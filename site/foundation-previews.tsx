@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { Bell, Bot, Map, Wifi } from "lucide-react"
-import { StatusGlyph } from "@/registry/syncrobotic/blocks/status-glyph"
+import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { type FoundationSlug, foundations } from "./foundations"
 import { contrast } from "./theme-tokens"
 

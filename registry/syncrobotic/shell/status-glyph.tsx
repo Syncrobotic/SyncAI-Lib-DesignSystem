@@ -33,4 +33,14 @@ export function StatusGlyph({ tone, className }: { tone: Tone; className?: strin
   )
 }
 
+/** Text colour per tone. Shared by every status display so a tone always means the same colour. */
 export const toneText = color
+
+/** Subtle tint per tone, for backgrounds behind tone text. */
+export const toneSubtle: Record<Tone, string> = {
+  info: "bg-info-subtle",
+  success: "bg-success-subtle",
+  warning: "bg-warning-subtle",
+  danger: "bg-danger-subtle",
+  neutral: "bg-neutral-subtle",
+}

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { fn } from "@storybook/test"
 import { Bluetooth, Check, CircleAlert, Square, Zap } from "lucide-react"
-import { Island, IslandNotice } from "@/registry/syncrobotic/blocks/island"
+import { Island, IslandNotice } from "@/registry/syncrobotic/shell/island"
 
 const meta: Meta<typeof Island> = {
   title: "Shell/Dynamic island",

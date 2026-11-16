@@ -66,7 +66,7 @@
       ],
       "files": [
         {
-          "path": "registry/syncrobotic/blocks/status-glyph.tsx",
+          "path": "registry/syncrobotic/shell/status-glyph.tsx",
           "type": "registry:component"
         }
       ]
@@ -82,7 +82,7 @@
       ],
       "files": [
         {
-          "path": "registry/syncrobotic/blocks/status-eyebrow.tsx",
+          "path": "registry/syncrobotic/shell/status-eyebrow.tsx",
           "type": "registry:component"
         }
       ]
@@ -97,7 +97,7 @@
       ],
       "files": [
         {
-          "path": "registry/syncrobotic/blocks/tray.tsx",
+          "path": "registry/syncrobotic/shell/tray.tsx",
           "type": "registry:component"
         }
       ]
@@ -116,7 +116,7 @@
       ],
       "files": [
         {
-          "path": "registry/syncrobotic/blocks/stop-button.tsx",
+          "path": "registry/syncrobotic/shell/stop-button.tsx",
           "type": "registry:component"
         }
       ]
@@ -135,7 +135,7 @@
       ],
       "files": [
         {
-          "path": "registry/syncrobotic/blocks/slide-to-release.tsx",
+          "path": "registry/syncrobotic/shell/slide-to-release.tsx",
           "type": "registry:component"
         }
       ]
@@ -151,7 +151,7 @@
       ],
       "files": [
         {
-          "path": "registry/syncrobotic/blocks/dock.tsx",
+          "path": "registry/syncrobotic/shell/dock.tsx",
           "type": "registry:component"
         }
       ]
@@ -171,7 +171,7 @@
       ],
       "files": [
         {
-          "path": "registry/syncrobotic/blocks/island.tsx",
+          "path": "registry/syncrobotic/shell/island.tsx",
           "type": "registry:component"
         }
       ]
@@ -189,7 +189,7 @@
       ],
       "files": [
         {
-          "path": "registry/syncrobotic/blocks/list.tsx",
+          "path": "registry/syncrobotic/shell/list.tsx",
           "type": "registry:component"
         }
       ]
@@ -204,7 +204,7 @@
       ],
       "files": [
         {
-          "path": "registry/syncrobotic/blocks/skeleton.tsx",
+          "path": "registry/syncrobotic/shell/skeleton.tsx",
           "type": "registry:component"
         }
       ]
@@ -719,7 +719,7 @@
       ],
       "files": [
         {
-          "path": "registry/syncrobotic/sections/stats-cards.tsx",
+          "path": "registry/syncrobotic/blocks/stats-cards.tsx",
           "type": "registry:component"
         }
       ]
@@ -745,7 +745,7 @@
       ],
       "files": [
         {
-          "path": "registry/syncrobotic/sections/fleet-table.tsx",
+          "path": "registry/syncrobotic/blocks/fleet-table.tsx",
           "type": "registry:component"
         }
       ]
@@ -767,7 +767,7 @@
       ],
       "files": [
         {
-          "path": "registry/syncrobotic/sections/robot-status-card.tsx",
+          "path": "registry/syncrobotic/blocks/robot-status-card.tsx",
           "type": "registry:component"
         }
       ]
@@ -788,7 +788,7 @@
       ],
       "files": [
         {
-          "path": "registry/syncrobotic/sections/marketing-hero.tsx",
+          "path": "registry/syncrobotic/blocks/marketing-hero.tsx",
           "type": "registry:component"
         }
       ]
