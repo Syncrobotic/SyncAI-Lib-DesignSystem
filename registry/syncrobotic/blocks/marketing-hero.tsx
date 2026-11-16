@@ -1,7 +1,7 @@
 import * as React from "react"
 import { ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { StatusGlyph } from "@/registry/syncrobotic/blocks/status-glyph"
+import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { Badge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
 

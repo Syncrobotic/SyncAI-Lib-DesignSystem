@@ -26,7 +26,13 @@ export function useSlideRelease({
 }: Options) {
   const trackRef = React.useRef<HTMLDivElement>(null)
   const thumbRef = React.useRef<HTMLDivElement>(null)
-  const [position, setPosition] = React.useState(0)
+  const [position, setPositionState] = React.useState(0)
+  // Read on pointer up. State from the last render can lag a fast flick, so the release decision uses the ref.
+  const positionRef = React.useRef(0)
+  const setPosition = (p: number) => {
+    positionRef.current = p
+    setPositionState(p)
+  }
   const [dragging, setDragging] = React.useState(false)
   const [released, setReleased] = React.useState(false)
   const origin = React.useRef<number | null>(null)
@@ -43,7 +49,8 @@ export function useSlideRelease({
 
   const finish = React.useCallback(() => {
     setReleased(true)
-    setPosition(1)
+    positionRef.current = 1
+    setPositionState(1)
     navigator.vibrate?.(30)
     onRelease()
   }, [onRelease])
@@ -70,7 +77,7 @@ export function useSlideRelease({
     if (origin.current === null) return
     origin.current = null
     setDragging(false)
-    if (armed.current && position >= threshold) finish()
+    if (armed.current && positionRef.current >= threshold) finish()
     else setPosition(0)
     armed.current = false
   }
@@ -99,7 +106,8 @@ export function useSlideRelease({
     released,
     reset: () => {
       setReleased(false)
-      setPosition(0)
+      positionRef.current = 0
+      setPositionState(0)
     },
     thumbHandlers: { onPointerDown, onPointerMove, onPointerUp: end, onPointerCancel: end },
     trackHandlers: { onKeyDown, onKeyUp },

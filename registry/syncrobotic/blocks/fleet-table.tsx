@@ -2,8 +2,8 @@
 
 import * as React from "react"
 import { ChevronLeft, ChevronRight, Ellipsis, MapPin, Pencil, Search, Trash2 } from "lucide-react"
-import { InlineStatus } from "@/registry/syncrobotic/blocks/status-eyebrow"
-import type { Tone } from "@/registry/syncrobotic/blocks/status-glyph"
+import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
+import type { Tone } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import {
   DropdownMenu,

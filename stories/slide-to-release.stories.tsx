@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { fn } from "@storybook/test"
-import { SlideToRelease } from "@/registry/syncrobotic/blocks/slide-to-release"
+import { SlideToRelease } from "@/registry/syncrobotic/shell/slide-to-release"
 
 const meta: Meta<typeof SlideToRelease> = {
   title: "Shell/Slide to release",
