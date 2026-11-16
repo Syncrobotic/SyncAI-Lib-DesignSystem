@@ -1,66 +1,104 @@
 "use client"
 
 import * as React from "react"
-import { Monitor, Smartphone, Tablet } from "lucide-react"
+import { Code, Eye, Monitor, Smartphone, Tablet } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/registry/syncrobotic/ui/tabs"
 
-const widths = { desktop: "100%", tablet: "768px", mobile: "390px" } as const
+const widths = { desktop: 1280, tablet: 768, mobile: 390 } as const
 type Viewport = keyof typeof widths
 
-/** Live block in an iframe, with a viewport switch so responsive behaviour is visible. */
-export function BlockFrame({ name, height, initial }: { name: string; height: number; initial: "desktop" | "mobile" }) {
+/**
+ * A block in one card: Preview / Code tabs. The preview is an iframe rendered at the real device width
+ * (1280, 768 or 390) and scaled down to fit, so breakpoints behave as they would on that device.
+ */
+export function BlockFrame({ name, height, initial, code }: { name: string; height: number; initial: "desktop" | "mobile"; code: React.ReactNode }) {
   const [vp, setVp] = React.useState<Viewport>(initial)
-  const ref = React.useRef<HTMLIFrameElement>(null)
+  const [tab, setTab] = React.useState("preview")
+  const [avail, setAvail] = React.useState(0)
+  const box = React.useRef<HTMLDivElement>(null)
+  const frame = React.useRef<HTMLIFrameElement>(null)
+
+  React.useEffect(() => {
+    const el = box.current
+    if (!el) return
+    const ro = new ResizeObserver(([e]) => setAvail(e.contentRect.width))
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [tab])
 
   // Keep the frame's dark/light in step with the page.
   React.useEffect(() => {
-    const sync = () => {
-      const dark = document.documentElement.classList.contains("dark")
-      ref.current?.contentDocument?.documentElement.classList.toggle("dark", dark)
-    }
-    sync()
+    const sync = () => frame.current?.contentDocument?.documentElement.classList.toggle("dark", document.documentElement.classList.contains("dark"))
     const obs = new MutationObserver(sync)
     obs.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
     return () => obs.disconnect()
   }, [])
 
+  const width = widths[vp]
+  const scale = avail > 0 ? Math.min(1, avail / width) : 1
+
   return (
-    <div className="flex flex-col gap-3">
-      <div className="flex items-center justify-between">
-        <div role="group" aria-label="Viewport" className="inline-flex gap-1 rounded-sm bg-muted p-1">
-          {(
-            [
-              ["desktop", Monitor],
-              ["tablet", Tablet],
-              ["mobile", Smartphone],
-            ] as const
-          ).map(([v, Icon]) => (
-            <button
-              key={v}
-              type="button"
-              aria-label={`${v} view`}
-              aria-pressed={vp === v}
-              onClick={() => setVp(v)}
-              className={cn("flex size-8 items-center justify-center rounded-xs text-muted-foreground", vp === v && "bg-primary text-primary-foreground")}
-            >
-              <Icon aria-hidden className="size-4" />
-            </button>
-          ))}
+    <div className="overflow-hidden rounded-md border border-border bg-card">
+      <Tabs value={tab} onValueChange={setTab} className="gap-0">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border px-4">
+          <TabsList aria-label="View" className="border-b-0">
+            <TabsTrigger value="preview">
+              <Eye aria-hidden="true" /> Preview
+            </TabsTrigger>
+            <TabsTrigger value="code">
+              <Code aria-hidden="true" /> Code
+            </TabsTrigger>
+          </TabsList>
+          {tab === "preview" && (
+            <div className="flex items-center gap-3 py-2">
+              <div role="group" aria-label="Device width" className="inline-flex gap-1 rounded-sm bg-muted p-1">
+                {(
+                  [
+                    ["desktop", Monitor],
+                    ["tablet", Tablet],
+                    ["mobile", Smartphone],
+                  ] as const
+                ).map(([v, Icon]) => (
+                  <button
+                    key={v}
+                    type="button"
+                    aria-label={`${v} view, ${widths[v]} pixels`}
+                    aria-pressed={vp === v}
+                    onClick={() => setVp(v)}
+                    className={cn("flex size-8 items-center justify-center rounded-xs text-muted-foreground", vp === v && "bg-primary text-primary-foreground")}
+                  >
+                    <Icon aria-hidden className="size-4" />
+                  </button>
+                ))}
+              </div>
+              <a href={`/preview/${name}`} target="_blank" rel="noreferrer" className="text-sm text-muted-foreground hover:text-foreground">
+                Open ↗
+              </a>
+            </div>
+          )}
         </div>
-        <a href={`/preview/${name}`} target="_blank" rel="noreferrer" className="text-sm text-muted-foreground hover:text-foreground">
-          Open in new tab ↗
-        </a>
-      </div>
-      <div className="specimen flex justify-center overflow-hidden rounded-md border border-border p-2">
-        <iframe
-          ref={ref}
-          src={`/preview/${name}`}
-          title={`${name} preview`}
-          onLoad={(e) => e.currentTarget.contentDocument?.documentElement.classList.toggle("dark", document.documentElement.classList.contains("dark"))}
-          className="rounded-sm bg-background ring-1 ring-border transition-[width] duration-(--motion-base) ease-(--ease-standard)"
-          style={{ width: widths[vp], maxWidth: "100%", height }}
-        />
-      </div>
+        <TabsContent value="preview" className="specimen p-4">
+          <div ref={box} className="w-full">
+            <div className="mx-auto overflow-hidden rounded-sm ring-1 ring-border" style={{ width: width * scale, height: height * scale }}>
+              <iframe
+                ref={frame}
+                src={`/preview/${name}`}
+                title={`${name} preview at ${width} pixels`}
+                onLoad={(e) => e.currentTarget.contentDocument?.documentElement.classList.toggle("dark", document.documentElement.classList.contains("dark"))}
+                className="origin-top-left bg-background"
+                style={{ width, height, transform: `scale(${scale})` }}
+              />
+            </div>
+          </div>
+          <p className="pt-2 text-center font-mono text-xs text-muted-foreground">
+            {width}px{scale < 1 ? ` · shown at ${Math.round(scale * 100)}%` : ""}
+          </p>
+        </TabsContent>
+        <TabsContent value="code" className="[&>div]:rounded-none [&>div]:border-0">
+          {code}
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }
