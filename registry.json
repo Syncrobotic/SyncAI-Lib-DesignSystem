@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "syncrobotic",
-  "homepage": "https://github.com/Syncrobotic/SyncAI-Lib-DesignSystem",
+  "homepage": "https://syncai-lib-designsystem.vercel.app",
   "items": [
     {
       "name": "syncrobotic-theme",
