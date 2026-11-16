@@ -41,8 +41,8 @@ export default async function ComponentPage({ params }: Props) {
 
       {item.examples && (
         <>
-          <H2 id="states">States</H2>
-          <p className="pb-4 text-sm text-muted-foreground">Each state is the same story Storybook renders and the visual regression test captures.</p>
+          <H2 id="examples">Examples</H2>
+          <p className="pb-4 text-sm text-muted-foreground">States and real uses. Each one is a Storybook story and is captured by the visual regression test.</p>
           <div className="flex flex-col gap-6">
             {names.map((n) => (
               <section key={n} className="flex flex-col gap-2">

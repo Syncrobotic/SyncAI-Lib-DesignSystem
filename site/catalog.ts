@@ -4,7 +4,8 @@ import registry from "../registry.json"
 
 // Where each registry item's live examples come from. Stories are the single source of the states.
 export type StoryFile = "stop-button" | "slide-to-release" | "dock" | "island" | "list" | "actions" | "inputs" | "display" | "navigation" | "overlays"
-type Examples = { file: StoryFile; only?: string[] }
+/** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
+type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
 export const groups = ["Actions", "Inputs", "Display", "Navigation", "Overlays", "Robot shell", "Hooks"] as const
 export type Group = (typeof groups)[number]
@@ -20,7 +21,7 @@ const entries: Record<string, Entry> = {
   // Actions
   button: {
     group: "Actions",
-    examples: { file: "actions", only: ["ButtonVariants", "ButtonSizes", "ButtonWithIcon", "ButtonStates"] },
+    examples: { file: "actions", prefix: "Button" },
     rules: [
       "One primary button per view. Primary is neutral high contrast, never blue or red.",
       "Destructive is a danger outline and text. Solid red belongs to the emergency stop alone.",
@@ -30,45 +31,45 @@ const entries: Record<string, Entry> = {
   },
   "segmented-control": {
     group: "Actions",
-    examples: { file: "actions", only: ["SegmentedControlDefault"] },
+    examples: { file: "actions", prefix: "SegmentedControl" },
     rules: ["For two to four views of the same data. For sections of a page, use Tabs.", "The selected segment is inverted, per the selected-state rule."],
   },
   // Inputs
   input: {
     group: "Inputs",
-    examples: { file: "inputs", only: ["InputStates"] },
+    examples: { file: "inputs", prefix: "Input" },
     rules: ["Wrap it in Field for the label, hint and error.", "Text is 16 px so iOS does not zoom on focus."],
   },
-  textarea: { group: "Inputs", examples: { file: "inputs", only: ["TextareaDefault"] } },
-  label: { group: "Inputs", examples: { file: "inputs", only: ["CheckboxDefault"] } },
+  textarea: { group: "Inputs", examples: { file: "inputs", prefix: "Textarea" } },
+  label: { group: "Inputs", examples: { file: "inputs", prefix: "Label" } },
   field: {
     group: "Inputs",
-    examples: { file: "inputs", only: ["InputStates"] },
+    examples: { file: "inputs", prefix: "Field" },
     rules: ["The error replaces the hint in the same line, so the layout does not jump.", "Say how to fix it (“At least 8 characters”), not just that it is wrong."],
   },
   checkbox: {
     group: "Inputs",
-    examples: { file: "inputs", only: ["CheckboxDefault"] },
+    examples: { file: "inputs", prefix: "Checkbox" },
     rules: ["Keep the whole 44 px row tappable by pairing it with its Label.", "Changes apply on save. For settings that apply immediately, use Switch."],
   },
-  "radio-group": { group: "Inputs", examples: { file: "inputs", only: ["RadioGroupDefault"] }, rules: ["For two to five options that all fit on screen. Longer lists use Select."] },
-  switch: { group: "Inputs", examples: { file: "inputs", only: ["SwitchDefault"] }, rules: ["Takes effect immediately; no save button.", "On is success green, per the colour rules."] },
-  select: { group: "Inputs", examples: { file: "inputs", only: ["SelectDefault"] } },
-  slider: { group: "Inputs", examples: { file: "inputs", only: ["SliderDefault"] }, rules: ["Always show the current value in the label next to it."] },
+  "radio-group": { group: "Inputs", examples: { file: "inputs", prefix: "RadioGroup" }, rules: ["For two to five options that all fit on screen. Longer lists use Select."] },
+  switch: { group: "Inputs", examples: { file: "inputs", prefix: "Switch" }, rules: ["Takes effect immediately; no save button.", "On is success green, per the colour rules."] },
+  select: { group: "Inputs", examples: { file: "inputs", prefix: "Select" } },
+  slider: { group: "Inputs", examples: { file: "inputs", prefix: "Slider" }, rules: ["Always show the current value in the label next to it."] },
   // Display
-  badge: { group: "Display", examples: { file: "display", only: ["BadgeTones"] }, rules: ["Counts and short states. In list rows prefer Status eyebrow's InlineStatus."] },
-  card: { group: "Display", examples: { file: "display", only: ["CardDefault"] }, rules: ["Never nest cards. Group rows inside one card with separators."] },
-  avatar: { group: "Display", examples: { file: "display", only: ["AvatarDefault"] } },
-  separator: { group: "Display", examples: { file: "display", only: ["CardDefault"] } },
-  progress: { group: "Display", examples: { file: "display", only: ["ProgressDefault"] }, rules: ["Blue means in progress. Use another tone only when the value itself is a status, like battery."] },
+  badge: { group: "Display", examples: { file: "display", prefix: "Badge" }, rules: ["Counts and short states. In list rows prefer Status eyebrow's InlineStatus."] },
+  card: { group: "Display", examples: { file: "display", prefix: "Card" }, rules: ["Never nest cards. Group rows inside one card with separators."] },
+  avatar: { group: "Display", examples: { file: "display", prefix: "Avatar" } },
+  separator: { group: "Display", examples: { file: "display", prefix: "Separator" } },
+  progress: { group: "Display", examples: { file: "display", prefix: "Progress" }, rules: ["Blue means in progress. Use another tone only when the value itself is a status, like battery."] },
   spinner: {
     group: "Display",
-    examples: { file: "display", only: ["SpinnerDefault"] },
+    examples: { file: "display", prefix: "Spinner" },
     rules: ["Waits 300 ms before it appears. Work that finishes sooner never flashes a spinner.", "Prefer Skeleton when you know the shape of what is loading."],
   },
-  alert: { group: "Display", examples: { file: "display", only: ["AlertTones"] }, rules: ["For a condition on this page. Transient events go to the island's notices."] },
-  "empty-state": { group: "Display", examples: { file: "display", only: ["EmptyStateDefault"] } },
-  table: { group: "Display", examples: { file: "display", only: ["TableDefault"] }, rules: ["Right-align numbers. Numbers are tabular by default."] },
+  alert: { group: "Display", examples: { file: "display", prefix: "Alert" }, rules: ["For a condition on this page. Transient events go to the island's notices."] },
+  "empty-state": { group: "Display", examples: { file: "display", prefix: "EmptyState" } },
+  table: { group: "Display", examples: { file: "display", prefix: "Table" }, rules: ["Right-align numbers. Numbers are tabular by default."] },
   list: { group: "Display", examples: { file: "list", only: ["GroupedList"] } },
   "status-glyph": {
     group: "Display",
@@ -84,23 +85,23 @@ const entries: Record<string, Entry> = {
     rules: ["Show what is already known; only unknown values get a skeleton.", "The whole group breathes over 1.2 s with no diagonal shimmer, and stops under reduced motion."],
   },
   // Navigation
-  tabs: { group: "Navigation", examples: { file: "navigation", only: ["TabsDefault"] } },
-  accordion: { group: "Navigation", examples: { file: "navigation", only: ["AccordionDefault"] } },
+  tabs: { group: "Navigation", examples: { file: "navigation", prefix: "Tabs" } },
+  accordion: { group: "Navigation", examples: { file: "navigation", prefix: "Accordion" } },
   // Overlays: the docs show the closed trigger; the *Open stories are for visual tests.
-  dialog: { group: "Overlays", examples: { file: "overlays", only: ["DialogDefault"] }, rules: ["A short decision. On phones prefer Sheet for anything longer."] },
+  dialog: { group: "Overlays", examples: { file: "overlays", prefix: "Dialog" }, rules: ["A short decision. On phones prefer Sheet for anything longer."] },
   "alert-dialog": {
     group: "Overlays",
-    examples: { file: "overlays", only: ["AlertDialogDefault"] },
+    examples: { file: "overlays", prefix: "AlertDialog" },
     rules: ["Only for actions that cannot be undone.", "The confirm names the consequence (“Delete 38 GB”); the cancel names what is kept."],
   },
-  sheet: { group: "Overlays", examples: { file: "overlays", only: ["SheetDefault"] } },
-  popover: { group: "Overlays", examples: { file: "overlays", only: ["PopoverDefault"] } },
+  sheet: { group: "Overlays", examples: { file: "overlays", prefix: "Sheet" } },
+  popover: { group: "Overlays", examples: { file: "overlays", prefix: "Popover" } },
   tooltip: {
     group: "Overlays",
-    examples: { file: "overlays", only: ["TooltipDefault"] },
+    examples: { file: "overlays", prefix: "Tooltip" },
     rules: ["Touch screens never show tooltips. Never put information the operator needs in one."],
   },
-  "dropdown-menu": { group: "Overlays", examples: { file: "overlays", only: ["DropdownMenuDefault"] }, rules: ["Destructive items go last, after a separator."] },
+  "dropdown-menu": { group: "Overlays", examples: { file: "overlays", prefix: "DropdownMenu" }, rules: ["Destructive items go last, after a separator."] },
   // Robot shell
   "stop-button": {
     group: "Robot shell",
@@ -155,7 +156,9 @@ export function readSource(path: string) {
 export function storyNames(ex: Examples) {
   const src = readSource(`stories/${ex.file}.stories.tsx`)
   const names = [...src.matchAll(/^export const ([^\s:=]+)\s*[:=]/gm)].map((m) => m[1])
-  return ex.only ? names.filter((n) => ex.only!.includes(n)) : names
+  if (ex.only) return names.filter((n) => ex.only!.includes(n))
+  if (ex.prefix) return names.filter((n) => n.startsWith(ex.prefix!) && !n.endsWith("Open"))
+  return names
 }
 
 /** "ThreeTiersWithPageAction" -> "Three tiers with page action", as Storybook shows it. */
