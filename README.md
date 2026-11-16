@@ -4,7 +4,7 @@
 
 Like [ReUI](https://reui.io), components install into your project as source code: you can read them, change them and keep them in step with the shadcn ecosystem.
 
-- **Docs site:** [https://syncai-lib-designsystem.vercel.app](https://syncai-lib-designsystem.vercel.app) (Next.js app in `app/`, deployed on Vercel; password-protected until open-sourced)
+- **Docs site:** [https://syncai-lib-designsystem.vercel.app](https://syncai-lib-designsystem.vercel.app) (Next.js app in `app/`, deployed on Vercel; behind Vercel Authentication until open-sourced)
 - **Registry:** `https://syncai-lib-designsystem.vercel.app/r/{name}.json`
 - **Workbench:** Storybook, with visual regression tests on every state
 
@@ -25,7 +25,7 @@ Operators control robots outdoors, one-handed and sometimes in a hurry. The syst
    "registries": {
      "@syncrobotic": {
        "url": "https://syncai-lib-designsystem.vercel.app/r/{name}.json",
-       "headers": { "Authorization": "Bearer ${SYNCROBOTIC_REGISTRY_TOKEN}" }
+       "headers": { "x-vercel-protection-bypass": "${SYNCROBOTIC_REGISTRY_TOKEN}" }
      }
    }
    ```
@@ -97,18 +97,25 @@ The first `test:visual` run writes baselines; commit them (`tests/__screenshots_
 
 ## Deploy (Vercel)
 
-Import the repo into the company Vercel team. Vercel detects Next.js and runs `npm run build`, which builds the registry and the site. `main` deploys to production; `dev` and `stage` get preview URLs.
+The project lives in the company Vercel team. `vercel.json` pins the framework to Next.js; `npm run build` builds the registry and the site. `main` deploys to production; `dev` and `stage` get preview URLs.
 
-Environment variables:
+### Access
+
+Until the project is open-sourced, the site and the registry are private through Vercel's own Deployment Protection, not code in this repo:
+
+- **People** sign in with their Vercel account (Settings → Deployment Protection → Vercel Authentication, covering production too).
+- **The shadcn CLI** sends the project's *Protection Bypass for Automation* secret in the `x-vercel-protection-bypass` header (see Install). Maintainers create it on the same settings page and hand it to engineers as `SYNCROBOTIC_REGISTRY_TOKEN`.
+
+### Environment variables
 
 | Name | Purpose |
 | --- | --- |
-| `SITE_PASSWORD` | Password for people (HTTP Basic auth, any user name) |
-| `REGISTRY_TOKEN` | Bearer token the shadcn CLI sends for `/r/*` |
 | `SITE_URL` | Canonical URL, e.g. `https://design.example.com`. Defaults to the Vercel production URL |
-| `SITE_PUBLIC` | `true` removes the password and lets search engines index the site. Leave unset until open-sourcing |
+| `SITE_PUBLIC` | `true` lets search engines index the site (robots, sitemap). Leave unset until open-sourcing |
 
-A deployment without `SITE_PASSWORD` and `REGISTRY_TOKEN` answers 503 instead of opening up.
+### Open-sourcing
+
+Turn off Vercel Authentication, set `SITE_PUBLIC=true` and redeploy. Consumers can then drop the `headers` block from `components.json`.
 
 ## Known issues
 
