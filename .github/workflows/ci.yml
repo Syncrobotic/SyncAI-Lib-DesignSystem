@@ -1,0 +1,31 @@
+name: ci
+on:
+  pull_request:
+  push:
+    branches: [dev, stage, main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm run lint:tokens
+      - run: npm run typecheck
+      # Registry JSON + docs site (Next.js)
+      - run: npm run build
+      - run: npm run build-storybook
+      - run: npx playwright install --with-deps chromium
+      # Until baselines are committed, the first run writes them instead of failing.
+      # Download the "visual-baseline" artifact and commit it to tests/__screenshots__/.
+      - run: npm run test:visual -- --update-snapshots=missing
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: visual-baseline, path: tests/__screenshots__, if-no-files-found: ignore }
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with: { name: visual-diff, path: test-results }
+      - uses: actions/upload-artifact@v4
+        with: { name: registry, path: public/r }

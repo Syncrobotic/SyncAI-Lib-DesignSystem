@@ -1,0 +1,76 @@
+{
+  "name": "@syncrobotic/design-system",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Design language and React UI kit for robot control apps, shipped as a shadcn/ui registry for Tailwind CSS v4.",
+  "keywords": [
+    "design-system",
+    "ui-kit",
+    "shadcn",
+    "shadcn-registry",
+    "shadcn-ui",
+    "tailwindcss",
+    "tailwindcss-v4",
+    "react",
+    "nextjs",
+    "robotics",
+    "design-tokens",
+    "emergency-stop",
+    "dark-mode"
+  ],
+  "homepage": "https://syncai-lib-designsystem.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Syncrobotic/SyncAI-Lib-DesignSystem.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Syncrobotic/SyncAI-Lib-DesignSystem/issues"
+  },
+  "author": "SYNCROBOTIC",
+  "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "shadcn build -o public/r && next build",
+    "start": "next start",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build -o storybook-static",
+    "registry:build": "shadcn build -o public/r",
+    "typecheck": "tsc --noEmit",
+    "lint:tokens": "node scripts/check-tokens.mjs",
+    "test:visual": "playwright test",
+    "ci": "npm run lint:tokens && npm run typecheck && npm run build && npm run build-storybook"
+  },
+  "dependencies": {
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "geist": "^1.9.2",
+    "lucide-react": "^0.468.0",
+    "next": "^16.4.6",
+    "radix-ui": "^1.8.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "shiki": "^4.6.0",
+    "tailwind-merge": "^3.0.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.1",
+    "@storybook/addon-a11y": "^8.6.0",
+    "@storybook/addon-essentials": "^8.6.0",
+    "@storybook/react": "^8.6.0",
+    "@storybook/react-vite": "^8.6.0",
+    "@storybook/test": "^8.6.0",
+    "@tailwindcss/postcss": "^4.3.5",
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "http-server": "^14.1.1",
+    "shadcn": "^3.0.0",
+    "storybook": "^8.6.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.0",
+    "vite": "^6.0.0"
+  }
+}

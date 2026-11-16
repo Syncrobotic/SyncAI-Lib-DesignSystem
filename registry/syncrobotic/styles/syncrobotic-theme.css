@@ -1,0 +1,247 @@
+/*
+ * SYNCROBOTIC theme v0.9
+ * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
+ *
+ * Usage:
+ *   1. In globals.css, add @import "./syncrobotic-theme.css"; after @import "tailwindcss";
+ *   2. Delete the :root / .dark / @theme inline blocks that shadcn init generated (this file replaces them)
+ *   3. Dark is the default: <html class="dark">. Teleoperation and intercom screens put class="dark"
+ *      on their root so they stay dark whatever the appearance setting.
+ *
+ * Colour rules:
+ *   - Solid red (--stop) is for the emergency stop only. Other destructive actions use the --danger outline and text
+ *   - Status colours come in pairs: foreground (--info) on its subtle tint (--info-subtle)
+ *   - --primary is neutral high contrast (black in light, white in dark); blue (--info) only means "in progress"
+ *   - Selected states are inverted (white on black in dark mode); a switch that is on uses --success
+ *   - Actions in the lower part of the dock are never solid white, so they do not compete with the stop
+ *   - Alerts other than the stop (event counts) use --danger on --danger-subtle, never solid red
+ */
+
+/* ---------- Light ---------- */
+:root {
+  --background: #efeff2;
+  --foreground: #09090b;
+  --card: #ffffff;
+  --card-foreground: var(--foreground);
+  --popover: #ffffff;
+  --popover-foreground: var(--foreground);
+  --primary: #09090b;
+  --primary-foreground: #ffffff;
+  --secondary: #e6e6ea;
+  --secondary-foreground: var(--foreground);
+  --muted: #e6e6ea;
+  --muted-foreground: #52525b;
+  --accent: #e6e6ea;
+  --accent-foreground: var(--foreground);
+  --destructive: #b91c1c;
+  --border: #dcdce1;
+  --input: #dcdce1;
+  --ring: #1d4ed8;
+  --disabled: #a1a1aa;
+
+  --info: #1d4ed8;
+  --info-subtle: #dbeafe;
+  --success: #047857;
+  --success-subtle: #d1fae5;
+  --warning: #b45309;
+  --warning-subtle: #fef3c7;
+  --danger: #b91c1c;
+  --danger-subtle: #fee2e2;
+  --neutral: #52525b;
+  --neutral-subtle: #f4f4f5;
+
+  --stop: #dc2626;
+  --stop-deep: #991b1b;
+
+  --map: #f1f2f5;
+  --map-point: #7b8190;
+  --scrim: rgb(9 9 11 / 0.45);
+  --float: rgb(255 255 255 / 0.9);
+  --edge: rgb(9 9 11 / 0.14);
+  --shadow-float: 0 8px 24px rgb(9 9 11 / 0.12);
+  --shadow-overlay: 0 16px 40px rgb(9 9 11 / 0.18);
+
+  /* Heights */
+  --h-tag: 1.5rem;    /* 24 tag, not interactive */
+  --h-sm: 2.25rem;    /* 36 small button inside a card */
+  --h-md: 2.75rem;    /* 44 default, minimum height of anything interactive */
+  --h-lg: 3rem;       /* 48 page primary action, dock tabs */
+  --h-row: 3.5rem;    /* 56 list row */
+  --h-stop: 3.5rem;   /* 56 emergency stop only */
+
+  /* Tray: shared by the dynamic island and the dock. Outer radius 24 = inner radius 16 + padding 8 */
+  --tray-pad: 0.5rem;
+  --tray-gap: 0.5rem;
+
+  /* Motion: only for state changes */
+  --motion-fast: 120ms;
+  --motion-base: 200ms;
+  --motion-sheet: 320ms;
+}
+
+/* ---------- Dark (default) ---------- */
+.dark {
+  --background: #09090b;
+  --foreground: #fafafa;
+  --card: #16161a;
+  --popover: #16161a;
+  --primary: #fafafa;
+  --primary-foreground: #09090b;
+  --secondary: #25252b;
+  --muted: #25252b;
+  --muted-foreground: #a1a1aa;
+  --accent: #25252b;
+  --destructive: #f87171;
+  --border: #2c2c32;
+  --input: #2c2c32;
+  --ring: #60a5fa;
+  --disabled: #63636b;
+
+  --info: #60a5fa;
+  --info-subtle: #14254f;
+  --success: #34d399;
+  --success-subtle: #06302a;
+  --warning: #fbbf24;
+  --warning-subtle: #3a2a07;
+  --danger: #f87171;
+  --danger-subtle: #451313;
+  --neutral: #a1a1aa;
+  --neutral-subtle: #1c1c21;
+
+  --stop: #dc2626;
+  --stop-deep: #7f1d1d;
+
+  --map: #0d0d10;
+  --map-point: #6f7682;
+  --scrim: rgb(0 0 0 / 0.66);
+  --float: rgb(32 32 38 / 0.86);
+  --edge: rgb(255 255 255 / 0.12);
+  --shadow-float: 0 8px 24px rgb(0 0 0 / 0.32);
+  --shadow-overlay: 0 16px 40px rgb(0 0 0 / 0.45);
+}
+
+/* ---------- Tailwind utilities ---------- */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-disabled: var(--disabled);
+
+  /* Usage: <Badge className="bg-info-subtle text-info"> */
+  --color-info: var(--info);
+  --color-info-subtle: var(--info-subtle);
+  --color-success: var(--success);
+  --color-success-subtle: var(--success-subtle);
+  --color-warning: var(--warning);
+  --color-warning-subtle: var(--warning-subtle);
+  --color-danger: var(--danger);
+  --color-danger-subtle: var(--danger-subtle);
+  --color-neutral: var(--neutral);
+  --color-neutral-subtle: var(--neutral-subtle);
+  --color-stop: var(--stop);
+  --color-stop-deep: var(--stop-deep);
+  --color-map: var(--map);
+  --color-map-point: var(--map-point);
+  --color-float: var(--float);
+  --color-edge: var(--edge);
+
+  --shadow-float: var(--shadow-float);
+  --shadow-overlay: var(--shadow-overlay);
+}
+
+@theme {
+  /*
+   * Radius scale: xs 8, sm 12, md 16, lg 20, xl 24, full. All multiples of 4, sharing the spacing base,
+   * so nested corners are always concentric: outer radius = inner radius + padding.
+   *   rounded-xs = 8   tags, small parts flush inside a container
+   *   rounded-sm = 12  buttons, inputs, icon tiles
+   *   rounded-md = 16  cards, parts inside a tray
+   *   rounded-lg = 20  floating notices, dialogs
+   *   rounded-xl = 24  trays (dynamic island, dock), bottom sheets
+   * Note: shadcn's default button and input use rounded-md and its card uses rounded-xl.
+   * When adding them to this registry, move them to the steps above (button rounded-sm, card rounded-md).
+   */
+  --radius-xs: 0.5rem;
+  --radius-sm: 0.75rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.5rem;
+
+  /* Font: bundled with the app, never loaded from a CDN */
+  --font-sans: "Geist", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+
+  /* Type scale: six steps, every line height a multiple of 4. Inputs use base (16) so iOS does not zoom */
+  --text-xs: 0.75rem;      /* caption 12/16 */
+  --text-xs--line-height: 1rem;
+  --text-sm: 0.875rem;     /* label 14/20 */
+  --text-sm--line-height: 1.25rem;
+  --text-base: 1rem;       /* body 16/24 */
+  --text-base--line-height: 1.5rem;
+  --text-lg: 1.125rem;     /* heading 18/24 */
+  --text-lg--line-height: 1.5rem;
+  --text-xl: 1.25rem;      /* title 20/28 */
+  --text-xl--line-height: 1.75rem;
+  --text-3xl: 1.75rem;     /* display 28/36 */
+  --text-3xl--line-height: 2.25rem;
+
+  /* Font weights: three only */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  /* Spacing keeps Tailwind's 4px base and uses only 1, 2, 3, 4, 6, 8 (4, 8, 12, 16, 24, 32 px) */
+
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Skeleton: the whole group breathes over 1.2 s, no diagonal shimmer */
+  --animate-breath: breath 1.2s var(--ease-standard) infinite;
+  @keyframes breath {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+    font-variant-numeric: tabular-nums;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-breath { animation: none; }
+  :root {
+    --motion-fast: 0.01ms;
+    --motion-base: 0.01ms;
+    --motion-sheet: 0.01ms;
+  }
+}

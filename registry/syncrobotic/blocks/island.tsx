@@ -1,0 +1,157 @@
+"use client"
+
+import * as React from "react"
+import { Battery, BatteryCharging, Bell, ChevronDown, TriangleAlert, Wifi, WifiOff, X } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Tray } from "@/registry/syncrobotic/blocks/tray"
+import { StatusGlyph, type Tone } from "@/registry/syncrobotic/blocks/status-glyph"
+
+type Zone = "name" | "status" | "bell"
+
+/** Screen-reader strings. Pass `labels` to localise. */
+export type IslandLabels = {
+  attention: string
+  status: string
+  notifications: (unread: number) => string
+}
+
+export const defaultIslandLabels: IslandLabels = {
+  attention: "Another dog needs attention",
+  status: "Device status",
+  notifications: (unread) => `Notifications, ${unread} unread`,
+}
+
+type IslandProps = {
+  name: string
+  avatar?: React.ReactNode
+  /** Shape at the avatar's corner: the dog's current state. */
+  tone: Tone
+  /** Another dog needs attention: a triangle after the name. Show it only for new issues. */
+  attention?: boolean
+  online?: boolean
+  battery?: number
+  charging?: boolean
+  unread?: number
+  /** Which zone is expanded. Each zone has its own panel. */
+  open?: Zone | null
+  onOpenChange?: (zone: Zone | null) => void
+  /** Persistent state (offline, stopped): changes the tray edge colour. */
+  edge?: Tone
+  /** Status zone while the first status has not arrived. */
+  loading?: boolean
+  /** IslandNotice or a panel. */
+  children?: React.ReactNode
+  labels?: Partial<IslandLabels>
+  className?: string
+}
+
+/**
+ * Three zones — name, device status, notifications — each opens on its own.
+ * Notices live inside the island as a child, assembled like the e-stop in the dock.
+ */
+export function Island({ name, avatar, tone, attention, online = true, battery = 72, charging, unread = 0, open = null, onOpenChange, edge, loading, children, labels, className }: IslandProps) {
+  const l = { ...defaultIslandLabels, ...labels }
+  const toggle = (z: Zone) => onOpenChange?.(open === z ? null : z)
+  const zone = (z: Zone) => cn("flex h-(--h-md) items-center gap-1 rounded-md px-2", open === z && "bg-muted")
+  const low = battery < 30
+  const BatteryIcon = charging ? BatteryCharging : Battery
+  return (
+    <Tray
+      className={cn(
+        "fixed inset-x-4 top-[max(1rem,env(safe-area-inset-top))] z-10",
+        edge === "danger" && "ring-danger",
+        edge === "warning" && "ring-warning",
+        className,
+      )}
+    >
+      <div className="flex h-(--h-md) items-center gap-1">
+        <button type="button" aria-expanded={open === "name"} onClick={() => toggle("name")} className={cn(zone("name"), "min-w-0 flex-1 text-left")}>
+          <span className="relative shrink-0">
+            {avatar ?? <span className="block size-8 rounded-full bg-muted" />}
+            <StatusGlyph tone={tone} className="absolute -right-0.5 -bottom-0.5 rounded-full bg-float" />
+          </span>
+          <span className="truncate text-sm font-medium">{name}</span>
+          {attention && <TriangleAlert aria-label={l.attention} className="size-4 shrink-0 text-warning" />}
+          <ChevronDown aria-hidden="true" className="size-4 shrink-0 text-muted-foreground" />
+        </button>
+        <button type="button" aria-expanded={open === "status"} aria-label={l.status} onClick={() => toggle("status")} className={zone("status")}>
+          {loading ? (
+            <>
+              <span className="block h-3 w-5 animate-breath rounded-xs bg-muted" />
+              <span className="block h-3 w-6 animate-breath rounded-xs bg-muted" />
+            </>
+          ) : (
+            <>
+              {online ? <Wifi aria-hidden="true" className="size-4" /> : <WifiOff aria-hidden="true" className="size-4 text-muted-foreground" />}
+              <BatteryIcon aria-hidden="true" className={cn("size-5", low && "text-warning")} />
+              {low && <span className="text-xs font-medium text-warning">{battery}%</span>}
+            </>
+          )}
+        </button>
+        <button type="button" aria-expanded={open === "bell"} aria-label={l.notifications(unread)} onClick={() => toggle("bell")} className={cn(zone("bell"), "relative")}>
+          <Bell aria-hidden="true" className="size-5" />
+          {unread > 0 && (
+            <span className="absolute top-1 right-1 inline-flex size-4 items-center justify-center rounded-full bg-foreground text-xs font-bold text-background">{unread}</span>
+          )}
+        </button>
+      </div>
+      {children}
+    </Tray>
+  )
+}
+
+type NoticeProps = {
+  tone: Tone
+  icon: React.ElementType
+  title: string
+  meta?: string
+  action?: { label: string; onClick: () => void }
+  /** Offline, stopped: no close button, stays until the state changes. */
+  persistent?: boolean
+  /** Severe events and failures use a danger tint and do not auto-dismiss. */
+  emphasis?: boolean
+  onDismiss?: () => void
+  dismissLabel?: string
+}
+
+/** A notice inside the island. Normal: 4 s. Reversible (has an undo action): 8 s. Failures: until handled. */
+// Full class names so Tailwind can find them (no string building).
+const subtle: Record<Tone, string> = {
+  info: "bg-info-subtle",
+  success: "bg-success-subtle",
+  warning: "bg-warning-subtle",
+  danger: "bg-danger-subtle",
+  neutral: "bg-neutral-subtle",
+}
+const fg: Record<Tone, string> = {
+  info: "text-info",
+  success: "text-success",
+  warning: "text-warning",
+  danger: "text-danger",
+  neutral: "text-muted-foreground",
+}
+
+export function IslandNotice({ tone, icon: Icon, title, meta, action, persistent, emphasis, onDismiss, dismissLabel = "Dismiss" }: NoticeProps) {
+  const tint = persistent || emphasis ? subtle[tone] : "bg-muted"
+  return (
+    <div role="status" className={cn("flex min-h-(--h-row) items-center gap-2 rounded-md px-2", tint)}>
+      <span className={cn("flex size-8 shrink-0 items-center justify-center rounded-sm", fg[tone])}>
+        <Icon aria-hidden="true" className="size-5" />
+      </span>
+      <span className="flex min-w-0 flex-1 flex-col">
+        <span className="truncate text-sm font-medium">{title}</span>
+        {meta && <span className="truncate text-xs text-muted-foreground">{meta}</span>}
+      </span>
+      {action && (
+        <button type="button" onClick={action.onClick} className="h-(--h-sm) shrink-0 rounded-sm bg-background/40 px-3 text-sm font-medium">
+          {action.label}
+        </button>
+      )}
+      {!persistent && onDismiss && (
+        <button type="button" aria-label={dismissLabel} onClick={onDismiss} className="flex size-(--h-sm) shrink-0 items-center justify-center rounded-sm text-muted-foreground">
+          <X aria-hidden="true" className="size-4" />
+        </button>
+      )}
+    </div>
+  )
+}
