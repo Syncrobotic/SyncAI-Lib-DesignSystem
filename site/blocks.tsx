@@ -1,8 +1,8 @@
 import registry from "../registry.json"
-import { FleetTable } from "@/registry/syncrobotic/sections/fleet-table"
-import { MarketingHero } from "@/registry/syncrobotic/sections/marketing-hero"
-import { RobotStatusCard } from "@/registry/syncrobotic/sections/robot-status-card"
-import { StatsCards } from "@/registry/syncrobotic/sections/stats-cards"
+import { FleetTable } from "@/registry/syncrobotic/blocks/fleet-table"
+import { MarketingHero } from "@/registry/syncrobotic/blocks/marketing-hero"
+import { RobotStatusCard } from "@/registry/syncrobotic/blocks/robot-status-card"
+import { StatsCards } from "@/registry/syncrobotic/blocks/stats-cards"
 
 // Blocks are composed sections. Each renders alone at /preview/<name> so the docs can frame it at any width.
 type Meta = { product: "Dashboard" | "Control app" | "Marketing"; viewport: "desktop" | "mobile"; height: number; render: () => React.ReactNode }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
-import { StatusGlyph } from "@/registry/syncrobotic/blocks/status-glyph"
+import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { Badge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Switch } from "@/registry/syncrobotic/ui/switch"
@@ -9,6 +9,7 @@ import { groups, items } from "@/site/catalog"
 import { CodeBlock } from "@/site/code-block"
 import { site } from "@/site/config"
 import { FoundationGrid } from "@/site/foundation-previews"
+import pkg from "../../package.json"
 import { color, px, themeValue } from "@/site/theme-tokens"
 
 export const metadata: Metadata = {
@@ -208,7 +209,7 @@ export default function HomePage() {
           <CodeBlock code={"npx shadcn add @syncrobotic/syncrobotic-theme\nnpx shadcn add @syncrobotic/button @syncrobotic/card"} lang="bash" title="Terminal" />
         </div>
         <p className="pt-6 text-center font-mono text-xs text-muted-foreground">
-          Theme v0.9 · body text {px(themeValue("text-base"))} px · background {color("background").dark}
+          Version {pkg.version} · body text {px(themeValue("text-base"))} px · background {color("background").dark}
         </p>
       </section>
     </main>

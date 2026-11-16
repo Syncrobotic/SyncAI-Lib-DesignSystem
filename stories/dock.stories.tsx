@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { fn } from "@storybook/test"
 import { Bot, CircleAlert, House, ListChecks, Pause } from "lucide-react"
-import { Dock, DockActions, DockNav, type NavItem } from "@/registry/syncrobotic/blocks/dock"
-import { StopButton, WakeButton } from "@/registry/syncrobotic/blocks/stop-button"
-import { SlideToRelease } from "@/registry/syncrobotic/blocks/slide-to-release"
+import { Dock, DockActions, DockNav, type NavItem } from "@/registry/syncrobotic/shell/dock"
+import { StopButton, WakeButton } from "@/registry/syncrobotic/shell/stop-button"
+import { SlideToRelease } from "@/registry/syncrobotic/shell/slide-to-release"
 
 const items: NavItem[] = [
   { key: "home", label: "Now", icon: House },

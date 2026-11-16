@@ -11,7 +11,7 @@ const products = ["Dashboard", "Control app", "Marketing"] as const
 
 export default function BlocksPage() {
   return (
-    <main id="content" className="mx-auto max-w-6xl px-4 pt-16 pb-24">
+    <article>
       <header className="flex flex-col gap-3 border-b border-border pb-10">
         <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">Blocks</p>
         <h1 className="text-[2.5rem] leading-[2.75rem] font-bold tracking-tight">Sections you can drop into a page</h1>
@@ -55,6 +55,6 @@ export default function BlocksPage() {
           </section>
         )
       })}
-    </main>
+    </article>
   )
 }

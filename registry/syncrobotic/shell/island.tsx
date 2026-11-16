@@ -3,8 +3,8 @@
 import * as React from "react"
 import { Battery, BatteryCharging, Bell, ChevronDown, TriangleAlert, Wifi, WifiOff, X } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { Tray } from "@/registry/syncrobotic/blocks/tray"
-import { StatusGlyph, type Tone } from "@/registry/syncrobotic/blocks/status-glyph"
+import { Tray } from "@/registry/syncrobotic/shell/tray"
+import { StatusGlyph, toneSubtle, toneText, type Tone } from "@/registry/syncrobotic/shell/status-glyph"
 
 type Zone = "name" | "status" | "bell"
 
@@ -115,27 +115,12 @@ type NoticeProps = {
 }
 
 /** A notice inside the island. Normal: 4 s. Reversible (has an undo action): 8 s. Failures: until handled. */
-// Full class names so Tailwind can find them (no string building).
-const subtle: Record<Tone, string> = {
-  info: "bg-info-subtle",
-  success: "bg-success-subtle",
-  warning: "bg-warning-subtle",
-  danger: "bg-danger-subtle",
-  neutral: "bg-neutral-subtle",
-}
-const fg: Record<Tone, string> = {
-  info: "text-info",
-  success: "text-success",
-  warning: "text-warning",
-  danger: "text-danger",
-  neutral: "text-muted-foreground",
-}
 
 export function IslandNotice({ tone, icon: Icon, title, meta, action, persistent, emphasis, onDismiss, dismissLabel = "Dismiss" }: NoticeProps) {
-  const tint = persistent || emphasis ? subtle[tone] : "bg-muted"
+  const tint = persistent || emphasis ? toneSubtle[tone] : "bg-muted"
   return (
     <div role="status" className={cn("flex min-h-(--h-row) items-center gap-2 rounded-md px-2", tint)}>
-      <span className={cn("flex size-8 shrink-0 items-center justify-center rounded-sm", fg[tone])}>
+      <span className={cn("flex size-8 shrink-0 items-center justify-center rounded-sm", toneText[tone])}>
         <Icon aria-hidden="true" className="size-5" />
       </span>
       <span className="flex min-w-0 flex-1 flex-col">

@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { fn } from "@storybook/test"
-import { ListGroup, ListRow } from "@/registry/syncrobotic/blocks/list"
-import { InlineStatus, StatusEyebrow } from "@/registry/syncrobotic/blocks/status-eyebrow"
-import { StatusGlyph } from "@/registry/syncrobotic/blocks/status-glyph"
-import { Bone, LoadingLine } from "@/registry/syncrobotic/blocks/skeleton"
+import { ListGroup, ListRow } from "@/registry/syncrobotic/shell/list"
+import { InlineStatus, StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
+import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
+import { Bone, LoadingLine } from "@/registry/syncrobotic/shell/skeleton"
 
 const meta: Meta = { title: "Data/List and status" }
 export default meta

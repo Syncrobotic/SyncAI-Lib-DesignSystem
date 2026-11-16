@@ -10,7 +10,7 @@
     "cssVariables": true
   },
   "aliases": {
-    "components": "@/registry/syncrobotic/blocks",
+    "components": "@/registry/syncrobotic/shell",
     "utils": "@/lib/utils",
     "hooks": "@/registry/syncrobotic/hooks",
     "lib": "@/lib",

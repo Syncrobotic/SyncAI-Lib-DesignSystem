@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { Tray } from "@/registry/syncrobotic/blocks/tray"
+import { Tray } from "@/registry/syncrobotic/shell/tray"
 
 /**
  * Three tiers, top to bottom:

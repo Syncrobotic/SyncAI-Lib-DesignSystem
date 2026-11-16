@@ -110,6 +110,7 @@ const entries: Record<string, Entry> = {
       "UI only: it takes `state` and calls onStop, onStopAll or onWake. Sending the command, waiting for the dog and falling back to Bluetooth after 1.5 s belong to the app, which passes the result back as `state`.",
       "Solid red is reserved for the emergency stop. Other destructive actions use the danger outline and text.",
       "Fixed at 56 px (--h-stop), the only button in the system at that height.",
+      "Works the same for every input: touch or click stops; Enter or Space stops; holding any of them for 2 s stops all; a screen-reader or switch-control activation stops.",
       "Every string can be replaced through `labels` (WakeButton: `label` and `reason`) to localise.",
     ],
   },
@@ -156,9 +157,14 @@ export function readSource(path: string) {
 export function storyNames(ex: Examples) {
   const src = readSource(`stories/${ex.file}.stories.tsx`)
   const names = [...src.matchAll(/^export const ([^\s:=]+)\s*[:=]/gm)].map((m) => m[1])
-  if (ex.only) return names.filter((n) => ex.only!.includes(n))
-  if (ex.prefix) return names.filter((n) => n.startsWith(ex.prefix!) && !n.endsWith("Open"))
-  return names
+  const picked = ex.only
+    ? names.filter((n) => ex.only!.includes(n))
+    : ex.prefix
+      ? names.filter((n) => n.startsWith(ex.prefix!) && !n.endsWith("Open"))
+      : names
+  // Fail the build rather than publish a component page with its examples silently missing.
+  if (picked.length === 0) throw new Error(`No stories in stories/${ex.file}.stories.tsx match ${ex.prefix ?? ex.only?.join(", ")}`)
+  return picked
 }
 
 /** "ThreeTiersWithPageAction" -> "Three tiers with page action", as Storybook shows it. */
