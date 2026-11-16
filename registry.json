@@ -1,0 +1,210 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "syncrobotic",
+  "homepage": "https://github.com/Syncrobotic/SyncAI-Lib-DesignSystem",
+  "items": [
+    {
+      "name": "syncrobotic-theme",
+      "type": "registry:style",
+      "title": "SYNCROBOTIC 主題",
+      "description": "色彩、圓角、字級、高度、動效 token。取代 shadcn init 產生的 :root/.dark/@theme。",
+      "files": [
+        {
+          "path": "registry/syncrobotic/styles/syncrobotic-theme.css",
+          "type": "registry:file",
+          "target": "styles/syncrobotic-theme.css"
+        }
+      ]
+    },
+    {
+      "name": "cn",
+      "type": "registry:lib",
+      "title": "cn() 工具",
+      "description": "clsx + tailwind-merge。內含在本 registry，內網也能安裝。",
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/lib/utils.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "use-long-press",
+      "type": "registry:hook",
+      "title": "長按（含進度）",
+      "files": [
+        {
+          "path": "registry/syncrobotic/hooks/use-long-press.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "use-slide-release",
+      "type": "registry:hook",
+      "title": "滑動解除",
+      "files": [
+        {
+          "path": "registry/syncrobotic/hooks/use-slide-release.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "status-glyph",
+      "type": "registry:component",
+      "title": "狀態形狀",
+      "description": "形狀＋顏色表示狀態：實心圓進行中、空心圓正常、三角注意、方塊停止、斜線圓離線。",
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/status-glyph.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "status-eyebrow",
+      "type": "registry:component",
+      "title": "狀態前導與列內狀態",
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/status-glyph"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/status-eyebrow.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "tray",
+      "type": "registry:component",
+      "title": "托盤",
+      "description": "動態島與底座共用的組裝：圓角 24、內距 8、間隔 8。",
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/tray.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "stop-button",
+      "type": "registry:component",
+      "title": "緊急停止與喚醒",
+      "description": "一碰就停、按住 2 秒停止全部；趴著時換成喚醒並站起來。只負責畫面，送指令與藍牙備援在 App 層。",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/use-long-press"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/stop-button.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "slide-to-release",
+      "type": "registry:component",
+      "title": "滑動解除",
+      "description": "滑過 85% 解除，未過回彈 200 ms；檢視者鎖住；鍵盤與切換控制可長按 2 秒替代。",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/use-slide-release"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/slide-to-release.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "dock",
+      "type": "registry:component",
+      "title": "底座",
+      "description": "三層：狀態動作／這頁的主要動作／導覽。",
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/tray"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/dock.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "island",
+      "type": "registry:component",
+      "title": "動態島",
+      "description": "名稱、設備狀態、通知三區各自展開；通知是島裡的子元件。",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/tray",
+        "@syncrobotic/status-glyph"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/island.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "list",
+      "type": "registry:component",
+      "title": "分組列表",
+      "description": "一個表面、內縮分隔線；圖示只在有意義時出現；狀態用形狀＋文字。",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/list.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:component",
+      "title": "載入骨架",
+      "description": "已知的先出現，只有未知的值用骨架；整體呼吸。",
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/skeleton.tsx",
+          "type": "registry:component"
+        }
+      ]
+    }
+  ]
+}

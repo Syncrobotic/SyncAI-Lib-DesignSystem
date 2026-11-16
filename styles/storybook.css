@@ -1,0 +1,4 @@
+@import "tailwindcss";
+@import "../registry/syncrobotic/styles/syncrobotic-theme.css";
+@source "../registry";
+@source "../stories";
