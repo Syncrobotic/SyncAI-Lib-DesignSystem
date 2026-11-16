@@ -1,15 +1,11 @@
 import type { Metadata } from "next"
+import { pageMeta } from "@/site/config"
 import Link from "next/link"
 import { blocks } from "@/site/blocks"
 
 const description = "Ready-made sections built from SYNCROBOTIC components and tokens: dashboard, control app and marketing blocks you install as source."
 
-export const metadata: Metadata = {
-  title: "Blocks",
-  description,
-  alternates: { canonical: "/blocks" },
-  openGraph: { title: "Blocks", description, url: "/blocks" },
-}
+export const metadata: Metadata = pageMeta({ title: "Blocks", description, path: "/blocks" })
 
 const products = ["Dashboard", "Control app", "Marketing"] as const
 

@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { pageMeta } from "@/site/config"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { BlockFrame } from "@/site/block-frame"
@@ -14,8 +15,7 @@ type Props = { params: Promise<{ name: string }> }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const b = getBlock((await params).name)
   if (!b) return {}
-  const path = `/blocks/${b.name}`
-  return { title: `${b.title} — block`, description: b.description, alternates: { canonical: path }, openGraph: { title: b.title, description: b.description, url: path } }
+  return pageMeta({ title: `${b.title} — block`, description: b.description ?? "", path: `/blocks/${b.name}` })
 }
 
 export default async function BlockPage({ params }: Props) {

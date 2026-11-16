@@ -1,16 +1,11 @@
 import type { Metadata } from "next"
 import { CodeBlock } from "@/site/code-block"
-import { site } from "@/site/config"
+import { pageMeta, site } from "@/site/config"
 import { H2, Inline, PageTitle } from "@/site/prose"
 
 const description = "Install the SYNCROBOTIC theme and components into a Next.js or React project with the shadcn CLI and Tailwind CSS v4."
 
-export const metadata: Metadata = {
-  title: "Installation — shadcn registry",
-  description,
-  alternates: { canonical: "/docs/installation" },
-  openGraph: { title: "Installation — shadcn registry", description, url: "/docs/installation" },
-}
+export const metadata: Metadata = pageMeta({ title: "Installation — shadcn registry", description, path: "/docs/installation" })
 
 const registryConfig = `{
   "registries": {

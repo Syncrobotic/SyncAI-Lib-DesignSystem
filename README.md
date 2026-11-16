@@ -1,6 +1,8 @@
+<img src="public/brand/syncrobotic-mark.svg" alt="SYNCROBOTIC" width="56" />
+
 # SYNCROBOTIC Design System
 
-**Design language and React UI kit for robot control apps.** Emergency stop, slide to release, dock, dynamic island and design tokens, shipped as a [shadcn/ui](https://ui.shadcn.com) registry for Tailwind CSS v4.
+**One design language for every SYNCROBOTIC product.** Colour, type, spacing, radius and motion tokens, React components and blocks, shipped as a [shadcn/ui](https://ui.shadcn.com) registry for Tailwind CSS v4.
 
 Like [ReUI](https://reui.io), components install into your project as source code: you can read them, change them and keep them in step with the shadcn ecosystem.
 

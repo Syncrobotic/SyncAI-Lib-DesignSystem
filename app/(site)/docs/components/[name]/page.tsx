@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { pageMeta } from "@/site/config"
 import { notFound } from "next/navigation"
 import { getItem, items, readSource, storyNames, storyTitle } from "@/site/catalog"
 import { CodeBlock } from "@/site/code-block"
@@ -14,13 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const item = getItem((await params).name)
   if (!item) return {}
   const title = `${item.title} — React ${item.group === "Hooks" ? "hook" : "component"}`
-  const path = `/docs/components/${item.name}`
-  return {
-    title,
-    description: item.description,
-    alternates: { canonical: path },
-    openGraph: { title, description: item.description, url: path },
-  }
+  return pageMeta({ title, description: item.description ?? `${item.title} for the SYNCROBOTIC design system.`, path: `/docs/components/${item.name}` })
 }
 
 export default async function ComponentPage({ params }: Props) {

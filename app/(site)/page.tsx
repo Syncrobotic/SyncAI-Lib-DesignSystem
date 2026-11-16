@@ -16,16 +16,23 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 }
 
+const org = { "@type": "Organization", "@id": `${site.url}/#org`, name: "SYNCROBOTIC", logo: `${site.url}${site.logo}`, url: site.url }
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "SoftwareSourceCode",
-  name: site.name,
-  description: site.description,
-  codeRepository: site.repo,
-  programmingLanguage: ["TypeScript", "CSS"],
-  runtimePlatform: "React",
-  keywords: site.keywords.join(", "),
-  author: { "@type": "Organization", name: "SYNCROBOTIC" },
+  "@graph": [
+    org,
+    { "@type": "WebSite", "@id": `${site.url}/#site`, name: site.name, url: site.url, description: site.description, publisher: { "@id": org["@id"] } },
+    {
+      "@type": "SoftwareSourceCode",
+      name: site.name,
+      description: site.description,
+      codeRepository: site.repo,
+      programmingLanguage: ["TypeScript", "CSS"],
+      runtimePlatform: "React",
+      keywords: site.keywords.join(", "),
+      author: { "@id": org["@id"] },
+    },
+  ],
 }
 
 /** The hero: the language itself, as a mosaic of real tokens. */
