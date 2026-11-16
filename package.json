@@ -18,7 +18,7 @@
     "emergency-stop",
     "dark-mode"
   ],
-  "homepage": "https://github.com/Syncrobotic/SyncAI-Lib-DesignSystem#readme",
+  "homepage": "https://syncai-lib-designsystem.vercel.app",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Syncrobotic/SyncAI-Lib-DesignSystem.git"

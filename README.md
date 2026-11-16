@@ -4,8 +4,8 @@
 
 Like [ReUI](https://reui.io), components install into your project as source code: you can read them, change them and keep them in step with the shadcn ecosystem.
 
-- **Docs site:** Next.js app in this repo (`app/`), deployed on Vercel
-- **Registry:** `/r/{name}.json` on the same deployment
+- **Docs site:** [https://syncai-lib-designsystem.vercel.app](https://syncai-lib-designsystem.vercel.app) (Next.js app in `app/`, deployed on Vercel; password-protected until open-sourced)
+- **Registry:** `https://syncai-lib-designsystem.vercel.app/r/{name}.json`
 - **Workbench:** Storybook, with visual regression tests on every state
 
 ## Why
@@ -24,7 +24,7 @@ Operators control robots outdoors, one-handed and sometimes in a hurry. The syst
    ```json
    "registries": {
      "@syncrobotic": {
-       "url": "https://<your-deployment>/r/{name}.json",
+       "url": "https://syncai-lib-designsystem.vercel.app/r/{name}.json",
        "headers": { "Authorization": "Bearer ${SYNCROBOTIC_REGISTRY_TOKEN}" }
      }
    }
