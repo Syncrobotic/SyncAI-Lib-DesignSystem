@@ -72,7 +72,6 @@ export function StopButton({ state = "ready", tag, onStop, onStopAll, holdAllMs 
   return (
     <button
       type="button"
-      aria-label={tag ? `${text}, ${tag}` : text}
       disabled={disabled}
       {...(disabled ? {} : onStopAll ? handlers : { onPointerDown: () => onStop() })}
       className={cn(
@@ -89,8 +88,9 @@ export function StopButton({ state = "ready", tag, onStop, onStopAll, holdAllMs 
       )}
       <Icon aria-hidden="true" className="relative size-5" strokeWidth={2} />
       <span className="relative text-lg font-bold">{text}</span>
+      {tag && !disabled && <span className="sr-only">, </span>}
       {tag && !disabled && (
-        <span className={cn("relative inline-flex h-(--h-tag) items-center rounded-xs px-2 text-xs font-medium", pale ? "bg-danger/15" : "bg-white/20")}>
+        <span className={cn("relative inline-flex h-(--h-tag) items-center rounded-xs px-2 text-xs font-medium", pale ? "ring-1 ring-danger ring-inset" : "bg-stop-deep")}>
           {tag}
         </span>
       )}

@@ -11,23 +11,24 @@ const items: NavItem[] = [
   { key: "tasks", label: "Tasks", icon: ListChecks },
   { key: "device", label: "Device", icon: Bot },
 ]
-const nav = <DockNav items={items} active="home" onSelect={fn()} />
+// Each example names its nav so a page showing several docks has unique landmarks.
+const nav = (example: string) => <DockNav items={items} active="home" onSelect={fn()} label={`Primary, ${example}`} />
 
 const meta: Meta = { title: "Shell/Dock" }
 export default meta
 type S = StoryObj
 
-export const Moving: S = { render: () => <Dock className="static" state={<StopButton tag="7F3A" onStop={fn()} onStopAll={fn()} />} nav={nav} /> }
-export const StandingStill: S = { render: () => <Dock className="static" state={<StopButton state="idle" tag="7F3A" onStop={fn()} />} nav={nav} /> }
-export const LyingDown: S = { render: () => <Dock className="static" state={<WakeButton onWake={fn()} />} nav={nav} /> }
-export const Stopped: S = { render: () => <Dock className="static" state={<SlideToRelease tag="7F3A" onRelease={fn()} />} nav={nav} /> }
+export const Moving: S = { render: () => <Dock className="static" state={<StopButton tag="7F3A" onStop={fn()} onStopAll={fn()} />} nav={nav("moving")} /> }
+export const StandingStill: S = { render: () => <Dock className="static" state={<StopButton state="idle" tag="7F3A" onStop={fn()} />} nav={nav("standing still")} /> }
+export const LyingDown: S = { render: () => <Dock className="static" state={<WakeButton onWake={fn()} />} nav={nav("lying down")} /> }
+export const Stopped: S = { render: () => <Dock className="static" state={<SlideToRelease tag="7F3A" onRelease={fn()} />} nav={nav("stopped")} /> }
 export const ThreeTiersWithPageAction: S = {
   render: () => (
     <Dock
       className="static"
       state={<StopButton tag="7F3A" onStop={fn()} onStopAll={fn()} />}
       action={<DockActions secondary={{ label: "End task", onClick: fn() }} primary={{ label: "Resume task", onClick: fn() }} />}
-      nav={nav}
+      nav={nav("three tiers")}
     />
   ),
 }

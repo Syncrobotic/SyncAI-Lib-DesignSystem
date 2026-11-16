@@ -4,8 +4,22 @@ import * as React from "react"
 import { Slider as SliderPrimitive } from "radix-ui"
 import { cn } from "@/lib/utils"
 
-export function Slider({ className, defaultValue, value, min = 0, max = 100, ...props }: React.ComponentProps<typeof SliderPrimitive.Root>) {
+/**
+ * Each thumb is a focusable control and needs its own name. By default it takes the slider's
+ * `aria-label` ("… minimum" / "… maximum" for a range); pass `thumbLabels` to name them yourself.
+ */
+export function Slider({
+  className,
+  defaultValue,
+  value,
+  min = 0,
+  max = 100,
+  thumbLabels,
+  ...props
+}: React.ComponentProps<typeof SliderPrimitive.Root> & { thumbLabels?: string[] }) {
   const thumbs = (value ?? defaultValue ?? [min]).length
+  const label = props["aria-label"]
+  const nameOf = (i: number) => thumbLabels?.[i] ?? (label && thumbs > 1 ? `${label} ${i === 0 ? "minimum" : "maximum"}` : label)
   return (
     <SliderPrimitive.Root
       data-slot="slider"
@@ -20,7 +34,7 @@ export function Slider({ className, defaultValue, value, min = 0, max = 100, ...
         <SliderPrimitive.Range className="absolute h-full bg-primary" />
       </SliderPrimitive.Track>
       {Array.from({ length: thumbs }, (_, i) => (
-        <SliderPrimitive.Thumb key={i} className="block size-6 rounded-full bg-white shadow-float ring-1 ring-edge" />
+        <SliderPrimitive.Thumb key={i} aria-label={nameOf(i)} className="block size-6 rounded-full bg-white shadow-float ring-1 ring-edge" />
       ))}
     </SliderPrimitive.Root>
   )

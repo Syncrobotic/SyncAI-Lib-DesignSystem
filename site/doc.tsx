@@ -68,7 +68,7 @@ export function DoDont({ good, bad }: { good: { visual: React.ReactNode; text: s
 
 export function TokenTable({ head, rows }: { head: string[]; rows: React.ReactNode[][] }) {
   return (
-    <div className="overflow-x-auto rounded-md border border-border">
+    <div tabIndex={0} role="group" aria-label="Token table" className="overflow-x-auto rounded-md border border-border">
       <table className="w-full text-sm">
         <thead className="bg-muted text-left text-xs text-muted-foreground">
           <tr>

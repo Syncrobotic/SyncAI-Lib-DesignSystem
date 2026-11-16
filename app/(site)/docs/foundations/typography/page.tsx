@@ -6,6 +6,7 @@ import { px, themeValue } from "@/site/theme-tokens"
 export const metadata: Metadata = metaFor("typography")
 
 const scale = [
+  { key: "5xl", cls: "text-5xl", role: "Hero", use: "Marketing page headlines only" },
   { key: "3xl", cls: "text-3xl", role: "Display", use: "Page titles, big numbers" },
   { key: "xl", cls: "text-xl", role: "Title", use: "Section and sheet titles" },
   { key: "lg", cls: "text-lg", role: "Heading", use: "Card titles, emergency stop label" },

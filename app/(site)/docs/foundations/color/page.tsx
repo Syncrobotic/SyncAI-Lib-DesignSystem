@@ -152,11 +152,11 @@ export default function ColorPage() {
           bad={{
             visual: (
               <div className="flex gap-2">
-                <span className="inline-flex h-(--h-tag) items-center rounded-xs bg-info px-2 text-xs font-medium text-white">Docked</span>
-                <span className="inline-flex h-(--h-tag) items-center rounded-xs bg-info-subtle px-2 text-xs font-medium text-warning">Low battery</span>
+                <Badge tone="info">Docked</Badge>
+                <Badge tone="danger">Low battery</Badge>
               </div>
             ),
-            text: "Use blue for anything but in progress, or mix one tone's text with another's tint.",
+            text: "Pick a tone by looks. Blue means in progress, not docked; low battery is attention (warning), not failure (danger).",
           }}
         />
       </Section>

@@ -23,7 +23,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
       <aside className="sticky top-14 hidden h-[calc(100vh-3.5rem)] w-52 shrink-0 overflow-y-auto py-8 md:block">
         <Sidebar groups={groups} />
       </aside>
-      <main className="min-w-0 flex-1 py-8 pb-24">
+      <main id="content" className="min-w-0 flex-1 py-8 pb-24">
         <details className="mb-8 rounded-md border border-border md:hidden">
           <summary className="flex h-(--h-md) cursor-pointer items-center px-4 text-sm font-medium">Menu</summary>
           <div className="border-t border-border p-4">

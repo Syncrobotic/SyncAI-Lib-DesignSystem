@@ -704,6 +704,94 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "stats-cards",
+      "type": "registry:block",
+      "title": "KPI cards",
+      "description": "Four headline numbers with change and sparkline. Trend colour follows whether the change is good, not its direction.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/card"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/sections/stats-cards.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "fleet-table",
+      "type": "registry:block",
+      "title": "Fleet table",
+      "description": "Search, filter by state, paginate and act on rows. Status as shape plus word, low battery in warning.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/dropdown-menu",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/input",
+        "@syncrobotic/progress",
+        "@syncrobotic/segmented-control",
+        "@syncrobotic/table",
+        "@syncrobotic/status-eyebrow"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/sections/fleet-table.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "robot-status-card",
+      "type": "registry:block",
+      "title": "Robot status card",
+      "description": "One robot on a phone: state, battery, connection, location, current task and the next actions.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/card",
+        "@syncrobotic/progress",
+        "@syncrobotic/status-eyebrow"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/sections/robot-status-card.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "marketing-hero",
+      "type": "registry:block",
+      "title": "Marketing hero",
+      "description": "Landing page hero with eyebrow, headline, two calls to action and a product visual.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/badge",
+        "@syncrobotic/button",
+        "@syncrobotic/status-glyph"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/sections/marketing-hero.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }

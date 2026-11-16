@@ -82,3 +82,56 @@ export const SegmentedControlDefault: S = {
     </div>
   ),
 }
+
+export const ButtonAsLink: S = {
+  render: () => (
+    <div className="flex flex-wrap gap-3">
+      <Button asChild>
+        <a href="#routes">Open routes</a>
+      </Button>
+      <Button variant="link" asChild>
+        <a href="#log">View full log</a>
+      </Button>
+    </div>
+  ),
+}
+
+export const ButtonInAForm: S = {
+  render: () => (
+    <div className="flex flex-col gap-2 rounded-md bg-card p-4 ring-1 ring-border">
+      <p className="text-sm text-muted-foreground">Unsaved changes to “Night patrol”.</p>
+      <div className="flex gap-2">
+        <Button variant="ghost" className="flex-1">
+          Discard
+        </Button>
+        <Button className="flex-1">Save route</Button>
+      </div>
+    </div>
+  ),
+}
+
+export const ButtonFullWidth: S = {
+  render: () => (
+    <div className="flex flex-col gap-2">
+      <Button size="lg" className="w-full">
+        Start patrol
+      </Button>
+      <Button size="lg" variant="secondary" className="w-full">
+        Schedule for later
+      </Button>
+    </div>
+  ),
+}
+
+export const SegmentedControlIconOnly: S = {
+  render: () => (
+    <SegmentedControl defaultValue="map" aria-label="View" className="w-auto">
+      <SegmentedControlItem value="map" aria-label="Map">
+        <Map aria-hidden="true" />
+      </SegmentedControlItem>
+      <SegmentedControlItem value="camera" aria-label="Camera">
+        <Video aria-hidden="true" />
+      </SegmentedControlItem>
+    </SegmentedControl>
+  ),
+}

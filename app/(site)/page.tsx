@@ -16,16 +16,23 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 }
 
+const org = { "@type": "Organization", "@id": `${site.url}/#org`, name: "SYNCROBOTIC", logo: `${site.url}${site.logo}`, url: site.url }
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "SoftwareSourceCode",
-  name: site.name,
-  description: site.description,
-  codeRepository: site.repo,
-  programmingLanguage: ["TypeScript", "CSS"],
-  runtimePlatform: "React",
-  keywords: site.keywords.join(", "),
-  author: { "@type": "Organization", name: "SYNCROBOTIC" },
+  "@graph": [
+    org,
+    { "@type": "WebSite", "@id": `${site.url}/#site`, name: site.name, url: site.url, description: site.description, publisher: { "@id": org["@id"] } },
+    {
+      "@type": "SoftwareSourceCode",
+      name: site.name,
+      description: site.description,
+      codeRepository: site.repo,
+      programmingLanguage: ["TypeScript", "CSS"],
+      runtimePlatform: "React",
+      keywords: site.keywords.join(", "),
+      author: { "@id": org["@id"] },
+    },
+  ],
 }
 
 /** The hero: the language itself, as a mosaic of real tokens. */
@@ -121,7 +128,7 @@ const samples: Record<string, React.ReactNode> = {
 export default function HomePage() {
   const firstOf = (g: string) => items.find((i) => i.group === g)?.name
   return (
-    <main className="pb-24">
+    <main id="content" className="pb-24">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <section className="border-b border-border">
@@ -171,7 +178,9 @@ export default function HomePage() {
               const list = items.filter((i) => i.group === g)
               return (
                 <Link key={g} href={`/docs/components/${firstOf(g)}`} className="group flex flex-col overflow-hidden rounded-md border border-border hover:border-muted-foreground">
-                  <div className="specimen flex h-36 items-center justify-center p-6">{samples[g]}</div>
+                  <div aria-hidden inert className="specimen flex h-36 items-center justify-center p-6">
+                    {samples[g]}
+                  </div>
                   <div className="flex flex-1 flex-col gap-1 border-t border-border bg-card p-5">
                     <span className="flex items-center justify-between">
                       <span className="font-bold">{g}</span>
