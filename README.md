@@ -46,18 +46,20 @@ Dark is the default: `<html class="dark">`. Default copy is English; every visib
 
 ## Components
 
-| Name | What it does |
+40 registry items, grouped as on the docs site. Every component follows the colour, radius, height and spacing rules, and every state has a story.
+
+| Group | Items |
 | --- | --- |
-| `syncrobotic-theme` | Colour, radius, type, height and motion tokens |
-| `stop-button` | Emergency stop (one touch stops, hold 2 s to stop all, 7 states) and wake and stand up |
-| `slide-to-release` | Past 85% releases, short of that springs back; locked for viewers; hold 2 s on the keyboard |
-| `dock` | Three tiers: state action, this page's primary action, navigation |
-| `island` | Dynamic island: name, device status, notifications; notices inside the island |
-| `list` | Grouped list |
-| `status-glyph`, `status-eyebrow` | Status shapes and the state word above a headline |
-| `skeleton` | Loading skeleton |
-| `tray` | The frame shared by the island and the dock |
-| `use-long-press`, `use-slide-release` | Interaction hooks |
+| Theme | `syncrobotic-theme` (colour, radius, type, height and motion tokens) |
+| Actions | `button`, `segmented-control` |
+| Inputs | `input`, `textarea`, `label`, `field`, `checkbox`, `radio-group`, `switch`, `select`, `slider` |
+| Display | `badge`, `card`, `avatar`, `separator`, `progress`, `spinner`, `alert`, `empty-state`, `table`, `list`, `status-glyph`, `status-eyebrow`, `skeleton` |
+| Navigation | `tabs`, `accordion` |
+| Overlays | `dialog`, `alert-dialog`, `sheet`, `popover`, `tooltip`, `dropdown-menu` |
+| Robot shell | `stop-button`, `slide-to-release`, `dock`, `island`, `tray` |
+| Hooks | `use-long-press`, `use-slide-release` |
+
+General components are built on [Radix UI](https://www.radix-ui.com) primitives, the same base as shadcn/ui, so keyboard and screen-reader behaviour comes from Radix.
 
 ## Develop
 
@@ -83,7 +85,7 @@ The first `test:visual` run writes baselines; commit them (`tests/__screenshots_
 
 ### Adding a component
 
-1. Write it in `registry/syncrobotic/blocks/`. Import from `@/lib/utils` and `@/registry/syncrobotic/...`; the CLI rewrites these to the consumer's paths on install.
+1. Write it in `registry/syncrobotic/ui/` (general) or `registry/syncrobotic/blocks/` (robot shell). Import from `@/lib/utils` and `@/registry/syncrobotic/...`; the CLI rewrites these to the consumer's paths on install.
 2. Add an entry to `registry.json` with its `dependencies` (npm) and `registryDependencies` (other `@syncrobotic/...` items).
 3. Write one story per state in `stories/`. The docs site renders the same stories.
 4. Add it to `site/catalog.ts` with its usage rules.

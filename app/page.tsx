@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { items } from "@/site/catalog"
+import { groups, items } from "@/site/catalog"
 import { CodeBlock } from "@/site/code-block"
 import { site } from "@/site/config"
 import { Stage } from "@/site/examples"
@@ -29,7 +29,6 @@ const pillars = [
 ]
 
 export default function HomePage() {
-  const components = items.filter((i) => i.group === "Components")
   return (
     <main className="mx-auto max-w-6xl px-4 pb-24">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
@@ -45,7 +44,7 @@ export default function HomePage() {
             <Link href="/docs/installation" className="inline-flex h-(--h-lg) items-center rounded-sm bg-primary px-6 font-medium text-primary-foreground">
               Get started
             </Link>
-            <Link href="/docs/components/stop-button" className="inline-flex h-(--h-lg) items-center rounded-sm bg-secondary px-6 font-medium">
+            <Link href="/docs/components/button" className="inline-flex h-(--h-lg) items-center rounded-sm bg-secondary px-6 font-medium">
               Browse components
             </Link>
           </div>
@@ -76,14 +75,23 @@ export default function HomePage() {
             Foundations and tokens →
           </Link>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {components.map((c) => (
-            <Link key={c.name} href={`/docs/components/${c.name}`} className="flex flex-col gap-2 rounded-md border border-border bg-card p-4 hover:border-muted-foreground">
-              <h3 className="font-medium">{c.title}</h3>
-              <p className="text-sm text-muted-foreground">{c.description}</p>
-            </Link>
+        {groups
+          .filter((g) => g !== "Hooks")
+          .map((g) => (
+            <div key={g} className="flex flex-col gap-3">
+              <h3 className="text-sm font-medium text-muted-foreground">{g}</h3>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {items
+                  .filter((c) => c.group === g)
+                  .map((c) => (
+                    <Link key={c.name} href={`/docs/components/${c.name}`} className="flex flex-col gap-2 rounded-md border border-border bg-card p-4 hover:border-muted-foreground">
+                      <span className="font-medium">{c.title}</span>
+                      <span className="text-sm text-muted-foreground">{c.description}</span>
+                    </Link>
+                  ))}
+              </div>
+            </div>
           ))}
-        </div>
       </section>
     </main>
   )
