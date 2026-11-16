@@ -1,22 +1,23 @@
 /*
  * SYNCROBOTIC theme v0.9
- * 對應畫布上的「Style Guideline」。適用：shadcn/ui（含 ReUI registry）+ Tailwind CSS v4。
+ * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
  *
- * 用法：
- *   1. globals.css 內，在 @import "tailwindcss"; 之後加上 @import "./syncrobotic-theme.css";
- *   2. 刪掉 shadcn init 產生的 :root / .dark / @theme inline 區塊（本檔取代它們）
- *   3. 深色為預設：<html class="dark">。遙控與對講頁在根節點加 class="dark"，不受外觀設定影響
+ * Usage:
+ *   1. In globals.css, add @import "./syncrobotic-theme.css"; after @import "tailwindcss";
+ *   2. Delete the :root / .dark / @theme inline blocks that shadcn init generated (this file replaces them)
+ *   3. Dark is the default: <html class="dark">. Teleoperation and intercom screens put class="dark"
+ *      on their root so they stay dark whatever the appearance setting.
  *
- * 三條色彩規則：
- *   - 實心紅（--stop）只給緊急停止。其他破壞性動作用 --danger 的外框與文字
- *   - 狀態色成對使用：前景（--info）配淡底（--info-subtle）
- *   - --primary 是中性高對比（淺色為黑、深色為白），藍色（--info）只代表「進行中」
- *   - 選中狀態一律反白（深色模式白底黑字）；開關開啟用 --success
- *   - 底座下半的動作不用實心白色，避免和緊急停止搶
- *   - 事件數字等非緊急停止的警示，用 --danger 配 --danger-subtle，不用實心紅
+ * Colour rules:
+ *   - Solid red (--stop) is for the emergency stop only. Other destructive actions use the --danger outline and text
+ *   - Status colours come in pairs: foreground (--info) on its subtle tint (--info-subtle)
+ *   - --primary is neutral high contrast (black in light, white in dark); blue (--info) only means "in progress"
+ *   - Selected states are inverted (white on black in dark mode); a switch that is on uses --success
+ *   - Actions in the lower part of the dock are never solid white, so they do not compete with the stop
+ *   - Alerts other than the stop (event counts) use --danger on --danger-subtle, never solid red
  */
 
-/* ---------- 淺色 ---------- */
+/* ---------- Light ---------- */
 :root {
   --background: #efeff2;
   --foreground: #09090b;
@@ -60,25 +61,25 @@
   --shadow-float: 0 8px 24px rgb(9 9 11 / 0.12);
   --shadow-overlay: 0 16px 40px rgb(9 9 11 / 0.18);
 
-  /* 高度 */
-  --h-tag: 1.5rem;    /* 24 標籤，不可點 */
-  --h-sm: 2.25rem;    /* 36 卡片內的小按鈕 */
-  --h-md: 2.75rem;    /* 44 預設，可點元素的最小高度 */
-  --h-lg: 3rem;       /* 48 頁面主要動作、底座裡的分頁 */
-  --h-row: 3.5rem;    /* 56 列表列 */
-  --h-stop: 3.5rem;   /* 56 只有緊急停止 */
+  /* Heights */
+  --h-tag: 1.5rem;    /* 24 tag, not interactive */
+  --h-sm: 2.25rem;    /* 36 small button inside a card */
+  --h-md: 2.75rem;    /* 44 default, minimum height of anything interactive */
+  --h-lg: 3rem;       /* 48 page primary action, dock tabs */
+  --h-row: 3.5rem;    /* 56 list row */
+  --h-stop: 3.5rem;   /* 56 emergency stop only */
 
-  /* 托盤：動態島與底座共用。外圓角 24 = 內圓角 16 + 內距 8 */
+  /* Tray: shared by the dynamic island and the dock. Outer radius 24 = inner radius 16 + padding 8 */
   --tray-pad: 0.5rem;
   --tray-gap: 0.5rem;
 
-  /* 動效：只用在狀態改變 */
+  /* Motion: only for state changes */
   --motion-fast: 120ms;
   --motion-base: 200ms;
   --motion-sheet: 320ms;
 }
 
-/* ---------- 深色（預設） ---------- */
+/* ---------- Dark (default) ---------- */
 .dark {
   --background: #09090b;
   --foreground: #fafafa;
@@ -119,7 +120,7 @@
   --shadow-overlay: 0 16px 40px rgb(0 0 0 / 0.45);
 }
 
-/* ---------- 對應到 Tailwind utilities ---------- */
+/* ---------- Tailwind utilities ---------- */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -141,7 +142,7 @@
   --color-ring: var(--ring);
   --color-disabled: var(--disabled);
 
-  /* 用法：<Badge className="bg-info-subtle text-info"> */
+  /* Usage: <Badge className="bg-info-subtle text-info"> */
   --color-info: var(--info);
   --color-info-subtle: var(--info-subtle);
   --color-success: var(--success);
@@ -165,16 +166,15 @@
 
 @theme {
   /*
-   * 圓角：規範是 xs 8、sm 12、md 16、lg 20、xl 24、full。全部是 4 的倍數，
-   * 和間距共用基數，所以巢狀圓角永遠同心：外圓角 = 內圓角 + 內距。
-   * Tailwind 的名稱直接對到規範的同名層級：
-   *   rounded-xs = 8   標籤、容器內貼邊的小元件
-   *   rounded-sm = 12  按鈕、輸入框、圖示方塊
-   *   rounded-md = 16  卡片、托盤裡的元件
-   *   rounded-lg = 20  浮動提示卡、對話框
-   *   rounded-xl = 24  托盤（動態島、底座）、底部彈窗
-   * 注意：shadcn 元件預設的按鈕與輸入框是 rounded-md，卡片是 rounded-xl，
-   * 加入 registry 時請改成上表的層級（按鈕 rounded-sm、卡片 rounded-md）。
+   * Radius scale: xs 8, sm 12, md 16, lg 20, xl 24, full. All multiples of 4, sharing the spacing base,
+   * so nested corners are always concentric: outer radius = inner radius + padding.
+   *   rounded-xs = 8   tags, small parts flush inside a container
+   *   rounded-sm = 12  buttons, inputs, icon tiles
+   *   rounded-md = 16  cards, parts inside a tray
+   *   rounded-lg = 20  floating notices, dialogs
+   *   rounded-xl = 24  trays (dynamic island, dock), bottom sheets
+   * Note: shadcn's default button and input use rounded-md and its card uses rounded-xl.
+   * When adding them to this registry, move them to the steps above (button rounded-sm, card rounded-md).
    */
   --radius-xs: 0.5rem;
   --radius-sm: 0.75rem;
@@ -182,33 +182,33 @@
   --radius-lg: 1.25rem;
   --radius-xl: 1.5rem;
 
-  /* 字體：隨 App 打包，不走 CDN */
+  /* Font: bundled with the app, never loaded from a CDN */
   --font-sans: "Geist", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
 
-  /* 字級：六級，行高都是 4 的倍數。輸入框用 base（16），iOS 才不會自動放大 */
-  --text-xs: 0.75rem;      /* caption 12／16 */
+  /* Type scale: six steps, every line height a multiple of 4. Inputs use base (16) so iOS does not zoom */
+  --text-xs: 0.75rem;      /* caption 12/16 */
   --text-xs--line-height: 1rem;
-  --text-sm: 0.875rem;     /* label 14／20 */
+  --text-sm: 0.875rem;     /* label 14/20 */
   --text-sm--line-height: 1.25rem;
-  --text-base: 1rem;       /* body 16／24 */
+  --text-base: 1rem;       /* body 16/24 */
   --text-base--line-height: 1.5rem;
-  --text-lg: 1.125rem;     /* heading 18／24 */
+  --text-lg: 1.125rem;     /* heading 18/24 */
   --text-lg--line-height: 1.5rem;
-  --text-xl: 1.25rem;      /* title 20／28 */
+  --text-xl: 1.25rem;      /* title 20/28 */
   --text-xl--line-height: 1.75rem;
-  --text-3xl: 1.75rem;     /* display 28／36 */
+  --text-3xl: 1.75rem;     /* display 28/36 */
   --text-3xl--line-height: 2.25rem;
 
-  /* 字重：只用三種 */
+  /* Font weights: three only */
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-bold: 700;
 
-  /* 間距沿用 Tailwind 的 4px 基數，只使用 1、2、3、4、6、8（4、8、12、16、24、32） */
+  /* Spacing keeps Tailwind's 4px base and uses only 1, 2, 3, 4, 6, 8 (4, 8, 12, 16, 24, 32 px) */
 
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
 
-  /* 骨架：整體呼吸 1.2 秒，不用斜向光帶 */
+  /* Skeleton: the whole group breathes over 1.2 s, no diagonal shimmer */
   --animate-breath: breath 1.2s var(--ease-standard) infinite;
   @keyframes breath {
     0%, 100% { opacity: 1; }

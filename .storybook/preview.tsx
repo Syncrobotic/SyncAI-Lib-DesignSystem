@@ -5,8 +5,8 @@ import "../styles/storybook.css"
 const preview: Preview = {
   globalTypes: {
     theme: {
-      description: "外觀",
-      toolbar: { icon: "contrast", items: [{ value: "dark", title: "深色" }, { value: "light", title: "淺色" }] },
+      description: "Appearance",
+      toolbar: { icon: "contrast", items: [{ value: "dark", title: "Dark" }, { value: "light", title: "Light" }] },
     },
   },
   initialGlobals: { theme: "dark" },

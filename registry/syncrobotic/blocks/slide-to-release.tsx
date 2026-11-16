@@ -8,10 +8,14 @@ import { useSlideRelease } from "@/registry/syncrobotic/hooks/use-slide-release"
 type Props = {
   onRelease: () => void
   label?: string
-  /** Name tag, e.g. "7F3A", or "已停止 3 隻" after stop-all. */
+  /** Name tag, e.g. "7F3A", or "3 stopped" after stop-all. */
   tag?: string
   /** Viewers cannot release: the thumb shows a lock and the label says who can. */
   locked?: boolean
+  /** Shown instead of the label while locked. */
+  lockedLabel?: string
+  /** Shown after release while waiting for the dog. */
+  releasingLabel?: string
   className?: string
 }
 
@@ -21,12 +25,20 @@ type Props = {
  * Past 85% letting go releases; otherwise the thumb springs back in 200 ms.
  * Keyboard and switch control: hold Enter or Space for 2 s.
  */
-export function SlideToRelease({ onRelease, label = "滑動解除停止", tag, locked, className }: Props) {
+export function SlideToRelease({
+  onRelease,
+  label = "Slide to release",
+  lockedLabel = "Only operators can release",
+  releasingLabel = "Releasing…",
+  tag,
+  locked,
+  className,
+}: Props) {
   const { trackRef, thumbRef, position, dragging, released, thumbHandlers, trackHandlers } = useSlideRelease({
     onRelease,
     disabled: locked,
   })
-  const text = locked ? "只有操作員以上能解除" : released ? "解除中…" : label
+  const text = locked ? lockedLabel : released ? releasingLabel : label
   const thumbLeft = `calc(${position} * (100% - var(--h-lg) - 0.5rem) + 0.25rem)`
 
   return (

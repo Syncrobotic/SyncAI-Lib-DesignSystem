@@ -3,14 +3,20 @@ import { fn } from "@storybook/test"
 import { SlideToRelease } from "@/registry/syncrobotic/blocks/slide-to-release"
 
 const meta: Meta<typeof SlideToRelease> = {
-  title: "外殼/滑動解除",
+  title: "Shell/Slide to release",
   component: SlideToRelease,
   args: { tag: "7F3A", onRelease: fn() },
-  parameters: { docs: { description: { component: "往右拖：滑過 85% 放開即解除；沒過就回彈。鍵盤：按住 Enter 或空白鍵 2 秒。" } } },
+  parameters: {
+    docs: {
+      description: {
+        component: "Drag right: let go past 85% to release; short of that it springs back. Keyboard: hold Enter or Space for 2 s.",
+      },
+    },
+  },
 }
 export default meta
 type S = StoryObj<typeof SlideToRelease>
 
-export const 已停止: S = {}
-export const 停止全部之後: S = { args: { label: "滑動解除全部", tag: "已停止 3 隻" } }
-export const 檢視者鎖住: S = { args: { locked: true } }
+export const Stopped: S = {}
+export const AfterStopAll: S = { args: { label: "Slide to release all", tag: "3 stopped" } }
+export const LockedForViewers: S = { args: { locked: true } }

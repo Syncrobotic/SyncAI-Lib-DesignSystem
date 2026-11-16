@@ -14,10 +14,12 @@ jobs:
       - run: npm ci
       - run: npm run lint:tokens
       - run: npm run typecheck
-      - run: npm run registry:build
+      # Registry JSON + docs site (Next.js)
+      - run: npm run build
       - run: npm run build-storybook
       - run: npx playwright install --with-deps chromium
-      # 基準圖還沒 commit 時，第一次執行會產生基準圖而不判失敗；請從 artifact「visual-baseline」下載後 commit 到 tests/__screenshots__/
+      # Until baselines are committed, the first run writes them instead of failing.
+      # Download the "visual-baseline" artifact and commit it to tests/__screenshots__/.
       - run: npm run test:visual -- --update-snapshots=missing
       - uses: actions/upload-artifact@v4
         if: always()

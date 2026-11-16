@@ -6,8 +6,8 @@
     {
       "name": "syncrobotic-theme",
       "type": "registry:style",
-      "title": "SYNCROBOTIC 主題",
-      "description": "色彩、圓角、字級、高度、動效 token。取代 shadcn init 產生的 :root/.dark/@theme。",
+      "title": "SYNCROBOTIC theme",
+      "description": "Colour, radius, type, height and motion tokens. Replaces the :root, .dark and @theme blocks from shadcn init.",
       "files": [
         {
           "path": "registry/syncrobotic/styles/syncrobotic-theme.css",
@@ -19,8 +19,8 @@
     {
       "name": "cn",
       "type": "registry:lib",
-      "title": "cn() 工具",
-      "description": "clsx + tailwind-merge。內含在本 registry，內網也能安裝。",
+      "title": "cn() utility",
+      "description": "clsx + tailwind-merge, shipped inside this registry so it installs on an intranet too.",
       "dependencies": [
         "clsx",
         "tailwind-merge"
@@ -35,7 +35,8 @@
     {
       "name": "use-long-press",
       "type": "registry:hook",
-      "title": "長按（含進度）",
+      "title": "useLongPress",
+      "description": "Press and hold with progress from 0 to 1.",
       "files": [
         {
           "path": "registry/syncrobotic/hooks/use-long-press.ts",
@@ -46,7 +47,8 @@
     {
       "name": "use-slide-release",
       "type": "registry:hook",
-      "title": "滑動解除",
+      "title": "useSlideRelease",
+      "description": "Drag, threshold and spring-back logic for slide to release.",
       "files": [
         {
           "path": "registry/syncrobotic/hooks/use-slide-release.ts",
@@ -57,8 +59,8 @@
     {
       "name": "status-glyph",
       "type": "registry:component",
-      "title": "狀態形狀",
-      "description": "形狀＋顏色表示狀態：實心圓進行中、空心圓正常、三角注意、方塊停止、斜線圓離線。",
+      "title": "Status glyph",
+      "description": "Status as shape plus colour: filled circle in progress, hollow circle normal, triangle attention, square stopped, slashed circle offline.",
       "registryDependencies": [
         "@syncrobotic/cn"
       ],
@@ -72,7 +74,8 @@
     {
       "name": "status-eyebrow",
       "type": "registry:component",
-      "title": "狀態前導與列內狀態",
+      "title": "Status eyebrow",
+      "description": "The state word above a headline, and the same status inside a list row.",
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/status-glyph"
@@ -87,8 +90,8 @@
     {
       "name": "tray",
       "type": "registry:component",
-      "title": "托盤",
-      "description": "動態島與底座共用的組裝：圓角 24、內距 8、間隔 8。",
+      "title": "Tray",
+      "description": "The shared frame of the dynamic island and the dock: radius 24, padding 8, gap 8.",
       "registryDependencies": [
         "@syncrobotic/cn"
       ],
@@ -102,8 +105,8 @@
     {
       "name": "stop-button",
       "type": "registry:component",
-      "title": "緊急停止與喚醒",
-      "description": "一碰就停、按住 2 秒停止全部；趴著時換成喚醒並站起來。只負責畫面，送指令與藍牙備援在 App 層。",
+      "title": "Emergency stop",
+      "description": "One touch stops; hold 2 s to stop all; lying down it becomes wake and stand up. UI only: sending and the Bluetooth fallback live in the app.",
       "dependencies": [
         "lucide-react"
       ],
@@ -121,8 +124,8 @@
     {
       "name": "slide-to-release",
       "type": "registry:component",
-      "title": "滑動解除",
-      "description": "滑過 85% 解除，未過回彈 200 ms；檢視者鎖住；鍵盤與切換控制可長按 2 秒替代。",
+      "title": "Slide to release",
+      "description": "Past 85% releases, short of that springs back in 200 ms; locked for viewers; hold 2 s on the keyboard instead.",
       "dependencies": [
         "lucide-react"
       ],
@@ -140,8 +143,8 @@
     {
       "name": "dock",
       "type": "registry:component",
-      "title": "底座",
-      "description": "三層：狀態動作／這頁的主要動作／導覽。",
+      "title": "Dock",
+      "description": "Three tiers: state action, this page's primary action, navigation.",
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/tray"
@@ -156,8 +159,8 @@
     {
       "name": "island",
       "type": "registry:component",
-      "title": "動態島",
-      "description": "名稱、設備狀態、通知三區各自展開；通知是島裡的子元件。",
+      "title": "Dynamic island",
+      "description": "Name, device status and notifications, each zone expanding on its own; notices live inside the island.",
       "dependencies": [
         "lucide-react"
       ],
@@ -176,8 +179,8 @@
     {
       "name": "list",
       "type": "registry:component",
-      "title": "分組列表",
-      "description": "一個表面、內縮分隔線；圖示只在有意義時出現；狀態用形狀＋文字。",
+      "title": "Grouped list",
+      "description": "One surface with inset dividers; icons only when they carry meaning; status as shape plus word.",
       "dependencies": [
         "lucide-react"
       ],
@@ -194,8 +197,8 @@
     {
       "name": "skeleton",
       "type": "registry:component",
-      "title": "載入骨架",
-      "description": "已知的先出現，只有未知的值用骨架；整體呼吸。",
+      "title": "Skeleton",
+      "description": "What is known shows first; only unknown values get a skeleton; the whole group breathes.",
       "registryDependencies": [
         "@syncrobotic/cn"
       ],
