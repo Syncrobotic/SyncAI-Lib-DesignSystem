@@ -4,7 +4,7 @@
 
 Like [ReUI](https://reui.io), components install into your project as source code: you can read them, change them and keep them in step with the shadcn ecosystem.
 
-- **Docs site:** [https://syncai-lib-designsystem.vercel.app](https://syncai-lib-designsystem.vercel.app) (Next.js app in `app/`, deployed on Vercel; behind Vercel Authentication until open-sourced)
+- **Docs site:** [https://syncai-lib-designsystem.vercel.app](https://syncai-lib-designsystem.vercel.app) (Next.js app in `app/`, deployed on Vercel; open to anyone with the link, not indexed until open-sourced)
 - **Registry:** `https://syncai-lib-designsystem.vercel.app/r/{name}.json`
 - **Workbench:** Storybook, with visual regression tests on every state
 
@@ -24,8 +24,7 @@ Operators control robots outdoors, one-handed and sometimes in a hurry. The syst
    ```json
    "registries": {
      "@syncrobotic": {
-       "url": "https://syncai-lib-designsystem.vercel.app/r/{name}.json",
-       "headers": { "x-vercel-protection-bypass": "${SYNCROBOTIC_REGISTRY_TOKEN}" }
+       "url": "https://syncai-lib-designsystem.vercel.app/r/{name}.json"
      }
    }
    ```
@@ -102,10 +101,7 @@ The project lives in the company Vercel team. `vercel.json` pins the framework t
 
 ### Access
 
-Until the project is open-sourced, the site and the registry are private through Vercel's own Deployment Protection, not code in this repo:
-
-- **People** sign in with their Vercel account (Settings → Deployment Protection → Vercel Authentication, covering production too).
-- **The shadcn CLI** sends the project's *Protection Bypass for Automation* secret in the `x-vercel-protection-bypass` header (see Install). Maintainers create it on the same settings page and hand it to engineers as `SYNCROBOTIC_REGISTRY_TOKEN`.
+No sign-in and no token: anyone with the link can read the docs and install from the registry. Vercel Deployment Protection is off for the production deployment. Until the project is open-sourced the site is `noindex` and `robots.txt` disallows everything, so it stays out of search results.
 
 ### Environment variables
 
@@ -116,7 +112,7 @@ Until the project is open-sourced, the site and the registry are private through
 
 ### Open-sourcing
 
-Turn off Vercel Authentication, set `SITE_PUBLIC=true` and redeploy. Consumers can then drop the `headers` block from `components.json`.
+Set `SITE_PUBLIC=true` and redeploy. Search engines may then index the site, and the sitemap is published.
 
 ## Known issues
 
