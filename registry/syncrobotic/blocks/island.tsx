@@ -74,7 +74,7 @@ export function Island({ name, avatar, tone, attention, online = true, battery =
           {attention && <TriangleAlert aria-label={l.attention} className="size-4 shrink-0 text-warning" />}
           <ChevronDown aria-hidden="true" className="size-4 shrink-0 text-muted-foreground" />
         </button>
-        <button type="button" aria-expanded={open === "status"} aria-label={l.status} onClick={() => toggle("status")} className={zone("status")}>
+        <button type="button" aria-expanded={open === "status"} aria-label={low && !loading ? `${l.status}, battery ${battery}%` : l.status} onClick={() => toggle("status")} className={zone("status")}>
           {loading ? (
             <>
               <span className="block h-3 w-5 animate-breath rounded-xs bg-muted" />

@@ -86,7 +86,9 @@ export function FoundationGrid() {
     <div className="grid gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
       {foundations.map((f, i) => (
         <Link key={f.slug} href={`/docs/foundations/${f.slug}`} className="group flex flex-col gap-6 bg-background p-6 transition-colors duration-(--motion-fast) hover:bg-card">
-          <div className="specimen flex h-32 items-center justify-center rounded-sm border border-border p-4">{previews[f.slug]}</div>
+          <div aria-hidden className="specimen flex h-32 items-center justify-center rounded-sm border border-border p-4">
+            {previews[f.slug]}
+          </div>
           <div className="flex flex-col gap-1">
             <span className="flex items-baseline gap-2">
               <span className="font-mono text-xs text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>

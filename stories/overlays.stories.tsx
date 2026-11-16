@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { Copy, Ellipsis, Info, Pencil, Trash2 } from "lucide-react"
+import { Copy, Ellipsis, Filter, Info, Keyboard, PanelRight, Pencil, Trash2 } from "lucide-react"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,14 +15,18 @@ import { Button } from "@/registry/syncrobotic/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/registry/syncrobotic/ui/dialog"
 import {
   DropdownMenu,
+  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/registry/syncrobotic/ui/dropdown-menu"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
+import { Label } from "@/registry/syncrobotic/ui/label"
+import { Switch } from "@/registry/syncrobotic/ui/switch"
 import { Popover, PopoverContent, PopoverTrigger } from "@/registry/syncrobotic/ui/popover"
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/registry/syncrobotic/ui/sheet"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/registry/syncrobotic/ui/tooltip"
@@ -149,3 +153,145 @@ const RowMenu = ({ open }: { open?: boolean }) => (
 )
 export const DropdownMenuDefault: S = { render: () => <RowMenu /> }
 export const DropdownMenuOpen: S = { render: () => <RowMenu open /> }
+
+export const DialogInformation: S = {
+  render: () => (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline">
+          <Keyboard aria-hidden="true" /> Keyboard shortcuts
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Keyboard shortcuts</DialogTitle>
+          <DialogDescription>Work in the console without a mouse.</DialogDescription>
+        </DialogHeader>
+        <dl className="grid grid-cols-[1fr_auto] gap-y-2 text-sm">
+          {[
+            ["Emergency stop selected robot", "Space"],
+            ["Stop all robots", "Hold Space 2 s"],
+            ["Next robot", "J"],
+            ["Previous robot", "K"],
+          ].map(([a, k]) => (
+            <div key={a} className="contents">
+              <dt>{a}</dt>
+              <dd className="rounded-xs bg-muted px-2 font-mono text-xs leading-6">{k}</dd>
+            </div>
+          ))}
+        </dl>
+      </DialogContent>
+    </Dialog>
+  ),
+}
+
+export const AlertDialogConfirm: S = {
+  render: () => (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button>Send all robots home</Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Send 12 robots back to their docks?</AlertDialogTitle>
+          <AlertDialogDescription>Current patrols end now. You can restart them from the schedule.</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Keep patrolling</AlertDialogCancel>
+          <AlertDialogAction>Send 12 home</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  ),
+}
+
+export const SheetSidePanel: S = {
+  render: () => (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="secondary">
+          <PanelRight aria-hidden="true" /> Robot details
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="right">
+        <SheetHeader>
+          <SheetTitle>Patrol dog 7F3A</SheetTitle>
+          <SheetDescription>Firmware 2.4.1 · 412 h in service</SheetDescription>
+        </SheetHeader>
+        <div className="flex flex-col gap-1">
+          {[
+            { id: "sp1", t: "Night vision", on: true },
+            { id: "sp2", t: "Two-way audio", on: false },
+          ].map((x) => (
+            <div key={x.id} className="flex min-h-(--h-md) items-center justify-between">
+              <Label htmlFor={x.id}>{x.t}</Label>
+              <Switch id={x.id} defaultChecked={x.on} />
+            </div>
+          ))}
+        </div>
+        <SheetFooter>
+          <Button>Save</Button>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
+  ),
+}
+
+export const PopoverWithForm: S = {
+  render: () => (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="outline">
+          <Filter aria-hidden="true" /> Battery filter
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="flex flex-col gap-3">
+        <Field label="Show robots below">
+          <Input type="number" defaultValue={30} />
+        </Field>
+        <Button size="sm">Apply</Button>
+      </PopoverContent>
+    </Popover>
+  ),
+}
+
+export const TooltipOnToolbar: S = {
+  render: () => (
+    <div className="flex gap-1 rounded-sm bg-card p-1 ring-1 ring-border">
+      {[
+        { l: "Rename", I: Pencil },
+        { l: "Duplicate", I: Copy },
+        { l: "Delete", I: Trash2 },
+      ].map(({ l, I }) => (
+        <Tooltip key={l}>
+          <TooltipTrigger asChild>
+            <Button variant="ghost" size="icon" aria-label={l}>
+              <I aria-hidden="true" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>{l}</TooltipContent>
+        </Tooltip>
+      ))}
+    </div>
+  ),
+}
+
+export const DropdownMenuWithCheckboxes: S = {
+  render: () => (
+    <DropdownMenu modal={false}>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline">Columns</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start">
+        <DropdownMenuLabel>Show columns</DropdownMenuLabel>
+        <DropdownMenuCheckboxItem checked>Status</DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem checked>Battery</DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem>Firmware</DropdownMenuCheckboxItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          Reset view <DropdownMenuShortcut>⌘R</DropdownMenuShortcut>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  ),
+}

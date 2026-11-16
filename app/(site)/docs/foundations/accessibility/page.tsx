@@ -17,6 +17,10 @@ const pairs: { fg: string; bg: string; use: string }[] = [
   { fg: "warning", bg: "warning-subtle", use: "Warning badge" },
   { fg: "danger", bg: "danger-subtle", use: "Danger badge" },
   { fg: "danger", bg: "background", use: "Destructive button text" },
+  { fg: "warning", bg: "background", use: "Warning text in a page" },
+  { fg: "warning", bg: "card", use: "Warning text in a card" },
+  { fg: "success", bg: "background", use: "Success text in a page" },
+  { fg: "success", bg: "card", use: "Success text in a card" },
   { fg: "info", bg: "background", use: "Links" },
   { fg: "white", bg: "stop", use: "Emergency stop label" },
 ]
