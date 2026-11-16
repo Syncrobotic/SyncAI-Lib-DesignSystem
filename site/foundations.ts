@@ -1,3 +1,5 @@
+import { pageMeta } from "./config"
+
 // The design language, page by page. Drives the sidebar, the overview, the home page and the sitemap.
 export const foundations = [
   { slug: "principles", title: "Principles", lead: "Five decisions every screen inherits." },
@@ -26,6 +28,5 @@ export function neighbours(slug: FoundationSlug) {
 
 export const metaFor = (slug: FoundationSlug) => {
   const f = foundation(slug)
-  const path = `/docs/foundations/${slug}`
-  return { title: `${f.title} — design tokens`, description: f.lead, alternates: { canonical: path }, openGraph: { title: f.title, description: f.lead, url: path } }
+  return pageMeta({ title: `${f.title} — design tokens`, description: f.lead, path: `/docs/foundations/${slug}` })
 }

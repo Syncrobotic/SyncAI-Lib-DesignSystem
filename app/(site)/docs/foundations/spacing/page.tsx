@@ -73,6 +73,20 @@ export default function SpacingPage() {
         />
       </Section>
 
+      <Section id="sections" title="Page sections" lead="Marketing pages need more air between sections than product UI. Two layout tokens cover that; never use them inside components.">
+        <TokenTable
+          head={["Token", "Utility", "px", "Use"]}
+          rows={["space-section", "space-section-sm"].map((t) => [
+            <Code key="t">--{t}</Code>,
+            <Code key="u">py-(--{t})</Code>,
+            px(themeValue(t)),
+            <span key="n" className="text-muted-foreground">
+              {t.endsWith("sm") ? "Between sections on phones" : "Between sections on marketing pages"}
+            </span>,
+          ])}
+        />
+      </Section>
+
       <Section id="rules" title="Rules">
         <DoDont
           good={{

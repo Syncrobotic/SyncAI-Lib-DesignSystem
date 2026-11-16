@@ -2,7 +2,7 @@
   "name": "@syncrobotic/design-system",
   "version": "0.1.0",
   "private": true,
-  "description": "Design language and React UI kit for robot control apps, shipped as a shadcn/ui registry for Tailwind CSS v4.",
+  "description": "The SYNCROBOTIC design language: tokens, React components and blocks, shipped as a shadcn/ui registry for Tailwind CSS v4.",
   "keywords": [
     "design-system",
     "ui-kit",

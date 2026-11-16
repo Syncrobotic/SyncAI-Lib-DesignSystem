@@ -74,9 +74,9 @@ export default function IconographyPage() {
           }}
           bad={{
             visual: (
-              <button className="flex size-(--h-md) items-center justify-center rounded-sm ring-1 ring-border">
+              <span aria-hidden className="flex size-(--h-md) items-center justify-center rounded-sm ring-1 ring-border">
                 <Trash2 className="size-5" />
-              </button>
+              </span>
             ),
             text: "Ship an icon-only button with no name. Screen readers announce “button” and nothing else.",
           }}

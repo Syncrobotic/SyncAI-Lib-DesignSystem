@@ -1,22 +1,16 @@
 import type { Metadata } from "next"
 import { CodeBlock } from "@/site/code-block"
-import { site } from "@/site/config"
+import { pageMeta, site } from "@/site/config"
 import { H2, Inline, PageTitle } from "@/site/prose"
 
 const description = "Install the SYNCROBOTIC theme and components into a Next.js or React project with the shadcn CLI and Tailwind CSS v4."
 
-export const metadata: Metadata = {
-  title: "Installation — shadcn registry",
-  description,
-  alternates: { canonical: "/docs/installation" },
-  openGraph: { title: "Installation — shadcn registry", description, url: "/docs/installation" },
-}
+export const metadata: Metadata = pageMeta({ title: "Installation — shadcn registry", description, path: "/docs/installation" })
 
 const registryConfig = `{
   "registries": {
     "@syncrobotic": {
-      "url": "${site.registryUrl}/r/{name}.json",
-      "headers": { "x-vercel-protection-bypass": "\${SYNCROBOTIC_REGISTRY_TOKEN}" }
+      "url": "${site.registryUrl}/r/{name}.json"
     }
   }
 }`
@@ -40,7 +34,7 @@ export default function InstallationPage() {
 
       <H2 id="registry">2. Add the registry</H2>
       <p className="pb-3 text-sm">
-        <Inline text="In `components.json`. Set `SYNCROBOTIC_REGISTRY_TOKEN` in your environment to the Vercel protection bypass secret the design system maintainers give you." />
+        <Inline text="In `components.json`. No token is needed." />
       </p>
       <CodeBlock code={registryConfig} lang="json" title="components.json" />
 

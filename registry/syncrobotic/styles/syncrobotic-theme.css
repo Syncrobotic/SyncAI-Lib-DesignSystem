@@ -43,7 +43,7 @@
   --info-subtle: #dbeafe;
   --success: #047857;
   --success-subtle: #d1fae5;
-  --warning: #b45309;
+  --warning: #a14a07;
   --warning-subtle: #fef3c7;
   --danger: #b91c1c;
   --danger-subtle: #fee2e2;
@@ -72,6 +72,10 @@
   /* Tray: shared by the dynamic island and the dock. Outer radius 24 = inner radius 16 + padding 8 */
   --tray-pad: 0.5rem;
   --tray-gap: 0.5rem;
+
+  /* Layout: vertical rhythm between sections of a marketing page. Product UI uses the 4–32 scale */
+  --space-section: 6rem;     /* 96 */
+  --space-section-sm: 4rem;  /* 64, phones */
 
   /* Motion: only for state changes */
   --motion-fast: 120ms;
@@ -198,6 +202,8 @@
   --text-xl--line-height: 1.75rem;
   --text-3xl: 1.75rem;     /* display 28/36 */
   --text-3xl--line-height: 2.25rem;
+  --text-5xl: 3rem;        /* hero 48/52, marketing pages only */
+  --text-5xl--line-height: 3.25rem;
 
   /* Font weights: three only */
   --font-weight-normal: 400;
@@ -234,6 +240,27 @@
   :focus-visible {
     outline: 2px solid var(--ring);
     outline-offset: 2px;
+  }
+
+  /* Tailwind v4 dropped the pointer cursor on buttons. Anything clickable shows it; disabled shows not-allowed. */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [role="tab"],
+  [role="menuitem"],
+  [role="option"],
+  [role="switch"],
+  [role="checkbox"],
+  [role="radio"],
+  summary,
+  label[for],
+  select {
+    cursor: pointer;
+  }
+
+  :disabled,
+  [aria-disabled="true"],
+  [data-disabled] {
+    cursor: not-allowed;
   }
 }
 

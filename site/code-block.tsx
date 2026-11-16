@@ -17,7 +17,7 @@ export async function CodeBlock({
         <span className="font-mono text-xs text-muted-foreground">{title ?? lang}</span>
         <CopyButton text={code} />
       </div>
-      <div className="code overflow-x-auto p-4 text-sm" dangerouslySetInnerHTML={{ __html: html }} />
+      <div tabIndex={0} role="group" aria-label={title ?? `${lang} code`} className="code overflow-x-auto p-4 text-sm" dangerouslySetInnerHTML={{ __html: html }} />
     </div>
   )
 }
