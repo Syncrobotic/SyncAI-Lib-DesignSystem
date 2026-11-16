@@ -5,35 +5,35 @@ import { InlineStatus, StatusEyebrow } from "@/registry/syncrobotic/blocks/statu
 import { StatusGlyph } from "@/registry/syncrobotic/blocks/status-glyph"
 import { Bone, LoadingLine } from "@/registry/syncrobotic/blocks/skeleton"
 
-const meta: Meta = { title: "資訊/列表與狀態" }
+const meta: Meta = { title: "Data/List and status" }
 export default meta
 type S = StoryObj
 
-export const 狀態形狀: S = {
+export const StatusShapes: S = {
   render: () => (
     <div className="flex flex-col gap-3">
       <div className="flex gap-4">{(["info", "success", "warning", "danger", "neutral"] as const).map((t) => <StatusGlyph key={t} tone={t} />)}</div>
-      <StatusEyebrow tone="info">巡邏中</StatusEyebrow>
-      <StatusEyebrow tone="success">充電中</StatusEyebrow>
-      <StatusEyebrow tone="warning">任務暫停</StatusEyebrow>
-      <StatusEyebrow tone="danger">已緊急停止</StatusEyebrow>
-      <StatusEyebrow tone="neutral">Wi-Fi 中斷</StatusEyebrow>
+      <StatusEyebrow tone="info">Patrolling</StatusEyebrow>
+      <StatusEyebrow tone="success">Charging</StatusEyebrow>
+      <StatusEyebrow tone="warning">Task paused</StatusEyebrow>
+      <StatusEyebrow tone="danger">Emergency stopped</StatusEyebrow>
+      <StatusEyebrow tone="neutral">Wi-Fi lost</StatusEyebrow>
     </div>
   ),
 }
-export const 分組列表: S = {
+export const GroupedList: S = {
   render: () => (
     <ListGroup>
-      <ListRow title="網路" meta="訊號良好" trailing="SyncAI-Office" chevron onClick={fn()} />
-      <ListRow title="授權" meta="專業版 · 到期日 11/19" trailing={<InlineStatus tone="warning">剩 5 天</InlineStatus>} chevron onClick={fn()} />
-      <ListRow title="夜班 · Pixel 8" meta="操作員" trailing={<InlineStatus tone="success">在線</InlineStatus>} />
+      <ListRow title="Network" meta="Good signal" trailing="SyncAI-Office" chevron onClick={fn()} />
+      <ListRow title="License" meta="Pro · expires 11/19" trailing={<InlineStatus tone="warning">5 days left</InlineStatus>} chevron onClick={fn()} />
+      <ListRow title="Night shift · Pixel 8" meta="Operator" trailing={<InlineStatus tone="success">Online</InlineStatus>} />
     </ListGroup>
   ),
 }
-export const 載入骨架: S = {
+export const LoadingSkeleton: S = {
   render: () => (
     <div className="flex flex-col gap-3">
-      <LoadingLine>正在從 4 隻機器狗取得事件…</LoadingLine>
+      <LoadingLine>Fetching events from 4 dogs…</LoadingLine>
       <ListGroup>
         {[0, 1, 2].map((i) => (
           <div key={i} className="flex min-h-(--h-row) items-center gap-3 border-b border-border py-2 last:border-b-0" style={{ opacity: i === 2 ? 0.5 : 1 }}>

@@ -14,14 +14,28 @@ export type StopButtonState =
   | "bluetooth-sent" //sent over Bluetooth; Bluetooth cannot confirm, so it says "delivered"
   | "dead" //          neither link works
 
-const copy: Record<StopButtonState, { text: string; icon: React.ElementType }> = {
-  ready: { text: "緊急停止", icon: Square },
-  idle: { text: "停止", icon: Square },
-  sending: { text: "送出中…", icon: Square },
-  unconfirmed: { text: "未確認，再按一次", icon: AlertCircle },
-  bluetooth: { text: "緊急停止", icon: Bluetooth },
-  "bluetooth-sent": { text: "已經由藍牙送達", icon: Bluetooth },
-  dead: { text: "無法連線", icon: Square },
+const icons: Record<StopButtonState, React.ElementType> = {
+  ready: Square,
+  idle: Square,
+  sending: Square,
+  unconfirmed: AlertCircle,
+  bluetooth: Bluetooth,
+  "bluetooth-sent": Bluetooth,
+  dead: Square,
+}
+
+/** Every string the button shows. Pass `labels` to localise. */
+export type StopButtonLabels = Record<StopButtonState, string> & { holdAll: string }
+
+export const defaultStopButtonLabels: StopButtonLabels = {
+  ready: "Emergency stop",
+  idle: "Stop",
+  sending: "Sending…",
+  unconfirmed: "Not confirmed, press again",
+  bluetooth: "Emergency stop",
+  "bluetooth-sent": "Delivered over Bluetooth",
+  dead: "No connection",
+  holdAll: "Keep holding to stop all",
 }
 
 type Props = {
@@ -33,6 +47,7 @@ type Props = {
   /** Called after holding for `holdAllMs`. Omit to disable stop-all (single dog). */
   onStopAll?: () => void
   holdAllMs?: number
+  labels?: Partial<StopButtonLabels>
   className?: string
 }
 
@@ -41,21 +56,23 @@ type Props = {
  * This component is UI only — sending, waiting for the reply and falling back to Bluetooth belong
  * to the app layer, which passes the resulting `state` back in.
  */
-export function StopButton({ state = "ready", tag, onStop, onStopAll, holdAllMs = 2000, className }: Props) {
+export function StopButton({ state = "ready", tag, onStop, onStopAll, holdAllMs = 2000, labels, className }: Props) {
+  const l = { ...defaultStopButtonLabels, ...labels }
   const { progress, holding, handlers } = useLongPress({
     onPress: onStop,
     onLongPress: () => onStopAll?.(),
     duration: holdAllMs,
   })
   const holdingAll = Boolean(onStopAll) && holding
-  const { text, icon: Icon } = holdingAll ? { text: "繼續按住，停止全部", icon: Square } : copy[state]
+  const text = holdingAll ? l.holdAll : l[state]
+  const Icon = holdingAll ? Square : icons[state]
   const pale = state === "idle"
   const disabled = state === "dead"
 
   return (
     <button
       type="button"
-      aria-label={tag ? `${text}，${tag}` : text}
+      aria-label={tag ? `${text}, ${tag}` : text}
       disabled={disabled}
       {...(disabled ? {} : onStopAll ? handlers : { onPointerDown: () => onStop() })}
       className={cn(
@@ -82,7 +99,18 @@ export function StopButton({ state = "ready", tag, onStop, onStopAll, holdAllMs 
 }
 
 /** Shown when the dog is lying down (charging or resting): the motors hold no force, so there is no stop. */
-export function WakeButton({ onWake, disabled, reason = "電量不足，充到 25% 才能站起來" }: { onWake: () => void; disabled?: boolean; reason?: string }) {
+export function WakeButton({
+  onWake,
+  disabled,
+  label = "Wake and stand up",
+  reason = "Battery low. Charge to 25% to stand up",
+}: {
+  onWake: () => void
+  disabled?: boolean
+  label?: string
+  /** Shown under the label while disabled. */
+  reason?: string
+}) {
   return (
     <button
       type="button"
@@ -95,7 +123,7 @@ export function WakeButton({ onWake, disabled, reason = "電量不足，充到 2
     >
       <span className="inline-flex items-center gap-2 text-lg font-bold">
         <ChevronsUp aria-hidden="true" className="size-5" strokeWidth={2} />
-        喚醒並站起來
+        {label}
       </span>
       {disabled && <span className="text-xs">{reason}</span>}
     </button>

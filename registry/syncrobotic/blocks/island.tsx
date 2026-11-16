@@ -8,6 +8,19 @@ import { StatusGlyph, type Tone } from "@/registry/syncrobotic/blocks/status-gly
 
 type Zone = "name" | "status" | "bell"
 
+/** Screen-reader strings. Pass `labels` to localise. */
+export type IslandLabels = {
+  attention: string
+  status: string
+  notifications: (unread: number) => string
+}
+
+export const defaultIslandLabels: IslandLabels = {
+  attention: "Another dog needs attention",
+  status: "Device status",
+  notifications: (unread) => `Notifications, ${unread} unread`,
+}
+
 type IslandProps = {
   name: string
   avatar?: React.ReactNode
@@ -28,6 +41,7 @@ type IslandProps = {
   loading?: boolean
   /** IslandNotice or a panel. */
   children?: React.ReactNode
+  labels?: Partial<IslandLabels>
   className?: string
 }
 
@@ -35,7 +49,8 @@ type IslandProps = {
  * Three zones — name, device status, notifications — each opens on its own.
  * Notices live inside the island as a child, assembled like the e-stop in the dock.
  */
-export function Island({ name, avatar, tone, attention, online = true, battery = 72, charging, unread = 0, open = null, onOpenChange, edge, loading, children, className }: IslandProps) {
+export function Island({ name, avatar, tone, attention, online = true, battery = 72, charging, unread = 0, open = null, onOpenChange, edge, loading, children, labels, className }: IslandProps) {
+  const l = { ...defaultIslandLabels, ...labels }
   const toggle = (z: Zone) => onOpenChange?.(open === z ? null : z)
   const zone = (z: Zone) => cn("flex h-(--h-md) items-center gap-1 rounded-md px-2", open === z && "bg-muted")
   const low = battery < 30
@@ -56,10 +71,10 @@ export function Island({ name, avatar, tone, attention, online = true, battery =
             <StatusGlyph tone={tone} className="absolute -right-0.5 -bottom-0.5 rounded-full bg-float" />
           </span>
           <span className="truncate text-sm font-medium">{name}</span>
-          {attention && <TriangleAlert aria-label="其他機器狗需要注意" className="size-4 shrink-0 text-warning" />}
+          {attention && <TriangleAlert aria-label={l.attention} className="size-4 shrink-0 text-warning" />}
           <ChevronDown aria-hidden="true" className="size-4 shrink-0 text-muted-foreground" />
         </button>
-        <button type="button" aria-expanded={open === "status"} aria-label="設備狀態" onClick={() => toggle("status")} className={zone("status")}>
+        <button type="button" aria-expanded={open === "status"} aria-label={l.status} onClick={() => toggle("status")} className={zone("status")}>
           {loading ? (
             <>
               <span className="block h-3 w-5 animate-breath rounded-xs bg-muted" />
@@ -73,7 +88,7 @@ export function Island({ name, avatar, tone, attention, online = true, battery =
             </>
           )}
         </button>
-        <button type="button" aria-expanded={open === "bell"} aria-label={`通知，${unread} 則未讀`} onClick={() => toggle("bell")} className={cn(zone("bell"), "relative")}>
+        <button type="button" aria-expanded={open === "bell"} aria-label={l.notifications(unread)} onClick={() => toggle("bell")} className={cn(zone("bell"), "relative")}>
           <Bell aria-hidden="true" className="size-5" />
           {unread > 0 && (
             <span className="absolute top-1 right-1 inline-flex size-4 items-center justify-center rounded-full bg-foreground text-xs font-bold text-background">{unread}</span>
@@ -96,6 +111,7 @@ type NoticeProps = {
   /** Severe events and failures use a danger tint and do not auto-dismiss. */
   emphasis?: boolean
   onDismiss?: () => void
+  dismissLabel?: string
 }
 
 /** A notice inside the island. Normal: 4 s. Reversible (has an undo action): 8 s. Failures: until handled. */
@@ -115,7 +131,7 @@ const fg: Record<Tone, string> = {
   neutral: "text-muted-foreground",
 }
 
-export function IslandNotice({ tone, icon: Icon, title, meta, action, persistent, emphasis, onDismiss }: NoticeProps) {
+export function IslandNotice({ tone, icon: Icon, title, meta, action, persistent, emphasis, onDismiss, dismissLabel = "Dismiss" }: NoticeProps) {
   const tint = persistent || emphasis ? subtle[tone] : "bg-muted"
   return (
     <div role="status" className={cn("flex min-h-(--h-row) items-center gap-2 rounded-md px-2", tint)}>
@@ -132,7 +148,7 @@ export function IslandNotice({ tone, icon: Icon, title, meta, action, persistent
         </button>
       )}
       {!persistent && onDismiss && (
-        <button type="button" aria-label="關閉" onClick={onDismiss} className="flex size-(--h-sm) shrink-0 items-center justify-center rounded-sm text-muted-foreground">
+        <button type="button" aria-label={dismissLabel} onClick={onDismiss} className="flex size-(--h-sm) shrink-0 items-center justify-center rounded-sm text-muted-foreground">
           <X aria-hidden="true" className="size-4" />
         </button>
       )}

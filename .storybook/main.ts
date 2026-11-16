@@ -8,6 +8,8 @@ const config: StorybookConfig = {
   framework: { name: "@storybook/react-vite", options: {} },
   viteFinal: async (cfg) => {
     cfg.plugins = [...(cfg.plugins ?? []), tailwindcss()]
+    // postcss.config.mjs belongs to Next.js; an inline config stops Vite from loading it and running Tailwind twice.
+    cfg.css = { ...cfg.css, postcss: { plugins: [] } }
     cfg.resolve = cfg.resolve ?? {}
     cfg.resolve.alias = {
       ...(cfg.resolve.alias as Record<string, string>),
