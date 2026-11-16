@@ -16,7 +16,7 @@ const registryConfig = `{
   "registries": {
     "@syncrobotic": {
       "url": "${site.registryUrl}/r/{name}.json",
-      "headers": { "Authorization": "Bearer \${SYNCROBOTIC_REGISTRY_TOKEN}" }
+      "headers": { "x-vercel-protection-bypass": "\${SYNCROBOTIC_REGISTRY_TOKEN}" }
     }
   }
 }`
@@ -40,7 +40,7 @@ export default function InstallationPage() {
 
       <H2 id="registry">2. Add the registry</H2>
       <p className="pb-3 text-sm">
-        <Inline text="In `components.json`. Set `SYNCROBOTIC_REGISTRY_TOKEN` in your environment; the token comes from the design system maintainers." />
+        <Inline text="In `components.json`. Set `SYNCROBOTIC_REGISTRY_TOKEN` in your environment to the Vercel protection bypass secret the design system maintainers give you." />
       </p>
       <CodeBlock code={registryConfig} lang="json" title="components.json" />
 

@@ -1,5 +1,5 @@
 // Site identity and indexing. One switch decides whether search engines may index the site:
-// SITE_PUBLIC=true (also turns off the password in proxy.ts). Until then everything is noindex.
+// SITE_PUBLIC=true. Until then everything is noindex. Access itself is Vercel Deployment Protection (see README).
 
 // Fallback is the production deployment, so local builds and previews point at the canonical site.
 const host =

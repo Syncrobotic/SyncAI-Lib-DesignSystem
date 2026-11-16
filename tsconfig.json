@@ -46,7 +46,6 @@
     ".storybook",
     "app",
     "site",
-    "proxy.ts",
     "next.config.ts",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
