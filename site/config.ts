@@ -1,16 +1,19 @@
 // Site identity and indexing. One switch decides whether search engines may index the site:
 // SITE_PUBLIC=true (also turns off the password in proxy.ts). Until then everything is noindex.
 
-const host = process.env.SITE_URL ?? (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : undefined)
+// Fallback is the production deployment, so local builds and previews point at the canonical site.
+const host =
+  process.env.SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "https://syncai-lib-designsystem.vercel.app")
 
 export const site = {
   name: "SYNCROBOTIC Design System",
   shortName: "SYNCROBOTIC DS",
   description:
     "Design language and React UI kit for robot control apps: emergency stop, slide to release, dock, dynamic island and design tokens, shipped as a shadcn/ui registry for Tailwind CSS v4.",
-  url: host ?? "http://localhost:3000",
-  /** Shown in install instructions; a placeholder until the site has a production URL. */
-  registryUrl: host ?? "https://<your-deployment>",
+  url: host,
+  /** Shown in install instructions. */
+  registryUrl: host,
   repo: "https://github.com/Syncrobotic/SyncAI-Lib-DesignSystem",
   keywords: [
     "design system",
