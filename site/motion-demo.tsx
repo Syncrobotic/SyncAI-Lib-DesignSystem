@@ -28,6 +28,7 @@ export function MotionDemo({ durations }: { durations: { key: string; ms: string
       ))}
       <button
         type="button"
+        aria-pressed={on}
         onClick={() => setOn((v) => !v)}
         className="self-start rounded-sm bg-secondary px-4 py-2 text-sm font-medium hover:bg-accent"
       >

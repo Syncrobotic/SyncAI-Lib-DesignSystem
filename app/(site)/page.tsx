@@ -121,7 +121,7 @@ const samples: Record<string, React.ReactNode> = {
 export default function HomePage() {
   const firstOf = (g: string) => items.find((i) => i.group === g)?.name
   return (
-    <main className="pb-24">
+    <main id="content" className="pb-24">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <section className="border-b border-border">
@@ -171,7 +171,9 @@ export default function HomePage() {
               const list = items.filter((i) => i.group === g)
               return (
                 <Link key={g} href={`/docs/components/${firstOf(g)}`} className="group flex flex-col overflow-hidden rounded-md border border-border hover:border-muted-foreground">
-                  <div className="specimen flex h-36 items-center justify-center p-6">{samples[g]}</div>
+                  <div aria-hidden inert className="specimen flex h-36 items-center justify-center p-6">
+                    {samples[g]}
+                  </div>
                   <div className="flex flex-1 flex-col gap-1 border-t border-border bg-card p-5">
                     <span className="flex items-center justify-between">
                       <span className="font-bold">{g}</span>

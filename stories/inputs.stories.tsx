@@ -90,18 +90,18 @@ export const SwitchDefault: S = {
 
 export const SelectDefault: S = {
   render: () => (
-    <Field label="Patrol route">
-      <Select defaultValue="perimeter">
+    <Select defaultValue="perimeter">
+      <Field label="Patrol route">
         <SelectTrigger>
           <SelectValue placeholder="Choose a route" />
         </SelectTrigger>
+      </Field>
         <SelectContent>
           <SelectItem value="perimeter">Perimeter</SelectItem>
           <SelectItem value="parking">Parking lot</SelectItem>
           <SelectItem value="warehouse">Warehouse aisles</SelectItem>
         </SelectContent>
-      </Select>
-    </Field>
+    </Select>
   ),
 }
 

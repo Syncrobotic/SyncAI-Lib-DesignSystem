@@ -58,6 +58,7 @@ Dark is the default: `<html class="dark">`. Default copy is English; every visib
 | Overlays | `dialog`, `alert-dialog`, `sheet`, `popover`, `tooltip`, `dropdown-menu` |
 | Robot shell | `stop-button`, `slide-to-release`, `dock`, `island`, `tray` |
 | Hooks | `use-long-press`, `use-slide-release` |
+| Blocks | `stats-cards`, `fleet-table`, `robot-status-card`, `marketing-hero` |
 
 General components are built on [Radix UI](https://www.radix-ui.com) primitives, the same base as shadcn/ui, so keyboard and screen-reader behaviour comes from Radix.
 

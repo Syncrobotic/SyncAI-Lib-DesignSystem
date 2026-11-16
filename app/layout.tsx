@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next"
 import { GeistMono } from "geist/font/mono"
 import { GeistSans } from "geist/font/sans"
 import { site } from "@/site/config"
-import { SiteHeader } from "@/site/site-header"
 import { themeScript } from "@/site/theme-toggle"
 import "./globals.css"
 
@@ -43,10 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="min-h-screen">
-        <SiteHeader />
-        {children}
-      </body>
+      <body className="min-h-screen">{children}</body>
     </html>
   )
 }

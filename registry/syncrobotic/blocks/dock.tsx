@@ -50,9 +50,9 @@ export function DockActions({ secondary, primary, destructive }: { secondary: Ac
 export type NavItem = { key: string; label: string; icon: React.ElementType; badge?: number }
 
 /** Tab bar inside the dock. The event badge is a danger tint, not solid red. */
-export function DockNav({ items, active, onSelect }: { items: NavItem[]; active: string; onSelect: (key: string) => void }) {
+export function DockNav({ items, active, onSelect, label = "Primary" }: { items: NavItem[]; active: string; onSelect: (key: string) => void; label?: string }) {
   return (
-    <nav className="flex gap-1">
+    <nav aria-label={label} className="flex gap-1">
       {items.map(({ key, label, icon: Icon, badge }) => (
         <button
           key={key}
