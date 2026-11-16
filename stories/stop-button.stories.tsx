@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { fn } from "@storybook/test"
-import { StopButton, WakeButton } from "@/registry/syncrobotic/blocks/stop-button"
+import { StopButton, WakeButton } from "@/registry/syncrobotic/shell/stop-button"
 
 const meta: Meta<typeof StopButton> = {
   title: "Shell/Emergency stop",

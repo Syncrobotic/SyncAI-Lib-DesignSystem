@@ -73,7 +73,7 @@ export function StopButton({ state = "ready", tag, onStop, onStopAll, holdAllMs 
     <button
       type="button"
       disabled={disabled}
-      {...(disabled ? {} : onStopAll ? handlers : { onPointerDown: () => onStop() })}
+      {...(disabled ? {} : handlers)}
       className={cn(
         "relative flex h-(--h-stop) w-full touch-none select-none items-center justify-center gap-2 overflow-hidden rounded-md",
         "transition-colors duration-(--motion-fast)",

@@ -67,14 +67,31 @@ General components are built on [Radix UI](https://www.radix-ui.com) primitives,
 
 ```bash
 npm install
-npm run dev              # docs site at http://localhost:3000 (no password locally)
+npm run dev              # docs site at http://localhost:3000
 npm run storybook        # http://localhost:6006, toolbar switches dark and light
 npm run lint:tokens      # fails on any value outside the tokens
+npm run lint:registry    # fails when an item's dependencies drift from its imports
 npm run typecheck
+npm test                 # behaviour tests (Vitest): stop, stop all, slide to release, keyboard and AT paths
 npm run build            # registry JSON in public/r + docs site
 npm run build-storybook
+npm run test:a11y        # axe (WCAG 2.2 AA) on every story, dark and light
 npm run test:visual      # screenshots every story in dark and light
+npm run test:registry    # installs every item into a fresh Next.js app, then typechecks and builds it
 ```
+
+### Repository layout
+
+| Path | What |
+| --- | --- |
+| `registry/syncrobotic/styles/` | The theme: every token |
+| `registry/syncrobotic/ui/` | General components (Radix UI based) |
+| `registry/syncrobotic/shell/` | Robot shell components: emergency stop, slide to release, dock, island, status |
+| `registry/syncrobotic/blocks/` | Blocks: composed sections for dashboards, apps and marketing pages |
+| `registry/syncrobotic/hooks/`, `lib/` | Interaction hooks and `cn()` |
+| `stories/` | One story per state; the docs site, visual tests and axe all read them |
+| `tests/unit/` | Behaviour tests |
+| `app/`, `site/` | The docs site |
 
 The first `test:visual` run writes baselines; commit them (`tests/__screenshots__/`). After that, any change to how a component looks fails CI with a diff image. To accept the new look: `npx playwright test --update-snapshots`.
 
@@ -87,11 +104,12 @@ The first `test:visual` run writes baselines; commit them (`tests/__screenshots_
 
 ### Adding a component
 
-1. Write it in `registry/syncrobotic/ui/` (general) or `registry/syncrobotic/blocks/` (robot shell). Import from `@/lib/utils` and `@/registry/syncrobotic/...`; the CLI rewrites these to the consumer's paths on install.
+1. Write it in `registry/syncrobotic/ui/` (general), `registry/syncrobotic/shell/` (robot shell) or `registry/syncrobotic/blocks/` (blocks). Import from `@/lib/utils` and `@/registry/syncrobotic/...`; the CLI rewrites these to the consumer's paths on install.
 2. Add an entry to `registry.json` with its `dependencies` (npm) and `registryDependencies` (other `@syncrobotic/...` items).
 3. Write one story per state in `stories/`. The docs site renders the same stories.
 4. Add it to `site/catalog.ts` with its usage rules.
-5. Open a PR once `npm run ci` passes.
+5. Interaction logic gets a behaviour test in `tests/unit/`.
+6. Open a PR once `npm run ci` passes. Add a line to `CHANGELOG.md`.
 
 ## Branches
 

@@ -13,19 +13,35 @@ jobs:
         with: { node-version: 22, cache: npm }
       - run: npm ci
       - run: npm run lint:tokens
+      # Every registry item declares exactly what its files import, and hook users are client components
+      - run: npm run lint:registry
       - run: npm run typecheck
+      # Behaviour of safety-critical interactions: stop, stop all, slide to release, keyboard and AT paths
+      - run: npm test
       # Registry JSON + docs site (Next.js)
       - run: npm run build
       - run: npm run build-storybook
       - run: npx playwright install --with-deps chromium
-      # Until baselines are committed, the first run writes them instead of failing.
-      # Download the "visual-baseline" artifact and commit it to tests/__screenshots__/.
-      - run: npm run test:visual -- --update-snapshots=missing
+      # Story checks: accessibility (axe, WCAG 2.2 AA) and visual regression, dark and light.
+      # Until visual baselines are committed, missing ones are written instead of failing;
+      # download the "visual-baseline" artifact and commit it to tests/__screenshots__/.
+      - run: npx playwright test --update-snapshots=missing
       - uses: actions/upload-artifact@v4
         if: always()
         with: { name: visual-baseline, path: tests/__screenshots__, if-no-files-found: ignore }
       - uses: actions/upload-artifact@v4
         if: failure()
-        with: { name: visual-diff, path: test-results }
+        with: { name: story-test-results, path: test-results }
       - uses: actions/upload-artifact@v4
         with: { name: registry, path: public/r }
+
+  # Installs every item into a fresh Next.js app with the shadcn CLI, then typechecks and builds it.
+  registry-e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm run registry:build
+      - run: npm run test:registry

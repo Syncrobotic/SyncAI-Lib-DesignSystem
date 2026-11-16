@@ -1,10 +1,12 @@
 import type { Metadata } from "next"
-import { pageMeta } from "@/site/config"
 import { notFound } from "next/navigation"
+import { pageMeta } from "@/site/config"
 import { getItem, items, readSource, storyNames, storyTitle } from "@/site/catalog"
 import { CodeBlock } from "@/site/code-block"
+import { ExampleCard } from "@/site/example-card"
 import { Stage } from "@/site/examples"
 import { H2, PageTitle, Rules } from "@/site/prose"
+import { storySource } from "@/site/story-source"
 
 export const dynamicParams = false
 export const generateStaticParams = () => items.map((i) => ({ name: i.name }))
@@ -42,13 +44,16 @@ export default async function ComponentPage({ params }: Props) {
       {item.examples && (
         <>
           <H2 id="examples">Examples</H2>
-          <p className="pb-4 text-sm text-muted-foreground">States and real uses. Each one is a Storybook story and is captured by the visual regression test.</p>
+          <p className="pb-4 text-sm text-muted-foreground">States and real uses. Switch to Code for the JSX. Each example is also a Storybook story and a visual regression test.</p>
           <div className="flex flex-col gap-6">
             {names.map((n) => (
-              <section key={n} className="flex flex-col gap-2">
-                <h3 className="text-sm font-medium">{storyTitle(n)}</h3>
-                <Stage file={item.examples!.file} name={n} />
-              </section>
+              <ExampleCard
+                key={n}
+                id={`example-${n}`}
+                title={storyTitle(n)}
+                preview={<Stage file={item.examples!.file} name={n} className="w-full" />}
+                code={<CodeBlock code={storySource(item.examples!.file, n)} title={`${storyTitle(n)}.tsx`} />}
+              />
             ))}
           </div>
         </>

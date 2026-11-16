@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { Battery, Bell, Bluetooth, Bot, CircleAlert, House, ListChecks, Map, Settings, Square, Trash2, Video, Wifi } from "lucide-react"
-import { StatusGlyph } from "@/registry/syncrobotic/blocks/status-glyph"
+import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { Code, DocHeader, DoDont, Pager, Section, Specimen, TokenTable } from "@/site/doc"
 import { metaFor, neighbours } from "@/site/foundations"
 

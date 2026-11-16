@@ -23,7 +23,7 @@ export default async function BlockPage({ params }: Props) {
   if (!b) notFound()
   const uses = (b.registryDependencies ?? []).filter((d) => d !== "@syncrobotic/cn").map((d) => d.replace("@syncrobotic/", ""))
   return (
-    <main id="content" className="mx-auto max-w-6xl px-4 pt-10 pb-24">
+    <article>
       <Link href="/blocks" className="text-sm text-muted-foreground hover:text-foreground">
         ← All blocks
       </Link>
@@ -33,30 +33,26 @@ export default async function BlockPage({ params }: Props) {
         <p className="max-w-2xl text-muted-foreground">{b.description}</p>
       </header>
 
-      <BlockFrame name={b.name} height={b.height} initial={b.viewport} />
-
-      <div className="grid gap-8 pt-10 lg:grid-cols-[1fr_18rem]">
-        <div className="flex min-w-0 flex-col gap-4">
-          <h2 className="text-xl font-bold">Code</h2>
-          {b.files.map((f) => (
-            <CodeBlock key={f.path} code={readSource(f.path)} title={f.path} />
+      <div className="flex flex-col gap-3 pb-8">
+        <CodeBlock code={`npx shadcn add @syncrobotic/${b.name}`} lang="bash" title="Install" />
+        <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+          Built from
+          {uses.map((u) => (
+            <Link key={u} href={`/docs/components/${u}`} className="rounded-xs bg-muted px-2 py-1 font-mono text-xs hover:bg-accent">
+              {u}
+            </Link>
           ))}
         </div>
-        <aside className="flex flex-col gap-4">
-          <h2 className="text-xl font-bold">Install</h2>
-          <CodeBlock code={`npx shadcn add @syncrobotic/${b.name}`} lang="bash" />
-          <div className="flex flex-col gap-2">
-            <span className="text-sm text-muted-foreground">Built from</span>
-            <div className="flex flex-wrap gap-2">
-              {uses.map((u) => (
-                <Link key={u} href={`/docs/components/${u}`} className="rounded-xs bg-muted px-2 py-1 font-mono text-xs hover:bg-accent">
-                  {u}
-                </Link>
-              ))}
-            </div>
-          </div>
-        </aside>
       </div>
-    </main>
+
+      <BlockFrame
+        name={b.name}
+        height={b.height}
+        initial={b.viewport}
+        code={b.files.map((f) => (
+          <CodeBlock key={f.path} code={readSource(f.path)} title={f.path} />
+        ))}
+      />
+    </article>
   )
 }
