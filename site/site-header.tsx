@@ -14,7 +14,7 @@ export function SiteHeader() {
         <nav aria-label="Main" className="hidden items-center gap-4 text-sm text-muted-foreground sm:flex">
           <Link href="/docs/installation" className="hover:text-foreground">Installation</Link>
           <Link href="/docs/foundations" className="hover:text-foreground">Foundations</Link>
-          <Link href="/docs/components/stop-button" className="hover:text-foreground">Components</Link>
+          <Link href="/docs/components/button" className="hover:text-foreground">Components</Link>
         </nav>
         <div className="ml-auto flex items-center gap-1">
           <a href={site.repo} className="rounded-sm px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground">

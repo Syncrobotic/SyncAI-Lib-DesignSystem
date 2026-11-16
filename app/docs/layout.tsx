@@ -1,4 +1,4 @@
-import { items } from "@/site/catalog"
+import { groups as itemGroups, items } from "@/site/catalog"
 import { Sidebar, type NavGroup } from "@/site/sidebar"
 
 const groups: NavGroup[] = [
@@ -9,7 +9,7 @@ const groups: NavGroup[] = [
       { href: "/docs/foundations", label: "Foundations" },
     ],
   },
-  ...(["Components", "Hooks"] as const).map((g) => ({
+  ...itemGroups.map((g) => ({
     title: g,
     links: items.filter((i) => i.group === g).map((i) => ({ href: `/docs/components/${i.name}`, label: i.title })),
   })),

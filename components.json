@@ -13,7 +13,8 @@
     "components": "@/registry/syncrobotic/blocks",
     "utils": "@/lib/utils",
     "hooks": "@/registry/syncrobotic/hooks",
-    "lib": "@/lib"
+    "lib": "@/lib",
+    "ui": "@/registry/syncrobotic/ui"
   },
   "iconLibrary": "lucide"
 }

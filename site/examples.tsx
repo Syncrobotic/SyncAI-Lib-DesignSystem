@@ -1,9 +1,14 @@
 "use client"
 
 import * as React from "react"
+import * as actions from "@/stories/actions.stories"
+import * as display from "@/stories/display.stories"
 import * as dock from "@/stories/dock.stories"
+import * as inputs from "@/stories/inputs.stories"
 import * as island from "@/stories/island.stories"
 import * as list from "@/stories/list.stories"
+import * as navigation from "@/stories/navigation.stories"
+import * as overlays from "@/stories/overlays.stories"
 import * as slide from "@/stories/slide-to-release.stories"
 import * as stop from "@/stories/stop-button.stories"
 import type { StoryFile } from "./catalog"
@@ -18,6 +23,11 @@ const files: Record<StoryFile, StoryModule> = {
   dock: dock as unknown as StoryModule,
   island: island as unknown as StoryModule,
   list: list as unknown as StoryModule,
+  actions: actions as unknown as StoryModule,
+  inputs: inputs as unknown as StoryModule,
+  display: display as unknown as StoryModule,
+  navigation: navigation as unknown as StoryModule,
+  overlays: overlays as unknown as StoryModule,
 }
 
 // Same rule as Storybook: story args override meta args; a story's own render wins over meta.component.
