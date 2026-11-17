@@ -2,6 +2,8 @@
 "use client"
 
 import * as React from "react"
+import { cn } from "@/lib/utils"
+import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
 import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
 import {
   AlertDialog,
@@ -69,6 +71,8 @@ export function SettingsPage() {
   const [timezone, setTimezone] = React.useState(saved.timezone)
   const [error, setError] = React.useState<string | null>(null)
   const dirty = site !== saved.site || timezone !== saved.timezone
+  // The save bar leaves the way it came (disappear), after Save or Discard.
+  const saveBar = usePresence(dirty)
 
   const save = () => {
     if (site.trim().length < 2) return setError("At least 2 characters")
@@ -140,11 +144,16 @@ export function SettingsPage() {
       </div>
 
       {/* The save bar sticks to the bottom of the scrolling page, wherever the sidebar is. */}
-      {dirty && (
+      {saveBar.mounted && (
         <div
           role="region"
           aria-label="Unsaved changes"
-          className="sticky bottom-0 -mx-6 -mb-6 mt-8 animate-appear border-t border-edge bg-float shadow-float backdrop-blur-xl"
+          aria-hidden={saveBar.leaving || undefined}
+          onAnimationEnd={(e) => e.target === e.currentTarget && saveBar.done()}
+          className={cn(
+            "sticky bottom-0 -mx-6 -mb-6 mt-8 border-t border-edge bg-float shadow-float backdrop-blur-xl",
+            saveBar.leaving ? "animate-disappear" : "animate-appear",
+          )}
         >
           <div className="flex max-w-4xl items-center justify-between gap-3 px-6 py-3">
             <span className="text-sm">Unsaved changes</span>

@@ -12,8 +12,10 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - `choice-field` (ChoiceField, FieldSet): a checkbox, radio or switch as a whole 44 px row with label, description and count; a legend and one note line for the group.
 - `copy-button`: copies and confirms in place, the icon swapping to a check for 1.5 s.
 - `badge` › CountBadge: the one way to draw a count, danger on its tint or neutral, 99+.
+- `use-presence`: keeps an element or list items on screen while they leave.
 
 ### Changed
+- **Every exit is animated**: cleared alarms, island notices and the island alarm, finished governance tasks, the settings save bar and fixed form errors now leave with the disappear movement instead of vanishing.
 - `field` / `select`: a Select inside a Field is labelled, described and marked invalid through its trigger (`useField`).
 - `table`: sortable headers (`sort`, `onSort`) with aria-sort and an arrow.
 - Blocks use them instead of hand-built copies: battery Meters in the fleet table, list and detail, and map; Pagination in the fleet table; Breadcrumb, CopyButton and DescriptionList in the dataset page; FieldSets of ChoiceFields as catalog filters and settings switches; Selects in Fields in the mission form, invitations and settings; CountBadge in the app shell, dock and island.

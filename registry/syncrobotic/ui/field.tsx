@@ -39,6 +39,10 @@ export function Field({
   const id = (children.props as { id?: string }).id ?? generated
   const noteId = `${id}-note`
   const note = error ?? hint
+  // The last note stays in the collapsing line, fading out, so an error that is fixed leaves instead of vanishing.
+  const last = React.useRef<{ note: React.ReactNode; error: boolean }>({ note: null, error: false })
+  if (note) last.current = { note, error: !!error }
+  const shown = note ? { note, error: !!error } : last.current
   return (
     <FieldContext.Provider value={{ id, describedBy: note ? noteId : undefined, invalid: error ? true : undefined }}>
       <div data-slot="field" className={cn("flex flex-col gap-2", className)}>
@@ -56,15 +60,20 @@ export function Field({
             note ? "grid-rows-[1fr]" : "-mt-2 grid-rows-[0fr]",
           )}
         >
-          <div className="overflow-hidden">
-            {note && (
+          <div className="overflow-hidden" aria-hidden={note ? undefined : true}>
+            {shown.note && (
               <p
-                id={noteId}
-                key={error ? "error" : "hint"}
-                className={cn("flex items-start gap-1 text-xs", error ? "animate-appear text-danger" : "text-muted-foreground")}
+                id={note ? noteId : undefined}
+                key={shown.error ? "error" : "hint"}
+                className={cn(
+                  "flex items-start gap-1 text-xs transition-opacity duration-(--motion-base) ease-(--ease-standard)",
+                  shown.error ? "text-danger" : "text-muted-foreground",
+                  shown.error && note && "animate-appear",
+                  !note && "opacity-0",
+                )}
               >
-                {error && <CircleAlert aria-hidden="true" className="size-4 shrink-0" />}
-                <span>{note}</span>
+                {shown.error && <CircleAlert aria-hidden="true" className="size-4 shrink-0" />}
+                <span>{shown.note}</span>
               </p>
             )}
           </div>

@@ -107,6 +107,30 @@
       }
     },
     {
+      "name": "use-presence",
+      "type": "registry:hook",
+      "title": "usePresence",
+      "description": "Keeps an element, or list items, on screen while they leave, so exits use the disappear movement instead of vanishing.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/syncrobotic/hooks/use-presence.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "meta": {
+        "version": "0.8.0",
+        "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
       "name": "status-glyph",
       "type": "registry:component",
       "title": "Status glyph",
@@ -305,7 +329,8 @@
         "@syncrobotic/tray",
         "@syncrobotic/status-glyph",
         "@syncrobotic/alarm",
-        "@syncrobotic/badge"
+        "@syncrobotic/badge",
+        "@syncrobotic/use-presence"
       ],
       "files": [
         {
@@ -319,7 +344,7 @@
           {
             "version": "0.8.0",
             "date": "2026-11-17",
-            "note": "The unread count uses CountBadge."
+            "note": "The unread count uses CountBadge. Notices and the island alarm leave with disappear."
           },
           {
             "version": "0.7.0",
@@ -740,7 +765,7 @@
           {
             "version": "0.8.0",
             "date": "2026-11-17",
-            "note": "Shares its id, note and error through useField, so a Select's trigger inside a Field is labelled and described."
+            "note": "Shares its id, note and error through useField, so a Select's trigger inside a Field is labelled and described. A fixed error fades out while its line closes."
           },
           {
             "version": "0.7.0",
@@ -893,7 +918,7 @@
           {
             "version": "0.8.0",
             "date": "2026-11-17",
-            "note": "First release."
+            "note": "First release. FieldSet's note grows open and fades out like Field's."
           }
         ]
       }
@@ -1213,7 +1238,8 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "@syncrobotic/cn"
+        "@syncrobotic/cn",
+        "@syncrobotic/use-presence"
       ],
       "files": [
         {
@@ -1222,8 +1248,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "A cleared alarm fades out (disappear) instead of vanishing."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -2253,7 +2284,8 @@
         "@syncrobotic/button",
         "@syncrobotic/empty-state",
         "@syncrobotic/segmented-control",
-        "@syncrobotic/separator"
+        "@syncrobotic/separator",
+        "@syncrobotic/use-presence"
       ],
       "files": [
         {
@@ -2262,8 +2294,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "A finished task fades out where it was."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -2289,7 +2326,8 @@
         "@syncrobotic/select",
         "@syncrobotic/switch",
         "@syncrobotic/toast",
-        "@syncrobotic/choice-field"
+        "@syncrobotic/choice-field",
+        "@syncrobotic/use-presence"
       ],
       "files": [
         {
@@ -2303,7 +2341,7 @@
           {
             "version": "0.8.0",
             "date": "2026-11-17",
-            "note": "The time-zone Select sits in a Field; switches are ChoiceFields."
+            "note": "The time-zone Select sits in a Field; switches are ChoiceFields. The save bar leaves the way it came."
           },
           {
             "version": "0.7.0",

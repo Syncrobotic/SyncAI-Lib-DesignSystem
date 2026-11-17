@@ -24,6 +24,9 @@ export function FieldSet({
 }) {
   const id = React.useId()
   const note = error ?? hint
+  const last = React.useRef<{ note: React.ReactNode; error: boolean }>({ note: null, error: false })
+  if (note) last.current = { note, error: !!error }
+  const shown = note ? { note, error: !!error } : last.current
   return (
     <fieldset
       data-slot="fieldset"
@@ -33,12 +36,25 @@ export function FieldSet({
     >
       <legend className="pb-1 text-sm font-medium">{legend}</legend>
       <div className="flex flex-col">{children}</div>
-      {note && (
-        <p id={`${id}-note`} className={cn("flex items-start gap-1 text-xs", error ? "animate-appear text-danger" : "text-muted-foreground")}>
-          {error && <CircleAlert aria-hidden="true" className="size-4 shrink-0" />}
-          <span>{note}</span>
-        </p>
-      )}
+      {/* Same note line as Field: it grows open, and a fixed error fades out while the line closes. */}
+      <div className={cn("grid transition-[grid-template-rows] duration-(--motion-base) ease-(--ease-standard)", note ? "grid-rows-[1fr]" : "grid-rows-[0fr]")}>
+        <div className="overflow-hidden" aria-hidden={note ? undefined : true}>
+          {shown.note && (
+            <p
+              id={note ? `${id}-note` : undefined}
+              className={cn(
+                "flex items-start gap-1 text-xs transition-opacity duration-(--motion-base) ease-(--ease-standard)",
+                shown.error ? "text-danger" : "text-muted-foreground",
+                shown.error && note && "animate-appear",
+                !note && "opacity-0",
+              )}
+            >
+              {shown.error && <CircleAlert aria-hidden="true" className="size-4 shrink-0" />}
+              <span>{shown.note}</span>
+            </p>
+          )}
+        </div>
+      </div>
     </fieldset>
   )
 }

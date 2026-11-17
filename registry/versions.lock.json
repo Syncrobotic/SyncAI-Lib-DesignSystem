@@ -15,6 +15,10 @@
     "version": "0.5.0",
     "hash": "419ce274e0f518ef"
   },
+  "use-presence": {
+    "version": "0.8.0",
+    "hash": "a0d4130094efa1db"
+  },
   "status-glyph": {
     "version": "0.6.0",
     "hash": "28d84a1c4cfe3bd6"
@@ -41,7 +45,7 @@
   },
   "island": {
     "version": "0.8.0",
-    "hash": "f48325a6a72fb147"
+    "hash": "3fb9f8d0c43354ca"
   },
   "list": {
     "version": "0.7.0",
@@ -93,7 +97,7 @@
   },
   "field": {
     "version": "0.8.0",
-    "hash": "4f5d7b38758c37b1"
+    "hash": "3cc93839199c9ab6"
   },
   "checkbox": {
     "version": "0.7.0",
@@ -109,7 +113,7 @@
   },
   "choice-field": {
     "version": "0.8.0",
-    "hash": "22adc320cb944996"
+    "hash": "7550e0bc4949482d"
   },
   "select": {
     "version": "0.8.0",
@@ -152,8 +156,8 @@
     "hash": "5b71af158dadc4e3"
   },
   "alarm": {
-    "version": "0.7.0",
-    "hash": "9d5cb137f15cf185"
+    "version": "0.8.0",
+    "hash": "5f2b84c6ebffbf23"
   },
   "toast": {
     "version": "0.7.0",
@@ -264,12 +268,12 @@
     "hash": "53386e5a32c05f37"
   },
   "governance-todo": {
-    "version": "0.6.0",
-    "hash": "23b0815d9b000389"
+    "version": "0.8.0",
+    "hash": "aa135082180c763a"
   },
   "settings-page": {
     "version": "0.8.0",
-    "hash": "41ee21aa14c5c8ff"
+    "hash": "b5fdc9663c3b5282"
   },
   "record-form": {
     "version": "0.8.0",
