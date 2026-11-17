@@ -98,7 +98,7 @@ npm run test:registry    # installs every item into a fresh Next.js app, then ty
 | `tests/unit/` | Behaviour tests |
 | `app/`, `site/` | The docs site |
 
-The first `test:visual` run writes baselines; commit them (`tests/__screenshots__/`). After that, any change to how a component looks fails CI with a diff image. To accept the new look: `npx playwright test --update-snapshots`.
+Baselines live in `tests/__screenshots__/` and are written only by CI (Actions → `visual-baseline`), never locally: fonts and anti-aliasing differ between machines. Stories render in Geist, loaded before each screenshot, with the page clock run past timed UI. Any change to how a component looks fails CI with a diff image; to accept it, run the workflow on the branch.
 
 ### Rules CI enforces
 
