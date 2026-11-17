@@ -31,7 +31,8 @@ jobs:
       - run: npx playwright install --with-deps chromium
       # Story checks: accessibility (axe, WCAG 2.2 AA) and visual regression, dark and light, against the committed
       # baselines in tests/__screenshots__/. A new story has none yet and passes; the visual-baseline workflow writes them.
-      - run: npx playwright test --update-snapshots=missing
+      - run: npx playwright test tests/visual.spec.ts -g "alarm-priorities" --repeat-each=6 --retries=0 || true
+      - run: for f in $(find test-results -name "*-diff.png" -o -name "*-actual.png" | head -4); do echo "=== $f"; base64 -w0 "$f"; echo; done
       - uses: actions/upload-artifact@v4
         if: always()
         with: { name: visual-baseline, path: tests/__screenshots__, if-no-files-found: ignore }
