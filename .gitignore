@@ -8,3 +8,6 @@ playwright-report
 next-env.d.ts
 *.tsbuildinfo
 .vercel
+
+# Python caches from .claude/skills scripts
+__pycache__/
