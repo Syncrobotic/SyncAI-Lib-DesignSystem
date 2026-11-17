@@ -1,4 +1,4 @@
-// @syncrobotic/list v0.6.0 · update: npx shadcn add @syncrobotic/list --overwrite
+// @syncrobotic/list v0.7.0 · update: npx shadcn add @syncrobotic/list --overwrite
 import * as React from "react"
 import { ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -26,7 +26,7 @@ export function ListRow({ title, meta, lead, trailing, chevron, onClick }: RowPr
     <Comp
       type={onClick ? "button" : undefined}
       onClick={onClick}
-      className="press flex min-h-(--h-row) w-full items-center gap-3 border-b border-border py-2 text-left last:border-b-0"
+      className={cn("flex min-h-(--h-row) w-full items-center gap-3 border-b border-border py-2 text-left last:border-b-0", onClick && "press")}
     >
       {lead}
       <span className="flex min-w-0 flex-1 flex-col">

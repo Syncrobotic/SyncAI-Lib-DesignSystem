@@ -1,4 +1,4 @@
-// @syncrobotic/status-pages v0.6.0 · update: npx shadcn add @syncrobotic/status-pages --overwrite
+// @syncrobotic/status-pages v0.7.0 · update: npx shadcn add @syncrobotic/status-pages --overwrite
 "use client"
 
 import * as React from "react"
@@ -9,7 +9,16 @@ import { Bone, LoadingLine } from "@/registry/syncrobotic/shell/skeleton"
 type PageProps = { onPrimary?: () => void; onSecondary?: () => void }
 
 /** One layout for every page that is not the content: what happened, why, and the next step. Never a dead end. */
-function StatusPage({ icon: Icon, code, title, body, primary, secondary, onPrimary, onSecondary }: PageProps & { icon: React.ElementType; code?: string; title: string; body: React.ReactNode; primary: string; secondary?: string }) {
+function StatusPage({
+  icon: Icon,
+  code,
+  title,
+  body,
+  primary,
+  secondary,
+  onPrimary,
+  onSecondary,
+}: PageProps & { icon: React.ElementType; code?: string; title: string; body: React.ReactNode; primary: string; secondary?: string }) {
   return (
     <main className="flex min-h-dvh items-center justify-center bg-background p-4">
       <div className="flex max-w-md animate-appear flex-col items-start gap-4">
@@ -33,7 +42,17 @@ function StatusPage({ icon: Icon, code, title, body, primary, secondary, onPrima
 }
 
 export function NotFoundPage(props: PageProps) {
-  return <StatusPage icon={SearchX} code="404" title="This page does not exist" body="The link may be old, or the robot or dataset it pointed to was removed." primary="Go to overview" secondary="Search" {...props} />
+  return (
+    <StatusPage
+      icon={SearchX}
+      code="404"
+      title="This page does not exist"
+      body="The link may be old, or the robot or dataset it pointed to was removed."
+      primary="Go to overview"
+      secondary="Search"
+      {...props}
+    />
+  )
 }
 
 export function NoAccessPage(props: PageProps & { role?: string; admin?: string }) {
@@ -92,7 +111,7 @@ export function LoadingPage({ what = "Loading the fleet" }: { what?: string }) {
         {["Robots online", "Patrol hours", "Events", "Avg. battery"].map((label) => (
           <div key={label} className="flex flex-col gap-3 rounded-md bg-card p-4 ring-1 ring-border">
             <span className="text-sm text-muted-foreground">{label}</span>
-            <Bone onCard className="h-8 w-20" />
+            <Bone onCard className="h-9 w-20" />
           </div>
         ))}
       </div>

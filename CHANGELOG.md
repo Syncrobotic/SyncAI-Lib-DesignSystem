@@ -7,10 +7,26 @@ Components install as source, so a project keeps the version it installed. Re-ru
 ### Added
 - `input-group`: an icon, a unit or a button (clear, show password) inside the input's edge. The group draws the field, focus and error, so addons of any width fit; a Field around it labels the text box inside.
 - `number-field`: a number with a range, a step and a unit (speed limits, thresholds, intervals). Typing is never blocked; the value is kept in range on blur. 44 px buttons; ↑↓, Shift, PageUp/PageDown, Home/End; a spinbutton that reads its unit.
+- `command`: a filterable list and the ⌘K palette. AppShell `search` puts a field with a scope in the top bar that opens it.
+- `chart`: line, area and bar charts on Recharts in the categorical palette, with a crosshair tooltip, a legend and a table view.
+- `top-bar-shell`: the frame without a sidebar; its top bar gathers into a floating panel as the page scrolls.
+- Every component page opens with what the component is, when to use it, and when to use something else.
 
 ### Changed
 - **Errors grow in, never shake.** `field` 0.7.0: the message line grows open (height at --motion-base) and the error appears with an icon, so it never relies on colour alone; an error replacing a hint keeps the height. `input`, `textarea`, `select` 0.7.0: the error edge is 2 px and transitions at --motion-fast.
 - `field` 0.7.0: a control that brings its own id keeps it, and the label follows (labels were lost before).
+
+### App shell
+- Inset layout by default: sidebar, top bar and content are separate panels 16 px apart and 16 px from the edge (the cards' gutter), top rows level. Below 1280 px the sidebar is a 72 px rail with the logo, opening over the content on hover or tap; the logo, icons and avatar hold the rail's centre line; a group's name gives way to a short line on the rail; the pin icon is filled when the sidebar is kept open. The user menu sits at the foot (44 px as a rail, 56 px open). Footer slot.
+
+### Design-language pass (audit against the foundations)
+- **Touch**: compact controls (`--h-sm`, 36 px) are for a mouse only; on touch screens the token is 44 px, so the island, the dock and phone layouts never go below a finger. Written into Accessibility › Target size.
+- **Selected vs hover**: the current page in navigation is `--muted` with weight; hover is `--accent`. Inverted is for segmented control and toggle.
+- **Motion**: every duration token travels with `--ease-standard` (lint); only the Spinner loops, and it stops under reduced motion (lint); radio and checkbox marks fade in; the sheet's scrim leaves with the panel; the app-shell frame resizes at `--motion-sheet`; chart marks no longer run Recharts' own timing, the chart fades in.
+- **Radius**: menu and select items, alarm and island buttons and the dialog close are concentric with their containers.
+- **Icons**: 16, 20 or 24 px with a 2 px stroke (lint).
+- **One search field**: the shell, fleet table, list and detail, event log and data catalog all use InputGroup.
+- **Colour**: counts are danger text on its tint everywhere; licence tiers are outline tags; the dock's destructive action is an outline.
 
 ## 0.6.0 · 2026-11-17
 

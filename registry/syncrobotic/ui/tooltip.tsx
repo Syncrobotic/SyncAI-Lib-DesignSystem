@@ -1,4 +1,4 @@
-// @syncrobotic/tooltip v0.6.0 · update: npx shadcn add @syncrobotic/tooltip --overwrite
+// @syncrobotic/tooltip v0.7.0 · update: npx shadcn add @syncrobotic/tooltip --overwrite
 "use client"
 
 import * as React from "react"
@@ -23,13 +23,16 @@ export function Tooltip(props: React.ComponentProps<typeof TooltipPrimitive.Root
 
 export const TooltipTrigger = TooltipPrimitive.Trigger
 
-export function TooltipContent({ className, sideOffset = 6, ...props }: React.ComponentProps<typeof TooltipPrimitive.Content>) {
+export function TooltipContent({ className, sideOffset = 8, ...props }: React.ComponentProps<typeof TooltipPrimitive.Content>) {
   return (
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Content
         data-slot="tooltip-content"
         sideOffset={sideOffset}
-        className={cn("z-50 rounded-xs bg-primary px-2 py-1 text-xs font-medium text-primary-foreground data-[state=delayed-open]:animate-appear data-[state=instant-open]:animate-appear data-[state=closed]:animate-disappear", className)}
+        className={cn(
+          "z-50 rounded-xs bg-primary px-2 py-1 text-xs font-medium text-primary-foreground data-[state=delayed-open]:animate-appear data-[state=instant-open]:animate-appear data-[state=closed]:animate-disappear",
+          className,
+        )}
         {...props}
       />
     </TooltipPrimitive.Portal>

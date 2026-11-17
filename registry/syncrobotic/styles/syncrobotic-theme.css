@@ -1,4 +1,4 @@
-/* @syncrobotic/syncrobotic-theme v0.6.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
+/* @syncrobotic/syncrobotic-theme v0.7.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
 /*
  * SYNCROBOTIC theme · design system 0.5.0 (see CHANGELOG.md)
  * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
@@ -15,7 +15,7 @@
  *   - Solid red (--stop) is for the emergency stop only. Other destructive actions use the --danger outline and text
  *   - Status colours come in pairs: foreground (--info) on its subtle tint (--info-subtle)
  *   - --primary is neutral high contrast (black in light, white in dark); blue (--info) only means "in progress"
- *   - Selected states are inverted (white on black in dark mode); a switch that is on uses --success
+ *   - Selected controls (segmented control, toggle) are inverted; the current page in navigation is --muted with weight, hover is --accent; a switch that is on uses --success
  *   - Actions in the lower part of the dock are never solid white, so they do not compete with the stop
  *   - Alerts other than the stop (event counts) use --danger on --danger-subtle, never solid red
  */
@@ -77,7 +77,7 @@
 
   /* Heights */
   --h-tag: 1.5rem;    /* 24 tag, not interactive */
-  --h-sm: 2.25rem;    /* 36 small button inside a card */
+  --h-sm: 2.25rem;    /* 36 compact control: only with a mouse (pointer: fine). On touch it is 44, see below. */
   --h-md: 2.75rem;    /* 44 default, minimum height of anything interactive */
   --h-lg: 3rem;       /* 48 page primary action, dock tabs */
   --h-row: 3.5rem;    /* 56 list row */
@@ -348,8 +348,16 @@
   }
 }
 
+/* Compact density is for a mouse only. On touch screens every compact control is the full 44 px,
+   so nothing interactive is ever smaller than a finger: the island, the dock and phone layouts included. */
+@media (pointer: coarse) {
+  :root { --h-sm: var(--h-md); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-breath { animation: none; }
+  /* The spinner is the one loop the language allows; without motion it stands still and the label says it is working. */
+  .animate-spin { animation: none; }
   .press:active { scale: none; }
   /* State still changes; it does not travel. */
   @keyframes appear { from { opacity: 0; } }

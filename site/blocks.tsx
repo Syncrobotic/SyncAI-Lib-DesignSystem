@@ -1,5 +1,6 @@
 import registry from "../registry.json"
 import { AppShellDemo } from "./app-shell-demo"
+import { TopBarShellDemo } from "./top-bar-shell-demo"
 import { SignIn } from "@/registry/syncrobotic/blocks/sign-in"
 import { ErrorPage, LoadingPage, NoAccessPage, NotFoundPage, OfflinePage } from "@/registry/syncrobotic/blocks/status-pages"
 import { RecordForm } from "@/registry/syncrobotic/blocks/record-form"
@@ -57,6 +58,7 @@ const meta: Record<string, Meta> = {
       </div>
     ),
   },
+  "top-bar-shell": { product: "App shells", viewport: "desktop", height: 720, render: () => <TopBarShellDemo /> },
   "console-overview": { product: "App shells", viewport: "desktop", height: 900, render: () => <ConsoleOverview /> },
   "list-detail": { product: "App shells", viewport: "desktop", height: 720, render: () => <ListDetail /> },
   "event-log": { product: "App shells", viewport: "desktop", height: 720, render: () => <EventLog /> },

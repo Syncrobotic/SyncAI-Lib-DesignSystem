@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import * as actions from "@/stories/actions.stories"
+import * as charts from "@/stories/charts.stories"
 import * as display from "@/stories/display.stories"
 import * as dock from "@/stories/dock.stories"
 import * as feedback from "@/stories/feedback.stories"
@@ -30,6 +31,7 @@ const files: Record<StoryFile, StoryModule> = {
   feedback: feedback as unknown as StoryModule,
   navigation: navigation as unknown as StoryModule,
   overlays: overlays as unknown as StoryModule,
+  charts: charts as unknown as StoryModule,
 }
 
 // Same rule as Storybook: story args override meta args; a story's own render wins over meta.component.
@@ -44,10 +46,10 @@ function render(file: StoryFile, name: string) {
 }
 
 /** One state on a phone-width stage, the size components ship at. */
-export function Stage({ file, name, className }: { file: StoryFile; name: string; className?: string }) {
+export function Stage({ file, name, className, wide }: { file: StoryFile; name: string; className?: string; /** Full width, for charts. */ wide?: boolean }) {
   return (
     <div className={className ?? "flex justify-center rounded-md border border-border bg-background px-4 py-8"}>
-      <div className="w-full max-w-sm">{render(file, name)}</div>
+      <div className={wide ? "w-full" : "w-full max-w-sm"}>{render(file, name)}</div>
     </div>
   )
 }

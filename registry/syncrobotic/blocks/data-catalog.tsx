@@ -1,8 +1,8 @@
-// @syncrobotic/data-catalog v0.6.0 · update: npx shadcn add @syncrobotic/data-catalog --overwrite
+// @syncrobotic/data-catalog v0.7.0 · update: npx shadcn add @syncrobotic/data-catalog --overwrite
 "use client"
 
 import * as React from "react"
-import { ArrowDown, ArrowUp, ArrowUpDown, Database, Grid3x3, ListFilter, Plus, ScrollText, SearchX, ShieldCheck } from "lucide-react"
+import { ArrowDown, ArrowUp, ArrowUpDown, Database, Grid3x3, ListFilter, Plus, ScrollText, Search, SearchX, ShieldCheck } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { AppShell, type AppNavGroup } from "@/registry/syncrobotic/blocks/app-shell"
 import { Badge } from "@/registry/syncrobotic/ui/badge"
@@ -10,6 +10,7 @@ import { Button } from "@/registry/syncrobotic/ui/button"
 import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 import { Input } from "@/registry/syncrobotic/ui/input"
+import { InputGroup, InputGroupAddon } from "@/registry/syncrobotic/ui/input-group"
 import { Label } from "@/registry/syncrobotic/ui/label"
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/registry/syncrobotic/ui/sheet"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
@@ -31,8 +32,8 @@ export type Tier = "T0" | "T1" | "T2" | "T3"
 export const tiers: Record<Tier, { label: string; tone: "neutral" | "outline" | "warning" | "danger" }> = {
   T0: { label: "Commercial", tone: "neutral" },
   T1: { label: "Non-commercial", tone: "outline" },
-  T2: { label: "Restricted", tone: "warning" },
-  T3: { label: "On-premises only", tone: "danger" },
+  T2: { label: "Restricted", tone: "outline" },
+  T3: { label: "On-premises only", tone: "outline" },
 }
 
 export function TierBadge({ tier, compact }: { tier: Tier; compact?: boolean }) {
@@ -44,15 +45,85 @@ export function TierBadge({ tier, compact }: { tier: Tier; compact?: boolean }) 
   )
 }
 
-export type Dataset = { ref: string; name: string; version: string; tier: Tier; task: string; use: "Product" | "Research" | "Evaluation"; owner: string; licence: string; items: number }
+export type Dataset = {
+  ref: string
+  name: string
+  version: string
+  tier: Tier
+  task: string
+  use: "Product" | "Research" | "Evaluation"
+  owner: string
+  licence: string
+  items: number
+}
 
 export const sampleDatasets: Dataset[] = [
-  { ref: "people/night-parking", name: "Night parking lot people", version: "v3", tier: "T0", task: "Detection", use: "Product", owner: "Data team", licence: "First-party", items: 48210 },
-  { ref: "smoking/clips", name: "Smoking clips", version: "v2", tier: "T1", task: "Classification", use: "Research", owner: "Vision lab", licence: "CC BY-NC 4.0", items: 9120 },
-  { ref: "lidar/warehouse", name: "Warehouse LiDAR sweeps", version: "v1", tier: "T2", task: "Segmentation", use: "Evaluation", owner: "Perception", licence: "Partner NDA", items: 2304 },
-  { ref: "pose/patrol", name: "Patrol pose keypoints", version: "v5", tier: "T0", task: "Keypoints", use: "Product", owner: "Data team", licence: "First-party", items: 120540 },
-  { ref: "depth/indoor", name: "Indoor depth pairs", version: "v2", tier: "T1", task: "Depth", use: "Research", owner: "Perception", licence: "Academic", items: 31877 },
-  { ref: "faces/site-a", name: "Site A access faces", version: "v1", tier: "T3", task: "Detection", use: "Evaluation", owner: "Compliance", licence: "Customer contract", items: 640 },
+  {
+    ref: "people/night-parking",
+    name: "Night parking lot people",
+    version: "v3",
+    tier: "T0",
+    task: "Detection",
+    use: "Product",
+    owner: "Data team",
+    licence: "First-party",
+    items: 48210,
+  },
+  {
+    ref: "smoking/clips",
+    name: "Smoking clips",
+    version: "v2",
+    tier: "T1",
+    task: "Classification",
+    use: "Research",
+    owner: "Vision lab",
+    licence: "CC BY-NC 4.0",
+    items: 9120,
+  },
+  {
+    ref: "lidar/warehouse",
+    name: "Warehouse LiDAR sweeps",
+    version: "v1",
+    tier: "T2",
+    task: "Segmentation",
+    use: "Evaluation",
+    owner: "Perception",
+    licence: "Partner NDA",
+    items: 2304,
+  },
+  {
+    ref: "pose/patrol",
+    name: "Patrol pose keypoints",
+    version: "v5",
+    tier: "T0",
+    task: "Keypoints",
+    use: "Product",
+    owner: "Data team",
+    licence: "First-party",
+    items: 120540,
+  },
+  {
+    ref: "depth/indoor",
+    name: "Indoor depth pairs",
+    version: "v2",
+    tier: "T1",
+    task: "Depth",
+    use: "Research",
+    owner: "Perception",
+    licence: "Academic",
+    items: 31877,
+  },
+  {
+    ref: "faces/site-a",
+    name: "Site A access faces",
+    version: "v1",
+    tier: "T3",
+    task: "Detection",
+    use: "Evaluation",
+    owner: "Compliance",
+    licence: "Customer contract",
+    items: 640,
+  },
 ]
 
 type SortKey = "name" | "items"
@@ -107,9 +178,13 @@ export function DataCatalog({ datasets = sampleDatasets }: { datasets?: Dataset[
     const Icon = on ? (sort.dir === 1 ? ArrowUp : ArrowDown) : ArrowUpDown
     return (
       <TableHead aria-sort={on ? (sort.dir === 1 ? "ascending" : "descending") : "none"} className={className}>
-        <button type="button" onClick={() => setSort({ key: k, dir: on ? (sort.dir === 1 ? -1 : 1) : 1 })} className="press inline-flex items-center gap-1 hover:text-foreground">
+        <button
+          type="button"
+          onClick={() => setSort({ key: k, dir: on ? (sort.dir === 1 ? -1 : 1) : 1 })}
+          className="press inline-flex items-center gap-1 hover:text-foreground"
+        >
           {children}
-          <Icon aria-hidden="true" className="size-3" />
+          <Icon aria-hidden="true" className="size-4" />
         </button>
       </TableHead>
     )
@@ -134,7 +209,18 @@ export function DataCatalog({ datasets = sampleDatasets }: { datasets?: Dataset[
         </aside>
         <div className="flex min-w-0 flex-1 flex-col gap-4">
           <div className="flex gap-2">
-            <Input type="search" aria-label="Search datasets" placeholder="Search name, path or owner" value={query} onChange={(e) => setQuery(e.target.value)} />
+            <InputGroup>
+              <InputGroupAddon>
+                <Search aria-hidden="true" />
+              </InputGroupAddon>
+              <Input
+                type="search"
+                aria-label="Search datasets"
+                placeholder="Search name, path or owner"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+            </InputGroup>
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="secondary" className="lg:hidden">

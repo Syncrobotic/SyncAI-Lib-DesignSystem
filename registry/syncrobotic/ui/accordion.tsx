@@ -1,4 +1,4 @@
-// @syncrobotic/accordion v0.6.0 · update: npx shadcn add @syncrobotic/accordion --overwrite
+// @syncrobotic/accordion v0.7.0 · update: npx shadcn add @syncrobotic/accordion --overwrite
 "use client"
 
 import * as React from "react"
@@ -20,14 +20,17 @@ export function AccordionTrigger({ className, children, ...props }: React.Compon
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
         className={cn(
-          "flex min-h-(--h-row) flex-1 items-center justify-between gap-4 text-left text-sm font-medium",
+          "press flex min-h-(--h-row) flex-1 items-center justify-between gap-4 text-left text-sm font-medium",
           "disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180",
           className,
         )}
         {...props}
       >
         {children}
-        <ChevronDown aria-hidden="true" className="size-5 shrink-0 text-muted-foreground transition-transform duration-(--motion-base)" />
+        <ChevronDown
+          aria-hidden="true"
+          className="size-5 shrink-0 text-muted-foreground transition-transform duration-(--motion-base) ease-(--ease-standard)"
+        />
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   )
@@ -35,7 +38,11 @@ export function AccordionTrigger({ className, children, ...props }: React.Compon
 
 export function AccordionContent({ className, children, ...props }: React.ComponentProps<typeof AccordionPrimitive.Content>) {
   return (
-    <AccordionPrimitive.Content data-slot="accordion-content" className="overflow-hidden text-sm data-[state=open]:animate-expand data-[state=closed]:animate-collapse" {...props}>
+    <AccordionPrimitive.Content
+      data-slot="accordion-content"
+      className="overflow-hidden text-sm data-[state=open]:animate-expand data-[state=closed]:animate-collapse"
+      {...props}
+    >
       <div className={cn("pb-4 text-muted-foreground", className)}>{children}</div>
     </AccordionPrimitive.Content>
   )

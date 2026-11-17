@@ -31,7 +31,7 @@ export function Sidebar({ scopes, switcher = false }: { scopes: Scope[]; switche
               href={s.href}
               aria-current={s.key === active.key ? "true" : undefined}
               className={cn(
-                "press relative flex h-8 items-center justify-center rounded-xs text-xs transition-colors duration-(--motion-fast)",
+                "press relative flex h-(--h-sm) items-center justify-center rounded-xs text-sm transition-colors duration-(--motion-fast) ease-(--ease-standard)",
                 s.key === active.key ? "font-medium text-primary-foreground" : "text-muted-foreground hover:text-foreground",
               )}
             >
@@ -50,12 +50,12 @@ export function Sidebar({ scopes, switcher = false }: { scopes: Scope[]; switche
                 href={l.href}
                 aria-current={path === l.href ? "page" : undefined}
                 className={cn(
-                  "relative flex h-8 items-center rounded-xs px-3 transition-colors duration-(--motion-fast) hover:bg-accent",
+                  "press relative flex h-(--h-sm) items-center rounded-xs px-3 transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent",
                   path === l.href ? "font-medium text-foreground" : "text-muted-foreground hover:text-foreground",
                 )}
               >
                 {/* The current-page marker slides to the page you open. */}
-                {path === l.href && <m.span layoutId={`${switcher ? "m-" : ""}sidebar-marker`} aria-hidden className="absolute inset-0 rounded-xs bg-accent" />}
+                {path === l.href && <m.span layoutId={`${switcher ? "m-" : ""}sidebar-marker`} aria-hidden className="absolute inset-0 rounded-xs bg-muted" />}
                 <span className="relative">{l.label}</span>
               </Link>
               {/* The open page's examples grow in under it (the sheet pattern: height and opacity, --motion-sheet). */}
@@ -74,7 +74,7 @@ export function Sidebar({ scopes, switcher = false }: { scopes: Scope[]; switche
                       <li key={s.href}>
                         <a
                           href={s.href}
-                          className="flex min-h-8 items-center py-1 pr-2 pl-3 text-xs text-muted-foreground transition-colors duration-(--motion-fast) hover:text-foreground"
+                          className="flex min-h-(--h-sm) items-center py-1 pr-2 pl-3 text-sm text-muted-foreground transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:text-foreground"
                         >
                           {s.label}
                         </a>

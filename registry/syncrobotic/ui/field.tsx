@@ -39,11 +39,20 @@ export function Field({
         The note line grows open when a hint or error arrives (height at --motion-base), and the error itself appears
         with an icon, so it never relies on colour alone. An error that replaces a hint keeps the height: no jump. Never a shake.
       */}
-      <div className={cn("grid transition-[grid-template-rows] duration-(--motion-base) ease-(--ease-standard)", note ? "grid-rows-[1fr]" : "-mt-2 grid-rows-[0fr]")}>
+      <div
+        className={cn(
+          "grid transition-[grid-template-rows] duration-(--motion-base) ease-(--ease-standard)",
+          note ? "grid-rows-[1fr]" : "-mt-2 grid-rows-[0fr]",
+        )}
+      >
         <div className="overflow-hidden">
           {note && (
-            <p id={noteId} key={error ? "error" : "hint"} className={cn("flex items-start gap-1 text-xs", error ? "animate-appear text-danger" : "text-muted-foreground")}>
-              {error && <CircleAlert aria-hidden="true" className="mt-px size-3.5 shrink-0" />}
+            <p
+              id={noteId}
+              key={error ? "error" : "hint"}
+              className={cn("flex items-start gap-1 text-xs", error ? "animate-appear text-danger" : "text-muted-foreground")}
+            >
+              {error && <CircleAlert aria-hidden="true" className="size-4 shrink-0" />}
               <span>{note}</span>
             </p>
           )}

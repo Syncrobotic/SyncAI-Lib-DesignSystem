@@ -1,4 +1,4 @@
-// @syncrobotic/dock v0.6.0 · update: npx shadcn add @syncrobotic/dock --overwrite
+// @syncrobotic/dock v0.7.0 · update: npx shadcn add @syncrobotic/dock --overwrite
 "use client"
 
 import * as React from "react"
@@ -40,7 +40,7 @@ export function DockActions({ secondary, primary, destructive }: { secondary: Ac
       <button
         type="button"
         onClick={primary.onClick}
-        className={cn(base, "font-bold", destructive ? "bg-danger-subtle text-danger" : "bg-muted text-foreground ring-1 ring-edge")}
+        className={cn(base, "font-bold", destructive ? "text-danger ring-1 ring-danger" : "bg-muted text-foreground ring-1 ring-edge")}
       >
         {primary.label}
       </button>
@@ -68,7 +68,9 @@ export function DockNav({ items, active, onSelect, label = "Primary" }: { items:
           <Icon aria-hidden="true" className="size-5" />
           {label}
           {badge ? (
-            <span className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-danger-subtle px-1 text-xs font-bold text-danger">{badge}</span>
+            <span className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-danger-subtle px-1 text-xs font-bold text-danger">
+              {badge}
+            </span>
           ) : null}
         </button>
       ))}

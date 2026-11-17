@@ -1,4 +1,4 @@
-// @syncrobotic/toast v0.5.0 · update: npx shadcn add @syncrobotic/toast --overwrite
+// @syncrobotic/toast v0.7.0 · update: npx shadcn add @syncrobotic/toast --overwrite
 "use client"
 
 import * as React from "react"
@@ -100,10 +100,10 @@ export function Toast({ className, tone = "neutral", children, ...props }: React
       // Failures interrupt (assertive); everything else waits its turn (polite).
       type={tone === "danger" ? "foreground" : "background"}
       className={cn(
-        "relative flex items-start gap-3 rounded-lg bg-float p-4 pr-(--h-md) text-sm shadow-overlay ring-1 ring-edge backdrop-blur",
+        "relative flex items-start gap-3 rounded-lg bg-float p-4 pr-(--h-md) text-sm shadow-float ring-1 ring-edge backdrop-blur-xl",
         tone === "danger" && "ring-danger",
         "data-[state=open]:animate-appear data-[state=closed]:animate-disappear",
-        "data-[swipe=move]:translate-x-(--radix-toast-swipe-move-x) data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-transform data-[swipe=cancel]:duration-(--motion-base) data-[swipe=end]:animate-disappear",
+        "data-[swipe=move]:translate-x-(--radix-toast-swipe-move-x) data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-transform data-[swipe=cancel]:duration-(--motion-base) ease-(--ease-standard) data-[swipe=end]:animate-disappear",
         className,
       )}
       {...props}
@@ -126,7 +126,7 @@ export function ToastAction({ className, ...props }: React.ComponentProps<typeof
   return (
     <ToastPrimitive.Action
       data-slot="toast-action"
-      className={cn("mt-1 h-(--h-sm) self-start rounded-sm px-3 text-sm font-medium ring-1 ring-border ring-inset hover:bg-accent", className)}
+      className={cn("press mt-1 h-(--h-sm) self-start rounded-sm px-3 text-sm font-medium ring-1 ring-border ring-inset hover:bg-accent", className)}
       {...props}
     />
   )
@@ -137,7 +137,10 @@ export function ToastClose({ className, label = "Dismiss", ...props }: React.Com
     <ToastPrimitive.Close
       data-slot="toast-close"
       aria-label={label}
-      className={cn("-mt-1 -mr-1 flex size-(--h-sm) shrink-0 items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground", className)}
+      className={cn(
+        "press -mt-1 -mr-1 flex size-(--h-sm) shrink-0 items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground",
+        className,
+      )}
       {...props}
     >
       <X aria-hidden="true" className="size-4" />

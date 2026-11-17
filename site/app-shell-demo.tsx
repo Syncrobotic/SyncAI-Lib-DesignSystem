@@ -1,6 +1,6 @@
 "use client"
 
-import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, sampleNav, sampleSearch } from "@/registry/syncrobotic/blocks/app-shell"
 import { LogoMark } from "./logo"
 
 /** The bare app shell for the blocks page, in its inset layout: sidebar, top bar, content and footer, an empty page in the middle. */
@@ -15,7 +15,7 @@ export function AppShellDemo() {
       title="Overview"
       environment="local"
       user={{ name: "Mei Lin", initials: "ML", email: "mei.lin@syncrobotic.ai" }}
-      onSearch={() => {}}
+      search={sampleSearch}
       footer={
         <>
           <span>© 2026 SYNCROBOTIC</span>

@@ -21,11 +21,11 @@ const groups: { title: string; tokens: string[]; use: Record<string, string> }[]
     title: "Surface and text",
     tokens: ["background", "card", "popover", "secondary", "muted", "border", "input", "foreground", "muted-foreground", "disabled"],
     use: {
-      background: "Page",
-      card: "Cards, list groups",
+      background: "Page only. Never fill a control with it: a field on a panel takes the panel's surface (card) and an input edge, or it reads as a hole",
+      card: "Cards, list groups, app-shell panels, and the fields on them",
       popover: "Menus, dialogs",
       secondary: "Secondary buttons",
-      muted: "Tracks, selected tab bg",
+      muted: "Tracks, current page in navigation (hover is accent)",
       border: "Dividers, outlines",
       input: "Field outlines",
       foreground: "Body text",
@@ -41,7 +41,12 @@ const groups: { title: string; tokens: string[]; use: Record<string, string> }[]
   {
     title: "Status (pairs)",
     tokens: tones.flatMap(({ t }) => [t, `${t}-subtle`]),
-    use: Object.fromEntries(tones.flatMap(({ t, means }) => [[t, means], [`${t}-subtle`, `Tint behind ${t}`]])),
+    use: Object.fromEntries(
+      tones.flatMap(({ t, means }) => [
+        [t, means],
+        [`${t}-subtle`, `Tint behind ${t}`],
+      ]),
+    ),
   },
   {
     title: "Emergency stop",
@@ -56,7 +61,15 @@ const groups: { title: string; tokens: string[]; use: Record<string, string> }[]
 ]
 
 const utility = (t: string) =>
-  t.endsWith("foreground") ? `text-${t}` : t === "border" || t === "input" ? `border-${t}` : t === "ring" || t === "edge" ? `ring-${t}` : t === "scrim" ? "bg-(--scrim)" : `bg-${t}`
+  t.endsWith("foreground")
+    ? `text-${t}`
+    : t === "border" || t === "input"
+      ? `border-${t}`
+      : t === "ring" || t === "edge"
+        ? `ring-${t}`
+        : t === "scrim"
+          ? "bg-(--scrim)"
+          : `bg-${t}`
 
 const fmt = (r: number | null) => (r ? `${r.toFixed(1)}:1` : "—")
 
@@ -87,7 +100,11 @@ export default function ColorPage() {
         </Specimen>
       </Section>
 
-      <Section id="neutrals" title="Neutrals carry the interface" lead="Most of every screen is these six. Primary is neutral too: white in dark mode, black in light mode.">
+      <Section
+        id="neutrals"
+        title="Neutrals carry the interface"
+        lead="Most of every screen is these six. Primary is neutral too: white in dark mode, black in light mode."
+      >
         <div className="grid grid-cols-2 overflow-hidden rounded-md border border-border sm:grid-cols-6">
           {neutrals.map((t) => (
             <div key={t} className="flex flex-col">
@@ -110,10 +127,18 @@ export default function ColorPage() {
           good={{
             visual: (
               <ul className="flex w-56 flex-col gap-2 text-sm">
-                <li className="flex justify-between">7F3A <InlineStatus tone="info">Patrolling</InlineStatus></li>
-                <li className="flex justify-between">2B10 <InlineStatus tone="success">Docked</InlineStatus></li>
-                <li className="flex justify-between">9C44 <InlineStatus tone="warning">Needs attention</InlineStatus></li>
-                <li className="flex justify-between">8F15 <InlineStatus tone="success">Docked</InlineStatus></li>
+                <li className="flex justify-between">
+                  7F3A <InlineStatus tone="info">Patrolling</InlineStatus>
+                </li>
+                <li className="flex justify-between">
+                  2B10 <InlineStatus tone="success">Docked</InlineStatus>
+                </li>
+                <li className="flex justify-between">
+                  9C44 <InlineStatus tone="warning">Needs attention</InlineStatus>
+                </li>
+                <li className="flex justify-between">
+                  8F15 <InlineStatus tone="success">Docked</InlineStatus>
+                </li>
               </ul>
             ),
             text: "Neutral for normal; colour only on the robot that needs attention.",
@@ -121,10 +146,18 @@ export default function ColorPage() {
           bad={{
             visual: (
               <ul className="flex w-56 flex-col gap-2 text-sm">
-                <li className="flex justify-between">7F3A <span className="text-info">● Patrolling</span></li>
-                <li className="flex justify-between">2B10 <span className="text-success">○ Docked</span></li>
-                <li className="flex justify-between">9C44 <span className="text-warning">▲ Needs attention</span></li>
-                <li className="flex justify-between">8F15 <span className="text-success">○ Docked</span></li>
+                <li className="flex justify-between">
+                  7F3A <span className="text-info">● Patrolling</span>
+                </li>
+                <li className="flex justify-between">
+                  2B10 <span className="text-success">○ Docked</span>
+                </li>
+                <li className="flex justify-between">
+                  9C44 <span className="text-warning">▲ Needs attention</span>
+                </li>
+                <li className="flex justify-between">
+                  8F15 <span className="text-success">○ Docked</span>
+                </li>
               </ul>
             ),
             text: "Every row coloured: the problem has to compete with three robots that are fine.",
@@ -132,7 +165,11 @@ export default function ColorPage() {
         />
       </Section>
 
-      <Section id="status" title="Status colours come in pairs" lead="Each tone has a foreground and a subtle tint. Use them together; never put tone text on another tone's tint.">
+      <Section
+        id="status"
+        title="Status colours come in pairs"
+        lead="Each tone has a foreground and a subtle tint. Use them together; never put tone text on another tone's tint."
+      >
         <div className="grid gap-3 sm:grid-cols-5">
           {tones.map(({ t, means }) => (
             <div key={t} className="flex flex-col overflow-hidden rounded-md border border-border">
@@ -165,7 +202,9 @@ export default function ColorPage() {
             visual: (
               <div className="flex gap-3">
                 <Button variant="secondary">Cancel</Button>
-                <button type="button" className="press h-(--h-md) rounded-sm bg-stop px-4 text-sm font-medium text-white">Delete route</button>
+                <button type="button" className="press h-(--h-md) rounded-sm bg-stop px-4 text-sm font-medium text-white">
+                  Delete route
+                </button>
               </div>
             ),
             text: "Use solid red outside the emergency stop. Operators learn that solid red means stop the robot.",
@@ -193,7 +232,11 @@ export default function ColorPage() {
         />
       </Section>
 
-      <Section id="tokens" title="All colour tokens" lead="Values come straight from the theme file. Contrast is measured against the surface the token sits on.">
+      <Section
+        id="tokens"
+        title="All colour tokens"
+        lead="Values come straight from the theme file. Contrast is measured against the surface the token sits on."
+      >
         <div className="flex flex-col gap-8">
           {groups.map((g) => (
             <div key={g.title} className="flex flex-col gap-3">

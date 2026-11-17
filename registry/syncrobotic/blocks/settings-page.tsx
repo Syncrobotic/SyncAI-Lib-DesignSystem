@@ -1,4 +1,4 @@
-// @syncrobotic/settings-page v0.6.0 · update: npx shadcn add @syncrobotic/settings-page --overwrite
+// @syncrobotic/settings-page v0.7.0 · update: npx shadcn add @syncrobotic/settings-page --overwrite
 "use client"
 
 import * as React from "react"
@@ -84,7 +84,11 @@ export function SettingsPage() {
       <div className="flex max-w-4xl flex-col gap-8">
         <nav aria-label="Settings sections" className="flex gap-1 overflow-x-auto">
           {sections.map((s) => (
-            <a key={s.id} href={`#${s.id}`} className="press flex h-8 shrink-0 items-center rounded-xs px-3 text-sm text-muted-foreground hover:bg-accent hover:text-foreground">
+            <a
+              key={s.id}
+              href={`#${s.id}`}
+              className="press flex h-(--h-sm) shrink-0 items-center rounded-xs px-3 text-sm text-muted-foreground hover:bg-accent hover:text-foreground"
+            >
               {s.label}
             </a>
           ))}
@@ -141,7 +145,11 @@ export function SettingsPage() {
 
       {/* The save bar sticks to the bottom of the scrolling page, wherever the sidebar is. */}
       {dirty && (
-        <div role="region" aria-label="Unsaved changes" className="sticky bottom-0 -mx-6 -mb-6 mt-8 animate-appear border-t border-border bg-float backdrop-blur">
+        <div
+          role="region"
+          aria-label="Unsaved changes"
+          className="sticky bottom-0 -mx-6 -mb-6 mt-8 animate-appear border-t border-edge bg-float shadow-float backdrop-blur-xl"
+        >
           <div className="flex max-w-4xl items-center justify-between gap-3 px-6 py-3">
             <span className="text-sm">Unsaved changes</span>
             <div className="flex gap-2">
