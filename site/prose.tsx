@@ -49,3 +49,8 @@ export function Rules({ rules }: { rules: string[] }) {
     </ul>
   )
 }
+
+/** The list bullet used across the docs. */
+export function Dot() {
+  return <span aria-hidden className="mt-2 size-1.5 shrink-0 rounded-full bg-muted-foreground" />
+}

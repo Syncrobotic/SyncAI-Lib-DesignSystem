@@ -197,7 +197,20 @@ function Nav({
       {nav.map((g, i) => (
         <div key={g.label ?? i} className="flex flex-col gap-1">
           {/* Collapsed, a group label would be a clipped word; keep its height so icons do not jump when the rail opens. */}
-          {g.label && <p className={cn("h-5 px-3 text-xs font-medium text-muted-foreground", reveal(!collapsed))}>{g.label}</p>}
+          {g.label && (
+            // Collapsed, the group's name gives way to a short centred line in the same 20 px, so groups stay apart
+            // on the rail without a clipped word; the two cross-fade as the rail opens.
+            <div className="relative h-5">
+              <p className={cn("px-3 text-xs font-medium text-muted-foreground", reveal(!collapsed))}>{g.label}</p>
+              <span
+                aria-hidden="true"
+                className={cn(
+                  "absolute top-1/2 left-3 h-px w-6 bg-border transition-opacity duration-(--motion-base) ease-(--ease-standard)",
+                  collapsed ? "opacity-100" : "opacity-0",
+                )}
+              />
+            </div>
+          )}
           {g.items.map((item) => {
             const active = item.href === current
             return (
@@ -527,9 +540,9 @@ export function AppShell({
             peek !== "closed" && "shadow-overlay",
           )}
         >
-          {/* Flush: always lined, level with the top bar's line. Inset: lined only as a rail, where the logo and the avatar
-              need setting apart from a column of bare icons; open, the labels and group names do that. */}
-          <div className={cn("flex h-(--h-row) shrink-0 items-center gap-2 border-b px-3", !inset || !expanded ? "border-border" : "border-transparent")}>
+          {/* Flush: lined, level with the top bar's line. Inset: no lines; on the rail, groups are set apart by short lines
+              where their names were. */}
+          <div className={cn("flex h-(--h-row) shrink-0 items-center gap-2 border-b px-3", inset ? "border-transparent" : "border-border")}>
             <span className="min-w-0 flex-1">{brand}</span>
             <span inert={!expanded} className={cn("shrink-0", reveal(expanded))}>
               <button
@@ -550,7 +563,7 @@ export function AppShell({
             <Nav nav={nav} current={current} collapsed={!expanded} linkAs={linkAs} onNavigate={onNavigate} />
           </div>
           {user && (
-            <div className={cn("shrink-0 border-t p-3", !inset || !expanded ? "border-border" : "border-transparent")}>
+            <div className={cn("shrink-0 border-t p-3", inset ? "border-transparent" : "border-border")}>
               <SidebarUserMenu
                 user={user}
                 items={userMenu}
