@@ -1,13 +1,15 @@
-// @syncrobotic/dataset-detail v0.6.0 · update: npx shadcn add @syncrobotic/dataset-detail --overwrite
+// @syncrobotic/dataset-detail v0.8.0 · update: npx shadcn add @syncrobotic/dataset-detail --overwrite
 "use client"
 
 import * as React from "react"
-import { ArrowRight, ChevronRight, Copy, TriangleAlert } from "lucide-react"
+import { ArrowRight, TriangleAlert } from "lucide-react"
 import { dataNav, TierBadge, type Tier } from "@/registry/syncrobotic/blocks/data-catalog"
+import { Breadcrumb, BreadcrumbLink, BreadcrumbPage } from "@/registry/syncrobotic/ui/breadcrumb"
+import { CopyButton } from "@/registry/syncrobotic/ui/copy-button"
+import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
 import { AppShell } from "@/registry/syncrobotic/blocks/app-shell"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { Alert, AlertDescription, AlertTitle } from "@/registry/syncrobotic/ui/alert"
-import { Button } from "@/registry/syncrobotic/ui/button"
 import { Separator } from "@/registry/syncrobotic/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/registry/syncrobotic/ui/tabs"
 import { Toggle } from "@/registry/syncrobotic/ui/toggle"
@@ -18,10 +20,7 @@ type Sample = { id: string; split: "train" | "val" | "test"; boxes: Box[] }
 const samples: Sample[] = Array.from({ length: 8 }, (_, i) => ({
   id: `frame-${String(1024 + i * 37).padStart(6, "0")}`,
   split: i % 5 === 4 ? "test" : i % 4 === 3 ? "val" : "train",
-  boxes: [
-    { x: 12 + ((i * 11) % 40), y: 30, w: 14, h: 38, label: "person" },
-    ...(i % 2 ? [{ x: 60, y: 44, w: 26, h: 22, label: "car" }] : []),
-  ],
+  boxes: [{ x: 12 + ((i * 11) % 40), y: 30, w: 14, h: 38, label: "person" }, ...(i % 2 ? [{ x: 60, y: 44, w: 26, h: 22, label: "car" }] : [])],
 }))
 
 const splits = [
@@ -52,13 +51,26 @@ function Frame({ s, boxes, labels }: { s: Sample; boxes: boolean; labels: boolea
           <rect x="0" y="70" width="100" height="30" className="fill-secondary" />
           {boxes &&
             s.boxes.map((b, i) => (
-              <rect key={i} x={b.x} y={b.y} width={b.w} height={b.h} className="fill-none stroke-foreground" strokeWidth="0.8" vectorEffect="non-scaling-stroke" />
+              <rect
+                key={i}
+                x={b.x}
+                y={b.y}
+                width={b.w}
+                height={b.h}
+                className="fill-none stroke-foreground"
+                strokeWidth="0.8"
+                vectorEffect="non-scaling-stroke"
+              />
             ))}
         </svg>
         {boxes && labels && (
           <div className="absolute inset-0">
             {s.boxes.map((b, i) => (
-              <span key={i} className="absolute -translate-y-full rounded-xs bg-foreground px-1 text-xs text-background" style={{ left: `${b.x}%`, top: `${b.y}%` }}>
+              <span
+                key={i}
+                className="absolute -translate-y-full rounded-xs bg-foreground px-1 text-xs text-background"
+                style={{ left: `${b.x}%`, top: `${b.y}%` }}
+              >
                 {b.label}
               </span>
             ))}
@@ -84,19 +96,11 @@ export function DatasetDetail({ name = "Night parking lot people", reference = "
   return (
     <AppShell product="DataCore" nav={dataNav} current="#catalog" title="Catalog" user={{ name: "Mei Lin", initials: "ML" }}>
       <div className="flex max-w-5xl flex-col gap-6">
-        <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-sm text-muted-foreground">
-          <a href="#catalog" className="hover:text-foreground hover:underline">
-            Catalog
-          </a>
-          <ChevronRight aria-hidden="true" className="size-4" />
-          <a href="#people" className="hover:text-foreground hover:underline">
-            people
-          </a>
-          <ChevronRight aria-hidden="true" className="size-4" />
-          <span aria-current="page" className="text-foreground">
-            night-parking@v3
-          </span>
-        </nav>
+        <Breadcrumb>
+          <BreadcrumbLink href="#catalog">Catalog</BreadcrumbLink>
+          <BreadcrumbLink href="#people">people</BreadcrumbLink>
+          <BreadcrumbPage>night-parking@v3</BreadcrumbPage>
+        </Breadcrumb>
 
         <header className="flex flex-col gap-3">
           <div className="flex flex-wrap items-center gap-3">
@@ -105,9 +109,7 @@ export function DatasetDetail({ name = "Night parking lot people", reference = "
           </div>
           <p className="flex flex-wrap items-center gap-2 font-mono text-sm text-muted-foreground">
             {reference}
-            <Button variant="ghost" size="icon-sm" aria-label="Copy reference">
-              <Copy aria-hidden="true" />
-            </Button>
+            <CopyButton value={reference} label="Copy reference" />
           </p>
           <InlineStatus tone="success">May enter product releases</InlineStatus>
         </header>
@@ -126,19 +128,15 @@ export function DatasetDetail({ name = "Night parking lot people", reference = "
               <AlertTitle>1 open issue</AlertTitle>
               <AlertDescription>Consent for site B is not recorded. Items from site B are held back until it is.</AlertDescription>
             </Alert>
-            <dl className="grid gap-4 rounded-md bg-card p-4 ring-1 ring-border sm:grid-cols-4">
-              {[
-                ["Items", "48,210"],
-                ["Classes", "2"],
-                ["Owner", "Data team"],
-                ["Updated", "2026-11-14"],
-              ].map(([k, v]) => (
-                <div key={k} className="flex flex-col gap-1">
-                  <dt className="text-xs text-muted-foreground">{k}</dt>
-                  <dd className="text-sm font-medium tabular-nums">{v}</dd>
-                </div>
-              ))}
-            </dl>
+            <DescriptionList
+              columns={4}
+              items={[
+                { label: "Items", value: "48,210" },
+                { label: "Classes", value: "2" },
+                { label: "Owner", value: "Data team" },
+                { label: "Updated", value: "2026-11-14" },
+              ]}
+            />
             <section aria-labelledby="splits" className="flex flex-col gap-2">
               <h3 id="splits" className="text-sm font-bold">
                 Splits

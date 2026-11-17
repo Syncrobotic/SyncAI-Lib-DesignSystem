@@ -1,4 +1,4 @@
-// @syncrobotic/settings-page v0.7.0 · update: npx shadcn add @syncrobotic/settings-page --overwrite
+// @syncrobotic/settings-page v0.8.0 · update: npx shadcn add @syncrobotic/settings-page --overwrite
 "use client"
 
 import * as React from "react"
@@ -17,7 +17,7 @@ import {
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
-import { Label } from "@/registry/syncrobotic/ui/label"
+import { ChoiceField } from "@/registry/syncrobotic/ui/choice-field"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
 import { Switch } from "@/registry/syncrobotic/ui/switch"
 import { Toaster, toast } from "@/registry/syncrobotic/ui/toast"
@@ -42,23 +42,20 @@ function Section({ id, title, description, children }: { id: string; title: stri
   )
 }
 
-function SwitchRow({ id, label, hint, defaultChecked }: { id: string; label: string; hint: string; defaultChecked?: boolean }) {
+function SwitchRow({ label, hint, defaultChecked }: { id?: string; label: string; hint: string; defaultChecked?: boolean }) {
   return (
-    <div className="flex min-h-(--h-md) items-center justify-between gap-4">
-      <div className="flex flex-col">
-        <Label htmlFor={id}>{label}</Label>
-        <span id={`${id}-hint`} className="text-xs text-muted-foreground">
-          {hint}
-        </span>
-      </div>
-      <Switch
-        id={id}
-        aria-describedby={`${id}-hint`}
-        defaultChecked={defaultChecked}
-        // Switches apply at once (the Switch rule); say so, there is no save for them.
-        onCheckedChange={(on) => toast({ tone: "success", title: `${label} ${on ? "on" : "off"}` })}
-      />
-    </div>
+    <ChoiceField
+      label={label}
+      description={hint}
+      controlAt="end"
+      control={
+        <Switch
+          defaultChecked={defaultChecked}
+          // Switches apply at once (the Switch rule); say so, there is no save for them.
+          onCheckedChange={(on) => toast({ tone: "success", title: `${label} ${on ? "on" : "off"}` })}
+        />
+      }
+    />
   )
 }
 
@@ -98,10 +95,9 @@ export function SettingsPage() {
           <Field label="Site name" error={error ?? undefined} hint="Shown on the island and in reports.">
             <Input value={site} onChange={(e) => setSite(e.target.value)} />
           </Field>
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="settings-timezone">Time zone</Label>
+          <Field label="Time zone">
             <Select value={timezone} onValueChange={setTimezone}>
-              <SelectTrigger id="settings-timezone">
+              <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -110,7 +106,7 @@ export function SettingsPage() {
                 <SelectItem value="Europe/Berlin">Berlin (UTC+1)</SelectItem>
               </SelectContent>
             </Select>
-          </div>
+          </Field>
         </Section>
 
         <Section id="notifications" title="Notifications" description="Changes here apply at once.">

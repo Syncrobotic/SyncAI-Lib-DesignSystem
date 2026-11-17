@@ -1,4 +1,4 @@
-// @syncrobotic/record-form v0.6.0 · update: npx shadcn add @syncrobotic/record-form --overwrite
+// @syncrobotic/record-form v0.8.0 · update: npx shadcn add @syncrobotic/record-form --overwrite
 "use client"
 
 import * as React from "react"
@@ -48,17 +48,22 @@ export function RecordForm({ initial }: { initial?: { name: string; robot: strin
   }
 
   return (
-    <AppShell product="Fleet console" nav={sampleNav} current="#overview" title={initial ? "Edit mission" : "New mission"} user={{ name: "Mei Lin", initials: "ML" }}>
+    <AppShell
+      product="Fleet console"
+      nav={sampleNav}
+      current="#overview"
+      title={initial ? "Edit mission" : "New mission"}
+      user={{ name: "Mei Lin", initials: "ML" }}
+    >
       <form ref={form} noValidate onSubmit={submit} className="flex max-w-xl flex-col gap-6">
         <Field label="Mission name" error={errors.name} hint="Shown in the schedule and on the island.">
           <Input value={name} onChange={(e) => setName(e.target.value)} autoComplete="off" />
         </Field>
 
-        {/* Select's trigger is the control, so it is labelled directly rather than through Field. */}
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="mission-robot">Robot</Label>
+        {/* Field labels the Select's trigger and carries its error, like any other control. */}
+        <Field label="Robot" error={errors.robot}>
           <Select value={robot} onValueChange={setRobot}>
-            <SelectTrigger id="mission-robot" aria-invalid={errors.robot ? true : undefined} aria-describedby={errors.robot ? "mission-robot-error" : undefined}>
+            <SelectTrigger>
               <SelectValue placeholder="Choose a robot" />
             </SelectTrigger>
             <SelectContent>
@@ -67,12 +72,7 @@ export function RecordForm({ initial }: { initial?: { name: string; robot: strin
               <SelectItem value="1A08">Patrol dog 1A08</SelectItem>
             </SelectContent>
           </Select>
-          {errors.robot && (
-            <p id="mission-robot-error" className="animate-appear text-xs text-danger">
-              {errors.robot}
-            </p>
-          )}
-        </div>
+        </Field>
 
         <fieldset className="flex flex-col gap-2">
           <legend className="pb-2 text-sm font-medium">Repeat</legend>

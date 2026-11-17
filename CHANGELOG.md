@@ -2,6 +2,22 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.8.0 · 2026-11-17
+
+### Added
+- `meter`: a level in a known range (battery, storage), neutral until it crosses `low` or `critical`; `inline` for table cells. role="meter".
+- `pagination`: the range (1–10 of 48) with previous / next, or numbered pages with gaps.
+- `breadcrumb`: links to the levels above, the current page last; AppShell takes it as `breadcrumb`, with the title as the current page.
+- `description-list`: label and value pairs, plain or as tiles.
+- `choice-field` (ChoiceField, FieldSet): a checkbox, radio or switch as a whole 44 px row with label, description and count; a legend and one note line for the group.
+- `copy-button`: copies and confirms in place, the icon swapping to a check for 1.5 s.
+- `badge` › CountBadge: the one way to draw a count, danger on its tint or neutral, 99+.
+
+### Changed
+- `field` / `select`: a Select inside a Field is labelled, described and marked invalid through its trigger (`useField`).
+- `table`: sortable headers (`sort`, `onSort`) with aria-sort and an arrow.
+- Blocks use them instead of hand-built copies: battery Meters in the fleet table, list and detail, and map; Pagination in the fleet table; Breadcrumb, CopyButton and DescriptionList in the dataset page; FieldSets of ChoiceFields as catalog filters and settings switches; Selects in Fields in the mission form, invitations and settings; CountBadge in the app shell, dock and island.
+
 ## 0.7.0 · 2026-11-17
 
 ### Added

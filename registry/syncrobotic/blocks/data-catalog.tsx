@@ -1,9 +1,10 @@
-// @syncrobotic/data-catalog v0.7.0 · update: npx shadcn add @syncrobotic/data-catalog --overwrite
+// @syncrobotic/data-catalog v0.8.0 · update: npx shadcn add @syncrobotic/data-catalog --overwrite
 "use client"
 
 import * as React from "react"
-import { ArrowDown, ArrowUp, ArrowUpDown, Database, Grid3x3, ListFilter, Plus, ScrollText, Search, SearchX, ShieldCheck } from "lucide-react"
+import { Database, Grid3x3, ListFilter, Plus, ScrollText, Search, SearchX, ShieldCheck } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { ChoiceField, FieldSet } from "@/registry/syncrobotic/ui/choice-field"
 import { AppShell, type AppNavGroup } from "@/registry/syncrobotic/blocks/app-shell"
 import { Badge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
@@ -11,7 +12,6 @@ import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { InputGroup, InputGroupAddon } from "@/registry/syncrobotic/ui/input-group"
-import { Label } from "@/registry/syncrobotic/ui/label"
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/registry/syncrobotic/ui/sheet"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
 
@@ -139,22 +139,16 @@ function Facets({ data, picks, onPick }: { data: Dataset[]; picks: Picks; onPick
   return (
     <div className="flex flex-col gap-6">
       {facets.map((f) => (
-        <fieldset key={f.key} className="flex flex-col gap-1">
-          <legend className="pb-2 text-sm font-medium">{f.label}</legend>
-          {f.values.map((v) => {
-            const id = `facet-${f.key}-${v.value}`
-            const count = data.filter((d) => d[f.key] === v.value).length
-            return (
-              <div key={v.value} className="flex min-h-(--h-md) items-center gap-3">
-                <Checkbox id={id} checked={picks[f.key].includes(v.value)} onCheckedChange={(c) => onPick(f.key, v.value, c === true)} />
-                <Label htmlFor={id} className="flex flex-1 items-center justify-between gap-2 font-normal">
-                  {v.label}
-                  <span className="text-xs text-muted-foreground tabular-nums">{count}</span>
-                </Label>
-              </div>
-            )
-          })}
-        </fieldset>
+        <FieldSet key={f.key} legend={f.label}>
+          {f.values.map((v) => (
+            <ChoiceField
+              key={v.value}
+              label={v.label}
+              trailing={data.filter((d) => d[f.key] === v.value).length}
+              control={<Checkbox checked={picks[f.key].includes(v.value)} onCheckedChange={(c) => onPick(f.key, v.value, c === true)} />}
+            />
+          ))}
+        </FieldSet>
       ))}
     </div>
   )
@@ -173,22 +167,10 @@ export function DataCatalog({ datasets = sampleDatasets }: { datasets?: Dataset[
     .filter((d) => `${d.name} ${d.ref} ${d.owner}`.toLowerCase().includes(query.toLowerCase()))
     .sort((a, b) => (sort.key === "items" ? a.items - b.items : a.name.localeCompare(b.name)) * sort.dir)
 
-  const SortHead = ({ k, children, className }: { k: SortKey; children: React.ReactNode; className?: string }) => {
-    const on = sort.key === k
-    const Icon = on ? (sort.dir === 1 ? ArrowUp : ArrowDown) : ArrowUpDown
-    return (
-      <TableHead aria-sort={on ? (sort.dir === 1 ? "ascending" : "descending") : "none"} className={className}>
-        <button
-          type="button"
-          onClick={() => setSort({ key: k, dir: on ? (sort.dir === 1 ? -1 : 1) : 1 })}
-          className="press inline-flex items-center gap-1 hover:text-foreground"
-        >
-          {children}
-          <Icon aria-hidden="true" className="size-4" />
-        </button>
-      </TableHead>
-    )
-  }
+  const sortProps = (k: SortKey) => ({
+    sort: sort.key === k ? (sort.dir === 1 ? ("asc" as const) : ("desc" as const)) : (false as const),
+    onSort: () => setSort({ key: k, dir: sort.key === k ? (sort.dir === 1 ? -1 : 1) : 1 }),
+  })
 
   return (
     <AppShell
@@ -242,14 +224,14 @@ export function DataCatalog({ datasets = sampleDatasets }: { datasets?: Dataset[
             <Table>
               <TableHeader>
                 <TableRow>
-                  <SortHead k="name">Dataset</SortHead>
+                  <TableHead {...sortProps("name")}>Dataset</TableHead>
                   <TableHead>Tier</TableHead>
                   <TableHead className="hidden md:table-cell">Task</TableHead>
                   <TableHead className="hidden md:table-cell">Use</TableHead>
                   <TableHead className="hidden xl:table-cell">Owner</TableHead>
-                  <SortHead k="items" className="text-right">
+                  <TableHead {...sortProps("items")} className="text-right">
                     Items
-                  </SortHead>
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

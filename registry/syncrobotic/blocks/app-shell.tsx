@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell v0.7.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
+// @syncrobotic/app-shell v0.8.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -20,8 +20,8 @@ import {
   type LucideIcon,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { Badge, CountBadge } from "@/registry/syncrobotic/ui/badge"
 import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"
-import { Badge } from "@/registry/syncrobotic/ui/badge"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -146,6 +146,8 @@ type AppShellProps = {
   current?: string
   /** Page title in the top bar. */
   title: string
+  /** Levels above this page, shown before the title (a Breadcrumb's links). The title is the current page. */
+  breadcrumb?: React.ReactNode
   /** Buttons at the right of the top bar. */
   actions?: React.ReactNode
   /** Which backend the tool talks to. Production is red so nobody mistakes it for a test. */
@@ -242,9 +244,7 @@ function Nav({
                         !collapsed && "opacity-0",
                       )}
                     />
-                    <span className={cn("rounded-full bg-danger-subtle px-2 text-xs font-medium text-danger tabular-nums", reveal(!collapsed))}>
-                      {item.count}
-                    </span>
+                    <CountBadge count={item.count} className={reveal(!collapsed)} />
                   </>
                 ) : null}
               </Link>
@@ -512,6 +512,7 @@ export function AppShell({
   nav,
   current,
   title,
+  breadcrumb,
   actions,
   environment,
   user,
@@ -650,6 +651,7 @@ export function AppShell({
               )}
             </SheetContent>
           </Sheet>
+          {breadcrumb && <div className="hidden min-w-0 shrink items-center gap-1 md:flex">{breadcrumb}</div>}
           <h1 className="truncate text-lg font-bold">{title}</h1>
           {env && <Badge tone={env.tone}>{env.label}</Badge>}
           <div className="ml-auto flex items-center gap-2">

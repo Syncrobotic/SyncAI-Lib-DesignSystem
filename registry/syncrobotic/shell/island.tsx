@@ -1,9 +1,10 @@
-// @syncrobotic/island v0.7.0 · update: npx shadcn add @syncrobotic/island --overwrite
+// @syncrobotic/island v0.8.0 · update: npx shadcn add @syncrobotic/island --overwrite
 "use client"
 
 import * as React from "react"
 import { Battery, BatteryCharging, Bell, ChevronDown, TriangleAlert, Wifi, WifiOff, X } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { CountBadge } from "@/registry/syncrobotic/ui/badge"
 import { Tray } from "@/registry/syncrobotic/shell/tray"
 import { StatusGlyph, toneSubtle, toneText, type Tone } from "@/registry/syncrobotic/shell/status-glyph"
 import { alarmPriority, defaultAlarmLabels, topAlarm, type AlarmData, type AlarmLabels } from "@/registry/syncrobotic/ui/alarm"
@@ -120,11 +121,7 @@ export function Island({
           className={cn(zone("bell"), "relative")}
         >
           <Bell aria-hidden="true" className="size-5" />
-          {unread > 0 && (
-            <span className="absolute top-1 right-1 inline-flex size-4 items-center justify-center rounded-full bg-danger-subtle text-xs font-bold text-danger">
-              {unread}
-            </span>
-          )}
+          {unread > 0 && <CountBadge count={unread} className="absolute top-0 right-0" />}
         </button>
       </div>
       {children}

@@ -1,8 +1,9 @@
-// @syncrobotic/dock v0.7.0 · update: npx shadcn add @syncrobotic/dock --overwrite
+// @syncrobotic/dock v0.8.0 · update: npx shadcn add @syncrobotic/dock --overwrite
 "use client"
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
+import { CountBadge } from "@/registry/syncrobotic/ui/badge"
 import { Tray } from "@/registry/syncrobotic/shell/tray"
 
 /**
@@ -67,11 +68,7 @@ export function DockNav({ items, active, onSelect, label = "Primary" }: { items:
         >
           <Icon aria-hidden="true" className="size-5" />
           {label}
-          {badge ? (
-            <span className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-danger-subtle px-1 text-xs font-bold text-danger">
-              {badge}
-            </span>
-          ) : null}
+          {badge ? <CountBadge count={badge} /> : null}
         </button>
       ))}
     </nav>

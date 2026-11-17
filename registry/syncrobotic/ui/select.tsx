@@ -1,18 +1,24 @@
-// @syncrobotic/select v0.7.0 · update: npx shadcn add @syncrobotic/select --overwrite
+// @syncrobotic/select v0.8.0 · update: npx shadcn add @syncrobotic/select --overwrite
 "use client"
 
 import * as React from "react"
 import { Select as SelectPrimitive } from "radix-ui"
 import { Check, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useField } from "@/registry/syncrobotic/ui/field"
 
 export const Select = SelectPrimitive.Root
 export const SelectGroup = SelectPrimitive.Group
 export const SelectValue = SelectPrimitive.Value
 
+/** Inside a Field, the trigger takes the field's id, note and error, so `<Field label><Select>…</Select></Field>` just works. */
 export function SelectTrigger({ className, children, ...props }: React.ComponentProps<typeof SelectPrimitive.Trigger>) {
+  const field = useField()
   return (
     <SelectPrimitive.Trigger
+      id={field?.id}
+      aria-describedby={field?.describedBy}
+      aria-invalid={field?.invalid}
       data-slot="select-trigger"
       className={cn(
         "flex h-(--h-md) w-full items-center justify-between gap-2 rounded-sm bg-card px-3 text-base ring-1 ring-input ring-inset",

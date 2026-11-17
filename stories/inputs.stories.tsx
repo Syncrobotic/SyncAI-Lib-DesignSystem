@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSepa
 import { Slider } from "@/registry/syncrobotic/ui/slider"
 import { Switch } from "@/registry/syncrobotic/ui/switch"
 import { Textarea } from "@/registry/syncrobotic/ui/textarea"
+import { ChoiceField, FieldSet } from "@/registry/syncrobotic/ui/choice-field"
 
 const meta: Meta = { title: "Inputs" }
 export default meta
@@ -100,11 +101,11 @@ export const SelectDefault: S = {
           <SelectValue placeholder="Choose a route" />
         </SelectTrigger>
       </Field>
-        <SelectContent>
-          <SelectItem value="perimeter">Perimeter</SelectItem>
-          <SelectItem value="parking">Parking lot</SelectItem>
-          <SelectItem value="warehouse">Warehouse aisles</SelectItem>
-        </SelectContent>
+      <SelectContent>
+        <SelectItem value="perimeter">Perimeter</SelectItem>
+        <SelectItem value="parking">Parking lot</SelectItem>
+        <SelectItem value="warehouse">Warehouse aisles</SelectItem>
+      </SelectContent>
     </Select>
   ),
 }
@@ -378,5 +379,56 @@ export const SliderDisabled: S = {
       <Label>Speaker volume · 40% (muted at night)</Label>
       <Slider defaultValue={[40]} disabled aria-label="Speaker volume" />
     </div>
+  ),
+}
+
+/** Field labels a Select's trigger and carries its hint and error, like any other control. */
+export const FieldWithSelect: S = {
+  render: () => (
+    <div className="flex flex-col gap-6">
+      <Field label="Patrol route" hint="Routes for the north site">
+        <Select defaultValue="perimeter">
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="perimeter">Perimeter</SelectItem>
+            <SelectItem value="parking">Parking lot</SelectItem>
+          </SelectContent>
+        </Select>
+      </Field>
+      <Field label="Return dock" error="Choose a dock before starting">
+        <Select>
+          <SelectTrigger>
+            <SelectValue placeholder="Choose a dock" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="a">Dock A</SelectItem>
+            <SelectItem value="b">Dock B</SelectItem>
+          </SelectContent>
+        </Select>
+      </Field>
+    </div>
+  ),
+}
+
+/** Checkboxes under one question, each a whole 44 px row with a count at the end. */
+export const ChoiceFieldCheckboxes: S = {
+  render: () => (
+    <FieldSet legend="Status" hint="Show robots in any of these states">
+      <ChoiceField label="Patrolling" trailing={5} control={<Checkbox defaultChecked />} />
+      <ChoiceField label="Docked" trailing={2} control={<Checkbox />} />
+      <ChoiceField label="Offline" trailing={1} control={<Checkbox />} />
+    </FieldSet>
+  ),
+}
+
+/** Switches act at once, so they sit at the end of the row, with a line saying what they do. */
+export const ChoiceFieldSwitches: S = {
+  render: () => (
+    <FieldSet legend="Notifications">
+      <ChoiceField label="Critical alarms by SMS" description="Every critical alarm, day and night." controlAt="end" control={<Switch defaultChecked />} />
+      <ChoiceField label="Daily summary email" description="Patrols, events and battery health at 08:00." controlAt="end" control={<Switch />} />
+    </FieldSet>
   ),
 }
