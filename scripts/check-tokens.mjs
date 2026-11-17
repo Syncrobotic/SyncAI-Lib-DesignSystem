@@ -23,6 +23,8 @@ const ROUND = {
   "registry/syncrobotic/blocks/app-shell.tsx": "unread dot on a collapsed nav icon",
   "registry/syncrobotic/ui/badge.tsx": "count badge",
   "registry/syncrobotic/ui/meter.tsx": "meter track and fill",
+  "registry/syncrobotic/ui/icon-tile.tsx": "circle tile shape and the status dot",
+  "registry/syncrobotic/ui/scroll-area.tsx": "scrollbar thumb",
   "site/prose.tsx": "list bullet dot",
   "app/(site)/(docs)/docs/foundations/motion/page.tsx": "timeline dot",
   "app/(site)/(docs)/docs/foundations/radius/page.tsx": "documents this rule: bullet dots and the pill-button counter-example",

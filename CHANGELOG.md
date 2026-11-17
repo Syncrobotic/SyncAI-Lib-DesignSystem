@@ -2,6 +2,20 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.9.0 · 2026-11-17
+
+### Added
+- `item`: a general-purpose row (media, title, description, actions) in default, outline and muted, md and sm; only a link draws the hover fill. Header and footer lines for card-like rows.
+- `icon-tile`: one surface and size for icons in rows, cards and empty states: outline, muted, raised, soft and solid, sm to xl, square or circle, with a status dot. Solid danger stays on its tint.
+- `kbd` and `KbdGroup`: keys and chords for shortcuts and instructions; adapts inside a tooltip.
+- `button-group`: buttons, fields and menus joined into one strip (split button, stepper, pagination, search with scope), horizontal or vertical, with a text cell and a separator for filled buttons.
+- `scroll-area`: a bounded, themed scroll region, vertical, horizontal or both, with fading edges; focusable for the keyboard.
+- `toggle-group`: single or multiple toggles, joined or spaced, outline or ghost, horizontal or vertical. On is inverted.
+
+### Changed
+- More examples for the existing Actions and Display components: toggle, segmented control, copy button, badge, avatar, card, separator, progress, spinner, meter, description list, status glyph, status eyebrow and skeleton now show 4 to 8 real uses each.
+- Story checks run the page clock past timed UI (the loading spinner, presence timers) before the screenshot, so visual baselines no longer depend on machine speed.
+
 ## 0.8.0 · 2026-11-17
 
 ### Added

@@ -16,6 +16,12 @@ export type StoryFile =
   | "navigation"
   | "overlays"
   | "charts"
+  | "item"
+  | "icon-tile"
+  | "kbd"
+  | "button-group"
+  | "scroll-area"
+  | "toggle-group"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
@@ -40,6 +46,52 @@ const overlayKeys: [string, string][] = [
 ]
 
 const entries: Record<string, Entry> = {
+  item: {
+    group: "Display",
+    examples: { file: "item", prefix: "Item" },
+    rules: [
+      "One row per thing: a person, a file, a service, a setting link.",
+      "Only a link draws the hover fill; a static row never looks clickable.",
+      "Robot rows with a live status use the shell's List.",
+    ],
+  },
+  "icon-tile": {
+    group: "Display",
+    examples: { file: "icon-tile", prefix: "IconTile" },
+    rules: [
+      "Neutral by default. A tone only when the tile states a status.",
+      "Never solid red: a solid danger tile stays on its tint, since solid red belongs to the emergency stop.",
+      "Icons inside are 16, 20 or 24 px; the size prop sets them.",
+    ],
+  },
+  kbd: {
+    group: "Display",
+    examples: { file: "kbd", prefix: "Kbd" },
+    rules: ["One key per Kbd; a chord is a KbdGroup without plus signs.", "Use the platform's symbols: ⌘ on Mac, Ctrl elsewhere."],
+  },
+  "button-group": {
+    group: "Actions",
+    examples: { file: "button-group", prefix: "ButtonGroup" },
+    rules: [
+      "Holds no selection; for one choice among several use Segmented control or Toggle group.",
+      "Keep destructive actions outside the group.",
+      "Give the group an aria-label.",
+    ],
+  },
+  "scroll-area": {
+    group: "Display",
+    examples: { file: "scroll-area", prefix: "ScrollArea" },
+    rules: ["Give it a fixed height (or width) and an aria-label.", "The viewport takes focus so the keyboard can scroll it."],
+  },
+  "toggle-group": {
+    group: "Actions",
+    examples: { file: "toggle-group", prefix: "ToggleGroup" },
+    rules: [
+      'type="single" for one choice, type="multiple" for layers or channels.',
+      "On is inverted, like a selected segment.",
+      "Icon-only items need an aria-label.",
+    ],
+  },
   // Actions
   button: {
     group: "Actions",
@@ -177,15 +229,15 @@ const entries: Record<string, Entry> = {
   list: { group: "Display", examples: { file: "list", only: ["GroupedList"] } },
   "status-glyph": {
     group: "Display",
-    examples: { file: "list", only: ["StatusShapes"] },
+    examples: { file: "display", prefix: "StatusGlyph" },
     rules: [
       "Status is shape plus colour, so it reads without colour vision: filled circle in progress, hollow circle normal, triangle attention, square stopped, slashed circle offline.",
     ],
   },
-  "status-eyebrow": { group: "Display", examples: { file: "list", only: ["StatusShapes"] } },
+  "status-eyebrow": { group: "Display", examples: { file: "list", only: ["StatusShapes", "StatusEyebrowOverTitle", "StatusInlineInRows"] } },
   skeleton: {
     group: "Display",
-    examples: { file: "list", only: ["LoadingSkeleton"] },
+    examples: { file: "list", only: ["LoadingSkeleton", "SkeletonCard", "SkeletonTableRows"] },
     rules: [
       "Show what is already known; only unknown values get a skeleton.",
       "The whole group breathes over 1.2 s with no diagonal shimmer, and stops under reduced motion.",
@@ -324,6 +376,16 @@ export type Item = (typeof registry.items)[number] & Entry
 
 // What each component does with the keyboard beyond Tab. Radix supplies most of it; these tables say so out loud.
 const keyboard: Record<string, [string, string][]> = {
+  "scroll-area": [
+    ["Tab", "Focus the scroll region"],
+    ["Arrow keys", "Scroll"],
+    ["Page Up / Page Down", "Scroll by a page"],
+  ],
+  "toggle-group": [
+    ["Tab", "Move into the group"],
+    ["Arrow keys", "Move between items"],
+    ["Enter / Space", "Turn the focused item on or off"],
+  ],
   button: [["Enter / Space", "Activate"]],
   "segmented-control": [
     ["← / →", "Move to the previous or next segment"],
@@ -433,6 +495,9 @@ export function storyNames(ex: Examples) {
 
 /** "ThreeTiersWithPageAction" -> "Three tiers with page action", as Storybook shows it. */
 export const storyTitle = (name: string) => {
-  const words = name.replace(/([a-z0-9])([A-Z])/g, "$1 $2").replace(/([A-Z])([A-Z][a-z])/g, "$1 $2").split(" ")
+  const words = name
+    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+    .replace(/([A-Z])([A-Z][a-z])/g, "$1 $2")
+    .split(" ")
   return words.map((w, i) => (i === 0 ? w : w.toLowerCase())).join(" ")
 }

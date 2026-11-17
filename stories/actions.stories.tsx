@@ -164,3 +164,85 @@ export const CopyButtonDefault: S = {
     </div>
   ),
 }
+
+export const ToggleSizes: S = {
+  render: () => (
+    <div className="flex items-center gap-2">
+      <Toggle size="sm">Grid</Toggle>
+      <Toggle>Grid</Toggle>
+    </div>
+  ),
+}
+
+export const ToggleIconOnly: S = {
+  render: () => (
+    <div className="flex items-center gap-2">
+      <Toggle aria-label="Show camera" defaultPressed className="w-(--h-md) px-0">
+        <Video aria-hidden="true" />
+      </Toggle>
+      <Toggle aria-label="Show map" className="w-(--h-md) px-0">
+        <Map aria-hidden="true" />
+      </Toggle>
+    </div>
+  ),
+}
+
+export const ToggleWithIcon: S = {
+  render: () => (
+    <Toggle defaultPressed>
+      <Video aria-hidden="true" /> Follow robot
+    </Toggle>
+  ),
+}
+
+export const ToggleDisabled: S = {
+  render: () => (
+    <div className="flex items-center gap-2">
+      <Toggle disabled>Heat map</Toggle>
+      <Toggle disabled defaultPressed>
+        Lidar
+      </Toggle>
+    </div>
+  ),
+}
+
+export const SegmentedControlThreeViews: S = {
+  render: () => (
+    <SegmentedControl defaultValue="live" aria-label="Camera">
+      <SegmentedControlItem value="live">Live</SegmentedControlItem>
+      <SegmentedControlItem value="replay">Replay</SegmentedControlItem>
+      <SegmentedControlItem value="snapshots">Snapshots</SegmentedControlItem>
+    </SegmentedControl>
+  ),
+}
+
+export const SegmentedControlDisabledItem: S = {
+  render: () => (
+    <SegmentedControl defaultValue="day" aria-label="Range">
+      <SegmentedControlItem value="day">Day</SegmentedControlItem>
+      <SegmentedControlItem value="week">Week</SegmentedControlItem>
+      <SegmentedControlItem value="year" disabled>
+        Year
+      </SegmentedControlItem>
+    </SegmentedControl>
+  ),
+}
+
+export const CopyButtonVariants: S = {
+  render: () => (
+    <div className="flex items-center gap-2">
+      <CopyButton value="7F3A" label="Copy robot ID" />
+      <CopyButton value="7F3A" label="Copy robot ID" variant="outline" />
+      <CopyButton value="7F3A" label="Copy robot ID" variant="secondary" />
+    </div>
+  ),
+}
+
+export const CopyButtonInField: S = {
+  render: () => (
+    <div className="flex h-(--h-md) items-center gap-2 rounded-sm bg-card pr-1 pl-3 ring-1 ring-input ring-inset">
+      <span className="flex-1 truncate font-mono text-sm">sk_live_7f3a••••••••2b19</span>
+      <CopyButton value="sk_live_7f3a2b19" label="Copy API key" />
+    </div>
+  ),
+}
