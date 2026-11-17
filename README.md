@@ -69,7 +69,7 @@ General components are built on [Radix UI](https://www.radix-ui.com) primitives,
 npm install
 npm run dev              # docs site at http://localhost:3000
 npm run storybook        # http://localhost:6006, toolbar switches dark and light
-npm run lint:tokens      # fails on any value outside the tokens
+npm run lint:tokens      # fails on any value outside the tokens, in the registry and the docs site
 npm run lint:registry    # fails when an item's dependencies drift from its imports
 npm run typecheck
 npm test                 # behaviour tests (Vitest): stop, stop all, slide to release, keyboard and AT paths
@@ -99,6 +99,8 @@ The first `test:visual` run writes baselines; commit them (`tests/__screenshots_
 
 - No arbitrary Tailwind lengths (`h-[72px]`); use tokens (`h-(--h-stop)`, `rounded-md`)
 - No raw colours; use tokens such as `bg-stop` and `text-info`
+- `rounded-full` only for round things (avatars, dots, switch, radio, tracks, count badges, grabber); everything else uses `rounded-xs`…`rounded-xl`
+- Animation only marks a state change and uses the motion tokens; in JavaScript, import `site/motion.ts`
 - Spacing only 1, 2, 3, 4, 6, 8 (4, 8, 12, 16, 24, 32 px)
 - Font weights only 400, 500, 700
 

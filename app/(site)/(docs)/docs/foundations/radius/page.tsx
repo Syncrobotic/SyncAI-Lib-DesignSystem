@@ -1,9 +1,20 @@
 import type { Metadata } from "next"
 import { Code, DocHeader, DoDont, Pager, Section, Specimen, TokenTable } from "@/site/doc"
 import { metaFor, neighbours } from "@/site/foundations"
+import { LogoMark } from "@/site/logo"
 import { px, themeValue } from "@/site/theme-tokens"
 
 export const metadata: Metadata = metaFor("radius")
+
+// The same uses the token lint allows rounded-full for (scripts/check-tokens.mjs, ROUND).
+const round = [
+  "Avatars and their placeholders",
+  "Status dots and list bullets",
+  "Switch track and thumb, radio and its dot",
+  "Slider track and thumb, progress track",
+  "Count badges (a number in a circle)",
+  "The bottom sheet's grabber",
+]
 
 const radii = [
   { key: "xs", cls: "rounded-xs", use: "Tags, small parts flush inside a container" },
@@ -59,6 +70,45 @@ export default function RadiusPage() {
             text: "Repeat the outer radius inside. The gap pinches at the corners and the shapes look misaligned.",
           }}
         />
+      </Section>
+
+      <Section id="full" title="Full: only for things that are round" lead="`rounded-full` is not a sixth step. It is for shapes whose meaning is a circle or a pill, never for a container, card or button.">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <ul className="flex flex-col gap-2 rounded-md border border-border bg-card p-4 text-sm">
+            {round.map((r) => (
+              <li key={r} className="flex items-center gap-3">
+                <span aria-hidden className="size-2 shrink-0 rounded-full bg-success" />
+                {r}
+              </li>
+            ))}
+          </ul>
+          <DoDont
+            good={{ visual: <span className="flex h-(--h-md) items-center rounded-sm bg-primary px-6 text-sm font-medium text-primary-foreground">Start patrol</span>, text: "Buttons use rounded-sm." }}
+            bad={{ visual: <span className="flex h-(--h-md) items-center rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground">Start patrol</span>, text: "A pill button is a second shape language." }}
+          />
+        </div>
+        <p className="text-sm text-muted-foreground">
+          CI enforces it: <Code>npm run lint:tokens</Code> fails on <Code>rounded-full</Code> in any file not listed with its use.
+        </p>
+      </Section>
+
+      <Section id="brand" title="Brand mark and icon tiles" lead="The SYNCROBOTIC mark is a disc by design. It is artwork, not UI, so the radius scale does not reshape it. What holds the mark follows the scale.">
+        <Specimen className="flex flex-wrap items-end gap-8">
+          <figure className="flex flex-col items-center gap-2">
+            <LogoMark className="size-16" />
+            <figcaption className="text-xs text-muted-foreground">Mark: never re-cornered</figcaption>
+          </figure>
+          <figure className="flex flex-col items-center gap-2">
+            {/* Icon tiles scale with the icon, so their corner is a proportion: rounded-xl (24) at the 108 px app-icon size = 22 %. */}
+            <span className="flex size-16 items-center justify-center bg-foreground" style={{ borderRadius: "22%" }}>
+              <LogoMark title="" className="size-12 [&_path:first-child]:fill-background [&_path:not(:first-child)]:fill-foreground" />
+            </span>
+            <figcaption className="text-xs text-muted-foreground">Favicon tile: corner 22 % of the side</figcaption>
+          </figure>
+        </Specimen>
+        <p className="text-sm text-muted-foreground">
+          App icons that the OS masks (iOS, Android adaptive) are drawn full bleed: the OS supplies the tile, and a second radius inside it would not be concentric.
+        </p>
       </Section>
 
       <Section id="tokens" title="Tokens" lead="shadcn defaults differ: its button and input use `rounded-md`, its card `rounded-xl`. Move them to the steps above when adding them to the registry.">

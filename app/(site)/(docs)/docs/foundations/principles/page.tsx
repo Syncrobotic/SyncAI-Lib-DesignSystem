@@ -48,7 +48,7 @@ export default function PrinciplesPage() {
       />
       <ol className="flex flex-col">
         {principles.map((p) => (
-          <li key={p.n} className="grid gap-4 border-b border-border py-10 sm:grid-cols-[6rem_1fr]">
+          <li key={p.n} className="grid gap-4 border-b border-border py-8 sm:grid-cols-[6rem_1fr]">
             <span className="font-mono text-3xl text-muted-foreground">{p.n}</span>
             <div className="flex flex-col gap-3">
               <h2 className="text-xl font-bold">{p.title}</h2>

@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Code, DocHeader, DoDont, Pager, Section, Specimen } from "@/site/doc"
 import { metaFor, neighbours } from "@/site/foundations"
 import { MotionDemo } from "@/site/motion-demo"
+import { MotionPatterns } from "@/site/motion-patterns"
 import { themeValue } from "@/site/theme-tokens"
 
 export const metadata: Metadata = metaFor("motion")
@@ -64,11 +65,23 @@ export default function MotionPage() {
         </Specimen>
       </Section>
 
+      <Section
+        id="patterns"
+        title="Patterns"
+        lead="Five movements cover every state change. This site uses exactly these: pages and tab panels appear, the mobile menu opens as a sheet, controls press, icons swap, and the current-page marker moves."
+      >
+        <MotionPatterns />
+        <p className="text-sm text-muted-foreground">
+          CSS uses the tokens directly (<Code>duration-(--motion-base) ease-(--ease-standard)</Code>). JavaScript animation (motion/react) imports the same values from{" "}
+          <Code>site/motion.ts</Code>; a unit test fails if they drift from the theme file.
+        </p>
+      </Section>
+
       <Section id="timing" title="Timing rules" lead="Shared across products, so every app behaves the same under pressure.">
         <ol className="relative flex flex-col border-l border-border pl-6">
           {timings.map((x) => (
-            <li key={x.t} className="relative pb-5 last:pb-0">
-              <span className="absolute top-1.5 -left-[1.6rem] size-2 rounded-full bg-foreground" />
+            <li key={x.t} className="relative pb-6 last:pb-0">
+              <span className="absolute top-1.5 -left-6 size-2 -translate-x-1/2 rounded-full bg-foreground" />
               <span className="font-mono text-sm">{x.t}</span>
               <p className="text-sm text-muted-foreground">{x.what}</p>
             </li>

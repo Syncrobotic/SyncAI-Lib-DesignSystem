@@ -2,7 +2,9 @@ import type { Metadata, Viewport } from "next"
 import { GeistMono } from "geist/font/mono"
 import { GeistSans } from "geist/font/sans"
 import { site } from "@/site/config"
+import { MotionProvider } from "@/site/motion-provider"
 import { themeScript } from "@/site/theme-toggle"
+import { color } from "@/site/theme-tokens"
 import "./globals.css"
 
 export const metadata: Metadata = {
@@ -31,8 +33,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#09090b" },
-    { media: "(prefers-color-scheme: light)", color: "#efeff2" },
+    { media: "(prefers-color-scheme: dark)", color: color("background").dark },
+    { media: "(prefers-color-scheme: light)", color: color("background").light },
   ],
 }
 
@@ -42,7 +44,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="min-h-screen">{children}</body>
+      <body className="min-h-screen">
+        <MotionProvider>{children}</MotionProvider>
+      </body>
     </html>
   )
 }

@@ -12,7 +12,7 @@ export default defineConfig({
   esbuild: { jsx: "automatic" },
   test: {
     environment: "happy-dom",
-    include: ["tests/unit/**/*.test.tsx"],
+    include: ["tests/unit/**/*.test.{ts,tsx}"],
     fakeTimers: { toFake: ["setTimeout", "clearTimeout", "requestAnimationFrame", "cancelAnimationFrame", "performance"] },
   },
 })

@@ -26,7 +26,7 @@ export default function FoundationsPage() {
             { k: "Tailwind utilities", v: "bg-info · rounded-md · h-(--h-md)", d: "What components and product code write. CI rejects anything outside the tokens." },
             { k: "This site", v: "Read at build time", d: "Every swatch, size and contrast ratio here is parsed from the theme file on each deploy." },
           ].map((x) => (
-            <div key={x.k} className="flex flex-col gap-2 rounded-md bg-card p-5 ring-1 ring-border">
+            <div key={x.k} className="flex flex-col gap-2 rounded-md bg-card p-4 ring-1 ring-border">
               <span className="text-xs text-muted-foreground">{x.k}</span>
               <span className="font-mono text-sm">{x.v}</span>
               <span className="text-sm text-muted-foreground">{x.d}</span>
