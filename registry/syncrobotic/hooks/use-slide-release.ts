@@ -1,4 +1,4 @@
-// @syncrobotic/use-slide-release v0.5.0 · update: npx shadcn add @syncrobotic/use-slide-release --overwrite
+// @syncrobotic/use-slide-release v0.7.0 · update: npx shadcn add @syncrobotic/use-slide-release --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,7 +7,7 @@ type Options = {
   onRelease: () => void
   /** Fraction of the track the thumb must pass before letting go releases. Default 0.85. */
   threshold?: number
-  /** Horizontal movement in px before dragging starts, so scrolling never moves the thumb. Default 24. */
+  /** Horizontal movement in px before the thumb moves, so a tap or a slip does nothing. Then it follows the finger 1:1. Default 8. */
   startAfter?: number
   /** Keyboard / switch-control fallback: hold Enter or Space this long to release. Default 2000. */
   holdFallback?: number
@@ -21,7 +21,7 @@ type Options = {
 export function useSlideRelease({
   onRelease,
   threshold = 0.85,
-  startAfter = 24,
+  startAfter = 8,
   holdFallback = 2000,
   disabled = false,
 }: Options) {
@@ -44,7 +44,9 @@ export function useSlideRelease({
     const track = trackRef.current
     const thumb = thumbRef.current
     if (!track || !thumb) return 1
-    const inset = thumb.offsetLeft
+    // The inset is the thumb's resting gap, which equals its top gap. Not offsetLeft: that grows as the thumb moves,
+    // which shrank the travel mid-drag and made the thumb outrun the finger and finish on its own.
+    const inset = thumb.offsetTop
     return Math.max(1, track.clientWidth - thumb.offsetWidth - inset * 2)
   }
 
@@ -71,7 +73,8 @@ export function useSlideRelease({
       armed.current = true
       setDragging(true)
     }
-    setPosition(Math.min(1, Math.max(0, (dx - startAfter) / travel())))
+    // 1:1 with the finger: the thumb sits under the finger, not startAfter px behind it.
+    setPosition(Math.min(1, Math.max(0, dx / travel())))
   }
 
   const end = () => {
