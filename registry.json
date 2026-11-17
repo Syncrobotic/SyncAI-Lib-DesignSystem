@@ -2097,7 +2097,7 @@
       "title": "Calendar",
       "description": "A month grid for one day, several days or a range; 36 px days with a mouse, 44 px on touch.",
       "dependencies": [
-        "react-day-picker",
+        "react-day-picker@^9",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -2126,7 +2126,7 @@
       "title": "Date selector",
       "description": "DatePicker and DateRangePicker: a field that opens a calendar, with presets and clear.",
       "dependencies": [
-        "react-day-picker",
+        "react-day-picker@^9",
         "date-fns",
         "lucide-react"
       ],
