@@ -822,7 +822,7 @@
       "name": "switch",
       "type": "registry:ui",
       "title": "Switch",
-      "description": "On is success green; takes effect immediately.",
+      "description": "On is the primary colour, off a neutral track; takes effect immediately.",
       "dependencies": ["radix-ui"],
       "registryDependencies": ["@syncrobotic/cn"],
       "files": [
@@ -832,8 +832,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.9.0",
         "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "Description and doc comment corrected: on is the primary colour, not success green."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
