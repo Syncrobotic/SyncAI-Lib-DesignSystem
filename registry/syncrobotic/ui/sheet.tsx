@@ -1,4 +1,4 @@
-// @syncrobotic/sheet v0.5.0 · update: npx shadcn add @syncrobotic/sheet --overwrite
+// @syncrobotic/sheet v0.6.0 · update: npx shadcn add @syncrobotic/sheet --overwrite
 "use client"
 
 import * as React from "react"
@@ -12,10 +12,12 @@ export const SheetClose = SheetPrimitive.Close
 const sides = {
   bottom: "inset-x-0 bottom-0 max-h-[85vh] rounded-t-xl pb-[max(1.5rem,env(safe-area-inset-bottom))]",
   right: "inset-y-0 right-0 h-full w-full max-w-sm rounded-l-xl",
+  /** Navigation drawers, which open from the side the navigation lives on. */
+  left: "inset-y-0 left-0 h-full w-full max-w-sm rounded-r-xl",
 } as const
 
 /**
- * Bottom sheet on phones (radius 24, xl, with a grab handle); right panel on wide screens.
+ * Bottom sheet on phones (radius 24, xl, with a grab handle); right panel on wide screens; left for navigation drawers.
  */
 export function SheetContent({
   className,

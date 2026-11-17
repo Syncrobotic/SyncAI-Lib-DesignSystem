@@ -1078,8 +1078,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.6.0",
         "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "side=\"left\" for navigation drawers."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -1297,6 +1302,180 @@
             "version": "0.5.0",
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
+    },
+    {
+      "name": "app-shell",
+      "type": "registry:block",
+      "title": "App shell",
+      "description": "The frame of an internal tool: collapsible sidebar (a drawer on phones), top bar with title, environment, search and user, and the page.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/avatar",
+        "@syncrobotic/badge",
+        "@syncrobotic/input",
+        "@syncrobotic/sheet"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/app-shell.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "console-overview",
+      "type": "registry:block",
+      "title": "Operations console",
+      "description": "App shell with fleet numbers, the robot table and the alarm list on one screen.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/stats-cards",
+        "@syncrobotic/fleet-table",
+        "@syncrobotic/alarm",
+        "@syncrobotic/button"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/console-overview.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "list-detail",
+      "type": "registry:block",
+      "title": "List and detail",
+      "description": "App shell with a filterable robot list and a detail pane; on phones the detail replaces the list.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/fleet-table",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/button",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/input",
+        "@syncrobotic/progress",
+        "@syncrobotic/separator"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/list-detail.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "event-log",
+      "type": "registry:block",
+      "title": "Event log",
+      "description": "App shell with time, level and text filters, an event table and a side sheet for one event.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/alarm",
+        "@syncrobotic/button",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/input",
+        "@syncrobotic/segmented-control",
+        "@syncrobotic/select",
+        "@syncrobotic/sheet",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/event-log.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "map-workspace",
+      "type": "registry:block",
+      "title": "Map workspace",
+      "description": "App shell with the site map edge to edge and floating trays for the selected robot, the top alarm and the emergency stop.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/island",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/stop-button",
+        "@syncrobotic/tray",
+        "@syncrobotic/alarm",
+        "@syncrobotic/button",
+        "@syncrobotic/progress"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/map-workspace.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release."
           }
         ]
       }

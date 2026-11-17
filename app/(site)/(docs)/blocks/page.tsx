@@ -1,13 +1,12 @@
 import type { Metadata } from "next"
 import { pageMeta } from "@/site/config"
 import Link from "next/link"
-import { blocks } from "@/site/blocks"
+import { blocks, products } from "@/site/blocks"
 
-const description = "Ready-made sections built from SYNCROBOTIC components and tokens: dashboard, control app and marketing blocks you install as source."
+const description = "Ready-made screens and sections built from SYNCROBOTIC components and tokens: app shells for internal tools, dashboard, control app and marketing blocks you install as source."
 
 export const metadata: Metadata = pageMeta({ title: "Blocks", description, path: "/blocks" })
 
-const products = ["Dashboard", "Control app", "Marketing"] as const
 
 export default function BlocksPage() {
   return (

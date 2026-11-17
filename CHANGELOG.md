@@ -2,6 +2,20 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.6.0 · 2026-11-17
+
+### Added
+- **App shells for internal tools**, on the Blocks page with desktop, tablet and phone previews and the code, each installable with `npx shadcn add`:
+  - `app-shell`: the frame. Collapsible sidebar (a drawer on phones), top bar with title, environment (production in red), search and user; `linkAs` takes your router's link; `bleed` for maps and video.
+  - `console-overview`: fleet numbers, the robot table and the alarm list on one screen.
+  - `list-detail`: filterable robot list and a detail pane; on phones the detail replaces the list.
+  - `event-log`: time, level and text filters, an event table, one event in a side sheet.
+  - `map-workspace`: the site map edge to edge with floating trays for the selected robot, the top alarm and the emergency stop.
+  Every shell ships with sample data, so a prototype is one install and a data swap.
+
+### Changed
+- `sheet` 0.6.0: `side="left"` for navigation drawers.
+
 ## 0.5.0 · 2026-11-17
 
 ### Added

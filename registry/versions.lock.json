@@ -156,8 +156,8 @@
     "hash": "0e5581b828fcd2cc"
   },
   "sheet": {
-    "version": "0.5.0",
-    "hash": "35f2b818c5ebb527"
+    "version": "0.6.0",
+    "hash": "6d881fabcaa83745"
   },
   "popover": {
     "version": "0.5.0",
@@ -186,5 +186,25 @@
   "marketing-hero": {
     "version": "0.5.0",
     "hash": "58add783eccaf892"
+  },
+  "app-shell": {
+    "version": "0.6.0",
+    "hash": "8683a1b9f619762b"
+  },
+  "console-overview": {
+    "version": "0.6.0",
+    "hash": "8a965a1e4d4d1036"
+  },
+  "list-detail": {
+    "version": "0.6.0",
+    "hash": "923fa55d46fb0f15"
+  },
+  "event-log": {
+    "version": "0.6.0",
+    "hash": "e3a6a0cfb410da78"
+  },
+  "map-workspace": {
+    "version": "0.6.0",
+    "hash": "8ecd4faa6fcb90a2"
   }
 }

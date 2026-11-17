@@ -1,13 +1,31 @@
 import registry from "../registry.json"
+import { AppShellDemo } from "./app-shell-demo"
+import { ConsoleOverview } from "@/registry/syncrobotic/blocks/console-overview"
+import { EventLog } from "@/registry/syncrobotic/blocks/event-log"
+import { ListDetail } from "@/registry/syncrobotic/blocks/list-detail"
+import { MapWorkspace } from "@/registry/syncrobotic/blocks/map-workspace"
 import { FleetTable } from "@/registry/syncrobotic/blocks/fleet-table"
 import { MarketingHero } from "@/registry/syncrobotic/blocks/marketing-hero"
 import { RobotStatusCard } from "@/registry/syncrobotic/blocks/robot-status-card"
 import { StatsCards } from "@/registry/syncrobotic/blocks/stats-cards"
 
 // Blocks are composed sections. Each renders alone at /preview/<name> so the docs can frame it at any width.
-type Meta = { product: "Dashboard" | "Control app" | "Marketing"; viewport: "desktop" | "mobile"; height: number; render: () => React.ReactNode }
+export const products = ["App shells", "Dashboard", "Control app", "Marketing"] as const
+type Meta = { product: (typeof products)[number]; viewport: "desktop" | "mobile"; height: number; render: () => React.ReactNode }
 
 const meta: Record<string, Meta> = {
+  // App shells: whole screens for internal engineering tools. Install one, replace the sample data, and you have a prototype.
+  "app-shell": {
+    product: "App shells",
+    viewport: "desktop",
+    height: 720,
+    render: () => <AppShellDemo />,
+  },
+  "console-overview": { product: "App shells", viewport: "desktop", height: 900, render: () => <ConsoleOverview /> },
+  "list-detail": { product: "App shells", viewport: "desktop", height: 720, render: () => <ListDetail /> },
+  "event-log": { product: "App shells", viewport: "desktop", height: 720, render: () => <EventLog /> },
+  "map-workspace": { product: "App shells", viewport: "desktop", height: 720, render: () => <MapWorkspace /> },
+
   "stats-cards": {
     product: "Dashboard",
     viewport: "desktop",
