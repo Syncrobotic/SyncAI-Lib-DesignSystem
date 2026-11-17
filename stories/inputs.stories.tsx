@@ -1,6 +1,7 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
-import { Eye, EyeOff, Search, X } from "lucide-react"
+import { Eye, EyeOff, Info, Search, X } from "lucide-react"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/registry/syncrobotic/ui/tooltip"
 import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
@@ -636,5 +637,66 @@ export const ChoiceFieldRadios: S = {
         <ChoiceField label="Ask an operator" control={<RadioGroupItem value="ask" />} />
       </FieldSet>
     </RadioGroup>
+  ),
+}
+
+export const LabelOptional: S = {
+  render: () => (
+    <div className="flex flex-col gap-2">
+      <Label htmlFor="lbl-note">
+        Note for the operator <span className="font-normal text-muted-foreground">(optional)</span>
+      </Label>
+      <Input id="lbl-note" placeholder="Gate code is on the back of the badge" />
+    </div>
+  ),
+}
+
+/** More about a label goes in a tooltip on a button beside it, never in the label itself. */
+export const LabelWithInfo: S = {
+  render: () => (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-1">
+        <Label htmlFor="lbl-speed">Top speed</Label>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              type="button"
+              aria-label="About top speed"
+              className="press grid size-(--h-sm) place-items-center rounded-sm text-muted-foreground hover:text-foreground"
+            >
+              <Info aria-hidden="true" className="size-4" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent>Indoors the robot never exceeds 1.2 m/s, whatever is set here.</TooltipContent>
+        </Tooltip>
+      </div>
+      <Input id="lbl-speed" defaultValue="1.5 m/s" />
+    </div>
+  ),
+}
+
+/** Label beside the control on wide forms, above it on phones. */
+export const LabelInline: S = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      {[
+        ["lbl-site", "Site", "Taipei warehouse"],
+        ["lbl-dock", "Home dock", "Dock 2"],
+      ].map(([id, l, v]) => (
+        <div key={id} className="grid gap-2 sm:grid-cols-[8rem_1fr] sm:items-center">
+          <Label htmlFor={id}>{l}</Label>
+          <Input id={id} defaultValue={v} />
+        </div>
+      ))}
+    </div>
+  ),
+}
+
+export const LabelDisabled: S = {
+  render: () => (
+    <div className="group flex flex-col gap-2" data-disabled>
+      <Label htmlFor="lbl-serial">Serial number</Label>
+      <Input id="lbl-serial" disabled defaultValue="SR-7F3A-2041" />
+    </div>
   ),
 }

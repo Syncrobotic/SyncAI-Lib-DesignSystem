@@ -291,6 +291,26 @@
     "version": "0.9.0",
     "hash": "03d1069002cfe53c"
   },
+  "stepper": {
+    "version": "0.9.0",
+    "hash": "e7884438d6d25848"
+  },
+  "timeline": {
+    "version": "0.9.0",
+    "hash": "8655c77429cb87ac"
+  },
+  "scrollspy": {
+    "version": "0.9.0",
+    "hash": "f50d11f9cd2b215b"
+  },
+  "navigation-menu": {
+    "version": "0.9.0",
+    "hash": "d208c36788b4fa08"
+  },
+  "questionnaire": {
+    "version": "0.9.0",
+    "hash": "874e48187e1b7b93"
+  },
   "stats-cards": {
     "version": "0.8.0",
     "hash": "7ea8d5c0e447f2ee"

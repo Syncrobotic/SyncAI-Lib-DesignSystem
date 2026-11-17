@@ -5,6 +5,39 @@
 export type Overview = { what: string; use: string[]; instead?: string[]; notes?: string[] }
 
 export const overviews: Record<string, Overview> = {
+  stepper: {
+    what: "Shows where someone is in a fixed sequence of steps, which are done, and which failed.",
+    use: ["Commissioning a robot.", "An import or upload wizard.", "A pre-shift checklist done in order."],
+    instead: ["Sections of one page: `tabs`.", "Progress of a machine task: `progress`.", "Asking the questions themselves: `questionnaire`."],
+    notes: ["value starts at 1; a value past the last step marks all done.", 'navigable="done" lets people click back to finished steps only.'],
+  },
+  timeline: {
+    what: "A list of events in time order, each with a time, a marker and a title.",
+    use: ["What a robot did on a shift.", "How an incident unfolded.", "Maintenance and release history."],
+    instead: ["A sortable, filterable log: `data-grid`.", "Steps someone has to go through: `stepper`."],
+    notes: ["tone draws the status glyph; colour only for warning and danger.", "TimelineHeading groups events by day."],
+  },
+  scrollspy: {
+    what: "An On this page list that marks the section being read and scrolls to a section when clicked.",
+    use: ["Long settings or detail pages.", "Docs pages.", "A robot's detail panel with many sections."],
+    instead: ["Separate views people switch between: `tabs`."],
+    notes: ["useScrollspy(ids) alone gives the current id for a custom display.", "Links move focus to the section, so keyboard users land there."],
+  },
+  "navigation-menu": {
+    what: "The top navigation of a website: links, and triggers that open panels of links with descriptions.",
+    use: ["A marketing or docs site header.", "A portal with a few product areas."],
+    instead: ["An app's own sections: the app-shell block's sidebar.", "Actions on a thing: `dropdown-menu`.", "A path to the current page: `breadcrumb`."],
+    notes: [
+      "Use NavigationMenuLink (or navigationMenuTriggerStyle on it) for plain top-level links.",
+      "viewport={false} puts each panel under its own trigger.",
+    ],
+  },
+  questionnaire: {
+    what: "A short form of questions with choice, scale and text answers, paged or on one page, that checks required answers.",
+    use: ["Pre-shift checklists.", "Incident follow-up questions.", "Feedback and site surveys."],
+    instead: ["A form of named fields (name, address): `field`.", "Only showing progress through steps: `stepper`."],
+    notes: ["Answers are keyed by question id; onSubmit gets them all.", "QuestionField draws one question on its own inside your form."],
+  },
   "data-grid": {
     what: "A full data table built on TanStack Table: you own the table state; DataGrid, DataGridTable and their parts draw it in the kit's style.",
     use: [

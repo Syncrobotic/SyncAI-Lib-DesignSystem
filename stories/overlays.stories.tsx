@@ -1,6 +1,24 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
-import { Bot, CirclePlus, Copy, Ellipsis, Filter, Info, Keyboard, LayoutDashboard, Map, PanelRight, Pencil, Search, Trash2 } from "lucide-react"
+import {
+  Bell,
+  Bot,
+  CirclePlus,
+  Menu,
+  Share2,
+  Wrench,
+  Copy,
+  Ellipsis,
+  Filter,
+  Info,
+  Keyboard,
+  LayoutDashboard,
+  Map,
+  PanelRight,
+  Pencil,
+  Search,
+  Trash2,
+} from "lucide-react"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -40,7 +58,7 @@ import { Input } from "@/registry/syncrobotic/ui/input"
 import { Label } from "@/registry/syncrobotic/ui/label"
 import { Switch } from "@/registry/syncrobotic/ui/switch"
 import { Popover, PopoverContent, PopoverTrigger } from "@/registry/syncrobotic/ui/popover"
-import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/registry/syncrobotic/ui/sheet"
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/registry/syncrobotic/ui/sheet"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/registry/syncrobotic/ui/tooltip"
 
 // Each overlay has a closed story (click to open; used on the docs site) and an *Open story for visual tests.
@@ -371,3 +389,105 @@ const Palette = ({ open: initial = false }: { open?: boolean }) => {
 /** The ⌘K palette. In an app, AppShell's search prop wires the field, the scope and the shortcut. */
 export const CommandPalette: S = { render: () => <Palette /> }
 export const CommandPaletteOpen: S = { render: () => <Palette open /> }
+
+/** Navigation drawer: opens from the side the navigation lives on. */
+export const SheetNavigationDrawer: S = {
+  render: () => (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="outline" size="icon" aria-label="Open navigation">
+          <Menu aria-hidden="true" />
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="left">
+        <SheetHeader>
+          <SheetTitle>Taipei warehouse</SheetTitle>
+          <SheetDescription>6 robots · 2 docks</SheetDescription>
+        </SheetHeader>
+        <nav aria-label="Main">
+          <ul className="flex flex-col">
+            {[
+              { icon: LayoutDashboard, t: "Overview" },
+              { icon: Bot, t: "Robots" },
+              { icon: Map, t: "Maps" },
+              { icon: Bell, t: "Alarms" },
+            ].map(({ icon: Icon, t }) => (
+              <li key={t}>
+                <a href={`#${t.toLowerCase()}`} className="flex min-h-(--h-md) items-center gap-2 rounded-sm px-2 text-sm hover:bg-muted">
+                  <Icon aria-hidden="true" className="size-5 text-muted-foreground" /> {t}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </SheetContent>
+    </Sheet>
+  ),
+}
+
+/** Phones: a bottom sheet of actions, each a full-width 44 px row. */
+export const SheetBottomActions: S = {
+  render: () => (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="outline">
+          <Ellipsis aria-hidden="true" /> Robot actions
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="bottom">
+        <SheetHeader>
+          <SheetTitle>Patrol dog 7F3A</SheetTitle>
+          <SheetDescription>Docked · 94 %</SheetDescription>
+        </SheetHeader>
+        <div className="flex flex-col">
+          {[
+            { icon: Wrench, t: "Schedule maintenance" },
+            { icon: Share2, t: "Share live view" },
+            { icon: Pencil, t: "Rename" },
+          ].map(({ icon: Icon, t }) => (
+            <SheetClose key={t} asChild>
+              <button type="button" className="press flex min-h-(--h-md) items-center gap-2 rounded-sm px-2 text-left text-sm hover:bg-muted">
+                <Icon aria-hidden="true" className="size-5 text-muted-foreground" /> {t}
+              </button>
+            </SheetClose>
+          ))}
+        </div>
+      </SheetContent>
+    </Sheet>
+  ),
+}
+
+/** An edit form in a side panel: Save and Cancel at the bottom, Cancel keeps what was there. */
+export const SheetEditForm: S = {
+  render: () => (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="secondary">
+          <Pencil aria-hidden="true" /> Edit robot
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="right">
+        <SheetHeader>
+          <SheetTitle>Edit robot</SheetTitle>
+          <SheetDescription>Changes apply on the next patrol.</SheetDescription>
+        </SheetHeader>
+        <div className="flex flex-col gap-4">
+          <Field label="Name">
+            <Input defaultValue="Patrol dog 7F3A" />
+          </Field>
+          <Field label="Home dock" hint="Where it charges between patrols.">
+            <Input defaultValue="Dock 2 · Hall B" />
+          </Field>
+        </div>
+        <SheetFooter className="flex-row justify-end">
+          <SheetClose asChild>
+            <Button variant="ghost">Cancel</Button>
+          </SheetClose>
+          <SheetClose asChild>
+            <Button>Save</Button>
+          </SheetClose>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
+  ),
+}
