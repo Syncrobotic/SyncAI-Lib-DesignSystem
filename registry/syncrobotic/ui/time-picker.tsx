@@ -138,6 +138,7 @@ export function TimePicker({
   disabled?: boolean
 }) {
   const f = useField()
+  const uid = React.useId()
   const [open, setOpen] = React.useState(false)
   const slots: Time[] = []
   for (let m = toMin(min); m <= toMin(max); m += step) slots.push(fromMin(m))
@@ -147,7 +148,8 @@ export function TimePicker({
         <button
           type="button"
           id={id ?? f?.id}
-          aria-label={ariaLabel}
+          // Label then shown value, so the name contains what is on screen (WCAG 2.5.3).
+          aria-labelledby={ariaLabel ? `${uid}-l ${uid}-v` : undefined}
           aria-describedby={f?.describedBy}
           aria-invalid={f?.invalid || undefined}
           disabled={disabled}
@@ -155,7 +157,14 @@ export function TimePicker({
           className={cn(field, "press text-left data-[empty=true]:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50", className)}
         >
           <Clock aria-hidden="true" className="size-4 shrink-0 text-muted-foreground" />
-          <span className="truncate tabular-nums">{value ? formatTime(value, hour12) : placeholder}</span>
+          {ariaLabel && (
+            <span id={`${uid}-l`} className="sr-only">
+              {ariaLabel}
+            </span>
+          )}
+          <span id={`${uid}-v`} className="truncate tabular-nums">
+            {value ? formatTime(value, hour12) : placeholder}
+          </span>
         </button>
       </PopoverTrigger>
       <PopoverContent align="start" className="w-48 p-1">

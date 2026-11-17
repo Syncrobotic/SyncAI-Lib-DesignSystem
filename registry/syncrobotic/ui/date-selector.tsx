@@ -149,6 +149,7 @@ function Picker({
   "aria-label"?: string
 }) {
   const field = useField()
+  const uid = React.useId()
   return (
     <div className={cn("relative w-full", className)}>
       <Popover open={open} onOpenChange={setOpen}>
@@ -156,7 +157,8 @@ function Picker({
           <button
             type="button"
             id={id ?? field?.id}
-            aria-label={ariaLabel}
+            // The name is the label followed by the shown value, so it contains what is on screen (WCAG 2.5.3).
+            aria-labelledby={ariaLabel ? `${uid}-l ${uid}-v` : undefined}
             aria-describedby={field?.describedBy}
             aria-invalid={field?.invalid || undefined}
             data-empty={empty}
@@ -164,7 +166,14 @@ function Picker({
             className={cn(trigger, onClear && "pr-(--h-md)")}
           >
             <CalendarDays aria-hidden="true" className="size-4 shrink-0 text-muted-foreground" />
-            <span className="truncate">{label}</span>
+            {ariaLabel && (
+              <span id={`${uid}-l`} className="sr-only">
+                {ariaLabel}
+              </span>
+            )}
+            <span id={`${uid}-v`} className="truncate">
+              {label}
+            </span>
           </button>
         </PopoverTrigger>
         <PopoverContent align="start" collisionPadding={16} className="flex w-auto flex-col gap-3 p-3 sm:flex-row">
