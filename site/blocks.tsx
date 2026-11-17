@@ -1,5 +1,8 @@
 import registry from "../registry.json"
 import { AppShellDemo } from "./app-shell-demo"
+import { RecordForm } from "@/registry/syncrobotic/blocks/record-form"
+import { SettingsPage } from "@/registry/syncrobotic/blocks/settings-page"
+import { UsersRoles } from "@/registry/syncrobotic/blocks/users-roles"
 import { DataCatalog } from "@/registry/syncrobotic/blocks/data-catalog"
 import { DatasetDetail } from "@/registry/syncrobotic/blocks/dataset-detail"
 import { GovernanceTodo } from "@/registry/syncrobotic/blocks/governance-todo"
@@ -13,7 +16,7 @@ import { RobotStatusCard } from "@/registry/syncrobotic/blocks/robot-status-card
 import { StatsCards } from "@/registry/syncrobotic/blocks/stats-cards"
 
 // Blocks are composed sections. Each renders alone at /preview/<name> so the docs can frame it at any width.
-export const products = ["App shells", "Data tools", "Dashboard", "Control app", "Marketing"] as const
+export const products = ["App shells", "Data tools", "Forms and settings", "Dashboard", "Control app", "Marketing"] as const
 type Meta = {
   product: (typeof products)[number]
   viewport: "desktop" | "mobile"
@@ -34,6 +37,9 @@ const meta: Record<string, Meta> = {
   "data-catalog": { product: "Data tools", viewport: "desktop", height: 760, render: () => <DataCatalog /> },
   "dataset-detail": { product: "Data tools", viewport: "desktop", height: 820, render: () => <DatasetDetail /> },
   "governance-todo": { product: "Data tools", viewport: "desktop", height: 600, render: () => <GovernanceTodo /> },
+  "settings-page": { product: "Forms and settings", viewport: "desktop", height: 820, render: () => <SettingsPage /> },
+  "record-form": { product: "Forms and settings", viewport: "desktop", height: 820, render: () => <RecordForm /> },
+  "users-roles": { product: "Forms and settings", viewport: "desktop", height: 620, render: () => <UsersRoles /> },
   "console-overview": { product: "App shells", viewport: "desktop", height: 900, render: () => <ConsoleOverview /> },
   "list-detail": { product: "App shells", viewport: "desktop", height: 720, render: () => <ListDetail /> },
   "event-log": { product: "App shells", viewport: "desktop", height: 720, render: () => <EventLog /> },

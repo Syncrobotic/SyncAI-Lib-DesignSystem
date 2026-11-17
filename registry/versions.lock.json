@@ -222,5 +222,17 @@
   "governance-todo": {
     "version": "0.6.0",
     "hash": "23b0815d9b000389"
+  },
+  "settings-page": {
+    "version": "0.6.0",
+    "hash": "f92e09e0791caaf4"
+  },
+  "record-form": {
+    "version": "0.6.0",
+    "hash": "0d70d8e710ae9332"
+  },
+  "users-roles": {
+    "version": "0.6.0",
+    "hash": "04ad3b3f5459b781"
   }
 }

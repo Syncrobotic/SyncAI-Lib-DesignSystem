@@ -47,7 +47,7 @@ Dark is the default: `<html class="dark">`. Default copy is English; every visib
 
 ## Components
 
-56 registry items, grouped as on the docs site. Every component follows the colour, radius, height and spacing rules, and every state has a story.
+59 registry items, grouped as on the docs site. Every component follows the colour, radius, height and spacing rules, and every state has a story.
 
 | Group | Items |
 | --- | --- |
@@ -62,6 +62,7 @@ Dark is the default: `<html class="dark">`. Default copy is English; every visib
 | Hooks | `use-long-press`, `use-slide-release` |
 | App shells | `app-shell`, `console-overview`, `list-detail`, `event-log`, `map-workspace` |
 | Data tools | `data-catalog`, `dataset-detail`, `governance-todo` |
+| Forms and settings | `settings-page`, `record-form`, `users-roles` |
 | Blocks | `stats-cards`, `fleet-table`, `robot-status-card`, `marketing-hero` |
 
 General components are built on [Radix UI](https://www.radix-ui.com) primitives, the same base as shadcn/ui, so keyboard and screen-reader behaviour comes from Radix.

@@ -1735,6 +1735,116 @@
           }
         ]
       }
+    },
+    {
+      "name": "settings-page",
+      "type": "registry:block",
+      "title": "Settings page",
+      "description": "Sections beside their explanation; switches apply at once, text fields collect into a save bar that appears only when something changed; a danger zone that names the consequence.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/alert-dialog",
+        "@syncrobotic/button",
+        "@syncrobotic/field",
+        "@syncrobotic/input",
+        "@syncrobotic/label",
+        "@syncrobotic/select",
+        "@syncrobotic/switch",
+        "@syncrobotic/toast"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/settings-page.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "record-form",
+      "type": "registry:block",
+      "title": "Create and edit form",
+      "description": "One column, labels above fields, errors in the hint line on submit with focus on the first, the primary action names the result.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/button",
+        "@syncrobotic/field",
+        "@syncrobotic/input",
+        "@syncrobotic/label",
+        "@syncrobotic/radio-group",
+        "@syncrobotic/select",
+        "@syncrobotic/textarea",
+        "@syncrobotic/toast"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/record-form.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "users-roles",
+      "type": "registry:block",
+      "title": "Users and roles",
+      "description": "Who can do what: change a role in place, invite by email in a dialog, remove from the row menu with undo.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/avatar",
+        "@syncrobotic/badge",
+        "@syncrobotic/button",
+        "@syncrobotic/dialog",
+        "@syncrobotic/dropdown-menu",
+        "@syncrobotic/field",
+        "@syncrobotic/input",
+        "@syncrobotic/label",
+        "@syncrobotic/select",
+        "@syncrobotic/table",
+        "@syncrobotic/toast"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/users-roles.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
     }
   ]
 }
