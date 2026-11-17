@@ -178,3 +178,195 @@ export const NavigationMenuFeatured: S = {
     </div>
   ),
 }
+
+/** A site header: logo on the left, the menu, and the one action on the right. */
+export const NavigationMenuSiteHeader: S = {
+  render: () => (
+    <div className="flex min-h-80 flex-col">
+      <header className="flex items-center justify-between gap-4 border-b border-border px-4 py-2">
+        <span className="text-sm font-bold">SYNCROBOTIC</span>
+        <Products />
+        <a href="#contact" className="press flex h-(--h-sm) items-center rounded-sm bg-primary px-3 text-sm font-medium text-primary-foreground">
+          Talk to us
+        </a>
+      </header>
+    </div>
+  ),
+}
+
+/** The current section is marked on its trigger; the current page inside the panel too. */
+export const NavigationMenuActive: S = {
+  render: () => (
+    <div className={frame}>
+      <NavigationMenu defaultValue="fleet" viewport={false}>
+        <NavigationMenuList>
+          <NavigationMenuItem value="fleet">
+            <NavigationMenuTrigger data-active="">Fleet</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="flex w-48 flex-col">
+                {["Robots", "Docks", "Maps"].map((t) => (
+                  <li key={t}>
+                    <NavigationMenuLink href={`#${t.toLowerCase()}`} active={t === "Robots"} aria-current={t === "Robots" ? "page" : undefined}>
+                      {t}
+                    </NavigationMenuLink>
+                  </li>
+                ))}
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink href="#reports" className={navigationMenuTriggerStyle()}>
+              Reports
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+    </div>
+  ),
+}
+
+/** Three columns of links under headings, for a docs or resources menu. */
+export const NavigationMenuColumns: S = {
+  render: () => (
+    <div className={frame}>
+      <NavigationMenu defaultValue="docs">
+        <NavigationMenuList>
+          <NavigationMenuItem value="docs">
+            <NavigationMenuTrigger>Docs</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <div className="grid w-full gap-4 p-2 md:w-120 md:grid-cols-3">
+                {[
+                  ["Start", ["Install", "First robot", "First map"]],
+                  ["Operate", ["Patrols", "Alarms", "Handover"]],
+                  ["Build", ["API", "Webhooks", "MCP"]],
+                ].map(([h, links]) => (
+                  <div key={h as string} className="flex flex-col gap-1">
+                    <span className="px-3 text-xs font-medium text-muted-foreground">{h}</span>
+                    <ul className="flex flex-col">
+                      {(links as string[]).map((l) => (
+                        <li key={l}>
+                          <NavigationMenuLink href={`#${l.toLowerCase().replace(/ /g, "-")}`} className="py-2">
+                            {l}
+                          </NavigationMenuLink>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+    </div>
+  ),
+}
+
+/** A panel that ends with a link to everything, so the short list never hides the rest. */
+export const NavigationMenuSeeAll: S = {
+  render: () => (
+    <div className={frame}>
+      <NavigationMenu defaultValue="robots" viewport={false}>
+        <NavigationMenuList>
+          <NavigationMenuItem value="robots">
+            <NavigationMenuTrigger>Robots</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <div className="flex w-72 flex-col">
+                <NavigationMenuCard href="#patrol" icon={<ShieldCheck />} title="Patrol dog" description="Security patrol, day and night." />
+                <NavigationMenuCard href="#courier" icon={<Bot />} title="Courier" description="Indoor delivery." />
+                <NavigationMenuLink href="#all" className="mt-1 border-t border-border pt-3 text-sm font-medium">
+                  All robots →
+                </NavigationMenuLink>
+              </div>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+    </div>
+  ),
+}
+
+/** A section not open yet: disabled, with the reason in its title. */
+export const NavigationMenuDisabled: S = {
+  render: () => (
+    <NavigationMenu>
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuLink href="#overview" className={navigationMenuTriggerStyle()}>
+            Overview
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger disabled title="Available after your first robot is paired">
+            Analytics
+          </NavigationMenuTrigger>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
+  ),
+}
+
+/** Cards with a muted "New" tag; tags are text, never a coloured badge. */
+export const NavigationMenuWithTags: S = {
+  render: () => (
+    <div className={frame}>
+      <NavigationMenu defaultValue="features" viewport={false}>
+        <NavigationMenuList>
+          <NavigationMenuItem value="features">
+            <NavigationMenuTrigger>Features</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="flex w-80 flex-col">
+                {[
+                  { icon: <Map />, t: "Live map", d: "Every robot, door and lift in one view.", tag: "" },
+                  { icon: <Radio />, t: "Remote takeover", d: "Drive from the browser when needed.", tag: "New" },
+                  { icon: <Warehouse />, t: "Multi-site", d: "One login for every building.", tag: "" },
+                ].map((f) => (
+                  <li key={f.t}>
+                    <NavigationMenuCard
+                      href={`#${f.t}`}
+                      icon={f.icon}
+                      title={
+                        <span className="flex items-center gap-2">
+                          {f.t}
+                          {f.tag && <span className="rounded-xs px-1 text-xs font-normal text-muted-foreground ring-1 ring-border ring-inset">{f.tag}</span>}
+                        </span>
+                      }
+                      description={f.d}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+    </div>
+  ),
+}
+
+/** Open, with the shared panel sized to the Robots content. Visual test of the panel itself. */
+export const NavigationMenuLearnOpen: S = {
+  render: () => (
+    <div className={frame}>
+      <NavigationMenu defaultValue="learn">
+        <NavigationMenuList>
+          <NavigationMenuItem value="learn">
+            <NavigationMenuTrigger>
+              <BookOpen aria-hidden="true" /> Learn
+            </NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="flex w-full flex-col gap-1 md:w-80">
+                <li>
+                  <NavigationMenuCard href="#maps" icon={<Map />} title="Mapping a site" description="Walk the robot once to build the map." />
+                </li>
+                <li>
+                  <NavigationMenuCard href="#cpu" icon={<Cpu />} title="Updating firmware" description="Rollouts robot by robot, with a way back." />
+                </li>
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+    </div>
+  ),
+}

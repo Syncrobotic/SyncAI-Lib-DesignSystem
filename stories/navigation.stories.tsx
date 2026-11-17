@@ -201,3 +201,56 @@ export const BreadcrumbTruncated: S = {
     </div>
   ),
 }
+
+function PaginationAt({ start = 0, ...props }: { start?: number } & Omit<React.ComponentProps<typeof Pagination>, "page" | "onPageChange">) {
+  const [page, setPage] = React.useState(start)
+  return <Pagination page={page} onPageChange={setPage} {...props} />
+}
+
+/** Everything fits on one page: both arrows are off, the range still says how many. */
+export const PaginationSinglePage: S = { render: () => <PaginationAt pageSize={10} total={7} /> }
+
+/** Nothing to page through. */
+export const PaginationEmpty: S = { render: () => <PaginationAt pageSize={10} total={0} labels={{ empty: "No events" }} /> }
+
+/** Deep in a long list: the first and last pages stay reachable, gaps fold the rest. */
+export const PaginationMiddle: S = { render: () => <PaginationAt pages pageSize={20} total={1240} start={30} /> }
+
+/** In a table footer, with the noun in the range. */
+export const PaginationTableFooter: S = {
+  render: () => (
+    <div className="flex flex-col rounded-md ring-1 ring-border">
+      <div className="px-4 py-8 text-center text-sm text-muted-foreground">Table rows</div>
+      <div className="border-t border-border px-3 py-2">
+        <PaginationAt pageSize={25} total={312} start={2} labels={{ range: (f, t, n) => `Events ${f}–${t} of ${n}` }} />
+      </div>
+    </div>
+  ),
+}
+
+/** Two levels only: the parent and this page. */
+export const BreadcrumbTwoLevels: S = {
+  render: () => (
+    <Breadcrumb>
+      <BreadcrumbLink href="#robots">Robots</BreadcrumbLink>
+      <BreadcrumbPage>Patrol dog 7F3A</BreadcrumbPage>
+    </Breadcrumb>
+  ),
+}
+
+/** Above a page title, with the page's actions on the right. */
+export const BreadcrumbPageHeader: S = {
+  render: () => (
+    <div className="flex flex-col gap-2">
+      <Breadcrumb>
+        <BreadcrumbLink href="#sites">Sites</BreadcrumbLink>
+        <BreadcrumbLink href="#taipei">Taipei warehouse</BreadcrumbLink>
+        <BreadcrumbPage>Maps</BreadcrumbPage>
+      </Breadcrumb>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h2 className="text-xl font-bold">Maps</h2>
+        <span className="text-sm text-muted-foreground">4 maps · updated 2 h ago</span>
+      </div>
+    </div>
+  ),
+}

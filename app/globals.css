@@ -14,6 +14,15 @@
   --font-sans: var(--font-geist-sans), "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
 }
 
+/* In-page links (#examples, #changelog, the skip link) travel to their target instead of jumping; targets keep clear of
+   the sticky header with scroll-mt. Route changes still start at the top at once: <html data-scroll-behavior="smooth">
+   tells Next.js to switch smoothing off while it navigates. Under reduced motion every scroll is instant. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 /* shiki dual theme: colours come from CSS variables, the surface comes from our card. */
 .code pre {
   background: transparent !important;
@@ -31,7 +40,6 @@
 .specimen {
   background-color: var(--background);
 }
-
 
 /* Site arrival (site/appear.tsx): the theme's appear movement in CSS, staggered by order, so nothing waits on scripts. */
 [data-reveal="waiting"] .appear-item {

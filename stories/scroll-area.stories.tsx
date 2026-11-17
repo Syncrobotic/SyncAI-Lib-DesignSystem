@@ -88,3 +88,60 @@ export const ScrollAreaFadeEdges: S = {
     </ScrollArea>
   ),
 }
+
+/** A strip of camera tiles that scrolls sideways; the last tile is cut to show there is more. */
+export const ScrollAreaCameraStrip: S = {
+  render: () => (
+    <ScrollArea orientation="horizontal" fade className="w-full max-w-md rounded-md ring-1 ring-border" aria-label="Cameras">
+      <div className="flex gap-3 p-3">
+        {["North gate", "Hall B", "Dock 2", "Parking", "Perimeter E", "Lift lobby", "Roof"].map((c) => (
+          <div key={c} className="flex w-40 shrink-0 flex-col gap-2">
+            <div className="aspect-video rounded-sm bg-muted" />
+            <span className="truncate text-xs text-muted-foreground">{c}</span>
+          </div>
+        ))}
+      </div>
+    </ScrollArea>
+  ),
+}
+
+/** Filter chips that would wrap onto three lines on a phone: one scrolling row instead. */
+export const ScrollAreaChips: S = {
+  render: () => (
+    <ScrollArea orientation="horizontal" fade className="w-full max-w-xs" aria-label="Filters">
+      <div className="flex gap-2 py-1">
+        {["All", "Patrolling", "Docked", "Needs attention", "Stopped", "Offline", "Updating"].map((f, i) => (
+          <span
+            key={f}
+            className={`flex h-(--h-sm) shrink-0 items-center rounded-sm px-3 text-sm ring-1 ring-inset ${i === 0 ? "bg-foreground text-background ring-foreground" : "ring-border"}`}
+          >
+            {f}
+          </span>
+        ))}
+      </div>
+    </ScrollArea>
+  ),
+}
+
+/** A conversation with the operator desk: fixed height, newest at the bottom. */
+export const ScrollAreaThread: S = {
+  render: () => (
+    <ScrollArea className="h-56 w-full max-w-sm rounded-md bg-card ring-1 ring-border" aria-label="Messages">
+      <ul className="flex flex-col gap-3 p-4 text-sm">
+        {[
+          ["Desk", "7F3A, is door 3 clear?"],
+          ["7F3A", "Pallet in the way. Waiting."],
+          ["Desk", "Forklift on its way, 2 min."],
+          ["7F3A", "Path clear. Resuming."],
+          ["Desk", "Thanks. Skip the roof tonight."],
+          ["7F3A", "Roof removed from route."],
+        ].map(([who, msg], i) => (
+          <li key={i} className={who === "Desk" ? "self-end rounded-md bg-muted px-3 py-2" : "self-start rounded-md px-3 py-2 ring-1 ring-border"}>
+            <span className="block text-xs text-muted-foreground">{who}</span>
+            {msg}
+          </li>
+        ))}
+      </ul>
+    </ScrollArea>
+  ),
+}

@@ -80,8 +80,8 @@
     "hash": "ea9e19ae18463262"
   },
   "input-group": {
-    "version": "0.7.0",
-    "hash": "c09c4a812384300e"
+    "version": "0.9.0",
+    "hash": "27092f42e7f6f4e9"
   },
   "number-field": {
     "version": "0.7.0",
@@ -293,7 +293,7 @@
   },
   "stepper": {
     "version": "0.9.0",
-    "hash": "80c7f03072f7d722"
+    "hash": "678c4fcbfa09e46f"
   },
   "timeline": {
     "version": "0.9.0",
