@@ -905,7 +905,7 @@
           {
             "version": "0.8.0",
             "date": "2026-11-17",
-            "note": "44 px tall hit area around the 28 px track."
+            "note": "44 px tall hit area around the 28 px track. On is the primary colour (was success green), as in shadcn/ui: a setting being on is a selection, not a status."
           },
           {
             "version": "0.7.0",

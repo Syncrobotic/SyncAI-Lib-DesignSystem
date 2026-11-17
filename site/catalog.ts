@@ -123,7 +123,7 @@ const entries: Record<string, Entry> = {
   switch: {
     group: "Inputs",
     examples: { file: "inputs", prefix: "Switch" },
-    rules: ["Takes effect immediately; no save button.", "On is success green, per the colour rules."],
+    rules: ["Takes effect immediately; no save button.", "On is the primary colour, like every selected control; green stays for status."],
   },
   "choice-field": {
     group: "Inputs",
