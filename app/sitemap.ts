@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next"
 import { items } from "@/site/catalog"
 import { site } from "@/site/config"
-import { blocks } from "@/site/blocks"
+import { blocksOfType } from "@/site/blocks"
+import { blockTypes } from "@/site/block-types"
 import { foundations } from "@/site/foundations"
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -14,7 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...foundations.map((f) => ({ path: `/docs/foundations/${f.slug}`, priority: 0.8 })),
     ...items.map((i) => ({ path: `/docs/components/${i.name}`, priority: 0.6 })),
     { path: "/blocks", priority: 0.8 },
-    ...blocks.map((b) => ({ path: `/blocks/${b.name}`, priority: 0.6 })),
+    ...blockTypes.filter((t) => blocksOfType(t.slug).length > 0).map((t) => ({ path: `/blocks/${t.slug}`, priority: 0.6 })),
   ]
   return pages.map((p) => ({ url: `${site.url}${p.path}`, changeFrequency: "weekly", priority: p.priority }))
 }

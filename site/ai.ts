@@ -1,4 +1,5 @@
 import registry from "../registry.json"
+import { blockGroups, blockHref, blockTypes, getBlockType, placement } from "./block-types"
 import { groups, items, getItem, readSource, storyNames, storyTitle } from "./catalog"
 import { site } from "./config"
 import { foundations } from "./foundations"
@@ -67,11 +68,11 @@ export function blockMarkdown(name: string) {
       "",
       `> ${b.description}`,
       "",
-      `- Type: block (a whole screen or section; install it, then replace the sample data)`,
+      `- Type: block${placement[name] ? ` in ${getBlockType(placement[name].type)?.group} › ${getBlockType(placement[name].type)?.title}` : ""} (a whole screen or section; install it, then replace the sample data)`,
       `- Version: ${b.meta?.version ?? "unversioned"}`,
       `- Install: \`${install(name)}\``,
       `- Preview: ${url(`/preview/${name}`)}`,
-      `- Page: ${url(`/blocks/${name}`)}`,
+      `- Page: ${url(blockHref(name))}`,
       `- Source: ${site.repo}/blob/main/${b.files[0].path}`,
       "",
       "## Built from",
@@ -117,8 +118,15 @@ const intro = [
 export function llmsTxt() {
   const out = [...intro, "", "## Foundations", ""]
   for (const f of foundations) out.push(`- [${f.title}](${url(`/docs/foundations/${f.slug}.md`)}): ${f.lead}`)
-  out.push("", "## Blocks", "")
-  for (const b of blocks) out.push(`- [${b.title}](${url(`/blocks/${b.name}.md`)}): ${b.description}`)
+  // Blocks by group and type, the way the site lists them.
+  for (const g of blockGroups) {
+    for (const t of blockTypes.filter((x) => x.group === g)) {
+      const inType = blocks.filter((b) => placement[b.name]?.type === t.slug)
+      if (!inType.length) continue
+      out.push("", `## Blocks: ${g} › ${t.title}`, "")
+      for (const b of inType) out.push(`- [${b.title}](${url(`/blocks/${b.name}.md`)}): ${b.description}`)
+    }
+  }
   for (const g of groups) {
     const inGroup = items.filter((i) => i.group === g)
     if (!inGroup.length) continue

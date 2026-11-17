@@ -108,8 +108,8 @@
     "hash": "6bf86fd82a070cec"
   },
   "switch": {
-    "version": "0.8.0",
-    "hash": "042aa2c45186620e"
+    "version": "0.9.0",
+    "hash": "6028f89b48d8aa15"
   },
   "choice-field": {
     "version": "0.8.0",
@@ -336,12 +336,12 @@
     "hash": "876a51f3cf222b32"
   },
   "app-shell": {
-    "version": "0.8.0",
-    "hash": "dd063586a5dfd6e8"
+    "version": "0.9.0",
+    "hash": "d98704eb32062811"
   },
   "top-bar-shell": {
-    "version": "0.7.0",
-    "hash": "772b3c54944120c2"
+    "version": "0.9.0",
+    "hash": "3cca8b98438bf95d"
   },
   "console-overview": {
     "version": "0.8.0",
@@ -394,5 +394,209 @@
   "agent-skill": {
     "version": "0.8.0",
     "hash": "b0e394a5d3029ea6"
+  },
+  "line-chart-telemetry": {
+    "version": "0.9.0",
+    "hash": "85ba8a13dba7be39"
+  },
+  "line-chart-limit": {
+    "version": "0.9.0",
+    "hash": "3d9c706b96f1227b"
+  },
+  "line-chart-compare": {
+    "version": "0.9.0",
+    "hash": "a8a14d511121e5da"
+  },
+  "area-chart-battery": {
+    "version": "0.9.0",
+    "hash": "bab50ebaf2636e11"
+  },
+  "area-chart-fleet-states": {
+    "version": "0.9.0",
+    "hash": "a0ead38521563294"
+  },
+  "area-chart-cumulative": {
+    "version": "0.9.0",
+    "hash": "27550ba9ecc2f875"
+  },
+  "bar-chart-missions": {
+    "version": "0.9.0",
+    "hash": "fd19a31aacf6a401"
+  },
+  "bar-chart-ranked": {
+    "version": "0.9.0",
+    "hash": "a7b19da8456503dd"
+  },
+  "bar-chart-stacked": {
+    "version": "0.9.0",
+    "hash": "9ff19aa05c341d81"
+  },
+  "bar-chart-variance": {
+    "version": "0.9.0",
+    "hash": "a694d973c3fb537d"
+  },
+  "sparkline-robot-list": {
+    "version": "0.9.0",
+    "hash": "a829139b101c1391"
+  },
+  "sparkline-metric-tiles": {
+    "version": "0.9.0",
+    "hash": "0ecbab4b1697923e"
+  },
+  "sparkline-table": {
+    "version": "0.9.0",
+    "hash": "1388d5f74e5bc037"
+  },
+  "status-tracker-uptime": {
+    "version": "0.9.0",
+    "hash": "a459158ac3a7c0be"
+  },
+  "status-tracker-runs": {
+    "version": "0.9.0",
+    "hash": "c2761ec802c9d6ae"
+  },
+  "status-tracker-rollout": {
+    "version": "0.9.0",
+    "hash": "a66a091de7d3d0dd"
+  },
+  "radial-chart-battery": {
+    "version": "0.9.0",
+    "hash": "60f92f8ec9414c0a"
+  },
+  "radial-chart-goal": {
+    "version": "0.9.0",
+    "hash": "9457395cd06a6488"
+  },
+  "radial-chart-capacity": {
+    "version": "0.9.0",
+    "hash": "c573936711301bd7"
+  },
+  "heatmap-week-hours": {
+    "version": "0.9.0",
+    "hash": "a95fda5d79232154"
+  },
+  "heatmap-zones": {
+    "version": "0.9.0",
+    "hash": "e61d0deae1e1a1d9"
+  },
+  "app-shell-mobile-tabs": {
+    "version": "0.9.0",
+    "hash": "5d2bf4931a64ef3e"
+  },
+  "stats-meters": {
+    "version": "0.9.0",
+    "hash": "f54b051e09b7ad8e"
+  },
+  "stats-filtered": {
+    "version": "0.9.0",
+    "hash": "fabdc7a985e3cc17"
+  },
+  "card-site": {
+    "version": "0.9.0",
+    "hash": "bf4d479f7aebd9f0"
+  },
+  "card-mission": {
+    "version": "0.9.0",
+    "hash": "a3c5d391dc9f6f18"
+  },
+  "auth-passkey": {
+    "version": "0.9.0",
+    "hash": "e5255506c5c03b3c"
+  },
+  "auth-invite": {
+    "version": "0.9.0",
+    "hash": "1b6c135ab92f51ee"
+  },
+  "settings-notifications": {
+    "version": "0.9.0",
+    "hash": "4b5a8c34a52d83b3"
+  },
+  "settings-api-keys": {
+    "version": "0.9.0",
+    "hash": "44054b9c7331ff60"
+  },
+  "dialog-confirm-destructive": {
+    "version": "0.9.0",
+    "hash": "8c62a948606cf202"
+  },
+  "dialog-form": {
+    "version": "0.9.0",
+    "hash": "df0f35502f4df2f2"
+  },
+  "dialog-share": {
+    "version": "0.9.0",
+    "hash": "88ebaa9f142d9686"
+  },
+  "sheet-robot-detail": {
+    "version": "0.9.0",
+    "hash": "b61c183ad698d219"
+  },
+  "sheet-filters": {
+    "version": "0.9.0",
+    "hash": "f47b5225f54409c1"
+  },
+  "timeline-activity": {
+    "version": "0.9.0",
+    "hash": "797512631022eba0"
+  },
+  "timeline-audit": {
+    "version": "0.9.0",
+    "hash": "c808c8d419e199f4"
+  },
+  "wizard-commission": {
+    "version": "0.9.0",
+    "hash": "919d996644b8e415"
+  },
+  "wizard-import": {
+    "version": "0.9.0",
+    "hash": "6c5d29608c824697"
+  },
+  "mission-schedule": {
+    "version": "0.9.0",
+    "hash": "2a81cfcc65bfda50"
+  },
+  "users-invitations": {
+    "version": "0.9.0",
+    "hash": "c85a53a4a7a5244b"
+  },
+  "users-audit-log": {
+    "version": "0.9.0",
+    "hash": "84b9fee974dd55aa"
+  },
+  "incident-queue": {
+    "version": "0.9.0",
+    "hash": "6663d78e45d8ad69"
+  },
+  "incident-detail": {
+    "version": "0.9.0",
+    "hash": "02896d12f98143c2"
+  },
+  "maintenance-due": {
+    "version": "0.9.0",
+    "hash": "070ffe10ad1ee600"
+  },
+  "maintenance-work-order": {
+    "version": "0.9.0",
+    "hash": "f65ea5fbca6da10b"
+  },
+  "rollout-overview": {
+    "version": "0.9.0",
+    "hash": "6bc30f9ed2a7b7f2"
+  },
+  "rollout-plan": {
+    "version": "0.9.0",
+    "hash": "22a1505315265566"
+  },
+  "agent-runs": {
+    "version": "0.9.0",
+    "hash": "3e36b6e8be7dc71b"
+  },
+  "agent-trace": {
+    "version": "0.9.0",
+    "hash": "fad6f2414e8a6b00"
+  },
+  "agent-approval": {
+    "version": "0.9.0",
+    "hash": "ad170866e645777d"
   }
 }
