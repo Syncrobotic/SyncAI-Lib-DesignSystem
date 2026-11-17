@@ -30,6 +30,7 @@ const ROUND = {
   "registry/syncrobotic/ui/trace.tsx": "waterfall bar track and fill",
   "registry/syncrobotic/ui/stepper.tsx": "step circles and the compact progress track",
   "registry/syncrobotic/ui/timeline.tsx": "event dots",
+  "registry/syncrobotic/blocks/wizard-commission.tsx": "dot of a self-check that has not started",
   "registry/syncrobotic/ui/questionnaire.tsx": "progress track",
   "site/prose.tsx": "list bullet dot",
   "app/(site)/(docs)/docs/foundations/motion/page.tsx": "timeline dot",

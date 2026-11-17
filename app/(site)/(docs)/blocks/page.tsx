@@ -12,7 +12,8 @@ const description =
 export const metadata: Metadata = pageMeta({ title: "Blocks", description, path: "/blocks" })
 
 const groupIntro: Record<(typeof blockGroups)[number], string> = {
-  Application: "The screens and sections any tool is built from: shells, stats, cards, forms, settings, sign-in and states.",
+  Application:
+    "The screens and sections any tool is built from: shells, stats, cards, sign-in, settings, forms, dialogs, sheets, timelines, wizards and states.",
   Charts: "Data shown as charts, ready for a dashboard: trends, comparisons, run histories and gauges.",
   Solutions: "Whole working screens for one job in robot operations, built from Application blocks and Charts.",
 }
