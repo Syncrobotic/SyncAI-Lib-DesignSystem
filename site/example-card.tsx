@@ -1,35 +1,34 @@
-"use client"
-
 import * as React from "react"
-import { Code, Eye } from "lucide-react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/registry/syncrobotic/ui/tabs"
-import { TabPanel } from "./tab-panel"
+import { CodeSheet } from "./code-sheet"
 
-/** One example: title, then Preview / Code tabs inside a single card. Built with our own Tabs. */
-export function ExampleCard({ id, title, preview, code }: { id: string; title: string; preview: React.ReactNode; code: React.ReactNode }) {
+/** One example: the live preview, with a footer naming it and a Code button that opens its JSX beside it. */
+export function ExampleCard({
+  id,
+  title,
+  preview,
+  code,
+  install,
+  wide,
+}: {
+  id: string
+  title: string
+  preview: React.ReactNode
+  code: React.ReactNode
+  install: React.ReactNode
+  /** Charts and other wide content use the card's width instead of a 384 px column. */
+  wide?: boolean
+}) {
   return (
     <section id={id} aria-labelledby={`${id}-title`} className="scroll-mt-20 overflow-hidden rounded-md border border-border bg-card">
-      <Tabs defaultValue="preview" className="gap-0">
-        <div className="flex items-center justify-between gap-4 border-b border-border pl-4">
-          <h3 id={`${id}-title`} className="truncate text-sm font-medium">
-            {title}
-          </h3>
-          <TabsList aria-label={`${title}: view`} className="border-b-0 pr-4">
-            <TabsTrigger value="preview">
-              <Eye aria-hidden="true" /> Preview
-            </TabsTrigger>
-            <TabsTrigger value="code">
-              <Code aria-hidden="true" /> Code
-            </TabsTrigger>
-          </TabsList>
-        </div>
-        <TabsContent value="preview" className="specimen flex min-h-48 items-center justify-center p-8">
-          <TabPanel className="w-full max-w-sm">{preview}</TabPanel>
-        </TabsContent>
-        <TabsContent value="code">
-          <TabPanel className="[&>div]:rounded-none [&>div]:border-0">{code}</TabPanel>
-        </TabsContent>
-      </Tabs>
+      <div className="specimen flex min-h-48 items-center justify-center p-8">
+        <div className={wide ? "w-full" : "w-full max-w-sm"}>{preview}</div>
+      </div>
+      <div className="flex items-center justify-between gap-4 border-t border-border py-1 pr-1 pl-4">
+        <h3 id={`${id}-title`} className="truncate text-sm text-muted-foreground">
+          {title}
+        </h3>
+        <CodeSheet title={`${title}.tsx`} install={install} files={[{ name: `${title}.tsx`, code }]} />
+      </div>
     </section>
   )
 }

@@ -1,4 +1,4 @@
-// @syncrobotic/segmented-control v0.6.0 · update: npx shadcn add @syncrobotic/segmented-control --overwrite
+// @syncrobotic/segmented-control v0.8.0 · update: npx shadcn add @syncrobotic/segmented-control --overwrite
 "use client"
 
 import * as React from "react"
@@ -22,7 +22,7 @@ export function SegmentedControlItem({ className, ...props }: React.ComponentPro
     <ToggleGroup.Item
       data-slot="segmented-control-item"
       className={cn(
-        "inline-flex h-full flex-1 items-center justify-center gap-1 whitespace-nowrap rounded-xs px-3 text-sm text-muted-foreground",
+        "inline-flex h-full flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-xs px-3 text-sm text-muted-foreground",
         "press hover:text-foreground",
         "data-[state=on]:bg-primary data-[state=on]:font-medium data-[state=on]:text-primary-foreground",
         "disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4",

@@ -1,9 +1,11 @@
-// @syncrobotic/list-detail v0.6.0 · update: npx shadcn add @syncrobotic/list-detail --overwrite
+// @syncrobotic/list-detail v0.8.0 · update: npx shadcn add @syncrobotic/list-detail --overwrite
 "use client"
 
 import * as React from "react"
 import { ArrowLeft, MapPin, Pause, RotateCcw, Search } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
+import { Meter } from "@/registry/syncrobotic/ui/meter"
 import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
 import { sampleRobots, type Robot } from "@/registry/syncrobotic/blocks/fleet-table"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
@@ -11,7 +13,7 @@ import type { Tone } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 import { Input } from "@/registry/syncrobotic/ui/input"
-import { Progress } from "@/registry/syncrobotic/ui/progress"
+import { InputGroup, InputGroupAddon } from "@/registry/syncrobotic/ui/input-group"
 import { Separator } from "@/registry/syncrobotic/ui/separator"
 
 const status: Record<Robot["status"], { tone: Tone; label: string }> = {
@@ -37,9 +39,13 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
     <AppShell product="Fleet console" nav={sampleNav} current="#robots" title="Robots" environment="staging" user={{ name: "Mei Lin", initials: "ML" }} bleed>
       <div className="flex h-full">
         <div className={cn("flex w-full flex-col border-r border-border md:w-80", robot && "hidden md:flex")}>
-          <div className="relative border-b border-border p-3">
-            <Search aria-hidden="true" className="pointer-events-none absolute top-1/2 left-6 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input type="search" aria-label="Filter robots" placeholder="Filter by name or site" value={query} onChange={(e) => setQuery(e.target.value)} className="pl-(--h-sm)" />
+          <div className="border-b border-border p-3">
+            <InputGroup>
+              <InputGroupAddon>
+                <Search aria-hidden="true" />
+              </InputGroupAddon>
+              <Input type="search" aria-label="Filter robots" placeholder="Filter by name or site" value={query} onChange={(e) => setQuery(e.target.value)} />
+            </InputGroup>
           </div>
           <ul className="flex-1 overflow-y-auto p-2" aria-label="Robots">
             {shown.map((r) => (
@@ -48,7 +54,10 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
                   type="button"
                   aria-current={r.id === selected ? "true" : undefined}
                   onClick={() => setSelected(r.id)}
-                  className={cn("press flex min-h-(--h-row) w-full flex-col items-start justify-center rounded-sm px-3 text-left hover:bg-accent", r.id === selected && "bg-accent")}
+                  className={cn(
+                    "press flex min-h-(--h-row) w-full flex-col items-start justify-center rounded-sm px-3 text-left hover:bg-accent",
+                    r.id === selected && "bg-muted font-medium",
+                  )}
                 >
                   <span className="text-sm font-medium">{r.name}</span>
                   <span className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -81,25 +90,20 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
                   </Button>
                 </div>
               </div>
-              <dl className="grid gap-4 rounded-md bg-card p-4 ring-1 ring-border sm:grid-cols-3">
-                <div className="flex flex-col gap-1">
-                  <dt className="text-xs text-muted-foreground">Battery</dt>
-                  <dd className="flex flex-col gap-2 text-sm font-medium tabular-nums">
-                    {robot.battery} %
-                    <Progress value={robot.battery} tone={robot.battery < 30 ? "warning" : "neutral"} aria-label="Battery" />
-                  </dd>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <dt className="text-xs text-muted-foreground">Site</dt>
-                  <dd className="flex items-center gap-1 text-sm font-medium">
-                    <MapPin aria-hidden="true" className="size-4 text-muted-foreground" /> {robot.site}
-                  </dd>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <dt className="text-xs text-muted-foreground">Last seen</dt>
-                  <dd className="text-sm font-medium">{robot.lastSeen}</dd>
-                </div>
-              </dl>
+              <DescriptionList
+                items={[
+                  { label: "Battery", value: <Meter value={robot.battery} low={30} critical={15} label="Battery" inline /> },
+                  {
+                    label: "Site",
+                    value: (
+                      <span className="flex items-center gap-2">
+                        <MapPin aria-hidden="true" className="size-4 text-muted-foreground" /> {robot.site}
+                      </span>
+                    ),
+                  },
+                  { label: "Last seen", value: robot.lastSeen },
+                ]}
+              />
               <div className="flex flex-col gap-2">
                 <h3 className="text-sm font-bold">Recent activity</h3>
                 <ul className="rounded-md bg-card ring-1 ring-border">

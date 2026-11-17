@@ -2,6 +2,62 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.8.0 · 2026-11-17
+
+### Added
+- **MCP server** at `/mcp` (Streamable HTTP, stateless, read-only): `search`, `get_item`, `get_install_command`, `get_design_language`, `get_checklist`, answered from the same data as the pages and their twins. Connect: `claude mcp add --transport http syncrobotic https://syncai-lib-designsystem.vercel.app/mcp`.
+- `meter`: a level in a known range (battery, storage), neutral until it crosses `low` or `critical`; `inline` for table cells. role="meter".
+- `pagination`: the range (1–10 of 48) with previous / next, or numbered pages with gaps.
+- `breadcrumb`: links to the levels above, the current page last; AppShell takes it as `breadcrumb`, with the title as the current page.
+- `description-list`: label and value pairs, plain or as tiles.
+- `choice-field` (ChoiceField, FieldSet): a checkbox, radio or switch as a whole 44 px row with label, description and count; a legend and one note line for the group.
+- `copy-button`: copies and confirms in place, the icon swapping to a check for 1.5 s.
+- `badge` › CountBadge: the one way to draw a count, danger on its tint or neutral, 99+.
+- `use-presence`: keeps an element or list items on screen while they leave.
+
+### Changed
+- **Links are foreground with an underline**, not blue (`button` link variant, docs links): blue means in progress. The focus ring stays blue and now appears in that colour at once (it faded from the text colour on elements with `transition-colors`).
+- **The home page is never blank without JavaScript**: the arrival movement is CSS; sections below the screen wait and play as they scroll in, everything else renders visible.
+- `app-shell` hides the environment badge below 640 px; `console-overview` and `event-log` show their action as an icon on phones, so the title is not cut. Home: Charts card has an exhibit and the grid fills its rows; token tables wrap their last column; a component page skips the intro line when it repeats the description.
+- **Hydration error #418 fixed** (intermittent, on most docs pages): the root layout wrote its own `<head>` for the theme script, and React sometimes hydrated `<body>` against Next's hidden metadata wrapper. The script now runs first thing in `<body>`, still before anything paints. 100 loads, 0 errors (was about 1 in 5).
+- Review pass (ui-ux-pro-max): `dock` tabs put the label under the icon below 384 px so four fit a 360 px phone, and action labels wrap; `switch` has a 44 px hit area and is the primary colour when on (was green; a setting being on is a selection, not a status); `table` scroll container is focusable; `fleet-table` names are 44 px targets; `map-workspace` markers use the status shapes; previews no longer nest two `<main>`; `/docs` redirects to the foundations and unknown URLs get the kit's 404; normal states in the docs examples are neutral; the Motion page's looping "don't" stops under reduced motion.
+- **Icon to label is 8 px everywhere** (`gap-2`): segmented control, table sort, field and choice notes, alert, alarm, toast, command, dock, island, status eyebrow, loading line, breadcrumb, app-shell nav and search scope, and the blocks that set their own. The Spacing foundation said 4; it now says 4 is for text to text and inside the 24 px Badge. `lint:motion` fails an icon row with a 4 or 12 px gap.
+- `status-pages` redone: centred on both axes (it read off-balance left-aligned in a centred column); `fill="parent"` sits in an app shell's content; the Blocks page shows the four states side by side.
+- `app-shell`: one gutter and one inset, panels 8 px apart and from the edge with 16 px inside each (24 px inside and 16 px outside read unbalanced).
+- **Every exit is animated**: cleared alarms, island notices and the island alarm, finished governance tasks, the settings save bar and fixed form errors now leave with the disappear movement instead of vanishing.
+- `field` / `select`: a Select inside a Field is labelled, described and marked invalid through its trigger (`useField`).
+- `table`: sortable headers (`sort`, `onSort`) with aria-sort and an arrow.
+- Blocks use them instead of hand-built copies: battery Meters in the fleet table, list and detail, and map; Pagination in the fleet table; Breadcrumb, CopyButton and DescriptionList in the dataset page; FieldSets of ChoiceFields as catalog filters and settings switches; Selects in Fields in the mission form, invitations and settings; CountBadge in the app shell, dock and island.
+
+## 0.7.0 · 2026-11-17
+
+### Added
+- `input-group`: an icon, a unit or a button (clear, show password) inside the input's edge. The group draws the field, focus and error, so addons of any width fit; a Field around it labels the text box inside.
+- `number-field`: a number with a range, a step and a unit (speed limits, thresholds, intervals). Typing is never blocked; the value is kept in range on blur. 44 px buttons; ↑↓, Shift, PageUp/PageDown, Home/End; a spinbutton that reads its unit.
+- `command`: a filterable list and the ⌘K palette. AppShell `search` puts a field with a scope in the top bar that opens it.
+- `chart`: line, area and bar charts on Recharts in the categorical palette, with a crosshair tooltip, a legend and a table view.
+- `top-bar-shell`: the frame without a sidebar; its top bar gathers into a floating panel as the page scrolls.
+- Every component page opens with what the component is, when to use it, and when to use something else.
+
+### Changed
+- **Errors grow in, never shake.** `field` 0.7.0: the message line grows open (height at --motion-base) and the error appears with an icon, so it never relies on colour alone; an error replacing a hint keeps the height. `input`, `textarea`, `select` 0.7.0: the error edge is 2 px and transitions at --motion-fast.
+- `field` 0.7.0: a control that brings its own id keeps it, and the label follows (labels were lost before).
+
+### App shell
+- Inset layout by default: sidebar, top bar and content are separate panels 8 px apart and from the edge, 16 px inside each, top rows level. Below 1280 px the sidebar is a 72 px rail with the logo, opening over the content on hover or tap; the logo, icons and avatar hold the rail's centre line; a group's name gives way to a short line on the rail; the pin icon is filled when the sidebar is kept open. The user menu sits at the foot (44 px as a rail, 56 px open). Footer slot.
+
+### Design-language pass (audit against the foundations)
+- **Touch**: compact controls (`--h-sm`, 36 px) are for a mouse only; on touch screens the token is 44 px, so the island, the dock and phone layouts never go below a finger. Written into Accessibility › Target size.
+- **Selected vs hover**: the current page in navigation is `--muted` with weight; hover is `--accent`. Inverted is for segmented control and toggle.
+- **Motion**: every duration token travels with `--ease-standard` (lint); only the Spinner loops, and it stops under reduced motion (lint); radio and checkbox marks fade in; the sheet's scrim leaves with the panel; the app-shell frame resizes at `--motion-sheet`; chart marks no longer run Recharts' own timing, the chart fades in.
+- **Radius**: menu and select items, alarm and island buttons and the dialog close are concentric with their containers.
+- **Icons**: 16, 20 or 24 px with a 2 px stroke (lint).
+- **One search field**: the shell, fleet table, list and detail, event log and data catalog all use InputGroup.
+- **Colour**: counts are danger text on its tint everywhere; licence tiers are outline tags; the dock's destructive action is an outline.
+
+### Fixed
+- `use-slide-release` 0.7.0 (behind `slide-to-release`): the thumb follows the finger 1:1. The travel was measured from the thumb's current position, so it shrank mid-drag and the thumb outran the finger and released on its own.
+
 ## 0.6.0 · 2026-11-17
 
 ### Added
@@ -22,6 +78,10 @@ Components install as source, so a project keeps the version it installed. Re-ru
   - `stats-cards` 0.6.0: sparklines neutral; only a change for the worse is coloured.
   - Docs site: a real product screen replaces the swatch collage on the home page; no dot grid behind examples; plain eyebrows; new Color rule "Colour is for what is abnormal".
 - **Motion in every component.** The motion language was applied on the docs site but not in the components. Now: overlays (dialog, alert dialog, popover, dropdown menu, select, tooltip) appear and disappear; sheets slide from their edge and their scrim fades; accordion content expands; tab panels, alerts, alarms and island notices appear; field errors appear where the hint was; buttons, toggles, segments, the stop button, the dock, island zones and list rows press. All from theme tokens (`animate-*`, `press`), all off under reduced motion. `npm run lint:motion` (CI) fails a component that skips them or hard-codes timing.
+- **Data tool blocks**, after DataCore, on the same shell: `data-catalog` (filters by tier, use and task; drawer on phones; sort; only restricted tiers coloured), `dataset-detail` (release verdict, open issues, counts and splits, annotated browse grid with layer toggles, lineage, compliance), `governance-todo` (what needs a maintainer or compliance reviewer, most blocking first).
+- **Form and settings blocks**: `settings-page` (switches apply at once, a save bar appears only for unsaved text changes, danger zone confirms the consequence), `record-form` (one column, errors on submit with focus on the first), `users-roles` (role in place, invite dialog, remove with undo).
+- **Sign-in and state blocks**: `sign-in` (company SSO first, email link fallback), `status-pages` (not found, no access, error with a reference, offline that says the stop still works, loading with only unknown values breathing). Never a dead end.
+- Home page: Foundations as a bento grid (Principles leads, the rest in pairs and threes); cards lift their exhibit 2 px and show an arrow on hover at --motion-fast, no travel under reduced motion.
 - `toggle` (new): an on/off button for a layer or option, inverted when on.
 - Block previews follow the block's height at each device width, so nothing overflows or is cut off; app shells keep a screen height. Thumbnails on the Blocks page scale to the card width.
 

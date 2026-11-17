@@ -26,11 +26,11 @@ export default function BlocksPage() {
         return (
           <section key={p} className="flex flex-col gap-4 pt-section-sm">
             <h2 className="text-xl font-bold">{p}</h2>
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid items-start gap-6 md:grid-cols-2">
               {list.map((b) => {
                 return (
                   <Link key={b.name} href={`/blocks/${b.name}`} className="press group flex flex-col overflow-hidden rounded-md border border-border hover:border-muted-foreground">
-                    <BlockThumb name={b.name} title={b.title} width={b.viewport === "mobile" ? 390 : 1280} height={b.height} />
+                    <BlockThumb name={b.name} title={b.title} width={b.viewport === "mobile" ? 390 : 1280} height={b.height} fit={b.product === "App shells" ? "screen" : "content"} />
                     <div className="flex flex-1 flex-col gap-1 border-t border-border bg-card p-4">
                       <span className="font-bold group-hover:underline">{b.title}</span>
                       <span className="text-sm text-muted-foreground">{b.description}</span>

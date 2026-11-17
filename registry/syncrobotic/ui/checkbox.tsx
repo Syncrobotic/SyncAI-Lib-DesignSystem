@@ -1,4 +1,4 @@
-// @syncrobotic/checkbox v0.6.0 · update: npx shadcn add @syncrobotic/checkbox --overwrite
+// @syncrobotic/checkbox v0.7.0 · update: npx shadcn add @syncrobotic/checkbox --overwrite
 "use client"
 
 import * as React from "react"
@@ -21,8 +21,8 @@ export function Checkbox({ className, ...props }: React.ComponentProps<typeof Ch
       {...props}
     >
       <CheckboxPrimitive.Indicator className="group flex items-center justify-center">
-        <Check aria-hidden="true" className="size-4 group-data-[state=indeterminate]:hidden" strokeWidth={3} />
-        <Minus aria-hidden="true" className="hidden size-4 group-data-[state=indeterminate]:block" strokeWidth={3} />
+        <Check aria-hidden="true" className="size-4 animate-fade-in group-data-[state=indeterminate]:hidden" strokeWidth={2} />
+        <Minus aria-hidden="true" className="hidden size-4 animate-fade-in group-data-[state=indeterminate]:block" strokeWidth={2} />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   )

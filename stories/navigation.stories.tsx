@@ -1,8 +1,11 @@
+import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
 import { Bell, Bot, Settings } from "lucide-react"
 import { Badge } from "@/registry/syncrobotic/ui/badge"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/registry/syncrobotic/ui/accordion"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/registry/syncrobotic/ui/tabs"
+import { Breadcrumb, BreadcrumbLink, BreadcrumbPage } from "@/registry/syncrobotic/ui/breadcrumb"
+import { Pagination } from "@/registry/syncrobotic/ui/pagination"
 
 const meta: Meta = { title: "Navigation" }
 export default meta
@@ -65,9 +68,15 @@ export const TabsWithIconsAndCounts: S = {
           <Settings aria-hidden="true" /> Settings
         </TabsTrigger>
       </TabsList>
-      <TabsContent value="robots" className="text-sm text-muted-foreground">12 robots on this site</TabsContent>
-      <TabsContent value="events" className="text-sm text-muted-foreground">3 events need review</TabsContent>
-      <TabsContent value="settings" className="text-sm text-muted-foreground">Site settings</TabsContent>
+      <TabsContent value="robots" className="text-sm text-muted-foreground">
+        12 robots on this site
+      </TabsContent>
+      <TabsContent value="events" className="text-sm text-muted-foreground">
+        3 events need review
+      </TabsContent>
+      <TabsContent value="settings" className="text-sm text-muted-foreground">
+        Site settings
+      </TabsContent>
     </Tabs>
   ),
 }
@@ -90,3 +99,24 @@ export const AccordionMultiple: S = {
     </Accordion>
   ),
 }
+
+export const BreadcrumbDefault: S = {
+  render: () => (
+    <Breadcrumb>
+      <BreadcrumbLink href="#catalog">Catalog</BreadcrumbLink>
+      <BreadcrumbLink href="#people">people</BreadcrumbLink>
+      <BreadcrumbPage>night-parking@v3</BreadcrumbPage>
+    </Breadcrumb>
+  ),
+}
+
+function PaginationDemo({ pages = false, total = 48 }: { pages?: boolean; total?: number }) {
+  const [page, setPage] = React.useState(0)
+  return <Pagination page={page} pageSize={10} total={total} onPageChange={setPage} pages={pages} />
+}
+
+/** Range and previous / next: the default for tables. */
+export const PaginationSimple: S = { render: () => <PaginationDemo /> }
+
+/** Numbered pages, with gaps, for long lists you jump around in. */
+export const PaginationPages: S = { render: () => <PaginationDemo pages total={240} /> }

@@ -47,12 +47,12 @@ Dark is the default: `<html class="dark">`. Default copy is English; every visib
 
 ## Components
 
-52 registry items, grouped as on the docs site. Every component follows the colour, radius, height and spacing rules, and every state has a story.
+61 registry items, grouped as on the docs site. Every component follows the colour, radius, height and spacing rules, and every state has a story.
 
 | Group | Items |
 | --- | --- |
 | Theme | `syncrobotic-theme` (colour, radius, type, height and motion tokens) |
-| Actions | `button`, `segmented-control` |
+| Actions | `button`, `segmented-control`, `toggle` |
 | Inputs | `input`, `textarea`, `label`, `field`, `checkbox`, `radio-group`, `switch`, `select`, `slider` |
 | Display | `badge`, `card`, `avatar`, `separator`, `progress`, `spinner`, `empty-state`, `table`, `list`, `status-glyph`, `status-eyebrow`, `skeleton` |
 | Feedback | `alarm`, `alert`, `toast` |
@@ -61,6 +61,9 @@ Dark is the default: `<html class="dark">`. Default copy is English; every visib
 | Robot shell | `stop-button`, `slide-to-release`, `dock`, `island`, `tray` |
 | Hooks | `use-long-press`, `use-slide-release` |
 | App shells | `app-shell`, `console-overview`, `list-detail`, `event-log`, `map-workspace` |
+| Data tools | `data-catalog`, `dataset-detail`, `governance-todo` |
+| Forms and settings | `settings-page`, `record-form`, `users-roles` |
+| Sign-in and states | `sign-in`, `status-pages` |
 | Blocks | `stats-cards`, `fleet-table`, `robot-status-card`, `marketing-hero` |
 
 General components are built on [Radix UI](https://www.radix-ui.com) primitives, the same base as shadcn/ui, so keyboard and screen-reader behaviour comes from Radix.
@@ -116,6 +119,8 @@ The first `test:visual` run writes baselines; commit them (`tests/__screenshots_
 6. Open a PR once `npm run ci` passes. Add a line to `CHANGELOG.md`.
 
 After changing an item's files, bump its `meta.version` in `registry.json`, add a `meta.changelog` line and run `npm run versions`. After changing the theme, run `npm run tokens`.
+
+Releases: when `main` gets a `package.json` version that has no tag, the `release` workflow tags it `vX.Y.Z` and publishes a GitHub Release with that version's `CHANGELOG.md` section. CI checks that the section exists.
 
 New components start as a proposal issue. How work is chosen, reviewed and released is in [ROADMAP.md](ROADMAP.md).
 

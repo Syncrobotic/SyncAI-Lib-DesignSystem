@@ -144,6 +144,26 @@
     "edge": {
       "$type": "color",
       "$value": "#09090b24"
+    },
+    "chart-1": {
+      "$type": "color",
+      "$value": "#2a78d6"
+    },
+    "chart-2": {
+      "$type": "color",
+      "$value": "#eb6834"
+    },
+    "chart-3": {
+      "$type": "color",
+      "$value": "#1baf7a"
+    },
+    "chart-4": {
+      "$type": "color",
+      "$value": "#eda100"
+    },
+    "chart-5": {
+      "$type": "color",
+      "$value": "#e87ba4"
     }
   },
   "shadow": {

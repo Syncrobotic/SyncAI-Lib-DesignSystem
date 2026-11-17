@@ -72,8 +72,8 @@ export default function MotionPage() {
       >
         <MotionPatterns />
         <p className="text-sm text-muted-foreground">
-          CSS uses the tokens directly (<Code>duration-(--motion-base) ease-(--ease-standard)</Code>). JavaScript animation (motion/react) imports the same values from{" "}
-          <Code>site/motion.ts</Code>; a unit test fails if they drift from the theme file.
+          CSS uses the tokens directly (<Code>duration-(--motion-base) ease-(--ease-standard)</Code>). JavaScript animation (motion/react) imports the same
+          values from <Code>site/motion.ts</Code>; a unit test fails if they drift from the theme file.
         </p>
       </Section>
 
@@ -81,15 +81,20 @@ export default function MotionPage() {
         <TokenTable
           head={["Pattern", "Utility", "Components"]}
           rows={[
-            ["Appear / disappear", <Code key="u">animate-appear · animate-disappear</Code>, "Dialog, Alert dialog, Popover, Dropdown menu, Select, Tooltip, Toast, Alert, Alarm, island notices, tab panels, field errors"],
+            [
+              "Appear / disappear",
+              <Code key="u">animate-appear · animate-disappear</Code>,
+              "Dialog, Alert dialog, Popover, Dropdown menu, Select, Tooltip, Toast, Alert, Alarm, island notices, tab panels, field errors",
+            ],
             ["Sheet", <Code key="u">animate-sheet-in-* · animate-sheet-out-*</Code>, "Sheet (bottom, right, left); scrims fade in with animate-fade-in"],
             ["Expand / collapse", <Code key="u">animate-expand · animate-collapse</Code>, "Accordion"],
             ["Press", <Code key="u">press</Code>, "Button, Toggle, Segmented control, Emergency stop, Dock, island zones, list rows, app-shell navigation"],
-            ["Move", <Code key="u">transition · duration-(--motion-base)</Code>, "Switch thumb, Slide to release, Progress"],
+            ["Move", <Code key="u">transition · duration-(--motion-base) ease-(--ease-standard)</Code>, "Switch thumb, Slide to release, Progress"],
           ]}
         />
         <p className="text-sm text-muted-foreground">
-          <Code>npm run lint:motion</Code> checks that overlays animate in and out, that every button presses, and that no component writes its own duration or easing.
+          <Code>npm run lint:motion</Code> checks that overlays animate in and out, that every button presses, and that no component writes its own duration or
+          easing.
         </p>
       </Section>
 
@@ -105,14 +110,19 @@ export default function MotionPage() {
         </ol>
       </Section>
 
-      <Section id="reduced" title="Reduced motion" lead="When the system asks for reduced motion, every duration drops to 0.01 ms and the skeleton stops breathing. State still changes; it just does not travel.">
+      <Section
+        id="reduced"
+        title="Reduced motion"
+        lead="When the system asks for reduced motion, every duration drops to 0.01 ms and the skeleton stops breathing. State still changes; it just does not travel."
+      >
         <DoDont
           good={{
             visual: <span className="rounded-sm bg-success-subtle px-3 py-2 text-sm text-success">Released</span>,
             text: "Animate the change from stopped to released.",
           }}
           bad={{
-            visual: <span className="animate-pulse rounded-sm bg-info-subtle px-3 py-2 text-sm text-info">New</span>,
+            // motion-ok: the "don't" example shows the loop it forbids
+            visual: <span className="animate-pulse rounded-sm motion-reduce:animate-none bg-info-subtle px-3 py-2 text-sm text-info">New</span>,
             text: "Loop animations to draw the eye. A pulsing badge competes with the emergency stop.",
           }}
         />
