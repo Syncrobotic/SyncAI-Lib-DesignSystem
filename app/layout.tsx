@@ -41,10 +41,9 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`dark ${GeistSans.variable} ${GeistMono.variable}`} suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
       <body className="min-h-screen">
+        {/* Before anything paints. Not in a hand-written <head>: that made hydration fail intermittently (React #418). */}
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <MotionProvider>{children}</MotionProvider>
       </body>
     </html>

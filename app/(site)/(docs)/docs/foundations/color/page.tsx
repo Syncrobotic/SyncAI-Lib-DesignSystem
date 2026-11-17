@@ -214,8 +214,8 @@ export default function ColorPage() {
           good={{
             visual: (
               <div className="flex gap-2">
-                <Badge tone="success">Docked</Badge>
                 <Badge tone="warning">Low battery</Badge>
+                <Badge tone="danger">Motor fault</Badge>
               </div>
             ),
             text: "Pair each tone with its own tint.",

@@ -8,7 +8,7 @@ import { Meter } from "@/registry/syncrobotic/ui/meter"
 import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
 import { IslandAlarm } from "@/registry/syncrobotic/shell/island"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
-import type { Tone } from "@/registry/syncrobotic/shell/status-glyph"
+import { StatusGlyph, type Tone } from "@/registry/syncrobotic/shell/status-glyph"
 import { StopButton, type StopButtonState } from "@/registry/syncrobotic/shell/stop-button"
 import { Tray } from "@/registry/syncrobotic/shell/tray"
 import { type AlarmData } from "@/registry/syncrobotic/ui/alarm"
@@ -40,8 +40,6 @@ const alarms: AlarmData[] = [
   { id: "a1", priority: "critical", title: "Emergency stop · Warehouse", source: "4D21", time: "14:02", active: true, acknowledged: false },
   { id: "a2", priority: "high", title: "Battery 18 %", source: "9C44", time: "14:01", active: true, acknowledged: false },
 ]
-
-const dot: Record<Tone, string> = { info: "fill-info", warning: "fill-warning", danger: "fill-danger", success: "fill-success", neutral: "fill-neutral" }
 
 /**
  * Map workspace: the site map fills the screen; floating trays hold the selected robot, the most urgent alarm
@@ -90,9 +88,7 @@ export function MapWorkspace() {
               r.id === selected && "ring-2 ring-foreground",
             )}
           >
-            <svg viewBox="0 0 12 12" className="size-4" aria-hidden="true">
-              <circle cx="6" cy="6" r="5" className={dot[r.tone]} />
-            </svg>
+            <StatusGlyph tone={r.tone} className="size-4" />
             <span className="absolute top-full font-mono text-xs">{r.id}</span>
           </button>
         ))}

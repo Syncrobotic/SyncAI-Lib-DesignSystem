@@ -1,4 +1,4 @@
-// @syncrobotic/switch v0.7.0 · update: npx shadcn add @syncrobotic/switch --overwrite
+// @syncrobotic/switch v0.8.0 · update: npx shadcn add @syncrobotic/switch --overwrite
 "use client"
 
 import * as React from "react"
@@ -11,7 +11,7 @@ export function Switch({ className, ...props }: React.ComponentProps<typeof Swit
     <SwitchPrimitive.Root
       data-slot="switch"
       className={cn(
-        "peer inline-flex h-7 w-12 shrink-0 items-center rounded-full p-0.5 transition-colors duration-(--motion-base) ease-(--ease-standard)",
+        "peer relative inline-flex h-7 w-12 shrink-0 items-center rounded-full p-0.5 after:absolute after:inset-x-0 after:-inset-y-2 after:content-[''] transition-colors duration-(--motion-base) ease-(--ease-standard)",
         "bg-muted ring-1 ring-border ring-inset data-[state=checked]:bg-success data-[state=checked]:ring-success",
         "disabled:cursor-not-allowed disabled:opacity-50",
         className,
