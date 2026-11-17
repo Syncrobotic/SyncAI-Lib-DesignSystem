@@ -68,20 +68,28 @@
     "hash": "cfa3a04a7233455a"
   },
   "input": {
-    "version": "0.6.0",
-    "hash": "b4871ed7356ff50b"
+    "version": "0.7.0",
+    "hash": "ea9e19ae18463262"
+  },
+  "input-group": {
+    "version": "0.7.0",
+    "hash": "c09c4a812384300e"
+  },
+  "number-field": {
+    "version": "0.7.0",
+    "hash": "31bcad4daff1f6b8"
   },
   "textarea": {
-    "version": "0.6.0",
-    "hash": "729aed38f84f31d1"
+    "version": "0.7.0",
+    "hash": "ab4517bc51099226"
   },
   "label": {
     "version": "0.5.0",
     "hash": "1b3ee1d30973dd40"
   },
   "field": {
-    "version": "0.6.0",
-    "hash": "8c9e9b6fd456f634"
+    "version": "0.7.0",
+    "hash": "9eea7c4f560ce661"
   },
   "checkbox": {
     "version": "0.6.0",
@@ -96,8 +104,8 @@
     "hash": "63e73fa0146ebd3d"
   },
   "select": {
-    "version": "0.6.0",
-    "hash": "43447c24300a4aa8"
+    "version": "0.7.0",
+    "hash": "e0966fba845c1d30"
   },
   "slider": {
     "version": "0.5.0",
