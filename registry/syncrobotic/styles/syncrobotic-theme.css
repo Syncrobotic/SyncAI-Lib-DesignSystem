@@ -1,4 +1,4 @@
-/* @syncrobotic/syncrobotic-theme v0.7.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
+/* @syncrobotic/syncrobotic-theme v0.8.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
 /*
  * SYNCROBOTIC theme · design system 0.5.0 (see CHANGELOG.md)
  * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
@@ -299,6 +299,8 @@
 @layer base {
   * {
     border-color: var(--border);
+    /* The focus ring's colour is set before focus, so elements with transition-colors show it at once instead of fading from the text colour. */
+    outline-color: var(--ring);
   }
 
   body {

@@ -10,7 +10,7 @@ export const metadata: Metadata = metaFor("color")
 
 const neutrals = ["background", "card", "secondary", "border", "muted-foreground", "foreground"]
 const tones = [
-  { t: "info", means: "In progress, links, focus" },
+  { t: "info", means: "In progress, focus ring" },
   { t: "success", means: "Normal, done" },
   { t: "warning", means: "Needs attention soon" },
   { t: "danger", means: "Failed, destructive, stopped" },
