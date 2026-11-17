@@ -52,6 +52,7 @@ export const overviews: Record<string, Overview> = {
       "selectColumn() and expandColumn() are ready-made columns; renderSubRow goes in the table's meta.",
       "Give each column meta.label so the visibility menu names it.",
       "Keep getRowId stable so selection survives sorting.",
+      "data and columns must keep their identity between renders; an inline array (`rows.slice(0, 6)`, `[]`) re-renders forever once state auto-resets.",
     ],
   },
   sortable: {

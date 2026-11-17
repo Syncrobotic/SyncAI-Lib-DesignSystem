@@ -6,6 +6,7 @@ import { flexRender, type Column, type ColumnDef, type Row, type Table as TanTab
 import { useVirtualizer } from "@tanstack/react-virtual"
 import { ArrowDown, ArrowUp, ArrowUpDown, ChevronRight, Columns3, EyeOff, Pin, PinOff } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
 import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
 import {
   DropdownMenu,
@@ -33,6 +34,9 @@ const useGrid = () => {
  * rows, totals, a loading state, and virtual scrolling for thousands of rows. You build the table with useReactTable
  * and these parts draw it in the kit's style: rows 56 px (44 dense), numbers tabular and right-aligned, selection on the
  * accent fill. For a handful of static rows, Table is enough.
+ *
+ * Pass useReactTable data and columns that keep their identity between renders (module scope or useMemo): a new array
+ * on every render recomputes the rows, TanStack auto-resets state, and the component renders again without end.
  */
 export function DataGrid<T>({
   table,
@@ -208,12 +212,12 @@ export function DataGridTable({
                     </td>
                   ))}
                 </tr>
-                {row.getIsExpanded() && table.options.meta && (table.options.meta as { renderSubRow?: (r: Row<unknown>) => React.ReactNode }).renderSubRow && (
-                  <tr>
-                    <td colSpan={cols} className="border-b border-border bg-muted/50 p-4">
-                      {(table.options.meta as { renderSubRow: (r: Row<unknown>) => React.ReactNode }).renderSubRow(row)}
-                    </td>
-                  </tr>
+                {row.getCanExpand() && (
+                  <SubRow
+                    row={row}
+                    cols={cols}
+                    render={(table.options.meta as { renderSubRow?: (r: Row<unknown>) => React.ReactNode } | undefined)?.renderSubRow}
+                  />
                 )}
               </React.Fragment>
             ))}
@@ -342,14 +346,39 @@ export function DataGridPagination({ pages = true }: { pages?: boolean }) {
 export function DataGridSelectionSummary({ children }: { children?: React.ReactNode }) {
   const { table } = useGrid()
   const n = table.getSelectedRowModel().rows.length
-  if (!n) return null
+  // The bar arrives with the first selection and leaves with the last, keeping its count while it goes.
+  const { mounted, leaving, done } = usePresence(n > 0)
+  const last = React.useRef(n)
+  if (n) last.current = n
+  if (!mounted) return null
   return (
-    <div role="status" className="flex h-(--h-md) items-center justify-between gap-3 rounded-sm bg-muted px-3 text-sm">
+    <div
+      role="status"
+      onAnimationEnd={(e) => e.target === e.currentTarget && done()}
+      className={cn("flex h-(--h-md) items-center justify-between gap-3 rounded-sm bg-muted px-3 text-sm", leaving ? "animate-disappear" : "animate-appear")}
+    >
       <span className="tabular-nums">
-        {n} of {table.getRowCount()} selected
+        {last.current} of {table.getRowCount()} selected
       </span>
-      <div className="flex items-center gap-2">{children}</div>
+      <div className="flex items-center gap-2" inert={leaving || undefined}>
+        {children}
+      </div>
     </div>
+  )
+}
+
+// An expanded row's detail: arrives under the row and leaves before the row closes up.
+function SubRow({ row, cols, render }: { row: Row<unknown>; cols: number; render?: (r: Row<unknown>) => React.ReactNode }) {
+  const { mounted, leaving, done } = usePresence(row.getIsExpanded())
+  if (!mounted || !render) return null
+  return (
+    <tr>
+      <td colSpan={cols} className="border-b border-border bg-muted/50 p-4">
+        <div onAnimationEnd={(e) => e.target === e.currentTarget && done()} className={leaving ? "animate-disappear" : "animate-appear"}>
+          {render(row)}
+        </div>
+      </td>
+    </tr>
   )
 }
 

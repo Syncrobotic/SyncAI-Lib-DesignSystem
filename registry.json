@@ -1926,7 +1926,13 @@
       "title": "Data grid",
       "description": "A TanStack Table grid: sorting, pagination, selection, column menus, pinning, resizing, expandable rows, totals, loading, virtual rows.",
       "dependencies": ["@tanstack/react-table", "@tanstack/react-virtual", "lucide-react"],
-      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/checkbox", "@syncrobotic/dropdown-menu", "@syncrobotic/pagination"],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/checkbox",
+        "@syncrobotic/dropdown-menu",
+        "@syncrobotic/pagination",
+        "@syncrobotic/use-presence"
+      ],
       "files": [
         {
           "path": "registry/syncrobotic/ui/data-grid.tsx",
@@ -2070,7 +2076,7 @@
       "title": "Stepper",
       "description": "Where someone is in a fixed sequence of steps: done, current, upcoming and error steps, horizontal or vertical, with a compact bar for phones.",
       "dependencies": ["lucide-react"],
-      "registryDependencies": ["@syncrobotic/cn"],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/use-presence"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/stepper.tsx",

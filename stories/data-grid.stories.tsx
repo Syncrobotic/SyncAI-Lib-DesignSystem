@@ -64,6 +64,11 @@ const makeRobots = (n: number): Robot[] =>
     }
   })
 const robots = makeRobots(48)
+// useReactTable needs data and columns that keep their identity between renders (module scope or useMemo). A new array on
+// every render recomputes the rows and auto-resets state, which renders again: an endless loop once a row is expanded.
+const six = robots.slice(0, 6)
+const five = robots.slice(0, 5)
+const none: Robot[] = []
 
 const columns: ColumnDef<Robot>[] = [
   {
@@ -97,6 +102,22 @@ const columns: ColumnDef<Robot>[] = [
   },
 ]
 
+const firstThree = columns.slice(0, 3)
+const expandableColumns = [expandColumn<Robot>(), ...firstThree]
+const selectableColumns = [selectColumn<Robot>(), ...columns]
+const totalsColumns: ColumnDef<Robot>[] = [
+  { ...columns[0], footer: () => "Total" },
+  columns[1],
+  { ...columns[4], footer: () => `${six.reduce((s, r) => s + r.km, 0).toLocaleString("en-US")} km` },
+  {
+    accessorKey: "tasks",
+    header: ({ column }) => <DataGridColumnHeader column={column} title="Tasks" />,
+    size: 90,
+    meta: { align: "right" },
+    footer: () => six.reduce((s, r) => s + r.tasks, 0),
+  },
+]
+
 function useGrid(data: Robot[], cols: ColumnDef<Robot>[], extra: Partial<TableOptions<Robot>> = {}) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   return useReactTable({
@@ -127,7 +148,7 @@ export const DataGridDefault: S = {
 
 export const DataGridSelection: S = {
   render: function D() {
-    const table = useGrid(robots, [selectColumn<Robot>(), ...columns], { enableRowSelection: (r) => r.original.status !== "offline" })
+    const table = useGrid(robots, selectableColumns, { enableRowSelection: (r) => r.original.status !== "offline" })
     return (
       <DataGrid table={table}>
         <DataGridSelectionSummary>
@@ -159,7 +180,7 @@ export const DataGridDense: S = {
 
 export const DataGridStriped: S = {
   render: function D() {
-    const table = useGrid(robots.slice(0, 6), columns)
+    const table = useGrid(six, columns)
     return (
       <DataGrid table={table} variant="striped">
         <DataGridTable aria-label="Robots" />
@@ -170,7 +191,7 @@ export const DataGridStriped: S = {
 
 export const DataGridCellBorders: S = {
   render: function D() {
-    const table = useGrid(robots.slice(0, 6), columns)
+    const table = useGrid(six, columns)
     return (
       <DataGrid table={table} variant="borders" density="dense">
         <DataGridTable aria-label="Robots" />
@@ -181,7 +202,7 @@ export const DataGridCellBorders: S = {
 
 export const DataGridBorderless: S = {
   render: function D() {
-    const table = useGrid(robots.slice(0, 5), columns.slice(0, 3))
+    const table = useGrid(five, firstThree)
     return (
       <DataGrid table={table} variant="borderless">
         <DataGridTable aria-label="Robots" />
@@ -208,7 +229,7 @@ export const DataGridColumnVisibilityMenu: S = {
 
 export const DataGridExpandableRows: S = {
   render: function D() {
-    const table = useGrid(robots.slice(0, 6), [expandColumn<Robot>(), ...columns.slice(0, 3)], {
+    const table = useGrid(six, expandableColumns, {
       getRowCanExpand: () => true,
       getExpandedRowModel: getExpandedRowModel(),
       initialState: { expanded: { [robots[0].id]: true } },
@@ -275,20 +296,7 @@ export const DataGridVirtualRows: S = {
 
 export const DataGridTotalsFooter: S = {
   render: function D() {
-    const rows = robots.slice(0, 6)
-    const cols: ColumnDef<Robot>[] = [
-      { ...columns[0], footer: () => "Total" },
-      columns[1],
-      { ...columns[4], footer: () => `${rows.reduce((s, r) => s + r.km, 0).toLocaleString("en-US")} km` },
-      {
-        accessorKey: "tasks",
-        header: ({ column }) => <DataGridColumnHeader column={column} title="Tasks" />,
-        size: 90,
-        meta: { align: "right" },
-        footer: () => rows.reduce((s, r) => s + r.tasks, 0),
-      },
-    ]
-    const table = useGrid(rows, cols)
+    const table = useGrid(six, totalsColumns)
     return (
       <DataGrid table={table}>
         <DataGridTable aria-label="Robot mileage" />
@@ -299,7 +307,7 @@ export const DataGridTotalsFooter: S = {
 
 export const DataGridLoading: S = {
   render: function D() {
-    const table = useGrid([], columns)
+    const table = useGrid(none, columns)
     return (
       <DataGrid table={table} loading>
         <DataGridTable aria-label="Robots" />
@@ -310,7 +318,7 @@ export const DataGridLoading: S = {
 
 export const DataGridEmpty: S = {
   render: function D() {
-    const table = useGrid([], columns)
+    const table = useGrid(none, columns)
     return (
       <DataGrid table={table} emptyText="No robots match these filters.">
         <DataGridTable aria-label="Robots" />

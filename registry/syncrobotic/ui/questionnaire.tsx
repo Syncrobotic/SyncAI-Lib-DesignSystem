@@ -77,10 +77,22 @@ export function Questionnaire({
     return m.length === 0
   }
   const total = questions.length + (review ? 1 : 0)
-  const move = (to: number) => {
-    setIndex(to)
-    // Move focus to the new question so keyboard and screen reader users land on it.
+  // Changing page: the current question leaves, then the next arrives and takes focus, so keyboard and screen reader
+  // users land on it. If animations never run, the switch still happens after the safety delay.
+  const [next, setNext] = React.useState<number | null>(null)
+  const commit = React.useCallback(() => {
+    if (next === null) return
+    setIndex(next)
+    setNext(null)
     requestAnimationFrame(() => headingRef.current?.focus())
+  }, [next])
+  React.useEffect(() => {
+    if (next === null) return
+    const t = window.setTimeout(commit, 400)
+    return () => window.clearTimeout(t)
+  }, [next, commit])
+  const move = (to: number) => {
+    if (next === null && to !== index) setNext(to)
   }
 
   const field = (q: Question) => (
@@ -149,7 +161,14 @@ export function Questionnaire({
           <div className="h-full rounded-full bg-foreground transition-[width] duration-(--motion-base) ease-(--ease-standard)" style={{ width: `${pct}%` }} />
         </div>
       </div>
-      <div ref={headingRef} tabIndex={-1} key={index} className="animate-appear outline-none">
+      <div
+        ref={headingRef}
+        tabIndex={-1}
+        key={index}
+        inert={next !== null || undefined}
+        onAnimationEnd={(e) => e.target === e.currentTarget && commit()}
+        className={cn("outline-none", next === null ? "animate-appear" : "animate-disappear")}
+      >
         {onReview ? (
           <ul aria-label="Your answers" className="flex flex-col">
             {questions.map((x, i) => (

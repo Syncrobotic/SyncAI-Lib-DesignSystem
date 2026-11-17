@@ -1,6 +1,7 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
 import { Camera, ImagePlus, Map } from "lucide-react"
+import { usePresenceList } from "@/registry/syncrobotic/hooks/use-presence"
 import { Attachment } from "@/registry/syncrobotic/ui/attachment"
 import { FileUpload, formatBytes, type FileRejection } from "@/registry/syncrobotic/ui/file-upload"
 
@@ -13,11 +14,24 @@ const reasons = { type: "is not a supported type", size: "is too large", count: 
 export const FileUploadDefault: S = {
   render: function U() {
     const [files, setFiles] = React.useState<File[]>([])
+    // Removed files fade out where they were instead of vanishing.
+    const { rendered, done } = usePresenceList(files, (f) => f.name)
     return (
       <div className="flex flex-col gap-3">
-        <FileUpload onFiles={(f) => setFiles((p) => [...p, ...f])} hint="Any file up to 50 MB" maxSize={50 * 1024 ** 2} />
-        {files.map((f) => (
-          <Attachment key={f.name} name={f.name} size={f.size} onRemove={() => setFiles((p) => p.filter((x) => x !== f))} />
+        <FileUpload
+          onFiles={(f) => setFiles((p) => [...p, ...f.filter((n) => !p.some((x) => x.name === n.name))])}
+          hint="Any file up to 50 MB"
+          maxSize={50 * 1024 ** 2}
+        />
+        {rendered.map(({ item: f, leaving }) => (
+          <Attachment
+            key={f.name}
+            name={f.name}
+            size={f.size}
+            leaving={leaving}
+            onLeft={() => done(f.name)}
+            onRemove={() => setFiles((p) => p.filter((x) => x !== f))}
+          />
         ))}
       </div>
     )

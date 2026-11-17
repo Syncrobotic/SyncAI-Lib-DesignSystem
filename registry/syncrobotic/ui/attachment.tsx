@@ -26,7 +26,9 @@ export function Attachment({
   onRemove,
   onRetry,
   onDownload,
-  className,
+  leaving,
+  onLeft,
+  className: classNameProp,
 }: {
   name: string
   /** Bytes. */
@@ -40,8 +42,16 @@ export function Attachment({
   onRemove?: () => void
   onRetry?: () => void
   onDownload?: () => void
+  /** Removed from the list: plays the exit, then calls onLeft. Pair with usePresenceList. */
+  leaving?: boolean
+  onLeft?: () => void
   className?: string
 }) {
+  // Every attachment arrives and leaves: appear on mount, disappear when `leaving`.
+  const className = cn(leaving ? "animate-disappear" : "animate-appear", classNameProp)
+  const onAnimationEnd = (e: React.AnimationEvent) => {
+    if (leaving && e.target === e.currentTarget) onLeft?.()
+  }
   const meta =
     status === "uploading"
       ? `${progress ?? 0} % · ${size ? formatBytes(size) : ""}`
@@ -60,7 +70,7 @@ export function Attachment({
 
   if (variant === "image")
     return (
-      <figure data-slot="attachment" data-status={status} className={cn("group relative flex w-28 flex-col gap-1", className)}>
+      <figure data-slot="attachment" data-status={status} onAnimationEnd={onAnimationEnd} className={cn("group relative flex w-28 flex-col gap-1", className)}>
         <div className={cn("relative aspect-square overflow-hidden rounded-sm bg-muted ring-1 ring-border", status === "error" && "ring-2 ring-danger")}>
           {previewUrl ? (
             // eslint-disable-next-line @next/next/no-img-element -- a local object URL preview
@@ -92,6 +102,7 @@ export function Attachment({
       <span
         data-slot="attachment"
         data-status={status}
+        onAnimationEnd={onAnimationEnd}
         className={cn(
           "inline-flex h-(--h-md) max-w-64 items-center gap-2 rounded-sm bg-card pr-1 pl-2 ring-1 ring-border ring-inset",
           status === "error" && "ring-danger",
@@ -111,6 +122,7 @@ export function Attachment({
     <div
       data-slot="attachment"
       data-status={status}
+      onAnimationEnd={onAnimationEnd}
       className={cn(
         "flex min-h-(--h-row) items-center gap-3 rounded-sm bg-card px-3 py-2 ring-1 ring-border ring-inset",
         status === "error" && "ring-danger",

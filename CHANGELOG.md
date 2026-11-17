@@ -31,6 +31,8 @@ Components install as source, so a project keeps the version it installed. Re-ru
 
 ### Changed
 - More examples for the existing Inputs: textarea, checkbox, radio group, switch, select, slider, label, input group, number field, field and choice field.
+- Everything that comes also goes: the data grid's selection bar and expanded rows, a vertical stepper's step content, questionnaire pages (the question leaves before the next arrives) and attachments (`leaving` and `onLeft`, with usePresenceList) now have an exit as well as an entrance.
+- Component pages: examples, usage rules, keys and changelog arrive as they scroll in. Whatever is on screen at load renders at once, and nothing is hidden without JavaScript.
 - More examples for Breadcrumb (icon, collapsed levels, switcher, truncation), Sheet (navigation drawer, bottom actions, edit form), Toast (undo, failure with retry, title only, queue) and Label (optional, info tooltip, inline, disabled).
 - More examples for the existing Actions and Display components: toggle, segmented control, copy button, badge, avatar, card, separator, progress, spinner, meter, description list, status glyph, status eyebrow and skeleton now show 4 to 8 real uses each.
 - Story checks run the page clock past timed UI (the loading spinner, presence timers) before the screenshot, so visual baselines no longer depend on machine speed.

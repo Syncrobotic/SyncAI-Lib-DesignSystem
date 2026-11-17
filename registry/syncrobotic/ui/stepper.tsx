@@ -4,6 +4,7 @@
 import * as React from "react"
 import { Check, X } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
 
 /**
  * Where someone is in a fixed sequence of steps (commissioning a robot, an import wizard).
@@ -155,7 +156,9 @@ export function StepperItem({
       {vertical && children && (
         <div className="flex gap-3">
           <span aria-hidden="true" className={cn("shrink-0", size === "sm" ? "w-6" : "w-8")} />
-          <div className="min-w-0 flex-1 pt-3 pb-6">{state === "current" || state === "error" ? children : null}</div>
+          <div className="min-w-0 flex-1 pt-3 pb-6">
+            <StepContent show={state === "current" || state === "error"}>{children}</StepContent>
+          </div>
         </div>
       )}
       {vertical && !children && !last && <div className="h-6" />}
@@ -203,6 +206,21 @@ export function StepperCompact({ value, total, title, className }: { value: numb
       >
         <div className="h-full rounded-full bg-foreground transition-[width] duration-(--motion-base) ease-(--ease-standard)" style={{ width: `${pct}%` }} />
       </div>
+    </div>
+  )
+}
+
+// A vertical step's content: shown while the step is current (or failed), arriving and leaving with the step.
+function StepContent({ show, children }: { show: boolean; children: React.ReactNode }) {
+  const { mounted, leaving, done } = usePresence(show)
+  if (!mounted) return null
+  return (
+    <div
+      onAnimationEnd={(e) => e.target === e.currentTarget && done()}
+      inert={leaving || undefined}
+      className={leaving ? "animate-disappear" : "animate-appear"}
+    >
+      {children}
     </div>
   )
 }
