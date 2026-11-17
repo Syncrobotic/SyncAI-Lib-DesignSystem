@@ -379,7 +379,7 @@ export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch;
   return (
     <>
       {/* Wide screens: a field with the scope inside. Narrow: an icon button. Both open the palette. */}
-      <div className="hidden h-(--h-md) w-80 items-center rounded-sm bg-background ring-1 ring-input ring-inset lg:flex">
+      <div className="hidden h-(--h-md) w-80 items-center rounded-sm bg-card ring-1 ring-input ring-inset lg:flex">
         <button
           type="button"
           onClick={() => setOpen(true)}

@@ -21,8 +21,8 @@ const groups: { title: string; tokens: string[]; use: Record<string, string> }[]
     title: "Surface and text",
     tokens: ["background", "card", "popover", "secondary", "muted", "border", "input", "foreground", "muted-foreground", "disabled"],
     use: {
-      background: "Page",
-      card: "Cards, list groups",
+      background: "Page only. Never fill a control with it: a field on a panel takes the panel's surface (card) and an input edge, or it reads as a hole",
+      card: "Cards, list groups, app-shell panels, and the fields on them",
       popover: "Menus, dialogs",
       secondary: "Secondary buttons",
       muted: "Tracks, current page in navigation (hover is accent)",
