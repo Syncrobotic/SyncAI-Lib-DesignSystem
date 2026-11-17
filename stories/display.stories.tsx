@@ -488,3 +488,315 @@ export const TableSortable: S = {
     )
   },
 }
+
+export const BadgeOutline: S = {
+  render: () => (
+    <div className="flex flex-wrap gap-2">
+      <Badge tone="outline">Firmware 4.8</Badge>
+      <Badge tone="outline">Hall B</Badge>
+      <Badge tone="outline">Night shift</Badge>
+    </div>
+  ),
+}
+
+export const BadgeWithIcon: S = {
+  render: () => (
+    <div className="flex flex-wrap gap-2">
+      <Badge tone="warning">
+        <TriangleAlert aria-hidden="true" /> Low battery
+      </Badge>
+      <Badge>
+        <Wifi aria-hidden="true" /> Online
+      </Badge>
+      <Badge tone="danger">
+        <CircleAlert aria-hidden="true" /> 2 faults
+      </Badge>
+    </div>
+  ),
+}
+
+export const BadgeInHeading: S = {
+  render: () => (
+    <div className="flex flex-col gap-3">
+      <h3 className="flex items-center gap-2 text-lg font-bold">
+        North gate patrol <Badge tone="outline">Draft</Badge>
+      </h3>
+      <h3 className="flex items-center gap-2 text-lg font-bold">
+        Site map <Badge>v12 · live</Badge>
+      </h3>
+    </div>
+  ),
+}
+
+export const BadgeAsLink: S = {
+  render: () => (
+    <Badge asChild tone="outline" className="press hover:bg-accent">
+      <a href="#tag-hall-b">Hall B</a>
+    </Badge>
+  ),
+}
+
+export const AvatarGroup: S = {
+  render: () => (
+    <div className="flex items-center gap-3">
+      <div className="flex -space-x-2" aria-label="On shift: Mei Lin, Arjun Rao, Sara Kim and 2 more">
+        {["ML", "AR", "SK"].map((i) => (
+          <Avatar key={i} className="ring-2 ring-background">
+            <AvatarFallback>{i}</AvatarFallback>
+          </Avatar>
+        ))}
+        <Avatar className="ring-2 ring-background">
+          <AvatarFallback>+2</AvatarFallback>
+        </Avatar>
+      </div>
+      <span className="text-sm text-muted-foreground">5 on shift</span>
+    </div>
+  ),
+}
+
+export const AvatarWithName: S = {
+  render: () => (
+    <div className="flex items-center gap-3">
+      <Avatar className="size-10">
+        <AvatarFallback>ML</AvatarFallback>
+      </Avatar>
+      <div className="flex flex-col">
+        <span className="text-sm font-medium">Mei Lin</span>
+        <span className="text-xs text-muted-foreground">Operator · night shift</span>
+      </div>
+    </div>
+  ),
+}
+
+export const CardWithAction: S = {
+  render: () => (
+    <Card>
+      <CardHeader>
+        <CardTitle>Lidar cleaning due</CardTitle>
+        <CardDescription>Courier 2B19 · every 200 h, last 212 h ago</CardDescription>
+      </CardHeader>
+      <CardFooter className="justify-end gap-2">
+        <Button variant="ghost" size="sm">
+          Snooze
+        </Button>
+        <Button size="sm">Schedule</Button>
+      </CardFooter>
+    </Card>
+  ),
+}
+
+export const CardInteractive: S = {
+  render: () => (
+    <a
+      href="#site-hall-b"
+      className="press group block rounded-md transition-colors duration-(--motion-fast) ease-(--ease-standard) [&>[data-slot=card]]:hover:ring-muted-foreground"
+    >
+      <Card>
+        <CardHeader>
+          <CardTitle>Hall B</CardTitle>
+          <CardDescription>6 robots · 2 patrolling · 1 needs attention</CardDescription>
+        </CardHeader>
+      </Card>
+    </a>
+  ),
+}
+
+export const CardEmpty: S = {
+  render: () => (
+    <Card>
+      <CardHeader>
+        <CardTitle>Scheduled missions</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <EmptyState icon={SearchX} title="Nothing scheduled" description="Missions you schedule for this site appear here." />
+      </CardContent>
+    </Card>
+  ),
+}
+
+export const SeparatorVertical: S = {
+  render: () => (
+    <div className="flex h-6 items-center gap-3 text-sm">
+      <span>Hall B</span>
+      <Separator orientation="vertical" />
+      <span className="text-muted-foreground">6 robots</span>
+      <Separator orientation="vertical" />
+      <span className="text-muted-foreground">Floor 2</span>
+    </div>
+  ),
+}
+
+export const SeparatorWithLabel: S = {
+  render: () => (
+    <div className="flex items-center gap-3 text-xs text-muted-foreground">
+      <Separator className="flex-1" />
+      Yesterday
+      <Separator className="flex-1" />
+    </div>
+  ),
+}
+
+export const ProgressTones: S = {
+  render: () => (
+    <div className="flex flex-col gap-4 text-sm">
+      {[
+        { label: "Map upload", value: 40, tone: "info" as const },
+        { label: "Firmware update", value: 100, tone: "success" as const },
+        { label: "Battery", value: 18, tone: "warning" as const },
+      ].map((p) => (
+        <div key={p.label} className="flex flex-col gap-2">
+          <span className="flex justify-between">
+            {p.label}
+            <span className="text-muted-foreground tabular-nums">{p.value} %</span>
+          </span>
+          <Progress value={p.value} tone={p.tone} aria-label={p.label} />
+        </div>
+      ))}
+    </div>
+  ),
+}
+
+export const ProgressInCard: S = {
+  render: () => (
+    <Card>
+      <CardHeader>
+        <CardTitle>Inventory scan</CardTitle>
+        <CardDescription>Aisle 14 of 24 · about 6 min left</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Progress value={58} aria-label="Inventory scan" />
+      </CardContent>
+    </Card>
+  ),
+}
+
+export const SpinnerInline: S = {
+  render: () => (
+    <p role="status" className="flex items-center gap-2 text-sm text-muted-foreground">
+      <Spinner delay={0} className="size-4" label="Syncing" />
+      Syncing route to 4 robots…
+    </p>
+  ),
+}
+
+export const SpinnerSizes: S = {
+  render: () => (
+    <div className="flex items-end gap-4">
+      <Spinner delay={0} className="size-4" />
+      <Spinner delay={0} className="size-5" />
+      <Spinner delay={0} className="size-6" />
+    </div>
+  ),
+}
+
+export const MeterHigherIsWorse: S = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <Meter label="Motor temperature" value={48} max={90} low={60} critical={75} higherIsWorse unit=" °C" />
+      <Meter label="Motor temperature" value={68} max={90} low={60} critical={75} higherIsWorse unit=" °C" />
+      <Meter label="Motor temperature" value={81} max={90} low={60} critical={75} higherIsWorse unit=" °C" />
+    </div>
+  ),
+}
+
+export const MeterStorage: S = {
+  render: () => <Meter label="Recording storage" value={412} max={512} low={0} critical={0} higherIsWorse unit=" GB" />,
+}
+
+export const MeterGrid: S = {
+  render: () => (
+    <div className="grid grid-cols-2 gap-4">
+      <Meter label="Battery" value={72} low={30} critical={15} />
+      <Meter label="Signal" value={54} low={40} critical={20} />
+      <Meter label="Storage used" value={81} low={80} critical={95} higherIsWorse />
+      <Meter label="CPU" value={36} low={80} critical={95} higherIsWorse />
+    </div>
+  ),
+}
+
+export const DescriptionListTwoColumns: S = {
+  render: () => (
+    <DescriptionList
+      columns={2}
+      items={[
+        { label: "Robot", value: "Patrol dog 7F3A" },
+        { label: "Firmware", value: "4.8.0" },
+        { label: "Site", value: "North gate" },
+        { label: "Last contact", value: "14:02:31" },
+      ]}
+    />
+  ),
+}
+
+export const DescriptionListWithStatus: S = {
+  render: () => (
+    <DescriptionList
+      columns={2}
+      items={[
+        { label: "State", value: <InlineStatus tone="warning">Needs attention</InlineStatus> },
+        { label: "Licence", value: <Badge tone="outline">Pro</Badge> },
+        { label: "Battery", value: "18 %" },
+        { label: "Odometer", value: "1 284 km" },
+      ]}
+    />
+  ),
+}
+
+export const StatusGlyphTones: S = {
+  render: () => (
+    <ul className="flex flex-col gap-2 text-sm">
+      {(
+        [
+          ["info", "In progress"],
+          ["success", "Normal"],
+          ["warning", "Needs attention"],
+          ["danger", "Stopped"],
+          ["neutral", "Offline"],
+        ] as const
+      ).map(([t, l]) => (
+        <li key={t} className="flex items-center gap-2">
+          <StatusGlyph tone={t} /> {l}
+        </li>
+      ))}
+    </ul>
+  ),
+}
+
+export const StatusGlyphSizes: S = {
+  render: () => (
+    <div className="flex items-end gap-4">
+      {(["size-3", "size-4", "size-5"] as const).map((s) => (
+        <StatusGlyph key={s} tone="warning" className={s} />
+      ))}
+    </div>
+  ),
+}
+
+export const StatusGlyphInTable: S = {
+  render: () => (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Robot</TableHead>
+          <TableHead>State</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {[
+          ["7F3A", "info", "Patrolling"],
+          ["2B10", "success", "Docked"],
+          ["9C44", "warning", "Needs attention"],
+          ["4D21", "danger", "Stopped"],
+          ["1A08", "neutral", "Offline"],
+        ].map(([id, tone, label]) => (
+          <TableRow key={id}>
+            <TableCell className="font-medium">{id}</TableCell>
+            <TableCell>
+              <InlineStatus tone={tone as "info"}>{label}</InlineStatus>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  ),
+}

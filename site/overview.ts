@@ -5,6 +5,80 @@
 export type Overview = { what: string; use: string[]; instead?: string[]; notes?: string[] }
 
 export const overviews: Record<string, Overview> = {
+  item: {
+    what: "A general-purpose row: a leading icon, avatar or image, a title with one or two lines below, and actions, a badge or a key at the end.",
+    use: [
+      "Lists of people, files, integrations or settings links.",
+      "Menus where each whole row is a link.",
+      "A compact card-like record with a header and footer line.",
+    ],
+    instead: [
+      "A robot with live status in the robot shell: `list`.",
+      "Rows the user sorts or filters by column: `table`.",
+      "Key and value pairs: `description-list`.",
+    ],
+    notes: [
+      "A row becomes a link only through asChild on an <a>; never put onClick on a static Item.",
+      "ItemGroup has role list; wrap each Item in an element with role listitem.",
+      "ItemTitle is one line: put the text in a <span> first so it truncates and badges stay whole.",
+    ],
+  },
+  "icon-tile": {
+    what: "A tile that gives an icon a consistent surface and size, so icons in rows, cards and empty states line up.",
+    use: ["The media of a row or card.", "A status at a glance: a failed run, a warning.", "A feature or category heading."],
+    instead: ["A person: `avatar`.", "A status next to text in a row: `status-glyph` or `status-eyebrow`."],
+    notes: [
+      "Use the soft or solid tones only for status, never to decorate a category.",
+      "An interactive tile (asChild link) needs its own aria-label.",
+      "IconTileDot needs a label; it is announced as an image.",
+    ],
+  },
+  kbd: {
+    what: "A key cap for shortcuts and keyboard instructions, alone or grouped into a chord.",
+    use: ["Shortcut hints in menus, tooltips and search fields.", "A keyboard reference list.", "Instructions like Hold Space to stop all."],
+    instead: ["A code value or ID: a <code> span in font-mono."],
+    notes: ["Icon-only keys (arrows) need sr-only text inside; a <kbd> cannot take an aria-label.", "Inside a tooltip the key takes the tooltip's colours automatically."],
+  },
+  "button-group": {
+    what: "A strip of joined controls that reads as one: neighbours share an edge and only the outer corners are round.",
+    use: [
+      "A split button: the main action and a menu of variants.",
+      "A stepper: minus, value, plus.",
+      "Prev and next, zoom in and out, playback controls.",
+      "A search field with its scope menu and button.",
+    ],
+    instead: [
+      "One choice among several that stays selected: `toggle-group` or `segmented-control`.",
+      "Unrelated actions in a toolbar: separate buttons with a gap.",
+    ],
+    notes: [
+      "Filled buttons need ButtonGroupSeparator between them; outline buttons share their edge.",
+      "ButtonGroupText is not interactive; use it for a value or count.",
+      'Set orientation="vertical" for map zoom and tool palettes.',
+    ],
+  },
+  "scroll-area": {
+    what: "A region that scrolls inside a fixed size, with a scrollbar that matches the theme on every platform.",
+    use: ["A long log or list inside a card.", "A row of thumbnails that pans sideways.", "A wide table inside a panel."],
+    instead: ["The whole page: let the page scroll.", "A data table with sorting: `table`, which scrolls by itself."],
+    notes: [
+      "Without a height it never scrolls; set h-* or max-h-*.",
+      "fade hides the edges with a mask; do not use it when the first or last line must always be legible.",
+    ],
+  },
+  "toggle-group": {
+    what: "A row of toggle buttons where one (single) or several (multiple) can be on.",
+    use: ["Time ranges, view modes and filters with a single choice.", "Map layers or notification channels where any mix is on."],
+    instead: [
+      "Switching views of the same data on a muted track: `segmented-control`.",
+      "One on/off: `toggle`.",
+      "A form choice saved on submit: `radio-group` or `checkbox`.",
+    ],
+    notes: [
+      "Single mode allows clearing the value; guard against an empty value if one is required.",
+      "Use joined={false} for filter chips that read as separate options.",
+    ],
+  },
   "choice-field": {
     what: "One choice as a whole tappable row: a checkbox, radio or switch with its label, a description and an optional count. FieldSet groups them under one question.",
     use: ["Filters with counts.", "Settings that switch on and off.", "Several answers to one question in a form."],

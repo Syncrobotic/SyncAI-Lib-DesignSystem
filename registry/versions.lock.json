@@ -219,6 +219,30 @@
     "version": "0.8.0",
     "hash": "10bb4491132203af"
   },
+  "item": {
+    "version": "0.9.0",
+    "hash": "d0e5f2ecc5b1a1bd"
+  },
+  "icon-tile": {
+    "version": "0.9.0",
+    "hash": "5300fcb25c819cb1"
+  },
+  "kbd": {
+    "version": "0.9.0",
+    "hash": "865079a18d9b1fb9"
+  },
+  "button-group": {
+    "version": "0.9.0",
+    "hash": "8e7f546fe1ffe696"
+  },
+  "scroll-area": {
+    "version": "0.9.0",
+    "hash": "84680f8e564dae37"
+  },
+  "toggle-group": {
+    "version": "0.9.0",
+    "hash": "f666b471537373bb"
+  },
   "stats-cards": {
     "version": "0.8.0",
     "hash": "7ea8d5c0e447f2ee"
