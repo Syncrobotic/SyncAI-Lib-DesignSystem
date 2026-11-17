@@ -1481,7 +1481,7 @@
           {
             "version": "0.6.0",
             "date": "2026-11-17",
-            "note": "First release. Links and buttons press."
+            "note": "First release. Links and buttons press. Brand row matches the top bar's height and hairline; title, content and the user row share the 24 px edge; optional logo."
           }
         ]
       }

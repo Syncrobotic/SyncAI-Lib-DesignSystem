@@ -40,6 +40,8 @@ const environments = {
 type AppShellProps = {
   /** The tool's name, top of the sidebar. */
   product: string
+  /** Mark before the name, at 28 px (e.g. the SYNCROBOTIC mark). */
+  logo?: React.ReactNode
   nav: AppNavGroup[]
   /** href of the current page. */
   current?: string
@@ -99,14 +101,20 @@ function Nav({ nav, current, collapsed, linkAs: Link = "a" }: { nav: AppNavGroup
  * The frame of an internal tool: sidebar navigation (collapsible on desktop, a sheet on phones),
  * a top bar with the page title, search, environment and user, and the page content.
  */
-export function AppShell({ product, nav, current, title, actions, environment, user, onSearch, linkAs, bleed, children }: AppShellProps) {
+export function AppShell({ product, logo, nav, current, title, actions, environment, user, onSearch, linkAs, bleed, children }: AppShellProps) {
   const [collapsed, setCollapsed] = React.useState(false)
   const env = environment ? environments[environment] : null
   return (
     <div className="flex h-dvh bg-background text-foreground">
-      <aside className={cn("hidden shrink-0 flex-col gap-6 border-r border-border bg-card p-3 md:flex", collapsed ? "w-18" : "w-60")}>
-        <div className={cn("flex h-(--h-md) items-center gap-2", collapsed ? "justify-center" : "pl-3")}>
-          {!collapsed && <span className="flex-1 truncate text-sm font-bold">{product}</span>}
+      <aside className={cn("hidden shrink-0 flex-col border-r border-border bg-card md:flex", collapsed ? "w-18" : "w-60")}>
+        {/* Same height and hairline as the top bar, so the brand row and the bar read as one line across the screen. */}
+        <div className={cn("flex h-(--h-row) shrink-0 items-center gap-2 border-b border-border px-3", collapsed && "justify-center")}>
+          {!collapsed && (
+            <span className="flex min-w-0 flex-1 items-center gap-2 pl-3">
+              {logo}
+              <span className="truncate text-sm font-bold">{product}</span>
+            </span>
+          )}
           <button
             type="button"
             aria-label={collapsed ? "Expand navigation" : "Collapse navigation"}
@@ -117,11 +125,11 @@ export function AppShell({ product, nav, current, title, actions, environment, u
             {collapsed ? <PanelLeftOpen aria-hidden="true" className="size-5" /> : <PanelLeftClose aria-hidden="true" className="size-5" />}
           </button>
         </div>
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto p-3">
           <Nav nav={nav} current={current} collapsed={collapsed} linkAs={linkAs} />
         </div>
         {user && (
-          <div className={cn("flex items-center gap-3", collapsed ? "justify-center" : "px-3")}>
+          <div className={cn("flex h-(--h-row) shrink-0 items-center gap-3 border-t border-border px-6", collapsed && "justify-center px-3")}>
             <Avatar>
               <AvatarFallback>{user.initials}</AvatarFallback>
             </Avatar>
@@ -131,10 +139,10 @@ export function AppShell({ product, nav, current, title, actions, environment, u
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex h-(--h-row) shrink-0 items-center gap-3 border-b border-border px-4">
+        <header className="flex h-(--h-row) shrink-0 items-center gap-3 border-b border-border px-6">
           <Sheet>
             <SheetTrigger asChild>
-              <button type="button" aria-label="Open navigation" className="press flex size-(--h-md) items-center justify-center rounded-sm hover:bg-accent md:hidden">
+              <button type="button" aria-label="Open navigation" className="press -ml-3 flex size-(--h-md) items-center justify-center rounded-sm hover:bg-accent md:hidden">
                 <Menu aria-hidden="true" className="size-5" />
               </button>
             </SheetTrigger>
