@@ -27,7 +27,7 @@ export default function TypographyPage() {
 
       <Section id="family" title="Typeface" lead="Geist for Latin, with a Traditional Chinese fallback. Fonts ship with the product; they are never loaded from a CDN.">
         <Specimen className="flex flex-col gap-6">
-          <p className="text-[5rem] leading-none font-bold tracking-tight">Aa 7F3A</p>
+          <p className="text-5xl font-bold tracking-tight">Aa 7F3A</p>
           <p className="max-w-xl text-muted-foreground">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789 · %/°→</p>
           <Code>font-family: {family}</Code>
         </Specimen>
@@ -36,7 +36,7 @@ export default function TypographyPage() {
       <Section id="scale" title="Scale" lead="Size / line height in px. Inputs use body (16) so iOS does not zoom on focus.">
         <div className="overflow-hidden rounded-md border border-border">
           {scale.map((s) => (
-            <div key={s.key} className="grid items-baseline gap-2 border-b border-border bg-card px-6 py-5 last:border-b-0 sm:grid-cols-[10rem_1fr]">
+            <div key={s.key} className="grid items-baseline gap-2 border-b border-border bg-card px-6 py-4 last:border-b-0 sm:grid-cols-[10rem_1fr]">
               <div className="flex flex-col">
                 <span className="text-sm font-medium">{s.role}</span>
                 <span className="font-mono text-xs text-muted-foreground">
@@ -73,7 +73,7 @@ export default function TypographyPage() {
             { w: "font-medium", n: "500 Medium", u: "Labels, list titles, selected" },
             { w: "font-bold", n: "700 Bold", u: "Titles, primary actions, stop" },
           ].map((x) => (
-            <div key={x.w} className="flex flex-col gap-2 rounded-md border border-border bg-card p-5">
+            <div key={x.w} className="flex flex-col gap-2 rounded-md border border-border bg-card p-4">
               <span className={`text-3xl ${x.w}`}>Aa</span>
               <span className="text-sm font-medium">{x.n}</span>
               <span className="text-xs text-muted-foreground">{x.u}</span>

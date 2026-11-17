@@ -72,7 +72,7 @@ export default function ColorPage() {
         <Specimen>
           <div className="grid gap-4 text-sm sm:grid-cols-3">
             {[
-              { k: "1 · Value", v: "#60a5fa", d: "A literal colour. Lives only in the theme file." },
+              { k: "1 · Value", v: color("info").dark, d: "A literal colour. Lives only in the theme file." },
               { k: "2 · Semantic token", v: "--info", d: "A meaning, resolved per mode in :root and .dark." },
               { k: "3 · Utility", v: "text-info", d: "What components write. Tailwind maps it to the token." },
             ].map((s) => (

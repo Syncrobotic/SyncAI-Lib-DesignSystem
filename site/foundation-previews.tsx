@@ -24,7 +24,7 @@ const previews: Record<FoundationSlug, React.ReactNode> = {
   ),
   typography: (
     <div className="flex items-baseline gap-3">
-      <span className="text-[3.5rem] leading-none font-bold">Aa</span>
+      <span className="text-5xl font-bold">Aa</span>
       <span className="flex flex-col text-xs text-muted-foreground">
         <span>28 / 20 / 18</span>
         <span>16 / 14 / 12</span>
@@ -34,14 +34,14 @@ const previews: Record<FoundationSlug, React.ReactNode> = {
   spacing: (
     <div className="flex items-end gap-2">
       {[4, 8, 12, 16, 24, 32].map((s) => (
-        <span key={s} className="w-3 rounded-[2px] bg-info" style={{ height: s * 2 }} />
+        <span key={s} className="w-3 bg-info" style={{ height: s * 2 }} />
       ))}
     </div>
   ),
   radius: (
     <div className="rounded-xl bg-float p-2 ring-1 ring-edge">
       <div className="rounded-md bg-muted p-1">
-        <div className="flex h-10 w-28 items-center justify-center rounded-sm bg-card font-mono text-[10px] text-muted-foreground">24 · 16 · 12</div>
+        <div className="flex h-10 w-28 items-center justify-center rounded-sm bg-card font-mono text-xs text-muted-foreground">24 · 16 · 12</div>
       </div>
     </div>
   ),
@@ -85,7 +85,7 @@ export function FoundationGrid() {
   return (
     <div className="grid gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
       {foundations.map((f, i) => (
-        <Link key={f.slug} href={`/docs/foundations/${f.slug}`} className="group flex flex-col gap-6 bg-background p-6 transition-colors duration-(--motion-fast) hover:bg-card">
+        <Link key={f.slug} href={`/docs/foundations/${f.slug}`} className="press group flex flex-col gap-6 bg-background p-6 hover:bg-card">
           <div aria-hidden className="specimen flex h-32 items-center justify-center rounded-sm border border-border p-4">
             {previews[f.slug]}
           </div>

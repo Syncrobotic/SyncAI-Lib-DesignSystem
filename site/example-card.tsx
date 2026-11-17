@@ -3,6 +3,7 @@
 import * as React from "react"
 import { Code, Eye } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/registry/syncrobotic/ui/tabs"
+import { TabPanel } from "./tab-panel"
 
 /** One example: title, then Preview / Code tabs inside a single card. Built with our own Tabs. */
 export function ExampleCard({ id, title, preview, code }: { id: string; title: string; preview: React.ReactNode; code: React.ReactNode }) {
@@ -23,10 +24,10 @@ export function ExampleCard({ id, title, preview, code }: { id: string; title: s
           </TabsList>
         </div>
         <TabsContent value="preview" className="specimen flex min-h-48 items-center justify-center p-8">
-          <div className="w-full max-w-[390px]">{preview}</div>
+          <TabPanel className="w-full max-w-sm">{preview}</TabPanel>
         </TabsContent>
-        <TabsContent value="code" className="[&>div]:rounded-none [&>div]:border-0">
-          {code}
+        <TabsContent value="code">
+          <TabPanel className="[&>div]:rounded-none [&>div]:border-0">{code}</TabPanel>
         </TabsContent>
       </Tabs>
     </section>

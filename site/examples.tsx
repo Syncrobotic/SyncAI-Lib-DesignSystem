@@ -45,7 +45,7 @@ function render(file: StoryFile, name: string) {
 export function Stage({ file, name, className }: { file: StoryFile; name: string; className?: string }) {
   return (
     <div className={className ?? "flex justify-center rounded-md border border-border bg-background px-4 py-8"}>
-      <div className="w-full max-w-[390px]">{render(file, name)}</div>
+      <div className="w-full max-w-sm">{render(file, name)}</div>
     </div>
   )
 }

@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { Check, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Inline } from "./prose"
@@ -6,9 +7,9 @@ import { Inline } from "./prose"
 
 export function DocHeader({ eyebrow, title, lead }: { eyebrow: string; title: string; lead: string }) {
   return (
-    <header className="flex flex-col gap-3 border-b border-border pb-10">
+    <header className="flex flex-col gap-3 border-b border-border pb-8">
       <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">{eyebrow}</p>
-      <h1 className="text-[2.5rem] leading-[2.75rem] font-bold tracking-tight">{title}</h1>
+      <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
       <p className="max-w-2xl text-lg text-muted-foreground">{lead}</p>
     </header>
   )
@@ -16,7 +17,7 @@ export function DocHeader({ eyebrow, title, lead }: { eyebrow: string; title: st
 
 export function Section({ id, title, lead, children }: { id: string; title: string; lead?: string; children: React.ReactNode }) {
   return (
-    <section id={id} className="flex scroll-mt-20 flex-col gap-4 pt-12">
+    <section id={id} className="flex scroll-mt-20 flex-col gap-4 pt-section-sm">
       <div className="flex flex-col gap-1">
         <h2 className="text-xl font-bold">{title}</h2>
         {lead && (
@@ -104,20 +105,20 @@ export function Swatch({ value, className }: { value: string; className?: string
 
 export function Pager({ prev, next }: { prev?: { href: string; title: string }; next?: { href: string; title: string } }) {
   return (
-    <nav aria-label="Pagination" className="mt-16 grid gap-4 border-t border-border pt-8 sm:grid-cols-2">
+    <nav aria-label="Pagination" className="mt-section-sm grid gap-4 border-t border-border pt-8 sm:grid-cols-2">
       {prev ? (
-        <a href={prev.href} className="flex flex-col gap-1 rounded-md border border-border p-4 hover:border-muted-foreground">
+        <Link href={prev.href} className="press flex flex-col gap-1 rounded-md border border-border p-4 hover:border-muted-foreground">
           <span className="text-xs text-muted-foreground">Previous</span>
           <span className="font-medium">{prev.title}</span>
-        </a>
+        </Link>
       ) : (
         <span />
       )}
       {next && (
-        <a href={next.href} className="flex flex-col items-end gap-1 rounded-md border border-border p-4 text-right hover:border-muted-foreground">
+        <Link href={next.href} className="press flex flex-col items-end gap-1 rounded-md border border-border p-4 text-right hover:border-muted-foreground">
           <span className="text-xs text-muted-foreground">Next</span>
           <span className="font-medium">{next.title}</span>
-        </a>
+        </Link>
       )}
     </nav>
   )

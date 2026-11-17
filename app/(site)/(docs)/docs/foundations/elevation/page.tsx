@@ -64,8 +64,8 @@ export default function ElevationPage() {
           good={{
             visual: (
               <div className="flex w-64 flex-col gap-2 rounded-md bg-card p-4 ring-1 ring-border">
-                <div className="h-3 w-2/3 rounded-full bg-muted" />
-                <div className="h-3 w-1/2 rounded-full bg-muted" />
+                <div className="h-3 w-2/3 rounded-xs bg-muted" />
+                <div className="h-3 w-1/2 rounded-xs bg-muted" />
               </div>
             ),
             text: "Keep in-page content flat: one surface, a hairline border.",
@@ -74,7 +74,7 @@ export default function ElevationPage() {
             visual: (
               <div className="flex w-64 flex-col gap-2 rounded-md bg-card p-4 shadow-overlay ring-1 ring-border">
                 <div className="rounded-sm bg-card p-3 shadow-float ring-1 ring-border">
-                  <div className="h-3 w-2/3 rounded-full bg-muted" />
+                  <div className="h-3 w-2/3 rounded-xs bg-muted" />
                 </div>
               </div>
             ),
