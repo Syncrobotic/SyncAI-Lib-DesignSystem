@@ -4525,6 +4525,390 @@
           }
         ]
       }
+    },
+    {
+      "name": "mission-schedule",
+      "type": "registry:block",
+      "title": "Mission schedule",
+      "description": "A night's missions in lanes per robot: done muted, running blue, planned outlined, and a conflict explained in words.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/button",
+        "@syncrobotic/segmented-control"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/mission-schedule.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "users-invitations",
+      "type": "registry:block",
+      "title": "Invitations",
+      "description": "Invite in one row with what the role allows, then the pending list: expired ones say so, revoking can be undone.",
+      "registryDependencies": [
+        "@syncrobotic/app-shell",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/button",
+        "@syncrobotic/field",
+        "@syncrobotic/input",
+        "@syncrobotic/select",
+        "@syncrobotic/table",
+        "@syncrobotic/toast"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/users-invitations.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "users-audit-log",
+      "type": "registry:block",
+      "title": "Audit log",
+      "description": "Who did what, when and from where, narrowed by person and kind, with values before and after; exports what is shown.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/app-shell",
+        "@syncrobotic/button",
+        "@syncrobotic/input",
+        "@syncrobotic/select",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/users-audit-log.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "incident-queue",
+      "type": "registry:block",
+      "title": "Incident queue",
+      "description": "Open incidents, unowned first, then by severity and age; severity has a shape and a number, and nobody-owns-it is a button.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/avatar",
+        "@syncrobotic/button",
+        "@syncrobotic/table",
+        "@syncrobotic/segmented-control"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/incident-queue.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "incident-detail",
+      "type": "registry:block",
+      "title": "Incident",
+      "description": "One incident: its state as steps, the facts, and updates newest first; posting an update can move it on.",
+      "registryDependencies": [
+        "@syncrobotic/app-shell",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/button",
+        "@syncrobotic/description-list",
+        "@syncrobotic/field",
+        "@syncrobotic/select",
+        "@syncrobotic/stepper",
+        "@syncrobotic/textarea",
+        "@syncrobotic/timeline"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/incident-detail.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "maintenance-due",
+      "type": "registry:block",
+      "title": "Service due",
+      "description": "Service coming due by hours run: a meter per robot that turns amber near its interval and red past it, overdue first.",
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/button",
+        "@syncrobotic/meter",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/maintenance-due.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "maintenance-work-order",
+      "type": "registry:block",
+      "title": "Work order",
+      "description": "A work order at the bench: steps as a checklist, parts used, notes, and sign-off that says why it is not ready yet.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/app-shell",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/button",
+        "@syncrobotic/checkbox",
+        "@syncrobotic/description-list",
+        "@syncrobotic/field",
+        "@syncrobotic/label",
+        "@syncrobotic/table",
+        "@syncrobotic/textarea"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/maintenance-work-order.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "rollout-overview",
+      "type": "registry:block",
+      "title": "Rollout in progress",
+      "description": "A firmware rollout while it runs: its stage, the gates that pause it, and the robots in the stage, failures first.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/button",
+        "@syncrobotic/progress",
+        "@syncrobotic/stepper",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/rollout-overview.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "rollout-plan",
+      "type": "registry:block",
+      "title": "Plan a rollout",
+      "description": "Version, stages with share and watch time, update window and safety, with what will happen said in plain words.",
+      "registryDependencies": [
+        "@syncrobotic/app-shell",
+        "@syncrobotic/button",
+        "@syncrobotic/checkbox",
+        "@syncrobotic/field",
+        "@syncrobotic/label",
+        "@syncrobotic/number-field",
+        "@syncrobotic/select",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/rollout-plan.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "agent-runs",
+      "type": "registry:block",
+      "title": "Agent runs",
+      "description": "What the AI agents did: each run's goal, trigger and state; one waiting for approval comes first with the only button.",
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/trace",
+        "@syncrobotic/button",
+        "@syncrobotic/segmented-control",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/agent-runs.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "agent-trace",
+      "type": "registry:block",
+      "title": "Agent run trace",
+      "description": "One agent run step by step as a waterfall: tools called, inputs and outputs, a warning and what the agent did about it.",
+      "registryDependencies": [
+        "@syncrobotic/app-shell",
+        "@syncrobotic/button",
+        "@syncrobotic/description-list",
+        "@syncrobotic/trace"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/agent-trace.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "agent-approval",
+      "type": "registry:block",
+      "title": "Approve an agent's proposal",
+      "description": "An agent's proposed change, before and after per robot, why, and what it does not know; approve or send back with a reason.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/app-shell",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/button",
+        "@syncrobotic/field",
+        "@syncrobotic/table",
+        "@syncrobotic/textarea"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/agent-approval.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
     }
   ]
 }

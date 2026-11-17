@@ -1,0 +1,156 @@
+// @syncrobotic/agent-runs v0.9.0 · update: npx shadcn add @syncrobotic/agent-runs --overwrite
+"use client"
+
+import * as React from "react"
+import { cn } from "@/lib/utils"
+import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
+import { TraceStatusIcon, formatDuration, type TraceStatus } from "@/registry/syncrobotic/ui/trace"
+import { Button } from "@/registry/syncrobotic/ui/button"
+import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
+
+type Run = {
+  id: string
+  agent: string
+  goal: string
+  trigger: string
+  status: TraceStatus | "approval"
+  started: string
+  duration: number
+  steps: number
+}
+
+// Sample data. An agent that wants to change something in the world waits for a person: that wait is the one call to action.
+const runs: Run[] = [
+  {
+    id: "run_8c21",
+    agent: "Route planner",
+    goal: "Reroute around door C3",
+    trigger: "Incident IN-2041",
+    status: "approval",
+    started: "21:58",
+    duration: 14200,
+    steps: 6,
+  },
+  {
+    id: "run_8c1f",
+    agent: "Incident writer",
+    goal: "Summarise IN-2041 for the morning shift",
+    trigger: "Every 30 min",
+    status: "running",
+    started: "21:59",
+    duration: 8100,
+    steps: 3,
+  },
+  {
+    id: "run_8c0a",
+    agent: "Maintenance planner",
+    goal: "Book overdue services",
+    trigger: "Daily 08:00",
+    status: "error",
+    started: "08:00",
+    duration: 3900,
+    steps: 4,
+  },
+  {
+    id: "run_8bf3",
+    agent: "Route planner",
+    goal: "Plan tonight's patrols",
+    trigger: "Daily 17:30",
+    status: "done",
+    started: "17:30",
+    duration: 22500,
+    steps: 9,
+  },
+  { id: "run_8be0", agent: "Incident writer", goal: "Summarise IN-2039", trigger: "Every 30 min", status: "done", started: "17:00", duration: 6400, steps: 3 },
+]
+const word: Record<Run["status"], string> = {
+  approval: "Needs your approval",
+  running: "Running",
+  error: "Failed",
+  done: "Done",
+  warning: "Done with warnings",
+  pending: "Queued",
+  skipped: "Skipped",
+}
+
+/**
+ * What the AI agents did and are doing: each run's goal in words, what started it, and its state. A run waiting for a
+ * person's approval comes first and is the only one with a button; running is blue, a failure says it failed.
+ */
+export function AgentRuns() {
+  const [filter, setFilter] = React.useState("all")
+  const shown = runs.filter((r) => filter === "all" || (filter === "attention" ? r.status === "approval" || r.status === "error" : r.status === filter))
+  return (
+    <AppShell product="Fleet console" nav={sampleNav} current="#events" title="Agent runs" user={{ name: "Mei Lin", initials: "ML" }}>
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <SegmentedControl aria-label="Show runs" value={filter} onValueChange={(v) => v && setFilter(v)}>
+            <SegmentedControlItem value="all">All</SegmentedControlItem>
+            <SegmentedControlItem value="attention">Needs someone</SegmentedControlItem>
+            <SegmentedControlItem value="running">Running</SegmentedControlItem>
+          </SegmentedControl>
+          <span className="text-sm text-muted-foreground">Agents only suggest changes to robots; a person approves them.</span>
+        </div>
+        <div className="overflow-x-auto rounded-md bg-card ring-1 ring-border">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Run</TableHead>
+                <TableHead>State</TableHead>
+                <TableHead>Started by</TableHead>
+                <TableHead className="text-right">Steps</TableHead>
+                <TableHead className="text-right">Time</TableHead>
+                <TableHead>
+                  <span className="sr-only">Actions</span>
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {shown.map((r) => (
+                <TableRow key={r.id}>
+                  <TableCell>
+                    <a href={`#${r.id}`} className="flex flex-col hover:underline">
+                      <span className="font-medium">{r.goal}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {r.agent} · <span className="font-mono">{r.id}</span>
+                      </span>
+                    </a>
+                  </TableCell>
+                  <TableCell>
+                    <span
+                      className={cn(
+                        "flex items-center gap-2 whitespace-nowrap",
+                        r.status === "approval" && "font-medium text-warning",
+                        r.status === "error" && "font-medium text-danger",
+                      )}
+                    >
+                      {r.status === "approval" ? (
+                        <TraceStatusIcon status="warning" />
+                      ) : (
+                        <TraceStatusIcon status={r.status} className={r.status === "running" ? "text-info" : undefined} />
+                      )}
+                      {word[r.status]}
+                    </span>
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {r.trigger}, {r.started}
+                  </TableCell>
+                  <TableCell className="text-right tabular-nums">{r.steps}</TableCell>
+                  <TableCell className="text-right text-muted-foreground tabular-nums">{formatDuration(r.duration)}</TableCell>
+                  <TableCell className="text-right">
+                    {r.status === "approval" && (
+                      <Button size="sm" aria-label={`Review ${r.goal}`}>
+                        Review
+                      </Button>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
+    </AppShell>
+  )
+}
