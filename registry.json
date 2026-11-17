@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "The focus ring appears in the ring colour at once (outline colour set before focus; transition-colors used to fade it from the text colour)."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -468,8 +473,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "The link variant is foreground with an underline (was blue): a link reads by its underline; blue means in progress."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -2016,7 +2026,7 @@
           {
             "version": "0.8.0",
             "date": "2026-11-17",
-            "note": "breadcrumb slot before the title; nav counts use CountBadge. One gutter and one inset: panels 8 px apart and from the edge, 16 px inside every panel (top bar, content, footer). Icon to label 8 px (gap-2), the same in every component."
+            "note": "breadcrumb slot before the title; nav counts use CountBadge. One gutter and one inset: panels 8 px apart and from the edge, 16 px inside every panel (top bar, content, footer). Icon to label 8 px (gap-2), the same in every component. The environment badge shows from 640 px, so the page title keeps the room on phones."
           },
           {
             "version": "0.7.0",
@@ -2086,8 +2096,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "On phones the New mission action is its icon (named for screen readers), so the title is not cut."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -2173,8 +2188,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "On phones Export CSV is its icon (named for screen readers), so the title is not cut."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
