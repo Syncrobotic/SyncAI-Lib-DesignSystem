@@ -11,8 +11,15 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - `button-group`: buttons, fields and menus joined into one strip (split button, stepper, pagination, search with scope), horizontal or vertical, with a text cell and a separator for filled buttons.
 - `scroll-area`: a bounded, themed scroll region, vertical, horizontal or both, with fading edges; focusable for the keyboard.
 - `toggle-group`: single or multiple toggles, joined or spaced, outline or ghost, horizontal or vertical. On is inverted.
+- `autocomplete`: a text field that suggests as you type (WAI-ARIA combobox): filtering, groups with labels, disabled options, clear and show-all buttons, server search with a loading state, sm and md.
+- `input-otp`: one-time codes and PINs, one 44 px box per character, with separators, paste and SMS autofill (input-otp).
+- `phone-input`: country plus number, formatted as you type and stored as E.164; `isPhoneValid` for validation (libphonenumber-js).
+- `calendar`: single, multiple or range, one or two months, disabled days, week numbers, month and year dropdowns, event dots (react-day-picker).
+- `date-selector`: `DatePicker` and `DateRangePicker`, fields that open the calendar, with presets, clear and Field wiring.
+- `time-picker`: `TimePicker` (slots in a popover, with step, bounds and taken slots) and `TimeInput` (typed: 930, 9:30, 21.30, 9:30 pm), on a 24-hour value.
 
 ### Changed
+- More examples for the existing Inputs: textarea, checkbox, radio group, switch, select, slider, label, input group, number field, field and choice field.
 - More examples for the existing Actions and Display components: toggle, segmented control, copy button, badge, avatar, card, separator, progress, spinner, meter, description list, status glyph, status eyebrow and skeleton now show 4 to 8 real uses each.
 - Story checks run the page clock past timed UI (the loading spinner, presence timers) before the screenshot, so visual baselines no longer depend on machine speed.
 

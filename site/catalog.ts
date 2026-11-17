@@ -16,6 +16,12 @@ export type StoryFile =
   | "navigation"
   | "overlays"
   | "charts"
+  | "autocomplete"
+  | "input-otp"
+  | "phone-input"
+  | "calendar"
+  | "date-selector"
+  | "time-picker"
   | "item"
   | "icon-tile"
   | "kbd"
@@ -46,6 +52,51 @@ const overlayKeys: [string, string][] = [
 ]
 
 const entries: Record<string, Entry> = {
+  autocomplete: {
+    group: "Inputs",
+    examples: { file: "autocomplete", prefix: "Autocomplete" },
+    rules: [
+      "For picking one of many known values; for free text use Input.",
+      "Disabled options stay in the list so people see why they cannot pick them.",
+      "Inside a Field it takes the label, note and error.",
+    ],
+  },
+  "input-otp": {
+    group: "Inputs",
+    examples: { file: "input-otp", prefix: "InputOTP" },
+    rules: [
+      "One real input underneath: paste and SMS autofill work.",
+      "Say where the code was sent and when it expires.",
+      "Show the error under the boxes, not in a toast.",
+    ],
+  },
+  "phone-input": {
+    group: "Inputs",
+    examples: { file: "phone-input", prefix: "PhoneInput" },
+    rules: [
+      "Store and send the E.164 value (+886912345678), never the formatted text.",
+      "Validate on blur or submit with isPhoneValid, through Field's error.",
+    ],
+  },
+  calendar: {
+    group: "Inputs",
+    examples: { file: "calendar", prefix: "Calendar" },
+    rules: ["The picked day is inverted; today is bold with a ring.", "Weeks start on Monday by default.", "Disabled days stay visible and struck through."],
+  },
+  "date-selector": {
+    group: "Inputs",
+    examples: { file: "date-selector", prefix: "Date" },
+    rules: [
+      "The trigger reads like an input and shows the date in words.",
+      "Presets for the ranges people pick most (Last 7 days).",
+      "Inside a Field it takes the label, note and error.",
+    ],
+  },
+  "time-picker": {
+    group: "Inputs",
+    examples: { file: "time-picker", prefix: "Time" },
+    rules: ['Values are "HH:mm" on a 24-hour clock; hour12 only changes how they read.', "Taken slots stay in the list, struck through."],
+  },
   item: {
     group: "Display",
     examples: { file: "item", prefix: "Item" },
@@ -376,6 +427,26 @@ export type Item = (typeof registry.items)[number] & Entry
 
 // What each component does with the keyboard beyond Tab. Radix supplies most of it; these tables say so out loud.
 const keyboard: Record<string, [string, string][]> = {
+  autocomplete: [
+    ["Arrow Down / Up", "Open the list, move between options"],
+    ["Enter", "Pick the highlighted option"],
+    ["Escape", "Close and restore the picked value"],
+  ],
+  "input-otp": [
+    ["Type", "Fill the next box"],
+    ["Backspace", "Clear the previous box"],
+    ["Arrow Left / Right", "Move between boxes"],
+  ],
+  calendar: [
+    ["Arrow keys", "Move by day or week"],
+    ["Page Up / Page Down", "Previous or next month"],
+    ["Home / End", "Start or end of the week"],
+    ["Enter / Space", "Pick the focused day"],
+  ],
+  "time-picker": [
+    ["Enter", "Commit the typed time (TimeInput)"],
+    ["Tab", "Leave the field; the time is read on blur"],
+  ],
   "scroll-area": [
     ["Tab", "Focus the scroll region"],
     ["Arrow keys", "Scroll"],

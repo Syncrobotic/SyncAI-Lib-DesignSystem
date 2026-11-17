@@ -1,0 +1,204 @@
+// @syncrobotic/date-selector v0.9.0 · update: npx shadcn add @syncrobotic/date-selector --overwrite
+"use client"
+
+import * as React from "react"
+import type { DateRange } from "react-day-picker"
+import { format, isSameDay } from "date-fns"
+import { CalendarDays, X } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Calendar } from "@/registry/syncrobotic/ui/calendar"
+import { useField } from "@/registry/syncrobotic/ui/field"
+import { Popover, PopoverContent, PopoverTrigger } from "@/registry/syncrobotic/ui/popover"
+
+export type { DateRange }
+export type DatePreset<T> = { label: string; value: () => T }
+
+const trigger =
+  "press flex h-(--h-md) w-full min-w-0 items-center gap-2 rounded-sm bg-card px-3 text-left text-base ring-1 ring-input ring-inset transition-shadow duration-(--motion-fast) ease-(--ease-standard) aria-invalid:ring-2 aria-invalid:ring-danger disabled:cursor-not-allowed disabled:opacity-50 data-[empty=true]:text-muted-foreground"
+
+type Common = {
+  placeholder?: string
+  /** date-fns pattern for the trigger. */
+  displayFormat?: string
+  disabled?: boolean
+  /** Days that cannot be picked, in react-day-picker's matcher form, e.g. `{ before: new Date() }`. */
+  disabledDays?: React.ComponentProps<typeof Calendar>["disabled"]
+  /** Shows an × to clear the value. */
+  clearable?: boolean
+  className?: string
+  id?: string
+  "aria-label"?: string
+}
+
+/**
+ * A field that opens a calendar to pick one day. The trigger reads like an input and shows the day in words; inside a
+ * Field it takes the field's label, note and error. Presets (Today, Tomorrow) sit beside the calendar when given.
+ */
+export function DatePicker({
+  value,
+  onValueChange,
+  placeholder = "Pick a day",
+  displayFormat = "d MMM yyyy",
+  presets,
+  disabled,
+  disabledDays,
+  clearable,
+  className,
+  ...rest
+}: Common & { value?: Date; onValueChange?: (d: Date | undefined) => void; presets?: DatePreset<Date>[] }) {
+  const [open, setOpen] = React.useState(false)
+  const pick = (d: Date | undefined) => {
+    onValueChange?.(d)
+    if (d) setOpen(false)
+  }
+  return (
+    <Picker
+      open={open}
+      setOpen={setOpen}
+      label={value ? format(value, displayFormat) : placeholder}
+      empty={!value}
+      disabled={disabled}
+      onClear={clearable && value ? () => onValueChange?.(undefined) : undefined}
+      className={className}
+      {...rest}
+    >
+      {presets && <Presets presets={presets} active={(p) => !!value && isSameDay(p.value(), value)} onPick={(p) => pick(p.value())} />}
+      <Calendar mode="single" selected={value} onSelect={pick} defaultMonth={value} disabled={disabledDays} autoFocus />
+    </Picker>
+  )
+}
+
+/** A field that opens a calendar for a from–to range, two months wide on larger screens, with optional presets. */
+export function DateRangePicker({
+  value,
+  onValueChange,
+  placeholder = "Pick a range",
+  displayFormat = "d MMM yyyy",
+  presets,
+  numberOfMonths = 2,
+  disabled,
+  disabledDays,
+  clearable,
+  className,
+  ...rest
+}: Common & { value?: DateRange; onValueChange?: (r: DateRange | undefined) => void; presets?: DatePreset<DateRange>[]; numberOfMonths?: number }) {
+  const [open, setOpen] = React.useState(false)
+  const text = value?.from
+    ? value.to
+      ? `${format(value.from, displayFormat)} – ${format(value.to, displayFormat)}`
+      : format(value.from, displayFormat)
+    : placeholder
+  return (
+    <Picker
+      open={open}
+      setOpen={setOpen}
+      label={text}
+      empty={!value?.from}
+      disabled={disabled}
+      onClear={clearable && value?.from ? () => onValueChange?.(undefined) : undefined}
+      className={className}
+      {...rest}
+    >
+      {presets && (
+        <Presets
+          presets={presets}
+          active={(p) => {
+            const r = p.value()
+            return !!(value?.from && value.to && r.from && r.to && isSameDay(r.from, value.from) && isSameDay(r.to, value.to))
+          }}
+          onPick={(p) => {
+            onValueChange?.(p.value())
+            setOpen(false)
+          }}
+        />
+      )}
+      <Calendar
+        mode="range"
+        selected={value}
+        onSelect={onValueChange}
+        numberOfMonths={numberOfMonths}
+        defaultMonth={value?.from}
+        disabled={disabledDays}
+        autoFocus
+      />
+    </Picker>
+  )
+}
+
+function Picker({
+  open,
+  setOpen,
+  label,
+  empty,
+  disabled,
+  onClear,
+  className,
+  children,
+  id,
+  "aria-label": ariaLabel,
+}: {
+  open: boolean
+  setOpen: (o: boolean) => void
+  label: string
+  empty: boolean
+  disabled?: boolean
+  onClear?: () => void
+  className?: string
+  children: React.ReactNode
+  id?: string
+  "aria-label"?: string
+}) {
+  const field = useField()
+  return (
+    <div className={cn("relative w-full", className)}>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <button
+            type="button"
+            id={id ?? field?.id}
+            aria-label={ariaLabel}
+            aria-describedby={field?.describedBy}
+            aria-invalid={field?.invalid || undefined}
+            data-empty={empty}
+            disabled={disabled}
+            className={cn(trigger, onClear && "pr-(--h-md)")}
+          >
+            <CalendarDays aria-hidden="true" className="size-4 shrink-0 text-muted-foreground" />
+            <span className="truncate">{label}</span>
+          </button>
+        </PopoverTrigger>
+        <PopoverContent align="start" collisionPadding={16} className="flex w-auto flex-col gap-3 p-3 sm:flex-row">
+          {children}
+        </PopoverContent>
+      </Popover>
+      {onClear && (
+        <button
+          type="button"
+          aria-label="Clear"
+          onClick={onClear}
+          className="press absolute top-1/2 right-1 flex size-(--h-sm) -translate-y-1/2 items-center justify-center rounded-xs text-muted-foreground hover:bg-accent hover:text-foreground"
+        >
+          <X aria-hidden="true" className="size-4" />
+        </button>
+      )}
+    </div>
+  )
+}
+
+function Presets<T>({ presets, active, onPick }: { presets: DatePreset<T>[]; active: (p: DatePreset<T>) => boolean; onPick: (p: DatePreset<T>) => void }) {
+  return (
+    <div role="group" aria-label="Presets" className="flex gap-1 overflow-x-auto sm:w-36 sm:flex-col sm:border-r sm:border-border sm:pr-3">
+      {presets.map((p) => (
+        <button
+          key={p.label}
+          type="button"
+          aria-pressed={active(p)}
+          onClick={() => onPick(p)}
+          className="press flex h-(--h-sm) shrink-0 items-center rounded-xs px-3 text-left text-sm whitespace-nowrap hover:bg-accent aria-pressed:bg-muted aria-pressed:font-medium"
+        >
+          {p.label}
+        </button>
+      ))}
+    </div>
+  )
+}
