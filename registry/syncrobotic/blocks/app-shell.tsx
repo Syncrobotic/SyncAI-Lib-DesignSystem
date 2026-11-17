@@ -159,7 +159,7 @@ type AppShellProps = {
   /** Content fills the area edge to edge, for maps and video. */
   bleed?: boolean
   /**
-   * flush: sidebar, top bar and content share one surface, split by hairlines.
+   * inset (default): see below. flush: sidebar, top bar and content share one surface, split by hairlines.
    * inset: raised panels on the page, 8 px apart: the sidebar, the top bar, and the content with its footer.
    * The top bar is as tall as the sidebar's brand row, so their edges line up across the gap.
    */
@@ -198,14 +198,15 @@ function Nav({
         <div key={g.label ?? i} className="flex flex-col gap-1">
           {/* Collapsed, a group label would be a clipped word; keep its height so icons do not jump when the rail opens. */}
           {g.label && (
-            // Collapsed, the group's name gives way to a short centred line in the same 20 px, so groups stay apart
-            // on the rail without a clipped word; the two cross-fade as the rail opens.
+            // Collapsed, the group's name gives way to a short centred line, so groups stay apart on the rail without a
+            // clipped word; the two cross-fade as the rail opens. The line sits 4 px into the 20 px row so it is 20 px from
+            // the icon above (16 px group gap + 4) and 20 px from the icon below (16 + the 4 px item gap): even on both sides.
             <div className="relative h-5">
               <p className={cn("px-3 text-xs font-medium text-muted-foreground", reveal(!collapsed))}>{g.label}</p>
               <span
                 aria-hidden="true"
                 className={cn(
-                  "absolute top-1/2 left-3 h-px w-6 bg-border transition-opacity duration-(--motion-base) ease-(--ease-standard)",
+                  "absolute top-1 left-3 h-px w-6 bg-border transition-opacity duration-(--motion-base) ease-(--ease-standard)",
                   collapsed ? "opacity-100" : "opacity-0",
                 )}
               />
@@ -320,7 +321,7 @@ export function SidebarUserMenu({
  * The top bar's search. The field shows the scope and ⌘K; pressing it (or the shortcut anywhere) opens the palette,
  * where typing narrows the results and the scope narrows the groups. The scope can be changed in the field or the palette.
  */
-function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch; linkAs?: React.ElementType }) {
+export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch; linkAs?: React.ElementType }) {
   const [open, setOpen] = React.useState(false)
   const scopes = search.scopes ?? [{ value: "all", label: "Everything" }]
   const [scope, setScope] = React.useState(scopes[0].value)
@@ -473,7 +474,7 @@ export function AppShell({
   search,
   linkAs,
   bleed,
-  layout = "flush",
+  layout = "inset",
   footer,
   children,
 }: AppShellProps) {
@@ -619,9 +620,7 @@ export function AppShell({
         <main className={cn("flex min-h-0 flex-1 flex-col overflow-y-auto", inset && "rounded-md bg-card ring-1 ring-border")}>
           <div className={cn("flex-1", !bleed && "p-6")}>{children}</div>
           {footer && (
-            <footer className="flex shrink-0 flex-wrap items-center justify-between gap-x-6 gap-y-1 border-t border-border px-6 py-3 text-xs text-muted-foreground">
-              {footer}
-            </footer>
+            <footer className="flex shrink-0 flex-wrap items-center justify-between gap-x-6 gap-y-1 px-6 py-3 text-xs text-muted-foreground">{footer}</footer>
           )}
         </main>
       </div>

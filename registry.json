@@ -1617,12 +1617,44 @@
           {
             "version": "0.7.0",
             "date": "2026-11-17",
-            "note": "Sidebar as a rail below 1280 px that shows the logo and opens over the content (hover with a mouse, tap on touch tablets), with a pin button. Inset layout: two floating panels, no lines in the sidebar, the top bar a layer over the content that gains a backing on scroll. Footer slot. User menu at the sidebar's foot. Search: a top-bar field with a scope that opens the ⌘K palette (search prop)."
+            "note": "Sidebar as a rail below 1280 px that shows the logo and opens over the content (hover with a mouse, tap on touch tablets), with a pin button. Inset layout: two floating panels, no lines in the sidebar, the top bar a layer over the content that gains a backing on scroll. Footer slot. User menu at the sidebar's foot. Search: a top-bar field with a scope that opens the ⌘K palette (search prop). Inset is now the default layout; no line above the footer."
           },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
             "note": "First release. Links and buttons press. Brand row matches the top bar's height and hairline; title, content and the user row share the 24 px edge; optional logo."
+          }
+        ]
+      }
+    },
+    {
+      "name": "top-bar-shell",
+      "type": "registry:block",
+      "title": "Top-bar shell",
+      "description": "The frame for a tool or site without a sidebar: links, search and user in a top bar that gathers into a floating panel as the page scrolls, then the content and a footer.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/avatar",
+        "@syncrobotic/dropdown-menu",
+        "@syncrobotic/sheet"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/top-bar-shell.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "meta": {
+        "version": "0.7.0",
+        "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "First release."
           }
         ]
       }
