@@ -1,3 +1,4 @@
+// @syncrobotic/separator v0.5.0 · update: npx shadcn add @syncrobotic/separator --overwrite
 "use client"
 
 import * as React from "react"

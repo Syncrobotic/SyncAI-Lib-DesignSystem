@@ -114,6 +114,8 @@ The first `test:visual` run writes baselines; commit them (`tests/__screenshots_
 5. Interaction logic gets a behaviour test in `tests/unit/`.
 6. Open a PR once `npm run ci` passes. Add a line to `CHANGELOG.md`.
 
+After changing an item's files, bump its `meta.version` in `registry.json`, add a `meta.changelog` line and run `npm run versions`. After changing the theme, run `npm run tokens`.
+
 New components start as a proposal issue. How work is chosen, reviewed and released is in [ROADMAP.md](ROADMAP.md).
 
 ## Branches

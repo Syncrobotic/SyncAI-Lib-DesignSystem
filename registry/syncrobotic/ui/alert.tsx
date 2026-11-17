@@ -1,3 +1,4 @@
+// @syncrobotic/alert v0.5.0 · update: npx shadcn add @syncrobotic/alert --overwrite
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"

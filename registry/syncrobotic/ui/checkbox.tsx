@@ -1,3 +1,4 @@
+// @syncrobotic/checkbox v0.5.0 · update: npx shadcn add @syncrobotic/checkbox --overwrite
 "use client"
 
 import * as React from "react"

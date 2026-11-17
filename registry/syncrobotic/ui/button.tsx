@@ -1,3 +1,4 @@
+// @syncrobotic/button v0.5.0 · update: npx shadcn add @syncrobotic/button --overwrite
 import * as React from "react"
 import { Slot } from "radix-ui"
 import { cva, type VariantProps } from "class-variance-authority"

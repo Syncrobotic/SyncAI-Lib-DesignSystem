@@ -1,3 +1,4 @@
+// @syncrobotic/segmented-control v0.5.0 · update: npx shadcn add @syncrobotic/segmented-control --overwrite
 "use client"
 
 import * as React from "react"

@@ -1,0 +1,190 @@
+{
+  "syncrobotic-theme": {
+    "version": "0.5.0",
+    "hash": "288f4824c9e95b5a"
+  },
+  "cn": {
+    "version": "0.5.0",
+    "hash": "0beb78557975abe0"
+  },
+  "use-long-press": {
+    "version": "0.5.0",
+    "hash": "f9fc6f352b80a160"
+  },
+  "use-slide-release": {
+    "version": "0.5.0",
+    "hash": "419ce274e0f518ef"
+  },
+  "status-glyph": {
+    "version": "0.5.0",
+    "hash": "2faa4bfbb57c0579"
+  },
+  "status-eyebrow": {
+    "version": "0.5.0",
+    "hash": "1ef2be2ae4a771c8"
+  },
+  "tray": {
+    "version": "0.5.0",
+    "hash": "2813a626bd3abfad"
+  },
+  "stop-button": {
+    "version": "0.5.0",
+    "hash": "1633e74eaabab100"
+  },
+  "slide-to-release": {
+    "version": "0.5.0",
+    "hash": "922a2450cdd91247"
+  },
+  "dock": {
+    "version": "0.5.0",
+    "hash": "1c116c37046f20a1"
+  },
+  "island": {
+    "version": "0.5.0",
+    "hash": "284b7b09cf88568d"
+  },
+  "list": {
+    "version": "0.5.0",
+    "hash": "df2cbde8851d1e27"
+  },
+  "skeleton": {
+    "version": "0.5.0",
+    "hash": "ae6717c61296cb3d"
+  },
+  "button": {
+    "version": "0.5.0",
+    "hash": "721ad061f2c70778"
+  },
+  "spinner": {
+    "version": "0.5.0",
+    "hash": "4735ca41a1c21a06"
+  },
+  "segmented-control": {
+    "version": "0.5.0",
+    "hash": "2d5b38fadec1d096"
+  },
+  "input": {
+    "version": "0.5.0",
+    "hash": "87b7bad20e47618b"
+  },
+  "textarea": {
+    "version": "0.5.0",
+    "hash": "06a2b2db5021fac8"
+  },
+  "label": {
+    "version": "0.5.0",
+    "hash": "1b3ee1d30973dd40"
+  },
+  "field": {
+    "version": "0.5.0",
+    "hash": "6fd39ccc05d1847f"
+  },
+  "checkbox": {
+    "version": "0.5.0",
+    "hash": "b8ad19b248a00564"
+  },
+  "radio-group": {
+    "version": "0.5.0",
+    "hash": "c14613dc6bbafb1f"
+  },
+  "switch": {
+    "version": "0.5.0",
+    "hash": "63e73fa0146ebd3d"
+  },
+  "select": {
+    "version": "0.5.0",
+    "hash": "99a3594e7c9c7a98"
+  },
+  "slider": {
+    "version": "0.5.0",
+    "hash": "23fa5a22e2b00803"
+  },
+  "badge": {
+    "version": "0.5.0",
+    "hash": "f28b461132ceb1af"
+  },
+  "card": {
+    "version": "0.5.0",
+    "hash": "bee22f60cfb3effd"
+  },
+  "avatar": {
+    "version": "0.5.0",
+    "hash": "823b654c6206b486"
+  },
+  "separator": {
+    "version": "0.5.0",
+    "hash": "7b4d8675eed8b3b3"
+  },
+  "progress": {
+    "version": "0.5.0",
+    "hash": "07bde4770434d7e2"
+  },
+  "alert": {
+    "version": "0.5.0",
+    "hash": "a543fa4f770645ce"
+  },
+  "alarm": {
+    "version": "0.5.0",
+    "hash": "6b29e735f2455a97"
+  },
+  "toast": {
+    "version": "0.5.0",
+    "hash": "88ab0397b50aefad"
+  },
+  "empty-state": {
+    "version": "0.5.0",
+    "hash": "6c8309eb741645bc"
+  },
+  "table": {
+    "version": "0.5.0",
+    "hash": "f4ba057dce546919"
+  },
+  "tabs": {
+    "version": "0.5.0",
+    "hash": "4600a8d4f0a3bbab"
+  },
+  "accordion": {
+    "version": "0.5.0",
+    "hash": "96c3fc8f2900ad5b"
+  },
+  "dialog": {
+    "version": "0.5.0",
+    "hash": "8ff0f08638137dd5"
+  },
+  "alert-dialog": {
+    "version": "0.5.0",
+    "hash": "0e5581b828fcd2cc"
+  },
+  "sheet": {
+    "version": "0.5.0",
+    "hash": "35f2b818c5ebb527"
+  },
+  "popover": {
+    "version": "0.5.0",
+    "hash": "438546a87ed46d8d"
+  },
+  "tooltip": {
+    "version": "0.5.0",
+    "hash": "23d1ba7ff0560646"
+  },
+  "dropdown-menu": {
+    "version": "0.5.0",
+    "hash": "c572a9916f655b40"
+  },
+  "stats-cards": {
+    "version": "0.5.0",
+    "hash": "fe654998af101726"
+  },
+  "fleet-table": {
+    "version": "0.5.0",
+    "hash": "44176c8c1d49a9a3"
+  },
+  "robot-status-card": {
+    "version": "0.5.0",
+    "hash": "91e4aae471ef1527"
+  },
+  "marketing-hero": {
+    "version": "0.5.0",
+    "hash": "58add783eccaf892"
+  }
+}

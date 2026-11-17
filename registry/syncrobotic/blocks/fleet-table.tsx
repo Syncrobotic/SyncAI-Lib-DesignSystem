@@ -1,3 +1,4 @@
+// @syncrobotic/fleet-table v0.5.0 · update: npx shadcn add @syncrobotic/fleet-table --overwrite
 "use client"
 
 import * as React from "react"

@@ -25,12 +25,21 @@ export default async function ComponentPage({ params }: Props) {
   if (!item) notFound()
 
   const names = item.examples ? storyNames(item.examples) : []
+  const meta = (item as { meta?: { version: string; changelog: { version: string; date: string; note: string }[] } }).meta
   const deps = [...(("dependencies" in item && item.dependencies) || []), ...(("registryDependencies" in item && item.registryDependencies) || [])]
 
   return (
     <article>
       <PageTitle eyebrow={item.group} title={item.title} lead={item.description} />
 
+      {meta && (
+        <p className="-mt-4 pb-4 text-sm text-muted-foreground">
+          <span className="font-mono tabular-nums">v{meta.version}</span> ·{" "}
+          <a href="#changelog" className="underline-offset-4 hover:underline">
+            Changelog
+          </a>
+        </p>
+      )}
       <CodeBlock code={`npx shadcn add @syncrobotic/${item.name}`} lang="bash" title="Install" />
       {deps.length > 0 && <p className="pt-2 text-sm text-muted-foreground">Also installs: {deps.join(", ")}</p>}
 
@@ -56,6 +65,26 @@ export default async function ComponentPage({ params }: Props) {
               />
             ))}
           </div>
+        </>
+      )}
+
+      {meta && (
+        <>
+          <H2 id="changelog">Changelog</H2>
+          <ul className="flex flex-col gap-2 text-sm">
+            {meta.changelog.map((c) => (
+              <li key={c.version} className="flex gap-3">
+                <span className="w-16 shrink-0 font-mono tabular-nums">{c.version}</span>
+                <span className="w-24 shrink-0 text-muted-foreground tabular-nums">{c.date}</span>
+                <span>{c.note}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="pt-2 text-sm text-muted-foreground">
+            <a href="/docs/upgrading" className="underline-offset-4 hover:underline">
+              How to upgrade
+            </a>
+          </p>
         </>
       )}
 

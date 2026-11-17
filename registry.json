@@ -14,7 +14,17 @@
           "type": "registry:file",
           "target": "styles/syncrobotic-theme.css"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "cn",
@@ -30,7 +40,17 @@
           "path": "registry/syncrobotic/lib/utils.ts",
           "type": "registry:lib"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "use-long-press",
@@ -42,7 +62,17 @@
           "path": "registry/syncrobotic/hooks/use-long-press.ts",
           "type": "registry:hook"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "use-slide-release",
@@ -54,7 +84,17 @@
           "path": "registry/syncrobotic/hooks/use-slide-release.ts",
           "type": "registry:hook"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "status-glyph",
@@ -69,7 +109,17 @@
           "path": "registry/syncrobotic/shell/status-glyph.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "status-eyebrow",
@@ -85,7 +135,17 @@
           "path": "registry/syncrobotic/shell/status-eyebrow.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "tray",
@@ -100,7 +160,17 @@
           "path": "registry/syncrobotic/shell/tray.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "stop-button",
@@ -119,7 +189,17 @@
           "path": "registry/syncrobotic/shell/stop-button.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "slide-to-release",
@@ -138,7 +218,17 @@
           "path": "registry/syncrobotic/shell/slide-to-release.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "dock",
@@ -154,7 +244,17 @@
           "path": "registry/syncrobotic/shell/dock.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "island",
@@ -175,7 +275,17 @@
           "path": "registry/syncrobotic/shell/island.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "list",
@@ -193,7 +303,17 @@
           "path": "registry/syncrobotic/shell/list.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "skeleton",
@@ -208,7 +328,17 @@
           "path": "registry/syncrobotic/shell/skeleton.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "button",
@@ -228,7 +358,17 @@
           "path": "registry/syncrobotic/ui/button.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "spinner",
@@ -243,7 +383,17 @@
           "path": "registry/syncrobotic/ui/spinner.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "segmented-control",
@@ -261,7 +411,17 @@
           "path": "registry/syncrobotic/ui/segmented-control.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "input",
@@ -276,7 +436,17 @@
           "path": "registry/syncrobotic/ui/input.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "textarea",
@@ -291,7 +461,17 @@
           "path": "registry/syncrobotic/ui/textarea.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "label",
@@ -309,7 +489,17 @@
           "path": "registry/syncrobotic/ui/label.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "field",
@@ -328,7 +518,17 @@
           "path": "registry/syncrobotic/ui/field.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "checkbox",
@@ -347,7 +547,17 @@
           "path": "registry/syncrobotic/ui/checkbox.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "radio-group",
@@ -365,7 +575,17 @@
           "path": "registry/syncrobotic/ui/radio-group.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "switch",
@@ -383,7 +603,17 @@
           "path": "registry/syncrobotic/ui/switch.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "select",
@@ -402,7 +632,17 @@
           "path": "registry/syncrobotic/ui/select.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "slider",
@@ -420,7 +660,17 @@
           "path": "registry/syncrobotic/ui/slider.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "badge",
@@ -439,7 +689,17 @@
           "path": "registry/syncrobotic/ui/badge.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "card",
@@ -454,7 +714,17 @@
           "path": "registry/syncrobotic/ui/card.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "avatar",
@@ -472,7 +742,17 @@
           "path": "registry/syncrobotic/ui/avatar.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "separator",
@@ -490,7 +770,17 @@
           "path": "registry/syncrobotic/ui/separator.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "progress",
@@ -508,7 +798,17 @@
           "path": "registry/syncrobotic/ui/progress.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "alert",
@@ -526,7 +826,17 @@
           "path": "registry/syncrobotic/ui/alert.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "alarm",
@@ -544,7 +854,17 @@
           "path": "registry/syncrobotic/ui/alarm.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "toast",
@@ -563,7 +883,17 @@
           "path": "registry/syncrobotic/ui/toast.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "empty-state",
@@ -578,7 +908,17 @@
           "path": "registry/syncrobotic/ui/empty-state.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "table",
@@ -593,7 +933,17 @@
           "path": "registry/syncrobotic/ui/table.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "tabs",
@@ -611,7 +961,17 @@
           "path": "registry/syncrobotic/ui/tabs.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "accordion",
@@ -630,7 +990,17 @@
           "path": "registry/syncrobotic/ui/accordion.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "dialog",
@@ -649,7 +1019,17 @@
           "path": "registry/syncrobotic/ui/dialog.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "alert-dialog",
@@ -668,7 +1048,17 @@
           "path": "registry/syncrobotic/ui/alert-dialog.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "sheet",
@@ -686,7 +1076,17 @@
           "path": "registry/syncrobotic/ui/sheet.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "popover",
@@ -704,7 +1104,17 @@
           "path": "registry/syncrobotic/ui/popover.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "tooltip",
@@ -722,7 +1132,17 @@
           "path": "registry/syncrobotic/ui/tooltip.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "dropdown-menu",
@@ -741,7 +1161,17 @@
           "path": "registry/syncrobotic/ui/dropdown-menu.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "stats-cards",
@@ -760,7 +1190,17 @@
           "path": "registry/syncrobotic/blocks/stats-cards.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "fleet-table",
@@ -786,7 +1226,17 @@
           "path": "registry/syncrobotic/blocks/fleet-table.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "robot-status-card",
@@ -808,7 +1258,17 @@
           "path": "registry/syncrobotic/blocks/robot-status-card.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "marketing-hero",
@@ -829,7 +1289,17 @@
           "path": "registry/syncrobotic/blocks/marketing-hero.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     }
   ]
 }

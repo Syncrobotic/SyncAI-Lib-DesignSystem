@@ -11,13 +11,15 @@ export const scopes: Scope[] = [
     key: "foundations",
     label: "Foundations",
     href: "/docs/foundations",
-    match: ["/docs/foundations", "/docs/installation"],
+    match: ["/docs/foundations", "/docs/installation", "/docs/tokens", "/docs/upgrading"],
     groups: [
       {
         title: "Getting started",
         links: [
           { href: "/docs/foundations", label: "Overview" },
           { href: "/docs/installation", label: "Installation" },
+          { href: "/docs/tokens", label: "Design tokens" },
+          { href: "/docs/upgrading", label: "Versions and upgrades" },
         ],
       },
       { title: "Foundations", links: foundations.map((f) => ({ href: `/docs/foundations/${f.slug}`, label: f.title })) },

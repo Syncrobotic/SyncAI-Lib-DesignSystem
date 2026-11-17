@@ -1,3 +1,4 @@
+// @syncrobotic/stop-button v0.5.0 · update: npx shadcn add @syncrobotic/stop-button --overwrite
 "use client"
 
 import * as React from "react"

@@ -1,3 +1,4 @@
+// @syncrobotic/marketing-hero v0.5.0 · update: npx shadcn add @syncrobotic/marketing-hero --overwrite
 import * as React from "react"
 import { ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"

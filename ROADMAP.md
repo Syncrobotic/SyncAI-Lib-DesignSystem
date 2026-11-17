@@ -39,13 +39,13 @@ Ordered by what blocks adoption first. Each milestone is one or two release trai
 ### 0.4 · Alarms and feedback (this release)
 - [x] Alarms foundation, `alarm`, `toast`
 - [x] Process: this file, issue templates, PR checklist
-- [ ] Commit the visual baselines so CI fails on any visual change
+- [ ] Commit the visual baselines so CI fails on any visual change (#26)
 - [x] Island notices and alarms share one data shape; the control app's island shows the highest unacknowledged alarm
 
 ### 0.5 · Versions and design source
-- [ ] Per-item version and changelog in the registry, and an upgrade guide using `shadcn diff`
-- [ ] Tokens exported as W3C Design Tokens (DTCG JSON), generated from the theme file in CI
-- [ ] Figma library fed from the same tokens (Tokens Studio), so design and code share one source
+- [x] Per-item version and changelog in the registry, a version header in every file, and an upgrade guide (#27)
+- [x] Tokens exported as W3C Design Tokens (DTCG JSON), generated from the theme file and checked in CI (#28)
+- [ ] Figma library fed from the same tokens (Tokens Studio), so design and code share one source (#29: sync path documented; binding the Figma components needs a designer)
 
 ### 0.6 · Components teams are missing
 - [ ] Combobox, date picker, pagination, breadcrumb, stepper, file upload
