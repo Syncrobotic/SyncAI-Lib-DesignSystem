@@ -50,10 +50,15 @@ jobs:
       - run: npx playwright test --update-snapshots=missing --shard=${{ matrix.shard }}/4
       - uses: actions/upload-artifact@v4
         if: always()
-        with: { name: visual-baseline-${{ matrix.shard }}, path: tests/__screenshots__, if-no-files-found: ignore }
+        with:
+          name: visual-baseline-${{ matrix.shard }}
+          path: tests/__screenshots__
+          if-no-files-found: ignore
       - uses: actions/upload-artifact@v4
         if: failure()
-        with: { name: story-test-results-${{ matrix.shard }}, path: test-results }
+        with:
+          name: story-test-results-${{ matrix.shard }}
+          path: test-results
 
   # Installs every item into a fresh Next.js app with the shadcn CLI, then typechecks and builds it.
   registry-e2e:
