@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.9.0",
         "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "caret-blink animation for one-time-code boxes; stops under reduced motion."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -1982,6 +1987,188 @@
       "files": [
         {
           "path": "registry/syncrobotic/ui/toggle-group.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "autocomplete",
+      "type": "registry:ui",
+      "title": "Autocomplete",
+      "description": "A text field that suggests as you type: filter, arrows, Enter, groups, server search with loading.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/field",
+        "@syncrobotic/popover",
+        "@syncrobotic/spinner"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/autocomplete.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "input-otp",
+      "type": "registry:ui",
+      "title": "Input OTP",
+      "description": "A one-time code or PIN, one 44 px box per character, with paste and SMS autofill.",
+      "dependencies": [
+        "input-otp",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/input-otp.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "phone-input",
+      "type": "registry:ui",
+      "title": "Phone input",
+      "description": "A phone number with its country, formatted as you type, stored as E.164.",
+      "dependencies": [
+        "libphonenumber-js"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/field",
+        "@syncrobotic/select"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/phone-input.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "calendar",
+      "type": "registry:ui",
+      "title": "Calendar",
+      "description": "A month grid for one day, several days or a range; 36 px days with a mouse, 44 px on touch.",
+      "dependencies": [
+        "react-day-picker@^9",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/calendar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "date-selector",
+      "type": "registry:ui",
+      "title": "Date selector",
+      "description": "DatePicker and DateRangePicker: a field that opens a calendar, with presets and clear.",
+      "dependencies": [
+        "react-day-picker@^9",
+        "date-fns",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/calendar",
+        "@syncrobotic/field",
+        "@syncrobotic/popover"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/date-selector.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "time-picker",
+      "type": "registry:ui",
+      "title": "Time picker",
+      "description": "TimePicker (slots in a popover) and TimeInput (typed), on a 24-hour \"HH:mm\" value.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/field",
+        "@syncrobotic/popover"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/time-picker.tsx",
           "type": "registry:ui"
         }
       ],

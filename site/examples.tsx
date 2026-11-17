@@ -19,6 +19,12 @@ import * as s_kbd from "@/stories/kbd.stories"
 import * as s_button_group from "@/stories/button-group.stories"
 import * as s_scroll_area from "@/stories/scroll-area.stories"
 import * as s_toggle_group from "@/stories/toggle-group.stories"
+import * as s_autocomplete from "@/stories/autocomplete.stories"
+import * as s_input_otp from "@/stories/input-otp.stories"
+import * as s_phone_input from "@/stories/phone-input.stories"
+import * as s_calendar from "@/stories/calendar.stories"
+import * as s_date_selector from "@/stories/date-selector.stories"
+import * as s_time_picker from "@/stories/time-picker.stories"
 import type { StoryFile } from "./catalog"
 
 type Meta = { component?: React.ComponentType<Record<string, unknown>>; args?: Record<string, unknown> }
@@ -38,6 +44,12 @@ const files: Record<StoryFile, StoryModule> = {
   navigation: navigation as unknown as StoryModule,
   overlays: overlays as unknown as StoryModule,
   charts: charts as unknown as StoryModule,
+  autocomplete: s_autocomplete as unknown as StoryModule,
+  "input-otp": s_input_otp as unknown as StoryModule,
+  "phone-input": s_phone_input as unknown as StoryModule,
+  calendar: s_calendar as unknown as StoryModule,
+  "date-selector": s_date_selector as unknown as StoryModule,
+  "time-picker": s_time_picker as unknown as StoryModule,
   item: s_item as unknown as StoryModule,
   "icon-tile": s_icon_tile as unknown as StoryModule,
   kbd: s_kbd as unknown as StoryModule,
