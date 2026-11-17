@@ -41,6 +41,27 @@
   background-color: var(--background);
 }
 
+/* Scroll reveal (site/appear.tsx Reveal): where the browser can tie an animation to an element's way through the viewport,
+   each item rises 24 px and fades in as it enters, and goes back the same way when scrolled out (enter and exit are one
+   motion). Items already on screen at load are mid-way or done, never hidden. No script, nothing to flash. Browsers
+   without scroll timelines use the observer fallback below. Off under reduced motion. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-scroll-reveal] .appear-item {
+      animation: scroll-rise linear both;
+      animation-timing-function: var(--ease-standard);
+      animation-timeline: view();
+      animation-range: entry 0% cover 25%;
+    }
+  }
+}
+@keyframes scroll-rise {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+}
+
 /* Site arrival (site/appear.tsx): the theme's appear movement in CSS, staggered by order, so nothing waits on scripts. */
 [data-reveal="waiting"] .appear-item {
   opacity: 0;
