@@ -1,4 +1,4 @@
-// @syncrobotic/island v0.5.0 · update: npx shadcn add @syncrobotic/island --overwrite
+// @syncrobotic/island v0.6.0 · update: npx shadcn add @syncrobotic/island --overwrite
 "use client"
 
 import * as React from "react"
@@ -164,7 +164,7 @@ export function IslandAlarm({ alarms, onAcknowledge, onShowAll, labels }: Island
   const p = alarmPriority[top.priority]
   const Icon = p.icon
   return (
-    <div role="group" aria-label={`${l[top.priority]}: ${top.title}`} className={cn("flex min-h-(--h-row) items-center gap-2 rounded-md px-2", p.tint)}>
+    <div role="group" aria-label={`${l[top.priority]}: ${top.title}`} className={cn("flex min-h-(--h-row) items-center gap-2 rounded-md px-2", top.priority === "critical" ? p.tint : "bg-muted")}>
       <span className={cn("flex size-8 shrink-0 items-center justify-center", p.text)}>
         <Icon aria-hidden="true" className="size-5" />
       </span>
@@ -183,7 +183,7 @@ export function IslandAlarm({ alarms, onAcknowledge, onShowAll, labels }: Island
         </button>
       )}
       {onAcknowledge && (
-        <button type="button" onClick={() => onAcknowledge(top.id)} className="h-(--h-sm) shrink-0 rounded-sm bg-primary px-3 text-sm font-medium text-primary-foreground">
+        <button type="button" onClick={() => onAcknowledge(top.id)} className="h-(--h-sm) shrink-0 rounded-sm px-3 text-sm font-medium ring-1 ring-foreground ring-inset">
           {l.acknowledge}
         </button>
       )}

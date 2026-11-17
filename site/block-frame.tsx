@@ -15,7 +15,33 @@ type Viewport = keyof typeof widths
  * A block in one card: Preview / Code tabs. The preview is an iframe rendered at the real device width
  * (1280, 768 or 390) and scaled down to fit, so breakpoints behave as they would on that device.
  */
-export function BlockFrame({ name, height, initial, code }: { name: string; height: number; initial: "desktop" | "mobile"; code: React.ReactNode }) {
+export function BlockFrame({
+  name,
+  height,
+  initial,
+  code,
+  fit = "content",
+}: {
+  name: string
+  height: number
+  initial: "desktop" | "mobile"
+  code: React.ReactNode
+  /** content: the frame is as tall as the block at the chosen width, so nothing is cut off or left empty. screen: a fixed screen height, for app shells. */
+  fit?: "content" | "screen"
+}) {
+  const [contentH, setContentH] = React.useState<number | null>(null)
+  const observer = React.useRef<ResizeObserver | null>(null)
+  React.useEffect(() => () => observer.current?.disconnect(), [])
+
+  // Same-origin frame: watch the block's root and follow its height (it changes with the device width).
+  const measure = (f: HTMLIFrameElement) => {
+    observer.current?.disconnect()
+    const win = f.contentWindow as (Window & typeof globalThis) | null
+    const root = f.contentDocument?.getElementById("block-root")
+    if (fit !== "content" || !win || !root) return
+    observer.current = new win.ResizeObserver(() => setContentH(Math.ceil(root.getBoundingClientRect().height)))
+    observer.current.observe(root)
+  }
   const [vp, setVp] = React.useState<Viewport>(initial)
   const [tab, setTab] = React.useState("preview")
   const [avail, setAvail] = React.useState(0)
@@ -38,7 +64,19 @@ export function BlockFrame({ name, height, initial, code }: { name: string; heig
     return () => obs.disconnect()
   }, [])
 
+  // The frame may finish loading before React attaches onLoad (it starts with the server HTML), so check once mounted too.
+  React.useEffect(() => {
+    const f = frame.current
+    if (f?.contentDocument?.readyState === "complete") {
+      f.contentDocument.documentElement.classList.toggle("dark", document.documentElement.classList.contains("dark"))
+      measure(f)
+    }
+    // measure only reads refs and props that do not change for a mounted frame
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tab])
+
   const width = widths[vp]
+  const frameH = fit === "content" && contentH ? contentH : height
   const scale = avail > 0 ? Math.min(1, avail / width) : 1
 
   return (
@@ -88,14 +126,17 @@ export function BlockFrame({ name, height, initial, code }: { name: string; heig
         <TabsContent value="preview" className="specimen p-4">
           <div ref={box} className="w-full">
             {/* Changing the device width resizes the frame with the sheet duration; the iframe re-lays out at the new width. */}
-            <m.div className="mx-auto overflow-hidden rounded-sm ring-1 ring-border" initial={false} animate={{ width: width * scale, height: height * scale }} transition={t.sheet}>
+            <m.div className="mx-auto overflow-hidden rounded-sm ring-1 ring-border" initial={false} animate={{ width: width * scale, height: frameH * scale }} transition={t.sheet}>
               <iframe
                 ref={frame}
                 src={`/preview/${name}`}
                 title={`${name} preview at ${width} pixels`}
-                onLoad={(e) => e.currentTarget.contentDocument?.documentElement.classList.toggle("dark", document.documentElement.classList.contains("dark"))}
+                onLoad={(e) => {
+                  e.currentTarget.contentDocument?.documentElement.classList.toggle("dark", document.documentElement.classList.contains("dark"))
+                  measure(e.currentTarget)
+                }}
                 className="origin-top-left bg-background"
-                style={{ width, height, transform: `scale(${scale})` }}
+                style={{ width, height: frameH, transform: `scale(${scale})` }}
               />
             </m.div>
           </div>

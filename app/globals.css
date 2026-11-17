@@ -27,11 +27,9 @@
   color: var(--shiki-dark);
 }
 
-/* Exhibits sit on a faint dot grid, so tokens read as measured, not decorated. */
+/* Exhibits sit on the page background, a step below the card around them. No pattern: the component is the subject. */
 .specimen {
   background-color: var(--background);
-  background-image: radial-gradient(var(--border) 1px, transparent 1px);
-  background-size: 16px 16px;
 }
 
 /* Press feedback (motion pattern "press"): a control sinks slightly while held, at --motion-fast.

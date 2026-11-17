@@ -8,7 +8,7 @@ import { Inline } from "./prose"
 export function DocHeader({ eyebrow, title, lead }: { eyebrow: string; title: string; lead: string }) {
   return (
     <header className="flex flex-col gap-3 border-b border-border pb-8">
-      <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">{eyebrow}</p>
+      <p className="text-sm font-medium text-muted-foreground">{eyebrow}</p>
       <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
       <p className="max-w-2xl text-lg text-muted-foreground">{lead}</p>
     </header>

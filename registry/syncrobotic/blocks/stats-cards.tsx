@@ -1,4 +1,4 @@
-// @syncrobotic/stats-cards v0.5.0 · update: npx shadcn add @syncrobotic/stats-cards --overwrite
+// @syncrobotic/stats-cards v0.6.0 · update: npx shadcn add @syncrobotic/stats-cards --overwrite
 import * as React from "react"
 import { ArrowDownRight, ArrowUpRight } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -36,7 +36,8 @@ function Sparkline({ series, className }: { series: number[]; className?: string
   )
 }
 
-const trendText = { good: "text-success", bad: "text-danger", flat: "text-muted-foreground" } as const
+// Only a change for the worse gets colour. Good news and the sparkline stay neutral, so the bad number is the one you see.
+const trendText = { good: "text-foreground", bad: "text-danger", flat: "text-muted-foreground" } as const
 
 /** Four headline numbers for a dashboard. Value first, then the change, then context. */
 export function StatsCards({ stats = sampleStats, className }: { stats?: Stat[]; className?: string }) {
@@ -62,7 +63,7 @@ export function StatsCards({ stats = sampleStats, className }: { stats?: Stat[];
                 <span className="text-3xl font-bold">{s.value}</span>
                 {s.unit && <span className="text-sm text-muted-foreground">{s.unit}</span>}
               </span>
-              {s.series && <Sparkline series={s.series} className={trendText[trend]} />}
+              {s.series && <Sparkline series={s.series} className="text-muted-foreground" />}
             </div>
             {s.caption && <span className="text-xs text-muted-foreground">{s.caption}</span>}
           </Card>

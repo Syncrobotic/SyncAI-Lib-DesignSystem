@@ -79,7 +79,7 @@ export function MapWorkspace() {
             </div>
             <div className="flex flex-col gap-1 text-xs text-muted-foreground">
               Battery {robot.battery} %
-              <Progress value={robot.battery} tone={robot.battery < 30 ? "warning" : "success"} aria-label="Battery" />
+              <Progress value={robot.battery} tone={robot.battery < 30 ? "warning" : "neutral"} aria-label="Battery" />
             </div>
             <div className="flex gap-2">
               <Button variant="secondary" size="sm">

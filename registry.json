@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.6.0",
         "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Calmer status hues in both modes (all still ≥ 4.5:1 on every surface); colour rule: colour is for what is abnormal."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -111,8 +116,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.6.0",
         "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "In progress and normal use the text colour; only warning, danger and offline are coloured."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -277,8 +287,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.6.0",
         "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "IslandAlarm tints only critical alarms; Acknowledge is an outline button."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -856,8 +871,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.6.0",
         "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Only critical unacknowledged alarms are tinted; others are a bar and the word. Acknowledge is an outline button."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -1197,8 +1217,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.6.0",
         "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Sparklines neutral; only a change for the worse is coloured."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",

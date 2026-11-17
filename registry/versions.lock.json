@@ -1,7 +1,7 @@
 {
   "syncrobotic-theme": {
-    "version": "0.5.0",
-    "hash": "288f4824c9e95b5a"
+    "version": "0.6.0",
+    "hash": "b47dfba102160699"
   },
   "cn": {
     "version": "0.5.0",
@@ -16,8 +16,8 @@
     "hash": "419ce274e0f518ef"
   },
   "status-glyph": {
-    "version": "0.5.0",
-    "hash": "2faa4bfbb57c0579"
+    "version": "0.6.0",
+    "hash": "28d84a1c4cfe3bd6"
   },
   "status-eyebrow": {
     "version": "0.5.0",
@@ -40,8 +40,8 @@
     "hash": "1c116c37046f20a1"
   },
   "island": {
-    "version": "0.5.0",
-    "hash": "284b7b09cf88568d"
+    "version": "0.6.0",
+    "hash": "1776042b54260b4a"
   },
   "list": {
     "version": "0.5.0",
@@ -124,8 +124,8 @@
     "hash": "a543fa4f770645ce"
   },
   "alarm": {
-    "version": "0.5.0",
-    "hash": "6b29e735f2455a97"
+    "version": "0.6.0",
+    "hash": "46e6d3eb6980e872"
   },
   "toast": {
     "version": "0.5.0",
@@ -172,8 +172,8 @@
     "hash": "c572a9916f655b40"
   },
   "stats-cards": {
-    "version": "0.5.0",
-    "hash": "fe654998af101726"
+    "version": "0.6.0",
+    "hash": "a56c70d020b65fdd"
   },
   "fleet-table": {
     "version": "0.5.0",
@@ -197,7 +197,7 @@
   },
   "list-detail": {
     "version": "0.6.0",
-    "hash": "923fa55d46fb0f15"
+    "hash": "ac7955daff642645"
   },
   "event-log": {
     "version": "0.6.0",
@@ -205,6 +205,6 @@
   },
   "map-workspace": {
     "version": "0.6.0",
-    "hash": "8ecd4faa6fcb90a2"
+    "hash": "bf5cd7eaf7fc52d5"
   }
 }

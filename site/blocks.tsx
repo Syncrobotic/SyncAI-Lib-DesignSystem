@@ -11,7 +11,13 @@ import { StatsCards } from "@/registry/syncrobotic/blocks/stats-cards"
 
 // Blocks are composed sections. Each renders alone at /preview/<name> so the docs can frame it at any width.
 export const products = ["App shells", "Dashboard", "Control app", "Marketing"] as const
-type Meta = { product: (typeof products)[number]; viewport: "desktop" | "mobile"; height: number; render: () => React.ReactNode }
+type Meta = {
+  product: (typeof products)[number]
+  viewport: "desktop" | "mobile"
+  /** Starting height. Sections then grow or shrink to their content; app shells fill this height like a screen. */
+  height: number
+  render: () => React.ReactNode
+}
 
 const meta: Record<string, Meta> = {
   // App shells: whole screens for internal engineering tools. Install one, replace the sample data, and you have a prototype.

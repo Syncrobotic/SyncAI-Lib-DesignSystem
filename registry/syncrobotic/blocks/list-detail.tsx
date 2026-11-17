@@ -86,7 +86,7 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
                   <dt className="text-xs text-muted-foreground">Battery</dt>
                   <dd className="flex flex-col gap-2 text-sm font-medium tabular-nums">
                     {robot.battery} %
-                    <Progress value={robot.battery} tone={robot.battery < 30 ? "warning" : "success"} aria-label="Battery" />
+                    <Progress value={robot.battery} tone={robot.battery < 30 ? "warning" : "neutral"} aria-label="Battery" />
                   </dd>
                 </div>
                 <div className="flex flex-col gap-1">
