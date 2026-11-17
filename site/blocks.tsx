@@ -39,6 +39,24 @@ import { RadialChartGoal } from "@/registry/syncrobotic/blocks/radial-chart-goal
 import { RadialChartCapacity } from "@/registry/syncrobotic/blocks/radial-chart-capacity"
 import { HeatmapWeekHours } from "@/registry/syncrobotic/blocks/heatmap-week-hours"
 import { HeatmapZones } from "@/registry/syncrobotic/blocks/heatmap-zones"
+import { AppShellMobileTabs } from "@/registry/syncrobotic/blocks/app-shell-mobile-tabs"
+import { StatsMeters } from "@/registry/syncrobotic/blocks/stats-meters"
+import { StatsFiltered } from "@/registry/syncrobotic/blocks/stats-filtered"
+import { CardSite } from "@/registry/syncrobotic/blocks/card-site"
+import { CardMission } from "@/registry/syncrobotic/blocks/card-mission"
+import { AuthPasskey } from "@/registry/syncrobotic/blocks/auth-passkey"
+import { AuthInvite } from "@/registry/syncrobotic/blocks/auth-invite"
+import { SettingsNotifications } from "@/registry/syncrobotic/blocks/settings-notifications"
+import { SettingsApiKeys } from "@/registry/syncrobotic/blocks/settings-api-keys"
+import { DialogConfirmDestructive } from "@/registry/syncrobotic/blocks/dialog-confirm-destructive"
+import { DialogForm } from "@/registry/syncrobotic/blocks/dialog-form"
+import { DialogShare } from "@/registry/syncrobotic/blocks/dialog-share"
+import { SheetRobotDetail } from "@/registry/syncrobotic/blocks/sheet-robot-detail"
+import { SheetFilters } from "@/registry/syncrobotic/blocks/sheet-filters"
+import { TimelineActivity } from "@/registry/syncrobotic/blocks/timeline-activity"
+import { TimelineAudit } from "@/registry/syncrobotic/blocks/timeline-audit"
+import { WizardCommission } from "@/registry/syncrobotic/blocks/wizard-commission"
+import { WizardImport } from "@/registry/syncrobotic/blocks/wizard-import"
 
 // Blocks are composed sections. Each renders alone at /preview/<name> so the docs can frame it at any width.
 type Meta = {
@@ -329,6 +347,99 @@ const meta: Record<string, Meta> = {
     ),
   },
   "marketing-hero": { viewport: "desktop", height: 760, render: () => <MarketingHero /> },
+  // Application, batch 3. Dialogs and sheets open on load in the preview without taking the page's focus.
+  "app-shell-mobile-tabs": { viewport: "mobile", height: 720, render: () => <AppShellMobileTabs /> },
+  "stats-meters": {
+    viewport: "desktop",
+    height: 320,
+    render: () => (
+      <div className="p-6">
+        <StatsMeters />
+      </div>
+    ),
+  },
+  "stats-filtered": {
+    viewport: "desktop",
+    height: 360,
+    render: () => (
+      <div className="p-6">
+        <StatsFiltered />
+      </div>
+    ),
+  },
+  "card-site": {
+    viewport: "desktop",
+    height: 400,
+    render: () => (
+      <div className="p-6">
+        <CardSite />
+      </div>
+    ),
+  },
+  "card-mission": {
+    viewport: "desktop",
+    thumbWidth: 960,
+    height: 480,
+    render: () => (
+      <div className="mx-auto max-w-4xl p-6">
+        <CardMission />
+      </div>
+    ),
+  },
+  "auth-passkey": { viewport: "desktop", height: 640, render: () => <AuthPasskey /> },
+  "auth-invite": { viewport: "desktop", height: 760, render: () => <AuthInvite /> },
+  "settings-notifications": {
+    viewport: "desktop",
+    thumbWidth: 960,
+    height: 640,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <SettingsNotifications />
+      </div>
+    ),
+  },
+  "settings-api-keys": {
+    viewport: "desktop",
+    thumbWidth: 960,
+    height: 480,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <SettingsApiKeys />
+      </div>
+    ),
+  },
+  "dialog-confirm-destructive": {
+    viewport: "desktop",
+    thumbWidth: 960,
+    height: 640,
+    render: () => <DialogConfirmDestructive defaultOpen focusOnOpen={false} />,
+  },
+  "dialog-form": { viewport: "desktop", thumbWidth: 960, height: 600, render: () => <DialogForm defaultOpen focusOnOpen={false} /> },
+  "dialog-share": { viewport: "desktop", thumbWidth: 960, height: 680, render: () => <DialogShare defaultOpen focusOnOpen={false} /> },
+  "sheet-robot-detail": { viewport: "desktop", thumbWidth: 960, height: 760, render: () => <SheetRobotDetail defaultOpen focusOnOpen={false} /> },
+  "sheet-filters": { viewport: "mobile", height: 760, render: () => <SheetFilters defaultOpen focusOnOpen={false} /> },
+  "timeline-activity": {
+    viewport: "desktop",
+    thumbWidth: 720,
+    height: 560,
+    render: () => (
+      <div className="p-6">
+        <TimelineActivity className="mx-auto" />
+      </div>
+    ),
+  },
+  "timeline-audit": {
+    viewport: "desktop",
+    thumbWidth: 720,
+    height: 520,
+    render: () => (
+      <div className="p-6">
+        <TimelineAudit className="mx-auto" />
+      </div>
+    ),
+  },
+  "wizard-commission": { viewport: "desktop", thumbWidth: 960, height: 520, render: () => <WizardCommission /> },
+  "wizard-import": { viewport: "desktop", thumbWidth: 960, height: 760, render: () => <WizardImport /> },
 }
 
 export const blocks = Object.keys(placement)

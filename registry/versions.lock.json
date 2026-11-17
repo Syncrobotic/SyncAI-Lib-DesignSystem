@@ -478,5 +478,77 @@
   "heatmap-zones": {
     "version": "0.9.0",
     "hash": "e61d0deae1e1a1d9"
+  },
+  "app-shell-mobile-tabs": {
+    "version": "0.9.0",
+    "hash": "5875219b8fa00d85"
+  },
+  "stats-meters": {
+    "version": "0.9.0",
+    "hash": "f54b051e09b7ad8e"
+  },
+  "stats-filtered": {
+    "version": "0.9.0",
+    "hash": "fabdc7a985e3cc17"
+  },
+  "card-site": {
+    "version": "0.9.0",
+    "hash": "bf4d479f7aebd9f0"
+  },
+  "card-mission": {
+    "version": "0.9.0",
+    "hash": "a3c5d391dc9f6f18"
+  },
+  "auth-passkey": {
+    "version": "0.9.0",
+    "hash": "e5255506c5c03b3c"
+  },
+  "auth-invite": {
+    "version": "0.9.0",
+    "hash": "d304da16321f4761"
+  },
+  "settings-notifications": {
+    "version": "0.9.0",
+    "hash": "4b5a8c34a52d83b3"
+  },
+  "settings-api-keys": {
+    "version": "0.9.0",
+    "hash": "656651f2169b1696"
+  },
+  "dialog-confirm-destructive": {
+    "version": "0.9.0",
+    "hash": "8c62a948606cf202"
+  },
+  "dialog-form": {
+    "version": "0.9.0",
+    "hash": "da038e7cf183335a"
+  },
+  "dialog-share": {
+    "version": "0.9.0",
+    "hash": "88ebaa9f142d9686"
+  },
+  "sheet-robot-detail": {
+    "version": "0.9.0",
+    "hash": "b61c183ad698d219"
+  },
+  "sheet-filters": {
+    "version": "0.9.0",
+    "hash": "f47b5225f54409c1"
+  },
+  "timeline-activity": {
+    "version": "0.9.0",
+    "hash": "2d9fe73489e36b7f"
+  },
+  "timeline-audit": {
+    "version": "0.9.0",
+    "hash": "d27eaaf295bbfbdc"
+  },
+  "wizard-commission": {
+    "version": "0.9.0",
+    "hash": "0d9400de6de61910"
+  },
+  "wizard-import": {
+    "version": "0.9.0",
+    "hash": "6c5d29608c824697"
   }
 }
