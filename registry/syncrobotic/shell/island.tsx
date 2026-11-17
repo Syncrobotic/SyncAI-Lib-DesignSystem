@@ -1,9 +1,11 @@
-// @syncrobotic/island v0.7.0 · update: npx shadcn add @syncrobotic/island --overwrite
+// @syncrobotic/island v0.8.0 · update: npx shadcn add @syncrobotic/island --overwrite
 "use client"
 
 import * as React from "react"
 import { Battery, BatteryCharging, Bell, ChevronDown, TriangleAlert, Wifi, WifiOff, X } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
+import { CountBadge } from "@/registry/syncrobotic/ui/badge"
 import { Tray } from "@/registry/syncrobotic/shell/tray"
 import { StatusGlyph, toneSubtle, toneText, type Tone } from "@/registry/syncrobotic/shell/status-glyph"
 import { alarmPriority, defaultAlarmLabels, topAlarm, type AlarmData, type AlarmLabels } from "@/registry/syncrobotic/ui/alarm"
@@ -68,6 +70,9 @@ export function Island({
   labels,
   className,
 }: IslandProps) {
+  const lastChildren = React.useRef<React.ReactNode>(children)
+  if (children) lastChildren.current = children
+  const slot = usePresence(!!children)
   const l = { ...defaultIslandLabels, ...labels }
   const toggle = (z: Zone) => onOpenChange?.(open === z ? null : z)
   const zone = (z: Zone) => cn("press flex h-(--h-md) items-center gap-1 rounded-md px-2", open === z && "bg-muted")
@@ -120,14 +125,19 @@ export function Island({
           className={cn(zone("bell"), "relative")}
         >
           <Bell aria-hidden="true" className="size-5" />
-          {unread > 0 && (
-            <span className="absolute top-1 right-1 inline-flex size-4 items-center justify-center rounded-full bg-danger-subtle text-xs font-bold text-danger">
-              {unread}
-            </span>
-          )}
+          {unread > 0 && <CountBadge count={unread} className="absolute top-0 right-0" />}
         </button>
       </div>
-      {children}
+      {slot.mounted && (
+        // A notice or panel leaves the way it came (disappear), instead of the tray snapping shut under it.
+        <div
+          aria-hidden={slot.leaving || undefined}
+          className={slot.leaving ? "animate-disappear" : undefined}
+          onAnimationEnd={(e) => e.target === e.currentTarget && slot.done()}
+        >
+          {children ?? lastChildren.current}
+        </div>
+      )}
     </Tray>
   )
 }
@@ -193,8 +203,13 @@ type IslandAlarmProps = {
  */
 export function IslandAlarm({ alarms, onAcknowledge, onShowAll, labels }: IslandAlarmProps) {
   const l = { ...defaultAlarmLabels, more: (n: number) => `+${n}`, moreAlarms: "more unacknowledged", ...labels }
-  const top = topAlarm(alarms)
-  if (!top) return null
+  const current = topAlarm(alarms)
+  // When the last alarm is acknowledged, it fades out where it was (disappear) rather than vanishing.
+  const last = React.useRef(current)
+  if (current) last.current = current
+  const presence = usePresence(!!current)
+  const top = current ?? last.current
+  if (!presence.mounted || !top) return null
   const others = alarms.filter((a) => !a.acknowledged).length - 1
   const p = alarmPriority[top.priority]
   const Icon = p.icon
@@ -203,7 +218,13 @@ export function IslandAlarm({ alarms, onAcknowledge, onShowAll, labels }: Island
       role="group"
       aria-label={`${l[top.priority]}: ${top.title}`}
       key={top.id}
-      className={cn("flex min-h-(--h-row) animate-appear items-center gap-2 rounded-md px-2", top.priority === "critical" ? p.tint : "bg-muted")}
+      aria-hidden={presence.leaving || undefined}
+      onAnimationEnd={(e) => e.target === e.currentTarget && presence.done()}
+      className={cn(
+        "flex min-h-(--h-row) items-center gap-2 rounded-md px-2",
+        presence.leaving ? "animate-disappear" : "animate-appear",
+        top.priority === "critical" ? p.tint : "bg-muted",
+      )}
     >
       <span className={cn("flex size-8 shrink-0 items-center justify-center", p.text)}>
         <Icon aria-hidden="true" className="size-5" />

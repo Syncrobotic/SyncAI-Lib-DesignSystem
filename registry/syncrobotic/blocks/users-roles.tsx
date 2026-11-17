@@ -1,4 +1,4 @@
-// @syncrobotic/users-roles v0.6.0 · update: npx shadcn add @syncrobotic/users-roles --overwrite
+// @syncrobotic/users-roles v0.8.0 · update: npx shadcn add @syncrobotic/users-roles --overwrite
 "use client"
 
 import * as React from "react"
@@ -11,7 +11,6 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/registry/syncrobotic/ui/dropdown-menu"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
-import { Label } from "@/registry/syncrobotic/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
 import { Toaster, toast } from "@/registry/syncrobotic/ui/toast"
@@ -32,7 +31,13 @@ const initial: User[] = [
   { id: "u4", name: "", email: "night.shift@example.com", role: "Viewer", invited: true },
 ]
 
-const initials = (u: User) => (u.name || u.email).split(/[ .@]/).filter(Boolean).slice(0, 2).map((s) => s[0]!.toUpperCase()).join("")
+const initials = (u: User) =>
+  (u.name || u.email)
+    .split(/[ .@]/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((s) => s[0]!.toUpperCase())
+    .join("")
 
 /** Users and roles: who can do what. Change a role in place; invite by email; remove from the row menu (last, after a separator). */
 export function UsersRoles() {
@@ -73,10 +78,9 @@ export function UsersRoles() {
             <Field label="Email" error={error}>
               <Input type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} />
             </Field>
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="invite-role">Role</Label>
+            <Field label="Role" hint={roles[role]}>
               <Select value={role} onValueChange={(v) => setRole(v as Role)}>
-                <SelectTrigger id="invite-role" aria-describedby="invite-role-hint">
+                <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -87,10 +91,7 @@ export function UsersRoles() {
                   ))}
                 </SelectContent>
               </Select>
-              <p id="invite-role-hint" className="text-xs text-muted-foreground">
-                {roles[role]}
-              </p>
-            </div>
+            </Field>
             <DialogFooter>
               <Button onClick={invite}>Send invitation</Button>
             </DialogFooter>
@@ -149,7 +150,9 @@ export function UsersRoles() {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      {u.invited && <DropdownMenuItem onSelect={() => toast({ title: "Invitation sent again", description: u.email })}>Resend invitation</DropdownMenuItem>}
+                      {u.invited && (
+                        <DropdownMenuItem onSelect={() => toast({ title: "Invitation sent again", description: u.email })}>Resend invitation</DropdownMenuItem>
+                      )}
                       <DropdownMenuItem>View activity</DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem

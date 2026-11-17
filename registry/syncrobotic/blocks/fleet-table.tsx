@@ -1,8 +1,8 @@
-// @syncrobotic/fleet-table v0.7.0 · update: npx shadcn add @syncrobotic/fleet-table --overwrite
+// @syncrobotic/fleet-table v0.8.0 · update: npx shadcn add @syncrobotic/fleet-table --overwrite
 "use client"
 
 import * as React from "react"
-import { ChevronLeft, ChevronRight, Ellipsis, MapPin, Pencil, Search, Trash2 } from "lucide-react"
+import { Ellipsis, MapPin, Pencil, Search, Trash2 } from "lucide-react"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import type { Tone } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
@@ -10,7 +10,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { InputGroup, InputGroupAddon } from "@/registry/syncrobotic/ui/input-group"
-import { Progress } from "@/registry/syncrobotic/ui/progress"
+import { Meter } from "@/registry/syncrobotic/ui/meter"
+import { Pagination } from "@/registry/syncrobotic/ui/pagination"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
 
@@ -146,15 +147,7 @@ export function FleetTable({ robots = sampleRobots, pageSize = 5, onOpen }: { ro
                   <InlineStatus tone={status[r.status].tone}>{status[r.status].label}</InlineStatus>
                 </TableCell>
                 <TableCell>
-                  <div className="flex items-center gap-2">
-                    <Progress
-                      value={r.battery}
-                      tone={r.battery < 30 ? "warning" : "neutral"}
-                      aria-label={`Battery ${r.battery}%`}
-                      className="hidden w-20 sm:block"
-                    />
-                    <span className={r.battery < 30 ? "text-warning" : "text-muted-foreground"}>{r.battery}%</span>
-                  </div>
+                  <Meter value={r.battery} low={30} critical={15} label={`Battery, ${r.name}`} inline />
                 </TableCell>
                 <TableCell className="hidden text-muted-foreground md:table-cell">{r.site}</TableCell>
                 <TableCell className="hidden text-muted-foreground md:table-cell">{r.lastSeen}</TableCell>
@@ -185,17 +178,7 @@ export function FleetTable({ robots = sampleRobots, pageSize = 5, onOpen }: { ro
         </Table>
       )}
 
-      <div className="flex items-center justify-between text-sm text-muted-foreground">
-        <span>{rows.length === 0 ? "0 robots" : `${current * pageSize + 1}–${current * pageSize + visible.length} of ${rows.length}`}</span>
-        <div className="flex gap-2">
-          <Button variant="outline" size="icon-sm" aria-label="Previous page" disabled={current === 0} onClick={() => setPage(current - 1)}>
-            <ChevronLeft aria-hidden="true" />
-          </Button>
-          <Button variant="outline" size="icon-sm" aria-label="Next page" disabled={current >= pages - 1} onClick={() => setPage(current + 1)}>
-            <ChevronRight aria-hidden="true" />
-          </Button>
-        </div>
-      </div>
+      <Pagination page={current} pageSize={pageSize} total={rows.length} onPageChange={setPage} labels={{ empty: "0 robots" }} />
     </div>
   )
 }

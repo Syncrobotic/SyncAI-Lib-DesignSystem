@@ -1,4 +1,4 @@
-// @syncrobotic/badge v0.7.0 · update: npx shadcn add @syncrobotic/badge --overwrite
+// @syncrobotic/badge v0.8.0 · update: npx shadcn add @syncrobotic/badge --overwrite
 import * as React from "react"
 import { Slot } from "radix-ui"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -22,4 +22,31 @@ export const badgeVariants = cva("inline-flex h-(--h-tag) shrink-0 items-center 
 export function Badge({ className, tone, asChild, ...props }: React.ComponentProps<"span"> & VariantProps<typeof badgeVariants> & { asChild?: boolean }) {
   const Comp = asChild ? Slot.Root : "span"
   return <Comp data-slot="badge" className={cn(badgeVariants({ tone }), className)} {...props} />
+}
+
+/**
+ * A count next to a label: unread events, alarms, items. Danger text on its tint when the count needs attention, neutral
+ * otherwise; never solid red, which belongs to the emergency stop. Over `max` it shows "99+".
+ */
+export function CountBadge({
+  count,
+  max = 99,
+  tone = "danger",
+  className,
+  ...props
+}: React.ComponentProps<"span"> & { count: number; max?: number; tone?: "danger" | "neutral" }) {
+  if (count <= 0) return null
+  return (
+    <span
+      data-slot="count-badge"
+      className={cn(
+        "inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full px-1 text-xs font-medium tabular-nums",
+        tone === "danger" ? "bg-danger-subtle text-danger" : "bg-muted text-foreground",
+        className,
+      )}
+      {...props}
+    >
+      {count > max ? `${max}+` : count}
+    </span>
+  )
 }

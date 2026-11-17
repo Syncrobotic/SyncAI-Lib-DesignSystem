@@ -1,3 +1,4 @@
+import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
 import { Battery, CircleAlert, Info, MapPinOff, RefreshCw, SearchX, TriangleAlert, Wifi } from "lucide-react"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
@@ -12,6 +13,9 @@ import { Progress } from "@/registry/syncrobotic/ui/progress"
 import { Separator } from "@/registry/syncrobotic/ui/separator"
 import { Spinner } from "@/registry/syncrobotic/ui/spinner"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
+import { CountBadge } from "@/registry/syncrobotic/ui/badge"
+import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
+import { Meter } from "@/registry/syncrobotic/ui/meter"
 
 const meta: Meta = { title: "Display" }
 export default meta
@@ -327,7 +331,12 @@ export const AlertWithAction: S = {
 export const EmptyStateNoResults: S = {
   render: () => (
     <Card>
-      <EmptyState icon={SearchX} title="No events match “gate b”" description="Try a shorter search or a wider date range." action={<Button variant="secondary">Clear search</Button>} />
+      <EmptyState
+        icon={SearchX}
+        title="No events match “gate b”"
+        description="Try a shorter search or a wider date range."
+        action={<Button variant="secondary">Clear search</Button>}
+      />
     </Card>
   ),
 }
@@ -335,7 +344,12 @@ export const EmptyStateNoResults: S = {
 export const EmptyStateError: S = {
   render: () => (
     <Card>
-      <EmptyState icon={CircleAlert} title="Could not load events" description="The server did not answer. Your robots keep patrolling." action={<Button>Try again</Button>} />
+      <EmptyState
+        icon={CircleAlert}
+        title="Could not load events"
+        description="The server did not answer. Your robots keep patrolling."
+        action={<Button>Try again</Button>}
+      />
     </Card>
   ),
 }
@@ -368,4 +382,109 @@ export const TableWithStatusAndSelectedRow: S = {
       </TableBody>
     </Table>
   ),
+}
+
+/** Normal is neutral; below `low` it turns warning, below `critical` danger, and the value is always written. */
+export const MeterLevels: S = {
+  render: () => (
+    <div className="flex flex-col gap-6">
+      <Meter value={72} low={30} critical={15} label="Battery" />
+      <Meter value={24} low={30} critical={15} label="Battery" />
+      <Meter value={9} low={30} critical={15} label="Battery" />
+      <Meter value={86} low={80} critical={95} higherIsWorse label="Storage" />
+    </div>
+  ),
+}
+
+/** One line for table cells: bar and value; the label is read, not shown. */
+export const MeterInline: S = {
+  render: () => (
+    <div className="flex flex-col gap-3">
+      <Meter value={72} low={30} critical={15} label="Battery, Patrol dog 7F3A" inline />
+      <Meter value={18} low={30} critical={15} label="Battery, Patrol dog 9C44" inline />
+    </div>
+  ),
+}
+
+export const DescriptionListPlain: S = {
+  render: () => (
+    <DescriptionList
+      items={[
+        { label: "Site", value: "North gate" },
+        { label: "Firmware", value: "2.4.0" },
+        { label: "Last seen", value: "now" },
+      ]}
+    />
+  ),
+}
+
+/** The few numbers that matter most, each in its own tile. */
+export const DescriptionListTiles: S = {
+  render: () => (
+    <DescriptionList
+      variant="tiles"
+      columns={2}
+      items={[
+        { label: "Patrols today", value: "14" },
+        { label: "Distance", value: "41 km" },
+        { label: "Events", value: "3" },
+        { label: "Uptime", value: "99.2 %" },
+      ]}
+    />
+  ),
+}
+
+/** Danger tint when the count needs attention, neutral otherwise; 99+ past the maximum. */
+export const BadgeCount: S = {
+  render: () => (
+    <div className="flex flex-col gap-3 text-sm">
+      <span className="flex items-center gap-2">
+        Alarms <CountBadge count={2} />
+      </span>
+      <span className="flex items-center gap-2">
+        Unread messages <CountBadge count={7} tone="neutral" />
+      </span>
+      <span className="flex items-center gap-2">
+        Events <CountBadge count={240} />
+      </span>
+    </div>
+  ),
+}
+
+const fleet = [
+  { name: "Patrol dog 7F3A", battery: 72 },
+  { name: "Patrol dog 9C44", battery: 18 },
+  { name: "Patrol dog 2B10", battery: 100 },
+]
+
+/** Sortable columns: the label is a button, the header announces its order, an arrow shows it. */
+export const TableSortable: S = {
+  render: function Render() {
+    const [sort, setSort] = React.useState<{ key: "name" | "battery"; dir: "asc" | "desc" }>({ key: "name", dir: "asc" })
+    const rows = [...fleet].sort((a, b) => (sort.key === "name" ? a.name.localeCompare(b.name) : a.battery - b.battery) * (sort.dir === "asc" ? 1 : -1))
+    const head = (key: "name" | "battery") => ({
+      sort: sort.key === key ? sort.dir : (false as const),
+      onSort: () => setSort({ key, dir: sort.key === key && sort.dir === "asc" ? "desc" : "asc" }),
+    })
+    return (
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead {...head("name")}>Robot</TableHead>
+            <TableHead {...head("battery")} className="text-right">
+              Battery
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {rows.map((r) => (
+            <TableRow key={r.name}>
+              <TableCell className="font-medium">{r.name}</TableCell>
+              <TableCell className="text-right tabular-nums">{r.battery} %</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    )
+  },
 }

@@ -4,6 +4,36 @@
 export type Overview = { what: string; use: string[]; instead?: string[] }
 
 export const overviews: Record<string, Overview> = {
+  "choice-field": {
+    what: "One choice as a whole tappable row: a checkbox, radio or switch with its label, a description and an optional count. FieldSet groups them under one question.",
+    use: ["Filters with counts.", "Settings that switch on and off.", "Several answers to one question in a form."],
+    instead: ["A single control with a label and nothing else: `label` next to it.", "Picking one of many: `select`."],
+  },
+  meter: {
+    what: "A level within a known range, like battery or storage, neutral until it crosses a threshold.",
+    use: ["Battery, storage, signal strength, CPU.", "Inline in a table cell, or above a value in a card."],
+    instead: ["Work that is under way and will finish: `progress`."],
+  },
+  "description-list": {
+    what: "Facts about one thing as label and value pairs.",
+    use: ["A robot's site, firmware and last contact.", "A dataset's owner, size and date."],
+    instead: ["Many records to compare: `table`.", "One headline number: a stat in a `card`."],
+  },
+  breadcrumb: {
+    what: "Where this page sits, as a row of links to the levels above it.",
+    use: ["Pages two or more levels deep: a dataset inside a catalog, a robot inside a site."],
+    instead: ["Moving between sections at one level: `tabs`.", "Top-level navigation: the app shell's sidebar."],
+  },
+  pagination: {
+    what: "Where you are in a long list, and how to move through it.",
+    use: ["Tables and lists with more rows than fit."],
+    instead: ["A short list: show it all.", "Finding one record: `command` or a search field."],
+  },
+  "copy-button": {
+    what: "Copies a value and confirms it in place: the icon becomes a check for 1.5 s.",
+    use: ["IDs, references, install commands, coordinates."],
+    instead: ["Sharing a link to the current page: the browser already does it."],
+  },
   button: {
     what: "A control that does one thing now: save, send, start a mission. The label is a verb that says what happens.",
     use: [
@@ -86,11 +116,12 @@ export const overviews: Record<string, Overview> = {
     what: "A short label or count in a status tone.",
     use: ["A count next to a title (3 alarms).", "A state word in a header, like Production or Offline."],
     instead: ["A state in a list row: `status-eyebrow` (InlineStatus).", "A message that needs a sentence: `alert`."],
+    // CountBadge, in the same file, is the one way to draw a count next to a label.
   },
   card: {
     what: "One raised surface that holds a group of related content.",
     use: ["A robot's summary, a KPI, a settings section."],
-    instead: ["Rows of similar items: `list` or `table` inside one card. Cards are never nested."],
+    instead: ["Rows of similar items: `list` or `table` inside one card. Cards are never nested.", "Label and value pairs: `description-list`."],
   },
   avatar: {
     what: "A person's picture, or their initials when there is none.",
@@ -105,7 +136,7 @@ export const overviews: Record<string, Overview> = {
   progress: {
     what: "A bar that fills as work completes. Blue means in progress.",
     use: ["Uploads, map processing, a mission's completion.", "A value that is itself a status, like battery, in a status tone."],
-    instead: ["Waiting with no measurable progress: `spinner`.", "Content still loading: `skeleton`."],
+    instead: ["Waiting with no measurable progress: `spinner`.", "Content still loading: `skeleton`.", "A level that is not work, like battery: `meter`."],
   },
   spinner: {
     what: "A turning indicator for work with no measurable progress. It appears only after 300 ms, so quick work never flashes it.",

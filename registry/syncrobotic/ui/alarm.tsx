@@ -1,9 +1,10 @@
-// @syncrobotic/alarm v0.7.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
+// @syncrobotic/alarm v0.8.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
 "use client"
 
 import * as React from "react"
 import { CircleAlert, OctagonAlert, TriangleAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { usePresence, usePresenceList } from "@/registry/syncrobotic/hooks/use-presence"
 
 /**
  * Alarms follow ISA-18.2 / IEC 62682: an alarm is an abnormal condition that needs an operator action.
@@ -178,7 +179,9 @@ export function AlarmList({ alarms, onAcknowledge, labels, className }: AlarmLis
     none: "No active alarms",
     ...labels,
   }
-  const shown = sortAlarms(alarms)
+  const shown = React.useMemo(() => sortAlarms(alarms), [alarms])
+  // A cleared alarm fades out (disappear, --motion-fast) instead of vanishing from under the operator's finger.
+  const { rendered, done } = usePresenceList(shown, (a) => a.id)
   const unack = shown.filter((a) => !a.acknowledged).length
   const summary = labels?.summary?.(shown.filter((a) => a.active).length, unack) ?? `${shown.filter((a) => a.active).length} active · ${unack} unacknowledged`
 
@@ -206,12 +209,17 @@ export function AlarmList({ alarms, onAcknowledge, labels, className }: AlarmLis
         <h2 className="text-sm font-bold">{l.title}</h2>
         <span className="text-xs text-muted-foreground tabular-nums">{summary}</span>
       </div>
-      {shown.length === 0 ? (
+      {rendered.length === 0 ? (
         <p className="rounded-md bg-card px-4 py-4 text-sm text-muted-foreground ring-1 ring-border">{l.none}</p>
       ) : (
         <ul className="flex flex-col gap-2">
-          {shown.map((a) => (
-            <li key={a.id}>
+          {rendered.map(({ item: a, leaving }) => (
+            <li
+              key={a.id}
+              aria-hidden={leaving || undefined}
+              className={leaving ? "animate-disappear" : undefined}
+              onAnimationEnd={(e) => leaving && e.target === e.currentTarget && done(a.id)}
+            >
               <Alarm {...a} labels={labels} onAcknowledge={onAcknowledge ? () => onAcknowledge(a.id) : undefined} />
             </li>
           ))}

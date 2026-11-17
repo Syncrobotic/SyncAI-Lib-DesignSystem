@@ -56,6 +56,14 @@ const entries: Record<string, Entry> = {
     examples: { file: "actions", prefix: "SegmentedControl" },
     rules: ["For two to four views of the same data. For sections of a page, use Tabs.", "The selected segment is inverted, per the selected-state rule."],
   },
+  "copy-button": {
+    group: "Actions",
+    examples: { file: "actions", prefix: "CopyButton" },
+    rules: [
+      "The icon becomes a check for 1.5 s and the label says Copied: the swap pattern, never a toast.",
+      "Icon-only needs a label that names what is copied (Copy reference).",
+    ],
+  },
   toggle: {
     group: "Actions",
     examples: { file: "actions", prefix: "Toggle" },
@@ -117,6 +125,15 @@ const entries: Record<string, Entry> = {
     examples: { file: "inputs", prefix: "Switch" },
     rules: ["Takes effect immediately; no save button.", "On is success green, per the colour rules."],
   },
+  "choice-field": {
+    group: "Inputs",
+    examples: { file: "inputs", prefix: "ChoiceField" },
+    rules: [
+      "The whole row is the target, at least 44 px: a tap on the label toggles the control.",
+      "Checkboxes and radios at the start; a switch, which acts at once, at the end.",
+      "Group choices under one question with FieldSet and a legend; its hint or error sits under the group.",
+    ],
+  },
   select: { group: "Inputs", examples: { file: "inputs", prefix: "Select" } },
   slider: { group: "Inputs", examples: { file: "inputs", prefix: "Slider" }, rules: ["Always show the current value in the label next to it."] },
   // Display
@@ -140,6 +157,20 @@ const entries: Record<string, Entry> = {
       "Waits 300 ms before it appears. Work that finishes sooner never flashes a spinner.",
       "Prefer Skeleton when you know the shape of what is loading.",
     ],
+  },
+  meter: {
+    group: "Display",
+    examples: { file: "display", prefix: "Meter" },
+    rules: [
+      "For a level in a known range (battery, storage). For work under way, use Progress.",
+      "Neutral while normal; warning past `low`, danger past `critical`. Colour only when something is wrong, and the value is always written.",
+      "`inline` in table cells; the label is still read by screen readers.",
+    ],
+  },
+  "description-list": {
+    group: "Display",
+    examples: { file: "display", prefix: "DescriptionList" },
+    rules: ["Label above value, value in medium weight with tabular numbers.", "`tiles` only for the few numbers that matter most; everything else plain."],
   },
   "empty-state": { group: "Display", examples: { file: "display", prefix: "EmptyState" } },
   table: { group: "Display", examples: { file: "display", prefix: "Table" }, rules: ["Right-align numbers. Numbers are tabular by default."] },
@@ -190,6 +221,19 @@ const entries: Record<string, Entry> = {
     ],
   },
   // Navigation
+  breadcrumb: {
+    group: "Navigation",
+    examples: { file: "navigation", prefix: "Breadcrumb" },
+    rules: ["Each level is a link; the current page is last and is not.", "In an app shell, pass it as `breadcrumb`: the top bar's title is the current page."],
+  },
+  pagination: {
+    group: "Navigation",
+    examples: { file: "navigation", prefix: "Pagination" },
+    rules: [
+      "Say the range (1–10 of 48) so people know how much there is.",
+      "Previous and next disable at the ends. Numbered pages only for long lists people jump around in.",
+    ],
+  },
   tabs: { group: "Navigation", examples: { file: "navigation", prefix: "Tabs" } },
   accordion: { group: "Navigation", examples: { file: "navigation", prefix: "Accordion" } },
   // Overlays: the docs show the closed trigger; the *Open stories are for visual tests.
@@ -334,6 +378,19 @@ const keyboard: Record<string, [string, string][]> = {
     ["Enter", "Run the highlighted result"],
     ["Esc", "Close and return focus"],
   ],
+  pagination: [
+    ["Tab", "Move between previous, the pages and next"],
+    ["Enter / Space", "Go to that page"],
+  ],
+  breadcrumb: [
+    ["Tab", "Move between the levels"],
+    ["Enter", "Open that level"],
+  ],
+  "choice-field": [
+    ["Space", "Toggle the focused checkbox or switch"],
+    ["↑ ↓", "Move between radio options"],
+  ],
+  "copy-button": [["Enter / Space", "Copy"]],
   "dropdown-menu": [
     ["Enter / Space / ↓", "Open the menu"],
     ["↑ / ↓", "Move between items"],

@@ -1,7 +1,9 @@
-// @syncrobotic/settings-page v0.7.0 · update: npx shadcn add @syncrobotic/settings-page --overwrite
+// @syncrobotic/settings-page v0.8.0 · update: npx shadcn add @syncrobotic/settings-page --overwrite
 "use client"
 
 import * as React from "react"
+import { cn } from "@/lib/utils"
+import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
 import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
 import {
   AlertDialog,
@@ -17,7 +19,7 @@ import {
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
-import { Label } from "@/registry/syncrobotic/ui/label"
+import { ChoiceField } from "@/registry/syncrobotic/ui/choice-field"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
 import { Switch } from "@/registry/syncrobotic/ui/switch"
 import { Toaster, toast } from "@/registry/syncrobotic/ui/toast"
@@ -42,23 +44,20 @@ function Section({ id, title, description, children }: { id: string; title: stri
   )
 }
 
-function SwitchRow({ id, label, hint, defaultChecked }: { id: string; label: string; hint: string; defaultChecked?: boolean }) {
+function SwitchRow({ label, hint, defaultChecked }: { id?: string; label: string; hint: string; defaultChecked?: boolean }) {
   return (
-    <div className="flex min-h-(--h-md) items-center justify-between gap-4">
-      <div className="flex flex-col">
-        <Label htmlFor={id}>{label}</Label>
-        <span id={`${id}-hint`} className="text-xs text-muted-foreground">
-          {hint}
-        </span>
-      </div>
-      <Switch
-        id={id}
-        aria-describedby={`${id}-hint`}
-        defaultChecked={defaultChecked}
-        // Switches apply at once (the Switch rule); say so, there is no save for them.
-        onCheckedChange={(on) => toast({ tone: "success", title: `${label} ${on ? "on" : "off"}` })}
-      />
-    </div>
+    <ChoiceField
+      label={label}
+      description={hint}
+      controlAt="end"
+      control={
+        <Switch
+          defaultChecked={defaultChecked}
+          // Switches apply at once (the Switch rule); say so, there is no save for them.
+          onCheckedChange={(on) => toast({ tone: "success", title: `${label} ${on ? "on" : "off"}` })}
+        />
+      }
+    />
   )
 }
 
@@ -72,6 +71,8 @@ export function SettingsPage() {
   const [timezone, setTimezone] = React.useState(saved.timezone)
   const [error, setError] = React.useState<string | null>(null)
   const dirty = site !== saved.site || timezone !== saved.timezone
+  // The save bar leaves the way it came (disappear), after Save or Discard.
+  const saveBar = usePresence(dirty)
 
   const save = () => {
     if (site.trim().length < 2) return setError("At least 2 characters")
@@ -98,10 +99,9 @@ export function SettingsPage() {
           <Field label="Site name" error={error ?? undefined} hint="Shown on the island and in reports.">
             <Input value={site} onChange={(e) => setSite(e.target.value)} />
           </Field>
-          <div className="flex flex-col gap-2">
-            <Label htmlFor="settings-timezone">Time zone</Label>
+          <Field label="Time zone">
             <Select value={timezone} onValueChange={setTimezone}>
-              <SelectTrigger id="settings-timezone">
+              <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -110,7 +110,7 @@ export function SettingsPage() {
                 <SelectItem value="Europe/Berlin">Berlin (UTC+1)</SelectItem>
               </SelectContent>
             </Select>
-          </div>
+          </Field>
         </Section>
 
         <Section id="notifications" title="Notifications" description="Changes here apply at once.">
@@ -144,11 +144,16 @@ export function SettingsPage() {
       </div>
 
       {/* The save bar sticks to the bottom of the scrolling page, wherever the sidebar is. */}
-      {dirty && (
+      {saveBar.mounted && (
         <div
           role="region"
           aria-label="Unsaved changes"
-          className="sticky bottom-0 -mx-6 -mb-6 mt-8 animate-appear border-t border-edge bg-float shadow-float backdrop-blur-xl"
+          aria-hidden={saveBar.leaving || undefined}
+          onAnimationEnd={(e) => e.target === e.currentTarget && saveBar.done()}
+          className={cn(
+            "sticky bottom-0 -mx-6 -mb-6 mt-8 border-t border-edge bg-float shadow-float backdrop-blur-xl",
+            saveBar.leaving ? "animate-disappear" : "animate-appear",
+          )}
         >
           <div className="flex max-w-4xl items-center justify-between gap-3 px-6 py-3">
             <span className="text-sm">Unsaved changes</span>

@@ -1,15 +1,26 @@
-// @syncrobotic/status-pages v0.7.0 · update: npx shadcn add @syncrobotic/status-pages --overwrite
+// @syncrobotic/status-pages v0.8.0 · update: npx shadcn add @syncrobotic/status-pages --overwrite
 "use client"
 
 import * as React from "react"
 import { CloudOff, Lock, RotateCcw, SearchX } from "lucide-react"
+import { cn } from "@/lib/utils"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Bone, LoadingLine } from "@/registry/syncrobotic/shell/skeleton"
 
-type PageProps = { onPrimary?: () => void; onSecondary?: () => void }
+type PageProps = {
+  onPrimary?: () => void
+  onSecondary?: () => void
+  /** Fill the screen (a route of its own, the default) or the space it is given (inside an app shell's content). */
+  fill?: "screen" | "parent"
+  className?: string
+}
 
-/** One layout for every page that is not the content: what happened, why, and the next step. Never a dead end. */
-function StatusPage({
+/**
+ * One layout for every page that is not the content: what happened, why, and the next step. Never a dead end.
+ * Centred on both axes, like the empty state, so it balances in any frame: a full screen, or an app shell's content panel.
+ * Icon tile, then the code, title and explanation as one block, then the actions: 16 px apart, 24 px before the actions.
+ */
+export function StatusPage({
   icon: Icon,
   code,
   title,
@@ -18,26 +29,31 @@ function StatusPage({
   secondary,
   onPrimary,
   onSecondary,
+  fill = "screen",
+  className,
 }: PageProps & { icon: React.ElementType; code?: string; title: string; body: React.ReactNode; primary: string; secondary?: string }) {
+  const Root = fill === "screen" ? "main" : "section"
   return (
-    <main className="flex min-h-dvh items-center justify-center bg-background p-4">
-      <div className="flex max-w-md animate-appear flex-col items-start gap-4">
+    <Root className={cn("flex items-center justify-center bg-background p-6", fill === "screen" ? "min-h-dvh" : "h-full min-h-96", className)}>
+      <div className="flex max-w-md animate-appear flex-col items-center gap-4 text-center">
         <span className="flex size-12 items-center justify-center rounded-sm bg-muted text-muted-foreground">
           <Icon aria-hidden="true" className="size-6" />
         </span>
-        {code && <p className="font-mono text-sm text-muted-foreground">{code}</p>}
-        <h1 className="text-3xl font-bold">{title}</h1>
-        <div className="text-muted-foreground">{body}</div>
-        <div className="flex flex-wrap gap-3 pt-2">
+        <div className="flex flex-col items-center gap-2">
+          {code && <p className="font-mono text-sm text-muted-foreground tabular-nums">{code}</p>}
+          <h1 className="text-2xl font-bold text-balance">{title}</h1>
+          <div className="text-sm text-pretty text-muted-foreground">{body}</div>
+        </div>
+        <div className="flex flex-wrap justify-center gap-2 pt-2">
           <Button onClick={onPrimary}>{primary}</Button>
           {secondary && (
-            <Button variant="ghost" onClick={onSecondary}>
+            <Button variant="secondary" onClick={onSecondary}>
               {secondary}
             </Button>
           )}
         </div>
       </div>
-    </main>
+    </Root>
   )
 }
 
@@ -55,7 +71,7 @@ export function NotFoundPage(props: PageProps) {
   )
 }
 
-export function NoAccessPage(props: PageProps & { role?: string; admin?: string }) {
+export function NoAccessPage({ role = "Viewer", admin = "Your site admin", ...props }: PageProps & { role?: string; admin?: string }) {
   return (
     <StatusPage
       icon={Lock}
@@ -63,7 +79,7 @@ export function NoAccessPage(props: PageProps & { role?: string; admin?: string 
       title="You do not have access"
       body={
         <>
-          Your role ({props.role ?? "Viewer"}) cannot open this page. {props.admin ?? "Your site admin"} can change it.
+          Your role ({role}) cannot open this page. {admin} can change it.
         </>
       }
       primary="Request access"
@@ -77,10 +93,11 @@ export function ErrorPage({ reference = "a7f3-22c1", ...props }: PageProps & { r
   return (
     <StatusPage
       icon={RotateCcw}
+      code="500"
       title="Something went wrong on our side"
       body={
         <>
-          Your work is saved. Try again; if it keeps happening, send this reference to support: <span className="font-mono text-foreground">{reference}</span>
+          Your work is saved. Try again; if it keeps happening, send support this reference: <span className="font-mono text-foreground">{reference}</span>
         </>
       }
       primary="Try again"
@@ -94,8 +111,9 @@ export function OfflinePage(props: PageProps) {
   return (
     <StatusPage
       icon={CloudOff}
+      code="Offline"
       title="No connection to the fleet server"
-      body="Robots keep running their missions and the emergency stop still works over Bluetooth from the control app. This page reconnects on its own."
+      body="Robots keep running their missions, and the emergency stop still works over Bluetooth from the control app. This page reconnects on its own."
       primary="Retry now"
       {...props}
     />
@@ -103,9 +121,10 @@ export function OfflinePage(props: PageProps) {
 }
 
 /** Loading a page: say what we are waiting for, show the frame, and let only the unknown values breathe. */
-export function LoadingPage({ what = "Loading the fleet" }: { what?: string }) {
+export function LoadingPage({ what = "Loading the fleet", fill = "screen", className }: { what?: string; fill?: "screen" | "parent"; className?: string }) {
+  const Root = fill === "screen" ? "main" : "section"
   return (
-    <main aria-busy="true" className="flex min-h-dvh flex-col gap-6 bg-background p-6">
+    <Root aria-busy="true" className={cn("flex flex-col gap-4 bg-background p-6", fill === "screen" ? "min-h-dvh" : "h-full", className)}>
       <LoadingLine>{what}</LoadingLine>
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {["Robots online", "Patrol hours", "Events", "Avg. battery"].map((label) => (
@@ -120,6 +139,6 @@ export function LoadingPage({ what = "Loading the fleet" }: { what?: string }) {
           <Bone key={i} onCard className="h-6 w-full" />
         ))}
       </div>
-    </main>
+    </Root>
   )
 }

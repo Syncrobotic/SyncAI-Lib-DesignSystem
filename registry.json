@@ -112,6 +112,30 @@
       }
     },
     {
+      "name": "use-presence",
+      "type": "registry:hook",
+      "title": "usePresence",
+      "description": "Keeps an element, or list items, on screen while they leave, so exits use the disappear movement instead of vanishing.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/syncrobotic/hooks/use-presence.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "meta": {
+        "version": "0.8.0",
+        "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
       "name": "status-glyph",
       "type": "registry:component",
       "title": "Status glyph",
@@ -262,7 +286,8 @@
       "description": "Three tiers: state action, this page's primary action, navigation.",
       "registryDependencies": [
         "@syncrobotic/cn",
-        "@syncrobotic/tray"
+        "@syncrobotic/tray",
+        "@syncrobotic/badge"
       ],
       "files": [
         {
@@ -271,8 +296,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "The tab count uses CountBadge."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -303,7 +333,9 @@
         "@syncrobotic/cn",
         "@syncrobotic/tray",
         "@syncrobotic/status-glyph",
-        "@syncrobotic/alarm"
+        "@syncrobotic/alarm",
+        "@syncrobotic/badge",
+        "@syncrobotic/use-presence"
       ],
       "files": [
         {
@@ -312,8 +344,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "The unread count uses CountBadge. Notices and the island alarm leave with disappear."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -528,6 +565,35 @@
       }
     },
     {
+      "name": "copy-button",
+      "type": "registry:ui",
+      "title": "Copy button",
+      "description": "Copies a value; the icon becomes a check for 1.5 s.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/copy-button.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.8.0",
+        "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
       "name": "input",
       "type": "registry:ui",
       "title": "Input",
@@ -699,8 +765,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Shares its id, note and error through useField, so a Select's trigger inside a Field is labelled and described. A fixed error fades out while its line closes."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -830,6 +901,34 @@
       }
     },
     {
+      "name": "choice-field",
+      "type": "registry:ui",
+      "title": "Choice field",
+      "description": "A choice as a whole tappable row (checkbox, radio or switch with label, description and count); FieldSet groups them under one question.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/choice-field.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.8.0",
+        "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "First release. FieldSet's note grows open and fades out like Field's."
+          }
+        ]
+      }
+    },
+    {
       "name": "select",
       "type": "registry:ui",
       "title": "Select",
@@ -839,7 +938,8 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "@syncrobotic/cn"
+        "@syncrobotic/cn",
+        "@syncrobotic/field"
       ],
       "files": [
         {
@@ -848,8 +948,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "The trigger reads the surrounding Field: <Field label><Select>…</Select></Field> works."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -915,8 +1020,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "CountBadge: the one way to draw a count, danger on its tint or neutral, 99+."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -1040,6 +1150,58 @@
       }
     },
     {
+      "name": "description-list",
+      "type": "registry:ui",
+      "title": "Description list",
+      "description": "Label and value pairs about one thing, plain or as tiles.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/description-list.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.8.0",
+        "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "meter",
+      "type": "registry:ui",
+      "title": "Meter",
+      "description": "A level within a known range, neutral until it crosses a threshold; inline for table cells.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/meter.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.8.0",
+        "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
       "name": "alert",
       "type": "registry:ui",
       "title": "Alert",
@@ -1081,7 +1243,8 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "@syncrobotic/cn"
+        "@syncrobotic/cn",
+        "@syncrobotic/use-presence"
       ],
       "files": [
         {
@@ -1090,8 +1253,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "A cleared alarm fades out (disappear) instead of vanishing."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -1184,15 +1352,23 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Sortable headers: sort and onSort make the label a button, with aria-sort and an arrow."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
         ]
-      }
+      },
+      "dependencies": [
+        "lucide-react"
+      ]
     },
     {
       "name": "chart",
@@ -1257,6 +1433,63 @@
             "version": "0.5.0",
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
+    },
+    {
+      "name": "pagination",
+      "type": "registry:ui",
+      "title": "Pagination",
+      "description": "Range and previous / next, or numbered pages, for long lists.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/pagination.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.8.0",
+        "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "breadcrumb",
+      "type": "registry:ui",
+      "title": "Breadcrumb",
+      "description": "Where this page sits: links to the levels above, the current page last.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/breadcrumb.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.8.0",
+        "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "First release."
           }
         ]
       }
@@ -1603,7 +1836,9 @@
         "@syncrobotic/segmented-control",
         "@syncrobotic/table",
         "@syncrobotic/status-eyebrow",
-        "@syncrobotic/input-group"
+        "@syncrobotic/input-group",
+        "@syncrobotic/meter",
+        "@syncrobotic/pagination"
       ],
       "files": [
         {
@@ -1612,8 +1847,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Battery is an inline Meter; Pagination instead of hand-built controls."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -1721,8 +1961,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "breadcrumb slot before the title; nav counts use CountBadge. One gutter and one inset: panels 8 px apart and from the edge, 16 px inside every panel (top bar, content, footer)."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -1819,7 +2064,9 @@
         "@syncrobotic/input",
         "@syncrobotic/progress",
         "@syncrobotic/separator",
-        "@syncrobotic/input-group"
+        "@syncrobotic/input-group",
+        "@syncrobotic/description-list",
+        "@syncrobotic/meter"
       ],
       "files": [
         {
@@ -1828,8 +2075,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Robot facts are a DescriptionList with a battery Meter."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -1903,7 +2155,8 @@
         "@syncrobotic/tray",
         "@syncrobotic/alarm",
         "@syncrobotic/button",
-        "@syncrobotic/progress"
+        "@syncrobotic/progress",
+        "@syncrobotic/meter"
       ],
       "files": [
         {
@@ -1912,8 +2165,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Battery is a Meter."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -1941,7 +2199,8 @@
         "@syncrobotic/label",
         "@syncrobotic/sheet",
         "@syncrobotic/table",
-        "@syncrobotic/input-group"
+        "@syncrobotic/input-group",
+        "@syncrobotic/choice-field"
       ],
       "files": [
         {
@@ -1950,8 +2209,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Filters are FieldSets of ChoiceFields; sortable headers come from Table."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -1982,7 +2246,10 @@
         "@syncrobotic/button",
         "@syncrobotic/separator",
         "@syncrobotic/tabs",
-        "@syncrobotic/toggle"
+        "@syncrobotic/toggle",
+        "@syncrobotic/breadcrumb",
+        "@syncrobotic/copy-button",
+        "@syncrobotic/description-list"
       ],
       "files": [
         {
@@ -1991,8 +2258,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Breadcrumb, CopyButton and DescriptionList instead of hand-built ones."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -2017,7 +2289,8 @@
         "@syncrobotic/button",
         "@syncrobotic/empty-state",
         "@syncrobotic/segmented-control",
-        "@syncrobotic/separator"
+        "@syncrobotic/separator",
+        "@syncrobotic/use-presence"
       ],
       "files": [
         {
@@ -2026,8 +2299,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "A finished task fades out where it was."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -2052,7 +2330,9 @@
         "@syncrobotic/label",
         "@syncrobotic/select",
         "@syncrobotic/switch",
-        "@syncrobotic/toast"
+        "@syncrobotic/toast",
+        "@syncrobotic/choice-field",
+        "@syncrobotic/use-presence"
       ],
       "files": [
         {
@@ -2061,8 +2341,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "The time-zone Select sits in a Field; switches are ChoiceFields. The save bar leaves the way it came."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -2101,8 +2386,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "The robot Select sits in a Field, with its error."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -2141,8 +2431,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "The role Select sits in a Field, with its hint."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -2201,8 +2496,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Redone: centred on both axes like the empty state, so it balances in any frame; `fill` for a full screen or an app shell's content; codes for every state; secondary actions as secondary buttons. StatusPage is exported."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",

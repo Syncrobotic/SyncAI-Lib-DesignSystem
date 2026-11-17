@@ -2,6 +2,26 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.8.0 · 2026-11-17
+
+### Added
+- `meter`: a level in a known range (battery, storage), neutral until it crosses `low` or `critical`; `inline` for table cells. role="meter".
+- `pagination`: the range (1–10 of 48) with previous / next, or numbered pages with gaps.
+- `breadcrumb`: links to the levels above, the current page last; AppShell takes it as `breadcrumb`, with the title as the current page.
+- `description-list`: label and value pairs, plain or as tiles.
+- `choice-field` (ChoiceField, FieldSet): a checkbox, radio or switch as a whole 44 px row with label, description and count; a legend and one note line for the group.
+- `copy-button`: copies and confirms in place, the icon swapping to a check for 1.5 s.
+- `badge` › CountBadge: the one way to draw a count, danger on its tint or neutral, 99+.
+- `use-presence`: keeps an element or list items on screen while they leave.
+
+### Changed
+- `status-pages` redone: centred on both axes (it read off-balance left-aligned in a centred column); `fill="parent"` sits in an app shell's content; the Blocks page shows the four states side by side.
+- `app-shell`: one gutter and one inset, panels 8 px apart and from the edge with 16 px inside each (24 px inside and 16 px outside read unbalanced).
+- **Every exit is animated**: cleared alarms, island notices and the island alarm, finished governance tasks, the settings save bar and fixed form errors now leave with the disappear movement instead of vanishing.
+- `field` / `select`: a Select inside a Field is labelled, described and marked invalid through its trigger (`useField`).
+- `table`: sortable headers (`sort`, `onSort`) with aria-sort and an arrow.
+- Blocks use them instead of hand-built copies: battery Meters in the fleet table, list and detail, and map; Pagination in the fleet table; Breadcrumb, CopyButton and DescriptionList in the dataset page; FieldSets of ChoiceFields as catalog filters and settings switches; Selects in Fields in the mission form, invitations and settings; CountBadge in the app shell, dock and island.
+
 ## 0.7.0 · 2026-11-17
 
 ### Added
@@ -17,7 +37,7 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - `field` 0.7.0: a control that brings its own id keeps it, and the label follows (labels were lost before).
 
 ### App shell
-- Inset layout by default: sidebar, top bar and content are separate panels 16 px apart and 16 px from the edge (the cards' gutter), top rows level. Below 1280 px the sidebar is a 72 px rail with the logo, opening over the content on hover or tap; the logo, icons and avatar hold the rail's centre line; a group's name gives way to a short line on the rail; the pin icon is filled when the sidebar is kept open. The user menu sits at the foot (44 px as a rail, 56 px open). Footer slot.
+- Inset layout by default: sidebar, top bar and content are separate panels 8 px apart and from the edge, 16 px inside each, top rows level. Below 1280 px the sidebar is a 72 px rail with the logo, opening over the content on hover or tap; the logo, icons and avatar hold the rail's centre line; a group's name gives way to a short line on the rail; the pin icon is filled when the sidebar is kept open. The user menu sits at the foot (44 px as a rail, 56 px open). Footer slot.
 
 ### Design-language pass (audit against the foundations)
 - **Touch**: compact controls (`--h-sm`, 36 px) are for a mouse only; on touch screens the token is 44 px, so the island, the dock and phone layouts never go below a finger. Written into Accessibility › Target size.
