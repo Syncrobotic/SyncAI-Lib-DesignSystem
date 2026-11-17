@@ -1,4 +1,4 @@
-// @syncrobotic/select v0.6.0 · update: npx shadcn add @syncrobotic/select --overwrite
+// @syncrobotic/select v0.7.0 · update: npx shadcn add @syncrobotic/select --overwrite
 "use client"
 
 import * as React from "react"
@@ -17,7 +17,7 @@ export function SelectTrigger({ className, children, ...props }: React.Component
       className={cn(
         "flex h-(--h-md) w-full items-center justify-between gap-2 rounded-sm bg-card px-3 text-base ring-1 ring-input ring-inset",
         "transition-shadow duration-(--motion-fast) ease-(--ease-standard)",
-        "data-[placeholder]:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-danger",
+        "data-[placeholder]:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-2 aria-invalid:ring-danger",
         "[&>span]:truncate",
         className,
       )}
