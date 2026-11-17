@@ -3,6 +3,8 @@ on:
   pull_request:
   push:
     branches: [dev, stage, main]
+  # Run everything, story checks included, on any branch: Actions → ci → Run workflow.
+  workflow_dispatch:
 
 jobs:
   check:
@@ -34,7 +36,9 @@ jobs:
   # Story checks: every story, dark and light, opened once for its screenshot (against the committed baselines in
   # tests/__screenshots__/) and for axe (WCAG 2.2 A/AA). Split over four runners: one runner took over 13 minutes.
   # A new story has no baseline yet and passes; the visual-baseline workflow writes them.
+  # They gate promotion, not every feature PR: PRs into stage or main, and manual runs. PRs into dev get the fast checks.
   stories:
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && (github.base_ref == 'stage' || github.base_ref == 'main'))
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
