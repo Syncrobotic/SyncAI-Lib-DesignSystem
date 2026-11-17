@@ -34,7 +34,7 @@ function Ratio({ fg, bg, mode }: { fg: string; bg: string; mode: Mode }) {
       <span className="font-mono text-xs">{r.toFixed(1)}:1</span>
       <span
         className={cn(
-          "rounded-xs px-1.5 text-xs font-medium",
+          "rounded-xs px-2 text-xs font-medium",
           l === "Fail" ? "bg-danger-subtle text-danger" : l === "AA large" ? "bg-warning-subtle text-warning" : "bg-success-subtle text-success",
         )}
       >

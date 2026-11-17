@@ -30,7 +30,7 @@ export default function IconographyPage() {
       </Section>
 
       <Section id="sizes" title="Sizes">
-        <Specimen className="flex flex-wrap items-end gap-10">
+        <Specimen className="flex flex-wrap items-end gap-8">
           {[
             { cls: "size-4", px: 16, use: "Inside 36 px controls, menus, inline" },
             { cls: "size-5", px: 20, use: "Inside 44–56 px controls, dock tabs" },

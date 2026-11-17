@@ -3,7 +3,10 @@
 import * as React from "react"
 import { Code, Eye, Monitor, Smartphone, Tablet } from "lucide-react"
 import { cn } from "@/lib/utils"
+import * as m from "motion/react-m"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/registry/syncrobotic/ui/tabs"
+import { t } from "./motion"
+import { TabPanel } from "./tab-panel"
 
 const widths = { desktop: 1280, tablet: 768, mobile: 390 } as const
 type Viewport = keyof typeof widths
@@ -66,9 +69,13 @@ export function BlockFrame({ name, height, initial, code }: { name: string; heig
                     aria-label={`${v} view, ${widths[v]} pixels`}
                     aria-pressed={vp === v}
                     onClick={() => setVp(v)}
-                    className={cn("flex size-8 items-center justify-center rounded-xs text-muted-foreground", vp === v && "bg-primary text-primary-foreground")}
+                    className={cn(
+                      "press relative flex size-8 items-center justify-center rounded-xs transition-colors duration-(--motion-fast)",
+                      vp === v ? "text-primary-foreground" : "text-muted-foreground hover:text-foreground",
+                    )}
                   >
-                    <Icon aria-hidden className="size-4" />
+                    {vp === v && <m.span layoutId={`${name}-viewport-marker`} aria-hidden className="absolute inset-0 rounded-xs bg-primary" />}
+                    <Icon aria-hidden className="relative size-4" />
                   </button>
                 ))}
               </div>
@@ -80,7 +87,8 @@ export function BlockFrame({ name, height, initial, code }: { name: string; heig
         </div>
         <TabsContent value="preview" className="specimen p-4">
           <div ref={box} className="w-full">
-            <div className="mx-auto overflow-hidden rounded-sm ring-1 ring-border" style={{ width: width * scale, height: height * scale }}>
+            {/* Changing the device width resizes the frame with the sheet duration; the iframe re-lays out at the new width. */}
+            <m.div className="mx-auto overflow-hidden rounded-sm ring-1 ring-border" initial={false} animate={{ width: width * scale, height: height * scale }} transition={t.sheet}>
               <iframe
                 ref={frame}
                 src={`/preview/${name}`}
@@ -89,14 +97,14 @@ export function BlockFrame({ name, height, initial, code }: { name: string; heig
                 className="origin-top-left bg-background"
                 style={{ width, height, transform: `scale(${scale})` }}
               />
-            </div>
+            </m.div>
           </div>
           <p className="pt-2 text-center font-mono text-xs text-muted-foreground">
             {width}px{scale < 1 ? ` · shown at ${Math.round(scale * 100)}%` : ""}
           </p>
         </TabsContent>
-        <TabsContent value="code" className="[&>div]:rounded-none [&>div]:border-0">
-          {code}
+        <TabsContent value="code">
+          <TabPanel className="[&>div]:rounded-none [&>div]:border-0">{code}</TabPanel>
         </TabsContent>
       </Tabs>
     </div>

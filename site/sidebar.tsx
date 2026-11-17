@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import * as m from "motion/react-m"
 import { cn } from "@/lib/utils"
 import type { Scope } from "./scopes"
 
@@ -24,11 +25,12 @@ export function Sidebar({ scopes, switcher = false }: { scopes: Scope[]; switche
             href={s.href}
             aria-current={s.key === active.key ? "true" : undefined}
             className={cn(
-              "flex h-8 items-center justify-center rounded-xs text-xs",
-              s.key === active.key ? "bg-primary font-medium text-primary-foreground" : "text-muted-foreground hover:text-foreground",
+              "press relative flex h-8 items-center justify-center rounded-xs text-xs transition-colors duration-(--motion-fast)",
+              s.key === active.key ? "font-medium text-primary-foreground" : "text-muted-foreground hover:text-foreground",
             )}
           >
-            {s.label}
+            {s.key === active.key && <m.span layoutId="area-marker" aria-hidden className="absolute inset-0 rounded-xs bg-primary" />}
+            <span className="relative">{s.label}</span>
           </Link>
         ))}
       </div>
@@ -41,9 +43,14 @@ export function Sidebar({ scopes, switcher = false }: { scopes: Scope[]; switche
               key={l.href}
               href={l.href}
               aria-current={path === l.href ? "page" : undefined}
-              className={cn("rounded-xs px-3 py-1.5 hover:bg-accent", path === l.href ? "bg-accent font-medium text-foreground" : "text-muted-foreground")}
+              className={cn(
+                "relative flex h-8 items-center rounded-xs px-3 transition-colors duration-(--motion-fast) hover:bg-accent",
+                path === l.href ? "font-medium text-foreground" : "text-muted-foreground hover:text-foreground",
+              )}
             >
-              {l.label}
+              {/* The current-page marker slides to the page you open. */}
+              {path === l.href && <m.span layoutId={`${switcher ? "m-" : ""}sidebar-marker`} aria-hidden className="absolute inset-0 rounded-xs bg-accent" />}
+              <span className="relative">{l.label}</span>
             </Link>
           ))}
         </div>
