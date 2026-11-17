@@ -7,6 +7,8 @@ export default defineConfig({
     alias: {
       "@/lib": path.resolve(__dirname, "lib"),
       "@/registry": path.resolve(__dirname, "registry"),
+      "@/site": path.resolve(__dirname, "site"),
+      "@/app": path.resolve(__dirname, "app"),
     },
   },
   esbuild: { jsx: "automatic" },

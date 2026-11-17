@@ -9,6 +9,8 @@ const config: NextConfig = {
       { source: "/docs/foundations/:slug.md", destination: "/md/foundations/:slug" },
     ]
   },
+  // /mcp reads item sources, stories and the agent skill at request time; ship them with that function.
+  outputFileTracingIncludes: { "/mcp": ["./registry/**/*", "./stories/**/*"] },
   // Stories import fn() from @storybook/test. The site only needs a no-op, not the test runtime.
   turbopack: {
     resolveAlias: { "@storybook/test": "./site/shims/storybook-test.ts" },
