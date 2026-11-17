@@ -1,4 +1,4 @@
-// @syncrobotic/robot-status-card v0.5.0 · update: npx shadcn add @syncrobotic/robot-status-card --overwrite
+// @syncrobotic/robot-status-card v0.8.0 · update: npx shadcn add @syncrobotic/robot-status-card --overwrite
 import * as React from "react"
 import { Battery, BatteryCharging, MapPin, Navigation, Wifi, WifiOff } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -59,14 +59,14 @@ export function RobotStatusCard({
       <dl className="grid grid-cols-2 gap-3 text-sm">
         <div className="flex flex-col gap-1 rounded-sm bg-muted p-3">
           <dt className="text-xs text-muted-foreground">Battery</dt>
-          <dd className={cn("flex items-center gap-1 font-medium", low && "text-warning")}>
+          <dd className={cn("flex items-center gap-2 font-medium", low && "text-warning")}>
             <BatteryIcon aria-hidden="true" className="size-4" />
             {robot.battery}%
           </dd>
         </div>
         <div className="flex flex-col gap-1 rounded-sm bg-muted p-3">
           <dt className="text-xs text-muted-foreground">Connection</dt>
-          <dd className={cn("flex items-center gap-1 font-medium", !robot.online && "text-muted-foreground")}>
+          <dd className={cn("flex items-center gap-2 font-medium", !robot.online && "text-muted-foreground")}>
             {robot.online ? <Wifi aria-hidden="true" className="size-4" /> : <WifiOff aria-hidden="true" className="size-4" />}
             {robot.online ? (robot.signal ?? "Online") : "Offline"}
           </dd>

@@ -181,8 +181,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Icon to label 8 px (gap-2), the same in every component."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -301,7 +306,7 @@
           {
             "version": "0.8.0",
             "date": "2026-11-17",
-            "note": "The tab count uses CountBadge."
+            "note": "The tab count uses CountBadge. Icon to label 8 px (gap-2), the same in every component."
           },
           {
             "version": "0.7.0",
@@ -349,7 +354,7 @@
           {
             "version": "0.8.0",
             "date": "2026-11-17",
-            "note": "The unread count uses CountBadge. Notices and the island alarm leave with disappear."
+            "note": "The unread count uses CountBadge. Notices and the island alarm leave with disappear. Icon to label 8 px (gap-2), the same in every component."
           },
           {
             "version": "0.7.0",
@@ -423,8 +428,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Icon to label 8 px (gap-2), the same in every component."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -521,8 +531,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Icon to label 8 px (gap-2), the same in every component."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -770,7 +785,7 @@
           {
             "version": "0.8.0",
             "date": "2026-11-17",
-            "note": "Shares its id, note and error through useField, so a Select's trigger inside a Field is labelled and described. A fixed error fades out while its line closes."
+            "note": "Shares its id, note and error through useField, so a Select's trigger inside a Field is labelled and described. A fixed error fades out while its line closes. Icon to label 8 px (gap-2), the same in every component."
           },
           {
             "version": "0.7.0",
@@ -923,7 +938,7 @@
           {
             "version": "0.8.0",
             "date": "2026-11-17",
-            "note": "First release. FieldSet's note grows open and fades out like Field's."
+            "note": "First release. FieldSet's note grows open and fades out like Field's. Icon to label 8 px (gap-2), the same in every component."
           }
         ]
       }
@@ -1219,8 +1234,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Icon to label 8 px (gap-2), the same in every component."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -1258,7 +1278,7 @@
           {
             "version": "0.8.0",
             "date": "2026-11-17",
-            "note": "A cleared alarm fades out (disappear) instead of vanishing."
+            "note": "A cleared alarm fades out (disappear) instead of vanishing. Icon to label 8 px (gap-2), the same in every component."
           },
           {
             "version": "0.7.0",
@@ -1297,8 +1317,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Icon to label 8 px (gap-2), the same in every component."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -1357,7 +1382,7 @@
           {
             "version": "0.8.0",
             "date": "2026-11-17",
-            "note": "Sortable headers: sort and onSort make the label a button, with aria-sort and an arrow."
+            "note": "Sortable headers: sort and onSort make the label a button, with aria-sort and an arrow. Icon to label 8 px (gap-2), the same in every component."
           },
           {
             "version": "0.5.0",
@@ -1489,7 +1514,7 @@
           {
             "version": "0.8.0",
             "date": "2026-11-17",
-            "note": "First release."
+            "note": "First release. Icon to label 8 px (gap-2), the same in every component."
           }
         ]
       }
@@ -1774,8 +1799,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Icon to label 8 px (gap-2), the same in every component."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -1803,8 +1833,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Icon to label 8 px (gap-2), the same in every component."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -1889,8 +1924,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Icon to label 8 px (gap-2), the same in every component."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -1920,8 +1960,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Icon to label 8 px (gap-2), the same in every component."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -1966,7 +2011,7 @@
           {
             "version": "0.8.0",
             "date": "2026-11-17",
-            "note": "breadcrumb slot before the title; nav counts use CountBadge. One gutter and one inset: panels 8 px apart and from the edge, 16 px inside every panel (top bar, content, footer)."
+            "note": "breadcrumb slot before the title; nav counts use CountBadge. One gutter and one inset: panels 8 px apart and from the edge, 16 px inside every panel (top bar, content, footer). Icon to label 8 px (gap-2), the same in every component."
           },
           {
             "version": "0.7.0",

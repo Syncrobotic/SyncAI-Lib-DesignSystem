@@ -95,7 +95,7 @@ export function Alarm({ priority, title, source, time, active, acknowledged, onA
       data-priority={priority}
       data-state={!acknowledged ? "unacknowledged" : "acknowledged"}
       className={cn(
-        "relative flex min-h-(--h-row) animate-appear flex-wrap items-center gap-x-3 gap-y-2 overflow-hidden rounded-md py-2 pr-2 pl-4",
+        "relative flex min-h-(--h-row) animate-appear flex-wrap items-center gap-x-2 gap-y-2 overflow-hidden rounded-md py-2 pr-2 pl-4",
         !acknowledged && active && priority === "critical" ? p.tint : "bg-card ring-1 ring-border",
         className,
       )}

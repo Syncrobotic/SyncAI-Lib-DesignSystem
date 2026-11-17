@@ -66,7 +66,7 @@ export function Field({
                 id={note ? noteId : undefined}
                 key={shown.error ? "error" : "hint"}
                 className={cn(
-                  "flex items-start gap-1 text-xs transition-opacity duration-(--motion-base) ease-(--ease-standard)",
+                  "flex items-start gap-2 text-xs transition-opacity duration-(--motion-base) ease-(--ease-standard)",
                   shown.error ? "text-danger" : "text-muted-foreground",
                   shown.error && note && "animate-appear",
                   !note && "opacity-0",

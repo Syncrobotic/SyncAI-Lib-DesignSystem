@@ -1,4 +1,4 @@
-// @syncrobotic/command v0.7.0 · update: npx shadcn add @syncrobotic/command --overwrite
+// @syncrobotic/command v0.8.0 · update: npx shadcn add @syncrobotic/command --overwrite
 "use client"
 
 import * as React from "react"
@@ -57,7 +57,7 @@ export function CommandDialog({
 /** The text box, with a search icon and an optional element at the end (a scope, a shortcut hint). */
 export function CommandInput({ className, end, ...props }: React.ComponentProps<typeof CommandPrimitive.Input> & { end?: React.ReactNode }) {
   return (
-    <div data-slot="command-input" className="flex h-(--h-row) shrink-0 items-center gap-3 border-b border-border px-4">
+    <div data-slot="command-input" className="flex h-(--h-row) shrink-0 items-center gap-2 border-b border-border px-4">
       <Search aria-hidden="true" className="size-5 shrink-0 text-muted-foreground" />
       <CommandPrimitive.Input
         className={cn("h-full min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-muted-foreground", className)}
@@ -104,7 +104,7 @@ export function CommandItem({ className, ...props }: React.ComponentProps<typeof
     <CommandPrimitive.Item
       data-slot="command-item"
       className={cn(
-        "flex h-(--h-md) cursor-default items-center gap-3 rounded-sm px-3 text-sm outline-none select-none",
+        "flex h-(--h-md) cursor-default items-center gap-2 rounded-sm px-3 text-sm outline-none select-none",
         "data-[selected=true]:bg-accent data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
         "[&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground",
         className,
