@@ -306,7 +306,7 @@
           {
             "version": "0.8.0",
             "date": "2026-11-17",
-            "note": "The tab count uses CountBadge. Icon to label 8 px (gap-2), the same in every component."
+            "note": "The tab count uses CountBadge. Icon to label 8 px (gap-2), the same in every component. Tabs put the label under the icon below 384 px of dock, so four tabs fit a 360 px phone; action labels wrap instead of running past the edge."
           },
           {
             "version": "0.7.0",
@@ -900,8 +900,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "44 px tall hit area around the 28 px track. On is the primary colour (was success green), as in shadcn/ui: a setting being on is a selection, not a status."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -1382,7 +1387,7 @@
           {
             "version": "0.8.0",
             "date": "2026-11-17",
-            "note": "Sortable headers: sort and onSort make the label a button, with aria-sort and an arrow. Icon to label 8 px (gap-2), the same in every component."
+            "note": "Sortable headers: sort and onSort make the label a button, with aria-sort and an arrow. Icon to label 8 px (gap-2), the same in every component. The scrolling container takes focus (Tab, then arrow keys), with a visible ring."
           },
           {
             "version": "0.5.0",
@@ -1887,7 +1892,7 @@
           {
             "version": "0.8.0",
             "date": "2026-11-17",
-            "note": "Battery is an inline Meter; Pagination instead of hand-built controls."
+            "note": "Battery is an inline Meter; Pagination instead of hand-built controls. The robot name is a 44 px tall target."
           },
           {
             "version": "0.7.0",
@@ -2215,7 +2220,7 @@
           {
             "version": "0.8.0",
             "date": "2026-11-17",
-            "note": "Battery is a Meter."
+            "note": "Battery is a Meter. Markers use the status shapes (normal and in progress neutral), like every other status display."
           },
           {
             "version": "0.6.0",

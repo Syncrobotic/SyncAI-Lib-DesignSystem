@@ -135,7 +135,7 @@ export function FleetTable({ robots = sampleRobots, pageSize = 5, onOpen }: { ro
               <TableRow key={r.id}>
                 <TableCell>
                   <div className="flex flex-col gap-1">
-                    <button type="button" onClick={() => onOpen?.(r)} className="text-left font-medium hover:underline">
+                    <button type="button" onClick={() => onOpen?.(r)} className="flex min-h-(--h-md) items-center text-left font-medium hover:underline">
                       {r.name}
                     </button>
                     <span className="sm:hidden">

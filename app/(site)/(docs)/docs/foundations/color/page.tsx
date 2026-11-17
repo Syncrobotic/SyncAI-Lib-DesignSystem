@@ -11,7 +11,7 @@ export const metadata: Metadata = metaFor("color")
 const neutrals = ["background", "card", "secondary", "border", "muted-foreground", "foreground"]
 const tones = [
   { t: "info", means: "In progress, links, focus" },
-  { t: "success", means: "Normal, done, switch on" },
+  { t: "success", means: "Normal, done" },
   { t: "warning", means: "Needs attention soon" },
   { t: "danger", means: "Failed, destructive, stopped" },
   { t: "neutral", means: "Offline, inactive" },
@@ -214,8 +214,8 @@ export default function ColorPage() {
           good={{
             visual: (
               <div className="flex gap-2">
-                <Badge tone="success">Docked</Badge>
                 <Badge tone="warning">Low battery</Badge>
+                <Badge tone="danger">Motor fault</Badge>
               </div>
             ),
             text: "Pair each tone with its own tint.",

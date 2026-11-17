@@ -9,6 +9,10 @@ const config: NextConfig = {
       { source: "/docs/foundations/:slug.md", destination: "/md/foundations/:slug" },
     ]
   },
+  // /docs has no page of its own: send it to the first one.
+  async redirects() {
+    return [{ source: "/docs", destination: "/docs/foundations", permanent: false }]
+  },
   // Stories import fn() from @storybook/test. The site only needs a no-op, not the test runtime.
   turbopack: {
     resolveAlias: { "@storybook/test": "./site/shims/storybook-test.ts" },

@@ -31,7 +31,7 @@ export default function SpacingPage() {
               <span className="font-mono text-sm">
                 {s} · {s * 4}px
               </span>
-              <span className="h-6 rounded-xs bg-info" style={{ width: s * 4 * 3 }} />
+              <span className="h-6 rounded-xs bg-muted-foreground" style={{ width: s * 4 * 3 }} />
               <span className="text-sm text-muted-foreground">{use}</span>
             </div>
           ))}

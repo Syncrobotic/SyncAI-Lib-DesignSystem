@@ -6,7 +6,12 @@ import { cn } from "@/lib/utils"
 /** Dense data for dashboards. Numbers are tabular by default; right-align numeric columns. */
 export function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
-    <div data-slot="table-container" className="relative w-full overflow-x-auto rounded-md ring-1 ring-border">
+    <div
+      data-slot="table-container"
+      // A table wider than the screen scrolls; keyboard users reach it with Tab and scroll it with the arrow keys.
+      tabIndex={0}
+      className="relative w-full overflow-x-auto rounded-md ring-1 ring-border focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+    >
       <table data-slot="table" className={cn("w-full caption-bottom text-sm", className)} {...props} />
     </div>
   )

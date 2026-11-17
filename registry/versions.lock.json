@@ -41,7 +41,7 @@
   },
   "dock": {
     "version": "0.8.0",
-    "hash": "267a1a93492db536"
+    "hash": "c1f253777684177c"
   },
   "island": {
     "version": "0.8.0",
@@ -108,8 +108,8 @@
     "hash": "6bf86fd82a070cec"
   },
   "switch": {
-    "version": "0.7.0",
-    "hash": "35c138601a78af3e"
+    "version": "0.8.0",
+    "hash": "042aa2c45186620e"
   },
   "choice-field": {
     "version": "0.8.0",
@@ -169,7 +169,7 @@
   },
   "table": {
     "version": "0.8.0",
-    "hash": "53cee17be688c43e"
+    "hash": "2ac2bd84f81c42ec"
   },
   "chart": {
     "version": "0.7.0",
@@ -225,7 +225,7 @@
   },
   "fleet-table": {
     "version": "0.8.0",
-    "hash": "f6352efcaf6bae4e"
+    "hash": "cef458cc31022edc"
   },
   "robot-status-card": {
     "version": "0.8.0",
@@ -257,7 +257,7 @@
   },
   "map-workspace": {
     "version": "0.8.0",
-    "hash": "04668e029f901eb4"
+    "hash": "a348c3c5398324f4"
   },
   "data-catalog": {
     "version": "0.8.0",
