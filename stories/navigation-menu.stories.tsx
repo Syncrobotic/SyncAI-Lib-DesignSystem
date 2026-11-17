@@ -186,7 +186,10 @@ export const NavigationMenuSiteHeader: S = {
       <header className="flex items-center justify-between gap-4 border-b border-border px-4 py-2">
         <span className="text-sm font-bold">SYNCROBOTIC</span>
         <Products />
-        <a href="#contact" className="press flex h-(--h-sm) items-center rounded-sm bg-primary px-3 text-sm font-medium text-primary-foreground">
+        <a
+          href="#contact"
+          className="press flex h-(--h-sm) shrink-0 items-center rounded-sm bg-primary px-3 text-sm font-medium whitespace-nowrap text-primary-foreground"
+        >
           Talk to us
         </a>
       </header>

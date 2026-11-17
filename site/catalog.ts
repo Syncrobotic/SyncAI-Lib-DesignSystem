@@ -114,6 +114,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "navigation-menu": {
+    wide: true,
     group: "Navigation",
     examples: { file: "navigation-menu", prefix: "NavigationMenu" },
     rules: [
