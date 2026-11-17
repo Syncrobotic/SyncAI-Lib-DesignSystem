@@ -432,3 +432,209 @@ export const ChoiceFieldSwitches: S = {
     </FieldSet>
   ),
 }
+
+export const TextareaWithCount: S = {
+  render: function T() {
+    const [v, setV] = React.useState("Door 3 sticks on the second push. Robot waits, then retries.")
+    return (
+      <Field label="Handover note" hint={`${v.length} / 280`}>
+        <Textarea value={v} maxLength={280} onChange={(e) => setV(e.target.value)} rows={3} />
+      </Field>
+    )
+  },
+}
+
+export const TextareaDisabled: S = {
+  render: () => (
+    <Field label="Robot's last message">
+      <Textarea disabled defaultValue="Stopped: obstacle in path for 30 s at waypoint 14." rows={2} />
+    </Field>
+  ),
+}
+
+export const CheckboxIndeterminate: S = {
+  render: function C() {
+    const [picked, setPicked] = React.useState(["7f3a"])
+    const all = ["7f3a", "9c44", "1a08"]
+    const state = picked.length === all.length ? true : picked.length ? "indeterminate" : false
+    return (
+      <div className="flex flex-col gap-2 text-sm">
+        <label className="flex min-h-(--h-md) items-center gap-3 font-medium">
+          <Checkbox checked={state} onCheckedChange={(c) => setPicked(c === true ? all : [])} /> All patrol dogs
+        </label>
+        {all.map((id) => (
+          <label key={id} className="flex min-h-(--h-md) items-center gap-3 pl-8">
+            <Checkbox checked={picked.includes(id)} onCheckedChange={(c) => setPicked((p) => (c === true ? [...p, id] : p.filter((x) => x !== id)))} />
+            {id.toUpperCase()}
+          </label>
+        ))}
+      </div>
+    )
+  },
+}
+
+export const CheckboxDisabled: S = {
+  render: () => (
+    <div className="flex flex-col gap-2 text-sm">
+      <label className="flex min-h-(--h-md) items-center gap-3 text-muted-foreground">
+        <Checkbox disabled /> Night vision (not on this model)
+      </label>
+      <label className="flex min-h-(--h-md) items-center gap-3 text-muted-foreground">
+        <Checkbox disabled defaultChecked /> Collision stop (always on)
+      </label>
+    </div>
+  ),
+}
+
+export const RadioGroupHorizontal: S = {
+  render: () => (
+    <RadioGroup defaultValue="normal" aria-label="Speed profile" className="flex flex-row flex-wrap gap-6 text-sm">
+      {["Slow", "Normal", "Fast"].map((v) => (
+        <label key={v} className="flex min-h-(--h-md) items-center gap-3">
+          <RadioGroupItem value={v.toLowerCase()} /> {v}
+        </label>
+      ))}
+    </RadioGroup>
+  ),
+}
+
+export const RadioGroupDisabledOption: S = {
+  render: () => (
+    <RadioGroup defaultValue="wifi" aria-label="Uplink" className="text-sm">
+      {[
+        ["wifi", "Site Wi-Fi", false],
+        ["lte", "LTE", false],
+        ["sat", "Satellite (not installed)", true],
+      ].map(([v, l, d]) => (
+        <label key={v as string} className={`flex min-h-(--h-md) items-center gap-3 ${d ? "text-muted-foreground" : ""}`}>
+          <RadioGroupItem value={v as string} disabled={d as boolean} /> {l as string}
+        </label>
+      ))}
+    </RadioGroup>
+  ),
+}
+
+export const SwitchWithDescription: S = {
+  render: () => (
+    <label className="flex items-start justify-between gap-4 text-sm">
+      <span className="flex flex-col gap-1">
+        <span className="font-medium">Return to dock under 20 %</span>
+        <span className="text-muted-foreground">The robot stops its task and drives home to charge.</span>
+      </span>
+      <Switch defaultChecked />
+    </label>
+  ),
+}
+
+export const SwitchDisabled: S = {
+  render: () => (
+    <div className="flex flex-col gap-3 text-sm">
+      <label className="flex min-h-(--h-md) items-center justify-between gap-4 text-muted-foreground">
+        Remote override (admin only) <Switch disabled />
+      </label>
+      <label className="flex min-h-(--h-md) items-center justify-between gap-4 text-muted-foreground">
+        Collision stop (always on) <Switch disabled defaultChecked />
+      </label>
+    </div>
+  ),
+}
+
+export const SelectDisabledOption: S = {
+  render: () => (
+    <Field label="Map layer">
+      <Select defaultValue="lidar">
+        <SelectTrigger>
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="floor">Floor plan</SelectItem>
+          <SelectItem value="lidar">Lidar point cloud</SelectItem>
+          <SelectItem value="heat">Heat map</SelectItem>
+          <SelectItem value="wifi" disabled>
+            Wi-Fi coverage (no survey yet)
+          </SelectItem>
+        </SelectContent>
+      </Select>
+    </Field>
+  ),
+}
+
+export const SliderSteps: S = {
+  render: function Sl() {
+    const [v, setV] = React.useState([3])
+    const labels = ["Off", "Low", "Medium", "High", "Max"]
+    return (
+      <div className="flex flex-col gap-2">
+        <Label>Headlight · {labels[v[0]]}</Label>
+        <Slider value={v} onValueChange={setV} min={0} max={4} step={1} aria-label="Headlight" />
+        <div className="flex justify-between text-xs text-muted-foreground">
+          {labels.map((l) => (
+            <span key={l}>{l}</span>
+          ))}
+        </div>
+      </div>
+    )
+  },
+}
+
+export const SliderVolume: S = {
+  render: function Sl() {
+    const [v, setV] = React.useState([40])
+    return (
+      <div className="flex flex-col gap-2">
+        <Label>Siren volume · {v[0]} %</Label>
+        <Slider value={v} onValueChange={setV} step={5} aria-label="Siren volume" />
+      </div>
+    )
+  },
+}
+
+export const LabelRequired: S = {
+  render: () => (
+    <div className="flex flex-col gap-1">
+      <Label htmlFor="site-name">
+        Site name <span className="text-muted-foreground">(required)</span>
+      </Label>
+      <Input id="site-name" required placeholder="North gate" />
+    </div>
+  ),
+}
+
+export const InputGroupWithButton: S = {
+  render: () => (
+    <InputGroup>
+      <Input aria-label="Robot ID" placeholder="7F3A" />
+      <InputGroupButton aria-label="Find robot">
+        <Search aria-hidden="true" />
+      </InputGroupButton>
+    </InputGroup>
+  ),
+}
+
+export const NumberFieldPercent: S = {
+  render: () => (
+    <Field label="Return to dock at" hint="Between 10 and 50 %.">
+      <NumberField defaultValue={20} min={10} max={50} step={5} unit="%" />
+    </Field>
+  ),
+}
+
+export const FieldWithTextarea: S = {
+  render: () => (
+    <Field label="Why are you stopping all robots?" hint="Saved to the event log with your name." error="Write at least a few words.">
+      <Textarea rows={2} />
+    </Field>
+  ),
+}
+
+export const ChoiceFieldRadios: S = {
+  render: () => (
+    <RadioGroup defaultValue="dock">
+      <FieldSet legend="When the battery is low">
+        <ChoiceField label="Return to dock" description="Stop the task and charge." control={<RadioGroupItem value="dock" />} />
+        <ChoiceField label="Finish the task first" description="Only if it ends within 10 minutes." control={<RadioGroupItem value="finish" />} />
+        <ChoiceField label="Ask an operator" control={<RadioGroupItem value="ask" />} />
+      </FieldSet>
+    </RadioGroup>
+  ),
+}

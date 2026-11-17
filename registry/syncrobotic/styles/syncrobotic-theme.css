@@ -1,4 +1,4 @@
-/* @syncrobotic/syncrobotic-theme v0.8.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
+/* @syncrobotic/syncrobotic-theme v0.9.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
 /*
  * SYNCROBOTIC theme · design system 0.5.0 (see CHANGELOG.md)
  * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
@@ -294,6 +294,12 @@
     0%, 100% { opacity: 1; }
     50% { opacity: 0.5; }
   }
+  /* The caret in a one-time-code box blinks like a native caret: on and off, no fade. */
+  --animate-caret-blink: caret-blink 1s steps(1) infinite;
+  @keyframes caret-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
 }
 
 @layer base {
@@ -358,6 +364,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .animate-breath { animation: none; }
+  .animate-caret-blink { animation: none; }
   /* The spinner is the one loop the language allows; without motion it stands still and the label says it is working. */
   .animate-spin { animation: none; }
   .press:active { scale: none; }

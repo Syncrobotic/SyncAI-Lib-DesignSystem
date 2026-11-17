@@ -5,6 +5,69 @@
 export type Overview = { what: string; use: string[]; instead?: string[]; notes?: string[] }
 
 export const overviews: Record<string, Overview> = {
+  autocomplete: {
+    what: "A text field with a list of suggestions that narrows as you type, for picking one value from many.",
+    use: [
+      "Picking a robot, site, user or dataset from a long list.",
+      "Searching a server as you type, with a loading state.",
+      "Grouped suggestions, such as robots by kind.",
+    ],
+    instead: ["Fewer than about 10 options: `select`.", "A command that does something: `command`.", "Free text with no list: `input`."],
+    notes: [
+      "The value is the option's value; the field shows its label.",
+      "Pass filter={false} and onQueryChange when the server filters, and loading while it works.",
+      "Typing alone never sets a value: only picking an option does.",
+    ],
+  },
+  "input-otp": {
+    what: "Boxes for a short code typed one character at a time: a verification code, a pairing code, a PIN.",
+    use: ["Two-step sign-in and verification codes.", "Pairing a robot with a code from its screen.", "A short PIN to release a stop."],
+    instead: ["A password: `input` with type password.", "A number with a range: `number-field`."],
+    notes: [
+      "Set pattern (REGEXP_ONLY_DIGITS) and maxLength to the code's length.",
+      "autoComplete is one-time-code by default so phones offer the SMS code.",
+      "The caret blinks only while focused and stops under reduced motion.",
+    ],
+  },
+  "phone-input": {
+    what: "A country picker joined to a phone field that formats the number as it is typed and gives back an international (E.164) number.",
+    use: ["On-call numbers for alarm escalation.", "Site and customer contacts."],
+    instead: ["A number that is not a phone (an ID, a count): `input` or `number-field`."],
+    notes: [
+      "Pasting a number that starts with + switches the country.",
+      "Limit countryOptions to the countries you operate in to shorten the list.",
+      "libphonenumber-js adds about 150 KB; load the page that needs it lazily if size matters.",
+    ],
+  },
+  calendar: {
+    what: "A month view to pick dates (react-day-picker): single, multiple or a range, one month or several.",
+    use: ["Inline on a scheduling page.", "Inside a popover: use `date-selector`, which wraps it.", "Showing which days have events."],
+    instead: ["A date field in a form: `date-selector`.", "A time of day: `time-picker`."],
+    notes: [
+      "Pass today in tests and stories so screenshots stay stable.",
+      "disabled takes matchers: { before: date }, { dayOfWeek: [0, 6] }.",
+      'captionLayout="dropdown" with startMonth and endMonth for distant dates.',
+    ],
+  },
+  "date-selector": {
+    what: "Form fields that open a calendar: DatePicker for one day and DateRangePicker for a from–to range.",
+    use: ["A day or range in a form or a filter bar.", "Event and report ranges with presets."],
+    instead: ["A calendar that is always visible: `calendar`.", "A time: `time-picker`."],
+    notes: [
+      "Values are Date objects (DateRange for ranges); format with date-fns.",
+      "clearable adds an × that sets the value to undefined.",
+      "DateRangePicker shows two months; pass numberOfMonths={1} in narrow panels.",
+    ],
+  },
+  "time-picker": {
+    what: "Two ways to enter a time: TimePicker picks from a grid of slots, TimeInput reads what is typed (930, 9:30, 21.30, 9:30 pm).",
+    use: ["Schedules, quiet hours and charging windows.", "Opening-hour slots with some taken.", "Fast entry for people who know the time."],
+    instead: ["A date: `date-selector`.", "A duration: `number-field` with a unit."],
+    notes: [
+      "step sets minutes between slots; min and max bound them.",
+      "TimeInput marks unreadable or out-of-range text invalid and keeps the text so it can be fixed.",
+    ],
+  },
   item: {
     what: "A general-purpose row: a leading icon, avatar or image, a title with one or two lines below, and actions, a badge or a key at the end.",
     use: [
@@ -37,7 +100,10 @@ export const overviews: Record<string, Overview> = {
     what: "A key cap for shortcuts and keyboard instructions, alone or grouped into a chord.",
     use: ["Shortcut hints in menus, tooltips and search fields.", "A keyboard reference list.", "Instructions like Hold Space to stop all."],
     instead: ["A code value or ID: a <code> span in font-mono."],
-    notes: ["Icon-only keys (arrows) need sr-only text inside; a <kbd> cannot take an aria-label.", "Inside a tooltip the key takes the tooltip's colours automatically."],
+    notes: [
+      "Icon-only keys (arrows) need sr-only text inside; a <kbd> cannot take an aria-label.",
+      "Inside a tooltip the key takes the tooltip's colours automatically.",
+    ],
   },
   "button-group": {
     what: "A strip of joined controls that reads as one: neighbours share an edge and only the outer corners are round.",

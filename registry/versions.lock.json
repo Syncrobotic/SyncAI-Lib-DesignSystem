@@ -1,7 +1,7 @@
 {
   "syncrobotic-theme": {
-    "version": "0.8.0",
-    "hash": "b701865568e50474"
+    "version": "0.9.0",
+    "hash": "54e447dd22ec8344"
   },
   "cn": {
     "version": "0.5.0",
@@ -242,6 +242,30 @@
   "toggle-group": {
     "version": "0.9.0",
     "hash": "f666b471537373bb"
+  },
+  "autocomplete": {
+    "version": "0.9.0",
+    "hash": "8236eb4e1364101a"
+  },
+  "input-otp": {
+    "version": "0.9.0",
+    "hash": "d482d8c3047f83be"
+  },
+  "phone-input": {
+    "version": "0.9.0",
+    "hash": "44ad41f349471d28"
+  },
+  "calendar": {
+    "version": "0.9.0",
+    "hash": "f6e0a0ea2dae13b7"
+  },
+  "date-selector": {
+    "version": "0.9.0",
+    "hash": "80a835b576c3f8e0"
+  },
+  "time-picker": {
+    "version": "0.9.0",
+    "hash": "8930042b08f607db"
   },
   "stats-cards": {
     "version": "0.8.0",
