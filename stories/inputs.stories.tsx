@@ -1,8 +1,11 @@
+import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
-import { Search } from "lucide-react"
+import { Eye, EyeOff, Search, X } from "lucide-react"
 import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
+import { InputGroup, InputGroupAddon, InputGroupButton } from "@/registry/syncrobotic/ui/input-group"
+import { NumberField } from "@/registry/syncrobotic/ui/number-field"
 import { Label } from "@/registry/syncrobotic/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/registry/syncrobotic/ui/radio-group"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
@@ -121,22 +124,95 @@ export const SliderDefault: S = {
   ),
 }
 
-export const InputWithIcon: S = {
+function SearchWithClear() {
+  const [q, setQ] = React.useState("North gate")
+  return (
+    <InputGroup>
+      <InputGroupAddon>
+        <Search aria-hidden="true" />
+      </InputGroupAddon>
+      <Input type="search" aria-label="Search robots" placeholder="Search robots, sites or events" value={q} onChange={(e) => setQ(e.target.value)} />
+      {q && (
+        <InputGroupButton aria-label="Clear search" onClick={() => setQ("")}>
+          <X aria-hidden="true" />
+        </InputGroupButton>
+      )}
+    </InputGroup>
+  )
+}
+
+export const InputGroupSearch: S = { render: () => <SearchWithClear /> }
+
+function PasswordReveal() {
+  const [shown, setShown] = React.useState(false)
+  return (
+    <Field label="Robot Wi-Fi password">
+      <InputGroup>
+        <Input type={shown ? "text" : "password"} autoComplete="new-password" defaultValue="patrol-7F3A" />
+        <InputGroupButton aria-label={shown ? "Hide password" : "Show password"} aria-pressed={shown} onClick={() => setShown((v) => !v)}>
+          {shown ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}
+        </InputGroupButton>
+      </InputGroup>
+    </Field>
+  )
+}
+
+export const InputGroupPassword: S = { render: () => <PasswordReveal /> }
+
+export const InputGroupUnit: S = {
   render: () => (
-    <div className="relative">
-      <Search aria-hidden="true" className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-      <Input type="search" placeholder="Search robots, sites or events" aria-label="Search" className="pl-8" />
-    </div>
+    <Field label="Geofence radius" hint="Measured from the dock">
+      <InputGroup className="w-48">
+        <Input inputMode="numeric" defaultValue="120" />
+        <InputGroupAddon>m</InputGroupAddon>
+      </InputGroup>
+    </Field>
   ),
 }
 
-export const InputWithUnit: S = {
+export const NumberFieldSpeed: S = {
   render: () => (
-    <div className="flex items-start gap-2">
-      <Field label="Patrol interval (minutes)" hint="Between 15 and 240">
-        <Input type="number" defaultValue={120} min={15} max={240} className="w-28" />
-      </Field>
-    </div>
+    <Field label="Speed limit" hint="0.2 to 2.0 m/s. Shift+↑↓ moves by 1.0">
+      <NumberField defaultValue={1.2} min={0.2} max={2} step={0.1} unit="m/s" className="w-56" />
+    </Field>
+  ),
+}
+
+export const NumberFieldInterval: S = {
+  render: () => (
+    <Field label="Patrol interval" hint="Between 15 and 240 minutes">
+      <NumberField defaultValue={120} min={15} max={240} step={5} largeStep={60} unit="min" className="w-56" />
+    </Field>
+  ),
+}
+
+export const NumberFieldError: S = {
+  render: () => (
+    <Field label="Return to dock below" error="Must be at least 10 %, or the robot may not reach the dock">
+      <NumberField defaultValue={5} min={0} max={50} unit="%" className="w-56" />
+    </Field>
+  ),
+}
+
+function ValidateOnBlur() {
+  const [name, setName] = React.useState("")
+  const [touched, setTouched] = React.useState(false)
+  const error = touched && name.trim().length < 3 ? "At least 3 characters, e.g. “Dock A”" : undefined
+  return (
+    <Field label="Dock name" error={error}>
+      <Input value={name} onChange={(e) => setName(e.target.value)} onBlur={() => setTouched(true)} />
+    </Field>
+  )
+}
+
+// Leave the field empty and press Tab: the message line grows open and the error appears. No shake.
+export const InputErrorOnBlur: S = { render: () => <ValidateOnBlur /> }
+
+export const InputError: S = {
+  render: () => (
+    <Field label="Robot name" error="Already used by another robot on this site">
+      <Input defaultValue="Patrol dog 7F3A" />
+    </Field>
   ),
 }
 

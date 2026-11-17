@@ -1,8 +1,11 @@
-// @syncrobotic/input v0.6.0 · update: npx shadcn add @syncrobotic/input --overwrite
+// @syncrobotic/input v0.7.0 · update: npx shadcn add @syncrobotic/input --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
-/** 16 px text so iOS does not zoom on focus. `aria-invalid` turns the edge danger. */
+/**
+ * 16 px text so iOS does not zoom on focus. `aria-invalid` turns the edge danger and 2 px at --motion-fast:
+ * the error is a state change, shown in place, never a shake.
+ */
 export function Input({ className, type = "text", ...props }: React.ComponentProps<"input">) {
   return (
     <input
@@ -13,7 +16,7 @@ export function Input({ className, type = "text", ...props }: React.ComponentPro
         "transition-shadow duration-(--motion-fast) ease-(--ease-standard)",
         "placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
         "file:mr-3 file:border-0 file:bg-transparent file:text-sm file:font-medium",
-        "aria-invalid:ring-danger",
+        "aria-invalid:ring-2 aria-invalid:ring-danger",
         className,
       )}
       {...props}

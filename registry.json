@@ -506,8 +506,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Error edge is 2 px, transitions at --motion-fast; no shake."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -517,6 +522,60 @@
             "version": "0.5.0",
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
+    },
+    {
+      "name": "input-group",
+      "type": "registry:ui",
+      "title": "Input group",
+      "description": "An input with an icon, a unit or a button (clear, show password) inside its edge. The group draws the field, focus and error.",
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/input-group.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.7.0",
+        "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "number-field",
+      "type": "registry:ui",
+      "title": "Number field",
+      "description": "A number with a range, a step and a unit. Type freely, kept in range on blur; 44 px buttons; arrow keys, Shift, PageUp/PageDown, Home/End.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/input-group"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/number-field.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.7.0",
+        "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "First release."
           }
         ]
       }
@@ -536,8 +595,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Error edge is 2 px."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -585,7 +649,8 @@
       "title": "Field",
       "description": "Label, control and one line for the hint or the error, with ids and aria wired up.",
       "dependencies": [
-        "radix-ui"
+        "radix-ui",
+        "lucide-react"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -598,8 +663,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "The error appears with an icon in the hint's place. A control that brings its own id keeps it, and the label follows."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -727,8 +797,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Error edge is 2 px."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",

@@ -43,7 +43,29 @@ const entries: Record<string, Entry> = {
   input: {
     group: "Inputs",
     examples: { file: "inputs", prefix: "Input" },
-    rules: ["Wrap it in Field for the label, hint and error.", "Text is 16 px so iOS does not zoom on focus."],
+    rules: [
+      "Wrap it in Field for the label, hint and error.",
+      "Text is 16 px so iOS does not zoom on focus.",
+      "An error is a state change: the edge turns danger and 2 px at --motion-fast, the message appears with an icon in the hint's place. Never shake; on submit, move focus to the first field in error.",
+    ],
+  },
+  "input-group": {
+    group: "Inputs",
+    examples: { file: "inputs", prefix: "InputGroup" },
+    rules: [
+      "For an icon, a unit or a button inside the field's edge. Use it instead of positioning icons by hand.",
+      "Units are text after the value, so “120 m” reads as one; icons are decorative and hidden from screen readers.",
+      "Buttons inside (clear, show password) need an aria-label and stay 36 px.",
+    ],
+  },
+  "number-field": {
+    group: "Inputs",
+    examples: { file: "inputs", prefix: "NumberField" },
+    rules: [
+      "For a number with a range and a unit: speed, thresholds, intervals. For a free number with no range, Input with inputMode=\"numeric\" is enough.",
+      "Never block typing. The value is kept in range when the field loses focus, and the hint says the range.",
+      "↑↓ step, Shift or PageUp/PageDown step by largeStep, Home/End go to the limits. The buttons are for touch and skip the Tab order.",
+    ],
   },
   textarea: { group: "Inputs", examples: { file: "inputs", prefix: "Textarea" } },
   label: { group: "Inputs", examples: { file: "inputs", prefix: "Label" } },

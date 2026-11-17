@@ -1,8 +1,9 @@
-// @syncrobotic/field v0.6.0 · update: npx shadcn add @syncrobotic/field --overwrite
+// @syncrobotic/field v0.7.0 · update: npx shadcn add @syncrobotic/field --overwrite
 "use client"
 
 import * as React from "react"
 import { Slot } from "radix-ui"
+import { CircleAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Label } from "@/registry/syncrobotic/ui/label"
 
@@ -23,7 +24,9 @@ export function Field({
   className?: string
   children: React.ReactElement
 }) {
-  const id = React.useId()
+  const generated = React.useId()
+  // A control that brings its own id keeps it, and the label follows it.
+  const id = (children.props as { id?: string }).id ?? generated
   const noteId = `${id}-note`
   const note = error ?? hint
   return (
@@ -32,11 +35,20 @@ export function Field({
       <Slot.Root id={id} aria-describedby={note ? noteId : undefined} aria-invalid={error ? true : undefined}>
         {children}
       </Slot.Root>
-      {note && (
-        <p id={noteId} key={error ? "error" : "hint"} className={cn("text-xs", error ? "animate-appear text-danger" : "text-muted-foreground")}>
-          {note}
-        </p>
-      )}
+      {/*
+        The note line grows open when a hint or error arrives (height at --motion-base), and the error itself appears
+        with an icon, so it never relies on colour alone. An error that replaces a hint keeps the height: no jump. Never a shake.
+      */}
+      <div className={cn("grid transition-[grid-template-rows] duration-(--motion-base) ease-(--ease-standard)", note ? "grid-rows-[1fr]" : "-mt-2 grid-rows-[0fr]")}>
+        <div className="overflow-hidden">
+          {note && (
+            <p id={noteId} key={error ? "error" : "hint"} className={cn("flex items-start gap-1 text-xs", error ? "animate-appear text-danger" : "text-muted-foreground")}>
+              {error && <CircleAlert aria-hidden="true" className="mt-px size-3.5 shrink-0" />}
+              <span>{note}</span>
+            </p>
+          )}
+        </div>
+      </div>
     </div>
   )
 }
