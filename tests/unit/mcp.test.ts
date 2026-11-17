@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { describe, expect, it } from "vitest"
-import { POST } from "@/app/mcp/route"
+import { POST } from "../../app/mcp/route"
 
 const call = async (body: unknown) => {
   const res = await POST(new Request("http://x/mcp", { method: "POST", body: JSON.stringify(body), headers: { "content-type": "application/json" } }))
@@ -13,7 +13,13 @@ describe("MCP server", () => {
     expect(init.json.result.serverInfo.name).toBe("syncrobotic-ui")
     expect((await call({ jsonrpc: "2.0", method: "notifications/initialized" })).status).toBe(202)
     const list = await call({ jsonrpc: "2.0", id: 2, method: "tools/list" })
-    expect(list.json.result.tools.map((t: { name: string }) => t.name)).toEqual(["search", "get_item", "get_install_command", "get_design_language", "get_checklist"])
+    expect(list.json.result.tools.map((t: { name: string }) => t.name)).toEqual([
+      "search",
+      "get_item",
+      "get_install_command",
+      "get_design_language",
+      "get_checklist",
+    ])
   })
 
   it("finds an item for a need and returns its twin", async () => {
