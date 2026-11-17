@@ -23,9 +23,17 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - `file-upload`: a drop zone that is also a button; checks type, size and count and reports what it refused.
 - `attachment`: a file as a row, chip or image tile with progress, error and Retry, Download and Remove.
 - `file-type`: file icons from a name or extension, including robot formats (mcap, bag, db3, pgm, pcd, urdf, onnx).
+- `stepper`: done, current, upcoming and error steps, horizontal or vertical (with the current step's content), optional steps, sm and md, clicking back to finished steps, and `StepperCompact` for phones. The current step is the neutral primary.
+- `timeline`: events with a neutral dot, a status glyph or an icon; vertical, alternate or horizontal, dense, grouped by day.
+- `scrollspy`: an On this page rail or pills that follow the reader through a page or a scroll area, and the `useScrollspy` hook.
+- `navigation-menu`: a site's top navigation with panels of links and cards, a shared animated panel or one per trigger (Radix).
+- `questionnaire`: choice, multiple choice (with a limit), scale and text questions, one per page with progress or all on one form, required checks without a shake, and a review page with Edit.
 
 ### Changed
 - More examples for the existing Inputs: textarea, checkbox, radio group, switch, select, slider, label, input group, number field, field and choice field.
+- Everything that comes also goes: the data grid's selection bar and expanded rows, a vertical stepper's step content, questionnaire pages (the question leaves before the next arrives) and attachments (`leaving` and `onLeft`, with usePresenceList) now have an exit as well as an entrance.
+- Component pages: examples, usage rules, keys and changelog arrive as they scroll in. Whatever is on screen at load renders at once, and nothing is hidden without JavaScript.
+- More examples for Breadcrumb (icon, collapsed levels, switcher, truncation), Sheet (navigation drawer, bottom actions, edit form), Toast (undo, failure with retry, title only, queue) and Label (optional, info tooltip, inline, disabled).
 - More examples for the existing Actions and Display components: toggle, segmented control, copy button, badge, avatar, card, separator, progress, spinner, meter, description list, status glyph, status eyebrow and skeleton now show 4 to 8 real uses each.
 - Story checks run the page clock past timed UI (the loading spinner, presence timers) before the screenshot, so visual baselines no longer depend on machine speed.
 

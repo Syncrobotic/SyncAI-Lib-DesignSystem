@@ -1,6 +1,7 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
-import { Bell, Bot, Settings } from "lucide-react"
+import { Bell, Bot, ChevronDown, Ellipsis, House, Settings } from "lucide-react"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/registry/syncrobotic/ui/dropdown-menu"
 import { Badge } from "@/registry/syncrobotic/ui/badge"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/registry/syncrobotic/ui/accordion"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/registry/syncrobotic/ui/tabs"
@@ -120,3 +121,83 @@ export const PaginationSimple: S = { render: () => <PaginationDemo /> }
 
 /** Numbered pages, with gaps, for long lists you jump around in. */
 export const PaginationPages: S = { render: () => <PaginationDemo pages total={240} /> }
+
+export const BreadcrumbWithIcon: S = {
+  render: () => (
+    <Breadcrumb>
+      <BreadcrumbLink href="#home" className="flex items-center gap-2">
+        <House aria-hidden="true" className="size-4" />
+        <span>Sites</span>
+      </BreadcrumbLink>
+      <BreadcrumbLink href="#taipei">Taipei warehouse</BreadcrumbLink>
+      <BreadcrumbPage>Hall B</BreadcrumbPage>
+    </Breadcrumb>
+  ),
+}
+
+/** Deep paths fold the middle levels into a menu, keeping the first and the last two. */
+export const BreadcrumbCollapsed: S = {
+  render: () => (
+    <Breadcrumb>
+      <BreadcrumbLink href="#sites">Sites</BreadcrumbLink>
+      <DropdownMenu>
+        <DropdownMenuTrigger
+          className="press flex size-(--h-sm) items-center justify-center rounded-sm hover:bg-muted hover:text-foreground"
+          aria-label="Show 2 more levels"
+        >
+          <Ellipsis aria-hidden="true" className="size-4" />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start">
+          <DropdownMenuItem asChild>
+            <a href="#taipei">Taipei warehouse</a>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <a href="#hall-b">Hall B</a>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <BreadcrumbLink href="#robots">Robots</BreadcrumbLink>
+      <BreadcrumbPage>Patrol dog 7F3A</BreadcrumbPage>
+    </Breadcrumb>
+  ),
+}
+
+/** The current level switches between siblings, e.g. one robot to another. */
+export const BreadcrumbWithSwitcher: S = {
+  render: () => (
+    <Breadcrumb>
+      <BreadcrumbLink href="#robots">Robots</BreadcrumbLink>
+      <DropdownMenu>
+        <DropdownMenuTrigger
+          className="press flex h-(--h-sm) items-center gap-2 rounded-sm px-2 text-foreground hover:bg-muted"
+          aria-label="Patrol dog 7F3A, switch robot"
+        >
+          <span aria-current="page">Patrol dog 7F3A</span>
+          <ChevronDown aria-hidden="true" className="size-4 text-muted-foreground" />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start">
+          {["Patrol dog 7F3A", "Patrol dog DAA6", "Courier 9E37"].map((r) => (
+            <DropdownMenuItem key={r}>{r}</DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </Breadcrumb>
+  ),
+}
+
+/** In a narrow space each level truncates; the full name stays in the link. */
+export const BreadcrumbTruncated: S = {
+  render: () => (
+    <div className="w-64">
+      <Breadcrumb>
+        <BreadcrumbLink href="#sites" title="Sites">
+          Sites
+        </BreadcrumbLink>
+        <BreadcrumbLink href="#site" title="Taipei Neihu distribution warehouse">
+          Taipei Neihu distribution warehouse
+        </BreadcrumbLink>
+        <BreadcrumbPage title="Night patrol, north perimeter">Night patrol, north perimeter</BreadcrumbPage>
+      </Breadcrumb>
+    </div>
+  ),
+}

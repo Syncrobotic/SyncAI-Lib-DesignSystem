@@ -16,6 +16,11 @@ export type StoryFile =
   | "navigation"
   | "overlays"
   | "charts"
+  | "stepper"
+  | "timeline"
+  | "scrollspy"
+  | "navigation-menu"
+  | "questionnaire"
   | "data-grid"
   | "sortable"
   | "resizable"
@@ -58,6 +63,51 @@ const overlayKeys: [string, string][] = [
 ]
 
 const entries: Record<string, Entry> = {
+  stepper: {
+    group: "Navigation",
+    examples: { file: "stepper", prefix: "Stepper" },
+    rules: [
+      "Only for a fixed sequence people go through once (commissioning, an import). Sections of a page are Tabs.",
+      "The current step is the neutral primary, never blue: blue means a machine is working.",
+      "An error step says why in its description.",
+      "Phones: StepperCompact, not a squeezed row of circles.",
+    ],
+  },
+  timeline: {
+    group: "Display",
+    examples: { file: "timeline", prefix: "Timeline" },
+    rules: [
+      "Plain events get a neutral dot. Only warning and danger events are coloured.",
+      "Give dateTime so the time is machine-readable.",
+      "Newest first for incidents and logs; oldest first for a process.",
+    ],
+  },
+  scrollspy: {
+    group: "Navigation",
+    examples: { file: "scrollspy", prefix: "Scrollspy" },
+    rules: [
+      "Each section needs an id and a heading.",
+      "Pass root when the page scrolls inside a container.",
+      "Hide the rail on phones, or use the pills variant.",
+    ],
+  },
+  "navigation-menu": {
+    group: "Navigation",
+    examples: { file: "navigation-menu", prefix: "NavigationMenu" },
+    rules: [
+      "For a site's top navigation. An app's sections go in the app shell's sidebar; actions go in a DropdownMenu.",
+      "Every panel item is a link. Mark the current page with active.",
+    ],
+  },
+  questionnaire: {
+    group: "Inputs",
+    examples: { file: "questionnaire", prefix: "Questionnaire" },
+    rules: [
+      "Paged for up to about eight questions on a phone; list when people need to see them all.",
+      "Required questions block Next with a message under the question, never a shake.",
+      "review lets people check and edit before sending.",
+    ],
+  },
   "data-grid": {
     wide: true,
     group: "Display",
@@ -475,6 +525,25 @@ export type Item = (typeof registry.items)[number] & Entry
 
 // What each component does with the keyboard beyond Tab. Radix supplies most of it; these tables say so out loud.
 const keyboard: Record<string, [string, string][]> = {
+  stepper: [
+    ["Tab", "Focus a step people may go back to"],
+    ["Enter / Space", "Go to that step"],
+  ],
+  scrollspy: [
+    ["Tab", "Focus a section link"],
+    ["Enter", "Scroll to the section and move focus to it"],
+  ],
+  "navigation-menu": [
+    ["Enter / Space", "Open a panel"],
+    ["Arrow keys", "Move between top-level items"],
+    ["Tab", "Move into an open panel"],
+    ["Escape", "Close the panel"],
+  ],
+  questionnaire: [
+    ["Arrow keys", "Choose an option or a point on a scale"],
+    ["Space", "Tick a checkbox"],
+    ["Enter", "Next, or send on the last page"],
+  ],
   "data-grid": [
     ["Tab", "Focus the grid region, then the headers and cells' controls"],
     ["Arrow keys", "Scroll the region"],

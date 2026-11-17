@@ -26,6 +26,11 @@ import * as s_calendar from "@/stories/calendar.stories"
 import * as s_date_selector from "@/stories/date-selector.stories"
 import * as s_time_picker from "@/stories/time-picker.stories"
 import * as s_data_grid from "@/stories/data-grid.stories"
+import * as s_stepper from "@/stories/stepper.stories"
+import * as s_timeline from "@/stories/timeline.stories"
+import * as s_scrollspy from "@/stories/scrollspy.stories"
+import * as s_navigation_menu from "@/stories/navigation-menu.stories"
+import * as s_questionnaire from "@/stories/questionnaire.stories"
 import * as s_sortable from "@/stories/sortable.stories"
 import * as s_resizable from "@/stories/resizable.stories"
 import * as s_file_upload from "@/stories/file-upload.stories"
@@ -51,6 +56,11 @@ const files: Record<StoryFile, StoryModule> = {
   overlays: overlays as unknown as StoryModule,
   charts: charts as unknown as StoryModule,
   "data-grid": s_data_grid as unknown as StoryModule,
+  stepper: s_stepper as unknown as StoryModule,
+  timeline: s_timeline as unknown as StoryModule,
+  scrollspy: s_scrollspy as unknown as StoryModule,
+  "navigation-menu": s_navigation_menu as unknown as StoryModule,
+  questionnaire: s_questionnaire as unknown as StoryModule,
   sortable: s_sortable as unknown as StoryModule,
   resizable: s_resizable as unknown as StoryModule,
   "file-upload": s_file_upload as unknown as StoryModule,

@@ -6,6 +6,7 @@ import { ChangelogList } from "@/site/changelog-list"
 import { CodeSheet } from "@/site/code-sheet"
 import { getItem, items, readSource, storyNames, storyTitle } from "@/site/catalog"
 import { CodeBlock } from "@/site/code-block"
+import { Reveal, AppearItem } from "@/site/appear"
 import { ExampleCard } from "@/site/example-card"
 import { Stage } from "@/site/examples"
 import { Dot, H2, PageTitle, Rules } from "@/site/prose"
@@ -152,16 +153,20 @@ export default async function ComponentPage({ params }: Props) {
           <H2 id="examples">Examples</H2>
           <p className="pb-4 text-sm text-muted-foreground">States and real uses. Each example is also a Storybook story and a visual regression test.</p>
           <div className="flex flex-col gap-6">
+            {/* Each example arrives as it scrolls in (site/appear.tsx); those already on screen render as they are. */}
             {names.map((n) => (
-              <ExampleCard
-                key={n}
-                id={`example-${n}`}
-                title={storyTitle(n)}
-                wide={item.wide}
-                preview={<Stage file={item.examples!.file} name={n} className="w-full" wide={item.wide} />}
-                install={installBlock}
-                code={<CodeBlock code={storySource(item.examples!.file, n)} title={`${storyTitle(n)}.tsx`} />}
-              />
+              <Reveal key={n}>
+                <AppearItem>
+                  <ExampleCard
+                    id={`example-${n}`}
+                    title={storyTitle(n)}
+                    wide={item.wide}
+                    preview={<Stage file={item.examples!.file} name={n} className="w-full" wide={item.wide} />}
+                    install={installBlock}
+                    code={<CodeBlock code={storySource(item.examples!.file, n)} title={`${storyTitle(n)}.tsx`} />}
+                  />
+                </AppearItem>
+              </Reveal>
             ))}
           </div>
         </>
@@ -170,39 +175,45 @@ export default async function ComponentPage({ params }: Props) {
       {item.rules && (
         <>
           <H2 id="usage">Usage rules</H2>
-          <Rules rules={item.rules} />
+          <Reveal>
+            <AppearItem>
+              <Rules rules={item.rules} />
+            </AppearItem>
+          </Reveal>
         </>
       )}
 
       {item.keyboard && (
         <>
           <H2 id="keyboard">Keyboard</H2>
-          <div className="overflow-hidden rounded-md border border-border bg-card">
-            <table className="w-full text-sm">
-              <thead className="sr-only">
-                <tr>
-                  <th>Keys</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {item.keyboard.map(([keys, action]) => (
-                  <tr key={keys} className="border-b border-border last:border-0">
-                    <td className="w-56 py-2 pr-4 pl-4 align-top">
-                      <span className="flex flex-wrap gap-1">
-                        {keys.split(" / ").map((k) => (
-                          <kbd key={k} className="rounded-xs bg-muted px-1 py-0.5 font-mono text-xs whitespace-nowrap">
-                            {k}
-                          </kbd>
-                        ))}
-                      </span>
-                    </td>
-                    <td className="py-2 pr-4 text-muted-foreground">{action}</td>
+          <Reveal>
+            <AppearItem className="overflow-hidden rounded-md border border-border bg-card">
+              <table className="w-full text-sm">
+                <thead className="sr-only">
+                  <tr>
+                    <th>Keys</th>
+                    <th>Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {item.keyboard.map(([keys, action]) => (
+                    <tr key={keys} className="border-b border-border last:border-0">
+                      <td className="w-56 py-2 pr-4 pl-4 align-top">
+                        <span className="flex flex-wrap gap-1">
+                          {keys.split(" / ").map((k) => (
+                            <kbd key={k} className="rounded-xs bg-muted px-1 py-0.5 font-mono text-xs whitespace-nowrap">
+                              {k}
+                            </kbd>
+                          ))}
+                        </span>
+                      </td>
+                      <td className="py-2 pr-4 text-muted-foreground">{action}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </AppearItem>
+          </Reveal>
         </>
       )}
 
@@ -220,7 +231,11 @@ export default async function ComponentPage({ params }: Props) {
       {meta && (
         <>
           <H2 id="changelog">Changelog</H2>
-          <ChangelogList entries={meta.changelog} />
+          <Reveal>
+            <AppearItem>
+              <ChangelogList entries={meta.changelog} />
+            </AppearItem>
+          </Reveal>
           <p className="pt-3 text-sm text-muted-foreground">
             <a href="/docs/upgrading" className="underline-offset-4 hover:underline">
               How to upgrade
