@@ -3,11 +3,11 @@ import { join } from "node:path"
 import registry from "../registry.json"
 
 // Where each registry item's live examples come from. Stories are the single source of the states.
-export type StoryFile = "stop-button" | "slide-to-release" | "dock" | "island" | "list" | "actions" | "inputs" | "display" | "navigation" | "overlays"
+export type StoryFile = "stop-button" | "slide-to-release" | "dock" | "island" | "list" | "actions" | "inputs" | "display" | "feedback" | "navigation" | "overlays"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
-export const groups = ["Actions", "Inputs", "Display", "Navigation", "Overlays", "Robot shell", "Hooks"] as const
+export const groups = ["Actions", "Inputs", "Display", "Feedback", "Navigation", "Overlays", "Robot shell", "Hooks"] as const
 export type Group = (typeof groups)[number]
 
 type Entry = {
@@ -67,7 +67,6 @@ const entries: Record<string, Entry> = {
     examples: { file: "display", prefix: "Spinner" },
     rules: ["Waits 300 ms before it appears. Work that finishes sooner never flashes a spinner.", "Prefer Skeleton when you know the shape of what is loading."],
   },
-  alert: { group: "Display", examples: { file: "display", prefix: "Alert" }, rules: ["For a condition on this page. Transient events go to the island's notices."] },
   "empty-state": { group: "Display", examples: { file: "display", prefix: "EmptyState" } },
   table: { group: "Display", examples: { file: "display", prefix: "Table" }, rules: ["Right-align numbers. Numbers are tabular by default."] },
   list: { group: "Display", examples: { file: "list", only: ["GroupedList"] } },
@@ -83,6 +82,32 @@ const entries: Record<string, Entry> = {
     group: "Display",
     examples: { file: "list", only: ["LoadingSkeleton"] },
     rules: ["Show what is already known; only unknown values get a skeleton.", "The whole group breathes over 1.2 s with no diagonal shimmer, and stops under reduced motion."],
+  },
+  // Feedback, most urgent first. The Alarms foundation explains which one to use.
+  alarm: {
+    group: "Feedback",
+    examples: { file: "feedback", prefix: "Alarm" },
+    rules: [
+      "Only for an abnormal condition that needs an operator to act. No action, no alarm: log it instead.",
+      "Three priorities, each with its own shape, colour and word: critical (act now), high (act within minutes), low (act when convenient).",
+      "Stays until the condition clears and someone acknowledges it. Acknowledging records that it was seen; it does not clear it.",
+      "Never auto-dismissed, never a toast, never blinking: the tint, the bar and the word “Unacknowledged” carry the state.",
+      "One alarm per root cause. If the robot is offline, do not also raise camera lost and lidar lost.",
+    ],
+  },
+  alert: {
+    group: "Feedback",
+    examples: { file: "display", prefix: "Alert" },
+    rules: ["A condition on this page that stays while it is true (a licence about to expire, a form that cannot be sent). No acknowledge.", "If the operator must act on the robot, it is an alarm instead."],
+  },
+  toast: {
+    group: "Feedback",
+    examples: { file: "feedback", prefix: "Toast" },
+    rules: [
+      "The result of what the user just did, or a minor event. Web and dashboard use Toast; the control app uses the island's notices, with the same timings.",
+      "4 s; 8 s when it offers an action such as Undo; failures stay until dismissed. Hovering or focusing pauses the timer.",
+      "At most three on screen. Never use a toast for an alarm.",
+    ],
   },
   // Navigation
   tabs: { group: "Navigation", examples: { file: "navigation", prefix: "Tabs" } },

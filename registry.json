@@ -528,6 +528,43 @@
       ]
     },
     {
+      "name": "alarm",
+      "type": "registry:ui",
+      "title": "Alarm",
+      "description": "ISA-18.2 alarms: three priorities with their own shape, colour and words, acknowledge and clear states, and a sorted list that announces new alarms to screen readers.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/alarm.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "toast",
+      "type": "registry:ui",
+      "title": "Toast",
+      "description": "Transient feedback on what the user just did: 4 s, 8 s with an action, failures until dismissed. Call toast() anywhere; mount <Toaster /> once.",
+      "dependencies": [
+        "radix-ui",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/toast.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "empty-state",
       "type": "registry:ui",
       "title": "Empty state",

@@ -2,9 +2,10 @@ import type { Metadata } from "next"
 import { pageMeta } from "@/site/config"
 import { DocHeader, Section } from "@/site/doc"
 import { FoundationGrid } from "@/site/foundation-previews"
+import { foundations } from "@/site/foundations"
 
 const description =
-  "The SYNCROBOTIC design language: principles, colour, typography, spacing, radius, elevation, motion, iconography and accessibility, shared by every product team."
+  "The SYNCROBOTIC design language: principles, colour, typography, spacing, radius, elevation, motion, iconography, accessibility and alarms, shared by every product team."
 
 export const metadata: Metadata = pageMeta({ title: "Foundations — design language", description, path: "/docs/foundations" })
 
@@ -16,7 +17,7 @@ export default function FoundationsPage() {
         title="One design language for every product"
         lead="Apps, dashboards, internal tools and marketing pages share these decisions. Designers use them to choose; engineers get them as CSS variables and Tailwind utilities from one theme file."
       />
-      <Section id="all" title="Nine foundations">
+      <Section id="all" title={`${foundations.length} foundations`}>
         <FoundationGrid />
       </Section>
       <Section id="how" title="How the tokens reach your product" lead="One source of truth, three ways to consume it.">

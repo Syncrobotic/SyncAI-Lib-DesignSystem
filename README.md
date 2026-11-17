@@ -47,14 +47,15 @@ Dark is the default: `<html class="dark">`. Default copy is English; every visib
 
 ## Components
 
-40 registry items, grouped as on the docs site. Every component follows the colour, radius, height and spacing rules, and every state has a story.
+47 registry items, grouped as on the docs site. Every component follows the colour, radius, height and spacing rules, and every state has a story.
 
 | Group | Items |
 | --- | --- |
 | Theme | `syncrobotic-theme` (colour, radius, type, height and motion tokens) |
 | Actions | `button`, `segmented-control` |
 | Inputs | `input`, `textarea`, `label`, `field`, `checkbox`, `radio-group`, `switch`, `select`, `slider` |
-| Display | `badge`, `card`, `avatar`, `separator`, `progress`, `spinner`, `alert`, `empty-state`, `table`, `list`, `status-glyph`, `status-eyebrow`, `skeleton` |
+| Display | `badge`, `card`, `avatar`, `separator`, `progress`, `spinner`, `empty-state`, `table`, `list`, `status-glyph`, `status-eyebrow`, `skeleton` |
+| Feedback | `alarm`, `alert`, `toast` |
 | Navigation | `tabs`, `accordion` |
 | Overlays | `dialog`, `alert-dialog`, `sheet`, `popover`, `tooltip`, `dropdown-menu` |
 | Robot shell | `stop-button`, `slide-to-release`, `dock`, `island`, `tray` |
@@ -112,6 +113,8 @@ The first `test:visual` run writes baselines; commit them (`tests/__screenshots_
 4. Add it to `site/catalog.ts` with its usage rules.
 5. Interaction logic gets a behaviour test in `tests/unit/`.
 6. Open a PR once `npm run ci` passes. Add a line to `CHANGELOG.md`.
+
+New components start as a proposal issue. How work is chosen, reviewed and released is in [ROADMAP.md](ROADMAP.md).
 
 ## Branches
 

@@ -4,6 +4,7 @@ import * as React from "react"
 import * as actions from "@/stories/actions.stories"
 import * as display from "@/stories/display.stories"
 import * as dock from "@/stories/dock.stories"
+import * as feedback from "@/stories/feedback.stories"
 import * as inputs from "@/stories/inputs.stories"
 import * as island from "@/stories/island.stories"
 import * as list from "@/stories/list.stories"
@@ -26,6 +27,7 @@ const files: Record<StoryFile, StoryModule> = {
   actions: actions as unknown as StoryModule,
   inputs: inputs as unknown as StoryModule,
   display: display as unknown as StoryModule,
+  feedback: feedback as unknown as StoryModule,
   navigation: navigation as unknown as StoryModule,
   overlays: overlays as unknown as StoryModule,
 }

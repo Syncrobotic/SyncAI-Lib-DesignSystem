@@ -1,0 +1,27 @@
+name: Proposal
+description: A new component, pattern, token or change to the design language
+labels: [proposal]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What can a team not do today, and in which product (dashboard, control app, website)? Link the screen.
+    validations: { required: true }
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: How many products need it? Is something similar already built in an app? Screenshots welcome.
+    validations: { required: true }
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: The smallest change that solves it. Which existing tokens and components does it reuse?
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options: [Component, Pattern or guideline, Token, Block, Change to an existing item]
+    validations: { required: true }

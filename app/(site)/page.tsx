@@ -111,6 +111,12 @@ const samples: Record<string, React.ReactNode> = {
       <Badge tone="outline">v2.4</Badge>
     </div>
   ),
+  Feedback: (
+    <div className="flex w-56 items-center gap-2 rounded-md bg-danger-subtle px-3 py-2 text-sm">
+      <span className="font-bold text-danger">Critical</span>
+      <span className="truncate">Collision risk · Hall B</span>
+    </div>
+  ),
   Navigation: (
     <div className="flex gap-4 border-b border-border text-sm">
       <span className="border-b-2 border-foreground pb-2 font-medium">Overview</span>
