@@ -120,6 +120,8 @@ The first `test:visual` run writes baselines; commit them (`tests/__screenshots_
 
 After changing an item's files, bump its `meta.version` in `registry.json`, add a `meta.changelog` line and run `npm run versions`. After changing the theme, run `npm run tokens`.
 
+Visual regression: every story is compared, dark and light, with the baselines in `tests/__screenshots__/`. They are written on CI's own browser: after an intended visual change, run Actions → `visual-baseline` on the branch and review the committed screenshots in the PR.
+
 Releases: when `main` gets a `package.json` version that has no tag, the `release` workflow tags it `vX.Y.Z` and publishes a GitHub Release with that version's `CHANGELOG.md` section. CI checks that the section exists.
 
 New components start as a proposal issue. How work is chosen, reviewed and released is in [ROADMAP.md](ROADMAP.md).
