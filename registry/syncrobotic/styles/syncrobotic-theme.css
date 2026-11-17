@@ -64,6 +64,17 @@
   --shadow-float: 0 8px 24px rgb(9 9 11 / 0.12);
   --shadow-overlay: 0 16px 40px rgb(9 9 11 / 0.18);
 
+  /*
+   * Chart series: identity, not status. Fixed order, never cycled; validated for colour-vision deficiency
+   * (dataviz validator: adjacent CVD ΔE ≥ 8, normal-vision ≥ 15). Slots 3–5 sit under 3:1 on white,
+   * so charts always ship a legend, direct labels and a table view. Use status colours for status, never as series.
+   */
+  --chart-1: #2a78d6;
+  --chart-2: #eb6834;
+  --chart-3: #1baf7a;
+  --chart-4: #eda100;
+  --chart-5: #e87ba4;
+
   /* Heights */
   --h-tag: 1.5rem;    /* 24 tag, not interactive */
   --h-sm: 2.25rem;    /* 36 small button inside a card */
@@ -118,6 +129,12 @@
   --stop: #dc2626;
   --stop-deep: #7f1d1d;
 
+  --chart-1: #3987e5;
+  --chart-2: #d95926;
+  --chart-3: #199e70;
+  --chart-4: #c98500;
+  --chart-5: #d55181;
+
   --map: #0d0d10;
   --map-point: #6f7682;
   --scrim: rgb(0 0 0 / 0.66);
@@ -169,6 +186,13 @@
 
   --shadow-float: var(--shadow-float);
   --shadow-overlay: var(--shadow-overlay);
+
+  /* Usage: stroke-chart-1, bg-chart-2. Series identity only. */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
 
   /* Usage: pt-section sm:pt-section, gap-section-sm. Vertical rhythm between page sections only */
   --spacing-section: var(--space-section);

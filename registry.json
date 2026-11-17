@@ -21,7 +21,7 @@
           {
             "version": "0.6.0",
             "date": "2026-11-17",
-            "note": "Calmer status hues in both modes (all still ≥ 4.5:1 on every surface); colour rule: colour is for what is abnormal. Motion tokens as CSS: appear/disappear, fade-in, sheet-in/out per side, expand/collapse, and the press utility."
+            "note": "Calmer status hues in both modes (all still ≥ 4.5:1 on every surface); colour rule: colour is for what is abnormal. Motion tokens as CSS: appear/disappear, fade-in, sheet-in/out per side, expand/collapse, and the press utility. Chart series tokens --chart-1…5 for light and dark, validated for colour-vision deficiency."
           },
           {
             "version": "0.5.0",
