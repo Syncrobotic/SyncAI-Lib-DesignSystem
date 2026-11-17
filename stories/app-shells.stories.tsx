@@ -5,6 +5,8 @@ import { ListDetail } from "@/registry/syncrobotic/blocks/list-detail"
 import { DataCatalog } from "@/registry/syncrobotic/blocks/data-catalog"
 import { DatasetDetail } from "@/registry/syncrobotic/blocks/dataset-detail"
 import { GovernanceTodo } from "@/registry/syncrobotic/blocks/governance-todo"
+import { SignIn } from "@/registry/syncrobotic/blocks/sign-in"
+import { ErrorPage, LoadingPage, NoAccessPage, NotFoundPage, OfflinePage } from "@/registry/syncrobotic/blocks/status-pages"
 import { RecordForm } from "@/registry/syncrobotic/blocks/record-form"
 import { SettingsPage } from "@/registry/syncrobotic/blocks/settings-page"
 import { UsersRoles } from "@/registry/syncrobotic/blocks/users-roles"
@@ -26,3 +28,9 @@ export const GovernanceTodoScreen: S = { render: () => <GovernanceTodo /> }
 export const SettingsScreen: S = { render: () => <SettingsPage /> }
 export const RecordFormScreen: S = { render: () => <RecordForm /> }
 export const UsersRolesScreen: S = { render: () => <UsersRoles /> }
+export const SignInScreen: S = { render: () => <SignIn /> }
+export const NotFoundScreen: S = { render: () => <NotFoundPage /> }
+export const NoAccessScreen: S = { render: () => <NoAccessPage /> }
+export const ErrorScreen: S = { render: () => <ErrorPage /> }
+export const OfflineScreen: S = { render: () => <OfflinePage /> }
+export const LoadingScreen: S = { render: () => <LoadingPage /> }

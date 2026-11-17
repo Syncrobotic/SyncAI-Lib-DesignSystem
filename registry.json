@@ -1845,6 +1845,66 @@
           }
         ]
       }
+    },
+    {
+      "name": "sign-in",
+      "type": "registry:block",
+      "title": "Sign in",
+      "description": "Company SSO first, email link as the fallback; one column, errors under the field, a confirmation that says where the link went.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/field",
+        "@syncrobotic/input",
+        "@syncrobotic/separator"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/sign-in.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "status-pages",
+      "type": "registry:block",
+      "title": "Status pages",
+      "description": "Not found, no access, error, offline and loading: what happened, why, and the next step. Never a dead end.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/skeleton"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/status-pages.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
     }
   ]
 }

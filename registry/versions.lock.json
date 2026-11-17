@@ -234,5 +234,13 @@
   "users-roles": {
     "version": "0.6.0",
     "hash": "04ad3b3f5459b781"
+  },
+  "sign-in": {
+    "version": "0.6.0",
+    "hash": "ca26144d94449917"
+  },
+  "status-pages": {
+    "version": "0.6.0",
+    "hash": "bbee1304b56f9ebe"
   }
 }
