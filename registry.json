@@ -2515,6 +2515,39 @@
           }
         ]
       }
+    },
+    {
+      "name": "agent-skill",
+      "type": "registry:file",
+      "title": "Agent skill",
+      "description": "Teaches a coding agent to build with this kit: plan, start from a block, read each item's markdown twin, reuse, check. Installs to .claude/skills/syncrobotic-ui/.",
+      "files": [
+        {
+          "path": "registry/syncrobotic/skill/SKILL.md",
+          "type": "registry:file",
+          "target": ".claude/skills/syncrobotic-ui/SKILL.md"
+        },
+        {
+          "path": "registry/syncrobotic/skill/references/design-language.md",
+          "type": "registry:file",
+          "target": ".claude/skills/syncrobotic-ui/references/design-language.md"
+        },
+        {
+          "path": "registry/syncrobotic/skill/references/checklist.md",
+          "type": "registry:file",
+          "target": ".claude/skills/syncrobotic-ui/references/checklist.md"
+        }
+      ],
+      "meta": {
+        "version": "0.8.0",
+        "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
     }
   ]
 }

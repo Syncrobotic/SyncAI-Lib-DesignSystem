@@ -290,5 +290,9 @@
   "status-pages": {
     "version": "0.8.0",
     "hash": "9b75fb563ad656ed"
+  },
+  "agent-skill": {
+    "version": "0.8.0",
+    "hash": "3b1f790f6f28984d"
   }
 }

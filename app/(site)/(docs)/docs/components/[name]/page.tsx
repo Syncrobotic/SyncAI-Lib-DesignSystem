@@ -11,6 +11,8 @@ import { Stage } from "@/site/examples"
 import { Dot, H2, PageTitle, Rules } from "@/site/prose"
 import { storySource } from "@/site/story-source"
 import { overviews } from "@/site/overview"
+import { aiPrompt, componentMarkdown } from "@/site/ai"
+import { CopyButton } from "@/registry/syncrobotic/ui/copy-button"
 import { getItem as findItem } from "@/site/catalog"
 
 /** `name` becomes a link to that component's page; other backticked words stay code. */
@@ -71,12 +73,19 @@ export default async function ComponentPage({ params }: Props) {
     <article>
       <div className="flex flex-wrap items-start justify-between gap-x-6">
         <PageTitle eyebrow={item.group} title={item.title} lead={item.description} />
-        <div className="flex items-center gap-3 pb-6 sm:pt-6 sm:pb-0">
+        <div className="flex flex-wrap items-center gap-2 pb-6 sm:pt-6">
           {meta && (
             <a href="#changelog" className="font-mono text-sm text-muted-foreground tabular-nums underline-offset-4 hover:underline">
               v{meta.version}
             </a>
           )}
+          {/* For AI agents: the page as markdown, or a prompt that points an agent at it. */}
+          <CopyButton value={componentMarkdown(item.name) ?? ""} variant="outline" label="Copy as Markdown">
+            Markdown
+          </CopyButton>
+          <CopyButton value={aiPrompt(item.title, `/docs/components/${item.name}`, item.name)} variant="outline" label="Copy prompt for AI">
+            Prompt
+          </CopyButton>
           {!inlineSource && (
             <CodeSheet
               label="Source"
