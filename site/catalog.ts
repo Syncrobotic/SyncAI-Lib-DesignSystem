@@ -34,6 +34,11 @@ const entries: Record<string, Entry> = {
     examples: { file: "actions", prefix: "SegmentedControl" },
     rules: ["For two to four views of the same data. For sections of a page, use Tabs.", "The selected segment is inverted, per the selected-state rule."],
   },
+  toggle: {
+    group: "Actions",
+    examples: { file: "actions", prefix: "Toggle" },
+    rules: ["On/off for one thing, such as an image or map layer. On is inverted.", "For one choice among several, use Segmented control; for a setting that applies at once, use Switch."],
+  },
   // Inputs
   input: {
     group: "Inputs",

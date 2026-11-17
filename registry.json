@@ -439,6 +439,34 @@
       }
     },
     {
+      "name": "toggle",
+      "type": "registry:ui",
+      "title": "Toggle",
+      "description": "An on/off button for a layer or option. On is inverted, like a selected segment.",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/toggle.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
       "name": "input",
       "type": "registry:ui",
       "title": "Input",
