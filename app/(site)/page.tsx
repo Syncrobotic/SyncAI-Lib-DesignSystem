@@ -153,9 +153,13 @@ export default function HomePage() {
             .map((g) => {
               const list = items.filter((i) => i.group === g)
               return (
-                <Link key={g} href={`/docs/components/${firstOf(g)}`} className="press group flex flex-col overflow-hidden rounded-md border border-border hover:border-muted-foreground">
+                <Link
+                  key={g}
+                  href={`/docs/components/${firstOf(g)}`}
+                  className="press group flex flex-col overflow-hidden rounded-md border border-border transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:border-muted-foreground"
+                >
                   <div aria-hidden inert className="specimen flex h-36 items-center justify-center p-6">
-                    {samples[g]}
+                    <div className="transition-transform duration-(--motion-fast) ease-(--ease-standard) group-hover:-translate-y-0.5 motion-reduce:group-hover:translate-y-0">{samples[g]}</div>
                   </div>
                   <div className="flex flex-1 flex-col gap-1 border-t border-border bg-card p-4">
                     <span className="flex items-center justify-between">

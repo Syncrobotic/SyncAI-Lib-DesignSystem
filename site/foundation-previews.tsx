@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Bell, Bot, CircleAlert, Map, OctagonAlert, TriangleAlert, Wifi } from "lucide-react"
+import { ArrowUpRight, Bell, Bot, CircleAlert, Map, OctagonAlert, TriangleAlert, Wifi } from "lucide-react"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { type FoundationSlug, foundations } from "./foundations"
 import { contrast } from "./theme-tokens"
@@ -9,11 +9,14 @@ const bodyContrast = contrast("foreground", "background", "dark")!.toFixed(1)
 // One small, real exhibit per foundation. Every value comes from the theme through Tailwind utilities.
 const previews: Record<FoundationSlug, React.ReactNode> = {
   principles: (
-    <div className="flex flex-col items-start gap-1 font-mono text-xs text-muted-foreground">
-      {["01 Safety is a colour", "02 One meaning per colour", "03 Readable anywhere", "04 One geometry", "05 Calm by default"].map((p) => (
-        <span key={p}>{p}</span>
+    <ol className="flex flex-col items-start gap-2 text-sm">
+      {["Safety is a colour", "One meaning per colour", "Readable anywhere", "One geometry", "Calm by default"].map((p, i) => (
+        <li key={p} className="flex items-baseline gap-3">
+          <span className="font-mono text-xs text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
+          {p}
+        </li>
       ))}
-    </div>
+    </ol>
   ),
   color: (
     <div className="grid h-full w-full grid-cols-6 gap-1">
@@ -94,20 +97,48 @@ const previews: Record<FoundationSlug, React.ReactNode> = {
   ),
 }
 
+// Bento: principles lead (two rows), the rest in pairs and threes, so the grid reads as one composition, not ten equal cards.
+const span: Record<FoundationSlug, string> = {
+  principles: "lg:col-span-2 lg:row-span-2",
+  color: "lg:col-span-2",
+  typography: "lg:col-span-2",
+  spacing: "lg:col-span-2",
+  radius: "lg:col-span-2",
+  elevation: "lg:col-span-2",
+  motion: "lg:col-span-2",
+  iconography: "lg:col-span-2",
+  accessibility: "lg:col-span-3",
+  alarms: "lg:col-span-3",
+}
+
+// Hover is a state change, so it moves the way the Motion foundation says: --motion-fast, standard easing, a 2 px lift
+// of the exhibit and the arrow fading in. Reduced motion keeps the colour change and drops the travel.
+const fast = "duration-(--motion-fast) ease-(--ease-standard)"
+
 export function FoundationGrid() {
   return (
-    <div className="grid gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid auto-rows-fr gap-3 sm:grid-cols-2 lg:grid-cols-6">
       {foundations.map((f, i) => (
-        <Link key={f.slug} href={`/docs/foundations/${f.slug}`} className="press group flex flex-col gap-6 bg-background p-6 hover:bg-card">
-          <div aria-hidden className="specimen flex h-32 items-center justify-center rounded-sm border border-border p-4">
-            {previews[f.slug]}
+        <Link
+          key={f.slug}
+          href={`/docs/foundations/${f.slug}`}
+          className={`press group flex flex-col gap-4 rounded-md border border-border bg-background p-4 transition-colors hover:border-muted-foreground hover:bg-card ${fast} ${span[f.slug]}`}
+        >
+          <div aria-hidden className="specimen flex min-h-32 flex-1 items-center justify-center overflow-hidden rounded-sm border border-border p-4">
+            <div className={`flex size-full items-center justify-center transition-transform group-hover:-translate-y-0.5 motion-reduce:group-hover:translate-y-0 ${fast}`}>{previews[f.slug]}</div>
           </div>
-          <div className="flex flex-col gap-1">
-            <span className="flex items-baseline gap-2">
-              <span className="font-mono text-xs text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
-              <span className="font-bold group-hover:underline">{f.title}</span>
-            </span>
-            <span className="text-sm text-muted-foreground">{f.lead}</span>
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex flex-col gap-1">
+              <span className="flex items-baseline gap-2">
+                <span className="font-mono text-xs text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
+                <span className="font-bold">{f.title}</span>
+              </span>
+              <span className="text-sm text-muted-foreground">{f.lead}</span>
+            </div>
+            <ArrowUpRight
+              aria-hidden
+              className={`size-4 shrink-0 text-muted-foreground opacity-0 transition-[opacity,translate] group-hover:translate-x-0.5 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:group-hover:translate-x-0 ${fast}`}
+            />
           </div>
         </Link>
       ))}
