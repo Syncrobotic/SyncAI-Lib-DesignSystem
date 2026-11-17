@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Code, DocHeader, DoDont, Pager, Section, Specimen } from "@/site/doc"
+import { Code, DocHeader, DoDont, Pager, Section, Specimen, TokenTable } from "@/site/doc"
 import { metaFor, neighbours } from "@/site/foundations"
 import { MotionDemo } from "@/site/motion-demo"
 import { MotionPatterns } from "@/site/motion-patterns"
@@ -74,6 +74,22 @@ export default function MotionPage() {
         <p className="text-sm text-muted-foreground">
           CSS uses the tokens directly (<Code>duration-(--motion-base) ease-(--ease-standard)</Code>). JavaScript animation (motion/react) imports the same values from{" "}
           <Code>site/motion.ts</Code>; a unit test fails if they drift from the theme file.
+        </p>
+      </Section>
+
+      <Section id="components" title="In the components" lead="Every component uses one of the patterns, from the theme. CI fails a component that skips them.">
+        <TokenTable
+          head={["Pattern", "Utility", "Components"]}
+          rows={[
+            ["Appear / disappear", <Code key="u">animate-appear · animate-disappear</Code>, "Dialog, Alert dialog, Popover, Dropdown menu, Select, Tooltip, Toast, Alert, Alarm, island notices, tab panels, field errors"],
+            ["Sheet", <Code key="u">animate-sheet-in-* · animate-sheet-out-*</Code>, "Sheet (bottom, right, left); scrims fade in with animate-fade-in"],
+            ["Expand / collapse", <Code key="u">animate-expand · animate-collapse</Code>, "Accordion"],
+            ["Press", <Code key="u">press</Code>, "Button, Toggle, Segmented control, Emergency stop, Dock, island zones, list rows, app-shell navigation"],
+            ["Move", <Code key="u">transition · duration-(--motion-base)</Code>, "Switch thumb, Slide to release, Progress"],
+          ]}
+        />
+        <p className="text-sm text-muted-foreground">
+          <Code>npm run lint:motion</Code> checks that overlays animate in and out, that every button presses, and that no component writes its own duration or easing.
         </p>
       </Section>
 

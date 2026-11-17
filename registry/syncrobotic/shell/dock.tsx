@@ -1,3 +1,4 @@
+// @syncrobotic/dock v0.6.0 · update: npx shadcn add @syncrobotic/dock --overwrite
 "use client"
 
 import * as React from "react"
@@ -28,7 +29,7 @@ type Act = { label: string; onClick: () => void; icon?: React.ElementType }
  * so it does not compete with the red stop right above it.
  */
 export function DockActions({ secondary, primary, destructive }: { secondary: Act; primary: Act; destructive?: boolean }) {
-  const base = "flex h-(--h-lg) flex-1 items-center justify-center gap-1 rounded-md text-sm whitespace-nowrap"
+  const base = "press flex h-(--h-lg) flex-1 items-center justify-center gap-1 rounded-md text-sm whitespace-nowrap"
   const S = secondary.icon
   return (
     <div className="flex gap-(--tray-gap)">
@@ -60,7 +61,7 @@ export function DockNav({ items, active, onSelect, label = "Primary" }: { items:
           aria-current={key === active ? "page" : undefined}
           onClick={() => onSelect(key)}
           className={cn(
-            "flex h-(--h-lg) flex-1 items-center justify-center gap-1 rounded-md text-sm",
+            "press flex h-(--h-lg) flex-1 items-center justify-center gap-1 rounded-md text-sm",
             key === active ? "bg-muted text-foreground font-medium" : "text-muted-foreground",
           )}
         >

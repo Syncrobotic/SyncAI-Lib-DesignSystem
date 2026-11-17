@@ -1,3 +1,4 @@
+// @syncrobotic/alert-dialog v0.6.0 · update: npx shadcn add @syncrobotic/alert-dialog --overwrite
 "use client"
 
 import * as React from "react"
@@ -15,12 +16,13 @@ export const AlertDialogTrigger = AlertDialogPrimitive.Trigger
 export function AlertDialogContent({ className, ...props }: React.ComponentProps<typeof AlertDialogPrimitive.Content>) {
   return (
     <AlertDialogPrimitive.Portal>
-      <AlertDialogPrimitive.Overlay className="fixed inset-0 z-50 bg-(--scrim)" />
+      <AlertDialogPrimitive.Overlay className="fixed inset-0 z-50 bg-(--scrim) data-[state=open]:animate-fade-in data-[state=closed]:animate-disappear" />
       <AlertDialogPrimitive.Content
         data-slot="alert-dialog-content"
         className={cn(
           "fixed inset-x-4 top-1/2 z-50 mx-auto flex max-w-md -translate-y-1/2 flex-col gap-4",
           "rounded-lg bg-popover p-6 text-popover-foreground shadow-overlay ring-1 ring-border",
+          "data-[state=open]:animate-appear data-[state=closed]:animate-disappear",
           className,
         )}
         {...props}

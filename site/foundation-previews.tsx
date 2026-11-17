@@ -17,7 +17,7 @@ const previews: Record<FoundationSlug, React.ReactNode> = {
   ),
   color: (
     <div className="grid h-full w-full grid-cols-6 gap-1">
-      {["bg-background", "bg-card", "bg-secondary", "bg-muted-foreground", "bg-foreground", "bg-stop", "bg-info-subtle", "bg-success-subtle", "bg-warning-subtle", "bg-danger-subtle", "bg-neutral-subtle", "bg-stop-deep", "bg-info", "bg-success", "bg-warning", "bg-danger", "bg-neutral", "bg-primary"].map((c) => (
+      {["bg-background", "bg-card", "bg-secondary", "bg-muted-foreground", "bg-foreground", "bg-stop"].map((c) => (
         <span key={c} className={`${c} rounded-xs ring-1 ring-edge`} />
       ))}
     </div>
@@ -34,7 +34,7 @@ const previews: Record<FoundationSlug, React.ReactNode> = {
   spacing: (
     <div className="flex items-end gap-2">
       {[4, 8, 12, 16, 24, 32].map((s) => (
-        <span key={s} className="w-3 bg-info" style={{ height: s * 2 }} />
+        <span key={s} className="w-3 bg-muted-foreground" style={{ height: s * 2 }} />
       ))}
     </div>
   ),

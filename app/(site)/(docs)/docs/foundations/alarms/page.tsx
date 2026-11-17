@@ -84,7 +84,7 @@ export default function AlarmsPage() {
             "One alarm per root cause. When a robot goes offline, raise “offline”, not also “camera lost” and “lidar lost”.",
             "The title says what happened and where (“Collision risk · Hall B”); the source names the robot; the action says what to do (“Open camera”).",
             "Never auto-dismiss an alarm and never send one as a toast.",
-            "No blinking. The unacknowledged state is the tint, the bar and the word “Unacknowledged”; sound does the interrupting.",
+            "No blinking. The unacknowledged state is the bar and the word “Unacknowledged” (critical ones are also tinted); sound does the interrupting.",
             "New critical alarms are announced to screen readers assertively, others politely. `AlarmList` does this for you.",
             "In the control app the island shows the most urgent unacknowledged alarm (`IslandAlarm`), above any notice, and its edge takes the alarm's colour. The dashboard shows the full `AlarmList`. Both read the same data.",
             "More than 10 new alarms per operator in 10 minutes is an alarm flood: a design fault to fix at the source, not a load to carry.",

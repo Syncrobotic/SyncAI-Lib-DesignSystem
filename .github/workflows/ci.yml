@@ -15,6 +15,11 @@ jobs:
       - run: npm run lint:tokens
       # Every registry item declares exactly what its files import, and hook users are client components
       - run: npm run lint:registry
+      # Overlays animate in and out, buttons press, timing comes from the motion tokens
+      - run: npm run lint:motion
+      # Every item file changed only with a version bump; the DTCG token files match the CSS theme
+      - run: npm run lint:versions
+      - run: npm run lint:dtcg
       - run: npm run typecheck
       # Behaviour of safety-critical interactions: stop, stop all, slide to release, keyboard and AT paths
       - run: npm test

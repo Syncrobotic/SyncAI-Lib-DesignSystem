@@ -1,3 +1,4 @@
+// @syncrobotic/field v0.6.0 · update: npx shadcn add @syncrobotic/field --overwrite
 "use client"
 
 import * as React from "react"
@@ -32,7 +33,7 @@ export function Field({
         {children}
       </Slot.Root>
       {note && (
-        <p id={noteId} className={cn("text-xs", error ? "text-danger" : "text-muted-foreground")}>
+        <p id={noteId} key={error ? "error" : "hint"} className={cn("text-xs", error ? "animate-appear text-danger" : "text-muted-foreground")}>
           {note}
         </p>
       )}

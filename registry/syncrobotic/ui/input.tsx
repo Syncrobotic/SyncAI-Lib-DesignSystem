@@ -1,3 +1,4 @@
+// @syncrobotic/input v0.6.0 · update: npx shadcn add @syncrobotic/input --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
@@ -9,6 +10,7 @@ export function Input({ className, type = "text", ...props }: React.ComponentPro
       data-slot="input"
       className={cn(
         "flex h-(--h-md) w-full min-w-0 rounded-sm bg-card px-3 text-base ring-1 ring-input ring-inset",
+        "transition-shadow duration-(--motion-fast) ease-(--ease-standard)",
         "placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
         "file:mr-3 file:border-0 file:bg-transparent file:text-sm file:font-medium",
         "aria-invalid:ring-danger",

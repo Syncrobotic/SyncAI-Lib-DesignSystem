@@ -14,7 +14,22 @@
           "type": "registry:file",
           "target": "styles/syncrobotic-theme.css"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Calmer status hues in both modes (all still ≥ 4.5:1 on every surface); colour rule: colour is for what is abnormal. Motion tokens as CSS: appear/disappear, fade-in, sheet-in/out per side, expand/collapse, and the press utility."
+          },
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "cn",
@@ -30,7 +45,17 @@
           "path": "registry/syncrobotic/lib/utils.ts",
           "type": "registry:lib"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "use-long-press",
@@ -42,7 +67,17 @@
           "path": "registry/syncrobotic/hooks/use-long-press.ts",
           "type": "registry:hook"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "use-slide-release",
@@ -54,7 +89,17 @@
           "path": "registry/syncrobotic/hooks/use-slide-release.ts",
           "type": "registry:hook"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "status-glyph",
@@ -69,7 +114,22 @@
           "path": "registry/syncrobotic/shell/status-glyph.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "In progress and normal use the text colour; only warning, danger and offline are coloured."
+          },
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "status-eyebrow",
@@ -85,7 +145,17 @@
           "path": "registry/syncrobotic/shell/status-eyebrow.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "tray",
@@ -100,7 +170,17 @@
           "path": "registry/syncrobotic/shell/tray.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "stop-button",
@@ -119,7 +199,22 @@
           "path": "registry/syncrobotic/shell/stop-button.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Presses."
+          },
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "slide-to-release",
@@ -138,7 +233,17 @@
           "path": "registry/syncrobotic/shell/slide-to-release.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "dock",
@@ -154,7 +259,22 @@
           "path": "registry/syncrobotic/shell/dock.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Buttons press."
+          },
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "island",
@@ -175,7 +295,22 @@
           "path": "registry/syncrobotic/shell/island.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "IslandAlarm tints only critical alarms; Acknowledge is an outline button. Notices and the alarm appear; zones and buttons press."
+          },
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "list",
@@ -193,7 +328,22 @@
           "path": "registry/syncrobotic/shell/list.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Rows press."
+          },
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "skeleton",
@@ -208,7 +358,17 @@
           "path": "registry/syncrobotic/shell/skeleton.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "button",
@@ -228,7 +388,22 @@
           "path": "registry/syncrobotic/ui/button.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Presses (scale 0.97 at --motion-fast)."
+          },
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "spinner",
@@ -243,7 +418,17 @@
           "path": "registry/syncrobotic/ui/spinner.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "segmented-control",
@@ -261,7 +446,50 @@
           "path": "registry/syncrobotic/ui/segmented-control.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Presses."
+          },
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
+    },
+    {
+      "name": "toggle",
+      "type": "registry:ui",
+      "title": "Toggle",
+      "description": "An on/off button for a layer or option. On is inverted, like a selected segment.",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/toggle.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release. Presses."
+          }
+        ]
+      }
     },
     {
       "name": "input",
@@ -276,7 +504,22 @@
           "path": "registry/syncrobotic/ui/input.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Focus ring transitions."
+          },
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "textarea",
@@ -291,7 +534,22 @@
           "path": "registry/syncrobotic/ui/textarea.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Focus ring transitions."
+          },
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "label",
@@ -309,7 +567,17 @@
           "path": "registry/syncrobotic/ui/label.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "field",
@@ -328,7 +596,22 @@
           "path": "registry/syncrobotic/ui/field.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "The error appears where the hint was."
+          },
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "checkbox",
@@ -347,7 +630,22 @@
           "path": "registry/syncrobotic/ui/checkbox.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Check state transitions."
+          },
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "radio-group",
@@ -365,7 +663,22 @@
           "path": "registry/syncrobotic/ui/radio-group.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Focus ring transitions; the dot appears."
+          },
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "switch",
@@ -383,7 +696,17 @@
           "path": "registry/syncrobotic/ui/switch.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "select",
@@ -402,7 +725,22 @@
           "path": "registry/syncrobotic/ui/select.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Menu appears and disappears; trigger focus ring transitions."
+          },
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "slider",
@@ -420,7 +758,17 @@
           "path": "registry/syncrobotic/ui/slider.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "badge",
@@ -439,7 +787,17 @@
           "path": "registry/syncrobotic/ui/badge.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "card",
@@ -454,7 +812,17 @@
           "path": "registry/syncrobotic/ui/card.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "avatar",
@@ -472,7 +840,17 @@
           "path": "registry/syncrobotic/ui/avatar.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "separator",
@@ -490,7 +868,17 @@
           "path": "registry/syncrobotic/ui/separator.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "progress",
@@ -508,7 +896,17 @@
           "path": "registry/syncrobotic/ui/progress.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "alert",
@@ -526,7 +924,22 @@
           "path": "registry/syncrobotic/ui/alert.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Appears."
+          },
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "alarm",
@@ -544,7 +957,22 @@
           "path": "registry/syncrobotic/ui/alarm.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Only critical unacknowledged alarms are tinted; others are a bar and the word. Acknowledge is an outline button. New alarms appear; buttons press."
+          },
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "toast",
@@ -563,7 +991,17 @@
           "path": "registry/syncrobotic/ui/toast.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "empty-state",
@@ -578,7 +1016,17 @@
           "path": "registry/syncrobotic/ui/empty-state.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "table",
@@ -593,7 +1041,17 @@
           "path": "registry/syncrobotic/ui/table.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "tabs",
@@ -611,7 +1069,22 @@
           "path": "registry/syncrobotic/ui/tabs.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "The chosen panel appears."
+          },
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "accordion",
@@ -630,7 +1103,22 @@
           "path": "registry/syncrobotic/ui/accordion.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Content expands and collapses."
+          },
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "dialog",
@@ -649,7 +1137,22 @@
           "path": "registry/syncrobotic/ui/dialog.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Scrim fades in; the dialog appears and disappears."
+          },
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "alert-dialog",
@@ -668,7 +1171,22 @@
           "path": "registry/syncrobotic/ui/alert-dialog.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Scrim fades in; the dialog appears and disappears."
+          },
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "sheet",
@@ -686,7 +1204,22 @@
           "path": "registry/syncrobotic/ui/sheet.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "side=\"left\" for navigation drawers. Slides in and out from its edge at --motion-sheet; scrim fades."
+          },
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "popover",
@@ -704,7 +1237,22 @@
           "path": "registry/syncrobotic/ui/popover.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Appears and disappears."
+          },
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "tooltip",
@@ -722,7 +1270,22 @@
           "path": "registry/syncrobotic/ui/tooltip.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Appears and disappears."
+          },
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "dropdown-menu",
@@ -741,7 +1304,22 @@
           "path": "registry/syncrobotic/ui/dropdown-menu.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Appears and disappears."
+          },
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "stats-cards",
@@ -760,7 +1338,22 @@
           "path": "registry/syncrobotic/blocks/stats-cards.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Sparklines neutral; only a change for the worse is coloured."
+          },
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "fleet-table",
@@ -786,7 +1379,17 @@
           "path": "registry/syncrobotic/blocks/fleet-table.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "robot-status-card",
@@ -808,7 +1411,17 @@
           "path": "registry/syncrobotic/blocks/robot-status-card.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
     },
     {
       "name": "marketing-hero",
@@ -829,7 +1442,191 @@
           "path": "registry/syncrobotic/blocks/marketing-hero.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "meta": {
+        "version": "0.5.0",
+        "changelog": [
+          {
+            "version": "0.5.0",
+            "date": "2026-11-17",
+            "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
+    },
+    {
+      "name": "app-shell",
+      "type": "registry:block",
+      "title": "App shell",
+      "description": "The frame of an internal tool: collapsible sidebar (a drawer on phones), top bar with title, environment, search and user, and the page.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/avatar",
+        "@syncrobotic/badge",
+        "@syncrobotic/input",
+        "@syncrobotic/sheet"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/app-shell.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release. Links and buttons press."
+          }
+        ]
+      }
+    },
+    {
+      "name": "console-overview",
+      "type": "registry:block",
+      "title": "Operations console",
+      "description": "App shell with fleet numbers, the robot table and the alarm list on one screen.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/stats-cards",
+        "@syncrobotic/fleet-table",
+        "@syncrobotic/alarm",
+        "@syncrobotic/button"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/console-overview.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "list-detail",
+      "type": "registry:block",
+      "title": "List and detail",
+      "description": "App shell with a filterable robot list and a detail pane; on phones the detail replaces the list.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/fleet-table",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/button",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/input",
+        "@syncrobotic/progress",
+        "@syncrobotic/separator"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/list-detail.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release. Rows press."
+          }
+        ]
+      }
+    },
+    {
+      "name": "event-log",
+      "type": "registry:block",
+      "title": "Event log",
+      "description": "App shell with time, level and text filters, an event table and a side sheet for one event.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/alarm",
+        "@syncrobotic/button",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/input",
+        "@syncrobotic/segmented-control",
+        "@syncrobotic/select",
+        "@syncrobotic/sheet",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/event-log.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "map-workspace",
+      "type": "registry:block",
+      "title": "Map workspace",
+      "description": "App shell with the site map edge to edge and floating trays for the selected robot, the top alarm and the emergency stop.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/island",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/stop-button",
+        "@syncrobotic/tray",
+        "@syncrobotic/alarm",
+        "@syncrobotic/button",
+        "@syncrobotic/progress"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/map-workspace.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release. Markers press."
+          }
+        ]
+      }
     }
   ]
 }

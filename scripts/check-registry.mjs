@@ -44,7 +44,7 @@ for (const item of registry.items) {
       }
     }
     const usesClient = /\bReact\.use(State|Effect|Ref|Id|Callback|Memo|LayoutEffect)\b|\buse(LongPress|SlideRelease)\(/.test(src)
-    if (usesClient && !/^["']use client["']/.test(src.trimStart())) fail(item.name, `${f.path} uses hooks but is missing "use client"`)
+    if (usesClient && !/^["']use client["']/.test(src.replace(/^(\/\/[^\n]*\n|\/\*[\s\S]*?\*\/\s*)*/, "").trimStart())) fail(item.name, `${f.path} uses hooks but is missing "use client"`)
     for (const d of item.dependencies ?? []) {
       if (!src.includes(`"${d}`) && item.files.length === 1) fail(item.name, `lists ${d} in dependencies but never imports it`)
     }

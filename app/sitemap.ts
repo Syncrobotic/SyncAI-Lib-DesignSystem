@@ -8,6 +8,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const pages = [
     { path: "/", priority: 1 },
     { path: "/docs/installation", priority: 0.8 },
+    { path: "/docs/tokens", priority: 0.7 },
+    { path: "/docs/upgrading", priority: 0.7 },
     { path: "/docs/foundations", priority: 0.9 },
     ...foundations.map((f) => ({ path: `/docs/foundations/${f.slug}`, priority: 0.8 })),
     ...items.map((i) => ({ path: `/docs/components/${i.name}`, priority: 0.6 })),

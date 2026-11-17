@@ -1,3 +1,4 @@
+// @syncrobotic/island v0.6.0 · update: npx shadcn add @syncrobotic/island --overwrite
 "use client"
 
 import * as React from "react"
@@ -53,7 +54,7 @@ type IslandProps = {
 export function Island({ name, avatar, tone, attention, online = true, battery = 72, charging, unread = 0, open = null, onOpenChange, edge, loading, children, labels, className }: IslandProps) {
   const l = { ...defaultIslandLabels, ...labels }
   const toggle = (z: Zone) => onOpenChange?.(open === z ? null : z)
-  const zone = (z: Zone) => cn("flex h-(--h-md) items-center gap-1 rounded-md px-2", open === z && "bg-muted")
+  const zone = (z: Zone) => cn("press flex h-(--h-md) items-center gap-1 rounded-md px-2", open === z && "bg-muted")
   const low = battery < 30
   const BatteryIcon = charging ? BatteryCharging : Battery
   return (
@@ -120,7 +121,7 @@ type NoticeProps = {
 export function IslandNotice({ tone, icon: Icon, title, meta, action, persistent, emphasis, onDismiss, dismissLabel = "Dismiss" }: NoticeProps) {
   const tint = persistent || emphasis ? toneSubtle[tone] : "bg-muted"
   return (
-    <div role="status" className={cn("flex min-h-(--h-row) items-center gap-2 rounded-md px-2", tint)}>
+    <div role="status" className={cn("flex min-h-(--h-row) animate-appear items-center gap-2 rounded-md px-2", tint)}>
       <span className={cn("flex size-8 shrink-0 items-center justify-center rounded-sm", toneText[tone])}>
         <Icon aria-hidden="true" className="size-5" />
       </span>
@@ -129,12 +130,12 @@ export function IslandNotice({ tone, icon: Icon, title, meta, action, persistent
         {meta && <span className="truncate text-xs text-muted-foreground">{meta}</span>}
       </span>
       {action && (
-        <button type="button" onClick={action.onClick} className="h-(--h-sm) shrink-0 rounded-sm bg-background/40 px-3 text-sm font-medium">
+        <button type="button" onClick={action.onClick} className="press h-(--h-sm) shrink-0 rounded-sm bg-background/40 px-3 text-sm font-medium">
           {action.label}
         </button>
       )}
       {!persistent && onDismiss && (
-        <button type="button" aria-label={dismissLabel} onClick={onDismiss} className="flex size-(--h-sm) shrink-0 items-center justify-center rounded-sm text-muted-foreground">
+        <button type="button" aria-label={dismissLabel} onClick={onDismiss} className="press flex size-(--h-sm) shrink-0 items-center justify-center rounded-sm text-muted-foreground">
           <X aria-hidden="true" className="size-4" />
         </button>
       )}
@@ -163,7 +164,8 @@ export function IslandAlarm({ alarms, onAcknowledge, onShowAll, labels }: Island
   const p = alarmPriority[top.priority]
   const Icon = p.icon
   return (
-    <div role="group" aria-label={`${l[top.priority]}: ${top.title}`} className={cn("flex min-h-(--h-row) items-center gap-2 rounded-md px-2", p.tint)}>
+    <div role="group" aria-label={`${l[top.priority]}: ${top.title}`} key={top.id}
+      className={cn("flex min-h-(--h-row) animate-appear items-center gap-2 rounded-md px-2", top.priority === "critical" ? p.tint : "bg-muted")}>
       <span className={cn("flex size-8 shrink-0 items-center justify-center", p.text)}>
         <Icon aria-hidden="true" className="size-5" />
       </span>
@@ -176,13 +178,13 @@ export function IslandAlarm({ alarms, onAcknowledge, onShowAll, labels }: Island
         </span>
       </span>
       {others > 0 && onShowAll && (
-        <button type="button" onClick={onShowAll} className="h-(--h-sm) shrink-0 rounded-sm px-2 text-xs font-medium ring-1 ring-border ring-inset">
+        <button type="button" onClick={onShowAll} className="press h-(--h-sm) shrink-0 rounded-sm px-2 text-xs font-medium ring-1 ring-border ring-inset">
           {l.more(others)}
           <span className="sr-only"> {l.moreAlarms}</span>
         </button>
       )}
       {onAcknowledge && (
-        <button type="button" onClick={() => onAcknowledge(top.id)} className="h-(--h-sm) shrink-0 rounded-sm bg-primary px-3 text-sm font-medium text-primary-foreground">
+        <button type="button" onClick={() => onAcknowledge(top.id)} className="press h-(--h-sm) shrink-0 rounded-sm px-3 text-sm font-medium ring-1 ring-foreground ring-inset">
           {l.acknowledge}
         </button>
       )}

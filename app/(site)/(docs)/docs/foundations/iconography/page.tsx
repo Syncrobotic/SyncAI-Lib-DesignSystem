@@ -66,7 +66,7 @@ export default function IconographyPage() {
         <DoDont
           good={{
             visual: (
-              <button className="flex h-(--h-md) items-center gap-2 rounded-sm px-4 text-sm text-danger ring-1 ring-danger">
+              <button type="button" className="press flex h-(--h-md) items-center gap-2 rounded-sm px-4 text-sm text-danger ring-1 ring-danger">
                 <Trash2 aria-hidden className="size-5" /> Delete route
               </button>
             ),

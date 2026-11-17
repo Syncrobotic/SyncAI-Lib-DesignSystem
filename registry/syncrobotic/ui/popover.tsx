@@ -1,3 +1,4 @@
+// @syncrobotic/popover v0.6.0 · update: npx shadcn add @syncrobotic/popover --overwrite
 "use client"
 
 import * as React from "react"
@@ -15,7 +16,7 @@ export function PopoverContent({ className, align = "center", sideOffset = 8, ..
         data-slot="popover-content"
         align={align}
         sideOffset={sideOffset}
-        className={cn("z-50 w-72 rounded-md bg-popover p-4 text-sm text-popover-foreground shadow-overlay ring-1 ring-border outline-none", className)}
+        className={cn("z-50 w-72 rounded-md bg-popover p-4 text-sm text-popover-foreground shadow-overlay ring-1 ring-border outline-none data-[state=open]:animate-appear data-[state=closed]:animate-disappear", className)}
         {...props}
       />
     </PopoverPrimitive.Portal>
