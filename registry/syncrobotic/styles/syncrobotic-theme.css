@@ -221,14 +221,47 @@
 
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
 
-  /* Motion patterns in CSS (see the Motion foundation). Appear: rise 8 px and fade in. Disappear: fade out. */
+  /*
+   * Motion patterns in CSS (see the Motion foundation). Every component uses these, never its own timing.
+   *   appear / disappear  overlays, menus, tooltips, notices, alarms, tab panels: rise 8 px and fade in, fade out
+   *   fade-in             scrims behind dialogs and sheets
+   *   sheet-in-* / -out-* sheets from their edge, at --motion-sheet
+   *   expand / collapse   accordion content, at --motion-base
+   *   press (utility)     anything you press: sinks to 97 % at --motion-fast
+   */
   --animate-appear: appear var(--motion-base) var(--ease-standard);
   --animate-disappear: disappear var(--motion-fast) var(--ease-standard) forwards;
+  --animate-fade-in: fade-in var(--motion-base) var(--ease-standard);
+  --animate-sheet-in-bottom: sheet-in-bottom var(--motion-sheet) var(--ease-standard);
+  --animate-sheet-out-bottom: sheet-out-bottom var(--motion-sheet) var(--ease-standard) forwards;
+  --animate-sheet-in-right: sheet-in-right var(--motion-sheet) var(--ease-standard);
+  --animate-sheet-out-right: sheet-out-right var(--motion-sheet) var(--ease-standard) forwards;
+  --animate-sheet-in-left: sheet-in-left var(--motion-sheet) var(--ease-standard);
+  --animate-sheet-out-left: sheet-out-left var(--motion-sheet) var(--ease-standard) forwards;
+  --animate-expand: expand var(--motion-base) var(--ease-standard);
+  --animate-collapse: collapse var(--motion-base) var(--ease-standard);
   @keyframes appear {
     from { opacity: 0; transform: translateY(0.5rem); }
   }
   @keyframes disappear {
     to { opacity: 0; }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+  }
+  @keyframes sheet-in-bottom { from { transform: translateY(100%); } }
+  @keyframes sheet-out-bottom { to { transform: translateY(100%); } }
+  @keyframes sheet-in-right { from { transform: translateX(100%); } }
+  @keyframes sheet-out-right { to { transform: translateX(100%); } }
+  @keyframes sheet-in-left { from { transform: translateX(-100%); } }
+  @keyframes sheet-out-left { to { transform: translateX(-100%); } }
+  @keyframes expand {
+    from { height: 0; opacity: 0; }
+    to { height: var(--radix-accordion-content-height); }
+  }
+  @keyframes collapse {
+    from { height: var(--radix-accordion-content-height); }
+    to { height: 0; opacity: 0; }
   }
 
   /* Skeleton: the whole group breathes over 1.2 s, no diagonal shimmer */
@@ -281,8 +314,19 @@
   }
 }
 
+/* Press: a control sinks slightly while held, so touch feels answered before the result arrives. */
+@utility press {
+  transition-property: scale, color, background-color, box-shadow, opacity;
+  transition-duration: var(--motion-fast);
+  transition-timing-function: var(--ease-standard);
+  &:active:not(:disabled):not([aria-disabled="true"]) {
+    scale: 0.97;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-breath { animation: none; }
+  .press:active { scale: none; }
   /* State still changes; it does not travel. */
   @keyframes appear { from { opacity: 0; } }
   :root {

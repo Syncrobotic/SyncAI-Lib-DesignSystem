@@ -165,7 +165,7 @@ export default function ColorPage() {
             visual: (
               <div className="flex gap-3">
                 <Button variant="secondary">Cancel</Button>
-                <button className="h-(--h-md) rounded-sm bg-stop px-4 text-sm font-medium text-white">Delete route</button>
+                <button type="button" className="press h-(--h-md) rounded-sm bg-stop px-4 text-sm font-medium text-white">Delete route</button>
               </div>
             ),
             text: "Use solid red outside the emergency stop. Operators learn that solid red means stop the robot.",

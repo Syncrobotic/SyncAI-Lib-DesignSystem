@@ -12,7 +12,7 @@ export function Toggle({ className, size = "md", ...props }: React.ComponentProp
       data-slot="toggle"
       className={cn(
         "inline-flex shrink-0 items-center justify-center gap-2 rounded-sm px-3 text-sm font-medium whitespace-nowrap ring-1 ring-border ring-inset",
-        "transition-colors duration-(--motion-fast) hover:bg-accent",
+        "press hover:bg-accent",
         "data-[state=on]:bg-primary data-[state=on]:text-primary-foreground data-[state=on]:ring-primary",
         "disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4",
         size === "sm" ? "h-(--h-sm)" : "h-(--h-md)",

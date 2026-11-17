@@ -62,7 +62,7 @@ export function MapWorkspace() {
             aria-pressed={r.id === selected}
             onClick={() => setSelected(r.id)}
             style={{ left: `${r.x}%`, top: `${r.y}%` }}
-            className={cn("absolute flex size-(--h-md) -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-sm", r.id === selected && "ring-2 ring-foreground")}
+            className={cn("press absolute flex size-(--h-md) -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-sm", r.id === selected && "ring-2 ring-foreground")}
           >
             <svg viewBox="0 0 12 12" className="size-4" aria-hidden="true">
               <circle cx="6" cy="6" r="5" className={dot[r.tone]} />

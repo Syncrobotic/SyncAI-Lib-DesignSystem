@@ -21,7 +21,7 @@
           {
             "version": "0.6.0",
             "date": "2026-11-17",
-            "note": "Calmer status hues in both modes (all still ≥ 4.5:1 on every surface); colour rule: colour is for what is abnormal."
+            "note": "Calmer status hues in both modes (all still ≥ 4.5:1 on every surface); colour rule: colour is for what is abnormal. Motion tokens as CSS: appear/disappear, fade-in, sheet-in/out per side, expand/collapse, and the press utility."
           },
           {
             "version": "0.5.0",
@@ -201,8 +201,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.6.0",
         "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Presses."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -256,8 +261,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.6.0",
         "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Buttons press."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -292,7 +302,7 @@
           {
             "version": "0.6.0",
             "date": "2026-11-17",
-            "note": "IslandAlarm tints only critical alarms; Acknowledge is an outline button."
+            "note": "IslandAlarm tints only critical alarms; Acknowledge is an outline button. Notices and the alarm appear; zones and buttons press."
           },
           {
             "version": "0.5.0",
@@ -320,8 +330,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.6.0",
         "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Rows press."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -375,8 +390,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.6.0",
         "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Presses (scale 0.97 at --motion-fast)."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -428,8 +448,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.6.0",
         "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Presses."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -461,7 +486,7 @@
           {
             "version": "0.6.0",
             "date": "2026-11-17",
-            "note": "First release."
+            "note": "First release. Presses."
           }
         ]
       }
@@ -481,8 +506,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.6.0",
         "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Focus ring transitions."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -506,8 +536,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.6.0",
         "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Focus ring transitions."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -563,8 +598,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.6.0",
         "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "The error appears where the hint was."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -592,8 +632,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.6.0",
         "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Check state transitions."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -620,8 +665,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.6.0",
         "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Focus ring transitions; the dot appears."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -677,8 +727,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.6.0",
         "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Menu appears and disappears; trigger focus ring transitions."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -871,8 +926,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.6.0",
         "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Appears."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -904,7 +964,7 @@
           {
             "version": "0.6.0",
             "date": "2026-11-17",
-            "note": "Only critical unacknowledged alarms are tinted; others are a bar and the word. Acknowledge is an outline button."
+            "note": "Only critical unacknowledged alarms are tinted; others are a bar and the word. Acknowledge is an outline button. New alarms appear; buttons press."
           },
           {
             "version": "0.5.0",
@@ -1011,8 +1071,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.6.0",
         "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "The chosen panel appears."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -1040,8 +1105,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.6.0",
         "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Content expands and collapses."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -1069,8 +1139,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.6.0",
         "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Scrim fades in; the dialog appears and disappears."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -1098,8 +1173,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.6.0",
         "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Scrim fades in; the dialog appears and disappears."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -1131,7 +1211,7 @@
           {
             "version": "0.6.0",
             "date": "2026-11-17",
-            "note": "side=\"left\" for navigation drawers."
+            "note": "side=\"left\" for navigation drawers. Slides in and out from its edge at --motion-sheet; scrim fades."
           },
           {
             "version": "0.5.0",
@@ -1159,8 +1239,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.6.0",
         "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Appears and disappears."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -1187,8 +1272,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.6.0",
         "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Appears and disappears."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -1216,8 +1306,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.6.0",
         "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "Appears and disappears."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -1386,7 +1481,7 @@
           {
             "version": "0.6.0",
             "date": "2026-11-17",
-            "note": "First release."
+            "note": "First release. Links and buttons press."
           }
         ]
       }
@@ -1455,7 +1550,7 @@
           {
             "version": "0.6.0",
             "date": "2026-11-17",
-            "note": "First release."
+            "note": "First release. Rows press."
           }
         ]
       }
@@ -1528,7 +1623,7 @@
           {
             "version": "0.6.0",
             "date": "2026-11-17",
-            "note": "First release."
+            "note": "First release. Markers press."
           }
         ]
       }

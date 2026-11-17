@@ -48,7 +48,7 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
                   type="button"
                   aria-current={r.id === selected ? "true" : undefined}
                   onClick={() => setSelected(r.id)}
-                  className={cn("flex min-h-(--h-row) w-full flex-col items-start justify-center rounded-sm px-3 text-left hover:bg-accent", r.id === selected && "bg-accent")}
+                  className={cn("press flex min-h-(--h-row) w-full flex-col items-start justify-center rounded-sm px-3 text-left hover:bg-accent", r.id === selected && "bg-accent")}
                 >
                   <span className="text-sm font-medium">{r.name}</span>
                   <span className="flex items-center gap-2 text-xs text-muted-foreground">

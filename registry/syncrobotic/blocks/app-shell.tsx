@@ -74,7 +74,7 @@ function Nav({ nav, current, collapsed, linkAs: Link = "a" }: { nav: AppNavGroup
                 aria-current={active ? "page" : undefined}
                 aria-label={collapsed ? (item.count ? `${item.label}, ${item.count}` : item.label) : undefined}
                 className={cn(
-                  "flex h-(--h-md) items-center gap-3 rounded-sm px-3 text-sm transition-colors duration-(--motion-fast)",
+                  "press flex h-(--h-md) items-center gap-3 rounded-sm px-3 text-sm",
                   active ? "bg-accent font-medium text-foreground" : "text-muted-foreground hover:bg-accent hover:text-foreground",
                   collapsed && "justify-center px-0",
                 )}
@@ -112,7 +112,7 @@ export function AppShell({ product, nav, current, title, actions, environment, u
             aria-label={collapsed ? "Expand navigation" : "Collapse navigation"}
             aria-expanded={!collapsed}
             onClick={() => setCollapsed((v) => !v)}
-            className="flex size-(--h-sm) items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground"
+            className="press flex size-(--h-sm) items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground"
           >
             {collapsed ? <PanelLeftOpen aria-hidden="true" className="size-5" /> : <PanelLeftClose aria-hidden="true" className="size-5" />}
           </button>
@@ -134,7 +134,7 @@ export function AppShell({ product, nav, current, title, actions, environment, u
         <header className="flex h-(--h-row) shrink-0 items-center gap-3 border-b border-border px-4">
           <Sheet>
             <SheetTrigger asChild>
-              <button type="button" aria-label="Open navigation" className="flex size-(--h-md) items-center justify-center rounded-sm hover:bg-accent md:hidden">
+              <button type="button" aria-label="Open navigation" className="press flex size-(--h-md) items-center justify-center rounded-sm hover:bg-accent md:hidden">
                 <Menu aria-hidden="true" className="size-5" />
               </button>
             </SheetTrigger>

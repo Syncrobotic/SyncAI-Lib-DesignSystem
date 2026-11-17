@@ -32,18 +32,3 @@
   background-color: var(--background);
 }
 
-/* Press feedback (motion pattern "press"): a control sinks slightly while held, at --motion-fast.
-   Reduced motion sets the duration to near zero and drops the scale. */
-@utility press {
-  transition-property: scale, color, background-color, border-color;
-  transition-duration: var(--motion-fast);
-  transition-timing-function: var(--ease-standard);
-  &:active {
-    scale: 0.97;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    &:active {
-      scale: none;
-    }
-  }
-}

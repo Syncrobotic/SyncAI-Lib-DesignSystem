@@ -1,4 +1,4 @@
-// @syncrobotic/stop-button v0.5.0 · update: npx shadcn add @syncrobotic/stop-button --overwrite
+// @syncrobotic/stop-button v0.6.0 · update: npx shadcn add @syncrobotic/stop-button --overwrite
 "use client"
 
 import * as React from "react"
@@ -77,7 +77,7 @@ export function StopButton({ state = "ready", tag, onStop, onStopAll, holdAllMs 
       {...(disabled ? {} : handlers)}
       className={cn(
         "relative flex h-(--h-stop) w-full touch-none select-none items-center justify-center gap-2 overflow-hidden rounded-md",
-        "transition-colors duration-(--motion-fast)",
+        "press",
         pale ? "bg-danger-subtle text-danger" : "bg-stop text-white",
         state === "bluetooth-sent" && "bg-stop-deep",
         disabled && "bg-disabled text-white",
@@ -118,7 +118,7 @@ export function WakeButton({
       onClick={onWake}
       disabled={disabled}
       className={cn(
-        "flex h-(--h-stop) w-full flex-col items-center justify-center rounded-md",
+        "press flex h-(--h-stop) w-full flex-col items-center justify-center rounded-md",
         disabled ? "bg-muted text-disabled" : "bg-primary text-primary-foreground",
       )}
     >
