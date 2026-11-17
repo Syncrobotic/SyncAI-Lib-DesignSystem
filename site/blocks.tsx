@@ -57,6 +57,18 @@ import { TimelineActivity } from "@/registry/syncrobotic/blocks/timeline-activit
 import { TimelineAudit } from "@/registry/syncrobotic/blocks/timeline-audit"
 import { WizardCommission } from "@/registry/syncrobotic/blocks/wizard-commission"
 import { WizardImport } from "@/registry/syncrobotic/blocks/wizard-import"
+import { MissionSchedule } from "@/registry/syncrobotic/blocks/mission-schedule"
+import { UsersInvitations } from "@/registry/syncrobotic/blocks/users-invitations"
+import { UsersAuditLog } from "@/registry/syncrobotic/blocks/users-audit-log"
+import { IncidentQueue } from "@/registry/syncrobotic/blocks/incident-queue"
+import { IncidentDetail } from "@/registry/syncrobotic/blocks/incident-detail"
+import { MaintenanceDue } from "@/registry/syncrobotic/blocks/maintenance-due"
+import { MaintenanceWorkOrder } from "@/registry/syncrobotic/blocks/maintenance-work-order"
+import { RolloutOverview } from "@/registry/syncrobotic/blocks/rollout-overview"
+import { RolloutPlan } from "@/registry/syncrobotic/blocks/rollout-plan"
+import { AgentRuns } from "@/registry/syncrobotic/blocks/agent-runs"
+import { AgentTrace } from "@/registry/syncrobotic/blocks/agent-trace"
+import { AgentApproval } from "@/registry/syncrobotic/blocks/agent-approval"
 
 // Blocks are composed sections. Each renders alone at /preview/<name> so the docs can frame it at any width.
 type Meta = {
@@ -347,6 +359,19 @@ const meta: Record<string, Meta> = {
     ),
   },
   "marketing-hero": { viewport: "desktop", height: 760, render: () => <MarketingHero /> },
+  // Solutions, batch 4: whole screens in the app shell.
+  "mission-schedule": { viewport: "desktop", height: 720, render: () => <MissionSchedule /> },
+  "users-invitations": { viewport: "desktop", height: 680, render: () => <UsersInvitations /> },
+  "users-audit-log": { viewport: "desktop", height: 680, render: () => <UsersAuditLog /> },
+  "incident-queue": { viewport: "desktop", height: 620, render: () => <IncidentQueue /> },
+  "incident-detail": { viewport: "desktop", height: 900, render: () => <IncidentDetail /> },
+  "maintenance-due": { viewport: "desktop", height: 600, render: () => <MaintenanceDue /> },
+  "maintenance-work-order": { viewport: "desktop", height: 1000, render: () => <MaintenanceWorkOrder /> },
+  "rollout-overview": { viewport: "desktop", height: 900, render: () => <RolloutOverview /> },
+  "rollout-plan": { viewport: "desktop", height: 960, render: () => <RolloutPlan /> },
+  "agent-runs": { viewport: "desktop", height: 620, render: () => <AgentRuns /> },
+  "agent-trace": { viewport: "desktop", height: 820, render: () => <AgentTrace /> },
+  "agent-approval": { viewport: "desktop", height: 880, render: () => <AgentApproval /> },
   // Application, batch 3. Dialogs and sheets open on load in the preview without taking the page's focus.
   "app-shell-mobile-tabs": { viewport: "mobile", height: 720, render: () => <AppShellMobileTabs /> },
   "stats-meters": {
