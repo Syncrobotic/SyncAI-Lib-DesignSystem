@@ -288,3 +288,99 @@ export const ChartNoData: S = {
     </div>
   ),
 }
+
+const weekCompare = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d, i) => ({
+  d,
+  now: [21, 24, 19, 26, 23, 14, 12][i],
+  before: [18, 20, 21, 19, 22, 13, 11][i],
+}))
+const compareConfig = { now: { label: "This week", color: 1 }, before: { label: "Last week", color: 2 } } satisfies ChartConfig
+
+/** This period against the last: the earlier one dashed, so it reads as a reference. */
+export const ChartPreviousPeriod: S = {
+  render: () => (
+    <div className="flex w-full max-w-3xl flex-col gap-3">
+      <p className="text-sm font-medium">Missions per day</p>
+      <ChartContainer config={compareConfig} label="Missions per day, this week against last week">
+        <LineChart data={weekCompare} margin={{ top: 0, right: 8, left: 0, bottom: 0 }}>
+          <CartesianGrid vertical={false} />
+          <XAxis dataKey="d" {...chartAxis} />
+          <YAxis {...chartAxis} allowDecimals={false} width={40} />
+          <ChartTooltip />
+          <ChartLegend />
+          <Line dataKey="before" stroke="var(--color-before)" strokeWidth={2} strokeDasharray="4 4" dot={false} {...chartMotion} />
+          <Line
+            dataKey="now"
+            stroke="var(--color-now)"
+            strokeWidth={2}
+            dot={false}
+            activeDot={{ r: 4, strokeWidth: 2, stroke: "var(--card)" }}
+            {...chartMotion}
+          />
+        </LineChart>
+      </ChartContainer>
+    </div>
+  ),
+}
+
+const states = hours.map((t, i) => ({ t, patrol: [2, 4, 5, 5, 4, 5, 3, 2][i], charging: [3, 1, 1, 1, 2, 1, 2, 3][i], idle: [1, 1, 0, 0, 0, 0, 1, 1][i] }))
+const statesConfig = {
+  patrol: { label: "Patrolling", color: 1 },
+  charging: { label: "Charging", color: 2 },
+  idle: { label: "Idle", color: 3 },
+} satisfies ChartConfig
+
+/** How the fleet's time splits over the day: stacked areas that always add up to the fleet. */
+export const ChartStackedArea: S = {
+  render: () => (
+    <div className="flex w-full max-w-3xl flex-col gap-3">
+      <p className="text-sm font-medium">
+        Fleet by state <span className="font-normal text-muted-foreground">· 6 robots</span>
+      </p>
+      <ChartContainer config={statesConfig} label="Number of robots patrolling, charging and idle by hour">
+        <AreaChart data={states} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
+          <CartesianGrid vertical={false} />
+          <XAxis dataKey="t" {...chartAxis} />
+          <YAxis {...chartAxis} allowDecimals={false} domain={[0, 6]} width={40} />
+          <ChartTooltip />
+          <ChartLegend />
+          <Area dataKey="patrol" stackId="s" type="stepAfter" stroke="var(--color-patrol)" fill="var(--color-patrol)" fillOpacity={0.5} {...chartMotion} />
+          <Area
+            dataKey="charging"
+            stackId="s"
+            type="stepAfter"
+            stroke="var(--color-charging)"
+            fill="var(--color-charging)"
+            fillOpacity={0.5}
+            {...chartMotion}
+          />
+          <Area dataKey="idle" stackId="s" type="stepAfter" stroke="var(--color-idle)" fill="var(--color-idle)" fillOpacity={0.5} {...chartMotion} />
+        </AreaChart>
+      </ChartContainer>
+    </div>
+  ),
+}
+
+const drift = ["7F3A", "DAA6", "9E37", "1715", "B54C"].map((r, i) => ({ r, delta: [-4, 2, -11, 6, 1][i] }))
+const driftConfig = { delta: { label: "Change", color: 1, unit: "min" } } satisfies ChartConfig
+
+/** Above and below zero: patrol time against plan, one hue, the zero line marked. */
+export const ChartAboveBelowZero: S = {
+  render: () => (
+    <div className="flex w-full max-w-3xl flex-col gap-3">
+      <p className="text-sm font-medium">
+        Patrol time against plan <span className="font-normal text-muted-foreground">· min</span>
+      </p>
+      <ChartContainer config={driftConfig} label="Minutes each robot's patrol ran over or under plan" className="h-48">
+        <BarChart data={drift} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
+          <CartesianGrid vertical={false} />
+          <XAxis dataKey="r" {...chartAxis} />
+          <YAxis {...chartAxis} domain={[-12, 12]} ticks={[-12, -6, 0, 6, 12]} width={40} />
+          <ReferenceLine y={0} stroke="var(--muted-foreground)" />
+          <ChartTooltip />
+          <Bar dataKey="delta" fill="var(--color-delta)" radius={4} maxBarSize={24} {...chartMotion} />
+        </BarChart>
+      </ChartContainer>
+    </div>
+  ),
+}

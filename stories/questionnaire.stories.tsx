@@ -138,3 +138,100 @@ export const QuestionnaireRequiredError: S = {
     />
   ),
 }
+
+const incident: Question[] = [
+  {
+    id: "what",
+    type: "text",
+    title: "What happened?",
+    description: "In a sentence or two.",
+    required: true,
+    placeholder: "The robot stopped at door 3 because…",
+  },
+  {
+    id: "hurt",
+    type: "single",
+    title: "Was anyone hurt?",
+    required: true,
+    options: [
+      { value: "no", label: "No" },
+      { value: "minor", label: "Minor, first aid only" },
+      { value: "yes", label: "Yes, needed care", description: "Security will call you." },
+    ],
+  },
+  {
+    id: "damage",
+    type: "multiple",
+    title: "What was damaged?",
+    options: [
+      { value: "robot", label: "The robot" },
+      { value: "goods", label: "Goods or pallets" },
+      { value: "building", label: "Doors, walls or racks" },
+      { value: "none", label: "Nothing" },
+    ],
+  },
+]
+
+/** An incident report: text first, then choices. */
+export const QuestionnaireIncident: S = { render: () => <Demo questions={incident} review submitLabel="Send report" /> }
+
+/** One scale on its own page, 0 to 10. */
+export const QuestionnaireScaleOnly: S = {
+  render: () => (
+    <Demo
+      submitLabel="Send"
+      questions={[
+        {
+          id: "nps",
+          type: "scale",
+          title: "How likely are you to recommend us to a colleague?",
+          min: 0,
+          max: 10,
+          minLabel: "Not at all",
+          maxLabel: "Certainly",
+          required: true,
+        },
+      ]}
+    />
+  ),
+}
+
+/** Picked up where it was left: page 2 of 4, earlier answers kept. */
+export const QuestionnaireResume: S = {
+  render: () => <Questionnaire questions={preShift} defaultAnswers={{ area: "north" }} defaultStep={1} onSubmit={() => {}} submitLabel="Send checklist" />,
+}
+
+/** Options that need a word of explanation each. */
+export const QuestionnaireDescribedOptions: S = {
+  render: function D() {
+    const [v, setV] = React.useState<Answers[string]>()
+    return (
+      <QuestionField
+        question={{
+          id: "mode",
+          type: "single",
+          title: "How should the robot handle a closed door?",
+          options: [
+            { value: "wait", label: "Wait", description: "Up to 2 minutes, then skip the stop." },
+            { value: "ask", label: "Ask the desk", description: "Pauses until someone answers." },
+            { value: "skip", label: "Skip", description: "Moves on at once and logs it." },
+          ],
+        }}
+        value={v}
+        onChange={setV}
+      />
+    )
+  },
+}
+
+/** A free-text question with its own required check. */
+export const QuestionnaireTextRequired: S = {
+  render: () => (
+    <QuestionField
+      question={{ id: "why", type: "text", title: "Why are you stopping the patrol early?", required: true, placeholder: "e.g. Event in the hall tonight" }}
+      value=""
+      onChange={() => {}}
+      error="Answer this question to continue."
+    />
+  ),
+}

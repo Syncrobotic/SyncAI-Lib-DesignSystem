@@ -74,3 +74,24 @@ export const AttachmentReadOnly: S = {
     </div>
   ),
 }
+
+/** Photos from an incident report: image tiles in a wrapping grid. */
+export const AttachmentGallery: S = {
+  render: () => (
+    <div className="flex flex-wrap gap-3">
+      {["door-3-left.jpg", "door-3-right.jpg", "pallet.jpg", "corridor-b4.jpg", "badge-reader.jpg"].map((n) => (
+        <Attachment key={n} variant="image" name={n} onRemove={noop} />
+      ))}
+    </div>
+  ),
+}
+
+/** A long name keeps its extension visible; the size stays on the right. */
+export const AttachmentLongName: S = {
+  render: () => (
+    <div className="flex max-w-sm flex-col gap-2">
+      <Attachment name="taipei-warehouse-hall-b-night-patrol-2026-11-17-full-recording.mcap" size={1.8 * 1024 ** 3} onDownload={noop} onRemove={noop} />
+      <Attachment variant="chip" name="taipei-warehouse-floor-plan-revision-12-final.pdf" size={4.1 * 1024 ** 2} onRemove={noop} />
+    </div>
+  ),
+}

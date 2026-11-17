@@ -19,7 +19,9 @@ export default meta
 type S = StoryObj
 
 export const Moving: S = { render: () => <Dock className="static" state={<StopButton tag="7F3A" onStop={fn()} onStopAll={fn()} />} nav={nav("moving")} /> }
-export const StandingStill: S = { render: () => <Dock className="static" state={<StopButton state="idle" tag="7F3A" onStop={fn()} />} nav={nav("standing still")} /> }
+export const StandingStill: S = {
+  render: () => <Dock className="static" state={<StopButton state="idle" tag="7F3A" onStop={fn()} />} nav={nav("standing still")} />,
+}
 export const LyingDown: S = { render: () => <Dock className="static" state={<WakeButton onWake={fn()} />} nav={nav("lying down")} /> }
 export const Stopped: S = { render: () => <Dock className="static" state={<SlideToRelease tag="7F3A" onRelease={fn()} />} nav={nav("stopped")} /> }
 export const ThreeTiersWithPageAction: S = {

@@ -700,3 +700,30 @@ export const LabelDisabled: S = {
     </div>
   ),
 }
+
+/** A whole count with no unit. */
+export const NumberFieldCount: S = {
+  render: () => (
+    <Field label="Robots on this route" hint="1 to 6">
+      <NumberField defaultValue={2} min={1} max={6} className="w-40" />
+    </Field>
+  ),
+}
+
+/** Below and above zero: a calibration offset. */
+export const NumberFieldNegative: S = {
+  render: () => (
+    <Field label="Heading offset" hint="−10 to 10 degrees">
+      <NumberField defaultValue={-2.5} min={-10} max={10} step={0.5} unit="°" className="w-48" />
+    </Field>
+  ),
+}
+
+/** Locked while the robot is on a mission. */
+export const NumberFieldDisabled: S = {
+  render: () => (
+    <Field label="Max speed" hint="Can’t change during a mission">
+      <NumberField defaultValue={1.5} unit="m/s" disabled className="w-48" />
+    </Field>
+  ),
+}

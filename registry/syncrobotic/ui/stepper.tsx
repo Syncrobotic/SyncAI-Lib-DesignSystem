@@ -95,7 +95,7 @@ export function StepperItem({
   const vertical = orientation === "vertical"
   const label = (
     <>
-      <StepIndicator state={state} step={step} size={size} />
+      <StepIndicator state={state} step={step} size={size} disabled={disabled} />
       <span className={cn("flex min-w-0 flex-col", vertical && "pt-1")}>
         <span className={cn("text-sm", state === "upcoming" ? "text-muted-foreground" : "font-medium text-foreground", state === "error" && "text-danger")}>
           {title}
@@ -106,13 +106,22 @@ export function StepperItem({
       </span>
     </>
   )
-  const status = state === "done" ? "completed" : state === "error" ? "has an error" : state === "current" ? "current step" : "not started"
+  const status = disabled
+    ? "unavailable"
+    : state === "done"
+      ? "completed"
+      : state === "error"
+        ? "has an error"
+        : state === "current"
+          ? "current step"
+          : "not started"
   return (
     <li
       data-slot="stepper-item"
       data-state={state}
       aria-current={state === "current" ? "step" : undefined}
-      className={cn("relative flex min-w-0 flex-col", !vertical && "flex-1 pr-2", disabled && "opacity-50", className)}
+      aria-disabled={disabled || undefined}
+      className={cn("relative flex min-w-0 flex-col", !vertical && "flex-1 pr-2", className)}
       {...props}
     >
       {/* Connector to the next step: solid once this step is done. */}
@@ -166,7 +175,7 @@ export function StepperItem({
   )
 }
 
-function StepIndicator({ state, step, size }: { state: StepState; step: number; size: "md" | "sm" }) {
+function StepIndicator({ state, step, size, disabled }: { state: StepState; step: number; size: "md" | "sm"; disabled?: boolean }) {
   return (
     <span
       aria-hidden="true"
@@ -177,6 +186,8 @@ function StepIndicator({ state, step, size }: { state: StepState; step: number; 
         state === "done" && "bg-card text-foreground ring-foreground",
         state === "current" && "bg-primary text-primary-foreground ring-primary",
         state === "upcoming" && "bg-card text-muted-foreground ring-border",
+        // Not reachable yet: a muted disc instead of a faded one, so the title and the reason stay readable.
+        disabled && "bg-muted text-muted-foreground ring-transparent",
         state === "error" && "bg-danger-subtle text-danger ring-danger",
       )}
     >

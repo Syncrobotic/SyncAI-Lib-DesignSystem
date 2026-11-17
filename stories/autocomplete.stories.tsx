@@ -108,3 +108,60 @@ export const AutocompleteInForm: S = {
     )
   },
 }
+
+/** A wrong or missing pick shows its reason under the field, like any other field. */
+export const AutocompleteError: S = {
+  render: function A() {
+    const [v, setV] = React.useState<string | undefined>()
+    return (
+      <Field label="Home dock" error="Pick a dock. The robot needs somewhere to charge.">
+        <Autocomplete options={sites} value={v} onValueChange={setV} placeholder="Search docks" />
+      </Field>
+    )
+  },
+}
+
+const many: AutocompleteOption[] = Array.from({ length: 120 }, (_, i) => {
+  const id = ((i * 2654435761) >>> 0).toString(16).padStart(8, "0").slice(0, 4).toUpperCase()
+  return { value: id, label: `${i % 3 ? "Courier" : "Patrol dog"} ${id}`, description: ["North gate", "Hall B", "Dock 2", "Perimeter"][i % 4] }
+})
+
+/** A hundred and twenty robots: the list scrolls and filters as you type. */
+export const AutocompleteLongList: S = {
+  render: function A() {
+    const [v, setV] = React.useState<string | undefined>()
+    return <Autocomplete options={many} value={v} onValueChange={setV} placeholder="Search 120 robots" aria-label="Robot" />
+  },
+}
+
+/** Recent picks first, in their own group, then everything. */
+export const AutocompleteRecent: S = {
+  render: function A() {
+    const [v, setV] = React.useState<string | undefined>()
+    const options = [
+      ...["Hall B", "North gate"].map((s) => ({ value: `r-${s}`, label: s, group: "Recent" })),
+      ...sites.map((s) => ({ ...s, group: "All sites" })),
+    ]
+    return <Autocomplete options={options} value={v} onValueChange={setV} placeholder="Go to a site" aria-label="Site" />
+  },
+}
+
+/** Required: no clear button, so it can never be left empty once picked. */
+export const AutocompleteRequired: S = {
+  render: function A() {
+    const [v, setV] = React.useState<string | undefined>("Hall B")
+    return (
+      <Field label="Site" hint="Every robot belongs to one site.">
+        <Autocomplete options={sites} value={v} onValueChange={(x) => x && setV(x)} clearable={false} />
+      </Field>
+    )
+  },
+}
+
+/** Options with a second line: the robot and where it is now. */
+export const AutocompleteDescriptions: S = {
+  render: function A() {
+    const [v, setV] = React.useState<string | undefined>("9c44")
+    return <Autocomplete options={robots.map(({ group: _g, ...r }) => r)} value={v} onValueChange={setV} placeholder="Search robots" aria-label="Robot" />
+  },
+}

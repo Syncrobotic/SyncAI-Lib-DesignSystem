@@ -95,3 +95,40 @@ export const DateRangePickerPresets: S = {
     )
   },
 }
+
+/** The day in a shorter form, when space is tight. */
+export const DatePickerShortFormat: S = {
+  render: function D() {
+    const [d, setD] = React.useState<Date | undefined>(day)
+    return <DatePicker value={d} onValueChange={setD} displayFormat="EEE d MMM" aria-label="Patrol day" className="w-44" />
+  },
+}
+
+/** Weekdays only: weekends are disabled in the calendar. */
+export const DatePickerWeekdays: S = {
+  render: function D() {
+    const [d, setD] = React.useState<Date | undefined>()
+    return (
+      <Field label="Service visit" hint="Technicians come Monday to Friday.">
+        <DatePicker value={d} onValueChange={setD} disabledDays={[{ before: day }, { dayOfWeek: [0, 6] }]} clearable />
+      </Field>
+    )
+  },
+}
+
+/** A range in one month, for narrow panels. */
+export const DateRangePickerOneMonth: S = {
+  render: function R() {
+    const [r, setR] = React.useState<DateRange | undefined>({ from: startOfMonth(day), to: day })
+    return <DateRangePicker value={r} onValueChange={setR} numberOfMonths={1} aria-label="Report range" />
+  },
+}
+
+/** A range that is too long, said under the field. */
+export const DateRangePickerError: S = {
+  render: () => (
+    <Field label="Export events" error="Exports cover at most 31 days. Shorten the range.">
+      <DateRangePicker value={{ from: subDays(day, 45), to: day }} />
+    </Field>
+  ),
+}
