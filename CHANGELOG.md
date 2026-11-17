@@ -12,6 +12,9 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - **Errors grow in, never shake.** `field` 0.7.0: the message line grows open (height at --motion-base) and the error appears with an icon, so it never relies on colour alone; an error replacing a hint keeps the height. `input`, `textarea`, `select` 0.7.0: the error edge is 2 px and transitions at --motion-fast.
 - `field` 0.7.0: a control that brings its own id keeps it, and the label follows (labels were lost before).
 
+### Fixed
+- `use-slide-release` 0.7.0 (behind `slide-to-release`): the thumb follows the finger 1:1. The travel was measured from the thumb's current position, so it shrank mid-drag and the thumb outran the finger and released on its own.
+
 ## 0.6.0 · 2026-11-17
 
 ### Added
