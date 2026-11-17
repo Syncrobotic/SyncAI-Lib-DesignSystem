@@ -7,7 +7,12 @@ import { openStory, stories, themes } from "./story"
 async function analyze(page: Page) {
   for (let attempt = 0; ; attempt++) {
     try {
-      return await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"]).analyze()
+      return await new AxeBuilder({ page })
+        .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
+        // Radix NavigationMenu's focus proxy: an aria-hidden, tabbable span after an open trigger whose only job is to pass
+        // focus straight into the panel. It never keeps focus, so aria-hidden-focus is a static false positive here.
+        .exclude('[data-slot="navigation-menu-trigger"] + span[aria-hidden="true"][tabindex="0"]')
+        .analyze()
     } catch (e) {
       if (attempt >= 4 || !String(e).includes("Axe is already running")) throw e
       await page.waitForTimeout(500)
