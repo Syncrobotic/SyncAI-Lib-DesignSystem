@@ -38,7 +38,7 @@
     "registry:build": "shadcn build -o public/r",
     "typecheck": "tsc --noEmit",
     "lint:tokens": "node scripts/check-tokens.mjs",
-    "test:visual": "playwright test tests/visual.spec.ts",
+    "test:stories": "playwright test tests/stories.spec.ts",
     "ci": "npm run lint:tokens && npm run lint:registry && npm run lint:motion && npm run lint:versions && npm run lint:dtcg && npm run typecheck && npm test && npm run build && npm run build-storybook",
     "test": "vitest run",
     "lint:registry": "node scripts/check-registry.mjs",
@@ -47,8 +47,7 @@
     "versions": "node scripts/versions.mjs --write",
     "lint:dtcg": "node scripts/tokens.mjs",
     "tokens": "node scripts/tokens.mjs --write",
-    "test:registry": "bash scripts/registry-e2e.sh",
-    "test:a11y": "playwright test tests/a11y.spec.ts"
+    "test:registry": "bash scripts/registry-e2e.sh"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
