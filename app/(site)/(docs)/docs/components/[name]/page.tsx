@@ -1,6 +1,9 @@
 import type { Metadata } from "next"
+import * as React from "react"
 import { notFound } from "next/navigation"
-import { pageMeta } from "@/site/config"
+import { pageMeta, site } from "@/site/config"
+import { ChangelogList } from "@/site/changelog-list"
+import { CodeSheet } from "@/site/code-sheet"
 import { getItem, items, readSource, storyNames, storyTitle } from "@/site/catalog"
 import { CodeBlock } from "@/site/code-block"
 import { ExampleCard } from "@/site/example-card"
@@ -28,20 +31,62 @@ export default async function ComponentPage({ params }: Props) {
   const meta = (item as { meta?: { version: string; changelog: { version: string; date: string; note: string }[] } }).meta
   const deps = [...(("dependencies" in item && item.dependencies) || []), ...(("registryDependencies" in item && item.registryDependencies) || [])]
 
+  const install = `npx shadcn add @syncrobotic/${item.name}`
+  const installBlock = <CodeBlock code={install} lang="bash" title="Terminal" />
+  const sourceFiles = await Promise.all(
+    item.files.map(async (f) => ({
+      name: f.path.split("/").pop()!,
+      code: <CodeBlock code={readSource(f.path)} lang={f.path.endsWith(".ts") ? "ts" : "tsx"} title={f.path} />,
+    })),
+  )
+  // Hooks (and the tray) have no examples: their source is the page, so it stays inline.
+  const inlineSource = !item.examples
+
   return (
     <article>
-      <PageTitle eyebrow={item.group} title={item.title} lead={item.description} />
+      <div className="flex flex-wrap items-start justify-between gap-x-6">
+        <PageTitle eyebrow={item.group} title={item.title} lead={item.description} />
+        <div className="flex items-center gap-3 pb-6 sm:pt-6 sm:pb-0">
+          {meta && (
+            <a href="#changelog" className="font-mono text-sm text-muted-foreground tabular-nums underline-offset-4 hover:underline">
+              v{meta.version}
+            </a>
+          )}
+          {!inlineSource && (
+            <CodeSheet
+              label="Source"
+              variant="outline"
+              title={`${item.name}${sourceFiles.length > 1 ? ` · ${sourceFiles.length} files` : ".tsx"}`}
+              meta={meta ? `v${meta.version}` : undefined}
+              install={installBlock}
+              files={sourceFiles}
+              href={`${site.repo}/blob/main/${item.files[0].path}`}
+            />
+          )}
+        </div>
+      </div>
 
-      {meta && (
-        <p className="-mt-4 pb-4 text-sm text-muted-foreground">
-          <span className="font-mono tabular-nums">v{meta.version}</span> ·{" "}
-          <a href="#changelog" className="underline-offset-4 hover:underline">
-            Changelog
-          </a>
-        </p>
-      )}
-      <CodeBlock code={`npx shadcn add @syncrobotic/${item.name}`} lang="bash" title="Install" />
+      <CodeBlock code={install} lang="bash" title="Install" />
       {deps.length > 0 && <p className="pt-2 text-sm text-muted-foreground">Also installs: {deps.join(", ")}</p>}
+
+      {item.examples && (
+        <>
+          <H2 id="examples">Examples</H2>
+          <p className="pb-4 text-sm text-muted-foreground">States and real uses. Each example is also a Storybook story and a visual regression test.</p>
+          <div className="flex flex-col gap-6">
+            {names.map((n) => (
+              <ExampleCard
+                key={n}
+                id={`example-${n}`}
+                title={storyTitle(n)}
+                preview={<Stage file={item.examples!.file} name={n} className="w-full" />}
+                install={installBlock}
+                code={<CodeBlock code={storySource(item.examples!.file, n)} title={`${storyTitle(n)}.tsx`} />}
+              />
+            ))}
+          </div>
+        </>
+      )}
 
       {item.rules && (
         <>
@@ -50,19 +95,44 @@ export default async function ComponentPage({ params }: Props) {
         </>
       )}
 
-      {item.examples && (
+      {item.keyboard && (
         <>
-          <H2 id="examples">Examples</H2>
-          <p className="pb-4 text-sm text-muted-foreground">States and real uses. Switch to Code for the JSX. Each example is also a Storybook story and a visual regression test.</p>
-          <div className="flex flex-col gap-6">
-            {names.map((n) => (
-              <ExampleCard
-                key={n}
-                id={`example-${n}`}
-                title={storyTitle(n)}
-                preview={<Stage file={item.examples!.file} name={n} className="w-full" />}
-                code={<CodeBlock code={storySource(item.examples!.file, n)} title={`${storyTitle(n)}.tsx`} />}
-              />
+          <H2 id="keyboard">Keyboard</H2>
+          <div className="overflow-hidden rounded-md border border-border bg-card">
+            <table className="w-full text-sm">
+              <thead className="sr-only">
+                <tr>
+                  <th>Keys</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {item.keyboard.map(([keys, action]) => (
+                  <tr key={keys} className="border-b border-border last:border-0">
+                    <td className="w-56 py-2 pr-4 pl-4 align-top">
+                      <span className="flex flex-wrap gap-1">
+                        {keys.split(" / ").map((k) => (
+                          <kbd key={k} className="rounded-xs bg-muted px-1 py-0.5 font-mono text-xs whitespace-nowrap">
+                            {k}
+                          </kbd>
+                        ))}
+                      </span>
+                    </td>
+                    <td className="py-2 pr-4 text-muted-foreground">{action}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+
+      {inlineSource && (
+        <>
+          <H2 id="source">Source</H2>
+          <div className="flex flex-col gap-4">
+            {sourceFiles.map((f) => (
+              <React.Fragment key={f.name}>{f.code}</React.Fragment>
             ))}
           </div>
         </>
@@ -71,29 +141,14 @@ export default async function ComponentPage({ params }: Props) {
       {meta && (
         <>
           <H2 id="changelog">Changelog</H2>
-          <ul className="flex flex-col gap-2 text-sm">
-            {meta.changelog.map((c) => (
-              <li key={c.version} className="flex gap-3">
-                <span className="w-16 shrink-0 font-mono tabular-nums">{c.version}</span>
-                <span className="w-24 shrink-0 text-muted-foreground tabular-nums">{c.date}</span>
-                <span>{c.note}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="pt-2 text-sm text-muted-foreground">
+          <ChangelogList entries={meta.changelog} />
+          <p className="pt-3 text-sm text-muted-foreground">
             <a href="/docs/upgrading" className="underline-offset-4 hover:underline">
               How to upgrade
             </a>
           </p>
         </>
       )}
-
-      <H2 id="source">Source</H2>
-      <div className="flex flex-col gap-4">
-        {item.files.map((f) => (
-          <CodeBlock key={f.path} code={readSource(f.path)} lang={f.path.endsWith(".ts") ? "ts" : "tsx"} title={f.path} />
-        ))}
-      </div>
     </article>
   )
 }

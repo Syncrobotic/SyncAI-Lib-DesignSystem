@@ -13,6 +13,12 @@ export function MobileMenu({ children }: { children: React.ReactNode }) {
   const path = usePathname()
   const id = React.useId()
   React.useEffect(() => setOpen(false), [path])
+  // An in-page link (an example on this page) changes only the hash; close for that too.
+  React.useEffect(() => {
+    const close = () => setOpen(false)
+    window.addEventListener("hashchange", close)
+    return () => window.removeEventListener("hashchange", close)
+  }, [])
   return (
     <div className="mb-8 overflow-hidden rounded-md border border-border md:hidden">
       <button

@@ -1,9 +1,14 @@
 import { blocks, products } from "./blocks"
-import { groups as itemGroups, items } from "./catalog"
+import { groups as itemGroups, items, storyNames, storyTitle } from "./catalog"
 import { foundations } from "./foundations"
 
 // The site's three areas. The header links to each; the sidebar shows only the area you are in.
-export type NavGroup = { title: string; links: { href: string; label: string }[] }
+export type NavLink = {
+  href: string
+  label: string
+  /** In-page anchors, listed under the link while its page is open. */ sections?: { href: string; label: string }[]
+}
+export type NavGroup = { title: string; links: NavLink[] }
 export type Scope = { key: string; label: string; href: string; match: string[]; groups: NavGroup[] }
 
 export const scopes: Scope[] = [
@@ -32,7 +37,14 @@ export const scopes: Scope[] = [
     match: ["/docs/components"],
     groups: itemGroups.map((g) => ({
       title: g,
-      links: items.filter((i) => i.group === g).map((i) => ({ href: `/docs/components/${i.name}`, label: i.title })),
+      links: items
+        .filter((i) => i.group === g)
+        .map((i) => ({
+          href: `/docs/components/${i.name}`,
+          label: i.title,
+          // The page's examples, so you can jump to one; as ReUI lists them, without a second table of contents.
+          sections: i.examples ? storyNames(i.examples).map((n) => ({ href: `/docs/components/${i.name}#example-${n}`, label: storyTitle(n) })) : undefined,
+        })),
     })),
   },
   {
