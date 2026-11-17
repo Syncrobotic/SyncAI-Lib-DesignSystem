@@ -1,13 +1,20 @@
 import { MARK_DISC, MARK_STROKES, MARK_VIEWBOX } from "./brand-paths"
+import { color } from "./theme-tokens"
+
+// Light: the brand file's own fills. Reversed (on dark): the theme's foreground and background.
+const fills = {
+  normal: { disc: "#000000", s: "#fbfbfb" }, // tokens-ok: colours of public/brand/syncrobotic-mark.svg
+  reversed: { disc: color("foreground").dark, s: color("background").dark },
+}
 
 // The official mark for next/og surfaces (social cards, Apple touch icon). Geometry from the brand SVG.
-// Raw colours are fine here: next/og renders outside the page, without CSS variables.
+// next/og renders outside the page, without CSS variables, so colours are resolved from the theme file.
 export function MarkImage({ size, reversed = false }: { size: number; reversed?: boolean }) {
   return (
     <svg width={size} height={size} viewBox={MARK_VIEWBOX}>
-      <path d={MARK_DISC.d} transform={MARK_DISC.transform} fill={reversed ? "#fafafa" : "#000000"} />
+      <path d={MARK_DISC.d} transform={MARK_DISC.transform} fill={fills[reversed ? "reversed" : "normal"].disc} />
       {MARK_STROKES.map((p) => (
-        <path key={p.transform} d={p.d} transform={p.transform} fill={reversed ? "#09090b" : "#fbfbfb"} />
+        <path key={p.transform} d={p.d} transform={p.transform} fill={fills[reversed ? "reversed" : "normal"].s} />
       ))}
     </svg>
   )

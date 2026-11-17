@@ -6,7 +6,7 @@ export function Inline({ text }: { text: string }) {
     <>
       {text.split(/(`[^`]+`)/).map((part, i) =>
         part.startsWith("`") ? (
-          <code key={i} className="rounded-xs bg-muted px-1 font-mono text-[0.9em]">
+          <code key={i} className="rounded-xs bg-muted px-1 font-mono text-sm">
             {part.slice(1, -1)}
           </code>
         ) : (

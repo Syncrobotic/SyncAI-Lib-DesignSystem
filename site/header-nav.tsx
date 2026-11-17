@@ -2,10 +2,11 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import * as m from "motion/react-m"
 import { cn } from "@/lib/utils"
 import type { Scope } from "./scopes"
 
-/** Header area links; the one you are in is marked. */
+/** Header area links. The marker of the area you are in slides to the new one: a selection moving is a state change. */
 export function HeaderNav({ links }: { links: Pick<Scope, "key" | "label" | "href" | "match">[] }) {
   const path = usePathname()
   const current = links.findIndex((s) => s.match.some((m) => path === m || path.startsWith(`${m}/`)))
@@ -16,9 +17,13 @@ export function HeaderNav({ links }: { links: Pick<Scope, "key" | "label" | "hre
           key={l.key}
           href={l.href}
           aria-current={i === current ? "page" : undefined}
-          className={cn("rounded-xs px-3 py-1.5", i === current ? "bg-accent font-medium text-foreground" : "text-muted-foreground hover:text-foreground")}
+          className={cn(
+            "press relative flex h-8 items-center rounded-xs px-3 transition-colors duration-(--motion-fast)",
+            i === current ? "font-medium text-foreground" : "text-muted-foreground hover:text-foreground",
+          )}
         >
-          {l.label}
+          {i === current && <m.span layoutId="header-nav-marker" aria-hidden className="absolute inset-0 rounded-xs bg-accent" />}
+          <span className="relative">{l.label}</span>
         </Link>
       ))}
     </nav>
