@@ -40,7 +40,7 @@ Ordered by what blocks adoption first. Each milestone is one or two release trai
 - [x] Alarms foundation, `alarm`, `toast`
 - [x] Process: this file, issue templates, PR checklist
 - [ ] Commit the visual baselines so CI fails on any visual change
-- [ ] Island notices and alarms share one data shape; the control app's island shows the highest unacknowledged alarm
+- [x] Island notices and alarms share one data shape; the control app's island shows the highest unacknowledged alarm
 
 ### 0.5 · Versions and design source
 - [ ] Per-item version and changelog in the registry, and an upgrade guide using `shadcn diff`

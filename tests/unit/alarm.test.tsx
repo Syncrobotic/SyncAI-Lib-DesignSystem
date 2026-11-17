@@ -42,3 +42,21 @@ describe("AlarmList", () => {
     expect(polite.textContent).toBe("High: Alarm 3")
   })
 })
+
+import { IslandAlarm } from "@/registry/syncrobotic/shell/island"
+import { alarmEdge, topAlarm } from "@/registry/syncrobotic/ui/alarm"
+
+describe("IslandAlarm", () => {
+  it("shows the most urgent unacknowledged alarm and counts the rest", () => {
+    const list = [a("1", "high"), a("2", "critical"), a("3", "low", true)]
+    render(<IslandAlarm alarms={list} onShowAll={() => {}} />)
+    expect(screen.getByRole("group", { name: "Critical: Alarm 2" })).toBeTruthy()
+    expect(screen.getByRole("button", { name: "+1 more unacknowledged" })).toBeTruthy()
+    expect(alarmEdge(topAlarm(list))).toBe("danger")
+  })
+
+  it("renders nothing once everything is acknowledged", () => {
+    const { container } = render(<IslandAlarm alarms={[a("1", "critical", true)]} />)
+    expect(container.innerHTML).toBe("")
+  })
+})

@@ -152,7 +152,11 @@ const entries: Record<string, Entry> = {
   island: {
     group: "Robot shell",
     examples: { file: "island" },
-    rules: ["Name, device status and notifications each expand on their own.", "Failure notices stay until handled. Persistent states (offline, stopped) change the tray edge colour."],
+    rules: [
+      "Name, device status and notifications each expand on their own.",
+      "Failure notices stay until handled. Persistent states (offline, stopped) change the tray edge colour.",
+      "IslandAlarm shows the most urgent unacknowledged alarm above any notice, from the same data as AlarmList. The edge follows it: critical danger, high warning.",
+    ],
   },
   tray: {
     group: "Robot shell",

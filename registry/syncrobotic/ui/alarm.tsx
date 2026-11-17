@@ -45,7 +45,7 @@ export type AlarmLabels = {
   acknowledge: string
 }
 
-const defaultLabels: AlarmLabels = {
+export const defaultAlarmLabels: AlarmLabels = {
   critical: "Critical",
   high: "High",
   low: "Low",
@@ -81,7 +81,7 @@ type AlarmProps = Omit<AlarmData, "id"> & {
 
 /** One alarm. The unacknowledged state is the strongest: tinted, with a bar and the word "Unacknowledged". */
 export function Alarm({ priority, title, source, time, active, acknowledged, onAcknowledge, action, labels, className }: AlarmProps) {
-  const l = { ...defaultLabels, ...labels }
+  const l = { ...defaultAlarmLabels, ...labels }
   const p = alarmPriority[priority]
   const Icon = p.icon
   const id = React.useId()
@@ -149,6 +149,12 @@ export function sortAlarms<T extends AlarmData>(alarms: T[]): T[] {
     .map(({ a }) => a)
 }
 
+/** The alarm a compact surface (the control app's island) should show: the first unacknowledged one in list order. */
+export const topAlarm = <T extends AlarmData>(alarms: T[]): T | undefined => sortAlarms(alarms).find((a) => !a.acknowledged)
+
+/** Tray edge colour while an alarm is unacknowledged: critical → danger, high → warning, low → none. */
+export const alarmEdge = (alarm?: AlarmData) => (alarm?.priority === "critical" ? "danger" : alarm?.priority === "high" ? "warning" : undefined)
+
 type AlarmListProps = {
   alarms: AlarmData[]
   onAcknowledge?: (id: string) => void
@@ -166,7 +172,7 @@ type AlarmListProps = {
  */
 export function AlarmList({ alarms, onAcknowledge, labels, className }: AlarmListProps) {
   const l = {
-    ...defaultLabels,
+    ...defaultAlarmLabels,
     title: "Alarms",
     none: "No active alarms",
     ...labels,
