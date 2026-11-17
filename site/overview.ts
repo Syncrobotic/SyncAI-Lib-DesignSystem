@@ -5,6 +5,52 @@
 export type Overview = { what: string; use: string[]; instead?: string[]; notes?: string[] }
 
 export const overviews: Record<string, Overview> = {
+  "data-grid": {
+    what: "A full data table built on TanStack Table: you own the table state; DataGrid, DataGridTable and their parts draw it in the kit's style.",
+    use: [
+      "Fleets, events and datasets people sort, select and page through.",
+      "Bulk actions on selected rows.",
+      "Thousands of rows with virtual scrolling.",
+      "Rows that open a detail panel underneath.",
+    ],
+    instead: ["A handful of static rows: `table`.", "A list of things with actions, not columns: `item`."],
+    notes: [
+      "Column header: DataGridColumnHeader gives sort, pin and hide in one menu.",
+      "selectColumn() and expandColumn() are ready-made columns; renderSubRow goes in the table's meta.",
+      "Give each column meta.label so the visibility menu names it.",
+      "Keep getRowId stable so selection survives sorting.",
+    ],
+  },
+  sortable: {
+    what: "A reorderable list or grid with a grip on each item, usable with a mouse, a finger or the keyboard.",
+    use: ["Waypoint and patrol order.", "Rule priorities.", "Column order, camera layout, playlist steps."],
+    instead: ["Ordering by a value (date, name): sort a `table` or `data-grid`.", "Moving items between lists: compose dnd-kit directly."],
+    notes: ["Order lives in your state; onValueChange gets the new array.", "Touch drags start after a short press so the page still scrolls."],
+  },
+  resizable: {
+    what: "A layout of panels whose sizes the user changes by dragging or with the keyboard.",
+    use: ["A map beside a robot list.", "A camera above an event log.", "An editor beside its preview."],
+    instead: ["A panel that slides in over content: `sheet`.", "Fixed app chrome: the app-shell block."],
+    notes: ["autoSaveId on the group remembers sizes in the browser.", "collapsible panels collapse when dragged past their minSize."],
+  },
+  "file-upload": {
+    what: "An area that takes files by drop or by the picker, validates them, and hands the accepted ones to you.",
+    use: ["Maps, logs and recordings uploaded to a site.", "A single photo or avatar.", "A compact attach row in a form."],
+    instead: ["Showing files already attached: `attachment`."],
+    notes: ['accept uses the input\'s syntax: "image/*,.pgm".', "The upload itself and its progress are yours; FileUpload only selects."],
+  },
+  attachment: {
+    what: "A file row, chip or image tile showing a file's type, name, size and state.",
+    use: ["Upload queues with progress.", "Files attached to an incident or message.", "Image strips with previews."],
+    instead: ["Picking files: `file-upload`.", "A file browser with many columns: `data-grid`."],
+    notes: ["variant row, chip or image; status idle, uploading, done or error.", "Pass previewUrl (an object URL) for images."],
+  },
+  "file-type": {
+    what: "A file icon chosen from the name or extension, in a tile, as a bare glyph or as a label.",
+    use: ["File rows, upload queues and file browsers.", "Showing the format of a log, map or model."],
+    instead: ["A generic icon surface: `icon-tile`."],
+    notes: ["familyOf(name) tells you the family (map, model, data…) for your own logic.", "label overrides the written extension (db3 → ROS2)."],
+  },
   autocomplete: {
     what: "A text field with a list of suggestions that narrows as you type, for picking one value from many.",
     use: [

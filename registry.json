@@ -2184,6 +2184,185 @@
       }
     },
     {
+      "name": "data-grid",
+      "type": "registry:ui",
+      "title": "Data grid",
+      "description": "A TanStack Table grid: sorting, pagination, selection, column menus, pinning, resizing, expandable rows, totals, loading, virtual rows.",
+      "dependencies": [
+        "@tanstack/react-table",
+        "@tanstack/react-virtual",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/checkbox",
+        "@syncrobotic/dropdown-menu",
+        "@syncrobotic/pagination"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/data-grid.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "sortable",
+      "type": "registry:ui",
+      "title": "Sortable",
+      "description": "A list or grid people reorder by dragging a handle, by touch or by keyboard, with announcements (dnd-kit).",
+      "dependencies": [
+        "@dnd-kit/core",
+        "@dnd-kit/sortable",
+        "@dnd-kit/utilities",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/sortable.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "resizable",
+      "type": "registry:ui",
+      "title": "Resizable",
+      "description": "Panels resized by dragging the line between them or with the arrow keys, horizontal, vertical or nested (react-resizable-panels).",
+      "dependencies": [
+        "react-resizable-panels"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/resizable.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "file-upload",
+      "type": "registry:ui",
+      "title": "File upload",
+      "description": "A drop zone that is also a button: checks type, size and count, and says what it refused.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/file-upload.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "attachment",
+      "type": "registry:ui",
+      "title": "Attachment",
+      "description": "One file in a list, a composer or a queue: type, name, size, progress, error with Retry, Download and Remove.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/file-type",
+        "@syncrobotic/file-upload",
+        "@syncrobotic/progress"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/attachment.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "file-type",
+      "type": "registry:ui",
+      "title": "File type",
+      "description": "An icon for a file from its name or extension, with robot formats (mcap, bag, pgm, pcd, onnx) and the extension written on it.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/file-type.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
       "name": "stats-cards",
       "type": "registry:block",
       "title": "KPI cards",

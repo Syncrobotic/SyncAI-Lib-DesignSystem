@@ -16,6 +16,12 @@ export type StoryFile =
   | "navigation"
   | "overlays"
   | "charts"
+  | "data-grid"
+  | "sortable"
+  | "resizable"
+  | "file-upload"
+  | "attachment"
+  | "file-type"
   | "autocomplete"
   | "input-otp"
   | "phone-input"
@@ -52,6 +58,47 @@ const overlayKeys: [string, string][] = [
 ]
 
 const entries: Record<string, Entry> = {
+  "data-grid": {
+    wide: true,
+    group: "Display",
+    examples: { file: "data-grid", prefix: "DataGrid" },
+    rules: [
+      "Build the table with useReactTable; DataGrid draws it.",
+      "Numbers right-aligned (meta.align) and tabular.",
+      "Status cells use InlineStatus, never a coloured badge.",
+      "virtual needs a maxHeight.",
+    ],
+  },
+  sortable: {
+    group: "Inputs",
+    examples: { file: "sortable", prefix: "Sortable" },
+    rules: [
+      "Only the handle drags; the rest of the row stays clickable.",
+      "Give getLabel so moves are announced by name.",
+      "Keyboard: Space to lift, arrows to move, Space to drop, Escape to cancel.",
+    ],
+  },
+  resizable: {
+    wide: true,
+    group: "Display",
+    examples: { file: "resizable", prefix: "Resizable" },
+    rules: ["Set minSize so a panel never collapses into nothing by accident.", "withHandle on touch screens, where a thin line is hard to find."],
+  },
+  "file-upload": {
+    group: "Inputs",
+    examples: { file: "file-upload", prefix: "FileUpload" },
+    rules: ["Say what is accepted and how big, in the hint.", "Report refused files by name and reason.", "Show what was taken as Attachment rows."],
+  },
+  attachment: {
+    group: "Display",
+    examples: { file: "attachment", prefix: "Attachment" },
+    rules: ["An error says why in words and offers Retry.", "Remove is always the last action, and names the file for screen readers."],
+  },
+  "file-type": {
+    group: "Display",
+    examples: { file: "file-type", prefix: "FileType" },
+    rules: ["Neutral like every icon; the label tells formats apart, not colour."],
+  },
   autocomplete: {
     group: "Inputs",
     examples: { file: "autocomplete", prefix: "Autocomplete" },
@@ -427,6 +474,26 @@ export type Item = (typeof registry.items)[number] & Entry
 
 // What each component does with the keyboard beyond Tab. Radix supplies most of it; these tables say so out loud.
 const keyboard: Record<string, [string, string][]> = {
+  "data-grid": [
+    ["Tab", "Focus the grid region, then the headers and cells' controls"],
+    ["Arrow keys", "Scroll the region"],
+    ["Enter / Space", "Open a column menu, toggle a checkbox"],
+  ],
+  sortable: [
+    ["Space", "Lift or drop the focused item"],
+    ["Arrow keys", "Move the lifted item"],
+    ["Escape", "Cancel the move"],
+  ],
+  resizable: [
+    ["Tab", "Focus a handle"],
+    ["Arrow keys", "Resize"],
+    ["Home / End", "Collapse or expand fully"],
+    ["Enter", "Toggle a collapsible panel"],
+  ],
+  "file-upload": [
+    ["Tab", "Focus the drop zone"],
+    ["Enter / Space", "Open the file picker"],
+  ],
   autocomplete: [
     ["Arrow Down / Up", "Open the list, move between options"],
     ["Enter", "Pick the highlighted option"],
