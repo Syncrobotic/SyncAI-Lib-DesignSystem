@@ -5,7 +5,10 @@ import * as React from "react"
 import {
   Bell,
   Bot,
+  ChevronDown,
   ChevronsUpDown,
+  CirclePlus,
+  CheckCheck,
   LayoutDashboard,
   LogOut,
   Map,
@@ -29,6 +32,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/registry/syncrobotic/ui/dropdown-menu"
+import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandShortcut } from "@/registry/syncrobotic/ui/command"
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/registry/syncrobotic/ui/sheet"
 
@@ -37,6 +41,26 @@ export type AppNavGroup = { label?: string; items: AppNavItem[] }
 export type AppUser = { name: string; initials: string; email?: string }
 /** One row of the user menu. Sign out goes last; it is not destructive, so it is not red. */
 export type AppUserMenuItem = { label: string; icon?: LucideIcon; href?: string; onSelect?: () => void; separatorBefore?: boolean }
+
+export type AppSearchItem = {
+  label: string
+  icon?: LucideIcon
+  /** Right-aligned detail, e.g. a robot's state. */ hint?: string
+  href?: string
+  onSelect?: () => void
+  keywords?: string[]
+}
+export type AppSearchGroup = {
+  heading: string
+  /** The scope this group belongs to; groups outside the chosen scope are hidden. */ scope: string
+  items: AppSearchItem[]
+}
+export type AppSearch = {
+  placeholder?: string
+  /** What the search covers. The first is the default, e.g. "Everything". */
+  scopes?: { value: string; label: string }[]
+  groups: AppSearchGroup[]
+}
 
 /** Navigation shared by the engineering-tool templates. Replace with your own. */
 export const sampleNav: AppNavGroup[] = [
@@ -56,6 +80,45 @@ export const sampleNav: AppNavGroup[] = [
     ],
   },
 ]
+
+/** A search to start from: pages, robots and actions, scoped. Replace with your data. */
+export const sampleSearch: AppSearch = {
+  placeholder: "Search robots, pages and actions",
+  scopes: [
+    { value: "all", label: "Everything" },
+    { value: "robots", label: "Robots" },
+    { value: "pages", label: "Pages" },
+    { value: "actions", label: "Actions" },
+  ],
+  groups: [
+    {
+      heading: "Robots",
+      scope: "robots",
+      items: [
+        { label: "Patrol dog 7F3A", icon: Bot, hint: "Patrolling", href: "#robots/7F3A", keywords: ["7F3A"] },
+        { label: "Patrol dog 2B10", icon: Bot, hint: "Docked", href: "#robots/2B10", keywords: ["2B10"] },
+        { label: "Patrol dog 4D21", icon: Bot, hint: "Stopped", href: "#robots/4D21", keywords: ["4D21"] },
+      ],
+    },
+    {
+      heading: "Pages",
+      scope: "pages",
+      items: [
+        { label: "Overview", icon: LayoutDashboard, href: "#overview" },
+        { label: "Map", icon: Map, href: "#map" },
+        { label: "Event log", icon: ScrollText, href: "#events" },
+      ],
+    },
+    {
+      heading: "Actions",
+      scope: "actions",
+      items: [
+        { label: "New mission", icon: CirclePlus, href: "#missions/new" },
+        { label: "Acknowledge all alarms", icon: CheckCheck, href: "#alarms" },
+      ],
+    },
+  ],
+}
 
 /** The user menu every tool starts with. Replace the hrefs, or pass your own `userMenu`. */
 export const sampleUserMenu: AppUserMenuItem[] = [
@@ -87,16 +150,18 @@ type AppShellProps = {
   /** Bottom of the sidebar: who is signed in, and a menu for account, preferences and sign out. */
   user?: AppUser
   userMenu?: AppUserMenuItem[]
-  /** Shown as a search field in the top bar when set. */
+  /** A plain filter field in the top bar, for a page that filters what it shows. */
   onSearch?: (query: string) => void
+  /** The tool's search: a field in the top bar with a scope, opening a palette (also on ⌘K / Ctrl+K). */
+  search?: AppSearch
   /** Swap in your router's link (e.g. next/link). */
   linkAs?: React.ElementType
   /** Content fills the area edge to edge, for maps and video. */
   bleed?: boolean
   /**
    * flush: sidebar, top bar and content share one surface, split by hairlines.
-   * inset: two raised panels on the page with an 8 px margin: the sidebar, and the top bar with content and footer.
-   * Their top rows are the same height and their hairlines meet in one line across the gap.
+   * inset: raised panels on the page, 8 px apart: the sidebar, the top bar, and the content with its footer.
+   * The top bar is as tall as the sidebar's brand row, so their edges line up across the gap.
    */
   layout?: "flush" | "inset"
   /** End of the content: version, copyright, links. Scrolls with the page, never overlaps it. */
@@ -224,6 +289,120 @@ export function SidebarUserMenu({
   )
 }
 
+/**
+ * The top bar's search. The field shows the scope and ⌘K; pressing it (or the shortcut anywhere) opens the palette,
+ * where typing narrows the results and the scope narrows the groups. The scope can be changed in the field or the palette.
+ */
+function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch; linkAs?: React.ElementType }) {
+  const [open, setOpen] = React.useState(false)
+  const scopes = search.scopes ?? [{ value: "all", label: "Everything" }]
+  const [scope, setScope] = React.useState(scopes[0].value)
+  const scopeLabel = scopes.find((s) => s.value === scope)?.label
+  const [mac, setMac] = React.useState(false)
+  React.useEffect(() => {
+    setMac(/Mac|iPhone|iPad/.test(navigator.platform))
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault()
+        setOpen((o) => !o)
+      }
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [])
+  const shortcut = mac ? "⌘K" : "Ctrl K"
+  const groups = search.groups.filter((g) => scope === scopes[0].value || g.scope === scope)
+
+  const scopeMenu = (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button
+          type="button"
+          aria-label={`Search scope: ${scopeLabel}`}
+          className="press flex h-(--h-sm) shrink-0 items-center gap-1 rounded-xs px-2 text-xs text-muted-foreground hover:bg-accent hover:text-foreground"
+        >
+          {scopeLabel}
+          <ChevronDown aria-hidden="true" className="size-4" />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        {scopes.map((s) => (
+          <DropdownMenuItem
+            key={s.value}
+            onSelect={() => setScope(s.value)}
+            aria-current={s.value === scope || undefined}
+            className={cn(s.value === scope && "font-medium")}
+          >
+            {s.label}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+
+  return (
+    <>
+      {/* Wide screens: a field with the scope inside. Narrow: an icon button. Both open the palette. */}
+      <div className="hidden h-(--h-sm) w-80 items-center rounded-sm bg-background pr-1 ring-1 ring-input ring-inset lg:flex">
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="press flex h-full min-w-0 flex-1 items-center gap-2 rounded-l-sm pl-3 text-left text-sm text-muted-foreground hover:text-foreground"
+        >
+          <Search aria-hidden="true" className="size-4 shrink-0" />
+          <span className="truncate">{search.placeholder ?? "Search"}</span>
+          <CommandShortcut className="mr-1">{shortcut}</CommandShortcut>
+        </button>
+        {scopes.length > 1 && scopeMenu}
+      </div>
+      <button
+        type="button"
+        aria-label="Search"
+        onClick={() => setOpen(true)}
+        className="press flex size-(--h-md) items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground lg:hidden"
+      >
+        <Search aria-hidden="true" className="size-5" />
+      </button>
+
+      <CommandDialog open={open} onOpenChange={setOpen} title="Search" description={search.placeholder}>
+        <CommandInput placeholder={search.placeholder ?? "Search"} end={scopes.length > 1 ? scopeMenu : undefined} />
+        <CommandList>
+          <CommandEmpty>No match in {scopeLabel?.toLowerCase()}. Try another word, or search everything.</CommandEmpty>
+          {groups.map((g) => (
+            <CommandGroup key={g.heading} heading={g.heading}>
+              {g.items.map((item) => (
+                <CommandItem
+                  key={item.label}
+                  value={[item.label, ...(item.keywords ?? [])].join(" ")}
+                  onSelect={() => {
+                    setOpen(false)
+                    item.onSelect?.()
+                  }}
+                  asChild={!!item.href}
+                >
+                  {item.href ? (
+                    <Link href={item.href}>
+                      {item.icon && <item.icon aria-hidden="true" />}
+                      <span className="flex-1 truncate">{item.label}</span>
+                      {item.hint && <span className="text-xs text-muted-foreground">{item.hint}</span>}
+                    </Link>
+                  ) : (
+                    <>
+                      {item.icon && <item.icon aria-hidden="true" />}
+                      <span className="flex-1 truncate">{item.label}</span>
+                      {item.hint && <span className="text-xs text-muted-foreground">{item.hint}</span>}
+                    </>
+                  )}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          ))}
+        </CommandList>
+      </CommandDialog>
+    </>
+  )
+}
+
 /** Which way the collapsed rail opens: by hover where there is a mouse, by a tap on touch tablets. */
 function usePointerMode() {
   const [mode, setMode] = React.useState<{ hover: boolean; wide: boolean }>({ hover: true, wide: true })
@@ -251,7 +430,7 @@ const isControl = (el: EventTarget | null) => el instanceof Element && !!el.clos
  * Sidebar: open on wide screens (1280 px and up); a 72 px rail of icons below that, showing the logo at the top.
  * The rail opens over the content without moving it: on hover with a mouse, on a tap on touch tablets (a tap on an
  * icon opens the rail first, the next one navigates; a tap outside closes it). The pin button keeps it open.
- * Phones get a drawer from the menu button. `layout="inset"` floats the sidebar and the content as two panels.
+ * Phones get a drawer from the menu button. `layout="inset"` floats the sidebar, the top bar and the content as separate panels.
  */
 export function AppShell({
   product,
@@ -264,6 +443,7 @@ export function AppShell({
   user,
   userMenu,
   onSearch,
+  search,
   linkAs,
   bleed,
   layout = "flush",
@@ -280,7 +460,6 @@ export function AppShell({
   const aside = React.useRef<HTMLElement>(null)
   const env = environment ? environments[environment] : null
   const inset = layout === "inset"
-  const [scrolled, setScrolled] = React.useState(false)
 
   // A tap outside closes a rail opened by tap.
   React.useEffect(() => {
@@ -333,7 +512,9 @@ export function AppShell({
             peek !== "closed" && "shadow-overlay",
           )}
         >
-          <div className={cn("flex h-(--h-row) shrink-0 items-center gap-2 pr-3 pl-6", !inset && "border-b border-border")}>
+          {/* Flush: always lined, level with the top bar's line. Inset: lined only as a rail, where the logo and the avatar
+              need setting apart from a column of bare icons; open, the labels and group names do that. */}
+          <div className={cn("flex h-(--h-row) shrink-0 items-center gap-2 border-b pr-3 pl-6", !inset || !expanded ? "border-border" : "border-transparent")}>
             <span className="min-w-0 flex-1">{brand}</span>
             {expanded && (
               <button
@@ -354,7 +535,7 @@ export function AppShell({
             <Nav nav={nav} current={current} collapsed={!expanded} linkAs={linkAs} onNavigate={onNavigate} />
           </div>
           {user && (
-            <div className={cn("shrink-0 p-3", !inset && "border-t border-border")}>
+            <div className={cn("shrink-0 border-t p-3", !inset || !expanded ? "border-border" : "border-transparent")}>
               <SidebarUserMenu
                 user={user}
                 items={userMenu}
@@ -370,20 +551,10 @@ export function AppShell({
         </aside>
       </div>
 
-      <div className={cn("relative flex min-w-0 flex-1 flex-col", inset && "overflow-hidden rounded-md bg-card ring-1 ring-border")}>
-        {/* Inset: the top bar is its own layer over the content, with no line. Once the content scrolls under it,
-            a card-coloured backing fades in, its last 16 px dissolving into the content. */}
-        {inset && (
-          <div
-            aria-hidden="true"
-            className={cn(
-              "pointer-events-none absolute inset-x-0 top-0 z-10 h-(--h-row) box-content pb-4 bg-card [mask-image:linear-gradient(to_bottom,black_calc(100%-1rem),transparent)]",
-              "transition-opacity duration-(--motion-fast) ease-(--ease-standard)",
-              scrolled ? "opacity-100" : "opacity-0",
-            )}
-          />
-        )}
-        <header className={cn("z-20 flex h-(--h-row) shrink-0 items-center gap-3 px-6", inset ? "absolute inset-x-0 top-0" : "border-b border-border")}>
+      {/* Inset: the top bar and the content are two panels, 8 px apart, so the bar never reads as part of the page.
+          The bar's panel is as tall as the sidebar's brand row, so their bottom edges line up across the gap. */}
+      <div className={cn("flex min-w-0 flex-1 flex-col", inset && "gap-2")}>
+        <header className={cn("flex h-(--h-row) shrink-0 items-center gap-3 px-6", inset ? "rounded-md bg-card ring-1 ring-border" : "border-b border-border")}>
           <Sheet>
             <SheetTrigger asChild>
               <button
@@ -407,6 +578,7 @@ export function AppShell({
           <h1 className="truncate text-lg font-bold">{title}</h1>
           {env && <Badge tone={env.tone}>{env.label}</Badge>}
           <div className="ml-auto flex items-center gap-2">
+            {search && <ShellSearch search={search} linkAs={linkAs} />}
             {onSearch && (
               <div className="relative hidden lg:block">
                 <Search aria-hidden="true" className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -416,18 +588,10 @@ export function AppShell({
             {actions}
           </div>
         </header>
-        <main
-          onScroll={(e) => setScrolled(e.currentTarget.scrollTop > 4)}
-          className={cn("flex min-h-0 flex-1 flex-col overflow-y-auto", inset && "pt-(--h-row)")}
-        >
-          <div className={cn("flex-1", !bleed && "p-6", inset && !bleed && "pt-2")}>{children}</div>
+        <main className={cn("flex min-h-0 flex-1 flex-col overflow-y-auto", inset && "rounded-md bg-card ring-1 ring-border")}>
+          <div className={cn("flex-1", !bleed && "p-6")}>{children}</div>
           {footer && (
-            <footer
-              className={cn(
-                "flex shrink-0 flex-wrap items-center justify-between gap-x-6 gap-y-1 px-6 py-3 text-xs text-muted-foreground",
-                !inset && "border-t border-border",
-              )}
-            >
+            <footer className="flex shrink-0 flex-wrap items-center justify-between gap-x-6 gap-y-1 border-t border-border px-6 py-3 text-xs text-muted-foreground">
               {footer}
             </footer>
           )}

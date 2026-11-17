@@ -203,6 +203,15 @@ const entries: Record<string, Entry> = {
     examples: { file: "overlays", prefix: "Tooltip" },
     rules: ["Touch screens never show tooltips. Never put information the operator needs in one."],
   },
+  command: {
+    group: "Overlays",
+    examples: { file: "overlays", prefix: "Command" },
+    rules: [
+      "One palette per tool, opened by ⌘K / Ctrl+K and by the search field in the top bar (AppShell `search`).",
+      "Group results by kind (robots, pages, actions) and show a detail on the right, such as the robot's state.",
+      "The empty state says what was searched and what to try, not just “No results”.",
+    ],
+  },
   "dropdown-menu": { group: "Overlays", examples: { file: "overlays", prefix: "DropdownMenu" }, rules: ["Destructive items go last, after a separator."] },
   // Robot shell
   "stop-button": {
@@ -302,6 +311,12 @@ const keyboard: Record<string, [string, string][]> = {
   tooltip: [
     ["Focus", "Show"],
     ["Esc", "Hide"],
+  ],
+  command: [
+    ["⌘K / Ctrl+K", "Open or close the palette"],
+    ["↑ / ↓", "Move between results"],
+    ["Enter", "Run the highlighted result"],
+    ["Esc", "Close and return focus"],
   ],
   "dropdown-menu": [
     ["Enter / Space / ↓", "Open the menu"],

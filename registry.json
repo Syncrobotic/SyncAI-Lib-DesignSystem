@@ -1397,6 +1397,36 @@
       }
     },
     {
+      "name": "command",
+      "type": "registry:ui",
+      "title": "Command",
+      "description": "Search and run from the keyboard: a filterable list, and the ⌘K palette that opens over any page.",
+      "dependencies": [
+        "cmdk",
+        "radix-ui",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/command.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.7.0",
+        "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
       "name": "stats-cards",
       "type": "registry:block",
       "title": "KPI cards",
@@ -1543,7 +1573,8 @@
         "@syncrobotic/badge",
         "@syncrobotic/input",
         "@syncrobotic/sheet",
-        "@syncrobotic/dropdown-menu"
+        "@syncrobotic/dropdown-menu",
+        "@syncrobotic/command"
       ],
       "files": [
         {
@@ -1557,7 +1588,7 @@
           {
             "version": "0.7.0",
             "date": "2026-11-17",
-            "note": "Sidebar as a rail below 1280 px that shows the logo and opens over the content (hover with a mouse, tap on touch tablets), with a pin button. Inset layout: two floating panels, no lines in the sidebar, the top bar a layer over the content that gains a backing on scroll. Footer slot. User menu at the sidebar's foot."
+            "note": "Sidebar as a rail below 1280 px that shows the logo and opens over the content (hover with a mouse, tap on touch tablets), with a pin button. Inset layout: two floating panels, no lines in the sidebar, the top bar a layer over the content that gains a backing on scroll. Footer slot. User menu at the sidebar's foot. Search: a top-bar field with a scope that opens the ⌘K palette (search prop)."
           },
           {
             "version": "0.6.0",

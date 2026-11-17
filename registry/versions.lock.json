@@ -183,6 +183,10 @@
     "version": "0.6.0",
     "hash": "ef7e0eb7d80ba29a"
   },
+  "command": {
+    "version": "0.7.0",
+    "hash": "85c7bb66de8b09d6"
+  },
   "stats-cards": {
     "version": "0.6.0",
     "hash": "a56c70d020b65fdd"
@@ -201,7 +205,7 @@
   },
   "app-shell": {
     "version": "0.7.0",
-    "hash": "b3f171e989bd55fb"
+    "hash": "63399bb6e244cd46"
   },
   "console-overview": {
     "version": "0.6.0",
