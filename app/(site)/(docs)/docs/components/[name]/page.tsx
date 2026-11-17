@@ -108,9 +108,12 @@ export default async function ComponentPage({ params }: Props) {
           <h2 id="overview" className="sr-only">
             Overview
           </h2>
-          <p className="max-w-3xl text-base">
-            <Linked text={overview.what} />
-          </p>
+          {/* Skip the line when it only repeats the description above. */}
+          {overview.what.trim() !== (item.description ?? "").trim() && (
+            <p className="max-w-3xl text-base">
+              <Linked text={overview.what} />
+            </p>
+          )}
           <div className="grid gap-6 pt-6 sm:grid-cols-2">
             <div>
               <h3 className="pb-2 text-sm font-bold">When to use</h3>

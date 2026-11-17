@@ -31,7 +31,7 @@ function SpeedChart() {
           <LineChart data={speed} margin={{ top: 0, right: 8, left: 0, bottom: 0 }}>
             <CartesianGrid vertical={false} />
             <XAxis dataKey="t" {...chartAxis} />
-            <YAxis {...chartAxis} domain={[0, 2]} ticks={[0, 0.5, 1, 1.5, 2]} width={32} />
+            <YAxis {...chartAxis} domain={[0, 2]} ticks={[0, 0.5, 1, 1.5, 2]} width={40} />
             <ChartTooltip />
             <ChartLegend />
             <Line
@@ -74,7 +74,7 @@ function BatteryChart() {
         <AreaChart data={battery} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
           <CartesianGrid vertical={false} />
           <XAxis dataKey="t" {...chartAxis} />
-          <YAxis {...chartAxis} domain={[0, 100]} ticks={[0, 25, 50, 75, 100]} width={32} />
+          <YAxis {...chartAxis} domain={[0, 100]} ticks={[0, 25, 50, 75, 100]} width={40} />
           <ChartTooltip />
           <Area dataKey="battery" type="linear" stroke="var(--color-battery)" strokeWidth={2} fill="var(--color-battery)" fillOpacity={0.12} {...chartMotion} />
         </AreaChart>
@@ -96,7 +96,7 @@ function MissionChart() {
         <BarChart data={missions} barGap={2} margin={{ top: 0, right: 8, left: 0, bottom: 0 }}>
           <CartesianGrid vertical={false} />
           <XAxis dataKey="d" {...chartAxis} />
-          <YAxis {...chartAxis} allowDecimals={false} width={32} />
+          <YAxis {...chartAxis} allowDecimals={false} width={40} />
           <ChartTooltip />
           <ChartLegend />
           <Bar dataKey="done" fill="var(--color-done)" radius={[4, 4, 0, 0]} maxBarSize={24} {...chartMotion} />

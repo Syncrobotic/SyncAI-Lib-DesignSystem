@@ -122,7 +122,7 @@ export default function MotionPage() {
           }}
           bad={{
             // motion-ok: the "don't" example shows the loop it forbids
-            visual: <span className="animate-pulse rounded-sm bg-info-subtle px-3 py-2 text-sm text-info">New</span>,
+            visual: <span className="animate-pulse rounded-sm motion-reduce:animate-none bg-info-subtle px-3 py-2 text-sm text-info">New</span>,
             text: "Loop animations to draw the eye. A pulsing badge competes with the emergency stop.",
           }}
         />

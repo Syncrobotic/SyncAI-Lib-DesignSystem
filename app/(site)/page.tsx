@@ -95,6 +95,13 @@ const samples: Record<string, React.ReactNode> = {
       <div className="px-3 py-2 text-danger">Delete route</div>
     </div>
   ),
+  Charts: (
+    <div className="flex h-16 items-end gap-2">
+      {[40, 64, 52, 80, 56, 72].map((h, i) => (
+        <span key={i} className={cn("w-4 rounded-t-xs", i === 3 ? "bg-foreground" : "bg-muted-foreground/40")} style={{ height: `${h}%` }} />
+      ))}
+    </div>
+  ),
   "Robot shell": (
     <span className="flex h-(--h-md) w-48 items-center justify-center rounded-md bg-stop text-sm font-bold text-white">Emergency stop · 7F3A</span>
   ),
@@ -178,11 +185,11 @@ export default function HomePage() {
             .filter((g) => g !== "Hooks")
             .map((g) => {
               const list = items.filter((i) => i.group === g)
-              // Seven groups never fill a grid of two or three, so the robot shell (what sets this kit apart) closes it at full width,
-              // exhibit and text side by side on wide screens.
+              // Eight groups: four rows of two; on three columns the robot shell (what sets this kit apart) takes two cells
+              // so the last row is full, exhibit and text side by side.
               const wide = g === "Robot shell"
               return (
-                <AppearItem key={g} className={cn("flex", wide && "sm:col-span-2 lg:col-span-3")}>
+                <AppearItem key={g} className={cn("flex", wide && "lg:col-span-2")}>
                   <Link
                     href={`/docs/components/${firstOf(g)}`}
                     className={cn(
@@ -227,7 +234,7 @@ export default function HomePage() {
                 Install the theme and components into any React or Next.js app with the shadcn CLI. The theme replaces shadcn&apos;s defaults; components land
                 as source you can read and adapt.
               </p>
-              <Link href="/docs/installation" className="inline-flex items-center gap-2 text-sm font-medium text-info hover:underline">
+              <Link href="/docs/installation" className="inline-flex items-center gap-2 text-sm font-medium text-foreground underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground">
                 Installation guide <ArrowRight aria-hidden className="size-4" />
               </Link>
             </div>
@@ -239,7 +246,7 @@ export default function HomePage() {
           </AppearItem>
         </Reveal>
         <p className="pt-6 text-center font-mono text-xs text-muted-foreground">
-          Version {pkg.version} · body text {px(themeValue("text-base"))} px · background {color("background").dark}
+          Version {pkg.version} · body text {px(themeValue("text-base"))} px
         </p>
       </section>
     </main>

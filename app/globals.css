@@ -32,3 +32,45 @@
   background-color: var(--background);
 }
 
+
+/* Site arrival (site/appear.tsx): the theme's appear movement in CSS, staggered by order, so nothing waits on scripts. */
+[data-reveal="waiting"] .appear-item {
+  opacity: 0;
+}
+[data-reveal="playing"] .appear-item {
+  animation: var(--animate-appear) both;
+  animation-delay: calc(var(--stagger, 0s) * var(--i, 0));
+}
+.appear-item:nth-child(2) {
+  --i: 1;
+}
+.appear-item:nth-child(3) {
+  --i: 2;
+}
+.appear-item:nth-child(4) {
+  --i: 3;
+}
+.appear-item:nth-child(5) {
+  --i: 4;
+}
+.appear-item:nth-child(6) {
+  --i: 5;
+}
+.appear-item:nth-child(7) {
+  --i: 6;
+}
+.appear-item:nth-child(8) {
+  --i: 7;
+}
+.appear-item:nth-child(9) {
+  --i: 8;
+}
+.appear-item:nth-child(10) {
+  --i: 9;
+}
+.appear-item:nth-child(11) {
+  --i: 10;
+}
+.appear-item:nth-child(12) {
+  --i: 11;
+}

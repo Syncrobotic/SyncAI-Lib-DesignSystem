@@ -659,7 +659,12 @@ export function AppShell({
           </Sheet>
           {breadcrumb && <div className="hidden min-w-0 shrink items-center gap-1 md:flex">{breadcrumb}</div>}
           <h1 className="truncate text-lg font-bold">{title}</h1>
-          {env && <Badge tone={env.tone}>{env.label}</Badge>}
+          {/* On phones the title keeps the room; the environment shows from 640 px. */}
+          {env && (
+            <Badge tone={env.tone} className="max-sm:hidden">
+              {env.label}
+            </Badge>
+          )}
           <div className="ml-auto flex items-center gap-2">
             {search && <ShellSearch search={search} linkAs={linkAs} />}
             {onSearch && (

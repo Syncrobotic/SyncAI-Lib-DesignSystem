@@ -1,4 +1,4 @@
-// @syncrobotic/event-log v0.7.0 · update: npx shadcn add @syncrobotic/event-log --overwrite
+// @syncrobotic/event-log v0.8.0 · update: npx shadcn add @syncrobotic/event-log --overwrite
 "use client"
 
 import * as React from "react"
@@ -111,8 +111,9 @@ export function EventLog({ events = sampleEvents }: { events?: LogEvent[] }) {
       environment="production"
       user={{ name: "Mei Lin", initials: "ML" }}
       actions={
-        <Button variant="secondary" size="sm">
-          <Download aria-hidden="true" /> Export CSV
+        <Button variant="secondary" size="sm" className="max-sm:w-(--h-sm) max-sm:px-0">
+          <Download aria-hidden="true" />
+          <span className="max-sm:sr-only">Export CSV</span>
         </Button>
       }
     >

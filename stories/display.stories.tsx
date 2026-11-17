@@ -24,8 +24,8 @@ type S = StoryObj
 export const BadgeTones: S = {
   render: () => (
     <div className="flex flex-wrap gap-2">
-      <Badge tone="info">Patrolling</Badge>
-      <Badge tone="success">Docked</Badge>
+      <Badge tone="info">Updating</Badge>
+      <Badge tone="success">Passed</Badge>
       <Badge tone="warning">Low battery</Badge>
       <Badge tone="danger">3 events</Badge>
       <Badge>Offline</Badge>
@@ -165,7 +165,7 @@ export const TableDefault: S = {
           <TableRow key={r.id}>
             <TableCell className="font-medium">{r.id}</TableCell>
             <TableCell>
-              <Badge tone={r.tone}>{r.s}</Badge>
+              <InlineStatus tone={r.tone}>{r.s}</InlineStatus>
             </TableCell>
             <TableCell className="text-right">{r.b}%</TableCell>
           </TableRow>

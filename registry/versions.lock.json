@@ -1,7 +1,7 @@
 {
   "syncrobotic-theme": {
-    "version": "0.7.0",
-    "hash": "ce6cf3504814ac1e"
+    "version": "0.8.0",
+    "hash": "b701865568e50474"
   },
   "cn": {
     "version": "0.5.0",
@@ -41,7 +41,7 @@
   },
   "dock": {
     "version": "0.8.0",
-    "hash": "267a1a93492db536"
+    "hash": "c1f253777684177c"
   },
   "island": {
     "version": "0.8.0",
@@ -56,8 +56,8 @@
     "hash": "1f73e7d87ba39b3f"
   },
   "button": {
-    "version": "0.7.0",
-    "hash": "0375f7628bb47f71"
+    "version": "0.8.0",
+    "hash": "bab8101ef6139ea6"
   },
   "spinner": {
     "version": "0.5.0",
@@ -108,8 +108,8 @@
     "hash": "6bf86fd82a070cec"
   },
   "switch": {
-    "version": "0.7.0",
-    "hash": "35c138601a78af3e"
+    "version": "0.8.0",
+    "hash": "042aa2c45186620e"
   },
   "choice-field": {
     "version": "0.8.0",
@@ -169,7 +169,7 @@
   },
   "table": {
     "version": "0.8.0",
-    "hash": "53cee17be688c43e"
+    "hash": "2ac2bd84f81c42ec"
   },
   "chart": {
     "version": "0.7.0",
@@ -225,7 +225,7 @@
   },
   "fleet-table": {
     "version": "0.8.0",
-    "hash": "f6352efcaf6bae4e"
+    "hash": "cef458cc31022edc"
   },
   "robot-status-card": {
     "version": "0.8.0",
@@ -237,27 +237,27 @@
   },
   "app-shell": {
     "version": "0.8.0",
-    "hash": "c00e853bbcd8533f"
+    "hash": "dd063586a5dfd6e8"
   },
   "top-bar-shell": {
     "version": "0.7.0",
     "hash": "772b3c54944120c2"
   },
   "console-overview": {
-    "version": "0.6.0",
-    "hash": "8a965a1e4d4d1036"
+    "version": "0.8.0",
+    "hash": "0b2fa9cac43c1b68"
   },
   "list-detail": {
     "version": "0.8.0",
     "hash": "e04ee1c2608f0db9"
   },
   "event-log": {
-    "version": "0.7.0",
-    "hash": "9f614623ddc00b79"
+    "version": "0.8.0",
+    "hash": "1f144c18bee6a25d"
   },
   "map-workspace": {
     "version": "0.8.0",
-    "hash": "04668e029f901eb4"
+    "hash": "a348c3c5398324f4"
   },
   "data-catalog": {
     "version": "0.8.0",
