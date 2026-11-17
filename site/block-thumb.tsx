@@ -14,12 +14,16 @@ export function BlockThumb({
   width,
   height,
   fit = "screen",
+  ratio,
 }: {
   name: string
   title: string
   width: number
   height: number
   fit?: "content" | "screen"
+  /** A fixed box (width / height), for grids where every card must line up. Screens fill its width and crop at the
+   * bottom; sections and phone screens are scaled to fit inside it and centred. */
+  ratio?: number
 }) {
   const box = React.useRef<HTMLDivElement>(null)
   const frame = React.useRef<HTMLIFrameElement>(null)
@@ -54,10 +58,23 @@ export function BlockThumb({
   }, [avail, measure])
 
   const h = Math.min(height, contentH ?? height)
-  const scale = avail ? Math.min(1, avail / width, maxHeight / h) : 0
+  let scale = avail ? Math.min(1, avail / width, maxHeight / h) : 0
+  let top = 0
+  if (ratio && avail) {
+    const boxH = avail / ratio
+    const screen = fit === "screen" && width > 600
+    // A desktop screen fills the width and is cut at the bottom, like a screenshot. Anything smaller sits whole, centred,
+    // with a margin, so a row of KPI cards or a phone does not look stretched.
+    scale = screen ? avail / width : Math.min(avail / width, boxH / h) * 0.9
+    top = screen ? 0 : Math.max(0, (boxH - h * scale) / 2)
+  }
   return (
-    // Before the first measure the frame holds the block's ratio, so the grid does not jump.
-    <div ref={box} className="specimen relative overflow-hidden" style={scale ? { height: h * scale } : { aspectRatio: `${width} / ${height}` }}>
+    // Before the first measure the frame holds the box (or the block's ratio), so the grid does not jump.
+    <div
+      ref={box}
+      className="specimen relative overflow-hidden"
+      style={ratio ? { aspectRatio: String(ratio) } : scale ? { height: h * scale } : { aspectRatio: `${width} / ${height}` }}
+    >
       {scale > 0 && (
         <iframe
           ref={frame}
@@ -68,8 +85,8 @@ export function BlockThumb({
           inert
           loading="lazy"
           onLoad={measure}
-          className="pointer-events-none absolute top-0 left-1/2 origin-top bg-background"
-          style={{ width, height, transform: `translateX(-50%) scale(${scale})` }}
+          className="pointer-events-none absolute left-1/2 origin-top bg-background"
+          style={{ top, width, height, transform: `translateX(-50%) scale(${scale})` }}
         />
       )}
     </div>

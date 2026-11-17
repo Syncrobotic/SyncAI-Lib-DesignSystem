@@ -39,17 +39,24 @@ export default function BlocksPage() {
               </h2>
               <p className="max-w-2xl text-sm text-muted-foreground">{groupIntro[g]}</p>
             </div>
-            <Reveal className="grid items-start gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <Reveal className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {types.map((t) => {
                 const list = blocksOfType(t.slug)
                 const first = list[0]
                 return (
-                  <AppearItem key={t.slug}>
+                  <AppearItem key={t.slug} className="flex">
                     <Link
                       href={`/blocks/${t.slug}`}
-                      className="press group flex flex-col overflow-hidden rounded-md border border-border hover:border-muted-foreground"
+                      className="press group flex w-full flex-col overflow-hidden rounded-md border border-border hover:border-muted-foreground"
                     >
-                      <BlockThumb name={first.name} title={t.title} width={first.viewport === "mobile" ? 390 : 1280} height={first.height} fit={first.fit} />
+                      <BlockThumb
+                        name={first.name}
+                        title={t.title}
+                        width={first.viewport === "mobile" ? 390 : 1280}
+                        height={first.height}
+                        fit={first.fit}
+                        ratio={16 / 10}
+                      />
                       <div className="flex flex-1 flex-col gap-1 border-t border-border bg-card p-4">
                         <span className="flex items-baseline justify-between gap-2">
                           <span className="font-bold group-hover:underline">{t.title}</span>
