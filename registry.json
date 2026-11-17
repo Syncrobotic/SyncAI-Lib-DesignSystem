@@ -2991,6 +2991,500 @@
           }
         ]
       }
+    },
+    {
+      "name": "line-chart-telemetry",
+      "type": "registry:block",
+      "title": "Telemetry over time",
+      "description": "Two series over time with a 1 h / 24 h switch and a table view: the default telemetry chart.",
+      "dependencies": ["recharts@^3"],
+      "registryDependencies": ["@syncrobotic/card", "@syncrobotic/chart", "@syncrobotic/segmented-control"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/line-chart-telemetry.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "line-chart-limit",
+      "type": "registry:block",
+      "title": "Against a limit",
+      "description": "One measurement against its limit: the latest value up top, the limit as a labelled dashed line, a warning only while it is over.",
+      "dependencies": ["recharts@^3", "lucide-react"],
+      "registryDependencies": ["@syncrobotic/card", "@syncrobotic/chart"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/line-chart-limit.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "line-chart-compare",
+      "type": "registry:block",
+      "title": "This period against the last",
+      "description": "This week against last week: the total and the change up top, the earlier period dashed.",
+      "dependencies": ["recharts@^3"],
+      "registryDependencies": ["@syncrobotic/card", "@syncrobotic/chart"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/line-chart-compare.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "area-chart-battery",
+      "type": "registry:block",
+      "title": "Battery over a shift",
+      "description": "One robot's battery over a shift with the return-to-dock level marked; the charge shows as the jump.",
+      "dependencies": ["recharts@^3"],
+      "registryDependencies": ["@syncrobotic/card", "@syncrobotic/chart"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/area-chart-battery.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "area-chart-fleet-states",
+      "type": "registry:block",
+      "title": "Fleet by state",
+      "description": "How the fleet splits between patrolling, charging and idle over the day: stacked step areas that add up to the fleet.",
+      "dependencies": ["recharts@^3"],
+      "registryDependencies": ["@syncrobotic/card", "@syncrobotic/chart"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/area-chart-fleet-states.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "area-chart-cumulative",
+      "type": "registry:block",
+      "title": "Progress to a target",
+      "description": "The running total this month as an area against the plan as a dashed line, ahead or behind said in words.",
+      "dependencies": ["recharts@^3"],
+      "registryDependencies": ["@syncrobotic/card", "@syncrobotic/chart"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/area-chart-cumulative.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "bar-chart-missions",
+      "type": "registry:block",
+      "title": "Grouped by day",
+      "description": "Two counts side by side per day, with totals and a table view.",
+      "dependencies": ["recharts@^3"],
+      "registryDependencies": ["@syncrobotic/card", "@syncrobotic/chart", "@syncrobotic/segmented-control"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/bar-chart-missions.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "bar-chart-ranked",
+      "type": "registry:block",
+      "title": "Ranked categories",
+      "description": "Categories with long names, sorted, as horizontal bars with the value at each end.",
+      "dependencies": ["recharts@^3"],
+      "registryDependencies": ["@syncrobotic/card", "@syncrobotic/chart"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/bar-chart-ranked.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "bar-chart-stacked",
+      "type": "registry:block",
+      "title": "Parts of a whole",
+      "description": "Stacked segments per category with a 2 px gap in the card colour.",
+      "dependencies": ["recharts@^3"],
+      "registryDependencies": ["@syncrobotic/card", "@syncrobotic/chart"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/bar-chart-stacked.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "bar-chart-variance",
+      "type": "registry:block",
+      "title": "Above and below plan",
+      "description": "Positive and negative values in one hue around a drawn zero line, the biggest gap named.",
+      "dependencies": ["recharts@^3"],
+      "registryDependencies": ["@syncrobotic/card", "@syncrobotic/chart"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/bar-chart-variance.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "sparkline-robot-list",
+      "type": "registry:block",
+      "title": "Robot list with trend",
+      "description": "Each robot row with its last 12 hours of battery as a sparkline and the value now.",
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/card", "@syncrobotic/status-glyph"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/sparkline-robot-list.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "sparkline-metric-tiles",
+      "type": "registry:block",
+      "title": "Metric tiles",
+      "description": "Three headline numbers, each with its week as a sparkline; only a change for the worse is coloured.",
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/card"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/sparkline-metric-tiles.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "sparkline-table",
+      "type": "registry:block",
+      "title": "Table with a trend column",
+      "description": "A table where each row's last 14 days are mini bars on one shared scale.",
+      "registryDependencies": ["@syncrobotic/card", "@syncrobotic/table"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/sparkline-table.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "status-tracker-uptime",
+      "type": "registry:block",
+      "title": "Uptime over 30 days",
+      "description": "One cell a day per robot: grey where it ran, colour only on degraded and down days, with a tooltip per day.",
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/card", "@syncrobotic/tooltip"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/status-tracker-uptime.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "status-tracker-runs",
+      "type": "registry:block",
+      "title": "Run history",
+      "description": "The last 20 runs of each route as a strip, newest on the right, with the pass count.",
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/card"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/status-tracker-runs.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "status-tracker-rollout",
+      "type": "registry:block",
+      "title": "Rollout stages",
+      "description": "A rollout as stage lanes: finished stages checked, the running one in progress, later ones waiting.",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/card"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/status-tracker-rollout.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "radial-chart-battery",
+      "type": "registry:block",
+      "title": "Battery rings",
+      "description": "Battery per robot as rings, neutral until low or critical, the number always in the middle.",
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/card"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/radial-chart-battery.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "radial-chart-goal",
+      "type": "registry:block",
+      "title": "Progress to a goal",
+      "description": "One large ring with the share of the plan done and the breakdown beside it in words.",
+      "registryDependencies": ["@syncrobotic/card"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/radial-chart-goal.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "radial-chart-capacity",
+      "type": "registry:block",
+      "title": "Capacity rings",
+      "description": "Several shares of capacity as concentric rings in series colours, each named with its value.",
+      "registryDependencies": ["@syncrobotic/card"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/radial-chart-capacity.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "heatmap-week-hours",
+      "type": "registry:block",
+      "title": "Time of week",
+      "description": "Days by 2-hour slots in one sequential hue, the busiest slot named, a tooltip per cell.",
+      "registryDependencies": ["@syncrobotic/card", "@syncrobotic/tooltip"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/heatmap-week-hours.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "heatmap-zones",
+      "type": "registry:block",
+      "title": "Zones by time of day",
+      "description": "Zones by time slots with the value written in every cell, so the colour only groups.",
+      "registryDependencies": ["@syncrobotic/card", "@syncrobotic/table"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/heatmap-zones.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
     }
   ]
 }

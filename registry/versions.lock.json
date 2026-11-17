@@ -394,5 +394,89 @@
   "agent-skill": {
     "version": "0.8.0",
     "hash": "b0e394a5d3029ea6"
+  },
+  "line-chart-telemetry": {
+    "version": "0.9.0",
+    "hash": "85ba8a13dba7be39"
+  },
+  "line-chart-limit": {
+    "version": "0.9.0",
+    "hash": "3d9c706b96f1227b"
+  },
+  "line-chart-compare": {
+    "version": "0.9.0",
+    "hash": "a8a14d511121e5da"
+  },
+  "area-chart-battery": {
+    "version": "0.9.0",
+    "hash": "bab50ebaf2636e11"
+  },
+  "area-chart-fleet-states": {
+    "version": "0.9.0",
+    "hash": "a0ead38521563294"
+  },
+  "area-chart-cumulative": {
+    "version": "0.9.0",
+    "hash": "27550ba9ecc2f875"
+  },
+  "bar-chart-missions": {
+    "version": "0.9.0",
+    "hash": "fd19a31aacf6a401"
+  },
+  "bar-chart-ranked": {
+    "version": "0.9.0",
+    "hash": "a7b19da8456503dd"
+  },
+  "bar-chart-stacked": {
+    "version": "0.9.0",
+    "hash": "9ff19aa05c341d81"
+  },
+  "bar-chart-variance": {
+    "version": "0.9.0",
+    "hash": "a694d973c3fb537d"
+  },
+  "sparkline-robot-list": {
+    "version": "0.9.0",
+    "hash": "a829139b101c1391"
+  },
+  "sparkline-metric-tiles": {
+    "version": "0.9.0",
+    "hash": "0ecbab4b1697923e"
+  },
+  "sparkline-table": {
+    "version": "0.9.0",
+    "hash": "1388d5f74e5bc037"
+  },
+  "status-tracker-uptime": {
+    "version": "0.9.0",
+    "hash": "a459158ac3a7c0be"
+  },
+  "status-tracker-runs": {
+    "version": "0.9.0",
+    "hash": "c2761ec802c9d6ae"
+  },
+  "status-tracker-rollout": {
+    "version": "0.9.0",
+    "hash": "a66a091de7d3d0dd"
+  },
+  "radial-chart-battery": {
+    "version": "0.9.0",
+    "hash": "60f92f8ec9414c0a"
+  },
+  "radial-chart-goal": {
+    "version": "0.9.0",
+    "hash": "9457395cd06a6488"
+  },
+  "radial-chart-capacity": {
+    "version": "0.9.0",
+    "hash": "c573936711301bd7"
+  },
+  "heatmap-week-hours": {
+    "version": "0.9.0",
+    "hash": "a95fda5d79232154"
+  },
+  "heatmap-zones": {
+    "version": "0.9.0",
+    "hash": "e61d0deae1e1a1d9"
   }
 }
