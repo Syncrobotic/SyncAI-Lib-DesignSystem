@@ -2189,7 +2189,7 @@
       "title": "Data grid",
       "description": "A TanStack Table grid: sorting, pagination, selection, column menus, pinning, resizing, expandable rows, totals, loading, virtual rows.",
       "dependencies": [
-        "@tanstack/react-table",
+        "@tanstack/react-table@^8",
         "@tanstack/react-virtual",
         "lucide-react"
       ],
@@ -2253,7 +2253,7 @@
       "title": "Resizable",
       "description": "Panels resized by dragging the line between them or with the arrow keys, horizontal, vertical or nested (react-resizable-panels).",
       "dependencies": [
-        "react-resizable-panels"
+        "react-resizable-panels@^3"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
