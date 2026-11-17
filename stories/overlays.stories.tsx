@@ -654,3 +654,78 @@ export const CommandRecent: S = {
     </Command>
   ),
 }
+
+/** Actions with their keyboard shortcuts, learned from the palette. */
+export const CommandShortcuts: S = {
+  render: () => (
+    <Command className="max-w-md rounded-md ring-1 ring-border">
+      <CommandInput placeholder="Type a command" />
+      <CommandList>
+        <CommandGroup heading="Actions">
+          <CommandItem>
+            <CirclePlus /> <span className="flex-1">New mission</span> <CommandShortcut>N</CommandShortcut>
+          </CommandItem>
+          <CommandItem>
+            <Map /> <span className="flex-1">Open map</span> <CommandShortcut>G M</CommandShortcut>
+          </CommandItem>
+          <CommandItem>
+            <Bell /> <span className="flex-1">Alarms</span> <CommandShortcut>G A</CommandShortcut>
+          </CommandItem>
+          <CommandItem>
+            <Keyboard /> <span className="flex-1">All shortcuts</span> <CommandShortcut>?</CommandShortcut>
+          </CommandItem>
+        </CommandGroup>
+      </CommandList>
+    </Command>
+  ),
+}
+
+/** Items with a second line, for actions whose name alone is not enough. */
+export const CommandDescriptions: S = {
+  render: () => (
+    <Command className="max-w-md rounded-md ring-1 ring-border">
+      <CommandInput placeholder="What do you want to do?" />
+      <CommandList>
+        <CommandGroup heading="Fleet">
+          {[
+            ["Send all to dock", "Every robot finishes its stop, then charges."],
+            ["Pause patrols", "Robots hold where they are until resumed."],
+            ["Export today’s events", "CSV of every event since 00:00."],
+          ].map(([t, d]) => (
+            <CommandItem key={t} value={t} className="h-auto py-2">
+              <span className="flex flex-col">
+                <span>{t}</span>
+                <span className="text-xs text-muted-foreground">{d}</span>
+              </span>
+            </CommandItem>
+          ))}
+        </CommandGroup>
+      </CommandList>
+    </Command>
+  ),
+}
+
+/** A destructive action stays last, apart, and names what it does. */
+export const CommandDestructive: S = {
+  render: () => (
+    <Command className="max-w-md rounded-md ring-1 ring-border">
+      <CommandInput placeholder="Actions for Patrol dog 7F3A" />
+      <CommandList>
+        <CommandGroup heading="Patrol dog 7F3A">
+          <CommandItem>
+            <Map /> Show on map
+          </CommandItem>
+          <CommandItem>
+            <Pencil /> Rename
+          </CommandItem>
+        </CommandGroup>
+        <CommandSeparator />
+        <CommandGroup>
+          <CommandItem className="text-danger [&_svg]:text-danger">
+            <Trash2 /> Remove 7F3A from this site
+          </CommandItem>
+        </CommandGroup>
+      </CommandList>
+    </Command>
+  ),
+}

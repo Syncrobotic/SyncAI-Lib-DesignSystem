@@ -21,13 +21,30 @@ export const Notice: S = {
 }
 export const Reversible: S = {
   args: {
-    children: <IslandNotice tone="info" icon={Zap} title="Returning to the charging dock" meta="7F3A · just now" action={{ label: "Cancel", onClick: fn() }} onDismiss={fn()} />,
+    children: (
+      <IslandNotice
+        tone="info"
+        icon={Zap}
+        title="Returning to the charging dock"
+        meta="7F3A · just now"
+        action={{ label: "Cancel", onClick: fn() }}
+        onDismiss={fn()}
+      />
+    ),
   },
 }
 export const FailureStaysUntilHandled: S = {
   args: {
     children: (
-      <IslandNotice tone="danger" icon={CircleAlert} title="Not dispatched: connection lost" meta="2B10 did not receive the command" action={{ label: "Retry", onClick: fn() }} emphasis onDismiss={fn()} />
+      <IslandNotice
+        tone="danger"
+        icon={CircleAlert}
+        title="Not dispatched: connection lost"
+        meta="2B10 did not receive the command"
+        action={{ label: "Retry", onClick: fn() }}
+        emphasis
+        onDismiss={fn()}
+      />
     ),
   },
 }
@@ -36,11 +53,24 @@ export const BluetoothOnlyPersistent: S = {
     tone: "neutral",
     online: false,
     edge: "warning",
-    children: <IslandNotice tone="warning" icon={Bluetooth} title="Bluetooth only" meta="Emergency stop and device status still work" action={{ label: "Retry", onClick: fn() }} persistent />,
+    children: (
+      <IslandNotice
+        tone="warning"
+        icon={Bluetooth}
+        title="Bluetooth only"
+        meta="Emergency stop and device status still work"
+        action={{ label: "Retry", onClick: fn() }}
+        persistent
+      />
+    ),
   },
 }
 export const StoppedPersistent: S = {
-  args: { tone: "danger", edge: "danger", children: <IslandNotice tone="danger" icon={Square} title="Night shift · Pixel 8 triggered an emergency stop" meta="7F3A · 21:08" persistent /> },
+  args: {
+    tone: "danger",
+    edge: "danger",
+    children: <IslandNotice tone="danger" icon={Square} title="Night shift · Pixel 8 triggered an emergency stop" meta="7F3A · 21:08" persistent />,
+  },
 }
 
 const fleetAlarms: AlarmData[] = [

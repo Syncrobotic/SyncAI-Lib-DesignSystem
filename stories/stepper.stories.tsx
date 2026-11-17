@@ -124,3 +124,48 @@ export const StepperVerticalChecklist: S = {
     </Stepper>
   ),
 }
+
+/** Any step can be opened, in any order: a settings wizard where nothing depends on the step before. */
+export const StepperFreeOrder: S = {
+  render: function F() {
+    const [step, setStep] = React.useState(2)
+    return (
+      <Stepper value={step} onValueChange={setStep} navigable="all">
+        {["Profile", "Notifications", "Security", "Billing"].map((t) => (
+          <StepperItem key={t} title={t} />
+        ))}
+      </Stepper>
+    )
+  },
+}
+
+/** A step that can't be reached yet stays dimmed and says why. */
+export const StepperDisabledStep: S = {
+  render: () => (
+    <Stepper value={2}>
+      <StepperItem title="Connect" />
+      <StepperItem title="Map the site" />
+      <StepperItem title="Lift access" description="Needs the building’s API key" disabled />
+      <StepperItem title="Test run" />
+    </Stepper>
+  ),
+}
+
+/** Vertical, with the failed step open and what to do about it. */
+export const StepperVerticalError: S = {
+  render: () => (
+    <Stepper value={3} errors={[2]} orientation="vertical">
+      <StepperItem title="Connect" description="Paired with 7F3A" />
+      <StepperItem title="Map the site" description="Map has gaps">
+        <div className="flex flex-col gap-3 rounded-md p-4 text-sm ring-1 ring-danger">
+          <span>Two rooms were not reached: Hall B storage, Dock 2 office.</span>
+          <Button size="sm" variant="outline" className="self-start">
+            Walk those rooms again
+          </Button>
+        </div>
+      </StepperItem>
+      <StepperItem title="Set routes" />
+      <StepperItem title="Test run" />
+    </Stepper>
+  ),
+}

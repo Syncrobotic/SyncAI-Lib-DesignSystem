@@ -113,3 +113,61 @@ export const CalendarWithEvents: S = {
     )
   },
 }
+
+/** Only today and later: past days are disabled. */
+export const CalendarFutureOnly: S = {
+  render: function F() {
+    const [d, setD] = React.useState<Date | undefined>(addDays(day, 3))
+    return (
+      <Calendar
+        mode="single"
+        selected={d}
+        onSelect={setD}
+        defaultMonth={day}
+        today={day}
+        disabled={{ before: day }}
+        className="rounded-md bg-card p-3 ring-1 ring-border"
+      />
+    )
+  },
+}
+
+/** Weeks starting on Sunday, for sites that count them that way. */
+export const CalendarSundayFirst: S = {
+  render: () => <Calendar mode="single" selected={day} defaultMonth={day} today={day} weekStartsOn={0} className="rounded-md bg-card p-3 ring-1 ring-border" />,
+}
+
+/** A range of at most 7 days: maintenance windows can't be longer. */
+export const CalendarRangeMaxWeek: S = {
+  render: function R() {
+    const [r, setR] = React.useState<DateRange | undefined>({ from: day, to: addDays(day, 2) })
+    return (
+      <div className="flex flex-col gap-2">
+        <Calendar mode="range" max={7} selected={r} onSelect={setR} defaultMonth={day} today={day} className="rounded-md bg-card p-3 ring-1 ring-border" />
+        <p className="text-sm text-muted-foreground">Up to 7 days</p>
+      </div>
+    )
+  },
+}
+
+/** A footer under the grid says what is picked, in words. */
+export const CalendarFooter: S = {
+  render: function F() {
+    const [d, setD] = React.useState<Date | undefined>(day)
+    return (
+      <Calendar
+        mode="single"
+        selected={d}
+        onSelect={setD}
+        defaultMonth={day}
+        today={day}
+        footer={
+          <p className="pt-3 text-sm text-muted-foreground">
+            {d ? `Patrol on ${d.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" })}` : "Pick a day"}
+          </p>
+        }
+        className="rounded-md bg-card p-3 ring-1 ring-border"
+      />
+    )
+  },
+}
