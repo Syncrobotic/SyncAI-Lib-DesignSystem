@@ -15,15 +15,18 @@ export type StoryFile =
   | "feedback"
   | "navigation"
   | "overlays"
+  | "charts"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
-export const groups = ["Actions", "Inputs", "Display", "Feedback", "Navigation", "Overlays", "Robot shell", "Hooks"] as const
+export const groups = ["Actions", "Inputs", "Display", "Charts", "Feedback", "Navigation", "Overlays", "Robot shell", "Hooks"] as const
 export type Group = (typeof groups)[number]
 
 type Entry = {
   group: Group
   examples?: Examples
+  /** Examples use the card's full width (charts). */
+  wide?: boolean
   /** Usage rules shown after the examples. */
   rules?: string[]
   /** Keys and what they do, shown as a table. Only what this component adds beyond Tab and focus. */
@@ -202,6 +205,19 @@ const entries: Record<string, Entry> = {
     group: "Overlays",
     examples: { file: "overlays", prefix: "Tooltip" },
     rules: ["Touch screens never show tooltips. Never put information the operator needs in one."],
+  },
+  chart: {
+    group: "Charts",
+    wide: true,
+    examples: { file: "charts", prefix: "Chart" },
+    rules: [
+      "Colour is the series' identity, not its rank: slots --chart-1…5 in a fixed order, kept with the series when others are filtered out. Never a status colour as a series.",
+      "Two series or more: a legend above the plot. One series: no legend; the title names it.",
+      "Every chart offers its numbers as a table (ChartTable), for exact values and for anyone who cannot tell two hues apart.",
+      "One y axis. Two measures on different scales are two charts.",
+      "Lines 2 px; bars with 4 px rounded data ends and a 2 px gap; a horizontal hairline grid; no axis lines.",
+      "Data arrives in --motion-base (useChartMotion) and does not move under reduced motion.",
+    ],
   },
   command: {
     group: "Overlays",

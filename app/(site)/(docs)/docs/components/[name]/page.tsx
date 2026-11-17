@@ -79,7 +79,8 @@ export default async function ComponentPage({ params }: Props) {
                 key={n}
                 id={`example-${n}`}
                 title={storyTitle(n)}
-                preview={<Stage file={item.examples!.file} name={n} className="w-full" />}
+                wide={item.wide}
+                preview={<Stage file={item.examples!.file} name={n} className="w-full" wide={item.wide} />}
                 install={installBlock}
                 code={<CodeBlock code={storySource(item.examples!.file, n)} title={`${storyTitle(n)}.tsx`} />}
               />

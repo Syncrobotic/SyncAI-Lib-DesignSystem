@@ -169,6 +169,16 @@ type AppShellProps = {
   children: React.ReactNode
 }
 
+/**
+ * Text beside the rail's icons. It is always rendered, so opening the rail never moves the icons or the logo: the
+ * column of icons stays on the rail's centre line and the words fade in from 4 px to their left (--motion-base).
+ */
+const reveal = (shown: boolean) =>
+  cn(
+    "whitespace-nowrap transition-[opacity,translate] duration-(--motion-base) ease-(--ease-standard) motion-reduce:transition-none",
+    shown ? "translate-x-0 opacity-100" : "-translate-x-1 opacity-0",
+  )
+
 function Nav({
   nav,
   current,
@@ -187,7 +197,7 @@ function Nav({
       {nav.map((g, i) => (
         <div key={g.label ?? i} className="flex flex-col gap-1">
           {/* Collapsed, a group label would be a clipped word; keep its height so icons do not jump when the rail opens. */}
-          {g.label && <p className={cn("h-5 truncate px-3 text-xs font-medium text-muted-foreground", collapsed && "invisible")}>{g.label}</p>}
+          {g.label && <p className={cn("h-5 px-3 text-xs font-medium text-muted-foreground", reveal(!collapsed))}>{g.label}</p>}
           {g.items.map((item) => {
             const active = item.href === current
             return (
@@ -203,14 +213,22 @@ function Nav({
                   active ? "bg-accent font-medium text-foreground" : "text-muted-foreground hover:bg-accent hover:text-foreground",
                 )}
               >
-                <item.icon aria-hidden="true" className="size-5 shrink-0" />
-                {!collapsed && <span className="flex-1 truncate">{item.label}</span>}
+                {/* 24 px box 12 px into a 48 px item: the icon's centre sits on the rail's centre line (36 px). */}
+                <span className="flex size-6 shrink-0 items-center justify-center">
+                  <item.icon aria-hidden="true" className="size-5" />
+                </span>
+                <span className={cn("flex-1", reveal(!collapsed))}>{item.label}</span>
                 {item.count ? (
-                  collapsed ? (
-                    <span aria-hidden="true" className="absolute top-2 right-2 size-2 rounded-full bg-danger" />
-                  ) : (
-                    <span className="text-xs font-medium text-danger tabular-nums">{item.count}</span>
-                  )
+                  <>
+                    <span
+                      aria-hidden="true"
+                      className={cn(
+                        "absolute top-2 left-8 size-2 rounded-full bg-danger transition-opacity duration-(--motion-base)",
+                        !collapsed && "opacity-0",
+                      )}
+                    />
+                    <span className={cn("text-xs font-medium text-danger tabular-nums", reveal(!collapsed))}>{item.count}</span>
+                  </>
                 ) : null}
               </Link>
             )
@@ -249,15 +267,11 @@ export function SidebarUserMenu({
           <Avatar>
             <AvatarFallback>{user.initials}</AvatarFallback>
           </Avatar>
-          {!collapsed && (
-            <>
-              <span className="flex min-w-0 flex-1 flex-col">
-                <span className="truncate text-sm font-medium">{user.name}</span>
-                {user.email && <span className="truncate text-xs text-muted-foreground">{user.email}</span>}
-              </span>
-              <ChevronsUpDown aria-hidden="true" className="size-4 shrink-0 text-muted-foreground" />
-            </>
-          )}
+          <span className={cn("flex min-w-0 flex-1 flex-col", reveal(!collapsed))}>
+            <span className="truncate text-sm font-medium">{user.name}</span>
+            {user.email && <span className="truncate text-xs text-muted-foreground">{user.email}</span>}
+          </span>
+          <ChevronsUpDown aria-hidden="true" className={cn("size-4 shrink-0 text-muted-foreground", reveal(!collapsed))} />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent side={collapsed ? "right" : "top"} align={collapsed ? "end" : "start"} className="w-(--radix-dropdown-menu-trigger-width) min-w-56">
@@ -481,16 +495,17 @@ export function AppShell({
     setPeek("closed")
   }
 
+  // The logo sits in a 48 px box 12 px in, so its centre is the rail's centre line, open or closed; only the name moves.
   const brand = (
-    <span className="flex min-w-0 items-center gap-2">
-      <span className="flex size-7 shrink-0 items-center justify-center">
+    <span className="flex min-w-0 items-center">
+      <span className="flex w-12 shrink-0 items-center justify-center">
         {logo ?? (
           <span aria-hidden="true" className="flex size-7 items-center justify-center rounded-sm bg-primary text-sm font-bold text-primary-foreground">
             {product.slice(0, 1)}
           </span>
         )}
       </span>
-      {expanded && <span className="truncate text-sm font-bold">{product}</span>}
+      <span className={cn("truncate text-sm font-bold", reveal(expanded))}>{product}</span>
     </span>
   )
 
@@ -514,9 +529,9 @@ export function AppShell({
         >
           {/* Flush: always lined, level with the top bar's line. Inset: lined only as a rail, where the logo and the avatar
               need setting apart from a column of bare icons; open, the labels and group names do that. */}
-          <div className={cn("flex h-(--h-row) shrink-0 items-center gap-2 border-b pr-3 pl-6", !inset || !expanded ? "border-border" : "border-transparent")}>
+          <div className={cn("flex h-(--h-row) shrink-0 items-center gap-2 border-b px-3", !inset || !expanded ? "border-border" : "border-transparent")}>
             <span className="min-w-0 flex-1">{brand}</span>
-            {expanded && (
+            <span inert={!expanded} className={cn("shrink-0", reveal(expanded))}>
               <button
                 type="button"
                 aria-label={open ? "Collapse sidebar" : "Keep sidebar open"}
@@ -529,7 +544,7 @@ export function AppShell({
               >
                 {open ? <PanelLeftClose aria-hidden="true" className="size-5" /> : <PanelLeftOpen aria-hidden="true" className="size-5" />}
               </button>
-            )}
+            </span>
           </div>
           <div className="flex-1 overflow-x-hidden overflow-y-auto px-3 py-2">
             <Nav nav={nav} current={current} collapsed={!expanded} linkAs={linkAs} onNavigate={onNavigate} />

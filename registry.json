@@ -1129,6 +1129,35 @@
       }
     },
     {
+      "name": "chart",
+      "type": "registry:ui",
+      "title": "Chart",
+      "description": "Line, area and bar charts on Recharts, in the categorical palette, with a crosshair tooltip, a legend and a table view.",
+      "dependencies": [
+        "recharts"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/chart.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.7.0",
+        "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
       "name": "tabs",
       "type": "registry:ui",
       "title": "Tabs",

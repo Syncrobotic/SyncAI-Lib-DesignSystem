@@ -151,6 +151,10 @@
     "version": "0.5.0",
     "hash": "f4ba057dce546919"
   },
+  "chart": {
+    "version": "0.7.0",
+    "hash": "ac9310e3713e52c9"
+  },
   "tabs": {
     "version": "0.6.0",
     "hash": "117f29a1e4e69300"
@@ -185,7 +189,7 @@
   },
   "command": {
     "version": "0.7.0",
-    "hash": "85c7bb66de8b09d6"
+    "hash": "547421abc888f584"
   },
   "stats-cards": {
     "version": "0.6.0",
@@ -205,7 +209,7 @@
   },
   "app-shell": {
     "version": "0.7.0",
-    "hash": "63399bb6e244cd46"
+    "hash": "ba125563165db985"
   },
   "console-overview": {
     "version": "0.6.0",
