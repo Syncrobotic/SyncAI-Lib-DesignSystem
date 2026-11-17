@@ -20,6 +20,8 @@ export async function openStory(page: Page, id: string, theme: (typeof themes)[n
   await page.goto(`/iframe.html?id=${id}&viewMode=story&globals=theme:${theme}`)
   await page.waitForSelector("#storybook-root > *")
   await page.waitForFunction((dark) => document.documentElement.classList.contains("dark") === dark, theme === "dark")
+  // fonts.ready resolves before a face has even started loading; ask for the kit's faces explicitly.
+  await page.evaluate(() => Promise.all(["400 16px Geist", "500 16px Geist", "700 16px Geist", "400 16px 'Geist Mono'"].map((f) => document.fonts.load(f))))
   await page.evaluate(() => document.fonts.ready)
   await page.clock.runFor(1000)
 }
