@@ -1,4 +1,5 @@
 import registry from "../registry.json"
+import { placement } from "./block-types"
 import { AppShellDemo } from "./app-shell-demo"
 import { TopBarShellDemo } from "./top-bar-shell-demo"
 import { SignIn } from "@/registry/syncrobotic/blocks/sign-in"
@@ -19,9 +20,7 @@ import { RobotStatusCard } from "@/registry/syncrobotic/blocks/robot-status-card
 import { StatsCards } from "@/registry/syncrobotic/blocks/stats-cards"
 
 // Blocks are composed sections. Each renders alone at /preview/<name> so the docs can frame it at any width.
-export const products = ["App shells", "Data tools", "Forms and settings", "Sign-in and states", "Dashboard", "Control app", "Marketing"] as const
 type Meta = {
-  product: (typeof products)[number]
   viewport: "desktop" | "mobile"
   /** Starting height. Sections then grow or shrink to their content; app shells fill this height like a screen. */
   height: number
@@ -31,21 +30,19 @@ type Meta = {
 const meta: Record<string, Meta> = {
   // App shells: whole screens for internal engineering tools. Install one, replace the sample data, and you have a prototype.
   "app-shell": {
-    product: "App shells",
     viewport: "desktop",
     height: 720,
     render: () => <AppShellDemo />,
   },
   // Data tools: internal tools for datasets, after DataCore. Same shell, same rules.
-  "data-catalog": { product: "Data tools", viewport: "desktop", height: 760, render: () => <DataCatalog /> },
-  "dataset-detail": { product: "Data tools", viewport: "desktop", height: 820, render: () => <DatasetDetail /> },
-  "governance-todo": { product: "Data tools", viewport: "desktop", height: 600, render: () => <GovernanceTodo /> },
-  "settings-page": { product: "Forms and settings", viewport: "desktop", height: 820, render: () => <SettingsPage /> },
-  "record-form": { product: "Forms and settings", viewport: "desktop", height: 820, render: () => <RecordForm /> },
-  "users-roles": { product: "Forms and settings", viewport: "desktop", height: 620, render: () => <UsersRoles /> },
-  "sign-in": { product: "Sign-in and states", viewport: "desktop", height: 640, render: () => <SignIn /> },
+  "data-catalog": { viewport: "desktop", height: 760, render: () => <DataCatalog /> },
+  "dataset-detail": { viewport: "desktop", height: 820, render: () => <DatasetDetail /> },
+  "governance-todo": { viewport: "desktop", height: 600, render: () => <GovernanceTodo /> },
+  "settings-page": { viewport: "desktop", height: 820, render: () => <SettingsPage /> },
+  "record-form": { viewport: "desktop", height: 820, render: () => <RecordForm /> },
+  "users-roles": { viewport: "desktop", height: 620, render: () => <UsersRoles /> },
+  "sign-in": { viewport: "desktop", height: 640, render: () => <SignIn /> },
   "status-pages": {
-    product: "Sign-in and states",
     viewport: "desktop",
     height: 640,
     render: () => (
@@ -64,14 +61,13 @@ const meta: Record<string, Meta> = {
       </div>
     ),
   },
-  "top-bar-shell": { product: "App shells", viewport: "desktop", height: 720, render: () => <TopBarShellDemo /> },
-  "console-overview": { product: "App shells", viewport: "desktop", height: 900, render: () => <ConsoleOverview /> },
-  "list-detail": { product: "App shells", viewport: "desktop", height: 720, render: () => <ListDetail /> },
-  "event-log": { product: "App shells", viewport: "desktop", height: 720, render: () => <EventLog /> },
-  "map-workspace": { product: "App shells", viewport: "desktop", height: 720, render: () => <MapWorkspace /> },
+  "top-bar-shell": { viewport: "desktop", height: 720, render: () => <TopBarShellDemo /> },
+  "console-overview": { viewport: "desktop", height: 900, render: () => <ConsoleOverview /> },
+  "list-detail": { viewport: "desktop", height: 720, render: () => <ListDetail /> },
+  "event-log": { viewport: "desktop", height: 720, render: () => <EventLog /> },
+  "map-workspace": { viewport: "desktop", height: 720, render: () => <MapWorkspace /> },
 
   "stats-cards": {
-    product: "Dashboard",
     viewport: "desktop",
     height: 520,
     render: () => (
@@ -81,7 +77,6 @@ const meta: Record<string, Meta> = {
     ),
   },
   "fleet-table": {
-    product: "Dashboard",
     viewport: "desktop",
     height: 640,
     render: () => (
@@ -91,7 +86,6 @@ const meta: Record<string, Meta> = {
     ),
   },
   "robot-status-card": {
-    product: "Control app",
     viewport: "mobile",
     height: 640,
     render: () => (
@@ -100,9 +94,13 @@ const meta: Record<string, Meta> = {
       </div>
     ),
   },
-  "marketing-hero": { product: "Marketing", viewport: "desktop", height: 760, render: () => <MarketingHero /> },
+  "marketing-hero": { viewport: "desktop", height: 760, render: () => <MarketingHero /> },
 }
 
-export const blocks = registry.items.filter((i) => i.type === "registry:block" && i.name in meta).map((i) => ({ ...i, ...meta[i.name] }))
+export const blocks = Object.keys(placement)
+  .map((name) => registry.items.find((i) => i.type === "registry:block" && i.name === name))
+  .filter((i): i is NonNullable<typeof i> => !!i && i.name in meta)
+  .map((i) => ({ ...i, ...meta[i.name], ...placement[i.name] }))
 
 export const getBlock = (name: string) => blocks.find((b) => b.name === name)
+export const blocksOfType = (slug: string) => blocks.filter((b) => b.type === slug)

@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell v0.8.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
+// @syncrobotic/app-shell v0.9.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -278,7 +278,7 @@ export function SidebarUserMenu({
       <DropdownMenuTrigger asChild>
         <button
           type="button"
-          aria-label={collapsed ? `${user.name}, account menu` : undefined}
+          aria-label={collapsed ? `${user.name}, ${user.initials}, account menu` : undefined}
           className={cn(
             "press flex w-full items-center gap-3 rounded-xs px-3 text-left hover:bg-accent data-[state=open]:bg-accent",
             // As a rail only the avatar shows, so the row is 44 px; opening it grows to 56 for the name and email (--motion-sheet).

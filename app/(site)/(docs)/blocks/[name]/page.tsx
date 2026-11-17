@@ -1,69 +1,140 @@
 import type { Metadata } from "next"
+import Link from "next/link"
+import { notFound, permanentRedirect } from "next/navigation"
 import { aiPrompt, blockMarkdown } from "@/site/ai"
 import { CopyButton } from "@/registry/syncrobotic/ui/copy-button"
 import { pageMeta } from "@/site/config"
-import Link from "next/link"
-import { notFound } from "next/navigation"
 import { BlockFrame } from "@/site/block-frame"
-import { blocks, getBlock } from "@/site/blocks"
-import { readSource } from "@/site/catalog"
+import { blocks, blocksOfType, getBlock } from "@/site/blocks"
+import { blockHref, blockTypes, getBlockType } from "@/site/block-types"
+import { getItem, readSource } from "@/site/catalog"
 import { CodeBlock } from "@/site/code-block"
+import { Dot, H2, PageTitle, Rules } from "@/site/prose"
+import { AppearItem, Reveal } from "@/site/appear"
 
+// One page per block type, like one page per component: every block of the type, each with its preview, code and install.
+// A block's own name still works as a URL (old links, the markdown twins) and leads to its place on the type page.
 export const dynamicParams = false
-export const generateStaticParams = () => blocks.map((b) => ({ name: b.name }))
+export const generateStaticParams = () => [
+  ...blockTypes.filter((t) => blocksOfType(t.slug).length > 0).map((t) => ({ name: t.slug })),
+  ...blocks.filter((b) => !getBlockType(b.name)).map((b) => ({ name: b.name })),
+]
 
 type Props = { params: Promise<{ name: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const b = getBlock((await params).name)
-  if (!b) return {}
-  return pageMeta({ title: `${b.title} — block`, description: b.description ?? "", path: `/blocks/${b.name}` })
+  const t = getBlockType((await params).name)
+  if (!t) return {}
+  return pageMeta({ title: `${t.title} blocks`, description: t.description, path: `/blocks/${t.slug}` })
 }
 
-export default async function BlockPage({ params }: Props) {
-  const b = getBlock((await params).name)
-  if (!b) notFound()
-  const uses = (b.registryDependencies ?? []).filter((d) => d !== "@syncrobotic/cn").map((d) => d.replace("@syncrobotic/", ""))
+export default async function BlockTypePage({ params }: Props) {
+  const name = (await params).name
+  const type = getBlockType(name)
+  if (!type) {
+    const b = getBlock(name)
+    if (b) permanentRedirect(`/blocks/${b.type}#${b.name}`)
+    notFound()
+  }
+  const list = blocksOfType(type.slug)
+  if (list.length === 0) notFound()
+
   return (
     <article>
-      <Link href="/blocks" className="text-sm text-muted-foreground hover:text-foreground">
-        ← All blocks
-      </Link>
-      <header className="flex flex-col gap-2 pt-6 pb-8">
-        <p className="text-sm font-medium text-muted-foreground">{b.product}</p>
-        <h1 className="text-3xl font-bold">{b.title}</h1>
-        <p className="max-w-2xl text-muted-foreground">{b.description}</p>
-        <div className="flex flex-wrap gap-2 pt-2">
-          <CopyButton value={blockMarkdown(b.name) ?? ""} variant="outline" label="Copy as Markdown">
-            Markdown
-          </CopyButton>
-          <CopyButton value={aiPrompt(b.title, `/blocks/${b.name}`, b.name)} variant="outline" label="Copy prompt for AI">
-            Prompt
-          </CopyButton>
-        </div>
-      </header>
+      <PageTitle eyebrow={`Blocks · ${type.group} · ${list.length} ${list.length === 1 ? "block" : "blocks"}`} title={type.title} lead={type.description} />
 
-      <div className="flex flex-col gap-3 pb-8">
-        <CodeBlock code={`npx shadcn add @syncrobotic/${b.name}`} lang="bash" title="Install" />
-        <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-          Built from
-          {uses.map((u) => (
-            <Link key={u} href={`/docs/components/${u}`} className="rounded-xs bg-muted px-2 py-1 font-mono text-xs hover:bg-accent">
-              {u}
-            </Link>
-          ))}
+      <section aria-labelledby="overview" className="grid gap-6 sm:grid-cols-2">
+        <h2 id="overview" className="sr-only">
+          Overview
+        </h2>
+        <div>
+          <h3 className="pb-2 text-sm font-bold">When to use</h3>
+          <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
+            {type.use.map((u) => (
+              <li key={u} className="flex gap-3">
+                <Dot />
+                <span>{u}</span>
+              </li>
+            ))}
+          </ul>
         </div>
+        {type.instead && (
+          <div>
+            <h3 className="pb-2 text-sm font-bold">Use something else</h3>
+            <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
+              {type.instead.map((u) => (
+                <li key={u} className="flex gap-3">
+                  <Dot />
+                  <span>{u}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </section>
+
+      <H2 id="blocks">Blocks</H2>
+      <div className="flex flex-col gap-section-sm">
+        {list.map((b) => {
+          const uses = (b.registryDependencies ?? []).filter((d) => d !== "@syncrobotic/cn").map((d) => d.replace("@syncrobotic/", ""))
+          return (
+            <section key={b.name} id={b.name} aria-labelledby={`${b.name}-title`} className="flex scroll-mt-20 flex-col gap-3">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div className="flex max-w-2xl flex-col gap-1">
+                  <h3 id={`${b.name}-title`} className="text-lg font-bold">
+                    {b.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">{b.description}</p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <CopyButton value={blockMarkdown(b.name) ?? ""} variant="outline" label={`Copy ${b.title} as Markdown`}>
+                    Markdown
+                  </CopyButton>
+                  <CopyButton value={aiPrompt(b.title, `/blocks/${type.slug}#${b.name}`, b.name)} variant="outline" label={`Copy a prompt for ${b.title}`}>
+                    Prompt
+                  </CopyButton>
+                </div>
+              </div>
+              <CodeBlock code={`npx shadcn add @syncrobotic/${b.name}`} lang="bash" title="Install" />
+              {uses.length > 0 && (
+                <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+                  Built from
+                  {/* A dependency is a component (its page) or another block (its place on its type page). */}
+                  {uses.map((u) => (
+                    <Link
+                      key={u}
+                      href={getItem(u) ? `/docs/components/${u}` : blockHref(u)}
+                      className="rounded-xs bg-muted px-2 py-1 font-mono text-xs hover:bg-accent"
+                    >
+                      {u}
+                    </Link>
+                  ))}
+                </div>
+              )}
+              <BlockFrame
+                name={b.name}
+                height={b.height}
+                fit={b.fit}
+                initial={b.viewport}
+                code={b.files.map((f) => (
+                  <CodeBlock key={f.path} code={readSource(f.path)} title={f.path} />
+                ))}
+              />
+            </section>
+          )
+        })}
       </div>
 
-      <BlockFrame
-        name={b.name}
-        height={b.height}
-        fit={["App shells", "Data tools", "Forms and settings"].includes(b.product) || b.name === "sign-in" ? "screen" : "content"}
-        initial={b.viewport}
-        code={b.files.map((f) => (
-          <CodeBlock key={f.path} code={readSource(f.path)} title={f.path} />
-        ))}
-      />
+      {type.rules && (
+        <>
+          <H2 id="usage">Usage rules</H2>
+          <Reveal>
+            <AppearItem>
+              <Rules rules={type.rules} />
+            </AppearItem>
+          </Reveal>
+        </>
+      )}
     </article>
   )
 }
