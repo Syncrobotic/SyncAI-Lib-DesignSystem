@@ -1,5 +1,6 @@
+import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
-import { Copy, Ellipsis, Filter, Info, Keyboard, PanelRight, Pencil, Trash2 } from "lucide-react"
+import { Bot, CirclePlus, Copy, Ellipsis, Filter, Info, Keyboard, LayoutDashboard, Map, PanelRight, Pencil, Search, Trash2 } from "lucide-react"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,6 +13,17 @@ import {
   AlertDialogTrigger,
 } from "@/registry/syncrobotic/ui/alert-dialog"
 import { Button } from "@/registry/syncrobotic/ui/button"
+import {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "@/registry/syncrobotic/ui/command"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/registry/syncrobotic/ui/dialog"
 import {
   DropdownMenu,
@@ -295,3 +307,67 @@ export const DropdownMenuWithCheckboxes: S = {
     </DropdownMenu>
   ),
 }
+
+const PaletteResults = () => (
+  <>
+    <CommandEmpty>No robot, page or action matches. Try a robot ID such as 7F3A.</CommandEmpty>
+    <CommandGroup heading="Robots">
+      <CommandItem value="Patrol dog 7F3A">
+        <Bot /> <span className="flex-1">Patrol dog 7F3A</span>
+        <span className="text-xs text-muted-foreground">Patrolling</span>
+      </CommandItem>
+      <CommandItem value="Patrol dog 2B10">
+        <Bot /> <span className="flex-1">Patrol dog 2B10</span>
+        <span className="text-xs text-muted-foreground">Docked</span>
+      </CommandItem>
+    </CommandGroup>
+    <CommandSeparator />
+    <CommandGroup heading="Pages">
+      <CommandItem>
+        <LayoutDashboard /> Overview
+      </CommandItem>
+      <CommandItem>
+        <Map /> Map
+      </CommandItem>
+    </CommandGroup>
+    <CommandGroup heading="Actions">
+      <CommandItem>
+        <CirclePlus /> New mission <CommandShortcut>N</CommandShortcut>
+      </CommandItem>
+    </CommandGroup>
+  </>
+)
+
+/** Inline: the same list in a panel, e.g. a picker. */
+export const CommandInline: S = {
+  render: () => (
+    <div className="p-6">
+      <Command className="max-w-md rounded-md ring-1 ring-border">
+        <CommandInput placeholder="Search robots, pages and actions" />
+        <CommandList>
+          <PaletteResults />
+        </CommandList>
+      </Command>
+    </div>
+  ),
+}
+
+const Palette = ({ open: initial = false }: { open?: boolean }) => {
+  const [open, setOpen] = React.useState(initial)
+  return (
+    <div className="p-6">
+      <Button variant="secondary" onClick={() => setOpen(true)}>
+        <Search /> Search <CommandShortcut className="ml-2">⌘K</CommandShortcut>
+      </Button>
+      <CommandDialog open={open} onOpenChange={setOpen}>
+        <CommandInput placeholder="Search robots, pages and actions" />
+        <CommandList>
+          <PaletteResults />
+        </CommandList>
+      </CommandDialog>
+    </div>
+  )
+}
+/** The ⌘K palette. In an app, AppShell's search prop wires the field, the scope and the shortcut. */
+export const CommandPalette: S = { render: () => <Palette /> }
+export const CommandPaletteOpen: S = { render: () => <Palette open /> }

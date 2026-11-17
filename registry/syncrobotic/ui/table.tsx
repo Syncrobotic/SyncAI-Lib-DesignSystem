@@ -1,11 +1,17 @@
-// @syncrobotic/table v0.5.0 · update: npx shadcn add @syncrobotic/table --overwrite
+// @syncrobotic/table v0.8.0 · update: npx shadcn add @syncrobotic/table --overwrite
 import * as React from "react"
+import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 /** Dense data for dashboards. Numbers are tabular by default; right-align numeric columns. */
 export function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
-    <div data-slot="table-container" className="relative w-full overflow-x-auto rounded-md ring-1 ring-border">
+    <div
+      data-slot="table-container"
+      // A table wider than the screen scrolls; keyboard users reach it with Tab and scroll it with the arrow keys.
+      tabIndex={0}
+      className="relative w-full overflow-x-auto rounded-md ring-1 ring-border focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+    >
       <table data-slot="table" className={cn("w-full caption-bottom text-sm", className)} {...props} />
     </div>
   )
@@ -23,8 +29,40 @@ export function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
   return <tr data-slot="table-row" className={cn("border-b border-border data-[state=selected]:bg-accent", className)} {...props} />
 }
 
-export function TableHead({ className, ...props }: React.ComponentProps<"th">) {
-  return <th data-slot="table-head" className={cn("h-(--h-md) px-4 text-left align-middle text-xs font-medium whitespace-nowrap text-muted-foreground", className)} {...props} />
+/**
+ * A column header. Give it `sort` and `onSort` to make it sortable: the whole label becomes a button, the header announces
+ * its order (aria-sort), and an arrow shows it; unsorted columns show a neutral two-way arrow.
+ */
+export function TableHead({
+  className,
+  children,
+  sort,
+  onSort,
+  ...props
+}: React.ComponentProps<"th"> & { sort?: "asc" | "desc" | false; onSort?: () => void }) {
+  const sortable = onSort !== undefined
+  const Icon = sort === "asc" ? ArrowUp : sort === "desc" ? ArrowDown : ArrowUpDown
+  return (
+    <th
+      data-slot="table-head"
+      aria-sort={sortable ? (sort === "asc" ? "ascending" : sort === "desc" ? "descending" : "none") : undefined}
+      className={cn("h-(--h-md) px-4 text-left align-middle text-xs font-medium whitespace-nowrap text-muted-foreground", className)}
+      {...props}
+    >
+      {sortable ? (
+        <button
+          type="button"
+          onClick={onSort}
+          className={cn("press -mx-1 inline-flex h-(--h-sm) items-center gap-2 rounded-xs px-1 hover:text-foreground", sort && "text-foreground")}
+        >
+          {children}
+          <Icon aria-hidden="true" className="size-4" />
+        </button>
+      ) : (
+        children
+      )}
+    </th>
+  )
 }
 
 export function TableCell({ className, ...props }: React.ComponentProps<"td">) {

@@ -84,7 +84,7 @@ export function TokenTable({ head, rows }: { head: string[]; rows: React.ReactNo
           {rows.map((r, i) => (
             <tr key={i} className="border-t border-border">
               {r.map((c, j) => (
-                <td key={j} className="h-12 px-4 align-middle whitespace-nowrap">
+                <td key={j} className="h-12 px-4 align-middle whitespace-nowrap last:min-w-56 last:whitespace-normal">
                   {c}
                 </td>
               ))}

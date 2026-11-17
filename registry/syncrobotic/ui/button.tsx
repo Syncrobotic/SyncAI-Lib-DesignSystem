@@ -1,4 +1,4 @@
-// @syncrobotic/button v0.6.0 · update: npx shadcn add @syncrobotic/button --overwrite
+// @syncrobotic/button v0.8.0 · update: npx shadcn add @syncrobotic/button --overwrite
 import * as React from "react"
 import { Slot } from "radix-ui"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -19,10 +19,11 @@ export const buttonVariants = cva(
         outline: "bg-transparent ring-1 ring-border ring-inset hover:bg-accent",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         destructive: "bg-transparent text-danger ring-1 ring-danger ring-inset hover:bg-danger-subtle",
-        link: "text-info underline-offset-4 hover:underline",
+        // A link reads as a link by its underline, not by colour: blue means in progress.
+        link: "text-foreground underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground",
       },
       size: {
-        sm: "h-(--h-sm) px-3 text-sm",
+        sm: "h-(--h-sm) px-3 text-sm [&_svg:not([class*='size-'])]:size-4",
         md: "h-(--h-md) px-4 text-sm",
         lg: "h-(--h-lg) px-6 text-base",
         icon: "size-(--h-md)",

@@ -1,14 +1,18 @@
+import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
-import { Search } from "lucide-react"
+import { Eye, EyeOff, Search, X } from "lucide-react"
 import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
+import { InputGroup, InputGroupAddon, InputGroupButton } from "@/registry/syncrobotic/ui/input-group"
+import { NumberField } from "@/registry/syncrobotic/ui/number-field"
 import { Label } from "@/registry/syncrobotic/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/registry/syncrobotic/ui/radio-group"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
 import { Slider } from "@/registry/syncrobotic/ui/slider"
 import { Switch } from "@/registry/syncrobotic/ui/switch"
 import { Textarea } from "@/registry/syncrobotic/ui/textarea"
+import { ChoiceField, FieldSet } from "@/registry/syncrobotic/ui/choice-field"
 
 const meta: Meta = { title: "Inputs" }
 export default meta
@@ -97,11 +101,11 @@ export const SelectDefault: S = {
           <SelectValue placeholder="Choose a route" />
         </SelectTrigger>
       </Field>
-        <SelectContent>
-          <SelectItem value="perimeter">Perimeter</SelectItem>
-          <SelectItem value="parking">Parking lot</SelectItem>
-          <SelectItem value="warehouse">Warehouse aisles</SelectItem>
-        </SelectContent>
+      <SelectContent>
+        <SelectItem value="perimeter">Perimeter</SelectItem>
+        <SelectItem value="parking">Parking lot</SelectItem>
+        <SelectItem value="warehouse">Warehouse aisles</SelectItem>
+      </SelectContent>
     </Select>
   ),
 }
@@ -121,22 +125,95 @@ export const SliderDefault: S = {
   ),
 }
 
-export const InputWithIcon: S = {
+function SearchWithClear() {
+  const [q, setQ] = React.useState("North gate")
+  return (
+    <InputGroup>
+      <InputGroupAddon>
+        <Search aria-hidden="true" />
+      </InputGroupAddon>
+      <Input type="search" aria-label="Search robots" placeholder="Search robots, sites or events" value={q} onChange={(e) => setQ(e.target.value)} />
+      {q && (
+        <InputGroupButton aria-label="Clear search" onClick={() => setQ("")}>
+          <X aria-hidden="true" />
+        </InputGroupButton>
+      )}
+    </InputGroup>
+  )
+}
+
+export const InputGroupSearch: S = { render: () => <SearchWithClear /> }
+
+function PasswordReveal() {
+  const [shown, setShown] = React.useState(false)
+  return (
+    <Field label="Robot Wi-Fi password">
+      <InputGroup>
+        <Input type={shown ? "text" : "password"} autoComplete="new-password" defaultValue="patrol-7F3A" />
+        <InputGroupButton aria-label={shown ? "Hide password" : "Show password"} aria-pressed={shown} onClick={() => setShown((v) => !v)}>
+          {shown ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}
+        </InputGroupButton>
+      </InputGroup>
+    </Field>
+  )
+}
+
+export const InputGroupPassword: S = { render: () => <PasswordReveal /> }
+
+export const InputGroupUnit: S = {
   render: () => (
-    <div className="relative">
-      <Search aria-hidden="true" className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-      <Input type="search" placeholder="Search robots, sites or events" aria-label="Search" className="pl-8" />
-    </div>
+    <Field label="Geofence radius" hint="Measured from the dock">
+      <InputGroup className="w-48">
+        <Input inputMode="numeric" defaultValue="120" />
+        <InputGroupAddon>m</InputGroupAddon>
+      </InputGroup>
+    </Field>
   ),
 }
 
-export const InputWithUnit: S = {
+export const NumberFieldSpeed: S = {
   render: () => (
-    <div className="flex items-start gap-2">
-      <Field label="Patrol interval (minutes)" hint="Between 15 and 240">
-        <Input type="number" defaultValue={120} min={15} max={240} className="w-28" />
-      </Field>
-    </div>
+    <Field label="Speed limit" hint="0.2 to 2.0 m/s. Shift+↑↓ moves by 1.0">
+      <NumberField defaultValue={1.2} min={0.2} max={2} step={0.1} unit="m/s" className="w-56" />
+    </Field>
+  ),
+}
+
+export const NumberFieldInterval: S = {
+  render: () => (
+    <Field label="Patrol interval" hint="Between 15 and 240 minutes">
+      <NumberField defaultValue={120} min={15} max={240} step={5} largeStep={60} unit="min" className="w-56" />
+    </Field>
+  ),
+}
+
+export const NumberFieldError: S = {
+  render: () => (
+    <Field label="Return to dock below" error="Must be at least 10 %, or the robot may not reach the dock">
+      <NumberField defaultValue={5} min={0} max={50} unit="%" className="w-56" />
+    </Field>
+  ),
+}
+
+function ValidateOnBlur() {
+  const [name, setName] = React.useState("")
+  const [touched, setTouched] = React.useState(false)
+  const error = touched && name.trim().length < 3 ? "At least 3 characters, e.g. “Dock A”" : undefined
+  return (
+    <Field label="Dock name" error={error}>
+      <Input value={name} onChange={(e) => setName(e.target.value)} onBlur={() => setTouched(true)} />
+    </Field>
+  )
+}
+
+// Leave the field empty and press Tab: the message line grows open and the error appears. No shake.
+export const InputErrorOnBlur: S = { render: () => <ValidateOnBlur /> }
+
+export const InputError: S = {
+  render: () => (
+    <Field label="Robot name" error="Already used by another robot on this site">
+      <Input defaultValue="Patrol dog 7F3A" />
+    </Field>
   ),
 }
 
@@ -302,5 +379,56 @@ export const SliderDisabled: S = {
       <Label>Speaker volume · 40% (muted at night)</Label>
       <Slider defaultValue={[40]} disabled aria-label="Speaker volume" />
     </div>
+  ),
+}
+
+/** Field labels a Select's trigger and carries its hint and error, like any other control. */
+export const FieldWithSelect: S = {
+  render: () => (
+    <div className="flex flex-col gap-6">
+      <Field label="Patrol route" hint="Routes for the north site">
+        <Select defaultValue="perimeter">
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="perimeter">Perimeter</SelectItem>
+            <SelectItem value="parking">Parking lot</SelectItem>
+          </SelectContent>
+        </Select>
+      </Field>
+      <Field label="Return dock" error="Choose a dock before starting">
+        <Select>
+          <SelectTrigger>
+            <SelectValue placeholder="Choose a dock" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="a">Dock A</SelectItem>
+            <SelectItem value="b">Dock B</SelectItem>
+          </SelectContent>
+        </Select>
+      </Field>
+    </div>
+  ),
+}
+
+/** Checkboxes under one question, each a whole 44 px row with a count at the end. */
+export const ChoiceFieldCheckboxes: S = {
+  render: () => (
+    <FieldSet legend="Status" hint="Show robots in any of these states">
+      <ChoiceField label="Patrolling" trailing={5} control={<Checkbox defaultChecked />} />
+      <ChoiceField label="Docked" trailing={2} control={<Checkbox />} />
+      <ChoiceField label="Offline" trailing={1} control={<Checkbox />} />
+    </FieldSet>
+  ),
+}
+
+/** Switches act at once, so they sit at the end of the row, with a line saying what they do. */
+export const ChoiceFieldSwitches: S = {
+  render: () => (
+    <FieldSet legend="Notifications">
+      <ChoiceField label="Critical alarms by SMS" description="Every critical alarm, day and night." controlAt="end" control={<Switch defaultChecked />} />
+      <ChoiceField label="Daily summary email" description="Patrols, events and battery health at 08:00." controlAt="end" control={<Switch />} />
+    </FieldSet>
   ),
 }

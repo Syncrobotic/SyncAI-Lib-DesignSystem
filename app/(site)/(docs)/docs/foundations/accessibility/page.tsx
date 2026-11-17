@@ -66,15 +66,17 @@ export default function AccessibilityPage() {
             <Ratio key="l" {...p} mode="light" />,
           ])}
         />
-        <p className="text-sm text-muted-foreground">
-          The emergency stop label is 18 px bold, so it is held to the large-text threshold of 3:1.
-        </p>
+        <p className="text-sm text-muted-foreground">The emergency stop label is 18 px bold, so it is held to the large-text threshold of 3:1.</p>
       </Section>
 
-      <Section id="targets" title="Target size" lead="Anything interactive is at least 44 × 44 px (`--h-md`). Small visuals, like a 20 px checkbox, sit inside a 44 px row that is tappable as a whole.">
+      <Section
+        id="targets"
+        title="Target size"
+        lead="Anything interactive is at least 44 × 44 px (`--h-md`) on touch. With a mouse, compact controls may be 36 px (`--h-sm`) for dense tools; on touch screens `--h-sm` becomes 44 by itself, so the island, the dock and phone layouts are never smaller. Small visuals, like a 20 px checkbox, sit inside a 44 px row that is tappable as a whole."
+      >
         <Specimen className="flex flex-wrap items-center gap-8">
           {[
-            { h: "--h-sm", n: "36 · inside cards only" },
+            { h: "--h-sm", n: "36 · compact, mouse only (44 on touch)" },
             { h: "--h-md", n: "44 · minimum" },
             { h: "--h-lg", n: "48 · primary actions" },
             { h: "--h-stop", n: "56 · emergency stop" },
@@ -87,7 +89,11 @@ export default function AccessibilityPage() {
         </Specimen>
       </Section>
 
-      <Section id="focus" title="Focus" lead="Every focusable element shows a 2 px `--ring` outline with a 2 px offset on keyboard focus. It is set globally; do not remove it.">
+      <Section
+        id="focus"
+        title="Focus"
+        lead="Every focusable element shows a 2 px `--ring` outline with a 2 px offset on keyboard focus. It is set globally; do not remove it."
+      >
         <Specimen className="flex gap-4">
           <span className="flex h-(--h-md) items-center rounded-sm bg-secondary px-4 text-sm font-medium outline-2 outline-offset-2 outline-ring">
             Focused button

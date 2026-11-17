@@ -1,4 +1,4 @@
-// @syncrobotic/marketing-hero v0.5.0 · update: npx shadcn add @syncrobotic/marketing-hero --overwrite
+// @syncrobotic/marketing-hero v0.8.0 · update: npx shadcn add @syncrobotic/marketing-hero --overwrite
 import * as React from "react"
 import { ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -40,7 +40,7 @@ export function MarketingHero({
           <div className="flex flex-wrap gap-3">
             <Button size="lg" asChild>
               <a href={primary.href}>
-                {primary.label} <ArrowRight aria-hidden="true" className="size-4" />
+                {primary.label} <ArrowRight aria-hidden="true" className="size-5" />
               </a>
             </Button>
             <Button size="lg" variant="secondary" asChild>
@@ -61,7 +61,7 @@ function FleetSummary() {
     { tone: "warning" as const, name: "Patrol dog 9C44", meta: "Parking lot · low battery" },
   ]
   return (
-    <div className="flex flex-col gap-4 rounded-xl bg-card p-6 shadow-overlay ring-1 ring-border">
+    <div className="flex flex-col gap-4 rounded-md bg-card p-6 ring-1 ring-border">
       <div className="flex items-baseline justify-between">
         <span className="text-sm text-muted-foreground">Tonight</span>
         <span className="text-sm text-muted-foreground">02:41</span>
@@ -80,7 +80,7 @@ function FleetSummary() {
       </div>
       <ul className="flex flex-col">
         {rows.map((r) => (
-          <li key={r.name} className="flex items-center gap-3 border-b border-border py-3 last:border-b-0">
+          <li key={r.name} className="flex items-center gap-2 border-b border-border py-3 last:border-b-0">
             <StatusGlyph tone={r.tone} />
             <span className="flex flex-col">
               <span className="text-sm font-medium">{r.name}</span>

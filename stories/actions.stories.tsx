@@ -4,6 +4,7 @@ import { Download, Map, Plus, Trash2, Video } from "lucide-react"
 import { Toggle } from "@/registry/syncrobotic/ui/toggle"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
+import { CopyButton } from "@/registry/syncrobotic/ui/copy-button"
 
 const meta: Meta = { title: "Actions" }
 export default meta
@@ -145,6 +146,21 @@ export const ToggleLayers: S = {
       </Toggle>
       <Toggle size="sm">Keypoints</Toggle>
       <Toggle size="sm">Depth</Toggle>
+    </div>
+  ),
+}
+
+/** The icon swaps to a check for 1.5 s; with text, the word changes too. */
+export const CopyButtonDefault: S = {
+  render: () => (
+    <div className="flex flex-col items-start gap-4">
+      <span className="flex items-center gap-2 font-mono text-sm text-muted-foreground">
+        people/night-parking@v3
+        <CopyButton value="people/night-parking@v3" label="Copy reference" />
+      </span>
+      <CopyButton value="npx shadcn add @syncrobotic/button" variant="outline">
+        Copy install command
+      </CopyButton>
     </div>
   ),
 }

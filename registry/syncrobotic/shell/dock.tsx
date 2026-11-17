@@ -1,8 +1,9 @@
-// @syncrobotic/dock v0.6.0 · update: npx shadcn add @syncrobotic/dock --overwrite
+// @syncrobotic/dock v0.8.0 · update: npx shadcn add @syncrobotic/dock --overwrite
 "use client"
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
+import { CountBadge } from "@/registry/syncrobotic/ui/badge"
 import { Tray } from "@/registry/syncrobotic/shell/tray"
 
 /**
@@ -29,7 +30,8 @@ type Act = { label: string; onClick: () => void; icon?: React.ElementType }
  * so it does not compete with the red stop right above it.
  */
 export function DockActions({ secondary, primary, destructive }: { secondary: Act; primary: Act; destructive?: boolean }) {
-  const base = "press flex h-(--h-lg) flex-1 items-center justify-center gap-1 rounded-md text-sm whitespace-nowrap"
+  // Labels wrap to a second line rather than run past the edge on a narrow phone: a consequence ("Delete 38 GB") must stay readable.
+  const base = "press flex min-h-(--h-lg) min-w-0 flex-1 items-center justify-center gap-2 rounded-md px-2 py-1 text-center text-sm leading-tight"
   const S = secondary.icon
   return (
     <div className="flex gap-(--tray-gap)">
@@ -40,7 +42,7 @@ export function DockActions({ secondary, primary, destructive }: { secondary: Ac
       <button
         type="button"
         onClick={primary.onClick}
-        className={cn(base, "font-bold", destructive ? "bg-danger-subtle text-danger" : "bg-muted text-foreground ring-1 ring-edge")}
+        className={cn(base, "font-bold", destructive ? "text-danger ring-1 ring-danger" : "bg-muted text-foreground ring-1 ring-edge")}
       >
         {primary.label}
       </button>
@@ -53,7 +55,7 @@ export type NavItem = { key: string; label: string; icon: React.ElementType; bad
 /** Tab bar inside the dock. The event badge is a danger tint, not solid red. */
 export function DockNav({ items, active, onSelect, label = "Primary" }: { items: NavItem[]; active: string; onSelect: (key: string) => void; label?: string }) {
   return (
-    <nav aria-label={label} className="flex gap-1">
+    <nav aria-label={label} className="@container flex gap-1">
       {items.map(({ key, label, icon: Icon, badge }) => (
         <button
           key={key}
@@ -61,15 +63,16 @@ export function DockNav({ items, active, onSelect, label = "Primary" }: { items:
           aria-current={key === active ? "page" : undefined}
           onClick={() => onSelect(key)}
           className={cn(
-            "press flex h-(--h-lg) flex-1 items-center justify-center gap-1 rounded-md text-sm",
+            // Below 384 px of dock the label goes under the icon, the usual phone tab bar, so four tabs fit a 360 px phone.
+            "press flex h-(--h-lg) min-w-0 flex-1 items-center justify-center gap-2 rounded-md text-sm @max-sm:flex-col @max-sm:gap-1 @max-sm:text-xs",
             key === active ? "bg-muted text-foreground font-medium" : "text-muted-foreground",
           )}
         >
-          <Icon aria-hidden="true" className="size-5" />
-          {label}
-          {badge ? (
-            <span className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-danger-subtle px-1 text-xs font-bold text-danger">{badge}</span>
-          ) : null}
+          <Icon aria-hidden="true" className="size-5 shrink-0" />
+          <span className="flex min-w-0 items-center gap-1">
+            <span className="truncate">{label}</span>
+            {badge ? <CountBadge count={badge} /> : null}
+          </span>
         </button>
       ))}
     </nav>

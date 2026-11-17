@@ -5,6 +5,9 @@ import { defineConfig } from "@playwright/test"
 export default defineConfig({
   testDir: "tests",
   testMatch: "*.spec.ts",
+  // Every story test is independent: spread them over all cores instead of one worker per file (two files, two workers).
+  fullyParallel: true,
+  workers: process.env.CI ? 4 : undefined,
   snapshotPathTemplate: "{testDir}/__screenshots__/{arg}{ext}",
   use: {
     baseURL: "http://127.0.0.1:6007",

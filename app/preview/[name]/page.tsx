@@ -11,10 +11,10 @@ export default async function PreviewPage({ params }: { params: Promise<{ name: 
   const block = getBlock((await params).name)
   if (!block) notFound()
   return (
-    <main className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background">
       <h1 className="sr-only">{block.title}</h1>
       {/* The docs frame measures this element so the preview is exactly as tall as the block. */}
       <div id="block-root">{block.render()}</div>
-    </main>
+    </div>
   )
 }

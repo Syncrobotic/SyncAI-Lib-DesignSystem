@@ -1,9 +1,11 @@
-// @syncrobotic/island v0.6.0 · update: npx shadcn add @syncrobotic/island --overwrite
+// @syncrobotic/island v0.8.0 · update: npx shadcn add @syncrobotic/island --overwrite
 "use client"
 
 import * as React from "react"
 import { Battery, BatteryCharging, Bell, ChevronDown, TriangleAlert, Wifi, WifiOff, X } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
+import { CountBadge } from "@/registry/syncrobotic/ui/badge"
 import { Tray } from "@/registry/syncrobotic/shell/tray"
 import { StatusGlyph, toneSubtle, toneText, type Tone } from "@/registry/syncrobotic/shell/status-glyph"
 import { alarmPriority, defaultAlarmLabels, topAlarm, type AlarmData, type AlarmLabels } from "@/registry/syncrobotic/ui/alarm"
@@ -51,10 +53,29 @@ type IslandProps = {
  * Three zones — name, device status, notifications — each opens on its own.
  * Notices live inside the island as a child, assembled like the e-stop in the dock.
  */
-export function Island({ name, avatar, tone, attention, online = true, battery = 72, charging, unread = 0, open = null, onOpenChange, edge, loading, children, labels, className }: IslandProps) {
+export function Island({
+  name,
+  avatar,
+  tone,
+  attention,
+  online = true,
+  battery = 72,
+  charging,
+  unread = 0,
+  open = null,
+  onOpenChange,
+  edge,
+  loading,
+  children,
+  labels,
+  className,
+}: IslandProps) {
+  const lastChildren = React.useRef<React.ReactNode>(children)
+  if (children) lastChildren.current = children
+  const slot = usePresence(!!children)
   const l = { ...defaultIslandLabels, ...labels }
   const toggle = (z: Zone) => onOpenChange?.(open === z ? null : z)
-  const zone = (z: Zone) => cn("press flex h-(--h-md) items-center gap-1 rounded-md px-2", open === z && "bg-muted")
+  const zone = (z: Zone) => cn("press flex h-(--h-md) items-center gap-2 rounded-md px-2", open === z && "bg-muted")
   const low = battery < 30
   const BatteryIcon = charging ? BatteryCharging : Battery
   return (
@@ -76,7 +97,13 @@ export function Island({ name, avatar, tone, attention, online = true, battery =
           {attention && <TriangleAlert aria-label={l.attention} className="size-4 shrink-0 text-warning" />}
           <ChevronDown aria-hidden="true" className="size-4 shrink-0 text-muted-foreground" />
         </button>
-        <button type="button" aria-expanded={open === "status"} aria-label={low && !loading ? `${l.status}, battery ${battery}%` : l.status} onClick={() => toggle("status")} className={zone("status")}>
+        <button
+          type="button"
+          aria-expanded={open === "status"}
+          aria-label={low && !loading ? `${l.status}, battery ${battery}%` : l.status}
+          onClick={() => toggle("status")}
+          className={zone("status")}
+        >
           {loading ? (
             <>
               <span className="block h-3 w-5 animate-breath rounded-xs bg-muted" />
@@ -90,14 +117,27 @@ export function Island({ name, avatar, tone, attention, online = true, battery =
             </>
           )}
         </button>
-        <button type="button" aria-expanded={open === "bell"} aria-label={l.notifications(unread)} onClick={() => toggle("bell")} className={cn(zone("bell"), "relative")}>
+        <button
+          type="button"
+          aria-expanded={open === "bell"}
+          aria-label={l.notifications(unread)}
+          onClick={() => toggle("bell")}
+          className={cn(zone("bell"), "relative")}
+        >
           <Bell aria-hidden="true" className="size-5" />
-          {unread > 0 && (
-            <span className="absolute top-1 right-1 inline-flex size-4 items-center justify-center rounded-full bg-foreground text-xs font-bold text-background">{unread}</span>
-          )}
+          {unread > 0 && <CountBadge count={unread} className="absolute top-0 right-0" />}
         </button>
       </div>
-      {children}
+      {slot.mounted && (
+        // A notice or panel leaves the way it came (disappear), instead of the tray snapping shut under it.
+        <div
+          aria-hidden={slot.leaving || undefined}
+          className={slot.leaving ? "animate-disappear" : undefined}
+          onAnimationEnd={(e) => e.target === e.currentTarget && slot.done()}
+        >
+          {children ?? lastChildren.current}
+        </div>
+      )}
     </Tray>
   )
 }
@@ -130,12 +170,17 @@ export function IslandNotice({ tone, icon: Icon, title, meta, action, persistent
         {meta && <span className="truncate text-xs text-muted-foreground">{meta}</span>}
       </span>
       {action && (
-        <button type="button" onClick={action.onClick} className="press h-(--h-sm) shrink-0 rounded-sm bg-background/40 px-3 text-sm font-medium">
+        <button type="button" onClick={action.onClick} className="press h-(--h-sm) shrink-0 rounded-xs bg-background/40 px-3 text-sm font-medium">
           {action.label}
         </button>
       )}
       {!persistent && onDismiss && (
-        <button type="button" aria-label={dismissLabel} onClick={onDismiss} className="press flex size-(--h-sm) shrink-0 items-center justify-center rounded-sm text-muted-foreground">
+        <button
+          type="button"
+          aria-label={dismissLabel}
+          onClick={onDismiss}
+          className="press flex size-(--h-sm) shrink-0 items-center justify-center rounded-xs text-muted-foreground"
+        >
           <X aria-hidden="true" className="size-4" />
         </button>
       )}
@@ -158,14 +203,29 @@ type IslandAlarmProps = {
  */
 export function IslandAlarm({ alarms, onAcknowledge, onShowAll, labels }: IslandAlarmProps) {
   const l = { ...defaultAlarmLabels, more: (n: number) => `+${n}`, moreAlarms: "more unacknowledged", ...labels }
-  const top = topAlarm(alarms)
-  if (!top) return null
+  const current = topAlarm(alarms)
+  // When the last alarm is acknowledged, it fades out where it was (disappear) rather than vanishing.
+  const last = React.useRef(current)
+  if (current) last.current = current
+  const presence = usePresence(!!current)
+  const top = current ?? last.current
+  if (!presence.mounted || !top) return null
   const others = alarms.filter((a) => !a.acknowledged).length - 1
   const p = alarmPriority[top.priority]
   const Icon = p.icon
   return (
-    <div role="group" aria-label={`${l[top.priority]}: ${top.title}`} key={top.id}
-      className={cn("flex min-h-(--h-row) animate-appear items-center gap-2 rounded-md px-2", top.priority === "critical" ? p.tint : "bg-muted")}>
+    <div
+      role="group"
+      aria-label={`${l[top.priority]}: ${top.title}`}
+      key={top.id}
+      aria-hidden={presence.leaving || undefined}
+      onAnimationEnd={(e) => e.target === e.currentTarget && presence.done()}
+      className={cn(
+        "flex min-h-(--h-row) items-center gap-2 rounded-md px-2",
+        presence.leaving ? "animate-disappear" : "animate-appear",
+        top.priority === "critical" ? p.tint : "bg-muted",
+      )}
+    >
       <span className={cn("flex size-8 shrink-0 items-center justify-center", p.text)}>
         <Icon aria-hidden="true" className="size-5" />
       </span>
@@ -178,13 +238,17 @@ export function IslandAlarm({ alarms, onAcknowledge, onShowAll, labels }: Island
         </span>
       </span>
       {others > 0 && onShowAll && (
-        <button type="button" onClick={onShowAll} className="press h-(--h-sm) shrink-0 rounded-sm px-2 text-xs font-medium ring-1 ring-border ring-inset">
+        <button type="button" onClick={onShowAll} className="press h-(--h-sm) shrink-0 rounded-xs px-3 text-sm font-medium ring-1 ring-border ring-inset">
           {l.more(others)}
           <span className="sr-only"> {l.moreAlarms}</span>
         </button>
       )}
       {onAcknowledge && (
-        <button type="button" onClick={() => onAcknowledge(top.id)} className="press h-(--h-sm) shrink-0 rounded-sm px-3 text-sm font-medium ring-1 ring-foreground ring-inset">
+        <button
+          type="button"
+          onClick={() => onAcknowledge(top.id)}
+          className="press h-(--h-sm) shrink-0 rounded-xs px-3 text-sm font-medium ring-1 ring-foreground ring-inset"
+        >
           {l.acknowledge}
         </button>
       )}

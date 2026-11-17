@@ -1,4 +1,6 @@
 import type { Metadata } from "next"
+import { aiPrompt, blockMarkdown } from "@/site/ai"
+import { CopyButton } from "@/registry/syncrobotic/ui/copy-button"
 import { pageMeta } from "@/site/config"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -31,6 +33,14 @@ export default async function BlockPage({ params }: Props) {
         <p className="text-sm font-medium text-muted-foreground">{b.product}</p>
         <h1 className="text-3xl font-bold">{b.title}</h1>
         <p className="max-w-2xl text-muted-foreground">{b.description}</p>
+        <div className="flex flex-wrap gap-2 pt-2">
+          <CopyButton value={blockMarkdown(b.name) ?? ""} variant="outline" label="Copy as Markdown">
+            Markdown
+          </CopyButton>
+          <CopyButton value={aiPrompt(b.title, `/blocks/${b.name}`, b.name)} variant="outline" label="Copy prompt for AI">
+            Prompt
+          </CopyButton>
+        </div>
       </header>
 
       <div className="flex flex-col gap-3 pb-8">
@@ -48,7 +58,7 @@ export default async function BlockPage({ params }: Props) {
       <BlockFrame
         name={b.name}
         height={b.height}
-        fit={b.product === "App shells" ? "screen" : "content"}
+        fit={["App shells", "Data tools", "Forms and settings"].includes(b.product) || b.name === "sign-in" ? "screen" : "content"}
         initial={b.viewport}
         code={b.files.map((f) => (
           <CodeBlock key={f.path} code={readSource(f.path)} title={f.path} />

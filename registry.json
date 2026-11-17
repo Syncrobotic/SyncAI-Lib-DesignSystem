@@ -16,12 +16,22 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "The focus ring appears in the ring colour at once (outline colour set before focus; transition-colors used to fade it from the text colour)."
+          },
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Compact density is for a mouse only: on touch (pointer: coarse) --h-sm is 44 px. The spinner stops under reduced motion. Selected-state rule written down."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
-            "note": "Calmer status hues in both modes (all still ≥ 4.5:1 on every surface); colour rule: colour is for what is abnormal. Motion tokens as CSS: appear/disappear, fade-in, sheet-in/out per side, expand/collapse, and the press utility."
+            "note": "Calmer status hues in both modes (all still ≥ 4.5:1 on every surface); colour rule: colour is for what is abnormal. Motion tokens as CSS: appear/disappear, fade-in, sheet-in/out per side, expand/collapse, and the press utility. Chart series tokens --chart-1…5 for light and dark, validated for colour-vision deficiency."
           },
           {
             "version": "0.5.0",
@@ -91,12 +101,41 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Fix: the thumb follows the finger 1:1. It used to speed up mid-drag and finish on its own."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
+    },
+    {
+      "name": "use-presence",
+      "type": "registry:hook",
+      "title": "usePresence",
+      "description": "Keeps an element, or list items, on screen while they leave, so exits use the disappear movement instead of vanishing.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/syncrobotic/hooks/use-presence.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "meta": {
+        "version": "0.8.0",
+        "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "First release."
           }
         ]
       }
@@ -147,8 +186,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Icon to label 8 px (gap-2), the same in every component."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -252,7 +296,8 @@
       "description": "Three tiers: state action, this page's primary action, navigation.",
       "registryDependencies": [
         "@syncrobotic/cn",
-        "@syncrobotic/tray"
+        "@syncrobotic/tray",
+        "@syncrobotic/badge"
       ],
       "files": [
         {
@@ -261,8 +306,18 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "The tab count uses CountBadge. Icon to label 8 px (gap-2), the same in every component. Tabs put the label under the icon below 384 px of dock, so four tabs fit a 360 px phone; action labels wrap instead of running past the edge."
+          },
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "The destructive action is a danger outline, not a tinted fill."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -288,7 +343,9 @@
         "@syncrobotic/cn",
         "@syncrobotic/tray",
         "@syncrobotic/status-glyph",
-        "@syncrobotic/alarm"
+        "@syncrobotic/alarm",
+        "@syncrobotic/badge",
+        "@syncrobotic/use-presence"
       ],
       "files": [
         {
@@ -297,8 +354,18 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "The unread count uses CountBadge. Notices and the island alarm leave with disappear. Icon to label 8 px (gap-2), the same in every component."
+          },
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Buttons are rounded-xs and 14 px text; the unread count uses the danger tint like the dock."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -330,8 +397,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Only pressable rows press."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -351,7 +423,8 @@
       "title": "Skeleton",
       "description": "What is known shows first; only unknown values get a skeleton; the whole group breathes.",
       "registryDependencies": [
-        "@syncrobotic/cn"
+        "@syncrobotic/cn",
+        "@syncrobotic/spinner"
       ],
       "files": [
         {
@@ -360,8 +433,18 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Icon to label 8 px (gap-2), the same in every component."
+          },
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "LoadingLine uses the Spinner (its delay and track)."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -390,8 +473,18 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "The link variant is foreground with an underline (was blue): a link reads by its underline; blue means in progress."
+          },
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Small buttons carry 16 px icons."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -448,8 +541,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Icon to label 8 px (gap-2), the same in every component."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -492,6 +590,35 @@
       }
     },
     {
+      "name": "copy-button",
+      "type": "registry:ui",
+      "title": "Copy button",
+      "description": "Copies a value; the icon becomes a check for 1.5 s.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/copy-button.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.8.0",
+        "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
       "name": "input",
       "type": "registry:ui",
       "title": "Input",
@@ -506,8 +633,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Error edge is 2 px, transitions at --motion-fast; no shake."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -517,6 +649,60 @@
             "version": "0.5.0",
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
+    },
+    {
+      "name": "input-group",
+      "type": "registry:ui",
+      "title": "Input group",
+      "description": "An input with an icon, a unit or a button (clear, show password) inside its edge. The group draws the field, focus and error.",
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/input-group.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.7.0",
+        "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "number-field",
+      "type": "registry:ui",
+      "title": "Number field",
+      "description": "A number with a range, a step and a unit. Type freely, kept in range on blur; 44 px buttons; arrow keys, Shift, PageUp/PageDown, Home/End.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/input-group"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/number-field.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.7.0",
+        "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "First release."
           }
         ]
       }
@@ -536,8 +722,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Error edge is 2 px."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -585,7 +776,8 @@
       "title": "Field",
       "description": "Label, control and one line for the hint or the error, with ids and aria wired up.",
       "dependencies": [
-        "radix-ui"
+        "radix-ui",
+        "lucide-react"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -598,8 +790,18 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Shares its id, note and error through useField, so a Select's trigger inside a Field is labelled and described. A fixed error fades out while its line closes. Icon to label 8 px (gap-2), the same in every component."
+          },
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "The error appears with an icon in the hint's place. A control that brings its own id keeps it, and the label follows. The error icon is 16 px."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -632,8 +834,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "The check fades in; 2 px stroke like every icon."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -665,8 +872,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "The dot fades in instead of rising."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -698,12 +910,50 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "44 px tall hit area around the 28 px track. On is the primary colour (was success green), as in shadcn/ui: a setting being on is a selection, not a status."
+          },
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "The track moves on the standard curve."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
+    },
+    {
+      "name": "choice-field",
+      "type": "registry:ui",
+      "title": "Choice field",
+      "description": "A choice as a whole tappable row (checkbox, radio or switch with label, description and count); FieldSet groups them under one question.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/choice-field.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.8.0",
+        "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "First release. FieldSet's note grows open and fades out like Field's. Icon to label 8 px (gap-2), the same in every component."
           }
         ]
       }
@@ -718,7 +968,8 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "@syncrobotic/cn"
+        "@syncrobotic/cn",
+        "@syncrobotic/field"
       ],
       "files": [
         {
@@ -727,8 +978,18 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "The trigger reads the surrounding Field: <Field label><Select>…</Select></Field> works."
+          },
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Error edge is 2 px. Items are rounded-sm, concentric with the list."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -789,8 +1050,18 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "CountBadge: the one way to draw a count, danger on its tint or neutral, 99+."
+          },
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Icons at 16 px."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -909,6 +1180,58 @@
       }
     },
     {
+      "name": "description-list",
+      "type": "registry:ui",
+      "title": "Description list",
+      "description": "Label and value pairs about one thing, plain or as tiles.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/description-list.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.8.0",
+        "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "meter",
+      "type": "registry:ui",
+      "title": "Meter",
+      "description": "A level within a known range, neutral until it crosses a threshold; inline for table cells.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/meter.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.8.0",
+        "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
       "name": "alert",
       "type": "registry:ui",
       "title": "Alert",
@@ -926,8 +1249,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Icon to label 8 px (gap-2), the same in every component."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -950,7 +1278,8 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "@syncrobotic/cn"
+        "@syncrobotic/cn",
+        "@syncrobotic/use-presence"
       ],
       "files": [
         {
@@ -959,8 +1288,18 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "A cleared alarm fades out (disappear) instead of vanishing. Icon to label 8 px (gap-2), the same in every component."
+          },
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Buttons are rounded-xs, concentric with the card."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -993,8 +1332,18 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Icon to label 8 px (gap-2), the same in every component."
+          },
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "A float layer (float shadow, blur-xl); action and close press."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -1043,12 +1392,49 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Sortable headers: sort and onSort make the label a button, with aria-sort and an arrow. Icon to label 8 px (gap-2), the same in every component. The scrolling container takes focus (Tab, then arrow keys), with a visible ring."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      },
+      "dependencies": [
+        "lucide-react"
+      ]
+    },
+    {
+      "name": "chart",
+      "type": "registry:ui",
+      "title": "Chart",
+      "description": "Line, area and bar charts on Recharts, in the categorical palette, with a crosshair tooltip, a legend and a table view.",
+      "dependencies": [
+        "recharts"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/chart.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.7.0",
+        "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "First release."
           }
         ]
       }
@@ -1071,8 +1457,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "The indicator moves on the standard curve."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -1082,6 +1473,63 @@
             "version": "0.5.0",
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
+    },
+    {
+      "name": "pagination",
+      "type": "registry:ui",
+      "title": "Pagination",
+      "description": "Range and previous / next, or numbered pages, for long lists.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/pagination.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.8.0",
+        "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "breadcrumb",
+      "type": "registry:ui",
+      "title": "Breadcrumb",
+      "description": "Where this page sits: links to the levels above, the current page last.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/breadcrumb.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.8.0",
+        "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "First release. Icon to label 8 px (gap-2), the same in every component."
           }
         ]
       }
@@ -1105,8 +1553,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Trigger presses; the chevron turns on the standard curve."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -1139,8 +1592,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "The close button sits 8 px from the corner (concentric) and presses."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -1206,8 +1664,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Titles are the sheet size (xl); the scrim leaves with the panel."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -1272,8 +1735,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "8 px from its anchor, like the popover."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -1306,8 +1774,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Items are rounded-sm, concentric with the menu."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -1317,6 +1790,41 @@
             "version": "0.5.0",
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
+          }
+        ]
+      }
+    },
+    {
+      "name": "command",
+      "type": "registry:ui",
+      "title": "Command",
+      "description": "Search and run from the keyboard: a filterable list, and the ⌘K palette that opens over any page.",
+      "dependencies": [
+        "cmdk",
+        "radix-ui",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/command.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.8.0",
+        "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Icon to label 8 px (gap-2), the same in every component."
+          },
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "First release. The separator inside the list is decorative, so the listbox holds only groups and options."
           }
         ]
       }
@@ -1340,8 +1848,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Icon to label 8 px (gap-2), the same in every component."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -1372,7 +1885,10 @@
         "@syncrobotic/progress",
         "@syncrobotic/segmented-control",
         "@syncrobotic/table",
-        "@syncrobotic/status-eyebrow"
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/input-group",
+        "@syncrobotic/meter",
+        "@syncrobotic/pagination"
       ],
       "files": [
         {
@@ -1381,8 +1897,18 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Battery is an inline Meter; Pagination instead of hand-built controls. The robot name is a 44 px tall target."
+          },
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Search is an InputGroup."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -1413,8 +1939,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Icon to label 8 px (gap-2), the same in every component."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -1444,8 +1975,18 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Icon to label 8 px (gap-2), the same in every component."
+          },
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "The in-page card has no overlay shadow and the card radius; 20 px icon in the large button."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -1467,7 +2008,11 @@
         "@syncrobotic/avatar",
         "@syncrobotic/badge",
         "@syncrobotic/input",
-        "@syncrobotic/sheet"
+        "@syncrobotic/sheet",
+        "@syncrobotic/dropdown-menu",
+        "@syncrobotic/command",
+        "@syncrobotic/input-group",
+        "@syncrobotic/status-glyph"
       ],
       "files": [
         {
@@ -1476,12 +2021,54 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "breadcrumb slot before the title; nav counts use CountBadge. One gutter and one inset: panels 8 px apart and from the edge, 16 px inside every panel (top bar, content, footer). Icon to label 8 px (gap-2), the same in every component. The environment badge shows from 640 px, so the page title keeps the room on phones."
+          },
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Sidebar as a rail below 1280 px that shows the logo and opens over the content (hover with a mouse, tap on touch tablets), with a pin button. Inset layout: two floating panels, no lines in the sidebar, the top bar a layer over the content that gains a backing on scroll. Footer slot. User menu at the sidebar's foot. Search: a top-bar field with a scope that opens the ⌘K palette (search prop). Inset is now the default layout; no line above the footer. Panels are 16 px apart and 16 px from the edge, the same gutter as the cards inside them."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
-            "note": "First release. Links and buttons press."
+            "note": "First release. Links and buttons press. Brand row matches the top bar's height and hairline; title, content and the user row share the 24 px edge; optional logo."
+          }
+        ]
+      }
+    },
+    {
+      "name": "top-bar-shell",
+      "type": "registry:block",
+      "title": "Top-bar shell",
+      "description": "The frame for a tool or site without a sidebar: links, search and user in a top bar that gathers into a floating panel as the page scrolls, then the content and a footer.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/avatar",
+        "@syncrobotic/dropdown-menu",
+        "@syncrobotic/sheet"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/top-bar-shell.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "meta": {
+        "version": "0.7.0",
+        "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "First release. The floating bar's edges line up with the content below."
           }
         ]
       }
@@ -1509,8 +2096,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "On phones the New mission action is its icon (named for screen readers), so the title is not cut."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -1536,7 +2128,10 @@
         "@syncrobotic/empty-state",
         "@syncrobotic/input",
         "@syncrobotic/progress",
-        "@syncrobotic/separator"
+        "@syncrobotic/separator",
+        "@syncrobotic/input-group",
+        "@syncrobotic/description-list",
+        "@syncrobotic/meter"
       ],
       "files": [
         {
@@ -1545,8 +2140,18 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Robot facts are a DescriptionList with a battery Meter."
+          },
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Search is an InputGroup; the selected robot is muted, hover is accent."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -1573,7 +2178,8 @@
         "@syncrobotic/segmented-control",
         "@syncrobotic/select",
         "@syncrobotic/sheet",
-        "@syncrobotic/table"
+        "@syncrobotic/table",
+        "@syncrobotic/input-group"
       ],
       "files": [
         {
@@ -1582,8 +2188,18 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "On phones Export CSV is its icon (named for screen readers), so the title is not cut."
+          },
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Search is an InputGroup with an icon."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -1609,11 +2225,313 @@
         "@syncrobotic/tray",
         "@syncrobotic/alarm",
         "@syncrobotic/button",
-        "@syncrobotic/progress"
+        "@syncrobotic/progress",
+        "@syncrobotic/meter"
       ],
       "files": [
         {
           "path": "registry/syncrobotic/blocks/map-workspace.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.8.0",
+        "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Battery is a Meter. Markers use the status shapes (normal and in progress neutral), like every other status display."
+          },
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release. Markers press."
+          }
+        ]
+      }
+    },
+    {
+      "name": "data-catalog",
+      "type": "registry:block",
+      "title": "Data catalog",
+      "description": "Datasets one row each: filter by tier, use and task (a drawer on phones), search, sort. Only restricted tiers carry colour.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/badge",
+        "@syncrobotic/button",
+        "@syncrobotic/checkbox",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/input",
+        "@syncrobotic/label",
+        "@syncrobotic/sheet",
+        "@syncrobotic/table",
+        "@syncrobotic/input-group",
+        "@syncrobotic/choice-field"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/data-catalog.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.8.0",
+        "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Filters are FieldSets of ChoiceFields; sortable headers come from Table."
+          },
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Search is an InputGroup with an icon; 16 px sort icons; licence tiers are outline tags, not status colours."
+          },
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "dataset-detail",
+      "type": "registry:block",
+      "title": "Dataset detail",
+      "description": "One dataset: release verdict, open issues, counts and splits, an annotated browse grid with layer toggles, lineage and compliance.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/data-catalog",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/alert",
+        "@syncrobotic/button",
+        "@syncrobotic/separator",
+        "@syncrobotic/tabs",
+        "@syncrobotic/toggle",
+        "@syncrobotic/breadcrumb",
+        "@syncrobotic/copy-button",
+        "@syncrobotic/description-list"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/dataset-detail.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.8.0",
+        "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Breadcrumb, CopyButton and DescriptionList instead of hand-built ones."
+          },
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "governance-todo",
+      "type": "registry:block",
+      "title": "Governance to-do",
+      "description": "What needs a maintainer or the compliance reviewer, most blocking first; done items leave the list.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/data-catalog",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/button",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/segmented-control",
+        "@syncrobotic/separator",
+        "@syncrobotic/use-presence"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/governance-todo.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.8.0",
+        "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "A finished task fades out where it was."
+          },
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "settings-page",
+      "type": "registry:block",
+      "title": "Settings page",
+      "description": "Sections beside their explanation; switches apply at once, text fields collect into a save bar that appears only when something changed; a danger zone that names the consequence.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/alert-dialog",
+        "@syncrobotic/button",
+        "@syncrobotic/field",
+        "@syncrobotic/input",
+        "@syncrobotic/label",
+        "@syncrobotic/select",
+        "@syncrobotic/switch",
+        "@syncrobotic/toast",
+        "@syncrobotic/choice-field",
+        "@syncrobotic/use-presence"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/settings-page.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.8.0",
+        "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "The time-zone Select sits in a Field; switches are ChoiceFields. The save bar leaves the way it came."
+          },
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Section links use the compact height token; the save bar is a full float."
+          },
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "record-form",
+      "type": "registry:block",
+      "title": "Create and edit form",
+      "description": "One column, labels above fields, errors in the hint line on submit with focus on the first, the primary action names the result.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/button",
+        "@syncrobotic/field",
+        "@syncrobotic/input",
+        "@syncrobotic/label",
+        "@syncrobotic/radio-group",
+        "@syncrobotic/select",
+        "@syncrobotic/textarea",
+        "@syncrobotic/toast"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/record-form.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.8.0",
+        "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "The robot Select sits in a Field, with its error."
+          },
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "users-roles",
+      "type": "registry:block",
+      "title": "Users and roles",
+      "description": "Who can do what: change a role in place, invite by email in a dialog, remove from the row menu with undo.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/avatar",
+        "@syncrobotic/badge",
+        "@syncrobotic/button",
+        "@syncrobotic/dialog",
+        "@syncrobotic/dropdown-menu",
+        "@syncrobotic/field",
+        "@syncrobotic/input",
+        "@syncrobotic/label",
+        "@syncrobotic/select",
+        "@syncrobotic/table",
+        "@syncrobotic/toast"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/users-roles.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.8.0",
+        "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "The role Select sits in a Field, with its hint."
+          },
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "sign-in",
+      "type": "registry:block",
+      "title": "Sign in",
+      "description": "Company SSO first, email link as the fallback; one column, errors under the field, a confirmation that says where the link went.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/field",
+        "@syncrobotic/input",
+        "@syncrobotic/separator"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/sign-in.tsx",
           "type": "registry:component"
         }
       ],
@@ -1623,7 +2541,80 @@
           {
             "version": "0.6.0",
             "date": "2026-11-17",
-            "note": "First release. Markers press."
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "status-pages",
+      "type": "registry:block",
+      "title": "Status pages",
+      "description": "Not found, no access, error, offline and loading: what happened, why, and the next step. Never a dead end.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/skeleton"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/status-pages.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.8.0",
+        "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Redone: centred on both axes like the empty state, so it balances in any frame; `fill` for a full screen or an app shell's content; codes for every state; secondary actions as secondary buttons. StatusPage is exported."
+          },
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "The loading value is as tall as the number it stands for."
+          },
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "agent-skill",
+      "type": "registry:file",
+      "title": "Agent skill",
+      "description": "Teaches a coding agent to build with this kit: plan, start from a block, read each item's markdown twin, reuse, check. Installs to .claude/skills/syncrobotic-ui/.",
+      "files": [
+        {
+          "path": "registry/syncrobotic/skill/SKILL.md",
+          "type": "registry:file",
+          "target": ".claude/skills/syncrobotic-ui/SKILL.md"
+        },
+        {
+          "path": "registry/syncrobotic/skill/references/design-language.md",
+          "type": "registry:file",
+          "target": ".claude/skills/syncrobotic-ui/references/design-language.md"
+        },
+        {
+          "path": "registry/syncrobotic/skill/references/checklist.md",
+          "type": "registry:file",
+          "target": ".claude/skills/syncrobotic-ui/references/checklist.md"
+        }
+      ],
+      "meta": {
+        "version": "0.8.0",
+        "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "First release."
           }
         ]
       }
