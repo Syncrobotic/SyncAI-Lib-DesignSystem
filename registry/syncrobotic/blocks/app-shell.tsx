@@ -104,29 +104,49 @@ type AppShellProps = {
   children: React.ReactNode
 }
 
-function Nav({ nav, current, collapsed, linkAs: Link = "a" }: { nav: AppNavGroup[]; current?: string; collapsed?: boolean; linkAs?: React.ElementType }) {
+function Nav({
+  nav,
+  current,
+  collapsed,
+  linkAs: Link = "a",
+  onNavigate,
+}: {
+  nav: AppNavGroup[]
+  current?: string
+  collapsed?: boolean
+  linkAs?: React.ElementType
+  onNavigate?: (e: React.MouseEvent) => void
+}) {
   return (
     <nav aria-label="Main" className="flex flex-col gap-4">
       {nav.map((g, i) => (
         <div key={g.label ?? i} className="flex flex-col gap-1">
-          {g.label && !collapsed && <p className="px-3 pb-1 text-xs font-medium text-muted-foreground">{g.label}</p>}
+          {/* Collapsed, a group label would be a clipped word; keep its height so icons do not jump when the rail opens. */}
+          {g.label && <p className={cn("h-5 truncate px-3 text-xs font-medium text-muted-foreground", collapsed && "invisible")}>{g.label}</p>}
           {g.items.map((item) => {
             const active = item.href === current
             return (
               <Link
                 key={item.href}
                 href={item.href}
+                onClick={onNavigate}
                 aria-current={active ? "page" : undefined}
                 aria-label={collapsed ? (item.count ? `${item.label}, ${item.count}` : item.label) : undefined}
+                title={collapsed ? item.label : undefined}
                 className={cn(
-                  "press flex h-(--h-md) items-center gap-3 rounded-sm px-3 text-sm",
+                  "press relative flex h-(--h-md) items-center gap-3 rounded-sm px-3 text-sm",
                   active ? "bg-accent font-medium text-foreground" : "text-muted-foreground hover:bg-accent hover:text-foreground",
-                  collapsed && "justify-center px-0",
                 )}
               >
                 <item.icon aria-hidden="true" className="size-5 shrink-0" />
                 {!collapsed && <span className="flex-1 truncate">{item.label}</span>}
-                {!collapsed && item.count ? <span className="text-xs font-medium text-danger tabular-nums">{item.count}</span> : null}
+                {item.count ? (
+                  collapsed ? (
+                    <span aria-hidden="true" className="absolute top-2 right-2 size-2 rounded-full bg-danger" />
+                  ) : (
+                    <span className="text-xs font-medium text-danger tabular-nums">{item.count}</span>
+                  )
+                ) : null}
               </Link>
             )
           })}
@@ -140,17 +160,26 @@ function Nav({ nav, current, collapsed, linkAs: Link = "a" }: { nav: AppNavGroup
  * Who is signed in, at the foot of the sidebar: one button with avatar, name and email that opens the account menu
  * upwards. Collapsed, only the avatar shows and the name is its label. The same control in every tool.
  */
-export function SidebarUserMenu({ user, items = sampleUserMenu, collapsed, linkAs: Link = "a" }: { user: AppUser; items?: AppUserMenuItem[]; collapsed?: boolean; linkAs?: React.ElementType }) {
+export function SidebarUserMenu({
+  user,
+  items = sampleUserMenu,
+  collapsed,
+  linkAs: Link = "a",
+  onOpenChange,
+}: {
+  user: AppUser
+  items?: AppUserMenuItem[]
+  collapsed?: boolean
+  linkAs?: React.ElementType
+  onOpenChange?: (open: boolean) => void
+}) {
   return (
-    <DropdownMenu>
+    <DropdownMenu onOpenChange={onOpenChange}>
       <DropdownMenuTrigger asChild>
         <button
           type="button"
           aria-label={collapsed ? `${user.name}, account menu` : undefined}
-          className={cn(
-            "press flex h-(--h-row) w-full items-center gap-3 rounded-sm px-3 text-left hover:bg-accent data-[state=open]:bg-accent",
-            collapsed && "justify-center px-0",
-          )}
+          className={cn("press flex h-(--h-row) w-full items-center gap-3 rounded-sm px-2 text-left hover:bg-accent data-[state=open]:bg-accent")}
         >
           <Avatar>
             <AvatarFallback>{user.initials}</AvatarFallback>
@@ -195,10 +224,34 @@ export function SidebarUserMenu({ user, items = sampleUserMenu, collapsed, linkA
   )
 }
 
+/** Which way the collapsed rail opens: by hover where there is a mouse, by a tap on touch tablets. */
+function usePointerMode() {
+  const [mode, setMode] = React.useState<{ hover: boolean; wide: boolean }>({ hover: true, wide: true })
+  React.useEffect(() => {
+    const hover = window.matchMedia("(hover: hover) and (pointer: fine)")
+    const wide = window.matchMedia("(min-width: 1280px)")
+    const update = () => setMode({ hover: hover.matches, wide: wide.matches })
+    update()
+    hover.addEventListener("change", update)
+    wide.addEventListener("change", update)
+    return () => {
+      hover.removeEventListener("change", update)
+      wide.removeEventListener("change", update)
+    }
+  }, [])
+  return mode
+}
+
+const isControl = (el: EventTarget | null) => el instanceof Element && !!el.closest("a, button, input, select, textarea, [role=button], [role=menuitem]")
+
 /**
- * The frame of an internal tool, in three zones: the sidebar (navigation, collapsible on desktop, a sheet on phones,
- * with the user menu at its foot), the top bar (page title, environment, search, actions), and the content with its footer.
- * `layout="inset"` floats the sidebar and the content as two panels with a margin, top rows level.
+ * The frame of an internal tool, in three zones: the sidebar (navigation, with the user menu at its foot), the top bar
+ * (page title, environment, search, actions), and the content with its footer.
+ *
+ * Sidebar: open on wide screens (1280 px and up); a 72 px rail of icons below that, showing the logo at the top.
+ * The rail opens over the content without moving it: on hover with a mouse, on a tap on touch tablets (a tap on an
+ * icon opens the rail first, the next one navigates; a tap outside closes it). The pin button keeps it open.
+ * Phones get a drawer from the menu button. `layout="inset"` floats the sidebar and the content as two panels.
  */
 export function AppShell({
   product,
@@ -217,51 +270,127 @@ export function AppShell({
   footer,
   children,
 }: AppShellProps) {
-  const [collapsed, setCollapsed] = React.useState(false)
+  const { hover, wide } = usePointerMode()
+  // null: follow the screen (open when wide). A press of the pin button makes it the person's choice.
+  const [pinned, setPinned] = React.useState<boolean | null>(null)
+  const open = pinned ?? wide
+  const [peek, setPeek] = React.useState<"closed" | "hover" | "tap">("closed")
+  const [menuOpen, setMenuOpen] = React.useState(false)
+  const expanded = open || peek !== "closed"
+  const aside = React.useRef<HTMLElement>(null)
   const env = environment ? environments[environment] : null
   const inset = layout === "inset"
+  const [scrolled, setScrolled] = React.useState(false)
+
+  // A tap outside closes a rail opened by tap.
+  React.useEffect(() => {
+    if (peek !== "tap") return
+    const close = (e: PointerEvent) => {
+      if (!aside.current?.contains(e.target as Node)) setPeek("closed")
+    }
+    document.addEventListener("pointerdown", close)
+    return () => document.removeEventListener("pointerdown", close)
+  }, [peek])
+
+  const tapMode = !open && !hover
+  const onNavigate = (e: React.MouseEvent) => {
+    if (tapMode && peek === "closed") {
+      e.preventDefault()
+      setPeek("tap")
+      return
+    }
+    setPeek("closed")
+  }
+
+  const brand = (
+    <span className="flex min-w-0 items-center gap-2">
+      <span className="flex size-7 shrink-0 items-center justify-center">
+        {logo ?? (
+          <span aria-hidden="true" className="flex size-7 items-center justify-center rounded-sm bg-primary text-sm font-bold text-primary-foreground">
+            {product.slice(0, 1)}
+          </span>
+        )}
+      </span>
+      {expanded && <span className="truncate text-sm font-bold">{product}</span>}
+    </span>
+  )
+
   return (
     <div className={cn("flex h-dvh bg-background text-foreground", inset && "gap-2 p-2")}>
-      <aside
-        className={cn(
-          "hidden shrink-0 flex-col bg-card transition-[width] duration-(--motion-base) ease-(--ease-standard) md:flex",
-          inset ? "overflow-hidden rounded-md ring-1 ring-border" : "border-r border-border",
-          collapsed ? "w-18" : "w-60",
-        )}
-      >
-        {/* Same height as the top bar, so the brand row and the bar read as one line across the screen. */}
-        <div className={cn("flex h-(--h-row) shrink-0 items-center gap-2 border-b border-border px-3", collapsed && "justify-center")}>
-          {!collapsed && (
-            <span className="flex min-w-0 flex-1 items-center gap-2 pl-3">
-              {logo}
-              <span className="truncate text-sm font-bold">{product}</span>
-            </span>
+      {/* The sidebar's place in the layout: as wide as the pinned state. When the rail peeks open, the panel grows over the content. */}
+      <div className={cn("relative hidden shrink-0 transition-[width] duration-(--motion-base) ease-(--ease-standard) sm:block", open ? "w-60" : "w-18")}>
+        <aside
+          ref={aside}
+          aria-label="Sidebar"
+          onMouseEnter={() => !open && hover && setPeek("hover")}
+          onMouseLeave={() => peek === "hover" && !menuOpen && setPeek("closed")}
+          onPointerDown={(e) => tapMode && peek === "closed" && !isControl(e.target) && setPeek("tap")}
+          className={cn(
+            "absolute inset-y-0 left-0 z-30 flex flex-col overflow-hidden bg-card",
+            "transition-[width,box-shadow] duration-(--motion-base) ease-(--ease-standard)",
+            expanded ? "w-60" : "w-18",
+            inset ? "rounded-md ring-1 ring-border" : "border-r border-border",
+            peek !== "closed" && "shadow-overlay",
           )}
-          <button
-            type="button"
-            aria-label={collapsed ? "Expand navigation" : "Collapse navigation"}
-            aria-expanded={!collapsed}
-            onClick={() => setCollapsed((v) => !v)}
-            className="press flex size-(--h-sm) items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground"
-          >
-            {collapsed ? <PanelLeftOpen aria-hidden="true" className="size-5" /> : <PanelLeftClose aria-hidden="true" className="size-5" />}
-          </button>
-        </div>
-        <div className="flex-1 overflow-y-auto p-3">
-          <Nav nav={nav} current={current} collapsed={collapsed} linkAs={linkAs} />
-        </div>
-        {user && (
-          <div className="shrink-0 border-t border-border p-3">
-            <SidebarUserMenu user={user} items={userMenu} collapsed={collapsed} linkAs={linkAs} />
+        >
+          <div className={cn("flex h-(--h-row) shrink-0 items-center gap-2 pr-3 pl-6", !inset && "border-b border-border")}>
+            <span className="min-w-0 flex-1">{brand}</span>
+            {expanded && (
+              <button
+                type="button"
+                aria-label={open ? "Collapse sidebar" : "Keep sidebar open"}
+                aria-pressed={open}
+                onClick={() => {
+                  setPinned(!open)
+                  setPeek("closed")
+                }}
+                className="press flex size-(--h-sm) shrink-0 items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground"
+              >
+                {open ? <PanelLeftClose aria-hidden="true" className="size-5" /> : <PanelLeftOpen aria-hidden="true" className="size-5" />}
+              </button>
+            )}
           </div>
-        )}
-      </aside>
+          <div className="flex-1 overflow-x-hidden overflow-y-auto px-3 py-2">
+            <Nav nav={nav} current={current} collapsed={!expanded} linkAs={linkAs} onNavigate={onNavigate} />
+          </div>
+          {user && (
+            <div className={cn("shrink-0 p-3", !inset && "border-t border-border")}>
+              <SidebarUserMenu
+                user={user}
+                items={userMenu}
+                collapsed={!expanded}
+                linkAs={linkAs}
+                onOpenChange={(o) => {
+                  setMenuOpen(o)
+                  if (!o && peek === "hover" && !aside.current?.matches(":hover")) setPeek("closed")
+                }}
+              />
+            </div>
+          )}
+        </aside>
+      </div>
 
-      <div className={cn("flex min-w-0 flex-1 flex-col", inset && "overflow-hidden rounded-md bg-card ring-1 ring-border")}>
-        <header className="flex h-(--h-row) shrink-0 items-center gap-3 border-b border-border px-6">
+      <div className={cn("relative flex min-w-0 flex-1 flex-col", inset && "overflow-hidden rounded-md bg-card ring-1 ring-border")}>
+        {/* Inset: the top bar is its own layer over the content, with no line. Once the content scrolls under it,
+            a card-coloured backing fades in, its last 16 px dissolving into the content. */}
+        {inset && (
+          <div
+            aria-hidden="true"
+            className={cn(
+              "pointer-events-none absolute inset-x-0 top-0 z-10 h-(--h-row) box-content pb-4 bg-card [mask-image:linear-gradient(to_bottom,black_calc(100%-1rem),transparent)]",
+              "transition-opacity duration-(--motion-fast) ease-(--ease-standard)",
+              scrolled ? "opacity-100" : "opacity-0",
+            )}
+          />
+        )}
+        <header className={cn("z-20 flex h-(--h-row) shrink-0 items-center gap-3 px-6", inset ? "absolute inset-x-0 top-0" : "border-b border-border")}>
           <Sheet>
             <SheetTrigger asChild>
-              <button type="button" aria-label="Open navigation" className="press -ml-3 flex size-(--h-md) items-center justify-center rounded-sm hover:bg-accent md:hidden">
+              <button
+                type="button"
+                aria-label="Open navigation"
+                className="press -ml-3 flex size-(--h-md) items-center justify-center rounded-sm hover:bg-accent sm:hidden"
+              >
                 <Menu aria-hidden="true" className="size-5" />
               </button>
             </SheetTrigger>
@@ -269,7 +398,7 @@ export function AppShell({
               <SheetTitle className="pb-4">{product}</SheetTitle>
               <Nav nav={nav} current={current} linkAs={linkAs} />
               {user && (
-                <div className="mt-auto border-t border-border pt-3">
+                <div className="mt-auto pt-3">
                   <SidebarUserMenu user={user} items={userMenu} linkAs={linkAs} />
                 </div>
               )}
@@ -287,10 +416,18 @@ export function AppShell({
             {actions}
           </div>
         </header>
-        <main className="flex min-h-0 flex-1 flex-col overflow-y-auto">
-          <div className={cn("flex-1", !bleed && "p-6")}>{children}</div>
+        <main
+          onScroll={(e) => setScrolled(e.currentTarget.scrollTop > 4)}
+          className={cn("flex min-h-0 flex-1 flex-col overflow-y-auto", inset && "pt-(--h-row)")}
+        >
+          <div className={cn("flex-1", !bleed && "p-6", inset && !bleed && "pt-2")}>{children}</div>
           {footer && (
-            <footer className="flex shrink-0 flex-wrap items-center justify-between gap-x-6 gap-y-1 border-t border-border px-6 py-3 text-xs text-muted-foreground">
+            <footer
+              className={cn(
+                "flex shrink-0 flex-wrap items-center justify-between gap-x-6 gap-y-1 px-6 py-3 text-xs text-muted-foreground",
+                !inset && "border-t border-border",
+              )}
+            >
               {footer}
             </footer>
           )}

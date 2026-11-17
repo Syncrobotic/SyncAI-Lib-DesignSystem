@@ -1557,7 +1557,7 @@
           {
             "version": "0.7.0",
             "date": "2026-11-17",
-            "note": "Inset layout (two floating panels, top rows level), a footer slot, and the user menu at the sidebar's foot (avatar, name, email; account, preferences, sign out)."
+            "note": "Sidebar as a rail below 1280 px that shows the logo and opens over the content (hover with a mouse, tap on touch tablets), with a pin button. Inset layout: two floating panels, no lines in the sidebar, the top bar a layer over the content that gains a backing on scroll. Footer slot. User menu at the sidebar's foot."
           },
           {
             "version": "0.6.0",
