@@ -1,0 +1,103 @@
+import * as React from "react"
+import type { Meta, StoryObj } from "@storybook/react"
+import { fn } from "@storybook/test"
+import { Alarm, AlarmList, type AlarmData } from "@/registry/syncrobotic/ui/alarm"
+import { Button } from "@/registry/syncrobotic/ui/button"
+import { Toast, ToastAction, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport, Toaster, toast } from "@/registry/syncrobotic/ui/toast"
+
+// Feedback, from most to least urgent: alarm (operator must act), alert (a condition on this page), toast (what just happened).
+const meta: Meta = { title: "Feedback" }
+export default meta
+type S = StoryObj
+
+export const AlarmPriorities: S = {
+  render: () => (
+    <div className="flex flex-col gap-2">
+      <Alarm priority="critical" title="Collision risk · Hall B" source="Patrol dog 7F3A" time="14:02:31" active acknowledged={false} onAcknowledge={fn()} />
+      <Alarm priority="high" title="Battery 12 %, 9 min left" source="Patrol dog 7F3A" time="14:01:05" active acknowledged={false} onAcknowledge={fn()} />
+      <Alarm priority="low" title="Lidar cleaning due" source="Courier 2B19" time="13:40:12" active acknowledged={false} onAcknowledge={fn()} />
+    </div>
+  ),
+}
+
+export const AlarmStates: S = {
+  render: () => (
+    <div className="flex flex-col gap-2">
+      <Alarm priority="high" title="Localisation degraded · Floor 3" source="Courier 2B19" time="14:05:44" active acknowledged={false} onAcknowledge={fn()} />
+      <Alarm priority="high" title="Localisation degraded · Floor 3" source="Courier 2B19" time="14:05:44" active acknowledged />
+      <Alarm priority="high" title="Localisation degraded · Floor 3" source="Courier 2B19" time="14:05:44" active={false} acknowledged={false} onAcknowledge={fn()} />
+    </div>
+  ),
+}
+
+export const AlarmWithAction: S = {
+  render: () => (
+    <Alarm
+      priority="critical"
+      title="Person in restricted zone · Dock 4"
+      source="Patrol dog 7F3A"
+      time="14:06:02"
+      active
+      acknowledged={false}
+      action={{ label: "Open camera", onClick: fn() }}
+      onAcknowledge={fn()}
+    />
+  ),
+}
+
+function AlarmPanel() {
+  // From the robot fleet, oldest first. The list sorts: unacknowledged, then priority, then newest.
+  const [alarms, setAlarms] = React.useState<AlarmData[]>([
+    { id: "a1", priority: "low", title: "Lidar cleaning due", source: "Courier 2B19", time: "13:40", active: true, acknowledged: true },
+    { id: "a2", priority: "high", title: "Battery 12 %, 9 min left", source: "Patrol dog 7F3A", time: "14:01", active: true, acknowledged: false },
+    { id: "a3", priority: "critical", title: "Collision risk · Hall B", source: "Patrol dog 7F3A", time: "14:02", active: true, acknowledged: false },
+  ])
+  const acknowledge = (id: string) => setAlarms((list) => list.map((a) => (a.id === id ? { ...a, acknowledged: true } : a)))
+  return <AlarmList alarms={alarms} onAcknowledge={acknowledge} />
+}
+
+export const AlarmListSorted: S = { render: () => <AlarmPanel /> }
+
+function ToastDemo() {
+  return (
+    <div className="flex flex-wrap gap-2">
+      <Button variant="secondary" onClick={() => toast({ tone: "success", title: "Route saved", description: "Night patrol · 6 waypoints" })}>
+        Save route
+      </Button>
+      <Button variant="secondary" onClick={() => toast({ title: "Waypoint deleted", action: { label: "Undo", onClick: () => toast({ title: "Waypoint restored" }) } })}>
+        Delete waypoint
+      </Button>
+      <Button variant="secondary" onClick={() => toast({ tone: "danger", title: "Couldn't upload the map", description: "Check the connection and try again." })}>
+        Upload map
+      </Button>
+      <Toaster />
+    </div>
+  )
+}
+
+export const ToastTones: S = { render: () => <ToastDemo /> }
+
+// Visual test: the three tones, open.
+export const ToastOpen: S = {
+  parameters: { layout: "fullscreen" },
+  render: () => (
+    <ToastProvider>
+      <Toast tone="success" open duration={Infinity}>
+        <ToastTitle>Route saved</ToastTitle>
+        <ToastDescription>Night patrol · 6 waypoints</ToastDescription>
+        <ToastClose className="absolute top-3 right-3" />
+      </Toast>
+      <Toast open duration={Infinity}>
+        <ToastTitle>Waypoint deleted</ToastTitle>
+        <ToastAction altText="Undo deleting the waypoint">Undo</ToastAction>
+        <ToastClose className="absolute top-3 right-3" />
+      </Toast>
+      <Toast tone="danger" open duration={Infinity}>
+        <ToastTitle>Couldn&apos;t upload the map</ToastTitle>
+        <ToastDescription>Check the connection and try again.</ToastDescription>
+        <ToastClose className="absolute top-3 right-3" />
+      </Toast>
+      <ToastViewport />
+    </ToastProvider>
+  ),
+}

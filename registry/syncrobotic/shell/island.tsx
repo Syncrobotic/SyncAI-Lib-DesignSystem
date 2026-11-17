@@ -5,6 +5,7 @@ import { Battery, BatteryCharging, Bell, ChevronDown, TriangleAlert, Wifi, WifiO
 import { cn } from "@/lib/utils"
 import { Tray } from "@/registry/syncrobotic/shell/tray"
 import { StatusGlyph, toneSubtle, toneText, type Tone } from "@/registry/syncrobotic/shell/status-glyph"
+import { alarmPriority, defaultAlarmLabels, topAlarm, type AlarmData, type AlarmLabels } from "@/registry/syncrobotic/ui/alarm"
 
 type Zone = "name" | "status" | "bell"
 
@@ -135,6 +136,54 @@ export function IslandNotice({ tone, icon: Icon, title, meta, action, persistent
       {!persistent && onDismiss && (
         <button type="button" aria-label={dismissLabel} onClick={onDismiss} className="flex size-(--h-sm) shrink-0 items-center justify-center rounded-sm text-muted-foreground">
           <X aria-hidden="true" className="size-4" />
+        </button>
+      )}
+    </div>
+  )
+}
+
+type IslandAlarmProps = {
+  alarms: AlarmData[]
+  onAcknowledge?: (id: string) => void
+  /** Opens the full alarm list. Shown when more than one alarm is unacknowledged. */
+  onShowAll?: () => void
+  labels?: Partial<AlarmLabels> & { more?: (n: number) => string; moreAlarms?: string }
+}
+
+/**
+ * The control app's alarm surface: the island shows the most urgent unacknowledged alarm, above any notice.
+ * Same data as AlarmList, so the phone and the dashboard never disagree. Pair it with `edge={alarmEdge(topAlarm(alarms))}`.
+ * Renders nothing when every alarm is acknowledged.
+ */
+export function IslandAlarm({ alarms, onAcknowledge, onShowAll, labels }: IslandAlarmProps) {
+  const l = { ...defaultAlarmLabels, more: (n: number) => `+${n}`, moreAlarms: "more unacknowledged", ...labels }
+  const top = topAlarm(alarms)
+  if (!top) return null
+  const others = alarms.filter((a) => !a.acknowledged).length - 1
+  const p = alarmPriority[top.priority]
+  const Icon = p.icon
+  return (
+    <div role="group" aria-label={`${l[top.priority]}: ${top.title}`} className={cn("flex min-h-(--h-row) items-center gap-2 rounded-md px-2", p.tint)}>
+      <span className={cn("flex size-8 shrink-0 items-center justify-center", p.text)}>
+        <Icon aria-hidden="true" className="size-5" />
+      </span>
+      <span className="flex min-w-0 flex-1 flex-col">
+        <span className="truncate text-sm font-bold">
+          <span className={p.text}>{l[top.priority]}</span> · {top.title}
+        </span>
+        <span className="truncate text-xs text-muted-foreground">
+          {[top.source, top.time, others > 0 && !onShowAll ? l.more(others) : null].filter(Boolean).join(" · ")}
+        </span>
+      </span>
+      {others > 0 && onShowAll && (
+        <button type="button" onClick={onShowAll} className="h-(--h-sm) shrink-0 rounded-sm px-2 text-xs font-medium ring-1 ring-border ring-inset">
+          {l.more(others)}
+          <span className="sr-only"> {l.moreAlarms}</span>
+        </button>
+      )}
+      {onAcknowledge && (
+        <button type="button" onClick={() => onAcknowledge(top.id)} className="h-(--h-sm) shrink-0 rounded-sm bg-primary px-3 text-sm font-medium text-primary-foreground">
+          {l.acknowledge}
         </button>
       )}
     </div>

@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { fn } from "@storybook/test"
 import { Bluetooth, Check, CircleAlert, Square, Zap } from "lucide-react"
-import { Island, IslandNotice } from "@/registry/syncrobotic/shell/island"
+import { Island, IslandAlarm, IslandNotice } from "@/registry/syncrobotic/shell/island"
+import { alarmEdge, topAlarm, type AlarmData } from "@/registry/syncrobotic/ui/alarm"
 
 const meta: Meta<typeof Island> = {
   title: "Shell/Dynamic island",
@@ -40,4 +41,17 @@ export const BluetoothOnlyPersistent: S = {
 }
 export const StoppedPersistent: S = {
   args: { tone: "danger", edge: "danger", children: <IslandNotice tone="danger" icon={Square} title="Night shift · Pixel 8 triggered an emergency stop" meta="7F3A · 21:08" persistent /> },
+}
+
+const fleetAlarms: AlarmData[] = [
+  { id: "a1", priority: "high", title: "Battery 12 %", source: "7F3A", time: "14:01", active: true, acknowledged: false },
+  { id: "a2", priority: "critical", title: "Collision risk · Hall B", source: "7F3A", time: "14:02", active: true, acknowledged: false },
+]
+// The most urgent unacknowledged alarm sits in the island, above notices; the edge takes its colour.
+export const AlarmInIsland: S = {
+  args: {
+    tone: "danger",
+    edge: alarmEdge(topAlarm(fleetAlarms)),
+    children: <IslandAlarm alarms={fleetAlarms} onAcknowledge={fn()} onShowAll={fn()} />,
+  },
 }

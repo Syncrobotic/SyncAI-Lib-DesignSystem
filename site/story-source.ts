@@ -74,7 +74,21 @@ function clean(code: string) {
 }
 
 export function storySource(file: string, name: string) {
-  return clean(rawStorySource(file, name))
+  return clean(inlineHelper(file, rawStorySource(file, name)))
+}
+
+/**
+ * A story that renders one helper from its own file (`<AlarmPanel />`, usually because it keeps state)
+ * shows the helper's source instead, so the code tab holds something you can copy and run.
+ */
+function inlineHelper(file: string, code: string) {
+  const name = code.match(/^<([A-Z]\w*)[^<>]*\/>$/)?.[1]
+  if (!name) return code
+  const src = readSource(`stories/${file}.stories.tsx`)
+  const start = src.search(new RegExp(`^(?:export )?function ${name}\\b`, "m"))
+  if (start < 0) return code
+  const open = src.indexOf("{", src.indexOf(")", start))
+  return src.slice(start, matchClose(src, open, "{", "}") + 1).replace(/^export /, "")
 }
 
 function rawStorySource(file: string, name: string) {
