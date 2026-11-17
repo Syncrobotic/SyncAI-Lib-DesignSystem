@@ -16,6 +16,8 @@ const lock = existsSync(LOCK) ? JSON.parse(readFileSync(LOCK, "utf8")) : {}
 
 const HEADER = /^(\/\/ @syncrobotic\/\S+ v\S+.*\n|\/\* @syncrobotic\/\S+ v\S+.*\*\/\n)/
 const header = (file, name, version) => {
+  // Markdown (the agent skill) carries no header: a skill file must start with its frontmatter. Its version is in the lock.
+  if (file.endsWith(".md")) return ""
   const text = `@syncrobotic/${name} v${version} · update: npx shadcn add @syncrobotic/${name} --overwrite`
   return file.endsWith(".css") ? `/* ${text} */\n` : `// ${text}\n`
 }
