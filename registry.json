@@ -1542,7 +1542,8 @@
         "@syncrobotic/avatar",
         "@syncrobotic/badge",
         "@syncrobotic/input",
-        "@syncrobotic/sheet"
+        "@syncrobotic/sheet",
+        "@syncrobotic/dropdown-menu"
       ],
       "files": [
         {
@@ -1551,8 +1552,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Inset layout (two floating panels, top rows level), a footer slot, and the user menu at the sidebar's foot (avatar, name, email; account, preferences, sign out)."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",

@@ -1,16 +1,42 @@
-// @syncrobotic/app-shell v0.6.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
+// @syncrobotic/app-shell v0.7.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
 "use client"
 
 import * as React from "react"
-import { Bell, Bot, LayoutDashboard, Map, Menu, PanelLeftClose, PanelLeftOpen, ScrollText, Search, Settings, type LucideIcon } from "lucide-react"
+import {
+  Bell,
+  Bot,
+  ChevronsUpDown,
+  LayoutDashboard,
+  LogOut,
+  Map,
+  Menu,
+  PanelLeftClose,
+  PanelLeftOpen,
+  ScrollText,
+  Search,
+  Settings,
+  UserRound,
+  type LucideIcon,
+} from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"
 import { Badge } from "@/registry/syncrobotic/ui/badge"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/registry/syncrobotic/ui/dropdown-menu"
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/registry/syncrobotic/ui/sheet"
 
 export type AppNavItem = { label: string; href: string; icon: LucideIcon; /** A count, e.g. unacknowledged alarms. */ count?: number }
 export type AppNavGroup = { label?: string; items: AppNavItem[] }
+export type AppUser = { name: string; initials: string; email?: string }
+/** One row of the user menu. Sign out goes last; it is not destructive, so it is not red. */
+export type AppUserMenuItem = { label: string; icon?: LucideIcon; href?: string; onSelect?: () => void; separatorBefore?: boolean }
 
 /** Navigation shared by the engineering-tool templates. Replace with your own. */
 export const sampleNav: AppNavGroup[] = [
@@ -29,6 +55,13 @@ export const sampleNav: AppNavGroup[] = [
       { label: "Settings", href: "#settings", icon: Settings },
     ],
   },
+]
+
+/** The user menu every tool starts with. Replace the hrefs, or pass your own `userMenu`. */
+export const sampleUserMenu: AppUserMenuItem[] = [
+  { label: "Account", icon: UserRound, href: "#account" },
+  { label: "Preferences", icon: Settings, href: "#preferences" },
+  { label: "Sign out", icon: LogOut, href: "#sign-out", separatorBefore: true },
 ]
 
 const environments = {
@@ -51,13 +84,23 @@ type AppShellProps = {
   actions?: React.ReactNode
   /** Which backend the tool talks to. Production is red so nobody mistakes it for a test. */
   environment?: keyof typeof environments
-  user?: { name: string; initials: string }
+  /** Bottom of the sidebar: who is signed in, and a menu for account, preferences and sign out. */
+  user?: AppUser
+  userMenu?: AppUserMenuItem[]
   /** Shown as a search field in the top bar when set. */
   onSearch?: (query: string) => void
   /** Swap in your router's link (e.g. next/link). */
   linkAs?: React.ElementType
   /** Content fills the area edge to edge, for maps and video. */
   bleed?: boolean
+  /**
+   * flush: sidebar, top bar and content share one surface, split by hairlines.
+   * inset: two raised panels on the page with an 8 px margin: the sidebar, and the top bar with content and footer.
+   * Their top rows are the same height and their hairlines meet in one line across the gap.
+   */
+  layout?: "flush" | "inset"
+  /** End of the content: version, copyright, links. Scrolls with the page, never overlaps it. */
+  footer?: React.ReactNode
   children: React.ReactNode
 }
 
@@ -83,11 +126,7 @@ function Nav({ nav, current, collapsed, linkAs: Link = "a" }: { nav: AppNavGroup
               >
                 <item.icon aria-hidden="true" className="size-5 shrink-0" />
                 {!collapsed && <span className="flex-1 truncate">{item.label}</span>}
-                {!collapsed && item.count ? (
-                  <span className="text-xs font-medium text-danger tabular-nums">
-                    {item.count}
-                  </span>
-                ) : null}
+                {!collapsed && item.count ? <span className="text-xs font-medium text-danger tabular-nums">{item.count}</span> : null}
               </Link>
             )
           })}
@@ -98,16 +137,99 @@ function Nav({ nav, current, collapsed, linkAs: Link = "a" }: { nav: AppNavGroup
 }
 
 /**
- * The frame of an internal tool: sidebar navigation (collapsible on desktop, a sheet on phones),
- * a top bar with the page title, search, environment and user, and the page content.
+ * Who is signed in, at the foot of the sidebar: one button with avatar, name and email that opens the account menu
+ * upwards. Collapsed, only the avatar shows and the name is its label. The same control in every tool.
  */
-export function AppShell({ product, logo, nav, current, title, actions, environment, user, onSearch, linkAs, bleed, children }: AppShellProps) {
+export function SidebarUserMenu({ user, items = sampleUserMenu, collapsed, linkAs: Link = "a" }: { user: AppUser; items?: AppUserMenuItem[]; collapsed?: boolean; linkAs?: React.ElementType }) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button
+          type="button"
+          aria-label={collapsed ? `${user.name}, account menu` : undefined}
+          className={cn(
+            "press flex h-(--h-row) w-full items-center gap-3 rounded-sm px-3 text-left hover:bg-accent data-[state=open]:bg-accent",
+            collapsed && "justify-center px-0",
+          )}
+        >
+          <Avatar>
+            <AvatarFallback>{user.initials}</AvatarFallback>
+          </Avatar>
+          {!collapsed && (
+            <>
+              <span className="flex min-w-0 flex-1 flex-col">
+                <span className="truncate text-sm font-medium">{user.name}</span>
+                {user.email && <span className="truncate text-xs text-muted-foreground">{user.email}</span>}
+              </span>
+              <ChevronsUpDown aria-hidden="true" className="size-4 shrink-0 text-muted-foreground" />
+            </>
+          )}
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent side={collapsed ? "right" : "top"} align={collapsed ? "end" : "start"} className="w-(--radix-dropdown-menu-trigger-width) min-w-56">
+        <DropdownMenuLabel className="flex flex-col">
+          <span className="truncate">{user.name}</span>
+          {user.email && <span className="truncate text-xs font-normal text-muted-foreground">{user.email}</span>}
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {items.map((item) => (
+          <React.Fragment key={item.label}>
+            {item.separatorBefore && <DropdownMenuSeparator />}
+            <DropdownMenuItem asChild={!!item.href} onSelect={item.onSelect}>
+              {item.href ? (
+                <Link href={item.href}>
+                  {item.icon && <item.icon aria-hidden="true" />}
+                  {item.label}
+                </Link>
+              ) : (
+                <>
+                  {item.icon && <item.icon aria-hidden="true" />}
+                  {item.label}
+                </>
+              )}
+            </DropdownMenuItem>
+          </React.Fragment>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
+/**
+ * The frame of an internal tool, in three zones: the sidebar (navigation, collapsible on desktop, a sheet on phones,
+ * with the user menu at its foot), the top bar (page title, environment, search, actions), and the content with its footer.
+ * `layout="inset"` floats the sidebar and the content as two panels with a margin, top rows level.
+ */
+export function AppShell({
+  product,
+  logo,
+  nav,
+  current,
+  title,
+  actions,
+  environment,
+  user,
+  userMenu,
+  onSearch,
+  linkAs,
+  bleed,
+  layout = "flush",
+  footer,
+  children,
+}: AppShellProps) {
   const [collapsed, setCollapsed] = React.useState(false)
   const env = environment ? environments[environment] : null
+  const inset = layout === "inset"
   return (
-    <div className="flex h-dvh bg-background text-foreground">
-      <aside className={cn("hidden shrink-0 flex-col border-r border-border bg-card md:flex", collapsed ? "w-18" : "w-60")}>
-        {/* Same height and hairline as the top bar, so the brand row and the bar read as one line across the screen. */}
+    <div className={cn("flex h-dvh bg-background text-foreground", inset && "gap-2 p-2")}>
+      <aside
+        className={cn(
+          "hidden shrink-0 flex-col bg-card transition-[width] duration-(--motion-base) ease-(--ease-standard) md:flex",
+          inset ? "overflow-hidden rounded-md ring-1 ring-border" : "border-r border-border",
+          collapsed ? "w-18" : "w-60",
+        )}
+      >
+        {/* Same height as the top bar, so the brand row and the bar read as one line across the screen. */}
         <div className={cn("flex h-(--h-row) shrink-0 items-center gap-2 border-b border-border px-3", collapsed && "justify-center")}>
           {!collapsed && (
             <span className="flex min-w-0 flex-1 items-center gap-2 pl-3">
@@ -129,16 +251,13 @@ export function AppShell({ product, logo, nav, current, title, actions, environm
           <Nav nav={nav} current={current} collapsed={collapsed} linkAs={linkAs} />
         </div>
         {user && (
-          <div className={cn("flex h-(--h-row) shrink-0 items-center gap-3 border-t border-border px-6", collapsed && "justify-center px-3")}>
-            <Avatar>
-              <AvatarFallback>{user.initials}</AvatarFallback>
-            </Avatar>
-            {!collapsed && <span className="truncate text-sm">{user.name}</span>}
+          <div className="shrink-0 border-t border-border p-3">
+            <SidebarUserMenu user={user} items={userMenu} collapsed={collapsed} linkAs={linkAs} />
           </div>
         )}
       </aside>
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className={cn("flex min-w-0 flex-1 flex-col", inset && "overflow-hidden rounded-md bg-card ring-1 ring-border")}>
         <header className="flex h-(--h-row) shrink-0 items-center gap-3 border-b border-border px-6">
           <Sheet>
             <SheetTrigger asChild>
@@ -149,6 +268,11 @@ export function AppShell({ product, logo, nav, current, title, actions, environm
             <SheetContent side="left" className="w-72">
               <SheetTitle className="pb-4">{product}</SheetTitle>
               <Nav nav={nav} current={current} linkAs={linkAs} />
+              {user && (
+                <div className="mt-auto border-t border-border pt-3">
+                  <SidebarUserMenu user={user} items={userMenu} linkAs={linkAs} />
+                </div>
+              )}
             </SheetContent>
           </Sheet>
           <h1 className="truncate text-lg font-bold">{title}</h1>
@@ -163,7 +287,14 @@ export function AppShell({ product, logo, nav, current, title, actions, environm
             {actions}
           </div>
         </header>
-        <main className={cn("min-h-0 flex-1 overflow-y-auto", !bleed && "p-6")}>{children}</main>
+        <main className="flex min-h-0 flex-1 flex-col overflow-y-auto">
+          <div className={cn("flex-1", !bleed && "p-6")}>{children}</div>
+          {footer && (
+            <footer className="flex shrink-0 flex-wrap items-center justify-between gap-x-6 gap-y-1 border-t border-border px-6 py-3 text-xs text-muted-foreground">
+              {footer}
+            </footer>
+          )}
+        </main>
       </div>
     </div>
   )
