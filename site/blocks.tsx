@@ -18,16 +18,250 @@ import { FleetTable } from "@/registry/syncrobotic/blocks/fleet-table"
 import { MarketingHero } from "@/registry/syncrobotic/blocks/marketing-hero"
 import { RobotStatusCard } from "@/registry/syncrobotic/blocks/robot-status-card"
 import { StatsCards } from "@/registry/syncrobotic/blocks/stats-cards"
+import { LineChartTelemetry } from "@/registry/syncrobotic/blocks/line-chart-telemetry"
+import { LineChartLimit } from "@/registry/syncrobotic/blocks/line-chart-limit"
+import { LineChartCompare } from "@/registry/syncrobotic/blocks/line-chart-compare"
+import { AreaChartBattery } from "@/registry/syncrobotic/blocks/area-chart-battery"
+import { AreaChartFleetStates } from "@/registry/syncrobotic/blocks/area-chart-fleet-states"
+import { AreaChartCumulative } from "@/registry/syncrobotic/blocks/area-chart-cumulative"
+import { BarChartMissions } from "@/registry/syncrobotic/blocks/bar-chart-missions"
+import { BarChartRanked } from "@/registry/syncrobotic/blocks/bar-chart-ranked"
+import { BarChartStacked } from "@/registry/syncrobotic/blocks/bar-chart-stacked"
+import { BarChartVariance } from "@/registry/syncrobotic/blocks/bar-chart-variance"
+import { SparklineRobotList } from "@/registry/syncrobotic/blocks/sparkline-robot-list"
+import { SparklineMetricTiles } from "@/registry/syncrobotic/blocks/sparkline-metric-tiles"
+import { SparklineTable } from "@/registry/syncrobotic/blocks/sparkline-table"
+import { StatusTrackerUptime } from "@/registry/syncrobotic/blocks/status-tracker-uptime"
+import { StatusTrackerRuns } from "@/registry/syncrobotic/blocks/status-tracker-runs"
+import { StatusTrackerRollout } from "@/registry/syncrobotic/blocks/status-tracker-rollout"
+import { RadialChartBattery } from "@/registry/syncrobotic/blocks/radial-chart-battery"
+import { RadialChartGoal } from "@/registry/syncrobotic/blocks/radial-chart-goal"
+import { RadialChartCapacity } from "@/registry/syncrobotic/blocks/radial-chart-capacity"
+import { HeatmapWeekHours } from "@/registry/syncrobotic/blocks/heatmap-week-hours"
+import { HeatmapZones } from "@/registry/syncrobotic/blocks/heatmap-zones"
 
 // Blocks are composed sections. Each renders alone at /preview/<name> so the docs can frame it at any width.
 type Meta = {
   viewport: "desktop" | "mobile"
+  /** Width the overview thumbnail renders at. Charts are dashboard cards, so they render at a card's width, not a screen's. */
+  thumbWidth?: number
   /** Starting height. Sections then grow or shrink to their content; app shells fill this height like a screen. */
   height: number
   render: () => React.ReactNode
 }
 
 const meta: Record<string, Meta> = {
+  // Charts: one card each, shown at a dashboard card's width.
+  "line-chart-telemetry": {
+    viewport: "desktop",
+    thumbWidth: 720,
+    height: 480,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <LineChartTelemetry />
+      </div>
+    ),
+  },
+  "line-chart-limit": {
+    viewport: "desktop",
+    thumbWidth: 720,
+    height: 480,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <LineChartLimit />
+      </div>
+    ),
+  },
+  "line-chart-compare": {
+    viewport: "desktop",
+    thumbWidth: 720,
+    height: 480,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <LineChartCompare />
+      </div>
+    ),
+  },
+  "area-chart-battery": {
+    viewport: "desktop",
+    thumbWidth: 720,
+    height: 480,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <AreaChartBattery />
+      </div>
+    ),
+  },
+  "area-chart-fleet-states": {
+    viewport: "desktop",
+    thumbWidth: 720,
+    height: 480,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <AreaChartFleetStates />
+      </div>
+    ),
+  },
+  "area-chart-cumulative": {
+    viewport: "desktop",
+    thumbWidth: 720,
+    height: 480,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <AreaChartCumulative />
+      </div>
+    ),
+  },
+  "bar-chart-missions": {
+    viewport: "desktop",
+    thumbWidth: 720,
+    height: 480,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <BarChartMissions />
+      </div>
+    ),
+  },
+  "bar-chart-ranked": {
+    viewport: "desktop",
+    thumbWidth: 720,
+    height: 480,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <BarChartRanked />
+      </div>
+    ),
+  },
+  "bar-chart-stacked": {
+    viewport: "desktop",
+    thumbWidth: 720,
+    height: 480,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <BarChartStacked />
+      </div>
+    ),
+  },
+  "bar-chart-variance": {
+    viewport: "desktop",
+    thumbWidth: 720,
+    height: 480,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <BarChartVariance />
+      </div>
+    ),
+  },
+  "sparkline-robot-list": {
+    viewport: "desktop",
+    thumbWidth: 720,
+    height: 480,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <SparklineRobotList />
+      </div>
+    ),
+  },
+  "sparkline-metric-tiles": {
+    viewport: "desktop",
+    thumbWidth: 720,
+    height: 480,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <SparklineMetricTiles />
+      </div>
+    ),
+  },
+  "sparkline-table": {
+    viewport: "desktop",
+    thumbWidth: 720,
+    height: 480,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <SparklineTable />
+      </div>
+    ),
+  },
+  "status-tracker-uptime": {
+    viewport: "desktop",
+    thumbWidth: 720,
+    height: 480,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <StatusTrackerUptime />
+      </div>
+    ),
+  },
+  "status-tracker-runs": {
+    viewport: "desktop",
+    thumbWidth: 720,
+    height: 480,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <StatusTrackerRuns />
+      </div>
+    ),
+  },
+  "status-tracker-rollout": {
+    viewport: "desktop",
+    thumbWidth: 720,
+    height: 480,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <StatusTrackerRollout />
+      </div>
+    ),
+  },
+  "radial-chart-battery": {
+    viewport: "desktop",
+    thumbWidth: 720,
+    height: 480,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <RadialChartBattery />
+      </div>
+    ),
+  },
+  "radial-chart-goal": {
+    viewport: "desktop",
+    thumbWidth: 720,
+    height: 480,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <RadialChartGoal />
+      </div>
+    ),
+  },
+  "radial-chart-capacity": {
+    viewport: "desktop",
+    thumbWidth: 720,
+    height: 480,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <RadialChartCapacity />
+      </div>
+    ),
+  },
+  "heatmap-week-hours": {
+    viewport: "desktop",
+    thumbWidth: 720,
+    height: 480,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <HeatmapWeekHours />
+      </div>
+    ),
+  },
+  "heatmap-zones": {
+    viewport: "desktop",
+    thumbWidth: 720,
+    height: 480,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <HeatmapZones />
+      </div>
+    ),
+  },
   // App shells: whole screens for internal engineering tools. Install one, replace the sample data, and you have a prototype.
   "app-shell": {
     viewport: "desktop",

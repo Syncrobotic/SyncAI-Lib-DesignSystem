@@ -52,7 +52,7 @@ export default function BlocksPage() {
                       <BlockThumb
                         name={first.name}
                         title={t.title}
-                        width={first.viewport === "mobile" ? 390 : 1280}
+                        width={first.thumbWidth ?? (first.viewport === "mobile" ? 390 : 1280)}
                         height={first.height}
                         fit={first.fit}
                         ratio={16 / 10}
