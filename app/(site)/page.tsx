@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { ArrowRight, ArrowUpRight } from "lucide-react"
+import { cn } from "@/lib/utils"
 import { Badge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Switch } from "@/registry/syncrobotic/ui/switch"
@@ -177,16 +178,27 @@ export default function HomePage() {
             .filter((g) => g !== "Hooks")
             .map((g) => {
               const list = items.filter((i) => i.group === g)
+              // Seven groups never fill a grid of two or three, so the robot shell (what sets this kit apart) closes it at full width,
+              // exhibit and text side by side on wide screens.
+              const wide = g === "Robot shell"
               return (
-                <AppearItem key={g} className="flex">
+                <AppearItem key={g} className={cn("flex", wide && "sm:col-span-2 lg:col-span-3")}>
                   <Link
                     href={`/docs/components/${firstOf(g)}`}
-                    className={`press group flex w-full flex-col overflow-hidden rounded-md border border-border transition-colors hover:border-muted-foreground ${fast}`}
+                    className={cn(
+                      `press group flex w-full flex-col overflow-hidden rounded-md border border-border transition-colors hover:border-muted-foreground ${fast}`,
+                      wide && "lg:flex-row",
+                    )}
                   >
-                    <div aria-hidden inert className="specimen flex h-36 items-center justify-center p-6">
+                    <div aria-hidden inert className={cn("specimen flex h-36 items-center justify-center p-6", wide && "lg:h-auto lg:w-1/2")}>
                       <div className={`transition-transform group-hover:-translate-y-0.5 motion-reduce:group-hover:translate-y-0 ${fast}`}>{samples[g]}</div>
                     </div>
-                    <div className="flex flex-1 flex-col gap-1 border-t border-border bg-card p-4">
+                    <div
+                      className={cn(
+                        "flex flex-1 flex-col gap-1 border-t border-border bg-card p-4",
+                        wide && "lg:justify-center lg:border-t-0 lg:border-l lg:p-6",
+                      )}
+                    >
                       <span className="flex items-center justify-between">
                         <span className="font-bold">{g}</span>
                         <span className="flex items-center gap-2">
