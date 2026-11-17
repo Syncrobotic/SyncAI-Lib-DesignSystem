@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Bell, Bot, Map, Wifi } from "lucide-react"
+import { Bell, Bot, CircleAlert, Map, OctagonAlert, TriangleAlert, Wifi } from "lucide-react"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { type FoundationSlug, foundations } from "./foundations"
 import { contrast } from "./theme-tokens"
@@ -64,6 +64,19 @@ const previews: Record<FoundationSlug, React.ReactNode> = {
       <Map className="size-6" />
       <Wifi className="size-5" />
       <Bell className="size-4" />
+    </div>
+  ),
+  alarms: (
+    <div className="flex flex-col gap-1 text-sm">
+      <span className="flex items-center gap-2 text-danger">
+        <OctagonAlert aria-hidden className="size-4" /> Critical
+      </span>
+      <span className="flex items-center gap-2 text-warning">
+        <TriangleAlert aria-hidden className="size-4" /> High
+      </span>
+      <span className="flex items-center gap-2 text-neutral">
+        <CircleAlert aria-hidden className="size-4" /> Low
+      </span>
     </div>
   ),
   accessibility: (

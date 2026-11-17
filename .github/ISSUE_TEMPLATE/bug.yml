@@ -1,0 +1,30 @@
+name: Bug
+description: Something in a component, token or the docs does not behave as documented
+labels: [bug]
+body:
+  - type: input
+    id: item
+    attributes:
+      label: Item
+      description: Registry item name, e.g. stop-button
+    validations: { required: true }
+  - type: textarea
+    id: what
+    attributes:
+      label: What happens, and what should happen
+    validations: { required: true }
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - Safety (stop, release or an alarm can fail)
+        - Accessibility (someone cannot use it)
+        - Broken (wrong result, crash)
+        - Visual (looks wrong)
+    validations: { required: true }
+  - type: input
+    id: version
+    attributes:
+      label: Version installed
+      description: From the CHANGELOG entry you installed, e.g. 0.3.0
