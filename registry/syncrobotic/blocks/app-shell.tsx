@@ -225,7 +225,7 @@ function Nav({
                 aria-label={collapsed ? (item.count ? `${item.label}, ${item.count}` : item.label) : undefined}
                 title={collapsed ? item.label : undefined}
                 className={cn(
-                  "press relative flex h-(--h-md) items-center gap-3 rounded-sm px-3 text-sm",
+                  "press relative flex h-(--h-md) items-center gap-2 rounded-sm px-3 text-sm",
                   // Current page: muted fill and weight. Hover: the lighter accent, so the two never look alike.
                   active ? "bg-muted font-medium text-foreground" : "text-muted-foreground hover:bg-accent hover:text-foreground",
                 )}
@@ -355,7 +355,7 @@ export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch;
         <button
           type="button"
           aria-label={`Search scope: ${scopeLabel}`}
-          className="press mx-1 flex h-(--h-sm) shrink-0 items-center gap-1 rounded-xs px-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground"
+          className="press mx-1 flex h-(--h-sm) shrink-0 items-center gap-2 rounded-xs px-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground"
         >
           {scopeLabel}
           <ChevronDown aria-hidden="true" className="size-4" />

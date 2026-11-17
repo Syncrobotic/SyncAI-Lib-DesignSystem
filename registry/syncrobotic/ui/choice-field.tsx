@@ -43,7 +43,7 @@ export function FieldSet({
             <p
               id={note ? `${id}-note` : undefined}
               className={cn(
-                "flex items-start gap-1 text-xs transition-opacity duration-(--motion-base) ease-(--ease-standard)",
+                "flex items-start gap-2 text-xs transition-opacity duration-(--motion-base) ease-(--ease-standard)",
                 shown.error ? "text-danger" : "text-muted-foreground",
                 shown.error && note && "animate-appear",
                 !note && "opacity-0",

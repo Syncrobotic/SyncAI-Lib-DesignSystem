@@ -75,7 +75,7 @@ export function Island({
   const slot = usePresence(!!children)
   const l = { ...defaultIslandLabels, ...labels }
   const toggle = (z: Zone) => onOpenChange?.(open === z ? null : z)
-  const zone = (z: Zone) => cn("press flex h-(--h-md) items-center gap-1 rounded-md px-2", open === z && "bg-muted")
+  const zone = (z: Zone) => cn("press flex h-(--h-md) items-center gap-2 rounded-md px-2", open === z && "bg-muted")
   const low = battery < 30
   const BatteryIcon = charging ? BatteryCharging : Battery
   return (

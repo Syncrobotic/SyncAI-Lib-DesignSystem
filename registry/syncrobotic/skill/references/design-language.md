@@ -15,7 +15,7 @@ Everything here is a token in `syncrobotic-theme.css`; use the token, never the 
 - Numbers are tabular. Weights: regular, medium, bold.
 
 ## Spacing and size
-- 4 px base, steps 4, 8, 12, 16, 24, 32. Icon to label 8.
+- 4 px base, steps 4, 8, 12, 16, 24, 32. Icon to label 8 (`gap-2`) everywhere: buttons, menus, tabs, nav, notes, alerts, alarms; the one exception is inside a 24 px Badge, 4.
 - Heights: `--h-sm` 36 (mouse only; 44 on touch), `--h-md` 44 (minimum interactive), `--h-lg` 48, `--h-row` 56 (rows, bars), `--h-stop` 56 (stop only).
 - App shell: panels 8 px apart and from the edge, 16 px inside each.
 

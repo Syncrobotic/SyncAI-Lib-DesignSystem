@@ -15,6 +15,7 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - `use-presence`: keeps an element or list items on screen while they leave.
 
 ### Changed
+- **Icon to label is 8 px everywhere** (`gap-2`): segmented control, table sort, field and choice notes, alert, alarm, toast, command, dock, island, status eyebrow, loading line, breadcrumb, app-shell nav and search scope, and the blocks that set their own. The Spacing foundation said 4; it now says 4 is for text to text and inside the 24 px Badge. `lint:motion` fails an icon row with a 4 or 12 px gap.
 - `status-pages` redone: centred on both axes (it read off-balance left-aligned in a centred column); `fill="parent"` sits in an app shell's content; the Blocks page shows the four states side by side.
 - `app-shell`: one gutter and one inset, panels 8 px apart and from the edge with 16 px inside each (24 px inside and 16 px outside read unbalanced).
 - **Every exit is animated**: cleared alarms, island notices and the island alarm, finished governance tasks, the settings save bar and fixed form errors now leave with the disappear movement instead of vanishing.

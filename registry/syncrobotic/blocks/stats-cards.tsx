@@ -1,4 +1,4 @@
-// @syncrobotic/stats-cards v0.6.0 · update: npx shadcn add @syncrobotic/stats-cards --overwrite
+// @syncrobotic/stats-cards v0.8.0 · update: npx shadcn add @syncrobotic/stats-cards --overwrite
 import * as React from "react"
 import { ArrowDownRight, ArrowUpRight } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -51,7 +51,7 @@ export function StatsCards({ stats = sampleStats, className }: { stats?: Stat[];
             <div className="flex items-center justify-between gap-2">
               <span className="text-sm text-muted-foreground">{s.label}</span>
               {s.delta && (
-                <span className={cn("inline-flex items-center gap-1 text-sm font-medium", trendText[trend])}>
+                <span className={cn("inline-flex items-center gap-2 text-sm font-medium", trendText[trend])}>
                   <Arrow aria-hidden="true" className="size-4" />
                   {s.delta}
                   <span className="sr-only">{trend === "good" ? ", better" : trend === "bad" ? ", worse" : ""}</span>

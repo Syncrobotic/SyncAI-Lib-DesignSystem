@@ -8,9 +8,9 @@ export function Breadcrumb({ className, children, ...props }: React.ComponentPro
   const items = React.Children.toArray(children)
   return (
     <nav aria-label="Breadcrumb" data-slot="breadcrumb" className={cn("min-w-0", className)} {...props}>
-      <ol className="flex min-w-0 items-center gap-1 text-sm text-muted-foreground">
+      <ol className="flex min-w-0 items-center gap-2 text-sm text-muted-foreground">
         {items.map((child, i) => (
-          <li key={i} className="flex min-w-0 items-center gap-1">
+          <li key={i} className="flex min-w-0 items-center gap-2">
             {i > 0 && <ChevronRight aria-hidden="true" className="size-4 shrink-0" />}
             {child}
           </li>

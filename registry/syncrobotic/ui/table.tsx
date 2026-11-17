@@ -48,7 +48,7 @@ export function TableHead({
         <button
           type="button"
           onClick={onSort}
-          className={cn("press -mx-1 inline-flex h-(--h-sm) items-center gap-1 rounded-xs px-1 hover:text-foreground", sort && "text-foreground")}
+          className={cn("press -mx-1 inline-flex h-(--h-sm) items-center gap-2 rounded-xs px-1 hover:text-foreground", sort && "text-foreground")}
         >
           {children}
           <Icon aria-hidden="true" className="size-4" />

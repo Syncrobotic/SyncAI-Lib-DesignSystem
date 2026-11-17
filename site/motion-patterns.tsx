@@ -45,7 +45,7 @@ export function MotionPatterns() {
       >
         <AnimatePresence initial={false}>
           {notice && (
-            <m.div key="n" initial="hidden" animate="shown" exit="hidden" variants={patterns.appear} className="flex items-center gap-3 rounded-lg bg-float px-4 py-3 text-sm shadow-float ring-1 ring-edge">
+            <m.div key="n" initial="hidden" animate="shown" exit="hidden" variants={patterns.appear} className="flex items-center gap-2 rounded-lg bg-float px-4 py-3 text-sm shadow-float ring-1 ring-edge">
               <Bell aria-hidden className="size-4 text-muted-foreground" /> Patrol route saved
             </m.div>
           )}

@@ -1,4 +1,4 @@
-// @syncrobotic/marketing-hero v0.7.0 · update: npx shadcn add @syncrobotic/marketing-hero --overwrite
+// @syncrobotic/marketing-hero v0.8.0 · update: npx shadcn add @syncrobotic/marketing-hero --overwrite
 import * as React from "react"
 import { ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -80,7 +80,7 @@ function FleetSummary() {
       </div>
       <ul className="flex flex-col">
         {rows.map((r) => (
-          <li key={r.name} className="flex items-center gap-3 border-b border-border py-3 last:border-b-0">
+          <li key={r.name} className="flex items-center gap-2 border-b border-border py-3 last:border-b-0">
             <StatusGlyph tone={r.tone} />
             <span className="flex flex-col">
               <span className="text-sm font-medium">{r.name}</span>
