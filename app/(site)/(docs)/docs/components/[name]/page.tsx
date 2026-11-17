@@ -8,8 +8,32 @@ import { getItem, items, readSource, storyNames, storyTitle } from "@/site/catal
 import { CodeBlock } from "@/site/code-block"
 import { ExampleCard } from "@/site/example-card"
 import { Stage } from "@/site/examples"
-import { H2, PageTitle, Rules } from "@/site/prose"
+import { Dot, H2, PageTitle, Rules } from "@/site/prose"
 import { storySource } from "@/site/story-source"
+import { overviews } from "@/site/overview"
+import { getItem as findItem } from "@/site/catalog"
+
+/** `name` becomes a link to that component's page; other backticked words stay code. */
+function Linked({ text }: { text: string }) {
+  return (
+    <>
+      {text.split(/(`[^`]+`)/).map((part, i) => {
+        if (!part.startsWith("`")) return part
+        const word = part.slice(1, -1)
+        const target = findItem(word)
+        return target ? (
+          <a key={i} href={`/docs/components/${word}`} className="font-medium text-foreground underline underline-offset-4 hover:text-info">
+            {target.title}
+          </a>
+        ) : (
+          <code key={i} className="rounded-xs bg-muted px-1 font-mono text-sm">
+            {word}
+          </code>
+        )
+      })}
+    </>
+  )
+}
 
 export const dynamicParams = false
 export const generateStaticParams = () => items.map((i) => ({ name: i.name }))
@@ -31,6 +55,7 @@ export default async function ComponentPage({ params }: Props) {
   const meta = (item as { meta?: { version: string; changelog: { version: string; date: string; note: string }[] } }).meta
   const deps = [...(("dependencies" in item && item.dependencies) || []), ...(("registryDependencies" in item && item.registryDependencies) || [])]
 
+  const overview = overviews[item.name]
   const install = `npx shadcn add @syncrobotic/${item.name}`
   const installBlock = <CodeBlock code={install} lang="bash" title="Terminal" />
   const sourceFiles = await Promise.all(
@@ -69,6 +94,47 @@ export default async function ComponentPage({ params }: Props) {
       <CodeBlock code={install} lang="bash" title="Install" />
       {deps.length > 0 && <p className="pt-2 text-sm text-muted-foreground">Also installs: {deps.join(", ")}</p>}
 
+      {overview && (
+        <section aria-labelledby="overview" className="pt-8">
+          <h2 id="overview" className="sr-only">
+            Overview
+          </h2>
+          <p className="max-w-3xl text-base">
+            <Linked text={overview.what} />
+          </p>
+          <div className="grid gap-6 pt-6 sm:grid-cols-2">
+            <div>
+              <h3 className="pb-2 text-sm font-bold">When to use</h3>
+              <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
+                {overview.use.map((u) => (
+                  <li key={u} className="flex gap-3">
+                    <Dot />
+                    <span>
+                      <Linked text={u} />
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            {overview.instead && (
+              <div>
+                <h3 className="pb-2 text-sm font-bold">Use something else</h3>
+                <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
+                  {overview.instead.map((u) => (
+                    <li key={u} className="flex gap-3">
+                      <Dot />
+                      <span>
+                        <Linked text={u} />
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
       {item.examples && (
         <>
           <H2 id="examples">Examples</H2>
@@ -79,7 +145,8 @@ export default async function ComponentPage({ params }: Props) {
                 key={n}
                 id={`example-${n}`}
                 title={storyTitle(n)}
-                preview={<Stage file={item.examples!.file} name={n} className="w-full" />}
+                wide={item.wide}
+                preview={<Stage file={item.examples!.file} name={n} className="w-full" wide={item.wide} />}
                 install={installBlock}
                 code={<CodeBlock code={storySource(item.examples!.file, n)} title={`${storyTitle(n)}.tsx`} />}
               />

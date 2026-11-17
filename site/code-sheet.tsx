@@ -70,7 +70,7 @@ export function CodeSheet({
               <Tabs defaultValue={files[0].name} className="gap-3">
                 <TabsList aria-label="Files">
                   {files.map((f) => (
-                    <TabsTrigger key={f.name} value={f.name} className="font-mono text-xs">
+                    <TabsTrigger key={f.name} value={f.name} className="font-mono">
                       {f.name}
                     </TabsTrigger>
                   ))}

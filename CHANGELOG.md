@@ -7,10 +7,26 @@ Components install as source, so a project keeps the version it installed. Re-ru
 ### Added
 - `input-group`: an icon, a unit or a button (clear, show password) inside the input's edge. The group draws the field, focus and error, so addons of any width fit; a Field around it labels the text box inside.
 - `number-field`: a number with a range, a step and a unit (speed limits, thresholds, intervals). Typing is never blocked; the value is kept in range on blur. 44 px buttons; ↑↓, Shift, PageUp/PageDown, Home/End; a spinbutton that reads its unit.
+- `command`: a filterable list and the ⌘K palette. AppShell `search` puts a field with a scope in the top bar that opens it.
+- `chart`: line, area and bar charts on Recharts in the categorical palette, with a crosshair tooltip, a legend and a table view.
+- `top-bar-shell`: the frame without a sidebar; its top bar gathers into a floating panel as the page scrolls.
+- Every component page opens with what the component is, when to use it, and when to use something else.
 
 ### Changed
 - **Errors grow in, never shake.** `field` 0.7.0: the message line grows open (height at --motion-base) and the error appears with an icon, so it never relies on colour alone; an error replacing a hint keeps the height. `input`, `textarea`, `select` 0.7.0: the error edge is 2 px and transitions at --motion-fast.
 - `field` 0.7.0: a control that brings its own id keeps it, and the label follows (labels were lost before).
+
+### App shell
+- Inset layout by default: sidebar, top bar and content are separate panels 16 px apart and 16 px from the edge (the cards' gutter), top rows level. Below 1280 px the sidebar is a 72 px rail with the logo, opening over the content on hover or tap; the logo, icons and avatar hold the rail's centre line; a group's name gives way to a short line on the rail; the pin icon is filled when the sidebar is kept open. The user menu sits at the foot (44 px as a rail, 56 px open). Footer slot.
+
+### Design-language pass (audit against the foundations)
+- **Touch**: compact controls (`--h-sm`, 36 px) are for a mouse only; on touch screens the token is 44 px, so the island, the dock and phone layouts never go below a finger. Written into Accessibility › Target size.
+- **Selected vs hover**: the current page in navigation is `--muted` with weight; hover is `--accent`. Inverted is for segmented control and toggle.
+- **Motion**: every duration token travels with `--ease-standard` (lint); only the Spinner loops, and it stops under reduced motion (lint); radio and checkbox marks fade in; the sheet's scrim leaves with the panel; the app-shell frame resizes at `--motion-sheet`; chart marks no longer run Recharts' own timing, the chart fades in.
+- **Radius**: menu and select items, alarm and island buttons and the dialog close are concentric with their containers.
+- **Icons**: 16, 20 or 24 px with a 2 px stroke (lint).
+- **One search field**: the shell, fleet table, list and detail, event log and data catalog all use InputGroup.
+- **Colour**: counts are danger text on its tint everywhere; licence tiers are outline tags; the dock's destructive action is an outline.
 
 ### Fixed
 - `use-slide-release` 0.7.0 (behind `slide-to-release`): the thumb follows the finger 1:1. The travel was measured from the thumb's current position, so it shrank mid-drag and the thumb outran the finger and released on its own.
@@ -35,6 +51,10 @@ Components install as source, so a project keeps the version it installed. Re-ru
   - `stats-cards` 0.6.0: sparklines neutral; only a change for the worse is coloured.
   - Docs site: a real product screen replaces the swatch collage on the home page; no dot grid behind examples; plain eyebrows; new Color rule "Colour is for what is abnormal".
 - **Motion in every component.** The motion language was applied on the docs site but not in the components. Now: overlays (dialog, alert dialog, popover, dropdown menu, select, tooltip) appear and disappear; sheets slide from their edge and their scrim fades; accordion content expands; tab panels, alerts, alarms and island notices appear; field errors appear where the hint was; buttons, toggles, segments, the stop button, the dock, island zones and list rows press. All from theme tokens (`animate-*`, `press`), all off under reduced motion. `npm run lint:motion` (CI) fails a component that skips them or hard-codes timing.
+- **Data tool blocks**, after DataCore, on the same shell: `data-catalog` (filters by tier, use and task; drawer on phones; sort; only restricted tiers coloured), `dataset-detail` (release verdict, open issues, counts and splits, annotated browse grid with layer toggles, lineage, compliance), `governance-todo` (what needs a maintainer or compliance reviewer, most blocking first).
+- **Form and settings blocks**: `settings-page` (switches apply at once, a save bar appears only for unsaved text changes, danger zone confirms the consequence), `record-form` (one column, errors on submit with focus on the first), `users-roles` (role in place, invite dialog, remove with undo).
+- **Sign-in and state blocks**: `sign-in` (company SSO first, email link fallback), `status-pages` (not found, no access, error with a reference, offline that says the stop still works, loading with only unknown values breathing). Never a dead end.
+- Home page: Foundations as a bento grid (Principles leads, the rest in pairs and threes); cards lift their exhibit 2 px and show an arrow on hover at --motion-fast, no travel under reduced motion.
 - `toggle` (new): an on/off button for a layer or option, inverted when on.
 - Block previews follow the block's height at each device width, so nothing overflows or is cut off; app shells keep a screen height. Thumbnails on the Blocks page scale to the card width.
 

@@ -15,15 +15,18 @@ export type StoryFile =
   | "feedback"
   | "navigation"
   | "overlays"
+  | "charts"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
-export const groups = ["Actions", "Inputs", "Display", "Feedback", "Navigation", "Overlays", "Robot shell", "Hooks"] as const
+export const groups = ["Actions", "Inputs", "Display", "Charts", "Feedback", "Navigation", "Overlays", "Robot shell", "Hooks"] as const
 export type Group = (typeof groups)[number]
 
 type Entry = {
   group: Group
   examples?: Examples
+  /** Examples use the card's full width (charts). */
+  wide?: boolean
   /** Usage rules shown after the examples. */
   rules?: string[]
   /** Keys and what they do, shown as a table. Only what this component adds beyond Tab and focus. */
@@ -203,6 +206,28 @@ const entries: Record<string, Entry> = {
     examples: { file: "overlays", prefix: "Tooltip" },
     rules: ["Touch screens never show tooltips. Never put information the operator needs in one."],
   },
+  chart: {
+    group: "Charts",
+    wide: true,
+    examples: { file: "charts", prefix: "Chart" },
+    rules: [
+      "Colour is the series' identity, not its rank: slots --chart-1…5 in a fixed order, kept with the series when others are filtered out. Never a status colour as a series.",
+      "Two series or more: a legend above the plot. One series: no legend; the title names it.",
+      "Every chart offers its numbers as a table (ChartTable), for exact values and for anyone who cannot tell two hues apart.",
+      "One y axis. Two measures on different scales are two charts.",
+      "Lines 2 px; bars with 4 px rounded data ends and a 2 px gap; a horizontal hairline grid; no axis lines.",
+      "The chart fades in when it mounts (--motion-base); marks do not animate, because Recharts cannot use the motion tokens. Nothing moves under reduced motion.",
+    ],
+  },
+  command: {
+    group: "Overlays",
+    examples: { file: "overlays", prefix: "Command" },
+    rules: [
+      "One palette per tool, opened by ⌘K / Ctrl+K and by the search field in the top bar (AppShell `search`).",
+      "Group results by kind (robots, pages, actions) and show a detail on the right, such as the robot's state.",
+      "The empty state says what was searched and what to try, not just “No results”.",
+    ],
+  },
   "dropdown-menu": { group: "Overlays", examples: { file: "overlays", prefix: "DropdownMenu" }, rules: ["Destructive items go last, after a separator."] },
   // Robot shell
   "stop-button": {
@@ -302,6 +327,12 @@ const keyboard: Record<string, [string, string][]> = {
   tooltip: [
     ["Focus", "Show"],
     ["Esc", "Hide"],
+  ],
+  command: [
+    ["⌘K / Ctrl+K", "Open or close the palette"],
+    ["↑ / ↓", "Move between results"],
+    ["Enter", "Run the highlighted result"],
+    ["Esc", "Close and return focus"],
   ],
   "dropdown-menu": [
     ["Enter / Space / ↓", "Open the menu"],

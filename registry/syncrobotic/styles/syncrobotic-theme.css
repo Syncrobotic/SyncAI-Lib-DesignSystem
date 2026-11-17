@@ -1,4 +1,4 @@
-/* @syncrobotic/syncrobotic-theme v0.6.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
+/* @syncrobotic/syncrobotic-theme v0.7.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
 /*
  * SYNCROBOTIC theme · design system 0.5.0 (see CHANGELOG.md)
  * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
@@ -15,7 +15,7 @@
  *   - Solid red (--stop) is for the emergency stop only. Other destructive actions use the --danger outline and text
  *   - Status colours come in pairs: foreground (--info) on its subtle tint (--info-subtle)
  *   - --primary is neutral high contrast (black in light, white in dark); blue (--info) only means "in progress"
- *   - Selected states are inverted (white on black in dark mode); a switch that is on uses --success
+ *   - Selected controls (segmented control, toggle) are inverted; the current page in navigation is --muted with weight, hover is --accent; a switch that is on uses --success
  *   - Actions in the lower part of the dock are never solid white, so they do not compete with the stop
  *   - Alerts other than the stop (event counts) use --danger on --danger-subtle, never solid red
  */
@@ -64,9 +64,20 @@
   --shadow-float: 0 8px 24px rgb(9 9 11 / 0.12);
   --shadow-overlay: 0 16px 40px rgb(9 9 11 / 0.18);
 
+  /*
+   * Chart series: identity, not status. Fixed order, never cycled; validated for colour-vision deficiency
+   * (dataviz validator: adjacent CVD ΔE ≥ 8, normal-vision ≥ 15). Slots 3–5 sit under 3:1 on white,
+   * so charts always ship a legend, direct labels and a table view. Use status colours for status, never as series.
+   */
+  --chart-1: #2a78d6;
+  --chart-2: #eb6834;
+  --chart-3: #1baf7a;
+  --chart-4: #eda100;
+  --chart-5: #e87ba4;
+
   /* Heights */
   --h-tag: 1.5rem;    /* 24 tag, not interactive */
-  --h-sm: 2.25rem;    /* 36 small button inside a card */
+  --h-sm: 2.25rem;    /* 36 compact control: only with a mouse (pointer: fine). On touch it is 44, see below. */
   --h-md: 2.75rem;    /* 44 default, minimum height of anything interactive */
   --h-lg: 3rem;       /* 48 page primary action, dock tabs */
   --h-row: 3.5rem;    /* 56 list row */
@@ -117,6 +128,12 @@
 
   --stop: #dc2626;
   --stop-deep: #7f1d1d;
+
+  --chart-1: #3987e5;
+  --chart-2: #d95926;
+  --chart-3: #199e70;
+  --chart-4: #c98500;
+  --chart-5: #d55181;
 
   --map: #0d0d10;
   --map-point: #6f7682;
@@ -169,6 +186,13 @@
 
   --shadow-float: var(--shadow-float);
   --shadow-overlay: var(--shadow-overlay);
+
+  /* Usage: stroke-chart-1, bg-chart-2. Series identity only. */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
 
   /* Usage: pt-section sm:pt-section, gap-section-sm. Vertical rhythm between page sections only */
   --spacing-section: var(--space-section);
@@ -324,8 +348,16 @@
   }
 }
 
+/* Compact density is for a mouse only. On touch screens every compact control is the full 44 px,
+   so nothing interactive is ever smaller than a finger: the island, the dock and phone layouts included. */
+@media (pointer: coarse) {
+  :root { --h-sm: var(--h-md); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-breath { animation: none; }
+  /* The spinner is the one loop the language allows; without motion it stands still and the label says it is working. */
+  .animate-spin { animation: none; }
   .press:active { scale: none; }
   /* State still changes; it does not travel. */
   @keyframes appear { from { opacity: 0; } }

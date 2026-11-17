@@ -1,4 +1,4 @@
-// @syncrobotic/alarm v0.6.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
+// @syncrobotic/alarm v0.7.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
 "use client"
 
 import * as React from "react"
@@ -121,7 +121,7 @@ export function Alarm({ priority, title, source, time, active, acknowledged, onA
           <button
             type="button"
             onClick={action.onClick}
-            className="press h-(--h-sm) shrink-0 rounded-sm px-3 text-sm font-medium ring-1 ring-border ring-inset hover:bg-accent"
+            className="press h-(--h-sm) shrink-0 rounded-xs px-3 text-sm font-medium ring-1 ring-border ring-inset hover:bg-accent"
           >
             {action.label}
           </button>
@@ -130,7 +130,7 @@ export function Alarm({ priority, title, source, time, active, acknowledged, onA
           <button
             type="button"
             onClick={onAcknowledge}
-            className="press h-(--h-sm) shrink-0 rounded-sm px-3 text-sm font-medium ring-1 ring-foreground ring-inset hover:bg-accent"
+            className="press h-(--h-sm) shrink-0 rounded-xs px-3 text-sm font-medium ring-1 ring-foreground ring-inset hover:bg-accent"
           >
             {l.acknowledge}
             <span className="sr-only">: {title}</span>

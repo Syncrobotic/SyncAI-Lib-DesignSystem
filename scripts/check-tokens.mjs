@@ -20,6 +20,7 @@ const ROUND = {
   "registry/syncrobotic/ui/sheet.tsx": "bottom sheet grabber",
   "registry/syncrobotic/shell/dock.tsx": "count badge",
   "registry/syncrobotic/shell/island.tsx": "avatar placeholder, status dot ring, unread count",
+  "registry/syncrobotic/blocks/app-shell.tsx": "unread dot on a collapsed nav icon",
   "site/prose.tsx": "list bullet dot",
   "app/(site)/(docs)/docs/foundations/motion/page.tsx": "timeline dot",
   "app/(site)/(docs)/docs/foundations/radius/page.tsx": "documents this rule: bullet dots and the pill-button counter-example",
