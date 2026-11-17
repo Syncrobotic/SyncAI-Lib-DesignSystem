@@ -2,7 +2,7 @@
 "use client"
 
 import * as React from "react"
-import { DayPicker, type DayButtonProps } from "react-day-picker"
+import { DateLib, DayPicker, type DayButtonProps, type Modifiers } from "react-day-picker"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -11,9 +11,19 @@ import { cn } from "@/lib/utils"
  * touch, like every compact control. The picked day is inverted, today is bold with a ring, a range fills between its
  * ends with the muted surface. Weeks start on Monday unless `weekStartsOn` says otherwise.
  */
-export function Calendar({ className, classNames, showOutsideDays = true, weekStartsOn = 1, ...props }: React.ComponentProps<typeof DayPicker>) {
+// Spoken name of a day button. It starts with the day number shown on the button ("26 October 2026, Monday"), so speech
+// input users can say what they see (WCAG 2.5.3); the library's default ("Monday, October 26th") does not contain it.
+const labelDayButton = (date: Date, modifiers: Modifiers, options?: ConstructorParameters<typeof DateLib>[0], dateLib?: DateLib) => {
+  let label = (dateLib ?? new DateLib(options)).format(date, "d MMMM yyyy, EEEE")
+  if (modifiers.today) label = `${label}, today`
+  if (modifiers.selected) label = `${label}, selected`
+  return label
+}
+
+export function Calendar({ className, classNames, showOutsideDays = true, weekStartsOn = 1, labels, ...props }: React.ComponentProps<typeof DayPicker>) {
   return (
     <DayPicker
+      labels={{ labelDayButton, ...labels }}
       data-slot="calendar"
       showOutsideDays={showOutsideDays}
       weekStartsOn={weekStartsOn}

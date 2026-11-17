@@ -257,15 +257,15 @@
   },
   "calendar": {
     "version": "0.9.0",
-    "hash": "56764d069c4906a8"
+    "hash": "f6e0a0ea2dae13b7"
   },
   "date-selector": {
     "version": "0.9.0",
-    "hash": "9f77b1d4a546310e"
+    "hash": "80a835b576c3f8e0"
   },
   "time-picker": {
     "version": "0.9.0",
-    "hash": "5d08d157e8a4f3f1"
+    "hash": "8930042b08f607db"
   },
   "stats-cards": {
     "version": "0.8.0",
