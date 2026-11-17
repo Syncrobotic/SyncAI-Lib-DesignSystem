@@ -80,8 +80,7 @@ npm run typecheck
 npm test                 # behaviour tests (Vitest): stop, stop all, slide to release, keyboard and AT paths
 npm run build            # registry JSON in public/r + docs site
 npm run build-storybook
-npm run test:a11y        # axe (WCAG 2.2 AA) on every story, dark and light
-npm run test:visual      # screenshots every story in dark and light
+npm run test:stories     # every story, dark and light: screenshot against its baseline, then axe (WCAG 2.2 AA)
 npm run test:registry    # installs every item into a fresh Next.js app, then typechecks and builds it
 ```
 
@@ -120,7 +119,7 @@ Baselines live in `tests/__screenshots__/` and are written only by CI (Actions �
 
 After changing an item's files, bump its `meta.version` in `registry.json`, add a `meta.changelog` line and run `npm run versions`. After changing the theme, run `npm run tokens`.
 
-Visual regression: every story is compared, dark and light, with the baselines in `tests/__screenshots__/`. They are written on CI's own browser: after an intended visual change, run Actions → `visual-baseline` on the branch and review the committed screenshots in the PR.
+Visual regression: every story is compared, dark and light, with the baselines in `tests/__screenshots__/`, together with axe. These story checks run on PRs into `stage` and `main` and on demand (Actions → `ci` → Run workflow); PRs into `dev` get the fast checks (lint, types, unit tests, builds, registry e2e). They are written on CI's own browser: after an intended visual change, run Actions → `visual-baseline` on the branch and review the committed screenshots in the PR.
 
 Releases: when `main` gets a `package.json` version that has no tag, the `release` workflow tags it `vX.Y.Z` and publishes a GitHub Release with that version's `CHANGELOG.md` section. CI checks that the section exists.
 
