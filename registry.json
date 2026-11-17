@@ -1541,7 +1541,7 @@
           {
             "version": "0.7.0",
             "date": "2026-11-17",
-            "note": "First release."
+            "note": "First release. The separator inside the list is decorative, so the listbox holds only groups and options."
           }
         ]
       }

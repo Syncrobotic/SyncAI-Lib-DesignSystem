@@ -90,8 +90,12 @@ export function CommandGroup({ className, ...props }: React.ComponentProps<typeo
   )
 }
 
-export function CommandSeparator({ className, ...props }: React.ComponentProps<typeof CommandPrimitive.Separator>) {
-  return <CommandPrimitive.Separator data-slot="command-separator" className={cn("-mx-2 my-2 h-px bg-border", className)} {...props} />
+/**
+ * A line between groups. Inside a listbox only options and groups are allowed, so it is decorative (the groups already
+ * have headings for screen readers) rather than cmdk's role="separator".
+ */
+export function CommandSeparator({ className, ...props }: React.ComponentProps<"div">) {
+  return <div aria-hidden="true" data-slot="command-separator" className={cn("-mx-2 my-2 h-px bg-border", className)} {...props} />
 }
 
 /** One result. The highlighted row is the one Enter runs; it follows the keyboard and the pointer. 44 px for touch. */
