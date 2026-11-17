@@ -26,7 +26,13 @@ const nights: Record<"tonight" | "tomorrow", Lane[]> = {
       robot: "Patrol dog 9E37",
       slots: [
         { name: "Loading bay", start: 1, end: 3, state: "done" },
-        { name: "Loading bay", start: 6, end: 8.5, state: "conflict", note: "It overlaps its charging time; the round needs 40 % battery and it will have 22 %" },
+        {
+          name: "Loading bay",
+          start: 6,
+          end: 8.5,
+          state: "conflict",
+          note: "It overlaps its charging time; the round needs 40 % battery and it will have 22 %",
+        },
       ],
     },
     {
