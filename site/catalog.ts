@@ -16,6 +16,8 @@ export type StoryFile =
   | "navigation"
   | "overlays"
   | "charts"
+  | "trace"
+  | "marker"
   | "stepper"
   | "timeline"
   | "scrollspy"
@@ -63,6 +65,26 @@ const overlayKeys: [string, string][] = [
 ]
 
 const entries: Record<string, Entry> = {
+  trace: {
+    wide: true,
+    group: "Display",
+    examples: { file: "trace", prefix: "Trace" },
+    rules: [
+      "Done steps are a neutral check; only warnings and failures are coloured.",
+      "A failed step says why in its description; the raw error goes in a TraceCode inside it.",
+      "Open the step that needs attention by default, nothing else.",
+      "total plus start and duration draw the waterfall; leave them out for a plain list.",
+    ],
+  },
+  marker: {
+    group: "Display",
+    examples: { file: "marker", prefix: "Marker" },
+    rules: [
+      "Marker for moments that change how the lines after it read (a takeover, a new day, unread). Not for every event.",
+      "MarkerRow is one line; details belong in a Trace or a detail panel.",
+      "Tone only for warning and danger.",
+    ],
+  },
   stepper: {
     group: "Navigation",
     examples: { file: "stepper", prefix: "Stepper" },
@@ -525,6 +547,10 @@ export type Item = (typeof registry.items)[number] & Entry
 
 // What each component does with the keyboard beyond Tab. Radix supplies most of it; these tables say so out loud.
 const keyboard: Record<string, [string, string][]> = {
+  trace: [
+    ["Tab", "Focus a step that opens"],
+    ["Enter / Space", "Open or close its details"],
+  ],
   stepper: [
     ["Tab", "Focus a step people may go back to"],
     ["Enter / Space", "Go to that step"],

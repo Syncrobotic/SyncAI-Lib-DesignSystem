@@ -1618,8 +1618,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.9.0",
         "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "CommandEmpty is a disabled option, so a list with no matches is never an empty listbox; it also holds a loading line."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -2181,6 +2186,53 @@
       "files": [
         {
           "path": "registry/syncrobotic/ui/questionnaire.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "trace",
+      "type": "registry:ui",
+      "title": "Trace",
+      "description": "The steps of a run with status and duration: missions, agent tool calls, rollouts, CI runs, audit trails. Steps open to show input, output or sub-steps; an optional waterfall bar.",
+      "dependencies": ["lucide-react", "radix-ui"],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/spinner"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/trace.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "marker",
+      "type": "registry:ui",
+      "title": "Marker",
+      "description": "A labelled line across a log or feed (a day, a takeover, an e-stop), and MarkerRow: one dense log line with a status glyph, detail and time.",
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/status-glyph"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/marker.tsx",
           "type": "registry:ui"
         }
       ],

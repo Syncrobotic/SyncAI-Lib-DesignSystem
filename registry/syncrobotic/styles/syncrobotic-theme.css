@@ -279,12 +279,13 @@
   @keyframes sheet-out-right { to { transform: translateX(100%); } }
   @keyframes sheet-in-left { from { transform: translateX(-100%); } }
   @keyframes sheet-out-left { to { transform: translateX(-100%); } }
+  /* Accordion and Collapsible content: Radix measures the open height into one of these variables. */
   @keyframes expand {
     from { height: 0; opacity: 0; }
-    to { height: var(--radix-accordion-content-height); }
+    to { height: var(--radix-accordion-content-height, var(--radix-collapsible-content-height)); }
   }
   @keyframes collapse {
-    from { height: var(--radix-accordion-content-height); }
+    from { height: var(--radix-accordion-content-height, var(--radix-collapsible-content-height)); }
     to { height: 0; opacity: 0; }
   }
 

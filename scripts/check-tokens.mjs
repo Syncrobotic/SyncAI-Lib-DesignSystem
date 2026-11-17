@@ -26,6 +26,7 @@ const ROUND = {
   "registry/syncrobotic/ui/icon-tile.tsx": "circle tile shape and the status dot",
   "registry/syncrobotic/ui/scroll-area.tsx": "scrollbar thumb",
   "registry/syncrobotic/ui/resizable.tsx": "resize grip pill",
+  "registry/syncrobotic/ui/trace.tsx": "waterfall bar track and fill",
   "registry/syncrobotic/ui/stepper.tsx": "step circles and the compact progress track",
   "registry/syncrobotic/ui/timeline.tsx": "event dots",
   "registry/syncrobotic/ui/questionnaire.tsx": "progress track",
