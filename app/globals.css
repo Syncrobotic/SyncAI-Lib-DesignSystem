@@ -27,25 +27,8 @@
   color: var(--shiki-dark);
 }
 
-/* Exhibits sit on a faint dot grid, so tokens read as measured, not decorated. */
+/* Exhibits sit on the page background, a step below the card around them. No pattern: the component is the subject. */
 .specimen {
   background-color: var(--background);
-  background-image: radial-gradient(var(--border) 1px, transparent 1px);
-  background-size: 16px 16px;
 }
 
-/* Press feedback (motion pattern "press"): a control sinks slightly while held, at --motion-fast.
-   Reduced motion sets the duration to near zero and drops the scale. */
-@utility press {
-  transition-property: scale, color, background-color, border-color;
-  transition-duration: var(--motion-fast);
-  transition-timing-function: var(--ease-standard);
-  &:active {
-    scale: 0.97;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    &:active {
-      scale: none;
-    }
-  }
-}

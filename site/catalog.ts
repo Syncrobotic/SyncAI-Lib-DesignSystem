@@ -34,6 +34,11 @@ const entries: Record<string, Entry> = {
     examples: { file: "actions", prefix: "SegmentedControl" },
     rules: ["For two to four views of the same data. For sections of a page, use Tabs.", "The selected segment is inverted, per the selected-state rule."],
   },
+  toggle: {
+    group: "Actions",
+    examples: { file: "actions", prefix: "Toggle" },
+    rules: ["On/off for one thing, such as an image or map layer. On is inverted.", "For one choice among several, use Segmented control; for a setting that applies at once, use Switch."],
+  },
   // Inputs
   input: {
     group: "Inputs",
@@ -91,7 +96,7 @@ const entries: Record<string, Entry> = {
       "Only for an abnormal condition that needs an operator to act. No action, no alarm: log it instead.",
       "Three priorities, each with its own shape, colour and word: critical (act now), high (act within minutes), low (act when convenient).",
       "Stays until the condition clears and someone acknowledges it. Acknowledging records that it was seen; it does not clear it.",
-      "Never auto-dismissed, never a toast, never blinking: the tint, the bar and the word “Unacknowledged” carry the state.",
+      "Never auto-dismissed, never a toast, never blinking: the bar and the word “Unacknowledged” carry the state; only critical alarms are also tinted.",
       "One alarm per root cause. If the robot is offline, do not also raise camera lost and lidar lost.",
     ],
   },

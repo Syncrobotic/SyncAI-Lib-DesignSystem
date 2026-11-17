@@ -28,7 +28,7 @@ export default async function BlockPage({ params }: Props) {
         ← All blocks
       </Link>
       <header className="flex flex-col gap-2 pt-6 pb-8">
-        <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">{b.product}</p>
+        <p className="text-sm font-medium text-muted-foreground">{b.product}</p>
         <h1 className="text-3xl font-bold">{b.title}</h1>
         <p className="max-w-2xl text-muted-foreground">{b.description}</p>
       </header>
@@ -48,6 +48,7 @@ export default async function BlockPage({ params }: Props) {
       <BlockFrame
         name={b.name}
         height={b.height}
+        fit={b.product === "App shells" ? "screen" : "content"}
         initial={b.viewport}
         code={b.files.map((f) => (
           <CodeBlock key={f.path} code={readSource(f.path)} title={f.path} />

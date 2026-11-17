@@ -1,3 +1,4 @@
+// @syncrobotic/use-long-press v0.5.0 · update: npx shadcn add @syncrobotic/use-long-press --overwrite
 "use client"
 
 import * as React from "react"

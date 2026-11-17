@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { fn } from "@storybook/test"
 import { Download, Map, Plus, Trash2, Video } from "lucide-react"
+import { Toggle } from "@/registry/syncrobotic/ui/toggle"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 
@@ -133,5 +134,17 @@ export const SegmentedControlIconOnly: S = {
         <Video aria-hidden="true" />
       </SegmentedControlItem>
     </SegmentedControl>
+  ),
+}
+
+export const ToggleLayers: S = {
+  render: () => (
+    <div role="group" aria-label="Layers" className="flex flex-wrap gap-2">
+      <Toggle size="sm" defaultPressed>
+        Boxes
+      </Toggle>
+      <Toggle size="sm">Keypoints</Toggle>
+      <Toggle size="sm">Depth</Toggle>
+    </div>
   ),
 }

@@ -1,3 +1,4 @@
+// @syncrobotic/checkbox v0.6.0 · update: npx shadcn add @syncrobotic/checkbox --overwrite
 "use client"
 
 import * as React from "react"
@@ -11,7 +12,7 @@ export function Checkbox({ className, ...props }: React.ComponentProps<typeof Ch
     <CheckboxPrimitive.Root
       data-slot="checkbox"
       className={cn(
-        "peer flex size-5 shrink-0 items-center justify-center rounded-xs bg-card ring-1 ring-input ring-inset",
+        "peer flex size-5 shrink-0 items-center justify-center rounded-xs bg-card ring-1 ring-input ring-inset transition-colors duration-(--motion-fast) ease-(--ease-standard)",
         "data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:ring-primary",
         "data-[state=indeterminate]:bg-primary data-[state=indeterminate]:text-primary-foreground data-[state=indeterminate]:ring-primary",
         "disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-danger",

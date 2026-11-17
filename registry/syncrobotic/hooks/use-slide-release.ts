@@ -1,3 +1,4 @@
+// @syncrobotic/use-slide-release v0.5.0 · update: npx shadcn add @syncrobotic/use-slide-release --overwrite
 "use client"
 
 import * as React from "react"

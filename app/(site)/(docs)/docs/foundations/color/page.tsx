@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { Badge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Code, DocHeader, DoDont, Pager, Section, Specimen, Swatch, TokenTable } from "@/site/doc"
@@ -100,6 +101,37 @@ export default function ColorPage() {
         </div>
       </Section>
 
+      <Section
+        id="abnormal"
+        title="Colour is for what is abnormal"
+        lead="A fleet that is fine should look calm. Normal and in-progress states are shape and neutral text; only warning, danger and the stop carry colour, so the one robot that needs you is the one you see."
+      >
+        <DoDont
+          good={{
+            visual: (
+              <ul className="flex w-56 flex-col gap-2 text-sm">
+                <li className="flex justify-between">7F3A <InlineStatus tone="info">Patrolling</InlineStatus></li>
+                <li className="flex justify-between">2B10 <InlineStatus tone="success">Docked</InlineStatus></li>
+                <li className="flex justify-between">9C44 <InlineStatus tone="warning">Needs attention</InlineStatus></li>
+                <li className="flex justify-between">8F15 <InlineStatus tone="success">Docked</InlineStatus></li>
+              </ul>
+            ),
+            text: "Neutral for normal; colour only on the robot that needs attention.",
+          }}
+          bad={{
+            visual: (
+              <ul className="flex w-56 flex-col gap-2 text-sm">
+                <li className="flex justify-between">7F3A <span className="text-info">● Patrolling</span></li>
+                <li className="flex justify-between">2B10 <span className="text-success">○ Docked</span></li>
+                <li className="flex justify-between">9C44 <span className="text-warning">▲ Needs attention</span></li>
+                <li className="flex justify-between">8F15 <span className="text-success">○ Docked</span></li>
+              </ul>
+            ),
+            text: "Every row coloured: the problem has to compete with three robots that are fine.",
+          }}
+        />
+      </Section>
+
       <Section id="status" title="Status colours come in pairs" lead="Each tone has a foreground and a subtle tint. Use them together; never put tone text on another tone's tint.">
         <div className="grid gap-3 sm:grid-cols-5">
           {tones.map(({ t, means }) => (
@@ -133,7 +165,7 @@ export default function ColorPage() {
             visual: (
               <div className="flex gap-3">
                 <Button variant="secondary">Cancel</Button>
-                <button className="h-(--h-md) rounded-sm bg-stop px-4 text-sm font-medium text-white">Delete route</button>
+                <button type="button" className="press h-(--h-md) rounded-sm bg-stop px-4 text-sm font-medium text-white">Delete route</button>
               </div>
             ),
             text: "Use solid red outside the emergency stop. Operators learn that solid red means stop the robot.",

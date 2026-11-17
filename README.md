@@ -47,7 +47,7 @@ Dark is the default: `<html class="dark">`. Default copy is English; every visib
 
 ## Components
 
-47 registry items, grouped as on the docs site. Every component follows the colour, radius, height and spacing rules, and every state has a story.
+52 registry items, grouped as on the docs site. Every component follows the colour, radius, height and spacing rules, and every state has a story.
 
 | Group | Items |
 | --- | --- |
@@ -60,6 +60,7 @@ Dark is the default: `<html class="dark">`. Default copy is English; every visib
 | Overlays | `dialog`, `alert-dialog`, `sheet`, `popover`, `tooltip`, `dropdown-menu` |
 | Robot shell | `stop-button`, `slide-to-release`, `dock`, `island`, `tray` |
 | Hooks | `use-long-press`, `use-slide-release` |
+| App shells | `app-shell`, `console-overview`, `list-detail`, `event-log`, `map-workspace` |
 | Blocks | `stats-cards`, `fleet-table`, `robot-status-card`, `marketing-hero` |
 
 General components are built on [Radix UI](https://www.radix-ui.com) primitives, the same base as shadcn/ui, so keyboard and screen-reader behaviour comes from Radix.
@@ -113,6 +114,8 @@ The first `test:visual` run writes baselines; commit them (`tests/__screenshots_
 4. Add it to `site/catalog.ts` with its usage rules.
 5. Interaction logic gets a behaviour test in `tests/unit/`.
 6. Open a PR once `npm run ci` passes. Add a line to `CHANGELOG.md`.
+
+After changing an item's files, bump its `meta.version` in `registry.json`, add a `meta.changelog` line and run `npm run versions`. After changing the theme, run `npm run tokens`.
 
 New components start as a proposal issue. How work is chosen, reviewed and released is in [ROADMAP.md](ROADMAP.md).
 
