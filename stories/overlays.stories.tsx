@@ -3,6 +3,8 @@ import type { Meta, StoryObj } from "@storybook/react"
 import {
   Bell,
   Bot,
+  Check,
+  History,
   CirclePlus,
   Menu,
   Share2,
@@ -30,7 +32,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/registry/syncrobotic/ui/alert-dialog"
+import { StatusGlyph, type Tone } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
+import { Spinner } from "@/registry/syncrobotic/ui/spinner"
 import {
   Command,
   CommandDialog,
@@ -489,5 +493,164 @@ export const SheetEditForm: S = {
         </SheetFooter>
       </SheetContent>
     </Sheet>
+  ),
+}
+
+/** Robots with their state: the glyph and a word, never colour alone. */
+export const CommandWithStatus: S = {
+  render: () => (
+    <Command className="max-w-md rounded-md ring-1 ring-border">
+      <CommandInput placeholder="Find a robot" />
+      <CommandList>
+        <CommandEmpty>No robot matches.</CommandEmpty>
+        <CommandGroup heading="Robots">
+          {[
+            ["Patrol dog 7F3A", "info", "Patrolling"],
+            ["Courier 9E37", "warning", "Needs attention"],
+            ["Patrol dog DAA6", "success", "Docked"],
+            ["Courier 1715", "neutral", "Offline"],
+          ].map(([n, tone, label]) => (
+            <CommandItem key={n} value={n}>
+              <StatusGlyph tone={tone as Tone} />
+              <span className="flex-1">{n}</span>
+              <span className="text-xs text-muted-foreground">{label}</span>
+            </CommandItem>
+          ))}
+        </CommandGroup>
+      </CommandList>
+    </Command>
+  ),
+}
+
+/** Nothing matches: say what can be searched. */
+export const CommandNoResults: S = {
+  render: () => (
+    <Command className="max-w-md rounded-md ring-1 ring-border">
+      <CommandInput placeholder="Find a robot" value="gate x" readOnly />
+      <CommandList>
+        <CommandEmpty>No robot, page or action matches “gate x”. Try a robot ID such as 7F3A.</CommandEmpty>
+        <CommandGroup heading="Robots">
+          <CommandItem value="Patrol dog 7F3A">Patrol dog 7F3A</CommandItem>
+        </CommandGroup>
+      </CommandList>
+    </Command>
+  ),
+}
+
+/** Several picks: a check marks each chosen item and Enter toggles it. */
+export const CommandMultiSelect: S = {
+  render: function M() {
+    const [picked, setPicked] = React.useState<string[]>(["North gate"])
+    const toggle = (v: string) => setPicked((p) => (p.includes(v) ? p.filter((x) => x !== v) : [...p, v]))
+    return (
+      <Command className="max-w-md rounded-md ring-1 ring-border">
+        <CommandInput placeholder="Filter by site" />
+        <CommandList>
+          <CommandGroup heading={`Sites · ${picked.length} selected`}>
+            {["North gate", "Hall B", "Warehouse 3", "Parking lot"].map((site) => (
+              <CommandItem key={site} value={site} onSelect={() => toggle(site)} data-checked={picked.includes(site)}>
+                <Check aria-hidden="true" className={picked.includes(site) ? "opacity-100" : "opacity-0"} />
+                {site}
+              </CommandItem>
+            ))}
+          </CommandGroup>
+        </CommandList>
+      </Command>
+    )
+  },
+}
+
+/** Pages inside the palette: pick a robot, then an action for it. Backspace on an empty field goes back. */
+export const CommandNestedPages: S = {
+  render: function P() {
+    const [robot, setRobot] = React.useState<string>()
+    const [q, setQ] = React.useState("")
+    return (
+      <Command
+        className="max-w-md rounded-md ring-1 ring-border"
+        onKeyDown={(e) => {
+          if (e.key === "Backspace" && !q && robot) {
+            e.preventDefault()
+            setRobot(undefined)
+          }
+        }}
+      >
+        {robot && (
+          <div className="flex items-center gap-2 px-3 pt-3 text-xs text-muted-foreground">
+            <button type="button" className="press rounded-xs underline-offset-4 hover:underline" onClick={() => setRobot(undefined)}>
+              Robots
+            </button>
+            <span aria-hidden="true">/</span>
+            <span className="text-foreground">{robot}</span>
+          </div>
+        )}
+        <CommandInput value={q} onValueChange={setQ} placeholder={robot ? `Action for ${robot}` : "Find a robot"} />
+        <CommandList>
+          <CommandEmpty>Nothing matches.</CommandEmpty>
+          {robot ? (
+            <CommandGroup heading="Actions">
+              <CommandItem>
+                <Map /> Show on map
+              </CommandItem>
+              <CommandItem>
+                <Pencil /> Rename
+              </CommandItem>
+              <CommandItem>
+                <Copy /> Copy ID
+              </CommandItem>
+            </CommandGroup>
+          ) : (
+            <CommandGroup heading="Robots">
+              {["Patrol dog 7F3A", "Courier 9E37", "Patrol dog DAA6"].map((r) => (
+                <CommandItem
+                  key={r}
+                  onSelect={() => {
+                    setRobot(r)
+                    setQ("")
+                  }}
+                >
+                  <Bot /> {r}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          )}
+        </CommandList>
+      </Command>
+    )
+  },
+}
+
+/** Results from the server: a spinner row while the search runs, results replace it. */
+export const CommandLoading: S = {
+  render: () => (
+    <Command className="max-w-md rounded-md ring-1 ring-border" shouldFilter={false}>
+      <CommandInput placeholder="Search events" value="door" readOnly />
+      <CommandList>
+        <CommandEmpty className="flex items-center justify-center gap-2 py-6">
+          <Spinner delay={0} className="size-4" label="" /> Searching 30 days of events…
+        </CommandEmpty>
+      </CommandList>
+    </Command>
+  ),
+}
+
+/** Recent first: what the operator opened last, then everything. */
+export const CommandRecent: S = {
+  render: () => (
+    <Command className="max-w-md rounded-md ring-1 ring-border">
+      <CommandInput placeholder="Search robots, pages and actions" />
+      <CommandList>
+        <CommandGroup heading="Recent">
+          <CommandItem>
+            <History /> Hall B map
+          </CommandItem>
+          <CommandItem>
+            <History /> Patrol dog 7F3A
+          </CommandItem>
+        </CommandGroup>
+        <CommandSeparator />
+        <PaletteResults />
+      </CommandList>
+    </Command>
   ),
 }

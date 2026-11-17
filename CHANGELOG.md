@@ -28,9 +28,14 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - `scrollspy`: an On this page rail or pills that follow the reader through a page or a scroll area, and the `useScrollspy` hook.
 - `navigation-menu`: a site's top navigation with panels of links and cards, a shared animated panel or one per trigger (Radix).
 - `questionnaire`: choice, multiple choice (with a limit), scale and text questions, one per page with progress or all on one form, required checks without a shake, and a review page with Edit.
+- `trace`: the steps of a run (a mission, an agent's tool calls, a rollout, a CI run, an audit trail) with status, duration, meta and time; steps open to show input, output, raw errors or nested steps; a waterfall bar; a header with counts; dense.
+- `marker`: labelled lines across a log (a new day, an operator takeover, an e-stop, unread) and `MarkerRow`, one dense log line with a status glyph, monospace detail and time.
 
 ### Changed
 - More examples for the existing Inputs: textarea, checkbox, radio group, switch, select, slider, label, input group, number field, field and choice field.
+- More examples for Chart (stacked, horizontal, threshold line, step line, small multiples, no data), Command (status, no results, multi-select, nested pages, loading, recent) and Empty state (first run, filtered, no permission, offline, compact).
+- `command`: CommandEmpty is a disabled option, so a list with no matches is never an empty listbox and screen readers read the message; it also holds a loading line.
+- Accordion and Collapsible content share the expand and collapse animations.
 - Everything that comes also goes: the data grid's selection bar and expanded rows, a vertical stepper's step content, questionnaire pages (the question leaves before the next arrives) and attachments (`leaving` and `onLeft`, with usePresenceList) now have an exit as well as an entrance.
 - Component pages: examples, usage rules, keys and changelog arrive as they scroll in. Whatever is on screen at load renders at once, and nothing is hidden without JavaScript.
 - More examples for Breadcrumb (icon, collapsed levels, switcher, truncation), Sheet (navigation drawer, bottom actions, edit form), Toast (undo, failure with retry, title only, queue) and Label (optional, info tooltip, inline, disabled).

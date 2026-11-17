@@ -1,6 +1,6 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
-import { Battery, CircleAlert, Info, MapPinOff, RefreshCw, SearchX, TriangleAlert, Wifi } from "lucide-react"
+import { Battery, Bot, CircleAlert, FilterX, Info, Lock, MapPinOff, RefreshCw, SearchX, TriangleAlert, Wifi, WifiOff } from "lucide-react"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { Alert, AlertDescription, AlertTitle } from "@/registry/syncrobotic/ui/alert"
@@ -798,5 +798,80 @@ export const StatusGlyphInTable: S = {
         ))}
       </TableBody>
     </Table>
+  ),
+}
+
+/** First run: the main action, and a second way in for people who already have data. */
+export const EmptyStateFirstRun: S = {
+  render: () => (
+    <Card>
+      <EmptyState
+        icon={Bot}
+        title="Add your first robot"
+        description="Pair a robot over Wi-Fi, or import a fleet from a CSV file."
+        action={
+          <div className="flex flex-wrap justify-center gap-2">
+            <Button>Pair a robot</Button>
+            <Button variant="outline">Import CSV</Button>
+          </div>
+        }
+      />
+    </Card>
+  ),
+}
+
+/** Filters hide everything: say how many are hidden and offer to clear them. */
+export const EmptyStateFiltered: S = {
+  render: () => (
+    <Card>
+      <EmptyState
+        icon={FilterX}
+        title="No robots match these filters"
+        description="12 robots are hidden by Site: Hall B and Status: Offline."
+        action={<Button variant="secondary">Clear filters</Button>}
+      />
+    </Card>
+  ),
+}
+
+/** No access: who can give it, not a dead end. */
+export const EmptyStateNoPermission: S = {
+  render: () => (
+    <Card>
+      <EmptyState
+        icon={Lock}
+        title="You can’t see camera clips"
+        description="Ask a site admin for the Viewer role on Taipei warehouse."
+        action={<Button variant="outline">Request access</Button>}
+      />
+    </Card>
+  ),
+}
+
+/** Offline: what still works, and a retry. */
+export const EmptyStateOffline: S = {
+  render: () => (
+    <Card>
+      <EmptyState
+        icon={WifiOff}
+        title="You’re offline"
+        description="Robots keep running their schedules. Live positions return when you reconnect."
+        action={
+          <Button variant="secondary">
+            <RefreshCw aria-hidden="true" /> Retry
+          </Button>
+        }
+      />
+    </Card>
+  ),
+}
+
+/** Inside a table or a small panel: no icon, less padding. */
+export const EmptyStateCompact: S = {
+  render: () => (
+    <div className="rounded-md ring-1 ring-border">
+      <div className="border-b border-border px-4 py-3 text-sm font-medium">Open alarms</div>
+      <EmptyState className="py-6" title="No open alarms" description="New alarms show up here as they happen." />
+    </div>
   ),
 }

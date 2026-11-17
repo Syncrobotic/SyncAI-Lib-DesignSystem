@@ -5,6 +5,30 @@
 export type Overview = { what: string; use: string[]; instead?: string[]; notes?: string[] }
 
 export const overviews: Record<string, Overview> = {
+  trace: {
+    what: "The steps of a run in order, each with a status and a duration, that open to show input, output and sub-steps.",
+    use: [
+      "What a robot did on a mission.",
+      "An AI agent's tool calls and reasoning.",
+      "Firmware rollouts, map builds and other CI-like runs.",
+      "Audit trails of who changed what.",
+    ],
+    instead: [
+      "Events at points in time with no duration: `timeline`.",
+      "A sequence a person goes through: `stepper`.",
+      "Thousands of log lines: `data-grid` with virtual rows.",
+    ],
+    notes: ["formatDuration(ms) gives 840 ms, 1.2 s, 2 m 05 s.", "Nest a Trace inside a TraceItem for sub-steps; density and total are inherited."],
+  },
+  marker: {
+    what: "A labelled divider across a log or feed, plus a one-line log row with a status glyph.",
+    use: ["Day breaks in an event feed.", "Where an operator took over or autonomy resumed.", "An unread line in a log.", "Dense tool-call or command logs."],
+    instead: ["A plain divider with no label: `separator`.", "Steps with durations and details: `trace`."],
+    notes: [
+      "Marker reads as text, not a separator role, so the label is announced.",
+      "MarkerRow takes the StatusGlyph tones; danger and warning are also spoken.",
+    ],
+  },
   stepper: {
     what: "Shows where someone is in a fixed sequence of steps, which are done, and which failed.",
     use: ["Commissioning a robot.", "An import or upload wizard.", "A pre-shift checklist done in order."],

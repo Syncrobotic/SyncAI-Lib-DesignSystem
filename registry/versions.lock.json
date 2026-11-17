@@ -1,7 +1,7 @@
 {
   "syncrobotic-theme": {
     "version": "0.9.0",
-    "hash": "54e447dd22ec8344"
+    "hash": "f8232f487129014a"
   },
   "cn": {
     "version": "0.5.0",
@@ -216,8 +216,8 @@
     "hash": "1c718ef5ec09500b"
   },
   "command": {
-    "version": "0.8.0",
-    "hash": "10bb4491132203af"
+    "version": "0.9.0",
+    "hash": "0857492bb8a696bf"
   },
   "item": {
     "version": "0.9.0",
@@ -310,6 +310,14 @@
   "questionnaire": {
     "version": "0.9.0",
     "hash": "787769c920d7f0db"
+  },
+  "trace": {
+    "version": "0.9.0",
+    "hash": "65731a517d0b339c"
+  },
+  "marker": {
+    "version": "0.9.0",
+    "hash": "127b23a2f6ee3b4a"
   },
   "stats-cards": {
     "version": "0.8.0",
