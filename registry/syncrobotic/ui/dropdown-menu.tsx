@@ -1,3 +1,4 @@
+// @syncrobotic/dropdown-menu v0.5.0 · update: npx shadcn add @syncrobotic/dropdown-menu --overwrite
 "use client"
 
 import * as React from "react"

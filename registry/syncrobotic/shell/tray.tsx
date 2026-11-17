@@ -1,3 +1,4 @@
+// @syncrobotic/tray v0.5.0 · update: npx shadcn add @syncrobotic/tray --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 

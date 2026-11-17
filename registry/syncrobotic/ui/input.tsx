@@ -1,3 +1,4 @@
+// @syncrobotic/input v0.5.0 · update: npx shadcn add @syncrobotic/input --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 

@@ -1,0 +1,171 @@
+{
+  "$description": "SYNCROBOTIC design tokens. Generated from syncrobotic-theme.css; do not edit.",
+  "color": {
+    "background": {
+      "$type": "color",
+      "$value": "#efeff2"
+    },
+    "foreground": {
+      "$type": "color",
+      "$value": "#09090b"
+    },
+    "card": {
+      "$type": "color",
+      "$value": "#ffffff"
+    },
+    "card-foreground": {
+      "$type": "color",
+      "$value": "{color.foreground}"
+    },
+    "popover": {
+      "$type": "color",
+      "$value": "#ffffff"
+    },
+    "popover-foreground": {
+      "$type": "color",
+      "$value": "{color.foreground}"
+    },
+    "primary": {
+      "$type": "color",
+      "$value": "#09090b"
+    },
+    "primary-foreground": {
+      "$type": "color",
+      "$value": "#ffffff"
+    },
+    "secondary": {
+      "$type": "color",
+      "$value": "#e6e6ea"
+    },
+    "secondary-foreground": {
+      "$type": "color",
+      "$value": "{color.foreground}"
+    },
+    "muted": {
+      "$type": "color",
+      "$value": "#e6e6ea"
+    },
+    "muted-foreground": {
+      "$type": "color",
+      "$value": "#52525b"
+    },
+    "accent": {
+      "$type": "color",
+      "$value": "#e6e6ea"
+    },
+    "accent-foreground": {
+      "$type": "color",
+      "$value": "{color.foreground}"
+    },
+    "destructive": {
+      "$type": "color",
+      "$value": "#b91c1c"
+    },
+    "border": {
+      "$type": "color",
+      "$value": "#dcdce1"
+    },
+    "input": {
+      "$type": "color",
+      "$value": "#dcdce1"
+    },
+    "ring": {
+      "$type": "color",
+      "$value": "#1d4ed8"
+    },
+    "disabled": {
+      "$type": "color",
+      "$value": "#a1a1aa"
+    },
+    "info": {
+      "$type": "color",
+      "$value": "#1d4ed8"
+    },
+    "info-subtle": {
+      "$type": "color",
+      "$value": "#dbeafe"
+    },
+    "success": {
+      "$type": "color",
+      "$value": "#047857"
+    },
+    "success-subtle": {
+      "$type": "color",
+      "$value": "#d1fae5"
+    },
+    "warning": {
+      "$type": "color",
+      "$value": "#a14a07"
+    },
+    "warning-subtle": {
+      "$type": "color",
+      "$value": "#fef3c7"
+    },
+    "danger": {
+      "$type": "color",
+      "$value": "#b91c1c"
+    },
+    "danger-subtle": {
+      "$type": "color",
+      "$value": "#fee2e2"
+    },
+    "neutral": {
+      "$type": "color",
+      "$value": "#52525b"
+    },
+    "neutral-subtle": {
+      "$type": "color",
+      "$value": "#f4f4f5"
+    },
+    "stop": {
+      "$type": "color",
+      "$value": "#dc2626"
+    },
+    "stop-deep": {
+      "$type": "color",
+      "$value": "#991b1b"
+    },
+    "map": {
+      "$type": "color",
+      "$value": "#f1f2f5"
+    },
+    "map-point": {
+      "$type": "color",
+      "$value": "#7b8190"
+    },
+    "scrim": {
+      "$type": "color",
+      "$value": "#09090b73"
+    },
+    "float": {
+      "$type": "color",
+      "$value": "#ffffffe6"
+    },
+    "edge": {
+      "$type": "color",
+      "$value": "#09090b24"
+    }
+  },
+  "shadow": {
+    "float": {
+      "$type": "shadow",
+      "$value": {
+        "color": "#09090b1f",
+        "offsetX": "0px",
+        "offsetY": "8px",
+        "blur": "24px",
+        "spread": "0px"
+      }
+    },
+    "overlay": {
+      "$type": "shadow",
+      "$value": {
+        "color": "#09090b2e",
+        "offsetX": "0px",
+        "offsetY": "16px",
+        "blur": "40px",
+        "spread": "0px"
+      }
+    }
+  }
+}

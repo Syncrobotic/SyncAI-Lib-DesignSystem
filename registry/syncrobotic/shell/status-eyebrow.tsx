@@ -1,3 +1,4 @@
+// @syncrobotic/status-eyebrow v0.5.0 · update: npx shadcn add @syncrobotic/status-eyebrow --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { StatusGlyph, toneText, type Tone } from "@/registry/syncrobotic/shell/status-glyph"

@@ -1,3 +1,4 @@
+// @syncrobotic/card v0.5.0 · update: npx shadcn add @syncrobotic/card --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 

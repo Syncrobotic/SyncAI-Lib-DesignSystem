@@ -1,3 +1,4 @@
+// @syncrobotic/switch v0.5.0 · update: npx shadcn add @syncrobotic/switch --overwrite
 "use client"
 
 import * as React from "react"

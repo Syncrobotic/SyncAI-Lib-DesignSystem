@@ -1,3 +1,4 @@
+// @syncrobotic/radio-group v0.5.0 · update: npx shadcn add @syncrobotic/radio-group --overwrite
 "use client"
 
 import * as React from "react"

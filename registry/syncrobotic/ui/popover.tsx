@@ -1,3 +1,4 @@
+// @syncrobotic/popover v0.5.0 · update: npx shadcn add @syncrobotic/popover --overwrite
 "use client"
 
 import * as React from "react"

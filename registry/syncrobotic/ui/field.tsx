@@ -1,3 +1,4 @@
+// @syncrobotic/field v0.5.0 · update: npx shadcn add @syncrobotic/field --overwrite
 "use client"
 
 import * as React from "react"
