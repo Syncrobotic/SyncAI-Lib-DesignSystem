@@ -210,5 +210,17 @@
   "map-workspace": {
     "version": "0.6.0",
     "hash": "c35d2deb6fa43ba1"
+  },
+  "data-catalog": {
+    "version": "0.6.0",
+    "hash": "22283e64d242a77f"
+  },
+  "dataset-detail": {
+    "version": "0.6.0",
+    "hash": "3d08cc74120b5b73"
+  },
+  "governance-todo": {
+    "version": "0.6.0",
+    "hash": "23b0815d9b000389"
   }
 }

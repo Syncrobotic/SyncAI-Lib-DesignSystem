@@ -1627,6 +1627,114 @@
           }
         ]
       }
+    },
+    {
+      "name": "data-catalog",
+      "type": "registry:block",
+      "title": "Data catalog",
+      "description": "Datasets one row each: filter by tier, use and task (a drawer on phones), search, sort. Only restricted tiers carry colour.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/badge",
+        "@syncrobotic/button",
+        "@syncrobotic/checkbox",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/input",
+        "@syncrobotic/label",
+        "@syncrobotic/sheet",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/data-catalog.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "dataset-detail",
+      "type": "registry:block",
+      "title": "Dataset detail",
+      "description": "One dataset: release verdict, open issues, counts and splits, an annotated browse grid with layer toggles, lineage and compliance.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/data-catalog",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/alert",
+        "@syncrobotic/button",
+        "@syncrobotic/separator",
+        "@syncrobotic/tabs",
+        "@syncrobotic/toggle"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/dataset-detail.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "governance-todo",
+      "type": "registry:block",
+      "title": "Governance to-do",
+      "description": "What needs a maintainer or the compliance reviewer, most blocking first; done items leave the list.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/data-catalog",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/button",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/segmented-control",
+        "@syncrobotic/separator"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/governance-todo.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.6.0",
+        "changelog": [
+          {
+            "version": "0.6.0",
+            "date": "2026-11-17",
+            "note": "First release."
+          }
+        ]
+      }
     }
   ]
 }

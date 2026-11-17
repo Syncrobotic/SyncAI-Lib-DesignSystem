@@ -1,5 +1,8 @@
 import registry from "../registry.json"
 import { AppShellDemo } from "./app-shell-demo"
+import { DataCatalog } from "@/registry/syncrobotic/blocks/data-catalog"
+import { DatasetDetail } from "@/registry/syncrobotic/blocks/dataset-detail"
+import { GovernanceTodo } from "@/registry/syncrobotic/blocks/governance-todo"
 import { ConsoleOverview } from "@/registry/syncrobotic/blocks/console-overview"
 import { EventLog } from "@/registry/syncrobotic/blocks/event-log"
 import { ListDetail } from "@/registry/syncrobotic/blocks/list-detail"
@@ -10,7 +13,7 @@ import { RobotStatusCard } from "@/registry/syncrobotic/blocks/robot-status-card
 import { StatsCards } from "@/registry/syncrobotic/blocks/stats-cards"
 
 // Blocks are composed sections. Each renders alone at /preview/<name> so the docs can frame it at any width.
-export const products = ["App shells", "Dashboard", "Control app", "Marketing"] as const
+export const products = ["App shells", "Data tools", "Dashboard", "Control app", "Marketing"] as const
 type Meta = {
   product: (typeof products)[number]
   viewport: "desktop" | "mobile"
@@ -27,6 +30,10 @@ const meta: Record<string, Meta> = {
     height: 720,
     render: () => <AppShellDemo />,
   },
+  // Data tools: internal tools for datasets, after DataCore. Same shell, same rules.
+  "data-catalog": { product: "Data tools", viewport: "desktop", height: 760, render: () => <DataCatalog /> },
+  "dataset-detail": { product: "Data tools", viewport: "desktop", height: 820, render: () => <DatasetDetail /> },
+  "governance-todo": { product: "Data tools", viewport: "desktop", height: 600, render: () => <GovernanceTodo /> },
   "console-overview": { product: "App shells", viewport: "desktop", height: 900, render: () => <ConsoleOverview /> },
   "list-detail": { product: "App shells", viewport: "desktop", height: 720, render: () => <ListDetail /> },
   "event-log": { product: "App shells", viewport: "desktop", height: 720, render: () => <EventLog /> },

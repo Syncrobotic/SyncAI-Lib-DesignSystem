@@ -48,7 +48,7 @@ export default async function BlockPage({ params }: Props) {
       <BlockFrame
         name={b.name}
         height={b.height}
-        fit={b.product === "App shells" ? "screen" : "content"}
+        fit={b.product === "App shells" || b.product === "Data tools" ? "screen" : "content"}
         initial={b.viewport}
         code={b.files.map((f) => (
           <CodeBlock key={f.path} code={readSource(f.path)} title={f.path} />

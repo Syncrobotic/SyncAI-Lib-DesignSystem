@@ -47,12 +47,12 @@ Dark is the default: `<html class="dark">`. Default copy is English; every visib
 
 ## Components
 
-52 registry items, grouped as on the docs site. Every component follows the colour, radius, height and spacing rules, and every state has a story.
+56 registry items, grouped as on the docs site. Every component follows the colour, radius, height and spacing rules, and every state has a story.
 
 | Group | Items |
 | --- | --- |
 | Theme | `syncrobotic-theme` (colour, radius, type, height and motion tokens) |
-| Actions | `button`, `segmented-control` |
+| Actions | `button`, `segmented-control`, `toggle` |
 | Inputs | `input`, `textarea`, `label`, `field`, `checkbox`, `radio-group`, `switch`, `select`, `slider` |
 | Display | `badge`, `card`, `avatar`, `separator`, `progress`, `spinner`, `empty-state`, `table`, `list`, `status-glyph`, `status-eyebrow`, `skeleton` |
 | Feedback | `alarm`, `alert`, `toast` |
@@ -61,6 +61,7 @@ Dark is the default: `<html class="dark">`. Default copy is English; every visib
 | Robot shell | `stop-button`, `slide-to-release`, `dock`, `island`, `tray` |
 | Hooks | `use-long-press`, `use-slide-release` |
 | App shells | `app-shell`, `console-overview`, `list-detail`, `event-log`, `map-workspace` |
+| Data tools | `data-catalog`, `dataset-detail`, `governance-todo` |
 | Blocks | `stats-cards`, `fleet-table`, `robot-status-card`, `marketing-hero` |
 
 General components are built on [Radix UI](https://www.radix-ui.com) primitives, the same base as shadcn/ui, so keyboard and screen-reader behaviour comes from Radix.
