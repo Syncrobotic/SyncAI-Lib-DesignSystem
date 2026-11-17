@@ -11,6 +11,7 @@ export const foundations = [
   { slug: "motion", title: "Motion", lead: "Movement only marks a change of state." },
   { slug: "iconography", title: "Iconography", lead: "Lucide at three sizes, always with a name." },
   { slug: "accessibility", title: "Accessibility", lead: "Contrast, target size, focus and motion, checked at build time." },
+  { slug: "alarms", title: "Alarms", lead: "Three priorities, one lifecycle, and which surface each message belongs on." },
 ] as const
 
 export type FoundationSlug = (typeof foundations)[number]["slug"]

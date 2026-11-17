@@ -160,14 +160,15 @@
       "name": "island",
       "type": "registry:component",
       "title": "Dynamic island",
-      "description": "Name, device status and notifications, each zone expanding on its own; notices live inside the island.",
+      "description": "Name, device status and notifications, each zone expanding on its own; notices and the most urgent unacknowledged alarm live inside the island.",
       "dependencies": [
         "lucide-react"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/tray",
-        "@syncrobotic/status-glyph"
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/alarm"
       ],
       "files": [
         {
@@ -523,6 +524,43 @@
       "files": [
         {
           "path": "registry/syncrobotic/ui/alert.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "alarm",
+      "type": "registry:ui",
+      "title": "Alarm",
+      "description": "ISA-18.2 alarms: three priorities with their own shape, colour and words, acknowledge and clear states, and a sorted list that announces new alarms to screen readers.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/alarm.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "toast",
+      "type": "registry:ui",
+      "title": "Toast",
+      "description": "Transient feedback on what the user just did: 4 s, 8 s with an action, failures until dismissed. Call toast() anywhere; mount <Toaster /> once.",
+      "dependencies": [
+        "radix-ui",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/toast.tsx",
           "type": "registry:ui"
         }
       ]

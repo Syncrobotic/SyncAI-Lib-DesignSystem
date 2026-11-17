@@ -1,5 +1,5 @@
 /*
- * SYNCROBOTIC theme · design system 0.3.0 (see CHANGELOG.md)
+ * SYNCROBOTIC theme · design system 0.4.0 (see CHANGELOG.md)
  * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
  *
  * Usage:
@@ -218,6 +218,16 @@
 
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
 
+  /* Motion patterns in CSS (see the Motion foundation). Appear: rise 8 px and fade in. Disappear: fade out. */
+  --animate-appear: appear var(--motion-base) var(--ease-standard);
+  --animate-disappear: disappear var(--motion-fast) var(--ease-standard) forwards;
+  @keyframes appear {
+    from { opacity: 0; transform: translateY(0.5rem); }
+  }
+  @keyframes disappear {
+    to { opacity: 0; }
+  }
+
   /* Skeleton: the whole group breathes over 1.2 s, no diagonal shimmer */
   --animate-breath: breath 1.2s var(--ease-standard) infinite;
   @keyframes breath {
@@ -270,6 +280,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .animate-breath { animation: none; }
+  /* State still changes; it does not travel. */
+  @keyframes appear { from { opacity: 0; } }
   :root {
     --motion-fast: 0.01ms;
     --motion-base: 0.01ms;
