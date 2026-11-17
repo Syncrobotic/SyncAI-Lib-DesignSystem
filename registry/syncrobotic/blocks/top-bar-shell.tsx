@@ -38,7 +38,7 @@ type TopBarShellProps = {
 
 /**
  * The frame for a tool or site without a sidebar: a top bar and the content. At the top of the page the bar is part of it,
- * full width with no line; once the page scrolls it gathers into a floating panel as wide as the content (max 1152 px),
+ * full width with no line; once the page scrolls it gathers into a floating panel whose edges line up with the content below,
  * 8 px down, in the card surface with a hairline, the same panel as the app shell's top bar. Only colour, edge and a
  * transform change (--motion-base), so nothing below moves. Phones put the links in a drawer.
  */
@@ -87,10 +87,10 @@ export function TopBarShell({
 
   return (
     <div className="flex min-h-dvh flex-col bg-background text-foreground">
-      <header className="pointer-events-none sticky top-0 z-20 h-(--h-row) px-2">
+      <header className="pointer-events-none sticky top-0 z-20 mx-auto h-(--h-row) w-full max-w-6xl px-6">
         <div
           className={cn(
-            "pointer-events-auto mx-auto flex h-(--h-row) max-w-6xl items-center gap-6 rounded-md px-6 ring-1",
+            "pointer-events-auto flex h-(--h-row) items-center gap-6 rounded-md px-4 ring-1",
             "transition-[background-color,box-shadow,translate] duration-(--motion-base) ease-(--ease-standard) motion-reduce:transition-none",
             scrolled ? "translate-y-2 bg-card ring-border" : "translate-y-0 bg-transparent ring-transparent",
           )}

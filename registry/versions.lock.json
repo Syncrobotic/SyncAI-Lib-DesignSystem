@@ -209,11 +209,11 @@
   },
   "app-shell": {
     "version": "0.7.0",
-    "hash": "8b8704b4030ce60e"
+    "hash": "fcd28dda26564859"
   },
   "top-bar-shell": {
     "version": "0.7.0",
-    "hash": "21ac9f96784674c7"
+    "hash": "772b3c54944120c2"
   },
   "console-overview": {
     "version": "0.6.0",

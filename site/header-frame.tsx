@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 
 /**
  * At the top of the page the header is part of it: full width, no line. Once the page scrolls, the bar gathers into a
- * floating panel, as wide as the content (max 1152 px), 8 px down, in the card surface with a hairline: the same panel
+ * floating panel whose edges line up with the content column, 8 px down, in the card surface with a hairline: the same panel
  * as the app shell's top bar. Only colour, edge and a transform change, so nothing below moves (--motion-base).
  */
 export function HeaderFrame({ children }: { children: React.ReactNode }) {
@@ -17,11 +17,11 @@ export function HeaderFrame({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener("scroll", on)
   }, [])
   return (
-    <header className="pointer-events-none sticky top-0 z-20 h-(--site-header) px-2">
+    <header className="pointer-events-none sticky top-0 z-20 mx-auto h-(--site-header) max-w-6xl px-4">
       <div
         data-scrolled={scrolled || undefined}
         className={cn(
-          "pointer-events-auto mx-auto flex h-(--site-header) max-w-6xl items-center gap-6 rounded-md px-4 ring-1",
+          "pointer-events-auto flex h-(--site-header) items-center gap-6 rounded-md px-3 ring-1",
           "transition-[background-color,box-shadow,translate] duration-(--motion-base) ease-(--ease-standard) motion-reduce:transition-none",
           scrolled ? "translate-y-2 bg-card ring-border" : "translate-y-0 bg-transparent ring-transparent",
         )}
