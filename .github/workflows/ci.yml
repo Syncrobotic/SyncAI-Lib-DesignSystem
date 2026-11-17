@@ -29,9 +29,8 @@ jobs:
       - run: npm run build
       - run: npm run build-storybook
       - run: npx playwright install --with-deps chromium
-      # Story checks: accessibility (axe, WCAG 2.2 AA) and visual regression, dark and light.
-      # Until visual baselines are committed, missing ones are written instead of failing;
-      # download the "visual-baseline" artifact and commit it to tests/__screenshots__/.
+      # Story checks: accessibility (axe, WCAG 2.2 AA) and visual regression, dark and light, against the committed
+      # baselines in tests/__screenshots__/. A new story has none yet and passes; the visual-baseline workflow writes them.
       - run: npx playwright test --update-snapshots=missing
       - uses: actions/upload-artifact@v4
         if: always()
