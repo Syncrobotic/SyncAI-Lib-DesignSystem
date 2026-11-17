@@ -25,6 +25,12 @@ import * as s_phone_input from "@/stories/phone-input.stories"
 import * as s_calendar from "@/stories/calendar.stories"
 import * as s_date_selector from "@/stories/date-selector.stories"
 import * as s_time_picker from "@/stories/time-picker.stories"
+import * as s_data_grid from "@/stories/data-grid.stories"
+import * as s_sortable from "@/stories/sortable.stories"
+import * as s_resizable from "@/stories/resizable.stories"
+import * as s_file_upload from "@/stories/file-upload.stories"
+import * as s_attachment from "@/stories/attachment.stories"
+import * as s_file_type from "@/stories/file-type.stories"
 import type { StoryFile } from "./catalog"
 
 type Meta = { component?: React.ComponentType<Record<string, unknown>>; args?: Record<string, unknown> }
@@ -44,6 +50,12 @@ const files: Record<StoryFile, StoryModule> = {
   navigation: navigation as unknown as StoryModule,
   overlays: overlays as unknown as StoryModule,
   charts: charts as unknown as StoryModule,
+  "data-grid": s_data_grid as unknown as StoryModule,
+  sortable: s_sortable as unknown as StoryModule,
+  resizable: s_resizable as unknown as StoryModule,
+  "file-upload": s_file_upload as unknown as StoryModule,
+  attachment: s_attachment as unknown as StoryModule,
+  "file-type": s_file_type as unknown as StoryModule,
   autocomplete: s_autocomplete as unknown as StoryModule,
   "input-otp": s_input_otp as unknown as StoryModule,
   "phone-input": s_phone_input as unknown as StoryModule,

@@ -17,6 +17,12 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - `calendar`: single, multiple or range, one or two months, disabled days, week numbers, month and year dropdowns, event dots (react-day-picker).
 - `date-selector`: `DatePicker` and `DateRangePicker`, fields that open the calendar, with presets, clear and Field wiring.
 - `time-picker`: `TimePicker` (slots in a popover, with step, bounds and taken slots) and `TimeInput` (typed: 930, 9:30, 21.30, 9:30 pm), on a 24-hour value.
+- `data-grid`: a TanStack Table grid with sorting and column menus (sort, pin, hide), pagination, row selection with a bulk bar, column visibility, pinned and resizable columns, expandable rows, totals footer, sticky header, loading and empty states, density and striped / bordered / borderless variants, and virtual rows for thousands of records.
+- `sortable`: reorderable lists and grids by handle, touch or keyboard, with spoken moves (dnd-kit).
+- `resizable`: horizontal, vertical, nested and collapsible panels with an optional grip (react-resizable-panels).
+- `file-upload`: a drop zone that is also a button; checks type, size and count and reports what it refused.
+- `attachment`: a file as a row, chip or image tile with progress, error and Retry, Download and Remove.
+- `file-type`: file icons from a name or extension, including robot formats (mcap, bag, db3, pgm, pcd, urdf, onnx).
 
 ### Changed
 - More examples for the existing Inputs: textarea, checkbox, radio group, switch, select, slider, label, input group, number field, field and choice field.

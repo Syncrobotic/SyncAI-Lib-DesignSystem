@@ -267,6 +267,30 @@
     "version": "0.9.0",
     "hash": "8930042b08f607db"
   },
+  "data-grid": {
+    "version": "0.9.0",
+    "hash": "2aaba4111a9dd86c"
+  },
+  "sortable": {
+    "version": "0.9.0",
+    "hash": "02a528b4ec0ea465"
+  },
+  "resizable": {
+    "version": "0.9.0",
+    "hash": "1ca551383fcf3ae8"
+  },
+  "file-upload": {
+    "version": "0.9.0",
+    "hash": "a292f9ed99da9820"
+  },
+  "attachment": {
+    "version": "0.9.0",
+    "hash": "02b870d2764fbc52"
+  },
+  "file-type": {
+    "version": "0.9.0",
+    "hash": "03d1069002cfe53c"
+  },
   "stats-cards": {
     "version": "0.8.0",
     "hash": "7ea8d5c0e447f2ee"
