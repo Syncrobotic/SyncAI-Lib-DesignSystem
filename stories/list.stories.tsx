@@ -12,7 +12,11 @@ type S = StoryObj
 export const StatusShapes: S = {
   render: () => (
     <div className="flex flex-col gap-3">
-      <div className="flex gap-4">{(["info", "success", "warning", "danger", "neutral"] as const).map((t) => <StatusGlyph key={t} tone={t} />)}</div>
+      <div className="flex gap-4">
+        {(["info", "success", "warning", "danger", "neutral"] as const).map((t) => (
+          <StatusGlyph key={t} tone={t} />
+        ))}
+      </div>
       <StatusEyebrow tone="info">Patrolling</StatusEyebrow>
       <StatusEyebrow tone="success">Charging</StatusEyebrow>
       <StatusEyebrow tone="warning">Task paused</StatusEyebrow>
@@ -46,5 +50,56 @@ export const LoadingSkeleton: S = {
         ))}
       </ListGroup>
     </div>
+  ),
+}
+
+export const SkeletonCard: S = {
+  render: () => (
+    <div className="flex flex-col gap-3 rounded-md bg-card p-4 ring-1 ring-border">
+      <span className="text-sm font-medium">Patrol dog 7F3A</span>
+      <div className="grid grid-cols-2 gap-3">
+        {["Battery", "Signal"].map((l) => (
+          <div key={l} className="flex flex-col gap-2">
+            <span className="text-xs text-muted-foreground">{l}</span>
+            <Bone onCard className="h-5 w-16" />
+          </div>
+        ))}
+      </div>
+    </div>
+  ),
+}
+
+export const SkeletonTableRows: S = {
+  render: () => (
+    <div className="flex flex-col gap-3">
+      <LoadingLine>Loading events…</LoadingLine>
+      {[0, 1, 2, 3].map((i) => (
+        <div key={i} className="flex items-center gap-4">
+          <Bone className="h-4 w-16" />
+          <Bone className="h-4 flex-1" />
+          <Bone className="h-4 w-12" />
+        </div>
+      ))}
+    </div>
+  ),
+}
+
+export const StatusEyebrowOverTitle: S = {
+  render: () => (
+    <div className="flex flex-col gap-1">
+      <StatusEyebrow tone="warning">Task paused</StatusEyebrow>
+      <h2 className="text-2xl font-bold">Patrol dog 7F3A</h2>
+      <p className="text-sm text-muted-foreground">Waiting at door 3 for 2 min.</p>
+    </div>
+  ),
+}
+
+export const StatusInlineInRows: S = {
+  render: () => (
+    <ListGroup>
+      <ListRow title="Patrol dog 7F3A" meta="North gate" trailing={<InlineStatus tone="info">Patrolling</InlineStatus>} />
+      <ListRow title="Courier 2B19" meta="Hall B" trailing={<InlineStatus tone="warning">Low battery</InlineStatus>} />
+      <ListRow title="Courier 4D21" meta="Floor 3" trailing={<InlineStatus tone="danger">Stopped</InlineStatus>} />
+    </ListGroup>
   ),
 }

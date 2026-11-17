@@ -1,6 +1,8 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, Line, LineChart, ReferenceLine, XAxis, YAxis } from "recharts"
+import { ChartNoAxesColumn } from "lucide-react"
+import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 import { ChartContainer, ChartLegend, ChartTable, ChartTooltip, chartAxis, chartMotion, type ChartConfig } from "@/registry/syncrobotic/ui/chart"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 
@@ -107,3 +109,182 @@ function MissionChart() {
   )
 }
 export const ChartBar: S = { render: () => <MissionChart /> }
+
+const sites = ["North", "South", "Hall B", "Parking"].map((site, i) => ({
+  site,
+  patrol: [42, 31, 18, 12][i],
+  charging: [9, 11, 6, 4][i],
+  idle: [3, 6, 2, 5][i],
+}))
+const hoursConfig = {
+  patrol: { label: "Patrolling", color: 1, unit: "h" },
+  charging: { label: "Charging", color: 2, unit: "h" },
+  idle: { label: "Idle", color: 3, unit: "h" },
+} satisfies ChartConfig
+
+/**
+ * Parts of a whole per site: stacked segments with a 2 px gap in the surface colour, rounded only at the top of the stack.
+ * The gap is drawn in --card, so the chart sits on a card, as it does on a dashboard.
+ */
+export const ChartStackedBar: S = {
+  render: () => (
+    <div className="flex w-full max-w-3xl flex-col gap-3 rounded-md bg-card p-4 ring-1 ring-border">
+      <p className="text-sm font-medium">
+        Robot hours by site <span className="font-normal text-muted-foreground">· this week</span>
+      </p>
+      <ChartContainer config={hoursConfig} label="Patrolling, charging and idle hours per site this week">
+        <BarChart data={sites} margin={{ top: 0, right: 8, left: 0, bottom: 0 }}>
+          <CartesianGrid vertical={false} />
+          <XAxis dataKey="site" {...chartAxis} />
+          <YAxis {...chartAxis} width={40} />
+          <ChartTooltip />
+          <ChartLegend />
+          <Bar dataKey="patrol" stackId="h" fill="var(--color-patrol)" stroke="var(--card)" strokeWidth={2} maxBarSize={32} {...chartMotion} />
+          <Bar dataKey="charging" stackId="h" fill="var(--color-charging)" stroke="var(--card)" strokeWidth={2} maxBarSize={32} {...chartMotion} />
+          <Bar
+            dataKey="idle"
+            stackId="h"
+            fill="var(--color-idle)"
+            stroke="var(--card)"
+            strokeWidth={2}
+            radius={[4, 4, 0, 0]}
+            maxBarSize={32}
+            {...chartMotion}
+          />
+        </BarChart>
+      </ChartContainer>
+    </div>
+  ),
+}
+
+const incidents = [
+  { cause: "Blocked path", n: 23 },
+  { cause: "Door closed", n: 14 },
+  { cause: "Low battery", n: 9 },
+  { cause: "Lost localization", n: 5 },
+  { cause: "Other", n: 3 },
+]
+const incidentConfig = { n: { label: "Stops", color: 1 } } satisfies ChartConfig
+
+/** Ranked categories with long names: horizontal bars, sorted, one series so no legend. */
+export const ChartHorizontalBar: S = {
+  render: () => (
+    <div className="flex w-full max-w-3xl flex-col gap-3">
+      <p className="text-sm font-medium">Why robots stopped · last 30 days</p>
+      <ChartContainer config={incidentConfig} label="Number of robot stops by cause, last 30 days" className="h-56">
+        <BarChart data={incidents} layout="vertical" margin={{ top: 0, right: 16, left: 0, bottom: 0 }}>
+          <CartesianGrid horizontal={false} />
+          <XAxis type="number" {...chartAxis} allowDecimals={false} />
+          <YAxis type="category" dataKey="cause" {...chartAxis} width={112} />
+          <ChartTooltip />
+          <Bar dataKey="n" fill="var(--color-n)" radius={[0, 4, 4, 0]} maxBarSize={20} {...chartMotion} />
+        </BarChart>
+      </ChartContainer>
+    </div>
+  ),
+}
+
+const temp = hours.map((t, i) => ({ t, motor: [41, 44, 52, 61, 66, 63, 55, 47][i] }))
+const tempConfig = { motor: { label: "Motor", color: 1, unit: "°C" } } satisfies ChartConfig
+
+/** A limit drawn as a labelled dashed line in text colour: the line marks it, the label says it. */
+export const ChartThreshold: S = {
+  render: () => (
+    <div className="flex w-full max-w-3xl flex-col gap-3">
+      <p className="text-sm font-medium">
+        Motor temperature · 7F3A <span className="font-normal text-muted-foreground">· °C</span>
+      </p>
+      <ChartContainer config={tempConfig} label="Motor temperature of 7F3A by hour, with the 60 °C limit" className="h-48">
+        <LineChart data={temp} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
+          <CartesianGrid vertical={false} />
+          <XAxis dataKey="t" {...chartAxis} />
+          <YAxis {...chartAxis} domain={[30, 80]} ticks={[30, 40, 50, 60, 70, 80]} width={40} />
+          <ChartTooltip />
+          <ReferenceLine
+            y={60}
+            stroke="var(--muted-foreground)"
+            strokeDasharray="4 4"
+            label={{ value: "Limit 60 °C", position: "insideTopRight", fill: "var(--muted-foreground)", fontSize: 12 }}
+          />
+          <Line
+            dataKey="motor"
+            stroke="var(--color-motor)"
+            strokeWidth={2}
+            dot={false}
+            activeDot={{ r: 4, strokeWidth: 2, stroke: "var(--card)" }}
+            {...chartMotion}
+          />
+        </LineChart>
+      </ChartContainer>
+    </div>
+  ),
+}
+
+const load = hours.map((t, i) => ({ t, robots: [2, 4, 6, 6, 5, 6, 4, 3][i] }))
+const loadConfig = { robots: { label: "Robots out", color: 1 } } satisfies ChartConfig
+
+/** A count that changes in jumps: a step line, not a smooth curve that invents values between hours. */
+export const ChartStepLine: S = {
+  render: () => (
+    <div className="flex w-full max-w-3xl flex-col gap-3">
+      <p className="text-sm font-medium">Robots out on patrol</p>
+      <ChartContainer config={loadConfig} label="Number of robots out on patrol by hour" className="h-40">
+        <AreaChart data={load} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
+          <CartesianGrid vertical={false} />
+          <XAxis dataKey="t" {...chartAxis} />
+          <YAxis {...chartAxis} allowDecimals={false} domain={[0, 6]} width={40} />
+          <ChartTooltip />
+          <Area dataKey="robots" type="stepAfter" stroke="var(--color-robots)" strokeWidth={2} fill="var(--color-robots)" fillOpacity={0.12} {...chartMotion} />
+        </AreaChart>
+      </ChartContainer>
+    </div>
+  ),
+}
+
+const fleetBattery = ["7F3A", "DAA6", "9E37"].map((id, r) => ({
+  id,
+  data: hours.map((t, i) => ({ t, battery: Math.max(8, [96, 80, 70][r] - i * [9, 6, 11][r] + (i > 5 ? 40 : 0)) })),
+}))
+
+/** One chart per robot on the same scale: compare shapes without a crowded legend. */
+export const ChartSmallMultiples: S = {
+  render: () => (
+    <div className="grid w-full max-w-3xl gap-4 sm:grid-cols-3">
+      {fleetBattery.map((r) => (
+        <div key={r.id} className="flex flex-col gap-2">
+          <p className="text-sm font-medium">
+            {r.id} <span className="font-normal text-muted-foreground">· battery %</span>
+          </p>
+          <ChartContainer config={batteryConfig} label={`Battery of ${r.id} by hour`} className="h-28">
+            <AreaChart data={r.data} margin={{ top: 4, right: 4, left: 0, bottom: 0 }}>
+              <XAxis dataKey="t" {...chartAxis} ticks={["06:00", "20:00"]} />
+              <YAxis {...chartAxis} domain={[0, 100]} ticks={[0, 50, 100]} width={32} />
+              <ChartTooltip />
+              <Area
+                dataKey="battery"
+                type="linear"
+                stroke="var(--color-battery)"
+                strokeWidth={2}
+                fill="var(--color-battery)"
+                fillOpacity={0.12}
+                {...chartMotion}
+              />
+            </AreaChart>
+          </ChartContainer>
+        </div>
+      ))}
+    </div>
+  ),
+}
+
+/** No data yet: keep the title and the frame, and say why instead of drawing empty axes. */
+export const ChartNoData: S = {
+  render: () => (
+    <div className="flex w-full max-w-3xl flex-col gap-3">
+      <p className="text-sm font-medium">Missions this week</p>
+      <div className="grid h-64 place-items-center rounded-md ring-1 ring-border">
+        <EmptyState icon={ChartNoAxesColumn} title="No missions yet this week" description="Charts fill in after the first mission ends." />
+      </div>
+    </div>
+  ),
+}

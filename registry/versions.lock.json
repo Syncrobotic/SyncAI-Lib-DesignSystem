@@ -1,7 +1,7 @@
 {
   "syncrobotic-theme": {
-    "version": "0.8.0",
-    "hash": "b701865568e50474"
+    "version": "0.9.0",
+    "hash": "f8232f487129014a"
   },
   "cn": {
     "version": "0.5.0",
@@ -216,8 +216,108 @@
     "hash": "1c718ef5ec09500b"
   },
   "command": {
-    "version": "0.8.0",
-    "hash": "10bb4491132203af"
+    "version": "0.9.0",
+    "hash": "0857492bb8a696bf"
+  },
+  "item": {
+    "version": "0.9.0",
+    "hash": "d0e5f2ecc5b1a1bd"
+  },
+  "icon-tile": {
+    "version": "0.9.0",
+    "hash": "5300fcb25c819cb1"
+  },
+  "kbd": {
+    "version": "0.9.0",
+    "hash": "865079a18d9b1fb9"
+  },
+  "button-group": {
+    "version": "0.9.0",
+    "hash": "8e7f546fe1ffe696"
+  },
+  "scroll-area": {
+    "version": "0.9.0",
+    "hash": "84680f8e564dae37"
+  },
+  "toggle-group": {
+    "version": "0.9.0",
+    "hash": "f666b471537373bb"
+  },
+  "autocomplete": {
+    "version": "0.9.0",
+    "hash": "8236eb4e1364101a"
+  },
+  "input-otp": {
+    "version": "0.9.0",
+    "hash": "d482d8c3047f83be"
+  },
+  "phone-input": {
+    "version": "0.9.0",
+    "hash": "44ad41f349471d28"
+  },
+  "calendar": {
+    "version": "0.9.0",
+    "hash": "f6e0a0ea2dae13b7"
+  },
+  "date-selector": {
+    "version": "0.9.0",
+    "hash": "80a835b576c3f8e0"
+  },
+  "time-picker": {
+    "version": "0.9.0",
+    "hash": "8930042b08f607db"
+  },
+  "data-grid": {
+    "version": "0.9.0",
+    "hash": "43243c551675fd98"
+  },
+  "sortable": {
+    "version": "0.9.0",
+    "hash": "02a528b4ec0ea465"
+  },
+  "resizable": {
+    "version": "0.9.0",
+    "hash": "1ca551383fcf3ae8"
+  },
+  "file-upload": {
+    "version": "0.9.0",
+    "hash": "a292f9ed99da9820"
+  },
+  "attachment": {
+    "version": "0.9.0",
+    "hash": "0e768f92bf3bb456"
+  },
+  "file-type": {
+    "version": "0.9.0",
+    "hash": "03d1069002cfe53c"
+  },
+  "stepper": {
+    "version": "0.9.0",
+    "hash": "80c7f03072f7d722"
+  },
+  "timeline": {
+    "version": "0.9.0",
+    "hash": "8655c77429cb87ac"
+  },
+  "scrollspy": {
+    "version": "0.9.0",
+    "hash": "f50d11f9cd2b215b"
+  },
+  "navigation-menu": {
+    "version": "0.9.0",
+    "hash": "d208c36788b4fa08"
+  },
+  "questionnaire": {
+    "version": "0.9.0",
+    "hash": "787769c920d7f0db"
+  },
+  "trace": {
+    "version": "0.9.0",
+    "hash": "65731a517d0b339c"
+  },
+  "marker": {
+    "version": "0.9.0",
+    "hash": "127b23a2f6ee3b4a"
   },
   "stats-cards": {
     "version": "0.8.0",

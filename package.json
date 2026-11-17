@@ -1,6 +1,6 @@
 {
   "name": "@syncrobotic/design-system",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "private": true,
   "description": "The SYNCROBOTIC design language: tokens, React components and blocks, shipped as a shadcn/ui registry for Tailwind CSS v4.",
   "keywords": [
@@ -38,7 +38,7 @@
     "registry:build": "shadcn build -o public/r",
     "typecheck": "tsc --noEmit",
     "lint:tokens": "node scripts/check-tokens.mjs",
-    "test:visual": "playwright test tests/visual.spec.ts",
+    "test:stories": "playwright test tests/stories.spec.ts",
     "ci": "npm run lint:tokens && npm run lint:registry && npm run lint:motion && npm run lint:versions && npm run lint:dtcg && npm run typecheck && npm test && npm run build && npm run build-storybook",
     "test": "vitest run",
     "lint:registry": "node scripts/check-registry.mjs",
@@ -47,20 +47,29 @@
     "versions": "node scripts/versions.mjs --write",
     "lint:dtcg": "node scripts/tokens.mjs",
     "tokens": "node scripts/tokens.mjs --write",
-    "test:registry": "bash scripts/registry-e2e.sh",
-    "test:a11y": "playwright test tests/a11y.spec.ts"
+    "test:registry": "bash scripts/registry-e2e.sh"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
+    "@tanstack/react-table": "^8.21.3",
+    "@tanstack/react-virtual": "^3.14.26",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
+    "date-fns": "^4.4.0",
     "geist": "^1.9.2",
+    "input-otp": "^1.5.0",
+    "libphonenumber-js": "^1.13.16",
     "lucide-react": "^0.468.0",
     "motion": "^12.43.0",
     "next": "^16.4.6",
     "radix-ui": "^1.8.1",
     "react": "^19.0.0",
+    "react-day-picker": "^9.14.0",
     "react-dom": "^19.0.0",
+    "react-resizable-panels": "^3.0.6",
     "recharts": "^3.10.1",
     "shiki": "^4.6.0",
     "tailwind-merge": "^3.0.1"

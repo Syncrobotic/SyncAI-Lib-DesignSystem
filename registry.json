@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.9.0",
         "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "caret-blink animation for one-time-code boxes; stops under reduced motion."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -46,10 +51,7 @@
       "type": "registry:lib",
       "title": "cn() utility",
       "description": "clsx + tailwind-merge, shipped inside this registry so it installs on an intranet too.",
-      "dependencies": [
-        "clsx",
-        "tailwind-merge"
-      ],
+      "dependencies": ["clsx", "tailwind-merge"],
       "files": [
         {
           "path": "registry/syncrobotic/lib/utils.ts",
@@ -145,9 +147,7 @@
       "type": "registry:component",
       "title": "Status glyph",
       "description": "Status as shape plus colour: filled circle in progress, hollow circle normal, triangle attention, square stopped, slashed circle offline.",
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/shell/status-glyph.tsx",
@@ -175,10 +175,7 @@
       "type": "registry:component",
       "title": "Status eyebrow",
       "description": "The state word above a headline, and the same status inside a list row.",
-      "registryDependencies": [
-        "@syncrobotic/cn",
-        "@syncrobotic/status-glyph"
-      ],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/status-glyph"],
       "files": [
         {
           "path": "registry/syncrobotic/shell/status-eyebrow.tsx",
@@ -206,9 +203,7 @@
       "type": "registry:component",
       "title": "Tray",
       "description": "The shared frame of the dynamic island and the dock: radius 24, padding 8, gap 8.",
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/shell/tray.tsx",
@@ -231,13 +226,8 @@
       "type": "registry:component",
       "title": "Emergency stop",
       "description": "One touch stops; hold 2 s to stop all; lying down it becomes wake and stand up. UI only: sending and the Bluetooth fallback live in the app.",
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn",
-        "@syncrobotic/use-long-press"
-      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/use-long-press"],
       "files": [
         {
           "path": "registry/syncrobotic/shell/stop-button.tsx",
@@ -265,13 +255,8 @@
       "type": "registry:component",
       "title": "Slide to release",
       "description": "Past 85% releases, short of that springs back in 200 ms; locked for viewers; hold 2 s on the keyboard instead.",
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn",
-        "@syncrobotic/use-slide-release"
-      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/use-slide-release"],
       "files": [
         {
           "path": "registry/syncrobotic/shell/slide-to-release.tsx",
@@ -294,11 +279,7 @@
       "type": "registry:component",
       "title": "Dock",
       "description": "Three tiers: state action, this page's primary action, navigation.",
-      "registryDependencies": [
-        "@syncrobotic/cn",
-        "@syncrobotic/tray",
-        "@syncrobotic/badge"
-      ],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/tray", "@syncrobotic/badge"],
       "files": [
         {
           "path": "registry/syncrobotic/shell/dock.tsx",
@@ -336,9 +317,7 @@
       "type": "registry:component",
       "title": "Dynamic island",
       "description": "Name, device status and notifications, each zone expanding on its own; notices and the most urgent unacknowledged alarm live inside the island.",
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": ["lucide-react"],
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/tray",
@@ -384,12 +363,8 @@
       "type": "registry:component",
       "title": "Grouped list",
       "description": "One surface with inset dividers; icons only when they carry meaning; status as shape plus word.",
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/shell/list.tsx",
@@ -422,10 +397,7 @@
       "type": "registry:component",
       "title": "Skeleton",
       "description": "What is known shows first; only unknown values get a skeleton; the whole group breathes.",
-      "registryDependencies": [
-        "@syncrobotic/cn",
-        "@syncrobotic/spinner"
-      ],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/spinner"],
       "files": [
         {
           "path": "registry/syncrobotic/shell/skeleton.tsx",
@@ -458,14 +430,8 @@
       "type": "registry:ui",
       "title": "Button",
       "description": "Primary, secondary, outline, ghost, destructive and link; 36, 44 and 48 px; loading state with a delayed spinner.",
-      "dependencies": [
-        "radix-ui",
-        "class-variance-authority"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn",
-        "@syncrobotic/spinner"
-      ],
+      "dependencies": ["radix-ui", "class-variance-authority"],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/spinner"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/button.tsx",
@@ -503,9 +469,7 @@
       "type": "registry:ui",
       "title": "Spinner",
       "description": "Appears only after 300 ms, so quick work never flashes a spinner.",
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/spinner.tsx",
@@ -528,12 +492,8 @@
       "type": "registry:ui",
       "title": "Segmented control",
       "description": "Switch between views of the same data. The selected segment is inverted.",
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/segmented-control.tsx",
@@ -566,12 +526,8 @@
       "type": "registry:ui",
       "title": "Toggle",
       "description": "An on/off button for a layer or option. On is inverted, like a selected segment.",
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/toggle.tsx",
@@ -594,13 +550,8 @@
       "type": "registry:ui",
       "title": "Copy button",
       "description": "Copies a value; the icon becomes a check for 1.5 s.",
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn",
-        "@syncrobotic/button"
-      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/button"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/copy-button.tsx",
@@ -623,9 +574,7 @@
       "type": "registry:ui",
       "title": "Input",
       "description": "44 px text field with 16 px text so iOS does not zoom; aria-invalid turns the edge danger.",
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/input.tsx",
@@ -658,9 +607,7 @@
       "type": "registry:ui",
       "title": "Input group",
       "description": "An input with an icon, a unit or a button (clear, show password) inside its edge. The group draws the field, focus and error.",
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/input-group.tsx",
@@ -683,13 +630,8 @@
       "type": "registry:ui",
       "title": "Number field",
       "description": "A number with a range, a step and a unit. Type freely, kept in range on blur; 44 px buttons; arrow keys, Shift, PageUp/PageDown, Home/End.",
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn",
-        "@syncrobotic/input-group"
-      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/input-group"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/number-field.tsx",
@@ -712,9 +654,7 @@
       "type": "registry:ui",
       "title": "Textarea",
       "description": "Multi-line text field.",
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/textarea.tsx",
@@ -747,12 +687,8 @@
       "type": "registry:ui",
       "title": "Label",
       "description": "Accessible label for any control.",
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/label.tsx",
@@ -775,14 +711,8 @@
       "type": "registry:ui",
       "title": "Field",
       "description": "Label, control and one line for the hint or the error, with ids and aria wired up.",
-      "dependencies": [
-        "radix-ui",
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn",
-        "@syncrobotic/label"
-      ],
+      "dependencies": ["radix-ui", "lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/label"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/field.tsx",
@@ -820,13 +750,8 @@
       "type": "registry:ui",
       "title": "Checkbox",
       "description": "Checked, unchecked and indeterminate.",
-      "dependencies": [
-        "radix-ui",
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "dependencies": ["radix-ui", "lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/checkbox.tsx",
@@ -859,12 +784,8 @@
       "type": "registry:ui",
       "title": "Radio group",
       "description": "Pick exactly one of a few visible options.",
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/radio-group.tsx",
@@ -897,12 +818,8 @@
       "type": "registry:ui",
       "title": "Switch",
       "description": "On is success green; takes effect immediately.",
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/switch.tsx",
@@ -935,12 +852,8 @@
       "type": "registry:ui",
       "title": "Choice field",
       "description": "A choice as a whole tappable row (checkbox, radio or switch with label, description and count); FieldSet groups them under one question.",
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/choice-field.tsx",
@@ -963,14 +876,8 @@
       "type": "registry:ui",
       "title": "Select",
       "description": "Pick one from a longer list.",
-      "dependencies": [
-        "radix-ui",
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn",
-        "@syncrobotic/field"
-      ],
+      "dependencies": ["radix-ui", "lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/field"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/select.tsx",
@@ -1008,12 +915,8 @@
       "type": "registry:ui",
       "title": "Slider",
       "description": "Single value or range.",
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/slider.tsx",
@@ -1036,13 +939,8 @@
       "type": "registry:ui",
       "title": "Badge",
       "description": "Status tones as foreground on subtle tint, plus outline.",
-      "dependencies": [
-        "radix-ui",
-        "class-variance-authority"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "dependencies": ["radix-ui", "class-variance-authority"],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/badge.tsx",
@@ -1075,9 +973,7 @@
       "type": "registry:ui",
       "title": "Card",
       "description": "One surface with radius 16 for a group of related content.",
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/card.tsx",
@@ -1100,12 +996,8 @@
       "type": "registry:ui",
       "title": "Avatar",
       "description": "Image with initials fallback.",
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/avatar.tsx",
@@ -1128,12 +1020,8 @@
       "type": "registry:ui",
       "title": "Separator",
       "description": "Horizontal or vertical hairline.",
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/separator.tsx",
@@ -1156,12 +1044,8 @@
       "type": "registry:ui",
       "title": "Progress",
       "description": "Determinate progress; blue unless the value itself is a status.",
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/progress.tsx",
@@ -1185,9 +1069,7 @@
       "title": "Description list",
       "description": "Label and value pairs about one thing, plain or as tiles.",
       "dependencies": [],
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/description-list.tsx",
@@ -1211,9 +1093,7 @@
       "title": "Meter",
       "description": "A level within a known range, neutral until it crosses a threshold; inline for table cells.",
       "dependencies": [],
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/meter.tsx",
@@ -1236,12 +1116,8 @@
       "type": "registry:ui",
       "title": "Alert",
       "description": "Inline message in a status tone with icon, title and description.",
-      "dependencies": [
-        "class-variance-authority"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/alert.tsx",
@@ -1274,13 +1150,8 @@
       "type": "registry:ui",
       "title": "Alarm",
       "description": "ISA-18.2 alarms: three priorities with their own shape, colour and words, acknowledge and clear states, and a sorted list that announces new alarms to screen readers.",
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn",
-        "@syncrobotic/use-presence"
-      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/use-presence"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/alarm.tsx",
@@ -1318,13 +1189,8 @@
       "type": "registry:ui",
       "title": "Toast",
       "description": "Transient feedback on what the user just did: 4 s, 8 s with an action, failures until dismissed. Call toast() anywhere; mount <Toaster /> once.",
-      "dependencies": [
-        "radix-ui",
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "dependencies": ["radix-ui", "lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/toast.tsx",
@@ -1357,9 +1223,7 @@
       "type": "registry:ui",
       "title": "Empty state",
       "description": "What is missing, why, and the one action that fixes it.",
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/empty-state.tsx",
@@ -1382,9 +1246,7 @@
       "type": "registry:ui",
       "title": "Table",
       "description": "Dense rows for dashboards with tabular numbers.",
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/table.tsx",
@@ -1406,22 +1268,15 @@
           }
         ]
       },
-      "dependencies": [
-        "lucide-react"
-      ]
+      "dependencies": ["lucide-react"]
     },
     {
       "name": "chart",
       "type": "registry:ui",
       "title": "Chart",
       "description": "Line, area and bar charts on Recharts, in the categorical palette, with a crosshair tooltip, a legend and a table view.",
-      "dependencies": [
-        "recharts"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn",
-        "@syncrobotic/table"
-      ],
+      "dependencies": ["recharts"],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/table"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/chart.tsx",
@@ -1444,12 +1299,8 @@
       "type": "registry:ui",
       "title": "Tabs",
       "description": "Sections of one page.",
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/tabs.tsx",
@@ -1482,13 +1333,8 @@
       "type": "registry:ui",
       "title": "Pagination",
       "description": "Range and previous / next, or numbered pages, for long lists.",
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn",
-        "@syncrobotic/button"
-      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/button"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/pagination.tsx",
@@ -1511,12 +1357,8 @@
       "type": "registry:ui",
       "title": "Breadcrumb",
       "description": "Where this page sits: links to the levels above, the current page last.",
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/breadcrumb.tsx",
@@ -1539,13 +1381,8 @@
       "type": "registry:ui",
       "title": "Accordion",
       "description": "Collapsible sections for settings and FAQs.",
-      "dependencies": [
-        "radix-ui",
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "dependencies": ["radix-ui", "lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/accordion.tsx",
@@ -1578,13 +1415,8 @@
       "type": "registry:ui",
       "title": "Dialog",
       "description": "A short decision in a centered panel with radius 20.",
-      "dependencies": [
-        "radix-ui",
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "dependencies": ["radix-ui", "lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/dialog.tsx",
@@ -1617,13 +1449,8 @@
       "type": "registry:ui",
       "title": "Alert dialog",
       "description": "Confirms an action that cannot be undone; the confirm names the consequence.",
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn",
-        "@syncrobotic/button"
-      ],
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/button"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/alert-dialog.tsx",
@@ -1651,12 +1478,8 @@
       "type": "registry:ui",
       "title": "Sheet",
       "description": "Bottom sheet on phones with a grab handle, side panel on wide screens.",
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/sheet.tsx",
@@ -1689,12 +1512,8 @@
       "type": "registry:ui",
       "title": "Popover",
       "description": "Extra detail anchored to a control.",
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/popover.tsx",
@@ -1722,12 +1541,8 @@
       "type": "registry:ui",
       "title": "Tooltip",
       "description": "Names an icon-only control on hover and focus.",
-      "dependencies": [
-        "radix-ui"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/tooltip.tsx",
@@ -1760,13 +1575,8 @@
       "type": "registry:ui",
       "title": "Dropdown menu",
       "description": "Actions on an item; destructive actions last.",
-      "dependencies": [
-        "radix-ui",
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "dependencies": ["radix-ui", "lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/dropdown-menu.tsx",
@@ -1799,14 +1609,8 @@
       "type": "registry:ui",
       "title": "Command",
       "description": "Search and run from the keyboard: a filterable list, and the ⌘K palette that opens over any page.",
-      "dependencies": [
-        "cmdk",
-        "radix-ui",
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn"
-      ],
+      "dependencies": ["cmdk", "radix-ui", "lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn"],
       "files": [
         {
           "path": "registry/syncrobotic/ui/command.tsx",
@@ -1814,8 +1618,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.9.0",
         "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "CommandEmpty is a disabled option, so a list with no matches is never an empty listbox; it also holds a loading line."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -1830,17 +1639,621 @@
       }
     },
     {
+      "name": "item",
+      "type": "registry:ui",
+      "title": "Item",
+      "description": "A row of content: media, title and description, and trailing actions. Links draw the hover fill.",
+      "dependencies": ["class-variance-authority", "radix-ui"],
+      "registryDependencies": ["@syncrobotic/cn"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/item.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "icon-tile",
+      "type": "registry:ui",
+      "title": "Icon tile",
+      "description": "A square or round surface behind one icon, in five surfaces and four sizes, with an optional status dot.",
+      "dependencies": ["class-variance-authority", "radix-ui"],
+      "registryDependencies": ["@syncrobotic/cn"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/icon-tile.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "kbd",
+      "type": "registry:ui",
+      "title": "Kbd",
+      "description": "A keyboard key in shortcuts and instructions; KbdGroup for chords.",
+      "registryDependencies": ["@syncrobotic/cn"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/kbd.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "button-group",
+      "type": "registry:ui",
+      "title": "Button group",
+      "description": "Buttons, a field or a menu joined into one strip: split buttons, steppers, prev / next, search with scope.",
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["@syncrobotic/cn"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/button-group.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "scroll-area",
+      "type": "registry:ui",
+      "title": "Scroll area",
+      "description": "A bounded region with a thin themed scrollbar, vertical, horizontal or both, with optional fading edges.",
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["@syncrobotic/cn"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/scroll-area.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "toggle-group",
+      "type": "registry:ui",
+      "title": "Toggle group",
+      "description": "A set of toggles, one or many on, joined or spaced, outline or ghost. On is inverted.",
+      "dependencies": ["radix-ui"],
+      "registryDependencies": ["@syncrobotic/cn"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/toggle-group.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "autocomplete",
+      "type": "registry:ui",
+      "title": "Autocomplete",
+      "description": "A text field that suggests as you type: filter, arrows, Enter, groups, server search with loading.",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/field", "@syncrobotic/popover", "@syncrobotic/spinner"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/autocomplete.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "input-otp",
+      "type": "registry:ui",
+      "title": "Input OTP",
+      "description": "A one-time code or PIN, one 44 px box per character, with paste and SMS autofill.",
+      "dependencies": ["input-otp", "lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/input-otp.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "phone-input",
+      "type": "registry:ui",
+      "title": "Phone input",
+      "description": "A phone number with its country, formatted as you type, stored as E.164.",
+      "dependencies": ["libphonenumber-js"],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/field", "@syncrobotic/select"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/phone-input.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "calendar",
+      "type": "registry:ui",
+      "title": "Calendar",
+      "description": "A month grid for one day, several days or a range; 36 px days with a mouse, 44 px on touch.",
+      "dependencies": ["react-day-picker@^9", "lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/calendar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "date-selector",
+      "type": "registry:ui",
+      "title": "Date selector",
+      "description": "DatePicker and DateRangePicker: a field that opens a calendar, with presets and clear.",
+      "dependencies": ["react-day-picker@^9", "date-fns", "lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/calendar", "@syncrobotic/field", "@syncrobotic/popover"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/date-selector.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "time-picker",
+      "type": "registry:ui",
+      "title": "Time picker",
+      "description": "TimePicker (slots in a popover) and TimeInput (typed), on a 24-hour \"HH:mm\" value.",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/field", "@syncrobotic/popover"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/time-picker.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "data-grid",
+      "type": "registry:ui",
+      "title": "Data grid",
+      "description": "A TanStack Table grid: sorting, pagination, selection, column menus, pinning, resizing, expandable rows, totals, loading, virtual rows.",
+      "dependencies": ["@tanstack/react-table@^8", "@tanstack/react-virtual", "lucide-react"],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/checkbox",
+        "@syncrobotic/dropdown-menu",
+        "@syncrobotic/pagination",
+        "@syncrobotic/use-presence"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/data-grid.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "sortable",
+      "type": "registry:ui",
+      "title": "Sortable",
+      "description": "A list or grid people reorder by dragging a handle, by touch or by keyboard, with announcements (dnd-kit).",
+      "dependencies": ["@dnd-kit/core", "@dnd-kit/sortable", "@dnd-kit/utilities", "lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/sortable.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "resizable",
+      "type": "registry:ui",
+      "title": "Resizable",
+      "description": "Panels resized by dragging the line between them or with the arrow keys, horizontal, vertical or nested (react-resizable-panels).",
+      "dependencies": ["react-resizable-panels@^3"],
+      "registryDependencies": ["@syncrobotic/cn"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/resizable.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "file-upload",
+      "type": "registry:ui",
+      "title": "File upload",
+      "description": "A drop zone that is also a button: checks type, size and count, and says what it refused.",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/file-upload.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "attachment",
+      "type": "registry:ui",
+      "title": "Attachment",
+      "description": "One file in a list, a composer or a queue: type, name, size, progress, error with Retry, Download and Remove.",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/file-type", "@syncrobotic/file-upload", "@syncrobotic/progress"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/attachment.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "file-type",
+      "type": "registry:ui",
+      "title": "File type",
+      "description": "An icon for a file from its name or extension, with robot formats (mcap, bag, pgm, pcd, onnx) and the extension written on it.",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/file-type.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "stepper",
+      "type": "registry:ui",
+      "title": "Stepper",
+      "description": "Where someone is in a fixed sequence of steps: done, current, upcoming and error steps, horizontal or vertical, with a compact bar for phones.",
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/use-presence"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/stepper.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "timeline",
+      "type": "registry:ui",
+      "title": "Timeline",
+      "description": "Events in time order with neutral markers, status glyphs or icons; vertical, alternate or horizontal, grouped by day.",
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/status-glyph"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/timeline.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "scrollspy",
+      "type": "registry:ui",
+      "title": "Scrollspy",
+      "description": "An On this page list that follows the reader through the sections of a page or a scroll area, and the useScrollspy hook behind it.",
+      "registryDependencies": ["@syncrobotic/cn"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/scrollspy.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "navigation-menu",
+      "type": "registry:ui",
+      "title": "Navigation menu",
+      "description": "A site's top navigation: links, and triggers that open panels of links and cards (Radix NavigationMenu).",
+      "dependencies": ["lucide-react", "radix-ui"],
+      "registryDependencies": ["@syncrobotic/cn"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/navigation-menu.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "questionnaire",
+      "type": "registry:ui",
+      "title": "Questionnaire",
+      "description": "A short set of questions, one per page or all on one form: single and multiple choice, scales and text, required checks and a review page.",
+      "dependencies": ["radix-ui"],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/checkbox",
+        "@syncrobotic/choice-field",
+        "@syncrobotic/radio-group",
+        "@syncrobotic/textarea"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/questionnaire.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "trace",
+      "type": "registry:ui",
+      "title": "Trace",
+      "description": "The steps of a run with status and duration: missions, agent tool calls, rollouts, CI runs, audit trails. Steps open to show input, output or sub-steps; an optional waterfall bar.",
+      "dependencies": ["lucide-react", "radix-ui"],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/spinner"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/trace.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "marker",
+      "type": "registry:ui",
+      "title": "Marker",
+      "description": "A labelled line across a log or feed (a day, a takeover, an e-stop), and MarkerRow: one dense log line with a status glyph, detail and time.",
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/status-glyph"],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/marker.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
       "name": "stats-cards",
       "type": "registry:block",
       "title": "KPI cards",
       "description": "Four headline numbers with change and sparkline. Trend colour follows whether the change is good, not its direction.",
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn",
-        "@syncrobotic/card"
-      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/card"],
       "files": [
         {
           "path": "registry/syncrobotic/blocks/stats-cards.tsx",
@@ -1873,9 +2286,7 @@
       "type": "registry:block",
       "title": "Fleet table",
       "description": "Search, filter by state, paginate and act on rows. Status as shape plus word, low battery in warning.",
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": ["lucide-react"],
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/button",
@@ -1922,16 +2333,8 @@
       "type": "registry:block",
       "title": "Robot status card",
       "description": "One robot on a phone: state, battery, connection, location, current task and the next actions.",
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn",
-        "@syncrobotic/button",
-        "@syncrobotic/card",
-        "@syncrobotic/progress",
-        "@syncrobotic/status-eyebrow"
-      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/button", "@syncrobotic/card", "@syncrobotic/progress", "@syncrobotic/status-eyebrow"],
       "files": [
         {
           "path": "registry/syncrobotic/blocks/robot-status-card.tsx",
@@ -1959,15 +2362,8 @@
       "type": "registry:block",
       "title": "Marketing hero",
       "description": "Landing page hero with eyebrow, headline, two calls to action and a product visual.",
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn",
-        "@syncrobotic/badge",
-        "@syncrobotic/button",
-        "@syncrobotic/status-glyph"
-      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/badge", "@syncrobotic/button", "@syncrobotic/status-glyph"],
       "files": [
         {
           "path": "registry/syncrobotic/blocks/marketing-hero.tsx",
@@ -2000,9 +2396,7 @@
       "type": "registry:block",
       "title": "App shell",
       "description": "The frame of an internal tool: collapsible sidebar (a drawer on phones), top bar with title, environment, search and user, and the page.",
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": ["lucide-react"],
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/avatar",
@@ -2046,16 +2440,8 @@
       "type": "registry:block",
       "title": "Top-bar shell",
       "description": "The frame for a tool or site without a sidebar: links, search and user in a top bar that gathers into a floating panel as the page scrolls, then the content and a footer.",
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn",
-        "@syncrobotic/app-shell",
-        "@syncrobotic/avatar",
-        "@syncrobotic/dropdown-menu",
-        "@syncrobotic/sheet"
-      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/app-shell", "@syncrobotic/avatar", "@syncrobotic/dropdown-menu", "@syncrobotic/sheet"],
       "files": [
         {
           "path": "registry/syncrobotic/blocks/top-bar-shell.tsx",
@@ -2078,9 +2464,7 @@
       "type": "registry:block",
       "title": "Operations console",
       "description": "App shell with fleet numbers, the robot table and the alarm list on one screen.",
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": ["lucide-react"],
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/app-shell",
@@ -2116,9 +2500,7 @@
       "type": "registry:block",
       "title": "List and detail",
       "description": "App shell with a filterable robot list and a detail pane; on phones the detail replaces the list.",
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": ["lucide-react"],
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/app-shell",
@@ -2165,9 +2547,7 @@
       "type": "registry:block",
       "title": "Event log",
       "description": "App shell with time, level and text filters, an event table and a side sheet for one event.",
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": ["lucide-react"],
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/app-shell",
@@ -2213,9 +2593,7 @@
       "type": "registry:block",
       "title": "Map workspace",
       "description": "App shell with the site map edge to edge and floating trays for the selected robot, the top alarm and the emergency stop.",
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": ["lucide-react"],
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/app-shell",
@@ -2255,9 +2633,7 @@
       "type": "registry:block",
       "title": "Data catalog",
       "description": "Datasets one row each: filter by tier, use and task (a drawer on phones), search, sort. Only restricted tiers carry colour.",
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": ["lucide-react"],
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/app-shell",
@@ -2304,9 +2680,7 @@
       "type": "registry:block",
       "title": "Dataset detail",
       "description": "One dataset: release verdict, open issues, counts and splits, an annotated browse grid with layer toggles, lineage and compliance.",
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": ["lucide-react"],
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/data-catalog",
@@ -2348,9 +2722,7 @@
       "type": "registry:block",
       "title": "Governance to-do",
       "description": "What needs a maintainer or the compliance reviewer, most blocking first; done items leave the list.",
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": ["lucide-react"],
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/data-catalog",
@@ -2476,9 +2848,7 @@
       "type": "registry:block",
       "title": "Users and roles",
       "description": "Who can do what: change a role in place, invite by email in a dialog, remove from the row menu with undo.",
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": ["lucide-react"],
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/app-shell",
@@ -2522,13 +2892,7 @@
       "title": "Sign in",
       "description": "Company SSO first, email link as the fallback; one column, errors under the field, a confirmation that says where the link went.",
       "dependencies": [],
-      "registryDependencies": [
-        "@syncrobotic/cn",
-        "@syncrobotic/button",
-        "@syncrobotic/field",
-        "@syncrobotic/input",
-        "@syncrobotic/separator"
-      ],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/button", "@syncrobotic/field", "@syncrobotic/input", "@syncrobotic/separator"],
       "files": [
         {
           "path": "registry/syncrobotic/blocks/sign-in.tsx",
@@ -2551,14 +2915,8 @@
       "type": "registry:block",
       "title": "Status pages",
       "description": "Not found, no access, error, offline and loading: what happened, why, and the next step. Never a dead end.",
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "@syncrobotic/cn",
-        "@syncrobotic/button",
-        "@syncrobotic/skeleton"
-      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@syncrobotic/cn", "@syncrobotic/button", "@syncrobotic/skeleton"],
       "files": [
         {
           "path": "registry/syncrobotic/blocks/status-pages.tsx",

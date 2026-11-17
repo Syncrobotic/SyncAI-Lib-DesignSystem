@@ -1,4 +1,4 @@
-// @syncrobotic/command v0.8.0 · update: npx shadcn add @syncrobotic/command --overwrite
+// @syncrobotic/command v0.9.0 · update: npx shadcn add @syncrobotic/command --overwrite
 "use client"
 
 import * as React from "react"
@@ -72,9 +72,19 @@ export function CommandList({ className, ...props }: React.ComponentProps<typeof
   return <CommandPrimitive.List data-slot="command-list" className={cn("min-h-0 flex-1 overflow-y-auto overscroll-contain p-2", className)} {...props} />
 }
 
-/** Say what was searched and what to try instead, not just "No results". */
-export function CommandEmpty({ className, ...props }: React.ComponentProps<typeof CommandPrimitive.Empty>) {
-  return <CommandPrimitive.Empty data-slot="command-empty" className={cn("px-3 py-8 text-center text-sm text-muted-foreground", className)} {...props} />
+/**
+ * Say what was searched and what to try instead, not just "No results". Also the place for a loading line.
+ * It is a disabled option, so the list is never an empty listbox and screen readers read the message.
+ */
+export function CommandEmpty({ className, children, ...props }: React.ComponentProps<typeof CommandPrimitive.Empty>) {
+  // cmdk forces role="presentation" on Empty itself, so the option is the element inside it.
+  return (
+    <CommandPrimitive.Empty data-slot="command-empty" {...props}>
+      <div role="option" aria-disabled="true" aria-selected="false" className={cn("px-3 py-8 text-center text-sm text-muted-foreground", className)}>
+        {children}
+      </div>
+    </CommandPrimitive.Empty>
+  )
 }
 
 export function CommandGroup({ className, ...props }: React.ComponentProps<typeof CommandPrimitive.Group>) {
