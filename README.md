@@ -98,7 +98,7 @@ npm run test:registry    # installs every item into a fresh Next.js app, then ty
 | `tests/unit/` | Behaviour tests |
 | `app/`, `site/` | The docs site |
 
-The first `test:visual` run writes baselines; commit them (`tests/__screenshots__/`). After that, any change to how a component looks fails CI with a diff image. To accept the new look: `npx playwright test --update-snapshots`.
+Baselines live in `tests/__screenshots__/` and are written only by CI (Actions → `visual-baseline`), never locally: fonts and anti-aliasing differ between machines. Stories render in Geist, loaded before each screenshot, with the page clock run past timed UI. Any change to how a component looks fails CI with a diff image; to accept it, run the workflow on the branch.
 
 ### Rules CI enforces
 
@@ -119,6 +119,8 @@ The first `test:visual` run writes baselines; commit them (`tests/__screenshots_
 6. Open a PR once `npm run ci` passes. Add a line to `CHANGELOG.md`.
 
 After changing an item's files, bump its `meta.version` in `registry.json`, add a `meta.changelog` line and run `npm run versions`. After changing the theme, run `npm run tokens`.
+
+Visual regression: every story is compared, dark and light, with the baselines in `tests/__screenshots__/`. They are written on CI's own browser: after an intended visual change, run Actions → `visual-baseline` on the branch and review the committed screenshots in the PR.
 
 Releases: when `main` gets a `package.json` version that has no tag, the `release` workflow tags it `vX.Y.Z` and publishes a GitHub Release with that version's `CHANGELOG.md` section. CI checks that the section exists.
 
