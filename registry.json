@@ -1961,7 +1961,7 @@
           {
             "version": "0.8.0",
             "date": "2026-11-17",
-            "note": "breadcrumb slot before the title; nav counts use CountBadge."
+            "note": "breadcrumb slot before the title; nav counts use CountBadge. One gutter and one inset: panels 8 px apart and from the edge, 16 px inside every panel (top bar, content, footer)."
           },
           {
             "version": "0.7.0",
@@ -2491,8 +2491,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.8.0",
         "changelog": [
+          {
+            "version": "0.8.0",
+            "date": "2026-11-17",
+            "note": "Redone: centred on both axes like the empty state, so it balances in any frame; `fill` for a full screen or an app shell's content; codes for every state; secondary actions as secondary buttons. StatusPage is exported."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",

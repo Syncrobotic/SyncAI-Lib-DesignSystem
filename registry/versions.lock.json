@@ -237,7 +237,7 @@
   },
   "app-shell": {
     "version": "0.8.0",
-    "hash": "68f0f9a40a48e0fc"
+    "hash": "9ccbe20a5f294b14"
   },
   "top-bar-shell": {
     "version": "0.7.0",
@@ -288,7 +288,7 @@
     "hash": "ca26144d94449917"
   },
   "status-pages": {
-    "version": "0.7.0",
-    "hash": "d82008a581f7d406"
+    "version": "0.8.0",
+    "hash": "9b75fb563ad656ed"
   }
 }

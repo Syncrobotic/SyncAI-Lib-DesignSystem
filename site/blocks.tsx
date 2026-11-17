@@ -49,12 +49,18 @@ const meta: Record<string, Meta> = {
     viewport: "desktop",
     height: 640,
     render: () => (
-      <div className="flex flex-col divide-y divide-border [&_main]:min-h-160">
-        <NotFoundPage />
-        <NoAccessPage />
-        <ErrorPage />
-        <OfflinePage />
-        <LoadingPage />
+      // The four states side by side, each in a frame the size of a content panel, then loading across the width.
+      <div className="flex flex-col gap-4 bg-background p-4">
+        <div className="grid gap-4 md:grid-cols-2">
+          {[NotFoundPage, NoAccessPage, ErrorPage, OfflinePage].map((Page, i) => (
+            <div key={i} className="overflow-hidden rounded-md ring-1 ring-border">
+              <Page fill="parent" />
+            </div>
+          ))}
+        </div>
+        <div className="overflow-hidden rounded-md ring-1 ring-border">
+          <LoadingPage fill="parent" />
+        </div>
       </div>
     ),
   },
@@ -97,8 +103,6 @@ const meta: Record<string, Meta> = {
   "marketing-hero": { product: "Marketing", viewport: "desktop", height: 760, render: () => <MarketingHero /> },
 }
 
-export const blocks = registry.items
-  .filter((i) => i.type === "registry:block" && i.name in meta)
-  .map((i) => ({ ...i, ...meta[i.name] }))
+export const blocks = registry.items.filter((i) => i.type === "registry:block" && i.name in meta).map((i) => ({ ...i, ...meta[i.name] }))
 
 export const getBlock = (name: string) => blocks.find((b) => b.name === name)

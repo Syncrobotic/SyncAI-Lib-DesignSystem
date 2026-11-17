@@ -15,6 +15,8 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - `use-presence`: keeps an element or list items on screen while they leave.
 
 ### Changed
+- `status-pages` redone: centred on both axes (it read off-balance left-aligned in a centred column); `fill="parent"` sits in an app shell's content; the Blocks page shows the four states side by side.
+- `app-shell`: one gutter and one inset, panels 8 px apart and from the edge with 16 px inside each (24 px inside and 16 px outside read unbalanced).
 - **Every exit is animated**: cleared alarms, island notices and the island alarm, finished governance tasks, the settings save bar and fixed form errors now leave with the disappear movement instead of vanishing.
 - `field` / `select`: a Select inside a Field is labelled, described and marked invalid through its trigger (`useField`).
 - `table`: sortable headers (`sort`, `onSort`) with aria-sort and an arrow.
@@ -35,7 +37,7 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - `field` 0.7.0: a control that brings its own id keeps it, and the label follows (labels were lost before).
 
 ### App shell
-- Inset layout by default: sidebar, top bar and content are separate panels 16 px apart and 16 px from the edge (the cards' gutter), top rows level. Below 1280 px the sidebar is a 72 px rail with the logo, opening over the content on hover or tap; the logo, icons and avatar hold the rail's centre line; a group's name gives way to a short line on the rail; the pin icon is filled when the sidebar is kept open. The user menu sits at the foot (44 px as a rail, 56 px open). Footer slot.
+- Inset layout by default: sidebar, top bar and content are separate panels 8 px apart and from the edge, 16 px inside each, top rows level. Below 1280 px the sidebar is a 72 px rail with the logo, opening over the content on hover or tap; the logo, icons and avatar hold the rail's centre line; a group's name gives way to a short line on the rail; the pin icon is filled when the sidebar is kept open. The user menu sits at the foot (44 px as a rail, 56 px open). Footer slot.
 
 ### Design-language pass (audit against the foundations)
 - **Touch**: compact controls (`--h-sm`, 36 px) are for a mouse only; on touch screens the token is 44 px, so the island, the dock and phone layouts never go below a finger. Written into Accessibility › Target size.

@@ -165,7 +165,7 @@ type AppShellProps = {
   bleed?: boolean
   /**
    * inset (default): see below. flush: sidebar, top bar and content share one surface, split by hairlines.
-   * inset: raised panels on the page, 16 px apart and 16 px from its edge (the same gutter as the cards inside): the sidebar, the top bar, and the content with its footer.
+   * inset: raised panels on the page, 8 px apart and 8 px from its edge, each with 16 px inside (the same as the gap between the cards in it): the sidebar, the top bar, and the content with its footer.
    * The top bar is as tall as the sidebar's brand row, so their edges line up across the gap.
    */
   layout?: "flush" | "inset"
@@ -571,7 +571,7 @@ export function AppShell({
   )
 
   return (
-    <div className={cn("flex h-dvh bg-background text-foreground", inset && "gap-4 p-4")}>
+    <div className={cn("flex h-dvh bg-background text-foreground", inset && "gap-2 p-2")}>
       {/* The sidebar's place in the layout: as wide as the pinned state. When the rail peeks open, the panel grows over the content. */}
       <div className={cn("relative hidden shrink-0 transition-[width] duration-(--motion-sheet) ease-(--ease-standard) sm:block", open ? "w-60" : "w-18")}>
         <aside
@@ -627,10 +627,16 @@ export function AppShell({
         </aside>
       </div>
 
-      {/* Inset: the top bar and the content are two panels, 16 px apart, so the bar never reads as part of the page.
+      {/* Inset: the top bar and the content are two panels, 8 px apart, so the bar never reads as part of the page.
           The bar's panel is as tall as the sidebar's brand row, so their bottom edges line up across the gap. */}
-      <div className={cn("flex min-w-0 flex-1 flex-col", inset && "gap-4")}>
-        <header className={cn("flex h-(--h-row) shrink-0 items-center gap-3 px-6", inset ? "rounded-md bg-card ring-1 ring-border" : "border-b border-border")}>
+      <div className={cn("flex min-w-0 flex-1 flex-col", inset && "gap-2")}>
+        <header
+          className={cn(
+            "flex h-(--h-row) shrink-0 items-center gap-3",
+            inset ? "px-4" : "px-6",
+            inset ? "rounded-md bg-card ring-1 ring-border" : "border-b border-border",
+          )}
+        >
           <Sheet>
             <SheetTrigger asChild>
               <button
@@ -668,9 +674,13 @@ export function AppShell({
           </div>
         </header>
         <main className={cn("flex min-h-0 flex-1 flex-col overflow-y-auto", inset && "rounded-md bg-card ring-1 ring-border")}>
-          <div className={cn("flex-1", !bleed && "p-6")}>{children}</div>
+          <div className={cn("flex-1", !bleed && (inset ? "p-4" : "p-6"))}>{children}</div>
           {footer && (
-            <footer className="flex shrink-0 flex-wrap items-center justify-between gap-x-6 gap-y-1 px-6 py-3 text-xs text-muted-foreground">{footer}</footer>
+            <footer
+              className={cn("flex shrink-0 flex-wrap items-center justify-between gap-x-6 gap-y-1 py-3 text-xs text-muted-foreground", inset ? "px-4" : "px-6")}
+            >
+              {footer}
+            </footer>
           )}
         </main>
       </div>
