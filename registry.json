@@ -96,8 +96,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Fix: the thumb follows the finger 1:1. It used to speed up mid-drag and finish on its own."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",

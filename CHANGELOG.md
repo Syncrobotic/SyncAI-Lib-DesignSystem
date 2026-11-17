@@ -28,6 +28,9 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - **One search field**: the shell, fleet table, list and detail, event log and data catalog all use InputGroup.
 - **Colour**: counts are danger text on its tint everywhere; licence tiers are outline tags; the dock's destructive action is an outline.
 
+### Fixed
+- `use-slide-release` 0.7.0 (behind `slide-to-release`): the thumb follows the finger 1:1. The travel was measured from the thumb's current position, so it shrank mid-drag and the thumb outran the finger and released on its own.
+
 ## 0.6.0 · 2026-11-17
 
 ### Added
