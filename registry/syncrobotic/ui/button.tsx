@@ -1,4 +1,4 @@
-// @syncrobotic/button v0.5.0 · update: npx shadcn add @syncrobotic/button --overwrite
+// @syncrobotic/button v0.6.0 · update: npx shadcn add @syncrobotic/button --overwrite
 import * as React from "react"
 import { Slot } from "radix-ui"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -10,7 +10,7 @@ import { Spinner } from "@/registry/syncrobotic/ui/spinner"
  * destructive is a danger outline and text — solid red belongs to the emergency stop alone.
  */
 export const buttonVariants = cva(
-  "inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-sm font-medium transition-colors duration-(--motion-fast) disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5",
+  "press inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-sm font-medium disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5",
   {
     variants: {
       variant: {

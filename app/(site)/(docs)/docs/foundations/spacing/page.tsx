@@ -47,7 +47,7 @@ export default function SpacingPage() {
               <div className="flex h-(--h-lg) flex-1 items-center justify-center rounded-md text-sm text-muted-foreground">Events</div>
             </div>
           </div>
-          <span className="font-mono text-xs text-info">padding 8 · gap 8 · radius 24 = 16 + 8</span>
+          <span className="font-mono text-xs text-muted-foreground">padding 8 · gap 8 · radius 24 = 16 + 8</span>
         </Specimen>
       </Section>
 

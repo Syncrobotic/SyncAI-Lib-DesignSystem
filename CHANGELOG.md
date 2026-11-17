@@ -2,6 +2,29 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.6.0 · 2026-11-17
+
+### Added
+- **App shells for internal tools**, on the Blocks page with desktop, tablet and phone previews and the code, each installable with `npx shadcn add`:
+  - `app-shell`: the frame. Collapsible sidebar (a drawer on phones), top bar with title, environment (production in red), search and user; `linkAs` takes your router's link; `bleed` for maps and video.
+  - `console-overview`: fleet numbers, the robot table and the alarm list on one screen.
+  - `list-detail`: filterable robot list and a detail pane; on phones the detail replaces the list.
+  - `event-log`: time, level and text filters, an event table, one event in a side sheet.
+  - `map-workspace`: the site map edge to edge with floating trays for the selected robot, the top alarm and the emergency stop.
+  Every shell ships with sample data, so a prototype is one install and a data swap.
+
+### Changed
+- `sheet` 0.6.0: `side="left"` for navigation drawers.
+- **Calmer colour.** A design review found the kit too colourful: every status coloured, alarm rows filled with tint, decorative swatches. Colour is now for what is abnormal:
+  - `syncrobotic-theme` 0.6.0: status hues muted in both modes (contrast still ≥ 4.5:1 on every surface).
+  - `status-glyph` 0.6.0: in progress and normal are shape + text colour; only warning, danger and offline are coloured. `InlineStatus` and `StatusEyebrow` follow.
+  - `alarm`, `island` 0.6.0: only critical unacknowledged alarms are tinted; Acknowledge is an outline button, so a screen keeps one primary action.
+  - `stats-cards` 0.6.0: sparklines neutral; only a change for the worse is coloured.
+  - Docs site: a real product screen replaces the swatch collage on the home page; no dot grid behind examples; plain eyebrows; new Color rule "Colour is for what is abnormal".
+- **Motion in every component.** The motion language was applied on the docs site but not in the components. Now: overlays (dialog, alert dialog, popover, dropdown menu, select, tooltip) appear and disappear; sheets slide from their edge and their scrim fades; accordion content expands; tab panels, alerts, alarms and island notices appear; field errors appear where the hint was; buttons, toggles, segments, the stop button, the dock, island zones and list rows press. All from theme tokens (`animate-*`, `press`), all off under reduced motion. `npm run lint:motion` (CI) fails a component that skips them or hard-codes timing.
+- `toggle` (new): an on/off button for a layer or option, inverted when on.
+- Block previews follow the block's height at each device width, so nothing overflows or is cut off; app shells keep a screen height. Thumbnails on the Blocks page scale to the card width.
+
 ## 0.5.0 · 2026-11-17
 
 ### Added

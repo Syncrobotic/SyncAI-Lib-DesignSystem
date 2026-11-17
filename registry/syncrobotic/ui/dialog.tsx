@@ -1,4 +1,4 @@
-// @syncrobotic/dialog v0.5.0 · update: npx shadcn add @syncrobotic/dialog --overwrite
+// @syncrobotic/dialog v0.6.0 · update: npx shadcn add @syncrobotic/dialog --overwrite
 "use client"
 
 import * as React from "react"
@@ -11,7 +11,7 @@ export const DialogTrigger = DialogPrimitive.Trigger
 export const DialogClose = DialogPrimitive.Close
 
 export function DialogOverlay({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
-  return <DialogPrimitive.Overlay data-slot="dialog-overlay" className={cn("fixed inset-0 z-50 bg-(--scrim)", className)} {...props} />
+  return <DialogPrimitive.Overlay data-slot="dialog-overlay" className={cn("fixed inset-0 z-50 bg-(--scrim) data-[state=open]:animate-fade-in data-[state=closed]:animate-disappear", className)} {...props} />
 }
 
 /** Centered, radius 20 (lg). On phones prefer Sheet; a dialog is for a short decision. */
@@ -30,6 +30,7 @@ export function DialogContent({
         className={cn(
           "fixed inset-x-4 top-1/2 z-50 mx-auto flex max-w-md -translate-y-1/2 flex-col gap-4",
           "rounded-lg bg-popover p-6 text-popover-foreground shadow-overlay ring-1 ring-border",
+          "data-[state=open]:animate-appear data-[state=closed]:animate-disappear",
           className,
         )}
         {...props}

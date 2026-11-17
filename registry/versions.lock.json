@@ -1,7 +1,7 @@
 {
   "syncrobotic-theme": {
-    "version": "0.5.0",
-    "hash": "288f4824c9e95b5a"
+    "version": "0.6.0",
+    "hash": "5bc79ef61fc4f952"
   },
   "cn": {
     "version": "0.5.0",
@@ -16,8 +16,8 @@
     "hash": "419ce274e0f518ef"
   },
   "status-glyph": {
-    "version": "0.5.0",
-    "hash": "2faa4bfbb57c0579"
+    "version": "0.6.0",
+    "hash": "28d84a1c4cfe3bd6"
   },
   "status-eyebrow": {
     "version": "0.5.0",
@@ -28,72 +28,76 @@
     "hash": "2813a626bd3abfad"
   },
   "stop-button": {
-    "version": "0.5.0",
-    "hash": "1633e74eaabab100"
+    "version": "0.6.0",
+    "hash": "cb96973c330a0ca3"
   },
   "slide-to-release": {
     "version": "0.5.0",
     "hash": "922a2450cdd91247"
   },
   "dock": {
-    "version": "0.5.0",
-    "hash": "1c116c37046f20a1"
+    "version": "0.6.0",
+    "hash": "a1d70a3eebc39b70"
   },
   "island": {
-    "version": "0.5.0",
-    "hash": "284b7b09cf88568d"
+    "version": "0.6.0",
+    "hash": "e1b50b3248b741b0"
   },
   "list": {
-    "version": "0.5.0",
-    "hash": "df2cbde8851d1e27"
+    "version": "0.6.0",
+    "hash": "2f389c32abf5209b"
   },
   "skeleton": {
     "version": "0.5.0",
     "hash": "ae6717c61296cb3d"
   },
   "button": {
-    "version": "0.5.0",
-    "hash": "721ad061f2c70778"
+    "version": "0.6.0",
+    "hash": "29422888c5b6c087"
   },
   "spinner": {
     "version": "0.5.0",
     "hash": "4735ca41a1c21a06"
   },
   "segmented-control": {
-    "version": "0.5.0",
-    "hash": "2d5b38fadec1d096"
+    "version": "0.6.0",
+    "hash": "23809c44e9b5be65"
+  },
+  "toggle": {
+    "version": "0.6.0",
+    "hash": "cfa3a04a7233455a"
   },
   "input": {
-    "version": "0.5.0",
-    "hash": "87b7bad20e47618b"
+    "version": "0.6.0",
+    "hash": "b4871ed7356ff50b"
   },
   "textarea": {
-    "version": "0.5.0",
-    "hash": "06a2b2db5021fac8"
+    "version": "0.6.0",
+    "hash": "729aed38f84f31d1"
   },
   "label": {
     "version": "0.5.0",
     "hash": "1b3ee1d30973dd40"
   },
   "field": {
-    "version": "0.5.0",
-    "hash": "6fd39ccc05d1847f"
+    "version": "0.6.0",
+    "hash": "8c9e9b6fd456f634"
   },
   "checkbox": {
-    "version": "0.5.0",
-    "hash": "b8ad19b248a00564"
+    "version": "0.6.0",
+    "hash": "13c66d8da8b0b4f2"
   },
   "radio-group": {
-    "version": "0.5.0",
-    "hash": "c14613dc6bbafb1f"
+    "version": "0.6.0",
+    "hash": "ddc0d9ce709b2a95"
   },
   "switch": {
     "version": "0.5.0",
     "hash": "63e73fa0146ebd3d"
   },
   "select": {
-    "version": "0.5.0",
-    "hash": "99a3594e7c9c7a98"
+    "version": "0.6.0",
+    "hash": "43447c24300a4aa8"
   },
   "slider": {
     "version": "0.5.0",
@@ -120,12 +124,12 @@
     "hash": "07bde4770434d7e2"
   },
   "alert": {
-    "version": "0.5.0",
-    "hash": "a543fa4f770645ce"
+    "version": "0.6.0",
+    "hash": "5b71af158dadc4e3"
   },
   "alarm": {
-    "version": "0.5.0",
-    "hash": "6b29e735f2455a97"
+    "version": "0.6.0",
+    "hash": "97b05ccb7cf6e87e"
   },
   "toast": {
     "version": "0.5.0",
@@ -140,40 +144,40 @@
     "hash": "f4ba057dce546919"
   },
   "tabs": {
-    "version": "0.5.0",
-    "hash": "4600a8d4f0a3bbab"
+    "version": "0.6.0",
+    "hash": "117f29a1e4e69300"
   },
   "accordion": {
-    "version": "0.5.0",
-    "hash": "96c3fc8f2900ad5b"
+    "version": "0.6.0",
+    "hash": "92171fd8faf890a4"
   },
   "dialog": {
-    "version": "0.5.0",
-    "hash": "8ff0f08638137dd5"
+    "version": "0.6.0",
+    "hash": "2db525e57670cd86"
   },
   "alert-dialog": {
-    "version": "0.5.0",
-    "hash": "0e5581b828fcd2cc"
+    "version": "0.6.0",
+    "hash": "79dcba56f21791c4"
   },
   "sheet": {
-    "version": "0.5.0",
-    "hash": "35f2b818c5ebb527"
+    "version": "0.6.0",
+    "hash": "e45aa755b30968b5"
   },
   "popover": {
-    "version": "0.5.0",
-    "hash": "438546a87ed46d8d"
+    "version": "0.6.0",
+    "hash": "2e42c1997dd4f943"
   },
   "tooltip": {
-    "version": "0.5.0",
-    "hash": "23d1ba7ff0560646"
+    "version": "0.6.0",
+    "hash": "9866778a3b5afd13"
   },
   "dropdown-menu": {
-    "version": "0.5.0",
-    "hash": "c572a9916f655b40"
+    "version": "0.6.0",
+    "hash": "ef7e0eb7d80ba29a"
   },
   "stats-cards": {
-    "version": "0.5.0",
-    "hash": "fe654998af101726"
+    "version": "0.6.0",
+    "hash": "a56c70d020b65fdd"
   },
   "fleet-table": {
     "version": "0.5.0",
@@ -186,5 +190,25 @@
   "marketing-hero": {
     "version": "0.5.0",
     "hash": "58add783eccaf892"
+  },
+  "app-shell": {
+    "version": "0.6.0",
+    "hash": "a7509d93fced5588"
+  },
+  "console-overview": {
+    "version": "0.6.0",
+    "hash": "8a965a1e4d4d1036"
+  },
+  "list-detail": {
+    "version": "0.6.0",
+    "hash": "eed21b02d181dba2"
+  },
+  "event-log": {
+    "version": "0.6.0",
+    "hash": "e3a6a0cfb410da78"
+  },
+  "map-workspace": {
+    "version": "0.6.0",
+    "hash": "c35d2deb6fa43ba1"
   }
 }

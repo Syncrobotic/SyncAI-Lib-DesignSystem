@@ -1,4 +1,4 @@
-// @syncrobotic/accordion v0.5.0 · update: npx shadcn add @syncrobotic/accordion --overwrite
+// @syncrobotic/accordion v0.6.0 · update: npx shadcn add @syncrobotic/accordion --overwrite
 "use client"
 
 import * as React from "react"
@@ -35,7 +35,7 @@ export function AccordionTrigger({ className, children, ...props }: React.Compon
 
 export function AccordionContent({ className, children, ...props }: React.ComponentProps<typeof AccordionPrimitive.Content>) {
   return (
-    <AccordionPrimitive.Content data-slot="accordion-content" className="overflow-hidden text-sm" {...props}>
+    <AccordionPrimitive.Content data-slot="accordion-content" className="overflow-hidden text-sm data-[state=open]:animate-expand data-[state=closed]:animate-collapse" {...props}>
       <div className={cn("pb-4 text-muted-foreground", className)}>{children}</div>
     </AccordionPrimitive.Content>
   )

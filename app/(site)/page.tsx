@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
-import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { Badge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Switch } from "@/registry/syncrobotic/ui/switch"
@@ -37,55 +36,20 @@ const jsonLd = {
   ],
 }
 
-/** The hero: the language itself, as a mosaic of real tokens. */
-function TokenMosaic() {
-  const tile = "rounded-md border border-border bg-card p-4"
+/** The hero: the language applied, as a real screen (the operations console app shell), not a collage of swatches. */
+function ProductShot() {
   return (
-    <Appear stagger={0.04} className="grid w-full max-w-xl grid-cols-6 grid-rows-[repeat(6,3.5rem)] gap-2">
-      <AppearItem className={`${tile} col-span-4 row-span-2 flex flex-col justify-between`}>
-        <span className="font-mono text-xs text-muted-foreground">Color · semantic</span>
-        <div className="flex h-8 gap-1">
-          {["bg-foreground", "bg-muted-foreground", "bg-info", "bg-success", "bg-warning", "bg-danger", "bg-stop"].map((c) => (
-            <span key={c} className={`${c} flex-1 rounded-xs`} />
-          ))}
-        </div>
-      </AppearItem>
-      <AppearItem className={`${tile} col-span-2 row-span-2 flex flex-col justify-between`}>
-        <span className="font-mono text-xs text-muted-foreground">Type</span>
-        <span className="text-5xl font-bold">Aa</span>
-      </AppearItem>
-      <AppearItem className={`${tile} col-span-2 row-span-2 flex items-center justify-center`}>
-        <div className="rounded-xl bg-float p-2 ring-1 ring-edge">
-          <div className="flex h-14 w-20 items-center justify-center rounded-md bg-muted font-mono text-xs text-muted-foreground">24=16+8</div>
-        </div>
-      </AppearItem>
-      <AppearItem className={`${tile} col-span-4 row-span-2 flex flex-col justify-between`}>
-        <span className="font-mono text-xs text-muted-foreground">Spacing · 4 px base</span>
-        <div className="flex items-end gap-2">
-          {[1, 2, 3, 4, 6, 8].map((s) => (
-            <span key={s} className="flex flex-col items-center gap-1">
-              <span className="w-4 bg-info" style={{ height: s * 4 }} />
-              <span className="font-mono text-xs text-muted-foreground">{s * 4}</span>
-            </span>
-          ))}
-        </div>
-      </AppearItem>
-      <AppearItem className={`${tile} col-span-3 row-span-2 flex flex-col justify-between`}>
-        <span className="font-mono text-xs text-muted-foreground">Status · shape + colour</span>
-        <div className="flex flex-wrap gap-2">
-          <Badge tone="info">
-            <StatusGlyph tone="info" /> Patrolling
-          </Badge>
-          <Badge tone="warning">
-            <StatusGlyph tone="warning" /> Low battery
-          </Badge>
-        </div>
-      </AppearItem>
-      <AppearItem className={`${tile} col-span-3 row-span-2 flex flex-col justify-between`}>
-        <span className="font-mono text-xs text-muted-foreground">Solid red · stop only</span>
-        <span className="flex h-(--h-md) items-center justify-center rounded-sm bg-stop text-sm font-bold text-white">Emergency stop</span>
-      </AppearItem>
-    </Appear>
+    <div aria-hidden className="relative h-90 w-full overflow-hidden lg:w-xl rounded-md bg-background ring-1 ring-border">
+      <iframe
+        src="/preview/console-overview"
+        title="Operations console"
+        tabIndex={-1}
+        inert
+        loading="eager"
+        className="pointer-events-none absolute top-0 left-0 origin-top-left"
+        style={{ width: 1280, height: 800, transform: "scale(0.45)" }}
+      />
+    </div>
   )
 }
 
@@ -106,7 +70,7 @@ const samples: Record<string, React.ReactNode> = {
   ),
   Display: (
     <div className="flex gap-2">
-      <Badge tone="success">Docked</Badge>
+      <Badge>Docked</Badge>
       <Badge tone="danger">2 events</Badge>
       <Badge tone="outline">v2.4</Badge>
     </div>
@@ -143,7 +107,7 @@ export default function HomePage() {
         <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 py-section-sm lg:py-section lg:grid-cols-[1fr_auto]">
           <Appear stagger={0.06} className="flex flex-col gap-6">
             <AppearItem>
-              <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">SYNCROBOTIC Design System</p>
+              <p className="text-sm font-medium text-muted-foreground">SYNCROBOTIC Design System</p>
             </AppearItem>
             <AppearItem>
               <h1 className="max-w-xl text-3xl font-bold tracking-tight sm:text-5xl">One design language for every product we build.</h1>
@@ -162,13 +126,13 @@ export default function HomePage() {
               </Link>
             </AppearItem>
           </Appear>
-          <TokenMosaic />
+          <ProductShot />
         </div>
       </section>
 
       <section className="mx-auto flex max-w-6xl flex-col gap-8 px-4 pt-section-sm lg:pt-section">
         <div className="flex flex-col gap-2">
-          <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">Foundations</p>
+          <p className="text-sm font-medium text-muted-foreground">Foundations</p>
           <h2 className="text-3xl font-bold">The decisions behind every screen</h2>
           <p className="max-w-2xl text-muted-foreground">Read these before you design or build. Every value is parsed from the theme file, so the docs never drift from what ships.</p>
         </div>
@@ -177,7 +141,7 @@ export default function HomePage() {
 
       <section className="mx-auto flex max-w-6xl flex-col gap-8 px-4 pt-section-sm lg:pt-section">
         <div className="flex flex-col gap-2">
-          <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">Components</p>
+          <p className="text-sm font-medium text-muted-foreground">Components</p>
           <h2 className="text-3xl font-bold">The language, already applied</h2>
           <p className="max-w-2xl text-muted-foreground">
             {items.filter((i) => i.group !== "Hooks").length} components built on the tokens: general UI for any product, plus the robot shell for control apps.

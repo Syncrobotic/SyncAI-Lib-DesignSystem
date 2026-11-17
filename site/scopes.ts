@@ -1,4 +1,4 @@
-import { blocks } from "./blocks"
+import { blocks, products } from "./blocks"
 import { groups as itemGroups, items } from "./catalog"
 import { foundations } from "./foundations"
 
@@ -42,7 +42,7 @@ export const scopes: Scope[] = [
     match: ["/blocks"],
     groups: [
       { title: "Blocks", links: [{ href: "/blocks", label: "All blocks" }] },
-      ...(["Dashboard", "Control app", "Marketing"] as const).map((p) => ({
+      ...products.map((p) => ({
         title: p,
         links: blocks.filter((b) => b.product === p).map((b) => ({ href: `/blocks/${b.name}`, label: b.title })),
       })),

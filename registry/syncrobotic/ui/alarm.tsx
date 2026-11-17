@@ -1,4 +1,4 @@
-// @syncrobotic/alarm v0.5.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
+// @syncrobotic/alarm v0.6.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
 "use client"
 
 import * as React from "react"
@@ -80,7 +80,7 @@ type AlarmProps = Omit<AlarmData, "id"> & {
   className?: string
 }
 
-/** One alarm. The unacknowledged state is the strongest: tinted, with a bar and the word "Unacknowledged". */
+/** One alarm. Unacknowledged: a bar in the priority colour and the word "Unacknowledged"; critical ones are also tinted. Colour stays off everything else. */
 export function Alarm({ priority, title, source, time, active, acknowledged, onAcknowledge, action, labels, className }: AlarmProps) {
   const l = { ...defaultAlarmLabels, ...labels }
   const p = alarmPriority[priority]
@@ -94,8 +94,8 @@ export function Alarm({ priority, title, source, time, active, acknowledged, onA
       data-priority={priority}
       data-state={!acknowledged ? "unacknowledged" : "acknowledged"}
       className={cn(
-        "relative flex min-h-(--h-row) flex-wrap items-center gap-x-3 gap-y-2 overflow-hidden rounded-md py-2 pr-2 pl-4",
-        !acknowledged && active ? p.tint : "bg-card ring-1 ring-border",
+        "relative flex min-h-(--h-row) animate-appear flex-wrap items-center gap-x-3 gap-y-2 overflow-hidden rounded-md py-2 pr-2 pl-4",
+        !acknowledged && active && priority === "critical" ? p.tint : "bg-card ring-1 ring-border",
         className,
       )}
     >
@@ -121,7 +121,7 @@ export function Alarm({ priority, title, source, time, active, acknowledged, onA
           <button
             type="button"
             onClick={action.onClick}
-            className="h-(--h-sm) shrink-0 rounded-sm px-3 text-sm font-medium ring-1 ring-border ring-inset hover:bg-accent"
+            className="press h-(--h-sm) shrink-0 rounded-sm px-3 text-sm font-medium ring-1 ring-border ring-inset hover:bg-accent"
           >
             {action.label}
           </button>
@@ -130,7 +130,7 @@ export function Alarm({ priority, title, source, time, active, acknowledged, onA
           <button
             type="button"
             onClick={onAcknowledge}
-            className="h-(--h-sm) shrink-0 rounded-sm bg-primary px-3 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+            className="press h-(--h-sm) shrink-0 rounded-sm px-3 text-sm font-medium ring-1 ring-foreground ring-inset hover:bg-accent"
           >
             {l.acknowledge}
             <span className="sr-only">: {title}</span>

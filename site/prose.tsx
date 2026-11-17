@@ -20,7 +20,7 @@ export function Inline({ text }: { text: string }) {
 export function PageTitle({ eyebrow, title, lead }: { eyebrow?: string; title: string; lead?: string }) {
   return (
     <div className="flex flex-col gap-2 pb-8">
-      {eyebrow && <p className="text-sm font-medium text-info">{eyebrow}</p>}
+      {eyebrow && <p className="text-sm font-medium text-muted-foreground">{eyebrow}</p>}
       <h1 className="text-3xl font-bold">{title}</h1>
       {lead && <p className="max-w-2xl text-lg text-muted-foreground">{lead}</p>}
     </div>

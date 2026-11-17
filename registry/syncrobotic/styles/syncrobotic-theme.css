@@ -1,4 +1,4 @@
-/* @syncrobotic/syncrobotic-theme v0.5.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
+/* @syncrobotic/syncrobotic-theme v0.6.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
 /*
  * SYNCROBOTIC theme · design system 0.5.0 (see CHANGELOG.md)
  * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
@@ -10,6 +10,8 @@
  *      on their root so they stay dark whatever the appearance setting.
  *
  * Colour rules:
+ *   - Colour is for what is abnormal. Normal and in-progress states are shape + neutral text; warning, danger and stop carry colour
+ *   - Status hues are muted on purpose: they must read at a glance without turning the screen into a chart
  *   - Solid red (--stop) is for the emergency stop only. Other destructive actions use the --danger outline and text
  *   - Status colours come in pairs: foreground (--info) on its subtle tint (--info-subtle)
  *   - --primary is neutral high contrast (black in light, white in dark); blue (--info) only means "in progress"
@@ -34,20 +36,20 @@
   --muted-foreground: #52525b;
   --accent: #e6e6ea;
   --accent-foreground: var(--foreground);
-  --destructive: #b91c1c;
+  --destructive: #b0302b;
   --border: #dcdce1;
   --input: #dcdce1;
-  --ring: #1d4ed8;
+  --ring: #2952b8;
   --disabled: #a1a1aa;
 
-  --info: #1d4ed8;
-  --info-subtle: #dbeafe;
-  --success: #047857;
-  --success-subtle: #d1fae5;
-  --warning: #a14a07;
-  --warning-subtle: #fef3c7;
-  --danger: #b91c1c;
-  --danger-subtle: #fee2e2;
+  --info: #2952b8;
+  --info-subtle: #e4e9f4;
+  --success: #18704f;
+  --success-subtle: #e0eee7;
+  --warning: #94500f;
+  --warning-subtle: #f4ecda;
+  --danger: #b0302b;
+  --danger-subtle: #f6e2e1;
   --neutral: #52525b;
   --neutral-subtle: #f4f4f5;
 
@@ -96,20 +98,20 @@
   --muted: #25252b;
   --muted-foreground: #a1a1aa;
   --accent: #25252b;
-  --destructive: #f87171;
+  --destructive: #ee8580;
   --border: #2c2c32;
   --input: #2c2c32;
-  --ring: #60a5fa;
+  --ring: #7da4e6;
   --disabled: #63636b;
 
-  --info: #60a5fa;
-  --info-subtle: #14254f;
-  --success: #34d399;
-  --success-subtle: #06302a;
-  --warning: #fbbf24;
-  --warning-subtle: #3a2a07;
-  --danger: #f87171;
-  --danger-subtle: #451313;
+  --info: #7da4e6;
+  --info-subtle: #1a2233;
+  --success: #6cc59c;
+  --success-subtle: #172720;
+  --warning: #e0b45c;
+  --warning-subtle: #2b2516;
+  --danger: #ee8580;
+  --danger-subtle: #321c1c;
   --neutral: #a1a1aa;
   --neutral-subtle: #1c1c21;
 
@@ -219,14 +221,47 @@
 
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
 
-  /* Motion patterns in CSS (see the Motion foundation). Appear: rise 8 px and fade in. Disappear: fade out. */
+  /*
+   * Motion patterns in CSS (see the Motion foundation). Every component uses these, never its own timing.
+   *   appear / disappear  overlays, menus, tooltips, notices, alarms, tab panels: rise 8 px and fade in, fade out
+   *   fade-in             scrims behind dialogs and sheets
+   *   sheet-in-* / -out-* sheets from their edge, at --motion-sheet
+   *   expand / collapse   accordion content, at --motion-base
+   *   press (utility)     anything you press: sinks to 97 % at --motion-fast
+   */
   --animate-appear: appear var(--motion-base) var(--ease-standard);
   --animate-disappear: disappear var(--motion-fast) var(--ease-standard) forwards;
+  --animate-fade-in: fade-in var(--motion-base) var(--ease-standard);
+  --animate-sheet-in-bottom: sheet-in-bottom var(--motion-sheet) var(--ease-standard);
+  --animate-sheet-out-bottom: sheet-out-bottom var(--motion-sheet) var(--ease-standard) forwards;
+  --animate-sheet-in-right: sheet-in-right var(--motion-sheet) var(--ease-standard);
+  --animate-sheet-out-right: sheet-out-right var(--motion-sheet) var(--ease-standard) forwards;
+  --animate-sheet-in-left: sheet-in-left var(--motion-sheet) var(--ease-standard);
+  --animate-sheet-out-left: sheet-out-left var(--motion-sheet) var(--ease-standard) forwards;
+  --animate-expand: expand var(--motion-base) var(--ease-standard);
+  --animate-collapse: collapse var(--motion-base) var(--ease-standard);
   @keyframes appear {
     from { opacity: 0; transform: translateY(0.5rem); }
   }
   @keyframes disappear {
     to { opacity: 0; }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+  }
+  @keyframes sheet-in-bottom { from { transform: translateY(100%); } }
+  @keyframes sheet-out-bottom { to { transform: translateY(100%); } }
+  @keyframes sheet-in-right { from { transform: translateX(100%); } }
+  @keyframes sheet-out-right { to { transform: translateX(100%); } }
+  @keyframes sheet-in-left { from { transform: translateX(-100%); } }
+  @keyframes sheet-out-left { to { transform: translateX(-100%); } }
+  @keyframes expand {
+    from { height: 0; opacity: 0; }
+    to { height: var(--radix-accordion-content-height); }
+  }
+  @keyframes collapse {
+    from { height: var(--radix-accordion-content-height); }
+    to { height: 0; opacity: 0; }
   }
 
   /* Skeleton: the whole group breathes over 1.2 s, no diagonal shimmer */
@@ -279,8 +314,19 @@
   }
 }
 
+/* Press: a control sinks slightly while held, so touch feels answered before the result arrives. */
+@utility press {
+  transition-property: scale, color, background-color, box-shadow, opacity;
+  transition-duration: var(--motion-fast);
+  transition-timing-function: var(--ease-standard);
+  &:active:not(:disabled):not([aria-disabled="true"]) {
+    scale: 0.97;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-breath { animation: none; }
+  .press:active { scale: none; }
   /* State still changes; it does not travel. */
   @keyframes appear { from { opacity: 0; } }
   :root {

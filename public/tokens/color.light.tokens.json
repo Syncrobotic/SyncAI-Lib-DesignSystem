@@ -59,7 +59,7 @@
     },
     "destructive": {
       "$type": "color",
-      "$value": "#b91c1c"
+      "$value": "#b0302b"
     },
     "border": {
       "$type": "color",
@@ -71,7 +71,7 @@
     },
     "ring": {
       "$type": "color",
-      "$value": "#1d4ed8"
+      "$value": "#2952b8"
     },
     "disabled": {
       "$type": "color",
@@ -79,35 +79,35 @@
     },
     "info": {
       "$type": "color",
-      "$value": "#1d4ed8"
+      "$value": "#2952b8"
     },
     "info-subtle": {
       "$type": "color",
-      "$value": "#dbeafe"
+      "$value": "#e4e9f4"
     },
     "success": {
       "$type": "color",
-      "$value": "#047857"
+      "$value": "#18704f"
     },
     "success-subtle": {
       "$type": "color",
-      "$value": "#d1fae5"
+      "$value": "#e0eee7"
     },
     "warning": {
       "$type": "color",
-      "$value": "#a14a07"
+      "$value": "#94500f"
     },
     "warning-subtle": {
       "$type": "color",
-      "$value": "#fef3c7"
+      "$value": "#f4ecda"
     },
     "danger": {
       "$type": "color",
-      "$value": "#b91c1c"
+      "$value": "#b0302b"
     },
     "danger-subtle": {
       "$type": "color",
-      "$value": "#fee2e2"
+      "$value": "#f6e2e1"
     },
     "neutral": {
       "$type": "color",
