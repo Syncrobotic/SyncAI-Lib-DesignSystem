@@ -110,6 +110,8 @@ const intro = [
   "Every page below also answers as plain markdown at its URL plus `.md`: what the item is, when to use it, when not to (and what to use instead), rules, keyboard, agent notes, install command and version.",
   "",
   "Agents: install the workflow and the rules as a skill with `npx shadcn add @syncrobotic/agent-skill` (it lands in `.claude/skills/syncrobotic-ui/`).",
+  "",
+  `MCP: the same content as tools (search, get_item, get_install_command, get_design_language, get_checklist) at ${url("/mcp")} (Streamable HTTP). Claude Code: \`claude mcp add --transport http syncrobotic ${url("/mcp")}\`.`,
 ]
 
 export function llmsTxt() {

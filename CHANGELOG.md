@@ -5,6 +5,7 @@ Components install as source, so a project keeps the version it installed. Re-ru
 ## 0.8.0 · 2026-11-17
 
 ### Added
+- **MCP server** at `/mcp` (Streamable HTTP, stateless, read-only): `search`, `get_item`, `get_install_command`, `get_design_language`, `get_checklist`, answered from the same data as the pages and their twins. Connect: `claude mcp add --transport http syncrobotic https://syncai-lib-designsystem.vercel.app/mcp`.
 - `meter`: a level in a known range (battery, storage), neutral until it crosses `low` or `critical`; `inline` for table cells. role="meter".
 - `pagination`: the range (1–10 of 48) with previous / next, or numbered pages with gaps.
 - `breadcrumb`: links to the levels above, the current page last; AppShell takes it as `breadcrumb`, with the title as the current page.

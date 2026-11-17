@@ -29,6 +29,15 @@ export default function AiPage() {
       </p>
       <CodeBlock code="npx shadcn add @syncrobotic/agent-skill" lang="bash" title="Install" />
 
+      <H2 id="mcp">MCP server</H2>
+      <p className="max-w-2xl pb-4 text-sm text-muted-foreground">
+        <Inline text="The same content as tools an agent calls while it works: `search` (find the item for a need), `get_item` (its markdown twin), `get_install_command`, `get_design_language` and `get_checklist`. Read-only and public: it answers from these pages and writes nothing." />
+      </p>
+      <CodeBlock code={`claude mcp add --transport http syncrobotic ${site.url}/mcp`} lang="bash" title="Claude Code" />
+      <div className="pt-3">
+        <CodeBlock code={JSON.stringify({ mcpServers: { syncrobotic: { url: `${site.url}/mcp` } } }, null, 2)} lang="json" title="Other clients (mcp.json)" />
+      </div>
+
       <H2 id="prompt">Starting an agent</H2>
       <CodeBlock
         lang="bash"

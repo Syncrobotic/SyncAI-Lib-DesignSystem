@@ -9,6 +9,8 @@ const config: NextConfig = {
       { source: "/docs/foundations/:slug.md", destination: "/md/foundations/:slug" },
     ]
   },
+  // /mcp reads item sources, stories and the agent skill at request time; ship them with that function.
+  outputFileTracingIncludes: { "/mcp": ["./registry/**/*", "./stories/**/*"] },
   // /docs has no page of its own: send it to the first one.
   async redirects() {
     return [{ source: "/docs", destination: "/docs/foundations", permanent: false }]
