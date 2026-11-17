@@ -1,4 +1,4 @@
-// @syncrobotic/dialog v0.6.0 · update: npx shadcn add @syncrobotic/dialog --overwrite
+// @syncrobotic/dialog v0.7.0 · update: npx shadcn add @syncrobotic/dialog --overwrite
 "use client"
 
 import * as React from "react"
@@ -11,7 +11,13 @@ export const DialogTrigger = DialogPrimitive.Trigger
 export const DialogClose = DialogPrimitive.Close
 
 export function DialogOverlay({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
-  return <DialogPrimitive.Overlay data-slot="dialog-overlay" className={cn("fixed inset-0 z-50 bg-(--scrim) data-[state=open]:animate-fade-in data-[state=closed]:animate-disappear", className)} {...props} />
+  return (
+    <DialogPrimitive.Overlay
+      data-slot="dialog-overlay"
+      className={cn("fixed inset-0 z-50 bg-(--scrim) data-[state=open]:animate-fade-in data-[state=closed]:animate-disappear", className)}
+      {...props}
+    />
+  )
 }
 
 /** Centered, radius 20 (lg). On phones prefer Sheet; a dialog is for a short decision. */
@@ -39,7 +45,7 @@ export function DialogContent({
         {showClose && (
           <DialogPrimitive.Close
             aria-label={closeLabel}
-            className="absolute top-3 right-3 flex size-(--h-md) items-center justify-center rounded-sm text-muted-foreground hover:bg-accent"
+            className="press absolute top-2 right-2 flex size-(--h-md) items-center justify-center rounded-sm text-muted-foreground hover:bg-accent"
           >
             <X aria-hidden="true" className="size-5" />
           </DialogPrimitive.Close>

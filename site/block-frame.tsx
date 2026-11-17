@@ -108,7 +108,7 @@ export function BlockFrame({
                     aria-pressed={vp === v}
                     onClick={() => setVp(v)}
                     className={cn(
-                      "press relative flex size-8 items-center justify-center rounded-xs transition-colors duration-(--motion-fast)",
+                      "press relative flex size-(--h-sm) items-center justify-center rounded-xs transition-colors duration-(--motion-fast) ease-(--ease-standard)",
                       vp === v ? "text-primary-foreground" : "text-muted-foreground hover:text-foreground",
                     )}
                   >
@@ -126,7 +126,12 @@ export function BlockFrame({
         <TabsContent value="preview" className="specimen p-4">
           <div ref={box} className="w-full">
             {/* Changing the device width resizes the frame with the sheet duration; the iframe re-lays out at the new width. */}
-            <m.div className="mx-auto overflow-hidden rounded-sm ring-1 ring-border" initial={false} animate={{ width: width * scale, height: frameH * scale }} transition={t.sheet}>
+            <m.div
+              className="mx-auto overflow-hidden rounded-sm ring-1 ring-border"
+              initial={false}
+              animate={{ width: width * scale, height: frameH * scale }}
+              transition={t.sheet}
+            >
               <iframe
                 ref={frame}
                 src={`/preview/${name}`}

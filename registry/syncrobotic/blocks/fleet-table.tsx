@@ -1,4 +1,4 @@
-// @syncrobotic/fleet-table v0.5.0 · update: npx shadcn add @syncrobotic/fleet-table --overwrite
+// @syncrobotic/fleet-table v0.7.0 · update: npx shadcn add @syncrobotic/fleet-table --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,15 +6,10 @@ import { ChevronLeft, ChevronRight, Ellipsis, MapPin, Pencil, Search, Trash2 } f
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import type { Tone } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/registry/syncrobotic/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/registry/syncrobotic/ui/dropdown-menu"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 import { Input } from "@/registry/syncrobotic/ui/input"
+import { InputGroup, InputGroupAddon } from "@/registry/syncrobotic/ui/input-group"
 import { Progress } from "@/registry/syncrobotic/ui/progress"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
@@ -84,8 +79,10 @@ export function FleetTable({ robots = sampleRobots, pageSize = 5, onOpen }: { ro
           <SegmentedControlItem value="attention">Attention {count("attention")}</SegmentedControlItem>
           <SegmentedControlItem value="offline">Offline {count("offline")}</SegmentedControlItem>
         </SegmentedControl>
-        <div className="relative lg:w-72">
-          <Search aria-hidden="true" className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+        <InputGroup className="lg:w-72">
+          <InputGroupAddon>
+            <Search aria-hidden="true" />
+          </InputGroupAddon>
           <Input
             type="search"
             value={query}
@@ -95,14 +92,28 @@ export function FleetTable({ robots = sampleRobots, pageSize = 5, onOpen }: { ro
             }}
             placeholder="Search name or site"
             aria-label="Search robots"
-            className="pl-8"
           />
-        </div>
+        </InputGroup>
       </div>
 
       {visible.length === 0 ? (
         <div className="rounded-md ring-1 ring-border">
-          <EmptyState icon={Search} title="No robots match" description="Try another name or clear the filter." action={<Button variant="secondary" onClick={() => { setQuery(""); setFilter("all") }}>Clear filters</Button>} />
+          <EmptyState
+            icon={Search}
+            title="No robots match"
+            description="Try another name or clear the filter."
+            action={
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  setQuery("")
+                  setFilter("all")
+                }}
+              >
+                Clear filters
+              </Button>
+            }
+          />
         </div>
       ) : (
         <Table>
@@ -136,7 +147,12 @@ export function FleetTable({ robots = sampleRobots, pageSize = 5, onOpen }: { ro
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-2">
-                    <Progress value={r.battery} tone={r.battery < 30 ? "warning" : "neutral"} aria-label={`Battery ${r.battery}%`} className="hidden w-20 sm:block" />
+                    <Progress
+                      value={r.battery}
+                      tone={r.battery < 30 ? "warning" : "neutral"}
+                      aria-label={`Battery ${r.battery}%`}
+                      className="hidden w-20 sm:block"
+                    />
                     <span className={r.battery < 30 ? "text-warning" : "text-muted-foreground"}>{r.battery}%</span>
                   </div>
                 </TableCell>
@@ -170,9 +186,7 @@ export function FleetTable({ robots = sampleRobots, pageSize = 5, onOpen }: { ro
       )}
 
       <div className="flex items-center justify-between text-sm text-muted-foreground">
-        <span>
-          {rows.length === 0 ? "0 robots" : `${current * pageSize + 1}–${current * pageSize + visible.length} of ${rows.length}`}
-        </span>
+        <span>{rows.length === 0 ? "0 robots" : `${current * pageSize + 1}–${current * pageSize + visible.length} of ${rows.length}`}</span>
         <div className="flex gap-2">
           <Button variant="outline" size="icon-sm" aria-label="Previous page" disabled={current === 0} onClick={() => setPage(current - 1)}>
             <ChevronLeft aria-hidden="true" />

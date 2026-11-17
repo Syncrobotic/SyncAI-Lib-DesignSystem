@@ -13,8 +13,6 @@ import {
   LogOut,
   Map,
   Menu,
-  PanelLeftClose,
-  PanelLeftOpen,
   ScrollText,
   Search,
   Settings,
@@ -34,6 +32,8 @@ import {
 } from "@/registry/syncrobotic/ui/dropdown-menu"
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandShortcut } from "@/registry/syncrobotic/ui/command"
 import { Input } from "@/registry/syncrobotic/ui/input"
+import { InputGroup, InputGroupAddon } from "@/registry/syncrobotic/ui/input-group"
+import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/registry/syncrobotic/ui/sheet"
 
 export type AppNavItem = { label: string; href: string; icon: LucideIcon; /** A count, e.g. unacknowledged alarms. */ count?: number }
@@ -45,7 +45,10 @@ export type AppUserMenuItem = { label: string; icon?: LucideIcon; href?: string;
 export type AppSearchItem = {
   label: string
   icon?: LucideIcon
-  /** Right-aligned detail, e.g. a robot's state. */ hint?: string
+  /** Right-aligned detail, e.g. a robot's state. */
+  hint?: string
+  /** A state hint gets its status shape, so "Stopped" never reads like "Docked". */
+  tone?: React.ComponentProps<typeof StatusGlyph>["tone"]
   href?: string
   onSelect?: () => void
   keywords?: string[]
@@ -95,9 +98,9 @@ export const sampleSearch: AppSearch = {
       heading: "Robots",
       scope: "robots",
       items: [
-        { label: "Patrol dog 7F3A", icon: Bot, hint: "Patrolling", href: "#robots/7F3A", keywords: ["7F3A"] },
-        { label: "Patrol dog 2B10", icon: Bot, hint: "Docked", href: "#robots/2B10", keywords: ["2B10"] },
-        { label: "Patrol dog 4D21", icon: Bot, hint: "Stopped", href: "#robots/4D21", keywords: ["4D21"] },
+        { label: "Patrol dog 7F3A", icon: Bot, hint: "Patrolling", tone: "info", href: "#robots/7F3A", keywords: ["7F3A"] },
+        { label: "Patrol dog 2B10", icon: Bot, hint: "Docked", tone: "neutral", href: "#robots/2B10", keywords: ["2B10"] },
+        { label: "Patrol dog 4D21", icon: Bot, hint: "Stopped", tone: "danger", href: "#robots/4D21", keywords: ["4D21"] },
       ],
     },
     {
@@ -171,13 +174,10 @@ type AppShellProps = {
 
 /**
  * Text beside the rail's icons. It is always rendered, so opening the rail never moves the icons or the logo: the
- * column of icons stays on the rail's centre line and the words fade in from 4 px to their left (--motion-base).
+ * column of icons stays on the rail's centre line and the words fade in (--motion-base). The frame's width is what moves.
  */
 const reveal = (shown: boolean) =>
-  cn(
-    "whitespace-nowrap transition-[opacity,translate] duration-(--motion-base) ease-(--ease-standard) motion-reduce:transition-none",
-    shown ? "translate-x-0 opacity-100" : "-translate-x-1 opacity-0",
-  )
+  cn("whitespace-nowrap transition-opacity duration-(--motion-base) ease-(--ease-standard) motion-reduce:transition-none", shown ? "opacity-100" : "opacity-0")
 
 function Nav({
   nav,
@@ -224,7 +224,8 @@ function Nav({
                 title={collapsed ? item.label : undefined}
                 className={cn(
                   "press relative flex h-(--h-md) items-center gap-3 rounded-sm px-3 text-sm",
-                  active ? "bg-accent font-medium text-foreground" : "text-muted-foreground hover:bg-accent hover:text-foreground",
+                  // Current page: muted fill and weight. Hover: the lighter accent, so the two never look alike.
+                  active ? "bg-muted font-medium text-foreground" : "text-muted-foreground hover:bg-accent hover:text-foreground",
                 )}
               >
                 {/* 24 px box 12 px into a 48 px item: the icon's centre sits on the rail's centre line (36 px). */}
@@ -237,11 +238,13 @@ function Nav({
                     <span
                       aria-hidden="true"
                       className={cn(
-                        "absolute top-2 left-8 size-2 rounded-full bg-danger transition-opacity duration-(--motion-base)",
+                        "absolute top-2 left-8 size-2 rounded-full bg-danger-subtle ring-1 ring-danger transition-opacity duration-(--motion-base) ease-(--ease-standard)",
                         !collapsed && "opacity-0",
                       )}
                     />
-                    <span className={cn("text-xs font-medium text-danger tabular-nums", reveal(!collapsed))}>{item.count}</span>
+                    <span className={cn("rounded-full bg-danger-subtle px-2 text-xs font-medium text-danger tabular-nums", reveal(!collapsed))}>
+                      {item.count}
+                    </span>
                   </>
                 ) : null}
               </Link>
@@ -276,7 +279,12 @@ export function SidebarUserMenu({
         <button
           type="button"
           aria-label={collapsed ? `${user.name}, account menu` : undefined}
-          className={cn("press flex h-(--h-row) w-full items-center gap-3 rounded-sm px-2 text-left hover:bg-accent data-[state=open]:bg-accent")}
+          className={cn(
+            "press flex w-full items-center gap-3 rounded-xs px-3 text-left hover:bg-accent data-[state=open]:bg-accent",
+            // As a rail only the avatar shows, so the row is 44 px; opening it grows to 56 for the name and email (--motion-sheet).
+            "transition-[height] duration-(--motion-sheet) ease-(--ease-standard) motion-reduce:transition-none",
+            collapsed ? "h-(--h-md)" : "h-(--h-row)",
+          )}
         >
           <Avatar>
             <AvatarFallback>{user.initials}</AvatarFallback>
@@ -290,7 +298,7 @@ export function SidebarUserMenu({
       </DropdownMenuTrigger>
       <DropdownMenuContent side={collapsed ? "right" : "top"} align={collapsed ? "end" : "start"} className="w-(--radix-dropdown-menu-trigger-width) min-w-56">
         <DropdownMenuLabel className="flex flex-col">
-          <span className="truncate">{user.name}</span>
+          <span className="truncate text-sm font-medium text-foreground">{user.name}</span>
           {user.email && <span className="truncate text-xs font-normal text-muted-foreground">{user.email}</span>}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -347,7 +355,7 @@ export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch;
         <button
           type="button"
           aria-label={`Search scope: ${scopeLabel}`}
-          className="press flex h-(--h-sm) shrink-0 items-center gap-1 rounded-xs px-2 text-xs text-muted-foreground hover:bg-accent hover:text-foreground"
+          className="press mx-1 flex h-(--h-sm) shrink-0 items-center gap-1 rounded-xs px-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground"
         >
           {scopeLabel}
           <ChevronDown aria-hidden="true" className="size-4" />
@@ -371,7 +379,7 @@ export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch;
   return (
     <>
       {/* Wide screens: a field with the scope inside. Narrow: an icon button. Both open the palette. */}
-      <div className="hidden h-(--h-sm) w-80 items-center rounded-sm bg-background pr-1 ring-1 ring-input ring-inset lg:flex">
+      <div className="hidden h-(--h-md) w-80 items-center rounded-sm bg-background ring-1 ring-input ring-inset lg:flex">
         <button
           type="button"
           onClick={() => setOpen(true)}
@@ -412,13 +420,23 @@ export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch;
                     <Link href={item.href}>
                       {item.icon && <item.icon aria-hidden="true" />}
                       <span className="flex-1 truncate">{item.label}</span>
-                      {item.hint && <span className="text-xs text-muted-foreground">{item.hint}</span>}
+                      {item.hint && (
+                        <span className="flex items-center gap-2 text-xs text-muted-foreground">
+                          {item.tone && <StatusGlyph tone={item.tone} />}
+                          {item.hint}
+                        </span>
+                      )}
                     </Link>
                   ) : (
                     <>
                       {item.icon && <item.icon aria-hidden="true" />}
                       <span className="flex-1 truncate">{item.label}</span>
-                      {item.hint && <span className="text-xs text-muted-foreground">{item.hint}</span>}
+                      {item.hint && (
+                        <span className="flex items-center gap-2 text-xs text-muted-foreground">
+                          {item.tone && <StatusGlyph tone={item.tone} />}
+                          {item.hint}
+                        </span>
+                      )}
                     </>
                   )}
                 </CommandItem>
@@ -428,6 +446,34 @@ export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch;
         </CommandList>
       </CommandDialog>
     </>
+  )
+}
+
+/**
+ * The pin button's icon: a panel whose sidebar column is filled while the sidebar is kept open and hollow when it is a
+ * rail. The fill swaps at --motion-fast (the swap pattern), 2 px stroke like every icon.
+ */
+function SidebarIcon({ pinned }: { pinned: boolean }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="size-5"
+    >
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <path
+        d="M4 4h5v16H4z"
+        stroke="none"
+        fill="currentColor"
+        className={cn("transition-opacity duration-(--motion-fast) ease-(--ease-standard)", pinned ? "opacity-100" : "opacity-0")}
+      />
+      <path d="M9 3v18" />
+    </svg>
   )
 }
 
@@ -526,7 +572,7 @@ export function AppShell({
   return (
     <div className={cn("flex h-dvh bg-background text-foreground", inset && "gap-2 p-2")}>
       {/* The sidebar's place in the layout: as wide as the pinned state. When the rail peeks open, the panel grows over the content. */}
-      <div className={cn("relative hidden shrink-0 transition-[width] duration-(--motion-base) ease-(--ease-standard) sm:block", open ? "w-60" : "w-18")}>
+      <div className={cn("relative hidden shrink-0 transition-[width] duration-(--motion-sheet) ease-(--ease-standard) sm:block", open ? "w-60" : "w-18")}>
         <aside
           ref={aside}
           aria-label="Sidebar"
@@ -535,10 +581,10 @@ export function AppShell({
           onPointerDown={(e) => tapMode && peek === "closed" && !isControl(e.target) && setPeek("tap")}
           className={cn(
             "absolute inset-y-0 left-0 z-30 flex flex-col overflow-hidden bg-card",
-            "transition-[width,box-shadow] duration-(--motion-base) ease-(--ease-standard)",
+            "transition-[width,box-shadow] duration-(--motion-sheet) ease-(--ease-standard)",
             expanded ? "w-60" : "w-18",
             inset ? "rounded-md ring-1 ring-border" : "border-r border-border",
-            peek !== "closed" && "shadow-overlay",
+            peek !== "closed" && "shadow-float",
           )}
         >
           {/* Flush: lined, level with the top bar's line. Inset: no lines; on the rail, groups are set apart by short lines
@@ -554,9 +600,9 @@ export function AppShell({
                   setPinned(!open)
                   setPeek("closed")
                 }}
-                className="press flex size-(--h-sm) shrink-0 items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground"
+                className="press flex size-(--h-md) shrink-0 items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground"
               >
-                {open ? <PanelLeftClose aria-hidden="true" className="size-5" /> : <PanelLeftOpen aria-hidden="true" className="size-5" />}
+                <SidebarIcon pinned={open} />
               </button>
             </span>
           </div>
@@ -564,7 +610,7 @@ export function AppShell({
             <Nav nav={nav} current={current} collapsed={!expanded} linkAs={linkAs} onNavigate={onNavigate} />
           </div>
           {user && (
-            <div className={cn("shrink-0 border-t p-3", inset ? "border-transparent" : "border-border")}>
+            <div className={cn("shrink-0 border-t p-2", inset ? "border-transparent" : "border-border")}>
               <SidebarUserMenu
                 user={user}
                 items={userMenu}
@@ -609,10 +655,12 @@ export function AppShell({
           <div className="ml-auto flex items-center gap-2">
             {search && <ShellSearch search={search} linkAs={linkAs} />}
             {onSearch && (
-              <div className="relative hidden lg:block">
-                <Search aria-hidden="true" className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-                <Input type="search" aria-label="Search" placeholder="Search" className="w-64 pl-(--h-sm)" onChange={(e) => onSearch(e.target.value)} />
-              </div>
+              <InputGroup className="hidden w-64 lg:flex">
+                <InputGroupAddon>
+                  <Search aria-hidden="true" />
+                </InputGroupAddon>
+                <Input type="search" aria-label="Search" placeholder="Search" onChange={(e) => onSearch(e.target.value)} />
+              </InputGroup>
             )}
             {actions}
           </div>

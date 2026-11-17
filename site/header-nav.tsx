@@ -18,11 +18,11 @@ export function HeaderNav({ links }: { links: Pick<Scope, "key" | "label" | "hre
           href={l.href}
           aria-current={i === current ? "page" : undefined}
           className={cn(
-            "press relative flex h-8 items-center rounded-xs px-3 transition-colors duration-(--motion-fast)",
+            "press relative flex h-(--h-sm) items-center rounded-xs px-3 transition-colors duration-(--motion-fast) ease-(--ease-standard)",
             i === current ? "font-medium text-foreground" : "text-muted-foreground hover:text-foreground",
           )}
         >
-          {i === current && <m.span layoutId="header-nav-marker" aria-hidden className="absolute inset-0 rounded-xs bg-accent" />}
+          {i === current && <m.span layoutId="header-nav-marker" aria-hidden className="absolute inset-0 rounded-xs bg-muted" />}
           <span className="relative">{l.label}</span>
         </Link>
       ))}

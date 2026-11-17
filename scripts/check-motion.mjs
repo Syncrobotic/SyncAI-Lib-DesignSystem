@@ -49,7 +49,17 @@ for (const file of ROOTS.flatMap(walk)) {
   lines.forEach((l, i) => {
     const t = l.trim()
     if (t.startsWith("//") || t.startsWith("*")) return
+    // Escape hatch, as in check-tokens: `motion-ok: <reason>` on the line or the line above (a "don't" example in the docs).
+    if (/motion-ok:/.test((lines[i - 1] ?? "") + l)) return
     for (const m of l.matchAll(/(?<![\w-])(duration-\d+|ease-(?:in|out|in-out|linear)\b|delay-\d+)/g)) fail(file, i + 1, `${m[0]}: use duration-(--motion-fast|base|sheet) and ease-(--ease-standard)`)
+    // 4. A duration token always travels with the curve; without it Tailwind's own default curve applies.
+    for (const m of l.matchAll(/["`][^"`\n]*duration-\(--motion-\w+\)[^"`\n]*["`]/g))
+      if (!m[0].includes("ease-(--ease-standard)")) fail(file, i + 1, "duration-(--motion-*) without ease-(--ease-standard) on the same element")
+    // 5. Nothing loops except the spinner, which stops under reduced motion (theme).
+    if (!file.endsWith("spinner.tsx")) for (const m of l.matchAll(/(?<![\w-])animate-(spin|pulse|ping|bounce)\b/g)) fail(file, i + 1, `${m[0]}: only the Spinner loops; use <Spinner />`)
+    // 6. Icons are 16, 20 or 24 px with a 2 px stroke.
+    for (const m of l.matchAll(/(?:\[&_svg\]:|<[A-Z]\w+ [^>]*className="[^"]*)size-(2\.5|3\.5|3)\b/g)) fail(file, i + 1, `icon size-${m[1]}: use size-4, size-5 or size-6`)
+    if (/strokeWidth=\{?["']?(?:1\.5|2\.5|3)\b/.test(l) && /lucide|<[A-Z]\w+ /.test(l) && !/<(circle|path|svg|rect|line)\b/.test(l)) fail(file, i + 1, "icon strokeWidth: 2 px like every icon")
   })
 }
 

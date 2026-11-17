@@ -41,7 +41,7 @@ export function ChartContainer({
         aria-label={label}
         style={vars}
         className={cn(
-          "h-64 w-full text-xs",
+          "h-64 w-full animate-fade-in text-xs",
           // Recessive frame: muted axis text, hairline grid, no axis lines; the data carries the contrast.
           "[&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line]:stroke-border",
           "[&_.recharts-reference-line_line]:stroke-muted-foreground [&_.recharts-surface]:outline-none [&_.recharts-wrapper]:outline-none",
@@ -59,20 +59,13 @@ export function ChartContainer({
 }
 
 /**
- * Motion for marks, from the motion tokens: data arrives in --motion-base with the standard ease; under reduced motion it
- * is simply there. Spread onto Line, Area and Bar: `<Line {...chartMotion} />`.
+ * Motion for marks. Recharts times its own animation in JavaScript and takes only named easings, so it cannot follow the
+ * motion tokens; marks therefore draw without it, and the whole chart arrives with the fade pattern (ChartContainer's
+ * animate-fade-in, --motion-base) when it mounts. Spread onto Line, Area and Bar: `<Line {...chartMotion} />`.
  */
-export function useChartMotion() {
-  const [reduce, setReduce] = React.useState(false)
-  React.useEffect(() => {
-    const q = window.matchMedia("(prefers-reduced-motion: reduce)")
-    setReduce(q.matches)
-    const on = () => setReduce(q.matches)
-    q.addEventListener("change", on)
-    return () => q.removeEventListener("change", on)
-  }, [])
-  return { isAnimationActive: !reduce, animationDuration: 200, animationEasing: "ease" as const }
-}
+export const chartMotion = { isAnimationActive: false } as const
+/** @deprecated Use `chartMotion`; kept so existing code compiles. */
+export const useChartMotion = () => chartMotion
 
 /** The hover layer. Line and area charts get a crosshair (the default cursor); bars a band. */
 export function ChartTooltip(props: React.ComponentProps<typeof Tooltip>) {
@@ -96,7 +89,7 @@ export function ChartTooltipContent({
   const config = useChartConfig()
   if (!active || !payload?.length) return null
   return (
-    <div className="min-w-40 rounded-md bg-popover px-3 py-2 text-xs text-popover-foreground shadow-float ring-1 ring-border">
+    <div className="min-w-40 rounded-md bg-popover px-3 py-2 text-xs text-popover-foreground shadow-overlay ring-1 ring-border">
       <p className="pb-1 font-medium">{labelFormatter ? labelFormatter(label) : String(label)}</p>
       <ul className="flex flex-col gap-1">
         {payload.map((p) => {
@@ -104,7 +97,7 @@ export function ChartTooltipContent({
           const c = config[key]
           return (
             <li key={key} className="flex items-center gap-2">
-              <span aria-hidden="true" className="size-2.5 shrink-0 rounded-xs" style={{ background: `var(--color-${key})` }} />
+              <span aria-hidden="true" className="size-3 shrink-0 rounded-xs" style={{ background: `var(--color-${key})` }} />
               <span className="flex-1 text-muted-foreground">{c?.label ?? key}</span>
               <span className="font-mono font-medium tabular-nums">
                 {formatter ? formatter(Number(p.value), key) : `${p.value}${c?.unit ? ` ${c.unit}` : ""}`}
@@ -134,7 +127,7 @@ export function ChartLegendContent({ payload }: { payload?: readonly { dataKey?:
         const key = String(p.dataKey)
         return (
           <li key={key} className="flex items-center gap-2 text-muted-foreground">
-            <span aria-hidden="true" className="size-2.5 rounded-xs" style={{ background: `var(--color-${key})` }} />
+            <span aria-hidden="true" className="size-3 rounded-xs" style={{ background: `var(--color-${key})` }} />
             {config[key]?.label ?? key}
           </li>
         )
@@ -162,7 +155,7 @@ export function ChartTable<T extends Record<string, unknown>>({
 }) {
   const keys = Object.keys(config)
   return (
-    <div className={cn("max-h-64 overflow-auto rounded-md ring-1 ring-border", className)}>
+    <div className={cn("max-h-64 overflow-auto", className)}>
       <Table>
         <TableHeader>
           <TableRow>

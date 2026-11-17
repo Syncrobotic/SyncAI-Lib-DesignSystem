@@ -1,4 +1,4 @@
-// @syncrobotic/radio-group v0.6.0 · update: npx shadcn add @syncrobotic/radio-group --overwrite
+// @syncrobotic/radio-group v0.7.0 · update: npx shadcn add @syncrobotic/radio-group --overwrite
 "use client"
 
 import * as React from "react"
@@ -20,7 +20,7 @@ export function RadioGroupItem({ className, ...props }: React.ComponentProps<typ
       )}
       {...props}
     >
-      <RadioGroupPrimitive.Indicator className="size-2 animate-appear rounded-full bg-primary" />
+      <RadioGroupPrimitive.Indicator className="size-2 animate-fade-in rounded-full bg-primary" />
     </RadioGroupPrimitive.Item>
   )
 }

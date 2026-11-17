@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Compact density is for a mouse only: on touch (pointer: coarse) --h-sm is 44 px. The spinner stops under reduced motion. Selected-state rule written down."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -261,8 +266,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "The destructive action is a danger outline, not a tinted fill."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -297,8 +307,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Buttons are rounded-xs and 14 px text; the unread count uses the danger tint like the dock."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -330,8 +345,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Only pressable rows press."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -351,7 +371,8 @@
       "title": "Skeleton",
       "description": "What is known shows first; only unknown values get a skeleton; the whole group breathes.",
       "registryDependencies": [
-        "@syncrobotic/cn"
+        "@syncrobotic/cn",
+        "@syncrobotic/spinner"
       ],
       "files": [
         {
@@ -360,8 +381,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "LoadingLine uses the Spinner (its delay and track)."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -390,8 +416,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Small buttons carry 16 px icons."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -668,7 +699,7 @@
           {
             "version": "0.7.0",
             "date": "2026-11-17",
-            "note": "The error appears with an icon in the hint's place. A control that brings its own id keeps it, and the label follows."
+            "note": "The error appears with an icon in the hint's place. A control that brings its own id keeps it, and the label follows. The error icon is 16 px."
           },
           {
             "version": "0.6.0",
@@ -702,8 +733,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "The check fades in; 2 px stroke like every icon."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -735,8 +771,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "The dot fades in instead of rising."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -768,8 +809,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "The track moves on the standard curve."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -802,7 +848,7 @@
           {
             "version": "0.7.0",
             "date": "2026-11-17",
-            "note": "Error edge is 2 px."
+            "note": "Error edge is 2 px. Items are rounded-sm, concentric with the list."
           },
           {
             "version": "0.6.0",
@@ -864,8 +910,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Icons at 16 px."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -1034,8 +1085,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Buttons are rounded-xs, concentric with the card."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -1068,8 +1124,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "A float layer (float shadow, blur-xl); action and close press."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -1175,8 +1236,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "The indicator moves on the standard curve."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -1209,8 +1275,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Trigger presses; the chevron turns on the standard curve."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -1243,8 +1314,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "The close button sits 8 px from the corner (concentric) and presses."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -1310,8 +1386,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Titles are the sheet size (xl); the scrim leaves with the panel."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -1376,8 +1457,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "8 px from its anchor, like the popover."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -1410,8 +1496,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Items are rounded-sm, concentric with the menu."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -1506,7 +1597,8 @@
         "@syncrobotic/progress",
         "@syncrobotic/segmented-control",
         "@syncrobotic/table",
-        "@syncrobotic/status-eyebrow"
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/input-group"
       ],
       "files": [
         {
@@ -1515,8 +1607,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Search is an InputGroup."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -1578,8 +1675,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "The in-page card has no overlay shadow and the card radius; 20 px icon in the large button."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -1603,7 +1705,9 @@
         "@syncrobotic/input",
         "@syncrobotic/sheet",
         "@syncrobotic/dropdown-menu",
-        "@syncrobotic/command"
+        "@syncrobotic/command",
+        "@syncrobotic/input-group",
+        "@syncrobotic/status-glyph"
       ],
       "files": [
         {
@@ -1709,7 +1813,8 @@
         "@syncrobotic/empty-state",
         "@syncrobotic/input",
         "@syncrobotic/progress",
-        "@syncrobotic/separator"
+        "@syncrobotic/separator",
+        "@syncrobotic/input-group"
       ],
       "files": [
         {
@@ -1718,8 +1823,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Search is an InputGroup; the selected robot is muted, hover is accent."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -1746,7 +1856,8 @@
         "@syncrobotic/segmented-control",
         "@syncrobotic/select",
         "@syncrobotic/sheet",
-        "@syncrobotic/table"
+        "@syncrobotic/table",
+        "@syncrobotic/input-group"
       ],
       "files": [
         {
@@ -1755,8 +1866,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Search is an InputGroup with an icon."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -1819,7 +1935,8 @@
         "@syncrobotic/input",
         "@syncrobotic/label",
         "@syncrobotic/sheet",
-        "@syncrobotic/table"
+        "@syncrobotic/table",
+        "@syncrobotic/input-group"
       ],
       "files": [
         {
@@ -1828,8 +1945,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Search is an InputGroup with an icon; 16 px sort icons; licence tiers are outline tags, not status colours."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -1934,8 +2056,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "Section links use the compact height token; the save bar is a full float."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -2069,8 +2196,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.7.0",
         "changelog": [
+          {
+            "version": "0.7.0",
+            "date": "2026-11-17",
+            "note": "The loading value is as tall as the number it stands for."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",

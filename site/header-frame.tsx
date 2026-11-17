@@ -23,7 +23,7 @@ export function HeaderFrame({ children }: { children: React.ReactNode }) {
         className={cn(
           "pointer-events-auto mx-auto flex h-(--site-header) max-w-6xl items-center gap-6 rounded-md px-4 ring-1",
           "transition-[background-color,box-shadow,translate] duration-(--motion-base) ease-(--ease-standard) motion-reduce:transition-none",
-          scrolled ? "translate-y-2 bg-card shadow-float ring-border" : "translate-y-0 bg-transparent ring-transparent",
+          scrolled ? "translate-y-2 bg-card ring-border" : "translate-y-0 bg-transparent ring-transparent",
         )}
       >
         {children}

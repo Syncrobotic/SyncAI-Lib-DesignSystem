@@ -216,7 +216,7 @@ const entries: Record<string, Entry> = {
       "Every chart offers its numbers as a table (ChartTable), for exact values and for anyone who cannot tell two hues apart.",
       "One y axis. Two measures on different scales are two charts.",
       "Lines 2 px; bars with 4 px rounded data ends and a 2 px gap; a horizontal hairline grid; no axis lines.",
-      "Data arrives in --motion-base (useChartMotion) and does not move under reduced motion.",
+      "The chart fades in when it mounts (--motion-base); marks do not animate, because Recharts cannot use the motion tokens. Nothing moves under reduced motion.",
     ],
   },
   command: {

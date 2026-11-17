@@ -1,7 +1,7 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
-import { ChartContainer, ChartLegend, ChartTable, ChartTooltip, chartAxis, useChartMotion, type ChartConfig } from "@/registry/syncrobotic/ui/chart"
+import { ChartContainer, ChartLegend, ChartTable, ChartTooltip, chartAxis, chartMotion, type ChartConfig } from "@/registry/syncrobotic/ui/chart"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 
 const meta: Meta = { title: "Charts" }
@@ -14,7 +14,6 @@ const speedConfig = { north: { label: "North site", color: 1, unit: "m/s" }, sou
 
 /** Two series over time: legend on top, crosshair tooltip, and the same numbers as a table. */
 function SpeedChart() {
-  const motion = useChartMotion()
   const [view, setView] = React.useState("chart")
   return (
     <div className="flex w-full max-w-3xl flex-col gap-3">
@@ -41,7 +40,7 @@ function SpeedChart() {
               strokeWidth={2}
               dot={false}
               activeDot={{ r: 4, strokeWidth: 2, stroke: "var(--card)" }}
-              {...motion}
+              {...chartMotion}
             />
             <Line
               dataKey="south"
@@ -49,7 +48,7 @@ function SpeedChart() {
               strokeWidth={2}
               dot={false}
               activeDot={{ r: 4, strokeWidth: 2, stroke: "var(--card)" }}
-              {...motion}
+              {...chartMotion}
             />
           </LineChart>
         </ChartContainer>
@@ -66,7 +65,6 @@ const batteryConfig = { battery: { label: "Battery", color: 1, unit: "%" } } sat
 
 /** One series: no legend (the title names it), a soft fill under the line. */
 function BatteryChart() {
-  const motion = useChartMotion()
   return (
     <div className="flex w-full max-w-3xl flex-col gap-3">
       <p className="text-sm font-medium">
@@ -78,7 +76,7 @@ function BatteryChart() {
           <XAxis dataKey="t" {...chartAxis} />
           <YAxis {...chartAxis} domain={[0, 100]} ticks={[0, 25, 50, 75, 100]} width={32} />
           <ChartTooltip />
-          <Area dataKey="battery" type="linear" stroke="var(--color-battery)" strokeWidth={2} fill="var(--color-battery)" fillOpacity={0.12} {...motion} />
+          <Area dataKey="battery" type="linear" stroke="var(--color-battery)" strokeWidth={2} fill="var(--color-battery)" fillOpacity={0.12} {...chartMotion} />
         </AreaChart>
       </ChartContainer>
     </div>
@@ -91,7 +89,6 @@ const missionConfig = { done: { label: "Completed", color: 1 }, aborted: { label
 
 /** Grouped bars: 4 px rounded ends on the data side, a 2 px gap between neighbours, a band behind the hovered day. */
 function MissionChart() {
-  const motion = useChartMotion()
   return (
     <div className="flex w-full max-w-3xl flex-col gap-3">
       <p className="text-sm font-medium">Missions this week</p>
@@ -102,8 +99,8 @@ function MissionChart() {
           <YAxis {...chartAxis} allowDecimals={false} width={32} />
           <ChartTooltip />
           <ChartLegend />
-          <Bar dataKey="done" fill="var(--color-done)" radius={[4, 4, 0, 0]} maxBarSize={24} {...motion} />
-          <Bar dataKey="aborted" fill="var(--color-aborted)" radius={[4, 4, 0, 0]} maxBarSize={24} {...motion} />
+          <Bar dataKey="done" fill="var(--color-done)" radius={[4, 4, 0, 0]} maxBarSize={24} {...chartMotion} />
+          <Bar dataKey="aborted" fill="var(--color-aborted)" radius={[4, 4, 0, 0]} maxBarSize={24} {...chartMotion} />
         </BarChart>
       </ChartContainer>
     </div>

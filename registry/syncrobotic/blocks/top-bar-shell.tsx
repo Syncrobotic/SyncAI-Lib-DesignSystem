@@ -90,9 +90,9 @@ export function TopBarShell({
       <header className="pointer-events-none sticky top-0 z-20 h-(--h-row) px-2">
         <div
           className={cn(
-            "pointer-events-auto mx-auto flex h-(--h-row) max-w-6xl items-center gap-6 rounded-md px-4 ring-1",
+            "pointer-events-auto mx-auto flex h-(--h-row) max-w-6xl items-center gap-6 rounded-md px-6 ring-1",
             "transition-[background-color,box-shadow,translate] duration-(--motion-base) ease-(--ease-standard) motion-reduce:transition-none",
-            scrolled ? "translate-y-2 bg-card shadow-float ring-border" : "translate-y-0 bg-transparent ring-transparent",
+            scrolled ? "translate-y-2 bg-card ring-border" : "translate-y-0 bg-transparent ring-transparent",
           )}
         >
           <Sheet>

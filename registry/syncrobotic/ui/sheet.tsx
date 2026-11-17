@@ -1,4 +1,4 @@
-// @syncrobotic/sheet v0.6.0 · update: npx shadcn add @syncrobotic/sheet --overwrite
+// @syncrobotic/sheet v0.7.0 · update: npx shadcn add @syncrobotic/sheet --overwrite
 "use client"
 
 import * as React from "react"
@@ -10,7 +10,8 @@ export const SheetTrigger = SheetPrimitive.Trigger
 export const SheetClose = SheetPrimitive.Close
 
 const sides = {
-  bottom: "inset-x-0 bottom-0 max-h-[85vh] rounded-t-xl pb-[max(1.5rem,env(safe-area-inset-bottom))] data-[state=open]:animate-sheet-in-bottom data-[state=closed]:animate-sheet-out-bottom",
+  bottom:
+    "inset-x-0 bottom-0 max-h-[85vh] rounded-t-xl pb-[max(1.5rem,env(safe-area-inset-bottom))] data-[state=open]:animate-sheet-in-bottom data-[state=closed]:animate-sheet-out-bottom",
   right: "inset-y-0 right-0 h-full w-full max-w-sm rounded-l-xl data-[state=open]:animate-sheet-in-right data-[state=closed]:animate-sheet-out-right",
   /** Navigation drawers, which open from the side the navigation lives on. */
   left: "inset-y-0 left-0 h-full w-full max-w-sm rounded-r-xl data-[state=open]:animate-sheet-in-left data-[state=closed]:animate-sheet-out-left",
@@ -27,7 +28,7 @@ export function SheetContent({
 }: React.ComponentProps<typeof SheetPrimitive.Content> & { side?: keyof typeof sides }) {
   return (
     <SheetPrimitive.Portal>
-      <SheetPrimitive.Overlay className="fixed inset-0 z-50 bg-(--scrim) data-[state=open]:animate-fade-in data-[state=closed]:animate-disappear" />
+      <SheetPrimitive.Overlay className="fixed inset-0 z-50 bg-(--scrim) data-[state=open]:animate-fade-in data-[state=closed]:animate-disappear data-[state=closed]:[animation-duration:var(--motion-sheet)]" />
       <SheetPrimitive.Content
         data-slot="sheet-content"
         data-side={side}
@@ -54,7 +55,7 @@ export function SheetFooter({ className, ...props }: React.ComponentProps<"div">
 }
 
 export function SheetTitle({ className, ...props }: React.ComponentProps<typeof SheetPrimitive.Title>) {
-  return <SheetPrimitive.Title className={cn("text-lg font-bold", className)} {...props} />
+  return <SheetPrimitive.Title className={cn("text-xl font-bold", className)} {...props} />
 }
 
 export function SheetDescription({ className, ...props }: React.ComponentProps<typeof SheetPrimitive.Description>) {
