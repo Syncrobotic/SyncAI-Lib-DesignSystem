@@ -1,14 +1,14 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, ArrowUpRight } from "lucide-react"
 import { Badge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Switch } from "@/registry/syncrobotic/ui/switch"
 import { groups, items } from "@/site/catalog"
 import { CodeBlock } from "@/site/code-block"
 import { site } from "@/site/config"
-import { Appear, AppearItem } from "@/site/appear"
-import { FoundationGrid } from "@/site/foundation-previews"
+import { Appear, AppearItem, Reveal } from "@/site/appear"
+import { fast, FoundationGrid } from "@/site/foundation-previews"
 import pkg from "../../package.json"
 import { color, px, themeValue } from "@/site/theme-tokens"
 
@@ -94,7 +94,26 @@ const samples: Record<string, React.ReactNode> = {
       <div className="px-3 py-2 text-danger">Delete route</div>
     </div>
   ),
-  "Robot shell": <span className="flex h-(--h-md) w-48 items-center justify-center rounded-md bg-stop text-sm font-bold text-white">Emergency stop · 7F3A</span>,
+  "Robot shell": (
+    <span className="flex h-(--h-md) w-48 items-center justify-center rounded-md bg-stop text-sm font-bold text-white">Emergency stop · 7F3A</span>
+  ),
+}
+
+/** Every section below the hero opens the same way: eyebrow, title and lead arrive in sequence as it scrolls into view. */
+function SectionHead({ eyebrow, title, children }: { eyebrow: string; title: string; children: React.ReactNode }) {
+  return (
+    <Reveal className="flex flex-col gap-2">
+      <AppearItem>
+        <p className="text-sm font-medium text-muted-foreground">{eyebrow}</p>
+      </AppearItem>
+      <AppearItem>
+        <h2 className="text-3xl font-bold">{title}</h2>
+      </AppearItem>
+      <AppearItem>
+        <p className="max-w-2xl text-muted-foreground">{children}</p>
+      </AppearItem>
+    </Reveal>
+  )
 }
 
 export default function HomePage() {
@@ -105,7 +124,7 @@ export default function HomePage() {
 
       <section className="border-b border-border">
         <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 py-section-sm lg:py-section lg:grid-cols-[1fr_auto]">
-          <Appear stagger={0.06} className="flex flex-col gap-6">
+          <Appear stagger={0.04} className="flex flex-col gap-6">
             <AppearItem>
               <p className="text-sm font-medium text-muted-foreground">SYNCROBOTIC Design System</p>
             </AppearItem>
@@ -118,75 +137,95 @@ export default function HomePage() {
               </p>
             </AppearItem>
             <AppearItem className="flex flex-wrap gap-3">
-              <Link href="/docs/foundations" className="press inline-flex h-(--h-lg) items-center gap-2 rounded-sm bg-primary px-6 font-medium text-primary-foreground">
+              <Link
+                href="/docs/foundations"
+                className="press inline-flex h-(--h-lg) items-center gap-2 rounded-sm bg-primary px-6 font-medium text-primary-foreground"
+              >
                 Explore the foundations <ArrowRight aria-hidden className="size-4" />
               </Link>
-              <Link href="/docs/components/button" className="press inline-flex h-(--h-lg) items-center rounded-sm bg-secondary px-6 font-medium hover:bg-accent">
+              <Link
+                href="/docs/components/button"
+                className="press inline-flex h-(--h-lg) items-center rounded-sm bg-secondary px-6 font-medium hover:bg-accent"
+              >
                 Browse components
               </Link>
             </AppearItem>
           </Appear>
-          <ProductShot />
+          {/* The screenshot arrives with the words, after them, so the first screen moves as one. */}
+          <Appear stagger={0.04}>
+            <AppearItem>
+              <ProductShot />
+            </AppearItem>
+          </Appear>
         </div>
       </section>
 
       <section className="mx-auto flex max-w-6xl flex-col gap-8 px-4 pt-section-sm lg:pt-section">
-        <div className="flex flex-col gap-2">
-          <p className="text-sm font-medium text-muted-foreground">Foundations</p>
-          <h2 className="text-3xl font-bold">The decisions behind every screen</h2>
-          <p className="max-w-2xl text-muted-foreground">Read these before you design or build. Every value is parsed from the theme file, so the docs never drift from what ships.</p>
-        </div>
+        <SectionHead eyebrow="Foundations" title="The decisions behind every screen">
+          Read these before you design or build. Every value is parsed from the theme file, so the docs never drift from what ships.
+        </SectionHead>
         <FoundationGrid />
       </section>
 
       <section className="mx-auto flex max-w-6xl flex-col gap-8 px-4 pt-section-sm lg:pt-section">
-        <div className="flex flex-col gap-2">
-          <p className="text-sm font-medium text-muted-foreground">Components</p>
-          <h2 className="text-3xl font-bold">The language, already applied</h2>
-          <p className="max-w-2xl text-muted-foreground">
-            {items.filter((i) => i.group !== "Hooks").length} components built on the tokens: general UI for any product, plus the robot shell for control apps.
-          </p>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <SectionHead eyebrow="Components" title="The language, already applied">
+          {items.filter((i) => i.group !== "Hooks").length} components built on the tokens: general UI for any product, plus the robot shell for control apps.
+        </SectionHead>
+        {/* Same arrival and the same hover as the Foundations grid: lift the exhibit, show the arrow. */}
+        <Reveal className="grid auto-rows-fr gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {groups
             .filter((g) => g !== "Hooks")
             .map((g) => {
               const list = items.filter((i) => i.group === g)
               return (
-                <Link
-                  key={g}
-                  href={`/docs/components/${firstOf(g)}`}
-                  className="press group flex flex-col overflow-hidden rounded-md border border-border transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:border-muted-foreground"
-                >
-                  <div aria-hidden inert className="specimen flex h-36 items-center justify-center p-6">
-                    <div className="transition-transform duration-(--motion-fast) ease-(--ease-standard) group-hover:-translate-y-0.5 motion-reduce:group-hover:translate-y-0">{samples[g]}</div>
-                  </div>
-                  <div className="flex flex-1 flex-col gap-1 border-t border-border bg-card p-4">
-                    <span className="flex items-center justify-between">
-                      <span className="font-bold">{g}</span>
-                      <span className="font-mono text-xs text-muted-foreground">{list.length}</span>
-                    </span>
-                    <span className="text-sm text-muted-foreground">{list.map((i) => i.title).join(", ")}</span>
-                  </div>
-                </Link>
+                <AppearItem key={g} className="flex">
+                  <Link
+                    href={`/docs/components/${firstOf(g)}`}
+                    className={`press group flex w-full flex-col overflow-hidden rounded-md border border-border transition-colors hover:border-muted-foreground ${fast}`}
+                  >
+                    <div aria-hidden inert className="specimen flex h-36 items-center justify-center p-6">
+                      <div className={`transition-transform group-hover:-translate-y-0.5 motion-reduce:group-hover:translate-y-0 ${fast}`}>{samples[g]}</div>
+                    </div>
+                    <div className="flex flex-1 flex-col gap-1 border-t border-border bg-card p-4">
+                      <span className="flex items-center justify-between">
+                        <span className="font-bold">{g}</span>
+                        <span className="flex items-center gap-2">
+                          <span className="font-mono text-xs text-muted-foreground">{list.length}</span>
+                          <ArrowUpRight
+                            aria-hidden
+                            className={`size-4 shrink-0 text-muted-foreground opacity-0 transition-[opacity,translate] group-hover:translate-x-0.5 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:group-hover:translate-x-0 ${fast}`}
+                          />
+                        </span>
+                      </span>
+                      <span className="text-sm text-muted-foreground">{list.map((i) => i.title).join(", ")}</span>
+                    </div>
+                  </Link>
+                </AppearItem>
               )
             })}
-        </div>
+        </Reveal>
       </section>
 
       <section className="mx-auto max-w-6xl px-4 pt-section-sm lg:pt-section">
-        <div className="grid items-center gap-8 rounded-xl border border-border bg-card p-8 lg:grid-cols-2">
-          <div className="flex flex-col gap-3">
-            <h2 className="text-xl font-bold">Use it in a project</h2>
-            <p className="text-muted-foreground">
-              Install the theme and components into any React or Next.js app with the shadcn CLI. The theme replaces shadcn&apos;s defaults; components land as source you can read and adapt.
-            </p>
-            <Link href="/docs/installation" className="inline-flex items-center gap-2 text-sm font-medium text-info hover:underline">
-              Installation guide <ArrowRight aria-hidden className="size-4" />
-            </Link>
-          </div>
-          <CodeBlock code={"npx shadcn add @syncrobotic/syncrobotic-theme\nnpx shadcn add @syncrobotic/button @syncrobotic/card"} lang="bash" title="Terminal" />
-        </div>
+        <Reveal>
+          <AppearItem className="grid items-center gap-8 rounded-xl border border-border bg-card p-8 lg:grid-cols-2">
+            <div className="flex flex-col gap-3">
+              <h2 className="text-xl font-bold">Use it in a project</h2>
+              <p className="text-muted-foreground">
+                Install the theme and components into any React or Next.js app with the shadcn CLI. The theme replaces shadcn&apos;s defaults; components land
+                as source you can read and adapt.
+              </p>
+              <Link href="/docs/installation" className="inline-flex items-center gap-2 text-sm font-medium text-info hover:underline">
+                Installation guide <ArrowRight aria-hidden className="size-4" />
+              </Link>
+            </div>
+            <CodeBlock
+              code={"npx shadcn add @syncrobotic/syncrobotic-theme\nnpx shadcn add @syncrobotic/button @syncrobotic/card"}
+              lang="bash"
+              title="Terminal"
+            />
+          </AppearItem>
+        </Reveal>
         <p className="pt-6 text-center font-mono text-xs text-muted-foreground">
           Version {pkg.version} · body text {px(themeValue("text-base"))} px · background {color("background").dark}
         </p>

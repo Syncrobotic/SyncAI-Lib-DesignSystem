@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { ArrowUpRight, Bell, Bot, CircleAlert, Map, OctagonAlert, TriangleAlert, Wifi } from "lucide-react"
+import { AppearItem, Reveal } from "./appear"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { type FoundationSlug, foundations } from "./foundations"
 import { contrast } from "./theme-tokens"
@@ -113,35 +114,40 @@ const span: Record<FoundationSlug, string> = {
 
 // Hover is a state change, so it moves the way the Motion foundation says: --motion-fast, standard easing, a 2 px lift
 // of the exhibit and the arrow fading in. Reduced motion keeps the colour change and drops the travel.
-const fast = "duration-(--motion-fast) ease-(--ease-standard)"
+export const fast = "duration-(--motion-fast) ease-(--ease-standard)"
 
 export function FoundationGrid() {
   return (
-    <div className="grid auto-rows-fr gap-3 sm:grid-cols-2 lg:grid-cols-6">
+    <Reveal className="grid auto-rows-fr gap-3 sm:grid-cols-2 lg:grid-cols-6">
       {foundations.map((f, i) => (
-        <Link
-          key={f.slug}
-          href={`/docs/foundations/${f.slug}`}
-          className={`press group flex flex-col gap-4 rounded-md border border-border bg-background p-4 transition-colors hover:border-muted-foreground hover:bg-card ${fast} ${span[f.slug]}`}
-        >
-          <div aria-hidden className="specimen flex min-h-32 flex-1 items-center justify-center overflow-hidden rounded-sm border border-border p-4">
-            <div className={`flex size-full items-center justify-center transition-transform group-hover:-translate-y-0.5 motion-reduce:group-hover:translate-y-0 ${fast}`}>{previews[f.slug]}</div>
-          </div>
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex flex-col gap-1">
-              <span className="flex items-baseline gap-2">
-                <span className="font-mono text-xs text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
-                <span className="font-bold">{f.title}</span>
-              </span>
-              <span className="text-sm text-muted-foreground">{f.lead}</span>
+        <AppearItem key={f.slug} className={`flex ${span[f.slug]}`}>
+          <Link
+            href={`/docs/foundations/${f.slug}`}
+            className={`press group flex w-full flex-col gap-4 rounded-md border border-border bg-background p-4 transition-colors hover:border-muted-foreground hover:bg-card ${fast}`}
+          >
+            <div aria-hidden className="specimen flex min-h-32 flex-1 items-center justify-center overflow-hidden rounded-sm border border-border p-4">
+              <div
+                className={`flex size-full items-center justify-center transition-transform group-hover:-translate-y-0.5 motion-reduce:group-hover:translate-y-0 ${fast}`}
+              >
+                {previews[f.slug]}
+              </div>
             </div>
-            <ArrowUpRight
-              aria-hidden
-              className={`size-4 shrink-0 text-muted-foreground opacity-0 transition-[opacity,translate] group-hover:translate-x-0.5 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:group-hover:translate-x-0 ${fast}`}
-            />
-          </div>
-        </Link>
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex flex-col gap-1">
+                <span className="flex items-baseline gap-2">
+                  <span className="font-mono text-xs text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="font-bold">{f.title}</span>
+                </span>
+                <span className="text-sm text-muted-foreground">{f.lead}</span>
+              </div>
+              <ArrowUpRight
+                aria-hidden
+                className={`size-4 shrink-0 text-muted-foreground opacity-0 transition-[opacity,translate] group-hover:translate-x-0.5 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:group-hover:translate-x-0 ${fast}`}
+              />
+            </div>
+          </Link>
+        </AppearItem>
       ))}
-    </div>
+    </Reveal>
   )
 }
