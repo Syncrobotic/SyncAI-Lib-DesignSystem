@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.11.0",
         "changelog": [
+          {
+            "version": "0.11.0",
+            "date": "2026-11-18",
+            "note": "Density: `data-density=\"glove\"` (48 px controls, 64 px rows and stop) and `data-density=\"compact\"` (36 px controls, 40 px rows, mouse only; touch keeps 44) on `<html>` or any container. The stop never shrinks."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -2607,8 +2612,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.11.0",
         "changelog": [
+          {
+            "version": "0.11.0",
+            "date": "2026-11-18",
+            "note": "Virtual rows read their height from the token, so they follow `data-density`."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",

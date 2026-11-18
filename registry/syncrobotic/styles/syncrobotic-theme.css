@@ -1,4 +1,4 @@
-/* @syncrobotic/syncrobotic-theme v0.10.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
+/* @syncrobotic/syncrobotic-theme v0.11.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
 /*
  * SYNCROBOTIC theme · design system 0.5.0 (see CHANGELOG.md)
  * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
@@ -385,6 +385,28 @@
    so nothing interactive is ever smaller than a finger: the island, the dock and phone layouts included. */
 @media (pointer: coarse) {
   :root { --h-sm: var(--h-md); }
+}
+
+/* Density: one attribute, on <html> or on any container, re-sizes every control under it, because every height above
+   is a token. Without it: the bare-finger default (44 px controls, 56 px rows). Type and spacing do not change. */
+
+/* Glove: work gloves need 48–56 px. Every interactive height steps up, the stop included. */
+[data-density="glove"] {
+  --h-sm: 3rem;    /* 48 */
+  --h-md: 3rem;    /* 48 */
+  --h-lg: 3.5rem;  /* 56 */
+  --h-row: 4rem;   /* 64 */
+  --h-stop: 4rem;  /* 64 */
+}
+
+/* Compact: a control-room console with a mouse: 36 px controls, 40 px rows. Only with a fine pointer; on a touch
+   screen a finger still gets 44. The stop keeps its size in every density. */
+@media (pointer: fine) {
+  [data-density="compact"] {
+    --h-md: 2.25rem; /* 36 */
+    --h-lg: 2.5rem;  /* 40 */
+    --h-row: 2.5rem; /* 40 */
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
