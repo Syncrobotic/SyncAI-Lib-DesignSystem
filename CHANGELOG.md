@@ -2,6 +2,11 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Fixed
+- The site moved to its own domain, but the README (install example, MCP command, links), `package.json` and `registry.json` homepages, the agent skill's index link and the site's fallback URL still named `syncai-lib-designsystem.vercel.app`. They now say `design-system.syncrobotic.me`. Projects whose `components.json` still names the old address depend on Vercel keeping it (it does unless the domain is removed in the project settings); switch the registry `url` to the new domain. Re-install `agent-skill`.
+
 ## 0.11.0 · 2026-11-18
 
 ### Added
