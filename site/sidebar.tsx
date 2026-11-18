@@ -41,9 +41,10 @@ export function Sidebar({ scopes, switcher = false }: { scopes: Scope[]; switche
           ))}
         </div>
       )}
-      {active.groups.map((g) => (
-        <div key={g.title} className="flex flex-col gap-1">
-          <p className="px-3 pb-1 text-xs font-medium text-muted-foreground">{g.title}</p>
+      {active.groups.map((g, gi) => (
+        // Groups are split by a hairline, and the group's name is in ink while its pages are grey: two levels, not one.
+        <div key={g.title} className={cn("flex flex-col gap-1", gi > 0 && "border-t border-border pt-4")}>
+          <p className="px-3 pb-1 text-xs font-bold text-foreground">{g.title}</p>
           {g.links.map((l) => (
             <React.Fragment key={l.href}>
               <Link
