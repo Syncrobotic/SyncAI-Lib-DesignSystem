@@ -240,7 +240,7 @@ export const AvatarSizesAndStatus: S = {
   render: () => (
     <div className="flex items-end gap-4">
       {[
-        { c: "size-6 text-[10px]", i: "AL" },
+        { c: "size-6 text-xs", i: "AL" },
         { c: "size-8", i: "BK" },
         { c: "size-12 text-sm", i: "CW" },
       ].map((a) => (
