@@ -47,6 +47,7 @@ export type StoryFile =
   | "search-field"
   | "theme-toggle"
   | "route-progress"
+  | "data-pieces"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
@@ -492,6 +493,24 @@ const entries: Record<string, Entry> = {
       "Pass `raisedAt` so a flood (over 10 alarms in 10 minutes) is named and the low ones fold away; then fix the root cause the flood points to.",
     ],
   },
+  "share-bar": {
+    group: "Display",
+    examples: { file: "data-pieces", prefix: "ShareBar" },
+    rules: [
+      "How a whole splits into a few parts (up to five, then “Other”). For values over time or many categories, use a chart.",
+      "Colours follow the order you give, never the size, and are never status colours.",
+      "Outside a table cell, show the legend: identity never rests on colour alone. In a table, the column header names the parts.",
+    ],
+  },
+  "restricted-preview": {
+    group: "Display",
+    examples: { file: "data-pieces", prefix: "RestrictedPreview" },
+    rules: [
+      "For pictures someone should choose to see: restricted tiers, faces, number plates. Nothing loads until they ask.",
+      "Neutral, not a warning colour: restricted is a property of the data, not a fault. Say why in `reason`.",
+      "Each preview reveals on its own; log the reveal in `onReveal` if the data needs an audit trail.",
+    ],
+  },
   alert: {
     group: "Feedback",
     examples: { file: "display", prefix: "Alert" },
@@ -521,6 +540,16 @@ const entries: Record<string, Entry> = {
     rules: [
       "Say the range (1–10 of 48) so people know how much there is.",
       "Previous and next disable at the ends. Numbered pages only for long lists people jump around in.",
+      "When the list is a page of its own, use `href` so each page is a URL: shareable, Back works, no JavaScript needed.",
+      "On a phone or in a gallery, prefer LoadMore: pages suit a desktop table, a growing list suits scrolling.",
+    ],
+  },
+  "load-more": {
+    group: "Navigation",
+    examples: { file: "data-pieces", prefix: "LoadMore" },
+    rules: [
+      "Say how much is shown, and on the button how many it adds and how many remain. Never “Load more” alone.",
+      "It disappears once everything is shown. For a desktop table people jump around in, use Pagination.",
     ],
   },
   tabs: { group: "Navigation", examples: { file: "navigation", prefix: "Tabs" } },

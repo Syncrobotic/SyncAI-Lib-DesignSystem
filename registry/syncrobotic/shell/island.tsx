@@ -1,4 +1,4 @@
-// @syncrobotic/island v0.11.1 · update: npx shadcn add @syncrobotic/island --overwrite
+// @syncrobotic/island v0.12.0 · update: npx shadcn add @syncrobotic/island --overwrite
 "use client"
 
 import * as React from "react"
@@ -16,12 +16,18 @@ type Zone = "name" | "status" | "bell"
 export type IslandLabels = {
   attention: string
   status: string
+  offline: string
+  charging: string
+  battery: (percent: number) => string
   notifications: (unread: number) => string
 }
 
 export const defaultIslandLabels: IslandLabels = {
   attention: "Another dog needs attention",
   status: "Device status",
+  offline: "offline",
+  charging: "charging",
+  battery: (n) => `battery ${n}%`,
   notifications: (unread) => `Notifications, ${unread} unread`,
 }
 
@@ -100,7 +106,8 @@ export function Island({
         <button
           type="button"
           aria-expanded={open === "status"}
-          aria-label={low && !loading ? `${l.status}, battery ${battery}%` : l.status}
+          // Every state the icons show is also said: offline and charging matter as much as a low battery.
+          aria-label={loading ? l.status : [l.status, !online && l.offline, charging && l.charging, (low || charging) && l.battery(battery)].filter(Boolean).join(", ")}
           onClick={() => toggle("status")}
           className={zone("status")}
         >

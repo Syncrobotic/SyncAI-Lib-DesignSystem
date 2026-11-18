@@ -1,4 +1,4 @@
-// @syncrobotic/status-glyph v0.10.0 · update: npx shadcn add @syncrobotic/status-glyph --overwrite
+// @syncrobotic/status-glyph v0.12.0 · update: npx shadcn add @syncrobotic/status-glyph --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
@@ -39,10 +39,13 @@ export function StatusGlyph({ tone, className }: { tone: Tone; className?: strin
 /** Text colour per tone. Shared by every status display so a tone always means the same colour. */
 export const toneText = color
 
-/** Subtle tint per tone, for backgrounds behind tone text. */
+/**
+ * Subtle tint per tone, for backgrounds behind tone text. Busy and normal are calm states, so they stay grey like their
+ * text: only warning and danger tint a surface.
+ */
 export const toneSubtle: Record<Tone, string> = {
-  info: "bg-info-subtle",
-  success: "bg-success-subtle",
+  info: "bg-neutral-subtle",
+  success: "bg-neutral-subtle",
   warning: "bg-warning-subtle",
   danger: "bg-danger-subtle",
   neutral: "bg-neutral-subtle",

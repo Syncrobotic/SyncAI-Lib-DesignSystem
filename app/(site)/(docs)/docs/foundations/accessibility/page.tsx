@@ -22,7 +22,7 @@ const pairs: { fg: string; bg: string; use: string }[] = [
   { fg: "warning", bg: "card", use: "Warning text in a card" },
   { fg: "success", bg: "background", use: "Success text in a page" },
   { fg: "success", bg: "card", use: "Success text in a card" },
-  { fg: "info", bg: "background", use: "Links" },
+  { fg: "info", bg: "background", use: "A process being waited on: progress, a running stage" },
   { fg: "white", bg: "stop", use: "Emergency stop label" },
 ]
 
