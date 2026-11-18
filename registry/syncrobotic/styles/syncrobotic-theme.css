@@ -214,6 +214,7 @@
    * Note: shadcn's default button and input use rounded-md and its card uses rounded-xl.
    * When adding them to this registry, move them to the steps above (button rounded-sm, card rounded-md).
    */
+  --radius-2xs: 0.25rem; /* 4: controls 24 px and smaller (checkbox, kbd, a handle in a tight row), so they keep a square shape */
   --radius-xs: 0.5rem;
   --radius-sm: 0.75rem;
   --radius-md: 1rem;

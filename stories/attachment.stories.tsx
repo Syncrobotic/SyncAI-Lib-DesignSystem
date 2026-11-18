@@ -32,7 +32,7 @@ export const AttachmentChips: S = {
 
 export const AttachmentInComposer: S = {
   render: () => (
-    <div className="flex flex-col gap-2 rounded-md bg-card p-2 ring-1 ring-border">
+    <div className="flex flex-col gap-2 rounded-lg bg-card p-2 ring-1 ring-border">
       <div className="flex flex-wrap gap-2">
         <Attachment variant="chip" name="obstacle.jpg" size={900 * 1024} onRemove={noop} />
         <Attachment variant="chip" name="7F3A-log.mcap" size={12 * 1024 ** 2} onRemove={noop} />
