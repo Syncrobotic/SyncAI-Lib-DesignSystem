@@ -1,7 +1,7 @@
 {
   "syncrobotic-theme": {
     "version": "0.10.0",
-    "hash": "358062fcab06ecf2"
+    "hash": "50b75b043e9b2539"
   },
   "cn": {
     "version": "0.5.0",
@@ -100,8 +100,8 @@
     "hash": "9e521392d3860c92"
   },
   "checkbox": {
-    "version": "0.7.0",
-    "hash": "ad2050935b414de0"
+    "version": "0.10.0",
+    "hash": "52eadf07446dee41"
   },
   "radio-group": {
     "version": "0.7.0",
@@ -216,8 +216,8 @@
     "hash": "1c718ef5ec09500b"
   },
   "command": {
-    "version": "0.9.0",
-    "hash": "0857492bb8a696bf"
+    "version": "0.10.0",
+    "hash": "ef9406c1f274c0c8"
   },
   "item": {
     "version": "0.9.0",
@@ -228,8 +228,8 @@
     "hash": "1c6f59a6a871308a"
   },
   "kbd": {
-    "version": "0.9.0",
-    "hash": "865079a18d9b1fb9"
+    "version": "0.10.0",
+    "hash": "65456e28766e23bd"
   },
   "button-group": {
     "version": "0.9.0",
@@ -272,8 +272,8 @@
     "hash": "43243c551675fd98"
   },
   "sortable": {
-    "version": "0.9.0",
-    "hash": "02a528b4ec0ea465"
+    "version": "0.10.0",
+    "hash": "fab9ba8dd8436d8a"
   },
   "resizable": {
     "version": "0.9.0",
@@ -300,12 +300,12 @@
     "hash": "8655c77429cb87ac"
   },
   "scrollspy": {
-    "version": "0.9.0",
-    "hash": "f50d11f9cd2b215b"
+    "version": "0.10.0",
+    "hash": "08fe28dc16f4b51e"
   },
   "navigation-menu": {
-    "version": "0.9.0",
-    "hash": "d208c36788b4fa08"
+    "version": "0.10.0",
+    "hash": "4cc99f4a6f4bc89b"
   },
   "questionnaire": {
     "version": "0.9.0",
@@ -348,8 +348,8 @@
     "hash": "0b2fa9cac43c1b68"
   },
   "list-detail": {
-    "version": "0.8.0",
-    "hash": "e04ee1c2608f0db9"
+    "version": "0.10.0",
+    "hash": "d421f02593a991c3"
   },
   "event-log": {
     "version": "0.8.0",
@@ -552,8 +552,8 @@
     "hash": "6c5d29608c824697"
   },
   "mission-schedule": {
-    "version": "0.9.0",
-    "hash": "2a81cfcc65bfda50"
+    "version": "0.10.0",
+    "hash": "38f04a526fab53bf"
   },
   "users-invitations": {
     "version": "0.9.0",

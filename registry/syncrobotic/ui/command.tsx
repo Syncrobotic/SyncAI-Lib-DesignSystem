@@ -1,4 +1,4 @@
-// @syncrobotic/command v0.9.0 · update: npx shadcn add @syncrobotic/command --overwrite
+// @syncrobotic/command v0.10.0 · update: npx shadcn add @syncrobotic/command --overwrite
 "use client"
 
 import * as React from "react"
@@ -114,7 +114,7 @@ export function CommandItem({ className, ...props }: React.ComponentProps<typeof
     <CommandPrimitive.Item
       data-slot="command-item"
       className={cn(
-        "flex h-(--h-md) cursor-default items-center gap-2 rounded-sm px-3 text-sm outline-none select-none",
+        "flex h-(--h-md) cursor-default items-center gap-2 rounded-xs px-3 text-sm outline-none select-none",
         "data-[selected=true]:bg-accent data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
         "[&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground",
         className,

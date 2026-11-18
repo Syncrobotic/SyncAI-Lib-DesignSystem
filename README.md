@@ -122,6 +122,7 @@ npm run build            # registry JSON in public/r + docs site
 npm run build-storybook
 npm run test:stories     # every story, dark and light: screenshot against its baseline, then axe (WCAG 2.2 AA)
 npm run test:registry    # installs every item into a fresh Next.js app, then typechecks and builds it
+npm run check:radius     # with the site running (npm start): nested corners on every page follow outer = inner + padding
 ```
 
 ### Repository layout
@@ -143,6 +144,7 @@ Baselines live in `tests/__screenshots__/` and are written only by CI (Actions â
 
 - No arbitrary Tailwind lengths (`h-[72px]`); use tokens (`h-(--h-stop)`, `rounded-md`)
 - No raw colours; use tokens such as `bg-stop` and `text-info`
+- Font sizes only from the scale: xs, sm, base, lg, xl, 2xl, 3xl, 4xl, 5xl (Tailwind's other sizes are cleared from the theme)
 - `rounded-full` only for round things (avatars, dots, switch, radio, tracks, count badges, grabber); everything else uses `rounded-xs`â€¦`rounded-xl`
 - Animation only marks a state change and uses the motion tokens; in JavaScript, import `site/motion.ts`
 - Spacing only 1, 2, 3, 4, 6, 8 (4, 8, 12, 16, 24, 32 px)

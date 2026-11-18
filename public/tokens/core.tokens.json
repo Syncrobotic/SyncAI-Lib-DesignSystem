@@ -1,6 +1,10 @@
 {
   "$description": "SYNCROBOTIC design tokens. Generated from syncrobotic-theme.css; do not edit.",
   "radius": {
+    "2xs": {
+      "$type": "dimension",
+      "$value": "4px"
+    },
     "xs": {
       "$type": "dimension",
       "$value": "8px"

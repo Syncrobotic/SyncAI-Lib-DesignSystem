@@ -1,4 +1,4 @@
-// @syncrobotic/mission-schedule v0.9.0 · update: npx shadcn add @syncrobotic/mission-schedule --overwrite
+// @syncrobotic/mission-schedule v0.10.0 · update: npx shadcn add @syncrobotic/mission-schedule --overwrite
 "use client"
 
 import * as React from "react"
@@ -131,7 +131,7 @@ export function MissionSchedule() {
                       {l.slots.map((s) => (
                         <li
                           key={s.start}
-                          className={cn("absolute inset-y-2 flex items-center overflow-hidden rounded-sm px-2 text-xs", slotStyle[s.state])}
+                          className={cn("absolute inset-y-2 flex items-center overflow-hidden rounded-xs px-2 text-xs", slotStyle[s.state])}
                           style={{ left: `${(s.start / HOURS) * 100}%`, width: `${((s.end - s.start) / HOURS) * 100}%` }}
                         >
                           <span className="truncate">
