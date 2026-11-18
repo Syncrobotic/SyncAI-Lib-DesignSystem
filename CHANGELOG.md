@@ -2,7 +2,7 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.10.1 · 2026-11-18
 
 ### Changed
 - Docs home page: a front page, not a sitemap. About two screens instead of five: what it is beside the working emergency stop, then how to install, the three rules side by side, and one row each for foundations, components and blocks (with counts). "Get started" leads, since most visitors are here to install. The full foundations and component grids stay on their own pages.
