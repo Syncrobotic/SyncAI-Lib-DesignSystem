@@ -71,7 +71,7 @@
     },
     "ring": {
       "$type": "color",
-      "$value": "#2952b8"
+      "$value": "{color.foreground}"
     },
     "disabled": {
       "$type": "color",
@@ -147,23 +147,23 @@
     },
     "chart-1": {
       "$type": "color",
-      "$value": "#2a78d6"
+      "$value": "#663e9e"
     },
     "chart-2": {
       "$type": "color",
-      "$value": "#eb6834"
+      "$value": "#00929f"
     },
     "chart-3": {
       "$type": "color",
-      "$value": "#1baf7a"
+      "$value": "#6b7f09"
     },
     "chart-4": {
       "$type": "color",
-      "$value": "#eda100"
+      "$value": "#943171"
     },
     "chart-5": {
       "$type": "color",
-      "$value": "#e87ba4"
+      "$value": "#71717a"
     }
   },
   "shadow": {

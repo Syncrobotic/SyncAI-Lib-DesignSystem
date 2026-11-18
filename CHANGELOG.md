@@ -2,6 +2,16 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+Re-install `syncrobotic-theme`, `badge` and `icon-tile`.
+
+### Changed
+- **Focus ring is the foreground colour** (white on dark, ink on light), no longer the in-progress blue: blue now means in progress and nothing else.
+- **Chart palette moves off the status hues.** Series 1–4 are violet, teal, olive and magenta, between the status hues, so no series reads as info, success, warning or danger; series 5 is grey for "Other". Validated for colour-vision deficiency (worst adjacent ΔE 14.6 dark, 16.0 light) and 3:1 against the card.
+- **Type scale is locked.** It gains 2xl (24/32, the number that leads a card) and 4xl (36/40, hero on phones), and Tailwind's other sizes are cleared, so an off-scale size produces nothing; lint reports 6xl–9xl.
+- **`badge` and `icon-tile`: `tone="success"` is neutral.** A calm state is grey; green is kept for confirmations that come and go (Toast, Alert). The prop value still works.
+
 ## 0.9.1 · 2026-11-18
 
 ### Changed

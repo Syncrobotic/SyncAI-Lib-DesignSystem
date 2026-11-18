@@ -10,8 +10,8 @@ export const metadata: Metadata = metaFor("color")
 
 const neutrals = ["background", "card", "secondary", "border", "muted-foreground", "foreground"]
 const tones = [
-  { t: "info", means: "In progress, focus ring" },
-  { t: "success", means: "Normal, done" },
+  { t: "info", means: "In progress, and nothing else" },
+  { t: "success", means: "Just done: a confirmation that comes and goes (toast, alert). A calm state stays grey." },
   { t: "warning", means: "Needs attention soon" },
   { t: "danger", means: "Failed, destructive, stopped" },
   { t: "neutral", means: "Offline, inactive" },
@@ -36,7 +36,7 @@ const groups: { title: string; tokens: string[]; use: Record<string, string> }[]
   {
     title: "Emphasis",
     tokens: ["primary", "primary-foreground", "ring"],
-    use: { primary: "Primary action, selected", "primary-foreground": "Text on primary", ring: "Focus ring" },
+    use: { primary: "Primary action, selected", "primary-foreground": "Text on primary", ring: "Focus ring: the foreground colour, so focus never looks like a status" },
   },
   {
     title: "Status (pairs)",

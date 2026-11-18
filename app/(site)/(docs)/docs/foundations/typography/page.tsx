@@ -7,7 +7,9 @@ export const metadata: Metadata = metaFor("typography")
 
 const scale = [
   { key: "5xl", cls: "text-5xl", role: "Hero", use: "Marketing page headlines only" },
-  { key: "3xl", cls: "text-3xl", role: "Display", use: "Page titles, big numbers" },
+  { key: "4xl", cls: "text-4xl", role: "Hero, phone", use: "Marketing headlines on phones" },
+  { key: "3xl", cls: "text-3xl", role: "Display", use: "Page titles" },
+  { key: "2xl", cls: "text-2xl", role: "Figure", use: "The number that leads a card or chart" },
   { key: "xl", cls: "text-xl", role: "Title", use: "Section and sheet titles" },
   { key: "lg", cls: "text-lg", role: "Heading", use: "Card titles, emergency stop label" },
   { key: "base", cls: "text-base", role: "Body", use: "Paragraphs, inputs" },
@@ -21,7 +23,7 @@ export default function TypographyPage() {
     <article>
       <DocHeader
         title="Typography"
-        lead="Six sizes, three weights, one family. Every line height is a multiple of 4, so text sits on the same grid as spacing and components."
+        lead="Nine sizes, three weights, one family. Every line height is a multiple of 4, so text sits on the same grid as spacing and components. A size off the scale produces nothing and CI reports it."
       />
 
       <Section id="family" title="Typeface" lead="Geist for Latin, with a Traditional Chinese fallback. Fonts ship with the product; they are never loaded from a CDN.">

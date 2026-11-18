@@ -132,7 +132,7 @@ export default function HomePage() {
         <div className="mx-auto flex max-w-6xl flex-col gap-section-sm px-4 py-section-sm lg:py-section">
           <Appear stagger={0.04} className="flex flex-col gap-6">
             <AppearItem>
-              <h1 className="max-w-4xl text-4xl font-bold tracking-tight text-balance sm:text-6xl">Interfaces for the people who run robots.</h1>
+              <h1 className="max-w-4xl text-4xl font-bold tracking-tight text-balance sm:text-5xl">Interfaces for the people who run robots.</h1>
             </AppearItem>
             <AppearItem>
               <p className="max-w-2xl text-lg text-muted-foreground">

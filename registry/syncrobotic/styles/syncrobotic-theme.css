@@ -1,4 +1,4 @@
-/* @syncrobotic/syncrobotic-theme v0.9.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
+/* @syncrobotic/syncrobotic-theme v0.10.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
 /*
  * SYNCROBOTIC theme · design system 0.5.0 (see CHANGELOG.md)
  * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
@@ -39,7 +39,7 @@
   --destructive: #b0302b;
   --border: #dcdce1;
   --input: #dcdce1;
-  --ring: #2952b8;
+  --ring: var(--foreground); /* focus is not a status: the ink colour, never the in-progress blue */
   --disabled: #a1a1aa;
 
   --info: #2952b8;
@@ -69,11 +69,14 @@
    * (dataviz validator: adjacent CVD ΔE ≥ 8, normal-vision ≥ 15). Slots 3–5 sit under 3:1 on white,
    * so charts always ship a legend, direct labels and a table view. Use status colours for status, never as series.
    */
-  --chart-1: #2a78d6;
-  --chart-2: #eb6834;
-  --chart-3: #1baf7a;
-  --chart-4: #eda100;
-  --chart-5: #e87ba4;
+  /* Series identity only. Hues sit between the status hues (blue 262, green 162, amber 60–85, red 25) so no series
+     reads as a status: violet 300, teal 205, olive 120, magenta 345, then grey for "Other". Validated for CVD
+     (worst adjacent ΔE 16 deutan) and 3:1 against the card. */
+  --chart-1: #663e9e;
+  --chart-2: #00929f;
+  --chart-3: #6b7f09;
+  --chart-4: #943171;
+  --chart-5: #71717a;
 
   /* Heights */
   --h-tag: 1.5rem;    /* 24 tag, not interactive */
@@ -112,7 +115,7 @@
   --destructive: #ee8580;
   --border: #2c2c32;
   --input: #2c2c32;
-  --ring: #7da4e6;
+  --ring: var(--foreground);
   --disabled: #63636b;
 
   --info: #7da4e6;
@@ -129,11 +132,11 @@
   --stop: #dc2626;
   --stop-deep: #7f1d1d;
 
-  --chart-1: #3987e5;
-  --chart-2: #d95926;
-  --chart-3: #199e70;
-  --chart-4: #c98500;
-  --chart-5: #d55181;
+  --chart-1: #7d56b8;
+  --chart-2: #13a5b2;
+  --chart-3: #82972f;
+  --chart-4: #af4a88;
+  --chart-5: #8f8f98;
 
   --map: #0d0d10;
   --map-point: #6f7682;
@@ -220,7 +223,9 @@
   /* Font: bundled with the app, never loaded from a CDN */
   --font-sans: "Geist", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
 
-  /* Type scale: six steps, every line height a multiple of 4. Inputs use base (16) so iOS does not zoom */
+  /* Type scale: nine steps, every line height a multiple of 4. Inputs use base (16) so iOS does not zoom.
+     Tailwind's own sizes are cleared first, so a size off this scale (text-6xl) produces nothing and lint reports it. */
+  --text-*: initial;
   --text-xs: 0.75rem;      /* caption 12/16 */
   --text-xs--line-height: 1rem;
   --text-sm: 0.875rem;     /* label 14/20 */
@@ -231,8 +236,12 @@
   --text-lg--line-height: 1.5rem;
   --text-xl: 1.25rem;      /* title 20/28 */
   --text-xl--line-height: 1.75rem;
+  --text-2xl: 1.5rem;      /* figure 24/32: a number that leads a card */
+  --text-2xl--line-height: 2rem;
   --text-3xl: 1.75rem;     /* display 28/36 */
   --text-3xl--line-height: 2.25rem;
+  --text-4xl: 2.25rem;     /* hero on phones 36/40, marketing pages only */
+  --text-4xl--line-height: 2.5rem;
   --text-5xl: 3rem;        /* hero 48/52, marketing pages only */
   --text-5xl--line-height: 3.25rem;
 
