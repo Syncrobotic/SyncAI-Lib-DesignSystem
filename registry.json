@@ -21,7 +21,7 @@
           {
             "version": "0.10.0",
             "date": "2026-11-18",
-            "note": "Focus ring is the foreground colour, no longer the in-progress blue. Chart palette moves off the status hues (violet, teal, olive, magenta, grey for Other), CVD-validated. Type scale gains 2xl (24, figures) and 4xl (36, hero on phones) and is locked: sizes off the scale produce nothing. Adds radius-2xs (4) for controls 24 px and smaller. Warning and danger are told apart by hue and lightness (deutan ΔE 12.5 light / 23.2 dark, was 1.5). Adds --ease-exit for exits. Blue is defined: a process someone is waiting on, never a state."
+            "note": "Focus ring is the foreground colour, no longer the in-progress blue. Chart palette moves off the status hues (violet, teal, olive, magenta, grey for Other), CVD-validated. Type scale gains 2xl (24, figures) and 4xl (36, hero on phones) and is locked: sizes off the scale produce nothing. Adds radius-2xs (4) for controls 24 px and smaller. Warning and danger are told apart by hue and lightness (deutan ΔE 10.8 light / 21.6 dark, was 1.5; 4.8:1 or more as text on every surface). Adds --ease-exit for exits. Blue is defined: a process someone is waiting on, never a state."
           },
           {
             "version": "0.9.0",
@@ -638,8 +638,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Works over plain HTTP (falls back to execCommand when the Clipboard API is missing or refused), says so when the copy fails instead of failing silently, and announces the result for icon buttons too. Exports copyText()."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
