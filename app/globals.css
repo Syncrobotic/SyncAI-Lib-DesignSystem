@@ -1,8 +1,12 @@
-@import "tailwindcss";
+/* source(none): Tailwind only reads the folders that render, not the whole repo (READMEs, the built registry JSON, agent
+   skills and their examples would otherwise add classes nobody uses). A new folder of UI code goes on this list. */
+@import "tailwindcss" source(none);
 @import "../registry/syncrobotic/styles/syncrobotic-theme.css";
+@source "../app";
 @source "../registry";
 @source "../stories";
 @source "../site";
+@source "../lib";
 
 /* The theme switches on the .dark class, not on the OS setting. */
 @custom-variant dark (&:where(.dark, .dark *));
