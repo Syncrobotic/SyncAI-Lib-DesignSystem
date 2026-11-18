@@ -28,7 +28,6 @@ export default function AlarmsPage() {
   return (
     <article>
       <DocHeader
-        eyebrow="Foundations · 10"
         title="Alarms"
         lead="An operator watching twenty robots can act on only a few things at once. Alarms decide which, and how loudly. The rules follow ISA-18.2 and IEC 62682, the standards for industrial alarm management."
       />

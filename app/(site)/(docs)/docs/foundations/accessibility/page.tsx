@@ -48,7 +48,6 @@ export default function AccessibilityPage() {
   return (
     <article>
       <DocHeader
-        eyebrow="Foundations · 09"
         title="Accessibility"
         lead="Accessibility is part of the tokens, not a review step. Contrast below is computed from the theme file on every build."
       />

@@ -73,7 +73,7 @@ export default async function ComponentPage({ params }: Props) {
   return (
     <article>
       <div className="flex flex-wrap items-start justify-between gap-x-6">
-        <PageTitle eyebrow={item.group} title={item.title} lead={item.description} />
+        <PageTitle title={item.title} lead={item.description} />
         <div className="flex flex-wrap items-center gap-2 pb-6 sm:pt-6">
           {meta && (
             <a href="#changelog" className="font-mono text-sm text-muted-foreground tabular-nums underline-offset-4 hover:underline">

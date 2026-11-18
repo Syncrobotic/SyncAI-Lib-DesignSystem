@@ -41,7 +41,7 @@ export default async function BlockTypePage({ params }: Props) {
 
   return (
     <article>
-      <PageTitle eyebrow={`Blocks · ${type.group} · ${list.length} ${list.length === 1 ? "block" : "blocks"}`} title={type.title} lead={type.description} />
+      <PageTitle title={type.title} lead={type.description} />
 
       <section aria-labelledby="overview" className="grid gap-6 sm:grid-cols-2">
         <h2 id="overview" className="sr-only">

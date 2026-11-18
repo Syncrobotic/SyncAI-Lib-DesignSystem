@@ -19,7 +19,6 @@ export default function SpacingPage() {
   return (
     <article>
       <DocHeader
-        eyebrow="Foundations · 04"
         title="Spacing"
         lead="Everything sits on a 4 px base and uses six steps. Fewer choices make layouts consistent across teams, and CI rejects any other value in shipped components."
       />

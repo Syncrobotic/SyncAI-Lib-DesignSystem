@@ -10,6 +10,8 @@ import { CodeBlock } from "@/site/code-block"
 import { site } from "@/site/config"
 import { Appear, AppearItem, Reveal } from "@/site/appear"
 import { fast, FoundationGrid } from "@/site/foundation-previews"
+import { HeroDemo } from "@/site/hero-demo"
+import { blockGroups, blockTypes, placement } from "@/site/block-types"
 import pkg from "../../package.json"
 import { color, px, themeValue } from "@/site/theme-tokens"
 
@@ -35,23 +37,6 @@ const jsonLd = {
       author: { "@id": org["@id"] },
     },
   ],
-}
-
-/** The hero: the language applied, as a real screen (the operations console app shell), not a collage of swatches. */
-function ProductShot() {
-  return (
-    <div aria-hidden className="relative h-90 w-full overflow-hidden lg:w-xl rounded-md bg-background ring-1 ring-border">
-      <iframe
-        src="/preview/console-overview"
-        title="Operations console"
-        tabIndex={-1}
-        inert
-        loading="eager"
-        className="pointer-events-none absolute top-0 left-0 origin-top-left"
-        style={{ width: 1280, height: 800, transform: "scale(0.45)" }}
-      />
-    </div>
-  )
 }
 
 const samples: Record<string, React.ReactNode> = {
@@ -107,13 +92,10 @@ const samples: Record<string, React.ReactNode> = {
   ),
 }
 
-/** Every section below the hero opens the same way: eyebrow, title and lead arrive in sequence as it scrolls into view. */
-function SectionHead({ eyebrow, title, children }: { eyebrow: string; title: string; children: React.ReactNode }) {
+/** A section opens with its title and one line; the title carries the weight, no label above it. */
+function SectionHead({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <Reveal className="flex flex-col gap-2">
-      <AppearItem>
-        <p className="text-sm font-medium text-muted-foreground">{eyebrow}</p>
-      </AppearItem>
       <AppearItem>
         <h2 className="text-3xl font-bold">{title}</h2>
       </AppearItem>
@@ -124,6 +106,22 @@ function SectionHead({ eyebrow, title, children }: { eyebrow: string; title: str
   )
 }
 
+const componentCount = items.filter((i) => i.group !== "Hooks").length
+const blockCount = Object.keys(placement).length
+
+// The three rules the hero demonstrates, in the words the foundations use.
+const rules = [
+  {
+    title: "Solid red means stop.",
+    body: "The emergency stop is the only solid red on any screen. Everything else that is wrong is a tint, a shape and a word.",
+  },
+  { title: "Colour means something is wrong.", body: "A calm fleet is grey. Blue means work in progress, amber needs attention, red needs someone now." },
+  {
+    title: "Made for one thumb, outdoors.",
+    body: "Dark by default, 44 px touch targets, status as a shape and a word so it reads in sunlight and without colour.",
+  },
+]
+
 export default function HomePage() {
   const firstOf = (g: string) => items.find((i) => i.group === g)?.name
   return (
@@ -131,17 +129,15 @@ export default function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <section className="border-b border-border">
-        <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 py-section-sm lg:py-section lg:grid-cols-[1fr_auto]">
+        <div className="mx-auto flex max-w-6xl flex-col gap-section-sm px-4 py-section-sm lg:py-section">
           <Appear stagger={0.04} className="flex flex-col gap-6">
             <AppearItem>
-              <p className="text-sm font-medium text-muted-foreground">SYNCROBOTIC Design System</p>
+              <h1 className="max-w-4xl text-4xl font-bold tracking-tight text-balance sm:text-6xl">Interfaces for the people who run robots.</h1>
             </AppearItem>
             <AppearItem>
-              <h1 className="max-w-xl text-3xl font-bold tracking-tight sm:text-5xl">One design language for every product we build.</h1>
-            </AppearItem>
-            <AppearItem>
-              <p className="max-w-lg text-lg text-muted-foreground">
-                How we define colour, type, spacing, radius, depth and motion, written down once and shipped as tokens and React components every team can use.
+              <p className="max-w-2xl text-lg text-muted-foreground">
+                The SYNCROBOTIC design language, written down once: tokens, {componentCount} React components and {blockCount} blocks for fleet consoles and the
+                apps operators hold outdoors.
               </p>
             </AppearItem>
             <AppearItem className="flex flex-wrap gap-3">
@@ -149,7 +145,7 @@ export default function HomePage() {
                 href="/docs/foundations"
                 className="press inline-flex h-(--h-lg) items-center gap-2 rounded-sm bg-primary px-6 font-medium text-primary-foreground"
               >
-                Explore the foundations <ArrowRight aria-hidden className="size-4" />
+                Read the foundations <ArrowRight aria-hidden className="size-4" />
               </Link>
               <Link
                 href="/docs/components/button"
@@ -159,24 +155,34 @@ export default function HomePage() {
               </Link>
             </AppearItem>
           </Appear>
-          {/* The screenshot arrives with the words, after them, so the first screen moves as one. */}
-          <Appear stagger={0.04}>
+          {/* The exhibit beside the three rules it demonstrates: a working stop, not a screenshot. */}
+          <Appear stagger={0.06} className="grid items-start gap-8 lg:grid-cols-[auto_1fr]">
             <AppearItem>
-              <ProductShot />
+              <HeroDemo />
+            </AppearItem>
+            <AppearItem>
+              <dl className="flex flex-col border-t border-border">
+                {rules.map((r) => (
+                  <div key={r.title} className="grid gap-2 border-b border-border py-6 sm:grid-cols-[14rem_1fr] sm:gap-8">
+                    <dt className="font-bold">{r.title}</dt>
+                    <dd className="max-w-prose text-muted-foreground">{r.body}</dd>
+                  </div>
+                ))}
+              </dl>
             </AppearItem>
           </Appear>
         </div>
       </section>
 
       <section className="mx-auto flex max-w-6xl flex-col gap-8 px-4 pt-section-sm lg:pt-section">
-        <SectionHead eyebrow="Foundations" title="The decisions behind every screen">
+        <SectionHead title="The decisions behind every screen">
           Read these before you design or build. Every value is parsed from the theme file, so the docs never drift from what ships.
         </SectionHead>
         <FoundationGrid />
       </section>
 
       <section className="mx-auto flex max-w-6xl flex-col gap-8 px-4 pt-section-sm lg:pt-section">
-        <SectionHead eyebrow="Components" title="The language, already applied">
+        <SectionHead title="The language, already applied">
           {items.filter((i) => i.group !== "Hooks").length} components built on the tokens: general UI for any product, plus the robot shell for control apps.
         </SectionHead>
         {/* Same arrival and the same hover as the Foundations grid: lift the exhibit, show the arrow. */}
@@ -225,16 +231,43 @@ export default function HomePage() {
         </Reveal>
       </section>
 
+      <section className="mx-auto flex max-w-6xl flex-col gap-8 px-4 pt-section-sm lg:pt-section">
+        <SectionHead title="Whole screens, ready to install">
+          {blockCount} blocks built from those components, with real copy and real states. Install one and it lands as source you own.
+        </SectionHead>
+        <Reveal className="flex flex-col border-t border-border">
+          {blockGroups.map((g) => {
+            const types = blockTypes.filter((t) => t.group === g)
+            const count = Object.values(placement).filter((p) => types.some((t) => t.slug === p.type)).length
+            return (
+              <AppearItem key={g}>
+                <Link
+                  href={`/blocks#group-${g}`}
+                  className={`group grid gap-2 border-b border-border py-6 sm:grid-cols-[14rem_1fr_auto] sm:items-baseline sm:gap-8 ${fast}`}
+                >
+                  <span className="text-xl font-bold group-hover:underline">{g}</span>
+                  <span className="text-muted-foreground">{types.map((t) => t.title).join(", ")}</span>
+                  <span className="text-sm text-muted-foreground tabular-nums">{count} blocks</span>
+                </Link>
+              </AppearItem>
+            )
+          })}
+        </Reveal>
+      </section>
+
       <section className="mx-auto max-w-6xl px-4 pt-section-sm lg:pt-section">
         <Reveal>
-          <AppearItem className="grid items-center gap-8 rounded-xl border border-border bg-card p-8 lg:grid-cols-2">
+          <AppearItem className="grid items-center gap-8 border-t border-border pt-8 lg:grid-cols-2">
             <div className="flex flex-col gap-3">
               <h2 className="text-xl font-bold">Use it in a project</h2>
               <p className="text-muted-foreground">
                 Install the theme and components into any React or Next.js app with the shadcn CLI. The theme replaces shadcn&apos;s defaults; components land
                 as source you can read and adapt.
               </p>
-              <Link href="/docs/installation" className="inline-flex items-center gap-2 text-sm font-medium text-foreground underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground">
+              <Link
+                href="/docs/installation"
+                className="inline-flex items-center gap-2 text-sm font-medium text-foreground underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground"
+              >
                 Installation guide <ArrowRight aria-hidden className="size-4" />
               </Link>
             </div>

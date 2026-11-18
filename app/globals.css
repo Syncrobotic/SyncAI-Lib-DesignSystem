@@ -27,6 +27,19 @@
   }
 }
 
+/* The parts the browser draws itself, themed from the palette: text selection, the caret, scrollbars and native
+   controls. Selection is neutral (blue would read as "in progress"); scrollbars are thin and quiet. */
+::selection {
+  background: color-mix(in oklab, var(--foreground) 22%, transparent);
+  color: var(--foreground);
+}
+html {
+  caret-color: var(--foreground);
+  accent-color: var(--primary);
+  scrollbar-color: var(--border) transparent;
+  scrollbar-width: thin;
+}
+
 /* shiki dual theme: colours come from CSS variables, the surface comes from our card. */
 .code pre {
   background: transparent !important;

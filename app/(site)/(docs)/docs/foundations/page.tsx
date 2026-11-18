@@ -13,7 +13,6 @@ export default function FoundationsPage() {
   return (
     <article>
       <DocHeader
-        eyebrow="Foundations"
         title="One design language for every product"
         lead="Apps, dashboards, internal tools and marketing pages share these decisions. Designers use them to choose; engineers get them as CSS variables and Tailwind utilities from one theme file."
       />
