@@ -7,6 +7,7 @@ Components install as source, so a project keeps the version it installed. Re-ru
 Re-install `syncrobotic-theme`, `badge`, `icon-tile`, `checkbox`, `kbd`, `sortable`, `command`, `navigation-menu`, `scrollspy`, `list-detail` and `mission-schedule`.
 
 ### Fixed
+- Popover example "with form" used a native number input (the browser's own spinner, no unit, no range); it uses `NumberField` now. Lint rejects `<Input type="number">` and now also checks the examples (stories), where it found four more off-scale values (a 10 px label, 40 and 48 px gaps), all fixed.
 - Nested corners follow the radius rule (outer = inner + padding) everywhere: items in panels with 8 px padding use radius 8, not 12 (`command`, `navigation-menu`, `scrollspy`, `list-detail`, `mission-schedule`). A new radius-2xs (4) keeps controls of 24 px and smaller square: the `checkbox` no longer reads as a radio button, and `kbd` and the `sortable` handle sit clear of the corner around them. `npm run check:radius` checks every docs page and block preview; it found 12 cases and now finds none.
 - Docs home: the hero no longer frames the dock in a box of the same radius (24 inside 24, which the radius rule forbids); the readouts and the dock stand on the page.
 

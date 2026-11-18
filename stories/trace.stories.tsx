@@ -162,6 +162,7 @@ export const TraceAllStatuses: S = {
 export const TraceCI: S = {
   render: () => (
     <div className="flex flex-col gap-2">
+      {/* tokens-ok: a build number, not a colour */}
       <TraceHeader title="Map build #312" status="error" duration={96_000} counts={{ done: 3, error: 1, skipped: 1 }} />
       <Trace>
         <TraceItem status="done" title="Checkout" duration={4000} />

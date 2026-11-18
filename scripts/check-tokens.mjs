@@ -8,7 +8,7 @@
 import { readFileSync, readdirSync, statSync } from "node:fs"
 import { join } from "node:path"
 
-const ROOTS = process.argv.slice(2).length ? process.argv.slice(2) : ["registry", "site", "app"]
+const ROOTS = process.argv.slice(2).length ? process.argv.slice(2) : ["registry", "site", "app", "stories"]
 const SPACING_OK = new Set(["0", "px", "0.5", "1", "2", "3", "4", "6", "8"])
 // Files allowed to use rounded-full, and for what. The Radius page lists the same uses.
 const ROUND = {
@@ -30,6 +30,9 @@ const ROUND = {
   "registry/syncrobotic/ui/trace.tsx": "waterfall bar track and fill",
   "registry/syncrobotic/ui/stepper.tsx": "step circles and the compact progress track",
   "registry/syncrobotic/ui/timeline.tsx": "event dots",
+  "stories/calendar.stories.tsx": "booked-day dot",
+  "stories/display.stories.tsx": "status dot on an avatar",
+  "stories/file-upload.stories.tsx": "avatar upload: the avatar is a circle",
   "registry/syncrobotic/blocks/wizard-commission.tsx": "dot of a self-check that has not started",
   "registry/syncrobotic/ui/questionnaire.tsx": "progress track",
   "site/prose.tsx": "list bullet dot",
@@ -49,6 +52,11 @@ const rules = [
     test: (m) => !SPACING_OK.has(m[1]),
   },
   { name: "Font size off the scale (use xs, sm, base, lg, xl, 2xl, 3xl, 4xl or 5xl)", re: /(?<![\w-])text-([6-9]xl)\b/g },
+  {
+    // A native number input draws the browser's own spinner and has no unit or range. NumberField has both.
+    name: "Native number input (use NumberField: 44 px steppers, a unit and a range)",
+    re: /<Input\b[^>]*type="number"/g,
+  },
   { name: "Font weight off the scale (use only 400, 500, 700)", re: /\bfont-(thin|extralight|light|semibold|extrabold|black)\b/g },
   {
     // The radius scale is xs–xl. Full is only for things that are round by nature (ROUND below).
