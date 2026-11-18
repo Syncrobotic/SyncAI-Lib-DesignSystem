@@ -12,7 +12,6 @@ export default function IconographyPage() {
   return (
     <article>
       <DocHeader
-        eyebrow="Foundations · 08"
         title="Iconography"
         lead="Lucide icons at a 2 px stroke, in three sizes tied to component heights. An icon always has a name, either a visible label or an accessible one."
       />

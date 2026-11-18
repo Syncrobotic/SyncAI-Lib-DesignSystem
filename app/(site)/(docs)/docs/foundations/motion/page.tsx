@@ -41,7 +41,6 @@ export default function MotionPage() {
   return (
     <article>
       <DocHeader
-        eyebrow="Foundations · 07"
         title="Motion"
         lead="Movement only marks a change of state: pressed, opened, stopped, released. Nothing moves to decorate or to attract attention."
       />

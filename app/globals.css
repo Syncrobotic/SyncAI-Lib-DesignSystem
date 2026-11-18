@@ -1,8 +1,12 @@
-@import "tailwindcss";
+/* source(none): Tailwind only reads the folders that render, not the whole repo (READMEs, the built registry JSON, agent
+   skills and their examples would otherwise add classes nobody uses). A new folder of UI code goes on this list. */
+@import "tailwindcss" source(none);
 @import "../registry/syncrobotic/styles/syncrobotic-theme.css";
+@source "../app";
 @source "../registry";
 @source "../stories";
 @source "../site";
+@source "../lib";
 
 /* The theme switches on the .dark class, not on the OS setting. */
 @custom-variant dark (&:where(.dark, .dark *));
@@ -21,6 +25,19 @@
   html {
     scroll-behavior: smooth;
   }
+}
+
+/* The parts the browser draws itself, themed from the palette: text selection, the caret, scrollbars and native
+   controls. Selection is neutral (blue would read as "in progress"); scrollbars are thin and quiet. */
+::selection {
+  background: color-mix(in oklab, var(--foreground) 22%, transparent);
+  color: var(--foreground);
+}
+html {
+  caret-color: var(--foreground);
+  accent-color: var(--primary);
+  scrollbar-color: var(--border) transparent;
+  scrollbar-width: thin;
 }
 
 /* shiki dual theme: colours come from CSS variables, the surface comes from our card. */

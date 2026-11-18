@@ -27,7 +27,6 @@ export default function UpgradingPage() {
   return (
     <article>
       <PageTitle
-        eyebrow="Getting started"
         title="Versions and upgrades"
         lead="Components install as source, so a project keeps what it installed. Every item has its own version; read it from the first line of the file."
       />
