@@ -2,12 +2,14 @@
 
 # SYNCROBOTIC Design System
 
-**One design language for every SYNCROBOTIC product.** Colour, type, spacing, radius and motion tokens, React components and blocks, shipped as a [shadcn/ui](https://ui.shadcn.com) registry for Tailwind CSS v4.
+**One design language for every SYNCROBOTIC product.** Colour, type, spacing, radius and motion tokens, 75 React components and 69 blocks, shipped as a [shadcn/ui](https://ui.shadcn.com) registry for Tailwind CSS v4.
 
 Like [ReUI](https://reui.io), components install into your project as source code: you can read them, change them and keep them in step with the shadcn ecosystem.
 
 - **Docs site:** [https://syncai-lib-designsystem.vercel.app](https://syncai-lib-designsystem.vercel.app) (Next.js app in `app/`, deployed on Vercel; open to anyone with the link, not indexed until open-sourced)
 - **Registry:** `https://syncai-lib-designsystem.vercel.app/r/{name}.json`
+- **Blocks:** [https://syncai-lib-designsystem.vercel.app/blocks](https://syncai-lib-designsystem.vercel.app/blocks): application screens, charts and whole robot-operations screens, each installable as source
+- **For AI agents:** [`/llms.txt`](https://syncai-lib-designsystem.vercel.app/llms.txt), a Markdown twin of every page, an agent skill and a read-only MCP server (see [below](#for-ai-agents))
 - **Workbench:** Storybook, with visual regression tests on every state
 
 ## Why
@@ -47,26 +49,64 @@ Dark is the default: `<html class="dark">`. Default copy is English; every visib
 
 ## Components
 
-61 registry items, grouped as on the docs site. Every component follows the colour, radius, height and spacing rules, and every state has a story.
+75 components and 2 hooks in eight groups, as on the docs site. Every component follows the colour, radius, height and spacing rules, and every state has a story.
 
 | Group | Items |
 | --- | --- |
 | Theme | `syncrobotic-theme` (colour, radius, type, height and motion tokens) |
-| Actions | `button`, `segmented-control`, `toggle` |
-| Inputs | `input`, `textarea`, `label`, `field`, `checkbox`, `radio-group`, `switch`, `select`, `slider` |
-| Display | `badge`, `card`, `avatar`, `separator`, `progress`, `spinner`, `empty-state`, `table`, `list`, `status-glyph`, `status-eyebrow`, `skeleton` |
-| Feedback | `alarm`, `alert`, `toast` |
-| Navigation | `tabs`, `accordion` |
-| Overlays | `dialog`, `alert-dialog`, `sheet`, `popover`, `tooltip`, `dropdown-menu` |
-| Robot shell | `stop-button`, `slide-to-release`, `dock`, `island`, `tray` |
+| Actions | `button`, `segmented-control`, `toggle`, `copy-button`, `button-group`, `toggle-group` |
+| Inputs | `input`, `input-group`, `number-field`, `textarea`, `label`, `field`, `checkbox`, `radio-group`, `switch`, `choice-field`, `select`, `slider`, `autocomplete`, `input-otp`, `phone-input`, `calendar`, `date-selector`, `time-picker`, `sortable`, `file-upload`, `questionnaire` |
+| Display | `status-glyph`, `status-eyebrow`, `list`, `skeleton`, `spinner`, `badge`, `card`, `avatar`, `separator`, `progress`, `description-list`, `meter`, `empty-state`, `table`, `item`, `icon-tile`, `kbd`, `scroll-area`, `data-grid`, `resizable`, `attachment`, `file-type`, `timeline`, `trace`, `marker` |
+| Charts | `chart` (Recharts) |
+| Feedback | `alert`, `alarm`, `toast` |
+| Navigation | `tabs`, `pagination`, `breadcrumb`, `accordion`, `stepper`, `scrollspy`, `navigation-menu` |
+| Overlays | `dialog`, `alert-dialog`, `sheet`, `popover`, `tooltip`, `dropdown-menu`, `command` |
+| Robot shell | `tray`, `stop-button`, `slide-to-release`, `dock`, `island` |
 | Hooks | `use-long-press`, `use-slide-release` |
-| App shells | `app-shell`, `console-overview`, `list-detail`, `event-log`, `map-workspace` |
-| Data tools | `data-catalog`, `dataset-detail`, `governance-todo` |
-| Forms and settings | `settings-page`, `record-form`, `users-roles` |
-| Sign-in and states | `sign-in`, `status-pages` |
-| Blocks | `stats-cards`, `fleet-table`, `robot-status-card`, `marketing-hero` |
+
+## Blocks
+
+69 blocks, grouped like the components: a group, then a type, then its blocks. The docs site has one page per type with every block's preview at desktop, tablet and phone width, its code and its install command.
+
+| Group | Type | Blocks |
+| --- | --- | --- |
+| Application | App shell | `app-shell`, `top-bar-shell`, `app-shell-mobile-tabs` |
+| Application | Stats | `stats-cards`, `stats-meters`, `stats-filtered` |
+| Application | Card | `robot-status-card`, `card-site`, `card-mission` |
+| Application | Sign-in | `sign-in`, `auth-passkey`, `auth-invite` |
+| Application | Settings | `settings-page`, `settings-notifications`, `settings-api-keys` |
+| Application | Form | `record-form` |
+| Application | Empty and error states | `status-pages` |
+| Application | Landing | `marketing-hero` |
+| Application | Dialog | `dialog-confirm-destructive`, `dialog-form`, `dialog-share` |
+| Application | Sheet | `sheet-robot-detail`, `sheet-filters` |
+| Application | Timeline | `timeline-activity`, `timeline-audit` |
+| Application | Wizard | `wizard-commission`, `wizard-import` |
+| Charts | Line chart | `line-chart-telemetry`, `line-chart-limit`, `line-chart-compare` |
+| Charts | Area chart | `area-chart-battery`, `area-chart-fleet-states`, `area-chart-cumulative` |
+| Charts | Bar chart | `bar-chart-missions`, `bar-chart-ranked`, `bar-chart-stacked`, `bar-chart-variance` |
+| Charts | Sparkline | `sparkline-robot-list`, `sparkline-metric-tiles`, `sparkline-table` |
+| Charts | Status tracker | `status-tracker-uptime`, `status-tracker-runs`, `status-tracker-rollout` |
+| Charts | Radial chart | `radial-chart-battery`, `radial-chart-goal`, `radial-chart-capacity` |
+| Charts | Heatmap | `heatmap-week-hours`, `heatmap-zones` |
+| Solutions | Fleet operations | `console-overview`, `map-workspace`, `list-detail`, `event-log`, `fleet-table`, `mission-schedule` |
+| Solutions | Data operations | `data-catalog`, `dataset-detail`, `governance-todo` |
+| Solutions | Users and access | `users-roles`, `users-invitations`, `users-audit-log` |
+| Solutions | Incidents | `incident-queue`, `incident-detail` |
+| Solutions | Maintenance | `maintenance-due`, `maintenance-work-order` |
+| Solutions | Firmware rollout | `rollout-overview`, `rollout-plan` |
+| Solutions | AI agents | `agent-runs`, `agent-trace`, `agent-approval` |
 
 General components are built on [Radix UI](https://www.radix-ui.com) primitives, the same base as shadcn/ui, so keyboard and screen-reader behaviour comes from Radix.
+
+## For AI agents
+
+Coding agents can read the whole kit without scraping the site:
+
+- **`/llms.txt`** lists every component and block with a one-line summary; **`/llms-full.txt`** is everything in one file: the design language, every block, and every component with when to use it.
+- **Markdown twins.** Every component, block and foundation page has a Markdown version at its URL plus `.md`, e.g. `/docs/components/button.md`. The docs site's Markdown and Prompt buttons copy them.
+- **Agent skill.** `npx shadcn add @syncrobotic/agent-skill` installs the workflow and the design language into `.claude/skills/syncrobotic-ui/`.
+- **MCP server** (read-only, no sign-in): `claude mcp add --transport http syncrobotic https://syncai-lib-designsystem.vercel.app/mcp`. Tools: `search`, `get_item` (source, stories and rules), `get_install_command`, `get_design_language` and `get_checklist`.
 
 ## Develop
 
@@ -91,13 +131,13 @@ npm run test:registry    # installs every item into a fresh Next.js app, then ty
 | `registry/syncrobotic/styles/` | The theme: every token |
 | `registry/syncrobotic/ui/` | General components (Radix UI based) |
 | `registry/syncrobotic/shell/` | Robot shell components: emergency stop, slide to release, dock, island, status |
-| `registry/syncrobotic/blocks/` | Blocks: composed sections for dashboards, apps and marketing pages |
+| `registry/syncrobotic/blocks/` | Blocks: application screens, charts and robot-operations screens |
 | `registry/syncrobotic/hooks/`, `lib/` | Interaction hooks and `cn()` |
 | `stories/` | One story per state; the docs site, visual tests and axe all read them |
 | `tests/unit/` | Behaviour tests |
-| `app/`, `site/` | The docs site |
+| `app/`, `site/` | The docs site; `site/block-types.ts` holds the block groups, types and order |
 
-Baselines live in `tests/__screenshots__/` and are written only by CI (Actions → `visual-baseline`), never locally: fonts and anti-aliasing differ between machines. Stories render in Geist, loaded before each screenshot, with the page clock run past timed UI. Any change to how a component looks fails CI with a diff image; to accept it, run the workflow on the branch.
+Baselines live in `tests/__screenshots__/` and are written only by CI (Actions → `visual-baseline`), never locally: fonts and anti-aliasing differ between machines. Stories render in Geist, loaded before each screenshot, with the page clock run past timed UI. Any change to how a component looks fails CI with a diff image; to accept it, run the workflow on `dev` (not on `stage`: a baseline commit that exists only on `stage` conflicts with the next promotion). A commit pushed by the workflow does not start CI by itself, so run Actions → `ci` on the branch afterwards.
 
 ### Rules CI enforces
 
@@ -113,7 +153,7 @@ Baselines live in `tests/__screenshots__/` and are written only by CI (Actions �
 1. Write it in `registry/syncrobotic/ui/` (general), `registry/syncrobotic/shell/` (robot shell) or `registry/syncrobotic/blocks/` (blocks). Import from `@/lib/utils` and `@/registry/syncrobotic/...`; the CLI rewrites these to the consumer's paths on install.
 2. Add an entry to `registry.json` with its `dependencies` (npm) and `registryDependencies` (other `@syncrobotic/...` items).
 3. Write one story per state in `stories/`. The docs site renders the same stories.
-4. Add it to `site/catalog.ts` with its usage rules.
+4. Add it to `site/catalog.ts` with its usage rules. A block instead goes into `site/block-types.ts` (its type and order) and `site/blocks.tsx` (its preview).
 5. Interaction logic gets a behaviour test in `tests/unit/`.
 6. Open a PR once `npm run ci` passes. Add a line to `CHANGELOG.md`.
 
