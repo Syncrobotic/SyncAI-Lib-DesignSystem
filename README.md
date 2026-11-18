@@ -53,7 +53,7 @@ Dark is the default (`<html class="dark">`). Copy is English; every visible and 
 
 | | |
 | --- | --- |
-| **Foundations** | Principles, colour, typography, spacing, radius, elevation, motion, iconography, accessibility and alarms, each with its tokens and the rules for using them, plus an [icon set](https://syncai-lib-designsystem.vercel.app/docs/icons) that gives each icon one meaning, with robot icons Lucide lacks drawn to match. Tokens also ship as [DTCG JSON](public/tokens) for design tools. |
+| **Foundations** | Principles, colour, typography, spacing, radius, elevation, motion, iconography, accessibility and alarms, each with its tokens and the rules for using them, plus an [icon set](https://syncai-lib-designsystem.vercel.app/icons) that gives each icon one meaning, with robot icons Lucide lacks drawn to match. Tokens also ship as [DTCG JSON](public/tokens) for design tools. |
 | **81 components** | General UI on Radix primitives, a charts component on Recharts, building blocks for data tools, and the robot shell: emergency stop, slide to release, dock and dynamic island. |
 | **69 blocks** | Whole screens in three groups: Application (shells, stats, cards, sign-in, settings, forms, dialogs, sheets, timelines, wizards), Charts, and Solutions for robot operations (fleet operations, data operations, users and access, incidents, maintenance, firmware rollout, AI agents). |
 

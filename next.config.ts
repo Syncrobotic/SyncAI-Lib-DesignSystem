@@ -13,7 +13,11 @@ const config: NextConfig = {
   outputFileTracingIncludes: { "/mcp": ["./registry/**/*", "./stories/**/*"] },
   // /docs has no page of its own: send it to the first one.
   async redirects() {
-    return [{ source: "/docs", destination: "/docs/foundations", permanent: false }]
+    return [
+      { source: "/docs", destination: "/docs/foundations", permanent: false },
+      // The icons moved from the foundations to an area of their own.
+      { source: "/docs/icons", destination: "/icons", permanent: true },
+    ]
   },
   // Stories import fn() from @storybook/test. The site only needs a no-op, not the test runtime.
   turbopack: {
