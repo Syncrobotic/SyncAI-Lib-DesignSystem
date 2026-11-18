@@ -6,6 +6,7 @@ Components install as source, so a project keeps the version it installed. Re-ru
 
 ### Added
 - **Touch and sound for safety moments** (`@syncrobotic/feedback`). One fixed vibration pattern per moment: the stop sent (at the touch), confirmed, not confirmed, release, a new critical alarm, a new high alarm. Critical and high alarms also sound, in the IEC 60601-1-8 burst rhythm (3 + 2 pulses at 880 Hz, 3 pulses at 660 Hz), generated with Web Audio so there is no audio file to ship. Low alarms stay silent. `configureFeedback({ haptics, sound })` turns either off app-wide. Vibration needs the Vibration API (Android, not iOS) and sound needs one tap on the page first, so neither replaces the screen. The Alarms foundation lists the patterns. Re-install `stop-button`, `use-slide-release` (and so `slide-to-release`) and `alarm`; `AlarmList` takes `feedback={false}` for a record view.
+- **Alarm lifecycle beyond acknowledge** (ISA-18.2), in `alarm`. Shelved: an operator hides a nuisance alarm until a time (`shelvedUntil`, `onShelve`, `onUnshelve`); it leaves the live list into a quiet "Shelved" group and returns when the app clears it. Critical alarms cannot be shelved. Suppressed by design and out of service are counted under the list instead of vanishing silently. Floods: with `raisedAt`, over 10 alarms in 10 minutes puts up a banner, keeps critical and high in view, folds the low ones into one row, and screen readers hear one count instead of every title. The Alarms foundation has the table.
 
 ## 0.10.1 · 2026-11-18
 

@@ -1430,7 +1430,7 @@
           {
             "version": "0.11.0",
             "date": "2026-11-18",
-            "note": "AlarmList buzzes and sounds for a new critical or high alarm (`feedback`, on by default; `feedback={false}` for a record view)."
+            "note": "AlarmList buzzes and sounds for a new critical or high alarm (`feedback`, on by default; `feedback={false}` for a record view). The ISA-18.2 states beyond acknowledge: shelved (`shelvedUntil`, `onShelve`/`onUnshelve`; never critical), suppressed by design and out of service (counted under the list), and floods (over 10 in 10 minutes from `raisedAt`: a banner, low alarms folded, one announcement)."
           },
           {
             "version": "0.8.0",
