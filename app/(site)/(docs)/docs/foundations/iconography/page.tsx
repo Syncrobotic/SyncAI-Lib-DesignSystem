@@ -51,7 +51,7 @@ export default function IconographyPage() {
           head={["Glyph", "Tone", "Means"]}
           rows={(
             [
-              ["info", "In progress"],
+              ["info", "Active, busy"],
               ["success", "Normal"],
               ["warning", "Needs attention"],
               ["danger", "Stopped or failed"],

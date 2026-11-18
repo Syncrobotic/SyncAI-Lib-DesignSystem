@@ -1,4 +1,4 @@
-// @syncrobotic/accordion v0.7.0 · update: npx shadcn add @syncrobotic/accordion --overwrite
+// @syncrobotic/accordion v0.10.0 · update: npx shadcn add @syncrobotic/accordion --overwrite
 "use client"
 
 import * as React from "react"
@@ -21,7 +21,7 @@ export function AccordionTrigger({ className, children, ...props }: React.Compon
         data-slot="accordion-trigger"
         className={cn(
           "press flex min-h-(--h-row) flex-1 items-center justify-between gap-4 text-left text-sm font-medium",
-          "disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180",
+          "disabled:pointer-events-none disabled:text-disabled [&[data-state=open]>svg]:rotate-180",
           className,
         )}
         {...props}

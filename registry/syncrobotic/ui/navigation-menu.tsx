@@ -43,7 +43,7 @@ export function NavigationMenuItem({ className, ...props }: React.ComponentProps
 const itemStyle = cn(
   "inline-flex h-(--h-sm) w-max items-center justify-center gap-2 rounded-sm px-3 text-sm font-medium text-muted-foreground outline-none",
   "transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-muted hover:text-foreground",
-  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50",
+  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:text-disabled",
   "data-[state=open]:bg-muted data-[state=open]:text-foreground data-active:text-foreground [&_svg]:size-4",
 )
 /** The look of a top-level item, for plain links next to triggers. */

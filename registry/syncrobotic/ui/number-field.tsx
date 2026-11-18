@@ -1,4 +1,4 @@
-// @syncrobotic/number-field v0.7.0 · update: npx shadcn add @syncrobotic/number-field --overwrite
+// @syncrobotic/number-field v0.10.0 · update: npx shadcn add @syncrobotic/number-field --overwrite
 "use client"
 
 import * as React from "react"
@@ -73,7 +73,7 @@ export function NumberField({
         aria-label={labels?.decrease ?? "Decrease"}
         disabled={disabled || (min !== undefined && value !== null && value <= min)}
         onClick={() => nudge(-step)}
-        className="press flex h-full w-(--h-md) shrink-0 items-center justify-center rounded-l-sm text-muted-foreground hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4"
+        className="press flex h-full w-(--h-md) shrink-0 items-center justify-center rounded-l-sm text-muted-foreground hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:text-disabled [&_svg]:size-4"
       >
         <Minus aria-hidden="true" />
       </button>
@@ -131,7 +131,7 @@ export function NumberField({
         aria-label={labels?.increase ?? "Increase"}
         disabled={disabled || (max !== undefined && value !== null && value >= max)}
         onClick={() => nudge(step)}
-        className="press flex h-full w-(--h-md) shrink-0 items-center justify-center rounded-r-sm text-muted-foreground hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4"
+        className="press flex h-full w-(--h-md) shrink-0 items-center justify-center rounded-r-sm text-muted-foreground hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:text-disabled [&_svg]:size-4"
       >
         <Plus aria-hidden="true" />
       </button>

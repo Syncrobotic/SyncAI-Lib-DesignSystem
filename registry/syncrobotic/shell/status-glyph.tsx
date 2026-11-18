@@ -1,10 +1,10 @@
-// @syncrobotic/status-glyph v0.6.0 · update: npx shadcn add @syncrobotic/status-glyph --overwrite
+// @syncrobotic/status-glyph v0.10.0 · update: npx shadcn add @syncrobotic/status-glyph --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
 export type Tone = "info" | "success" | "warning" | "danger" | "neutral"
 
-// Colour is for what is abnormal. In progress and normal read from the shape alone, in the text colour,
+// Colour is for what is abnormal. Active and normal read from the shape alone, in the text colour,
 // so a fleet that is fine looks calm and the one robot that is not stands out.
 const color: Record<Tone, string> = {
   info: "text-foreground",
@@ -16,7 +16,7 @@ const color: Record<Tone, string> = {
 
 /**
  * Status is always shape + colour, never colour alone:
- * filled circle = in progress, hollow circle = normal, triangle = attention,
+ * filled circle = active (busy), hollow circle = normal, triangle = attention,
  * square = stopped, slashed circle = offline.
  */
 export function StatusGlyph({ tone, className }: { tone: Tone; className?: string }) {

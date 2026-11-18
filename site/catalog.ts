@@ -273,6 +273,7 @@ const entries: Record<string, Entry> = {
       "Destructive is a danger outline and text. Solid red belongs to the emergency stop alone.",
       "44 px is the default. 36 px only inside cards; 48 px for a page's main action.",
       "Name the result (“Delete route”), not the mechanism (“OK”, “Submit”).",
+      "Disabled says why, next to it or in the hint (“Robot offline: cannot dispatch”). Its words stay readable: a grey block, never faded.",
     ],
   },
   "segmented-control": {
@@ -303,6 +304,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "Wrap it in Field for the label, hint and error.",
       "Text is 16 px so iOS does not zoom on focus.",
+      "Disabled is a grey field with readable text, not a faded one, and the hint says why it cannot be changed.",
       "An error is a state change: the edge turns danger and 2 px at --motion-fast, the message appears with an icon in the hint's place. Never shake; on submit, move focus to the first field in error.",
     ],
   },
@@ -372,7 +374,7 @@ const entries: Record<string, Entry> = {
   progress: {
     group: "Display",
     examples: { file: "display", prefix: "Progress" },
-    rules: ["Blue means in progress. Use another tone only when the value itself is a status, like battery."],
+    rules: ["Blue: a process someone is waiting on, with an end. Use another tone only when the value itself is a status, like battery."],
   },
   spinner: {
     group: "Display",
@@ -403,7 +405,7 @@ const entries: Record<string, Entry> = {
     group: "Display",
     examples: { file: "display", prefix: "StatusGlyph" },
     rules: [
-      "Status is shape plus colour, so it reads without colour vision: filled circle in progress, hollow circle normal, triangle attention, square stopped, slashed circle offline.",
+      "Status is shape plus colour, so it reads without colour vision: filled circle active, hollow circle normal, triangle attention, square stopped, slashed circle offline.",
     ],
   },
   "status-eyebrow": { group: "Display", examples: { file: "list", only: ["StatusShapes", "StatusEyebrowOverTitle", "StatusInlineInRows"] } },
