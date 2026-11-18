@@ -231,6 +231,10 @@
     "version": "0.10.0",
     "hash": "65456e28766e23bd"
   },
+  "robot-icons": {
+    "version": "0.10.0",
+    "hash": "59eb33324b2b76b2"
+  },
   "button-group": {
     "version": "0.9.0",
     "hash": "8e7f546fe1ffe696"
@@ -373,7 +377,7 @@
   },
   "list-detail": {
     "version": "0.10.0",
-    "hash": "5fe717145b4e137b"
+    "hash": "6c39e5eeaadc2275"
   },
   "event-log": {
     "version": "0.8.0",
@@ -381,7 +385,7 @@
   },
   "map-workspace": {
     "version": "0.10.0",
-    "hash": "7e79d919473c418e"
+    "hash": "f6bad679b9c4cfe2"
   },
   "data-catalog": {
     "version": "0.10.0",
@@ -553,7 +557,7 @@
   },
   "sheet-robot-detail": {
     "version": "0.10.0",
-    "hash": "63a15389d0beebb2"
+    "hash": "8e485999087ca7fe"
   },
   "sheet-filters": {
     "version": "0.9.0",

@@ -1,7 +1,8 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 // tokens-ok: Radio and RotateCcw are the counter-example in "One icon, one meaning"
-import { Battery, Bell, Bluetooth, Bot, CircleAlert, House, HousePlug, ListChecks, Map, Radio, RotateCcw, Settings, Square, Trash2, Video, Wifi } from "lucide-react"
+import { Battery, Bell, Bluetooth, Bot, CircleAlert, House, ListChecks, Map, Radio, RotateCcw, Settings, Square, Trash2, Video, Wifi } from "lucide-react"
+import { ChargingDock } from "@/registry/syncrobotic/ui/robot-icons"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { Code, DocHeader, DoDont, Pager, Section, Specimen, TokenTable } from "@/site/doc"
 import { metaFor, neighbours } from "@/site/foundations"
@@ -43,7 +44,7 @@ export default function IconographyPage() {
       <Section
         id="meaning"
         title="One icon, one meaning"
-        lead="An icon is a word. Once the dock is HousePlug, it is HousePlug on every screen, and HousePlug means nothing else. Lint rejects a Lucide import outside the set, so a new icon or a second icon for a meaning is a reviewed change to `site/icons.ts`."
+        lead="An icon is a word. Once the dock is ChargingDock, it is ChargingDock on every screen, and ChargingDock means nothing else. Lint rejects a Lucide import outside the set, so a new icon or a second icon for a meaning is a reviewed change to `site/icons.ts`."
       >
         <DoDont
           good={{
@@ -51,7 +52,7 @@ export default function IconographyPage() {
               <span className="flex items-center gap-6">
                 {["Send to dock", "Return to dock", "Dock"].map((t) => (
                   <span key={t} className="flex items-center gap-2 text-sm">
-                    <HousePlug aria-hidden className="size-5" /> {t}
+                    <ChargingDock aria-hidden className="size-5" /> {t}
                   </span>
                 ))}
               </span>

@@ -15,6 +15,12 @@ export default function IconsPage() {
   // Rendered here, so the browser gets markup and the client never loads the icon components.
   const groups = iconGroups.map((g) => ({
     title: g.title,
+    note: g.from ? (
+      <>
+        Not in Lucide. Install <code className="font-mono text-xs">npx shadcn add @syncrobotic/robot-icons</code> and import from{" "}
+        <code className="font-mono text-xs">robot-icons</code>; they take Lucide&apos;s props.
+      </>
+    ) : undefined,
     icons: g.icons.map(({ name, Icon, means }) => ({ name, means, glyph: <Icon /> })),
   }))
   return (

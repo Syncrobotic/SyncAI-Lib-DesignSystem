@@ -2,8 +2,9 @@
 "use client"
 
 import * as React from "react"
-import { Crosshair, Pause, HousePlug } from "lucide-react"
+import { Crosshair, Pause } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { ChargingDock } from "@/registry/syncrobotic/ui/robot-icons"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
 import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
 import { IslandAlarm } from "@/registry/syncrobotic/shell/island"
@@ -105,7 +106,7 @@ export function MapWorkspace() {
                 <Pause aria-hidden="true" /> Pause
               </Button>
               <Button variant="secondary" size="sm">
-                <HousePlug aria-hidden="true" /> Dock
+                <ChargingDock aria-hidden="true" /> Dock
               </Button>
               <Button variant="ghost" size="icon-sm" aria-label="Centre map on robot">
                 <Crosshair aria-hidden="true" />
