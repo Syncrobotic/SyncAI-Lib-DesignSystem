@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { cn } from "@/lib/utils"
+import { DensityDemo } from "@/site/density-demo"
 import { Code, DocHeader, Pager, Section, Specimen, TokenTable } from "@/site/doc"
 import { metaFor, neighbours } from "@/site/foundations"
 import { contrast, level, type Mode } from "@/site/theme-tokens"
@@ -98,6 +99,16 @@ export default function AccessibilityPage() {
             Focused button
           </span>
           <span className="flex h-(--h-md) items-center rounded-sm bg-secondary px-4 text-sm font-medium">Resting button</span>
+        </Specimen>
+      </Section>
+
+      <Section
+        id="density"
+        title="Density"
+        lead="One attribute sets how big every control is, because every height is a token. Put `data-density` on `<html>` for the whole app or on a container for one area; type and spacing stay the same. Glove for outdoor work in gloves, compact for a control-room console with a mouse."
+      >
+        <Specimen>
+          <DensityDemo />
         </Specimen>
       </Section>
 
