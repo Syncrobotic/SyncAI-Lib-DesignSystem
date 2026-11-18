@@ -1,4 +1,4 @@
-// @syncrobotic/alarm v0.11.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
+// @syncrobotic/alarm v0.11.1 · update: npx shadcn add @syncrobotic/alarm --overwrite
 "use client"
 
 import * as React from "react"
@@ -110,7 +110,8 @@ export function Alarm({ priority, title, source, time, active, acknowledged, she
   const p = alarmPriority[priority]
   const Icon = p.icon
   const id = React.useId()
-  const shelved = Boolean(shelvedUntil)
+  // Critical alarms cannot be shelved: a stray shelvedUntil on one is ignored, here and in the list.
+  const shelved = Boolean(shelvedUntil) && priority !== "critical"
   const state = shelved ? `${l.shelvedUntil} ${shelvedUntil}` : !acknowledged ? (active ? l.unacknowledged : l.cleared) : l.acknowledged
   // A shelved alarm is quiet: no bar, no tint, no acknowledge; only the way back.
   const loud = !acknowledged && !shelved
@@ -188,6 +189,9 @@ export function Alarm({ priority, title, source, time, active, acknowledged, she
   )
 }
 
+/** Shelved, unless it is critical: critical alarms cannot be shelved, whatever the data says. */
+const isShelved = (a: AlarmData) => Boolean(a.shelvedUntil) && a.priority !== "critical"
+
 /**
  * The live list: unacknowledged before acknowledged, then priority, then newest first (by list order). Cleared and
  * acknowledged alarms leave it, and so do shelved, suppressed and out-of-service ones (AlarmList shows those apart).
@@ -195,7 +199,7 @@ export function Alarm({ priority, title, source, time, active, acknowledged, she
 export function sortAlarms<T extends AlarmData>(alarms: T[]): T[] {
   return alarms
     .map((a, i) => ({ a, i }))
-    .filter(({ a }) => (a.active || !a.acknowledged) && !a.shelvedUntil && !a.suppressed && !a.outOfService)
+    .filter(({ a }) => (a.active || !a.acknowledged) && !isShelved(a) && !a.suppressed && !a.outOfService)
     .sort((x, y) => Number(x.a.acknowledged) - Number(y.a.acknowledged) || alarmPriority[x.a.priority].rank - alarmPriority[y.a.priority].rank || y.i - x.i)
     .map(({ a }) => a)
 }
@@ -205,6 +209,65 @@ export const topAlarm = <T extends AlarmData>(alarms: T[]): T | undefined => sor
 
 /** Tray edge colour while an alarm is unacknowledged: critical → danger, high → warning, low → none. */
 export const alarmEdge = (alarm?: AlarmData) => (alarm?.priority === "critical" ? "danger" : alarm?.priority === "high" ? "warning" : undefined)
+
+/** How often an unacknowledged critical alarm sounds again (ms). It repeats until someone acknowledges it. */
+export const CRITICAL_REPEAT_MS = 10_000
+
+/**
+ * The live part every alarm surface shares, so the phone's island and the dashboard's list behave the same: for an
+ * alarm that newly enters the live list (raised, or back from shelving), buzz and sound by priority; keep sounding
+ * while a critical alarm is unacknowledged; and say what arrived to screen readers. Shelved, suppressed and
+ * out-of-service alarms are not live, so they stay silent. In a flood only the count is announced. Turn `feedback`
+ * off on all but one surface per screen, so a phone that shows two does not buzz twice.
+ */
+export function useAlarmSignals(
+  alarms: AlarmData[],
+  { feedback = true, flooding = false, labels }: { feedback?: boolean; flooding?: boolean; labels?: Partial<AlarmLabels> & { many?: (n: number) => string } },
+) {
+  const live = React.useMemo(() => sortAlarms(alarms), [alarms])
+  const seen = React.useRef<Set<string> | null>(null)
+  const [announce, setAnnounce] = React.useState({ assertive: "", polite: "" })
+  React.useEffect(() => {
+    const l = { ...defaultAlarmLabels, many: (n: number) => `${n} new alarms`, ...labels }
+    const ids = new Set(live.map((a) => a.id))
+    if (seen.current) {
+      const fresh = live.filter((a) => a.active && !a.acknowledged && !seen.current!.has(a.id))
+      const critical = fresh.some((a) => a.priority === "critical")
+      if (feedback && critical) signal("alarmCritical")
+      else if (feedback && fresh.some((a) => a.priority === "high")) signal("alarmHigh")
+      const text = (list: AlarmData[]) => list.map((a) => `${l[a.priority]}: ${a.title}`).join(". ")
+      // In a flood, or when many arrive at once: one count, not a minute of titles read aloud; assertive only for critical.
+      if (fresh.length && (flooding || fresh.length > 5))
+        setAnnounce(critical ? { assertive: l.many(fresh.length), polite: "" } : { assertive: "", polite: l.many(fresh.length) })
+      else if (fresh.length) setAnnounce({ assertive: text(fresh.filter((a) => a.priority === "critical")), polite: text(fresh.filter((a) => a.priority !== "critical")) })
+    }
+    seen.current = ids
+    // Labels are stable strings; signals depend only on which alarms are newly live.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [live])
+  // Critical keeps sounding until acknowledged (the Alarms foundation's promise), not only once when raised.
+  const ringing = feedback && live.some((a) => a.priority === "critical" && a.active && !a.acknowledged)
+  React.useEffect(() => {
+    if (!ringing) return
+    const t = setInterval(() => signal("alarmCritical"), CRITICAL_REPEAT_MS)
+    return () => clearInterval(t)
+  }, [ringing])
+  return announce
+}
+
+/** The two live regions an alarm surface keeps mounted, so announcements are heard even when the surface is empty. */
+export function AlarmAnnouncer({ announce }: { announce: { assertive: string; polite: string } }) {
+  return (
+    <>
+      <div aria-live="assertive" className="sr-only">
+        {announce.assertive}
+      </div>
+      <div aria-live="polite" className="sr-only">
+        {announce.polite}
+      </div>
+    </>
+  )
+}
 
 type AlarmListProps = {
   alarms: AlarmData[]
@@ -258,12 +321,19 @@ export function AlarmList({ alarms, onAcknowledge, onShelve, onUnshelve, labels,
   // A cleared alarm fades out (disappear, --motion-fast) instead of vanishing from under the operator's finger.
   const { rendered, done } = usePresenceList(shown, (a) => a.id)
   const unack = shown.filter((a) => !a.acknowledged).length
-  const shelved = alarms.filter((a) => a.shelvedUntil && (a.active || !a.acknowledged))
+  const shelved = alarms.filter((a) => isShelved(a) && (a.active || !a.acknowledged))
   const suppressed = alarms.filter((a) => a.suppressed && a.active).length
-  const outOfService = alarms.filter((a) => a.outOfService).length
-  const [clock] = React.useState(() => Date.now())
+  const outOfService = alarms.filter((a) => a.outOfService && (a.active || !a.acknowledged)).length
+  // The clock moves on (every 30 s), so a flood ends when its alarms age out of the window.
+  const [clock, setClock] = React.useState(() => Date.now())
+  React.useEffect(() => {
+    if (now !== undefined) return
+    const t = setInterval(() => setClock(Date.now()), 30_000)
+    return () => clearInterval(t)
+  }, [now])
   const at = now ?? clock
-  const recent = alarms.filter((a) => a.raisedAt !== undefined && at - a.raisedAt <= flood.minutes * 60_000).length
+  // Only live alarms count: acknowledged-and-cleared, shelved, suppressed and out-of-service ones are not annunciating.
+  const recent = shown.filter((a) => a.raisedAt !== undefined && at - a.raisedAt <= flood.minutes * 60_000).length
   const flooding = recent > flood.count
   // In a flood, unacknowledged low alarms fold into one row so critical and high stay in view.
   const folded = flooding ? rendered.filter(({ item: a }) => a.priority === "low" && !a.acknowledged) : []
@@ -285,27 +355,7 @@ export function AlarmList({ alarms, onAcknowledge, onShelve, onUnshelve, labels,
   )
   const summary = labels?.summary?.(shown.filter((a) => a.active).length, unack) ?? `${shown.filter((a) => a.active).length} active · ${unack} unacknowledged`
 
-  const seen = React.useRef<Set<string> | null>(null)
-  const [announce, setAnnounce] = React.useState({ assertive: "", polite: "" })
-  React.useEffect(() => {
-    const ids = new Set(alarms.map((a) => a.id))
-    if (seen.current) {
-      const fresh = alarms.filter((a) => a.active && !seen.current!.has(a.id))
-      const text = (list: AlarmData[]) => list.map((a) => `${l[a.priority]}: ${a.title}`).join(". ")
-      if (feedback && fresh.some((a) => a.priority === "critical")) signal("alarmCritical")
-      else if (feedback && fresh.some((a) => a.priority === "high")) signal("alarmHigh")
-      // Many at once: one count, not a minute of titles read aloud.
-      if (fresh.length > 5) setAnnounce({ assertive: l.many(fresh.length), polite: "" })
-      else if (fresh.length)
-        setAnnounce({
-          assertive: text(fresh.filter((a) => a.priority === "critical")),
-          polite: text(fresh.filter((a) => a.priority !== "critical")),
-        })
-    }
-    seen.current = ids
-    // Labels are stable strings; announcing depends only on which alarms are new.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [alarms])
+  const announce = useAlarmSignals(alarms, { feedback, flooding, labels })
 
   return (
     <section aria-label={l.title} className={cn("flex flex-col gap-2", className)}>
@@ -349,12 +399,7 @@ export function AlarmList({ alarms, onAcknowledge, onShelve, onUnshelve, labels,
         </details>
       )}
       {(suppressed > 0 || outOfService > 0) && <p className="px-1 text-xs text-muted-foreground">{l.hidden(suppressed, outOfService)}</p>}
-      <div aria-live="assertive" className="sr-only">
-        {announce.assertive}
-      </div>
-      <div aria-live="polite" className="sr-only">
-        {announce.polite}
-      </div>
+      <AlarmAnnouncer announce={announce} />
     </section>
   )
 }

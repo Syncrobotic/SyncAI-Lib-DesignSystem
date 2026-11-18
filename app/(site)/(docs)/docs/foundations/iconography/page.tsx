@@ -35,7 +35,7 @@ export default function IconographyPage() {
           </div>
         </Specimen>
         <p className="text-sm">
-          <Link href="/docs/icons" className="underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground">
+          <Link href="/icons" className="underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground">
             Browse all {iconCount} icons and what each means
           </Link>
         </p>

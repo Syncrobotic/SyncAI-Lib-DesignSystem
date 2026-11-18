@@ -2,9 +2,23 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.11.1 · 2026-11-18
+
+### Changed
+- **Icons is an area of its own** (`/icons`, in the header beside Foundations, Components and Blocks; `/docs/icons` redirects). A grid of tiles instead of a list; picking one opens its details beside the grid (a sheet from the bottom on a phone): the drawing at 48, 24, 20 and 16 px, what it means, and copy buttons for the name, the import, JSX and the SVG. Two tabs: **Kit icons**, the 155 with their meanings, and **All Lucide**, all 1,544 icons of the Lucide version the kit ships with, searchable, with the kit's set marked by a dot. That list is built at build time and downloaded only on its tab. Picking a Lucide icon outside the set says how to add it, since lint still rejects it until then.
 
 ### Fixed
+From a full audit of 0.11.0; most of these came with it.
+- **Alarms on a phone signalled nothing.** Touch, sound and announcements lived only in `AlarmList`, but on a phone the island is the alarm surface, so a new critical alarm neither buzzed nor was heard. `IslandAlarm` now signals like the list (shared `useAlarmSignals` and `AlarmAnnouncer`); turn `feedback` off on one of them when both are on screen.
+- **Critical alarms sounded once**, though the Alarms foundation said they repeat. An unacknowledged critical alarm now sounds every 10 s until acknowledged.
+- **Shelved, suppressed and out-of-service alarms still buzzed, sounded and were announced.** They are silent now; an alarm back from shelving sounds again.
+- **A critical alarm with `shelvedUntil` vanished** from the list, the island and the tray edge. Critical alarms are never shelved, whatever the data says.
+- **A flood never ended.** Its clock stopped when the list mounted; it now moves on every 30 s, and only live alarms count. In a flood screen readers hear one count, assertively only when it includes a critical alarm.
+- **The stop's "confirmed" pulse never played** in the dock's flow, where the button gives way to slide to release. The app plays it at that moment (`feedback("stopConfirmed")`); the docs, the home page demo and `map-workspace` do so, and `map-workspace` now stops and releases like the dock.
+- **"No connection" on the stop and the wake button's disabled reason measured 2.1–2.6:1.** Both are muted text on muted now.
+- **Slide to release could stick on "Releasing…".** `failed` puts the thumb back and says to slide again. The thumb follows a new `--h-thumb`, so it fills the track in glove and compact density.
+- The island's "+N more" counted alarms the list does not show; `map-workspace` left an empty tray over the map once every alarm was acknowledged.
+- **The agent skill taught the old rules** (blue for any state in progress, one easing for everything, no density, no touch and sound). Its design language and checklist now match 0.10 and 0.11.
 - The site moved to its own domain, but the README (install example, MCP command, links), `package.json` and `registry.json` homepages, the agent skill's index link and the site's fallback URL still named `syncai-lib-designsystem.vercel.app`. They now say `design-system.syncrobotic.me`. Projects whose `components.json` still names the old address depend on Vercel keeping it (it does unless the domain is removed in the project settings); switch the registry `url` to the new domain. Re-install `agent-skill`.
 
 ## 0.11.0 · 2026-11-18

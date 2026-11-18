@@ -79,7 +79,7 @@ export default function AccessibilityPage() {
             { h: "--h-sm", n: "36 · compact, mouse only (44 on touch)" },
             { h: "--h-md", n: "44 · minimum" },
             { h: "--h-lg", n: "48 · primary actions" },
-            { h: "--h-stop", n: "56 · emergency stop" },
+            { h: "--h-stop", n: "56 · emergency stop (64 in glove density; never smaller)" },
           ].map((t) => (
             <div key={t.h} className="flex flex-col items-center gap-2">
               <div className="rounded-sm bg-secondary ring-1 ring-border" style={{ height: `var(${t.h})`, width: `var(${t.h})` }} />

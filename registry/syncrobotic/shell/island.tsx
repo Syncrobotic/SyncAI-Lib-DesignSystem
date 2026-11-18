@@ -1,4 +1,4 @@
-// @syncrobotic/island v0.8.0 · update: npx shadcn add @syncrobotic/island --overwrite
+// @syncrobotic/island v0.11.1 · update: npx shadcn add @syncrobotic/island --overwrite
 "use client"
 
 import * as React from "react"
@@ -8,7 +8,7 @@ import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
 import { CountBadge } from "@/registry/syncrobotic/ui/badge"
 import { Tray } from "@/registry/syncrobotic/shell/tray"
 import { StatusGlyph, toneSubtle, toneText, type Tone } from "@/registry/syncrobotic/shell/status-glyph"
-import { alarmPriority, defaultAlarmLabels, topAlarm, type AlarmData, type AlarmLabels } from "@/registry/syncrobotic/ui/alarm"
+import { AlarmAnnouncer, alarmPriority, defaultAlarmLabels, sortAlarms, topAlarm, useAlarmSignals, type AlarmData, type AlarmLabels } from "@/registry/syncrobotic/ui/alarm"
 
 type Zone = "name" | "status" | "bell"
 
@@ -193,7 +193,9 @@ type IslandAlarmProps = {
   onAcknowledge?: (id: string) => void
   /** Opens the full alarm list. Shown when more than one alarm is unacknowledged. */
   onShowAll?: () => void
-  labels?: Partial<AlarmLabels> & { more?: (n: number) => string; moreAlarms?: string }
+  labels?: Partial<AlarmLabels> & { more?: (n: number) => string; moreAlarms?: string; many?: (n: number) => string }
+  /** Buzz and sound for a new critical or high alarm, and repeat critical until acknowledged. On by default: on a phone the island is the alarm surface. Turn off if an AlarmList on the same screen already signals. */
+  feedback?: boolean
 }
 
 /**
@@ -201,21 +203,26 @@ type IslandAlarmProps = {
  * Same data as AlarmList, so the phone and the dashboard never disagree. Pair it with `edge={alarmEdge(topAlarm(alarms))}`.
  * Renders nothing when every alarm is acknowledged.
  */
-export function IslandAlarm({ alarms, onAcknowledge, onShowAll, labels }: IslandAlarmProps) {
+export function IslandAlarm({ alarms, onAcknowledge, onShowAll, labels, feedback = true }: IslandAlarmProps) {
   const l = { ...defaultAlarmLabels, more: (n: number) => `+${n}`, moreAlarms: "more unacknowledged", ...labels }
+  // The same signals as AlarmList: touch, sound and screen-reader announcements, kept mounted even when nothing shows.
+  const announce = useAlarmSignals(alarms, { feedback, labels })
   const current = topAlarm(alarms)
   // When the last alarm is acknowledged, it fades out where it was (disappear) rather than vanishing.
   const last = React.useRef(current)
   if (current) last.current = current
   const presence = usePresence(!!current)
   const top = current ?? last.current
-  if (!presence.mounted || !top) return null
-  const others = alarms.filter((a) => !a.acknowledged).length - 1
+  if (!presence.mounted || !top) return <AlarmAnnouncer announce={announce} />
+  // Counted from the live list, so shelved, suppressed and out-of-service alarms are not "more" the list will not show.
+  const others = sortAlarms(alarms).filter((a) => !a.acknowledged).length - 1
   const p = alarmPriority[top.priority]
   const Icon = p.icon
   return (
-    <div
-      role="group"
+    <>
+      <AlarmAnnouncer announce={announce} />
+      <div
+        role="group"
       aria-label={`${l[top.priority]}: ${top.title}`}
       key={top.id}
       aria-hidden={presence.leaving || undefined}
@@ -252,6 +259,7 @@ export function IslandAlarm({ alarms, onAcknowledge, onShowAll, labels }: Island
           {l.acknowledge}
         </button>
       )}
-    </div>
+      </div>
+    </>
   )
 }
