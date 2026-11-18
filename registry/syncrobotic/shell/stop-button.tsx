@@ -1,4 +1,4 @@
-// @syncrobotic/stop-button v0.11.0 · update: npx shadcn add @syncrobotic/stop-button --overwrite
+// @syncrobotic/stop-button v0.11.1 · update: npx shadcn add @syncrobotic/stop-button --overwrite
 "use client"
 
 import * as React from "react"
@@ -61,6 +61,8 @@ type Props = {
 export function StopButton({ state = "ready", tag, onStop, onStopAll, holdAllMs = 2000, labels, className }: Props) {
   const l = { ...defaultStopButtonLabels, ...labels }
   // The hand feels each step of a stop: sent at the touch, then confirmed, unconfirmed or delivered over Bluetooth.
+  // When the app swaps the button for SlideToRelease on confirmation (the dock's flow), this button is gone before it
+  // could say so: the app calls feedback("stopConfirmed") at that moment.
   const last = React.useRef(state)
   React.useEffect(() => {
     const was = last.current
@@ -94,7 +96,7 @@ export function StopButton({ state = "ready", tag, onStop, onStopAll, holdAllMs 
         "press",
         pale ? "bg-danger-subtle text-danger" : "bg-stop text-white",
         state === "bluetooth-sent" && "bg-stop-deep",
-        disabled && "bg-disabled text-white",
+        disabled && "bg-muted text-muted-foreground",
         className,
       )}
     >
@@ -133,7 +135,7 @@ export function WakeButton({
       disabled={disabled}
       className={cn(
         "press flex h-(--h-stop) w-full flex-col items-center justify-center rounded-md",
-        disabled ? "bg-muted text-disabled" : "bg-primary text-primary-foreground",
+        disabled ? "bg-muted text-muted-foreground" : "bg-primary text-primary-foreground",
       )}
     >
       <span className="inline-flex items-center gap-2 text-lg font-bold">

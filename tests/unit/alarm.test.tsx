@@ -55,8 +55,9 @@ describe("IslandAlarm", () => {
     expect(alarmEdge(topAlarm(list))).toBe("danger")
   })
 
-  it("renders nothing once everything is acknowledged", () => {
+  it("shows nothing once everything is acknowledged, but keeps its live regions for the next alarm", () => {
     const { container } = render(<IslandAlarm alarms={[a("1", "critical", true)]} />)
-    expect(container.innerHTML).toBe("")
+    expect(container.querySelector('[role="group"]')).toBeNull()
+    expect(container.querySelectorAll("[aria-live]")).toHaveLength(2)
   })
 })
