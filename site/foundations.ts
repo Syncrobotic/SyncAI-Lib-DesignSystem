@@ -21,6 +21,10 @@ export const foundation = (slug: FoundationSlug) => foundations.find((f) => f.sl
 export function neighbours(slug: FoundationSlug) {
   const i = foundations.findIndex((f) => f.slug === slug)
   const link = (f?: (typeof foundations)[number]) => (f ? { href: `/docs/foundations/${f.slug}`, title: f.title } : undefined)
+  // The icon set sits between Iconography and the page after it.
+  const icons = { href: "/docs/icons", title: "Icon set" }
+  if (slug === "iconography") return { prev: link(foundations[i - 1]), next: icons }
+  if (foundations[i - 1]?.slug === "iconography") return { prev: icons, next: link(foundations[i + 1]) }
   return {
     prev: i === 0 ? { href: "/docs/foundations", title: "Foundations overview" } : link(foundations[i - 1]),
     next: i === foundations.length - 1 ? { href: "/docs/components/button", title: "Components" } : link(foundations[i + 1]),

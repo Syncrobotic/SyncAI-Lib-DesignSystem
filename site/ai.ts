@@ -3,6 +3,7 @@ import { blockGroups, blockHref, blockTypes, getBlockType, placement } from "./b
 import { groups, items, getItem, readSource, storyNames, storyTitle } from "./catalog"
 import { site } from "./config"
 import { foundations } from "./foundations"
+import { iconCount, iconGroups } from "./icons"
 import { overviews } from "./overview"
 
 // The kit as AI agents read it: llms.txt, llms-full.txt and a markdown twin of every page (its URL plus .md).
@@ -118,6 +119,7 @@ const intro = [
 export function llmsTxt() {
   const out = [...intro, "", "## Foundations", ""]
   for (const f of foundations) out.push(`- [${f.title}](${url(`/docs/foundations/${f.slug}.md`)}): ${f.lead}`)
+  out.push(`- [Icon set](${url("/docs/icons")}): the ${iconCount} Lucide icons the kit uses, one meaning each. Full list in llms-full.txt.`)
   // Blocks by group and type, the way the site lists them.
   for (const g of blockGroups) {
     for (const t of blockTypes.filter((x) => x.group === g)) {
@@ -144,7 +146,10 @@ export function llmsTxt() {
 }
 
 export function llmsFull() {
-  const out = [...intro, "", designLanguage(), "", "# Blocks", ""]
+  const out = [...intro, "", designLanguage(), "", "# Icon set", ""]
+  out.push("Lucide icons, one meaning each. Use the icon listed for a meaning; do not import another Lucide icon for it.", "")
+  for (const g of iconGroups) out.push(`- ${g.title}: ${g.icons.map((i) => `${i.name} (${i.means})`).join("; ")}`)
+  out.push("", "# Blocks", "")
   for (const b of blocks) out.push(`- **${b.title}** (\`${b.name}\`): ${b.description} Install: \`${install(b.name)}\``)
   out.push("", "# Components", "")
   for (const i of items) {

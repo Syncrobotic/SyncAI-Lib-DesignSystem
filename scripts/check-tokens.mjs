@@ -66,6 +66,18 @@ const rules = [
   },
 ]
 
+// The icon set (site/icons.ts) is the allowlist for Lucide: one icon per meaning, so a new icon is a reviewed change there.
+const iconImport = (src) =>
+  [...src.matchAll(/import\s*\{([^}]*)\}\s*from\s*"lucide-react"/g)].flatMap((m) =>
+    m[1]
+      .split(",")
+      .map((n) => n.replace(/^\s*type\s+/, "").split(/\s+as\s+/)[0].trim())
+      .filter(Boolean)
+      .map((name) => ({ name, at: m.index })),
+  )
+const ICONS = new Set(iconImport(readFileSync("site/icons.ts", "utf8")).map((i) => i.name))
+const ICON_TYPES = new Set(["LucideIcon", "LucideProps"])
+
 function walk(dir) {
   return readdirSync(dir).flatMap((f) => {
     const p = join(dir, f)
@@ -75,7 +87,15 @@ function walk(dir) {
 
 let bad = 0
 for (const file of ROOTS.flatMap(walk)) {
-  const lines = readFileSync(file, "utf8").split("\n")
+  const src = readFileSync(file, "utf8")
+  const lines = src.split("\n")
+  for (const { name, at } of iconImport(src)) {
+    if (ICONS.has(name) || ICON_TYPES.has(name)) continue
+    const n = src.slice(0, at).split("\n").length
+    if (/tokens-ok:/.test((lines[n - 2] ?? "") + lines[n - 1])) continue
+    console.error(`${file}:${n}  Icon outside the icon set (use the icon site/icons.ts gives that meaning, or add it there)\n    ${name}`)
+    bad++
+  }
   lines.forEach((line, i) => {
     const prev = lines[i - 1] ?? ""
     const t = line.trim()

@@ -1,9 +1,9 @@
-// @syncrobotic/toast v0.8.0 · update: npx shadcn add @syncrobotic/toast --overwrite
+// @syncrobotic/toast v0.10.0 · update: npx shadcn add @syncrobotic/toast --overwrite
 "use client"
 
 import * as React from "react"
 import { Toast as ToastPrimitive } from "radix-ui"
-import { CircleCheck, CircleX, Info, X } from "lucide-react"
+import { CircleCheck, CircleAlert, Info, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 /**
@@ -25,7 +25,7 @@ type Item = ToastInput & { id: number; open: boolean }
 
 export const toastDuration = (t: ToastInput) => (t.tone === "danger" ? Infinity : t.action ? 8000 : 4000)
 
-const icons = { neutral: Info, success: CircleCheck, danger: CircleX } as const
+const icons = { neutral: Info, success: CircleCheck, danger: CircleAlert } as const
 const iconColor = { neutral: "text-muted-foreground", success: "text-success", danger: "text-danger" } as const
 
 // A tiny store, so any code can call toast() without a context.

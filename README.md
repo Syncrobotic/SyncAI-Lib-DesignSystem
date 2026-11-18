@@ -53,7 +53,7 @@ Dark is the default (`<html class="dark">`). Copy is English; every visible and 
 
 | | |
 | --- | --- |
-| **Foundations** | Principles, colour, typography, spacing, radius, elevation, motion, iconography, accessibility and alarms, each with its tokens and the rules for using them. Tokens also ship as [DTCG JSON](public/tokens) for design tools. |
+| **Foundations** | Principles, colour, typography, spacing, radius, elevation, motion, iconography, accessibility and alarms, each with its tokens and the rules for using them, plus an [icon set](https://syncai-lib-designsystem.vercel.app/docs/icons) that gives each icon one meaning. Tokens also ship as [DTCG JSON](public/tokens) for design tools. |
 | **81 components** | General UI on Radix primitives, a charts component on Recharts, building blocks for data tools, and the robot shell: emergency stop, slide to release, dock and dynamic island. |
 | **69 blocks** | Whole screens in three groups: Application (shells, stats, cards, sign-in, settings, forms, dialogs, sheets, timelines, wizards), Charts, and Solutions for robot operations (fleet operations, data operations, users and access, incidents, maintenance, firmware rollout, AI agents). |
 
@@ -114,7 +114,7 @@ The rules are not a style guide that drifts: CI enforces them on every change.
 
 - **Accessibility.** Every story, in dark and light, is checked with axe against WCAG 2.2 AA. Status colours are validated for colour-vision deficiency, and the warning and danger pair stays apart for deutan eyes.
 - **Visual regression.** Every state of every component is a screenshot compared with its baseline in both themes; a change to how anything looks needs an approved new baseline.
-- **Tokens only.** Lint rejects raw colours, arbitrary lengths, off-scale spacing, type sizes and weights, and native number inputs (NumberField replaces them). A check walks every page for nested corners that break the radius rule.
+- **Tokens only.** Lint rejects raw colours, arbitrary lengths, off-scale spacing, type sizes and weights, native number inputs (NumberField replaces them) and icons outside the icon set. A check walks every page for nested corners that break the radius rule.
 - **Installs for real.** Every registry item is installed into a fresh Next.js app, type-checked and built.
 - **Versioned per item.** Each component carries its own version and changelog, so a team knows when to re-install. The [upgrading guide](https://syncai-lib-designsystem.vercel.app/docs/upgrading) lists them.
 

@@ -1,6 +1,6 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
-import { Battery, Bot, CircleAlert, FilterX, Info, Lock, MapPinOff, RefreshCw, SearchX, TriangleAlert, Wifi, WifiOff } from "lucide-react"
+import { Battery, Bot, CircleAlert, Info, Lock, MapPinOff, RotateCw, SearchX, TriangleAlert, Wifi, WifiOff } from "lucide-react"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { Alert, AlertDescription, AlertTitle } from "@/registry/syncrobotic/ui/alert"
@@ -321,7 +321,7 @@ export const AlertWithAction: S = {
       <AlertDescription className="flex flex-col items-start gap-3">
         Last seen at the north gate. It may be out of Wi-Fi range.
         <Button size="sm" variant="secondary">
-          <RefreshCw aria-hidden="true" /> Ping robot
+          <RotateCw aria-hidden="true" /> Ping robot
         </Button>
       </AlertDescription>
     </Alert>
@@ -825,7 +825,7 @@ export const EmptyStateFiltered: S = {
   render: () => (
     <Card>
       <EmptyState
-        icon={FilterX}
+        icon={SearchX}
         title="No robots match these filters"
         description="12 robots are hidden by Site: Hall B and Status: Offline."
         action={<Button variant="secondary">Clear filters</Button>}
@@ -858,7 +858,7 @@ export const EmptyStateOffline: S = {
         description="Robots keep running their schedules. Live positions return when you reconnect."
         action={
           <Button variant="secondary">
-            <RefreshCw aria-hidden="true" /> Retry
+            <RotateCw aria-hidden="true" /> Retry
           </Button>
         }
       />

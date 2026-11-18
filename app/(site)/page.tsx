@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ArrowRight, ArrowUpRight } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
@@ -215,7 +215,7 @@ export default function HomePage() {
                         <span className="font-bold">{g}</span>
                         <span className="flex items-center gap-2 text-sm text-muted-foreground tabular-nums">
                           {list.length}
-                          <ArrowUpRight
+                          <ArrowRight
                             aria-hidden
                             className={`size-4 shrink-0 opacity-0 transition-[opacity,translate] group-hover:translate-x-0.5 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:group-hover:translate-x-0 ${fast}`}
                           />

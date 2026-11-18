@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { BookOpen, Bot, Cpu, Map, Radio, ShieldCheck, Warehouse } from "lucide-react"
+import { BookOpen, Bot, Cpu, Hand, HousePlug, Map, ShieldCheck, Warehouse } from "lucide-react"
 import {
   NavigationMenu,
   NavigationMenuCard,
@@ -36,7 +36,7 @@ function Products({ defaultValue }: { defaultValue?: string }) {
                 <NavigationMenuCard href="#inspector" icon={<Cpu />} title="Inspector" description="Thermal and gauge reading on fixed routes." />
               </li>
               <li>
-                <NavigationMenuCard href="#dock" icon={<Radio />} title="Dock" description="Charging and remote updates." />
+                <NavigationMenuCard href="#dock" icon={<HousePlug />} title="Dock" description="Charging and remote updates." />
               </li>
             </ul>
           </NavigationMenuContent>
@@ -321,7 +321,7 @@ export const NavigationMenuWithTags: S = {
               <ul className="flex w-80 flex-col">
                 {[
                   { icon: <Map />, t: "Live map", d: "Every robot, door and lift in one view.", tag: "" },
-                  { icon: <Radio />, t: "Remote takeover", d: "Drive from the browser when needed.", tag: "New" },
+                  { icon: <Hand />, t: "Remote takeover", d: "Drive from the browser when needed.", tag: "New" },
                   { icon: <Warehouse />, t: "Multi-site", d: "One login for every building.", tag: "" },
                 ].map((f) => (
                   <li key={f.t}>

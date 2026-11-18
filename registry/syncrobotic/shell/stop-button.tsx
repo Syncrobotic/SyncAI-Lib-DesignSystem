@@ -1,8 +1,8 @@
-// @syncrobotic/stop-button v0.6.0 · update: npx shadcn add @syncrobotic/stop-button --overwrite
+// @syncrobotic/stop-button v0.10.0 · update: npx shadcn add @syncrobotic/stop-button --overwrite
 "use client"
 
 import * as React from "react"
-import { AlertCircle, Bluetooth, ChevronsUp, Square } from "lucide-react"
+import { CircleAlert, Bluetooth, ChevronsUp, Square } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useLongPress } from "@/registry/syncrobotic/hooks/use-long-press"
 
@@ -19,7 +19,7 @@ const icons: Record<StopButtonState, React.ElementType> = {
   ready: Square,
   idle: Square,
   sending: Square,
-  unconfirmed: AlertCircle,
+  unconfirmed: CircleAlert,
   bluetooth: Bluetooth,
   "bluetooth-sent": Bluetooth,
   dead: Square,

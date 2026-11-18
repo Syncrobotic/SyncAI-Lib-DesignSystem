@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { Bot, Hand, OctagonX, Play, Terminal, Wrench } from "lucide-react"
+import { Bot, Hand, OctagonAlert, Play, Terminal, Wrench } from "lucide-react"
 import { Marker, MarkerRow } from "@/registry/syncrobotic/ui/marker"
 
 const meta: Meta = { title: "Display/Marker" }
@@ -30,7 +30,7 @@ export const MarkerTones: S = {
     <div className="flex flex-col">
       <Marker>Shift change</Marker>
       <Marker tone="warning">Connection lost for 42 s</Marker>
-      <Marker tone="danger" icon={<OctagonX />} time="14:02">
+      <Marker tone="danger" icon={<OctagonAlert />} time="14:02">
         Emergency stop
       </Marker>
     </div>
