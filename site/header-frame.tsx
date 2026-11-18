@@ -17,7 +17,13 @@ export function HeaderFrame({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener("scroll", on)
   }, [])
   return (
-    <header className="pointer-events-none sticky top-0 z-20 mx-auto h-(--site-header) max-w-6xl px-4">
+    // Once it floats, the strip above the panel takes the page colour, so content never peeks out above the header.
+    <header
+      className={cn(
+        "pointer-events-none sticky top-0 z-20 mx-auto h-(--site-header) max-w-6xl px-4 transition-colors duration-(--motion-base) ease-(--ease-standard)",
+        scrolled && "bg-background",
+      )}
+    >
       <div
         data-scrolled={scrolled || undefined}
         className={cn(

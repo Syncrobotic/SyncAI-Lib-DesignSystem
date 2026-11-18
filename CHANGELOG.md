@@ -4,6 +4,12 @@ Components install as source, so a project keeps the version it installed. Re-ru
 
 ## Unreleased
 
+### Fixed
+- Docs site on phones:
+  - The menu button said only "Menu"; it now says where you are (area, then page). The four areas sat in one row where "Foundations" and "Components" did not fit; they are two by two. The open menu stays within most of the screen and scrolls inside, instead of pushing the page several screens down.
+  - Block previews opened at desktop width, shrunk to a quarter and unreadable; on a narrow screen they start at the phone width, unless you pick another. The Preview and Code tabs no longer get cut by a scroll edge.
+  - Once the header floats, the strip above it takes the page colour, so text no longer shows through above the header.
+
 ### Changed
 - **Light is the default theme.** The design language says the interfaces are used outdoors, and in daylight and glare a dark screen washes out while dark text on a light surface holds. Dark stays complete and is for control rooms and night shifts: add `class="dark"` to `<html>`. The docs site, Storybook, the installation guide, the Principles page, the README and the agent skill now start in light; a visitor who chose dark keeps it. Components did not change: both themes were already complete and checked.
 
