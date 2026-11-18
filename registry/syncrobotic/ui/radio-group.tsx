@@ -1,4 +1,4 @@
-// @syncrobotic/radio-group v0.7.0 · update: npx shadcn add @syncrobotic/radio-group --overwrite
+// @syncrobotic/radio-group v0.12.0 · update: npx shadcn add @syncrobotic/radio-group --overwrite
 "use client"
 
 import * as React from "react"
@@ -15,12 +15,14 @@ export function RadioGroupItem({ className, ...props }: React.ComponentProps<typ
       data-slot="radio-group-item"
       className={cn(
         "peer flex size-5 shrink-0 items-center justify-center rounded-full bg-card ring-1 ring-input ring-inset transition-shadow duration-(--motion-fast) ease-(--ease-standard)",
-        "data-[state=checked]:ring-2 data-[state=checked]:ring-primary disabled:cursor-not-allowed disabled:opacity-50",
+        "data-[state=checked]:ring-2 data-[state=checked]:ring-primary",
+        // Disabled: never faded. The disc keeps its edge; when chosen, a grey ring and dot instead of the primary.
+        "disabled:cursor-not-allowed disabled:data-[state=checked]:ring-muted-foreground",
         className,
       )}
       {...props}
     >
-      <RadioGroupPrimitive.Indicator className="size-2 animate-fade-in rounded-full bg-primary" />
+      <RadioGroupPrimitive.Indicator className="size-2 animate-fade-in rounded-full bg-primary in-data-disabled:bg-muted-foreground" />
     </RadioGroupPrimitive.Item>
   )
 }

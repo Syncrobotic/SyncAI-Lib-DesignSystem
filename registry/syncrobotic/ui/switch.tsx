@@ -1,4 +1,4 @@
-// @syncrobotic/switch v0.9.0 · update: npx shadcn add @syncrobotic/switch --overwrite
+// @syncrobotic/switch v0.12.0 · update: npx shadcn add @syncrobotic/switch --overwrite
 "use client"
 
 import * as React from "react"
@@ -11,9 +11,10 @@ export function Switch({ className, ...props }: React.ComponentProps<typeof Swit
     <SwitchPrimitive.Root
       data-slot="switch"
       className={cn(
-        "peer relative inline-flex h-7 w-12 shrink-0 items-center rounded-full p-0.5 after:absolute after:inset-x-0 after:-inset-y-2 after:content-[''] transition-colors duration-(--motion-base) ease-(--ease-standard)",
+        "peer relative inline-flex h-7 w-12 shrink-0 items-center rounded-full p-0.5 after:absolute after:inset-x-0 after:top-1/2 after:h-(--h-md) after:-translate-y-1/2 after:content-[''] transition-colors duration-(--motion-base) ease-(--ease-standard)",
         "bg-muted ring-1 ring-border ring-inset data-[state=checked]:bg-primary data-[state=checked]:ring-primary",
-        "disabled:cursor-not-allowed disabled:opacity-50",
+        // Disabled: never faded. When on, the track goes grey instead of the primary, so the setting still reads in glare.
+        "disabled:cursor-not-allowed disabled:data-[state=checked]:bg-muted-foreground disabled:data-[state=checked]:ring-muted-foreground",
         className,
       )}
       {...props}

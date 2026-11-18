@@ -11,6 +11,17 @@ Components install as source, so a project keeps the version it installed. Re-ru
   - `restricted-preview`: pictures someone should choose to see (restricted tiers, faces, number plates) stay unloaded until asked, card by card, with the reason. Neutral: restricted is a property of the data, not a fault, so restricted tiers take no warning colour.
 - **Pagination link mode**: `href` makes every page a URL (?page=3), so a page can be shared, Back works and it needs no JavaScript; `onNavigate` routes through the app's router.
 
+### Fixed
+The rest of the 0.11.0 audit and the design review: rules the kit stated but did not keep.
+- **Disabled checkboxes, radios, switches and sliders faded to 50 %**, the last controls doing so. They keep their shape and say it with colour that stays readable in glare: grey instead of the primary when on, a grey label beside them.
+- **Calm notices turned blue or green.** `toneSubtle` (behind a persistent or emphasised island notice) tinted busy and normal; only warning and danger tint now.
+- **The Badge example showed the use the Colour foundation forbids**, a blue badge for "Patrolling", and a Badge for a count. It is a neutral badge with the status shape, and a CountBadge.
+- **One icon, one meaning was broken by the kit itself.** Trace marked done and failed with Check and X (the set's "selected" and "close"); it uses CircleCheck and CircleAlert. In a stepper's step disc, where a circled icon would draw two rings, Check and X stay and the set now says so.
+- **Touch targets under 44 px:** an expandable trace row in dense density (32 px), and stepper steps you can jump to (24–32 px). Both are at least `--h-md` now, so they follow density too; the switch's hit area does as well.
+- **Screen readers did not hear "offline" or "charging"** on the island's status button. They do now.
+- **A stepper step with an error stopped being the current step** for screen readers, and offered to jump to itself.
+- The Accessibility contrast table listed blue as the colour of links; links are underlined text, and blue is a process being waited on.
+
 ## 0.11.1 · 2026-11-18
 
 ### Changed
