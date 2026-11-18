@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Focus ring is the foreground colour, no longer the in-progress blue. Chart palette moves off the status hues (violet, teal, olive, magenta, grey for Other), CVD-validated. Type scale gains 2xl (24, figures) and 4xl (36, hero on phones) and is locked: sizes off the scale produce nothing."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -1065,8 +1070,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "tone=\"success\" is neutral: a calm state is grey. Green stays for confirmations (Toast, Alert)."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -1897,8 +1907,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "tone=\"success\" is neutral on soft and solid tiles, and its status dot is the foreground colour."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",

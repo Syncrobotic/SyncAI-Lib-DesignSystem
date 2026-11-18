@@ -48,6 +48,7 @@ const rules = [
     re: /(?<![\w-])(?:-?(?:p|px|py|pt|pb|pl|pr|m|mx|my|mt|mb|ml|mr|gap|gap-x|gap-y|space-x|space-y))-(\d+(?:\.\d+)?)\b/g,
     test: (m) => !SPACING_OK.has(m[1]),
   },
+  { name: "Font size off the scale (use xs, sm, base, lg, xl, 2xl, 3xl, 4xl or 5xl)", re: /(?<![\w-])text-([6-9]xl)\b/g },
   { name: "Font weight off the scale (use only 400, 500, 700)", re: /\bfont-(thin|extralight|light|semibold|extrabold|black)\b/g },
   {
     // The radius scale is xs–xl. Full is only for things that are round by nature (ROUND below).

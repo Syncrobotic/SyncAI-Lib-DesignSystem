@@ -1,4 +1,4 @@
-// @syncrobotic/badge v0.8.0 · update: npx shadcn add @syncrobotic/badge --overwrite
+// @syncrobotic/badge v0.10.0 · update: npx shadcn add @syncrobotic/badge --overwrite
 import * as React from "react"
 import { Slot } from "radix-ui"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -10,7 +10,8 @@ export const badgeVariants = cva("inline-flex h-(--h-tag) shrink-0 items-center 
     tone: {
       neutral: "bg-neutral-subtle text-neutral",
       info: "bg-info-subtle text-info",
-      success: "bg-success-subtle text-success",
+      // A calm state is grey: success reads as neutral. Green is for a confirmation that just happened (Toast, Alert).
+      success: "bg-neutral-subtle text-neutral",
       warning: "bg-warning-subtle text-warning",
       danger: "bg-danger-subtle text-danger",
       outline: "text-foreground ring-1 ring-border ring-inset",

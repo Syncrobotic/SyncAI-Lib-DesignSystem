@@ -141,9 +141,17 @@
         "$type": "dimension",
         "$value": "20px"
       },
+      "2xl": {
+        "$type": "dimension",
+        "$value": "24px"
+      },
       "3xl": {
         "$type": "dimension",
         "$value": "28px"
+      },
+      "4xl": {
+        "$type": "dimension",
+        "$value": "36px"
       },
       "5xl": {
         "$type": "dimension",
@@ -171,9 +179,17 @@
         "$type": "dimension",
         "$value": "28px"
       },
+      "2xl": {
+        "$type": "dimension",
+        "$value": "32px"
+      },
       "3xl": {
         "$type": "dimension",
         "$value": "36px"
+      },
+      "4xl": {
+        "$type": "dimension",
+        "$value": "40px"
       },
       "5xl": {
         "$type": "dimension",

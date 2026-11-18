@@ -1,7 +1,7 @@
 {
   "syncrobotic-theme": {
-    "version": "0.9.0",
-    "hash": "f8232f487129014a"
+    "version": "0.10.0",
+    "hash": "358062fcab06ecf2"
   },
   "cn": {
     "version": "0.5.0",
@@ -124,8 +124,8 @@
     "hash": "23fa5a22e2b00803"
   },
   "badge": {
-    "version": "0.8.0",
-    "hash": "ad0b7ec759bcfa45"
+    "version": "0.10.0",
+    "hash": "e3bc03bf2b3cf40d"
   },
   "card": {
     "version": "0.5.0",
@@ -224,8 +224,8 @@
     "hash": "d0e5f2ecc5b1a1bd"
   },
   "icon-tile": {
-    "version": "0.9.0",
-    "hash": "5300fcb25c819cb1"
+    "version": "0.10.0",
+    "hash": "1c6f59a6a871308a"
   },
   "kbd": {
     "version": "0.9.0",
