@@ -310,18 +310,31 @@ const meta: Record<string, Meta> = {
     viewport: "desktop",
     height: 640,
     render: () => (
-      // The four states side by side, each in a frame the size of a content panel, then loading across the width.
+      // Five states, each named above its frame: the loading one is a state on show, not the preview still loading.
       <div className="flex flex-col gap-4 bg-background p-4">
         <div className="grid gap-4 md:grid-cols-2">
-          {[NotFoundPage, NoAccessPage, ErrorPage, OfflinePage].map((Page, i) => (
-            <div key={i} className="overflow-hidden rounded-md ring-1 ring-border">
-              <Page fill="parent" />
-            </div>
+          {(
+            [
+              [NotFoundPage, "Not found"],
+              [NoAccessPage, "No access"],
+              [ErrorPage, "Error"],
+              [OfflinePage, "Offline"],
+            ] as const
+          ).map(([Page, name]) => (
+            <figure key={name} className="flex flex-col gap-2">
+              <figcaption className="text-xs font-medium text-muted-foreground">{name}</figcaption>
+              <div className="overflow-hidden rounded-md ring-1 ring-border">
+                <Page fill="parent" />
+              </div>
+            </figure>
           ))}
         </div>
-        <div className="overflow-hidden rounded-md ring-1 ring-border">
-          <LoadingPage fill="parent" />
-        </div>
+        <figure className="flex flex-col gap-2">
+          <figcaption className="text-xs font-medium text-muted-foreground">Loading</figcaption>
+          <div className="overflow-hidden rounded-md ring-1 ring-border">
+            <LoadingPage fill="parent" />
+          </div>
+        </figure>
       </div>
     ),
   },

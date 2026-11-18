@@ -1,4 +1,4 @@
-// @syncrobotic/data-grid v0.9.0 · update: npx shadcn add @syncrobotic/data-grid --overwrite
+// @syncrobotic/data-grid v0.11.0 · update: npx shadcn add @syncrobotic/data-grid --overwrite
 "use client"
 
 import * as React from "react"
@@ -20,6 +20,15 @@ import {
 import { Pagination } from "@/registry/syncrobotic/ui/pagination"
 
 type Density = "default" | "dense"
+
+/** A height token in px as it resolves at `el` (rem or px), or undefined before mount. */
+function tokenPx(el: HTMLElement | null, name: string) {
+  if (!el) return undefined
+  const v = getComputedStyle(el).getPropertyValue(name).trim()
+  const n = parseFloat(v)
+  if (!n) return undefined
+  return v.endsWith("rem") ? n * parseFloat(getComputedStyle(document.documentElement).fontSize) : n
+}
 type Variant = "default" | "striped" | "borders" | "borderless"
 type Ctx = { table: TanTable<unknown>; density: Density; variant: Variant; loading: boolean; emptyText: React.ReactNode }
 const GridContext = React.createContext<Ctx | null>(null)
@@ -84,11 +93,11 @@ export function DataGridTable({
   const { table, density, variant, loading, emptyText } = useGrid()
   const scrollRef = React.useRef<HTMLDivElement>(null)
   const rows = table.getRowModel().rows
-  const rowHeight = density === "dense" ? 44 : 56
   const virtualizer = useVirtualizer({
     count: virtual ? rows.length : 0,
     getScrollElement: () => scrollRef.current,
-    estimateSize: () => rowHeight,
+    // The row height is a token, so it follows the density (data-density) the grid sits in.
+    estimateSize: () => tokenPx(scrollRef.current, density === "dense" ? "--h-md" : "--h-row") ?? (density === "dense" ? 44 : 56),
     overscan: 8,
   })
   const items = virtual ? virtualizer.getVirtualItems() : []
