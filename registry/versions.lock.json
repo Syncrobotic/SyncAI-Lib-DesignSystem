@@ -24,8 +24,8 @@
     "hash": "a0d4130094efa1db"
   },
   "status-glyph": {
-    "version": "0.10.0",
-    "hash": "06b740d7fdd754f2"
+    "version": "0.12.0",
+    "hash": "3cce1401a3c94eb2"
   },
   "status-eyebrow": {
     "version": "0.8.0",
@@ -48,8 +48,8 @@
     "hash": "c1f253777684177c"
   },
   "island": {
-    "version": "0.11.1",
-    "hash": "4af32ed4cc553fed"
+    "version": "0.12.0",
+    "hash": "4c576b06ed0a32e1"
   },
   "list": {
     "version": "0.7.0",
@@ -104,16 +104,16 @@
     "hash": "9e521392d3860c92"
   },
   "checkbox": {
-    "version": "0.10.0",
-    "hash": "52eadf07446dee41"
+    "version": "0.12.0",
+    "hash": "a448878740f18d92"
   },
   "radio-group": {
-    "version": "0.7.0",
-    "hash": "6bf86fd82a070cec"
+    "version": "0.12.0",
+    "hash": "579cb87bc5e40d1e"
   },
   "switch": {
-    "version": "0.9.0",
-    "hash": "6028f89b48d8aa15"
+    "version": "0.12.0",
+    "hash": "88f0091114308b19"
   },
   "choice-field": {
     "version": "0.10.0",
@@ -124,8 +124,8 @@
     "hash": "0b80a804a278f2ba"
   },
   "slider": {
-    "version": "0.5.0",
-    "hash": "23fa5a22e2b00803"
+    "version": "0.12.0",
+    "hash": "d5e6cb1ad82eb417"
   },
   "badge": {
     "version": "0.10.0",
@@ -336,8 +336,8 @@
     "hash": "03d1069002cfe53c"
   },
   "stepper": {
-    "version": "0.9.0",
-    "hash": "678c4fcbfa09e46f"
+    "version": "0.12.0",
+    "hash": "b6157305432c4880"
   },
   "timeline": {
     "version": "0.9.0",
@@ -356,8 +356,8 @@
     "hash": "787769c920d7f0db"
   },
   "trace": {
-    "version": "0.9.0",
-    "hash": "65731a517d0b339c"
+    "version": "0.12.0",
+    "hash": "6bc40b987bc99053"
   },
   "marker": {
     "version": "0.9.0",
