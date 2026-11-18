@@ -17,7 +17,7 @@ Like [ReUI](https://reui.io), components install into your project as source cod
 Operators control robots outdoors, one-handed and sometimes in a hurry. The system is built around that:
 
 - **Solid red is for the emergency stop only.** One touch stops, holding stops every robot, release takes a deliberate slide.
-- **Readable outdoors.** Dark by default, 44 px minimum touch targets, status as shape plus colour.
+- **Readable outdoors.** 44 px minimum touch targets, and every status as shape, colour and a word, so it reads in glare and without colour vision. Dark is the default theme; light is the better choice in direct sun.
 - **UI only.** Components never send commands. The app sends, waits for the robot, falls back to Bluetooth and passes the result back as `state`, so every component is testable on its own.
 
 ## Install

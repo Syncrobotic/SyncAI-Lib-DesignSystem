@@ -77,7 +77,7 @@ export default function ColorPage() {
   return (
     <article>
       <DocHeader
-        title="Color"
+        title="Colour"
         lead="Colours are named for what they mean, not what they look like. Components never use a raw value; they use a semantic token, and the token resolves per mode."
       />
 

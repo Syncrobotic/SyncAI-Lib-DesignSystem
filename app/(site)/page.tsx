@@ -115,10 +115,13 @@ const rules = [
     title: "Solid red means stop.",
     body: "The emergency stop is the only solid red on any screen. Everything else that is wrong is a tint, a shape and a word.",
   },
-  { title: "Colour means something is wrong.", body: "A calm fleet is grey. Blue means work in progress, amber needs attention, red needs someone now." },
+  {
+    title: "Colour is for what needs someone.",
+    body: "A calm fleet is grey, busy or idle. Amber needs attention, red needs someone now; blue only marks a process you are waiting on.",
+  },
   {
     title: "Made for one thumb, outdoors.",
-    body: "Dark by default, 44 px touch targets, status as a shape and a word so it reads in sunlight and without colour.",
+    body: "44 px touch targets, and every status as a shape and a word, so it reads in glare and without colour vision.",
   },
 ]
 
@@ -275,7 +278,7 @@ export default function HomePage() {
           </AppearItem>
         </Reveal>
         <p className="pt-6 text-center font-mono text-xs text-muted-foreground">
-          Version {pkg.version} · body text {px(themeValue("text-base"))} px
+          Version {pkg.version}
         </p>
       </section>
     </main>

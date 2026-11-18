@@ -39,7 +39,7 @@
   --muted-foreground: #52525b;
   --accent: #e6e6ea;
   --accent-foreground: var(--foreground);
-  --destructive: #8d0018;
+  --destructive: #860012;
   --border: #dcdce1;
   --input: #dcdce1;
   --ring: var(--foreground); /* focus is not a status: the ink colour, never the in-progress blue */
@@ -49,11 +49,12 @@
   --info-subtle: #e4e9f4;
   --success: #18704f;
   --success-subtle: #e0eee7;
-  /* Warning and danger are told apart by hue and by lightness, so they stay apart for colour-blind eyes (deutan ΔE 12.5
-     light, 23.2 dark) and at a glance (ΔE 17 and 30). Both reach 4.5:1 as text on the page, the card and their tint. */
-  --warning: #975d00;
+  /* Warning and danger are told apart by hue and by lightness, so they stay apart for colour-blind eyes (deutan ΔE 10.8
+     light, 21.6 dark) and at a glance (ΔE 16 and 29). Both reach 4.8:1 or more as text on every surface they sit on:
+     the page, the card, a muted tile or a selected row, and their own tint. */
+  --warning: #865900;
   --warning-subtle: #f4ecda;
-  --danger: #8d0018;
+  --danger: #860012;
   --danger-subtle: #f6e2e1;
   --neutral: #52525b;
   --neutral-subtle: #f4f4f5;
@@ -117,7 +118,7 @@
   --muted: #25252b;
   --muted-foreground: #a1a1aa;
   --accent: #25252b;
-  --destructive: #f05560;
+  --destructive: #f75b6b;
   --border: #2c2c32;
   --input: #2c2c32;
   --ring: var(--foreground);
@@ -127,9 +128,9 @@
   --info-subtle: #1a2233;
   --success: #6cc59c;
   --success-subtle: #172720;
-  --warning: #ffd667;
+  --warning: #ffd663;
   --warning-subtle: #2b2516;
-  --danger: #f05560;
+  --danger: #f75b6b;
   --danger-subtle: #321c1c;
   --neutral: #a1a1aa;
   --neutral-subtle: #1c1c21;

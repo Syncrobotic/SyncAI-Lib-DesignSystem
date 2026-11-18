@@ -3,9 +3,11 @@ import { ArrowUpRight, Bell, Bot, CircleAlert, Map, OctagonAlert, TriangleAlert,
 import { AppearItem, Reveal } from "./appear"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { type FoundationSlug, foundations } from "./foundations"
-import { contrast } from "./theme-tokens"
+import { contrast, px, themeValue } from "./theme-tokens"
 
 const bodyContrast = contrast("foreground", "background", "dark")!.toFixed(1)
+// The type scale as shipped, largest first, read from the theme so the preview cannot drift from it.
+const typeScale = ["5xl", "4xl", "3xl", "2xl", "xl", "lg", "base", "sm", "xs"].map((k) => px(themeValue(`text-${k}`)))
 
 // One small, real exhibit per foundation. Every value comes from the theme through Tailwind utilities.
 const previews: Record<FoundationSlug, React.ReactNode> = {
@@ -29,8 +31,8 @@ const previews: Record<FoundationSlug, React.ReactNode> = {
     <div className="flex items-baseline gap-3">
       <span className="text-5xl font-bold">Aa</span>
       <span className="flex flex-col text-xs text-muted-foreground">
-        <span>28 / 20 / 18</span>
-        <span>16 / 14 / 12</span>
+        <span>{typeScale.slice(0, 5).join(" / ")}</span>
+        <span>{typeScale.slice(5).join(" / ")}</span>
       </span>
     </div>
   ),

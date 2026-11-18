@@ -3,10 +3,10 @@ import { pageMeta } from "./config"
 // The design language, page by page. Drives the sidebar, the overview, the home page and the sitemap.
 export const foundations = [
   { slug: "principles", title: "Principles", lead: "Five decisions every screen inherits." },
-  { slug: "color", title: "Color", lead: "Semantic tokens, one meaning per colour, paired foreground and tint." },
-  { slug: "typography", title: "Typography", lead: "Six sizes on a 4 px rhythm, three weights, tabular numbers." },
+  { slug: "color", title: "Colour", lead: "Semantic tokens, one meaning per colour, paired foreground and tint." },
+  { slug: "typography", title: "Typography", lead: "Nine sizes on a 4 px rhythm, three weights, tabular numbers." },
   { slug: "spacing", title: "Spacing", lead: "A 4 px base and six steps. Nothing in between." },
-  { slug: "radius", title: "Radius", lead: "Five steps that keep nested corners concentric." },
+  { slug: "radius", title: "Radius", lead: "Six steps that keep nested corners concentric." },
   { slug: "elevation", title: "Elevation", lead: "Three layers: surface, float, overlay." },
   { slug: "motion", title: "Motion", lead: "Movement only marks a change of state." },
   { slug: "iconography", title: "Iconography", lead: "Lucide at three sizes, always with a name." },

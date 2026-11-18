@@ -59,7 +59,7 @@
     },
     "destructive": {
       "$type": "color",
-      "$value": "#8d0018"
+      "$value": "#860012"
     },
     "border": {
       "$type": "color",
@@ -95,7 +95,7 @@
     },
     "warning": {
       "$type": "color",
-      "$value": "#975d00"
+      "$value": "#865900"
     },
     "warning-subtle": {
       "$type": "color",
@@ -103,7 +103,7 @@
     },
     "danger": {
       "$type": "color",
-      "$value": "#8d0018"
+      "$value": "#860012"
     },
     "danger-subtle": {
       "$type": "color",

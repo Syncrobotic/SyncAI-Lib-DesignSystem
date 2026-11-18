@@ -1,7 +1,7 @@
 {
   "syncrobotic-theme": {
     "version": "0.10.0",
-    "hash": "11f899eabc312672"
+    "hash": "0a509f523797a203"
   },
   "cn": {
     "version": "0.5.0",
@@ -72,8 +72,8 @@
     "hash": "eb762064ebf94820"
   },
   "copy-button": {
-    "version": "0.8.0",
-    "hash": "f786e3b18a44336d"
+    "version": "0.10.0",
+    "hash": "7124ad1cba9f2388"
   },
   "input": {
     "version": "0.10.0",
