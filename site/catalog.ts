@@ -488,6 +488,8 @@ const entries: Record<string, Entry> = {
       "Stays until the condition clears and someone acknowledges it. Acknowledging records that it was seen; it does not clear it.",
       "Never auto-dismissed, never a toast, never blinking: the bar and the word “Unacknowledged” carry the state; only critical alarms are also tinted.",
       "One alarm per root cause. If the robot is offline, do not also raise camera lost and lidar lost.",
+      "Shelving hides a nuisance alarm for a set time and it comes back on its own; it is never permanent and never for critical alarms. Suppressed by design (the app's logic) and out of service (maintenance) are counted under the list, not hidden silently.",
+      "Pass `raisedAt` so a flood (over 10 alarms in 10 minutes) is named and the low ones fold away; then fix the root cause the flood points to.",
     ],
   },
   alert: {
