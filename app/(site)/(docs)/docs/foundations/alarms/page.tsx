@@ -20,7 +20,7 @@ const surfaces = [
 ]
 
 const priorities = [
-  { p: "Critical", icon: OctagonAlert, cls: "text-danger", act: "Now", sound: "Repeats until acknowledged", share: "≤ 5 %", example: "Collision risk, person in a restricted zone, robot fell" },
+  { p: "Critical", icon: OctagonAlert, cls: "text-danger", act: "Now", sound: "Every 10 s until acknowledged", share: "≤ 5 %", example: "Collision risk, person in a restricted zone, robot fell" },
   { p: "High", icon: TriangleAlert, cls: "text-warning", act: "Within minutes", sound: "Plays once", share: "≈ 15 %", example: "Battery below 15 %, localisation lost, stuck for 30 s" },
   { p: "Low", icon: CircleAlert, cls: "text-neutral", act: "When convenient", sound: "Silent", share: "≈ 80 %", example: "Cleaning due, firmware update ready, map out of date" },
 ]
@@ -89,7 +89,7 @@ export default function AlarmsPage() {
       <Section
         id="touch-and-sound"
         title="Touch and sound"
-        lead="Gloves, wind and machine noise: the screen alone cannot tell an operator that a stop went out or a critical alarm came in. Each safety moment has one fixed pattern from `@syncrobotic/feedback`, so the hand learns it like the eye learns a colour. Touch works where the browser can vibrate (Android, not iOS); sound only after the first tap on the page. Neither ever replaces what the screen shows."
+        lead="Gloves, wind and machine noise: the screen alone cannot tell an operator that a stop went out or a critical alarm came in. Each safety moment has one fixed pattern from `@syncrobotic/feedback`, so the hand learns it like the eye learns a colour. Both the phone's island and the dashboard's list signal; a critical alarm sounds again every 10 s until someone acknowledges it, and shelved, suppressed and out-of-service alarms stay silent. Touch works where the browser can vibrate (Android, not iOS); sound only after the first tap on the page. Neither ever replaces what the screen shows."
       >
         <TokenTable
           head={["Moment", "Vibration (ms on, off, on…)", "Tone"]}

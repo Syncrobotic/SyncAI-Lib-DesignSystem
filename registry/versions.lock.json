@@ -1,7 +1,7 @@
 {
   "syncrobotic-theme": {
-    "version": "0.11.0",
-    "hash": "3fbea44f8d0bf928"
+    "version": "0.11.1",
+    "hash": "6d5dc5802dc1e9fd"
   },
   "cn": {
     "version": "0.5.0",
@@ -16,8 +16,8 @@
     "hash": "f9fc6f352b80a160"
   },
   "use-slide-release": {
-    "version": "0.11.0",
-    "hash": "caac418757f13f04"
+    "version": "0.11.1",
+    "hash": "9033117864602a03"
   },
   "use-presence": {
     "version": "0.8.0",
@@ -36,20 +36,20 @@
     "hash": "2813a626bd3abfad"
   },
   "stop-button": {
-    "version": "0.11.0",
-    "hash": "1dc8b12ffb3c9e39"
+    "version": "0.11.1",
+    "hash": "afc4d829767510e1"
   },
   "slide-to-release": {
-    "version": "0.5.0",
-    "hash": "922a2450cdd91247"
+    "version": "0.11.1",
+    "hash": "bfc221fcb6e4e7df"
   },
   "dock": {
     "version": "0.8.0",
     "hash": "c1f253777684177c"
   },
   "island": {
-    "version": "0.8.0",
-    "hash": "2f59ca4bd8a68056"
+    "version": "0.11.1",
+    "hash": "4af32ed4cc553fed"
   },
   "list": {
     "version": "0.7.0",
@@ -160,8 +160,8 @@
     "hash": "de8cc4db3909ad49"
   },
   "alarm": {
-    "version": "0.11.0",
-    "hash": "2ef1870b1633b861"
+    "version": "0.11.1",
+    "hash": "21bb6a4249454852"
   },
   "toast": {
     "version": "0.10.0",
@@ -388,8 +388,8 @@
     "hash": "1f144c18bee6a25d"
   },
   "map-workspace": {
-    "version": "0.10.0",
-    "hash": "f6bad679b9c4cfe2"
+    "version": "0.11.1",
+    "hash": "ba3e1bcb0e329ff8"
   },
   "data-catalog": {
     "version": "0.10.0",
@@ -424,8 +424,8 @@
     "hash": "bfca1bddfd8b0af7"
   },
   "agent-skill": {
-    "version": "0.12.0",
-    "hash": "f1371c51ee7ad7c2"
+    "version": "0.11.1",
+    "hash": "5705c2b4b6efe0b5"
   },
   "line-chart-telemetry": {
     "version": "0.9.0",

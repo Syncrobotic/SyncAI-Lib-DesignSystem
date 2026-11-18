@@ -1,4 +1,4 @@
-// @syncrobotic/map-workspace v0.10.0 · update: npx shadcn add @syncrobotic/map-workspace --overwrite
+// @syncrobotic/map-workspace v0.11.1 · update: npx shadcn add @syncrobotic/map-workspace --overwrite
 "use client"
 
 import * as React from "react"
@@ -10,7 +10,9 @@ import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
 import { IslandAlarm } from "@/registry/syncrobotic/shell/island"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { StatusGlyph, type Tone } from "@/registry/syncrobotic/shell/status-glyph"
-import { StopButton, type StopButtonState } from "@/registry/syncrobotic/shell/stop-button"
+import { SlideToRelease } from "@/registry/syncrobotic/shell/slide-to-release"
+import { StopButton } from "@/registry/syncrobotic/shell/stop-button"
+import { feedback } from "@/registry/syncrobotic/lib/feedback"
 import { Tray } from "@/registry/syncrobotic/shell/tray"
 import { type AlarmData } from "@/registry/syncrobotic/ui/alarm"
 import { Button } from "@/registry/syncrobotic/ui/button"
@@ -48,7 +50,8 @@ const alarms: AlarmData[] = [
  */
 export function MapWorkspace() {
   const [selected, setSelected] = React.useState("7F3A")
-  const [stop, setStop] = React.useState<StopButtonState>("ready")
+  // The stop as in the dock: ready, sending until the robot confirms, then stopped with slide to release.
+  const [stop, setStop] = React.useState<"ready" | "sending" | "stopped">("ready")
   const [list, setList] = React.useState(alarms)
   const robot = robots.find((r) => r.id === selected)!
 
@@ -115,19 +118,28 @@ export function MapWorkspace() {
           </div>
         </Tray>
 
-        <Tray className="absolute top-4 right-4 hidden w-96 lg:flex">
+        {/* Only while an alarm shows: an empty tray would float as a bare pill. The island stays mounted so it hears new alarms. */}
+        <Tray className="absolute top-4 right-4 hidden w-96 lg:has-[[role=group]]:flex">
           <IslandAlarm alarms={list} onAcknowledge={(id) => setList((l) => l.map((a) => (a.id === id ? { ...a, acknowledged: true } : a)))} />
         </Tray>
 
         <div className="absolute right-4 bottom-4 w-72">
-          <StopButton
-            state={stop}
-            tag={robot.id}
-            onStop={() => {
-              setStop("sending")
-              window.setTimeout(() => setStop("idle"), 800)
-            }}
-          />
+          {stop === "stopped" ? (
+            <SlideToRelease tag={robot.id} onRelease={() => window.setTimeout(() => setStop("ready"), 500)} />
+          ) : (
+            <StopButton
+              state={stop}
+              tag={robot.id}
+              onStop={() => {
+                setStop("sending")
+                // The robot confirms: the app says so to the hand, then offers release.
+                window.setTimeout(() => {
+                  feedback("stopConfirmed")
+                  setStop("stopped")
+                }, 800)
+              }}
+            />
+          )}
         </div>
       </div>
     </AppShell>
