@@ -5,7 +5,7 @@ import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { type FoundationSlug, foundations } from "./foundations"
 import { contrast, px, themeValue } from "./theme-tokens"
 
-const bodyContrast = contrast("foreground", "background", "dark")!.toFixed(1)
+const bodyContrast = contrast("foreground", "background", "light")!.toFixed(1)
 // The type scale as shipped, largest first, read from the theme so the preview cannot drift from it.
 const typeScale = ["5xl", "4xl", "3xl", "2xl", "xl", "lg", "base", "sm", "xs"].map((k) => px(themeValue(`text-${k}`)))
 

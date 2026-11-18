@@ -2,6 +2,11 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Changed
+- **Light is the default theme.** The design language says the interfaces are used outdoors, and in daylight and glare a dark screen washes out while dark text on a light surface holds. Dark stays complete and is for control rooms and night shifts: add `class="dark"` to `<html>`. The docs site, Storybook, the installation guide, the Principles page, the README and the agent skill now start in light; a visitor who chose dark keeps it. Components did not change: both themes were already complete and checked.
+
 ## 0.12.0 · 2026-11-18
 
 ### Added
