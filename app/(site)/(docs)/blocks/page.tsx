@@ -22,7 +22,6 @@ export default function BlocksPage() {
   return (
     <article>
       <header className="flex flex-col gap-3 border-b border-border pb-8">
-        <p className="text-sm font-medium text-muted-foreground">Blocks</p>
         <h1 className="text-3xl font-bold tracking-tight">Sections and screens you can drop into a tool</h1>
         <p className="max-w-2xl text-lg text-muted-foreground">
           Components composed the way we use them: real copy, real states, responsive. Pick a type, compare its blocks, install one as source.
@@ -46,19 +45,22 @@ export default function BlocksPage() {
                 const first = list[0]
                 return (
                   <AppearItem key={t.slug} className="flex">
+                    {/* The screenshot is framed (it is a picture of a screen); the words under it are not boxed. */}
                     <Link
                       href={`/blocks/${t.slug}`}
-                      className="press group flex w-full flex-col overflow-hidden rounded-md border border-border hover:border-muted-foreground"
+                      className="group flex w-full flex-col gap-3 rounded-md outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
                     >
-                      <BlockThumb
-                        name={first.name}
-                        title={t.title}
-                        width={first.thumbWidth ?? (first.viewport === "mobile" ? 390 : 1280)}
-                        height={first.height}
-                        fit={first.fit}
-                        ratio={16 / 10}
-                      />
-                      <div className="flex flex-1 flex-col gap-1 border-t border-border bg-card p-4">
+                      <div className="overflow-hidden rounded-md ring-1 ring-border transition-shadow duration-(--motion-fast) ease-(--ease-standard) group-hover:ring-muted-foreground">
+                        <BlockThumb
+                          name={first.name}
+                          title={t.title}
+                          width={first.thumbWidth ?? (first.viewport === "mobile" ? 390 : 1280)}
+                          height={first.height}
+                          fit={first.fit}
+                          ratio={16 / 10}
+                        />
+                      </div>
+                      <div className="flex flex-1 flex-col gap-1">
                         <span className="flex items-baseline justify-between gap-2">
                           <span className="font-bold group-hover:underline">{t.title}</span>
                           <span className="text-xs text-muted-foreground tabular-nums">
