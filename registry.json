@@ -210,8 +210,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.12.0",
         "changelog": [
+          {
+            "version": "0.12.0",
+            "date": "2026-11-18",
+            "note": "`toneSubtle` tints only warning and danger; busy (info) and normal (success) are grey, like their text. A calm notice on the island no longer turns blue or green."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -435,8 +440,13 @@
         }
       ],
       "meta": {
-        "version": "0.11.1",
+        "version": "0.12.0",
         "changelog": [
+          {
+            "version": "0.12.0",
+            "date": "2026-11-18",
+            "note": "The status button says offline and charging (new `offline`, `charging`, `battery` labels), not only a low battery."
+          },
           {
             "version": "0.11.1",
             "date": "2026-11-18",
@@ -970,8 +980,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.12.0",
         "changelog": [
+          {
+            "version": "0.12.0",
+            "date": "2026-11-18",
+            "note": "Disabled is never faded: the box keeps its edge and the grey label says it is off limits; when checked or mixed, grey instead of the primary, so it reads in glare."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -1013,8 +1028,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.12.0",
         "changelog": [
+          {
+            "version": "0.12.0",
+            "date": "2026-11-18",
+            "note": "Disabled is never faded: the disc keeps its edge; when chosen, a grey ring and dot instead of the primary."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -1051,8 +1071,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.12.0",
         "changelog": [
+          {
+            "version": "0.12.0",
+            "date": "2026-11-18",
+            "note": "Disabled is never faded: when on, the track goes grey instead of the primary. The hit area is the --h-md token, so it grows with glove density."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -1177,8 +1202,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.12.0",
         "changelog": [
+          {
+            "version": "0.12.0",
+            "date": "2026-11-18",
+            "note": "Disabled is never faded: the filled part goes grey instead of the primary."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -1674,7 +1704,8 @@
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
-        "@syncrobotic/button"
+        "@syncrobotic/button",
+        "@syncrobotic/filter-form"
       ],
       "files": [
         {
@@ -1683,8 +1714,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.12.0",
         "changelog": [
+          {
+            "version": "0.12.0",
+            "date": "2026-11-18",
+            "note": "Link mode: `href` makes every page a link (?page=3), so it can be shared, Back works and it needs no JavaScript; `onNavigate` routes through the app's router. `onPageChange` is optional with `href`."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -2298,6 +2334,85 @@
       }
     },
     {
+      "name": "share-bar",
+      "type": "registry:ui",
+      "title": "Share bar",
+      "description": "How a whole splits, as one thin bar in the chart palette: light enough for a table cell, with an optional label, total and legend.",
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/share-bar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.12.0",
+        "changelog": [
+          {
+            "version": "0.12.0",
+            "date": "2026-11-18",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "load-more",
+      "type": "registry:ui",
+      "title": "Load more",
+      "description": "The end of a long list on a phone or in a gallery: how much is shown, and one button for the next batch that says how many it adds and how many remain.",
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/load-more.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.12.0",
+        "changelog": [
+          {
+            "version": "0.12.0",
+            "date": "2026-11-18",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "restricted-preview",
+      "type": "registry:ui",
+      "title": "Restricted preview",
+      "description": "A preview that is not loaded until someone asks: restricted data, or pictures with faces or number plates. Neutral, with the reason.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/restricted-preview.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.12.0",
+        "changelog": [
+          {
+            "version": "0.12.0",
+            "date": "2026-11-18",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
       "name": "filter-form",
       "type": "registry:ui",
       "title": "Filter form",
@@ -2832,8 +2947,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.12.0",
         "changelog": [
+          {
+            "version": "0.12.0",
+            "date": "2026-11-18",
+            "note": "The step you are on keeps `aria-current` when it has an error, and is no longer offered as a jump to itself. A step you can jump to is at least --h-md tall."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -2985,8 +3105,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.12.0",
         "changelog": [
+          {
+            "version": "0.12.0",
+            "date": "2026-11-18",
+            "note": "Done and failed use the icon set's CircleCheck and CircleAlert (Check and X mean selected and close). An expandable row is at least --h-md tall in dense density too."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",

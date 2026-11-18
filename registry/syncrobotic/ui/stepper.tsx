@@ -1,4 +1,4 @@
-// @syncrobotic/stepper v0.9.0 · update: npx shadcn add @syncrobotic/stepper --overwrite
+// @syncrobotic/stepper v0.12.0 · update: npx shadcn add @syncrobotic/stepper --overwrite
 "use client"
 
 import * as React from "react"
@@ -91,7 +91,7 @@ export function StepperItem({
 }) {
   const { orientation, onValueChange, navigable, size, value } = useStepper()
   const { step, state, last } = React.useContext(StepCtx)
-  const canJump = !disabled && !!onValueChange && state !== "current" && (navigable === "all" || (navigable === "done" && step < value))
+  const canJump = !disabled && !!onValueChange && step !== value && (navigable === "all" || (navigable === "done" && step < value))
   const vertical = orientation === "vertical"
   const label = (
     <>
@@ -119,7 +119,8 @@ export function StepperItem({
     <li
       data-slot="stepper-item"
       data-state={state}
-      aria-current={state === "current" ? "step" : undefined}
+      // The step you are on stays the current step even when it has an error.
+      aria-current={step === value ? "step" : undefined}
       aria-disabled={disabled || undefined}
       className={cn("relative flex min-w-0 flex-col", !vertical && "flex-1 pr-2", className)}
       {...props}
@@ -147,7 +148,8 @@ export function StepperItem({
             type="button"
             onClick={() => onValueChange?.(step)}
             className={cn(
-              "flex min-w-0 rounded-sm text-left outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+              // At least a finger's height, whatever the size and orientation.
+              "flex min-h-(--h-md) min-w-0 rounded-sm text-left outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
               "press hover:opacity-80",
               vertical ? "items-start gap-3" : "flex-col items-start gap-2",
             )}

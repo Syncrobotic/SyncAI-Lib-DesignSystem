@@ -1,9 +1,9 @@
-// @syncrobotic/trace v0.9.0 · update: npx shadcn add @syncrobotic/trace --overwrite
+// @syncrobotic/trace v0.12.0 · update: npx shadcn add @syncrobotic/trace --overwrite
 "use client"
 
 import * as React from "react"
 import { Collapsible as CollapsiblePrimitive } from "radix-ui"
-import { Check, ChevronRight, Circle, Minus, TriangleAlert, X } from "lucide-react"
+import { ChevronRight, Circle, CircleAlert, CircleCheck, Minus, TriangleAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Spinner } from "@/registry/syncrobotic/ui/spinner"
 
@@ -59,9 +59,9 @@ export function TraceStatusIcon({ status, className }: { status: TraceStatus; cl
   return (
     <span aria-hidden="true" className={cn("grid size-5 shrink-0 place-items-center [&_svg]:size-4", className)}>
       {status === "running" && <Spinner delay={0} label="" className="size-4" />}
-      {status === "done" && <Check className="text-foreground" />}
+      {status === "done" && <CircleCheck className="text-foreground" />}
       {status === "warning" && <TriangleAlert className="text-warning" />}
-      {status === "error" && <X className="text-danger" />}
+      {status === "error" && <CircleAlert className="text-danger" />}
       {status === "pending" && <Circle className="text-muted-foreground" />}
       {status === "skipped" && <Minus className="text-muted-foreground" />}
     </span>
@@ -105,7 +105,8 @@ export function TraceItem({
   const { density, total } = React.useContext(TraceCtx)
   const expandable = React.Children.count(children) > 0
   const bar = total && start !== undefined && duration !== undefined
-  const row = cn("flex w-full min-w-0 items-start gap-2 text-left text-sm", density === "dense" ? "min-h-8 py-1" : "min-h-(--h-md) py-2")
+  // Dense only tightens the padding: a row you can open is still a full touch target.
+  const row = cn("flex w-full min-w-0 items-start gap-2 text-left text-sm", expandable || density !== "dense" ? "min-h-(--h-md)" : "min-h-8", density === "dense" ? "py-1" : "py-2")
   const head = (
     <>
       <span className={cn("relative z-10 flex shrink-0 items-center bg-background", density === "dense" ? "h-6" : "h-5")}>

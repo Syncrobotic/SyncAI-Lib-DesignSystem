@@ -1,4 +1,4 @@
-// @syncrobotic/checkbox v0.10.0 · update: npx shadcn add @syncrobotic/checkbox --overwrite
+// @syncrobotic/checkbox v0.12.0 · update: npx shadcn add @syncrobotic/checkbox --overwrite
 "use client"
 
 import * as React from "react"
@@ -15,7 +15,8 @@ export function Checkbox({ className, ...props }: React.ComponentProps<typeof Ch
         "peer flex size-5 shrink-0 items-center justify-center rounded-2xs bg-card ring-1 ring-input ring-inset transition-colors duration-(--motion-fast) ease-(--ease-standard)",
         "data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:ring-primary",
         "data-[state=indeterminate]:bg-primary data-[state=indeterminate]:text-primary-foreground data-[state=indeterminate]:ring-primary",
-        "disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-danger",
+        // Disabled: never faded. The box keeps its edge (the grey label says it is off limits); when checked, grey instead of the primary, so on and off stay readable in glare.
+        "disabled:cursor-not-allowed disabled:data-[state=checked]:bg-muted-foreground disabled:data-[state=checked]:ring-muted-foreground disabled:data-[state=checked]:text-background disabled:data-[state=indeterminate]:bg-muted-foreground disabled:data-[state=indeterminate]:ring-muted-foreground disabled:data-[state=indeterminate]:text-background aria-invalid:ring-danger",
         className,
       )}
       {...props}

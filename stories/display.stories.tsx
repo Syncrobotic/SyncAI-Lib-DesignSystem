@@ -175,17 +175,18 @@ export const TableDefault: S = {
   ),
 }
 
+/** A calm state is a neutral badge with its shape; only what needs attention is tinted. Counts are CountBadges. */
 export const BadgeWithStatusAndCount: S = {
   render: () => (
     <div className="flex flex-wrap items-center gap-2">
-      <Badge tone="info">
+      <Badge tone="neutral">
         <StatusGlyph tone="info" /> Patrolling
       </Badge>
       <Badge tone="warning">
         <Battery aria-hidden="true" /> 18%
       </Badge>
       <span className="inline-flex items-center gap-2 text-sm">
-        Events <Badge tone="danger">12</Badge>
+        Events <CountBadge count={12} />
       </span>
     </div>
   ),

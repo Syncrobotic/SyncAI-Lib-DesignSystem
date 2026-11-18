@@ -1,10 +1,11 @@
-// @syncrobotic/pagination v0.8.0 · update: npx shadcn add @syncrobotic/pagination --overwrite
+// @syncrobotic/pagination v0.12.0 · update: npx shadcn add @syncrobotic/pagination --overwrite
 "use client"
 
 import * as React from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/registry/syncrobotic/ui/button"
+import type { Navigate } from "@/registry/syncrobotic/ui/filter-form"
 
 type Labels = { range?: (from: number, to: number, total: number) => string; previous?: string; next?: string; page?: (n: number) => string; empty?: string }
 
@@ -30,12 +31,17 @@ function pageList(page: number, count: number): (number | null)[] {
 /**
  * Where you are in a long list and how to move through it: "1–5 of 8" and previous / next, or numbered pages
  * (`pages`). Pages are zero-based in code and one-based on screen. Previous and next disable at the ends.
+ *
+ * With `href` every page is a link (`?page=3`), so a page can be shared, Back works and it needs no JavaScript; pass
+ * `onNavigate` to route through the app's router instead of a full load.
  */
 export function Pagination({
   page,
   pageSize,
   total,
   onPageChange,
+  href,
+  onNavigate,
   pages = false,
   labels,
   className,
@@ -43,7 +49,12 @@ export function Pagination({
   page: number
   pageSize: number
   total: number
-  onPageChange: (page: number) => void
+  /** For pages kept in state. Not needed with `href`. */
+  onPageChange?: (page: number) => void
+  /** Link mode: the URL of a page (zero-based), e.g. (p) => `?page=${p + 1}`. */
+  href?: (page: number) => string
+  /** In link mode, follow a link through the app's router; without it the browser loads the page. */
+  onNavigate?: Navigate
   /** Show numbered page buttons between previous and next. */
   pages?: boolean
   labels?: Labels
@@ -53,15 +64,38 @@ export function Pagination({
   const count = Math.max(1, Math.ceil(total / pageSize))
   const from = total === 0 ? 0 : page * pageSize + 1
   const to = Math.min(total, (page + 1) * pageSize)
+  // One control per page: a link in link mode, a button otherwise. An end that does not exist is a disabled button.
+  const go = (n: number, props: React.ComponentProps<typeof Button>, children: React.ReactNode) => {
+    if (!href || props.disabled)
+      return (
+        <Button {...props} onClick={() => onPageChange?.(n)}>
+          {children}
+        </Button>
+      )
+    const url = href(n)
+    return (
+      <Button {...props} asChild>
+        <a
+          href={url}
+          onClick={(e) => {
+            onPageChange?.(n)
+            if (!onNavigate || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return
+            e.preventDefault()
+            onNavigate(url, "push")
+          }}
+        >
+          {children}
+        </a>
+      </Button>
+    )
+  }
   return (
     <nav aria-label="Pagination" data-slot="pagination" className={cn("flex items-center justify-between gap-4 text-sm text-muted-foreground", className)}>
       <span aria-live="polite" className="tabular-nums">
         {total === 0 ? l.empty : l.range(from, to, total)}
       </span>
-      <div className="flex items-center gap-1">
-        <Button variant="outline" size="icon-sm" aria-label={l.previous} disabled={page <= 0} onClick={() => onPageChange(page - 1)}>
-          <ChevronLeft aria-hidden="true" />
-        </Button>
+      <div className="flex items-center gap-1" /* icon-gap-ok: 4 px between page buttons, not an icon and its label */>
+        {go(page - 1, { variant: "outline", size: "icon-sm", "aria-label": l.previous, disabled: page <= 0 }, <ChevronLeft aria-hidden="true" />)}
         {pages &&
           pageList(page, count).map((n, i) =>
             n === null ? (
@@ -69,22 +103,22 @@ export function Pagination({
                 …
               </span>
             ) : (
-              <Button
-                key={n}
-                variant={n === page ? "secondary" : "ghost"}
-                size="icon-sm"
-                aria-label={l.page(n + 1)}
-                aria-current={n === page ? "page" : undefined}
-                className={cn("tabular-nums", n === page && "font-medium text-foreground")}
-                onClick={() => onPageChange(n)}
-              >
-                {n + 1}
-              </Button>
+              <React.Fragment key={n}>
+                {go(
+                  n,
+                  {
+                    variant: n === page ? "secondary" : "ghost",
+                    size: "icon-sm",
+                    "aria-label": l.page(n + 1),
+                    "aria-current": n === page ? "page" : undefined,
+                    className: cn("tabular-nums", n === page && "font-medium text-foreground"),
+                  },
+                  n + 1,
+                )}
+              </React.Fragment>
             ),
           )}
-        <Button variant="outline" size="icon-sm" aria-label={l.next} disabled={page >= count - 1} onClick={() => onPageChange(page + 1)}>
-          <ChevronRight aria-hidden="true" />
-        </Button>
+        {go(page + 1, { variant: "outline", size: "icon-sm", "aria-label": l.next, disabled: page >= count - 1 }, <ChevronRight aria-hidden="true" />)}
       </div>
     </nav>
   )
