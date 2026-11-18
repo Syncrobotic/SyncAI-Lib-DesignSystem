@@ -1,0 +1,110 @@
+// @syncrobotic/search-field v0.10.0 · update: npx shadcn add @syncrobotic/search-field --overwrite
+"use client"
+
+import * as React from "react"
+import { Search } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { browserNavigate, type Navigate } from "@/registry/syncrobotic/ui/filter-form"
+import { Input } from "@/registry/syncrobotic/ui/input"
+import { InputGroup, InputGroupAddon } from "@/registry/syncrobotic/ui/input-group"
+import { Kbd } from "@/registry/syncrobotic/ui/kbd"
+
+/**
+ * The tool's one search box, in the top bar. `/` focuses it from anywhere on the page (not while typing in a field).
+ * Enter opens the results page; on the results page (`live`) it holds the query from the URL and applies itself a moment
+ * after typing stops, refining one history entry. Without JavaScript it is a GET form to `action`.
+ */
+export function SearchField({
+  action = "/search",
+  name = "q",
+  live = false,
+  onNavigate = browserNavigate,
+  delay = 400,
+  label = "Search",
+  placeholder = "Search",
+  hotkey = "/",
+  className,
+}: {
+  /** The results page. */
+  action?: string
+  /** The query parameter. */
+  name?: string
+  /** True on the results page: follow the URL and apply while typing. */
+  live?: boolean
+  onNavigate?: Navigate
+  delay?: number
+  label?: string
+  placeholder?: string
+  /** The key that focuses the box; null for none. */
+  hotkey?: string | null
+  className?: string
+}) {
+  const input = React.useRef<HTMLInputElement>(null)
+  const timer = React.useRef<number | undefined>(undefined)
+  const id = React.useId()
+  const go = (replace: boolean) => {
+    window.clearTimeout(timer.current)
+    const q = input.current?.value.trim()
+    onNavigate(q ? `${action}?${name}=${encodeURIComponent(q)}` : action, replace ? "replace" : "push")
+  }
+
+  // On the results page the box mirrors ?q=: on arrival, and on Back or Forward.
+  React.useEffect(() => {
+    if (!live) return
+    const sync = () => {
+      const q = new URLSearchParams(window.location.search).get(name) ?? ""
+      if (input.current && input.current.value !== q) input.current.value = q
+    }
+    sync()
+    window.addEventListener("popstate", sync)
+    return () => window.removeEventListener("popstate", sync)
+  }, [live, name])
+
+  React.useEffect(() => {
+    if (!hotkey) return
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target instanceof Element ? e.target : null
+      if (e.key !== hotkey || e.metaKey || e.ctrlKey || e.altKey || t?.closest("input, textarea, select, [contenteditable]")) return
+      e.preventDefault()
+      input.current?.focus()
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [hotkey])
+
+  React.useEffect(() => () => window.clearTimeout(timer.current), [])
+
+  return (
+    <form
+      role="search"
+      aria-label={label}
+      action={action}
+      data-slot="search-field"
+      className={cn("relative w-full", className)}
+      onInput={() => {
+        if (!live) return
+        window.clearTimeout(timer.current)
+        timer.current = window.setTimeout(() => go(true), delay)
+      }}
+      onSubmit={(e) => {
+        e.preventDefault()
+        go(live)
+      }}
+    >
+      <label htmlFor={id} className="sr-only">
+        {label}
+      </label>
+      <InputGroup>
+        <InputGroupAddon>
+          <Search aria-hidden="true" />
+        </InputGroupAddon>
+        <Input ref={input} id={id} name={name} type="search" autoComplete="off" placeholder={placeholder} />
+        {hotkey && (
+          <InputGroupAddon aria-hidden="true" className="max-md:hidden">
+            <Kbd>{hotkey}</Kbd>
+          </InputGroupAddon>
+        )}
+      </InputGroup>
+    </form>
+  )
+}

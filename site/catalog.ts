@@ -41,6 +41,12 @@ export type StoryFile =
   | "button-group"
   | "scroll-area"
   | "toggle-group"
+  | "page-header"
+  | "chip-group"
+  | "filter-form"
+  | "search-field"
+  | "theme-toggle"
+  | "route-progress"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
@@ -254,6 +260,61 @@ const entries: Record<string, Entry> = {
     group: "Display",
     examples: { file: "scroll-area", prefix: "ScrollArea" },
     rules: ["Give it a fixed height (or width) and an aria-label.", "The viewport takes focus so the keyboard can scroll it."],
+  },
+  "page-header": {
+    group: "Navigation",
+    examples: { file: "page-header", prefix: "PageHeader" },
+    rules: [
+      "One per page, first in the content: the breadcrumb says where, the h1 says what. No label above the title.",
+      "Meta pills are facts (counts, owner, last update); a status pill takes a tone and only warning and danger are coloured.",
+      "Actions sit at the right; the page's one primary action may be among them.",
+    ],
+  },
+  "chip-group": {
+    group: "Inputs",
+    examples: { file: "chip-group", prefix: "ChipGroup" },
+    rules: [
+      "One choice among several, with the count each gives. For several choices at once use checkboxes in a FieldSet.",
+      "Selected is inverted, like a selected segment.",
+      "Fold long rows with max; the selected chip always stays visible.",
+      "Chips with href are links: the filter lives in the URL and works without JavaScript.",
+    ],
+  },
+  "filter-form": {
+    group: "Inputs",
+    examples: { file: "filter-form", prefix: "FilterForm" },
+    rules: [
+      "Filters that change what a page lists belong in the URL: shareable, bookmarkable, undone with Back.",
+      "Typing applies a moment after it stops; a pick applies at once. The page number resets.",
+      "It is a plain GET form, so it works before JavaScript loads. Pass onNavigate to stay client-side (Next.js: router.push / router.replace with scroll: false).",
+    ],
+  },
+  "search-field": {
+    group: "Inputs",
+    examples: { file: "search-field", prefix: "SearchField" },
+    rules: [
+      "One search box per tool, in the top bar. / focuses it; Enter opens the results page.",
+      "On the results page set live: it mirrors ?q= and applies as you type.",
+      "For jumping to pages and actions use the command palette (AppShell search); this is for searching data.",
+    ],
+  },
+  "theme-toggle": {
+    group: "Actions",
+    examples: { file: "theme-toggle", prefix: "ThemeToggle" },
+    rules: [
+      "Three choices: light, match the system, dark. Match the system is the default.",
+      "Pass undefined until the stored choice is known, so nothing is shown selected and then jumps.",
+      "In a top bar, at the far right beside the user.",
+    ],
+  },
+  "route-progress": {
+    group: "Feedback",
+    examples: { file: "route-progress", prefix: "RouteProgress" },
+    rules: [
+      "For a page that takes long to arrive; it shows after 300 ms, so a quick page never flashes it.",
+      "Blue: a process someone is waiting on. It never reaches the end until the page is in.",
+      "Drive active from your router; it gives up after 10 s if the navigation never reports back.",
+    ],
   },
   "toggle-group": {
     group: "Actions",

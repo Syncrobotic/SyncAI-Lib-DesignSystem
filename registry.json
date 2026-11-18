@@ -21,7 +21,7 @@
           {
             "version": "0.10.0",
             "date": "2026-11-18",
-            "note": "Focus ring is the foreground colour, no longer the in-progress blue. Chart palette moves off the status hues (violet, teal, olive, magenta, grey for Other), CVD-validated. Type scale gains 2xl (24, figures) and 4xl (36, hero on phones) and is locked: sizes off the scale produce nothing. Adds radius-2xs (4) for controls 24 px and smaller. Warning and danger are told apart by hue and lightness (deutan ΔE 10.8 light / 21.6 dark, was 1.5; 4.8:1 or more as text on every surface). Adds --ease-exit for exits. Blue is defined: a process someone is waiting on, never a state."
+            "note": "Focus ring is the foreground colour, no longer the in-progress blue. Chart palette moves off the status hues (violet, teal, olive, magenta, grey for Other), CVD-validated. Type scale gains 2xl (24, figures) and 4xl (36, hero on phones) and is locked: sizes off the scale produce nothing. Adds radius-2xs (4) for controls 24 px and smaller. Warning and danger are told apart by hue and lightness (deutan ΔE 10.8 light / 21.6 dark, was 1.5; 4.8:1 or more as text on every surface). Adds --ease-exit for exits. Blue is defined: a process someone is waiting on, never a state. Adds animate-route-progress (off under reduced motion)."
           },
           {
             "version": "0.9.0",
@@ -2126,6 +2126,169 @@
           {
             "version": "0.9.0",
             "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "page-header",
+      "type": "registry:ui",
+      "title": "Page header",
+      "description": "The block a page opens with: breadcrumb above, one h1 and a line, meta pills, actions at the right. No label above the title.",
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/status-glyph"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/page-header.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.10.0",
+        "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "chip-group",
+      "type": "registry:ui",
+      "title": "Chip group",
+      "description": "One choice among several as chips with counts, folded after N; or links, so a filter lives in the URL. Selected is inverted.",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/chip-group.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.10.0",
+        "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "filter-form",
+      "type": "registry:ui",
+      "title": "Filter form",
+      "description": "Filters kept in the URL: a GET form that applies itself after typing stops or at once on a pick, resets the page, and works without JavaScript.",
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/filter-form.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.10.0",
+        "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "search-field",
+      "type": "registry:ui",
+      "title": "Search field",
+      "description": "The tool's one search box: / focuses it, Enter opens the results page, and on that page it follows ?q= and applies as you type.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/filter-form",
+        "@syncrobotic/input",
+        "@syncrobotic/input-group",
+        "@syncrobotic/kbd"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/search-field.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.10.0",
+        "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "theme-toggle",
+      "type": "registry:ui",
+      "title": "Theme toggle",
+      "description": "Light, match the system, or dark: three icon segments, the current one inverted, each named for screen readers.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/segmented-control"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/theme-toggle.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.10.0",
+        "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "route-progress",
+      "type": "registry:ui",
+      "title": "Route progress",
+      "description": "A thin blue bar while the next page loads: shows after 300 ms, never reaches the end, gives up after 10 s.",
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/route-progress.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.10.0",
+        "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
             "note": "New."
           }
         ]
