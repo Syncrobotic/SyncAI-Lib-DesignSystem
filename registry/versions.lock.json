@@ -32,8 +32,8 @@
     "hash": "2813a626bd3abfad"
   },
   "stop-button": {
-    "version": "0.6.0",
-    "hash": "cb96973c330a0ca3"
+    "version": "0.10.0",
+    "hash": "ea5ef04b0c9a0485"
   },
   "slide-to-release": {
     "version": "0.5.0",
@@ -160,8 +160,8 @@
     "hash": "acd324da76e6e9c6"
   },
   "toast": {
-    "version": "0.8.0",
-    "hash": "158e78d88fce5577"
+    "version": "0.10.0",
+    "hash": "9f9222359e3e1b63"
   },
   "empty-state": {
     "version": "0.5.0",
@@ -373,19 +373,19 @@
   },
   "list-detail": {
     "version": "0.10.0",
-    "hash": "d421f02593a991c3"
+    "hash": "5fe717145b4e137b"
   },
   "event-log": {
     "version": "0.8.0",
     "hash": "1f144c18bee6a25d"
   },
   "map-workspace": {
-    "version": "0.8.0",
-    "hash": "a348c3c5398324f4"
+    "version": "0.10.0",
+    "hash": "7e79d919473c418e"
   },
   "data-catalog": {
-    "version": "0.8.0",
-    "hash": "85cfc0719b0350fa"
+    "version": "0.10.0",
+    "hash": "26098a19776672f2"
   },
   "dataset-detail": {
     "version": "0.8.0",
@@ -412,8 +412,8 @@
     "hash": "ca26144d94449917"
   },
   "status-pages": {
-    "version": "0.8.0",
-    "hash": "9b75fb563ad656ed"
+    "version": "0.10.0",
+    "hash": "bfca1bddfd8b0af7"
   },
   "agent-skill": {
     "version": "0.8.0",
@@ -552,8 +552,8 @@
     "hash": "88ebaa9f142d9686"
   },
   "sheet-robot-detail": {
-    "version": "0.9.0",
-    "hash": "b61c183ad698d219"
+    "version": "0.10.0",
+    "hash": "63a15389d0beebb2"
   },
   "sheet-filters": {
     "version": "0.9.0",

@@ -2,7 +2,7 @@
 "use client"
 
 import * as React from "react"
-import { ArrowLeft, MapPin, Pause, RotateCcw, Search } from "lucide-react"
+import { ArrowLeft, MapPin, Pause, HousePlug, Search } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
@@ -86,7 +86,7 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
                     <Pause aria-hidden="true" /> Pause
                   </Button>
                   <Button variant="secondary" size="sm">
-                    <RotateCcw aria-hidden="true" /> Return to dock
+                    <HousePlug aria-hidden="true" /> Return to dock
                   </Button>
                 </div>
               </div>

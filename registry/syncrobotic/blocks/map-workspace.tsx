@@ -1,8 +1,8 @@
-// @syncrobotic/map-workspace v0.8.0 · update: npx shadcn add @syncrobotic/map-workspace --overwrite
+// @syncrobotic/map-workspace v0.10.0 · update: npx shadcn add @syncrobotic/map-workspace --overwrite
 "use client"
 
 import * as React from "react"
-import { Crosshair, Pause, RotateCcw } from "lucide-react"
+import { Crosshair, Pause, HousePlug } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
 import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
@@ -105,7 +105,7 @@ export function MapWorkspace() {
                 <Pause aria-hidden="true" /> Pause
               </Button>
               <Button variant="secondary" size="sm">
-                <RotateCcw aria-hidden="true" /> Dock
+                <HousePlug aria-hidden="true" /> Dock
               </Button>
               <Button variant="ghost" size="icon-sm" aria-label="Centre map on robot">
                 <Crosshair aria-hidden="true" />

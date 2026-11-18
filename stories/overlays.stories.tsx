@@ -11,7 +11,7 @@ import {
   Wrench,
   Copy,
   Ellipsis,
-  Filter,
+  SlidersHorizontal,
   Info,
   Keyboard,
   LayoutDashboard,
@@ -277,7 +277,7 @@ export const PopoverWithForm: S = {
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="outline">
-          <Filter aria-hidden="true" /> Battery filter
+          <SlidersHorizontal aria-hidden="true" /> Battery filter
         </Button>
       </PopoverTrigger>
       <PopoverContent className="flex flex-col gap-3">

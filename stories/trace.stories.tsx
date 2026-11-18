@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { Bot, Camera, Cpu, Database, MapPin, RefreshCw, Route, Search, Wrench } from "lucide-react"
+import { Bot, Camera, Cpu, Database, MapPin, RotateCw, Route, Search, Wrench } from "lucide-react"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Trace, TraceCode, TraceDetail, TraceHeader, TraceItem } from "@/registry/syncrobotic/ui/trace"
 
@@ -99,7 +99,7 @@ export const TraceWithHeader: S = {
     <div className="flex flex-col gap-2">
       <TraceHeader title="Firmware 2.4.1 rollout" status="warning" duration={1_920_000} counts={{ done: 5, warning: 1 }}>
         <Button size="sm" variant="outline">
-          <RefreshCw aria-hidden="true" /> Retry
+          <RotateCw aria-hidden="true" /> Retry
         </Button>
       </TraceHeader>
       <Trace>

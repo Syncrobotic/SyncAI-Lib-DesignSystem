@@ -1,8 +1,8 @@
-// @syncrobotic/sheet-robot-detail v0.9.0 · update: npx shadcn add @syncrobotic/sheet-robot-detail --overwrite
+// @syncrobotic/sheet-robot-detail v0.10.0 · update: npx shadcn add @syncrobotic/sheet-robot-detail --overwrite
 "use client"
 
 import * as React from "react"
-import { Camera, Home } from "lucide-react"
+import { Camera, HousePlug } from "lucide-react"
 import { StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
@@ -63,7 +63,7 @@ export function SheetRobotDetail({
 
           <SheetFooter className="mt-auto">
             <Button>
-              <Home aria-hidden="true" />
+              <HousePlug aria-hidden="true" />
               Send to dock
             </Button>
             <Button variant="secondary">

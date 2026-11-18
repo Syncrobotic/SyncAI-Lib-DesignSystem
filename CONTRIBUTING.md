@@ -43,6 +43,7 @@ npm run check:radius     # with the site running (npm start): nested corners fol
 - `rounded-full` only for round things (avatars, dots, switch, radio, tracks, count badges, grabber).
 - Motion only marks a change of state and uses the motion tokens; in JavaScript, import `site/motion.ts`.
 - No native number input; use `NumberField`.
+- Icons only from the icon set (`site/icons.ts`, browsable at `/docs/icons`), one meaning per icon. A new icon is a new entry there, with its meaning.
 
 ## Visual baselines
 

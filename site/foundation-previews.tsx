@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ArrowUpRight, Bell, Bot, CircleAlert, Map, OctagonAlert, TriangleAlert, Wifi } from "lucide-react"
+import { ArrowRight, Bell, Bot, CircleAlert, Map, OctagonAlert, TriangleAlert, Wifi } from "lucide-react"
 import { AppearItem, Reveal } from "./appear"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { type FoundationSlug, foundations } from "./foundations"
@@ -144,7 +144,7 @@ export function FoundationGrid() {
                 <span className="font-bold">{f.title}</span>
                 <span className="text-sm text-muted-foreground">{f.lead}</span>
               </div>
-              <ArrowUpRight
+              <ArrowRight
                 aria-hidden
                 className={`size-4 shrink-0 text-muted-foreground opacity-0 transition-[opacity,translate] group-hover:translate-x-0.5 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:group-hover:translate-x-0 ${fast}`}
               />
