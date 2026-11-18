@@ -4,12 +4,12 @@
 
 **Interfaces for the people who run robots.** The design language behind every SYNCROBOTIC product: design tokens, 81 React components and 69 ready-made blocks, shipped as a [shadcn/ui](https://ui.shadcn.com) registry for Tailwind CSS v4. Components install into your project as source you can read and change.
 
-[Documentation](https://syncai-lib-designsystem.vercel.app) · [Components](https://syncai-lib-designsystem.vercel.app/docs/components/button) · [Blocks](https://syncai-lib-designsystem.vercel.app/blocks) · [Changelog](CHANGELOG.md) · [Roadmap](ROADMAP.md)
+[Documentation](https://design-system.syncrobotic.me) · [Components](https://design-system.syncrobotic.me/docs/components/button) · [Blocks](https://design-system.syncrobotic.me/blocks) · [Changelog](CHANGELOG.md) · [Roadmap](ROADMAP.md)
 
 [![CI](https://github.com/Syncrobotic/SyncAI-Lib-DesignSystem/actions/workflows/ci.yml/badge.svg)](https://github.com/Syncrobotic/SyncAI-Lib-DesignSystem/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/Syncrobotic/SyncAI-Lib-DesignSystem)](https://github.com/Syncrobotic/SyncAI-Lib-DesignSystem/releases)
 
-![The docs site's home page: a working emergency stop beside the three rules it demonstrates](https://syncai-lib-designsystem.vercel.app/opengraph-image)
+![The docs site's home page: a working emergency stop beside the three rules it demonstrates](https://design-system.syncrobotic.me/opengraph-image)
 
 > **Source-available, not open source.** This repository is public so it can be read. Using, copying or redistributing it needs a written agreement with SYNCROBOTIC; see [LICENSE](LICENSE).
 
@@ -30,7 +30,7 @@ In a React or Next.js project with Tailwind CSS v4:
 
    ```json
    "registries": {
-     "@syncrobotic": { "url": "https://syncai-lib-designsystem.vercel.app/r/{name}.json" }
+     "@syncrobotic": { "url": "https://design-system.syncrobotic.me/r/{name}.json" }
    }
    ```
 
@@ -47,13 +47,13 @@ In a React or Next.js project with Tailwind CSS v4:
    npx shadcn add @syncrobotic/console-overview
    ```
 
-Dark is the default (`<html class="dark">`). Copy is English; every visible and screen-reader string is a prop, so it localises. The [installation guide](https://syncai-lib-designsystem.vercel.app/docs/installation) covers the details.
+Dark is the default (`<html class="dark">`). Copy is English; every visible and screen-reader string is a prop, so it localises. The [installation guide](https://design-system.syncrobotic.me/docs/installation) covers the details.
 
 ## What's inside
 
 | | |
 | --- | --- |
-| **Foundations** | Principles, colour, typography, spacing, radius, elevation, motion, iconography, accessibility and alarms, each with its tokens and the rules for using them, plus an [icon set](https://syncai-lib-designsystem.vercel.app/docs/icons) that gives each icon one meaning, with robot icons Lucide lacks drawn to match. Tokens also ship as [DTCG JSON](public/tokens) for design tools. |
+| **Foundations** | Principles, colour, typography, spacing, radius, elevation, motion, iconography, accessibility and alarms, each with its tokens and the rules for using them, plus an [icon set](https://design-system.syncrobotic.me/docs/icons) that gives each icon one meaning, with robot icons Lucide lacks drawn to match. Tokens also ship as [DTCG JSON](public/tokens) for design tools. |
 | **81 components** | General UI on Radix primitives, a charts component on Recharts, building blocks for data tools, and the robot shell: emergency stop, slide to release, dock and dynamic island. |
 | **69 blocks** | Whole screens in three groups: Application (shells, stats, cards, sign-in, settings, forms, dialogs, sheets, timelines, wizards), Charts, and Solutions for robot operations (fleet operations, data operations, users and access, incidents, maintenance, firmware rollout, AI agents). |
 
@@ -117,7 +117,7 @@ The rules are not a style guide that drifts: CI enforces them on every change.
 - **Visual regression.** Every state of every component is a screenshot compared with its baseline in both themes; a change to how anything looks needs an approved new baseline.
 - **Tokens only.** Lint rejects raw colours, arbitrary lengths, off-scale spacing, type sizes and weights, native number inputs (NumberField replaces them) and icons outside the icon set. A check walks every page for nested corners that break the radius rule.
 - **Installs for real.** Every registry item is installed into a fresh Next.js app, type-checked and built.
-- **Versioned per item.** Each component carries its own version and changelog, so a team knows when to re-install. The [upgrading guide](https://syncai-lib-designsystem.vercel.app/docs/upgrading) lists them.
+- **Versioned per item.** Each component carries its own version and changelog, so a team knows when to re-install. The [upgrading guide](https://design-system.syncrobotic.me/docs/upgrading) lists them.
 
 ## For AI agents
 
@@ -126,7 +126,7 @@ Coding agents can read the whole kit without scraping the site:
 - **`/llms.txt`** lists every component and block with a one-line summary; **`/llms-full.txt`** is everything in one file: the design language, every block, and every component with when to use it.
 - **Markdown twins.** Every component, block and foundation page has a Markdown version at its URL plus `.md`, for example `/docs/components/button.md`.
 - **Agent skill.** `npx shadcn add @syncrobotic/agent-skill` installs the workflow and the design language into `.claude/skills/syncrobotic-ui/`.
-- **MCP server** (read-only, no sign-in): `claude mcp add --transport http syncrobotic https://syncai-lib-designsystem.vercel.app/mcp`. Tools: `search`, `get_item`, `get_install_command`, `get_design_language` and `get_checklist`.
+- **MCP server** (read-only, no sign-in): `claude mcp add --transport http syncrobotic https://design-system.syncrobotic.me/mcp`. Tools: `search`, `get_item`, `get_install_command`, `get_design_language` and `get_checklist`.
 
 ## Contributing
 

@@ -424,8 +424,8 @@
     "hash": "bfca1bddfd8b0af7"
   },
   "agent-skill": {
-    "version": "0.8.0",
-    "hash": "b0e394a5d3029ea6"
+    "version": "0.12.0",
+    "hash": "f1371c51ee7ad7c2"
   },
   "line-chart-telemetry": {
     "version": "0.9.0",
