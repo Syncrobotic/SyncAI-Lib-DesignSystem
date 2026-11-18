@@ -19,9 +19,9 @@ const sizes = [
 
 /**
  * The icon set as ruled rows: glyph, name and the one thing it means. Search matches name and meaning, so "dock" finds
- * HousePlug. A row copies the icon's name.
+ * ChargingDock. A row copies the icon's name.
  */
-export function IconBrowser({ groups, total }: { groups: { title: string; icons: BrowserIcon[] }[]; total: number }) {
+export function IconBrowser({ groups, total }: { groups: { title: string; icons: BrowserIcon[]; note?: React.ReactNode }[]; total: number }) {
   const [query, setQuery] = React.useState("")
   const [size, setSize] = React.useState<(typeof sizes)[number]["value"]>("20")
   const [copied, setCopied] = React.useState<{ name: string; ok: boolean } | null>(null)
@@ -81,9 +81,12 @@ export function IconBrowser({ groups, total }: { groups: { title: string; icons:
 
       {shown.map((g) => (
         <section key={g.title} aria-labelledby={`icons-${g.title}`} className="flex flex-col gap-2">
-          <h3 id={`icons-${g.title}`} className="text-sm font-bold">
-            {g.title}
-          </h3>
+          <div className="flex flex-col gap-1">
+            <h3 id={`icons-${g.title}`} className="text-sm font-bold">
+              {g.title}
+            </h3>
+            {g.note && <p className="text-sm text-muted-foreground">{g.note}</p>}
+          </div>
           <ul className="grid border-t border-border sm:grid-cols-2 sm:gap-x-8">
             {g.icons.map((i) => {
               const done = copied?.name === i.name && copied.ok

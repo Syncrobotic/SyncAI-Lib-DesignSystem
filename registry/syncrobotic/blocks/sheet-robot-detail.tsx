@@ -2,7 +2,8 @@
 "use client"
 
 import * as React from "react"
-import { Camera, HousePlug } from "lucide-react"
+import { Camera } from "lucide-react"
+import { ChargingDock } from "@/registry/syncrobotic/ui/robot-icons"
 import { StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
@@ -63,7 +64,7 @@ export function SheetRobotDetail({
 
           <SheetFooter className="mt-auto">
             <Button>
-              <HousePlug aria-hidden="true" />
+              <ChargingDock aria-hidden="true" />
               Send to dock
             </Button>
             <Button variant="secondary">

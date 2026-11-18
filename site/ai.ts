@@ -148,7 +148,8 @@ export function llmsTxt() {
 export function llmsFull() {
   const out = [...intro, "", designLanguage(), "", "# Icon set", ""]
   out.push("Lucide icons, one meaning each. Use the icon listed for a meaning; do not import another Lucide icon for it.", "")
-  for (const g of iconGroups) out.push(`- ${g.title}: ${g.icons.map((i) => `${i.name} (${i.means})`).join("; ")}`)
+  for (const g of iconGroups)
+    out.push(`- ${g.title}${g.from ? " (`npx shadcn add @syncrobotic/robot-icons`, not lucide-react)" : ""}: ${g.icons.map((i) => `${i.name} (${i.means})`).join("; ")}`)
   out.push("", "# Blocks", "")
   for (const b of blocks) out.push(`- **${b.title}** (\`${b.name}\`): ${b.description} Install: \`${install(b.name)}\``)
   out.push("", "# Components", "")

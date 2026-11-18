@@ -2,8 +2,9 @@
 "use client"
 
 import * as React from "react"
-import { ArrowLeft, MapPin, Pause, HousePlug, Search } from "lucide-react"
+import { ArrowLeft, MapPin, Pause, Search } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { ChargingDock } from "@/registry/syncrobotic/ui/robot-icons"
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
 import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
@@ -86,7 +87,7 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
                     <Pause aria-hidden="true" /> Pause
                   </Button>
                   <Button variant="secondary" size="sm">
-                    <HousePlug aria-hidden="true" /> Return to dock
+                    <ChargingDock aria-hidden="true" /> Return to dock
                   </Button>
                 </div>
               </div>

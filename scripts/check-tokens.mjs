@@ -76,7 +76,7 @@ const iconImport = (src) =>
       .map((name) => ({ name, at: m.index })),
   )
 const ICONS = new Set(iconImport(readFileSync("site/icons.ts", "utf8")).map((i) => i.name))
-const ICON_TYPES = new Set(["LucideIcon", "LucideProps"])
+const ICON_TYPES = new Set(["LucideIcon", "LucideProps", "createLucideIcon"])
 
 function walk(dir) {
   return readdirSync(dir).flatMap((f) => {
