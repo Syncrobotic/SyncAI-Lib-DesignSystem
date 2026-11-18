@@ -11,9 +11,9 @@ export const site = {
   shortName: "SYNCROBOTIC DS",
   /** One sentence, used for meta description, Open Graph, the manifest and JSON-LD. */
   description:
-    "The SYNCROBOTIC design language: colour, type, spacing, radius and motion tokens, React components and blocks, shipped as a shadcn/ui registry for Tailwind CSS v4.",
+    "The SYNCROBOTIC design language: colour, type, spacing, radius and motion tokens, React components, and blocks for application screens, charts and robot operations, shipped as a shadcn/ui registry for Tailwind CSS v4.",
   /** Short line under the name on social cards. */
-  tagline: "One design language for every SYNCROBOTIC product. Tokens, React components and blocks for Tailwind CSS v4.",
+  tagline: "One design language for every SYNCROBOTIC product. Tokens, React components, charts and ready-made screens for Tailwind CSS v4.",
   logo: "/brand/syncrobotic-mark.svg",
   url: host,
   /** Shown in install instructions. */
@@ -34,6 +34,13 @@ export const site = {
     "quadruped robot",
     "emergency stop",
     "design tokens",
+    "blocks",
+    "dashboard",
+    "charts",
+    "fleet management",
+    "AI agents",
+    "MCP",
+    "llms.txt",
     "dark mode",
     "SYNCROBOTIC",
   ],

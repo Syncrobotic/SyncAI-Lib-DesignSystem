@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.9.0",
         "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "caret-blink animation for one-time-code boxes; stops under reduced motion."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -668,8 +673,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.9.0",
         "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "Disabled is a muted surface instead of 50 % opacity, so its text (a unit, a prefix) keeps readable contrast."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -896,7 +906,7 @@
       "name": "switch",
       "type": "registry:ui",
       "title": "Switch",
-      "description": "On is success green; takes effect immediately.",
+      "description": "On is the primary colour, off a neutral track; takes effect immediately.",
       "dependencies": [
         "radix-ui"
       ],
@@ -910,8 +920,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.9.0",
         "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "Description and doc comment corrected: on is the primary colour, not success green."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -1814,8 +1829,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.9.0",
         "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "CommandEmpty is a disabled option, so a list with no matches is never an empty listbox; it also holds a loading line."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -1825,6 +1845,733 @@
             "version": "0.7.0",
             "date": "2026-11-17",
             "note": "First release. The separator inside the list is decorative, so the listbox holds only groups and options."
+          }
+        ]
+      }
+    },
+    {
+      "name": "item",
+      "type": "registry:ui",
+      "title": "Item",
+      "description": "A row of content: media, title and description, and trailing actions. Links draw the hover fill.",
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/item.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "icon-tile",
+      "type": "registry:ui",
+      "title": "Icon tile",
+      "description": "A square or round surface behind one icon, in five surfaces and four sizes, with an optional status dot.",
+      "dependencies": [
+        "class-variance-authority",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/icon-tile.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "kbd",
+      "type": "registry:ui",
+      "title": "Kbd",
+      "description": "A keyboard key in shortcuts and instructions; KbdGroup for chords.",
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/kbd.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "button-group",
+      "type": "registry:ui",
+      "title": "Button group",
+      "description": "Buttons, a field or a menu joined into one strip: split buttons, steppers, prev / next, search with scope.",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/button-group.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "scroll-area",
+      "type": "registry:ui",
+      "title": "Scroll area",
+      "description": "A bounded region with a thin themed scrollbar, vertical, horizontal or both, with optional fading edges.",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/scroll-area.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "toggle-group",
+      "type": "registry:ui",
+      "title": "Toggle group",
+      "description": "A set of toggles, one or many on, joined or spaced, outline or ghost. On is inverted.",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/toggle-group.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "autocomplete",
+      "type": "registry:ui",
+      "title": "Autocomplete",
+      "description": "A text field that suggests as you type: filter, arrows, Enter, groups, server search with loading.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/field",
+        "@syncrobotic/popover",
+        "@syncrobotic/spinner"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/autocomplete.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "input-otp",
+      "type": "registry:ui",
+      "title": "Input OTP",
+      "description": "A one-time code or PIN, one 44 px box per character, with paste and SMS autofill.",
+      "dependencies": [
+        "input-otp",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/input-otp.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "phone-input",
+      "type": "registry:ui",
+      "title": "Phone input",
+      "description": "A phone number with its country, formatted as you type, stored as E.164.",
+      "dependencies": [
+        "libphonenumber-js"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/field",
+        "@syncrobotic/select"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/phone-input.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "calendar",
+      "type": "registry:ui",
+      "title": "Calendar",
+      "description": "A month grid for one day, several days or a range; 36 px days with a mouse, 44 px on touch.",
+      "dependencies": [
+        "react-day-picker@^9",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/calendar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "date-selector",
+      "type": "registry:ui",
+      "title": "Date selector",
+      "description": "DatePicker and DateRangePicker: a field that opens a calendar, with presets and clear.",
+      "dependencies": [
+        "react-day-picker@^9",
+        "date-fns",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/calendar",
+        "@syncrobotic/field",
+        "@syncrobotic/popover"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/date-selector.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "time-picker",
+      "type": "registry:ui",
+      "title": "Time picker",
+      "description": "TimePicker (slots in a popover) and TimeInput (typed), on a 24-hour \"HH:mm\" value.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/field",
+        "@syncrobotic/popover"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/time-picker.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "data-grid",
+      "type": "registry:ui",
+      "title": "Data grid",
+      "description": "A TanStack Table grid: sorting, pagination, selection, column menus, pinning, resizing, expandable rows, totals, loading, virtual rows.",
+      "dependencies": [
+        "@tanstack/react-table@^8",
+        "@tanstack/react-virtual",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/checkbox",
+        "@syncrobotic/dropdown-menu",
+        "@syncrobotic/pagination",
+        "@syncrobotic/use-presence"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/data-grid.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "sortable",
+      "type": "registry:ui",
+      "title": "Sortable",
+      "description": "A list or grid people reorder by dragging a handle, by touch or by keyboard, with announcements (dnd-kit).",
+      "dependencies": [
+        "@dnd-kit/core",
+        "@dnd-kit/sortable",
+        "@dnd-kit/utilities",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/sortable.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "resizable",
+      "type": "registry:ui",
+      "title": "Resizable",
+      "description": "Panels resized by dragging the line between them or with the arrow keys, horizontal, vertical or nested (react-resizable-panels).",
+      "dependencies": [
+        "react-resizable-panels@^3"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/resizable.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "file-upload",
+      "type": "registry:ui",
+      "title": "File upload",
+      "description": "A drop zone that is also a button: checks type, size and count, and says what it refused.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/file-upload.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "attachment",
+      "type": "registry:ui",
+      "title": "Attachment",
+      "description": "One file in a list, a composer or a queue: type, name, size, progress, error with Retry, Download and Remove.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/file-type",
+        "@syncrobotic/file-upload",
+        "@syncrobotic/progress"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/attachment.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "file-type",
+      "type": "registry:ui",
+      "title": "File type",
+      "description": "An icon for a file from its name or extension, with robot formats (mcap, bag, pgm, pcd, onnx) and the extension written on it.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/file-type.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "stepper",
+      "type": "registry:ui",
+      "title": "Stepper",
+      "description": "Where someone is in a fixed sequence of steps: done, current, upcoming and error steps, horizontal or vertical, with a compact bar for phones.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/use-presence"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/stepper.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "timeline",
+      "type": "registry:ui",
+      "title": "Timeline",
+      "description": "Events in time order with neutral markers, status glyphs or icons; vertical, alternate or horizontal, grouped by day.",
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/status-glyph"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/timeline.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "scrollspy",
+      "type": "registry:ui",
+      "title": "Scrollspy",
+      "description": "An On this page list that follows the reader through the sections of a page or a scroll area, and the useScrollspy hook behind it.",
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/scrollspy.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "navigation-menu",
+      "type": "registry:ui",
+      "title": "Navigation menu",
+      "description": "A site's top navigation: links, and triggers that open panels of links and cards (Radix NavigationMenu).",
+      "dependencies": [
+        "lucide-react",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/navigation-menu.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "questionnaire",
+      "type": "registry:ui",
+      "title": "Questionnaire",
+      "description": "A short set of questions, one per page or all on one form: single and multiple choice, scales and text, required checks and a review page.",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/checkbox",
+        "@syncrobotic/choice-field",
+        "@syncrobotic/radio-group",
+        "@syncrobotic/textarea"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/questionnaire.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "trace",
+      "type": "registry:ui",
+      "title": "Trace",
+      "description": "The steps of a run with status and duration: missions, agent tool calls, rollouts, CI runs, audit trails. Steps open to show input, output or sub-steps; an optional waterfall bar.",
+      "dependencies": [
+        "lucide-react",
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/spinner"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/trace.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "marker",
+      "type": "registry:ui",
+      "title": "Marker",
+      "description": "A labelled line across a log or feed (a day, a takeover, an e-stop), and MarkerRow: one dense log line with a status glyph, detail and time.",
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/status-glyph"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/marker.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
           }
         ]
       }
@@ -2021,8 +2768,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.9.0",
         "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "The account button's name includes the initials it shows (\"Mei Lin, ML, account menu\"), so people using speech input can say what they see (WCAG 2.5.3)."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -2063,8 +2815,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.9.0",
         "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "The account button's name includes the initials it shows (\"Mei Lin, ML, account menu\"), so people using speech input can say what they see (WCAG 2.5.3)."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -2615,6 +3372,1540 @@
             "version": "0.8.0",
             "date": "2026-11-17",
             "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "line-chart-telemetry",
+      "type": "registry:block",
+      "title": "Telemetry over time",
+      "description": "Two series over time with a 1 h / 24 h switch and a table view: the default telemetry chart.",
+      "dependencies": [
+        "recharts@^3"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/card",
+        "@syncrobotic/chart",
+        "@syncrobotic/segmented-control"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/line-chart-telemetry.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "line-chart-limit",
+      "type": "registry:block",
+      "title": "Against a limit",
+      "description": "One measurement against its limit: the latest value up top, the limit as a labelled dashed line, a warning only while it is over.",
+      "dependencies": [
+        "recharts@^3",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/card",
+        "@syncrobotic/chart"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/line-chart-limit.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "line-chart-compare",
+      "type": "registry:block",
+      "title": "This period against the last",
+      "description": "This week against last week: the total and the change up top, the earlier period dashed.",
+      "dependencies": [
+        "recharts@^3"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/card",
+        "@syncrobotic/chart"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/line-chart-compare.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "area-chart-battery",
+      "type": "registry:block",
+      "title": "Battery over a shift",
+      "description": "One robot's battery over a shift with the return-to-dock level marked; the charge shows as the jump.",
+      "dependencies": [
+        "recharts@^3"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/card",
+        "@syncrobotic/chart"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/area-chart-battery.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "area-chart-fleet-states",
+      "type": "registry:block",
+      "title": "Fleet by state",
+      "description": "How the fleet splits between patrolling, charging and idle over the day: stacked step areas that add up to the fleet.",
+      "dependencies": [
+        "recharts@^3"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/card",
+        "@syncrobotic/chart"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/area-chart-fleet-states.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "area-chart-cumulative",
+      "type": "registry:block",
+      "title": "Progress to a target",
+      "description": "The running total this month as an area against the plan as a dashed line, ahead or behind said in words.",
+      "dependencies": [
+        "recharts@^3"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/card",
+        "@syncrobotic/chart"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/area-chart-cumulative.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "bar-chart-missions",
+      "type": "registry:block",
+      "title": "Grouped by day",
+      "description": "Two counts side by side per day, with totals and a table view.",
+      "dependencies": [
+        "recharts@^3"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/card",
+        "@syncrobotic/chart",
+        "@syncrobotic/segmented-control"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/bar-chart-missions.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "bar-chart-ranked",
+      "type": "registry:block",
+      "title": "Ranked categories",
+      "description": "Categories with long names, sorted, as horizontal bars with the value at each end.",
+      "dependencies": [
+        "recharts@^3"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/card",
+        "@syncrobotic/chart"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/bar-chart-ranked.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "bar-chart-stacked",
+      "type": "registry:block",
+      "title": "Parts of a whole",
+      "description": "Stacked segments per category with a 2 px gap in the card colour.",
+      "dependencies": [
+        "recharts@^3"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/card",
+        "@syncrobotic/chart"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/bar-chart-stacked.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "bar-chart-variance",
+      "type": "registry:block",
+      "title": "Above and below plan",
+      "description": "Positive and negative values in one hue around a drawn zero line, the biggest gap named.",
+      "dependencies": [
+        "recharts@^3"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/card",
+        "@syncrobotic/chart"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/bar-chart-variance.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "sparkline-robot-list",
+      "type": "registry:block",
+      "title": "Robot list with trend",
+      "description": "Each robot row with its last 12 hours of battery as a sparkline and the value now.",
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/card",
+        "@syncrobotic/status-glyph"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/sparkline-robot-list.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "sparkline-metric-tiles",
+      "type": "registry:block",
+      "title": "Metric tiles",
+      "description": "Three headline numbers, each with its week as a sparkline; only a change for the worse is coloured.",
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/card"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/sparkline-metric-tiles.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "sparkline-table",
+      "type": "registry:block",
+      "title": "Table with a trend column",
+      "description": "A table where each row's last 14 days are mini bars on one shared scale.",
+      "registryDependencies": [
+        "@syncrobotic/card",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/sparkline-table.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "status-tracker-uptime",
+      "type": "registry:block",
+      "title": "Uptime over 30 days",
+      "description": "One cell a day per robot: grey where it ran, colour only on degraded and down days, with a tooltip per day.",
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/card",
+        "@syncrobotic/tooltip"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/status-tracker-uptime.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "status-tracker-runs",
+      "type": "registry:block",
+      "title": "Run history",
+      "description": "The last 20 runs of each route as a strip, newest on the right, with the pass count.",
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/card"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/status-tracker-runs.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "status-tracker-rollout",
+      "type": "registry:block",
+      "title": "Rollout stages",
+      "description": "A rollout as stage lanes: finished stages checked, the running one in progress, later ones waiting.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/card"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/status-tracker-rollout.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "radial-chart-battery",
+      "type": "registry:block",
+      "title": "Battery rings",
+      "description": "Battery per robot as rings, neutral until low or critical, the number always in the middle.",
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/card"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/radial-chart-battery.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "radial-chart-goal",
+      "type": "registry:block",
+      "title": "Progress to a goal",
+      "description": "One large ring with the share of the plan done and the breakdown beside it in words.",
+      "registryDependencies": [
+        "@syncrobotic/card"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/radial-chart-goal.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "radial-chart-capacity",
+      "type": "registry:block",
+      "title": "Capacity rings",
+      "description": "Several shares of capacity as concentric rings in series colours, each named with its value.",
+      "registryDependencies": [
+        "@syncrobotic/card"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/radial-chart-capacity.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "heatmap-week-hours",
+      "type": "registry:block",
+      "title": "Time of week",
+      "description": "Days by 2-hour slots in one sequential hue, the busiest slot named, a tooltip per cell.",
+      "registryDependencies": [
+        "@syncrobotic/card",
+        "@syncrobotic/tooltip"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/heatmap-week-hours.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "heatmap-zones",
+      "type": "registry:block",
+      "title": "Zones by time of day",
+      "description": "Zones by time slots with the value written in every cell, so the colour only groups.",
+      "registryDependencies": [
+        "@syncrobotic/card",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/heatmap-zones.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "app-shell-mobile-tabs",
+      "type": "registry:block",
+      "title": "Phone shell with tabs",
+      "description": "A phone frame: the page title on top and up to four sections as tabs in a floating dock, in thumb reach.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/dock",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/tray",
+        "@syncrobotic/button"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/app-shell-mobile-tabs.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "stats-meters",
+      "type": "registry:block",
+      "title": "Levels",
+      "description": "Levels in a fixed range, one per card: a bar for how full, the number for exactly, colour only past a line.",
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/card",
+        "@syncrobotic/meter"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/stats-meters.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "stats-filtered",
+      "type": "registry:block",
+      "title": "KPIs with a range",
+      "description": "A KPI row that follows a site and a time range chosen above it, each change compared with the period before.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/card",
+        "@syncrobotic/select",
+        "@syncrobotic/segmented-control"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/stats-filtered.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "card-site",
+      "type": "registry:block",
+      "title": "Site cards",
+      "description": "Sites to pick from: each card one link, state first, robots and missions, and what needs someone in words.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/card"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/card-site.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "card-mission",
+      "type": "registry:block",
+      "title": "Mission cards",
+      "description": "A mission's state, route, robot and progress, with the next action; a paused one says why and offers the fix.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/button",
+        "@syncrobotic/card",
+        "@syncrobotic/progress"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/card-mission.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "auth-passkey",
+      "type": "registry:block",
+      "title": "Passkey sign-in",
+      "description": "Sign in with a passkey, with a code from an authenticator app as the way back in on the same page.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/button",
+        "@syncrobotic/input-otp",
+        "@syncrobotic/label",
+        "@syncrobotic/separator"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/auth-passkey.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "auth-invite",
+      "type": "registry:block",
+      "title": "Accept an invitation",
+      "description": "Who invited you, to what, and what the role lets you do, then one field and one action to join.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/avatar",
+        "@syncrobotic/button",
+        "@syncrobotic/field",
+        "@syncrobotic/input"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/auth-invite.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "settings-notifications",
+      "type": "registry:block",
+      "title": "Notification matrix",
+      "description": "Events by channel as checkboxes that apply at once; emergency stops are locked on and say so.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/card",
+        "@syncrobotic/checkbox",
+        "@syncrobotic/switch",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/settings-notifications.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "settings-api-keys",
+      "type": "registry:block",
+      "title": "API keys",
+      "description": "Create, list and revoke API keys: a new secret shown once with a copy button, revoking confirmed first.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/alert-dialog",
+        "@syncrobotic/button",
+        "@syncrobotic/card",
+        "@syncrobotic/copy-button",
+        "@syncrobotic/field",
+        "@syncrobotic/input"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/settings-api-keys.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "dialog-confirm-destructive",
+      "type": "registry:block",
+      "title": "Confirm a deletion",
+      "description": "A dialog for something that cannot be undone: what is lost, who it affects, and the name typed to confirm.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/alert-dialog",
+        "@syncrobotic/button",
+        "@syncrobotic/field",
+        "@syncrobotic/input"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/dialog-confirm-destructive.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "dialog-form",
+      "type": "registry:block",
+      "title": "Form in a dialog",
+      "description": "A short form in a dialog: three fields at most, errors under their fields, nothing typed is lost.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/button",
+        "@syncrobotic/dialog",
+        "@syncrobotic/field",
+        "@syncrobotic/input",
+        "@syncrobotic/segmented-control",
+        "@syncrobotic/select"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/dialog-form.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "dialog-share",
+      "type": "registry:block",
+      "title": "Share dialog",
+      "description": "Invite people by email, change their access in place, and copy a link whose reach is said in words.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/avatar",
+        "@syncrobotic/button",
+        "@syncrobotic/copy-button",
+        "@syncrobotic/dialog",
+        "@syncrobotic/input",
+        "@syncrobotic/select",
+        "@syncrobotic/separator"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/dialog-share.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "sheet-robot-detail",
+      "type": "registry:block",
+      "title": "Robot detail panel",
+      "description": "One robot in a side panel over the list: state, levels, last events and actions in thumb reach.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/button",
+        "@syncrobotic/description-list",
+        "@syncrobotic/meter",
+        "@syncrobotic/sheet",
+        "@syncrobotic/timeline"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/sheet-robot-detail.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "sheet-filters",
+      "type": "registry:block",
+      "title": "Filters sheet",
+      "description": "Filters in a bottom sheet: grouped options with counts and one button that says how many results you will see.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/button",
+        "@syncrobotic/badge",
+        "@syncrobotic/checkbox",
+        "@syncrobotic/label",
+        "@syncrobotic/radio-group",
+        "@syncrobotic/sheet"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/sheet-filters.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "timeline-activity",
+      "type": "registry:block",
+      "title": "Robot activity",
+      "description": "A robot's shift, newest first and grouped by day, each event with its kind as an icon.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/card",
+        "@syncrobotic/timeline"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/timeline-activity.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "timeline-audit",
+      "type": "registry:block",
+      "title": "Audit history",
+      "description": "Who changed what, with the value before and after, filtered to people or the system.",
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/avatar",
+        "@syncrobotic/card",
+        "@syncrobotic/segmented-control",
+        "@syncrobotic/timeline"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/timeline-audit.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "wizard-commission",
+      "type": "registry:block",
+      "title": "Add a robot",
+      "description": "Adding a robot in four steps: identify, place, a live self-check, and a name.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/button",
+        "@syncrobotic/card",
+        "@syncrobotic/description-list",
+        "@syncrobotic/field",
+        "@syncrobotic/input",
+        "@syncrobotic/select",
+        "@syncrobotic/spinner",
+        "@syncrobotic/stepper"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/wizard-commission.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "wizard-import",
+      "type": "registry:block",
+      "title": "Import a file",
+      "description": "Import a CSV in three steps down the page: choose it, match its columns, check the rows and import.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/button",
+        "@syncrobotic/select",
+        "@syncrobotic/stepper",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/wizard-import.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "mission-schedule",
+      "type": "registry:block",
+      "title": "Mission schedule",
+      "description": "A night's missions in lanes per robot: done muted, running blue, planned outlined, and a conflict explained in words.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/button",
+        "@syncrobotic/segmented-control"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/mission-schedule.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "users-invitations",
+      "type": "registry:block",
+      "title": "Invitations",
+      "description": "Invite in one row with what the role allows, then the pending list: expired ones say so, revoking can be undone.",
+      "registryDependencies": [
+        "@syncrobotic/app-shell",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/button",
+        "@syncrobotic/field",
+        "@syncrobotic/input",
+        "@syncrobotic/select",
+        "@syncrobotic/table",
+        "@syncrobotic/toast"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/users-invitations.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "users-audit-log",
+      "type": "registry:block",
+      "title": "Audit log",
+      "description": "Who did what, when and from where, narrowed by person and kind, with values before and after; exports what is shown.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/app-shell",
+        "@syncrobotic/button",
+        "@syncrobotic/input",
+        "@syncrobotic/select",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/users-audit-log.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "incident-queue",
+      "type": "registry:block",
+      "title": "Incident queue",
+      "description": "Open incidents, unowned first, then by severity and age; severity has a shape and a number, and nobody-owns-it is a button.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/avatar",
+        "@syncrobotic/button",
+        "@syncrobotic/table",
+        "@syncrobotic/segmented-control"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/incident-queue.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "incident-detail",
+      "type": "registry:block",
+      "title": "Incident",
+      "description": "One incident: its state as steps, the facts, and updates newest first; posting an update can move it on.",
+      "registryDependencies": [
+        "@syncrobotic/app-shell",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/button",
+        "@syncrobotic/description-list",
+        "@syncrobotic/field",
+        "@syncrobotic/select",
+        "@syncrobotic/stepper",
+        "@syncrobotic/textarea",
+        "@syncrobotic/timeline"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/incident-detail.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "maintenance-due",
+      "type": "registry:block",
+      "title": "Service due",
+      "description": "Service coming due by hours run: a meter per robot that turns amber near its interval and red past it, overdue first.",
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/button",
+        "@syncrobotic/meter",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/maintenance-due.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "maintenance-work-order",
+      "type": "registry:block",
+      "title": "Work order",
+      "description": "A work order at the bench: steps as a checklist, parts used, notes, and sign-off that says why it is not ready yet.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/app-shell",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/button",
+        "@syncrobotic/checkbox",
+        "@syncrobotic/description-list",
+        "@syncrobotic/field",
+        "@syncrobotic/label",
+        "@syncrobotic/table",
+        "@syncrobotic/textarea"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/maintenance-work-order.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "rollout-overview",
+      "type": "registry:block",
+      "title": "Rollout in progress",
+      "description": "A firmware rollout while it runs: its stage, the gates that pause it, and the robots in the stage, failures first.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/button",
+        "@syncrobotic/progress",
+        "@syncrobotic/stepper",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/rollout-overview.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "rollout-plan",
+      "type": "registry:block",
+      "title": "Plan a rollout",
+      "description": "Version, stages with share and watch time, update window and safety, with what will happen said in plain words.",
+      "registryDependencies": [
+        "@syncrobotic/app-shell",
+        "@syncrobotic/button",
+        "@syncrobotic/checkbox",
+        "@syncrobotic/field",
+        "@syncrobotic/label",
+        "@syncrobotic/number-field",
+        "@syncrobotic/select",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/rollout-plan.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "agent-runs",
+      "type": "registry:block",
+      "title": "Agent runs",
+      "description": "What the AI agents did: each run's goal, trigger and state; one waiting for approval comes first with the only button.",
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/trace",
+        "@syncrobotic/button",
+        "@syncrobotic/segmented-control",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/agent-runs.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "agent-trace",
+      "type": "registry:block",
+      "title": "Agent run trace",
+      "description": "One agent run step by step as a waterfall: tools called, inputs and outputs, a warning and what the agent did about it.",
+      "registryDependencies": [
+        "@syncrobotic/app-shell",
+        "@syncrobotic/button",
+        "@syncrobotic/description-list",
+        "@syncrobotic/trace"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/agent-trace.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "agent-approval",
+      "type": "registry:block",
+      "title": "Approve an agent's proposal",
+      "description": "An agent's proposed change, before and after per robot, why, and what it does not know; approve or send back with a reason.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/app-shell",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/button",
+        "@syncrobotic/field",
+        "@syncrobotic/table",
+        "@syncrobotic/textarea"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/agent-approval.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.9.0",
+        "changelog": [
+          {
+            "version": "0.9.0",
+            "date": "2026-11-17",
+            "note": "New."
           }
         ]
       }

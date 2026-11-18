@@ -1,4 +1,4 @@
-// @syncrobotic/input-group v0.7.0 · update: npx shadcn add @syncrobotic/input-group --overwrite
+// @syncrobotic/input-group v0.9.0 · update: npx shadcn add @syncrobotic/input-group --overwrite
 "use client"
 
 import * as React from "react"
@@ -9,18 +9,18 @@ import { cn } from "@/lib/utils"
  * The group draws the field (edge, focus ring, error); the Input inside it draws nothing, so addons of any width fit
  * without guessing padding. Put the Input (or a Field's child) inside, with addons before or after it.
  */
-export function InputGroup({
-  className,
-  children,
-  id,
-  "aria-describedby": describedBy,
-  "aria-invalid": invalid,
-  ...props
-}: React.ComponentProps<"div">) {
+export function InputGroup({ className, children, id, "aria-describedby": describedBy, "aria-invalid": invalid, ...props }: React.ComponentProps<"div">) {
   // A Field around the group hands it the id, description and error state; they belong to the text box inside.
   let given = false
   const content = React.Children.map(children, (child) => {
-    if (given || !React.isValidElement<Record<string, unknown>>(child) || typeof child.type === "string" || child.type === InputGroupAddon || child.type === InputGroupButton) return child
+    if (
+      given ||
+      !React.isValidElement<Record<string, unknown>>(child) ||
+      typeof child.type === "string" ||
+      child.type === InputGroupAddon ||
+      child.type === InputGroupButton
+    )
+      return child
     if (!(id || describedBy || invalid)) return child
     given = true
     return React.cloneElement(child, {
@@ -38,7 +38,8 @@ export function InputGroup({
         // The focus ring belongs to the whole group, not the bare text box inside it.
         "has-[input:focus-visible]:outline-2 has-[input:focus-visible]:outline-offset-2 has-[input:focus-visible]:outline-ring",
         "has-[[aria-invalid=true]]:ring-2 has-[[aria-invalid=true]]:ring-danger",
-        "has-[input:disabled]:opacity-50",
+        // Disabled reads as a muted surface, not a faded one, so its text keeps enough contrast to be read.
+        "has-[input:disabled]:cursor-not-allowed has-[input:disabled]:bg-muted has-[input:disabled]:text-muted-foreground",
         // Text sits 8 px from an addon, 12 px from a bare edge.
         "[&_[data-slot=input-group-addon]+[data-slot=input]]:pl-2 [&_[data-slot=input]:has(+[data-slot=input-group-addon])]:pr-2",
         "[&_[data-slot=input]]:h-full [&_[data-slot=input]]:rounded-none [&_[data-slot=input]]:bg-transparent [&_[data-slot=input]]:ring-0 [&_[data-slot=input]]:focus-visible:outline-none",

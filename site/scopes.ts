@@ -1,4 +1,5 @@
-import { blocks, products } from "./blocks"
+import { blocksOfType } from "./blocks"
+import { blockGroups, blockTypes } from "./block-types"
 import { groups as itemGroups, items, storyNames, storyTitle } from "./catalog"
 import { foundations } from "./foundations"
 
@@ -54,11 +55,20 @@ export const scopes: Scope[] = [
     href: "/blocks",
     match: ["/blocks"],
     groups: [
-      { title: "Blocks", links: [{ href: "/blocks", label: "All blocks" }] },
-      ...products.map((p) => ({
-        title: p,
-        links: blocks.filter((b) => b.product === p).map((b) => ({ href: `/blocks/${b.name}`, label: b.title })),
-      })),
+      { title: "Browse", links: [{ href: "/blocks", label: "All blocks" }] },
+      // Like components: a group, its types, and under the open type the blocks it holds.
+      ...blockGroups
+        .map((g) => ({
+          title: g,
+          links: blockTypes
+            .filter((t) => t.group === g && blocksOfType(t.slug).length > 0)
+            .map((t) => ({
+              href: `/blocks/${t.slug}`,
+              label: t.title,
+              sections: blocksOfType(t.slug).map((b) => ({ href: `/blocks/${t.slug}#${b.name}`, label: b.title })),
+            })),
+        }))
+        .filter((g) => g.links.length > 0),
     ],
   },
 ]

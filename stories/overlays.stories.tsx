@@ -1,6 +1,26 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
-import { Bot, CirclePlus, Copy, Ellipsis, Filter, Info, Keyboard, LayoutDashboard, Map, PanelRight, Pencil, Search, Trash2 } from "lucide-react"
+import {
+  Bell,
+  Bot,
+  Check,
+  History,
+  CirclePlus,
+  Menu,
+  Share2,
+  Wrench,
+  Copy,
+  Ellipsis,
+  Filter,
+  Info,
+  Keyboard,
+  LayoutDashboard,
+  Map,
+  PanelRight,
+  Pencil,
+  Search,
+  Trash2,
+} from "lucide-react"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,7 +32,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/registry/syncrobotic/ui/alert-dialog"
+import { StatusGlyph, type Tone } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
+import { Spinner } from "@/registry/syncrobotic/ui/spinner"
 import {
   Command,
   CommandDialog,
@@ -40,7 +62,7 @@ import { Input } from "@/registry/syncrobotic/ui/input"
 import { Label } from "@/registry/syncrobotic/ui/label"
 import { Switch } from "@/registry/syncrobotic/ui/switch"
 import { Popover, PopoverContent, PopoverTrigger } from "@/registry/syncrobotic/ui/popover"
-import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/registry/syncrobotic/ui/sheet"
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/registry/syncrobotic/ui/sheet"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/registry/syncrobotic/ui/tooltip"
 
 // Each overlay has a closed story (click to open; used on the docs site) and an *Open story for visual tests.
@@ -371,3 +393,339 @@ const Palette = ({ open: initial = false }: { open?: boolean }) => {
 /** The ⌘K palette. In an app, AppShell's search prop wires the field, the scope and the shortcut. */
 export const CommandPalette: S = { render: () => <Palette /> }
 export const CommandPaletteOpen: S = { render: () => <Palette open /> }
+
+/** Navigation drawer: opens from the side the navigation lives on. */
+export const SheetNavigationDrawer: S = {
+  render: () => (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="outline" size="icon" aria-label="Open navigation">
+          <Menu aria-hidden="true" />
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="left">
+        <SheetHeader>
+          <SheetTitle>Taipei warehouse</SheetTitle>
+          <SheetDescription>6 robots · 2 docks</SheetDescription>
+        </SheetHeader>
+        <nav aria-label="Main">
+          <ul className="flex flex-col">
+            {[
+              { icon: LayoutDashboard, t: "Overview" },
+              { icon: Bot, t: "Robots" },
+              { icon: Map, t: "Maps" },
+              { icon: Bell, t: "Alarms" },
+            ].map(({ icon: Icon, t }) => (
+              <li key={t}>
+                <a href={`#${t.toLowerCase()}`} className="flex min-h-(--h-md) items-center gap-2 rounded-sm px-2 text-sm hover:bg-muted">
+                  <Icon aria-hidden="true" className="size-5 text-muted-foreground" /> {t}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </SheetContent>
+    </Sheet>
+  ),
+}
+
+/** Phones: a bottom sheet of actions, each a full-width 44 px row. */
+export const SheetBottomActions: S = {
+  render: () => (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="outline">
+          <Ellipsis aria-hidden="true" /> Robot actions
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="bottom">
+        <SheetHeader>
+          <SheetTitle>Patrol dog 7F3A</SheetTitle>
+          <SheetDescription>Docked · 94 %</SheetDescription>
+        </SheetHeader>
+        <div className="flex flex-col">
+          {[
+            { icon: Wrench, t: "Schedule maintenance" },
+            { icon: Share2, t: "Share live view" },
+            { icon: Pencil, t: "Rename" },
+          ].map(({ icon: Icon, t }) => (
+            <SheetClose key={t} asChild>
+              <button type="button" className="press flex min-h-(--h-md) items-center gap-2 rounded-sm px-2 text-left text-sm hover:bg-muted">
+                <Icon aria-hidden="true" className="size-5 text-muted-foreground" /> {t}
+              </button>
+            </SheetClose>
+          ))}
+        </div>
+      </SheetContent>
+    </Sheet>
+  ),
+}
+
+/** An edit form in a side panel: Save and Cancel at the bottom, Cancel keeps what was there. */
+export const SheetEditForm: S = {
+  render: () => (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="secondary">
+          <Pencil aria-hidden="true" /> Edit robot
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="right">
+        <SheetHeader>
+          <SheetTitle>Edit robot</SheetTitle>
+          <SheetDescription>Changes apply on the next patrol.</SheetDescription>
+        </SheetHeader>
+        <div className="flex flex-col gap-4">
+          <Field label="Name">
+            <Input defaultValue="Patrol dog 7F3A" />
+          </Field>
+          <Field label="Home dock" hint="Where it charges between patrols.">
+            <Input defaultValue="Dock 2 · Hall B" />
+          </Field>
+        </div>
+        <SheetFooter className="flex-row justify-end">
+          <SheetClose asChild>
+            <Button variant="ghost">Cancel</Button>
+          </SheetClose>
+          <SheetClose asChild>
+            <Button>Save</Button>
+          </SheetClose>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
+  ),
+}
+
+/** Robots with their state: the glyph and a word, never colour alone. */
+export const CommandWithStatus: S = {
+  render: () => (
+    <Command className="max-w-md rounded-md ring-1 ring-border">
+      <CommandInput placeholder="Find a robot" />
+      <CommandList>
+        <CommandEmpty>No robot matches.</CommandEmpty>
+        <CommandGroup heading="Robots">
+          {[
+            ["Patrol dog 7F3A", "info", "Patrolling"],
+            ["Courier 9E37", "warning", "Needs attention"],
+            ["Patrol dog DAA6", "success", "Docked"],
+            ["Courier 1715", "neutral", "Offline"],
+          ].map(([n, tone, label]) => (
+            <CommandItem key={n} value={n}>
+              <StatusGlyph tone={tone as Tone} />
+              <span className="flex-1">{n}</span>
+              <span className="text-xs text-muted-foreground">{label}</span>
+            </CommandItem>
+          ))}
+        </CommandGroup>
+      </CommandList>
+    </Command>
+  ),
+}
+
+/** Nothing matches: say what can be searched. */
+export const CommandNoResults: S = {
+  render: () => (
+    <Command className="max-w-md rounded-md ring-1 ring-border">
+      <CommandInput placeholder="Find a robot" value="gate x" readOnly />
+      <CommandList>
+        <CommandEmpty>No robot, page or action matches “gate x”. Try a robot ID such as 7F3A.</CommandEmpty>
+        <CommandGroup heading="Robots">
+          <CommandItem value="Patrol dog 7F3A">Patrol dog 7F3A</CommandItem>
+        </CommandGroup>
+      </CommandList>
+    </Command>
+  ),
+}
+
+/** Several picks: a check marks each chosen item and Enter toggles it. */
+export const CommandMultiSelect: S = {
+  render: function M() {
+    const [picked, setPicked] = React.useState<string[]>(["North gate"])
+    const toggle = (v: string) => setPicked((p) => (p.includes(v) ? p.filter((x) => x !== v) : [...p, v]))
+    return (
+      <Command className="max-w-md rounded-md ring-1 ring-border">
+        <CommandInput placeholder="Filter by site" />
+        <CommandList>
+          <CommandGroup heading={`Sites · ${picked.length} selected`}>
+            {["North gate", "Hall B", "Warehouse 3", "Parking lot"].map((site) => (
+              <CommandItem key={site} value={site} onSelect={() => toggle(site)} data-checked={picked.includes(site)}>
+                <Check aria-hidden="true" className={picked.includes(site) ? "opacity-100" : "opacity-0"} />
+                {site}
+              </CommandItem>
+            ))}
+          </CommandGroup>
+        </CommandList>
+      </Command>
+    )
+  },
+}
+
+/** Pages inside the palette: pick a robot, then an action for it. Backspace on an empty field goes back. */
+export const CommandNestedPages: S = {
+  render: function P() {
+    const [robot, setRobot] = React.useState<string>()
+    const [q, setQ] = React.useState("")
+    return (
+      <Command
+        className="max-w-md rounded-md ring-1 ring-border"
+        onKeyDown={(e) => {
+          if (e.key === "Backspace" && !q && robot) {
+            e.preventDefault()
+            setRobot(undefined)
+          }
+        }}
+      >
+        {robot && (
+          <div className="flex items-center gap-2 px-3 pt-3 text-xs text-muted-foreground">
+            <button type="button" className="press rounded-xs underline-offset-4 hover:underline" onClick={() => setRobot(undefined)}>
+              Robots
+            </button>
+            <span aria-hidden="true">/</span>
+            <span className="text-foreground">{robot}</span>
+          </div>
+        )}
+        <CommandInput value={q} onValueChange={setQ} placeholder={robot ? `Action for ${robot}` : "Find a robot"} />
+        <CommandList>
+          <CommandEmpty>Nothing matches.</CommandEmpty>
+          {robot ? (
+            <CommandGroup heading="Actions">
+              <CommandItem>
+                <Map /> Show on map
+              </CommandItem>
+              <CommandItem>
+                <Pencil /> Rename
+              </CommandItem>
+              <CommandItem>
+                <Copy /> Copy ID
+              </CommandItem>
+            </CommandGroup>
+          ) : (
+            <CommandGroup heading="Robots">
+              {["Patrol dog 7F3A", "Courier 9E37", "Patrol dog DAA6"].map((r) => (
+                <CommandItem
+                  key={r}
+                  onSelect={() => {
+                    setRobot(r)
+                    setQ("")
+                  }}
+                >
+                  <Bot /> {r}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          )}
+        </CommandList>
+      </Command>
+    )
+  },
+}
+
+/** Results from the server: a spinner row while the search runs, results replace it. */
+export const CommandLoading: S = {
+  render: () => (
+    <Command className="max-w-md rounded-md ring-1 ring-border" shouldFilter={false}>
+      <CommandInput placeholder="Search events" value="door" readOnly />
+      <CommandList>
+        <CommandEmpty className="flex items-center justify-center gap-2 py-6">
+          <Spinner delay={0} className="size-4" label="" /> Searching 30 days of events…
+        </CommandEmpty>
+      </CommandList>
+    </Command>
+  ),
+}
+
+/** Recent first: what the operator opened last, then everything. */
+export const CommandRecent: S = {
+  render: () => (
+    <Command className="max-w-md rounded-md ring-1 ring-border">
+      <CommandInput placeholder="Search robots, pages and actions" />
+      <CommandList>
+        <CommandGroup heading="Recent">
+          <CommandItem>
+            <History /> Hall B map
+          </CommandItem>
+          <CommandItem>
+            <History /> Patrol dog 7F3A
+          </CommandItem>
+        </CommandGroup>
+        <CommandSeparator />
+        <PaletteResults />
+      </CommandList>
+    </Command>
+  ),
+}
+
+/** Actions with their keyboard shortcuts, learned from the palette. */
+export const CommandShortcuts: S = {
+  render: () => (
+    <Command className="max-w-md rounded-md ring-1 ring-border">
+      <CommandInput placeholder="Type a command" />
+      <CommandList>
+        <CommandGroup heading="Actions">
+          <CommandItem>
+            <CirclePlus /> <span className="flex-1">New mission</span> <CommandShortcut>N</CommandShortcut>
+          </CommandItem>
+          <CommandItem>
+            <Map /> <span className="flex-1">Open map</span> <CommandShortcut>G M</CommandShortcut>
+          </CommandItem>
+          <CommandItem>
+            <Bell /> <span className="flex-1">Alarms</span> <CommandShortcut>G A</CommandShortcut>
+          </CommandItem>
+          <CommandItem>
+            <Keyboard /> <span className="flex-1">All shortcuts</span> <CommandShortcut>?</CommandShortcut>
+          </CommandItem>
+        </CommandGroup>
+      </CommandList>
+    </Command>
+  ),
+}
+
+/** Items with a second line, for actions whose name alone is not enough. */
+export const CommandDescriptions: S = {
+  render: () => (
+    <Command className="max-w-md rounded-md ring-1 ring-border">
+      <CommandInput placeholder="What do you want to do?" />
+      <CommandList>
+        <CommandGroup heading="Fleet">
+          {[
+            ["Send all to dock", "Every robot finishes its stop, then charges."],
+            ["Pause patrols", "Robots hold where they are until resumed."],
+            ["Export today’s events", "CSV of every event since 00:00."],
+          ].map(([t, d]) => (
+            <CommandItem key={t} value={t} className="h-auto py-2">
+              <span className="flex flex-col">
+                <span>{t}</span>
+                <span className="text-xs text-muted-foreground">{d}</span>
+              </span>
+            </CommandItem>
+          ))}
+        </CommandGroup>
+      </CommandList>
+    </Command>
+  ),
+}
+
+/** A destructive action stays last, apart, and names what it does. */
+export const CommandDestructive: S = {
+  render: () => (
+    <Command className="max-w-md rounded-md ring-1 ring-border">
+      <CommandInput placeholder="Actions for Patrol dog 7F3A" />
+      <CommandList>
+        <CommandGroup heading="Patrol dog 7F3A">
+          <CommandItem>
+            <Map /> Show on map
+          </CommandItem>
+          <CommandItem>
+            <Pencil /> Rename
+          </CommandItem>
+        </CommandGroup>
+        <CommandSeparator />
+        <CommandGroup>
+          <CommandItem className="text-danger [&_svg]:text-danger">
+            <Trash2 /> Remove 7F3A from this site
+          </CommandItem>
+        </CommandGroup>
+      </CommandList>
+    </Command>
+  ),
+}

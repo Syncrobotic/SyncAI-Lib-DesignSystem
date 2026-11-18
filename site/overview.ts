@@ -5,6 +5,250 @@
 export type Overview = { what: string; use: string[]; instead?: string[]; notes?: string[] }
 
 export const overviews: Record<string, Overview> = {
+  trace: {
+    what: "The steps of a run in order, each with a status and a duration, that open to show input, output and sub-steps.",
+    use: [
+      "What a robot did on a mission.",
+      "An AI agent's tool calls and reasoning.",
+      "Firmware rollouts, map builds and other CI-like runs.",
+      "Audit trails of who changed what.",
+    ],
+    instead: [
+      "Events at points in time with no duration: `timeline`.",
+      "A sequence a person goes through: `stepper`.",
+      "Thousands of log lines: `data-grid` with virtual rows.",
+    ],
+    notes: ["formatDuration(ms) gives 840 ms, 1.2 s, 2 m 05 s.", "Nest a Trace inside a TraceItem for sub-steps; density and total are inherited."],
+  },
+  marker: {
+    what: "A labelled divider across a log or feed, plus a one-line log row with a status glyph.",
+    use: ["Day breaks in an event feed.", "Where an operator took over or autonomy resumed.", "An unread line in a log.", "Dense tool-call or command logs."],
+    instead: ["A plain divider with no label: `separator`.", "Steps with durations and details: `trace`."],
+    notes: [
+      "Marker reads as text, not a separator role, so the label is announced.",
+      "MarkerRow takes the StatusGlyph tones; danger and warning are also spoken.",
+    ],
+  },
+  stepper: {
+    what: "Shows where someone is in a fixed sequence of steps, which are done, and which failed.",
+    use: ["Commissioning a robot.", "An import or upload wizard.", "A pre-shift checklist done in order."],
+    instead: ["Sections of one page: `tabs`.", "Progress of a machine task: `progress`.", "Asking the questions themselves: `questionnaire`."],
+    notes: ["value starts at 1; a value past the last step marks all done.", 'navigable="done" lets people click back to finished steps only.'],
+  },
+  timeline: {
+    what: "A list of events in time order, each with a time, a marker and a title.",
+    use: ["What a robot did on a shift.", "How an incident unfolded.", "Maintenance and release history."],
+    instead: ["A sortable, filterable log: `data-grid`.", "Steps someone has to go through: `stepper`."],
+    notes: ["tone draws the status glyph; colour only for warning and danger.", "TimelineHeading groups events by day."],
+  },
+  scrollspy: {
+    what: "An On this page list that marks the section being read and scrolls to a section when clicked.",
+    use: ["Long settings or detail pages.", "Docs pages.", "A robot's detail panel with many sections."],
+    instead: ["Separate views people switch between: `tabs`."],
+    notes: ["useScrollspy(ids) alone gives the current id for a custom display.", "Links move focus to the section, so keyboard users land there."],
+  },
+  "navigation-menu": {
+    what: "The top navigation of a website: links, and triggers that open panels of links with descriptions.",
+    use: ["A marketing or docs site header.", "A portal with a few product areas."],
+    instead: ["An app's own sections: the app-shell block's sidebar.", "Actions on a thing: `dropdown-menu`.", "A path to the current page: `breadcrumb`."],
+    notes: [
+      "Use NavigationMenuLink (or navigationMenuTriggerStyle on it) for plain top-level links.",
+      "viewport={false} puts each panel under its own trigger.",
+    ],
+  },
+  questionnaire: {
+    what: "A short form of questions with choice, scale and text answers, paged or on one page, that checks required answers.",
+    use: ["Pre-shift checklists.", "Incident follow-up questions.", "Feedback and site surveys."],
+    instead: ["A form of named fields (name, address): `field`.", "Only showing progress through steps: `stepper`."],
+    notes: ["Answers are keyed by question id; onSubmit gets them all.", "QuestionField draws one question on its own inside your form."],
+  },
+  "data-grid": {
+    what: "A full data table built on TanStack Table: you own the table state; DataGrid, DataGridTable and their parts draw it in the kit's style.",
+    use: [
+      "Fleets, events and datasets people sort, select and page through.",
+      "Bulk actions on selected rows.",
+      "Thousands of rows with virtual scrolling.",
+      "Rows that open a detail panel underneath.",
+    ],
+    instead: ["A handful of static rows: `table`.", "A list of things with actions, not columns: `item`."],
+    notes: [
+      "Column header: DataGridColumnHeader gives sort, pin and hide in one menu.",
+      "selectColumn() and expandColumn() are ready-made columns; renderSubRow goes in the table's meta.",
+      "Give each column meta.label so the visibility menu names it.",
+      "Keep getRowId stable so selection survives sorting.",
+      "data and columns must keep their identity between renders; an inline array (`rows.slice(0, 6)`, `[]`) re-renders forever once state auto-resets.",
+    ],
+  },
+  sortable: {
+    what: "A reorderable list or grid with a grip on each item, usable with a mouse, a finger or the keyboard.",
+    use: ["Waypoint and patrol order.", "Rule priorities.", "Column order, camera layout, playlist steps."],
+    instead: ["Ordering by a value (date, name): sort a `table` or `data-grid`.", "Moving items between lists: compose dnd-kit directly."],
+    notes: ["Order lives in your state; onValueChange gets the new array.", "Touch drags start after a short press so the page still scrolls."],
+  },
+  resizable: {
+    what: "A layout of panels whose sizes the user changes by dragging or with the keyboard.",
+    use: ["A map beside a robot list.", "A camera above an event log.", "An editor beside its preview."],
+    instead: ["A panel that slides in over content: `sheet`.", "Fixed app chrome: the app-shell block."],
+    notes: ["autoSaveId on the group remembers sizes in the browser.", "collapsible panels collapse when dragged past their minSize."],
+  },
+  "file-upload": {
+    what: "An area that takes files by drop or by the picker, validates them, and hands the accepted ones to you.",
+    use: ["Maps, logs and recordings uploaded to a site.", "A single photo or avatar.", "A compact attach row in a form."],
+    instead: ["Showing files already attached: `attachment`."],
+    notes: ['accept uses the input\'s syntax: "image/*,.pgm".', "The upload itself and its progress are yours; FileUpload only selects."],
+  },
+  attachment: {
+    what: "A file row, chip or image tile showing a file's type, name, size and state.",
+    use: ["Upload queues with progress.", "Files attached to an incident or message.", "Image strips with previews."],
+    instead: ["Picking files: `file-upload`.", "A file browser with many columns: `data-grid`."],
+    notes: ["variant row, chip or image; status idle, uploading, done or error.", "Pass previewUrl (an object URL) for images."],
+  },
+  "file-type": {
+    what: "A file icon chosen from the name or extension, in a tile, as a bare glyph or as a label.",
+    use: ["File rows, upload queues and file browsers.", "Showing the format of a log, map or model."],
+    instead: ["A generic icon surface: `icon-tile`."],
+    notes: ["familyOf(name) tells you the family (map, model, data…) for your own logic.", "label overrides the written extension (db3 → ROS2)."],
+  },
+  autocomplete: {
+    what: "A text field with a list of suggestions that narrows as you type, for picking one value from many.",
+    use: [
+      "Picking a robot, site, user or dataset from a long list.",
+      "Searching a server as you type, with a loading state.",
+      "Grouped suggestions, such as robots by kind.",
+    ],
+    instead: ["Fewer than about 10 options: `select`.", "A command that does something: `command`.", "Free text with no list: `input`."],
+    notes: [
+      "The value is the option's value; the field shows its label.",
+      "Pass filter={false} and onQueryChange when the server filters, and loading while it works.",
+      "Typing alone never sets a value: only picking an option does.",
+    ],
+  },
+  "input-otp": {
+    what: "Boxes for a short code typed one character at a time: a verification code, a pairing code, a PIN.",
+    use: ["Two-step sign-in and verification codes.", "Pairing a robot with a code from its screen.", "A short PIN to release a stop."],
+    instead: ["A password: `input` with type password.", "A number with a range: `number-field`."],
+    notes: [
+      "Set pattern (REGEXP_ONLY_DIGITS) and maxLength to the code's length.",
+      "autoComplete is one-time-code by default so phones offer the SMS code.",
+      "The caret blinks only while focused and stops under reduced motion.",
+    ],
+  },
+  "phone-input": {
+    what: "A country picker joined to a phone field that formats the number as it is typed and gives back an international (E.164) number.",
+    use: ["On-call numbers for alarm escalation.", "Site and customer contacts."],
+    instead: ["A number that is not a phone (an ID, a count): `input` or `number-field`."],
+    notes: [
+      "Pasting a number that starts with + switches the country.",
+      "Limit countryOptions to the countries you operate in to shorten the list.",
+      "libphonenumber-js adds about 150 KB; load the page that needs it lazily if size matters.",
+    ],
+  },
+  calendar: {
+    what: "A month view to pick dates (react-day-picker): single, multiple or a range, one month or several.",
+    use: ["Inline on a scheduling page.", "Inside a popover: use `date-selector`, which wraps it.", "Showing which days have events."],
+    instead: ["A date field in a form: `date-selector`.", "A time of day: `time-picker`."],
+    notes: [
+      "Pass today in tests and stories so screenshots stay stable.",
+      "disabled takes matchers: { before: date }, { dayOfWeek: [0, 6] }.",
+      'captionLayout="dropdown" with startMonth and endMonth for distant dates.',
+    ],
+  },
+  "date-selector": {
+    what: "Form fields that open a calendar: DatePicker for one day and DateRangePicker for a from–to range.",
+    use: ["A day or range in a form or a filter bar.", "Event and report ranges with presets."],
+    instead: ["A calendar that is always visible: `calendar`.", "A time: `time-picker`."],
+    notes: [
+      "Values are Date objects (DateRange for ranges); format with date-fns.",
+      "clearable adds an × that sets the value to undefined.",
+      "DateRangePicker shows two months; pass numberOfMonths={1} in narrow panels.",
+    ],
+  },
+  "time-picker": {
+    what: "Two ways to enter a time: TimePicker picks from a grid of slots, TimeInput reads what is typed (930, 9:30, 21.30, 9:30 pm).",
+    use: ["Schedules, quiet hours and charging windows.", "Opening-hour slots with some taken.", "Fast entry for people who know the time."],
+    instead: ["A date: `date-selector`.", "A duration: `number-field` with a unit."],
+    notes: [
+      "step sets minutes between slots; min and max bound them.",
+      "TimeInput marks unreadable or out-of-range text invalid and keeps the text so it can be fixed.",
+    ],
+  },
+  item: {
+    what: "A general-purpose row: a leading icon, avatar or image, a title with one or two lines below, and actions, a badge or a key at the end.",
+    use: [
+      "Lists of people, files, integrations or settings links.",
+      "Menus where each whole row is a link.",
+      "A compact card-like record with a header and footer line.",
+    ],
+    instead: [
+      "A robot with live status in the robot shell: `list`.",
+      "Rows the user sorts or filters by column: `table`.",
+      "Key and value pairs: `description-list`.",
+    ],
+    notes: [
+      "A row becomes a link only through asChild on an <a>; never put onClick on a static Item.",
+      "ItemGroup has role list; wrap each Item in an element with role listitem.",
+      "ItemTitle is one line: put the text in a <span> first so it truncates and badges stay whole.",
+    ],
+  },
+  "icon-tile": {
+    what: "A tile that gives an icon a consistent surface and size, so icons in rows, cards and empty states line up.",
+    use: ["The media of a row or card.", "A status at a glance: a failed run, a warning.", "A feature or category heading."],
+    instead: ["A person: `avatar`.", "A status next to text in a row: `status-glyph` or `status-eyebrow`."],
+    notes: [
+      "Use the soft or solid tones only for status, never to decorate a category.",
+      "An interactive tile (asChild link) needs its own aria-label.",
+      "IconTileDot needs a label; it is announced as an image.",
+    ],
+  },
+  kbd: {
+    what: "A key cap for shortcuts and keyboard instructions, alone or grouped into a chord.",
+    use: ["Shortcut hints in menus, tooltips and search fields.", "A keyboard reference list.", "Instructions like Hold Space to stop all."],
+    instead: ["A code value or ID: a <code> span in font-mono."],
+    notes: [
+      "Icon-only keys (arrows) need sr-only text inside; a <kbd> cannot take an aria-label.",
+      "Inside a tooltip the key takes the tooltip's colours automatically.",
+    ],
+  },
+  "button-group": {
+    what: "A strip of joined controls that reads as one: neighbours share an edge and only the outer corners are round.",
+    use: [
+      "A split button: the main action and a menu of variants.",
+      "A stepper: minus, value, plus.",
+      "Prev and next, zoom in and out, playback controls.",
+      "A search field with its scope menu and button.",
+    ],
+    instead: [
+      "One choice among several that stays selected: `toggle-group` or `segmented-control`.",
+      "Unrelated actions in a toolbar: separate buttons with a gap.",
+    ],
+    notes: [
+      "Filled buttons need ButtonGroupSeparator between them; outline buttons share their edge.",
+      "ButtonGroupText is not interactive; use it for a value or count.",
+      'Set orientation="vertical" for map zoom and tool palettes.',
+    ],
+  },
+  "scroll-area": {
+    what: "A region that scrolls inside a fixed size, with a scrollbar that matches the theme on every platform.",
+    use: ["A long log or list inside a card.", "A row of thumbnails that pans sideways.", "A wide table inside a panel."],
+    instead: ["The whole page: let the page scroll.", "A data table with sorting: `table`, which scrolls by itself."],
+    notes: [
+      "Without a height it never scrolls; set h-* or max-h-*.",
+      "fade hides the edges with a mask; do not use it when the first or last line must always be legible.",
+    ],
+  },
+  "toggle-group": {
+    what: "A row of toggle buttons where one (single) or several (multiple) can be on.",
+    use: ["Time ranges, view modes and filters with a single choice.", "Map layers or notification channels where any mix is on."],
+    instead: [
+      "Switching views of the same data on a muted track: `segmented-control`.",
+      "One on/off: `toggle`.",
+      "A form choice saved on submit: `radio-group` or `checkbox`.",
+    ],
+    notes: [
+      "Single mode allows clearing the value; guard against an empty value if one is required.",
+      "Use joined={false} for filter chips that read as separate options.",
+    ],
+  },
   "choice-field": {
     what: "One choice as a whole tappable row: a checkbox, radio or switch with its label, a description and an optional count. FieldSet groups them under one question.",
     use: ["Filters with counts.", "Settings that switch on and off.", "Several answers to one question in a form."],

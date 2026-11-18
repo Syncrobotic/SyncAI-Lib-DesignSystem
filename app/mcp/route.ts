@@ -40,14 +40,19 @@ const tools: Tool[] = [
         })),
         ...blocks.map((b) => ({ name: b.name, kind: "block", text: b.description ?? "", use: "" })),
       ]
+      // Rank by how many of the query's words an item matches; at a tie, components before blocks (blocks are built from
+      // components, so the component is the answer to a need and the block an example of it); then by weight (a word in
+      // the name counts more). "battery level" finds Meter before the chart blocks that show a battery.
       const score = (r: (typeof rows)[number]) => {
         const hay = `${r.name} ${r.text} ${r.use}`.toLowerCase()
-        return words.reduce((s, w) => s + (r.name.includes(w) ? 3 : 0) + (hay.includes(w) ? 1 : 0), 0)
+        const matched = words.filter((w) => hay.includes(w)).length
+        const weight = words.reduce((s, w) => s + (r.name.includes(w) ? 3 : 0) + (hay.includes(w) ? 1 : 0), 0)
+        return { matched, weight }
       }
       const hits = rows
         .map((r) => ({ r, s: score(r) }))
-        .filter((x) => x.s > 0)
-        .sort((a, b) => b.s - a.s)
+        .filter((x) => x.s.matched > 0)
+        .sort((a, b) => b.s.matched - a.s.matched || Number(a.r.kind === "block") - Number(b.r.kind === "block") || b.s.weight - a.s.weight)
         .slice(0, 10)
       if (!hits.length) return `Nothing matches "${query}". Read ${site.url}/llms.txt for the full index.`
       return hits.map(({ r }) => `- ${r.name} (${r.kind}): ${r.text}${r.use ? `\n  Use for: ${r.use}` : ""}`).join("\n")

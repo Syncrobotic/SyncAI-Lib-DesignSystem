@@ -1,6 +1,7 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
-import { Eye, EyeOff, Search, X } from "lucide-react"
+import { Eye, EyeOff, Info, Search, X } from "lucide-react"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/registry/syncrobotic/ui/tooltip"
 import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
@@ -430,5 +431,299 @@ export const ChoiceFieldSwitches: S = {
       <ChoiceField label="Critical alarms by SMS" description="Every critical alarm, day and night." controlAt="end" control={<Switch defaultChecked />} />
       <ChoiceField label="Daily summary email" description="Patrols, events and battery health at 08:00." controlAt="end" control={<Switch />} />
     </FieldSet>
+  ),
+}
+
+export const TextareaWithCount: S = {
+  render: function T() {
+    const [v, setV] = React.useState("Door 3 sticks on the second push. Robot waits, then retries.")
+    return (
+      <Field label="Handover note" hint={`${v.length} / 280`}>
+        <Textarea value={v} maxLength={280} onChange={(e) => setV(e.target.value)} rows={3} />
+      </Field>
+    )
+  },
+}
+
+export const TextareaDisabled: S = {
+  render: () => (
+    <Field label="Robot's last message">
+      <Textarea disabled defaultValue="Stopped: obstacle in path for 30 s at waypoint 14." rows={2} />
+    </Field>
+  ),
+}
+
+export const CheckboxIndeterminate: S = {
+  render: function C() {
+    const [picked, setPicked] = React.useState(["7f3a"])
+    const all = ["7f3a", "9c44", "1a08"]
+    const state = picked.length === all.length ? true : picked.length ? "indeterminate" : false
+    return (
+      <div className="flex flex-col gap-2 text-sm">
+        <label className="flex min-h-(--h-md) items-center gap-3 font-medium">
+          <Checkbox checked={state} onCheckedChange={(c) => setPicked(c === true ? all : [])} /> All patrol dogs
+        </label>
+        {all.map((id) => (
+          <label key={id} className="flex min-h-(--h-md) items-center gap-3 pl-8">
+            <Checkbox checked={picked.includes(id)} onCheckedChange={(c) => setPicked((p) => (c === true ? [...p, id] : p.filter((x) => x !== id)))} />
+            {id.toUpperCase()}
+          </label>
+        ))}
+      </div>
+    )
+  },
+}
+
+export const CheckboxDisabled: S = {
+  render: () => (
+    <div className="flex flex-col gap-2 text-sm">
+      <label className="flex min-h-(--h-md) items-center gap-3 text-muted-foreground">
+        <Checkbox disabled /> Night vision (not on this model)
+      </label>
+      <label className="flex min-h-(--h-md) items-center gap-3 text-muted-foreground">
+        <Checkbox disabled defaultChecked /> Collision stop (always on)
+      </label>
+    </div>
+  ),
+}
+
+export const RadioGroupHorizontal: S = {
+  render: () => (
+    <RadioGroup defaultValue="normal" aria-label="Speed profile" className="flex flex-row flex-wrap gap-6 text-sm">
+      {["Slow", "Normal", "Fast"].map((v) => (
+        <label key={v} className="flex min-h-(--h-md) items-center gap-3">
+          <RadioGroupItem value={v.toLowerCase()} /> {v}
+        </label>
+      ))}
+    </RadioGroup>
+  ),
+}
+
+export const RadioGroupDisabledOption: S = {
+  render: () => (
+    <RadioGroup defaultValue="wifi" aria-label="Uplink" className="text-sm">
+      {[
+        ["wifi", "Site Wi-Fi", false],
+        ["lte", "LTE", false],
+        ["sat", "Satellite (not installed)", true],
+      ].map(([v, l, d]) => (
+        <label key={v as string} className={`flex min-h-(--h-md) items-center gap-3 ${d ? "text-muted-foreground" : ""}`}>
+          <RadioGroupItem value={v as string} disabled={d as boolean} /> {l as string}
+        </label>
+      ))}
+    </RadioGroup>
+  ),
+}
+
+export const SwitchWithDescription: S = {
+  render: () => (
+    <label className="flex items-start justify-between gap-4 text-sm">
+      <span className="flex flex-col gap-1">
+        <span className="font-medium">Return to dock under 20 %</span>
+        <span className="text-muted-foreground">The robot stops its task and drives home to charge.</span>
+      </span>
+      <Switch defaultChecked />
+    </label>
+  ),
+}
+
+export const SwitchDisabled: S = {
+  render: () => (
+    <div className="flex flex-col gap-3 text-sm">
+      <label className="flex min-h-(--h-md) items-center justify-between gap-4 text-muted-foreground">
+        Remote override (admin only) <Switch disabled />
+      </label>
+      <label className="flex min-h-(--h-md) items-center justify-between gap-4 text-muted-foreground">
+        Collision stop (always on) <Switch disabled defaultChecked />
+      </label>
+    </div>
+  ),
+}
+
+export const SelectDisabledOption: S = {
+  render: () => (
+    <Field label="Map layer">
+      <Select defaultValue="lidar">
+        <SelectTrigger>
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="floor">Floor plan</SelectItem>
+          <SelectItem value="lidar">Lidar point cloud</SelectItem>
+          <SelectItem value="heat">Heat map</SelectItem>
+          <SelectItem value="wifi" disabled>
+            Wi-Fi coverage (no survey yet)
+          </SelectItem>
+        </SelectContent>
+      </Select>
+    </Field>
+  ),
+}
+
+export const SliderSteps: S = {
+  render: function Sl() {
+    const [v, setV] = React.useState([3])
+    const labels = ["Off", "Low", "Medium", "High", "Max"]
+    return (
+      <div className="flex flex-col gap-2">
+        <Label>Headlight · {labels[v[0]]}</Label>
+        <Slider value={v} onValueChange={setV} min={0} max={4} step={1} aria-label="Headlight" />
+        <div className="flex justify-between text-xs text-muted-foreground">
+          {labels.map((l) => (
+            <span key={l}>{l}</span>
+          ))}
+        </div>
+      </div>
+    )
+  },
+}
+
+export const SliderVolume: S = {
+  render: function Sl() {
+    const [v, setV] = React.useState([40])
+    return (
+      <div className="flex flex-col gap-2">
+        <Label>Siren volume · {v[0]} %</Label>
+        <Slider value={v} onValueChange={setV} step={5} aria-label="Siren volume" />
+      </div>
+    )
+  },
+}
+
+export const LabelRequired: S = {
+  render: () => (
+    <div className="flex flex-col gap-1">
+      <Label htmlFor="site-name">
+        Site name <span className="text-muted-foreground">(required)</span>
+      </Label>
+      <Input id="site-name" required placeholder="North gate" />
+    </div>
+  ),
+}
+
+export const InputGroupWithButton: S = {
+  render: () => (
+    <InputGroup>
+      <Input aria-label="Robot ID" placeholder="7F3A" />
+      <InputGroupButton aria-label="Find robot">
+        <Search aria-hidden="true" />
+      </InputGroupButton>
+    </InputGroup>
+  ),
+}
+
+export const NumberFieldPercent: S = {
+  render: () => (
+    <Field label="Return to dock at" hint="Between 10 and 50 %.">
+      <NumberField defaultValue={20} min={10} max={50} step={5} unit="%" />
+    </Field>
+  ),
+}
+
+export const FieldWithTextarea: S = {
+  render: () => (
+    <Field label="Why are you stopping all robots?" hint="Saved to the event log with your name." error="Write at least a few words.">
+      <Textarea rows={2} />
+    </Field>
+  ),
+}
+
+export const ChoiceFieldRadios: S = {
+  render: () => (
+    <RadioGroup defaultValue="dock">
+      <FieldSet legend="When the battery is low">
+        <ChoiceField label="Return to dock" description="Stop the task and charge." control={<RadioGroupItem value="dock" />} />
+        <ChoiceField label="Finish the task first" description="Only if it ends within 10 minutes." control={<RadioGroupItem value="finish" />} />
+        <ChoiceField label="Ask an operator" control={<RadioGroupItem value="ask" />} />
+      </FieldSet>
+    </RadioGroup>
+  ),
+}
+
+export const LabelOptional: S = {
+  render: () => (
+    <div className="flex flex-col gap-2">
+      <Label htmlFor="lbl-note">
+        Note for the operator <span className="font-normal text-muted-foreground">(optional)</span>
+      </Label>
+      <Input id="lbl-note" placeholder="Gate code is on the back of the badge" />
+    </div>
+  ),
+}
+
+/** More about a label goes in a tooltip on a button beside it, never in the label itself. */
+export const LabelWithInfo: S = {
+  render: () => (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-1">
+        <Label htmlFor="lbl-speed">Top speed</Label>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              type="button"
+              aria-label="About top speed"
+              className="press grid size-(--h-sm) place-items-center rounded-sm text-muted-foreground hover:text-foreground"
+            >
+              <Info aria-hidden="true" className="size-4" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent>Indoors the robot never exceeds 1.2 m/s, whatever is set here.</TooltipContent>
+        </Tooltip>
+      </div>
+      <Input id="lbl-speed" defaultValue="1.5 m/s" />
+    </div>
+  ),
+}
+
+/** Label beside the control on wide forms, above it on phones. */
+export const LabelInline: S = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      {[
+        ["lbl-site", "Site", "Taipei warehouse"],
+        ["lbl-dock", "Home dock", "Dock 2"],
+      ].map(([id, l, v]) => (
+        <div key={id} className="grid gap-2 sm:grid-cols-[8rem_1fr] sm:items-center">
+          <Label htmlFor={id}>{l}</Label>
+          <Input id={id} defaultValue={v} />
+        </div>
+      ))}
+    </div>
+  ),
+}
+
+export const LabelDisabled: S = {
+  render: () => (
+    <div className="group flex flex-col gap-2" data-disabled>
+      <Label htmlFor="lbl-serial">Serial number</Label>
+      <Input id="lbl-serial" disabled defaultValue="SR-7F3A-2041" />
+    </div>
+  ),
+}
+
+/** A whole count with no unit. */
+export const NumberFieldCount: S = {
+  render: () => (
+    <Field label="Robots on this route" hint="1 to 6">
+      <NumberField defaultValue={2} min={1} max={6} className="w-40" />
+    </Field>
+  ),
+}
+
+/** Below and above zero: a calibration offset. */
+export const NumberFieldNegative: S = {
+  render: () => (
+    <Field label="Heading offset" hint="−10 to 10 degrees">
+      <NumberField defaultValue={-2.5} min={-10} max={10} step={0.5} unit="°" className="w-48" />
+    </Field>
+  ),
+}
+
+/** Locked while the robot is on a mission. */
+export const NumberFieldDisabled: S = {
+  render: () => (
+    <Field label="Max speed" hint="Can’t change during a mission">
+      <NumberField defaultValue={1.5} unit="m/s" disabled className="w-48" />
+    </Field>
   ),
 }

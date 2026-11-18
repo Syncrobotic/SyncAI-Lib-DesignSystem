@@ -3,6 +3,8 @@ on:
   pull_request:
   push:
     branches: [dev, stage, main]
+  # Run everything, story checks included, on any branch: Actions → ci → Run workflow.
+  workflow_dispatch:
 
 jobs:
   check:
@@ -28,18 +30,39 @@ jobs:
       # Registry JSON + docs site (Next.js)
       - run: npm run build
       - run: npm run build-storybook
-      - run: npx playwright install --with-deps chromium
-      # Story checks: accessibility (axe, WCAG 2.2 AA) and visual regression, dark and light, against the committed
-      # baselines in tests/__screenshots__/. A new story has none yet and passes; the visual-baseline workflow writes them.
-      - run: npx playwright test --update-snapshots=missing
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with: { name: visual-baseline, path: tests/__screenshots__, if-no-files-found: ignore }
-      - uses: actions/upload-artifact@v4
-        if: failure()
-        with: { name: story-test-results, path: test-results }
       - uses: actions/upload-artifact@v4
         with: { name: registry, path: public/r }
+
+  # Story checks: every story, dark and light, opened once for its screenshot (against the committed baselines in
+  # tests/__screenshots__/) and for axe (WCAG 2.2 A/AA). Split over four runners: one runner took over 13 minutes.
+  # A new story has no baseline yet and passes; the visual-baseline workflow writes them.
+  # They gate promotion, not every feature PR: PRs into stage or main, and manual runs. PRs into dev get the fast checks.
+  stories:
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && (github.base_ref == 'stage' || github.base_ref == 'main'))
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm run build-storybook
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test --update-snapshots=missing --shard=${{ matrix.shard }}/4
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: visual-baseline-${{ matrix.shard }}
+          path: tests/__screenshots__
+          if-no-files-found: ignore
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: story-test-results-${{ matrix.shard }}
+          path: test-results
 
   # Installs every item into a fresh Next.js app with the shadcn CLI, then typechecks and builds it.
   registry-e2e:

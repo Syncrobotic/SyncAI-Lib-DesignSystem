@@ -16,6 +16,31 @@ export type StoryFile =
   | "navigation"
   | "overlays"
   | "charts"
+  | "trace"
+  | "marker"
+  | "stepper"
+  | "timeline"
+  | "scrollspy"
+  | "navigation-menu"
+  | "questionnaire"
+  | "data-grid"
+  | "sortable"
+  | "resizable"
+  | "file-upload"
+  | "attachment"
+  | "file-type"
+  | "autocomplete"
+  | "input-otp"
+  | "phone-input"
+  | "calendar"
+  | "date-selector"
+  | "time-picker"
+  | "item"
+  | "icon-tile"
+  | "kbd"
+  | "button-group"
+  | "scroll-area"
+  | "toggle-group"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
@@ -40,6 +65,205 @@ const overlayKeys: [string, string][] = [
 ]
 
 const entries: Record<string, Entry> = {
+  trace: {
+    wide: true,
+    group: "Display",
+    examples: { file: "trace", prefix: "Trace" },
+    rules: [
+      "Done steps are a neutral check; only warnings and failures are coloured.",
+      "A failed step says why in its description; the raw error goes in a TraceCode inside it.",
+      "Open the step that needs attention by default, nothing else.",
+      "total plus start and duration draw the waterfall; leave them out for a plain list.",
+    ],
+  },
+  marker: {
+    group: "Display",
+    examples: { file: "marker", prefix: "Marker" },
+    rules: [
+      "Marker for moments that change how the lines after it read (a takeover, a new day, unread). Not for every event.",
+      "MarkerRow is one line; details belong in a Trace or a detail panel.",
+      "Tone only for warning and danger.",
+    ],
+  },
+  stepper: {
+    group: "Navigation",
+    examples: { file: "stepper", prefix: "Stepper" },
+    rules: [
+      "Only for a fixed sequence people go through once (commissioning, an import). Sections of a page are Tabs.",
+      "The current step is the neutral primary, never blue: blue means a machine is working.",
+      "An error step says why in its description.",
+      "Phones: StepperCompact, not a squeezed row of circles.",
+    ],
+  },
+  timeline: {
+    group: "Display",
+    examples: { file: "timeline", prefix: "Timeline" },
+    rules: [
+      "Plain events get a neutral dot. Only warning and danger events are coloured.",
+      "Give dateTime so the time is machine-readable.",
+      "Newest first for incidents and logs; oldest first for a process.",
+    ],
+  },
+  scrollspy: {
+    group: "Navigation",
+    examples: { file: "scrollspy", prefix: "Scrollspy" },
+    rules: [
+      "Each section needs an id and a heading.",
+      "Pass root when the page scrolls inside a container.",
+      "Hide the rail on phones, or use the pills variant.",
+    ],
+  },
+  "navigation-menu": {
+    wide: true,
+    group: "Navigation",
+    examples: { file: "navigation-menu", prefix: "NavigationMenu" },
+    rules: [
+      "For a site's top navigation. An app's sections go in the app shell's sidebar; actions go in a DropdownMenu.",
+      "Every panel item is a link. Mark the current page with active.",
+    ],
+  },
+  questionnaire: {
+    group: "Inputs",
+    examples: { file: "questionnaire", prefix: "Questionnaire" },
+    rules: [
+      "Paged for up to about eight questions on a phone; list when people need to see them all.",
+      "Required questions block Next with a message under the question, never a shake.",
+      "review lets people check and edit before sending.",
+    ],
+  },
+  "data-grid": {
+    wide: true,
+    group: "Display",
+    examples: { file: "data-grid", prefix: "DataGrid" },
+    rules: [
+      "Build the table with useReactTable; DataGrid draws it.",
+      "Keep data and columns stable (module scope or useMemo). A new array each render loops once a row expands.",
+      "Numbers right-aligned (meta.align) and tabular.",
+      "Status cells use InlineStatus, never a coloured badge.",
+      "virtual needs a maxHeight.",
+    ],
+  },
+  sortable: {
+    group: "Inputs",
+    examples: { file: "sortable", prefix: "Sortable" },
+    rules: [
+      "Only the handle drags; the rest of the row stays clickable.",
+      "Give getLabel so moves are announced by name.",
+      "Keyboard: Space to lift, arrows to move, Space to drop, Escape to cancel.",
+    ],
+  },
+  resizable: {
+    wide: true,
+    group: "Display",
+    examples: { file: "resizable", prefix: "Resizable" },
+    rules: ["Set minSize so a panel never collapses into nothing by accident.", "withHandle on touch screens, where a thin line is hard to find."],
+  },
+  "file-upload": {
+    group: "Inputs",
+    examples: { file: "file-upload", prefix: "FileUpload" },
+    rules: ["Say what is accepted and how big, in the hint.", "Report refused files by name and reason.", "Show what was taken as Attachment rows."],
+  },
+  attachment: {
+    group: "Display",
+    examples: { file: "attachment", prefix: "Attachment" },
+    rules: ["An error says why in words and offers Retry.", "Remove is always the last action, and names the file for screen readers."],
+  },
+  "file-type": {
+    group: "Display",
+    examples: { file: "file-type", prefix: "FileType" },
+    rules: ["Neutral like every icon; the label tells formats apart, not colour."],
+  },
+  autocomplete: {
+    group: "Inputs",
+    examples: { file: "autocomplete", prefix: "Autocomplete" },
+    rules: [
+      "For picking one of many known values; for free text use Input.",
+      "Disabled options stay in the list so people see why they cannot pick them.",
+      "Inside a Field it takes the label, note and error.",
+    ],
+  },
+  "input-otp": {
+    group: "Inputs",
+    examples: { file: "input-otp", prefix: "InputOTP" },
+    rules: [
+      "One real input underneath: paste and SMS autofill work.",
+      "Say where the code was sent and when it expires.",
+      "Show the error under the boxes, not in a toast.",
+    ],
+  },
+  "phone-input": {
+    group: "Inputs",
+    examples: { file: "phone-input", prefix: "PhoneInput" },
+    rules: [
+      "Store and send the E.164 value (+886912345678), never the formatted text.",
+      "Validate on blur or submit with isPhoneValid, through Field's error.",
+    ],
+  },
+  calendar: {
+    group: "Inputs",
+    examples: { file: "calendar", prefix: "Calendar" },
+    rules: ["The picked day is inverted; today is bold with a ring.", "Weeks start on Monday by default.", "Disabled days stay visible and struck through."],
+  },
+  "date-selector": {
+    group: "Inputs",
+    examples: { file: "date-selector", prefix: "Date" },
+    rules: [
+      "The trigger reads like an input and shows the date in words.",
+      "Presets for the ranges people pick most (Last 7 days).",
+      "Inside a Field it takes the label, note and error.",
+    ],
+  },
+  "time-picker": {
+    group: "Inputs",
+    examples: { file: "time-picker", prefix: "Time" },
+    rules: ['Values are "HH:mm" on a 24-hour clock; hour12 only changes how they read.', "Taken slots stay in the list, struck through."],
+  },
+  item: {
+    group: "Display",
+    examples: { file: "item", prefix: "Item" },
+    rules: [
+      "One row per thing: a person, a file, a service, a setting link.",
+      "Only a link draws the hover fill; a static row never looks clickable.",
+      "Robot rows with a live status use the shell's List.",
+    ],
+  },
+  "icon-tile": {
+    group: "Display",
+    examples: { file: "icon-tile", prefix: "IconTile" },
+    rules: [
+      "Neutral by default. A tone only when the tile states a status.",
+      "Never solid red: a solid danger tile stays on its tint, since solid red belongs to the emergency stop.",
+      "Icons inside are 16, 20 or 24 px; the size prop sets them.",
+    ],
+  },
+  kbd: {
+    group: "Display",
+    examples: { file: "kbd", prefix: "Kbd" },
+    rules: ["One key per Kbd; a chord is a KbdGroup without plus signs.", "Use the platform's symbols: ⌘ on Mac, Ctrl elsewhere."],
+  },
+  "button-group": {
+    group: "Actions",
+    examples: { file: "button-group", prefix: "ButtonGroup" },
+    rules: [
+      "Holds no selection; for one choice among several use Segmented control or Toggle group.",
+      "Keep destructive actions outside the group.",
+      "Give the group an aria-label.",
+    ],
+  },
+  "scroll-area": {
+    group: "Display",
+    examples: { file: "scroll-area", prefix: "ScrollArea" },
+    rules: ["Give it a fixed height (or width) and an aria-label.", "The viewport takes focus so the keyboard can scroll it."],
+  },
+  "toggle-group": {
+    group: "Actions",
+    examples: { file: "toggle-group", prefix: "ToggleGroup" },
+    rules: [
+      'type="single" for one choice, type="multiple" for layers or channels.',
+      "On is inverted, like a selected segment.",
+      "Icon-only items need an aria-label.",
+    ],
+  },
   // Actions
   button: {
     group: "Actions",
@@ -177,15 +401,15 @@ const entries: Record<string, Entry> = {
   list: { group: "Display", examples: { file: "list", only: ["GroupedList"] } },
   "status-glyph": {
     group: "Display",
-    examples: { file: "list", only: ["StatusShapes"] },
+    examples: { file: "display", prefix: "StatusGlyph" },
     rules: [
       "Status is shape plus colour, so it reads without colour vision: filled circle in progress, hollow circle normal, triangle attention, square stopped, slashed circle offline.",
     ],
   },
-  "status-eyebrow": { group: "Display", examples: { file: "list", only: ["StatusShapes"] } },
+  "status-eyebrow": { group: "Display", examples: { file: "list", only: ["StatusShapes", "StatusEyebrowOverTitle", "StatusInlineInRows"] } },
   skeleton: {
     group: "Display",
-    examples: { file: "list", only: ["LoadingSkeleton"] },
+    examples: { file: "list", only: ["LoadingSkeleton", "SkeletonCard", "SkeletonTableRows"] },
     rules: [
       "Show what is already known; only unknown values get a skeleton.",
       "The whole group breathes over 1.2 s with no diagonal shimmer, and stops under reduced motion.",
@@ -324,6 +548,79 @@ export type Item = (typeof registry.items)[number] & Entry
 
 // What each component does with the keyboard beyond Tab. Radix supplies most of it; these tables say so out loud.
 const keyboard: Record<string, [string, string][]> = {
+  trace: [
+    ["Tab", "Focus a step that opens"],
+    ["Enter / Space", "Open or close its details"],
+  ],
+  stepper: [
+    ["Tab", "Focus a step people may go back to"],
+    ["Enter / Space", "Go to that step"],
+  ],
+  scrollspy: [
+    ["Tab", "Focus a section link"],
+    ["Enter", "Scroll to the section and move focus to it"],
+  ],
+  "navigation-menu": [
+    ["Enter / Space", "Open a panel"],
+    ["Arrow keys", "Move between top-level items"],
+    ["Tab", "Move into an open panel"],
+    ["Escape", "Close the panel"],
+  ],
+  questionnaire: [
+    ["Arrow keys", "Choose an option or a point on a scale"],
+    ["Space", "Tick a checkbox"],
+    ["Enter", "Next, or send on the last page"],
+  ],
+  "data-grid": [
+    ["Tab", "Focus the grid region, then the headers and cells' controls"],
+    ["Arrow keys", "Scroll the region"],
+    ["Enter / Space", "Open a column menu, toggle a checkbox"],
+  ],
+  sortable: [
+    ["Space", "Lift or drop the focused item"],
+    ["Arrow keys", "Move the lifted item"],
+    ["Escape", "Cancel the move"],
+  ],
+  resizable: [
+    ["Tab", "Focus a handle"],
+    ["Arrow keys", "Resize"],
+    ["Home / End", "Collapse or expand fully"],
+    ["Enter", "Toggle a collapsible panel"],
+  ],
+  "file-upload": [
+    ["Tab", "Focus the drop zone"],
+    ["Enter / Space", "Open the file picker"],
+  ],
+  autocomplete: [
+    ["Arrow Down / Up", "Open the list, move between options"],
+    ["Enter", "Pick the highlighted option"],
+    ["Escape", "Close and restore the picked value"],
+  ],
+  "input-otp": [
+    ["Type", "Fill the next box"],
+    ["Backspace", "Clear the previous box"],
+    ["Arrow Left / Right", "Move between boxes"],
+  ],
+  calendar: [
+    ["Arrow keys", "Move by day or week"],
+    ["Page Up / Page Down", "Previous or next month"],
+    ["Home / End", "Start or end of the week"],
+    ["Enter / Space", "Pick the focused day"],
+  ],
+  "time-picker": [
+    ["Enter", "Commit the typed time (TimeInput)"],
+    ["Tab", "Leave the field; the time is read on blur"],
+  ],
+  "scroll-area": [
+    ["Tab", "Focus the scroll region"],
+    ["Arrow keys", "Scroll"],
+    ["Page Up / Page Down", "Scroll by a page"],
+  ],
+  "toggle-group": [
+    ["Tab", "Move into the group"],
+    ["Arrow keys", "Move between items"],
+    ["Enter / Space", "Turn the focused item on or off"],
+  ],
   button: [["Enter / Space", "Activate"]],
   "segmented-control": [
     ["← / →", "Move to the previous or next segment"],
@@ -433,6 +730,9 @@ export function storyNames(ex: Examples) {
 
 /** "ThreeTiersWithPageAction" -> "Three tiers with page action", as Storybook shows it. */
 export const storyTitle = (name: string) => {
-  const words = name.replace(/([a-z0-9])([A-Z])/g, "$1 $2").replace(/([A-Z])([A-Z][a-z])/g, "$1 $2").split(" ")
+  const words = name
+    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+    .replace(/([A-Z])([A-Z][a-z])/g, "$1 $2")
+    .split(" ")
   return words.map((w, i) => (i === 0 ? w : w.toLowerCase())).join(" ")
 }

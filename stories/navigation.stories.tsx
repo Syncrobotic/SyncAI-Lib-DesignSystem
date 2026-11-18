@@ -1,6 +1,7 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
-import { Bell, Bot, Settings } from "lucide-react"
+import { Bell, Bot, ChevronDown, Ellipsis, House, Settings } from "lucide-react"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/registry/syncrobotic/ui/dropdown-menu"
 import { Badge } from "@/registry/syncrobotic/ui/badge"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/registry/syncrobotic/ui/accordion"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/registry/syncrobotic/ui/tabs"
@@ -120,3 +121,136 @@ export const PaginationSimple: S = { render: () => <PaginationDemo /> }
 
 /** Numbered pages, with gaps, for long lists you jump around in. */
 export const PaginationPages: S = { render: () => <PaginationDemo pages total={240} /> }
+
+export const BreadcrumbWithIcon: S = {
+  render: () => (
+    <Breadcrumb>
+      <BreadcrumbLink href="#home" className="flex items-center gap-2">
+        <House aria-hidden="true" className="size-4" />
+        <span>Sites</span>
+      </BreadcrumbLink>
+      <BreadcrumbLink href="#taipei">Taipei warehouse</BreadcrumbLink>
+      <BreadcrumbPage>Hall B</BreadcrumbPage>
+    </Breadcrumb>
+  ),
+}
+
+/** Deep paths fold the middle levels into a menu, keeping the first and the last two. */
+export const BreadcrumbCollapsed: S = {
+  render: () => (
+    <Breadcrumb>
+      <BreadcrumbLink href="#sites">Sites</BreadcrumbLink>
+      <DropdownMenu>
+        <DropdownMenuTrigger
+          className="press flex size-(--h-sm) items-center justify-center rounded-sm hover:bg-muted hover:text-foreground"
+          aria-label="Show 2 more levels"
+        >
+          <Ellipsis aria-hidden="true" className="size-4" />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start">
+          <DropdownMenuItem asChild>
+            <a href="#taipei">Taipei warehouse</a>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <a href="#hall-b">Hall B</a>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <BreadcrumbLink href="#robots">Robots</BreadcrumbLink>
+      <BreadcrumbPage>Patrol dog 7F3A</BreadcrumbPage>
+    </Breadcrumb>
+  ),
+}
+
+/** The current level switches between siblings, e.g. one robot to another. */
+export const BreadcrumbWithSwitcher: S = {
+  render: () => (
+    <Breadcrumb>
+      <BreadcrumbLink href="#robots">Robots</BreadcrumbLink>
+      <DropdownMenu>
+        <DropdownMenuTrigger
+          className="press flex h-(--h-sm) items-center gap-2 rounded-sm px-2 text-foreground hover:bg-muted"
+          aria-label="Patrol dog 7F3A, switch robot"
+        >
+          <span aria-current="page">Patrol dog 7F3A</span>
+          <ChevronDown aria-hidden="true" className="size-4 text-muted-foreground" />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start">
+          {["Patrol dog 7F3A", "Patrol dog DAA6", "Courier 9E37"].map((r) => (
+            <DropdownMenuItem key={r}>{r}</DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </Breadcrumb>
+  ),
+}
+
+/** In a narrow space each level truncates; the full name stays in the link. */
+export const BreadcrumbTruncated: S = {
+  render: () => (
+    <div className="w-64">
+      <Breadcrumb>
+        <BreadcrumbLink href="#sites" title="Sites">
+          Sites
+        </BreadcrumbLink>
+        <BreadcrumbLink href="#site" title="Taipei Neihu distribution warehouse">
+          Taipei Neihu distribution warehouse
+        </BreadcrumbLink>
+        <BreadcrumbPage title="Night patrol, north perimeter">Night patrol, north perimeter</BreadcrumbPage>
+      </Breadcrumb>
+    </div>
+  ),
+}
+
+function PaginationAt({ start = 0, ...props }: { start?: number } & Omit<React.ComponentProps<typeof Pagination>, "page" | "onPageChange">) {
+  const [page, setPage] = React.useState(start)
+  return <Pagination page={page} onPageChange={setPage} {...props} />
+}
+
+/** Everything fits on one page: both arrows are off, the range still says how many. */
+export const PaginationSinglePage: S = { render: () => <PaginationAt pageSize={10} total={7} /> }
+
+/** Nothing to page through. */
+export const PaginationEmpty: S = { render: () => <PaginationAt pageSize={10} total={0} labels={{ empty: "No events" }} /> }
+
+/** Deep in a long list: the first and last pages stay reachable, gaps fold the rest. */
+export const PaginationMiddle: S = { render: () => <PaginationAt pages pageSize={20} total={1240} start={30} /> }
+
+/** In a table footer, with the noun in the range. */
+export const PaginationTableFooter: S = {
+  render: () => (
+    <div className="flex flex-col rounded-md ring-1 ring-border">
+      <div className="px-4 py-8 text-center text-sm text-muted-foreground">Table rows</div>
+      <div className="border-t border-border px-3 py-2">
+        <PaginationAt pageSize={25} total={312} start={2} labels={{ range: (f, t, n) => `Events ${f}–${t} of ${n}` }} />
+      </div>
+    </div>
+  ),
+}
+
+/** Two levels only: the parent and this page. */
+export const BreadcrumbTwoLevels: S = {
+  render: () => (
+    <Breadcrumb>
+      <BreadcrumbLink href="#robots">Robots</BreadcrumbLink>
+      <BreadcrumbPage>Patrol dog 7F3A</BreadcrumbPage>
+    </Breadcrumb>
+  ),
+}
+
+/** Above a page title, with the page's actions on the right. */
+export const BreadcrumbPageHeader: S = {
+  render: () => (
+    <div className="flex flex-col gap-2">
+      <Breadcrumb>
+        <BreadcrumbLink href="#sites">Sites</BreadcrumbLink>
+        <BreadcrumbLink href="#taipei">Taipei warehouse</BreadcrumbLink>
+        <BreadcrumbPage>Maps</BreadcrumbPage>
+      </Breadcrumb>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h2 className="text-xl font-bold">Maps</h2>
+        <span className="text-sm text-muted-foreground">4 maps · updated 2 h ago</span>
+      </div>
+    </div>
+  ),
+}

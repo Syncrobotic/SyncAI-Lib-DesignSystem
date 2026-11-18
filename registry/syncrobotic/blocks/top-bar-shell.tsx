@@ -1,4 +1,4 @@
-// @syncrobotic/top-bar-shell v0.7.0 · update: npx shadcn add @syncrobotic/top-bar-shell --overwrite
+// @syncrobotic/top-bar-shell v0.9.0 · update: npx shadcn add @syncrobotic/top-bar-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -123,7 +123,7 @@ export function TopBarShell({
                 <DropdownMenuTrigger asChild>
                   <button
                     type="button"
-                    aria-label={`${user.name}, account menu`}
+                    aria-label={`${user.name}, ${user.initials}, account menu`}
                     className="press flex size-(--h-md) items-center justify-center rounded-sm hover:bg-accent"
                   >
                     <Avatar>

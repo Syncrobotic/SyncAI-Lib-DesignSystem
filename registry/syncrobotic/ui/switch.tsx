@@ -1,11 +1,11 @@
-// @syncrobotic/switch v0.8.0 · update: npx shadcn add @syncrobotic/switch --overwrite
+// @syncrobotic/switch v0.9.0 · update: npx shadcn add @syncrobotic/switch --overwrite
 "use client"
 
 import * as React from "react"
 import { Switch as SwitchPrimitive } from "radix-ui"
 import { cn } from "@/lib/utils"
 
-/** On is success green, per the colour rules; off is a neutral track. */
+/** On is the primary colour (a setting being on is a selection, not a status); off is a neutral track. Takes effect at once. */
 export function Switch({ className, ...props }: React.ComponentProps<typeof SwitchPrimitive.Root>) {
   return (
     <SwitchPrimitive.Root

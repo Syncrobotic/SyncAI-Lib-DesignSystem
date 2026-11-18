@@ -2,6 +2,58 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.9.0 · 2026-11-18
+
+### Added
+- `item`: a general-purpose row (media, title, description, actions) in default, outline and muted, md and sm; only a link draws the hover fill. Header and footer lines for card-like rows.
+- `icon-tile`: one surface and size for icons in rows, cards and empty states: outline, muted, raised, soft and solid, sm to xl, square or circle, with a status dot. Solid danger stays on its tint.
+- `kbd` and `KbdGroup`: keys and chords for shortcuts and instructions; adapts inside a tooltip.
+- `button-group`: buttons, fields and menus joined into one strip (split button, stepper, pagination, search with scope), horizontal or vertical, with a text cell and a separator for filled buttons.
+- `scroll-area`: a bounded, themed scroll region, vertical, horizontal or both, with fading edges; focusable for the keyboard.
+- `toggle-group`: single or multiple toggles, joined or spaced, outline or ghost, horizontal or vertical. On is inverted.
+- `autocomplete`: a text field that suggests as you type (WAI-ARIA combobox): filtering, groups with labels, disabled options, clear and show-all buttons, server search with a loading state, sm and md.
+- `input-otp`: one-time codes and PINs, one 44 px box per character, with separators, paste and SMS autofill (input-otp).
+- `phone-input`: country plus number, formatted as you type and stored as E.164; `isPhoneValid` for validation (libphonenumber-js).
+- `calendar`: single, multiple or range, one or two months, disabled days, week numbers, month and year dropdowns, event dots (react-day-picker).
+- `date-selector`: `DatePicker` and `DateRangePicker`, fields that open the calendar, with presets, clear and Field wiring.
+- `time-picker`: `TimePicker` (slots in a popover, with step, bounds and taken slots) and `TimeInput` (typed: 930, 9:30, 21.30, 9:30 pm), on a 24-hour value.
+- `data-grid`: a TanStack Table grid with sorting and column menus (sort, pin, hide), pagination, row selection with a bulk bar, column visibility, pinned and resizable columns, expandable rows, totals footer, sticky header, loading and empty states, density and striped / bordered / borderless variants, and virtual rows for thousands of records.
+- `sortable`: reorderable lists and grids by handle, touch or keyboard, with spoken moves (dnd-kit).
+- `resizable`: horizontal, vertical, nested and collapsible panels with an optional grip (react-resizable-panels).
+- `file-upload`: a drop zone that is also a button; checks type, size and count and reports what it refused.
+- `attachment`: a file as a row, chip or image tile with progress, error and Retry, Download and Remove.
+- `file-type`: file icons from a name or extension, including robot formats (mcap, bag, db3, pgm, pcd, urdf, onnx).
+- `stepper`: done, current, upcoming and error steps, horizontal or vertical (with the current step's content), optional steps, sm and md, clicking back to finished steps, and `StepperCompact` for phones. The current step is the neutral primary.
+- `timeline`: events with a neutral dot, a status glyph or an icon; vertical, alternate or horizontal, dense, grouped by day.
+- `scrollspy`: an On this page rail or pills that follow the reader through a page or a scroll area, and the `useScrollspy` hook.
+- `navigation-menu`: a site's top navigation with panels of links and cards, a shared animated panel or one per trigger (Radix).
+- `questionnaire`: choice, multiple choice (with a limit), scale and text questions, one per page with progress or all on one form, required checks without a shake, and a review page with Edit.
+- `trace`: the steps of a run (a mission, an agent's tool calls, a rollout, a CI run, an audit trail) with status, duration, meta and time; steps open to show input, output, raw errors or nested steps; a waterfall bar; a header with counts; dense.
+- `marker`: labelled lines across a log (a new day, an operator takeover, an e-stop, unread) and `MarkerRow`, one dense log line with a status glyph, monospace detail and time.
+
+### Changed
+- More examples for the existing Inputs: textarea, checkbox, radio group, switch, select, slider, label, input group, number field, field and choice field.
+- More examples for Chart (stacked, horizontal, threshold line, step line, small multiples, no data), Command (status, no results, multi-select, nested pages, loading, recent) and Empty state (first run, filtered, no permission, offline, compact).
+- `command`: CommandEmpty is a disabled option, so a list with no matches is never an empty listbox and screen readers read the message; it also holds a loading line.
+- Accordion and Collapsible content share the expand and collapse animations.
+- More examples, so every component has 6–8 and the complex ones 12 or more: pagination, number field, scroll area, scrollspy, attachment and breadcrumb; navigation menu, sortable, file upload, autocomplete, questionnaire, calendar, date selector, stepper, command and chart.
+- `input-group` (and NumberField, which uses it): disabled is a muted surface instead of 50 % opacity, so a unit or prefix stays readable. A disabled stepper step is a muted disc, not a faded row, and is announced as unavailable.
+- Docs site: sections below the home hero (and component page examples) rise into place as they scroll in and back out as they leave, tied to the scroll position in CSS. Sections already on screen at load move too, so the hero is no longer the only thing that moves; browsers without scroll timelines keep the one-time reveal, and reduced motion shows everything at rest.
+- Charts blocks (21): line (telemetry with range and table view, against a limit, this period against the last), area (battery over a shift, fleet by state, progress to a target), bar (grouped, ranked, stacked, above and below plan), sparkline (robot list, metric tiles, table column), status tracker (30-day uptime, run history, rollout stages), radial (battery rings, progress to a goal, capacity) and heatmap (time of week, zones by time of day). Normal stays neutral; colour is for series identity or for what is abnormal.
+- Application blocks (18): a phone shell with tab dock; stats as levels and as KPIs with a site and range filter; site and mission cards; passkey sign-in and accepting an invitation; a notification matrix and API keys (secret shown once); and four new types: Dialog (confirm a deletion, a short form, share), Sheet (robot detail panel, filters with a result count), Timeline (robot activity, audit history) and Wizard (add a robot with a live self-check, import a CSV).
+- Solutions blocks (12): a mission schedule in Fleet operations; invitations and an audit log in Users and access; and four new types: Incidents (queue, one incident with updates), Maintenance (service due by hours run, a work order with sign-off), Firmware rollout (plan with stages and gates, a rollout in progress) and AI agents (runs, one run as a trace, a proposal waiting for approval).
+- README lists every component and block by group and type, and how AI agents read the kit (llms.txt, Markdown twins, agent skill, MCP). Site description, social card line and keywords cover blocks, charts and agents. Visual baselines are accepted on `dev`, then `ci` is run by hand.
+- MCP `search` ranks by how many of the query's words an item matches, then components before blocks: "battery level" finds Meter before the charts that show a battery.
+- `switch`: the description no longer says on is success green; it is the primary colour, as it has been since 0.8.
+- Docs site: Blocks are organised like Components. Three groups (Application, Charts, Solutions), a page per type that shows all its blocks with preview, code and install, and a sidebar that lists each type's blocks. Old block URLs redirect to their place on the type page; llms.txt lists blocks by group and type. "Built from" links to blocks as well as components.
+- `app-shell`, `top-bar-shell`: the account button's name includes the initials it shows ("Mei Lin, ML, account menu"), so people using speech input can say what they see.
+- Docs site: links to a place on the same page (the examples list in the sidebar, the version link) scroll there smoothly instead of jumping; instant under reduced motion, and a new page still opens at the top.
+- Everything that comes also goes: the data grid's selection bar and expanded rows, a vertical stepper's step content, questionnaire pages (the question leaves before the next arrives) and attachments (`leaving` and `onLeft`, with usePresenceList) now have an exit as well as an entrance.
+- Component pages: examples, usage rules, keys and changelog arrive as they scroll in. Whatever is on screen at load renders at once, and nothing is hidden without JavaScript.
+- More examples for Breadcrumb (icon, collapsed levels, switcher, truncation), Sheet (navigation drawer, bottom actions, edit form), Toast (undo, failure with retry, title only, queue) and Label (optional, info tooltip, inline, disabled).
+- More examples for the existing Actions and Display components: toggle, segmented control, copy button, badge, avatar, card, separator, progress, spinner, meter, description list, status glyph, status eyebrow and skeleton now show 4 to 8 real uses each.
+- Story checks run the page clock past timed UI (the loading spinner, presence timers) before the screenshot, so visual baselines no longer depend on machine speed.
+
 ## 0.8.0 · 2026-11-17
 
 ### Added

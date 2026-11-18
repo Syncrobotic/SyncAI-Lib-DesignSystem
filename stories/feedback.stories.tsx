@@ -25,7 +25,15 @@ export const AlarmStates: S = {
     <div className="flex flex-col gap-2">
       <Alarm priority="high" title="Localisation degraded · Floor 3" source="Courier 2B19" time="14:05:44" active acknowledged={false} onAcknowledge={fn()} />
       <Alarm priority="high" title="Localisation degraded · Floor 3" source="Courier 2B19" time="14:05:44" active acknowledged />
-      <Alarm priority="high" title="Localisation degraded · Floor 3" source="Courier 2B19" time="14:05:44" active={false} acknowledged={false} onAcknowledge={fn()} />
+      <Alarm
+        priority="high"
+        title="Localisation degraded · Floor 3"
+        source="Courier 2B19"
+        time="14:05:44"
+        active={false}
+        acknowledged={false}
+        onAcknowledge={fn()}
+      />
     </div>
   ),
 }
@@ -64,10 +72,16 @@ function ToastDemo() {
       <Button variant="secondary" onClick={() => toast({ tone: "success", title: "Route saved", description: "Night patrol · 6 waypoints" })}>
         Save route
       </Button>
-      <Button variant="secondary" onClick={() => toast({ title: "Waypoint deleted", action: { label: "Undo", onClick: () => toast({ title: "Waypoint restored" }) } })}>
+      <Button
+        variant="secondary"
+        onClick={() => toast({ title: "Waypoint deleted", action: { label: "Undo", onClick: () => toast({ title: "Waypoint restored" }) } })}
+      >
         Delete waypoint
       </Button>
-      <Button variant="secondary" onClick={() => toast({ tone: "danger", title: "Couldn't upload the map", description: "Check the connection and try again." })}>
+      <Button
+        variant="secondary"
+        onClick={() => toast({ tone: "danger", title: "Couldn't upload the map", description: "Check the connection and try again." })}
+      >
         Upload map
       </Button>
       <Toaster />
@@ -101,3 +115,74 @@ export const ToastOpen: S = {
     </ToastProvider>
   ),
 }
+
+// Toasts drawn in place, for reading their anatomy; in an app they come from toast() and the Toaster.
+function InPlace({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <ToastProvider label={label}>
+      {children}
+      <ToastViewport className="static max-w-none p-0" />
+    </ToastProvider>
+  )
+}
+
+/** An action keeps the toast 8 s instead of 4. */
+export const ToastWithUndo: S = {
+  render: () => (
+    <InPlace label="Undo example">
+      <Toast open duration={Infinity}>
+        <ToastTitle>3 waypoints deleted</ToastTitle>
+        <ToastDescription>Night patrol now has 4 stops.</ToastDescription>
+        <ToastAction altText="Undo deleting 3 waypoints">Undo</ToastAction>
+        <ToastClose className="absolute top-3 right-3" />
+      </Toast>
+    </InPlace>
+  ),
+}
+
+/** Failures stay until dismissed and say what to do next. */
+export const ToastFailureWithRetry: S = {
+  render: () => (
+    <InPlace label="Failure example">
+      <Toast tone="danger" open duration={Infinity}>
+        <ToastTitle>Couldn&apos;t send the route to 2 robots</ToastTitle>
+        <ToastDescription>Courier 9E37 and Courier 1715 are offline. It will be sent when they reconnect.</ToastDescription>
+        <ToastAction altText="Retry sending the route">Retry now</ToastAction>
+        <ToastClose className="absolute top-3 right-3" />
+      </Toast>
+    </InPlace>
+  ),
+}
+
+/** Title only: the shortest toast. */
+export const ToastTitleOnly: S = {
+  render: () => (
+    <InPlace label="Short example">
+      <Toast tone="success" open duration={Infinity}>
+        <ToastTitle>Copied</ToastTitle>
+        <ToastClose className="absolute top-3 right-3" />
+      </Toast>
+    </InPlace>
+  ),
+}
+
+function QueueDemo() {
+  let n = 0
+  return (
+    <div className="flex flex-col items-start gap-2">
+      <Button
+        variant="secondary"
+        onClick={() => {
+          for (const name of ["North gate", "Hall B", "Perimeter", "Parking lot"])
+            toast({ tone: "success", title: `${name} patrol done`, description: `Run ${++n}` })
+        }}
+      >
+        Finish 4 patrols at once
+      </Button>
+      <p className="text-xs text-muted-foreground">At most three show; the oldest makes room.</p>
+      <Toaster />
+    </div>
+  )
+}
+
+export const ToastQueue: S = { render: () => <QueueDemo /> }
