@@ -569,7 +569,8 @@ const entries: Record<string, Entry> = {
     rules: [
       "UI only: it takes `state` and calls onStop, onStopAll or onWake. Sending the command, waiting for the dog and falling back to Bluetooth after 1.5 s belong to the app, which passes the result back as `state`.",
       "Solid red is reserved for the emergency stop. Other destructive actions use the danger outline and text.",
-      "Fixed at 56 px (--h-stop), the only button in the system at that height.",
+      "Its height is --h-stop: 56 px, 64 px in glove density, and it never shrinks (compact leaves it alone). Only the stop, wake and slide to release use it.",
+      "It buzzes at the touch and for the answer it is shown (unconfirmed, delivered over Bluetooth). When the app swaps it for SlideToRelease on confirmation, the app calls feedback(\"stopConfirmed\") at that moment.",
       "Works the same for every input: touch or click stops; Enter or Space stops; holding any of them for 2 s stops all; a screen-reader or switch-control activation stops.",
       "Every string can be replaced through `labels` (WakeButton: `label` and `reason`) to localise.",
     ],
@@ -581,6 +582,7 @@ const entries: Record<string, Entry> = {
       "Letting go past 85% releases; short of that the thumb springs back in 200 ms.",
       "Viewers can see it but cannot release.",
       "Keyboard and switch control: hold Enter or Space for 2 s.",
+      "If the robot does not release, set `failed`: the thumb goes back and the label says to slide again. Never leave it on Releasing….",
     ],
   },
   dock: {
@@ -598,6 +600,7 @@ const entries: Record<string, Entry> = {
       "Name, device status and notifications each expand on their own.",
       "Failure notices stay until handled. Persistent states (offline, stopped) change the tray edge colour.",
       "IslandAlarm shows the most urgent unacknowledged alarm above any notice, from the same data as AlarmList. The edge follows it: critical danger, high warning.",
+      "On a phone the island is the alarm surface, so it buzzes, sounds (critical repeats until acknowledged) and announces new alarms, like AlarmList. Turn `feedback` off on one of them when both are on screen.",
     ],
   },
   tray: {

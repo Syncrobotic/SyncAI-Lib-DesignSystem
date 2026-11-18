@@ -1,4 +1,4 @@
-// @syncrobotic/slide-to-release v0.5.0 · update: npx shadcn add @syncrobotic/slide-to-release --overwrite
+// @syncrobotic/slide-to-release v0.11.1 · update: npx shadcn add @syncrobotic/slide-to-release --overwrite
 "use client"
 
 import * as React from "react"
@@ -17,6 +17,13 @@ type Props = {
   lockedLabel?: string
   /** Shown after release while waiting for the dog. */
   releasingLabel?: string
+  /**
+   * The robot did not release (no reply, or it refused). The thumb goes back and the label says so, so the operator can
+   * slide again. Set it when the release fails; clear it in your next `onRelease`.
+   */
+  failed?: boolean
+  /** Shown while `failed`. */
+  failedLabel?: string
   className?: string
 }
 
@@ -31,16 +38,23 @@ export function SlideToRelease({
   label = "Slide to release",
   lockedLabel = "Only operators can release",
   releasingLabel = "Releasing…",
+  failed = false,
+  failedLabel = "Not released, slide again",
   tag,
   locked,
   className,
 }: Props) {
-  const { trackRef, thumbRef, position, dragging, released, thumbHandlers, trackHandlers } = useSlideRelease({
+  const { trackRef, thumbRef, position, dragging, released, reset, thumbHandlers, trackHandlers } = useSlideRelease({
     onRelease,
     disabled: locked,
   })
-  const text = locked ? lockedLabel : released ? releasingLabel : label
-  const thumbLeft = `calc(${position} * (100% - var(--h-lg) - 0.5rem) + 0.25rem)`
+  // A failed release puts the thumb back, so "Releasing…" never becomes a dead end.
+  React.useEffect(() => {
+    if (failed) reset()
+  }, [failed, reset])
+  const text = locked ? lockedLabel : released ? releasingLabel : failed ? failedLabel : label
+  // The thumb is the stop's height less its 4 px inset, so it fills the track in every density.
+  const thumbLeft = `calc(${position} * (100% - var(--h-thumb) - 0.5rem) + 0.25rem)`
 
   return (
     <div
@@ -56,9 +70,9 @@ export function SlideToRelease({
       className={cn("relative flex h-(--h-stop) w-full select-none items-center justify-center overflow-hidden rounded-md bg-stop-deep text-white", className)}
     >
       {position > 0 && (
-        <span aria-hidden="true" className="absolute inset-y-0 left-0 bg-white/15" style={{ width: `calc(${thumbLeft} + var(--h-lg))` }} />
+        <span aria-hidden="true" className="absolute inset-y-0 left-0 bg-white/15" style={{ width: `calc(${thumbLeft} + var(--h-thumb))` }} />
       )}
-      <span aria-hidden="true" className="w-(--h-lg) shrink-0" />
+      <span aria-hidden="true" className="w-(--h-thumb) shrink-0" />
       <span
         className="relative inline-flex items-center gap-2 text-lg font-bold"
         style={{ opacity: released ? 1 : Math.max(0, 1 - position * 1.6) }}
@@ -70,7 +84,7 @@ export function SlideToRelease({
         ref={thumbRef}
         {...thumbHandlers}
         className={cn(
-          "absolute top-1 flex size-(--h-lg) touch-none items-center justify-center rounded-sm shadow-float",
+          "absolute top-1 flex size-(--h-thumb) touch-none items-center justify-center rounded-sm shadow-float",
           locked ? "bg-white/30 text-white" : "bg-white text-stop-deep",
           !dragging && "transition-[left] duration-(--motion-base) ease-(--ease-standard)",
         )}

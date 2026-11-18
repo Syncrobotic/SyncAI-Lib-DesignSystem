@@ -1,6 +1,6 @@
-/* @syncrobotic/syncrobotic-theme v0.11.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
+/* @syncrobotic/syncrobotic-theme v0.11.1 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
 /*
- * SYNCROBOTIC theme · design system 0.5.0 (see CHANGELOG.md)
+ * SYNCROBOTIC theme (see CHANGELOG.md for its version history)
  * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
  *
  * Usage:
@@ -91,6 +91,7 @@
   --h-lg: 3rem;       /* 48 page primary action, dock tabs */
   --h-row: 3.5rem;    /* 56 list row */
   --h-stop: 3.5rem;   /* 56 emergency stop only */
+  --h-thumb: calc(var(--h-stop) - 0.5rem); /* slide-to-release thumb: the stop less its 4 px inset, in every density */
 
   /* Tray: shared by the dynamic island and the dock. Outer radius 24 = inner radius 16 + padding 8 */
   --tray-pad: 0.5rem;

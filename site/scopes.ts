@@ -17,7 +17,7 @@ export const scopes: Scope[] = [
     key: "foundations",
     label: "Foundations",
     href: "/docs/foundations",
-    match: ["/docs/foundations", "/docs/icons", "/docs/installation", "/docs/tokens", "/docs/upgrading", "/docs/ai"],
+    match: ["/docs/foundations", "/docs/installation", "/docs/tokens", "/docs/upgrading", "/docs/ai"],
     groups: [
       {
         title: "Getting started",
@@ -31,11 +31,7 @@ export const scopes: Scope[] = [
       },
       {
         title: "Foundations",
-        links: foundations.flatMap((f) => [
-          { href: `/docs/foundations/${f.slug}`, label: f.title },
-          // The browsable set, under the rules it follows.
-          ...(f.slug === "iconography" ? [{ href: "/docs/icons", label: "Icon set" }] : []),
-        ]),
+        links: foundations.map((f) => ({ href: `/docs/foundations/${f.slug}`, label: f.title })),
       },
     ],
   },
@@ -76,6 +72,22 @@ export const scopes: Scope[] = [
             })),
         }))
         .filter((g) => g.links.length > 0),
+    ],
+  },
+  {
+    key: "icons",
+    label: "Icons",
+    href: "/icons",
+    match: ["/icons"],
+    groups: [
+      {
+        title: "Browse",
+        links: [
+          { href: "/icons", label: "Kit icons" },
+          { href: "/icons/lucide", label: "All Lucide" },
+        ],
+      },
+      { title: "Rules", links: [{ href: "/docs/foundations/iconography", label: "Iconography" }] },
     ],
   },
 ]

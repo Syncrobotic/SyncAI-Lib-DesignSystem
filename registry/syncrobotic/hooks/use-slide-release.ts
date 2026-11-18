@@ -1,4 +1,4 @@
-// @syncrobotic/use-slide-release v0.11.0 · update: npx shadcn add @syncrobotic/use-slide-release --overwrite
+// @syncrobotic/use-slide-release v0.11.1 · update: npx shadcn add @syncrobotic/use-slide-release --overwrite
 "use client"
 
 import * as React from "react"
@@ -103,17 +103,20 @@ export function useSlideRelease({
 
   React.useEffect(() => () => onKeyUp(), [])
 
+  // Back to the start, e.g. when the release did not go through. Stable, so an effect can depend on it.
+  const reset = React.useCallback(() => {
+    setReleased(false)
+    positionRef.current = 0
+    setPositionState(0)
+  }, [])
+
   return {
     trackRef,
     thumbRef,
     position,
     dragging,
     released,
-    reset: () => {
-      setReleased(false)
-      positionRef.current = 0
-      setPositionState(0)
-    },
+    reset,
     thumbHandlers: { onPointerDown, onPointerMove, onPointerUp: end, onPointerCancel: end },
     trackHandlers: { onKeyDown, onKeyUp },
   }

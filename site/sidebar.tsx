@@ -23,7 +23,7 @@ export function Sidebar({ scopes, switcher = false }: { scopes: Scope[]; switche
     <nav aria-label={`${active.label} navigation`} className="flex flex-col gap-6 text-sm">
       {!switcher && <p className="px-3 text-sm font-medium text-muted-foreground">{active.label}</p>}
       {switcher && (
-        <div role="list" aria-label="Areas" className="grid grid-cols-3 gap-1 rounded-sm bg-muted p-1">
+        <div role="list" aria-label="Areas" className="grid grid-cols-4 gap-1 rounded-sm bg-muted p-1">
           {scopes.map((s) => (
             <Link
               key={s.key}

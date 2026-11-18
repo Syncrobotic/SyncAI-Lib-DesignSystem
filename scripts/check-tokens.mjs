@@ -12,6 +12,7 @@ const ROOTS = process.argv.slice(2).length ? process.argv.slice(2) : ["registry"
 const SPACING_OK = new Set(["0", "px", "0.5", "1", "2", "3", "4", "6", "8"])
 // Files allowed to use rounded-full, and for what. The Radius page lists the same uses.
 const ROUND = {
+  "site/icon-gallery.tsx": "the dot that marks the icons the kit has given a meaning",
   "registry/syncrobotic/ui/avatar.tsx": "avatar",
   "registry/syncrobotic/ui/switch.tsx": "switch track and thumb",
   "registry/syncrobotic/ui/radio-group.tsx": "radio and its dot",

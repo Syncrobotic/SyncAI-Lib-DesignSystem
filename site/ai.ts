@@ -119,7 +119,7 @@ const intro = [
 export function llmsTxt() {
   const out = [...intro, "", "## Foundations", ""]
   for (const f of foundations) out.push(`- [${f.title}](${url(`/docs/foundations/${f.slug}.md`)}): ${f.lead}`)
-  out.push(`- [Icon set](${url("/docs/icons")}): the ${iconCount} Lucide icons the kit uses, one meaning each. Full list in llms-full.txt.`)
+  out.push(`- [Icon set](${url("/icons")}): the ${iconCount} Lucide icons the kit uses, one meaning each. Full list in llms-full.txt.`)
   // Blocks by group and type, the way the site lists them.
   for (const g of blockGroups) {
     for (const t of blockTypes.filter((x) => x.group === g)) {
