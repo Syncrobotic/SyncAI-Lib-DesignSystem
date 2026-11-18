@@ -156,7 +156,7 @@ import { ChargingDock, EStopPressed, MobileRobot, RobotArm, SafetyZone } from "@
 /**
  * The icon set: every Lucide icon the kit uses, each with the one thing it means. The import list above is also the
  * allowlist: `npm run lint:tokens` rejects a Lucide import that is not in it, so a new icon, or a second icon for a
- * meaning that already has one, is a deliberate change to this file. Drives /docs/icons.
+ * meaning that already has one, is a deliberate change to this file. Drives /icons.
  */
 export type IconEntry = { name: string; Icon: LucideIcon; means: string }
 export type IconGroup = { title: string; icons: IconEntry[]; /** Where the group imports from, when not lucide-react. */ from?: string }

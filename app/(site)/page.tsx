@@ -7,6 +7,7 @@ import { site } from "@/site/config"
 import { Appear, AppearItem, Reveal } from "@/site/appear"
 import { fast } from "@/site/foundation-previews"
 import { foundations } from "@/site/foundations"
+import { iconCount } from "@/site/icons"
 import { HeroDemo } from "@/site/hero-demo"
 import { placement } from "@/site/block-types"
 import pkg from "../../package.json"
@@ -61,13 +62,19 @@ export default function HomePage() {
       href: "/docs/foundations",
       title: "Foundations",
       count: `${foundations.length} pages`,
-      body: "The rules and tokens behind every screen: colour, type, spacing, radius, motion, icons, accessibility and alarms.",
+      body: "The rules and tokens behind every screen: colour, type, spacing, radius, motion, iconography, accessibility and alarms.",
     },
     {
       href: "/docs/components/button",
       title: "Components",
       count: `${componentCount} components`,
       body: "General UI on Radix, charts on Recharts, and the robot shell: emergency stop, slide to release, dock and island.",
+    },
+    {
+      href: "/icons",
+      title: "Icons",
+      count: `${iconCount} icons`,
+      body: "Each with the one thing it means, robot icons drawn to match, and every Lucide icon to search.",
     },
     {
       href: "/blocks",

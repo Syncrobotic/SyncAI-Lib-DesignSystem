@@ -84,6 +84,10 @@
     "stop": {
       "$type": "dimension",
       "$value": "56px"
+    },
+    "thumb": {
+      "$type": "dimension",
+      "$value": "calc(var(--h-stop) - 0.5rem)"
     }
   },
   "tray": {
