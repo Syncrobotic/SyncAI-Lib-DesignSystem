@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { CircleAlert, OctagonAlert, TriangleAlert } from "lucide-react"
+import { haptics, tones } from "@/registry/syncrobotic/lib/feedback"
 import { Alarm } from "@/registry/syncrobotic/ui/alarm"
 import { Alert, AlertDescription, AlertTitle } from "@/registry/syncrobotic/ui/alert"
 import { AlarmLifecycle } from "@/site/alarm-lifecycle"
@@ -74,6 +75,26 @@ export default function AlarmsPage() {
         <Specimen>
           <AlarmLifecycle />
         </Specimen>
+      </Section>
+
+      <Section
+        id="touch-and-sound"
+        title="Touch and sound"
+        lead="Gloves, wind and machine noise: the screen alone cannot tell an operator that a stop went out or a critical alarm came in. Each safety moment has one fixed pattern from `@syncrobotic/feedback`, so the hand learns it like the eye learns a colour. Touch works where the browser can vibrate (Android, not iOS); sound only after the first tap on the page. Neither ever replaces what the screen shows."
+      >
+        <TokenTable
+          head={["Moment", "Vibration (ms on, off, on…)", "Tone"]}
+          rows={(Object.keys(haptics) as (keyof typeof haptics)[]).map((k) => {
+            const t = (tones as Partial<Record<string, { hz: number; pulse: number; starts: readonly number[] }>>)[k]
+            return [
+              <Code key="k">{k}</Code>,
+              <span key="v" className="font-mono text-xs tabular-nums">
+                {haptics[k].join(", ")}
+              </span>,
+              t ? `${t.starts.length} pulses of ${t.pulse} ms at ${t.hz} Hz` : "None",
+            ]
+          })}
+        />
       </Section>
 
       <Section id="rules" title="Rules">

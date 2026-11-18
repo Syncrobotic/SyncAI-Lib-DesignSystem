@@ -78,6 +78,28 @@
       }
     },
     {
+      "name": "feedback",
+      "type": "registry:lib",
+      "title": "Feedback",
+      "description": "Touch and sound as tokens: one vibration pattern per safety moment (stop sent, confirmed, unconfirmed, release, new critical or high alarm) and IEC 60601-1-8-style alarm tones from Web Audio.",
+      "files": [
+        {
+          "path": "registry/syncrobotic/lib/feedback.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "meta": {
+        "version": "0.11.0",
+        "changelog": [
+          {
+            "version": "0.11.0",
+            "date": "2026-11-18",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
       "name": "use-long-press",
       "type": "registry:hook",
       "title": "useLongPress",
@@ -111,8 +133,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.11.0",
         "changelog": [
+          {
+            "version": "0.11.0",
+            "date": "2026-11-18",
+            "note": "The release pulse comes from `feedback` (`release`), so an app can turn touch off in one place."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -124,7 +151,10 @@
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
         ]
-      }
+      },
+      "registryDependencies": [
+        "@syncrobotic/feedback"
+      ]
     },
     {
       "name": "use-presence",
@@ -251,7 +281,8 @@
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
-        "@syncrobotic/use-long-press"
+        "@syncrobotic/use-long-press",
+        "@syncrobotic/feedback"
       ],
       "files": [
         {
@@ -260,8 +291,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.11.0",
         "changelog": [
+          {
+            "version": "0.11.0",
+            "date": "2026-11-18",
+            "note": "Buzzes: one pulse at the touch, two when the robot confirms, two long ones when it does not (the `feedback` patterns)."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -1379,7 +1415,8 @@
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
-        "@syncrobotic/use-presence"
+        "@syncrobotic/use-presence",
+        "@syncrobotic/feedback"
       ],
       "files": [
         {
@@ -1388,8 +1425,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.11.0",
         "changelog": [
+          {
+            "version": "0.11.0",
+            "date": "2026-11-18",
+            "note": "AlarmList buzzes and sounds for a new critical or high alarm (`feedback`, on by default; `feedback={false}` for a record view)."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
