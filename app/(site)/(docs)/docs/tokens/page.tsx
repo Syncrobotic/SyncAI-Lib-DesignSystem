@@ -28,7 +28,6 @@ export default function TokensPage() {
   return (
     <article>
       <PageTitle
-        eyebrow="Getting started"
         title="Design tokens"
         lead="The theme in a format any tool can read. Generated from syncrobotic-theme.css on every change, so design files, native apps and the web read the same values."
       />

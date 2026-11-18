@@ -28,7 +28,6 @@ export default function RadiusPage() {
   return (
     <article>
       <DocHeader
-        eyebrow="Foundations · 05"
         title="Radius"
         lead="Five steps, each 4 px apart, sharing the spacing base. Because steps differ by the padding between them, nested corners are always concentric."
       />

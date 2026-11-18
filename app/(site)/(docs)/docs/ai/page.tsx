@@ -11,7 +11,7 @@ export const metadata: Metadata = pageMeta({ title: "For AI agents", description
 export default function AiPage() {
   return (
     <article>
-      <PageTitle eyebrow="Getting started" title="For AI agents" lead={description} />
+      <PageTitle title="For AI agents" lead={description} />
 
       <H2 id="read">What an agent can read</H2>
       <Rules

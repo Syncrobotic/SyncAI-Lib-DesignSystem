@@ -10,14 +10,13 @@ const bodyContrast = contrast("foreground", "background", "dark")!.toFixed(1)
 // One small, real exhibit per foundation. Every value comes from the theme through Tailwind utilities.
 const previews: Record<FoundationSlug, React.ReactNode> = {
   principles: (
-    <ol className="flex flex-col items-start gap-2 text-sm">
-      {["Safety is a colour", "One meaning per colour", "Readable anywhere", "One geometry", "Calm by default"].map((p, i) => (
-        <li key={p} className="flex items-baseline gap-3">
-          <span className="font-mono text-xs text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
+    <ul className="flex w-full max-w-48 flex-col text-sm">
+      {["Safety is a colour", "One meaning per colour", "Readable anywhere", "One geometry", "Calm by default"].map((p) => (
+        <li key={p} className="border-b border-border py-2 last:border-b-0">
           {p}
         </li>
       ))}
-    </ol>
+    </ul>
   ),
   color: (
     <div className="grid h-full w-full grid-cols-6 gap-1">
@@ -119,7 +118,7 @@ export const fast = "duration-(--motion-fast) ease-(--ease-standard)"
 export function FoundationGrid() {
   return (
     <Reveal className="grid auto-rows-fr gap-3 sm:grid-cols-2 lg:grid-cols-6">
-      {foundations.map((f, i) => (
+      {foundations.map((f) => (
         <AppearItem key={f.slug} className={`flex ${span[f.slug]}`}>
           <Link
             href={`/docs/foundations/${f.slug}`}
@@ -134,10 +133,7 @@ export function FoundationGrid() {
             </div>
             <div className="flex items-start justify-between gap-3">
               <div className="flex flex-col gap-1">
-                <span className="flex items-baseline gap-2">
-                  <span className="font-mono text-xs text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="font-bold">{f.title}</span>
-                </span>
+                <span className="font-bold">{f.title}</span>
                 <span className="text-sm text-muted-foreground">{f.lead}</span>
               </div>
               <ArrowUpRight

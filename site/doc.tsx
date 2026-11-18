@@ -5,10 +5,9 @@ import { Inline } from "./prose"
 
 // Building blocks for the design-language pages: specimens, do/don't pairs and token tables.
 
-export function DocHeader({ eyebrow, title, lead }: { eyebrow: string; title: string; lead: string }) {
+export function DocHeader({ title, lead }: { title: string; lead: string }) {
   return (
     <header className="flex flex-col gap-3 border-b border-border pb-8">
-      <p className="text-sm font-medium text-muted-foreground">{eyebrow}</p>
       <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
       <p className="max-w-2xl text-lg text-muted-foreground">{lead}</p>
     </header>
