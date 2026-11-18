@@ -2,6 +2,11 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **Touch and sound for safety moments** (`@syncrobotic/feedback`). One fixed vibration pattern per moment: the stop sent (at the touch), confirmed, not confirmed, release, a new critical alarm, a new high alarm. Critical and high alarms also sound, in the IEC 60601-1-8 burst rhythm (3 + 2 pulses at 880 Hz, 3 pulses at 660 Hz), generated with Web Audio so there is no audio file to ship. Low alarms stay silent. `configureFeedback({ haptics, sound })` turns either off app-wide. Vibration needs the Vibration API (Android, not iOS) and sound needs one tap on the page first, so neither replaces the screen. The Alarms foundation lists the patterns. Re-install `stop-button`, `use-slide-release` (and so `slide-to-release`) and `alarm`; `AlarmList` takes `feedback={false}` for a record view.
+
 ## 0.10.1 · 2026-11-18
 
 ### Changed

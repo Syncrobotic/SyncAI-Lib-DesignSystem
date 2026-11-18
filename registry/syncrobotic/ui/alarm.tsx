@@ -1,10 +1,11 @@
-// @syncrobotic/alarm v0.8.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
+// @syncrobotic/alarm v0.11.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
 "use client"
 
 import * as React from "react"
 import { CircleAlert, OctagonAlert, TriangleAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { usePresence, usePresenceList } from "@/registry/syncrobotic/hooks/use-presence"
+import { feedback as signal } from "@/registry/syncrobotic/lib/feedback"
 
 /**
  * Alarms follow ISA-18.2 / IEC 62682: an alarm is an abnormal condition that needs an operator action.
@@ -165,6 +166,8 @@ type AlarmListProps = {
     summary?: (active: number, unacknowledged: number) => string
     none?: string
   }
+  /** Buzz and sound for a new critical or high alarm (the `feedback` patterns). On by default; turn off where the list is a record, not a live feed. */
+  feedback?: boolean
   className?: string
 }
 
@@ -172,7 +175,7 @@ type AlarmListProps = {
  * The alarm list: summary, then alarms in order. New critical alarms are announced assertively,
  * others politely, so screen-reader users hear them without moving focus.
  */
-export function AlarmList({ alarms, onAcknowledge, labels, className }: AlarmListProps) {
+export function AlarmList({ alarms, onAcknowledge, labels, feedback = true, className }: AlarmListProps) {
   const l = {
     ...defaultAlarmLabels,
     title: "Alarms",
@@ -192,6 +195,8 @@ export function AlarmList({ alarms, onAcknowledge, labels, className }: AlarmLis
     if (seen.current) {
       const fresh = alarms.filter((a) => a.active && !seen.current!.has(a.id))
       const text = (list: AlarmData[]) => list.map((a) => `${l[a.priority]}: ${a.title}`).join(". ")
+      if (feedback && fresh.some((a) => a.priority === "critical")) signal("alarmCritical")
+      else if (feedback && fresh.some((a) => a.priority === "high")) signal("alarmHigh")
       if (fresh.length)
         setAnnounce({
           assertive: text(fresh.filter((a) => a.priority === "critical")),

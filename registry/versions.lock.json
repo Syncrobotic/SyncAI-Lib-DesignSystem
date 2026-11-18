@@ -7,13 +7,17 @@
     "version": "0.5.0",
     "hash": "0beb78557975abe0"
   },
+  "feedback": {
+    "version": "0.11.0",
+    "hash": "9ff75d69d2135307"
+  },
   "use-long-press": {
     "version": "0.5.0",
     "hash": "f9fc6f352b80a160"
   },
   "use-slide-release": {
-    "version": "0.7.0",
-    "hash": "2e48ba7ba775412d"
+    "version": "0.11.0",
+    "hash": "caac418757f13f04"
   },
   "use-presence": {
     "version": "0.8.0",
@@ -32,8 +36,8 @@
     "hash": "2813a626bd3abfad"
   },
   "stop-button": {
-    "version": "0.10.0",
-    "hash": "ea5ef04b0c9a0485"
+    "version": "0.11.0",
+    "hash": "1dc8b12ffb3c9e39"
   },
   "slide-to-release": {
     "version": "0.5.0",
@@ -156,8 +160,8 @@
     "hash": "de8cc4db3909ad49"
   },
   "alarm": {
-    "version": "0.8.0",
-    "hash": "acd324da76e6e9c6"
+    "version": "0.11.0",
+    "hash": "b7ecd7449d9f305b"
   },
   "toast": {
     "version": "0.10.0",

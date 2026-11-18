@@ -1,10 +1,11 @@
-// @syncrobotic/stop-button v0.10.0 · update: npx shadcn add @syncrobotic/stop-button --overwrite
+// @syncrobotic/stop-button v0.11.0 · update: npx shadcn add @syncrobotic/stop-button --overwrite
 "use client"
 
 import * as React from "react"
 import { CircleAlert, Bluetooth, ChevronsUp, Square } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useLongPress } from "@/registry/syncrobotic/hooks/use-long-press"
+import { feedback, type FeedbackName } from "@/registry/syncrobotic/lib/feedback"
 
 export type StopButtonState =
   | "ready" //         standing, may move: one touch stops
@@ -59,8 +60,21 @@ type Props = {
  */
 export function StopButton({ state = "ready", tag, onStop, onStopAll, holdAllMs = 2000, labels, className }: Props) {
   const l = { ...defaultStopButtonLabels, ...labels }
+  // The hand feels each step of a stop: sent at the touch, then confirmed, unconfirmed or delivered over Bluetooth.
+  const last = React.useRef(state)
+  React.useEffect(() => {
+    const was = last.current
+    last.current = state
+    if (was !== "sending" || state === "sending") return
+    const next: Partial<Record<StopButtonState, FeedbackName>> = { idle: "stopConfirmed", unconfirmed: "stopUnconfirmed", "bluetooth-sent": "stopSent" }
+    const name = next[state]
+    if (name) feedback(name)
+  }, [state])
   const { progress, holding, handlers } = useLongPress({
-    onPress: onStop,
+    onPress: () => {
+      feedback("stopSent")
+      onStop()
+    },
     onLongPress: () => onStopAll?.(),
     duration: holdAllMs,
   })

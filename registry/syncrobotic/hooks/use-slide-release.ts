@@ -1,7 +1,8 @@
-// @syncrobotic/use-slide-release v0.7.0 · update: npx shadcn add @syncrobotic/use-slide-release --overwrite
+// @syncrobotic/use-slide-release v0.11.0 · update: npx shadcn add @syncrobotic/use-slide-release --overwrite
 "use client"
 
 import * as React from "react"
+import { feedback } from "@/registry/syncrobotic/lib/feedback"
 
 type Options = {
   onRelease: () => void
@@ -54,7 +55,7 @@ export function useSlideRelease({
     setReleased(true)
     positionRef.current = 1
     setPositionState(1)
-    navigator.vibrate?.(30)
+    feedback("release")
     onRelease()
   }, [onRelease])
 
