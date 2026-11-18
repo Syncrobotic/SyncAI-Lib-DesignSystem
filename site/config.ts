@@ -3,7 +3,7 @@
 // which deployment this is. Only production is indexed; previews (dev, stage, pull requests) stay out of search results.
 
 // Local builds and previews point their canonical URLs at production.
-const host = process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "https://syncai-lib-designsystem.vercel.app"
+const host = process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "https://design-system.syncrobotic.me"
 
 export const site = {
   name: "SYNCROBOTIC Design System",

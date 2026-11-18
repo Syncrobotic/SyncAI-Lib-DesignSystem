@@ -7,7 +7,7 @@ description: Build SYNCROBOTIC interfaces (robot control apps, internal engineer
 
 The design system ships as a shadcn registry: tokens, components, robot-shell parts and whole blocks, installed as source with `npx shadcn add @syncrobotic/<name>`. Build with them; do not hand-roll what they already are.
 
-Machine-readable index: https://syncai-lib-designsystem.vercel.app/llms.txt. Every component, block and foundation page also answers as markdown at its URL plus `.md` (for example `/docs/components/meter.md`): what it is, when to use it, when not to (and what to use instead), rules, keyboard, agent notes, install command, version.
+Machine-readable index: https://design-system.syncrobotic.me/llms.txt. Every component, block and foundation page also answers as markdown at its URL plus `.md` (for example `/docs/components/meter.md`): what it is, when to use it, when not to (and what to use instead), rules, keyboard, agent notes, install command, version.
 
 ## Workflow
 

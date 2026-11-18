@@ -7,6 +7,9 @@ Components install as source, so a project keeps the version it installed. Re-ru
 ### Changed
 - **Icons is an area of its own** (`/icons`, in the header beside Foundations, Components and Blocks; `/docs/icons` redirects). A grid of tiles instead of a list; picking one opens its details beside the grid (a sheet from the bottom on a phone): the drawing at 48, 24, 20 and 16 px, what it means, and copy buttons for the name, the import, JSX and the SVG. Two tabs: **Kit icons**, the 155 with their meanings, and **All Lucide**, all 1,544 icons of the Lucide version the kit ships with, searchable, with the kit's set marked by a dot. That list is built at build time and downloaded only on its tab. Picking a Lucide icon outside the set says how to add it, since lint still rejects it until then.
 
+### Fixed
+- The site moved to its own domain, but the README (install example, MCP command, links), `package.json` and `registry.json` homepages, the agent skill's index link and the site's fallback URL still named `syncai-lib-designsystem.vercel.app`. They now say `design-system.syncrobotic.me`. Projects whose `components.json` still names the old address depend on Vercel keeping it (it does unless the domain is removed in the project settings); switch the registry `url` to the new domain. Re-install `agent-skill`.
+
 ## 0.11.0 · 2026-11-18
 
 ### Added
