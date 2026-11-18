@@ -1,4 +1,4 @@
-// @syncrobotic/calendar v0.9.0 · update: npx shadcn add @syncrobotic/calendar --overwrite
+// @syncrobotic/calendar v0.10.0 · update: npx shadcn add @syncrobotic/calendar --overwrite
 "use client"
 
 import * as React from "react"
@@ -52,7 +52,7 @@ export function Calendar({ className, classNames, showOutsideDays = true, weekSt
         range_end: "rounded-r-xs bg-muted",
         today: "",
         outside: "text-muted-foreground",
-        disabled: "text-muted-foreground opacity-50",
+        disabled: "text-disabled",
         hidden: "invisible",
         ...classNames,
       }}
@@ -67,7 +67,7 @@ export function Calendar({ className, classNames, showOutsideDays = true, weekSt
 }
 
 const navButton =
-  "press inline-flex size-(--h-sm) items-center justify-center rounded-sm text-muted-foreground transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
+  "press inline-flex size-(--h-sm) items-center justify-center rounded-sm text-muted-foreground transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:text-disabled"
 
 function CalendarDayButton({ className, day, modifiers, ...props }: DayButtonProps) {
   const ref = React.useRef<HTMLButtonElement>(null)

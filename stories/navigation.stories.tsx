@@ -219,7 +219,7 @@ export const PaginationMiddle: S = { render: () => <PaginationAt pages pageSize=
 /** In a table footer, with the noun in the range. */
 export const PaginationTableFooter: S = {
   render: () => (
-    <div className="flex flex-col rounded-md ring-1 ring-border">
+    <div className="flex flex-col rounded-lg ring-1 ring-border">
       <div className="px-4 py-8 text-center text-sm text-muted-foreground">Table rows</div>
       <div className="border-t border-border px-3 py-2">
         <PaginationAt pageSize={25} total={312} start={2} labels={{ range: (f, t, n) => `Events ${f}–${t} of ${n}` }} />

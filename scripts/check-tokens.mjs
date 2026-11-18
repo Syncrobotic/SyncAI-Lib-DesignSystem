@@ -8,7 +8,7 @@
 import { readFileSync, readdirSync, statSync } from "node:fs"
 import { join } from "node:path"
 
-const ROOTS = process.argv.slice(2).length ? process.argv.slice(2) : ["registry", "site", "app"]
+const ROOTS = process.argv.slice(2).length ? process.argv.slice(2) : ["registry", "site", "app", "stories"]
 const SPACING_OK = new Set(["0", "px", "0.5", "1", "2", "3", "4", "6", "8"])
 // Files allowed to use rounded-full, and for what. The Radius page lists the same uses.
 const ROUND = {
@@ -30,6 +30,9 @@ const ROUND = {
   "registry/syncrobotic/ui/trace.tsx": "waterfall bar track and fill",
   "registry/syncrobotic/ui/stepper.tsx": "step circles and the compact progress track",
   "registry/syncrobotic/ui/timeline.tsx": "event dots",
+  "stories/calendar.stories.tsx": "booked-day dot",
+  "stories/display.stories.tsx": "status dot on an avatar",
+  "stories/file-upload.stories.tsx": "avatar upload: the avatar is a circle",
   "registry/syncrobotic/blocks/wizard-commission.tsx": "dot of a self-check that has not started",
   "registry/syncrobotic/ui/questionnaire.tsx": "progress track",
   "site/prose.tsx": "list bullet dot",
@@ -48,6 +51,12 @@ const rules = [
     re: /(?<![\w-])(?:-?(?:p|px|py|pt|pb|pl|pr|m|mx|my|mt|mb|ml|mr|gap|gap-x|gap-y|space-x|space-y))-(\d+(?:\.\d+)?)\b/g,
     test: (m) => !SPACING_OK.has(m[1]),
   },
+  { name: "Font size off the scale (use xs, sm, base, lg, xl, 2xl, 3xl, 4xl or 5xl)", re: /(?<![\w-])text-([6-9]xl)\b/g },
+  {
+    // A native number input draws the browser's own spinner and has no unit or range. NumberField has both.
+    name: "Native number input (use NumberField: 44 px steppers, a unit and a range)",
+    re: /<Input\b[^>]*type="number"/g,
+  },
   { name: "Font weight off the scale (use only 400, 500, 700)", re: /\bfont-(thin|extralight|light|semibold|extrabold|black)\b/g },
   {
     // The radius scale is xs–xl. Full is only for things that are round by nature (ROUND below).
@@ -56,6 +65,18 @@ const rules = [
     file: (f) => !(f.replaceAll("\\", "/") in ROUND),
   },
 ]
+
+// The icon set (site/icons.ts) is the allowlist for Lucide: one icon per meaning, so a new icon is a reviewed change there.
+const iconImport = (src) =>
+  [...src.matchAll(/import\s*\{([^}]*)\}\s*from\s*"lucide-react"/g)].flatMap((m) =>
+    m[1]
+      .split(",")
+      .map((n) => n.replace(/^\s*type\s+/, "").split(/\s+as\s+/)[0].trim())
+      .filter(Boolean)
+      .map((name) => ({ name, at: m.index })),
+  )
+const ICONS = new Set(iconImport(readFileSync("site/icons.ts", "utf8")).map((i) => i.name))
+const ICON_TYPES = new Set(["LucideIcon", "LucideProps", "createLucideIcon"])
 
 function walk(dir) {
   return readdirSync(dir).flatMap((f) => {
@@ -66,7 +87,15 @@ function walk(dir) {
 
 let bad = 0
 for (const file of ROOTS.flatMap(walk)) {
-  const lines = readFileSync(file, "utf8").split("\n")
+  const src = readFileSync(file, "utf8")
+  const lines = src.split("\n")
+  for (const { name, at } of iconImport(src)) {
+    if (ICONS.has(name) || ICON_TYPES.has(name)) continue
+    const n = src.slice(0, at).split("\n").length
+    if (/tokens-ok:/.test((lines[n - 2] ?? "") + lines[n - 1])) continue
+    console.error(`${file}:${n}  Icon outside the icon set (use the icon site/icons.ts gives that meaning, or add it there)\n    ${name}`)
+    bad++
+  }
   lines.forEach((line, i) => {
     const prev = lines[i - 1] ?? ""
     const t = line.trim()

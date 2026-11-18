@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ArrowRight, ArrowUpRight } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
@@ -115,10 +115,13 @@ const rules = [
     title: "Solid red means stop.",
     body: "The emergency stop is the only solid red on any screen. Everything else that is wrong is a tint, a shape and a word.",
   },
-  { title: "Colour means something is wrong.", body: "A calm fleet is grey. Blue means work in progress, amber needs attention, red needs someone now." },
+  {
+    title: "Colour is for what needs someone.",
+    body: "A calm fleet is grey, busy or idle. Amber needs attention, red needs someone now; blue only marks a process you are waiting on.",
+  },
   {
     title: "Made for one thumb, outdoors.",
-    body: "Dark by default, 44 px touch targets, status as a shape and a word so it reads in sunlight and without colour.",
+    body: "44 px touch targets, and every status as a shape and a word, so it reads in glare and without colour vision.",
   },
 ]
 
@@ -132,7 +135,7 @@ export default function HomePage() {
         <div className="mx-auto flex max-w-6xl flex-col gap-section-sm px-4 py-section-sm lg:py-section">
           <Appear stagger={0.04} className="flex flex-col gap-6">
             <AppearItem>
-              <h1 className="max-w-4xl text-4xl font-bold tracking-tight text-balance sm:text-6xl">Interfaces for the people who run robots.</h1>
+              <h1 className="max-w-4xl text-4xl font-bold tracking-tight text-balance sm:text-5xl">Interfaces for the people who run robots.</h1>
             </AppearItem>
             <AppearItem>
               <p className="max-w-2xl text-lg text-muted-foreground">
@@ -212,7 +215,7 @@ export default function HomePage() {
                         <span className="font-bold">{g}</span>
                         <span className="flex items-center gap-2 text-sm text-muted-foreground tabular-nums">
                           {list.length}
-                          <ArrowUpRight
+                          <ArrowRight
                             aria-hidden
                             className={`size-4 shrink-0 opacity-0 transition-[opacity,translate] group-hover:translate-x-0.5 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:group-hover:translate-x-0 ${fast}`}
                           />
@@ -275,7 +278,7 @@ export default function HomePage() {
           </AppearItem>
         </Reveal>
         <p className="pt-6 text-center font-mono text-xs text-muted-foreground">
-          Version {pkg.version} · body text {px(themeValue("text-base"))} px
+          Version {pkg.version}
         </p>
       </section>
     </main>

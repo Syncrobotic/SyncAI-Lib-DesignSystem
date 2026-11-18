@@ -115,7 +115,7 @@ export const QuestionnaireSingleQuestion: S = {
       id: "cause",
       type: "single",
       title: "What caused the stop?",
-      description: "Saved with incident #2041.",
+      description: "Saved with incident #2041.", // tokens-ok: an incident number, not a colour
       options: [
         { value: "obstacle", label: "Obstacle in the path" },
         { value: "person", label: "A person stepped in front" },

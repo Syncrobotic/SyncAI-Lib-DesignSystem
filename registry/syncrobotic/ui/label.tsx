@@ -1,4 +1,4 @@
-// @syncrobotic/label v0.5.0 · update: npx shadcn add @syncrobotic/label --overwrite
+// @syncrobotic/label v0.10.0 · update: npx shadcn add @syncrobotic/label --overwrite
 "use client"
 
 import * as React from "react"
@@ -9,7 +9,7 @@ export function Label({ className, ...props }: React.ComponentProps<typeof Label
   return (
     <LabelPrimitive.Root
       data-slot="label"
-      className={cn("text-sm font-medium select-none peer-disabled:opacity-50", className)}
+      className={cn("text-sm font-medium select-none peer-disabled:text-muted-foreground", className)}
       {...props}
     />
   )

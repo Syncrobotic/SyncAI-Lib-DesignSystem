@@ -66,6 +66,7 @@ Ordered by what blocks adoption first. Each milestone is one or two release trai
 - [ ] Manual screen-reader and keyboard test matrix per component (VoiceOver, TalkBack, NVDA)
 - [ ] Accessibility conformance report (ACR / VPAT)
 
-### 1.0 · Open source
-- [ ] Licence, CONTRIBUTING, CODE_OF_CONDUCT, SECURITY
-- [ ] Public roadmap and `SITE_PUBLIC=true`
+### 1.0 · Public, source-available
+- [x] Licence (all rights reserved, source-available), CONTRIBUTING, SECURITY
+- [x] Production indexed by search engines with no configuration; previews stay `noindex`
+- [ ] Make the repository public on GitHub (a repository setting, done by an owner)

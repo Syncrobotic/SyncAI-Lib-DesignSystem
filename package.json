@@ -1,6 +1,6 @@
 {
   "name": "@syncrobotic/design-system",
-  "version": "0.9.1",
+  "version": "0.10.0",
   "private": true,
   "description": "The SYNCROBOTIC design language: tokens, React components, and blocks for application screens, charts and robot operations, shipped as a shadcn/ui registry for Tailwind CSS v4.",
   "keywords": [
@@ -32,7 +32,7 @@
     "url": "https://github.com/Syncrobotic/SyncAI-Lib-DesignSystem/issues"
   },
   "author": "SYNCROBOTIC",
-  "license": "UNLICENSED",
+  "license": "SEE LICENSE IN LICENSE",
   "type": "module",
   "scripts": {
     "dev": "next dev",
@@ -50,6 +50,7 @@
     "lint:versions": "node scripts/versions.mjs",
     "lint:motion": "node scripts/check-motion.mjs registry site app",
     "versions": "node scripts/versions.mjs --write",
+    "check:radius": "node scripts/check-radius.cjs",
     "lint:dtcg": "node scripts/tokens.mjs",
     "tokens": "node scripts/tokens.mjs --write",
     "test:registry": "bash scripts/registry-e2e.sh"

@@ -15,7 +15,7 @@ const principles = [
   {
     n: "02",
     title: "One meaning per colour",
-    body: "Blue means in progress, green means normal or on, amber means attention, red means stopped or failed, grey means offline. Brand expression lives in neutral contrast, not in hue.",
+    body: "Grey and ink for every state, busy or idle. Blue for a process someone is waiting on (a progress bar, a stage running, a command being sent). Amber means attention, red means stopped or failed, green means it just worked. Brand expression lives in neutral contrast, not in hue.",
     rule: "Status colours come in pairs: `text-info` on `bg-info-subtle`.",
   },
   {

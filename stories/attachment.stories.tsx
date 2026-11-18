@@ -32,7 +32,7 @@ export const AttachmentChips: S = {
 
 export const AttachmentInComposer: S = {
   render: () => (
-    <div className="flex flex-col gap-2 rounded-md bg-card p-2 ring-1 ring-border">
+    <div className="flex flex-col gap-2 rounded-lg bg-card p-2 ring-1 ring-border">
       <div className="flex flex-wrap gap-2">
         <Attachment variant="chip" name="obstacle.jpg" size={900 * 1024} onRemove={noop} />
         <Attachment variant="chip" name="7F3A-log.mcap" size={12 * 1024 ** 2} onRemove={noop} />
@@ -68,6 +68,7 @@ export const AttachmentImages: S = {
 export const AttachmentReadOnly: S = {
   render: () => (
     <div className="flex flex-col gap-2">
+      {/* tokens-ok: an incident number, not a colour */}
       <span className="text-sm font-medium">Attached to incident #2041</span>
       <Attachment name="incident-2041.mcap" size={86 * 1024 ** 2} onDownload={noop} />
       <Attachment name="operator-report.pdf" size={340 * 1024} onDownload={noop} />

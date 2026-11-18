@@ -1,8 +1,8 @@
-// @syncrobotic/status-pages v0.8.0 · update: npx shadcn add @syncrobotic/status-pages --overwrite
+// @syncrobotic/status-pages v0.10.0 · update: npx shadcn add @syncrobotic/status-pages --overwrite
 "use client"
 
 import * as React from "react"
-import { CloudOff, Lock, RotateCcw, SearchX } from "lucide-react"
+import { CloudOff, Lock, RotateCw, SearchX } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Bone, LoadingLine } from "@/registry/syncrobotic/shell/skeleton"
@@ -92,7 +92,7 @@ export function NoAccessPage({ role = "Viewer", admin = "Your site admin", ...pr
 export function ErrorPage({ reference = "a7f3-22c1", ...props }: PageProps & { reference?: string }) {
   return (
     <StatusPage
-      icon={RotateCcw}
+      icon={RotateCw}
       code="500"
       title="Something went wrong on our side"
       body={

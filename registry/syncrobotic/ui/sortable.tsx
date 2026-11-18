@@ -1,4 +1,4 @@
-// @syncrobotic/sortable v0.9.0 · update: npx shadcn add @syncrobotic/sortable --overwrite
+// @syncrobotic/sortable v0.10.0 · update: npx shadcn add @syncrobotic/sortable --overwrite
 "use client"
 
 import * as React from "react"
@@ -120,7 +120,7 @@ export function SortableHandle({ label, className }: { label: string; className?
       {...ctx?.attributes}
       {...ctx?.listeners}
       className={cn(
-        "press flex size-(--h-sm) shrink-0 cursor-grab touch-none items-center justify-center rounded-xs text-muted-foreground hover:bg-accent hover:text-foreground active:cursor-grabbing",
+        "press flex size-(--h-sm) shrink-0 cursor-grab touch-none items-center justify-center rounded-2xs text-muted-foreground hover:bg-accent hover:text-foreground active:cursor-grabbing",
         className,
       )}
     >

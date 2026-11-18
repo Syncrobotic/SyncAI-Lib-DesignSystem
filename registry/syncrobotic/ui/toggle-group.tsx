@@ -1,4 +1,4 @@
-// @syncrobotic/toggle-group v0.9.0 · update: npx shadcn add @syncrobotic/toggle-group --overwrite
+// @syncrobotic/toggle-group v0.10.0 · update: npx shadcn add @syncrobotic/toggle-group --overwrite
 "use client"
 
 import * as React from "react"
@@ -54,7 +54,7 @@ export function ToggleGroupItem({ className, ...props }: React.ComponentProps<ty
         "transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent",
         variant === "outline" && "ring-1 ring-border ring-inset",
         "data-[state=on]:bg-primary data-[state=on]:text-primary-foreground data-[state=on]:ring-primary data-[state=on]:hover:bg-primary",
-        "disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4",
+        "disabled:pointer-events-none disabled:text-disabled [&_svg]:size-4",
         size === "sm" ? "h-(--h-sm) min-w-(--h-sm)" : "h-(--h-md) min-w-(--h-md)",
         className,
       )}

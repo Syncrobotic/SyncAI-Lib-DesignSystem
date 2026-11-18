@@ -1,4 +1,4 @@
-// @syncrobotic/button v0.8.0 · update: npx shadcn add @syncrobotic/button --overwrite
+// @syncrobotic/button v0.10.0 · update: npx shadcn add @syncrobotic/button --overwrite
 import * as React from "react"
 import { Slot } from "radix-ui"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -10,17 +10,18 @@ import { Spinner } from "@/registry/syncrobotic/ui/spinner"
  * destructive is a danger outline and text — solid red belongs to the emergency stop alone.
  */
 export const buttonVariants = cva(
-  "press inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-sm font-medium disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5",
+  "press inline-flex shrink-0 select-none items-center justify-center gap-2 whitespace-nowrap rounded-sm font-medium disabled:pointer-events-none disabled:not-aria-busy:bg-muted disabled:not-aria-busy:text-muted-foreground disabled:not-aria-busy:ring-transparent disabled:not-aria-busy:no-underline [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5",
   {
     variants: {
       variant: {
         primary: "bg-primary text-primary-foreground hover:bg-primary/90",
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         outline: "bg-transparent ring-1 ring-border ring-inset hover:bg-accent",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
+        // Without a surface, disabled stays without one: solid disabled ink, no grey block that could read as selected.
+        ghost: "hover:bg-accent hover:text-accent-foreground disabled:not-aria-busy:bg-transparent disabled:not-aria-busy:text-disabled",
         destructive: "bg-transparent text-danger ring-1 ring-danger ring-inset hover:bg-danger-subtle",
-        // A link reads as a link by its underline, not by colour: blue means in progress.
-        link: "text-foreground underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground",
+        // A link reads as a link by its underline, not by colour: blue is for a process someone is waiting on.
+        link: "text-foreground underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground disabled:not-aria-busy:bg-transparent disabled:not-aria-busy:text-disabled",
       },
       size: {
         sm: "h-(--h-sm) px-3 text-sm [&_svg:not([class*='size-'])]:size-4",
@@ -38,7 +39,8 @@ export type ButtonProps = React.ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
     /** Render the child element (e.g. a link) with button styles. */
     asChild?: boolean
-    /** Disables the button and shows a spinner after 300 ms, so quick actions never flash. */
+    /** Disables the button (no double submit) and shows a spinner after 300 ms, so quick actions never flash. It keeps its look:
+     *  busy is not unavailable. */
     loading?: boolean
   }
 

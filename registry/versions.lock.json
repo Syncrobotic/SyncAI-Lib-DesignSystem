@@ -1,7 +1,7 @@
 {
   "syncrobotic-theme": {
-    "version": "0.9.0",
-    "hash": "f8232f487129014a"
+    "version": "0.10.0",
+    "hash": "3dbbe623b3342fe7"
   },
   "cn": {
     "version": "0.5.0",
@@ -20,8 +20,8 @@
     "hash": "a0d4130094efa1db"
   },
   "status-glyph": {
-    "version": "0.6.0",
-    "hash": "28d84a1c4cfe3bd6"
+    "version": "0.10.0",
+    "hash": "06b740d7fdd754f2"
   },
   "status-eyebrow": {
     "version": "0.8.0",
@@ -32,8 +32,8 @@
     "hash": "2813a626bd3abfad"
   },
   "stop-button": {
-    "version": "0.6.0",
-    "hash": "cb96973c330a0ca3"
+    "version": "0.10.0",
+    "hash": "ea5ef04b0c9a0485"
   },
   "slide-to-release": {
     "version": "0.5.0",
@@ -56,52 +56,52 @@
     "hash": "1f73e7d87ba39b3f"
   },
   "button": {
-    "version": "0.8.0",
-    "hash": "bab8101ef6139ea6"
+    "version": "0.10.0",
+    "hash": "9f9e6b849193d2a4"
   },
   "spinner": {
     "version": "0.5.0",
     "hash": "4735ca41a1c21a06"
   },
   "segmented-control": {
-    "version": "0.8.0",
-    "hash": "b226366373ffa95d"
+    "version": "0.10.0",
+    "hash": "b7d28bc6963503f0"
   },
   "toggle": {
-    "version": "0.6.0",
-    "hash": "cfa3a04a7233455a"
+    "version": "0.10.0",
+    "hash": "eb762064ebf94820"
   },
   "copy-button": {
-    "version": "0.8.0",
-    "hash": "f786e3b18a44336d"
+    "version": "0.10.0",
+    "hash": "7124ad1cba9f2388"
   },
   "input": {
-    "version": "0.7.0",
-    "hash": "ea9e19ae18463262"
+    "version": "0.10.0",
+    "hash": "8bbf1a9c8dd609a4"
   },
   "input-group": {
-    "version": "0.9.0",
-    "hash": "27092f42e7f6f4e9"
+    "version": "0.10.0",
+    "hash": "cf156ffaf1b860c2"
   },
   "number-field": {
-    "version": "0.7.0",
-    "hash": "31bcad4daff1f6b8"
+    "version": "0.10.0",
+    "hash": "527929d9a1cadd45"
   },
   "textarea": {
-    "version": "0.7.0",
-    "hash": "ab4517bc51099226"
+    "version": "0.10.0",
+    "hash": "701665ee1d32bbb4"
   },
   "label": {
-    "version": "0.5.0",
-    "hash": "1b3ee1d30973dd40"
+    "version": "0.10.0",
+    "hash": "1dce6b1033d93e98"
   },
   "field": {
     "version": "0.8.0",
     "hash": "9e521392d3860c92"
   },
   "checkbox": {
-    "version": "0.7.0",
-    "hash": "ad2050935b414de0"
+    "version": "0.10.0",
+    "hash": "52eadf07446dee41"
   },
   "radio-group": {
     "version": "0.7.0",
@@ -112,20 +112,20 @@
     "hash": "6028f89b48d8aa15"
   },
   "choice-field": {
-    "version": "0.8.0",
-    "hash": "e5983dc4fd44cc32"
+    "version": "0.10.0",
+    "hash": "00c3a77a0aff061c"
   },
   "select": {
-    "version": "0.8.0",
-    "hash": "8c67cc943aacebaf"
+    "version": "0.10.0",
+    "hash": "0b80a804a278f2ba"
   },
   "slider": {
     "version": "0.5.0",
     "hash": "23fa5a22e2b00803"
   },
   "badge": {
-    "version": "0.8.0",
-    "hash": "ad0b7ec759bcfa45"
+    "version": "0.10.0",
+    "hash": "e3bc03bf2b3cf40d"
   },
   "card": {
     "version": "0.5.0",
@@ -140,8 +140,8 @@
     "hash": "7b4d8675eed8b3b3"
   },
   "progress": {
-    "version": "0.5.0",
-    "hash": "07bde4770434d7e2"
+    "version": "0.10.0",
+    "hash": "e7c30d134c4fe7b1"
   },
   "description-list": {
     "version": "0.8.0",
@@ -160,8 +160,8 @@
     "hash": "acd324da76e6e9c6"
   },
   "toast": {
-    "version": "0.8.0",
-    "hash": "158e78d88fce5577"
+    "version": "0.10.0",
+    "hash": "9f9222359e3e1b63"
   },
   "empty-state": {
     "version": "0.5.0",
@@ -176,8 +176,8 @@
     "hash": "e455c0d9acadcb0b"
   },
   "tabs": {
-    "version": "0.7.0",
-    "hash": "00415b26dbbf3e56"
+    "version": "0.10.0",
+    "hash": "8ecbc1546bed777f"
   },
   "pagination": {
     "version": "0.8.0",
@@ -188,8 +188,8 @@
     "hash": "e936426c03da5cc8"
   },
   "accordion": {
-    "version": "0.7.0",
-    "hash": "555742401a8c5862"
+    "version": "0.10.0",
+    "hash": "a542674c1883114e"
   },
   "dialog": {
     "version": "0.7.0",
@@ -212,24 +212,28 @@
     "hash": "7dd7e3177ffd2874"
   },
   "dropdown-menu": {
-    "version": "0.7.0",
-    "hash": "1c718ef5ec09500b"
+    "version": "0.10.0",
+    "hash": "059fdc47730b98de"
   },
   "command": {
-    "version": "0.9.0",
-    "hash": "0857492bb8a696bf"
+    "version": "0.10.0",
+    "hash": "206cef1f75f74e8e"
   },
   "item": {
     "version": "0.9.0",
     "hash": "d0e5f2ecc5b1a1bd"
   },
   "icon-tile": {
-    "version": "0.9.0",
-    "hash": "5300fcb25c819cb1"
+    "version": "0.10.0",
+    "hash": "1c6f59a6a871308a"
   },
   "kbd": {
-    "version": "0.9.0",
-    "hash": "865079a18d9b1fb9"
+    "version": "0.10.0",
+    "hash": "65456e28766e23bd"
+  },
+  "robot-icons": {
+    "version": "0.10.0",
+    "hash": "59eb33324b2b76b2"
   },
   "button-group": {
     "version": "0.9.0",
@@ -240,48 +244,72 @@
     "hash": "84680f8e564dae37"
   },
   "toggle-group": {
-    "version": "0.9.0",
-    "hash": "f666b471537373bb"
+    "version": "0.10.0",
+    "hash": "3eb66a84f20923b5"
+  },
+  "page-header": {
+    "version": "0.10.0",
+    "hash": "6be8a160b3c68849"
+  },
+  "chip-group": {
+    "version": "0.10.0",
+    "hash": "ba9941913066d20a"
+  },
+  "filter-form": {
+    "version": "0.10.0",
+    "hash": "4408d94150b8f69d"
+  },
+  "search-field": {
+    "version": "0.10.0",
+    "hash": "487eb1914dde58a8"
+  },
+  "theme-toggle": {
+    "version": "0.10.0",
+    "hash": "6101b5270e7fa0fa"
+  },
+  "route-progress": {
+    "version": "0.10.0",
+    "hash": "7edb5b1f526606fe"
   },
   "autocomplete": {
-    "version": "0.9.0",
-    "hash": "8236eb4e1364101a"
+    "version": "0.10.0",
+    "hash": "60df099b10b3705f"
   },
   "input-otp": {
-    "version": "0.9.0",
-    "hash": "d482d8c3047f83be"
+    "version": "0.10.0",
+    "hash": "6816d4bd7c41bc2a"
   },
   "phone-input": {
-    "version": "0.9.0",
-    "hash": "44ad41f349471d28"
+    "version": "0.10.0",
+    "hash": "8735cdd106dee3b8"
   },
   "calendar": {
-    "version": "0.9.0",
-    "hash": "f6e0a0ea2dae13b7"
+    "version": "0.10.0",
+    "hash": "fa8e2ec56b3c294c"
   },
   "date-selector": {
-    "version": "0.9.0",
-    "hash": "80a835b576c3f8e0"
+    "version": "0.10.0",
+    "hash": "a0892d62953379ec"
   },
   "time-picker": {
-    "version": "0.9.0",
-    "hash": "8930042b08f607db"
+    "version": "0.10.0",
+    "hash": "8c59d6acf7b680e5"
   },
   "data-grid": {
     "version": "0.9.0",
     "hash": "43243c551675fd98"
   },
   "sortable": {
-    "version": "0.9.0",
-    "hash": "02a528b4ec0ea465"
+    "version": "0.10.0",
+    "hash": "fab9ba8dd8436d8a"
   },
   "resizable": {
     "version": "0.9.0",
     "hash": "1ca551383fcf3ae8"
   },
   "file-upload": {
-    "version": "0.9.0",
-    "hash": "a292f9ed99da9820"
+    "version": "0.10.0",
+    "hash": "ebaae2a3974a0971"
   },
   "attachment": {
     "version": "0.9.0",
@@ -300,12 +328,12 @@
     "hash": "8655c77429cb87ac"
   },
   "scrollspy": {
-    "version": "0.9.0",
-    "hash": "f50d11f9cd2b215b"
+    "version": "0.10.0",
+    "hash": "08fe28dc16f4b51e"
   },
   "navigation-menu": {
-    "version": "0.9.0",
-    "hash": "d208c36788b4fa08"
+    "version": "0.10.0",
+    "hash": "3c41979f60975d5a"
   },
   "questionnaire": {
     "version": "0.9.0",
@@ -348,20 +376,20 @@
     "hash": "0b2fa9cac43c1b68"
   },
   "list-detail": {
-    "version": "0.8.0",
-    "hash": "e04ee1c2608f0db9"
+    "version": "0.10.0",
+    "hash": "6c39e5eeaadc2275"
   },
   "event-log": {
     "version": "0.8.0",
     "hash": "1f144c18bee6a25d"
   },
   "map-workspace": {
-    "version": "0.8.0",
-    "hash": "a348c3c5398324f4"
+    "version": "0.10.0",
+    "hash": "f6bad679b9c4cfe2"
   },
   "data-catalog": {
-    "version": "0.8.0",
-    "hash": "85cfc0719b0350fa"
+    "version": "0.10.0",
+    "hash": "26098a19776672f2"
   },
   "dataset-detail": {
     "version": "0.8.0",
@@ -388,8 +416,8 @@
     "hash": "ca26144d94449917"
   },
   "status-pages": {
-    "version": "0.8.0",
-    "hash": "9b75fb563ad656ed"
+    "version": "0.10.0",
+    "hash": "bfca1bddfd8b0af7"
   },
   "agent-skill": {
     "version": "0.8.0",
@@ -528,8 +556,8 @@
     "hash": "88ebaa9f142d9686"
   },
   "sheet-robot-detail": {
-    "version": "0.9.0",
-    "hash": "b61c183ad698d219"
+    "version": "0.10.0",
+    "hash": "8e485999087ca7fe"
   },
   "sheet-filters": {
     "version": "0.9.0",
@@ -552,8 +580,8 @@
     "hash": "6c5d29608c824697"
   },
   "mission-schedule": {
-    "version": "0.9.0",
-    "hash": "2a81cfcc65bfda50"
+    "version": "0.10.0",
+    "hash": "38f04a526fab53bf"
   },
   "users-invitations": {
     "version": "0.9.0",

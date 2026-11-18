@@ -26,7 +26,9 @@ export function HeroDemo() {
   const moving = phase !== "stopped"
   return (
     <figure className="flex w-full max-w-sm flex-col gap-3">
-      <div className="flex flex-col gap-4 rounded-xl bg-background p-4 ring-1 ring-border">
+      {/* No frame around the dock: a frame would need a radius of the dock's plus its padding (the radius rule), and the
+          dock already is the frame. The readouts and the dock stand on the page. */}
+      <div className="flex flex-col gap-4">
         <div className="flex items-start justify-between gap-3">
           <div className="flex flex-col gap-1">
             <StatusEyebrow tone={moving ? "info" : "neutral"}>{moving ? "Patrolling" : "Stopped by you"}</StatusEyebrow>

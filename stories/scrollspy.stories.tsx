@@ -19,7 +19,7 @@ function Body({ prefix = "" }: { prefix?: string }) {
   return (
     <>
       {sections.map((s) => (
-        <section key={s.id} id={prefix + s.id} aria-labelledby={`${prefix}${s.id}-h`} className="flex flex-col gap-2 pb-12">
+        <section key={s.id} id={prefix + s.id} aria-labelledby={`${prefix}${s.id}-h`} className="flex flex-col gap-2 pb-8">
           <h3 id={`${prefix}${s.id}-h`} className="text-base font-medium">
             {s.label}
           </h3>
@@ -147,7 +147,7 @@ export const ScrollspySettings: S = {
           className="min-w-0 flex-1 overflow-y-auto pr-2 outline-none focus-visible:outline-2 focus-visible:outline-ring"
         >
           {settings.map((s) => (
-            <section key={s.id} id={s.id} aria-labelledby={`${s.id}-h`} className="flex flex-col gap-2 pb-10">
+            <section key={s.id} id={s.id} aria-labelledby={`${s.id}-h`} className="flex flex-col gap-2 pb-8">
               <h3 id={`${s.id}-h`} className={s.level ? "text-sm font-medium" : "text-base font-bold"}>
                 {s.label}
               </h3>
@@ -179,7 +179,7 @@ export const ScrollspyLongNames: S = {
           className="min-w-0 flex-1 overflow-y-auto outline-none focus-visible:outline-2 focus-visible:outline-ring"
         >
           {items.map((s) => (
-            <section key={s.id} id={s.id} aria-labelledby={`${s.id}-h`} className="flex flex-col gap-2 pb-12">
+            <section key={s.id} id={s.id} aria-labelledby={`${s.id}-h`} className="flex flex-col gap-2 pb-8">
               <h3 id={`${s.id}-h`} className="text-base font-medium">
                 {s.label}
               </h3>

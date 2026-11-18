@@ -38,6 +38,7 @@ function Curve({ value }: { value: string }) {
 
 export default function MotionPage() {
   const ease = themeValue("ease-standard")
+  const exit = themeValue("ease-exit")
   return (
     <article>
       <DocHeader
@@ -51,16 +52,25 @@ export default function MotionPage() {
         </Specimen>
       </Section>
 
-      <Section id="easing" title="Easing" lead="One curve for everything: fast out, gentle settle. Things respond immediately and land softly.">
+      <Section
+        id="easing"
+        title="Easing"
+        lead="Two curves. What arrives or changes responds at once and settles softly. What leaves starts gently and speeds away, so it never lingers in a slow tail."
+      >
         <Specimen className="flex flex-wrap items-center gap-8">
-          <Curve value={ease} />
-          <div className="flex flex-col gap-1">
-            <Code>--ease-standard</Code>
-            <Code>{ease}</Code>
-            <span className="text-sm text-muted-foreground">
-              Utility: <Code>ease-(--ease-standard)</Code>
-            </span>
-          </div>
+          {[
+            { v: ease, t: "--ease-standard", use: "Arrivals and every state change; transitions" },
+            { v: exit, t: "--ease-exit", use: "Exits only: disappear, sheets closing, collapse" },
+          ].map((c) => (
+            <div key={c.t} className="flex items-center gap-6">
+              <Curve value={c.v} />
+              <div className="flex flex-col gap-1">
+                <Code>{c.t}</Code>
+                <Code>{c.v}</Code>
+                <span className="text-sm text-muted-foreground">{c.use}</span>
+              </div>
+            </div>
+          ))}
         </Specimen>
       </Section>
 
