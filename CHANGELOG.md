@@ -2,6 +2,15 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **Three more pieces for data tools**, from the DataCore review (the gaps used on two to four pages each):
+  - `share-bar`: how a whole splits, as one thin bar in the chart palette, light enough for a table cell; with `legend`, a label, total and a legend that names every value. Colour follows the order given, never the size.
+  - `load-more`: the end of a long list on a phone or in a gallery: "Showing 40 of 125" and "Show 20 more (85 left)", gone once everything is shown.
+  - `restricted-preview`: pictures someone should choose to see (restricted tiers, faces, number plates) stay unloaded until asked, card by card, with the reason. Neutral: restricted is a property of the data, not a fault, so restricted tiers take no warning colour.
+- **Pagination link mode**: `href` makes every page a URL (?page=3), so a page can be shared, Back works and it needs no JavaScript; `onNavigate` routes through the app's router.
+
 ## 0.11.1 · 2026-11-18
 
 ### Changed

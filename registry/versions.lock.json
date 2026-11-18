@@ -184,8 +184,8 @@
     "hash": "8ecbc1546bed777f"
   },
   "pagination": {
-    "version": "0.8.0",
-    "hash": "79b134de7cedc11e"
+    "version": "0.12.0",
+    "hash": "7a2f0bea249456c7"
   },
   "breadcrumb": {
     "version": "0.8.0",
@@ -258,6 +258,18 @@
   "chip-group": {
     "version": "0.10.0",
     "hash": "ba9941913066d20a"
+  },
+  "share-bar": {
+    "version": "0.12.0",
+    "hash": "71b33d4c5d487df5"
+  },
+  "load-more": {
+    "version": "0.12.0",
+    "hash": "418d0b7442f4a0fa"
+  },
+  "restricted-preview": {
+    "version": "0.12.0",
+    "hash": "ca01f61622b7a9ad"
   },
   "filter-form": {
     "version": "0.10.0",

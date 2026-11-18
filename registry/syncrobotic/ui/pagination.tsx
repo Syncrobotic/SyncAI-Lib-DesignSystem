@@ -1,4 +1,4 @@
-// @syncrobotic/pagination v0.8.0 · update: npx shadcn add @syncrobotic/pagination --overwrite
+// @syncrobotic/pagination v0.12.0 · update: npx shadcn add @syncrobotic/pagination --overwrite
 "use client"
 
 import * as React from "react"
@@ -94,7 +94,7 @@ export function Pagination({
       <span aria-live="polite" className="tabular-nums">
         {total === 0 ? l.empty : l.range(from, to, total)}
       </span>
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1" /* icon-gap-ok: 4 px between page buttons, not an icon and its label */>
         {go(page - 1, { variant: "outline", size: "icon-sm", "aria-label": l.previous, disabled: page <= 0 }, <ChevronLeft aria-hidden="true" />)}
         {pages &&
           pageList(page, count).map((n, i) =>
