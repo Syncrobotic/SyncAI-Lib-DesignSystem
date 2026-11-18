@@ -186,48 +186,44 @@ export default function HomePage() {
           {items.filter((i) => i.group !== "Hooks").length} components built on the tokens: general UI for any product, plus the robot shell for control apps.
         </SectionHead>
         {/* Same arrival and the same hover as the Foundations grid: lift the exhibit, show the arrow. */}
-        <Reveal className="grid auto-rows-fr gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {groups
-            .filter((g) => g !== "Hooks")
-            .map((g) => {
-              const list = items.filter((i) => i.group === g)
-              // Eight groups: four rows of two; on three columns the robot shell (what sets this kit apart) takes two cells
-              // so the last row is full, exhibit and text side by side.
-              const wide = g === "Robot shell"
-              return (
-                <AppearItem key={g} className={cn("flex", wide && "lg:col-span-2")}>
+        {/* The same ruled sheet as the foundations: each group's specimen, then its name, count and members. */}
+        <Reveal>
+          <AppearItem className="grid gap-px border-y border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+            {groups
+              .filter((g) => g !== "Hooks")
+              .map((g) => {
+                const list = items.filter((i) => i.group === g)
+                // Eight groups: on three columns the robot shell (what sets this kit apart) takes two cells, so the last row is full.
+                const wide = g === "Robot shell"
+                return (
                   <Link
+                    key={g}
                     href={`/docs/components/${firstOf(g)}`}
                     className={cn(
-                      `press group flex w-full flex-col overflow-hidden rounded-md border border-border transition-colors hover:border-muted-foreground ${fast}`,
-                      wide && "lg:flex-row",
+                      `group flex flex-col gap-6 bg-background p-6 outline-none transition-colors hover:bg-card focus-visible:bg-card focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring ${fast}`,
+                      wide && "lg:col-span-2 lg:flex-row lg:items-center",
                     )}
                   >
-                    <div aria-hidden inert className={cn("specimen flex h-36 items-center justify-center p-6", wide && "lg:h-auto lg:w-1/2")}>
+                    <div aria-hidden inert className={cn("flex h-32 items-center justify-center", wide && "lg:h-full lg:flex-1")}>
                       <div className={`transition-transform group-hover:-translate-y-0.5 motion-reduce:group-hover:translate-y-0 ${fast}`}>{samples[g]}</div>
                     </div>
-                    <div
-                      className={cn(
-                        "flex flex-1 flex-col gap-1 border-t border-border bg-card p-4",
-                        wide && "lg:justify-center lg:border-t-0 lg:border-l lg:p-6",
-                      )}
-                    >
-                      <span className="flex items-center justify-between">
+                    <div className={cn("flex flex-col gap-1", wide && "lg:flex-1")}>
+                      <span className="flex items-baseline justify-between gap-3">
                         <span className="font-bold">{g}</span>
-                        <span className="flex items-center gap-2">
-                          <span className="font-mono text-xs text-muted-foreground">{list.length}</span>
+                        <span className="flex items-center gap-2 text-sm text-muted-foreground tabular-nums">
+                          {list.length}
                           <ArrowUpRight
                             aria-hidden
-                            className={`size-4 shrink-0 text-muted-foreground opacity-0 transition-[opacity,translate] group-hover:translate-x-0.5 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:group-hover:translate-x-0 ${fast}`}
+                            className={`size-4 shrink-0 opacity-0 transition-[opacity,translate] group-hover:translate-x-0.5 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:group-hover:translate-x-0 ${fast}`}
                           />
                         </span>
                       </span>
                       <span className="text-sm text-muted-foreground">{list.map((i) => i.title).join(", ")}</span>
                     </div>
                   </Link>
-                </AppearItem>
-              )
-            })}
+                )
+              })}
+          </AppearItem>
         </Reveal>
       </section>
 
