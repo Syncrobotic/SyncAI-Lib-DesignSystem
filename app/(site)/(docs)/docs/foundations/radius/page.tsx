@@ -17,7 +17,8 @@ const round = [
 ]
 
 const radii = [
-  { key: "xs", cls: "rounded-xs", use: "Tags, small parts flush inside a container" },
+  { key: "2xs", cls: "rounded-2xs", use: "Controls 24 px and smaller: checkbox, key caps, a handle in a tight row" },
+  { key: "xs", cls: "rounded-xs", use: "Tags, small parts, items inside a panel with 8 px padding (menus, command)" },
   { key: "sm", cls: "rounded-sm", use: "Buttons, inputs, icon tiles" },
   { key: "md", cls: "rounded-md", use: "Cards, parts inside a tray" },
   { key: "lg", cls: "rounded-lg", use: "Floating notices, dialogs" },
@@ -29,7 +30,7 @@ export default function RadiusPage() {
     <article>
       <DocHeader
         title="Radius"
-        lead="Five steps, each 4 px apart, sharing the spacing base. Because steps differ by the padding between them, nested corners are always concentric."
+        lead="Six steps, 4 to 24, each 4 px apart, sharing the spacing base. Because steps differ by the padding between them, nested corners can always be concentric. `npm run check:radius` finds corners that are not, on every docs page and block."
       />
 
       <Section id="scale" title="Scale">
@@ -50,7 +51,7 @@ export default function RadiusPage() {
         </Specimen>
       </Section>
 
-      <Section id="concentric" title="Outer radius = inner radius + padding" lead="A tray (24) with 8 padding holds parts at 16. A card (16) with 4 padding holds a tag at 12. The curves stay parallel.">
+      <Section id="concentric" title="Outer radius = inner radius + padding" lead="A tray (24) with 8 padding holds parts at 16. A panel (16) with 8 padding holds items at 8, never at 12: a menu, the command list, a row of attachments. When the parts must stay at 12, give the container 20. The curves stay parallel.">
         <DoDont
           good={{
             visual: (
@@ -71,7 +72,7 @@ export default function RadiusPage() {
         />
       </Section>
 
-      <Section id="full" title="Full: only for things that are round" lead="`rounded-full` is not a sixth step. It is for shapes whose meaning is a circle or a pill, never for a container, card or button.">
+      <Section id="full" title="Full: only for things that are round" lead="`rounded-full` is not a seventh step. It is for shapes whose meaning is a circle or a pill, never for a container, card or button.">
         <div className="grid gap-4 sm:grid-cols-2">
           <ul className="flex flex-col gap-2 rounded-md border border-border bg-card p-4 text-sm">
             {round.map((r) => (

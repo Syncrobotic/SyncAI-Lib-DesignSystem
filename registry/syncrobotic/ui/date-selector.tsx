@@ -1,4 +1,4 @@
-// @syncrobotic/date-selector v0.9.0 · update: npx shadcn add @syncrobotic/date-selector --overwrite
+// @syncrobotic/date-selector v0.10.0 · update: npx shadcn add @syncrobotic/date-selector --overwrite
 "use client"
 
 import * as React from "react"
@@ -14,7 +14,7 @@ export type { DateRange }
 export type DatePreset<T> = { label: string; value: () => T }
 
 const trigger =
-  "press flex h-(--h-md) w-full min-w-0 items-center gap-2 rounded-sm bg-card px-3 text-left text-base ring-1 ring-input ring-inset transition-shadow duration-(--motion-fast) ease-(--ease-standard) aria-invalid:ring-2 aria-invalid:ring-danger disabled:cursor-not-allowed disabled:opacity-50 data-[empty=true]:text-muted-foreground"
+  "press flex h-(--h-md) w-full min-w-0 items-center gap-2 rounded-sm bg-card px-3 text-left text-base ring-1 ring-input ring-inset transition-shadow duration-(--motion-fast) ease-(--ease-standard) aria-invalid:ring-2 aria-invalid:ring-danger disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground data-[empty=true]:text-muted-foreground"
 
 type Common = {
   placeholder?: string

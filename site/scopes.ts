@@ -17,7 +17,7 @@ export const scopes: Scope[] = [
     key: "foundations",
     label: "Foundations",
     href: "/docs/foundations",
-    match: ["/docs/foundations", "/docs/installation", "/docs/tokens", "/docs/upgrading", "/docs/ai"],
+    match: ["/docs/foundations", "/docs/icons", "/docs/installation", "/docs/tokens", "/docs/upgrading", "/docs/ai"],
     groups: [
       {
         title: "Getting started",
@@ -29,7 +29,14 @@ export const scopes: Scope[] = [
           { href: "/docs/ai", label: "For AI agents" },
         ],
       },
-      { title: "Foundations", links: foundations.map((f) => ({ href: `/docs/foundations/${f.slug}`, label: f.title })) },
+      {
+        title: "Foundations",
+        links: foundations.flatMap((f) => [
+          { href: `/docs/foundations/${f.slug}`, label: f.title },
+          // The browsable set, under the rules it follows.
+          ...(f.slug === "iconography" ? [{ href: "/docs/icons", label: "Icon set" }] : []),
+        ]),
+      },
     ],
   },
   {

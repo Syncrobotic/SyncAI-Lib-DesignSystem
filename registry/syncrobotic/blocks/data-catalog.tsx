@@ -1,8 +1,8 @@
-// @syncrobotic/data-catalog v0.8.0 · update: npx shadcn add @syncrobotic/data-catalog --overwrite
+// @syncrobotic/data-catalog v0.10.0 · update: npx shadcn add @syncrobotic/data-catalog --overwrite
 "use client"
 
 import * as React from "react"
-import { Database, Grid3x3, ListFilter, Plus, ScrollText, Search, SearchX, ShieldCheck } from "lucide-react"
+import { Database, Grid3x3, SlidersHorizontal, Plus, ScrollText, Search, SearchX, ShieldCheck } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { ChoiceField, FieldSet } from "@/registry/syncrobotic/ui/choice-field"
 import { AppShell, type AppNavGroup } from "@/registry/syncrobotic/blocks/app-shell"
@@ -206,7 +206,7 @@ export function DataCatalog({ datasets = sampleDatasets }: { datasets?: Dataset[
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="secondary" className="lg:hidden">
-                  <ListFilter aria-hidden="true" /> Filters{active ? ` · ${active}` : ""}
+                  <SlidersHorizontal aria-hidden="true" /> Filters{active ? ` · ${active}` : ""}
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="w-80">

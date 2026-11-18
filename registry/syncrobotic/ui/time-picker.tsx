@@ -1,4 +1,4 @@
-// @syncrobotic/time-picker v0.9.0 · update: npx shadcn add @syncrobotic/time-picker --overwrite
+// @syncrobotic/time-picker v0.10.0 · update: npx shadcn add @syncrobotic/time-picker --overwrite
 "use client"
 
 import * as React from "react"
@@ -154,7 +154,7 @@ export function TimePicker({
           aria-invalid={f?.invalid || undefined}
           disabled={disabled}
           data-empty={!value}
-          className={cn(field, "press text-left data-[empty=true]:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50", className)}
+          className={cn(field, "press text-left data-[empty=true]:text-muted-foreground disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground", className)}
         >
           <Clock aria-hidden="true" className="size-4 shrink-0 text-muted-foreground" />
           {ariaLabel && (

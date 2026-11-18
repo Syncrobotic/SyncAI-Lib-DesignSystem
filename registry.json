@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Focus ring is the foreground colour, no longer the in-progress blue. Chart palette moves off the status hues (violet, teal, olive, magenta, grey for Other), CVD-validated. Type scale gains 2xl (24, figures) and 4xl (36, hero on phones) and is locked: sizes off the scale produce nothing. Adds radius-2xs (4) for controls 24 px and smaller. Warning and danger are told apart by hue and lightness (deutan ΔE 10.8 light / 21.6 dark, was 1.5; 4.8:1 or more as text on every surface). Adds --ease-exit for exits. Blue is defined: a process someone is waiting on, never a state. Adds animate-route-progress (off under reduced motion)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -160,8 +165,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Docs: the filled circle is an active (busy) state, drawn in ink."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -250,8 +260,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Imports CircleAlert by its current Lucide name (AlertCircle was an alias); no visual change."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -478,8 +493,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight. A loading button keeps its look (busy is not unavailable) and still blocks a second press."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -546,8 +566,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -584,8 +609,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -613,8 +643,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Works over plain HTTP (falls back to execCommand when the Clipboard API is missing or refused), says so when the copy fails instead of failing silently, and announces the result for icon buttons too. Exports copyText()."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -638,8 +673,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -673,8 +713,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -707,8 +752,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -732,8 +782,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -770,8 +825,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "A label next to a disabled control turns muted, not faded."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -844,8 +904,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Radius 4 (the new radius-2xs): at 20 px, radius 8 made the box read as a radio button."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -963,8 +1028,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "A disabled choice turns muted, not faded."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -993,8 +1063,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -1065,8 +1140,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "tone=\"success\" is neutral: a calm state is grey. Green stays for confirmations (Toast, Alert)."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -1184,8 +1264,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Docs: blue marks a process someone is waiting on."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -1347,8 +1432,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "A failed toast uses CircleAlert, the kit's one icon for failed."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -1472,8 +1562,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -1568,8 +1663,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -1789,8 +1889,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -1829,8 +1934,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Items use radius 8, so they sit concentric inside the 16 px panel with its 8 px padding. Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -1897,8 +2007,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "tone=\"success\" is neutral on soft and solid tiles, and its status dot is the foreground colour."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -1922,11 +2037,41 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Radius 4 (radius-2xs), so a key inside a tooltip or an input keeps clear of the corner around it."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "robot-icons",
+      "type": "registry:ui",
+      "title": "Robot icons",
+      "description": "Robot icons Lucide lacks, drawn to its grid: robot arm, mobile robot, charging dock, physical emergency stop pressed, safety zone.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/robot-icons.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.10.0",
+        "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
             "note": "New."
           }
         ]
@@ -2006,11 +2151,179 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "page-header",
+      "type": "registry:ui",
+      "title": "Page header",
+      "description": "The block a page opens with: breadcrumb above, one h1 and a line, meta pills, actions at the right. No label above the title.",
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/status-glyph"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/page-header.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.10.0",
+        "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "chip-group",
+      "type": "registry:ui",
+      "title": "Chip group",
+      "description": "One choice among several as chips with counts, folded after N; or links, so a filter lives in the URL. Selected is inverted.",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/chip-group.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.10.0",
+        "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "filter-form",
+      "type": "registry:ui",
+      "title": "Filter form",
+      "description": "Filters kept in the URL: a GET form that applies itself after typing stops or at once on a pick, resets the page, and works without JavaScript.",
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/filter-form.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.10.0",
+        "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "search-field",
+      "type": "registry:ui",
+      "title": "Search field",
+      "description": "The tool's one search box: / focuses it, Enter opens the results page, and on that page it follows ?q= and applies as you type.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/filter-form",
+        "@syncrobotic/input",
+        "@syncrobotic/input-group",
+        "@syncrobotic/kbd"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/search-field.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.10.0",
+        "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "theme-toggle",
+      "type": "registry:ui",
+      "title": "Theme toggle",
+      "description": "Light, match the system, or dark: three icon segments, the current one inverted, each named for screen readers.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/segmented-control"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/theme-toggle.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.10.0",
+        "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "route-progress",
+      "type": "registry:ui",
+      "title": "Route progress",
+      "description": "A thin blue bar while the next page loads: shows after 300 ms, never reaches the end, gives up after 10 s.",
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/route-progress.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.10.0",
+        "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
             "note": "New."
           }
         ]
@@ -2037,8 +2350,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -2066,8 +2384,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -2096,8 +2419,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -2125,8 +2453,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -2158,8 +2491,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -2188,8 +2526,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -2253,8 +2596,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "The handle uses radius 4 (radius-2xs) inside its row."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -2309,8 +2657,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -2448,8 +2801,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Chips use radius 8."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -2477,8 +2835,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Links in the panel use radius 8, concentric with the panel (16) and its 8 px padding. Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -2888,7 +3251,8 @@
         "@syncrobotic/separator",
         "@syncrobotic/input-group",
         "@syncrobotic/description-list",
-        "@syncrobotic/meter"
+        "@syncrobotic/meter",
+        "@syncrobotic/robot-icons"
       ],
       "files": [
         {
@@ -2897,8 +3261,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "List rows use radius 8, concentric with the panel. Return to dock uses ChargingDock (from robot-icons), the kit's one icon for the dock."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -2983,7 +3352,8 @@
         "@syncrobotic/alarm",
         "@syncrobotic/button",
         "@syncrobotic/progress",
-        "@syncrobotic/meter"
+        "@syncrobotic/meter",
+        "@syncrobotic/robot-icons"
       ],
       "files": [
         {
@@ -2992,8 +3362,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Dock uses ChargingDock (from robot-icons), the kit's one icon for the dock."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -3036,8 +3411,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "The Filters button uses SlidersHorizontal, the kit's one icon for filters."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -3323,8 +3703,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "The server error page uses RotateCw, the kit's one icon for retry."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -4349,7 +4734,8 @@
         "@syncrobotic/description-list",
         "@syncrobotic/meter",
         "@syncrobotic/sheet",
-        "@syncrobotic/timeline"
+        "@syncrobotic/timeline",
+        "@syncrobotic/robot-icons"
       ],
       "files": [
         {
@@ -4358,8 +4744,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Send to dock uses ChargingDock (from robot-icons), the kit's one icon for the dock."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -4547,8 +4938,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Mission bars use radius 8, concentric with the lanes."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",

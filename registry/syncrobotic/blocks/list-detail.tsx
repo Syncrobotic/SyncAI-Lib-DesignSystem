@@ -1,9 +1,10 @@
-// @syncrobotic/list-detail v0.8.0 · update: npx shadcn add @syncrobotic/list-detail --overwrite
+// @syncrobotic/list-detail v0.10.0 · update: npx shadcn add @syncrobotic/list-detail --overwrite
 "use client"
 
 import * as React from "react"
-import { ArrowLeft, MapPin, Pause, RotateCcw, Search } from "lucide-react"
+import { ArrowLeft, MapPin, Pause, Search } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { ChargingDock } from "@/registry/syncrobotic/ui/robot-icons"
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
 import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
@@ -55,7 +56,7 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
                   aria-current={r.id === selected ? "true" : undefined}
                   onClick={() => setSelected(r.id)}
                   className={cn(
-                    "press flex min-h-(--h-row) w-full flex-col items-start justify-center rounded-sm px-3 text-left hover:bg-accent",
+                    "press flex min-h-(--h-row) w-full flex-col items-start justify-center rounded-xs px-3 text-left hover:bg-accent",
                     r.id === selected && "bg-muted font-medium",
                   )}
                 >
@@ -86,7 +87,7 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
                     <Pause aria-hidden="true" /> Pause
                   </Button>
                   <Button variant="secondary" size="sm">
-                    <RotateCcw aria-hidden="true" /> Return to dock
+                    <ChargingDock aria-hidden="true" /> Return to dock
                   </Button>
                 </div>
               </div>

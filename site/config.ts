@@ -1,10 +1,9 @@
-// Site identity and indexing. One switch decides whether search engines may index the site:
-// SITE_PUBLIC=true. Until then everything is noindex. The site itself needs no sign-in (see README).
+// Site identity and indexing, with no environment variables to set. Vercel provides both values below on its own:
+// VERCEL_PROJECT_PRODUCTION_URL is the production domain (the custom domain once one is attached), and VERCEL_ENV says
+// which deployment this is. Only production is indexed; previews (dev, stage, pull requests) stay out of search results.
 
-// Fallback is the production deployment, so local builds and previews point at the canonical site.
-const host =
-  process.env.SITE_URL ??
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "https://syncai-lib-designsystem.vercel.app")
+// Local builds and previews point their canonical URLs at production.
+const host = process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "https://syncai-lib-designsystem.vercel.app"
 
 export const site = {
   name: "SYNCROBOTIC Design System",
@@ -44,7 +43,8 @@ export const site = {
     "dark mode",
     "SYNCROBOTIC",
   ],
-  public: process.env.SITE_PUBLIC === "true",
+  /** Search engines may index this deployment: production only. */
+  public: process.env.VERCEL_ENV === "production",
 }
 
 /**

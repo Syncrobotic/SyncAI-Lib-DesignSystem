@@ -11,7 +11,7 @@ import {
   Wrench,
   Copy,
   Ellipsis,
-  Filter,
+  SlidersHorizontal,
   Info,
   Keyboard,
   LayoutDashboard,
@@ -59,6 +59,7 @@ import {
 } from "@/registry/syncrobotic/ui/dropdown-menu"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
+import { NumberField } from "@/registry/syncrobotic/ui/number-field"
 import { Label } from "@/registry/syncrobotic/ui/label"
 import { Switch } from "@/registry/syncrobotic/ui/switch"
 import { Popover, PopoverContent, PopoverTrigger } from "@/registry/syncrobotic/ui/popover"
@@ -276,12 +277,12 @@ export const PopoverWithForm: S = {
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="outline">
-          <Filter aria-hidden="true" /> Battery filter
+          <SlidersHorizontal aria-hidden="true" /> Battery filter
         </Button>
       </PopoverTrigger>
       <PopoverContent className="flex flex-col gap-3">
-        <Field label="Show robots below">
-          <Input type="number" defaultValue={30} />
+        <Field label="Show robots below" hint="Battery, 0 to 100 %">
+          <NumberField defaultValue={30} min={0} max={100} step={5} unit="%" />
         </Field>
         <Button size="sm">Apply</Button>
       </PopoverContent>

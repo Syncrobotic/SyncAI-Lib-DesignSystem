@@ -1,4 +1,4 @@
-// @syncrobotic/icon-tile v0.9.0 · update: npx shadcn add @syncrobotic/icon-tile --overwrite
+// @syncrobotic/icon-tile v0.10.0 · update: npx shadcn add @syncrobotic/icon-tile --overwrite
 import * as React from "react"
 import { Slot } from "radix-ui"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -29,12 +29,13 @@ export const iconTileVariants = cva("relative inline-flex shrink-0 items-center 
   compoundVariants: [
     { variant: "soft", tone: "neutral", class: "bg-neutral-subtle text-neutral" },
     { variant: "soft", tone: "info", class: "bg-info-subtle text-info" },
-    { variant: "soft", tone: "success", class: "bg-success-subtle text-success" },
+    // success stays calm (neutral) on a tile that stays on screen; green is for confirmations that come and go.
+    { variant: "soft", tone: "success", class: "bg-neutral-subtle text-neutral" },
     { variant: "soft", tone: "warning", class: "bg-warning-subtle text-warning" },
     { variant: "soft", tone: "danger", class: "bg-danger-subtle text-danger" },
     { variant: "solid", tone: "neutral", class: "bg-primary text-primary-foreground" },
     { variant: "solid", tone: "info", class: "bg-info text-white" },
-    { variant: "solid", tone: "success", class: "bg-success text-white" },
+    { variant: "solid", tone: "success", class: "bg-primary text-primary-foreground" },
     { variant: "solid", tone: "warning", class: "bg-warning text-black" },
     // Solid red is the emergency stop's alone, so a solid danger tile stays on its tint with a danger edge.
     { variant: "solid", tone: "danger", class: "bg-danger-subtle text-danger ring-1 ring-danger ring-inset" },
@@ -75,6 +76,6 @@ export function IconTileDot({
   tone?: "success" | "warning" | "danger" | "neutral"
   label: string
 }) {
-  const fill = { success: "bg-success", warning: "bg-warning", danger: "bg-danger", neutral: "bg-muted-foreground" }[tone]
+  const fill = { success: "bg-foreground", warning: "bg-warning", danger: "bg-danger", neutral: "bg-muted-foreground" }[tone]
   return <span role="img" aria-label={label} className={cn("absolute -top-1 -right-1 size-3 rounded-full ring-2 ring-background", fill, className)} />
 }

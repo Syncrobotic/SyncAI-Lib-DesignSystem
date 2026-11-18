@@ -1,4 +1,4 @@
-// @syncrobotic/input-group v0.9.0 · update: npx shadcn add @syncrobotic/input-group --overwrite
+// @syncrobotic/input-group v0.10.0 · update: npx shadcn add @syncrobotic/input-group --overwrite
 "use client"
 
 import * as React from "react"
@@ -70,7 +70,7 @@ export function InputGroupButton({ className, type = "button", ...props }: React
       type={type}
       data-slot="input-group-button"
       className={cn(
-        "press mx-1 flex size-(--h-sm) shrink-0 items-center justify-center rounded-xs text-muted-foreground hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4",
+        "press mx-1 flex size-(--h-sm) shrink-0 items-center justify-center rounded-xs text-muted-foreground hover:bg-accent hover:text-foreground disabled:pointer-events-none disabled:text-disabled [&_svg]:size-4",
         className,
       )}
       {...props}

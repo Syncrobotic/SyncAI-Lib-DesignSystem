@@ -41,7 +41,7 @@ export const LoadingSkeleton: S = {
       <ListGroup>
         {[0, 1, 2].map((i) => (
           <div key={i} className="flex min-h-(--h-row) items-center gap-3 border-b border-border py-2 last:border-b-0" style={{ opacity: i === 2 ? 0.5 : 1 }}>
-            <Bone onCard className="size-14 rounded-sm" />
+            <Bone onCard className="size-10 rounded-xs" />
             <div className="flex flex-1 flex-col gap-2">
               <Bone onCard className="h-4 w-3/5" />
               <Bone onCard className="h-3 w-4/5" />

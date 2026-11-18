@@ -1,4 +1,4 @@
-// @syncrobotic/file-upload v0.9.0 · update: npx shadcn add @syncrobotic/file-upload --overwrite
+// @syncrobotic/file-upload v0.10.0 · update: npx shadcn add @syncrobotic/file-upload --overwrite
 "use client"
 
 import * as React from "react"
@@ -111,7 +111,7 @@ export function FileUpload({
         "hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
         "data-[over]:border-ring data-[over]:bg-accent",
         compact ? "min-h-(--h-md) items-center gap-3 px-3" : "flex-col items-center justify-center gap-3 px-6 py-8 text-center",
-        disabled && "pointer-events-none opacity-50",
+        disabled && "pointer-events-none bg-muted text-muted-foreground",
         className,
       )}
     >

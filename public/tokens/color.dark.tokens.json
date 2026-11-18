@@ -59,7 +59,7 @@
     },
     "destructive": {
       "$type": "color",
-      "$value": "#ee8580"
+      "$value": "#f75b6b"
     },
     "border": {
       "$type": "color",
@@ -71,7 +71,7 @@
     },
     "ring": {
       "$type": "color",
-      "$value": "#7da4e6"
+      "$value": "{color.foreground}"
     },
     "disabled": {
       "$type": "color",
@@ -95,7 +95,7 @@
     },
     "warning": {
       "$type": "color",
-      "$value": "#e0b45c"
+      "$value": "#ffd663"
     },
     "warning-subtle": {
       "$type": "color",
@@ -103,7 +103,7 @@
     },
     "danger": {
       "$type": "color",
-      "$value": "#ee8580"
+      "$value": "#f75b6b"
     },
     "danger-subtle": {
       "$type": "color",
@@ -147,23 +147,23 @@
     },
     "chart-1": {
       "$type": "color",
-      "$value": "#3987e5"
+      "$value": "#7d56b8"
     },
     "chart-2": {
       "$type": "color",
-      "$value": "#d95926"
+      "$value": "#13a5b2"
     },
     "chart-3": {
       "$type": "color",
-      "$value": "#199e70"
+      "$value": "#82972f"
     },
     "chart-4": {
       "$type": "color",
-      "$value": "#c98500"
+      "$value": "#af4a88"
     },
     "chart-5": {
       "$type": "color",
-      "$value": "#d55181"
+      "$value": "#8f8f98"
     }
   },
   "shadow": {

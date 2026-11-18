@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { fn } from "@storybook/test"
-import { Bell, ChevronRight, FileText, KeyRound, Map, MoreHorizontal, Plug, Route, Settings, ShieldCheck, Users, Wifi } from "lucide-react"
+import { Bell, ChevronRight, FileText, KeyRound, Map, Ellipsis, Plug, Route, Settings, ShieldCheck, Users, Wifi } from "lucide-react"
 import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"
 import { Badge, CountBadge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
@@ -253,7 +253,7 @@ export const ItemWithMenu: S = {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button size="icon-sm" variant="ghost" aria-label="Elevator bridge actions">
-              <MoreHorizontal aria-hidden="true" />
+              <Ellipsis aria-hidden="true" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">

@@ -1,4 +1,4 @@
-// @syncrobotic/autocomplete v0.9.0 · update: npx shadcn add @syncrobotic/autocomplete --overwrite
+// @syncrobotic/autocomplete v0.10.0 · update: npx shadcn add @syncrobotic/autocomplete --overwrite
 "use client"
 
 import * as React from "react"
@@ -94,7 +94,7 @@ export function Autocomplete({
             "flex w-full min-w-0 items-center rounded-sm bg-card ring-1 ring-input ring-inset transition-shadow duration-(--motion-fast) ease-(--ease-standard)",
             "has-[input:focus-visible]:outline-2 has-[input:focus-visible]:outline-offset-2 has-[input:focus-visible]:outline-ring",
             f?.invalid && "ring-2 ring-danger",
-            disabled && "opacity-50",
+            disabled && "bg-muted text-muted-foreground",
             size === "sm" ? "h-(--h-sm)" : "h-(--h-md)",
             className,
           )}
@@ -185,7 +185,7 @@ export function Autocomplete({
                       className={cn(
                         "flex min-h-(--h-sm) cursor-default items-center gap-2 rounded-sm px-3 py-1 text-sm",
                         isActive && "bg-accent",
-                        o.disabled && "text-muted-foreground opacity-50",
+                        o.disabled && "text-disabled",
                       )}
                     >
                       <span className="flex min-w-0 flex-1 flex-col">

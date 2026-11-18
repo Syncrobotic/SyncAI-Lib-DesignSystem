@@ -1,4 +1,4 @@
-// @syncrobotic/dropdown-menu v0.7.0 · update: npx shadcn add @syncrobotic/dropdown-menu --overwrite
+// @syncrobotic/dropdown-menu v0.10.0 · update: npx shadcn add @syncrobotic/dropdown-menu --overwrite
 "use client"
 
 import * as React from "react"
@@ -27,7 +27,7 @@ export function DropdownMenuContent({ className, sideOffset = 4, ...props }: Rea
 }
 
 const item =
-  "relative flex h-(--h-md) cursor-default select-none items-center gap-2 rounded-sm px-3 text-sm outline-none focus:bg-accent data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0"
+  "relative flex h-(--h-md) cursor-default select-none items-center gap-2 rounded-sm px-3 text-sm outline-none focus:bg-accent data-[disabled]:pointer-events-none data-[disabled]:text-disabled [&_svg]:size-4 [&_svg]:shrink-0"
 
 /** `destructive` items use danger text; keep them last, after a separator. */
 export function DropdownMenuItem({ className, destructive, ...props }: React.ComponentProps<typeof MenuPrimitive.Item> & { destructive?: boolean }) {

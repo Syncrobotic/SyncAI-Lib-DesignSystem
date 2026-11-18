@@ -1,8 +1,12 @@
 import type { Metadata } from "next"
-import { Battery, Bell, Bluetooth, Bot, CircleAlert, House, ListChecks, Map, Settings, Square, Trash2, Video, Wifi } from "lucide-react"
+import Link from "next/link"
+// tokens-ok: Radio and RotateCcw are the counter-example in "One icon, one meaning"
+import { Battery, Bell, Bluetooth, Bot, CircleAlert, House, ListChecks, Map, Radio, RotateCcw, Settings, Square, Trash2, Video, Wifi } from "lucide-react"
+import { ChargingDock } from "@/registry/syncrobotic/ui/robot-icons"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { Code, DocHeader, DoDont, Pager, Section, Specimen, TokenTable } from "@/site/doc"
 import { metaFor, neighbours } from "@/site/foundations"
+import { iconCount } from "@/site/icons"
 
 export const metadata: Metadata = metaFor("iconography")
 
@@ -16,7 +20,11 @@ export default function IconographyPage() {
         lead="Lucide icons at a 2 px stroke, in three sizes tied to component heights. An icon always has a name, either a visible label or an accessible one."
       />
 
-      <Section id="set" title="Library" lead="Lucide (lucide.dev): outline, 2 px stroke, 24 px grid. Do not mix in filled icons or other sets.">
+      <Section
+        id="set"
+        title="Library"
+        lead="Lucide (lucide.dev): outline, 2 px stroke, 24 px grid. Do not mix in filled icons or other sets. The kit uses a fixed subset; the icon set lists each one with its meaning."
+      >
         <Specimen>
           <div className="grid grid-cols-4 gap-6 sm:grid-cols-6">
             {set.map((Icon, i) => (
@@ -26,6 +34,50 @@ export default function IconographyPage() {
             ))}
           </div>
         </Specimen>
+        <p className="text-sm">
+          <Link href="/docs/icons" className="underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground">
+            Browse all {iconCount} icons and what each means
+          </Link>
+        </p>
+      </Section>
+
+      <Section
+        id="meaning"
+        title="One icon, one meaning"
+        lead="An icon is a word. Once the dock is ChargingDock, it is ChargingDock on every screen, and ChargingDock means nothing else. Lint rejects a Lucide import outside the set, so a new icon or a second icon for a meaning is a reviewed change to `site/icons.ts`."
+      >
+        <DoDont
+          good={{
+            visual: (
+              <span className="flex items-center gap-6">
+                {["Send to dock", "Return to dock", "Dock"].map((t) => (
+                  <span key={t} className="flex items-center gap-2 text-sm">
+                    <ChargingDock aria-hidden className="size-5" /> {t}
+                  </span>
+                ))}
+              </span>
+            ),
+            text: "Look the meaning up in the icon set and use its icon, every time.",
+          }}
+          bad={{
+            visual: (
+              <span className="flex items-center gap-6">
+                {(
+                  [
+                    [House, "Send to dock"],
+                    [RotateCcw, "Return to dock"],
+                    [Radio, "Dock"],
+                  ] as const
+                ).map(([I, t]) => (
+                  <span key={t} className="flex items-center gap-2 text-sm">
+                    <I aria-hidden className="size-5" /> {t}
+                  </span>
+                ))}
+              </span>
+            ),
+            text: "Pick whatever looks close on each screen. This kit had three icons for the dock until the set existed.",
+          }}
+        />
       </Section>
 
       <Section id="sizes" title="Sizes">
@@ -51,7 +103,7 @@ export default function IconographyPage() {
           head={["Glyph", "Tone", "Means"]}
           rows={(
             [
-              ["info", "In progress"],
+              ["info", "Active, busy"],
               ["success", "Normal"],
               ["warning", "Needs attention"],
               ["danger", "Stopped or failed"],

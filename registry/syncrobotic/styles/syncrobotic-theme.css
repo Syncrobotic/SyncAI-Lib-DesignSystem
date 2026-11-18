@@ -1,4 +1,4 @@
-/* @syncrobotic/syncrobotic-theme v0.9.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
+/* @syncrobotic/syncrobotic-theme v0.10.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
 /*
  * SYNCROBOTIC theme · design system 0.5.0 (see CHANGELOG.md)
  * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
@@ -10,12 +10,15 @@
  *      on their root so they stay dark whatever the appearance setting.
  *
  * Colour rules:
- *   - Colour is for what is abnormal. Normal and in-progress states are shape + neutral text; warning, danger and stop carry colour
+ *   - Colour is for what is abnormal, and blue for a process someone is waiting on. A thing's state (patrolling, docked,
+ *     charging) is shape + neutral text even while it is busy; warning, danger and stop carry colour
  *   - Status hues are muted on purpose: they must read at a glance without turning the screen into a chart
  *   - Solid red (--stop) is for the emergency stop only. Other destructive actions use the --danger outline and text
  *   - Status colours come in pairs: foreground (--info) on its subtle tint (--info-subtle)
- *   - --primary is neutral high contrast (black in light, white in dark); blue (--info) only means "in progress"
- *   - Selected controls (segmented control, toggle) are inverted; the current page in navigation is --muted with weight, hover is --accent; a switch that is on uses --success
+ *   - --primary is neutral high contrast (black in light, white in dark). Blue (--info) only marks a bounded process someone
+ *     is waiting on: a progress bar, a stage that is running, a command being sent. Never a state, never focus
+ *   - Green (--success) is a confirmation that just happened (toast, alert); a calm state stays grey
+ *   - Selected controls (segmented control, toggle) are inverted; the current page in navigation is --muted with weight, hover is --accent; a switch that is on uses --primary
  *   - Actions in the lower part of the dock are never solid white, so they do not compete with the stop
  *   - Alerts other than the stop (event counts) use --danger on --danger-subtle, never solid red
  */
@@ -36,19 +39,22 @@
   --muted-foreground: #52525b;
   --accent: #e6e6ea;
   --accent-foreground: var(--foreground);
-  --destructive: #b0302b;
+  --destructive: #860012;
   --border: #dcdce1;
   --input: #dcdce1;
-  --ring: #2952b8;
+  --ring: var(--foreground); /* focus is not a status: the ink colour, never the in-progress blue */
   --disabled: #a1a1aa;
 
   --info: #2952b8;
   --info-subtle: #e4e9f4;
   --success: #18704f;
   --success-subtle: #e0eee7;
-  --warning: #94500f;
+  /* Warning and danger are told apart by hue and by lightness, so they stay apart for colour-blind eyes (deutan ΔE 10.8
+     light, 21.6 dark) and at a glance (ΔE 16 and 29). Both reach 4.8:1 or more as text on every surface they sit on:
+     the page, the card, a muted tile or a selected row, and their own tint. */
+  --warning: #865900;
   --warning-subtle: #f4ecda;
-  --danger: #b0302b;
+  --danger: #860012;
   --danger-subtle: #f6e2e1;
   --neutral: #52525b;
   --neutral-subtle: #f4f4f5;
@@ -69,11 +75,14 @@
    * (dataviz validator: adjacent CVD ΔE ≥ 8, normal-vision ≥ 15). Slots 3–5 sit under 3:1 on white,
    * so charts always ship a legend, direct labels and a table view. Use status colours for status, never as series.
    */
-  --chart-1: #2a78d6;
-  --chart-2: #eb6834;
-  --chart-3: #1baf7a;
-  --chart-4: #eda100;
-  --chart-5: #e87ba4;
+  /* Series identity only. Hues sit between the status hues (blue 262, green 162, amber 60–85, red 25) so no series
+     reads as a status: violet 300, teal 205, olive 120, magenta 345, then grey for "Other". Validated for CVD
+     (worst adjacent ΔE 16 deutan) and 3:1 against the card. */
+  --chart-1: #663e9e;
+  --chart-2: #00929f;
+  --chart-3: #6b7f09;
+  --chart-4: #943171;
+  --chart-5: #71717a;
 
   /* Heights */
   --h-tag: 1.5rem;    /* 24 tag, not interactive */
@@ -109,19 +118,19 @@
   --muted: #25252b;
   --muted-foreground: #a1a1aa;
   --accent: #25252b;
-  --destructive: #ee8580;
+  --destructive: #f75b6b;
   --border: #2c2c32;
   --input: #2c2c32;
-  --ring: #7da4e6;
+  --ring: var(--foreground);
   --disabled: #63636b;
 
   --info: #7da4e6;
   --info-subtle: #1a2233;
   --success: #6cc59c;
   --success-subtle: #172720;
-  --warning: #e0b45c;
+  --warning: #ffd663;
   --warning-subtle: #2b2516;
-  --danger: #ee8580;
+  --danger: #f75b6b;
   --danger-subtle: #321c1c;
   --neutral: #a1a1aa;
   --neutral-subtle: #1c1c21;
@@ -129,11 +138,11 @@
   --stop: #dc2626;
   --stop-deep: #7f1d1d;
 
-  --chart-1: #3987e5;
-  --chart-2: #d95926;
-  --chart-3: #199e70;
-  --chart-4: #c98500;
-  --chart-5: #d55181;
+  --chart-1: #7d56b8;
+  --chart-2: #13a5b2;
+  --chart-3: #82972f;
+  --chart-4: #af4a88;
+  --chart-5: #8f8f98;
 
   --map: #0d0d10;
   --map-point: #6f7682;
@@ -211,6 +220,7 @@
    * Note: shadcn's default button and input use rounded-md and its card uses rounded-xl.
    * When adding them to this registry, move them to the steps above (button rounded-sm, card rounded-md).
    */
+  --radius-2xs: 0.25rem; /* 4: controls 24 px and smaller (checkbox, kbd, a handle in a tight row), so they keep a square shape */
   --radius-xs: 0.5rem;
   --radius-sm: 0.75rem;
   --radius-md: 1rem;
@@ -220,7 +230,9 @@
   /* Font: bundled with the app, never loaded from a CDN */
   --font-sans: "Geist", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
 
-  /* Type scale: six steps, every line height a multiple of 4. Inputs use base (16) so iOS does not zoom */
+  /* Type scale: nine steps, every line height a multiple of 4. Inputs use base (16) so iOS does not zoom.
+     Tailwind's own sizes are cleared first, so a size off this scale (text-6xl) produces nothing and lint reports it. */
+  --text-*: initial;
   --text-xs: 0.75rem;      /* caption 12/16 */
   --text-xs--line-height: 1rem;
   --text-sm: 0.875rem;     /* label 14/20 */
@@ -231,8 +243,12 @@
   --text-lg--line-height: 1.5rem;
   --text-xl: 1.25rem;      /* title 20/28 */
   --text-xl--line-height: 1.75rem;
+  --text-2xl: 1.5rem;      /* figure 24/32: a number that leads a card */
+  --text-2xl--line-height: 2rem;
   --text-3xl: 1.75rem;     /* display 28/36 */
   --text-3xl--line-height: 2.25rem;
+  --text-4xl: 2.25rem;     /* hero on phones 36/40, marketing pages only */
+  --text-4xl--line-height: 2.5rem;
   --text-5xl: 3rem;        /* hero 48/52, marketing pages only */
   --text-5xl--line-height: 3.25rem;
 
@@ -244,6 +260,8 @@
   /* Spacing keeps Tailwind's 4px base and uses only 1, 2, 3, 4, 6, 8 (4, 8, 12, 16, 24, 32 px) */
 
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  /* Leaving: starts gently and speeds away, so what goes does not linger in a slow tail. Exits only. */
+  --ease-exit: cubic-bezier(0.3, 0, 1, 1);
 
   /*
    * Motion patterns in CSS (see the Motion foundation). Every component uses these, never its own timing.
@@ -254,16 +272,16 @@
    *   press (utility)     anything you press: sinks to 97 % at --motion-fast
    */
   --animate-appear: appear var(--motion-base) var(--ease-standard);
-  --animate-disappear: disappear var(--motion-fast) var(--ease-standard) forwards;
+  --animate-disappear: disappear var(--motion-fast) var(--ease-exit) forwards;
   --animate-fade-in: fade-in var(--motion-base) var(--ease-standard);
   --animate-sheet-in-bottom: sheet-in-bottom var(--motion-sheet) var(--ease-standard);
-  --animate-sheet-out-bottom: sheet-out-bottom var(--motion-sheet) var(--ease-standard) forwards;
+  --animate-sheet-out-bottom: sheet-out-bottom var(--motion-sheet) var(--ease-exit) forwards;
   --animate-sheet-in-right: sheet-in-right var(--motion-sheet) var(--ease-standard);
-  --animate-sheet-out-right: sheet-out-right var(--motion-sheet) var(--ease-standard) forwards;
+  --animate-sheet-out-right: sheet-out-right var(--motion-sheet) var(--ease-exit) forwards;
   --animate-sheet-in-left: sheet-in-left var(--motion-sheet) var(--ease-standard);
-  --animate-sheet-out-left: sheet-out-left var(--motion-sheet) var(--ease-standard) forwards;
+  --animate-sheet-out-left: sheet-out-left var(--motion-sheet) var(--ease-exit) forwards;
   --animate-expand: expand var(--motion-base) var(--ease-standard);
-  --animate-collapse: collapse var(--motion-base) var(--ease-standard);
+  --animate-collapse: collapse var(--motion-base) var(--ease-exit);
   @keyframes appear {
     from { opacity: 0; transform: translateY(0.5rem); }
   }
@@ -290,6 +308,12 @@
   }
 
   /* Skeleton: the whole group breathes over 1.2 s, no diagonal shimmer */
+  /* A page load in flight: the bar creeps towards the end and never reaches it until the page is in (RouteProgress). */
+  --animate-route-progress: route-progress 8s var(--ease-standard) forwards;
+  @keyframes route-progress {
+    from { scale: 0.1 1; }
+    to { scale: 0.9 1; }
+  }
   --animate-breath: breath 1.2s var(--ease-standard) infinite;
   @keyframes breath {
     0%, 100% { opacity: 1; }
@@ -365,6 +389,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .animate-breath { animation: none; }
+  .animate-route-progress { animation: none; }
   .animate-caret-blink { animation: none; }
   /* The spinner is the one loop the language allows; without motion it stands still and the label says it is working. */
   .animate-spin { animation: none; }
