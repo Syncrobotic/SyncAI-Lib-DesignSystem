@@ -308,6 +308,12 @@
   }
 
   /* Skeleton: the whole group breathes over 1.2 s, no diagonal shimmer */
+  /* A page load in flight: the bar creeps towards the end and never reaches it until the page is in (RouteProgress). */
+  --animate-route-progress: route-progress 8s var(--ease-standard) forwards;
+  @keyframes route-progress {
+    from { scale: 0.1 1; }
+    to { scale: 0.9 1; }
+  }
   --animate-breath: breath 1.2s var(--ease-standard) infinite;
   @keyframes breath {
     0%, 100% { opacity: 1; }
@@ -383,6 +389,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .animate-breath { animation: none; }
+  .animate-route-progress { animation: none; }
   .animate-caret-blink { animation: none; }
   /* The spinner is the one loop the language allows; without motion it stands still and the label says it is working. */
   .animate-spin { animation: none; }

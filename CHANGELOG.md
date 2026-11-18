@@ -6,6 +6,15 @@ Components install as source, so a project keeps the version it installed. Re-ru
 
 Most items change in this release: re-install the theme and every component you use (`npx shadcn add @syncrobotic/<name> --overwrite`). Each item's changelog says what changed.
 
+
+### Added
+- **Building blocks for data tools**, from a page-by-page review of DataCore against the kit (it covered about 59 %; these close the gaps every page shares). All framework-free: navigation goes through an `onNavigate(url, "push" | "replace")` callback, every string is a prop.
+  - `page-header`: breadcrumb above, one h1 and a line, `MetaPill` facts (a status pill takes a tone), actions at the right.
+  - `chip-group`: one choice among several with counts; folds after `max` (the selected chip stays); chips with `href` are links with `aria-current`, for saved views and filters that work without JavaScript.
+  - `filter-form`: filters kept in the URL. A GET form that applies itself after typing stops or at once on a pick, resets the page, makes a pick a history entry and a run of typing one entry; works with Radix Select and Checkbox. `filterUrl()` is exported.
+  - `search-field`: the tool's one search box; `/` focuses it (not while typing elsewhere), Enter opens the results page, and on that page (`live`) it mirrors `?q=` and applies as you type. Built on `input-group`.
+  - `theme-toggle`: light, match the system, dark; nothing selected until the stored choice is known.
+  - `route-progress`: a thin blue bar while the next page loads, after 300 ms, never at the end, gives up after 10 s; still under reduced motion.
 ### Fixed
 - **`copy-button` works over plain HTTP.** It only used the Clipboard API, which browsers offer on HTTPS and localhost alone, and swallowed the error, so on a LAN tool served over HTTP pressing it did nothing and said nothing. It now falls back to `execCommand("copy")`, says "Not copied" with an alert icon when both fail, and announces the result for icon buttons too. `copyText()` is exported. The docs site's copy buttons use it.
 - **Home page copy.** "Colour means something is wrong" sat over a line that called blue normal; it now reads "Colour is for what needs someone" with the defined meaning of blue. "Dark by default … reads in sunlight" was not true (a dark screen is the harder one to read in sun) and is gone. The foundation cards said six type sizes and five radius steps; they say nine and six, the type preview reads the scale from the theme, and a unit test fails if a card's count stops matching the theme. "Color" is "Colour" like the rest of the prose. The footer no longer reports the body text size.

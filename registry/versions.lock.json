@@ -1,7 +1,7 @@
 {
   "syncrobotic-theme": {
     "version": "0.10.0",
-    "hash": "0a509f523797a203"
+    "hash": "3dbbe623b3342fe7"
   },
   "cn": {
     "version": "0.5.0",
@@ -242,6 +242,30 @@
   "toggle-group": {
     "version": "0.10.0",
     "hash": "3eb66a84f20923b5"
+  },
+  "page-header": {
+    "version": "0.10.0",
+    "hash": "6be8a160b3c68849"
+  },
+  "chip-group": {
+    "version": "0.10.0",
+    "hash": "ba9941913066d20a"
+  },
+  "filter-form": {
+    "version": "0.10.0",
+    "hash": "4408d94150b8f69d"
+  },
+  "search-field": {
+    "version": "0.10.0",
+    "hash": "487eb1914dde58a8"
+  },
+  "theme-toggle": {
+    "version": "0.10.0",
+    "hash": "6101b5270e7fa0fa"
+  },
+  "route-progress": {
+    "version": "0.10.0",
+    "hash": "7edb5b1f526606fe"
   },
   "autocomplete": {
     "version": "0.10.0",
