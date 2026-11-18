@@ -217,6 +217,11 @@ export const PaginationEmpty: S = { render: () => <PaginationAt pageSize={10} to
 export const PaginationMiddle: S = { render: () => <PaginationAt pages pageSize={20} total={1240} start={30} /> }
 
 /** In a table footer, with the noun in the range. */
+/** Link mode: every page is a URL (?page=3), so it can be shared, Back works, and it needs no JavaScript. */
+export const PaginationLinks: S = {
+  render: () => <Pagination page={2} pageSize={20} total={240} pages href={(p) => `?page=${p + 1}`} onNavigate={() => {}} />,
+}
+
 export const PaginationTableFooter: S = {
   render: () => (
     <div className="flex flex-col rounded-lg ring-1 ring-border">

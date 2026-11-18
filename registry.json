@@ -1674,7 +1674,8 @@
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
-        "@syncrobotic/button"
+        "@syncrobotic/button",
+        "@syncrobotic/filter-form"
       ],
       "files": [
         {
@@ -1683,8 +1684,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.12.0",
         "changelog": [
+          {
+            "version": "0.12.0",
+            "date": "2026-11-18",
+            "note": "Link mode: `href` makes every page a link (?page=3), so it can be shared, Back works and it needs no JavaScript; `onNavigate` routes through the app's router. `onPageChange` is optional with `href`."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -2291,6 +2297,85 @@
         "changelog": [
           {
             "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "share-bar",
+      "type": "registry:ui",
+      "title": "Share bar",
+      "description": "How a whole splits, as one thin bar in the chart palette: light enough for a table cell, with an optional label, total and legend.",
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/share-bar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.12.0",
+        "changelog": [
+          {
+            "version": "0.12.0",
+            "date": "2026-11-18",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "load-more",
+      "type": "registry:ui",
+      "title": "Load more",
+      "description": "The end of a long list on a phone or in a gallery: how much is shown, and one button for the next batch that says how many it adds and how many remain.",
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/load-more.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.12.0",
+        "changelog": [
+          {
+            "version": "0.12.0",
+            "date": "2026-11-18",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "restricted-preview",
+      "type": "registry:ui",
+      "title": "Restricted preview",
+      "description": "A preview that is not loaded until someone asks: restricted data, or pictures with faces or number plates. Neutral, with the reason.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/restricted-preview.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.12.0",
+        "changelog": [
+          {
+            "version": "0.12.0",
             "date": "2026-11-18",
             "note": "New."
           }

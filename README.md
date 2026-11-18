@@ -2,7 +2,7 @@
 
 # SYNCROBOTIC Design System
 
-**Interfaces for the people who run robots.** The design language behind every SYNCROBOTIC product: design tokens, 81 React components and 69 ready-made blocks, shipped as a [shadcn/ui](https://ui.shadcn.com) registry for Tailwind CSS v4. Components install into your project as source you can read and change.
+**Interfaces for the people who run robots.** The design language behind every SYNCROBOTIC product: design tokens, 84 React components and 69 ready-made blocks, shipped as a [shadcn/ui](https://ui.shadcn.com) registry for Tailwind CSS v4. Components install into your project as source you can read and change.
 
 [Documentation](https://design-system.syncrobotic.me) · [Components](https://design-system.syncrobotic.me/docs/components/button) · [Blocks](https://design-system.syncrobotic.me/blocks) · [Changelog](CHANGELOG.md) · [Roadmap](ROADMAP.md)
 
@@ -54,7 +54,7 @@ Dark is the default (`<html class="dark">`). Copy is English; every visible and 
 | | |
 | --- | --- |
 | **Foundations** | Principles, colour, typography, spacing, radius, elevation, motion, iconography, accessibility and alarms, each with its tokens and the rules for using them, plus an [icon set](https://design-system.syncrobotic.me/icons) that gives each icon one meaning, with robot icons Lucide lacks drawn to match. Tokens also ship as [DTCG JSON](public/tokens) for design tools. |
-| **81 components** | General UI on Radix primitives, a charts component on Recharts, building blocks for data tools, and the robot shell: emergency stop, slide to release, dock and dynamic island. |
+| **84 components** | General UI on Radix primitives, a charts component on Recharts, building blocks for data tools, and the robot shell: emergency stop, slide to release, dock and dynamic island. |
 | **69 blocks** | Whole screens in three groups: Application (shells, stats, cards, sign-in, settings, forms, dialogs, sheets, timelines, wizards), Charts, and Solutions for robot operations (fleet operations, data operations, users and access, incidents, maintenance, firmware rollout, AI agents). |
 
 <details>
@@ -65,10 +65,10 @@ Dark is the default (`<html class="dark">`). Copy is English; every visible and 
 | Actions | `button`, `segmented-control`, `toggle`, `copy-button`, `button-group`, `toggle-group`, `theme-toggle` |
 | Inputs | `input`, `input-group`, `number-field`, `textarea`, `label`, `field`, `checkbox`, `radio-group`, `switch`, `choice-field`, `select`, `slider`, `chip-group`, `filter-form`, `search-field`, `autocomplete`, `input-otp`, `phone-input`, `calendar`, `date-selector`, `time-picker`, `sortable`, `file-upload`, `questionnaire` |
 | Icons | `robot-icons` |
-| Display | `status-glyph`, `status-eyebrow`, `list`, `skeleton`, `spinner`, `badge`, `card`, `avatar`, `separator`, `progress`, `description-list`, `meter`, `empty-state`, `table`, `item`, `icon-tile`, `kbd`, `scroll-area`, `data-grid`, `resizable`, `attachment`, `file-type`, `timeline`, `trace`, `marker` |
+| Display | `status-glyph`, `status-eyebrow`, `list`, `skeleton`, `spinner`, `badge`, `card`, `avatar`, `separator`, `progress`, `description-list`, `meter`, `empty-state`, `table`, `item`, `icon-tile`, `kbd`, `scroll-area`, `data-grid`, `resizable`, `attachment`, `file-type`, `timeline`, `trace`, `marker`, `share-bar`, `restricted-preview` |
 | Charts | `chart` |
 | Feedback | `alert`, `alarm`, `toast`, `route-progress` |
-| Navigation | `tabs`, `pagination`, `breadcrumb`, `accordion`, `page-header`, `stepper`, `scrollspy`, `navigation-menu` |
+| Navigation | `tabs`, `pagination`, `breadcrumb`, `accordion`, `page-header`, `stepper`, `scrollspy`, `navigation-menu`, `load-more` |
 | Overlays | `dialog`, `alert-dialog`, `sheet`, `popover`, `tooltip`, `dropdown-menu`, `command` |
 | Robot shell | `tray`, `stop-button`, `slide-to-release`, `dock`, `island` |
 | Hooks | `use-long-press`, `use-slide-release` |
