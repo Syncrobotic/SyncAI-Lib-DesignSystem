@@ -2,7 +2,7 @@
   "name": "@syncrobotic/design-system",
   "version": "0.9.0",
   "private": true,
-  "description": "The SYNCROBOTIC design language: tokens, React components and blocks, shipped as a shadcn/ui registry for Tailwind CSS v4.",
+  "description": "The SYNCROBOTIC design language: tokens, React components, and blocks for application screens, charts and robot operations, shipped as a shadcn/ui registry for Tailwind CSS v4.",
   "keywords": [
     "design-system",
     "ui-kit",
@@ -15,6 +15,11 @@
     "nextjs",
     "robotics",
     "design-tokens",
+    "blocks",
+    "dashboard",
+    "charts",
+    "mcp",
+    "llms-txt",
     "emergency-stop",
     "dark-mode"
   ],

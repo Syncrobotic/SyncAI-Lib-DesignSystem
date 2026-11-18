@@ -2,7 +2,7 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## 0.9.0 · 2026-11-17
+## 0.9.0 · 2026-11-18
 
 ### Added
 - `item`: a general-purpose row (media, title, description, actions) in default, outline and muted, md and sm; only a link draws the hover fill. Header and footer lines for card-like rows.
@@ -42,6 +42,7 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - Charts blocks (21): line (telemetry with range and table view, against a limit, this period against the last), area (battery over a shift, fleet by state, progress to a target), bar (grouped, ranked, stacked, above and below plan), sparkline (robot list, metric tiles, table column), status tracker (30-day uptime, run history, rollout stages), radial (battery rings, progress to a goal, capacity) and heatmap (time of week, zones by time of day). Normal stays neutral; colour is for series identity or for what is abnormal.
 - Application blocks (18): a phone shell with tab dock; stats as levels and as KPIs with a site and range filter; site and mission cards; passkey sign-in and accepting an invitation; a notification matrix and API keys (secret shown once); and four new types: Dialog (confirm a deletion, a short form, share), Sheet (robot detail panel, filters with a result count), Timeline (robot activity, audit history) and Wizard (add a robot with a live self-check, import a CSV).
 - Solutions blocks (12): a mission schedule in Fleet operations; invitations and an audit log in Users and access; and four new types: Incidents (queue, one incident with updates), Maintenance (service due by hours run, a work order with sign-off), Firmware rollout (plan with stages and gates, a rollout in progress) and AI agents (runs, one run as a trace, a proposal waiting for approval).
+- README lists every component and block by group and type, and how AI agents read the kit (llms.txt, Markdown twins, agent skill, MCP). Site description, social card line and keywords cover blocks, charts and agents. Visual baselines are accepted on `dev`, then `ci` is run by hand.
 - MCP `search` ranks by how many of the query's words an item matches, then components before blocks: "battery level" finds Meter before the charts that show a battery.
 - `switch`: the description no longer says on is success green; it is the primary colour, as it has been since 0.8.
 - Docs site: Blocks are organised like Components. Three groups (Application, Charts, Solutions), a page per type that shows all its blocks with preview, code and install, and a sidebar that lists each type's blocks. Old block URLs redirect to their place on the type page; llms.txt lists blocks by group and type. "Built from" links to blocks as well as components.
