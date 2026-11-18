@@ -2,71 +2,80 @@
 
 # SYNCROBOTIC Design System
 
-**One design language for every SYNCROBOTIC product.** Colour, type, spacing, radius and motion tokens, 75 React components and 69 blocks, shipped as a [shadcn/ui](https://ui.shadcn.com) registry for Tailwind CSS v4.
+**Interfaces for the people who run robots.** The design language behind every SYNCROBOTIC product: design tokens, 81 React components and 69 ready-made blocks, shipped as a [shadcn/ui](https://ui.shadcn.com) registry for Tailwind CSS v4. Components install into your project as source you can read and change.
 
-Like [ReUI](https://reui.io), components install into your project as source code: you can read them, change them and keep them in step with the shadcn ecosystem.
+[Documentation](https://syncai-lib-designsystem.vercel.app) · [Components](https://syncai-lib-designsystem.vercel.app/docs/components/button) · [Blocks](https://syncai-lib-designsystem.vercel.app/blocks) · [Changelog](CHANGELOG.md) · [Roadmap](ROADMAP.md)
 
-- **Docs site:** [https://syncai-lib-designsystem.vercel.app](https://syncai-lib-designsystem.vercel.app) (Next.js app in `app/`, deployed on Vercel; open to anyone with the link, not indexed until open-sourced)
-- **Registry:** `https://syncai-lib-designsystem.vercel.app/r/{name}.json`
-- **Blocks:** [https://syncai-lib-designsystem.vercel.app/blocks](https://syncai-lib-designsystem.vercel.app/blocks): application screens, charts and whole robot-operations screens, each installable as source
-- **For AI agents:** [`/llms.txt`](https://syncai-lib-designsystem.vercel.app/llms.txt), a Markdown twin of every page, an agent skill and a read-only MCP server (see [below](#for-ai-agents))
-- **Workbench:** Storybook, with visual regression tests on every state
+[![CI](https://github.com/Syncrobotic/SyncAI-Lib-DesignSystem/actions/workflows/ci.yml/badge.svg)](https://github.com/Syncrobotic/SyncAI-Lib-DesignSystem/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/Syncrobotic/SyncAI-Lib-DesignSystem)](https://github.com/Syncrobotic/SyncAI-Lib-DesignSystem/releases)
 
-## Why
+![The docs site's home page: a working emergency stop beside the three rules it demonstrates](https://syncai-lib-designsystem.vercel.app/opengraph-image)
 
-Operators control robots outdoors, one-handed and sometimes in a hurry. The system is built around that:
+> **Source-available, not open source.** This repository is public so it can be read. Using, copying or redistributing it needs a written agreement with SYNCROBOTIC; see [LICENSE](LICENSE).
 
-- **Solid red is for the emergency stop only.** One touch stops, holding stops every robot, release takes a deliberate slide.
-- **Readable outdoors.** 44 px minimum touch targets, and every status as shape, colour and a word, so it reads in glare and without colour vision. Dark is the default theme; light is the better choice in direct sun.
-- **UI only.** Components never send commands. The app sends, waits for the robot, falls back to Bluetooth and passes the result back as `state`, so every component is testable on its own.
+## Built for one job
 
-## Install
+Operators control fleets of robots from a console in a control room and from a phone outdoors, one-handed, sometimes in a hurry. Every rule in the system follows from that.
 
-1. Run `npx shadcn init` in a React or Next.js project (Tailwind CSS v4).
-2. Add the registry to `components.json`:
+- **Solid red means stop.** The emergency stop is the only solid red on any screen. One touch stops, holding stops every robot, and release takes a deliberate slide. Everything else that is wrong is a tint, a shape and a word.
+- **Colour is for what needs someone.** A calm fleet is grey, busy or idle. Amber needs attention, red needs someone now, and blue marks only a process someone is waiting on.
+- **Made for one thumb, outdoors.** 44 px touch targets, and every status as a shape and a word, so it reads in glare and without colour vision.
+- **UI only.** Components never send commands. The app sends, waits for the robot, falls back to Bluetooth and passes the result back as `state`, so every component can be tested on its own.
+
+## Quick start
+
+In a React or Next.js project with Tailwind CSS v4:
+
+1. Run `npx shadcn init`, then add the registry to `components.json`:
 
    ```json
    "registries": {
-     "@syncrobotic": {
-       "url": "https://syncai-lib-designsystem.vercel.app/r/{name}.json"
-     }
+     "@syncrobotic": { "url": "https://syncai-lib-designsystem.vercel.app/r/{name}.json" }
    }
    ```
 
-3. Install the theme, import it after Tailwind in `globals.css` (`@import "../styles/syncrobotic-theme.css";`) and delete the `:root`, `.dark` and `@theme inline` blocks that shadcn init generated:
+2. Install the theme. Import it after Tailwind in `globals.css` (`@import "../styles/syncrobotic-theme.css";`) and delete the `:root`, `.dark` and `@theme inline` blocks that `shadcn init` generated:
 
    ```bash
    npx shadcn add @syncrobotic/syncrobotic-theme
    ```
 
-4. Install components:
+3. Install what you need, a component or a whole screen:
 
    ```bash
-   npx shadcn add @syncrobotic/dock @syncrobotic/stop-button @syncrobotic/slide-to-release @syncrobotic/island
+   npx shadcn add @syncrobotic/button @syncrobotic/data-grid
+   npx shadcn add @syncrobotic/console-overview
    ```
 
-Dark is the default: `<html class="dark">`. Default copy is English; every visible and screen-reader string can be replaced through props to localise.
+Dark is the default (`<html class="dark">`). Copy is English; every visible and screen-reader string is a prop, so it localises. The [installation guide](https://syncai-lib-designsystem.vercel.app/docs/installation) covers the details.
 
-## Components
+## What's inside
 
-75 components and 2 hooks in eight groups, as on the docs site. Every component follows the colour, radius, height and spacing rules, and every state has a story.
-
-| Group | Items |
+| | |
 | --- | --- |
-| Theme | `syncrobotic-theme` (colour, radius, type, height and motion tokens) |
-| Actions | `button`, `segmented-control`, `toggle`, `copy-button`, `button-group`, `toggle-group` |
-| Inputs | `input`, `input-group`, `number-field`, `textarea`, `label`, `field`, `checkbox`, `radio-group`, `switch`, `choice-field`, `select`, `slider`, `autocomplete`, `input-otp`, `phone-input`, `calendar`, `date-selector`, `time-picker`, `sortable`, `file-upload`, `questionnaire` |
+| **Foundations** | Principles, colour, typography, spacing, radius, elevation, motion, iconography, accessibility and alarms, each with its tokens and the rules for using them. Tokens also ship as [DTCG JSON](public/tokens) for design tools. |
+| **81 components** | General UI on Radix primitives, a charts component on Recharts, building blocks for data tools, and the robot shell: emergency stop, slide to release, dock and dynamic island. |
+| **69 blocks** | Whole screens in three groups: Application (shells, stats, cards, sign-in, settings, forms, dialogs, sheets, timelines, wizards), Charts, and Solutions for robot operations (fleet operations, data operations, users and access, incidents, maintenance, firmware rollout, AI agents). |
+
+<details>
+<summary>Every component, by group</summary>
+
+| Group | Components |
+| --- | --- |
+| Actions | `button`, `segmented-control`, `toggle`, `copy-button`, `button-group`, `toggle-group`, `theme-toggle` |
+| Inputs | `input`, `input-group`, `number-field`, `textarea`, `label`, `field`, `checkbox`, `radio-group`, `switch`, `choice-field`, `select`, `slider`, `chip-group`, `filter-form`, `search-field`, `autocomplete`, `input-otp`, `phone-input`, `calendar`, `date-selector`, `time-picker`, `sortable`, `file-upload`, `questionnaire` |
 | Display | `status-glyph`, `status-eyebrow`, `list`, `skeleton`, `spinner`, `badge`, `card`, `avatar`, `separator`, `progress`, `description-list`, `meter`, `empty-state`, `table`, `item`, `icon-tile`, `kbd`, `scroll-area`, `data-grid`, `resizable`, `attachment`, `file-type`, `timeline`, `trace`, `marker` |
-| Charts | `chart` (Recharts) |
-| Feedback | `alert`, `alarm`, `toast` |
-| Navigation | `tabs`, `pagination`, `breadcrumb`, `accordion`, `stepper`, `scrollspy`, `navigation-menu` |
+| Charts | `chart` |
+| Feedback | `alert`, `alarm`, `toast`, `route-progress` |
+| Navigation | `tabs`, `pagination`, `breadcrumb`, `accordion`, `page-header`, `stepper`, `scrollspy`, `navigation-menu` |
 | Overlays | `dialog`, `alert-dialog`, `sheet`, `popover`, `tooltip`, `dropdown-menu`, `command` |
 | Robot shell | `tray`, `stop-button`, `slide-to-release`, `dock`, `island` |
 | Hooks | `use-long-press`, `use-slide-release` |
 
-## Blocks
+</details>
 
-69 blocks, grouped like the components: a group, then a type, then its blocks. The docs site has one page per type with every block's preview at desktop, tablet and phone width, its code and its install command.
+<details>
+<summary>Every block, by group and type</summary>
 
 | Group | Type | Blocks |
 | --- | --- | --- |
@@ -97,100 +106,36 @@ Dark is the default: `<html class="dark">`. Default copy is English; every visib
 | Solutions | Firmware rollout | `rollout-overview`, `rollout-plan` |
 | Solutions | AI agents | `agent-runs`, `agent-trace`, `agent-approval` |
 
-General components are built on [Radix UI](https://www.radix-ui.com) primitives, the same base as shadcn/ui, so keyboard and screen-reader behaviour comes from Radix.
+</details>
+
+## Quality you can rely on
+
+The rules are not a style guide that drifts: CI enforces them on every change.
+
+- **Accessibility.** Every story, in dark and light, is checked with axe against WCAG 2.2 AA. Status colours are validated for colour-vision deficiency, and the warning and danger pair stays apart for deutan eyes.
+- **Visual regression.** Every state of every component is a screenshot compared with its baseline in both themes; a change to how anything looks needs an approved new baseline.
+- **Tokens only.** Lint rejects raw colours, arbitrary lengths, off-scale spacing, type sizes and weights, and native number inputs (NumberField replaces them). A check walks every page for nested corners that break the radius rule.
+- **Installs for real.** Every registry item is installed into a fresh Next.js app, type-checked and built.
+- **Versioned per item.** Each component carries its own version and changelog, so a team knows when to re-install. The [upgrading guide](https://syncai-lib-designsystem.vercel.app/docs/upgrading) lists them.
 
 ## For AI agents
 
 Coding agents can read the whole kit without scraping the site:
 
 - **`/llms.txt`** lists every component and block with a one-line summary; **`/llms-full.txt`** is everything in one file: the design language, every block, and every component with when to use it.
-- **Markdown twins.** Every component, block and foundation page has a Markdown version at its URL plus `.md`, e.g. `/docs/components/button.md`. The docs site's Markdown and Prompt buttons copy them.
+- **Markdown twins.** Every component, block and foundation page has a Markdown version at its URL plus `.md`, for example `/docs/components/button.md`.
 - **Agent skill.** `npx shadcn add @syncrobotic/agent-skill` installs the workflow and the design language into `.claude/skills/syncrobotic-ui/`.
-- **MCP server** (read-only, no sign-in): `claude mcp add --transport http syncrobotic https://syncai-lib-designsystem.vercel.app/mcp`. Tools: `search`, `get_item` (source, stories and rules), `get_install_command`, `get_design_language` and `get_checklist`.
+- **MCP server** (read-only, no sign-in): `claude mcp add --transport http syncrobotic https://syncai-lib-designsystem.vercel.app/mcp`. Tools: `search`, `get_item`, `get_install_command`, `get_design_language` and `get_checklist`.
 
-## Develop
+## Contributing
 
-```bash
-npm install
-npm run dev              # docs site at http://localhost:3000
-npm run storybook        # http://localhost:6006, toolbar switches dark and light
-npm run lint:tokens      # fails on any value outside the tokens, in the registry and the docs site
-npm run lint:registry    # fails when an item's dependencies drift from its imports
-npm run typecheck
-npm test                 # behaviour tests (Vitest): stop, stop all, slide to release, keyboard and AT paths
-npm run build            # registry JSON in public/r + docs site
-npm run build-storybook
-npm run test:stories     # every story, dark and light: screenshot against its baseline, then axe (WCAG 2.2 AA)
-npm run test:registry    # installs every item into a fresh Next.js app, then typechecks and builds it
-npm run check:radius     # with the site running (npm start): nested corners on every page follow outer = inner + padding
-```
-
-### Repository layout
-
-| Path | What |
-| --- | --- |
-| `registry/syncrobotic/styles/` | The theme: every token |
-| `registry/syncrobotic/ui/` | General components (Radix UI based) |
-| `registry/syncrobotic/shell/` | Robot shell components: emergency stop, slide to release, dock, island, status |
-| `registry/syncrobotic/blocks/` | Blocks: application screens, charts and robot-operations screens |
-| `registry/syncrobotic/hooks/`, `lib/` | Interaction hooks and `cn()` |
-| `stories/` | One story per state; the docs site, visual tests and axe all read them |
-| `tests/unit/` | Behaviour tests |
-| `app/`, `site/` | The docs site; `site/block-types.ts` holds the block groups, types and order |
-
-Baselines live in `tests/__screenshots__/` and are written only by CI (Actions → `visual-baseline`), never locally: fonts and anti-aliasing differ between machines. Stories render in Geist, loaded before each screenshot, with the page clock run past timed UI. Any change to how a component looks fails CI with a diff image; to accept it, run the workflow on `dev` (not on `stage`: a baseline commit that exists only on `stage` conflicts with the next promotion). A commit pushed by the workflow does not start CI by itself, so run Actions → `ci` on the branch afterwards.
-
-### Rules CI enforces
-
-- No arbitrary Tailwind lengths (`h-[72px]`); use tokens (`h-(--h-stop)`, `rounded-md`)
-- No raw colours; use tokens such as `bg-stop` and `text-info`
-- Font sizes only from the scale: xs, sm, base, lg, xl, 2xl, 3xl, 4xl, 5xl (Tailwind's other sizes are cleared from the theme)
-- `rounded-full` only for round things (avatars, dots, switch, radio, tracks, count badges, grabber); everything else uses `rounded-xs`…`rounded-xl`
-- Animation only marks a state change and uses the motion tokens; in JavaScript, import `site/motion.ts`
-- Spacing only 1, 2, 3, 4, 6, 8 (4, 8, 12, 16, 24, 32 px)
-- Font weights only 400, 500, 700
-
-### Adding a component
-
-1. Write it in `registry/syncrobotic/ui/` (general), `registry/syncrobotic/shell/` (robot shell) or `registry/syncrobotic/blocks/` (blocks). Import from `@/lib/utils` and `@/registry/syncrobotic/...`; the CLI rewrites these to the consumer's paths on install.
-2. Add an entry to `registry.json` with its `dependencies` (npm) and `registryDependencies` (other `@syncrobotic/...` items).
-3. Write one story per state in `stories/`. The docs site renders the same stories.
-4. Add it to `site/catalog.ts` with its usage rules. A block instead goes into `site/block-types.ts` (its type and order) and `site/blocks.tsx` (its preview).
-5. Interaction logic gets a behaviour test in `tests/unit/`.
-6. Open a PR once `npm run ci` passes. Add a line to `CHANGELOG.md`.
-
-After changing an item's files, bump its `meta.version` in `registry.json`, add a `meta.changelog` line and run `npm run versions`. After changing the theme, run `npm run tokens`.
-
-Visual regression: every story is compared, dark and light, with the baselines in `tests/__screenshots__/`, together with axe. These story checks run on PRs into `stage` and `main` and on demand (Actions → `ci` → Run workflow); PRs into `dev` get the fast checks (lint, types, unit tests, builds, registry e2e). They are written on CI's own browser: after an intended visual change, run Actions → `visual-baseline` on the branch and review the committed screenshots in the PR.
-
-Releases: when `main` gets a `package.json` version that has no tag, the `release` workflow tags it `vX.Y.Z` and publishes a GitHub Release with that version's `CHANGELOG.md` section. CI checks that the section exists.
-
-New components start as a proposal issue. How work is chosen, reviewed and released is in [ROADMAP.md](ROADMAP.md).
-
-## Branches
-
-`feat/*` → `dev` → `stage` → `main`, each step through a pull request with CI green.
-
-## Deploy (Vercel)
-
-The project lives in the company Vercel team. `vercel.json` pins the framework to Next.js; `npm run build` builds the registry and the site. `main` deploys to production; `dev` and `stage` get preview URLs.
-
-### Access
-
-No sign-in and no token: anyone with the link can read the docs and install from the registry. Vercel Deployment Protection is off for the production deployment. Until the project is open-sourced the site is `noindex` and `robots.txt` disallows everything, so it stays out of search results.
-
-### Environment variables
-
-| Name | Purpose |
-| --- | --- |
-| `SITE_URL` | Canonical URL, e.g. `https://design.example.com`. Defaults to the Vercel production URL |
-| `SITE_PUBLIC` | `true` lets search engines index the site (robots, sitemap). Leave unset until open-sourcing |
-
-### Open-sourcing
-
-Set `SITE_PUBLIC=true` and redeploy. Search engines may then index the site, and the sitemap is published.
+Work happens in pull requests: `feat/*` → `dev` → `stage` → `main`, each step with CI green. [CONTRIBUTING.md](CONTRIBUTING.md) covers the setup, the checks, adding a component and how releases work; [ROADMAP.md](ROADMAP.md) covers how work is chosen.
 
 ## Known issues
 
 - Installing two or more components that share `@syncrobotic/cn` prints "Circular dependency detected". The CLI is merging shared dependencies; the result is correct.
 - The shadcn CLI fetches base colours from ui.shadcn.com during install, so the machine needs access to it.
+
+## License
+
+Copyright © 2026 SYNCROBOTIC. All rights reserved. Source-available for reading; see [LICENSE](LICENSE).
