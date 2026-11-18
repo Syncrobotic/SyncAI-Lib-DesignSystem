@@ -10,14 +10,13 @@ const bodyContrast = contrast("foreground", "background", "dark")!.toFixed(1)
 // One small, real exhibit per foundation. Every value comes from the theme through Tailwind utilities.
 const previews: Record<FoundationSlug, React.ReactNode> = {
   principles: (
-    <ol className="flex flex-col items-start gap-2 text-sm">
-      {["Safety is a colour", "One meaning per colour", "Readable anywhere", "One geometry", "Calm by default"].map((p, i) => (
-        <li key={p} className="flex items-baseline gap-3">
-          <span className="font-mono text-xs text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
+    <ul className="flex w-full max-w-48 flex-col text-sm">
+      {["Safety is a colour", "One meaning per colour", "Readable anywhere", "One geometry", "Calm by default"].map((p) => (
+        <li key={p} className="border-b border-border py-2 last:border-b-0">
           {p}
         </li>
       ))}
-    </ol>
+    </ul>
   ),
   color: (
     <div className="grid h-full w-full grid-cols-6 gap-1">
@@ -116,16 +115,22 @@ const span: Record<FoundationSlug, string> = {
 // of the exhibit and the arrow fading in. Reduced motion keeps the colour change and drops the travel.
 export const fast = "duration-(--motion-fast) ease-(--ease-standard)"
 
+/**
+ * The foundations as one ruled sheet, not a pile of cards: cells split by hairlines (the grid's 1 px gap over the border
+ * colour), open at the sides, each a specimen with its name under it. The sheet arrives as one piece, so a moving cell
+ * never shows the lines behind it.
+ */
 export function FoundationGrid() {
   return (
-    <Reveal className="grid auto-rows-fr gap-3 sm:grid-cols-2 lg:grid-cols-6">
-      {foundations.map((f, i) => (
-        <AppearItem key={f.slug} className={`flex ${span[f.slug]}`}>
+    <Reveal>
+      <AppearItem className="grid gap-px border-y border-border bg-border sm:grid-cols-2 lg:grid-cols-6">
+        {foundations.map((f) => (
           <Link
+            key={f.slug}
             href={`/docs/foundations/${f.slug}`}
-            className={`press group flex w-full flex-col gap-4 rounded-md border border-border bg-background p-4 transition-colors hover:border-muted-foreground hover:bg-card ${fast}`}
+            className={`group flex flex-col gap-6 bg-background p-6 outline-none transition-colors hover:bg-card focus-visible:bg-card focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring ${fast} ${span[f.slug]}`}
           >
-            <div aria-hidden className="specimen flex min-h-32 flex-1 items-center justify-center overflow-hidden rounded-sm border border-border p-4">
+            <div aria-hidden className="flex min-h-32 flex-1 items-center justify-center overflow-hidden">
               <div
                 className={`flex size-full items-center justify-center transition-transform group-hover:-translate-y-0.5 motion-reduce:group-hover:translate-y-0 ${fast}`}
               >
@@ -134,10 +139,7 @@ export function FoundationGrid() {
             </div>
             <div className="flex items-start justify-between gap-3">
               <div className="flex flex-col gap-1">
-                <span className="flex items-baseline gap-2">
-                  <span className="font-mono text-xs text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="font-bold">{f.title}</span>
-                </span>
+                <span className="font-bold">{f.title}</span>
                 <span className="text-sm text-muted-foreground">{f.lead}</span>
               </div>
               <ArrowUpRight
@@ -146,8 +148,8 @@ export function FoundationGrid() {
               />
             </div>
           </Link>
-        </AppearItem>
-      ))}
+        ))}
+      </AppearItem>
     </Reveal>
   )
 }

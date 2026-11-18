@@ -15,7 +15,6 @@ export default function ElevationPage() {
   return (
     <article>
       <DocHeader
-        eyebrow="Foundations · 06"
         title="Elevation"
         lead="Three layers, no more. Depth tells the operator what is page, what floats over the live view, and what interrupts it."
       />

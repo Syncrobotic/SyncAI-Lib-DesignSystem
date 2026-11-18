@@ -42,7 +42,6 @@ export default function PrinciplesPage() {
   return (
     <article>
       <DocHeader
-        eyebrow="Foundations · 01"
         title="Principles"
         lead="Every token in this system exists to serve one of these five decisions. When a choice is unclear, these settle it."
       />

@@ -20,7 +20,6 @@ export default function TypographyPage() {
   return (
     <article>
       <DocHeader
-        eyebrow="Foundations · 03"
         title="Typography"
         lead="Six sizes, three weights, one family. Every line height is a multiple of 4, so text sits on the same grid as spacing and components."
       />

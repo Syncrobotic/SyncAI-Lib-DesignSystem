@@ -22,7 +22,6 @@ export default function InstallationPage() {
   return (
     <article>
       <PageTitle
-        eyebrow="Getting started"
         title="Installation"
         lead="Components install as source code into your project, the same way shadcn/ui does. You can read and change every line."
       />
