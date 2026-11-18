@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { CircleAlert, OctagonAlert, TriangleAlert } from "lucide-react"
+import { haptics, tones } from "@/registry/syncrobotic/lib/feedback"
 import { Alarm } from "@/registry/syncrobotic/ui/alarm"
 import { Alert, AlertDescription, AlertTitle } from "@/registry/syncrobotic/ui/alert"
 import { AlarmLifecycle } from "@/site/alarm-lifecycle"
@@ -74,6 +75,35 @@ export default function AlarmsPage() {
         <Specimen>
           <AlarmLifecycle />
         </Specimen>
+        <TokenTable
+          head={["State", "Who sets it", "In the list"]}
+          rows={[
+            ["Shelved", "An operator, for a set time (not critical alarms)", "Out of the live list into “Shelved”, silent, with Unshelve. Returns when the time is up."],
+            ["Suppressed by design", "The app's logic: the condition does not apply now, e.g. a docked robot is not moving", "Counted under the list"],
+            ["Out of service", "An authorised person, for maintenance", "Counted under the list"],
+            ["Flood", "The list: over 10 alarms raised in 10 minutes (ISA-18.2)", "Named in a banner; critical and high stay in view, low alarms fold into one row; screen readers hear one count"],
+          ]}
+        />
+      </Section>
+
+      <Section
+        id="touch-and-sound"
+        title="Touch and sound"
+        lead="Gloves, wind and machine noise: the screen alone cannot tell an operator that a stop went out or a critical alarm came in. Each safety moment has one fixed pattern from `@syncrobotic/feedback`, so the hand learns it like the eye learns a colour. Touch works where the browser can vibrate (Android, not iOS); sound only after the first tap on the page. Neither ever replaces what the screen shows."
+      >
+        <TokenTable
+          head={["Moment", "Vibration (ms on, off, on…)", "Tone"]}
+          rows={(Object.keys(haptics) as (keyof typeof haptics)[]).map((k) => {
+            const t = (tones as Partial<Record<string, { hz: number; pulse: number; starts: readonly number[] }>>)[k]
+            return [
+              <Code key="k">{k}</Code>,
+              <span key="v" className="font-mono text-xs tabular-nums">
+                {haptics[k].join(", ")}
+              </span>,
+              t ? `${t.starts.length} pulses of ${t.pulse} ms at ${t.hz} Hz` : "None",
+            ]
+          })}
+        />
       </Section>
 
       <Section id="rules" title="Rules">

@@ -66,6 +66,48 @@ function AlarmPanel() {
 
 export const AlarmListSorted: S = { render: () => <AlarmPanel /> }
 
+function ShelvingPanel() {
+  // Shelve a nuisance alarm for a while (the app asks how long; here, until 15:30). Critical alarms cannot be shelved.
+  const [alarms, setAlarms] = React.useState<AlarmData[]>([
+    { id: "s1", priority: "critical", title: "Collision risk · Hall B", source: "Patrol dog 7F3A", time: "14:02", active: true, acknowledged: false },
+    { id: "s2", priority: "high", title: "Wi-Fi weak · Dock 2", source: "Courier 2B19", time: "13:58", active: true, acknowledged: false },
+    { id: "s3", priority: "low", title: "Lidar cleaning due", source: "Courier 2B19", time: "13:40", active: true, acknowledged: false, shelvedUntil: "15:30" },
+    { id: "s4", priority: "high", title: "Not moving", source: "Courier 5C01", time: "13:20", active: true, acknowledged: false, suppressed: true },
+    { id: "s5", priority: "low", title: "Bumper sensor fault", source: "Tug 0A77", time: "09:12", active: true, acknowledged: true, outOfService: true },
+  ])
+  const set = (id: string, patch: Partial<AlarmData>) => setAlarms((list) => list.map((a) => (a.id === id ? { ...a, ...patch } : a)))
+  return (
+    <AlarmList
+      alarms={alarms}
+      onAcknowledge={(id) => set(id, { acknowledged: true })}
+      onShelve={(id) => set(id, { shelvedUntil: "15:30" })}
+      onUnshelve={(id) => set(id, { shelvedUntil: undefined })}
+    />
+  )
+}
+
+/** Shelved alarms leave the live list into their own group, quiet, with the way back. Suppressed and out-of-service ones are counted under it. */
+export const AlarmListShelved: S = { render: () => <ShelvingPanel /> }
+
+const NOW = Date.UTC(2026, 10, 18, 14, 10)
+const flood: AlarmData[] = [
+  { id: "f0", priority: "critical", title: "Network down · Hall B", source: "Site", time: "14:09", active: true, acknowledged: false, raisedAt: NOW - 60_000 },
+  { id: "f1", priority: "high", title: "Lost connection", source: "Patrol dog 7F3A", time: "14:09", active: true, acknowledged: false, raisedAt: NOW - 55_000 },
+  ...Array.from({ length: 14 }, (_, i): AlarmData => ({
+    id: `fl${i}`,
+    priority: "low",
+    title: "Telemetry delayed",
+    source: `Courier ${(0x2b10 + i).toString(16).toUpperCase()}`,
+    time: "14:09",
+    active: true,
+    acknowledged: false,
+    raisedAt: NOW - 50_000 + i * 1000,
+  })),
+]
+
+/** One network fault raises 16 alarms in a minute. Over 10 in 10 minutes is a flood: the list says so, keeps critical and high in view and folds the low ones. */
+export const AlarmListFlood: S = { render: () => <AlarmList alarms={flood} now={NOW} feedback={false} onAcknowledge={fn()} /> }
+
 function ToastDemo() {
   return (
     <div className="flex flex-wrap gap-2">

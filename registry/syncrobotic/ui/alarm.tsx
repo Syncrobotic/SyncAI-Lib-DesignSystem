@@ -1,10 +1,11 @@
-// @syncrobotic/alarm v0.8.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
+// @syncrobotic/alarm v0.11.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
 "use client"
 
 import * as React from "react"
-import { CircleAlert, OctagonAlert, TriangleAlert } from "lucide-react"
+import { ChevronRight, CircleAlert, OctagonAlert, TriangleAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { usePresence, usePresenceList } from "@/registry/syncrobotic/hooks/use-presence"
+import { feedback as signal } from "@/registry/syncrobotic/lib/feedback"
 
 /**
  * Alarms follow ISA-18.2 / IEC 62682: an alarm is an abnormal condition that needs an operator action.
@@ -45,6 +46,10 @@ export type AlarmLabels = {
   acknowledged: string
   cleared: string
   acknowledge: string
+  shelve: string
+  unshelve: string
+  /** Before the time the alarm comes back: "Shelved until 15:30". */
+  shelvedUntil: string
 }
 
 export const defaultAlarmLabels: AlarmLabels = {
@@ -55,6 +60,9 @@ export const defaultAlarmLabels: AlarmLabels = {
   acknowledged: "Acknowledged",
   cleared: "Cleared, not acknowledged",
   acknowledge: "Acknowledge",
+  shelve: "Shelve",
+  unshelve: "Unshelve",
+  shelvedUntil: "Shelved until",
 }
 
 export type AlarmData = {
@@ -70,11 +78,26 @@ export type AlarmData = {
   active: boolean
   /** An operator has acknowledged it. */
   acknowledged: boolean
+  /**
+   * Shelved by an operator until this time, already formatted ("15:30"). A shelved alarm is out of the live list and
+   * silent; the app clears this field when the time comes, and the alarm returns. Critical alarms cannot be shelved.
+   */
+  shelvedUntil?: string
+  /** Suppressed by design: the app's logic says it does not apply now (a docked robot's "not moving"). Counted, not shown. */
+  suppressed?: boolean
+  /** Out of service: taken off for maintenance by an authorised person. Counted, not shown. */
+  outOfService?: boolean
+  /** When it was raised, in ms since the epoch. Needed only for flood detection. */
+  raisedAt?: number
 }
 
 type AlarmProps = Omit<AlarmData, "id"> & {
   /** Shown while unacknowledged. Without it the alarm is read-only (for viewers). */
   onAcknowledge?: () => void
+  /** Shows "Shelve" (not on critical alarms). The app asks how long, then sets `shelvedUntil`. */
+  onShelve?: () => void
+  /** Shows "Unshelve" on a shelved alarm. */
+  onUnshelve?: () => void
   /** The corrective action, e.g. "Open camera". */
   action?: { label: string; onClick: () => void }
   labels?: Partial<AlarmLabels>
@@ -82,28 +105,31 @@ type AlarmProps = Omit<AlarmData, "id"> & {
 }
 
 /** One alarm. Unacknowledged: a bar in the priority colour and the word "Unacknowledged"; critical ones are also tinted. Colour stays off everything else. */
-export function Alarm({ priority, title, source, time, active, acknowledged, onAcknowledge, action, labels, className }: AlarmProps) {
+export function Alarm({ priority, title, source, time, active, acknowledged, shelvedUntil, onAcknowledge, onShelve, onUnshelve, action, labels, className }: AlarmProps) {
   const l = { ...defaultAlarmLabels, ...labels }
   const p = alarmPriority[priority]
   const Icon = p.icon
   const id = React.useId()
-  const state = !acknowledged ? (active ? l.unacknowledged : l.cleared) : l.acknowledged
+  const shelved = Boolean(shelvedUntil)
+  const state = shelved ? `${l.shelvedUntil} ${shelvedUntil}` : !acknowledged ? (active ? l.unacknowledged : l.cleared) : l.acknowledged
+  // A shelved alarm is quiet: no bar, no tint, no acknowledge; only the way back.
+  const loud = !acknowledged && !shelved
   return (
     <article
       aria-labelledby={`${id}-title`}
       aria-describedby={`${id}-meta`}
       data-priority={priority}
-      data-state={!acknowledged ? "unacknowledged" : "acknowledged"}
+      data-state={shelved ? "shelved" : !acknowledged ? "unacknowledged" : "acknowledged"}
       className={cn(
         "relative flex min-h-(--h-row) animate-appear flex-wrap items-center gap-x-2 gap-y-2 overflow-hidden rounded-md py-2 pr-2 pl-4",
-        !acknowledged && active && priority === "critical" ? p.tint : "bg-card ring-1 ring-border",
+        loud && active && priority === "critical" ? p.tint : "bg-card ring-1 ring-border",
         className,
       )}
     >
-      {!acknowledged && <span aria-hidden="true" className={cn("absolute inset-y-0 left-0 w-1", p.bar)} />}
+      {loud && <span aria-hidden="true" className={cn("absolute inset-y-0 left-0 w-1", p.bar)} />}
       <Icon aria-hidden="true" className={cn("size-5 shrink-0", p.text)} />
       <div className="flex min-w-0 flex-1 basis-40 flex-col">
-        <p id={`${id}-title`} className={cn("line-clamp-2 text-sm", !acknowledged ? "font-bold" : "font-medium")}>
+        <p id={`${id}-title`} className={cn("line-clamp-2 text-sm", loud ? "font-bold" : "font-medium")}>
           <span className={p.text}>{l[priority]}</span>
           <span aria-hidden="true" className="text-muted-foreground">
             {" "}
@@ -127,7 +153,27 @@ export function Alarm({ priority, title, source, time, active, acknowledged, onA
             {action.label}
           </button>
         )}
-        {!acknowledged && onAcknowledge && (
+        {!shelved && onShelve && priority !== "critical" && (
+          <button
+            type="button"
+            onClick={onShelve}
+            className="press h-(--h-sm) shrink-0 rounded-xs px-3 text-sm font-medium ring-1 ring-border ring-inset hover:bg-accent"
+          >
+            {l.shelve}
+            <span className="sr-only">: {title}</span>
+          </button>
+        )}
+        {shelved && onUnshelve && (
+          <button
+            type="button"
+            onClick={onUnshelve}
+            className="press h-(--h-sm) shrink-0 rounded-xs px-3 text-sm font-medium ring-1 ring-border ring-inset hover:bg-accent"
+          >
+            {l.unshelve}
+            <span className="sr-only">: {title}</span>
+          </button>
+        )}
+        {loud && onAcknowledge && (
           <button
             type="button"
             onClick={onAcknowledge}
@@ -142,11 +188,14 @@ export function Alarm({ priority, title, source, time, active, acknowledged, onA
   )
 }
 
-/** Unacknowledged before acknowledged, then priority, then newest first (by list order). Cleared and acknowledged alarms leave the list. */
+/**
+ * The live list: unacknowledged before acknowledged, then priority, then newest first (by list order). Cleared and
+ * acknowledged alarms leave it, and so do shelved, suppressed and out-of-service ones (AlarmList shows those apart).
+ */
 export function sortAlarms<T extends AlarmData>(alarms: T[]): T[] {
   return alarms
     .map((a, i) => ({ a, i }))
-    .filter(({ a }) => a.active || !a.acknowledged)
+    .filter(({ a }) => (a.active || !a.acknowledged) && !a.shelvedUntil && !a.suppressed && !a.outOfService)
     .sort((x, y) => Number(x.a.acknowledged) - Number(y.a.acknowledged) || alarmPriority[x.a.priority].rank - alarmPriority[y.a.priority].rank || y.i - x.i)
     .map(({ a }) => a)
 }
@@ -160,11 +209,32 @@ export const alarmEdge = (alarm?: AlarmData) => (alarm?.priority === "critical" 
 type AlarmListProps = {
   alarms: AlarmData[]
   onAcknowledge?: (id: string) => void
+  onShelve?: (id: string) => void
+  onUnshelve?: (id: string) => void
   labels?: Partial<AlarmLabels> & {
     title?: string
     summary?: (active: number, unacknowledged: number) => string
     none?: string
+    /** "Shelved · 2" */
+    shelvedGroup?: (count: number) => string
+    /** "2 suppressed by design · 1 out of service" */
+    hidden?: (suppressed: number, outOfService: number) => string
+    /** The flood banner. */
+    flood?: (count: number, minutes: number) => string
+    /** "18 low alarms" */
+    lowGroup?: (count: number) => string
+    /** Announced instead of every title when many arrive at once: "23 new alarms". */
+    many?: (count: number) => string
   }
+  /**
+   * More than `count` alarms raised within `minutes` is a flood (ISA-18.2: over 10 in 10 minutes per operator). The list
+   * says so, keeps critical and high on top and folds low alarms into one row. Needs `raisedAt` on the alarms.
+   */
+  flood?: { count: number; minutes: number }
+  /** The current time in ms, for flood detection. Defaults to the clock; pass it to make a story or test stable. */
+  now?: number
+  /** Buzz and sound for a new critical or high alarm (the `feedback` patterns). On by default; turn off where the list is a record, not a live feed. */
+  feedback?: boolean
   className?: string
 }
 
@@ -172,17 +242,47 @@ type AlarmListProps = {
  * The alarm list: summary, then alarms in order. New critical alarms are announced assertively,
  * others politely, so screen-reader users hear them without moving focus.
  */
-export function AlarmList({ alarms, onAcknowledge, labels, className }: AlarmListProps) {
+export function AlarmList({ alarms, onAcknowledge, onShelve, onUnshelve, labels, flood = { count: 10, minutes: 10 }, now, feedback = true, className }: AlarmListProps) {
   const l = {
     ...defaultAlarmLabels,
     title: "Alarms",
     none: "No active alarms",
+    shelvedGroup: (n: number) => `Shelved · ${n}`,
+    hidden: (sup: number, oos: number) => [sup && `${sup} suppressed by design`, oos && `${oos} out of service`].filter(Boolean).join(" · "),
+    flood: (n: number, m: number) => `Alarm flood: ${n} alarms in ${m} min. Critical and high first; low alarms are grouped.`,
+    lowGroup: (n: number) => `${n} low alarm${n === 1 ? "" : "s"}`,
+    many: (n: number) => `${n} new alarms`,
     ...labels,
   }
   const shown = React.useMemo(() => sortAlarms(alarms), [alarms])
   // A cleared alarm fades out (disappear, --motion-fast) instead of vanishing from under the operator's finger.
   const { rendered, done } = usePresenceList(shown, (a) => a.id)
   const unack = shown.filter((a) => !a.acknowledged).length
+  const shelved = alarms.filter((a) => a.shelvedUntil && (a.active || !a.acknowledged))
+  const suppressed = alarms.filter((a) => a.suppressed && a.active).length
+  const outOfService = alarms.filter((a) => a.outOfService).length
+  const [clock] = React.useState(() => Date.now())
+  const at = now ?? clock
+  const recent = alarms.filter((a) => a.raisedAt !== undefined && at - a.raisedAt <= flood.minutes * 60_000).length
+  const flooding = recent > flood.count
+  // In a flood, unacknowledged low alarms fold into one row so critical and high stay in view.
+  const folded = flooding ? rendered.filter(({ item: a }) => a.priority === "low" && !a.acknowledged) : []
+  const open = folded.length ? rendered.filter((r) => !folded.includes(r)) : rendered
+  const row = ({ item: a, leaving }: (typeof rendered)[number]) => (
+    <li
+      key={a.id}
+      aria-hidden={leaving || undefined}
+      className={leaving ? "animate-disappear" : undefined}
+      onAnimationEnd={(e) => leaving && e.target === e.currentTarget && done(a.id)}
+    >
+      <Alarm
+        {...a}
+        labels={labels}
+        onAcknowledge={onAcknowledge ? () => onAcknowledge(a.id) : undefined}
+        onShelve={onShelve ? () => onShelve(a.id) : undefined}
+      />
+    </li>
+  )
   const summary = labels?.summary?.(shown.filter((a) => a.active).length, unack) ?? `${shown.filter((a) => a.active).length} active · ${unack} unacknowledged`
 
   const seen = React.useRef<Set<string> | null>(null)
@@ -192,7 +292,11 @@ export function AlarmList({ alarms, onAcknowledge, labels, className }: AlarmLis
     if (seen.current) {
       const fresh = alarms.filter((a) => a.active && !seen.current!.has(a.id))
       const text = (list: AlarmData[]) => list.map((a) => `${l[a.priority]}: ${a.title}`).join(". ")
-      if (fresh.length)
+      if (feedback && fresh.some((a) => a.priority === "critical")) signal("alarmCritical")
+      else if (feedback && fresh.some((a) => a.priority === "high")) signal("alarmHigh")
+      // Many at once: one count, not a minute of titles read aloud.
+      if (fresh.length > 5) setAnnounce({ assertive: l.many(fresh.length), polite: "" })
+      else if (fresh.length)
         setAnnounce({
           assertive: text(fresh.filter((a) => a.priority === "critical")),
           polite: text(fresh.filter((a) => a.priority !== "critical")),
@@ -209,22 +313,42 @@ export function AlarmList({ alarms, onAcknowledge, labels, className }: AlarmLis
         <h2 className="text-sm font-bold">{l.title}</h2>
         <span className="text-xs text-muted-foreground tabular-nums">{summary}</span>
       </div>
+      {flooding && (
+        <p className="flex items-start gap-2 rounded-md bg-warning-subtle px-4 py-3 text-sm">
+          <TriangleAlert aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-warning" />
+          <span className="font-medium">{l.flood(recent, flood.minutes)}</span>
+        </p>
+      )}
       {rendered.length === 0 ? (
         <p className="rounded-md bg-card px-4 py-4 text-sm text-muted-foreground ring-1 ring-border">{l.none}</p>
       ) : (
-        <ul className="flex flex-col gap-2">
-          {rendered.map(({ item: a, leaving }) => (
-            <li
-              key={a.id}
-              aria-hidden={leaving || undefined}
-              className={leaving ? "animate-disappear" : undefined}
-              onAnimationEnd={(e) => leaving && e.target === e.currentTarget && done(a.id)}
-            >
-              <Alarm {...a} labels={labels} onAcknowledge={onAcknowledge ? () => onAcknowledge(a.id) : undefined} />
-            </li>
-          ))}
-        </ul>
+        <ul className="flex flex-col gap-2">{open.map(row)}</ul>
       )}
+      {folded.length > 0 && (
+        <details className="group rounded-md ring-1 ring-border">
+          <summary className="press flex min-h-(--h-md) cursor-pointer items-center gap-2 px-4 text-sm font-medium [&::-webkit-details-marker]:hidden">
+            <ChevronRight aria-hidden="true" className="size-4 shrink-0 transition-transform duration-(--motion-fast) ease-(--ease-standard) group-open:rotate-90" />
+            {l.lowGroup(folded.length)}
+          </summary>
+          <ul className="flex flex-col gap-2 p-2">{folded.map(row)}</ul>
+        </details>
+      )}
+      {shelved.length > 0 && (
+        <details className="group rounded-md ring-1 ring-border">
+          <summary className="press flex min-h-(--h-md) cursor-pointer items-center gap-2 px-4 text-sm font-medium [&::-webkit-details-marker]:hidden">
+            <ChevronRight aria-hidden="true" className="size-4 shrink-0 transition-transform duration-(--motion-fast) ease-(--ease-standard) group-open:rotate-90" />
+            {l.shelvedGroup(shelved.length)}
+          </summary>
+          <ul className="flex flex-col gap-2 p-2">
+            {shelved.map((a) => (
+              <li key={a.id}>
+                <Alarm {...a} labels={labels} onUnshelve={onUnshelve ? () => onUnshelve(a.id) : undefined} />
+              </li>
+            ))}
+          </ul>
+        </details>
+      )}
+      {(suppressed > 0 || outOfService > 0) && <p className="px-1 text-xs text-muted-foreground">{l.hidden(suppressed, outOfService)}</p>}
       <div aria-live="assertive" className="sr-only">
         {announce.assertive}
       </div>
