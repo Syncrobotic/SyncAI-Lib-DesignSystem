@@ -2,11 +2,14 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.9.1 · 2026-11-18
 
+### Changed
 - Docs site, no more card grids: the foundations and component groups are ruled sheets (cells split by hairlines, open at the sides, the specimen then its name), arriving as one piece; block types show a framed screenshot with plain text under it. The last eyebrow (on /blocks) is gone.
 - Docs site, less template: the home page leads with a working emergency stop (stop, then slide to release, with the real shell components) beside the three rules it shows, instead of a screenshot; a Blocks section; no eyebrow labels above any page title and no section numbers; the install panel and lists are ruled rows instead of boxed cards. Selection, caret, scrollbars and native controls take the theme's colours.
 - Docs site CSS: Tailwind reads only the folders that render (`app`, `registry`, `stories`, `site`, `lib`) instead of the whole repo, so classes from READMEs, the built registry JSON and agent skills no longer ship. 94.4 KB → 87.5 KB (15.9 KB gzipped), no visual change.
+
+### Added
 - Agent skills for design work, installed for the project: `impeccable` (critique, audit and polish against an anti-pattern detector) and `stageshow` (faux product UI and animated demos for the home page). Pinned in `skills-lock.json`; restore with `npx skills experimental_install`.
 
 ## 0.9.0 · 2026-11-18
