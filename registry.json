@@ -21,7 +21,7 @@
           {
             "version": "0.10.0",
             "date": "2026-11-18",
-            "note": "Focus ring is the foreground colour, no longer the in-progress blue. Chart palette moves off the status hues (violet, teal, olive, magenta, grey for Other), CVD-validated. Type scale gains 2xl (24, figures) and 4xl (36, hero on phones) and is locked: sizes off the scale produce nothing."
+            "note": "Focus ring is the foreground colour, no longer the in-progress blue. Chart palette moves off the status hues (violet, teal, olive, magenta, grey for Other), CVD-validated. Type scale gains 2xl (24, figures) and 4xl (36, hero on phones) and is locked: sizes off the scale produce nothing. Adds radius-2xs (4) for controls 24 px and smaller."
           },
           {
             "version": "0.9.0",
@@ -849,8 +849,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Radius 4 (the new radius-2xs): at 20 px, radius 8 made the box read as a radio button."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -1839,8 +1844,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Items use radius 8, so they sit concentric inside the 16 px panel with its 8 px padding."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -1937,8 +1947,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Radius 4 (radius-2xs), so a key inside a tooltip or an input keeps clear of the corner around it."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -2268,8 +2283,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "The handle uses radius 4 (radius-2xs) inside its row."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -2463,8 +2483,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Chips use radius 8."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -2492,8 +2517,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Links in the panel use radius 8, concentric with the panel (16) and its 8 px padding."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -2912,8 +2942,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "List rows use radius 8, concentric with the panel."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -4562,8 +4597,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Mission bars use radius 8, concentric with the lanes."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",

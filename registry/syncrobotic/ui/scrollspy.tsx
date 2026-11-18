@@ -1,4 +1,4 @@
-// @syncrobotic/scrollspy v0.9.0 · update: npx shadcn add @syncrobotic/scrollspy --overwrite
+// @syncrobotic/scrollspy v0.10.0 · update: npx shadcn add @syncrobotic/scrollspy --overwrite
 "use client"
 
 import * as React from "react"
@@ -100,7 +100,7 @@ export function Scrollspy({
                   "flex items-center text-sm outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
                   "transition-colors duration-(--motion-fast) ease-(--ease-standard)",
                   pills
-                    ? "h-(--h-sm) rounded-sm px-3 text-muted-foreground ring-1 ring-border ring-inset hover:text-foreground data-current:bg-foreground data-current:text-background data-current:ring-foreground"
+                    ? "h-(--h-sm) rounded-xs px-3 text-muted-foreground ring-1 ring-border ring-inset hover:text-foreground data-current:bg-foreground data-current:text-background data-current:ring-foreground"
                     : cn(
                         "-ml-px min-h-(--h-sm) border-l-2 border-transparent py-1 text-muted-foreground hover:text-foreground",
                         "data-current:border-foreground data-current:font-medium data-current:text-foreground",

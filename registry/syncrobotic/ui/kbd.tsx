@@ -1,4 +1,4 @@
-// @syncrobotic/kbd v0.9.0 · update: npx shadcn add @syncrobotic/kbd --overwrite
+// @syncrobotic/kbd v0.10.0 · update: npx shadcn add @syncrobotic/kbd --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
@@ -11,7 +11,7 @@ export function Kbd({ className, ...props }: React.ComponentProps<"kbd">) {
     <kbd
       data-slot="kbd"
       className={cn(
-        "inline-flex h-6 min-w-6 shrink-0 items-center justify-center gap-1 rounded-xs bg-muted px-1 font-sans text-xs font-medium text-muted-foreground ring-1 ring-border ring-inset select-none [&_svg]:size-4",
+        "inline-flex h-6 min-w-6 shrink-0 items-center justify-center gap-1 rounded-2xs bg-muted px-1 font-sans text-xs font-medium text-muted-foreground ring-1 ring-border ring-inset select-none [&_svg]:size-4",
         "[[data-slot=tooltip-content]_&]:bg-white/15 [[data-slot=tooltip-content]_&]:text-current [[data-slot=tooltip-content]_&]:ring-white/20",
         className,
       )}
