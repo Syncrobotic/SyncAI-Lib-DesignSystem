@@ -1,4 +1,4 @@
-// @syncrobotic/input-otp v0.9.0 · update: npx shadcn add @syncrobotic/input-otp --overwrite
+// @syncrobotic/input-otp v0.10.0 · update: npx shadcn add @syncrobotic/input-otp --overwrite
 "use client"
 
 import * as React from "react"
@@ -17,7 +17,7 @@ export function InputOTP({ className, containerClassName, ...props }: React.Comp
     <OTPInput
       data-slot="input-otp"
       autoComplete="one-time-code"
-      containerClassName={cn("flex items-center gap-2 has-disabled:opacity-50", containerClassName)}
+      containerClassName={cn("flex items-center gap-2 has-disabled:text-muted-foreground", containerClassName)}
       className={cn("disabled:cursor-not-allowed", className)}
       {...props}
     />

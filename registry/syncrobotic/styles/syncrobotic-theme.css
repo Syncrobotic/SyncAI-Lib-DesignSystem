@@ -10,12 +10,15 @@
  *      on their root so they stay dark whatever the appearance setting.
  *
  * Colour rules:
- *   - Colour is for what is abnormal. Normal and in-progress states are shape + neutral text; warning, danger and stop carry colour
+ *   - Colour is for what is abnormal, and blue for a process someone is waiting on. A thing's state (patrolling, docked,
+ *     charging) is shape + neutral text even while it is busy; warning, danger and stop carry colour
  *   - Status hues are muted on purpose: they must read at a glance without turning the screen into a chart
  *   - Solid red (--stop) is for the emergency stop only. Other destructive actions use the --danger outline and text
  *   - Status colours come in pairs: foreground (--info) on its subtle tint (--info-subtle)
- *   - --primary is neutral high contrast (black in light, white in dark); blue (--info) only means "in progress"
- *   - Selected controls (segmented control, toggle) are inverted; the current page in navigation is --muted with weight, hover is --accent; a switch that is on uses --success
+ *   - --primary is neutral high contrast (black in light, white in dark). Blue (--info) only marks a bounded process someone
+ *     is waiting on: a progress bar, a stage that is running, a command being sent. Never a state, never focus
+ *   - Green (--success) is a confirmation that just happened (toast, alert); a calm state stays grey
+ *   - Selected controls (segmented control, toggle) are inverted; the current page in navigation is --muted with weight, hover is --accent; a switch that is on uses --primary
  *   - Actions in the lower part of the dock are never solid white, so they do not compete with the stop
  *   - Alerts other than the stop (event counts) use --danger on --danger-subtle, never solid red
  */
@@ -36,7 +39,7 @@
   --muted-foreground: #52525b;
   --accent: #e6e6ea;
   --accent-foreground: var(--foreground);
-  --destructive: #b0302b;
+  --destructive: #8d0018;
   --border: #dcdce1;
   --input: #dcdce1;
   --ring: var(--foreground); /* focus is not a status: the ink colour, never the in-progress blue */
@@ -46,9 +49,11 @@
   --info-subtle: #e4e9f4;
   --success: #18704f;
   --success-subtle: #e0eee7;
-  --warning: #94500f;
+  /* Warning and danger are told apart by hue and by lightness, so they stay apart for colour-blind eyes (deutan ΔE 12.5
+     light, 23.2 dark) and at a glance (ΔE 17 and 30). Both reach 4.5:1 as text on the page, the card and their tint. */
+  --warning: #975d00;
   --warning-subtle: #f4ecda;
-  --danger: #b0302b;
+  --danger: #8d0018;
   --danger-subtle: #f6e2e1;
   --neutral: #52525b;
   --neutral-subtle: #f4f4f5;
@@ -112,7 +117,7 @@
   --muted: #25252b;
   --muted-foreground: #a1a1aa;
   --accent: #25252b;
-  --destructive: #ee8580;
+  --destructive: #f05560;
   --border: #2c2c32;
   --input: #2c2c32;
   --ring: var(--foreground);
@@ -122,9 +127,9 @@
   --info-subtle: #1a2233;
   --success: #6cc59c;
   --success-subtle: #172720;
-  --warning: #e0b45c;
+  --warning: #ffd667;
   --warning-subtle: #2b2516;
-  --danger: #ee8580;
+  --danger: #f05560;
   --danger-subtle: #321c1c;
   --neutral: #a1a1aa;
   --neutral-subtle: #1c1c21;
@@ -254,6 +259,8 @@
   /* Spacing keeps Tailwind's 4px base and uses only 1, 2, 3, 4, 6, 8 (4, 8, 12, 16, 24, 32 px) */
 
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  /* Leaving: starts gently and speeds away, so what goes does not linger in a slow tail. Exits only. */
+  --ease-exit: cubic-bezier(0.3, 0, 1, 1);
 
   /*
    * Motion patterns in CSS (see the Motion foundation). Every component uses these, never its own timing.
@@ -264,16 +271,16 @@
    *   press (utility)     anything you press: sinks to 97 % at --motion-fast
    */
   --animate-appear: appear var(--motion-base) var(--ease-standard);
-  --animate-disappear: disappear var(--motion-fast) var(--ease-standard) forwards;
+  --animate-disappear: disappear var(--motion-fast) var(--ease-exit) forwards;
   --animate-fade-in: fade-in var(--motion-base) var(--ease-standard);
   --animate-sheet-in-bottom: sheet-in-bottom var(--motion-sheet) var(--ease-standard);
-  --animate-sheet-out-bottom: sheet-out-bottom var(--motion-sheet) var(--ease-standard) forwards;
+  --animate-sheet-out-bottom: sheet-out-bottom var(--motion-sheet) var(--ease-exit) forwards;
   --animate-sheet-in-right: sheet-in-right var(--motion-sheet) var(--ease-standard);
-  --animate-sheet-out-right: sheet-out-right var(--motion-sheet) var(--ease-standard) forwards;
+  --animate-sheet-out-right: sheet-out-right var(--motion-sheet) var(--ease-exit) forwards;
   --animate-sheet-in-left: sheet-in-left var(--motion-sheet) var(--ease-standard);
-  --animate-sheet-out-left: sheet-out-left var(--motion-sheet) var(--ease-standard) forwards;
+  --animate-sheet-out-left: sheet-out-left var(--motion-sheet) var(--ease-exit) forwards;
   --animate-expand: expand var(--motion-base) var(--ease-standard);
-  --animate-collapse: collapse var(--motion-base) var(--ease-standard);
+  --animate-collapse: collapse var(--motion-base) var(--ease-exit);
   @keyframes appear {
     from { opacity: 0; transform: translateY(0.5rem); }
   }

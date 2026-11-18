@@ -1,4 +1,4 @@
-// @syncrobotic/choice-field v0.8.0 · update: npx shadcn add @syncrobotic/choice-field --overwrite
+// @syncrobotic/choice-field v0.10.0 · update: npx shadcn add @syncrobotic/choice-field --overwrite
 "use client"
 
 import * as React from "react"
@@ -84,7 +84,7 @@ export function ChoiceField({
   return (
     <label
       data-slot="choice-field"
-      className={cn("flex min-h-(--h-md) cursor-pointer items-center gap-3 py-2 has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50", className)}
+      className={cn("flex min-h-(--h-md) cursor-pointer items-center gap-3 py-2 has-[:disabled]:cursor-not-allowed has-[:disabled]:text-muted-foreground", className)}
     >
       {controlAt === "start" && control}
       <span className="flex min-w-0 flex-1 flex-col">

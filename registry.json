@@ -21,7 +21,7 @@
           {
             "version": "0.10.0",
             "date": "2026-11-18",
-            "note": "Focus ring is the foreground colour, no longer the in-progress blue. Chart palette moves off the status hues (violet, teal, olive, magenta, grey for Other), CVD-validated. Type scale gains 2xl (24, figures) and 4xl (36, hero on phones) and is locked: sizes off the scale produce nothing. Adds radius-2xs (4) for controls 24 px and smaller."
+            "note": "Focus ring is the foreground colour, no longer the in-progress blue. Chart palette moves off the status hues (violet, teal, olive, magenta, grey for Other), CVD-validated. Type scale gains 2xl (24, figures) and 4xl (36, hero on phones) and is locked: sizes off the scale produce nothing. Adds radius-2xs (4) for controls 24 px and smaller. Warning and danger are told apart by hue and lightness (deutan ΔE 12.5 light / 23.2 dark, was 1.5). Adds --ease-exit for exits. Blue is defined: a process someone is waiting on, never a state."
           },
           {
             "version": "0.9.0",
@@ -165,8 +165,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Docs: the filled circle is an active (busy) state, drawn in ink."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -483,8 +488,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight. A loading button keeps its look (busy is not unavailable) and still blocks a second press."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -551,8 +561,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -589,8 +604,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -643,8 +663,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -678,8 +703,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -712,8 +742,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -737,8 +772,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -775,8 +815,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "A label next to a disabled control turns muted, not faded."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -973,8 +1018,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "A disabled choice turns muted, not faded."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -1003,8 +1053,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -1199,8 +1254,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Docs: blue marks a process someone is waiting on."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -1487,8 +1547,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -1583,8 +1648,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -1804,8 +1874,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -1849,7 +1924,7 @@
           {
             "version": "0.10.0",
             "date": "2026-11-18",
-            "note": "Items use radius 8, so they sit concentric inside the 16 px panel with its 8 px padding."
+            "note": "Items use radius 8, so they sit concentric inside the 16 px panel with its 8 px padding. Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
           },
           {
             "version": "0.9.0",
@@ -2036,8 +2111,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -2067,8 +2147,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -2096,8 +2181,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -2126,8 +2216,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -2155,8 +2250,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -2188,8 +2288,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -2218,8 +2323,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -2344,8 +2454,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.10.0",
         "changelog": [
+          {
+            "version": "0.10.0",
+            "date": "2026-11-18",
+            "note": "Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -2522,7 +2637,7 @@
           {
             "version": "0.10.0",
             "date": "2026-11-18",
-            "note": "Links in the panel use radius 8, concentric with the panel (16) and its 8 px padding."
+            "note": "Links in the panel use radius 8, concentric with the panel (16) and its 8 px padding. Disabled keeps its words readable: a grey field (bg-muted, muted text) on controls with a surface, solid disabled ink on items and icons; no more 50 % opacity, which washes text out in sunlight."
           },
           {
             "version": "0.9.0",

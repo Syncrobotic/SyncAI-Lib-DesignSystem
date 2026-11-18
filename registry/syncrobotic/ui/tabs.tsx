@@ -1,4 +1,4 @@
-// @syncrobotic/tabs v0.7.0 · update: npx shadcn add @syncrobotic/tabs --overwrite
+// @syncrobotic/tabs v0.10.0 · update: npx shadcn add @syncrobotic/tabs --overwrite
 "use client"
 
 import * as React from "react"
@@ -22,7 +22,7 @@ export function TabsTrigger({ className, ...props }: React.ComponentProps<typeof
         "-mb-px inline-flex h-(--h-md) items-center gap-2 border-b-2 border-transparent text-sm whitespace-nowrap text-muted-foreground",
         "transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:text-foreground",
         "data-[state=active]:border-foreground data-[state=active]:font-medium data-[state=active]:text-foreground",
-        "disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4",
+        "disabled:pointer-events-none disabled:text-disabled [&_svg]:size-4",
         className,
       )}
       {...props}

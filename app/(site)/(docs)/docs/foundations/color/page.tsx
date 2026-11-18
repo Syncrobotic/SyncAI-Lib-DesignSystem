@@ -10,7 +10,7 @@ export const metadata: Metadata = metaFor("color")
 
 const neutrals = ["background", "card", "secondary", "border", "muted-foreground", "foreground"]
 const tones = [
-  { t: "info", means: "In progress, and nothing else" },
+  { t: "info", means: "A process someone is waiting on: progress, a running stage, a command being sent. Never a state" },
   { t: "success", means: "Just done: a confirmation that comes and goes (toast, alert). A calm state stays grey." },
   { t: "warning", means: "Needs attention soon" },
   { t: "danger", means: "Failed, destructive, stopped" },
@@ -120,7 +120,7 @@ export default function ColorPage() {
       <Section
         id="abnormal"
         title="Colour is for what is abnormal"
-        lead="A fleet that is fine should look calm. Normal and in-progress states are shape and neutral text; only warning, danger and the stop carry colour, so the one robot that needs you is the one you see."
+        lead="A fleet that is fine should look calm. Every state, busy or idle, is shape and neutral text; only warning, danger and the stop carry colour, so the one robot that needs you is the one you see."
       >
         <DoDont
           good={{
@@ -226,7 +226,7 @@ export default function ColorPage() {
                 <Badge tone="danger">Low battery</Badge>
               </div>
             ),
-            text: "Pick a tone by looks. Blue means in progress, not docked; low battery is attention (warning), not failure (danger).",
+            text: "Pick a tone by looks. Blue is for a process someone waits on, not for a robot that is busy; low battery is attention (warning), not failure (danger).",
           }}
         />
       </Section>

@@ -4,7 +4,7 @@ Components install as source, so a project keeps the version it installed. Re-ru
 
 ## Unreleased
 
-Re-install `syncrobotic-theme`, `badge`, `icon-tile`, `checkbox`, `kbd`, `sortable`, `command`, `navigation-menu`, `scrollspy`, `list-detail` and `mission-schedule`.
+Most items change in this release: re-install the theme and every component you use (`npx shadcn add @syncrobotic/<name> --overwrite`). Each item's changelog says what changed.
 
 ### Fixed
 - Popover example "with form" used a native number input (the browser's own spinner, no unit, no range); it uses `NumberField` now. Lint rejects `<Input type="number">` and now also checks the examples (stories), where it found four more off-scale values (a 10 px label, 40 and 48 px gaps), all fixed.
@@ -12,6 +12,10 @@ Re-install `syncrobotic-theme`, `badge`, `icon-tile`, `checkbox`, `kbd`, `sortab
 - Docs home: the hero no longer frames the dock in a box of the same radius (24 inside 24, which the radius rule forbids); the readouts and the dock stand on the page.
 
 ### Changed
+- **Warning and danger are told apart.** In light mode the two read as one colour to deutan eyes (ΔE 1.5) and were close even with full colour vision (8.7); they now differ by hue and lightness: ΔE 12.5 / 17.0 light, 23.2 / 29.8 dark. Light warning `#975d00`, danger `#8d0018`; dark warning `#ffd667`, danger `#f05560`. Both still reach 4.5:1 as text on the page, the card and their tint.
+- **Blue is defined.** It marks a process someone is waiting on, with an end: a progress bar, a stage that is running, a command being sent. A thing's state (patrolling, docked, charging) is a shape and neutral text even while it is busy. The theme notes, the principles, the color and iconography pages and the component rules say the same thing now; a stale note (a switch that is on uses green) is gone.
+- **Disabled keeps its words readable.** No more 50 % opacity, which washes text out in sunlight: controls with a surface (button, input, select, pickers, upload) turn into a grey field with readable muted text; items and icons (tabs, menu items, toggles, steppers' buttons, calendar days) use the solid disabled colour; the label of a disabled control turns muted. Only checkbox, radio, switch and slider marks still dim, and their labels stay readable. A loading button keeps its look: busy is not unavailable. Button and input rules: disabled says why.
+- **Exits have their own curve.** `--ease-exit` (`cubic-bezier(0.3, 0, 1, 1)`) for disappear, sheets closing and collapse: what leaves speeds away instead of lingering. `--ease-standard` stays for arrivals and state changes.
 - **Focus ring is the foreground colour** (white on dark, ink on light), no longer the in-progress blue: blue now means in progress and nothing else.
 - **Chart palette moves off the status hues.** Series 1–4 are violet, teal, olive and magenta, between the status hues, so no series reads as info, success, warning or danger; series 5 is grey for "Other". Validated for colour-vision deficiency (worst adjacent ΔE 14.6 dark, 16.0 light) and 3:1 against the card.
 - **Type scale is locked.** It gains 2xl (24/32, the number that leads a card) and 4xl (36/40, hero on phones), and Tailwind's other sizes are cleared, so an off-scale size produces nothing; lint reports 6xl–9xl.
