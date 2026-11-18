@@ -6,6 +6,9 @@ Components install as source, so a project keeps the version it installed. Re-ru
 
 Re-install `syncrobotic-theme`, `badge` and `icon-tile`.
 
+### Fixed
+- Docs home: the hero no longer frames the dock in a box of the same radius (24 inside 24, which the radius rule forbids); the readouts and the dock stand on the page.
+
 ### Changed
 - **Focus ring is the foreground colour** (white on dark, ink on light), no longer the in-progress blue: blue now means in progress and nothing else.
 - **Chart palette moves off the status hues.** Series 1–4 are violet, teal, olive and magenta, between the status hues, so no series reads as info, success, warning or danger; series 5 is grey for "Other". Validated for colour-vision deficiency (worst adjacent ΔE 14.6 dark, 16.0 light) and 3:1 against the card.
