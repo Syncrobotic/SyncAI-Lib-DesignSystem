@@ -32,7 +32,14 @@ export function RestrictedPreview({
   className?: string
 }) {
   const [shown, setShown] = React.useState(false)
-  if (!restricted || shown) return <>{children}</>
+  if (!restricted) return <>{children}</>
+  // Revealed: the preview fades in where the placeholder was (same size), instead of replacing it in one frame.
+  if (shown)
+    return (
+      <div data-slot="restricted-preview" data-revealed="" className={cn("animate-fade-in", className)}>
+        {children}
+      </div>
+    )
   return (
     <button
       type="button"

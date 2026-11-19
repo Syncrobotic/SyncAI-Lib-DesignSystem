@@ -29,7 +29,7 @@ export function ScrollArea({
         data-slot="scroll-area-viewport"
         tabIndex={0}
         className={cn(
-          "size-full rounded-[inherit] outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring",
+          "size-full rounded-[inherit] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring",
           fade && orientation !== "horizontal" && "[mask-image:linear-gradient(to_bottom,transparent,black_1.5rem,black_calc(100%-1.5rem),transparent)]",
           fade && orientation === "horizontal" && "[mask-image:linear-gradient(to_right,transparent,black_1.5rem,black_calc(100%-1.5rem),transparent)]",
           viewportClassName,

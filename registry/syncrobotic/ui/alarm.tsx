@@ -122,12 +122,13 @@ export function Alarm({ priority, title, source, time, active, acknowledged, she
       data-priority={priority}
       data-state={shelved ? "shelved" : !acknowledged ? "unacknowledged" : "acknowledged"}
       className={cn(
-        "relative flex min-h-(--h-row) animate-appear flex-wrap items-center gap-x-2 gap-y-2 overflow-hidden rounded-md py-2 pr-2 pl-4",
+        "relative flex min-h-(--h-row) animate-appear flex-wrap items-start gap-x-2 gap-y-2 overflow-hidden rounded-md py-2 pr-2 pl-4",
         loud && active && priority === "critical" ? p.tint : "bg-card ring-1 ring-border",
         className,
       )}
     >
       {loud && <span aria-hidden="true" className={cn("absolute inset-y-0 left-0 w-1", p.bar)} />}
+      {/* On the title's first line (20 px icon, 20 px line), not the middle of a two- or three-line block. */}
       <Icon aria-hidden="true" className={cn("size-5 shrink-0", p.text)} />
       <div className="flex min-w-0 flex-1 basis-40 flex-col">
         <p id={`${id}-title`} className={cn("line-clamp-2 text-sm", loud ? "font-bold" : "font-medium")}>
@@ -144,7 +145,7 @@ export function Alarm({ priority, title, source, time, active, acknowledged, she
         </p>
       </div>
       {/* Actions wrap under the text when the row is narrow, instead of squeezing the title. */}
-      <div className="ml-auto flex shrink-0 gap-2 empty:hidden">
+      <div className="ml-auto flex shrink-0 gap-2 self-center empty:hidden">
         {action && (
           <button
             type="button"

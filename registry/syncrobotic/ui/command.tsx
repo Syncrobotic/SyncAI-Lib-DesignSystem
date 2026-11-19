@@ -4,7 +4,7 @@
 import * as React from "react"
 import { Command as CommandPrimitive } from "cmdk"
 import { Dialog as DialogPrimitive } from "radix-ui"
-import { Search } from "lucide-react"
+import { Check, Search } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 /** A filterable list you drive from the keyboard: type to narrow, ↑↓ to move, Enter to run. Built on cmdk. */
@@ -57,7 +57,11 @@ export function CommandDialog({
 /** The text box, with a search icon and an optional element at the end (a scope, a shortcut hint). */
 export function CommandInput({ className, end, ...props }: React.ComponentProps<typeof CommandPrimitive.Input> & { end?: React.ReactNode }) {
   return (
-    <div data-slot="command-input" className="flex h-(--h-row) shrink-0 items-center gap-2 border-b border-border px-4">
+    <div
+      data-slot="command-input"
+      // The text box itself has no edge of its own, so its row shows keyboard focus, inset so the list and the frame never clip it.
+      className="flex h-(--h-row) shrink-0 items-center gap-2 border-b border-border px-4 has-focus-visible:outline-2 has-focus-visible:-outline-offset-2"
+    >
       <Search aria-hidden="true" className="size-5 shrink-0 text-muted-foreground" />
       <CommandPrimitive.Input
         className={cn("h-full min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-muted-foreground", className)}
@@ -120,6 +124,24 @@ export function CommandItem({ className, ...props }: React.ComponentProps<typeof
         className,
       )}
       {...props}
+    />
+  )
+}
+
+/**
+ * The check that marks a picked row when several can be picked. It fades and scales in and out (the swap pattern,
+ * --motion-fast) instead of blinking, and keeps its space either way so the row's label never moves.
+ */
+export function CommandCheck({ checked, className }: { checked: boolean; className?: string }) {
+  return (
+    <Check
+      aria-hidden="true"
+      data-slot="command-check"
+      className={cn(
+        "transition-[opacity,scale] duration-(--motion-fast) ease-(--ease-standard)",
+        checked ? "scale-100 opacity-100" : "scale-60 opacity-0",
+        className,
+      )}
     />
   )
 }

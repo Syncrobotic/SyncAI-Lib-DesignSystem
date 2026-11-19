@@ -41,7 +41,17 @@ export function TableHead({
   ...props
 }: React.ComponentProps<"th"> & { sort?: "asc" | "desc" | false; onSort?: () => void }) {
   const sortable = onSort !== undefined
-  const Icon = sort === "asc" ? ArrowUp : sort === "desc" ? ArrowDown : ArrowUpDown
+  // The swap pattern (like CopyButton): all three arrows are drawn in one spot and cross-fade, so a change of order
+  // reads as a change instead of a jump.
+  const arrow = (s: typeof sort, Icon: typeof ArrowUp) => (
+    <Icon
+      aria-hidden="true"
+      className={cn(
+        "absolute size-4 transition-[opacity,scale] duration-(--motion-fast) ease-(--ease-standard)",
+        (sort || false) === s ? "scale-100 opacity-100" : "scale-60 opacity-0",
+      )}
+    />
+  )
   return (
     <th
       data-slot="table-head"
@@ -56,7 +66,11 @@ export function TableHead({
           className={cn("press -mx-1 inline-flex h-(--h-sm) items-center gap-2 rounded-xs px-1 hover:text-foreground", sort && "text-foreground")}
         >
           {children}
-          <Icon aria-hidden="true" className="size-4" />
+          <span className="relative flex size-4 items-center justify-center">
+            {arrow(false, ArrowUpDown)}
+            {arrow("asc", ArrowUp)}
+            {arrow("desc", ArrowDown)}
+          </span>
         </button>
       ) : (
         children

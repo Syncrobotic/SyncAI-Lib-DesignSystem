@@ -16,7 +16,7 @@ export type Chip = {
 
 const chip = cn(
   "press inline-flex h-(--h-sm) shrink-0 items-center gap-2 whitespace-nowrap rounded-xs px-3 text-sm ring-1 ring-border ring-inset",
-  "hover:bg-accent outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+  "hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
   // Selected is inverted, like every selected control in the system.
   "data-[state=on]:bg-primary data-[state=on]:font-medium data-[state=on]:text-primary-foreground data-[state=on]:ring-primary",
   "aria-[current=page]:bg-primary aria-[current=page]:font-medium aria-[current=page]:text-primary-foreground aria-[current=page]:ring-primary",
@@ -57,13 +57,45 @@ export function ChipGroup({
   className?: string
 }) {
   const [open, setOpen] = React.useState(false)
+  // Folding again: the extra chips fade out where they are (disappear), then the row closes up. If animations never
+  // run, the safety delay folds it anyway.
+  const [closing, setClosing] = React.useState(false)
+  React.useEffect(() => {
+    if (!closing) return
+    const t = window.setTimeout(() => {
+      setOpen(false)
+      setClosing(false)
+    }, 400)
+    return () => window.clearTimeout(t)
+  }, [closing])
+  const extra = (c: Chip, i: number) => max !== undefined && i >= max && c.value !== value
   const folded = max !== undefined && !open && items.length > max
-  const shown = folded ? items.filter((it, i) => i < max! || it.value === value) : items
-  const hidden = items.length - shown.length
+  const shown = items.map((c, i) => ({ c, i })).filter(({ c, i }) => !folded || !extra(c, i))
+  const hidden = items.filter(extra).length
+  const lastExtra = [...shown].reverse().find(({ c, i }) => extra(c, i))?.c.value
+  // Chips that unfold arrive (appear) instead of popping into the row.
+  const motion = (c: Chip, i: number) =>
+    open && extra(c, i)
+      ? {
+          className: closing ? "animate-disappear" : "animate-appear",
+          inert: closing || undefined,
+          onAnimationEnd: (e: React.AnimationEvent) => {
+            if (!closing || c.value !== lastExtra || e.target !== e.currentTarget) return
+            setOpen(false)
+            setClosing(false)
+          },
+        }
+      : undefined
+  const expanded = open && !closing
   const more =
     max !== undefined && items.length > max ? (
-      <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} className={cn(chip, "press text-muted-foreground ring-transparent")}>
-        {folded ? moreLabel(hidden) : lessLabel}
+      <button
+        type="button"
+        onClick={() => (expanded ? setClosing(true) : (setOpen(true), setClosing(false)))}
+        aria-expanded={expanded}
+        className={cn(chip, "press text-muted-foreground ring-transparent")}
+      >
+        {expanded ? lessLabel : moreLabel(hidden)}
       </button>
     ) : null
   const inner = (c: Chip) => (
@@ -77,8 +109,8 @@ export function ChipGroup({
     return (
       <nav aria-label={label} data-slot="chip-group" className={className}>
         <ul className="flex flex-wrap items-center gap-2">
-          {shown.map((c) => (
-            <li key={c.value}>
+          {shown.map(({ c, i }) => (
+            <li key={c.value} {...motion(c, i)}>
               <Link href={c.href} aria-current={c.value === value ? "page" : undefined} className={chip}>
                 {inner(c)}
               </Link>
@@ -99,8 +131,8 @@ export function ChipGroup({
       onValueChange={(v) => (v || allowNone ? onValueChange?.(v || undefined) : undefined)}
       className={cn("flex flex-wrap items-center gap-2", className)}
     >
-      {shown.map((c) => (
-        <ToggleGroup.Item key={c.value} value={c.value} className={chip}>
+      {shown.map(({ c, i }) => (
+        <ToggleGroup.Item key={c.value} value={c.value} {...motion(c, i)} className={cn(chip, motion(c, i)?.className)}>
           {inner(c)}
         </ToggleGroup.Item>
       ))}

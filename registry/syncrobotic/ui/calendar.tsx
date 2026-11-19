@@ -3,7 +3,7 @@
 
 import * as React from "react"
 import { DateLib, DayPicker, type DayButtonProps, type Modifiers } from "react-day-picker"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 /**
@@ -33,9 +33,9 @@ export function Calendar({ className, classNames, showOutsideDays = true, weekSt
         months: "flex flex-col gap-4 sm:flex-row",
         month: "flex flex-col gap-3",
         month_caption: "flex h-(--h-sm) items-center justify-center px-8 font-medium",
-        caption_label: "text-sm font-medium",
+        caption_label: "flex items-center gap-2 text-sm font-medium",
         dropdowns: "flex items-center gap-2",
-        dropdown_root: "relative",
+        dropdown_root: "relative rounded-xs has-focus-visible:outline-2 has-focus-visible:outline-offset-2",
         dropdown: "absolute inset-0 opacity-0",
         nav: "absolute inset-x-0 top-0 flex items-center justify-between",
         button_previous: navButton,
@@ -44,8 +44,9 @@ export function Calendar({ className, classNames, showOutsideDays = true, weekSt
         weekdays: "flex",
         weekday: "flex size-(--h-sm) items-center justify-center text-xs font-normal text-muted-foreground",
         week: "mt-1 flex",
-        week_number_header: "flex size-(--h-sm) items-center justify-center text-xs text-muted-foreground",
-        week_number: "flex size-(--h-sm) items-center justify-center text-xs text-muted-foreground tabular-nums",
+        // Week numbers are a narrow column (20 px, enough for two digits), so a week-numbered month still fits a phone.
+        week_number_header: "flex h-(--h-sm) w-5 items-center justify-center text-xs text-muted-foreground",
+        week_number: "flex h-(--h-sm) w-5 items-center justify-center text-xs text-muted-foreground tabular-nums",
         day: "group/day relative size-(--h-sm) p-0 text-center",
         range_start: "rounded-l-xs bg-muted",
         range_middle: "bg-muted",
@@ -57,8 +58,15 @@ export function Calendar({ className, classNames, showOutsideDays = true, weekSt
         ...classNames,
       }}
       components={{
+        // The month and year dropdowns ask for a down chevron, the arrows for left and right.
         Chevron: ({ orientation }) =>
-          orientation === "left" ? <ChevronLeft aria-hidden="true" className="size-4" /> : <ChevronRight aria-hidden="true" className="size-4" />,
+          orientation === "left" ? (
+            <ChevronLeft aria-hidden="true" className="size-4" />
+          ) : orientation === "down" ? (
+            <ChevronDown aria-hidden="true" className="size-4 text-muted-foreground" />
+          ) : (
+            <ChevronRight aria-hidden="true" className="size-4" />
+          ),
         DayButton: CalendarDayButton,
       }}
       {...props}

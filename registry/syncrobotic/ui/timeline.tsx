@@ -46,7 +46,7 @@ export function Timeline({
         tabIndex={orientation === "horizontal" ? 0 : undefined}
         className={cn(
           orientation === "horizontal"
-            ? "flex w-full overflow-x-auto rounded-sm pb-2 outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+            ? "flex w-full overflow-x-auto rounded-sm pb-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
             : "flex flex-col",
           className,
         )}
