@@ -1,4 +1,4 @@
-// @syncrobotic/textarea v0.10.0 · update: npx shadcn add @syncrobotic/textarea --overwrite
+// @syncrobotic/textarea v0.17.3 · update: npx shadcn add @syncrobotic/textarea --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 

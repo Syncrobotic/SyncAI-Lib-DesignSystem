@@ -16,7 +16,7 @@ export const IconTileDefault: S = {
 
 export const IconTileVariants: S = {
   render: () => (
-    <div className="flex items-center gap-3">
+    <div className="flex w-fit items-center gap-3">
       {(["outline", "muted", "raised", "soft", "solid"] as const).map((v) => (
         <div key={v} className="flex flex-col items-center gap-2">
           <IconTile variant={v}>
@@ -31,7 +31,7 @@ export const IconTileVariants: S = {
 
 export const IconTileSizes: S = {
   render: () => (
-    <div className="flex items-end gap-3">
+    <div className="flex w-fit items-end gap-3">
       {(["sm", "md", "lg", "xl"] as const).map((s) => (
         <div key={s} className="flex flex-col items-center gap-2">
           <IconTile size={s} variant="raised">
@@ -46,7 +46,7 @@ export const IconTileSizes: S = {
 
 export const IconTileCircle: S = {
   render: () => (
-    <div className="flex items-center gap-3">
+    <div className="flex w-fit items-center gap-3">
       <IconTile shape="circle" size="lg">
         <Camera aria-hidden="true" />
       </IconTile>
@@ -94,7 +94,7 @@ export const IconTileStatusTones: S = {
 
 export const IconTileWithDot: S = {
   render: () => (
-    <div className="flex items-center gap-4">
+    <div className="flex w-fit items-center gap-4">
       <IconTile variant="raised" size="lg">
         <Wifi aria-hidden="true" />
         <IconTileDot label="Online" />
@@ -109,7 +109,7 @@ export const IconTileWithDot: S = {
 
 export const IconTileText: S = {
   render: () => (
-    <div className="flex items-center gap-3">
+    <div className="flex w-fit items-center gap-3">
       <IconTile variant="raised" className="text-sm font-bold">
         7F
       </IconTile>

@@ -7,6 +7,7 @@ import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupUnit as Unit } from "@/registry/syncrobotic/ui/input-group"
 import { NumberField } from "@/registry/syncrobotic/ui/number-field"
+import { States } from "./states"
 import { Label } from "@/registry/syncrobotic/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/registry/syncrobotic/ui/radio-group"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
@@ -196,9 +197,11 @@ export const NumberFieldError: S = {
   ),
 }
 
+// Shown as it is after someone typed "D" and left the field: the error is there from the start. Fix the name and it
+// clears as you type; empty it and press Tab to see it come back.
 function ValidateOnBlur() {
-  const [name, setName] = React.useState("")
-  const [touched, setTouched] = React.useState(false)
+  const [name, setName] = React.useState("D")
+  const [touched, setTouched] = React.useState(true)
   const error = touched && name.trim().length < 3 ? "At least 3 characters, e.g. “Dock A”" : undefined
   return (
     <Field label="Dock name" error={error}>
@@ -207,7 +210,7 @@ function ValidateOnBlur() {
   )
 }
 
-// Leave the field empty and press Tab: the message line grows open and the error appears. No shake.
+// The message line grows open when the field is left with too short a name, and the error appears. No shake.
 export const InputErrorOnBlur: S = { render: () => <ValidateOnBlur /> }
 
 export const InputError: S = {
@@ -603,19 +606,23 @@ export const LabelRequired: S = {
 
 export const InputGroupWithButton: S = {
   render: () => (
-    <InputGroup>
-      <Input aria-label="Robot ID" placeholder="7F3A" />
-      <InputGroupButton aria-label="Find robot">
-        <Search aria-hidden="true" />
-      </InputGroupButton>
-    </InputGroup>
+    <Field label="Robot ID">
+      <InputGroup>
+        <Input defaultValue="7F3A" />
+        {/* A button with a word, inside the field's edge: the field's one action. */}
+        <InputGroupButton className="w-auto gap-2 px-3 text-sm font-medium text-foreground ring-1 ring-border ring-inset">
+          <Search aria-hidden="true" />
+          Find
+        </InputGroupButton>
+      </InputGroup>
+    </Field>
   ),
 }
 
 export const NumberFieldPercent: S = {
   render: () => (
     <Field label="Return to dock at" hint="Between 10 and 50 %.">
-      <NumberField defaultValue={20} min={10} max={50} step={5} unit="%" />
+      <NumberField defaultValue={20} min={10} max={50} step={5} unit="%" className="w-56" />
     </Field>
   ),
 }
@@ -705,7 +712,7 @@ export const LabelDisabled: S = {
 export const NumberFieldCount: S = {
   render: () => (
     <Field label="Robots on this route" hint="1 to 6">
-      <NumberField defaultValue={2} min={1} max={6} className="w-40" />
+      <NumberField defaultValue={2} min={1} max={6} className="w-56" />
     </Field>
   ),
 }
@@ -714,7 +721,7 @@ export const NumberFieldCount: S = {
 export const NumberFieldNegative: S = {
   render: () => (
     <Field label="Heading offset" hint="−10 to 10 degrees">
-      <NumberField defaultValue={-2.5} min={-10} max={10} step={0.5} unit="°" className="w-48" />
+      <NumberField defaultValue={-2.5} min={-10} max={10} step={0.5} unit="°" className="w-56" />
     </Field>
   ),
 }
@@ -723,7 +730,36 @@ export const NumberFieldNegative: S = {
 export const NumberFieldDisabled: S = {
   render: () => (
     <Field label="Max speed" hint="Can’t change during a mission">
-      <NumberField defaultValue={1.5} step={0.1} unit="m/s" disabled className="w-48" />
+      <NumberField defaultValue={1.5} step={0.1} unit="m/s" disabled className="w-56" />
     </Field>
+  ),
+}
+
+// For the docs: number fields grouped, so the page shows them side by side instead of one card each.
+const show = (story: S) => story.render?.({} as never, {} as never)
+
+/** Units and ranges: minutes, a percentage, a plain count and a value below zero. */
+export const NumberFieldKinds: S = {
+  render: () => (
+    <States
+      items={[
+        ["Minutes, large steps", show(NumberFieldInterval)],
+        ["Percent", show(NumberFieldPercent)],
+        ["Count, no unit", show(NumberFieldCount)],
+        ["Below zero", show(NumberFieldNegative)],
+      ]}
+    />
+  ),
+}
+
+/** With an error, and locked while a mission runs. */
+export const NumberFieldStates: S = {
+  render: () => (
+    <States
+      items={[
+        ["Error", show(NumberFieldError)],
+        ["Disabled", show(NumberFieldDisabled)],
+      ]}
+    />
   ),
 }

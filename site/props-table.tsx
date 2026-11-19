@@ -26,9 +26,20 @@ function Described({ text }: { text: string }) {
  * not a wide table, so it reads on a phone without sideways scrolling.
  */
 export function PropsTable({ name }: { name: string }) {
-  const parts = propsOf(name).filter((p) => p.props.length > 0 || p.inherits.length > 0)
-  if (!parts.length) return null
-  const many = parts.length > 1
+  const all = propsOf(name).filter((p) => p.props.length > 0 || p.inherits.length > 0)
+  if (!all.length) return null
+  const many = all.length > 1
+  // Parts that add nothing of their own (they only pass an element's props through) are not given a block each: they are
+  // listed together at the end, one line per element they take after ("CardHeader, CardTitle and CardFooter take every
+  // prop of <div>"). A component whose only part is like that keeps its sentence.
+  const own = many ? all.filter((p) => p.props.length > 0) : all
+  const passThrough = many ? all.filter((p) => p.props.length === 0) : []
+  const byInherits = new Map<string, string[]>()
+  for (const p of passThrough) {
+    const key = p.inherits.join("|")
+    byInherits.set(key, [...(byInherits.get(key) ?? []), p.name])
+  }
+  const parts = own
   return (
     <>
       <H2 id="api">API reference</H2>
@@ -61,8 +72,7 @@ export function PropsTable({ name }: { name: string }) {
                     </dt>
                     <dd className="flex min-w-0 flex-col gap-1 text-sm">
                       <code className="font-mono text-xs wrap-anywhere text-muted-foreground">
-                        {p.type}
-                        {p.default !== undefined && <span className="text-foreground"> = {p.default}</span>}
+                        <TypeWithDefault type={p.type} value={p.default} />
                       </code>
                       {p.description && <Described text={p.description} />}
                     </dd>
@@ -72,7 +82,56 @@ export function PropsTable({ name }: { name: string }) {
             )}
           </section>
         ))}
+        {byInherits.size > 0 && (
+          <section aria-labelledby="api-pass-through" className="flex flex-col gap-3">
+            <h3 id="api-pass-through" className="font-mono text-base font-bold">
+              {own.length ? "Other parts" : "Parts"}
+            </h3>
+            <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
+              {[...byInherits].map(([key, names]) => {
+                const inherits = key.split("|")
+                return (
+                  <li key={key} className="text-pretty">
+                    {names.map((n, i) => (
+                      <span key={n}>
+                        {i > 0 && (i === names.length - 1 ? " and " : ", ")}
+                        <code id={`api-${n}`} className={code}>
+                          {n}
+                        </code>
+                      </span>
+                    ))}{" "}
+                    {names.length > 1 ? "take" : "takes"} every prop of{" "}
+                    {inherits.map((x, n) => (
+                      <span key={x}>
+                        {n > 0 && (n === inherits.length - 1 ? " and " : ", ")}
+                        <code className={code}>{x}</code>
+                      </span>
+                    ))}
+                    .
+                  </li>
+                )
+              })}
+            </ul>
+          </section>
+        )}
       </div>
+    </>
+  )
+}
+
+/** A type and its default; the default stays on one line with the type's last member, never alone on the next line. */
+function TypeWithDefault({ type, value }: { type: string; value?: string }) {
+  if (value === undefined) return <>{type}</>
+  const cut = type.lastIndexOf(" | ")
+  const head = cut < 0 ? "" : type.slice(0, cut + 3)
+  const tail = cut < 0 ? type : type.slice(cut + 3)
+  return (
+    <>
+      {head}
+      <span className="whitespace-nowrap">
+        {tail}
+        <span className="text-foreground"> = {value}</span>
+      </span>
     </>
   )
 }

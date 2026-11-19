@@ -47,6 +47,7 @@ import * as s_resizable from "@/stories/resizable.stories"
 import * as s_file_upload from "@/stories/file-upload.stories"
 import * as s_attachment from "@/stories/attachment.stories"
 import * as s_file_type from "@/stories/file-type.stories"
+import * as s_hooks from "@/stories/hooks.stories"
 import type { StoryFile } from "./catalog"
 
 type Meta = { component?: React.ComponentType<Record<string, unknown>>; args?: Record<string, unknown> }
@@ -100,6 +101,7 @@ const files: Record<StoryFile, StoryModule> = {
   "search-field": s_search_field as unknown as StoryModule,
   "theme-toggle": s_theme_toggle as unknown as StoryModule,
   "route-progress": s_route_progress as unknown as StoryModule,
+  hooks: s_hooks as unknown as StoryModule,
 }
 
 // Same rule as Storybook: story args override meta args; a story's own render wins over meta.component.

@@ -1,4 +1,4 @@
-// @syncrobotic/heatmap-zones v0.17.2 · update: npx shadcn add @syncrobotic/heatmap-zones --overwrite
+// @syncrobotic/heatmap-zones v0.17.3 · update: npx shadcn add @syncrobotic/heatmap-zones --overwrite
 "use client"
 
 import * as React from "react"
@@ -31,7 +31,7 @@ export function HeatmapZones() {
       <Table className="table-fixed">
         <TableHeader>
           <TableRow>
-            <TableHead className="w-20 pr-2 @md:w-24">Zone</TableHead>
+            <TableHead className="w-24 pr-2">Zone</TableHead>
             {slots.map((s) => (
               <TableHead key={s} className="px-0 text-center tabular-nums">
                 {s}

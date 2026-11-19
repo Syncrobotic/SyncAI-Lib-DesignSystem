@@ -1,4 +1,4 @@
-// @syncrobotic/maintenance-due v0.17.2 · update: npx shadcn add @syncrobotic/maintenance-due --overwrite
+// @syncrobotic/maintenance-due v0.17.3 · update: npx shadcn add @syncrobotic/maintenance-due --overwrite
 "use client"
 
 import * as React from "react"

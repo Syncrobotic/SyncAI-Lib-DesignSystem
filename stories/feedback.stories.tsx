@@ -163,7 +163,8 @@ function InPlace({ label, children }: { label: string; children: React.ReactNode
   return (
     <ToastProvider label={label}>
       {children}
-      <ToastViewport className="static max-w-none p-0" />
+      {/* The width toasts have on screen (24rem), so a long failure and a one-word "Copied" are the same size here. */}
+      <ToastViewport className="static w-sm max-w-full p-0" />
     </ToastProvider>
   )
 }

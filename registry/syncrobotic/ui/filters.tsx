@@ -1,4 +1,4 @@
-// @syncrobotic/filters v0.17.2 · update: npx shadcn add @syncrobotic/filters --overwrite
+// @syncrobotic/filters v0.17.3 · update: npx shadcn add @syncrobotic/filters --overwrite
 "use client"
 
 import * as React from "react"
@@ -578,37 +578,40 @@ export function Filters({
           })}
         </ul>
       )}
-      <Popover open={editing?.id === null} onOpenChange={(o) => !o && setEditing(null)}>
-        <PopoverAnchor asChild>
+      {/* + Filter and Clear all wrap as one, so Clear all is never left alone on a line of its own. */}
+      <div className="flex items-center gap-2">
+        <Popover open={editing?.id === null} onOpenChange={(o) => !o && setEditing(null)}>
+          <PopoverAnchor asChild>
+            <Button
+              ref={addRef}
+              variant="outline"
+              size="sm"
+              aria-haspopup="dialog"
+              aria-expanded={editing?.id === null}
+              onClick={(e) => open(null, "field", e.currentTarget)}
+            >
+              <Plus aria-hidden="true" />
+              {labels.add}
+            </Button>
+          </PopoverAnchor>
+          {picker(null)}
+        </Popover>
+        {clear.mounted && (
           <Button
-            ref={addRef}
-            variant="outline"
+            variant="ghost"
             size="sm"
-            aria-haspopup="dialog"
-            aria-expanded={editing?.id === null}
-            onClick={(e) => open(null, "field", e.currentTarget)}
+            inert={clear.leaving || undefined}
+            onAnimationEnd={(e) => e.target === e.currentTarget && clear.done()}
+            className={clear.leaving ? "animate-disappear" : "animate-appear"}
+            onClick={() => {
+              focusNext.current = ""
+              set([])
+            }}
           >
-            <Plus aria-hidden="true" />
-            {labels.add}
+            {labels.clear}
           </Button>
-        </PopoverAnchor>
-        {picker(null)}
-      </Popover>
-      {clear.mounted && (
-        <Button
-          variant="ghost"
-          size="sm"
-          inert={clear.leaving || undefined}
-          onAnimationEnd={(e) => e.target === e.currentTarget && clear.done()}
-          className={clear.leaving ? "animate-disappear" : "animate-appear"}
-          onClick={() => {
-            focusNext.current = ""
-            set([])
-          }}
-        >
-          {labels.clear}
-        </Button>
-      )}
+        )}
+      </div>
     </div>
   )
 }

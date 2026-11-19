@@ -1,4 +1,4 @@
-// @syncrobotic/skeleton v0.8.0 · update: npx shadcn add @syncrobotic/skeleton --overwrite
+// @syncrobotic/skeleton v0.17.3 · update: npx shadcn add @syncrobotic/skeleton --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Spinner } from "@/registry/syncrobotic/ui/spinner"

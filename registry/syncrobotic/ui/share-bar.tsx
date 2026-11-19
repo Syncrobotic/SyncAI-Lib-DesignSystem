@@ -1,4 +1,4 @@
-// @syncrobotic/share-bar v0.12.0 · update: npx shadcn add @syncrobotic/share-bar --overwrite
+// @syncrobotic/share-bar v0.17.3 · update: npx shadcn add @syncrobotic/share-bar --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 

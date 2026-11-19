@@ -22,7 +22,7 @@ export function PreviewBack({ href }: { href: string }) {
         screen. A full-screen block (a dialog or sheet over its page, a sign-in screen) is held to the same height, so the
         page never scrolls 44 px for nothing and no band under it is left outside a dialog's scrim.
       */}
-      <style>{":root{--app-shell-height:calc(100dvh - var(--h-md))}#block-root .min-h-dvh{min-height:var(--app-shell-height)}"}</style>
+      <style>{":root{--app-shell-height:calc(100dvh - var(--h-md))}"}</style>
       <a
       href={href}
       className="press flex h-(--h-md) items-center gap-2 border-b border-border bg-card px-4 text-sm font-medium hover:bg-accent"

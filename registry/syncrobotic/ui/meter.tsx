@@ -1,4 +1,4 @@
-// @syncrobotic/meter v0.8.0 · update: npx shadcn add @syncrobotic/meter --overwrite
+// @syncrobotic/meter v0.17.3 · update: npx shadcn add @syncrobotic/meter --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 

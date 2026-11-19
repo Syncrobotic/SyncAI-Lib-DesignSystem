@@ -1,4 +1,4 @@
-// @syncrobotic/card-site v0.17.2 · update: npx shadcn add @syncrobotic/card-site --overwrite
+// @syncrobotic/card-site v0.17.3 · update: npx shadcn add @syncrobotic/card-site --overwrite
 import * as React from "react"
 import { ChevronRight, MapPin } from "lucide-react"
 import { cn } from "@/lib/utils"

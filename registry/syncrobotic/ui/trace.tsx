@@ -1,4 +1,4 @@
-// @syncrobotic/trace v0.17.2 · update: npx shadcn add @syncrobotic/trace --overwrite
+// @syncrobotic/trace v0.17.3 · update: npx shadcn add @syncrobotic/trace --overwrite
 "use client"
 
 import * as React from "react"

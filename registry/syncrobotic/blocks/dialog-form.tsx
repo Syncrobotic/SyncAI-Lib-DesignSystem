@@ -1,4 +1,4 @@
-// @syncrobotic/dialog-form v0.17.2 · update: npx shadcn add @syncrobotic/dialog-form --overwrite
+// @syncrobotic/dialog-form v0.17.3 · update: npx shadcn add @syncrobotic/dialog-form --overwrite
 "use client"
 
 import * as React from "react"
@@ -44,7 +44,7 @@ export function DialogForm({
   }
 
   return (
-    <div className="flex min-h-dvh items-center justify-center bg-background p-6">
+    <div className="flex min-h-[var(--app-shell-height,100dvh)] items-center justify-center bg-background p-6">
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button>

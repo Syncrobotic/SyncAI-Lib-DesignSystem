@@ -1,4 +1,4 @@
-// @syncrobotic/top-bar-shell v0.17.2 · update: npx shadcn add @syncrobotic/top-bar-shell --overwrite
+// @syncrobotic/top-bar-shell v0.17.3 · update: npx shadcn add @syncrobotic/top-bar-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -86,7 +86,7 @@ export function TopBarShell({
   )
 
   return (
-    <div className="flex min-h-dvh flex-col bg-background text-foreground">
+    <div className="flex min-h-[var(--app-shell-height,100dvh)] flex-col bg-background text-foreground">
       <header className="pointer-events-none sticky top-0 z-20 mx-auto h-(--h-row) w-full max-w-6xl px-6">
         <div
           className={cn(
