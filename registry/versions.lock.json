@@ -289,15 +289,15 @@
   },
   "autocomplete": {
     "version": "0.15.0",
-    "hash": "bdb838ee75ad78ca"
+    "hash": "d31c9cd4a895eedb"
   },
   "input-otp": {
-    "version": "0.10.0",
-    "hash": "6816d4bd7c41bc2a"
+    "version": "0.15.0",
+    "hash": "4266ee1fd2fa67c8"
   },
   "phone-input": {
-    "version": "0.10.0",
-    "hash": "8735cdd106dee3b8"
+    "version": "0.15.0",
+    "hash": "bf37858d441e0160"
   },
   "calendar": {
     "version": "0.10.0",
