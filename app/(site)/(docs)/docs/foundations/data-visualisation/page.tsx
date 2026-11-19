@@ -26,7 +26,7 @@ const forms: { job: string; form: string; items: string[] }[] = [
 
 const components = new Set(["meter", "trace", "timeline", "data-grid"])
 const ItemLink = ({ name }: { name: string }) => (
-  <Link href={components.has(name) ? `/docs/components/${name}` : blockHref(name)} className="inline-flex min-h-6 items-center font-mono text-xs underline underline-offset-4">
+  <Link href={components.has(name) ? `/docs/components/${name}` : blockHref(name)} className="inline-flex min-h-(--h-sm) items-center font-mono text-xs underline underline-offset-4">
     {name}
   </Link>
 )

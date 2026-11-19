@@ -2,6 +2,18 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Fixed
+- **`progress`**: `tone="success"` is neutral. A finished bar stays grey; green is a confirmation that comes and goes, not a state that stays.
+- **`breadcrumb`**: a crumb link is as tall as a compact control (36 px with a mouse, 44 px on touch); it was 20 px, too small to tap.
+- Docs site:
+  - The theme menu has three choices, Light, Match system and Dark, and matches the system by default (it was a two-way switch, light by default). It follows the system live while that choice is on.
+  - Sections no longer rise 24 px and run back as you scroll. They arrive once with the theme's appear movement (8 px), as the motion rules ask.
+  - Calm things on the foundation pages are no longer green: Do examples, accessibility passes and the checklist, list dots, a good-signal bar.
+  - Touch targets reach 44 px on phones: the logo, a block's Open link, "Built from" chips, the data-visualisation item links, the Installation guide link.
+  - Examples follow the rules they teach: Update available is a neutral alert (blue is only a process), the previous period in a chart is slot 5 grey, a finished progress bar is grey, the attachment composer shows focus.
+
 ## 0.17.1 · 2026-11-19
 
 ### Changed

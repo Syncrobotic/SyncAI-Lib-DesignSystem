@@ -96,7 +96,7 @@ export default function SpacingPage() {
               <div className="flex w-56 flex-col gap-2 rounded-md bg-card p-4 ring-1 ring-border">
                 <span className="text-sm font-medium">Wi-Fi</span>
                 <span className="text-xs text-muted-foreground">Good signal</span>
-                <div className="mt-2 h-2 rounded-xs bg-success" />
+                <div className="mt-2 h-2 rounded-xs bg-neutral" />
               </div>
             ),
             caption: "padding 16 · gap 8 · bar 8 below",
@@ -107,7 +107,7 @@ export default function SpacingPage() {
               <div className="flex w-56 flex-col rounded-md bg-card ring-1 ring-border" style={{ padding: 13, gap: 5 }}>
                 <span className="text-sm font-medium">Wi-Fi</span>
                 <span className="text-xs text-muted-foreground">Good signal</span>
-                <div className="h-2 rounded-xs bg-success" style={{ marginTop: 11 }} />
+                <div className="h-2 rounded-xs bg-neutral" style={{ marginTop: 11 }} />
               </div>
             ),
             caption: "padding 13 · gap 5 · bar 11 below",

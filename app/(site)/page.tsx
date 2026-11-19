@@ -137,7 +137,7 @@ export default function HomePage() {
               </p>
               <Link
                 href="/docs/installation"
-                className="inline-flex items-center gap-2 text-sm font-medium text-foreground underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground"
+                className="inline-flex min-h-(--h-sm) items-center gap-2 text-sm font-medium text-foreground underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground"
               >
                 Installation guide <ArrowRight aria-hidden className="size-4" />
               </Link>

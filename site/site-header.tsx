@@ -13,7 +13,7 @@ export function SiteHeader() {
     <HeaderFrame>
       {/* Left, where its drawer opens from: the button and the panel move the same way. */}
       <NavDrawer scopes={scopes} />
-      <Link href="/">
+      <Link href="/" className="inline-flex min-h-(--h-md) items-center rounded-sm">
         <Logo />
       </Link>
       <HeaderNav links={headerLinks} />

@@ -1535,8 +1535,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "tone=\"success\" is neutral: a finished bar stays grey (green is a confirmation that comes and goes, not a state that stays)."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -1988,8 +1993,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "A crumb link is as tall as a compact control (36 px with a mouse, 44 px on touch), so it is a target on a phone (it was 20 px)."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
