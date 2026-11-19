@@ -48,6 +48,7 @@ export type StoryFile =
   | "theme-toggle"
   | "route-progress"
   | "data-pieces"
+  | "image-grid"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
@@ -575,6 +576,18 @@ const entries: Record<string, Entry> = {
       "Each preview reveals on its own; log the reveal in `onReveal` if the data needs an audit trail.",
     ],
   },
+  "image-grid": {
+    wide: true,
+    group: "Display",
+    examples: { file: "image-grid", prefix: "ImageGrid" },
+    rules: [
+      "Every tile keeps its aspect box before and after the picture loads, so the grid never jumps; pictures load lazily.",
+      "Give each picture an alt that says what it shows, and its file name: the name is what a broken tile and the lightbox title show.",
+      "Picked tiles are ringed in the focus ink with a check, never a status colour. While picking, the corner button opens the lightbox.",
+      "Pictures the viewer must ask to see are `restricted`, with a `reason`; nothing loads before they ask. Log the view in `onReveal`.",
+      "Use the strip for a short row, such as what was just uploaded; for a whole dataset, the grid.",
+    ],
+  },
   alert: {
     group: "Feedback",
     examples: { file: "display", prefix: "Alert" },
@@ -855,6 +868,11 @@ const keyboard: Record<string, [string, string][]> = {
     ["Enter / Space", "Open or close the section"],
     ["↑ / ↓", "Move between section headers"],
     ["Home / End", "First or last header"],
+  ],
+  "image-grid": [
+    ["Enter / Space", "Open the picture in the lightbox, or pick it while picking"],
+    ["← / →", "In the lightbox: previous or next picture"],
+    ["Esc", "Close the lightbox and return focus to the picture's tile"],
   ],
   dialog: overlayKeys,
   "alert-dialog": [

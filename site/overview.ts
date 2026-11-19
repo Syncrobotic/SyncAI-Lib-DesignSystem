@@ -45,6 +45,19 @@ export const overviews: Record<string, Overview> = {
     use: ["Thumbnails of a restricted dataset in a catalog or gallery."],
     instead: ["Data the viewer may not see at all: leave it out and say so in an `empty-state`."],
   },
+  "image-grid": {
+    what: "Many pictures at once, as a grid or a strip, that open in a lightbox or are picked one or many at a time.",
+    use: [
+      "A dataset's images, the frames of a run, a camera's snapshots.",
+      "Picking a cover picture, or the frames to send for labelling.",
+      "What was just uploaded, as a strip under the upload field.",
+    ],
+    instead: ["Files that are not pictures, or a queue with progress: `attachment`.", "One preview someone must ask to see: `restricted-preview`."],
+    notes: [
+      "Placeholders and tests must not load external URLs; draw the picture in code (an SVG data URI).",
+      "Selection is `aria-pressed` on each tile; do not add a separate checkbox.",
+    ],
+  },
   "load-more": {
     what: "The end of a long list: how much is shown, and one button for the next batch that says how many remain.",
     use: ["Lists and galleries on a phone.", "Results that load in batches."],
