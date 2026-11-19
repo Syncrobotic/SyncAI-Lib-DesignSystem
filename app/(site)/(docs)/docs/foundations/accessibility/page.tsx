@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { cn } from "@/lib/utils"
+import { ContrastDemo } from "@/site/contrast-demo"
 import { DensityDemo } from "@/site/density-demo"
 import { Code, DocHeader, Pager, Section, Specimen, TokenTable } from "@/site/doc"
 import { metaFor, neighbours } from "@/site/foundations"
@@ -24,6 +25,12 @@ const pairs: { fg: string; bg: string; use: string }[] = [
   { fg: "success", bg: "card", use: "Success text in a card" },
   { fg: "info", bg: "background", use: "A process being waited on: progress, a running stage" },
   { fg: "white", bg: "stop", use: "Emergency stop label" },
+]
+
+// UI parts: WCAG 1.4.11 asks 3:1. High contrast meets it; the default theme draws fields and cards with fill as well as edge.
+const edges = [
+  { fg: "border", bg: "background", use: "Card and divider edge" },
+  { fg: "input", bg: "card", use: "Field edge on a card" },
 ]
 
 function Ratio({ fg, bg, mode }: { fg: string; bg: string; mode: Mode }) {
@@ -110,6 +117,32 @@ export default function AccessibilityPage() {
         <Specimen>
           <DensityDemo />
         </Specimen>
+      </Section>
+
+      <Section
+        id="high-contrast"
+        title="High contrast"
+        lead={"For a tablet in bright sun, glare on an outdoor robot's screen, and low vision. Put `data-contrast=\"more\"` on `<html>` or on a container, in light or dark. Text and status reach 7:1 on every surface they sit on, field and card edges reach 3:1 so they show without their fill, and trays over the map turn opaque. Meanings stay the same: blue is still a process, solid red still only the stop."}
+      >
+        <Specimen>
+          <ContrastDemo />
+        </Specimen>
+        <TokenTable
+          head={["Foreground", "Background", "Use", "Dark", "Light"]}
+          rows={[...pairs, ...edges].map((p) => [
+            <Code key="f">{p.fg}</Code>,
+            <Code key="b">{p.bg}</Code>,
+            <span key="u" className="text-muted-foreground">
+              {p.use}
+            </span>,
+            <Ratio key="d" {...p} mode="dark-hc" />,
+            <Ratio key="l" {...p} mode="light-hc" />,
+          ])}
+        />
+        <p className="text-sm text-muted-foreground">
+          Edges are UI parts, held to 3:1. To follow the system setting, set the attribute from{" "}
+          <Code>{'matchMedia("(prefers-contrast: more)")'}</Code>; on a robot&apos;s own screen, offer it as a setting beside the appearance.
+        </p>
       </Section>
 
       <Section id="checklist" title="Checklist">

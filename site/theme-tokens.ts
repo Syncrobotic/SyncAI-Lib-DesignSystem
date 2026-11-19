@@ -11,16 +11,20 @@ function block(selector: string) {
 
 const light = block(":root")
 const dark = { ...light, ...block(".dark") }
+// High contrast (data-contrast="more") on top of each mode.
+const lightHc = { ...light, ...block('[data-contrast="more"]') }
+const darkHc = { ...dark, ...block('[data-contrast="more"] .dark') }
+const modes = { light, dark, "light-hc": lightHc, "dark-hc": darkHc }
 const theme = block("@theme")
 
-export type Mode = "light" | "dark"
+export type Mode = keyof typeof modes
 
 export function color(name: string) {
   const resolve = (v: string, map: Record<string, string>): string => {
     const ref = v.match(/^var\(--([\w-]+)\)$/)
     return ref ? resolve(map[ref[1]], map) : v
   }
-  return { light: resolve(light[name], light), dark: resolve(dark[name], dark) }
+  return Object.fromEntries(Object.entries(modes).map(([m, map]) => [m, resolve(map[name], map)])) as Record<Mode, string>
 }
 
 export const themeValue = (name: string) => theme[name] ?? light[name]

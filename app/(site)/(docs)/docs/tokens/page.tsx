@@ -12,7 +12,9 @@ export const metadata: Metadata = pageMeta({ title: "Design tokens — DTCG JSON
 const files = [
   { file: "core.tokens.json", holds: "Radius, spacing, heights, type, motion. The same in every mode." },
   { file: "color.light.tokens.json", holds: "Colour and shadow, light mode." },
-  { file: "color.dark.tokens.json", holds: "Colour and shadow, dark mode. Same names as light, so tools treat the two as modes." },
+  { file: "color.dark.tokens.json", holds: "Colour and shadow, dark mode. Same names as light, so tools treat the files as modes." },
+  { file: "color.light-hc.tokens.json", holds: "Light mode in high contrast (data-contrast=\"more\"): 7:1 text, 3:1 edges." },
+  { file: "color.dark-hc.tokens.json", holds: "Dark mode in high contrast." },
 ]
 
 const styleDictionary = `// style-dictionary.config.mjs — e.g. Swift and Android resources for a native control app
@@ -57,7 +59,7 @@ export default function TokensPage() {
           <code className="mt-1 block font-mono text-xs break-all text-muted-foreground">{base}/core.tokens.json</code>
         </li>
         <li>
-          <Inline text="Make two themes: Light (core + color.light) and Dark (core + color.dark)." />
+          <Inline text="Make two themes: Light (core + color.light) and Dark (core + color.dark), and two more for high contrast if the product goes outdoors (color.light-hc, color.dark-hc)." />
         </li>
         <li>
           <Inline text="Export them to Figma variables, one collection with Light and Dark as modes. Component styles then bind to the variables, not to hex values." />
