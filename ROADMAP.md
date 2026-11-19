@@ -34,12 +34,12 @@ Reviewed each release, so the roadmap follows evidence rather than taste.
 
 ## Plan
 
-Ordered by what blocks adoption first. Each milestone is one or two release trains.
+Ordered by what blocks adoption first. Each milestone is one or two release trains. The milestones are themes, not version numbers: the kit is at 0.13, and the open items below are what is left of each theme. Checked 2026-11-19.
 
-### 0.4 · Alarms and feedback (this release)
+### 0.4 · Alarms and feedback
 - [x] Alarms foundation, `alarm`, `toast`
 - [x] Process: this file, issue templates, PR checklist
-- [ ] Commit the visual baselines so CI fails on any visual change (#26)
+- [x] Commit the visual baselines so CI fails on any visual change (#26)
 - [x] Island notices and alarms share one data shape; the control app's island shows the highest unacknowledged alarm
 
 ### 0.5 · Versions and design source
@@ -48,14 +48,16 @@ Ordered by what blocks adoption first. Each milestone is one or two release trai
 - [ ] Figma library fed from the same tokens (Tokens Studio), so design and code share one source (#29: sync path documented; binding the Figma components needs a designer)
 
 ### 0.6 · Components teams are missing
-- [ ] Combobox, date picker, pagination, breadcrumb, stepper, file upload
-- [ ] Data table with sort, filter and pagination; form validation with React Hook Form
-- [ ] Charts and data-visualisation rules (palette, axes, maps and robot tracks)
+- [x] Combobox (`autocomplete`), date picker (`calendar`, `date-selector`), pagination, breadcrumb, stepper, file upload
+- [x] Data table with sort and pagination (`data-grid`), filters beside it (`filter-form`)
+- [ ] Form validation with React Hook Form: `field` shows errors, but no wiring or example with a form library
+- [x] Charts (`chart` and the chart items)
+- [ ] Data-visualisation rules as a foundation page (palette, axes, maps and robot tracks); today they live in each chart's usage notes
 
 ### 0.7 · Environments
-- [ ] Compact density for dashboards
+- [x] Compact density for dashboards (`data-density="compact"`, mouse only)
 - [ ] High-contrast theme for bright sun and outdoor robots
-- [ ] Glove-sized targets for field use
+- [x] Glove-sized targets for field use (`data-density="glove"`)
 
 ### 0.8 · Documentation
 - [ ] Props tables generated from the types; status labels (beta, stable) per item
