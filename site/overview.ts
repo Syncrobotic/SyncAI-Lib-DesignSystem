@@ -358,6 +358,23 @@ export const overviews: Record<string, Overview> = {
     use: ["Filters with counts.", "Settings that switch on and off.", "Several answers to one question in a form."],
     instead: ["A single control with a label and nothing else: `label` next to it.", "Picking one of many: `select`."],
   },
+  "metric-card": {
+    what: "One headline number on a card: what it counts, the value, how it changed and a line of context, coloured only when the change is for the worse.",
+    use: [
+      "The row of numbers under a dashboard's page header: robots online, events, devices, API calls.",
+      "A count that opens the list behind it (with `href`).",
+    ],
+    instead: [
+      "A level in a known range (battery, storage, signal): `meter`.",
+      "A number with a chart under it: a `card` with CardDataHeader and CardFigure.",
+      "Several values about one thing (a robot's facts): `description-list`.",
+    ],
+    notes: [
+      "Set `trend` from whether the change is good for the reader, not from its sign; only \"bad\" is coloured.",
+      "Pass `unavailable` with the reason instead of value 0 when the source is down or the count is unknown.",
+      "`labels` translates the words only screen readers hear (better, worse, loading, unavailable).",
+    ],
+  },
   meter: {
     what: "A level within a known range, like battery or storage, neutral until it crosses a threshold.",
     use: ["Battery, storage, signal strength, CPU.", "Inline in a table cell, or above a value in a card."],

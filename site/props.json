@@ -2729,6 +2729,87 @@
    "inherits": []
   }
  ],
+ "metric-card": [
+  {
+   "name": "MetricCard",
+   "props": [
+    {
+     "name": "label",
+     "type": "ReactNode",
+     "required": true,
+     "description": "What is counted: \"Robots online\". The link's text when the card has `href`."
+    },
+    {
+     "name": "value",
+     "type": "ReactNode",
+     "description": "The number, already formatted: \"12\", \"1,204\", \"99.2\"."
+    },
+    {
+     "name": "unit",
+     "type": "string",
+     "description": "Written small after the value: \"/ 14\", \"h\", \"%\"."
+    },
+    {
+     "name": "delta",
+     "type": "string",
+     "description": "Change against the previous period: \"+8%\", \"−2\". A leading minus (- or −) turns the arrow down."
+    },
+    {
+     "name": "trend",
+     "type": "\"flat\" | \"good\" | \"bad\"",
+     "default": "\"flat\"",
+     "description": "Whether the change is good. Direction alone does not decide: a rise in events is bad. Only \"bad\" is coloured."
+    },
+    {
+     "name": "series",
+     "type": "number[]",
+     "description": "Last values, oldest first, drawn as a sparkline from 640 px. Two or more."
+    },
+    {
+     "name": "caption",
+     "type": "ReactNode",
+     "description": "One line of context under the value: \"2 docked for charging\", \"Last 7 days\"."
+    },
+    {
+     "name": "href",
+     "type": "string",
+     "description": "Makes the whole card one link, to the page behind the number."
+    },
+    {
+     "name": "linkAs",
+     "type": "ElementType",
+     "default": "\"a\"",
+     "description": "Your router's link (e.g. next/link), for `href`."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "default": "false",
+     "description": "The value is on its way: the label stays, bones hold the value and caption at the same height."
+    },
+    {
+     "name": "unavailable",
+     "type": "string",
+     "description": "Why there is no value (\"Device offline since 14:02\"). The value shows a dash and this replaces the caption."
+    },
+    {
+     "name": "labels",
+     "type": "MetricCardLabels",
+     "description": "The words only screen readers hear (\", better\", \", worse\", \"Loading\", \"Not available\"), to translate them."
+    }
+   ],
+   "inherits": [
+    "<div> (except children)"
+   ]
+  },
+  {
+   "name": "MetricGrid",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  }
+ ],
  "navigation-menu": [
   {
    "name": "NavigationMenu",
