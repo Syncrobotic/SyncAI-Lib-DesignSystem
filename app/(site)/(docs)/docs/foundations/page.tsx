@@ -1,8 +1,8 @@
 import type { Metadata } from "next"
 import { pageMeta } from "@/site/config"
-import { DocHeader, Section } from "@/site/doc"
+import { DocHeader, Section, Pager } from "@/site/doc"
 import { FoundationGrid } from "@/site/foundation-previews"
-import { foundations } from "@/site/foundations"
+import { foundations, startNeighbours } from "@/site/foundations"
 
 const description =
   "The SYNCROBOTIC design language: principles, colour, typography, spacing, radius, elevation, motion, iconography, accessibility and alarms, shared by every product team."
@@ -34,6 +34,7 @@ export default function FoundationsPage() {
           ))}
         </div>
       </Section>
+      <Pager {...startNeighbours("/docs/foundations")} />
     </article>
   )
 }

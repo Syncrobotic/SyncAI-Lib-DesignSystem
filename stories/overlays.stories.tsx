@@ -211,7 +211,7 @@ export const DialogInformation: S = {
           ].map(([a, k]) => (
             <div key={a} className="contents">
               <dt>{a}</dt>
-              <dd className="rounded-xs bg-muted px-2 font-mono text-xs leading-6">{k}</dd>
+              <dd className="justify-self-end rounded-xs bg-muted px-2 font-mono text-xs leading-6">{k}</dd>
             </div>
           ))}
         </dl>

@@ -1,8 +1,10 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { Search, X } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { Button } from "@/registry/syncrobotic/ui/button"
 import { CopyButton } from "@/registry/syncrobotic/ui/copy-button"
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { InputGroup, InputGroupAddon } from "@/registry/syncrobotic/ui/input-group"
@@ -43,7 +45,17 @@ export function IconGallery({ groups, total, placeholder, markKit = false }: { g
 
   const q = query.trim().toLowerCase()
   const shown = groups
-    .map((g) => ({ ...g, icons: q ? g.icons.filter((i) => i.name.toLowerCase().includes(q) || i.means?.toLowerCase().includes(q)) : g.icons }))
+    .map((g) => ({
+      ...g,
+      // Best match first: the exact name, then names that start with the query, then the rest (Battery before BatteryWarning).
+      icons: q
+        ? g.icons
+            .filter((i) => i.name.toLowerCase().includes(q) || i.means?.toLowerCase().includes(q))
+            .map((i, n) => ({ i, n, rank: i.name.toLowerCase() === q ? 0 : i.name.toLowerCase().startsWith(q) ? 1 : 2 }))
+            .sort((a, b) => a.rank - b.rank || a.i.name.length - b.i.name.length || a.n - b.n)
+            .map((x) => x.i)
+        : g.icons,
+    }))
     .filter((g) => g.icons.length > 0)
   const count = shown.reduce((n, g) => n + g.icons.length, 0)
   const glyphSize = sizes.find((s) => s.value === size)!.cls
@@ -67,14 +79,31 @@ export function IconGallery({ groups, total, placeholder, markKit = false }: { g
           </SegmentedControl>
         </div>
 
-        <p aria-live="polite" className="text-sm text-muted-foreground tabular-nums">
+        <p aria-live="polite" className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground tabular-nums">
           {q ? `${count} of ${total} icons` : `${total} icons`}
+          {markKit && (
+            <span className="inline-flex items-center gap-2">
+              <span aria-hidden className="size-1.5 rounded-full bg-foreground" /> In the kit, with a meaning
+            </span>
+          )}
         </p>
 
         {shown.length === 0 && (
-          <p className="border-y border-border py-8 text-sm text-muted-foreground">
-            No icon matches “{query.trim()}”. Try the thing it stands for, or look in All Lucide.
-          </p>
+          <div className="flex flex-col items-start gap-3 border-y border-border py-8">
+            <p className="text-sm text-muted-foreground">
+              No icon matches “{query.trim()}”. Search for the thing it stands for{markKit ? "" : ", or look through every Lucide icon"}.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <Button variant="secondary" size="sm" onClick={() => setQuery("")}>
+                Clear search
+              </Button>
+              {!markKit && (
+                <Button variant="ghost" size="sm" asChild>
+                  <Link href="/icons/lucide">All Lucide icons</Link>
+                </Button>
+              )}
+            </div>
+          </div>
         )}
 
         {shown.map((g) => (
@@ -96,12 +125,23 @@ export function IconGallery({ groups, total, placeholder, markKit = false }: { g
                     data-icon={i.name}
                     aria-label={i.means ? `${i.name}: ${i.means}` : i.name}
                     onClick={() => setPicked(i)}
-                    className="press relative flex aspect-square w-full flex-col items-center justify-center gap-3 p-2 transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent aria-pressed:bg-muted"
+                    className="press relative flex h-full min-h-28 w-full flex-col items-center justify-center gap-2 p-3 transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent aria-pressed:bg-muted"
                   >
                     <span aria-hidden className={cn("flex size-6 items-center justify-center", glyphSize)}>
                       {i.glyph}
                     </span>
-                    <span className="w-full truncate text-center font-mono text-xs text-muted-foreground">{i.name}</span>
+                    {/* The whole name, over two lines if it needs them: a touch screen has no tooltip to show the rest. */}
+                    <span className="line-clamp-2 w-full text-center font-mono text-xs text-muted-foreground">
+                      {/* Breaks only between words of the name: Battery|Charging, never BatteryChar|ging. */}
+                      {i.name.split(/(?=[A-Z])/).map((w, k) => (
+                        <React.Fragment key={k}>
+                          {k > 0 && <wbr />}
+                          {w}
+                        </React.Fragment>
+                      ))}
+                    </span>
+                    {/* In the kit's set, what it means is on the tile, not only behind a click. */}
+                    {!markKit && i.means && <span className="line-clamp-2 w-full text-center text-xs text-muted-foreground">{i.means}</span>}
                     {/* In the full Lucide list, a dot marks the icons the kit has given a meaning. */}
                     {markKit && i.means && <span aria-hidden className="absolute top-2 right-2 size-1.5 rounded-full bg-foreground" />}
                   </button>
@@ -116,6 +156,19 @@ export function IconGallery({ groups, total, placeholder, markKit = false }: { g
       {picked && <div aria-hidden className="h-72" />}
       {picked && <Details icon={picked} onClose={() => setPicked(null)} />}
     </div>
+  )
+}
+
+/** The copy fields: shown for an icon in the set, folded under "Copy anyway" for one that is not. */
+function CopyFields({ open, children }: { open: boolean; children: React.ReactNode }) {
+  if (open) return <>{children}</>
+  return (
+    <details className="group min-w-0 flex-1">
+      <summary className="press flex h-(--h-sm) w-fit cursor-pointer items-center rounded-sm px-3 text-sm text-muted-foreground ring-1 ring-border hover:bg-accent [&::-webkit-details-marker]:hidden">
+        Copy anyway
+      </summary>
+      <div className="pt-3">{children}</div>
+    </details>
   )
 }
 
@@ -165,6 +218,8 @@ function Details({ icon, onClose }: { icon: GalleryIcon; onClose: () => void }) 
             </p>
           )}
         </div>
+        {/* Not in the set: how to add it comes first, and the code to copy waits behind "Copy anyway". */}
+        <CopyFields open={!!icon.means}>
         <div className="grid min-w-0 flex-1 gap-2 sm:grid-cols-2">
           {(
             [
@@ -177,12 +232,13 @@ function Details({ icon, onClose }: { icon: GalleryIcon; onClose: () => void }) 
             <div key={label} className="flex min-w-0 items-center justify-between gap-2 rounded-sm bg-card py-1 pr-1 pl-3 ring-1 ring-border">
               <span className="flex min-w-0 flex-col">
                 <span className="text-xs text-muted-foreground">{label}</span>
-                <code className="truncate font-mono text-xs">{value}</code>
+                <code className="line-clamp-3 font-mono text-xs break-all">{value}</code>
               </span>
               <CopyButton value={value} label={`Copy ${label.toLowerCase()}`} />
             </div>
           ))}
         </div>
+        </CopyFields>
         <button
           type="button"
           onClick={onClose}

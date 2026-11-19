@@ -21,7 +21,7 @@ const previews: Record<FoundationSlug, React.ReactNode> = {
     </ul>
   ),
   color: (
-    <div className="grid h-full w-full grid-cols-6 gap-1">
+    <div className="grid h-full w-full grid-cols-6 gap-1 p-px">
       {["bg-background", "bg-card", "bg-secondary", "bg-muted-foreground", "bg-foreground", "bg-stop"].map((c) => (
         <span key={c} className={`${c} rounded-xs ring-1 ring-edge`} />
       ))}

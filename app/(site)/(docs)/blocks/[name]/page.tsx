@@ -79,21 +79,22 @@ export default async function BlockTypePage({ params }: Props) {
           const uses = (b.registryDependencies ?? []).filter((d) => d !== "@syncrobotic/cn").map((d) => d.replace("@syncrobotic/", ""))
           return (
             <section key={b.name} id={b.name} aria-labelledby={`${b.name}-title`} className="flex scroll-mt-20 flex-col gap-3">
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div className="flex max-w-2xl flex-col gap-1">
-                  <h3 id={`${b.name}-title`} className="text-lg font-bold">
+              {/* Title and tools share one row, always; the description sits under them, so its length never moves the tools. */}
+              <div className="flex flex-col gap-1">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <h3 id={`${b.name}-title`} className="min-w-0 text-lg font-bold">
                     {b.title}
                   </h3>
-                  <p className="text-sm text-muted-foreground">{b.description}</p>
-                </div>
-                <div className="flex flex-wrap gap-2">
+                  <div className="flex shrink-0 flex-wrap gap-2">
                   <CopyButton value={blockMarkdown(b.name) ?? ""} variant="outline" label={`Copy ${b.title} as Markdown`}>
                     Markdown
                   </CopyButton>
                   <CopyButton value={aiPrompt(b.title, `/blocks/${type.slug}#${b.name}`, b.name)} variant="outline" label={`Copy a prompt for ${b.title}`}>
                     Prompt
                   </CopyButton>
+                  </div>
                 </div>
+                <p className="max-w-2xl text-sm text-muted-foreground">{b.description}</p>
               </div>
               <CodeBlock code={`npx shadcn add @syncrobotic/${b.name}`} lang="bash" title="Install" />
               {uses.length > 0 && (

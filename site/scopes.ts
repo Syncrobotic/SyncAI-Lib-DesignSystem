@@ -38,9 +38,11 @@ export const scopes: Scope[] = [
   {
     key: "components",
     label: "Components",
-    href: "/docs/components/button",
+    href: "/docs/components",
     match: ["/docs/components"],
-    groups: itemGroups.map((g) => ({
+    groups: [
+      { title: "Browse", links: [{ href: "/docs/components", label: "All components" }] },
+      ...itemGroups.map((g) => ({
       title: g,
       links: items
         .filter((i) => i.group === g)
@@ -50,7 +52,8 @@ export const scopes: Scope[] = [
           // The page's examples, so you can jump to one; as ReUI lists them, without a second table of contents.
           sections: i.examples ? storyNames(i.examples).map((n) => ({ href: `/docs/components/${i.name}#example-${n}`, label: storyTitle(n) })) : undefined,
         })),
-    })),
+      })),
+    ],
   },
   {
     key: "blocks",

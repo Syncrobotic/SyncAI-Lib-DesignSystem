@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/docs/upgrading", priority: 0.7 },
     { path: "/docs/foundations", priority: 0.9 },
     ...foundations.map((f) => ({ path: `/docs/foundations/${f.slug}`, priority: 0.8 })),
+    { path: "/docs/components", priority: 0.9 },
     { path: "/icons", priority: 0.7 },
     { path: "/icons/lucide", priority: 0.5 },
     ...items.map((i) => ({ path: `/docs/components/${i.name}`, priority: 0.6 })),

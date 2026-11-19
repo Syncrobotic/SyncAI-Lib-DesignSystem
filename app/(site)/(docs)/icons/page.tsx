@@ -3,7 +3,6 @@ import Link from "next/link"
 import { pageMeta } from "@/site/config"
 import { DocHeader } from "@/site/doc"
 import { IconGallery } from "@/site/icon-gallery"
-import { IconTabs } from "@/site/icon-tabs"
 import { iconCount, iconGroups } from "@/site/icons"
 
 export const metadata: Metadata = pageMeta({
@@ -41,7 +40,6 @@ export default function IconsPage() {
         </Link>
         . Lint rejects a Lucide import that is not in this set.
       </p>
-      <IconTabs current="kit" />
       <IconGallery groups={groups} total={iconCount} placeholder="Search by name or meaning" />
     </article>
   )

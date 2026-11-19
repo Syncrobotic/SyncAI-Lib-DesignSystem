@@ -15,9 +15,9 @@ export const StandingStill: S = { args: { state: "idle" } }
 export const Sending: S = { args: { state: "sending" } }
 export const Unconfirmed: S = { args: { state: "unconfirmed" } }
 export const BluetoothOnly: S = { args: { state: "bluetooth" } }
-export const SentOverBluetooth: S = { args: { state: "bluetooth-sent" } }
+export const DeliveredOverBluetooth: S = { args: { state: "bluetooth-sent" } }
 export const NoConnection: S = { args: { state: "dead" } }
-export const SingleDogNoStopAll: S = { args: { state: "ready", tag: undefined, onStopAll: undefined } }
+export const OneRobotOnly: S = { args: { state: "ready", tag: undefined, onStopAll: undefined } }
 
-export const LyingDownShowsWake: StoryObj<typeof WakeButton> = { render: () => <WakeButton onWake={fn()} /> }
+export const WakeWhileLyingDown: StoryObj<typeof WakeButton> = { render: () => <WakeButton onWake={fn()} /> }
 export const BatteryTooLowToWake: StoryObj<typeof WakeButton> = { render: () => <WakeButton onWake={fn()} disabled /> }

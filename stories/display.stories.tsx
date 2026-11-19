@@ -385,14 +385,17 @@ export const TableWithStatusAndSelectedRow: S = {
   ),
 }
 
-/** Normal is neutral; below `low` it turns warning, below `critical` danger, and the value is always written. */
+/**
+ * Normal is neutral; past `low` it turns warning, past `critical` danger, and the value is always written. A low battery
+ * needs attention, never danger, so battery takes only `low`; danger is for a level that breaks something, like full storage.
+ */
 export const MeterLevels: S = {
   render: () => (
     <div className="flex flex-col gap-6">
-      <Meter value={72} low={30} critical={15} label="Battery" />
-      <Meter value={24} low={30} critical={15} label="Battery" />
-      <Meter value={9} low={30} critical={15} label="Battery" />
+      <Meter value={72} low={30} label="Battery" />
+      <Meter value={9} low={30} label="Battery" />
       <Meter value={86} low={80} critical={95} higherIsWorse label="Storage" />
+      <Meter value={97} low={80} critical={95} higherIsWorse label="Storage" />
     </div>
   ),
 }
@@ -401,8 +404,8 @@ export const MeterLevels: S = {
 export const MeterInline: S = {
   render: () => (
     <div className="flex flex-col gap-3">
-      <Meter value={72} low={30} critical={15} label="Battery, Patrol dog 7F3A" inline />
-      <Meter value={18} low={30} critical={15} label="Battery, Patrol dog 9C44" inline />
+      <Meter value={72} low={30} label="Battery, Patrol dog 7F3A" inline />
+      <Meter value={18} low={30} label="Battery, Patrol dog 9C44" inline />
     </div>
   ),
 }
@@ -707,7 +710,7 @@ export const MeterStorage: S = {
 export const MeterGrid: S = {
   render: () => (
     <div className="grid grid-cols-2 gap-4">
-      <Meter label="Battery" value={72} low={30} critical={15} />
+      <Meter label="Battery" value={72} low={30} />
       <Meter label="Signal" value={54} low={40} critical={20} />
       <Meter label="Storage used" value={81} low={80} critical={95} higherIsWorse />
       <Meter label="CPU" value={36} low={80} critical={95} higherIsWorse />

@@ -35,14 +35,13 @@ export default function RadiusPage() {
 
       <Section id="scale" title="Scale">
         <Specimen>
-          <div className="grid grid-cols-2 gap-6 sm:grid-cols-5">
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6">
             {radii.map((r) => (
               <div key={r.key} className="flex flex-col gap-3">
                 <div className={`${r.cls} aspect-square border-2 border-foreground/80 bg-card`} />
                 <div className="flex flex-col">
-                  <span className="font-mono text-sm">
-                    rounded-{r.key} · {px(themeValue(`radius-${r.key}`))}
-                  </span>
+                  <span className="font-mono text-sm">rounded-{r.key}</span>
+                  <span className="font-mono text-sm text-muted-foreground tabular-nums">{px(themeValue(`radius-${r.key}`))}</span>
                   <span className="text-xs text-muted-foreground">{r.use}</span>
                 </div>
               </div>

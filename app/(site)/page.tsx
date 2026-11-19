@@ -65,22 +65,22 @@ export default function HomePage() {
       body: "The rules and tokens behind every screen: colour, type, spacing, radius, motion, iconography, accessibility and alarms.",
     },
     {
-      href: "/docs/components/button",
+      href: "/docs/components",
       title: "Components",
       count: `${componentCount} components`,
       body: "General UI on Radix, charts on Recharts, and the robot shell: emergency stop, slide to release, dock and island.",
-    },
-    {
-      href: "/icons",
-      title: "Icons",
-      count: `${iconCount} icons`,
-      body: "Each with the one thing it means, robot icons drawn to match, and every Lucide icon to search.",
     },
     {
       href: "/blocks",
       title: "Blocks",
       count: `${blockCount} blocks`,
       body: "Whole screens with real copy and real states: application screens, charts, and robot operations from fleet maps to incidents.",
+    },
+    {
+      href: "/icons",
+      title: "Icons",
+      count: `${iconCount} icons`,
+      body: "Each with the one thing it means, robot icons drawn to match, and every Lucide icon to search.",
     },
   ]
   return (
