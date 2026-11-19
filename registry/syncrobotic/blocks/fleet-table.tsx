@@ -1,4 +1,4 @@
-// @syncrobotic/fleet-table v0.13.0 · update: npx shadcn add @syncrobotic/fleet-table --overwrite
+// @syncrobotic/fleet-table v0.13.1 · update: npx shadcn add @syncrobotic/fleet-table --overwrite
 "use client"
 
 import * as React from "react"
@@ -147,7 +147,7 @@ export function FleetTable({ robots = sampleRobots, pageSize = 5, onOpen }: { ro
                   <InlineStatus status={status[r.status].tone}>{status[r.status].label}</InlineStatus>
                 </TableCell>
                 <TableCell>
-                  <Meter value={r.battery} low={30} critical={15} label={`Battery, ${r.name}`} inline />
+                  <Meter value={r.battery} low={30} label={`Battery, ${r.name}`} inline />
                 </TableCell>
                 <TableCell className="hidden text-muted-foreground md:table-cell">{r.site}</TableCell>
                 <TableCell className="hidden text-muted-foreground md:table-cell">{r.lastSeen}</TableCell>

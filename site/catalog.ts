@@ -450,6 +450,7 @@ const entries: Record<string, Entry> = {
     group: "Display",
     examples: { file: "display", prefix: "Meter" },
     rules: [
+      "A battery takes only `low`: a low battery needs attention, it is not a failure, so it turns warning and never danger. Danger is for a level that breaks something, like full storage.",
       "For a level in a known range (battery, storage). For work under way, use Progress.",
       "Neutral while normal; warning past `low`, danger past `critical`. Colour only when something is wrong, and the value is always written.",
       "`inline` in table cells; the label is still read by screen readers.",

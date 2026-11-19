@@ -17,7 +17,7 @@ export function SiteHeader() {
       </Link>
       <HeaderNav links={headerLinks} />
       <div className="ml-auto flex items-center gap-1">
-        <a href={site.repo} className="press rounded-sm px-3 py-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground">
+        <a href={site.repo} className="press inline-flex h-(--h-sm) items-center rounded-sm px-3 text-sm text-muted-foreground hover:bg-accent hover:text-foreground">
           GitHub
         </a>
         <ThemeToggle />

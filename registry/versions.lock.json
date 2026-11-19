@@ -68,8 +68,8 @@
     "hash": "4735ca41a1c21a06"
   },
   "segmented-control": {
-    "version": "0.10.0",
-    "hash": "b7d28bc6963503f0"
+    "version": "0.13.1",
+    "hash": "31dd726e0597a868"
   },
   "toggle": {
     "version": "0.10.0",
@@ -368,8 +368,8 @@
     "hash": "7ea8d5c0e447f2ee"
   },
   "fleet-table": {
-    "version": "0.13.0",
-    "hash": "28ce3f2410009487"
+    "version": "0.13.1",
+    "hash": "19492f2cd5740bb9"
   },
   "robot-status-card": {
     "version": "0.13.0",
@@ -392,16 +392,16 @@
     "hash": "0b2fa9cac43c1b68"
   },
   "list-detail": {
-    "version": "0.13.0",
-    "hash": "4acd01af87e3775b"
+    "version": "0.13.1",
+    "hash": "fd3331c2e6a9ac97"
   },
   "event-log": {
     "version": "0.8.0",
     "hash": "1f144c18bee6a25d"
   },
   "map-workspace": {
-    "version": "0.13.0",
-    "hash": "71159daa09c6c190"
+    "version": "0.13.1",
+    "hash": "327db618e12c286c"
   },
   "data-catalog": {
     "version": "0.10.0",
@@ -504,8 +504,8 @@
     "hash": "a66a091de7d3d0dd"
   },
   "radial-chart-battery": {
-    "version": "0.9.0",
-    "hash": "60f92f8ec9414c0a"
+    "version": "0.13.1",
+    "hash": "2c6093e52f183b79"
   },
   "radial-chart-goal": {
     "version": "0.9.0",
@@ -572,8 +572,8 @@
     "hash": "88ebaa9f142d9686"
   },
   "sheet-robot-detail": {
-    "version": "0.13.0",
-    "hash": "05a41bbc9d3a65dd"
+    "version": "0.13.1",
+    "hash": "28c1509937c40e7a"
   },
   "sheet-filters": {
     "version": "0.9.0",

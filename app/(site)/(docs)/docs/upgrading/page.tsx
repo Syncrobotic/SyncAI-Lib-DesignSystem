@@ -62,7 +62,7 @@ export default function UpgradingPage() {
               {m?.version}
             </span>,
             <span key="c" className="text-muted-foreground">
-              {last ? `${last.date} · ${last.note}` : ""}
+              {last && <Inline text={`${last.date} · ${last.note}`} />}
             </span>,
           ]
         })}
