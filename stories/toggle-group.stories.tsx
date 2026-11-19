@@ -24,9 +24,15 @@ type S = StoryObj
 export const ToggleGroupSingle: S = {
   render: () => (
     <ToggleGroup type="single" defaultValue="24h" aria-label="Time range">
-      {["1h", "6h", "24h", "7d", "30d"].map((r) => (
-        <ToggleGroupItem key={r} value={r}>
-          {r}
+      {[
+        ["1h", "1 h"],
+        ["6h", "6 h"],
+        ["24h", "24 h"],
+        ["7d", "7 days"],
+        ["30d", "30 days"],
+      ].map(([v, l]) => (
+        <ToggleGroupItem key={v} value={v}>
+          {l}
         </ToggleGroupItem>
       ))}
     </ToggleGroup>

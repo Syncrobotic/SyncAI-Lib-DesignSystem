@@ -27,7 +27,7 @@ export function InputOTP({
     <OTPInput
       data-slot="input-otp"
       autoComplete="one-time-code"
-      containerClassName={cn("flex items-center gap-2 has-disabled:text-muted-foreground", containerClassName)}
+      containerClassName={cn("flex min-w-0 items-center gap-1 sm:gap-2 has-disabled:text-muted-foreground", containerClassName)}
       className={cn("disabled:cursor-not-allowed", className)}
       maxLength={maxLength}
       value={value}
@@ -44,7 +44,8 @@ export function InputOTP({
 }
 
 export function InputOTPGroup({ className, ...props }: React.ComponentProps<"div">) {
-  return <div data-slot="input-otp-group" className={cn("flex items-center gap-2", className)} {...props} />
+  // On a phone a long code (8 boxes and a separator) is wider than the screen: the boxes give a few px each, never overflow.
+  return <div data-slot="input-otp-group" className={cn("flex min-w-0 items-center gap-1 sm:gap-2", className)} {...props} />
 }
 
 /** One box. The caret blinks only while focused and stops under reduced motion. */
@@ -56,7 +57,7 @@ export function InputOTPSlot({ index, className, ...props }: React.ComponentProp
       data-slot="input-otp-slot"
       data-active={isActive}
       className={cn(
-        "relative flex size-(--h-md) items-center justify-center rounded-sm bg-card font-mono text-lg font-medium ring-1 ring-input ring-inset",
+        "relative flex h-(--h-md) w-(--h-md) min-w-0 shrink items-center justify-center rounded-sm bg-card font-mono text-lg font-medium ring-1 ring-input ring-inset",
         "transition-shadow duration-(--motion-fast) ease-(--ease-standard) data-[active=true]:ring-2 data-[active=true]:ring-ring",
         "aria-invalid:ring-2 aria-invalid:ring-danger",
         className,

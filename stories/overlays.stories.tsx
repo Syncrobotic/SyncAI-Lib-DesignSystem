@@ -85,7 +85,7 @@ const RenameDialog = ({ open }: { open?: boolean }) => (
         <Input defaultValue="Patrol dog 7F3A" />
       </Field>
       <DialogFooter>
-        <Button>Save</Button>
+        <Button>Rename</Button>
       </DialogFooter>
     </DialogContent>
   </Dialog>
@@ -284,7 +284,7 @@ export const PopoverWithForm: S = {
         <Field label="Show robots below" hint="Battery, 0 to 100 %">
           <NumberField defaultValue={30} min={0} max={100} step={5} unit="%" />
         </Field>
-        <Button size="sm">Apply</Button>
+        <Button size="sm">Show robots</Button>
       </PopoverContent>
     </Popover>
   ),

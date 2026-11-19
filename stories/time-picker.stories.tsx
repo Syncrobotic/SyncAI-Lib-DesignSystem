@@ -62,9 +62,9 @@ export const TimeInputRange: S = {
       <fieldset className="flex flex-col gap-2">
         <legend className="pb-2 text-sm font-medium">Night patrol</legend>
         <div className="flex items-center gap-2">
-          <TimeInput value={from} onValueChange={setFrom} aria-label="From" />
+          <TimeInput value={from} onValueChange={setFrom} aria-label="From" className="min-w-0 flex-1" />
           <span className="text-muted-foreground">–</span>
-          <TimeInput value={to} onValueChange={setTo} aria-label="To" />
+          <TimeInput value={to} onValueChange={setTo} aria-label="To" className="min-w-0 flex-1" />
         </div>
         <p className="text-xs text-muted-foreground">Ends the next morning.</p>
       </fieldset>

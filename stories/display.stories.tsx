@@ -91,16 +91,17 @@ export const ProgressDefault: S = {
       <div className="flex flex-col gap-2">
         <div className="flex justify-between">
           <span>Uploading video</span>
-          <span className="text-muted-foreground">64%</span>
+          <span className="text-muted-foreground tabular-nums">64 %</span>
         </div>
         <Progress value={64} aria-label="Uploading video" />
       </div>
+      {/* Progress is for a process someone waits on. A level (battery, storage) is a Meter. */}
       <div className="flex flex-col gap-2">
         <div className="flex justify-between">
-          <span>Battery</span>
-          <span className="text-warning">18%</span>
+          <span>Installing firmware 2.4.1</span>
+          <span className="text-muted-foreground tabular-nums">18 %</span>
         </div>
-        <Progress value={18} tone="warning" aria-label="Battery" />
+        <Progress value={18} aria-label="Installing firmware 2.4.1" />
       </div>
     </div>
   ),
@@ -148,7 +149,7 @@ export const TableDefault: S = {
             <TableCell>
               <InlineStatus status={r.tone}>{r.s}</InlineStatus>
             </TableCell>
-            <TableCell className="text-right">{r.b}%</TableCell>
+            <TableCell className="text-right">{r.b} %</TableCell>
           </TableRow>
         ))}
       </TableBody>
@@ -182,7 +183,7 @@ export const CardWithList: S = {
       </CardHeader>
       <CardContent className="gap-0">
         {[
-          { n: "Dock A", m: "2B10 charging · 64%", t: "normal" as const, s: "In use" },
+          { n: "Dock A", m: "2B10 charging · 64 %", t: "normal" as const, s: "In use" },
           { n: "Dock B", m: "Free", t: "offline" as const, s: "Idle" },
           { n: "Dock C", m: "Power fault since 01:12", t: "danger" as const, s: "Fault" },
         ].map((d) => (
@@ -240,7 +241,7 @@ export const ProgressSteps: S = {
     <div className="flex flex-col gap-3 text-sm">
       {[
         { n: "Map upload", v: 100, t: "success" as const, s: "Done" },
-        { n: "Route check", v: 45, t: "info" as const, s: "45%" },
+        { n: "Route check", v: 45, t: "info" as const, s: "45 %" },
         { n: "Firmware", v: 0, t: "neutral" as const, s: "Waiting" },
       ].map((x) => (
         <div key={x.n} className="flex flex-col gap-1">

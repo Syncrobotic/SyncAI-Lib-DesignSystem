@@ -19,8 +19,8 @@ export default async function PreviewPage({ params }: { params: Promise<{ name: 
     <div className="min-h-screen bg-background">
       <h1 className="sr-only">{block.title}</h1>
       {/* The docs frame measures this element so the preview is exactly as tall as the block. */}
-      <div id="block-root">{block.render()}</div>
       <PreviewBack href={blockHref(block.name)} />
+      <div id="block-root">{block.render()}</div>
     </div>
   )
 }

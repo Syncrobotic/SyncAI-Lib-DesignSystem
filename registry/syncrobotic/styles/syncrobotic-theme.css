@@ -43,7 +43,7 @@
   --border: #dcdce1;
   --input: #dcdce1;
   --ring: var(--foreground); /* focus is not a status: the ink colour, never the in-progress blue */
-  --disabled: #a1a1aa;
+  --disabled: #84848c; /* disabled text: 3:1 on the page and cards, still clearly lighter than secondary text */
 
   --info: #2952b8;
   --info-subtle: #e4e9f4;
@@ -129,7 +129,7 @@
   --border: #2c2c32;
   --input: #2c2c32;
   --ring: var(--foreground);
-  --disabled: #63636b;
+  --disabled: #6e6e76;
 
   --info: #7da4e6;
   --info-subtle: #1a2233;

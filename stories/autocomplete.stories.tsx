@@ -85,7 +85,14 @@ export const AutocompleteSmall: S = {
 }
 
 export const AutocompleteDisabled: S = {
-  render: () => <Autocomplete options={sites} value="Hall B" disabled aria-label="Site" />,
+  render: () => (
+    <div className="flex flex-col gap-1">
+      <Autocomplete options={sites} value="Hall B" disabled aria-label="Site" aria-describedby="site-why" />
+      <p id="site-why" className="text-xs text-muted-foreground">
+        The site is set by the robot&apos;s map and cannot change during a mission.
+      </p>
+    </div>
+  ),
 }
 
 export const AutocompleteInForm: S = {

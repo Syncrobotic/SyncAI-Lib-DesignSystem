@@ -75,7 +75,7 @@
     },
     "disabled": {
       "$type": "color",
-      "$value": "#63636b"
+      "$value": "#6e6e76"
     },
     "info": {
       "$type": "color",
