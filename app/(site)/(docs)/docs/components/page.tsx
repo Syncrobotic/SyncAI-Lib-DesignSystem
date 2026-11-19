@@ -37,7 +37,7 @@ export default function ComponentsIndex() {
                     className="group flex min-h-(--h-row) flex-col justify-center gap-1 py-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                   >
                     <span className="font-medium group-hover:underline">{i.title}</span>
-                    {i.description && <span className="line-clamp-2 text-sm text-muted-foreground">{i.description}</span>}
+                    {i.description && <span className="line-clamp-3 text-sm text-muted-foreground">{i.description}</span>}
                   </Link>
                 </li>
               ))}

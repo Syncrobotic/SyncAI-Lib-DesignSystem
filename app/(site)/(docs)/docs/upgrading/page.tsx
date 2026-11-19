@@ -27,6 +27,20 @@ npx shadcn add @syncrobotic/stop-button --overwrite
 # 4. Review the change, and re-apply any local edits the diff removed
 git diff`
 
+/** Where an item is documented: its component or block page, or the page that covers it (the theme, the feedback, the
+ *  agent skill). Null when nothing does. */
+const covered: Record<string, string> = {
+  "syncrobotic-theme": "/docs/tokens",
+  feedback: "/docs/foundations/alarms#touch-and-sound",
+  "agent-skill": "/docs/ai",
+  "robot-icons": "/icons",
+}
+function pageOf(name: string, type: string) {
+  if (getItem(name)) return `/docs/components/${name}`
+  if (type === "registry:block") return blockHref(name)
+  return covered[name] ?? null
+}
+
 export default function UpgradingPage() {
   return (
     <article>
@@ -69,17 +83,19 @@ export default function UpgradingPage() {
           const m = (i as { meta?: Meta }).meta
           const last = m?.changelog.find((c) => c.version === m.version)
           return [
-            getItem(i.name) || i.type === "registry:block" ? (
+            pageOf(i.name, i.type) ? (
               <Link
                 key="n"
-                href={getItem(i.name) ? `/docs/components/${i.name}` : blockHref(i.name)}
+                href={pageOf(i.name, i.type)!}
                 className="font-mono text-sm underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground"
               >
                 {i.name}
               </Link>
             ) : (
-              <span key="n" className="font-mono text-sm">
-                {i.name}
+              // No page of its own: the same name, unlinked, with what it is in place of a link.
+              <span key="n" className="flex flex-col">
+                <span className="font-mono text-sm">{i.name}</span>
+                <span className="text-xs text-muted-foreground">Utility, no page</span>
               </span>
             ),
             <span key="v" className="font-mono text-sm tabular-nums">

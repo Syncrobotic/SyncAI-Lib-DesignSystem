@@ -52,7 +52,7 @@
     },
     {
      "name": "priority",
-     "type": "AlarmPriority",
+     "type": "\"critical\" | \"high\" | \"low\"",
      "required": true,
      "description": ""
     },
@@ -298,7 +298,7 @@
     },
     {
      "name": "status",
-     "type": "AttachmentStatus",
+     "type": "\"idle\" | \"uploading\" | \"done\" | \"error\"",
      "default": "\"done\"",
      "description": ""
     },
@@ -483,7 +483,7 @@
    "props": [
     {
      "name": "status",
-     "type": "Status",
+     "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
      "description": ""
     }
    ],
@@ -740,7 +740,7 @@
    "props": [
     {
      "name": "children",
-     "type": "React.ReactNode & React.ReactElement<unknown, string | React.JSXElementConstructor<any>>",
+     "type": "ReactNode & ReactElement",
      "required": true,
      "description": ""
     },
@@ -773,12 +773,12 @@
    "props": [
     {
      "name": "formatter",
-     "type": "Formatter<number, string> & ((value: number, name: string, item: TooltipPayloadEntry, index: number, payload: TooltipPayload) => React.ReactNode | [React.ReactNode, React.ReactNode]) & ((value: number, key: string) => React.ReactNode)",
+     "type": "Formatter<number, string> & ((value: number, name: string, item: TooltipPayloadEntry, index: number, payload: TooltipPayload) => ReactNode | [ReactNode, ReactNode]) & ((value: number, key: string) => ReactNode)",
      "description": "Function to customize the value in the tooltip. If you return an array, the first entry will be the formatted \"value\", and the second entry will be the formatted \"name\""
     },
     {
      "name": "labelFormatter",
-     "type": "((label: React.ReactNode, payload: readonly Payload<number, string>[]) => React.ReactNode) & ((label: React.ReactNode, payload: TooltipPayload) => React.ReactNode) & ((label: unknown) => React.ReactNode)",
+     "type": "((label: ReactNode, payload: readonly Payload<number, string>[]) => ReactNode) & ((label: ReactNode, payload: TooltipPayload) => ReactNode) & ((label: unknown) => ReactNode)",
      "description": "The formatter function of label in tooltip."
     }
    ],
@@ -895,7 +895,7 @@
     },
     {
      "name": "linkAs",
-     "type": "React.ElementType<any, keyof React.JSX.IntrinsicElements>",
+     "type": "ElementType",
      "default": "\"a\"",
      "description": "Your router's link (e.g. next/link), for chips with href."
     }
@@ -909,23 +909,23 @@
    "props": [
     {
      "name": "legend",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "required": true,
      "description": ""
     },
     {
      "name": "hint",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": ""
     },
     {
      "name": "error",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": ""
     },
     {
      "name": "children",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "required": true,
      "description": ""
     }
@@ -937,24 +937,24 @@
    "props": [
     {
      "name": "label",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "required": true,
      "description": ""
     },
     {
      "name": "description",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": ""
     },
     {
      "name": "control",
-     "type": "React.ReactElement<unknown, string | React.JSXElementConstructor<any>>",
+     "type": "ReactElement",
      "required": true,
      "description": "A Checkbox, RadioGroupItem or Switch."
     },
     {
      "name": "trailing",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": "A count or a value at the end of the row."
     },
     {
@@ -1010,7 +1010,7 @@
    "props": [
     {
      "name": "end",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": ""
     }
    ],
@@ -1103,7 +1103,7 @@
     },
     {
      "name": "children",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": ""
     },
     {
@@ -1133,12 +1133,12 @@
     },
     {
      "name": "density",
-     "type": "Density",
+     "type": "\"default\" | \"dense\"",
      "description": ""
     },
     {
      "name": "variant",
-     "type": "Variant",
+     "type": "\"default\" | \"striped\" | \"borders\" | \"borderless\"",
      "default": "\"default\"",
      "description": ""
     },
@@ -1150,13 +1150,13 @@
     },
     {
      "name": "emptyText",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "default": "\"No rows\"",
      "description": ""
     },
     {
      "name": "children",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "required": true,
      "description": ""
     }
@@ -1232,7 +1232,7 @@
    "props": [
     {
      "name": "children",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": ""
     }
    ],
@@ -1473,18 +1473,18 @@
    "props": [
     {
      "name": "state",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "required": true,
      "description": ""
     },
     {
      "name": "action",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": ""
     },
     {
      "name": "nav",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": ""
     }
    ],
@@ -1495,13 +1495,13 @@
    "props": [
     {
      "name": "secondary",
-     "type": "Act",
+     "type": "{ label: string; onClick: () => void; icon?: ElementType }",
      "required": true,
      "description": ""
     },
     {
      "name": "primary",
-     "type": "Act",
+     "type": "{ label: string; onClick: () => void; icon?: ElementType }",
      "required": true,
      "description": ""
     },
@@ -1621,23 +1621,23 @@
    "props": [
     {
      "name": "icon",
-     "type": "React.ElementType<any, keyof React.JSX.IntrinsicElements>",
+     "type": "ElementType",
      "description": ""
     },
     {
      "name": "title",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "required": true,
      "description": ""
     },
     {
      "name": "description",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": ""
     },
     {
      "name": "action",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": ""
     }
    ],
@@ -1650,23 +1650,23 @@
    "props": [
     {
      "name": "label",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "required": true,
      "description": ""
     },
     {
      "name": "hint",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": ""
     },
     {
      "name": "error",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": ""
     },
     {
      "name": "children",
-     "type": "React.ReactElement<unknown, string | React.JSXElementConstructor<any>>",
+     "type": "ReactElement",
      "required": true,
      "description": ""
     }
@@ -1748,18 +1748,18 @@
     },
     {
      "name": "title",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "default": "\"Drop files here or choose files\"",
      "description": ""
     },
     {
      "name": "hint",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": ""
     },
     {
      "name": "icon",
-     "type": "React.ElementType<any, keyof React.JSX.IntrinsicElements>",
+     "type": "ElementType",
      "default": "Upload",
      "description": ""
     },
@@ -1771,7 +1771,7 @@
     },
     {
      "name": "children",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": "Replace the default content entirely (an avatar, a cover image)."
     }
    ],
@@ -1784,7 +1784,7 @@
    "props": [
     {
      "name": "children",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "required": true,
      "description": ""
     },
@@ -1795,7 +1795,7 @@
     },
     {
      "name": "onNavigate",
-     "type": "Navigate",
+     "type": "(url: string, mode: NavigateMode) => void",
      "default": "browserNavigate",
      "description": ""
     },
@@ -2086,17 +2086,17 @@
     },
     {
      "name": "avatar",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": ""
     },
     {
      "name": "status",
-     "type": "Status",
+     "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
      "description": "Shape at the avatar's corner: the dog's current state."
     },
     {
      "name": "tone",
-     "type": "Tone",
+     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
      "description": ""
     },
     {
@@ -2129,7 +2129,7 @@
     },
     {
      "name": "open",
-     "type": "Zone",
+     "type": "\"name\" | \"status\" | \"bell\"",
      "default": "null",
      "description": "Which zone is expanded. Each zone has its own panel."
     },
@@ -2140,7 +2140,7 @@
     },
     {
      "name": "edge",
-     "type": "Tone",
+     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
      "description": "Persistent fault (stopped): changes the tray edge colour. Offline is neutral: say it, do not colour it."
     },
     {
@@ -2150,7 +2150,7 @@
     },
     {
      "name": "children",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": "IslandNotice or a panel."
     },
     {
@@ -2166,13 +2166,13 @@
    "props": [
     {
      "name": "tone",
-     "type": "Tone",
+     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
      "required": true,
      "description": ""
     },
     {
      "name": "icon",
-     "type": "React.ElementType<any, keyof React.JSX.IntrinsicElements>",
+     "type": "ElementType",
      "required": true,
      "description": ""
     },
@@ -2391,23 +2391,23 @@
    "props": [
     {
      "name": "title",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "required": true,
      "description": ""
     },
     {
      "name": "meta",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": ""
     },
     {
      "name": "lead",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": "Only when the icon carries meaning (event snapshot, step number). No decorative tiles."
     },
     {
      "name": "trailing",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": "Value text or InlineStatus. Filled badges belong in headers, not rows."
     },
     {
@@ -2473,12 +2473,12 @@
    "props": [
     {
      "name": "icon",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": ""
     },
     {
      "name": "time",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": ""
     },
     {
@@ -2502,28 +2502,28 @@
    "props": [
     {
      "name": "tone",
-     "type": "Tone",
+     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
      "description": ""
     },
     {
      "name": "icon",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": "An icon for the kind of line, used when there is no tone."
     },
     {
      "name": "title",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "required": true,
      "description": ""
     },
     {
      "name": "detail",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": "Arguments, an id, a path: shown in monospace after the title."
     },
     {
      "name": "time",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": ""
     }
    ],
@@ -2647,18 +2647,18 @@
    "props": [
     {
      "name": "icon",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": ""
     },
     {
      "name": "title",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "required": true,
      "description": ""
     },
     {
      "name": "description",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": ""
     }
    ],
@@ -2738,28 +2738,28 @@
    "props": [
     {
      "name": "title",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "required": true,
      "description": ""
     },
     {
      "name": "description",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": ""
     },
     {
      "name": "breadcrumb",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": "A Breadcrumb, shown above the title."
     },
     {
      "name": "meta",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": "MetaPills: counts, owner, last update, a status."
     },
     {
      "name": "actions",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": "Buttons for this page, at the right on wide screens and under the title on phones."
     },
     {
@@ -2776,17 +2776,17 @@
    "props": [
     {
      "name": "tone",
-     "type": "Tone",
+     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
      "description": ""
     },
     {
      "name": "icon",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": ""
     },
     {
      "name": "children",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "required": true,
      "description": ""
     }
@@ -2828,7 +2828,7 @@
     },
     {
      "name": "onNavigate",
-     "type": "Navigate",
+     "type": "(url: string, mode: NavigateMode) => void",
      "description": "In link mode, follow a link through the app's router; without it the browser loads the page."
     },
     {
@@ -2964,7 +2964,7 @@
     },
     {
      "name": "defaultAnswers",
-     "type": "Answers",
+     "type": "Record<string, string | string[] | number | undefined>",
      "default": "{}",
      "description": ""
     },
@@ -3023,7 +3023,7 @@
     },
     {
      "name": "error",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": ""
     }
    ],
@@ -3080,7 +3080,7 @@
     },
     {
      "name": "children",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "required": true,
      "description": ""
     },
@@ -3187,12 +3187,12 @@
     },
     {
      "name": "root",
-     "type": "React.RefObject<HTMLElement | null>",
+     "type": "RefObject<HTMLElement | null>",
      "description": "The scrolling element, when it is not the window."
     },
     {
      "name": "title",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "default": "\"On this page\"",
      "description": ""
     },
@@ -3232,7 +3232,7 @@
     },
     {
      "name": "onNavigate",
-     "type": "Navigate",
+     "type": "(url: string, mode: NavigateMode) => void",
      "default": "browserNavigate",
      "description": ""
     },
@@ -3471,7 +3471,7 @@
    "props": [
     {
      "name": "children",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "required": true,
      "description": ""
     }
@@ -3583,12 +3583,12 @@
     },
     {
      "name": "renderOverlay",
-     "type": "(item: T) => React.ReactNode",
+     "type": "(item: T) => ReactNode",
      "description": "A copy that follows the pointer while the item stays as a faded placeholder. Without it the item itself follows."
     },
     {
      "name": "children",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "required": true,
      "description": ""
     }
@@ -3606,7 +3606,7 @@
     },
     {
      "name": "children",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "required": true,
      "description": ""
     }
@@ -3652,17 +3652,17 @@
    "props": [
     {
      "name": "status",
-     "type": "Status",
+     "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
      "description": ""
     },
     {
      "name": "tone",
-     "type": "Tone",
+     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
      "description": ""
     },
     {
      "name": "children",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "required": true,
      "description": ""
     }
@@ -3674,17 +3674,17 @@
    "props": [
     {
      "name": "status",
-     "type": "Status",
+     "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
      "description": ""
     },
     {
      "name": "tone",
-     "type": "Tone",
+     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
      "description": ""
     },
     {
      "name": "children",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "required": true,
      "description": ""
     }
@@ -3698,12 +3698,12 @@
    "props": [
     {
      "name": "status",
-     "type": "Status",
+     "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
      "description": ""
     },
     {
      "name": "tone",
-     "type": "Tone",
+     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
      "description": ""
     }
    ],
@@ -3759,13 +3759,13 @@
    "props": [
     {
      "name": "title",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "required": true,
      "description": ""
     },
     {
      "name": "description",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": ""
     },
     {
@@ -3800,7 +3800,7 @@
     },
     {
      "name": "title",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": ""
     }
    ],
@@ -4044,7 +4044,7 @@
    "props": [
     {
      "name": "value",
-     "type": "ThemeChoice",
+     "type": "\"light\" | \"system\" | \"dark\"",
      "required": true,
      "description": ""
     },
@@ -4222,7 +4222,7 @@
    "props": [
     {
      "name": "time",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": "Shown as written (\"09:41\", \"Yesterday\")."
     },
     {
@@ -4232,17 +4232,17 @@
     },
     {
      "name": "tone",
-     "type": "Tone",
+     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
      "description": "A status, drawn as its glyph. Leave empty for an ordinary event."
     },
     {
      "name": "icon",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": "An icon instead of a dot, e.g. for kinds of event."
     },
     {
      "name": "title",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "required": true,
      "description": ""
     }
@@ -4279,7 +4279,7 @@
    "props": [
     {
      "name": "tone",
-     "type": "ToastTone",
+     "type": "\"neutral\" | \"success\" | \"danger\"",
      "default": "\"neutral\"",
      "description": ""
     }
@@ -4364,13 +4364,13 @@
    "props": [
     {
      "name": "variant",
-     "type": "Variant",
+     "type": "\"ghost\" | \"outline\"",
      "default": "\"outline\"",
      "description": ""
     },
     {
      "name": "size",
-     "type": "Size",
+     "type": "\"sm\" | \"md\"",
      "default": "\"md\"",
      "description": ""
     },
@@ -4452,7 +4452,7 @@
    "props": [
     {
      "name": "status",
-     "type": "TraceStatus",
+     "type": "\"pending\" | \"running\" | \"done\" | \"warning\" | \"error\" | \"skipped\"",
      "required": true,
      "description": ""
     }
@@ -4464,29 +4464,29 @@
    "props": [
     {
      "name": "status",
-     "type": "TraceStatus",
+     "type": "\"pending\" | \"running\" | \"done\" | \"warning\" | \"error\" | \"skipped\"",
      "required": true,
      "description": ""
     },
     {
      "name": "title",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "required": true,
      "description": ""
     },
     {
      "name": "description",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": "One line under the title: the reason for a failure, a short result."
     },
     {
      "name": "meta",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": "A muted detail beside the title: the tool, the robot, the model."
     },
     {
      "name": "icon",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": "Replaces the status mark with an icon for the kind of step; the status is still announced."
     },
     {
@@ -4501,7 +4501,7 @@
     },
     {
      "name": "time",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": "A clock time, shown as written."
     },
     {
@@ -4529,13 +4529,13 @@
    "props": [
     {
      "name": "label",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "required": true,
      "description": ""
     },
     {
      "name": "children",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "required": true,
      "description": ""
     }
@@ -4547,7 +4547,7 @@
    "props": [
     {
      "name": "children",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "required": true,
      "description": ""
     },
@@ -4564,13 +4564,13 @@
    "props": [
     {
      "name": "title",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "required": true,
      "description": ""
     },
     {
      "name": "status",
-     "type": "TraceStatus",
+     "type": "\"pending\" | \"running\" | \"done\" | \"warning\" | \"error\" | \"skipped\"",
      "required": true,
      "description": ""
     },
@@ -4586,7 +4586,7 @@
     },
     {
      "name": "children",
-     "type": "string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<AwaitedReactNode>",
+     "type": "ReactNode",
      "description": ""
     }
    ],

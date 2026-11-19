@@ -33,6 +33,28 @@ const own = (decl) => {
 }
 const clean = (s) => s.replace(/\s+/g, " ").replace(/import\("[^"]+"\)\./g, "").trim()
 
+/** React's own types as a reader writes them: the checker expands ReactNode into its eight-member union. */
+const reactNames = (s) =>
+  s
+    .replace(/React\.ReactElement<unknown, string \| React\.JSXElementConstructor<any>>/g, "ReactElement")
+    .replace(/React\.ElementType<any, keyof React\.JSX\.IntrinsicElements>/g, "ElementType")
+    .replace(/\bReact\.(\w+)/g, "$1")
+    .replace(/string \| number \| bigint \| boolean \| ReactElement \| Iterable<ReactNode> \| ReactPortal \| Promise<AwaitedReactNode>/g, "ReactNode")
+
+/** Small local aliases (`type Tone = "a" | "b"`) are printed as what they stand for; longer ones keep their name. */
+const ALIAS_MAX = 64
+const aliases = new Map()
+function aliasText(name, sf) {
+  const key = `${sf.fileName}#${name}`
+  if (!aliases.has(key)) {
+    let text = null
+    for (const st of sf.statements)
+      if (ts.isTypeAliasDeclaration(st) && st.name.text === name && !st.typeParameters) text = reactNames(clean(st.type.getText(sf)))
+    aliases.set(key, text)
+  }
+  return aliases.get(key)
+}
+
 /** "React.ComponentProps<typeof DialogPrimitive.Content>" → "Radix Dialog.Content"; "<button>" for elements. */
 function inheritedName(text, sf) {
   let t = text.replace(/\s+/g, " ")
@@ -143,7 +165,16 @@ for (const sf of program.getSourceFiles().filter((s) => files.includes(path.reso
       const t = checker.getTypeOfSymbolAtLocation(sym, param)
       let typeText = clean(checker.typeToString(checker.getNonNullableType(t), param, ts.TypeFormatFlags.NoTruncation | ts.TypeFormatFlags.UseAliasDefinedOutsideCurrentScope))
       // cva variants come through as `"a" | "b" | null`; the null is cva's, not an option.
-      typeText = typeText.replace(/ \| null$/, "")
+      typeText = reactNames(typeText.replace(/ \| null$/, ""))
+      if (/^\w+$/.test(typeText)) {
+        // Follow the prop's own annotation to the alias, through an import if there is one.
+        const ref = decls.find(own)?.type
+        let target = ref && ts.isTypeReferenceNode(ref) && ts.isIdentifier(ref.typeName) ? checker.getSymbolAtLocation(ref.typeName) : undefined
+        if (target && target.flags & ts.SymbolFlags.Alias) target = checker.getAliasedSymbol(target)
+        const decl = target?.declarations?.find((d) => ts.isTypeAliasDeclaration(d) && own(d))
+        const expanded = decl ? aliasText(typeText, decl.getSourceFile()) : aliasText(typeText, sf)
+        if (expanded && expanded.length <= ALIAS_MAX) typeText = expanded
+      }
       const optional = (sym.flags & ts.SymbolFlags.Optional) !== 0
       props.push({
         name,

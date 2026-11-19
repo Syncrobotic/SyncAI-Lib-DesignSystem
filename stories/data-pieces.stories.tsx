@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils"
 import { LoadMore } from "@/registry/syncrobotic/ui/load-more"
 import { RestrictedPreview } from "@/registry/syncrobotic/ui/restricted-preview"
 import { ShareBar } from "@/registry/syncrobotic/ui/share-bar"
+import { placeholderPhoto } from "./placeholder-photos"
 
 const meta: Meta = { title: "Display/Data pieces" }
 export default meta
@@ -86,11 +87,13 @@ export const LoadMoreList: S = { render: () => <Gallery /> }
 /** While the next batch is fetched. */
 export const LoadMoreLoading: S = { render: () => <LoadMore shown={40} total={125} step={20} loading onMore={() => {}} /> }
 
-function Mosaic({ tone }: { tone: string }) {
+/** The dataset's first four pictures, as a catalog card shows them. */
+function Mosaic({ prefix }: { prefix: string }) {
   return (
     <span aria-label="Four sample images" role="img" className="grid aspect-4/3 w-full grid-cols-2 grid-rows-2 gap-px overflow-hidden rounded-sm bg-border">
       {[0, 1, 2, 3].map((i) => (
-        <span key={i} className={tone} />
+        // eslint-disable-next-line @next/next/no-img-element -- a drawn placeholder, not a page image
+        <img key={i} src={placeholderPhoto(i + 2, `${prefix}-${i + 1}`)} alt="" className="size-full object-cover" />
       ))}
     </span>
   )
@@ -106,7 +109,7 @@ export const RestrictedPreviewCards: S = {
       ].map((d) => (
         <figure key={d.name} className="flex flex-col gap-2">
           <RestrictedPreview restricted={d.restricted} reason={d.reason} className="aspect-4/3 w-full">
-            <Mosaic tone="bg-muted" />
+            <Mosaic prefix={d.name.startsWith("Dock") ? "dock" : "hall-b"} />
           </RestrictedPreview>
           <figcaption className="text-sm">{d.name}</figcaption>
         </figure>

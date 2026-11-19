@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from "@storybook/react"
 import { fn } from "@storybook/test"
 import { ListGroup, ListRow } from "@/registry/syncrobotic/shell/list"
 import { InlineStatus, StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
-import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { Bone, LoadingLine } from "@/registry/syncrobotic/shell/skeleton"
 
 const meta: Meta = { title: "Data/List and status" }
@@ -11,12 +10,8 @@ type S = StoryObj
 
 export const StatusShapes: S = {
   render: () => (
+    // Each shape with its word: a glyph alone is documented under Status glyph.
     <div className="flex flex-col gap-3">
-      <div className="flex gap-4">
-        {(["active", "normal", "warning", "danger", "offline"] as const).map((t) => (
-          <StatusGlyph key={t} status={t} />
-        ))}
-      </div>
       <StatusEyebrow status="active">Patrolling</StatusEyebrow>
       <StatusEyebrow status="normal">Charging</StatusEyebrow>
       <StatusEyebrow status="warning">Task paused</StatusEyebrow>
