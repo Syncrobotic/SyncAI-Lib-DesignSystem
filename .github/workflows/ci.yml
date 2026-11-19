@@ -22,6 +22,8 @@ jobs:
       - run: npm run lint:tokens
       # Every registry item declares exactly what its files import, and hook users are client components
       - run: npm run lint:registry
+      # Focus is never removed, a battery warns below 15 %, every chart block has a table view
+      - run: npm run lint:rules
       # Overlays animate in and out, buttons press, timing comes from the motion tokens
       - run: npm run lint:motion
       # Every item file changed only with a version bump; the DTCG token files match the CSS theme

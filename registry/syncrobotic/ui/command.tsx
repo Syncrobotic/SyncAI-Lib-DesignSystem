@@ -1,4 +1,4 @@
-// @syncrobotic/command v0.16.1 · update: npx shadcn add @syncrobotic/command --overwrite
+// @syncrobotic/command v0.17.2 · update: npx shadcn add @syncrobotic/command --overwrite
 "use client"
 
 import * as React from "react"
@@ -66,6 +66,7 @@ export function CommandInput({ className, end, ...props }: React.ComponentProps<
     >
       <Search aria-hidden="true" className="size-5 shrink-0 text-muted-foreground" />
       <CommandPrimitive.Input
+        // focus-ring: its row draws the ring (has-focus-visible on command-input), or the caret in a palette.
         className={cn("h-full min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-muted-foreground", className)}
         {...props}
       />

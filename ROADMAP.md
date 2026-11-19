@@ -76,7 +76,7 @@ Ordered by what blocks adoption first. Each milestone is one or two release trai
 - [x] Overview puts alarms first; neutral environment badge; lighter disabled outlines; every chart has a table view
 - [x] Field edges 3:1 (WCAG 1.4.11), focus rings never removed, battery threshold 15 % everywhere, 44 px targets on the docs site
 - [x] One rule where two disagreed (default theme, battery as Meter, switch on, offline, 36 px, button weight, KPI colour, missions as processes)
-- [ ] Lints for what the audit found by hand: `outline-none` without a replacement, field-edge contrast, battery thresholds, a chart block without `ChartTable`
+- [x] Lints for what the audit found by hand (`lint:rules`): `outline-none` without a replacement, battery thresholds, a chart block without `ChartTable`; field-edge contrast as a unit test
 - [ ] Docs site: component pages open with the first example; block thumbnails readable; one search on the overview; filter segments the same everywhere
 
 ### 0.9 · Accessibility evidence
