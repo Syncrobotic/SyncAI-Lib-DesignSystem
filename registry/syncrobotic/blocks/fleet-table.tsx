@@ -147,7 +147,7 @@ export function FleetTable({ robots = sampleRobots, pageSize = 5, onOpen }: { ro
                   <InlineStatus status={status[r.status].tone}>{status[r.status].label}</InlineStatus>
                 </TableCell>
                 <TableCell>
-                  <Meter value={r.battery} low={30} label={`Battery, ${r.name}`} inline />
+                  <Meter value={r.battery} low={15} label={`Battery, ${r.name}`} inline className="max-sm:flex-col max-sm:items-start max-sm:gap-1" />
                 </TableCell>
                 <TableCell className="hidden text-muted-foreground md:table-cell">{r.site}</TableCell>
                 <TableCell className="hidden text-muted-foreground md:table-cell">{r.lastSeen}</TableCell>

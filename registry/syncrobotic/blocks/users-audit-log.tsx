@@ -62,6 +62,15 @@ const rows: Row[] = [
   { at: "2026-11-16T08:02", time: "16 Nov 08:02", who: "Mei Lin", kind: "access", action: "Signed in", target: "Fleet console", ip: "10.2.4.18" },
 ]
 
+function Change({ from, to }: { from: string; to?: string }) {
+  return (
+    <span className="whitespace-nowrap">
+      {from} <span aria-hidden="true">→</span>
+      <span className="sr-only">to</span> <span className="text-foreground">{to}</span>
+    </span>
+  )
+}
+
 /**
  * Who did what, when, from where: a table you can narrow by person and kind, and search. Values changed show before and
  * after. Nothing is coloured: an emergency stop is a fact here, not an alarm. Export takes the filtered rows.
@@ -90,7 +99,7 @@ export function UsersAuditLog() {
     >
       <div className="flex flex-col gap-4">
         <div className="flex flex-wrap items-center gap-2">
-          <div className="relative w-64">
+          <div className="relative w-full sm:w-64">
             <Search aria-hidden="true" className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               aria-label="Search actions and targets"
@@ -101,7 +110,7 @@ export function UsersAuditLog() {
             />
           </div>
           <Select value={who} onValueChange={setWho}>
-            <SelectTrigger aria-label="Person" className="w-40">
+            <SelectTrigger aria-label="Person" className="flex-1 sm:w-40 sm:flex-none">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -114,7 +123,7 @@ export function UsersAuditLog() {
             </SelectContent>
           </Select>
           <Select value={kind} onValueChange={setKind}>
-            <SelectTrigger aria-label="Kind of action" className="w-40">
+            <SelectTrigger aria-label="Kind of action" className="flex-1 sm:w-40 sm:flex-none">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -133,11 +142,11 @@ export function UsersAuditLog() {
             <TableHeader>
               <TableRow>
                 <TableHead>Time</TableHead>
-                <TableHead>Person</TableHead>
+                <TableHead className="hidden sm:table-cell">Person</TableHead>
                 <TableHead>Action</TableHead>
-                <TableHead>Target</TableHead>
-                <TableHead>Change</TableHead>
-                <TableHead>IP address</TableHead>
+                <TableHead className="hidden md:table-cell">Target</TableHead>
+                <TableHead className="hidden md:table-cell">Change</TableHead>
+                <TableHead className="hidden lg:table-cell">IP address</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -146,25 +155,26 @@ export function UsersAuditLog() {
                   <TableCell className="whitespace-nowrap text-muted-foreground tabular-nums">
                     <time dateTime={r.at}>{r.time}</time>
                   </TableCell>
-                  <TableCell>{r.who}</TableCell>
-                  <TableCell className="font-medium">{r.action}</TableCell>
-                  <TableCell>{r.target}</TableCell>
-                  <TableCell className="text-muted-foreground">
-                    {r.from ? (
-                      <span className="whitespace-nowrap">
-                        {r.from} <span aria-hidden="true">→</span>
-                        <span className="sr-only">to</span> <span className="text-foreground">{r.to}</span>
+                  <TableCell className="hidden sm:table-cell">{r.who}</TableCell>
+                  <TableCell className="py-2 max-md:whitespace-normal">
+                    <span className="font-medium">{r.action}</span>
+                    {/* Below 768 px the person, target and change stack under the action instead of scrolling off the side. */}
+                    <span className="flex flex-col text-xs text-muted-foreground md:hidden">
+                      <span>
+                        <span className="sm:hidden">{r.who} · </span>
+                        {r.target}
                       </span>
-                    ) : (
-                      "—"
-                    )}
+                      {r.from && <Change from={r.from} to={r.to} />}
+                    </span>
                   </TableCell>
-                  <TableCell className="font-mono text-xs text-muted-foreground">{r.ip}</TableCell>
+                  <TableCell className="hidden md:table-cell">{r.target}</TableCell>
+                  <TableCell className="hidden text-muted-foreground md:table-cell">{r.from ? <Change from={r.from} to={r.to} /> : "—"}</TableCell>
+                  <TableCell className="hidden font-mono text-xs text-muted-foreground lg:table-cell">{r.ip}</TableCell>
                 </TableRow>
               ))}
               {shown.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={6} className="py-8 text-center text-muted-foreground">
+                  <TableCell colSpan={6} className="py-8 text-center whitespace-normal text-muted-foreground">
                     No entries match. Clear the search or choose Everyone.
                   </TableCell>
                 </TableRow>
