@@ -27,7 +27,7 @@ export function HeaderFrame({ children }: { children: React.ReactNode }) {
       <div
         data-scrolled={scrolled || undefined}
         className={cn(
-          "pointer-events-auto flex h-(--site-header) items-center gap-6 rounded-md px-3 ring-1",
+          "pointer-events-auto flex h-(--site-header) items-center gap-2 rounded-md md:gap-6 px-3 ring-1",
           "transition-[background-color,box-shadow,translate] duration-(--motion-base) ease-(--ease-standard) motion-reduce:transition-none",
           scrolled ? "translate-y-2 bg-card ring-border" : "translate-y-0 bg-transparent ring-transparent",
         )}

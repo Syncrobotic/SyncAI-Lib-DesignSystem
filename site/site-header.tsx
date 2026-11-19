@@ -10,6 +10,8 @@ import { ThemeToggle } from "./theme-toggle"
 export function SiteHeader() {
   return (
     <HeaderFrame>
+      {/* Left, where its drawer opens from: the button and the panel move the same way. */}
+      <NavDrawer scopes={scopes} />
       <Link href="/">
         <Logo />
       </Link>
@@ -19,7 +21,6 @@ export function SiteHeader() {
           GitHub
         </a>
         <ThemeToggle />
-        <NavDrawer scopes={scopes} />
       </div>
     </HeaderFrame>
   )
