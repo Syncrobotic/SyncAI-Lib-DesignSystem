@@ -1,4 +1,4 @@
-// @syncrobotic/button v0.10.0 · update: npx shadcn add @syncrobotic/button --overwrite
+// @syncrobotic/button v0.17.1 · update: npx shadcn add @syncrobotic/button --overwrite
 import * as React from "react"
 import { Slot } from "radix-ui"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -16,10 +16,11 @@ export const buttonVariants = cva(
       variant: {
         primary: "bg-primary text-primary-foreground hover:bg-primary/90",
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        outline: "bg-transparent ring-1 ring-border ring-inset hover:bg-accent",
+        // Disabled keeps the outline and loses the ink: lighter than the enabled outline, never a filled grey that looks heavier.
+        outline: "bg-transparent ring-1 ring-border ring-inset hover:bg-accent disabled:not-aria-busy:bg-transparent disabled:not-aria-busy:text-disabled disabled:not-aria-busy:ring-border",
         // Without a surface, disabled stays without one: solid disabled ink, no grey block that could read as selected.
         ghost: "hover:bg-accent hover:text-accent-foreground disabled:not-aria-busy:bg-transparent disabled:not-aria-busy:text-disabled",
-        destructive: "bg-transparent text-danger ring-1 ring-danger ring-inset hover:bg-danger-subtle",
+        destructive: "bg-transparent text-danger ring-1 ring-danger ring-inset hover:bg-danger-subtle disabled:not-aria-busy:bg-transparent disabled:not-aria-busy:text-disabled disabled:not-aria-busy:ring-border",
         // A link reads as a link by its underline, not by colour: blue is for a process someone is waiting on.
         link: "text-foreground underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground disabled:not-aria-busy:bg-transparent disabled:not-aria-busy:text-disabled",
       },

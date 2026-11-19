@@ -28,7 +28,7 @@ function Linked({ text }: { text: string }) {
         const word = part.slice(1, -1)
         const target = findItem(word)
         return target ? (
-          <a key={i} href={`/docs/components/${word}`} className="font-medium text-foreground underline underline-offset-4 hover:text-info">
+          <a key={i} href={`/docs/components/${word}`} className="font-medium text-foreground underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground">
             {target.title}
           </a>
         ) : (

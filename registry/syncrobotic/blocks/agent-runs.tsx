@@ -1,4 +1,4 @@
-// @syncrobotic/agent-runs v0.15.0 · update: npx shadcn add @syncrobotic/agent-runs --overwrite
+// @syncrobotic/agent-runs v0.17.1 · update: npx shadcn add @syncrobotic/agent-runs --overwrite
 "use client"
 
 import * as React from "react"
@@ -101,7 +101,7 @@ export function AgentRuns() {
   const [filter, setFilter] = React.useState("all")
   const shown = runs.filter((r) => filter === "all" || (filter === "attention" ? r.status === "approval" || r.status === "error" : r.status === filter))
   return (
-    <AppShell product="Fleet console" nav={sampleNav} current="#events" title="Agent runs" user={{ name: "Mei Lin", initials: "ML" }}>
+    <AppShell product="Fleet console" nav={sampleNav} current="#agents" title="Agent runs" user={{ name: "Mei Lin", initials: "ML" }}>
       <div className="flex flex-col gap-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <SegmentedControl aria-label="Show runs" value={filter} onValueChange={(v) => v && setFilter(v)}>

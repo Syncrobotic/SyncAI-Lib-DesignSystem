@@ -2,6 +2,33 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.17.1 · 2026-11-19
+
+### Changed
+- **`console-overview`**: alarms come first, above the numbers and the robots, and leave when none is active. On a phone, what needs someone is now the first thing on screen; it was about three screens down.
+- **`stats-cards`**: two across on phones, so four numbers take half a screen. The change sits under the label so the values line up; the sparkline shows from 640 px.
+- **`app-shell`**: the environment badge is a neutral outline for every environment. Staging was amber and Production red: a status colour on every page, all day, which dulls the warnings that do need someone. The sample nav has **Agents**, and the agent pages (`agent-runs`, `agent-trace`, `agent-approval`) mark it as current (they marked Event log or Alarms).
+
+### Fixed
+- **Field edges reach 3:1** (WCAG 1.4.11). `--input`, the edge of fields, checkboxes, radios and a switch that is off, was 1.2–1.4:1, and on a card that edge is all that shows where a control is. Now #80808a in light and #72727a in dark: 3:1 or more on the card, the page and a muted tile. `switch` draws its off state with it.
+- **Focus rings put back**: `tabs` (the panel) and `chart` took keyboard focus and showed nothing.
+- **`icon-tile`**: `tone="info"` is neutral, like success (a tile stays on screen; blue is only a process someone is waiting on). Solid warning takes the mode's ink, 4.5:1 or more in every theme; solid info was 2.5:1 in dark and solid warning 2.2:1 in light high contrast.
+- **Battery threshold is 15 % everywhere**: `island` turned warning at 30 %, and `stats-meters` turned the fleet average danger at 15 % (a battery never turns danger). `event-log`'s sample says 15 %.
+- **Every chart block has a table view**: the nine that lacked one (area, ranked, stacked and variance bars, compare and limit lines, the week-by-hour heatmap) now switch between Chart and Table, as the data-visualisation rule asks.
+- Docs: on phones a long name in a changelog line no longer widens the page (Island, Alarm). "Built from" chips no longer link to pages that do not exist (`use-presence` has its own page now; `robot-icons` goes to Icons). Links in component pages no longer turn blue on hover.
+- **`button`**: disabled outline and destructive buttons keep their outline and lose the ink. They were a filled grey that looked heavier than the enabled button beside them (pagination's Previous on the first page).
+- **`app-shell`**: its height can be set with `--app-shell-height` (default the screen). The docs' preview strip uses it, so the emergency stop and the user menu are no longer pushed 44 px below the screen in a preview opened on its own.
+
+### Docs: rules that contradicted each other, now one rule each
+- Light is `:root` and dark the `.dark` class; the theme header said dark was the default.
+- A battery (any level that stays) is a Meter, never a Progress.
+- A switch that is on is the primary colour, never green.
+- Offline is a neutral state: said in words and by its shape, no colour, no tray edge.
+- 36 px controls are for a mouse only and become 44 px on touch (one place said "only inside cards").
+- Buttons are medium weight; bold is for titles, figures and the stop.
+- In a KPI, only a change for the worse gets colour.
+- A run with a start and an end that someone is waiting on (a mission in progress, a rollout stage) is a process, so blue.
+
 ## 0.17.0 · 2026-11-19
 
 ### Changed
