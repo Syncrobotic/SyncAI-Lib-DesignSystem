@@ -89,37 +89,44 @@ export function IncidentQueue() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-24">Severity</TableHead>
+                <TableHead className="w-24 max-sm:pr-0">Severity</TableHead>
                 <TableHead>Incident</TableHead>
-                <TableHead>State</TableHead>
+                <TableHead className="hidden sm:table-cell">State</TableHead>
                 <TableHead>Owner</TableHead>
-                <TableHead className="text-right">Robots</TableHead>
-                <TableHead className="text-right">Open for</TableHead>
+                <TableHead className="hidden text-right md:table-cell">Robots</TableHead>
+                <TableHead className="hidden text-right sm:table-cell">Open for</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {shown.map((i) => (
                 <TableRow key={i.id}>
-                  <TableCell>
+                  <TableCell className="max-sm:pr-0">
                     <span className={cn("flex items-center gap-2 font-medium", i.severity === 1 && "text-danger", i.severity === 2 && "text-warning")}>
                       <StatusGlyph status={sevTone[i.severity]} />
                       Sev {i.severity}
                     </span>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="py-2 max-sm:whitespace-normal">
                     <a href={`#${i.id}`} className="flex flex-col hover:underline">
                       <span className="font-medium">{i.title}</span>
-                      <span className="font-mono text-xs text-muted-foreground">{i.id}</span>
+                      <span className="text-xs text-muted-foreground">
+                        <span className="font-mono">{i.id}</span>
+                        {/* On a phone the state and age follow the id; they are columns from 640 px. */}
+                        <span className="sm:hidden">
+                          {" "}
+                          · {i.state} · {i.open}
+                        </span>
+                      </span>
                     </a>
                   </TableCell>
-                  <TableCell>{i.state}</TableCell>
+                  <TableCell className="hidden sm:table-cell">{i.state}</TableCell>
                   <TableCell>
                     {i.owner ? (
                       <span className="flex items-center gap-2">
                         <Avatar className="size-6">
                           <AvatarFallback className="text-xs">{i.owner.initials}</AvatarFallback>
                         </Avatar>
-                        {i.owner.name}
+                        <span className="max-sm:sr-only">{i.owner.name}</span>
                       </span>
                     ) : (
                       <Button size="sm" variant="secondary" aria-label={`Take ${i.id}`}>
@@ -127,8 +134,8 @@ export function IncidentQueue() {
                       </Button>
                     )}
                   </TableCell>
-                  <TableCell className="text-right tabular-nums">{i.robots}</TableCell>
-                  <TableCell className="text-right text-muted-foreground tabular-nums">{i.open}</TableCell>
+                  <TableCell className="hidden text-right tabular-nums md:table-cell">{i.robots}</TableCell>
+                  <TableCell className="hidden text-right text-muted-foreground tabular-nums sm:table-cell">{i.open}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

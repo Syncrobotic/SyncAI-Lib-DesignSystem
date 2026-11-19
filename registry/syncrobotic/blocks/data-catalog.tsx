@@ -198,7 +198,7 @@ export function DataCatalog({ datasets = sampleDatasets }: { datasets?: Dataset[
               <Input
                 type="search"
                 aria-label="Search datasets"
-                placeholder="Search name, path or owner"
+                placeholder="Search datasets"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
               />

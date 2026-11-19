@@ -153,23 +153,30 @@ export function EventLog({ events = sampleEvents }: { events?: LogEvent[] }) {
             <TableHeader>
               <TableRow>
                 <TableHead className="w-28">Time</TableHead>
-                <TableHead className="w-28">Level</TableHead>
-                <TableHead className="w-24">Source</TableHead>
+                <TableHead className="hidden w-28 sm:table-cell">Level</TableHead>
+                <TableHead className="hidden w-24 md:table-cell">Source</TableHead>
                 <TableHead>Message</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {rows.map((e) => (
                 <TableRow key={e.id}>
-                  <TableCell className="font-mono text-sm tabular-nums">{e.time}</TableCell>
-                  <TableCell>
+                  <TableCell className="py-2 align-top font-mono text-sm tabular-nums sm:align-middle">
+                    {e.time}
+                    {/* On a phone the level sits under the time, and the source under the message. */}
+                    <span className="mt-1 block font-sans sm:hidden">
+                      <Level priority={e.priority} />
+                    </span>
+                  </TableCell>
+                  <TableCell className="hidden sm:table-cell">
                     <Level priority={e.priority} />
                   </TableCell>
-                  <TableCell className="font-mono text-sm">{e.source}</TableCell>
-                  <TableCell>
-                    <button type="button" onClick={() => setOpen(e)} className="text-left text-sm underline-offset-4 hover:underline">
+                  <TableCell className="hidden font-mono text-sm md:table-cell">{e.source}</TableCell>
+                  <TableCell className="py-2 max-md:whitespace-normal">
+                    <button type="button" onClick={() => setOpen(e)} className="press text-left text-sm underline-offset-4 hover:underline">
                       {e.message}
                     </button>
+                    <span className="block font-mono text-xs text-muted-foreground md:hidden">{e.source}</span>
                   </TableCell>
                 </TableRow>
               ))}

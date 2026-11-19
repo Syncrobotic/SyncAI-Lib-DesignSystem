@@ -43,14 +43,14 @@ export function LineChartLimit() {
       <ChartContainer config={config} label={`Motor temperature of 7F3A every 30 minutes, with the ${limit} °C limit`} className="h-48">
         <LineChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
           <CartesianGrid vertical={false} />
-          <XAxis dataKey="t" {...chartAxis} />
-          <YAxis {...chartAxis} domain={[30, 80]} ticks={[30, 40, 50, 60, 70, 80]} width={40} />
+          <XAxis dataKey="t" {...chartAxis} interval="equidistantPreserveStart" />
+          <YAxis {...chartAxis} domain={[30, 80]} ticks={[30, 40, 50, 60, 70, 80]} interval={0} width={40} />
           <ChartTooltip />
           <ReferenceLine
             y={limit}
             stroke="var(--muted-foreground)"
             strokeDasharray="4 4"
-            label={{ value: `Limit ${limit} °C`, position: "insideTopRight", fill: "var(--muted-foreground)", fontSize: 12 }}
+            label={{ value: `Limit ${limit} °C`, position: "insideTopLeft", fill: "var(--muted-foreground)", fontSize: 12 }}
           />
           <Line
             dataKey="temp"

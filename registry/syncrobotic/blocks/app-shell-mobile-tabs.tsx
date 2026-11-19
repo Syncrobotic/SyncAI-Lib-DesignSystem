@@ -38,7 +38,7 @@ function SampleRobots() {
               <StatusGlyph status={r.tone} /> {r.state} · {r.where}
             </span>
           </span>
-          <span className={r.battery < 15 ? "text-sm font-medium text-danger tabular-nums" : "text-sm text-muted-foreground tabular-nums"}>{r.battery} %</span>
+          <span className={r.battery < 15 ? "text-sm font-medium text-warning tabular-nums" : "text-sm text-muted-foreground tabular-nums"}>{r.battery} %</span>
         </li>
       ))}
     </ul>

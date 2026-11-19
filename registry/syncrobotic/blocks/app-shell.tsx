@@ -59,7 +59,10 @@ export type AppSearchGroup = {
   items: AppSearchItem[]
 }
 export type AppSearch = {
+  /** The hint in the palette's input, e.g. "Search robots, pages and actions". */
   placeholder?: string
+  /** The short word in the field that opens the palette, where a long placeholder would be cut. Default "Search". */
+  label?: string
   /** What the search covers. The first is the default, e.g. "Everything". */
   scopes?: { value: string; label: string }[]
   groups: AppSearchGroup[]
@@ -386,7 +389,7 @@ export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch;
           className="press flex h-full min-w-0 flex-1 items-center gap-2 rounded-l-sm pl-3 text-left text-sm text-muted-foreground hover:text-foreground"
         >
           <Search aria-hidden="true" className="size-4 shrink-0" />
-          <span className="truncate">{search.placeholder ?? "Search"}</span>
+          <span className="truncate">{search.label ?? "Search"}</span>
           <CommandShortcut className="mr-1">{shortcut}</CommandShortcut>
         </button>
         {scopes.length > 1 && scopeMenu}

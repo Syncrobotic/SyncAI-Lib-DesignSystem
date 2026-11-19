@@ -64,7 +64,7 @@ export function RadialChartGoal() {
             </span>
           </Ring>
         </span>
-        <dl className="flex min-w-48 flex-1 flex-col divide-y divide-border text-sm">
+        <dl className="flex max-w-sm min-w-48 flex-1 flex-col divide-y divide-border text-sm">
           {parts.map((p) => (
             <div key={p.label} className="flex justify-between gap-4 py-2">
               <dt className="text-muted-foreground">{p.label}</dt>

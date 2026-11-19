@@ -44,7 +44,7 @@ export function RobotStatusCard({
   onReturn?: () => void
   className?: string
 }) {
-  const low = robot.battery < 30
+  const low = robot.battery < 15
   const BatteryIcon = robot.charging ? BatteryCharging : Battery
   return (
     <Card className={cn("w-full max-w-sm", className)}>

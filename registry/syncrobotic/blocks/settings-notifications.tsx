@@ -57,7 +57,7 @@ export function SettingsNotifications() {
               <TableRow>
                 <TableHead>Event</TableHead>
                 {channels.map((c) => (
-                  <TableHead key={c.key} className="w-24 text-center">
+                  <TableHead key={c.key} className="w-18 px-2 text-center sm:w-24 sm:px-4">
                     {c.label}
                   </TableHead>
                 ))}
@@ -66,7 +66,7 @@ export function SettingsNotifications() {
             <TableBody>
               {events.map((e) => (
                 <TableRow key={e.key}>
-                  <TableCell>
+                  <TableCell className="py-2 whitespace-normal">
                     <span className="flex flex-col">
                       <span className="font-medium">{e.label}</span>
                       <span className="text-xs text-muted-foreground">{e.hint}</span>
@@ -75,15 +75,16 @@ export function SettingsNotifications() {
                   {channels.map((c) => {
                     const locked = e.locked?.includes(c.key)
                     return (
-                      <TableCell key={c.key} className="text-center">
-                        <span className="inline-flex items-center justify-center gap-2">
+                      <TableCell key={c.key} className="px-2 text-center sm:px-4">
+                        {/* The lock hangs to the right of the box, out of the flow, so every box stays on its column's centre line. */}
+                        <span className="relative inline-flex align-middle">
                           <Checkbox
                             aria-label={`${e.label}, ${c.label}${locked ? ", always on" : ""}`}
                             checked={locked || on[e.key].includes(c.key)}
                             disabled={locked}
                             onCheckedChange={(v) => toggle(e.key, c.key, v === true)}
                           />
-                          {locked && <Lock aria-hidden="true" className="size-4 text-muted-foreground" />}
+                          {locked && <Lock aria-hidden="true" className="absolute top-1/2 left-full ml-1 size-4 -translate-y-1/2 text-muted-foreground" />}
                         </span>
                       </TableCell>
                     )

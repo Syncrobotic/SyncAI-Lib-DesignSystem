@@ -87,7 +87,10 @@ export function DataGrid<T>({
   )
 }
 
-const meta = (c: Column<unknown>) => (c.columnDef.meta ?? {}) as { align?: "left" | "right"; headerClassName?: string; cellClassName?: string }
+const meta = (c: Column<unknown>) =>
+  (c.columnDef.meta ?? {}) as { align?: "left" | "right"; headerClassName?: string; cellClassName?: string; label?: string }
+/** A column's name in words: meta.label, else a plain-text header, else its id. */
+const columnName = (c: Column<unknown>) => meta(c).label ?? (typeof c.columnDef.header === "string" ? c.columnDef.header : c.id)
 
 /**
  * The grid itself. `maxHeight` makes the body scroll under a sticky header; `virtual` renders only the rows in view
@@ -136,7 +139,7 @@ export function DataGridTable({
       aria-busy={loading || undefined}
       style={maxHeight ? { maxHeight } : undefined}
       className={cn(
-        "relative w-full overflow-auto rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+        "@container relative w-full overflow-auto rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
         variant !== "borderless" && "ring-1 ring-border",
         className,
       )}
@@ -202,8 +205,12 @@ export function DataGridTable({
             ))}
           {!loading && rows.length === 0 && (
             <tr>
-              <td colSpan={cols} className="h-32 text-center text-muted-foreground">
-                {emptyText}
+              <td colSpan={cols} className="p-0">
+                {/* As wide as the visible part of the grid and held at its left edge, so the words stay in view however
+                    wide the columns behind them are. 100cqw is the scroll area's own width (it is the container). */}
+                <div className="sticky left-0 flex h-32 w-[100cqw] items-center justify-center px-4 text-center whitespace-normal text-muted-foreground">
+                  {emptyText}
+                </div>
               </td>
             </tr>
           )}
@@ -249,13 +256,35 @@ export function DataGridTable({
         {hasFooter && (
           <tfoot className={cn("bg-muted font-medium", maxHeight && "sticky bottom-0")}>
             {table.getFooterGroups().map((g) => (
-              <tr key={g.id}>
-                {g.headers.map((h) => (
-                  <td key={h.id} className={cn("h-(--h-md) tabular-nums", cellPad, meta(h.column).align === "right" && "text-right")}>
-                    {h.isPlaceholder ? null : flexRender(h.column.columnDef.footer, h.getContext())}
+              <React.Fragment key={g.id}>
+                <tr className="max-sm:hidden">
+                  {g.headers.map((h) => (
+                    <td key={h.id} className={cn("h-(--h-md) tabular-nums", cellPad, meta(h.column).align === "right" && "text-right")}>
+                      {h.isPlaceholder ? null : flexRender(h.column.columnDef.footer, h.getContext())}
+                    </td>
+                  ))}
+                </tr>
+                {/* On a phone the totals' columns are usually off to the side, so they are written out in one row that
+                    stays in view: the first column's footer leads ("Total"), then each total after its column's name. */}
+                <tr className="sm:hidden">
+                  <td colSpan={cols} className="p-0">
+                    <div className={cn("sticky left-0 flex w-[100cqw] flex-wrap items-center gap-x-4 gap-y-1 py-3 tabular-nums", cellPad)}>
+                      {g.headers
+                        .filter((h) => !h.isPlaceholder && h.column.columnDef.footer)
+                        .map((h, i) =>
+                          i === 0 && meta(h.column).align !== "right" ? (
+                            <span key={h.id}>{flexRender(h.column.columnDef.footer, h.getContext())}</span>
+                          ) : (
+                            <span key={h.id} className="flex items-baseline gap-2">
+                              <span className="font-normal text-muted-foreground">{columnName(h.column)}</span>
+                              {flexRender(h.column.columnDef.footer, h.getContext())}
+                            </span>
+                          ),
+                        )}
+                    </div>
                   </td>
-                ))}
-              </tr>
+                </tr>
+              </React.Fragment>
             ))}
           </tfoot>
         )}
@@ -270,7 +299,10 @@ export function DataGridTable({
  */
 export function DataGridColumnHeader<T>({ column, title }: { column: Column<T, unknown>; title: string }) {
   const sorted = column.getIsSorted()
-  const Icon = sorted === "asc" ? ArrowUp : sorted === "desc" ? ArrowDown : ArrowUpDown
+  // The swap pattern: the three arrows sit on top of each other and the current one fades and scales in at --motion-fast,
+  // so a change of order is seen on the header even though the rows move at once.
+  const swap = "absolute transition-[opacity,scale] duration-(--motion-fast) ease-(--ease-standard)"
+  const shown = (s: false | "asc" | "desc") => (sorted === s ? "scale-100 opacity-100" : "scale-60 opacity-0")
   if (!column.getCanSort() && !column.getCanHide() && !column.getCanPin()) return <>{title}</>
   return (
     <DropdownMenu>
@@ -284,7 +316,13 @@ export function DataGridColumnHeader<T>({ column, title }: { column: Column<T, u
           )}
         >
           {title}
-          {column.getCanSort() && <Icon aria-hidden="true" className="size-4" />}
+          {column.getCanSort() && (
+            <span data-slot="sort-icon" data-sort={sorted || "none"} aria-hidden="true" className="relative flex size-4 shrink-0 items-center justify-center">
+              <ArrowUpDown className={cn(swap, "size-4", shown(false))} />
+              <ArrowUp className={cn(swap, "size-4", shown("asc"))} />
+              <ArrowDown className={cn(swap, "size-4", shown("desc"))} />
+            </span>
+          )}
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">

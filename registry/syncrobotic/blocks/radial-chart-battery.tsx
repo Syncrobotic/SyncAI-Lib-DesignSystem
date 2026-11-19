@@ -50,9 +50,9 @@ const robots = [
   { id: "9E37", battery: 12 },
   { id: "1715", battery: 27 },
 ]
-const tone = (v: number) => (v < 30 ? "stroke-warning" : "stroke-foreground")
+const tone = (v: number) => (v < 15 ? "stroke-warning" : "stroke-foreground")
 
-/** Battery per robot as rings: neutral when fine, warning below 30 %, with the number always in the middle. */
+/** Battery per robot as rings: neutral when fine, warning below 15 % (never danger), with the number always in the middle. */
 export function RadialChartBattery() {
   return (
     <Card>
@@ -62,7 +62,7 @@ export function RadialChartBattery() {
           <li key={r.id} className="flex flex-col items-center gap-2">
             <span role="meter" aria-label={`Battery of ${r.id}`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={r.battery}>
               <Ring value={r.battery} className={tone(r.battery)}>
-                <span className={cn("text-lg font-bold tabular-nums", r.battery < 15 && "text-danger")}>{r.battery}%</span>
+                <span className={cn("text-lg font-bold tabular-nums", r.battery < 15 && "text-warning")}>{r.battery}%</span>
               </Ring>
             </span>
             <span className="text-xs text-muted-foreground">{r.id}</span>

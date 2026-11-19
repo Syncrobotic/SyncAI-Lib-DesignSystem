@@ -50,8 +50,8 @@ export function SparklineRobotList() {
                 </span>
               </span>
               <Sparkline values={r.battery} />
-              <span className={cn("w-12 text-right text-sm tabular-nums", low ? "font-medium text-danger" : "text-foreground")}>
-                {now} %<span className="sr-only">{low ? ", critically low" : ""}</span>
+              <span className={cn("w-12 text-right text-sm tabular-nums", low ? "font-medium text-warning" : "text-foreground")}>
+                {now} %<span className="sr-only">{low ? ", low" : ""}</span>
               </span>
             </li>
           )
