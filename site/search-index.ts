@@ -1,7 +1,7 @@
 import { readdirSync } from "node:fs"
 import { join } from "node:path"
 import { blocks } from "./blocks"
-import { blockTypes } from "./block-types"
+import { blockHref, blockTypes, typeHref } from "./block-types"
 import { items, readSource } from "./catalog"
 import { foundations } from "./foundations"
 import { iconGroups } from "./icons"
@@ -39,8 +39,10 @@ export function buildSearchIndex(): SearchEntry[] {
   for (const t of blockTypes) {
     const inType = blocks.filter((b) => b.type === t.slug)
     if (inType.length === 0) continue
-    out.push({ group: "Blocks", title: t.title, href: `/blocks/${t.slug}`, hint: t.description })
-    for (const b of inType) out.push({ group: "Blocks", title: b.title, href: `/blocks/${t.slug}#${b.name}`, hint: b.description, text: `${b.name} ${t.title}` })
+    // A pattern set (charts, timelines, dialogs, sheets) is found as part of its component, at its place on that page.
+    const group = t.home ? "Components" : "Blocks"
+    out.push({ group, title: t.title, href: typeHref(t), hint: t.description, text: t.home })
+    for (const b of inType) out.push({ group, title: b.title, href: blockHref(b.name), hint: b.description, text: `${b.name} ${t.title}` })
   }
 
   for (const g of iconGroups) for (const ic of g.icons) out.push({ group: "Icons", title: ic.name, href: `/icons?icon=${encodeURIComponent(ic.name)}`, hint: ic.means, text: g.title })

@@ -1,5 +1,5 @@
 import { blocksOfType } from "./blocks"
-import { blockGroups, blockTypes } from "./block-types"
+import { blockGroups, blockTypes, patternsOf } from "./block-types"
 import { groups as itemGroups, items, storyNames, storyTitle } from "./catalog"
 import { foundations } from "./foundations"
 
@@ -50,7 +50,13 @@ export const scopes: Scope[] = [
           href: `/docs/components/${i.name}`,
           label: i.title,
           // The page's examples, so you can jump to one; as ReUI lists them, without a second table of contents.
-          sections: i.examples ? storyNames(i.examples).map((n) => ({ href: `/docs/components/${i.name}#example-${n}`, label: storyTitle(n) })) : undefined,
+          // Then its pattern sets (Line chart, Heatmap…), so a chart is found under Chart, not under Blocks.
+          sections: [
+            ...(i.examples ? storyNames(i.examples).map((n) => ({ href: `/docs/components/${i.name}#example-${n}`, label: storyTitle(n) })) : []),
+            ...patternsOf(i.name)
+              .filter((t) => blocksOfType(t.slug).length > 0)
+              .map((t) => ({ href: `/docs/components/${i.name}#${t.slug}`, label: t.title })),
+          ],
         })),
       })),
     ],
