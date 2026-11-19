@@ -1,4 +1,4 @@
-// @syncrobotic/status-pages v0.10.0 · update: npx shadcn add @syncrobotic/status-pages --overwrite
+// @syncrobotic/status-pages v0.13.1 · update: npx shadcn add @syncrobotic/status-pages --overwrite
 "use client"
 
 import * as React from "react"
@@ -33,6 +33,8 @@ export function StatusPage({
   className,
 }: PageProps & { icon: React.ElementType; code?: string; title: string; body: React.ReactNode; primary: string; secondary?: string }) {
   const Root = fill === "screen" ? "main" : "section"
+  // A route of its own has the page's h1; inside an app shell's content the shell's title is the h1, so this is an h2.
+  const Heading = fill === "screen" ? "h1" : "h2"
   return (
     <Root className={cn("flex items-center justify-center bg-background p-6", fill === "screen" ? "min-h-dvh" : "h-full min-h-96", className)}>
       <div className="flex max-w-md animate-appear flex-col items-center gap-4 text-center">
@@ -41,7 +43,7 @@ export function StatusPage({
         </span>
         <div className="flex flex-col items-center gap-2">
           {code && <p className="font-mono text-sm text-muted-foreground tabular-nums">{code}</p>}
-          <h1 className="text-2xl font-bold text-balance">{title}</h1>
+          <Heading className="text-2xl font-bold text-balance">{title}</Heading>
           <div className="text-sm text-pretty text-muted-foreground">{body}</div>
         </div>
         <div className="flex flex-wrap justify-center gap-2 pt-2">

@@ -1840,7 +1840,7 @@
       "name": "dialog",
       "type": "registry:ui",
       "title": "Dialog",
-      "description": "A short decision in a centered panel with radius 20.",
+      "description": "A short decision or form that needs an answer before you go on, in a panel over the page.",
       "dependencies": [
         "radix-ui",
         "lucide-react"
@@ -4032,8 +4032,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.13.1",
         "changelog": [
+          {
+            "version": "0.13.1",
+            "date": "2026-11-19",
+            "note": "The heading is an h1 when `fill=\"screen\"` (the page's only heading) and an h2 inside an app shell, which has its own."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",

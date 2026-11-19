@@ -8,9 +8,9 @@ export function MotionDemo({ durations }: { durations: { key: string; ms: string
   return (
     <div className="flex flex-col gap-4">
       {durations.map((d) => (
-        <div key={d.key} className="grid items-center gap-3 sm:grid-cols-[10rem_1fr]">
+        <div key={d.key} className="grid items-center gap-3 sm:grid-cols-[12rem_1fr]">
           <span className="flex flex-col">
-            <span className="font-mono text-sm">
+            <span className="font-mono text-sm whitespace-nowrap">
               --{d.key} · {d.ms}
             </span>
             <span className="text-xs text-muted-foreground">{d.use}</span>

@@ -71,16 +71,16 @@ export default function HomePage() {
       body: "General UI on Radix, charts on Recharts, and the robot shell: emergency stop, slide to release, dock and island.",
     },
     {
-      href: "/icons",
-      title: "Icons",
-      count: `${iconCount} icons`,
-      body: "Each with the one thing it means, robot icons drawn to match, and every Lucide icon to search.",
-    },
-    {
       href: "/blocks",
       title: "Blocks",
       count: `${blockCount} blocks`,
       body: "Whole screens with real copy and real states: application screens, charts, and robot operations from fleet maps to incidents.",
+    },
+    {
+      href: "/icons",
+      title: "Icons",
+      count: `${iconCount} icons`,
+      body: "Each with the one thing it means, robot icons drawn to match, and every Lucide icon to search.",
     },
   ]
   return (

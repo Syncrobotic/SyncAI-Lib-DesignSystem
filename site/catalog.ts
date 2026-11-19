@@ -918,5 +918,7 @@ export const storyTitle = (name: string) => {
     .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
     .replace(/([A-Z])([A-Z][a-z])/g, "$1 $2")
     .split(" ")
-  return words.map((w, i) => (i === 0 ? w : w.toLowerCase())).join(" ")
+  // Proper names keep their capital: "Delivered over Bluetooth", not "bluetooth".
+  const proper = new Set(["Bluetooth", "Wi", "Fi", "AI", "URL", "SMS"])
+  return words.map((w, i) => (i === 0 || proper.has(w) ? w : w.toLowerCase())).join(" ")
 }

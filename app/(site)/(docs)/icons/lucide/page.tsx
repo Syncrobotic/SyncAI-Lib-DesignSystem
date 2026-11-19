@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import { pageMeta } from "@/site/config"
 import { DocHeader } from "@/site/doc"
-import { IconTabs } from "@/site/icon-tabs"
 import { iconGroups } from "@/site/icons"
 import { LucideGallery } from "@/site/lucide-gallery"
 
@@ -20,7 +19,6 @@ export default function LucidePage() {
         title="All Lucide icons"
         lead="Every icon in the Lucide version the kit ships with. A dot marks the ones the kit has given a meaning. Before you use one without a dot, add it to the set with what it means, unless an icon there already means that."
       />
-      <IconTabs current="lucide" />
       <LucideGallery meanings={meanings} />
     </article>
   )
