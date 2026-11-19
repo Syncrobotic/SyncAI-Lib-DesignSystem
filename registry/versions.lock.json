@@ -232,8 +232,8 @@
     "hash": "f3a73fbae88d468d"
   },
   "command": {
-    "version": "0.16.0",
-    "hash": "c213a71acb846a3b"
+    "version": "0.16.1",
+    "hash": "5e2f8d1b0a622b66"
   },
   "item": {
     "version": "0.9.0",
@@ -292,8 +292,8 @@
     "hash": "4408d94150b8f69d"
   },
   "filters": {
-    "version": "0.16.0",
-    "hash": "f5909edac985f07d"
+    "version": "0.16.1",
+    "hash": "93e12312d46e547d"
   },
   "search-field": {
     "version": "0.10.0",
