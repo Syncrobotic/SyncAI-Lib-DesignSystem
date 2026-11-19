@@ -1368,8 +1368,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.17.4",
         "changelog": [
+          {
+            "version": "0.17.4",
+            "date": "2026-11-19",
+            "note": "Opened with a click, the list shows no keyboard ring until a key moves in it (the selected option was ringed on every mouse open)."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -1947,8 +1952,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.17.4",
         "changelog": [
+          {
+            "version": "0.17.4",
+            "date": "2026-11-19",
+            "note": "The scroll cue is a mask on the scrolling box (scrollFadeMask): content fades to whatever is behind, so a grey header no longer gets a light smear and the frame's edge stays whole. The edge and focus ring are drawn on the frame. ScrollFades is deprecated."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -2130,8 +2140,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.17.4",
         "changelog": [
+          {
+            "version": "0.17.4",
+            "date": "2026-11-19",
+            "note": "The few-letters floor is on a middle crumb's name, not the item, so a short name (two characters) is no longer padded out with a gap before the next chevron."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -2410,8 +2425,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.4",
         "changelog": [
+          {
+            "version": "0.17.4",
+            "date": "2026-11-19",
+            "note": "Opens the way it was opened: no keyboard ring after a click until a key moves in it."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -3427,8 +3447,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.17.4",
         "changelog": [
+          {
+            "version": "0.17.4",
+            "date": "2026-11-19",
+            "note": "The same scroll cue as Table (a mask), with the edge and focus ring on the frame."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
