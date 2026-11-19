@@ -1,7 +1,8 @@
-// @syncrobotic/sortable v0.10.0 · update: npx shadcn add @syncrobotic/sortable --overwrite
+// @syncrobotic/sortable v0.13.1 · update: npx shadcn add @syncrobotic/sortable --overwrite
 "use client"
 
 import * as React from "react"
+import { createPortal } from "react-dom"
 import {
   closestCenter,
   DndContext,
@@ -21,6 +22,9 @@ import { cn } from "@/lib/utils"
 
 type ItemCtx = { attributes: ReturnType<typeof useSortable>["attributes"]; listeners: ReturnType<typeof useSortable>["listeners"]; isDragging: boolean }
 const SortableItemContext = React.createContext<ItemCtx | null>(null)
+// Whether a drag overlay follows the pointer; without one the item itself does.
+const OverlayContext = React.createContext(false)
+const noop = () => () => {}
 
 /**
  * A list (or grid) people reorder by dragging a handle, by touch, or by keyboard: focus the handle, Space to lift, arrows
@@ -42,7 +46,7 @@ export function Sortable<T>({
   getId: (item: T) => UniqueIdentifier
   getLabel?: (item: T) => string
   layout?: "list" | "grid"
-  /** What follows the pointer while dragging; defaults to the item itself. */
+  /** A copy that follows the pointer while the item stays as a faded placeholder. Without it the item itself follows. */
   renderOverlay?: (item: T) => React.ReactNode
   className?: string
   children: React.ReactNode
@@ -64,6 +68,14 @@ export function Sortable<T>({
     onValueChange(arrayMove(value, ids.indexOf(e.active.id), ids.indexOf(e.over.id)))
   }
   const activeItem = active !== null ? value.find((v) => getId(v) === active) : undefined
+  // The overlay is position: fixed. Rendered in place, any transformed ancestor (an entrance animation, a sheet) becomes
+  // its containing block and it drifts away from the pointer, so it lives on <body>.
+  const mounted = React.useSyncExternalStore(noop, () => true, () => false)
+  const overlay = (
+    <DragOverlay dropAnimation={{ duration: 200, easing: "cubic-bezier(0.2, 0, 0, 1)" }}>
+      {activeItem !== undefined && renderOverlay ? <div className="rounded-sm shadow-float">{renderOverlay(activeItem)}</div> : null}
+    </DragOverlay>
+  )
   return (
     <DndContext
       sensors={sensors}
@@ -82,14 +94,14 @@ export function Sortable<T>({
         screenReaderInstructions: { draggable: "To reorder, press Space, move with the arrow keys, press Space again to drop, or Escape to cancel." },
       }}
     >
-      <SortableContext items={ids} strategy={layout === "grid" ? rectSortingStrategy : verticalListSortingStrategy}>
-        <ul data-slot="sortable" className={cn(layout === "grid" ? "grid grid-cols-2 gap-2 sm:grid-cols-3" : "flex flex-col gap-2", className)}>
-          {children}
-        </ul>
-      </SortableContext>
-      <DragOverlay dropAnimation={{ duration: 200, easing: "cubic-bezier(0.2, 0, 0, 1)" }}>
-        {activeItem !== undefined && renderOverlay ? <div className="rounded-sm shadow-float">{renderOverlay(activeItem)}</div> : null}
-      </DragOverlay>
+      <OverlayContext.Provider value={!!renderOverlay}>
+        <SortableContext items={ids} strategy={layout === "grid" ? rectSortingStrategy : verticalListSortingStrategy}>
+          <ul data-slot="sortable" className={cn(layout === "grid" ? "grid grid-cols-2 gap-2 sm:grid-cols-3" : "flex flex-col gap-2", className)}>
+            {children}
+          </ul>
+        </SortableContext>
+      </OverlayContext.Provider>
+      {renderOverlay && mounted ? createPortal(overlay, document.body) : null}
     </DndContext>
   )
 }
@@ -97,13 +109,20 @@ export function Sortable<T>({
 /** One reorderable entry. Put a SortableHandle inside it; the rest of the row stays clickable. */
 export function SortableItem({ id, className, children }: { id: UniqueIdentifier; className?: string; children: React.ReactNode }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id })
+  const overlay = React.useContext(OverlayContext)
   return (
     <li
       ref={setNodeRef}
       data-slot="sortable-item"
       data-dragging={isDragging || undefined}
-      style={{ transform: CSS.Translate.toString(transform), transition }}
-      className={cn("relative data-[dragging]:z-10 data-[dragging]:opacity-40", className)}
+      // The item under the pointer moves with it, untransitioned; the others glide aside.
+      style={{ transform: CSS.Translate.toString(transform), transition: isDragging && !overlay ? undefined : transition }}
+      className={cn(
+        "relative data-[dragging]:z-10",
+        // With an overlay the item stays behind as a faded placeholder; without one it is what you drag, so it lifts.
+        overlay ? "data-[dragging]:opacity-40" : "data-[dragging]:rounded-sm data-[dragging]:bg-card data-[dragging]:shadow-float",
+        className,
+      )}
     >
       <SortableItemContext.Provider value={{ attributes, listeners, isDragging }}>{children}</SortableItemContext.Provider>
     </li>
