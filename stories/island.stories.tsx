@@ -7,7 +7,7 @@ import { alarmEdge, topAlarm, type AlarmData } from "@/registry/syncrobotic/ui/a
 const meta: Meta<typeof Island> = {
   title: "Shell/Dynamic island",
   component: Island,
-  args: { name: "Patrol dog 7F3A", tone: "info", unread: 2, className: "static" },
+  args: { name: "Patrol dog 7F3A", status: "active", unread: 2, className: "static" },
 }
 export default meta
 type S = StoryObj<typeof Island>
@@ -15,7 +15,7 @@ type S = StoryObj<typeof Island>
 export const Default: S = {}
 export const AnotherDogNeedsAttention: S = { args: { attention: true } }
 export const LowBattery: S = { args: { battery: 18 } }
-export const Loading: S = { args: { loading: true, tone: "neutral", unread: 0 } }
+export const Loading: S = { args: { loading: true, status: "offline", unread: 0 } }
 export const Notice: S = {
   args: { children: <IslandNotice tone="success" icon={Check} title="Parking lot patrol saved" meta="Next run 11/16 02:00" onDismiss={fn()} /> },
 }
@@ -50,7 +50,7 @@ export const FailureStaysUntilHandled: S = {
 }
 export const BluetoothOnlyPersistent: S = {
   args: {
-    tone: "neutral",
+    status: "offline",
     online: false,
     edge: "warning",
     children: (
@@ -67,7 +67,7 @@ export const BluetoothOnlyPersistent: S = {
 }
 export const StoppedPersistent: S = {
   args: {
-    tone: "danger",
+    status: "danger",
     edge: "danger",
     children: <IslandNotice tone="danger" icon={Square} title="Night shift · Pixel 8 triggered an emergency stop" meta="7F3A · 21:08" persistent />,
   },
@@ -80,7 +80,7 @@ const fleetAlarms: AlarmData[] = [
 // The most urgent unacknowledged alarm sits in the island, above notices; the edge takes its colour.
 export const AlarmInIsland: S = {
   args: {
-    tone: "danger",
+    status: "danger",
     edge: alarmEdge(topAlarm(fleetAlarms)),
     children: <IslandAlarm alarms={fleetAlarms} onAcknowledge={fn()} onShowAll={fn()} />,
   },

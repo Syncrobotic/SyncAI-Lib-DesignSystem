@@ -245,7 +245,7 @@ export const iconGroups: IconGroup[] = [
     icons: [
       e(OctagonAlert, "Critical alarm, stopped by a fault"),
       e(TriangleAlert, "Warning"),
-      e(CircleAlert, "Failed, or a field is wrong"),
+      e(CircleAlert, "Failed, or a field is wrong; a low-priority alarm (its own shape beside high and critical)"),
       e(CircleCheck, "Done"),
       e(Info, "Information"),
       e(Circle, "A step not started"),

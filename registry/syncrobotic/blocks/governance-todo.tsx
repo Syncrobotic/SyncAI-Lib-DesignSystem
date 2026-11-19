@@ -1,4 +1,4 @@
-// @syncrobotic/governance-todo v0.8.0 · update: npx shadcn add @syncrobotic/governance-todo --overwrite
+// @syncrobotic/governance-todo v0.13.0 · update: npx shadcn add @syncrobotic/governance-todo --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,13 +7,13 @@ import { CircleCheck } from "lucide-react"
 import { dataNav } from "@/registry/syncrobotic/blocks/data-catalog"
 import { AppShell } from "@/registry/syncrobotic/blocks/app-shell"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
-import type { Tone } from "@/registry/syncrobotic/shell/status-glyph"
+import type { Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 import { Separator } from "@/registry/syncrobotic/ui/separator"
 
-export type Todo = { id: string; who: "Maintainer" | "Compliance"; dataset: string; what: string; state: { tone: Tone; label: string }; action: string }
+export type Todo = { id: string; who: "Maintainer" | "Compliance"; dataset: string; what: string; state: { tone: Status; label: string }; action: string }
 
 export const sampleTodos: Todo[] = [
   {
@@ -45,7 +45,7 @@ export const sampleTodos: Todo[] = [
     who: "Maintainer",
     dataset: "depth/indoor@v2",
     what: "Card owner left the team",
-    state: { tone: "neutral", label: "No owner" },
+    state: { tone: "offline", label: "No owner" },
     action: "Assign owner",
   },
 ]
@@ -89,7 +89,7 @@ export function GovernanceTodo({ todos = sampleTodos }: { todos?: Todo[] }) {
                       <span className="font-mono">{t.dataset}</span> · {t.who}
                     </span>
                   </div>
-                  <InlineStatus tone={t.state.tone}>{t.state.label}</InlineStatus>
+                  <InlineStatus status={t.state.tone}>{t.state.label}</InlineStatus>
                   <Button variant="secondary" size="sm" onClick={() => setDone((d) => [...d, t.id])}>
                     {t.action}
                   </Button>

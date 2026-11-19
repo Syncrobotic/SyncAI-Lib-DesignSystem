@@ -1,4 +1,4 @@
-/* @syncrobotic/syncrobotic-theme v0.11.1 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
+/* @syncrobotic/syncrobotic-theme v0.13.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
 /*
  * SYNCROBOTIC theme (see CHANGELOG.md for its version history)
  * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
@@ -86,7 +86,7 @@
 
   /* Heights */
   --h-tag: 1.5rem;    /* 24 tag, not interactive */
-  --h-sm: 2.25rem;    /* 36 compact control: only with a mouse (pointer: fine). On touch it is 44, see below. */
+  --h-sm: 2.25rem;    /* 36 compact control: only where nothing is a touch screen. On touch it is 44, see below. */
   --h-md: 2.75rem;    /* 44 default, minimum height of anything interactive */
   --h-lg: 3rem;       /* 48 page primary action, dock tabs */
   --h-row: 3.5rem;    /* 56 list row */
@@ -384,7 +384,8 @@
 
 /* Compact density is for a mouse only. On touch screens every compact control is the full 44 px,
    so nothing interactive is ever smaller than a finger: the island, the dock and phone layouts included. */
-@media (pointer: coarse) {
+/* any-pointer: a touch laptop with a trackpad has a coarse pointer too, and its fingers still need 44. */
+@media (any-pointer: coarse) {
   :root { --h-sm: var(--h-md); }
 }
 
@@ -402,7 +403,7 @@
 
 /* Compact: a control-room console with a mouse: 36 px controls, 40 px rows. Only with a fine pointer; on a touch
    screen a finger still gets 44. The stop keeps its size in every density. */
-@media (pointer: fine) {
+@media (pointer: fine) and (not (any-pointer: coarse)) {
   [data-density="compact"] {
     --h-md: 2.25rem; /* 36 */
     --h-lg: 2.5rem;  /* 40 */

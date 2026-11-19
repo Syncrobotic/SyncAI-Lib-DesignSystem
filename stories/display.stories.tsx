@@ -158,14 +158,14 @@ export const TableDefault: S = {
       </TableHeader>
       <TableBody>
         {[
-          { id: "7F3A", tone: "info" as const, s: "Patrolling", b: 72 },
-          { id: "2B10", tone: "success" as const, s: "Docked", b: 100 },
+          { id: "7F3A", tone: "active" as const, s: "Patrolling", b: 72 },
+          { id: "2B10", tone: "normal" as const, s: "Docked", b: 100 },
           { id: "9C44", tone: "warning" as const, s: "Low battery", b: 18 },
         ].map((r) => (
           <TableRow key={r.id}>
             <TableCell className="font-medium">{r.id}</TableCell>
             <TableCell>
-              <InlineStatus tone={r.tone}>{r.s}</InlineStatus>
+              <InlineStatus status={r.tone}>{r.s}</InlineStatus>
             </TableCell>
             <TableCell className="text-right">{r.b}%</TableCell>
           </TableRow>
@@ -180,7 +180,7 @@ export const BadgeWithStatusAndCount: S = {
   render: () => (
     <div className="flex flex-wrap items-center gap-2">
       <Badge tone="neutral">
-        <StatusGlyph tone="info" /> Patrolling
+        <StatusGlyph status="active" /> Patrolling
       </Badge>
       <Badge tone="warning">
         <Battery aria-hidden="true" /> 18%
@@ -201,8 +201,8 @@ export const CardWithList: S = {
       </CardHeader>
       <CardContent className="gap-0">
         {[
-          { n: "Dock A", m: "2B10 charging · 64%", t: "success" as const, s: "In use" },
-          { n: "Dock B", m: "Free", t: "neutral" as const, s: "Idle" },
+          { n: "Dock A", m: "2B10 charging · 64%", t: "normal" as const, s: "In use" },
+          { n: "Dock B", m: "Free", t: "offline" as const, s: "Idle" },
           { n: "Dock C", m: "Power fault since 01:12", t: "danger" as const, s: "Fault" },
         ].map((d) => (
           <div key={d.n} className="flex min-h-(--h-row) items-center justify-between border-b border-border last:border-b-0">
@@ -210,7 +210,7 @@ export const CardWithList: S = {
               <span className="text-sm font-medium">{d.n}</span>
               <span className="text-xs text-muted-foreground">{d.m}</span>
             </span>
-            <InlineStatus tone={d.t}>{d.s}</InlineStatus>
+            <InlineStatus status={d.t}>{d.s}</InlineStatus>
           </div>
         ))}
       </CardContent>
@@ -249,7 +249,7 @@ export const AvatarSizesAndStatus: S = {
           <Avatar className={a.c}>
             <AvatarFallback>{a.i}</AvatarFallback>
           </Avatar>
-          <StatusGlyph tone="success" className="absolute -right-0.5 -bottom-0.5 rounded-full bg-background" />
+          <StatusGlyph status="normal" className="absolute -right-0.5 -bottom-0.5 rounded-full bg-background" />
         </span>
       ))}
       <span className="flex items-center gap-2">
@@ -369,14 +369,14 @@ export const TableWithStatusAndSelectedRow: S = {
         <TableRow>
           <TableCell>02:14</TableCell>
           <TableCell>
-            <InlineStatus tone="warning">Door left open</InlineStatus>
+            <InlineStatus status="warning">Door left open</InlineStatus>
           </TableCell>
           <TableCell className="text-right">7F3A</TableCell>
         </TableRow>
         <TableRow data-state="selected">
           <TableCell>01:52</TableCell>
           <TableCell>
-            <InlineStatus tone="danger">Person detected</InlineStatus>
+            <InlineStatus status="danger">Person detected</InlineStatus>
           </TableCell>
           <TableCell className="text-right">9C44</TableCell>
         </TableRow>
@@ -734,7 +734,7 @@ export const DescriptionListWithStatus: S = {
     <DescriptionList
       columns={2}
       items={[
-        { label: "State", value: <InlineStatus tone="warning">Needs attention</InlineStatus> },
+        { label: "State", value: <InlineStatus status="warning">Needs attention</InlineStatus> },
         { label: "Licence", value: <Badge tone="outline">Pro</Badge> },
         { label: "Battery", value: "18 %" },
         { label: "Odometer", value: "1 284 km" },
@@ -748,15 +748,15 @@ export const StatusGlyphTones: S = {
     <ul className="flex flex-col gap-2 text-sm">
       {(
         [
-          ["info", "In progress"],
-          ["success", "Normal"],
+          ["active", "In progress"],
+          ["normal", "Normal"],
           ["warning", "Needs attention"],
           ["danger", "Stopped"],
-          ["neutral", "Offline"],
+          ["offline", "Offline"],
         ] as const
       ).map(([t, l]) => (
         <li key={t} className="flex items-center gap-2">
-          <StatusGlyph tone={t} /> {l}
+          <StatusGlyph status={t} /> {l}
         </li>
       ))}
     </ul>
@@ -767,7 +767,7 @@ export const StatusGlyphSizes: S = {
   render: () => (
     <div className="flex items-end gap-4">
       {(["size-3", "size-4", "size-5"] as const).map((s) => (
-        <StatusGlyph key={s} tone="warning" className={s} />
+        <StatusGlyph key={s} status="warning" className={s} />
       ))}
     </div>
   ),
@@ -784,16 +784,16 @@ export const StatusGlyphInTable: S = {
       </TableHeader>
       <TableBody>
         {[
-          ["7F3A", "info", "Patrolling"],
-          ["2B10", "success", "Docked"],
+          ["7F3A", "active", "Patrolling"],
+          ["2B10", "normal", "Docked"],
           ["9C44", "warning", "Needs attention"],
           ["4D21", "danger", "Stopped"],
-          ["1A08", "neutral", "Offline"],
-        ].map(([id, tone, label]) => (
+          ["1A08", "offline", "Offline"],
+        ].map(([id, status, label]) => (
           <TableRow key={id}>
             <TableCell className="font-medium">{id}</TableCell>
             <TableCell>
-              <InlineStatus tone={tone as "info"}>{label}</InlineStatus>
+              <InlineStatus status={status as "active"}>{label}</InlineStatus>
             </TableCell>
           </TableRow>
         ))}

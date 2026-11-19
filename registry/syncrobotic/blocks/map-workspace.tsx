@@ -1,4 +1,4 @@
-// @syncrobotic/map-workspace v0.11.1 · update: npx shadcn add @syncrobotic/map-workspace --overwrite
+// @syncrobotic/map-workspace v0.13.0 · update: npx shadcn add @syncrobotic/map-workspace --overwrite
 "use client"
 
 import * as React from "react"
@@ -9,7 +9,7 @@ import { Meter } from "@/registry/syncrobotic/ui/meter"
 import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
 import { IslandAlarm } from "@/registry/syncrobotic/shell/island"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
-import { StatusGlyph, type Tone } from "@/registry/syncrobotic/shell/status-glyph"
+import { StatusGlyph, type Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { SlideToRelease } from "@/registry/syncrobotic/shell/slide-to-release"
 import { StopButton } from "@/registry/syncrobotic/shell/stop-button"
 import { feedback } from "@/registry/syncrobotic/lib/feedback"
@@ -17,14 +17,14 @@ import { Tray } from "@/registry/syncrobotic/shell/tray"
 import { type AlarmData } from "@/registry/syncrobotic/ui/alarm"
 import { Button } from "@/registry/syncrobotic/ui/button"
 
-type MapRobot = { id: string; x: number; y: number; tone: Tone; status: string; battery: number; route?: [number, number][] }
+type MapRobot = { id: string; x: number; y: number; tone: Status; status: string; battery: number; route?: [number, number][] }
 
 const robots: MapRobot[] = [
   {
     id: "7F3A",
     x: 30,
     y: 35,
-    tone: "info",
+    tone: "active",
     status: "Patrolling",
     battery: 72,
     route: [
@@ -36,7 +36,7 @@ const robots: MapRobot[] = [
   },
   { id: "9C44", x: 72, y: 22, tone: "warning", status: "Needs attention", battery: 18 },
   { id: "4D21", x: 48, y: 70, tone: "danger", status: "Stopped", battery: 64 },
-  { id: "2B10", x: 85, y: 78, tone: "success", status: "Docked", battery: 100 },
+  { id: "2B10", x: 85, y: 78, tone: "normal", status: "Docked", battery: 100 },
 ]
 
 const alarms: AlarmData[] = [
@@ -92,7 +92,7 @@ export function MapWorkspace() {
               r.id === selected && "ring-2 ring-foreground",
             )}
           >
-            <StatusGlyph tone={r.tone} className="size-4" />
+            <StatusGlyph status={r.tone} className="size-4" />
             <span className="absolute top-full font-mono text-xs">{r.id}</span>
           </button>
         ))}
@@ -101,7 +101,7 @@ export function MapWorkspace() {
           <div className="flex flex-col gap-3 rounded-md bg-card p-4">
             <div className="flex items-center justify-between gap-2">
               <h2 className="font-bold">Patrol dog {robot.id}</h2>
-              <InlineStatus tone={robot.tone}>{robot.status}</InlineStatus>
+              <InlineStatus status={robot.tone}>{robot.status}</InlineStatus>
             </div>
             <Meter value={robot.battery} low={30} critical={15} label="Battery" />
             <div className="flex gap-2">

@@ -1,4 +1,4 @@
-// @syncrobotic/users-invitations v0.9.0 · update: npx shadcn add @syncrobotic/users-invitations --overwrite
+// @syncrobotic/users-invitations v0.13.0 · update: npx shadcn add @syncrobotic/users-invitations --overwrite
 "use client"
 
 import * as React from "react"
@@ -114,7 +114,7 @@ export function UsersInvitations() {
                     <TableCell>
                       {i.expired ? (
                         <span className="flex items-center gap-2 text-warning">
-                          <StatusGlyph tone="warning" /> Expired {i.expires}
+                          <StatusGlyph status="warning" /> Expired {i.expires}
                         </span>
                       ) : (
                         <span className="text-muted-foreground">{i.expires}</span>

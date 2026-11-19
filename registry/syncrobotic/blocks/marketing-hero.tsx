@@ -1,4 +1,4 @@
-// @syncrobotic/marketing-hero v0.8.0 · update: npx shadcn add @syncrobotic/marketing-hero --overwrite
+// @syncrobotic/marketing-hero v0.13.0 · update: npx shadcn add @syncrobotic/marketing-hero --overwrite
 import * as React from "react"
 import { ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -56,8 +56,8 @@ export function MarketingHero({
 
 function FleetSummary() {
   const rows = [
-    { tone: "info" as const, name: "Patrol dog 7F3A", meta: "North gate · patrolling" },
-    { tone: "success" as const, name: "Patrol dog 2B10", meta: "Dock A · charging" },
+    { tone: "active" as const, name: "Patrol dog 7F3A", meta: "North gate · patrolling" },
+    { tone: "normal" as const, name: "Patrol dog 2B10", meta: "Dock A · charging" },
     { tone: "warning" as const, name: "Patrol dog 9C44", meta: "Parking lot · low battery" },
   ]
   return (
@@ -81,7 +81,7 @@ function FleetSummary() {
       <ul className="flex flex-col">
         {rows.map((r) => (
           <li key={r.name} className="flex items-center gap-2 border-b border-border py-3 last:border-b-0">
-            <StatusGlyph tone={r.tone} />
+            <StatusGlyph status={r.tone} />
             <span className="flex flex-col">
               <span className="text-sm font-medium">{r.name}</span>
               <span className="text-xs text-muted-foreground">{r.meta}</span>

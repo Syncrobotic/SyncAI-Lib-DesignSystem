@@ -32,7 +32,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/registry/syncrobotic/ui/alert-dialog"
-import { StatusGlyph, type Tone } from "@/registry/syncrobotic/shell/status-glyph"
+import { StatusGlyph, type Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Spinner } from "@/registry/syncrobotic/ui/spinner"
 import {
@@ -512,7 +512,7 @@ export const CommandWithStatus: S = {
             ["Courier 1715", "neutral", "Offline"],
           ].map(([n, tone, label]) => (
             <CommandItem key={n} value={n}>
-              <StatusGlyph tone={tone as Tone} />
+              <StatusGlyph status={tone as Status} />
               <span className="flex-1">{n}</span>
               <span className="text-xs text-muted-foreground">{label}</span>
             </CommandItem>

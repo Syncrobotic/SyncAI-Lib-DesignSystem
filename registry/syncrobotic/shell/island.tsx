@@ -1,4 +1,4 @@
-// @syncrobotic/island v0.12.0 · update: npx shadcn add @syncrobotic/island --overwrite
+// @syncrobotic/island v0.13.0 · update: npx shadcn add @syncrobotic/island --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
 import { CountBadge } from "@/registry/syncrobotic/ui/badge"
 import { Tray } from "@/registry/syncrobotic/shell/tray"
-import { StatusGlyph, toneSubtle, toneText, type Tone } from "@/registry/syncrobotic/shell/status-glyph"
+import { StatusGlyph, toneSubtle, toneText, toStatus, warnTone, type Status, type Tone } from "@/registry/syncrobotic/shell/status-glyph"
 import { AlarmAnnouncer, alarmPriority, defaultAlarmLabels, sortAlarms, topAlarm, useAlarmSignals, type AlarmData, type AlarmLabels } from "@/registry/syncrobotic/ui/alarm"
 
 type Zone = "name" | "status" | "bell"
@@ -35,7 +35,9 @@ type IslandProps = {
   name: string
   avatar?: React.ReactNode
   /** Shape at the avatar's corner: the dog's current state. */
-  tone: Tone
+  status?: Status
+  /** @deprecated Use `status`. */
+  tone?: Tone
   /** Another dog needs attention: a triangle after the name. Show it only for new issues. */
   attention?: boolean
   online?: boolean
@@ -62,6 +64,7 @@ type IslandProps = {
 export function Island({
   name,
   avatar,
+  status: given,
   tone,
   attention,
   online = true,
@@ -80,6 +83,8 @@ export function Island({
   if (children) lastChildren.current = children
   const slot = usePresence(!!children)
   const l = { ...defaultIslandLabels, ...labels }
+  warnTone("Island", tone)
+  const status = given ?? toStatus(tone ?? "neutral")
   const toggle = (z: Zone) => onOpenChange?.(open === z ? null : z)
   const zone = (z: Zone) => cn("press flex h-(--h-md) items-center gap-2 rounded-md px-2", open === z && "bg-muted")
   const low = battery < 30
@@ -97,7 +102,7 @@ export function Island({
         <button type="button" aria-expanded={open === "name"} onClick={() => toggle("name")} className={cn(zone("name"), "min-w-0 flex-1 text-left")}>
           <span className="relative shrink-0">
             {avatar ?? <span className="block size-8 rounded-full bg-muted" />}
-            <StatusGlyph tone={tone} className="absolute -right-0.5 -bottom-0.5 rounded-full bg-float" />
+            <StatusGlyph status={status} className="absolute -right-0.5 -bottom-0.5 rounded-full bg-float" />
           </span>
           <span className="truncate text-sm font-medium">{name}</span>
           {attention && <TriangleAlert aria-label={l.attention} className="size-4 shrink-0 text-warning" />}
@@ -207,7 +212,7 @@ type IslandAlarmProps = {
 
 /**
  * The control app's alarm surface: the island shows the most urgent unacknowledged alarm, above any notice.
- * Same data as AlarmList, so the phone and the dashboard never disagree. Pair it with `edge={alarmEdge(topAlarm(alarms))}`.
+ * Same data as AlarmList, so the phone and the dashboard never disagree. Pair it with `edge={alarmEdge(topAlarm(alarms)) ?? stateEdge}`, so a persistent state (offline, stopped) keeps its edge when only a low alarm shows.
  * Renders nothing when every alarm is acknowledged.
  */
 export function IslandAlarm({ alarms, onAcknowledge, onShowAll, labels, feedback = true }: IslandAlarmProps) {

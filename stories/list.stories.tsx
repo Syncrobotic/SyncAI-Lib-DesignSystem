@@ -13,15 +13,15 @@ export const StatusShapes: S = {
   render: () => (
     <div className="flex flex-col gap-3">
       <div className="flex gap-4">
-        {(["info", "success", "warning", "danger", "neutral"] as const).map((t) => (
-          <StatusGlyph key={t} tone={t} />
+        {(["active", "normal", "warning", "danger", "offline"] as const).map((t) => (
+          <StatusGlyph key={t} status={t} />
         ))}
       </div>
-      <StatusEyebrow tone="info">Patrolling</StatusEyebrow>
-      <StatusEyebrow tone="success">Charging</StatusEyebrow>
-      <StatusEyebrow tone="warning">Task paused</StatusEyebrow>
-      <StatusEyebrow tone="danger">Emergency stopped</StatusEyebrow>
-      <StatusEyebrow tone="neutral">Wi-Fi lost</StatusEyebrow>
+      <StatusEyebrow status="active">Patrolling</StatusEyebrow>
+      <StatusEyebrow status="normal">Charging</StatusEyebrow>
+      <StatusEyebrow status="warning">Task paused</StatusEyebrow>
+      <StatusEyebrow status="danger">Emergency stopped</StatusEyebrow>
+      <StatusEyebrow status="offline">Wi-Fi lost</StatusEyebrow>
     </div>
   ),
 }
@@ -29,8 +29,8 @@ export const GroupedList: S = {
   render: () => (
     <ListGroup>
       <ListRow title="Network" meta="Good signal" trailing="SyncAI-Office" chevron onClick={fn()} />
-      <ListRow title="License" meta="Pro · expires 11/19" trailing={<InlineStatus tone="warning">5 days left</InlineStatus>} chevron onClick={fn()} />
-      <ListRow title="Night shift · Pixel 8" meta="Operator" trailing={<InlineStatus tone="success">Online</InlineStatus>} />
+      <ListRow title="License" meta="Pro · expires 11/19" trailing={<InlineStatus status="warning">5 days left</InlineStatus>} chevron onClick={fn()} />
+      <ListRow title="Night shift · Pixel 8" meta="Operator" trailing={<InlineStatus status="normal">Online</InlineStatus>} />
     </ListGroup>
   ),
 }
@@ -87,7 +87,7 @@ export const SkeletonTableRows: S = {
 export const StatusEyebrowOverTitle: S = {
   render: () => (
     <div className="flex flex-col gap-1">
-      <StatusEyebrow tone="warning">Task paused</StatusEyebrow>
+      <StatusEyebrow status="warning">Task paused</StatusEyebrow>
       <h2 className="text-2xl font-bold">Patrol dog 7F3A</h2>
       <p className="text-sm text-muted-foreground">Waiting at door 3 for 2 min.</p>
     </div>
@@ -97,9 +97,9 @@ export const StatusEyebrowOverTitle: S = {
 export const StatusInlineInRows: S = {
   render: () => (
     <ListGroup>
-      <ListRow title="Patrol dog 7F3A" meta="North gate" trailing={<InlineStatus tone="info">Patrolling</InlineStatus>} />
-      <ListRow title="Courier 2B19" meta="Hall B" trailing={<InlineStatus tone="warning">Low battery</InlineStatus>} />
-      <ListRow title="Courier 4D21" meta="Floor 3" trailing={<InlineStatus tone="danger">Stopped</InlineStatus>} />
+      <ListRow title="Patrol dog 7F3A" meta="North gate" trailing={<InlineStatus status="active">Patrolling</InlineStatus>} />
+      <ListRow title="Courier 2B19" meta="Hall B" trailing={<InlineStatus status="warning">Low battery</InlineStatus>} />
+      <ListRow title="Courier 4D21" meta="Floor 3" trailing={<InlineStatus status="danger">Stopped</InlineStatus>} />
     </ListGroup>
   ),
 }

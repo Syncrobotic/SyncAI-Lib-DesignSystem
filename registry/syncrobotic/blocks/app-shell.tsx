@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell v0.9.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
+// @syncrobotic/app-shell v0.13.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -48,7 +48,7 @@ export type AppSearchItem = {
   /** Right-aligned detail, e.g. a robot's state. */
   hint?: string
   /** A state hint gets its status shape, so "Stopped" never reads like "Docked". */
-  tone?: React.ComponentProps<typeof StatusGlyph>["tone"]
+  status?: React.ComponentProps<typeof StatusGlyph>["status"]
   href?: string
   onSelect?: () => void
   keywords?: string[]
@@ -98,9 +98,9 @@ export const sampleSearch: AppSearch = {
       heading: "Robots",
       scope: "robots",
       items: [
-        { label: "Patrol dog 7F3A", icon: Bot, hint: "Patrolling", tone: "info", href: "#robots/7F3A", keywords: ["7F3A"] },
-        { label: "Patrol dog 2B10", icon: Bot, hint: "Docked", tone: "neutral", href: "#robots/2B10", keywords: ["2B10"] },
-        { label: "Patrol dog 4D21", icon: Bot, hint: "Stopped", tone: "danger", href: "#robots/4D21", keywords: ["4D21"] },
+        { label: "Patrol dog 7F3A", icon: Bot, hint: "Patrolling", status: "active", href: "#robots/7F3A", keywords: ["7F3A"] },
+        { label: "Patrol dog 2B10", icon: Bot, hint: "Docked", status: "offline", href: "#robots/2B10", keywords: ["2B10"] },
+        { label: "Patrol dog 4D21", icon: Bot, hint: "Stopped", status: "danger", href: "#robots/4D21", keywords: ["4D21"] },
       ],
     },
     {
@@ -422,7 +422,7 @@ export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch;
                       <span className="flex-1 truncate">{item.label}</span>
                       {item.hint && (
                         <span className="flex items-center gap-2 text-xs text-muted-foreground">
-                          {item.tone && <StatusGlyph tone={item.tone} />}
+                          {item.status && <StatusGlyph status={item.status} />}
                           {item.hint}
                         </span>
                       )}
@@ -433,7 +433,7 @@ export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch;
                       <span className="flex-1 truncate">{item.label}</span>
                       {item.hint && (
                         <span className="flex items-center gap-2 text-xs text-muted-foreground">
-                          {item.tone && <StatusGlyph tone={item.tone} />}
+                          {item.status && <StatusGlyph status={item.status} />}
                           {item.hint}
                         </span>
                       )}

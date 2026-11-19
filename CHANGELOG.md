@@ -4,6 +4,18 @@ Components install as source, so a project keeps the version it installed. Re-ru
 
 ## Unreleased
 
+### Changed
+- **`status` replaces `tone` on status displays** (StatusGlyph, StatusEyebrow, InlineStatus, Island): `active`, `normal`, `warning`, `danger`, `offline`. The old `tone` named colours (`info`, `success`, `neutral`) for states that are deliberately not coloured, and meant blue on a Badge but grey on a glyph. Badge, IconTile, Marker and the other colour components keep `tone`. **Not breaking:** `tone` still works until 1.0, maps info → active, success → normal, neutral → offline, and warns once in development. Every block and story uses `status`.
+- **`size="sm"` replaces `density="dense"`** on DataGrid, Trace and Timeline, so it is not confused with the theme's `data-density`. `density` still works until 1.0.
+- Touch is detected with `any-pointer: coarse`: a touch laptop with a trackpad keeps 44 px controls, and compact density applies only where nothing is a touch screen.
+- Failed toasts are never closed for you. With more than three open, the oldest that is not a failure makes room; if all are failures, all stay.
+- Mission schedule's now line is the foreground colour: a time marker, not a process being waited on.
+- The icon set records that a low-priority alarm uses CircleAlert, so it keeps its own shape beside high and critical.
+- The Island docs pair the edge as `alarmEdge(topAlarm(alarms)) ?? stateEdge`, so a low alarm does not erase the offline or stopped edge.
+
+### Added
+- Buttons on the Alarms foundation to feel and hear each feedback pattern on a real device.
+
 ### Fixed
 - Docs site on phones:
   - The menu button said only "Menu"; it now says where you are (area, then page). The four areas sat in one row where "Foundations" and "Components" did not fit; they are two by two. The open menu stays within most of the screen and scrolls inside, instead of pushing the page several screens down.
