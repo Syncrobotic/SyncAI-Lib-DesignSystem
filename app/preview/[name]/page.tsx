@@ -1,11 +1,16 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
+import { blockHref } from "@/site/block-types"
 import { blocks, getBlock } from "@/site/blocks"
+import { PreviewBack } from "@/site/preview-back"
 
 // Bare render of one block, loaded in an iframe by the docs so breakpoints respond to the frame width.
 export const dynamicParams = false
 export const generateStaticParams = () => blocks.map((b) => ({ name: b.name }))
-export const metadata: Metadata = { robots: { index: false, follow: false } }
+export async function generateMetadata({ params }: { params: Promise<{ name: string }> }): Promise<Metadata> {
+  const block = getBlock((await params).name)
+  return { title: block ? `${block.title} · preview` : "Preview", robots: { index: false, follow: false } }
+}
 
 export default async function PreviewPage({ params }: { params: Promise<{ name: string }> }) {
   const block = getBlock((await params).name)
@@ -15,6 +20,7 @@ export default async function PreviewPage({ params }: { params: Promise<{ name: 
       <h1 className="sr-only">{block.title}</h1>
       {/* The docs frame measures this element so the preview is exactly as tall as the block. */}
       <div id="block-root">{block.render()}</div>
+      <PreviewBack href={blockHref(block.name)} />
     </div>
   )
 }

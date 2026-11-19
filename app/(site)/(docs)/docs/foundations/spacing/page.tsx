@@ -55,7 +55,10 @@ export default function SpacingPage() {
           {heights.map((h) => (
             <div key={h} className="flex flex-col items-center gap-2">
               <div className="w-16 rounded-xs bg-secondary ring-1 ring-border" style={{ height: `var(--${h})` }} />
-              <span className="font-mono text-xs">{px(themeValue(h))}</span>
+              <span className="flex flex-col items-center font-mono text-xs">
+                {px(themeValue(h))}
+                <span className="text-muted-foreground">{h.replace("h-", "")}</span>
+              </span>
             </div>
           ))}
         </Specimen>
@@ -96,6 +99,7 @@ export default function SpacingPage() {
                 <div className="mt-2 h-2 rounded-xs bg-success" />
               </div>
             ),
+            caption: "padding 16 · gap 8 · bar 8 below",
             text: "Use the scale: 16 card padding, 8 between related lines.",
           }}
           bad={{
@@ -106,6 +110,7 @@ export default function SpacingPage() {
                 <div className="h-2 rounded-xs bg-success" style={{ marginTop: 11 }} />
               </div>
             ),
+            caption: "padding 13 · gap 5 · bar 11 below",
             text: "Eyeball values like 13, 5 or 11. They drift between screens and teams. `npm run lint:tokens` rejects them.",
           }}
         />

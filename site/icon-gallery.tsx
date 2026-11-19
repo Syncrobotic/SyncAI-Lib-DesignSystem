@@ -45,7 +45,17 @@ export function IconGallery({ groups, total, placeholder, markKit = false }: { g
 
   const q = query.trim().toLowerCase()
   const shown = groups
-    .map((g) => ({ ...g, icons: q ? g.icons.filter((i) => i.name.toLowerCase().includes(q) || i.means?.toLowerCase().includes(q)) : g.icons }))
+    .map((g) => ({
+      ...g,
+      // Best match first: the exact name, then names that start with the query, then the rest (Battery before BatteryWarning).
+      icons: q
+        ? g.icons
+            .filter((i) => i.name.toLowerCase().includes(q) || i.means?.toLowerCase().includes(q))
+            .map((i, n) => ({ i, n, rank: i.name.toLowerCase() === q ? 0 : i.name.toLowerCase().startsWith(q) ? 1 : 2 }))
+            .sort((a, b) => a.rank - b.rank || a.i.name.length - b.i.name.length || a.n - b.n)
+            .map((x) => x.i)
+        : g.icons,
+    }))
     .filter((g) => g.icons.length > 0)
   const count = shown.reduce((n, g) => n + g.icons.length, 0)
   const glyphSize = sizes.find((s) => s.value === size)!.cls

@@ -45,7 +45,9 @@ export function Specimen({ children, className, caption }: { children: React.Rea
   )
 }
 
-export function DoDont({ good, bad }: { good: { visual: React.ReactNode; text: string }; bad: { visual: React.ReactNode; text: string } }) {
+type Case = { visual: React.ReactNode; text: string; /** The measurements, under the visual, when the difference is in numbers. */ caption?: string }
+
+export function DoDont({ good, bad }: { good: Case; bad: Case }) {
   return (
     <div className="grid gap-4 sm:grid-cols-2">
       {[
@@ -53,7 +55,10 @@ export function DoDont({ good, bad }: { good: { visual: React.ReactNode; text: s
         { ...bad, ok: false },
       ].map((c) => (
         <figure key={String(c.ok)} className="flex flex-col overflow-hidden rounded-md border border-border">
-          <div className="specimen flex min-h-40 items-center justify-center p-6">{c.visual}</div>
+          <div className="specimen flex min-h-40 flex-col items-center justify-center gap-3 p-6">
+            {c.visual}
+            {c.caption && <span className="font-mono text-xs text-muted-foreground">{c.caption}</span>}
+          </div>
           <figcaption className={cn("flex flex-1 gap-2 border-t-2 bg-card p-4 text-sm", c.ok ? "border-success" : "border-danger")}>
             {c.ok ? <Check aria-hidden className="mt-0.5 size-4 shrink-0 text-success" /> : <X aria-hidden className="mt-0.5 size-4 shrink-0 text-danger" />}
             <span>

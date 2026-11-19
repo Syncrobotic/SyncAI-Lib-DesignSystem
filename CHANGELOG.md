@@ -23,6 +23,9 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - **Example code runs when pasted:** each example carries the imports it uses, from where the CLI installs them (`@/components/ui/button`), and a bare snippet comes wrapped in a component. File names have no spaces (`button-variants.tsx`).
 - **Icons:** names break between their words over two lines instead of being cut off; the kit's tiles show what each icon means; All Lucide explains its dot; a search with no result offers to clear it (and, in the kit, to look through every Lucide icon); for an icon not in the set, how to add it comes first and the code to copy waits behind "Copy anyway", in full instead of cut. The Iconography page names its twelve sample icons.
 - **Search fields' clear button** (theme): the browser's small blue cross is the kit's grey cross at 20 px; blue means a process being waited on.
+- **Polish from the page-by-page review:** the Colour neutrals break their names only after a hyphen; Radius shows its six corners in one row on a desktop with the value under the name; Spacing labels each height with its pixels and token and gives the do and don't their measurements; Motion's durations no longer wrap and the timing rules line up with their rail; the Dialog's description says what it is for; the shortcut keys in the overlay story line up on the right; a lone example button sits centred; the home page lists Foundations, Components, Blocks, Icons in the header's order; the icon search puts the exact name first; story names keep Bluetooth and Wi-Fi capitalised; Upgrading lists the most recently changed items first, each linked to its page.
+- **Block previews opened on their own** have a title and a link back to the docs.
+- `status-pages`: the heading is an h1 only when the page fills the screen; inside an app shell it is an h2.
 
 ## 0.13.0 · 2026-11-19
 
