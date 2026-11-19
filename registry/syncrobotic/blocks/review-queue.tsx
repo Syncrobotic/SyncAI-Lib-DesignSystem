@@ -1,4 +1,4 @@
-// @syncrobotic/review-queue v0.16.0 · update: npx shadcn add @syncrobotic/review-queue --overwrite
+// @syncrobotic/review-queue v0.16.1 · update: npx shadcn add @syncrobotic/review-queue --overwrite
 "use client"
 
 import * as React from "react"
@@ -81,6 +81,14 @@ export function ReviewQueue({
   })
   const [history, setHistory] = React.useState<Step[]>([])
   const [help, setHelp] = React.useState(false)
+  // Opened with "?", the dialog has no trigger to give focus back to: return it to whatever had it, or to the shortcuts
+  // button, so the keyboard user lands somewhere on the page and not on <body>.
+  const helpButton = React.useRef<HTMLButtonElement>(null)
+  const opener = React.useRef<HTMLElement | null>(null)
+  const openHelp = () => {
+    opener.current = document.activeElement instanceof HTMLElement && document.activeElement !== document.body ? document.activeElement : null
+    setHelp(true)
+  }
   const [message, setMessage] = React.useState("")
   const mac = React.useSyncExternalStore(subscribeNever, isMac, () => false)
 
@@ -126,7 +134,7 @@ export function ReviewQueue({
       Escape: back,
       Backspace: undo,
       "mod+z": undo,
-      "?": () => setHelp(true),
+      "?": openHelp,
     },
     { enabled: !help },
   )
@@ -157,7 +165,7 @@ export function ReviewQueue({
           </h2>
           <span className="truncate font-mono text-xs text-muted-foreground">{batch}</span>
         </div>
-        <Button variant="ghost" size="icon" aria-label="Keyboard shortcuts" aria-keyshortcuts="?" onClick={() => setHelp(true)}>
+        <Button ref={helpButton} variant="ghost" size="icon" aria-label="Keyboard shortcuts" aria-keyshortcuts="?" onClick={openHelp}>
           <Keyboard aria-hidden="true" />
         </Button>
       </header>
@@ -246,7 +254,12 @@ export function ReviewQueue({
       </p>
 
       <Dialog open={help} onOpenChange={setHelp}>
-        <DialogContent>
+        <DialogContent
+          onCloseAutoFocus={(e) => {
+            e.preventDefault()
+            ;(opener.current?.isConnected ? opener.current : helpButton.current)?.focus()
+          }}
+        >
           <DialogHeader>
             <DialogTitle>Keyboard shortcuts</DialogTitle>
             <DialogDescription>Answer without leaving the keyboard. Keys do nothing while you type in a field.</DialogDescription>

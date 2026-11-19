@@ -2,6 +2,21 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.16.1 · 2026-11-19
+
+### Added
+- **`ResultBadge`** (`badge`): one prop for the verdict of a test, an evaluation or an audit.
+  - `result="passed"`: grey with a check.
+  - `"failed"`: danger outline and text.
+  - `"insufficient"`: grey outline with a dashed circle.
+  - The Colour foundation and the examples use it, so products no longer assemble the three by hand.
+
+### Fixed
+- **`filters` jumped**: with the picker open, a click on another part of the same chip closed it, so a second click was needed and the picker flashed between heights. Now it switches to that step in place; clicking the open part again closes it. Fields without an icon keep the icon's space, so names line up.
+- **`command`**: the search row inside a picker popover no longer shows a heavy focus ring for good (the box always has focus there).
+- **`review-queue`**: after the shortcuts dialog is opened with ? and closed by keyboard, focus goes back where it was (or to the shortcuts button), not to the page body.
+- ROADMAP: the repository is public.
+
 ## 0.16.0 · 2026-11-19
 
 ### Added
