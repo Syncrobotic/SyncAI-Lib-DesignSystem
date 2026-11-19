@@ -1,7 +1,7 @@
 {
   "syncrobotic-theme": {
-    "version": "0.15.0",
-    "hash": "161286546a7809bd"
+    "version": "0.16.0",
+    "hash": "ea9a0adc17944d8c"
   },
   "cn": {
     "version": "0.5.0",
@@ -275,6 +275,10 @@
     "version": "0.15.0",
     "hash": "6d75adddb09e47de"
   },
+  "image-grid": {
+    "version": "0.16.0",
+    "hash": "b9e55a965bd57792"
+  },
   "filter-form": {
     "version": "0.10.0",
     "hash": "4408d94150b8f69d"
@@ -391,6 +395,10 @@
     "version": "0.14.1",
     "hash": "a5e7903c108c0282"
   },
+  "action-rail-shell": {
+    "version": "0.16.0",
+    "hash": "c3829fba8b11c4df"
+  },
   "console-overview": {
     "version": "0.8.0",
     "hash": "0b2fa9cac43c1b68"
@@ -440,8 +448,8 @@
     "hash": "d47a56ba7af41b46"
   },
   "agent-skill": {
-    "version": "0.15.0",
-    "hash": "fceec2a07fa3f1f7"
+    "version": "0.16.0",
+    "hash": "2dd07645a4a2d25e"
   },
   "line-chart-telemetry": {
     "version": "0.9.0",

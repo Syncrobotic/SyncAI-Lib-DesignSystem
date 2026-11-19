@@ -5,6 +5,19 @@ Components install as source, so a project keeps the version it installed. Re-ru
 ## Unreleased
 
 ### Added
+- **`image-grid`**: a gallery of thumbnails, as a grid or a scroll-snap strip.
+  - Tiles load lazily and keep their aspect.
+  - States: loading (skeleton), hidden (RestrictedPreview), broken (shows the file name).
+  - Single or multiple picking.
+  - A lightbox with the position ("3 of 24"), ← → to move, Esc to close, and focus back on the tile.
+- **`action-rail-shell`** (block): a page whose right column holds only the next step.
+  - The rail holds one large primary button and a few small actions.
+  - On phones it becomes a bar fixed to the bottom, above the safe area.
+  - ← or Esc goes back.
+- **Annotations on images** (theme and Data visualisation foundation):
+  - Tokens: `--annotate-predicted`, `--annotate-truth`, `--annotate-previous`, `--annotate-selected`, `--annotate-halo`, `--annotate-fade`.
+  - Line style is the primary encoding (solid, dashed, dotted, thick with handles).
+  - A halo under every stroke keeps boxes and points at 3:1 or better on any photo.
 - **Site search**: ⌘K, Ctrl+K or / opens a palette over pages, foundation sections (every rule by its heading), components, blocks and the icon set. Whole words, titles first. The index is written at build time and fetched the first time the search opens. An icon result opens that icon's details (`/icons?icon=Name`). On phones a 44 px search button sits in the header.
 
 ### Changed
