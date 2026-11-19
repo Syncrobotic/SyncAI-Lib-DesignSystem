@@ -120,8 +120,8 @@
     "hash": "00c3a77a0aff061c"
   },
   "select": {
-    "version": "0.10.0",
-    "hash": "0b80a804a278f2ba"
+    "version": "0.15.0",
+    "hash": "a3b3b22af4865a56"
   },
   "slider": {
     "version": "0.12.0",
@@ -216,12 +216,12 @@
     "hash": "7dd7e3177ffd2874"
   },
   "dropdown-menu": {
-    "version": "0.10.0",
-    "hash": "059fdc47730b98de"
+    "version": "0.15.0",
+    "hash": "f3a73fbae88d468d"
   },
   "command": {
-    "version": "0.10.0",
-    "hash": "206cef1f75f74e8e"
+    "version": "0.15.0",
+    "hash": "4140e094e384be96"
   },
   "item": {
     "version": "0.9.0",
@@ -288,8 +288,8 @@
     "hash": "7edb5b1f526606fe"
   },
   "autocomplete": {
-    "version": "0.10.0",
-    "hash": "60df099b10b3705f"
+    "version": "0.15.0",
+    "hash": "bdb838ee75ad78ca"
   },
   "input-otp": {
     "version": "0.10.0",

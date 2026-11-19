@@ -1,4 +1,4 @@
-// @syncrobotic/autocomplete v0.10.0 · update: npx shadcn add @syncrobotic/autocomplete --overwrite
+// @syncrobotic/autocomplete v0.15.0 · update: npx shadcn add @syncrobotic/autocomplete --overwrite
 "use client"
 
 import * as React from "react"
@@ -125,17 +125,24 @@ export function Autocomplete({
             className="h-full min-w-0 flex-1 bg-transparent px-3 text-base outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed"
           />
           {loading && <Spinner delay={0} className="mr-2 size-4" label="Searching" />}
-          {clearable && query && !disabled && (
+          {clearable && !disabled && (
             <button
               type="button"
+              className={cn(
+                "press flex size-(--h-sm) shrink-0 items-center justify-center rounded-xs text-muted-foreground transition-[opacity,visibility,background-color,color,scale] hover:bg-accent hover:text-foreground",
+                query ? "visible opacity-100" : "invisible opacity-0",
+              )}
               aria-label="Clear"
+              // Always rendered, so it can fade in and out with the query instead of popping; hidden, it is out of the
+              // tab order and the accessibility tree.
+              aria-hidden={!query || undefined}
+              tabIndex={query ? undefined : -1}
               onClick={() => {
                 setQuery("")
                 onValueChange?.(undefined)
                 onQueryChange?.("")
                 inputRef.current?.focus()
               }}
-              className="press flex size-(--h-sm) shrink-0 items-center justify-center rounded-xs text-muted-foreground hover:bg-accent hover:text-foreground"
             >
               <X aria-hidden="true" className="size-4" />
             </button>
@@ -152,7 +159,10 @@ export function Autocomplete({
               }}
               className="press mr-1 flex size-(--h-sm) shrink-0 items-center justify-center rounded-xs text-muted-foreground hover:bg-accent hover:text-foreground"
             >
-              <ChevronDown aria-hidden="true" className="size-4" />
+              <ChevronDown
+                aria-hidden="true"
+                className={cn("size-4 transition-transform duration-(--motion-base) ease-(--ease-standard)", open && !disabled && "rotate-180")}
+              />
             </button>
           )}
         </div>
@@ -183,7 +193,7 @@ export function Autocomplete({
                       onClick={() => !o.disabled && pick(o)}
                       onMouseEnter={() => !o.disabled && setActive(enabled.indexOf(o))}
                       className={cn(
-                        "flex min-h-(--h-sm) cursor-default items-center gap-2 rounded-sm px-3 py-1 text-sm",
+                        "flex min-h-(--h-sm) cursor-default items-center gap-2 rounded-sm px-3 py-1 text-sm transition-colors duration-(--motion-fast) ease-(--ease-standard)",
                         isActive && "bg-accent",
                         o.disabled && "text-disabled",
                       )}
@@ -192,7 +202,7 @@ export function Autocomplete({
                         <span className="truncate">{o.label}</span>
                         {o.description && <span className="truncate text-xs text-muted-foreground">{o.description}</span>}
                       </span>
-                      {o.value === value && <Check aria-hidden="true" className="size-4 shrink-0" />}
+                      {o.value === value && <Check aria-hidden="true" className="size-4 shrink-0 animate-fade-in" />}
                     </div>
                   )
                 })}

@@ -1204,8 +1204,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The chevron turns while the list is open; the highlighted option changes colour instead of jumping."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -2062,8 +2067,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The highlighted item changes colour instead of jumping."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -2107,8 +2117,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The selected item changes colour instead of jumping."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -2607,8 +2622,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The chevron turns while the list is open; the clear button fades in and out with the query; the highlight moves with a colour change; the selected check fades in."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
