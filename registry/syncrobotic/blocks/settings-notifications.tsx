@@ -68,12 +68,13 @@ export function SettingsNotifications() {
                 <TableRow key={e.key}>
                   <TableCell className="py-2 whitespace-normal">
                     <span className="flex flex-col">
-                      <span className="font-medium">
-                        {e.label}
-                        {/* On a phone the lock is beside the event, not the box, so it never reaches the card's edge. */}
-                        {e.locked && <Lock aria-hidden="true" className="ml-2 inline size-4 align-text-bottom text-muted-foreground sm:hidden" />}
+                      <span className="font-medium">{e.label}</span>
+                      {/* On a phone the lock leads the line that explains it, not the box, so it never reaches the card's edge
+                          and never sits alone under a wrapped name. */}
+                      <span className="flex items-start gap-2 text-xs text-muted-foreground">
+                        {e.locked && <Lock aria-hidden="true" className="size-4 shrink-0 sm:hidden" />}
+                        {e.hint}
                       </span>
-                      <span className="text-xs text-muted-foreground">{e.hint}</span>
                     </span>
                   </TableCell>
                   {channels.map((c) => {
