@@ -1,5 +1,7 @@
+import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Save, Search } from "lucide-react"
+import { useHotkeys } from "@/registry/syncrobotic/hooks/use-hotkeys"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { InputGroup, InputGroupAddon } from "@/registry/syncrobotic/ui/input-group"
@@ -129,3 +131,39 @@ export const KbdShortcutList: S = {
     </dl>
   ),
 }
+
+/** A key going down: it sinks and its edge thickens to the text colour, so it reads without colour. */
+export const KbdPressed: S = {
+  render: () => (
+    <div className="flex items-center gap-2">
+      <Kbd>1</Kbd>
+      <Kbd pressed>2</Kbd>
+      <Kbd>3</Kbd>
+    </div>
+  ),
+}
+
+const liveAnswers = { "1": "Yes", "2": "No", "3": "Skip" } as const
+
+function LiveKeys() {
+  const [last, setLast] = React.useState<string | null>(null)
+  const { pressed } = useHotkeys({ "1": () => setLast("Yes"), "2": () => setLast("No"), "3": () => setLast("Skip") })
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex flex-wrap items-center gap-4 text-sm">
+        {Object.entries(liveAnswers).map(([k, label]) => (
+          <span key={k} className="flex items-center gap-2">
+            <Kbd pressed={pressed === k}>{k}</Kbd>
+            {label}
+          </span>
+        ))}
+      </div>
+      <p className="text-sm text-muted-foreground" aria-live="polite">
+        {last ? `You pressed ${last}.` : "Press 1, 2 or 3."}
+      </p>
+    </div>
+  )
+}
+
+/** With useHotkeys: press 1, 2 or 3 and its key goes down for as long as it is held, at least 150 ms. */
+export const KbdPressedLive: S = { render: () => <LiveKeys /> }

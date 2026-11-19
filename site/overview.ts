@@ -275,6 +275,20 @@ export const overviews: Record<string, Overview> = {
       "IconTileDot needs a label; it is announced as an image.",
     ],
   },
+  "text-diff": {
+    what: "Where two texts differ, word by word: insertions a grey block with an underline, removals struck through, with a +3 words, −1 word summary.",
+    use: [
+      "A base model's caption or answer against a fine-tuned one.",
+      "A label, prompt or description before and after an edit.",
+      "Reviewing a proposed change to a text before accepting it.",
+    ],
+    instead: ["A change of one value (a number, a setting): before → after in a timeline or audit row.", "Code: a code diff viewer with lines and syntax."],
+    notes: [
+      "Never colour the changes green and red: a removal is not an error. The shape (block and underline, strike) carries the meaning.",
+      "Screen readers hear added and removed around each change; pass `labels` to translate them and the summary.",
+      "diffWords and diffStats are exported for counts elsewhere (a table of eval results).",
+    ],
+  },
   kbd: {
     what: "A key cap for shortcuts and keyboard instructions, alone or grouped into a chord.",
     use: ["Shortcut hints in menus, tooltips and search fields.", "A keyboard reference list.", "Instructions like Hold Space to stop all."],
@@ -282,6 +296,7 @@ export const overviews: Record<string, Overview> = {
     notes: [
       "Icon-only keys (arrows) need sr-only text inside; a <kbd> cannot take an aria-label.",
       "Inside a tooltip the key takes the tooltip's colours automatically.",
+      "pressed (from useHotkeys' `pressed`) makes the key sink and its edge darken for a moment; it is a visual echo, so the result of the key still has to be said on screen.",
     ],
   },
   "button-group": {
@@ -670,6 +685,16 @@ export const overviews: Record<string, Overview> = {
     what: "A value or a function call that waits until changes pause: useDebouncedValue and useDebouncedCallback.",
     use: ["A search sent to a server when the typing stops (autocomplete's `debounce` uses it).", "Autosave after edits pause."],
     instead: ["Something the person must see at once: update it directly, never debounced."],
+  },
+  "use-hotkeys": {
+    what: "Keyboard shortcuts as a map of keys to handlers ({ \"1\": yes, \"mod+z\": undo, \"?\": help }), quiet while someone types, with the key being pressed for Kbd.",
+    use: ["A review or labelling queue answered by keyboard.", "A tool's global shortcuts, like mod+k for search."],
+    instead: ["Keys inside one widget (arrows in a list): the widget's own onKeyDown, or the Radix component that has them."],
+    notes: [
+      "mod is ⌘ on Mac and Ctrl elsewhere. Symbols like ? match whatever Shift it took; letters need the exact modifiers, so mod+z never fires on mod+shift+z.",
+      "Held keys do not repeat unless a binding sets repeat: holding 1 answers once.",
+      "Returns `pressed`, the binding whose key is down (kept at least 150 ms), for <Kbd pressed>.",
+    ],
   },
   "use-slide-release": {
     what: "A hook with the drag, threshold and spring-back logic behind slide to release.",

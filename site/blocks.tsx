@@ -11,6 +11,7 @@ import { UsersRoles } from "@/registry/syncrobotic/blocks/users-roles"
 import { DataCatalog } from "@/registry/syncrobotic/blocks/data-catalog"
 import { DatasetDetail } from "@/registry/syncrobotic/blocks/dataset-detail"
 import { GovernanceTodo } from "@/registry/syncrobotic/blocks/governance-todo"
+import { ReviewQueue } from "@/registry/syncrobotic/blocks/review-queue"
 import { ConsoleOverview } from "@/registry/syncrobotic/blocks/console-overview"
 import { EventLog } from "@/registry/syncrobotic/blocks/event-log"
 import { ListDetail } from "@/registry/syncrobotic/blocks/list-detail"
@@ -303,6 +304,8 @@ const meta: Record<string, Meta> = {
   "data-catalog": { viewport: "desktop", height: 760, render: () => <DataCatalog /> },
   "dataset-detail": { viewport: "desktop", height: 820, render: () => <DatasetDetail /> },
   "governance-todo": { viewport: "desktop", height: 600, render: () => <GovernanceTodo /> },
+  // Keyboard review: a focused screen of its own, without the shell, so nothing competes with the item.
+  "review-queue": { viewport: "desktop", thumbWidth: 960, height: 820, render: () => <ReviewQueue /> },
   "settings-page": { viewport: "desktop", height: 820, render: () => <SettingsPage /> },
   "record-form": { viewport: "desktop", height: 820, render: () => <RecordForm /> },
   "users-roles": { viewport: "desktop", height: 620, render: () => <UsersRoles /> },

@@ -1,6 +1,6 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
-import { Battery, Bot, CircleAlert, Info, Lock, MapPinOff, RotateCw, SearchX, TriangleAlert, Wifi, WifiOff } from "lucide-react"
+import { Battery, Bot, CircleAlert, CircleCheck, CircleDashed, Info, Lock, MapPinOff, RotateCw, SearchX, TriangleAlert, Wifi, WifiOff } from "lucide-react"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { Alert, AlertDescription, AlertTitle } from "@/registry/syncrobotic/ui/alert"
@@ -16,6 +16,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { CountBadge } from "@/registry/syncrobotic/ui/badge"
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
+import { TextDiff } from "@/registry/syncrobotic/ui/text-diff"
 
 const meta: Meta = { title: "Display" }
 export default meta
@@ -471,6 +472,76 @@ export const BadgeWithIcon: S = {
         <CircleAlert aria-hidden="true" /> 2 faults
       </Badge>
     </div>
+  ),
+}
+
+/**
+ * Test and audit results: a pass is calm grey with a check, a failure is a danger outline with danger text, and too few
+ * samples to judge is a grey outline with a dashed circle. Each has its own icon and edge, so none relies on colour.
+ */
+export const BadgeTestResults: S = {
+  render: () => (
+    <div className="flex flex-wrap gap-2">
+      <Badge>
+        <CircleCheck aria-hidden="true" /> Passed
+      </Badge>
+      <Badge tone="outline" className="text-danger ring-danger">
+        <CircleAlert aria-hidden="true" /> Failed
+      </Badge>
+      <Badge tone="outline" className="text-muted-foreground">
+        <CircleDashed aria-hidden="true" /> Not enough samples
+      </Badge>
+    </div>
+  ),
+}
+
+/** An evaluation of a fine-tuned model, one row per check. The score says why; the badge says what it means. */
+export const BadgeTestResultsInTable: S = {
+  render: () => (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Check</TableHead>
+          <TableHead>Result</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {(
+          [
+            ["Caption accuracy", "0.91", 400, "pass"],
+            ["Counting objects", "0.62", 250, "fail"],
+            ["Night images", "0.88", 12, "few"],
+            ["Safety refusals", "0.99", 300, "pass"],
+          ] as const
+        ).map(([check, score, n, result]) => (
+          <TableRow key={check}>
+            <TableCell>
+              <span className="flex flex-col">
+                <span className="font-medium">{check}</span>
+                <span className="text-xs text-muted-foreground tabular-nums">
+                  {score} · n = {n}
+                </span>
+              </span>
+            </TableCell>
+            <TableCell>
+              {result === "pass" ? (
+                <Badge>
+                  <CircleCheck aria-hidden="true" /> Passed
+                </Badge>
+              ) : result === "fail" ? (
+                <Badge tone="outline" className="text-danger ring-danger">
+                  <CircleAlert aria-hidden="true" /> Failed
+                </Badge>
+              ) : (
+                <Badge tone="outline" className="text-muted-foreground">
+                  <CircleDashed aria-hidden="true" /> Not enough samples
+                </Badge>
+              )}
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   ),
 }
 
@@ -939,4 +1010,44 @@ export const AvatarImageFallback: S = {
       </span>
     </div>
   ),
+}
+
+/** A base model's caption against the fine-tuned one: inserted words are a grey block with an underline, removed ones struck through. */
+export const TextDiffCaption: S = {
+  render: () => (
+    <TextDiff
+      before="A forklift carries two pallets across the warehouse floor."
+      after="A yellow forklift carries three pallets past the loading dock."
+    />
+  ),
+}
+
+/** The same pair side by side: the base model's text with its removals on the left, the fine-tuned text with its insertions on the right. */
+export const TextDiffSideBySide: S = {
+  render: () => (
+    <TextDiff
+      mode="side-by-side"
+      beforeLabel="Base model"
+      afterLabel="Fine-tuned"
+      before="A forklift carries two pallets across the warehouse floor."
+      after="A yellow forklift carries three pallets past the loading dock."
+    />
+  ),
+}
+
+export const TextDiffLongParagraph: S = {
+  render: () => (
+    <TextDiff
+      before="The image shows an indoor warehouse aisle with tall metal shelves on both sides. A worker in a dark jacket walks towards the camera while a small robot waits near the left shelf. Boxes are stacked on the lower shelves and the floor is clear of obstacles. The lighting is bright and even."
+      after="The image shows an indoor warehouse aisle with tall metal shelves on both sides. A worker in a high-visibility vest walks away from the camera while a delivery robot waits near the left shelf. Boxes are stacked on the lower shelves and one box lies on the floor in the robot's path. The lighting is bright and even."
+    />
+  ),
+}
+
+export const TextDiffNoChange: S = {
+  render: () => <TextDiff before="Two people stand next to a charging dock." after="Two people stand next to a charging dock." />,
+}
+
+export const TextDiffAllDifferent: S = {
+  render: () => <TextDiff before="A cat sleeps on a sofa." after="Empty parking lot at night, three cars." />,
 }
