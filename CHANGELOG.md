@@ -2,7 +2,9 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.18.0 · 2026-11-19
+
+Four pieces the kit was missing, found by checking what products build by hand.
 
 ### Added
 - **`annotated-image`** (beta): boxes, points, polygons and poses over a picture, in its own pixel space with non-scaling strokes. Predicted solid, ground truth dashed, the previous version dotted and faded, each on a halo; selected 3 px with handles; class words on the picture (all, selected or none); one image with a spoken summary, or, with `onSelectedChange`, a group of buttons (one Tab stop, arrows, Enter, Esc); raster overlays; loading and failed states; and `AnnotationLegend` for the kinds present.
