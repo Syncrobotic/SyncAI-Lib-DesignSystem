@@ -1,4 +1,4 @@
-// @syncrobotic/area-chart-cumulative v0.9.0 · update: npx shadcn add @syncrobotic/area-chart-cumulative --overwrite
+// @syncrobotic/area-chart-cumulative v0.15.0 · update: npx shadcn add @syncrobotic/area-chart-cumulative --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,7 +6,7 @@ import { Area, AreaChart, CartesianGrid, Line, XAxis, YAxis } from "recharts"
 import { Card } from "@/registry/syncrobotic/ui/card"
 import { ChartContainer, ChartLegend, ChartTooltip, chartAxis, chartMotion, type ChartConfig } from "@/registry/syncrobotic/ui/chart"
 
-const config = { done: { label: "Patrolled", color: 1, unit: "km" }, plan: { label: "Plan", color: 2, unit: "km" } } satisfies ChartConfig
+const config = { done: { label: "Patrolled", color: 1, unit: "km" }, plan: { label: "Plan", color: 5, unit: "km" } } satisfies ChartConfig
 // Sample data: kilometres patrolled so far this month against the plan's straight line.
 const data = Array.from({ length: 17 }, (_, i) => ({
   d: `${i + 1}`,

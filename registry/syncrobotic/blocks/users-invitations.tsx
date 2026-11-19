@@ -1,4 +1,4 @@
-// @syncrobotic/users-invitations v0.13.0 · update: npx shadcn add @syncrobotic/users-invitations --overwrite
+// @syncrobotic/users-invitations v0.15.0 · update: npx shadcn add @syncrobotic/users-invitations --overwrite
 "use client"
 
 import * as React from "react"
@@ -23,6 +23,16 @@ const roleHint: Record<string, string> = {
   Viewer: "Sees robots, maps and logs; changes nothing.",
   Operator: "Runs missions, acknowledges alarms, stops and releases robots.",
   Supervisor: "Everything an Operator does, plus schedules and routes.",
+}
+
+function Expiry({ invite }: { invite: Invite }) {
+  return invite.expired ? (
+    <span className="flex items-center gap-2 text-warning">
+      <StatusGlyph status="warning" /> Expired {invite.expires}
+    </span>
+  ) : (
+    <span className="text-muted-foreground">{invite.expires}</span>
+  )
 }
 
 /**
@@ -95,9 +105,9 @@ export function UsersInvitations() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Email</TableHead>
-                  <TableHead>Role</TableHead>
-                  <TableHead>Invited by</TableHead>
-                  <TableHead>Expires</TableHead>
+                  <TableHead className="hidden sm:table-cell">Role</TableHead>
+                  <TableHead className="hidden md:table-cell">Invited by</TableHead>
+                  <TableHead className="hidden sm:table-cell">Expires</TableHead>
                   <TableHead>
                     <span className="sr-only">Actions</span>
                   </TableHead>
@@ -106,27 +116,30 @@ export function UsersInvitations() {
               <TableBody>
                 {invites.map((i) => (
                   <TableRow key={i.email}>
-                    <TableCell className="font-medium">{i.email}</TableCell>
-                    <TableCell>{i.role}</TableCell>
-                    <TableCell className="text-muted-foreground">
+                    <TableCell className="py-2">
+                      <span className="font-medium">{i.email}</span>
+                      {/* On a phone the role and expiry sit under the email; they are columns from wider screens. */}
+                      <span className="flex flex-col text-xs sm:hidden">
+                        <span className="text-muted-foreground">{i.role}</span>
+                        <Expiry invite={i} />
+                      </span>
+                    </TableCell>
+                    <TableCell className="hidden sm:table-cell">{i.role}</TableCell>
+                    <TableCell className="hidden text-muted-foreground md:table-cell">
                       {i.by}, {i.sent}
                     </TableCell>
-                    <TableCell>
-                      {i.expired ? (
-                        <span className="flex items-center gap-2 text-warning">
-                          <StatusGlyph status="warning" /> Expired {i.expires}
-                        </span>
-                      ) : (
-                        <span className="text-muted-foreground">{i.expires}</span>
-                      )}
+                    <TableCell className="hidden sm:table-cell">
+                      <Expiry invite={i} />
                     </TableCell>
-                    <TableCell className="text-right whitespace-nowrap">
-                      <Button size="sm" variant={i.expired ? "secondary" : "ghost"} onClick={() => resend(i)} aria-label={`Send again to ${i.email}`}>
-                        Send again
-                      </Button>
-                      <Button size="sm" variant="ghost" onClick={() => revoke(i)} aria-label={`Revoke invitation for ${i.email}`}>
-                        Revoke
-                      </Button>
+                    <TableCell className="py-2 text-right whitespace-nowrap">
+                      <span className="flex flex-col items-end sm:flex-row sm:justify-end">
+                        <Button size="sm" variant={i.expired ? "secondary" : "ghost"} onClick={() => resend(i)} aria-label={`Send again to ${i.email}`}>
+                          Send again
+                        </Button>
+                        <Button size="sm" variant="ghost" onClick={() => revoke(i)} aria-label={`Revoke invitation for ${i.email}`}>
+                          Revoke
+                        </Button>
+                      </span>
                     </TableCell>
                   </TableRow>
                 ))}

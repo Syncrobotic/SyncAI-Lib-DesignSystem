@@ -36,3 +36,12 @@ describe("high contrast", () => {
     })
   }
 })
+
+describe("disabled text", () => {
+  for (const mode of ["light", "dark", "light-hc", "dark-hc"] as const) {
+    it(`${mode}: readable (3:1 on the page and cards) and lighter than secondary text`, () => {
+      for (const bg of ["background", "card"]) expect(contrast("disabled", bg, mode), `disabled on ${bg}`).toBeGreaterThanOrEqual(3)
+      expect(contrast("disabled", "background", mode)!).toBeLessThan(contrast("muted-foreground", "background", mode)!)
+    })
+  }
+})

@@ -1,10 +1,10 @@
-// @syncrobotic/number-field v0.10.0 · update: npx shadcn add @syncrobotic/number-field --overwrite
+// @syncrobotic/number-field v0.15.0 · update: npx shadcn add @syncrobotic/number-field --overwrite
 "use client"
 
 import * as React from "react"
 import { Minus, Plus } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { InputGroup, InputGroupAddon } from "@/registry/syncrobotic/ui/input-group"
+import { InputGroup } from "@/registry/syncrobotic/ui/input-group"
 
 type NumberFieldProps = Omit<React.ComponentProps<"input">, "value" | "defaultValue" | "onChange" | "type" | "min" | "max" | "step"> & {
   value?: number | null
@@ -15,10 +15,13 @@ type NumberFieldProps = Omit<React.ComponentProps<"input">, "value" | "defaultVa
   /** Arrow keys and the buttons move by this much; Shift or PageUp/PageDown by `largeStep`. */
   step?: number
   largeStep?: number
-  /** Shown inside the edge after the value, and read with it: "2.0 m/s". */
+  /** Written right after the value and read with it: "2.0 m/s". */
   unit?: string
   labels?: { decrease?: string; increase?: string }
 }
+
+// Angles sit on the number ("-2.5°"); every other unit is a word or symbol one space away ("20 %", "1.2 m/s").
+const tight = (unit?: string) => unit === "°" || unit === "′" || unit === "″"
 
 const decimalsOf = (n: number) => (String(n).split(".")[1] ?? "").length
 const clamp = (n: number, min = -Infinity, max = Infinity) => Math.min(max, Math.max(min, n))
@@ -27,6 +30,7 @@ const clamp = (n: number, min = -Infinity, max = Infinity) => Math.min(max, Math
  * A number with a range and a unit: speed limits, battery thresholds, intervals.
  * Type freely; the value is kept in range when you leave the field, never blocked while you type.
  * 44 px buttons for touch; ↑↓ step, Shift+↑↓ and PageUp/PageDown step by largeStep, Home/End go to the limits.
+ * The value and its unit are one reading ("20 %"), centred between − and +, however wide the field.
  */
 export function NumberField({
   value: controlled,
@@ -77,54 +81,72 @@ export function NumberField({
       >
         <Minus aria-hidden="true" />
       </button>
-      <input
-        {...props}
-        data-slot="input"
-        type="text"
-        inputMode={decimals ? "decimal" : "numeric"}
-        role="spinbutton"
-        autoComplete="off"
-        disabled={disabled}
-        aria-valuenow={value ?? undefined}
-        aria-valuemin={min}
-        aria-valuemax={max}
-        aria-valuetext={value === null ? undefined : `${format(value)}${unit ? ` ${unit}` : ""}`}
-        value={draft}
-        onChange={(e) => {
-          typing.current = true
-          setDraft(e.target.value)
-        }}
-        onBlur={(e) => {
-          typing.current = false
-          const t = draft.trim().replace(",", ".")
-          commit(t === "" ? null : Number.isFinite(Number(t)) ? Number(t) : value)
-          onBlur?.(e)
-        }}
-        onKeyDown={(e) => {
-          onKeyDown?.(e)
-          if (e.defaultPrevented) return
-          const keys: Record<string, () => void> = {
-            ArrowUp: () => nudge(e.shiftKey ? largeStep : step),
-            ArrowDown: () => nudge(-(e.shiftKey ? largeStep : step)),
-            PageUp: () => nudge(largeStep),
-            PageDown: () => nudge(-largeStep),
-            Home: () => min !== undefined && commit(min),
-            End: () => max !== undefined && commit(max),
-            Enter: () => {
-              typing.current = false
-              const t = draft.trim().replace(",", ".")
-              commit(t === "" ? null : Number.isFinite(Number(t)) ? Number(t) : value)
-            },
-          }
-          const run = keys[e.key]
-          if (!run) return
+      {/* The reading: the value as wide as its digits, the unit right after it, the pair centred. A press anywhere in it
+          puts the caret in the value. */}
+      <div
+        className={cn("flex h-full min-w-16 flex-1 cursor-text items-center justify-center", !tight(unit) && "gap-1")}
+        onMouseDown={(e) => {
+          const input = e.currentTarget.querySelector("input")
+          if (!input || e.target === input || disabled) return
           e.preventDefault()
-          typing.current = false
-          run()
+          input.focus()
         }}
-        className="h-full w-full min-w-16 bg-transparent text-center text-base tabular-nums outline-none focus-visible:outline-none"
-      />
-      {unit && <InputGroupAddon className="pl-0">{unit}</InputGroupAddon>}
+      >
+        <input
+          {...props}
+          data-slot="input"
+          type="text"
+          inputMode={decimals ? "decimal" : "numeric"}
+          role="spinbutton"
+          autoComplete="off"
+          disabled={disabled}
+          aria-valuenow={value ?? undefined}
+          aria-valuemin={min}
+          aria-valuemax={max}
+          aria-valuetext={value === null ? undefined : `${format(value)}${unit ? `${tight(unit) ? "" : " "}${unit}` : ""}`}
+          value={draft}
+          onChange={(e) => {
+            typing.current = true
+            setDraft(e.target.value)
+          }}
+          onBlur={(e) => {
+            typing.current = false
+            const t = draft.trim().replace(",", ".")
+            commit(t === "" ? null : Number.isFinite(Number(t)) ? Number(t) : value)
+            onBlur?.(e)
+          }}
+          onKeyDown={(e) => {
+            onKeyDown?.(e)
+            if (e.defaultPrevented) return
+            const keys: Record<string, () => void> = {
+              ArrowUp: () => nudge(e.shiftKey ? largeStep : step),
+              ArrowDown: () => nudge(-(e.shiftKey ? largeStep : step)),
+              PageUp: () => nudge(largeStep),
+              PageDown: () => nudge(-largeStep),
+              Home: () => min !== undefined && commit(min),
+              End: () => max !== undefined && commit(max),
+              Enter: () => {
+                typing.current = false
+                const t = draft.trim().replace(",", ".")
+                commit(t === "" ? null : Number.isFinite(Number(t)) ? Number(t) : value)
+              },
+            }
+            const run = keys[e.key]
+            if (!run) return
+            e.preventDefault()
+            typing.current = false
+            run()
+          }}
+          // Digits are tabular, so one ch per character fits the value exactly; 2 px leave room for the caret.
+          style={{ width: `calc(${Math.max(draft.length, 1)}ch + 2px)` }}
+          className="h-full max-w-full min-w-0 bg-transparent text-center text-base tabular-nums outline-none focus-visible:outline-none"
+        />
+        {unit && (
+          <span aria-hidden="true" className="shrink-0 text-sm text-muted-foreground">
+            {unit}
+          </span>
+        )}
+      </div>
       <button
         type="button"
         tabIndex={-1}

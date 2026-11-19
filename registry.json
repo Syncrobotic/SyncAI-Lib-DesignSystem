@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.14.1",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "A search field in an input group with a button in it no longer shows the browser's clear cross as well: one cross, not two. `--disabled` is 3:1 on the page and cards (#84848c light, #6e6e76 dark), still lighter than secondary text. Fieldsets can shrink (min-width 0), so fields inside never push past a phone's edge."
+          },
           {
             "version": "0.14.1",
             "date": "2026-11-19",
@@ -211,6 +216,30 @@
             "version": "0.8.0",
             "date": "2026-11-17",
             "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "use-debounce",
+      "type": "registry:hook",
+      "title": "useDebounce",
+      "description": "A value, or a function call, that waits until changes pause: a search sent when the typing stops, not on every key.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/syncrobotic/hooks/use-debounce.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "meta": {
+        "version": "0.15.0",
+        "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "First release: useDebouncedValue and useDebouncedCallback (with cancel and flush)."
           }
         ]
       }
@@ -470,8 +499,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "Alarm and notice text wraps to two lines instead of being cut, and the buttons move to their own row when space is short."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -528,8 +562,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The lead icon sits on the title's line, not the middle of title and meta."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -677,8 +716,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.1",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The selected thumb travels to the segment you pick (Move pattern, --motion-base); the label colour changes with it."
+          },
           {
             "version": "0.13.1",
             "date": "2026-11-19",
@@ -829,8 +873,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "InputGroupUnit: a unit written right after the value (\"120 m\"), the value as wide as its text, instead of a unit at the far edge. A press on the field's empty space puts the caret in the text box."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -868,8 +917,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The value and its unit are one reading, centred between \u2212 and + (\"20 %\"), instead of the value in the middle and the unit by the + button; the value is as wide as its digits. Angles sit on the number (\"-2.5\u00b0\"). A press anywhere in the middle puts the caret in the value."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -1020,8 +1074,13 @@
         }
       ],
       "meta": {
-        "version": "0.12.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The 20 px box answers a 44 px touch."
+          },
           {
             "version": "0.12.0",
             "date": "2026-11-18",
@@ -1068,8 +1127,13 @@
         }
       ],
       "meta": {
-        "version": "0.12.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The 20 px radio answers a 44 px touch."
+          },
           {
             "version": "0.12.0",
             "date": "2026-11-18",
@@ -1159,8 +1223,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "FieldSet takes its column's width, so long legends wrap instead of being cut."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -1194,8 +1263,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The chevron turns while the list is open; the highlighted option changes colour instead of jumping."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -1330,12 +1404,13 @@
       "name": "avatar",
       "type": "registry:ui",
       "title": "Avatar",
-      "description": "Image with initials fallback.",
+      "description": "A person (round) or a robot, site or team (square), by picture, initials or icon, in four sizes, with a status or count badge and overlapping groups that fold into +N.",
       "dependencies": [
         "radix-ui"
       ],
       "registryDependencies": [
-        "@syncrobotic/cn"
+        "@syncrobotic/cn",
+        "@syncrobotic/status-glyph"
       ],
       "files": [
         {
@@ -1344,8 +1419,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "`size` (sm 24, md 32, lg 40, xl 48) and `shape` (circle for people, square for robots, sites and teams); AvatarBadge for a status (StatusGlyph shapes) or a count; AvatarGroup with `max` folding the rest into +N and a `label` for screen readers; AvatarGroupCount. The default looks as before."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -1525,8 +1605,13 @@
         }
       ],
       "meta": {
-        "version": "0.11.1",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The priority icon sits on the title's first line instead of the middle of the block."
+          },
           {
             "version": "0.11.1",
             "date": "2026-11-18",
@@ -1649,8 +1734,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The sort arrow cross-fades when the order changes; scroll containers show keyboard focus."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -1714,8 +1804,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The underline travels to the tab you pick (Move pattern, --motion-base)."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -1759,8 +1854,13 @@
         }
       ],
       "meta": {
-        "version": "0.12.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The range never wraps; in a container under 36rem the page numbers fold to previous, current and next."
+          },
           {
             "version": "0.12.0",
             "date": "2026-11-18",
@@ -2052,8 +2152,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The highlighted item changes colour instead of jumping."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -2097,8 +2202,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The selected item changes colour instead of jumping. The input row shows keyboard focus; new `CommandCheck` marks picked rows with a check that fades in and out."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -2286,8 +2396,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The viewport shows keyboard focus again."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -2378,8 +2493,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "Chips show keyboard focus again, and chips revealed by \"N more\" appear, and fade out when folded."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -2429,8 +2549,13 @@
         }
       ],
       "meta": {
-        "version": "0.12.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The docs say to give newly loaded rows `animate-appear`."
+          },
           {
             "version": "0.12.0",
             "date": "2026-11-18",
@@ -2457,8 +2582,13 @@
         }
       ],
       "meta": {
-        "version": "0.12.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "A revealed preview fades in."
+          },
           {
             "version": "0.12.0",
             "date": "2026-11-18",
@@ -2588,7 +2718,8 @@
         "@syncrobotic/cn",
         "@syncrobotic/field",
         "@syncrobotic/popover",
-        "@syncrobotic/spinner"
+        "@syncrobotic/spinner",
+        "@syncrobotic/use-debounce"
       ],
       "files": [
         {
@@ -2597,8 +2728,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The chevron turns while the list is open; the clear button fades in and out with the query; the highlight moves with a colour change; the selected check fades in. `debounce` (ms) sends `onQueryChange` when the typing pauses, through useDebouncedCallback; clearing never waits."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -2631,8 +2767,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "A full code no longer changes when you keep typing: input-otp kept the last character selected, so each key swapped the last box. Backspace, select-all and paste still edit. On a phone a long code's boxes give a few px each instead of overflowing."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -2666,8 +2807,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The country list takes its own width from the trigger's left edge instead of the trigger's 128 px, so names are no longer cut; a long name ends in an ellipsis and the code keeps its column."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -2700,8 +2846,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "Month and year dropdowns show keyboard focus and a down chevron inline with the label; week numbers use a narrow column so the month fits a phone."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -2738,8 +2889,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The Clear button fades in and out instead of popping, and is hidden while the field is disabled."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -2812,8 +2968,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The empty state stays in view on phones, totals become one readable row on phones, and the sort arrow swaps with a fade."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -3012,8 +3173,13 @@
         }
       ],
       "meta": {
-        "version": "0.12.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "Horizontal steps are equal width with labels centred under their dots and connectors from dot to dot; a narrow stepper keeps only the current step's label; step buttons show keyboard focus again."
+          },
           {
             "version": "0.12.0",
             "date": "2026-11-18",
@@ -3043,8 +3209,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The horizontal timeline shows keyboard focus again."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -3073,8 +3244,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "Links show keyboard focus again."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -3107,8 +3283,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "Triggers and links show keyboard focus again; the site-header example folds into a menu sheet on phones."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -3145,8 +3326,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "Scale buttons show keyboard focus, and long scales (0\u201310) fold into rows of six in a narrow container instead of overflowing."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -3175,8 +3361,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "Row buttons and the detail block show keyboard focus again."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -3294,8 +3485,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.1",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "On phones the battery meter stacks so the actions column fits; battery warns under 15 %."
+          },
           {
             "version": "0.13.1",
             "date": "2026-11-19",
@@ -3346,8 +3542,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "Battery warns under 15 %, never danger."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -3438,8 +3639,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "New `AppSearch.label` sets the short text in the search field (default \"Search\"); the placeholder stays for the palette."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -3578,8 +3784,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.1",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "Battery warns under 15 %, never danger."
+          },
           {
             "version": "0.13.1",
             "date": "2026-11-19",
@@ -3641,8 +3852,13 @@
         }
       ],
       "meta": {
-        "version": "0.14.1",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "On phones the level stacks under the time and the source under the message."
+          },
           {
             "version": "0.14.1",
             "date": "2026-11-19",
@@ -3696,8 +3912,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.1",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "Battery warns under 15 %, never danger."
+          },
           {
             "version": "0.13.1",
             "date": "2026-11-19",
@@ -3760,8 +3981,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "Shorter search placeholder, so it is not cut."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -3997,8 +4223,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The role picker stays on screen on phones, with long emails truncated."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -4115,8 +4346,13 @@
         }
       ],
       "meta": {
-        "version": "0.14.2",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "Design language: disabled text is `text-disabled` on text-only controls, 3:1 and lighter than secondary text; say why something is disabled."
+          },
           {
             "version": "0.14.2",
             "date": "2026-11-19",
@@ -4195,8 +4431,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "Every Y tick is drawn, the limit label moved off the curve, and time ticks are evenly spaced."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -4224,8 +4465,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "\"Last week\" uses chart slot 5 (grey), the slot for an earlier period."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -4253,8 +4499,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "\"Returns to dock\" no longer overlaps the curve, and time ticks are evenly spaced."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -4282,8 +4533,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "Time ticks are evenly spaced, so 18:00 is no longer dropped."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -4311,8 +4567,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The Plan line uses chart slot 5 (grey), the slot for a reference."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -4455,8 +4716,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "Low battery is warning, not danger."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -4512,8 +4778,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The robot count moves under the site on phones, so trend and events fit."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -4539,8 +4810,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The uptime figure follows the robot's name."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -4620,8 +4896,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.1",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "Warns under 15 % and never shows danger."
+          },
           {
             "version": "0.13.1",
             "date": "2026-11-19",
@@ -4650,8 +4931,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The breakdown is capped so values sit near their labels."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -4675,8 +4961,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The legend is capped so values sit near their labels."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -4727,8 +5018,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The table fits its card on phones."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -4758,8 +5054,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "Low battery is warning, never danger."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -4988,8 +5289,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "Channel columns fit a phone, and locked checkboxes stay on their column's centre line."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -5021,8 +5327,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "Revoke uses the destructive button style."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -5153,8 +5464,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.1",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The meters sit side by side, and battery warns under 15 %."
+          },
           {
             "version": "0.13.1",
             "date": "2026-11-19",
@@ -5201,8 +5517,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "Counts follow their option's words."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -5362,8 +5683,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "Bars show the name over the time, and short missions are labelled beside the bar, so no label is cut."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -5404,8 +5730,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "Role and expiry stack under the email on phones, with the actions stacked."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -5441,8 +5772,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "Person, target and change stack under the action on narrow screens; the search is full width on phones."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -5475,8 +5811,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "On phones state and age follow the incident id, and the owner shows as an avatar."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -5547,8 +5888,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "On phones the service and due date stack under the robot and the hours meter stacks, so nothing scrolls off."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -5622,8 +5968,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": " Robot state, progress and detail stack on phones, and the header actions go icon-only so the title fits."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -5659,8 +6010,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "Share and watch time show their unit in the field (\"10 %\", \"12 h\") instead of the column heading; the last row lines up with the readings above it. On phones the watch time stacks under the share and the robot count under the stage."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -5689,8 +6045,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "On phones the run state sits under the goal; trigger, steps and time hide below 768 px."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -5750,8 +6111,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "On phones, Now and After stack under each robot, so the approver sees both before deciding."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",

@@ -1,4 +1,4 @@
-// @syncrobotic/line-chart-compare v0.9.0 · update: npx shadcn add @syncrobotic/line-chart-compare --overwrite
+// @syncrobotic/line-chart-compare v0.15.0 · update: npx shadcn add @syncrobotic/line-chart-compare --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,7 +6,7 @@ import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
 import { Card } from "@/registry/syncrobotic/ui/card"
 import { ChartContainer, ChartLegend, ChartTooltip, chartAxis, chartMotion, type ChartConfig } from "@/registry/syncrobotic/ui/chart"
 
-const config = { now: { label: "This week", color: 1 }, before: { label: "Last week", color: 2 } } satisfies ChartConfig
+const config = { now: { label: "This week", color: 1 }, before: { label: "Last week", color: 5 } } satisfies ChartConfig
 // Sample data: missions completed per day.
 const data = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d, i) => ({
   d,

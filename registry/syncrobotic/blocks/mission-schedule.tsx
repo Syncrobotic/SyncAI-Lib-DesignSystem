@@ -1,4 +1,4 @@
-// @syncrobotic/mission-schedule v0.13.0 · update: npx shadcn add @syncrobotic/mission-schedule --overwrite
+// @syncrobotic/mission-schedule v0.15.0 · update: npx shadcn add @syncrobotic/mission-schedule --overwrite
 "use client"
 
 import * as React from "react"
@@ -105,7 +105,7 @@ export function MissionSchedule() {
         ))}
 
         <div className="overflow-x-auto rounded-md bg-card ring-1 ring-border">
-          <div className="min-w-2xl">
+          <div className="min-w-3xl">
             <div aria-hidden="true" className="grid grid-cols-[10rem_1fr] border-b border-border text-xs text-muted-foreground">
               <span />
               <div className="relative h-8">
@@ -128,21 +128,26 @@ export function MissionSchedule() {
                     {now !== undefined && <span aria-hidden="true" className="absolute inset-y-0 w-px bg-foreground" style={{ left: `${(now / HOURS) * 100}%` }} />}
                     {l.slots.length === 0 && <span className="absolute inset-y-0 left-2 flex items-center text-xs text-muted-foreground">No missions</span>}
                     <ul aria-label={`${l.robot} missions`}>
-                      {l.slots.map((s) => (
-                        <li
-                          key={s.start}
-                          className={cn("absolute inset-y-2 flex items-center overflow-hidden rounded-xs px-2 text-xs", slotStyle[s.state])}
-                          style={{ left: `${(s.start / HOURS) * 100}%`, width: `${((s.end - s.start) / HOURS) * 100}%` }}
-                        >
-                          <span className="truncate">
-                            <span className="font-medium">{s.name}</span>{" "}
-                            <span className="tabular-nums">
-                              {clock(s.start)}–{clock(s.end)}
+                      {l.slots.map((s) => {
+                        // Name over time, two lines, so a two-hour bar holds both at the narrowest width. A mission
+                        // shorter than that writes its label beside the bar instead of cutting it to a few letters.
+                        const short = s.end - s.start < 1.5
+                        return (
+                          <li
+                            key={s.start}
+                            className={cn("absolute inset-y-2 flex flex-col justify-center rounded-xs text-xs leading-4", !short && "px-2", slotStyle[s.state])}
+                            style={{ left: `${(s.start / HOURS) * 100}%`, width: `${((s.end - s.start) / HOURS) * 100}%` }}
+                          >
+                            <span className={cn("flex flex-col", short ? "absolute left-full ml-1 rounded-2xs bg-card px-1 whitespace-nowrap text-foreground" : "min-w-0")}>
+                              <span className="truncate font-medium">{s.name}</span>
+                              <span className="truncate tabular-nums">
+                                {clock(s.start)}–{clock(s.end)}
+                              </span>
+                              <span className="sr-only">, {stateWord[s.state]}</span>
                             </span>
-                            <span className="sr-only">, {stateWord[s.state]}</span>
-                          </span>
-                        </li>
-                      ))}
+                          </li>
+                        )
+                      })}
                     </ul>
                   </div>
                 </li>

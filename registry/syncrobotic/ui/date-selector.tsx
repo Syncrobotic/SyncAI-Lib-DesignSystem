@@ -1,4 +1,4 @@
-// @syncrobotic/date-selector v0.10.0 · update: npx shadcn add @syncrobotic/date-selector --overwrite
+// @syncrobotic/date-selector v0.15.0 · update: npx shadcn add @syncrobotic/date-selector --overwrite
 "use client"
 
 import * as React from "react"
@@ -58,7 +58,7 @@ export function DatePicker({
       label={value ? format(value, displayFormat) : placeholder}
       empty={!value}
       disabled={disabled}
-      onClear={clearable && value ? () => onValueChange?.(undefined) : undefined}
+      onClear={clearable ? () => onValueChange?.(undefined) : undefined}
       className={className}
       {...rest}
     >
@@ -95,7 +95,7 @@ export function DateRangePicker({
       label={text}
       empty={!value?.from}
       disabled={disabled}
-      onClear={clearable && value?.from ? () => onValueChange?.(undefined) : undefined}
+      onClear={clearable ? () => onValueChange?.(undefined) : undefined}
       className={className}
       {...rest}
     >
@@ -185,7 +185,15 @@ function Picker({
           type="button"
           aria-label="Clear"
           onClick={onClear}
-          className="press absolute top-1/2 right-1 flex size-(--h-sm) -translate-y-1/2 items-center justify-center rounded-xs text-muted-foreground hover:bg-accent hover:text-foreground"
+          // Always rendered, like Autocomplete's, so it fades in with a value and out when cleared instead of popping;
+          // hidden, it is out of the tab order and the accessibility tree.
+          aria-hidden={empty || disabled || undefined}
+          tabIndex={empty || disabled ? -1 : undefined}
+          className={cn(
+            "press absolute top-1/2 right-1 flex size-(--h-sm) -translate-y-1/2 items-center justify-center rounded-xs text-muted-foreground hover:bg-accent hover:text-foreground",
+            "transition-[opacity,visibility,background-color,color,scale] duration-(--motion-fast) ease-(--ease-standard)",
+            empty || disabled ? "invisible opacity-0" : "visible opacity-100",
+          )}
         >
           <X aria-hidden="true" className="size-4" />
         </button>

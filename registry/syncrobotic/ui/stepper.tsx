@@ -1,4 +1,4 @@
-// @syncrobotic/stepper v0.12.0 · update: npx shadcn add @syncrobotic/stepper --overwrite
+// @syncrobotic/stepper v0.15.0 · update: npx shadcn add @syncrobotic/stepper --overwrite
 "use client"
 
 import * as React from "react"
@@ -28,7 +28,12 @@ const useStepper = () => {
   if (!c) throw new Error("Stepper parts must be inside <Stepper>")
   return c
 }
-const StepCtx = React.createContext<{ step: number; state: StepState; last: boolean }>({ step: 1, state: "upcoming", last: false })
+const StepCtx = React.createContext<{ step: number; state: StepState; last: boolean; count: number }>({ step: 1, state: "upcoming", last: false, count: 1 })
+
+// Horizontal steps share the row equally. Under about 5rem a step, the labels would collide, so only the current step
+// keeps its label (the others stay for screen readers). The width is the stepper's own, not the screen's.
+const labelRoom: Record<number, string> = { 4: "@xs:not-sr-only", 5: "@md:not-sr-only", 6: "@lg:not-sr-only", 7: "@xl:not-sr-only" }
+const roomFor = (count: number) => (count <= 3 ? "" : (labelRoom[count] ?? "@2xl:not-sr-only"))
 
 export function Stepper({
   value,
@@ -56,14 +61,14 @@ export function Stepper({
       <ol
         data-slot="stepper"
         data-orientation={orientation}
-        className={cn("flex", orientation === "horizontal" ? "w-full items-start" : "flex-col", className)}
+        className={cn("flex", orientation === "horizontal" ? "@container w-full items-start" : "flex-col", className)}
         {...props}
       >
         {items.map((child, i) => {
           const step = i + 1
           const state: StepState = errors.includes(step) ? "error" : step < value ? "done" : step === value ? "current" : "upcoming"
           return (
-            <StepCtx.Provider key={child.key ?? i} value={{ step, state, last: i === items.length - 1 }}>
+            <StepCtx.Provider key={child.key ?? i} value={{ step, state, last: i === items.length - 1, count: items.length }}>
               {child}
             </StepCtx.Provider>
           )
@@ -90,13 +95,19 @@ export function StepperItem({
   disabled?: boolean
 }) {
   const { orientation, onValueChange, navigable, size, value } = useStepper()
-  const { step, state, last } = React.useContext(StepCtx)
+  const { step, state, last, count } = React.useContext(StepCtx)
   const canJump = !disabled && !!onValueChange && step !== value && (navigable === "all" || (navigable === "done" && step < value))
   const vertical = orientation === "vertical"
   const label = (
     <>
       <StepIndicator state={state} step={step} size={size} disabled={disabled} />
-      <span className={cn("flex min-w-0 flex-col", vertical && "pt-1")}>
+      <span
+        className={cn(
+          "flex min-w-0 flex-col",
+          // Horizontal: centred under the dot, as wide as the step's share of the row at most, wrapping instead of colliding.
+          vertical ? "pt-1" : cn("max-w-full items-center px-1 text-center break-words hyphens-auto", step !== value && roomFor(count) && cn("sr-only", roomFor(count))),
+        )}
+      >
         <span className={cn("text-sm", state === "upcoming" ? "text-muted-foreground" : "font-medium text-foreground", state === "error" && "text-danger")}>
           {title}
         </span>
@@ -122,10 +133,11 @@ export function StepperItem({
       // The step you are on stays the current step even when it has an error.
       aria-current={step === value ? "step" : undefined}
       aria-disabled={disabled || undefined}
-      className={cn("relative flex min-w-0 flex-col", !vertical && "flex-1 pr-2", className)}
+      className={cn("relative flex min-w-0 flex-col", !vertical && "flex-1 items-center", className)}
       {...props}
     >
-      {/* Connector to the next step: solid once this step is done. */}
+      {/* Connector to the next step: solid once this step is done. Horizontal: from this dot's centre to the next one's
+          (every step is the same width), kept clear of both dots. */}
       {!last && (
         <span
           aria-hidden="true"
@@ -137,28 +149,28 @@ export function StepperItem({
                 ? "top-8 bottom-1 left-3 w-px"
                 : "top-10 bottom-1 left-4 w-px"
               : size === "sm"
-                ? "top-3 right-2 left-8 h-px"
-                : "top-4 right-2 left-10 h-px",
+                ? "top-3 -right-1/2 left-1/2 mx-4 h-px"
+                : "top-4 -right-1/2 left-1/2 mx-6 h-px",
           )}
         />
       )}
-      <div className="flex">
+      <div className={cn("flex", !vertical && "w-full justify-center")}>
         {canJump ? (
           <button
             type="button"
             onClick={() => onValueChange?.(step)}
             className={cn(
               // At least a finger's height, whatever the size and orientation.
-              "flex min-h-(--h-md) min-w-0 rounded-sm text-left outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+              "flex min-h-(--h-md) min-w-0 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
               "press hover:opacity-80",
-              vertical ? "items-start gap-3" : "flex-col items-start gap-2",
+              vertical ? "items-start gap-3 text-left" : "max-w-full flex-col items-center gap-2",
             )}
           >
             {label}
             <span className="sr-only">, {status}</span>
           </button>
         ) : (
-          <div className={cn("flex min-w-0", vertical ? "items-start gap-3" : "flex-col items-start gap-2")}>
+          <div className={cn("flex min-w-0", vertical ? "items-start gap-3" : "max-w-full flex-col items-center gap-2")}>
             {label}
             <span className="sr-only">, {status}</span>
           </div>

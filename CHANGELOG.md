@@ -2,6 +2,57 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **`use-debounce`**: `useDebouncedValue` and `useDebouncedCallback` (with `cancel` and `flush`), for a search or an autosave that waits until changes pause. `autocomplete` takes `debounce` (ms): the text box updates on every key, `onQueryChange` fires when the typing pauses, and clearing never waits. The server-search example also drops answers that arrive after a newer query.
+- **`avatar`, richer** (after ReUI's set, in our rules): four sizes; `shape="square"` for robots, sites and teams beside round people; `AvatarBadge` with a status (the StatusGlyph shapes, so only warning and danger are coloured) or a count; `AvatarGroup` with `max` folding the rest into +N and a `label` that names everyone. The default avatar looks as before.
+
+### Changed
+- **A selection travels:** `segmented-control`'s thumb and `tabs`' underline move to the option you pick (the Move pattern, `--motion-base`) instead of jumping; the label's colour changes with the travel.
+- **`number-field` reads as one value:** the number and its unit sit together, centred between − and + ("20 %"), instead of the number in the middle and the unit pushed against the +, which drifted 140 px apart in a wide field. Angles sit on the number ("-2.5°"). `rollout-plan` writes its units in the fields, not the column headings.
+- **Lists and pickers move with their state:** `autocomplete` and `select` turn their chevron while open, like `accordion` and `navigation-menu`; the highlight in `autocomplete`, `select`, `dropdown-menu` and `command` changes colour (`--motion-fast`) instead of jumping; `autocomplete`'s clear button fades in and out with the query and its selected check fades in. Filtering as you type stays still, so the list does not move under every keystroke.
+- **`input-group` units follow the value:** `InputGroupUnit` writes the unit right after the value ("120 m") instead of at the far edge; the value is as wide as its text (`field-sizing: content`; browsers without it keep the unit at the edge). A press on the field's empty space puts the caret in the text box.
+
+### Fixed
+- **Keyboard focus was invisible** on chip-group, navigation-menu, scrollspy, stepper, trace, questionnaire, scroll-area, timeline, calendar's dropdowns and command's input: `outline-none` with `focus-visible:outline-2` draws nothing in Tailwind 4.3. Every one shows the 2 px ring again.
+- **Phones (412 px), from a page-by-page audit:**
+  - 15 block tables no longer scroll key columns off screen: secondary columns fold under the main cell. `agent-approval` shows Now and After before you approve.
+  - `data-grid`'s empty state and totals stay in view.
+  - `questionnaire`'s 0–10 scale wraps into rows of six.
+  - `pagination` keeps its range on one line and folds to previous / current / next in a narrow container.
+  - `island` wraps alarm and failure text to two lines instead of cutting it; safety text is never an ellipsis.
+  - `navigation-menu`'s site header folds into a menu sheet.
+  - `calendar`, `input-otp`, the time range example and `heatmap-zones` fit.
+  - Fieldsets can shrink (theme).
+- **`stepper`**: equal steps, labels centred under their dots, connectors from dot to dot. A narrow stepper keeps only the current step's label.
+- **Charts:**
+  - The earlier period and the plan are grey (slot 5), as the Data visualisation rules say.
+  - Limit and dock labels no longer sit on the curve.
+  - Ticks are even, so 70 and 18:00 are back.
+- **Battery never shows danger and warns under 15 %** in every block: one rule, the Alarms foundation's.
+- **Disabled text is readable**: `--disabled` is 3:1 on the page and cards, still lighter than secondary text. Every disabled example says why. The emergency stop row in Sortable priorities is fixed above the list with no handle.
+- **State changes that jumped now move:**
+  - Sort arrows cross-fade (`table`, `data-grid`).
+  - Chips revealed by "N more" appear and leave.
+  - `date-selector`'s Clear fades.
+  - `restricted-preview` fades in.
+  - `CommandCheck` marks picked rows.
+- **Alignment:**
+  - Alarm and list icons sit on the title's line.
+  - Values sit next to their labels in `radial-chart-*`, `status-tracker-uptime`, `sheet-robot-detail` and `sheet-filters`.
+  - `settings-notifications` checkboxes line up.
+- **Smaller fixes:**
+  - Checkbox and radio answer a 44 px touch.
+  - `settings-api-keys` Revoke is destructive.
+  - Search placeholders are no longer cut (`AppSearch.label`).
+  - Block previews opened on their own put "Back to the docs" above the block instead of over its stop button.
+- **Two clear crosses in a search field** (`input-group` with its own clear button): an input group with a button in it hides the browser's cross (`syncrobotic-theme`).
+- **`input-otp`: the last digit kept changing** once the code was full: the library keeps the last character selected, so every further key swapped it. A full code now ignores extra keys; Backspace, select-all and paste still edit.
+- **`phone-input`: the country list was cut off**, as narrow as the flag-and-code trigger (128 px). It now takes its own width (288 px) from the trigger's left edge; long names end in an ellipsis and the calling code keeps its column.
+- The disabled NumberField example showed 1.5 m/s as "2" (no `step`, so it rounded to whole numbers).
+
+
 ## 0.14.2 · 2026-11-19
 
 ### Added

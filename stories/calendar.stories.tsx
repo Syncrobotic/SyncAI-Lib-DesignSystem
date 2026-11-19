@@ -51,7 +51,7 @@ export const CalendarMultiple: S = {
 }
 
 export const CalendarWeekNumbers: S = {
-  render: () => <Calendar mode="single" defaultMonth={day} today={day} showWeekNumber className="rounded-md bg-card p-3 ring-1 ring-border" />,
+  render: () => <Calendar mode="single" defaultMonth={day} today={day} showWeekNumber className="rounded-md bg-card p-2 ring-1 ring-border" />,
 }
 
 export const CalendarMonthYearDropdowns: S = {

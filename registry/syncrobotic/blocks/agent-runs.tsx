@@ -1,4 +1,4 @@
-// @syncrobotic/agent-runs v0.9.0 · update: npx shadcn add @syncrobotic/agent-runs --overwrite
+// @syncrobotic/agent-runs v0.15.0 · update: npx shadcn add @syncrobotic/agent-runs --overwrite
 "use client"
 
 import * as React from "react"
@@ -74,6 +74,25 @@ const word: Record<Run["status"], string> = {
   skipped: "Skipped",
 }
 
+function RunState({ status }: { status: Run["status"] }) {
+  return (
+    <span
+      className={cn(
+        "flex items-center gap-2 whitespace-nowrap",
+        status === "approval" && "font-medium text-warning",
+        status === "error" && "font-medium text-danger",
+      )}
+    >
+      {status === "approval" ? (
+        <TraceStatusIcon status="warning" />
+      ) : (
+        <TraceStatusIcon status={status} className={status === "running" ? "text-info" : undefined} />
+      )}
+      {word[status]}
+    </span>
+  )
+}
+
 /**
  * What the AI agents did and are doing: each run's goal in words, what started it, and its state. A run waiting for a
  * person's approval comes first and is the only one with a button; running is blue, a failure says it failed.
@@ -97,10 +116,10 @@ export function AgentRuns() {
             <TableHeader>
               <TableRow>
                 <TableHead>Run</TableHead>
-                <TableHead>State</TableHead>
-                <TableHead>Started by</TableHead>
-                <TableHead className="text-right">Steps</TableHead>
-                <TableHead className="text-right">Time</TableHead>
+                <TableHead className="hidden sm:table-cell">State</TableHead>
+                <TableHead className="hidden md:table-cell">Started by</TableHead>
+                <TableHead className="hidden text-right md:table-cell">Steps</TableHead>
+                <TableHead className="hidden text-right md:table-cell">Time</TableHead>
                 <TableHead>
                   <span className="sr-only">Actions</span>
                 </TableHead>
@@ -109,35 +128,26 @@ export function AgentRuns() {
             <TableBody>
               {shown.map((r) => (
                 <TableRow key={r.id}>
-                  <TableCell>
+                  <TableCell className="py-2 whitespace-normal">
                     <a href={`#${r.id}`} className="flex flex-col hover:underline">
                       <span className="font-medium">{r.goal}</span>
                       <span className="text-xs text-muted-foreground">
                         {r.agent} · <span className="font-mono">{r.id}</span>
                       </span>
                     </a>
-                  </TableCell>
-                  <TableCell>
-                    <span
-                      className={cn(
-                        "flex items-center gap-2 whitespace-nowrap",
-                        r.status === "approval" && "font-medium text-warning",
-                        r.status === "error" && "font-medium text-danger",
-                      )}
-                    >
-                      {r.status === "approval" ? (
-                        <TraceStatusIcon status="warning" />
-                      ) : (
-                        <TraceStatusIcon status={r.status} className={r.status === "running" ? "text-info" : undefined} />
-                      )}
-                      {word[r.status]}
+                    {/* On a phone the state sits under the goal instead of in a column off the screen. */}
+                    <span className="mt-1 block sm:hidden">
+                      <RunState status={r.status} />
                     </span>
                   </TableCell>
-                  <TableCell className="text-muted-foreground">
+                  <TableCell className="hidden sm:table-cell">
+                    <RunState status={r.status} />
+                  </TableCell>
+                  <TableCell className="hidden text-muted-foreground md:table-cell">
                     {r.trigger}, {r.started}
                   </TableCell>
-                  <TableCell className="text-right tabular-nums">{r.steps}</TableCell>
-                  <TableCell className="text-right text-muted-foreground tabular-nums">{formatDuration(r.duration)}</TableCell>
+                  <TableCell className="hidden text-right tabular-nums md:table-cell">{r.steps}</TableCell>
+                  <TableCell className="hidden text-right text-muted-foreground tabular-nums md:table-cell">{formatDuration(r.duration)}</TableCell>
                   <TableCell className="text-right">
                     {r.status === "approval" && (
                       <Button size="sm" aria-label={`Review ${r.goal}`}>
