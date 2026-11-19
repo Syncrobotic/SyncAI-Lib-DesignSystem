@@ -24,13 +24,19 @@ export const blockTypes: BlockType[] = [
     title: "App shell",
     group: "Application",
     description: "The frame of a tool: navigation, top bar, search and the user, around whatever page you put in it.",
-    use: ["Internal tools and consoles with more than a handful of pages.", "A site or tool that only needs a top bar."],
+    use: [
+      "Internal tools and consoles with more than a handful of pages.",
+      "A site or tool that only needs a top bar.",
+      "A page that leads to one next step, such as a batch to review or a model to train: the action rail.",
+    ],
     instead: ["A single screen with no navigation: start from a Solutions block."],
     rules: [
       "One shell per product. Pages change inside it; the shell does not.",
       "The current page is marked in the navigation and named in the top bar.",
       "On phones the sidebar becomes a drawer; nothing is hidden for good. The drawer floats 8 px from the edges, the shell's gutter.",
       "A top bar over plain content starts on the content's edge and, on scroll, gathers into a floating panel as wide as the content column.",
+      "The action rail holds only the next step: one large primary button and a few small actions, never filters or facts. On phones it is a bar fixed above the safe area, and the page is padded so it never covers content.",
+      "← and Esc go back up a level wherever there is a back button, except while typing or when an overlay is open.",
     ],
   },
   {
@@ -232,9 +238,13 @@ export const blockTypes: BlockType[] = [
     slug: "data-operations",
     title: "Data operations",
     group: "Solutions",
-    description: "Robot datasets as a product: the catalog, one dataset's release readiness, and the review queue.",
-    use: ["Teams that collect, label and release robot data."],
-    rules: ["Only restricted tiers are coloured.", "A release verdict says what blocks it, not just that it is blocked."],
+    description: "Robot datasets as a product: the catalog, one dataset's release readiness, the governance to-do, and labels reviewed by keyboard.",
+    use: ["Teams that collect, label and release robot data.", "Checking a model's captions or answers one image at a time."],
+    rules: [
+      "Only restricted tiers are coloured.",
+      "A release verdict says what blocks it, not just that it is blocked.",
+      "A review queue answers with single keys (1, 2, 3), shows each key on its button, and undoes with Backspace or ⌘Z / Ctrl+Z. ? lists the keys.",
+    ],
   },
   {
     slug: "users-access",
@@ -302,6 +312,7 @@ export const getBlockType = (slug: string) => blockTypes.find((t) => t.slug === 
 export const placement: Record<string, { type: string; fit: "screen" | "content" }> = {
   "app-shell": { type: "app-shell", fit: "screen" },
   "top-bar-shell": { type: "app-shell", fit: "screen" },
+  "action-rail-shell": { type: "app-shell", fit: "screen" },
   "app-shell-mobile-tabs": { type: "app-shell", fit: "screen" },
   "stats-cards": { type: "stats", fit: "content" },
   "stats-meters": { type: "stats", fit: "content" },
@@ -336,6 +347,7 @@ export const placement: Record<string, { type: string; fit: "screen" | "content"
   "data-catalog": { type: "data-operations", fit: "screen" },
   "dataset-detail": { type: "data-operations", fit: "screen" },
   "governance-todo": { type: "data-operations", fit: "screen" },
+  "review-queue": { type: "data-operations", fit: "screen" },
   "users-roles": { type: "users-access", fit: "screen" },
   "users-invitations": { type: "users-access", fit: "screen" },
   "users-audit-log": { type: "users-access", fit: "screen" },
