@@ -2,7 +2,7 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.14.0 · 2026-11-19
 
 ### Added
 - **High contrast** (`syncrobotic-theme`): `data-contrast="more"` on `<html>` or any container, in light or dark, for a tablet in bright sun, glare on an outdoor robot's screen, and low vision. Text and status reach 7:1 (WCAG AAA) on every surface they sit on, field and card edges reach 3:1 so they show without their fill, and trays over the map are opaque. Meanings do not change. Tested in CI; shown on the Accessibility page with its contrast table; exported as `color.light-hc` and `color.dark-hc` DTCG tokens; a Contrast switch in Storybook's toolbar. To follow the system setting, set the attribute from `matchMedia("(prefers-contrast: more)")`.
