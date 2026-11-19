@@ -1,8 +1,8 @@
 import * as React from "react"
 import type { Metadata } from "next"
-import { CircleAlert, CircleCheck, CircleDashed } from "lucide-react"
+import { CircleAlert } from "lucide-react"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
-import { Badge } from "@/registry/syncrobotic/ui/badge"
+import { Badge, ResultBadge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Code, DocHeader, DoDont, Pager, Section, Specimen, Swatch, TokenTable } from "@/site/doc"
 import { metaFor, neighbours } from "@/site/foundations"
@@ -257,31 +257,23 @@ export default function ColorPage() {
               <ul className="flex w-64 flex-col gap-2 text-sm">
                 <li className="flex items-center justify-between gap-2">
                   Caption accuracy
-                  <Badge>
-                    <CircleCheck aria-hidden="true" /> Passed
-                  </Badge>
+                  <ResultBadge result="passed" />
                 </li>
                 <li className="flex items-center justify-between gap-2">
                   Counting objects
-                  <Badge tone="outline" className="text-danger ring-danger">
-                    <CircleAlert aria-hidden="true" /> Failed
-                  </Badge>
+                  <ResultBadge result="failed" />
                 </li>
                 <li className="flex items-center justify-between gap-2">
                   Night images
-                  <Badge tone="outline" className="text-muted-foreground">
-                    <CircleDashed aria-hidden="true" /> Not enough samples
-                  </Badge>
+                  <ResultBadge result="insufficient" />
                 </li>
                 <li className="flex items-center justify-between gap-2">
                   Safety refusals
-                  <Badge>
-                    <CircleCheck aria-hidden="true" /> Passed
-                  </Badge>
+                  <ResultBadge result="passed" />
                 </li>
               </ul>
             ),
-            text: "Pass is grey with a check. Fail is a danger outline with danger text. Not enough samples is a grey outline with a dashed circle: no verdict yet, never a pass.",
+            text: "Pass is grey with a check. Fail is a danger outline with danger text. Not enough samples is a grey outline with a dashed circle: no verdict yet, never a pass. ResultBadge draws all three.",
           }}
           bad={{
             visual: (
