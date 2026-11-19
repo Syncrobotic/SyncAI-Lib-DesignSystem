@@ -243,6 +243,7 @@ const entries: Record<string, Entry> = {
     examples: { file: "icon-tile", prefix: "IconTile" },
     rules: [
       "Neutral by default. A tone only when the tile states a status.",
+      "Tones info and success render neutral: a tile stays on screen, so it is a state, and a state is grey. Only warning and danger colour it.",
       "Never solid red: a solid danger tile stays on its tint, since solid red belongs to the emergency stop.",
       "Icons inside are 16, 20 or 24 px; the size prop sets them.",
     ],
@@ -334,7 +335,7 @@ const entries: Record<string, Entry> = {
     group: "Actions",
     examples: { file: "theme-toggle", prefix: "ThemeToggle" },
     rules: [
-      "Three choices: light, match the system, dark. Match the system is the default.",
+      "Three choices: light, match the system, dark. With no stored choice the app's default applies: light (:root).",
       "Pass undefined until the stored choice is known, so nothing is shown selected and then jumps.",
       "In a top bar, at the far right beside the user.",
     ],
@@ -366,7 +367,7 @@ const entries: Record<string, Entry> = {
       "Destructive is a danger outline and text. Solid red belongs to the emergency stop alone.",
       "44 px is the default. 36 px (sm) is for a mouse only: on a touch screen it is 44 px by itself. 48 px for a page's main action.",
       "Name the result (“Delete route”), not the mechanism (“OK”, “Submit”).",
-      "Disabled says why, next to it or in the hint (“Robot offline: cannot dispatch”). Its words stay readable: a grey block, never faded.",
+      "Disabled says why, next to it or in the hint (“Robot offline: cannot dispatch”). Its words stay readable: filled buttons become a grey block; outline and destructive keep their outline with text-disabled; never opacity.",
     ],
   },
   "segmented-control": {
@@ -509,7 +510,10 @@ const entries: Record<string, Entry> = {
   progress: {
     group: "Display",
     examples: { file: "display", prefix: "Progress" },
-    rules: ["Blue: a process someone is waiting on, with an end. A level that stays (battery, storage, signal) is a Meter, not a Progress."],
+    rules: [
+      "Blue: a process someone is waiting on, with an end. A level that stays (battery, storage, signal) is a Meter, not a Progress.",
+      "Success is neutral: a finished bar stays grey. Green is a confirmation that comes and goes (a toast), not a state.",
+    ],
   },
   spinner: {
     group: "Display",
@@ -523,9 +527,8 @@ const entries: Record<string, Entry> = {
     group: "Display",
     examples: { file: "display", prefix: "Meter" },
     rules: [
-      "A battery takes only `low`: a low battery needs attention, it is not a failure, so it turns warning and never danger. Danger is for a level that breaks something, like full storage.",
       "For a level in a known range (battery, storage). For work under way, use Progress.",
-      "Neutral while normal; warning past `low`, danger past `critical`. Colour only when something is wrong, and the value is always written.",
+      "Neutral while normal; warning past `low`, danger past `critical`; the value is always written. A battery takes only `low` (15 %): a low battery needs attention, it is not a failure, so it turns warning and never danger. Danger is for a level that breaks something, like full storage.",
       "`inline` in table cells; the label is still read by screen readers.",
     ],
   },
@@ -555,7 +558,7 @@ const entries: Record<string, Entry> = {
     group: "Display",
     examples: { file: "display", prefix: "StatusGlyph" },
     rules: [
-      "Status is shape plus colour, so it reads without colour vision: filled circle active, hollow circle normal, triangle attention, square stopped, slashed circle offline.",
+      "Status is a shape and a word; colour only when it is abnormal. The shape reads without colour vision: filled circle active, hollow circle normal, triangle attention, square stopped, slashed circle offline.",
       "Pass `status`: active, normal, warning, danger or offline. The old `tone` (info, success, warning, danger, neutral) still works until 1.0 and warns once in development.",
     ],
   },
@@ -712,7 +715,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "Colour is the series' identity, not its rank: slots --chart-1…5 in a fixed order, kept with the series when others are filtered out. Never a status colour as a series.",
       "Two series or more: a legend above the plot. One series: no legend; the title names it.",
-      "Every chart offers its numbers as a table (ChartTable), for exact values and for anyone who cannot tell two hues apart.",
+      "Every chart with axes (line, area, bar, heatmap) has a table view (ChartTable), for exact values and for anyone who cannot tell two hues apart. Sparklines, rings (radial) and status strips write their numbers in words instead.",
       "One y axis. Two measures on different scales are two charts.",
       "Lines 2 px; bars with 4 px rounded data ends and a 2 px gap; a horizontal hairline grid; no axis lines.",
       "The chart fades in when it mounts (--motion-base); marks do not animate, because Recharts cannot use the motion tokens. Nothing moves under reduced motion.",

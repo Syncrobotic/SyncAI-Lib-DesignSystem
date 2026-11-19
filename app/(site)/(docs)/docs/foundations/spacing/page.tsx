@@ -50,7 +50,7 @@ export default function SpacingPage() {
         </Specimen>
       </Section>
 
-      <Section id="heights" title="Component heights" lead="Heights are tokens too. Anything interactive is at least 44 px; 56 is reserved for list rows and the emergency stop.">
+      <Section id="heights" title="Component heights" lead="Heights are tokens too. Anything interactive is at least 44 px on touch; 36 (--h-sm) with a mouse only. 56 is reserved for list rows and the emergency stop.">
         <Specimen className="flex flex-wrap items-end gap-4">
           {heights.map((h) => (
             <div key={h} className="flex flex-col items-center gap-2">

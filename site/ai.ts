@@ -134,7 +134,7 @@ const intro = [
 ]
 
 export function llmsTxt() {
-  const out = [...intro, "", "## Foundations", ""]
+  const out = [...intro, "", "## Foundations", "", "Each foundation's `.md` twin carries the whole design language.", ""]
   for (const f of foundations) out.push(`- [${f.title}](${url(`/docs/foundations/${f.slug}.md`)}): ${f.lead}`)
   out.push(`- [Icon set](${url("/icons")}): the ${iconCount} Lucide icons the kit uses, one meaning each. Full list in llms-full.txt.`)
   // Blocks by group and type, the way the site lists them.
@@ -201,5 +201,5 @@ export const aiPrompt = (title: string, path: string, name: string) =>
     `1. Install it: ${install(name)}`,
     `2. Read ${url(`${path}.md`)} and follow its rules and agent notes; the design language is in ${url("/llms-full.txt")}.`,
     "3. Keep its structure and tokens; replace only the sample data. Do not invent props: read the installed source.",
-    "4. Check: tokens only, 44 px targets on touch, colour only for abnormal states, every duration with ease-(--ease-standard).",
+    "4. Check: tokens only, 44 px targets on touch, colour only for abnormal states, every duration class with ease-(--ease-standard) beside it; leaving uses the exit animations (animate-disappear, sheet-out, collapse), which carry --ease-exit.",
   ].join("\n")

@@ -1,7 +1,7 @@
 {
   "syncrobotic-theme": {
-    "version": "0.17.1",
-    "hash": "3285b63e51f99f0e"
+    "version": "0.17.2",
+    "hash": "c382f25704d105ec"
   },
   "cn": {
     "version": "0.5.0",
@@ -465,7 +465,7 @@
   },
   "agent-skill": {
     "version": "0.17.2",
-    "hash": "265370ce3252c7a8"
+    "hash": "570e277e02c8b028"
   },
   "line-chart-telemetry": {
     "version": "0.9.0",

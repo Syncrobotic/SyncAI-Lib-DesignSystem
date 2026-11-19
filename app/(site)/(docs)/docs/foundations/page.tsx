@@ -5,7 +5,7 @@ import { FoundationGrid } from "@/site/foundation-previews"
 import { foundations, startNeighbours } from "@/site/foundations"
 
 const description =
-  "The SYNCROBOTIC design language: principles, colour, typography, spacing, radius, elevation, motion, iconography, accessibility and alarms, shared by every product team."
+  "The SYNCROBOTIC design language: principles, colour, typography, spacing, radius, elevation, motion, iconography, accessibility, alarms and data visualisation, shared by every product team."
 
 export const metadata: Metadata = pageMeta({ title: "Foundations — design language", description, path: "/docs/foundations" })
 

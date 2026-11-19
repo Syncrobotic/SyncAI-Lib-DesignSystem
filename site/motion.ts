@@ -17,7 +17,8 @@ export const t = {
 } satisfies Record<string, Transition>
 
 /**
- * The four movements the language allows. Each marks a change of state; none loops or decorates.
+ * Four of the six motion patterns (see the Motion foundation), for JavaScript animation. Each marks a change of state;
+ * none loops or decorates.
  * Under reduced motion (MotionConfig reducedMotion="user") transforms are dropped and only opacity changes.
  */
 export const patterns = {

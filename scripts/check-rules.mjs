@@ -7,7 +7,8 @@
 //  2. In Tailwind 4, `outline-none` cancels `focus-visible:outline-2` on the same element (both set outline-style), so
 //     the ring never draws. Drop `outline-none` there: :focus-visible already keeps mouse clicks ring-free.
 //  3. A battery warns below 15 % and never turns danger: no other threshold, no `critical` on a battery Meter.
-//  4. Every chart block has a table view: a block that draws a chart (ChartContainer) offers ChartTable or a Table.
+//  4. Every chart with axes has a table view: a block that draws one (ChartContainer: line, area, bar) offers ChartTable or
+//     a Table. Sparklines, rings and status strips write their numbers in words instead (see the Data visualisation foundation).
 //
 // Field-edge contrast (--input 3:1) is a number, so it is a unit test: tests/unit/rules.test.ts.
 //

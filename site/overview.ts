@@ -349,8 +349,8 @@ export const overviews: Record<string, Overview> = {
     use: ["Battery, storage, signal strength, CPU.", "Inline in a table cell, or above a value in a card."],
     instead: ["Work that is under way and will finish: `progress`."],
     notes: [
-      "Neutral while normal: colour appears only past `low` (warning) or `critical` (danger). Do not pass a tone.",
-      "Battery: low={15} only; a low battery is warning, never danger. For values where higher is worse, set higherIsWorse.",
+      "Do not pass a tone: colour comes from `low` and `critical`.",
+      "For values where higher is worse, set higherIsWorse.",
     ],
   },
   "description-list": {
@@ -373,7 +373,6 @@ export const overviews: Record<string, Overview> = {
     what: "Copies a value and confirms it in place: the icon becomes a check for 1.5 s.",
     use: ["IDs, references, install commands, coordinates."],
     instead: ["Sharing a link to the current page: the browser already does it."],
-    notes: ["Icon-only needs `label` naming what is copied. It confirms in place; do not add a toast."],
   },
   button: {
     what: "A control that does one thing now: save, send, start a mission. The label is a verb that says what happens.",
@@ -407,10 +406,6 @@ export const overviews: Record<string, Overview> = {
     what: "A single-line text field, 44 px high with 16 px text so phones do not zoom in.",
     use: ["Names, IDs, addresses, short free text.", "Inside a `field` for its label, hint and error."],
     instead: ["A number with a range or unit: `number-field`.", "An icon, unit or button inside the edge: `input-group`.", "Several lines: `textarea`."],
-    notes: [
-      "Text is 16 px so iOS does not zoom; do not shrink it.",
-      "Put it in a `field` for the label, hint and error; do not hand-write a label and an error paragraph.",
-    ],
   },
   "input-group": {
     what: "An input with something inside its edge: a search icon, a unit, a clear or show-password button.",
@@ -446,14 +441,14 @@ export const overviews: Record<string, Overview> = {
     instead: ["A group of checkboxes or radios under one question: a fieldset with a legend."],
     notes: [
       "Exactly one child control. A Select works too: its trigger reads the Field through useField.",
-      "The error replaces the hint in the same line; never add a second error paragraph. Errors never shake.",
+      "Never add a second error paragraph under it.",
     ],
   },
   checkbox: {
     what: "A box that is checked, unchecked or partly checked. Changes apply when the form is saved.",
     use: ["Agreeing to terms.", "Choosing several items from a list.", "Select all, with the partly-checked state."],
     instead: ["A setting that applies immediately: `switch`.", "Exactly one of several options: `radio-group`."],
-    notes: ["Pair it with its label so the whole 44 px row is tappable: ChoiceField does this."],
+    notes: ["ChoiceField pairs it with its label for you."],
   },
   "radio-group": {
     what: "A set of options where exactly one is chosen, all visible at once.",
@@ -472,11 +467,8 @@ export const overviews: Record<string, Overview> = {
   select: {
     what: "A button that opens a list to pick one option from.",
     use: ["Six or more options, or options with long names.", "A compact choice in a table row or a toolbar."],
-    instead: ["Two to five options worth seeing at once: `radio-group`.", "A long list the user needs to search: `command`."],
-    notes: [
-      "Inside a Field the trigger is labelled and described automatically; outside one, give the trigger an aria-label.",
-      "For long lists people search, use Command instead.",
-    ],
+    instead: ["Two to five options worth seeing at once: `radio-group`.", "A long list the user needs to search: `autocomplete`."],
+    notes: ["Inside a Field the trigger is labelled and described automatically; outside one, give the trigger an aria-label."],
   },
   slider: {
     what: "A track with a thumb for picking a value or a range by dragging.",
@@ -510,9 +502,8 @@ export const overviews: Record<string, Overview> = {
   },
   progress: {
     what: "A bar that fills as work completes. Blue means in progress.",
-    use: ["Uploads, map processing, a mission's completion.", "A value that is itself a status, like battery, in a status tone."],
+    use: ["Uploads, map processing, a mission's completion."],
     instead: ["Waiting with no measurable progress: `spinner`.", "Content still loading: `skeleton`.", "A level that is not work, like battery: `meter`."],
-    notes: ["Blue (info) means work under way. A battery or storage level is a Meter, not a Progress."],
   },
   spinner: {
     what: "A turning indicator for work with no measurable progress. It appears only after 300 ms, so quick work never flashes it.",
@@ -528,11 +519,7 @@ export const overviews: Record<string, Overview> = {
     what: "Rows and columns for comparing many records at once, with tabular numbers.",
     use: ["Fleet lists, event logs, user lists on wide screens."],
     instead: ["Phones, or records with one main line: `list`.", "A trend over time: `chart`."],
-    notes: [
-      "Right-align numeric columns; numbers are tabular already.",
-      "Sortable column: pass `sort` and `onSort` to TableHead; do not build your own header button.",
-      "Phones: prefer List for one-line records.",
-    ],
+    notes: ["Sortable column: pass `sort` and `onSort` to TableHead; do not build your own header button."],
   },
   list: {
     what: "Rows on one surface with inset dividers; status as shape plus word.",
@@ -540,11 +527,11 @@ export const overviews: Record<string, Overview> = {
     instead: ["Many columns to compare: `table`."],
   },
   "status-glyph": {
-    what: "Status as a shape plus a colour, so it reads without colour: filled circle in progress, hollow circle normal, triangle attention, square stopped, slashed circle offline.",
+    what: "Status is a shape and a word; colour only when it is abnormal. The shapes: filled circle busy, hollow circle normal, triangle attention, square stopped, slashed circle offline.",
     use: ["Next to a robot's name, in tables and on the map."],
     instead: ["A state with its word: `status-eyebrow`.", "An alarm: `alarm`, which has its own shapes."],
     notes: [
-      "`status`: active (busy, filled circle), normal (hollow circle), warning (triangle), danger (stopped, square), offline (slashed). Active and normal render in the foreground colour, not blue or green. `tone` is the old name for the same prop (info, success, neutral meant active, normal, offline), accepted until 1.0.",
+      "Active and normal render in the foreground colour, not blue or green. The old `tone` maps info, success and neutral to active, normal and offline.",
     ],
   },
   "status-eyebrow": {
@@ -607,7 +594,6 @@ export const overviews: Record<string, Overview> = {
     what: "A panel that slides in: from the bottom on phones, from the side on wide screens.",
     use: ["Filters, a record's details next to a list, longer forms on phones."],
     instead: ["A short decision on desktop: `dialog`."],
-    notes: ['side="bottom" on phones, "right" for detail panels on wide screens, "left" only for navigation.'],
   },
   popover: {
     what: "A small panel anchored to a control, with extra detail or a quick setting.",
@@ -618,17 +604,12 @@ export const overviews: Record<string, Overview> = {
     what: "The name of an icon-only control, on hover and on keyboard focus.",
     use: ["Every icon button without a visible label."],
     instead: ["Anything needed on touch screens, where tooltips never show: a visible label, or `popover`."],
-    notes: ["Tooltips never show on touch. Never put anything only there that a touch user needs."],
   },
   chart: {
     what: "Line, area and bar charts in the categorical palette, with a crosshair tooltip, a legend and a table view.",
     use: ["Trends over time, comparisons between a few series."],
     instead: ["A single number: a stat in a `card`.", "Exact values to read or export: `table` (`ChartTable`)."],
-    notes: [
-      "Map series in ChartConfig to palette slots 1–5 in a fixed order; never colour by rank and never use status colours for series.",
-      "Always offer ChartTable; add ChartLegend for two series or more.",
-      "Spread `chartMotion` onto marks; do not set Recharts animation timing.",
-    ],
+    notes: ["Spread `chartMotion` onto marks; do not set Recharts animation timing."],
   },
   command: {
     what: "Search and run from the keyboard: a filterable list, and the ⌘K palette that opens over any page.",
@@ -657,13 +638,12 @@ export const overviews: Record<string, Overview> = {
     what: "Releases a stopped robot with a deliberate slide: past 85% it releases, short of that it springs back.",
     use: ["Releasing an emergency stop, where a tap would be too easy in a panic."],
     instead: ["Routine confirmations: `alert-dialog`."],
-    notes: ["Past 85% releases; keyboard and switch users hold Enter or Space for 2 s. Viewers get `locked`."],
+    notes: ["Viewers get `locked`."],
   },
   dock: {
     what: "The bottom bar of the control app in three tiers: the state action, this page's primary action, navigation.",
     use: ["Every page of the phone control app."],
     instead: ["Internal tools on desktop: the app shell's sidebar."],
-    notes: ["Three tiers top to bottom: the state action, this page's primary action, navigation. Nothing in the lower tiers is solid white."],
   },
   island: {
     what: "The top of the control app: name, device status and notifications, each expanding on its own, with the most urgent alarm inside.",
