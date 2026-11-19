@@ -10,7 +10,8 @@ const Row = ({ c }: { c: Entry }) => (
   <li className="flex gap-3">
     <span className="w-16 shrink-0 font-mono tabular-nums">{c.version}</span>
     <span className="w-24 shrink-0 text-muted-foreground tabular-nums">{c.date}</span>
-    <span>
+    {/* min-w-0 and wrap-anywhere: a long name in code (a prop, a token) wraps instead of widening the page on a phone. */}
+    <span className="min-w-0 wrap-anywhere">
       <Inline text={c.note} />
     </span>
   </li>

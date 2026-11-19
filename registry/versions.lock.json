@@ -1,7 +1,7 @@
 {
   "syncrobotic-theme": {
-    "version": "0.16.0",
-    "hash": "ea9a0adc17944d8c"
+    "version": "0.17.1",
+    "hash": "3285b63e51f99f0e"
   },
   "cn": {
     "version": "0.5.0",
@@ -56,8 +56,8 @@
     "hash": "c1f253777684177c"
   },
   "island": {
-    "version": "0.15.0",
-    "hash": "87885ff224024662"
+    "version": "0.17.1",
+    "hash": "4ddd6d7542e6199a"
   },
   "list": {
     "version": "0.15.0",
@@ -120,8 +120,8 @@
     "hash": "ef34189d92ad4b30"
   },
   "switch": {
-    "version": "0.12.0",
-    "hash": "88f0091114308b19"
+    "version": "0.17.1",
+    "hash": "49439b4434ec16c7"
   },
   "choice-field": {
     "version": "0.15.0",
@@ -152,8 +152,8 @@
     "hash": "7b4d8675eed8b3b3"
   },
   "progress": {
-    "version": "0.10.0",
-    "hash": "e7c30d134c4fe7b1"
+    "version": "0.17.1",
+    "hash": "7c559a0fc2a45d26"
   },
   "description-list": {
     "version": "0.8.0",
@@ -188,12 +188,12 @@
     "hash": "2003425d3c094087"
   },
   "chart": {
-    "version": "0.7.0",
-    "hash": "e455c0d9acadcb0b"
+    "version": "0.17.1",
+    "hash": "98e2dad3b8da90e6"
   },
   "tabs": {
-    "version": "0.15.0",
-    "hash": "9c5cc62e5205695f"
+    "version": "0.17.1",
+    "hash": "9e7864e1bf6573d4"
   },
   "pagination": {
     "version": "0.15.0",
@@ -240,8 +240,8 @@
     "hash": "d0e5f2ecc5b1a1bd"
   },
   "icon-tile": {
-    "version": "0.10.0",
-    "hash": "1c6f59a6a871308a"
+    "version": "0.17.1",
+    "hash": "aaf4cea60a6e919d"
   },
   "kbd": {
     "version": "0.16.0",
@@ -420,8 +420,8 @@
     "hash": "9ceaa645ff210899"
   },
   "event-log": {
-    "version": "0.15.0",
-    "hash": "4b25249eb13bb6a2"
+    "version": "0.17.1",
+    "hash": "f23e8f93ac99a860"
   },
   "map-workspace": {
     "version": "0.15.0",
@@ -472,40 +472,40 @@
     "hash": "85ba8a13dba7be39"
   },
   "line-chart-limit": {
-    "version": "0.15.0",
-    "hash": "e36f6e5acbf2faff"
+    "version": "0.17.1",
+    "hash": "43564282fedfba52"
   },
   "line-chart-compare": {
-    "version": "0.15.0",
-    "hash": "112013aeb4a61d42"
+    "version": "0.17.1",
+    "hash": "36d290e05f4714fd"
   },
   "area-chart-battery": {
-    "version": "0.15.0",
-    "hash": "d867b792f99c7247"
+    "version": "0.17.1",
+    "hash": "380f0f87c82209ac"
   },
   "area-chart-fleet-states": {
-    "version": "0.15.0",
-    "hash": "a9a6fe3791af4df7"
+    "version": "0.17.1",
+    "hash": "c85c4c2fe807c183"
   },
   "area-chart-cumulative": {
-    "version": "0.15.0",
-    "hash": "944febb751e89d23"
+    "version": "0.17.1",
+    "hash": "ac3f6dc5fe143d94"
   },
   "bar-chart-missions": {
     "version": "0.9.0",
     "hash": "fd19a31aacf6a401"
   },
   "bar-chart-ranked": {
-    "version": "0.9.0",
-    "hash": "a7b19da8456503dd"
+    "version": "0.17.1",
+    "hash": "ae83c8f6d11c2c1e"
   },
   "bar-chart-stacked": {
-    "version": "0.9.0",
-    "hash": "9ff19aa05c341d81"
+    "version": "0.17.1",
+    "hash": "61cb30434f309b26"
   },
   "bar-chart-variance": {
-    "version": "0.9.0",
-    "hash": "a694d973c3fb537d"
+    "version": "0.17.1",
+    "hash": "739977b335f27e76"
   },
   "sparkline-robot-list": {
     "version": "0.15.0",
@@ -544,8 +544,8 @@
     "hash": "65c15b3f7d5f246c"
   },
   "heatmap-week-hours": {
-    "version": "0.9.0",
-    "hash": "a95fda5d79232154"
+    "version": "0.17.1",
+    "hash": "86a8904848fda1f8"
   },
   "heatmap-zones": {
     "version": "0.15.0",
@@ -556,8 +556,8 @@
     "hash": "a90dd95f72563686"
   },
   "stats-meters": {
-    "version": "0.9.0",
-    "hash": "f54b051e09b7ad8e"
+    "version": "0.17.1",
+    "hash": "40b28da97c7647d7"
   },
   "stats-filtered": {
     "version": "0.9.0",

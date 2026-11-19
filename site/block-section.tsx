@@ -2,10 +2,14 @@ import Link from "next/link"
 import { CopyButton } from "@/registry/syncrobotic/ui/copy-button"
 import { aiPrompt, blockMarkdown } from "./ai"
 import { BlockFrame } from "./block-frame"
-import { blockHref } from "./block-types"
+import { blockHref, placement } from "./block-types"
 import type { blocks } from "./blocks"
 import { getItem, readSource } from "./catalog"
 import { CodeBlock } from "./code-block"
+
+/** Where a "Built from" chip goes: a component's page, the icon gallery for the robot icons, or another block's place.
+ *  Anything else (a hook without a page of its own) is a plain chip, never a link to a page that does not exist. */
+const usesHref = (u: string) => (getItem(u) ? `/docs/components/${u}` : u === "robot-icons" ? "/icons" : placement[u] ? blockHref(u) : null)
 
 /**
  * One block as the docs show it, on a Blocks page or under a component's Patterns: title and tools on one row, the
@@ -37,11 +41,19 @@ export function BlockSection({ block: b, heading: H = "h3" }: { block: (typeof b
         <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
           Built from
           {/* A dependency is a component (its page) or another block (its place on its page). */}
-          {uses.map((u) => (
-            <Link key={u} href={getItem(u) ? `/docs/components/${u}` : blockHref(u)} className="rounded-xs bg-muted px-2 py-1 font-mono text-xs hover:bg-accent">
-              {u}
-            </Link>
-          ))}
+          {uses.map((u) => {
+            const href = usesHref(u)
+            const chip = "inline-flex min-h-(--h-sm) items-center rounded-xs bg-muted px-2 font-mono text-xs"
+            return href ? (
+              <Link key={u} href={href} className={`${chip} hover:bg-accent`}>
+                {u}
+              </Link>
+            ) : (
+              <span key={u} className={chip}>
+                {u}
+              </span>
+            )
+          })}
         </div>
       )}
       <BlockFrame

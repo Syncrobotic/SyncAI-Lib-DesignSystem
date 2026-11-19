@@ -49,7 +49,7 @@ export const blockTypes: BlockType[] = [
     description: "Headline numbers with their change: the first row of a dashboard.",
     use: ["The top of an overview page.", "A row of KPIs above a table or a chart."],
     instead: ["One number in context of time: a Charts block with a sparkline.", "A whole overview screen: Solutions › Fleet operations."],
-    rules: ["Four numbers at most in a row.", "A change is coloured by whether it is good, not by its direction.", "Every number has a unit and a time range."],
+    rules: ["Four numbers at most in a row.", "Only a change for the worse gets colour (decided by whether it is bad, not by its direction); good news stays neutral.", "Every number has a unit and a time range."],
   },
   {
     slug: "card",

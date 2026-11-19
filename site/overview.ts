@@ -669,7 +669,7 @@ export const overviews: Record<string, Overview> = {
     what: "The top of the control app: name, device status and notifications, each expanding on its own, with the most urgent alarm inside.",
     use: ["Every page of the phone control app."],
     instead: ["Internal tools: the app shell's top bar."],
-    notes: ["Pair with `edge={alarmEdge(topAlarm(alarms)) ?? stateEdge}`, where stateEdge is the persistent state (offline: warning, stopped: danger), so a low alarm does not erase it. Put IslandAlarm inside, from the same alarm data as AlarmList."],
+    notes: ["Pair with `edge={alarmEdge(topAlarm(alarms)) ?? stateEdge}`, where stateEdge is the persistent fault (stopped: danger; offline stays neutral), so a low alarm does not erase it. Put IslandAlarm inside, from the same alarm data as AlarmList."],
   },
   tray: {
     what: "The shared frame of the island and the dock: radius 24, padding 8, gap 8.",

@@ -364,7 +364,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "One primary button per view. Primary is neutral high contrast, never blue or red.",
       "Destructive is a danger outline and text. Solid red belongs to the emergency stop alone.",
-      "44 px is the default. 36 px only inside cards; 48 px for a page's main action.",
+      "44 px is the default. 36 px (sm) is for a mouse only: on a touch screen it is 44 px by itself. 48 px for a page's main action.",
       "Name the result (“Delete route”), not the mechanism (“OK”, “Submit”).",
       "Disabled says why, next to it or in the hint (“Robot offline: cannot dispatch”). Its words stay readable: a grey block, never faded.",
     ],
@@ -407,7 +407,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "For an icon, a unit or a button inside the field's edge. Use it instead of positioning icons by hand.",
       "Units are text after the value, so “120 m” reads as one; icons are decorative and hidden from screen readers.",
-      "Buttons inside (clear, show password) need an aria-label and stay 36 px.",
+      "Buttons inside (clear, show password) need an aria-label; they are 36 px with a mouse and 44 px on touch, like every compact control.",
     ],
   },
   "number-field": {
@@ -457,7 +457,7 @@ const entries: Record<string, Entry> = {
   switch: {
     group: "Inputs",
     examples: { file: "inputs", prefix: "Switch" },
-    rules: ["Takes effect immediately; no save button.", "On is the primary colour, like every selected control; green stays for status."],
+    rules: ["Takes effect immediately; no save button.", "On is the primary colour, like every selected control; never green (green is a confirmation that just happened, not a setting)."],
   },
   "choice-field": {
     group: "Inputs",
@@ -509,7 +509,7 @@ const entries: Record<string, Entry> = {
   progress: {
     group: "Display",
     examples: { file: "display", prefix: "Progress" },
-    rules: ["Blue: a process someone is waiting on, with an end. Use another tone only when the value itself is a status, like battery."],
+    rules: ["Blue: a process someone is waiting on, with an end. A level that stays (battery, storage, signal) is a Meter, not a Progress."],
   },
   spinner: {
     group: "Display",
@@ -764,7 +764,7 @@ const entries: Record<string, Entry> = {
     examples: { file: "island" },
     rules: [
       "Name, device status and notifications each expand on their own.",
-      "Failure notices stay until handled. Persistent states (offline, stopped) change the tray edge colour.",
+      "Failure notices stay until handled. A persistent fault (stopped) changes the tray edge colour; offline stays neutral and is said in words and by its shape.",
       "IslandAlarm shows the most urgent unacknowledged alarm above any notice, from the same data as AlarmList. The edge follows it: critical danger, high warning.",
       "On a phone the island is the alarm surface, so it buzzes, sounds (critical repeats until acknowledged) and announces new alarms, like AlarmList. Turn `feedback` off on one of them when both are on screen.",
     ],
@@ -776,6 +776,13 @@ const entries: Record<string, Entry> = {
   // Hooks
   "use-long-press": { group: "Hooks", rules: ["Returns hold progress from 0 to 1. The emergency stop uses it for hold-to-stop-all."] },
   "use-slide-release": { group: "Hooks", rules: ["Drag, threshold and spring-back logic behind Slide to release."] },
+  "use-presence": {
+    group: "Hooks",
+    rules: [
+      "Keeps an element (usePresence) or list items (usePresenceList) mounted while they leave, so an exit plays disappear instead of vanishing.",
+      "It is how alarms fade out of a list and a save bar leaves after Save: not for anything that should simply hide at once.",
+    ],
+  },
   "use-hotkeys": {
     group: "Hooks",
     rules: [

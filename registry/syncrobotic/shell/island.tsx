@@ -1,4 +1,4 @@
-// @syncrobotic/island v0.15.0 · update: npx shadcn add @syncrobotic/island --overwrite
+// @syncrobotic/island v0.17.1 · update: npx shadcn add @syncrobotic/island --overwrite
 "use client"
 
 import * as React from "react"
@@ -47,7 +47,7 @@ type IslandProps = {
   /** Which zone is expanded. Each zone has its own panel. */
   open?: Zone | null
   onOpenChange?: (zone: Zone | null) => void
-  /** Persistent state (offline, stopped): changes the tray edge colour. */
+  /** Persistent fault (stopped): changes the tray edge colour. Offline is neutral: say it, do not colour it. */
   edge?: Tone
   /** Status zone while the first status has not arrived. */
   loading?: boolean
@@ -87,7 +87,8 @@ export function Island({
   const status = given ?? toStatus(tone ?? "neutral")
   const toggle = (z: Zone) => onOpenChange?.(open === z ? null : z)
   const zone = (z: Zone) => cn("press flex h-(--h-md) items-center gap-2 rounded-md px-2", open === z && "bg-muted")
-  const low = battery < 30
+  // Warning below 15 %, the fleet-wide battery threshold (never danger: a low battery is not a fault).
+  const low = battery < 15
   const BatteryIcon = charging ? BatteryCharging : Battery
   return (
     <Tray
@@ -218,7 +219,7 @@ type IslandAlarmProps = {
 
 /**
  * The control app's alarm surface: the island shows the most urgent unacknowledged alarm, above any notice.
- * Same data as AlarmList, so the phone and the dashboard never disagree. Pair it with `edge={alarmEdge(topAlarm(alarms)) ?? stateEdge}`, so a persistent state (offline, stopped) keeps its edge when only a low alarm shows.
+ * Same data as AlarmList, so the phone and the dashboard never disagree. Pair it with `edge={alarmEdge(topAlarm(alarms)) ?? stateEdge}`, so a persistent fault (stopped) keeps its edge when only a low alarm shows.
  * Renders nothing when every alarm is acknowledged.
  */
 export function IslandAlarm({ alarms, onAcknowledge, onShowAll, labels, feedback = true }: IslandAlarmProps) {
