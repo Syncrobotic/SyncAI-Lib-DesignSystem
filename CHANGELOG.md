@@ -2,7 +2,7 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.16.1 · 2026-11-19
 
 ### Added
 - **`ResultBadge`** (`badge`): one prop for the verdict of a test, an evaluation or an audit.
