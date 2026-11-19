@@ -1,4 +1,4 @@
-/* @syncrobotic/syncrobotic-theme v0.16.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
+/* @syncrobotic/syncrobotic-theme v0.17.1 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
 /*
  * SYNCROBOTIC theme (see CHANGELOG.md for its version history)
  * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
@@ -6,12 +6,13 @@
  * Usage:
  *   1. In globals.css, add @import "./syncrobotic-theme.css"; after @import "tailwindcss";
  *   2. Delete the :root / .dark / @theme inline blocks that shadcn init generated (this file replaces them)
- *   3. Dark is the default: <html class="dark">. Teleoperation and intercom screens put class="dark"
- *      on their root so they stay dark whatever the appearance setting.
+ *   3. Light is :root; dark is class="dark" on <html> (follow the system setting by default, and let people choose).
+ *      Teleoperation and intercom screens put class="dark" on their root so they stay dark whatever the setting.
  *
  * Colour rules:
  *   - Colour is for what is abnormal, and blue for a process someone is waiting on. A thing's state (patrolling, docked,
- *     charging) is shape + neutral text even while it is busy; warning, danger and stop carry colour
+ *     charging, offline) is shape + neutral text even while it is busy; warning, danger and stop carry colour. A run with
+ *     a start and an end that someone is waiting on (a mission in progress, a rollout stage, an upload) is a process: blue
  *   - Status hues are muted on purpose: they must read at a glance without turning the screen into a chart
  *   - Solid red (--stop) is for the emergency stop only. Other destructive actions use the --danger outline and text
  *   - Status colours come in pairs: foreground (--info) on its subtle tint (--info-subtle)
@@ -41,7 +42,9 @@
   --accent-foreground: var(--foreground);
   --destructive: #860012;
   --border: #dcdce1;
-  --input: #dcdce1;
+  /* The edge of anything you fill in or tick (field, checkbox, radio, switch off): 3:1 on the card, the page and a muted tile
+     (WCAG 1.4.11), because on a card the edge is all that shows where the control is. Dividers stay --border. */
+  --input: #80808a;
   --ring: var(--foreground); /* focus is not a status: the ink colour, never the in-progress blue */
   --disabled: #84848c; /* disabled text: 3:1 on the page and cards, still clearly lighter than secondary text */
 
@@ -72,8 +75,8 @@
 
   /*
    * Chart series: identity, not status. Fixed order, never cycled; validated for colour-vision deficiency
-   * (dataviz validator: adjacent CVD ΔE ≥ 8, normal-vision ≥ 15). Slots 3–5 sit under 3:1 on white,
-   * so charts always ship a legend, direct labels and a table view. Use status colours for status, never as series.
+   * (dataviz validator: adjacent CVD ΔE ≥ 8, normal-vision ≥ 15). Every slot is 3:1 or more on the card, and charts still
+   * ship a legend, direct labels and a table view, so no series is told apart by colour alone. Use status colours for status, never as series.
    */
   /* Series identity only. Hues sit between the status hues (blue 262, green 162, amber 60–85, red 25) so no series
      reads as a status: violet 300, teal 205, olive 120, magenta 345, then grey for "Other". Validated for CVD
@@ -118,7 +121,7 @@
   --motion-sheet: 320ms;
 }
 
-/* ---------- Dark (default) ---------- */
+/* ---------- Dark ---------- */
 .dark {
   --background: #09090b;
   --foreground: #fafafa;
@@ -138,7 +141,7 @@
   --accent: #25252b;
   --destructive: #f75b6b;
   --border: #2c2c32;
-  --input: #2c2c32;
+  --input: #72727a;
   --ring: var(--foreground);
   --disabled: #6e6e76;
 
@@ -334,7 +337,7 @@
 
 @theme {
   /*
-   * Radius scale: xs 8, sm 12, md 16, lg 20, xl 24, full. All multiples of 4, sharing the spacing base,
+   * Radius scale: 2xs 4, xs 8, sm 12, md 16, lg 20, xl 24, full. All multiples of 4, sharing the spacing base,
    * so nested corners are always concentric: outer radius = inner radius + padding.
    *   rounded-xs = 8   tags, small parts flush inside a container
    *   rounded-sm = 12  buttons, inputs, icon tiles

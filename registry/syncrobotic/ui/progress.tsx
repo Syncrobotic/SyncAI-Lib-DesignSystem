@@ -1,4 +1,4 @@
-// @syncrobotic/progress v0.10.0 · update: npx shadcn add @syncrobotic/progress --overwrite
+// @syncrobotic/progress v0.17.1 · update: npx shadcn add @syncrobotic/progress --overwrite
 "use client"
 
 import * as React from "react"
@@ -13,7 +13,7 @@ const fill = {
   neutral: "bg-neutral",
 } as const
 
-/** Blue: a process someone is waiting on, with an end. Use another tone only when the value itself is a status (e.g. low battery). */
+/** Blue: a process someone is waiting on, with an end. A level that stays (battery, storage) is a Meter, not a Progress. */
 export function Progress({
   className,
   value,

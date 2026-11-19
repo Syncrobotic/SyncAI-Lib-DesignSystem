@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.16.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "--input (the edge of fields, checkboxes, radios and a switch that is off) is now 3:1 on the card, the page and a muted tile (WCAG 1.4.11): #80808a light, #72727a dark. It was 1.2–1.4:1, and on a card that edge is all that shows where a control is. The header says light is :root and dark the .dark class, and that offline is a neutral state."
+          },
           {
             "version": "0.16.0",
             "date": "2026-11-19",
@@ -528,8 +533,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "The battery turns warning below 15 %, the fleet-wide threshold (it was 30 %). Offline is documented as neutral."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -672,8 +682,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "Disabled outline and destructive buttons keep their outline and lose the ink (--disabled text, border ring). They were a filled grey, which looked heavier than the enabled outline beside them, as in pagination."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -951,7 +966,7 @@
           {
             "version": "0.15.0",
             "date": "2026-11-19",
-            "note": "The value and its unit are one reading, centred between \u2212 and + (\"20 %\"), instead of the value in the middle and the unit by the + button; the value is as wide as its digits. Angles sit on the number (\"-2.5\u00b0\"). A press anywhere in the middle puts the caret in the value."
+            "note": "The value and its unit are one reading, centred between − and + (\"20 %\"), instead of the value in the middle and the unit by the + button; the value is as wide as its digits. Angles sit on the number (\"-2.5°\"). A press anywhere in the middle puts the caret in the value."
           },
           {
             "version": "0.10.0",
@@ -1204,8 +1219,13 @@
         }
       ],
       "meta": {
-        "version": "0.12.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "Off is drawn with the --input edge, 3:1 on its surface (it was the --border edge, 1.3:1)."
+          },
           {
             "version": "0.12.0",
             "date": "2026-11-18",
@@ -1365,7 +1385,11 @@
       "type": "registry:ui",
       "title": "Badge",
       "description": "Status tones as foreground on subtle tint, plus outline; CountBadge for a count and ResultBadge for a pass, a fail or too few samples.",
-      "dependencies": ["class-variance-authority", "lucide-react", "radix-ui"],
+      "dependencies": [
+        "class-variance-authority",
+        "lucide-react",
+        "radix-ui"
+      ],
       "registryDependencies": [
         "@syncrobotic/cn"
       ],
@@ -1511,8 +1535,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "Documentation: a level that stays (battery, storage) is a Meter, not a Progress."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -1833,8 +1862,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "The chart shows the focus ring when it takes keyboard focus (it removed it)."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -1861,8 +1895,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "The panel shows the focus ring when it takes keyboard focus (it removed it)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -2347,8 +2386,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "tone=\"info\" is neutral, like success: a tile stays on screen, and blue is only for a process someone is waiting on. Solid warning takes the mode's ink, 4.5:1 or more in every theme (it was 2.2:1 in light high contrast; solid info was 2.5:1 in dark)."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -3476,7 +3520,7 @@
           {
             "version": "0.15.0",
             "date": "2026-11-19",
-            "note": "Scale buttons show keyboard focus, and long scales (0\u201310) fold into rows of six in a narrow container instead of overflowing."
+            "note": "Scale buttons show keyboard focus, and long scales (0–10) fold into rows of six in a narrow container instead of overflowing."
           },
           {
             "version": "0.9.0",
@@ -3581,8 +3625,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "Two across on phones, so four numbers take half a screen; the sparkline shows from 640 px."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -3784,8 +3833,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "The environment badge is a neutral outline for every environment (Staging was amber and Production red, a status colour on every page all day). The shell height can be set with --app-shell-height, so a banner above it does not push the bottom of the sidebar off screen. The sample nav has Agents."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -3914,8 +3968,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "Alarms come first, above the numbers and the robots, and leave when none is active: on a phone what needs someone is the first thing on screen."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -4027,8 +4086,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "Sample event reads Battery below 15 %, the fleet threshold."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -4564,7 +4628,7 @@
           {
             "version": "0.16.0",
             "date": "2026-11-19",
-            "note": "Design language: annotations on images (line style first, a halo under every stroke, class as a word not a colour) and the action rail (only the next step; \u2190 and Esc go back). Test and audit results: a pass is grey with a check, a failure a danger outline, not enough samples grey with a dashed circle."
+            "note": "Design language: annotations on images (line style first, a halo under every stroke, class as a word not a colour) and the action rail (only the next step; ← and Esc go back). Test and audit results: a pass is grey with a check, a failure a danger outline, not enough samples grey with a dashed circle."
           },
           {
             "version": "0.15.0",
@@ -4640,7 +4704,8 @@
       ],
       "registryDependencies": [
         "@syncrobotic/card",
-        "@syncrobotic/chart"
+        "@syncrobotic/chart",
+        "@syncrobotic/segmented-control"
       ],
       "files": [
         {
@@ -4649,8 +4714,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "Chart / Table switch in the header: the same numbers as a table, as every chart has (the data-visualisation rule)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -4674,7 +4744,8 @@
       ],
       "registryDependencies": [
         "@syncrobotic/card",
-        "@syncrobotic/chart"
+        "@syncrobotic/chart",
+        "@syncrobotic/segmented-control"
       ],
       "files": [
         {
@@ -4683,8 +4754,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "Chart / Table switch in the header: the same numbers as a table, as every chart has (the data-visualisation rule)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -4708,7 +4784,8 @@
       ],
       "registryDependencies": [
         "@syncrobotic/card",
-        "@syncrobotic/chart"
+        "@syncrobotic/chart",
+        "@syncrobotic/segmented-control"
       ],
       "files": [
         {
@@ -4717,8 +4794,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "Chart / Table switch in the header: the same numbers as a table, as every chart has (the data-visualisation rule)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -4742,7 +4824,8 @@
       ],
       "registryDependencies": [
         "@syncrobotic/card",
-        "@syncrobotic/chart"
+        "@syncrobotic/chart",
+        "@syncrobotic/segmented-control"
       ],
       "files": [
         {
@@ -4751,8 +4834,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "Chart / Table switch in the header: the same numbers as a table, as every chart has (the data-visualisation rule)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -4776,7 +4864,8 @@
       ],
       "registryDependencies": [
         "@syncrobotic/card",
-        "@syncrobotic/chart"
+        "@syncrobotic/chart",
+        "@syncrobotic/segmented-control"
       ],
       "files": [
         {
@@ -4785,8 +4874,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "Chart / Table switch in the header: the same numbers as a table, as every chart has (the data-visualisation rule)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -4840,7 +4934,8 @@
       ],
       "registryDependencies": [
         "@syncrobotic/card",
-        "@syncrobotic/chart"
+        "@syncrobotic/chart",
+        "@syncrobotic/segmented-control"
       ],
       "files": [
         {
@@ -4849,8 +4944,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "Chart / Table switch in the header: the same numbers as a table, as every chart has (the data-visualisation rule)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -4869,7 +4969,8 @@
       ],
       "registryDependencies": [
         "@syncrobotic/card",
-        "@syncrobotic/chart"
+        "@syncrobotic/chart",
+        "@syncrobotic/segmented-control"
       ],
       "files": [
         {
@@ -4878,8 +4979,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "Chart / Table switch in the header: the same numbers as a table, as every chart has (the data-visualisation rule)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -4898,7 +5004,8 @@
       ],
       "registryDependencies": [
         "@syncrobotic/card",
-        "@syncrobotic/chart"
+        "@syncrobotic/chart",
+        "@syncrobotic/segmented-control"
       ],
       "files": [
         {
@@ -4907,8 +5014,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "Chart / Table switch in the header: the same numbers as a table, as every chart has (the data-visualisation rule)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -5201,6 +5313,8 @@
       "description": "Days by 2-hour slots in one sequential hue, the busiest slot named, a tooltip per cell.",
       "registryDependencies": [
         "@syncrobotic/card",
+        "@syncrobotic/segmented-control",
+        "@syncrobotic/table",
         "@syncrobotic/tooltip"
       ],
       "files": [
@@ -5210,8 +5324,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "Chart / Table switch in the header: the same numbers as a table, as every chart has (the data-visualisation rule)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -5309,8 +5428,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "Fleet battery takes only low at 15 %: a battery never turns danger (it had low 30 and critical 15)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -6263,8 +6387,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "The sidebar marks Agents as the current page (it marked Event log)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -6296,8 +6425,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "The sidebar marks Agents as the current page (it marked Event log)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -6329,8 +6463,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "The sidebar marks Agents as the current page (it marked Alarms)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
