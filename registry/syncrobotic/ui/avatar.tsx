@@ -29,6 +29,8 @@ export function Avatar({
       data-slot="avatar"
       data-size={size}
       data-shape={shape}
+      // Labelled ("Patrol dog 7F3A, 3 open alarms"), it is one picture to a screen reader, not a bare span.
+      role={props["aria-label"] ? "img" : undefined}
       className={cn(
         "group/avatar relative flex shrink-0 select-none",
         sizes[size],

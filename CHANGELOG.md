@@ -15,6 +15,8 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - **`input-group` units follow the value:** `InputGroupUnit` writes the unit right after the value ("120 m") instead of at the far edge; the value is as wide as its text (`field-sizing: content`; browsers without it keep the unit at the edge). A press on the field's empty space puts the caret in the text box.
 
 ### Fixed
+- **The docs site rang alarms**: an unacknowledged critical alarm in a block example (map-workspace on Fleet operations) repeated its tone every 10 s once the page had a click. The docs and previews keep sound and vibration off; the sample buttons on the Alarms page play only when pressed. Products are unchanged: critical alarms still repeat until acknowledged.
+- `avatar` with an `aria-label` is announced as one picture (`role="img"`).
 - **Keyboard focus was invisible** on chip-group, navigation-menu, scrollspy, stepper, trace, questionnaire, scroll-area, timeline, calendar's dropdowns and command's input: `outline-none` with `focus-visible:outline-2` draws nothing in Tailwind 4.3. Every one shows the 2 px ring again.
 - **Phones (412 px), from a page-by-page audit:**
   - 15 block tables no longer scroll key columns off screen: secondary columns fold under the main cell. `agent-approval` shows Now and After before you approve.

@@ -4,7 +4,7 @@ import * as React from "react"
 import { Dock } from "@/registry/syncrobotic/shell/dock"
 import { StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { StopButton } from "@/registry/syncrobotic/shell/stop-button"
-import { feedback } from "@/registry/syncrobotic/lib/feedback"
+import { sample } from "./quiet"
 import { SlideToRelease } from "@/registry/syncrobotic/shell/slide-to-release"
 
 type Phase = "moving" | "sending" | "stopped"
@@ -23,7 +23,8 @@ export function HeroDemo() {
     // The robot confirms; the shell waits for it rather than pretending.
     timer.current = window.setTimeout(() => {
       // Confirmed: the hand feels it as the stop gives way to release.
-      feedback("stopConfirmed")
+      // You pressed the stop: you hear and feel what an operator would.
+      sample("stopConfirmed")
       setPhase("stopped")
     }, 700)
   }

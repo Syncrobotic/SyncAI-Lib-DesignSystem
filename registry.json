@@ -1424,7 +1424,7 @@
           {
             "version": "0.15.0",
             "date": "2026-11-19",
-            "note": "`size` (sm 24, md 32, lg 40, xl 48) and `shape` (circle for people, square for robots, sites and teams); AvatarBadge for a status (StatusGlyph shapes) or a count; AvatarGroup with `max` folding the rest into +N and a `label` for screen readers; AvatarGroupCount. The default looks as before."
+            "note": "`size` (sm 24, md 32, lg 40, xl 48) and `shape` (circle for people, square for robots, sites and teams); AvatarBadge for a status (StatusGlyph shapes) or a count; AvatarGroup with `max` folding the rest into +N and a `label` for screen readers; AvatarGroupCount. The default looks as before. With an aria-label it is announced as one picture (role=\"img\")."
           },
           {
             "version": "0.5.0",
