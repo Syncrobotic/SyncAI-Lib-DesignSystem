@@ -2,7 +2,7 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.15.0 · 2026-11-19
 
 ### Added
 - **`use-debounce`**: `useDebouncedValue` and `useDebouncedCallback` (with `cancel` and `flush`), for a search or an autosave that waits until changes pause. `autocomplete` takes `debounce` (ms): the text box updates on every key, `onQueryChange` fires when the typing pauses, and clearing never waits. The server-search example also drops answers that arrive after a newer query.
