@@ -57,6 +57,20 @@ export const overviews: Record<string, Overview> = {
     use: ["Images by use, label sources, a dataset's tiers.", "Inside a table cell without a legend, or on its own with `legend`."],
     instead: ["Values over time or many categories: `chart`.", "A single level within a range: `meter`."],
   },
+  "annotated-image": {
+    what: "A picture with boxes, points, polygons or poses drawn over it: what a model predicted, what a person labelled, the previous version.",
+    use: [
+      "Reviewing a model's detections against ground truth, frame by frame.",
+      "Comparing two versions of a model or of a dataset's labels on the same picture.",
+      "Showing what a camera saw when an event fired, with the object that fired it.",
+    ],
+    instead: ["Many pictures at once, without marks: `image-grid`.", "Drawing or editing boxes: a labelling tool; this one shows and selects, it does not edit."],
+    notes: [
+      "Annotation coordinates are image pixels, not percentages or CSS pixels; `width` and `height` are the picture's natural size.",
+      "Without `onSelectedChange` the picture is one role=img with a generated summary; with it, a group of buttons with aria-pressed. Do not wrap it in another button.",
+      "Placeholders and tests draw the picture in code (an SVG data URI); never an external URL.",
+    ],
+  },
   "restricted-preview": {
     what: "A preview that does not load until someone asks: restricted data, faces, number plates.",
     use: ["Thumbnails of a restricted dataset in a catalog or gallery."],

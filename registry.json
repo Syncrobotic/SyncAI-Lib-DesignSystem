@@ -2974,6 +2974,36 @@
       }
     },
     {
+      "name": "annotated-image",
+      "type": "registry:ui",
+      "title": "Annotated image",
+      "description": "Boxes, points, polygons and poses over a picture, in its own pixel space: predicted solid, ground truth dashed, the previous version dotted, each on a halo; class words, a line-style legend, selection by keyboard, raster overlays, loading and failed states.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/skeleton"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/annotated-image.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.18.0",
+        "changelog": [
+          {
+            "version": "0.18.0",
+            "date": "2026-11-19",
+            "note": "First release: AnnotatedImage (src or image, width, height, annotations of box, point, polygon and keypoints) with an SVG in the picture's pixel space and non-scaling strokes; predicted solid, ground truth dashed, previous dotted and faded, each on a halo; selected 3 px with handles; class words (all, selected or none); a role=img summary, or with onSelectedChange one Tab stop, arrows, Enter and Esc; overlays; loading and failed states; and AnnotationLegend for the kinds present."
+          }
+        ]
+      }
+    },
+    {
       "name": "filter-form",
       "type": "registry:ui",
       "title": "Filter form",

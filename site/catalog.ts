@@ -50,6 +50,7 @@ export type StoryFile =
   | "route-progress"
   | "data-pieces"
   | "image-grid"
+  | "annotated-image"
   | "hooks"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
@@ -623,6 +624,18 @@ const entries: Record<string, Entry> = {
       "Use the strip for a short row, such as what was just uploaded; for a whole dataset, the grid.",
     ],
   },
+  "annotated-image": {
+    wide: true,
+    group: "Display",
+    examples: { file: "annotated-image", prefix: "AnnotatedImage" },
+    rules: [
+      "Coordinates are the picture's own pixels; give its natural `width` and `height`. The box keeps that aspect ratio, so the marks line up at any size.",
+      "Line style says where a mark came from (predicted solid, ground truth dashed, previous dotted); the class is the word on it. Never a colour per class, never status colours.",
+      "Keep the legend (or an AnnotationLegend nearby) whenever more than one kind is on screen.",
+      "Crowded picture, or a picture shown phone-wide: `showLabels=\"selected\"`. The words are still read out in the summary or on each annotation's button.",
+      "Selectable only when something happens on select (a details panel, a review); otherwise the picture is one image with a summary.",
+    ],
+  },
   alert: {
     group: "Feedback",
     examples: { file: "display", prefix: "Alert" },
@@ -944,6 +957,13 @@ const keyboard: Record<string, [string, string][]> = {
     ["Enter / Space", "Open the picture in the lightbox, or pick it while picking"],
     ["← / →", "In the lightbox: previous or next picture"],
     ["Esc", "Close the lightbox and return focus to the picture's tile"],
+  ],
+  "annotated-image": [
+    ["Tab", "Reach the picture's annotations once; Tab again leaves"],
+    ["← → / ↑ ↓", "Previous or next annotation, top to bottom and left to right"],
+    ["Home / End", "First or last annotation"],
+    ["Enter / Space", "Select the annotation"],
+    ["Esc", "Clear the selection"],
   ],
   dialog: overlayKeys,
   "alert-dialog": [

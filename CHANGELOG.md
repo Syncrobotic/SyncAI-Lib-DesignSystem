@@ -2,6 +2,11 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **`annotated-image`** (beta): boxes, points, polygons and poses over a picture, in its own pixel space with non-scaling strokes. Predicted solid, ground truth dashed, the previous version dotted and faded, each on a halo; selected 3 px with handles; class words on the picture (all, selected or none); one image with a spoken summary, or, with `onSelectedChange`, a group of buttons (one Tab stop, arrows, Enter, Esc); raster overlays; loading and failed states; and `AnnotationLegend` for the kinds present.
+
 ## 0.17.4 · 2026-11-19
 
 Found by putting the kit into a real product (the DataCore dashboard), not by a review.

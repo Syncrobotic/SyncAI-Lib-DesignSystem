@@ -287,6 +287,10 @@
     "version": "0.17.3",
     "hash": "092404505fa28c94"
   },
+  "annotated-image": {
+    "version": "0.18.0",
+    "hash": "b033c11941fbc3f8"
+  },
   "filter-form": {
     "version": "0.10.0",
     "hash": "4408d94150b8f69d"

@@ -281,6 +281,104 @@
    ]
   }
  ],
+ "annotated-image": [
+  {
+   "name": "AnnotatedImage",
+   "props": [
+    {
+     "name": "src",
+     "type": "string",
+     "description": "The picture. Or pass `image` to draw your own (a canvas, a video frame)."
+    },
+    {
+     "name": "image",
+     "type": "ReactNode",
+     "description": "The picture as an element, in place of `src`; it should fill its box (size-full)."
+    },
+    {
+     "name": "width",
+     "type": "number",
+     "required": true,
+     "description": "The picture's natural size in pixels: the coordinate space of the annotations, and the box's aspect ratio."
+    },
+    {
+     "name": "height",
+     "type": "number",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "What the picture is, e.g. \"Camera 2, aisle 3, 14:08\". The annotations are summarised after it for screen readers."
+    },
+    {
+     "name": "annotations",
+     "type": "Annotation[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "selectedId",
+     "type": "string",
+     "default": "null",
+     "description": "The annotation drawn as selected: 3 px in the focus ink, with handles."
+    },
+    {
+     "name": "onSelectedChange",
+     "type": "(id: string | null) => void",
+     "description": "Makes each annotation a button (one Tab stop, arrows move, Enter selects, Esc clears). Without it nothing is focusable."
+    },
+    {
+     "name": "showLabels",
+     "type": "\"none\" | \"all\" | \"selected\"",
+     "default": "\"all\"",
+     "description": "Which class words show on the picture. `selected` keeps a crowded picture readable; the words are still read out."
+    },
+    {
+     "name": "legend",
+     "type": "boolean",
+     "default": "true",
+     "description": "The line-style legend under the picture, for the kinds present. On by default; off when the page has its own."
+    },
+    {
+     "name": "overlays",
+     "type": "AnnotationOverlay[]",
+     "default": "[]",
+     "description": "Raster layers drawn between the picture and the marks, in order."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "description": "Show the box at the picture's aspect ratio, breathing, until the picture and its annotations arrive."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<AnnotatedImageLabels>",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "AnnotationLegend",
+   "props": [
+    {
+     "name": "kinds",
+     "type": "AnnotationKind[]",
+     "default": "kinds",
+     "description": "The kinds to list, in this order: predicted, ground truth, previous version."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<Pick<AnnotatedImageLabels, \"legend\" | \"previous\" | \"predicted\" | \"truth\">>",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "attachment": [
   {
    "name": "Attachment",
@@ -549,7 +647,7 @@
    "props": [
     {
      "name": "result",
-     "type": "\"passed\" | \"failed\" | \"insufficient\"",
+     "type": "\"failed\" | \"passed\" | \"insufficient\"",
      "required": true,
      "description": ""
     }
