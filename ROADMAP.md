@@ -52,11 +52,11 @@ Ordered by what blocks adoption first. Each milestone is one or two release trai
 - [x] Data table with sort and pagination (`data-grid`), filters beside it (`filter-form`)
 - [ ] Form validation with React Hook Form: `field` shows errors, but no wiring or example with a form library
 - [x] Charts (`chart` and the chart items)
-- [ ] Data-visualisation rules as a foundation page (palette, axes, maps and robot tracks); today they live in each chart's usage notes
+- [x] Data-visualisation rules as a foundation page (palette, axes, maps and robot tracks)
 
 ### 0.7 · Environments
 - [x] Compact density for dashboards (`data-density="compact"`, mouse only)
-- [ ] High-contrast theme for bright sun and outdoor robots
+- [x] High-contrast theme for bright sun and outdoor robots (`data-contrast="more"`)
 - [x] Glove-sized targets for field use (`data-density="glove"`)
 
 ### 0.8 · Documentation

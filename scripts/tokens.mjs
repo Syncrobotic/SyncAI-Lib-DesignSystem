@@ -7,7 +7,8 @@
 // Output (served by the docs site at /tokens/…):
 //   core.tokens.json        radius, spacing, heights, type, motion: the same in every mode
 //   color.light.tokens.json colour, shadow: light mode
-//   color.dark.tokens.json  colour, shadow: dark mode (same names, so tools treat the two files as modes)
+//   color.dark.tokens.json  colour, shadow: dark mode (same names, so tools treat the files as modes)
+//   color.light-hc.tokens.json, color.dark-hc.tokens.json  the same under data-contrast="more"
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs"
 
 const WRITE = process.argv.includes("--write")
@@ -31,6 +32,8 @@ function block(selector) {
 
 const light = block(":root")
 const dark = block(".dark")
+const lightHc = block('[data-contrast="more"]')
+const darkHc = block('[data-contrast="more"] .dark')
 const theme = block("@theme")
 
 // ---------- value conversion ----------
@@ -50,8 +53,7 @@ function shadow(v) {
 
 // ---------- colour sets ----------
 const colorNames = Object.keys(light).filter((k) => /^#|^rgb|^var\(--/.test(light[k]) && !k.startsWith("shadow"))
-function colorSet(mode) {
-  const values = mode === "dark" ? { ...light, ...dark } : light
+function colorSet(values) {
   const color_ = {}
   for (const k of colorNames) {
     const v = values[k]
@@ -103,8 +105,10 @@ const core = {
 
 const files = {
   "core.tokens.json": core,
-  "color.light.tokens.json": colorSet("light"),
-  "color.dark.tokens.json": colorSet("dark"),
+  "color.light.tokens.json": colorSet(light),
+  "color.dark.tokens.json": colorSet({ ...light, ...dark }),
+  "color.light-hc.tokens.json": colorSet({ ...light, ...lightHc }),
+  "color.dark-hc.tokens.json": colorSet({ ...light, ...dark, ...darkHc }),
 }
 
 let stale = 0
