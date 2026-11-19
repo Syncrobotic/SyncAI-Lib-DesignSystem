@@ -1,10 +1,10 @@
-// @syncrobotic/fleet-table v0.8.0 · update: npx shadcn add @syncrobotic/fleet-table --overwrite
+// @syncrobotic/fleet-table v0.13.0 · update: npx shadcn add @syncrobotic/fleet-table --overwrite
 "use client"
 
 import * as React from "react"
 import { Ellipsis, MapPin, Pencil, Search, Trash2 } from "lucide-react"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
-import type { Tone } from "@/registry/syncrobotic/shell/status-glyph"
+import type { Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/registry/syncrobotic/ui/dropdown-menu"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
@@ -24,12 +24,12 @@ export type Robot = {
   lastSeen: string
 }
 
-const status: Record<Robot["status"], { tone: Tone; label: string }> = {
-  patrolling: { tone: "info", label: "Patrolling" },
-  docked: { tone: "success", label: "Docked" },
+const status: Record<Robot["status"], { tone: Status; label: string }> = {
+  patrolling: { tone: "active", label: "Patrolling" },
+  docked: { tone: "normal", label: "Docked" },
   attention: { tone: "warning", label: "Needs attention" },
   stopped: { tone: "danger", label: "Stopped" },
-  offline: { tone: "neutral", label: "Offline" },
+  offline: { tone: "offline", label: "Offline" },
 }
 
 export const sampleRobots: Robot[] = [
@@ -139,12 +139,12 @@ export function FleetTable({ robots = sampleRobots, pageSize = 5, onOpen }: { ro
                       {r.name}
                     </button>
                     <span className="sm:hidden">
-                      <InlineStatus tone={status[r.status].tone}>{status[r.status].label}</InlineStatus>
+                      <InlineStatus status={status[r.status].tone}>{status[r.status].label}</InlineStatus>
                     </span>
                   </div>
                 </TableCell>
                 <TableCell className="hidden sm:table-cell">
-                  <InlineStatus tone={status[r.status].tone}>{status[r.status].label}</InlineStatus>
+                  <InlineStatus status={status[r.status].tone}>{status[r.status].label}</InlineStatus>
                 </TableCell>
                 <TableCell>
                   <Meter value={r.battery} low={30} critical={15} label={`Battery, ${r.name}`} inline />

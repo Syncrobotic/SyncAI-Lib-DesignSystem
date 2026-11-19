@@ -49,7 +49,7 @@ export const TimelineWithIcons: S = {
 
 export const TimelineGroupedByDay: S = {
   render: () => (
-    <Timeline density="dense">
+    <Timeline size="sm">
       <TimelineHeading>Today</TimelineHeading>
       <TimelineItem time="10:40" title="Returned to dock" />
       <TimelineItem time="09:12" title="North gate patrol done" />

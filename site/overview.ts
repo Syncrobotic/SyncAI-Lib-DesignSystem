@@ -18,7 +18,7 @@ export const overviews: Record<string, Overview> = {
       "A sequence a person goes through: `stepper`.",
       "Thousands of log lines: `data-grid` with virtual rows.",
     ],
-    notes: ["formatDuration(ms) gives 840 ms, 1.2 s, 2 m 05 s.", "Nest a Trace inside a TraceItem for sub-steps; density and total are inherited."],
+    notes: ["formatDuration(ms) gives 840 ms, 1.2 s, 2 m 05 s.", "Nest a Trace inside a TraceItem for sub-steps; size and total are inherited."],
   },
   marker: {
     what: "A labelled divider across a log or feed, plus a one-line log row with a status glyph.",
@@ -454,7 +454,7 @@ export const overviews: Record<string, Overview> = {
     use: ["Next to a robot's name, in tables and on the map."],
     instead: ["A state with its word: `status-eyebrow`.", "An alarm: `alarm`, which has its own shapes."],
     notes: [
-      "Tones: info (in progress, filled circle), neutral (normal, hollow circle), warning (triangle), danger (stopped, square), offline (slashed). Info and success render in foreground colour, not blue or green.",
+      "`status`: active (busy, filled circle), normal (hollow circle), warning (triangle), danger (stopped, square), offline (slashed). Active and normal render in the foreground colour, not blue or green. `tone` is the old name for the same prop (info, success, neutral meant active, normal, offline), accepted until 1.0.",
     ],
   },
   "status-eyebrow": {
@@ -579,7 +579,7 @@ export const overviews: Record<string, Overview> = {
     what: "The top of the control app: name, device status and notifications, each expanding on its own, with the most urgent alarm inside.",
     use: ["Every page of the phone control app."],
     instead: ["Internal tools: the app shell's top bar."],
-    notes: ["Pair with `edge={alarmEdge(topAlarm(alarms))}` and put IslandAlarm inside, from the same alarm data as AlarmList."],
+    notes: ["Pair with `edge={alarmEdge(topAlarm(alarms)) ?? stateEdge}`, where stateEdge is the persistent state (offline: warning, stopped: danger), so a low alarm does not erase it. Put IslandAlarm inside, from the same alarm data as AlarmList."],
   },
   tray: {
     what: "The shared frame of the island and the dock: radius 24, padding 8, gap 8.",

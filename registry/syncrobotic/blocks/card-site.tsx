@@ -1,15 +1,15 @@
-// @syncrobotic/card-site v0.9.0 · update: npx shadcn add @syncrobotic/card-site --overwrite
+// @syncrobotic/card-site v0.13.0 · update: npx shadcn add @syncrobotic/card-site --overwrite
 import * as React from "react"
 import { ChevronRight, MapPin } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
-import type { Tone } from "@/registry/syncrobotic/shell/status-glyph"
+import type { Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Card } from "@/registry/syncrobotic/ui/card"
 
 export type Site = {
   name: string
   address: string
-  state: { tone: Tone; label: string }
+  state: { tone: Status; label: string }
   robots: { active: number; total: number }
   missionsToday: number
   /** What needs someone, in words. Empty when all is well. */
@@ -21,7 +21,7 @@ export const sampleSites: Site[] = [
   {
     name: "Taipei HQ",
     address: "Neihu District, Taipei",
-    state: { tone: "success", label: "All normal" },
+    state: { tone: "normal", label: "All normal" },
     robots: { active: 9, total: 10 },
     missionsToday: 64,
     href: "#taipei",
@@ -38,7 +38,7 @@ export const sampleSites: Site[] = [
   {
     name: "Hsinchu lab",
     address: "East District, Hsinchu",
-    state: { tone: "neutral", label: "Closed until 08:00" },
+    state: { tone: "offline", label: "Closed until 08:00" },
     robots: { active: 0, total: 4 },
     missionsToday: 0,
     href: "#hsinchu",
@@ -57,7 +57,7 @@ export function CardSite({ sites = sampleSites, className }: { sites?: Site[]; c
           <Card className="press relative flex-1 gap-4 hover:ring-muted-foreground has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-ring">
             <div className="flex items-start justify-between gap-3">
               <div className="flex min-w-0 flex-col gap-1">
-                <StatusEyebrow tone={s.state.tone}>{s.state.label}</StatusEyebrow>
+                <StatusEyebrow status={s.state.tone}>{s.state.label}</StatusEyebrow>
                 <h3 className="truncate text-lg font-bold">
                   {/* The whole card is the link's target; the name is its text. */}
                   <a href={s.href} className="outline-none after:absolute after:inset-0 after:rounded-[inherit]">

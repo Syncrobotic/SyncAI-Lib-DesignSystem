@@ -1,4 +1,4 @@
-// @syncrobotic/dataset-detail v0.8.0 · update: npx shadcn add @syncrobotic/dataset-detail --overwrite
+// @syncrobotic/dataset-detail v0.13.0 · update: npx shadcn add @syncrobotic/dataset-detail --overwrite
 "use client"
 
 import * as React from "react"
@@ -111,7 +111,7 @@ export function DatasetDetail({ name = "Night parking lot people", reference = "
             {reference}
             <CopyButton value={reference} label="Copy reference" />
           </p>
-          <InlineStatus tone="success">May enter product releases</InlineStatus>
+          <InlineStatus status="normal">May enter product releases</InlineStatus>
         </header>
 
         <Tabs defaultValue="overview">
@@ -194,7 +194,7 @@ export function DatasetDetail({ name = "Night parking lot people", reference = "
                   {i > 0 && <Separator />}
                   <div className="flex min-h-(--h-row) items-center justify-between gap-3 px-4 text-sm">
                     {r.check}
-                    <InlineStatus tone={r.state === "passed" ? "success" : "warning"}>{r.state === "passed" ? "Passed" : "Open"}</InlineStatus>
+                    <InlineStatus status={r.state === "passed" ? "normal" : "warning"}>{r.state === "passed" ? "Passed" : "Open"}</InlineStatus>
                   </div>
                 </li>
               ))}

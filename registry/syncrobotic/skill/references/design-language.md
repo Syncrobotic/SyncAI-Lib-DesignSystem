@@ -3,6 +3,7 @@
 Everything here is a token in `syncrobotic-theme.css`; use the token, never the value.
 
 ## Colour: colour is for what needs someone
+- Light is the default theme: it reads outdoors, in daylight and glare. Dark (`class="dark"` on `<html>`) is for control rooms and night shifts. Both are complete; never design for one only.
 - Surfaces: `--background` is the page only; `--card` for panels, cards and the fields on them; `--popover` for overlays; `--muted` for tracks and the current page in navigation; `--accent` for hover.
 - Text: `--foreground`, `--muted-foreground`. Text never takes a series or status colour except the status word itself. Disabled controls keep their words readable: `bg-muted text-muted-foreground`, never opacity on text.
 - Status: `warning` (needs attention), `danger` (needs someone now), each with a `-subtle` tint; pair foreground on tint. A calm state (normal, idle, busy, patrolling, charging) is grey: shape + neutral text. `success` green only for a confirmation that comes and goes (toast, alert), never for a state.

@@ -1,11 +1,11 @@
-// @syncrobotic/card-mission v0.9.0 · update: npx shadcn add @syncrobotic/card-mission --overwrite
+// @syncrobotic/card-mission v0.13.0 · update: npx shadcn add @syncrobotic/card-mission --overwrite
 "use client"
 
 import * as React from "react"
 import { Bot, Clock, Route } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
-import type { Tone } from "@/registry/syncrobotic/shell/status-glyph"
+import type { Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Card } from "@/registry/syncrobotic/ui/card"
 import { Progress } from "@/registry/syncrobotic/ui/progress"
@@ -14,7 +14,7 @@ export type Mission = {
   name: string
   route: string
   robot: string
-  state: { tone: Tone; label: string }
+  state: { tone: Status; label: string }
   /** Checkpoints passed and in total. */
   checkpoints: { done: number; total: number }
   time: string
@@ -27,7 +27,7 @@ export const sampleMissions: Mission[] = [
     name: "Night patrol",
     route: "Perimeter, 12 checkpoints",
     robot: "Patrol dog 7F3A",
-    state: { tone: "info", label: "Running" },
+    state: { tone: "active", label: "Running" },
     checkpoints: { done: 7, total: 12 },
     time: "14 min left",
   },
@@ -55,7 +55,7 @@ export function CardMission({ missions = sampleMissions, className }: { missions
         return (
           <Card key={m.name} className="gap-4">
             <div className="flex flex-col gap-1">
-              <StatusEyebrow tone={m.state.tone}>{m.state.label}</StatusEyebrow>
+              <StatusEyebrow status={m.state.tone}>{m.state.label}</StatusEyebrow>
               <h3 className="text-lg font-bold">{m.name}</h3>
             </div>
             <ul className="flex flex-col gap-2 text-sm text-muted-foreground">

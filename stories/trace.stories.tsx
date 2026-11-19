@@ -56,7 +56,7 @@ export const TraceNested: S = {
   render: () => (
     <Trace>
       <TraceItem status="done" title="Night patrol · North" duration={1_412_000} defaultOpen>
-        <Trace density="dense">
+        <Trace size="sm">
           <TraceItem status="done" title="Gate A" duration={312_000} />
           <TraceItem status="warning" title="Gate B" description="Door left open; photo sent to security." duration={498_000} />
           <TraceItem status="done" title="Parking lot" duration={602_000} />
@@ -121,7 +121,7 @@ export const TraceWithHeader: S = {
 
 export const TraceDense: S = {
   render: () => (
-    <Trace density="dense">
+    <Trace size="sm">
       {["Boot", "Self-test", "Localize", "Load mission", "Arm"].map((t, i) => (
         <TraceItem key={t} status="done" title={t} duration={[1800, 4200, 2600, 300, 120][i]} />
       ))}

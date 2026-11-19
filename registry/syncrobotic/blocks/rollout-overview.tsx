@@ -1,11 +1,11 @@
-// @syncrobotic/rollout-overview v0.9.0 · update: npx shadcn add @syncrobotic/rollout-overview --overwrite
+// @syncrobotic/rollout-overview v0.13.0 · update: npx shadcn add @syncrobotic/rollout-overview --overwrite
 "use client"
 
 import * as React from "react"
 import { Pause, Play, Undo2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
-import { StatusGlyph, type Tone } from "@/registry/syncrobotic/shell/status-glyph"
+import { StatusGlyph, type Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Progress } from "@/registry/syncrobotic/ui/progress"
 import { Stepper, StepperItem } from "@/registry/syncrobotic/ui/stepper"
@@ -19,7 +19,7 @@ const robots: RobotRow[] = [
   { robot: "Patrol dog DAA6", state: "updated", note: "2.4.1, health checks passed" },
   { robot: "Patrol dog B812", state: "waiting", note: "Waits until it docks after its mission (about 22:40)" },
 ]
-const tone: Record<RobotRow["state"], Tone> = { updated: "success", updating: "info", failed: "danger", waiting: "neutral" }
+const tone: Record<RobotRow["state"], Status> = { updated: "normal", updating: "active", failed: "danger", waiting: "offline" }
 const word = { updated: "Updated", updating: "Updating", failed: "Failed", waiting: "Waiting to dock" } as const
 
 const gates = [
@@ -112,7 +112,7 @@ export function RolloutOverview() {
                       <TableCell className="font-medium">{r.robot}</TableCell>
                       <TableCell>
                         <span className={cn("flex items-center gap-2", r.state === "failed" && "font-medium text-danger")}>
-                          <StatusGlyph tone={tone[r.state]} />
+                          <StatusGlyph status={tone[r.state]} />
                           {word[r.state]}
                         </span>
                       </TableCell>

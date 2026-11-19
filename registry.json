@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.11.1",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "Touch is detected with `any-pointer: coarse`, so a touch laptop with a trackpad keeps 44 px controls, and compact density applies only where nothing is a touch screen."
+          },
           {
             "version": "0.11.1",
             "date": "2026-11-18",
@@ -210,8 +215,13 @@
         }
       ],
       "meta": {
-        "version": "0.12.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "`status` (active, normal, warning, danger, offline) replaces `tone`, whose info, success and neutral named colours for states that are not coloured. `tone` still works until 1.0 and warns once in development. New `Status`, `toStatus`, `statusText`, `statusSubtle`."
+          },
           {
             "version": "0.12.0",
             "date": "2026-11-18",
@@ -251,8 +261,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "StatusEyebrow and InlineStatus take `status`; `tone` still works until 1.0."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -440,8 +455,13 @@
         }
       ],
       "meta": {
-        "version": "0.12.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "Island takes `status` for the robot's state; `tone` still works until 1.0. The docs pair the edge as `alarmEdge(topAlarm(alarms)) ?? stateEdge`, so a low alarm does not erase offline or stopped."
+          },
           {
             "version": "0.12.0",
             "date": "2026-11-18",
@@ -1539,8 +1559,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "Failures are never closed for you: when more than three toasts are open, the oldest that is not a failure makes room, and if all are failures, they all stay."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -2295,8 +2320,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "Its status pill's glyph reads the tone through `toStatus`."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -2757,8 +2787,13 @@
         }
       ],
       "meta": {
-        "version": "0.11.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "`size=\"sm\"` replaces `density=\"dense\"`, so it is not confused with the theme's data-density. `density` still works until 1.0."
+          },
           {
             "version": "0.11.0",
             "date": "2026-11-18",
@@ -2978,8 +3013,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "`size=\"sm\"` replaces `density=\"dense\"`; `density` still works until 1.0. Its status glyph reads the tone through `toStatus`."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -3105,8 +3145,13 @@
         }
       ],
       "meta": {
-        "version": "0.12.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "`size=\"sm\"` replaces `density=\"dense\"`; `density` still works until 1.0."
+          },
           {
             "version": "0.12.0",
             "date": "2026-11-18",
@@ -3136,8 +3181,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "Its glyph reads the tone through `toStatus`."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -3214,8 +3264,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "Uses `status` instead of `tone` for robot states (same look)."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -3256,8 +3311,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "Uses `status` instead of `tone` for robot states (same look)."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -3292,8 +3352,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "Uses `status` instead of `tone` for robot states (same look)."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -3338,8 +3403,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "Uses `status` instead of `tone` for robot states (same look)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -3468,8 +3538,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "Uses `status` instead of `tone` for robot states (same look)."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -3571,8 +3646,13 @@
         }
       ],
       "meta": {
-        "version": "0.11.1",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "Uses `status` instead of `tone` for robot states (same look)."
+          },
           {
             "version": "0.11.1",
             "date": "2026-11-18",
@@ -3679,8 +3759,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "Uses `status` instead of `tone` for robot states (same look)."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -3720,8 +3805,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "Uses `status` instead of `tone` for robot states (same look)."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -3965,8 +4055,13 @@
         }
       ],
       "meta": {
-        "version": "0.11.1",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-18",
+            "note": "Light is the default theme; dark is for control rooms and night shifts."
+          },
           {
             "version": "0.11.1",
             "date": "2026-11-18",
@@ -4290,8 +4385,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "Uses `status` instead of `tone` for robot states (same look)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -4583,8 +4683,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "Uses `status` instead of `tone` for robot states (same look)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -4672,8 +4777,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "Uses `status` instead of `tone` for robot states (same look)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -4705,8 +4815,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "Uses `status` instead of `tone` for robot states (same look)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -4963,8 +5078,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "Uses `size=\"sm\"` on its timeline and `status` on its glyphs."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -5060,8 +5180,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "Uses `size=\"sm\"`."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -5157,8 +5282,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "The now line is the foreground colour: it marks a time, not a process someone waits on."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -5194,8 +5324,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "Uses `status` instead of `tone` for robot states (same look)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -5260,8 +5395,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "Uses `status` instead of `tone` for robot states (same look)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -5293,8 +5433,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "Uses `status` instead of `tone` for robot states (same look)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -5358,8 +5503,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "Uses `status` instead of `tone` for robot states (same look)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -5392,8 +5542,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "Uses `status` instead of `tone` for robot states (same look)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -5515,8 +5670,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.13.0",
         "changelog": [
+          {
+            "version": "0.13.0",
+            "date": "2026-11-19",
+            "note": "Uses `status` instead of `tone` for robot states (same look)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",

@@ -1,4 +1,4 @@
-// @syncrobotic/mission-schedule v0.10.0 · update: npx shadcn add @syncrobotic/mission-schedule --overwrite
+// @syncrobotic/mission-schedule v0.13.0 · update: npx shadcn add @syncrobotic/mission-schedule --overwrite
 "use client"
 
 import * as React from "react"
@@ -125,7 +125,7 @@ export function MissionSchedule() {
                 <li key={l.robot} className="grid grid-cols-[10rem_1fr] items-center border-b border-border last:border-b-0">
                   <span className="px-4 text-sm font-medium">{l.robot}</span>
                   <div className="relative h-14">
-                    {now !== undefined && <span aria-hidden="true" className="absolute inset-y-0 w-px bg-info" style={{ left: `${(now / HOURS) * 100}%` }} />}
+                    {now !== undefined && <span aria-hidden="true" className="absolute inset-y-0 w-px bg-foreground" style={{ left: `${(now / HOURS) * 100}%` }} />}
                     {l.slots.length === 0 && <span className="absolute inset-y-0 left-2 flex items-center text-xs text-muted-foreground">No missions</span>}
                     <ul aria-label={`${l.robot} missions`}>
                       {l.slots.map((s) => (

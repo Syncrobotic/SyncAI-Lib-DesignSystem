@@ -47,7 +47,7 @@ In a React or Next.js project with Tailwind CSS v4:
    npx shadcn add @syncrobotic/console-overview
    ```
 
-Dark is the default (`<html class="dark">`). Copy is English; every visible and screen-reader string is a prop, so it localises. The [installation guide](https://design-system.syncrobotic.me/docs/installation) covers the details.
+Light is the default, because it reads in daylight and glare; add `class="dark"` to `<html>` for control rooms and night shifts. Copy is English; every visible and screen-reader string is a prop, so it localises. The [installation guide](https://design-system.syncrobotic.me/docs/installation) covers the details.
 
 ## What's inside
 

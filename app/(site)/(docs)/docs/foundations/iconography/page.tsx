@@ -100,16 +100,16 @@ export default function IconographyPage() {
 
       <Section id="status" title="Status is a shape, not an icon" lead="State uses the status glyph so it reads in colour and without it. Icons name things; glyphs say how they are.">
         <TokenTable
-          head={["Glyph", "Tone", "Means"]}
+          head={["Glyph", "Status", "Means"]}
           rows={(
             [
-              ["info", "Active, busy"],
-              ["success", "Normal"],
+              ["active", "Busy, on a mission"],
+              ["normal", "Fine, waiting"],
               ["warning", "Needs attention"],
               ["danger", "Stopped or failed"],
-              ["neutral", "Offline"],
+              ["offline", "Offline"],
             ] as const
-          ).map(([t, m]) => [<StatusGlyph key="g" tone={t} className="size-4" />, <Code key="t">{t}</Code>, m])}
+          ).map(([t, m]) => [<StatusGlyph key="g" status={t} className="size-4" />, <Code key="t">{t}</Code>, m])}
         />
       </Section>
 

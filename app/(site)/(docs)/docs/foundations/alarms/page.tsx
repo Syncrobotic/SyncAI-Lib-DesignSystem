@@ -4,6 +4,7 @@ import { haptics, tones } from "@/registry/syncrobotic/lib/feedback"
 import { Alarm } from "@/registry/syncrobotic/ui/alarm"
 import { Alert, AlertDescription, AlertTitle } from "@/registry/syncrobotic/ui/alert"
 import { AlarmLifecycle } from "@/site/alarm-lifecycle"
+import { FeedbackDemo } from "@/site/feedback-demo"
 import { Code, DocHeader, DoDont, Pager, Section, Specimen, TokenTable } from "@/site/doc"
 import { Stage } from "@/site/examples"
 import { metaFor, neighbours } from "@/site/foundations"
@@ -104,6 +105,9 @@ export default function AlarmsPage() {
             ]
           })}
         />
+        <Specimen>
+          <FeedbackDemo />
+        </Specimen>
       </Section>
 
       <Section id="rules" title="Rules">
