@@ -20,6 +20,23 @@ export const overviews: Record<string, Overview> = {
     use: ["A catalog or log whose filtered view should be shareable and survive Back.", "Any page where changing a filter resets the page number."],
     instead: ["Filters on data already in the browser: filter in state, as `data-grid` does."],
   },
+  filters: {
+    what: "A query people build from chips: pick a field, how to compare it and a value; every rule must match.",
+    use: [
+      "A long list or grid with many columns worth filtering: robots, incidents, runs.",
+      "Views people tune and share: the rules go in the URL.",
+    ],
+    instead: [
+      "A fixed set of known filters, laid out in a sheet or above a list: `filter-form`.",
+      "One facet, one choice: `chip-group`.",
+      "Text only: `search-field`.",
+    ],
+    notes: [
+      "The value is a plain array of { id, field, operator, value }; filter rows with filterRows or matchRule, never by reading the chips.",
+      "Boolean rules carry null; the operator (is_true, is_false) is the whole rule.",
+      "Dates are \"yyyy-MM-dd\" strings, not Date objects, so the rules stay serialisable.",
+    ],
+  },
   "search-field": {
     what: "The tool's one search box: `/` focuses it, Enter opens the results page, and on that page it follows the URL.",
     use: ["The search in an app's top bar.", "The query box on a results page (`live`)."],

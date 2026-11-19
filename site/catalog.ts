@@ -44,6 +44,7 @@ export type StoryFile =
   | "page-header"
   | "chip-group"
   | "filter-form"
+  | "filters"
   | "search-field"
   | "theme-toggle"
   | "route-progress"
@@ -290,6 +291,17 @@ const entries: Record<string, Entry> = {
       "Filters that change what a page lists belong in the URL: shareable, bookmarkable, undone with Back.",
       "Typing applies a moment after it stops; a pick applies at once. The page number resets.",
       "It is a plain GET form, so it works before JavaScript loads. Pass onNavigate to stay client-side (Next.js: router.push / router.replace with scroll: false).",
+    ],
+  },
+  filters: {
+    group: "Inputs",
+    examples: { file: "filters", prefix: "Filters" },
+    rules: [
+      "For a query people build themselves: any field, any number of rules. For a few fixed facets use Chip group or Filter form.",
+      "Rules combine with AND, and the bar says so between the chips. There are no groups and no OR.",
+      "Keep the rules in the URL with toSearchParams and fromSearchParams, so a filtered view can be shared and undone with Back.",
+      "Show what the rules leave (\"12 of 40 robots\") next to the bar, in a polite live region.",
+      "Every label is a prop; translate the operators too.",
     ],
   },
   "search-field": {
@@ -886,6 +898,12 @@ const keyboard: Record<string, [string, string][]> = {
     ["↑ ↓", "Move between radio options"],
   ],
   "copy-button": [["Enter / Space", "Copy"]],
+  filters: [
+    ["Enter", "On + Filter, open the picker; on a part of a chip, reopen that step"],
+    ["↑ / ↓", "Move through fields, operators or values; type to narrow them"],
+    ["Enter", "Choose and go to the next step; in a value box, apply"],
+    ["Esc", "Back one step; at the first step, close and return focus"],
+  ],
   "dropdown-menu": [
     ["Enter / Space / ↓", "Open the menu"],
     ["↑ / ↓", "Move between items"],
