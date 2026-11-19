@@ -2,7 +2,7 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.14.2 · 2026-11-19
 
 ### Added
 - **Page transitions on the docs site:** going to another page fades the old content out (`--motion-fast`) and brings the new one in with an 8 px rise (`--motion-base`), while the header and sidebar stay still and clickable. Reduced motion keeps the fade.
