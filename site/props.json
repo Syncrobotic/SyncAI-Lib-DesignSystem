@@ -2141,7 +2141,7 @@
     {
      "name": "edge",
      "type": "Tone",
-     "description": "Persistent state (offline, stopped): changes the tray edge colour."
+     "description": "Persistent fault (stopped): changes the tray edge colour. Offline is neutral: say it, do not colour it."
     },
     {
      "name": "loading",
