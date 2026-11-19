@@ -1,9 +1,9 @@
-// @syncrobotic/line-chart-telemetry v0.9.0 · update: npx shadcn add @syncrobotic/line-chart-telemetry --overwrite
+// @syncrobotic/line-chart-telemetry v0.17.2 · update: npx shadcn add @syncrobotic/line-chart-telemetry --overwrite
 "use client"
 
 import * as React from "react"
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
-import { Card } from "@/registry/syncrobotic/ui/card"
+import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 import { ChartContainer, ChartLegend, ChartTable, ChartTooltip, chartAxis, chartMotion, type ChartConfig } from "@/registry/syncrobotic/ui/chart"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 
@@ -16,7 +16,7 @@ const day = Array.from({ length: 12 }, (_, i) => ({
   south: [0.7, 0.8, 0.9, 1.2, 1.3, 1.4, 1.5, 1.2, 1.1, 1.3, 1.1, 0.9][i],
 }))
 const hour = Array.from({ length: 7 }, (_, i) => ({
-  t: `13:${String(i * 10).padStart(2, "0")}`,
+  t: i < 6 ? `13:${String(i * 10).padStart(2, "0")}` : "14:00",
   north: [1.4, 1.5, 1.3, 1.6, 1.7, 1.5, 1.6][i],
   south: [1.1, 1.2, 1.3, 1.2, 1.0, 1.1, 1.2][i],
 }))
@@ -28,29 +28,34 @@ export function LineChartTelemetry({ title = "Average patrol speed" }: { title?:
   const data = range === "24h" ? day : hour
   return (
     <Card>
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="flex flex-col gap-1">
-          <h3 className="text-sm font-medium">
+      <CardDataHeader
+        title={
+          <>
             {title} <span className="font-normal text-muted-foreground">· m/s</span>
-          </h3>
-          <p className="text-xs text-muted-foreground">{range === "24h" ? "Last 24 hours, per 2 hours" : "Last hour, per 10 minutes"}</p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <SegmentedControl value={range} onValueChange={(v) => v && setRange(v)} aria-label="Range" className="w-auto">
-            <SegmentedControlItem value="1h">1 h</SegmentedControlItem>
-            <SegmentedControlItem value="24h">24 h</SegmentedControlItem>
-          </SegmentedControl>
-          <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
-            <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
-            <SegmentedControlItem value="table">Table</SegmentedControlItem>
-          </SegmentedControl>
-        </div>
-      </div>
+          </>
+        }
+        actions={
+          <>
+            <SegmentedControl value={range} onValueChange={(v) => v && setRange(v)} aria-label="Range" className="w-auto">
+              <SegmentedControlItem value="1h">1 h</SegmentedControlItem>
+              <SegmentedControlItem value="24h">24 h</SegmentedControlItem>
+            </SegmentedControl>
+            <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
+              <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
+              <SegmentedControlItem value="table">Table</SegmentedControlItem>
+            </SegmentedControl>
+          </>
+        }
+      >
+        <p className="text-xs text-muted-foreground">{range === "24h" ? "Last 24 hours, per 2 hours" : "Last hour, per 10 minutes"}</p>
+      </CardDataHeader>
       {view === "chart" ? (
         <ChartContainer config={config} label={`${title}, north and south site`}>
-          <LineChart data={data} margin={{ top: 0, right: 8, left: 0, bottom: 0 }}>
+          {/* Right margin: a label on the last point is centred on the plot's edge and has to stay inside the card. */}
+          <LineChart data={data} margin={{ top: 0, right: 20, left: 0, bottom: 0 }}>
             <CartesianGrid vertical={false} />
-            <XAxis dataKey="t" {...chartAxis} />
+            {/* Every other point: evenly spaced labels (every 4 hours, every 20 minutes) that fit a phone. */}
+            <XAxis dataKey="t" {...chartAxis} interval={1} />
             <YAxis {...chartAxis} domain={[0, 2]} ticks={[0, 0.5, 1, 1.5, 2]} width={40} />
             <ChartTooltip />
             <ChartLegend />

@@ -13,7 +13,8 @@ type Viewport = keyof typeof widths
 
 /**
  * A block in one card: Preview / Code tabs. The preview is an iframe rendered at the real device width
- * (1280, 768 or 390) and scaled down to fit, so breakpoints behave as they would on that device.
+ * (1280, 768 or 390) and scaled down to fit, so breakpoints behave as they would on that device. A phone view on a
+ * phone takes the width there is instead, so its text is read at full size.
  */
 export function BlockFrame({
   name,
@@ -85,7 +86,9 @@ export function BlockFrame({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tab])
 
-  const width = widths[vp]
+  // On a phone the phone view is drawn at the width there is, at 100 %: a 390 px layout scaled to fit would set its
+  // text near 8 px. Wider views still scale down (a desktop layout cannot reflow into a phone).
+  const width = vp === "mobile" && avail > 0 && avail < widths.mobile ? Math.floor(avail) : widths[vp]
   const frameH = fit === "content" && contentH ? contentH : height
   const scale = avail > 0 ? Math.min(1, avail / width) : 1
 
@@ -134,7 +137,7 @@ export function BlockFrame({
             </div>
           )}
         </div>
-        <TabsContent value="preview" className="specimen p-4">
+        <TabsContent value="preview" className="specimen p-2 sm:p-4">
           <div ref={box} className="w-full">
             {/* Changing the device width resizes the frame with the sheet duration; the iframe re-lays out at the new width. */}
             <m.div

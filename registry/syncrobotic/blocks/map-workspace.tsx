@@ -6,7 +6,7 @@ import { Crosshair, Pause } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { ChargingDock } from "@/registry/syncrobotic/ui/robot-icons"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
-import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { IslandAlarm } from "@/registry/syncrobotic/shell/island"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { StatusGlyph, type Status } from "@/registry/syncrobotic/shell/status-glyph"
@@ -40,7 +40,7 @@ const robots: MapRobot[] = [
 ]
 
 const alarms: AlarmData[] = [
-  { id: "a1", priority: "critical", title: "Emergency stop · Warehouse", source: "4D21", time: "14:02", active: true, acknowledged: false },
+  { id: "a1", priority: "critical", title: "Emergency stop", source: "4D21, Warehouse", time: "14:02", active: true, acknowledged: false },
   { id: "a2", priority: "high", title: "Battery 18 %", source: "9C44", time: "14:01", active: true, acknowledged: false },
 ]
 
@@ -62,7 +62,7 @@ export function MapWorkspace() {
       current="#map"
       title="Map · North site"
       environment="staging"
-      user={{ name: "Mei Lin", initials: "ML" }}
+      user={sampleUser}
       bleed
     >
       {/*
@@ -70,7 +70,7 @@ export function MapWorkspace() {
         there the robot's tray sits above the map and the stop below it. From sm up they float over the map's corners.
       */}
       <div className="flex h-full min-h-96 flex-col gap-4 overflow-hidden bg-map sm:relative sm:block">
-        <Tray className="z-10 m-4 mb-0 sm:absolute sm:top-4 sm:left-4 sm:m-0 sm:w-72">
+        <Tray className="z-10 m-4 mb-0 shrink-0 sm:absolute sm:top-4 sm:left-4 sm:m-0 sm:w-72">
           <div className="flex flex-col gap-3 rounded-md bg-card p-4">
             <div className="flex items-center justify-between gap-2">
               <h2 className="font-bold">Patrol dog {robot.id}</h2>
@@ -84,14 +84,15 @@ export function MapWorkspace() {
               <Button variant="secondary" size="sm">
                 <ChargingDock aria-hidden="true" /> Dock
               </Button>
-              <Button variant="ghost" size="icon-sm" aria-label="Centre map on robot">
+              <Button variant="secondary" size="icon-sm" aria-label="Centre map on robot">
                 <Crosshair aria-hidden="true" />
               </Button>
             </div>
           </div>
         </Tray>
 
-        <div className="relative min-h-80 flex-1 sm:absolute sm:inset-0 sm:min-h-0">
+        {/* On phones the map gives way: the tray and the stop keep their size, so the stop is on screen on any phone. */}
+        <div className="relative min-h-0 flex-1 sm:absolute sm:inset-0">
           <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 size-full" aria-hidden="true">
             {Array.from({ length: 9 }, (_, i) => (
               <g key={i} className="stroke-edge" strokeWidth="0.15">
@@ -129,7 +130,7 @@ export function MapWorkspace() {
           <IslandAlarm alarms={list} onAcknowledge={(id) => setList((l) => l.map((a) => (a.id === id ? { ...a, acknowledged: true } : a)))} />
         </Tray>
 
-        <div className="z-10 m-4 mt-0 sm:absolute sm:right-4 sm:bottom-4 sm:m-0 sm:w-72">
+        <div className="z-10 m-4 mt-0 shrink-0 sm:absolute sm:right-4 sm:bottom-4 sm:m-0 sm:w-72">
           {stop === "stopped" ? (
             <SlideToRelease tag={robot.id} onRelease={() => window.setTimeout(() => setStop("ready"), 500)} />
           ) : (

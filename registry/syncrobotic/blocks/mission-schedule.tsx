@@ -1,10 +1,10 @@
-// @syncrobotic/mission-schedule v0.15.0 · update: npx shadcn add @syncrobotic/mission-schedule --overwrite
+// @syncrobotic/mission-schedule v0.17.2 · update: npx shadcn add @syncrobotic/mission-schedule --overwrite
 "use client"
 
 import * as React from "react"
 import { Plus } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 
@@ -58,7 +58,7 @@ const clock = (h: number) => {
   const t = (18 + h) % 24
   return `${String(Math.floor(t)).padStart(2, "0")}:${t % 1 ? "30" : "00"}`
 }
-const stateWord = { done: "done", running: "running now", planned: "planned", conflict: "conflict" } as const
+const stateWord = { done: "Done", running: "Running now", planned: "Planned", conflict: "Cannot run as planned" } as const
 const slotStyle = {
   done: "bg-muted text-muted-foreground",
   running: "bg-info-subtle text-foreground ring-1 ring-info ring-inset",
@@ -79,9 +79,9 @@ export function MissionSchedule() {
     <AppShell
       product="Fleet console"
       nav={sampleNav}
-      current="#overview"
+      current="#schedule"
       title="Schedule"
-      user={{ name: "Mei Lin", initials: "ML" }}
+      user={sampleUser}
       actions={
         <Button size="sm">
           <Plus aria-hidden="true" />
@@ -91,7 +91,7 @@ export function MissionSchedule() {
     >
       <div className="flex flex-col gap-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <SegmentedControl aria-label="Night" value={night} onValueChange={(v) => v && setNight(v as typeof night)}>
+          <SegmentedControl aria-label="Night" value={night} onValueChange={(v) => v && setNight(v as typeof night)} className="w-auto">
             <SegmentedControlItem value="tonight">Tonight</SegmentedControlItem>
             <SegmentedControlItem value="tomorrow">Tomorrow night</SegmentedControlItem>
           </SegmentedControl>
@@ -104,9 +104,36 @@ export function MissionSchedule() {
           </p>
         ))}
 
-        <div className="overflow-x-auto rounded-md bg-card ring-1 ring-border">
+        {/* Phones: one list per robot, every mission in words, instead of a timeline that would show two hours of twelve. */}
+        <ul aria-label="Missions by robot" className="flex flex-col rounded-md bg-card ring-1 ring-border md:hidden">
+          {lanes.map((l) => (
+            <li key={l.robot} className="flex flex-col gap-2 border-b border-border p-4 last:border-b-0">
+              <span className="text-sm font-medium">{l.robot}</span>
+              {l.slots.length === 0 ? (
+                <span className="text-xs text-muted-foreground">No missions</span>
+              ) : (
+                <ul aria-label={`${l.robot} missions`} className="flex flex-col gap-2">
+                  {l.slots.map((s) => (
+                    <li key={s.start} className={cn("flex min-h-(--h-md) items-center justify-between gap-3 rounded-xs px-3 py-2 text-sm", slotStyle[s.state])}>
+                      <span className="flex min-w-0 flex-col">
+                        <span className="font-medium">{s.name}</span>
+                        {s.state !== "planned" && <span className="text-xs text-muted-foreground">{stateWord[s.state]}</span>}
+                      </span>
+                      <span className="shrink-0 tabular-nums">
+                        {clock(s.start)}–{clock(s.end)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))}
+        </ul>
+
+        <div className="hidden overflow-x-auto rounded-md bg-card ring-1 ring-border md:block">
           <div className="min-w-3xl">
-            <div aria-hidden="true" className="grid grid-cols-[10rem_1fr] border-b border-border text-xs text-muted-foreground">
+            {/* The track stops 16 px short of the card's edge, so the last hour and a mission that runs to it are whole. */}
+            <div aria-hidden="true" className="grid grid-cols-[10rem_1fr] border-b border-border pr-4 text-xs text-muted-foreground">
               <span />
               <div className="relative h-8">
                 {Array.from({ length: HOURS / 2 + 1 }, (_, i) => i * 2).map((h) => (
@@ -122,7 +149,7 @@ export function MissionSchedule() {
             </div>
             <ul>
               {lanes.map((l) => (
-                <li key={l.robot} className="grid grid-cols-[10rem_1fr] items-center border-b border-border last:border-b-0">
+                <li key={l.robot} className="grid grid-cols-[10rem_1fr] items-center border-b border-border pr-4 last:border-b-0">
                   <span className="px-4 text-sm font-medium">{l.robot}</span>
                   <div className="relative h-14">
                     {now !== undefined && <span aria-hidden="true" className="absolute inset-y-0 w-px bg-foreground" style={{ left: `${(now / HOURS) * 100}%` }} />}
@@ -143,7 +170,7 @@ export function MissionSchedule() {
                               <span className="truncate tabular-nums">
                                 {clock(s.start)}–{clock(s.end)}
                               </span>
-                              <span className="sr-only">, {stateWord[s.state]}</span>
+                              <span className="sr-only">, {stateWord[s.state].toLowerCase()}</span>
                             </span>
                           </li>
                         )
@@ -155,7 +182,7 @@ export function MissionSchedule() {
             </ul>
           </div>
         </div>
-        <p className="text-xs text-muted-foreground">Muted: done. Blue: running now (the line is the time). Outlined: planned. Amber: cannot run as planned.</p>
+        <p className="hidden text-xs text-muted-foreground md:block">Muted: done. Blue: running now (the line is the time). Outlined: planned. Amber: cannot run as planned.</p>
       </div>
     </AppShell>
   )

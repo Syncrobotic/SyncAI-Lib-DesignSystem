@@ -1,4 +1,4 @@
-// @syncrobotic/settings-notifications v0.15.0 · update: npx shadcn add @syncrobotic/settings-notifications --overwrite
+// @syncrobotic/settings-notifications v0.17.2 · update: npx shadcn add @syncrobotic/settings-notifications --overwrite
 "use client"
 
 import * as React from "react"
@@ -57,7 +57,7 @@ export function SettingsNotifications() {
               <TableRow>
                 <TableHead>Event</TableHead>
                 {channels.map((c) => (
-                  <TableHead key={c.key} className="w-18 px-2 text-center sm:w-24 sm:px-4">
+                  <TableHead key={c.key} className="w-14 px-1 text-center sm:w-24 sm:px-4">
                     {c.label}
                   </TableHead>
                 ))}
@@ -69,13 +69,18 @@ export function SettingsNotifications() {
                   <TableCell className="py-2 whitespace-normal">
                     <span className="flex flex-col">
                       <span className="font-medium">{e.label}</span>
-                      <span className="text-xs text-muted-foreground">{e.hint}</span>
+                      {/* On a phone the lock leads the line that explains it, not the box, so it never reaches the card's edge
+                          and never sits alone under a wrapped name. */}
+                      <span className="flex items-start gap-2 text-xs text-muted-foreground">
+                        {e.locked && <Lock aria-hidden="true" className="size-4 shrink-0 sm:hidden" />}
+                        {e.hint}
+                      </span>
                     </span>
                   </TableCell>
                   {channels.map((c) => {
                     const locked = e.locked?.includes(c.key)
                     return (
-                      <TableCell key={c.key} className="px-2 text-center sm:px-4">
+                      <TableCell key={c.key} className="px-1 text-center sm:px-4">
                         {/* The lock hangs to the right of the box, out of the flow, so every box stays on its column's centre line. */}
                         <span className="relative inline-flex align-middle">
                           <Checkbox
@@ -84,7 +89,7 @@ export function SettingsNotifications() {
                             disabled={locked}
                             onCheckedChange={(v) => toggle(e.key, c.key, v === true)}
                           />
-                          {locked && <Lock aria-hidden="true" className="absolute top-1/2 left-full ml-1 size-4 -translate-y-1/2 text-muted-foreground" />}
+                          {locked && <Lock aria-hidden="true" className="absolute top-1/2 left-full ml-1 hidden size-4 -translate-y-1/2 text-muted-foreground sm:block" />}
                         </span>
                       </TableCell>
                     )

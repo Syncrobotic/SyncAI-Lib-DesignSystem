@@ -1,9 +1,9 @@
-// @syncrobotic/maintenance-due v0.15.0 · update: npx shadcn add @syncrobotic/maintenance-due --overwrite
+// @syncrobotic/maintenance-due v0.17.2 · update: npx shadcn add @syncrobotic/maintenance-due --overwrite
 "use client"
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
@@ -28,71 +28,74 @@ export function MaintenanceDue() {
   const [rows, setRows] = React.useState(initial)
   const sorted = [...rows].sort((a, b) => b.hours / b.every - a.hours / a.every)
   return (
-    <AppShell product="Fleet console" nav={sampleNav} current="#robots" title="Maintenance" user={{ name: "Mei Lin", initials: "ML" }}>
+    <AppShell product="Fleet console" nav={sampleNav} current="#robots" title="Maintenance" user={sampleUser}>
       <div className="flex flex-col gap-4">
         <p className="text-sm text-muted-foreground">1 overdue · 1 due this week · intervals from the manufacturer&apos;s service plan</p>
-        <div className="overflow-x-auto rounded-md bg-card ring-1 ring-border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Robot</TableHead>
-                <TableHead className="hidden md:table-cell">Service</TableHead>
-                <TableHead className="sm:w-56">
-                  <span className="sm:hidden">Hours</span>
-                  <span className="hidden sm:inline">Hours since last</span>
-                </TableHead>
-                <TableHead className="hidden sm:table-cell">Due</TableHead>
-                <TableHead>
-                  <span className="sr-only">Actions</span>
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {sorted.map((r) => {
-                const pct = (r.hours / r.every) * 100
-                return (
-                  <TableRow key={r.robot + r.task}>
-                    <TableCell className="py-2 whitespace-normal">
-                      <span className="font-medium whitespace-nowrap">{r.robot}</span>
-                      {/* On a phone the service and when it is due sit under the robot; they are columns from wider screens. */}
-                      <span className="block text-xs text-muted-foreground md:hidden">{r.task}</span>
-                      <span className={cn("block text-xs sm:hidden", dueTone(pct))}>{r.due}</span>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell">{r.task}</TableCell>
-                    <TableCell>
-                      <Meter
-                        inline
-                        className="flex-col items-start gap-1 sm:flex-row sm:items-center sm:gap-2"
-                        label={`${r.robot}, hours since ${r.task}`}
-                        value={r.hours}
-                        max={r.every}
-                        unit={`of ${r.every} h`}
-                        higherIsWorse
-                        low={r.every * 0.9}
-                        critical={r.every}
-                      />
-                    </TableCell>
-                    <TableCell className={cn("hidden sm:table-cell", dueTone(pct))}>{r.due}</TableCell>
-                    <TableCell className="text-right max-sm:w-24 max-sm:whitespace-normal">
-                      {r.booked ? (
-                        <span className="text-sm text-muted-foreground">Booked {r.booked}</span>
-                      ) : (
-                        <Button
-                          size="sm"
-                          variant={pct >= 90 ? "secondary" : "ghost"}
-                          aria-label={`Book service for ${r.robot}`}
-                          onClick={() => setRows((l) => l.map((x) => (x === r ? { ...x, booked: "tomorrow, 08:00" } : x)))}
-                        >
-                          Book
-                        </Button>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                )
-              })}
-            </TableBody>
-          </Table>
-        </div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Robot</TableHead>
+              <TableHead className="hidden md:table-cell">Service</TableHead>
+              <TableHead className="hidden sm:table-cell sm:w-56">Hours since last</TableHead>
+              <TableHead className="hidden sm:table-cell">Due</TableHead>
+              <TableHead className="max-sm:pl-0">
+                <span className="sr-only">Actions</span>
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {sorted.map((r) => {
+              const pct = (r.hours / r.every) * 100
+              const meter = (
+                <Meter
+                  inline
+                  label={`${r.robot}, hours since ${r.task}`}
+                  value={r.hours}
+                  max={r.every}
+                  unit={`of ${r.every} h`}
+                  higherIsWorse
+                  low={r.every * 0.9}
+                  critical={r.every}
+                />
+              )
+              return (
+                <TableRow key={r.robot + r.task}>
+                  <TableCell className="py-3 max-sm:whitespace-normal sm:py-2">
+                    <span className="font-medium whitespace-nowrap">{r.robot}</span>
+                    {/* On a phone the service, the hours and when it is due stack under the robot, so only the robot and
+                        its action share the row; they are columns from wider screens. */}
+                    <span className="block text-xs text-muted-foreground md:hidden">{r.task}</span>
+                    <span className="mt-2 flex flex-col gap-1 sm:hidden">
+                      {meter}
+                      <span className={cn("text-xs", dueTone(pct))}>
+                        {r.due}
+                        {r.booked && <span className="font-normal text-muted-foreground"> · booked {r.booked}</span>}
+                      </span>
+                    </span>
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">{r.task}</TableCell>
+                  <TableCell className="hidden sm:table-cell">{meter}</TableCell>
+                  <TableCell className={cn("hidden sm:table-cell", dueTone(pct))}>{r.due}</TableCell>
+                  <TableCell className="text-right max-sm:w-0 max-sm:pl-0">
+                    {r.booked ? (
+                      <span className="text-sm text-muted-foreground max-sm:hidden">Booked {r.booked}</span>
+                    ) : (
+                      // One style on every row: the urgency is in the meter and the due date, not in the button.
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        aria-label={`Book service for ${r.robot}`}
+                        onClick={() => setRows((l) => l.map((x) => (x === r ? { ...x, booked: "tomorrow, 08:00" } : x)))}
+                      >
+                        Book
+                      </Button>
+                    )}
+                  </TableCell>
+                </TableRow>
+              )
+            })}
+          </TableBody>
+        </Table>
       </div>
     </AppShell>
   )

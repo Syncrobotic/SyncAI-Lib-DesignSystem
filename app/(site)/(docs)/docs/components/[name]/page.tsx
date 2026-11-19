@@ -9,7 +9,7 @@ import { CodeBlock } from "@/site/code-block"
 import { Reveal, AppearItem } from "@/site/appear"
 import { ExampleCard } from "@/site/example-card"
 import { Stage } from "@/site/examples"
-import { Dot, H2, PageTitle, Rules } from "@/site/prose"
+import { Dot, H2, PageTitle, Rules, Unbroken } from "@/site/prose"
 import { storySource } from "@/site/story-source"
 import { overviews } from "@/site/overview"
 import { aiPrompt, componentMarkdown } from "@/site/ai"
@@ -35,7 +35,7 @@ function Linked({ text }: { text: string }) {
           </a>
         ) : (
           <code key={i} className="rounded-xs bg-muted px-1 font-mono text-sm">
-            {word}
+            <Unbroken text={word} />
           </code>
         )
       })}
@@ -75,6 +75,8 @@ export default async function ComponentPage({ params }: Props) {
   const deps = [...(("dependencies" in item && item.dependencies) || []), ...(("registryDependencies" in item && item.registryDependencies) || [])]
 
   const overview = overviews[item.name]
+  // Skip the overview's line when it only repeats the description above, word for word or nearly.
+  const what = overview && !repeats(overview.what, item.description ?? "")
   const install = `npx shadcn add @syncrobotic/${item.name}`
   const installBlock = <CodeBlock code={install} lang="bash" title="Terminal" />
   const sourceFiles = await Promise.all(
@@ -90,7 +92,6 @@ export default async function ComponentPage({ params }: Props) {
     <ExampleCard
       id={`example-${n}`}
       title={storyTitle(n)}
-      wide={item.wide}
       preview={<Stage file={item.examples!.file} name={n} className="w-full" wide={item.wide} />}
       install={installBlock}
       code={<CodeBlock code={storySource(item.examples!.file, n)} title={`${storyTitle(n).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}.tsx`} />}
@@ -102,7 +103,10 @@ export default async function ComponentPage({ params }: Props) {
     <article>
       {/* The same head on every component page: title, one line, then the version and the tools, always below. */}
       <PageTitle title={item.title} lead={item.description} />
-      <div className="-mt-4 flex flex-wrap items-center gap-2 pb-6">
+      {/* On a phone the version is one line and the three tools share the next one in equal columns, so none is left alone
+          on a line of its own; from 640 px they all sit in one row. */}
+      <div className="-mt-4 flex flex-col gap-2 pb-6 sm:flex-row sm:flex-wrap sm:items-center">
+        <div className="flex items-center gap-2">
           {meta && (
             <a href="#changelog" className="inline-flex h-(--h-sm) items-center font-mono text-sm text-muted-foreground tabular-nums underline-offset-4 hover:underline">
               v{meta.version}
@@ -113,6 +117,8 @@ export default async function ComponentPage({ params }: Props) {
               <Badge tone="outline">Beta</Badge>
             </a>
           )}
+        </div>
+        <div className={`grid gap-2 sm:flex sm:flex-wrap ${inlineSource ? "grid-cols-2" : "grid-cols-3"}`}>
           {/* For AI agents: the page as markdown, or a prompt that points an agent at it. */}
           <CopyButton value={componentMarkdown(item.name) ?? ""} variant="outline" label="Copy as Markdown">
             Markdown
@@ -131,6 +137,7 @@ export default async function ComponentPage({ params }: Props) {
               href={`${site.repo}/blob/main/${item.files[0].path}`}
             />
           )}
+        </div>
       </div>
 
       {first && example(first)}
@@ -138,20 +145,33 @@ export default async function ComponentPage({ params }: Props) {
       <div className={first ? "pt-8" : undefined}>
         <CodeBlock code={install} lang="bash" title="Install" />
       </div>
-      {deps.length > 0 && <p className="pt-2 text-sm text-muted-foreground">Also installs: {deps.join(", ")}</p>}
+      {deps.length > 0 && (
+        // Each package name stays whole; the list wraps between names.
+        <p className="pt-2 text-sm text-muted-foreground">
+          Also installs:{" "}
+          {deps.map((d, i) => (
+            <React.Fragment key={d}>
+              <span className="whitespace-nowrap">
+                {d}
+                {i < deps.length - 1 && ","}
+              </span>
+              {i < deps.length - 1 && " "}
+            </React.Fragment>
+          ))}
+        </p>
+      )}
 
       {overview && (
         <section aria-labelledby="overview" className="pt-8">
           <h2 id="overview" className="sr-only">
             Overview
           </h2>
-          {/* Skip the line when it only repeats the description above, word for word or nearly. */}
-          {!repeats(overview.what, item.description ?? "") && (
+          {what && (
             <p className="max-w-3xl text-base">
               <Linked text={overview.what} />
             </p>
           )}
-          <div className="grid gap-6 pt-6 sm:grid-cols-2">
+          <div className={`grid gap-6 sm:grid-cols-2 ${what ? "pt-6" : ""}`}>
             <div>
               <h3 className="pb-2 text-sm font-bold">When to use</h3>
               <ul className="flex flex-col gap-2 text-sm text-muted-foreground">

@@ -49,6 +49,43 @@ html {
 .code span {
   color: var(--shiki-light);
 }
+/* A shell command wraps between words and after a "/" (site/code-block.tsx keeps each name whole), so a package
+   name never runs off the card on a phone. */
+.code-wrap pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+/* A wrapped command's continuation is indented, so it never reads as a second command. */
+.code-wrap .line {
+  display: inline-block;
+  width: 100%;
+  padding-left: 2ch;
+  text-indent: -2ch;
+}
+/* Source scrolls sideways; while more of a line is out of view, its right edge fades so the cut reads as "more". */
+@property --code-edge {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+@supports (animation-timeline: scroll()) {
+  .code-edge {
+    mask-image: linear-gradient(to left, transparent, #000 var(--code-edge));
+    animation: code-edge linear both;
+    animation-timeline: scroll(self inline);
+  }
+}
+@keyframes code-edge {
+  from {
+    --code-edge: 2rem;
+  }
+  99% {
+    --code-edge: 2rem;
+  }
+  to {
+    --code-edge: 0px;
+  }
+}
 .dark .code span {
   color: var(--shiki-dark);
 }
@@ -61,6 +98,13 @@ html {
 /* Site arrival (site/appear.tsx): the theme's appear movement in CSS, staggered by order, so nothing waits on scripts. */
 [data-reveal="waiting"] .appear-item {
   opacity: 0;
+}
+/* Printed (or saved as PDF) before it was scrolled through, a section still waiting to arrive prints as it is. */
+@media print {
+  [data-reveal] .appear-item {
+    opacity: 1;
+    animation: none;
+  }
 }
 [data-reveal="playing"] .appear-item {
   animation: var(--animate-appear) both;
@@ -134,5 +178,33 @@ html {
 @keyframes page-fade-in {
   from {
     opacity: 0;
+  }
+}
+.code-edge:focus-visible {
+  mask-image: none;
+}
+
+/* The docs sidebar: once its column is scrolled, the top edge fades so a row passing under it never reads as cut. */
+@property --sidebar-fade {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+@supports (animation-timeline: scroll()) {
+  .sidebar-fade {
+    mask-image: linear-gradient(to bottom, transparent, #000 var(--sidebar-fade));
+    animation: sidebar-fade linear both;
+    animation-timeline: scroll(self block);
+  }
+}
+@keyframes sidebar-fade {
+  from {
+    --sidebar-fade: 0px;
+  }
+  2% {
+    --sidebar-fade: 1rem;
+  }
+  to {
+    --sidebar-fade: 1rem;
   }
 }

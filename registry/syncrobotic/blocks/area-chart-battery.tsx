@@ -1,9 +1,9 @@
-// @syncrobotic/area-chart-battery v0.17.1 · update: npx shadcn add @syncrobotic/area-chart-battery --overwrite
+// @syncrobotic/area-chart-battery v0.17.2 · update: npx shadcn add @syncrobotic/area-chart-battery --overwrite
 "use client"
 
 import * as React from "react"
 import { Area, AreaChart, CartesianGrid, ReferenceLine, XAxis, YAxis } from "recharts"
-import { Card } from "@/registry/syncrobotic/ui/card"
+import { Card, CardDataHeader, CardFigure } from "@/registry/syncrobotic/ui/card"
 import { ChartContainer, ChartTable, ChartTooltip, chartAxis, chartMotion, type ChartConfig } from "@/registry/syncrobotic/ui/chart"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 
@@ -20,24 +20,25 @@ export function AreaChartBattery() {
   const [view, setView] = React.useState("chart")
   return (
     <Card>
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div className="flex flex-col gap-1">
-          <h3 className="text-sm font-medium">
+      <CardDataHeader
+        title={
+          <>
             Battery · Patrol dog 7F3A <span className="font-normal text-muted-foreground">· %</span>
-          </h3>
-          <p className="text-xs text-muted-foreground">Charged 14:00–14:40 at Dock 2</p>
-        </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="text-2xl font-bold tabular-nums">61 %</span>
+          </>
+        }
+        actions={
           <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
             <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
             <SegmentedControlItem value="table">Table</SegmentedControlItem>
           </SegmentedControl>
-        </div>
-      </div>
+        }
+      >
+        <CardFigure value="61 %" />
+        <p className="text-xs text-muted-foreground">Charged 14:00–14:40 at Dock 2</p>
+      </CardDataHeader>
       {view === "chart" ? (
         <ChartContainer config={config} label={`Battery of 7F3A by hour over the shift, with the ${dock} % return level`} className="h-48">
-          <AreaChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
+          <AreaChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
             <CartesianGrid vertical={false} />
             <XAxis dataKey="t" {...chartAxis} interval="equidistantPreserveStart" />
             <YAxis {...chartAxis} domain={[0, 100]} ticks={[0, 25, 50, 75, 100]} width={40} />

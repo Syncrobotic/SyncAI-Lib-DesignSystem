@@ -100,7 +100,7 @@ export default function HomePage() {
               <h1 className="max-w-3xl text-4xl font-bold tracking-tight text-balance sm:text-5xl">Interfaces for the people who run robots.</h1>
             </AppearItem>
             <AppearItem>
-              <p className="max-w-xl text-lg text-muted-foreground">
+              <p className="max-w-xl text-lg text-pretty text-muted-foreground">
                 The SYNCROBOTIC design language, written down once: tokens, {componentCount} React components and {blockCount} blocks for fleet consoles and the
                 apps operators hold outdoors.
               </p>

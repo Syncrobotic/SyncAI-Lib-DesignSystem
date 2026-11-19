@@ -1,9 +1,9 @@
-// @syncrobotic/bar-chart-ranked v0.17.1 · update: npx shadcn add @syncrobotic/bar-chart-ranked --overwrite
+// @syncrobotic/bar-chart-ranked v0.17.2 · update: npx shadcn add @syncrobotic/bar-chart-ranked --overwrite
 "use client"
 
 import * as React from "react"
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from "recharts"
-import { Card } from "@/registry/syncrobotic/ui/card"
+import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 import { ChartContainer, ChartTable, ChartTooltip, chartAxis, chartMotion, type ChartConfig } from "@/registry/syncrobotic/ui/chart"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 
@@ -22,16 +22,17 @@ export function BarChartRanked() {
   const [view, setView] = React.useState("chart")
   return (
     <Card>
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="flex flex-col gap-1">
-          <h3 className="text-sm font-medium">Why robots stopped</h3>
-          <p className="text-xs text-muted-foreground tabular-nums">Last 30 days · {data.reduce((s, d) => s + d.n, 0)} stops</p>
-        </div>
-        <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
-          <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
-          <SegmentedControlItem value="table">Table</SegmentedControlItem>
-        </SegmentedControl>
-      </div>
+      <CardDataHeader
+        title="Why robots stopped"
+        actions={
+          <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
+            <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
+            <SegmentedControlItem value="table">Table</SegmentedControlItem>
+          </SegmentedControl>
+        }
+      >
+        <p className="text-xs text-muted-foreground tabular-nums">Last 30 days · {data.reduce((s, d) => s + d.n, 0)} stops</p>
+      </CardDataHeader>
       {view === "chart" ? (
         <ChartContainer config={config} label="Number of robot stops by cause, last 30 days" className="h-56">
           <BarChart data={data} layout="vertical" margin={{ top: 0, right: 32, left: 0, bottom: 0 }}>

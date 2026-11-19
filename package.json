@@ -59,6 +59,7 @@
     "lint:motion": "node scripts/check-motion.mjs registry site app",
     "versions": "node scripts/versions.mjs --write",
     "check:radius": "node scripts/check-radius.cjs",
+    "check:wrap": "node scripts/check-wrap.cjs",
     "lint:dtcg": "node scripts/tokens.mjs",
     "tokens": "node scripts/tokens.mjs --write",
     "test:registry": "bash scripts/registry-e2e.sh"
