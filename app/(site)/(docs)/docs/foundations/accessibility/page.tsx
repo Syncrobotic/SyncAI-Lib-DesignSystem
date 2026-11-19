@@ -27,10 +27,12 @@ const pairs: { fg: string; bg: string; use: string }[] = [
   { fg: "white", bg: "stop", use: "Emergency stop label" },
 ]
 
-// UI parts: WCAG 1.4.11 asks 3:1. High contrast meets it; the default theme draws fields and cards with fill as well as edge.
+// UI parts: WCAG 1.4.11 asks 3:1 for what identifies a control. Field edges meet it in every theme; card and divider edges
+// only group things (the content inside identifies them), so they stay quiet.
 const edges = [
   { fg: "border", bg: "background", use: "Card and divider edge" },
-  { fg: "input", bg: "card", use: "Field edge on a card" },
+  { fg: "input", bg: "card", use: "Field, checkbox and switch edge on a card" },
+  { fg: "input", bg: "background", use: "Field edge on the page" },
 ]
 
 function Ratio({ fg, bg, mode }: { fg: string; bg: string; mode: Mode }) {

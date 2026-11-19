@@ -71,8 +71,8 @@ export default function TypographyPage() {
         <div className="grid gap-3 sm:grid-cols-3">
           {[
             { w: "font-normal", n: "400 Regular", u: "Body, secondary text" },
-            { w: "font-medium", n: "500 Medium", u: "Labels, list titles, selected" },
-            { w: "font-bold", n: "700 Bold", u: "Titles, primary actions, stop" },
+            { w: "font-medium", n: "500 Medium", u: "Labels, buttons, list titles, selected" },
+            { w: "font-bold", n: "700 Bold", u: "Titles, figures, the stop" },
           ].map((x) => (
             <div key={x.w} className="flex flex-col gap-2 rounded-md border border-border bg-card p-4">
               <span className={`text-3xl ${x.w}`}>Aa</span>

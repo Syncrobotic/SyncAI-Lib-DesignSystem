@@ -1,4 +1,4 @@
-// @syncrobotic/event-log v0.15.0 · update: npx shadcn add @syncrobotic/event-log --overwrite
+// @syncrobotic/event-log v0.17.1 · update: npx shadcn add @syncrobotic/event-log --overwrite
 "use client"
 
 import * as React from "react"
@@ -32,7 +32,7 @@ export const sampleEvents: LogEvent[] = [
     age: "1h",
     priority: "high",
     source: "9C44",
-    message: "Battery below 20 %",
+    message: "Battery below 15 %",
     detail: "18 % at 14:01. Estimated 12 min left. Return-to-dock suggested.",
   },
   { id: "e3", time: "13:58:12", age: "1h", priority: "info", source: "7F3A", message: "Route Perimeter B started", detail: "6 waypoints, 1.2 km. ETA 14:31." },
