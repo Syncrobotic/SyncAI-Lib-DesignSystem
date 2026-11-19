@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils"
  * At the top of the page the header is part of it: full width, no line. Once the page scrolls, the bar gathers into a
  * floating panel whose edges line up with the content column, 8 px down, in the card surface with a hairline: the same panel
  * as the app shell's top bar. Only colour, edge and a transform change, so nothing below moves (--motion-base).
+ * On phones the bar sits 4 px from the screen with no inner padding: the 44 px menu and theme buttons hold their icons
+ * 12 px in, so the icons land on the content's 16 px edges, in line with the headline.
  */
 export function HeaderFrame({ children }: { children: React.ReactNode }) {
   const [scrolled, setScrolled] = React.useState(false)
@@ -20,14 +22,14 @@ export function HeaderFrame({ children }: { children: React.ReactNode }) {
     // Once it floats, the strip above the panel takes the page colour, so content never peeks out above the header.
     <header
       className={cn(
-        "pointer-events-none sticky top-0 z-20 mx-auto h-(--site-header) max-w-6xl px-4 transition-colors duration-(--motion-base) ease-(--ease-standard)",
+        "pointer-events-none sticky top-0 z-20 mx-auto h-(--site-header) max-w-6xl px-1 md:px-4 transition-colors duration-(--motion-base) ease-(--ease-standard)",
         scrolled && "bg-background",
       )}
     >
       <div
         data-scrolled={scrolled || undefined}
         className={cn(
-          "pointer-events-auto flex h-(--site-header) items-center gap-2 rounded-md md:gap-6 px-3 ring-1",
+          "pointer-events-auto flex h-(--site-header) items-center gap-2 rounded-md md:gap-6 md:px-3 ring-1",
           "transition-[background-color,box-shadow,translate] duration-(--motion-base) ease-(--ease-standard) motion-reduce:transition-none",
           scrolled ? "translate-y-2 bg-card ring-border" : "translate-y-0 bg-transparent ring-transparent",
         )}
