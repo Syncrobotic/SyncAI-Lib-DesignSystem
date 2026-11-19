@@ -2,7 +2,7 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.17.1 · 2026-11-19
 
 ### Changed
 - **`console-overview`**: alarms come first, above the numbers and the robots, and leave when none is active. On a phone, what needs someone is now the first thing on screen; it was about three screens down.
