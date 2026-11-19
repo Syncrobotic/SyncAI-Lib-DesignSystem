@@ -66,6 +66,7 @@ export function IncidentQueue() {
     .filter((i) => (tab === "open" ? i.state !== "Resolved" : i.state === "Resolved"))
     .sort((a, b) => order.indexOf(a.state) - order.indexOf(b.state) || a.severity - b.severity)
   const openCount = incidents.filter((i) => i.state !== "Resolved").length
+  const resolvedCount = incidents.length - openCount
   return (
     <AppShell
       product="Fleet console"
@@ -81,9 +82,9 @@ export function IncidentQueue() {
       }
     >
       <div className="flex flex-col gap-4">
-        <SegmentedControl aria-label="Show incidents" value={tab} onValueChange={(v) => v && setTab(v)} className="self-start">
+        <SegmentedControl aria-label="Show incidents" value={tab} onValueChange={(v) => v && setTab(v)} className="w-auto self-start">
           <SegmentedControlItem value="open">Open {openCount}</SegmentedControlItem>
-          <SegmentedControlItem value="resolved">Resolved</SegmentedControlItem>
+          <SegmentedControlItem value="resolved">Resolved {resolvedCount}</SegmentedControlItem>
         </SegmentedControl>
         <div className="overflow-x-auto rounded-md bg-card ring-1 ring-border">
           <Table>

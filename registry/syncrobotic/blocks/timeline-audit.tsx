@@ -52,15 +52,16 @@ const entries: Entry[] = [
  */
 export function TimelineAudit({ className }: { className?: string }) {
   const [who, setWho] = React.useState("all")
-  const shown = entries.filter((e) => who === "all" || (who === "people" ? e.who : !e.who))
+  const by = (w: string) => entries.filter((e) => w === "all" || (w === "people" ? e.who : !e.who))
+  const shown = by(who)
   return (
     <Card className={cn("w-full max-w-2xl", className)}>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h3 className="text-sm font-medium">Changes at Taoyuan plant</h3>
-        <SegmentedControl aria-label="Show changes by" value={who} onValueChange={(v) => v && setWho(v)}>
-          <SegmentedControlItem value="all">All</SegmentedControlItem>
-          <SegmentedControlItem value="people">People</SegmentedControlItem>
-          <SegmentedControlItem value="system">System</SegmentedControlItem>
+        <SegmentedControl aria-label="Show changes by" value={who} onValueChange={(v) => v && setWho(v)} className="w-auto">
+          <SegmentedControlItem value="all">All {by("all").length}</SegmentedControlItem>
+          <SegmentedControlItem value="people">People {by("people").length}</SegmentedControlItem>
+          <SegmentedControlItem value="system">System {by("system").length}</SegmentedControlItem>
         </SegmentedControl>
       </div>
       <Timeline size="sm">

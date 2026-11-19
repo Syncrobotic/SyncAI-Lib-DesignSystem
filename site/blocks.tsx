@@ -1,5 +1,6 @@
 import registry from "../registry.json"
 import { placement } from "./block-types"
+import type { ThumbView } from "./block-thumb"
 import { AppShellDemo } from "./app-shell-demo"
 import { TopBarShellDemo } from "./top-bar-shell-demo"
 import { ActionRailShellDemo } from "./action-rail-shell-demo"
@@ -77,6 +78,10 @@ type Meta = {
   viewport: "desktop" | "mobile"
   /** Width the overview thumbnail renders at. Charts are dashboard cards, so they render at a card's width, not a screen's. */
   thumbWidth?: number
+  /** The region the /blocks card shows, when the default (a desktop screen's top-left 480 px; a section whole) is not the telling part. */
+  thumb?: ThumbView
+  /** Shown on /blocks for its type instead of the type's first block (when the first is a bare frame with nothing in it). */
+  cover?: boolean
   /** Starting height. Sections then grow or shrink to their content; app shells fill this height like a screen. */
   height: number
   render: () => React.ReactNode
@@ -309,10 +314,11 @@ const meta: Record<string, Meta> = {
   "settings-page": { viewport: "desktop", height: 820, render: () => <SettingsPage /> },
   "record-form": { viewport: "desktop", height: 820, render: () => <RecordForm /> },
   "users-roles": { viewport: "desktop", height: 620, render: () => <UsersRoles /> },
-  "sign-in": { viewport: "desktop", height: 640, render: () => <SignIn /> },
+  "sign-in": { viewport: "desktop", height: 640, thumb: { x: 400, y: 112, width: 480 }, render: () => <SignIn /> },
   "status-pages": {
     viewport: "desktop",
     height: 640,
+    thumb: { x: 84, y: 72, width: 480 },
     render: () => (
       // Five states, each named above its frame: the loading one is a state on show, not the preview still loading.
       <div className="flex flex-col gap-4 bg-background p-4">
@@ -343,7 +349,8 @@ const meta: Record<string, Meta> = {
     ),
   },
   "top-bar-shell": { viewport: "desktop", height: 720, render: () => <TopBarShellDemo /> },
-  "action-rail-shell": { viewport: "desktop", height: 720, render: () => <ActionRailShellDemo /> },
+  // The bare shells hold an empty page; this one holds frames and its next step, so it stands for the type on /blocks.
+  "action-rail-shell": { viewport: "desktop", height: 720, cover: true, thumb: { x: 704, width: 576 }, render: () => <ActionRailShellDemo /> },
   "console-overview": { viewport: "desktop", height: 900, render: () => <ConsoleOverview /> },
   "list-detail": { viewport: "desktop", height: 720, render: () => <ListDetail /> },
   "event-log": { viewport: "desktop", height: 720, render: () => <EventLog /> },
@@ -352,6 +359,7 @@ const meta: Record<string, Meta> = {
   "stats-cards": {
     viewport: "desktop",
     height: 520,
+    thumb: { x: 8, y: -36, width: 400 },
     render: () => (
       <div className="p-6">
         <StatsCards />
@@ -376,7 +384,7 @@ const meta: Record<string, Meta> = {
       </div>
     ),
   },
-  "marketing-hero": { viewport: "desktop", height: 760, render: () => <MarketingHero /> },
+  "marketing-hero": { viewport: "desktop", height: 760, thumb: { x: 56, y: 104, width: 600 }, render: () => <MarketingHero /> },
   // Solutions, batch 4: whole screens in the app shell.
   "mission-schedule": { viewport: "desktop", height: 720, render: () => <MissionSchedule /> },
   "users-invitations": { viewport: "desktop", height: 680, render: () => <UsersInvitations /> },
@@ -481,14 +489,41 @@ const meta: Record<string, Meta> = {
       </div>
     ),
   },
-  "wizard-commission": { viewport: "desktop", thumbWidth: 960, height: 520, render: () => <WizardCommission /> },
+  "wizard-commission": { viewport: "desktop", height: 520, thumb: { x: 296, width: 560 }, render: () => <WizardCommission /> },
   "wizard-import": { viewport: "desktop", thumbWidth: 960, height: 760, render: () => <WizardImport /> },
 }
+
+// Screens in the app shell: their /blocks card skips the sidebar (the same on every one) for the page's title and first panel.
+const shellView: ThumbView = { x: 248, width: 480 }
+const inShell = new Set([
+  "agent-approval",
+  "agent-runs",
+  "agent-trace",
+  "console-overview",
+  "data-catalog",
+  "dataset-detail",
+  "event-log",
+  "governance-todo",
+  "incident-detail",
+  "incident-queue",
+  "list-detail",
+  "maintenance-due",
+  "maintenance-work-order",
+  "map-workspace",
+  "mission-schedule",
+  "record-form",
+  "rollout-overview",
+  "rollout-plan",
+  "settings-page",
+  "users-audit-log",
+  "users-invitations",
+  "users-roles",
+])
 
 export const blocks = Object.keys(placement)
   .map((name) => registry.items.find((i) => i.type === "registry:block" && i.name === name))
   .filter((i): i is NonNullable<typeof i> => !!i && i.name in meta)
-  .map((i) => ({ ...i, ...meta[i.name], ...placement[i.name] }))
+  .map((i) => ({ ...i, thumb: inShell.has(i.name) ? shellView : undefined, ...meta[i.name], ...placement[i.name] }))
 
 export const getBlock = (name: string) => blocks.find((b) => b.name === name)
 export const blocksOfType = (slug: string) => blocks.filter((b) => b.type === slug)

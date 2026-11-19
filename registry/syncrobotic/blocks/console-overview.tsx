@@ -26,7 +26,6 @@ export function ConsoleOverview() {
       title="Overview"
       environment="staging"
       user={{ name: "Mei Lin", initials: "ML" }}
-      onSearch={() => {}}
       actions={
         // On phones the action is its icon (named for screen readers) so the page title is not cut.
         <Button size="sm" className="max-sm:w-(--h-sm) max-sm:px-0">

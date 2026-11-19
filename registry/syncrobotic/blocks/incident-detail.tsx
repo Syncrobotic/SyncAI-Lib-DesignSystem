@@ -34,17 +34,17 @@ const initial: Update[] = [
 export function IncidentDetail() {
   const [updates, setUpdates] = React.useState(initial)
   const [text, setText] = React.useState("")
-  const [error, setError] = React.useState<string>()
   const [state, setState] = React.useState("Investigating")
   const [next, setNext] = React.useState("Investigating")
 
+  // An empty update says nothing: Post stays off until there is text, and the reason sits beside it.
+  const empty = !text.trim()
   const post = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!text.trim()) return setError("Write what changed, or what you are doing next.")
+    if (empty) return
     setUpdates((u) => [{ at: `now-${u.length}`, time: "Now", who: "Mei Lin", text: text.trim(), state: next !== state ? next : undefined }, ...u])
     setState(next)
     setText("")
-    setError(undefined)
   }
 
   return (
@@ -73,7 +73,7 @@ export function IncidentDetail() {
           </Stepper>
 
           <form noValidate onSubmit={post} className="flex flex-col gap-3 rounded-md bg-card p-4 ring-1 ring-border">
-            <Field label="Post an update" error={error}>
+            <Field label="Post an update">
               <Textarea rows={3} value={text} onChange={(e) => setText(e.target.value)} />
             </Field>
             <div className="flex flex-wrap items-end justify-between gap-3">
@@ -91,7 +91,16 @@ export function IncidentDetail() {
                   </SelectContent>
                 </Select>
               </Field>
-              <Button type="submit">Post update</Button>
+              <div className="flex flex-wrap items-center justify-end gap-3">
+                {empty && (
+                  <span id="post-update-reason" className="text-sm text-muted-foreground">
+                    Write what changed first.
+                  </span>
+                )}
+                <Button type="submit" disabled={empty} aria-describedby={empty ? "post-update-reason" : undefined}>
+                  Post update
+                </Button>
+              </div>
             </div>
           </form>
 
