@@ -1,4 +1,4 @@
-// @syncrobotic/top-bar-shell v0.9.0 · update: npx shadcn add @syncrobotic/top-bar-shell --overwrite
+// @syncrobotic/top-bar-shell v0.14.1 · update: npx shadcn add @syncrobotic/top-bar-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -91,8 +91,10 @@ export function TopBarShell({
         <div
           className={cn(
             "pointer-events-auto flex h-(--h-row) items-center gap-6 rounded-md px-4 ring-1",
-            "transition-[background-color,box-shadow,translate] duration-(--motion-base) ease-(--ease-standard) motion-reduce:transition-none",
-            scrolled ? "translate-y-2 bg-card ring-border" : "translate-y-0 bg-transparent ring-transparent",
+            "transition-[background-color,box-shadow,translate,margin] duration-(--motion-base) ease-(--ease-standard) motion-reduce:transition-none",
+            // At the top the bar is invisible and 16 px wider each side, so the menu icon or the logo starts on the
+            // content's edge, in line with the page's text. On scroll it gathers: its edges come in to the content column.
+            scrolled ? "mx-0 translate-y-2 bg-card ring-border" : "-mx-4 translate-y-0 bg-transparent ring-transparent",
           )}
         >
           <Sheet>
@@ -100,7 +102,7 @@ export function TopBarShell({
               <button
                 type="button"
                 aria-label="Open navigation"
-                className="press -ml-2 flex size-(--h-md) items-center justify-center rounded-sm hover:bg-accent md:hidden"
+                className="press -ml-3 flex size-(--h-md) items-center justify-center rounded-sm hover:bg-accent md:hidden"
               >
                 <Menu aria-hidden="true" className="size-5" />
               </button>

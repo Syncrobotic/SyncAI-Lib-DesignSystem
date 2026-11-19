@@ -47,13 +47,13 @@ In a React or Next.js project with Tailwind CSS v4:
    npx shadcn add @syncrobotic/console-overview
    ```
 
-Light is the default, because it reads in daylight and glare; add `class="dark"` to `<html>` for control rooms and night shifts. Copy is English; every visible and screen-reader string is a prop, so it localises. The [installation guide](https://design-system.syncrobotic.me/docs/installation) covers the details.
+Light is the default, because it reads in daylight and glare; add `class="dark"` to `<html>` for control rooms and night shifts, `data-contrast="more"` for bright sun and low vision (7:1 text, in light or dark), and `data-density="glove"` or `"compact"` for gloved field work or a mouse-driven console. Copy is English; every visible and screen-reader string is a prop, so it localises. The [installation guide](https://design-system.syncrobotic.me/docs/installation) covers the details.
 
 ## What's inside
 
 | | |
 | --- | --- |
-| **Foundations** | Principles, colour, typography, spacing, radius, elevation, motion, iconography, accessibility and alarms, each with its tokens and the rules for using them, plus an [icon set](https://design-system.syncrobotic.me/icons) that gives each icon one meaning, with robot icons Lucide lacks drawn to match. Tokens also ship as [DTCG JSON](public/tokens) for design tools. |
+| **Foundations** | Principles, colour, typography, spacing, radius, elevation, motion, iconography, accessibility, alarms and data visualisation, each with its tokens and the rules for using them, plus an [icon set](https://design-system.syncrobotic.me/icons) that gives each icon one meaning, with robot icons Lucide lacks drawn to match. Tokens also ship as [DTCG JSON](public/tokens) for design tools, in light, dark and high contrast. |
 | **84 components** | General UI on Radix primitives, a charts component on Recharts, building blocks for data tools, and the robot shell: emergency stop, slide to release, dock and dynamic island. |
 | **69 blocks** | Whole screens in three groups: Application (shells, stats, cards, sign-in, settings, forms, dialogs, sheets, timelines, wizards), Charts, and Solutions for robot operations (fleet operations, data operations, users and access, incidents, maintenance, firmware rollout, AI agents). |
 

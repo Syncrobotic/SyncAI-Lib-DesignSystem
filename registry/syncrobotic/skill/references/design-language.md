@@ -11,7 +11,8 @@ Everything here is a token in `syncrobotic-theme.css`; use the token, never the 
 - Solid red (`--stop`) is the emergency stop only. Destructive actions: danger outline and text.
 - Focus ring is the foreground colour (`--ring`), so focus never looks like a status.
 - Selected controls (segmented control, toggle) are inverted. Current page in navigation: muted fill + weight; hover: accent.
-- Charts: `--chart-1…5` for series identity in a fixed order, off the status hues. Never status colours for series.
+- Charts: `--chart-1…5` for series identity in a fixed order, off the status hues; slot 5 is grey for Other or an earlier period. Up to five series in lines, bars and stacks; up to three (slots 1–3) in scatter plots and on maps, where any two marks can touch. A sixth is folded into Other, never a new colour. Never status colours for series. Pick the form from the question first (/docs/foundations/data-visualisation).
+- High contrast: `data-contrast="more"` on `<html>` or a container, in light or dark, for bright sun and low vision: 7:1 text and status, 3:1 edges, nothing translucent. Set it from `matchMedia("(prefers-contrast: more)")` or a setting; meanings do not change.
 
 ## Type
 - Sizes: xs 12 (hints, metadata, tags), sm 14 (buttons, rows, labels), base 16 (body, inputs), lg 18 (card titles), xl 20 (section and sheet titles), 2xl 24 (the number that leads a card), 3xl 28 (page titles), 4xl 36 and 5xl 48 (marketing heroes only). Nothing else.
@@ -21,7 +22,8 @@ Everything here is a token in `syncrobotic-theme.css`; use the token, never the 
 - 4 px base, steps 4, 8, 12, 16, 24, 32. Icon to label 8 (`gap-2`) everywhere: buttons, menus, tabs, nav, notes, alerts, alarms; the one exception is inside a 24 px Badge, 4.
 - Heights are tokens: `--h-sm` 36 (mouse only; 44 on touch), `--h-md` 44 (minimum interactive), `--h-lg` 48, `--h-row` 56 (rows, bars), `--h-stop` 56 (stop, wake and slide to release only). Never hard-code a height: use the token so density works.
 - Density: `data-density="glove"` on `<html>` or a container (48 px controls, 64 px rows and stop) for gloved outdoor work; `data-density="compact"` (36 px controls, 40 px rows, mouse only) for a control-room console. The stop never shrinks.
-- App shell: panels 8 px apart and from the edge, 16 px inside each.
+- App shell: panels 8 px apart and from the edge, 16 px inside each. Sheets float 8 px from the screen's edges too, every corner rounded.
+- A top bar over plain page content is invisible at the top with its first and last controls on the content's edge; on scroll it gathers into a floating panel whose edges are the content column's.
 
 ## Radius
 - 2xs 4 (controls 24 px and smaller), xs 8, sm 12, md 16, lg 20, xl 24. Nested corners are concentric: outer = inner + padding when the inner part is within 8 px of the corner.
