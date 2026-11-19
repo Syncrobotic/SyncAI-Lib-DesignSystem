@@ -10,6 +10,7 @@ import { foundations } from "@/site/foundations"
 import { iconCount } from "@/site/icons"
 import { HeroDemo } from "@/site/hero-demo"
 import { placement } from "@/site/block-types"
+import { PageTransition } from "@/site/page-transition"
 import pkg from "../../package.json"
 
 export const metadata: Metadata = {
@@ -84,6 +85,7 @@ export default function HomePage() {
     },
   ]
   return (
+    <PageTransition>
     <main id="content" className="pb-section">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
@@ -184,5 +186,6 @@ export default function HomePage() {
         <p className="pt-6 text-center font-mono text-xs text-muted-foreground">Version {pkg.version}</p>
       </section>
     </main>
+    </PageTransition>
   )
 }
