@@ -2,6 +2,11 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Fixed
+- **Docs header on phones, done right:** 0.14.0 made the scrolled header a full-width bar, wider than the content column every other floating bar lines up with. Now at the top of the page the icons sit on the 16 px edge, in line with the headline; on scroll the bar gathers into a panel whose edges are the content column's 16 px, the icons moving in with it. Desktop is unchanged.
+
 ## 0.14.0 · 2026-11-19
 
 ### Added
