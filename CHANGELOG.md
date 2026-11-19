@@ -16,6 +16,7 @@ Components install as source, so a project keeps the version it installed. Re-ru
   CI now checks the chart palette for normal and colour-blind separation and 3:1 contrast in all four modes.
 
 ### Fixed
+- **Docs header on phones:** the menu and theme icons sat 24 px inside the page edge, out of line with the headline. They now sit on the content's 16 px edges.
 - **A `.dark` area on a light page kept light-mode ink** on cards, menus, secondary buttons and accents: their colours are aliases of `--foreground`, which CSS resolves where they are declared, so `.dark` now restates them. Re-install `syncrobotic-theme`.
 
 ## 0.13.2 · 2026-11-19
