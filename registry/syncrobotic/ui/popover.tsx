@@ -1,4 +1,4 @@
-// @syncrobotic/popover v0.6.0 · update: npx shadcn add @syncrobotic/popover --overwrite
+// @syncrobotic/popover v0.17.2 · update: npx shadcn add @syncrobotic/popover --overwrite
 "use client"
 
 import * as React from "react"
@@ -16,6 +16,7 @@ export function PopoverContent({ className, align = "center", sideOffset = 8, ..
         data-slot="popover-content"
         align={align}
         sideOffset={sideOffset}
+        // focus-ring: the panel only holds focus for what is inside it; it is not a control, its contents show their own rings.
         className={cn("z-50 w-72 rounded-md bg-popover p-4 text-sm text-popover-foreground shadow-overlay ring-1 ring-border outline-none data-[state=open]:animate-appear data-[state=closed]:animate-disappear", className)}
         {...props}
       />

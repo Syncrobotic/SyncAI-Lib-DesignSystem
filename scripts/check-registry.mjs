@@ -7,6 +7,8 @@ const registry = JSON.parse(readFileSync("registry.json", "utf8"))
 const byPath = new Map(registry.items.flatMap((i) => i.files.map((f) => [f.path.replace(/\.tsx?$/, ""), i.name])))
 const byName = new Map(registry.items.map((i) => [i.name, i]))
 const BUILTIN = new Set(["react", "react-dom"])
+const pkg = JSON.parse(readFileSync("package.json", "utf8"))
+const minor = (v) => v.split(".").slice(0, 2).join(".")
 
 function closure(name, seen = new Set()) {
   for (const d of byName.get(name)?.registryDependencies ?? []) {
@@ -52,6 +54,16 @@ for (const item of registry.items) {
       if (!src.includes(`"${d}`) && item.files.length === 1) fail(item.name, `lists ${d} in dependencies but never imports it`)
     }
   }
+
+  // Status: "beta" (the API may still change in a minor release) or "stable"; absent means stable. Blocks and patterns
+  // are templates you copy and edit, so they carry none. A new item starts in beta: one first released in the current
+  // minor must say so explicitly, so nothing is stable by omission.
+  const status = item.meta?.status
+  if (status !== undefined && !["beta", "stable"].includes(status)) fail(item.name, `meta.status must be "beta" or "stable", not "${status}"`)
+  if (status !== undefined && item.type === "registry:block") fail(item.name, `blocks carry no meta.status`)
+  const first = item.meta?.changelog?.at(-1)?.version
+  if (item.type !== "registry:block" && first && status === undefined && minor(first) === minor(pkg.version))
+    fail(item.name, `first released in ${first}: set meta.status ("beta" until a product has used it)`)
 }
 
 if (bad) {

@@ -43,6 +43,7 @@ export const AttachmentInComposer: S = {
           aria-label="Message"
           rows={2}
           placeholder="Describe what happened at door 3"
+          // focus-ring: the composer around it draws the ring (has-[textarea:focus-visible]).
           className="min-h-(--h-md) flex-1 resize-none bg-transparent px-2 py-2 text-base outline-none placeholder:text-muted-foreground"
         />
         <Button variant="ghost" size="icon" aria-label="Attach files">

@@ -4,7 +4,15 @@ Components install as source, so a project keeps the version it installed. Re-ru
 
 ## Unreleased
 
+### Added
+- **API reference on every component page**, generated from the types (`npm run props`, checked in CI): each part's own props with type, default and description, and what the rest come from (an HTML element or a Radix part). Also in each component's Markdown twin, for agents.
+- **Beta and stable.** An item marked Beta may still change its API in a minor release; the label sits beside the version on its page, in its Markdown and in `/llms.txt`. Beta now: `filters`, `text-diff`, `image-grid`, `use-hotkeys`. New items start in beta (lint:registry asks for `meta.status`). See Versions and upgrades › Beta and stable.
+- Component pages open with their first example, right under the title; install and when to use follow.
+- **`lint:rules`** (in CI and `npm run ci`): the rules the 0.17 audit found broken by hand now fail the build. `outline-none` needs a visible focus in its place (or a `// focus-ring:` comment saying where focus shows); `outline-none` next to `focus-visible:outline-*` is an error, since Tailwind 4 cancels the ring; a battery threshold other than 15 % or a battery Meter with `critical`; a chart block without a table view. Field-edge contrast (`--input` 3:1 on card, page and muted tile, every theme) is a unit test.
+
 ### Fixed
+- Docs: on a 375 px phone the header's "Design System" no longer wraps to two lines.
+- Docs: the cards on the home page, Blocks, Components and the foundation previews showed no focus ring at all: `outline-none` cancelled their `focus-visible:outline-2` (a Tailwind 4 behaviour). Found by the new lint.
 - **`progress`**: `tone="success"` is neutral. A finished bar stays grey; green is a confirmation that comes and goes, not a state that stays.
 - **`breadcrumb`**: a crumb link is as tall as a compact control (36 px with a mouse, 44 px on touch); it was 20 px, too small to tap.
 - Docs site:

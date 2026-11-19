@@ -34,7 +34,7 @@ export default function ComponentsIndex() {
                 <li key={i.name} className="border-b border-border">
                   <Link
                     href={`/docs/components/${i.name}`}
-                    className="group flex min-h-(--h-row) flex-col justify-center gap-1 py-3 outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                    className="group flex min-h-(--h-row) flex-col justify-center gap-1 py-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                   >
                     <span className="font-medium group-hover:underline">{i.title}</span>
                     {i.description && <span className="line-clamp-2 text-sm text-muted-foreground">{i.description}</span>}

@@ -1,4 +1,4 @@
-// @syncrobotic/time-picker v0.10.0 · update: npx shadcn add @syncrobotic/time-picker --overwrite
+// @syncrobotic/time-picker v0.17.2 · update: npx shadcn add @syncrobotic/time-picker --overwrite
 "use client"
 
 import * as React from "react"
@@ -98,6 +98,7 @@ export function TimeInput({
         onChange={(e) => setText(e.target.value)}
         onBlur={commit}
         onKeyDown={(e) => e.key === "Enter" && commit()}
+        // focus-ring: the field around it draws the ring (has-[input:focus-visible]).
         className="h-full min-w-0 flex-1 bg-transparent tabular-nums outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed"
       />
     </div>

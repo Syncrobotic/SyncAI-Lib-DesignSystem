@@ -22,11 +22,15 @@ jobs:
       - run: npm run lint:tokens
       # Every registry item declares exactly what its files import, and hook users are client components
       - run: npm run lint:registry
+      # Focus is never removed, a battery warns below 15 %, every chart block has a table view
+      - run: npm run lint:rules
       # Overlays animate in and out, buttons press, timing comes from the motion tokens
       - run: npm run lint:motion
       # Every item file changed only with a version bump; the DTCG token files match the CSS theme
       - run: npm run lint:versions
       - run: npm run lint:dtcg
+      # The API reference on each component page matches the types (npm run props)
+      - run: npm run lint:props
       # The package version has its CHANGELOG section, so the release on main has notes
       - run: node scripts/release-notes.mjs "$(node -p "require('./package.json').version")" > /dev/null
       - run: npm run typecheck

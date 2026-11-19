@@ -171,7 +171,7 @@ export default function HomePage() {
             <AppearItem key={w.href}>
               <Link
                 href={w.href}
-                className={`group grid gap-2 border-b border-border py-6 outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring sm:grid-cols-[12rem_1fr_auto] sm:items-baseline sm:gap-8 ${fast}`}
+                className={`group grid gap-2 border-b border-border py-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring sm:grid-cols-[12rem_1fr_auto] sm:items-baseline sm:gap-8 ${fast}`}
               >
                 <span className="text-xl font-bold group-hover:underline">{w.title}</span>
                 <span className="text-muted-foreground">{w.body}</span>

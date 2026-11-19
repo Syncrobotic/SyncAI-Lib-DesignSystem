@@ -2,6 +2,7 @@ import { blocksOfType } from "./blocks"
 import { blockGroups, blockTypes, patternsOf } from "./block-types"
 import { groups as itemGroups, items, storyNames, storyTitle } from "./catalog"
 import { foundations } from "./foundations"
+import { propsOf } from "./props-data"
 
 // The site's three areas. The header links to each; the sidebar shows only the area you are in.
 export type NavLink = {
@@ -56,6 +57,7 @@ export const scopes: Scope[] = [
             ...patternsOf(i.name)
               .filter((t) => blocksOfType(t.slug).length > 0)
               .map((t) => ({ href: `/docs/components/${i.name}#${t.slug}`, label: t.title })),
+            ...(propsOf(i.name).some((p) => p.props.length || p.inherits.length) ? [{ href: `/docs/components/${i.name}#api`, label: "API reference" }] : []),
           ],
         })),
       })),
