@@ -587,6 +587,25 @@ export const overviews: Record<string, Overview> = {
     use: ["A robot's Overview, Sensors and Logs."],
     instead: ["Two to four views of the same data: `segmented-control`.", "Sections the user may want open together: `accordion`."],
   },
+  tree: {
+    what: "A hierarchy from data, with a guide line per level: a nested list of links people open and close, or a tree widget to pick one node in.",
+    use: [
+      "Data lineage: a release, the label sets it was trained on, and their sources.",
+      "Sites › zones › robots, to read or to pick one.",
+      "The folders and files of a dataset, as a file explorer.",
+    ],
+    instead: [
+      "One level of rows: `list`.",
+      "Where this page sits among its parents: `breadcrumb`.",
+      "Sections of one page that open and close: `accordion`.",
+      "Rows with columns to compare: `data-grid` with expanding rows.",
+    ],
+    notes: [
+      "Do not use select mode for a tree of links: role=\"tree\" takes the arrow keys and makes the whole tree one Tab stop, so links inside it are not followed by Enter. Use list mode, which keeps links as links.",
+      "Each node's id must be unique across the tree, even when the same thing appears twice (a source under two label sets): give the repeat its own id and a marker in meta.",
+      "Pass `labels.toggle` and `empty` to translate the disclosure buttons' names and the empty text.",
+    ],
+  },
   accordion: {
     what: "Sections that open and close in place.",
     use: ["Long settings, FAQs, details the user rarely needs."],

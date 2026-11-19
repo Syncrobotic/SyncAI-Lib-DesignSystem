@@ -51,6 +51,7 @@ export type StoryFile =
   | "data-pieces"
   | "image-grid"
   | "annotated-image"
+  | "tree"
   | "hooks"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
@@ -693,6 +694,17 @@ const entries: Record<string, Entry> = {
       "One open at a time only when the sections are alternatives.",
     ],
   },
+  tree: {
+    group: "Navigation",
+    examples: { file: "tree", prefix: "Tree" },
+    rules: [
+      "list (default) for a hierarchy people read and follow links in: lineage, an outline. select only when choosing a node is the job (a file explorer, a site picker): it is one Tab stop with arrow keys, and its nodes are not links.",
+      "A node used twice (a source under two label sets) is named again with a marker in meta, \"(listed above)\", not drawn twice in full.",
+      "meta is a count, a size or a calm state word, in muted text; never a coloured status. A disabled node says why in its meta.",
+      "Open what people came for (defaultExpanded or expandAll for short trees); a deep tree starts collapsed.",
+      "Give textValue when label is not a string, so type-ahead and screen readers have its name.",
+    ],
+  },
   // Overlays: the docs show the closed trigger; the *Open stories are for visual tests.
   dialog: { group: "Overlays", examples: { file: "overlays", prefix: "Dialog" }, rules: ["A short decision. On phones prefer Sheet for anything longer."] },
   "alert-dialog": {
@@ -952,6 +964,16 @@ const keyboard: Record<string, [string, string][]> = {
     ["Enter / Space", "Open or close the section"],
     ["↑ / ↓", "Move between section headers"],
     ["Home / End", "First or last header"],
+  ],
+  tree: [
+    ["Tab", "list: move between links and disclosure buttons. select: move into the tree (one stop) and out"],
+    ["Enter / Space", "list: open or close a branch, follow a link. select: select the focused node"],
+    ["↑ / ↓", "select: previous or next node on screen"],
+    ["→", "select: open a closed branch; on an open one, move to its first child"],
+    ["←", "select: close an open branch; otherwise move to the parent"],
+    ["Home / End", "select: first or last node on screen"],
+    ["Type letters", "select: move to the next node whose name starts with them"],
+    ["*", "select: open every branch beside the focused node"],
   ],
   "image-grid": [
     ["Enter / Space", "Open the picture in the lightbox, or pick it while picking"],

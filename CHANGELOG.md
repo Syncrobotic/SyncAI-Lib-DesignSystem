@@ -6,6 +6,7 @@ Components install as source, so a project keeps the version it installed. Re-ru
 
 ### Added
 - **`annotated-image`** (beta): boxes, points, polygons and poses over a picture, in its own pixel space with non-scaling strokes. Predicted solid, ground truth dashed, the previous version dotted and faded, each on a halo; selected 3 px with handles; class words on the picture (all, selected or none); one image with a spoken summary, or, with `onSelectedChange`, a group of buttons (one Tab stop, arrows, Enter, Esc); raster overlays; loading and failed states; and `AnnotationLegend` for the kinds present.
+- **`tree`** (beta): a hierarchy from data (lineage, sites › zones › robots, a dataset's folders) in two modes. `list` (default) is a nested list with a 1 px guide line per level, a disclosure button per branch and links in the normal Tab order; `select` is a WAI-ARIA tree (one Tab stop, arrow keys, Home / End, type-ahead, `*`, one selected node) with the kit's keyboard ring and selected look.
 
 ## 0.17.4 · 2026-11-19
 

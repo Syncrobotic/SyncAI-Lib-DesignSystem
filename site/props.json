@@ -4756,5 +4756,83 @@
     "<div>"
    ]
   }
+ ],
+ "tree": [
+  {
+   "name": "Tree",
+   "props": [
+    {
+     "name": "items",
+     "type": "TreeNode[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "Names the tree or list for screen readers: \"Lineage\", \"Dataset files\"."
+    },
+    {
+     "name": "mode",
+     "type": "\"select\" | \"list\"",
+     "default": "\"list\"",
+     "description": "list (default): a nested list whose links and disclosure buttons are ordinary Tab stops. select: a tree widget (role=\"tree\"), one Tab stop, arrow keys, and one selected node."
+    },
+    {
+     "name": "defaultExpanded",
+     "type": "string[]",
+     "description": "Branches open at first (uncontrolled)."
+    },
+    {
+     "name": "expanded",
+     "type": "string[]",
+     "description": "Open branches, controlled; pair with onExpandedChange."
+    },
+    {
+     "name": "onExpandedChange",
+     "type": "(expanded: string[]) => void",
+     "description": ""
+    },
+    {
+     "name": "expandAll",
+     "type": "boolean",
+     "description": "Every branch open at first (uncontrolled), for short trees people read whole."
+    },
+    {
+     "name": "selectedId",
+     "type": "string",
+     "description": "select mode: the selected node, controlled; pair with onSelectedChange."
+    },
+    {
+     "name": "defaultSelectedId",
+     "type": "string",
+     "description": "select mode: the node selected at first (uncontrolled)."
+    },
+    {
+     "name": "onSelectedChange",
+     "type": "(id: string, node: TreeNode) => void",
+     "description": ""
+    },
+    {
+     "name": "empty",
+     "type": "ReactNode",
+     "default": "\"Nothing here yet.\"",
+     "description": "Shown instead of the tree when items is empty."
+    },
+    {
+     "name": "linkAs",
+     "type": "ElementType",
+     "default": "\"a\"",
+     "description": "Your router's link (e.g. next/link), for nodes with href in list mode."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<TreeLabels>",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
  ]
 }
