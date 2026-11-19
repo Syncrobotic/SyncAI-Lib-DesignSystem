@@ -12,10 +12,42 @@ import { cn } from "@/lib/utils"
  * It remembers whether the keyboard or the mouse moved last (data-nav), so the highlighted row shows its ring only in
  * keyboard use; under the pointer it keeps the calm fill.
  */
-export function Command({ className, onKeyDown, onPointerMove, ...props }: React.ComponentProps<typeof CommandPrimitive>) {
+/** Scroll an item into view inside its own list only, never the page around it. */
+function scrollWithinList(el: HTMLElement) {
+  const list = el.closest<HTMLElement>("[cmdk-list]")
+  if (!list) return
+  const l = list.getBoundingClientRect()
+  const r = el.getBoundingClientRect()
+  if (r.top < l.top) list.scrollTop -= l.top - r.top
+  else if (r.bottom > l.bottom) list.scrollTop += r.bottom - l.bottom
+}
+
+export function Command({ className, onKeyDown, onPointerMove, ref, ...props }: React.ComponentProps<typeof CommandPrimitive>) {
   const [nav, setNav] = React.useState<"key" | "pointer">("key")
+  const root = React.useRef<HTMLDivElement | null>(null)
+  // cmdk keeps the highlighted row in view with scrollIntoView, which also scrolls the page: an inline list further down
+  // pulled the whole page to it as it mounted. Here the rows (and group headings) scroll their own list only.
+  React.useLayoutEffect(() => {
+    const el = root.current
+    if (!el) return
+    const scope = () =>
+      el.querySelectorAll<HTMLElement>("[cmdk-item], [cmdk-group-heading]").forEach((n) => {
+        if (n.dataset.scrollScoped) return
+        n.dataset.scrollScoped = ""
+        n.scrollIntoView = () => scrollWithinList(n)
+      })
+    scope()
+    const mo = new MutationObserver(scope)
+    mo.observe(el, { childList: true, subtree: true })
+    return () => mo.disconnect()
+  }, [])
   return (
     <CommandPrimitive
+      ref={(node) => {
+        root.current = node
+        if (typeof ref === "function") ref(node)
+        else if (ref) ref.current = node
+      }}
       data-slot="command"
       data-nav={nav}
       onKeyDown={(e) => {

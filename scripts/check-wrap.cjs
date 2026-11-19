@@ -1,4 +1,4 @@
-// Rows of buttons on a phone: finds a wrapping row of actions (buttons, links, badges) whose last line holds a single item
+// Rows of buttons on a phone, and stray text: finds a wrapping row of actions (buttons, links, badges) whose last line holds a single item
 // under a fuller line, the "Source" left alone on a line of its own. A horizontal-overflow check cannot see it: nothing
 // overflows, it only wraps badly. Fix by giving the phone its own layout (equal columns, a stack, or a shorter row).
 // Needs the site running:
@@ -47,6 +47,14 @@ const pages = [
         const ls = Object.values(lines)
         if (ls.length > 1 && ls.at(-1).length === 1 && ls.at(-2).length >= 2)
           out.push(`alone on its line: "${(ls.at(-1)[0].textContent || '').trim().slice(0, 40)}" (${String(el.className).slice(0, 60)})`)
+      }
+      // Text that should never reach the screen: a code comment rendered as text, or a value that did not resolve.
+      const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
+      let t
+      while ((t = w.nextNode())) {
+        if (t.parentElement.closest('pre,code,script,style,[data-code]')) continue
+        const v = t.nodeValue.trim()
+        if (/^\/\/ |\bfocus-ring:|\[object Object\]|\bNaN\b/.test(v)) out.push(`text that should not show: "${v.slice(0, 50)}"`)
       }
       return out
     })
