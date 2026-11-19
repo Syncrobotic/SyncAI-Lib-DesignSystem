@@ -10,7 +10,9 @@ export function DocHeader({ title, lead }: { title: string; lead: string }) {
   return (
     <header className="flex flex-col gap-3 border-b border-border pb-8">
       <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
-      <p className="max-w-2xl text-lg text-muted-foreground">{lead}</p>
+      <p className="max-w-2xl text-lg text-pretty text-muted-foreground">
+        <Inline text={lead} />
+      </p>
     </header>
   )
 }

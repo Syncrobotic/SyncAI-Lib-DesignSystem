@@ -18,7 +18,7 @@ const meta: Meta = { title: "Navigation/Navigation menu" }
 export default meta
 type S = StoryObj
 
-// Docs pages show the closed menu; the open state is a visual test ("Open" stories are skipped in the docs).
+// The docs open with one panel open (Default); the other examples start closed. "Open" stories are skipped in the docs.
 const frame = "flex min-h-80 items-start justify-center"
 
 function Products({ defaultValue }: { defaultValue?: string }) {
@@ -109,10 +109,12 @@ function SiteMenu() {
   )
 }
 
+/** One panel open from the start, so the example shows what the menu holds instead of a tall empty frame. */
 export const NavigationMenuDefault: S = {
   render: () => (
-    <div className={frame}>
-      <Products />
+    // Taller on a phone, where the open panel stacks its four cards.
+    <div className="flex min-h-112 items-start justify-center md:min-h-80">
+      <Products defaultValue="robots" />
     </div>
   ),
 }

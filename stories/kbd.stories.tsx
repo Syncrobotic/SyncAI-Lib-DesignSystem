@@ -84,16 +84,16 @@ export const KbdInInput: S = {
   ),
 }
 
-export const KbdInTooltip: S = {
-  render: () => (
+function SaveWithTooltip({ open }: { open?: boolean }) {
+  return (
     <TooltipProvider>
-      <Tooltip defaultOpen>
+      <Tooltip defaultOpen={open}>
         <TooltipTrigger asChild>
           <Button size="icon" variant="outline" aria-label="Save route">
             <Save aria-hidden="true" />
           </Button>
         </TooltipTrigger>
-        <TooltipContent side="right">
+        <TooltipContent side="bottom">
           <span className="flex items-center gap-2">
             Save route
             <KbdGroup>
@@ -104,6 +104,25 @@ export const KbdInTooltip: S = {
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
+  )
+}
+
+/** The shortcut in the button's tooltip, shown on hover or keyboard focus. */
+export const KbdInTooltip: S = {
+  render: () => (
+    <div className="flex flex-col items-center gap-2">
+      <SaveWithTooltip />
+      <p className="text-sm text-muted-foreground">Point at the button or tab to it.</p>
+    </div>
+  ),
+}
+
+/** The tooltip open, for the visual test (the docs show the closed button above). */
+export const KbdInTooltipOpen: S = {
+  render: () => (
+    <div className="pb-8">
+      <SaveWithTooltip open />
+    </div>
   ),
 }
 

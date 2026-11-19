@@ -1,5 +1,24 @@
 import { propsOf } from "./props-data"
-import { H2 } from "./prose"
+import { H2, Unbroken } from "./prose"
+
+const code = "rounded-xs bg-muted px-1 font-mono text-xs text-foreground"
+
+/** A description's `backticked` names as inline code, the way the source's JSDoc means them. */
+function Described({ text }: { text: string }) {
+  return (
+    <span>
+      {text.split(/(`[^`]+`)/).map((s, i) =>
+        s.startsWith("`") && s.endsWith("`") && s.length > 2 ? (
+          <code key={i} className={code}>
+            <Unbroken text={s.slice(1, -1)} />
+          </code>
+        ) : (
+          s
+        ),
+      )}
+    </span>
+  )
+}
 
 /**
  * API reference: for each exported part, the props this kit adds (name, type, default, what it does), and what the rest
@@ -26,7 +45,7 @@ export function PropsTable({ name }: { name: string }) {
                 {part.inherits.map((i, n) => (
                   <span key={i}>
                     {n > 0 && (n === part.inherits.length - 1 ? " and " : ", ")}
-                    <code className="rounded-xs bg-muted px-1 font-mono text-xs text-foreground">{i}</code>
+                    <code className={code}>{i}</code>
                   </span>
                 ))}
                 .
@@ -45,7 +64,7 @@ export function PropsTable({ name }: { name: string }) {
                         {p.type}
                         {p.default !== undefined && <span className="text-foreground"> = {p.default}</span>}
                       </code>
-                      {p.description && <span>{p.description}</span>}
+                      {p.description && <Described text={p.description} />}
                     </dd>
                   </div>
                 ))}
