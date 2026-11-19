@@ -48,10 +48,20 @@ export function BlockFrame({
   const box = React.useRef<HTMLDivElement>(null)
   const frame = React.useRef<HTMLIFrameElement>(null)
 
+  // On a phone a desktop-width preview would shrink to a quarter and be unreadable: start at the phone width there,
+  // unless the reader picked a width themselves.
+  const picked = React.useRef(false)
+  const pick = (v: Viewport) => {
+    picked.current = true
+    setVp(v)
+  }
   React.useEffect(() => {
     const el = box.current
     if (!el) return
-    const ro = new ResizeObserver(([e]) => setAvail(e.contentRect.width))
+    const ro = new ResizeObserver(([e]) => {
+      setAvail(e.contentRect.width)
+      if (!picked.current && e.contentRect.width < 640) setVp("mobile")
+    })
     ro.observe(el)
     return () => ro.disconnect()
   }, [tab])
@@ -83,7 +93,7 @@ export function BlockFrame({
     <div className="overflow-hidden rounded-md border border-border bg-card">
       <Tabs value={tab} onValueChange={setTab} className="gap-0">
         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border px-4">
-          <TabsList aria-label="View" className="border-b-0">
+          <TabsList aria-label="View" className="shrink-0 overflow-visible border-b-0">
             <TabsTrigger value="preview">
               <Eye aria-hidden="true" /> Preview
             </TabsTrigger>
@@ -106,7 +116,7 @@ export function BlockFrame({
                     type="button"
                     aria-label={`${v} view, ${widths[v]} pixels`}
                     aria-pressed={vp === v}
-                    onClick={() => setVp(v)}
+                    onClick={() => pick(v)}
                     className={cn(
                       "press relative flex size-(--h-sm) items-center justify-center rounded-xs transition-colors duration-(--motion-fast) ease-(--ease-standard)",
                       vp === v ? "text-primary-foreground" : "text-muted-foreground hover:text-foreground",

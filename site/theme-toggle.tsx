@@ -25,5 +25,5 @@ export function ThemeToggle() {
   )
 }
 
-/** Runs before paint: dark is the default, light only when the viewer chose it. */
-export const themeScript = `try{if(localStorage.getItem("theme")==="light")document.documentElement.classList.remove("dark")}catch(e){}`
+/** Runs before paint: light is the default (it reads in daylight), dark only when the viewer chose it. */
+export const themeScript = `try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}`

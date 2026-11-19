@@ -6,10 +6,10 @@ const preview: Preview = {
   globalTypes: {
     theme: {
       description: "Appearance",
-      toolbar: { icon: "contrast", items: [{ value: "dark", title: "Dark" }, { value: "light", title: "Light" }] },
+      toolbar: { icon: "contrast", items: [{ value: "light", title: "Light" }, { value: "dark", title: "Dark" }] },
     },
   },
-  initialGlobals: { theme: "dark" },
+  initialGlobals: { theme: "light" },
   decorators: [
     (Story, ctx) => {
       const dark = ctx.globals.theme !== "light"

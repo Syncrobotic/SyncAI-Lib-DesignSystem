@@ -1,4 +1,4 @@
-// @syncrobotic/agent-approval v0.9.0 · update: npx shadcn add @syncrobotic/agent-approval --overwrite
+// @syncrobotic/agent-approval v0.13.0 · update: npx shadcn add @syncrobotic/agent-approval --overwrite
 "use client"
 
 import * as React from "react"
@@ -30,7 +30,7 @@ export function AgentApproval() {
     <AppShell product="Fleet console" nav={sampleNav} current="#alarms" title="Approval" user={{ name: "Mei Lin", initials: "ML" }}>
       <div className="flex max-w-3xl flex-col gap-6">
         <div className="flex flex-col gap-1">
-          <StatusEyebrow tone={decided ? "success" : "warning"}>
+          <StatusEyebrow status={decided ? "normal" : "warning"}>
             {state === "approved" ? "Approved by you" : state === "rejected" ? "Sent back" : "Needs your approval · expires in 25 min"}
           </StatusEyebrow>
           <h2 className="text-xl font-bold">Reroute around door C3</h2>

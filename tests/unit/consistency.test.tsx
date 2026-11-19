@@ -16,7 +16,7 @@ describe("calm states stay grey", () => {
 
 describe("island status", () => {
   it("says offline and charging, not only a low battery", () => {
-    render(<Island name="7F3A" tone="neutral" online={false} charging battery={64} />)
+    render(<Island name="7F3A" status="offline" online={false} charging battery={64} />)
     expect(screen.getByRole("button", { name: "Device status, offline, charging, battery 64%" })).toBeTruthy()
   })
 })
@@ -34,5 +34,13 @@ describe("stepper", () => {
     expect(items[1].getAttribute("aria-current")).toBe("step")
     expect(items[1].querySelector("button")).toBeNull()
     expect(items[0].querySelector("button")).toBeTruthy()
+  })
+})
+
+describe("status names", () => {
+  it("reads the old tone names as the new statuses", async () => {
+    const { toStatus } = await import("@/registry/syncrobotic/shell/status-glyph")
+    expect(["info", "success", "warning", "danger", "neutral"].map((t) => toStatus(t as "info"))).toEqual(["active", "normal", "warning", "danger", "offline"])
+    expect(toStatus("active")).toBe("active")
   })
 })

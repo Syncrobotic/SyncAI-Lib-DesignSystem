@@ -468,6 +468,7 @@ const entries: Record<string, Entry> = {
     examples: { file: "display", prefix: "StatusGlyph" },
     rules: [
       "Status is shape plus colour, so it reads without colour vision: filled circle active, hollow circle normal, triangle attention, square stopped, slashed circle offline.",
+      "Pass `status`: active, normal, warning, danger or offline. The old `tone` (info, success, warning, danger, neutral) still works until 1.0 and warns once in development.",
     ],
   },
   "status-eyebrow": { group: "Display", examples: { file: "list", only: ["StatusShapes", "StatusEyebrowOverTitle", "StatusInlineInRows"] } },

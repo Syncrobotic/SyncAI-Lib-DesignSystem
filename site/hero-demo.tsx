@@ -36,7 +36,7 @@ export function HeroDemo() {
       <div className="flex flex-col gap-4">
         <div className="flex items-start justify-between gap-3">
           <div className="flex flex-col gap-1">
-            <StatusEyebrow tone={moving ? "info" : "neutral"}>{moving ? "Patrolling" : "Stopped by you"}</StatusEyebrow>
+            <StatusEyebrow status={moving ? "active" : "offline"}>{moving ? "Patrolling" : "Stopped by you"}</StatusEyebrow>
             <span className="text-lg font-bold">Patrol dog 7F3A</span>
           </div>
           <span className="text-sm text-muted-foreground">North gate</span>

@@ -33,7 +33,7 @@ const principles = [
   {
     n: "05",
     title: "Calm by default",
-    body: "Dark is the default surface. Motion only marks a change of state and disappears under reduced motion. Nothing moves to attract attention; things change because something happened.",
+    body: "Light is the default surface: it reads in daylight and glare, where a dark screen washes out. Dark is for control rooms and night shifts. Motion only marks a change of state and disappears under reduced motion. Nothing moves to attract attention; things change because something happened.",
     rule: "Three durations: 120, 200, 320 ms.",
   },
 ]

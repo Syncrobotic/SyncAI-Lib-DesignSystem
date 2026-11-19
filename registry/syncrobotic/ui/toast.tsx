@@ -1,4 +1,4 @@
-// @syncrobotic/toast v0.10.0 · update: npx shadcn add @syncrobotic/toast --overwrite
+// @syncrobotic/toast v0.13.0 · update: npx shadcn add @syncrobotic/toast --overwrite
 "use client"
 
 import * as React from "react"
@@ -35,14 +35,17 @@ const listeners = new Set<() => void>()
 const emit = () => listeners.forEach((l) => l())
 const MAX = 3
 
-/** Show a toast. At most three are on screen; the oldest non-failure makes room. Returns its id. */
+/**
+ * Show a toast. At most three are on screen: the oldest that is not a failure makes room. Failures are never closed for
+ * you, so with several at once more than three can show, until someone dismisses them. Returns its id.
+ */
 export function toast(input: ToastInput) {
   const id = ++next
   items = [...items, { ...input, id, open: true }]
   const open = items.filter((t) => t.open)
   if (open.length > MAX) {
-    const drop = open.find((t) => t.tone !== "danger") ?? open[0]
-    items = items.map((t) => (t.id === drop.id ? { ...t, open: false } : t))
+    const drop = open.find((t) => t.tone !== "danger")
+    if (drop) items = items.map((t) => (t.id === drop.id ? { ...t, open: false } : t))
   }
   emit()
   return id

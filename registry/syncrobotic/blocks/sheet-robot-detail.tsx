@@ -1,4 +1,4 @@
-// @syncrobotic/sheet-robot-detail v0.10.0 · update: npx shadcn add @syncrobotic/sheet-robot-detail --overwrite
+// @syncrobotic/sheet-robot-detail v0.13.0 · update: npx shadcn add @syncrobotic/sheet-robot-detail --overwrite
 "use client"
 
 import * as React from "react"
@@ -31,7 +31,7 @@ export function SheetRobotDetail({
         </SheetTrigger>
         <SheetContent side="right" onOpenAutoFocus={focusOnOpen ? undefined : (e) => e.preventDefault()}>
           <SheetHeader>
-            <StatusEyebrow tone="warning">Needs attention</StatusEyebrow>
+            <StatusEyebrow status="warning">Needs attention</StatusEyebrow>
             <SheetTitle className="text-xl">Patrol dog 9E37</SheetTitle>
             <SheetDescription>Loading bay · stopped 6 min ago at door C3</SheetDescription>
           </SheetHeader>
@@ -55,7 +55,7 @@ export function SheetRobotDetail({
             <h3 id="robot-events" className="text-sm font-medium">
               Last events
             </h3>
-            <Timeline density="dense">
+            <Timeline size="sm">
               <TimelineItem time="21:46" dateTime="2026-11-17T21:46" tone="warning" title="Stopped: door C3 closed" />
               <TimelineItem time="21:41" dateTime="2026-11-17T21:41" title="Checkpoint 2 passed" />
               <TimelineItem time="21:33" dateTime="2026-11-17T21:33" title="Left Dock 1" />

@@ -1,16 +1,16 @@
-// @syncrobotic/robot-status-card v0.8.0 · update: npx shadcn add @syncrobotic/robot-status-card --overwrite
+// @syncrobotic/robot-status-card v0.13.0 · update: npx shadcn add @syncrobotic/robot-status-card --overwrite
 import * as React from "react"
 import { Battery, BatteryCharging, MapPin, Navigation, Wifi, WifiOff } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
-import type { Tone } from "@/registry/syncrobotic/shell/status-glyph"
+import type { Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Card } from "@/registry/syncrobotic/ui/card"
 import { Progress } from "@/registry/syncrobotic/ui/progress"
 
 export type RobotStatus = {
   name: string
-  state: { tone: Tone; label: string }
+  state: { tone: Status; label: string }
   battery: number
   charging?: boolean
   online: boolean
@@ -21,7 +21,7 @@ export type RobotStatus = {
 
 export const sampleRobotStatus: RobotStatus = {
   name: "Patrol dog 7F3A",
-  state: { tone: "info", label: "Patrolling" },
+  state: { tone: "active", label: "Patrolling" },
   battery: 72,
   online: true,
   signal: "Good",
@@ -51,7 +51,7 @@ export function RobotStatusCard({
       <div className="flex items-start gap-3">
         <span className="flex size-12 shrink-0 items-center justify-center rounded-sm bg-muted font-mono text-sm font-bold">{robot.name.slice(-4)}</span>
         <div className="flex min-w-0 flex-col">
-          <StatusEyebrow tone={robot.state.tone}>{robot.state.label}</StatusEyebrow>
+          <StatusEyebrow status={robot.state.tone}>{robot.state.label}</StatusEyebrow>
           <span className="truncate text-lg font-bold">{robot.name}</span>
         </div>
       </div>

@@ -127,16 +127,16 @@ export default function ColorPage() {
             visual: (
               <ul className="flex w-56 flex-col gap-2 text-sm">
                 <li className="flex justify-between">
-                  7F3A <InlineStatus tone="info">Patrolling</InlineStatus>
+                  7F3A <InlineStatus status="active">Patrolling</InlineStatus>
                 </li>
                 <li className="flex justify-between">
-                  2B10 <InlineStatus tone="success">Docked</InlineStatus>
+                  2B10 <InlineStatus status="normal">Docked</InlineStatus>
                 </li>
                 <li className="flex justify-between">
-                  9C44 <InlineStatus tone="warning">Needs attention</InlineStatus>
+                  9C44 <InlineStatus status="warning">Needs attention</InlineStatus>
                 </li>
                 <li className="flex justify-between">
-                  8F15 <InlineStatus tone="success">Docked</InlineStatus>
+                  8F15 <InlineStatus status="normal">Docked</InlineStatus>
                 </li>
               </ul>
             ),

@@ -44,7 +44,7 @@ export default function InstallationPage() {
       </p>
       <CodeBlock code={globals} lang="css" title="globals.css" />
       <p className="pt-3 text-sm">
-        <Inline text={'Dark is the default: put `class="dark"` on `<html>`.'} />
+        <Inline text={'Light is the default: it reads in daylight and glare. For a control room or a night shift, put `class="dark"` on `<html>`.'} />
       </p>
 
       <H2 id="components">4. Add components</H2>
