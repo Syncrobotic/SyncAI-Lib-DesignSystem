@@ -56,7 +56,7 @@ Ordered by what blocks adoption first. Each milestone is one or two release trai
 
 ### 0.7 · Environments
 - [x] Compact density for dashboards (`data-density="compact"`, mouse only)
-- [ ] High-contrast theme for bright sun and outdoor robots
+- [x] High-contrast theme for bright sun and outdoor robots (`data-contrast="more"`)
 - [x] Glove-sized targets for field use (`data-density="glove"`)
 
 ### 0.8 · Documentation

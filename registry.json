@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.1",
+        "version": "0.14.0",
         "changelog": [
+          {
+            "version": "0.14.0",
+            "date": "2026-11-19",
+            "note": "High contrast: `data-contrast=\"more\"` on `<html>` or a container, in light or dark, for bright sun and low vision. Text and status reach 7:1 on every surface, edges 3:1, trays over the map turn opaque. Fixed: a `.dark` subtree on a light page kept light-mode ink on cards, menus and secondary buttons."
+          },
           {
             "version": "0.13.1",
             "date": "2026-11-19",
