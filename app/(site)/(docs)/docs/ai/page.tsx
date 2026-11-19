@@ -20,7 +20,8 @@ export default function AiPage() {
         rules={[
           `\`${site.url}/llms.txt\`: the index. What the kit is, how to install, every foundation, block and component with one line each.`,
           `\`${site.url}/llms-full.txt\`: everything in one file: the design language, every block, every component with when to use it and its agent notes.`,
-          "Any page plus `.md`: its markdown twin. `/docs/components/meter.md`, `/blocks/app-shell.md`, `/docs/foundations/motion.md`. What it is, when to use it, when not to and what to use instead, rules, keyboard, agent notes, install command and version.",
+          "Any component or block page plus `.md`: its markdown twin. `/docs/components/meter.md`, `/blocks/app-shell.md`. What it is, when to use it, when not to and what to use instead, rules, keyboard, agent notes, install command and version.",
+          "A foundation page plus `.md` (`/docs/foundations/motion.md`) carries the whole design language, not that page alone: the same text as the skill's design-language reference.",
           "On every component and block page, **Markdown** copies that twin and **Prompt** copies a ready instruction for an agent.",
         ]}
       />

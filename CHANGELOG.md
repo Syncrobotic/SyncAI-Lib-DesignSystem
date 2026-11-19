@@ -2,6 +2,38 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.17.2 · 2026-11-19
+
+### Added
+- **API reference on every component page**, generated from the types (`npm run props`, checked in CI): each part's own props with type, default and description, and what the rest come from (an HTML element or a Radix part). Also in each component's Markdown twin, for agents.
+- **Beta and stable.** An item marked Beta may still change its API in a minor release; the label sits beside the version on its page, in its Markdown and in `/llms.txt`. Beta now: `filters`, `text-diff`, `image-grid`, `use-hotkeys`. New items start in beta (lint:registry asks for `meta.status`). See Versions and upgrades › Beta and stable.
+- Component pages open with their first example, right under the title; install and when to use follow.
+- **`lint:rules`** (in CI and `npm run ci`): the rules the 0.17 audit found broken by hand now fail the build. `outline-none` needs a visible focus in its place (or a `// focus-ring:` comment saying where focus shows); `outline-none` next to `focus-visible:outline-*` is an error, since Tailwind 4 cancels the ring; a battery threshold other than 15 % or a battery Meter with `critical`; a chart block without a table view. Field-edge contrast (`--input` 3:1 on card, page and muted tile, every theme) is a unit test.
+
+### Fixed
+- **Keyboard position is visible in every list** (2.4.7). In `dropdown-menu`, `select`, `command`, `autocomplete` and `time-picker` the highlighted item showed only a pale fill (1.24:1); with the keyboard it now also has a 2 px inset ring, and with a mouse it stays a plain fill. `time-picker`'s 48 times are one Tab stop with arrow keys. `lint:rules` no longer accepts a background alone as focus.
+- **`command`**: CommandDialog gives focus back to what opened it (a button or ⌘K); it fell to the page.
+- **Named popovers**: `date-selector`, `time-picker` and `autocomplete` panels are named by their field; the `popover` rules say content needs a name.
+- **Focus never hidden**: on phones `map-workspace` puts the robot tray above the map and the stop below it, so a focused marker is never under the tray; `action-rail-shell` keeps scroll padding for its floating bar.
+- **Graphics reach 3:1**: status tracker cells and sparkline-table bars are opaque grey; no data is an outlined cell; the uptime strip is one Tab stop that reads each day. In high contrast, the segmented track, radial tracks and island action buttons have an edge.
+- **Glove targets** (48 px): calendar month and year menus, navigation-menu links, the top-bar brand, row links in `data-catalog` and `agent-runs`, and the resizable handle on touch. `date-selector` scrolls inside on a small phone instead of running off the screen.
+- **`console-overview`**: one search, the table's filter; the top-bar search box duplicated it.
+- **Filter segments look the same everywhere**: `agent-runs`, `timeline-audit` and `incident-queue` use the compact segments with counts, like the fleet table.
+- **`incident-detail`**: Post update is disabled until there is text, and says why beside it.
+- Docs: block thumbnails on /blocks are readable. Each shows one telling region at about half size instead of a whole 1280 px screen, and App shell opens with a block that has content instead of an empty page.
+- **Docs say each rule once, and the same way everywhere.** A review of every place a rule is written (README, CONTRIBUTING, ROADMAP, the theme's comments, the agent skill, component rules, foundation pages, lint messages) removed stale facts (counts, paths, links, CI claims) and settled the copies that disagreed: light is the default theme; 44 px on touch, 36 with a mouse; disabled outlines; the elevation recipes; six motion patterns; exit easing; waiting loops only; a table view for every chart with axes (sparklines, rings and status strips say their numbers in words); status is a shape and a word; danger is "needs someone now: stopped, failed"; WCAG large text is 24 px, or 18.66 px bold. Each topic has one source page; the others link to it or repeat it exactly.
+- Docs: on a 375 px phone the header's "Design System" no longer wraps to two lines.
+- Docs: the cards on the home page, Blocks, Components and the foundation previews showed no focus ring at all: `outline-none` cancelled their `focus-visible:outline-2` (a Tailwind 4 behaviour). Found by the new lint.
+- **`progress`**: `tone="success"` is neutral. A finished bar stays grey; green is a confirmation that comes and goes, not a state that stays.
+- **`breadcrumb`**: a crumb link is as tall as a compact control (36 px with a mouse, 44 px on touch); it was 20 px, too small to tap.
+- Docs site:
+  - The theme menu has three choices, Light, Match system and Dark, and matches the system by default (it was a two-way switch, light by default). It follows the system live while that choice is on.
+  - Sections no longer rise 24 px and run back as you scroll. They arrive once with the theme's appear movement (8 px), as the motion rules ask.
+  - Calm things on the foundation pages are no longer green: Do examples, accessibility passes and the checklist, list dots, a good-signal bar.
+  - Touch targets reach 44 px on phones: the logo, a block's Open link, "Built from" chips, the data-visualisation item links, the Installation guide link.
+  - Docs follow 0.17's rules: the agent skill's design language and checklist (offline grey, battery a Meter warning below 15 %, switch on primary, KPI colour only when worse, neutral environment badge, field edges 3:1, alarms first, a table view for every chart, focus rings never removed), CONTRIBUTING's pre-PR check, the Meter guidance (`low={15}`) and the ROADMAP.
+  - Examples follow the rules they teach: Update available is a neutral alert (blue is only a process), the previous period in a chart is slot 5 grey, a finished progress bar is grey, the attachment composer shows focus.
+
 ## 0.17.1 · 2026-11-19
 
 ### Changed

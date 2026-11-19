@@ -1,4 +1,4 @@
-// @syncrobotic/calendar v0.15.0 · update: npx shadcn add @syncrobotic/calendar --overwrite
+// @syncrobotic/calendar v0.17.2 · update: npx shadcn add @syncrobotic/calendar --overwrite
 "use client"
 
 import * as React from "react"
@@ -35,7 +35,9 @@ export function Calendar({ className, classNames, showOutsideDays = true, weekSt
         month_caption: "flex h-(--h-sm) items-center justify-center px-8 font-medium",
         caption_label: "flex items-center gap-2 text-sm font-medium",
         dropdowns: "flex items-center gap-2",
-        dropdown_root: "relative rounded-xs has-focus-visible:outline-2 has-focus-visible:outline-offset-2",
+        // The month and year pickers are the label with a transparent select over it: the label row is the hit area, so
+        // it takes the control height (36, 44 on touch, 48 in gloves) instead of the 20 px of its text.
+        dropdown_root: "relative flex h-(--h-sm) items-center rounded-xs px-1 has-focus-visible:outline-2 has-focus-visible:outline-offset-2",
         dropdown: "absolute inset-0 opacity-0",
         nav: "absolute inset-x-0 top-0 flex items-center justify-between",
         button_previous: navButton,

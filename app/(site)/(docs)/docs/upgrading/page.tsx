@@ -40,12 +40,17 @@ export default function UpgradingPage() {
         head={["Change", "Version", "Example"]}
         rows={[
           ["Fix, no API change", "patch · 0.5.1", "Contrast fix, keyboard bug"],
-          ["New prop or behaviour, compatible", "minor · 0.6.0", "A labels prop"],
+          ["New item, token or prop, or a compatible change of behaviour", "minor · 0.6.0", "Combobox, --space-section, a labels prop"],
           ["Rename or remove a prop, token or item", "major (minor before 1.0)", "tone renamed"],
         ]}
       />
       <p className="pt-3 text-sm text-muted-foreground">
         <Inline text="CI refuses a change to an item's files without a version bump and a changelog line, so the header never lies." />
+      </p>
+
+      <H2 id="status">Beta and stable</H2>
+      <p className="max-w-3xl text-base">
+        <Inline text="An item marked Beta on its page may still change its API in a minor release: read its changelog before you upgrade. Every item starts in beta and becomes stable once a product has used it and its API has settled. Unmarked items are stable. Blocks and patterns have no status: you copy them and make them yours." />
       </p>
 
       <H2 id="upgrade">Upgrade</H2>

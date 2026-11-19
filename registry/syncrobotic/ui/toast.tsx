@@ -1,4 +1,4 @@
-// @syncrobotic/toast v0.13.0 · update: npx shadcn add @syncrobotic/toast --overwrite
+// @syncrobotic/toast v0.17.2 · update: npx shadcn add @syncrobotic/toast --overwrite
 "use client"
 
 import * as React from "react"
@@ -86,6 +86,7 @@ export function ToastViewport({ className, ...props }: React.ComponentProps<type
     <ToastPrimitive.Viewport
       data-slot="toast-viewport"
       className={cn(
+        // focus-ring: F8 lands on the region and Tab moves into the notices, which show their own rings.
         "fixed right-0 bottom-0 z-50 m-0 flex w-full max-w-sm list-none flex-col gap-2 p-4 outline-none",
         "pb-[max(1rem,env(safe-area-inset-bottom))]",
         className,

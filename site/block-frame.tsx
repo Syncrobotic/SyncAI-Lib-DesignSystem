@@ -128,7 +128,7 @@ export function BlockFrame({
                   </button>
                 ))}
               </div>
-              <a href={`/preview/${name}`} target="_blank" rel="noreferrer" className="text-sm text-muted-foreground hover:text-foreground">
+              <a href={`/preview/${name}`} target="_blank" rel="noreferrer" className="inline-flex min-h-(--h-sm) items-center px-2 text-sm text-muted-foreground hover:text-foreground">
                 Open ↗
               </a>
             </div>

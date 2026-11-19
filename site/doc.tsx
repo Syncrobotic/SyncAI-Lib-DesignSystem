@@ -59,10 +59,10 @@ export function DoDont({ good, bad }: { good: Case; bad: Case }) {
             {c.visual}
             {c.caption && <span className="font-mono text-xs text-muted-foreground">{c.caption}</span>}
           </div>
-          <figcaption className={cn("flex flex-1 gap-2 border-t-2 bg-card p-4 text-sm", c.ok ? "border-success" : "border-danger")}>
-            {c.ok ? <Check aria-hidden className="mt-0.5 size-4 shrink-0 text-success" /> : <X aria-hidden className="mt-0.5 size-4 shrink-0 text-danger" />}
+          <figcaption className={cn("flex flex-1 gap-2 border-t-2 bg-card p-4 text-sm", c.ok ? "border-foreground" : "border-danger")}>
+            {c.ok ? <Check aria-hidden className="mt-0.5 size-4 shrink-0 text-foreground" /> : <X aria-hidden className="mt-0.5 size-4 shrink-0 text-danger" />}
             <span>
-              <span className={cn("font-bold", c.ok ? "text-success" : "text-danger")}>{c.ok ? "Do. " : "Don't. "}</span>
+              <span className={cn("font-bold", c.ok ? "text-foreground" : "text-danger")}>{c.ok ? "Do. " : "Don't. "}</span>
               <Inline text={c.text} />
             </span>
           </figcaption>

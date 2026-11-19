@@ -27,4 +27,4 @@ body:
     id: version
     attributes:
       label: Version installed
-      description: From the CHANGELOG entry you installed, e.g. 0.3.0
+      description: "From the first line of the installed file, e.g. // @syncrobotic/stop-button v0.17.1"

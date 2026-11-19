@@ -77,7 +77,7 @@ export default function MotionPage() {
       <Section
         id="patterns"
         title="Patterns"
-        lead="Five movements cover every state change. This site uses exactly these: pages and tab panels appear, the mobile menu opens as a sheet, controls press, icons swap, and the current-page marker moves."
+        lead="Six patterns cover every state change; the table under In the components lists them and where each is used. This site shows five here: pages and tab panels appear, the mobile menu opens as a sheet, controls press, icons swap, and the current-page marker moves."
       >
         <MotionPatterns />
         <p className="text-sm text-muted-foreground">
@@ -98,6 +98,11 @@ export default function MotionPage() {
             ["Sheet", <Code key="u">animate-sheet-in-* · animate-sheet-out-*</Code>, "Sheet (bottom, right, left); scrims fade in with animate-fade-in"],
             ["Expand / collapse", <Code key="u">animate-expand · animate-collapse</Code>, "Accordion"],
             ["Press", <Code key="u">press</Code>, "Button, Toggle, Segmented control, Emergency stop, Dock, island zones, list rows, app-shell navigation"],
+            [
+              "Swap",
+              <Code key="u">transition-[opacity,scale] · duration-(--motion-fast) ease-(--ease-standard)</Code>,
+              "Copy button, Command (the check on a picked row), Table and Data grid sort arrows, Image grid selection",
+            ],
             ["Move", <Code key="u">transition · duration-(--motion-base) ease-(--ease-standard)</Code>, "Switch thumb, Slide to release, Progress"],
           ]}
         />
@@ -147,7 +152,7 @@ export default function MotionPage() {
       >
         <DoDont
           good={{
-            visual: <span className="rounded-sm bg-success-subtle px-3 py-2 text-sm text-success">Released</span>,
+            visual: <span className="rounded-sm bg-muted px-3 py-2 text-sm text-foreground">Released</span>,
             text: "Animate the change from stopped to released.",
           }}
           bad={{

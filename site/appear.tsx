@@ -23,17 +23,16 @@ export function AppearItem({ children, className }: { children: React.ReactNode;
 }
 
 /**
- * A section further down arrives as it scrolls into view. Where scroll timelines exist the movement is pure CSS, tied to
- * scroll position, so it also plays for sections already on screen at load and runs back when scrolled away (globals.css,
- * [data-scroll-reveal]). Elsewhere an observer plays the hero's movement once; only a section that starts below the
- * screen waits, so nothing is hidden without JavaScript and nothing already on screen flashes.
+ * A section further down arrives once, with the theme's appear movement (8 px, --motion-base), when it scrolls into view.
+ * Only a section that starts below the screen waits, so nothing is hidden without JavaScript and nothing already on screen
+ * flashes. It never runs back when scrolled away: nothing moves to decorate.
  */
 export function Reveal({ children, className, stagger: s = 0.04 }: { children: React.ReactNode; className?: string; stagger?: number }) {
   const ref = React.useRef<HTMLDivElement>(null)
   const [state, setState] = React.useState<"shown" | "waiting" | "playing">("shown")
   React.useEffect(() => {
     const el = ref.current
-    if (!el || CSS.supports("animation-timeline: view()") || el.getBoundingClientRect().top < window.innerHeight) return
+    if (!el || el.getBoundingClientRect().top < window.innerHeight) return
     setState("waiting")
     const io = new IntersectionObserver(
       ([e]) => {
@@ -47,7 +46,7 @@ export function Reveal({ children, className, stagger: s = 0.04 }: { children: R
     return () => io.disconnect()
   }, [])
   return (
-    <div ref={ref} data-reveal={state} data-scroll-reveal="" className={className} style={stagger(s)}>
+    <div ref={ref} data-reveal={state} className={className} style={stagger(s)}>
       {children}
     </div>
   )

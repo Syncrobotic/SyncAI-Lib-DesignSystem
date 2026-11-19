@@ -1,4 +1,4 @@
-// @syncrobotic/radial-chart-goal v0.15.0 · update: npx shadcn add @syncrobotic/radial-chart-goal --overwrite
+// @syncrobotic/radial-chart-goal v0.17.2 · update: npx shadcn add @syncrobotic/radial-chart-goal --overwrite
 "use client"
 
 import * as React from "react"
@@ -25,7 +25,7 @@ function Ring({
   return (
     <span className="relative grid shrink-0 place-items-center" style={{ width: size, height: size }}>
       <svg aria-hidden="true" width={size} height={size} className="-rotate-90">
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" strokeWidth={stroke} className="stroke-muted" />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" strokeWidth={stroke} className="stroke-muted in-data-[contrast=more]:stroke-input" />
         <circle
           cx={size / 2}
           cy={size / 2}

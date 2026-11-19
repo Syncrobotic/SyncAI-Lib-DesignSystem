@@ -66,7 +66,7 @@ export default function HomePage() {
       href: "/docs/foundations",
       title: "Foundations",
       count: `${foundations.length} pages`,
-      body: "The rules and tokens behind every screen: colour, type, spacing, radius, motion, iconography, accessibility and alarms.",
+      body: "The rules and tokens behind every screen: principles, colour, type, spacing, radius, elevation, motion, iconography, accessibility, alarms and data visualisation.",
     },
     {
       href: "/docs/components",
@@ -137,7 +137,7 @@ export default function HomePage() {
               </p>
               <Link
                 href="/docs/installation"
-                className="inline-flex items-center gap-2 text-sm font-medium text-foreground underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground"
+                className="inline-flex min-h-(--h-sm) items-center gap-2 text-sm font-medium text-foreground underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground"
               >
                 Installation guide <ArrowRight aria-hidden className="size-4" />
               </Link>
@@ -171,7 +171,7 @@ export default function HomePage() {
             <AppearItem key={w.href}>
               <Link
                 href={w.href}
-                className={`group grid gap-2 border-b border-border py-6 outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring sm:grid-cols-[12rem_1fr_auto] sm:items-baseline sm:gap-8 ${fast}`}
+                className={`group grid gap-2 border-b border-border py-6 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring sm:grid-cols-[12rem_1fr_auto] sm:items-baseline sm:gap-8 ${fast}`}
               >
                 <span className="text-xl font-bold group-hover:underline">{w.title}</span>
                 <span className="text-muted-foreground">{w.body}</span>

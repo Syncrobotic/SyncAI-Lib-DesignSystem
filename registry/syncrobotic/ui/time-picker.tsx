@@ -1,4 +1,4 @@
-// @syncrobotic/time-picker v0.10.0 · update: npx shadcn add @syncrobotic/time-picker --overwrite
+// @syncrobotic/time-picker v0.17.2 · update: npx shadcn add @syncrobotic/time-picker --overwrite
 "use client"
 
 import * as React from "react"
@@ -98,6 +98,7 @@ export function TimeInput({
         onChange={(e) => setText(e.target.value)}
         onBlur={commit}
         onKeyDown={(e) => e.key === "Enter" && commit()}
+        // focus-ring: the field around it draws the ring (has-[input:focus-visible]).
         className="h-full min-w-0 flex-1 bg-transparent tabular-nums outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed"
       />
     </div>
@@ -139,15 +140,67 @@ export function TimePicker({
 }) {
   const f = useField()
   const uid = React.useId()
+  const triggerId = id ?? f?.id ?? `${uid}-t`
   const [open, setOpen] = React.useState(false)
   const slots: Time[] = []
   for (let m = toMin(min); m <= toMin(max); m += step) slots.push(fromMin(m))
+  const free = (i: number) => i >= 0 && i < slots.length && !unavailable.includes(slots[i])
+  // The list is one Tab stop: the option that holds it is the picked one, or the first free one, and the arrow keys
+  // move it (roving tabindex), as in a native select.
+  const initial = () => {
+    const at = value ? slots.indexOf(value) : -1
+    return free(at) ? at : slots.findIndex((_, i) => free(i))
+  }
+  const [active, setActive] = React.useState(initial)
+  // Whether the keyboard or the pointer opened or moved the list last: the ring shows only in keyboard use.
+  const [nav, setNav] = React.useState<"key" | "pointer">("key")
+  const list = React.useRef<HTMLDivElement | null>(null)
+  // Stable, so it runs when the list opens and not on every arrow key (which would pull the picked slot back to centre).
+  const listRef = React.useCallback((el: HTMLDivElement | null) => {
+    list.current = el
+    el?.querySelector<HTMLElement>("[aria-selected=true]")?.scrollIntoView({ block: "center" })
+  }, [])
+  const move = (to: number, dir: 1 | -1) => {
+    let i = Math.max(0, Math.min(slots.length - 1, to))
+    // Taken slots are skipped; past either end, the nearest free slot back the other way.
+    while (i >= 0 && i < slots.length && !free(i)) i += dir
+    if (!free(i)) {
+      i = Math.max(0, Math.min(slots.length - 1, to))
+      while (i >= 0 && i < slots.length && !free(i)) i -= dir
+    }
+    if (!free(i)) return
+    setActive(i)
+    list.current?.querySelectorAll<HTMLElement>("[role=option]")[i]?.focus()
+  }
+  const page = 6
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    setNav("key")
+    const at = active
+    const to: Record<string, [number, 1 | -1]> = {
+      ArrowDown: [at + 1, 1],
+      ArrowUp: [at - 1, -1],
+      Home: [0, 1],
+      End: [slots.length - 1, -1],
+      PageDown: [at + page, 1],
+      PageUp: [at - page, -1],
+    }
+    const t = to[e.key]
+    if (!t) return
+    e.preventDefault()
+    move(...t)
+  }
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover
+      open={open}
+      onOpenChange={(o) => {
+        if (o) setActive(initial())
+        setOpen(o)
+      }}
+    >
       <PopoverTrigger asChild>
         <button
           type="button"
-          id={id ?? f?.id}
+          id={triggerId}
           // Label then shown value, so the name contains what is on screen (WCAG 2.5.3).
           aria-labelledby={ariaLabel ? `${uid}-l ${uid}-v` : undefined}
           aria-describedby={f?.describedBy}
@@ -155,6 +208,8 @@ export function TimePicker({
           disabled={disabled}
           data-empty={!value}
           className={cn(field, "press text-left data-[empty=true]:text-muted-foreground disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground", className)}
+          onPointerDown={() => setNav("pointer")}
+          onKeyDown={() => setNav("key")}
         >
           <Clock aria-hidden="true" className="size-4 shrink-0 text-muted-foreground" />
           {ariaLabel && (
@@ -167,24 +222,31 @@ export function TimePicker({
           </span>
         </button>
       </PopoverTrigger>
-      <PopoverContent align="start" className="w-48 p-1">
+      {/* Named by its field, so it is announced as "Start time, dialog" and not as a nameless dialog. */}
+      <PopoverContent align="start" aria-labelledby={triggerId} className="w-48 p-1">
         <div
           role="listbox"
           aria-label={ariaLabel ?? "Times"}
-          className="flex max-h-64 flex-col overflow-y-auto"
-          ref={(el) => {
-            el?.querySelector<HTMLElement>("[aria-selected=true]")?.scrollIntoView({ block: "center" })
-          }}
+          data-nav={nav}
+          className="group/times flex max-h-64 flex-col overflow-y-auto"
+          onKeyDown={onKeyDown}
+          onPointerMove={(e) => e.pointerType === "mouse" && setNav("pointer")}
+          ref={listRef}
         >
-          {slots.map((t) => {
+          {slots.map((t, i) => {
             const taken = unavailable.includes(t)
             const selected = t === value
             return (
               <button
                 key={t}
                 type="button"
+                tabIndex={i === active ? 0 : -1}
+                // The keyboard position is a 2 px ring inside the option (the list scrolls, so an outside ring would be
+                // clipped), not only the hover fill, which is too faint to find on its own. Opened with the pointer, the
+                // option that takes focus keeps the calm fill until a key is pressed.
                 className={cn(
                   "press flex h-(--h-sm) shrink-0 items-center justify-between rounded-sm px-3 text-sm tabular-nums outline-none hover:bg-accent focus-visible:bg-accent",
+                  "group-data-[nav=key]/times:focus-visible:outline-solid group-data-[nav=key]/times:focus-visible:outline-2 group-data-[nav=key]/times:focus-visible:-outline-offset-2 group-data-[nav=key]/times:focus-visible:outline-ring",
                   selected && "font-medium",
                   taken && "text-muted-foreground line-through hover:bg-transparent",
                 )}
@@ -192,6 +254,7 @@ export function TimePicker({
                 aria-selected={selected}
                 aria-disabled={taken || undefined}
                 disabled={taken}
+                onFocus={() => setActive(i)}
                 onClick={() => {
                   onValueChange?.(t)
                   setOpen(false)

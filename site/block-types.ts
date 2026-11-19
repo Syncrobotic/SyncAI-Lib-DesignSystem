@@ -46,8 +46,8 @@ export const blockTypes: BlockType[] = [
     slug: "stats",
     title: "Stats",
     group: "Application",
-    description: "Headline numbers with their change: the first row of a dashboard.",
-    use: ["The top of an overview page.", "A row of KPIs above a table or a chart."],
+    description: "Headline numbers with their change, under any active alarms.",
+    use: ["Under the alarms at the top of an overview page.", "A row of KPIs above a table or a chart."],
     instead: ["One number in context of time: a Charts block with a sparkline.", "A whole overview screen: Solutions › Fleet operations."],
     rules: ["Four numbers at most in a row.", "Only a change for the worse gets colour (decided by whether it is bad, not by its direction); good news stays neutral.", "Every number has a unit and a time range."],
   },
@@ -252,6 +252,7 @@ export const blockTypes: BlockType[] = [
     description: "Watching and running a fleet: the overview, the live map, robot lists, the event log.",
     use: ["The control room console.", "Supervisors watching several sites."],
     rules: [
+      "Active alarms come first, above the numbers and the tables.",
       "Normal is calm: colour only for what needs someone.",
       "The emergency stop is always one tap away and is the only solid red.",
       "Alarms sort by unacknowledged, then priority, then time.",

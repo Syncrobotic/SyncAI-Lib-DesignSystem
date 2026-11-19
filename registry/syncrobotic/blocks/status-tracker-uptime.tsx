@@ -1,4 +1,4 @@
-// @syncrobotic/status-tracker-uptime v0.15.0 · update: npx shadcn add @syncrobotic/status-tracker-uptime --overwrite
+// @syncrobotic/status-tracker-uptime v0.17.2 · update: npx shadcn add @syncrobotic/status-tracker-uptime --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,8 +7,10 @@ import { Card } from "@/registry/syncrobotic/ui/card"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/registry/syncrobotic/ui/tooltip"
 
 type Day = "up" | "degraded" | "down" | "none"
-// Normal days stay neutral; only degraded and down are coloured. "none" is a day with no data (not yet deployed).
-const cell: Record<Day, string> = { up: "bg-muted-foreground/50", degraded: "bg-warning", down: "bg-danger", none: "bg-muted" }
+// Normal days stay neutral; only degraded and down are coloured. "none" is a day with no data (not yet deployed): an empty
+// outlined cell, not a lighter grey, so it never reads as a calm day. Every mark is opaque and at least 3:1 on the card
+// (--input is the field-edge grey, held to 3:1 by tests/unit/rules.test.ts).
+const cell: Record<Day, string> = { up: "bg-input", degraded: "bg-warning", down: "bg-danger", none: "bg-transparent ring-1 ring-input ring-inset" }
 const word: Record<Day, string> = { up: "Up", degraded: "Degraded", down: "Down", none: "No data" }
 
 // Sample data: the last 30 days per robot, oldest first.
@@ -18,6 +20,55 @@ const pattern = (seed: number): Day[] =>
   )
 const robots = ["7F3A", "DAA6", "9E37", "1715"].map((id, s) => ({ id, days: pattern(s) }))
 
+/**
+ * One robot's 30 days. The strip is one Tab stop; ← → (Home, End) move along it and the focused day says itself in its
+ * tooltip and its name, so the days can be read without a pointer.
+ */
+function Strip({ label, days }: { label: string; days: Day[] }) {
+  const [active, setActive] = React.useState(days.length - 1)
+  const cells = React.useRef<(HTMLSpanElement | null)[]>([])
+  const go = (i: number) => {
+    const to = Math.max(0, Math.min(days.length - 1, i))
+    setActive(to)
+    cells.current[to]?.focus()
+  }
+  return (
+    <span
+      role="group"
+      aria-label={label}
+      className="flex h-6 gap-0.5"
+      onKeyDown={(e) => {
+        const keys: Record<string, number> = { ArrowRight: active + 1, ArrowLeft: active - 1, Home: 0, End: days.length - 1 }
+        const to = keys[e.key]
+        if (to === undefined) return
+        e.preventDefault()
+        go(to)
+      }}
+    >
+      {days.map((d, i) => {
+        const text = `${days.length - i} ${days.length - i === 1 ? "day" : "days"} ago · ${word[d]}`
+        return (
+          <Tooltip key={i}>
+            <TooltipTrigger asChild>
+              <span
+                ref={(el) => {
+                  cells.current[i] = el
+                }}
+                role="img"
+                aria-label={text}
+                tabIndex={i === active ? 0 : -1}
+                onFocus={() => setActive(i)}
+                className={cn("flex-1 rounded-xs transition-opacity duration-(--motion-fast) ease-(--ease-standard) hover:opacity-70", cell[d])}
+              />
+            </TooltipTrigger>
+            <TooltipContent>{text}</TooltipContent>
+          </Tooltip>
+        )
+      })}
+    </span>
+  )
+}
+
 /** Uptime per robot over 30 days, one cell a day: a calm grey strip where everything ran, colour only on the bad days. */
 export function StatusTrackerUptime() {
   return (
@@ -26,7 +77,7 @@ export function StatusTrackerUptime() {
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h3 className="text-sm font-medium">Uptime · last 30 days</h3>
           <span className="flex items-center gap-3 text-xs text-muted-foreground">
-            {(["up", "degraded", "down"] as Day[]).map((d) => (
+            {(["up", "degraded", "down", "none"] as Day[]).map((d) => (
               <span key={d} className="flex items-center gap-1">
                 <span aria-hidden="true" className={cn("size-2.5 rounded-xs", cell[d])} /> {word[d]}
               </span>
@@ -46,20 +97,7 @@ export function StatusTrackerUptime() {
                     {pct} % up{bad ? ` · ${bad} ${bad === 1 ? "day" : "days"} down` : ""}
                   </span>
                 </span>
-                <span className="flex h-6 gap-0.5" aria-hidden="true">
-                  {r.days.map((d, i) => (
-                    <Tooltip key={i}>
-                      <TooltipTrigger asChild>
-                        <span
-                          className={cn("flex-1 rounded-xs transition-opacity duration-(--motion-fast) ease-(--ease-standard) hover:opacity-70", cell[d])}
-                        />
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        {30 - i} {30 - i === 1 ? "day" : "days"} ago · {word[d]}
-                      </TooltipContent>
-                    </Tooltip>
-                  ))}
-                </span>
+                <Strip label={`Patrol dog ${r.id}, each day`} days={r.days} />
               </li>
             )
           })}
