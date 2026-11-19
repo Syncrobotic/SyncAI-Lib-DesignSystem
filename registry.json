@@ -4115,8 +4115,13 @@
         }
       ],
       "meta": {
-        "version": "0.14.1",
+        "version": "0.14.2",
         "changelog": [
+          {
+            "version": "0.14.2",
+            "date": "2026-11-19",
+            "note": "Design language: page transitions move only the content; the root and the stop are never in a view transition, which blocks clicks while it runs."
+          },
           {
             "version": "0.14.1",
             "date": "2026-11-19",

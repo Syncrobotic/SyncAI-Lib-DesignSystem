@@ -35,6 +35,7 @@ Everything here is a token in `syncrobotic-theme.css`; use the token, never the 
 ## Motion: movement only marks a change of state
 - Tokens: `--motion-fast` 120 ms (press, hover, icon swap, exits), `--motion-base` 200 ms (state changes, appear), `--motion-sheet` 320 ms (panels and frames that change size). Entering and changing: `ease-(--ease-standard)`; leaving: `ease-(--ease-exit)` (the disappear, sheet-out and collapse animations already use it).
 - Patterns: appear / disappear, fade-in, sheet in/out, expand / collapse, press (`press` utility, scale .97), swap (icon to icon), move (a value or selection travelling).
+- Between pages only the content moves (old: fade out, --motion-fast; new: fade in and 8 px rise, --motion-base). Anything inside a view transition cannot be clicked while it runs, so the root is never snapshotted (`:root { view-transition-name: none }`, `::view-transition { pointer-events: none }`) and the stop and the island are never inside one.
 - Every enter has an exit (`usePresence` keeps leaving items mounted). Loops only for waiting: the Spinner, the skeleton's breath and the caret. Reduced motion: opacity only, loops stop.
 
 ## Touch and sound

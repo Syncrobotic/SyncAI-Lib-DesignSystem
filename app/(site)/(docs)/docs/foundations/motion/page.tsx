@@ -120,6 +120,27 @@ export default function MotionPage() {
       </Section>
 
       <Section
+        id="pages"
+        title="Between pages"
+        lead="Going to another page swaps the content, not the frame: the old content disappears, the new one appears, and the header, navigation and anything safety-critical stay where they are. This site does it; try the sidebar."
+      >
+        <TokenTable
+          head={["Part", "How", "Tokens"]}
+          rows={[
+            ["Old content", "Fades out", <Code key="c">--motion-fast · --ease-exit</Code>],
+            ["New content", "Fades in and rises 8 px, after the old one has gone", <Code key="c">--motion-base · --ease-standard</Code>],
+            ["Header, navigation, stop, island", "Stay still and stay live", <Code key="c">not in the transition</Code>],
+          ]}
+        />
+        <p className="text-sm text-muted-foreground">
+          Built on React&apos;s <Code>{"<ViewTransition>"}</Code> around the content only, with <Code>{":root { view-transition-name: none }"}</Code> and{" "}
+          <Code>{"::view-transition { pointer-events: none }"}</Code>. While a view transition runs, whatever takes part in it cannot be clicked, and by
+          default the whole page takes part: measured in Chromium, a stop button did not respond for the length of the animation. So the root never takes
+          part, the stop and the island are never inside a transition, and on a robot app that only switches sections, use no page transition at all.
+        </p>
+      </Section>
+
+      <Section
         id="reduced"
         title="Reduced motion"
         lead="When the system asks for reduced motion, every duration drops to 0.01 ms and the skeleton stops breathing. State still changes; it just does not travel."
