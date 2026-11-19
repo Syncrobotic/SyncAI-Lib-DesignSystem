@@ -1,5 +1,6 @@
 import * as React from "react"
 import type { Metadata } from "next"
+import { CircleAlert, CircleCheck, CircleDashed } from "lucide-react"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { Badge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
@@ -241,6 +242,68 @@ export default function ColorPage() {
               </div>
             ),
             text: "Pick a tone by looks. Blue is for a process someone waits on, not for a robot that is busy; low battery is attention (warning), not failure (danger).",
+          }}
+        />
+      </Section>
+
+      <Section
+        id="results"
+        title="Test and audit results"
+        lead="A run of tests, an evaluation or an audit gives each check one of three results. A pass is what is expected, so it is calm; only a failure carries colour. Each result has its own icon and edge, so the three never rely on colour alone."
+      >
+        <DoDont
+          good={{
+            visual: (
+              <ul className="flex w-64 flex-col gap-2 text-sm">
+                <li className="flex items-center justify-between gap-2">
+                  Caption accuracy
+                  <Badge>
+                    <CircleCheck aria-hidden="true" /> Passed
+                  </Badge>
+                </li>
+                <li className="flex items-center justify-between gap-2">
+                  Counting objects
+                  <Badge tone="outline" className="text-danger ring-danger">
+                    <CircleAlert aria-hidden="true" /> Failed
+                  </Badge>
+                </li>
+                <li className="flex items-center justify-between gap-2">
+                  Night images
+                  <Badge tone="outline" className="text-muted-foreground">
+                    <CircleDashed aria-hidden="true" /> Not enough samples
+                  </Badge>
+                </li>
+                <li className="flex items-center justify-between gap-2">
+                  Safety refusals
+                  <Badge>
+                    <CircleCheck aria-hidden="true" /> Passed
+                  </Badge>
+                </li>
+              </ul>
+            ),
+            text: "Pass is grey with a check. Fail is a danger outline with danger text. Not enough samples is a grey outline with a dashed circle: no verdict yet, never a pass.",
+          }}
+          bad={{
+            visual: (
+              <ul className="flex w-64 flex-col gap-2 text-sm">
+                <li className="flex items-center justify-between gap-2">
+                  Caption accuracy <span className="inline-flex h-(--h-tag) items-center gap-1 rounded-xs bg-success-subtle px-2 text-xs font-medium text-success">Passed</span>
+                </li>
+                <li className="flex items-center justify-between gap-2">
+                  Counting objects
+                  <Badge tone="outline" className="text-danger ring-danger">
+                    <CircleAlert aria-hidden="true" /> Failed
+                  </Badge>
+                </li>
+                <li className="flex items-center justify-between gap-2">
+                  Night images <span className="inline-flex h-(--h-tag) items-center gap-1 rounded-xs bg-success-subtle px-2 text-xs font-medium text-success">Passed</span>
+                </li>
+                <li className="flex items-center justify-between gap-2">
+                  Safety refusals <span className="inline-flex h-(--h-tag) items-center gap-1 rounded-xs bg-success-subtle px-2 text-xs font-medium text-success">Passed</span>
+                </li>
+              </ul>
+            ),
+            text: "Green pass badges. The one failure competes with three green badges, and night images passed on three samples: too few to judge is shown as a pass.",
           }}
         />
       </Section>
