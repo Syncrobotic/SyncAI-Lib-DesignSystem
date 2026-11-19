@@ -60,9 +60,9 @@ export function CommandInput({ className, end, ...props }: React.ComponentProps<
     <div
       data-slot="command-input"
       // The text box itself has no edge of its own, so on a page its row shows keyboard focus, inset so nothing clips it.
-      // In the palette the box always has focus (it opens there and the list is driven from it), so the ring would only
-      // frame the top of the dialog for good: there the caret is the focus.
-      className="flex h-(--h-row) shrink-0 items-center gap-2 border-b border-border px-4 has-focus-visible:outline-2 has-focus-visible:-outline-offset-2 in-data-[slot=command-dialog]:has-focus-visible:outline-none"
+      // In the palette or a picker popover the box always has focus (it opens there and the list is driven from it), so the
+      // ring would only frame the top for good: there the caret is the focus.
+      className="flex h-(--h-row) shrink-0 items-center gap-2 border-b border-border px-4 has-focus-visible:outline-2 has-focus-visible:-outline-offset-2 in-data-[slot=command-dialog]:has-focus-visible:outline-none in-[[data-radix-popper-content-wrapper]]:has-focus-visible:outline-none"
     >
       <Search aria-hidden="true" className="size-5 shrink-0 text-muted-foreground" />
       <CommandPrimitive.Input

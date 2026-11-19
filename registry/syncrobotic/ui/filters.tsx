@@ -478,6 +478,12 @@ export function Filters({
         onCommit={commit}
         onCancel={() => setEditing(null)}
         onCloseAutoFocus={restoreFocus}
+        // A press on another part of the same chip is not "outside": it moves the picker to that part's step instead of
+        // closing it and leaving the person to click again.
+        onInteractOutside={(e) => {
+          const chip = e.target instanceof Element ? e.target.closest<HTMLElement>("[data-slot=filters-chip]") : null
+          if (rule && chip?.dataset.rule === rule.id) e.preventDefault()
+        }}
       />
     )
 
@@ -496,7 +502,8 @@ export function Filters({
               "aria-haspopup": "dialog" as const,
               "aria-expanded": isOpen && editing?.step === step,
               "data-state": isOpen && editing?.step === step ? "open" : "closed",
-              onClick: (e: React.MouseEvent<HTMLButtonElement>) => open(r.id, step, e.currentTarget),
+              // Another part of the open chip switches the picker to that step in place; the part already open closes it.
+              onClick: (e: React.MouseEvent<HTMLButtonElement>) => (isOpen && editing?.step === step ? setEditing(null) : open(r.id, step, e.currentTarget)),
             })
             return (
               <li
@@ -517,6 +524,7 @@ export function Filters({
                       role="group"
                       aria-label={desc}
                       data-slot="filters-chip"
+                      data-rule={r.id}
                       className="flex h-(--h-sm) max-w-full min-w-0 items-stretch overflow-hidden rounded-xs bg-card ring-1 ring-border ring-inset [&>*+*]:border-l [&>*+*]:border-border"
                     >
                       <button {...part("field")} aria-label={labels.editField(field.label)} className={cn(segment, "shrink-0")}>
@@ -600,6 +608,7 @@ function Picker({
   onCommit,
   onCancel,
   onCloseAutoFocus,
+  onInteractOutside,
 }: {
   fields: FilterField[]
   /** The rule being amended; null for a new one. */
@@ -609,6 +618,7 @@ function Picker({
   onCommit: (rule: FilterRule) => void
   onCancel: () => void
   onCloseAutoFocus: (e: Event) => void
+  onInteractOutside?: (e: Event) => void
 }) {
   const [draft, setDraft] = React.useState<{ field?: string; operator?: FilterOperator; value: FilterValue }>(
     rule ? { field: rule.field, operator: rule.operator, value: rule.value } : { value: null },
@@ -656,6 +666,7 @@ function Picker({
       // Focus goes to the step's own control (its search box, field or day), never the Back button.
       onOpenAutoFocus={(e) => e.preventDefault()}
       onCloseAutoFocus={onCloseAutoFocus}
+      onInteractOutside={onInteractOutside}
       onEscapeKeyDown={(e) => {
         if (steps.length > 1) {
           e.preventDefault()
@@ -688,7 +699,8 @@ function Picker({
             <CommandEmpty>{labels.noMatches}</CommandEmpty>
             {fields.map((f) => (
               <CommandItem key={f.key} value={f.key} keywords={[f.label]} onSelect={() => pickField(f)}>
-                {f.icon}
+                {/* When some fields have an icon, the others keep its space so every name starts on one line. */}
+                {f.icon ?? (fields.some((x) => x.icon) && <span aria-hidden="true" className="size-4 shrink-0" />)}
                 <span className="truncate">{f.label}</span>
               </CommandItem>
             ))}
