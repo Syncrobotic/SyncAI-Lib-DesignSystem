@@ -16,11 +16,15 @@ export function PreviewBack({ href }: { href: string }) {
   )
   if (!alone) return null
   return (
-    <a
+    <>
+      {/* A shell that fills the screen fills what is left under the strip, so its bottom (the stop, the user menu) stays on screen. */}
+      <style>{":root{--app-shell-height:calc(100dvh - var(--h-md))}"}</style>
+      <a
       href={href}
       className="press flex h-(--h-md) items-center gap-2 border-b border-border bg-card px-4 text-sm font-medium hover:bg-accent"
     >
       <ArrowLeft aria-hidden="true" className="size-4" /> Back to the docs
-    </a>
+      </a>
+    </>
   )
 }

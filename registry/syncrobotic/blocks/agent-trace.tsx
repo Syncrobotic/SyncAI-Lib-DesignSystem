@@ -1,4 +1,4 @@
-// @syncrobotic/agent-trace v0.9.0 · update: npx shadcn add @syncrobotic/agent-trace --overwrite
+// @syncrobotic/agent-trace v0.17.1 · update: npx shadcn add @syncrobotic/agent-trace --overwrite
 "use client"
 
 import * as React from "react"
@@ -17,7 +17,7 @@ export function AgentTrace() {
     <AppShell
       product="Fleet console"
       nav={sampleNav}
-      current="#events"
+      current="#agents"
       title="run_8bf3"
       user={{ name: "Mei Lin", initials: "ML" }}
       actions={

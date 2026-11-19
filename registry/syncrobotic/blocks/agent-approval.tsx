@@ -1,4 +1,4 @@
-// @syncrobotic/agent-approval v0.15.0 · update: npx shadcn add @syncrobotic/agent-approval --overwrite
+// @syncrobotic/agent-approval v0.17.1 · update: npx shadcn add @syncrobotic/agent-approval --overwrite
 "use client"
 
 import * as React from "react"
@@ -27,7 +27,7 @@ export function AgentApproval() {
   const decided = state === "approved" || state === "rejected"
 
   return (
-    <AppShell product="Fleet console" nav={sampleNav} current="#alarms" title="Approval" user={{ name: "Mei Lin", initials: "ML" }}>
+    <AppShell product="Fleet console" nav={sampleNav} current="#agents" title="Approval" user={{ name: "Mei Lin", initials: "ML" }}>
       <div className="flex max-w-3xl flex-col gap-6">
         <div className="flex flex-col gap-1">
           <StatusEyebrow status={decided ? "normal" : "warning"}>
