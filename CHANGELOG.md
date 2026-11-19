@@ -6,6 +6,7 @@ Components install as source, so a project keeps the version it installed. Re-ru
 
 ### Changed
 - **`number-field` reads as one value:** the number and its unit sit together, centred between − and + ("20 %"), instead of the number in the middle and the unit pushed against the +, which drifted 140 px apart in a wide field. Angles sit on the number ("-2.5°"). `rollout-plan` writes its units in the fields, not the column headings.
+- **`input-group` units follow the value:** `InputGroupUnit` writes the unit right after the value ("120 m") instead of at the far edge; the value is as wide as its text (`field-sizing: content`; browsers without it keep the unit at the edge). A press on the field's empty space puts the caret in the text box.
 
 ### Fixed
 - The disabled NumberField example showed 1.5 m/s as "2" (no `step`, so it rounded to whole numbers).

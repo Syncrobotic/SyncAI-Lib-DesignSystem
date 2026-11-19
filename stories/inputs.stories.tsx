@@ -5,7 +5,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/registry/syncrobotic/
 import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
-import { InputGroup, InputGroupAddon, InputGroupButton } from "@/registry/syncrobotic/ui/input-group"
+import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupUnit as Unit } from "@/registry/syncrobotic/ui/input-group"
 import { NumberField } from "@/registry/syncrobotic/ui/number-field"
 import { Label } from "@/registry/syncrobotic/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/registry/syncrobotic/ui/radio-group"
@@ -166,7 +166,7 @@ export const InputGroupUnit: S = {
     <Field label="Geofence radius" hint="Measured from the dock">
       <InputGroup className="w-48">
         <Input inputMode="numeric" defaultValue="120" />
-        <InputGroupAddon>m</InputGroupAddon>
+        <Unit>m</Unit>
       </InputGroup>
     </Field>
   ),

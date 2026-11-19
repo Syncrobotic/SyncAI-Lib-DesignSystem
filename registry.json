@@ -829,8 +829,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "InputGroupUnit: a unit written right after the value (\"120 m\"), the value as wide as its text, instead of a unit at the far edge. A press on the field's empty space puts the caret in the text box."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
