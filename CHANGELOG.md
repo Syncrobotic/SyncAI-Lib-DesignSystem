@@ -2,6 +2,11 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **`metric-card`** (beta): one headline number on a card, taken out of `stats-cards`. Label, value and unit, a change coloured only when it is for the worse (read aloud as better or worse), a neutral sparkline and a caption; `href` makes the whole card one link, `loading` keeps its height, `unavailable` shows a dash and why instead of a 0. `MetricGrid` lays out the row (two across on a phone, four from 1280 px). `stats-cards` is now built on it; its value is 24 px, the card-figure size (was 28 px).
+
 ## 0.17.4 · 2026-11-19
 
 Found by putting the kit into a real product (the DataCore dashboard), not by a review.

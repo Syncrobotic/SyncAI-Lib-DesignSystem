@@ -51,6 +51,7 @@ export type StoryFile =
   | "data-pieces"
   | "image-grid"
   | "hooks"
+  | "metric-card"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
@@ -531,6 +532,21 @@ const entries: Record<string, Entry> = {
       "For a level in a known range (battery, storage). For work under way, use Progress.",
       "Neutral while normal; warning past `low`, danger past `critical`; the value is always written. A battery takes only `low` (15 %): a low battery needs attention, it is not a failure, so it turns warning and never danger. Danger is for a level that breaks something, like full storage.",
       "`inline` in table cells; the label is still read by screen readers.",
+    ],
+  },
+  "metric-card": {
+    group: "Display",
+    /** A row of cards needs the row: examples use the card's full width. */
+    wide: true,
+    examples: { file: "metric-card", prefix: "MetricCard" },
+    rules: [
+      "Only a change for the worse is coloured (`trend=\"bad\"`, danger text). Good news stays foreground and no change stays grey, so the bad number is the one people see. The trend says whether the change is good, not which way it went.",
+      "The sparkline is neutral and silent; the delta and the caption say in words what it shows. It shows from 640 px; on a phone the change sits under the label so the values line up.",
+      "A value that cannot be read is `unavailable` with the reason; never a 0 or an empty card.",
+      "`loading` keeps the label and the card's height; only the value, change and caption are bones.",
+      "`href` makes the whole card one link (pass `linkAs` for your router); give it only when a page sits behind the number.",
+      "Put the cards in a MetricGrid: two across from the smallest phone, four from 1280 px. One row under the page header, what needs someone (alarms) above it.",
+      "A level in a known range (battery, storage, signal) is a Meter, not a metric card.",
     ],
   },
   "description-list": {

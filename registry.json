@@ -1736,6 +1736,37 @@
       }
     },
     {
+      "name": "metric-card",
+      "type": "registry:ui",
+      "title": "Metric card",
+      "description": "One headline number on a card: label, value, change and context, coloured only when the change is for the worse; a link, loading and unavailable state, and MetricGrid for the row.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/card",
+        "@syncrobotic/skeleton"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/metric-card.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.18.0",
+        "changelog": [
+          {
+            "version": "0.18.0",
+            "date": "2026-11-19",
+            "note": "First release: MetricCard (label, value and unit, delta coloured only when trend is bad with better/worse read aloud, neutral sparkline, caption; href makes the card one link; loading keeps its height; unavailable shows a dash and why) and MetricGrid, taken out of stats-cards."
+          }
+        ]
+      }
+    },
+    {
       "name": "alert",
       "type": "registry:ui",
       "title": "Alert",
@@ -3971,12 +4002,9 @@
       "type": "registry:block",
       "title": "KPI cards",
       "description": "Four headline numbers with change and sparkline. Trend colour follows whether the change is good, not its direction.",
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": [],
       "registryDependencies": [
-        "@syncrobotic/cn",
-        "@syncrobotic/card"
+        "@syncrobotic/metric-card"
       ],
       "files": [
         {
@@ -3985,8 +4013,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.18.0",
         "changelog": [
+          {
+            "version": "0.18.0",
+            "date": "2026-11-19",
+            "note": "Built on MetricCard and MetricGrid; Stat and sampleStats unchanged. The value is 24 px with tabular figures, the card-figure size (it was 28 px, the page-title size)."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
