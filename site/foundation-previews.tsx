@@ -84,6 +84,14 @@ const previews: Record<FoundationSlug, React.ReactNode> = {
       </span>
     </div>
   ),
+  "data-visualisation": (
+    <svg viewBox="0 0 120 64" className="h-16 w-32">
+      <line x1="0" y1="62" x2="120" y2="62" stroke="var(--border)" />
+      <line x1="0" y1="32" x2="120" y2="32" stroke="var(--border)" />
+      <polyline points="0,50 20,44 40,47 60,30 80,34 100,18 120,22" fill="none" stroke="var(--chart-1)" strokeWidth="2.5" />
+      <polyline points="0,58 20,54 40,56 60,48 80,50 100,42 120,44" fill="none" stroke="var(--chart-2)" strokeWidth="2.5" />
+    </svg>
+  ),
   accessibility: (
     <div className="flex flex-col items-start gap-2">
       <span className="font-mono text-2xl font-bold">
@@ -99,7 +107,7 @@ const previews: Record<FoundationSlug, React.ReactNode> = {
   ),
 }
 
-// Bento: principles lead (two rows), the rest in pairs and threes, so the grid reads as one composition, not ten equal cards.
+// Bento: principles lead (two rows), the rest in threes, so the grid reads as one composition, not eleven equal cards.
 const span: Record<FoundationSlug, string> = {
   principles: "lg:col-span-2 lg:row-span-2",
   color: "lg:col-span-2",
@@ -109,8 +117,9 @@ const span: Record<FoundationSlug, string> = {
   elevation: "lg:col-span-2",
   motion: "lg:col-span-2",
   iconography: "lg:col-span-2",
-  accessibility: "lg:col-span-3",
-  alarms: "lg:col-span-3",
+  accessibility: "lg:col-span-2",
+  alarms: "lg:col-span-2",
+  "data-visualisation": "lg:col-span-2",
 }
 
 // Hover is a state change, so it moves the way the Motion foundation says: --motion-fast, standard easing, a 2 px lift
@@ -132,7 +141,11 @@ export function FoundationGrid() {
             href={`/docs/foundations/${f.slug}`}
             className={`group flex flex-col gap-6 bg-background p-6 outline-none transition-colors hover:bg-card focus-visible:bg-card focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring ${fast} ${span[f.slug]}`}
           >
-            <div aria-hidden className="flex min-h-32 flex-1 items-center justify-center overflow-hidden">
+            {/* A fixed height, so titles in a row line up whatever the length of their lead; principles spans two rows and fills. */}
+            <div
+              aria-hidden
+              className={`flex items-center justify-center overflow-hidden ${f.slug === "principles" ? "min-h-32 flex-1" : "h-32"}`}
+            >
               <div
                 className={`flex size-full items-center justify-center transition-transform group-hover:-translate-y-0.5 motion-reduce:group-hover:translate-y-0 ${fast}`}
               >
