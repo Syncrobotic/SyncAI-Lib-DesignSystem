@@ -19,8 +19,20 @@ export const scopeFor = (scopes: Pick<Scope, "match">[], path: string) =>
 export function Sidebar({ scopes, switcher = false }: { scopes: Scope[]; switcher?: boolean }) {
   const path = usePathname()
   const active = scopes[scopeFor(scopes, path)]
+  const nav = React.useRef<HTMLElement>(null)
+  // Open where you are: if the current page's link is out of view in its scrolling column (or the drawer), centre it.
+  // Only that box scrolls, never the page.
+  React.useEffect(() => {
+    const link = nav.current?.querySelector<HTMLElement>('a[aria-current="page"]')
+    const box = link?.closest<HTMLElement>("[data-scroll]")
+    if (!link || !box) return
+    const l = link.getBoundingClientRect()
+    const b = box.getBoundingClientRect()
+    if (l.top >= b.top && l.bottom <= b.bottom) return
+    box.scrollTop += l.top - b.top - b.height / 2 + l.height / 2
+  }, [path])
   return (
-    <nav aria-label={`${active.label} navigation`} className="flex flex-col gap-6 text-sm">
+    <nav ref={nav} aria-label={`${active.label} navigation`} className="flex flex-col gap-6 text-sm">
       {!switcher && <p className="px-3 text-sm font-medium text-muted-foreground">{active.label}</p>}
       {switcher && (
         <div role="list" aria-label="Areas" className="grid grid-cols-2 gap-1 rounded-sm bg-muted p-1">

@@ -3,7 +3,8 @@ import { site } from "./config"
 import { HeaderFrame } from "./header-frame"
 import { HeaderNav } from "./header-nav"
 import { Logo } from "./logo"
-import { headerLinks } from "./scopes"
+import { NavDrawer } from "./nav-drawer"
+import { headerLinks, scopes } from "./scopes"
 import { ThemeToggle } from "./theme-toggle"
 
 export function SiteHeader() {
@@ -18,6 +19,7 @@ export function SiteHeader() {
           GitHub
         </a>
         <ThemeToggle />
+        <NavDrawer scopes={scopes} />
       </div>
     </HeaderFrame>
   )

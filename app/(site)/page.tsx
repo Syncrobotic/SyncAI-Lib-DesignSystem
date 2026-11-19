@@ -65,7 +65,7 @@ export default function HomePage() {
       body: "The rules and tokens behind every screen: colour, type, spacing, radius, motion, iconography, accessibility and alarms.",
     },
     {
-      href: "/docs/components/button",
+      href: "/docs/components",
       title: "Components",
       count: `${componentCount} components`,
       body: "General UI on Radix, charts on Recharts, and the robot shell: emergency stop, slide to release, dock and island.",
