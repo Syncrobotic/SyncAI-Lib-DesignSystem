@@ -1,4 +1,4 @@
-// @syncrobotic/maintenance-work-order v0.9.0 · update: npx shadcn add @syncrobotic/maintenance-work-order --overwrite
+// @syncrobotic/maintenance-work-order v0.13.0 · update: npx shadcn add @syncrobotic/maintenance-work-order --overwrite
 "use client"
 
 import * as React from "react"
@@ -38,7 +38,7 @@ export function MaintenanceWorkOrder() {
       <div className="grid gap-6 lg:grid-cols-[1fr_20rem]">
         <div className="flex min-w-0 flex-col gap-6">
           <div className="flex flex-col gap-1">
-            <StatusEyebrow tone={signed ? "success" : "neutral"}>{signed ? "Back in service" : "Out of service for maintenance"}</StatusEyebrow>
+            <StatusEyebrow status={signed ? "normal" : "offline"}>{signed ? "Back in service" : "Out of service for maintenance"}</StatusEyebrow>
             <h2 className="flex items-center gap-2 text-xl font-bold">
               <Wrench aria-hidden="true" className="size-5" />
               Leg joints and bearings, Patrol dog 9E37

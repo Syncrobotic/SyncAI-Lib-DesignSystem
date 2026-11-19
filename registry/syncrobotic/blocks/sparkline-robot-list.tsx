@@ -1,9 +1,9 @@
-// @syncrobotic/sparkline-robot-list v0.9.0 · update: npx shadcn add @syncrobotic/sparkline-robot-list --overwrite
+// @syncrobotic/sparkline-robot-list v0.13.0 · update: npx shadcn add @syncrobotic/sparkline-robot-list --overwrite
 "use client"
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { StatusGlyph, type Tone } from "@/registry/syncrobotic/shell/status-glyph"
+import { StatusGlyph, type Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Card } from "@/registry/syncrobotic/ui/card"
 
 // A sparkline: the shape of the last values, no axes. Neutral, so only a word or a number carries a warning.
@@ -18,13 +18,13 @@ function Sparkline({ values, className }: { values: number[]; className?: string
   )
 }
 
-type Row = { id: string; tone: Tone; state: string; battery: number[] }
+type Row = { id: string; tone: Status; state: string; battery: number[] }
 // Sample data: battery over the last 12 hours, oldest first.
 const rows: Row[] = [
-  { id: "7F3A", tone: "info", state: "Patrolling", battery: [96, 90, 84, 77, 70, 64, 58, 51, 45, 40, 36, 33] },
-  { id: "DAA6", tone: "success", state: "Docked", battery: [40, 34, 30, 52, 70, 84, 93, 98, 99, 100, 100, 100] },
+  { id: "7F3A", tone: "active", state: "Patrolling", battery: [96, 90, 84, 77, 70, 64, 58, 51, 45, 40, 36, 33] },
+  { id: "DAA6", tone: "normal", state: "Docked", battery: [40, 34, 30, 52, 70, 84, 93, 98, 99, 100, 100, 100] },
   { id: "9E37", tone: "warning", state: "Needs attention", battery: [62, 55, 47, 40, 33, 27, 22, 19, 17, 15, 14, 12] },
-  { id: "1715", tone: "info", state: "Patrolling", battery: [88, 85, 82, 79, 76, 73, 70, 67, 64, 61, 58, 55] },
+  { id: "1715", tone: "active", state: "Patrolling", battery: [88, 85, 82, 79, 76, 73, 70, 67, 64, 61, 58, 55] },
 ]
 
 const row = "flex min-h-(--h-row) items-center gap-3 border-b border-border px-4 last:border-b-0" // icon-gap-ok: the svg is a sparkline, not an icon beside a label
@@ -46,7 +46,7 @@ export function SparklineRobotList() {
               <span className="flex min-w-0 flex-1 flex-col">
                 <span className="text-sm font-medium">Patrol dog {r.id}</span>
                 <span className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <StatusGlyph tone={r.tone} /> {r.state}
+                  <StatusGlyph status={r.tone} /> {r.state}
                 </span>
               </span>
               <Sparkline values={r.battery} />

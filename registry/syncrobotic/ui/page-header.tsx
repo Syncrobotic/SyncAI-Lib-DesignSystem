@@ -1,7 +1,7 @@
-// @syncrobotic/page-header v0.10.0 · update: npx shadcn add @syncrobotic/page-header --overwrite
+// @syncrobotic/page-header v0.13.0 · update: npx shadcn add @syncrobotic/page-header --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { StatusGlyph, type Tone } from "@/registry/syncrobotic/shell/status-glyph"
+import { StatusGlyph, type Tone, toStatus } from "@/registry/syncrobotic/shell/status-glyph"
 
 /**
  * The block a page opens with: where you are (a breadcrumb above), what the page is (one h1 and a line), facts about it
@@ -63,7 +63,7 @@ export function MetaPill({ tone, icon, className, children }: { tone?: Tone; ico
         className,
       )}
     >
-      {tone ? <StatusGlyph tone={tone} /> : icon}
+      {tone ? <StatusGlyph status={toStatus(tone)} /> : icon}
       {children}
     </span>
   )

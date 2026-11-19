@@ -1,6 +1,6 @@
-// @syncrobotic/marker v0.9.0 · update: npx shadcn add @syncrobotic/marker --overwrite
+// @syncrobotic/marker v0.13.0 · update: npx shadcn add @syncrobotic/marker --overwrite
 import * as React from "react"
-import { StatusGlyph, type Tone } from "@/registry/syncrobotic/shell/status-glyph"
+import { StatusGlyph, type Tone, toStatus } from "@/registry/syncrobotic/shell/status-glyph"
 import { cn } from "@/lib/utils"
 
 /**
@@ -67,7 +67,7 @@ export function MarkerRow({
     <div data-slot="marker-row" className={cn("flex min-h-8 min-w-0 items-center gap-2 text-sm", className)} {...props}>
       {tone ? (
         <span className="grid size-4 shrink-0 place-items-center">
-          <StatusGlyph tone={tone} />
+          <StatusGlyph status={toStatus(tone)} />
         </span>
       ) : (
         icon && (

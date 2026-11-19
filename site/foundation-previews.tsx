@@ -91,8 +91,8 @@ const previews: Record<FoundationSlug, React.ReactNode> = {
         <span className="text-muted-foreground">:1</span>
       </span>
       <span className="flex gap-2">
-        {(["info", "success", "warning", "danger", "neutral"] as const).map((t) => (
-          <StatusGlyph key={t} tone={t} />
+        {(["active", "normal", "warning", "danger", "offline"] as const).map((t) => (
+          <StatusGlyph key={t} status={t} />
         ))}
       </span>
     </div>

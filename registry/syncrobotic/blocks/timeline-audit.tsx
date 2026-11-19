@@ -1,4 +1,4 @@
-// @syncrobotic/timeline-audit v0.9.0 · update: npx shadcn add @syncrobotic/timeline-audit --overwrite
+// @syncrobotic/timeline-audit v0.13.0 · update: npx shadcn add @syncrobotic/timeline-audit --overwrite
 "use client"
 
 import * as React from "react"
@@ -63,7 +63,7 @@ export function TimelineAudit({ className }: { className?: string }) {
           <SegmentedControlItem value="system">System</SegmentedControlItem>
         </SegmentedControl>
       </div>
-      <Timeline density="dense">
+      <Timeline size="sm">
         {shown.map((e) => (
           <TimelineItem
             key={e.at}

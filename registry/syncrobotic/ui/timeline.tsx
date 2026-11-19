@@ -1,6 +1,6 @@
-// @syncrobotic/timeline v0.9.0 · update: npx shadcn add @syncrobotic/timeline --overwrite
+// @syncrobotic/timeline v0.13.0 · update: npx shadcn add @syncrobotic/timeline --overwrite
 import * as React from "react"
-import { StatusGlyph, type Tone } from "@/registry/syncrobotic/shell/status-glyph"
+import { StatusGlyph, type Tone, toStatus } from "@/registry/syncrobotic/shell/status-glyph"
 import { cn } from "@/lib/utils"
 
 /**
@@ -11,18 +11,32 @@ import { cn } from "@/lib/utils"
 type Ctx = { orientation: "vertical" | "horizontal"; align: "start" | "alternate"; density: "default" | "dense" }
 const TimelineCtx = React.createContext<Ctx>({ orientation: "vertical", align: "start", density: "default" })
 
+const warned = new Set<string>()
+/** Says once that `density` is now `size`, so it is not confused with the theme's data-density. Development only. */
+function warnDensity(component: string, density: unknown) {
+  if (density === undefined || process.env.NODE_ENV === "production" || warned.has(component)) return
+  warned.add(component)
+  console.warn(`${component}: \`density="dense"\` is now \`size="sm"\`. \`density\` stops working in 1.0.`)
+}
+
 export function Timeline({
   orientation = "vertical",
   align = "start",
-  density = "default",
+  size,
+  density: legacy,
   className,
   ...props
 }: React.ComponentProps<"ol"> & {
   orientation?: "vertical" | "horizontal"
   /** alternate puts time on one side and content on the other (vertical, wide screens only). */
   align?: "start" | "alternate"
+  /** sm: less space between events, for a long history. */
+  size?: "default" | "sm"
+  /** @deprecated Use `size="sm"`. */
   density?: "default" | "dense"
 }) {
+  warnDensity("Timeline", legacy)
+  const density = (size ?? (legacy === "dense" ? "sm" : "default")) === "sm" ? "dense" : "default"
   return (
     <TimelineCtx.Provider value={{ orientation, align, density }}>
       <ol
@@ -71,7 +85,7 @@ export function TimelineItem({
         icon ? "size-8 text-muted-foreground ring-1 ring-border [&_svg]:size-4" : "size-4",
       )}
     >
-      {icon ?? (tone ? <StatusGlyph tone={tone} /> : <span className="size-2 rounded-full bg-muted-foreground" />)}
+      {icon ?? (tone ? <StatusGlyph status={toStatus(tone)} /> : <span className="size-2 rounded-full bg-muted-foreground" />)}
     </span>
   )
   const timeEl = time ? (

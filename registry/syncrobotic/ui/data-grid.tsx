@@ -1,4 +1,4 @@
-// @syncrobotic/data-grid v0.11.0 · update: npx shadcn add @syncrobotic/data-grid --overwrite
+// @syncrobotic/data-grid v0.13.0 · update: npx shadcn add @syncrobotic/data-grid --overwrite
 "use client"
 
 import * as React from "react"
@@ -20,6 +20,14 @@ import {
 import { Pagination } from "@/registry/syncrobotic/ui/pagination"
 
 type Density = "default" | "dense"
+
+const warned = new Set<string>()
+/** Says once that `density` is now `size`, so it is not confused with the theme's data-density. Development only. */
+function warnDensity(component: string, density: unknown) {
+  if (density === undefined || process.env.NODE_ENV === "production" || warned.has(component)) return
+  warned.add(component)
+  console.warn(`${component}: \`density="dense"\` is now \`size="sm"\`. \`density\` stops working in 1.0.`)
+}
 
 /** A height token in px as it resolves at `el` (rem or px), or undefined before mount. */
 function tokenPx(el: HTMLElement | null, name: string) {
@@ -49,7 +57,8 @@ const useGrid = () => {
  */
 export function DataGrid<T>({
   table,
-  density = "default",
+  size,
+  density: legacy,
   variant = "default",
   loading = false,
   emptyText = "No rows",
@@ -57,6 +66,9 @@ export function DataGrid<T>({
   children,
 }: {
   table: TanTable<T>
+  /** sm: 44 px rows for long lists on a desktop. Separate from the theme's data-density, which this follows too. */
+  size?: "default" | "sm"
+  /** @deprecated Use `size="sm"`. */
   density?: Density
   variant?: Variant
   loading?: boolean
@@ -64,6 +76,8 @@ export function DataGrid<T>({
   className?: string
   children: React.ReactNode
 }) {
+  warnDensity("DataGrid", legacy)
+  const density: Density = (size ?? (legacy === "dense" ? "sm" : "default")) === "sm" ? "dense" : "default"
   return (
     <GridContext.Provider value={{ table: table as TanTable<unknown>, density, variant, loading, emptyText }}>
       <div data-slot="data-grid" className={cn("flex w-full min-w-0 flex-col gap-3", className)}>

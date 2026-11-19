@@ -1,11 +1,11 @@
-// @syncrobotic/incident-queue v0.9.0 · update: npx shadcn add @syncrobotic/incident-queue --overwrite
+// @syncrobotic/incident-queue v0.13.0 · update: npx shadcn add @syncrobotic/incident-queue --overwrite
 "use client"
 
 import * as React from "react"
 import { Plus } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
-import { StatusGlyph, type Tone } from "@/registry/syncrobotic/shell/status-glyph"
+import { StatusGlyph, type Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
@@ -53,7 +53,7 @@ const incidents: Incident[] = [
   },
 ]
 
-const sevTone: Record<Incident["severity"], Tone> = { 1: "danger", 2: "warning", 3: "neutral" }
+const sevTone: Record<Incident["severity"], Status> = { 1: "danger", 2: "warning", 3: "offline" }
 const order: Incident["state"][] = ["Unassigned", "Investigating", "Monitoring", "Resolved"]
 
 /**
@@ -102,7 +102,7 @@ export function IncidentQueue() {
                 <TableRow key={i.id}>
                   <TableCell>
                     <span className={cn("flex items-center gap-2 font-medium", i.severity === 1 && "text-danger", i.severity === 2 && "text-warning")}>
-                      <StatusGlyph tone={sevTone[i.severity]} />
+                      <StatusGlyph status={sevTone[i.severity]} />
                       Sev {i.severity}
                     </span>
                   </TableCell>

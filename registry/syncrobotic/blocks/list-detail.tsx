@@ -1,4 +1,4 @@
-// @syncrobotic/list-detail v0.10.0 · update: npx shadcn add @syncrobotic/list-detail --overwrite
+// @syncrobotic/list-detail v0.13.0 · update: npx shadcn add @syncrobotic/list-detail --overwrite
 "use client"
 
 import * as React from "react"
@@ -10,19 +10,19 @@ import { Meter } from "@/registry/syncrobotic/ui/meter"
 import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
 import { sampleRobots, type Robot } from "@/registry/syncrobotic/blocks/fleet-table"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
-import type { Tone } from "@/registry/syncrobotic/shell/status-glyph"
+import type { Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { InputGroup, InputGroupAddon } from "@/registry/syncrobotic/ui/input-group"
 import { Separator } from "@/registry/syncrobotic/ui/separator"
 
-const status: Record<Robot["status"], { tone: Tone; label: string }> = {
-  patrolling: { tone: "info", label: "Patrolling" },
-  docked: { tone: "success", label: "Docked" },
+const status: Record<Robot["status"], { tone: Status; label: string }> = {
+  patrolling: { tone: "active", label: "Patrolling" },
+  docked: { tone: "normal", label: "Docked" },
   attention: { tone: "warning", label: "Needs attention" },
   stopped: { tone: "danger", label: "Stopped" },
-  offline: { tone: "neutral", label: "Offline" },
+  offline: { tone: "offline", label: "Offline" },
 }
 
 /** List and detail: pick a robot on the left, read and act on it on the right. On phones the detail replaces the list. */
@@ -62,7 +62,7 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
                 >
                   <span className="text-sm font-medium">{r.name}</span>
                   <span className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <InlineStatus tone={status[r.status].tone}>{status[r.status].label}</InlineStatus> · {r.site}
+                    <InlineStatus status={status[r.status].tone}>{status[r.status].label}</InlineStatus> · {r.site}
                   </span>
                 </button>
               </li>
@@ -80,7 +80,7 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
                 </Button>
                 <div className="flex min-w-0 flex-1 basis-48 flex-col gap-1">
                   <h2 className="text-xl font-bold">{robot.name}</h2>
-                  <InlineStatus tone={status[robot.status].tone}>{status[robot.status].label}</InlineStatus>
+                  <InlineStatus status={status[robot.status].tone}>{status[robot.status].label}</InlineStatus>
                 </div>
                 <div className="flex gap-2">
                   <Button variant="secondary" size="sm">

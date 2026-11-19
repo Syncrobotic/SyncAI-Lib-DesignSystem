@@ -1,10 +1,10 @@
-// @syncrobotic/app-shell-mobile-tabs v0.9.0 · update: npx shadcn add @syncrobotic/app-shell-mobile-tabs --overwrite
+// @syncrobotic/app-shell-mobile-tabs v0.13.0 · update: npx shadcn add @syncrobotic/app-shell-mobile-tabs --overwrite
 "use client"
 
 import * as React from "react"
 import { Bell, Bot, LayoutGrid, Map as MapIcon, Search } from "lucide-react"
 import { DockNav, type NavItem } from "@/registry/syncrobotic/shell/dock"
-import { StatusGlyph, type Tone } from "@/registry/syncrobotic/shell/status-glyph"
+import { StatusGlyph, type Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Tray } from "@/registry/syncrobotic/shell/tray"
 import { Button } from "@/registry/syncrobotic/ui/button"
 
@@ -16,12 +16,12 @@ export const sampleTabs: NavItem[] = [
 ]
 
 // Sample data for the page inside the shell.
-const robots: { id: string; tone: Tone; state: string; where: string; battery: number }[] = [
-  { id: "7F3A", tone: "info", state: "Patrolling", where: "North gate", battery: 72 },
+const robots: { id: string; tone: Status; state: string; where: string; battery: number }[] = [
+  { id: "7F3A", tone: "active", state: "Patrolling", where: "North gate", battery: 72 },
   { id: "9E37", tone: "warning", state: "Needs attention", where: "Loading bay", battery: 14 },
-  { id: "DAA6", tone: "success", state: "Docked", where: "Dock 2", battery: 100 },
-  { id: "1715", tone: "info", state: "Patrolling", where: "Car park", battery: 55 },
-  { id: "C2B0", tone: "neutral", state: "Offline", where: "Last seen at Dock 1", battery: 38 },
+  { id: "DAA6", tone: "normal", state: "Docked", where: "Dock 2", battery: 100 },
+  { id: "1715", tone: "active", state: "Patrolling", where: "Car park", battery: 55 },
+  { id: "C2B0", tone: "offline", state: "Offline", where: "Last seen at Dock 1", battery: 38 },
 ]
 
 const row = "flex min-h-(--h-row) items-center gap-3 border-b border-border py-2 last:border-b-0" // icon-gap-ok: the tile is the robot's id, not an icon
@@ -35,7 +35,7 @@ function SampleRobots() {
           <span className="flex min-w-0 flex-1 flex-col">
             <span className="truncate text-sm font-medium">Patrol dog {r.id}</span>
             <span className="flex items-center gap-2 truncate text-xs text-muted-foreground">
-              <StatusGlyph tone={r.tone} /> {r.state} · {r.where}
+              <StatusGlyph status={r.tone} /> {r.state} · {r.where}
             </span>
           </span>
           <span className={r.battery < 15 ? "text-sm font-medium text-danger tabular-nums" : "text-sm text-muted-foreground tabular-nums"}>{r.battery} %</span>

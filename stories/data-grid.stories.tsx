@@ -12,7 +12,7 @@ import {
 } from "@tanstack/react-table"
 import { Download, Pause, Trash2 } from "lucide-react"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
-import type { Tone } from "@/registry/syncrobotic/shell/status-glyph"
+import type { Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import {
   DataGrid,
@@ -40,12 +40,12 @@ type Robot = {
   km: number
   tasks: number
 }
-const status: Record<Robot["status"], { tone: Tone; label: string }> = {
-  patrolling: { tone: "info", label: "Patrolling" },
-  docked: { tone: "success", label: "Docked" },
+const status: Record<Robot["status"], { tone: Status; label: string }> = {
+  patrolling: { tone: "active", label: "Patrolling" },
+  docked: { tone: "normal", label: "Docked" },
   attention: { tone: "warning", label: "Needs attention" },
   stopped: { tone: "danger", label: "Stopped" },
-  offline: { tone: "neutral", label: "Offline" },
+  offline: { tone: "offline", label: "Offline" },
 }
 const sites = ["North gate", "Hall B", "Warehouse 3", "Parking lot", "Perimeter"]
 const kinds = Object.keys(status) as Robot["status"][]
@@ -82,7 +82,7 @@ const columns: ColumnDef<Robot>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => <DataGridColumnHeader column={column} title="Status" />,
-    cell: ({ row }) => <InlineStatus tone={status[row.original.status].tone}>{status[row.original.status].label}</InlineStatus>,
+    cell: ({ row }) => <InlineStatus status={status[row.original.status].tone}>{status[row.original.status].label}</InlineStatus>,
     size: 170,
     meta: { label: "Status" },
   },
@@ -170,7 +170,7 @@ export const DataGridDense: S = {
   render: function D() {
     const table = useGrid(robots, columns)
     return (
-      <DataGrid table={table} density="dense">
+      <DataGrid table={table} size="sm">
         <DataGridTable aria-label="Robots" />
         <DataGridPagination pages={false} />
       </DataGrid>
@@ -193,7 +193,7 @@ export const DataGridCellBorders: S = {
   render: function D() {
     const table = useGrid(six, columns)
     return (
-      <DataGrid table={table} variant="borders" density="dense">
+      <DataGrid table={table} variant="borders" size="sm">
         <DataGridTable aria-label="Robots" />
       </DataGrid>
     )
@@ -274,7 +274,7 @@ export const DataGridStickyHeader: S = {
   render: function D() {
     const table = useGrid(robots, columns, { getPaginationRowModel: undefined })
     return (
-      <DataGrid table={table} density="dense">
+      <DataGrid table={table} size="sm">
         <DataGridTable aria-label="Robots" maxHeight={320} />
       </DataGrid>
     )
@@ -286,7 +286,7 @@ export const DataGridVirtualRows: S = {
     const many = React.useMemo(() => makeRobots(5000), [])
     const table = useGrid(many, columns, { getPaginationRowModel: undefined })
     return (
-      <DataGrid table={table} density="dense">
+      <DataGrid table={table} size="sm">
         <p className="text-sm text-muted-foreground">5 000 robots, only the rows in view are drawn.</p>
         <DataGridTable aria-label="All robots" maxHeight={360} virtual />
       </DataGrid>
