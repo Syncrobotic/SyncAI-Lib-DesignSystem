@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.14.1",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "A search field in an input group with a button in it no longer shows the browser's clear cross as well: one cross, not two."
+          },
           {
             "version": "0.14.1",
             "date": "2026-11-19",
@@ -677,8 +682,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.1",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The selected thumb travels to the segment you pick (Move pattern, --motion-base); the label colour changes with it."
+          },
           {
             "version": "0.13.1",
             "date": "2026-11-19",
@@ -1735,8 +1745,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The underline travels to the tab you pick (Move pattern, --motion-base)."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
