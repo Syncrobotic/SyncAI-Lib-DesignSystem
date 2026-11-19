@@ -2,6 +2,16 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.17.0 · 2026-11-19
+
+### Changed
+- **Docs: Blocks are compositions, Patterns are variants of one component.** The Blocks page now holds only Application and Solutions. Variants of a single component moved to that component's page, under a new **Patterns** section:
+  - Line, area, bar, sparkline, status tracker, radial and heatmap charts → [Chart](https://design-system.syncrobotic.me/docs/components/chart#patterns).
+  - `timeline-activity`, `timeline-audit` → Timeline.
+  - `dialog-form`, `dialog-share` → Dialog; `dialog-confirm-destructive` → Alert dialog.
+  - `sheet-robot-detail`, `sheet-filters` → Sheet.
+- Install names are unchanged. Old `/blocks/<type>` and `/blocks/<name>` URLs redirect to the new place. Search, the sidebar, the sitemap, `llms.txt` and the Markdown twins follow the new grouping.
+
 ## 0.16.1 · 2026-11-19
 
 ### Added
