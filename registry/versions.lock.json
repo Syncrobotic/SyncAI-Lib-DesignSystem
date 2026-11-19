@@ -136,8 +136,8 @@
     "hash": "d5e6cb1ad82eb417"
   },
   "badge": {
-    "version": "0.10.0",
-    "hash": "e3bc03bf2b3cf40d"
+    "version": "0.16.1",
+    "hash": "9f704a562bd27a1b"
   },
   "card": {
     "version": "0.5.0",
@@ -232,8 +232,8 @@
     "hash": "f3a73fbae88d468d"
   },
   "command": {
-    "version": "0.16.0",
-    "hash": "c213a71acb846a3b"
+    "version": "0.16.1",
+    "hash": "5e2f8d1b0a622b66"
   },
   "item": {
     "version": "0.9.0",
@@ -292,8 +292,8 @@
     "hash": "4408d94150b8f69d"
   },
   "filters": {
-    "version": "0.16.0",
-    "hash": "f5909edac985f07d"
+    "version": "0.16.1",
+    "hash": "93e12312d46e547d"
   },
   "search-field": {
     "version": "0.10.0",
@@ -436,8 +436,8 @@
     "hash": "251dd5b71348afdd"
   },
   "review-queue": {
-    "version": "0.16.0",
-    "hash": "0f0b06e154eb8dec"
+    "version": "0.16.1",
+    "hash": "5cd1e42dcb6fbf2f"
   },
   "governance-todo": {
     "version": "0.13.0",

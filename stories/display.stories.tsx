@@ -1,11 +1,11 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
-import { Battery, Bot, CircleAlert, CircleCheck, CircleDashed, Info, Lock, MapPinOff, RotateCw, SearchX, TriangleAlert, Wifi, WifiOff } from "lucide-react"
+import { Battery, Bot, CircleAlert, Info, Lock, MapPinOff, RotateCw, SearchX, TriangleAlert, Wifi, WifiOff } from "lucide-react"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { Alert, AlertDescription, AlertTitle } from "@/registry/syncrobotic/ui/alert"
 import { Avatar, AvatarBadge, AvatarFallback, AvatarGroup, AvatarImage } from "@/registry/syncrobotic/ui/avatar"
-import { Badge } from "@/registry/syncrobotic/ui/badge"
+import { Badge, ResultBadge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/registry/syncrobotic/ui/card"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
@@ -482,15 +482,9 @@ export const BadgeWithIcon: S = {
 export const BadgeTestResults: S = {
   render: () => (
     <div className="flex flex-wrap gap-2">
-      <Badge>
-        <CircleCheck aria-hidden="true" /> Passed
-      </Badge>
-      <Badge tone="outline" className="text-danger ring-danger">
-        <CircleAlert aria-hidden="true" /> Failed
-      </Badge>
-      <Badge tone="outline" className="text-muted-foreground">
-        <CircleDashed aria-hidden="true" /> Not enough samples
-      </Badge>
+      <ResultBadge result="passed" />
+      <ResultBadge result="failed" />
+      <ResultBadge result="insufficient" />
     </div>
   ),
 }
@@ -524,19 +518,7 @@ export const BadgeTestResultsInTable: S = {
               </span>
             </TableCell>
             <TableCell>
-              {result === "pass" ? (
-                <Badge>
-                  <CircleCheck aria-hidden="true" /> Passed
-                </Badge>
-              ) : result === "fail" ? (
-                <Badge tone="outline" className="text-danger ring-danger">
-                  <CircleAlert aria-hidden="true" /> Failed
-                </Badge>
-              ) : (
-                <Badge tone="outline" className="text-muted-foreground">
-                  <CircleDashed aria-hidden="true" /> Not enough samples
-                </Badge>
-              )}
+              <ResultBadge result={result === "pass" ? "passed" : result === "fail" ? "failed" : "insufficient"} />
             </TableCell>
           </TableRow>
         ))}
