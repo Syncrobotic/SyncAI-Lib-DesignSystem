@@ -1,4 +1,4 @@
-// @syncrobotic/status-tracker-uptime v0.15.0 · update: npx shadcn add @syncrobotic/status-tracker-uptime --overwrite
+// @syncrobotic/status-tracker-uptime v0.17.2 · update: npx shadcn add @syncrobotic/status-tracker-uptime --overwrite
 "use client"
 
 import * as React from "react"

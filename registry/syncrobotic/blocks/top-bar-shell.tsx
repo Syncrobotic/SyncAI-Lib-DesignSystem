@@ -1,4 +1,4 @@
-// @syncrobotic/top-bar-shell v0.14.1 · update: npx shadcn add @syncrobotic/top-bar-shell --overwrite
+// @syncrobotic/top-bar-shell v0.17.2 · update: npx shadcn add @syncrobotic/top-bar-shell --overwrite
 "use client"
 
 import * as React from "react"

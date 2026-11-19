@@ -1,4 +1,4 @@
-// @syncrobotic/calendar v0.15.0 · update: npx shadcn add @syncrobotic/calendar --overwrite
+// @syncrobotic/calendar v0.17.2 · update: npx shadcn add @syncrobotic/calendar --overwrite
 "use client"
 
 import * as React from "react"

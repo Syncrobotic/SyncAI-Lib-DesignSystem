@@ -539,8 +539,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "In high contrast the action buttons are opaque with an --input edge."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -766,8 +771,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "In high contrast the track has an --input edge (3:1)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -1323,8 +1333,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "With the keyboard, the highlighted option shows a 2 px inset ring as well as the fill; with a mouse it stays a plain fill."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -2280,8 +2295,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "With the keyboard, the highlighted item shows a 2 px inset ring as well as the fill (the fill alone was 1.24:1); with a mouse it stays a plain fill."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -2335,7 +2355,7 @@
           {
             "version": "0.17.2",
             "date": "2026-11-19",
-            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules."
+            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules. With the keyboard, the selected row shows a 2 px inset ring. CommandDialog gives focus back to what had it before it opened (button or ⌘K); it fell to the page."
           },
           {
             "version": "0.16.1",
@@ -2961,7 +2981,7 @@
           {
             "version": "0.17.2",
             "date": "2026-11-19",
-            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules."
+            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules. With the keyboard, the active suggestion shows a 2 px inset ring; the suggestions panel has a name."
           },
           {
             "version": "0.15.0",
@@ -3084,8 +3104,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Month and year menus are a full compact-control target (44 px on touch, 48 in gloves)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -3127,8 +3152,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Its popover is named by the field, and on a small phone the calendar scrolls inside it instead of running off the screen."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -3172,7 +3202,7 @@
           {
             "version": "0.17.2",
             "date": "2026-11-19",
-            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules."
+            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules. The time list is one Tab stop: arrow keys, Home/End and PageUp/PageDown move, Enter or Space picks; the keyboard position shows a 2 px ring (it was a pale fill, 1.24:1, and 48 Tab stops). Its popover is named by the field."
           },
           {
             "version": "0.10.0",
@@ -3295,8 +3325,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "On a touch screen the handle's hit area is 44 px wide (48 in gloves)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -3526,8 +3561,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Links are at least a control tall, so they grow with glove density."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -3954,8 +3994,13 @@
         }
       ],
       "meta": {
-        "version": "0.14.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "The brand link is at least a control tall (48 in gloves)."
+          },
           {
             "version": "0.14.1",
             "date": "2026-11-19",
@@ -3994,8 +4039,13 @@
         }
       ],
       "meta": {
-        "version": "0.16.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "On phones the page keeps scroll padding for the floating bar, so focused items are never under it."
+          },
           {
             "version": "0.16.0",
             "date": "2026-11-19",
@@ -4215,8 +4265,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "On phones the robot tray sits above the map and the stop below it, so a focused marker is never hidden under the tray."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -4284,8 +4339,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Dataset links in rows are at least a control tall (48 in gloves)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -5177,8 +5237,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Bars are opaque grey, 3:1 (were 2.9:1 in light)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -5209,8 +5274,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Normal days are an opaque grey (3:1, was 2.35:1); no data is an outlined empty cell, in the legend. The strip is one Tab stop: arrow keys move day by day and read each day."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -5240,8 +5310,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Normal runs are an opaque grey (3:1, was 2.35:1); no data is an outlined empty cell, in the legend."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -5295,8 +5370,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "In high contrast the track is drawn in --input (3:1)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -5330,8 +5410,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "In high contrast the track is drawn in --input (3:1)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -5360,8 +5445,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "In high contrast the track is drawn in --input (3:1)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -6486,7 +6576,7 @@
           {
             "version": "0.17.2",
             "date": "2026-11-19",
-            "note": "Filter segments are compact with counts (All 5, Needs someone 2, Running 1), like the fleet table."
+            "note": "Filter segments are compact with counts (All 5, Needs someone 2, Running 1), like the fleet table. Run links in rows are at least a control tall (48 in gloves)."
           },
           {
             "version": "0.17.1",

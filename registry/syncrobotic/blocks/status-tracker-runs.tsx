@@ -1,4 +1,4 @@
-// @syncrobotic/status-tracker-runs v0.9.0 · update: npx shadcn add @syncrobotic/status-tracker-runs --overwrite
+// @syncrobotic/status-tracker-runs v0.17.2 · update: npx shadcn add @syncrobotic/status-tracker-runs --overwrite
 "use client"
 
 import * as React from "react"

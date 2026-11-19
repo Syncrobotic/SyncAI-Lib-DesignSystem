@@ -2,7 +2,7 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.17.2 · 2026-11-19
 
 ### Added
 - **API reference on every component page**, generated from the types (`npm run props`, checked in CI): each part's own props with type, default and description, and what the rest come from (an HTML element or a Radix part). Also in each component's Markdown twin, for agents.
@@ -11,6 +11,12 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - **`lint:rules`** (in CI and `npm run ci`): the rules the 0.17 audit found broken by hand now fail the build. `outline-none` needs a visible focus in its place (or a `// focus-ring:` comment saying where focus shows); `outline-none` next to `focus-visible:outline-*` is an error, since Tailwind 4 cancels the ring; a battery threshold other than 15 % or a battery Meter with `critical`; a chart block without a table view. Field-edge contrast (`--input` 3:1 on card, page and muted tile, every theme) is a unit test.
 
 ### Fixed
+- **Keyboard position is visible in every list** (2.4.7). In `dropdown-menu`, `select`, `command`, `autocomplete` and `time-picker` the highlighted item showed only a pale fill (1.24:1); with the keyboard it now also has a 2 px inset ring, and with a mouse it stays a plain fill. `time-picker`'s 48 times are one Tab stop with arrow keys. `lint:rules` no longer accepts a background alone as focus.
+- **`command`**: CommandDialog gives focus back to what opened it (a button or ⌘K); it fell to the page.
+- **Named popovers**: `date-selector`, `time-picker` and `autocomplete` panels are named by their field; the `popover` rules say content needs a name.
+- **Focus never hidden**: on phones `map-workspace` puts the robot tray above the map and the stop below it, so a focused marker is never under the tray; `action-rail-shell` keeps scroll padding for its floating bar.
+- **Graphics reach 3:1**: status tracker cells and sparkline-table bars are opaque grey; no data is an outlined cell; the uptime strip is one Tab stop that reads each day. In high contrast, the segmented track, radial tracks and island action buttons have an edge.
+- **Glove targets** (48 px): calendar month and year menus, navigation-menu links, the top-bar brand, row links in `data-catalog` and `agent-runs`, and the resizable handle on touch. `date-selector` scrolls inside on a small phone instead of running off the screen.
 - **`console-overview`**: one search, the table's filter; the top-bar search box duplicated it.
 - **Filter segments look the same everywhere**: `agent-runs`, `timeline-audit` and `incident-queue` use the compact segments with counts, like the fleet table.
 - **`incident-detail`**: Post update is disabled until there is text, and says why beside it.

@@ -1,4 +1,4 @@
-// @syncrobotic/action-rail-shell v0.16.0 · update: npx shadcn add @syncrobotic/action-rail-shell --overwrite
+// @syncrobotic/action-rail-shell v0.17.2 · update: npx shadcn add @syncrobotic/action-rail-shell --overwrite
 "use client"
 
 import * as React from "react"
