@@ -18,12 +18,27 @@ export type FoundationSlug = (typeof foundations)[number]["slug"]
 
 export const foundation = (slug: FoundationSlug) => foundations.find((f) => f.slug === slug)!
 
+/** Getting started, in sidebar order, then into the foundations: each page's previous and next. */
+const start = [
+  { href: "/docs/foundations", title: "Overview" },
+  { href: "/docs/installation", title: "Installation" },
+  { href: "/docs/tokens", title: "Design tokens" },
+  { href: "/docs/upgrading", title: "Versions and upgrades" },
+  { href: "/docs/ai", title: "For AI agents" },
+]
+
+export function startNeighbours(href: string) {
+  const i = start.findIndex((p) => p.href === href)
+  const first = { href: `/docs/foundations/${foundations[0].slug}`, title: foundations[0].title }
+  return { prev: start[i - 1], next: start[i + 1] ?? first }
+}
+
 export function neighbours(slug: FoundationSlug) {
   const i = foundations.findIndex((f) => f.slug === slug)
   const link = (f?: (typeof foundations)[number]) => (f ? { href: `/docs/foundations/${f.slug}`, title: f.title } : undefined)
   return {
-    prev: i === 0 ? { href: "/docs/foundations", title: "Foundations overview" } : link(foundations[i - 1]),
-    next: i === foundations.length - 1 ? { href: "/docs/components/button", title: "Components" } : link(foundations[i + 1]),
+    prev: i === 0 ? start[start.length - 1] : link(foundations[i - 1]),
+    next: i === foundations.length - 1 ? { href: "/docs/components", title: "Components" } : link(foundations[i + 1]),
   }
 }
 

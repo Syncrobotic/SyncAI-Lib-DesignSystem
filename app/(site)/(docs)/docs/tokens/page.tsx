@@ -1,7 +1,8 @@
 import type { Metadata } from "next"
+import { startNeighbours } from "@/site/foundations"
 import { CodeBlock } from "@/site/code-block"
 import { pageMeta, site } from "@/site/config"
-import { TokenTable } from "@/site/doc"
+import { TokenTable, Pager } from "@/site/doc"
 import { H2, Inline, PageTitle } from "@/site/prose"
 
 const description = "The SYNCROBOTIC tokens as W3C Design Tokens (DTCG JSON) for Figma, Tokens Studio, Style Dictionary and native apps."
@@ -76,6 +77,7 @@ export default function TokensPage() {
       <p className="text-sm">
         <Inline text="`npm run tokens` regenerates the files. CI runs the check and fails when the JSON no longer matches the CSS." />
       </p>
+      <Pager {...startNeighbours("/docs/tokens")} />
     </article>
   )
 }

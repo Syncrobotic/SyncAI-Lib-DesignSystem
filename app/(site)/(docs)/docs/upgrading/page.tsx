@@ -1,8 +1,9 @@
 import type { Metadata } from "next"
+import { startNeighbours } from "@/site/foundations"
 import registry from "../../../../../registry.json"
 import { CodeBlock } from "@/site/code-block"
 import { pageMeta } from "@/site/config"
-import { TokenTable } from "@/site/doc"
+import { TokenTable, Pager } from "@/site/doc"
 import { H2, Inline, PageTitle } from "@/site/prose"
 
 const description = "How SYNCROBOTIC components are versioned, how to see what a project has installed, and how to upgrade without losing local changes."
@@ -66,6 +67,7 @@ export default function UpgradingPage() {
           ]
         })}
       />
+      <Pager {...startNeighbours("/docs/upgrading")} />
     </article>
   )
 }

@@ -2,6 +2,16 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Changed
+- **Docs navigation, from a page-by-page review:**
+  - Phones: a menu button in the header, on every page including the home page, opens the navigation from the left (the four areas and the pages of the one you are in), scrolled to the page you are on, with a close button. It replaces the folding menu inside the content, which scrolled away and was missing from the home page.
+  - The sidebar opens scrolled to the page you are on; on the emergency stop page its link sat 3,800 px down, out of sight.
+  - **Components has an index** (`/docs/components`): every component by group, with what it is for. The header, the home page and the end of the foundations lead there instead of straight to Button.
+  - The 404 page keeps the site header, so a wrong link no longer strands you.
+  - Getting started has previous and next, in sidebar order: Overview, Installation, Design tokens, Versions and upgrades, For AI agents, then Principles.
+
 ## 0.13.0 · 2026-11-19
 
 ### Changed
