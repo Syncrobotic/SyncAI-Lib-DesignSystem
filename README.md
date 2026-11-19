@@ -2,7 +2,7 @@
 
 # SYNCROBOTIC Design System
 
-**Interfaces for the people who run robots.** The design language behind every SYNCROBOTIC product: design tokens, 84 React components and 69 ready-made blocks, shipped as a [shadcn/ui](https://ui.shadcn.com) registry for Tailwind CSS v4. Components install into your project as source you can read and change.
+**Interfaces for the people who run robots.** The design language behind every SYNCROBOTIC product: design tokens, 84 React components and 71 ready-made blocks and patterns, shipped as a [shadcn/ui](https://ui.shadcn.com) registry for Tailwind CSS v4. Components install into your project as source you can read and change.
 
 [Documentation](https://design-system.syncrobotic.me) · [Components](https://design-system.syncrobotic.me/docs/components/button) · [Blocks](https://design-system.syncrobotic.me/blocks) · [Changelog](CHANGELOG.md) · [Roadmap](ROADMAP.md)
 
@@ -55,7 +55,7 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 | --- | --- |
 | **Foundations** | Principles, colour, typography, spacing, radius, elevation, motion, iconography, accessibility, alarms and data visualisation, each with its tokens and the rules for using them, plus an [icon set](https://design-system.syncrobotic.me/icons) that gives each icon one meaning, with robot icons Lucide lacks drawn to match. Tokens also ship as [DTCG JSON](public/tokens) for design tools, in light, dark and high contrast. |
 | **91 components** | General UI on Radix primitives, a charts component on Recharts, building blocks for data tools (filters, data grid, text diff, image grid), and the robot shell: emergency stop, slide to release, dock and dynamic island. |
-| **71 blocks** | Whole screens in three groups: Application (shells, including an action-rail page, stats, cards, sign-in, settings, forms, dialogs, sheets, timelines, wizards), Charts, and Solutions for robot operations (fleet operations, data operations with a keyboard-first review queue, users and access, incidents, maintenance, firmware rollout, AI agents). |
+| **43 blocks, 28 patterns** | Blocks are whole screens and sections in two groups: Application (shells, including an action-rail page, stats, cards, sign-in, settings, forms, wizards) and Solutions for robot operations (fleet operations, data operations with a keyboard-first review queue, users and access, incidents, maintenance, firmware rollout, AI agents). Patterns are ready-made uses of one component (charts, timelines, dialogs, sheets) and live on that component's page. Both install the same way. |
 
 <details>
 <summary>Every component, by group</summary>
@@ -75,7 +75,7 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 </details>
 
 <details>
-<summary>Every block, by group and type</summary>
+<summary>Every block and pattern, by group and type</summary>
 
 | Group | Type | Blocks |
 | --- | --- | --- |
@@ -87,17 +87,18 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 | Application | Form | `record-form` |
 | Application | Empty and error states | `status-pages` |
 | Application | Landing | `marketing-hero` |
-| Application | Dialog | `dialog-confirm-destructive`, `dialog-form`, `dialog-share` |
-| Application | Sheet | `sheet-robot-detail`, `sheet-filters` |
-| Application | Timeline | `timeline-activity`, `timeline-audit` |
 | Application | Wizard | `wizard-commission`, `wizard-import` |
-| Charts | Line chart | `line-chart-telemetry`, `line-chart-limit`, `line-chart-compare` |
-| Charts | Area chart | `area-chart-battery`, `area-chart-fleet-states`, `area-chart-cumulative` |
-| Charts | Bar chart | `bar-chart-missions`, `bar-chart-ranked`, `bar-chart-stacked`, `bar-chart-variance` |
-| Charts | Sparkline | `sparkline-robot-list`, `sparkline-metric-tiles`, `sparkline-table` |
-| Charts | Status tracker | `status-tracker-uptime`, `status-tracker-runs`, `status-tracker-rollout` |
-| Charts | Radial chart | `radial-chart-battery`, `radial-chart-goal`, `radial-chart-capacity` |
-| Charts | Heatmap | `heatmap-week-hours`, `heatmap-zones` |
+| Patterns: Chart | Line chart | `line-chart-telemetry`, `line-chart-limit`, `line-chart-compare` |
+| Patterns: Chart | Area chart | `area-chart-battery`, `area-chart-fleet-states`, `area-chart-cumulative` |
+| Patterns: Chart | Bar chart | `bar-chart-missions`, `bar-chart-ranked`, `bar-chart-stacked`, `bar-chart-variance` |
+| Patterns: Chart | Sparkline | `sparkline-robot-list`, `sparkline-metric-tiles`, `sparkline-table` |
+| Patterns: Chart | Status tracker | `status-tracker-uptime`, `status-tracker-runs`, `status-tracker-rollout` |
+| Patterns: Chart | Radial chart | `radial-chart-battery`, `radial-chart-goal`, `radial-chart-capacity` |
+| Patterns: Chart | Heatmap | `heatmap-week-hours`, `heatmap-zones` |
+| Patterns: Alert dialog | Confirm a destructive action | `dialog-confirm-destructive` |
+| Patterns: Dialog | Dialog | `dialog-form`, `dialog-share` |
+| Patterns: Sheet | Sheet | `sheet-robot-detail`, `sheet-filters` |
+| Patterns: Timeline | Timeline | `timeline-activity`, `timeline-audit` |
 | Solutions | Fleet operations | `console-overview`, `map-workspace`, `list-detail`, `event-log`, `fleet-table`, `mission-schedule` |
 | Solutions | Data operations | `data-catalog`, `dataset-detail`, `governance-todo` |
 | Solutions | Users and access | `users-roles`, `users-invitations`, `users-audit-log` |

@@ -7,15 +7,13 @@ import { BlockThumb } from "@/site/block-thumb"
 import { AppearItem, Reveal } from "@/site/appear"
 
 const description =
-  "Ready-made screens and sections built from SYNCROBOTIC components and tokens, grouped like the components: Application blocks any tool is built from, Charts, and Solutions for robot operations. Install one and it lands as source."
+  "Ready-made screens and sections composed from SYNCROBOTIC components: Application blocks any tool is built from, and Solutions for robot operations. Variants of one component (charts, timelines, dialogs, sheets) are on that component's page, under Patterns. Install one and it lands as source."
 
 export const metadata: Metadata = pageMeta({ title: "Blocks", description, path: "/blocks" })
 
 const groupIntro: Record<(typeof blockGroups)[number], string> = {
-  Application:
-    "The screens and sections any tool is built from: shells, stats, cards, sign-in, settings, forms, dialogs, sheets, timelines, wizards and states.",
-  Charts: "Data shown as charts, ready for a dashboard: trends, comparisons, run histories and gauges.",
-  Solutions: "Whole working screens for one job in robot operations, built from Application blocks and Charts.",
+  Application: "The screens and sections any tool is built from: shells, stats, cards, sign-in, settings, forms, wizards and states.",
+  Solutions: "Whole working screens for one job in robot operations, built from components and Application blocks.",
 }
 
 export default function BlocksPage() {

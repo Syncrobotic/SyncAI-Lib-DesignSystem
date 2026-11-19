@@ -34,7 +34,7 @@ Reviewed each release, so the roadmap follows evidence rather than taste.
 
 ## Plan
 
-Ordered by what blocks adoption first. Each milestone is one or two release trains. The milestones are themes, not version numbers: the kit is at 0.13, and the open items below are what is left of each theme. Checked 2026-11-19 (0.16).
+Ordered by what blocks adoption first. Each milestone is one or two release trains. The milestones are themes, not version numbers: the kit is at 0.17, and the open items below are what is left of each theme. Checked 2026-11-19 (0.17).
 
 ### 0.4 · Alarms and feedback
 - [x] Alarms foundation, `alarm`, `toast`
@@ -62,6 +62,7 @@ Ordered by what blocks adoption first. Each milestone is one or two release trai
 ### 0.8 · Documentation
 - [ ] Props tables generated from the types; status labels (beta, stable) per item
 - [x] Site search (⌘K, Ctrl+K, /) over pages, rules, components, blocks and icons
+- [x] Information architecture: Blocks hold compositions; variants of one component are Patterns on its page
 - [ ] Docs per released version
 - [ ] Adoption scanner: a script that reports registry items and versions across company repos
 

@@ -69,7 +69,11 @@ export function blockMarkdown(name: string) {
       "",
       `> ${b.description}`,
       "",
-      `- Type: block${placement[name] ? ` in ${getBlockType(placement[name].type)?.group} › ${getBlockType(placement[name].type)?.title}` : ""} (a whole screen or section; install it, then replace the sample data)`,
+      (() => {
+        const t = placement[name] ? getBlockType(placement[name].type) : undefined
+        if (t?.home) return `- Type: pattern of \`${t.home}\` › ${t.title} (a ready-made use of one component; install it, then replace the sample data)`
+        return `- Type: block${t ? ` in ${t.group} › ${t.title}` : ""} (a whole screen or section; install it, then replace the sample data)`
+      })(),
       `- Version: ${b.meta?.version ?? "unversioned"}`,
       `- Install: \`${install(name)}\``,
       `- Preview: ${url(`/preview/${name}`)}`,
@@ -133,7 +137,12 @@ export function llmsTxt() {
     const inGroup = items.filter((i) => i.group === g)
     if (!inGroup.length) continue
     out.push("", `## Components: ${g}`, "")
-    for (const i of inGroup) out.push(`- [${i.title}](${url(`/docs/components/${i.name}.md`)}): ${i.description ?? ""}`)
+    for (const i of inGroup) {
+      out.push(`- [${i.title}](${url(`/docs/components/${i.name}.md`)}): ${i.description ?? ""}`)
+      // Its patterns: ready-made uses of this one component, each installable under its own name.
+      for (const t of blockTypes.filter((x) => x.home === i.name))
+        for (const b of blocks.filter((x) => placement[x.name]?.type === t.slug)) out.push(`  - Pattern, ${t.title}: [${b.title}](${url(`/blocks/${b.name}.md`)}): ${b.description}`)
+    }
   }
   out.push(
     "",

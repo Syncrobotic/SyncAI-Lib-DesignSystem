@@ -1,15 +1,18 @@
-// Blocks are grouped like components: a group, then a type, then the blocks (variants) of that type.
-// A type page shows every block of the type, the way a component page shows every example.
-// Application: the screens and sections any app is built from. Charts: data shown as charts. Solutions: whole
-// working screens for one job in robot operations, built from the other two.
+// Blocks are compositions: several components put together for one job, as a section of a page or a whole screen.
+// Application: the screens and sections any app is built from. Solutions: whole working screens for one job in robot
+// operations. A set of variants of ONE component (a line chart, a timeline, a dialog) is not a block: it is that
+// component's patterns, shown on the component's page (`home`), as ReUI shows charts on its Chart page. Those sets keep
+// their install names and previews; only where they are documented changes.
 
-export const blockGroups = ["Application", "Charts", "Solutions"] as const
-export type BlockGroup = (typeof blockGroups)[number]
+export const blockGroups = ["Application", "Solutions"] as const
+export type BlockGroup = (typeof blockGroups)[number] | "Patterns"
 
 export type BlockType = {
   slug: string
   title: string
   group: BlockGroup
+  /** For a set of one component's variants: the component whose page shows them, under "Patterns". */
+  home?: string
   /** One line for cards and the page header. */
   description: string
   use: string[]
@@ -100,9 +103,20 @@ export const blockTypes: BlockType[] = [
     rules: ["One headline, one supporting line, two actions at most."],
   },
   {
+    slug: "confirm-destructive",
+    title: "Confirm a destructive action",
+    group: "Patterns",
+    home: "alert-dialog",
+    description: "An action that cannot be undone, confirmed by typing the thing's name.",
+    use: ["Deleting a robot, a site, a dataset or a key."],
+    instead: ["A reversible action: do it and offer Undo in a toast."],
+    rules: ["The confirm button repeats the verb and stays disabled until the name matches.", "The destructive button is an outline in danger, never solid red."],
+  },
+  {
     slug: "dialog",
     title: "Dialog",
-    group: "Application",
+    group: "Patterns",
+    home: "dialog",
     description: "A short decision over the page: confirm a deletion, fill three fields, share with people.",
     use: ["Confirming something that cannot be undone.", "A form of three fields or fewer.", "Sharing one thing."],
     instead: ["A form longer than three fields: Form.", "Details you read while using the page: Sheet."],
@@ -115,7 +129,8 @@ export const blockTypes: BlockType[] = [
   {
     slug: "sheet",
     title: "Sheet",
-    group: "Application",
+    group: "Patterns",
+    home: "sheet",
     description: "A panel over the page, from the side or the bottom: one thing's details, or filters.",
     use: ["Details of a row or a map pin without leaving the list.", "Filters on a phone."],
     instead: ["A decision that must be answered: Dialog."],
@@ -128,7 +143,8 @@ export const blockTypes: BlockType[] = [
   {
     slug: "timeline",
     title: "Timeline",
-    group: "Application",
+    group: "Patterns",
+    home: "timeline",
     description: "Events in time order: what a robot did on its shift, who changed what.",
     use: ["A robot's or a mission's history.", "An audit log of changes."],
     instead: ["Many events to sort and filter by several fields: Solutions › Fleet operations › Event log."],
@@ -155,7 +171,8 @@ export const blockTypes: BlockType[] = [
   {
     slug: "line-chart",
     title: "Line chart",
-    group: "Charts",
+    group: "Patterns",
+    home: "chart",
     description: "Values over time: telemetry, a measurement against its limit, this period against the last.",
     use: ["Speed, temperature, latency, any reading over time.", "Comparing two periods or two sites."],
     instead: ["A count per category: Bar chart.", "A running total or a share of the fleet: Area chart."],
@@ -168,7 +185,8 @@ export const blockTypes: BlockType[] = [
   {
     slug: "area-chart",
     title: "Area chart",
-    group: "Charts",
+    group: "Patterns",
+    home: "chart",
     description: "A quantity over time with weight under it: battery, a running total, how the fleet splits.",
     use: ["One series where the amount matters, not just the shape.", "Parts of a whole over time, stacked."],
     instead: ["Several unrelated series: Line chart."],
@@ -177,7 +195,8 @@ export const blockTypes: BlockType[] = [
   {
     slug: "bar-chart",
     title: "Bar chart",
-    group: "Charts",
+    group: "Patterns",
+    home: "chart",
     description: "Counts per category: grouped, ranked, stacked, and above or below a plan.",
     use: ["Missions per day, stops per cause, hours per site."],
     instead: ["A trend over many points: Line chart."],
@@ -186,7 +205,8 @@ export const blockTypes: BlockType[] = [
   {
     slug: "sparkline",
     title: "Sparkline",
-    group: "Charts",
+    group: "Patterns",
+    home: "chart",
     description: "The shape of the last values next to a number: in lists, tiles and table cells.",
     use: ["A trend beside every row of a list or table.", "Headline numbers with their week."],
     instead: ["When exact values over time matter: a full chart with axes."],
@@ -195,7 +215,8 @@ export const blockTypes: BlockType[] = [
   {
     slug: "status-tracker",
     title: "Status tracker",
-    group: "Charts",
+    group: "Patterns",
+    home: "chart",
     description: "Histories of states as strips of cells: uptime per day, the last runs of a route, a rollout's stages.",
     use: ["Robot uptime.", "Patrol and job run histories.", "Firmware and map rollouts."],
     rules: [
@@ -207,7 +228,8 @@ export const blockTypes: BlockType[] = [
   {
     slug: "radial-chart",
     title: "Radial chart",
-    group: "Charts",
+    group: "Patterns",
+    home: "chart",
     description: "One share of a whole as a ring: battery, progress to a goal, capacity.",
     use: ["A level that reads at a glance.", "A few shares side by side."],
     instead: ["Comparing many values precisely: Bar chart."],
@@ -216,7 +238,8 @@ export const blockTypes: BlockType[] = [
   {
     slug: "heatmap",
     title: "Heatmap",
-    group: "Charts",
+    group: "Patterns",
+    home: "chart",
     description: "Two categories crossed, shaded by how much: incidents by time of week, presence by zone.",
     use: ["When things happen (day × hour).", "Where things happen (zone × time)."],
     rules: ["One hue, light to dark: darker always means more.", "A legend for the scale, and the extreme named in words or written in the cells."],
@@ -329,7 +352,7 @@ export const placement: Record<string, { type: string; fit: "screen" | "content"
   "record-form": { type: "form", fit: "screen" },
   "status-pages": { type: "states", fit: "content" },
   "marketing-hero": { type: "landing", fit: "content" },
-  "dialog-confirm-destructive": { type: "dialog", fit: "screen" },
+  "dialog-confirm-destructive": { type: "confirm-destructive", fit: "screen" },
   "dialog-form": { type: "dialog", fit: "screen" },
   "dialog-share": { type: "dialog", fit: "screen" },
   "sheet-robot-detail": { type: "sheet", fit: "screen" },
@@ -383,5 +406,16 @@ export const placement: Record<string, { type: string; fit: "screen" | "content"
   "heatmap-zones": { type: "heatmap", fit: "content" },
 }
 
-/** A block's page: its type page, scrolled to it. */
-export const blockHref = (name: string) => (placement[name] ? `/blocks/${placement[name].type}#${name}` : `/blocks/${name}`)
+/** Where a type is documented: its own page under Blocks, or the Patterns of the component it varies. */
+export const typeHref = (t: BlockType) => (t.home ? `/docs/components/${t.home}#${t.slug}` : `/blocks/${t.slug}`)
+
+/** A block's page: its type's page (a block page, or a component page for patterns), scrolled to it. */
+export const blockHref = (name: string) => {
+  const p = placement[name]
+  if (!p) return `/blocks/${name}`
+  const t = getBlockType(p.type)
+  return t?.home ? `/docs/components/${t.home}#${name}` : `/blocks/${p.type}#${name}`
+}
+
+/** The pattern sets a component page shows, in order. */
+export const patternsOf = (component: string) => blockTypes.filter((t) => t.home === component)

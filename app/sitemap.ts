@@ -18,7 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/icons/lucide", priority: 0.5 },
     ...items.map((i) => ({ path: `/docs/components/${i.name}`, priority: 0.6 })),
     { path: "/blocks", priority: 0.8 },
-    ...blockTypes.filter((t) => blocksOfType(t.slug).length > 0).map((t) => ({ path: `/blocks/${t.slug}`, priority: 0.6 })),
+    ...blockTypes.filter((t) => !t.home && blocksOfType(t.slug).length > 0).map((t) => ({ path: `/blocks/${t.slug}`, priority: 0.6 })),
   ]
   return pages.map((p) => ({ url: `${site.url}${p.path}`, changeFrequency: "weekly", priority: p.priority }))
 }
