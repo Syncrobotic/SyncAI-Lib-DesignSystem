@@ -37,7 +37,7 @@ export function CodeSheet({
           <Code aria-hidden="true" className="size-4" /> {label}
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-full max-w-none gap-0 p-0 sm:max-w-3xl">
+      <SheetContent side="right" className="max-w-none gap-0 p-0 sm:max-w-3xl">
         <div className="sticky top-0 z-10 flex items-center gap-3 border-b border-border bg-popover py-2 pr-2 pl-6">
           <div className="min-w-0 flex-1">
             <SheetTitle className="truncate font-mono text-sm font-medium">{title}</SheetTitle>

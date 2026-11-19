@@ -2,6 +2,16 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.14.1 · 2026-11-19
+
+### Changed
+- **Sheets float.** `sheet` sits 8 px from the screen's edges, the app shell's gutter, with every corner rounded, so a drawer or a bottom sheet reads as one more panel on the page instead of a slab glued to the glass. The bottom sheet clears the home indicator. A side sheet fills up to `max-w-sm` and auto margins keep it on its side: **drop `w-full` from your `SheetContent`** if you set it (re-install `sheet` and `syncrobotic-theme`).
+- **`top-bar-shell` header**, the same as the docs header: at the top its menu icon or logo starts on the content's edge, in line with the page; on scroll it gathers into a floating panel as wide as the content column.
+- The agent skill's design language, the README and the site's description now cover high contrast, chart limits and floating sheets.
+
+### Fixed
+- **Docs header on phones, done right:** 0.14.0 made the scrolled header a full-width bar, wider than the content column every other floating bar lines up with. Now at the top of the page the icons sit on the 16 px edge, in line with the headline; on scroll the bar gathers into a panel whose edges are the content column's 16 px, the icons moving in with it. Desktop is unchanged.
+
 ## 0.14.0 · 2026-11-19
 
 ### Added

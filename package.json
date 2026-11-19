@@ -1,6 +1,6 @@
 {
   "name": "@syncrobotic/design-system",
-  "version": "0.14.0",
+  "version": "0.14.1",
   "private": true,
   "description": "The SYNCROBOTIC design language: tokens, React components, and blocks for application screens, charts and robot operations, shipped as a shadcn/ui registry for Tailwind CSS v4.",
   "keywords": [
@@ -21,7 +21,12 @@
     "mcp",
     "llms-txt",
     "emergency-stop",
-    "dark-mode"
+    "dark-mode",
+    "high-contrast",
+    "accessibility",
+    "wcag",
+    "data-visualization",
+    "colorblind-safe"
   ],
   "homepage": "https://design-system.syncrobotic.me",
   "repository": {

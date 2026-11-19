@@ -1,4 +1,4 @@
-/* @syncrobotic/syncrobotic-theme v0.14.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
+/* @syncrobotic/syncrobotic-theme v0.14.1 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
 /*
  * SYNCROBOTIC theme (see CHANGELOG.md for its version history)
  * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
@@ -376,12 +376,13 @@
   @keyframes fade-in {
     from { opacity: 0; }
   }
-  @keyframes sheet-in-bottom { from { transform: translateY(100%); } }
-  @keyframes sheet-out-bottom { to { transform: translateY(100%); } }
-  @keyframes sheet-in-right { from { transform: translateX(100%); } }
-  @keyframes sheet-out-right { to { transform: translateX(100%); } }
-  @keyframes sheet-in-left { from { transform: translateX(-100%); } }
-  @keyframes sheet-out-left { to { transform: translateX(-100%); } }
+  /* Sheets float 8 px from the edge (plus the home indicator at the bottom), so they travel that much further to leave. */
+  @keyframes sheet-in-bottom { from { transform: translateY(calc(100% + 0.5rem + env(safe-area-inset-bottom))); } }
+  @keyframes sheet-out-bottom { to { transform: translateY(calc(100% + 0.5rem + env(safe-area-inset-bottom))); } }
+  @keyframes sheet-in-right { from { transform: translateX(calc(100% + 0.5rem)); } }
+  @keyframes sheet-out-right { to { transform: translateX(calc(100% + 0.5rem)); } }
+  @keyframes sheet-in-left { from { transform: translateX(calc(-100% - 0.5rem)); } }
+  @keyframes sheet-out-left { to { transform: translateX(calc(-100% - 0.5rem)); } }
   /* Accordion and Collapsible content: Radix measures the open height into one of these variables. */
   @keyframes expand {
     from { height: 0; opacity: 0; }
