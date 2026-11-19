@@ -58,7 +58,7 @@ Baselines live in `tests/__screenshots__/` and are written only by CI (Actions â
 1. Write it in `registry/syncrobotic/ui/` (general), `registry/syncrobotic/shell/` (robot shell) or `registry/syncrobotic/blocks/` (blocks). Import from `@/lib/utils` and `@/registry/syncrobotic/...`; the shadcn CLI rewrites these to the consumer's paths on install. Keep it free of any framework: navigation goes through a callback, and every string is a prop.
 2. Add an entry to `registry.json` with its `dependencies` (npm) and `registryDependencies` (other `@syncrobotic/...` items).
 3. Write one story per state in `stories/`. The docs site, the screenshots and axe all read them.
-4. Add it to `site/catalog.ts` with its usage rules, and to `site/examples.tsx`. A block goes into `site/block-types.ts` (its type and order) and `site/blocks.tsx` (its preview) instead.
+4. Add it to `site/catalog.ts` with its usage rules, and to `site/examples.tsx`. A block goes into `site/block-types.ts` (its type and order) and `site/blocks.tsx` (its preview) instead. Block or pattern: if it composes several components into a screen or section, it is a block (group Application or Solutions). If it is a ready-made use of one component (a chart, a dialog, a sheet, a timeline), it is a pattern: give its type `group: "Patterns"` and `home: "<component>"`, and it shows on that component's page under Patterns instead of on /blocks. Either way it installs under its own name.
 5. Interaction logic gets a behaviour test in `tests/unit/`.
 6. Add a line to `CHANGELOG.md` under Unreleased, and open a pull request once `npm run ci` passes.
 
@@ -71,7 +71,7 @@ After changing an item's files, bump its `meta.version` in `registry.json`, add 
 | `registry/syncrobotic/styles/` | The theme: every token |
 | `registry/syncrobotic/ui/` | General components (Radix UI based) |
 | `registry/syncrobotic/shell/` | Robot shell: emergency stop, slide to release, dock, island, status |
-| `registry/syncrobotic/blocks/` | Blocks: application screens, charts and robot-operations screens |
+| `registry/syncrobotic/blocks/` | Blocks (application and robot-operations screens) and patterns (ready-made uses of one component, such as charts) |
 | `registry/syncrobotic/hooks/`, `lib/` | Interaction hooks and `cn()` |
 | `stories/` | One story per state |
 | `tests/unit/` | Behaviour tests |

@@ -263,6 +263,7 @@
         }
       ],
       "meta": {
+        "status": "beta",
         "version": "0.16.0",
         "changelog": [
           {
@@ -951,7 +952,7 @@
           {
             "version": "0.15.0",
             "date": "2026-11-19",
-            "note": "The value and its unit are one reading, centred between \u2212 and + (\"20 %\"), instead of the value in the middle and the unit by the + button; the value is as wide as its digits. Angles sit on the number (\"-2.5\u00b0\"). A press anywhere in the middle puts the caret in the value."
+            "note": "The value and its unit are one reading, centred between − and + (\"20 %\"), instead of the value in the middle and the unit by the + button; the value is as wide as its digits. Angles sit on the number (\"-2.5°\"). A press anywhere in the middle puts the caret in the value."
           },
           {
             "version": "0.10.0",
@@ -1365,7 +1366,11 @@
       "type": "registry:ui",
       "title": "Badge",
       "description": "Status tones as foreground on subtle tint, plus outline; CountBadge for a count and ResultBadge for a pass, a fail or too few samples.",
-      "dependencies": ["class-variance-authority", "lucide-react", "radix-ui"],
+      "dependencies": [
+        "class-variance-authority",
+        "lucide-react",
+        "radix-ui"
+      ],
       "registryDependencies": [
         "@syncrobotic/cn"
       ],
@@ -1567,6 +1572,7 @@
         }
       ],
       "meta": {
+        "status": "beta",
         "version": "0.16.0",
         "changelog": [
           {
@@ -2691,6 +2697,7 @@
         }
       ],
       "meta": {
+        "status": "beta",
         "version": "0.16.0",
         "changelog": [
           {
@@ -2750,6 +2757,7 @@
         }
       ],
       "meta": {
+        "status": "beta",
         "version": "0.16.1",
         "changelog": [
           {
@@ -3476,7 +3484,7 @@
           {
             "version": "0.15.0",
             "date": "2026-11-19",
-            "note": "Scale buttons show keyboard focus, and long scales (0\u201310) fold into rows of six in a narrow container instead of overflowing."
+            "note": "Scale buttons show keyboard focus, and long scales (0–10) fold into rows of six in a narrow container instead of overflowing."
           },
           {
             "version": "0.9.0",
@@ -4564,7 +4572,7 @@
           {
             "version": "0.16.0",
             "date": "2026-11-19",
-            "note": "Design language: annotations on images (line style first, a halo under every stroke, class as a word not a colour) and the action rail (only the next step; \u2190 and Esc go back). Test and audit results: a pass is grey with a check, a failure a danger outline, not enough samples grey with a dashed circle."
+            "note": "Design language: annotations on images (line style first, a halo under every stroke, class as a word not a colour) and the action rail (only the next step; ← and Esc go back). Test and audit results: a pass is grey with a check, a failure a danger outline, not enough samples grey with a dashed circle."
           },
           {
             "version": "0.15.0",
