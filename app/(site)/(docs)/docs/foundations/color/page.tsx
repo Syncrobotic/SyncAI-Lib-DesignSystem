@@ -21,18 +21,19 @@ const tones = [
 const groups: { title: string; tokens: string[]; use: Record<string, string> }[] = [
   {
     title: "Surface and text",
-    tokens: ["background", "card", "popover", "secondary", "muted", "border", "input", "foreground", "muted-foreground", "disabled"],
+    tokens: ["background", "card", "popover", "secondary", "muted", "track", "border", "input", "foreground", "muted-foreground", "disabled"],
     use: {
       background: "Page only. Never fill a control with it: a field on a panel takes the panel's surface (card) and an input edge, or it reads as a hole",
       card: "Cards, list groups, app-shell panels, and the fields on them",
-      popover: "Menus, dialogs",
+      popover: "Menus, dialogs. In dark one step above the card, so an overlay is told apart by its fill, not only a shadow",
       secondary: "Secondary buttons",
-      muted: "Tracks, current page in navigation (hover is accent)",
+      muted: "Current page in navigation (hover is accent), disabled fields, table headers",
+      track: "The empty part of a slider, progress, meter or ring; skeleton bones, avatars without a picture, grips: 1.5:1 on the card and the page, so the shape reads",
       border: "Dividers, outlines",
       input: "The edge of anything you fill in or tick: fields, checkboxes, radios, a switch that is off. 3:1, since on a card the edge is all that shows the control",
       foreground: "Body text",
       "muted-foreground": "Secondary text",
-      disabled: "Disabled text on text-only and outlined controls (outline and destructive buttons keep their outline): 3:1 on the page, lighter than secondary text",
+      disabled: "Disabled text on text-only and outlined controls (outline and destructive buttons keep their outline): 3:1 on the page, a card and a muted track, lighter than secondary text",
     },
   },
   {
@@ -109,8 +110,8 @@ export default function ColorPage() {
         <div className="grid grid-cols-2 overflow-hidden rounded-md border border-border sm:grid-cols-6">
           {neutrals.map((t) => (
             <div key={t} className="flex flex-col">
-              <div className="h-24 dark:hidden" style={{ background: color(t).light }} />
-              <div className="hidden h-24 dark:block" style={{ background: color(t).dark }} />
+              <div className="h-24 ring-1 ring-border ring-inset dark:hidden" style={{ background: color(t).light }} />
+              <div className="hidden h-24 ring-1 ring-border ring-inset dark:block" style={{ background: color(t).dark }} />
               <div className="flex flex-1 flex-col gap-0.5 bg-card p-3">
                 <span className="font-mono text-xs">
                   {/* Breaks after a hyphen if it must: --muted-|foreground, never --muted-foregrou|nd. */}

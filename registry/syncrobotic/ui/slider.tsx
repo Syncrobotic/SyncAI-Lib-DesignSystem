@@ -1,4 +1,4 @@
-// @syncrobotic/slider v0.12.0 · update: npx shadcn add @syncrobotic/slider --overwrite
+// @syncrobotic/slider v0.17.3 · update: npx shadcn add @syncrobotic/slider --overwrite
 "use client"
 
 import * as React from "react"
@@ -31,7 +31,7 @@ export function Slider({
       className={cn("relative flex h-(--h-md) w-full touch-none select-none items-center data-disabled:cursor-not-allowed", className)}
       {...props}
     >
-      <SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-muted">
+      <SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-track">
         {/* Disabled: never faded. The filled part goes grey instead of the primary; the thumbs keep their edge. */}
         <SliderPrimitive.Range className="absolute h-full bg-primary in-data-disabled:bg-muted-foreground" />
       </SliderPrimitive.Track>

@@ -1,4 +1,4 @@
-// @syncrobotic/page-header v0.13.0 · update: npx shadcn add @syncrobotic/page-header --overwrite
+// @syncrobotic/page-header v0.17.3 · update: npx shadcn add @syncrobotic/page-header --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { StatusGlyph, type Tone, toStatus } from "@/registry/syncrobotic/shell/status-glyph"
@@ -34,7 +34,7 @@ export function PageHeader({
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex max-w-3xl min-w-0 flex-col gap-2">
           <h1 className="text-3xl font-bold tracking-tight text-balance">{title}</h1>
-          {description && <p className="text-base text-muted-foreground">{description}</p>}
+          {description && <p className="text-base text-pretty text-muted-foreground">{description}</p>}
         </div>
         {actions && <div className="flex shrink-0 flex-wrap gap-2">{actions}</div>}
       </div>

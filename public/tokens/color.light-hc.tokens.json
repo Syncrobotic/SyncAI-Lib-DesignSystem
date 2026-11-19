@@ -75,7 +75,11 @@
     },
     "disabled": {
       "$type": "color",
-      "$value": "#8a8a93"
+      "$value": "#74747c"
+    },
+    "track": {
+      "$type": "color",
+      "$value": "#b4b4bb"
     },
     "info": {
       "$type": "color",

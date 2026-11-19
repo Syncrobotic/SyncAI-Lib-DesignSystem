@@ -2,7 +2,7 @@ import * as React from "react"
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { afterEach, describe, expect, it } from "vitest"
 import { TimePicker } from "@/registry/syncrobotic/ui/time-picker"
-import { CommandDialog, CommandInput, CommandItem, CommandList } from "@/registry/syncrobotic/ui/command"
+import { Command, CommandDialog, CommandInput, CommandItem, CommandList } from "@/registry/syncrobotic/ui/command"
 
 afterEach(cleanup)
 
@@ -111,6 +111,27 @@ describe("CommandDialog focus", () => {
     fireEvent.keyDown(document.activeElement!, { key: "Escape" })
     await flush()
     expect(document.activeElement).toBe(elsewhere)
+  })
+
+  it("an inline list nobody has touched rings no row; the first key does, the mouse takes it away", () => {
+    render(
+      <Command>
+        <CommandInput placeholder="Filter" />
+        <CommandList>
+          <CommandItem>One</CommandItem>
+          <CommandItem>Two</CommandItem>
+        </CommandList>
+      </Command>,
+    )
+    const root = document.querySelector<HTMLElement>("[data-slot=command]")!
+    expect(root.dataset.nav).toBe("rest")
+    fireEvent.pointerDown(document.body)
+    fireEvent.focus(screen.getByPlaceholderText("Filter"))
+    expect(root.dataset.nav).toBe("rest")
+    fireEvent.keyDown(screen.getByPlaceholderText("Filter"), { key: "ArrowDown" })
+    expect(root.dataset.nav).toBe("key")
+    fireEvent.pointerMove(root, { pointerType: "mouse" })
+    expect(root.dataset.nav).toBe("pointer")
   })
 
   it("rings the highlighted row only in keyboard use", async () => {

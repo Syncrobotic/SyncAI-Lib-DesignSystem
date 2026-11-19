@@ -1,4 +1,4 @@
-// @syncrobotic/phone-input v0.17.2 · update: npx shadcn add @syncrobotic/phone-input --overwrite
+// @syncrobotic/phone-input v0.17.3 · update: npx shadcn add @syncrobotic/phone-input --overwrite
 "use client"
 
 import * as React from "react"
@@ -77,7 +77,7 @@ export function PhoneInput({
       className={cn(
         "flex h-(--h-md) w-full min-w-0 items-stretch rounded-sm bg-card ring-1 ring-input ring-inset transition-shadow duration-(--motion-fast) ease-(--ease-standard)",
         "has-[input:focus-visible]:outline-2 has-[input:focus-visible]:outline-offset-2 has-[input:focus-visible]:outline-ring aria-invalid:ring-2 aria-invalid:ring-danger",
-        disabled && "bg-muted text-muted-foreground",
+        disabled && "bg-muted text-muted-foreground ring-border",
         // Read-only is not disabled: it stays full contrast so it can be read and copied.
         readOnly && "bg-muted",
         className,
@@ -93,7 +93,9 @@ export function PhoneInput({
       >
         <SelectTrigger
           aria-label="Country"
-          className={cn("h-full w-auto shrink-0 gap-1 rounded-r-none bg-transparent px-3 ring-0", readOnly && "disabled:opacity-100")}
+          // Transparent in every state, disabled too: a fill of its own would paint over the field's inset outline, which
+          // must run unbroken round both segments.
+          className={cn("h-full w-auto shrink-0 gap-1 rounded-r-none bg-transparent px-3 ring-0 disabled:bg-transparent", readOnly && "disabled:opacity-100")}
         >
           <span className="flex items-center gap-2">
             <span aria-hidden="true">{flag(country)}</span>

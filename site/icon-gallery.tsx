@@ -126,7 +126,7 @@ export function IconGallery({ groups, total, placeholder, markKit = false }: { g
             {/* Tiles ruled like a sheet: each draws its right and bottom edge, the list its top and left. */}
             <ul className="grid grid-cols-[repeat(auto-fill,minmax(6.5rem,1fr))] border-t border-l border-border">
               {g.icons.map((i) => (
-                <li key={i.name} className="border-r border-b border-border" style={{ contentVisibility: "auto", containIntrinsicSize: "auto 6.5rem" }}>
+                <li key={i.name} className="border-r border-b border-border" style={{ contentVisibility: "auto", containIntrinsicSize: "auto 6.5rem auto 7rem" }}>
                   <button
                     type="button"
                     aria-pressed={picked?.name === i.name}

@@ -20,6 +20,7 @@ import { patternsOf } from "@/site/block-types"
 import { blocksOfType } from "@/site/blocks"
 import { PropsTable } from "@/site/props-table"
 import { Badge } from "@/registry/syncrobotic/ui/badge"
+import { Kbd } from "@/registry/syncrobotic/ui/kbd"
 
 /** `name` becomes a link to that component's page; other backticked words stay code. */
 function Linked({ text }: { text: string }) {
@@ -284,9 +285,9 @@ export default async function ComponentPage({ params }: Props) {
                       <td className="w-56 py-2 pr-4 pl-4 align-top">
                         <span className="flex flex-wrap gap-1">
                           {keys.split(" / ").map((k) => (
-                            <kbd key={k} className="rounded-xs bg-muted px-1 py-0.5 font-mono text-xs whitespace-nowrap">
+                            <Kbd key={k}>
                               {k}
-                            </kbd>
+                            </Kbd>
                           ))}
                         </span>
                       </td>

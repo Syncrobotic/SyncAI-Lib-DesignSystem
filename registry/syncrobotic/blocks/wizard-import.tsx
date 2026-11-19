@@ -1,4 +1,4 @@
-// @syncrobotic/wizard-import v0.9.0 · update: npx shadcn add @syncrobotic/wizard-import --overwrite
+// @syncrobotic/wizard-import v0.17.3 · update: npx shadcn add @syncrobotic/wizard-import --overwrite
 "use client"
 
 import * as React from "react"
@@ -91,28 +91,27 @@ export function WizardImport({ onImport }: { onImport?: (count: number) => void 
             <p className="text-sm">
               {good} rows are ready. <span className="text-warning">{bad} row has a problem and will be skipped.</span>
             </p>
-            <div className="overflow-hidden rounded-md ring-1 ring-border">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead className="text-right">X</TableHead>
-                    <TableHead className="text-right">Y</TableHead>
-                    <TableHead>Problem</TableHead>
+            {/* Table draws its own edge, scroll and fades; a second frame around it clipped or doubled them. */}
+            <Table className="bg-card">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead className="text-right">X</TableHead>
+                  <TableHead className="text-right">Y</TableHead>
+                  <TableHead>Problem</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {rows.map((r) => (
+                  <TableRow key={r.name}>
+                    <TableCell className="font-medium">{r.name}</TableCell>
+                    <TableCell className="text-right tabular-nums">{r.x}</TableCell>
+                    <TableCell className="text-right tabular-nums">{r.y || "—"}</TableCell>
+                    <TableCell className={r.issue ? "text-warning" : "text-muted-foreground"}>{r.issue || "None"}</TableCell>
                   </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {rows.map((r) => (
-                    <TableRow key={r.name}>
-                      <TableCell className="font-medium">{r.name}</TableCell>
-                      <TableCell className="text-right tabular-nums">{r.x}</TableCell>
-                      <TableCell className="text-right tabular-nums">{r.y || "—"}</TableCell>
-                      <TableCell className={r.issue ? "text-warning" : "text-muted-foreground"}>{r.issue || "None"}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                ))}
+              </TableBody>
+            </Table>
             <Button
               className="self-start"
               onClick={() => {

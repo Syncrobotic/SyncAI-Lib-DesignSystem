@@ -1,4 +1,4 @@
-// @syncrobotic/rollout-overview v0.17.2 · update: npx shadcn add @syncrobotic/rollout-overview --overwrite
+// @syncrobotic/rollout-overview v0.17.3 · update: npx shadcn add @syncrobotic/rollout-overview --overwrite
 "use client"
 
 import * as React from "react"
@@ -85,9 +85,10 @@ export function RolloutOverview() {
           <h2 id="gates-title" className="text-sm font-medium">
             Gates <span className="font-normal text-muted-foreground">· the rollout pauses itself if one fails</span>
           </h2>
+          {/* The cards share their rows (subgrid), so a title on two lines moves every value down with it, never one alone. */}
           <ul className="grid gap-3 sm:grid-cols-3">
             {gates.map((g) => (
-              <li key={g.name} className="flex flex-col gap-1 rounded-md bg-card p-4 ring-1 ring-border">
+              <li key={g.name} className="flex flex-col gap-1 rounded-md bg-card p-4 ring-1 ring-border sm:row-span-3 sm:grid sm:grid-rows-subgrid">
                 <span className="text-sm text-muted-foreground">{g.name}</span>
                 <span className="text-xl font-bold tabular-nums">{g.value}</span>
                 <span className="text-xs text-muted-foreground">
@@ -102,58 +103,57 @@ export function RolloutOverview() {
           <h2 id="stage-robots" className="text-sm font-medium">
             Robots in this stage
           </h2>
-          <div className="overflow-x-auto rounded-md bg-card ring-1 ring-border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Robot</TableHead>
-                  <TableHead className="hidden sm:table-cell">State</TableHead>
-                  <TableHead className="hidden w-40 sm:table-cell">Progress</TableHead>
-                  <TableHead className="hidden md:table-cell">Detail</TableHead>
-                  <TableHead>
-                    <span className="sr-only">Actions</span>
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {[...robots]
-                  .sort((a, b) => order[a.state] - order[b.state])
-                  .map((r) => (
-                    <TableRow key={r.robot}>
-                      <TableCell className="py-2 max-md:whitespace-normal">
-                        <span className="font-medium">{r.robot}</span>
-                        {/* On a phone the state, progress and detail stack under the robot instead of scrolling off the side. */}
-                        <span className="mt-1 flex flex-col gap-1 sm:hidden">
-                          <RobotState state={r.state} progress={r.progress} />
+          {/* Table draws its own edge, scroll and fades; a second frame around it clipped or doubled them. */}
+          <Table className="bg-card">
+            <TableHeader>
+              <TableRow>
+                <TableHead>Robot</TableHead>
+                <TableHead className="hidden sm:table-cell">State</TableHead>
+                <TableHead className="hidden w-40 sm:table-cell">Progress</TableHead>
+                <TableHead className="hidden lg:table-cell">Detail</TableHead>
+                <TableHead>
+                  <span className="sr-only">Actions</span>
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {[...robots]
+                .sort((a, b) => order[a.state] - order[b.state])
+                .map((r) => (
+                  <TableRow key={r.robot}>
+                    <TableCell className="py-2 max-lg:whitespace-normal">
+                      <span className="font-medium">{r.robot}</span>
+                      {/* On a phone the state, progress and detail stack under the robot instead of scrolling off the side. */}
+                      <span className="mt-1 flex flex-col gap-1 sm:hidden">
+                        <RobotState state={r.state} progress={r.progress} />
+                      </span>
+                      <span className="block text-xs text-muted-foreground lg:hidden">{r.note}</span>
+                    </TableCell>
+                    <TableCell className="hidden sm:table-cell">
+                      <RobotState state={r.state} />
+                    </TableCell>
+                    <TableCell className="hidden sm:table-cell">
+                      {r.state === "updating" ? (
+                        <span className="flex items-center gap-2">
+                          <Progress value={r.progress} aria-label={`${r.robot} update progress`} />
+                          <span className="text-xs text-muted-foreground tabular-nums">{r.progress} %</span>
                         </span>
-                        <span className="block text-xs text-muted-foreground md:hidden">{r.note}</span>
-                      </TableCell>
-                      <TableCell className="hidden sm:table-cell">
-                        <RobotState state={r.state} />
-                      </TableCell>
-                      <TableCell className="hidden sm:table-cell">
-                        {r.state === "updating" ? (
-                          <span className="flex items-center gap-2">
-                            <Progress value={r.progress} aria-label={`${r.robot} update progress`} />
-                            <span className="text-xs text-muted-foreground tabular-nums">{r.progress} %</span>
-                          </span>
-                        ) : (
-                          <span className="text-muted-foreground">—</span>
-                        )}
-                      </TableCell>
-                      <TableCell className="hidden text-muted-foreground md:table-cell">{r.note}</TableCell>
-                      <TableCell className="text-right">
-                        {r.state === "failed" && (
-                          <Button size="sm" variant="secondary" aria-label={`Retry ${r.robot}`}>
-                            Retry
-                          </Button>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-          </div>
+                      ) : (
+                        <span className="text-muted-foreground">—</span>
+                      )}
+                    </TableCell>
+                    <TableCell className="hidden whitespace-normal text-muted-foreground lg:table-cell">{r.note}</TableCell>
+                    <TableCell className="text-right">
+                      {r.state === "failed" && (
+                        <Button size="sm" variant="secondary" aria-label={`Retry ${r.robot}`}>
+                          Retry
+                        </Button>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
         </section>
       </div>
     </AppShell>

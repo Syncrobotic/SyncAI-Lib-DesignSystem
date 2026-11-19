@@ -17,8 +17,15 @@ function Demo({ children }: { children: (go: Navigate) => React.ReactNode }) {
   return (
     <div className="flex w-full max-w-xl flex-col gap-3">
       {children((url, mode) => setLast(`${mode} ${url}`))}
-      <p className="font-mono text-xs text-muted-foreground" aria-live="polite">
-        {last || "Change a filter: the URL it leads to appears here."}
+      {/* A caption in the page's own type; only the URL itself is code. */}
+      <p className="text-sm text-muted-foreground" aria-live="polite">
+        {last ? (
+          <>
+            Leads to <code className="font-mono text-xs break-all text-foreground">{last}</code>
+          </>
+        ) : (
+          "Change a filter: the URL it leads to appears here."
+        )}
       </p>
     </div>
   )

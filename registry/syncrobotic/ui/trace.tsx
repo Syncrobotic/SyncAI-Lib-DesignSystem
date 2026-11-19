@@ -1,4 +1,4 @@
-// @syncrobotic/trace v0.17.2 · update: npx shadcn add @syncrobotic/trace --overwrite
+// @syncrobotic/trace v0.17.3 · update: npx shadcn add @syncrobotic/trace --overwrite
 "use client"
 
 import * as React from "react"
@@ -149,7 +149,7 @@ export function TraceItem({
         {description && <span className={cn("text-xs", status === "error" ? "text-danger" : "text-muted-foreground")}>{description}</span>}
       </span>
       {bar && (
-        <span aria-hidden="true" className="relative mt-2 hidden h-1.5 w-1/3 shrink-0 overflow-hidden rounded-full bg-muted sm:block">
+        <span aria-hidden="true" className="relative mt-2 hidden h-1.5 w-1/3 shrink-0 overflow-hidden rounded-full bg-track sm:block">
           <span
             className={cn("absolute inset-y-0 rounded-full", status === "error" ? "bg-danger" : status === "warning" ? "bg-warning" : "bg-foreground/60")}
             style={{ left: `${(start! / total!) * 100}%`, width: `${Math.max((duration! / total!) * 100, 1)}%` }}

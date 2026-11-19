@@ -1,4 +1,4 @@
-// @syncrobotic/questionnaire v0.17.2 · update: npx shadcn add @syncrobotic/questionnaire --overwrite
+// @syncrobotic/questionnaire v0.17.3 · update: npx shadcn add @syncrobotic/questionnaire --overwrite
 "use client"
 
 import * as React from "react"
@@ -76,7 +76,6 @@ export function Questionnaire({
     if (m[0]) document.getElementById(`q-${m[0].id}`)?.querySelector<HTMLElement>("button, input, textarea")?.focus()
     return m.length === 0
   }
-  const total = questions.length + (review ? 1 : 0)
   // Changing page: the current question leaves, then the next arrives and takes focus, so keyboard and screen reader
   // users land on it. If animations never run, the switch still happens after the safety delay.
   const [next, setNext] = React.useState<number | null>(null)
@@ -127,7 +126,8 @@ export function Questionnaire({
 
   const onReview = review && index === questions.length
   const q = questions[index]
-  const pct = ((index + 1) / total) * 100
+  // One formula with the counter beside it: question 1 of 4 is 25 %, whatever comes after the questions; the review is 100 %.
+  const pct = onReview ? 100 : ((index + 1) / questions.length) * 100
   return (
     <form
       data-slot="questionnaire"
@@ -156,7 +156,7 @@ export function Questionnaire({
           aria-valuemin={0}
           aria-valuemax={100}
           aria-valuenow={Math.round(pct)}
-          className="h-1 overflow-hidden rounded-full bg-muted"
+          className="h-1 overflow-hidden rounded-full bg-track"
         >
           <div className="h-full rounded-full bg-foreground transition-[width] duration-(--motion-base) ease-(--ease-standard)" style={{ width: `${pct}%` }} />
         </div>

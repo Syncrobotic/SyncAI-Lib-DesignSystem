@@ -91,7 +91,7 @@ export default function AccessibilityPage() {
             { h: "--h-stop", n: "56 · emergency stop (64 in glove density; never smaller)" },
           ].map((t) => (
             <div key={t.h} className="flex flex-col items-center gap-2">
-              <div className="rounded-sm bg-secondary ring-1 ring-border" style={{ height: `var(${t.h})`, width: `var(${t.h})` }} />
+              <div className="rounded-sm bg-track" style={{ height: `var(${t.h})`, width: `var(${t.h})` }} />
               <span className="text-xs text-muted-foreground">{t.n}</span>
             </div>
           ))}

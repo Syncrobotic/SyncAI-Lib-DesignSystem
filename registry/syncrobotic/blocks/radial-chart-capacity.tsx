@@ -1,4 +1,4 @@
-// @syncrobotic/radial-chart-capacity v0.17.2 · update: npx shadcn add @syncrobotic/radial-chart-capacity --overwrite
+// @syncrobotic/radial-chart-capacity v0.17.3 · update: npx shadcn add @syncrobotic/radial-chart-capacity --overwrite
 "use client"
 
 import * as React from "react"
@@ -26,7 +26,7 @@ export function RadialChartCapacity() {
             const c = 2 * Math.PI * r
             return (
               <g key={g.label}>
-                <circle cx={size / 2} cy={size / 2} r={r} fill="none" strokeWidth={stroke} className="stroke-muted in-data-[contrast=more]:stroke-input" />
+                <circle cx={size / 2} cy={size / 2} r={r} fill="none" strokeWidth={stroke} className="stroke-track in-data-[contrast=more]:stroke-input" />
                 <circle
                   cx={size / 2}
                   cy={size / 2}

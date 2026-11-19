@@ -1,4 +1,4 @@
-/* @syncrobotic/syncrobotic-theme v0.17.2 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
+/* @syncrobotic/syncrobotic-theme v0.17.3 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
 /*
  * SYNCROBOTIC theme (see CHANGELOG.md for its version history)
  * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
@@ -48,7 +48,11 @@
      (WCAG 1.4.11), because on a card the edge is all that shows where the control is. Dividers stay --border. */
   --input: #80808a;
   --ring: var(--foreground); /* focus is not a status: the ink colour, never the in-progress blue */
-  --disabled: #84848c; /* disabled text: 3:1 on the page and cards, still clearly lighter than secondary text */
+  --disabled: #7a7a82; /* disabled text: 3:1 on the page, cards and a muted track, still clearly lighter than secondary text */
+  /* Tracks and quiet shapes: the unfilled part of a slider, progress, meter or ring, a skeleton bone, an avatar with no
+     picture, a resize grip, the blocks of an illustration. 1.5:1 on the card and the page, so the shape reads as a shape;
+     where the shape alone carries meaning (a bar at 0 %, a selected row) it also gets an edge at 3:1 (--input, --foreground). */
+  --track: #c4c4ca;
 
   --info: #2952b8;
   --info-subtle: #e4e9f4;
@@ -133,7 +137,9 @@
   --secondary-foreground: var(--foreground);
   --accent-foreground: var(--foreground);
   --card: #16161a;
-  --popover: #16161a;
+  /* One step above the card: in the dark a shadow barely shows, so a menu or dialog over a card is told apart by its fill
+     as well as its edge. */
+  --popover: #1c1c21;
   --primary: #fafafa;
   --primary-foreground: #09090b;
   --secondary: #25252b;
@@ -144,7 +150,8 @@
   --border: #2c2c32;
   --input: #72727a;
   --ring: var(--foreground);
-  --disabled: #6e6e76;
+  --disabled: #7c7c84;
+  --track: #3f3f46;
 
   --info: #7da4e6;
   --info-subtle: #1a2233;
@@ -206,7 +213,8 @@
   --border: #767680;
   --input: #5c5c66;
   --ring: var(--foreground);
-  --disabled: #8a8a93;
+  --disabled: #74747c;
+  --track: #b4b4bb;
 
   --info: #1d3d8f;
   --success: #0a4a32;
@@ -248,7 +256,8 @@
   --border: #8a8a94;
   --input: #a1a1aa;
   --ring: var(--foreground);
-  --disabled: #71717a;
+  --disabled: #808088;
+  --track: #4a4a52;
 
   --info: #a9c4f2;
   --info-subtle: #1a2233;
@@ -295,6 +304,7 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-disabled: var(--disabled);
+  --color-track: var(--track);
 
   /* Usage: <Badge className="bg-info-subtle text-info"> */
   --color-info: var(--info);
@@ -316,6 +326,9 @@
 
   --shadow-float: var(--shadow-float);
   --shadow-overlay: var(--shadow-overlay);
+  /* A selected table row: a 2 px bar in the ink colour on its first cell (3:1 and more in every mode), because the row's
+     fill alone (--accent) is a quiet step and does not say "selected" on its own. */
+  --shadow-selected: inset 0.125rem 0 0 var(--foreground);
 
   /* Usage: stroke-chart-1, bg-chart-2. Series identity only. */
   --color-chart-1: var(--chart-1);
