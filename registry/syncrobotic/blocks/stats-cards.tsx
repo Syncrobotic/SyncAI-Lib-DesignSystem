@@ -1,4 +1,4 @@
-// @syncrobotic/stats-cards v0.8.0 · update: npx shadcn add @syncrobotic/stats-cards --overwrite
+// @syncrobotic/stats-cards v0.17.1 · update: npx shadcn add @syncrobotic/stats-cards --overwrite
 import * as React from "react"
 import { ArrowDownRight, ArrowUpRight } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -42,13 +42,15 @@ const trendText = { good: "text-foreground", bad: "text-danger", flat: "text-mut
 /** Four headline numbers for a dashboard. Value first, then the change, then context. */
 export function StatsCards({ stats = sampleStats, className }: { stats?: Stat[]; className?: string }) {
   return (
-    <div className={cn("grid gap-4 sm:grid-cols-2 xl:grid-cols-4", className)}>
+    // Two across from the smallest phone, so four numbers take half a screen, not a whole one: there the change sits under the
+    // label in every card (so the values line up) and the sparkline joins from 640 px.
+    <div className={cn("grid grid-cols-2 gap-4 xl:grid-cols-4", className)}>
       {stats.map((s) => {
         const trend = s.trend ?? "flat"
         const Arrow = s.delta?.startsWith("-") || s.delta?.startsWith("−") ? ArrowDownRight : ArrowUpRight
         return (
           <Card key={s.label} className="gap-3">
-            <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center justify-between gap-2 max-sm:flex-col max-sm:items-start max-sm:gap-0">
               <span className="text-sm text-muted-foreground">{s.label}</span>
               {s.delta && (
                 <span className={cn("inline-flex items-center gap-2 text-sm font-medium", trendText[trend])}>
@@ -63,7 +65,7 @@ export function StatsCards({ stats = sampleStats, className }: { stats?: Stat[];
                 <span className="text-3xl font-bold">{s.value}</span>
                 {s.unit && <span className="text-sm text-muted-foreground">{s.unit}</span>}
               </span>
-              {s.series && <Sparkline series={s.series} className="text-muted-foreground" />}
+              {s.series && <Sparkline series={s.series} className="text-muted-foreground max-sm:hidden" />}
             </div>
             {s.caption && <span className="text-xs text-muted-foreground">{s.caption}</span>}
           </Card>

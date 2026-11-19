@@ -1,4 +1,4 @@
-// @syncrobotic/chart v0.7.0 · update: npx shadcn add @syncrobotic/chart --overwrite
+// @syncrobotic/chart v0.17.1 · update: npx shadcn add @syncrobotic/chart --overwrite
 "use client"
 
 import * as React from "react"
@@ -44,7 +44,7 @@ export function ChartContainer({
           "h-64 w-full animate-fade-in text-xs",
           // Recessive frame: muted axis text, hairline grid, no axis lines; the data carries the contrast.
           "[&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line]:stroke-border",
-          "[&_.recharts-reference-line_line]:stroke-muted-foreground [&_.recharts-surface]:outline-none [&_.recharts-wrapper]:outline-none",
+          "[&_.recharts-reference-line_line]:stroke-muted-foreground",
           "[&_.recharts-tooltip-cursor]:stroke-muted-foreground [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-accent",
           className,
         )}

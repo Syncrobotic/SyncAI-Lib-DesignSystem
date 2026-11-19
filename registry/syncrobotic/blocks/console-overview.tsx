@@ -1,4 +1,4 @@
-// @syncrobotic/console-overview v0.8.0 · update: npx shadcn add @syncrobotic/console-overview --overwrite
+// @syncrobotic/console-overview v0.17.1 · update: npx shadcn add @syncrobotic/console-overview --overwrite
 "use client"
 
 import * as React from "react"
@@ -15,7 +15,7 @@ const sampleAlarms: AlarmData[] = [
   { id: "a3", priority: "critical", title: "Emergency stop · Warehouse", source: "Patrol dog 4D21", time: "14:02", active: true, acknowledged: false },
 ]
 
-/** Operations console: the fleet's numbers, the robots, and what needs a person, on one screen. */
+/** Operations console: what needs a person first, then the fleet's numbers and the robots, on one screen. */
 export function ConsoleOverview() {
   const [alarms, setAlarms] = React.useState(sampleAlarms)
   return (
@@ -36,13 +36,15 @@ export function ConsoleOverview() {
       }
     >
       <div className="flex flex-col gap-6">
-        <StatsCards />
-        <div className="grid gap-6 2xl:grid-cols-[1fr_22rem]">
-          <section aria-label="Robots" className="min-w-0">
-            <FleetTable />
-          </section>
+        {/* What needs someone comes first, above the numbers: on a phone it is the first thing on screen, not three screens down.
+            With nothing active the list leaves, and the numbers move up. */}
+        {alarms.some((a) => a.active) && (
           <AlarmList alarms={alarms} onAcknowledge={(id) => setAlarms((l) => l.map((a) => (a.id === id ? { ...a, acknowledged: true } : a)))} />
-        </div>
+        )}
+        <StatsCards />
+        <section aria-label="Robots" className="min-w-0">
+          <FleetTable />
+        </section>
       </div>
     </AppShell>
   )

@@ -67,7 +67,7 @@
     },
     "input": {
       "$type": "color",
-      "$value": "#dcdce1"
+      "$value": "#80808a"
     },
     "ring": {
       "$type": "color",

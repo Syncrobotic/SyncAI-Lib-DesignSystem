@@ -1,4 +1,4 @@
-// @syncrobotic/icon-tile v0.10.0 · update: npx shadcn add @syncrobotic/icon-tile --overwrite
+// @syncrobotic/icon-tile v0.17.1 · update: npx shadcn add @syncrobotic/icon-tile --overwrite
 import * as React from "react"
 import { Slot } from "radix-ui"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -28,15 +28,17 @@ export const iconTileVariants = cva("relative inline-flex shrink-0 items-center 
   },
   compoundVariants: [
     { variant: "soft", tone: "neutral", class: "bg-neutral-subtle text-neutral" },
-    { variant: "soft", tone: "info", class: "bg-info-subtle text-info" },
-    // success stays calm (neutral) on a tile that stays on screen; green is for confirmations that come and go.
+    // info and success stay calm (neutral) on a tile that stays on screen: blue is for a process someone is waiting on (a
+    // progress bar, a running stage), green for confirmations that come and go. Neither is a state a tile can hold.
+    { variant: "soft", tone: "info", class: "bg-neutral-subtle text-neutral" },
     { variant: "soft", tone: "success", class: "bg-neutral-subtle text-neutral" },
     { variant: "soft", tone: "warning", class: "bg-warning-subtle text-warning" },
     { variant: "soft", tone: "danger", class: "bg-danger-subtle text-danger" },
     { variant: "solid", tone: "neutral", class: "bg-primary text-primary-foreground" },
-    { variant: "solid", tone: "info", class: "bg-info text-white" },
+    { variant: "solid", tone: "info", class: "bg-primary text-primary-foreground" },
     { variant: "solid", tone: "success", class: "bg-primary text-primary-foreground" },
-    { variant: "solid", tone: "warning", class: "bg-warning text-black" },
+    // The ink flips with the mode (white on light amber-brown, near-black on dark yellow): 4.5:1 or more in every theme.
+    { variant: "solid", tone: "warning", class: "bg-warning text-primary-foreground" },
     // Solid red is the emergency stop's alone, so a solid danger tile stays on its tint with a danger edge.
     { variant: "solid", tone: "danger", class: "bg-danger-subtle text-danger ring-1 ring-danger ring-inset" },
   ],

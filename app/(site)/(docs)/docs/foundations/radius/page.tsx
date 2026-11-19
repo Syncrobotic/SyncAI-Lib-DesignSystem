@@ -76,7 +76,7 @@ export default function RadiusPage() {
           <ul className="flex flex-col gap-2 rounded-md border border-border bg-card p-4 text-sm">
             {round.map((r) => (
               <li key={r} className="flex items-center gap-3">
-                <span aria-hidden className="size-2 shrink-0 rounded-full bg-success" />
+                <span aria-hidden className="size-2 shrink-0 rounded-full bg-foreground" />
                 {r}
               </li>
             ))}

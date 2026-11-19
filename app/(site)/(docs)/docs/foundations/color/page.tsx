@@ -29,7 +29,7 @@ const groups: { title: string; tokens: string[]; use: Record<string, string> }[]
       secondary: "Secondary buttons",
       muted: "Tracks, current page in navigation (hover is accent)",
       border: "Dividers, outlines",
-      input: "Field outlines",
+      input: "The edge of anything you fill in or tick: fields, checkboxes, radios, a switch that is off. 3:1, since on a card the edge is all that shows the control",
       foreground: "Body text",
       "muted-foreground": "Secondary text",
       disabled: "Disabled text on text-only controls: 3:1 on the page, lighter than secondary text",
