@@ -50,6 +50,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return pageMeta({ title, description: item.description ?? `${item.title} for the SYNCROBOTIC design system.`, path: `/docs/components/${item.name}` })
 }
 
+/** Whether two lines say the same thing: one contains the other, or they share their first six words. */
+function repeats(a: string, b: string) {
+  const norm = (t: string) => t.toLowerCase().replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").trim()
+  const x = norm(a)
+  const y = norm(b)
+  if (!x || !y) return false
+  return x.includes(y) || y.includes(x) || x.split(" ").slice(0, 6).join(" ") === y.split(" ").slice(0, 6).join(" ")
+}
+
 export default async function ComponentPage({ params }: Props) {
   const item = getItem((await params).name)
   if (!item) notFound()
@@ -72,9 +81,9 @@ export default async function ComponentPage({ params }: Props) {
 
   return (
     <article>
-      <div className="flex flex-wrap items-start justify-between gap-x-6">
-        <PageTitle title={item.title} lead={item.description} />
-        <div className="flex flex-wrap items-center gap-2 pb-6 sm:pt-6">
+      {/* The same head on every component page: title, one line, then the version and the tools, always below. */}
+      <PageTitle title={item.title} lead={item.description} />
+      <div className="-mt-4 flex flex-wrap items-center gap-2 pb-6">
           {meta && (
             <a href="#changelog" className="inline-flex h-(--h-sm) items-center font-mono text-sm text-muted-foreground tabular-nums underline-offset-4 hover:underline">
               v{meta.version}
@@ -98,7 +107,6 @@ export default async function ComponentPage({ params }: Props) {
               href={`${site.repo}/blob/main/${item.files[0].path}`}
             />
           )}
-        </div>
       </div>
 
       <CodeBlock code={install} lang="bash" title="Install" />
@@ -109,8 +117,8 @@ export default async function ComponentPage({ params }: Props) {
           <h2 id="overview" className="sr-only">
             Overview
           </h2>
-          {/* Skip the line when it only repeats the description above. */}
-          {overview.what.trim() !== (item.description ?? "").trim() && (
+          {/* Skip the line when it only repeats the description above, word for word or nearly. */}
+          {!repeats(overview.what, item.description ?? "") && (
             <p className="max-w-3xl text-base">
               <Linked text={overview.what} />
             </p>
@@ -163,7 +171,7 @@ export default async function ComponentPage({ params }: Props) {
                     wide={item.wide}
                     preview={<Stage file={item.examples!.file} name={n} className="w-full" wide={item.wide} />}
                     install={installBlock}
-                    code={<CodeBlock code={storySource(item.examples!.file, n)} title={`${storyTitle(n)}.tsx`} />}
+                    code={<CodeBlock code={storySource(item.examples!.file, n)} title={`${storyTitle(n).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}.tsx`} />}
                   />
                 </AppearItem>
               </Reveal>

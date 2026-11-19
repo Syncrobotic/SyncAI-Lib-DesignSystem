@@ -74,7 +74,41 @@ function clean(code: string) {
 }
 
 export function storySource(file: string, name: string) {
-  return clean(inlineHelper(file, rawStorySource(file, name)))
+  return withImports(file, clean(inlineHelper(file, rawStorySource(file, name))))
+}
+
+/** Where a registry file lands once installed with the shadcn CLI, so the imports in a copied example resolve. */
+const installed = (from: string) =>
+  from
+    .replace("@/registry/syncrobotic/ui/", "@/components/ui/")
+    .replace("@/registry/syncrobotic/shell/", "@/components/")
+    .replace("@/registry/syncrobotic/blocks/", "@/components/")
+    .replace("@/registry/syncrobotic/hooks/", "@/hooks/")
+    .replace("@/registry/syncrobotic/lib/", "@/lib/")
+
+/**
+ * The example as a file you can paste and run: the imports it uses, from where the CLI installs them, and a bare JSX
+ * snippet wrapped in a component. Story-only imports (Storybook's test helpers) are left out.
+ */
+function withImports(file: string, code: string) {
+  if (!code) return code
+  const src = readSource(`stories/${file}.stories.tsx`)
+  const body = /^(?:export )?function /.test(code) ? code : `export function Example() {\n  return (\n${code.replace(/^/gm, "    ")}\n  )\n}`
+  const lines: string[] = []
+  if (/\bReact\./.test(body)) lines.push('import * as React from "react"')
+  for (const m of src.matchAll(/^import\s+(?:type\s+)?\{([^}]*)\}\s+from\s+"([^"]+)"/gm)) {
+    if (m[2].startsWith("@storybook")) continue
+    const used = m[1]
+      .split(",")
+      .map((n) => n.trim())
+      .filter(Boolean)
+      .filter((n) => {
+        const local = n.replace(/^type\s+/, "").split(/\s+as\s+/).pop()!
+        return new RegExp(`\\b${local}\\b`).test(body)
+      })
+    if (used.length) lines.push(`import { ${used.join(", ")} } from "${installed(m[2])}"`)
+  }
+  return lines.length ? `${lines.join("\n")}\n\n${body}` : body
 }
 
 /**
