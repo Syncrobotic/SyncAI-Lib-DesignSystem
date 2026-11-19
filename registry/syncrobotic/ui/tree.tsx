@@ -393,9 +393,10 @@ function SelectTree({
           aria-expanded={branch ? isOpen : undefined}
           aria-selected={isSelected}
           aria-disabled={n.disabled || undefined}
+          // The name is what the row shows, label then meta ("dock-03_0412.jpg 2.4 MB"), so speech matches the visible words.
           aria-label={n.textValue}
-          aria-labelledby={n.textValue ? undefined : labelId}
-          aria-describedby={metaId}
+          aria-labelledby={n.textValue ? undefined : metaId ? `${labelId} ${metaId}` : labelId}
+          aria-describedby={n.textValue ? metaId : undefined}
           tabIndex={n.id === tabStop ? 0 : -1}
           onFocus={(e) => {
             if (e.target === e.currentTarget) setFocused(n.id)
@@ -430,6 +431,8 @@ function SelectTree({
               <span aria-hidden="true" className="w-(--h-sm) shrink-0" />
             )}
             <Label node={n} id={labelId} />
+            {/* A space between the two, so text read from the row is "name meta", not "namemeta". */}
+            {metaId && " "}
             <Meta node={n} id={metaId} />
           </div>
           {branch && (
