@@ -2838,8 +2838,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.13.1",
         "changelog": [
+          {
+            "version": "0.13.1",
+            "date": "2026-11-19",
+            "note": "The drag overlay renders on <body>, so it stays under the pointer and drops back to the right place inside a transformed container (an entrance animation, a sheet). Without `renderOverlay` the item itself follows the pointer, lifted, instead of fading and staying put."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
