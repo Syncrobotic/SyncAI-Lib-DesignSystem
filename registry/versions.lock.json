@@ -88,8 +88,8 @@
     "hash": "cf156ffaf1b860c2"
   },
   "number-field": {
-    "version": "0.10.0",
-    "hash": "527929d9a1cadd45"
+    "version": "0.15.0",
+    "hash": "a2bc9bf280876f5c"
   },
   "textarea": {
     "version": "0.10.0",
@@ -628,8 +628,8 @@
     "hash": "0fc48e992b5d0e8c"
   },
   "rollout-plan": {
-    "version": "0.9.0",
-    "hash": "22a1505315265566"
+    "version": "0.15.0",
+    "hash": "be0a4b33d1f444bc"
   },
   "agent-runs": {
     "version": "0.9.0",

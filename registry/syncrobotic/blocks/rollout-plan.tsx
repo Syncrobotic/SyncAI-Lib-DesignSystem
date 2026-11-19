@@ -1,4 +1,4 @@
-// @syncrobotic/rollout-plan v0.9.0 · update: npx shadcn add @syncrobotic/rollout-plan --overwrite
+// @syncrobotic/rollout-plan v0.15.0 · update: npx shadcn add @syncrobotic/rollout-plan --overwrite
 "use client"
 
 import * as React from "react"
@@ -71,9 +71,9 @@ export function RolloutPlan() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Stage</TableHead>
-                  <TableHead className="w-40">Share of fleet (%)</TableHead>
+                  <TableHead className="w-40">Share of fleet</TableHead>
                   <TableHead className="text-right">Robots</TableHead>
-                  <TableHead className="w-40">Watch before next (h)</TableHead>
+                  <TableHead className="w-40">Watch before next</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -82,13 +82,15 @@ export function RolloutPlan() {
                     <TableCell className="font-medium">{s.name}</TableCell>
                     <TableCell>
                       {i === stages.length - 1 ? (
-                        <span className="tabular-nums">100</span>
+                        <span className="flex justify-center tabular-nums">100 %</span>
                       ) : (
                         <NumberField
                           aria-label={`${s.name} share of fleet, percent`}
                           value={s.share}
                           min={1}
                           max={99}
+                          unit="%"
+                          className="w-full"
                           onValueChange={(v) => setStages((l) => l.map((x, j) => (j === i ? { ...x, share: v ?? x.share } : x)))}
                         />
                       )}
@@ -96,13 +98,15 @@ export function RolloutPlan() {
                     <TableCell className="text-right tabular-nums">{robots(s)}</TableCell>
                     <TableCell>
                       {i === stages.length - 1 ? (
-                        <span className="text-muted-foreground">—</span>
+                        <span className="flex justify-center text-muted-foreground">—</span>
                       ) : (
                         <NumberField
                           aria-label={`${s.name} watch time, hours`}
                           value={s.wait}
                           min={1}
                           max={72}
+                          unit="h"
+                          className="w-full"
                           onValueChange={(v) => setStages((l) => l.map((x, j) => (j === i ? { ...x, wait: v ?? x.wait } : x)))}
                         />
                       )}

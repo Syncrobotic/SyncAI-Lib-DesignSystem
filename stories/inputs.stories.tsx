@@ -723,7 +723,7 @@ export const NumberFieldNegative: S = {
 export const NumberFieldDisabled: S = {
   render: () => (
     <Field label="Max speed" hint="Can’t change during a mission">
-      <NumberField defaultValue={1.5} unit="m/s" disabled className="w-48" />
+      <NumberField defaultValue={1.5} step={0.1} unit="m/s" disabled className="w-48" />
     </Field>
   ),
 }

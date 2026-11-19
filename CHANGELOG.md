@@ -2,6 +2,14 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Changed
+- **`number-field` reads as one value:** the number and its unit sit together, centred between − and + ("20 %"), instead of the number in the middle and the unit pushed against the +, which drifted 140 px apart in a wide field. Angles sit on the number ("-2.5°"). `rollout-plan` writes its units in the fields, not the column headings.
+
+### Fixed
+- The disabled NumberField example showed 1.5 m/s as "2" (no `step`, so it rounded to whole numbers).
+
 ## 0.14.2 · 2026-11-19
 
 ### Added

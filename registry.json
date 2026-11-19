@@ -868,8 +868,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The value and its unit are one reading, centred between \u2212 and + (\"20 %\"), instead of the value in the middle and the unit by the + button; the value is as wide as its digits. Angles sit on the number (\"-2.5\u00b0\"). A press anywhere in the middle puts the caret in the value."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -5659,8 +5664,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "Share and watch time show their unit in the field (\"10 %\", \"12 h\") instead of the column heading; the last row lines up with the readings above it."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",

@@ -383,6 +383,7 @@ const entries: Record<string, Entry> = {
     group: "Inputs",
     examples: { file: "inputs", prefix: "NumberField" },
     rules: [
+      "The value and its unit are one reading, centred between − and +: write the unit with `unit`, not in the label.",
       'For a number with a range and a unit: speed, thresholds, intervals. For a free number with no range, Input with inputMode="numeric" is enough.',
       "Never block typing. The value is kept in range when the field loses focus, and the hint says the range.",
       "↑↓ step, Shift or PageUp/PageDown step by largeStep, Home/End go to the limits. The buttons are for touch and skip the Tab order.",
