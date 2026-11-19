@@ -2,7 +2,7 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.14.1 · 2026-11-19
 
 ### Changed
 - **Sheets float.** `sheet` sits 8 px from the screen's edges, the app shell's gutter, with every corner rounded, so a drawer or a bottom sheet reads as one more panel on the page instead of a slab glued to the glass. The bottom sheet clears the home indicator. A side sheet fills up to `max-w-sm` and auto margins keep it on its side: **drop `w-full` from your `SheetContent`** if you set it (re-install `sheet` and `syncrobotic-theme`).
