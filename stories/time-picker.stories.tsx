@@ -59,7 +59,7 @@ export const TimeInputRange: S = {
     const [from, setFrom] = React.useState<string | undefined>("22:00")
     const [to, setTo] = React.useState<string | undefined>("06:00")
     return (
-      <fieldset className="flex flex-col gap-2">
+      <fieldset className="flex min-w-0 flex-col gap-2">
         <legend className="pb-2 text-sm font-medium">Night patrol</legend>
         <div className="flex items-center gap-2">
           <TimeInput value={from} onValueChange={setFrom} aria-label="From" className="min-w-0 flex-1" />

@@ -474,6 +474,13 @@
   :root { --h-sm: var(--h-md); }
 }
 
+/* A fieldset is min-content wide by default, so fields inside it cannot shrink and push past a phone's edge. */
+@layer base {
+  fieldset {
+    min-width: 0;
+  }
+}
+
 /* A search field's clear button: the browser draws a small blue cross, and blue here means a process being waited on.
    It becomes the kit's grey cross at 20 px. Firefox has none, so apps that need clearing everywhere add their own. */
 @layer base {
