@@ -1,7 +1,6 @@
-// The registry CopyButton: one implementation, with the plain-HTTP fallback and the failure message.
-import { CopyButton } from "@/registry/syncrobotic/ui/copy-button"
+// The registry CodeBlock draws the frame, the copy button, the wrapping and the scroll cue; the site adds shiki.
+import { CodeBlock as Frame } from "@/registry/syncrobotic/ui/code-block"
 import { highlight } from "./highlight"
-import { Unbroken } from "./prose"
 
 export async function CodeBlock({
   code,
@@ -14,19 +13,14 @@ export async function CodeBlock({
 }) {
   const highlighted = await highlight(code, lang)
   // A shell command wraps between words and after a "/", never inside a name: "@syncrobotic/" then "number-field".
+  // The registry does this for plain text; shiki's HTML gets the same marks here.
   const html =
     lang === "bash"
       ? highlighted.replace(/>([^<]+)</g, (_, text: string) => `>${text.replace(/[^\s/]+\/?|\//g, (w) => `<span class="whitespace-nowrap">${w}</span>${w.endsWith("/") ? "<wbr>" : ""}`)}<`)
       : highlighted
   return (
-    <div className="overflow-hidden rounded-md border border-border bg-card">
-      <div className="flex items-center justify-between border-b border-border py-1 pr-1 pl-4">
-        <span className="font-mono text-xs text-muted-foreground">
-          <Unbroken text={title ?? lang} />
-        </span>
-        <CopyButton value={code} label={title ? `Copy ${title}` : "Copy code"} />
-      </div>
-      <div tabIndex={0} role="group" aria-label={title ?? `${lang} code`} className={`code overflow-x-auto p-4 text-sm ${lang === "bash" ? "code-wrap" : "code-edge"}`} dangerouslySetInnerHTML={{ __html: html }} />
-    </div>
+    <Frame code={code} title={title} language={lang} wrap={lang === "bash" ? "words" : "none"} labels={{ code: `${lang} code` }}>
+      <div className="code" dangerouslySetInnerHTML={{ __html: html }} />
+    </Frame>
   )
 }

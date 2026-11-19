@@ -281,6 +281,104 @@
    ]
   }
  ],
+ "annotated-image": [
+  {
+   "name": "AnnotatedImage",
+   "props": [
+    {
+     "name": "src",
+     "type": "string",
+     "description": "The picture. Or pass `image` to draw your own (a canvas, a video frame)."
+    },
+    {
+     "name": "image",
+     "type": "ReactNode",
+     "description": "The picture as an element, in place of `src`; it should fill its box (size-full)."
+    },
+    {
+     "name": "width",
+     "type": "number",
+     "required": true,
+     "description": "The picture's natural size in pixels: the coordinate space of the annotations, and the box's aspect ratio."
+    },
+    {
+     "name": "height",
+     "type": "number",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "What the picture is, e.g. \"Camera 2, aisle 3, 14:08\". The annotations are summarised after it for screen readers."
+    },
+    {
+     "name": "annotations",
+     "type": "Annotation[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "selectedId",
+     "type": "string",
+     "default": "null",
+     "description": "The annotation drawn as selected: 3 px in the focus ink, with handles."
+    },
+    {
+     "name": "onSelectedChange",
+     "type": "(id: string | null) => void",
+     "description": "Makes each annotation a button (one Tab stop, arrows move, Enter selects, Esc clears). Without it nothing is focusable."
+    },
+    {
+     "name": "showLabels",
+     "type": "\"none\" | \"all\" | \"selected\"",
+     "default": "\"all\"",
+     "description": "Which class words show on the picture. `selected` keeps a crowded picture readable; the words are still read out."
+    },
+    {
+     "name": "legend",
+     "type": "boolean",
+     "default": "true",
+     "description": "The line-style legend under the picture, for the kinds present. On by default; off when the page has its own."
+    },
+    {
+     "name": "overlays",
+     "type": "AnnotationOverlay[]",
+     "default": "[]",
+     "description": "Raster layers drawn between the picture and the marks, in order."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "description": "Show the box at the picture's aspect ratio, breathing, until the picture and its annotations arrive."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<AnnotatedImageLabels>",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "AnnotationLegend",
+   "props": [
+    {
+     "name": "kinds",
+     "type": "AnnotationKind[]",
+     "default": "kinds",
+     "description": "The kinds to list, in this order: predicted, ground truth, previous version."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<Pick<AnnotatedImageLabels, \"legend\" | \"previous\" | \"predicted\" | \"truth\">>",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "attachment": [
   {
    "name": "Attachment",
@@ -549,7 +647,7 @@
    "props": [
     {
      "name": "result",
-     "type": "\"passed\" | \"failed\" | \"insufficient\"",
+     "type": "\"failed\" | \"passed\" | \"insufficient\"",
      "required": true,
      "description": ""
     }
@@ -1001,6 +1099,63 @@
      "type": "\"end\" | \"start\"",
      "default": "\"start\"",
      "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "code-block": [
+  {
+   "name": "CodeBlock",
+   "props": [
+    {
+     "name": "code",
+     "type": "string",
+     "required": true,
+     "description": "The exact text; it is what Copy copies, also when `children` shows it highlighted."
+    },
+    {
+     "name": "title",
+     "type": "string",
+     "description": "Shown in the header and names the scroll box, e.g. a file name or \"Terminal\". Never put a secret here."
+    },
+    {
+     "name": "language",
+     "type": "string",
+     "description": "Shown in the header when there is no title."
+    },
+    {
+     "name": "wrap",
+     "type": "\"none\" | \"words\"",
+     "default": "\"none\"",
+     "description": "\"words\" for shell commands (wrap between words, never inside a name); \"none\" scrolls sideways."
+    },
+    {
+     "name": "lineNumbers",
+     "type": "boolean",
+     "default": "false",
+     "description": "Numbers each line in a gutter that stays put while the code scrolls; hidden from screen readers. With wrap=\"none\" only."
+    },
+    {
+     "name": "secret",
+     "type": "boolean",
+     "default": "false",
+     "description": "Hide the value behind dots, with a Show toggle; Copy still copies the real value."
+    },
+    {
+     "name": "copyLabel",
+     "type": "string",
+     "description": "The copy button's name. Defaults to \"Copy <title>\" or \"Copy code\"; pass your own in other languages."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<CodeBlockLabels>",
+     "description": ""
+    },
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "description": "Highlighted code (a `<pre>` from shiki or similar) shown in place of the plain text."
     }
    ],
    "inherits": []
@@ -2629,6 +2784,87 @@
     }
    ],
    "inherits": []
+  }
+ ],
+ "metric-card": [
+  {
+   "name": "MetricCard",
+   "props": [
+    {
+     "name": "label",
+     "type": "ReactNode",
+     "required": true,
+     "description": "What is counted: \"Robots online\". The link's text when the card has `href`."
+    },
+    {
+     "name": "value",
+     "type": "ReactNode",
+     "description": "The number, already formatted: \"12\", \"1,204\", \"99.2\"."
+    },
+    {
+     "name": "unit",
+     "type": "string",
+     "description": "Written small after the value: \"/ 14\", \"h\", \"%\"."
+    },
+    {
+     "name": "delta",
+     "type": "string",
+     "description": "Change against the previous period: \"+8%\", \"−2\". A leading minus (- or −) turns the arrow down."
+    },
+    {
+     "name": "trend",
+     "type": "\"flat\" | \"good\" | \"bad\"",
+     "default": "\"flat\"",
+     "description": "Whether the change is good. Direction alone does not decide: a rise in events is bad. Only \"bad\" is coloured."
+    },
+    {
+     "name": "series",
+     "type": "number[]",
+     "description": "Last values, oldest first, drawn as a sparkline from 640 px. Two or more."
+    },
+    {
+     "name": "caption",
+     "type": "ReactNode",
+     "description": "One line of context under the value: \"2 docked for charging\", \"Last 7 days\"."
+    },
+    {
+     "name": "href",
+     "type": "string",
+     "description": "Makes the whole card one link, to the page behind the number."
+    },
+    {
+     "name": "linkAs",
+     "type": "ElementType",
+     "default": "\"a\"",
+     "description": "Your router's link (e.g. next/link), for `href`."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "default": "false",
+     "description": "The value is on its way: the label stays, bones hold the value and caption at the same height."
+    },
+    {
+     "name": "unavailable",
+     "type": "string",
+     "description": "Why there is no value (\"Device offline since 14:02\"). The value shows a dash and this replaces the caption."
+    },
+    {
+     "name": "labels",
+     "type": "MetricCardLabels",
+     "description": "The words only screen readers hear (\", better\", \", worse\", \"Loading\", \"Not available\"), to translate them."
+    }
+   ],
+   "inherits": [
+    "<div> (except children)"
+   ]
+  },
+  {
+   "name": "MetricGrid",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
   }
  ],
  "navigation-menu": [
@@ -4657,6 +4893,84 @@
    "inherits": [
     "<div>"
    ]
+  }
+ ],
+ "tree": [
+  {
+   "name": "Tree",
+   "props": [
+    {
+     "name": "items",
+     "type": "TreeNode[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "Names the tree or list for screen readers: \"Lineage\", \"Dataset files\"."
+    },
+    {
+     "name": "mode",
+     "type": "\"select\" | \"list\"",
+     "default": "\"list\"",
+     "description": "list (default): a nested list whose links and disclosure buttons are ordinary Tab stops. select: a tree widget (role=\"tree\"), one Tab stop, arrow keys, and one selected node."
+    },
+    {
+     "name": "defaultExpanded",
+     "type": "string[]",
+     "description": "Branches open at first (uncontrolled)."
+    },
+    {
+     "name": "expanded",
+     "type": "string[]",
+     "description": "Open branches, controlled; pair with onExpandedChange."
+    },
+    {
+     "name": "onExpandedChange",
+     "type": "(expanded: string[]) => void",
+     "description": ""
+    },
+    {
+     "name": "expandAll",
+     "type": "boolean",
+     "description": "Every branch open at first (uncontrolled), for short trees people read whole."
+    },
+    {
+     "name": "selectedId",
+     "type": "string",
+     "description": "select mode: the selected node, controlled; pair with onSelectedChange."
+    },
+    {
+     "name": "defaultSelectedId",
+     "type": "string",
+     "description": "select mode: the node selected at first (uncontrolled)."
+    },
+    {
+     "name": "onSelectedChange",
+     "type": "(id: string, node: TreeNode) => void",
+     "description": ""
+    },
+    {
+     "name": "empty",
+     "type": "ReactNode",
+     "default": "\"Nothing here yet.\"",
+     "description": "Shown instead of the tree when items is empty."
+    },
+    {
+     "name": "linkAs",
+     "type": "ElementType",
+     "default": "\"a\"",
+     "description": "Your router's link (e.g. next/link), for nodes with href in list mode."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<TreeLabels>",
+     "description": ""
+    }
+   ],
+   "inherits": []
   }
  ]
 }

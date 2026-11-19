@@ -57,6 +57,20 @@ export const overviews: Record<string, Overview> = {
     use: ["Images by use, label sources, a dataset's tiers.", "Inside a table cell without a legend, or on its own with `legend`."],
     instead: ["Values over time or many categories: `chart`.", "A single level within a range: `meter`."],
   },
+  "annotated-image": {
+    what: "A picture with boxes, points, polygons or poses drawn over it: what a model predicted, what a person labelled, the previous version.",
+    use: [
+      "Reviewing a model's detections against ground truth, frame by frame.",
+      "Comparing two versions of a model or of a dataset's labels on the same picture.",
+      "Showing what a camera saw when an event fired, with the object that fired it.",
+    ],
+    instead: ["Many pictures at once, without marks: `image-grid`.", "Drawing or editing boxes: a labelling tool; this one shows and selects, it does not edit."],
+    notes: [
+      "Annotation coordinates are image pixels, not percentages or CSS pixels; `width` and `height` are the picture's natural size.",
+      "Without `onSelectedChange` the picture is one role=img with a generated summary; with it, a group of buttons with aria-pressed. Do not wrap it in another button.",
+      "Placeholders and tests draw the picture in code (an SVG data URI); never an external URL.",
+    ],
+  },
   "restricted-preview": {
     what: "A preview that does not load until someone asks: restricted data, faces, number plates.",
     use: ["Thumbnails of a restricted dataset in a catalog or gallery."],
@@ -344,6 +358,23 @@ export const overviews: Record<string, Overview> = {
     use: ["Filters with counts.", "Settings that switch on and off.", "Several answers to one question in a form."],
     instead: ["A single control with a label and nothing else: `label` next to it.", "Picking one of many: `select`."],
   },
+  "metric-card": {
+    what: "One headline number on a card: what it counts, the value, how it changed and a line of context, coloured only when the change is for the worse.",
+    use: [
+      "The row of numbers under a dashboard's page header: robots online, events, devices, API calls.",
+      "A count that opens the list behind it (with `href`).",
+    ],
+    instead: [
+      "A level in a known range (battery, storage, signal): `meter`.",
+      "A number with a chart under it: a `card` with CardDataHeader and CardFigure.",
+      "Several values about one thing (a robot's facts): `description-list`.",
+    ],
+    notes: [
+      "Set `trend` from whether the change is good for the reader, not from its sign; only \"bad\" is coloured.",
+      "Pass `unavailable` with the reason instead of value 0 when the source is down or the count is unknown.",
+      "`labels` translates the words only screen readers hear (better, worse, loading, unavailable).",
+    ],
+  },
   meter: {
     what: "A level within a known range, like battery or storage, neutral until it crosses a threshold.",
     use: ["Battery, storage, signal strength, CPU.", "Inline in a table cell, or above a value in a card."],
@@ -373,6 +404,19 @@ export const overviews: Record<string, Overview> = {
     what: "Copies a value and confirms it in place: the icon becomes a check for 1.5 s.",
     use: ["IDs, references, install commands, coordinates."],
     instead: ["Sharing a link to the current page: the browser already does it."],
+  },
+  "code-block": {
+    what: "Code or a command to read and copy, in a frame with its title and a copy button.",
+    use: [
+      "Install and import commands (dvc import, npx shadcn add) and curl examples.",
+      "A one-time API key or webhook secret, hidden until shown.",
+      "Source and API responses in docs and settings pages.",
+    ],
+    instead: ["A short value inline (an ID, a reference): `copy-button` beside the text.", "A value someone edits: `input` or `textarea`."],
+    notes: [
+      "It has no highlighter: pass shiki's `<pre>` as children (the docs site does, in site/code-block.tsx); `code` stays the plain text that Copy copies.",
+      "Highlighted shell commands wrap by words only if each name is marked nowrap in the HTML; the docs site's CodeBlock shows how.",
+    ],
   },
   button: {
     what: "A control that does one thing now: save, send, start a mission. The label is a verb that says what happens.",
@@ -572,6 +616,25 @@ export const overviews: Record<string, Overview> = {
     what: "Sections of one page under a row of labels; one section shows at a time.",
     use: ["A robot's Overview, Sensors and Logs."],
     instead: ["Two to four views of the same data: `segmented-control`.", "Sections the user may want open together: `accordion`."],
+  },
+  tree: {
+    what: "A hierarchy from data, with a guide line per level: a nested list of links people open and close, or a tree widget to pick one node in.",
+    use: [
+      "Data lineage: a release, the label sets it was trained on, and their sources.",
+      "Sites › zones › robots, to read or to pick one.",
+      "The folders and files of a dataset, as a file explorer.",
+    ],
+    instead: [
+      "One level of rows: `list`.",
+      "Where this page sits among its parents: `breadcrumb`.",
+      "Sections of one page that open and close: `accordion`.",
+      "Rows with columns to compare: `data-grid` with expanding rows.",
+    ],
+    notes: [
+      "Do not use select mode for a tree of links: role=\"tree\" takes the arrow keys and makes the whole tree one Tab stop, so links inside it are not followed by Enter. Use list mode, which keeps links as links.",
+      "Each node's id must be unique across the tree, even when the same thing appears twice (a source under two label sets): give the repeat its own id and a marker in meta.",
+      "Pass `labels.toggle` and `empty` to translate the disclosure buttons' names and the empty text.",
+    ],
   },
   accordion: {
     what: "Sections that open and close in place.",
