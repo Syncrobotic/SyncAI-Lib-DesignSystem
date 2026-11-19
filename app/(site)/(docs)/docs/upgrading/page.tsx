@@ -1,8 +1,12 @@
 import type { Metadata } from "next"
+import { startNeighbours } from "@/site/foundations"
 import registry from "../../../../../registry.json"
+import Link from "next/link"
+import { blockHref } from "@/site/block-types"
+import { getItem } from "@/site/catalog"
 import { CodeBlock } from "@/site/code-block"
 import { pageMeta } from "@/site/config"
-import { TokenTable } from "@/site/doc"
+import { TokenTable, Pager } from "@/site/doc"
 import { H2, Inline, PageTitle } from "@/site/prose"
 
 const description = "How SYNCROBOTIC components are versioned, how to see what a project has installed, and how to upgrade without losing local changes."
@@ -50,22 +54,39 @@ export default function UpgradingPage() {
       <H2 id="current">Current versions</H2>
       <TokenTable
         head={["Item", "Version", "Latest change"]}
-        rows={registry.items.map((i) => {
+        // Most recently changed first, then by name; each name opens its page.
+        rows={[...registry.items]
+          .sort((a, b) => {
+            const d = (i: typeof a) => (i as { meta?: Meta }).meta?.changelog[0]?.date ?? ""
+            return d(b).localeCompare(d(a)) || a.name.localeCompare(b.name)
+          })
+          .map((i) => {
           const m = (i as { meta?: Meta }).meta
           const last = m?.changelog.find((c) => c.version === m.version)
           return [
-            <span key="n" className="font-mono text-sm">
-              {i.name}
-            </span>,
+            getItem(i.name) || i.type === "registry:block" ? (
+              <Link
+                key="n"
+                href={getItem(i.name) ? `/docs/components/${i.name}` : blockHref(i.name)}
+                className="font-mono text-sm underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground"
+              >
+                {i.name}
+              </Link>
+            ) : (
+              <span key="n" className="font-mono text-sm">
+                {i.name}
+              </span>
+            ),
             <span key="v" className="font-mono text-sm tabular-nums">
               {m?.version}
             </span>,
             <span key="c" className="text-muted-foreground">
-              {last ? `${last.date} · ${last.note}` : ""}
+              {last && <Inline text={`${last.date} · ${last.note}`} />}
             </span>,
           ]
         })}
       />
+      <Pager {...startNeighbours("/docs/upgrading")} />
     </article>
   )
 }

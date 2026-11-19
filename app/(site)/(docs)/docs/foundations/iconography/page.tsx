@@ -27,10 +27,12 @@ export default function IconographyPage() {
       >
         <Specimen>
           <div className="grid grid-cols-4 gap-6 sm:grid-cols-6">
+            {/* Each with its name, as the page asks of every icon. */}
             {set.map((Icon, i) => (
-              <div key={i} className="flex aspect-square items-center justify-center rounded-sm bg-card ring-1 ring-border">
+              <figure key={i} className="flex aspect-square flex-col items-center justify-center gap-2 rounded-sm bg-card p-2 ring-1 ring-border">
                 <Icon aria-hidden className="size-6" />
-              </div>
+                <figcaption className="w-full truncate text-center font-mono text-xs text-muted-foreground">{Icon.displayName}</figcaption>
+              </figure>
             ))}
           </div>
         </Specimen>

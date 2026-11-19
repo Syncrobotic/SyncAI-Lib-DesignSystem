@@ -1,4 +1,3 @@
-import { MobileMenu } from "@/site/mobile-menu"
 import { scopes } from "@/site/scopes"
 import { Sidebar } from "@/site/sidebar"
 import { SidebarFrame } from "@/site/sidebar-frame"
@@ -11,9 +10,6 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
         <Sidebar scopes={scopes} />
       </SidebarFrame>
       <main id="content" className="min-w-0 flex-1 pt-8 pb-section">
-        <MobileMenu scopes={scopes}>
-          <Sidebar scopes={scopes} switcher />
-        </MobileMenu>
         {children}
       </main>
     </div>

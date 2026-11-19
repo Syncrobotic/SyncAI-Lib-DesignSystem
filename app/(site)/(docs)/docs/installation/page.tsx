@@ -1,4 +1,6 @@
 import type { Metadata } from "next"
+import { startNeighbours } from "@/site/foundations"
+import { Pager } from "@/site/doc"
 import { CodeBlock } from "@/site/code-block"
 import { pageMeta, site } from "@/site/config"
 import { H2, Inline, PageTitle } from "@/site/prose"
@@ -62,6 +64,7 @@ export default function InstallationPage() {
         </li>
         <li>The shadcn CLI fetches base colours from ui.shadcn.com during install, so the machine needs access to it.</li>
       </ul>
+      <Pager {...startNeighbours("/docs/installation")} />
     </article>
   )
 }

@@ -19,9 +19,35 @@ export const scopeFor = (scopes: Pick<Scope, "match">[], path: string) =>
 export function Sidebar({ scopes, switcher = false }: { scopes: Scope[]; switcher?: boolean }) {
   const path = usePathname()
   const active = scopes[scopeFor(scopes, path)]
+  // The home page belongs to no area: in the drawer, Home is current and no area is selected.
+  const home = path === "/"
+  const nav = React.useRef<HTMLElement>(null)
+  // Open where you are: if the current page's link is out of view in its scrolling column (or the drawer), centre it.
+  // Only that box scrolls, never the page.
+  React.useEffect(() => {
+    const link = nav.current?.querySelector<HTMLElement>('a[aria-current="page"]')
+    const box = link?.closest<HTMLElement>("[data-scroll]")
+    if (!link || !box) return
+    const l = link.getBoundingClientRect()
+    const b = box.getBoundingClientRect()
+    if (l.top >= b.top && l.bottom <= b.bottom) return
+    box.scrollTop += l.top - b.top - b.height / 2 + l.height / 2
+  }, [path])
   return (
-    <nav aria-label={`${active.label} navigation`} className="flex flex-col gap-6 text-sm">
+    <nav ref={nav} aria-label={`${active.label} navigation`} className="flex flex-col gap-6 text-sm">
       {!switcher && <p className="px-3 text-sm font-medium text-muted-foreground">{active.label}</p>}
+      {switcher && (
+        <Link
+          href="/"
+          aria-current={home ? "page" : undefined}
+          className={cn(
+            "press flex h-(--h-sm) items-center rounded-xs px-3 transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent",
+            home ? "bg-muted font-medium text-foreground" : "text-muted-foreground hover:text-foreground",
+          )}
+        >
+          Home
+        </Link>
+      )}
       {switcher && (
         <div role="list" aria-label="Areas" className="grid grid-cols-2 gap-1 rounded-sm bg-muted p-1">
           {scopes.map((s) => (
@@ -29,19 +55,19 @@ export function Sidebar({ scopes, switcher = false }: { scopes: Scope[]; switche
               key={s.key}
               role="listitem"
               href={s.href}
-              aria-current={s.key === active.key ? "true" : undefined}
+              aria-current={!home && s.key === active.key ? "true" : undefined}
               className={cn(
                 "press relative flex h-(--h-sm) items-center justify-center rounded-xs text-sm transition-colors duration-(--motion-fast) ease-(--ease-standard)",
-                s.key === active.key ? "font-medium text-primary-foreground" : "text-muted-foreground hover:text-foreground",
+                !home && s.key === active.key ? "font-medium text-primary-foreground" : "text-muted-foreground hover:text-foreground",
               )}
             >
-              {s.key === active.key && <m.span layoutId="area-marker" aria-hidden className="absolute inset-0 rounded-xs bg-primary" />}
+              {!home && s.key === active.key && <m.span layoutId="area-marker" aria-hidden className="absolute inset-0 rounded-xs bg-primary" />}
               <span className="relative">{s.label}</span>
             </Link>
           ))}
         </div>
       )}
-      {active.groups.map((g, gi) => (
+      {!(home && switcher) && active.groups.map((g, gi) => (
         // Groups are split by a hairline, and the group's name is in ink while its pages are grey: two levels, not one.
         <div key={g.title} className={cn("flex flex-col gap-1", gi > 0 && "border-t border-border pt-4")}>
           <p className="px-3 pb-1 text-xs font-bold text-foreground">{g.title}</p>

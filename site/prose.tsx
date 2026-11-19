@@ -1,14 +1,19 @@
 // Small typographic building blocks shared by the docs pages.
 
 /** Renders `backticked` words as inline code. */
+/** A line of copy with the two inline marks the docs use: `code` and **bold**. Nothing else is parsed. */
 export function Inline({ text }: { text: string }) {
   return (
     <>
-      {text.split(/(`[^`]+`)/).map((part, i) =>
+      {text.split(/(`[^`]+`|\*\*[^*]+\*\*)/).map((part, i) =>
         part.startsWith("`") ? (
           <code key={i} className="rounded-xs bg-muted px-1 font-mono text-sm">
             {part.slice(1, -1)}
           </code>
+        ) : part.startsWith("**") ? (
+          <strong key={i} className="font-medium text-foreground">
+            {part.slice(2, -2)}
+          </strong>
         ) : (
           part
         ),

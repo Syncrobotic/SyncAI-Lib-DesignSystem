@@ -2,6 +2,31 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.13.1 · 2026-11-19
+
+### Changed
+- **Docs navigation, from a page-by-page review:**
+  - Phones: a menu button in the header, on every page including the home page, opens the navigation from the left (the four areas and the pages of the one you are in), scrolled to the page you are on, with a close button. It replaces the folding menu inside the content, which scrolled away and was missing from the home page.
+  - The sidebar opens scrolled to the page you are on; on the emergency stop page its link sat 3,800 px down, out of sight.
+  - **Components has an index** (`/docs/components`): every component by group, with what it is for. The header, the home page and the end of the foundations lead there instead of straight to Button.
+  - The 404 page keeps the site header, so a wrong link no longer strands you.
+  - Getting started has previous and next, in sidebar order: Overview, Installation, Design tokens, Versions and upgrades, For AI agents, then Principles.
+  - The phone menu button sits at the left of the header, the side its drawer opens from. The drawer starts with Home; on the home page no area is selected and the four areas are the choice.
+- **Docs tables no longer cut columns off.** Token and rule tables (Accessibility, Alarms, Colour and the rest) wrap every column but the name, with even padding, so the Light contrast column and long descriptions show in full on a desktop. On a phone each row is a card with every value under its column's name, instead of a table whose colours, values and uses sat off screen. The DataGrid examples put Status right after the name, so it stays in view on a narrow screen.
+
+### Fixed
+- **A low battery showed as danger.** The Colour foundation says a low battery is attention, not failure, and the Alarms foundation makes battery under 15 % a high (amber) alarm, yet battery meters in `fleet-table`, `list-detail`, `map-workspace`, `sheet-robot-detail`, the DataGrid example and `radial-chart-battery` turned red below 15 %. Battery now takes only `low` and stops at warning. The Meter example shows danger with full storage instead, and the DataGrid sample no longer has a robot patrolling at 0 %.
+- **Segmented controls were 36 px tall to a finger** (the icon size switch, the density demo, fleet-table's filters): each segment's hit area now reaches its track's edges, 44 px. The header's GitHub link, the Motion demo's Play, a component's version link and "How to upgrade", and the token file links are 44 px on touch too.
+- **Raw Markdown on the page:** `**Markdown**` on the For AI agents page, and backticks in component changelogs and the Versions table. Docs copy renders `code` and **bold** everywhere now.
+- The Button example's disabled button says why, beside it and to screen readers, as its own usage rule asks.
+- **Component pages share one head:** title, one line, then the version and the Markdown, Prompt and Source buttons, always below (they jumped to the title's right when the line was short). Every component now has When to use and Use something else (nine were missing it) and usage rules (twelve were), and a line that only repeats the description is left out. Block pages keep Markdown and Prompt on the title's row, and the preview's toolbar keeps its height on the Code tab.
+- **Example code runs when pasted:** each example carries the imports it uses, from where the CLI installs them (`@/components/ui/button`), and a bare snippet comes wrapped in a component. File names have no spaces (`button-variants.tsx`).
+- **Icons:** names break between their words over two lines instead of being cut off; the kit's tiles show what each icon means; All Lucide explains its dot; a search with no result offers to clear it (and, in the kit, to look through every Lucide icon); for an icon not in the set, how to add it comes first and the code to copy waits behind "Copy anyway", in full instead of cut. The Iconography page names its twelve sample icons.
+- **Search fields' clear button** (theme): the browser's small blue cross is the kit's grey cross at 20 px; blue means a process being waited on.
+- **Polish from the page-by-page review:** the Colour neutrals break their names only after a hyphen; Radius shows its six corners in one row on a desktop with the value under the name; Spacing labels each height with its pixels and token and gives the do and don't their measurements; Motion's durations no longer wrap and the timing rules line up with their rail; the Dialog's description says what it is for; the shortcut keys in the overlay story line up on the right; a lone example button sits centred; the home page lists Foundations, Components, Blocks, Icons in the header's order; the icon search puts the exact name first; story names keep Bluetooth and Wi-Fi capitalised; Upgrading lists the most recently changed items first, each linked to its page.
+- **Block previews opened on their own** have a title and a link back to the docs.
+- `status-pages`: the heading is an h1 only when the page fills the screen; inside an app shell it is an h2.
+
 ## 0.13.0 · 2026-11-19
 
 ### Changed

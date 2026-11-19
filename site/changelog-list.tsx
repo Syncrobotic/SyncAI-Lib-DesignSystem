@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
+import { Inline } from "./prose"
 
 type Entry = { version: string; date: string; note: string }
 
@@ -9,7 +10,9 @@ const Row = ({ c }: { c: Entry }) => (
   <li className="flex gap-3">
     <span className="w-16 shrink-0 font-mono tabular-nums">{c.version}</span>
     <span className="w-24 shrink-0 text-muted-foreground tabular-nums">{c.date}</span>
-    <span>{c.note}</span>
+    <span>
+      <Inline text={c.note} />
+    </span>
   </li>
 )
 

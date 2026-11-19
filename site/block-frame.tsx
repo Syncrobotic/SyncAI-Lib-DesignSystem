@@ -92,7 +92,8 @@ export function BlockFrame({
   return (
     <div className="overflow-hidden rounded-md border border-border bg-card">
       <Tabs value={tab} onValueChange={setTab} className="gap-0">
-        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border px-4">
+        {/* One height whichever tab is open, so switching to Code does not shift the frame. */}
+        <div className="flex min-h-(--h-row) flex-wrap items-center justify-between gap-2 border-b border-border px-4">
           <TabsList aria-label="View" className="shrink-0 overflow-visible border-b-0">
             <TabsTrigger value="preview">
               <Eye aria-hidden="true" /> Preview

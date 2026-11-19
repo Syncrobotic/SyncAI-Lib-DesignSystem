@@ -1,3 +1,4 @@
+import * as React from "react"
 import type { Metadata } from "next"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { Badge } from "@/registry/syncrobotic/ui/badge"
@@ -110,7 +111,20 @@ export default function ColorPage() {
               <div className="h-24 dark:hidden" style={{ background: color(t).light }} />
               <div className="hidden h-24 dark:block" style={{ background: color(t).dark }} />
               <div className="flex flex-1 flex-col gap-0.5 bg-card p-3">
-                <span className="font-mono text-xs break-all">--{t}</span>
+                <span className="font-mono text-xs">
+                  {/* Breaks after a hyphen if it must: --muted-|foreground, never --muted-foregrou|nd. */}
+                  --
+                  {t.split("-").map((w, i) => (
+                    <React.Fragment key={i}>
+                      {i > 0 && (
+                        <>
+                          -<wbr />
+                        </>
+                      )}
+                      {w}
+                    </React.Fragment>
+                  ))}
+                </span>
               </div>
             </div>
           ))}

@@ -1,4 +1,4 @@
-// @syncrobotic/sheet-robot-detail v0.13.0 · update: npx shadcn add @syncrobotic/sheet-robot-detail --overwrite
+// @syncrobotic/sheet-robot-detail v0.13.1 · update: npx shadcn add @syncrobotic/sheet-robot-detail --overwrite
 "use client"
 
 import * as React from "react"
@@ -37,7 +37,7 @@ export function SheetRobotDetail({
           </SheetHeader>
 
           <div className="flex flex-col gap-4">
-            <Meter label="Battery" value={14} low={30} critical={15} />
+            <Meter label="Battery" value={14} low={30} />
             <Meter label="Signal" value={62} low={40} critical={20} />
           </div>
 

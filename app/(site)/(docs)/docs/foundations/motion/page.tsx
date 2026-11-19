@@ -108,7 +108,7 @@ export default function MotionPage() {
       </Section>
 
       <Section id="timing" title="Timing rules" lead="Shared across products, so every app behaves the same under pressure.">
-        <ol className="relative flex flex-col border-l border-border pl-6">
+        <ol className="relative ml-1 flex flex-col border-l border-border pl-6">
           {timings.map((x) => (
             <li key={x.t} className="relative pb-6 last:pb-0">
               <span className="absolute top-1.5 -left-6 size-2 -translate-x-1/2 rounded-full bg-foreground" />

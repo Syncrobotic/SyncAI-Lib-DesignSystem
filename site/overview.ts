@@ -5,6 +5,51 @@
 export type Overview = { what: string; use: string[]; instead?: string[]; notes?: string[] }
 
 export const overviews: Record<string, Overview> = {
+  "page-header": {
+    what: "The top of a page: where it sits, what it is, the facts that frame it, and its actions.",
+    use: ["The first thing in a page's content, under the app's top bar.", "A dataset, robot or site page whose counts and owner matter at a glance."],
+    instead: ["A title inside a card: the card's own heading.", "The app's own frame: `app-shell`."],
+  },
+  "chip-group": {
+    what: "One choice among several, shown as chips with their counts, folded after a few.",
+    use: ["A quick filter above a list: task, site, tier.", "Saved views as links, so the choice lives in the URL."],
+    instead: ["Several choices at once: checkboxes in a `field`.", "Two to four views of the same data: `segmented-control`."],
+  },
+  "filter-form": {
+    what: "Filters kept in the URL: a GET form that applies itself as you type or pick, and works without JavaScript.",
+    use: ["A catalog or log whose filtered view should be shareable and survive Back.", "Any page where changing a filter resets the page number."],
+    instead: ["Filters on data already in the browser: filter in state, as `data-grid` does."],
+  },
+  "search-field": {
+    what: "The tool's one search box: `/` focuses it, Enter opens the results page, and on that page it follows the URL.",
+    use: ["The search in an app's top bar.", "The query box on a results page (`live`)."],
+    instead: ["Filtering a list on the page: an `input-group` with a search icon.", "Picking from a known list as you type: `autocomplete`."],
+  },
+  "theme-toggle": {
+    what: "Light, match the system, or dark, as three icon segments.",
+    use: ["Settings, or the corner of an app's top bar."],
+    instead: ["A single on or off: `switch`."],
+  },
+  "route-progress": {
+    what: "A thin bar at the top while the next page loads, after 300 ms and gone when it arrives.",
+    use: ["Page changes in an app that loads data as you navigate."],
+    instead: ["Work inside the page: `progress` or a `skeleton`."],
+  },
+  "share-bar": {
+    what: "How a whole splits into a few parts, as one thin bar, light enough for a table cell.",
+    use: ["Images by use, label sources, a dataset's tiers.", "Inside a table cell without a legend, or on its own with `legend`."],
+    instead: ["Values over time or many categories: `chart`.", "A single level within a range: `meter`."],
+  },
+  "restricted-preview": {
+    what: "A preview that does not load until someone asks: restricted data, faces, number plates.",
+    use: ["Thumbnails of a restricted dataset in a catalog or gallery."],
+    instead: ["Data the viewer may not see at all: leave it out and say so in an `empty-state`."],
+  },
+  "load-more": {
+    what: "The end of a long list: how much is shown, and one button for the next batch that says how many remain.",
+    use: ["Lists and galleries on a phone.", "Results that load in batches."],
+    instead: ["A desktop table people jump around in: `pagination`."],
+  },
   trace: {
     what: "The steps of a run in order, each with a status and a duration, that open to show input, output and sub-steps.",
     use: [
@@ -260,7 +305,7 @@ export const overviews: Record<string, Overview> = {
     instead: ["Work that is under way and will finish: `progress`."],
     notes: [
       "Neutral while normal: colour appears only past `low` (warning) or `critical` (danger). Do not pass a tone.",
-      "Battery: low={30} critical={15}. For values where higher is worse, set higherIsWorse.",
+      "Battery: low={30} only; a low battery is warning, never danger. For values where higher is worse, set higherIsWorse.",
     ],
   },
   "description-list": {

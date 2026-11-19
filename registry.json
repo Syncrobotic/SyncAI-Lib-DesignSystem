@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.13.1",
         "changelog": [
+          {
+            "version": "0.13.1",
+            "date": "2026-11-19",
+            "note": "A search field's clear button is the kit's grey cross at 20 px instead of the browser's small blue one."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -662,8 +667,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.13.1",
         "changelog": [
+          {
+            "version": "0.13.1",
+            "date": "2026-11-19",
+            "note": "Each segment's hit area reaches the track's edges, so a finger gets 44 px though the segment draws 36."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -1830,7 +1840,7 @@
       "name": "dialog",
       "type": "registry:ui",
       "title": "Dialog",
-      "description": "A short decision in a centered panel with radius 20.",
+      "description": "A short decision or form that needs an answer before you go on, in a panel over the page.",
       "dependencies": [
         "radix-ui",
         "lucide-react"
@@ -3264,8 +3274,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.13.1",
         "changelog": [
+          {
+            "version": "0.13.1",
+            "date": "2026-11-19",
+            "note": "Battery meters take only `low`: a low battery needs attention (warning), it is not a failure (danger)."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -3538,8 +3553,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.13.1",
         "changelog": [
+          {
+            "version": "0.13.1",
+            "date": "2026-11-19",
+            "note": "Battery meters take only `low`: a low battery needs attention (warning), it is not a failure (danger)."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -3646,8 +3666,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.13.1",
         "changelog": [
+          {
+            "version": "0.13.1",
+            "date": "2026-11-19",
+            "note": "Battery meters take only `low`: a low battery needs attention (warning), it is not a failure (danger)."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -4007,8 +4032,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.13.1",
         "changelog": [
+          {
+            "version": "0.13.1",
+            "date": "2026-11-19",
+            "note": "The heading is an h1 when `fill=\"screen\"` (the page's only heading) and an h2 inside an app shell, which has its own."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -4550,8 +4580,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.13.1",
         "changelog": [
+          {
+            "version": "0.13.1",
+            "date": "2026-11-19",
+            "note": "A low battery is warning, never danger: the ring turns amber below 30 % and stops there."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -5078,8 +5113,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.13.1",
         "changelog": [
+          {
+            "version": "0.13.1",
+            "date": "2026-11-19",
+            "note": "Battery meters take only `low`: a low battery needs attention (warning), it is not a failure (danger)."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",

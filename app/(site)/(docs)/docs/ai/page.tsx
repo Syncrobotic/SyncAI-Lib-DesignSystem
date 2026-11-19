@@ -1,4 +1,6 @@
 import type { Metadata } from "next"
+import { startNeighbours } from "@/site/foundations"
+import { Pager } from "@/site/doc"
 import { CodeBlock } from "@/site/code-block"
 import { pageMeta, site } from "@/site/config"
 import { H2, Inline, PageTitle, Rules } from "@/site/prose"
@@ -46,6 +48,7 @@ export default function AiPage() {
 Read ${site.url}/llms.txt, start from the closest block, and read the .md twin of every component you use.
 Follow the agent skill in .claude/skills/syncrobotic-ui; run its checklist before you report.`}
       />
+      <Pager {...startNeighbours("/docs/ai")} />
     </article>
   )
 }
