@@ -14,9 +14,10 @@ const count = (d: number, h: number) =>
   Math.max(0, Math.round(3 * Math.sin((h - 14) / 5) + (h >= 20 ? 3 : 0) + (d === 4 ? 2 : 0) - (d >= 5 ? 1 : 0) + ((d * 3 + h) % 4) / 2 - 1))
 const grid = days.map((_, d) => hours.map((h) => count(d, h)))
 const max = Math.max(...grid.flat())
-// The kit's sequential heatmap scale (the same in heatmap-zones): one hue, darker always means more, from a faint tint
-// at none to 55 % at the most, so a number written on a cell would keep 7:1 in both themes.
-const shade = (v: number) => `color-mix(in oklab, var(--chart-1) ${Math.round(8 + (v / max) * 47)}%, var(--card))`
+// The kit's sequential heatmap scale (the same in heatmap-zones): one hue mixed into the track colour, from the bare track at
+// none (a grey cell that still reads as a cell on the card, 1.5:1 and more) to 55 % at the most, so a number written on
+// a cell keeps 4.5:1 in both themes and the step from none to a little is a change of hue, not only of lightness.
+const shade = (v: number) => `color-mix(in oklab, var(--chart-1) ${Math.round((v / max) * 55)}%, var(--track))`
 
 /** When incidents happen: days by 2-hour slots, one sequential hue, the busiest slot named in words. */
 export function HeatmapWeekHours() {

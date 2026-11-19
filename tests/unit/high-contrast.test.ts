@@ -38,11 +38,47 @@ describe("high contrast", () => {
   }
 })
 
+const modes = ["light", "dark", "light-hc", "dark-hc"] as const
+
 describe("disabled text", () => {
-  for (const mode of ["light", "dark", "light-hc", "dark-hc"] as const) {
-    it(`${mode}: readable (3:1 on the page and cards) and lighter than secondary text`, () => {
-      for (const bg of ["background", "card"]) expect(contrast("disabled", bg, mode), `disabled on ${bg}`).toBeGreaterThanOrEqual(3)
+  for (const mode of modes) {
+    // Disabled segments, toggles and tabs sit on a muted track; a disabled field is filled with --muted.
+    it(`${mode}: readable (3:1 on the page, cards and a muted track) and lighter than secondary text`, () => {
+      for (const bg of ["background", "card", "muted", "secondary", "accent"]) {
+        expect(contrast("disabled", bg, mode), `disabled on ${bg}`).toBeGreaterThanOrEqual(3)
+      }
       expect(contrast("disabled", "background", mode)!).toBeLessThan(contrast("muted-foreground", "background", mode)!)
+    })
+    // A disabled field, the wake button and the stop's reason: muted text on the muted fill is still body text.
+    it(`${mode}: words on a disabled fill (muted text on --muted) reach 4.5:1`, () => {
+      expect(contrast("muted-foreground", "muted", mode)).toBeGreaterThanOrEqual(4.5)
+    })
+  }
+})
+
+describe("tracks and quiet shapes", () => {
+  for (const mode of modes) {
+    // The empty part of a slider, progress, meter or ring, a skeleton bone, an avatar placeholder: a shape, not text.
+    it(`${mode}: --track reads as a shape (1.5:1) on the card, the page and a popover`, () => {
+      for (const bg of ["card", "background", "popover"]) expect(contrast("track", bg, mode), `track on ${bg}`).toBeGreaterThanOrEqual(1.5)
+    })
+    // Initials on an avatar without a picture are ink on the track.
+    it(`${mode}: initials on --track reach 4.5:1`, () => {
+      expect(contrast("foreground", "track", mode)).toBeGreaterThanOrEqual(4.5)
+    })
+    // Where the shape alone carries meaning: a bar at 0 % takes the --input edge, a selected row the ink bar.
+    it(`${mode}: the edges that carry meaning reach 3:1 on the card`, () => {
+      expect(contrast("input", "card", mode)).toBeGreaterThanOrEqual(3)
+      expect(contrast("foreground", "accent", mode)).toBeGreaterThanOrEqual(3)
+    })
+  }
+})
+
+describe("the stop and the wake button", () => {
+  for (const mode of modes) {
+    // "Standing still": the pale stop is danger text (18 px bold, normal text) on its tint.
+    it(`${mode}: danger on danger-subtle reaches 4.5:1`, () => {
+      expect(contrast("danger", "danger-subtle", mode)).toBeGreaterThanOrEqual(4.5)
     })
   }
 })

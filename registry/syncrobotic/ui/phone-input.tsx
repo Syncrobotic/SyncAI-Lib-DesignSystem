@@ -77,7 +77,7 @@ export function PhoneInput({
       className={cn(
         "flex h-(--h-md) w-full min-w-0 items-stretch rounded-sm bg-card ring-1 ring-input ring-inset transition-shadow duration-(--motion-fast) ease-(--ease-standard)",
         "has-[input:focus-visible]:outline-2 has-[input:focus-visible]:outline-offset-2 has-[input:focus-visible]:outline-ring aria-invalid:ring-2 aria-invalid:ring-danger",
-        disabled && "bg-muted text-muted-foreground",
+        disabled && "bg-muted text-muted-foreground ring-border",
         // Read-only is not disabled: it stays full contrast so it can be read and copied.
         readOnly && "bg-muted",
         className,

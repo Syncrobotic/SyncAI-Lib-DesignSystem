@@ -76,7 +76,7 @@ export function TableBody({ className, ...props }: React.ComponentProps<"tbody">
 }
 
 export function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
-  return <tr data-slot="table-row" className={cn("border-b border-border data-[state=selected]:bg-accent", className)} {...props} />
+  return <tr data-slot="table-row" className={cn("border-b border-border data-[state=selected]:bg-accent data-[state=selected]:*:first:shadow-selected", className)} {...props} />
 }
 
 /**

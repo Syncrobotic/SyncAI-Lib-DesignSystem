@@ -244,7 +244,7 @@ export function StepperCompact({ value, total, title, className }: { value: numb
         aria-valuemin={1}
         aria-valuemax={total}
         aria-valuenow={Math.min(value, total)}
-        className="h-1 overflow-hidden rounded-full bg-muted"
+        className="h-1 overflow-hidden rounded-full bg-track"
       >
         <div className="h-full rounded-full bg-foreground transition-[width] duration-(--motion-base) ease-(--ease-standard)" style={{ width: `${pct}%` }} />
       </div>
