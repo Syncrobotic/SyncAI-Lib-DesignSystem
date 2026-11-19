@@ -2,6 +2,12 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **Page transitions on the docs site:** going to another page fades the old content out (`--motion-fast`) and brings the new one in with an 8 px rise (`--motion-base`), while the header and sidebar stay still and clickable. Reduced motion keeps the fade.
+- **Motion foundation: Between pages.** A view transition makes whatever takes part in it unclickable while it runs, and by default that is the whole page: measured in Chromium, a stop button did not respond during the animation. The rule: only the content takes part, the root is never snapshotted, and the stop and the island are never inside a transition. The agent skill says the same (`agent-skill` 0.14.2).
+
 ## 0.14.1 · 2026-11-19
 
 ### Changed
