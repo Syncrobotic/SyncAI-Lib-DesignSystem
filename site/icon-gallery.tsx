@@ -49,7 +49,7 @@ export function IconGallery({ groups, total, placeholder, markKit = false }: { g
   const glyphSize = sizes.find((s) => s.value === size)!.cls
 
   return (
-    <div className="flex gap-8">
+    <div>
       <div className="flex min-w-0 flex-1 flex-col gap-6">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <InputGroup className="sm:flex-1">
@@ -93,6 +93,7 @@ export function IconGallery({ groups, total, placeholder, markKit = false }: { g
                     type="button"
                     aria-pressed={picked?.name === i.name}
                     title={i.name}
+                    data-icon={i.name}
                     aria-label={i.means ? `${i.name}: ${i.means}` : i.name}
                     onClick={() => setPicked(i)}
                     className="press relative flex aspect-square w-full flex-col items-center justify-center gap-3 p-2 transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent aria-pressed:bg-muted"
@@ -111,6 +112,8 @@ export function IconGallery({ groups, total, placeholder, markKit = false }: { g
         ))}
       </div>
 
+      {/* Room under the last row, so it can scroll clear of the details bar. */}
+      {picked && <div aria-hidden className="h-72" />}
       {picked && <Details icon={picked} onClose={() => setPicked(null)} />}
     </div>
   )
@@ -118,64 +121,76 @@ export function IconGallery({ groups, total, placeholder, markKit = false }: { g
 
 function Details({ icon, onClose }: { icon: GalleryIcon; onClose: () => void }) {
   const drawing = React.useRef<HTMLDivElement>(null)
+  const panel = React.useRef<HTMLElement>(null)
   const [svg, setSvg] = React.useState("")
-  // The SVG to copy is the drawing as rendered, without the classes the page added.
   React.useEffect(() => {
+    // The SVG to copy is the drawing as rendered, without the classes the page added.
     const el = drawing.current?.querySelector("svg")?.cloneNode(true) as SVGElement | undefined
-    if (!el) return
-    el.removeAttribute("class")
-    el.removeAttribute("aria-hidden")
-    setSvg(el.outerHTML)
+    if (el) {
+      el.removeAttribute("class")
+      el.removeAttribute("aria-hidden")
+      setSvg(el.outerHTML)
+    }
+    // The panel covers the bottom of the screen: if the picked tile is under it, bring the tile up into view.
+    const tile = document.querySelector<HTMLElement>(`[data-icon="${CSS.escape(icon.name)}"]`)
+    const h = panel.current?.offsetHeight ?? 0
+    if (!tile) return
+    const over = tile.getBoundingClientRect().bottom - (window.innerHeight - h) + 16
+    if (over > 0) window.scrollBy({ top: over, behavior: "smooth" })
   }, [icon])
   const importLine = `import { ${icon.name} } from "${icon.from}"`
   const jsx = `<${icon.name} aria-hidden="true" className="size-5" />`
   return (
     <aside
+      ref={panel}
       aria-label={`${icon.name} details`}
-      className={cn(
-        "flex animate-appear flex-col gap-4 bg-popover p-4",
-        // A sheet from the bottom on a phone; a column beside the grid on a wide screen, staying in view while you scroll.
-        "fixed inset-x-0 bottom-0 z-40 max-h-[70dvh] overflow-y-auto rounded-t-xl shadow-overlay ring-1 ring-border",
-        "lg:sticky lg:top-20 lg:inset-auto lg:z-auto lg:max-h-none lg:w-72 lg:shrink-0 lg:self-start lg:rounded-xl lg:shadow-none",
-      )}
+      // It floats over the bottom of the page instead of taking a column, so picking an icon never narrows the grid:
+      // a sheet on a phone, a bar across the bottom on a wide screen.
+      className="fixed inset-x-0 bottom-0 z-40 max-h-[70dvh] animate-sheet-in-bottom overflow-y-auto rounded-t-xl bg-popover shadow-overlay ring-1 ring-border"
     >
-      <div className="flex items-start justify-between gap-2">
-        <div className="flex min-w-0 flex-col gap-1">
+      <div className="mx-auto flex max-w-6xl flex-col gap-3 p-4 lg:flex-row lg:items-start lg:gap-6">
+        <div ref={drawing} className="flex shrink-0 items-end justify-center gap-6 rounded-md bg-card px-6 py-6 ring-1 ring-border">
+          <span className="[&_svg]:size-12">{icon.glyph}</span>
+          <span className="[&_svg]:size-6">{icon.glyph}</span>
+          <span className="[&_svg]:size-5">{icon.glyph}</span>
+          <span className="[&_svg]:size-4">{icon.glyph}</span>
+        </div>
+        <div className="flex min-w-0 flex-1 flex-col gap-1 lg:max-w-xs">
           <h2 className="truncate font-mono text-sm font-medium">{icon.name}</h2>
           <p className="text-sm text-muted-foreground">{icon.means ?? "Not in the kit's set yet."}</p>
+          {!icon.means && (
+            <p className="pt-2 text-sm text-muted-foreground">
+              Lint rejects it until it is in the set: add it to <code className="font-mono text-xs">site/icons.ts</code> with the one thing it means, unless an icon there
+              already means that.
+            </p>
+          )}
         </div>
-        <button type="button" onClick={onClose} aria-label="Close details" className="press -mt-1 -mr-1 flex size-(--h-md) shrink-0 items-center justify-center rounded-sm hover:bg-accent">
+        <div className="grid min-w-0 flex-1 gap-2 sm:grid-cols-2">
+          {(
+            [
+              ["Name", icon.name],
+              ["Import", importLine],
+              ["JSX", jsx],
+              ["SVG", svg],
+            ] as const
+          ).map(([label, value]) => (
+            <div key={label} className="flex min-w-0 items-center justify-between gap-2 rounded-sm bg-card py-1 pr-1 pl-3 ring-1 ring-border">
+              <span className="flex min-w-0 flex-col">
+                <span className="text-xs text-muted-foreground">{label}</span>
+                <code className="truncate font-mono text-xs">{value}</code>
+              </span>
+              <CopyButton value={value} label={`Copy ${label.toLowerCase()}`} />
+            </div>
+          ))}
+        </div>
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close details"
+          className="press order-first flex size-(--h-md) shrink-0 items-center justify-center self-end rounded-sm hover:bg-accent lg:order-last lg:-mt-1 lg:self-start"
+        >
           <X aria-hidden="true" className="size-5" />
         </button>
-      </div>
-      <div ref={drawing} className="flex items-end justify-center gap-6 rounded-md bg-card py-6 ring-1 ring-border">
-        <span className="[&_svg]:size-12">{icon.glyph}</span>
-        <span className="[&_svg]:size-6">{icon.glyph}</span>
-        <span className="[&_svg]:size-5">{icon.glyph}</span>
-        <span className="[&_svg]:size-4">{icon.glyph}</span>
-      </div>
-      {!icon.means && (
-        <p className="text-sm text-muted-foreground">
-          Lint rejects it until it is in the set: add it to <code className="font-mono text-xs">site/icons.ts</code> with the one thing it means, unless an icon there already means that.
-        </p>
-      )}
-      <div className="flex flex-col gap-2">
-        {(
-          [
-            ["Name", icon.name],
-            ["Import", importLine],
-            ["JSX", jsx],
-            ["SVG", svg],
-          ] as const
-        ).map(([label, value]) => (
-          <div key={label} className="flex items-center justify-between gap-2 rounded-sm bg-card py-1 pr-1 pl-3 ring-1 ring-border">
-            <span className="flex min-w-0 flex-col">
-              <span className="text-xs text-muted-foreground">{label}</span>
-              <code className="truncate font-mono text-xs">{value}</code>
-            </span>
-            <CopyButton value={value} label={`Copy ${label.toLowerCase()}`} />
-          </div>
-        ))}
       </div>
     </aside>
   )
