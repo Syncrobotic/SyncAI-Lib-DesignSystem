@@ -2,7 +2,7 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.13.2 · 2026-11-19
 
 ### Fixed
 - **`sortable`: the dragged item drifted away from the pointer**, and dropped to the wrong place, inside any transformed container, such as the docs page's entrance animation. The overlay now renders on `<body>`. Without `renderOverlay` the item itself follows the pointer, lifted, instead of fading and staying behind.
