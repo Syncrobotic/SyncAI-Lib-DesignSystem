@@ -71,6 +71,14 @@ Ordered by what blocks adoption first. Each milestone is one or two release trai
 - [x] For labelling and model review (VLM-Forge): text diff, image grid with a lightbox, keyboard-first review queue with `use-hotkeys`, action-rail page, annotation overlay tokens, and colours for test and audit results
 - [x] CI: pull requests only, stale runs cancelled, story checks once per release in Playwright's image
 
+### 0.17 · Audit: the kit follows its own rules
+- [x] Page-by-page design review and a rule-compliance audit of every component, block and page (dark and light, desktop and phone, axe)
+- [x] Overview puts alarms first; neutral environment badge; lighter disabled outlines; every chart has a table view
+- [x] Field edges 3:1 (WCAG 1.4.11), focus rings never removed, battery threshold 15 % everywhere, 44 px targets on the docs site
+- [x] One rule where two disagreed (default theme, battery as Meter, switch on, offline, 36 px, button weight, KPI colour, missions as processes)
+- [ ] Lints for what the audit found by hand: `outline-none` without a replacement, field-edge contrast, battery thresholds, a chart block without `ChartTable`
+- [ ] Docs site: component pages open with the first example; block thumbnails readable; one search on the overview; filter segments the same everywhere
+
 ### 0.9 · Accessibility evidence
 - [ ] Manual screen-reader and keyboard test matrix per component (VoiceOver, TalkBack, NVDA)
 - [ ] Accessibility conformance report (ACR / VPAT)

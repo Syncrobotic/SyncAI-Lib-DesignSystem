@@ -4633,8 +4633,13 @@
         }
       ],
       "meta": {
-        "version": "0.16.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "The design language and checklist carry the rules settled in 0.17: offline is calm grey; battery is a Meter that warns below 15 % and never turns danger; a switch on is primary; a KPI change is coloured only when worse; the environment badge is neutral; field edges use --input at 3:1; outlined buttons stay outlined when disabled; an overview puts alarms first; every chart has a table view; focus rings are never removed."
+          },
           {
             "version": "0.16.0",
             "date": "2026-11-19",

@@ -12,6 +12,7 @@ Components install as source, so a project keeps the version it installed. Re-ru
   - Sections no longer rise 24 px and run back as you scroll. They arrive once with the theme's appear movement (8 px), as the motion rules ask.
   - Calm things on the foundation pages are no longer green: Do examples, accessibility passes and the checklist, list dots, a good-signal bar.
   - Touch targets reach 44 px on phones: the logo, a block's Open link, "Built from" chips, the data-visualisation item links, the Installation guide link.
+  - Docs follow 0.17's rules: the agent skill's design language and checklist (offline grey, battery a Meter warning below 15 %, switch on primary, KPI colour only when worse, neutral environment badge, field edges 3:1, alarms first, a table view for every chart, focus rings never removed), CONTRIBUTING's pre-PR check, the Meter guidance (`low={15}`) and the ROADMAP.
   - Examples follow the rules they teach: Update available is a neutral alert (blue is only a process), the previous period in a chart is slot 5 grey, a finished progress bar is grey, the attachment composer shows focus.
 
 ## 0.17.1 · 2026-11-19
