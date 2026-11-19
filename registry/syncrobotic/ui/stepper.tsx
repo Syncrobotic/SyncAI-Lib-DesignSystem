@@ -30,9 +30,9 @@ const useStepper = () => {
 }
 const StepCtx = React.createContext<{ step: number; state: StepState; last: boolean; count: number }>({ step: 1, state: "upcoming", last: false, count: 1 })
 
-// Horizontal steps share the row equally. Under about 5rem a step, the labels would collide, so only the current step
+// Horizontal steps share the row equally. Under about 6rem a step, the labels would collide, so only the current step
 // keeps its label (the others stay for screen readers). The width is the stepper's own, not the screen's.
-const labelRoom: Record<number, string> = { 4: "@xs:not-sr-only", 5: "@md:not-sr-only", 6: "@lg:not-sr-only", 7: "@xl:not-sr-only" }
+const labelRoom: Record<number, string> = { 4: "@sm:not-sr-only", 5: "@lg:not-sr-only", 6: "@xl:not-sr-only", 7: "@2xl:not-sr-only" }
 const roomFor = (count: number) => (count <= 3 ? "" : (labelRoom[count] ?? "@2xl:not-sr-only"))
 
 export function Stepper({

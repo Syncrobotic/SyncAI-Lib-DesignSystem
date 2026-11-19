@@ -81,7 +81,8 @@ export function AppShellMobileTabs({
         {/* Room for the dock (its height, its padding and its gap to the edge), so the last row is never under it. */}
         <div aria-hidden="true" className="mt-4 h-(--h-lg)" />
       </main>
-      <Tray className="fixed inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-20">
+      {/* A phone's dock: on a wider screen it stays phone-wide, centred, instead of stretching four tabs across the glass. */}
+      <Tray className="fixed inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-20 mx-auto max-w-md">
         <DockNav
           items={tabs}
           active={active}

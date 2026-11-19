@@ -18,6 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/registry/syncrobotic/ui/dropdown-menu"
 import { Pagination } from "@/registry/syncrobotic/ui/pagination"
+import { ScrollFades, useScrollEdges } from "@/registry/syncrobotic/ui/table"
 
 type Density = "default" | "dense"
 
@@ -109,6 +110,7 @@ export function DataGridTable({
 }) {
   const { table, density, variant, loading, emptyText } = useGrid()
   const scrollRef = React.useRef<HTMLDivElement>(null)
+  const edges = useScrollEdges(scrollRef)
   const rows = table.getRowModel().rows
   const virtualizer = useVirtualizer({
     count: virtual ? rows.length : 0,
@@ -131,164 +133,168 @@ export function DataGridTable({
   }
 
   return (
-    <div
-      ref={scrollRef}
-      tabIndex={0}
-      role="region"
-      aria-label={ariaLabel ?? "Data"}
-      aria-busy={loading || undefined}
-      style={maxHeight ? { maxHeight } : undefined}
-      className={cn(
-        "@container relative w-full overflow-auto rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-        variant !== "borderless" && "ring-1 ring-border",
-        className,
-      )}
-    >
-      <table className="w-full caption-bottom border-separate border-spacing-0 text-sm" style={{ minWidth: table.getTotalSize() }}>
-        <thead className={cn(variant !== "borderless" && "bg-muted", maxHeight && "sticky top-0 z-10")}>
-          {table.getHeaderGroups().map((g) => (
-            <tr key={g.id}>
-              {g.headers.map((h) => (
-                <th
-                  key={h.id}
-                  colSpan={h.colSpan}
-                  aria-sort={
-                    h.column.getIsSorted() === "asc"
-                      ? "ascending"
-                      : h.column.getIsSorted() === "desc"
-                        ? "descending"
-                        : h.column.getCanSort()
-                          ? "none"
-                          : undefined
-                  }
-                  style={{ width: h.getSize(), ...pinStyle(h.column) }}
-                  className={cn(
-                    "relative h-(--h-md) border-b border-border text-left align-middle text-xs font-medium whitespace-nowrap text-muted-foreground",
-                    cellPad,
-                    variant === "borders" && "border-r last:border-r-0",
-                    h.column.getIsPinned() && "bg-muted",
-                    meta(h.column).align === "right" && "text-right",
-                    meta(h.column).headerClassName,
-                  )}
-                >
-                  {h.isPlaceholder ? null : flexRender(h.column.columnDef.header, h.getContext())}
-                  {h.column.getCanResize() && (
-                    <span
-                      role="separator"
-                      aria-orientation="vertical"
-                      aria-label={`Resize ${String(h.column.columnDef.header ?? h.id)}`}
-                      onMouseDown={h.getResizeHandler()}
-                      onTouchStart={h.getResizeHandler()}
-                      onDoubleClick={() => h.column.resetSize()}
-                      className={cn(
-                        "absolute top-2 right-0 bottom-2 w-1 cursor-col-resize touch-none rounded-xs select-none hover:bg-ring",
-                        h.column.getIsResizing() && "bg-ring",
-                      )}
-                    />
-                  )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody className="bg-card">
-          {padTop > 0 && <tr aria-hidden="true" style={{ height: padTop }} />}
-          {loading &&
-            Array.from({ length: Math.min(table.getState().pagination?.pageSize ?? 5, 8) }, (_, i) => (
-              <tr key={`sk-${i}`} aria-hidden="true">
-                {table.getVisibleLeafColumns().map((c) => (
-                  <td key={c.id} className={cn(cellPad, density === "dense" ? "h-(--h-md)" : "h-(--h-row)", "border-b border-border")}>
-                    <span className="block h-3 w-3/4 animate-breath rounded-xs bg-muted" />
-                  </td>
+    // The frame holds the fades that say the grid scrolls sideways (a phone shows only the first columns).
+    <div data-slot="data-grid-frame" className="relative w-full">
+      <div
+        ref={scrollRef}
+        tabIndex={0}
+        role="region"
+        aria-label={ariaLabel ?? "Data"}
+        aria-busy={loading || undefined}
+        style={maxHeight ? { maxHeight } : undefined}
+        className={cn(
+          "@container relative w-full overflow-auto rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+          variant !== "borderless" && "ring-1 ring-border",
+          className,
+        )}
+      >
+        <table className="w-full caption-bottom border-separate border-spacing-0 text-sm" style={{ minWidth: table.getTotalSize() }}>
+          <thead className={cn(variant !== "borderless" && "bg-muted", maxHeight && "sticky top-0 z-10")}>
+            {table.getHeaderGroups().map((g) => (
+              <tr key={g.id}>
+                {g.headers.map((h) => (
+                  <th
+                    key={h.id}
+                    colSpan={h.colSpan}
+                    aria-sort={
+                      h.column.getIsSorted() === "asc"
+                        ? "ascending"
+                        : h.column.getIsSorted() === "desc"
+                          ? "descending"
+                          : h.column.getCanSort()
+                            ? "none"
+                            : undefined
+                    }
+                    style={{ width: h.getSize(), ...pinStyle(h.column) }}
+                    className={cn(
+                      "relative h-(--h-md) border-b border-border text-left align-middle text-xs font-medium whitespace-nowrap text-muted-foreground",
+                      cellPad,
+                      variant === "borders" && "border-r last:border-r-0",
+                      h.column.getIsPinned() && "bg-muted",
+                      meta(h.column).align === "right" && "text-right",
+                      meta(h.column).headerClassName,
+                    )}
+                  >
+                    {h.isPlaceholder ? null : flexRender(h.column.columnDef.header, h.getContext())}
+                    {h.column.getCanResize() && (
+                      <span
+                        role="separator"
+                        aria-orientation="vertical"
+                        aria-label={`Resize ${String(h.column.columnDef.header ?? h.id)}`}
+                        onMouseDown={h.getResizeHandler()}
+                        onTouchStart={h.getResizeHandler()}
+                        onDoubleClick={() => h.column.resetSize()}
+                        className={cn(
+                          "absolute top-2 right-0 bottom-2 w-1 cursor-col-resize touch-none rounded-xs select-none hover:bg-ring",
+                          h.column.getIsResizing() && "bg-ring",
+                        )}
+                      />
+                    )}
+                  </th>
                 ))}
               </tr>
             ))}
-          {!loading && rows.length === 0 && (
-            <tr>
-              <td colSpan={cols} className="p-0">
-                {/* As wide as the visible part of the grid and held at its left edge, so the words stay in view however
-                    wide the columns behind them are. 100cqw is the scroll area's own width (it is the container). */}
-                <div className="sticky left-0 flex h-32 w-[100cqw] items-center justify-center px-4 text-center whitespace-normal text-muted-foreground">
-                  {emptyText}
-                </div>
-              </td>
-            </tr>
-          )}
-          {!loading &&
-            shown.map((row) => (
-              <React.Fragment key={row.id}>
-                <tr
-                  data-state={row.getIsSelected() ? "selected" : undefined}
-                  className={cn(
-                    "transition-colors duration-(--motion-fast) ease-(--ease-standard) data-[state=selected]:bg-accent",
-                    variant === "striped" && "even:bg-muted/50",
-                  )}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <td
-                      key={cell.id}
-                      style={{ width: cell.column.getSize(), ...pinStyle(cell.column) }}
-                      className={cn(
-                        "border-b border-border align-middle whitespace-nowrap",
-                        density === "dense" ? "h-(--h-md)" : "h-(--h-row)",
-                        cellPad,
-                        variant === "borders" && "border-r last:border-r-0",
-                        cell.column.getIsPinned() && "bg-card",
-                        meta(cell.column).align === "right" && "text-right tabular-nums",
-                        meta(cell.column).cellClassName,
-                      )}
-                    >
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+          </thead>
+          <tbody className="bg-card">
+            {padTop > 0 && <tr aria-hidden="true" style={{ height: padTop }} />}
+            {loading &&
+              Array.from({ length: Math.min(table.getState().pagination?.pageSize ?? 5, 8) }, (_, i) => (
+                <tr key={`sk-${i}`} aria-hidden="true">
+                  {table.getVisibleLeafColumns().map((c) => (
+                    <td key={c.id} className={cn(cellPad, density === "dense" ? "h-(--h-md)" : "h-(--h-row)", "border-b border-border")}>
+                      <span className="block h-3 w-3/4 animate-breath rounded-xs bg-muted" />
                     </td>
                   ))}
                 </tr>
-                {row.getCanExpand() && (
-                  <SubRow
-                    row={row}
-                    cols={cols}
-                    render={(table.options.meta as { renderSubRow?: (r: Row<unknown>) => React.ReactNode } | undefined)?.renderSubRow}
-                  />
-                )}
-              </React.Fragment>
-            ))}
-          {padBottom > 0 && <tr aria-hidden="true" style={{ height: padBottom }} />}
-        </tbody>
-        {hasFooter && (
-          <tfoot className={cn("bg-muted font-medium", maxHeight && "sticky bottom-0")}>
-            {table.getFooterGroups().map((g) => (
-              <React.Fragment key={g.id}>
-                <tr className="max-sm:hidden">
-                  {g.headers.map((h) => (
-                    <td key={h.id} className={cn("h-(--h-md) tabular-nums", cellPad, meta(h.column).align === "right" && "text-right")}>
-                      {h.isPlaceholder ? null : flexRender(h.column.columnDef.footer, h.getContext())}
-                    </td>
-                  ))}
-                </tr>
-                {/* On a phone the totals' columns are usually off to the side, so they are written out in one row that
-                    stays in view: the first column's footer leads ("Total"), then each total after its column's name. */}
-                <tr className="sm:hidden">
-                  <td colSpan={cols} className="p-0">
-                    <div className={cn("sticky left-0 flex w-[100cqw] flex-wrap items-center gap-x-4 gap-y-1 py-3 tabular-nums", cellPad)}>
-                      {g.headers
-                        .filter((h) => !h.isPlaceholder && h.column.columnDef.footer)
-                        .map((h, i) =>
-                          i === 0 && meta(h.column).align !== "right" ? (
-                            <span key={h.id}>{flexRender(h.column.columnDef.footer, h.getContext())}</span>
-                          ) : (
-                            <span key={h.id} className="flex items-baseline gap-2">
-                              <span className="font-normal text-muted-foreground">{columnName(h.column)}</span>
-                              {flexRender(h.column.columnDef.footer, h.getContext())}
-                            </span>
-                          ),
+              ))}
+            {!loading && rows.length === 0 && (
+              <tr>
+                <td colSpan={cols} className="p-0">
+                  {/* As wide as the visible part of the grid and held at its left edge, so the words stay in view however
+                      wide the columns behind them are. 100cqw is the scroll area's own width (it is the container). */}
+                  <div className="sticky left-0 flex h-32 w-[100cqw] items-center justify-center px-4 text-center whitespace-normal text-muted-foreground">
+                    {emptyText}
+                  </div>
+                </td>
+              </tr>
+            )}
+            {!loading &&
+              shown.map((row) => (
+                <React.Fragment key={row.id}>
+                  <tr
+                    data-state={row.getIsSelected() ? "selected" : undefined}
+                    className={cn(
+                      "transition-colors duration-(--motion-fast) ease-(--ease-standard) data-[state=selected]:bg-accent",
+                      variant === "striped" && "even:bg-muted/50",
+                    )}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <td
+                        key={cell.id}
+                        style={{ width: cell.column.getSize(), ...pinStyle(cell.column) }}
+                        className={cn(
+                          "border-b border-border align-middle whitespace-nowrap",
+                          density === "dense" ? "h-(--h-md)" : "h-(--h-row)",
+                          cellPad,
+                          variant === "borders" && "border-r last:border-r-0",
+                          cell.column.getIsPinned() && "bg-card",
+                          meta(cell.column).align === "right" && "text-right tabular-nums",
+                          meta(cell.column).cellClassName,
                         )}
-                    </div>
-                  </td>
-                </tr>
-              </React.Fragment>
-            ))}
-          </tfoot>
-        )}
-      </table>
+                      >
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </td>
+                    ))}
+                  </tr>
+                  {row.getCanExpand() && (
+                    <SubRow
+                      row={row}
+                      cols={cols}
+                      render={(table.options.meta as { renderSubRow?: (r: Row<unknown>) => React.ReactNode } | undefined)?.renderSubRow}
+                    />
+                  )}
+                </React.Fragment>
+              ))}
+            {padBottom > 0 && <tr aria-hidden="true" style={{ height: padBottom }} />}
+          </tbody>
+          {hasFooter && (
+            <tfoot className={cn("bg-muted font-medium", maxHeight && "sticky bottom-0")}>
+              {table.getFooterGroups().map((g) => (
+                <React.Fragment key={g.id}>
+                  <tr className="max-sm:hidden">
+                    {g.headers.map((h) => (
+                      <td key={h.id} className={cn("h-(--h-md) tabular-nums", cellPad, meta(h.column).align === "right" && "text-right")}>
+                        {h.isPlaceholder ? null : flexRender(h.column.columnDef.footer, h.getContext())}
+                      </td>
+                    ))}
+                  </tr>
+                  {/* On a phone the totals' columns are usually off to the side, so they are written out in one row that
+                      stays in view: the first column's footer leads ("Total"), then each total after its column's name. */}
+                  <tr className="sm:hidden">
+                    <td colSpan={cols} className="p-0">
+                      <div className={cn("sticky left-0 flex w-[100cqw] flex-wrap items-center gap-x-4 gap-y-1 py-3 tabular-nums", cellPad)}>
+                        {g.headers
+                          .filter((h) => !h.isPlaceholder && h.column.columnDef.footer)
+                          .map((h, i) =>
+                            i === 0 && meta(h.column).align !== "right" ? (
+                              <span key={h.id}>{flexRender(h.column.columnDef.footer, h.getContext())}</span>
+                            ) : (
+                              <span key={h.id} className="flex items-baseline gap-2">
+                                <span className="font-normal text-muted-foreground">{columnName(h.column)}</span>
+                                {flexRender(h.column.columnDef.footer, h.getContext())}
+                              </span>
+                            ),
+                          )}
+                      </div>
+                    </td>
+                  </tr>
+                </React.Fragment>
+              ))}
+            </tfoot>
+          )}
+        </table>
+      </div>
+      <ScrollFades {...edges} />
     </div>
   )
 }
@@ -312,7 +318,6 @@ export function DataGridColumnHeader<T>({ column, title }: { column: Column<T, u
           className={cn(
             "press -mx-1 inline-flex h-(--h-sm) items-center gap-2 rounded-xs px-1 hover:text-foreground data-[state=open]:text-foreground",
             sorted && "text-foreground",
-            (column.columnDef.meta as { align?: string } | undefined)?.align === "right" && "flex-row-reverse",
           )}
         >
           {title}

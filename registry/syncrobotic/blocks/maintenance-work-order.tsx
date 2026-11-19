@@ -72,26 +72,28 @@ export function MaintenanceWorkOrder() {
             <h3 id="parts-title" className="text-sm font-medium">
               Parts used
             </h3>
-            <div className="overflow-hidden rounded-md bg-card ring-1 ring-border">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Part</TableHead>
-                    <TableHead>Code</TableHead>
-                    <TableHead className="text-right">Quantity</TableHead>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Part</TableHead>
+                  <TableHead className="hidden sm:table-cell">Code</TableHead>
+                  <TableHead className="text-right">Quantity</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {parts.map((p) => (
+                  <TableRow key={p.code}>
+                    <TableCell className="py-2 max-sm:whitespace-normal">
+                      {p.part}
+                      {/* On a phone the code sits under the part, so the quantity keeps its place on the right. */}
+                      <span className="block font-mono text-xs text-muted-foreground sm:hidden">{p.code}</span>
+                    </TableCell>
+                    <TableCell className="hidden font-mono text-xs sm:table-cell">{p.code}</TableCell>
+                    <TableCell className="text-right tabular-nums">{p.qty}</TableCell>
                   </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {parts.map((p) => (
-                    <TableRow key={p.code}>
-                      <TableCell>{p.part}</TableCell>
-                      <TableCell className="font-mono text-xs">{p.code}</TableCell>
-                      <TableCell className="text-right tabular-nums">{p.qty}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                ))}
+              </TableBody>
+            </Table>
           </section>
 
           <Field label="Notes" hint="What you found, for the next person.">

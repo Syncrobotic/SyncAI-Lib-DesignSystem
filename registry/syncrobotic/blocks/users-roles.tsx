@@ -2,6 +2,7 @@
 "use client"
 
 import * as React from "react"
+import { cn } from "@/lib/utils"
 import { Ellipsis, UserPlus } from "lucide-react"
 import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
 import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"
@@ -38,6 +39,20 @@ const initials = (u: User) =>
     .slice(0, 2)
     .map((s) => s[0]!.toUpperCase())
     .join("")
+
+/** A long email wraps before its @, not in the middle of a word. */
+const breakAtSign = (email: string) => {
+  const at = email.indexOf("@")
+  return at < 0 ? (
+    email
+  ) : (
+    <>
+      {email.slice(0, at)}
+      <wbr />
+      {email.slice(at)}
+    </>
+  )
+}
 
 /** Users and roles: who can do what. Change a role in place; invite by email; remove from the row menu (last, after a separator). */
 export function UsersRoles() {
@@ -114,22 +129,23 @@ export function UsersRoles() {
           <TableBody>
             {users.map((u) => (
               <TableRow key={u.id}>
-                {/* w-full max-w-0: the person takes what the role and menu leave, and a long email truncates instead of pushing the role off a phone. */}
-                <TableCell className="w-full max-w-0">
+                {/* w-full max-w-0: the person takes what the role and menu leave, and a long email wraps instead of pushing the role off a phone. */}
+                <TableCell className="w-full max-w-0 py-2 whitespace-normal">
                   <div className="flex items-center gap-3">
                     <Avatar className="hidden sm:flex">
                       <AvatarFallback>{initials(u)}</AvatarFallback>
                     </Avatar>
-                    <div className="flex min-w-0 flex-col">
-                      <span className="flex min-w-0 items-center gap-2 font-medium">
-                        <span className="truncate">{u.name || u.email}</span>
-                        {u.invited && (
-                          <Badge tone="outline" className="shrink-0">
-                            Invited
-                          </Badge>
-                        )}
+                    <div className="flex min-w-0 flex-col items-start">
+                      {/* Someone invited has no name yet: the badge takes the name's line and the email its own, whole, so it
+                          is never cut to a few letters beside the badge. */}
+                      {u.name ? (
+                        <span className="max-w-full truncate font-medium">{u.name}</span>
+                      ) : (
+                        <Badge tone="outline">Invited</Badge>
+                      )}
+                      <span className={cn("max-w-full text-xs wrap-break-word", u.name ? "text-muted-foreground" : "mt-1 font-medium text-foreground")}>
+                        {breakAtSign(u.email)}
                       </span>
-                      {u.name && <span className="truncate text-xs text-muted-foreground">{u.email}</span>}
                     </div>
                   </div>
                 </TableCell>

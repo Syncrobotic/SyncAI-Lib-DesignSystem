@@ -71,7 +71,7 @@ export function SheetFilters({
             )}
           </Button>
         </SheetTrigger>
-        <SheetContent side="bottom" onOpenAutoFocus={focusOnOpen ? undefined : (e) => e.preventDefault()}>
+        <SheetContent side="bottom" className="sm:mx-auto sm:max-w-md" onOpenAutoFocus={focusOnOpen ? undefined : (e) => e.preventDefault()}>
           <SheetHeader>
             <SheetTitle>Filter robots</SheetTitle>
             <SheetDescription>Pick what to show; nothing changes until you apply.</SheetDescription>

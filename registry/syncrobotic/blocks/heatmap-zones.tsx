@@ -30,9 +30,14 @@ export function HeatmapZones() {
             <TableHead className="w-24 pr-2">Zone</TableHead>
             {slots.map((s) => (
               <TableHead key={s} className="px-0 text-center tabular-nums">
-                {s}:00
+                {/* On a phone the hour alone, so six headings fit over six cells instead of running together. */}
+                {s}
+                <span className="max-sm:sr-only">:00</span>
               </TableHead>
             ))}
+            {/* An empty column as wide as the gap after the last cell, so the last column keeps its width and the cells
+                stop 8 px short of the edge, like the zone names start. */}
+            <TableHead aria-hidden="true" className="w-2 p-0" />
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -46,6 +51,7 @@ export function HeatmapZones() {
                   </span>
                 </TableCell>
               ))}
+              <TableCell aria-hidden="true" className="p-0" />
             </TableRow>
           ))}
         </TableBody>

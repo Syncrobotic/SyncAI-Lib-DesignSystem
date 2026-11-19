@@ -73,7 +73,7 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
 
         <section aria-label="Robot detail" className={cn("min-w-0 flex-1 overflow-y-auto p-6", !robot && "hidden md:block")}>
           {robot ? (
-            <div className="flex max-w-3xl flex-col gap-6">
+            <div className="flex flex-col gap-6">
               <div className="flex flex-wrap items-start gap-3">
                 <Button variant="ghost" size="icon-sm" aria-label="Back to robots" className="md:hidden" onClick={() => setSelected(null)}>
                   <ArrowLeft aria-hidden="true" />

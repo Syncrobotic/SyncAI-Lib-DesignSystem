@@ -128,7 +128,8 @@ export function LoadingPage({ what = "Loading the fleet", fill = "screen", class
   return (
     <Root aria-busy="true" className={cn("flex flex-col gap-4 bg-background p-6", fill === "screen" ? "min-h-dvh" : "h-full", className)}>
       <LoadingLine>{what}</LoadingLine>
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      {/* Two by two on phones, as the stats it stands in for are. */}
+      <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
         {["Robots online", "Patrol hours", "Events", "Avg. battery"].map((label) => (
           <div key={label} className="flex flex-col gap-3 rounded-md bg-card p-4 ring-1 ring-border">
             <span className="text-sm text-muted-foreground">{label}</span>

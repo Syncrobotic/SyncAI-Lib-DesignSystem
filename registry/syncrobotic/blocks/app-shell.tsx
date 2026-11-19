@@ -5,6 +5,7 @@ import * as React from "react"
 import {
   Bell,
   Bot,
+  CalendarDays,
   ChevronDown,
   ChevronsUpDown,
   CirclePlus,
@@ -82,6 +83,7 @@ export const sampleNav: AppNavGroup[] = [
     label: "Operations",
     items: [
       { label: "Alarms", href: "#alarms", icon: Bell, count: 2 },
+      { label: "Schedule", href: "#schedule", icon: CalendarDays },
       { label: "Agents", href: "#agents", icon: Sparkles },
       { label: "Event log", href: "#events", icon: ScrollText },
       { label: "Settings", href: "#settings", icon: Settings },

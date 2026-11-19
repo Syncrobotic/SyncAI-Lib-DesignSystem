@@ -225,7 +225,7 @@ export function DataCatalog({ datasets = sampleDatasets }: { datasets?: Dataset[
               <TableHeader>
                 <TableRow>
                   <TableHead {...sortProps("name")}>Dataset</TableHead>
-                  <TableHead>Tier</TableHead>
+                  <TableHead className="hidden sm:table-cell">Tier</TableHead>
                   <TableHead className="hidden md:table-cell">Task</TableHead>
                   <TableHead className="hidden md:table-cell">Use</TableHead>
                   <TableHead className="hidden xl:table-cell">Owner</TableHead>
@@ -237,16 +237,20 @@ export function DataCatalog({ datasets = sampleDatasets }: { datasets?: Dataset[
               <TableBody>
                 {rows.map((d) => (
                   <TableRow key={d.ref}>
-                    <TableCell>
+                    <TableCell className="py-2 max-sm:whitespace-normal">
                       {/* At least the control height (44, 48 in gloves): two short lines alone are a 36 px target. */}
                       <a href={`#${d.ref}`} className="flex min-h-(--h-md) flex-col justify-center hover:underline">
                         <span className="font-medium">{d.name}</span>
-                        <span className="font-mono text-xs text-muted-foreground">
+                        <span className="font-mono text-xs break-all text-muted-foreground">
                           {d.ref}@{d.version}
                         </span>
                       </a>
+                      {/* On a phone the tier sits under the name; it is a column from 640 px, so the items count never clips. */}
+                      <span className="mt-1 flex sm:hidden">
+                        <TierBadge tier={d.tier} compact />
+                      </span>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="hidden sm:table-cell">
                       <TierBadge tier={d.tier} compact />
                     </TableCell>
                     <TableCell className="hidden md:table-cell">{d.task}</TableCell>

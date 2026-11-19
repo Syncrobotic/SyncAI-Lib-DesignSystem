@@ -9,6 +9,7 @@ import { Input } from "@/registry/syncrobotic/ui/input"
 import { Label } from "@/registry/syncrobotic/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/registry/syncrobotic/ui/radio-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
+import { TimeInput } from "@/registry/syncrobotic/ui/time-picker"
 import { Textarea } from "@/registry/syncrobotic/ui/textarea"
 import { Toaster, toast } from "@/registry/syncrobotic/ui/toast"
 
@@ -51,7 +52,7 @@ export function RecordForm({ initial }: { initial?: { name: string; robot: strin
     <AppShell
       product="Fleet console"
       nav={sampleNav}
-      current="#overview"
+      current="#schedule"
       title={initial ? "Edit mission" : "New mission"}
       user={{ name: "Mei Lin", initials: "ML" }}
     >
@@ -93,7 +94,8 @@ export function RecordForm({ initial }: { initial?: { name: string; robot: strin
         </fieldset>
 
         <Field label="Start" error={errors.start}>
-          <Input type="time" value={start} onChange={(e) => setStart(e.target.value)} className="w-40" />
+          {/* Typed on the kit's 24-hour clock (HH:mm), never the browser's own, which shows "10:00 PM" in an English locale. */}
+          <TimeInput value={start || undefined} onValueChange={(t) => setStart(t ?? "")} className="w-40" />
         </Field>
 
         <Field label="Notes" hint="Optional. Operators see this before the mission starts.">

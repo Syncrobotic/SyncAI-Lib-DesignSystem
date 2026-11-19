@@ -64,7 +64,7 @@ export function GovernanceTodo({ todos = sampleTodos }: { todos?: Todo[] }) {
   return (
     <AppShell product="DataCore" nav={dataNav} current="#governance" title="Governance" user={{ name: "Mei Lin", initials: "ML" }}>
       <div className="flex max-w-4xl flex-col gap-4">
-        <SegmentedControl value={who} onValueChange={(v) => v && setWho(v as typeof who)} aria-label="Owner" className="sm:w-auto">
+        <SegmentedControl value={who} onValueChange={(v) => v && setWho(v as typeof who)} aria-label="Owner" className="sm:w-auto sm:self-start">
           <SegmentedControlItem value="all">All {open.length}</SegmentedControlItem>
           <SegmentedControlItem value="Maintainer">Maintainers {count("Maintainer")}</SegmentedControlItem>
           <SegmentedControlItem value="Compliance">Compliance {count("Compliance")}</SegmentedControlItem>

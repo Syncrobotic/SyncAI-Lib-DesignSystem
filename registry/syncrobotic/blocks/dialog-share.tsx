@@ -127,7 +127,7 @@ export function DialogShare({
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="people">Only people added</SelectItem>
-                  <SelectItem value="org">Anyone in your organisation</SelectItem>
+                  <SelectItem value="org">Your organisation</SelectItem>
                 </SelectContent>
               </Select>
             </div>
