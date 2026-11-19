@@ -102,7 +102,10 @@ export default async function ComponentPage({ params }: Props) {
     <article>
       {/* The same head on every component page: title, one line, then the version and the tools, always below. */}
       <PageTitle title={item.title} lead={item.description} />
-      <div className="-mt-4 flex flex-wrap items-center gap-2 pb-6">
+      {/* On a phone the version is one line and the three tools share the next one in equal columns, so none is left alone
+          on a line of its own; from 640 px they all sit in one row. */}
+      <div className="-mt-4 flex flex-col gap-2 pb-6 sm:flex-row sm:flex-wrap sm:items-center">
+        <div className="flex items-center gap-2">
           {meta && (
             <a href="#changelog" className="inline-flex h-(--h-sm) items-center font-mono text-sm text-muted-foreground tabular-nums underline-offset-4 hover:underline">
               v{meta.version}
@@ -113,6 +116,8 @@ export default async function ComponentPage({ params }: Props) {
               <Badge tone="outline">Beta</Badge>
             </a>
           )}
+        </div>
+        <div className={`grid gap-2 sm:flex sm:flex-wrap ${inlineSource ? "grid-cols-2" : "grid-cols-3"}`}>
           {/* For AI agents: the page as markdown, or a prompt that points an agent at it. */}
           <CopyButton value={componentMarkdown(item.name) ?? ""} variant="outline" label="Copy as Markdown">
             Markdown
@@ -131,6 +136,7 @@ export default async function ComponentPage({ params }: Props) {
               href={`${site.repo}/blob/main/${item.files[0].path}`}
             />
           )}
+        </div>
       </div>
 
       {first && example(first)}

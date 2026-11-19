@@ -1,4 +1,4 @@
-// @syncrobotic/agent-approval v0.17.1 · update: npx shadcn add @syncrobotic/agent-approval --overwrite
+// @syncrobotic/agent-approval v0.17.2 · update: npx shadcn add @syncrobotic/agent-approval --overwrite
 "use client"
 
 import * as React from "react"
@@ -125,7 +125,11 @@ export function AgentApproval() {
             </div>
           </form>
         ) : (
-          <div className="flex flex-wrap gap-2 border-t border-border pt-4">
+          <div
+            // On a phone the three actions stack full width (the main one first), so none is left alone on a line; from 640 px
+            // they share a row.
+            className="grid gap-2 border-t border-border pt-4 sm:flex sm:flex-wrap"
+          >
             <Button onClick={() => setState("approved")}>Approve and send to robots</Button>
             <Button variant="secondary" onClick={() => setState("rejecting")}>
               Send back

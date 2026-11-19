@@ -110,7 +110,7 @@ export const AlarmListFlood: S = { render: () => <AlarmList alarms={flood} now={
 
 function ToastDemo() {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="grid gap-2 sm:flex sm:flex-wrap">
       <Button variant="secondary" onClick={() => toast({ tone: "success", title: "Route saved", description: "Night patrol · 6 waypoints" })}>
         Save route
       </Button>
