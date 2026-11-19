@@ -62,6 +62,13 @@ html {
 [data-reveal="waiting"] .appear-item {
   opacity: 0;
 }
+/* Printed (or saved as PDF) before it was scrolled through, a section still waiting to arrive prints as it is. */
+@media print {
+  [data-reveal] .appear-item {
+    opacity: 1;
+    animation: none;
+  }
+}
 [data-reveal="playing"] .appear-item {
   animation: var(--animate-appear) both;
   animation-delay: calc(var(--stagger, 0s) * var(--i, 0));

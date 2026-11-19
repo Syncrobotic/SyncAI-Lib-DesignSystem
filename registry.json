@@ -2355,7 +2355,7 @@
           {
             "version": "0.17.2",
             "date": "2026-11-19",
-            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules. With the keyboard, the selected row shows a 2 px inset ring. CommandDialog gives focus back to what had it before it opened (button or ⌘K); it fell to the page."
+            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules. With the keyboard, the selected row shows a 2 px inset ring. CommandDialog gives focus back to what had it before it opened (button or ⌘K); it fell to the page. An inline Command no longer scrolls the page to itself as it mounts: cmdk keeps the highlighted row in view with scrollIntoView, which also moved the page; rows now scroll their own list only."
           },
           {
             "version": "0.16.1",
