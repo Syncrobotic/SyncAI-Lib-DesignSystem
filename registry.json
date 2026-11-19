@@ -4664,7 +4664,8 @@
       ],
       "registryDependencies": [
         "@syncrobotic/card",
-        "@syncrobotic/chart"
+        "@syncrobotic/chart",
+        "@syncrobotic/segmented-control"
       ],
       "files": [
         {
@@ -4698,7 +4699,8 @@
       ],
       "registryDependencies": [
         "@syncrobotic/card",
-        "@syncrobotic/chart"
+        "@syncrobotic/chart",
+        "@syncrobotic/segmented-control"
       ],
       "files": [
         {
@@ -4732,7 +4734,8 @@
       ],
       "registryDependencies": [
         "@syncrobotic/card",
-        "@syncrobotic/chart"
+        "@syncrobotic/chart",
+        "@syncrobotic/segmented-control"
       ],
       "files": [
         {
@@ -4766,7 +4769,8 @@
       ],
       "registryDependencies": [
         "@syncrobotic/card",
-        "@syncrobotic/chart"
+        "@syncrobotic/chart",
+        "@syncrobotic/segmented-control"
       ],
       "files": [
         {
@@ -4800,7 +4804,8 @@
       ],
       "registryDependencies": [
         "@syncrobotic/card",
-        "@syncrobotic/chart"
+        "@syncrobotic/chart",
+        "@syncrobotic/segmented-control"
       ],
       "files": [
         {
@@ -4864,7 +4869,8 @@
       ],
       "registryDependencies": [
         "@syncrobotic/card",
-        "@syncrobotic/chart"
+        "@syncrobotic/chart",
+        "@syncrobotic/segmented-control"
       ],
       "files": [
         {
@@ -4893,7 +4899,8 @@
       ],
       "registryDependencies": [
         "@syncrobotic/card",
-        "@syncrobotic/chart"
+        "@syncrobotic/chart",
+        "@syncrobotic/segmented-control"
       ],
       "files": [
         {
@@ -4922,7 +4929,8 @@
       ],
       "registryDependencies": [
         "@syncrobotic/card",
-        "@syncrobotic/chart"
+        "@syncrobotic/chart",
+        "@syncrobotic/segmented-control"
       ],
       "files": [
         {
@@ -5225,6 +5233,8 @@
       "description": "Days by 2-hour slots in one sequential hue, the busiest slot named, a tooltip per cell.",
       "registryDependencies": [
         "@syncrobotic/card",
+        "@syncrobotic/segmented-control",
+        "@syncrobotic/table",
         "@syncrobotic/tooltip"
       ],
       "files": [
