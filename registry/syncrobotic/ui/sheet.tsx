@@ -1,4 +1,4 @@
-// @syncrobotic/sheet v0.7.0 · update: npx shadcn add @syncrobotic/sheet --overwrite
+// @syncrobotic/sheet v0.14.1 · update: npx shadcn add @syncrobotic/sheet --overwrite
 "use client"
 
 import * as React from "react"
@@ -9,16 +9,21 @@ export const Sheet = SheetPrimitive.Root
 export const SheetTrigger = SheetPrimitive.Trigger
 export const SheetClose = SheetPrimitive.Close
 
+// A sheet floats 8 px from the screen's edges, the app shell's gutter, so it reads as one more panel on the page instead
+// of a slab glued to the glass; every corner is rounded. The bottom sheet also clears the home indicator.
 const sides = {
   bottom:
-    "inset-x-0 bottom-0 max-h-[85vh] rounded-t-xl pb-[max(1.5rem,env(safe-area-inset-bottom))] data-[state=open]:animate-sheet-in-bottom data-[state=closed]:animate-sheet-out-bottom",
-  right: "inset-y-0 right-0 h-full w-full max-w-sm rounded-l-xl data-[state=open]:animate-sheet-in-right data-[state=closed]:animate-sheet-out-right",
+    "inset-x-2 bottom-[max(0.5rem,env(safe-area-inset-bottom))] max-h-[85dvh] rounded-xl data-[state=open]:animate-sheet-in-bottom data-[state=closed]:animate-sheet-out-bottom",
+  right:
+    "inset-2 ml-auto max-w-sm rounded-xl data-[state=open]:animate-sheet-in-right data-[state=closed]:animate-sheet-out-right",
   /** Navigation drawers, which open from the side the navigation lives on. */
-  left: "inset-y-0 left-0 h-full w-full max-w-sm rounded-r-xl data-[state=open]:animate-sheet-in-left data-[state=closed]:animate-sheet-out-left",
+  left: "inset-2 mr-auto max-w-sm rounded-xl data-[state=open]:animate-sheet-in-left data-[state=closed]:animate-sheet-out-left",
 } as const
 
 /**
  * Bottom sheet on phones (radius 24, xl, with a grab handle); right panel on wide screens; left for navigation drawers.
+ * Each floats 8 px in from the screen's edges. A side sheet fills the space between those edges up to `max-w-sm`;
+ * set `w-*` or `sm:max-w-*` to change it, and auto margins keep it on its side.
  */
 export function SheetContent({
   className,

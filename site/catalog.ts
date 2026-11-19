@@ -640,6 +640,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "Detail or a short form beside the list it came from, keeping the list in view. A decision that blocks the task is a Dialog.",
       "Bottom on phones, right on wide screens, left for navigation. Esc and the scrim close it.",
+      "It floats 8 px from the screen's edges, the app shell's gutter, with every corner rounded. Set a width with w-* or sm:max-w-*; auto margins keep it on its side.",
     ],
   },
   popover: {

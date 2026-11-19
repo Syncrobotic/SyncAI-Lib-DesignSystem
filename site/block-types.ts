@@ -29,7 +29,8 @@ export const blockTypes: BlockType[] = [
     rules: [
       "One shell per product. Pages change inside it; the shell does not.",
       "The current page is marked in the navigation and named in the top bar.",
-      "On phones the sidebar becomes a drawer; nothing is hidden for good.",
+      "On phones the sidebar becomes a drawer; nothing is hidden for good. The drawer floats 8 px from the edges, the shell's gutter.",
+      "A top bar over plain content starts on the content's edge and, on scroll, gathers into a floating panel as wide as the content column.",
     ],
   },
   {

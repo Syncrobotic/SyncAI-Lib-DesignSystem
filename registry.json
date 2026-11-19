@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.14.0",
+        "version": "0.14.1",
         "changelog": [
+          {
+            "version": "0.14.1",
+            "date": "2026-11-19",
+            "note": "Sheet animations travel the extra 8 px (and the home indicator) of the floating sheet."
+          },
           {
             "version": "0.14.0",
             "date": "2026-11-19",
@@ -1918,7 +1923,7 @@
       "name": "sheet",
       "type": "registry:ui",
       "title": "Sheet",
-      "description": "Bottom sheet on phones with a grab handle, side panel on wide screens.",
+      "description": "A panel that slides in and floats 8 px from the screen's edges: a bottom sheet with a grab handle on phones, a side panel on wide screens, a drawer for navigation.",
       "dependencies": [
         "radix-ui"
       ],
@@ -1932,8 +1937,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.14.1",
         "changelog": [
+          {
+            "version": "0.14.1",
+            "date": "2026-11-19",
+            "note": "Floats 8 px from the screen's edges, the app shell's gutter, with every corner rounded; the bottom sheet clears the home indicator. A side sheet fills up to max-w-sm with auto margins, so drop `w-full` from your SheetContent if you set it."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -3462,7 +3472,7 @@
       "name": "top-bar-shell",
       "type": "registry:block",
       "title": "Top-bar shell",
-      "description": "The frame for a tool or site without a sidebar: links, search and user in a top bar that gathers into a floating panel as the page scrolls, then the content and a footer.",
+      "description": "The frame for a tool or site without a sidebar: links, search and user in a top bar that starts on the content's edge and gathers into a floating panel as wide as the content column on scroll, then the content and a footer.",
       "dependencies": [
         "lucide-react"
       ],
@@ -3480,8 +3490,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.14.1",
         "changelog": [
+          {
+            "version": "0.14.1",
+            "date": "2026-11-19",
+            "note": "At the top the bar's menu icon or logo starts on the content's edge, in line with the page; on scroll it gathers into a floating panel as wide as the content column. The navigation drawer floats 8 px from the edges."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -3626,8 +3641,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.14.1",
         "changelog": [
+          {
+            "version": "0.14.1",
+            "date": "2026-11-19",
+            "note": "The details sheet takes the floating sheet's width on phones."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -4095,8 +4115,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.14.1",
         "changelog": [
+          {
+            "version": "0.14.1",
+            "date": "2026-11-19",
+            "note": "Design language: high contrast, how many chart series (five in lines and bars, three in scatter and maps), floating sheets and top bars."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-18",
