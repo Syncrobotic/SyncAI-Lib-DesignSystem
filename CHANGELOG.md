@@ -2,6 +2,14 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Changed
+- **A selection travels:** `segmented-control`'s thumb and `tabs`' underline move to the option you pick (the Move pattern, `--motion-base`) instead of jumping; the label's colour changes with the travel.
+
+### Fixed
+- **Two clear crosses in a search field** (`input-group` with its own clear button): an input group with a button in it hides the browser's cross (`syncrobotic-theme`).
+
 ## 0.14.2 · 2026-11-19
 
 ### Added
