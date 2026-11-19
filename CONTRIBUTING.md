@@ -26,13 +26,17 @@ npm run build            # registry JSON in public/r, and the docs site
 npm run build-storybook
 ```
 
-Slower checks, run on pull requests into `stage` and `main` and on demand (Actions → `ci` → Run workflow):
+CI runs on pull requests only (a merge lands a tree its pull request already passed) and cancels a run when a newer push makes it stale. The checks above run on every pull request. The slower ones:
 
 ```bash
 npm run test:stories     # every story, dark and light: screenshot against its baseline, then axe (WCAG 2.2 AA)
 npm run test:registry    # every item installed into a fresh Next.js app, type-checked and built
 npm run check:radius     # with the site running (npm start): nested corners follow outer = inner + padding
 ```
+
+- Story checks run on pull requests into `stage`, where a release is assembled, in Playwright's own image (`mcr.microsoft.com/playwright`), four shards. `main` receives `stage`'s tree unchanged, so they are not repeated there. Run them on any branch with Actions → `ci` → Run workflow.
+- The registry install test runs on every pull request that touches `registry/`, `registry.json`, the package files or the TypeScript config, and is skipped otherwise.
+- `check:radius` is local only.
 
 ### Rules the lints enforce
 
