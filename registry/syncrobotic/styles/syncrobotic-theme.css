@@ -1,4 +1,4 @@
-/* @syncrobotic/syncrobotic-theme v0.13.1 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
+/* @syncrobotic/syncrobotic-theme v0.14.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
 /*
  * SYNCROBOTIC theme (see CHANGELOG.md for its version history)
  * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
@@ -111,6 +111,12 @@
 .dark {
   --background: #09090b;
   --foreground: #fafafa;
+  /* Aliases are resolved where they are declared, so every block that changes --foreground restates them; otherwise a
+     .dark subtree on a light page inherits light-mode ink for cards, menus and secondary buttons. */
+  --card-foreground: var(--foreground);
+  --popover-foreground: var(--foreground);
+  --secondary-foreground: var(--foreground);
+  --accent-foreground: var(--foreground);
   --card: #16161a;
   --popover: #16161a;
   --primary: #fafafa;
@@ -152,6 +158,84 @@
   --edge: rgb(255 255 255 / 0.12);
   --shadow-float: 0 8px 24px rgb(0 0 0 / 0.32);
   --shadow-overlay: 0 16px 40px rgb(0 0 0 / 0.45);
+}
+
+/* ---------- High contrast ---------- */
+/* For bright sun, glare on a tablet outdoors, and low vision: data-contrast="more" on <html> or any container, in light or
+   dark. Text and status reach 7:1 (WCAG AAA) on every surface they sit on, edges reach 3:1 so a field or card is visible
+   without its fill, and nothing over the map is translucent. Meanings do not change: blue is still a process, solid red
+   still only the stop. To follow the system setting, set it from matchMedia("(prefers-contrast: more)"). */
+[data-contrast="more"] {
+  --background: #ffffff;
+  --foreground: #000000;
+  --card-foreground: var(--foreground);
+  --popover-foreground: var(--foreground);
+  --secondary-foreground: var(--foreground);
+  --accent-foreground: var(--foreground);
+  --card: #ffffff;
+  --popover: #ffffff;
+  --primary: #000000;
+  --primary-foreground: #ffffff;
+  --secondary: #dcdce1;
+  --muted: #dcdce1;
+  --muted-foreground: #3f3f46;
+  --accent: #d4d4d8;
+  --destructive: #6e000f;
+  --border: #767680;
+  --input: #5c5c66;
+  --ring: var(--foreground);
+  --disabled: #8a8a93;
+
+  --info: #1d3d8f;
+  --success: #0a4a32;
+  --warning: #5e3e00;
+  --danger: #6e000f;
+  --neutral: #3f3f46;
+
+  --map-point: #4b5160;
+  --scrim: rgb(0 0 0 / 0.6);
+  --float: rgb(255 255 255 / 1);
+  --edge: rgb(0 0 0 / 0.55);
+}
+
+.dark[data-contrast="more"],
+.dark [data-contrast="more"],
+[data-contrast="more"] .dark {
+  --background: #000000;
+  --foreground: #ffffff;
+  --card-foreground: var(--foreground);
+  --popover-foreground: var(--foreground);
+  --secondary-foreground: var(--foreground);
+  --accent-foreground: var(--foreground);
+  --card: #121215;
+  --popover: #121215;
+  --primary: #ffffff;
+  --primary-foreground: #000000;
+  --secondary: #2a2a30;
+  --muted: #2a2a30;
+  --muted-foreground: #d4d4d8;
+  --accent: #34343b;
+  --destructive: #ffa3ab;
+  --border: #8a8a94;
+  --input: #a1a1aa;
+  --ring: var(--foreground);
+  --disabled: #71717a;
+
+  --info: #a9c4f2;
+  --info-subtle: #1a2233;
+  --success: #8fdcb8;
+  --success-subtle: #172720;
+  --warning: #ffe08a;
+  --warning-subtle: #2b2516;
+  --danger: #ffa3ab;
+  --danger-subtle: #321c1c;
+  --neutral: #d4d4d8;
+  --neutral-subtle: #1c1c21;
+
+  --map-point: #9aa1ad;
+  --scrim: rgb(0 0 0 / 0.8);
+  --float: rgb(18 18 21 / 1);
+  --edge: rgb(255 255 255 / 0.55);
 }
 
 /* ---------- Tailwind utilities ---------- */
