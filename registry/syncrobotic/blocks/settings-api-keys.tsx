@@ -115,7 +115,7 @@ export function SettingsApiKeys({ keys: initial = sampleKeys }: { keys?: ApiKey[
               </span>
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button variant="ghost" size="sm" aria-label={`Revoke ${k.name}`}>
+                  <Button variant="destructive" size="sm" aria-label={`Revoke ${k.name}`}>
                     Revoke
                   </Button>
                 </AlertDialogTrigger>

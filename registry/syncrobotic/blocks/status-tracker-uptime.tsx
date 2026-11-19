@@ -40,7 +40,7 @@ export function StatusTrackerUptime() {
             const bad = r.days.filter((d) => d === "down").length
             return (
               <li key={r.id} className="flex flex-col gap-1">
-                <span className="flex items-baseline justify-between gap-2 text-xs">
+                <span className="flex flex-wrap items-baseline gap-x-2 text-xs">
                   <span className="font-medium text-foreground">Patrol dog {r.id}</span>
                   <span className="text-muted-foreground tabular-nums">
                     {pct} % up{bad ? ` · ${bad} ${bad === 1 ? "day" : "days"} down` : ""}

@@ -103,7 +103,7 @@ export function MapWorkspace() {
               <h2 className="font-bold">Patrol dog {robot.id}</h2>
               <InlineStatus status={robot.tone}>{robot.status}</InlineStatus>
             </div>
-            <Meter value={robot.battery} low={30} label="Battery" />
+            <Meter value={robot.battery} low={15} label="Battery" />
             <div className="flex gap-2">
               <Button variant="secondary" size="sm">
                 <Pause aria-hidden="true" /> Pause

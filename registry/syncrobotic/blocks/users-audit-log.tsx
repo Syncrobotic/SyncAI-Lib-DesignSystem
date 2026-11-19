@@ -133,7 +133,7 @@ export function UsersAuditLog() {
               <SelectItem value="settings">Settings</SelectItem>
             </SelectContent>
           </Select>
-          <span role="status" className="ml-auto text-sm text-muted-foreground tabular-nums">
+          <span role="status" className="text-sm text-muted-foreground tabular-nums max-sm:w-full sm:ml-auto">
             {shown.length} of {rows.length} entries
           </span>
         </div>

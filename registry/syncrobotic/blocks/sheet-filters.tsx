@@ -89,10 +89,11 @@ export function SheetFilters({
                     checked={picked.includes(s.value)}
                     onCheckedChange={(v) => setPicked((p) => (v === true ? [...p, s.value] : p.filter((x) => x !== s.value)))}
                   />
-                  <Label htmlFor={id} className="flex-1 font-normal">
+                  {/* The count follows the words, not the far edge, so it reads with its option on a wide sheet too. */}
+                  <Label htmlFor={id} className="flex flex-1 items-baseline gap-2 font-normal">
                     {s.label}
+                    <span className="text-sm text-muted-foreground tabular-nums">{n}</span>
                   </Label>
-                  <span className="text-sm text-muted-foreground tabular-nums">{n}</span>
                 </div>
               )
             })}
