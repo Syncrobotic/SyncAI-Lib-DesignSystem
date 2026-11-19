@@ -95,7 +95,7 @@ export function DatasetDetail({ name = "Night parking lot people", reference = "
 
   return (
     <AppShell product="DataCore" nav={dataNav} current="#catalog" title="Catalog" user={{ name: "Mei Lin", initials: "ML" }}>
-      <div className="flex max-w-5xl flex-col gap-6">
+      <div className="flex flex-col gap-6">
         <Breadcrumb>
           <BreadcrumbLink href="#catalog">Catalog</BreadcrumbLink>
           <BreadcrumbLink href="#people">people</BreadcrumbLink>

@@ -52,7 +52,7 @@ export function StatsFiltered({ className }: { className?: string }) {
               <SelectItem value="taoyuan">Taoyuan plant</SelectItem>
             </SelectContent>
           </Select>
-          <SegmentedControl aria-label="Time range" value={range} onValueChange={(v) => v && setRange(v as Range)}>
+          <SegmentedControl aria-label="Time range" value={range} onValueChange={(v) => v && setRange(v as Range)} className="w-auto">
             <SegmentedControlItem value="24h">24 h</SegmentedControlItem>
             <SegmentedControlItem value="7d">7 days</SegmentedControlItem>
             <SegmentedControlItem value="30d">30 days</SegmentedControlItem>

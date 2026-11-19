@@ -2,6 +2,7 @@
 "use client"
 
 import * as React from "react"
+import { cn } from "@/lib/utils"
 import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
@@ -32,6 +33,19 @@ function Expiry({ invite }: { invite: Invite }) {
     </span>
   ) : (
     <span className="text-muted-foreground">{invite.expires}</span>
+  )
+}
+
+function Actions({ invite, resend, revoke }: { invite: Invite; resend: (i: Invite) => void; revoke: (i: Invite) => void }) {
+  return (
+    <>
+      <Button size="sm" variant={invite.expired ? "secondary" : "ghost"} onClick={() => resend(invite)} aria-label={`Send again to ${invite.email}`}>
+        Send again
+      </Button>
+      <Button size="sm" variant="ghost" onClick={() => revoke(invite)} aria-label={`Revoke invitation for ${invite.email}`}>
+        Revoke
+      </Button>
+    </>
   )
 }
 
@@ -100,15 +114,14 @@ export function UsersInvitations() {
           <h2 id="pending-title" className="text-lg font-bold">
             Pending <span className="font-normal text-muted-foreground tabular-nums">{invites.length}</span>
           </h2>
-          <div className="overflow-hidden rounded-md bg-card ring-1 ring-border">
-            <Table>
+          <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Email</TableHead>
                   <TableHead className="hidden sm:table-cell">Role</TableHead>
                   <TableHead className="hidden md:table-cell">Invited by</TableHead>
                   <TableHead className="hidden sm:table-cell">Expires</TableHead>
-                  <TableHead>
+                  <TableHead className="hidden sm:table-cell">
                     <span className="sr-only">Actions</span>
                   </TableHead>
                 </TableRow>
@@ -116,12 +129,17 @@ export function UsersInvitations() {
               <TableBody>
                 {invites.map((i) => (
                   <TableRow key={i.email}>
-                    <TableCell className="py-2">
-                      <span className="font-medium">{i.email}</span>
-                      {/* On a phone the role and expiry sit under the email; they are columns from wider screens. */}
+                    <TableCell className="py-2 max-sm:pt-3 max-sm:whitespace-normal">
+                      <span className="font-medium break-all">{i.email}</span>
+                      {/* On a phone the role, the expiry and the actions sit under the email, so nothing reaches the card's
+                          edge; they are columns from wider screens. */}
                       <span className="flex flex-col text-xs sm:hidden">
                         <span className="text-muted-foreground">{i.role}</span>
                         <Expiry invite={i} />
+                      </span>
+                      {/* A ghost button's words line up with the email above it; a filled one's edge does. */}
+                      <span className={cn("mt-2 flex gap-2 sm:hidden", !i.expired && "-ml-3")}>
+                        <Actions invite={i} resend={resend} revoke={revoke} />
                       </span>
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">{i.role}</TableCell>
@@ -131,21 +149,15 @@ export function UsersInvitations() {
                     <TableCell className="hidden sm:table-cell">
                       <Expiry invite={i} />
                     </TableCell>
-                    <TableCell className="py-2 text-right whitespace-nowrap">
-                      <span className="flex flex-col items-end sm:flex-row sm:justify-end">
-                        <Button size="sm" variant={i.expired ? "secondary" : "ghost"} onClick={() => resend(i)} aria-label={`Send again to ${i.email}`}>
-                          Send again
-                        </Button>
-                        <Button size="sm" variant="ghost" onClick={() => revoke(i)} aria-label={`Revoke invitation for ${i.email}`}>
-                          Revoke
-                        </Button>
+                    <TableCell className="hidden py-2 text-right whitespace-nowrap sm:table-cell">
+                      <span className="flex justify-end">
+                        <Actions invite={i} resend={resend} revoke={revoke} />
                       </span>
                     </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
-          </div>
         </section>
       </div>
       <Toaster />

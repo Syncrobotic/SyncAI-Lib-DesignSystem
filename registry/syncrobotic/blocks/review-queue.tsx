@@ -176,7 +176,7 @@ export function ReviewQueue({
           <span className="font-medium tabular-nums">{done ? `${total} of ${total}` : `${position + 1} of ${total}`}</span>
           <span className="text-muted-foreground tabular-nums">{answered} answered</span>
         </div>
-        <Progress value={(answered / Math.max(total, 1)) * 100} aria-label={`${answered} of ${total} answered`} />
+        <Progress tone="neutral" value={(answered / Math.max(total, 1)) * 100} aria-label={`${answered} of ${total} answered`} />
       </div>
 
       {done ? (

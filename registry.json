@@ -3232,7 +3232,8 @@
         "@syncrobotic/checkbox",
         "@syncrobotic/dropdown-menu",
         "@syncrobotic/pagination",
-        "@syncrobotic/use-presence"
+        "@syncrobotic/use-presence",
+        "@syncrobotic/table"
       ],
       "files": [
         {
@@ -4570,7 +4571,8 @@
         "@syncrobotic/radio-group",
         "@syncrobotic/select",
         "@syncrobotic/textarea",
-        "@syncrobotic/toast"
+        "@syncrobotic/toast",
+        "@syncrobotic/time-picker"
       ],
       "files": [
         {
@@ -6230,6 +6232,7 @@
       "title": "Invitations",
       "description": "Invite in one row with what the role allows, then the pending list: expired ones say so, revoking can be undone.",
       "registryDependencies": [
+        "@syncrobotic/cn",
         "@syncrobotic/app-shell",
         "@syncrobotic/status-glyph",
         "@syncrobotic/button",

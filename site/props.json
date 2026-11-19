@@ -3888,6 +3888,24 @@
  ],
  "table": [
   {
+   "name": "ScrollFades",
+   "props": [
+    {
+     "name": "start",
+     "type": "boolean",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "end",
+     "type": "boolean",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
    "name": "Table",
    "props": [],
    "inherits": [

@@ -28,7 +28,7 @@ export function AgentApproval() {
 
   return (
     <AppShell product="Fleet console" nav={sampleNav} current="#agents" title="Approval" user={{ name: "Mei Lin", initials: "ML" }}>
-      <div className="flex max-w-3xl flex-col gap-6">
+      <div className="flex max-w-5xl flex-col gap-6">
         <div className="flex flex-col gap-1">
           <StatusEyebrow status={decided ? "normal" : "warning"}>
             {state === "approved" ? "Approved by you" : state === "rejected" ? "Sent back" : "Needs your approval · expires in 25 min"}
@@ -36,7 +36,9 @@ export function AgentApproval() {
           <h2 className="text-xl font-bold">Reroute around door C3</h2>
           <p className="flex items-center gap-2 text-sm text-muted-foreground">
             <Sparkles aria-hidden="true" className="size-4" />
-            Proposed by Route planner for incident IN-2041
+            <span>
+              Proposed by Route planner for incident <span className="whitespace-nowrap">IN-2041</span>
+            </span>
           </p>
         </div>
 
@@ -44,35 +46,33 @@ export function AgentApproval() {
           <h3 id="changes-title" className="text-sm font-medium">
             What changes
           </h3>
-          <div className="overflow-x-auto rounded-md bg-card ring-1 ring-border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Robot</TableHead>
-                  <TableHead className="hidden sm:table-cell">Now</TableHead>
-                  <TableHead className="hidden sm:table-cell">After</TableHead>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Robot</TableHead>
+                <TableHead className="hidden sm:table-cell">Now</TableHead>
+                <TableHead className="hidden sm:table-cell">After</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {changes.map((c) => (
+                <TableRow key={c.robot}>
+                  <TableCell className="py-3 align-top whitespace-normal sm:align-middle">
+                    <span className="font-medium sm:whitespace-nowrap">{c.robot}</span>
+                    {/* On a phone the before and after stack under the robot, so the approver sees both without scrolling. */}
+                    <dl className="mt-2 flex flex-col gap-1 sm:hidden">
+                      <dt className="text-xs text-muted-foreground">Now</dt>
+                      <dd className="text-muted-foreground">{c.before}</dd>
+                      <dt className="mt-1 text-xs text-muted-foreground">After</dt>
+                      <dd>{c.after}</dd>
+                    </dl>
+                  </TableCell>
+                  <TableCell className="hidden whitespace-normal text-muted-foreground sm:table-cell">{c.before}</TableCell>
+                  <TableCell className="hidden whitespace-normal sm:table-cell">{c.after}</TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {changes.map((c) => (
-                  <TableRow key={c.robot}>
-                    <TableCell className="py-3 align-top whitespace-normal sm:align-middle">
-                      <span className="font-medium">{c.robot}</span>
-                      {/* On a phone the before and after stack under the robot, so the approver sees both without scrolling. */}
-                      <dl className="mt-2 flex flex-col gap-1 sm:hidden">
-                        <dt className="text-xs text-muted-foreground">Now</dt>
-                        <dd className="text-muted-foreground">{c.before}</dd>
-                        <dt className="mt-1 text-xs text-muted-foreground">After</dt>
-                        <dd>{c.after}</dd>
-                      </dl>
-                    </TableCell>
-                    <TableCell className="hidden whitespace-normal text-muted-foreground sm:table-cell">{c.before}</TableCell>
-                    <TableCell className="hidden whitespace-normal sm:table-cell">{c.after}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+              ))}
+            </TableBody>
+          </Table>
         </section>
 
         <div className="grid gap-4 sm:grid-cols-2">
