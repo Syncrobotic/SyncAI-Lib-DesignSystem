@@ -701,6 +701,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "A small control or a few facts tied to one trigger: a filter, a colour, a definition.",
       "More than a few fields, or a decision, is a Sheet or Dialog. A hint that needs no interaction is a Tooltip.",
+      'The panel is a dialog, so it needs a name: aria-label on PopoverContent (usually the trigger\'s words, aria-label="Battery filter"), or aria-labelledby pointing at a heading inside it or at the trigger\'s id.',
     ],
   },
   tooltip: {
@@ -871,6 +872,13 @@ const keyboard: Record<string, [string, string][]> = {
   "time-picker": [
     ["Enter", "Commit the typed time (TimeInput)"],
     ["Tab", "Leave the field; the time is read on blur"],
+    ["Enter / Space", "Open the list of slots (TimePicker)"],
+    ["Tab", "In the list: one stop, on the picked slot (or the first free one)"],
+    ["↑ / ↓", "Previous or next free slot"],
+    ["Page Up / Page Down", "Six slots back or forward"],
+    ["Home / End", "First or last free slot"],
+    ["Enter / Space", "Pick the focused slot and close"],
+    ["Esc", "Close and return focus"],
   ],
   "scroll-area": [
     ["Tab", "Focus the scroll region"],

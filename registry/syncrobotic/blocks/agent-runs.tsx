@@ -137,7 +137,8 @@ export function AgentRuns() {
               {shown.map((r) => (
                 <TableRow key={r.id}>
                   <TableCell className="py-2 whitespace-normal">
-                    <a href={`#${r.id}`} className="flex flex-col hover:underline">
+                    {/* At least the control height (44, 48 in gloves): two short lines alone are a 36 px target. */}
+                    <a href={`#${r.id}`} className="flex min-h-(--h-md) flex-col justify-center hover:underline">
                       <span className="font-medium">{r.goal}</span>
                       <span className="text-xs text-muted-foreground">
                         {r.agent} · <span className="font-mono">{r.id}</span>

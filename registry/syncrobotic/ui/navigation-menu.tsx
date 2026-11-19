@@ -1,4 +1,4 @@
-// @syncrobotic/navigation-menu v0.15.0 · update: npx shadcn add @syncrobotic/navigation-menu --overwrite
+// @syncrobotic/navigation-menu v0.17.2 · update: npx shadcn add @syncrobotic/navigation-menu --overwrite
 "use client"
 
 import * as React from "react"
@@ -102,7 +102,8 @@ export function NavigationMenuLink({ className, ...props }: React.ComponentProps
     <NavPrimitive.Link
       data-slot="navigation-menu-link"
       className={cn(
-        "flex flex-col gap-1 rounded-xs p-3 text-sm",
+        // At least the control height (44, 48 in gloves), not only its padding, so a one-line link is a full target.
+        "flex min-h-(--h-md) flex-col justify-center gap-1 rounded-xs p-3 text-sm",
         "transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
         "data-active:bg-muted [&_svg]:size-4 [&_svg]:text-muted-foreground",
         className,

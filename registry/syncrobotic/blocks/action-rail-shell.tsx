@@ -1,4 +1,4 @@
-// @syncrobotic/action-rail-shell v0.16.0 · update: npx shadcn add @syncrobotic/action-rail-shell --overwrite
+// @syncrobotic/action-rail-shell v0.17.2 · update: npx shadcn add @syncrobotic/action-rail-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -102,12 +102,24 @@ export function ActionRailShell({
   }, [onBack])
 
   // On phones the rail is fixed over the page; pad the page by its real height, which grows with a long title or density.
+  // The page scrolls, so its scroll padding takes the same height: a field or thumbnail that gets focus near the bottom
+  // scrolls clear of the bar instead of stopping under it (WCAG 2.4.11).
   React.useEffect(() => {
     const el = rail.current
     if (!el) return
-    const ro = new ResizeObserver(() => setBarHeight(el.offsetHeight))
+    const root = document.scrollingElement instanceof HTMLElement ? document.scrollingElement : null
+    const before = root?.style.scrollPaddingBottom ?? ""
+    const ro = new ResizeObserver(() => {
+      setBarHeight(el.offsetHeight)
+      if (root)
+        root.style.scrollPaddingBottom =
+          getComputedStyle(el).position === "fixed" ? `calc(${el.offsetHeight}px + 1rem + env(safe-area-inset-bottom))` : before
+    })
     ro.observe(el)
-    return () => ro.disconnect()
+    return () => {
+      ro.disconnect()
+      if (root) root.style.scrollPaddingBottom = before
+    }
   }, [])
 
   const actionButton = (a: RailAction, primaryAction: boolean, className?: string) => {

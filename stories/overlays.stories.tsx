@@ -142,7 +142,8 @@ const InfoPopover = ({ open }: { open?: boolean }) => (
         <Info aria-hidden="true" /> Signal
       </Button>
     </PopoverTrigger>
-    <PopoverContent>
+    {/* Radix makes the panel a dialog: name it, here after its trigger. */}
+    <PopoverContent aria-label="Signal">
       <p className="font-medium">Wi-Fi −61 dBm</p>
       <p className="text-muted-foreground">Good. Video streams at 1080p. Below −75 dBm the app drops to 480p.</p>
     </PopoverContent>
@@ -280,7 +281,7 @@ export const PopoverWithForm: S = {
           <SlidersHorizontal aria-hidden="true" /> Battery filter
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="flex flex-col gap-3">
+      <PopoverContent aria-label="Battery filter" className="flex flex-col gap-3">
         <Field label="Show robots below" hint="Battery, 0 to 100 %">
           <NumberField defaultValue={30} min={0} max={100} step={5} unit="%" />
         </Field>

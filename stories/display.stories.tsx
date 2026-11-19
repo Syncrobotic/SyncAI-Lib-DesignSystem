@@ -540,11 +540,15 @@ export const BadgeInHeading: S = {
   ),
 }
 
+// The badge is 24 px, too small to tap: the link around it is the target, the control height (36, 44 on touch, 48 in
+// gloves), and the badge inside answers its hover and press.
 export const BadgeAsLink: S = {
   render: () => (
-    <Badge asChild tone="outline" className="press hover:bg-accent">
-      <a href="#tag-hall-b">Hall B</a>
-    </Badge>
+    <a href="#tag-hall-b" className="group/badge press inline-flex min-h-(--h-sm) items-center rounded-xs">
+      <Badge tone="outline" className="group-hover/badge:bg-accent">
+        Hall B
+      </Badge>
+    </a>
   ),
 }
 
