@@ -2,7 +2,7 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.13.0 · 2026-11-19
 
 ### Changed
 - **`status` replaces `tone` on status displays** (StatusGlyph, StatusEyebrow, InlineStatus, Island): `active`, `normal`, `warning`, `danger`, `offline`. The old `tone` named colours (`info`, `success`, `neutral`) for states that are deliberately not coloured, and meant blue on a Badge but grey on a glyph. Badge, IconTile, Marker and the other colour components keep `tone`. **Not breaking:** `tone` still works until 1.0, maps info → active, success → normal, neutral → offline, and warns once in development. Every block and story uses `status`.
