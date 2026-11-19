@@ -1364,11 +1364,8 @@
       "name": "badge",
       "type": "registry:ui",
       "title": "Badge",
-      "description": "Status tones as foreground on subtle tint, plus outline.",
-      "dependencies": [
-        "radix-ui",
-        "class-variance-authority"
-      ],
+      "description": "Status tones as foreground on subtle tint, plus outline; CountBadge for a count and ResultBadge for a pass, a fail or too few samples.",
+      "dependencies": ["class-variance-authority", "lucide-react", "radix-ui"],
       "registryDependencies": [
         "@syncrobotic/cn"
       ],
@@ -1379,8 +1376,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.16.1",
         "changelog": [
+          {
+            "version": "0.16.1",
+            "date": "2026-11-19",
+            "note": "ResultBadge: the verdict of a test or an audit in one prop, result=\"passed\" (grey with a check), \"failed\" (danger outline and text) or \"insufficient\" (grey outline, dashed circle), never a green pass."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -4246,8 +4248,13 @@
         }
       ],
       "meta": {
-        "version": "0.16.0",
+        "version": "0.16.1",
         "changelog": [
+          {
+            "version": "0.16.1",
+            "date": "2026-11-19",
+            "note": "Closing the shortcuts dialog opened with ? returns focus to what had it, or to the shortcuts button, instead of the page body."
+          },
           {
             "version": "0.16.0",
             "date": "2026-11-19",

@@ -77,4 +77,4 @@ Ordered by what blocks adoption first. Each milestone is one or two release trai
 ### 1.0 · Public, source-available
 - [x] Licence (all rights reserved, source-available), CONTRIBUTING, SECURITY
 - [x] Production indexed by search engines with no configuration; previews stay `noindex`
-- [ ] Make the repository public on GitHub (a repository setting, done by an owner)
+- [x] Make the repository public on GitHub

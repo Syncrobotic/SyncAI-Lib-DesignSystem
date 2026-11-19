@@ -1,7 +1,8 @@
-// @syncrobotic/badge v0.10.0 · update: npx shadcn add @syncrobotic/badge --overwrite
+// @syncrobotic/badge v0.16.1 · update: npx shadcn add @syncrobotic/badge --overwrite
 import * as React from "react"
 import { Slot } from "radix-ui"
 import { cva, type VariantProps } from "class-variance-authority"
+import { CircleAlert, CircleCheck, CircleDashed } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 /** Status colours always come in pairs: the tone's foreground on its subtle tint. */
@@ -23,6 +24,33 @@ export const badgeVariants = cva("inline-flex h-(--h-tag) shrink-0 items-center 
 export function Badge({ className, tone, asChild, ...props }: React.ComponentProps<"span"> & VariantProps<typeof badgeVariants> & { asChild?: boolean }) {
   const Comp = asChild ? Slot.Root : "span"
   return <Comp data-slot="badge" className={cn(badgeVariants({ tone }), className)} {...props} />
+}
+
+const results = {
+  passed: { icon: CircleCheck, label: "Passed", className: "bg-neutral-subtle text-neutral" },
+  failed: { icon: CircleAlert, label: "Failed", className: "text-danger ring-1 ring-danger ring-inset" },
+  insufficient: { icon: CircleDashed, label: "Not enough samples", className: "text-muted-foreground ring-1 ring-border ring-inset" },
+} as const
+
+/**
+ * The verdict of a test, an evaluation or an audit. Passing is a calm, lasting state, so it is grey with a check, never
+ * green; a failure is a danger outline with danger text, never a solid red; too few samples to judge is grey with a
+ * dashed circle. Fill, edge and icon differ, so the three read without colour. Pass `children` to change the word.
+ */
+export function ResultBadge({
+  result,
+  className,
+  children,
+  ...props
+}: React.ComponentProps<"span"> & { result: keyof typeof results }) {
+  const r = results[result]
+  const Icon = r.icon
+  return (
+    <span data-slot="result-badge" data-result={result} className={cn(badgeVariants({ tone: null }), r.className, className)} {...props}>
+      <Icon aria-hidden="true" />
+      {children ?? r.label}
+    </span>
+  )
 }
 
 /**
