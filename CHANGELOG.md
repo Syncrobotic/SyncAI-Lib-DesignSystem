@@ -2,6 +2,17 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Changed
+- **`console-overview`**: alarms come first, above the numbers and the robots, and leave when none is active. On a phone, what needs someone is now the first thing on screen; it was about three screens down.
+- **`stats-cards`**: two across on phones, so four numbers take half a screen. The change sits under the label so the values line up; the sparkline shows from 640 px.
+- **`app-shell`**: the environment badge is a neutral outline for every environment. Staging was amber and Production red: a status colour on every page, all day, which dulls the warnings that do need someone. The sample nav has **Agents**, and the agent pages (`agent-runs`, `agent-trace`, `agent-approval`) mark it as current (they marked Event log or Alarms).
+
+### Fixed
+- **`button`**: disabled outline and destructive buttons keep their outline and lose the ink. They were a filled grey that looked heavier than the enabled button beside them (pagination's Previous on the first page).
+- **`app-shell`**: its height can be set with `--app-shell-height` (default the screen). The docs' preview strip uses it, so the emergency stop and the user menu are no longer pushed 44 px below the screen in a preview opened on its own.
+
 ## 0.17.0 · 2026-11-19
 
 ### Changed

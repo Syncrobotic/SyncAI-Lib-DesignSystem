@@ -68,8 +68,8 @@
     "hash": "1f73e7d87ba39b3f"
   },
   "button": {
-    "version": "0.10.0",
-    "hash": "9f9e6b849193d2a4"
+    "version": "0.17.1",
+    "hash": "939af3f1ab76abb6"
   },
   "spinner": {
     "version": "0.5.0",
@@ -384,8 +384,8 @@
     "hash": "f3651ea23f66551a"
   },
   "stats-cards": {
-    "version": "0.8.0",
-    "hash": "7ea8d5c0e447f2ee"
+    "version": "0.17.1",
+    "hash": "846e0c4ce312a3b5"
   },
   "fleet-table": {
     "version": "0.15.0",
@@ -400,8 +400,8 @@
     "hash": "981a0f3eae7d6769"
   },
   "app-shell": {
-    "version": "0.15.0",
-    "hash": "87e134dffea57c12"
+    "version": "0.17.1",
+    "hash": "9309a4394d74820d"
   },
   "top-bar-shell": {
     "version": "0.14.1",
@@ -412,8 +412,8 @@
     "hash": "c3829fba8b11c4df"
   },
   "console-overview": {
-    "version": "0.8.0",
-    "hash": "0b2fa9cac43c1b68"
+    "version": "0.17.1",
+    "hash": "4299d9f4e625e85b"
   },
   "list-detail": {
     "version": "0.15.0",
@@ -660,15 +660,15 @@
     "hash": "280a019951addb12"
   },
   "agent-runs": {
-    "version": "0.15.0",
-    "hash": "3e087f1c0995288c"
+    "version": "0.17.1",
+    "hash": "0c2a67501f866bdd"
   },
   "agent-trace": {
-    "version": "0.9.0",
-    "hash": "fad6f2414e8a6b00"
+    "version": "0.17.1",
+    "hash": "011ba5bf6e990d35"
   },
   "agent-approval": {
-    "version": "0.15.0",
-    "hash": "bd0bfb47e32f872a"
+    "version": "0.17.1",
+    "hash": "c1a668cec358fe31"
   }
 }

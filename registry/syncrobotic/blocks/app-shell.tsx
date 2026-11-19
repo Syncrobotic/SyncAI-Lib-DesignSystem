@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell v0.15.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
+// @syncrobotic/app-shell v0.17.1 · update: npx shadcn add @syncrobotic/app-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -16,6 +16,7 @@ import {
   ScrollText,
   Search,
   Settings,
+  Sparkles,
   UserRound,
   type LucideIcon,
 } from "lucide-react"
@@ -81,6 +82,7 @@ export const sampleNav: AppNavGroup[] = [
     label: "Operations",
     items: [
       { label: "Alarms", href: "#alarms", icon: Bell, count: 2 },
+      { label: "Agents", href: "#agents", icon: Sparkles },
       { label: "Event log", href: "#events", icon: ScrollText },
       { label: "Settings", href: "#settings", icon: Settings },
     ],
@@ -133,10 +135,12 @@ export const sampleUserMenu: AppUserMenuItem[] = [
   { label: "Sign out", icon: LogOut, href: "#sign-out", separatorBefore: true },
 ]
 
+// Which backend this is, as a neutral outline. Not a status colour: the badge is on every page, all day, and a colour
+// that never goes away stops meaning anything (and would dull the warnings and alarms that do need someone).
 const environments = {
-  production: { tone: "danger", label: "Production" },
-  staging: { tone: "warning", label: "Staging" },
-  local: { tone: "neutral", label: "Local" },
+  production: { tone: "outline", label: "Production" },
+  staging: { tone: "outline", label: "Staging" },
+  local: { tone: "outline", label: "Local" },
 } as const
 
 type AppShellProps = {
@@ -153,7 +157,7 @@ type AppShellProps = {
   breadcrumb?: React.ReactNode
   /** Buttons at the right of the top bar. */
   actions?: React.ReactNode
-  /** Which backend the tool talks to. Production is red so nobody mistakes it for a test. */
+  /** Which backend the tool talks to, named in a neutral outline badge next to the title. */
   environment?: keyof typeof environments
   /** Bottom of the sidebar: who is signed in, and a menu for account, preferences and sign out. */
   user?: AppUser
@@ -574,7 +578,8 @@ export function AppShell({
   )
 
   return (
-    <div className={cn("flex h-dvh bg-background text-foreground", inset && "gap-2 p-2")}>
+    // The screen's height, unless the page puts something above the shell (a banner): it sets --app-shell-height.
+    <div className={cn("flex h-[var(--app-shell-height,100dvh)] bg-background text-foreground", inset && "gap-2 p-2")}>
       {/* The sidebar's place in the layout: as wide as the pinned state. When the rail peeks open, the panel grows over the content. */}
       <div className={cn("relative hidden shrink-0 transition-[width] duration-(--motion-sheet) ease-(--ease-standard) sm:block", open ? "w-60" : "w-18")}>
         <aside
