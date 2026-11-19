@@ -1,4 +1,4 @@
-// @syncrobotic/console-overview v0.17.1 · update: npx shadcn add @syncrobotic/console-overview --overwrite
+// @syncrobotic/console-overview v0.17.2 · update: npx shadcn add @syncrobotic/console-overview --overwrite
 "use client"
 
 import * as React from "react"

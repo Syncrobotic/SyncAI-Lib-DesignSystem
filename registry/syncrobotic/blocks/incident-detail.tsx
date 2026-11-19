@@ -1,4 +1,4 @@
-// @syncrobotic/incident-detail v0.13.0 · update: npx shadcn add @syncrobotic/incident-detail --overwrite
+// @syncrobotic/incident-detail v0.17.2 · update: npx shadcn add @syncrobotic/incident-detail --overwrite
 "use client"
 
 import * as React from "react"

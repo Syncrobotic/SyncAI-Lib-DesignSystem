@@ -11,6 +11,10 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - **`lint:rules`** (in CI and `npm run ci`): the rules the 0.17 audit found broken by hand now fail the build. `outline-none` needs a visible focus in its place (or a `// focus-ring:` comment saying where focus shows); `outline-none` next to `focus-visible:outline-*` is an error, since Tailwind 4 cancels the ring; a battery threshold other than 15 % or a battery Meter with `critical`; a chart block without a table view. Field-edge contrast (`--input` 3:1 on card, page and muted tile, every theme) is a unit test.
 
 ### Fixed
+- **`console-overview`**: one search, the table's filter; the top-bar search box duplicated it.
+- **Filter segments look the same everywhere**: `agent-runs`, `timeline-audit` and `incident-queue` use the compact segments with counts, like the fleet table.
+- **`incident-detail`**: Post update is disabled until there is text, and says why beside it.
+- Docs: block thumbnails on /blocks are readable. Each shows one telling region at about half size instead of a whole 1280 px screen, and App shell opens with a block that has content instead of an empty page.
 - Docs: on a 375 px phone the header's "Design System" no longer wraps to two lines.
 - Docs: the cards on the home page, Blocks, Components and the foundation previews showed no focus ring at all: `outline-none` cancelled their `focus-visible:outline-2` (a Tailwind 4 behaviour). Found by the new lint.
 - **`progress`**: `tone="success"` is neutral. A finished bar stays grey; green is a confirmation that comes and goes, not a state that stays.
