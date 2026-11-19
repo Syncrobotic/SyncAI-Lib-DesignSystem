@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Comments only: the header states one rule per topic (light is the default; a running piece of work is blue, its state word grey; waiting loops only) and points to the Motion and Colour foundations instead of repeating them. No token changed."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -268,6 +273,7 @@
         }
       ],
       "meta": {
+        "status": "beta",
         "version": "0.16.0",
         "changelog": [
           {
@@ -1606,6 +1612,7 @@
         }
       ],
       "meta": {
+        "status": "beta",
         "version": "0.16.0",
         "changelog": [
           {
@@ -2765,6 +2772,7 @@
         }
       ],
       "meta": {
+        "status": "beta",
         "version": "0.16.0",
         "changelog": [
           {
@@ -2824,6 +2832,7 @@
         }
       ],
       "meta": {
+        "status": "beta",
         "version": "0.16.1",
         "changelog": [
           {
@@ -4678,7 +4687,7 @@
           {
             "version": "0.17.2",
             "date": "2026-11-19",
-            "note": "The design language and checklist carry the rules settled in 0.17: offline is calm grey; battery is a Meter that warns below 15 % and never turns danger; a switch on is primary; a KPI change is coloured only when worse; the environment badge is neutral; field edges use --input at 3:1; outlined buttons stay outlined when disabled; an overview puts alarms first; every chart has a table view; focus rings are never removed."
+            "note": "The design language and checklist carry the rules settled in 0.17: offline is calm grey; battery is a Meter that warns below 15 % and never turns danger; a switch on is primary; a KPI change is coloured only when worse; the environment badge is neutral; field edges use --input at 3:1; outlined buttons stay outlined when disabled; an overview puts alarms first; every chart has a table view; focus rings are never removed. The design language and checklist match the foundations word for word: 44 px on touch and 36 with a mouse; disabled outlines; elevation recipes with ring-1; six motion patterns; exit easing via the exit animations; waiting loops; a table view for every chart with axes; IconTile and Progress success are neutral; weights; WCAG large text."
           },
           {
             "version": "0.16.0",

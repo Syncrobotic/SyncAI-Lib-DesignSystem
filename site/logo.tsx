@@ -19,7 +19,7 @@ export function Logo({ className }: { className?: string }) {
     <span className={cn("flex items-center gap-2", className)}>
       <LogoMark title="SYNCROBOTIC" className="size-7" />
       {/* The mark says SYNCROBOTIC; the words say what this site is. */}
-      <span className="text-sm font-bold">Design System</span>
+      <span className="text-sm font-bold whitespace-nowrap">Design System</span>
     </span>
   )
 }

@@ -54,7 +54,7 @@ The milestones are themes, not version numbers, listed by number. 0.4 to 0.9 and
 - [x] Glove-sized targets for field use (`data-density="glove"`)
 
 ### 0.8 · Documentation
-- [ ] Props tables generated from the types; status labels (beta, stable) per item
+- [x] Props tables generated from the types (API reference on every component page and in its Markdown); status labels (beta, stable) per item
 - [x] Site search (⌘K, Ctrl+K, /) over pages, rules, components, blocks and icons
 - [x] Information architecture: Blocks hold compositions; variants of one component are Patterns on its page
 - [ ] Docs per released version
