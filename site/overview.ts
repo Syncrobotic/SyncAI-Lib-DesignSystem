@@ -350,7 +350,7 @@ export const overviews: Record<string, Overview> = {
     instead: ["Work that is under way and will finish: `progress`."],
     notes: [
       "Neutral while normal: colour appears only past `low` (warning) or `critical` (danger). Do not pass a tone.",
-      "Battery: low={30} only; a low battery is warning, never danger. For values where higher is worse, set higherIsWorse.",
+      "Battery: low={15} only; a low battery is warning, never danger. For values where higher is worse, set higherIsWorse.",
     ],
   },
   "description-list": {

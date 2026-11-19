@@ -67,7 +67,7 @@ export const CardDefault: S = {
 export const AlertTones: S = {
   render: () => (
     <div className="flex flex-col gap-3">
-      <Alert tone="info">
+      <Alert>
         <Info aria-hidden="true" />
         <AlertTitle>Update available</AlertTitle>
         <AlertDescription>Firmware 2.5 installs while the robot is docked.</AlertDescription>

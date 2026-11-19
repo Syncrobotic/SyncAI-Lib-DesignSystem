@@ -32,7 +32,8 @@ export const AttachmentChips: S = {
 
 export const AttachmentInComposer: S = {
   render: () => (
-    <div className="flex flex-col gap-2 rounded-lg bg-card p-2 ring-1 ring-border">
+    // The text box has no edge of its own, so the whole composer shows focus: the ring moves to the box you type in.
+    <div className="flex flex-col gap-2 rounded-lg bg-card p-2 ring-1 ring-input has-[textarea:focus-visible]:outline-2 has-[textarea:focus-visible]:outline-offset-2 has-[textarea:focus-visible]:outline-ring">
       <div className="flex flex-wrap gap-2">
         <Attachment variant="chip" name="obstacle.jpg" size={900 * 1024} onRemove={noop} />
         <Attachment variant="chip" name="7F3A-log.mcap" size={12 * 1024 ** 2} onRemove={noop} />

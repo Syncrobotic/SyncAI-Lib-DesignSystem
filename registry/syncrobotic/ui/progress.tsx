@@ -1,4 +1,4 @@
-// @syncrobotic/progress v0.17.1 · update: npx shadcn add @syncrobotic/progress --overwrite
+// @syncrobotic/progress v0.17.2 · update: npx shadcn add @syncrobotic/progress --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,7 +7,8 @@ import { cn } from "@/lib/utils"
 
 const fill = {
   info: "bg-info",
-  success: "bg-success",
+  // Done is calm: a finished bar stays grey (green is a confirmation that comes and goes, a toast; not a state that stays).
+  success: "bg-neutral",
   warning: "bg-warning",
   danger: "bg-danger",
   neutral: "bg-neutral",

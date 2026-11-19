@@ -45,7 +45,7 @@ function Ratio({ fg, bg, mode }: { fg: string; bg: string; mode: Mode }) {
       <span
         className={cn(
           "rounded-xs px-2 text-xs font-medium",
-          l === "Fail" ? "bg-danger-subtle text-danger" : l === "AA large" ? "bg-warning-subtle text-warning" : "bg-success-subtle text-success",
+          l === "Fail" ? "bg-danger-subtle text-danger" : l === "AA large" ? "bg-warning-subtle text-warning" : "bg-muted text-foreground",
         )}
       >
         {l}
@@ -158,7 +158,7 @@ export default function AccessibilityPage() {
             "Inputs use 16 px text so iOS does not zoom.",
           ].map((x) => (
             <li key={x} className="flex gap-3 rounded-sm bg-card p-3 ring-1 ring-border">
-              <span aria-hidden className="text-success">
+              <span aria-hidden className="text-foreground">
                 ✓
               </span>
               <span>{x.split("`").map((part, i) => (i % 2 ? <Code key={i}>{part}</Code> : part))}</span>

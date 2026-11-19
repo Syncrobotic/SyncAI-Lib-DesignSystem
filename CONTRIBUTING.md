@@ -60,6 +60,7 @@ Baselines live in `tests/__screenshots__/` and are written only by CI (Actions â
 3. Write one story per state in `stories/`. The docs site, the screenshots and axe all read them.
 4. Add it to `site/catalog.ts` with its usage rules, and to `site/examples.tsx`. A block goes into `site/block-types.ts` (its type and order) and `site/blocks.tsx` (its preview) instead.
 5. Interaction logic gets a behaviour test in `tests/unit/`.
+   Before you open it, check it against the rules the audit kept finding: colour only for what needs someone (calm states and offline are grey; blue only for a process being waited on); nothing focusable removes its focus ring; field edges use `--input`; a battery is a `Meter` that warns below 15 %; a chart ships a Chart / Table switch; every target is 44 px on touch. The agent skill's checklist (`registry/syncrobotic/skill/references/checklist.md`) is the full list.
 6. Add a line to `CHANGELOG.md` under Unreleased, and open a pull request once `npm run ci` passes.
 
 After changing an item's files, bump its `meta.version` in `registry.json`, add a `meta.changelog` line and run `npm run versions`. After changing the theme, run `npm run tokens`.
@@ -71,7 +72,7 @@ After changing an item's files, bump its `meta.version` in `registry.json`, add 
 | `registry/syncrobotic/styles/` | The theme: every token |
 | `registry/syncrobotic/ui/` | General components (Radix UI based) |
 | `registry/syncrobotic/shell/` | Robot shell: emergency stop, slide to release, dock, island, status |
-| `registry/syncrobotic/blocks/` | Blocks: application screens, charts and robot-operations screens |
+| `registry/syncrobotic/blocks/` | Blocks (application and robot-operations screens) and patterns (ready-made uses of one component, such as charts) |
 | `registry/syncrobotic/hooks/`, `lib/` | Interaction hooks and `cn()` |
 | `stories/` | One story per state |
 | `tests/unit/` | Behaviour tests |

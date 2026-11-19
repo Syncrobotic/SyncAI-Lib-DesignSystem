@@ -294,7 +294,7 @@ const weekCompare = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d, i)
   now: [21, 24, 19, 26, 23, 14, 12][i],
   before: [18, 20, 21, 19, 22, 13, 11][i],
 }))
-const compareConfig = { now: { label: "This week", color: 1 }, before: { label: "Last week", color: 2 } } satisfies ChartConfig
+const compareConfig = { now: { label: "This week", color: 1 }, before: { label: "Last week", color: 5 } } satisfies ChartConfig
 
 /** This period against the last: the earlier one dashed, so it reads as a reference. */
 export const ChartPreviousPeriod: S = {
