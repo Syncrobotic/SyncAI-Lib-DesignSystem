@@ -9,6 +9,27 @@ import type { SearchEntry } from "./search-index"
 
 const order: SearchEntry["group"][] = ["Pages", "Foundations", "Components", "Blocks", "Icons"]
 let cached: Promise<SearchEntry[]> | undefined
+const fold = (t: string) => t.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim()
+
+/**
+ * Every word must appear (fuzzy letter-skipping found "Accessibility" for "fleet table"). The title outranks the text:
+ * exact, then starting with the query, then containing every word; a match only in the description comes last.
+ */
+function score(e: SearchEntry, q: string) {
+  const words = q.split(" ")
+  const title = fold(e.title)
+  const squashed = title.replace(/ /g, "")
+  const rest = fold(`${e.hint ?? ""} ${e.text ?? ""} ${e.href}`)
+  if (!words.every((w) => title.includes(w) || squashed.includes(w) || rest.includes(w))) return 0
+  if (title === q || squashed === q.replace(/ /g, "")) return 100
+  if (title.startsWith(q) || squashed.startsWith(q.replace(/ /g, ""))) return 80
+  if (words.every((w) => title.includes(w))) return 60
+  if (words.some((w) => title.includes(w))) return 40
+  return 20
+}
+
+// Most of the index is icons; cap each group so a broad word does not bury the rest.
+const cap: Record<SearchEntry["group"], number> = { Pages: 5, Foundations: 6, Components: 8, Blocks: 6, Icons: 8 }
 const load = () => (cached ??= fetch("/search-index.json").then((r) => r.json() as Promise<SearchEntry[]>))
 
 /**
@@ -43,7 +64,16 @@ export function SiteSearch() {
   }
   // With nothing typed, the pages and foundations to start from; the rest (sections, every component, block and icon)
   // once a word narrows them.
-  const shown = (index ?? []).filter((e) => query.trim() || e.group === "Pages" || (e.group === "Foundations" && !e.href.includes("#")))
+  const q = fold(query)
+  const shown = q
+    ? (index ?? [])
+        .map((e) => ({ e, s: score(e, q) }))
+        .filter((x) => x.s > 0)
+        .sort((a, b) => b.s - a.s)
+        .map((x) => x.e)
+    : (index ?? []).filter((e) => e.group === "Pages" || (e.group === "Foundations" && !e.href.includes("#")))
+  // Groups in the order of their best hit, so the best match is first whatever kind it is.
+  const groupOrder = q ? [...new Set(shown.map((e) => e.group))] : order
 
   return (
     <>
@@ -58,17 +88,17 @@ export function SiteSearch() {
         <span className="hidden md:inline">Search</span>
         <Kbd className="ml-4 hidden md:inline-flex">⌘K</Kbd>
       </button>
-      <CommandDialog open={open} onOpenChange={setOpen} title="Search the docs" description="Components, blocks, foundations and icons">
+      <CommandDialog open={open} onOpenChange={setOpen} title="Search the docs" description="Components, blocks, foundations and icons" shouldFilter={false}>
         <CommandInput value={query} onValueChange={setQuery} placeholder="Search components, blocks, rules, icons" />
         <CommandList>
           <CommandEmpty>{index ? "Nothing matches. Try a component, a rule or an icon's meaning." : "Loading…"}</CommandEmpty>
-          {order.map((g) => {
-            const list = shown.filter((e) => e.group === g)
+          {groupOrder.map((g) => {
+            const list = shown.filter((e) => e.group === g).slice(0, cap[g])
             if (list.length === 0) return null
             return (
               <CommandGroup key={g} heading={g}>
                 {list.map((e) => (
-                  <CommandItem key={e.href} value={e.href} keywords={[e.title, e.hint ?? "", e.text ?? ""]} onSelect={() => go(e.href)}>
+                  <CommandItem key={e.href} value={e.href} onSelect={() => go(e.href)}>
                     <span className="flex min-w-0 flex-col">
                       <span className="truncate">{e.title}</span>
                       {e.hint && <span className="truncate text-xs text-muted-foreground">{e.hint}</span>}
