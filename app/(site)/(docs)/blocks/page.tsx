@@ -46,7 +46,7 @@ export default function BlocksPage() {
                     {/* The screenshot is framed (it is a picture of a screen); the words under it are not boxed. */}
                     <Link
                       href={`/blocks/${t.slug}`}
-                      className="group flex w-full flex-col gap-3 rounded-md outline-none focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+                      className="group flex w-full flex-col gap-3 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
                     >
                       <div className="overflow-hidden rounded-md ring-1 ring-border transition-shadow duration-(--motion-fast) ease-(--ease-standard) group-hover:ring-muted-foreground">
                         <BlockThumb

@@ -1,4 +1,4 @@
-// @syncrobotic/number-field v0.15.0 · update: npx shadcn add @syncrobotic/number-field --overwrite
+// @syncrobotic/number-field v0.17.2 · update: npx shadcn add @syncrobotic/number-field --overwrite
 "use client"
 
 import * as React from "react"
@@ -139,6 +139,7 @@ export function NumberField({
           }}
           // Digits are tabular, so one ch per character fits the value exactly; 2 px leave room for the caret.
           style={{ width: `calc(${Math.max(draft.length, 1)}ch + 2px)` }}
+          // focus-ring: the InputGroup around it draws the ring.
           className="h-full max-w-full min-w-0 bg-transparent text-center text-base tabular-nums outline-none focus-visible:outline-none"
         />
         {unit && (

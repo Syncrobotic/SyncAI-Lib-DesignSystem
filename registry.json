@@ -962,8 +962,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -1757,8 +1762,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -2188,8 +2198,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -2310,8 +2325,13 @@
         }
       ],
       "meta": {
-        "version": "0.16.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules."
+          },
           {
             "version": "0.16.1",
             "date": "2026-11-19",
@@ -2931,8 +2951,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -3010,8 +3035,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -3132,8 +3162,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -3529,8 +3564,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -5514,8 +5554,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -5757,8 +5802,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
