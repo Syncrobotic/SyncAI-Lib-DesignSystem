@@ -1,9 +1,9 @@
-// @syncrobotic/bar-chart-stacked v0.17.1 · update: npx shadcn add @syncrobotic/bar-chart-stacked --overwrite
+// @syncrobotic/bar-chart-stacked v0.17.2 · update: npx shadcn add @syncrobotic/bar-chart-stacked --overwrite
 "use client"
 
 import * as React from "react"
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
-import { Card } from "@/registry/syncrobotic/ui/card"
+import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 import { ChartContainer, ChartLegend, ChartTable, ChartTooltip, chartAxis, chartMotion, type ChartConfig } from "@/registry/syncrobotic/ui/chart"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 
@@ -25,17 +25,19 @@ export function BarChartStacked() {
   const [view, setView] = React.useState("chart")
   return (
     <Card>
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="flex flex-col gap-1">
-          <h3 className="text-sm font-medium">
+      <CardDataHeader
+        title={
+          <>
             Robot hours by site <span className="font-normal text-muted-foreground">· this week</span>
-          </h3>
-        </div>
-        <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
-          <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
-          <SegmentedControlItem value="table">Table</SegmentedControlItem>
-        </SegmentedControl>
-      </div>
+          </>
+        }
+        actions={
+          <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
+            <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
+            <SegmentedControlItem value="table">Table</SegmentedControlItem>
+          </SegmentedControl>
+        }
+      />
       {view === "chart" ? (
         <ChartContainer config={config} label="Patrolling, charging and idle hours per site this week">
           <BarChart data={data} margin={{ top: 0, right: 8, left: 0, bottom: 0 }}>

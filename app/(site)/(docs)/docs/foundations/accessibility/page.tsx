@@ -15,7 +15,7 @@ const pairs: { fg: string; bg: string; use: string }[] = [
   { fg: "muted-foreground", bg: "card", use: "Secondary text on cards" },
   { fg: "primary-foreground", bg: "primary", use: "Primary button" },
   { fg: "info", bg: "info-subtle", use: "Info badge" },
-  { fg: "success", bg: "success-subtle", use: "Success badge" },
+  { fg: "success", bg: "success-subtle", use: "Toast or alert confirmation" },
   { fg: "warning", bg: "warning-subtle", use: "Warning badge" },
   { fg: "danger", bg: "danger-subtle", use: "Danger badge" },
   { fg: "danger", bg: "background", use: "Destructive button text" },
@@ -45,7 +45,7 @@ function Ratio({ fg, bg, mode }: { fg: string; bg: string; mode: Mode }) {
       <span
         className={cn(
           "rounded-xs px-2 text-xs font-medium",
-          l === "Fail" ? "bg-danger-subtle text-danger" : l === "AA large" ? "bg-warning-subtle text-warning" : "bg-success-subtle text-success",
+          l === "Fail" ? "bg-danger-subtle text-danger" : l === "AA large" ? "bg-warning-subtle text-warning" : "bg-muted text-foreground",
         )}
       >
         {l}
@@ -62,7 +62,7 @@ export default function AccessibilityPage() {
         lead="Accessibility is part of the tokens, not a review step. Contrast below is computed from the theme file on every build."
       />
 
-      <Section id="contrast" title="Contrast" lead="WCAG 2.2: AA needs 4.5:1 for text, 3:1 for large text (18 px bold or 24 px) and UI parts.">
+      <Section id="contrast" title="Contrast" lead="WCAG 2.2: AA needs 4.5:1 for text, 3:1 for large text (24 px, or 18.66 px (14 pt) bold) and UI parts.">
         <TokenTable
           head={["Foreground", "Background", "Use", "Dark", "Light"]}
           rows={pairs.map((p) => [
@@ -75,7 +75,7 @@ export default function AccessibilityPage() {
             <Ratio key="l" {...p} mode="light" />,
           ])}
         />
-        <p className="text-sm text-muted-foreground">The emergency stop label is 18 px bold, so it is held to the large-text threshold of 3:1.</p>
+        <p className="text-sm text-muted-foreground">The emergency stop label is 18 px bold, just under large text, so it is held to 4.5:1 and passes in every theme.</p>
       </Section>
 
       <Section
@@ -85,7 +85,7 @@ export default function AccessibilityPage() {
       >
         <Specimen className="flex flex-wrap items-center gap-8">
           {[
-            { h: "--h-sm", n: "36 · compact, mouse only (44 on touch)" },
+            { h: "--h-sm", n: "36 · with a mouse only, at any density (44 on touch)" },
             { h: "--h-md", n: "44 · minimum" },
             { h: "--h-lg", n: "48 · primary actions" },
             { h: "--h-stop", n: "56 · emergency stop (64 in glove density; never smaller)" },
@@ -150,7 +150,7 @@ export default function AccessibilityPage() {
       <Section id="checklist" title="Checklist">
         <ul className="flex flex-col gap-2 text-sm">
           {[
-            "Status is shape plus colour plus word, never colour alone.",
+            "Status is a shape and a word; colour only when it is abnormal. Never colour alone.",
             "Every icon-only control has an accessible name.",
             "Errors say how to fix them and sit next to the field (`aria-describedby`).",
             "Hold and slide gestures have a keyboard alternative: hold Enter or Space for 2 s.",
@@ -158,7 +158,7 @@ export default function AccessibilityPage() {
             "Inputs use 16 px text so iOS does not zoom.",
           ].map((x) => (
             <li key={x} className="flex gap-3 rounded-sm bg-card p-3 ring-1 ring-border">
-              <span aria-hidden className="text-success">
+              <span aria-hidden className="text-foreground">
                 ✓
               </span>
               <span>{x.split("`").map((part, i) => (i % 2 ? <Code key={i}>{part}</Code> : part))}</span>

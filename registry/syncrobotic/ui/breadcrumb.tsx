@@ -1,4 +1,4 @@
-// @syncrobotic/breadcrumb v0.8.0 · update: npx shadcn add @syncrobotic/breadcrumb --overwrite
+// @syncrobotic/breadcrumb v0.17.2 · update: npx shadcn add @syncrobotic/breadcrumb --overwrite
 import * as React from "react"
 import { ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -26,7 +26,8 @@ export function BreadcrumbLink({ className, ...props }: React.ComponentProps<"a"
     <a
       data-slot="breadcrumb-link"
       className={cn(
-        "truncate underline-offset-4 transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:text-foreground hover:underline",
+        // As tall as a compact control (36 px with a mouse, 44 px on touch), so the crumb is a target, not a line of text.
+        "inline-block truncate align-middle leading-(--h-sm) underline-offset-4 transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:text-foreground hover:underline",
         className,
       )}
       {...props}

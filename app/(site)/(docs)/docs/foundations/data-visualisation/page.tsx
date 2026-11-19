@@ -26,7 +26,7 @@ const forms: { job: string; form: string; items: string[] }[] = [
 
 const components = new Set(["meter", "trace", "timeline", "data-grid"])
 const ItemLink = ({ name }: { name: string }) => (
-  <Link href={components.has(name) ? `/docs/components/${name}` : blockHref(name)} className="inline-flex min-h-6 items-center font-mono text-xs underline underline-offset-4">
+  <Link href={components.has(name) ? `/docs/components/${name}` : blockHref(name)} className="inline-flex min-h-(--h-sm) items-center font-mono text-xs underline underline-offset-4">
     {name}
   </Link>
 )
@@ -349,7 +349,7 @@ export default function DataVisualisationPage() {
             "A limit is a dashed line with its label at the end, in --muted-foreground. Only the value past it turns warning.",
             "Two series or more: a legend above the plot. One series: no legend; the title names it. Up to four series may also be labelled at the line's end.",
             "Text is never in the series colour: values, labels and legend stay in text colours; the swatch beside them carries the identity.",
-            "Every chart has a table view (ChartTable), for exact values and for anyone who cannot tell two hues apart.",
+            "Every chart with axes (line, area, bar, heatmap) has a table view (ChartTable), for exact values and for anyone who cannot tell two hues apart. Sparklines, rings (radial) and status strips write their numbers in words instead.",
             "No data is said in words in the plot's place, not an empty frame.",
           ]}
         />

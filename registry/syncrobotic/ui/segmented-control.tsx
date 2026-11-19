@@ -1,4 +1,4 @@
-// @syncrobotic/segmented-control v0.15.0 · update: npx shadcn add @syncrobotic/segmented-control --overwrite
+// @syncrobotic/segmented-control v0.17.2 · update: npx shadcn add @syncrobotic/segmented-control --overwrite
 "use client"
 
 import * as React from "react"
@@ -15,15 +15,24 @@ function useThumb(root: React.RefObject<HTMLDivElement | null>) {
   React.useLayoutEffect(() => {
     const el = root.current
     if (!el) return
+    // offsetLeft / offsetWidth are the item's layout box inside the track (its offset parent), unaffected by the press
+    // scale, so the thumb is exactly the selected segment's box. Unchanged values keep the same state, so no re-render.
     const measure = () => {
       const on = el.querySelector<HTMLElement>(':scope > [data-slot="segmented-control-item"][data-state="on"]')
-      setThumb(on ? { x: on.offsetLeft, w: on.offsetWidth } : null)
+      setThumb((t) => {
+        if (!on) return null
+        const next = { x: on.offsetLeft, w: on.offsetWidth }
+        return t && t.x === next.x && t.w === next.w ? t : next
+      })
     }
     measure()
     const mo = new MutationObserver(measure)
     mo.observe(el, { subtree: true, attributes: true, attributeFilter: ["data-state"] })
+    // Every segment is watched as well as the track: a label that changes width (a web font arriving, a count) moves
+    // the segments inside a track whose own size stays the same.
     const ro = new ResizeObserver(measure)
     ro.observe(el)
+    el.querySelectorAll<HTMLElement>(':scope > [data-slot="segmented-control-item"]').forEach((i) => ro.observe(i))
     return () => {
       mo.disconnect()
       ro.disconnect()
@@ -51,7 +60,11 @@ export function SegmentedControl({ className, children, ...props }: Omit<ToggleG
       data-slot="segmented-control"
       data-thumb={thumb ? "" : undefined}
       type="single"
-      className={cn("group/segmented relative inline-flex h-(--h-md) w-full items-center gap-1 rounded-sm bg-muted p-1", className)}
+      // The muted track has no edge of its own (1.35:1 on the card); in high contrast it takes the 3:1 field edge.
+      className={cn(
+        "group/segmented relative inline-flex h-(--h-md) w-full items-center gap-1 rounded-sm bg-muted p-1 in-data-[contrast=more]:ring-1 in-data-[contrast=more]:ring-input in-data-[contrast=more]:ring-inset",
+        className,
+      )}
       {...props}
     >
       {thumb && (

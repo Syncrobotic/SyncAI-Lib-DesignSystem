@@ -1,6 +1,6 @@
 {
   "name": "@syncrobotic/design-system",
-  "version": "0.17.1",
+  "version": "0.17.2",
   "private": true,
   "description": "The SYNCROBOTIC design language: tokens, React components, and blocks for application screens, charts and robot operations, shipped as a shadcn/ui registry for Tailwind CSS v4.",
   "keywords": [
@@ -49,13 +49,17 @@
     "typecheck": "tsc --noEmit",
     "lint:tokens": "node scripts/check-tokens.mjs",
     "test:stories": "playwright test tests/stories.spec.ts",
-    "ci": "npm run lint:tokens && npm run lint:registry && npm run lint:motion && npm run lint:versions && npm run lint:dtcg && npm run typecheck && npm test && npm run build && npm run build-storybook",
+    "ci": "npm run lint:tokens && npm run lint:registry && npm run lint:rules && npm run lint:motion && npm run lint:versions && npm run lint:dtcg && npm run lint:props && npm run typecheck && npm test && npm run build && npm run build-storybook",
     "test": "vitest run",
     "lint:registry": "node scripts/check-registry.mjs",
+    "lint:rules": "node scripts/check-rules.mjs",
+    "lint:props": "node scripts/props.mjs",
+    "props": "node scripts/props.mjs --write",
     "lint:versions": "node scripts/versions.mjs",
     "lint:motion": "node scripts/check-motion.mjs registry site app",
     "versions": "node scripts/versions.mjs --write",
     "check:radius": "node scripts/check-radius.cjs",
+    "check:wrap": "node scripts/check-wrap.cjs",
     "lint:dtcg": "node scripts/tokens.mjs",
     "tokens": "node scripts/tokens.mjs --write",
     "test:registry": "bash scripts/registry-e2e.sh"

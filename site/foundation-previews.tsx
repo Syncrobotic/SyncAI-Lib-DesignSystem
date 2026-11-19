@@ -139,7 +139,7 @@ export function FoundationGrid() {
           <Link
             key={f.slug}
             href={`/docs/foundations/${f.slug}`}
-            className={`group flex flex-col gap-6 bg-background p-6 outline-none transition-colors hover:bg-card focus-visible:bg-card focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring ${fast} ${span[f.slug]}`}
+            className={`group flex flex-col gap-6 bg-background p-6 transition-colors hover:bg-card focus-visible:bg-card focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring ${fast} ${span[f.slug]}`}
           >
             {/* A fixed height, so titles in a row line up whatever the length of their lead; principles spans two rows and fills. */}
             <div

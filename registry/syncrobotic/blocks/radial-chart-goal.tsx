@@ -1,8 +1,8 @@
-// @syncrobotic/radial-chart-goal v0.15.0 · update: npx shadcn add @syncrobotic/radial-chart-goal --overwrite
+// @syncrobotic/radial-chart-goal v0.17.2 · update: npx shadcn add @syncrobotic/radial-chart-goal --overwrite
 "use client"
 
 import * as React from "react"
-import { Card } from "@/registry/syncrobotic/ui/card"
+import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 
 // A ring: a track and an arc from 12 o'clock, clockwise. The number in the middle is the value; the arc only shows it.
 function Ring({
@@ -25,7 +25,7 @@ function Ring({
   return (
     <span className="relative grid shrink-0 place-items-center" style={{ width: size, height: size }}>
       <svg aria-hidden="true" width={size} height={size} className="-rotate-90">
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" strokeWidth={stroke} className="stroke-muted" />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" strokeWidth={stroke} className="stroke-muted in-data-[contrast=more]:stroke-input" />
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -54,17 +54,17 @@ const parts = [
 export function RadialChartGoal() {
   return (
     <Card>
-      <h3 className="text-sm font-medium">Patrol coverage · today</h3>
+      <CardDataHeader title="Patrol coverage · today" />
       <div className="flex flex-wrap items-center gap-6">
         <span role="meter" aria-label="Patrol coverage today" aria-valuemin={0} aria-valuemax={100} aria-valuenow={covered}>
           <Ring value={covered} size={144} stroke={12} className="stroke-foreground">
             <span className="flex flex-col items-center">
-              <span className="text-3xl font-bold tabular-nums">{covered}%</span>
+              <span className="text-3xl font-bold tabular-nums">{covered} %</span>
               <span className="text-xs text-muted-foreground">of plan</span>
             </span>
           </Ring>
         </span>
-        <dl className="flex max-w-sm min-w-48 flex-1 flex-col divide-y divide-border text-sm">
+        <dl className="flex min-w-48 flex-1 flex-col divide-y divide-border text-sm">
           {parts.map((p) => (
             <div key={p.label} className="flex justify-between gap-4 py-2">
               <dt className="text-muted-foreground">{p.label}</dt>

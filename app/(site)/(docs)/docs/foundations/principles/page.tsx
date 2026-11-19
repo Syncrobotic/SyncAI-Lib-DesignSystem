@@ -15,13 +15,13 @@ const principles = [
   {
     n: "02",
     title: "One meaning per colour",
-    body: "Grey and ink for every state, busy or idle. Blue for a process someone is waiting on (a progress bar, a stage running, a command being sent). Amber means attention, red means stopped or failed, green means it just worked. Brand expression lives in neutral contrast, not in hue.",
+    body: "Grey and ink for every state, busy or idle. Blue for a process someone is waiting on (a progress bar, a stage running, a command being sent). Amber means attention, red means needs someone now: stopped, failed. Green means it just worked. Brand expression lives in neutral contrast, not in hue.",
     rule: "Status colours come in pairs: `text-info` on `bg-info-subtle`.",
   },
   {
     n: "03",
     title: "Readable at a glance, anywhere",
-    body: "Our interfaces are used outdoors, one-handed, in a hurry, and by people who do not see colour the same way. Status is always shape plus colour plus word, and every target is at least 44 px.",
+    body: "Our interfaces are used outdoors, one-handed, in a hurry, and by people who do not see colour the same way. Status is a shape and a word; colour only when it is abnormal. Every target is at least 44 px on touch; 36 (--h-sm) with a mouse only.",
     rule: "Text meets WCAG AA in both modes; see Accessibility.",
   },
   {

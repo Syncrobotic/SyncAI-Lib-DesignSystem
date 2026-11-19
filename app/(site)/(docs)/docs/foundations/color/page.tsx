@@ -15,7 +15,7 @@ const tones = [
   { t: "info", means: "A process someone is waiting on: progress, a running stage, a command being sent. Never a state" },
   { t: "success", means: "Just done: a confirmation that comes and goes (toast, alert). A calm state stays grey." },
   { t: "warning", means: "Needs attention soon" },
-  { t: "danger", means: "Failed, destructive, stopped" },
+  { t: "danger", means: "Needs someone now: stopped, failed." },
   { t: "neutral", means: "Offline, inactive" },
 ]
 const groups: { title: string; tokens: string[]; use: Record<string, string> }[] = [
@@ -32,7 +32,7 @@ const groups: { title: string; tokens: string[]; use: Record<string, string> }[]
       input: "The edge of anything you fill in or tick: fields, checkboxes, radios, a switch that is off. 3:1, since on a card the edge is all that shows the control",
       foreground: "Body text",
       "muted-foreground": "Secondary text",
-      disabled: "Disabled text on text-only controls: 3:1 on the page, lighter than secondary text",
+      disabled: "Disabled text on text-only and outlined controls (outline and destructive buttons keep their outline): 3:1 on the page, lighter than secondary text",
     },
   },
   {

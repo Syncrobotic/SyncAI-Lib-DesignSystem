@@ -1,9 +1,9 @@
-// @syncrobotic/event-log v0.17.1 · update: npx shadcn add @syncrobotic/event-log --overwrite
+// @syncrobotic/event-log v0.17.2 · update: npx shadcn add @syncrobotic/event-log --overwrite
 "use client"
 
 import * as React from "react"
 import { Download, Search, SearchX } from "lucide-react"
-import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { alarmPriority, type AlarmPriority } from "@/registry/syncrobotic/ui/alarm"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
@@ -109,7 +109,7 @@ export function EventLog({ events = sampleEvents }: { events?: LogEvent[] }) {
       current="#events"
       title="Event log"
       environment="production"
-      user={{ name: "Mei Lin", initials: "ML" }}
+      user={sampleUser}
       actions={
         <Button variant="secondary" size="sm" className="max-sm:w-(--h-sm) max-sm:px-0">
           <Download aria-hidden="true" />

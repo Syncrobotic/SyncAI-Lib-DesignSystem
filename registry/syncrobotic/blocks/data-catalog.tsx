@@ -1,11 +1,11 @@
-// @syncrobotic/data-catalog v0.15.0 · update: npx shadcn add @syncrobotic/data-catalog --overwrite
+// @syncrobotic/data-catalog v0.17.2 · update: npx shadcn add @syncrobotic/data-catalog --overwrite
 "use client"
 
 import * as React from "react"
 import { Database, Grid3x3, SlidersHorizontal, Plus, ScrollText, Search, SearchX, ShieldCheck } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { ChoiceField, FieldSet } from "@/registry/syncrobotic/ui/choice-field"
-import { AppShell, type AppNavGroup } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, type AppNavGroup, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { Badge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
@@ -178,7 +178,7 @@ export function DataCatalog({ datasets = sampleDatasets }: { datasets?: Dataset[
       nav={dataNav}
       current="#catalog"
       title="Catalog"
-      user={{ name: "Mei Lin", initials: "ML" }}
+      user={sampleUser}
       actions={
         <Button size="sm">
           <Plus aria-hidden="true" /> New dataset
@@ -225,7 +225,7 @@ export function DataCatalog({ datasets = sampleDatasets }: { datasets?: Dataset[
               <TableHeader>
                 <TableRow>
                   <TableHead {...sortProps("name")}>Dataset</TableHead>
-                  <TableHead>Tier</TableHead>
+                  <TableHead className="hidden sm:table-cell">Tier</TableHead>
                   <TableHead className="hidden md:table-cell">Task</TableHead>
                   <TableHead className="hidden md:table-cell">Use</TableHead>
                   <TableHead className="hidden xl:table-cell">Owner</TableHead>
@@ -237,15 +237,20 @@ export function DataCatalog({ datasets = sampleDatasets }: { datasets?: Dataset[
               <TableBody>
                 {rows.map((d) => (
                   <TableRow key={d.ref}>
-                    <TableCell>
-                      <a href={`#${d.ref}`} className="flex flex-col hover:underline">
+                    <TableCell className="py-2 max-sm:whitespace-normal">
+                      {/* At least the control height (44, 48 in gloves): two short lines alone are a 36 px target. */}
+                      <a href={`#${d.ref}`} className="flex min-h-(--h-md) flex-col justify-center hover:underline">
                         <span className="font-medium">{d.name}</span>
-                        <span className="font-mono text-xs text-muted-foreground">
+                        <span className="font-mono text-xs break-all text-muted-foreground">
                           {d.ref}@{d.version}
                         </span>
                       </a>
+                      {/* On a phone the tier sits under the name; it is a column from 640 px, so the items count never clips. */}
+                      <span className="mt-1 flex sm:hidden">
+                        <TierBadge tier={d.tier} compact />
+                      </span>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="hidden sm:table-cell">
                       <TierBadge tier={d.tier} compact />
                     </TableCell>
                     <TableCell className="hidden md:table-cell">{d.task}</TableCell>

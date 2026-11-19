@@ -61,8 +61,8 @@ const rules = [
   },
   { name: "Font weight off the scale (use only 400, 500, 700)", re: /\bfont-(thin|extralight|light|semibold|extrabold|black)\b/g },
   {
-    // The radius scale is xs–xl. Full is only for things that are round by nature (ROUND below).
-    name: "rounded-full outside its uses (avatar, dot, switch, radio, slider, progress track, count badge, grabber): use rounded-xs…xl, or add the file to ROUND with its use",
+    // The radius scale is 2xs–xl. Full is only for things that are round by nature (ROUND below).
+    name: "rounded-full outside its uses (round by nature: avatars, dots and bullets, switch and radio, tracks and thumbs (slider, progress, meter, scrollbar), count badges, step circles, grips and grabbers; see the Radius foundation): use rounded-2xs…xl, or add the file to ROUND with its use",
     re: /\brounded-full\b/g,
     file: (f) => !(f.replaceAll("\\", "/") in ROUND),
   },

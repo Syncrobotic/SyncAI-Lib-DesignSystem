@@ -1,4 +1,4 @@
-// @syncrobotic/select v0.15.0 · update: npx shadcn add @syncrobotic/select --overwrite
+// @syncrobotic/select v0.17.2 · update: npx shadcn add @syncrobotic/select --overwrite
 "use client"
 
 import * as React from "react"
@@ -39,14 +39,28 @@ export function SelectTrigger({ className, children, ...props }: React.Component
   )
 }
 
-export function SelectContent({ className, children, position = "popper", ...props }: React.ComponentProps<typeof SelectPrimitive.Content>) {
+/**
+ * The list remembers whether the keyboard or the mouse moved last (data-nav): the focused option shows a ring only in
+ * keyboard use, and keeps the calm fill under the pointer.
+ */
+export function SelectContent({ className, children, position = "popper", onKeyDown, onPointerMove, ...props }: React.ComponentProps<typeof SelectPrimitive.Content>) {
+  const [nav, setNav] = React.useState<"key" | "pointer">("key")
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
         data-slot="select-content"
+        data-nav={nav}
         position={position}
+        onKeyDown={(e) => {
+          setNav("key")
+          onKeyDown?.(e)
+        }}
+        onPointerMove={(e) => {
+          if (e.pointerType === "mouse") setNav("pointer")
+          onPointerMove?.(e)
+        }}
         className={cn(
-          "relative z-50 max-h-(--radix-select-content-available-height) min-w-32 overflow-hidden rounded-md bg-popover text-popover-foreground shadow-overlay ring-1 ring-border data-[state=open]:animate-appear data-[state=closed]:animate-disappear",
+          "group/select relative z-50 max-h-(--radix-select-content-available-height) min-w-32 overflow-hidden rounded-md bg-popover text-popover-foreground shadow-overlay ring-1 ring-border data-[state=open]:animate-appear data-[state=closed]:animate-disappear",
           position === "popper" && "w-(--radix-select-trigger-width)",
           className,
         )}
@@ -68,7 +82,10 @@ export function SelectItem({ className, children, ...props }: React.ComponentPro
     <SelectPrimitive.Item
       data-slot="select-item"
       className={cn(
+        // In keyboard use the focused option carries a 2 px ring inside it beside the fill (the fill alone is 1.2:1);
+        // under the pointer the fill is enough. Radix focuses the option on hover too, so the browser outline is off.
         "relative flex h-(--h-md) w-full cursor-default select-none items-center gap-2 rounded-sm pr-8 pl-3 text-sm outline-none",
+        "group-data-[nav=key]/select:focus:outline-solid group-data-[nav=key]/select:focus:outline-2 group-data-[nav=key]/select:focus:-outline-offset-2 group-data-[nav=key]/select:focus:outline-ring",
         "transition-colors duration-(--motion-fast) ease-(--ease-standard) focus:bg-accent data-[disabled]:pointer-events-none data-[disabled]:text-disabled",
         className,
       )}

@@ -1,4 +1,4 @@
-// @syncrobotic/questionnaire v0.15.0 · update: npx shadcn add @syncrobotic/questionnaire --overwrite
+// @syncrobotic/questionnaire v0.17.2 · update: npx shadcn add @syncrobotic/questionnaire --overwrite
 "use client"
 
 import * as React from "react"
@@ -167,6 +167,7 @@ export function Questionnaire({
         key={index}
         inert={next !== null || undefined}
         onAnimationEnd={(e) => e.target === e.currentTarget && commit()}
+        // focus-ring: the step takes focus only so a screen reader reads it after Next; it is not a control.
         className={cn("outline-none", next === null ? "animate-appear" : "animate-disappear")}
       >
         {onReview ? (

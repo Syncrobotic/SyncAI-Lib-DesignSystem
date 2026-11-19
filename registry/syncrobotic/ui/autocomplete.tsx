@@ -1,4 +1,4 @@
-// @syncrobotic/autocomplete v0.15.0 · update: npx shadcn add @syncrobotic/autocomplete --overwrite
+// @syncrobotic/autocomplete v0.17.2 · update: npx shadcn add @syncrobotic/autocomplete --overwrite
 "use client"
 
 import * as React from "react"
@@ -61,6 +61,8 @@ export function Autocomplete({
   const [query, setQuery] = React.useState(selected?.label ?? "")
   const [open, setOpen] = React.useState(false)
   const [active, setActive] = React.useState(0)
+  // Whether the keyboard or the pointer moved the highlight last: the ring shows only in keyboard use.
+  const [keyNav, setKeyNav] = React.useState(true)
   const inputRef = React.useRef<HTMLInputElement>(null)
   const sendQuery = useDebouncedCallback((q: string) => onQueryChange?.(q), debounce)
 
@@ -79,6 +81,7 @@ export function Autocomplete({
   const onKey = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowDown" || e.key === "ArrowUp") {
       e.preventDefault()
+      setKeyNav(true)
       if (!open) return setOpen(true)
       const d = e.key === "ArrowDown" ? 1 : -1
       setActive((i) => (i + d + enabled.length) % Math.max(enabled.length, 1))
@@ -129,6 +132,7 @@ export function Autocomplete({
             }}
             onKeyDown={onKey}
             onBlur={() => !open && setQuery(selected?.label ?? "")}
+            // focus-ring: the field around it draws the ring (has-[input:focus-visible]).
             className="h-full min-w-0 flex-1 bg-transparent px-3 text-base outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed"
           />
           {loading && <Spinner delay={0} className="mr-2 size-4" label="Searching" />}
@@ -179,6 +183,8 @@ export function Autocomplete({
         align="start"
         onOpenAutoFocus={(e) => e.preventDefault()}
         onInteractOutside={(e) => e.target instanceof Node && inputRef.current?.parentElement?.contains(e.target) && e.preventDefault()}
+        // Radix gives the panel role="dialog"; it is named like its list so it is never a nameless dialog.
+        aria-label={ariaLabel ?? "Suggestions"}
         className="w-(--radix-popover-trigger-width) min-w-56 p-1"
       >
         <div id={listId} role="listbox" aria-label={ariaLabel ?? "Suggestions"} className="flex max-h-72 flex-col overflow-y-auto">
@@ -199,10 +205,16 @@ export function Autocomplete({
                       aria-disabled={o.disabled || undefined}
                       onMouseDown={(e) => e.preventDefault()}
                       onClick={() => !o.disabled && pick(o)}
-                      onMouseEnter={() => !o.disabled && setActive(enabled.indexOf(o))}
+                      onMouseEnter={() => {
+                        if (o.disabled) return
+                        setActive(enabled.indexOf(o))
+                        setKeyNav(false)
+                      }}
                       className={cn(
                         "flex min-h-(--h-sm) cursor-default items-center gap-2 rounded-sm px-3 py-1 text-sm transition-colors duration-(--motion-fast) ease-(--ease-standard)",
                         isActive && "bg-accent",
+                        // The fill alone is 1.2:1: in keyboard use the active option also carries a 2 px ring inside it.
+                        isActive && keyNav && "outline-2 -outline-offset-2 outline-ring",
                         o.disabled && "text-disabled",
                       )}
                     >

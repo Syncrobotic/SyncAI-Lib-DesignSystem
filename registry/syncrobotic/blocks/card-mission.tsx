@@ -1,4 +1,4 @@
-// @syncrobotic/card-mission v0.13.0 · update: npx shadcn add @syncrobotic/card-mission --overwrite
+// @syncrobotic/card-mission v0.17.2 · update: npx shadcn add @syncrobotic/card-mission --overwrite
 "use client"
 
 import * as React from "react"
@@ -69,36 +69,25 @@ export function CardMission({ missions = sampleMissions, className }: { missions
               </li>
             </ul>
             <div className="flex flex-col gap-2">
-              <div className="flex items-baseline justify-between gap-2 text-sm">
+              {/* Both halves at 14 px on one line, so their baselines meet; the clock is centred on its own words. */}
+              <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-sm">
                 <span className="font-medium tabular-nums">
                   {m.checkpoints.done} of {m.checkpoints.total} checkpoints
                 </span>
-                <span className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Clock aria-hidden="true" className="size-4" />
+                <span className="flex items-center gap-2 text-muted-foreground tabular-nums">
+                  <Clock aria-hidden="true" className="size-4 shrink-0" />
                   {m.time}
                 </span>
               </div>
               <Progress value={pct} tone={paused ? "neutral" : "info"} aria-label={`${m.name} progress`} />
             </div>
             {m.reason && <p className="rounded-sm bg-warning-subtle p-3 text-sm text-warning">{m.reason}</p>}
+            {/* One action set per card, at the finger's 44 px: the next step as the primary (a paused mission's fix) or none,
+                then Open map in the same secondary style on every card. */}
             <div className="flex flex-wrap gap-2">
-              {paused ? (
-                <>
-                  <Button size="sm">Skip checkpoint</Button>
-                  <Button size="sm" variant="ghost">
-                    Open map
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Button size="sm" variant="secondary">
-                    Open map
-                  </Button>
-                  <Button size="sm" variant="ghost">
-                    Pause
-                  </Button>
-                </>
-              )}
+              {paused && <Button>Skip checkpoint</Button>}
+              <Button variant="secondary">Open map</Button>
+              {!paused && <Button variant="ghost">Pause</Button>}
             </div>
           </Card>
         )

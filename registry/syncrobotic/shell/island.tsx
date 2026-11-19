@@ -1,4 +1,4 @@
-// @syncrobotic/island v0.17.1 · update: npx shadcn add @syncrobotic/island --overwrite
+// @syncrobotic/island v0.17.2 · update: npx shadcn add @syncrobotic/island --overwrite
 "use client"
 
 import * as React from "react"
@@ -187,7 +187,12 @@ export function IslandNotice({ tone, icon: Icon, title, meta, action, persistent
       {(action || (!persistent && onDismiss)) && (
         <span className="ml-auto flex shrink-0 items-center gap-2">
           {action && (
-            <button type="button" onClick={action.onClick} className="press h-(--h-sm) shrink-0 rounded-xs bg-background/40 px-3 text-sm font-medium">
+            <button
+              type="button"
+              onClick={action.onClick}
+              // Translucent over the alarm tint; in high contrast, where nothing is translucent, opaque with an edge.
+              className="press h-(--h-sm) shrink-0 rounded-xs bg-background/40 px-3 text-sm font-medium in-data-[contrast=more]:bg-background in-data-[contrast=more]:ring-1 in-data-[contrast=more]:ring-input"
+            >
               {action.label}
             </button>
           )}
@@ -258,7 +263,9 @@ export function IslandAlarm({ alarms, onAcknowledge, onShowAll, labels, feedback
       {/* The alarm is never cut: two lines, and the buttons move to their own row before they squeeze it under 160 px. */}
       <span className="flex min-w-0 flex-1 basis-40 flex-col">
         <span className="line-clamp-2 text-sm font-bold break-words">
-          <span className={p.text}>{l[top.priority]}</span> · {top.title}
+          {/* The separator is held to the title (no-break space after it), so the first line never ends on a bare "·". */}
+          <span className={p.text}>{l[top.priority]}</span> {"\u00b7\u00a0"}
+          {top.title}
         </span>
         <span className="truncate text-xs text-muted-foreground">
           {[top.source, top.time, others > 0 && !onShowAll ? l.more(others) : null].filter(Boolean).join(" · ")}

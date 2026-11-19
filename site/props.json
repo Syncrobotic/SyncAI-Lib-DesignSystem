@@ -1,0 +1,4662 @@
+{
+ "$description": "Props per component, generated from the registry source by scripts/props.mjs; do not edit.",
+ "accordion": [
+  {
+   "name": "Accordion",
+   "props": [],
+   "inherits": [
+    "Radix Accordion.Root"
+   ]
+  },
+  {
+   "name": "AccordionItem",
+   "props": [],
+   "inherits": [
+    "Radix Accordion.Item"
+   ]
+  },
+  {
+   "name": "AccordionTrigger",
+   "props": [],
+   "inherits": [
+    "Radix Accordion.Trigger"
+   ]
+  },
+  {
+   "name": "AccordionContent",
+   "props": [],
+   "inherits": [
+    "Radix Accordion.Content"
+   ]
+  }
+ ],
+ "alarm": [
+  {
+   "name": "Alarm",
+   "props": [
+    {
+     "name": "source",
+     "type": "string",
+     "description": "The robot, sensor or system that raised it."
+    },
+    {
+     "name": "time",
+     "type": "string",
+     "description": "When it was raised, already formatted by the app: \"14:02:31\"."
+    },
+    {
+     "name": "title",
+     "type": "string",
+     "required": true,
+     "description": "What happened and where: \"Collision risk · Hall B\"."
+    },
+    {
+     "name": "priority",
+     "type": "\"critical\" | \"high\" | \"low\"",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "active",
+     "type": "boolean",
+     "required": true,
+     "description": "The condition is still present."
+    },
+    {
+     "name": "acknowledged",
+     "type": "boolean",
+     "required": true,
+     "description": "An operator has acknowledged it."
+    },
+    {
+     "name": "shelvedUntil",
+     "type": "string",
+     "description": "Shelved by an operator until this time, already formatted (\"15:30\"). A shelved alarm is out of the live list and silent; the app clears this field when the time comes, and the alarm returns. Critical alarms cannot be shelved."
+    },
+    {
+     "name": "suppressed",
+     "type": "boolean",
+     "description": "Suppressed by design: the app's logic says it does not apply now (a docked robot's \"not moving\"). Counted, not shown."
+    },
+    {
+     "name": "outOfService",
+     "type": "boolean",
+     "description": "Out of service: taken off for maintenance by an authorised person. Counted, not shown."
+    },
+    {
+     "name": "raisedAt",
+     "type": "number",
+     "description": "When it was raised, in ms since the epoch. Needed only for flood detection."
+    },
+    {
+     "name": "onAcknowledge",
+     "type": "() => void",
+     "description": "Shown while unacknowledged. Without it the alarm is read-only (for viewers)."
+    },
+    {
+     "name": "onShelve",
+     "type": "() => void",
+     "description": "Shows \"Shelve\" (not on critical alarms). The app asks how long, then sets `shelvedUntil`."
+    },
+    {
+     "name": "onUnshelve",
+     "type": "() => void",
+     "description": "Shows \"Unshelve\" on a shelved alarm."
+    },
+    {
+     "name": "action",
+     "type": "{ label: string; onClick: () => void; }",
+     "description": "The corrective action, e.g. \"Open camera\"."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<AlarmLabels>",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "AlarmData (except id)"
+   ]
+  },
+  {
+   "name": "AlarmAnnouncer",
+   "props": [
+    {
+     "name": "announce",
+     "type": "{ assertive: string; polite: string; }",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "AlarmList",
+   "props": [
+    {
+     "name": "alarms",
+     "type": "AlarmData[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "onAcknowledge",
+     "type": "(id: string) => void",
+     "description": ""
+    },
+    {
+     "name": "onShelve",
+     "type": "(id: string) => void",
+     "description": ""
+    },
+    {
+     "name": "onUnshelve",
+     "type": "(id: string) => void",
+     "description": ""
+    },
+    {
+     "name": "labels",
+     "type": "Partial<AlarmLabels> & { title?: string; summary?: (active: number, unacknowledged: number) => string; none?: string; shelvedGroup?: (count: number) => string; hidden?: (suppressed: number, outOfService: number) => string; flood?: (count: number, minutes: number) => string; lowGroup?: (count: number) => string; many?: (count: number) => string; }",
+     "description": ""
+    },
+    {
+     "name": "flood",
+     "type": "{ count: number; minutes: number; }",
+     "default": "{ count: 10, minutes: 10 }",
+     "description": "More than `count` alarms raised within `minutes` is a flood (ISA-18.2: over 10 in 10 minutes per operator). The list says so, keeps critical and high on top and folds low alarms into one row. Needs `raisedAt` on the alarms."
+    },
+    {
+     "name": "now",
+     "type": "number",
+     "description": "The current time in ms, for flood detection. Defaults to the clock; pass it to make a story or test stable."
+    },
+    {
+     "name": "feedback",
+     "type": "boolean",
+     "default": "true",
+     "description": "Buzz and sound for a new critical or high alarm (the `feedback` patterns). On by default; turn off where the list is a record, not a live feed."
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "alert": [
+  {
+   "name": "Alert",
+   "props": [
+    {
+     "name": "tone",
+     "type": "\"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
+     "default": "\"neutral\"",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "AlertTitle",
+   "props": [],
+   "inherits": [
+    "<p>"
+   ]
+  },
+  {
+   "name": "AlertDescription",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  }
+ ],
+ "alert-dialog": [
+  {
+   "name": "AlertDialog",
+   "props": [],
+   "inherits": [
+    "Radix AlertDialog.Root"
+   ]
+  },
+  {
+   "name": "AlertDialogTrigger",
+   "props": [],
+   "inherits": [
+    "Radix AlertDialog.Trigger"
+   ]
+  },
+  {
+   "name": "AlertDialogContent",
+   "props": [],
+   "inherits": [
+    "Radix AlertDialog.Content"
+   ]
+  },
+  {
+   "name": "AlertDialogHeader",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "AlertDialogFooter",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "AlertDialogTitle",
+   "props": [],
+   "inherits": [
+    "Radix AlertDialog.Title"
+   ]
+  },
+  {
+   "name": "AlertDialogDescription",
+   "props": [],
+   "inherits": [
+    "Radix AlertDialog.Description"
+   ]
+  },
+  {
+   "name": "AlertDialogAction",
+   "props": [
+    {
+     "name": "destructive",
+     "type": "boolean",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "Radix AlertDialog.Action"
+   ]
+  },
+  {
+   "name": "AlertDialogCancel",
+   "props": [],
+   "inherits": [
+    "Radix AlertDialog.Cancel"
+   ]
+  }
+ ],
+ "attachment": [
+  {
+   "name": "Attachment",
+   "props": [
+    {
+     "name": "name",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "size",
+     "type": "number",
+     "description": "Bytes."
+    },
+    {
+     "name": "status",
+     "type": "\"idle\" | \"uploading\" | \"done\" | \"error\"",
+     "default": "\"done\"",
+     "description": ""
+    },
+    {
+     "name": "progress",
+     "type": "number",
+     "description": "0–100 while uploading."
+    },
+    {
+     "name": "error",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "previewUrl",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "variant",
+     "type": "\"image\" | \"row\" | \"chip\"",
+     "default": "\"row\"",
+     "description": ""
+    },
+    {
+     "name": "onRemove",
+     "type": "() => void",
+     "description": ""
+    },
+    {
+     "name": "onRetry",
+     "type": "() => void",
+     "description": ""
+    },
+    {
+     "name": "onDownload",
+     "type": "() => void",
+     "description": ""
+    },
+    {
+     "name": "leaving",
+     "type": "boolean",
+     "description": "Removed from the list: plays the exit, then calls onLeft. Pair with usePresenceList."
+    },
+    {
+     "name": "onLeft",
+     "type": "() => void",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "autocomplete": [
+  {
+   "name": "Autocomplete",
+   "props": [
+    {
+     "name": "options",
+     "type": "AutocompleteOption[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "value",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "onValueChange",
+     "type": "(value: string | undefined) => void",
+     "description": ""
+    },
+    {
+     "name": "onQueryChange",
+     "type": "(query: string) => void",
+     "description": ""
+    },
+    {
+     "name": "debounce",
+     "type": "number",
+     "default": "0",
+     "description": "Call `onQueryChange` only once the typing has paused this long (ms). The text box itself never waits; clearing never waits."
+    },
+    {
+     "name": "filter",
+     "type": "boolean",
+     "default": "true",
+     "description": "Filter options by the typed text. Turn off when the server filters."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "description": ""
+    },
+    {
+     "name": "placeholder",
+     "type": "string",
+     "default": "\"Search\"",
+     "description": ""
+    },
+    {
+     "name": "emptyText",
+     "type": "string",
+     "default": "\"No matches\"",
+     "description": ""
+    },
+    {
+     "name": "clearable",
+     "type": "boolean",
+     "default": "true",
+     "description": ""
+    },
+    {
+     "name": "showTrigger",
+     "type": "boolean",
+     "default": "true",
+     "description": "A chevron that opens the full list."
+    },
+    {
+     "name": "size",
+     "type": "\"sm\" | \"md\"",
+     "default": "\"md\"",
+     "description": ""
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": ""
+    },
+    {
+     "name": "id",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "aria-label",
+     "type": "string",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "avatar": [
+  {
+   "name": "Avatar",
+   "props": [
+    {
+     "name": "size",
+     "type": "\"sm\" | \"md\" | \"lg\" | \"xl\"",
+     "default": "\"md\"",
+     "description": ""
+    },
+    {
+     "name": "shape",
+     "type": "\"circle\" | \"square\"",
+     "default": "\"circle\"",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "Radix Avatar.Root"
+   ]
+  },
+  {
+   "name": "AvatarImage",
+   "props": [],
+   "inherits": [
+    "Radix Avatar.Image"
+   ]
+  },
+  {
+   "name": "AvatarFallback",
+   "props": [],
+   "inherits": [
+    "Radix Avatar.Fallback"
+   ]
+  },
+  {
+   "name": "AvatarBadge",
+   "props": [
+    {
+     "name": "status",
+     "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<span>"
+   ]
+  },
+  {
+   "name": "AvatarGroup",
+   "props": [
+    {
+     "name": "max",
+     "type": "number",
+     "description": ""
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "AvatarGroupCount",
+   "props": [
+    {
+     "name": "size",
+     "type": "\"sm\" | \"md\" | \"lg\" | \"xl\"",
+     "default": "\"md\"",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<span>"
+   ]
+  }
+ ],
+ "badge": [
+  {
+   "name": "Badge",
+   "props": [
+    {
+     "name": "tone",
+     "type": "\"outline\" | \"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
+     "default": "\"neutral\"",
+     "description": ""
+    },
+    {
+     "name": "asChild",
+     "type": "boolean",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<span>"
+   ]
+  },
+  {
+   "name": "ResultBadge",
+   "props": [
+    {
+     "name": "result",
+     "type": "\"passed\" | \"failed\" | \"insufficient\"",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<span>"
+   ]
+  },
+  {
+   "name": "CountBadge",
+   "props": [
+    {
+     "name": "count",
+     "type": "number",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "max",
+     "type": "number",
+     "default": "99",
+     "description": ""
+    },
+    {
+     "name": "tone",
+     "type": "\"neutral\" | \"danger\"",
+     "default": "\"danger\"",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<span>"
+   ]
+  }
+ ],
+ "breadcrumb": [
+  {
+   "name": "Breadcrumb",
+   "props": [],
+   "inherits": [
+    "<nav>"
+   ]
+  },
+  {
+   "name": "BreadcrumbLink",
+   "props": [],
+   "inherits": [
+    "<a>"
+   ]
+  },
+  {
+   "name": "BreadcrumbPage",
+   "props": [],
+   "inherits": [
+    "<span>"
+   ]
+  }
+ ],
+ "button": [
+  {
+   "name": "Button",
+   "props": [
+    {
+     "name": "variant",
+     "type": "\"link\" | \"primary\" | \"secondary\" | \"outline\" | \"ghost\" | \"destructive\"",
+     "default": "\"primary\"",
+     "description": ""
+    },
+    {
+     "name": "size",
+     "type": "\"sm\" | \"md\" | \"lg\" | \"icon\" | \"icon-sm\"",
+     "default": "\"md\"",
+     "description": ""
+    },
+    {
+     "name": "asChild",
+     "type": "boolean",
+     "description": "Render the child element (e.g. a link) with button styles."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "description": "Disables the button (no double submit) and shows a spinner after 300 ms, so quick actions never flash. It keeps its look: busy is not unavailable."
+    }
+   ],
+   "inherits": [
+    "<button>"
+   ]
+  }
+ ],
+ "button-group": [
+  {
+   "name": "ButtonGroup",
+   "props": [
+    {
+     "name": "orientation",
+     "type": "\"vertical\" | \"horizontal\"",
+     "default": "\"horizontal\"",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "ButtonGroupText",
+   "props": [
+    {
+     "name": "asChild",
+     "type": "boolean",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<span>"
+   ]
+  },
+  {
+   "name": "ButtonGroupSeparator",
+   "props": [
+    {
+     "name": "orientation",
+     "type": "\"vertical\" | \"horizontal\"",
+     "default": "\"vertical\"",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "calendar": [
+  {
+   "name": "Calendar",
+   "props": [],
+   "inherits": [
+    "DayPicker"
+   ]
+  }
+ ],
+ "card": [
+  {
+   "name": "Card",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "CardHeader",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "CardTitle",
+   "props": [],
+   "inherits": [
+    "<h3>"
+   ]
+  },
+  {
+   "name": "CardDescription",
+   "props": [],
+   "inherits": [
+    "<p>"
+   ]
+  },
+  {
+   "name": "CardContent",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "CardFooter",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "CardDataHeader",
+   "props": [
+    {
+     "name": "title",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "actions",
+     "type": "ReactNode",
+     "description": "Controls: the Chart / Table switch, a range."
+    },
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "description": "What comes under the title: a CardFigure, a one-line summary."
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "CardFigure",
+   "props": [
+    {
+     "name": "value",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "note",
+     "type": "ReactNode",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "chart": [
+  {
+   "name": "ChartContainer",
+   "props": [
+    {
+     "name": "children",
+     "type": "ReactNode & ReactElement",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "config",
+     "type": "ChartConfig",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "ChartTooltip",
+   "props": [],
+   "inherits": [
+    "Tooltip"
+   ]
+  },
+  {
+   "name": "ChartTooltipContent",
+   "props": [
+    {
+     "name": "formatter",
+     "type": "Formatter<number, string> & ((value: number, name: string, item: TooltipPayloadEntry, index: number, payload: TooltipPayload) => ReactNode | [ReactNode, ReactNode]) & ((value: number, key: string) => ReactNode)",
+     "description": "Function to customize the value in the tooltip. If you return an array, the first entry will be the formatted \"value\", and the second entry will be the formatted \"name\""
+    },
+    {
+     "name": "labelFormatter",
+     "type": "((label: ReactNode, payload: readonly Payload<number, string>[]) => ReactNode) & ((label: ReactNode, payload: TooltipPayload) => ReactNode) & ((label: unknown) => ReactNode)",
+     "description": "The formatter function of label in tooltip."
+    }
+   ],
+   "inherits": [
+    "Partial<TooltipContentProps<number, string>>"
+   ]
+  },
+  {
+   "name": "ChartLegend",
+   "props": [],
+   "inherits": [
+    "LegendProps (except ref)"
+   ]
+  },
+  {
+   "name": "ChartLegendContent",
+   "props": [
+    {
+     "name": "payload",
+     "type": "readonly { dataKey?: unknown; value?: unknown; }[]",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "ChartTable",
+   "props": [
+    {
+     "name": "data",
+     "type": "T[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "x",
+     "type": "keyof T & string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "xLabel",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "config",
+     "type": "ChartConfig",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "checkbox": [
+  {
+   "name": "Checkbox",
+   "props": [],
+   "inherits": [
+    "Radix Checkbox.Root"
+   ]
+  }
+ ],
+ "chip-group": [
+  {
+   "name": "ChipGroup",
+   "props": [
+    {
+     "name": "items",
+     "type": "Chip[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "value",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "onValueChange",
+     "type": "(value: string | undefined) => void",
+     "description": ""
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "Names the group: \"Task\", \"Saved views\"."
+    },
+    {
+     "name": "max",
+     "type": "number",
+     "description": "Show this many chips, then \"N more\"."
+    },
+    {
+     "name": "allowNone",
+     "type": "boolean",
+     "default": "true",
+     "description": "Pressing the selected chip clears the choice."
+    },
+    {
+     "name": "moreLabel",
+     "type": "(hidden: number) => string",
+     "default": "(n) => `${n} more`",
+     "description": ""
+    },
+    {
+     "name": "lessLabel",
+     "type": "string",
+     "default": "\"Show fewer\"",
+     "description": ""
+    },
+    {
+     "name": "linkAs",
+     "type": "ElementType",
+     "default": "\"a\"",
+     "description": "Your router's link (e.g. next/link), for chips with href."
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "choice-field": [
+  {
+   "name": "FieldSet",
+   "props": [
+    {
+     "name": "legend",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "hint",
+     "type": "ReactNode",
+     "description": ""
+    },
+    {
+     "name": "error",
+     "type": "ReactNode",
+     "description": ""
+    },
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "ChoiceField",
+   "props": [
+    {
+     "name": "label",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "description",
+     "type": "ReactNode",
+     "description": ""
+    },
+    {
+     "name": "control",
+     "type": "ReactElement",
+     "required": true,
+     "description": "A Checkbox, RadioGroupItem or Switch."
+    },
+    {
+     "name": "trailing",
+     "type": "ReactNode",
+     "description": "A count or a value at the end of the row."
+    },
+    {
+     "name": "controlAt",
+     "type": "\"end\" | \"start\"",
+     "default": "\"start\"",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "command": [
+  {
+   "name": "Command",
+   "props": [],
+   "inherits": [
+    "CommandPrimitive"
+   ]
+  },
+  {
+   "name": "CommandDialog",
+   "props": [
+    {
+     "name": "title",
+     "type": "string",
+     "default": "\"Search\"",
+     "description": ""
+    },
+    {
+     "name": "open",
+     "type": "boolean",
+     "description": ""
+    },
+    {
+     "name": "onOpenChange",
+     "type": "(open: boolean) => void",
+     "description": ""
+    },
+    {
+     "name": "description",
+     "type": "string",
+     "default": "\"Search pages, robots and actions\"",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "CommandPrimitive"
+   ]
+  },
+  {
+   "name": "CommandInput",
+   "props": [
+    {
+     "name": "end",
+     "type": "ReactNode",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "CommandPrimitive.Input"
+   ]
+  },
+  {
+   "name": "CommandList",
+   "props": [],
+   "inherits": [
+    "CommandPrimitive.List"
+   ]
+  },
+  {
+   "name": "CommandEmpty",
+   "props": [],
+   "inherits": [
+    "CommandPrimitive.Empty"
+   ]
+  },
+  {
+   "name": "CommandGroup",
+   "props": [],
+   "inherits": [
+    "CommandPrimitive.Group"
+   ]
+  },
+  {
+   "name": "CommandSeparator",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "CommandItem",
+   "props": [],
+   "inherits": [
+    "CommandPrimitive.Item"
+   ]
+  },
+  {
+   "name": "CommandCheck",
+   "props": [
+    {
+     "name": "checked",
+     "type": "boolean",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "CommandShortcut",
+   "props": [],
+   "inherits": [
+    "<kbd>"
+   ]
+  }
+ ],
+ "copy-button": [
+  {
+   "name": "CopyButton",
+   "props": [
+    {
+     "name": "value",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "default": "\"Copy\"",
+     "description": ""
+    },
+    {
+     "name": "copiedLabel",
+     "type": "string",
+     "default": "\"Copied\"",
+     "description": ""
+    },
+    {
+     "name": "failedLabel",
+     "type": "string",
+     "default": "\"Could not copy: select the text and copy it\"",
+     "description": "Said when the browser refused (no clipboard access); it stays until the next press."
+    },
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "description": ""
+    },
+    {
+     "name": "variant",
+     "type": "\"secondary\" | \"outline\" | \"ghost\"",
+     "default": "\"ghost\"",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "data-grid": [
+  {
+   "name": "DataGrid",
+   "props": [
+    {
+     "name": "table",
+     "type": "TanTable<T>",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "size",
+     "type": "\"sm\" | \"default\"",
+     "description": "sm: 44 px rows for long lists on a desktop. Separate from the theme's data-density, which this follows too."
+    },
+    {
+     "name": "density",
+     "type": "\"default\" | \"dense\"",
+     "description": ""
+    },
+    {
+     "name": "variant",
+     "type": "\"default\" | \"striped\" | \"borders\" | \"borderless\"",
+     "default": "\"default\"",
+     "description": ""
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "default": "false",
+     "description": ""
+    },
+    {
+     "name": "emptyText",
+     "type": "ReactNode",
+     "default": "\"No rows\"",
+     "description": ""
+    },
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "DataGridTable",
+   "props": [
+    {
+     "name": "maxHeight",
+     "type": "number",
+     "description": ""
+    },
+    {
+     "name": "virtual",
+     "type": "boolean",
+     "default": "false",
+     "description": ""
+    },
+    {
+     "name": "aria-label",
+     "type": "string",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "DataGridColumnHeader",
+   "props": [
+    {
+     "name": "column",
+     "type": "Column<T, unknown>",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "title",
+     "type": "string",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "DataGridColumnVisibility",
+   "props": [
+    {
+     "name": "label",
+     "type": "string",
+     "default": "\"Columns\"",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "DataGridPagination",
+   "props": [
+    {
+     "name": "pages",
+     "type": "boolean",
+     "default": "true",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "DataGridSelectionSummary",
+   "props": [
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "date-selector": [
+  {
+   "name": "DatePicker",
+   "props": [
+    {
+     "name": "placeholder",
+     "type": "string",
+     "default": "\"Pick a day\"",
+     "description": ""
+    },
+    {
+     "name": "displayFormat",
+     "type": "string",
+     "default": "\"d MMM yyyy\"",
+     "description": "date-fns pattern for the trigger."
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": ""
+    },
+    {
+     "name": "disabledDays",
+     "type": "Matcher | Matcher[]",
+     "description": "Days that cannot be picked, in react-day-picker's matcher form, e.g. `{ before: new Date() }`."
+    },
+    {
+     "name": "clearable",
+     "type": "boolean",
+     "description": "Shows an × to clear the value."
+    },
+    {
+     "name": "id",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "aria-label",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "value",
+     "type": "Date",
+     "description": ""
+    },
+    {
+     "name": "onValueChange",
+     "type": "(d: Date | undefined) => void",
+     "description": ""
+    },
+    {
+     "name": "presets",
+     "type": "DatePreset<Date>[]",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "DateRangePicker",
+   "props": [
+    {
+     "name": "placeholder",
+     "type": "string",
+     "default": "\"Pick a range\"",
+     "description": ""
+    },
+    {
+     "name": "displayFormat",
+     "type": "string",
+     "default": "\"d MMM yyyy\"",
+     "description": "date-fns pattern for the trigger."
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": ""
+    },
+    {
+     "name": "disabledDays",
+     "type": "Matcher | Matcher[]",
+     "description": "Days that cannot be picked, in react-day-picker's matcher form, e.g. `{ before: new Date() }`."
+    },
+    {
+     "name": "clearable",
+     "type": "boolean",
+     "description": "Shows an × to clear the value."
+    },
+    {
+     "name": "id",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "aria-label",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "value",
+     "type": "DateRange",
+     "description": ""
+    },
+    {
+     "name": "onValueChange",
+     "type": "(r: DateRange | undefined) => void",
+     "description": ""
+    },
+    {
+     "name": "presets",
+     "type": "DatePreset<DateRange>[]",
+     "description": ""
+    },
+    {
+     "name": "numberOfMonths",
+     "type": "number",
+     "default": "2",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "description-list": [
+  {
+   "name": "DescriptionList",
+   "props": [
+    {
+     "name": "items",
+     "type": "Item[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "columns",
+     "type": "1 | 2 | 3 | 4",
+     "default": "3",
+     "description": ""
+    },
+    {
+     "name": "variant",
+     "type": "\"plain\" | \"tiles\"",
+     "default": "\"plain\"",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "dialog": [
+  {
+   "name": "Dialog",
+   "props": [],
+   "inherits": [
+    "Radix Dialog.Root"
+   ]
+  },
+  {
+   "name": "DialogTrigger",
+   "props": [],
+   "inherits": [
+    "Radix Dialog.Trigger"
+   ]
+  },
+  {
+   "name": "DialogClose",
+   "props": [],
+   "inherits": [
+    "Radix Dialog.Close"
+   ]
+  },
+  {
+   "name": "DialogOverlay",
+   "props": [],
+   "inherits": [
+    "Radix Dialog.Overlay"
+   ]
+  },
+  {
+   "name": "DialogContent",
+   "props": [
+    {
+     "name": "closeLabel",
+     "type": "string",
+     "default": "\"Close\"",
+     "description": ""
+    },
+    {
+     "name": "showClose",
+     "type": "boolean",
+     "default": "true",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "Radix Dialog.Content"
+   ]
+  },
+  {
+   "name": "DialogHeader",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "DialogFooter",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "DialogTitle",
+   "props": [],
+   "inherits": [
+    "Radix Dialog.Title"
+   ]
+  },
+  {
+   "name": "DialogDescription",
+   "props": [],
+   "inherits": [
+    "Radix Dialog.Description"
+   ]
+  }
+ ],
+ "dock": [
+  {
+   "name": "Dock",
+   "props": [
+    {
+     "name": "state",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "action",
+     "type": "ReactNode",
+     "description": ""
+    },
+    {
+     "name": "nav",
+     "type": "ReactNode",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "DockActions",
+   "props": [
+    {
+     "name": "secondary",
+     "type": "{ label: string; onClick: () => void; icon?: ElementType }",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "primary",
+     "type": "{ label: string; onClick: () => void; icon?: ElementType }",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "destructive",
+     "type": "boolean",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "DockNav",
+   "props": [
+    {
+     "name": "items",
+     "type": "NavItem[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "active",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "onSelect",
+     "type": "(key: string) => void",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "default": "\"Primary\"",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "dropdown-menu": [
+  {
+   "name": "DropdownMenu",
+   "props": [],
+   "inherits": [
+    "Radix DropdownMenu.Root"
+   ]
+  },
+  {
+   "name": "DropdownMenuTrigger",
+   "props": [],
+   "inherits": [
+    "Radix DropdownMenu.Trigger"
+   ]
+  },
+  {
+   "name": "DropdownMenuGroup",
+   "props": [],
+   "inherits": [
+    "Radix DropdownMenu.Group"
+   ]
+  },
+  {
+   "name": "DropdownMenuContent",
+   "props": [],
+   "inherits": [
+    "Radix DropdownMenu.Content"
+   ]
+  },
+  {
+   "name": "DropdownMenuItem",
+   "props": [
+    {
+     "name": "destructive",
+     "type": "boolean",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "Radix DropdownMenu.Item"
+   ]
+  },
+  {
+   "name": "DropdownMenuCheckboxItem",
+   "props": [],
+   "inherits": [
+    "Radix DropdownMenu.CheckboxItem"
+   ]
+  },
+  {
+   "name": "DropdownMenuLabel",
+   "props": [],
+   "inherits": [
+    "Radix DropdownMenu.Label"
+   ]
+  },
+  {
+   "name": "DropdownMenuSeparator",
+   "props": [],
+   "inherits": [
+    "Radix DropdownMenu.Separator"
+   ]
+  },
+  {
+   "name": "DropdownMenuShortcut",
+   "props": [],
+   "inherits": [
+    "<span>"
+   ]
+  }
+ ],
+ "empty-state": [
+  {
+   "name": "EmptyState",
+   "props": [
+    {
+     "name": "icon",
+     "type": "ElementType",
+     "description": ""
+    },
+    {
+     "name": "title",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "description",
+     "type": "ReactNode",
+     "description": ""
+    },
+    {
+     "name": "action",
+     "type": "ReactNode",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "field": [
+  {
+   "name": "Field",
+   "props": [
+    {
+     "name": "label",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "hint",
+     "type": "ReactNode",
+     "description": ""
+    },
+    {
+     "name": "error",
+     "type": "ReactNode",
+     "description": ""
+    },
+    {
+     "name": "children",
+     "type": "ReactElement",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "file-type": [
+  {
+   "name": "FileTypeIcon",
+   "props": [
+    {
+     "name": "name",
+     "type": "string",
+     "required": true,
+     "description": "A file name (\"route.geojson\") or a bare extension (\"geojson\")."
+    },
+    {
+     "name": "size",
+     "type": "\"sm\" | \"md\" | \"lg\"",
+     "default": "\"md\"",
+     "description": ""
+    },
+    {
+     "name": "variant",
+     "type": "\"label\" | \"icon\" | \"tile\"",
+     "default": "\"tile\"",
+     "description": "`tile`: the icon on a muted tile with the extension; `icon`: the glyph only; `label`: the extension as a tag."
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "description": "Override the written label, e.g. \"ROS 2\" for db3."
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "file-upload": [
+  {
+   "name": "FileUpload",
+   "props": [
+    {
+     "name": "onFiles",
+     "type": "(files: File[]) => void",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "onReject",
+     "type": "(rejections: FileRejection[]) => void",
+     "description": ""
+    },
+    {
+     "name": "accept",
+     "type": "string",
+     "description": "Same syntax as <input accept>: \"image/*,.pgm\"."
+    },
+    {
+     "name": "multiple",
+     "type": "boolean",
+     "default": "true",
+     "description": ""
+    },
+    {
+     "name": "maxSize",
+     "type": "number",
+     "description": "Bytes."
+    },
+    {
+     "name": "maxFiles",
+     "type": "number",
+     "description": ""
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": ""
+    },
+    {
+     "name": "title",
+     "type": "ReactNode",
+     "default": "\"Drop files here or choose files\"",
+     "description": ""
+    },
+    {
+     "name": "hint",
+     "type": "ReactNode",
+     "description": ""
+    },
+    {
+     "name": "icon",
+     "type": "ElementType",
+     "default": "Upload",
+     "description": ""
+    },
+    {
+     "name": "compact",
+     "type": "boolean",
+     "default": "false",
+     "description": "One line, for a toolbar or a form row."
+    },
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "description": "Replace the default content entirely (an avatar, a cover image)."
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "filter-form": [
+  {
+   "name": "FilterForm",
+   "props": [
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "action",
+     "type": "string",
+     "description": "The path to filter; the current one when left out."
+    },
+    {
+     "name": "onNavigate",
+     "type": "(url: string, mode: NavigateMode) => void",
+     "default": "browserNavigate",
+     "description": ""
+    },
+    {
+     "name": "delay",
+     "type": "number",
+     "default": "400",
+     "description": "Wait after typing stops, in ms."
+    },
+    {
+     "name": "drop",
+     "type": "string[]",
+     "default": "[\"page\"]",
+     "description": "Fields that reset when a filter changes."
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "default": "\"Filters\"",
+     "description": "Names the search landmark."
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "filters": [
+  {
+   "name": "Filters",
+   "props": [
+    {
+     "name": "fields",
+     "type": "FilterField[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "value",
+     "type": "FilterRule[]",
+     "description": ""
+    },
+    {
+     "name": "defaultValue",
+     "type": "FilterRule[]",
+     "description": ""
+    },
+    {
+     "name": "onValueChange",
+     "type": "(rules: FilterRule[]) => void",
+     "description": ""
+    },
+    {
+     "name": "labels",
+     "type": "Partial<Omit<FilterLabels, \"operators\">> & { operators?: Partial<Record<FilterOperator, string>>; }",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "icon-tile": [
+  {
+   "name": "IconTile",
+   "props": [
+    {
+     "name": "variant",
+     "type": "\"outline\" | \"muted\" | \"raised\" | \"soft\" | \"solid\"",
+     "default": "\"outline\"",
+     "description": ""
+    },
+    {
+     "name": "size",
+     "type": "\"sm\" | \"md\" | \"lg\" | \"xl\"",
+     "default": "\"md\"",
+     "description": ""
+    },
+    {
+     "name": "tone",
+     "type": "\"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
+     "default": "\"neutral\"",
+     "description": ""
+    },
+    {
+     "name": "shape",
+     "type": "\"circle\" | \"square\"",
+     "default": "\"square\"",
+     "description": ""
+    },
+    {
+     "name": "asChild",
+     "type": "boolean",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<span>"
+   ]
+  },
+  {
+   "name": "IconTileDot",
+   "props": [
+    {
+     "name": "tone",
+     "type": "\"neutral\" | \"success\" | \"warning\" | \"danger\"",
+     "default": "\"neutral\"",
+     "description": ""
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "image-grid": [
+  {
+   "name": "ImageGrid",
+   "props": [
+    {
+     "name": "items",
+     "type": "ImageGridItem[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "Names the collection for screen readers, e.g. \"Images in Forklift aisles v3\"."
+    },
+    {
+     "name": "layout",
+     "type": "\"grid\" | \"strip\"",
+     "default": "\"grid\"",
+     "description": "grid: rows of tiles that fill the width. strip: one row that scrolls sideways and snaps to each tile."
+    },
+    {
+     "name": "aspect",
+     "type": "\"video\" | \"square\" | \"4/3\"",
+     "default": "\"4/3\"",
+     "description": "Every tile keeps this shape before and after its picture loads, so nothing jumps."
+    },
+    {
+     "name": "size",
+     "type": "\"sm\" | \"md\" | \"lg\"",
+     "default": "\"md\"",
+     "description": "The smallest a tile gets (grid) or its width (strip): 96, 144 or 192 px."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "description": "Show skeleton tiles instead of the items."
+    },
+    {
+     "name": "loadingCount",
+     "type": "number",
+     "description": "How many skeleton tiles; default 8 (grid) or 4 (strip)."
+    },
+    {
+     "name": "selection",
+     "type": "\"none\" | \"single\" | \"multiple\"",
+     "default": "\"none\"",
+     "description": "none: a tile opens the lightbox. single or multiple: a tile is picked, and a corner button opens the lightbox."
+    },
+    {
+     "name": "selected",
+     "type": "string[]",
+     "description": "Picked ids (controlled)."
+    },
+    {
+     "name": "defaultSelected",
+     "type": "string[]",
+     "default": "[]",
+     "description": ""
+    },
+    {
+     "name": "onSelectedChange",
+     "type": "(ids: string[]) => void",
+     "description": ""
+    },
+    {
+     "name": "lightbox",
+     "type": "boolean",
+     "default": "true",
+     "description": "Open pictures in a lightbox. On by default."
+    },
+    {
+     "name": "onReveal",
+     "type": "(item: ImageGridItem) => void",
+     "description": "Called when someone asks to see a hidden picture, e.g. to log the view."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<ImageGridLabels>",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "input": [
+  {
+   "name": "Input",
+   "props": [],
+   "inherits": [
+    "<input>"
+   ]
+  }
+ ],
+ "input-group": [
+  {
+   "name": "InputGroup",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "InputGroupAddon",
+   "props": [],
+   "inherits": [
+    "<span>"
+   ]
+  },
+  {
+   "name": "InputGroupUnit",
+   "props": [],
+   "inherits": [
+    "<span>"
+   ]
+  },
+  {
+   "name": "InputGroupButton",
+   "props": [],
+   "inherits": [
+    "<button>"
+   ]
+  }
+ ],
+ "input-otp": [
+  {
+   "name": "InputOTP",
+   "props": [],
+   "inherits": [
+    "OTPInput"
+   ]
+  },
+  {
+   "name": "InputOTPGroup",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "InputOTPSlot",
+   "props": [
+    {
+     "name": "index",
+     "type": "number",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "InputOTPSeparator",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  }
+ ],
+ "island": [
+  {
+   "name": "Island",
+   "props": [
+    {
+     "name": "name",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "avatar",
+     "type": "ReactNode",
+     "description": ""
+    },
+    {
+     "name": "status",
+     "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
+     "description": "Shape at the avatar's corner: the dog's current state."
+    },
+    {
+     "name": "tone",
+     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
+     "description": ""
+    },
+    {
+     "name": "attention",
+     "type": "boolean",
+     "description": "Another dog needs attention: a triangle after the name. Show it only for new issues."
+    },
+    {
+     "name": "online",
+     "type": "boolean",
+     "default": "true",
+     "description": ""
+    },
+    {
+     "name": "battery",
+     "type": "number",
+     "default": "72",
+     "description": ""
+    },
+    {
+     "name": "charging",
+     "type": "boolean",
+     "description": ""
+    },
+    {
+     "name": "unread",
+     "type": "number",
+     "default": "0",
+     "description": ""
+    },
+    {
+     "name": "open",
+     "type": "\"name\" | \"status\" | \"bell\"",
+     "default": "null",
+     "description": "Which zone is expanded. Each zone has its own panel."
+    },
+    {
+     "name": "onOpenChange",
+     "type": "(zone: Zone | null) => void",
+     "description": ""
+    },
+    {
+     "name": "edge",
+     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
+     "description": "Persistent fault (stopped): changes the tray edge colour. Offline is neutral: say it, do not colour it."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "description": "Status zone while the first status has not arrived."
+    },
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "description": "IslandNotice or a panel."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<IslandLabels>",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "IslandNotice",
+   "props": [
+    {
+     "name": "tone",
+     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "icon",
+     "type": "ElementType",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "title",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "meta",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "action",
+     "type": "{ label: string; onClick: () => void; }",
+     "description": ""
+    },
+    {
+     "name": "persistent",
+     "type": "boolean",
+     "description": "Offline, stopped: no close button, stays until the state changes."
+    },
+    {
+     "name": "emphasis",
+     "type": "boolean",
+     "description": "Severe events and failures use a danger tint and do not auto-dismiss."
+    },
+    {
+     "name": "onDismiss",
+     "type": "() => void",
+     "description": ""
+    },
+    {
+     "name": "dismissLabel",
+     "type": "string",
+     "default": "\"Dismiss\"",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "IslandAlarm",
+   "props": [
+    {
+     "name": "alarms",
+     "type": "AlarmData[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "onAcknowledge",
+     "type": "(id: string) => void",
+     "description": ""
+    },
+    {
+     "name": "onShowAll",
+     "type": "() => void",
+     "description": "Opens the full alarm list. Shown when more than one alarm is unacknowledged."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<AlarmLabels> & { more?: (n: number) => string; moreAlarms?: string; many?: (n: number) => string; }",
+     "description": ""
+    },
+    {
+     "name": "feedback",
+     "type": "boolean",
+     "default": "true",
+     "description": "Buzz and sound for a new critical or high alarm, and repeat critical until acknowledged. On by default: on a phone the island is the alarm surface. Turn off if an AlarmList on the same screen already signals."
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "item": [
+  {
+   "name": "ItemGroup",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "Item",
+   "props": [
+    {
+     "name": "variant",
+     "type": "\"outline\" | \"default\" | \"muted\"",
+     "default": "\"default\"",
+     "description": ""
+    },
+    {
+     "name": "size",
+     "type": "\"sm\" | \"md\"",
+     "default": "\"md\"",
+     "description": ""
+    },
+    {
+     "name": "asChild",
+     "type": "boolean",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "ItemMedia",
+   "props": [
+    {
+     "name": "variant",
+     "type": "\"image\" | \"icon\" | \"plain\" | \"avatar\"",
+     "default": "\"icon\"",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "ItemContent",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "ItemTitle",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "ItemDescription",
+   "props": [],
+   "inherits": [
+    "<p>"
+   ]
+  },
+  {
+   "name": "ItemActions",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "ItemHeader",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "ItemFooter",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "ItemSeparator",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  }
+ ],
+ "kbd": [
+  {
+   "name": "Kbd",
+   "props": [
+    {
+     "name": "pressed",
+     "type": "boolean",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<kbd>"
+   ]
+  },
+  {
+   "name": "KbdGroup",
+   "props": [],
+   "inherits": [
+    "<kbd>"
+   ]
+  }
+ ],
+ "label": [
+  {
+   "name": "Label",
+   "props": [],
+   "inherits": [
+    "Radix Label.Root"
+   ]
+  }
+ ],
+ "list": [
+  {
+   "name": "ListGroup",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "ListRow",
+   "props": [
+    {
+     "name": "title",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "meta",
+     "type": "ReactNode",
+     "description": ""
+    },
+    {
+     "name": "lead",
+     "type": "ReactNode",
+     "description": "Only when the icon carries meaning (event snapshot, step number). No decorative tiles."
+    },
+    {
+     "name": "trailing",
+     "type": "ReactNode",
+     "description": "Value text or InlineStatus. Filled badges belong in headers, not rows."
+    },
+    {
+     "name": "chevron",
+     "type": "boolean",
+     "description": "Show only when the row leads somewhere."
+    },
+    {
+     "name": "onClick",
+     "type": "() => void",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "load-more": [
+  {
+   "name": "LoadMore",
+   "props": [
+    {
+     "name": "shown",
+     "type": "number",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "total",
+     "type": "number",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "step",
+     "type": "number",
+     "required": true,
+     "description": "How many one press adds."
+    },
+    {
+     "name": "onMore",
+     "type": "() => void",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "default": "false",
+     "description": "While the next batch is on its way (when it is fetched, not just revealed)."
+    },
+    {
+     "name": "labels",
+     "type": "Labels",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "marker": [
+  {
+   "name": "Marker",
+   "props": [
+    {
+     "name": "icon",
+     "type": "ReactNode",
+     "description": ""
+    },
+    {
+     "name": "time",
+     "type": "ReactNode",
+     "description": ""
+    },
+    {
+     "name": "tone",
+     "type": "\"warning\" | \"danger\"",
+     "description": "warning or danger colour the label; anything else stays neutral."
+    },
+    {
+     "name": "align",
+     "type": "\"center\" | \"start\"",
+     "default": "\"center\"",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "MarkerRow",
+   "props": [
+    {
+     "name": "tone",
+     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
+     "description": ""
+    },
+    {
+     "name": "icon",
+     "type": "ReactNode",
+     "description": "An icon for the kind of line, used when there is no tone."
+    },
+    {
+     "name": "title",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "detail",
+     "type": "ReactNode",
+     "description": "Arguments, an id, a path: shown in monospace after the title."
+    },
+    {
+     "name": "time",
+     "type": "ReactNode",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<div> (except title)"
+   ]
+  }
+ ],
+ "meter": [
+  {
+   "name": "Meter",
+   "props": [
+    {
+     "name": "value",
+     "type": "number",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "min",
+     "type": "number",
+     "default": "0",
+     "description": ""
+    },
+    {
+     "name": "max",
+     "type": "number",
+     "default": "100",
+     "description": ""
+    },
+    {
+     "name": "low",
+     "type": "number",
+     "description": "Warning from here (below it, or above it when higherIsWorse)."
+    },
+    {
+     "name": "critical",
+     "type": "number",
+     "description": "Danger from here."
+    },
+    {
+     "name": "higherIsWorse",
+     "type": "boolean",
+     "default": "false",
+     "description": ""
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "What is measured, e.g. \"Battery\". Shown above the bar, and read with the value."
+    },
+    {
+     "name": "unit",
+     "type": "string",
+     "default": "\"%\"",
+     "description": ""
+    },
+    {
+     "name": "inline",
+     "type": "boolean",
+     "default": "false",
+     "description": "One line for table cells: bar and value, the label only read by screen readers."
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "navigation-menu": [
+  {
+   "name": "NavigationMenu",
+   "props": [
+    {
+     "name": "viewport",
+     "type": "boolean",
+     "default": "true",
+     "description": "One shared panel that resizes between menus (default). false draws each panel under its own trigger."
+    }
+   ],
+   "inherits": [
+    "Radix NavigationMenu.Root"
+   ]
+  },
+  {
+   "name": "NavigationMenuList",
+   "props": [],
+   "inherits": [
+    "Radix NavigationMenu.List"
+   ]
+  },
+  {
+   "name": "NavigationMenuItem",
+   "props": [],
+   "inherits": [
+    "Radix NavigationMenu.Item"
+   ]
+  },
+  {
+   "name": "NavigationMenuTrigger",
+   "props": [],
+   "inherits": [
+    "Radix NavigationMenu.Trigger"
+   ]
+  },
+  {
+   "name": "NavigationMenuContent",
+   "props": [],
+   "inherits": [
+    "Radix NavigationMenu.Content"
+   ]
+  },
+  {
+   "name": "NavigationMenuLink",
+   "props": [],
+   "inherits": [
+    "Radix NavigationMenu.Link"
+   ]
+  },
+  {
+   "name": "NavigationMenuCard",
+   "props": [
+    {
+     "name": "icon",
+     "type": "ReactNode",
+     "description": ""
+    },
+    {
+     "name": "title",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "description",
+     "type": "ReactNode",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "Radix NavigationMenu.Link (except title)"
+   ]
+  },
+  {
+   "name": "NavigationMenuIndicator",
+   "props": [],
+   "inherits": [
+    "Radix NavigationMenu.Indicator"
+   ]
+  }
+ ],
+ "number-field": [
+  {
+   "name": "NumberField",
+   "props": [
+    {
+     "name": "value",
+     "type": "number",
+     "description": ""
+    },
+    {
+     "name": "defaultValue",
+     "type": "number",
+     "default": "null",
+     "description": ""
+    },
+    {
+     "name": "onValueChange",
+     "type": "(value: number | null) => void",
+     "description": ""
+    },
+    {
+     "name": "min",
+     "type": "number",
+     "description": ""
+    },
+    {
+     "name": "max",
+     "type": "number",
+     "description": ""
+    },
+    {
+     "name": "step",
+     "type": "number",
+     "default": "1",
+     "description": "Arrow keys and the buttons move by this much; Shift or PageUp/PageDown by `largeStep`."
+    },
+    {
+     "name": "largeStep",
+     "type": "number",
+     "default": "step * 10",
+     "description": ""
+    },
+    {
+     "name": "unit",
+     "type": "string",
+     "description": "Written right after the value and read with it: \"2.0 m/s\"."
+    },
+    {
+     "name": "labels",
+     "type": "{ decrease?: string; increase?: string; }",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<input> (except value, defaultValue, onChange, type, min, max, step)"
+   ]
+  }
+ ],
+ "page-header": [
+  {
+   "name": "PageHeader",
+   "props": [
+    {
+     "name": "title",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "description",
+     "type": "ReactNode",
+     "description": ""
+    },
+    {
+     "name": "breadcrumb",
+     "type": "ReactNode",
+     "description": "A Breadcrumb, shown above the title."
+    },
+    {
+     "name": "meta",
+     "type": "ReactNode",
+     "description": "MetaPills: counts, owner, last update, a status."
+    },
+    {
+     "name": "actions",
+     "type": "ReactNode",
+     "description": "Buttons for this page, at the right on wide screens and under the title on phones."
+    },
+    {
+     "name": "metaLabel",
+     "type": "string",
+     "default": "\"About this page\"",
+     "description": "Names the row of meta pills for screen readers."
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "MetaPill",
+   "props": [
+    {
+     "name": "tone",
+     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
+     "description": ""
+    },
+    {
+     "name": "icon",
+     "type": "ReactNode",
+     "description": ""
+    },
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "pagination": [
+  {
+   "name": "Pagination",
+   "props": [
+    {
+     "name": "page",
+     "type": "number",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "pageSize",
+     "type": "number",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "total",
+     "type": "number",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "onPageChange",
+     "type": "(page: number) => void",
+     "description": "For pages kept in state. Not needed with `href`."
+    },
+    {
+     "name": "href",
+     "type": "(page: number) => string",
+     "description": "Link mode: the URL of a page (zero-based), e.g. (p) => `?page=${p + 1}`."
+    },
+    {
+     "name": "onNavigate",
+     "type": "(url: string, mode: NavigateMode) => void",
+     "description": "In link mode, follow a link through the app's router; without it the browser loads the page."
+    },
+    {
+     "name": "pages",
+     "type": "boolean",
+     "default": "false",
+     "description": "Show numbered page buttons between previous and next."
+    },
+    {
+     "name": "labels",
+     "type": "Labels",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "phone-input": [
+  {
+   "name": "PhoneInput",
+   "props": [
+    {
+     "name": "value",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "onValueChange",
+     "type": "(e164: string | undefined, country: CountryCode) => void",
+     "description": ""
+    },
+    {
+     "name": "defaultCountry",
+     "type": "CountryCode",
+     "default": "\"TW\"",
+     "description": ""
+    },
+    {
+     "name": "countryOptions",
+     "type": "CountryCode[]",
+     "description": "Limit the country list, e.g. the countries you operate in."
+    },
+    {
+     "name": "placeholder",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": ""
+    },
+    {
+     "name": "readOnly",
+     "type": "boolean",
+     "description": ""
+    },
+    {
+     "name": "id",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "aria-label",
+     "type": "string",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "popover": [
+  {
+   "name": "Popover",
+   "props": [],
+   "inherits": [
+    "Radix Popover.Root"
+   ]
+  },
+  {
+   "name": "PopoverTrigger",
+   "props": [],
+   "inherits": [
+    "Radix Popover.Trigger"
+   ]
+  },
+  {
+   "name": "PopoverAnchor",
+   "props": [],
+   "inherits": [
+    "Radix Popover.Anchor"
+   ]
+  },
+  {
+   "name": "PopoverContent",
+   "props": [],
+   "inherits": [
+    "Radix Popover.Content"
+   ]
+  }
+ ],
+ "progress": [
+  {
+   "name": "Progress",
+   "props": [
+    {
+     "name": "tone",
+     "type": "\"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
+     "default": "\"info\"",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "Radix Progress.Root"
+   ]
+  }
+ ],
+ "questionnaire": [
+  {
+   "name": "Questionnaire",
+   "props": [
+    {
+     "name": "questions",
+     "type": "Question[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "mode",
+     "type": "\"list\" | \"paged\"",
+     "default": "\"paged\"",
+     "description": ""
+    },
+    {
+     "name": "defaultAnswers",
+     "type": "Record<string, string | string[] | number | undefined>",
+     "default": "{}",
+     "description": ""
+    },
+    {
+     "name": "onSubmit",
+     "type": "(answers: Answers) => void",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "submitLabel",
+     "type": "string",
+     "default": "\"Submit\"",
+     "description": ""
+    },
+    {
+     "name": "requiredMessage",
+     "type": "string",
+     "default": "\"Answer this question to continue.\"",
+     "description": ""
+    },
+    {
+     "name": "review",
+     "type": "boolean",
+     "description": "Paged only: a last page that lists the answers, each with Edit, before Submit."
+    },
+    {
+     "name": "defaultStep",
+     "type": "number",
+     "default": "0",
+     "description": "Paged only: the page to open on, from 0. The review page is questions.length."
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "QuestionField",
+   "props": [
+    {
+     "name": "question",
+     "type": "Question",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "value",
+     "type": "string | number | string[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "onChange",
+     "type": "(v: Answers[string]) => void",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "error",
+     "type": "ReactNode",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "radio-group": [
+  {
+   "name": "RadioGroup",
+   "props": [],
+   "inherits": [
+    "Radix RadioGroup.Root"
+   ]
+  },
+  {
+   "name": "RadioGroupItem",
+   "props": [],
+   "inherits": [
+    "Radix RadioGroup.Item"
+   ]
+  }
+ ],
+ "resizable": [
+  {
+   "name": "ResizablePanelGroup",
+   "props": [],
+   "inherits": [
+    "PanelGroup"
+   ]
+  },
+  {
+   "name": "ResizableHandle",
+   "props": [
+    {
+     "name": "withHandle",
+     "type": "boolean",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "PanelResizeHandle"
+   ]
+  }
+ ],
+ "restricted-preview": [
+  {
+   "name": "RestrictedPreview",
+   "props": [
+    {
+     "name": "restricted",
+     "type": "boolean",
+     "required": true,
+     "description": "When false, the children show at once."
+    },
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "default": "\"Restricted: show preview\"",
+     "description": "The button's words."
+    },
+    {
+     "name": "reason",
+     "type": "string",
+     "description": "Why it is hidden, e.g. \"T2 · faces\"."
+    },
+    {
+     "name": "onReveal",
+     "type": "() => void",
+     "description": "Called when someone asks to see it, e.g. to log the view."
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "route-progress": [
+  {
+   "name": "RouteProgress",
+   "props": [
+    {
+     "name": "active",
+     "type": "boolean",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "delay",
+     "type": "number",
+     "default": "300",
+     "description": ""
+    },
+    {
+     "name": "giveUp",
+     "type": "number",
+     "default": "10000",
+     "description": ""
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "default": "\"Loading page\"",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "scroll-area": [
+  {
+   "name": "ScrollArea",
+   "props": [
+    {
+     "name": "orientation",
+     "type": "\"vertical\" | \"horizontal\" | \"both\"",
+     "default": "\"vertical\"",
+     "description": ""
+    },
+    {
+     "name": "fade",
+     "type": "boolean",
+     "default": "false",
+     "description": "Fade the edges where more content is hidden."
+    },
+    {
+     "name": "viewportClassName",
+     "type": "string",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "Radix ScrollArea.Root"
+   ]
+  },
+  {
+   "name": "ScrollBar",
+   "props": [],
+   "inherits": [
+    "Radix ScrollArea.ScrollAreaScrollbar"
+   ]
+  }
+ ],
+ "scrollspy": [
+  {
+   "name": "Scrollspy",
+   "props": [
+    {
+     "name": "items",
+     "type": "ScrollspyItem[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "offset",
+     "type": "number",
+     "description": ""
+    },
+    {
+     "name": "root",
+     "type": "RefObject<HTMLElement | null>",
+     "description": "The scrolling element, when it is not the window."
+    },
+    {
+     "name": "title",
+     "type": "ReactNode",
+     "default": "\"On this page\"",
+     "description": ""
+    },
+    {
+     "name": "variant",
+     "type": "\"rail\" | \"pills\"",
+     "default": "\"rail\"",
+     "description": "rail: a line with the current section marked. pills: horizontal chips for a top bar."
+    }
+   ],
+   "inherits": [
+    "<nav> (except title)"
+   ]
+  }
+ ],
+ "search-field": [
+  {
+   "name": "SearchField",
+   "props": [
+    {
+     "name": "action",
+     "type": "string",
+     "default": "\"/search\"",
+     "description": "The results page."
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "default": "\"q\"",
+     "description": "The query parameter."
+    },
+    {
+     "name": "live",
+     "type": "boolean",
+     "default": "false",
+     "description": "True on the results page: follow the URL and apply while typing."
+    },
+    {
+     "name": "onNavigate",
+     "type": "(url: string, mode: NavigateMode) => void",
+     "default": "browserNavigate",
+     "description": ""
+    },
+    {
+     "name": "delay",
+     "type": "number",
+     "default": "400",
+     "description": ""
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "default": "\"Search\"",
+     "description": ""
+    },
+    {
+     "name": "placeholder",
+     "type": "string",
+     "default": "\"Search\"",
+     "description": ""
+    },
+    {
+     "name": "hotkey",
+     "type": "string",
+     "default": "\"/\"",
+     "description": "The key that focuses the box; null for none."
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "segmented-control": [
+  {
+   "name": "SegmentedControl",
+   "props": [],
+   "inherits": [
+    "ToggleGroup.ToggleGroupSingleProps (except type)"
+   ]
+  },
+  {
+   "name": "SegmentedControlItem",
+   "props": [],
+   "inherits": [
+    "ToggleGroup.Item"
+   ]
+  }
+ ],
+ "select": [
+  {
+   "name": "Select",
+   "props": [],
+   "inherits": [
+    "Radix Select.Root"
+   ]
+  },
+  {
+   "name": "SelectGroup",
+   "props": [],
+   "inherits": [
+    "Radix Select.Group"
+   ]
+  },
+  {
+   "name": "SelectValue",
+   "props": [],
+   "inherits": [
+    "Radix Select.Value"
+   ]
+  },
+  {
+   "name": "SelectTrigger",
+   "props": [],
+   "inherits": [
+    "Radix Select.Trigger"
+   ]
+  },
+  {
+   "name": "SelectContent",
+   "props": [],
+   "inherits": [
+    "Radix Select.Content"
+   ]
+  },
+  {
+   "name": "SelectLabel",
+   "props": [],
+   "inherits": [
+    "Radix Select.Label"
+   ]
+  },
+  {
+   "name": "SelectItem",
+   "props": [],
+   "inherits": [
+    "Radix Select.Item"
+   ]
+  },
+  {
+   "name": "SelectSeparator",
+   "props": [],
+   "inherits": [
+    "Radix Select.Separator"
+   ]
+  }
+ ],
+ "separator": [
+  {
+   "name": "Separator",
+   "props": [],
+   "inherits": [
+    "Radix Separator.Root"
+   ]
+  }
+ ],
+ "share-bar": [
+  {
+   "name": "ShareBar",
+   "props": [
+    {
+     "name": "segments",
+     "type": "ShareSegment[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "What the bar shows, e.g. \"Images by use\". The accessible name, and the heading when `legend` is on."
+    },
+    {
+     "name": "total",
+     "type": "number",
+     "description": "Defaults to the sum of the segments. Larger when part of the whole is not shown."
+    },
+    {
+     "name": "legend",
+     "type": "boolean",
+     "default": "false",
+     "description": "Show the label, the total and a legend under the bar."
+    },
+    {
+     "name": "unit",
+     "type": "string",
+     "description": "After the total: \"images\"."
+    },
+    {
+     "name": "size",
+     "type": "\"sm\" | \"md\"",
+     "default": "\"md\"",
+     "description": "sm: 8 px, for a table cell; md: 10 px."
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "sheet": [
+  {
+   "name": "Sheet",
+   "props": [],
+   "inherits": [
+    "Radix Dialog.Root"
+   ]
+  },
+  {
+   "name": "SheetTrigger",
+   "props": [],
+   "inherits": [
+    "Radix Dialog.Trigger"
+   ]
+  },
+  {
+   "name": "SheetClose",
+   "props": [],
+   "inherits": [
+    "Radix Dialog.Close"
+   ]
+  },
+  {
+   "name": "SheetContent",
+   "props": [
+    {
+     "name": "side",
+     "type": "\"bottom\" | \"right\" | \"left\"",
+     "default": "\"bottom\"",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "Radix Dialog.Content"
+   ]
+  },
+  {
+   "name": "SheetHeader",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "SheetFooter",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "SheetTitle",
+   "props": [],
+   "inherits": [
+    "Radix Dialog.Title"
+   ]
+  },
+  {
+   "name": "SheetDescription",
+   "props": [],
+   "inherits": [
+    "Radix Dialog.Description"
+   ]
+  }
+ ],
+ "skeleton": [
+  {
+   "name": "Bone",
+   "props": [
+    {
+     "name": "onCard",
+     "type": "boolean",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "LoadingLine",
+   "props": [
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "slide-to-release": [
+  {
+   "name": "SlideToRelease",
+   "props": [
+    {
+     "name": "onRelease",
+     "type": "() => void",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "default": "\"Slide to release\"",
+     "description": ""
+    },
+    {
+     "name": "tag",
+     "type": "string",
+     "description": "Name tag, e.g. \"7F3A\", or \"3 stopped\" after stop-all."
+    },
+    {
+     "name": "locked",
+     "type": "boolean",
+     "description": "Viewers cannot release: the thumb shows a lock and the label says who can."
+    },
+    {
+     "name": "lockedLabel",
+     "type": "string",
+     "default": "\"Only operators can release\"",
+     "description": "Shown instead of the label while locked."
+    },
+    {
+     "name": "releasingLabel",
+     "type": "string",
+     "default": "\"Releasing…\"",
+     "description": "Shown after release while waiting for the dog."
+    },
+    {
+     "name": "failed",
+     "type": "boolean",
+     "default": "false",
+     "description": "The robot did not release (no reply, or it refused). The thumb goes back and the label says so, so the operator can slide again. Set it when the release fails; clear it in your next `onRelease`."
+    },
+    {
+     "name": "failedLabel",
+     "type": "string",
+     "default": "\"Not released, slide again\"",
+     "description": "Shown while `failed`."
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "slider": [
+  {
+   "name": "Slider",
+   "props": [
+    {
+     "name": "thumbLabels",
+     "type": "string[]",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "Radix Slider.Root"
+   ]
+  }
+ ],
+ "sortable": [
+  {
+   "name": "Sortable",
+   "props": [
+    {
+     "name": "value",
+     "type": "T[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "onValueChange",
+     "type": "(next: T[]) => void",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "getId",
+     "type": "(item: T) => UniqueIdentifier",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "getLabel",
+     "type": "(item: T) => string",
+     "description": ""
+    },
+    {
+     "name": "layout",
+     "type": "\"grid\" | \"list\"",
+     "default": "\"list\"",
+     "description": ""
+    },
+    {
+     "name": "renderOverlay",
+     "type": "(item: T) => ReactNode",
+     "description": "A copy that follows the pointer while the item stays as a faded placeholder. Without it the item itself follows."
+    },
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "SortableItem",
+   "props": [
+    {
+     "name": "id",
+     "type": "UniqueIdentifier",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "SortableHandle",
+   "props": [
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "spinner": [
+  {
+   "name": "Spinner",
+   "props": [
+    {
+     "name": "delay",
+     "type": "number",
+     "default": "300",
+     "description": ""
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "default": "\"Loading\"",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "status-eyebrow": [
+  {
+   "name": "StatusEyebrow",
+   "props": [
+    {
+     "name": "status",
+     "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
+     "description": ""
+    },
+    {
+     "name": "tone",
+     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
+     "description": ""
+    },
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "InlineStatus",
+   "props": [
+    {
+     "name": "status",
+     "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
+     "description": ""
+    },
+    {
+     "name": "tone",
+     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
+     "description": ""
+    },
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "status-glyph": [
+  {
+   "name": "StatusGlyph",
+   "props": [
+    {
+     "name": "status",
+     "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
+     "description": ""
+    },
+    {
+     "name": "tone",
+     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "stepper": [
+  {
+   "name": "Stepper",
+   "props": [
+    {
+     "name": "value",
+     "type": "number",
+     "required": true,
+     "description": "The current step, from 1. A value past the last step marks every step done."
+    },
+    {
+     "name": "onValueChange",
+     "type": "(step: number) => void",
+     "description": ""
+    },
+    {
+     "name": "orientation",
+     "type": "\"vertical\" | \"horizontal\"",
+     "default": "\"horizontal\"",
+     "description": ""
+    },
+    {
+     "name": "navigable",
+     "type": "\"none\" | \"done\" | \"all\"",
+     "default": "\"none\"",
+     "description": ""
+    },
+    {
+     "name": "errors",
+     "type": "number[]",
+     "default": "[]",
+     "description": "Steps that failed validation."
+    },
+    {
+     "name": "size",
+     "type": "\"sm\" | \"md\"",
+     "default": "\"md\"",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<ol> (except onChange)"
+   ]
+  },
+  {
+   "name": "StepperItem",
+   "props": [
+    {
+     "name": "title",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "description",
+     "type": "ReactNode",
+     "description": ""
+    },
+    {
+     "name": "optional",
+     "type": "string | boolean",
+     "description": "Adds \"Optional\" under the title."
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<li> (except title)"
+   ]
+  },
+  {
+   "name": "StepperCompact",
+   "props": [
+    {
+     "name": "value",
+     "type": "number",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "total",
+     "type": "number",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "title",
+     "type": "ReactNode",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "stop-button": [
+  {
+   "name": "StopButton",
+   "props": [
+    {
+     "name": "state",
+     "type": "StopButtonState",
+     "default": "\"ready\"",
+     "description": ""
+    },
+    {
+     "name": "tag",
+     "type": "string",
+     "description": "Name tag on the right when there is more than one dog, e.g. \"7F3A\"."
+    },
+    {
+     "name": "onStop",
+     "type": "() => void",
+     "required": true,
+     "description": "Called on pointer down. Send the stop immediately; do not wait for an animation."
+    },
+    {
+     "name": "onStopAll",
+     "type": "() => void",
+     "description": "Called after holding for `holdAllMs`. Omit to disable stop-all (single dog)."
+    },
+    {
+     "name": "holdAllMs",
+     "type": "number",
+     "default": "2000",
+     "description": ""
+    },
+    {
+     "name": "labels",
+     "type": "Partial<StopButtonLabels>",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "WakeButton",
+   "props": [
+    {
+     "name": "onWake",
+     "type": "() => void",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": ""
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "default": "\"Wake and stand up\"",
+     "description": ""
+    },
+    {
+     "name": "reason",
+     "type": "string",
+     "default": "\"Battery low. Charge to 25% to stand up\"",
+     "description": "Shown under the label while disabled."
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "switch": [
+  {
+   "name": "Switch",
+   "props": [],
+   "inherits": [
+    "Radix Switch.Root"
+   ]
+  }
+ ],
+ "table": [
+  {
+   "name": "ScrollFades",
+   "props": [
+    {
+     "name": "start",
+     "type": "boolean",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "end",
+     "type": "boolean",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "Table",
+   "props": [],
+   "inherits": [
+    "<table>"
+   ]
+  },
+  {
+   "name": "TableHeader",
+   "props": [],
+   "inherits": [
+    "<thead>"
+   ]
+  },
+  {
+   "name": "TableBody",
+   "props": [],
+   "inherits": [
+    "<tbody>"
+   ]
+  },
+  {
+   "name": "TableRow",
+   "props": [],
+   "inherits": [
+    "<tr>"
+   ]
+  },
+  {
+   "name": "TableHead",
+   "props": [
+    {
+     "name": "sort",
+     "type": "false | \"desc\" | \"asc\"",
+     "description": ""
+    },
+    {
+     "name": "onSort",
+     "type": "() => void",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<th>"
+   ]
+  },
+  {
+   "name": "TableCell",
+   "props": [],
+   "inherits": [
+    "<td>"
+   ]
+  },
+  {
+   "name": "TableCaption",
+   "props": [],
+   "inherits": [
+    "<caption>"
+   ]
+  }
+ ],
+ "tabs": [
+  {
+   "name": "Tabs",
+   "props": [],
+   "inherits": [
+    "Radix Tabs.Root"
+   ]
+  },
+  {
+   "name": "TabsList",
+   "props": [],
+   "inherits": [
+    "Radix Tabs.List"
+   ]
+  },
+  {
+   "name": "TabsTrigger",
+   "props": [],
+   "inherits": [
+    "Radix Tabs.Trigger"
+   ]
+  },
+  {
+   "name": "TabsContent",
+   "props": [],
+   "inherits": [
+    "Radix Tabs.Content"
+   ]
+  }
+ ],
+ "text-diff": [
+  {
+   "name": "TextDiff",
+   "props": [
+    {
+     "name": "before",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "after",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "mode",
+     "type": "\"inline\" | \"side-by-side\"",
+     "default": "\"inline\"",
+     "description": "inline: one text with both kinds of change marked. side-by-side: before on the left with its removals, after on the right with its insertions."
+    },
+    {
+     "name": "beforeLabel",
+     "type": "string",
+     "default": "\"Before\"",
+     "description": "Column headings in side-by-side mode, e.g. \"Base model\" and \"Fine-tuned\"."
+    },
+    {
+     "name": "afterLabel",
+     "type": "string",
+     "default": "\"After\"",
+     "description": ""
+    },
+    {
+     "name": "showSummary",
+     "type": "boolean",
+     "default": "true",
+     "description": "The \"+3 words, −1 word\" line above the text."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<TextDiffLabels>",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<div> (except children)"
+   ]
+  }
+ ],
+ "textarea": [
+  {
+   "name": "Textarea",
+   "props": [],
+   "inherits": [
+    "<textarea>"
+   ]
+  }
+ ],
+ "theme-toggle": [
+  {
+   "name": "ThemeToggle",
+   "props": [
+    {
+     "name": "value",
+     "type": "\"light\" | \"system\" | \"dark\"",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "onValueChange",
+     "type": "(value: ThemeChoice) => void",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "labels",
+     "type": "Record<ThemeChoice, string>",
+     "default": "{ light: \"Light\", system: \"Match system\", dark: \"Dark\" }",
+     "description": ""
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "default": "\"Theme\"",
+     "description": "Names the group."
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "time-picker": [
+  {
+   "name": "TimeInput",
+   "props": [
+    {
+     "name": "value",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "onValueChange",
+     "type": "(t: Time | undefined) => void",
+     "description": ""
+    },
+    {
+     "name": "hour12",
+     "type": "boolean",
+     "default": "false",
+     "description": ""
+    },
+    {
+     "name": "min",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "max",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "id",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "aria-label",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "TimePicker",
+   "props": [
+    {
+     "name": "value",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "onValueChange",
+     "type": "(t: Time) => void",
+     "description": ""
+    },
+    {
+     "name": "step",
+     "type": "number",
+     "default": "30",
+     "description": "Minutes between slots."
+    },
+    {
+     "name": "min",
+     "type": "string",
+     "default": "\"00:00\"",
+     "description": ""
+    },
+    {
+     "name": "max",
+     "type": "string",
+     "default": "\"23:59\"",
+     "description": ""
+    },
+    {
+     "name": "unavailable",
+     "type": "string[]",
+     "default": "[]",
+     "description": "Slots that exist but cannot be picked."
+    },
+    {
+     "name": "hour12",
+     "type": "boolean",
+     "default": "false",
+     "description": ""
+    },
+    {
+     "name": "placeholder",
+     "type": "string",
+     "default": "\"Pick a time\"",
+     "description": ""
+    },
+    {
+     "name": "id",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "aria-label",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "timeline": [
+  {
+   "name": "Timeline",
+   "props": [
+    {
+     "name": "orientation",
+     "type": "\"vertical\" | \"horizontal\"",
+     "default": "\"vertical\"",
+     "description": ""
+    },
+    {
+     "name": "align",
+     "type": "\"start\" | \"alternate\"",
+     "default": "\"start\"",
+     "description": "alternate puts time on one side and content on the other (vertical, wide screens only)."
+    },
+    {
+     "name": "size",
+     "type": "\"sm\" | \"default\"",
+     "description": "sm: less space between events, for a long history."
+    },
+    {
+     "name": "density",
+     "type": "\"default\" | \"dense\"",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<ol>"
+   ]
+  },
+  {
+   "name": "TimelineItem",
+   "props": [
+    {
+     "name": "time",
+     "type": "ReactNode",
+     "description": "Shown as written (\"09:41\", \"Yesterday\")."
+    },
+    {
+     "name": "dateTime",
+     "type": "string",
+     "description": "Machine-readable time for the <time> element."
+    },
+    {
+     "name": "tone",
+     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
+     "description": "A status, drawn as its glyph. Leave empty for an ordinary event."
+    },
+    {
+     "name": "icon",
+     "type": "ReactNode",
+     "description": "An icon instead of a dot, e.g. for kinds of event."
+    },
+    {
+     "name": "title",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<li> (except title)"
+   ]
+  },
+  {
+   "name": "TimelineHeading",
+   "props": [],
+   "inherits": [
+    "<li>"
+   ]
+  }
+ ],
+ "toast": [
+  {
+   "name": "ToastProvider",
+   "props": [],
+   "inherits": [
+    "Radix Toast.Provider"
+   ]
+  },
+  {
+   "name": "ToastViewport",
+   "props": [],
+   "inherits": [
+    "Radix Toast.Viewport"
+   ]
+  },
+  {
+   "name": "Toast",
+   "props": [
+    {
+     "name": "tone",
+     "type": "\"neutral\" | \"success\" | \"danger\"",
+     "default": "\"neutral\"",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "Radix Toast.Root"
+   ]
+  },
+  {
+   "name": "ToastTitle",
+   "props": [],
+   "inherits": [
+    "Radix Toast.Title"
+   ]
+  },
+  {
+   "name": "ToastDescription",
+   "props": [],
+   "inherits": [
+    "Radix Toast.Description"
+   ]
+  },
+  {
+   "name": "ToastAction",
+   "props": [],
+   "inherits": [
+    "Radix Toast.Action"
+   ]
+  },
+  {
+   "name": "ToastClose",
+   "props": [
+    {
+     "name": "label",
+     "type": "string",
+     "default": "\"Dismiss\"",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "Radix Toast.Close"
+   ]
+  },
+  {
+   "name": "Toaster",
+   "props": [
+    {
+     "name": "label",
+     "type": "string",
+     "default": "\"Notifications ({hotkey})\"",
+     "description": ""
+    },
+    {
+     "name": "dismissLabel",
+     "type": "string",
+     "default": "\"Dismiss\"",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "toggle": [
+  {
+   "name": "Toggle",
+   "props": [
+    {
+     "name": "size",
+     "type": "\"sm\" | \"md\"",
+     "default": "\"md\"",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "Radix Toggle.Root"
+   ]
+  }
+ ],
+ "toggle-group": [
+  {
+   "name": "ToggleGroup",
+   "props": [
+    {
+     "name": "variant",
+     "type": "\"ghost\" | \"outline\"",
+     "default": "\"outline\"",
+     "description": ""
+    },
+    {
+     "name": "size",
+     "type": "\"sm\" | \"md\"",
+     "default": "\"md\"",
+     "description": ""
+    },
+    {
+     "name": "joined",
+     "type": "boolean",
+     "default": "true",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "Radix ToggleGroup.Root"
+   ]
+  },
+  {
+   "name": "ToggleGroupItem",
+   "props": [],
+   "inherits": [
+    "Radix ToggleGroup.Item"
+   ]
+  }
+ ],
+ "tooltip": [
+  {
+   "name": "TooltipProvider",
+   "props": [],
+   "inherits": [
+    "Radix Tooltip.Provider"
+   ]
+  },
+  {
+   "name": "Tooltip",
+   "props": [],
+   "inherits": [
+    "Radix Tooltip.Root"
+   ]
+  },
+  {
+   "name": "TooltipTrigger",
+   "props": [],
+   "inherits": [
+    "Radix Tooltip.Trigger"
+   ]
+  },
+  {
+   "name": "TooltipContent",
+   "props": [],
+   "inherits": [
+    "Radix Tooltip.Content"
+   ]
+  }
+ ],
+ "trace": [
+  {
+   "name": "Trace",
+   "props": [
+    {
+     "name": "size",
+     "type": "\"sm\" | \"default\"",
+     "description": "sm: tighter rows for a long run. Rows you can open stay 44 px."
+    },
+    {
+     "name": "density",
+     "type": "\"default\" | \"dense\"",
+     "description": ""
+    },
+    {
+     "name": "total",
+     "type": "number",
+     "description": "Length of the whole run in ms. With it, steps that have `start` and `duration` draw a waterfall bar."
+    }
+   ],
+   "inherits": [
+    "<ol>"
+   ]
+  },
+  {
+   "name": "TraceStatusIcon",
+   "props": [
+    {
+     "name": "status",
+     "type": "\"pending\" | \"running\" | \"done\" | \"warning\" | \"error\" | \"skipped\"",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "TraceItem",
+   "props": [
+    {
+     "name": "status",
+     "type": "\"pending\" | \"running\" | \"done\" | \"warning\" | \"error\" | \"skipped\"",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "title",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "description",
+     "type": "ReactNode",
+     "description": "One line under the title: the reason for a failure, a short result."
+    },
+    {
+     "name": "meta",
+     "type": "ReactNode",
+     "description": "A muted detail beside the title: the tool, the robot, the model."
+    },
+    {
+     "name": "icon",
+     "type": "ReactNode",
+     "description": "Replaces the status mark with an icon for the kind of step; the status is still announced."
+    },
+    {
+     "name": "duration",
+     "type": "number",
+     "description": "In ms."
+    },
+    {
+     "name": "start",
+     "type": "number",
+     "description": "Offset from the start of the run in ms, for the waterfall bar."
+    },
+    {
+     "name": "time",
+     "type": "ReactNode",
+     "description": "A clock time, shown as written."
+    },
+    {
+     "name": "defaultOpen",
+     "type": "boolean",
+     "description": ""
+    },
+    {
+     "name": "open",
+     "type": "boolean",
+     "description": ""
+    },
+    {
+     "name": "onOpenChange",
+     "type": "(open: boolean) => void",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<li> (except title)"
+   ]
+  },
+  {
+   "name": "TraceDetail",
+   "props": [
+    {
+     "name": "label",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "TraceCode",
+   "props": [
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "tone",
+     "type": "\"danger\"",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "TraceHeader",
+   "props": [
+    {
+     "name": "title",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "status",
+     "type": "\"pending\" | \"running\" | \"done\" | \"warning\" | \"error\" | \"skipped\"",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "duration",
+     "type": "number",
+     "description": ""
+    },
+    {
+     "name": "counts",
+     "type": "Partial<Record<TraceStatus, number>>",
+     "description": ""
+    },
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "tray": [
+  {
+   "name": "Tray",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  }
+ ]
+}

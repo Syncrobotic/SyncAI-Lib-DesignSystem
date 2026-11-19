@@ -1,16 +1,17 @@
-// @syncrobotic/sparkline-table v0.15.0 · update: npx shadcn add @syncrobotic/sparkline-table --overwrite
+// @syncrobotic/sparkline-table v0.17.2 · update: npx shadcn add @syncrobotic/sparkline-table --overwrite
 "use client"
 
 import * as React from "react"
-import { Card } from "@/registry/syncrobotic/ui/card"
+import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
 
-// Mini bars: one per day, the same height scale for every row so rows compare.
+// Mini bars: one per day, the same height scale for every row so rows compare. Opaque grey, 3:1 on the card and on a
+// hovered row (--input), never a translucent one that drops below it.
 function MiniBars({ values, max }: { values: number[]; max: number }) {
   return (
     <span aria-hidden="true" className="flex h-6 items-end gap-0.5">
       {values.map((v, i) => (
-        <span key={i} className="w-1.5 rounded-t-xs bg-muted-foreground/60" style={{ height: `${Math.max(8, (v / max) * 100)}%` }} />
+        <span key={i} className="w-1.5 rounded-t-xs bg-input" style={{ height: `${Math.max(8, (v / max) * 100)}%` }} />
       ))}
     </span>
   )
@@ -28,10 +29,10 @@ const sites = [
 export function SparklineTable() {
   const max = Math.max(...sites.flatMap((s) => s.events))
   return (
-    <Card className="gap-0 p-0">
-      <div className="border-b border-border px-4 py-3">
-        <h3 className="text-sm font-medium">Events by site · last 14 days</h3>
-      </div>
+    // The table runs edge to edge under the title: square at the top, where its header band meets the title's divider (no
+    // notches), the card's radius at the bottom (no corners poking out), and no ring of its own.
+    <Card className="gap-0 p-0 [&_[data-slot=table-container]]:rounded-t-none [&_[data-slot=table-container]]:ring-0">
+      <CardDataHeader title="Events by site · last 14 days" className="border-b border-border px-4 py-3" />
       <Table>
         <TableHeader>
           <TableRow>

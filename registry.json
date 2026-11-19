@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Comments only: the header states one rule per topic (light is the default; a running piece of work is blue, its state word grey; waiting loops only) and points to the Motion and Colour foundations instead of repeating them. No token changed."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -268,6 +273,7 @@
         }
       ],
       "meta": {
+        "status": "beta",
         "version": "0.16.0",
         "changelog": [
           {
@@ -533,8 +539,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "In high contrast the action buttons are opaque with an --input edge. A · in the title holds to the word after it."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -760,8 +771,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "In high contrast the track has an --input edge (3:1). The thumb re-measures when a segment resizes, so it never drifts off the selected segment."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -961,8 +977,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -1312,8 +1333,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "With the keyboard, the highlighted option shows a 2 px inset ring as well as the fill; with a mouse it stays a plain fill."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -1445,8 +1471,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "New CardDataHeader and CardFigure: the one header for a card of data (title, figure, controls)."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -1535,8 +1566,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "tone=\"success\" is neutral: a finished bar stays grey (green is a confirmation that comes and goes, not a state that stays)."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -1596,6 +1632,7 @@
         }
       ],
       "meta": {
+        "status": "beta",
         "version": "0.16.0",
         "changelog": [
           {
@@ -1691,8 +1728,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "A · in the meta line holds to the word after it, so it never dangles at a line end."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -1750,8 +1792,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -1820,8 +1867,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "A table that is wider than its card shows a fade on the side that still hides columns, so it reads as scrollable instead of cut off."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -1862,8 +1914,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "New chartNumber: negatives with a true minus sign (−) in ticks, tooltips and tables."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -1988,8 +2045,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "A crumb link is as tall as a compact control (36 px with a mouse, 44 px on touch), so it is a target on a phone (it was 20 px)."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -2176,8 +2238,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -2248,8 +2315,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "With the keyboard, the highlighted item shows a 2 px inset ring as well as the fill (the fill alone was 1.24:1); with a mouse it stays a plain fill."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -2298,8 +2370,13 @@
         }
       ],
       "meta": {
-        "version": "0.16.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules. With the keyboard, the selected row shows a 2 px inset ring. CommandDialog gives focus back to what had it before it opened (button or ⌘K); it fell to the page. An inline Command no longer scrolls the page to itself as it mounts: cmdk keeps the highlighted row in view with scrollIntoView, which also moved the page; rows now scroll their own list only."
+          },
           {
             "version": "0.16.1",
             "date": "2026-11-19",
@@ -2386,8 +2463,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "IconTileDot defaults to neutral (it was green)."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -2735,6 +2817,7 @@
         }
       ],
       "meta": {
+        "status": "beta",
         "version": "0.16.0",
         "changelog": [
           {
@@ -2794,8 +2877,14 @@
         }
       ],
       "meta": {
-        "version": "0.16.1",
+        "status": "beta",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "With several values, the first name truncates and the +N count always stays visible."
+          },
           {
             "version": "0.16.1",
             "date": "2026-11-19",
@@ -2917,8 +3006,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules. With the keyboard, the active suggestion shows a 2 px inset ring; the suggestions panel has a name."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -2996,8 +3090,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -3035,8 +3134,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Month and year menus are a full compact-control target (44 px on touch, 48 in gloves). Previous and next sit on the caption row (they were 12 px above it)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -3078,8 +3182,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Its popover is named by the field, and on a small phone the calendar scrolls inside it instead of running off the screen."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -3118,8 +3227,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules. The time list is one Tab stop: arrow keys, Home/End and PageUp/PageDown move, Enter or Space picks; the keyboard position shows a 2 px ring (it was a pale fill, 1.24:1, and 48 Tab stops). Its popover is named by the field."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -3148,7 +3262,8 @@
         "@syncrobotic/checkbox",
         "@syncrobotic/dropdown-menu",
         "@syncrobotic/pagination",
-        "@syncrobotic/use-presence"
+        "@syncrobotic/use-presence",
+        "@syncrobotic/table"
       ],
       "files": [
         {
@@ -3157,8 +3272,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "The same scroll fade as Table; the sort arrow always follows the label."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -3241,8 +3361,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "On a touch screen the handle's hit area is 44 px wide (48 in gloves)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -3362,8 +3487,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Steps share the row equally. When there is not about 6rem per step, the labels go to screen readers and the current step's title and description show once, full width, under the row (they were squeezed into their share and hyphenated)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -3472,8 +3602,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Links are at least a control tall, so they grow with glove density."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -3515,8 +3650,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -3550,8 +3690,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Rows that cannot open keep an empty chevron slot, so every bar starts on the same line."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -3679,8 +3824,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Phones: name and status are one 44 px row target with even padding. Desktop: column widths fit their content."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -3833,8 +3983,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Sample nav gains Schedule; sampleUser (name and email) is exported for every shell block."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -3895,8 +4050,13 @@
         }
       ],
       "meta": {
-        "version": "0.14.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "The brand link is at least a control tall (48 in gloves)."
+          },
           {
             "version": "0.14.1",
             "date": "2026-11-19",
@@ -3935,8 +4095,13 @@
         }
       ],
       "meta": {
-        "version": "0.16.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "On phones the page keeps scroll padding for the floating bar, so focused items are never under it. Phone bar: 12 px padding all round and radius 24, so its edges are even and its corners concentric."
+          },
           {
             "version": "0.16.0",
             "date": "2026-11-19",
@@ -3968,8 +4133,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "One search: the table filter (Search name or site); the top-bar search box is gone from this page. Sample data: the signed-in user shows a name and an email, the same in every shell block."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -4018,8 +4188,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Content fills the panel with even gutters. Sample data: the signed-in user shows a name and an email, the same in every shell block."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -4086,8 +4261,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Sample data: the signed-in user shows a name and an email, the same in every shell block."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -4151,8 +4331,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "On phones the robot tray sits above the map and the stop below it, so a focused marker is never hidden under the tray. On a phone the map gives way and the stop keeps its size, so the emergency stop is on screen on any phone (on a 360 × 640 screen it had been pushed below the edge). The sample alarm reads Emergency stop with the robot and place in its source line; the recentre button is secondary like Pause and Dock."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -4220,8 +4405,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Dataset links in rows are at least a control tall (48 in gloves). On phones the tier badge sits under the name and the Tier column hides, so Items is never cut. Sample data: the signed-in user shows a name and an email, the same in every shell block."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -4279,8 +4469,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Content fills the panel with even gutters. Sample data: the signed-in user shows a name and an email, the same in every shell block."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -4322,8 +4517,13 @@
         }
       ],
       "meta": {
-        "version": "0.16.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "The progress bar is neutral: a person working through a queue is not a process the system runs."
+          },
           {
             "version": "0.16.1",
             "date": "2026-11-19",
@@ -4363,8 +4563,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Filter segments are compact (they stretched full width). Sample data: the signed-in user shows a name and an email, the same in every shell block."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -4410,8 +4615,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Sample data: the signed-in user shows a name and an email, the same in every shell block."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -4446,7 +4656,8 @@
         "@syncrobotic/radio-group",
         "@syncrobotic/select",
         "@syncrobotic/textarea",
-        "@syncrobotic/toast"
+        "@syncrobotic/toast",
+        "@syncrobotic/time-picker"
       ],
       "files": [
         {
@@ -4455,8 +4666,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Start uses TimeInput and shows 22:00 (24-hour, like the kit); the sidebar marks Schedule. Sample data: the signed-in user shows a name and an email, the same in every shell block."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -4500,8 +4716,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "An invited person's email shows whole on its own line. Sample data: the signed-in user shows a name and an email, the same in every shell block."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -4570,8 +4791,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "The loading skeleton is 2 × 2 on phones, like the stats it stands in for."
+          },
           {
             "version": "0.13.1",
             "date": "2026-11-19",
@@ -4623,8 +4849,13 @@
         }
       ],
       "meta": {
-        "version": "0.16.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "The design language and checklist carry the rules settled in 0.17: offline is calm grey; battery is a Meter that warns below 15 % and never turns danger; a switch on is primary; a KPI change is coloured only when worse; the environment badge is neutral; field edges use --input at 3:1; outlined buttons stay outlined when disabled; an overview puts alarms first; every chart has a table view; focus rings are never removed. The design language and checklist match the foundations word for word: 44 px on touch and 36 with a mouse; disabled outlines; elevation recipes with ring-1; six motion patterns; exit easing via the exit animations; waiting loops; a table view for every chart with axes; IconTile and Progress success are neutral; weights; WCAG large text."
+          },
           {
             "version": "0.16.0",
             "date": "2026-11-19",
@@ -4683,8 +4914,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Even ticks with the last label inside the card; the 1 h sample no longer says 13:60. Header in the one order every chart block uses: title, then the figure or summary, then the controls (under the summary in a narrow card, top right in a wide one)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -4714,8 +4950,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Hourly ticks to 14:00 with the last label inside the card. Header in the one order every chart block uses: title, then the figure or summary, then the controls (under the summary in a narrow card, top right in a wide one)."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -4754,8 +4995,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Header in the one order every chart block uses: title, then the figure or summary, then the controls (under the summary in a narrow card, top right in a wide one)."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -4794,8 +5040,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "The top tick sits on its line. Header in the one order every chart block uses: title, then the figure or summary, then the controls (under the summary in a narrow card, top right in a wide one)."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -4834,8 +5085,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Header in the one order every chart block uses: title, then the figure or summary, then the controls (under the summary in a narrow card, top right in a wide one)."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -4874,8 +5130,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Header in the one order every chart block uses: title, then the figure or summary, then the controls (under the summary in a narrow card, top right in a wide one)."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -4914,8 +5175,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Header in the one order every chart block uses: title, then the figure or summary, then the controls (under the summary in a narrow card, top right in a wide one)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -4944,8 +5210,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Header in the one order every chart block uses: title, then the figure or summary, then the controls (under the summary in a narrow card, top right in a wide one)."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -4979,8 +5250,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Header in the one order every chart block uses: title, then the figure or summary, then the controls (under the summary in a narrow card, top right in a wide one)."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -5014,8 +5290,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "The top tick sits on its line; negatives use a true minus sign. Header in the one order every chart block uses: title, then the figure or summary, then the controls (under the summary in a narrow card, top right in a wide one)."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -5108,8 +5389,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Bars are opaque grey, 3:1 (were 2.9:1 in light). The table under the title is square at the top with no ring of its own (no white notches). Header in the one order every chart block uses: title, then the figure or summary, then the controls (under the summary in a narrow card, top right in a wide one)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -5140,8 +5426,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Normal days are an opaque grey (3:1, was 2.35:1); no data is an outlined empty cell, in the legend. The strip is one Tab stop: arrow keys move day by day and read each day. Header in the one order every chart block uses: title, then the figure or summary, then the controls (under the summary in a narrow card, top right in a wide one)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -5171,8 +5462,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Normal runs are an opaque grey (3:1, was 2.35:1); no data is an outlined empty cell, in the legend. Cells fill the row and the count follows the strip. Header in the one order every chart block uses: title, then the figure or summary, then the controls (under the summary in a narrow card, top right in a wide one)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -5200,8 +5496,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Header in the one order every chart block uses: title, then the figure or summary, then the controls (under the summary in a narrow card, top right in a wide one)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -5226,8 +5527,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "In high contrast the track is drawn in --input (3:1). Values are written with a space before %. Header in the one order every chart block uses: title, then the figure or summary, then the controls (under the summary in a narrow card, top right in a wide one)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -5261,8 +5567,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "In high contrast the track is drawn in --input (3:1). Values are written with a space before %; the list fills the card. Header in the one order every chart block uses: title, then the figure or summary, then the controls (under the summary in a narrow card, top right in a wide one)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -5291,8 +5602,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "In high contrast the track is drawn in --input (3:1). Values are written with a space before %; the list fills the card. Header in the one order every chart block uses: title, then the figure or summary, then the controls (under the summary in a narrow card, top right in a wide one)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -5324,8 +5640,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "The same sequential scale and legend as heatmap-zones. Header in the one order every chart block uses: title, then the figure or summary, then the controls (under the summary in a narrow card, top right in a wide one)."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -5355,8 +5676,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "One sequential scale with a Fewer → More legend; a narrow card writes the hour only so headings never run together; the last column has right padding."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -5391,8 +5717,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "On a wide screen the tab bar stays phone-width, centred."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -5464,8 +5795,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Title, site and range share one aligned row."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -5495,8 +5831,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -5533,8 +5874,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Open map is one secondary style on both cards; 44 px buttons; the meta line shares one baseline."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -5631,8 +5977,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "On phones the checkbox columns are narrow (each still a 44 px target) and the lock sits by the event name."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -5738,8 +6089,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "A comment says where keyboard focus shows instead of the removed outline (no change in behaviour); checked by lint:rules."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -5772,8 +6128,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Link option reads Your organisation (it was cut off)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -5806,8 +6167,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "A 44 px close button in the corner, like the dialogs."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -5859,8 +6225,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "From 640 px the bottom sheet is capped and centred (it spanned the whole screen)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -5923,8 +6294,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Filter segments are compact with counts."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -6025,8 +6401,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Phones get a list per robot instead of a timeline that scrolled off; desktop keeps 06:00 whole, compact segments, and the sidebar marks Schedule. Sample data: the signed-in user shows a name and an email, the same in every shell block."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -6056,6 +6437,7 @@
       "title": "Invitations",
       "description": "Invite in one row with what the role allows, then the pending list: expired ones say so, revoking can be undone.",
       "registryDependencies": [
+        "@syncrobotic/cn",
         "@syncrobotic/app-shell",
         "@syncrobotic/status-glyph",
         "@syncrobotic/button",
@@ -6072,8 +6454,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "On phones the actions sit under the email, inside the card. Sample data: the signed-in user shows a name and an email, the same in every shell block."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -6114,8 +6501,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Sample data: the signed-in user shows a name and an email, the same in every shell block."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -6153,8 +6545,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Filter segments are compact; Resolved shows its count. On phones severity and id sit under the title, so the title has the width. Sample data: the signed-in user shows a name and an email, the same in every shell block."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -6196,8 +6593,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Post update is disabled until there is text, and says why beside it (Write what changed first). Sample data: the signed-in user shows a name and an email, the same in every shell block."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -6230,8 +6632,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "On phones the task, meter and due date stack under the robot; Book is one style on every row. Sample data: the signed-in user shows a name and an email, the same in every shell block."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -6271,8 +6678,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "On phones the part code sits under the part, so Quantity is never cut. Sample data: the signed-in user shows a name and an email, the same in every shell block."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -6310,8 +6722,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Sample data: the signed-in user shows a name and an email, the same in every shell block."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -6352,8 +6769,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Sample data: the signed-in user shows a name and an email, the same in every shell block."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -6387,8 +6809,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Filter segments are compact with counts (All 5, Needs someone 2, Running 1), like the fleet table. Run links in rows are at least a control tall (48 in gloves). Sample data: the signed-in user shows a name and an email, the same in every shell block."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -6425,8 +6852,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Bars line up (an empty chevron slot where a row cannot open). Sample data: the signed-in user shows a name and an email, the same in every shell block."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -6463,8 +6895,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "On a phone the three actions stack full width, the main one first, so none is left alone on a line. Wider content: the robot name stays on one line and incident ids never break. Sample data: the signed-in user shows a name and an email, the same in every shell block."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",

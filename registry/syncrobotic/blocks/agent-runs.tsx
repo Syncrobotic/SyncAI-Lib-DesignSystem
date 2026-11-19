@@ -1,9 +1,9 @@
-// @syncrobotic/agent-runs v0.17.1 · update: npx shadcn add @syncrobotic/agent-runs --overwrite
+// @syncrobotic/agent-runs v0.17.2 · update: npx shadcn add @syncrobotic/agent-runs --overwrite
 "use client"
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { TraceStatusIcon, formatDuration, type TraceStatus } from "@/registry/syncrobotic/ui/trace"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
@@ -74,6 +74,13 @@ const word: Record<Run["status"], string> = {
   skipped: "Skipped",
 }
 
+type Filter = "all" | "attention" | "running"
+const matches: Record<Filter, (r: Run) => boolean> = {
+  all: () => true,
+  attention: (r) => r.status === "approval" || r.status === "error",
+  running: (r) => r.status === "running",
+}
+
 function RunState({ status }: { status: Run["status"] }) {
   return (
     <span
@@ -98,16 +105,17 @@ function RunState({ status }: { status: Run["status"] }) {
  * person's approval comes first and is the only one with a button; running is blue, a failure says it failed.
  */
 export function AgentRuns() {
-  const [filter, setFilter] = React.useState("all")
-  const shown = runs.filter((r) => filter === "all" || (filter === "attention" ? r.status === "approval" || r.status === "error" : r.status === filter))
+  const [filter, setFilter] = React.useState<Filter>("all")
+  const shown = runs.filter(matches[filter])
+  const count = (f: Filter) => runs.filter(matches[f]).length
   return (
-    <AppShell product="Fleet console" nav={sampleNav} current="#agents" title="Agent runs" user={{ name: "Mei Lin", initials: "ML" }}>
+    <AppShell product="Fleet console" nav={sampleNav} current="#agents" title="Agent runs" user={sampleUser}>
       <div className="flex flex-col gap-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <SegmentedControl aria-label="Show runs" value={filter} onValueChange={(v) => v && setFilter(v)}>
-            <SegmentedControlItem value="all">All</SegmentedControlItem>
-            <SegmentedControlItem value="attention">Needs someone</SegmentedControlItem>
-            <SegmentedControlItem value="running">Running</SegmentedControlItem>
+          <SegmentedControl aria-label="Show runs" value={filter} onValueChange={(v) => v && setFilter(v as Filter)} className="sm:w-auto">
+            <SegmentedControlItem value="all">All {count("all")}</SegmentedControlItem>
+            <SegmentedControlItem value="attention">Needs someone {count("attention")}</SegmentedControlItem>
+            <SegmentedControlItem value="running">Running {count("running")}</SegmentedControlItem>
           </SegmentedControl>
           <span className="text-sm text-muted-foreground">Agents only suggest changes to robots; a person approves them.</span>
         </div>
@@ -129,7 +137,8 @@ export function AgentRuns() {
               {shown.map((r) => (
                 <TableRow key={r.id}>
                   <TableCell className="py-2 whitespace-normal">
-                    <a href={`#${r.id}`} className="flex flex-col hover:underline">
+                    {/* At least the control height (44, 48 in gloves): two short lines alone are a 36 px target. */}
+                    <a href={`#${r.id}`} className="flex min-h-(--h-md) flex-col justify-center hover:underline">
                       <span className="font-medium">{r.goal}</span>
                       <span className="text-xs text-muted-foreground">
                         {r.agent} · <span className="font-mono">{r.id}</span>

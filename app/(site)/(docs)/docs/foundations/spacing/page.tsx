@@ -50,7 +50,7 @@ export default function SpacingPage() {
         </Specimen>
       </Section>
 
-      <Section id="heights" title="Component heights" lead="Heights are tokens too. Anything interactive is at least 44 px; 56 is reserved for list rows and the emergency stop.">
+      <Section id="heights" title="Component heights" lead="Heights are tokens too. Anything interactive is at least 44 px on touch; 36 (--h-sm) with a mouse only. 56 is reserved for list rows and the emergency stop.">
         <Specimen className="flex flex-wrap items-end gap-4">
           {heights.map((h) => (
             <div key={h} className="flex flex-col items-center gap-2">
@@ -96,7 +96,7 @@ export default function SpacingPage() {
               <div className="flex w-56 flex-col gap-2 rounded-md bg-card p-4 ring-1 ring-border">
                 <span className="text-sm font-medium">Wi-Fi</span>
                 <span className="text-xs text-muted-foreground">Good signal</span>
-                <div className="mt-2 h-2 rounded-xs bg-success" />
+                <div className="mt-2 h-2 rounded-xs bg-neutral" />
               </div>
             ),
             caption: "padding 16 · gap 8 · bar 8 below",
@@ -107,7 +107,7 @@ export default function SpacingPage() {
               <div className="flex w-56 flex-col rounded-md bg-card ring-1 ring-border" style={{ padding: 13, gap: 5 }}>
                 <span className="text-sm font-medium">Wi-Fi</span>
                 <span className="text-xs text-muted-foreground">Good signal</span>
-                <div className="h-2 rounded-xs bg-success" style={{ marginTop: 11 }} />
+                <div className="h-2 rounded-xs bg-neutral" style={{ marginTop: 11 }} />
               </div>
             ),
             caption: "padding 13 · gap 5 · bar 11 below",

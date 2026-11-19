@@ -82,7 +82,7 @@ export default function AlarmsPage() {
             ["Shelved", "An operator, for a set time (not critical alarms)", "Out of the live list into “Shelved”, silent, with Unshelve. Returns when the time is up."],
             ["Suppressed by design", "The app's logic: the condition does not apply now, e.g. a docked robot is not moving", "Counted under the list"],
             ["Out of service", "An authorised person, for maintenance", "Counted under the list"],
-            ["Flood", "The list: over 10 alarms raised in 10 minutes (ISA-18.2)", "Named in a banner; critical and high stay in view, low alarms fold into one row; screen readers hear one count"],
+            ["Flood", "The list: over 10 alarms per operator raised in 10 minutes (ISA-18.2). A design fault to fix at the source, not a load to carry", "Named in a banner; critical and high stay in view, low alarms fold into one row; screen readers hear one count"],
           ]}
         />
       </Section>
@@ -120,7 +120,6 @@ export default function AlarmsPage() {
             "No blinking. The unacknowledged state is the bar and the word “Unacknowledged” (critical ones are also tinted); sound does the interrupting.",
             "New critical alarms are announced to screen readers assertively, others politely. `AlarmList` does this for you.",
             "In the control app the island shows the most urgent unacknowledged alarm (`IslandAlarm`), above any notice, and its edge takes the alarm's colour. The dashboard shows the full `AlarmList`. Both read the same data.",
-            "More than 10 new alarms per operator in 10 minutes is an alarm flood: a design fault to fix at the source, not a load to carry.",
           ]}
         />
         <DoDont

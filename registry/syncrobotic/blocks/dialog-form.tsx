@@ -1,4 +1,4 @@
-// @syncrobotic/dialog-form v0.9.0 · update: npx shadcn add @syncrobotic/dialog-form --overwrite
+// @syncrobotic/dialog-form v0.17.2 · update: npx shadcn add @syncrobotic/dialog-form --overwrite
 "use client"
 
 import * as React from "react"
@@ -52,7 +52,7 @@ export function DialogForm({
             New mission
           </Button>
         </DialogTrigger>
-        {/* The panel itself can hold focus (when nothing inside takes it); it is not a control, so it shows no ring. */}
+        {/* focus-ring: the panel itself can hold focus (when nothing inside takes it); it is not a control, so it shows no ring. */}
         <DialogContent className="outline-none" onOpenAutoFocus={focusOnOpen ? undefined : (e) => e.preventDefault()}>
           <DialogHeader>
             <DialogTitle>New mission</DialogTitle>

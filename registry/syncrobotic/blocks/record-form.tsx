@@ -1,14 +1,15 @@
-// @syncrobotic/record-form v0.8.0 · update: npx shadcn add @syncrobotic/record-form --overwrite
+// @syncrobotic/record-form v0.17.2 · update: npx shadcn add @syncrobotic/record-form --overwrite
 "use client"
 
 import * as React from "react"
-import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { Label } from "@/registry/syncrobotic/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/registry/syncrobotic/ui/radio-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
+import { TimeInput } from "@/registry/syncrobotic/ui/time-picker"
 import { Textarea } from "@/registry/syncrobotic/ui/textarea"
 import { Toaster, toast } from "@/registry/syncrobotic/ui/toast"
 
@@ -51,9 +52,9 @@ export function RecordForm({ initial }: { initial?: { name: string; robot: strin
     <AppShell
       product="Fleet console"
       nav={sampleNav}
-      current="#overview"
+      current="#schedule"
       title={initial ? "Edit mission" : "New mission"}
-      user={{ name: "Mei Lin", initials: "ML" }}
+      user={sampleUser}
     >
       <form ref={form} noValidate onSubmit={submit} className="flex max-w-xl flex-col gap-6">
         <Field label="Mission name" error={errors.name} hint="Shown in the schedule and on the island.">
@@ -93,7 +94,8 @@ export function RecordForm({ initial }: { initial?: { name: string; robot: strin
         </fieldset>
 
         <Field label="Start" error={errors.start}>
-          <Input type="time" value={start} onChange={(e) => setStart(e.target.value)} className="w-40" />
+          {/* Typed on the kit's 24-hour clock (HH:mm), never the browser's own, which shows "10:00 PM" in an English locale. */}
+          <TimeInput value={start || undefined} onValueChange={(t) => setStart(t ?? "")} className="w-40" />
         </Field>
 
         <Field label="Notes" hint="Optional. Operators see this before the mission starts.">

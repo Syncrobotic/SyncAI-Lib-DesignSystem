@@ -1,4 +1,4 @@
-// @syncrobotic/command v0.16.1 · update: npx shadcn add @syncrobotic/command --overwrite
+// @syncrobotic/command v0.17.2 · update: npx shadcn add @syncrobotic/command --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,10 +7,60 @@ import { Dialog as DialogPrimitive } from "radix-ui"
 import { Check, Search } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-/** A filterable list you drive from the keyboard: type to narrow, ↑↓ to move, Enter to run. Built on cmdk. */
-export function Command({ className, ...props }: React.ComponentProps<typeof CommandPrimitive>) {
+/**
+ * A filterable list you drive from the keyboard: type to narrow, ↑↓ to move, Enter to run. Built on cmdk.
+ * It remembers whether the keyboard or the mouse moved last (data-nav), so the highlighted row shows its ring only in
+ * keyboard use; under the pointer it keeps the calm fill.
+ */
+/** Scroll an item into view inside its own list only, never the page around it. */
+function scrollWithinList(el: HTMLElement) {
+  const list = el.closest<HTMLElement>("[cmdk-list]")
+  if (!list) return
+  const l = list.getBoundingClientRect()
+  const r = el.getBoundingClientRect()
+  if (r.top < l.top) list.scrollTop -= l.top - r.top
+  else if (r.bottom > l.bottom) list.scrollTop += r.bottom - l.bottom
+}
+
+export function Command({ className, onKeyDown, onPointerMove, ref, ...props }: React.ComponentProps<typeof CommandPrimitive>) {
+  const [nav, setNav] = React.useState<"key" | "pointer">("key")
+  const root = React.useRef<HTMLDivElement | null>(null)
+  // cmdk keeps the highlighted row in view with scrollIntoView, which also scrolls the page: an inline list further down
+  // pulled the whole page to it as it mounted. Here the rows (and group headings) scroll their own list only.
+  React.useLayoutEffect(() => {
+    const el = root.current
+    if (!el) return
+    const scope = () =>
+      el.querySelectorAll<HTMLElement>("[cmdk-item], [cmdk-group-heading]").forEach((n) => {
+        if (n.dataset.scrollScoped) return
+        n.dataset.scrollScoped = ""
+        n.scrollIntoView = () => scrollWithinList(n)
+      })
+    scope()
+    const mo = new MutationObserver(scope)
+    mo.observe(el, { childList: true, subtree: true })
+    return () => mo.disconnect()
+  }, [])
   return (
-    <CommandPrimitive data-slot="command" className={cn("flex size-full flex-col overflow-hidden bg-popover text-popover-foreground", className)} {...props} />
+    <CommandPrimitive
+      ref={(node) => {
+        root.current = node
+        if (typeof ref === "function") ref(node)
+        else if (ref) ref.current = node
+      }}
+      data-slot="command"
+      data-nav={nav}
+      onKeyDown={(e) => {
+        setNav("key")
+        onKeyDown?.(e)
+      }}
+      onPointerMove={(e) => {
+        if (e.pointerType === "mouse") setNav("pointer")
+        onPointerMove?.(e)
+      }}
+      className={cn("group/command flex size-full flex-col overflow-hidden bg-popover text-popover-foreground", className)}
+      {...props}
+    />
   )
 }
 
@@ -32,12 +82,32 @@ export function CommandDialog({
   title?: string
   description?: string
 }) {
+  // The palette has no trigger of its own (it opens from ⌘K or a field), so Radix has nowhere to return focus. Remember
+  // what had focus while it was closed and go back there on close. The listener stops in the layout cleanup, before an
+  // autoFocus inside the palette can be mistaken for the element to return to, and ignores the palette while it leaves.
+  const returnTo = React.useRef<Element | null>(null)
+  React.useLayoutEffect(() => {
+    if (open) return
+    returnTo.current ??= document.activeElement
+    const remember = (e: FocusEvent) => {
+      if (e.target instanceof Element && !e.target.closest("[data-slot=command-dialog]")) returnTo.current = e.target
+    }
+    document.addEventListener("focusin", remember)
+    return () => document.removeEventListener("focusin", remember)
+  }, [open])
   return (
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-(--scrim) data-[state=open]:animate-fade-in data-[state=closed]:animate-disappear" />
         <DialogPrimitive.Content
           data-slot="command-dialog"
+          onCloseAutoFocus={(e) => {
+            const el = returnTo.current
+            if (el instanceof HTMLElement && el.isConnected && el !== document.body) {
+              e.preventDefault()
+              el.focus({ preventScroll: true })
+            }
+          }}
           className={cn(
             "fixed inset-x-4 top-[12vh] z-50 mx-auto flex max-h-[70vh] max-w-xl flex-col overflow-hidden rounded-lg bg-popover shadow-overlay ring-1 ring-border",
             "data-[state=open]:animate-appear data-[state=closed]:animate-disappear",
@@ -66,6 +136,7 @@ export function CommandInput({ className, end, ...props }: React.ComponentProps<
     >
       <Search aria-hidden="true" className="size-5 shrink-0 text-muted-foreground" />
       <CommandPrimitive.Input
+        // focus-ring: its row draws the ring (has-focus-visible on command-input), or the caret in a palette.
         className={cn("h-full min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-muted-foreground", className)}
         {...props}
       />
@@ -114,13 +185,17 @@ export function CommandSeparator({ className, ...props }: React.ComponentProps<"
   return <div aria-hidden="true" data-slot="command-separator" className={cn("-mx-2 my-2 h-px bg-border", className)} {...props} />
 }
 
-/** One result. The highlighted row is the one Enter runs; it follows the keyboard and the pointer. 44 px for touch. */
+/**
+ * One result. The highlighted row is the one Enter runs; it follows the keyboard and the pointer. 44 px for touch.
+ * In keyboard use it carries a 2 px ring inside the row as well as the fill, which on its own is 1.2:1 and cannot be found.
+ */
 export function CommandItem({ className, ...props }: React.ComponentProps<typeof CommandPrimitive.Item>) {
   return (
     <CommandPrimitive.Item
       data-slot="command-item"
       className={cn(
-        "flex h-(--h-md) cursor-default items-center gap-2 rounded-xs px-3 text-sm outline-none select-none",
+        "flex h-(--h-md) cursor-default items-center gap-2 rounded-xs px-3 text-sm select-none",
+        "group-data-[nav=key]/command:data-[selected=true]:outline-2 group-data-[nav=key]/command:data-[selected=true]:-outline-offset-2 group-data-[nav=key]/command:data-[selected=true]:outline-ring",
         "transition-colors duration-(--motion-fast) ease-(--ease-standard) data-[selected=true]:bg-accent data-[disabled=true]:pointer-events-none data-[disabled=true]:text-disabled",
         "[&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-muted-foreground",
         className,

@@ -1,4 +1,4 @@
-// @syncrobotic/action-rail-shell v0.16.0 · update: npx shadcn add @syncrobotic/action-rail-shell --overwrite
+// @syncrobotic/action-rail-shell v0.17.2 · update: npx shadcn add @syncrobotic/action-rail-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -102,12 +102,24 @@ export function ActionRailShell({
   }, [onBack])
 
   // On phones the rail is fixed over the page; pad the page by its real height, which grows with a long title or density.
+  // The page scrolls, so its scroll padding takes the same height: a field or thumbnail that gets focus near the bottom
+  // scrolls clear of the bar instead of stopping under it (WCAG 2.4.11).
   React.useEffect(() => {
     const el = rail.current
     if (!el) return
-    const ro = new ResizeObserver(() => setBarHeight(el.offsetHeight))
+    const root = document.scrollingElement instanceof HTMLElement ? document.scrollingElement : null
+    const before = root?.style.scrollPaddingBottom ?? ""
+    const ro = new ResizeObserver(() => {
+      setBarHeight(el.offsetHeight)
+      if (root)
+        root.style.scrollPaddingBottom =
+          getComputedStyle(el).position === "fixed" ? `calc(${el.offsetHeight}px + 1rem + env(safe-area-inset-bottom))` : before
+    })
     ro.observe(el)
-    return () => ro.disconnect()
+    return () => {
+      ro.disconnect()
+      if (root) root.style.scrollPaddingBottom = before
+    }
   }, [])
 
   const actionButton = (a: RailAction, primaryAction: boolean, className?: string) => {
@@ -183,11 +195,12 @@ export function ActionRailShell({
             "z-40 flex flex-col",
             // Wide: a panel in the column, kept in view while the content scrolls.
             "lg:sticky lg:top-2 lg:w-80 lg:shrink-0 lg:gap-4 lg:rounded-md lg:bg-card lg:p-4 lg:ring-1 lg:ring-border",
-            // Phones: a floating bar 8 px from the edges and above the home indicator. Radius 20 = the button's 12 + 8.
-            "max-lg:fixed max-lg:inset-x-2 max-lg:bottom-[calc(0.5rem+env(safe-area-inset-bottom))] max-lg:gap-2 max-lg:rounded-lg max-lg:bg-float max-lg:p-2 max-lg:shadow-float max-lg:ring-1 max-lg:ring-edge max-lg:backdrop-blur-xl",
+            // Phones: a floating bar 8 px from the edges and above the home indicator. The title and the buttons sit 12 px
+            // in on every side; radius 24 = the button's 12 + 12.
+            "max-lg:fixed max-lg:inset-x-2 max-lg:bottom-[calc(0.5rem+env(safe-area-inset-bottom))] max-lg:gap-2 max-lg:rounded-xl max-lg:bg-float max-lg:p-3 max-lg:shadow-float max-lg:ring-1 max-lg:ring-edge max-lg:backdrop-blur-xl",
           )}
         >
-          <div className="flex min-w-0 flex-col gap-1 max-lg:px-2">
+          <div className="flex min-w-0 flex-col gap-1">
             <p className="text-xs text-muted-foreground max-lg:hidden">{stepLabel}</p>
             <h2 id={titleId} className="text-lg font-bold max-lg:truncate max-lg:text-sm max-lg:font-medium">
               {step.title}
@@ -225,7 +238,7 @@ export function ActionRailShell({
             {actionButton(primary, true, "min-w-0 flex-1")}
           </div>
           {primary.disabled && primary.disabledReason && (
-            <p id={reasonId} className="text-xs text-muted-foreground max-lg:px-2">
+            <p id={reasonId} className="text-xs text-muted-foreground">
               {primary.disabledReason}
             </p>
           )}

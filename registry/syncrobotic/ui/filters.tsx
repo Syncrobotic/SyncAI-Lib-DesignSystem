@@ -1,4 +1,4 @@
-// @syncrobotic/filters v0.16.1 · update: npx shadcn add @syncrobotic/filters --overwrite
+// @syncrobotic/filters v0.17.2 · update: npx shadcn add @syncrobotic/filters --overwrite
 "use client"
 
 import * as React from "react"
@@ -386,6 +386,23 @@ type Step = "field" | "operator" | "value"
 type Editing = { id: string | null; step: Step }
 
 // One part of a chip. The inset ring keeps a focused part's outline inside the chip, clear of its neighbours.
+// Several values: the first name truncates, the count after it ("+1") always stays in view.
+function ValueText({ rule, field, labels, text }: { rule: FilterRule; field: FilterField; labels: Pick<FilterLabels, "more">; text: string }) {
+  const v = rule.value
+  if (field.type === "option" && Array.isArray(v) && v.length > 1) {
+    const first = field.options.find((o) => o.value === v[0])?.label ?? String(v[0])
+    if (text.startsWith(first) && text.length > first.length) {
+      return (
+        <span className="flex min-w-0 items-baseline">
+          <span className="truncate">{first}</span>
+          <span className="shrink-0 whitespace-pre">{text.slice(first.length)}</span>
+        </span>
+      )
+    }
+  }
+  return <span className="truncate">{text}</span>
+}
+
 const segment = cn("press inline-flex h-full min-w-(--h-sm) items-center justify-center gap-2 px-3 text-sm whitespace-nowrap hover:bg-accent",
   "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring",
   "data-[state=open]:bg-accent [&_svg]:size-4 [&_svg]:shrink-0",
@@ -537,7 +554,7 @@ export function Filters({
                       {val && (
                         <button {...part("value")} aria-label={labels.editValue(val)} className={cn(segment, "font-medium")}>
                           {field.type === "option" && !field.multiple && field.options.find((o) => o.value === r.value)?.icon}
-                          <span className="truncate">{val}</span>
+                          <ValueText rule={r} field={field} labels={labels} text={val} />
                         </button>
                       )}
                       <button

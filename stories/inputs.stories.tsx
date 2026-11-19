@@ -119,8 +119,8 @@ export const SliderDefault: S = {
         <Slider defaultValue={[60]} aria-label="Max speed" />
       </div>
       <div className="flex flex-col gap-1">
-        <Label>Patrol hours · 22:00–06:00</Label>
-        <Slider defaultValue={[22, 30]} max={36} aria-label="Patrol hours" />
+        <Label>Patrol hours · 08:00–18:00</Label>
+        <Slider defaultValue={[8, 18]} max={24} aria-label="Patrol hours" />
       </div>
     </div>
   ),

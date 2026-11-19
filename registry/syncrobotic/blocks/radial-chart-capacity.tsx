@@ -1,8 +1,8 @@
-// @syncrobotic/radial-chart-capacity v0.15.0 · update: npx shadcn add @syncrobotic/radial-chart-capacity --overwrite
+// @syncrobotic/radial-chart-capacity v0.17.2 · update: npx shadcn add @syncrobotic/radial-chart-capacity --overwrite
 "use client"
 
 import * as React from "react"
-import { Card } from "@/registry/syncrobotic/ui/card"
+import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 
 // Sample data: three resources of a site server, one concentric ring each, in palette order.
 const rings = [
@@ -18,7 +18,7 @@ export function RadialChartCapacity() {
   const gap = 4
   return (
     <Card>
-      <h3 className="text-sm font-medium">Site server capacity</h3>
+      <CardDataHeader title="Site server capacity" />
       <div className="flex flex-wrap items-center gap-6">
         <svg aria-hidden="true" width={size} height={size} className="shrink-0 -rotate-90">
           {rings.map((g, i) => {
@@ -26,7 +26,7 @@ export function RadialChartCapacity() {
             const c = 2 * Math.PI * r
             return (
               <g key={g.label}>
-                <circle cx={size / 2} cy={size / 2} r={r} fill="none" strokeWidth={stroke} className="stroke-muted" />
+                <circle cx={size / 2} cy={size / 2} r={r} fill="none" strokeWidth={stroke} className="stroke-muted in-data-[contrast=more]:stroke-input" />
                 <circle
                   cx={size / 2}
                   cy={size / 2}
@@ -41,7 +41,7 @@ export function RadialChartCapacity() {
             )
           })}
         </svg>
-        <ul className="flex max-w-sm min-w-48 flex-1 flex-col gap-3 text-sm">
+        <ul className="flex min-w-48 flex-1 flex-col gap-3 text-sm">
           {rings.map((g) => (
             <li key={g.label} className="flex items-center gap-2">
               <span aria-hidden="true" className="size-3 shrink-0 rounded-xs" style={{ background: g.color }} />
