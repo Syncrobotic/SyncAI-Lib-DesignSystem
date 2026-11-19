@@ -1,4 +1,4 @@
-// @syncrobotic/table v0.17.3 · update: npx shadcn add @syncrobotic/table --overwrite
+// @syncrobotic/table v0.17.4 · update: npx shadcn add @syncrobotic/table --overwrite
 "use client"
 
 import * as React from "react"
@@ -32,7 +32,18 @@ export function useScrollEdges(ref: React.RefObject<HTMLElement | null>) {
   return edges
 }
 
-/** A fade on each end of a scrolling table that still hides columns: the cue that it scrolls, never a clip with no hint. */
+/**
+ * The cue that a box scrolls sideways: its content fades out at each end that still hides columns. A mask, so whatever
+ * is behind shows through (a grey header row fades to the card, a white row to the card): no coloured smear over the
+ * rows and nothing painted over the frame's edge. Put it on the scrolling box; draw the edge on a box around it.
+ */
+export function scrollFadeMask({ start, end }: { start: boolean; end: boolean }): React.CSSProperties | undefined {
+  if (!start && !end) return undefined
+  const image = `linear-gradient(to right, ${start ? "transparent, black 2rem" : "black, black"}, ${end ? "black calc(100% - 2rem), transparent" : "black"})`
+  return { maskImage: image, WebkitMaskImage: image }
+}
+
+/** @deprecated since 0.17.4: use scrollFadeMask on the scrolling box (this overlay smeared over grey header rows). */
 export function ScrollFades({ start, end }: { start: boolean; end: boolean }) {
   const fade = "pointer-events-none absolute inset-y-0 z-10 w-8 from-card to-transparent transition-opacity duration-(--motion-fast) ease-(--ease-standard)"
   return (
@@ -52,17 +63,22 @@ export function Table({ className, ...props }: React.ComponentProps<"table">) {
   const scroller = React.useRef<HTMLDivElement>(null)
   const edges = useScrollEdges(scroller)
   return (
-    <div data-slot="table-frame" className="relative w-full">
+    // The frame draws the edge and the focus ring, so the fade on the scrolling box never eats either.
+    <div
+      data-slot="table-frame"
+      className="relative w-full rounded-md ring-1 ring-border has-[>[data-slot=table-container]:focus-visible]:outline-2 has-[>[data-slot=table-container]:focus-visible]:outline-offset-2 has-[>[data-slot=table-container]:focus-visible]:outline-ring"
+    >
       <div
         ref={scroller}
         data-slot="table-container"
         // A table wider than the screen scrolls; keyboard users reach it with Tab and scroll it with the arrow keys.
         tabIndex={0}
-        className="relative w-full overflow-x-auto rounded-md ring-1 ring-border focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+        style={scrollFadeMask(edges)}
+        // focus-ring: the frame around it draws the ring (has-[…:focus-visible]), so the fade does not hide it.
+        className="relative w-full overflow-x-auto rounded-md outline-none"
       >
         <table data-slot="table" className={cn("w-full caption-bottom text-sm", className)} {...props} />
       </div>
-      <ScrollFades {...edges} />
     </div>
   )
 }

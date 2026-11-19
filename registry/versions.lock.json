@@ -128,8 +128,8 @@
     "hash": "c19978145e9fa95a"
   },
   "select": {
-    "version": "0.17.3",
-    "hash": "edf5f9f9a777bb27"
+    "version": "0.17.4",
+    "hash": "14064e03debbbc84"
   },
   "slider": {
     "version": "0.17.3",
@@ -184,8 +184,8 @@
     "hash": "89f8484231126f8c"
   },
   "table": {
-    "version": "0.17.3",
-    "hash": "19dad9fe4d59e6c0"
+    "version": "0.17.4",
+    "hash": "c53a2b4f3f24b843"
   },
   "chart": {
     "version": "0.17.2",
@@ -200,8 +200,8 @@
     "hash": "d318cbcb1910af28"
   },
   "breadcrumb": {
-    "version": "0.17.3",
-    "hash": "ed43fa2b46d10209"
+    "version": "0.17.4",
+    "hash": "6ee6f82f2785c0e6"
   },
   "accordion": {
     "version": "0.10.0",
@@ -228,8 +228,8 @@
     "hash": "7dd7e3177ffd2874"
   },
   "dropdown-menu": {
-    "version": "0.17.2",
-    "hash": "d861a9dd749cd0fd"
+    "version": "0.17.4",
+    "hash": "18d0ebad899715de"
   },
   "command": {
     "version": "0.17.3",
@@ -332,8 +332,8 @@
     "hash": "c397a9088b11de0e"
   },
   "data-grid": {
-    "version": "0.17.3",
-    "hash": "350c1440fcabf48e"
+    "version": "0.17.4",
+    "hash": "fa161d5c87c2fb0d"
   },
   "sortable": {
     "version": "0.13.1",

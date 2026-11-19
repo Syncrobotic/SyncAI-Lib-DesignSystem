@@ -1,4 +1,4 @@
-// @syncrobotic/data-grid v0.17.3 · update: npx shadcn add @syncrobotic/data-grid --overwrite
+// @syncrobotic/data-grid v0.17.4 · update: npx shadcn add @syncrobotic/data-grid --overwrite
 "use client"
 
 import * as React from "react"
@@ -18,7 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/registry/syncrobotic/ui/dropdown-menu"
 import { Pagination } from "@/registry/syncrobotic/ui/pagination"
-import { ScrollFades, useScrollEdges } from "@/registry/syncrobotic/ui/table"
+import { scrollFadeMask, useScrollEdges } from "@/registry/syncrobotic/ui/table"
 
 type Density = "default" | "dense"
 
@@ -136,18 +136,25 @@ export function DataGridTable({
   }
 
   return (
-    // The frame holds the fades that say the grid scrolls sideways (a phone shows only the first columns).
-    <div data-slot="data-grid-frame" className="relative w-full">
+    // The frame draws the edge and the focus ring; the scrolling box fades the columns it still hides (a phone shows only
+    // the first ones), so the fade never eats the edge.
+    <div
+      data-slot="data-grid-frame"
+      className={cn(
+        "relative w-full rounded-md has-[>[role=region]:focus-visible]:outline-2 has-[>[role=region]:focus-visible]:outline-offset-2 has-[>[role=region]:focus-visible]:outline-ring",
+        variant !== "borderless" && "ring-1 ring-border",
+      )}
+    >
       <div
         ref={scrollRef}
         tabIndex={0}
         role="region"
         aria-label={ariaLabel ?? "Data"}
         aria-busy={loading || undefined}
-        style={maxHeight ? { maxHeight } : undefined}
+        style={{ ...(maxHeight ? { maxHeight } : {}), ...scrollFadeMask(edges) }}
+        // focus-ring: the frame around it draws the ring (has-[…:focus-visible]), so the fade does not hide it.
         className={cn(
-          "@container relative w-full overflow-auto rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-          variant !== "borderless" && "ring-1 ring-border",
+          "@container relative w-full overflow-auto rounded-md outline-none",
           className,
         )}
       >
@@ -297,7 +304,6 @@ export function DataGridTable({
           )}
         </table>
       </div>
-      <ScrollFades {...edges} />
     </div>
   )
 }
