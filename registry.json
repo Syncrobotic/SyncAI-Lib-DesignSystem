@@ -4270,7 +4270,7 @@
           {
             "version": "0.17.2",
             "date": "2026-11-19",
-            "note": "On phones the robot tray sits above the map and the stop below it, so a focused marker is never hidden under the tray."
+            "note": "On phones the robot tray sits above the map and the stop below it, so a focused marker is never hidden under the tray. On a phone the map gives way and the stop keeps its size, so the emergency stop is on screen on any phone (on a 360 × 640 screen it had been pushed below the edge)."
           },
           {
             "version": "0.15.0",
@@ -6652,8 +6652,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "On a phone the three actions stack full width, the main one first, so none is left alone on a line."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",

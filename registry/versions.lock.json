@@ -425,7 +425,7 @@
   },
   "map-workspace": {
     "version": "0.17.2",
-    "hash": "a6ba4befcb5bbd0e"
+    "hash": "f2c7fff28104eb85"
   },
   "data-catalog": {
     "version": "0.17.2",
@@ -668,7 +668,7 @@
     "hash": "011ba5bf6e990d35"
   },
   "agent-approval": {
-    "version": "0.17.1",
-    "hash": "c1a668cec358fe31"
+    "version": "0.17.2",
+    "hash": "15d5ef71758eb6a3"
   }
 }

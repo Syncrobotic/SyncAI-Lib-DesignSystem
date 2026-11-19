@@ -34,11 +34,12 @@ npm run test:stories     # every story, dark and light: screenshot against its b
 npm run test:registry    # every item installed into a fresh Next.js app, type-checked and built
 npm run check:radius     # with the site running (npm start): nested corners follow outer = inner + padding, on the
                          # home page, the foundation pages, every component page and every block preview
+npm run check:wrap       # with the site running: on a 375 px phone, no row of buttons wraps with one left alone on its line
 ```
 
 - Story checks run on pull requests into `stage`, where a release is assembled, in Playwright's own image (`mcr.microsoft.com/playwright`), four shards. `main` receives `stage`'s tree unchanged, so they are not repeated there. Run them on any branch with Actions → `ci` → Run workflow.
 - The registry install test runs on every pull request that touches `registry/`, `registry.json`, the package files or the TypeScript config, and is skipped otherwise.
-- `check:radius` is local only.
+- `check:radius` and `check:wrap` are local only: run them before a release.
 
 ### Rules the lints enforce
 

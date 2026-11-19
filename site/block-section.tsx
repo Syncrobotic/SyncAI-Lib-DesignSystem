@@ -38,7 +38,7 @@ export function BlockSection({ block: b, heading: H = "h3" }: { block: (typeof b
       </div>
       <CodeBlock code={`npx shadcn add @syncrobotic/${b.name}`} lang="bash" title="Install" />
       {uses.length > 0 && (
-        <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+        <div data-wrap="free" className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
           Built from
           {/* A dependency is a component (its page) or another block (its place on its page). */}
           {uses.map((u) => {
