@@ -1,4 +1,4 @@
-// @syncrobotic/bar-chart-ranked v0.9.0 · update: npx shadcn add @syncrobotic/bar-chart-ranked --overwrite
+// @syncrobotic/bar-chart-ranked v0.17.1 · update: npx shadcn add @syncrobotic/bar-chart-ranked --overwrite
 "use client"
 
 import * as React from "react"

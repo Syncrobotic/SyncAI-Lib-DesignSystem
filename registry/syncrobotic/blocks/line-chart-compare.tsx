@@ -1,4 +1,4 @@
-// @syncrobotic/line-chart-compare v0.15.0 · update: npx shadcn add @syncrobotic/line-chart-compare --overwrite
+// @syncrobotic/line-chart-compare v0.17.1 · update: npx shadcn add @syncrobotic/line-chart-compare --overwrite
 "use client"
 
 import * as React from "react"

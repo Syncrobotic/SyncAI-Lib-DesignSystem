@@ -472,40 +472,40 @@
     "hash": "85ba8a13dba7be39"
   },
   "line-chart-limit": {
-    "version": "0.15.0",
-    "hash": "e36f6e5acbf2faff"
+    "version": "0.17.1",
+    "hash": "43564282fedfba52"
   },
   "line-chart-compare": {
-    "version": "0.15.0",
-    "hash": "112013aeb4a61d42"
+    "version": "0.17.1",
+    "hash": "36d290e05f4714fd"
   },
   "area-chart-battery": {
-    "version": "0.15.0",
-    "hash": "d867b792f99c7247"
+    "version": "0.17.1",
+    "hash": "380f0f87c82209ac"
   },
   "area-chart-fleet-states": {
-    "version": "0.15.0",
-    "hash": "a9a6fe3791af4df7"
+    "version": "0.17.1",
+    "hash": "c85c4c2fe807c183"
   },
   "area-chart-cumulative": {
-    "version": "0.15.0",
-    "hash": "944febb751e89d23"
+    "version": "0.17.1",
+    "hash": "ac3f6dc5fe143d94"
   },
   "bar-chart-missions": {
     "version": "0.9.0",
     "hash": "fd19a31aacf6a401"
   },
   "bar-chart-ranked": {
-    "version": "0.9.0",
-    "hash": "a7b19da8456503dd"
+    "version": "0.17.1",
+    "hash": "ae83c8f6d11c2c1e"
   },
   "bar-chart-stacked": {
-    "version": "0.9.0",
-    "hash": "9ff19aa05c341d81"
+    "version": "0.17.1",
+    "hash": "61cb30434f309b26"
   },
   "bar-chart-variance": {
-    "version": "0.9.0",
-    "hash": "a694d973c3fb537d"
+    "version": "0.17.1",
+    "hash": "739977b335f27e76"
   },
   "sparkline-robot-list": {
     "version": "0.15.0",
@@ -544,8 +544,8 @@
     "hash": "65c15b3f7d5f246c"
   },
   "heatmap-week-hours": {
-    "version": "0.9.0",
-    "hash": "a95fda5d79232154"
+    "version": "0.17.1",
+    "hash": "86a8904848fda1f8"
   },
   "heatmap-zones": {
     "version": "0.15.0",

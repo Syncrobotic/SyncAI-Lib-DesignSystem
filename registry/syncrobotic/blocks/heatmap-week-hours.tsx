@@ -1,4 +1,4 @@
-// @syncrobotic/heatmap-week-hours v0.9.0 · update: npx shadcn add @syncrobotic/heatmap-week-hours --overwrite
+// @syncrobotic/heatmap-week-hours v0.17.1 · update: npx shadcn add @syncrobotic/heatmap-week-hours --overwrite
 "use client"
 
 import * as React from "react"

@@ -1,4 +1,4 @@
-// @syncrobotic/area-chart-fleet-states v0.15.0 · update: npx shadcn add @syncrobotic/area-chart-fleet-states --overwrite
+// @syncrobotic/area-chart-fleet-states v0.17.1 · update: npx shadcn add @syncrobotic/area-chart-fleet-states --overwrite
 "use client"
 
 import * as React from "react"

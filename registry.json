@@ -4714,8 +4714,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "Chart / Table switch in the header: the same numbers as a table, as every chart has (the data-visualisation rule)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -4749,8 +4754,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "Chart / Table switch in the header: the same numbers as a table, as every chart has (the data-visualisation rule)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -4784,8 +4794,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "Chart / Table switch in the header: the same numbers as a table, as every chart has (the data-visualisation rule)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -4819,8 +4834,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "Chart / Table switch in the header: the same numbers as a table, as every chart has (the data-visualisation rule)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -4854,8 +4874,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "Chart / Table switch in the header: the same numbers as a table, as every chart has (the data-visualisation rule)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -4919,8 +4944,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "Chart / Table switch in the header: the same numbers as a table, as every chart has (the data-visualisation rule)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -4949,8 +4979,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "Chart / Table switch in the header: the same numbers as a table, as every chart has (the data-visualisation rule)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -4979,8 +5014,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "Chart / Table switch in the header: the same numbers as a table, as every chart has (the data-visualisation rule)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -5284,8 +5324,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.17.1",
         "changelog": [
+          {
+            "version": "0.17.1",
+            "date": "2026-11-19",
+            "note": "Chart / Table switch in the header: the same numbers as a table, as every chart has (the data-visualisation rule)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",

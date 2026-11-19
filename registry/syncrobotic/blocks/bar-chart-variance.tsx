@@ -1,4 +1,4 @@
-// @syncrobotic/bar-chart-variance v0.9.0 · update: npx shadcn add @syncrobotic/bar-chart-variance --overwrite
+// @syncrobotic/bar-chart-variance v0.17.1 · update: npx shadcn add @syncrobotic/bar-chart-variance --overwrite
 "use client"
 
 import * as React from "react"

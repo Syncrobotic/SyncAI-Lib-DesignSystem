@@ -1,4 +1,4 @@
-// @syncrobotic/bar-chart-stacked v0.9.0 · update: npx shadcn add @syncrobotic/bar-chart-stacked --overwrite
+// @syncrobotic/bar-chart-stacked v0.17.1 · update: npx shadcn add @syncrobotic/bar-chart-stacked --overwrite
 "use client"
 
 import * as React from "react"
