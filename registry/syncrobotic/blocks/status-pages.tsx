@@ -1,4 +1,4 @@
-// @syncrobotic/status-pages v0.17.2 · update: npx shadcn add @syncrobotic/status-pages --overwrite
+// @syncrobotic/status-pages v0.17.3 · update: npx shadcn add @syncrobotic/status-pages --overwrite
 "use client"
 
 import * as React from "react"
@@ -36,7 +36,7 @@ export function StatusPage({
   // A route of its own has the page's h1; inside an app shell's content the shell's title is the h1, so this is an h2.
   const Heading = fill === "screen" ? "h1" : "h2"
   return (
-    <Root className={cn("flex items-center justify-center bg-background p-6", fill === "screen" ? "min-h-dvh" : "h-full min-h-96", className)}>
+    <Root className={cn("flex items-center justify-center bg-background p-6", fill === "screen" ? "min-h-[var(--app-shell-height,100dvh)]" : "h-full min-h-96", className)}>
       <div className="flex max-w-md animate-appear flex-col items-center gap-4 text-center">
         <span className="flex size-12 items-center justify-center rounded-sm bg-muted text-muted-foreground">
           <Icon aria-hidden="true" className="size-6" />
@@ -126,7 +126,7 @@ export function OfflinePage(props: PageProps) {
 export function LoadingPage({ what = "Loading the fleet", fill = "screen", className }: { what?: string; fill?: "screen" | "parent"; className?: string }) {
   const Root = fill === "screen" ? "main" : "section"
   return (
-    <Root aria-busy="true" className={cn("flex flex-col gap-4 bg-background p-6", fill === "screen" ? "min-h-dvh" : "h-full", className)}>
+    <Root aria-busy="true" className={cn("flex flex-col gap-4 bg-background p-6", fill === "screen" ? "min-h-[var(--app-shell-height,100dvh)]" : "h-full", className)}>
       <LoadingLine>{what}</LoadingLine>
       {/* Two by two on phones, as the stats it stands in for are. */}
       <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">

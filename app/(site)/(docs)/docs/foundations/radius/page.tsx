@@ -56,7 +56,7 @@ export default function RadiusPage() {
           good={{
             visual: (
               <div className="rounded-xl bg-float p-2 ring-1 ring-edge">
-                <div className="flex h-24 w-56 items-center justify-center rounded-md bg-muted text-xs text-muted-foreground">24 = 16 + 8</div>
+                <div className="flex h-24 w-56 items-center justify-center rounded-md bg-track text-xs text-foreground">24 = 16 + 8</div>
               </div>
             ),
             text: "Step the radius down by the padding you add.",
@@ -64,7 +64,7 @@ export default function RadiusPage() {
           bad={{
             visual: (
               <div className="rounded-xl bg-float p-2 ring-1 ring-edge">
-                <div className="flex h-24 w-56 items-center justify-center rounded-xl bg-muted text-xs text-muted-foreground">24 inside 24</div>
+                <div className="flex h-24 w-56 items-center justify-center rounded-xl bg-track text-xs text-foreground">24 inside 24</div>
               </div>
             ),
             text: "Repeat the outer radius inside. The gap pinches at the corners and the shapes look misaligned.",

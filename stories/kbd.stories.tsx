@@ -14,7 +14,7 @@ type S = StoryObj
 
 export const KbdKeys: S = {
   render: () => (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex w-fit flex-wrap items-center gap-2">
       <Kbd>Esc</Kbd>
       <Kbd>Enter</Kbd>
       <Kbd>Space</Kbd>
@@ -154,7 +154,7 @@ export const KbdShortcutList: S = {
 /** A key going down: it sinks and its edge thickens to the text colour, so it reads without colour. */
 export const KbdPressed: S = {
   render: () => (
-    <div className="flex items-center gap-2">
+    <div className="flex w-fit items-center gap-2">
       <Kbd>1</Kbd>
       <Kbd pressed>2</Kbd>
       <Kbd>3</Kbd>

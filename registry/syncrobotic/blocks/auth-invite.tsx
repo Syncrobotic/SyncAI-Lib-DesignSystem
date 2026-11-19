@@ -1,4 +1,4 @@
-// @syncrobotic/auth-invite v0.9.0 · update: npx shadcn add @syncrobotic/auth-invite --overwrite
+// @syncrobotic/auth-invite v0.17.3 · update: npx shadcn add @syncrobotic/auth-invite --overwrite
 "use client"
 
 import * as React from "react"
@@ -59,7 +59,7 @@ export function AuthInvite({
 
   const i = invitation
   return (
-    <main className="flex min-h-dvh items-center justify-center bg-background p-4">
+    <main className="flex min-h-[var(--app-shell-height,100dvh)] items-center justify-center bg-background p-4">
       <div className="flex w-full max-w-sm flex-col gap-6">
         {state === "accepted" ? (
           <div role="status" className="flex animate-appear flex-col gap-4">

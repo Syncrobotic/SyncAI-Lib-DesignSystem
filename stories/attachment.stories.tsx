@@ -42,7 +42,8 @@ export const AttachmentInComposer: S = {
         <textarea
           aria-label="Message"
           rows={2}
-          placeholder="Describe what happened at door 3"
+          // A no-break space keeps "door 3" together when the placeholder wraps.
+          placeholder={"What happened at door\u00a03?"}
           // focus-ring: the composer around it draws the ring (has-[textarea:focus-visible]).
           className="min-h-(--h-md) flex-1 resize-none bg-transparent px-2 py-2 text-base outline-none placeholder:text-muted-foreground"
         />

@@ -1,4 +1,4 @@
-// @syncrobotic/card-site v0.17.2 · update: npx shadcn add @syncrobotic/card-site --overwrite
+// @syncrobotic/card-site v0.17.3 · update: npx shadcn add @syncrobotic/card-site --overwrite
 import * as React from "react"
 import { ChevronRight, MapPin } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -51,7 +51,7 @@ export const sampleSites: Site[] = [
  */
 export function CardSite({ sites = sampleSites, className }: { sites?: Site[]; className?: string }) {
   return (
-    <ul className={cn("grid gap-4 sm:grid-cols-2 lg:grid-cols-3", className)}>
+    <ul className={cn("grid gap-4 sm:grid-cols-2 md:grid-cols-3", className)}>
       {sites.map((s) => (
         <li key={s.name} className="flex">
           <Card className="press relative flex-1 gap-4 hover:ring-muted-foreground has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-ring">

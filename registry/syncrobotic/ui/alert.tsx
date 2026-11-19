@@ -1,4 +1,4 @@
-// @syncrobotic/alert v0.8.0 · update: npx shadcn add @syncrobotic/alert --overwrite
+// @syncrobotic/alert v0.17.3 · update: npx shadcn add @syncrobotic/alert --overwrite
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
@@ -26,5 +26,5 @@ export function AlertTitle({ className, ...props }: React.ComponentProps<"p">) {
 }
 
 export function AlertDescription({ className, ...props }: React.ComponentProps<"div">) {
-  return <div data-slot="alert-description" className={cn("col-start-2 text-muted-foreground", className)} {...props} />
+  return <div data-slot="alert-description" className={cn("col-start-2 text-pretty text-muted-foreground", className)} {...props} />
 }

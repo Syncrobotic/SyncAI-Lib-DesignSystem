@@ -1,4 +1,4 @@
-// @syncrobotic/sheet-filters v0.17.2 · update: npx shadcn add @syncrobotic/sheet-filters --overwrite
+// @syncrobotic/sheet-filters v0.17.3 · update: npx shadcn add @syncrobotic/sheet-filters --overwrite
 "use client"
 
 import * as React from "react"
@@ -57,7 +57,7 @@ export function SheetFilters({
   const active = applied.states.length + (applied.site === "all" ? 0 : 1)
 
   return (
-    <div className="flex min-h-dvh flex-col gap-4 bg-background p-4">
+    <div className="flex min-h-[var(--app-shell-height,100dvh)] flex-col gap-4 bg-background p-4">
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
           <Button variant="secondary" className="self-start">

@@ -32,7 +32,7 @@ function SpeedChart() {
         <ChartContainer config={speedConfig} label="Average patrol speed by hour, north and south site">
           <LineChart data={speed} margin={{ top: 0, right: 8, left: 0, bottom: 0 }}>
             <CartesianGrid vertical={false} />
-            <XAxis dataKey="t" {...chartAxis} />
+            <XAxis dataKey="t" {...chartAxis} interval="preserveStartEnd" minTickGap={12} />
             <YAxis {...chartAxis} domain={[0, 2]} ticks={[0, 0.5, 1, 1.5, 2]} width={40} />
             <ChartTooltip />
             <ChartLegend />
@@ -75,7 +75,7 @@ function BatteryChart() {
       <ChartContainer config={batteryConfig} label="Battery of patrol dog 7F3A by hour" className="h-48">
         <AreaChart data={battery} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
           <CartesianGrid vertical={false} />
-          <XAxis dataKey="t" {...chartAxis} />
+          <XAxis dataKey="t" {...chartAxis} interval="preserveStartEnd" minTickGap={12} />
           <YAxis {...chartAxis} domain={[0, 100]} ticks={[0, 25, 50, 75, 100]} width={40} />
           <ChartTooltip />
           <Area dataKey="battery" type="linear" stroke="var(--color-battery)" strokeWidth={2} fill="var(--color-battery)" fillOpacity={0.12} {...chartMotion} />
@@ -197,7 +197,7 @@ export const ChartThreshold: S = {
       <ChartContainer config={tempConfig} label="Motor temperature of 7F3A by hour, with the 60 °C limit" className="h-48">
         <LineChart data={temp} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
           <CartesianGrid vertical={false} />
-          <XAxis dataKey="t" {...chartAxis} />
+          <XAxis dataKey="t" {...chartAxis} interval="preserveStartEnd" minTickGap={12} />
           <YAxis {...chartAxis} domain={[30, 80]} ticks={[30, 40, 50, 60, 70, 80]} width={40} />
           <ChartTooltip />
           <ReferenceLine
@@ -231,7 +231,7 @@ export const ChartStepLine: S = {
       <ChartContainer config={loadConfig} label="Number of robots out on patrol by hour" className="h-40">
         <AreaChart data={load} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
           <CartesianGrid vertical={false} />
-          <XAxis dataKey="t" {...chartAxis} />
+          <XAxis dataKey="t" {...chartAxis} interval="preserveStartEnd" minTickGap={12} />
           <YAxis {...chartAxis} allowDecimals={false} domain={[0, 6]} width={40} />
           <ChartTooltip />
           <Area dataKey="robots" type="stepAfter" stroke="var(--color-robots)" strokeWidth={2} fill="var(--color-robots)" fillOpacity={0.12} {...chartMotion} />
@@ -258,7 +258,7 @@ export const ChartSmallMultiples: S = {
           <ChartContainer config={batteryConfig} label={`Battery of ${r.id} by hour`} className="h-28">
             <AreaChart data={r.data} margin={{ top: 4, right: 4, left: 0, bottom: 0 }}>
               <XAxis dataKey="t" {...chartAxis} ticks={["06:00", "20:00"]} />
-              <YAxis {...chartAxis} domain={[0, 100]} ticks={[0, 50, 100]} width={32} />
+              <YAxis {...chartAxis} domain={[0, 100]} ticks={[0, 50, 100]} width={40} />
               <ChartTooltip />
               <Area
                 dataKey="battery"
@@ -340,7 +340,7 @@ export const ChartStackedArea: S = {
       <ChartContainer config={statesConfig} label="Number of robots patrolling, charging and idle by hour">
         <AreaChart data={states} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
           <CartesianGrid vertical={false} />
-          <XAxis dataKey="t" {...chartAxis} />
+          <XAxis dataKey="t" {...chartAxis} interval="preserveStartEnd" minTickGap={12} />
           <YAxis {...chartAxis} allowDecimals={false} domain={[0, 6]} width={40} />
           <ChartTooltip />
           <ChartLegend />

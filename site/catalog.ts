@@ -50,6 +50,7 @@ export type StoryFile =
   | "route-progress"
   | "data-pieces"
   | "image-grid"
+  | "hooks"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
@@ -413,7 +414,7 @@ const entries: Record<string, Entry> = {
   },
   "number-field": {
     group: "Inputs",
-    examples: { file: "inputs", prefix: "NumberField" },
+    examples: { file: "inputs", only: ["NumberFieldSpeed", "NumberFieldKinds", "NumberFieldStates"] },
     rules: [
       "The value and its unit are one reading, centred between − and +: write the unit with `unit`, not in the label.",
       'For a number with a range and a unit: speed, thresholds, intervals. For a free number with no range, Input with inputMode="numeric" is enough.',
@@ -735,7 +736,7 @@ const entries: Record<string, Entry> = {
   // Robot shell
   "stop-button": {
     group: "Robot shell",
-    examples: { file: "stop-button" },
+    examples: { file: "stop-button", only: ["Ready", "StopStates", "ConnectionStates", "WakeStates"] },
     rules: [
       "UI only: it takes `state` and calls onStop, onStopAll or onWake. Sending the command, waiting for the dog and falling back to Bluetooth after 1.5 s belong to the app, which passes the result back as `state`.",
       "Solid red is reserved for the emergency stop. Other destructive actions use the danger outline and text.",
@@ -747,7 +748,7 @@ const entries: Record<string, Entry> = {
   },
   "slide-to-release": {
     group: "Robot shell",
-    examples: { file: "slide-to-release" },
+    examples: { file: "slide-to-release", only: ["Stopped", "ReleaseStates"] },
     rules: [
       "Letting go past 85% releases; short of that the thumb springs back in 200 ms.",
       "Viewers can see it but cannot release.",
@@ -757,7 +758,7 @@ const entries: Record<string, Entry> = {
   },
   dock: {
     group: "Robot shell",
-    examples: { file: "dock" },
+    examples: { file: "dock", only: ["Moving", "DockRobotStates", "DockActionStates"] },
     rules: [
       "Three tiers, top to bottom: state action, this page's primary action, navigation.",
       "Actions in the lower tiers are never solid white, so they do not compete with the stop.",
@@ -775,13 +776,23 @@ const entries: Record<string, Entry> = {
   },
   tray: {
     group: "Robot shell",
-    rules: ["The shared frame of the island and the dock: radius 24 = inner radius 16 + padding 8. See Dock and Dynamic island for examples."],
+    examples: { file: "hooks", prefix: "Tray" },
+    rules: ["Rows inside are radius 16 (md), so their corners stay concentric with the tray's 24. Dock and Dynamic island are built on it."],
   },
-  // Hooks
-  "use-long-press": { group: "Hooks", rules: ["Returns hold progress from 0 to 1. The emergency stop uses it for hold-to-stop-all."] },
-  "use-slide-release": { group: "Hooks", rules: ["Drag, threshold and spring-back logic behind Slide to release."] },
+  // Hooks: each has a small live demo; the source is in the Source sheet.
+  "use-long-press": {
+    group: "Hooks",
+    examples: { file: "hooks", prefix: "UseLongPress" },
+    rules: ["Returns hold progress from 0 to 1. The emergency stop uses it for hold-to-stop-all."],
+  },
+  "use-slide-release": {
+    group: "Hooks",
+    examples: { file: "hooks", prefix: "UseSlideRelease" },
+    rules: ["Drag, threshold and spring-back logic behind Slide to release."],
+  },
   "use-presence": {
     group: "Hooks",
+    examples: { file: "hooks", prefix: "UsePresence" },
     rules: [
       "Keeps an element (usePresence) or list items (usePresenceList) mounted while they leave, so an exit plays disappear instead of vanishing.",
       "It is how alarms fade out of a list and a save bar leaves after Save: not for anything that should simply hide at once.",
@@ -789,6 +800,7 @@ const entries: Record<string, Entry> = {
   },
   "use-hotkeys": {
     group: "Hooks",
+    examples: { file: "hooks", prefix: "UseHotkeys" },
     rules: [
       "Single keys only where people work through a queue by keyboard (1 Yes, 2 No, ? help); everywhere else a shortcut takes a modifier (mod+k).",
       "Keys are ignored while someone types in a field, unless a binding sets allowInInput (Escape, mod+s).",
@@ -798,6 +810,7 @@ const entries: Record<string, Entry> = {
   },
   "use-debounce": {
     group: "Hooks",
+    examples: { file: "hooks", prefix: "UseDebounce" },
     rules: [
       "Debounce what goes to a server (a search, an autosave), never what the person sees: the text box updates on every key.",
       "300 ms for typing. A clear button and Enter do not wait: cancel() or flush().",

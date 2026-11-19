@@ -119,8 +119,27 @@ function PaginationDemo({ pages = false, total = 48 }: { pages?: boolean; total?
 /** Range and previous / next: the default for tables. */
 export const PaginationSimple: S = { render: () => <PaginationDemo /> }
 
+// Pagination is a container: under 36rem its numbered pages fold to the current one. A wide box lets the numbered demos
+// show their pages wherever the preview has the room; PaginationCompact shows the folded row on purpose.
+const wide = "w-2xl max-w-full"
+
 /** Numbered pages, with gaps, for long lists you jump around in. */
-export const PaginationPages: S = { render: () => <PaginationDemo pages total={240} /> }
+export const PaginationPages: S = {
+  render: () => (
+    <div className={wide}>
+      <PaginationDemo pages total={240} />
+    </div>
+  ),
+}
+
+/** In a narrow space (a card, a sheet, a phone) the numbered pages fold to the current one between previous and next. */
+export const PaginationCompact: S = {
+  render: () => (
+    <div className="w-72 max-w-full">
+      <PaginationDemo pages total={240} />
+    </div>
+  ),
+}
 
 export const BreadcrumbWithIcon: S = {
   render: () => (
@@ -214,12 +233,22 @@ export const PaginationSinglePage: S = { render: () => <PaginationAt pageSize={1
 export const PaginationEmpty: S = { render: () => <PaginationAt pageSize={10} total={0} labels={{ empty: "No events" }} /> }
 
 /** Deep in a long list: the first and last pages stay reachable, gaps fold the rest. */
-export const PaginationMiddle: S = { render: () => <PaginationAt pages pageSize={20} total={1240} start={30} /> }
+export const PaginationMiddle: S = {
+  render: () => (
+    <div className={wide}>
+      <PaginationAt pages pageSize={20} total={1240} start={30} />
+    </div>
+  ),
+}
 
 /** In a table footer, with the noun in the range. */
 /** Link mode: every page is a URL (?page=3), so it can be shared, Back works, and it needs no JavaScript. */
 export const PaginationLinks: S = {
-  render: () => <Pagination page={2} pageSize={20} total={240} pages href={(p) => `?page=${p + 1}`} onNavigate={() => {}} />,
+  render: () => (
+    <div className={wide}>
+      <Pagination page={2} pageSize={20} total={240} pages href={(p) => `?page=${p + 1}`} onNavigate={() => {}} />
+    </div>
+  ),
 }
 
 export const PaginationTableFooter: S = {

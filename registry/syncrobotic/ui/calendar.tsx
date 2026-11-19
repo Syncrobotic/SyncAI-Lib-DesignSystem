@@ -1,4 +1,4 @@
-// @syncrobotic/calendar v0.17.2 · update: npx shadcn add @syncrobotic/calendar --overwrite
+// @syncrobotic/calendar v0.17.3 · update: npx shadcn add @syncrobotic/calendar --overwrite
 "use client"
 
 import * as React from "react"
@@ -20,19 +20,24 @@ const labelDayButton = (date: Date, modifiers: Modifiers, options?: ConstructorP
   return label
 }
 
-export function Calendar({ className, classNames, showOutsideDays = true, weekStartsOn = 1, labels, ...props }: React.ComponentProps<typeof DayPicker>) {
+export function Calendar({ className, classNames, showOutsideDays, weekStartsOn = 1, labels, ...props }: React.ComponentProps<typeof DayPicker>) {
+  // Days of the next and previous month fill a single month's grid. With several months side by side they would show a
+  // day twice (5 December at the end of November and again in December), and a range's ends twice with it.
+  const outside = showOutsideDays ?? (props.numberOfMonths ?? 1) < 2
   return (
     <DayPicker
       labels={{ labelDayButton, ...labels }}
       data-slot="calendar"
-      showOutsideDays={showOutsideDays}
+      showOutsideDays={outside}
       weekStartsOn={weekStartsOn}
       className={cn("w-fit text-sm", className)}
       classNames={{
         root: "",
         // The arrows are placed against the months (the caption's box), not the root, so the root's padding cannot push
         // them above the caption row.
-        months: "relative flex flex-col gap-4 sm:flex-row",
+        // Months sit side by side where they fit and stack where they do not: the row wraps on the space the calendar is
+        // given (a card, a popover), not on the screen's width.
+        months: "relative flex flex-wrap gap-4",
         month: "flex flex-col gap-3",
         month_caption: "flex h-(--h-sm) items-center justify-center px-8 font-medium",
         caption_label: "flex items-center gap-2 text-sm font-medium",

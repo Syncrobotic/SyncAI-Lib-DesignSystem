@@ -1,4 +1,4 @@
-// @syncrobotic/sheet-robot-detail v0.17.2 · update: npx shadcn add @syncrobotic/sheet-robot-detail --overwrite
+// @syncrobotic/sheet-robot-detail v0.17.3 · update: npx shadcn add @syncrobotic/sheet-robot-detail --overwrite
 "use client"
 
 import * as React from "react"
@@ -24,7 +24,7 @@ export function SheetRobotDetail({
   focusOnOpen?: boolean
 }) {
   return (
-    <div className="flex min-h-dvh items-start bg-background p-6">
+    <div className="flex min-h-[var(--app-shell-height,100dvh)] items-start bg-background p-6">
       <Sheet defaultOpen={defaultOpen}>
         <SheetTrigger asChild>
           <Button variant="secondary">Open Patrol dog 9E37</Button>

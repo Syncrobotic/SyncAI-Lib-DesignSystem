@@ -1,4 +1,4 @@
-// @syncrobotic/stop-button v0.11.1 · update: npx shadcn add @syncrobotic/stop-button --overwrite
+// @syncrobotic/stop-button v0.17.3 · update: npx shadcn add @syncrobotic/stop-button --overwrite
 "use client"
 
 import * as React from "react"
@@ -142,7 +142,8 @@ export function WakeButton({
         <ChevronsUp aria-hidden="true" className="size-5" strokeWidth={2} />
         {label}
       </span>
-      {disabled && <span className="text-xs">{reason}</span>}
+      {/* 14 px, not 12: the reason is the one thing to read on a button that cannot be pressed (5.9:1 on --muted in dark). */}
+      {disabled && <span className="text-sm">{reason}</span>}
     </button>
   )
 }

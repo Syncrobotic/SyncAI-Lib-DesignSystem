@@ -1,4 +1,4 @@
-// @syncrobotic/status-tracker-rollout v0.17.2 · update: npx shadcn add @syncrobotic/status-tracker-rollout --overwrite
+// @syncrobotic/status-tracker-rollout v0.17.3 · update: npx shadcn add @syncrobotic/status-tracker-rollout --overwrite
 "use client"
 
 import * as React from "react"
@@ -39,7 +39,7 @@ export function StatusTrackerRollout() {
               aria-valuemin={0}
               aria-valuemax={s.robots}
               aria-valuenow={s.done}
-              className="h-2 overflow-hidden rounded-full bg-muted"
+              className="h-2 overflow-hidden rounded-full bg-track"
             >
               <span
                 className={cn("block h-full rounded-full", s.state === "running" ? "bg-info" : "bg-foreground/70")}
