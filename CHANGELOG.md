@@ -13,6 +13,9 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - The icon set records that a low-priority alarm uses CircleAlert, so it keeps its own shape beside high and critical.
 - The Island docs pair the edge as `alarmEdge(topAlarm(alarms)) ?? stateEdge`, so a low alarm does not erase the offline or stopped edge.
 
+### Fixed
+- Icons: picking an icon opened its details as a column beside the grid, which halved the grid's width on a desktop. The details now rise as a bar across the bottom (a sheet on a phone), so the grid keeps its width; a picked tile under the bar scrolls into view, and the last row can scroll clear of it.
+
 ### Added
 - Buttons on the Alarms foundation to feel and hear each feedback pattern on a real device.
 
