@@ -12,7 +12,9 @@ export function Checkbox({ className, ...props }: React.ComponentProps<typeof Ch
     <CheckboxPrimitive.Root
       data-slot="checkbox"
       className={cn(
-        "peer flex size-5 shrink-0 items-center justify-center rounded-2xs bg-card ring-1 ring-input ring-inset transition-colors duration-(--motion-fast) ease-(--ease-standard)",
+        "peer relative flex size-5 shrink-0 items-center justify-center rounded-2xs bg-card ring-1 ring-input ring-inset transition-colors duration-(--motion-fast) ease-(--ease-standard)",
+        // The 20 px box answers a 44 px touch (--h-md, so it follows density) even without a label row around it.
+        "after:absolute after:top-1/2 after:left-1/2 after:size-(--h-md) after:-translate-x-1/2 after:-translate-y-1/2 after:content-['']",
         "data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:ring-primary",
         "data-[state=indeterminate]:bg-primary data-[state=indeterminate]:text-primary-foreground data-[state=indeterminate]:ring-primary",
         // Disabled: never faded. The box keeps its edge (the grey label says it is off limits); when checked, grey instead of the primary, so on and off stay readable in glare.

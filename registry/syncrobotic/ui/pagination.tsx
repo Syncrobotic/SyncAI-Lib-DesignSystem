@@ -30,7 +30,8 @@ function pageList(page: number, count: number): (number | null)[] {
 
 /**
  * Where you are in a long list and how to move through it: "1–5 of 8" and previous / next, or numbered pages
- * (`pages`). Pages are zero-based in code and one-based on screen. Previous and next disable at the ends.
+ * (`pages`). Pages are zero-based in code and one-based on screen. Previous and next disable at the ends. In a narrow
+ * container (under 36rem) numbered pages fold to previous / current / next; the range stays on one line.
  *
  * With `href` every page is a link (`?page=3`), so a page can be shared, Back works and it needs no JavaScript; pass
  * `onNavigate` to route through the app's router instead of a full load.
@@ -90,16 +91,23 @@ export function Pagination({
     )
   }
   return (
-    <nav aria-label="Pagination" data-slot="pagination" className={cn("flex items-center justify-between gap-4 text-sm text-muted-foreground", className)}>
-      <span aria-live="polite" className="tabular-nums">
+    // A container, so the row fits the space it is given (a card, a sheet, a phone), not the screen: under 36rem the
+    // numbered pages fold to the current one between previous and next. The range never wraps; if even the compact row
+    // does not fit, the buttons move under it.
+    <nav
+      aria-label="Pagination"
+      data-slot="pagination"
+      className={cn("@container flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-sm text-muted-foreground", className)}
+    >
+      <span aria-live="polite" className="whitespace-nowrap tabular-nums">
         {total === 0 ? l.empty : l.range(from, to, total)}
       </span>
-      <div className="flex items-center gap-1" /* icon-gap-ok: 4 px between page buttons, not an icon and its label */>
+      <div className="flex shrink-0 items-center gap-1" /* icon-gap-ok: 4 px between page buttons, not an icon and its label */>
         {go(page - 1, { variant: "outline", size: "icon-sm", "aria-label": l.previous, disabled: page <= 0 }, <ChevronLeft aria-hidden="true" />)}
         {pages &&
           pageList(page, count).map((n, i) =>
             n === null ? (
-              <span key={`gap-${i}`} aria-hidden="true" className="w-6 text-center">
+              <span key={`gap-${i}`} aria-hidden="true" className="hidden w-6 text-center @xl:inline">
                 …
               </span>
             ) : (
@@ -111,7 +119,7 @@ export function Pagination({
                     size: "icon-sm",
                     "aria-label": l.page(n + 1),
                     "aria-current": n === page ? "page" : undefined,
-                    className: cn("tabular-nums", n === page && "font-medium text-foreground"),
+                    className: cn("tabular-nums", n === page ? "font-medium text-foreground" : "hidden @xl:inline-flex"),
                   },
                   n + 1,
                 )}
