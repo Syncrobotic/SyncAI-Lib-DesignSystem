@@ -2,6 +2,15 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.17.4 · 2026-11-19
+
+Found by putting the kit into a real product (the DataCore dashboard), not by a review.
+
+### Fixed
+- **`select`, `dropdown-menu`: opened with a click, no keyboard ring.** The selected option was ringed on every mouse open; the ring now appears when a key moves in the list, or at once when the list was opened from the keyboard (as `command` already did).
+- **`breadcrumb`: no gap after a short middle crumb.** The few-letters floor moved from the item to its name, so a two-character name is no longer padded to 64 px.
+- **`table`, `data-grid`: the scroll cue is a mask** (`scrollFadeMask`): columns fade into whatever is behind them, so a grey header row no longer gets a light smear and the frame's edge stays whole. The edge and the focus ring sit on the frame. `ScrollFades` is deprecated.
+
 ## 0.17.3 · 2026-11-19
 
 A second eyes-on review, of what the first did not see: every page in dark mode at desktop (full page), at tablet width (768 px) and every app screen scrolled to its end on a phone.

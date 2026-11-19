@@ -1,4 +1,4 @@
-// @syncrobotic/dropdown-menu v0.17.2 · update: npx shadcn add @syncrobotic/dropdown-menu --overwrite
+// @syncrobotic/dropdown-menu v0.17.4 · update: npx shadcn add @syncrobotic/dropdown-menu --overwrite
 "use client"
 
 import * as React from "react"
@@ -10,12 +10,20 @@ export const DropdownMenu = MenuPrimitive.Root
 export const DropdownMenuTrigger = MenuPrimitive.Trigger
 export const DropdownMenuGroup = MenuPrimitive.Group
 
+// How the list was opened: keys or a pointer, the last one used anywhere on the page. Opened by a click, the list shows no
+// ring until a key moves in it; opened from the keyboard, the ring is there at once.
+let lastInput: "key" | "pointer" = "pointer"
+if (typeof document !== "undefined") {
+  document.addEventListener("keydown", () => (lastInput = "key"), true)
+  document.addEventListener("pointerdown", () => (lastInput = "pointer"), true)
+}
+
 /**
  * The list remembers whether the keyboard or the mouse moved last (data-nav): the highlighted item shows a ring only in
  * keyboard use, and keeps the calm fill under the pointer.
  */
 export function DropdownMenuContent({ className, sideOffset = 4, onKeyDown, onPointerMove, ...props }: React.ComponentProps<typeof MenuPrimitive.Content>) {
-  const [nav, setNav] = React.useState<"key" | "pointer">("key")
+  const [nav, setNav] = React.useState<"key" | "pointer">(() => lastInput)
   return (
     <MenuPrimitive.Portal>
       <MenuPrimitive.Content
