@@ -15,6 +15,9 @@ import { overviews } from "@/site/overview"
 import { aiPrompt, componentMarkdown } from "@/site/ai"
 import { CopyButton } from "@/registry/syncrobotic/ui/copy-button"
 import { getItem as findItem } from "@/site/catalog"
+import { BlockSection } from "@/site/block-section"
+import { patternsOf } from "@/site/block-types"
+import { blocksOfType } from "@/site/blocks"
 
 /** `name` becomes a link to that component's page; other backticked words stay code. */
 function Linked({ text }: { text: string }) {
@@ -64,6 +67,8 @@ export default async function ComponentPage({ params }: Props) {
   if (!item) notFound()
 
   const names = item.examples ? storyNames(item.examples) : []
+  // Ready-made variants of this component (a line chart, an audit timeline), documented here rather than under Blocks.
+  const patterns = patternsOf(item.name).filter((t) => blocksOfType(t.slug).length > 0)
   const meta = (item as { meta?: { version: string; changelog: { version: string; date: string; note: string }[] } }).meta
   const deps = [...(("dependencies" in item && item.dependencies) || []), ...(("registryDependencies" in item && item.registryDependencies) || [])]
 
@@ -175,6 +180,40 @@ export default async function ComponentPage({ params }: Props) {
                   />
                 </AppearItem>
               </Reveal>
+            ))}
+          </div>
+        </>
+      )}
+
+      {patterns.length > 0 && (
+        <>
+          <H2 id="patterns">Patterns</H2>
+          <p className="pb-4 text-sm text-muted-foreground">
+            Ready-made uses of {item.title.toLowerCase()} with real data and copy. Each installs as source under its own name.
+          </p>
+          <div className="flex flex-col gap-section-sm">
+            {patterns.map((t) => (
+              <section key={t.slug} id={t.slug} aria-labelledby={`${t.slug}-title`} className="flex scroll-mt-20 flex-col gap-6">
+                <div className="flex flex-col gap-2">
+                  <h3 id={`${t.slug}-title`} className="text-xl font-bold">
+                    {t.title}
+                  </h3>
+                  <p className="max-w-2xl text-sm text-muted-foreground">{t.description}</p>
+                  {t.rules && (
+                    <ul className="flex flex-col gap-1 pt-1 text-sm text-muted-foreground">
+                      {t.rules.map((r) => (
+                        <li key={r} className="flex gap-3">
+                          <Dot />
+                          <span>{r}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+                {blocksOfType(t.slug).map((b) => (
+                  <BlockSection key={b.name} block={b} heading="h4" />
+                ))}
+              </section>
             ))}
           </div>
         </>

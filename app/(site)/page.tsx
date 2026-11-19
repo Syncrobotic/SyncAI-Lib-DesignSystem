@@ -9,7 +9,7 @@ import { fast } from "@/site/foundation-previews"
 import { foundations } from "@/site/foundations"
 import { iconCount } from "@/site/icons"
 import { HeroDemo } from "@/site/hero-demo"
-import { placement } from "@/site/block-types"
+import { getBlockType, placement } from "@/site/block-types"
 import { PageTransition } from "@/site/page-transition"
 import pkg from "../../package.json"
 
@@ -38,7 +38,10 @@ const jsonLd = {
 }
 
 const componentCount = items.filter((i) => i.group !== "Hooks").length
-const blockCount = Object.keys(placement).length
+// Blocks are compositions; one component's ready-made variants (charts, timelines…) count as its patterns instead.
+const isPattern = (name: string) => !!getBlockType(placement[name].type)?.home
+const blockCount = Object.keys(placement).filter((n) => !isPattern(n)).length
+const patternCount = Object.keys(placement).filter(isPattern).length
 
 // The three rules the hero demonstrates, in the words the foundations use.
 const rules = [
@@ -69,13 +72,13 @@ export default function HomePage() {
       href: "/docs/components",
       title: "Components",
       count: `${componentCount} components`,
-      body: "General UI on Radix, charts on Recharts, and the robot shell: emergency stop, slide to release, dock and island.",
+      body: `General UI on Radix, charts on Recharts with ${patternCount} ready-made patterns, and the robot shell: emergency stop, slide to release, dock and island.`,
     },
     {
       href: "/blocks",
       title: "Blocks",
       count: `${blockCount} blocks`,
-      body: "Whole screens with real copy and real states: application screens, charts, and robot operations from fleet maps to incidents.",
+      body: "Sections and whole screens with real copy and real states: application screens, and robot operations from fleet maps to incidents.",
     },
     {
       href: "/icons",

@@ -1,14 +1,9 @@
 import type { Metadata } from "next"
-import Link from "next/link"
 import { notFound, permanentRedirect } from "next/navigation"
-import { aiPrompt, blockMarkdown } from "@/site/ai"
-import { CopyButton } from "@/registry/syncrobotic/ui/copy-button"
 import { pageMeta } from "@/site/config"
-import { BlockFrame } from "@/site/block-frame"
 import { blocks, blocksOfType, getBlock } from "@/site/blocks"
-import { blockHref, blockTypes, getBlockType } from "@/site/block-types"
-import { getItem, readSource } from "@/site/catalog"
-import { CodeBlock } from "@/site/code-block"
+import { blockHref, blockTypes, getBlockType, typeHref } from "@/site/block-types"
+import { BlockSection } from "@/site/block-section"
 import { Dot, H2, PageTitle, Rules } from "@/site/prose"
 import { AppearItem, Reveal } from "@/site/appear"
 
@@ -16,6 +11,7 @@ import { AppearItem, Reveal } from "@/site/appear"
 // A block's own name still works as a URL (old links, the markdown twins) and leads to its place on the type page.
 export const dynamicParams = false
 export const generateStaticParams = () => [
+  // Pattern sets too: their old URLs lead to the component page that now shows them.
   ...blockTypes.filter((t) => blocksOfType(t.slug).length > 0).map((t) => ({ name: t.slug })),
   ...blocks.filter((b) => !getBlockType(b.name)).map((b) => ({ name: b.name })),
 ]
@@ -33,9 +29,10 @@ export default async function BlockTypePage({ params }: Props) {
   const type = getBlockType(name)
   if (!type) {
     const b = getBlock(name)
-    if (b) permanentRedirect(`/blocks/${b.type}#${b.name}`)
+    if (b) permanentRedirect(blockHref(b.name))
     notFound()
   }
+  if (type.home) permanentRedirect(typeHref(type))
   const list = blocksOfType(type.slug)
   if (list.length === 0) notFound()
 
@@ -75,55 +72,9 @@ export default async function BlockTypePage({ params }: Props) {
 
       <H2 id="blocks">Blocks</H2>
       <div className="flex flex-col gap-section-sm">
-        {list.map((b) => {
-          const uses = (b.registryDependencies ?? []).filter((d) => d !== "@syncrobotic/cn").map((d) => d.replace("@syncrobotic/", ""))
-          return (
-            <section key={b.name} id={b.name} aria-labelledby={`${b.name}-title`} className="flex scroll-mt-20 flex-col gap-3">
-              {/* Title and tools share one row, always; the description sits under them, so its length never moves the tools. */}
-              <div className="flex flex-col gap-1">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <h3 id={`${b.name}-title`} className="min-w-0 text-lg font-bold">
-                    {b.title}
-                  </h3>
-                  <div className="flex shrink-0 flex-wrap gap-2">
-                  <CopyButton value={blockMarkdown(b.name) ?? ""} variant="outline" label={`Copy ${b.title} as Markdown`}>
-                    Markdown
-                  </CopyButton>
-                  <CopyButton value={aiPrompt(b.title, `/blocks/${type.slug}#${b.name}`, b.name)} variant="outline" label={`Copy a prompt for ${b.title}`}>
-                    Prompt
-                  </CopyButton>
-                  </div>
-                </div>
-                <p className="max-w-2xl text-sm text-muted-foreground">{b.description}</p>
-              </div>
-              <CodeBlock code={`npx shadcn add @syncrobotic/${b.name}`} lang="bash" title="Install" />
-              {uses.length > 0 && (
-                <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-                  Built from
-                  {/* A dependency is a component (its page) or another block (its place on its type page). */}
-                  {uses.map((u) => (
-                    <Link
-                      key={u}
-                      href={getItem(u) ? `/docs/components/${u}` : blockHref(u)}
-                      className="rounded-xs bg-muted px-2 py-1 font-mono text-xs hover:bg-accent"
-                    >
-                      {u}
-                    </Link>
-                  ))}
-                </div>
-              )}
-              <BlockFrame
-                name={b.name}
-                height={b.height}
-                fit={b.fit}
-                initial={b.viewport}
-                code={b.files.map((f) => (
-                  <CodeBlock key={f.path} code={readSource(f.path)} title={f.path} />
-                ))}
-              />
-            </section>
-          )
-        })}
+        {list.map((b) => (
+          <BlockSection key={b.name} block={b} />
+        ))}
       </div>
 
       {type.rules && (
