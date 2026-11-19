@@ -3,7 +3,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { TraceStatusIcon, formatDuration, type TraceStatus } from "@/registry/syncrobotic/ui/trace"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
@@ -109,7 +109,7 @@ export function AgentRuns() {
   const shown = runs.filter(matches[filter])
   const count = (f: Filter) => runs.filter(matches[f]).length
   return (
-    <AppShell product="Fleet console" nav={sampleNav} current="#agents" title="Agent runs" user={{ name: "Mei Lin", initials: "ML" }}>
+    <AppShell product="Fleet console" nav={sampleNav} current="#agents" title="Agent runs" user={sampleUser}>
       <div className="flex flex-col gap-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <SegmentedControl aria-label="Show runs" value={filter} onValueChange={(v) => v && setFilter(v as Filter)} className="sm:w-auto">

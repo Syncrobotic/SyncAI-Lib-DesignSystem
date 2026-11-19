@@ -5,7 +5,7 @@ import * as React from "react"
 import { Database, Grid3x3, SlidersHorizontal, Plus, ScrollText, Search, SearchX, ShieldCheck } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { ChoiceField, FieldSet } from "@/registry/syncrobotic/ui/choice-field"
-import { AppShell, type AppNavGroup } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, type AppNavGroup, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { Badge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
@@ -178,7 +178,7 @@ export function DataCatalog({ datasets = sampleDatasets }: { datasets?: Dataset[
       nav={dataNav}
       current="#catalog"
       title="Catalog"
-      user={{ name: "Mei Lin", initials: "ML" }}
+      user={sampleUser}
       actions={
         <Button size="sm">
           <Plus aria-hidden="true" /> New dataset

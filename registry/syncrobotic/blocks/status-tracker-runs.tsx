@@ -3,7 +3,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { Card } from "@/registry/syncrobotic/ui/card"
+import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 
 type Run = "ok" | "partial" | "failed"
 // A run that passed is calm grey, opaque and 3:1 on the card (--input, the field-edge grey); only the others take colour.
@@ -20,26 +20,31 @@ const routes = [
 export function StatusTrackerRuns() {
   return (
     <Card>
-      <h3 className="text-sm font-medium">Route runs · last 20</h3>
+      <CardDataHeader title="Route runs · last 20" />
       <ul className="flex flex-col divide-y divide-border">
         {routes.map((r) => {
           const ok = r.runs.filter((x) => x === "ok").length
           const lastBad = r.runs[r.runs.length - 1] !== "ok"
           return (
             <li key={r.name} className="flex flex-wrap items-center gap-x-4 gap-y-2 py-3 first:pt-0 last:pb-0">
-              <span className="flex min-w-48 flex-1 flex-col">
+              <span className="flex w-48 min-w-0 flex-col">
                 <span className="text-sm font-medium">{r.name}</span>
                 <span className={cn("text-xs", lastBad ? "text-danger" : "text-muted-foreground")}>
                   Last run {r.last}
                   {lastBad ? " · failed" : ""}
                 </span>
               </span>
-              <span className="flex h-5 items-stretch gap-0.5" aria-hidden="true">
-                {r.runs.map((x, i) => (
-                  <span key={i} className={cn("w-2 rounded-xs", cell[x])} />
-                ))}
+              {/* The strip takes the rest of the row, its count right after it; on a phone the two wrap together. */}
+              <span className="flex min-w-56 flex-1 items-center gap-3">
+                <span className="flex h-5 flex-1 items-stretch gap-0.5" aria-hidden="true">
+                  {r.runs.map((x, i) => (
+                    <span key={i} className={cn("flex-1 rounded-xs", cell[x])} />
+                  ))}
+                </span>
+                <span className="text-sm tabular-nums">
+                  {ok}/20<span className="sr-only"> runs passed</span>
+                </span>
               </span>
-              <span className="w-14 text-right text-sm tabular-nums">{ok}/20</span>
             </li>
           )
         })}

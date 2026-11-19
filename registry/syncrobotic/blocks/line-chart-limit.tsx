@@ -1,10 +1,10 @@
-// @syncrobotic/line-chart-limit v0.17.1 · update: npx shadcn add @syncrobotic/line-chart-limit --overwrite
+// @syncrobotic/line-chart-limit v0.17.2 · update: npx shadcn add @syncrobotic/line-chart-limit --overwrite
 "use client"
 
 import * as React from "react"
 import { CartesianGrid, Line, LineChart, ReferenceLine, XAxis, YAxis } from "recharts"
 import { TriangleAlert } from "lucide-react"
-import { Card } from "@/registry/syncrobotic/ui/card"
+import { Card, CardDataHeader, CardFigure } from "@/registry/syncrobotic/ui/card"
 import { ChartContainer, ChartTable, ChartTooltip, chartAxis, chartMotion, type ChartConfig } from "@/registry/syncrobotic/ui/chart"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 
@@ -28,32 +28,30 @@ export function LineChartLimit() {
   const overAt = data.filter((d) => d.temp > limit).map((d) => d.t)
   return (
     <Card>
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div className="flex flex-col gap-1">
-          <h3 className="text-sm font-medium">Motor temperature · Patrol dog 7F3A</h3>
-          <p className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold tabular-nums">{latest} °C</span>
-            <span className="text-xs text-muted-foreground tabular-nums">peak {peak} °C at 13:00</span>
-          </p>
-        </div>
-        <div className="flex flex-wrap items-end gap-3">
-          {peak > limit && (
-            <p className={over ? "flex items-center gap-2 text-sm text-warning" : "flex items-center gap-2 text-sm text-muted-foreground"}>
-              <TriangleAlert aria-hidden="true" className="size-4" />
-              {over ? "Over the limit now" : "Was over the limit for 1 h"}
-            </p>
-          )}
+      <CardDataHeader
+        title="Motor temperature · Patrol dog 7F3A"
+        actions={
           <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
             <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
             <SegmentedControlItem value="table">Table</SegmentedControlItem>
           </SegmentedControl>
-        </div>
-      </div>
+        }
+      >
+        <CardFigure value={`${latest} °C`} note={`peak ${peak} °C at 13:00`} />
+        {peak > limit && (
+          <p className={over ? "flex items-center gap-2 text-sm text-warning" : "flex items-center gap-2 text-sm text-muted-foreground"}>
+            <TriangleAlert aria-hidden="true" className="size-4" />
+            {over ? "Over the limit now" : "Was over the limit for 1 h"}
+          </p>
+        )}
+      </CardDataHeader>
       {view === "chart" ? (
         <ChartContainer config={config} label={`Motor temperature of 7F3A every 30 minutes, with the ${limit} °C limit`} className="h-48">
-          <LineChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
+          {/* Right margin: the last tick sits on the plot's edge, and its centred label has to stay inside the card. */}
+          <LineChart data={data} margin={{ top: 8, right: 20, left: 0, bottom: 0 }}>
             <CartesianGrid vertical={false} />
-            <XAxis dataKey="t" {...chartAxis} interval="equidistantPreserveStart" />
+            {/* A label every hour, evenly spaced, from the first reading to the last. */}
+            <XAxis dataKey="t" {...chartAxis} ticks={data.filter((d) => d.t.endsWith(":00")).map((d) => d.t)} interval={0} />
             <YAxis {...chartAxis} domain={[30, 80]} ticks={[30, 40, 50, 60, 70, 80]} interval={0} width={40} />
             <ChartTooltip />
             <ReferenceLine

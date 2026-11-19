@@ -1,4 +1,4 @@
-// @syncrobotic/icon-tile v0.17.1 · update: npx shadcn add @syncrobotic/icon-tile --overwrite
+// @syncrobotic/icon-tile v0.17.2 · update: npx shadcn add @syncrobotic/icon-tile --overwrite
 import * as React from "react"
 import { Slot } from "radix-ui"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -71,7 +71,7 @@ export function IconTile({
 /** A dot pinned to the tile's top-end corner, cut out by the page colour: online, unread, needs attention. */
 export function IconTileDot({
   className,
-  tone = "success",
+  tone = "neutral",
   label,
 }: {
   className?: string

@@ -1,10 +1,10 @@
-// @syncrobotic/status-tracker-rollout v0.9.0 · update: npx shadcn add @syncrobotic/status-tracker-rollout --overwrite
+// @syncrobotic/status-tracker-rollout v0.17.2 · update: npx shadcn add @syncrobotic/status-tracker-rollout --overwrite
 "use client"
 
 import * as React from "react"
 import { Check } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { Card } from "@/registry/syncrobotic/ui/card"
+import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 
 // Sample data: a firmware rollout through its stages. Blue marks the stage that is running now, the only in-progress state.
 const stages = [
@@ -18,10 +18,9 @@ const stages = [
 export function StatusTrackerRollout() {
   return (
     <Card>
-      <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h3 className="text-sm font-medium">Firmware 2.4.1 rollout</h3>
-        <span className="text-xs text-muted-foreground tabular-nums">25 of 56 robots updated · no failures</span>
-      </div>
+      <CardDataHeader title="Firmware 2.4.1 rollout">
+        <p className="text-xs text-muted-foreground tabular-nums">25 of 56 robots updated · no failures</p>
+      </CardDataHeader>
       <ol className="grid gap-3 sm:grid-cols-4">
         {stages.map((s) => (
           <li key={s.name} className="flex flex-col gap-2">

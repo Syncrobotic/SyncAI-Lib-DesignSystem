@@ -3,7 +3,7 @@
 
 import * as React from "react"
 import { Check, Sparkles } from "lucide-react"
-import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Field } from "@/registry/syncrobotic/ui/field"
@@ -27,7 +27,7 @@ export function AgentApproval() {
   const decided = state === "approved" || state === "rejected"
 
   return (
-    <AppShell product="Fleet console" nav={sampleNav} current="#agents" title="Approval" user={{ name: "Mei Lin", initials: "ML" }}>
+    <AppShell product="Fleet console" nav={sampleNav} current="#agents" title="Approval" user={sampleUser}>
       <div className="flex max-w-5xl flex-col gap-6">
         <div className="flex flex-col gap-1">
           <StatusEyebrow status={decided ? "normal" : "warning"}>

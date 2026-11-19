@@ -1,7 +1,6 @@
 "use client"
 
-import { AppShell, sampleNav, sampleSearch } from "@/registry/syncrobotic/blocks/app-shell"
-import { LogoMark } from "./logo"
+import { AppShell, sampleNav, sampleSearch, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 
 /** The bare app shell for the blocks page, in its inset layout: sidebar, top bar, content and footer, an empty page in the middle. */
 export function AppShellDemo() {
@@ -9,12 +8,11 @@ export function AppShellDemo() {
     <AppShell
       layout="inset"
       product="Fleet console"
-      logo={<LogoMark title="" className="size-7" />}
       nav={sampleNav}
       current="#overview"
       title="Overview"
-      environment="local"
-      user={{ name: "Mei Lin", initials: "ML", email: "mei.lin@syncrobotic.ai" }}
+      environment="staging"
+      user={sampleUser}
       search={sampleSearch}
       footer={
         <>

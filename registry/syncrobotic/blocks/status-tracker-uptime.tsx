@@ -3,7 +3,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { Card } from "@/registry/syncrobotic/ui/card"
+import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/registry/syncrobotic/ui/tooltip"
 
 type Day = "up" | "degraded" | "down" | "none"
@@ -74,16 +74,18 @@ export function StatusTrackerUptime() {
   return (
     <TooltipProvider delayDuration={100}>
       <Card>
-        <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <h3 className="text-sm font-medium">Uptime · last 30 days</h3>
-          <span className="flex items-center gap-3 text-xs text-muted-foreground">
-            {(["up", "degraded", "down", "none"] as Day[]).map((d) => (
-              <span key={d} className="flex items-center gap-1">
-                <span aria-hidden="true" className={cn("size-2.5 rounded-xs", cell[d])} /> {word[d]}
-              </span>
-            ))}
-          </span>
-        </div>
+        <CardDataHeader
+          title="Uptime · last 30 days"
+          actions={
+            <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
+              {(["up", "degraded", "down", "none"] as Day[]).map((d) => (
+                <span key={d} className="flex items-center gap-1">
+                  <span aria-hidden="true" className={cn("size-2.5 rounded-xs", cell[d])} /> {word[d]}
+                </span>
+              ))}
+            </span>
+          }
+        />
         <ul className="flex flex-col gap-3">
           {robots.map((r) => {
             const known = r.days.filter((d) => d !== "none")

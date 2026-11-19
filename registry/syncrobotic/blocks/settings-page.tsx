@@ -1,10 +1,10 @@
-// @syncrobotic/settings-page v0.8.0 · update: npx shadcn add @syncrobotic/settings-page --overwrite
+// @syncrobotic/settings-page v0.17.2 · update: npx shadcn add @syncrobotic/settings-page --overwrite
 "use client"
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
-import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -81,7 +81,7 @@ export function SettingsPage() {
   }
 
   return (
-    <AppShell product="Fleet console" nav={sampleNav} current="#settings" title="Settings" user={{ name: "Mei Lin", initials: "ML" }}>
+    <AppShell product="Fleet console" nav={sampleNav} current="#settings" title="Settings" user={sampleUser}>
       <div className="flex max-w-4xl flex-col gap-8">
         <nav aria-label="Settings sections" className="flex gap-1 overflow-x-auto">
           {sections.map((s) => (

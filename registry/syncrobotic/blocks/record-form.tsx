@@ -1,8 +1,8 @@
-// @syncrobotic/record-form v0.8.0 · update: npx shadcn add @syncrobotic/record-form --overwrite
+// @syncrobotic/record-form v0.17.2 · update: npx shadcn add @syncrobotic/record-form --overwrite
 "use client"
 
 import * as React from "react"
-import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
@@ -54,7 +54,7 @@ export function RecordForm({ initial }: { initial?: { name: string; robot: strin
       nav={sampleNav}
       current="#schedule"
       title={initial ? "Edit mission" : "New mission"}
-      user={{ name: "Mei Lin", initials: "ML" }}
+      user={sampleUser}
     >
       <form ref={form} noValidate onSubmit={submit} className="flex max-w-xl flex-col gap-6">
         <Field label="Mission name" error={errors.name} hint="Shown in the schedule and on the island.">

@@ -3,7 +3,7 @@
 
 import * as React from "react"
 import { Plus } from "lucide-react"
-import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { FleetTable } from "@/registry/syncrobotic/blocks/fleet-table"
 import { StatsCards } from "@/registry/syncrobotic/blocks/stats-cards"
 import { AlarmList, type AlarmData } from "@/registry/syncrobotic/ui/alarm"
@@ -25,7 +25,7 @@ export function ConsoleOverview() {
       current="#overview"
       title="Overview"
       environment="staging"
-      user={{ name: "Mei Lin", initials: "ML" }}
+      user={sampleUser}
       actions={
         // On phones the action is its icon (named for screen readers) so the page title is not cut.
         <Button size="sm" className="max-sm:w-(--h-sm) max-sm:px-0">

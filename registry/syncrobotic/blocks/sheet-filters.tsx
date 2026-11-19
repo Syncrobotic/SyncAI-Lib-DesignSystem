@@ -1,4 +1,4 @@
-// @syncrobotic/sheet-filters v0.15.0 · update: npx shadcn add @syncrobotic/sheet-filters --overwrite
+// @syncrobotic/sheet-filters v0.17.2 · update: npx shadcn add @syncrobotic/sheet-filters --overwrite
 "use client"
 
 import * as React from "react"
