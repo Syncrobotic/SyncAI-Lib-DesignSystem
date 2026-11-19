@@ -4,6 +4,9 @@ Components install as source, so a project keeps the version it installed. Re-ru
 
 ## Unreleased
 
+
+### Added
+- **`avatar`, richer** (after ReUI's set, in our rules): four sizes; `shape="square"` for robots, sites and teams beside round people; `AvatarBadge` with a status (the StatusGlyph shapes, so only warning and danger are coloured) or a count; `AvatarGroup` with `max` folding the rest into +N and a `label` that names everyone. The default avatar looks as before.
 ### Changed
 - **`number-field` reads as one value:** the number and its unit sit together, centred between − and + ("20 %"), instead of the number in the middle and the unit pushed against the +, which drifted 140 px apart in a wide field. Angles sit on the number ("-2.5°"). `rollout-plan` writes its units in the fields, not the column headings.
 - **Lists and pickers move with their state:** `autocomplete` and `select` turn their chevron while open, like `accordion` and `navigation-menu`; the highlight in `autocomplete`, `select`, `dropdown-menu` and `command` changes colour (`--motion-fast`) instead of jumping; `autocomplete`'s clear button fades in and out with the query and its selected check fades in. Filtering as you type stays still, so the list does not move under every keystroke.

@@ -1345,12 +1345,13 @@
       "name": "avatar",
       "type": "registry:ui",
       "title": "Avatar",
-      "description": "Image with initials fallback.",
+      "description": "A person (round) or a robot, site or team (square), by picture, initials or icon, in four sizes, with a status or count badge and overlapping groups that fold into +N.",
       "dependencies": [
         "radix-ui"
       ],
       "registryDependencies": [
-        "@syncrobotic/cn"
+        "@syncrobotic/cn",
+        "@syncrobotic/status-glyph"
       ],
       "files": [
         {
@@ -1359,8 +1360,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "`size` (sm 24, md 32, lg 40, xl 48) and `shape` (circle for people, square for robots, sites and teams); AvatarBadge for a status (StatusGlyph shapes) or a count; AvatarGroup with `max` folding the rest into +N and a `label` for screen readers; AvatarGroupCount. The default looks as before."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",

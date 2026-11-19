@@ -454,9 +454,9 @@ export const overviews: Record<string, Overview> = {
     instead: ["Rows of similar items: `list` or `table` inside one card. Cards are never nested.", "Label and value pairs: `description-list`."],
   },
   avatar: {
-    what: "A person's picture, or their initials when there is none.",
-    use: ["The signed-in user, an assignee, an author in a log."],
-    instead: ["A robot: its ID in a square tile, not a round avatar."],
+    what: "A person's picture or initials, round; a robot, site or team, square. With a status or count badge, and groups that fold into +N.",
+    use: ["The signed-in user, an assignee, an author in a log.", "A robot or site next to its name in a list.", "Who is on shift, or which robots share a route, as a group."],
+    instead: ["A robot's live state in a table: `status-glyph` and `inline-status`, not a badge on an avatar.", "A large icon in a coloured tile: `icon-tile`."],
   },
   separator: {
     what: "A hairline between groups of content.",

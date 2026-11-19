@@ -459,7 +459,9 @@ const entries: Record<string, Entry> = {
     examples: { file: "display", prefix: "Avatar" },
     rules: [
       "A person or a robot, by picture or initials. Initials when there is no picture, never an empty circle.",
-      "Pair it with the name: an avatar alone is not an identity.",
+      "People are round; robots, sites and teams are square (shape=\"square\"), so a mixed list tells who from what before the name is read.",
+      "Pair it with the name: an avatar alone is not an identity. A status badge is said in words too, nearby or in the label.",
+      "A group shows a few and folds the rest into +N (max); its label names everyone.",
     ],
   },
   separator: {
