@@ -1,4 +1,4 @@
-// @syncrobotic/questionnaire v0.9.0 · update: npx shadcn add @syncrobotic/questionnaire --overwrite
+// @syncrobotic/questionnaire v0.15.0 · update: npx shadcn add @syncrobotic/questionnaire --overwrite
 "use client"
 
 import * as React from "react"
@@ -282,15 +282,18 @@ export function QuestionField({
     const min = q.min ?? 1
     const max = q.max ?? 5
     const steps = Array.from({ length: max - min + 1 }, (_, i) => min + i)
+    // A long scale (0–10 is 11 buttons, 564 px) folds into rows of six when its column is narrower than one row, so
+    // every number stays a 44 px target and in reach; the container, not the screen, decides.
+    const long = steps.length > 6
     return (
-      <div id={id}>
+      <div id={id} className={cn(long && "@container")}>
         <FieldSet legend={legend} error={error}>
           <RadioGroupPrimitive.Root
             value={value === undefined ? "" : String(value)}
             onValueChange={(v) => onChange(Number(v))}
             orientation="horizontal"
             aria-required={q.required}
-            className="flex gap-2 pt-2"
+            className={cn("gap-2 pt-2", long ? "grid grid-cols-6 @xl:flex" : "flex")}
           >
             {steps.map((n) => (
               <RadioGroupPrimitive.Item
@@ -298,7 +301,7 @@ export function QuestionField({
                 value={String(n)}
                 aria-label={String(n)}
                 className={cn(
-                  "press grid h-(--h-md) min-w-(--h-md) flex-1 place-items-center rounded-sm bg-card text-sm font-medium tabular-nums ring-1 ring-border ring-inset outline-none",
+                  "press grid h-(--h-md) min-w-(--h-md) flex-1 place-items-center rounded-sm bg-card text-sm font-medium tabular-nums ring-1 ring-border ring-inset",
                   "transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
                   "data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:ring-primary",
                 )}

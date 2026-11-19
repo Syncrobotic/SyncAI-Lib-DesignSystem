@@ -83,14 +83,19 @@ export const SegmentedControlDefault: S = {
           <Video aria-hidden="true" /> Camera
         </SegmentedControlItem>
       </SegmentedControl>
-      <SegmentedControl defaultValue="24h" aria-label="Range">
-        <SegmentedControlItem value="1h">1 h</SegmentedControlItem>
-        <SegmentedControlItem value="24h">24 h</SegmentedControlItem>
-        <SegmentedControlItem value="7d">7 days</SegmentedControlItem>
-        <SegmentedControlItem value="30d" disabled>
-          30 days
-        </SegmentedControlItem>
-      </SegmentedControl>
+      <div className="flex flex-col gap-1">
+        <SegmentedControl defaultValue="24h" aria-label="Range" aria-describedby="range-why">
+          <SegmentedControlItem value="1h">1 h</SegmentedControlItem>
+          <SegmentedControlItem value="24h">24 h</SegmentedControlItem>
+          <SegmentedControlItem value="7d">7 days</SegmentedControlItem>
+          <SegmentedControlItem value="30d" disabled>
+            30 days
+          </SegmentedControlItem>
+        </SegmentedControl>
+        <p id="range-why" className="text-xs text-muted-foreground">
+          30 days: this robot has 12 days of history.
+        </p>
+      </div>
     </div>
   ),
 }
@@ -207,11 +212,16 @@ export const ToggleWithIcon: S = {
 
 export const ToggleDisabled: S = {
   render: () => (
-    <div className="flex items-center gap-2">
-      <Toggle disabled>Heat map</Toggle>
-      <Toggle disabled defaultPressed>
-        Lidar
-      </Toggle>
+    <div className="flex flex-col gap-1">
+      <div className="flex items-center gap-2" aria-describedby="layers-why">
+        <Toggle disabled>Heat map</Toggle>
+        <Toggle disabled defaultPressed>
+          Lidar
+        </Toggle>
+      </div>
+      <p id="layers-why" className="text-xs text-muted-foreground">
+        Layers are fixed while a mission replays. Lidar stays on.
+      </p>
     </div>
   ),
 }
@@ -228,13 +238,18 @@ export const SegmentedControlThreeViews: S = {
 
 export const SegmentedControlDisabledItem: S = {
   render: () => (
-    <SegmentedControl defaultValue="day" aria-label="Range">
-      <SegmentedControlItem value="day">Day</SegmentedControlItem>
-      <SegmentedControlItem value="week">Week</SegmentedControlItem>
-      <SegmentedControlItem value="year" disabled>
-        Year
-      </SegmentedControlItem>
-    </SegmentedControl>
+    <div className="flex flex-col gap-1">
+      <SegmentedControl defaultValue="day" aria-label="Range" aria-describedby="year-why">
+        <SegmentedControlItem value="day">Day</SegmentedControlItem>
+        <SegmentedControlItem value="week">Week</SegmentedControlItem>
+        <SegmentedControlItem value="year" disabled>
+          Year
+        </SegmentedControlItem>
+      </SegmentedControl>
+      <p id="year-why" className="text-xs text-muted-foreground">
+        Year: reports keep 90 days.
+      </p>
+    </div>
   ),
 }
 

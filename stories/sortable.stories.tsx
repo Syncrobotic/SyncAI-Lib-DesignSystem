@@ -1,6 +1,6 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
-import { MapPin, X } from "lucide-react"
+import { Lock, MapPin, X } from "lucide-react"
 import { Sortable, SortableHandle, SortableItem } from "@/registry/syncrobotic/ui/sortable"
 import { Switch } from "@/registry/syncrobotic/ui/switch"
 
@@ -76,7 +76,6 @@ export const SortableWithOverlay: S = {
 export const SortablePriorities: S = {
   render: function P() {
     const [rules, setRules] = React.useState([
-      { id: "stop", label: "Emergency stop", on: true, locked: true },
       { id: "people", label: "Give way to people", on: true },
       { id: "battery", label: "Return when battery is low", on: true },
       { id: "doors", label: "Wait at closed doors", on: false },
@@ -84,13 +83,24 @@ export const SortablePriorities: S = {
     return (
       <div className="flex flex-col gap-2">
         <span className="text-sm font-medium">When rules conflict, the higher one wins</span>
+        {/* The stop is not a rule you can move or switch off: it sits above the list, with no handle, and says why. */}
+        <div className={row}>
+          <span className="flex size-(--h-sm) shrink-0 items-center justify-center text-muted-foreground">
+            <Lock aria-hidden="true" className="size-4" />
+          </span>
+          <span className="flex flex-1 flex-col">
+            <span className="text-sm">Emergency stop</span>
+            <span className="text-xs text-muted-foreground">Always first, always on</span>
+          </span>
+          <Switch checked disabled aria-label="Emergency stop, always on" />
+        </div>
         <Sortable value={rules} onValueChange={setRules} getId={(r) => r.id} getLabel={(r) => r.label}>
           {rules.map((r) => (
             <SortableItem key={r.id} id={r.id}>
               <label className={row}>
                 <SortableHandle label={`Move ${r.label}`} />
                 <span className="flex-1 text-sm">{r.label}</span>
-                <Switch checked={r.on} disabled={r.locked} onCheckedChange={(on) => setRules((rs) => rs.map((x) => (x.id === r.id ? { ...x, on } : x)))} />
+                <Switch checked={r.on} onCheckedChange={(on) => setRules((rs) => rs.map((x) => (x.id === r.id ? { ...x, on } : x)))} />
               </label>
             </SortableItem>
           ))}

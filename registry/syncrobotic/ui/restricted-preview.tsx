@@ -1,4 +1,4 @@
-// @syncrobotic/restricted-preview v0.12.0 · update: npx shadcn add @syncrobotic/restricted-preview --overwrite
+// @syncrobotic/restricted-preview v0.15.0 · update: npx shadcn add @syncrobotic/restricted-preview --overwrite
 "use client"
 
 import * as React from "react"
@@ -32,7 +32,14 @@ export function RestrictedPreview({
   className?: string
 }) {
   const [shown, setShown] = React.useState(false)
-  if (!restricted || shown) return <>{children}</>
+  if (!restricted) return <>{children}</>
+  // Revealed: the preview fades in where the placeholder was (same size), instead of replacing it in one frame.
+  if (shown)
+    return (
+      <div data-slot="restricted-preview" data-revealed="" className={cn("animate-fade-in", className)}>
+        {children}
+      </div>
+    )
   return (
     <button
       type="button"

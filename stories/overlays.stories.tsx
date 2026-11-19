@@ -3,7 +3,6 @@ import type { Meta, StoryObj } from "@storybook/react"
 import {
   Bell,
   Bot,
-  Check,
   History,
   CirclePlus,
   Menu,
@@ -37,6 +36,7 @@ import { Button } from "@/registry/syncrobotic/ui/button"
 import { Spinner } from "@/registry/syncrobotic/ui/spinner"
 import {
   Command,
+  CommandCheck,
   CommandDialog,
   CommandEmpty,
   CommandGroup,
@@ -85,7 +85,7 @@ const RenameDialog = ({ open }: { open?: boolean }) => (
         <Input defaultValue="Patrol dog 7F3A" />
       </Field>
       <DialogFooter>
-        <Button>Save</Button>
+        <Button>Rename</Button>
       </DialogFooter>
     </DialogContent>
   </Dialog>
@@ -284,7 +284,7 @@ export const PopoverWithForm: S = {
         <Field label="Show robots below" hint="Battery, 0 to 100 %">
           <NumberField defaultValue={30} min={0} max={100} step={5} unit="%" />
         </Field>
-        <Button size="sm">Apply</Button>
+        <Button size="sm">Show robots</Button>
       </PopoverContent>
     </Popover>
   ),
@@ -550,7 +550,7 @@ export const CommandMultiSelect: S = {
           <CommandGroup heading={`Sites · ${picked.length} selected`}>
             {["North gate", "Hall B", "Warehouse 3", "Parking lot"].map((site) => (
               <CommandItem key={site} value={site} onSelect={() => toggle(site)} data-checked={picked.includes(site)}>
-                <Check aria-hidden="true" className={picked.includes(site) ? "opacity-100" : "opacity-0"} />
+                <CommandCheck checked={picked.includes(site)} />
                 {site}
               </CommandItem>
             ))}

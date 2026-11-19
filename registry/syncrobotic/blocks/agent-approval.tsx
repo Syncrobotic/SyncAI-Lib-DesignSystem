@@ -1,4 +1,4 @@
-// @syncrobotic/agent-approval v0.13.0 · update: npx shadcn add @syncrobotic/agent-approval --overwrite
+// @syncrobotic/agent-approval v0.15.0 · update: npx shadcn add @syncrobotic/agent-approval --overwrite
 "use client"
 
 import * as React from "react"
@@ -49,16 +49,25 @@ export function AgentApproval() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Robot</TableHead>
-                  <TableHead>Now</TableHead>
-                  <TableHead>After</TableHead>
+                  <TableHead className="hidden sm:table-cell">Now</TableHead>
+                  <TableHead className="hidden sm:table-cell">After</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {changes.map((c) => (
                   <TableRow key={c.robot}>
-                    <TableCell className="font-medium">{c.robot}</TableCell>
-                    <TableCell className="text-muted-foreground">{c.before}</TableCell>
-                    <TableCell>{c.after}</TableCell>
+                    <TableCell className="py-3 align-top whitespace-normal sm:align-middle">
+                      <span className="font-medium">{c.robot}</span>
+                      {/* On a phone the before and after stack under the robot, so the approver sees both without scrolling. */}
+                      <dl className="mt-2 flex flex-col gap-1 sm:hidden">
+                        <dt className="text-xs text-muted-foreground">Now</dt>
+                        <dd className="text-muted-foreground">{c.before}</dd>
+                        <dt className="mt-1 text-xs text-muted-foreground">After</dt>
+                        <dd>{c.after}</dd>
+                      </dl>
+                    </TableCell>
+                    <TableCell className="hidden whitespace-normal text-muted-foreground sm:table-cell">{c.before}</TableCell>
+                    <TableCell className="hidden whitespace-normal sm:table-cell">{c.after}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

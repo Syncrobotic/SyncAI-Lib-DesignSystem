@@ -1,5 +1,6 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
+import { cn } from "@/lib/utils"
 import { LoadMore } from "@/registry/syncrobotic/ui/load-more"
 import { RestrictedPreview } from "@/registry/syncrobotic/ui/restricted-preview"
 import { ShareBar } from "@/registry/syncrobotic/ui/share-bar"
@@ -68,8 +69,8 @@ function Gallery() {
   return (
     <div className="flex max-w-lg flex-col gap-4">
       <ul className="grid grid-cols-3 gap-2 text-sm">
-        {all.slice(0, shown).map((r) => (
-          <li key={r} className="flex h-(--h-md) items-center rounded-sm bg-card px-3 ring-1 ring-border">
+        {all.slice(0, shown).map((r, i) => (
+          <li key={r} className={cn("flex h-(--h-md) items-center rounded-sm bg-card px-3 ring-1 ring-border", i >= 12 && "animate-appear")}>
             {r}
           </li>
         ))}

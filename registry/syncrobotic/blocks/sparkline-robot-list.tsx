@@ -1,4 +1,4 @@
-// @syncrobotic/sparkline-robot-list v0.13.0 · update: npx shadcn add @syncrobotic/sparkline-robot-list --overwrite
+// @syncrobotic/sparkline-robot-list v0.15.0 · update: npx shadcn add @syncrobotic/sparkline-robot-list --overwrite
 "use client"
 
 import * as React from "react"
@@ -50,8 +50,8 @@ export function SparklineRobotList() {
                 </span>
               </span>
               <Sparkline values={r.battery} />
-              <span className={cn("w-12 text-right text-sm tabular-nums", low ? "font-medium text-danger" : "text-foreground")}>
-                {now} %<span className="sr-only">{low ? ", critically low" : ""}</span>
+              <span className={cn("w-12 text-right text-sm tabular-nums", low ? "font-medium text-warning" : "text-foreground")}>
+                {now} %<span className="sr-only">{low ? ", low" : ""}</span>
               </span>
             </li>
           )

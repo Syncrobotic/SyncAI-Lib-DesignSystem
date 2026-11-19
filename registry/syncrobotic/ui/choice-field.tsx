@@ -1,4 +1,4 @@
-// @syncrobotic/choice-field v0.10.0 · update: npx shadcn add @syncrobotic/choice-field --overwrite
+// @syncrobotic/choice-field v0.15.0 · update: npx shadcn add @syncrobotic/choice-field --overwrite
 "use client"
 
 import * as React from "react"
@@ -32,7 +32,9 @@ export function FieldSet({
       data-slot="fieldset"
       aria-describedby={note ? `${id}-note` : undefined}
       aria-invalid={error ? true : undefined}
-      className={cn("flex flex-col gap-1", className)}
+      // A fieldset is as wide as its widest content by default (min-inline-size: min-content); min-w-0 lets it take its
+      // column's width, so a long legend wraps instead of being cut off.
+      className={cn("flex min-w-0 flex-col gap-1", className)}
     >
       <legend className="pb-1 text-sm font-medium">{legend}</legend>
       <div className="flex flex-col">{children}</div>

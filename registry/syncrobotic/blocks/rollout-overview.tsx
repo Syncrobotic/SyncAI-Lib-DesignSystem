@@ -1,4 +1,4 @@
-// @syncrobotic/rollout-overview v0.13.0 · update: npx shadcn add @syncrobotic/rollout-overview --overwrite
+// @syncrobotic/rollout-overview v0.15.0 · update: npx shadcn add @syncrobotic/rollout-overview --overwrite
 "use client"
 
 import * as React from "react"
@@ -28,6 +28,16 @@ const gates = [
   { name: "Mission success", rule: "at least 95 %", value: "98 %", ok: true },
 ]
 
+function RobotState({ state, progress }: { state: RobotRow["state"]; progress?: number }) {
+  return (
+    <span className={cn("flex items-center gap-2", state === "failed" && "font-medium text-danger")}>
+      <StatusGlyph status={tone[state]} />
+      {word[state]}
+      {state === "updating" && progress !== undefined && <span className="text-xs text-muted-foreground tabular-nums">{progress} %</span>}
+    </span>
+  )
+}
+
 /**
  * A firmware rollout while it runs: the stage it is in, the gates that pause it on their own, and the robots in this
  * stage, failures first. Updating is the only blue. A failure says what happened and that the robot still works. Pause and
@@ -45,13 +55,14 @@ export function RolloutOverview() {
       user={{ name: "Mei Lin", initials: "ML" }}
       actions={
         <>
-          <Button size="sm" variant="ghost">
+          {/* Icon-only on a phone, so the page title keeps its room; the words come back from 640 px. */}
+          <Button size="sm" variant="ghost" className="max-sm:w-(--h-sm) max-sm:px-0">
             <Undo2 aria-hidden="true" />
-            Roll back
+            <span className="max-sm:sr-only">Roll back</span>
           </Button>
-          <Button size="sm" variant="secondary" onClick={() => setPaused((p) => !p)}>
+          <Button size="sm" variant="secondary" className="max-sm:w-(--h-sm) max-sm:px-0" onClick={() => setPaused((p) => !p)}>
             {paused ? <Play aria-hidden="true" /> : <Pause aria-hidden="true" />}
-            {paused ? "Resume rollout" : "Pause rollout"}
+            <span className="max-sm:sr-only">{paused ? "Resume rollout" : "Pause rollout"}</span>
           </Button>
         </>
       }
@@ -96,9 +107,9 @@ export function RolloutOverview() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Robot</TableHead>
-                  <TableHead>State</TableHead>
-                  <TableHead className="w-40">Progress</TableHead>
-                  <TableHead>Detail</TableHead>
+                  <TableHead className="hidden sm:table-cell">State</TableHead>
+                  <TableHead className="hidden w-40 sm:table-cell">Progress</TableHead>
+                  <TableHead className="hidden md:table-cell">Detail</TableHead>
                   <TableHead>
                     <span className="sr-only">Actions</span>
                   </TableHead>
@@ -109,14 +120,18 @@ export function RolloutOverview() {
                   .sort((a, b) => order[a.state] - order[b.state])
                   .map((r) => (
                     <TableRow key={r.robot}>
-                      <TableCell className="font-medium">{r.robot}</TableCell>
-                      <TableCell>
-                        <span className={cn("flex items-center gap-2", r.state === "failed" && "font-medium text-danger")}>
-                          <StatusGlyph status={tone[r.state]} />
-                          {word[r.state]}
+                      <TableCell className="py-2 max-md:whitespace-normal">
+                        <span className="font-medium">{r.robot}</span>
+                        {/* On a phone the state, progress and detail stack under the robot instead of scrolling off the side. */}
+                        <span className="mt-1 flex flex-col gap-1 sm:hidden">
+                          <RobotState state={r.state} progress={r.progress} />
                         </span>
+                        <span className="block text-xs text-muted-foreground md:hidden">{r.note}</span>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="hidden sm:table-cell">
+                        <RobotState state={r.state} />
+                      </TableCell>
+                      <TableCell className="hidden sm:table-cell">
                         {r.state === "updating" ? (
                           <span className="flex items-center gap-2">
                             <Progress value={r.progress} aria-label={`${r.robot} update progress`} />
@@ -126,7 +141,7 @@ export function RolloutOverview() {
                           <span className="text-muted-foreground">—</span>
                         )}
                       </TableCell>
-                      <TableCell className="text-muted-foreground">{r.note}</TableCell>
+                      <TableCell className="hidden text-muted-foreground md:table-cell">{r.note}</TableCell>
                       <TableCell className="text-right">
                         {r.state === "failed" && (
                           <Button size="sm" variant="secondary" aria-label={`Retry ${r.robot}`}>

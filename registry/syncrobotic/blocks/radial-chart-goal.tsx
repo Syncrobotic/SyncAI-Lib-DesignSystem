@@ -1,4 +1,4 @@
-// @syncrobotic/radial-chart-goal v0.9.0 · update: npx shadcn add @syncrobotic/radial-chart-goal --overwrite
+// @syncrobotic/radial-chart-goal v0.15.0 · update: npx shadcn add @syncrobotic/radial-chart-goal --overwrite
 "use client"
 
 import * as React from "react"
@@ -64,7 +64,7 @@ export function RadialChartGoal() {
             </span>
           </Ring>
         </span>
-        <dl className="flex min-w-48 flex-1 flex-col divide-y divide-border text-sm">
+        <dl className="flex max-w-sm min-w-48 flex-1 flex-col divide-y divide-border text-sm">
           {parts.map((p) => (
             <div key={p.label} className="flex justify-between gap-4 py-2">
               <dt className="text-muted-foreground">{p.label}</dt>

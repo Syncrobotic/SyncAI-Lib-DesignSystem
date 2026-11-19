@@ -1,4 +1,4 @@
-// @syncrobotic/trace v0.13.0 · update: npx shadcn add @syncrobotic/trace --overwrite
+// @syncrobotic/trace v0.15.0 · update: npx shadcn add @syncrobotic/trace --overwrite
 "use client"
 
 import * as React from "react"
@@ -183,7 +183,7 @@ export function TraceItem({
           <CollapsiblePrimitive.Trigger
             className={cn(
               row,
-              "press rounded-sm outline-none hover:bg-muted/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+              "press rounded-sm hover:bg-muted/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
             )}
           >
             {head}
@@ -219,7 +219,7 @@ export function TraceCode({ className, children, tone }: { className?: string; c
     <pre
       tabIndex={0}
       className={cn(
-        "max-h-48 overflow-auto rounded-sm bg-muted p-3 font-mono text-xs leading-5 outline-none focus-visible:outline-2 focus-visible:outline-ring",
+        "max-h-48 overflow-auto rounded-sm bg-muted p-3 font-mono text-xs leading-5 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring",
         tone === "danger" && "text-danger",
         className,
       )}

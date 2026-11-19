@@ -1,4 +1,4 @@
-// @syncrobotic/area-chart-fleet-states v0.9.0 · update: npx shadcn add @syncrobotic/area-chart-fleet-states --overwrite
+// @syncrobotic/area-chart-fleet-states v0.15.0 · update: npx shadcn add @syncrobotic/area-chart-fleet-states --overwrite
 "use client"
 
 import * as React from "react"
@@ -32,7 +32,7 @@ export function AreaChartFleetStates() {
       <ChartContainer config={config} label="Number of robots patrolling, charging and idle by hour today">
         <AreaChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
           <CartesianGrid vertical={false} />
-          <XAxis dataKey="t" {...chartAxis} />
+          <XAxis dataKey="t" {...chartAxis} interval="equidistantPreserveStart" />
           <YAxis {...chartAxis} allowDecimals={false} domain={[0, 6]} width={40} />
           <ChartTooltip />
           <ChartLegend />

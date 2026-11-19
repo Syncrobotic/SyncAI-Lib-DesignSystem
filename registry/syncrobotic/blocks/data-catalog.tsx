@@ -1,4 +1,4 @@
-// @syncrobotic/data-catalog v0.10.0 · update: npx shadcn add @syncrobotic/data-catalog --overwrite
+// @syncrobotic/data-catalog v0.15.0 · update: npx shadcn add @syncrobotic/data-catalog --overwrite
 "use client"
 
 import * as React from "react"
@@ -198,7 +198,7 @@ export function DataCatalog({ datasets = sampleDatasets }: { datasets?: Dataset[
               <Input
                 type="search"
                 aria-label="Search datasets"
-                placeholder="Search name, path or owner"
+                placeholder="Search datasets"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
               />

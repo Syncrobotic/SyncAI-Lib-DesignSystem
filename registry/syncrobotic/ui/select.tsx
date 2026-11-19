@@ -1,4 +1,4 @@
-// @syncrobotic/select v0.10.0 · update: npx shadcn add @syncrobotic/select --overwrite
+// @syncrobotic/select v0.15.0 · update: npx shadcn add @syncrobotic/select --overwrite
 "use client"
 
 import * as React from "react"
@@ -25,13 +25,15 @@ export function SelectTrigger({ className, children, ...props }: React.Component
         "transition-shadow duration-(--motion-fast) ease-(--ease-standard)",
         "data-[placeholder]:text-muted-foreground disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground aria-invalid:ring-2 aria-invalid:ring-danger",
         "[&>span]:truncate",
+        // The chevron turns while the list is open, like every disclosure in the kit.
+        "[&[data-state=open]>svg]:rotate-180",
         className,
       )}
       {...props}
     >
       {children}
       <SelectPrimitive.Icon asChild>
-        <ChevronDown aria-hidden="true" className="size-4 shrink-0 text-muted-foreground" />
+        <ChevronDown aria-hidden="true" className="size-4 shrink-0 text-muted-foreground transition-transform duration-(--motion-base) ease-(--ease-standard)" />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   )
@@ -67,7 +69,7 @@ export function SelectItem({ className, children, ...props }: React.ComponentPro
       data-slot="select-item"
       className={cn(
         "relative flex h-(--h-md) w-full cursor-default select-none items-center gap-2 rounded-sm pr-8 pl-3 text-sm outline-none",
-        "focus:bg-accent data-[disabled]:pointer-events-none data-[disabled]:text-disabled",
+        "transition-colors duration-(--motion-fast) ease-(--ease-standard) focus:bg-accent data-[disabled]:pointer-events-none data-[disabled]:text-disabled",
         className,
       )}
       {...props}

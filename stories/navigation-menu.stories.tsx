@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import { BookOpen, Bot, Cpu, Joystick, Map, ShieldCheck, Warehouse } from "lucide-react"
+import { BookOpen, Bot, Cpu, Joystick, Map, Menu, ShieldCheck, Warehouse } from "lucide-react"
 import { ChargingDock } from "@/registry/syncrobotic/ui/robot-icons"
+import { Button } from "@/registry/syncrobotic/ui/button"
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/registry/syncrobotic/ui/sheet"
 import {
   NavigationMenu,
   NavigationMenuCard,
@@ -62,6 +64,48 @@ function Products({ defaultValue }: { defaultValue?: string }) {
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
+  )
+}
+
+// The narrow fallback for the site header: one button, and every link of the menu in a navigation drawer.
+const siteLinks = [
+  ["Robots", ["Patrol dog", "Courier", "Inspector", "Dock"]],
+  ["Solutions", ["Warehouses", "Campuses"]],
+] as const
+function SiteMenu() {
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="ghost" size="icon-sm" aria-label="Menu" className="@xl:hidden">
+          <Menu />
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="left">
+        <SheetHeader>
+          <SheetTitle>SYNCROBOTIC</SheetTitle>
+          <SheetDescription className="sr-only">Site navigation</SheetDescription>
+        </SheetHeader>
+        <nav aria-label="Site" className="flex flex-col gap-4">
+          {siteLinks.map(([group, links]) => (
+            <div key={group} className="flex flex-col gap-1">
+              <span className="text-xs font-medium text-muted-foreground">{group}</span>
+              {links.map((l) => (
+                <SheetClose asChild key={l}>
+                  <a href={`#${l.toLowerCase().replace(/\s+/g, "-")}`} className="press flex h-(--h-md) items-center rounded-sm px-3 text-sm hover:bg-accent">
+                    {l}
+                  </a>
+                </SheetClose>
+              ))}
+            </div>
+          ))}
+          <SheetClose asChild>
+            <a href="#docs" className="press flex h-(--h-md) items-center rounded-sm px-3 text-sm font-medium hover:bg-accent">
+              Docs
+            </a>
+          </SheetClose>
+        </nav>
+      </SheetContent>
+    </Sheet>
   )
 }
 
@@ -183,16 +227,23 @@ export const NavigationMenuFeatured: S = {
 /** A site header: logo on the left, the menu, and the one action on the right. */
 export const NavigationMenuSiteHeader: S = {
   render: () => (
-    <div className="flex min-h-80 flex-col">
+    // The header is a container: where the menu does not fit (under 36rem), a Menu button opens a sheet with the same
+    // links instead, and the call to action stays in view.
+    <div className="@container flex min-h-80 flex-col">
       <header className="flex items-center justify-between gap-4 border-b border-border px-4 py-2">
         <span className="text-sm font-bold">SYNCROBOTIC</span>
-        <Products />
-        <a
-          href="#contact"
-          className="press flex h-(--h-sm) shrink-0 items-center rounded-sm bg-primary px-3 text-sm font-medium whitespace-nowrap text-primary-foreground"
-        >
-          Talk to us
-        </a>
+        <div className="hidden @xl:flex">
+          <Products />
+        </div>
+        <div className="flex items-center gap-2">
+          <a
+            href="#contact"
+            className="press flex h-(--h-sm) shrink-0 items-center rounded-sm bg-primary px-3 text-sm font-medium whitespace-nowrap text-primary-foreground"
+          >
+            Talk to us
+          </a>
+          <SiteMenu />
+        </div>
       </header>
     </div>
   ),

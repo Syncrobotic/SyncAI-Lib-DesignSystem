@@ -1,9 +1,10 @@
-// @syncrobotic/autocomplete v0.10.0 · update: npx shadcn add @syncrobotic/autocomplete --overwrite
+// @syncrobotic/autocomplete v0.15.0 · update: npx shadcn add @syncrobotic/autocomplete --overwrite
 "use client"
 
 import * as React from "react"
 import { Check, ChevronDown, X } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useDebouncedCallback } from "@/registry/syncrobotic/hooks/use-debounce"
 import { useField } from "@/registry/syncrobotic/ui/field"
 import { Popover, PopoverAnchor, PopoverContent } from "@/registry/syncrobotic/ui/popover"
 import { Spinner } from "@/registry/syncrobotic/ui/spinner"
@@ -13,13 +14,15 @@ export type AutocompleteOption = { value: string; label: string; description?: s
 /**
  * A text field that suggests as you type (the WAI-ARIA combobox pattern): type to filter, arrows to move, Enter to pick,
  * Escape to close. For picking one of many known values (a robot, a site, a user) when a Select would be too long.
- * Filtering is built in; pass `onQueryChange` and `filter={false}` to search a server instead, with `loading`.
+ * Filtering is built in; pass `onQueryChange` and `filter={false}` to search a server instead, with `loading`, and
+ * `debounce` (ms) so the server hears the query when the typing pauses, not on every key.
  */
 export function Autocomplete({
   options,
   value,
   onValueChange,
   onQueryChange,
+  debounce = 0,
   filter = true,
   loading,
   placeholder = "Search",
@@ -36,6 +39,8 @@ export function Autocomplete({
   value?: string
   onValueChange?: (value: string | undefined) => void
   onQueryChange?: (query: string) => void
+  /** Call `onQueryChange` only once the typing has paused this long (ms). The text box itself never waits; clearing never waits. */
+  debounce?: number
   /** Filter options by the typed text. Turn off when the server filters. */
   filter?: boolean
   loading?: boolean
@@ -57,6 +62,7 @@ export function Autocomplete({
   const [open, setOpen] = React.useState(false)
   const [active, setActive] = React.useState(0)
   const inputRef = React.useRef<HTMLInputElement>(null)
+  const sendQuery = useDebouncedCallback((q: string) => onQueryChange?.(q), debounce)
 
   React.useEffect(() => setQuery(selected?.label ?? ""), [selected?.label])
 
@@ -118,24 +124,33 @@ export function Autocomplete({
               setQuery(e.target.value)
               setActive(0)
               setOpen(true)
-              onQueryChange?.(e.target.value)
+              if (debounce > 0) sendQuery(e.target.value)
+              else onQueryChange?.(e.target.value)
             }}
             onKeyDown={onKey}
             onBlur={() => !open && setQuery(selected?.label ?? "")}
             className="h-full min-w-0 flex-1 bg-transparent px-3 text-base outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed"
           />
           {loading && <Spinner delay={0} className="mr-2 size-4" label="Searching" />}
-          {clearable && query && !disabled && (
+          {clearable && !disabled && (
             <button
               type="button"
+              className={cn(
+                "press flex size-(--h-sm) shrink-0 items-center justify-center rounded-xs text-muted-foreground transition-[opacity,visibility,background-color,color,scale] duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent hover:text-foreground",
+                query ? "visible opacity-100" : "invisible opacity-0",
+              )}
               aria-label="Clear"
+              // Always rendered, so it can fade in and out with the query instead of popping; hidden, it is out of the
+              // tab order and the accessibility tree.
+              aria-hidden={!query || undefined}
+              tabIndex={query ? undefined : -1}
               onClick={() => {
                 setQuery("")
                 onValueChange?.(undefined)
+                sendQuery.cancel()
                 onQueryChange?.("")
                 inputRef.current?.focus()
               }}
-              className="press flex size-(--h-sm) shrink-0 items-center justify-center rounded-xs text-muted-foreground hover:bg-accent hover:text-foreground"
             >
               <X aria-hidden="true" className="size-4" />
             </button>
@@ -152,7 +167,10 @@ export function Autocomplete({
               }}
               className="press mr-1 flex size-(--h-sm) shrink-0 items-center justify-center rounded-xs text-muted-foreground hover:bg-accent hover:text-foreground"
             >
-              <ChevronDown aria-hidden="true" className="size-4" />
+              <ChevronDown
+                aria-hidden="true"
+                className={cn("size-4 transition-transform duration-(--motion-base) ease-(--ease-standard)", open && !disabled && "rotate-180")}
+              />
             </button>
           )}
         </div>
@@ -183,7 +201,7 @@ export function Autocomplete({
                       onClick={() => !o.disabled && pick(o)}
                       onMouseEnter={() => !o.disabled && setActive(enabled.indexOf(o))}
                       className={cn(
-                        "flex min-h-(--h-sm) cursor-default items-center gap-2 rounded-sm px-3 py-1 text-sm",
+                        "flex min-h-(--h-sm) cursor-default items-center gap-2 rounded-sm px-3 py-1 text-sm transition-colors duration-(--motion-fast) ease-(--ease-standard)",
                         isActive && "bg-accent",
                         o.disabled && "text-disabled",
                       )}
@@ -192,7 +210,7 @@ export function Autocomplete({
                         <span className="truncate">{o.label}</span>
                         {o.description && <span className="truncate text-xs text-muted-foreground">{o.description}</span>}
                       </span>
-                      {o.value === value && <Check aria-hidden="true" className="size-4 shrink-0" />}
+                      {o.value === value && <Check aria-hidden="true" className="size-4 shrink-0 animate-fade-in" />}
                     </div>
                   )
                 })}

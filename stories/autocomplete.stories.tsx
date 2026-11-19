@@ -48,7 +48,20 @@ export const AutocompleteServerSearch: S = {
     const [v, setV] = React.useState<string | undefined>()
     const [found, setFound] = React.useState<AutocompleteOption[]>([])
     const [loading, setLoading] = React.useState(false)
-    const timer = React.useRef<number | undefined>(undefined)
+    // Answers can arrive out of order; only the latest query's answer is shown.
+    const latest = React.useRef("")
+    const search = async (q: string) => {
+      latest.current = q
+      if (q.length < 2) {
+        setLoading(false)
+        return setFound([])
+      }
+      setLoading(true)
+      const answer = await fakeSearch(q)
+      if (latest.current !== q) return
+      setFound(answer)
+      setLoading(false)
+    }
     return (
       <Autocomplete
         options={found}
@@ -56,26 +69,29 @@ export const AutocompleteServerSearch: S = {
         onValueChange={setV}
         filter={false}
         loading={loading}
+        debounce={300}
         emptyText="Type at least 2 letters"
         placeholder="Search operators"
         aria-label="Operator"
-        onQueryChange={(q) => {
-          window.clearTimeout(timer.current)
-          if (q.length < 2) return setFound([])
-          setLoading(true)
-          timer.current = window.setTimeout(() => {
-            setFound(
-              ["Mei Lin", "Arjun Rao", "Sara Kim", "Lin Wei", "Marco Silva"]
-                .filter((n) => n.toLowerCase().includes(q.toLowerCase()))
-                .map((n) => ({ value: n, label: n })),
-            )
-            setLoading(false)
-          }, 400)
-        }}
+        onQueryChange={search}
       />
     )
   },
 }
+
+/** Stands in for a server: answers after 400 ms. */
+const fakeSearch = (q: string) =>
+  new Promise<AutocompleteOption[]>((resolve) =>
+    window.setTimeout(
+      () =>
+        resolve(
+          ["Mei Lin", "Arjun Rao", "Sara Kim", "Lin Wei", "Marco Silva"]
+            .filter((n) => n.toLowerCase().includes(q.toLowerCase()))
+            .map((n) => ({ value: n, label: n })),
+        ),
+      400,
+    ),
+  )
 
 export const AutocompleteSmall: S = {
   render: function A() {
@@ -85,7 +101,14 @@ export const AutocompleteSmall: S = {
 }
 
 export const AutocompleteDisabled: S = {
-  render: () => <Autocomplete options={sites} value="Hall B" disabled aria-label="Site" />,
+  render: () => (
+    <div className="flex flex-col gap-1">
+      <Autocomplete options={sites} value="Hall B" disabled aria-label="Site" aria-describedby="site-why" />
+      <p id="site-why" className="text-xs text-muted-foreground">
+        The site is set by the robot&apos;s map and cannot change during a mission.
+      </p>
+    </div>
+  ),
 }
 
 export const AutocompleteInForm: S = {

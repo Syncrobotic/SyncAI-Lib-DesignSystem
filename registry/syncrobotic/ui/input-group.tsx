@@ -1,15 +1,24 @@
-// @syncrobotic/input-group v0.10.0 · update: npx shadcn add @syncrobotic/input-group --overwrite
+// @syncrobotic/input-group v0.15.0 · update: npx shadcn add @syncrobotic/input-group --overwrite
 "use client"
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
 /**
- * An input with things inside its edge: an icon, a unit, a clear or reveal button.
+ * An input with things inside its edge: an icon, a unit, a clear or reveal button. A unit (InputGroupUnit) follows the
+ * value it belongs to, "120 m", not the far edge of the field.
  * The group draws the field (edge, focus ring, error); the Input inside it draws nothing, so addons of any width fit
  * without guessing padding. Put the Input (or a Field's child) inside, with addons before or after it.
  */
-export function InputGroup({ className, children, id, "aria-describedby": describedBy, "aria-invalid": invalid, ...props }: React.ComponentProps<"div">) {
+export function InputGroup({
+  className,
+  children,
+  id,
+  "aria-describedby": describedBy,
+  "aria-invalid": invalid,
+  onMouseDown,
+  ...props
+}: React.ComponentProps<"div">) {
   // A Field around the group hands it the id, description and error state; they belong to the text box inside.
   let given = false
   const content = React.Children.map(children, (child) => {
@@ -18,6 +27,7 @@ export function InputGroup({ className, children, id, "aria-describedby": descri
       !React.isValidElement<Record<string, unknown>>(child) ||
       typeof child.type === "string" ||
       child.type === InputGroupAddon ||
+      child.type === InputGroupUnit ||
       child.type === InputGroupButton
     )
       return child
@@ -43,8 +53,20 @@ export function InputGroup({ className, children, id, "aria-describedby": descri
         // Text sits 8 px from an addon, 12 px from a bare edge.
         "[&_[data-slot=input-group-addon]+[data-slot=input]]:pl-2 [&_[data-slot=input]:has(+[data-slot=input-group-addon])]:pr-2",
         "[&_[data-slot=input]]:h-full [&_[data-slot=input]]:rounded-none [&_[data-slot=input]]:bg-transparent [&_[data-slot=input]]:ring-0 [&_[data-slot=input]]:focus-visible:outline-none",
+        // A value with a unit is as wide as its text, so the unit sits right after it; the rest of the field still focuses it.
+        "[&_[data-slot=input]:has(+[data-slot=input-group-unit])]:w-auto [&_[data-slot=input]:has(+[data-slot=input-group-unit])]:min-w-4 [&_[data-slot=input]:has(+[data-slot=input-group-unit])]:flex-none [&_[data-slot=input]:has(+[data-slot=input-group-unit])]:pr-0 [&_[data-slot=input]:has(+[data-slot=input-group-unit])]:[field-sizing:content]",
+        "cursor-text",
         className,
       )}
+      onMouseDown={(e) => {
+        onMouseDown?.(e)
+        // A press on the field's empty space (not on a button or the text) puts the caret in the text box.
+        if (e.defaultPrevented || (e.target !== e.currentTarget && !(e.target as HTMLElement).matches("[data-slot=input-group-unit]"))) return
+        const input = e.currentTarget.querySelector<HTMLInputElement>("input:not(:disabled)")
+        if (!input) return
+        e.preventDefault()
+        input.focus()
+      }}
       {...props}
     >
       {content}
@@ -61,6 +83,11 @@ export function InputGroupAddon({ className, ...props }: React.ComponentProps<"s
       {...props}
     />
   )
+}
+
+/** The unit of the value before it ("m", "%"), written right after the value and read with it. */
+export function InputGroupUnit({ className, ...props }: React.ComponentProps<"span">) {
+  return <span data-slot="input-group-unit" className={cn("flex shrink-0 items-center pr-3 pl-1 text-sm text-muted-foreground", className)} {...props} />
 }
 
 /** A button inside the edge, e.g. clear or show password. 36 px inside the 44 px field; needs an aria-label. */

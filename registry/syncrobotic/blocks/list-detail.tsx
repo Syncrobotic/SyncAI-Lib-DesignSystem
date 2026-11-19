@@ -1,4 +1,4 @@
-// @syncrobotic/list-detail v0.13.1 · update: npx shadcn add @syncrobotic/list-detail --overwrite
+// @syncrobotic/list-detail v0.15.0 · update: npx shadcn add @syncrobotic/list-detail --overwrite
 "use client"
 
 import * as React from "react"
@@ -93,7 +93,7 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
               </div>
               <DescriptionList
                 items={[
-                  { label: "Battery", value: <Meter value={robot.battery} low={30} label="Battery" inline /> },
+                  { label: "Battery", value: <Meter value={robot.battery} low={15} label="Battery" inline /> },
                   {
                     label: "Site",
                     value: (
