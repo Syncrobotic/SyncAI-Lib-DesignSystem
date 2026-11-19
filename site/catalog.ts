@@ -245,10 +245,26 @@ const entries: Record<string, Entry> = {
       "Icons inside are 16, 20 or 24 px; the size prop sets them.",
     ],
   },
+  "text-diff": {
+    group: "Display",
+    /** Side by side needs the row: examples use the card's full width. */
+    wide: true,
+    examples: { file: "display", prefix: "TextDiff" },
+    rules: [
+      "Inserted words are a grey block with an underline; removed words are struck through in secondary text. A removal is not an error: no danger, no green, no blue.",
+      "Inline for a sentence or two; side by side when people read each version whole. Side by side stacks when its container is narrower than 448 px.",
+      "Keep the summary line (+3 words, −1 word): it says how big the change is before anyone reads it.",
+      "Words are split on spaces, punctuation included; Chinese and Japanese by character.",
+    ],
+  },
   kbd: {
     group: "Display",
     examples: { file: "kbd", prefix: "Kbd" },
-    rules: ["One key per Kbd; a chord is a KbdGroup without plus signs.", "Use the platform's symbols: ⌘ on Mac, Ctrl elsewhere."],
+    rules: [
+      "One key per Kbd; a chord is a KbdGroup without plus signs.",
+      "Use the platform's symbols: ⌘ on Mac, Ctrl elsewhere.",
+      "pressed shows the key going down (it sinks and its edge darkens) while its shortcut runs; useHotkeys returns which key that is.",
+    ],
   },
   "button-group": {
     group: "Actions",
@@ -453,7 +469,10 @@ const entries: Record<string, Entry> = {
   badge: {
     group: "Display",
     examples: { file: "display", prefix: "Badge" },
-    rules: ["Counts and short states. In list rows prefer Status eyebrow's InlineStatus."],
+    rules: [
+      "Counts and short states. In list rows prefer Status eyebrow's InlineStatus.",
+      "Test and audit results: Passed is the neutral badge with CircleCheck; Failed is tone=\"outline\" with text-danger ring-danger and CircleAlert; Not enough samples is tone=\"outline\" with text-muted-foreground and CircleDashed. Never a green pass.",
+    ],
   },
   card: { group: "Display", examples: { file: "display", prefix: "Card" }, rules: ["Never nest cards. Group rows inside one card with separators."] },
   avatar: {
@@ -732,6 +751,15 @@ const entries: Record<string, Entry> = {
   // Hooks
   "use-long-press": { group: "Hooks", rules: ["Returns hold progress from 0 to 1. The emergency stop uses it for hold-to-stop-all."] },
   "use-slide-release": { group: "Hooks", rules: ["Drag, threshold and spring-back logic behind Slide to release."] },
+  "use-hotkeys": {
+    group: "Hooks",
+    rules: [
+      "Single keys only where people work through a queue by keyboard (1 Yes, 2 No, ? help); everywhere else a shortcut takes a modifier (mod+k).",
+      "Keys are ignored while someone types in a field, unless a binding sets allowInInput (Escape, mod+s).",
+      "Turn it off with enabled: false while a dialog is open, so the dialog's own keys win.",
+      "Show the keys on screen (Kbd) and in a ? dialog: a shortcut nobody can find does not exist.",
+    ],
+  },
   "use-debounce": {
     group: "Hooks",
     rules: [
