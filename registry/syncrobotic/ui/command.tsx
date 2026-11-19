@@ -1,4 +1,4 @@
-// @syncrobotic/command v0.16.0 · update: npx shadcn add @syncrobotic/command --overwrite
+// @syncrobotic/command v0.16.1 · update: npx shadcn add @syncrobotic/command --overwrite
 "use client"
 
 import * as React from "react"

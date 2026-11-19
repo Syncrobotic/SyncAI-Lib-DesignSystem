@@ -2259,8 +2259,13 @@
         }
       ],
       "meta": {
-        "version": "0.16.0",
+        "version": "0.16.1",
         "changelog": [
+          {
+            "version": "0.16.1",
+            "date": "2026-11-19",
+            "note": "No focus ring on the search row inside a picker popover either: the box always has focus there."
+          },
           {
             "version": "0.16.0",
             "date": "2026-11-19",
@@ -2745,8 +2750,13 @@
         }
       ],
       "meta": {
-        "version": "0.16.0",
+        "version": "0.16.1",
         "changelog": [
+          {
+            "version": "0.16.1",
+            "date": "2026-11-19",
+            "note": "With the picker open, another part of the same chip switches it to that step in place (it closed, and a second click was needed); the part already open closes it. Fields without an icon keep the icon's space, so names line up."
+          },
           {
             "version": "0.16.0",
             "date": "2026-11-19",
