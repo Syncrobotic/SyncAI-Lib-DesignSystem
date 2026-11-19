@@ -5,6 +5,21 @@ Components install as source, so a project keeps the version it installed. Re-ru
 ## Unreleased
 
 ### Added
+- **`filters`**: a filter bar of chips, after ReUI's Filters but kept flat.
+  - **+ Filter** picks a field, an operator and a value. Any part of a chip reopens that step.
+  - Rules combine with "and". Fields can be text, option (single or multi), number with unit, date (single or range) and boolean.
+  - Rules live in the URL (`toQueryString` / `fromSearchParams`) and filter rows in the browser (`filterRows`).
+  - Fully keyboard operable: every step is announced, and focus returns where it came from. The DataGrid example filters 40 robots.
+- **`text-diff`**: where two texts differ, word by word.
+  - Insertions are a grey block with an underline. Removals are struck through in secondary text: a removal is not an error, so no green and no red. Each change is announced as added or removed.
+  - Inline or side by side, with a "+3 words, −1 word" summary.
+- **`use-hotkeys`**: shortcuts as a map of keys to handlers. They stay quiet while someone types in a field. The hook reports the key being pressed, so `kbd` (new `pressed` state) can show it going down.
+- **`review-queue`** (block, Data operations): review items one at a time by keyboard.
+  - 1/2/3 answer and advance. Esc goes back, Backspace or ⌘Z undoes, ? opens the shortcuts.
+  - The key bar shows each key going down.
+- **Test and audit results** (Colour foundation):
+  - A pass is grey with a check, never green. A failure is a danger outline with danger text. Not enough samples is grey with a dashed circle.
+  - There are Badge examples for all three.
 - **`image-grid`**: a gallery of thumbnails, as a grid or a scroll-snap strip.
   - Tiles load lazily and keep their aspect.
   - States: loading (skeleton), hidden (RestrictedPreview), broken (shows the file name).

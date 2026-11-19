@@ -250,6 +250,30 @@
       }
     },
     {
+      "name": "use-hotkeys",
+      "type": "registry:hook",
+      "title": "useHotkeys",
+      "description": "Keyboard shortcuts as a map of keys to handlers ({ \"1\": yes, \"mod+z\": undo, \"?\": help }), quiet while someone types in a field, with the key being pressed for Kbd.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/syncrobotic/hooks/use-hotkeys.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "meta": {
+        "version": "0.16.0",
+        "changelog": [
+          {
+            "version": "0.16.0",
+            "date": "2026-11-19",
+            "note": "First release: useHotkeys(map, { enabled }) with mod/ctrl/meta/alt/shift combos, keys ignored in text fields unless allowInInput, no repeats unless asked, and `pressed` for <Kbd pressed>."
+          }
+        ]
+      }
+    },
+    {
       "name": "status-glyph",
       "type": "registry:component",
       "title": "Status glyph",
@@ -1527,6 +1551,32 @@
       }
     },
     {
+      "name": "text-diff",
+      "type": "registry:ui",
+      "title": "Text diff",
+      "description": "Where two texts differ, word by word: insertions a grey block with an underline, removals struck through, each announced to screen readers. Inline or side by side, with a +3 words, −1 word summary.",
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/text-diff.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.16.0",
+        "changelog": [
+          {
+            "version": "0.16.0",
+            "date": "2026-11-19",
+            "note": "First release: TextDiff (before, after; inline or side-by-side) with a word-level LCS diff, <ins>/<del> announced as added and removed, a +N words, −N words summary, and diffWords/diffStats for counts elsewhere."
+          }
+        ]
+      },
+      "dependencies": []
+    },
+    {
       "name": "meter",
       "type": "registry:ui",
       "title": "Meter",
@@ -2320,8 +2370,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.16.0",
         "changelog": [
+          {
+            "version": "0.16.0",
+            "date": "2026-11-19",
+            "note": "`pressed` shows a key going down while its shortcut runs (it sinks and its edge thickens to the text colour, --motion-fast); useHotkeys returns which key that is."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -2658,6 +2713,42 @@
             "version": "0.10.0",
             "date": "2026-11-18",
             "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "filters",
+      "type": "registry:ui",
+      "title": "Filters",
+      "description": "A query people build from chips: + Filter picks a field, an operator and a value; each rule is a chip whose parts reopen that step. Rules combine with AND, live in the URL and filter rows in the browser.",
+      "dependencies": [
+        "date-fns",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/use-presence",
+        "@syncrobotic/button",
+        "@syncrobotic/calendar",
+        "@syncrobotic/command",
+        "@syncrobotic/input",
+        "@syncrobotic/number-field",
+        "@syncrobotic/popover"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/filters.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.16.0",
+        "changelog": [
+          {
+            "version": "0.16.0",
+            "date": "2026-11-19",
+            "note": "First release: a flat filter bar. + Filter opens a picker (field, operator, value) built on Command in a Popover; rules are chips whose parts reopen their step; AND between chips; text, option (single or multi), number (with unit), date and boolean fields; toSearchParams / toQueryString / fromSearchParams for the URL and filterRows / matchRule for rows in the browser."
           }
         ]
       }
@@ -4133,6 +4224,39 @@
       }
     },
     {
+      "name": "review-queue",
+      "type": "registry:block",
+      "title": "Review queue",
+      "description": "Review items one at a time by keyboard: progress, the image with its question and caption, and a key bar ([1] Yes, [2] No, [3] Skip, Esc back, ⌫ undo, ? shortcuts) whose keys go down as they are pressed.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/use-hotkeys",
+        "@syncrobotic/button",
+        "@syncrobotic/dialog",
+        "@syncrobotic/kbd",
+        "@syncrobotic/progress"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/review-queue.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "meta": {
+        "version": "0.16.0",
+        "changelog": [
+          {
+            "version": "0.16.0",
+            "date": "2026-11-19",
+            "note": "First release: keyboard-first review (1/2/3 answer and advance with the appear motion, Esc back, Backspace or ⌘Z / Ctrl+Z undo, ? shortcuts dialog), 44 px answer buttons for touch, and a blue progress bar for the batch."
+          }
+        ]
+      }
+    },
+    {
       "name": "governance-todo",
       "type": "registry:block",
       "title": "Governance to-do",
@@ -4423,7 +4547,7 @@
           {
             "version": "0.16.0",
             "date": "2026-11-19",
-            "note": "Design language: annotations on images (line style first, a halo under every stroke, class as a word not a colour) and the action rail (only the next step; \u2190 and Esc go back)."
+            "note": "Design language: annotations on images (line style first, a halo under every stroke, class as a word not a colour) and the action rail (only the next step; \u2190 and Esc go back). Test and audit results: a pass is grey with a check, a failure a danger outline, not enough samples grey with a dashed circle."
           },
           {
             "version": "0.15.0",

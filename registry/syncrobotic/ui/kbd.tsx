@@ -1,4 +1,4 @@
-// @syncrobotic/kbd v0.10.0 · update: npx shadcn add @syncrobotic/kbd --overwrite
+// @syncrobotic/kbd v0.16.0 · update: npx shadcn add @syncrobotic/kbd --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 

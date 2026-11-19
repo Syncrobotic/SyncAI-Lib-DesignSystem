@@ -27,6 +27,10 @@
     "version": "0.15.0",
     "hash": "ca537110acc20ac6"
   },
+  "use-hotkeys": {
+    "version": "0.16.0",
+    "hash": "86bab888e47c15ba"
+  },
   "status-glyph": {
     "version": "0.13.0",
     "hash": "3b21b7fea4d779ae"
@@ -155,6 +159,10 @@
     "version": "0.8.0",
     "hash": "cf17e73d8fc26aba"
   },
+  "text-diff": {
+    "version": "0.16.0",
+    "hash": "7ee216b2a2fea51a"
+  },
   "meter": {
     "version": "0.8.0",
     "hash": "a0089a4313b9dfeb"
@@ -236,8 +244,8 @@
     "hash": "1c6f59a6a871308a"
   },
   "kbd": {
-    "version": "0.10.0",
-    "hash": "65456e28766e23bd"
+    "version": "0.16.0",
+    "hash": "1d20484af6d07d39"
   },
   "robot-icons": {
     "version": "0.10.0",
@@ -282,6 +290,10 @@
   "filter-form": {
     "version": "0.10.0",
     "hash": "4408d94150b8f69d"
+  },
+  "filters": {
+    "version": "0.16.0",
+    "hash": "f5909edac985f07d"
   },
   "search-field": {
     "version": "0.10.0",
@@ -423,6 +435,10 @@
     "version": "0.13.0",
     "hash": "251dd5b71348afdd"
   },
+  "review-queue": {
+    "version": "0.16.0",
+    "hash": "0f0b06e154eb8dec"
+  },
   "governance-todo": {
     "version": "0.13.0",
     "hash": "42aea9b5b955f647"
@@ -449,7 +465,7 @@
   },
   "agent-skill": {
     "version": "0.16.0",
-    "hash": "2dd07645a4a2d25e"
+    "hash": "5437a01aa3d3479f"
   },
   "line-chart-telemetry": {
     "version": "0.9.0",
