@@ -1,4 +1,4 @@
-// @syncrobotic/autocomplete v0.15.0 · update: npx shadcn add @syncrobotic/autocomplete --overwrite
+// @syncrobotic/autocomplete v0.17.2 · update: npx shadcn add @syncrobotic/autocomplete --overwrite
 "use client"
 
 import * as React from "react"
@@ -129,6 +129,7 @@ export function Autocomplete({
             }}
             onKeyDown={onKey}
             onBlur={() => !open && setQuery(selected?.label ?? "")}
+            // focus-ring: the field around it draws the ring (has-[input:focus-visible]).
             className="h-full min-w-0 flex-1 bg-transparent px-3 text-base outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed"
           />
           {loading && <Spinner delay={0} className="mr-2 size-4" label="Searching" />}

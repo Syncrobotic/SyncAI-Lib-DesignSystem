@@ -1,4 +1,4 @@
-// @syncrobotic/phone-input v0.15.0 · update: npx shadcn add @syncrobotic/phone-input --overwrite
+// @syncrobotic/phone-input v0.17.2 · update: npx shadcn add @syncrobotic/phone-input --overwrite
 "use client"
 
 import * as React from "react"
@@ -128,6 +128,7 @@ export function PhoneInput({
         readOnly={readOnly}
         value={text}
         onChange={(e) => update(e.target.value, country)}
+        // focus-ring: the field around it draws the ring (has-[input:focus-visible]).
         className="h-full min-w-0 flex-1 bg-transparent px-3 text-base tabular-nums outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed"
       />
     </div>
