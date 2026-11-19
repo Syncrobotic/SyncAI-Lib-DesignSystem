@@ -18,6 +18,8 @@ export function ExampleCard({
   /** Charts and other wide content use the card's width instead of a 384 px column. */
   wide?: boolean
 }) {
+  // "Button variants" -> button-variants.tsx: a file name you could save it as.
+  const file = `${title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}.tsx`
   return (
     <section id={id} aria-labelledby={`${id}-title`} className="scroll-mt-20 overflow-hidden rounded-md border border-border bg-card">
       <div className="specimen flex min-h-48 items-center justify-center p-8">
@@ -27,7 +29,7 @@ export function ExampleCard({
         <h3 id={`${id}-title`} className="truncate text-sm text-muted-foreground">
           {title}
         </h3>
-        <CodeSheet title={`${title}.tsx`} install={install} files={[{ name: `${title}.tsx`, code }]} />
+        <CodeSheet title={file} install={install} files={[{ name: file, code }]} />
       </div>
     </section>
   )

@@ -388,8 +388,22 @@ const entries: Record<string, Entry> = {
       "↑↓ step, Shift or PageUp/PageDown step by largeStep, Home/End go to the limits. The buttons are for touch and skip the Tab order.",
     ],
   },
-  textarea: { group: "Inputs", examples: { file: "inputs", prefix: "Textarea" } },
-  label: { group: "Inputs", examples: { file: "inputs", prefix: "Label" } },
+  textarea: {
+    group: "Inputs",
+    examples: { file: "inputs", prefix: "Textarea" },
+    rules: [
+      "For text that runs past one line: notes, a reason, a message. One line of text is an Input.",
+      "Always with a visible Label; say the limit before it is reached, not after.",
+    ],
+  },
+  label: {
+    group: "Inputs",
+    examples: { file: "inputs", prefix: "Label" },
+    rules: [
+      "Every field has one, visible, above it. A placeholder is not a label.",
+      "Click the label to focus the field: pair them with htmlFor or wrap the control.",
+    ],
+  },
   field: {
     group: "Inputs",
     examples: { file: "inputs", prefix: "Field" },
@@ -422,7 +436,15 @@ const entries: Record<string, Entry> = {
       "Group choices under one question with FieldSet and a legend; its hint or error sits under the group.",
     ],
   },
-  select: { group: "Inputs", examples: { file: "inputs", prefix: "Select" } },
+  select: {
+    group: "Inputs",
+    examples: { file: "inputs", prefix: "Select" },
+    rules: [
+      "Choose one of a known list of five or more. Two to four short options read faster as a SegmentedControl or radios.",
+      "Always with a label; a placeholder says what to pick, never which value is the default.",
+      "For a long list people search, use Autocomplete.",
+    ],
+  },
   slider: { group: "Inputs", examples: { file: "inputs", prefix: "Slider" }, rules: ["Always show the current value in the label next to it."] },
   // Display
   badge: {
@@ -431,8 +453,22 @@ const entries: Record<string, Entry> = {
     rules: ["Counts and short states. In list rows prefer Status eyebrow's InlineStatus."],
   },
   card: { group: "Display", examples: { file: "display", prefix: "Card" }, rules: ["Never nest cards. Group rows inside one card with separators."] },
-  avatar: { group: "Display", examples: { file: "display", prefix: "Avatar" } },
-  separator: { group: "Display", examples: { file: "display", prefix: "Separator" } },
+  avatar: {
+    group: "Display",
+    examples: { file: "display", prefix: "Avatar" },
+    rules: [
+      "A person or a robot, by picture or initials. Initials when there is no picture, never an empty circle.",
+      "Pair it with the name: an avatar alone is not an identity.",
+    ],
+  },
+  separator: {
+    group: "Display",
+    examples: { file: "display", prefix: "Separator" },
+    rules: [
+      "Splits groups the eye would otherwise run together. If spacing already separates them, leave it out.",
+      "Decorative by default; mark it as a separator only between groups of a menu or toolbar.",
+    ],
+  },
   progress: {
     group: "Display",
     examples: { file: "display", prefix: "Progress" },
@@ -461,9 +497,23 @@ const entries: Record<string, Entry> = {
     examples: { file: "display", prefix: "DescriptionList" },
     rules: ["Label above value, value in medium weight with tabular numbers.", "`tiles` only for the few numbers that matter most; everything else plain."],
   },
-  "empty-state": { group: "Display", examples: { file: "display", prefix: "EmptyState" } },
+  "empty-state": {
+    group: "Display",
+    examples: { file: "display", prefix: "EmptyState" },
+    rules: [
+      "Says what is missing, why, and the next step as a button. Never a bare “No data”.",
+      "When a filter or search caused it, the action clears it.",
+    ],
+  },
   table: { group: "Display", examples: { file: "display", prefix: "Table" }, rules: ["Right-align numbers. Numbers are tabular by default."] },
-  list: { group: "Display", examples: { file: "list", only: ["GroupedList"] } },
+  list: {
+    group: "Display",
+    examples: { file: "list", only: ["GroupedList"] },
+    rules: [
+      "Rows of the same kind, each a whole touch target at 56 px, with its state in the trailing slot.",
+      "Group long lists under headings; more than about 50 rows wants search or a DataGrid.",
+    ],
+  },
   "status-glyph": {
     group: "Display",
     examples: { file: "display", prefix: "StatusGlyph" },
@@ -472,7 +522,14 @@ const entries: Record<string, Entry> = {
       "Pass `status`: active, normal, warning, danger or offline. The old `tone` (info, success, warning, danger, neutral) still works until 1.0 and warns once in development.",
     ],
   },
-  "status-eyebrow": { group: "Display", examples: { file: "list", only: ["StatusShapes", "StatusEyebrowOverTitle", "StatusInlineInRows"] } },
+  "status-eyebrow": {
+    group: "Display",
+    examples: { file: "list", only: ["StatusShapes", "StatusEyebrowOverTitle", "StatusInlineInRows"] },
+    rules: [
+      "A robot's state above its name, or in a row's trailing slot: shape plus word, always both.",
+      "Pass `status`: active, normal, warning, danger or offline. Only warning and danger are coloured.",
+    ],
+  },
   skeleton: {
     group: "Display",
     examples: { file: "list", only: ["LoadingSkeleton", "SkeletonCard", "SkeletonTableRows"] },
@@ -554,8 +611,22 @@ const entries: Record<string, Entry> = {
       "It disappears once everything is shown. For a desktop table people jump around in, use Pagination.",
     ],
   },
-  tabs: { group: "Navigation", examples: { file: "navigation", prefix: "Tabs" } },
-  accordion: { group: "Navigation", examples: { file: "navigation", prefix: "Accordion" } },
+  tabs: {
+    group: "Navigation",
+    examples: { file: "navigation", prefix: "Tabs" },
+    rules: [
+      "Switch between views of the same thing, all at the same level. Not for steps (Stepper) or for moving between pages.",
+      "Keep the labels short and the order stable.",
+    ],
+  },
+  accordion: {
+    group: "Navigation",
+    examples: { file: "navigation", prefix: "Accordion" },
+    rules: [
+      "Long content most people skip: FAQs, advanced settings. Content everyone needs stays open.",
+      "One open at a time only when the sections are alternatives.",
+    ],
+  },
   // Overlays: the docs show the closed trigger; the *Open stories are for visual tests.
   dialog: { group: "Overlays", examples: { file: "overlays", prefix: "Dialog" }, rules: ["A short decision. On phones prefer Sheet for anything longer."] },
   "alert-dialog": {
@@ -563,8 +634,22 @@ const entries: Record<string, Entry> = {
     examples: { file: "overlays", prefix: "AlertDialog" },
     rules: ["Only for actions that cannot be undone.", "The confirm names the consequence (“Delete 38 GB”); the cancel names what is kept."],
   },
-  sheet: { group: "Overlays", examples: { file: "overlays", prefix: "Sheet" } },
-  popover: { group: "Overlays", examples: { file: "overlays", prefix: "Popover" } },
+  sheet: {
+    group: "Overlays",
+    examples: { file: "overlays", prefix: "Sheet" },
+    rules: [
+      "Detail or a short form beside the list it came from, keeping the list in view. A decision that blocks the task is a Dialog.",
+      "Bottom on phones, right on wide screens, left for navigation. Esc and the scrim close it.",
+    ],
+  },
+  popover: {
+    group: "Overlays",
+    examples: { file: "overlays", prefix: "Popover" },
+    rules: [
+      "A small control or a few facts tied to one trigger: a filter, a colour, a definition.",
+      "More than a few fields, or a decision, is a Sheet or Dialog. A hint that needs no interaction is a Tooltip.",
+    ],
+  },
   tooltip: {
     group: "Overlays",
     examples: { file: "overlays", prefix: "Tooltip" },

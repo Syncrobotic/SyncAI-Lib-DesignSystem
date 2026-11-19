@@ -19,6 +19,10 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - **Segmented controls were 36 px tall to a finger** (the icon size switch, the density demo, fleet-table's filters): each segment's hit area now reaches its track's edges, 44 px. The header's GitHub link, the Motion demo's Play, a component's version link and "How to upgrade", and the token file links are 44 px on touch too.
 - **Raw Markdown on the page:** `**Markdown**` on the For AI agents page, and backticks in component changelogs and the Versions table. Docs copy renders `code` and **bold** everywhere now.
 - The Button example's disabled button says why, beside it and to screen readers, as its own usage rule asks.
+- **Component pages share one head:** title, one line, then the version and the Markdown, Prompt and Source buttons, always below (they jumped to the title's right when the line was short). Every component now has When to use and Use something else (nine were missing it) and usage rules (twelve were), and a line that only repeats the description is left out. Block pages keep Markdown and Prompt on the title's row, and the preview's toolbar keeps its height on the Code tab.
+- **Example code runs when pasted:** each example carries the imports it uses, from where the CLI installs them (`@/components/ui/button`), and a bare snippet comes wrapped in a component. File names have no spaces (`button-variants.tsx`).
+- **Icons:** names break between their words over two lines instead of being cut off; the kit's tiles show what each icon means; All Lucide explains its dot; a search with no result offers to clear it (and, in the kit, to look through every Lucide icon); for an icon not in the set, how to add it comes first and the code to copy waits behind "Copy anyway", in full instead of cut. The Iconography page names its twelve sample icons.
+- **Search fields' clear button** (theme): the browser's small blue cross is the kit's grey cross at 20 px; blue means a process being waited on.
 
 ## 0.13.0 · 2026-11-19
 

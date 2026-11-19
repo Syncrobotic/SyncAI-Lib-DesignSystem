@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.13.1",
         "changelog": [
+          {
+            "version": "0.13.1",
+            "date": "2026-11-19",
+            "note": "A search field's clear button is the kit's grey cross at 20 px instead of the browser's small blue one."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
