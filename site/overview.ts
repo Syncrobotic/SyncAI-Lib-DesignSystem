@@ -405,6 +405,19 @@ export const overviews: Record<string, Overview> = {
     use: ["IDs, references, install commands, coordinates."],
     instead: ["Sharing a link to the current page: the browser already does it."],
   },
+  "code-block": {
+    what: "Code or a command to read and copy, in a frame with its title and a copy button.",
+    use: [
+      "Install and import commands (dvc import, npx shadcn add) and curl examples.",
+      "A one-time API key or webhook secret, hidden until shown.",
+      "Source and API responses in docs and settings pages.",
+    ],
+    instead: ["A short value inline (an ID, a reference): `copy-button` beside the text.", "A value someone edits: `input` or `textarea`."],
+    notes: [
+      "It has no highlighter: pass shiki's `<pre>` as children (the docs site does, in site/code-block.tsx); `code` stays the plain text that Copy copies.",
+      "Highlighted shell commands wrap by words only if each name is marked nowrap in the HTML; the docs site's CodeBlock shows how.",
+    ],
+  },
   button: {
     what: "A control that does one thing now: save, send, start a mission. The label is a verb that says what happens.",
     use: [

@@ -16,6 +16,7 @@ import * as stop from "@/stories/stop-button.stories"
 import * as s_item from "@/stories/item.stories"
 import * as s_icon_tile from "@/stories/icon-tile.stories"
 import * as s_kbd from "@/stories/kbd.stories"
+import * as s_code_block from "@/stories/code-block.stories"
 import * as s_button_group from "@/stories/button-group.stories"
 import * as s_scroll_area from "@/stories/scroll-area.stories"
 import * as s_toggle_group from "@/stories/toggle-group.stories"
@@ -92,6 +93,7 @@ const files: Record<StoryFile, StoryModule> = {
   item: s_item as unknown as StoryModule,
   "icon-tile": s_icon_tile as unknown as StoryModule,
   kbd: s_kbd as unknown as StoryModule,
+  "code-block": s_code_block as unknown as StoryModule,
   "button-group": s_button_group as unknown as StoryModule,
   "scroll-area": s_scroll_area as unknown as StoryModule,
   "toggle-group": s_toggle_group as unknown as StoryModule,
