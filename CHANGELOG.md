@@ -2,6 +2,11 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **`code-block`** (beta): code or a command with its title and a copy button. `wrap="words"` wraps a shell command only between words and after "/", `wrap="none"` scrolls source sideways with the table's fade and takes focus, `secret` hides a one-time API key until Show is pressed (Copy copies the real value), `lineNumbers` adds a gutter. No highlighter inside: a highlighter's output goes in as children; the docs site's own code blocks now use it with shiki.
+
 ## 0.17.4 · 2026-11-19
 
 Found by putting the kit into a real product (the DataCore dashboard), not by a review.

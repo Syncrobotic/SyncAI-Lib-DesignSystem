@@ -38,6 +38,7 @@ export type StoryFile =
   | "item"
   | "icon-tile"
   | "kbd"
+  | "code-block"
   | "button-group"
   | "scroll-area"
   | "toggle-group"
@@ -268,6 +269,16 @@ const entries: Record<string, Entry> = {
       "One key per Kbd; a chord is a KbdGroup without plus signs.",
       "Use the platform's symbols: ⌘ on Mac, Ctrl elsewhere.",
       "pressed shows the key going down (it sinks and its edge darkens) while its shortcut runs; useHotkeys returns which key that is.",
+    ],
+  },
+  "code-block": {
+    group: "Display",
+    examples: { file: "code-block", prefix: "CodeBlock" },
+    rules: [
+      "Copy copies `code` exactly, whatever the block shows: highlighted children, wrapped lines or a hidden secret.",
+      "wrap=\"words\" for shell commands, so a phone never cuts a package name in two; wrap=\"none\" for source, which scrolls sideways with a fade on the side that hides text.",
+      "A one-time secret (an API key) is `secret`: dots until Show is pressed. Never put the value in the title or a label; say beside it that it is shown once.",
+      "No highlighter inside: pass shiki's output (or any `<pre>`) as children. Line numbers only for source people discuss by line.",
     ],
   },
   "button-group": {
@@ -975,6 +986,11 @@ const keyboard: Record<string, [string, string][]> = {
     ["↑ ↓", "Move between radio options"],
   ],
   "copy-button": [["Enter / Space", "Copy"]],
+  "code-block": [
+    ["Tab", "Move to Show (a secret), Copy, then the code when it scrolls"],
+    ["← / →", "Scroll the focused code sideways"],
+    ["Enter / Space", "On Show, show or hide the secret; on Copy, copy the code"],
+  ],
   filters: [
     ["Enter", "On + Filter, open the picker; on a part of a chip, reopen that step"],
     ["↑ / ↓", "Move through fields, operators or values; type to narrow them"],

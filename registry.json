@@ -899,6 +899,38 @@
       }
     },
     {
+      "name": "code-block",
+      "type": "registry:ui",
+      "title": "Code block",
+      "description": "Code or a command with a copy button: wraps a command between words, scrolls source sideways, hides a one-time secret until shown. Takes a highlighter's output as children.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/copy-button",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/code-block.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.18.0",
+        "status": "beta",
+        "changelog": [
+          {
+            "version": "0.18.0",
+            "date": "2026-11-19",
+            "note": "First release: a framed block with a title and CopyButton; wrap=\"words\" for shell commands, wrap=\"none\" scrolls with the table's fade and takes focus; secret hides a one-time value behind Show; optional line numbers; a highlighter's output (shiki) as children."
+          }
+        ]
+      }
+    },
+    {
       "name": "input",
       "type": "registry:ui",
       "title": "Input",

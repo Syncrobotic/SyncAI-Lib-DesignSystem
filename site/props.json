@@ -1006,6 +1006,63 @@
    "inherits": []
   }
  ],
+ "code-block": [
+  {
+   "name": "CodeBlock",
+   "props": [
+    {
+     "name": "code",
+     "type": "string",
+     "required": true,
+     "description": "The exact text; it is what Copy copies, also when `children` shows it highlighted."
+    },
+    {
+     "name": "title",
+     "type": "string",
+     "description": "Shown in the header and names the scroll box, e.g. a file name or \"Terminal\". Never put a secret here."
+    },
+    {
+     "name": "language",
+     "type": "string",
+     "description": "Shown in the header when there is no title."
+    },
+    {
+     "name": "wrap",
+     "type": "\"none\" | \"words\"",
+     "default": "\"none\"",
+     "description": "\"words\" for shell commands (wrap between words, never inside a name); \"none\" scrolls sideways."
+    },
+    {
+     "name": "lineNumbers",
+     "type": "boolean",
+     "default": "false",
+     "description": "Numbers each line in a gutter that stays put while the code scrolls; hidden from screen readers. With wrap=\"none\" only."
+    },
+    {
+     "name": "secret",
+     "type": "boolean",
+     "default": "false",
+     "description": "Hide the value behind dots, with a Show toggle; Copy still copies the real value."
+    },
+    {
+     "name": "copyLabel",
+     "type": "string",
+     "description": "The copy button's name. Defaults to \"Copy <title>\" or \"Copy code\"; pass your own in other languages."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<CodeBlockLabels>",
+     "description": ""
+    },
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "description": "Highlighted code (a `<pre>` from shiki or similar) shown in place of the plain text."
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "command": [
   {
    "name": "Command",
