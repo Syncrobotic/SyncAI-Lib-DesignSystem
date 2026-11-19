@@ -4,24 +4,26 @@
  * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
  *
  * Usage:
- *   1. In globals.css, add @import "./syncrobotic-theme.css"; after @import "tailwindcss";
+ *   1. In globals.css, add @import "../styles/syncrobotic-theme.css"; after @import "tailwindcss";
  *   2. Delete the :root / .dark / @theme inline blocks that shadcn init generated (this file replaces them)
- *   3. Light is :root; dark is class="dark" on <html> (follow the system setting by default, and let people choose).
+ *   3. Light is :root and the default; dark is class="dark" on <html>. Offer ThemeToggle (light, match system, dark); with
+ *      no stored choice the app's default, light, applies.
  *      Teleoperation and intercom screens put class="dark" on their root so they stay dark whatever the setting.
  *
  * Colour rules:
- *   - Colour is for what is abnormal, and blue for a process someone is waiting on. A thing's state (patrolling, docked,
- *     charging, offline) is shape + neutral text even while it is busy; warning, danger and stop carry colour. A run with
- *     a start and an end that someone is waiting on (a mission in progress, a rollout stage, an upload) is a process: blue
- *   - Status hues are muted on purpose: they must read at a glance without turning the screen into a chart
- *   - Solid red (--stop) is for the emergency stop only. Other destructive actions use the --danger outline and text
- *   - Status colours come in pairs: foreground (--info) on its subtle tint (--info-subtle)
- *   - --primary is neutral high contrast (black in light, white in dark). Blue (--info) only marks a bounded process someone
- *     is waiting on: a progress bar, a stage that is running, a command being sent. Never a state, never focus
- *   - Green (--success) is a confirmation that just happened (toast, alert); a calm state stays grey
- *   - Selected controls (segmented control, toggle) are inverted; the current page in navigation is --muted with weight, hover is --accent; a switch that is on uses --primary
- *   - Actions in the lower part of the dock are never solid white, so they do not compete with the stop
- *   - Alerts other than the stop (event counts) use --danger on --danger-subtle, never solid red
+ *   - Colour is for what is abnormal. A thing's state (patrolling, docked, charging, offline) is shape + neutral text even
+ *     while it is busy; warning, danger and stop carry colour.
+ *   - Blue (--info) only marks a bounded process someone is waiting on: a run with a start and an end (a mission in
+ *     progress, a rollout stage, an upload, a command being sent). Never a state, never focus. The bar or cell of the
+ *     running work is blue; the state word stays grey.
+ *   - Status hues are muted on purpose: they must read at a glance without turning the screen into a chart.
+ *   - Solid red (--stop) is for the emergency stop only. Other destructive actions use the --danger outline and text.
+ *   - Status colours come in pairs: foreground (--info) on its subtle tint (--info-subtle).
+ *   - --primary is neutral high contrast (black in light, white in dark).
+ *   - Green (--success) is a confirmation that just happened (toast, alert); a calm state stays grey.
+ *   - Selected controls (segmented control, toggle) are inverted; the current page in navigation is --muted with weight, hover is --accent; a switch that is on uses --primary.
+ *   - Actions in the lower part of the dock are never solid white, so they do not compete with the stop.
+ *   - Alerts other than the stop (event counts) use --danger on --danger-subtle, never solid red.
  */
 
 /* ---------- Light ---------- */
@@ -74,13 +76,12 @@
   --shadow-overlay: 0 16px 40px rgb(9 9 11 / 0.18);
 
   /*
-   * Chart series: identity, not status. Fixed order, never cycled; validated for colour-vision deficiency
-   * (dataviz validator: adjacent CVD ΔE ≥ 8, normal-vision ≥ 15). Every slot is 3:1 or more on the card, and charts still
-   * ship a legend, direct labels and a table view, so no series is told apart by colour alone. Use status colours for status, never as series.
+   * Chart series: identity, not status. Fixed order, never cycled. Hues sit between the status hues (blue 262, green 162,
+   * amber 60–85, red 25) so no series reads as a status: violet 300, teal 205, olive 120, magenta 345, then grey for
+   * "Other". Validated for colour-vision deficiency (worst adjacent ΔE 16 deutan) and 3:1 or more on the card. Charts still
+   * ship a legend and direct labels, and charts with axes a table view, so no series is told apart by colour alone.
+   * Use status colours for status, never as series.
    */
-  /* Series identity only. Hues sit between the status hues (blue 262, green 162, amber 60–85, red 25) so no series
-     reads as a status: violet 300, teal 205, olive 120, magenta 345, then grey for "Other". Validated for CVD
-     (worst adjacent ΔE 16 deutan) and 3:1 against the card. */
   --chart-1: #663e9e;
   --chart-2: #00929f;
   --chart-3: #6b7f09;
@@ -390,14 +391,8 @@
   /* Leaving: starts gently and speeds away, so what goes does not linger in a slow tail. Exits only. */
   --ease-exit: cubic-bezier(0.3, 0, 1, 1);
 
-  /*
-   * Motion patterns in CSS (see the Motion foundation). Every component uses these, never its own timing.
-   *   appear / disappear  overlays, menus, tooltips, notices, alarms, tab panels: rise 8 px and fade in, fade out
-   *   fade-in             scrims behind dialogs and sheets
-   *   sheet-in-* / -out-* sheets from their edge, at --motion-sheet
-   *   expand / collapse   accordion content, at --motion-base
-   *   press (utility)     anything you press: sinks to 97 % at --motion-fast
-   */
+  /* Motion patterns in CSS. The Motion foundation (/docs/foundations/motion) lists them and where each is used; every
+     component uses these, never its own timing. */
   --animate-appear: appear var(--motion-base) var(--ease-standard);
   --animate-disappear: disappear var(--motion-fast) var(--ease-exit) forwards;
   --animate-fade-in: fade-in var(--motion-base) var(--ease-standard);
@@ -509,8 +504,8 @@
   }
 }
 
-/* Compact density is for a mouse only. On touch screens every compact control is the full 44 px,
-   so nothing interactive is ever smaller than a finger: the island, the dock and phone layouts included. */
+/* --h-sm is for a mouse only: on any coarse pointer it is 44, so nothing interactive is ever smaller than a finger
+   (compact density, the island, the dock and phone layouts included). */
 /* any-pointer: a touch laptop with a trackpad has a coarse pointer too, and its fingers still need 44. */
 @media (any-pointer: coarse) {
   :root { --h-sm: var(--h-md); }
@@ -566,7 +561,8 @@
   .animate-breath { animation: none; }
   .animate-route-progress { animation: none; }
   .animate-caret-blink { animation: none; }
-  /* The spinner is the one loop the language allows; without motion it stands still and the label says it is working. */
+  /* Loops are only for waiting (Spinner, skeleton breath, caret); without motion the spinner stands still and the label
+     says it is working. */
   .animate-spin { animation: none; }
   .press:active { scale: none; }
   /* State still changes; it does not travel. */

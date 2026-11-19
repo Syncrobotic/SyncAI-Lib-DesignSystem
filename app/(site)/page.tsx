@@ -66,7 +66,7 @@ export default function HomePage() {
       href: "/docs/foundations",
       title: "Foundations",
       count: `${foundations.length} pages`,
-      body: "The rules and tokens behind every screen: colour, type, spacing, radius, motion, iconography, accessibility and alarms.",
+      body: "The rules and tokens behind every screen: principles, colour, type, spacing, radius, elevation, motion, iconography, accessibility, alarms and data visualisation.",
     },
     {
       href: "/docs/components",

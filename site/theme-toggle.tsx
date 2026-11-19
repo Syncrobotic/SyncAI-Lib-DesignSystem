@@ -28,8 +28,9 @@ function apply(choice: Choice) {
 }
 
 /**
- * Three choices, like the registry's ThemeToggle: light, match the system (the default), dark. In the header it is one
- * button that opens them, so it fits beside search on a phone; the icon shows the theme in use.
+ * Three choices, like the registry's ThemeToggle: light, match the system, dark. Products default to light (:root); this
+ * docs site's own menu alone defaults to match the system. In the header it is one button that opens them, so it fits
+ * beside search on a phone; the icon shows the theme in use.
  */
 export function ThemeToggle() {
   // Known only in the browser; undefined while rendering on the server, so nothing shows as chosen until then.

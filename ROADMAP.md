@@ -7,19 +7,13 @@ How the design system decides what to build, how work is reviewed and released, 
 1. **Intake.** Every change starts as an issue: a *Proposal* (new component, pattern, token) or a *Bug*. A proposal names the product that needs it and the evidence; one team asking is a signal, two teams is a component.
 2. **Triage, weekly.** The maintainers sort issues into the current milestone, the next one, or *not now* with a reason. Bugs marked *Safety* or *Accessibility* go into the current release, ahead of everything else.
 3. **Design decision.** Anything that changes the language (a token, a rule, a new pattern) gets a short decision record in the PR description: the problem, the options considered, the choice. Components that only apply existing rules skip this.
-4. **Build.** `feat/*` branch, following [Adding a component](README.md#adding-a-component). The PR template is the definition of done.
-5. **Review.** One engineer and one designer approve. CI must be green: tokens, registry, types, behaviour tests, build, axe on every story, visual regression, end-to-end install.
-6. **Release train, every two weeks.** `dev` → `stage` on Monday, `stage` → `main` on Wednesday after a check of the stage preview. Safety fixes ship as soon as they are green.
+4. **Build.** `feat/*` branch, following [Adding a component](CONTRIBUTING.md#adding-a-component). The PR template is the definition of done.
+5. **Review.** One engineer and one designer approve. CI must be green. On every pull request: tokens, registry, rules, motion, versions, DTCG, types, tests, build (and, when the registry changed, an end-to-end install). Before a release (pull requests into `stage`): axe and screenshots of every story.
+6. **Release.** When a batch of work on `dev` is verified, it goes `dev` → `stage` (where the story checks run), then `stage` → `main` after a check of the stage preview. There is no fixed schedule. Safety fixes ship as soon as they are green.
 
 ## Versions
 
-Components install as source, so a version tells a team when to re-install.
-
-| Change | Version | Example |
-| --- | --- | --- |
-| Fix, no API change | patch, 0.4.**1** | Contrast fix, keyboard bug |
-| New item, token or prop | minor, 0.**5**.0 | Combobox, `--space-section` |
-| Rename or remove a token, prop or item | major (minor before 1.0) | `tone` renamed |
+Components install as source, so a version tells a team when to re-install. How versions move (patch, minor, major) is on the [upgrading page](https://design-system.syncrobotic.me/docs/upgrading#versions).
 
 Every entry in [CHANGELOG.md](CHANGELOG.md) names the items to re-install. Breaking changes say how to migrate.
 
@@ -34,7 +28,7 @@ Reviewed each release, so the roadmap follows evidence rather than taste.
 
 ## Plan
 
-Ordered by what blocks adoption first. Each milestone is one or two release trains. The milestones are themes, not version numbers: the kit is at 0.17, and the open items below are what is left of each theme. Checked 2026-11-19 (0.17).
+The milestones are themes, not version numbers, listed by number. 0.4 to 0.9 and 1.0 were planned first; 0.16 and 0.17 were added later, so 0.9 is still open while they are done. The kit is at 0.17, and the open items below are what is left of each theme. Checked 2026-11-19 (0.17).
 
 ### 0.4 · Alarms and feedback
 - [x] Alarms foundation, `alarm`, `toast`
@@ -66,6 +60,10 @@ Ordered by what blocks adoption first. Each milestone is one or two release trai
 - [ ] Docs per released version
 - [ ] Adoption scanner: a script that reports registry items and versions across company repos
 
+### 0.9 · Accessibility evidence
+- [ ] Manual screen-reader and keyboard test matrix per component (VoiceOver, TalkBack, NVDA)
+- [ ] Accessibility conformance report (ACR / VPAT)
+
 ### 0.16 · Data tools and review (done)
 - [x] Filters: a flat chip filter bar (field, operator, value) that lives in the URL
 - [x] For labelling and model review (VLM-Forge): text diff, image grid with a lightbox, keyboard-first review queue with `use-hotkeys`, action-rail page, annotation overlay tokens, and colours for test and audit results
@@ -73,15 +71,11 @@ Ordered by what blocks adoption first. Each milestone is one or two release trai
 
 ### 0.17 · Audit: the kit follows its own rules
 - [x] Page-by-page design review and a rule-compliance audit of every component, block and page (dark and light, desktop and phone, axe)
-- [x] Overview puts alarms first; neutral environment badge; lighter disabled outlines; every chart has a table view
+- [x] Overview puts alarms first; neutral environment badge; lighter disabled outlines; every chart with axes has a table view
 - [x] Field edges 3:1 (WCAG 1.4.11), focus rings never removed, battery threshold 15 % everywhere, 44 px targets on the docs site
 - [x] One rule where two disagreed (default theme, battery as Meter, switch on, offline, 36 px, button weight, KPI colour, missions as processes)
 - [x] Lints for what the audit found by hand (`lint:rules`): `outline-none` without a replacement, battery thresholds, a chart block without `ChartTable`; field-edge contrast as a unit test
 - [ ] Docs site: component pages open with the first example; block thumbnails readable; one search on the overview; filter segments the same everywhere
-
-### 0.9 · Accessibility evidence
-- [ ] Manual screen-reader and keyboard test matrix per component (VoiceOver, TalkBack, NVDA)
-- [ ] Accessibility conformance report (ACR / VPAT)
 
 ### 1.0 · Public, source-available
 - [x] Licence (all rights reserved, source-available), CONTRIBUTING, SECURITY

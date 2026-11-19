@@ -40,7 +40,7 @@ export default function UpgradingPage() {
         head={["Change", "Version", "Example"]}
         rows={[
           ["Fix, no API change", "patch · 0.5.1", "Contrast fix, keyboard bug"],
-          ["New prop or behaviour, compatible", "minor · 0.6.0", "A labels prop"],
+          ["New item, token or prop, or a compatible change of behaviour", "minor · 0.6.0", "Combobox, --space-section, a labels prop"],
           ["Rename or remove a prop, token or item", "major (minor before 1.0)", "tone renamed"],
         ]}
       />

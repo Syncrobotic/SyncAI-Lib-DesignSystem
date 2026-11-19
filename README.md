@@ -2,7 +2,7 @@
 
 # SYNCROBOTIC Design System
 
-**Interfaces for the people who run robots.** The design language behind every SYNCROBOTIC product: design tokens, 84 React components and 71 ready-made blocks and patterns, shipped as a [shadcn/ui](https://ui.shadcn.com) registry for Tailwind CSS v4. Components install into your project as source you can read and change.
+**Interfaces for the people who run robots.** The design language behind every SYNCROBOTIC product: design tokens, 87 React components, 43 blocks and 28 patterns, shipped as a [shadcn/ui](https://ui.shadcn.com) registry for Tailwind CSS v4. Components install into your project as source you can read and change.
 
 [Documentation](https://design-system.syncrobotic.me) · [Components](https://design-system.syncrobotic.me/docs/components/button) · [Blocks](https://design-system.syncrobotic.me/blocks) · [Changelog](CHANGELOG.md) · [Roadmap](ROADMAP.md)
 
@@ -18,8 +18,8 @@
 Operators control fleets of robots from a console in a control room and from a phone outdoors, one-handed, sometimes in a hurry. Every rule in the system follows from that.
 
 - **Solid red means stop.** The emergency stop is the only solid red on any screen. One touch stops, holding stops every robot, and release takes a deliberate slide. Everything else that is wrong is a tint, a shape and a word.
-- **Colour is for what needs someone.** A calm fleet is grey, busy or idle. Amber needs attention, red needs someone now, and blue marks only a process someone is waiting on.
-- **Made for one thumb, outdoors.** 44 px touch targets, and every status as a shape and a word, so it reads in glare and without colour vision.
+- **Colour is for what needs someone.** A calm fleet is grey, busy or idle. Amber needs attention, red needs someone now: stopped, failed. Blue marks only a process someone is waiting on.
+- **Made for one thumb, outdoors.** At least 44 px on touch (36 with a mouse only), and every status a shape and a word, colour only when it is abnormal, so it reads in glare and without colour vision.
 - **UI only.** Components never send commands. The app sends, waits for the robot, falls back to Bluetooth and passes the result back as `state`, so every component can be tested on its own.
 
 ## Quick start
@@ -54,7 +54,7 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 | | |
 | --- | --- |
 | **Foundations** | Principles, colour, typography, spacing, radius, elevation, motion, iconography, accessibility, alarms and data visualisation, each with its tokens and the rules for using them, plus an [icon set](https://design-system.syncrobotic.me/icons) that gives each icon one meaning, with robot icons Lucide lacks drawn to match. Tokens also ship as [DTCG JSON](public/tokens) for design tools, in light, dark and high contrast. |
-| **91 components** | General UI on Radix primitives, a charts component on Recharts, building blocks for data tools (filters, data grid, text diff, image grid), and the robot shell: emergency stop, slide to release, dock and dynamic island. |
+| **87 components** | General UI on Radix primitives, a charts component on Recharts, building blocks for data tools (filters, data grid, text diff, image grid), and the robot shell: emergency stop, slide to release, dock and dynamic island. |
 | **43 blocks, 28 patterns** | Blocks are whole screens and sections in two groups: Application (shells, including an action-rail page, stats, cards, sign-in, settings, forms, wizards) and Solutions for robot operations (fleet operations, data operations with a keyboard-first review queue, users and access, incidents, maintenance, firmware rollout, AI agents). Patterns are ready-made uses of one component (charts, timelines, dialogs, sheets) and live on that component's page. Both install the same way. |
 
 <details>
@@ -70,7 +70,8 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 | Navigation | `tabs`, `pagination`, `breadcrumb`, `accordion`, `page-header`, `load-more`, `stepper`, `scrollspy`, `navigation-menu` |
 | Overlays | `dialog`, `alert-dialog`, `sheet`, `popover`, `tooltip`, `dropdown-menu`, `command` |
 | Robot shell | `tray`, `stop-button`, `slide-to-release`, `dock`, `island` |
-| Hooks | `use-long-press`, `use-slide-release`, `use-debounce`, `use-hotkeys` |
+| Icons | `robot-icons` (robot icons Lucide lacks, drawn to match) |
+| Hooks | `use-long-press`, `use-slide-release`, `use-presence`, `use-debounce`, `use-hotkeys` |
 
 </details>
 
@@ -79,7 +80,7 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 
 | Group | Type | Blocks |
 | --- | --- | --- |
-| Application | App shell | `app-shell`, `top-bar-shell`, `app-shell-mobile-tabs` |
+| Application | App shell | `app-shell`, `top-bar-shell`, `app-shell-mobile-tabs`, `action-rail-shell` |
 | Application | Stats | `stats-cards`, `stats-meters`, `stats-filtered` |
 | Application | Card | `robot-status-card`, `card-site`, `card-mission` |
 | Application | Sign-in | `sign-in`, `auth-passkey`, `auth-invite` |
@@ -100,7 +101,7 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 | Patterns: Sheet | Sheet | `sheet-robot-detail`, `sheet-filters` |
 | Patterns: Timeline | Timeline | `timeline-activity`, `timeline-audit` |
 | Solutions | Fleet operations | `console-overview`, `map-workspace`, `list-detail`, `event-log`, `fleet-table`, `mission-schedule` |
-| Solutions | Data operations | `data-catalog`, `dataset-detail`, `governance-todo` |
+| Solutions | Data operations | `data-catalog`, `dataset-detail`, `governance-todo`, `review-queue` |
 | Solutions | Users and access | `users-roles`, `users-invitations`, `users-audit-log` |
 | Solutions | Incidents | `incident-queue`, `incident-detail` |
 | Solutions | Maintenance | `maintenance-due`, `maintenance-work-order` |
@@ -111,12 +112,12 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 
 ## Quality you can rely on
 
-The rules are not a style guide that drifts: CI enforces them on every change.
+The rules are not a style guide that drifts: checks enforce them. On every pull request: tokens, registry, rules, motion, versions, DTCG, types, tests, build. Before a release (pull requests into `stage`): axe and screenshots of every story.
 
-- **Accessibility.** Every story, in dark and light, is checked with axe against WCAG 2.2 AA. Status colours are validated for colour-vision deficiency, and the warning and danger pair stays apart for deutan eyes.
-- **Visual regression.** Every state of every component is a screenshot compared with its baseline in both themes; a change to how anything looks needs an approved new baseline.
-- **Tokens only.** Lint rejects raw colours, arbitrary lengths, off-scale spacing, type sizes and weights, native number inputs (NumberField replaces them) and icons outside the icon set. A check walks every page for nested corners that break the radius rule.
-- **Installs for real.** Every registry item is installed into a fresh Next.js app, type-checked and built.
+- **Accessibility.** Before a release, every story, in dark and light, is checked with axe against WCAG 2.2 AA. Status colours are validated for colour-vision deficiency, and the warning and danger pair stays apart for deutan eyes.
+- **Visual regression.** Before a release, every state of every component is a screenshot compared with its baseline in both themes; a change to how anything looks needs an approved new baseline.
+- **Tokens only.** Lint rejects raw colours, arbitrary lengths, off-scale spacing, type sizes and weights, native number inputs (NumberField replaces them) and icons outside the icon set. A local check (`npm run check:radius`) walks the foundation, component and block pages for nested corners that break the radius rule.
+- **Installs for real.** On a pull request that touches the registry, every item is installed into a fresh Next.js app, type-checked and built.
 - **Versioned per item.** Each component carries its own version and changelog, so a team knows when to re-install. The [upgrading guide](https://design-system.syncrobotic.me/docs/upgrading) lists them.
 
 ## For AI agents
@@ -124,7 +125,7 @@ The rules are not a style guide that drifts: CI enforces them on every change.
 Coding agents can read the whole kit without scraping the site:
 
 - **`/llms.txt`** lists every component and block with a one-line summary; **`/llms-full.txt`** is everything in one file: the design language, every block, and every component with when to use it.
-- **Markdown twins.** Every component, block and foundation page has a Markdown version at its URL plus `.md`, for example `/docs/components/button.md`.
+- **Markdown twins.** Every component and block page has a Markdown version at its URL plus `.md`, for example `/docs/components/button.md`. A foundation page's twin carries the whole design language.
 - **Agent skill.** `npx shadcn add @syncrobotic/agent-skill` installs the workflow and the design language into `.claude/skills/syncrobotic-ui/`.
 - **MCP server** (read-only, no sign-in): `claude mcp add --transport http syncrobotic https://design-system.syncrobotic.me/mcp`. Tools: `search`, `get_item`, `get_install_command`, `get_design_language` and `get_checklist`.
 
