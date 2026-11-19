@@ -207,7 +207,7 @@ export function TimePicker({
           aria-invalid={f?.invalid || undefined}
           disabled={disabled}
           data-empty={!value}
-          className={cn(field, "press text-left data-[empty=true]:text-muted-foreground disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground", className)}
+          className={cn(field, "press text-left data-[empty=true]:text-muted-foreground disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:ring-border", className)}
           onPointerDown={() => setNav("pointer")}
           onKeyDown={() => setNav("key")}
         >

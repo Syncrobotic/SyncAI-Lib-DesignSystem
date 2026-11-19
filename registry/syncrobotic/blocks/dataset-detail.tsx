@@ -141,9 +141,12 @@ export function DatasetDetail({ name = "Night parking lot people", reference = "
               <h3 id="splits" className="text-sm font-bold">
                 Splits
               </h3>
-              <div className="flex h-2 overflow-hidden rounded-xs bg-muted" role="img" aria-label="train 80 %, val 10 %, test 10 %">
+              {/* Each split is its own segment, 2 px apart, in three steps of grey that stay apart from one another and from
+                  the card; none of them is the empty track. */}
+              <div className="flex h-2 gap-0.5 overflow-hidden rounded-xs" role="img" aria-label="train 80 %, val 10 %, test 10 %">
                 <span className="bg-foreground" style={{ width: "80%" }} />
                 <span className="bg-muted-foreground" style={{ width: "10%" }} />
+                <span className="bg-input" style={{ width: "10%" }} />
               </div>
               <ul className="flex gap-4 text-xs text-muted-foreground">
                 {splits.map((s) => (

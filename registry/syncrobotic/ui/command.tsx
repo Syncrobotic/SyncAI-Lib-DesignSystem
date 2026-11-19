@@ -10,8 +10,17 @@ import { cn } from "@/lib/utils"
 /**
  * A filterable list you drive from the keyboard: type to narrow, ↑↓ to move, Enter to run. Built on cmdk.
  * It remembers whether the keyboard or the mouse moved last (data-nav), so the highlighted row shows its ring only in
- * keyboard use; under the pointer it keeps the calm fill.
+ * keyboard use; under the pointer it keeps the calm fill. Until someone uses it (data-nav="rest") no row is ringed: a
+ * list on a page that nobody has touched shows no focus.
  */
+// The last way anyone moved on the page: keys or a pointer. A palette opened with ⌘K takes focus from the keyboard and
+// rings its row at once; one opened with a click, or a list nobody has touched, does not.
+let lastInput: "key" | "pointer" = "pointer"
+if (typeof document !== "undefined") {
+  document.addEventListener("keydown", () => (lastInput = "key"), true)
+  document.addEventListener("pointerdown", () => (lastInput = "pointer"), true)
+}
+
 /** Scroll an item into view inside its own list only, never the page around it. */
 function scrollWithinList(el: HTMLElement) {
   const list = el.closest<HTMLElement>("[cmdk-list]")
@@ -22,8 +31,8 @@ function scrollWithinList(el: HTMLElement) {
   else if (r.bottom > l.bottom) list.scrollTop += r.bottom - l.bottom
 }
 
-export function Command({ className, onKeyDown, onPointerMove, ref, ...props }: React.ComponentProps<typeof CommandPrimitive>) {
-  const [nav, setNav] = React.useState<"key" | "pointer">("key")
+export function Command({ className, onKeyDown, onPointerMove, onFocus, ref, ...props }: React.ComponentProps<typeof CommandPrimitive>) {
+  const [nav, setNav] = React.useState<"rest" | "key" | "pointer">("rest")
   const root = React.useRef<HTMLDivElement | null>(null)
   // cmdk keeps the highlighted row in view with scrollIntoView, which also scrolls the page: an inline list further down
   // pulled the whole page to it as it mounted. Here the rows (and group headings) scroll their own list only.
@@ -57,6 +66,10 @@ export function Command({ className, onKeyDown, onPointerMove, ref, ...props }: 
       onPointerMove={(e) => {
         if (e.pointerType === "mouse") setNav("pointer")
         onPointerMove?.(e)
+      }}
+      onFocus={(e) => {
+        if (lastInput === "key") setNav("key")
+        onFocus?.(e)
       }}
       className={cn("group/command flex size-full flex-col overflow-hidden bg-popover text-popover-foreground", className)}
       {...props}

@@ -49,12 +49,12 @@ export function AvatarImage({ className, ...props }: React.ComponentProps<typeof
   return <AvatarPrimitive.Image data-slot="avatar-image" className={cn(inner, "aspect-square object-cover", className)} {...props} />
 }
 
-/** Initials (or an icon) while the image loads or when there is none. */
+/** Initials (or an icon) while the image loads or when there is none: ink on --track, so the circle reads on any surface. */
 export function AvatarFallback({ className, ...props }: React.ComponentProps<typeof AvatarPrimitive.Fallback>) {
   return (
     <AvatarPrimitive.Fallback
       data-slot="avatar-fallback"
-      className={cn(inner, "flex items-center justify-center bg-muted font-medium text-muted-foreground [&_svg]:size-1/2", className)}
+      className={cn(inner, "flex items-center justify-center bg-track font-medium text-foreground [&_svg]:size-1/2", className)}
       {...props}
     />
   )
@@ -83,7 +83,9 @@ export function AvatarBadge({ status, className, children, ...props }: React.Com
 
 /**
  * A row of overlapping avatars. With `max`, the ones past it fold into a "+N" avatar; give `label` (who they are, in
- * words) so a screen reader hears everyone, not just the faces shown.
+ * words) so a screen reader hears everyone, not just the faces shown. Each avatar is ringed 2 px in the page colour
+ * (on a card, pass `*:data-[slot=avatar]:ring-card`) and overlaps the next by 4 px, so the stack reads as separate faces
+ * and no initials are cut.
  */
 export function AvatarGroup({
   max,
@@ -102,7 +104,7 @@ export function AvatarGroup({
       data-slot="avatar-group"
       role={label ? "group" : undefined}
       aria-label={label}
-      className={cn("flex items-center -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background", className)}
+      className={cn("flex items-center -space-x-1 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background", className)}
       {...props}
     >
       {shown}
@@ -118,7 +120,7 @@ export function AvatarGroupCount({ size = "md", className, children, ...props }:
       data-slot="avatar"
       data-size={size}
       className={cn(
-        "relative flex shrink-0 items-center justify-center rounded-full bg-secondary font-medium text-foreground tabular-nums",
+        "relative flex shrink-0 items-center justify-center rounded-full bg-track font-medium text-foreground tabular-nums",
         sizes[size],
         className,
       )}

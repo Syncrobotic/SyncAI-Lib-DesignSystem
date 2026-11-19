@@ -202,7 +202,7 @@ export function DataGridTable({
                 <tr key={`sk-${i}`} aria-hidden="true">
                   {table.getVisibleLeafColumns().map((c) => (
                     <td key={c.id} className={cn(cellPad, density === "dense" ? "h-(--h-md)" : "h-(--h-row)", "border-b border-border")}>
-                      <span className="block h-3 w-3/4 animate-breath rounded-xs bg-muted" />
+                      <span className="block h-3 w-3/4 animate-breath rounded-xs bg-track" />
                     </td>
                   ))}
                 </tr>

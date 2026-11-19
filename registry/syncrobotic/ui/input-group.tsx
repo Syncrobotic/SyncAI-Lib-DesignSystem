@@ -48,8 +48,9 @@ export function InputGroup({
         // The focus ring belongs to the whole group, not the bare text box inside it.
         "has-[input:focus-visible]:outline-2 has-[input:focus-visible]:outline-offset-2 has-[input:focus-visible]:outline-ring",
         "has-[[aria-invalid=true]]:ring-2 has-[[aria-invalid=true]]:ring-danger",
-        // Disabled reads as a muted surface, not a faded one, so its text keeps enough contrast to be read.
-        "has-[input:disabled]:cursor-not-allowed has-[input:disabled]:bg-muted has-[input:disabled]:text-muted-foreground",
+        // Disabled reads as a muted surface, not a faded one, so its text keeps enough contrast to be read; its edge steps back
+        // to --border, so in the dark too it no longer looks like a field you can fill in.
+        "has-[input:disabled]:cursor-not-allowed has-[input:disabled]:bg-muted has-[input:disabled]:text-muted-foreground has-[input:disabled]:ring-border",
         // Text sits 8 px from an addon, 12 px from a bare edge.
         "[&_[data-slot=input-group-addon]+[data-slot=input]]:pl-2 [&_[data-slot=input]:has(+[data-slot=input-group-addon])]:pr-2",
         "[&_[data-slot=input]]:h-full [&_[data-slot=input]]:rounded-none [&_[data-slot=input]]:bg-transparent [&_[data-slot=input]]:ring-0 [&_[data-slot=input]]:focus-visible:outline-none",

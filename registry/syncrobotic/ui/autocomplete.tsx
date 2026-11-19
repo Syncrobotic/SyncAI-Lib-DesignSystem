@@ -103,7 +103,7 @@ export function Autocomplete({
             "flex w-full min-w-0 items-center rounded-sm bg-card ring-1 ring-input ring-inset transition-shadow duration-(--motion-fast) ease-(--ease-standard)",
             "has-[input:focus-visible]:outline-2 has-[input:focus-visible]:outline-offset-2 has-[input:focus-visible]:outline-ring",
             f?.invalid && "ring-2 ring-danger",
-            disabled && "bg-muted text-muted-foreground",
+            disabled && "bg-muted text-muted-foreground ring-border",
             size === "sm" ? "h-(--h-sm)" : "h-(--h-md)",
             className,
           )}

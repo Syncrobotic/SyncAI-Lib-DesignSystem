@@ -18,7 +18,8 @@ export const ResizablePanel = Panel
 
 /**
  * The line between two panels. The hit area is wider than the line; `withHandle` shows a grip pill in the middle, which
- * tells touch users it can be dragged.
+ * tells touch users it can be dragged. The grip is --input (3:1, like any control edge) ringed in the card colour, and keeps
+ * its 6 px however thin the line it sits on.
  */
 export function ResizableHandle({ withHandle, className, ...props }: React.ComponentProps<typeof PanelResizeHandle> & { withHandle?: boolean }) {
   return (
@@ -39,7 +40,7 @@ export function ResizableHandle({ withHandle, className, ...props }: React.Compo
       {withHandle && (
         <span
           aria-hidden="true"
-          className="z-10 h-8 w-1.5 rounded-full bg-border ring-2 ring-background group-hover/handle:bg-muted-foreground group-data-[panel-group-direction=vertical]/handle:h-1.5 group-data-[panel-group-direction=vertical]/handle:w-8 group-data-[resize-handle-state=drag]/handle:bg-ring"
+          className="z-10 h-8 w-1.5 shrink-0 rounded-full bg-input ring-2 ring-card group-hover/handle:bg-muted-foreground group-data-[panel-group-direction=vertical]/handle:h-1.5 group-data-[panel-group-direction=vertical]/handle:w-8 group-data-[resize-handle-state=drag]/handle:bg-ring"
         />
       )}
     </PanelResizeHandle>

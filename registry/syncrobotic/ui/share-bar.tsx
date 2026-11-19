@@ -57,7 +57,7 @@ export function ShareBar({
       role="img"
       aria-label={`${label}: ${shown.map((s) => `${s.label} ${fmt(s.value)}`).join(", ")}`}
       data-slot="share-bar"
-      className={cn("flex w-full gap-0.5 overflow-hidden rounded-full bg-muted", size === "sm" ? "h-2" : "h-2.5", !legend && className)}
+      className={cn("flex w-full gap-0.5 overflow-hidden rounded-full bg-track", size === "sm" ? "h-2" : "h-2.5", !legend && className)}
     >
       {shown.map((s) => (
         <span key={s.key} title={`${s.label}: ${fmt(s.value)} (${pct(s.value).toFixed(1)} %)`} className={cn("h-full", tones[s.tone])} style={{ width: `${pct(s.value)}%` }} />

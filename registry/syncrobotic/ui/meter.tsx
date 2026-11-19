@@ -39,7 +39,7 @@ export function Meter({
   const pct = Math.min(100, Math.max(0, ((value - min) / (max - min)) * 100))
   const text = `${value}${unit === "%" ? " %" : unit ? ` ${unit}` : ""}`
   const bar = (
-    <span aria-hidden="true" className={cn("relative block h-2 overflow-hidden rounded-full bg-muted", inline ? "w-20" : "w-full")}>
+    <span aria-hidden="true" className={cn("relative block h-2 overflow-hidden rounded-full bg-track", inline ? "w-20" : "w-full")}>
       <span
         className={cn(
           "absolute inset-y-0 left-0 rounded-full transition-[width] duration-(--motion-base) ease-(--ease-standard)",

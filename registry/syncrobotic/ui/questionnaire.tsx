@@ -156,7 +156,7 @@ export function Questionnaire({
           aria-valuemin={0}
           aria-valuemax={100}
           aria-valuenow={Math.round(pct)}
-          className="h-1 overflow-hidden rounded-full bg-muted"
+          className="h-1 overflow-hidden rounded-full bg-track"
         >
           <div className="h-full rounded-full bg-foreground transition-[width] duration-(--motion-base) ease-(--ease-standard)" style={{ width: `${pct}%` }} />
         </div>

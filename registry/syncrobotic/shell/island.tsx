@@ -102,7 +102,7 @@ export function Island({
       <div className="flex h-(--h-md) items-center gap-1">
         <button type="button" aria-expanded={open === "name"} onClick={() => toggle("name")} className={cn(zone("name"), "min-w-0 flex-1 text-left")}>
           <span className="relative shrink-0">
-            {avatar ?? <span className="block size-8 rounded-full bg-muted" />}
+            {avatar ?? <span className="block size-8 rounded-full bg-track" />}
             <StatusGlyph status={status} className="absolute -right-0.5 -bottom-0.5 rounded-full bg-float" />
           </span>
           <span className="truncate text-sm font-medium">{name}</span>
@@ -119,8 +119,8 @@ export function Island({
         >
           {loading ? (
             <>
-              <span className="block h-3 w-5 animate-breath rounded-xs bg-muted" />
-              <span className="block h-3 w-6 animate-breath rounded-xs bg-muted" />
+              <span className="block h-3 w-5 animate-breath rounded-xs bg-track" />
+              <span className="block h-3 w-6 animate-breath rounded-xs bg-track" />
             </>
           ) : (
             <>
