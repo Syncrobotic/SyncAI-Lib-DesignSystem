@@ -412,8 +412,8 @@
     "hash": "c3829fba8b11c4df"
   },
   "console-overview": {
-    "version": "0.17.1",
-    "hash": "4299d9f4e625e85b"
+    "version": "0.17.2",
+    "hash": "bbd8bc57be5dc3a3"
   },
   "list-detail": {
     "version": "0.15.0",
@@ -612,8 +612,8 @@
     "hash": "797512631022eba0"
   },
   "timeline-audit": {
-    "version": "0.13.0",
-    "hash": "caa0dd54893d249e"
+    "version": "0.17.2",
+    "hash": "9c8b53e25ac75b5d"
   },
   "wizard-commission": {
     "version": "0.9.0",
@@ -636,12 +636,12 @@
     "hash": "83449db930cecfc4"
   },
   "incident-queue": {
-    "version": "0.15.0",
-    "hash": "39a2d19ef65fbaaf"
+    "version": "0.17.2",
+    "hash": "390c929d6a466f77"
   },
   "incident-detail": {
-    "version": "0.13.0",
-    "hash": "9d1ae6273a4f036c"
+    "version": "0.17.2",
+    "hash": "fd0f4bbaf8a6e262"
   },
   "maintenance-due": {
     "version": "0.15.0",
@@ -660,8 +660,8 @@
     "hash": "280a019951addb12"
   },
   "agent-runs": {
-    "version": "0.17.1",
-    "hash": "0c2a67501f866bdd"
+    "version": "0.17.2",
+    "hash": "ad586b5f4d62a7fd"
   },
   "agent-trace": {
     "version": "0.17.1",

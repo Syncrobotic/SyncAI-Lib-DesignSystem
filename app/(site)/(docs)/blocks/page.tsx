@@ -40,7 +40,8 @@ export default function BlocksPage() {
             <Reveal className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {types.map((t) => {
                 const list = blocksOfType(t.slug)
-                const first = list[0]
+                // The card shows the block that best stands for the type: its cover if one is marked, else the first.
+                const first = list.find((b) => b.cover) ?? list[0]
                 return (
                   <AppearItem key={t.slug} className="flex">
                     {/* The screenshot is framed (it is a picture of a screen); the words under it are not boxed. */}
@@ -56,6 +57,7 @@ export default function BlocksPage() {
                           height={first.height}
                           fit={first.fit}
                           ratio={16 / 10}
+                          view={first.thumb}
                         />
                       </div>
                       <div className="flex flex-1 flex-col gap-1">

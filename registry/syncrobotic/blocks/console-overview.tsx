@@ -1,4 +1,4 @@
-// @syncrobotic/console-overview v0.17.1 · update: npx shadcn add @syncrobotic/console-overview --overwrite
+// @syncrobotic/console-overview v0.17.2 · update: npx shadcn add @syncrobotic/console-overview --overwrite
 "use client"
 
 import * as React from "react"
@@ -26,7 +26,6 @@ export function ConsoleOverview() {
       title="Overview"
       environment="staging"
       user={{ name: "Mei Lin", initials: "ML" }}
-      onSearch={() => {}}
       actions={
         // On phones the action is its icon (named for screen readers) so the page title is not cut.
         <Button size="sm" className="max-sm:w-(--h-sm) max-sm:px-0">

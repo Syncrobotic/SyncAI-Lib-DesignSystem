@@ -4027,8 +4027,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "One search: the table filter (Search name or site); the top-bar search box is gone from this page."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -5997,8 +6002,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Filter segments are compact with counts."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -6227,8 +6237,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Filter segments are compact; Resolved shows its count."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -6270,8 +6285,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Post update is disabled until there is text, and says why beside it (Write what changed first)."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -6461,8 +6481,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-19",
+            "note": "Filter segments are compact with counts (All 5, Needs someone 2, Running 1), like the fleet table."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
