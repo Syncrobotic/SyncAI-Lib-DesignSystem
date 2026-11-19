@@ -12,6 +12,7 @@ Everything here is a token in `syncrobotic-theme.css`; use the token, never the 
 - Focus ring is the foreground colour (`--ring`), so focus never looks like a status.
 - Selected controls (segmented control, toggle) are inverted. Current page in navigation: muted fill + weight; hover: accent.
 - Charts: `--chart-1…5` for series identity in a fixed order, off the status hues; slot 5 is grey for Other or an earlier period. Up to five series in lines, bars and stacks; up to three (slots 1–3) in scatter plots and on maps, where any two marks can touch. A sixth is folded into Other, never a new colour. Never status colours for series. Pick the form from the question first (/docs/foundations/data-visualisation).
+- Annotations on images (boxes and points over a photo): line style first, colour second. Predicted solid 2 px (`--annotate-predicted`), ground truth dashed 2 px (`--annotate-truth`), the previous version dotted at `--annotate-fade` (`--annotate-previous`), selected 3 px with corner handles (`--annotate-selected`, the focus ink). Every stroke is drawn first in `--annotate-halo`, 2 px wider (3:1 against it), so it shows on light and dark photos. The class is a word in the label, never a colour; never status colours.
 - High contrast: `data-contrast="more"` on `<html>` or a container, in light or dark, for bright sun and low vision: 7:1 text and status, 3:1 edges, nothing translucent. Set it from `matchMedia("(prefers-contrast: more)")` or a setting; meanings do not change.
 
 ## Type
@@ -23,6 +24,7 @@ Everything here is a token in `syncrobotic-theme.css`; use the token, never the 
 - Heights are tokens: `--h-sm` 36 (mouse only; 44 on touch), `--h-md` 44 (minimum interactive), `--h-lg` 48, `--h-row` 56 (rows, bars), `--h-stop` 56 (stop, wake and slide to release only). Never hard-code a height: use the token so density works.
 - Density: `data-density="glove"` on `<html>` or a container (48 px controls, 64 px rows and stop) for gloved outdoor work; `data-density="compact"` (36 px controls, 40 px rows, mouse only) for a control-room console. The stop never shrinks.
 - App shell: panels 8 px apart and from the edge, 16 px inside each. Sheets float 8 px from the screen's edges too, every corner rounded.
+- Action rail (a page that leads to one next step): the right column holds only that step, its title, one line, one `--h-lg` primary and a few small actions. On phones it is a floating bar fixed above the safe area, and the page is padded by its height. ← and Esc go back up a level, never while typing or with an overlay open.
 - A top bar over plain page content is invisible at the top with its first and last controls on the content's edge; on scroll it gathers into a floating panel whose edges are the content column's.
 
 ## Radius

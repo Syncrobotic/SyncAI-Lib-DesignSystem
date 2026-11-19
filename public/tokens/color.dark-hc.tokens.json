@@ -164,6 +164,26 @@
     "chart-5": {
       "$type": "color",
       "$value": "#8f8f98"
+    },
+    "annotate-predicted": {
+      "$type": "color",
+      "$value": "{color.chart-1}"
+    },
+    "annotate-truth": {
+      "$type": "color",
+      "$value": "{color.chart-2}"
+    },
+    "annotate-previous": {
+      "$type": "color",
+      "$value": "{color.muted-foreground}"
+    },
+    "annotate-selected": {
+      "$type": "color",
+      "$value": "{color.ring}"
+    },
+    "annotate-halo": {
+      "$type": "color",
+      "$value": "#000000"
     }
   },
   "shadow": {
