@@ -2,6 +2,7 @@ import registry from "../registry.json"
 import { placement } from "./block-types"
 import { AppShellDemo } from "./app-shell-demo"
 import { TopBarShellDemo } from "./top-bar-shell-demo"
+import { ActionRailShellDemo } from "./action-rail-shell-demo"
 import { SignIn } from "@/registry/syncrobotic/blocks/sign-in"
 import { ErrorPage, LoadingPage, NoAccessPage, NotFoundPage, OfflinePage } from "@/registry/syncrobotic/blocks/status-pages"
 import { RecordForm } from "@/registry/syncrobotic/blocks/record-form"
@@ -10,6 +11,7 @@ import { UsersRoles } from "@/registry/syncrobotic/blocks/users-roles"
 import { DataCatalog } from "@/registry/syncrobotic/blocks/data-catalog"
 import { DatasetDetail } from "@/registry/syncrobotic/blocks/dataset-detail"
 import { GovernanceTodo } from "@/registry/syncrobotic/blocks/governance-todo"
+import { ReviewQueue } from "@/registry/syncrobotic/blocks/review-queue"
 import { ConsoleOverview } from "@/registry/syncrobotic/blocks/console-overview"
 import { EventLog } from "@/registry/syncrobotic/blocks/event-log"
 import { ListDetail } from "@/registry/syncrobotic/blocks/list-detail"
@@ -302,6 +304,8 @@ const meta: Record<string, Meta> = {
   "data-catalog": { viewport: "desktop", height: 760, render: () => <DataCatalog /> },
   "dataset-detail": { viewport: "desktop", height: 820, render: () => <DatasetDetail /> },
   "governance-todo": { viewport: "desktop", height: 600, render: () => <GovernanceTodo /> },
+  // Keyboard review: a focused screen of its own, without the shell, so nothing competes with the item.
+  "review-queue": { viewport: "desktop", thumbWidth: 960, height: 820, render: () => <ReviewQueue /> },
   "settings-page": { viewport: "desktop", height: 820, render: () => <SettingsPage /> },
   "record-form": { viewport: "desktop", height: 820, render: () => <RecordForm /> },
   "users-roles": { viewport: "desktop", height: 620, render: () => <UsersRoles /> },
@@ -339,6 +343,7 @@ const meta: Record<string, Meta> = {
     ),
   },
   "top-bar-shell": { viewport: "desktop", height: 720, render: () => <TopBarShellDemo /> },
+  "action-rail-shell": { viewport: "desktop", height: 720, render: () => <ActionRailShellDemo /> },
   "console-overview": { viewport: "desktop", height: 900, render: () => <ConsoleOverview /> },
   "list-detail": { viewport: "desktop", height: 720, render: () => <ListDetail /> },
   "event-log": { viewport: "desktop", height: 720, render: () => <EventLog /> },

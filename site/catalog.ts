@@ -44,10 +44,12 @@ export type StoryFile =
   | "page-header"
   | "chip-group"
   | "filter-form"
+  | "filters"
   | "search-field"
   | "theme-toggle"
   | "route-progress"
   | "data-pieces"
+  | "image-grid"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
@@ -245,10 +247,26 @@ const entries: Record<string, Entry> = {
       "Icons inside are 16, 20 or 24 px; the size prop sets them.",
     ],
   },
+  "text-diff": {
+    group: "Display",
+    /** Side by side needs the row: examples use the card's full width. */
+    wide: true,
+    examples: { file: "display", prefix: "TextDiff" },
+    rules: [
+      "Inserted words are a grey block with an underline; removed words are struck through in secondary text. A removal is not an error: no danger, no green, no blue.",
+      "Inline for a sentence or two; side by side when people read each version whole. Side by side stacks when its container is narrower than 448 px.",
+      "Keep the summary line (+3 words, −1 word): it says how big the change is before anyone reads it.",
+      "Words are split on spaces, punctuation included; Chinese and Japanese by character.",
+    ],
+  },
   kbd: {
     group: "Display",
     examples: { file: "kbd", prefix: "Kbd" },
-    rules: ["One key per Kbd; a chord is a KbdGroup without plus signs.", "Use the platform's symbols: ⌘ on Mac, Ctrl elsewhere."],
+    rules: [
+      "One key per Kbd; a chord is a KbdGroup without plus signs.",
+      "Use the platform's symbols: ⌘ on Mac, Ctrl elsewhere.",
+      "pressed shows the key going down (it sinks and its edge darkens) while its shortcut runs; useHotkeys returns which key that is.",
+    ],
   },
   "button-group": {
     group: "Actions",
@@ -290,6 +308,17 @@ const entries: Record<string, Entry> = {
       "Filters that change what a page lists belong in the URL: shareable, bookmarkable, undone with Back.",
       "Typing applies a moment after it stops; a pick applies at once. The page number resets.",
       "It is a plain GET form, so it works before JavaScript loads. Pass onNavigate to stay client-side (Next.js: router.push / router.replace with scroll: false).",
+    ],
+  },
+  filters: {
+    group: "Inputs",
+    examples: { file: "filters", prefix: "Filters" },
+    rules: [
+      "For a query people build themselves: any field, any number of rules. For a few fixed facets use Chip group or Filter form.",
+      "Rules combine with AND, and the bar says so between the chips. There are no groups and no OR.",
+      "Keep the rules in the URL with toSearchParams and fromSearchParams, so a filtered view can be shared and undone with Back.",
+      "Show what the rules leave (\"12 of 40 robots\") next to the bar, in a polite live region.",
+      "Every label is a prop; translate the operators too.",
     ],
   },
   "search-field": {
@@ -453,7 +482,10 @@ const entries: Record<string, Entry> = {
   badge: {
     group: "Display",
     examples: { file: "display", prefix: "Badge" },
-    rules: ["Counts and short states. In list rows prefer Status eyebrow's InlineStatus."],
+    rules: [
+      "Counts and short states. In list rows prefer Status eyebrow's InlineStatus.",
+      "Test and audit results: Passed is the neutral badge with CircleCheck; Failed is tone=\"outline\" with text-danger ring-danger and CircleAlert; Not enough samples is tone=\"outline\" with text-muted-foreground and CircleDashed. Never a green pass.",
+    ],
   },
   card: { group: "Display", examples: { file: "display", prefix: "Card" }, rules: ["Never nest cards. Group rows inside one card with separators."] },
   avatar: {
@@ -573,6 +605,18 @@ const entries: Record<string, Entry> = {
       "For pictures someone should choose to see: restricted tiers, faces, number plates. Nothing loads until they ask.",
       "Neutral, not a warning colour: restricted is a property of the data, not a fault. Say why in `reason`.",
       "Each preview reveals on its own; log the reveal in `onReveal` if the data needs an audit trail.",
+    ],
+  },
+  "image-grid": {
+    wide: true,
+    group: "Display",
+    examples: { file: "image-grid", prefix: "ImageGrid" },
+    rules: [
+      "Every tile keeps its aspect box before and after the picture loads, so the grid never jumps; pictures load lazily.",
+      "Give each picture an alt that says what it shows, and its file name: the name is what a broken tile and the lightbox title show.",
+      "Picked tiles are ringed in the focus ink with a check, never a status colour. While picking, the corner button opens the lightbox.",
+      "Pictures the viewer must ask to see are `restricted`, with a `reason`; nothing loads before they ask. Log the view in `onReveal`.",
+      "Use the strip for a short row, such as what was just uploaded; for a whole dataset, the grid.",
     ],
   },
   alert: {
@@ -732,6 +776,15 @@ const entries: Record<string, Entry> = {
   // Hooks
   "use-long-press": { group: "Hooks", rules: ["Returns hold progress from 0 to 1. The emergency stop uses it for hold-to-stop-all."] },
   "use-slide-release": { group: "Hooks", rules: ["Drag, threshold and spring-back logic behind Slide to release."] },
+  "use-hotkeys": {
+    group: "Hooks",
+    rules: [
+      "Single keys only where people work through a queue by keyboard (1 Yes, 2 No, ? help); everywhere else a shortcut takes a modifier (mod+k).",
+      "Keys are ignored while someone types in a field, unless a binding sets allowInInput (Escape, mod+s).",
+      "Turn it off with enabled: false while a dialog is open, so the dialog's own keys win.",
+      "Show the keys on screen (Kbd) and in a ? dialog: a shortcut nobody can find does not exist.",
+    ],
+  },
   "use-debounce": {
     group: "Hooks",
     rules: [
@@ -856,6 +909,11 @@ const keyboard: Record<string, [string, string][]> = {
     ["↑ / ↓", "Move between section headers"],
     ["Home / End", "First or last header"],
   ],
+  "image-grid": [
+    ["Enter / Space", "Open the picture in the lightbox, or pick it while picking"],
+    ["← / →", "In the lightbox: previous or next picture"],
+    ["Esc", "Close the lightbox and return focus to the picture's tile"],
+  ],
   dialog: overlayKeys,
   "alert-dialog": [
     ["Esc", "Cancel"],
@@ -886,6 +944,12 @@ const keyboard: Record<string, [string, string][]> = {
     ["↑ ↓", "Move between radio options"],
   ],
   "copy-button": [["Enter / Space", "Copy"]],
+  filters: [
+    ["Enter", "On + Filter, open the picker; on a part of a chip, reopen that step"],
+    ["↑ / ↓", "Move through fields, operators or values; type to narrow them"],
+    ["Enter", "Choose and go to the next step; in a value box, apply"],
+    ["Esc", "Back one step; at the first step, close and return focus"],
+  ],
   "dropdown-menu": [
     ["Enter / Space / ↓", "Open the menu"],
     ["↑ / ↓", "Move between items"],

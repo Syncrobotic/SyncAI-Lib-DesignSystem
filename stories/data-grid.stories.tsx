@@ -25,6 +25,7 @@ import {
   selectColumn,
 } from "@/registry/syncrobotic/ui/data-grid"
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
+import { Filters, filterRows, type FilterField, type FilterRule } from "@/registry/syncrobotic/ui/filters"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
 
 const meta: Meta = { title: "Display/Data grid" }
@@ -348,6 +349,45 @@ export const DataGridToolbar: S = {
           <Button size="sm" variant="outline">
             <Download aria-hidden="true" /> Export
           </Button>
+        </div>
+        <DataGridTable aria-label="Robots" />
+        <DataGridPagination />
+      </DataGrid>
+    )
+  },
+}
+
+// The filters bar over a grid: the rules filter the rows in the browser and the count says what is left.
+const fleet = robots.slice(0, 40)
+const fleetFields: FilterField[] = [
+  { key: "name", label: "Robot", type: "text", placeholder: "Name or id" },
+  {
+    key: "status",
+    label: "Status",
+    type: "option",
+    multiple: true,
+    options: kinds.map((k) => ({ value: k, label: status[k].label, count: fleet.filter((r) => r.status === k).length })),
+  },
+  { key: "site", label: "Site", type: "option", options: sites.map((s) => ({ value: s, label: s, count: fleet.filter((r) => r.site === s).length })) },
+  { key: "battery", label: "Battery", type: "number", unit: "%", min: 0, max: 100, step: 5 },
+  { key: "km", label: "Odometer", type: "number", unit: "km", min: 0, step: 10 },
+]
+
+export const DataGridFiltered: S = {
+  render: function D() {
+    const [rules, setRules] = React.useState<FilterRule[]>([
+      { id: "status", field: "status", operator: "any_of", value: ["patrolling", "docked"] },
+      { id: "battery", field: "battery", operator: "gt", value: 30 },
+    ])
+    const data = React.useMemo(() => filterRows(fleet, rules, fleetFields), [rules])
+    const table = useGrid(data, columns, { initialState: { pagination: { pageSize: 6, pageIndex: 0 } } })
+    return (
+      <DataGrid table={table} emptyText="No robots match these filters.">
+        <div className="flex flex-col gap-2">
+          <Filters fields={fleetFields} value={rules} onValueChange={setRules} />
+          <p aria-live="polite" className="text-sm text-muted-foreground tabular-nums">
+            {data.length} of {fleet.length} robots
+          </p>
         </div>
         <DataGridTable aria-label="Robots" />
         <DataGridPagination />
