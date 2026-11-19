@@ -26,5 +26,5 @@ export function AlertTitle({ className, ...props }: React.ComponentProps<"p">) {
 }
 
 export function AlertDescription({ className, ...props }: React.ComponentProps<"div">) {
-  return <div data-slot="alert-description" className={cn("col-start-2 text-muted-foreground", className)} {...props} />
+  return <div data-slot="alert-description" className={cn("col-start-2 text-pretty text-muted-foreground", className)} {...props} />
 }

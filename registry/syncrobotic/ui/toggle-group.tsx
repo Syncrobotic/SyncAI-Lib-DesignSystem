@@ -31,7 +31,14 @@ export function ToggleGroup({
         "flex w-fit items-stretch",
         orientation === "vertical" && "flex-col",
         !joined && "gap-2",
+        // Ghost items have no outline to join: they sit 4 px apart and keep their own corners, so a selected one is a
+        // whole rounded fill, never a square block.
+        joined && variant === "ghost" && "gap-1",
+        // Two selected neighbours keep a line between them, so they read as two choices, not one wide block.
+        joined && variant === "outline" && orientation === "horizontal" && "[&>[data-state=on]+[data-state=on]]:border-l [&>[data-state=on]+[data-state=on]]:border-background",
+        joined && variant === "outline" && orientation === "vertical" && "[&>[data-state=on]+[data-state=on]]:border-t [&>[data-state=on]+[data-state=on]]:border-background",
         joined &&
+          variant === "outline" &&
           (orientation === "horizontal"
             ? "[&>*:not(:first-child)]:-ml-px [&>*:not(:first-child)]:rounded-l-none [&>*:not(:last-child)]:rounded-r-none"
             : "[&>*:not(:first-child)]:-mt-px [&>*:not(:first-child)]:rounded-t-none [&>*:not(:last-child)]:rounded-b-none"),

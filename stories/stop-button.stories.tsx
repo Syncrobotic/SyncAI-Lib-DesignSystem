@@ -1,6 +1,8 @@
+import type * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
 import { fn } from "@storybook/test"
 import { StopButton, WakeButton } from "@/registry/syncrobotic/shell/stop-button"
+import { States } from "./states"
 
 const meta: Meta<typeof StopButton> = {
   title: "Shell/Emergency stop",
@@ -21,3 +23,45 @@ export const OneRobotOnly: S = { args: { state: "ready", tag: undefined, onStopA
 
 export const WakeWhileLyingDown: StoryObj<typeof WakeButton> = { render: () => <WakeButton onWake={fn()} /> }
 export const BatteryTooLowToWake: StoryObj<typeof WakeButton> = { render: () => <WakeButton onWake={fn()} disabled /> }
+
+// For the docs: the states above grouped by what they are about, so the page is four examples instead of ten.
+const stop = (props: Partial<React.ComponentProps<typeof StopButton>>) => <StopButton tag="7F3A" onStop={fn()} onStopAll={fn()} {...props} />
+
+/** Ready, standing still, and a single robot (no tag, no stop-all). */
+export const StopStates: S = {
+  render: () => (
+    <States
+      items={[
+        ["Standing still", stop({ state: "idle" })],
+        ["One robot only", stop({ state: "ready", tag: undefined, onStopAll: undefined })],
+      ]}
+    />
+  ),
+}
+
+/** What the stop says while the command travels: sending, unconfirmed, the Bluetooth fallback and no connection. */
+export const ConnectionStates: S = {
+  render: () => (
+    <States
+      items={[
+        ["Sending", stop({ state: "sending" })],
+        ["Unconfirmed", stop({ state: "unconfirmed" })],
+        ["Bluetooth only", stop({ state: "bluetooth" })],
+        ["Delivered over Bluetooth", stop({ state: "bluetooth-sent" })],
+        ["No connection", stop({ state: "dead" })],
+      ]}
+    />
+  ),
+}
+
+/** Lying down the stop becomes wake and stand up; a battery too low to stand says so. */
+export const WakeStates: S = {
+  render: () => (
+    <States
+      items={[
+        ["Wake while lying down", <WakeButton key="w" onWake={fn()} />],
+        ["Battery too low to wake", <WakeButton key="b" onWake={fn()} disabled />],
+      ]}
+    />
+  ),
+}

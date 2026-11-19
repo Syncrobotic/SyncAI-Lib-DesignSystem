@@ -240,10 +240,14 @@ export function ImageGrid({
                     aria-label={labels.viewLarger(item.name)}
                     aria-haspopup="dialog"
                     onClick={() => show(i)}
-                    className="press absolute top-0 right-0 flex size-(--h-md) items-center justify-center rounded-sm text-foreground"
+                    className={cn(
+                      "press absolute top-0 right-0 flex size-(--h-md) items-center justify-center rounded-sm text-foreground",
+                      // On a small tile the plate sits in the corner of its 44 px target, so it covers less of the picture.
+                      size === "sm" && "items-start justify-end p-2",
+                    )}
                   >
                     {/* A small plate under the icon, so it reads on any picture without covering the corner. */}
-                    <span className="flex size-8 items-center justify-center rounded-xs bg-card ring-1 ring-border">
+                    <span className={cn("flex items-center justify-center bg-card ring-1 ring-border", size === "sm" ? "size-6 rounded-2xs" : "size-8 rounded-xs")}>
                       <ZoomIn aria-hidden="true" className="size-4" />
                     </span>
                   </button>
@@ -302,7 +306,9 @@ function Picked({ on }: { on: boolean }) {
         className={cn(
           "absolute top-2 left-2 flex size-6 items-center justify-center rounded-2xs ring-1",
           "transition-colors duration-(--motion-fast) ease-(--ease-standard)",
-          on ? "bg-primary text-primary-foreground ring-card" : "bg-card text-transparent ring-border",
+          // Not picked: an empty box, a card-coloured line with a foreground edge, so it reads on light and dark pictures
+          // without becoming a solid square.
+          on ? "bg-primary text-primary-foreground ring-card" : "text-transparent ring-2 ring-card ring-inset outline-1 outline-foreground",
         )}
       >
         <Check className="size-4" />

@@ -256,16 +256,19 @@ export const DataGridExpandableRows: S = {
   },
 }
 
+// Every column plus tasks: wider than the preview, so the pinned first column has something to stay in front of.
+const pinnedColumns: ColumnDef<Robot>[] = [...columns, { ...totalsColumns[3], footer: undefined }]
+
 export const DataGridPinnedAndResizable: S = {
   render: function D() {
-    const table = useGrid(robots, columns, {
+    const table = useGrid(robots, pinnedColumns, {
       enableColumnResizing: true,
       columnResizeMode: "onChange",
       initialState: { pagination: { pageSize: 6, pageIndex: 0 }, columnPinning: { left: ["name"] } },
     })
     return (
       <DataGrid table={table}>
-        <DataGridTable aria-label="Robots" className="max-w-sm" />
+        <DataGridTable aria-label="Robots" />
         <p className="text-xs text-muted-foreground">Robot stays pinned while the rest scrolls. Drag a column edge to resize; double-click resets it.</p>
       </DataGrid>
     )
@@ -298,7 +301,8 @@ export const DataGridVirtualRows: S = {
 
 export const DataGridTotalsFooter: S = {
   render: function D() {
-    const table = useGrid(six, totalsColumns)
+    // Robot stays pinned; where the grid scrolls, the totals are written out in one row that stays in view.
+    const table = useGrid(six, totalsColumns, { initialState: { pagination: { pageSize: 8, pageIndex: 0 }, columnPinning: { left: ["name"] } } })
     return (
       <DataGrid table={table}>
         <DataGridTable aria-label="Robot mileage" />

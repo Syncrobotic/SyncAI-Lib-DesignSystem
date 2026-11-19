@@ -1,5 +1,5 @@
 // Placeholder "photos" drawn in code, so stories and docs never load an external picture. Each is an SVG data URI:
-// a wall and floor in two named colours, a few pallets, and a label naming the frame. Named colours, not tokens:
+// a wall and floor in two named colours, a few pallets, and a label naming the frame, centred at the bottom. Named colours, not tokens:
 // these stand for camera pictures, which do not follow the theme.
 
 const walls = ["slategray", "lightsteelblue", "darkslategray", "cadetblue", "lightslategray", "steelblue", "dimgray", "silver"]
@@ -23,8 +23,9 @@ export function placeholderPhoto(seed: number, label: string) {
     `<polygon points="0,${horizon} 400,${horizon} 400,300 0,300" fill="${floor}"/>` +
     `<line x1="200" y1="${horizon}" x2="120" y2="300" stroke="white" stroke-width="4" stroke-dasharray="16 12" opacity="0.7"/>` +
     boxes +
-    `<rect x="12" y="258" width="${label.length * 9 + 16}" height="30" rx="4" fill="black" opacity="0.6"/>` +
-    `<text x="20" y="279" font-family="monospace" font-size="15" fill="white">${label}</text>` +
+    // The label is centred, so a square or narrow tile, which crops the sides, keeps all of it.
+    `<rect x="${200 - (label.length * 9 + 16) / 2}" y="258" width="${label.length * 9 + 16}" height="30" rx="4" fill="black" opacity="0.6"/>` +
+    `<text x="200" y="279" text-anchor="middle" font-family="monospace" font-size="15" fill="white">${label}</text>` +
     `</svg>`
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`
 }

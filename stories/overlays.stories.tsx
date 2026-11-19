@@ -293,7 +293,7 @@ export const PopoverWithForm: S = {
 
 export const TooltipOnToolbar: S = {
   render: () => (
-    <div className="flex gap-1 rounded-sm bg-card p-1 ring-1 ring-border">
+    <div className="flex w-fit gap-1 rounded-sm bg-card p-1 ring-1 ring-border">
       {[
         { l: "Rename", I: Pencil },
         { l: "Duplicate", I: Copy },

@@ -156,16 +156,18 @@ export function MissionSchedule() {
                     {l.slots.length === 0 && <span className="absolute inset-y-0 left-2 flex items-center text-xs text-muted-foreground">No missions</span>}
                     <ul aria-label={`${l.robot} missions`}>
                       {l.slots.map((s) => {
-                        // Name over time, two lines, so a two-hour bar holds both at the narrowest width. A mission
-                        // shorter than that writes its label beside the bar instead of cutting it to a few letters.
+                        // Name over time, two lines, inside the bar it names. A short mission keeps its label inside too,
+                        // cut with an ellipsis where the bar is narrow, and its full name and time in the tooltip: a
+                        // label beside the bar read as a label for the empty space next to it.
                         const short = s.end - s.start < 1.5
                         return (
                           <li
                             key={s.start}
-                            className={cn("absolute inset-y-2 flex flex-col justify-center rounded-xs text-xs leading-4", !short && "px-2", slotStyle[s.state])}
+                            title={`${s.name}, ${clock(s.start)}–${clock(s.end)}`}
+                            className={cn("absolute inset-y-2 flex flex-col justify-center rounded-xs text-xs leading-4", short ? "px-1" : "px-2", slotStyle[s.state])}
                             style={{ left: `${(s.start / HOURS) * 100}%`, width: `${((s.end - s.start) / HOURS) * 100}%` }}
                           >
-                            <span className={cn("flex flex-col", short ? "absolute left-full ml-1 rounded-2xs bg-card px-1 whitespace-nowrap text-foreground" : "min-w-0")}>
+                            <span className="flex min-w-0 flex-col">
                               <span className="truncate font-medium">{s.name}</span>
                               <span className="truncate tabular-nums">
                                 {clock(s.start)}–{clock(s.end)}

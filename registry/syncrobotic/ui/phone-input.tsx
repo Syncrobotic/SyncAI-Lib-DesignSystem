@@ -93,7 +93,9 @@ export function PhoneInput({
       >
         <SelectTrigger
           aria-label="Country"
-          className={cn("h-full w-auto shrink-0 gap-1 rounded-r-none bg-transparent px-3 ring-0", readOnly && "disabled:opacity-100")}
+          // Transparent in every state, disabled too: a fill of its own would paint over the field's inset outline, which
+          // must run unbroken round both segments.
+          className={cn("h-full w-auto shrink-0 gap-1 rounded-r-none bg-transparent px-3 ring-0 disabled:bg-transparent", readOnly && "disabled:opacity-100")}
         >
           <span className="flex items-center gap-2">
             <span aria-hidden="true">{flag(country)}</span>

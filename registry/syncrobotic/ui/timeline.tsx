@@ -1,4 +1,6 @@
 // @syncrobotic/timeline v0.15.0 · update: npx shadcn add @syncrobotic/timeline --overwrite
+"use client"
+
 import * as React from "react"
 import { StatusGlyph, type Tone, toStatus } from "@/registry/syncrobotic/shell/status-glyph"
 import { cn } from "@/lib/utils"
@@ -37,16 +39,23 @@ export function Timeline({
 }) {
   warnDensity("Timeline", legacy)
   const density = (size ?? (legacy === "dense" ? "sm" : "default")) === "sm" ? "dense" : "default"
+  const list = React.useRef<HTMLOListElement>(null)
+  const more = useMoreToTheRight(list, orientation === "horizontal")
   return (
     <TimelineCtx.Provider value={{ orientation, align, density }}>
       <ol
+        ref={list}
         data-slot="timeline"
         data-orientation={orientation}
         // A horizontal timeline scrolls; the keyboard needs to reach it.
         tabIndex={orientation === "horizontal" ? 0 : undefined}
         className={cn(
           orientation === "horizontal"
-            ? "flex w-full overflow-x-auto rounded-sm pb-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+            ? cn(
+                "flex w-full overflow-x-auto rounded-sm pb-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+                // Events past the right edge: the last visible one fades out, the cue that the row scrolls.
+                more && "[mask-image:linear-gradient(to_right,black_calc(100%-3rem),transparent)]",
+              )
             : "flex flex-col",
           className,
         )}
@@ -54,6 +63,25 @@ export function Timeline({
       />
     </TimelineCtx.Provider>
   )
+}
+
+/** Whether a sideways-scrolling list still hides events past its right edge. */
+function useMoreToTheRight(ref: React.RefObject<HTMLElement | null>, watch: boolean) {
+  const [more, setMore] = React.useState(false)
+  React.useEffect(() => {
+    const el = ref.current
+    if (!el || !watch) return
+    const update = () => setMore(el.scrollLeft < el.scrollWidth - el.clientWidth - 1)
+    update()
+    el.addEventListener("scroll", update, { passive: true })
+    const ro = typeof ResizeObserver === "undefined" ? undefined : new ResizeObserver(update)
+    ro?.observe(el)
+    return () => {
+      el.removeEventListener("scroll", update)
+      ro?.disconnect()
+    }
+  }, [ref, watch])
+  return more
 }
 
 export function TimelineItem({

@@ -126,6 +126,9 @@ export function DataGridTable({
   const cols = table.getVisibleLeafColumns().length
   const hasFooter = table.getFooterGroups().some((g) => g.headers.some((h) => h.column.columnDef.footer))
   const cellPad = density === "dense" ? "px-3" : "px-4"
+  // When the grid scrolls sideways its totals are usually off to the side, so they are written out in one row that stays
+  // in view. Whether it scrolls depends on the space it is given (a card, a tablet, a phone), not on the screen's width.
+  const overflows = edges.start || edges.end
   const pinStyle = (c: Column<unknown>): React.CSSProperties | undefined => {
     const p = c.getIsPinned()
     if (!p) return undefined
@@ -261,16 +264,16 @@ export function DataGridTable({
             <tfoot className={cn("bg-muted font-medium", maxHeight && "sticky bottom-0")}>
               {table.getFooterGroups().map((g) => (
                 <React.Fragment key={g.id}>
-                  <tr className="max-sm:hidden">
+                  <tr className={cn(overflows && "hidden")}>
                     {g.headers.map((h) => (
                       <td key={h.id} className={cn("h-(--h-md) tabular-nums", cellPad, meta(h.column).align === "right" && "text-right")}>
                         {h.isPlaceholder ? null : flexRender(h.column.columnDef.footer, h.getContext())}
                       </td>
                     ))}
                   </tr>
-                  {/* On a phone the totals' columns are usually off to the side, so they are written out in one row that
-                      stays in view: the first column's footer leads ("Total"), then each total after its column's name. */}
-                  <tr className="sm:hidden">
+                  {/* Scrolling sideways: the totals in one row held at the visible left edge. The first column's footer
+                      leads ("Total"), then each total after its column's name. */}
+                  <tr className={cn(!overflows && "hidden")}>
                     <td colSpan={cols} className="p-0">
                       <div className={cn("sticky left-0 flex w-[100cqw] flex-wrap items-center gap-x-4 gap-y-1 py-3 tabular-nums", cellPad)}>
                         {g.headers

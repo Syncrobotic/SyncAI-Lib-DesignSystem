@@ -24,8 +24,9 @@ export function EmptyState({
         </span>
       )}
       <div className="flex flex-col gap-1">
-        <p className="font-medium">{title}</p>
-        {description && <p className="text-sm text-muted-foreground">{description}</p>}
+        {/* Centred lines balanced, so a description never ends on one word alone. */}
+        <p className="font-medium text-balance">{title}</p>
+        {description && <p className="text-sm text-balance text-muted-foreground">{description}</p>}
       </div>
       {action}
     </div>
