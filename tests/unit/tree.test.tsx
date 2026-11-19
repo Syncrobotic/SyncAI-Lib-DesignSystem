@@ -26,7 +26,8 @@ const items: TreeNode[] = [
   { id: "raw.tar", label: "raw.tar" },
 ]
 
-const item = (name: string) => screen.getByRole("treeitem", { name })
+// A node's name is its label, then its meta when it has one ("images 2").
+const item = (label: string) => screen.getByRole("treeitem", { name: (n) => n === label || n.startsWith(`${label} `) })
 const focused = () => (document.activeElement as HTMLElement).getAttribute("data-tree-id")
 const key = (k: string) => fireEvent.keyDown(document.activeElement!, { key: k })
 
@@ -98,7 +99,9 @@ describe("Tree, select mode", () => {
     expect(item("b.jpg").getAttribute("aria-posinset")).toBe("2")
     expect(item("b.jpg").hasAttribute("aria-expanded")).toBe(false)
     expect(item("faces").getAttribute("aria-disabled")).toBe("true")
-    expect(item("faces").getAttribute("aria-describedby")).toBeTruthy()
+    // The name is the row's words, label then meta, so speech matches what is on screen (WCAG 2.5.3).
+    const ids = item("faces").getAttribute("aria-labelledby")!.split(" ")
+    expect(ids.map((id) => document.getElementById(id)!.textContent).join(" ")).toBe("faces No access")
     expect(screen.queryAllByRole("link")).toHaveLength(0)
   })
 
