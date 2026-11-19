@@ -52,12 +52,22 @@ export const ButtonWithIcon: S = {
   ),
 }
 
+/** Disabled says why, next to it, and the button points at the reason so a screen reader reads it too. */
 export const ButtonStates: S = {
   render: () => (
-    <div className="flex flex-wrap items-center gap-3">
-      <Button disabled>Disabled</Button>
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-wrap items-center gap-3">
+        <Button disabled aria-describedby="dispatch-why">
+          Dispatch
+        </Button>
+        <span id="dispatch-why" className="text-sm text-muted-foreground">
+          Robot is offline
+        </span>
+      </div>
       {/* The spinner appears 300 ms after loading starts */}
-      <Button loading>Saving</Button>
+      <div>
+        <Button loading>Saving</Button>
+      </div>
     </div>
   ),
 }

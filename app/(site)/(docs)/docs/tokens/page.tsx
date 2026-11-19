@@ -37,7 +37,7 @@ export default function TokensPage() {
       <TokenTable
         head={["File", "Holds"]}
         rows={files.map((f) => [
-          <a key="f" href={`/tokens/${f.file}`} className="font-mono text-sm text-foreground underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground">
+          <a key="f" href={`/tokens/${f.file}`} className="inline-flex min-h-(--h-sm) items-center font-mono text-sm text-foreground underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground">
             {f.file}
           </a>,
           <span key="h" className="text-muted-foreground">

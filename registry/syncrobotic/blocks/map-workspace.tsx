@@ -1,4 +1,4 @@
-// @syncrobotic/map-workspace v0.13.0 · update: npx shadcn add @syncrobotic/map-workspace --overwrite
+// @syncrobotic/map-workspace v0.13.1 · update: npx shadcn add @syncrobotic/map-workspace --overwrite
 "use client"
 
 import * as React from "react"
@@ -103,7 +103,7 @@ export function MapWorkspace() {
               <h2 className="font-bold">Patrol dog {robot.id}</h2>
               <InlineStatus status={robot.tone}>{robot.status}</InlineStatus>
             </div>
-            <Meter value={robot.battery} low={30} critical={15} label="Battery" />
+            <Meter value={robot.battery} low={30} label="Battery" />
             <div className="flex gap-2">
               <Button variant="secondary" size="sm">
                 <Pause aria-hidden="true" /> Pause

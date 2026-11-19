@@ -662,8 +662,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.13.1",
         "changelog": [
+          {
+            "version": "0.13.1",
+            "date": "2026-11-19",
+            "note": "Each segment's hit area reaches the track's edges, so a finger gets 44 px though the segment draws 36."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -3264,8 +3269,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.13.1",
         "changelog": [
+          {
+            "version": "0.13.1",
+            "date": "2026-11-19",
+            "note": "Battery meters take only `low`: a low battery needs attention (warning), it is not a failure (danger)."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -3538,8 +3548,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.13.1",
         "changelog": [
+          {
+            "version": "0.13.1",
+            "date": "2026-11-19",
+            "note": "Battery meters take only `low`: a low battery needs attention (warning), it is not a failure (danger)."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -3646,8 +3661,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.13.1",
         "changelog": [
+          {
+            "version": "0.13.1",
+            "date": "2026-11-19",
+            "note": "Battery meters take only `low`: a low battery needs attention (warning), it is not a failure (danger)."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -4550,8 +4570,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.13.1",
         "changelog": [
+          {
+            "version": "0.13.1",
+            "date": "2026-11-19",
+            "note": "A low battery is warning, never danger: the ring turns amber below 30 % and stops there."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -5078,8 +5103,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.13.1",
         "changelog": [
+          {
+            "version": "0.13.1",
+            "date": "2026-11-19",
+            "note": "Battery meters take only `low`: a low battery needs attention (warning), it is not a failure (danger)."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",

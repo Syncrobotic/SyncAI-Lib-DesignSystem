@@ -58,7 +58,7 @@ const makeRobots = (n: number): Robot[] =>
       name: `${i % 3 ? "Courier" : "Patrol dog"} ${id}`,
       site: sites[i % sites.length],
       status: kinds[(i * 7) % kinds.length],
-      battery: (i * 37) % 100,
+      battery: 12 + ((i * 37) % 88), // never 0 %: a robot at 0 % is not patrolling
       km: 120 + ((i * 53) % 900),
       tasks: (i * 11) % 30,
     }
@@ -90,7 +90,7 @@ const columns: ColumnDef<Robot>[] = [
   {
     accessorKey: "battery",
     header: ({ column }) => <DataGridColumnHeader column={column} title="Battery" />,
-    cell: ({ row }) => <Meter inline label="Battery" value={row.original.battery} low={30} critical={15} />,
+    cell: ({ row }) => <Meter inline label="Battery" value={row.original.battery} low={30} />,
     size: 160,
     meta: { label: "Battery" },
   },

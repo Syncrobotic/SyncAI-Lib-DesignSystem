@@ -76,7 +76,7 @@ export default async function ComponentPage({ params }: Props) {
         <PageTitle title={item.title} lead={item.description} />
         <div className="flex flex-wrap items-center gap-2 pb-6 sm:pt-6">
           {meta && (
-            <a href="#changelog" className="font-mono text-sm text-muted-foreground tabular-nums underline-offset-4 hover:underline">
+            <a href="#changelog" className="inline-flex h-(--h-sm) items-center font-mono text-sm text-muted-foreground tabular-nums underline-offset-4 hover:underline">
               v{meta.version}
             </a>
           )}
@@ -237,7 +237,7 @@ export default async function ComponentPage({ params }: Props) {
             </AppearItem>
           </Reveal>
           <p className="pt-3 text-sm text-muted-foreground">
-            <a href="/docs/upgrading" className="underline-offset-4 hover:underline">
+            <a href="/docs/upgrading" className="inline-flex h-(--h-sm) items-center underline-offset-4 hover:underline">
               How to upgrade
             </a>
           </p>

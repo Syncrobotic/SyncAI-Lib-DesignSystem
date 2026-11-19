@@ -14,6 +14,12 @@ Components install as source, so a project keeps the version it installed. Re-ru
   - The phone menu button sits at the left of the header, the side its drawer opens from. The drawer starts with Home; on the home page no area is selected and the four areas are the choice.
 - **Docs tables no longer cut columns off.** Token and rule tables (Accessibility, Alarms, Colour and the rest) wrap every column but the name, with even padding, so the Light contrast column and long descriptions show in full on a desktop. On a phone each row is a card with every value under its column's name, instead of a table whose colours, values and uses sat off screen. The DataGrid examples put Status right after the name, so it stays in view on a narrow screen.
 
+### Fixed
+- **A low battery showed as danger.** The Colour foundation says a low battery is attention, not failure, and the Alarms foundation makes battery under 15 % a high (amber) alarm, yet battery meters in `fleet-table`, `list-detail`, `map-workspace`, `sheet-robot-detail`, the DataGrid example and `radial-chart-battery` turned red below 15 %. Battery now takes only `low` and stops at warning. The Meter example shows danger with full storage instead, and the DataGrid sample no longer has a robot patrolling at 0 %.
+- **Segmented controls were 36 px tall to a finger** (the icon size switch, the density demo, fleet-table's filters): each segment's hit area now reaches its track's edges, 44 px. The header's GitHub link, the Motion demo's Play, a component's version link and "How to upgrade", and the token file links are 44 px on touch too.
+- **Raw Markdown on the page:** `**Markdown**` on the For AI agents page, and backticks in component changelogs and the Versions table. Docs copy renders `code` and **bold** everywhere now.
+- The Button example's disabled button says why, beside it and to screen readers, as its own usage rule asks.
+
 ## 0.13.0 · 2026-11-19
 
 ### Changed
