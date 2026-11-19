@@ -1,6 +1,22 @@
 // Small typographic building blocks shared by the docs pages.
+import * as React from "react"
 
-/** Renders `backticked` words as inline code. */
+/** Code that never breaks mid-word: it may wrap at a space, and a path or URL after a "/" (`https://site/` · `llms.txt`). */
+export function Unbroken({ text }: { text: string }) {
+  // Split after each space and each "/", but keep a scheme ("https://") with the host after it.
+  const parts = text.split(/(?<=[^:/]\/)(?!\/)|(?<=\s)(?=\S)/)
+  return (
+    <>
+      {parts.map((p, i) => (
+        <React.Fragment key={i}>
+          {i > 0 && <wbr />}
+          <span className="whitespace-nowrap">{p}</span>
+        </React.Fragment>
+      ))}
+    </>
+  )
+}
+
 /** A line of copy with the two inline marks the docs use: `code` and **bold**. Nothing else is parsed. */
 export function Inline({ text }: { text: string }) {
   return (
@@ -8,7 +24,7 @@ export function Inline({ text }: { text: string }) {
       {text.split(/(`[^`]+`|\*\*[^*]+\*\*)/).map((part, i) =>
         part.startsWith("`") ? (
           <code key={i} className="rounded-xs bg-muted px-1 font-mono text-sm">
-            {part.slice(1, -1)}
+            <Unbroken text={part.slice(1, -1)} />
           </code>
         ) : part.startsWith("**") ? (
           <strong key={i} className="font-medium text-foreground">
@@ -26,7 +42,7 @@ export function PageTitle({ title, lead }: { title: string; lead?: string }) {
   return (
     <div className="flex flex-col gap-2 pb-8">
       <h1 className="text-3xl font-bold">{title}</h1>
-      {lead && <p className="max-w-2xl text-lg text-muted-foreground">{lead}</p>}
+      {lead && <p className="max-w-2xl text-lg text-pretty text-muted-foreground">{lead}</p>}
     </div>
   )
 }

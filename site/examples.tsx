@@ -117,7 +117,18 @@ function render(file: StoryFile, name: string) {
 export function Stage({ file, name, className, wide }: { file: StoryFile; name: string; className?: string; /** Full width, for charts. */ wide?: boolean }) {
   return (
     <div className={className ?? "flex justify-center rounded-md border border-border bg-background px-4 py-8"}>
-      <div className={wide ? "w-full" : "w-full max-w-sm"}>{render(file, name)}</div>
+      {/* Not wide: a column as wide as the example needs, at least 384 px (fields and grids fill it) and at most the
+          frame, so a row of badges or an alarm's meta stays on one line. The column is centred, and so is anything
+          narrower inside it: a lone trigger (inline, by text-align), a calendar or a fixed-width list (by margin). */}
+      <div
+        className={
+          wide
+            ? "w-full"
+            : "mx-auto w-fit max-w-full min-w-full text-center sm:min-w-sm [&>*]:mx-auto [&>*]:text-start"
+        }
+      >
+        {render(file, name)}
+      </div>
     </div>
   )
 }

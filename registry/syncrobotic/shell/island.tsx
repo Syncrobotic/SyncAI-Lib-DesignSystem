@@ -263,7 +263,9 @@ export function IslandAlarm({ alarms, onAcknowledge, onShowAll, labels, feedback
       {/* The alarm is never cut: two lines, and the buttons move to their own row before they squeeze it under 160 px. */}
       <span className="flex min-w-0 flex-1 basis-40 flex-col">
         <span className="line-clamp-2 text-sm font-bold break-words">
-          <span className={p.text}>{l[top.priority]}</span> · {top.title}
+          {/* The separator is held to the title (no-break space after it), so the first line never ends on a bare "·". */}
+          <span className={p.text}>{l[top.priority]}</span> {"\u00b7\u00a0"}
+          {top.title}
         </span>
         <span className="truncate text-xs text-muted-foreground">
           {[top.source, top.time, others > 0 && !onShowAll ? l.more(others) : null].filter(Boolean).join(" · ")}

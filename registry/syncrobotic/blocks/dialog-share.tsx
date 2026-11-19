@@ -1,4 +1,4 @@
-// @syncrobotic/dialog-share v0.9.0 · update: npx shadcn add @syncrobotic/dialog-share --overwrite
+// @syncrobotic/dialog-share v0.17.2 · update: npx shadcn add @syncrobotic/dialog-share --overwrite
 "use client"
 
 import * as React from "react"
@@ -127,7 +127,7 @@ export function DialogShare({
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="people">Only people added</SelectItem>
-                  <SelectItem value="org">Anyone in your organisation</SelectItem>
+                  <SelectItem value="org">Your organisation</SelectItem>
                 </SelectContent>
               </Select>
             </div>

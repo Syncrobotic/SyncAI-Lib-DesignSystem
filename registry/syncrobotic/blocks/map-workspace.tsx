@@ -6,7 +6,7 @@ import { Crosshair, Pause } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { ChargingDock } from "@/registry/syncrobotic/ui/robot-icons"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
-import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { IslandAlarm } from "@/registry/syncrobotic/shell/island"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { StatusGlyph, type Status } from "@/registry/syncrobotic/shell/status-glyph"
@@ -40,7 +40,7 @@ const robots: MapRobot[] = [
 ]
 
 const alarms: AlarmData[] = [
-  { id: "a1", priority: "critical", title: "Emergency stop · Warehouse", source: "4D21", time: "14:02", active: true, acknowledged: false },
+  { id: "a1", priority: "critical", title: "Emergency stop", source: "4D21, Warehouse", time: "14:02", active: true, acknowledged: false },
   { id: "a2", priority: "high", title: "Battery 18 %", source: "9C44", time: "14:01", active: true, acknowledged: false },
 ]
 
@@ -62,7 +62,7 @@ export function MapWorkspace() {
       current="#map"
       title="Map · North site"
       environment="staging"
-      user={{ name: "Mei Lin", initials: "ML" }}
+      user={sampleUser}
       bleed
     >
       {/*
@@ -84,7 +84,7 @@ export function MapWorkspace() {
               <Button variant="secondary" size="sm">
                 <ChargingDock aria-hidden="true" /> Dock
               </Button>
-              <Button variant="ghost" size="icon-sm" aria-label="Centre map on robot">
+              <Button variant="secondary" size="icon-sm" aria-label="Centre map on robot">
                 <Crosshair aria-hidden="true" />
               </Button>
             </div>

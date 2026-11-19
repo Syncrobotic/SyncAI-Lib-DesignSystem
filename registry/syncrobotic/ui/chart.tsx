@@ -1,4 +1,4 @@
-// @syncrobotic/chart v0.17.1 · update: npx shadcn add @syncrobotic/chart --overwrite
+// @syncrobotic/chart v0.17.2 · update: npx shadcn add @syncrobotic/chart --overwrite
 "use client"
 
 import * as React from "react"
@@ -18,6 +18,16 @@ export const useChartConfig = () => {
   const config = React.useContext(ChartContext)
   if (!config) throw new Error("Chart parts must be inside <ChartContainer>")
   return config
+}
+
+/**
+ * A number as charts write it: a true minus sign (U+2212) for negatives, so "−6" lines up with "6" and is read as minus.
+ * Use it for tick labels (`tickFormatter={chartNumber}`), tooltips and the table.
+ */
+export const chartNumber = (n: number | string) => {
+  const v = typeof n === "number" ? n : Number(n)
+  if (typeof n === "string" && (n.trim() === "" || Number.isNaN(v))) return n
+  return v < 0 ? `\u2212${String(Math.abs(v))}` : String(v)
 }
 
 /**
@@ -100,7 +110,7 @@ export function ChartTooltipContent({
               <span aria-hidden="true" className="size-3 shrink-0 rounded-xs" style={{ background: `var(--color-${key})` }} />
               <span className="flex-1 text-muted-foreground">{c?.label ?? key}</span>
               <span className="font-mono font-medium tabular-nums">
-                {formatter ? formatter(Number(p.value), key) : `${p.value}${c?.unit ? ` ${c.unit}` : ""}`}
+                {formatter ? formatter(Number(p.value), key) : `${typeof p.value === "number" ? chartNumber(p.value) : p.value}${c?.unit ? ` ${c.unit}` : ""}`}
               </span>
             </li>
           )
@@ -174,7 +184,7 @@ export function ChartTable<T extends Record<string, unknown>>({
               <TableCell>{String(row[x])}</TableCell>
               {keys.map((k) => (
                 <TableCell key={k} className="text-right tabular-nums">
-                  {String(row[k] ?? "–")}
+                  {row[k] == null ? "–" : typeof row[k] === "number" ? chartNumber(row[k]) : String(row[k])}
                 </TableCell>
               ))}
             </TableRow>

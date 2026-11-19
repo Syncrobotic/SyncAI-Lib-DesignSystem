@@ -31,7 +31,15 @@ export function Sidebar({ scopes, switcher = false }: { scopes: Scope[]; switche
     const l = link.getBoundingClientRect()
     const b = box.getBoundingClientRect()
     if (l.top >= b.top && l.bottom <= b.bottom) return
-    box.scrollTop += l.top - b.top - b.height / 2 + l.height / 2
+    // Centre it, then move up to the nearest whole row or group heading, so no item sits half cut at the top edge.
+    const centred = box.scrollTop + l.top - b.top - b.height / 2 + l.height / 2
+    const rows = [...box.querySelectorAll<HTMLElement>("a, nav > div > p")].map((e) => ({ heading: e.tagName === "P", top: e.getBoundingClientRect().top - b.top + box.scrollTop }))
+    // Near the end of the list the column cannot scroll that far: start from the last row it can bring to the top.
+    const max = box.scrollHeight - box.clientHeight + 12
+    let i = rows.filter((r) => r.top <= Math.min(centred, max) + 1).length - 1
+    // A group's first page starts the column with its group's name, never with the name cut off above it.
+    if (i > 0 && rows[i - 1].heading && rows[i].top - rows[i - 1].top < 40) i -= 1
+    box.scrollTop = Math.max(0, (i >= 0 ? rows[i].top : centred) - 12)
   }, [path])
   return (
     <nav ref={nav} aria-label={`${active.label} navigation`} className="flex flex-col gap-6 text-sm">

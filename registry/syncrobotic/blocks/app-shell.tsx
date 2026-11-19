@@ -1,10 +1,11 @@
-// @syncrobotic/app-shell v0.17.1 · update: npx shadcn add @syncrobotic/app-shell --overwrite
+// @syncrobotic/app-shell v0.17.2 · update: npx shadcn add @syncrobotic/app-shell --overwrite
 "use client"
 
 import * as React from "react"
 import {
   Bell,
   Bot,
+  CalendarDays,
   ChevronDown,
   ChevronsUpDown,
   CirclePlus,
@@ -82,6 +83,7 @@ export const sampleNav: AppNavGroup[] = [
     label: "Operations",
     items: [
       { label: "Alarms", href: "#alarms", icon: Bell, count: 2 },
+      { label: "Schedule", href: "#schedule", icon: CalendarDays },
       { label: "Agents", href: "#agents", icon: Sparkles },
       { label: "Event log", href: "#events", icon: ScrollText },
       { label: "Settings", href: "#settings", icon: Settings },
@@ -134,6 +136,9 @@ export const sampleUserMenu: AppUserMenuItem[] = [
   { label: "Preferences", icon: Settings, href: "#preferences" },
   { label: "Sign out", icon: LogOut, href: "#sign-out", separatorBefore: true },
 ]
+
+/** The signed-in person every sample screen shows: the sidebar's foot is the same avatar, name and email on every block. */
+export const sampleUser: AppUser = { name: "Mei Lin", initials: "ML", email: "mei.lin@example.com" }
 
 // Which backend this is, as a neutral outline. Not a status colour: the badge is on every page, all day, and a colour
 // that never goes away stops meaning anything (and would dull the warnings and alarms that do need someone).

@@ -1,4 +1,4 @@
-// @syncrobotic/fleet-table v0.15.0 · update: npx shadcn add @syncrobotic/fleet-table --overwrite
+// @syncrobotic/fleet-table v0.17.2 · update: npx shadcn add @syncrobotic/fleet-table --overwrite
 "use client"
 
 import * as React from "react"
@@ -121,11 +121,11 @@ export function FleetTable({ robots = sampleRobots, pageSize = 5, onOpen }: { ro
           <TableHeader>
             <TableRow>
               <TableHead>Robot</TableHead>
-              <TableHead className="hidden sm:table-cell">Status</TableHead>
-              <TableHead className="sm:w-40">Battery</TableHead>
-              <TableHead className="hidden md:table-cell">Site</TableHead>
-              <TableHead className="hidden md:table-cell">Last seen</TableHead>
-              <TableHead className="w-12">
+              <TableHead className="hidden sm:table-cell sm:w-44">Status</TableHead>
+              <TableHead className="sm:w-48">Battery</TableHead>
+              <TableHead className="hidden md:table-cell md:w-40">Site</TableHead>
+              <TableHead className="hidden md:table-cell md:w-32">Last seen</TableHead>
+              <TableHead className="w-12 max-sm:pr-2 max-sm:pl-0">
                 <span className="sr-only">Actions</span>
               </TableHead>
             </TableRow>
@@ -133,15 +133,15 @@ export function FleetTable({ robots = sampleRobots, pageSize = 5, onOpen }: { ro
           <TableBody>
             {visible.map((r) => (
               <TableRow key={r.id}>
-                <TableCell>
-                  <div className="flex flex-col gap-1">
-                    <button type="button" onClick={() => onOpen?.(r)} className="flex min-h-(--h-md) items-center text-left font-medium hover:underline">
-                      {r.name}
-                    </button>
+                <TableCell className="max-sm:py-2">
+                  {/* One target for the name and, on a phone, the status under it: at least 44 px, with the row's padding
+                      even above and below. */}
+                  <button type="button" onClick={() => onOpen?.(r)} className="group/name press flex min-h-(--h-md) flex-col items-start justify-center gap-1 text-left">
+                    <span className="font-medium group-hover/name:underline">{r.name}</span>
                     <span className="sm:hidden">
                       <InlineStatus status={status[r.status].tone}>{status[r.status].label}</InlineStatus>
                     </span>
-                  </div>
+                  </button>
                 </TableCell>
                 <TableCell className="hidden sm:table-cell">
                   <InlineStatus status={status[r.status].tone}>{status[r.status].label}</InlineStatus>
@@ -151,7 +151,7 @@ export function FleetTable({ robots = sampleRobots, pageSize = 5, onOpen }: { ro
                 </TableCell>
                 <TableCell className="hidden text-muted-foreground md:table-cell">{r.site}</TableCell>
                 <TableCell className="hidden text-muted-foreground md:table-cell">{r.lastSeen}</TableCell>
-                <TableCell>
+                <TableCell className="max-sm:pr-2 max-sm:pl-0">
                   <DropdownMenu modal={false}>
                     <DropdownMenuTrigger asChild>
                       <Button variant="ghost" size="icon-sm" aria-label={`Actions for ${r.name}`}>

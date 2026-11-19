@@ -1,10 +1,10 @@
-// @syncrobotic/rollout-overview v0.15.0 · update: npx shadcn add @syncrobotic/rollout-overview --overwrite
+// @syncrobotic/rollout-overview v0.17.2 · update: npx shadcn add @syncrobotic/rollout-overview --overwrite
 "use client"
 
 import * as React from "react"
 import { Pause, Play, Undo2 } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { StatusGlyph, type Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Progress } from "@/registry/syncrobotic/ui/progress"
@@ -52,7 +52,7 @@ export function RolloutOverview() {
       nav={sampleNav}
       current="#robots"
       title="Firmware 2.4.1"
-      user={{ name: "Mei Lin", initials: "ML" }}
+      user={sampleUser}
       actions={
         <>
           {/* Icon-only on a phone, so the page title keeps its room; the words come back from 640 px. */}

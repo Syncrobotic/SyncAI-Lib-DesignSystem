@@ -22,7 +22,7 @@ const frames = (n: number, prefix = "aisle"): ImageGridItem[] =>
 
 /** A dataset's pictures: a tile opens the lightbox, where ← and → move and Esc closes. */
 export const ImageGridDataset: S = {
-  render: () => <ImageGrid label="Images in Forklift aisles v3" items={frames(24)} />,
+  render: () => <ImageGrid label="Images in Forklift aisles v3" items={frames(8)} />,
 }
 
 function PickOne() {

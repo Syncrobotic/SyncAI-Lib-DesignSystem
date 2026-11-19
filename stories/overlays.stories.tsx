@@ -138,7 +138,7 @@ export const SheetOpen: S = { render: () => <FilterSheet open /> }
 const InfoPopover = ({ open }: { open?: boolean }) => (
   <Popover defaultOpen={open}>
     <PopoverTrigger asChild>
-      <Button variant="outline">
+      <Button variant="secondary">
         <Info aria-hidden="true" /> Signal
       </Button>
     </PopoverTrigger>
@@ -194,7 +194,7 @@ export const DialogInformation: S = {
   render: () => (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">
+        <Button variant="secondary">
           <Keyboard aria-hidden="true" /> Keyboard shortcuts
         </Button>
       </DialogTrigger>
@@ -277,7 +277,7 @@ export const PopoverWithForm: S = {
   render: () => (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline">
+        <Button variant="secondary">
           <SlidersHorizontal aria-hidden="true" /> Battery filter
         </Button>
       </PopoverTrigger>
@@ -436,7 +436,7 @@ export const SheetBottomActions: S = {
   render: () => (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline">
+        <Button variant="secondary">
           <Ellipsis aria-hidden="true" /> Robot actions
         </Button>
       </SheetTrigger>

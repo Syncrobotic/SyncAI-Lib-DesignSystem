@@ -1,4 +1,4 @@
-// @syncrobotic/list-detail v0.15.0 · update: npx shadcn add @syncrobotic/list-detail --overwrite
+// @syncrobotic/list-detail v0.17.2 · update: npx shadcn add @syncrobotic/list-detail --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 import { ChargingDock } from "@/registry/syncrobotic/ui/robot-icons"
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
-import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { sampleRobots, type Robot } from "@/registry/syncrobotic/blocks/fleet-table"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import type { Status } from "@/registry/syncrobotic/shell/status-glyph"
@@ -37,7 +37,7 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
   const robot = robots.find((r) => r.id === selected)
 
   return (
-    <AppShell product="Fleet console" nav={sampleNav} current="#robots" title="Robots" environment="staging" user={{ name: "Mei Lin", initials: "ML" }} bleed>
+    <AppShell product="Fleet console" nav={sampleNav} current="#robots" title="Robots" environment="staging" user={sampleUser} bleed>
       <div className="flex h-full">
         <div className={cn("flex w-full flex-col border-r border-border md:w-80", robot && "hidden md:flex")}>
           <div className="border-b border-border p-3">
@@ -73,7 +73,7 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
 
         <section aria-label="Robot detail" className={cn("min-w-0 flex-1 overflow-y-auto p-6", !robot && "hidden md:block")}>
           {robot ? (
-            <div className="flex max-w-3xl flex-col gap-6">
+            <div className="flex flex-col gap-6">
               <div className="flex flex-wrap items-start gap-3">
                 <Button variant="ghost" size="icon-sm" aria-label="Back to robots" className="md:hidden" onClick={() => setSelected(null)}>
                   <ArrowLeft aria-hidden="true" />

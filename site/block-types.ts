@@ -114,7 +114,7 @@ export const blockTypes: BlockType[] = [
   },
   {
     slug: "dialog",
-    title: "Dialog",
+    title: "Form and share dialogs",
     group: "Patterns",
     home: "dialog",
     description: "A short decision over the page: confirm a deletion, fill three fields, share with people.",
@@ -128,7 +128,7 @@ export const blockTypes: BlockType[] = [
   },
   {
     slug: "sheet",
-    title: "Sheet",
+    title: "Detail and filter sheets",
     group: "Patterns",
     home: "sheet",
     description: "A panel over the page, from the side or the bottom: one thing's details, or filters.",
@@ -142,7 +142,7 @@ export const blockTypes: BlockType[] = [
   },
   {
     slug: "timeline",
-    title: "Timeline",
+    title: "Activity and audit timelines",
     group: "Patterns",
     home: "timeline",
     description: "Events in time order: what a robot did on its shift, who changed what.",
