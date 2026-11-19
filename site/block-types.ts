@@ -24,13 +24,19 @@ export const blockTypes: BlockType[] = [
     title: "App shell",
     group: "Application",
     description: "The frame of a tool: navigation, top bar, search and the user, around whatever page you put in it.",
-    use: ["Internal tools and consoles with more than a handful of pages.", "A site or tool that only needs a top bar."],
+    use: [
+      "Internal tools and consoles with more than a handful of pages.",
+      "A site or tool that only needs a top bar.",
+      "A page that leads to one next step, such as a batch to review or a model to train: the action rail.",
+    ],
     instead: ["A single screen with no navigation: start from a Solutions block."],
     rules: [
       "One shell per product. Pages change inside it; the shell does not.",
       "The current page is marked in the navigation and named in the top bar.",
       "On phones the sidebar becomes a drawer; nothing is hidden for good. The drawer floats 8 px from the edges, the shell's gutter.",
       "A top bar over plain content starts on the content's edge and, on scroll, gathers into a floating panel as wide as the content column.",
+      "The action rail holds only the next step: one large primary button and a few small actions, never filters or facts. On phones it is a bar fixed above the safe area, and the page is padded so it never covers content.",
+      "← and Esc go back up a level wherever there is a back button, except while typing or when an overlay is open.",
     ],
   },
   {
@@ -302,6 +308,7 @@ export const getBlockType = (slug: string) => blockTypes.find((t) => t.slug === 
 export const placement: Record<string, { type: string; fit: "screen" | "content" }> = {
   "app-shell": { type: "app-shell", fit: "screen" },
   "top-bar-shell": { type: "app-shell", fit: "screen" },
+  "action-rail-shell": { type: "app-shell", fit: "screen" },
   "app-shell-mobile-tabs": { type: "app-shell", fit: "screen" },
   "stats-cards": { type: "stats", fit: "content" },
   "stats-meters": { type: "stats", fit: "content" },

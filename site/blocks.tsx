@@ -2,6 +2,7 @@ import registry from "../registry.json"
 import { placement } from "./block-types"
 import { AppShellDemo } from "./app-shell-demo"
 import { TopBarShellDemo } from "./top-bar-shell-demo"
+import { ActionRailShellDemo } from "./action-rail-shell-demo"
 import { SignIn } from "@/registry/syncrobotic/blocks/sign-in"
 import { ErrorPage, LoadingPage, NoAccessPage, NotFoundPage, OfflinePage } from "@/registry/syncrobotic/blocks/status-pages"
 import { RecordForm } from "@/registry/syncrobotic/blocks/record-form"
@@ -339,6 +340,7 @@ const meta: Record<string, Meta> = {
     ),
   },
   "top-bar-shell": { viewport: "desktop", height: 720, render: () => <TopBarShellDemo /> },
+  "action-rail-shell": { viewport: "desktop", height: 720, render: () => <ActionRailShellDemo /> },
   "console-overview": { viewport: "desktop", height: 900, render: () => <ConsoleOverview /> },
   "list-detail": { viewport: "desktop", height: 720, render: () => <ListDetail /> },
   "event-log": { viewport: "desktop", height: 720, render: () => <EventLog /> },
