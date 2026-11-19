@@ -20,6 +20,23 @@ export const overviews: Record<string, Overview> = {
     use: ["A catalog or log whose filtered view should be shareable and survive Back.", "Any page where changing a filter resets the page number."],
     instead: ["Filters on data already in the browser: filter in state, as `data-grid` does."],
   },
+  filters: {
+    what: "A query people build from chips: pick a field, how to compare it and a value; every rule must match.",
+    use: [
+      "A long list or grid with many columns worth filtering: robots, incidents, runs.",
+      "Views people tune and share: the rules go in the URL.",
+    ],
+    instead: [
+      "A fixed set of known filters, laid out in a sheet or above a list: `filter-form`.",
+      "One facet, one choice: `chip-group`.",
+      "Text only: `search-field`.",
+    ],
+    notes: [
+      "The value is a plain array of { id, field, operator, value }; filter rows with filterRows or matchRule, never by reading the chips.",
+      "Boolean rules carry null; the operator (is_true, is_false) is the whole rule.",
+      "Dates are \"yyyy-MM-dd\" strings, not Date objects, so the rules stay serialisable.",
+    ],
+  },
   "search-field": {
     what: "The tool's one search box: `/` focuses it, Enter opens the results page, and on that page it follows the URL.",
     use: ["The search in an app's top bar.", "The query box on a results page (`live`)."],
@@ -44,6 +61,19 @@ export const overviews: Record<string, Overview> = {
     what: "A preview that does not load until someone asks: restricted data, faces, number plates.",
     use: ["Thumbnails of a restricted dataset in a catalog or gallery."],
     instead: ["Data the viewer may not see at all: leave it out and say so in an `empty-state`."],
+  },
+  "image-grid": {
+    what: "Many pictures at once, as a grid or a strip, that open in a lightbox or are picked one or many at a time.",
+    use: [
+      "A dataset's images, the frames of a run, a camera's snapshots.",
+      "Picking a cover picture, or the frames to send for labelling.",
+      "What was just uploaded, as a strip under the upload field.",
+    ],
+    instead: ["Files that are not pictures, or a queue with progress: `attachment`.", "One preview someone must ask to see: `restricted-preview`."],
+    notes: [
+      "Placeholders and tests must not load external URLs; draw the picture in code (an SVG data URI).",
+      "Selection is `aria-pressed` on each tile; do not add a separate checkbox.",
+    ],
   },
   "load-more": {
     what: "The end of a long list: how much is shown, and one button for the next batch that says how many remain.",
@@ -245,6 +275,20 @@ export const overviews: Record<string, Overview> = {
       "IconTileDot needs a label; it is announced as an image.",
     ],
   },
+  "text-diff": {
+    what: "Where two texts differ, word by word: insertions a grey block with an underline, removals struck through, with a +3 words, −1 word summary.",
+    use: [
+      "A base model's caption or answer against a fine-tuned one.",
+      "A label, prompt or description before and after an edit.",
+      "Reviewing a proposed change to a text before accepting it.",
+    ],
+    instead: ["A change of one value (a number, a setting): before → after in a timeline or audit row.", "Code: a code diff viewer with lines and syntax."],
+    notes: [
+      "Never colour the changes green and red: a removal is not an error. The shape (block and underline, strike) carries the meaning.",
+      "Screen readers hear added and removed around each change; pass `labels` to translate them and the summary.",
+      "diffWords and diffStats are exported for counts elsewhere (a table of eval results).",
+    ],
+  },
   kbd: {
     what: "A key cap for shortcuts and keyboard instructions, alone or grouped into a chord.",
     use: ["Shortcut hints in menus, tooltips and search fields.", "A keyboard reference list.", "Instructions like Hold Space to stop all."],
@@ -252,6 +296,7 @@ export const overviews: Record<string, Overview> = {
     notes: [
       "Icon-only keys (arrows) need sr-only text inside; a <kbd> cannot take an aria-label.",
       "Inside a tooltip the key takes the tooltip's colours automatically.",
+      "pressed (from useHotkeys' `pressed`) makes the key sink and its edge darken for a moment; it is a visual echo, so the result of the key still has to be said on screen.",
     ],
   },
   "button-group": {
@@ -640,6 +685,16 @@ export const overviews: Record<string, Overview> = {
     what: "A value or a function call that waits until changes pause: useDebouncedValue and useDebouncedCallback.",
     use: ["A search sent to a server when the typing stops (autocomplete's `debounce` uses it).", "Autosave after edits pause."],
     instead: ["Something the person must see at once: update it directly, never debounced."],
+  },
+  "use-hotkeys": {
+    what: "Keyboard shortcuts as a map of keys to handlers ({ \"1\": yes, \"mod+z\": undo, \"?\": help }), quiet while someone types, with the key being pressed for Kbd.",
+    use: ["A review or labelling queue answered by keyboard.", "A tool's global shortcuts, like mod+k for search."],
+    instead: ["Keys inside one widget (arrows in a list): the widget's own onKeyDown, or the Radix component that has them."],
+    notes: [
+      "mod is ⌘ on Mac and Ctrl elsewhere. Symbols like ? match whatever Shift it took; letters need the exact modifiers, so mod+z never fires on mod+shift+z.",
+      "Held keys do not repeat unless a binding sets repeat: holding 1 answers once.",
+      "Returns `pressed`, the binding whose key is down (kept at least 150 ms), for <Kbd pressed>.",
+    ],
   },
   "use-slide-release": {
     what: "A hook with the drag, threshold and spring-back logic behind slide to release.",

@@ -54,8 +54,8 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 | | |
 | --- | --- |
 | **Foundations** | Principles, colour, typography, spacing, radius, elevation, motion, iconography, accessibility, alarms and data visualisation, each with its tokens and the rules for using them, plus an [icon set](https://design-system.syncrobotic.me/icons) that gives each icon one meaning, with robot icons Lucide lacks drawn to match. Tokens also ship as [DTCG JSON](public/tokens) for design tools, in light, dark and high contrast. |
-| **84 components** | General UI on Radix primitives, a charts component on Recharts, building blocks for data tools, and the robot shell: emergency stop, slide to release, dock and dynamic island. |
-| **69 blocks** | Whole screens in three groups: Application (shells, stats, cards, sign-in, settings, forms, dialogs, sheets, timelines, wizards), Charts, and Solutions for robot operations (fleet operations, data operations, users and access, incidents, maintenance, firmware rollout, AI agents). |
+| **91 components** | General UI on Radix primitives, a charts component on Recharts, building blocks for data tools (filters, data grid, text diff, image grid), and the robot shell: emergency stop, slide to release, dock and dynamic island. |
+| **71 blocks** | Whole screens in three groups: Application (shells, including an action-rail page, stats, cards, sign-in, settings, forms, dialogs, sheets, timelines, wizards), Charts, and Solutions for robot operations (fleet operations, data operations with a keyboard-first review queue, users and access, incidents, maintenance, firmware rollout, AI agents). |
 
 <details>
 <summary>Every component, by group</summary>
@@ -63,15 +63,14 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 | Group | Components |
 | --- | --- |
 | Actions | `button`, `segmented-control`, `toggle`, `copy-button`, `button-group`, `toggle-group`, `theme-toggle` |
-| Inputs | `input`, `input-group`, `number-field`, `textarea`, `label`, `field`, `checkbox`, `radio-group`, `switch`, `choice-field`, `select`, `slider`, `chip-group`, `filter-form`, `search-field`, `autocomplete`, `input-otp`, `phone-input`, `calendar`, `date-selector`, `time-picker`, `sortable`, `file-upload`, `questionnaire` |
-| Icons | `robot-icons` |
-| Display | `status-glyph`, `status-eyebrow`, `list`, `skeleton`, `spinner`, `badge`, `card`, `avatar`, `separator`, `progress`, `description-list`, `meter`, `empty-state`, `table`, `item`, `icon-tile`, `kbd`, `scroll-area`, `data-grid`, `resizable`, `attachment`, `file-type`, `timeline`, `trace`, `marker`, `share-bar`, `restricted-preview` |
+| Inputs | `input`, `input-group`, `number-field`, `textarea`, `label`, `field`, `checkbox`, `radio-group`, `switch`, `choice-field`, `select`, `slider`, `chip-group`, `filter-form`, `filters`, `search-field`, `autocomplete`, `input-otp`, `phone-input`, `calendar`, `date-selector`, `time-picker`, `sortable`, `file-upload`, `questionnaire` |
+| Display | `status-glyph`, `status-eyebrow`, `list`, `skeleton`, `spinner`, `badge`, `card`, `avatar`, `separator`, `progress`, `description-list`, `text-diff`, `meter`, `empty-state`, `table`, `item`, `icon-tile`, `kbd`, `scroll-area`, `share-bar`, `restricted-preview`, `image-grid`, `data-grid`, `resizable`, `attachment`, `file-type`, `timeline`, `trace`, `marker` |
 | Charts | `chart` |
 | Feedback | `alert`, `alarm`, `toast`, `route-progress` |
-| Navigation | `tabs`, `pagination`, `breadcrumb`, `accordion`, `page-header`, `stepper`, `scrollspy`, `navigation-menu`, `load-more` |
+| Navigation | `tabs`, `pagination`, `breadcrumb`, `accordion`, `page-header`, `load-more`, `stepper`, `scrollspy`, `navigation-menu` |
 | Overlays | `dialog`, `alert-dialog`, `sheet`, `popover`, `tooltip`, `dropdown-menu`, `command` |
 | Robot shell | `tray`, `stop-button`, `slide-to-release`, `dock`, `island` |
-| Hooks | `use-long-press`, `use-slide-release` |
+| Hooks | `use-long-press`, `use-slide-release`, `use-debounce`, `use-hotkeys` |
 
 </details>
 

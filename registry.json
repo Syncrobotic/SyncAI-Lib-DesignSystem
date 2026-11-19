@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.16.0",
         "changelog": [
+          {
+            "version": "0.16.0",
+            "date": "2026-11-19",
+            "note": "Annotation tokens for boxes and points on images: `--annotate-predicted` (chart-1), `--annotate-truth` (chart-2), `--annotate-previous` (muted ink), `--annotate-selected` (focus ink) and `--annotate-halo` (white in light, black in dark, at least 3:1 under every stroke), plus `--annotate-fade` (0.6; 1 in high contrast), as `stroke-annotate-*` utilities."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -240,6 +245,30 @@
             "version": "0.15.0",
             "date": "2026-11-19",
             "note": "First release: useDebouncedValue and useDebouncedCallback (with cancel and flush)."
+          }
+        ]
+      }
+    },
+    {
+      "name": "use-hotkeys",
+      "type": "registry:hook",
+      "title": "useHotkeys",
+      "description": "Keyboard shortcuts as a map of keys to handlers ({ \"1\": yes, \"mod+z\": undo, \"?\": help }), quiet while someone types in a field, with the key being pressed for Kbd.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/syncrobotic/hooks/use-hotkeys.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "meta": {
+        "version": "0.16.0",
+        "changelog": [
+          {
+            "version": "0.16.0",
+            "date": "2026-11-19",
+            "note": "First release: useHotkeys(map, { enabled }) with mod/ctrl/meta/alt/shift combos, keys ignored in text fields unless allowInInput, no repeats unless asked, and `pressed` for <Kbd pressed>."
           }
         ]
       }
@@ -1522,6 +1551,32 @@
       }
     },
     {
+      "name": "text-diff",
+      "type": "registry:ui",
+      "title": "Text diff",
+      "description": "Where two texts differ, word by word: insertions a grey block with an underline, removals struck through, each announced to screen readers. Inline or side by side, with a +3 words, −1 word summary.",
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/text-diff.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.16.0",
+        "changelog": [
+          {
+            "version": "0.16.0",
+            "date": "2026-11-19",
+            "note": "First release: TextDiff (before, after; inline or side-by-side) with a word-level LCS diff, <ins>/<del> announced as added and removed, a +N words, −N words summary, and diffWords/diffStats for counts elsewhere."
+          }
+        ]
+      },
+      "dependencies": []
+    },
+    {
       "name": "meter",
       "type": "registry:ui",
       "title": "Meter",
@@ -2202,8 +2257,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.16.0",
         "changelog": [
+          {
+            "version": "0.16.0",
+            "date": "2026-11-19",
+            "note": "In CommandDialog the input row has no focus ring: the box always has focus there, so the ring only framed the top of the palette. On a page it still shows."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -2310,8 +2370,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.16.0",
         "changelog": [
+          {
+            "version": "0.16.0",
+            "date": "2026-11-19",
+            "note": "`pressed` shows a key going down while its shortcut runs (it sinks and its edge thickens to the text colour, --motion-fast); useHotkeys returns which key that is."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -2598,6 +2663,38 @@
       }
     },
     {
+      "name": "image-grid",
+      "type": "registry:ui",
+      "title": "Image grid",
+      "description": "Many pictures as a grid or a scroll-snap strip: lazy tiles that keep their aspect, skeleton, hidden and broken states, single or multiple picking, and a lightbox with arrow keys and Esc.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/dialog",
+        "@syncrobotic/restricted-preview",
+        "@syncrobotic/skeleton"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/image-grid.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.16.0",
+        "changelog": [
+          {
+            "version": "0.16.0",
+            "date": "2026-11-19",
+            "note": "First release: a gallery of thumbnails as a grid or a scroll-snap strip. Tiles keep their aspect box and load lazily; skeleton tiles while loading, hidden pictures through RestrictedPreview, a broken picture shows its file name. Single or multiple picking (aria-pressed, a ring in the focus ink and a check). A lightbox on Dialog with the position (3 of 24), ← → to move, Esc to close, focus back on the tile."
+          }
+        ]
+      }
+    },
+    {
       "name": "filter-form",
       "type": "registry:ui",
       "title": "Filter form",
@@ -2616,6 +2713,42 @@
             "version": "0.10.0",
             "date": "2026-11-18",
             "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "filters",
+      "type": "registry:ui",
+      "title": "Filters",
+      "description": "A query people build from chips: + Filter picks a field, an operator and a value; each rule is a chip whose parts reopen that step. Rules combine with AND, live in the URL and filter rows in the browser.",
+      "dependencies": [
+        "date-fns",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/use-presence",
+        "@syncrobotic/button",
+        "@syncrobotic/calendar",
+        "@syncrobotic/command",
+        "@syncrobotic/input",
+        "@syncrobotic/number-field",
+        "@syncrobotic/popover"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/filters.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "version": "0.16.0",
+        "changelog": [
+          {
+            "version": "0.16.0",
+            "date": "2026-11-19",
+            "note": "First release: a flat filter bar. + Filter opens a picker (field, operator, value) built on Command in a Popover; rules are chips whose parts reopen their step; AND between chips; text, option (single or multi), number (with unit), date and boolean fields; toSearchParams / toQueryString / fromSearchParams for the URL and filterRows / matchRule for rows in the browser."
           }
         ]
       }
@@ -3717,6 +3850,36 @@
       }
     },
     {
+      "name": "action-rail-shell",
+      "type": "registry:block",
+      "title": "Action-rail shell",
+      "description": "A page whose right column holds only the next step: its title, what it does, one large primary button and a few small actions. A bar fixed to the bottom on phones; ← or Esc goes back up a level.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/dropdown-menu"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/action-rail-shell.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "meta": {
+        "version": "0.16.0",
+        "changelog": [
+          {
+            "version": "0.16.0",
+            "date": "2026-11-19",
+            "note": "First release: content on the left and a sticky right rail with the step's title, one line of what it does, the primary action at --h-lg and secondary actions. On phones the rail becomes a bar fixed to the bottom, above the safe area, with the secondary actions in a menu, and the content is padded by the bar's height so it never covers it. ← and Esc call onBack, except while typing or when an overlay is open."
+          }
+        ]
+      }
+    },
+    {
       "name": "console-overview",
       "type": "registry:block",
       "title": "Operations console",
@@ -4061,6 +4224,39 @@
       }
     },
     {
+      "name": "review-queue",
+      "type": "registry:block",
+      "title": "Review queue",
+      "description": "Review items one at a time by keyboard: progress, the image with its question and caption, and a key bar ([1] Yes, [2] No, [3] Skip, Esc back, ⌫ undo, ? shortcuts) whose keys go down as they are pressed.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/use-hotkeys",
+        "@syncrobotic/button",
+        "@syncrobotic/dialog",
+        "@syncrobotic/kbd",
+        "@syncrobotic/progress"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/review-queue.tsx",
+          "type": "registry:block"
+        }
+      ],
+      "meta": {
+        "version": "0.16.0",
+        "changelog": [
+          {
+            "version": "0.16.0",
+            "date": "2026-11-19",
+            "note": "First release: keyboard-first review (1/2/3 answer and advance with the appear motion, Esc back, Backspace or ⌘Z / Ctrl+Z undo, ? shortcuts dialog), 44 px answer buttons for touch, and a blue progress bar for the batch."
+          }
+        ]
+      }
+    },
+    {
       "name": "governance-todo",
       "type": "registry:block",
       "title": "Governance to-do",
@@ -4346,8 +4542,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.16.0",
         "changelog": [
+          {
+            "version": "0.16.0",
+            "date": "2026-11-19",
+            "note": "Design language: annotations on images (line style first, a halo under every stroke, class as a word not a colour) and the action rail (only the next step; \u2190 and Esc go back). Test and audit results: a pass is grey with a check, a failure a danger outline, not enough samples grey with a dashed circle."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",

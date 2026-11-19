@@ -125,6 +125,122 @@ const Bars = ({ status }: { status?: boolean }) => (
   </svg>
 )
 
+// Annotations on images: line style first, colour second. Each mark is drawn twice, the halo (2 px wider) under the stroke.
+const annotationKinds = [
+  { key: "predicted", label: "Predicted", line: "Solid, 2 px", dash: undefined, width: 2, fade: false, means: "What the model found" },
+  { key: "truth", label: "Ground truth", line: "Dashed 6 4, 2 px", dash: "6 4", width: 2, fade: false, means: "What a person labelled" },
+  { key: "previous", label: "Previous version", line: "Dotted, faded", dash: "0 5", width: 2, fade: true, means: "The same label in the last version" },
+  { key: "selected", label: "Selected", line: "Solid, 3 px, handles", dash: undefined, width: 3, fade: false, means: "The one being edited" },
+] as const
+type AnnotationKind = (typeof annotationKinds)[number]
+
+const strokeClass = { predicted: "stroke-annotate-predicted", truth: "stroke-annotate-truth", previous: "stroke-annotate-previous", selected: "stroke-annotate-selected" } as const
+const fillClass = { predicted: "fill-annotate-predicted", truth: "fill-annotate-truth", previous: "fill-annotate-previous", selected: "fill-annotate-selected" } as const
+
+/** One box: the halo, then the stroke, in the kind's line style; the selected one gets square handles at its corners. */
+function AnnotationBox({ kind, x, y, w, h }: { kind: AnnotationKind; x: number; y: number; w: number; h: number }) {
+  const common = { x, y, width: w, height: h, fill: "none", strokeDasharray: kind.dash, strokeLinecap: kind.dash === "0 5" ? ("round" as const) : undefined }
+  return (
+    <g style={kind.fade ? { opacity: "var(--annotate-fade)" } : undefined}>
+      <rect {...common} className="stroke-annotate-halo" strokeWidth={kind.width + 2} />
+      <rect {...common} className={strokeClass[kind.key]} strokeWidth={kind.width} />
+      {kind.key === "selected" &&
+        [
+          [x, y],
+          [x + w, y],
+          [x, y + h],
+          [x + w, y + h],
+        ].map(([cx, cy]) => <rect key={`${cx}-${cy}`} x={cx - 4} y={cy - 4} width="8" height="8" className="fill-annotate-halo stroke-annotate-selected" strokeWidth="2" />)}
+    </g>
+  )
+}
+
+/** One point: predicted a filled dot, ground truth a ring, previous a small faded dot, selected a 3 px ring. */
+function AnnotationPoint({ kind, x, y }: { kind: AnnotationKind; x: number; y: number }) {
+  const filled = kind.key === "predicted" || kind.key === "previous"
+  const r = kind.key === "previous" ? 3 : kind.key === "selected" ? 6 : 5
+  return (
+    <g style={kind.fade ? { opacity: "var(--annotate-fade)" } : undefined}>
+      <circle cx={x} cy={y} r={r + 1.5} className="fill-annotate-halo" />
+      {filled ? (
+        <circle cx={x} cy={y} r={r} className={fillClass[kind.key]} />
+      ) : (
+        <circle cx={x} cy={y} r={r - kind.width / 2} fill="none" className={strokeClass[kind.key]} strokeWidth={kind.width} />
+      )}
+    </g>
+  )
+}
+
+/** A placeholder "photo" drawn in code (named colours: a camera picture does not follow the theme), bright on the left and dark on
+ *  the right, so the specimen shows every mark on both. */
+function AnnotationSpecimen() {
+  const [predicted, truth, previous, selected] = annotationKinds
+  return (
+    <svg
+      viewBox="0 0 480 270"
+      className="block aspect-video w-full"
+      role="img"
+      aria-label="A warehouse picture, bright on the left and dark on the right, with boxes and points: predicted solid, ground truth dashed, previous dotted and faded, selected thicker with handles."
+    >
+      <defs>
+        <linearGradient id="annotate-photo" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="whitesmoke" />
+          <stop offset="0.35" stopColor="lightsteelblue" />
+          <stop offset="0.65" stopColor="slategray" />
+          <stop offset="1" stopColor="black" />
+        </linearGradient>
+        <linearGradient id="annotate-floor" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="wheat" />
+          <stop offset="0.5" stopColor="peru" />
+          <stop offset="1" stopColor="black" />
+        </linearGradient>
+      </defs>
+      <rect width="480" height="270" fill="url(#annotate-photo)" />
+      <polygon points="0,170 480,170 480,270 0,270" fill="url(#annotate-floor)" />
+      <rect x="44" y="104" width="92" height="74" fill="burlywood" />
+      <rect x="196" y="118" width="80" height="62" fill="sienna" />
+      <rect x="340" y="96" width="96" height="86" fill="darkslategray" />
+
+      {/* Left, on the bright part: a model's box over a person's label, and last version's box. */}
+      <AnnotationBox kind={previous} x={30} y={92} w={100} h={84} />
+      <AnnotationBox kind={truth} x={40} y={100} w={100} h={82} />
+      <AnnotationBox kind={predicted} x={46} y={106} w={92} h={74} />
+      {/* Middle: the selected box, being edited. */}
+      <AnnotationBox kind={selected} x={192} y={114} w={88} h={70} />
+      {/* Right, on the dark part: the same pair, still visible thanks to the halo. */}
+      <AnnotationBox kind={truth} x={334} y={90} w={108} h={96} />
+      <AnnotationBox kind={predicted} x={344} y={100} w={92} h={84} />
+
+      {[predicted, truth, previous, selected].map((k, i) => (
+        <g key={k.key}>
+          <AnnotationPoint kind={k} x={70 + i * 26} y={226} />
+          <AnnotationPoint kind={k} x={360 + i * 26} y={226} />
+        </g>
+      ))}
+    </svg>
+  )
+}
+
+/** The legend: the line itself, so it reads without colour. */
+function AnnotationLegend() {
+  return (
+    <ul className="grid gap-x-6 gap-y-2 sm:grid-cols-2">
+      {annotationKinds.map((k) => (
+        <li key={k.key} className="flex items-center gap-3 text-sm">
+          <svg viewBox="0 0 40 16" className="h-4 w-10 shrink-0" aria-hidden="true">
+            <g style={k.fade ? { opacity: "var(--annotate-fade)" } : undefined}>
+              <line x1="4" y1="8" x2="36" y2="8" className="stroke-annotate-halo" strokeWidth={k.width + 2} strokeDasharray={k.dash} strokeLinecap={k.dash === "0 5" ? "round" : undefined} />
+              <line x1="4" y1="8" x2="36" y2="8" className={strokeClass[k.key]} strokeWidth={k.width} strokeDasharray={k.dash} strokeLinecap={k.dash === "0 5" ? "round" : undefined} />
+            </g>
+          </svg>
+          <span className="font-medium">{k.label}</span>
+          <span className="text-muted-foreground">{k.line}</span>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
 export default function DataVisualisationPage() {
   return (
     <article>
@@ -270,6 +386,47 @@ export default function DataVisualisationPage() {
             ["Robots", <Code key="c">StatusGlyph + ID</Code>, "The status shape and the robot's ID, as in every list; colour only when a robot needs attention. The selected one gets the focus ring's ink."],
             ["Density over the floor", <Code key="c">--chart-1 ramp</Code>, "One hue over the grey scans, light to dark, with a scale."],
           ].map((r) => r.map((c, i) => (typeof c === "string" ? <span key={i} className={i === 0 ? "font-medium" : "text-muted-foreground"}>{c}</span> : c)))}
+        />
+      </Section>
+
+      <Section
+        id="annotations"
+        title="Annotations on images"
+        lead="Boxes and points over a photo: what a model predicted, what a person labelled, the previous version and the one being edited. The photo can be any colour, so the line style carries the meaning and every stroke has a halo."
+      >
+        <figure className="flex flex-col gap-4 overflow-hidden rounded-md border border-border bg-card p-4">
+          <div className="overflow-hidden rounded-xs">
+            <AnnotationSpecimen />
+          </div>
+          <figcaption>
+            <AnnotationLegend />
+          </figcaption>
+        </figure>
+        <TokenTable
+          head={["Mark", "Line", "Token", "Against its halo, light · dark"]}
+          rows={annotationKinds.map((k) => [
+            <span key="m" className="flex flex-col">
+              <span className="font-medium">{k.label}</span>
+              <span className="text-muted-foreground">{k.means}</span>
+            </span>,
+            <span key="l" className="text-muted-foreground">
+              {k.line}
+            </span>,
+            <Code key="t">--annotate-{k.key}</Code>,
+            <span key="c" className="font-mono text-xs whitespace-nowrap tabular-nums">
+              {contrast(`annotate-${k.key}`, "annotate-halo", "light")!.toFixed(1)}:1 · {contrast(`annotate-${k.key}`, "annotate-halo", "dark")!.toFixed(1)}:1
+            </span>,
+          ])}
+        />
+        <Rules
+          rules={[
+            "Line style first, colour second: predicted solid 2 px, ground truth dashed (6 4) 2 px, the previous version dotted and faded (--annotate-fade), the selected one 3 px with square handles at its corners. Points: predicted a filled dot, ground truth a ring.",
+            "Every stroke is drawn twice: first in --annotate-halo, 2 px wider, then in its colour. The two are at least 3:1 apart, so on a bright or a dark photo one of them shows.",
+            "Colours come from the chart palette (predicted --chart-1, ground truth --chart-2), the previous version is the muted ink and the selected one the focus ink. Never status colours: a low score is a number in the label, not a warning box.",
+            "The class is a word in the label (text in --foreground on --annotate-halo), not a colour: the colours already say where a box came from.",
+            "Two sources at a time, plus the selection: predicted against ground truth, or this version against the previous one. To compare more, put pictures side by side.",
+            "High contrast keeps the same strokes and stops fading the previous version: nothing is translucent there.",
+          ]}
         />
       </Section>
 

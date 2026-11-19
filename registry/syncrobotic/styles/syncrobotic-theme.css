@@ -1,4 +1,4 @@
-/* @syncrobotic/syncrobotic-theme v0.15.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
+/* @syncrobotic/syncrobotic-theme v0.16.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
 /*
  * SYNCROBOTIC theme (see CHANGELOG.md for its version history)
  * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
@@ -84,6 +84,17 @@
   --chart-4: #943171;
   --chart-5: #71717a;
 
+  /* Annotations on images: boxes and points drawn over camera pictures. Told apart first by line style (predicted solid
+     2 px, ground truth dashed 2 px, previous dotted and faded, selected 3 px with handles) and only then by these colours,
+     so they read without colour. Every stroke is drawn over --annotate-halo, 2 px wider and at least 3:1 against it, so
+     on any photo one of the two shows. Aliases are restated in every block below, like --card-foreground. */
+  --annotate-predicted: var(--chart-1);
+  --annotate-truth: var(--chart-2);
+  --annotate-previous: var(--muted-foreground);
+  --annotate-selected: var(--ring);
+  --annotate-halo: #ffffff;
+  --annotate-fade: 0.6; /* opacity of the previous version's marks; 1 in high contrast, where nothing is translucent */
+
   /* Heights */
   --h-tag: 1.5rem;    /* 24 tag, not interactive */
   --h-sm: 2.25rem;    /* 36 compact control: only where nothing is a touch screen. On touch it is 44, see below. */
@@ -151,6 +162,13 @@
   --chart-4: #af4a88;
   --chart-5: #8f8f98;
 
+  /* Lighter strokes over a black halo. */
+  --annotate-predicted: var(--chart-1);
+  --annotate-truth: var(--chart-2);
+  --annotate-previous: var(--muted-foreground);
+  --annotate-selected: var(--ring);
+  --annotate-halo: #000000;
+
   --map: #0d0d10;
   --map-point: #6f7682;
   --scrim: rgb(0 0 0 / 0.66);
@@ -196,6 +214,13 @@
   --scrim: rgb(0 0 0 / 0.6);
   --float: rgb(255 255 255 / 1);
   --edge: rgb(0 0 0 / 0.55);
+
+  --annotate-predicted: var(--chart-1);
+  --annotate-truth: var(--chart-2);
+  --annotate-previous: var(--muted-foreground);
+  --annotate-selected: var(--ring);
+  --annotate-halo: #ffffff;
+  --annotate-fade: 1;
 }
 
 .dark[data-contrast="more"],
@@ -236,6 +261,13 @@
   --scrim: rgb(0 0 0 / 0.8);
   --float: rgb(18 18 21 / 1);
   --edge: rgb(255 255 255 / 0.55);
+
+  --annotate-predicted: var(--chart-1);
+  --annotate-truth: var(--chart-2);
+  --annotate-previous: var(--muted-foreground);
+  --annotate-selected: var(--ring);
+  --annotate-halo: #000000;
+  --annotate-fade: 1;
 }
 
 /* ---------- Tailwind utilities ---------- */
@@ -287,6 +319,13 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+
+  /* Usage: stroke-annotate-truth over stroke-annotate-halo. Annotations on images only. */
+  --color-annotate-predicted: var(--annotate-predicted);
+  --color-annotate-truth: var(--annotate-truth);
+  --color-annotate-previous: var(--annotate-previous);
+  --color-annotate-selected: var(--annotate-selected);
+  --color-annotate-halo: var(--annotate-halo);
 
   /* Usage: pt-section sm:pt-section, gap-section-sm. Vertical rhythm between page sections only */
   --spacing-section: var(--space-section);

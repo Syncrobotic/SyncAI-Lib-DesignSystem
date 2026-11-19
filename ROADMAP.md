@@ -34,7 +34,7 @@ Reviewed each release, so the roadmap follows evidence rather than taste.
 
 ## Plan
 
-Ordered by what blocks adoption first. Each milestone is one or two release trains. The milestones are themes, not version numbers: the kit is at 0.13, and the open items below are what is left of each theme. Checked 2026-11-19.
+Ordered by what blocks adoption first. Each milestone is one or two release trains. The milestones are themes, not version numbers: the kit is at 0.13, and the open items below are what is left of each theme. Checked 2026-11-19 (0.16).
 
 ### 0.4 · Alarms and feedback
 - [x] Alarms foundation, `alarm`, `toast`
@@ -61,8 +61,14 @@ Ordered by what blocks adoption first. Each milestone is one or two release trai
 
 ### 0.8 · Documentation
 - [ ] Props tables generated from the types; status labels (beta, stable) per item
-- [ ] Site search (⌘K); docs per released version
+- [x] Site search (⌘K, Ctrl+K, /) over pages, rules, components, blocks and icons
+- [ ] Docs per released version
 - [ ] Adoption scanner: a script that reports registry items and versions across company repos
+
+### 0.16 · Data tools and review (done)
+- [x] Filters: a flat chip filter bar (field, operator, value) that lives in the URL
+- [x] For labelling and model review (VLM-Forge): text diff, image grid with a lightbox, keyboard-first review queue with `use-hotkeys`, action-rail page, annotation overlay tokens, and colours for test and audit results
+- [x] CI: pull requests only, stale runs cancelled, story checks once per release in Playwright's image
 
 ### 0.9 · Accessibility evidence
 - [ ] Manual screen-reader and keyboard test matrix per component (VoiceOver, TalkBack, NVDA)

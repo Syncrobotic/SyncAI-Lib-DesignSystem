@@ -2,6 +2,45 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.16.0 · 2026-11-19
+
+### Added
+- **`filters`**: a filter bar of chips, after ReUI's Filters but kept flat.
+  - **+ Filter** picks a field, an operator and a value. Any part of a chip reopens that step.
+  - Rules combine with "and". Fields can be text, option (single or multi), number with unit, date (single or range) and boolean.
+  - Rules live in the URL (`toQueryString` / `fromSearchParams`) and filter rows in the browser (`filterRows`).
+  - Fully keyboard operable: every step is announced, and focus returns where it came from. The DataGrid example filters 40 robots.
+- **`text-diff`**: where two texts differ, word by word.
+  - Insertions are a grey block with an underline. Removals are struck through in secondary text: a removal is not an error, so no green and no red. Each change is announced as added or removed.
+  - Inline or side by side, with a "+3 words, −1 word" summary.
+- **`use-hotkeys`**: shortcuts as a map of keys to handlers. They stay quiet while someone types in a field. The hook reports the key being pressed, so `kbd` (new `pressed` state) can show it going down.
+- **`review-queue`** (block, Data operations): review items one at a time by keyboard.
+  - 1/2/3 answer and advance. Esc goes back, Backspace or ⌘Z undoes, ? opens the shortcuts.
+  - The key bar shows each key going down.
+- **Test and audit results** (Colour foundation):
+  - A pass is grey with a check, never green. A failure is a danger outline with danger text. Not enough samples is grey with a dashed circle.
+  - There are Badge examples for all three.
+- **`image-grid`**: a gallery of thumbnails, as a grid or a scroll-snap strip.
+  - Tiles load lazily and keep their aspect.
+  - States: loading (skeleton), hidden (RestrictedPreview), broken (shows the file name).
+  - Single or multiple picking.
+  - A lightbox with the position ("3 of 24"), ← → to move, Esc to close, and focus back on the tile.
+- **`action-rail-shell`** (block): a page whose right column holds only the next step.
+  - The rail holds one large primary button and a few small actions.
+  - On phones it becomes a bar fixed to the bottom, above the safe area.
+  - ← or Esc goes back.
+- **Annotations on images** (theme and Data visualisation foundation):
+  - Tokens: `--annotate-predicted`, `--annotate-truth`, `--annotate-previous`, `--annotate-selected`, `--annotate-halo`, `--annotate-fade`.
+  - Line style is the primary encoding (solid, dashed, dotted, thick with handles).
+  - A halo under every stroke keeps boxes and points at 3:1 or better on any photo.
+- **Site search**: ⌘K, Ctrl+K or / opens a palette over pages, foundation sections (every rule by its heading), components, blocks and the icon set. Whole words, titles first. The index is written at build time and fetched the first time the search opens. An icon result opens that icon's details (`/icons?icon=Name`). On phones a 44 px search button sits in the header.
+
+### Changed
+- **CI is faster**: pull requests only, stale runs cancelled, story checks once per release (into stage) in Playwright's own image, registry-e2e skipped when no registry file changed.
+
+### Fixed
+- `command`: in CommandDialog the input row no longer shows a focus ring for good.
+
 ## 0.15.0 · 2026-11-19
 
 ### Added
