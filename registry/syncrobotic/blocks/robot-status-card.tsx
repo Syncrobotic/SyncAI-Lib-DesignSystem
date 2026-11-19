@@ -1,4 +1,4 @@
-// @syncrobotic/robot-status-card v0.13.0 · update: npx shadcn add @syncrobotic/robot-status-card --overwrite
+// @syncrobotic/robot-status-card v0.15.0 · update: npx shadcn add @syncrobotic/robot-status-card --overwrite
 import * as React from "react"
 import { Battery, BatteryCharging, MapPin, Navigation, Wifi, WifiOff } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -44,7 +44,7 @@ export function RobotStatusCard({
   onReturn?: () => void
   className?: string
 }) {
-  const low = robot.battery < 30
+  const low = robot.battery < 15
   const BatteryIcon = robot.charging ? BatteryCharging : Battery
   return (
     <Card className={cn("w-full max-w-sm", className)}>

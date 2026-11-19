@@ -1,4 +1,4 @@
-// @syncrobotic/sparkline-table v0.9.0 · update: npx shadcn add @syncrobotic/sparkline-table --overwrite
+// @syncrobotic/sparkline-table v0.15.0 · update: npx shadcn add @syncrobotic/sparkline-table --overwrite
 "use client"
 
 import * as React from "react"
@@ -36,7 +36,7 @@ export function SparklineTable() {
         <TableHeader>
           <TableRow>
             <TableHead>Site</TableHead>
-            <TableHead className="text-right">Robots</TableHead>
+            <TableHead className="hidden text-right sm:table-cell">Robots</TableHead>
             <TableHead>Trend</TableHead>
             <TableHead className="text-right">Events</TableHead>
           </TableRow>
@@ -44,8 +44,14 @@ export function SparklineTable() {
         <TableBody>
           {sites.map((s) => (
             <TableRow key={s.name}>
-              <TableCell className="font-medium">{s.name}</TableCell>
-              <TableCell className="text-right tabular-nums">{s.robots}</TableCell>
+              <TableCell>
+                <span className="font-medium">{s.name}</span>
+                {/* On a phone the robot count sits under the site, so the trend and its total fit beside it. */}
+                <span className="block text-xs text-muted-foreground tabular-nums sm:hidden">
+                  {s.robots} {s.robots === 1 ? "robot" : "robots"}
+                </span>
+              </TableCell>
+              <TableCell className="hidden text-right tabular-nums sm:table-cell">{s.robots}</TableCell>
               <TableCell>
                 <MiniBars values={s.events} max={max} />
               </TableCell>

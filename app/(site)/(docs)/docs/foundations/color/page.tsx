@@ -31,7 +31,7 @@ const groups: { title: string; tokens: string[]; use: Record<string, string> }[]
       input: "Field outlines",
       foreground: "Body text",
       "muted-foreground": "Secondary text",
-      disabled: "Disabled fill",
+      disabled: "Disabled text on text-only controls: 3:1 on the page, lighter than secondary text",
     },
   },
   {

@@ -1,4 +1,4 @@
-// @syncrobotic/list v0.7.0 · update: npx shadcn add @syncrobotic/list --overwrite
+// @syncrobotic/list v0.15.0 · update: npx shadcn add @syncrobotic/list --overwrite
 import * as React from "react"
 import { ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -28,10 +28,13 @@ export function ListRow({ title, meta, lead, trailing, chevron, onClick }: RowPr
       onClick={onClick}
       className={cn("flex min-h-(--h-row) w-full items-center gap-3 border-b border-border py-2 text-left last:border-b-0", onClick && "press")}
     >
-      {lead}
-      <span className="flex min-w-0 flex-1 flex-col">
-        <span className="truncate text-sm font-medium">{title}</span>
-        {meta && <span className="truncate text-xs text-muted-foreground">{meta}</span>}
+      {/* The lead sits on the title's line (20 px), not the middle of title and meta, so an icon reads with its name. */}
+      <span className="flex min-w-0 flex-1 items-start gap-3">
+        {lead && <span className="flex min-h-5 shrink-0 items-center">{lead}</span>}
+        <span className="flex min-w-0 flex-1 flex-col">
+          <span className="truncate text-sm font-medium">{title}</span>
+          {meta && <span className="truncate text-xs text-muted-foreground">{meta}</span>}
+        </span>
       </span>
       {typeof trailing === "string" ? <span className="shrink-0 whitespace-nowrap text-sm text-muted-foreground">{trailing}</span> : trailing}
       {chevron && <ChevronRight aria-hidden="true" className="size-5 shrink-0 text-muted-foreground" />}

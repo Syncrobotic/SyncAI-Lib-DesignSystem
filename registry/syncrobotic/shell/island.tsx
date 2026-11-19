@@ -1,4 +1,4 @@
-// @syncrobotic/island v0.13.0 · update: npx shadcn add @syncrobotic/island --overwrite
+// @syncrobotic/island v0.15.0 · update: npx shadcn add @syncrobotic/island --overwrite
 "use client"
 
 import * as React from "react"
@@ -173,28 +173,34 @@ type NoticeProps = {
 export function IslandNotice({ tone, icon: Icon, title, meta, action, persistent, emphasis, onDismiss, dismissLabel = "Dismiss" }: NoticeProps) {
   const tint = persistent || emphasis ? toneSubtle[tone] : "bg-muted"
   return (
-    <div role="status" className={cn("flex min-h-(--h-row) animate-appear items-center gap-2 rounded-md px-2", tint)}>
+    <div role="status" className={cn("flex min-h-(--h-row) animate-appear flex-wrap items-center gap-2 rounded-md px-2 py-2", tint)}>
       <span className={cn("flex size-8 shrink-0 items-center justify-center rounded-sm", toneText[tone])}>
         <Icon aria-hidden="true" className="size-5" />
       </span>
-      <span className="flex min-w-0 flex-1 flex-col">
-        <span className="truncate text-sm font-medium">{title}</span>
-        {meta && <span className="truncate text-xs text-muted-foreground">{meta}</span>}
+      {/* What happened is never cut: it wraps to a second line (clamped only past that), and when the buttons would
+          squeeze it under 160 px they move to a row of their own instead. */}
+      <span className="flex min-w-0 flex-1 basis-40 flex-col">
+        <span className="line-clamp-2 text-sm font-medium break-words">{title}</span>
+        {meta && <span className="line-clamp-2 text-xs text-muted-foreground break-words">{meta}</span>}
       </span>
-      {action && (
-        <button type="button" onClick={action.onClick} className="press h-(--h-sm) shrink-0 rounded-xs bg-background/40 px-3 text-sm font-medium">
-          {action.label}
-        </button>
-      )}
-      {!persistent && onDismiss && (
-        <button
-          type="button"
-          aria-label={dismissLabel}
-          onClick={onDismiss}
-          className="press flex size-(--h-sm) shrink-0 items-center justify-center rounded-xs text-muted-foreground"
-        >
-          <X aria-hidden="true" className="size-4" />
-        </button>
+      {(action || (!persistent && onDismiss)) && (
+        <span className="ml-auto flex shrink-0 items-center gap-2">
+          {action && (
+            <button type="button" onClick={action.onClick} className="press h-(--h-sm) shrink-0 rounded-xs bg-background/40 px-3 text-sm font-medium">
+              {action.label}
+            </button>
+          )}
+          {!persistent && onDismiss && (
+            <button
+              type="button"
+              aria-label={dismissLabel}
+              onClick={onDismiss}
+              className="press flex size-(--h-sm) shrink-0 items-center justify-center rounded-xs text-muted-foreground"
+            >
+              <X aria-hidden="true" className="size-4" />
+            </button>
+          )}
+        </span>
       )}
     </div>
   )
@@ -240,7 +246,7 @@ export function IslandAlarm({ alarms, onAcknowledge, onShowAll, labels, feedback
       aria-hidden={presence.leaving || undefined}
       onAnimationEnd={(e) => e.target === e.currentTarget && presence.done()}
       className={cn(
-        "flex min-h-(--h-row) items-center gap-2 rounded-md px-2",
+        "flex min-h-(--h-row) flex-wrap items-center gap-2 rounded-md px-2 py-2",
         presence.leaving ? "animate-disappear" : "animate-appear",
         top.priority === "critical" ? p.tint : "bg-muted",
       )}
@@ -248,28 +254,33 @@ export function IslandAlarm({ alarms, onAcknowledge, onShowAll, labels, feedback
       <span className={cn("flex size-8 shrink-0 items-center justify-center", p.text)}>
         <Icon aria-hidden="true" className="size-5" />
       </span>
-      <span className="flex min-w-0 flex-1 flex-col">
-        <span className="truncate text-sm font-bold">
+      {/* The alarm is never cut: two lines, and the buttons move to their own row before they squeeze it under 160 px. */}
+      <span className="flex min-w-0 flex-1 basis-40 flex-col">
+        <span className="line-clamp-2 text-sm font-bold break-words">
           <span className={p.text}>{l[top.priority]}</span> · {top.title}
         </span>
         <span className="truncate text-xs text-muted-foreground">
           {[top.source, top.time, others > 0 && !onShowAll ? l.more(others) : null].filter(Boolean).join(" · ")}
         </span>
       </span>
-      {others > 0 && onShowAll && (
-        <button type="button" onClick={onShowAll} className="press h-(--h-sm) shrink-0 rounded-xs px-3 text-sm font-medium ring-1 ring-border ring-inset">
-          {l.more(others)}
-          <span className="sr-only"> {l.moreAlarms}</span>
-        </button>
-      )}
-      {onAcknowledge && (
-        <button
-          type="button"
-          onClick={() => onAcknowledge(top.id)}
-          className="press h-(--h-sm) shrink-0 rounded-xs px-3 text-sm font-medium ring-1 ring-foreground ring-inset"
-        >
-          {l.acknowledge}
-        </button>
+      {((others > 0 && onShowAll) || onAcknowledge) && (
+        <span className="ml-auto flex shrink-0 items-center gap-2">
+          {others > 0 && onShowAll && (
+            <button type="button" onClick={onShowAll} className="press h-(--h-sm) shrink-0 rounded-xs px-3 text-sm font-medium ring-1 ring-border ring-inset">
+              {l.more(others)}
+              <span className="sr-only"> {l.moreAlarms}</span>
+            </button>
+          )}
+          {onAcknowledge && (
+            <button
+              type="button"
+              onClick={() => onAcknowledge(top.id)}
+              className="press h-(--h-sm) shrink-0 rounded-xs px-3 text-sm font-medium ring-1 ring-foreground ring-inset"
+            >
+              {l.acknowledge}
+            </button>
+          )}
+        </span>
       )}
       </div>
     </>

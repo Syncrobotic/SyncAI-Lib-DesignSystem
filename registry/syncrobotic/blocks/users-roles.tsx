@@ -1,4 +1,4 @@
-// @syncrobotic/users-roles v0.8.0 · update: npx shadcn add @syncrobotic/users-roles --overwrite
+// @syncrobotic/users-roles v0.15.0 · update: npx shadcn add @syncrobotic/users-roles --overwrite
 "use client"
 
 import * as React from "react"
@@ -105,8 +105,8 @@ export function UsersRoles() {
           <TableHeader>
             <TableRow>
               <TableHead>Person</TableHead>
-              <TableHead className="w-44">Role</TableHead>
-              <TableHead className="w-16">
+              <TableHead className="w-32 px-2 sm:w-44 sm:px-4">Role</TableHead>
+              <TableHead className="w-16 px-2 sm:px-4">
                 <span className="sr-only">Actions</span>
               </TableHead>
             </TableRow>
@@ -114,21 +114,26 @@ export function UsersRoles() {
           <TableBody>
             {users.map((u) => (
               <TableRow key={u.id}>
-                <TableCell>
+                {/* w-full max-w-0: the person takes what the role and menu leave, and a long email truncates instead of pushing the role off a phone. */}
+                <TableCell className="w-full max-w-0">
                   <div className="flex items-center gap-3">
-                    <Avatar>
+                    <Avatar className="hidden sm:flex">
                       <AvatarFallback>{initials(u)}</AvatarFallback>
                     </Avatar>
                     <div className="flex min-w-0 flex-col">
-                      <span className="flex items-center gap-2 font-medium">
-                        {u.name || u.email}
-                        {u.invited && <Badge tone="outline">Invited</Badge>}
+                      <span className="flex min-w-0 items-center gap-2 font-medium">
+                        <span className="truncate">{u.name || u.email}</span>
+                        {u.invited && (
+                          <Badge tone="outline" className="shrink-0">
+                            Invited
+                          </Badge>
+                        )}
                       </span>
                       {u.name && <span className="truncate text-xs text-muted-foreground">{u.email}</span>}
                     </div>
                   </div>
                 </TableCell>
-                <TableCell>
+                <TableCell className="px-2 sm:px-4">
                   <Select value={u.role} onValueChange={(v) => setUsers((list) => list.map((x) => (x.id === u.id ? { ...x, role: v as Role } : x)))}>
                     <SelectTrigger aria-label={`Role of ${u.name || u.email}`} className="h-(--h-sm)">
                       <SelectValue />
@@ -142,7 +147,7 @@ export function UsersRoles() {
                     </SelectContent>
                   </Select>
                 </TableCell>
-                <TableCell>
+                <TableCell className="px-2 sm:px-4">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="ghost" size="icon-sm" aria-label={`More for ${u.name || u.email}`}>

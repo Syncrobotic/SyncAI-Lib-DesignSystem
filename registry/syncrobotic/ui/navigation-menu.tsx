@@ -1,4 +1,4 @@
-// @syncrobotic/navigation-menu v0.10.0 · update: npx shadcn add @syncrobotic/navigation-menu --overwrite
+// @syncrobotic/navigation-menu v0.15.0 · update: npx shadcn add @syncrobotic/navigation-menu --overwrite
 "use client"
 
 import * as React from "react"
@@ -41,7 +41,7 @@ export function NavigationMenuItem({ className, ...props }: React.ComponentProps
 }
 
 const itemStyle = cn(
-  "inline-flex h-(--h-sm) w-max items-center justify-center gap-2 rounded-sm px-3 text-sm font-medium text-muted-foreground outline-none",
+  "inline-flex h-(--h-sm) w-max items-center justify-center gap-2 rounded-sm px-3 text-sm font-medium text-muted-foreground",
   "transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-muted hover:text-foreground",
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:text-disabled",
   "data-[state=open]:bg-muted data-[state=open]:text-foreground data-active:text-foreground [&_svg]:size-4",
@@ -102,7 +102,7 @@ export function NavigationMenuLink({ className, ...props }: React.ComponentProps
     <NavPrimitive.Link
       data-slot="navigation-menu-link"
       className={cn(
-        "flex flex-col gap-1 rounded-xs p-3 text-sm outline-none",
+        "flex flex-col gap-1 rounded-xs p-3 text-sm",
         "transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
         "data-active:bg-muted [&_svg]:size-4 [&_svg]:text-muted-foreground",
         className,

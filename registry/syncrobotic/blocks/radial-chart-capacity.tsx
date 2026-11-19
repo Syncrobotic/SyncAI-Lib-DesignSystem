@@ -1,4 +1,4 @@
-// @syncrobotic/radial-chart-capacity v0.9.0 · update: npx shadcn add @syncrobotic/radial-chart-capacity --overwrite
+// @syncrobotic/radial-chart-capacity v0.15.0 · update: npx shadcn add @syncrobotic/radial-chart-capacity --overwrite
 "use client"
 
 import * as React from "react"
@@ -41,7 +41,7 @@ export function RadialChartCapacity() {
             )
           })}
         </svg>
-        <ul className="flex min-w-48 flex-1 flex-col gap-3 text-sm">
+        <ul className="flex max-w-sm min-w-48 flex-1 flex-col gap-3 text-sm">
           {rings.map((g) => (
             <li key={g.label} className="flex items-center gap-2">
               <span aria-hidden="true" className="size-3 shrink-0 rounded-xs" style={{ background: g.color }} />

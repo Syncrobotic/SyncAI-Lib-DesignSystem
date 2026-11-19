@@ -4,7 +4,7 @@ import { Battery, Bot, CircleAlert, Info, Lock, MapPinOff, RotateCw, SearchX, Tr
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { Alert, AlertDescription, AlertTitle } from "@/registry/syncrobotic/ui/alert"
-import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"
+import { Avatar, AvatarBadge, AvatarFallback, AvatarGroup, AvatarImage } from "@/registry/syncrobotic/ui/avatar"
 import { Badge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/registry/syncrobotic/ui/card"
@@ -62,25 +62,6 @@ export const CardDefault: S = {
   ),
 }
 
-export const AvatarDefault: S = {
-  render: () => (
-    <div className="flex items-center gap-3">
-      <Avatar>
-        <AvatarFallback>NS</AvatarFallback>
-      </Avatar>
-      <Avatar className="size-12">
-        <AvatarFallback>7F</AvatarFallback>
-      </Avatar>
-      <div className="flex -space-x-2">
-        {["AL", "BK", "CW"].map((i) => (
-          <Avatar key={i} className="ring-2 ring-background">
-            <AvatarFallback>{i}</AvatarFallback>
-          </Avatar>
-        ))}
-      </div>
-    </div>
-  ),
-}
 
 export const AlertTones: S = {
   render: () => (
@@ -110,16 +91,17 @@ export const ProgressDefault: S = {
       <div className="flex flex-col gap-2">
         <div className="flex justify-between">
           <span>Uploading video</span>
-          <span className="text-muted-foreground">64%</span>
+          <span className="text-muted-foreground tabular-nums">64 %</span>
         </div>
         <Progress value={64} aria-label="Uploading video" />
       </div>
+      {/* Progress is for a process someone waits on. A level (battery, storage) is a Meter. */}
       <div className="flex flex-col gap-2">
         <div className="flex justify-between">
-          <span>Battery</span>
-          <span className="text-warning">18%</span>
+          <span>Installing firmware 2.4.1</span>
+          <span className="text-muted-foreground tabular-nums">18 %</span>
         </div>
-        <Progress value={18} tone="warning" aria-label="Battery" />
+        <Progress value={18} aria-label="Installing firmware 2.4.1" />
       </div>
     </div>
   ),
@@ -167,7 +149,7 @@ export const TableDefault: S = {
             <TableCell>
               <InlineStatus status={r.tone}>{r.s}</InlineStatus>
             </TableCell>
-            <TableCell className="text-right">{r.b}%</TableCell>
+            <TableCell className="text-right">{r.b} %</TableCell>
           </TableRow>
         ))}
       </TableBody>
@@ -201,7 +183,7 @@ export const CardWithList: S = {
       </CardHeader>
       <CardContent className="gap-0">
         {[
-          { n: "Dock A", m: "2B10 charging · 64%", t: "normal" as const, s: "In use" },
+          { n: "Dock A", m: "2B10 charging · 64 %", t: "normal" as const, s: "In use" },
           { n: "Dock B", m: "Free", t: "offline" as const, s: "Idle" },
           { n: "Dock C", m: "Power fault since 01:12", t: "danger" as const, s: "Fault" },
         ].map((d) => (
@@ -237,33 +219,6 @@ export const CardStat: S = {
   ),
 }
 
-export const AvatarSizesAndStatus: S = {
-  render: () => (
-    <div className="flex items-end gap-4">
-      {[
-        { c: "size-6 text-xs", i: "AL" },
-        { c: "size-8", i: "BK" },
-        { c: "size-12 text-sm", i: "CW" },
-      ].map((a) => (
-        <span key={a.i} className="relative">
-          <Avatar className={a.c}>
-            <AvatarFallback>{a.i}</AvatarFallback>
-          </Avatar>
-          <StatusGlyph status="normal" className="absolute -right-0.5 -bottom-0.5 rounded-full bg-background" />
-        </span>
-      ))}
-      <span className="flex items-center gap-2">
-        <Avatar>
-          <AvatarFallback>NS</AvatarFallback>
-        </Avatar>
-        <span className="flex flex-col">
-          <span className="text-sm font-medium">Night shift</span>
-          <span className="text-xs text-muted-foreground">Operator · online</span>
-        </span>
-      </span>
-    </div>
-  ),
-}
 
 export const SeparatorInToolbar: S = {
   render: () => (
@@ -286,7 +241,7 @@ export const ProgressSteps: S = {
     <div className="flex flex-col gap-3 text-sm">
       {[
         { n: "Map upload", v: 100, t: "success" as const, s: "Done" },
-        { n: "Route check", v: 45, t: "info" as const, s: "45%" },
+        { n: "Route check", v: 45, t: "info" as const, s: "45 %" },
         { n: "Firmware", v: 0, t: "neutral" as const, s: "Waiting" },
       ].map((x) => (
         <div key={x.n} className="flex flex-col gap-1">
@@ -540,37 +495,7 @@ export const BadgeAsLink: S = {
   ),
 }
 
-export const AvatarGroup: S = {
-  render: () => (
-    <div className="flex items-center gap-3">
-      <div className="flex -space-x-2" aria-label="On shift: Mei Lin, Arjun Rao, Sara Kim and 2 more">
-        {["ML", "AR", "SK"].map((i) => (
-          <Avatar key={i} className="ring-2 ring-background">
-            <AvatarFallback>{i}</AvatarFallback>
-          </Avatar>
-        ))}
-        <Avatar className="ring-2 ring-background">
-          <AvatarFallback>+2</AvatarFallback>
-        </Avatar>
-      </div>
-      <span className="text-sm text-muted-foreground">5 on shift</span>
-    </div>
-  ),
-}
 
-export const AvatarWithName: S = {
-  render: () => (
-    <div className="flex items-center gap-3">
-      <Avatar className="size-10">
-        <AvatarFallback>ML</AvatarFallback>
-      </Avatar>
-      <div className="flex flex-col">
-        <span className="text-sm font-medium">Mei Lin</span>
-        <span className="text-xs text-muted-foreground">Operator · night shift</span>
-      </div>
-    </div>
-  ),
-}
 
 export const CardWithAction: S = {
   render: () => (
@@ -876,6 +801,142 @@ export const EmptyStateCompact: S = {
     <div className="rounded-md ring-1 ring-border">
       <div className="border-b border-border px-4 py-3 text-sm font-medium">Open alarms</div>
       <EmptyState className="py-6" title="No open alarms" description="New alarms show up here as they happen." />
+    </div>
+  ),
+}
+
+export const AvatarDefault: S = {
+  render: () => (
+    <div className="flex items-end gap-3">
+      {(["sm", "md", "lg", "xl"] as const).map((size) => (
+        <Avatar key={size} size={size}>
+          <AvatarFallback>ML</AvatarFallback>
+        </Avatar>
+      ))}
+    </div>
+  ),
+}
+
+export const AvatarPeopleAndRobots: S = {
+  render: () => (
+    <ul className="flex flex-col gap-3">
+      <li className="flex items-center gap-3">
+        <Avatar size="lg">
+          <AvatarFallback>ML</AvatarFallback>
+        </Avatar>
+        <span className="flex flex-col">
+          <span className="text-sm font-medium">Mei Lin</span>
+          <span className="text-xs text-muted-foreground">Operator</span>
+        </span>
+      </li>
+      <li className="flex items-center gap-3">
+        <Avatar size="lg" shape="square">
+          <AvatarFallback>
+            <Bot aria-hidden="true" />
+          </AvatarFallback>
+        </Avatar>
+        <span className="flex flex-col">
+          <span className="text-sm font-medium">Patrol dog 7F3A</span>
+          <span className="text-xs text-muted-foreground">Robot · Hall B</span>
+        </span>
+      </li>
+      <li className="flex items-center gap-3">
+        <Avatar size="lg" shape="square">
+          <AvatarFallback>NS</AvatarFallback>
+        </Avatar>
+        <span className="flex flex-col">
+          <span className="text-sm font-medium">North site</span>
+          <span className="text-xs text-muted-foreground">Site · 14 robots</span>
+        </span>
+      </li>
+    </ul>
+  ),
+}
+
+export const AvatarStatus: S = {
+  render: () => (
+    <ul className="flex flex-col gap-3">
+      {(
+        [
+          { i: "ML", name: "Mei Lin", status: "active", word: "On shift" },
+          { i: "AR", name: "Arjun Rao", status: "normal", word: "Away" },
+          { i: "SK", name: "Sara Kim", status: "warning", word: "Shift ends in 10 min" },
+          { i: "TW", name: "Tom Wu", status: "offline", word: "Off shift" },
+        ] as const
+      ).map((p) => (
+        <li key={p.i} className="flex items-center gap-3">
+          <Avatar>
+            <AvatarFallback>{p.i}</AvatarFallback>
+            <AvatarBadge status={p.status} />
+          </Avatar>
+          <span className="flex flex-col">
+            <span className="text-sm font-medium">{p.name}</span>
+            <span className="text-xs text-muted-foreground">{p.word}</span>
+          </span>
+        </li>
+      ))}
+    </ul>
+  ),
+}
+
+export const AvatarCount: S = {
+  render: () => (
+    <div className="flex items-center gap-3">
+      <Avatar size="lg" shape="square" aria-label="Patrol dog 7F3A, 3 open alarms">
+        <AvatarFallback>
+          <Bot aria-hidden="true" />
+        </AvatarFallback>
+        <AvatarBadge aria-hidden="true" className="bg-danger-subtle text-danger">
+          3
+        </AvatarBadge>
+      </Avatar>
+      <span className="flex flex-col">
+        <span className="text-sm font-medium">Patrol dog 7F3A</span>
+        <span className="text-xs text-danger">3 open alarms</span>
+      </span>
+    </div>
+  ),
+}
+
+export const AvatarGroupOverflow: S = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center gap-3">
+        <AvatarGroup max={3} label="On shift: Mei Lin, Arjun Rao, Sara Kim, Tom Wu and Lea Park">
+          {["ML", "AR", "SK", "TW", "LP"].map((i) => (
+            <Avatar key={i}>
+              <AvatarFallback>{i}</AvatarFallback>
+            </Avatar>
+          ))}
+        </AvatarGroup>
+        <span className="text-sm text-muted-foreground">5 on shift</span>
+      </div>
+      <div className="flex items-center gap-3">
+        <AvatarGroup max={4} label="Robots on this route: 7F3A, 2B19, 4C02, 9C44, 8F15 and 3 more">
+          {["7F", "2B", "4C", "9C", "8F", "1A", "5D", "6E"].map((i) => (
+            <Avatar key={i} size="sm" shape="square">
+              <AvatarFallback>{i}</AvatarFallback>
+            </Avatar>
+          ))}
+        </AvatarGroup>
+        <span className="text-sm text-muted-foreground">8 robots on this route</span>
+      </div>
+    </div>
+  ),
+}
+
+export const AvatarImageFallback: S = {
+  render: () => (
+    <div className="flex items-center gap-3">
+      {/* The picture does not load, so the initials show: never an empty circle. */}
+      <Avatar size="lg">
+        <AvatarImage src="/avatars/missing.png" alt="" />
+        <AvatarFallback>ML</AvatarFallback>
+      </Avatar>
+      <span className="flex flex-col">
+        <span className="text-sm font-medium">Mei Lin</span>
+        <span className="text-xs text-muted-foreground">Picture not available: initials instead</span>
+      </span>
     </div>
   ),
 }

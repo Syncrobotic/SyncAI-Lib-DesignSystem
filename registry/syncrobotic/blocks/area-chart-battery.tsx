@@ -1,4 +1,4 @@
-// @syncrobotic/area-chart-battery v0.9.0 · update: npx shadcn add @syncrobotic/area-chart-battery --overwrite
+// @syncrobotic/area-chart-battery v0.15.0 · update: npx shadcn add @syncrobotic/area-chart-battery --overwrite
 "use client"
 
 import * as React from "react"
@@ -29,14 +29,14 @@ export function AreaChartBattery() {
       <ChartContainer config={config} label="Battery of 7F3A by hour over the shift, with the 30 % return level" className="h-48">
         <AreaChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
           <CartesianGrid vertical={false} />
-          <XAxis dataKey="t" {...chartAxis} />
+          <XAxis dataKey="t" {...chartAxis} interval="equidistantPreserveStart" />
           <YAxis {...chartAxis} domain={[0, 100]} ticks={[0, 25, 50, 75, 100]} width={40} />
           <ChartTooltip />
           <ReferenceLine
             y={30}
             stroke="var(--muted-foreground)"
             strokeDasharray="4 4"
-            label={{ value: "Returns to dock", position: "insideBottomRight", fill: "var(--muted-foreground)", fontSize: 12 }}
+            label={{ value: "Returns to dock", position: "insideBottomLeft", fill: "var(--muted-foreground)", fontSize: 12 }}
           />
           <Area dataKey="battery" type="linear" stroke="var(--color-battery)" strokeWidth={2} fill="var(--color-battery)" fillOpacity={0.12} {...chartMotion} />
         </AreaChart>

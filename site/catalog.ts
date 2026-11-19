@@ -94,6 +94,8 @@ const entries: Record<string, Entry> = {
   },
   stepper: {
     group: "Navigation",
+    /** Horizontal steps need the row: examples use the card's full width, like charts. */
+    wide: true,
     examples: { file: "stepper", prefix: "Stepper" },
     rules: [
       "Only for a fixed sequence people go through once (commissioning, an import). Sections of a page are Tabs.",
@@ -383,6 +385,7 @@ const entries: Record<string, Entry> = {
     group: "Inputs",
     examples: { file: "inputs", prefix: "NumberField" },
     rules: [
+      "The value and its unit are one reading, centred between − and +: write the unit with `unit`, not in the label.",
       'For a number with a range and a unit: speed, thresholds, intervals. For a free number with no range, Input with inputMode="numeric" is enough.',
       "Never block typing. The value is kept in range when the field loses focus, and the hint says the range.",
       "↑↓ step, Shift or PageUp/PageDown step by largeStep, Home/End go to the limits. The buttons are for touch and skip the Tab order.",
@@ -458,7 +461,9 @@ const entries: Record<string, Entry> = {
     examples: { file: "display", prefix: "Avatar" },
     rules: [
       "A person or a robot, by picture or initials. Initials when there is no picture, never an empty circle.",
-      "Pair it with the name: an avatar alone is not an identity.",
+      "People are round; robots, sites and teams are square (shape=\"square\"), so a mixed list tells who from what before the name is read.",
+      "Pair it with the name: an avatar alone is not an identity. A status badge is said in words too, nearby or in the label.",
+      "A group shows a few and folds the rest into +N (max); its label names everyone.",
     ],
   },
   separator: {
@@ -727,6 +732,14 @@ const entries: Record<string, Entry> = {
   // Hooks
   "use-long-press": { group: "Hooks", rules: ["Returns hold progress from 0 to 1. The emergency stop uses it for hold-to-stop-all."] },
   "use-slide-release": { group: "Hooks", rules: ["Drag, threshold and spring-back logic behind Slide to release."] },
+  "use-debounce": {
+    group: "Hooks",
+    rules: [
+      "Debounce what goes to a server (a search, an autosave), never what the person sees: the text box updates on every key.",
+      "300 ms for typing. A clear button and Enter do not wait: cancel() or flush().",
+      "Answers can return out of order: keep only the one for the latest query.",
+    ],
+  },
 }
 
 export type Item = (typeof registry.items)[number] & Entry

@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell-mobile-tabs v0.13.0 · update: npx shadcn add @syncrobotic/app-shell-mobile-tabs --overwrite
+// @syncrobotic/app-shell-mobile-tabs v0.15.0 · update: npx shadcn add @syncrobotic/app-shell-mobile-tabs --overwrite
 "use client"
 
 import * as React from "react"
@@ -38,7 +38,7 @@ function SampleRobots() {
               <StatusGlyph status={r.tone} /> {r.state} · {r.where}
             </span>
           </span>
-          <span className={r.battery < 15 ? "text-sm font-medium text-danger tabular-nums" : "text-sm text-muted-foreground tabular-nums"}>{r.battery} %</span>
+          <span className={r.battery < 15 ? "text-sm font-medium text-warning tabular-nums" : "text-sm text-muted-foreground tabular-nums"}>{r.battery} %</span>
         </li>
       ))}
     </ul>

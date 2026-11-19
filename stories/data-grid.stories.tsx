@@ -90,7 +90,7 @@ const columns: ColumnDef<Robot>[] = [
   {
     accessorKey: "battery",
     header: ({ column }) => <DataGridColumnHeader column={column} title="Battery" />,
-    cell: ({ row }) => <Meter inline label="Battery" value={row.original.battery} low={30} />,
+    cell: ({ row }) => <Meter inline label="Battery" value={row.original.battery} low={15} />,
     size: 160,
     meta: { label: "Battery" },
   },
@@ -114,7 +114,7 @@ const totalsColumns: ColumnDef<Robot>[] = [
     accessorKey: "tasks",
     header: ({ column }) => <DataGridColumnHeader column={column} title="Tasks" />,
     size: 90,
-    meta: { align: "right" },
+    meta: { align: "right", label: "Tasks" },
     footer: () => six.reduce((s, r) => s + r.tasks, 0),
   },
 ]
@@ -339,7 +339,7 @@ export const DataGridToolbar: S = {
           <input
             type="search"
             aria-label="Filter robots"
-            placeholder="Filter by name or site"
+            placeholder="Filter robots"
             value={q}
             onChange={(e) => setQ(e.target.value)}
             className="h-(--h-sm) min-w-0 flex-1 rounded-sm bg-card px-3 text-sm ring-1 ring-input ring-inset"

@@ -1,4 +1,4 @@
-/* @syncrobotic/syncrobotic-theme v0.14.1 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
+/* @syncrobotic/syncrobotic-theme v0.15.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
 /*
  * SYNCROBOTIC theme (see CHANGELOG.md for its version history)
  * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
@@ -43,7 +43,7 @@
   --border: #dcdce1;
   --input: #dcdce1;
   --ring: var(--foreground); /* focus is not a status: the ink colour, never the in-progress blue */
-  --disabled: #a1a1aa;
+  --disabled: #84848c; /* disabled text: 3:1 on the page and cards, still clearly lighter than secondary text */
 
   --info: #2952b8;
   --info-subtle: #e4e9f4;
@@ -129,7 +129,7 @@
   --border: #2c2c32;
   --input: #2c2c32;
   --ring: var(--foreground);
-  --disabled: #63636b;
+  --disabled: #6e6e76;
 
   --info: #7da4e6;
   --info-subtle: #1a2233;
@@ -474,6 +474,13 @@
   :root { --h-sm: var(--h-md); }
 }
 
+/* A fieldset is min-content wide by default, so fields inside it cannot shrink and push past a phone's edge. */
+@layer base {
+  fieldset {
+    min-width: 0;
+  }
+}
+
 /* A search field's clear button: the browser draws a small blue cross, and blue here means a process being waited on.
    It becomes the kit's grey cross at 20 px. Firefox has none, so apps that need clearing everywhere add their own. */
 @layer base {
@@ -484,6 +491,10 @@
     cursor: pointer;
     background-color: var(--muted-foreground);
     mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M18 6 6 18M6 6l12 12'/%3E%3C/svg%3E") center / 1rem no-repeat;
+  }
+  /* An input group with a button in it brings its own clear (or another action in that spot): one cross, not two. */
+  [data-slot="input-group"]:has([data-slot="input-group-button"]) input[type="search"]::-webkit-search-cancel-button {
+    display: none;
   }
 }
 

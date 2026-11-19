@@ -42,7 +42,7 @@ export const ScrollspySidebar: S = {
           ref={ref}
           tabIndex={0}
           aria-label="Robot details"
-          className="min-w-0 flex-1 overflow-y-auto pr-2 outline-none focus-visible:outline-2 focus-visible:outline-ring"
+          className="min-w-0 flex-1 overflow-y-auto pr-2 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
         >
           <Body />
         </div>
@@ -63,7 +63,7 @@ export const ScrollspyPills: S = {
           ref={ref}
           tabIndex={0}
           aria-label="Robot details"
-          className="min-w-0 flex-1 overflow-y-auto outline-none focus-visible:outline-2 focus-visible:outline-ring"
+          className="min-w-0 flex-1 overflow-y-auto focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
         >
           <Body prefix="p-" />
         </div>
@@ -93,7 +93,7 @@ export const ScrollspyHookOnly: S = {
           ref={ref}
           tabIndex={0}
           aria-label="Robot details"
-          className="min-w-0 flex-1 overflow-y-auto p-4 outline-none focus-visible:outline-2 focus-visible:outline-ring"
+          className="min-w-0 flex-1 overflow-y-auto p-4 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
         >
           <Body prefix="h-" />
         </div>
@@ -113,7 +113,7 @@ export const ScrollspyNoTitle: S = {
           ref={ref}
           tabIndex={0}
           aria-label="Robot details"
-          className="min-w-0 flex-1 overflow-y-auto outline-none focus-visible:outline-2 focus-visible:outline-ring"
+          className="min-w-0 flex-1 overflow-y-auto focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
         >
           <Body prefix="n-" />
         </div>
@@ -144,7 +144,7 @@ export const ScrollspySettings: S = {
           ref={ref}
           tabIndex={0}
           aria-label="Settings"
-          className="min-w-0 flex-1 overflow-y-auto pr-2 outline-none focus-visible:outline-2 focus-visible:outline-ring"
+          className="min-w-0 flex-1 overflow-y-auto pr-2 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
         >
           {settings.map((s) => (
             <section key={s.id} id={s.id} aria-labelledby={`${s.id}-h`} className="flex flex-col gap-2 pb-8">
@@ -160,7 +160,7 @@ export const ScrollspySettings: S = {
   },
 }
 
-/** Long section names truncate in the rail; the full name is in the section heading. */
+/** Long section names wrap in the rail, so the whole name is always readable. */
 export const ScrollspyLongNames: S = {
   render: function D() {
     const ref = React.useRef<HTMLDivElement>(null)
@@ -171,12 +171,12 @@ export const ScrollspyLongNames: S = {
     ]
     return (
       <div className="flex h-64 gap-6 rounded-md bg-card p-4 ring-1 ring-border">
-        <Scrollspy items={items.map((i) => ({ ...i, label: <span className="truncate">{i.label}</span> }))} root={ref} offset={24} className="w-40 shrink-0" />
+        <Scrollspy items={items} root={ref} offset={24} className="w-40 shrink-0" />
         <div
           ref={ref}
           tabIndex={0}
           aria-label="Procedures"
-          className="min-w-0 flex-1 overflow-y-auto outline-none focus-visible:outline-2 focus-visible:outline-ring"
+          className="min-w-0 flex-1 overflow-y-auto focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
         >
           {items.map((s) => (
             <section key={s.id} id={s.id} aria-labelledby={`${s.id}-h`} className="flex flex-col gap-2 pb-8">
