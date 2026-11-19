@@ -2210,6 +2210,36 @@
       }
     },
     {
+      "name": "tree",
+      "type": "registry:ui",
+      "title": "Tree",
+      "description": "A hierarchy from data: a nested list with guide lines, disclosure buttons and links (list), or a tree widget with arrow keys, type-ahead and one selected node (select).",
+      "dependencies": [
+        "radix-ui",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/tree.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.18.0",
+        "changelog": [
+          {
+            "version": "0.18.0",
+            "date": "2026-11-19",
+            "note": "First release: a hierarchy from data in two modes. list is a nested list with a guide line per level, a disclosure button per branch and links in the normal Tab order; select is a WAI-ARIA tree with one Tab stop, arrow keys, Home and End, type-ahead, * and one selected node."
+          }
+        ]
+      }
+    },
+    {
       "name": "dialog",
       "type": "registry:ui",
       "title": "Dialog",

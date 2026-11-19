@@ -207,6 +207,10 @@
     "version": "0.10.0",
     "hash": "a542674c1883114e"
   },
+  "tree": {
+    "version": "0.18.0",
+    "hash": "25868cf227d4ff19"
+  },
   "dialog": {
     "version": "0.7.0",
     "hash": "7346ce6a2cccffd9"

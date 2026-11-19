@@ -2,6 +2,11 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **`tree`** (beta): a hierarchy from data (lineage, sites › zones › robots, a dataset's folders) in two modes. `list` (default) is a nested list with a 1 px guide line per level, a disclosure button per branch and links in the normal Tab order; `select` is a WAI-ARIA tree (one Tab stop, arrow keys, Home / End, type-ahead, `*`, one selected node) with the kit's keyboard ring and selected look.
+
 ## 0.17.4 · 2026-11-19
 
 Found by putting the kit into a real product (the DataCore dashboard), not by a review.
