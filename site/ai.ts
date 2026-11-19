@@ -1,4 +1,5 @@
 import registry from "../registry.json"
+import { propsOf } from "./props-data"
 import { blockGroups, blockHref, blockTypes, getBlockType, placement } from "./block-types"
 import { groups, items, getItem, readSource, storyNames, storyTitle } from "./catalog"
 import { site } from "./config"
@@ -39,6 +40,7 @@ export function componentMarkdown(name: string) {
     "",
     `- Group: ${item.group}`,
     `- Version: ${meta?.version ?? "unversioned"}`,
+    `- Status: ${meta?.status === "beta" ? "beta (the API may still change in a minor release)" : "stable"}`,
     `- Install: \`${install(name)}\``,
     ...(deps.length ? [`- Also installs: ${deps.join(", ")}`] : []),
     `- Page: ${url(`/docs/components/${name}`)}`,
@@ -51,6 +53,17 @@ export function componentMarkdown(name: string) {
   }
   if (item.rules?.length) out.push("", "## Rules", "", list(item.rules))
   if (item.keyboard?.length) out.push("", "## Keyboard", "", "| Keys | Action |", "| --- | --- |", ...item.keyboard.map(([k, a]) => `| ${k} | ${a} |`))
+  // The API, generated from the types: own props, then what the rest come from.
+  const api = propsOf(name).filter((p) => p.props.length || p.inherits.length)
+  if (api.length) {
+    out.push("", "## API")
+    for (const part of api) {
+      out.push("", `### ${part.name}`)
+      if (part.inherits.length) out.push("", `${part.props.length ? "Also takes" : "Takes"} every prop of ${part.inherits.map((i) => `\`${i}\``).join(", ")}.`)
+      if (part.props.length)
+        out.push("", "| Prop | Type | Default | Description |", "| --- | --- | --- | --- |", ...part.props.map((p) => `| \`${p.name}\`${p.required ? " (required)" : ""} | \`${p.type.replace(/\|/g, "\\|")}\` | ${p.default !== undefined ? `\`${p.default}\`` : ""} | ${p.description.replace(/\|/g, "\\|")} |`))
+    }
+  }
   if (item.examples)
     out.push("", "## Examples", "", ...storyNames(item.examples).map((n) => `- ${storyTitle(n)}: ${url(`/docs/components/${name}#example-${n}`)}`))
   if (!item.examples) out.push("", "## Source", "", "```tsx", readSource(item.files[0].path).trim(), "```")
@@ -138,7 +151,8 @@ export function llmsTxt() {
     if (!inGroup.length) continue
     out.push("", `## Components: ${g}`, "")
     for (const i of inGroup) {
-      out.push(`- [${i.title}](${url(`/docs/components/${i.name}.md`)}): ${i.description ?? ""}`)
+      const beta = (i as unknown as { meta?: { status?: string } }).meta?.status === "beta"
+      out.push(`- [${i.title}](${url(`/docs/components/${i.name}.md`)})${beta ? " (beta)" : ""}: ${i.description ?? ""}`)
       // Its patterns: ready-made uses of this one component, each installable under its own name.
       for (const t of blockTypes.filter((x) => x.home === i.name))
         for (const b of blocks.filter((x) => placement[x.name]?.type === t.slug)) out.push(`  - Pattern, ${t.title}: [${b.title}](${url(`/blocks/${b.name}.md`)}): ${b.description}`)

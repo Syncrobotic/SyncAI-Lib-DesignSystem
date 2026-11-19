@@ -48,6 +48,11 @@ export default function UpgradingPage() {
         <Inline text="CI refuses a change to an item's files without a version bump and a changelog line, so the header never lies." />
       </p>
 
+      <H2 id="status">Beta and stable</H2>
+      <p className="max-w-3xl text-base">
+        <Inline text="An item marked Beta on its page may still change its API in a minor release: read its changelog before you upgrade. Every item starts in beta and becomes stable once a product has used it and its API has settled. Unmarked items are stable. Blocks and patterns have no status: you copy them and make them yours." />
+      </p>
+
       <H2 id="upgrade">Upgrade</H2>
       <CodeBlock code={steps} lang="bash" title="Terminal" />
 

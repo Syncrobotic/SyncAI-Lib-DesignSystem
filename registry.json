@@ -268,6 +268,7 @@
         }
       ],
       "meta": {
+        "status": "beta",
         "version": "0.16.0",
         "changelog": [
           {
@@ -1606,6 +1607,7 @@
         }
       ],
       "meta": {
+        "status": "beta",
         "version": "0.16.0",
         "changelog": [
           {
@@ -2765,6 +2767,7 @@
         }
       ],
       "meta": {
+        "status": "beta",
         "version": "0.16.0",
         "changelog": [
           {
@@ -2824,6 +2827,7 @@
         }
       ],
       "meta": {
+        "status": "beta",
         "version": "0.16.1",
         "changelog": [
           {

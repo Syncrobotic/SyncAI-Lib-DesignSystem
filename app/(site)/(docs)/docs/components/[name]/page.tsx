@@ -18,6 +18,8 @@ import { getItem as findItem } from "@/site/catalog"
 import { BlockSection } from "@/site/block-section"
 import { patternsOf } from "@/site/block-types"
 import { blocksOfType } from "@/site/blocks"
+import { PropsTable } from "@/site/props-table"
+import { Badge } from "@/registry/syncrobotic/ui/badge"
 
 /** `name` becomes a link to that component's page; other backticked words stay code. */
 function Linked({ text }: { text: string }) {
@@ -69,7 +71,7 @@ export default async function ComponentPage({ params }: Props) {
   const names = item.examples ? storyNames(item.examples) : []
   // Ready-made variants of this component (a line chart, an audit timeline), documented here rather than under Blocks.
   const patterns = patternsOf(item.name).filter((t) => blocksOfType(t.slug).length > 0)
-  const meta = (item as { meta?: { version: string; changelog: { version: string; date: string; note: string }[] } }).meta
+  const meta = (item as { meta?: { version: string; status?: "beta" | "stable"; changelog: { version: string; date: string; note: string }[] } }).meta
   const deps = [...(("dependencies" in item && item.dependencies) || []), ...(("registryDependencies" in item && item.registryDependencies) || [])]
 
   const overview = overviews[item.name]
@@ -83,6 +85,18 @@ export default async function ComponentPage({ params }: Props) {
   )
   // Hooks (and the tray) have no examples: their source is the page, so it stays inline.
   const inlineSource = !item.examples
+  // The first example opens the page, under the title: what it looks like comes before how to install it.
+  const example = (n: string) => (
+    <ExampleCard
+      id={`example-${n}`}
+      title={storyTitle(n)}
+      wide={item.wide}
+      preview={<Stage file={item.examples!.file} name={n} className="w-full" wide={item.wide} />}
+      install={installBlock}
+      code={<CodeBlock code={storySource(item.examples!.file, n)} title={`${storyTitle(n).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}.tsx`} />}
+    />
+  )
+  const [first, ...rest] = names
 
   return (
     <article>
@@ -92,6 +106,11 @@ export default async function ComponentPage({ params }: Props) {
           {meta && (
             <a href="#changelog" className="inline-flex h-(--h-sm) items-center font-mono text-sm text-muted-foreground tabular-nums underline-offset-4 hover:underline">
               v{meta.version}
+            </a>
+          )}
+          {meta?.status === "beta" && (
+            <a href="/docs/upgrading#status" title="The API may still change in a minor release" className="inline-flex h-(--h-sm) items-center">
+              <Badge tone="outline">Beta</Badge>
             </a>
           )}
           {/* For AI agents: the page as markdown, or a prompt that points an agent at it. */}
@@ -114,7 +133,11 @@ export default async function ComponentPage({ params }: Props) {
           )}
       </div>
 
-      <CodeBlock code={install} lang="bash" title="Install" />
+      {first && example(first)}
+
+      <div className={first ? "pt-8" : undefined}>
+        <CodeBlock code={install} lang="bash" title="Install" />
+      </div>
       {deps.length > 0 && <p className="pt-2 text-sm text-muted-foreground">Also installs: {deps.join(", ")}</p>}
 
       {overview && (
@@ -161,24 +184,15 @@ export default async function ComponentPage({ params }: Props) {
         </section>
       )}
 
-      {item.examples && (
+      {rest.length > 0 && (
         <>
-          <H2 id="examples">Examples</H2>
+          <H2 id="examples">More examples</H2>
           <p className="pb-4 text-sm text-muted-foreground">States and real uses. Each example is also a Storybook story and a visual regression test.</p>
           <div className="flex flex-col gap-6">
             {/* Each example arrives as it scrolls in (site/appear.tsx); those already on screen render as they are. */}
-            {names.map((n) => (
+            {rest.map((n) => (
               <Reveal key={n}>
-                <AppearItem>
-                  <ExampleCard
-                    id={`example-${n}`}
-                    title={storyTitle(n)}
-                    wide={item.wide}
-                    preview={<Stage file={item.examples!.file} name={n} className="w-full" wide={item.wide} />}
-                    install={installBlock}
-                    code={<CodeBlock code={storySource(item.examples!.file, n)} title={`${storyTitle(n).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}.tsx`} />}
-                  />
-                </AppearItem>
+                <AppearItem>{example(n)}</AppearItem>
               </Reveal>
             ))}
           </div>
@@ -218,6 +232,8 @@ export default async function ComponentPage({ params }: Props) {
           </div>
         </>
       )}
+
+      <PropsTable name={item.name} />
 
       {item.rules && (
         <>
