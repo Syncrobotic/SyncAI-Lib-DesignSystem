@@ -7,6 +7,14 @@ Components install as source, so a project keeps the version it installed. Re-ru
 ### Added
 - **High contrast** (`syncrobotic-theme`): `data-contrast="more"` on `<html>` or any container, in light or dark, for a tablet in bright sun, glare on an outdoor robot's screen, and low vision. Text and status reach 7:1 (WCAG AAA) on every surface they sit on, field and card edges reach 3:1 so they show without their fill, and trays over the map are opaque. Meanings do not change. Tested in CI; shown on the Accessibility page with its contrast table; exported as `color.light-hc` and `color.dark-hc` DTCG tokens; a Contrast switch in Storybook's toolbar. To follow the system setting, set the attribute from `matchMedia("(prefers-contrast: more)")`.
 
+- **Data visualisation foundation** (`/docs/foundations/data-visualisation`). It covers:
+  - which form fits which question, mapped to the kit's charts (and when the answer is a table or a trace);
+  - colour by job (categorical, sequential, status, process);
+  - how many series the palette carries, measured from the theme on every build: up to five for lines and bars, up to three for scatter and maps, because slots 1 and 4 are too close when any two can touch;
+  - marks and axes, maps and robot tracks, and motion.
+
+  CI now checks the chart palette for normal and colour-blind separation and 3:1 contrast in all four modes.
+
 ### Fixed
 - **A `.dark` area on a light page kept light-mode ink** on cards, menus, secondary buttons and accents: their colours are aliases of `--foreground`, which CSS resolves where they are declared, so `.dark` now restates them. Re-install `syncrobotic-theme`.
 
