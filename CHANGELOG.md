@@ -10,6 +10,8 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - **`input-group` units follow the value:** `InputGroupUnit` writes the unit right after the value ("120 m") instead of at the far edge; the value is as wide as its text (`field-sizing: content`; browsers without it keep the unit at the edge). A press on the field's empty space puts the caret in the text box.
 
 ### Fixed
+- **`input-otp`: the last digit kept changing** once the code was full: the library keeps the last character selected, so every further key swapped it. A full code now ignores extra keys; Backspace, select-all and paste still edit.
+- **`phone-input`: the country list was cut off**, as narrow as the flag-and-code trigger (128 px). It now takes its own width (288 px) from the trigger's left edge; long names end in an ellipsis and the calling code keeps its column.
 - The disabled NumberField example showed 1.5 m/s as "2" (no `step`, so it rounded to whole numbers).
 
 ## 0.14.2 · 2026-11-19

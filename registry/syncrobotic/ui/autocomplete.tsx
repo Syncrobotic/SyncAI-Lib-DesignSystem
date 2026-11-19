@@ -129,7 +129,7 @@ export function Autocomplete({
             <button
               type="button"
               className={cn(
-                "press flex size-(--h-sm) shrink-0 items-center justify-center rounded-xs text-muted-foreground transition-[opacity,visibility,background-color,color,scale] hover:bg-accent hover:text-foreground",
+                "press flex size-(--h-sm) shrink-0 items-center justify-center rounded-xs text-muted-foreground transition-[opacity,visibility,background-color,color,scale] duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent hover:text-foreground",
                 query ? "visible opacity-100" : "invisible opacity-0",
               )}
               aria-label="Clear"

@@ -1,4 +1,4 @@
-// @syncrobotic/input-otp v0.10.0 · update: npx shadcn add @syncrobotic/input-otp --overwrite
+// @syncrobotic/input-otp v0.15.0 · update: npx shadcn add @syncrobotic/input-otp --overwrite
 "use client"
 
 import * as React from "react"
@@ -12,13 +12,32 @@ export { REGEXP_ONLY_DIGITS, REGEXP_ONLY_DIGITS_AND_CHARS }
  * A one-time code or PIN, one box per character (input-otp). One real input underneath, so paste, autofill from SMS
  * (`autoComplete="one-time-code"`) and screen readers work as with any field. Boxes are 44 px, the touch minimum.
  */
-export function InputOTP({ className, containerClassName, ...props }: React.ComponentProps<typeof OTPInput>) {
+export function InputOTP({
+  className,
+  containerClassName,
+  value: controlled,
+  defaultValue,
+  onChange,
+  maxLength,
+  ...props
+}: React.ComponentProps<typeof OTPInput>) {
+  const [inner, setInner] = React.useState(String(defaultValue ?? ""))
+  const value = controlled ?? inner
   return (
     <OTPInput
       data-slot="input-otp"
       autoComplete="one-time-code"
       containerClassName={cn("flex items-center gap-2 has-disabled:text-muted-foreground", containerClassName)}
       className={cn("disabled:cursor-not-allowed", className)}
+      maxLength={maxLength}
+      value={value}
+      onChange={(next: string) => {
+        // A full code is done: input-otp keeps its last character selected, so every further key would swap that
+        // character and the last box would keep changing. Ignore it; Backspace, select-all or a paste still edit.
+        if (value.length === maxLength && next.length === maxLength && next !== value && next.slice(0, -1) === value.slice(0, -1)) return
+        if (controlled === undefined) setInner(next)
+        onChange?.(next)
+      }}
       {...props}
     />
   )

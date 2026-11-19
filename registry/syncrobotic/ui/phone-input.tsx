@@ -1,4 +1,4 @@
-// @syncrobotic/phone-input v0.10.0 · update: npx shadcn add @syncrobotic/phone-input --overwrite
+// @syncrobotic/phone-input v0.15.0 · update: npx shadcn add @syncrobotic/phone-input --overwrite
 "use client"
 
 import * as React from "react"
@@ -100,13 +100,15 @@ export function PhoneInput({
             <span className="text-sm text-muted-foreground tabular-nums">+{getCountryCallingCode(country)}</span>
           </span>
         </SelectTrigger>
-        <SelectContent className="max-h-72">
+        {/* The trigger is only the flag and code, so the list takes its own width (not the trigger's), from the trigger's
+            left edge: names fit, a long one ends in an ellipsis, and the code keeps its column on the right. */}
+        <SelectContent align="start" className="max-h-72 w-72">
           {list.map((c) => (
-            <SelectItem key={c.code} value={c.code}>
-              <span className="flex items-center gap-2">
+            <SelectItem key={c.code} value={c.code} className="[&>span:first-child]:min-w-0 [&>span:first-child]:flex-1">
+              <span className="flex w-full min-w-0 items-center gap-2">
                 <span aria-hidden="true">{flag(c.code)}</span>
-                {c.name}
-                <span className="text-muted-foreground tabular-nums">+{c.dial}</span>
+                <span className="min-w-0 flex-1 truncate">{c.name}</span>
+                <span className="shrink-0 text-muted-foreground tabular-nums">+{c.dial}</span>
               </span>
             </SelectItem>
           ))}

@@ -2661,8 +2661,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "A full code no longer changes when you keep typing: input-otp kept the last character selected, so each key swapped the last box. Backspace, select-all and paste still edit."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -2696,8 +2701,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.15.0",
         "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "The country list takes its own width from the trigger's left edge instead of the trigger's 128 px, so names are no longer cut; a long name ends in an ellipsis and the code keeps its column."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
