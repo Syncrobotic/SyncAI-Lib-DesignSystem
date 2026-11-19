@@ -35,8 +35,8 @@ export function MaintenanceDue() {
           <TableHeader>
             <TableRow>
               <TableHead>Robot</TableHead>
-              <TableHead className="hidden md:table-cell">Service</TableHead>
-              <TableHead className="hidden sm:table-cell sm:w-56">Hours since last</TableHead>
+              <TableHead className="hidden lg:table-cell">Service</TableHead>
+              <TableHead className="hidden sm:table-cell lg:w-56">Hours since last</TableHead>
               <TableHead className="hidden sm:table-cell">Due</TableHead>
               <TableHead className="max-sm:pl-0">
                 <span className="sr-only">Actions</span>
@@ -60,11 +60,11 @@ export function MaintenanceDue() {
               )
               return (
                 <TableRow key={r.robot + r.task}>
-                  <TableCell className="py-3 max-sm:whitespace-normal sm:py-2">
+                  <TableCell className="py-3 max-lg:whitespace-normal sm:py-2">
                     <span className="font-medium whitespace-nowrap">{r.robot}</span>
                     {/* On a phone the service, the hours and when it is due stack under the robot, so only the robot and
                         its action share the row; they are columns from wider screens. */}
-                    <span className="block text-xs text-muted-foreground md:hidden">{r.task}</span>
+                    <span className="block text-xs text-muted-foreground lg:hidden">{r.task}</span>
                     <span className="mt-2 flex flex-col gap-1 sm:hidden">
                       {meter}
                       <span className={cn("text-xs", dueTone(pct))}>
@@ -73,7 +73,7 @@ export function MaintenanceDue() {
                       </span>
                     </span>
                   </TableCell>
-                  <TableCell className="hidden md:table-cell">{r.task}</TableCell>
+                  <TableCell className="hidden lg:table-cell">{r.task}</TableCell>
                   <TableCell className="hidden sm:table-cell">{meter}</TableCell>
                   <TableCell className={cn("hidden sm:table-cell", dueTone(pct))}>{r.due}</TableCell>
                   <TableCell className="text-right max-sm:w-0 max-sm:pl-0">

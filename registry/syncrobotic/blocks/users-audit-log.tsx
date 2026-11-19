@@ -144,8 +144,8 @@ export function UsersAuditLog() {
               <TableHead>Time</TableHead>
               <TableHead className="hidden sm:table-cell">Person</TableHead>
               <TableHead>Action</TableHead>
-              <TableHead className="hidden md:table-cell">Target</TableHead>
-              <TableHead className="hidden md:table-cell">Change</TableHead>
+              <TableHead className="hidden lg:table-cell">Target</TableHead>
+              <TableHead className="hidden lg:table-cell">Change</TableHead>
               <TableHead className="hidden lg:table-cell">IP address</TableHead>
             </TableRow>
           </TableHeader>
@@ -156,10 +156,10 @@ export function UsersAuditLog() {
                   <time dateTime={r.at}>{r.time}</time>
                 </TableCell>
                 <TableCell className="hidden sm:table-cell">{r.who}</TableCell>
-                <TableCell className="py-2 max-md:whitespace-normal">
+                <TableCell className="py-2 max-lg:whitespace-normal">
                   <span className="font-medium">{r.action}</span>
                   {/* Below 768 px the person, target and change stack under the action instead of scrolling off the side. */}
-                  <span className="flex flex-col text-xs text-muted-foreground md:hidden">
+                  <span className="flex flex-col text-xs text-muted-foreground lg:hidden">
                     <span>
                       <span className="sm:hidden">{r.who} · </span>
                       {r.target}
@@ -167,8 +167,8 @@ export function UsersAuditLog() {
                     {r.from && <Change from={r.from} to={r.to} />}
                   </span>
                 </TableCell>
-                <TableCell className="hidden md:table-cell">{r.target}</TableCell>
-                <TableCell className="hidden text-muted-foreground md:table-cell">{r.from ? <Change from={r.from} to={r.to} /> : "—"}</TableCell>
+                <TableCell className="hidden lg:table-cell">{r.target}</TableCell>
+                <TableCell className="hidden text-muted-foreground lg:table-cell">{r.from ? <Change from={r.from} to={r.to} /> : "—"}</TableCell>
                 <TableCell className="hidden font-mono text-xs text-muted-foreground lg:table-cell">{r.ip}</TableCell>
               </TableRow>
             ))}

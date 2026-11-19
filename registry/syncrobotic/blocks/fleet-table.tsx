@@ -123,8 +123,8 @@ export function FleetTable({ robots = sampleRobots, pageSize = 5, onOpen }: { ro
               <TableHead>Robot</TableHead>
               <TableHead className="hidden sm:table-cell sm:w-44">Status</TableHead>
               <TableHead className="sm:w-48">Battery</TableHead>
-              <TableHead className="hidden md:table-cell md:w-40">Site</TableHead>
-              <TableHead className="hidden md:table-cell md:w-32">Last seen</TableHead>
+              <TableHead className="hidden lg:table-cell lg:w-40">Site</TableHead>
+              <TableHead className="hidden lg:table-cell lg:w-32">Last seen</TableHead>
               <TableHead className="w-12 max-sm:pr-2 max-sm:pl-0">
                 <span className="sr-only">Actions</span>
               </TableHead>
@@ -149,8 +149,8 @@ export function FleetTable({ robots = sampleRobots, pageSize = 5, onOpen }: { ro
                 <TableCell>
                   <Meter value={r.battery} low={15} label={`Battery, ${r.name}`} inline className="max-sm:flex-col max-sm:items-start max-sm:gap-1" />
                 </TableCell>
-                <TableCell className="hidden text-muted-foreground md:table-cell">{r.site}</TableCell>
-                <TableCell className="hidden text-muted-foreground md:table-cell">{r.lastSeen}</TableCell>
+                <TableCell className="hidden text-muted-foreground lg:table-cell">{r.site}</TableCell>
+                <TableCell className="hidden text-muted-foreground lg:table-cell">{r.lastSeen}</TableCell>
                 <TableCell className="max-sm:pr-2 max-sm:pl-0">
                   <DropdownMenu modal={false}>
                     <DropdownMenuTrigger asChild>

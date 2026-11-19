@@ -118,8 +118,8 @@ export function UsersInvitations() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Email</TableHead>
-                  <TableHead className="hidden sm:table-cell">Role</TableHead>
-                  <TableHead className="hidden md:table-cell">Invited by</TableHead>
+                  <TableHead className="hidden lg:table-cell">Role</TableHead>
+                  <TableHead className="hidden lg:table-cell">Invited by</TableHead>
                   <TableHead className="hidden sm:table-cell">Expires</TableHead>
                   <TableHead className="hidden sm:table-cell">
                     <span className="sr-only">Actions</span>
@@ -132,18 +132,20 @@ export function UsersInvitations() {
                     <TableCell className="py-2 max-sm:pt-3 max-sm:whitespace-normal">
                       <span className="font-medium break-all">{i.email}</span>
                       {/* On a phone the role, the expiry and the actions sit under the email, so nothing reaches the card's
-                          edge; they are columns from wider screens. */}
-                      <span className="flex flex-col text-xs sm:hidden">
+                          edge; they are columns from wider screens (the role from 1024 px, beside a shell's sidebar). */}
+                      <span className="flex flex-col text-xs lg:hidden">
                         <span className="text-muted-foreground">{i.role}</span>
-                        <Expiry invite={i} />
+                        <span className="sm:hidden">
+                          <Expiry invite={i} />
+                        </span>
                       </span>
                       {/* A ghost button's words line up with the email above it; a filled one's edge does. */}
                       <span className={cn("mt-2 flex gap-2 sm:hidden", !i.expired && "-ml-3")}>
                         <Actions invite={i} resend={resend} revoke={revoke} />
                       </span>
                     </TableCell>
-                    <TableCell className="hidden sm:table-cell">{i.role}</TableCell>
-                    <TableCell className="hidden text-muted-foreground md:table-cell">
+                    <TableCell className="hidden lg:table-cell">{i.role}</TableCell>
+                    <TableCell className="hidden text-muted-foreground lg:table-cell">
                       {i.by}, {i.sent}
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">

@@ -102,7 +102,7 @@ export function IncidentQueue() {
               <TableHead>Incident</TableHead>
               <TableHead className="hidden sm:table-cell">State</TableHead>
               <TableHead>Owner</TableHead>
-              <TableHead className="hidden text-right md:table-cell">Robots</TableHead>
+              <TableHead className="hidden text-right lg:table-cell">Robots</TableHead>
               <TableHead className="hidden text-right sm:table-cell">Open for</TableHead>
             </TableRow>
           </TableHeader>
@@ -112,7 +112,7 @@ export function IncidentQueue() {
                 <TableCell className="hidden sm:table-cell">
                   <Severity severity={i.severity} />
                 </TableCell>
-                <TableCell className="py-2 max-sm:whitespace-normal">
+                <TableCell className="py-2 max-lg:whitespace-normal">
                   <a href={`#${i.id}`} className="flex flex-col hover:underline">
                     <span className="font-medium">{i.title}</span>
                     <span className="text-xs text-muted-foreground">
@@ -144,7 +144,7 @@ export function IncidentQueue() {
                     </Button>
                   )}
                 </TableCell>
-                <TableCell className="hidden text-right tabular-nums md:table-cell">{i.robots}</TableCell>
+                <TableCell className="hidden text-right tabular-nums lg:table-cell">{i.robots}</TableCell>
                 <TableCell className="hidden text-right text-muted-foreground tabular-nums sm:table-cell">{i.open}</TableCell>
               </TableRow>
             ))}

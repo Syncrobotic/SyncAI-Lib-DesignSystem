@@ -104,8 +104,11 @@ export function MissionSchedule() {
           </p>
         ))}
 
-        {/* Phones: one list per robot, every mission in words, instead of a timeline that would show two hours of twelve. */}
-        <ul aria-label="Missions by robot" className="flex flex-col rounded-md bg-card ring-1 ring-border md:hidden">
+        {/*
+          Phones and tablets (below 1024 px, beside a shell's sidebar): one list per robot, every mission in words, instead of
+          a timeline that would show a few hours of twelve or cut its blocks at the edge.
+        */}
+        <ul aria-label="Missions by robot" className="flex flex-col rounded-md bg-card ring-1 ring-border lg:hidden">
           {lanes.map((l) => (
             <li key={l.robot} className="flex flex-col gap-2 border-b border-border p-4 last:border-b-0">
               <span className="text-sm font-medium">{l.robot}</span>
@@ -130,7 +133,7 @@ export function MissionSchedule() {
           ))}
         </ul>
 
-        <div className="hidden overflow-x-auto rounded-md bg-card ring-1 ring-border md:block">
+        <div className="hidden overflow-x-auto rounded-md bg-card ring-1 ring-border lg:block">
           <div className="min-w-3xl">
             {/* The track stops 16 px short of the card's edge, so the last hour and a mission that runs to it are whole. */}
             <div aria-hidden="true" className="grid grid-cols-[10rem_1fr] border-b border-border pr-4 text-xs text-muted-foreground">
@@ -182,7 +185,7 @@ export function MissionSchedule() {
             </ul>
           </div>
         </div>
-        <p className="hidden text-xs text-muted-foreground md:block">Muted: done. Blue: running now (the line is the time). Outlined: planned. Amber: cannot run as planned.</p>
+        <p className="hidden text-xs text-muted-foreground lg:block">Muted: done. Blue: running now (the line is the time). Outlined: planned. Amber: cannot run as planned.</p>
       </div>
     </AppShell>
   )

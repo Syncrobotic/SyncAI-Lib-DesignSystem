@@ -125,9 +125,9 @@ export function AgentRuns() {
             <TableRow>
               <TableHead>Run</TableHead>
               <TableHead className="hidden sm:table-cell">State</TableHead>
-              <TableHead className="hidden md:table-cell">Started by</TableHead>
-              <TableHead className="hidden text-right md:table-cell">Steps</TableHead>
-              <TableHead className="hidden text-right md:table-cell">Time</TableHead>
+              <TableHead className="hidden lg:table-cell">Started by</TableHead>
+              <TableHead className="hidden text-right lg:table-cell">Steps</TableHead>
+              <TableHead className="hidden text-right lg:table-cell">Time</TableHead>
               <TableHead>
                 <span className="sr-only">Actions</span>
               </TableHead>
@@ -152,11 +152,11 @@ export function AgentRuns() {
                 <TableCell className="hidden sm:table-cell">
                   <RunState status={r.status} />
                 </TableCell>
-                <TableCell className="hidden text-muted-foreground md:table-cell">
+                <TableCell className="hidden text-muted-foreground lg:table-cell">
                   {r.trigger}, {r.started}
                 </TableCell>
-                <TableCell className="hidden text-right tabular-nums md:table-cell">{r.steps}</TableCell>
-                <TableCell className="hidden text-right text-muted-foreground tabular-nums md:table-cell">{formatDuration(r.duration)}</TableCell>
+                <TableCell className="hidden text-right tabular-nums lg:table-cell">{r.steps}</TableCell>
+                <TableCell className="hidden text-right text-muted-foreground tabular-nums lg:table-cell">{formatDuration(r.duration)}</TableCell>
                 <TableCell className="text-right">
                   {r.status === "approval" && (
                     <Button size="sm" aria-label={`Review ${r.goal}`}>

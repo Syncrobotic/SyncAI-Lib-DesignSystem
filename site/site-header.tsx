@@ -19,7 +19,11 @@ export function SiteHeader() {
       <HeaderNav links={headerLinks} />
       <div className="ml-auto flex items-center gap-1">
         <SiteSearch />
-        <a href={site.repo} className="press inline-flex h-(--h-sm) items-center rounded-sm px-3 text-sm text-muted-foreground hover:bg-accent hover:text-foreground">
+        {/* Under 640 px it moves into the drawer, so the bar fits a 320 px screen. */}
+        <a
+          href={site.repo}
+          className="press inline-flex h-(--h-sm) items-center rounded-sm px-3 text-sm text-muted-foreground hover:bg-accent hover:text-foreground max-sm:hidden"
+        >
           GitHub
         </a>
         <ThemeToggle />

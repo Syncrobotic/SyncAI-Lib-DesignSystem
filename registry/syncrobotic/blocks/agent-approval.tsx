@@ -126,9 +126,9 @@ export function AgentApproval() {
           </form>
         ) : (
           <div
-            // On a phone the three actions stack full width (the main one first), so none is left alone on a line; from 640 px
-            // they share a row.
-            className="grid gap-2 border-t border-border pt-4 sm:flex sm:flex-wrap"
+            // On phones and tablets the three actions stack full width (the main one first), so none is left alone on a line;
+            // from 1024 px, where the content beside the shell's sidebar has room, they share a row.
+            className="grid gap-2 border-t border-border pt-4 lg:flex lg:flex-wrap"
           >
             <Button onClick={() => setState("approved")}>Approve and send to robots</Button>
             <Button variant="secondary" onClick={() => setState("rejecting")}>
