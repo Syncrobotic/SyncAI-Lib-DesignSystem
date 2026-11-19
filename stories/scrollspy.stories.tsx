@@ -42,7 +42,7 @@ export const ScrollspySidebar: S = {
           ref={ref}
           tabIndex={0}
           aria-label="Robot details"
-          className="min-w-0 flex-1 overflow-y-auto pr-2 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
+          className="min-w-0 flex-1 overflow-y-auto pr-2 [mask-image:linear-gradient(to_bottom,black_calc(100%-1.5rem),transparent)] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
         >
           <Body />
         </div>
@@ -107,7 +107,7 @@ export const ScrollspyNoTitle: S = {
     const ref = React.useRef<HTMLDivElement>(null)
     const items = sections.slice(0, 3).map((s) => ({ ...s, id: `n-${s.id}` }))
     return (
-      <div className="flex h-64 gap-6 rounded-md bg-card p-4 ring-1 ring-border">
+      <div className="flex h-64 gap-6 overflow-hidden rounded-md bg-card p-4 ring-1 ring-border">
         <Scrollspy items={items} root={ref} offset={24} title={null} aria-label="Sections" className="w-32 shrink-0" />
         <div
           ref={ref}
@@ -138,13 +138,15 @@ export const ScrollspySettings: S = {
   render: function D() {
     const ref = React.useRef<HTMLDivElement>(null)
     return (
-      <div className="flex h-80 gap-6 rounded-md bg-card p-4 ring-1 ring-border">
-        <Scrollspy items={settings} root={ref} offset={24} title="Settings" className="hidden w-44 shrink-0 sm:flex" />
+      // The card clips what scrolls inside it: the rail scrolls on its own when it is taller than the card, and the pane
+      // fades out at its bottom edge instead of cutting a line in half.
+      <div className="flex h-80 gap-6 overflow-hidden rounded-md bg-card p-4 ring-1 ring-border">
+        <Scrollspy items={settings} root={ref} offset={24} title="Settings" className="hidden w-44 shrink-0 overflow-y-auto sm:flex" />
         <div
           ref={ref}
           tabIndex={0}
           aria-label="Settings"
-          className="min-w-0 flex-1 overflow-y-auto pr-2 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
+          className="min-w-0 flex-1 overflow-y-auto pr-2 [mask-image:linear-gradient(to_bottom,black_calc(100%-1.5rem),transparent)] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
         >
           {settings.map((s) => (
             <section key={s.id} id={s.id} aria-labelledby={`${s.id}-h`} className="flex flex-col gap-2 pb-8">
@@ -170,13 +172,13 @@ export const ScrollspyLongNames: S = {
       { id: "ln-3", label: "After an emergency stop" },
     ]
     return (
-      <div className="flex h-64 gap-6 rounded-md bg-card p-4 ring-1 ring-border">
+      <div className="flex h-64 gap-6 overflow-hidden rounded-md bg-card p-4 ring-1 ring-border">
         <Scrollspy items={items} root={ref} offset={24} className="w-40 shrink-0" />
         <div
           ref={ref}
           tabIndex={0}
           aria-label="Procedures"
-          className="min-w-0 flex-1 overflow-y-auto focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
+          className="min-w-0 flex-1 overflow-y-auto [mask-image:linear-gradient(to_bottom,black_calc(100%-1.5rem),transparent)] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
         >
           {items.map((s) => (
             <section key={s.id} id={s.id} aria-labelledby={`${s.id}-h`} className="flex flex-col gap-2 pb-8">

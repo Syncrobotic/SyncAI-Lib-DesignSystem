@@ -2,6 +2,21 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.17.3 · 2026-11-19
+
+A second eyes-on review, of what the first did not see: every page in dark mode at desktop (full page), at tablet width (768 px) and every app screen scrolled to its end on a phone.
+
+### Changed
+- **New `--track` token** for tracks and quiet shapes (slider, progress, meter, rings, skeleton, steps), 1.5:1 on the surfaces they sit on; in dark mode they had been near invisible. **`--disabled` reaches 3:1** on every surface in every mode, and a disabled field keeps its grey fill with a quiet edge, so it never looks enabled in dark. Dark `--popover` sits one step above the card so overlays separate. Contrast tests cover all of it.
+- **Below 1024 px the docs site uses the phone header and drawer**: the area tabs and the sidebar move into the drawer, so a tablet gets the full width (pages were 823 px wide at 768, and the 240 px sidebar left tables clipped and text one word per line).
+- **App screens at tablet width**: secondary table columns show from 1024 px and long cells wrap, so tables fit beside the shell's rail. Full-screen blocks honour `--app-shell-height`.
+
+### Fixed
+- **`map-workspace`: the critical alarm shows at every width.** It was hidden below 1024 px.
+- **`command`: the ring on the highlighted row appears only after keyboard use**; static lists showed it at rest (a regression in 0.17.2).
+- `calendar` (two months: no doubled end day, months wrap), `navigation-menu` (aligned, never clipped), `data-grid` (summary totals when scrolling), `sheet` (sticky footer), `scroll-area` (no fade at the start), `resizable` (visible grip), `toggle-group` (divider between selected items), `table` (visible selected row), `breadcrumb`, `filters`, `image-grid`, `timeline`, `toast`, `phone-input`, `questionnaire`, `avatar`, `stop-button`, and five blocks whose tables drew two frames (`wizard-import` clipped its table).
+- Docs: examples group a component's states instead of one near-empty card each; hooks and the tray have live demos; the API reference lists pass-through parts once; keyboard tables use real key caps.
+
 ## 0.17.2 · 2026-11-19
 
 ### Added

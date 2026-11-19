@@ -1,4 +1,4 @@
-// @syncrobotic/action-rail-shell v0.17.2 · update: npx shadcn add @syncrobotic/action-rail-shell --overwrite
+// @syncrobotic/action-rail-shell v0.17.3 · update: npx shadcn add @syncrobotic/action-rail-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -162,7 +162,7 @@ export function ActionRailShell({
       data-slot="action-rail-shell"
       style={barHeight === null ? undefined : ({ "--action-bar": `${barHeight}px` } as React.CSSProperties)}
       className={cn(
-        "flex min-h-dvh flex-col gap-2 bg-background p-2 text-foreground",
+        "flex min-h-[var(--app-shell-height,100dvh)] flex-col gap-2 bg-background p-2 text-foreground",
         // Phones: the bar's height, its 8 px from the bottom, the safe area and an 8 px gap above it.
         "max-lg:pb-[calc(var(--action-bar,8rem)+1rem+env(safe-area-inset-bottom))]",
       )}

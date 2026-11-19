@@ -19,7 +19,7 @@
     },
     "popover": {
       "$type": "color",
-      "$value": "#16161a"
+      "$value": "#1c1c21"
     },
     "popover-foreground": {
       "$type": "color",
@@ -75,7 +75,11 @@
     },
     "disabled": {
       "$type": "color",
-      "$value": "#6e6e76"
+      "$value": "#7c7c84"
+    },
+    "track": {
+      "$type": "color",
+      "$value": "#3f3f46"
     },
     "info": {
       "$type": "color",

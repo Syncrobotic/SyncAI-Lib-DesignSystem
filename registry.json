@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "New --track (tracks and quiet shapes, 1.5:1 on card, page and popover) and --shadow-selected; --disabled raised to 3:1 on every surface in every mode; dark --popover one step above the card so overlays separate."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -410,8 +415,13 @@
         }
       ],
       "meta": {
-        "version": "0.11.1",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "WakeButton's disabled reason is 14 px (it was 12 px and dim)."
+          },
           {
             "version": "0.11.1",
             "date": "2026-11-18",
@@ -539,8 +549,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Tracks and quiet shapes use the new --track token, so they read in dark mode (1.5:1 on their surface; they were near invisible)."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -653,8 +668,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Tracks and quiet shapes use the new --track token, so they read in dark mode (1.5:1 on their surface; they were near invisible). Bone onCard is deprecated (no effect)."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -893,8 +913,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Disabled: the field keeps its grey fill with a --border edge, so in dark mode it no longer looks enabled; its words use the new --disabled (3:1 on every surface)."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -933,8 +958,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Disabled: the field keeps its grey fill with a --border edge, so in dark mode it no longer looks enabled; its words use the new --disabled (3:1 on every surface)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -1017,8 +1047,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Disabled: the field keeps its grey fill with a --border edge, so in dark mode it no longer looks enabled; its words use the new --disabled (3:1 on every surface)."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -1333,8 +1368,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Disabled: the field keeps its grey fill with a --border edge, so in dark mode it no longer looks enabled; its words use the new --disabled (3:1 on every surface)."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -1391,8 +1431,13 @@
         }
       ],
       "meta": {
-        "version": "0.12.0",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Tracks and quiet shapes use the new --track token, so they read in dark mode (1.5:1 on their surface; they were near invisible)."
+          },
           {
             "version": "0.12.0",
             "date": "2026-11-18",
@@ -1505,8 +1550,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Fallback on --track with foreground initials; groups overlap less so initials are whole."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -1566,8 +1616,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Tracks and quiet shapes use the new --track token, so they read in dark mode (1.5:1 on their surface; they were near invisible). A 0 % bar keeps an --input edge so a waiting bar still shows."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -1660,8 +1715,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Tracks and quiet shapes use the new --track token, so they read in dark mode (1.5:1 on their surface; they were near invisible)."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -1688,8 +1748,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Descriptions avoid a one-word last line."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -1728,8 +1793,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "A short last word stays joined to the one before it, so no lone \"3\" or \"B\" on a line."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -1792,8 +1862,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Every toast uses the 16 px radius."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -1842,8 +1917,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Balanced wrapping for title and description."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -1867,8 +1947,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "A selected row shows a 2 px foreground bar at its start (the fill alone was too faint in dark)."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -2045,8 +2130,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Middle crumbs shrink first; the first crumb keeps up to a third of the row."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -2195,8 +2285,13 @@
         }
       ],
       "meta": {
-        "version": "0.14.1",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "SheetFooter sticks to the bottom with its own padding, so the main action is never cut."
+          },
           {
             "version": "0.14.1",
             "date": "2026-11-19",
@@ -2370,8 +2465,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "The highlighted row's ring appears only after keyboard use: at rest (a static list) there is none; it was a regression in 0.17.2."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -2594,8 +2694,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Each edge fades only while content is hidden past it (the start faded at scroll 0)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -2627,8 +2732,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Two adjacent selected items keep a divider; ghost items keep their rounded corners with a 4 px gap."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -2658,8 +2768,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Descriptions avoid a one-word last line."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -2721,8 +2836,13 @@
         }
       ],
       "meta": {
-        "version": "0.12.0",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Tracks and quiet shapes use the new --track token, so they read in dark mode (1.5:1 on their surface; they were near invisible)."
+          },
           {
             "version": "0.12.0",
             "date": "2026-11-18",
@@ -2818,8 +2938,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.16.0",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "File names stay whole when a tile is cropped; an unchecked box is an outline; the zoom button is smaller on small tiles."
+          },
           {
             "version": "0.16.0",
             "date": "2026-11-19",
@@ -2878,8 +3003,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "+ Filter and Clear all stay together on one line."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -3006,8 +3136,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Disabled: the field keeps its grey fill with a --border edge, so in dark mode it no longer looks enabled; its words use the new --disabled (3:1 on every surface)."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -3090,8 +3225,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Disabled: the field keeps its grey fill with a --border edge, so in dark mode it no longer looks enabled; its words use the new --disabled (3:1 on every surface). Read-only and disabled draw one continuous outline (the country segment had none)."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -3134,8 +3274,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "With two or more months, days of neighbouring months are hidden (an end day showed twice) and months wrap when narrow."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -3182,8 +3327,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Disabled: the field keeps its grey fill with a --border edge, so in dark mode it no longer looks enabled; its words use the new --disabled (3:1 on every surface)."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -3227,8 +3377,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Disabled: the field keeps its grey fill with a --border edge, so in dark mode it no longer looks enabled; its words use the new --disabled (3:1 on every surface)."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -3272,8 +3427,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Tracks and quiet shapes use the new --track token, so they read in dark mode (1.5:1 on their surface; they were near invisible). Totals switch to the one-row summary whenever the grid scrolls sideways."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -3361,8 +3521,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "The grip is visible: --input with a card ring, and it no longer collapses to 1 px."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -3487,8 +3652,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Tracks and quiet shapes use the new --track token, so they read in dark mode (1.5:1 on their surface; they were near invisible)."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -3528,8 +3698,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "A horizontal timeline fades its last visible event when more are hidden (now a client component)."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -3602,8 +3777,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Panel rows align to one edge (each was centred by its own width) and panels follow the frame width."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -3650,8 +3830,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Tracks and quiet shapes use the new --track token, so they read in dark mode (1.5:1 on their surface; they were near invisible). The percentage follows the counter (question 1 of 4 is 25 %)."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -3690,8 +3875,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Tracks and quiet shapes use the new --track token, so they read in dark mode (1.5:1 on their surface; they were near invisible)."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -3824,8 +4014,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "At tablet width secondary columns show from 1024 px and long cells wrap, so the table fits beside the shell rail."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -4050,8 +4245,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Full-screen blocks honour --app-shell-height, so a banner above them (or the docs strip) never pushes them past the screen."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -4095,8 +4295,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Full-screen blocks honour --app-shell-height, so a banner above them (or the docs strip) never pushes them past the screen."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -4188,8 +4393,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Detail fields go 2 + 1 at tablet width."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -4331,8 +4541,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "The critical alarm shows at every width (it was hidden below 1024 px); the map keeps its aspect in any shape."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -4469,8 +4684,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Each split has its own grey with a 2 px gap (test read as empty track in dark)."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -4761,8 +4981,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Full-screen blocks honour --app-shell-height, so a banner above them (or the docs strip) never pushes them past the screen."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -4791,8 +5016,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Full-screen blocks honour --app-shell-height, so a banner above them (or the docs strip) never pushes them past the screen."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -4849,8 +5079,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Design language: --track for tracks and quiet shapes."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -5496,8 +5731,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Tracks and quiet shapes use the new --track token, so they read in dark mode (1.5:1 on their surface; they were near invisible)."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -5527,8 +5767,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Tracks and quiet shapes use the new --track token, so they read in dark mode (1.5:1 on their surface; they were near invisible)."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -5567,8 +5812,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Tracks and quiet shapes use the new --track token, so they read in dark mode (1.5:1 on their surface; they were near invisible)."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -5602,8 +5852,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Tracks and quiet shapes use the new --track token, so they read in dark mode (1.5:1 on their surface; they were near invisible)."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -5640,8 +5895,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "The scale starts from --track, so zero and low cells read in dark mode; numbers on cells stay 4.5:1."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -5676,8 +5936,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "The scale starts from --track; the row label column is fixed so long names never touch the first cell."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -5717,8 +5982,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Full-screen blocks honour --app-shell-height, so a banner above them (or the docs strip) never pushes them past the screen."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -5831,8 +6101,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Three cards in three columns from 768 px."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -5915,8 +6190,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Full-screen blocks honour --app-shell-height, so a banner above them (or the docs strip) never pushes them past the screen."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -5946,8 +6226,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Full-screen blocks honour --app-shell-height, so a banner above them (or the docs strip) never pushes them past the screen."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -6020,8 +6305,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Revoke in the list is neutral; red stays on the confirmation."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -6056,8 +6346,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Full-screen blocks honour --app-shell-height, so a banner above them (or the docs strip) never pushes them past the screen."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -6089,8 +6384,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Full-screen blocks honour --app-shell-height, so a banner above them (or the docs strip) never pushes them past the screen."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -6128,8 +6428,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Full-screen blocks honour --app-shell-height, so a banner above them (or the docs strip) never pushes them past the screen."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -6167,8 +6472,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Full-screen blocks honour --app-shell-height, so a banner above them (or the docs strip) never pushes them past the screen."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -6225,8 +6535,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Full-screen blocks honour --app-shell-height, so a banner above them (or the docs strip) never pushes them past the screen."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -6370,8 +6685,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Its table draws one frame (Table's own) and no longer clips."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -6401,8 +6721,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "List layout below 1024 px; a short mission's label sits inside its bar."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -6454,8 +6779,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "At tablet width secondary columns show from 1024 px and long cells wrap, so the table fits beside the shell rail."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -6501,8 +6831,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "At tablet width secondary columns show from 1024 px and long cells wrap, so the table fits beside the shell rail."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -6545,8 +6880,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "At tablet width secondary columns show from 1024 px and long cells wrap, so the table fits beside the shell rail."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -6632,8 +6972,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "At tablet width secondary columns show from 1024 px and long cells wrap, so the table fits beside the shell rail."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -6722,8 +7067,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "At tablet width secondary columns show from 1024 px and long cells wrap, so the table fits beside the shell rail. Gate values line up when a title wraps."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -6769,8 +7119,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Its table draws one frame (Table's own)."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -6809,8 +7164,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "At tablet width secondary columns show from 1024 px and long cells wrap, so the table fits beside the shell rail."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -6895,8 +7255,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-19",
+            "note": "Actions stack below 1024 px so none is left alone."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { fn } from "@storybook/test"
 import { SlideToRelease } from "@/registry/syncrobotic/shell/slide-to-release"
+import { States } from "./states"
 
 const meta: Meta<typeof SlideToRelease> = {
   title: "Shell/Slide to release",
@@ -20,3 +21,15 @@ type S = StoryObj<typeof SlideToRelease>
 export const Stopped: S = {}
 export const AfterStopAll: S = { args: { label: "Slide to release all", tag: "3 stopped" } }
 export const LockedForViewers: S = { args: { locked: true } }
+
+/** For the docs: the other two states side by side, after a stop-all and locked for viewers. */
+export const ReleaseStates: S = {
+  render: () => (
+    <States
+      items={[
+        ["After stop all", <SlideToRelease key="a" onRelease={fn()} label="Slide to release all" tag="3 stopped" />],
+        ["Locked for viewers", <SlideToRelease key="l" onRelease={fn()} tag="7F3A" locked />],
+      ]}
+    />
+  ),
+}

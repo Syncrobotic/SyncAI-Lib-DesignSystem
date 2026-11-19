@@ -19,7 +19,9 @@ export default meta
 type S = StoryObj
 
 // The docs open with one panel open (Default); the other examples start closed. "Open" stories are skipped in the docs.
-const frame = "flex min-h-80 items-start justify-center"
+// The menu starts at the frame's left edge, the way a site header places it, so a panel opens into the frame's width
+// instead of running off its right edge; the frame is a container, so a panel is two columns only where they fit.
+const frame = "@container flex min-h-80 items-start justify-start"
 
 function Products({ defaultValue }: { defaultValue?: string }) {
   return (
@@ -28,7 +30,7 @@ function Products({ defaultValue }: { defaultValue?: string }) {
         <NavigationMenuItem value="robots">
           <NavigationMenuTrigger>Robots</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid w-full gap-1 md:w-120 md:grid-cols-2">
+            <ul className="grid w-72 gap-1 @xl:w-120 @xl:grid-cols-2">
               <li>
                 <NavigationMenuCard href="#patrol" icon={<ShieldCheck />} title="Patrol dog" description="Four-legged security patrol, day and night." />
               </li>
@@ -47,7 +49,7 @@ function Products({ defaultValue }: { defaultValue?: string }) {
         <NavigationMenuItem value="solutions">
           <NavigationMenuTrigger>Solutions</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="flex w-full flex-col gap-1 md:w-64">
+            <ul className="flex w-64 flex-col gap-1">
               <li>
                 <NavigationMenuCard href="#warehouses" icon={<Warehouse />} title="Warehouses" />
               </li>
@@ -112,8 +114,8 @@ function SiteMenu() {
 /** One panel open from the start, so the example shows what the menu holds instead of a tall empty frame. */
 export const NavigationMenuDefault: S = {
   render: () => (
-    // Taller on a phone, where the open panel stacks its four cards.
-    <div className="flex min-h-112 items-start justify-center md:min-h-80">
+    // Taller where the open panel stacks its four cards.
+    <div className="@container flex min-h-112 items-start justify-start @xl:min-h-80">
       <Products defaultValue="robots" />
     </div>
   ),
@@ -164,25 +166,27 @@ export const NavigationMenuSimpleLists: S = {
 
 export const NavigationMenuLinksOnly: S = {
   render: () => (
-    <NavigationMenu>
-      <NavigationMenuList>
-        <NavigationMenuItem>
-          <NavigationMenuLink href="#overview" active className={navigationMenuTriggerStyle()}>
-            Overview
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuLink href="#robots" className={navigationMenuTriggerStyle()}>
-            Robots
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuLink href="#events" className={navigationMenuTriggerStyle()}>
-            Events
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-      </NavigationMenuList>
-    </NavigationMenu>
+    <div className="flex justify-start">
+      <NavigationMenu>
+        <NavigationMenuList>
+          <NavigationMenuItem>
+            <NavigationMenuLink href="#overview" active className={navigationMenuTriggerStyle()}>
+              Overview
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink href="#robots" className={navigationMenuTriggerStyle()}>
+              Robots
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink href="#events" className={navigationMenuTriggerStyle()}>
+              Events
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+    </div>
   ),
 }
 
@@ -196,7 +200,7 @@ export const NavigationMenuFeatured: S = {
               <BookOpen aria-hidden="true" /> Learn
             </NavigationMenuTrigger>
             <NavigationMenuContent>
-              <div className="grid w-full gap-2 md:w-120 md:grid-cols-[1fr_1.4fr]">
+              <div className="grid w-72 gap-2 @xl:w-120 @xl:grid-cols-[1fr_1.4fr]">
                 <NavigationMenuLink href="#getting-started" className="justify-end bg-muted p-4">
                   <span className="text-base font-medium">Getting started</span>
                   <span className="text-xs text-muted-foreground">Commission your first robot in about an hour.</span>
@@ -291,18 +295,18 @@ export const NavigationMenuColumns: S = {
           <NavigationMenuItem value="docs">
             <NavigationMenuTrigger>Docs</NavigationMenuTrigger>
             <NavigationMenuContent>
-              <div className="grid w-full gap-4 p-2 md:w-120 md:grid-cols-3">
+              <div className="grid w-80 grid-cols-3 gap-2 p-1 @xl:w-120 @xl:gap-4 @xl:p-2">
                 {[
                   ["Start", ["Install", "First robot", "First map"]],
                   ["Operate", ["Patrols", "Alarms", "Handover"]],
                   ["Build", ["API", "Webhooks", "MCP"]],
                 ].map(([h, links]) => (
                   <div key={h as string} className="flex flex-col gap-1">
-                    <span className="px-3 text-xs font-medium text-muted-foreground">{h}</span>
+                    <span className="px-2 text-xs font-medium text-muted-foreground @xl:px-3">{h}</span>
                     <ul className="flex flex-col">
                       {(links as string[]).map((l) => (
                         <li key={l}>
-                          <NavigationMenuLink href={`#${l.toLowerCase().replace(/ /g, "-")}`} className="py-2">
+                          <NavigationMenuLink href={`#${l.toLowerCase().replace(/ /g, "-")}`} className="px-2 py-2 @xl:px-3">
                             {l}
                           </NavigationMenuLink>
                         </li>
@@ -346,20 +350,22 @@ export const NavigationMenuSeeAll: S = {
 /** A section not open yet: disabled, with the reason in its title. */
 export const NavigationMenuDisabled: S = {
   render: () => (
-    <NavigationMenu>
-      <NavigationMenuList>
-        <NavigationMenuItem>
-          <NavigationMenuLink href="#overview" className={navigationMenuTriggerStyle()}>
-            Overview
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger disabled title="Available after your first robot is paired">
-            Analytics
-          </NavigationMenuTrigger>
-        </NavigationMenuItem>
-      </NavigationMenuList>
-    </NavigationMenu>
+    <div className="flex justify-start">
+      <NavigationMenu>
+        <NavigationMenuList>
+          <NavigationMenuItem>
+            <NavigationMenuLink href="#overview" className={navigationMenuTriggerStyle()}>
+              Overview
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger disabled title="Available after your first robot is paired">
+              Analytics
+            </NavigationMenuTrigger>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+    </div>
   ),
 }
 
@@ -412,7 +418,7 @@ export const NavigationMenuLearnOpen: S = {
               <BookOpen aria-hidden="true" /> Learn
             </NavigationMenuTrigger>
             <NavigationMenuContent>
-              <ul className="flex w-full flex-col gap-1 md:w-80">
+              <ul className="flex w-72 flex-col gap-1 @xl:w-80">
                 <li>
                   <NavigationMenuCard href="#maps" icon={<Map />} title="Mapping a site" description="Walk the robot once to build the map." />
                 </li>

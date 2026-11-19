@@ -1,4 +1,4 @@
-// @syncrobotic/list-detail v0.17.2 · update: npx shadcn add @syncrobotic/list-detail --overwrite
+// @syncrobotic/list-detail v0.17.3 · update: npx shadcn add @syncrobotic/list-detail --overwrite
 "use client"
 
 import * as React from "react"
@@ -91,7 +91,10 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
                   </Button>
                 </div>
               </div>
+              {/* Two columns beside the list on a tablet (the third field takes the next row), three from 1024 px. */}
               <DescriptionList
+                columns={2}
+                className="lg:grid-cols-3"
                 items={[
                   { label: "Battery", value: <Meter value={robot.battery} low={15} label="Battery" inline /> },
                   {

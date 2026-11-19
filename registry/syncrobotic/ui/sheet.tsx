@@ -1,4 +1,4 @@
-// @syncrobotic/sheet v0.14.1 · update: npx shadcn add @syncrobotic/sheet --overwrite
+// @syncrobotic/sheet v0.17.3 · update: npx shadcn add @syncrobotic/sheet --overwrite
 "use client"
 
 import * as React from "react"
@@ -55,8 +55,12 @@ export function SheetHeader({ className, ...props }: React.ComponentProps<"div">
   return <div className={cn("flex flex-col gap-1", className)} {...props} />
 }
 
+/**
+ * The sheet's actions, at its bottom. When the content is taller than the sheet and scrolls, the footer stays pinned to
+ * the bottom edge with the sheet's own padding under it, so the primary action is never cut in half.
+ */
 export function SheetFooter({ className, ...props }: React.ComponentProps<"div">) {
-  return <div className={cn("mt-auto flex flex-col gap-2", className)} {...props} />
+  return <div className={cn("sticky bottom-0 z-10 -mx-6 mt-auto -mb-6 flex flex-col gap-2 bg-popover px-6 pt-2 pb-6", className)} {...props} />
 }
 
 export function SheetTitle({ className, ...props }: React.ComponentProps<typeof SheetPrimitive.Title>) {

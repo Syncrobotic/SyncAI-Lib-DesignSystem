@@ -11,7 +11,7 @@ export function HeaderNav({ links }: { links: Pick<Scope, "key" | "label" | "hre
   const path = usePathname()
   const current = links.findIndex((s) => s.match.some((m) => path === m || path.startsWith(`${m}/`)))
   return (
-    <nav aria-label="Main" className="hidden items-center gap-1 text-sm sm:flex">
+    <nav aria-label="Main" className="hidden items-center gap-1 text-sm lg:flex">
       {links.map((l, i) => (
         <Link
           key={l.key}

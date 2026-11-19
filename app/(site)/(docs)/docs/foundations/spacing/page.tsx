@@ -54,7 +54,7 @@ export default function SpacingPage() {
         <Specimen className="flex flex-wrap items-end gap-4">
           {heights.map((h) => (
             <div key={h} className="flex flex-col items-center gap-2">
-              <div className="w-16 rounded-xs bg-secondary ring-1 ring-border" style={{ height: `var(--${h})` }} />
+              <div className="w-16 rounded-xs bg-track" style={{ height: `var(--${h})` }} />
               <span className="flex flex-col items-center font-mono text-xs">
                 {px(themeValue(h))}
                 <span className="text-muted-foreground">{h.replace("h-", "")}</span>

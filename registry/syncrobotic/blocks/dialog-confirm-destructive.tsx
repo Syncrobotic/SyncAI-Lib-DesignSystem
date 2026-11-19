@@ -1,4 +1,4 @@
-// @syncrobotic/dialog-confirm-destructive v0.9.0 · update: npx shadcn add @syncrobotic/dialog-confirm-destructive --overwrite
+// @syncrobotic/dialog-confirm-destructive v0.17.3 · update: npx shadcn add @syncrobotic/dialog-confirm-destructive --overwrite
 "use client"
 
 import * as React from "react"
@@ -41,7 +41,7 @@ export function DialogConfirmDestructive({
   const [typed, setTyped] = React.useState("")
   const match = typed.trim() === name
   return (
-    <div className="flex min-h-dvh items-center justify-center bg-background p-6">
+    <div className="flex min-h-[var(--app-shell-height,100dvh)] items-center justify-center bg-background p-6">
       <AlertDialog defaultOpen={defaultOpen} onOpenChange={() => setTyped("")}>
         <AlertDialogTrigger asChild>
           <Button variant="destructive">

@@ -116,9 +116,12 @@ export const SpinnerDefault: S = {
   ),
 }
 
+// Every empty-state example at one width, the size of a panel, so the examples line up down the page.
+const emptyWidth = "w-md max-w-full"
+
 export const EmptyStateDefault: S = {
   render: () => (
-    <Card>
+    <Card className={emptyWidth}>
       <EmptyState
         icon={MapPinOff}
         title="No routes yet"
@@ -223,13 +226,13 @@ export const CardStat: S = {
 
 export const SeparatorInToolbar: S = {
   render: () => (
-    <div className="flex h-(--h-md) items-center gap-3 rounded-md bg-card px-4 text-sm ring-1 ring-border">
-      <span className="flex items-center gap-1">
+    <div className="flex h-(--h-md) w-fit items-center gap-3 rounded-md bg-card px-4 text-sm ring-1 ring-border">
+      <span className="flex items-center gap-2">
         <Wifi aria-hidden="true" className="size-4" /> Good
       </span>
       <Separator orientation="vertical" className="h-5" />
-      <span className="flex items-center gap-1">
-        <Battery aria-hidden="true" className="size-4" /> 72%
+      <span className="flex items-center gap-2">
+        <Battery aria-hidden="true" className="size-4" /> 72 %
       </span>
       <Separator orientation="vertical" className="h-5" />
       <span className="text-muted-foreground">Firmware 2.4.1</span>
@@ -287,7 +290,7 @@ export const AlertWithAction: S = {
 
 export const EmptyStateNoResults: S = {
   render: () => (
-    <Card>
+    <Card className={emptyWidth}>
       <EmptyState
         icon={SearchX}
         title="No events match “gate b”"
@@ -300,7 +303,7 @@ export const EmptyStateNoResults: S = {
 
 export const EmptyStateError: S = {
   render: () => (
-    <Card>
+    <Card className={emptyWidth}>
       <EmptyState
         icon={CircleAlert}
         title="Could not load events"
@@ -789,7 +792,7 @@ export const StatusGlyphInTable: S = {
 /** First run: the main action, and a second way in for people who already have data. */
 export const EmptyStateFirstRun: S = {
   render: () => (
-    <Card>
+    <Card className={emptyWidth}>
       <EmptyState
         icon={Bot}
         title="Add your first robot"
@@ -808,7 +811,7 @@ export const EmptyStateFirstRun: S = {
 /** Filters hide everything: say how many are hidden and offer to clear them. */
 export const EmptyStateFiltered: S = {
   render: () => (
-    <Card>
+    <Card className={emptyWidth}>
       <EmptyState
         icon={SearchX}
         title="No robots match these filters"
@@ -822,7 +825,7 @@ export const EmptyStateFiltered: S = {
 /** No access: who can give it, not a dead end. */
 export const EmptyStateNoPermission: S = {
   render: () => (
-    <Card>
+    <Card className={emptyWidth}>
       <EmptyState
         icon={Lock}
         title="You can’t see camera clips"
@@ -836,7 +839,7 @@ export const EmptyStateNoPermission: S = {
 /** Offline: what still works, and a retry. */
 export const EmptyStateOffline: S = {
   render: () => (
-    <Card>
+    <Card className={emptyWidth}>
       <EmptyState
         icon={WifiOff}
         title="You’re offline"
@@ -854,7 +857,7 @@ export const EmptyStateOffline: S = {
 /** Inside a table or a small panel: no icon, less padding. */
 export const EmptyStateCompact: S = {
   render: () => (
-    <div className="rounded-md ring-1 ring-border">
+    <div className={`${emptyWidth} rounded-md bg-card ring-1 ring-border`}>
       <div className="border-b border-border px-4 py-3 text-sm font-medium">Open alarms</div>
       <EmptyState className="py-6" title="No open alarms" description="New alarms show up here as they happen." />
     </div>

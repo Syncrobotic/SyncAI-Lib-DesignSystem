@@ -1,4 +1,4 @@
-// @syncrobotic/agent-runs v0.17.2 · update: npx shadcn add @syncrobotic/agent-runs --overwrite
+// @syncrobotic/agent-runs v0.17.3 · update: npx shadcn add @syncrobotic/agent-runs --overwrite
 "use client"
 
 import * as React from "react"
@@ -119,56 +119,55 @@ export function AgentRuns() {
           </SegmentedControl>
           <span className="text-sm text-muted-foreground">Agents only suggest changes to robots; a person approves them.</span>
         </div>
-        <div className="overflow-x-auto rounded-md bg-card ring-1 ring-border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Run</TableHead>
-                <TableHead className="hidden sm:table-cell">State</TableHead>
-                <TableHead className="hidden md:table-cell">Started by</TableHead>
-                <TableHead className="hidden text-right md:table-cell">Steps</TableHead>
-                <TableHead className="hidden text-right md:table-cell">Time</TableHead>
-                <TableHead>
-                  <span className="sr-only">Actions</span>
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {shown.map((r) => (
-                <TableRow key={r.id}>
-                  <TableCell className="py-2 whitespace-normal">
-                    {/* At least the control height (44, 48 in gloves): two short lines alone are a 36 px target. */}
-                    <a href={`#${r.id}`} className="flex min-h-(--h-md) flex-col justify-center hover:underline">
-                      <span className="font-medium">{r.goal}</span>
-                      <span className="text-xs text-muted-foreground">
-                        {r.agent} · <span className="font-mono">{r.id}</span>
-                      </span>
-                    </a>
-                    {/* On a phone the state sits under the goal instead of in a column off the screen. */}
-                    <span className="mt-1 block sm:hidden">
-                      <RunState status={r.status} />
+        {/* Table draws its own edge, scroll and fades; a second frame around it clipped or doubled them. */}
+        <Table className="bg-card">
+          <TableHeader>
+            <TableRow>
+              <TableHead>Run</TableHead>
+              <TableHead className="hidden sm:table-cell">State</TableHead>
+              <TableHead className="hidden lg:table-cell">Started by</TableHead>
+              <TableHead className="hidden text-right lg:table-cell">Steps</TableHead>
+              <TableHead className="hidden text-right lg:table-cell">Time</TableHead>
+              <TableHead>
+                <span className="sr-only">Actions</span>
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {shown.map((r) => (
+              <TableRow key={r.id}>
+                <TableCell className="py-2 whitespace-normal">
+                  {/* At least the control height (44, 48 in gloves): two short lines alone are a 36 px target. */}
+                  <a href={`#${r.id}`} className="flex min-h-(--h-md) flex-col justify-center hover:underline">
+                    <span className="font-medium">{r.goal}</span>
+                    <span className="text-xs text-muted-foreground">
+                      {r.agent} · <span className="font-mono">{r.id}</span>
                     </span>
-                  </TableCell>
-                  <TableCell className="hidden sm:table-cell">
+                  </a>
+                  {/* On a phone the state sits under the goal instead of in a column off the screen. */}
+                  <span className="mt-1 block sm:hidden">
                     <RunState status={r.status} />
-                  </TableCell>
-                  <TableCell className="hidden text-muted-foreground md:table-cell">
-                    {r.trigger}, {r.started}
-                  </TableCell>
-                  <TableCell className="hidden text-right tabular-nums md:table-cell">{r.steps}</TableCell>
-                  <TableCell className="hidden text-right text-muted-foreground tabular-nums md:table-cell">{formatDuration(r.duration)}</TableCell>
-                  <TableCell className="text-right">
-                    {r.status === "approval" && (
-                      <Button size="sm" aria-label={`Review ${r.goal}`}>
-                        Review
-                      </Button>
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+                  </span>
+                </TableCell>
+                <TableCell className="hidden sm:table-cell">
+                  <RunState status={r.status} />
+                </TableCell>
+                <TableCell className="hidden text-muted-foreground lg:table-cell">
+                  {r.trigger}, {r.started}
+                </TableCell>
+                <TableCell className="hidden text-right tabular-nums lg:table-cell">{r.steps}</TableCell>
+                <TableCell className="hidden text-right text-muted-foreground tabular-nums lg:table-cell">{formatDuration(r.duration)}</TableCell>
+                <TableCell className="text-right">
+                  {r.status === "approval" && (
+                    <Button size="sm" aria-label={`Review ${r.goal}`}>
+                      Review
+                    </Button>
+                  )}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
     </AppShell>
   )

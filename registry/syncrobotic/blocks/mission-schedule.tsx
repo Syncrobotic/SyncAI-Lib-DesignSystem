@@ -1,4 +1,4 @@
-// @syncrobotic/mission-schedule v0.17.2 · update: npx shadcn add @syncrobotic/mission-schedule --overwrite
+// @syncrobotic/mission-schedule v0.17.3 · update: npx shadcn add @syncrobotic/mission-schedule --overwrite
 "use client"
 
 import * as React from "react"
@@ -104,8 +104,11 @@ export function MissionSchedule() {
           </p>
         ))}
 
-        {/* Phones: one list per robot, every mission in words, instead of a timeline that would show two hours of twelve. */}
-        <ul aria-label="Missions by robot" className="flex flex-col rounded-md bg-card ring-1 ring-border md:hidden">
+        {/*
+          Phones and tablets (below 1024 px, beside a shell's sidebar): one list per robot, every mission in words, instead of
+          a timeline that would show a few hours of twelve or cut its blocks at the edge.
+        */}
+        <ul aria-label="Missions by robot" className="flex flex-col rounded-md bg-card ring-1 ring-border lg:hidden">
           {lanes.map((l) => (
             <li key={l.robot} className="flex flex-col gap-2 border-b border-border p-4 last:border-b-0">
               <span className="text-sm font-medium">{l.robot}</span>
@@ -130,7 +133,7 @@ export function MissionSchedule() {
           ))}
         </ul>
 
-        <div className="hidden overflow-x-auto rounded-md bg-card ring-1 ring-border md:block">
+        <div className="hidden overflow-x-auto rounded-md bg-card ring-1 ring-border lg:block">
           <div className="min-w-3xl">
             {/* The track stops 16 px short of the card's edge, so the last hour and a mission that runs to it are whole. */}
             <div aria-hidden="true" className="grid grid-cols-[10rem_1fr] border-b border-border pr-4 text-xs text-muted-foreground">
@@ -156,16 +159,18 @@ export function MissionSchedule() {
                     {l.slots.length === 0 && <span className="absolute inset-y-0 left-2 flex items-center text-xs text-muted-foreground">No missions</span>}
                     <ul aria-label={`${l.robot} missions`}>
                       {l.slots.map((s) => {
-                        // Name over time, two lines, so a two-hour bar holds both at the narrowest width. A mission
-                        // shorter than that writes its label beside the bar instead of cutting it to a few letters.
+                        // Name over time, two lines, inside the bar it names. A short mission keeps its label inside too,
+                        // cut with an ellipsis where the bar is narrow, and its full name and time in the tooltip: a
+                        // label beside the bar read as a label for the empty space next to it.
                         const short = s.end - s.start < 1.5
                         return (
                           <li
                             key={s.start}
-                            className={cn("absolute inset-y-2 flex flex-col justify-center rounded-xs text-xs leading-4", !short && "px-2", slotStyle[s.state])}
+                            title={`${s.name}, ${clock(s.start)}–${clock(s.end)}`}
+                            className={cn("absolute inset-y-2 flex flex-col justify-center rounded-xs text-xs leading-4", short ? "px-1" : "px-2", slotStyle[s.state])}
                             style={{ left: `${(s.start / HOURS) * 100}%`, width: `${((s.end - s.start) / HOURS) * 100}%` }}
                           >
-                            <span className={cn("flex flex-col", short ? "absolute left-full ml-1 rounded-2xs bg-card px-1 whitespace-nowrap text-foreground" : "min-w-0")}>
+                            <span className="flex min-w-0 flex-col">
                               <span className="truncate font-medium">{s.name}</span>
                               <span className="truncate tabular-nums">
                                 {clock(s.start)}–{clock(s.end)}
@@ -182,7 +187,7 @@ export function MissionSchedule() {
             </ul>
           </div>
         </div>
-        <p className="hidden text-xs text-muted-foreground md:block">Muted: done. Blue: running now (the line is the time). Outlined: planned. Amber: cannot run as planned.</p>
+        <p className="hidden text-xs text-muted-foreground lg:block">Muted: done. Blue: running now (the line is the time). Outlined: planned. Amber: cannot run as planned.</p>
       </div>
     </AppShell>
   )

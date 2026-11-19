@@ -1,4 +1,4 @@
-// @syncrobotic/auth-passkey v0.9.0 · update: npx shadcn add @syncrobotic/auth-passkey --overwrite
+// @syncrobotic/auth-passkey v0.17.3 · update: npx shadcn add @syncrobotic/auth-passkey --overwrite
 "use client"
 
 import * as React from "react"
@@ -46,7 +46,7 @@ export function AuthPasskey({
   }
 
   return (
-    <main className="flex min-h-dvh items-center justify-center bg-background p-4">
+    <main className="flex min-h-[var(--app-shell-height,100dvh)] items-center justify-center bg-background p-4">
       <div className="flex w-full max-w-sm flex-col gap-6">
         <div className="flex flex-col gap-1">
           <h1 className="text-xl font-bold">Sign in to {product}</h1>

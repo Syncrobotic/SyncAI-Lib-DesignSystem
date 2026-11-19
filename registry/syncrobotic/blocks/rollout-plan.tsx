@@ -1,4 +1,4 @@
-// @syncrobotic/rollout-plan v0.17.2 · update: npx shadcn add @syncrobotic/rollout-plan --overwrite
+// @syncrobotic/rollout-plan v0.17.3 · update: npx shadcn add @syncrobotic/rollout-plan --overwrite
 "use client"
 
 import * as React from "react"
@@ -80,52 +80,51 @@ export function RolloutPlan() {
           <h2 id="stages-title" className="text-sm font-medium">
             Stages
           </h2>
-          <div className="overflow-x-auto rounded-md bg-card ring-1 ring-border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Stage</TableHead>
-                  <TableHead className="w-40">
-                    <span className="sm:hidden">Share, then watch</span>
-                    <span className="hidden sm:inline">Share of fleet</span>
-                  </TableHead>
-                  <TableHead className="hidden text-right sm:table-cell">Robots</TableHead>
-                  <TableHead className="hidden w-40 sm:table-cell">Watch before next</TableHead>
+          {/* Table draws its own edge, scroll and fades; a second frame around it clipped or doubled them. */}
+          <Table className="bg-card">
+            <TableHeader>
+              <TableRow>
+                <TableHead>Stage</TableHead>
+                <TableHead className="w-40">
+                  <span className="sm:hidden">Share, then watch</span>
+                  <span className="hidden sm:inline">Share of fleet</span>
+                </TableHead>
+                <TableHead className="hidden text-right sm:table-cell">Robots</TableHead>
+                <TableHead className="hidden w-40 sm:table-cell">Watch before next</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {stages.map((s, i) => (
+                <TableRow key={s.name}>
+                  <TableCell>
+                    <span className="font-medium">{s.name}</span>
+                    {/* On a phone the robot count sits under the stage, and the watch time under the share. */}
+                    <span className="block text-xs text-muted-foreground tabular-nums sm:hidden">{robots(s)} robots</span>
+                  </TableCell>
+                  <TableCell className="py-2 sm:py-0">
+                    <span className="flex flex-col gap-2">
+                      {i === stages.length - 1 ? (
+                        <span className="flex justify-center tabular-nums">100 %</span>
+                      ) : (
+                        <NumberField
+                          aria-label={`${s.name} share of fleet, percent`}
+                          value={s.share}
+                          min={1}
+                          max={99}
+                          unit="%"
+                          className="w-full"
+                          onValueChange={(v) => setStages((l) => l.map((x, j) => (j === i ? { ...x, share: v ?? x.share } : x)))}
+                        />
+                      )}
+                      <span className="sm:hidden">{watch(s, i)}</span>
+                    </span>
+                  </TableCell>
+                  <TableCell className="hidden text-right tabular-nums sm:table-cell">{robots(s)}</TableCell>
+                  <TableCell className="hidden sm:table-cell">{watch(s, i)}</TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {stages.map((s, i) => (
-                  <TableRow key={s.name}>
-                    <TableCell>
-                      <span className="font-medium">{s.name}</span>
-                      {/* On a phone the robot count sits under the stage, and the watch time under the share. */}
-                      <span className="block text-xs text-muted-foreground tabular-nums sm:hidden">{robots(s)} robots</span>
-                    </TableCell>
-                    <TableCell className="py-2 sm:py-0">
-                      <span className="flex flex-col gap-2">
-                        {i === stages.length - 1 ? (
-                          <span className="flex justify-center tabular-nums">100 %</span>
-                        ) : (
-                          <NumberField
-                            aria-label={`${s.name} share of fleet, percent`}
-                            value={s.share}
-                            min={1}
-                            max={99}
-                            unit="%"
-                            className="w-full"
-                            onValueChange={(v) => setStages((l) => l.map((x, j) => (j === i ? { ...x, share: v ?? x.share } : x)))}
-                          />
-                        )}
-                        <span className="sm:hidden">{watch(s, i)}</span>
-                      </span>
-                    </TableCell>
-                    <TableCell className="hidden text-right tabular-nums sm:table-cell">{robots(s)}</TableCell>
-                    <TableCell className="hidden sm:table-cell">{watch(s, i)}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+              ))}
+            </TableBody>
+          </Table>
           {bad && (
             <p role="alert" className="text-sm text-danger">
               Each stage must reach more of the fleet than the one before it.

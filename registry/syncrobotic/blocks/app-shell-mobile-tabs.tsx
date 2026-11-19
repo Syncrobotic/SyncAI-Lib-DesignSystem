@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell-mobile-tabs v0.17.2 · update: npx shadcn add @syncrobotic/app-shell-mobile-tabs --overwrite
+// @syncrobotic/app-shell-mobile-tabs v0.17.3 · update: npx shadcn add @syncrobotic/app-shell-mobile-tabs --overwrite
 "use client"
 
 import * as React from "react"
@@ -66,7 +66,7 @@ export function AppShellMobileTabs({
   const [active, setActive] = React.useState(defaultTab)
   const current = tabs.find((t) => t.key === active) ?? tabs[0]
   return (
-    <div className="flex min-h-dvh flex-col bg-background">
+    <div className="flex min-h-[var(--app-shell-height,100dvh)] flex-col bg-background">
       <header className="sticky top-0 z-10 flex min-h-(--h-lg) items-center justify-between gap-3 border-b border-border bg-background px-4 py-2">
         <div className="flex min-w-0 flex-col">
           <span className="text-xs text-muted-foreground">{product}</span>

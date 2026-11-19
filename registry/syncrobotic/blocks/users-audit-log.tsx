@@ -1,4 +1,4 @@
-// @syncrobotic/users-audit-log v0.17.2 · update: npx shadcn add @syncrobotic/users-audit-log --overwrite
+// @syncrobotic/users-audit-log v0.17.3 · update: npx shadcn add @syncrobotic/users-audit-log --overwrite
 "use client"
 
 import * as React from "react"
@@ -137,51 +137,50 @@ export function UsersAuditLog() {
             {shown.length} of {rows.length} entries
           </span>
         </div>
-        <div className="overflow-x-auto rounded-md bg-card ring-1 ring-border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Time</TableHead>
-                <TableHead className="hidden sm:table-cell">Person</TableHead>
-                <TableHead>Action</TableHead>
-                <TableHead className="hidden md:table-cell">Target</TableHead>
-                <TableHead className="hidden md:table-cell">Change</TableHead>
-                <TableHead className="hidden lg:table-cell">IP address</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {shown.map((r) => (
-                <TableRow key={r.at}>
-                  <TableCell className="whitespace-nowrap text-muted-foreground tabular-nums">
-                    <time dateTime={r.at}>{r.time}</time>
-                  </TableCell>
-                  <TableCell className="hidden sm:table-cell">{r.who}</TableCell>
-                  <TableCell className="py-2 max-md:whitespace-normal">
-                    <span className="font-medium">{r.action}</span>
-                    {/* Below 768 px the person, target and change stack under the action instead of scrolling off the side. */}
-                    <span className="flex flex-col text-xs text-muted-foreground md:hidden">
-                      <span>
-                        <span className="sm:hidden">{r.who} · </span>
-                        {r.target}
-                      </span>
-                      {r.from && <Change from={r.from} to={r.to} />}
+        {/* Table draws its own edge, scroll and fades; a second frame around it clipped or doubled them. */}
+        <Table className="bg-card">
+          <TableHeader>
+            <TableRow>
+              <TableHead>Time</TableHead>
+              <TableHead className="hidden sm:table-cell">Person</TableHead>
+              <TableHead>Action</TableHead>
+              <TableHead className="hidden lg:table-cell">Target</TableHead>
+              <TableHead className="hidden lg:table-cell">Change</TableHead>
+              <TableHead className="hidden lg:table-cell">IP address</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {shown.map((r) => (
+              <TableRow key={r.at}>
+                <TableCell className="whitespace-nowrap text-muted-foreground tabular-nums">
+                  <time dateTime={r.at}>{r.time}</time>
+                </TableCell>
+                <TableCell className="hidden sm:table-cell">{r.who}</TableCell>
+                <TableCell className="py-2 max-lg:whitespace-normal">
+                  <span className="font-medium">{r.action}</span>
+                  {/* Below 768 px the person, target and change stack under the action instead of scrolling off the side. */}
+                  <span className="flex flex-col text-xs text-muted-foreground lg:hidden">
+                    <span>
+                      <span className="sm:hidden">{r.who} · </span>
+                      {r.target}
                     </span>
-                  </TableCell>
-                  <TableCell className="hidden md:table-cell">{r.target}</TableCell>
-                  <TableCell className="hidden text-muted-foreground md:table-cell">{r.from ? <Change from={r.from} to={r.to} /> : "—"}</TableCell>
-                  <TableCell className="hidden font-mono text-xs text-muted-foreground lg:table-cell">{r.ip}</TableCell>
-                </TableRow>
-              ))}
-              {shown.length === 0 && (
-                <TableRow>
-                  <TableCell colSpan={6} className="py-8 text-center whitespace-normal text-muted-foreground">
-                    No entries match. Clear the search or choose Everyone.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
+                    {r.from && <Change from={r.from} to={r.to} />}
+                  </span>
+                </TableCell>
+                <TableCell className="hidden lg:table-cell">{r.target}</TableCell>
+                <TableCell className="hidden text-muted-foreground lg:table-cell">{r.from ? <Change from={r.from} to={r.to} /> : "—"}</TableCell>
+                <TableCell className="hidden font-mono text-xs text-muted-foreground lg:table-cell">{r.ip}</TableCell>
+              </TableRow>
+            ))}
+            {shown.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={6} className="py-8 text-center whitespace-normal text-muted-foreground">
+                  No entries match. Clear the search or choose Everyone.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
       </div>
     </AppShell>
   )

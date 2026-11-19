@@ -1,4 +1,4 @@
-// @syncrobotic/progress v0.17.2 · update: npx shadcn add @syncrobotic/progress --overwrite
+// @syncrobotic/progress v0.17.3 · update: npx shadcn add @syncrobotic/progress --overwrite
 "use client"
 
 import * as React from "react"
@@ -14,7 +14,10 @@ const fill = {
   neutral: "bg-neutral",
 } as const
 
-/** Blue: a process someone is waiting on, with an end. A level that stays (battery, storage) is a Meter, not a Progress. */
+/**
+ * Blue: a process someone is waiting on, with an end. A level that stays (battery, storage) is a Meter, not a Progress.
+ * At 0 % (waiting to start) the empty track is all there is to see, so it takes the --input edge (3:1) and reads as a bar.
+ */
 export function Progress({
   className,
   value,
@@ -22,7 +25,7 @@ export function Progress({
   ...props
 }: React.ComponentProps<typeof ProgressPrimitive.Root> & { tone?: keyof typeof fill }) {
   return (
-    <ProgressPrimitive.Root data-slot="progress" value={value} className={cn("relative h-2 w-full overflow-hidden rounded-full bg-muted", className)} {...props}>
+    <ProgressPrimitive.Root data-slot="progress" value={value} className={cn("relative h-2 w-full overflow-hidden rounded-full bg-track", !value && "ring-1 ring-input ring-inset", className)} {...props}>
       <ProgressPrimitive.Indicator
         className={cn("h-full w-full transition-transform duration-(--motion-base) ease-(--ease-standard)", fill[tone])}
         style={{ transform: `translateX(-${100 - (value ?? 0)}%)` }}

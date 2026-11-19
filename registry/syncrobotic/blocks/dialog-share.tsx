@@ -1,4 +1,4 @@
-// @syncrobotic/dialog-share v0.17.2 · update: npx shadcn add @syncrobotic/dialog-share --overwrite
+// @syncrobotic/dialog-share v0.17.3 · update: npx shadcn add @syncrobotic/dialog-share --overwrite
 "use client"
 
 import * as React from "react"
@@ -52,7 +52,7 @@ export function DialogShare({
   }
 
   return (
-    <div className="flex min-h-dvh items-center justify-center bg-background p-6">
+    <div className="flex min-h-[var(--app-shell-height,100dvh)] items-center justify-center bg-background p-6">
       <Dialog defaultOpen={defaultOpen}>
         <DialogTrigger asChild>
           <Button variant="secondary">

@@ -1,4 +1,4 @@
-// @syncrobotic/alarm v0.17.2 · update: npx shadcn add @syncrobotic/alarm --overwrite
+// @syncrobotic/alarm v0.17.3 · update: npx shadcn add @syncrobotic/alarm --overwrite
 "use client"
 
 import * as React from "react"
@@ -104,6 +104,9 @@ type AlarmProps = Omit<AlarmData, "id"> & {
   className?: string
 }
 
+/** A short last word ("3" in "Floor 3", "B" in "Hall B") held to the word before it, so it never wraps alone. */
+const keepLastWord = (text: string) => text.replace(/ (\S{1,3})$/, "\u00a0$1")
+
 /** One alarm. Unacknowledged: a bar in the priority colour and the word "Unacknowledged"; critical ones are also tinted. Colour stays off everything else. */
 export function Alarm({ priority, title, source, time, active, acknowledged, shelvedUntil, onAcknowledge, onShelve, onUnshelve, action, labels, className }: AlarmProps) {
   const l = { ...defaultAlarmLabels, ...labels }
@@ -131,16 +134,16 @@ export function Alarm({ priority, title, source, time, active, acknowledged, she
       {/* On the title's first line (20 px icon, 20 px line), not the middle of a two- or three-line block. */}
       <Icon aria-hidden="true" className={cn("size-5 shrink-0", p.text)} />
       <div className="flex min-w-0 flex-1 basis-40 flex-col">
-        <p id={`${id}-title`} className={cn("line-clamp-2 text-sm", loud ? "font-bold" : "font-medium")}>
+        <p id={`${id}-title`} className={cn("line-clamp-2 text-sm text-pretty", loud ? "font-bold" : "font-medium")}>
           <span className={p.text}>{l[priority]}</span>
           <span aria-hidden="true" className="text-muted-foreground">
             {" "}
             ·{" "}
           </span>
           <span className="sr-only">: </span>
-          {title}
+          {keepLastWord(title)}
         </p>
-        <p id={`${id}-meta`} className="text-xs text-muted-foreground">
+        <p id={`${id}-meta`} className="text-xs text-pretty text-muted-foreground">
           {/* Each separator is held to the word after it (no-break space), so a wrapped line never ends on a bare "·". */}
           {[source, time, state].filter(Boolean).join(" \u00b7\u00a0")}
         </p>

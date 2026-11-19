@@ -203,12 +203,13 @@ export const SortableDashboard: S = {
   render: function D() {
     const [w, setW] = React.useState(["Fleet status", "Open alarms", "Battery", "Patrols today"].map((n) => ({ id: n, name: n })))
     return (
-      <Sortable value={w} onValueChange={setW} getId={(x) => x.id} getLabel={(x) => x.name} layout="grid">
+      // Four widgets, two by two: no widget is left alone on a row, and each title has room for one line.
+      <Sortable value={w} onValueChange={setW} getId={(x) => x.id} getLabel={(x) => x.name} layout="grid" className="w-lg max-w-full sm:grid-cols-2">
         {w.map((x) => (
           <SortableItem key={x.id} id={x.id}>
             <div className="flex h-24 flex-col gap-2 rounded-md bg-card p-3 ring-1 ring-border">
               <div className="flex items-center justify-between gap-2">
-                <span className="text-sm font-medium">{x.name}</span>
+                <span className="truncate text-sm font-medium">{x.name}</span>
                 <SortableHandle label={`Move ${x.name}`} />
               </div>
               <div className="h-2 w-2/3 rounded-xs bg-muted" />
