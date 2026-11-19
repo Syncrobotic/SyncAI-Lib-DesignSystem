@@ -78,7 +78,6 @@ const columns: ColumnDef<Robot>[] = [
     size: 200,
     meta: { label: "Robot" },
   },
-  { accessorKey: "site", header: ({ column }) => <DataGridColumnHeader column={column} title="Site" />, size: 150, meta: { label: "Site" } },
   {
     accessorKey: "status",
     header: ({ column }) => <DataGridColumnHeader column={column} title="Status" />,
@@ -86,6 +85,8 @@ const columns: ColumnDef<Robot>[] = [
     size: 170,
     meta: { label: "Status" },
   },
+  // Status right after the name, so it stays in view when a narrow screen shows only the first columns.
+  { accessorKey: "site", header: ({ column }) => <DataGridColumnHeader column={column} title="Site" />, size: 150, meta: { label: "Site" } },
   {
     accessorKey: "battery",
     header: ({ column }) => <DataGridColumnHeader column={column} title="Battery" />,

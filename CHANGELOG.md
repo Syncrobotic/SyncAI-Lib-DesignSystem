@@ -11,6 +11,8 @@ Components install as source, so a project keeps the version it installed. Re-ru
   - **Components has an index** (`/docs/components`): every component by group, with what it is for. The header, the home page and the end of the foundations lead there instead of straight to Button.
   - The 404 page keeps the site header, so a wrong link no longer strands you.
   - Getting started has previous and next, in sidebar order: Overview, Installation, Design tokens, Versions and upgrades, For AI agents, then Principles.
+  - The phone menu button sits at the left of the header, the side its drawer opens from. The drawer starts with Home; on the home page no area is selected and the four areas are the choice.
+- **Docs tables no longer cut columns off.** Token and rule tables (Accessibility, Alarms, Colour and the rest) wrap every column but the name, with even padding, so the Light contrast column and long descriptions show in full on a desktop. On a phone each row is a card with every value under its column's name, instead of a table whose colours, values and uses sat off screen. The DataGrid examples put Status right after the name, so it stays in view on a narrow screen.
 
 ## 0.13.0 · 2026-11-19
 
