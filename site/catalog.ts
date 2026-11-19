@@ -730,6 +730,14 @@ const entries: Record<string, Entry> = {
   // Hooks
   "use-long-press": { group: "Hooks", rules: ["Returns hold progress from 0 to 1. The emergency stop uses it for hold-to-stop-all."] },
   "use-slide-release": { group: "Hooks", rules: ["Drag, threshold and spring-back logic behind Slide to release."] },
+  "use-debounce": {
+    group: "Hooks",
+    rules: [
+      "Debounce what goes to a server (a search, an autosave), never what the person sees: the text box updates on every key.",
+      "300 ms for typing. A clear button and Enter do not wait: cancel() or flush().",
+      "Answers can return out of order: keep only the one for the latest query.",
+    ],
+  },
 }
 
 export type Item = (typeof registry.items)[number] & Entry

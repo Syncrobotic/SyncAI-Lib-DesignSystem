@@ -5,6 +5,7 @@ Components install as source, so a project keeps the version it installed. Re-ru
 ## Unreleased
 
 ### Added
+- **`use-debounce`**: `useDebouncedValue` and `useDebouncedCallback` (with `cancel` and `flush`), for a search or an autosave that waits until changes pause. `autocomplete` takes `debounce` (ms): the text box updates on every key, `onQueryChange` fires when the typing pauses, and clearing never waits. The server-search example also drops answers that arrive after a newer query.
 - **`avatar`, richer** (after ReUI's set, in our rules): four sizes; `shape="square"` for robots, sites and teams beside round people; `AvatarBadge` with a status (the StatusGlyph shapes, so only warning and danger are coloured) or a count; `AvatarGroup` with `max` folding the rest into +N and a `label` that names everyone. The default avatar looks as before.
 
 ### Changed

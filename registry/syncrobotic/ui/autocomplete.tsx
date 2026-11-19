@@ -4,6 +4,7 @@
 import * as React from "react"
 import { Check, ChevronDown, X } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useDebouncedCallback } from "@/registry/syncrobotic/hooks/use-debounce"
 import { useField } from "@/registry/syncrobotic/ui/field"
 import { Popover, PopoverAnchor, PopoverContent } from "@/registry/syncrobotic/ui/popover"
 import { Spinner } from "@/registry/syncrobotic/ui/spinner"
@@ -13,13 +14,15 @@ export type AutocompleteOption = { value: string; label: string; description?: s
 /**
  * A text field that suggests as you type (the WAI-ARIA combobox pattern): type to filter, arrows to move, Enter to pick,
  * Escape to close. For picking one of many known values (a robot, a site, a user) when a Select would be too long.
- * Filtering is built in; pass `onQueryChange` and `filter={false}` to search a server instead, with `loading`.
+ * Filtering is built in; pass `onQueryChange` and `filter={false}` to search a server instead, with `loading`, and
+ * `debounce` (ms) so the server hears the query when the typing pauses, not on every key.
  */
 export function Autocomplete({
   options,
   value,
   onValueChange,
   onQueryChange,
+  debounce = 0,
   filter = true,
   loading,
   placeholder = "Search",
@@ -36,6 +39,8 @@ export function Autocomplete({
   value?: string
   onValueChange?: (value: string | undefined) => void
   onQueryChange?: (query: string) => void
+  /** Call `onQueryChange` only once the typing has paused this long (ms). The text box itself never waits; clearing never waits. */
+  debounce?: number
   /** Filter options by the typed text. Turn off when the server filters. */
   filter?: boolean
   loading?: boolean
@@ -57,6 +62,7 @@ export function Autocomplete({
   const [open, setOpen] = React.useState(false)
   const [active, setActive] = React.useState(0)
   const inputRef = React.useRef<HTMLInputElement>(null)
+  const sendQuery = useDebouncedCallback((q: string) => onQueryChange?.(q), debounce)
 
   React.useEffect(() => setQuery(selected?.label ?? ""), [selected?.label])
 
@@ -118,7 +124,8 @@ export function Autocomplete({
               setQuery(e.target.value)
               setActive(0)
               setOpen(true)
-              onQueryChange?.(e.target.value)
+              if (debounce > 0) sendQuery(e.target.value)
+              else onQueryChange?.(e.target.value)
             }}
             onKeyDown={onKey}
             onBlur={() => !open && setQuery(selected?.label ?? "")}
@@ -140,6 +147,7 @@ export function Autocomplete({
               onClick={() => {
                 setQuery("")
                 onValueChange?.(undefined)
+                sendQuery.cancel()
                 onQueryChange?.("")
                 inputRef.current?.focus()
               }}

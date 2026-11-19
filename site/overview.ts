@@ -636,6 +636,11 @@ export const overviews: Record<string, Overview> = {
     use: ["Hold-to-confirm actions, like stop all."],
     instead: ["A plain click: `button`."],
   },
+  "use-debounce": {
+    what: "A value or a function call that waits until changes pause: useDebouncedValue and useDebouncedCallback.",
+    use: ["A search sent to a server when the typing stops (autocomplete's `debounce` uses it).", "Autosave after edits pause."],
+    instead: ["Something the person must see at once: update it directly, never debounced."],
+  },
   "use-slide-release": {
     what: "A hook with the drag, threshold and spring-back logic behind slide to release.",
     use: ["Building another slide-to-confirm control."],

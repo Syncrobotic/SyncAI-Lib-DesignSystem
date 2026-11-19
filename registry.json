@@ -221,6 +221,30 @@
       }
     },
     {
+      "name": "use-debounce",
+      "type": "registry:hook",
+      "title": "useDebounce",
+      "description": "A value, or a function call, that waits until changes pause: a search sent when the typing stops, not on every key.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/syncrobotic/hooks/use-debounce.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "meta": {
+        "version": "0.15.0",
+        "changelog": [
+          {
+            "version": "0.15.0",
+            "date": "2026-11-19",
+            "note": "First release: useDebouncedValue and useDebouncedCallback (with cancel and flush)."
+          }
+        ]
+      }
+    },
+    {
       "name": "status-glyph",
       "type": "registry:component",
       "title": "Status glyph",
@@ -2634,7 +2658,8 @@
         "@syncrobotic/cn",
         "@syncrobotic/field",
         "@syncrobotic/popover",
-        "@syncrobotic/spinner"
+        "@syncrobotic/spinner",
+        "@syncrobotic/use-debounce"
       ],
       "files": [
         {
@@ -2648,7 +2673,7 @@
           {
             "version": "0.15.0",
             "date": "2026-11-19",
-            "note": "The chevron turns while the list is open; the clear button fades in and out with the query; the highlight moves with a colour change; the selected check fades in."
+            "note": "The chevron turns while the list is open; the clear button fades in and out with the query; the highlight moves with a colour change; the selected check fades in. `debounce` (ms) sends `onQueryChange` when the typing pauses, through useDebouncedCallback; clearing never waits."
           },
           {
             "version": "0.10.0",
