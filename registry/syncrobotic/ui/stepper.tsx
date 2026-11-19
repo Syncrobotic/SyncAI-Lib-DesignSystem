@@ -30,10 +30,16 @@ const useStepper = () => {
 }
 const StepCtx = React.createContext<{ step: number; state: StepState; last: boolean; count: number }>({ step: 1, state: "upcoming", last: false, count: 1 })
 
-// Horizontal steps share the row equally. Under about 5rem a step, the labels would collide, so only the current step
-// keeps its label (the others stay for screen readers). The width is the stepper's own, not the screen's.
-const labelRoom: Record<number, string> = { 4: "@xs:not-sr-only", 5: "@md:not-sr-only", 6: "@lg:not-sr-only", 7: "@xl:not-sr-only" }
-const roomFor = (count: number) => (count <= 3 ? "" : (labelRoom[count] ?? "@2xl:not-sr-only"))
+// Horizontal steps share the row equally. Under about 5rem a step, the labels would collide (and the current one would
+// be squeezed into its share of the row), so every label goes to screen readers only and the current step's title and
+// description show once, full width, under the row. The width is the stepper's own, not the screen's.
+const labelRoom: Record<number, [string, string]> = {
+  4: ["@xs:not-sr-only", "@xs:hidden"],
+  5: ["@md:not-sr-only", "@md:hidden"],
+  6: ["@lg:not-sr-only", "@lg:hidden"],
+  7: ["@xl:not-sr-only", "@xl:hidden"],
+}
+const roomFor = (count: number) => (count <= 3 ? null : (labelRoom[count] ?? ["@2xl:not-sr-only", "@2xl:hidden"]))
 
 export function Stepper({
   value,
@@ -56,13 +62,17 @@ export function Stepper({
   size?: "md" | "sm"
 }) {
   const items = React.Children.toArray(children).filter(React.isValidElement)
+  const room = orientation === "horizontal" ? roomFor(items.length) : null
+  const current = items[value - 1] as React.ReactElement<{ title?: React.ReactNode; description?: React.ReactNode }> | undefined
   return (
     <StepperCtx.Provider value={{ value, onValueChange, orientation, navigable, errors, size }}>
       <ol
         data-slot="stepper"
         data-orientation={orientation}
-        className={cn("flex", orientation === "horizontal" ? "@container w-full items-start" : "flex-col", className)}
+        // Horizontal: one equal column per step (a grid, so the current step's words can take a full row under them).
+        className={cn(orientation === "horizontal" ? "@container grid w-full items-start" : "flex flex-col", className)}
         {...props}
+        style={orientation === "horizontal" ? { gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))`, ...props.style } : props.style}
       >
         {items.map((child, i) => {
           const step = i + 1
@@ -73,6 +83,13 @@ export function Stepper({
             </StepCtx.Provider>
           )
         })}
+        {/* Narrow: the current step's words, once, under the row (the step itself keeps them for screen readers). */}
+        {room && current && (
+          <li aria-hidden="true" data-slot="stepper-current" className={cn("col-span-full mt-2 flex flex-col items-center gap-1 text-center", room[1])}>
+            <span className="text-sm font-medium text-foreground">{current.props.title}</span>
+            {current.props.description && <span className="text-xs text-muted-foreground">{current.props.description}</span>}
+          </li>
+        )}
       </ol>
     </StepperCtx.Provider>
   )
@@ -105,7 +122,7 @@ export function StepperItem({
         className={cn(
           "flex min-w-0 flex-col",
           // Horizontal: centred under the dot, as wide as the step's share of the row at most, wrapping instead of colliding.
-          vertical ? "pt-1" : cn("max-w-full items-center px-1 text-center break-words hyphens-auto", step !== value && roomFor(count) && cn("sr-only", roomFor(count))),
+          vertical ? "pt-1" : cn("max-w-full items-center px-1 text-center break-words hyphens-auto", roomFor(count) && cn("sr-only", roomFor(count)?.[0])),
         )}
       >
         <span className={cn("text-sm", state === "upcoming" ? "text-muted-foreground" : "font-medium text-foreground", state === "error" && "text-danger")}>

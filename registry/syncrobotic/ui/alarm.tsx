@@ -141,7 +141,8 @@ export function Alarm({ priority, title, source, time, active, acknowledged, she
           {title}
         </p>
         <p id={`${id}-meta`} className="text-xs text-muted-foreground">
-          {[source, time, state].filter(Boolean).join(" · ")}
+          {/* Each separator is held to the word after it (no-break space), so a wrapped line never ends on a bare "·". */}
+          {[source, time, state].filter(Boolean).join(" \u00b7\u00a0")}
         </p>
       </div>
       {/* Actions wrap under the text when the row is narrow, instead of squeezing the title. */}

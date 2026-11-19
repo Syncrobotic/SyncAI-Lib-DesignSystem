@@ -4,7 +4,7 @@
 import * as React from "react"
 import { Plus } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { StatusGlyph, type Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"
 import { Button } from "@/registry/syncrobotic/ui/button"
@@ -73,7 +73,7 @@ export function IncidentQueue() {
       nav={sampleNav}
       current="#alarms"
       title="Incidents"
-      user={{ name: "Mei Lin", initials: "ML" }}
+      user={sampleUser}
       actions={
         <Button size="sm">
           <Plus aria-hidden="true" />

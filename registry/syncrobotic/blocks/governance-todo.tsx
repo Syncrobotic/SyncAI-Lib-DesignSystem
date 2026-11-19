@@ -5,7 +5,7 @@ import * as React from "react"
 import { usePresenceList } from "@/registry/syncrobotic/hooks/use-presence"
 import { CircleCheck } from "lucide-react"
 import { dataNav } from "@/registry/syncrobotic/blocks/data-catalog"
-import { AppShell } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import type { Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
@@ -62,7 +62,7 @@ export function GovernanceTodo({ todos = sampleTodos }: { todos?: Todo[] }) {
   const { rendered, done: finish } = usePresenceList(shown, (t) => t.id)
 
   return (
-    <AppShell product="DataCore" nav={dataNav} current="#governance" title="Governance" user={{ name: "Mei Lin", initials: "ML" }}>
+    <AppShell product="DataCore" nav={dataNav} current="#governance" title="Governance" user={sampleUser}>
       <div className="flex max-w-4xl flex-col gap-4">
         <SegmentedControl value={who} onValueChange={(v) => v && setWho(v as typeof who)} aria-label="Owner" className="sm:w-auto">
           <SegmentedControlItem value="all">All {open.length}</SegmentedControlItem>

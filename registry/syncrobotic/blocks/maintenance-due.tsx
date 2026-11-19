@@ -3,7 +3,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
@@ -28,7 +28,7 @@ export function MaintenanceDue() {
   const [rows, setRows] = React.useState(initial)
   const sorted = [...rows].sort((a, b) => b.hours / b.every - a.hours / a.every)
   return (
-    <AppShell product="Fleet console" nav={sampleNav} current="#robots" title="Maintenance" user={{ name: "Mei Lin", initials: "ML" }}>
+    <AppShell product="Fleet console" nav={sampleNav} current="#robots" title="Maintenance" user={sampleUser}>
       <div className="flex flex-col gap-4">
         <p className="text-sm text-muted-foreground">1 overdue · 1 due this week · intervals from the manufacturer&apos;s service plan</p>
         <div className="overflow-x-auto rounded-md bg-card ring-1 ring-border">

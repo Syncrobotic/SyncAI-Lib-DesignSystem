@@ -3,7 +3,7 @@
 
 import * as React from "react"
 import { Area, AreaChart, CartesianGrid, Line, XAxis, YAxis } from "recharts"
-import { Card } from "@/registry/syncrobotic/ui/card"
+import { Card, CardDataHeader, CardFigure } from "@/registry/syncrobotic/ui/card"
 import { ChartContainer, ChartLegend, ChartTable, ChartTooltip, chartAxis, chartMotion, type ChartConfig } from "@/registry/syncrobotic/ui/chart"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 
@@ -25,22 +25,18 @@ export function AreaChartCumulative() {
   const ahead = last.done - last.plan
   return (
     <Card>
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div className="flex flex-col gap-1">
-          <h3 className="text-sm font-medium">Patrolled this month</h3>
-          <p className="text-xs text-muted-foreground">Target 300 km by the 30th</p>
-        </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <p className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold tabular-nums">{last.done} km</span>
-            <span className="text-xs text-muted-foreground tabular-nums">{ahead >= 0 ? `${ahead} km ahead of plan` : `${-ahead} km behind plan`}</span>
-          </p>
+      <CardDataHeader
+        title="Patrolled this month"
+        actions={
           <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
             <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
             <SegmentedControlItem value="table">Table</SegmentedControlItem>
           </SegmentedControl>
-        </div>
-      </div>
+        }
+      >
+        <CardFigure value={`${last.done} km`} note={ahead >= 0 ? `${ahead} km ahead of plan` : `${-ahead} km behind plan`} />
+        <p className="text-xs text-muted-foreground">Target 300 km by the 30th</p>
+      </CardDataHeader>
       {view === "chart" ? (
         <ChartContainer config={config} label="Kilometres patrolled so far this month against the plan" className="h-48">
           <AreaChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>

@@ -3,7 +3,7 @@
 
 import * as React from "react"
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
-import { Card } from "@/registry/syncrobotic/ui/card"
+import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 import { ChartContainer, ChartLegend, ChartTable, ChartTooltip, chartAxis, chartMotion, type ChartConfig } from "@/registry/syncrobotic/ui/chart"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 
@@ -25,18 +25,21 @@ export function AreaChartFleetStates() {
   const [view, setView] = React.useState("chart")
   return (
     <Card>
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="flex flex-col gap-1">
-          <h3 className="text-sm font-medium">
+      <CardDataHeader
+        title={
+          <>
             Fleet by state <span className="font-normal text-muted-foreground">· 6 robots</span>
-          </h3>
-          <p className="text-xs text-muted-foreground">Today, per 2 hours</p>
-        </div>
-        <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
-          <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
-          <SegmentedControlItem value="table">Table</SegmentedControlItem>
-        </SegmentedControl>
-      </div>
+          </>
+        }
+        actions={
+          <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
+            <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
+            <SegmentedControlItem value="table">Table</SegmentedControlItem>
+          </SegmentedControl>
+        }
+      >
+        <p className="text-xs text-muted-foreground">Today, per 2 hours</p>
+      </CardDataHeader>
       {view === "chart" ? (
         <ChartContainer config={config} label="Number of robots patrolling, charging and idle by hour today">
           <AreaChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>

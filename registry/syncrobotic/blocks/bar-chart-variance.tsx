@@ -3,8 +3,8 @@
 
 import * as React from "react"
 import { Bar, BarChart, CartesianGrid, ReferenceLine, XAxis, YAxis } from "recharts"
-import { Card } from "@/registry/syncrobotic/ui/card"
-import { ChartContainer, ChartTable, ChartTooltip, chartAxis, chartMotion, type ChartConfig } from "@/registry/syncrobotic/ui/chart"
+import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
+import { ChartContainer, chartNumber, ChartTable, ChartTooltip, chartAxis, chartMotion, type ChartConfig } from "@/registry/syncrobotic/ui/chart"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 
 const config = { delta: { label: "Against plan", color: 1, unit: "min" } } satisfies ChartConfig
@@ -17,26 +17,30 @@ export function BarChartVariance() {
   const worst = data.reduce((a, b) => (Math.abs(b.delta) > Math.abs(a.delta) ? b : a))
   return (
     <Card>
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="flex flex-col gap-1">
-          <h3 className="text-sm font-medium">
+      <CardDataHeader
+        title={
+          <>
             Patrol time against plan <span className="font-normal text-muted-foreground">· min</span>
-          </h3>
-          <p className="text-xs text-muted-foreground tabular-nums">
-            Biggest gap: {worst.r}, {Math.abs(worst.delta)} min {worst.delta < 0 ? "short" : "over"}
-          </p>
-        </div>
-        <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
-          <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
-          <SegmentedControlItem value="table">Table</SegmentedControlItem>
-        </SegmentedControl>
-      </div>
+          </>
+        }
+        actions={
+          <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
+            <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
+            <SegmentedControlItem value="table">Table</SegmentedControlItem>
+          </SegmentedControl>
+        }
+      >
+        <p className="text-xs text-muted-foreground tabular-nums">
+          Biggest gap: {worst.r}, {Math.abs(worst.delta)} min {worst.delta < 0 ? "short" : "over"}
+        </p>
+      </CardDataHeader>
       {view === "chart" ? (
         <ChartContainer config={config} label="Minutes each robot's patrol ran over or under plan today" className="h-48">
-          <BarChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
+          {/* 8 px above the plot: the top tick's label is centred on its gridline and needs half its line height clear. */}
+          <BarChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
             <CartesianGrid vertical={false} />
             <XAxis dataKey="r" {...chartAxis} />
-            <YAxis {...chartAxis} domain={[-12, 12]} ticks={[-12, -6, 0, 6, 12]} width={40} />
+            <YAxis {...chartAxis} domain={[-12, 12]} ticks={[-12, -6, 0, 6, 12]} tickFormatter={chartNumber} width={40} />
             <ReferenceLine y={0} stroke="var(--muted-foreground)" />
             <ChartTooltip />
             <Bar dataKey="delta" fill="var(--color-delta)" radius={4} maxBarSize={24} {...chartMotion} />

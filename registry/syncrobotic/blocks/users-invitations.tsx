@@ -2,7 +2,7 @@
 "use client"
 
 import * as React from "react"
-import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Field } from "@/registry/syncrobotic/ui/field"
@@ -66,7 +66,7 @@ export function UsersInvitations() {
   }
 
   return (
-    <AppShell product="Fleet console" nav={sampleNav} current="#settings" title="Invitations" user={{ name: "Mei Lin", initials: "ML" }}>
+    <AppShell product="Fleet console" nav={sampleNav} current="#settings" title="Invitations" user={sampleUser}>
       <div className="flex flex-col gap-6">
         <form noValidate onSubmit={send} className="flex flex-col gap-3 rounded-md bg-card p-4 ring-1 ring-border">
           <h2 className="text-sm font-medium">Invite someone</h2>

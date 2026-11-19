@@ -2,7 +2,7 @@
 "use client"
 
 import * as React from "react"
-import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
@@ -53,7 +53,7 @@ export function IncidentDetail() {
       nav={sampleNav}
       current="#alarms"
       title="IN-2041"
-      user={{ name: "Mei Lin", initials: "ML" }}
+      user={sampleUser}
       actions={
         <Button size="sm" variant="secondary">
           Open map

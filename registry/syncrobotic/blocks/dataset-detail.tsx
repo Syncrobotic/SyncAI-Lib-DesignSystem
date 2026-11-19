@@ -7,7 +7,7 @@ import { dataNav, TierBadge, type Tier } from "@/registry/syncrobotic/blocks/dat
 import { Breadcrumb, BreadcrumbLink, BreadcrumbPage } from "@/registry/syncrobotic/ui/breadcrumb"
 import { CopyButton } from "@/registry/syncrobotic/ui/copy-button"
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
-import { AppShell } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { Alert, AlertDescription, AlertTitle } from "@/registry/syncrobotic/ui/alert"
 import { Separator } from "@/registry/syncrobotic/ui/separator"
@@ -94,7 +94,7 @@ export function DatasetDetail({ name = "Night parking lot people", reference = "
   const [labels, setLabels] = React.useState(true)
 
   return (
-    <AppShell product="DataCore" nav={dataNav} current="#catalog" title="Catalog" user={{ name: "Mei Lin", initials: "ML" }}>
+    <AppShell product="DataCore" nav={dataNav} current="#catalog" title="Catalog" user={sampleUser}>
       <div className="flex max-w-5xl flex-col gap-6">
         <Breadcrumb>
           <BreadcrumbLink href="#catalog">Catalog</BreadcrumbLink>

@@ -3,7 +3,7 @@
 
 import * as React from "react"
 import { Wrench } from "lucide-react"
-import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
@@ -34,7 +34,7 @@ export function MaintenanceWorkOrder() {
   const [signed, setSigned] = React.useState(false)
   const left = done.filter((d) => !d).length
   return (
-    <AppShell product="Fleet console" nav={sampleNav} current="#robots" title="WO-0318" user={{ name: "Mei Lin", initials: "ML" }}>
+    <AppShell product="Fleet console" nav={sampleNav} current="#robots" title="WO-0318" user={sampleUser}>
       <div className="grid gap-6 lg:grid-cols-[1fr_20rem]">
         <div className="flex min-w-0 flex-col gap-6">
           <div className="flex flex-col gap-1">

@@ -135,6 +135,9 @@ export const sampleUserMenu: AppUserMenuItem[] = [
   { label: "Sign out", icon: LogOut, href: "#sign-out", separatorBefore: true },
 ]
 
+/** The signed-in person every sample screen shows: the sidebar's foot is the same avatar, name and email on every block. */
+export const sampleUser: AppUser = { name: "Mei Lin", initials: "ML", email: "mei.lin@example.com" }
+
 // Which backend this is, as a neutral outline. Not a status colour: the badge is on every page, all day, and a colour
 // that never goes away stops meaning anything (and would dull the warnings and alarms that do need someone).
 const environments = {

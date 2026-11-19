@@ -71,7 +71,7 @@ export function IconTile({
 /** A dot pinned to the tile's top-end corner, cut out by the page colour: online, unread, needs attention. */
 export function IconTileDot({
   className,
-  tone = "success",
+  tone = "neutral",
   label,
 }: {
   className?: string

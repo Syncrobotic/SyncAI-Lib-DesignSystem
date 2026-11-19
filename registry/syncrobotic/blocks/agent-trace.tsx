@@ -2,7 +2,7 @@
 "use client"
 
 import * as React from "react"
-import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
 import { Trace, TraceCode, TraceDetail, TraceHeader, TraceItem } from "@/registry/syncrobotic/ui/trace"
@@ -19,7 +19,7 @@ export function AgentTrace() {
       nav={sampleNav}
       current="#agents"
       title="run_8bf3"
-      user={{ name: "Mei Lin", initials: "ML" }}
+      user={sampleUser}
       actions={
         <Button size="sm" variant="secondary">
           Run again

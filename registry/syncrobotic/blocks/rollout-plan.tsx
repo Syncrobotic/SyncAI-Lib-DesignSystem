@@ -2,7 +2,7 @@
 "use client"
 
 import * as React from "react"
-import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
 import { Field } from "@/registry/syncrobotic/ui/field"
@@ -49,7 +49,7 @@ export function RolloutPlan() {
     )
 
   return (
-    <AppShell product="Fleet console" nav={sampleNav} current="#robots" title="New rollout" user={{ name: "Mei Lin", initials: "ML" }}>
+    <AppShell product="Fleet console" nav={sampleNav} current="#robots" title="New rollout" user={sampleUser}>
       <div className="flex max-w-3xl flex-col gap-6">
         <div className="grid gap-4 sm:grid-cols-2">
           <Field label="Firmware" hint="Release notes: lidar drift fix, faster docking.">

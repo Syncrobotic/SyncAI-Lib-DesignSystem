@@ -29,8 +29,10 @@ export function Calendar({ className, classNames, showOutsideDays = true, weekSt
       weekStartsOn={weekStartsOn}
       className={cn("w-fit text-sm", className)}
       classNames={{
-        root: "relative",
-        months: "flex flex-col gap-4 sm:flex-row",
+        root: "",
+        // The arrows are placed against the months (the caption's box), not the root, so the root's padding cannot push
+        // them above the caption row.
+        months: "relative flex flex-col gap-4 sm:flex-row",
         month: "flex flex-col gap-3",
         month_caption: "flex h-(--h-sm) items-center justify-center px-8 font-medium",
         caption_label: "flex items-center gap-2 text-sm font-medium",
@@ -39,7 +41,7 @@ export function Calendar({ className, classNames, showOutsideDays = true, weekSt
         // it takes the control height (36, 44 on touch, 48 in gloves) instead of the 20 px of its text.
         dropdown_root: "relative flex h-(--h-sm) items-center rounded-xs px-1 has-focus-visible:outline-2 has-focus-visible:outline-offset-2",
         dropdown: "absolute inset-0 opacity-0",
-        nav: "absolute inset-x-0 top-0 flex items-center justify-between",
+        nav: "absolute inset-x-0 top-0 flex h-(--h-sm) items-center justify-between",
         button_previous: navButton,
         button_next: navButton,
         month_grid: "border-collapse",

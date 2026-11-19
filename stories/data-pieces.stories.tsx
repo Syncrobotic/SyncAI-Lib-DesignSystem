@@ -68,9 +68,9 @@ function Gallery() {
   const [shown, setShown] = React.useState(12)
   return (
     <div className="flex max-w-lg flex-col gap-4">
-      <ul className="grid grid-cols-3 gap-2 text-sm">
+      <ul className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-3">
         {all.slice(0, shown).map((r, i) => (
-          <li key={r} className={cn("flex h-(--h-md) items-center rounded-sm bg-card px-3 ring-1 ring-border", i >= 12 && "animate-appear")}>
+          <li key={r} className={cn("flex h-(--h-md) items-center truncate rounded-sm bg-card px-3 whitespace-nowrap ring-1 ring-border", i >= 12 && "animate-appear")}>
             {r}
           </li>
         ))}

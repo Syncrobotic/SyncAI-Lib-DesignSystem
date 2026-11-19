@@ -15,15 +15,24 @@ function useThumb(root: React.RefObject<HTMLDivElement | null>) {
   React.useLayoutEffect(() => {
     const el = root.current
     if (!el) return
+    // offsetLeft / offsetWidth are the item's layout box inside the track (its offset parent), unaffected by the press
+    // scale, so the thumb is exactly the selected segment's box. Unchanged values keep the same state, so no re-render.
     const measure = () => {
       const on = el.querySelector<HTMLElement>(':scope > [data-slot="segmented-control-item"][data-state="on"]')
-      setThumb(on ? { x: on.offsetLeft, w: on.offsetWidth } : null)
+      setThumb((t) => {
+        if (!on) return null
+        const next = { x: on.offsetLeft, w: on.offsetWidth }
+        return t && t.x === next.x && t.w === next.w ? t : next
+      })
     }
     measure()
     const mo = new MutationObserver(measure)
     mo.observe(el, { subtree: true, attributes: true, attributeFilter: ["data-state"] })
+    // Every segment is watched as well as the track: a label that changes width (a web font arriving, a count) moves
+    // the segments inside a track whose own size stays the same.
     const ro = new ResizeObserver(measure)
     ro.observe(el)
+    el.querySelectorAll<HTMLElement>(':scope > [data-slot="segmented-control-item"]').forEach((i) => ro.observe(i))
     return () => {
       mo.disconnect()
       ro.disconnect()

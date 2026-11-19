@@ -3,7 +3,7 @@
 
 import * as React from "react"
 import { Download, Search } from "lucide-react"
-import { AppShell, sampleNav } from "@/registry/syncrobotic/blocks/app-shell"
+import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
@@ -89,7 +89,7 @@ export function UsersAuditLog() {
       nav={sampleNav}
       current="#events"
       title="Audit log"
-      user={{ name: "Mei Lin", initials: "ML" }}
+      user={sampleUser}
       actions={
         <Button size="sm" variant="secondary">
           <Download aria-hidden="true" />

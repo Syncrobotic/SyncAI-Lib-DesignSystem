@@ -3,7 +3,7 @@
 
 import * as React from "react"
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
-import { Card } from "@/registry/syncrobotic/ui/card"
+import { Card, CardDataHeader, CardFigure } from "@/registry/syncrobotic/ui/card"
 import { ChartContainer, ChartLegend, ChartTable, ChartTooltip, chartAxis, chartMotion, type ChartConfig } from "@/registry/syncrobotic/ui/chart"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 
@@ -23,22 +23,17 @@ export function LineChartCompare() {
   const change = Math.round(((now - before) / before) * 100)
   return (
     <Card>
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="flex flex-col gap-1">
-          <h3 className="text-sm font-medium">Missions completed</h3>
-          <p className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold tabular-nums">{now}</span>
-            <span className="text-xs text-muted-foreground tabular-nums">
-              {change >= 0 ? "+" : "−"}
-              {Math.abs(change)} % on last week ({before})
-            </span>
-          </p>
-        </div>
-        <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
-          <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
-          <SegmentedControlItem value="table">Table</SegmentedControlItem>
-        </SegmentedControl>
-      </div>
+      <CardDataHeader
+        title="Missions completed"
+        actions={
+          <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
+            <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
+            <SegmentedControlItem value="table">Table</SegmentedControlItem>
+          </SegmentedControl>
+        }
+      >
+        <CardFigure value={now} note={`${change >= 0 ? "+" : "\u2212"}${Math.abs(change)} % on last week (${before})`} />
+      </CardDataHeader>
       {view === "chart" ? (
         <ChartContainer config={config} label="Missions completed per day, this week against last week">
           <LineChart data={data} margin={{ top: 0, right: 8, left: 0, bottom: 0 }}>

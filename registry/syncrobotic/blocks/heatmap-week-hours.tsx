@@ -2,7 +2,7 @@
 "use client"
 
 import * as React from "react"
-import { Card } from "@/registry/syncrobotic/ui/card"
+import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/registry/syncrobotic/ui/tooltip"
@@ -14,8 +14,9 @@ const count = (d: number, h: number) =>
   Math.max(0, Math.round(3 * Math.sin((h - 14) / 5) + (h >= 20 ? 3 : 0) + (d === 4 ? 2 : 0) - (d >= 5 ? 1 : 0) + ((d * 3 + h) % 4) / 2 - 1))
 const grid = days.map((_, d) => hours.map((h) => count(d, h)))
 const max = Math.max(...grid.flat())
-// One hue from the surface to the text colour: sequential, so darker always means more.
-const shade = (v: number) => (v === 0 ? "var(--muted)" : `color-mix(in oklab, var(--foreground) ${Math.round(15 + (v / max) * 75)}%, var(--card))`)
+// The kit's sequential heatmap scale (the same in heatmap-zones): one hue, darker always means more, from a faint tint
+// at none to 55 % at the most, so a number written on a cell would keep 7:1 in both themes.
+const shade = (v: number) => `color-mix(in oklab, var(--chart-1) ${Math.round(8 + (v / max) * 47)}%, var(--card))`
 
 /** When incidents happen: days by 2-hour slots, one sequential hue, the busiest slot named in words. */
 export function HeatmapWeekHours() {
@@ -25,18 +26,19 @@ export function HeatmapWeekHours() {
   return (
     <TooltipProvider delayDuration={100}>
       <Card>
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div className="flex flex-col gap-1">
-            <h3 className="text-sm font-medium">Incidents by time of week · last 4 weeks</h3>
-            <p className="text-xs text-muted-foreground tabular-nums">
-              Busiest: {days[peak.d]} {String(peak.h).padStart(2, "0")}:00–{String(peak.h + 2).padStart(2, "0")}:00, {peak.v} incidents
-            </p>
-          </div>
-          <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
-            <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
-            <SegmentedControlItem value="table">Table</SegmentedControlItem>
-          </SegmentedControl>
-        </div>
+        <CardDataHeader
+          title="Incidents by time of week · last 4 weeks"
+          actions={
+            <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
+              <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
+              <SegmentedControlItem value="table">Table</SegmentedControlItem>
+            </SegmentedControl>
+          }
+        >
+          <p className="text-xs text-muted-foreground tabular-nums">
+            Busiest: {days[peak.d]} {String(peak.h).padStart(2, "0")}:00–{String(peak.h + 2).padStart(2, "0")}:00, {peak.v} incidents
+          </p>
+        </CardDataHeader>
         {view === "chart" ? (
           <>
             <div className="grid grid-cols-[2.5rem_1fr] gap-x-2 gap-y-1 text-xs" aria-hidden="true">

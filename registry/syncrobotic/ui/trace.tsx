@@ -118,7 +118,7 @@ export function TraceItem({
 }) {
   const { density, total } = React.useContext(TraceCtx)
   const expandable = React.Children.count(children) > 0
-  const bar = total && start !== undefined && duration !== undefined
+  const bar = !!total && start !== undefined && duration !== undefined
   // Dense only tightens the padding: a row you can open is still a full touch target.
   const row = cn("flex w-full min-w-0 items-start gap-2 text-left text-sm", expandable || density !== "dense" ? "min-h-(--h-md)" : "min-h-8", density === "dense" ? "py-1" : "py-2")
   const head = (
@@ -157,16 +157,20 @@ export function TraceItem({
         </span>
       )}
       {(duration !== undefined || time) && (
-        <span className="flex shrink-0 flex-col items-end gap-1 pt-px text-xs text-muted-foreground tabular-nums">
+        // In a waterfall the times take a fixed column, so every bar's track starts and ends at the same x.
+        <span className={cn("flex shrink-0 flex-col items-end gap-1 pt-px text-xs text-muted-foreground tabular-nums", bar && "min-w-14")}>
           {duration !== undefined && <span>{formatDuration(duration)}</span>}
           {time && <span>{time}</span>}
         </span>
       )}
-      {expandable && (
+      {expandable ? (
         <ChevronRight
           aria-hidden="true"
           className="mt-0.5 size-4 shrink-0 text-muted-foreground transition-transform duration-(--motion-fast) ease-(--ease-standard) group-data-[state=open]/trace:rotate-90"
         />
+      ) : (
+        // A waterfall keeps the chevron's slot in rows that do not open, so their bars line up with the rows that do.
+        bar && <span aria-hidden="true" className="size-4 shrink-0" />
       )}
     </>
   )
