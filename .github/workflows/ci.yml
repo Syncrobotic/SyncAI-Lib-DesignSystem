@@ -1,14 +1,19 @@
 name: ci
+# Runs on pull requests only: a merge into dev, stage or main lands a tree these checks already passed, so pushes are not
+# re-checked (they were half of all runs). Run everything by hand on any branch: Actions → ci → Run workflow.
 on:
   pull_request:
-  push:
-    branches: [dev, stage, main]
-  # Run everything, story checks included, on any branch: Actions → ci → Run workflow.
   workflow_dispatch:
+
+# A new push to a pull request cancels the run it makes stale.
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -34,23 +39,26 @@ jobs:
         with: { name: registry, path: public/r }
 
   # Story checks: every story, dark and light, opened once for its screenshot (against the committed baselines in
-  # tests/__screenshots__/) and for axe (WCAG 2.2 A/AA). Split over four runners: one runner took over 13 minutes.
-  # A new story has no baseline yet and passes; the visual-baseline workflow writes them.
-  # They gate promotion, not every feature PR: PRs into stage or main, and manual runs. PRs into dev get the fast checks.
+  # tests/__screenshots__/) and for axe (WCAG 2.2 A/AA), split over four runners.
+  # They gate promotion into stage, where a release is assembled, and manual runs. Main receives stage's tree unchanged,
+  # so checking it again found nothing new; PRs into dev and main get the fast checks.
+  # They run in Playwright's own image (same Ubuntu, browser and fonts preinstalled): installing them took 20 s to 4.5 min.
   stories:
-    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && (github.base_ref == 'stage' || github.base_ref == 'main'))
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.base_ref == 'stage')
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    container: { image: "mcr.microsoft.com/playwright:v1.65.1-noble" }
     strategy:
       fail-fast: false
       matrix:
         shard: [1, 2, 3, 4]
+    env: { HOME: /root }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 22, cache: npm }
       - run: npm ci
       - run: npm run build-storybook
-      - run: npx playwright install --with-deps chromium
       - run: npx playwright test --update-snapshots=missing --shard=${{ matrix.shard }}/4
       - uses: actions/upload-artifact@v4
         if: always()
@@ -64,13 +72,29 @@ jobs:
           name: story-test-results-${{ matrix.shard }}
           path: test-results
 
-  # Installs every item into a fresh Next.js app with the shadcn CLI, then typechecks and builds it.
+  # Installs every item into a fresh Next.js app with the shadcn CLI, then typechecks and builds it. Skipped when a pull
+  # request touches nothing an installed item is made of (docs pages, the site, stories, CI).
   registry-e2e:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+        with: { fetch-depth: 0 }
+      - id: changed
+        run: |
+          if [ "${{ github.event_name }}" != "pull_request" ]; then echo "registry=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          files=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD")
+          if echo "$files" | grep -qE '^(registry/|registry\.json|package(-lock)?\.json|scripts/registry|components\.json|tsconfig)'; then
+            echo "registry=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "registry=false" >> "$GITHUB_OUTPUT"; echo "No registry files changed: skipped."
+          fi
+      - if: steps.changed.outputs.registry == 'true'
+        uses: actions/setup-node@v4
         with: { node-version: 22, cache: npm }
-      - run: npm ci
-      - run: npm run registry:build
-      - run: npm run test:registry
+      - if: steps.changed.outputs.registry == 'true'
+        run: npm ci
+      - if: steps.changed.outputs.registry == 'true'
+        run: npm run registry:build
+      - if: steps.changed.outputs.registry == 'true'
+        run: npm run test:registry
