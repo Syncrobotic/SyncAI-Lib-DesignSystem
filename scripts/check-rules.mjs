@@ -1,9 +1,11 @@
 // Fails CI on the design rules the 0.17 audit found broken by hand. Each one is a rule from the foundations that a
 // reviewer missed more than once; a check is cheaper than a second audit.
 //
-//  1. Focus is never removed. `outline-none` needs a visible replacement on the same element (a focus-visible ring,
-//     background or outline, has-focus-visible on a wrapper, or a highlighted state for menu items), or a
-//     `focus-ring:` comment within three lines above saying where focus shows instead.
+//  1. Focus is never removed. `outline-none` needs a visible replacement on the same element: an outline, ring, border,
+//     underline or shadow under a focus or highlight state (focus-visible:, focus:, focus-within:, data-[highlighted]:,
+//     aria-selected:, data-[selected=true]:), or a wrapper that draws it (has-focus-visible:, has-[…focus-visible…]:), or
+//     a `focus-ring:` comment within three lines above saying where focus shows instead. A background change alone is
+//     not a replacement: bg-accent on the card is 1.2:1, so the keyboard position cannot be found by it.
 //  2. In Tailwind 4, `outline-none` cancels `focus-visible:outline-2` on the same element (both set outline-style), so
 //     the ring never draws. Drop `outline-none` there: :focus-visible already keeps mouse clicks ring-free.
 //  3. A battery warns below 15 % and never turns danger: no other threshold, no `critical` on a battery Meter.
@@ -29,9 +31,32 @@ const fail = (file, line, msg) => {
   bad++
 }
 
-// A focus style that shows: a ring, an outline, a fill, or a wrapper that draws it.
-const REPLACEMENT =
-  /focus-visible:(?:outline-(?!none)|ring|bg-|border-|underline|shadow)|has-focus-visible:|has-\[[^\]]*focus-visible\]:|focus-within:(?:outline|ring|bg-)|focus:bg-|data-\[highlighted\]:|data-highlighted:|aria-selected:bg-|data-\[selected=true\]:bg-/
+// A focus style that shows: an outline, ring, border, underline or shadow under a focus or highlight state, or a wrapper
+// that draws one. A fill alone (focus:bg-accent, data-[highlighted]:bg-accent) does not count.
+const STATE = /(?:^|:)(?:focus-visible|focus|focus-within|data-\[highlighted\]|data-highlighted|aria-selected|data-\[selected=true\])(?::|$)/
+const WRAPPER = /(?:^|:)(?:has-focus-visible|has-\[[^\]]*focus-visible[^\]]*\])(?::|$)/
+const DRAWS = /^-?(?:outline-(?!none$|hidden$|offset)|outline$|ring(?:-|$)|border(?:-|$)|underline|decoration-|shadow)/
+// Splits a class at its last colon outside brackets: variants, then the utility.
+const split = (token) => {
+  let depth = 0
+  for (let i = token.length - 1; i >= 0; i--) {
+    const c = token[i]
+    if (c === "]") depth++
+    else if (c === "[") depth--
+    else if (c === ":" && depth === 0) return [token.slice(0, i), token.slice(i + 1)]
+  }
+  return ["", token]
+}
+export const showsFocus = (text) =>
+  text
+    .split(/[\s"'`,{}]+/)
+    .filter(Boolean)
+    .some((token) => {
+      const [variants, utility] = split(token)
+      if (!variants) return false
+      if (WRAPPER.test(variants)) return true
+      return STATE.test(variants) && DRAWS.test(utility.replace(/^!/, ""))
+    })
 const OUTLINE_VARIANT = /focus-visible:outline-(?:\d|offset|ring|\[)/
 
 for (const file of ROOTS.flatMap(walk)) {
@@ -60,7 +85,7 @@ for (const file of ROOTS.flatMap(walk)) {
       }
       const near = [line, ...strings(i - 1, -1), ...strings(i + 1, 1)].join("\n")
       const above = lines.slice(Math.max(0, i - 3), i + 1).join("\n")
-      if (!REPLACEMENT.test(near) && !/focus-ring:/.test(above))
+      if (!showsFocus(near) && !/focus-ring:/.test(above))
         fail(file, n, "`outline-none` with no visible focus in its place. Add one, or a `// focus-ring:` comment saying where focus shows.")
     }
 

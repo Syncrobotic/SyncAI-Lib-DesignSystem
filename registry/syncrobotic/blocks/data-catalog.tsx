@@ -238,7 +238,8 @@ export function DataCatalog({ datasets = sampleDatasets }: { datasets?: Dataset[
                 {rows.map((d) => (
                   <TableRow key={d.ref}>
                     <TableCell>
-                      <a href={`#${d.ref}`} className="flex flex-col hover:underline">
+                      {/* At least the control height (44, 48 in gloves): two short lines alone are a 36 px target. */}
+                      <a href={`#${d.ref}`} className="flex min-h-(--h-md) flex-col justify-center hover:underline">
                         <span className="font-medium">{d.name}</span>
                         <span className="font-mono text-xs text-muted-foreground">
                           {d.ref}@{d.version}

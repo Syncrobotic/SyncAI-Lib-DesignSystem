@@ -26,7 +26,7 @@ export function RadialChartCapacity() {
             const c = 2 * Math.PI * r
             return (
               <g key={g.label}>
-                <circle cx={size / 2} cy={size / 2} r={r} fill="none" strokeWidth={stroke} className="stroke-muted" />
+                <circle cx={size / 2} cy={size / 2} r={r} fill="none" strokeWidth={stroke} className="stroke-muted in-data-[contrast=more]:stroke-input" />
                 <circle
                   cx={size / 2}
                   cy={size / 2}

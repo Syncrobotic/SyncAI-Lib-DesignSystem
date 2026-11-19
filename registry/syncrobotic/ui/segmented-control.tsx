@@ -51,7 +51,11 @@ export function SegmentedControl({ className, children, ...props }: Omit<ToggleG
       data-slot="segmented-control"
       data-thumb={thumb ? "" : undefined}
       type="single"
-      className={cn("group/segmented relative inline-flex h-(--h-md) w-full items-center gap-1 rounded-sm bg-muted p-1", className)}
+      // The muted track has no edge of its own (1.35:1 on the card); in high contrast it takes the 3:1 field edge.
+      className={cn(
+        "group/segmented relative inline-flex h-(--h-md) w-full items-center gap-1 rounded-sm bg-muted p-1 in-data-[contrast=more]:ring-1 in-data-[contrast=more]:ring-input in-data-[contrast=more]:ring-inset",
+        className,
+      )}
       {...props}
     >
       {thumb && (

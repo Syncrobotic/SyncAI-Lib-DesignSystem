@@ -10,14 +10,28 @@ export const DropdownMenu = MenuPrimitive.Root
 export const DropdownMenuTrigger = MenuPrimitive.Trigger
 export const DropdownMenuGroup = MenuPrimitive.Group
 
-export function DropdownMenuContent({ className, sideOffset = 4, ...props }: React.ComponentProps<typeof MenuPrimitive.Content>) {
+/**
+ * The list remembers whether the keyboard or the mouse moved last (data-nav): the highlighted item shows a ring only in
+ * keyboard use, and keeps the calm fill under the pointer.
+ */
+export function DropdownMenuContent({ className, sideOffset = 4, onKeyDown, onPointerMove, ...props }: React.ComponentProps<typeof MenuPrimitive.Content>) {
+  const [nav, setNav] = React.useState<"key" | "pointer">("key")
   return (
     <MenuPrimitive.Portal>
       <MenuPrimitive.Content
         data-slot="dropdown-menu-content"
+        data-nav={nav}
         sideOffset={sideOffset}
+        onKeyDown={(e) => {
+          setNav("key")
+          onKeyDown?.(e)
+        }}
+        onPointerMove={(e) => {
+          if (e.pointerType === "mouse") setNav("pointer")
+          onPointerMove?.(e)
+        }}
         className={cn(
-          "z-50 min-w-48 overflow-hidden rounded-md bg-popover p-1 text-popover-foreground shadow-overlay ring-1 ring-border data-[state=open]:animate-appear data-[state=closed]:animate-disappear",
+          "group/menu z-50 min-w-48 overflow-hidden rounded-md bg-popover p-1 text-popover-foreground shadow-overlay ring-1 ring-border data-[state=open]:animate-appear data-[state=closed]:animate-disappear",
           className,
         )}
         {...props}
@@ -26,8 +40,11 @@ export function DropdownMenuContent({ className, sideOffset = 4, ...props }: Rea
   )
 }
 
+// The keyboard position is a 2 px ring inside the item, beside the fill: the fill alone is 1.2:1 and cannot be found.
+// It shows only in keyboard use (data-nav on the content), so an item under the pointer keeps the calm fill. Radix moves
+// focus to the item on hover too, so the browser's own focus outline is off; this ring replaces it.
 const item =
-  "relative flex h-(--h-md) cursor-default select-none items-center gap-2 rounded-sm px-3 text-sm outline-none transition-colors duration-(--motion-fast) ease-(--ease-standard) focus:bg-accent data-[disabled]:pointer-events-none data-[disabled]:text-disabled [&_svg]:size-4 [&_svg]:shrink-0"
+  "relative flex h-(--h-md) cursor-default select-none items-center gap-2 rounded-sm px-3 text-sm outline-none transition-colors duration-(--motion-fast) ease-(--ease-standard) focus:bg-accent group-data-[nav=key]/menu:focus:outline-solid group-data-[nav=key]/menu:focus:outline-2 group-data-[nav=key]/menu:focus:-outline-offset-2 group-data-[nav=key]/menu:focus:outline-ring data-[disabled]:pointer-events-none data-[disabled]:text-disabled [&_svg]:size-4 [&_svg]:shrink-0"
 
 /** `destructive` items use danger text; keep them last, after a separator. */
 export function DropdownMenuItem({ className, destructive, ...props }: React.ComponentProps<typeof MenuPrimitive.Item> & { destructive?: boolean }) {

@@ -6,7 +6,8 @@ import { cn } from "@/lib/utils"
 import { Card } from "@/registry/syncrobotic/ui/card"
 
 type Run = "ok" | "partial" | "failed"
-const cell: Record<Run, string> = { ok: "bg-muted-foreground/50", partial: "bg-warning", failed: "bg-danger" }
+// A run that passed is calm grey, opaque and 3:1 on the card (--input, the field-edge grey); only the others take colour.
+const cell: Record<Run, string> = { ok: "bg-input", partial: "bg-warning", failed: "bg-danger" }
 // Sample data: the last 20 runs of each route, oldest first.
 const seq = (s: string): Run[] => s.split("").map((c) => (c === "x" ? "failed" : c === "~" ? "partial" : "ok"))
 const routes = [

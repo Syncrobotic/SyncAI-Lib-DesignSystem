@@ -150,13 +150,14 @@ function Picker({
 }) {
   const field = useField()
   const uid = React.useId()
+  const triggerId = id ?? field?.id ?? `${uid}-t`
   return (
     <div className={cn("relative w-full", className)}>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <button
             type="button"
-            id={id ?? field?.id}
+            id={triggerId}
             // The name is the label followed by the shown value, so it contains what is on screen (WCAG 2.5.3).
             aria-labelledby={ariaLabel ? `${uid}-l ${uid}-v` : undefined}
             aria-describedby={field?.describedBy}
@@ -176,7 +177,15 @@ function Picker({
             </span>
           </button>
         </PopoverTrigger>
-        <PopoverContent align="start" collisionPadding={16} className="flex w-auto flex-col gap-3 p-3 sm:flex-row">
+        <PopoverContent
+          align="start"
+          collisionPadding={16}
+          // The calendar is named by its field, so it is announced as "Start date, dialog" and not as a nameless dialog.
+          aria-labelledby={triggerId}
+          // On a phone the calendar and its presets can be taller than the space under the field: it scrolls instead of
+          // running off the screen, so the last week stays reachable.
+          className="flex max-h-(--radix-popover-content-available-height) w-auto flex-col gap-3 overflow-y-auto p-3 sm:flex-row"
+        >
           {children}
         </PopoverContent>
       </Popover>

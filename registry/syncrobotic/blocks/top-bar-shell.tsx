@@ -112,7 +112,8 @@ export function TopBarShell({
               {nav(true)}
             </SheetContent>
           </Sheet>
-          <Link href={links[0]?.href ?? "#"} className="flex shrink-0 items-center gap-2">
+          {/* The brand is a link home: a full-height target (44, 48 in gloves), not the 28 px of the logo. */}
+          <Link href={links[0]?.href ?? "#"} className="flex min-h-(--h-md) shrink-0 items-center gap-2 rounded-xs">
             {logo}
             <span className="text-sm font-bold">{product}</span>
           </Link>

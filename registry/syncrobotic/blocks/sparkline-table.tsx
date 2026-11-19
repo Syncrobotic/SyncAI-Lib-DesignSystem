@@ -5,12 +5,13 @@ import * as React from "react"
 import { Card } from "@/registry/syncrobotic/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
 
-// Mini bars: one per day, the same height scale for every row so rows compare.
+// Mini bars: one per day, the same height scale for every row so rows compare. Opaque grey, 3:1 on the card and on a
+// hovered row (--input), never a translucent one that drops below it.
 function MiniBars({ values, max }: { values: number[]; max: number }) {
   return (
     <span aria-hidden="true" className="flex h-6 items-end gap-0.5">
       {values.map((v, i) => (
-        <span key={i} className="w-1.5 rounded-t-xs bg-muted-foreground/60" style={{ height: `${Math.max(8, (v / max) * 100)}%` }} />
+        <span key={i} className="w-1.5 rounded-t-xs bg-input" style={{ height: `${Math.max(8, (v / max) * 100)}%` }} />
       ))}
     </span>
   )

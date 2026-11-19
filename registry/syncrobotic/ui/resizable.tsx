@@ -26,11 +26,12 @@ export function ResizableHandle({ withHandle, className, ...props }: React.Compo
       data-slot="resizable-handle"
       className={cn(
         "group/handle relative flex w-px shrink-0 items-center justify-center bg-border transition-colors duration-(--motion-fast) ease-(--ease-standard)",
-        "after:absolute after:inset-y-0 after:left-1/2 after:w-4 after:-translate-x-1/2",
+        // The hit area is 16 px for a mouse; on a touch screen it is the control height (44, 48 in gloves).
+        "after:absolute after:inset-y-0 after:left-1/2 after:w-4 after:-translate-x-1/2 any-pointer-coarse:after:w-(--h-md)",
         "hover:bg-muted-foreground data-[resize-handle-state=drag]:bg-ring",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
         "data-[panel-group-direction=vertical]:h-px data-[panel-group-direction=vertical]:w-full",
-        "data-[panel-group-direction=vertical]:after:inset-x-0 data-[panel-group-direction=vertical]:after:inset-y-auto data-[panel-group-direction=vertical]:after:top-1/2 data-[panel-group-direction=vertical]:after:left-0 data-[panel-group-direction=vertical]:after:h-4 data-[panel-group-direction=vertical]:after:w-full data-[panel-group-direction=vertical]:after:translate-x-0 data-[panel-group-direction=vertical]:after:-translate-y-1/2",
+        "data-[panel-group-direction=vertical]:after:inset-x-0 data-[panel-group-direction=vertical]:after:inset-y-auto data-[panel-group-direction=vertical]:after:top-1/2 data-[panel-group-direction=vertical]:after:left-0 data-[panel-group-direction=vertical]:after:h-4 any-pointer-coarse:data-[panel-group-direction=vertical]:after:h-(--h-md) data-[panel-group-direction=vertical]:after:w-full data-[panel-group-direction=vertical]:after:translate-x-0 data-[panel-group-direction=vertical]:after:-translate-y-1/2",
         className,
       )}
       {...props}

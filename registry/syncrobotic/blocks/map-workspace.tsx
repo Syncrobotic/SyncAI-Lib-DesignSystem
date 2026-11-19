@@ -65,39 +65,12 @@ export function MapWorkspace() {
       user={{ name: "Mei Lin", initials: "ML" }}
       bleed
     >
-      <div className="relative h-full min-h-96 overflow-hidden bg-map">
-        <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 size-full" aria-hidden="true">
-          {Array.from({ length: 9 }, (_, i) => (
-            <g key={i} className="stroke-edge" strokeWidth="0.15">
-              <line x1={(i + 1) * 10} y1="0" x2={(i + 1) * 10} y2="100" />
-              <line x1="0" y1={(i + 1) * 10} x2="100" y2={(i + 1) * 10} />
-            </g>
-          ))}
-          <rect x="40" y="58" width="22" height="24" className="fill-none stroke-map-point" strokeWidth="0.3" />
-          {robot.route && (
-            <polyline points={robot.route.map((p) => p.join(",")).join(" ")} className="fill-none stroke-info" strokeWidth="0.5" strokeDasharray="1.5 1" />
-          )}
-        </svg>
-
-        {robots.map((r) => (
-          <button
-            key={r.id}
-            type="button"
-            aria-label={`${r.id}, ${r.status}`}
-            aria-pressed={r.id === selected}
-            onClick={() => setSelected(r.id)}
-            style={{ left: `${r.x}%`, top: `${r.y}%` }}
-            className={cn(
-              "press absolute flex size-(--h-md) -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-sm",
-              r.id === selected && "ring-2 ring-foreground",
-            )}
-          >
-            <StatusGlyph status={r.tone} className="size-4" />
-            <span className="absolute top-full font-mono text-xs">{r.id}</span>
-          </button>
-        ))}
-
-        <Tray className="absolute top-4 left-4 w-72">
+      {/*
+        On a phone the trays would cover a third of the map, and a focused marker under one cannot be seen (WCAG 2.4.11):
+        there the robot's tray sits above the map and the stop below it. From sm up they float over the map's corners.
+      */}
+      <div className="flex h-full min-h-96 flex-col gap-4 overflow-hidden bg-map sm:relative sm:block">
+        <Tray className="z-10 m-4 mb-0 sm:absolute sm:top-4 sm:left-4 sm:m-0 sm:w-72">
           <div className="flex flex-col gap-3 rounded-md bg-card p-4">
             <div className="flex items-center justify-between gap-2">
               <h2 className="font-bold">Patrol dog {robot.id}</h2>
@@ -118,12 +91,45 @@ export function MapWorkspace() {
           </div>
         </Tray>
 
+        <div className="relative min-h-80 flex-1 sm:absolute sm:inset-0 sm:min-h-0">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 size-full" aria-hidden="true">
+            {Array.from({ length: 9 }, (_, i) => (
+              <g key={i} className="stroke-edge" strokeWidth="0.15">
+                <line x1={(i + 1) * 10} y1="0" x2={(i + 1) * 10} y2="100" />
+                <line x1="0" y1={(i + 1) * 10} x2="100" y2={(i + 1) * 10} />
+              </g>
+            ))}
+            <rect x="40" y="58" width="22" height="24" className="fill-none stroke-map-point" strokeWidth="0.3" />
+            {robot.route && (
+              <polyline points={robot.route.map((p) => p.join(",")).join(" ")} className="fill-none stroke-info" strokeWidth="0.5" strokeDasharray="1.5 1" />
+            )}
+          </svg>
+
+          {robots.map((r) => (
+            <button
+              key={r.id}
+              type="button"
+              aria-label={`${r.id}, ${r.status}`}
+              aria-pressed={r.id === selected}
+              onClick={() => setSelected(r.id)}
+              style={{ left: `${r.x}%`, top: `${r.y}%` }}
+              className={cn(
+                "press absolute flex size-(--h-md) -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-sm",
+                r.id === selected && "ring-2 ring-foreground",
+              )}
+            >
+              <StatusGlyph status={r.tone} className="size-4" />
+              <span className="absolute top-full font-mono text-xs">{r.id}</span>
+            </button>
+          ))}
+        </div>
+
         {/* Only while an alarm shows: an empty tray would float as a bare pill. The island stays mounted so it hears new alarms. */}
-        <Tray className="absolute top-4 right-4 hidden w-96 lg:has-[[role=group]]:flex">
+        <Tray className="absolute top-4 right-4 z-10 hidden w-96 lg:has-[[role=group]]:flex">
           <IslandAlarm alarms={list} onAcknowledge={(id) => setList((l) => l.map((a) => (a.id === id ? { ...a, acknowledged: true } : a)))} />
         </Tray>
 
-        <div className="absolute right-4 bottom-4 w-72">
+        <div className="z-10 m-4 mt-0 sm:absolute sm:right-4 sm:bottom-4 sm:m-0 sm:w-72">
           {stop === "stopped" ? (
             <SlideToRelease tag={robot.id} onRelease={() => window.setTimeout(() => setStop("ready"), 500)} />
           ) : (
