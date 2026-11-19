@@ -1,4 +1,4 @@
-// @syncrobotic/sparkline-table v0.9.0 · update: npx shadcn add @syncrobotic/sparkline-table --overwrite
+// @syncrobotic/sparkline-table v0.15.0 · update: npx shadcn add @syncrobotic/sparkline-table --overwrite
 "use client"
 
 import * as React from "react"

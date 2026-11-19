@@ -1,4 +1,4 @@
-// @syncrobotic/agent-approval v0.13.0 · update: npx shadcn add @syncrobotic/agent-approval --overwrite
+// @syncrobotic/agent-approval v0.15.0 · update: npx shadcn add @syncrobotic/agent-approval --overwrite
 "use client"
 
 import * as React from "react"

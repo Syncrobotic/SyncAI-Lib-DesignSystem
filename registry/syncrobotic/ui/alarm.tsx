@@ -1,4 +1,4 @@
-// @syncrobotic/alarm v0.11.1 · update: npx shadcn add @syncrobotic/alarm --overwrite
+// @syncrobotic/alarm v0.15.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
 "use client"
 
 import * as React from "react"

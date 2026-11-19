@@ -1,4 +1,4 @@
-// @syncrobotic/navigation-menu v0.10.0 · update: npx shadcn add @syncrobotic/navigation-menu --overwrite
+// @syncrobotic/navigation-menu v0.15.0 · update: npx shadcn add @syncrobotic/navigation-menu --overwrite
 "use client"
 
 import * as React from "react"

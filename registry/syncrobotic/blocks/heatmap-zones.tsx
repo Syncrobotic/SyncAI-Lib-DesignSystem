@@ -1,4 +1,4 @@
-// @syncrobotic/heatmap-zones v0.9.0 · update: npx shadcn add @syncrobotic/heatmap-zones --overwrite
+// @syncrobotic/heatmap-zones v0.15.0 · update: npx shadcn add @syncrobotic/heatmap-zones --overwrite
 "use client"
 
 import * as React from "react"

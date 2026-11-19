@@ -1,4 +1,4 @@
-// @syncrobotic/timeline v0.13.0 · update: npx shadcn add @syncrobotic/timeline --overwrite
+// @syncrobotic/timeline v0.15.0 · update: npx shadcn add @syncrobotic/timeline --overwrite
 import * as React from "react"
 import { StatusGlyph, type Tone, toStatus } from "@/registry/syncrobotic/shell/status-glyph"
 import { cn } from "@/lib/utils"

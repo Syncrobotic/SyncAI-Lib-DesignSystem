@@ -1,4 +1,4 @@
-// @syncrobotic/sparkline-robot-list v0.13.0 · update: npx shadcn add @syncrobotic/sparkline-robot-list --overwrite
+// @syncrobotic/sparkline-robot-list v0.15.0 · update: npx shadcn add @syncrobotic/sparkline-robot-list --overwrite
 "use client"
 
 import * as React from "react"

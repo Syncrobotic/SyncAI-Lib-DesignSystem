@@ -1,4 +1,4 @@
-// @syncrobotic/scroll-area v0.9.0 · update: npx shadcn add @syncrobotic/scroll-area --overwrite
+// @syncrobotic/scroll-area v0.15.0 · update: npx shadcn add @syncrobotic/scroll-area --overwrite
 "use client"
 
 import * as React from "react"

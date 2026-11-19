@@ -1,4 +1,4 @@
-// @syncrobotic/restricted-preview v0.12.0 · update: npx shadcn add @syncrobotic/restricted-preview --overwrite
+// @syncrobotic/restricted-preview v0.15.0 · update: npx shadcn add @syncrobotic/restricted-preview --overwrite
 "use client"
 
 import * as React from "react"

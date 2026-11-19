@@ -1,4 +1,4 @@
-// @syncrobotic/rollout-overview v0.13.0 · update: npx shadcn add @syncrobotic/rollout-overview --overwrite
+// @syncrobotic/rollout-overview v0.15.0 · update: npx shadcn add @syncrobotic/rollout-overview --overwrite
 "use client"
 
 import * as React from "react"

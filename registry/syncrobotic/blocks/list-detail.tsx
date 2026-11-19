@@ -1,4 +1,4 @@
-// @syncrobotic/list-detail v0.13.1 · update: npx shadcn add @syncrobotic/list-detail --overwrite
+// @syncrobotic/list-detail v0.15.0 · update: npx shadcn add @syncrobotic/list-detail --overwrite
 "use client"
 
 import * as React from "react"

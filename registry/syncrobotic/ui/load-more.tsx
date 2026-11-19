@@ -1,4 +1,4 @@
-// @syncrobotic/load-more v0.12.0 · update: npx shadcn add @syncrobotic/load-more --overwrite
+// @syncrobotic/load-more v0.15.0 · update: npx shadcn add @syncrobotic/load-more --overwrite
 "use client"
 
 import * as React from "react"

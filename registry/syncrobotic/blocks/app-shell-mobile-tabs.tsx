@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell-mobile-tabs v0.13.0 · update: npx shadcn add @syncrobotic/app-shell-mobile-tabs --overwrite
+// @syncrobotic/app-shell-mobile-tabs v0.15.0 · update: npx shadcn add @syncrobotic/app-shell-mobile-tabs --overwrite
 "use client"
 
 import * as React from "react"

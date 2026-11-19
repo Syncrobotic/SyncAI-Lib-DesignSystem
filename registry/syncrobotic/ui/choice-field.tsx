@@ -1,4 +1,4 @@
-// @syncrobotic/choice-field v0.10.0 · update: npx shadcn add @syncrobotic/choice-field --overwrite
+// @syncrobotic/choice-field v0.15.0 · update: npx shadcn add @syncrobotic/choice-field --overwrite
 "use client"
 
 import * as React from "react"

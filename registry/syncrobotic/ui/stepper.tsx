@@ -1,4 +1,4 @@
-// @syncrobotic/stepper v0.12.0 · update: npx shadcn add @syncrobotic/stepper --overwrite
+// @syncrobotic/stepper v0.15.0 · update: npx shadcn add @syncrobotic/stepper --overwrite
 "use client"
 
 import * as React from "react"

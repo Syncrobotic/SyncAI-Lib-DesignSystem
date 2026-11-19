@@ -1,4 +1,4 @@
-// @syncrobotic/users-invitations v0.13.0 · update: npx shadcn add @syncrobotic/users-invitations --overwrite
+// @syncrobotic/users-invitations v0.15.0 · update: npx shadcn add @syncrobotic/users-invitations --overwrite
 "use client"
 
 import * as React from "react"

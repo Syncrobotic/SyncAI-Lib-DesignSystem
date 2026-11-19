@@ -1,4 +1,4 @@
-// @syncrobotic/area-chart-battery v0.9.0 · update: npx shadcn add @syncrobotic/area-chart-battery --overwrite
+// @syncrobotic/area-chart-battery v0.15.0 · update: npx shadcn add @syncrobotic/area-chart-battery --overwrite
 "use client"
 
 import * as React from "react"

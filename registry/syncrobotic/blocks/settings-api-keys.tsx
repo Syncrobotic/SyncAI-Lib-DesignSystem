@@ -1,4 +1,4 @@
-// @syncrobotic/settings-api-keys v0.9.0 · update: npx shadcn add @syncrobotic/settings-api-keys --overwrite
+// @syncrobotic/settings-api-keys v0.15.0 · update: npx shadcn add @syncrobotic/settings-api-keys --overwrite
 "use client"
 
 import * as React from "react"

@@ -1,4 +1,4 @@
-// @syncrobotic/island v0.13.0 · update: npx shadcn add @syncrobotic/island --overwrite
+// @syncrobotic/island v0.15.0 · update: npx shadcn add @syncrobotic/island --overwrite
 "use client"
 
 import * as React from "react"

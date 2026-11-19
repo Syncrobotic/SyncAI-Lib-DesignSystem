@@ -1,4 +1,4 @@
-// @syncrobotic/mission-schedule v0.13.0 · update: npx shadcn add @syncrobotic/mission-schedule --overwrite
+// @syncrobotic/mission-schedule v0.15.0 · update: npx shadcn add @syncrobotic/mission-schedule --overwrite
 "use client"
 
 import * as React from "react"

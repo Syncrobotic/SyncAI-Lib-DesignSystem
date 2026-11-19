@@ -1,4 +1,4 @@
-// @syncrobotic/radial-chart-capacity v0.9.0 · update: npx shadcn add @syncrobotic/radial-chart-capacity --overwrite
+// @syncrobotic/radial-chart-capacity v0.15.0 · update: npx shadcn add @syncrobotic/radial-chart-capacity --overwrite
 "use client"
 
 import * as React from "react"

@@ -1,4 +1,4 @@
-// @syncrobotic/table v0.8.0 · update: npx shadcn add @syncrobotic/table --overwrite
+// @syncrobotic/table v0.15.0 · update: npx shadcn add @syncrobotic/table --overwrite
 import * as React from "react"
 import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react"
 import { cn } from "@/lib/utils"

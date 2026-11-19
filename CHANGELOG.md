@@ -15,6 +15,38 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - **`input-group` units follow the value:** `InputGroupUnit` writes the unit right after the value ("120 m") instead of at the far edge; the value is as wide as its text (`field-sizing: content`; browsers without it keep the unit at the edge). A press on the field's empty space puts the caret in the text box.
 
 ### Fixed
+- **Keyboard focus was invisible** on chip-group, navigation-menu, scrollspy, stepper, trace, questionnaire, scroll-area, timeline, calendar's dropdowns and command's input: `outline-none` with `focus-visible:outline-2` draws nothing in Tailwind 4.3. Every one shows the 2 px ring again.
+- **Phones (412 px), from a page-by-page audit:**
+  - 15 block tables no longer scroll key columns off screen: secondary columns fold under the main cell. `agent-approval` shows Now and After before you approve.
+  - `data-grid`'s empty state and totals stay in view.
+  - `questionnaire`'s 0–10 scale wraps into rows of six.
+  - `pagination` keeps its range on one line and folds to previous / current / next in a narrow container.
+  - `island` wraps alarm and failure text to two lines instead of cutting it; safety text is never an ellipsis.
+  - `navigation-menu`'s site header folds into a menu sheet.
+  - `calendar`, `input-otp`, the time range example and `heatmap-zones` fit.
+  - Fieldsets can shrink (theme).
+- **`stepper`**: equal steps, labels centred under their dots, connectors from dot to dot. A narrow stepper keeps only the current step's label.
+- **Charts:**
+  - The earlier period and the plan are grey (slot 5), as the Data visualisation rules say.
+  - Limit and dock labels no longer sit on the curve.
+  - Ticks are even, so 70 and 18:00 are back.
+- **Battery never shows danger and warns under 15 %** in every block: one rule, the Alarms foundation's.
+- **Disabled text is readable**: `--disabled` is 3:1 on the page and cards, still lighter than secondary text. Every disabled example says why. The emergency stop row in Sortable priorities is fixed above the list with no handle.
+- **State changes that jumped now move:**
+  - Sort arrows cross-fade (`table`, `data-grid`).
+  - Chips revealed by "N more" appear and leave.
+  - `date-selector`'s Clear fades.
+  - `restricted-preview` fades in.
+  - `CommandCheck` marks picked rows.
+- **Alignment:**
+  - Alarm and list icons sit on the title's line.
+  - Values sit next to their labels in `radial-chart-*`, `status-tracker-uptime`, `sheet-robot-detail` and `sheet-filters`.
+  - `settings-notifications` checkboxes line up.
+- **Smaller fixes:**
+  - Checkbox and radio answer a 44 px touch.
+  - `settings-api-keys` Revoke is destructive.
+  - Search placeholders are no longer cut (`AppSearch.label`).
+  - Block previews opened on their own put "Back to the docs" above the block instead of over its stop button.
 - **Two clear crosses in a search field** (`input-group` with its own clear button): an input group with a button in it hides the browser's cross (`syncrobotic-theme`).
 - **`input-otp`: the last digit kept changing** once the code was full: the library keeps the last character selected, so every further key swapped it. A full code now ignores extra keys; Backspace, select-all and paste still edit.
 - **`phone-input`: the country list was cut off**, as narrow as the flag-and-code trigger (128 px). It now takes its own width (288 px) from the trigger's left edge; long names end in an ellipsis and the calling code keeps its column.

@@ -94,6 +94,8 @@ const entries: Record<string, Entry> = {
   },
   stepper: {
     group: "Navigation",
+    /** Horizontal steps need the row: examples use the card's full width, like charts. */
+    wide: true,
     examples: { file: "stepper", prefix: "Stepper" },
     rules: [
       "Only for a fixed sequence people go through once (commissioning, an import). Sections of a page are Tabs.",

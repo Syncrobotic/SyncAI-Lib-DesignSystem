@@ -1,4 +1,4 @@
-// @syncrobotic/map-workspace v0.13.1 · update: npx shadcn add @syncrobotic/map-workspace --overwrite
+// @syncrobotic/map-workspace v0.15.0 · update: npx shadcn add @syncrobotic/map-workspace --overwrite
 "use client"
 
 import * as React from "react"
