@@ -87,6 +87,10 @@
     "version": "0.10.0",
     "hash": "7124ad1cba9f2388"
   },
+  "code-block": {
+    "version": "0.18.0",
+    "hash": "40dbae18a145364b"
+  },
   "input": {
     "version": "0.17.3",
     "hash": "6e4683848db70d23"
