@@ -36,6 +36,15 @@ export function IconGallery({ groups, total, placeholder, markKit = false }: { g
   const [query, setQuery] = React.useState("")
   const [size, setSize] = React.useState<(typeof sizes)[number]["value"]>("24")
   const [picked, setPicked] = React.useState<GalleryIcon | null>(null)
+  // Arriving from the site search (?icon=Battery): find that icon and open its details.
+  React.useEffect(() => {
+    const name = new URLSearchParams(window.location.search).get("icon")
+    if (!name) return
+    const hit = groups.flatMap((g) => g.icons).find((i) => i.name === name)
+    if (!hit) return
+    setQuery(name)
+    setPicked(hit)
+  }, [groups])
   React.useEffect(() => {
     if (!picked) return
     const close = (e: KeyboardEvent) => e.key === "Escape" && setPicked(null)
