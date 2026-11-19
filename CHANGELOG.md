@@ -2,6 +2,17 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **Site search**: ⌘K, Ctrl+K or / opens a palette over pages, foundation sections (every rule by its heading), components, blocks and the icon set. Whole words, titles first. The index is written at build time and fetched the first time the search opens. An icon result opens that icon's details (`/icons?icon=Name`). On phones a 44 px search button sits in the header.
+
+### Changed
+- **CI is faster**: pull requests only, stale runs cancelled, story checks once per release (into stage) in Playwright's own image, registry-e2e skipped when no registry file changed.
+
+### Fixed
+- `command`: in CommandDialog the input row no longer shows a focus ring for good.
+
 ## 0.15.0 · 2026-11-19
 
 ### Added

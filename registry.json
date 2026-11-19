@@ -2202,8 +2202,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.16.0",
         "changelog": [
+          {
+            "version": "0.16.0",
+            "date": "2026-11-19",
+            "note": "In CommandDialog the input row has no focus ring: the box always has focus there, so the ring only framed the top of the palette. On a page it still shows."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
