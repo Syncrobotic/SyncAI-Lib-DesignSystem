@@ -2,6 +2,16 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Changed
+- **Status on every item.** The 47 items a product uses (DataCore's dashboard) are `stable`; the others are `beta`, so a page now tells you which APIs have settled. Blocks carry no status, as before.
+- **`record-form`, `dialog-form`: validate like the `form` example**, without a form library: nothing is said before the first submit; after it, each error follows its value as you type, and a failed submit focuses the first field in error (`dialog-form` did not move focus before).
+
+### Docs and CI
+- The Accessibility tab's measured data is checked in CI: a job builds the site, measures every component again and fails when `site/a11y.json` differs (only when a component or story changed). The measured file is attached to a failed run.
+- Roadmap brought up to date.
+
 ## 0.20.0 · 2026-11-20
 
 ### Added

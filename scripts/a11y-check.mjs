@@ -13,4 +13,16 @@ if (real.length) {
   console.error(`site/a11y.json has no entry for: ${real.map((i) => i.name).join(", ")}.\nRun the site and SITE=… node scripts/a11y.cjs.`)
   process.exit(1)
 }
+// With --measured <file> (CI writes one from the built site), the committed data must equal what the browser measures now.
+const at = process.argv.indexOf("--measured")
+if (at > 0) {
+  const now = JSON.parse(readFileSync(process.argv[at + 1], "utf8"))
+  const names = [...new Set([...Object.keys(data), ...Object.keys(now)])].sort()
+  const stale = names.filter((n) => JSON.stringify(data[n]) !== JSON.stringify(now[n]))
+  if (stale.length) {
+    for (const n of stale) console.error(`${n}\n  committed: ${JSON.stringify(data[n] ?? null)}\n  measured:  ${JSON.stringify(now[n] ?? null)}`)
+    console.error(`\nsite/a11y.json is out of date for ${stale.length} component(s). Run the site and npm run a11y, or take the measured file from this run's artifact.`)
+    process.exit(1)
+  }
+}
 console.log(`A11y data check passed (${Object.keys(data).length} components)`)

@@ -1,4 +1,4 @@
-// @syncrobotic/dialog-form v0.17.3 · update: npx shadcn add @syncrobotic/dialog-form --overwrite
+// @syncrobotic/dialog-form v0.21.0 · update: npx shadcn add @syncrobotic/dialog-form --overwrite
 "use client"
 
 import * as React from "react"
@@ -13,9 +13,17 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 const robots = ["Patrol dog 7F3A", "Patrol dog 1715", "Patrol dog DAA6"]
 const routes = ["Perimeter", "Loading bay", "Car park", "Server room"]
 
+// The rules, in one place: say how to fix it, not just that it is wrong.
+const validate = (v: { name: string; robot: string }) => ({
+  name: v.name.trim() ? undefined : "Name the mission, e.g. Night patrol.",
+  robot: v.robot ? undefined : "Choose the robot that runs it.",
+})
+
 /**
- * A short form in a dialog: three fields at most, so it is a quick decision, not a page. Errors show under their fields on
- * submit and the dialog stays open with everything typed kept. Longer forms get their own page (Form).
+ * A short form in a dialog: three fields at most, so it is a quick decision, not a page. Validation behaves like the
+ * `form` example without a form library: nothing before the first submit; after it, each error follows its value, and
+ * a failed submit focuses the first field in error. The dialog stays open with everything typed kept.
+ * Longer forms get their own page (record-form).
  */
 export function DialogForm({
   onCreate,
@@ -32,14 +40,22 @@ export function DialogForm({
   const [robot, setRobot] = React.useState("")
   const [route, setRoute] = React.useState(routes[0])
   const [start, setStart] = React.useState("now")
-  const [errors, setErrors] = React.useState<{ name?: string; robot?: string }>({})
+  // Errors are worked out from the values once a submit has been tried, so a fixed field clears as you type.
+  const [submitted, setSubmitted] = React.useState(false)
+  const errors: ReturnType<typeof validate> = submitted ? validate({ name, robot }) : { name: undefined, robot: undefined }
+  const form = React.useRef<HTMLFormElement>(null)
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault()
-    const next = { name: name.trim() ? undefined : "Name the mission, e.g. Night patrol.", robot: robot ? undefined : "Choose the robot that runs it." }
-    setErrors(next)
-    if (next.name || next.robot) return
+    setSubmitted(true)
+    const next = validate({ name, robot })
+    if (next.name || next.robot) {
+      // Take the user to the first problem once the errors have rendered.
+      requestAnimationFrame(() => form.current?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus())
+      return
+    }
     onCreate?.({ name: name.trim(), robot, route, start })
+    setSubmitted(false)
     setOpen(false)
   }
 
@@ -58,7 +74,7 @@ export function DialogForm({
             <DialogTitle>New mission</DialogTitle>
             <DialogDescription>The robot leaves its dock when the mission starts.</DialogDescription>
           </DialogHeader>
-          <form id="new-mission" noValidate onSubmit={submit} className="flex flex-col gap-4">
+          <form ref={form} id="new-mission" noValidate onSubmit={submit} className="flex flex-col gap-4">
             <Field label="Name" error={errors.name}>
               <Input value={name} onChange={(e) => setName(e.target.value)} />
             </Field>

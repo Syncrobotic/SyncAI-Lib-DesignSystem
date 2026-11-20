@@ -82,6 +82,7 @@ const MEANINGFUL = new Set(
     process.stdout.write(".")
   }
   await browser.close()
-  writeFileSync("site/a11y.json", JSON.stringify(out, null, 2) + "\n")
-  console.log(`\nWrote site/a11y.json (${Object.keys(out).length} components)`)
+  const file = process.env.OUT || "site/a11y.json"
+  writeFileSync(file, JSON.stringify(out, null, 2) + "\n")
+  console.log(`\nWrote ${file} (${Object.keys(out).length} components)`)
 })()

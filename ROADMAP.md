@@ -28,7 +28,7 @@ Reviewed each release, so the roadmap follows evidence rather than taste.
 
 ## Plan
 
-The milestones are themes, not version numbers, listed by number. 0.4 to 0.9 and 1.0 were planned first; 0.16 and 0.17 were added later, so 0.9 is still open while they are done. The kit is at 0.17, and the open items below are what is left of each theme. Checked 2026-11-19 (0.17).
+The milestones are themes, not version numbers, listed by number. 0.4 to 0.9 and 1.0 were planned first; 0.16 and 0.17 were added later, so 0.9 is still open while they are done. The kit is at 0.20, and the open items below are what is left of each theme. Checked 2026-11-20 (0.20).
 
 ### 0.4 · Alarms and feedback
 - [x] Alarms foundation, `alarm`, `toast`
@@ -75,7 +75,14 @@ The milestones are themes, not version numbers, listed by number. 0.4 to 0.9 and
 - [x] Field edges 3:1 (WCAG 1.4.11), focus rings never removed, battery threshold 15 % everywhere, 44 px targets on the docs site
 - [x] One rule where two disagreed (default theme, battery as Meter, switch on, offline, 36 px, button weight, KPI colour, missions as processes)
 - [x] Lints for what the audit found by hand (`lint:rules`): `outline-none` without a replacement, battery thresholds, a chart block without `ChartTable`; field-edge contrast as a unit test
-- [ ] Docs site: component pages open with the first example; block thumbnails readable; one search on the overview; filter segments the same everywhere
+- [x] Docs site: component pages open with the first example; block thumbnails readable; one search on the overview; filter segments the same everywhere
+
+### 0.18 – 0.20 · What products build by hand
+- [x] Components found by putting the kit into a product: `annotated-image`, `tree`, `metric-card` (all KPI blocks built on it), `code-block` (the docs site's own code blocks use it)
+- [x] Component pages in three tabs, each at its own address: Overview, Properties, Accessibility; the Accessibility tab generated from roles measured in a browser and contrast computed from the theme, checked against the components in CI
+- [x] Forms with React Hook Form the way shadcn does them: Controller around Field, an installable example (`form`), no wrapper and no form library in any other item
+- [x] One version range per npm package across the registry (`lint:registry`)
+- [x] Status on every item: stable for what a product uses, beta for the rest
 
 ### 1.0 · Public, source-available
 - [x] Licence (all rights reserved, source-available), CONTRIBUTING, SECURITY

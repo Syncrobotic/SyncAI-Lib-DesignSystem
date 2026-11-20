@@ -468,8 +468,8 @@
     "hash": "0a6539af3b4adda9"
   },
   "record-form": {
-    "version": "0.17.2",
-    "hash": "b4bbada941b1acb2"
+    "version": "0.21.0",
+    "hash": "067f64eab908c338"
   },
   "users-roles": {
     "version": "0.17.2",
@@ -612,8 +612,8 @@
     "hash": "ba637560f7d29bcc"
   },
   "dialog-form": {
-    "version": "0.17.3",
-    "hash": "40879299949c7b7f"
+    "version": "0.21.0",
+    "hash": "d2ab2396f3090152"
   },
   "dialog-share": {
     "version": "0.17.3",
