@@ -420,7 +420,10 @@ export function CameraFeed({
           {state === "connecting" && (
             <div className="absolute inset-0">
               <Bone className="size-full rounded-none" />
-              <p className="absolute inset-0 grid place-items-center p-4 text-center text-sm text-muted-foreground">{l.connectingLong}</p>
+              {/* On its own surface, as Stalled is: grey words straight on the grey skeleton fall below 4.5:1. */}
+              <div className="absolute inset-0 grid place-items-center p-4">
+                <p className="rounded-sm bg-background px-3 py-2 text-center text-sm">{l.connectingLong}</p>
+              </div>
             </div>
           )}
 
