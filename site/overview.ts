@@ -113,6 +113,26 @@ export const overviews: Record<string, Overview> = {
     use: ["Lists and galleries on a phone.", "Results that load in batches."],
     instead: ["A desktop table people jump around in: `pagination`."],
   },
+  graph: {
+    what: "A directed graph that flows one way: boxes in columns, inputs on the left (or above), neutral lines between them, and a text view with the same nodes.",
+    use: [
+      "Lineage: Dataset v3, the label sets it was built from, and the raw captures under them.",
+      "A training run's inputs (dataset, base model, config) and outputs (checkpoints, metrics, evaluations).",
+      "A mission's steps when some run in parallel and meet again.",
+    ],
+    instead: [
+      "Every node has one parent: `tree`, which reads as a list and opens and closes.",
+      "Steps in one line, one after the other: `stepper` (a flow people go through) or `trace` (a run that happened).",
+      "Events in time order: `timeline`.",
+      "More than about 60 nodes, or a graph people edit: a dedicated library (React Flow, elkjs) with panning and zoom.",
+    ],
+    notes: [
+      "Offer `GraphList` beside `Graph` (a Graph / List switch with SegmentedControl), as charts offer `ChartTable`; `lint:rules` asks for it in a block.",
+      "Edges are `{ from, to }`, where `from` is an input of `to`. An edge that closes a cycle, points at a missing node or at itself is left out, with a warning in development.",
+      "Node ids must be unique. Labels are plain text: they start each node's accessible name, which then lists its inputs and outputs (\"Box labels v7, 48,210 boxes, from Hall B captures, to Dataset v3\").",
+      "Pass `labels` (from, to, status words, instructions, inputs, outputs, loading) and `empty` to translate.",
+    ],
+  },
   trace: {
     what: "The steps of a run in order, each with a status and a duration, that open to show input, output and sub-steps.",
     use: [
@@ -657,6 +677,7 @@ export const overviews: Record<string, Overview> = {
       "Where this page sits among its parents: `breadcrumb`.",
       "Sections of one page that open and close: `accordion`.",
       "Rows with columns to compare: `data-grid` with expanding rows.",
+      "Nodes with several parents (one source under two label sets, steps that run in parallel and meet): `graph`.",
     ],
     notes: [
       "Do not use select mode for a tree of links: role=\"tree\" takes the arrow keys and makes the whole tree one Tab stop, so links inside it are not followed by Enter. Use list mode, which keeps links as links.",

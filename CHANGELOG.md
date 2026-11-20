@@ -29,6 +29,9 @@ Components install as source, so a project keeps the version it installed. Re-ru
 
 ### Changed
 - **`slider`: `valueText`** sets each thumb's `aria-valuetext` on a controlled slider, so a screen reader hears "0:42 of 1:00" or "40 %" instead of a bare number.
+### Added
+- **`graph`** (beta): a directed acyclic graph for lineage and pipelines (Dataset v3 ← label sets ← raw captures; a training run's inputs and outputs; a mission's parallel steps), for when a node has several parents and a `tree` would list it twice. A small layered layout in the file, no dependency: longest-path layers, barycenter sweeps against crossings, edges routed between boxes as smooth curves under HTML boxes; left to right, or top to bottom with `orientation="vertical"`; up to about 60 nodes. Nodes carry a name, meta, a status (shape and word, colour only for warning and danger) and an optional link (`linkAs`). Selecting, pointing at or moving to a node draws its upstream and downstream path in the ink colour and quiets the rest. One Tab stop; the arrow keys follow the edges (forward to outputs, back to inputs, across within a column), Enter selects or follows, Esc clears. Each node's accessible name lists its inputs and outputs, and `GraphList` shows the same graph as text, to offer beside it as charts offer their table. Wider than a phone, it scrolls inside its frame with the kit's scroll fade.
+- **`lint:rules`: a block that draws a `Graph` offers a `GraphList`**, as a chart block offers its table.
 
 ## 0.20.0 · 2026-11-20
 

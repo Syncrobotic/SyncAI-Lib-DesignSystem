@@ -55,6 +55,7 @@ export type StoryFile =
   | "annotated-image"
   | "media-player"
   | "tree"
+  | "graph"
   | "hooks"
   | "metric-card"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
@@ -81,6 +82,19 @@ const overlayKeys: [string, string][] = [
 ]
 
 const entries: Record<string, Entry> = {
+  graph: {
+    group: "Display",
+    wide: true,
+    examples: { file: "graph", prefix: "Graph" },
+    rules: [
+      "For a node with several inputs: lineage, a training run's inputs and outputs, a mission's parallel steps. When every node has one parent, use a Tree.",
+      "Offer GraphList beside it (a Graph / List switch), as a chart offers its table: the same nodes as text, inputs before what they feed. On a phone the list reads without scrolling sideways.",
+      "Up to about 60 nodes. A bigger graph needs a dedicated layout library and panning; show a part of it (one node's lineage) instead.",
+      "Edges are neutral; the selected node's path is drawn in the ink colour and the rest steps back. No colours per edge or per kind of node.",
+      "Status is a shape and a word; only warning and danger are coloured. Steps that did not run are grey and say so (\"Not run\").",
+      "Names fit a box: about 28 characters show in full, longer ones end in an ellipsis. Put the detail in meta, one short line.",
+    ],
+  },
   trace: {
     wide: true,
     group: "Display",
@@ -756,7 +770,7 @@ const entries: Record<string, Entry> = {
     examples: { file: "tree", prefix: "Tree" },
     rules: [
       "list (default) for a hierarchy people read and follow links in: lineage, an outline. select only when choosing a node is the job (a file explorer, a site picker): it is one Tab stop with arrow keys, and its nodes are not links.",
-      "A node used twice (a source under two label sets) is named again with a marker in meta, \"(listed above)\", not drawn twice in full.",
+      "A node used twice (a source under two label sets) is named again with a marker in meta, \"(listed above)\", not drawn twice in full. When many nodes have several parents, it is a Graph.",
       "meta is a count, a size or a calm state word, in muted text; never a coloured status. A disabled node says why in its meta.",
       "Open what people came for (defaultExpanded or expandAll for short trees); a deep tree starts collapsed.",
       "Give textValue when label is not a string, so type-ahead and screen readers have its name.",
@@ -1021,6 +1035,15 @@ const keyboard: Record<string, [string, string][]> = {
     ["Enter / Space", "Open or close the section"],
     ["↑ / ↓", "Move between section headers"],
     ["Home / End", "First or last header"],
+  ],
+  graph: [
+    ["Tab", "Move into the graph (one stop, on the selected node or the first) and out"],
+    ["→ / ←", "Horizontal: to an output / to an input of the focused node (the nearest one, or back where you came from)"],
+    ["↓ / ↑", "Horizontal: next or previous node in the same column. Vertical: ↓ / ↑ follow the edges and ← / → move in the row"],
+    ["Home / End", "First or last node"],
+    ["Enter", "Select the node and highlight its path, or follow it when it is a link"],
+    ["Space", "Select the node, links included"],
+    ["Esc", "Clear the selection"],
   ],
   tree: [
     ["Tab", "list: move between links and disclosure buttons. select: move into the tree (one stop) and out"],
