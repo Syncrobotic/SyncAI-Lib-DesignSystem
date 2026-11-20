@@ -58,6 +58,9 @@ export type StoryFile =
   | "graph"
   | "hooks"
   | "metric-card"
+  | "context-menu"
+  | "hover-card"
+  | "banner"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
@@ -716,6 +719,19 @@ const entries: Record<string, Entry> = {
       "If the operator must act on the robot, it is an alarm instead.",
     ],
   },
+  banner: {
+    group: "Feedback",
+    examples: { file: "banner", prefix: "Banner" },
+    rules: [
+      "About the app, not one record: maintenance, read-only mode, a trial ending, no connection. A condition of one page or form is an Alert in the content; the result of what someone just did is a Toast.",
+      "Full width, first in the page (or above the whole app), before the header in the DOM so it is read first. At most one at a time: show the most severe and let the next one wait.",
+      "Tone by consequence: neutral for calm conditions, info only while a process runs (syncing back, a maintenance window under way), warning before something is lost, danger when the app cannot work. Danger is a tint, never solid red. Give it an icon that names the subject (Wrench, Lock, CloudOff).",
+      "role=\"status\" for neutral, info and warning (read politely); role=\"alert\" only for danger. It is not role=\"banner\", which is the page header landmark.",
+      "One action at most, named by its result (\"Choose a plan\", \"Retry now\"): a Button, size md, outline.",
+      "Dismiss only when the condition does not need the person (news, a trial reminder). Remembering it is yours: onDismiss stores it, then pass open={false}. A condition that ends by itself (offline, read-only) has no close button and leaves when it ends.",
+      "Above the AppShell: the shell is as tall as the screen unless --app-shell-height says otherwise. Put the banner and the shell in a column as tall as the screen (flex h-dvh flex-col) and wrap the shell in min-h-0 flex-1 [--app-shell-height:100%], so a banner that wraps on a phone never pushes the shell's bottom off screen.",
+    ],
+  },
   toast: {
     group: "Feedback",
     examples: { file: "feedback", prefix: "Toast" },
@@ -801,6 +817,16 @@ const entries: Record<string, Entry> = {
       'The panel is a dialog, so it needs a name: aria-label on PopoverContent (usually the trigger\'s words, aria-label="Battery filter"), or aria-labelledby pointing at a heading inside it or at the trigger\'s id.',
     ],
   },
+  "hover-card": {
+    group: "Overlays",
+    examples: { file: "hover-card", prefix: "HoverCard" },
+    rules: [
+      "Preview only. Hover does not exist on touch and screen readers are not told the card is there, so nothing in it may be the only way to a fact or an action: the trigger is a real link to the page that has it all.",
+      "No controls inside: a button or link in the card cannot be reached reliably. Something to act on is a Popover (opened by a click) or the page itself.",
+      "Keyboard focus on the link opens it, Esc or moving on closes it. It waits 500 ms before opening, so a pointer crossing a list does not flash cards.",
+      "A few facts: a name, a state with its shape and word, a level as a Meter, when it was last seen. More than that is the page.",
+    ],
+  },
   tooltip: {
     group: "Overlays",
     examples: { file: "overlays", prefix: "Tooltip" },
@@ -829,6 +855,17 @@ const entries: Record<string, Entry> = {
     ],
   },
   "dropdown-menu": { group: "Overlays", examples: { file: "overlays", prefix: "DropdownMenu" }, rules: ["Destructive items go last, after a separator."] },
+  "context-menu": {
+    group: "Overlays",
+    examples: { file: "context-menu", prefix: "ContextMenu" },
+    rules: [
+      "A shortcut, never the only way: every action in it is also on a visible control (a ⋯ button with the same DropdownMenu, a toolbar, the detail page). Nobody can see that a context menu exists, and many tablets have no right-click.",
+      "Touch: pressing and holding for 700 ms opens it (Radix does this). Keyboard: Shift+F10 or the Menu key on anything focused inside the trigger area; make the area focusable only if nothing in it is.",
+      "Same items, same order as the visible menu. Destructive items go last, after a separator, in danger text.",
+      "Submenus one level deep and short; ticks for options that switch on and off, a radio group for one of several.",
+      "Leave the browser's own menu on text people copy and on links: put the trigger on the row or card, not on a field.",
+    ],
+  },
   // Robot shell
   "stop-button": {
     group: "Robot shell",
@@ -1122,6 +1159,19 @@ const keyboard: Record<string, [string, string][]> = {
     ["Enter", "Run the item"],
     ["Esc", "Close and return focus"],
   ],
+  "context-menu": [
+    ["Shift+F10 / Menu key", "Open the menu for the focused row or area"],
+    ["↑ / ↓", "Move between items"],
+    ["→ / ←", "Open or close a submenu"],
+    ["Enter / Space", "Run the item, or tick it"],
+    ["Esc", "Close and return focus"],
+  ],
+  "hover-card": [
+    ["Focus", "Show the card after a moment"],
+    ["Esc / Tab away", "Hide it"],
+    ["Enter", "Follow the link"],
+  ],
+  banner: [["Enter / Space", "On the action, run it; on the close button, dismiss the notice"]],
   toast: [
     ["F8", "Move focus to the notifications"],
     ["Esc", "Dismiss the focused notification"],

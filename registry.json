@@ -1894,6 +1894,36 @@
       }
     },
     {
+      "name": "banner",
+      "type": "registry:ui",
+      "title": "Banner",
+      "description": "A full-width notice at the top of the page or app about the app itself: maintenance, read-only mode, a trial ending, no connection. Tones, one action, optional dismiss.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/use-presence"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/banner.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.21.0",
+        "changelog": [
+          {
+            "version": "0.21.0",
+            "date": "2026-11-20",
+            "note": "First release: neutral, info, warning and danger tones (role alert only for danger), an icon that can name the subject, one action, an optional close button (the caller remembers it), enter and exit movements, wraps at 375 px with 44 px targets."
+          }
+        ]
+      }
+    },
+    {
       "name": "alert",
       "type": "registry:ui",
       "title": "Alert",
@@ -2601,6 +2631,35 @@
       }
     },
     {
+      "name": "hover-card",
+      "type": "registry:ui",
+      "title": "Hover card",
+      "description": "A preview of what a link leads to, on hover and keyboard focus. Preview only: never the only way to the facts or actions in it.",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/hover-card.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.21.0",
+        "changelog": [
+          {
+            "version": "0.21.0",
+            "date": "2026-11-20",
+            "note": "First release: Radix HoverCard in the popover's look, 500 ms before opening and 300 ms before closing."
+          }
+        ]
+      }
+    },
+    {
       "name": "tooltip",
       "type": "registry:ui",
       "title": "Tooltip",
@@ -2697,6 +2756,36 @@
           }
         ],
         "status": "stable"
+      }
+    },
+    {
+      "name": "context-menu",
+      "type": "registry:ui",
+      "title": "Context menu",
+      "description": "Actions on an item by right-click or long press, styled exactly like the dropdown menu; a shortcut to actions that are also on a visible control.",
+      "dependencies": [
+        "radix-ui",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/context-menu.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.21.0",
+        "changelog": [
+          {
+            "version": "0.21.0",
+            "date": "2026-11-20",
+            "note": "First release: Radix ContextMenu in the dropdown menu's look (items, checkbox and radio items, labels, separators, shortcuts, submenus; keyboard ring only in keyboard use). Long press opens it on touch."
+          }
+        ]
       }
     },
     {

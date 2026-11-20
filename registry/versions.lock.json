@@ -179,6 +179,10 @@
     "version": "0.19.0",
     "hash": "45894bb1e3691d66"
   },
+  "banner": {
+    "version": "0.21.0",
+    "hash": "9fd748972df04a74"
+  },
   "alert": {
     "version": "0.17.3",
     "hash": "5599e73c521ec230"
@@ -243,6 +247,10 @@
     "version": "0.17.2",
     "hash": "481a17456371cffa"
   },
+  "hover-card": {
+    "version": "0.21.0",
+    "hash": "5aa1181453da09b1"
+  },
   "tooltip": {
     "version": "0.7.0",
     "hash": "7dd7e3177ffd2874"
@@ -250,6 +258,10 @@
   "dropdown-menu": {
     "version": "0.17.4",
     "hash": "18d0ebad899715de"
+  },
+  "context-menu": {
+    "version": "0.21.0",
+    "hash": "3d9573fb5779c661"
   },
   "command": {
     "version": "0.17.3",
