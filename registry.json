@@ -2327,10 +2327,10 @@
         }
       ],
       "meta": {
-        "version": "0.22.5",
+        "version": "0.23.0",
         "changelog": [
           {
-            "version": "0.22.5",
+            "version": "0.23.0",
             "date": "2026-11-20",
             "note": "The tab list no longer scrolls 1 px vertically (overflow-y hidden), so phones no longer show a scrollbar on it."
           },

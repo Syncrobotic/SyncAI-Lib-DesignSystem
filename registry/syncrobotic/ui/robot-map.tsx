@@ -505,16 +505,30 @@ export function RobotMap({
     const [x, y] = toScreen(r.x, r.y)
     return { id: r.id, box: { x: x - DISC, y: y - DISC, w: 2 * DISC, h: 2 * DISC } }
   })
+  // A zone's name sits in its first inside corner that no robot covers: top left, top right, bottom left, bottom right.
+  // Robots move and a zone does not, so the name moves aside rather than hide under a robot.
+  const zoneSpots = new Map<string, Box>()
+  for (const z of zones) {
+    const text = z.label ?? (z.kind === "other" ? undefined : labels.zoneKind[z.kind])
+    if (!text) continue
+    const xs = z.points.map((p) => p[0])
+    const ys = z.points.map((p) => p[1])
+    const [x0, y0] = toScreen(Math.min(...xs), Math.min(...ys))
+    const [x1, y1] = toScreen(Math.max(...xs), Math.max(...ys))
+    const w = text.length * charWidth + 32
+    const corners: Box[] = [
+      { x: x0 + 4, y: y0 + 4, w, h: LINE },
+      { x: x1 - 4 - w, y: y0 + 4, w, h: LINE },
+      { x: x0 + 4, y: y1 - 4 - LINE, w, h: LINE },
+      { x: x1 - 4 - w, y: y1 - 4 - LINE, w, h: LINE },
+    ]
+    zoneSpots.set(z.id, corners.find((c) => !discs.some((d) => overlap(d.box, c))) ?? corners[0])
+  }
   // What a name must not cover either: the zone names, and the buttons and scale bar in the bottom-left corner.
   const vertical = size.h >= 400
   const blocked: Box[] = [
     vertical ? { x: 0, y: size.h - INSET - 3 * 44, w: INSET + 44 + 8 + 120, h: 3 * 44 + INSET } : { x: 0, y: size.h - BOTTOM, w: INSET + 3 * 44 + 8 + 120, h: BOTTOM },
-    ...zones.flatMap((z) => {
-      const text = z.label ?? (z.kind === "other" ? undefined : labels.zoneKind[z.kind])
-      if (!text) return []
-      const [zx, zy] = toScreen(Math.min(...z.points.map((p) => p[0])), Math.min(...z.points.map((p) => p[1])))
-      return [{ x: zx + 4, y: zy + 4, w: text.length * charWidth + 32, h: LINE }]
-    }),
+    ...zoneSpots.values(),
   ]
   const inFrame = (b: Box) => b.x >= 0 && b.y >= 0 && b.x + b.w <= size.w && b.y + b.h <= size.h
   const names: Box[] = []
@@ -611,12 +625,12 @@ export function RobotMap({
           const Icon = kindIcon[z.kind]
           // An unnamed zone of no particular kind is only its outline.
           const text = z.label ?? (z.kind === "other" ? undefined : labels.zoneKind[z.kind])
-          if (!text) return null
-          const [zx, zy] = toScreen(Math.min(...z.points.map((p) => p[0])), Math.min(...z.points.map((p) => p[1])))
+          const spot = zoneSpots.get(z.id)
+          if (!text || !spot) return null
           return (
             <span
               key={z.id}
-              style={{ left: zx + 4, top: zy + 4 }}
+              style={{ left: spot.x, top: spot.y }}
               className="pointer-events-none absolute flex items-center gap-2 rounded-2xs bg-map px-1 text-xs whitespace-nowrap text-muted-foreground"
             >
               {Icon && <Icon aria-hidden="true" className="size-4" />}

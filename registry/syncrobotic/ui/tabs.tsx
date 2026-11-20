@@ -1,4 +1,4 @@
-// @syncrobotic/tabs v0.22.5 · update: npx shadcn add @syncrobotic/tabs --overwrite
+// @syncrobotic/tabs v0.23.0 · update: npx shadcn add @syncrobotic/tabs --overwrite
 "use client"
 
 import * as React from "react"

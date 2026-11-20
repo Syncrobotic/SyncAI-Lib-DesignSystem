@@ -212,7 +212,7 @@
     "hash": "3bf7168182df312b"
   },
   "tabs": {
-    "version": "0.22.5",
+    "version": "0.23.0",
     "hash": "15934ce34803cf0c"
   },
   "pagination": {
@@ -237,7 +237,7 @@
   },
   "robot-map": {
     "version": "0.23.0",
-    "hash": "9d5ce3362d046c1b"
+    "hash": "8655fa82271b719d"
   },
   "dialog": {
     "version": "0.23.0",

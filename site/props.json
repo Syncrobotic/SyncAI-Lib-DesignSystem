@@ -1384,7 +1384,123 @@
     {
      "name": "labels",
      "type": "Partial<CameraFeedLabels>",
-     "description": ""
+     "description": "",
+     "keys": [
+      {
+       "name": "keys",
+       "type": "string",
+       "default": "\"Space pauses and resumes the view, F goes full screen. Pausing freezes this view only; the robot keeps streaming.\"",
+       "description": "Read after the feed's name: the keys it answers to."
+      },
+      {
+       "name": "live",
+       "type": "string",
+       "default": "\"Live\"",
+       "description": ""
+      },
+      {
+       "name": "latency",
+       "type": "(ms: number) => string",
+       "default": "(ms) => `${Math.round(ms)} ms`",
+       "description": "Written after \"Live\": \"180 ms\"."
+      },
+      {
+       "name": "connecting",
+       "type": "string",
+       "default": "\"Connecting\"",
+       "description": "The state word while connecting, and the line over the skeleton."
+      },
+      {
+       "name": "connectingLong",
+       "type": "string",
+       "default": "\"Connecting to camera…\"",
+       "description": "Shown in the state while connecting, after the word; the line over the skeleton says the whole thing."
+      },
+      {
+       "name": "stalled",
+       "type": "string",
+       "default": "\"Stalled\"",
+       "description": ""
+      },
+      {
+       "name": "lastFrame",
+       "type": "(time: string) => string",
+       "default": "(time) => `last frame ${time}`",
+       "description": "After \"Stalled\": when the last frame arrived."
+      },
+      {
+       "name": "formatTime",
+       "type": "(date: Date) => string",
+       "default": "(d) => [d.getHours(), d.getMinutes(), d.getSeconds()].map((n) => String(n).padStart(2, \"0\")).join(\":\")",
+       "description": "The time of the last frame. 24-hour clock by default; pass the site's own format or time zone."
+      },
+      {
+       "name": "paused",
+       "type": "string",
+       "default": "\"Paused\"",
+       "description": ""
+      },
+      {
+       "name": "offline",
+       "type": "string",
+       "default": "\"Camera offline\"",
+       "description": ""
+      },
+      {
+       "name": "noCamera",
+       "type": "string",
+       "default": "\"No camera\"",
+       "description": ""
+      },
+      {
+       "name": "retry",
+       "type": "string",
+       "default": "\"Reconnect\"",
+       "description": ""
+      },
+      {
+       "name": "pauseView",
+       "type": "string",
+       "default": "\"Pause view\"",
+       "description": ""
+      },
+      {
+       "name": "resumeView",
+       "type": "string",
+       "default": "\"Resume view\"",
+       "description": ""
+      },
+      {
+       "name": "mute",
+       "type": "string",
+       "default": "\"Mute\"",
+       "description": ""
+      },
+      {
+       "name": "unmute",
+       "type": "string",
+       "default": "\"Unmute\"",
+       "description": ""
+      },
+      {
+       "name": "snapshot",
+       "type": "string",
+       "default": "\"Take snapshot\"",
+       "description": ""
+      },
+      {
+       "name": "fullscreen",
+       "type": "string",
+       "default": "\"Full screen\"",
+       "description": ""
+      },
+      {
+       "name": "exitFullscreen",
+       "type": "string",
+       "default": "\"Leave full screen\"",
+       "description": ""
+      }
+     ]
     }
    ],
    "inherits": []
@@ -5552,7 +5668,129 @@
     {
      "name": "labels",
      "type": "Partial<RobotMapLabels>",
-     "description": ""
+     "description": "",
+     "keys": [
+      {
+       "name": "instructions",
+       "type": "string",
+       "default": "\"Arrow keys move the map, plus and minus zoom, 0 shows the whole site. The robot list beside the map has the same robots as text.\"",
+       "description": "Read once when focus enters the map."
+      },
+      {
+       "name": "zoomIn",
+       "type": "string",
+       "default": "\"Zoom in\"",
+       "description": ""
+      },
+      {
+       "name": "zoomOut",
+       "type": "string",
+       "default": "\"Zoom out\"",
+       "description": ""
+      },
+      {
+       "name": "fit",
+       "type": "string",
+       "default": "\"Show the whole site\"",
+       "description": ""
+      },
+      {
+       "name": "status",
+       "type": "Record<Status, string>",
+       "default": "{ active: \"Working\", normal: \"Idle\", warning: \"Needs attention\", danger: \"Stopped\", offline: \"Offline\" }",
+       "description": "Default words per status, for robots without statusLabel."
+      },
+      {
+       "name": "zoneKind",
+       "type": "Record<RobotMapZoneKind, string>",
+       "default": "{ restricted: \"No entry\", slow: \"Slow zone\", charging: \"Charging\", other: \"Marked\" }",
+       "description": "Default names per zone kind, and the kind's word in the list."
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"No robots on this site right now.\"",
+       "description": "Said over the map and in the list when there are no robots."
+      },
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Loading the map\"",
+       "description": ""
+      },
+      {
+       "name": "error",
+       "type": "string",
+       "default": "\"The map could not be loaded.\"",
+       "description": ""
+      },
+      {
+       "name": "retry",
+       "type": "string",
+       "default": "\"Reload the map\"",
+       "description": ""
+      },
+      {
+       "name": "count",
+       "type": "(n: number) => string",
+       "default": "(n) => (n === 1 ? \"1 robot\" : `${n} robots`)",
+       "description": "How many robots the map shows, read with the instructions."
+      },
+      {
+       "name": "selected",
+       "type": "(name: string, status: string) => string",
+       "default": "(name, status) => `Selected: ${name}, ${status}`",
+       "description": "The selected robot, read with the instructions."
+      },
+      {
+       "name": "north",
+       "type": "(deg: number) => string",
+       "default": "(deg) => `North is ${Math.round(((deg % 360) + 360) % 360)}° clockwise from the top`",
+       "description": "Where north is, when `northDeg` is given."
+      },
+      {
+       "name": "northLetter",
+       "type": "string",
+       "default": "\"N\"",
+       "description": "The letter on the north arrow."
+      },
+      {
+       "name": "position",
+       "type": "(x: number, y: number) => string",
+       "default": "(x, y) => `${metres(x)} m across, ${metres(y)} m down`",
+       "description": "RobotMapList: a robot's position."
+      },
+      {
+       "name": "inZone",
+       "type": "(zone: string, kind?: string) => string",
+       "default": "(zone, kind) => (kind ? `In ${zone} (${kind.toLowerCase()})` : `In ${zone}`)",
+       "description": "RobotMapList: the zone a robot is in."
+      },
+      {
+       "name": "inUnnamedZone",
+       "type": "(kind: string) => string",
+       "default": "(kind) => `In a ${kind.toLowerCase()} zone`",
+       "description": "RobotMapList: the zone a robot is in, when the zone has no name."
+      },
+      {
+       "name": "noZone",
+       "type": "string",
+       "default": "\"Outside the marked zones\"",
+       "description": "RobotMapList: a robot outside every zone."
+      },
+      {
+       "name": "heading",
+       "type": "(deg: number) => string",
+       "default": "(deg) => `Facing ${Math.round(((deg % 360) + 360) % 360)}°`",
+       "description": "RobotMapList: which way it faces."
+      },
+      {
+       "name": "metres",
+       "type": "(m: number) => string",
+       "default": "(m) => `${m} m`",
+       "description": "The scale bar's length."
+      }
+     ]
     }
    ],
    "inherits": []
@@ -5584,7 +5822,129 @@
     {
      "name": "labels",
      "type": "Partial<RobotMapLabels>",
-     "description": ""
+     "description": "",
+     "keys": [
+      {
+       "name": "instructions",
+       "type": "string",
+       "default": "\"Arrow keys move the map, plus and minus zoom, 0 shows the whole site. The robot list beside the map has the same robots as text.\"",
+       "description": "Read once when focus enters the map."
+      },
+      {
+       "name": "zoomIn",
+       "type": "string",
+       "default": "\"Zoom in\"",
+       "description": ""
+      },
+      {
+       "name": "zoomOut",
+       "type": "string",
+       "default": "\"Zoom out\"",
+       "description": ""
+      },
+      {
+       "name": "fit",
+       "type": "string",
+       "default": "\"Show the whole site\"",
+       "description": ""
+      },
+      {
+       "name": "status",
+       "type": "Record<Status, string>",
+       "default": "{ active: \"Working\", normal: \"Idle\", warning: \"Needs attention\", danger: \"Stopped\", offline: \"Offline\" }",
+       "description": "Default words per status, for robots without statusLabel."
+      },
+      {
+       "name": "zoneKind",
+       "type": "Record<RobotMapZoneKind, string>",
+       "default": "{ restricted: \"No entry\", slow: \"Slow zone\", charging: \"Charging\", other: \"Marked\" }",
+       "description": "Default names per zone kind, and the kind's word in the list."
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"No robots on this site right now.\"",
+       "description": "Said over the map and in the list when there are no robots."
+      },
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Loading the map\"",
+       "description": ""
+      },
+      {
+       "name": "error",
+       "type": "string",
+       "default": "\"The map could not be loaded.\"",
+       "description": ""
+      },
+      {
+       "name": "retry",
+       "type": "string",
+       "default": "\"Reload the map\"",
+       "description": ""
+      },
+      {
+       "name": "count",
+       "type": "(n: number) => string",
+       "default": "(n) => (n === 1 ? \"1 robot\" : `${n} robots`)",
+       "description": "How many robots the map shows, read with the instructions."
+      },
+      {
+       "name": "selected",
+       "type": "(name: string, status: string) => string",
+       "default": "(name, status) => `Selected: ${name}, ${status}`",
+       "description": "The selected robot, read with the instructions."
+      },
+      {
+       "name": "north",
+       "type": "(deg: number) => string",
+       "default": "(deg) => `North is ${Math.round(((deg % 360) + 360) % 360)}° clockwise from the top`",
+       "description": "Where north is, when `northDeg` is given."
+      },
+      {
+       "name": "northLetter",
+       "type": "string",
+       "default": "\"N\"",
+       "description": "The letter on the north arrow."
+      },
+      {
+       "name": "position",
+       "type": "(x: number, y: number) => string",
+       "default": "(x, y) => `${metres(x)} m across, ${metres(y)} m down`",
+       "description": "RobotMapList: a robot's position."
+      },
+      {
+       "name": "inZone",
+       "type": "(zone: string, kind?: string) => string",
+       "default": "(zone, kind) => (kind ? `In ${zone} (${kind.toLowerCase()})` : `In ${zone}`)",
+       "description": "RobotMapList: the zone a robot is in."
+      },
+      {
+       "name": "inUnnamedZone",
+       "type": "(kind: string) => string",
+       "default": "(kind) => `In a ${kind.toLowerCase()} zone`",
+       "description": "RobotMapList: the zone a robot is in, when the zone has no name."
+      },
+      {
+       "name": "noZone",
+       "type": "string",
+       "default": "\"Outside the marked zones\"",
+       "description": "RobotMapList: a robot outside every zone."
+      },
+      {
+       "name": "heading",
+       "type": "(deg: number) => string",
+       "default": "(deg) => `Facing ${Math.round(((deg % 360) + 360) % 360)}°`",
+       "description": "RobotMapList: which way it faces."
+      },
+      {
+       "name": "metres",
+       "type": "(m: number) => string",
+       "default": "(m) => `${m} m`",
+       "description": "The scale bar's length."
+      }
+     ]
     },
     {
      "name": "robots",
@@ -6818,7 +7178,75 @@
     {
      "name": "labels",
      "type": "Partial<TeleopPadLabels>",
-     "description": ""
+     "description": "",
+     "keys": [
+      {
+       "name": "name",
+       "type": "string",
+       "default": "\"Drive the robot\"",
+       "description": "The pad's accessible name. Name the robot when there is more than one: \"Drive 7F3A\"."
+      },
+      {
+       "name": "roleDescription",
+       "type": "string",
+       "default": "\"drive pad\"",
+       "description": "Read after the role name, instead of \"application\"."
+      },
+      {
+       "name": "hint",
+       "type": "string",
+       "default": "\"Hold to drive\"",
+       "description": "First line of the description, and the status before the first drive."
+      },
+      {
+       "name": "release",
+       "type": "string",
+       "default": "\"Release to stop\"",
+       "description": ""
+      },
+      {
+       "name": "keys",
+       "type": "string",
+       "default": "\"Arrow keys or W A S D drive while held. Space stops.\"",
+       "description": ""
+      },
+      {
+       "name": "driving",
+       "type": "string",
+       "default": "\"Driving\"",
+       "description": ""
+      },
+      {
+       "name": "speedUnit",
+       "type": "string",
+       "default": "\"m/s\"",
+       "description": ""
+      },
+      {
+       "name": "stopped",
+       "type": "string",
+       "default": "\"Stopped\"",
+       "description": ""
+      },
+      {
+       "name": "lost",
+       "type": "string",
+       "default": "\"Stopped: input lost. Hold again to drive\"",
+       "description": "Stopped because input was lost (cancel, blur, hidden, timeout): the operator must lift and press again."
+      },
+      {
+       "name": "disabled",
+       "type": "string",
+       "default": "\"Disabled\"",
+       "description": ""
+      },
+      {
+       "name": "limit",
+       "type": "string",
+       "default": "\"Speed limit\"",
+       "description": "Before the cap, e.g. \"Speed limit 60 %\"."
+      }
+     ]
     }
    ],
    "inherits": []

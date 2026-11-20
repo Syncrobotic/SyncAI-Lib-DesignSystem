@@ -2,7 +2,9 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.23.0 · 2026-11-20
+
+What robot products need that no other kit has (a live camera, a dead-man drive pad, a site map), and every component's words translatable.
 
 ### Added
 - **`camera-feed`** (beta): a robot's live camera over a native `<video>` the app feeds (a WebRTC `stream`, set as `srcObject`, or a `src` the browser plays), no streaming library; the app owns the connection. It always says whether the picture is live, by a shape and a word in the header beside the camera and the robot: Live (a still dot, never red, never pulsing) with `latencyMs`; Connecting (the only blue: a spinner, over a skeleton that holds `aspectRatio`); Stalled · last frame 14:02:31 over the dimmed last picture after `staleAfterMs` (2 s) without a new frame, watched with `requestVideoFrameCallback`, else `timeupdate`; Paused; Camera offline with `offlineReason` and Reconnect (`onRetry`); No camera. Pause view freezes this screen only (the robot keeps streaming); snapshot draws the frame on screen to a PNG for `onSnapshot`; mute only with `audio`; full screen. Space and F only while focus is inside. `children` are drawn over the picture (a crosshair, detection boxes). Labels exported as `CameraFeedLabels` / `defaultCameraFeedLabels`, with `formatTime` for the site's clock.
@@ -18,6 +20,9 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - **Localisation: every word the kit says can be translated without editing its source.** Components that showed or announced fixed English now take `labels`, the kit's existing pattern: an exported `<Name>Labels` type and English `default<Name>Labels`, merged under a partial `labels` prop, with functions for words that hold a number or a name. New in 0.23.0: Autocomplete, Breadcrumb, ChipGroup, CommandDialog, CopyButton, DataGrid (every part, `selectColumn` and `expandColumn` included; DataGridPagination passes Pagination's), DatePicker and DateRangePicker, DialogContent, PhoneInput, Questionnaire and QuestionField, RouteProgress, SearchField, Spinner, Attachment, Stepper and StepperCompact, Sortable (its drag announcements), Trace and TraceHeader (status words, counts, durations), TimePicker. The defaults are today's words; single props such as `label`, `placeholder` and `closeLabel` still work and win.
 - **`locale` where a component formats a number, a day or a time itself:** ChipGroup, Filters, LoadMore and ShareBar (numbers; left out, the browser's language as before), DatePicker and DateRangePicker (the trigger's day with Intl, plus `calendarLocale` for react-day-picker's calendar), TimePicker (times with Intl), PhoneInput (country names and their order; English when left out). Calendar lets a react-day-picker locale such as `zhTW` name its days.
 - **Docs: Localisation** (Getting started): why labels and locale, the pattern, a worked zh-TW example, and every component's keys with their English defaults, generated from the source (`npm run props` now records each labels prop's keys in site/props.json).
+
+### Fixed
+- **`tabs` 0.23.0: no scrollbar on the tab list on phones.** The triggers sit 1 px past the list's border (`-mb-px`, so the underline covers it); with `overflow-x: auto` for many tabs, `overflow-y` computes to auto too, so the list scrolled 1 px vertically and Android showed a scrollbar on first load. `overflow-y` is now hidden (also on the docs' component tabs and the drawer's area tabs). Checked on all 334 pages at phone width: no box scrolls by 1–4 px any more.
 
 ## 0.22.4 · 2026-11-20
 

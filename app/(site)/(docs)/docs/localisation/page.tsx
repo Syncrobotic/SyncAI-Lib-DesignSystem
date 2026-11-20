@@ -144,7 +144,7 @@ export default function LocalisationPage() {
       />
 
       <H2 id="why">Why labels and locale</H2>
-      <P text="The kit ships in English, but products run in Taiwan, Japan and Europe. A component is only translated when all of it is: the button text, the empty message, and the names only a screen reader hears (`Clear`, `Select row`, `Picked up Dock A. Position 2 of 5.`). Editing the installed source would be lost on the next `npx shadcn add --overwrite`, so every one of these words comes in through a prop." />
+      <P text="The kit ships in English; a product may need another language, such as Traditional Chinese. A component is only translated when all of it is: the button text, the empty message, and the names only a screen reader hears (`Clear`, `Select row`, `Picked up Dock A. Position 2 of 5.`). Editing the installed source would be lost on the next `npx shadcn add --overwrite`, so every one of these words comes in through a prop." />
       <P text="Numbers, days and times are words too. A count of 12,345 is written 12.345 in German; 3 November 2026 is 2026年11月3日 in Taiwan. Components that write a number, a day or a time themselves take `locale` and format with the browser's Intl, so nothing is added to your bundle." />
 
       <H2 id="pattern">The pattern</H2>
