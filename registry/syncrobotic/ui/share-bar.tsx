@@ -1,22 +1,29 @@
-// @syncrobotic/share-bar v0.17.3 · update: npx shadcn add @syncrobotic/share-bar --overwrite
+// @syncrobotic/share-bar v0.22.0 · update: npx shadcn add @syncrobotic/share-bar --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
-/** The chart palette in order (validated for colour-vision deficiency, and off the status hues), then grey for "other". */
+/**
+ * The chart palette: the accent, two graphite steps, then the light grey for "other" (slot 4). Slot 5 is the baseline
+ * grey, kept for code that names it.
+ */
 const tones = {
   1: "bg-chart-1",
   2: "bg-chart-2",
   3: "bg-chart-3",
   4: "bg-chart-4",
   5: "bg-chart-5",
-  other: "bg-muted-foreground",
+  other: "bg-chart-4",
 } as const
 
 export type ShareSegment = {
   key: string
   label: string
   value: number
-  /** Chart colour 1–5 in a fixed order, or "other". Defaults to the segment's place in the list, so colour follows the order you give, never the size. */
+  /**
+   * Chart colour in a fixed order, or "other". Defaults to the segment's place in the list (the first in the accent,
+   * then two greys, then Other), so colour follows the order you give, never the size. Give at most three parts and
+   * fold the rest into one "Other" segment.
+   */
   tone?: keyof typeof tones
 }
 
@@ -50,18 +57,22 @@ export function ShareBar({
   className?: string
 }) {
   const total = totalProp ?? segments.reduce((n, s) => n + s.value, 0)
-  const shown = segments.map((s, i) => ({ ...s, tone: s.tone ?? (((i % 5) + 1) as 1 | 2 | 3 | 4 | 5) })).filter((s) => s.value > 0)
+  const shown = segments.map((s, i) => ({ ...s, tone: s.tone ?? (Math.min(i + 1, 4) as 1 | 2 | 3 | 4) })).filter((s) => s.value > 0)
+  const rest = total - shown.reduce((n, s) => n + s.value, 0)
   const pct = (v: number) => (100 * v) / Math.max(total, 1)
   const bar = (
     <div
       role="img"
       aria-label={`${label}: ${shown.map((s) => `${s.label} ${fmt(s.value)}`).join(", ")}`}
       data-slot="share-bar"
-      className={cn("flex w-full gap-0.5 overflow-hidden rounded-full bg-track", size === "sm" ? "h-2" : "h-2.5", !legend && className)}
+      className={cn("flex w-full gap-0.5 overflow-hidden rounded-full", size === "sm" ? "h-2" : "h-2.5", !legend && className)}
     >
       {shown.map((s) => (
         <span key={s.key} title={`${s.label}: ${fmt(s.value)} (${pct(s.value).toFixed(1)} %)`} className={cn("h-full", tones[s.tone])} style={{ width: `${pct(s.value)}%` }} />
       ))}
+      {/* The part of the whole not shown is the track; the 2 px gaps between parts show the surface, so Other never merges
+          with its neighbour or with the track. */}
+      {(rest > 0 || shown.length === 0) && <span data-rest="" className="h-full flex-1 bg-track" />}
     </div>
   )
   if (!legend) return bar

@@ -1,4 +1,4 @@
-/* @syncrobotic/syncrobotic-theme v0.17.3 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
+/* @syncrobotic/syncrobotic-theme v0.22.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
 /*
  * SYNCROBOTIC theme (see CHANGELOG.md for its version history)
  * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
@@ -80,17 +80,26 @@
   --shadow-overlay: 0 16px 40px rgb(9 9 11 / 0.18);
 
   /*
-   * Chart series: identity, not status. Fixed order, never cycled. Hues sit between the status hues (blue 262, green 162,
-   * amber 60–85, red 25) so no series reads as a status: violet 300, teal 205, olive 120, magenta 345, then grey for
-   * "Other". Validated for colour-vision deficiency (worst adjacent ΔE 16 deutan) and 3:1 or more on the card. Charts still
-   * ship a legend and direct labels, and charts with axes a table view, so no series is told apart by colour alone.
-   * Use status colours for status, never as series.
+   * Chart series: graphite and one accent. A chart has one series the reader should look at, in the accent: the
+   * SYNCROBOTIC brand indigo (#5347a8 in light; the other modes keep its hue), off the status hues. Every other series is
+   * graphite, and series are told apart by line style as well as colour: the first solid, the second dashed (6 4), the
+   * third dotted (1.5 3.5). Bars and stacks use the grey steps with a 2 px gap in the card colour between them.
+   *   1 accent: the series that matters (this week, this robot, the one the title names)
+   *   2 graphite strong, 3 graphite mid: the other series, in that order
+   *   4 Other: light grey for what is folded together. A fourth series or more never gets a colour: fold it into Other or
+   *     split the chart into small multiples. Other is below 3:1 on purpose (it recedes); it is always labelled, in the
+   *     legend and the table, and set off from its neighbour by the 2 px gap.
+   *   5 baseline: an earlier period, a plan or a target, always dashed. The graphite mid, by name.
+   * Checked in every mode below against its card (dataviz palette check): any two of slots 1–3, and 3 beside 4, differ
+   * by ΔE 15 or more to normal vision and under red-green colour blindness, and slots 1–3 are 3:1 or more. Charts still
+   * ship a legend and, with axes, a table view, so no series is told apart by colour alone. Blue, green, amber and red
+   * stay for status, never a series.
    */
-  --chart-1: #663e9e;
-  --chart-2: #00929f;
-  --chart-3: #6b7f09;
-  --chart-4: #943171;
-  --chart-5: #71717a;
+  --chart-1: #5347a8;
+  --chart-2: #3f3f46;
+  --chart-3: #82828c;
+  --chart-4: #b4b4bb;
+  --chart-5: var(--chart-3);
 
   /* Annotations on images: boxes and points drawn over camera pictures. Told apart first by line style (predicted solid
      2 px, ground truth dashed 2 px, previous dotted and faded, selected 3 px with handles) and only then by these colours,
@@ -167,11 +176,12 @@
   --stop: #dc2626;
   --stop-deep: #7f1d1d;
 
-  --chart-1: #7d56b8;
-  --chart-2: #13a5b2;
-  --chart-3: #82972f;
-  --chart-4: #af4a88;
-  --chart-5: #8f8f98;
+  /* The order of emphasis turns over: the strong graphite is the lightest grey, Other the darkest. */
+  --chart-1: #8986de;
+  --chart-2: #c4c4ca;
+  --chart-3: #717179;
+  --chart-4: #45454c;
+  --chart-5: var(--chart-3);
 
   /* Lighter strokes over a black halo. */
   --annotate-predicted: var(--chart-1);
@@ -227,6 +237,13 @@
   --float: rgb(255 255 255 / 1);
   --edge: rgb(0 0 0 / 0.55);
 
+  /* Series one step further from the card; here Other reaches 3:1 too. */
+  --chart-1: #3d2e8d;
+  --chart-2: #26262b;
+  --chart-3: #62626b;
+  --chart-4: #909097;
+  --chart-5: var(--chart-3);
+
   --annotate-predicted: var(--chart-1);
   --annotate-truth: var(--chart-2);
   --annotate-previous: var(--muted-foreground);
@@ -274,6 +291,12 @@
   --scrim: rgb(0 0 0 / 0.8);
   --float: rgb(18 18 21 / 1);
   --edge: rgb(255 255 255 / 0.55);
+
+  --chart-1: #b5b4ff;
+  --chart-2: #e4e4e8;
+  --chart-3: #93939c;
+  --chart-4: #64646b;
+  --chart-5: var(--chart-3);
 
   --annotate-predicted: var(--chart-1);
   --annotate-truth: var(--chart-2);
@@ -330,7 +353,7 @@
      fill alone (--accent) is a quiet step and does not say "selected" on its own. */
   --shadow-selected: inset 0.125rem 0 0 var(--foreground);
 
-  /* Usage: stroke-chart-1, bg-chart-2. Series identity only. */
+  /* Usage: stroke-chart-1, bg-chart-2. Series identity only: 1 accent, 2–3 graphite, 4 Other, 5 baseline. */
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);

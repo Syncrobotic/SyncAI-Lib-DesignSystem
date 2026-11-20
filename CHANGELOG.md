@@ -2,6 +2,31 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.22.0 · 2026-11-20
+
+Charts in graphite and the brand indigo, alarms you can scan, and the brand kit on its own page.
+
+### Added
+- **Brand assets** (`/brand`, linked from the footer): the official SYNCROBOTIC logo kit (horizontal, stacked and compact logos, logomark, logotype) in black, grey, indigo and white as SVG and 2048 px PNG, one ZIP with full-size PNGs and the Illustrator source; the brand colours with their contrast; and how to show the brand in web and app interfaces: the product header, favicon and app icon, sign-in and splash screens, clear space and smallest sizes, and what not to do. Product photos are listed as waiting for files.
+
+### Changed
+- **Chart palette: graphite and one accent** (`syncrobotic-theme` 0.22.0). The categorical palette (purple, teal, olive, plum, grey) felt foreign to a monochrome UI. Now a chart has one series the reader should look at, in the brand indigo (`--chart-1`: #5347a8 light, #8986de dark, #3d2e8d and #b5b4ff in high contrast); the others are graphite (`--chart-2`, `--chart-3`), `--chart-4` is a light grey for Other and `--chart-5` the baseline (an alias of `--chart-3`, always dashed). The token names are unchanged; their meaning is not: code that used slots 2–5 as hues now draws them grey. Checked in all four modes against the card: any two of slots 1–3, and 3 beside 4, differ by ΔE 15 or more to normal vision and under red-green colour blindness; slots 1–3 reach 3:1 (Other sits at 2.1:1 in light and 1.9:1 in dark on purpose, always labelled; 3:1 or more in high contrast). Blue, green, amber and red stay for status.
+- **`chart` 0.22.0: line style by series order.** `ChartContainer` gives every `Line` and `Area` outline that does not set `strokeDasharray` its style by its place in the config: solid, dashed (6 4), dotted (1.5 3.5); grouped bars get the kit's 2 px gap; the legend and tooltip draw each series' line (`ChartSwatch`). New exports `chartDash`, `chartDashes`, `ChartSwatch`. Three series and Other at most: fold the rest into Other, highlight one, or split into small multiples.
+- **`share-bar` 0.22.0**: parts take the accent, two greys, then the Other grey for a fourth part and more; `"other"` is `--chart-4`. The part not shown is its own track segment, so the gaps show the surface.
+- **Chart blocks** (0.22.0): `heatmap-week-hours` runs the accent's ramp from the track to the full accent; `heatmap-zones` up to 60 % (36 % in high contrast) so every written number keeps 4.5:1; `line-chart-compare` and `area-chart-cumulative` take their dashed second series from the chart; `histogram-battery` bins in the graphite mid; `radial-chart-capacity` rings in accent and greys; `area-chart-fleet-states` draws its stack as solid bands set apart by a 2 px card-coloured stroke, like a stacked bar. The other chart blocks keep their code and take the new palette and line styles from the theme and `chart`.
+- Docs: the **Data visualisation** foundation explains the new model (accent, greys, line style, Other, baseline) with its separation and contrast tables computed from the theme in all four modes; the design language and checklist follow.
+- **`bar-chart-stacked`, `bar-chart-missions`** (0.22.0) and `area-chart-fleet-states`: filled marks take the accent, then the mid and Other greys; the strong grey is for thin lines, because as a large fill it outweighs the accent (near-black in light, near-white in dark).
+- **`alarm` redesign** (0.22.0). The same priority was said four ways (bar, icon, coloured word, tinted row), every row carried a heavy Acknowledge, the time was buried in the meta line and the state could only be read from small grey text. Now `AlarmList` is one panel of aligned rows: priority glyph → time (tabular, first, so order and age read down the column) → priority word and title, source under it → state and actions.
+  - Colour only on the glyph and the priority word; no tinted rows, critical included.
+  - Unacknowledged: bold title and a solid bar in the priority's colour. Cleared but not acknowledged: still bold, the bar dashed, "Cleared 14:07, not acknowledged". Acknowledged: regular, grey, "Acknowledged 13:42".
+  - A lighter Acknowledge per row; after it, focus moves to the next Acknowledge (or the list's heading). The header gets "Acknowledge all" with two or more unacknowledged alarms in view; it takes only those (never shelved, suppressed or out-of-service ones; folded low alarms in a flood only while their group is open, when it reads "Acknowledge 2 shown") and announces how many it acknowledged.
+  - Shelved, suppressed and out-of-service alarms stay counted in the panel's footer. Flood handling is unchanged.
+  - Below 576 px of container width the row reflows: time and source under the title, state and buttons on their own line (44 px on touch).
+  - New, all optional: `AlarmData.acknowledgedAt`, `AlarmData.clearedAt`, `AlarmList.onAcknowledgeAll(ids)` (without it, "Acknowledge all" calls `onAcknowledge` per id), labels `clearedWhen`, `acknowledgeAll`, `acknowledgeShown`, `acknowledgedCount`. `alarmPriority` gains `border`; its `tint` is no longer used by the kit. The list is now a card with its own border: drop any card you wrapped it in.
+- **`island`** (0.22.0): `IslandAlarm` follows: never tinted, the time first in tabular figures, a lighter Acknowledge.
+- **`console-overview`** (0.22.0): acknowledging records the time, and Acknowledge all is wired.
+- Docs site: the header and footer use the official logomark (the S on its own); the disc stays for favicons, app icons and avatars. The footer's nameplate is the official logotype, not the name typed in Geist.
+
 ## 0.21.0 · 2026-11-20
 
 What products were building by hand: menus, previews and banners, a lineage graph, a media player, a histogram, and the account screens every console needs.

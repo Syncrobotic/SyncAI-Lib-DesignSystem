@@ -1,4 +1,4 @@
-// @syncrobotic/histogram-battery v0.21.0 · update: npx shadcn add @syncrobotic/histogram-battery --overwrite
+// @syncrobotic/histogram-battery v0.22.0 · update: npx shadcn add @syncrobotic/histogram-battery --overwrite
 "use client"
 
 import * as React from "react"
@@ -39,7 +39,7 @@ export function median(values: readonly number[]) {
   return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2
 }
 
-const config = { n: { label: "Dockings", color: 5 } } satisfies ChartConfig
+const config = { n: { label: "Dockings", color: 3 } } satisfies ChartConfig
 const LOW = 15
 // Sample data: battery level (%) each time a robot docked to charge, last 30 days, 240 dockings. A fixed generator, so the
 // picture is the same on every render: most robots dock between 25 and 55 %, a tail docks late.

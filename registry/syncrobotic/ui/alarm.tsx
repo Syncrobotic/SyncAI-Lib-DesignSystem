@@ -1,10 +1,10 @@
-// @syncrobotic/alarm v0.17.3 · update: npx shadcn add @syncrobotic/alarm --overwrite
+// @syncrobotic/alarm v0.22.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
 "use client"
 
 import * as React from "react"
 import { ChevronRight, CircleAlert, OctagonAlert, TriangleAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { usePresence, usePresenceList } from "@/registry/syncrobotic/hooks/use-presence"
+import { usePresenceList } from "@/registry/syncrobotic/hooks/use-presence"
 import { feedback as signal } from "@/registry/syncrobotic/lib/feedback"
 
 /**
@@ -18,8 +18,10 @@ export const alarmPriority = {
   critical: {
     icon: OctagonAlert,
     text: "text-danger",
+    /** Not used by Alarm since 0.22.0 (rows are never tinted); kept for code that reads it. */
     tint: "bg-danger-subtle",
     bar: "bg-danger",
+    border: "border-danger",
     rank: 0,
   },
   high: {
@@ -27,6 +29,7 @@ export const alarmPriority = {
     text: "text-warning",
     tint: "bg-warning-subtle",
     bar: "bg-warning",
+    border: "border-warning",
     rank: 1,
   },
   low: {
@@ -34,6 +37,7 @@ export const alarmPriority = {
     text: "text-neutral",
     tint: "bg-neutral-subtle",
     bar: "bg-neutral",
+    border: "border-neutral",
     rank: 2,
   },
 } as const
@@ -43,8 +47,12 @@ export type AlarmLabels = {
   high: string
   low: string
   unacknowledged: string
+  /** Alone, or before `acknowledgedAt`: "Acknowledged 13:42". */
   acknowledged: string
+  /** Cleared before anyone acknowledged it, when `clearedAt` is not given. */
   cleared: string
+  /** The same with the time it cleared: "Cleared 14:07, not acknowledged". */
+  clearedWhen: (time: string) => string
   acknowledge: string
   shelve: string
   unshelve: string
@@ -59,6 +67,7 @@ export const defaultAlarmLabels: AlarmLabels = {
   unacknowledged: "Unacknowledged",
   acknowledged: "Acknowledged",
   cleared: "Cleared, not acknowledged",
+  clearedWhen: (t) => `Cleared ${t}, not acknowledged`,
   acknowledge: "Acknowledge",
   shelve: "Shelve",
   unshelve: "Unshelve",
@@ -72,12 +81,16 @@ export type AlarmData = {
   title: string
   /** The robot, sensor or system that raised it. */
   source?: string
-  /** When it was raised, already formatted by the app: "14:02:31". */
+  /** When it was raised, already formatted by the app: "14:02:31". Shown first, in tabular figures. */
   time?: string
   /** The condition is still present. */
   active: boolean
   /** An operator has acknowledged it. */
   acknowledged: boolean
+  /** When it was acknowledged, already formatted: "13:42". Shown as "Acknowledged 13:42". */
+  acknowledgedAt?: string
+  /** When the condition cleared, already formatted ("14:07"). Shown while a cleared alarm waits for acknowledgement. */
+  clearedAt?: string
   /**
    * Shelved by an operator until this time, already formatted ("15:30"). A shelved alarm is out of the live list and
    * silent; the app clears this field when the time comes, and the alarm returns. Critical alarms cannot be shelved.
@@ -104,91 +117,139 @@ type AlarmProps = Omit<AlarmData, "id"> & {
   className?: string
 }
 
-/** A short last word ("3" in "Floor 3", "B" in "Hall B") held to the word before it, so it never wraps alone. */
-const keepLastWord = (text: string) => text.replace(/ (\S{1,3})$/, "\u00a0$1")
+/**
+ * A short last word ("3" in "Floor 3", "B" in "Hall B") held to the word before it, so it never wraps alone; and each " · "
+ * held to the word before it, so a wrapped line never starts on a bare "·".
+ */
+const keepLastWord = (text: string) => text.replace(/ (\S{1,3})$/, "\u00a0$1").replace(/ \u00b7 /g, "\u00a0\u00b7 ")
 
-/** One alarm. Unacknowledged: a bar in the priority colour and the word "Unacknowledged"; critical ones are also tinted. Colour stays off everything else. */
-export function Alarm({ priority, title, source, time, active, acknowledged, shelvedUntil, onAcknowledge, onShelve, onUnshelve, action, labels, className }: AlarmProps) {
+// Light row buttons: one quiet outline, so a list of ten alarms is not a column of heavy boxes. 44 px on touch (--h-sm).
+const rowButton = "press h-(--h-sm) shrink-0 rounded-xs px-3 text-sm font-medium ring-1 ring-inset hover:bg-accent"
+
+/**
+ * One alarm, as a row of aligned columns: priority glyph, time, priority word and title (source under it), then state
+ * and actions. Colour is only on the glyph and the priority word; rows are never tinted.
+ *
+ * - Unacknowledged: bold title and a solid bar in the priority's colour.
+ * - Cleared, not acknowledged: still bold (it still needs someone), but the bar is dashed: the condition has gone.
+ * - Acknowledged: regular weight, muted title, no bar, and when ("Acknowledged 13:42").
+ * - Shelved: quiet like acknowledged, with "Shelved until 15:30" and the way back.
+ *
+ * Narrower than 576 px (its container, not the screen) the columns reflow: the time goes under the title, and the
+ * state and buttons get a line of their own.
+ */
+export function Alarm({
+  priority,
+  title,
+  source,
+  time,
+  active,
+  acknowledged,
+  acknowledgedAt,
+  clearedAt,
+  shelvedUntil,
+  onAcknowledge,
+  onShelve,
+  onUnshelve,
+  action,
+  labels,
+  className,
+}: AlarmProps) {
   const l = { ...defaultAlarmLabels, ...labels }
   const p = alarmPriority[priority]
   const Icon = p.icon
   const id = React.useId()
   // Critical alarms cannot be shelved: a stray shelvedUntil on one is ignored, here and in the list.
   const shelved = Boolean(shelvedUntil) && priority !== "critical"
-  const state = shelved ? `${l.shelvedUntil} ${shelvedUntil}` : !acknowledged ? (active ? l.unacknowledged : l.cleared) : l.acknowledged
-  // A shelved alarm is quiet: no bar, no tint, no acknowledge; only the way back.
+  // A shelved alarm is quiet: no bar, no weight, no acknowledge; only the way back.
   const loud = !acknowledged && !shelved
+  const cleared = loud && !active
+  const state = shelved
+    ? `${l.shelvedUntil} ${shelvedUntil}`
+    : !acknowledged
+      ? active
+        ? l.unacknowledged
+        : clearedAt
+          ? l.clearedWhen(clearedAt)
+          : l.cleared
+      : acknowledgedAt
+        ? `${l.acknowledged} ${acknowledgedAt}`
+        : l.acknowledged
   return (
     <article
       aria-labelledby={`${id}-title`}
-      aria-describedby={`${id}-meta`}
+      aria-describedby={[time && `${id}-time`, source && `${id}-source`, `${id}-state`].filter(Boolean).join(" ")}
       data-priority={priority}
-      data-state={shelved ? "shelved" : !acknowledged ? "unacknowledged" : "acknowledged"}
-      className={cn(
-        "relative flex min-h-(--h-row) animate-appear flex-wrap items-start gap-x-2 gap-y-2 overflow-hidden rounded-md py-2 pr-2 pl-4",
-        loud && active && priority === "critical" ? p.tint : "bg-card ring-1 ring-border",
-        className,
-      )}
+      data-state={shelved ? "shelved" : cleared ? "cleared" : loud ? "unacknowledged" : "acknowledged"}
+      className={cn("@container relative w-full animate-appear rounded-md bg-card ring-1 ring-border", className)}
     >
-      {loud && <span aria-hidden="true" className={cn("absolute inset-y-0 left-0 w-1", p.bar)} />}
-      {/* On the title's first line (20 px icon, 20 px line), not the middle of a two- or three-line block. */}
-      <Icon aria-hidden="true" className={cn("size-5 shrink-0", p.text)} />
-      <div className="flex min-w-0 flex-1 basis-40 flex-col">
-        <p id={`${id}-title`} className={cn("line-clamp-2 text-sm text-pretty", loud ? "font-bold" : "font-medium")}>
-          <span className={p.text}>{l[priority]}</span>
-          <span aria-hidden="true" className="text-muted-foreground">
-            {" "}
-            ·{" "}
-          </span>
+      {/* Solid while the condition is present; dashed once it has cleared and only the acknowledgement is missing. */}
+      {loud && (
+        <span
+          aria-hidden="true"
+          className={cn("absolute inset-y-2 left-0 rounded-r-xs", cleared ? cn("border-l-4 border-dashed", p.border) : cn("w-1", p.bar))}
+        />
+      )}
+      <div className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-x-2 py-3 pr-3 pl-4 @xl:grid-cols-[auto_auto_minmax(0,1fr)_auto]">
+        {/* A 20 px glyph on the title's 20 px first line, not the middle of a two-line block. */}
+        <Icon aria-hidden="true" className={cn("col-start-1 row-start-1 size-5 shrink-0", p.text)} />
+        <p
+          id={`${id}-title`}
+          className={cn("col-start-2 row-start-1 line-clamp-2 text-sm text-pretty @xl:col-start-3", loud ? "font-bold" : "text-muted-foreground")}
+        >
+          <span className={cn("mr-2 font-medium", p.text)}>{l[priority]}</span>
           <span className="sr-only">: </span>
           {keepLastWord(title)}
         </p>
-        <p id={`${id}-meta`} className="text-xs text-pretty text-muted-foreground">
-          {/* Each separator is held to the word after it (no-break space), so a wrapped line never ends on a bare "·". */}
-          {[source, time, state].filter(Boolean).join(" \u00b7\u00a0")}
-        </p>
-      </div>
-      {/* Actions wrap under the text when the row is narrow, instead of squeezing the title. */}
-      <div className="ml-auto flex shrink-0 gap-2 self-center empty:hidden">
-        {action && (
-          <button
-            type="button"
-            onClick={action.onClick}
-            className="press h-(--h-sm) shrink-0 rounded-xs px-3 text-sm font-medium ring-1 ring-border ring-inset hover:bg-accent"
-          >
-            {action.label}
-          </button>
-        )}
-        {!shelved && onShelve && priority !== "critical" && (
-          <button
-            type="button"
-            onClick={onShelve}
-            className="press h-(--h-sm) shrink-0 rounded-xs px-3 text-sm font-medium ring-1 ring-border ring-inset hover:bg-accent"
-          >
-            {l.shelve}
-            <span className="sr-only">: {title}</span>
-          </button>
-        )}
-        {shelved && onUnshelve && (
-          <button
-            type="button"
-            onClick={onUnshelve}
-            className="press h-(--h-sm) shrink-0 rounded-xs px-3 text-sm font-medium ring-1 ring-border ring-inset hover:bg-accent"
-          >
-            {l.unshelve}
-            <span className="sr-only">: {title}</span>
-          </button>
-        )}
-        {loud && onAcknowledge && (
-          <button
-            type="button"
-            onClick={onAcknowledge}
-            className="press h-(--h-sm) shrink-0 rounded-xs px-3 text-sm font-medium ring-1 ring-foreground ring-inset hover:bg-accent"
-          >
-            {l.acknowledge}
-            <span className="sr-only">: {title}</span>
-          </button>
-        )}
+        {/* Narrow: one line under the title, time first. Wide: the time is its own column and the source sits under the title. */}
+        <div className="col-start-2 row-start-2 mt-1 flex min-w-0 flex-wrap gap-x-2 text-xs text-muted-foreground @xl:contents">
+          {time && (
+            <span id={`${id}-time`} className="font-mono whitespace-nowrap tabular-nums @xl:col-start-2 @xl:row-start-1 @xl:mr-2 @xl:min-w-[8ch] @xl:text-sm">
+              {time}
+            </span>
+          )}
+          {time && source && (
+            <span aria-hidden="true" className="@xl:hidden">
+              ·
+            </span>
+          )}
+          {source && (
+            <span id={`${id}-source`} className="min-w-0 @xl:col-start-3 @xl:row-start-2 @xl:mt-1">
+              {source}
+            </span>
+          )}
+        </div>
+        {/* Narrow: state and buttons on their own line, the buttons at its end. Wide: the last column. */}
+        <div className="col-start-2 row-start-3 mt-2 flex flex-wrap items-center justify-between gap-2 @xl:col-start-4 @xl:row-span-2 @xl:row-start-1 @xl:mt-0 @xl:justify-end @xl:self-center">
+          <span id={`${id}-state`} className="text-xs text-muted-foreground">
+            {state}
+          </span>
+          <span className="ml-auto flex flex-wrap justify-end gap-2 empty:hidden">
+            {action && (
+              <button type="button" onClick={action.onClick} className={cn(rowButton, "ring-border")}>
+                {action.label}
+              </button>
+            )}
+            {!shelved && onShelve && priority !== "critical" && (
+              <button type="button" onClick={onShelve} className={cn(rowButton, "ring-border")}>
+                {l.shelve}
+                <span className="sr-only">: {title}</span>
+              </button>
+            )}
+            {shelved && onUnshelve && (
+              <button type="button" onClick={onUnshelve} className={cn(rowButton, "ring-border")}>
+                {l.unshelve}
+                <span className="sr-only">: {title}</span>
+              </button>
+            )}
+            {loud && onAcknowledge && (
+              <button type="button" data-alarm-acknowledge="" onClick={onAcknowledge} className={cn(rowButton, "ring-input")}>
+                {l.acknowledge}
+                <span className="sr-only">: {title}</span>
+              </button>
+            )}
+          </span>
+        </div>
       </div>
     </article>
   )
@@ -277,12 +338,24 @@ export function AlarmAnnouncer({ announce }: { announce: { assertive: string; po
 type AlarmListProps = {
   alarms: AlarmData[]
   onAcknowledge?: (id: string) => void
+  /**
+   * "Acknowledge all" in the header, shown while two or more alarms in view are unacknowledged. It is called with the
+   * ids of those alarms only: never shelved, suppressed or out-of-service ones, and the low alarms folded in a flood
+   * only while their group is open. Without it, the button calls `onAcknowledge` once per id.
+   */
+  onAcknowledgeAll?: (ids: string[]) => void
   onShelve?: (id: string) => void
   onUnshelve?: (id: string) => void
   labels?: Partial<AlarmLabels> & {
     title?: string
     summary?: (active: number, unacknowledged: number) => string
     none?: string
+    /** The header button while every unacknowledged alarm is in view. */
+    acknowledgeAll?: string
+    /** The same button when some are out of view (folded low alarms in a flood): "Acknowledge 2 shown". */
+    acknowledgeShown?: (count: number) => string
+    /** Announced after "Acknowledge all": "3 alarms acknowledged". */
+    acknowledgedCount?: (count: number) => string
     /** "Shelved · 2" */
     shelvedGroup?: (count: number) => string
     /** "2 suppressed by design · 1 out of service" */
@@ -306,15 +379,34 @@ type AlarmListProps = {
   className?: string
 }
 
+const groupSummary =
+  "press flex min-h-(--h-md) cursor-pointer items-center gap-2 px-4 text-sm font-medium hover:bg-accent [&::-webkit-details-marker]:hidden"
+const groupChevron = "size-4 shrink-0 transition-transform duration-(--motion-fast) ease-(--ease-standard) group-open:rotate-90"
+
 /**
- * The alarm list: summary, then alarms in order. New critical alarms are announced assertively,
- * others politely, so screen-reader users hear them without moving focus.
+ * The alarm list: one panel with a header (title, counts, "Acknowledge all"), the live alarms as rows, then what is not
+ * live but never hidden silently: shelved alarms in their own group, suppressed and out-of-service ones counted. New
+ * critical alarms are announced assertively, others politely, so screen-reader users hear them without moving focus.
  */
-export function AlarmList({ alarms, onAcknowledge, onShelve, onUnshelve, labels, flood = { count: 10, minutes: 10 }, now, feedback = true, className }: AlarmListProps) {
+export function AlarmList({
+  alarms,
+  onAcknowledge,
+  onAcknowledgeAll,
+  onShelve,
+  onUnshelve,
+  labels,
+  flood = { count: 10, minutes: 10 },
+  now,
+  feedback = true,
+  className,
+}: AlarmListProps) {
   const l = {
     ...defaultAlarmLabels,
     title: "Alarms",
     none: "No active alarms",
+    acknowledgeAll: "Acknowledge all",
+    acknowledgeShown: (n: number) => `Acknowledge ${n} shown`,
+    acknowledgedCount: (n: number) => `${n} alarm${n === 1 ? "" : "s"} acknowledged`,
     shelvedGroup: (n: number) => `Shelved · ${n}`,
     hidden: (sup: number, oos: number) => [sup && `${sup} suppressed by design`, oos && `${oos} out of service`].filter(Boolean).join(" · "),
     flood: (n: number, m: number) => `Alarm flood: ${n} alarms in ${m} min. Critical and high first; low alarms are grouped.`,
@@ -322,6 +414,9 @@ export function AlarmList({ alarms, onAcknowledge, onShelve, onUnshelve, labels,
     many: (n: number) => `${n} new alarms`,
     ...labels,
   }
+  const headingId = React.useId()
+  const heading = React.useRef<HTMLHeadingElement>(null)
+  const listRef = React.useRef<HTMLUListElement>(null)
   const shown = React.useMemo(() => sortAlarms(alarms), [alarms])
   // A cleared alarm fades out (disappear, --motion-fast) instead of vanishing from under the operator's finger.
   const { rendered, done } = usePresenceList(shown, (a) => a.id)
@@ -343,6 +438,24 @@ export function AlarmList({ alarms, onAcknowledge, onShelve, onUnshelve, labels,
   // In a flood, unacknowledged low alarms fold into one row so critical and high stay in view.
   const folded = flooding ? rendered.filter(({ item: a }) => a.priority === "low" && !a.acknowledged) : []
   const open = folded.length ? rendered.filter((r) => !folded.includes(r)) : rendered
+  const [lowOpen, setLowOpen] = React.useState(false)
+
+  // Acknowledge all takes only what the operator can see: the live rows, and the folded low ones while their group is open.
+  const inView = [...open, ...(lowOpen ? folded : [])].filter((r) => !r.leaving && !r.item.acknowledged).map((r) => r.item.id)
+  const acknowledgeAll = onAcknowledgeAll ?? (onAcknowledge ? (ids: string[]) => ids.forEach(onAcknowledge) : undefined)
+  const [status, setStatus] = React.useState("")
+
+  // After an Acknowledge button leaves (its alarm was acknowledged), focus goes to the next one, or to the heading,
+  // so a keyboard user is never dropped at the top of the page.
+  const refocus = React.useRef(false)
+  React.useEffect(() => {
+    if (!refocus.current) return
+    if (document.activeElement && document.activeElement !== document.body) return
+    refocus.current = false
+    const next = listRef.current?.querySelector<HTMLElement>("[data-alarm-acknowledge]")
+    ;(next ?? heading.current)?.focus()
+  }, [shown])
+
   const row = ({ item: a, leaving }: (typeof rendered)[number]) => (
     <li
       key={a.id}
@@ -353,58 +466,112 @@ export function AlarmList({ alarms, onAcknowledge, onShelve, onUnshelve, labels,
       <Alarm
         {...a}
         labels={labels}
-        onAcknowledge={onAcknowledge ? () => onAcknowledge(a.id) : undefined}
+        className="rounded-none bg-transparent ring-0"
+        onAcknowledge={
+          onAcknowledge
+            ? () => {
+                refocus.current = true
+                onAcknowledge(a.id)
+              }
+            : undefined
+        }
         onShelve={onShelve ? () => onShelve(a.id) : undefined}
       />
     </li>
   )
-  const summary = labels?.summary?.(shown.filter((a) => a.active).length, unack) ?? `${shown.filter((a) => a.active).length} active · ${unack} unacknowledged`
+  const active = shown.filter((a) => a.active).length
+  const summary = labels?.summary?.(active, unack) ?? `${active} active · ${unack} unacknowledged`
+  const hidden = suppressed > 0 || outOfService > 0
 
   const announce = useAlarmSignals(alarms, { feedback, flooding, labels })
 
   return (
-    <section aria-label={l.title} className={cn("flex flex-col gap-2", className)}>
-      <div className="flex items-baseline justify-between gap-3 px-1">
-        <h2 className="text-sm font-bold">{l.title}</h2>
-        <span className="text-xs text-muted-foreground tabular-nums">{summary}</span>
+    <section aria-labelledby={headingId} className={cn("@container w-full overflow-hidden rounded-md bg-card ring-1 ring-border", className)}>
+      {/* The button keeps the title's line; on a narrow panel the counts go under the title rather than the button under everything. */}
+      <div className="flex min-h-(--h-row) items-center justify-between gap-3 border-b border-border px-4 py-2">
+        <div className="flex min-w-0 flex-col @md:flex-row @md:flex-wrap @md:items-baseline @md:gap-x-2">
+          {/* Focusable from script only: where focus lands when the last Acknowledge button goes. */}
+          <h2 id={headingId} ref={heading} tabIndex={-1} className="text-sm font-bold">
+            {l.title}
+          </h2>
+          {/* Each part keeps its words together, so a narrow header breaks between "3 active ·" and "2 unacknowledged". */}
+          <span className="text-xs text-muted-foreground tabular-nums">
+            {summary.split(" · ").map((part, i, all) => (
+              <React.Fragment key={i}>
+                <span className="whitespace-nowrap">
+                  {part}
+                  {i < all.length - 1 && " ·"}
+                </span>
+                {i < all.length - 1 && " "}
+              </React.Fragment>
+            ))}
+          </span>
+        </div>
+        {acknowledgeAll && inView.length >= 2 && (
+          <button
+            type="button"
+            onClick={() => {
+              acknowledgeAll(inView)
+              setStatus(l.acknowledgedCount(inView.length))
+              // The button leaves with the alarms it acknowledged; the heading keeps the keyboard in the list.
+              heading.current?.focus()
+            }}
+            className={cn(rowButton, "ring-input")}
+          >
+            {/* Honest about its reach: with alarms folded out of view it says how many it will take. */}
+            {inView.length < unack ? l.acknowledgeShown(inView.length) : l.acknowledgeAll}
+          </button>
+        )}
       </div>
       {flooding && (
-        <p className="flex items-start gap-2 rounded-md bg-warning-subtle px-4 py-3 text-sm">
+        <p className="flex items-start gap-2 border-b border-border bg-warning-subtle px-4 py-3 text-sm">
           <TriangleAlert aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-warning" />
           <span className="font-medium">{l.flood(recent, flood.minutes)}</span>
         </p>
       )}
       {rendered.length === 0 ? (
-        <p className="rounded-md bg-card px-4 py-4 text-sm text-muted-foreground ring-1 ring-border">{l.none}</p>
+        <p className="px-4 py-4 text-sm text-muted-foreground">{l.none}</p>
       ) : (
-        <ul className="flex flex-col gap-2">{open.map(row)}</ul>
+        open.length > 0 && (
+          <ul ref={listRef} className="divide-y divide-border">
+            {open.map(row)}
+          </ul>
+        )
       )}
       {folded.length > 0 && (
-        <details className="group rounded-md ring-1 ring-border">
-          <summary className="press flex min-h-(--h-md) cursor-pointer items-center gap-2 px-4 text-sm font-medium [&::-webkit-details-marker]:hidden">
-            <ChevronRight aria-hidden="true" className="size-4 shrink-0 transition-transform duration-(--motion-fast) ease-(--ease-standard) group-open:rotate-90" />
+        <details className="group border-t border-border" onToggle={(e) => setLowOpen(e.currentTarget.open)}>
+          <summary className={groupSummary}>
+            <ChevronRight aria-hidden="true" className={groupChevron} />
             {l.lowGroup(folded.length)}
           </summary>
-          <ul className="flex flex-col gap-2 p-2">{folded.map(row)}</ul>
+          <ul className="divide-y divide-border border-t border-border">{folded.map(row)}</ul>
         </details>
       )}
-      {shelved.length > 0 && (
-        <details className="group rounded-md ring-1 ring-border">
-          <summary className="press flex min-h-(--h-md) cursor-pointer items-center gap-2 px-4 text-sm font-medium [&::-webkit-details-marker]:hidden">
-            <ChevronRight aria-hidden="true" className="size-4 shrink-0 transition-transform duration-(--motion-fast) ease-(--ease-standard) group-open:rotate-90" />
-            {l.shelvedGroup(shelved.length)}
-          </summary>
-          <ul className="flex flex-col gap-2 p-2">
-            {shelved.map((a) => (
-              <li key={a.id}>
-                <Alarm {...a} labels={labels} onUnshelve={onUnshelve ? () => onUnshelve(a.id) : undefined} />
-              </li>
-            ))}
-          </ul>
-        </details>
+      {/* Not live, never hidden silently: shelved alarms in their group, the others counted. */}
+      {(shelved.length > 0 || hidden) && (
+        <div className="border-t border-border bg-muted">
+          {shelved.length > 0 && (
+            <details className="group">
+              <summary className={groupSummary}>
+                <ChevronRight aria-hidden="true" className={groupChevron} />
+                {l.shelvedGroup(shelved.length)}
+              </summary>
+              <ul className="divide-y divide-border border-y border-border bg-card">
+                {shelved.map((a) => (
+                  <li key={a.id}>
+                    <Alarm {...a} labels={labels} className="rounded-none bg-transparent ring-0" onUnshelve={onUnshelve ? () => onUnshelve(a.id) : undefined} />
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )}
+          {hidden && <p className="px-4 py-3 text-xs text-muted-foreground">{l.hidden(suppressed, outOfService)}</p>}
+        </div>
       )}
-      {(suppressed > 0 || outOfService > 0) && <p className="px-1 text-xs text-muted-foreground">{l.hidden(suppressed, outOfService)}</p>}
       <AlarmAnnouncer announce={announce} />
+      <p role="status" className="sr-only">
+        {status}
+      </p>
     </section>
   )
 }
