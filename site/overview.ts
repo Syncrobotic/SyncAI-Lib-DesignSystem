@@ -132,6 +132,26 @@ export const overviews: Record<string, Overview> = {
     use: ["Lists and galleries on a phone.", "Results that load in batches."],
     instead: ["A desktop table people jump around in: `pagination`."],
   },
+  "robot-map": {
+    what: "A site's floor plan in metres with its zones, routes and robots, panned and zoomed in place, and a list with the same robots as text.",
+    use: [
+      "Where the fleet is on a site right now: the map page of a fleet console, a robot's detail beside its position.",
+      "A mission's route over the floor: planned (dashed) and travelled (solid).",
+      "Zones people must know about: no entry, slow, charging.",
+    ],
+    instead: [
+      "Robots across many sites, or outdoors on GPS: a map library with tiles.",
+      "Time spent per zone: a heatmap (`heatmap-zones`).",
+      "A camera picture with boxes: `annotated-image`.",
+    ],
+    notes: [
+      "Offer `RobotMapList` beside `RobotMap` and share `selectedId` / `onSelect` between them; `lint:rules` asks for it in a block.",
+      "Coordinates are metres from the plan's top-left, y down; `heading` is degrees clockwise from the top of the plan. Convert from ROS (y up, counter-clockwise yaw) before passing them.",
+      "`floorplan` is an image URL stretched over `width` × `height`, or SVG drawn in metres (add `vectorEffect=\"non-scaling-stroke\"` to keep hairlines thin when zoomed).",
+      "By default the frame keeps the site's proportions (at most 75 % of the screen's height); `fill` makes it fill its parent, for a full-screen map.",
+      "Pass `labels` (status words, zone kinds, instructions, positions, empty, loading, error) to translate.",
+    ],
+  },
   graph: {
     what: "A directed graph that flows one way: boxes in columns, inputs on the left (or above), neutral lines between them, and a text view with the same nodes.",
     use: [

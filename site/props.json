@@ -3877,6 +3877,151 @@
    "inherits": []
   }
  ],
+ "robot-map": [
+  {
+   "name": "RobotMap",
+   "props": [
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "Names the map for screen readers: \"Map of North site\"."
+    },
+    {
+     "name": "width",
+     "type": "number",
+     "required": true,
+     "description": "The site's size in metres: the plan's width and height."
+    },
+    {
+     "name": "height",
+     "type": "number",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "floorplan",
+     "type": "ReactNode",
+     "description": "The floor plan under everything: an image URL (stretched over width × height), or SVG drawn in metres."
+    },
+    {
+     "name": "zones",
+     "type": "RobotMapZone[]",
+     "default": "[]",
+     "description": ""
+    },
+    {
+     "name": "robots",
+     "type": "RobotMapRobot[]",
+     "default": "[]",
+     "description": ""
+    },
+    {
+     "name": "paths",
+     "type": "RobotMapPath[]",
+     "default": "[]",
+     "description": ""
+    },
+    {
+     "name": "selectedId",
+     "type": "string",
+     "description": "The selected robot, controlled; null for none. Without it the map keeps its own selection."
+    },
+    {
+     "name": "onSelect",
+     "type": "(id: string | null, robot?: RobotMapRobot) => void",
+     "description": "Called with the robot clicked, or null when the background is clicked or Esc pressed."
+    },
+    {
+     "name": "northDeg",
+     "type": "number",
+     "description": "Where north is, in degrees clockwise from the top of the plan. Without it no north arrow is drawn."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "description": "Bones in the frame while the map loads."
+    },
+    {
+     "name": "error",
+     "type": "ReactNode",
+     "description": "The map could not be loaded: says so in the frame (`true` for the default words, or your own message)."
+    },
+    {
+     "name": "onRetry",
+     "type": "() => void",
+     "description": "Shows a button under the error that tries again."
+    },
+    {
+     "name": "fill",
+     "type": "boolean",
+     "description": "Fill the parent's height (a full-screen map) instead of keeping the site's proportions."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<RobotMapLabels>",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "RobotMapList",
+   "props": [
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "Names the map for screen readers: \"Map of North site\"."
+    },
+    {
+     "name": "onSelect",
+     "type": "(id: string | null, robot?: RobotMapRobot) => void",
+     "description": "Called with the robot clicked, or null when the background is clicked or Esc pressed."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "description": "Bones in the frame while the map loads."
+    },
+    {
+     "name": "error",
+     "type": "ReactNode",
+     "description": "The map could not be loaded: says so in the frame (`true` for the default words, or your own message)."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<RobotMapLabels>",
+     "description": ""
+    },
+    {
+     "name": "robots",
+     "type": "RobotMapRobot[]",
+     "default": "[]",
+     "description": ""
+    },
+    {
+     "name": "zones",
+     "type": "RobotMapZone[]",
+     "default": "[]",
+     "description": ""
+    },
+    {
+     "name": "selectedId",
+     "type": "string",
+     "description": "The selected robot, controlled; null for none. Without it the map keeps its own selection."
+    },
+    {
+     "name": "onRetry",
+     "type": "() => void",
+     "description": "Shows a button under the error that tries again."
+    }
+   ],
+   "inherits": [
+    "Pick<RobotMapProps, \"label\" | \"robots\" | \"zones\" | \"selectedId\" | \"onSelect\" | \"loading\" | \"error\" | \"onRetry\" | \"labels\" | \"className\">"
+   ]
+  }
+ ],
  "route-progress": [
   {
    "name": "RouteProgress",

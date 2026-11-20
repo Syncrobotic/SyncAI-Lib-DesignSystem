@@ -58,6 +58,7 @@ export type StoryFile =
   | "camera-feed"
   | "tree"
   | "graph"
+  | "robot-map"
   | "hooks"
   | "metric-card"
   | "context-menu"
@@ -867,6 +868,20 @@ const entries: Record<string, Entry> = {
       "The chart fades in when it mounts (--motion-base); marks do not animate, because Recharts cannot use the motion tokens. Nothing moves under reduced motion.",
     ],
   },
+  "robot-map": {
+    group: "Charts",
+    wide: true,
+    examples: { file: "robot-map", prefix: "RobotMap" },
+    rules: [
+      "Offer RobotMapList beside every RobotMap, as a chart offers its table: a Map / List switch, the two side by side on a wide screen, or a Robots sheet over a full-screen map. The map is one Tab stop; the list is where each robot is reached by keyboard and screen reader. `lint:rules` asks for it in a block.",
+      "Each layer keeps one job (Data visualisation, Maps and robot tracks): the floor and grid grey, zones as hairline outlines with an icon and a name and never a fill, the route being driven dashed blue (the one blue on the map), the track travelled solid grey.",
+      "Robots are their status shape and name, as in every list; colour and the status word only for a robot that needs someone. Selection is a ring in the focus ring's ink and a bold name, never colour alone.",
+      "Coordinates are metres from the plan's top-left corner, x to the right and y down, as the plan image is drawn. Convert from your map frame (ROS: y up, origin anywhere) before passing them.",
+      "Bottom left holds zoom and the scale bar, so the emergency stop keeps the bottom right. Show the north arrow (`northDeg`) only when the plan is not drawn north up and people need it.",
+      "No robots is said on the map, with the plan still shown; loading keeps the frame's size; an error says what failed and offers to reload.",
+      "Up to a few hundred robots and zones: everything is redrawn on each pan. A city-scale map, tiles or GPS belong to a map library.",
+    ],
+  },
   command: {
     group: "Overlays",
     examples: { file: "overlays", prefix: "Command" },
@@ -1120,6 +1135,13 @@ const keyboard: Record<string, [string, string][]> = {
     ["Home / End", "First or last node"],
     ["Enter", "Select the node and highlight its path, or follow it when it is a link"],
     ["Space", "Select the node, links included"],
+    ["Esc", "Clear the selection"],
+  ],
+  "robot-map": [
+    ["Tab", "Move into the map (one stop), then to its zoom buttons"],
+    ["← / → / ↑ / ↓", "Move the map"],
+    ["+ / -", "Zoom in or out"],
+    ["0", "Show the whole site"],
     ["Esc", "Clear the selection"],
   ],
   tree: [
