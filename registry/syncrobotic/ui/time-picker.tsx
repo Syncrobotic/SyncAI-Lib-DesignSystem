@@ -1,4 +1,4 @@
-// @syncrobotic/time-picker v0.17.3 · update: npx shadcn add @syncrobotic/time-picker --overwrite
+// @syncrobotic/time-picker v0.23.0 · update: npx shadcn add @syncrobotic/time-picker --overwrite
 "use client"
 
 import * as React from "react"
@@ -15,7 +15,12 @@ const toMin = (t: Time) => {
   return h * 60 + m
 }
 const fromMin = (m: number): Time => `${String(Math.floor(m / 60) % 24).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`
-export const formatTime = (t: Time, hour12 = false) => {
+/** "09:30", or "9:30 AM" with `hour12`. With a `locale`, the time as that language writes it ("上午9:30" for "zh-TW"). */
+export const formatTime = (t: Time, hour12 = false, locale?: string) => {
+  if (locale) {
+    const [h, m] = t.split(":").map(Number)
+    return new Intl.DateTimeFormat(locale, { hour: "numeric", minute: "2-digit", hourCycle: hour12 ? "h12" : "h23", timeZone: "UTC" }).format(Date.UTC(2000, 0, 1, h, m))
+  }
   if (!hour12) return t
   const [h, m] = t.split(":").map(Number)
   return `${((h + 11) % 12) + 1}:${String(m).padStart(2, "0")} ${h < 12 ? "AM" : "PM"}`
@@ -105,6 +110,15 @@ export function TimeInput({
   )
 }
 
+export type TimePickerLabels = {
+  /** On the trigger when no time is picked. */
+  placeholder: string
+  /** Names the list of times when the picker has no `aria-label`. */
+  times: string
+}
+
+export const defaultTimePickerLabels: TimePickerLabels = { placeholder: "Pick a time", times: "Times" }
+
 /**
  * A time picked from a list of slots, for a fixed grid of times (every 15 minutes, opening hours). Taken slots stay in
  * the list, disabled and struck through, so people see why a time is missing. The list scrolls to the picked slot.
@@ -117,7 +131,9 @@ export function TimePicker({
   max = "23:59",
   unavailable = [],
   hour12 = false,
-  placeholder = "Pick a time",
+  placeholder,
+  labels,
+  locale,
   className,
   id,
   "aria-label": ariaLabel,
@@ -132,12 +148,18 @@ export function TimePicker({
   /** Slots that exist but cannot be picked. */
   unavailable?: Time[]
   hour12?: boolean
+  /** Same as `labels.placeholder`, and wins over it. */
   placeholder?: string
+  /** The words it says, to translate them. */
+  labels?: Partial<TimePickerLabels>
+  /** Writes the times as this language does (a BCP 47 tag such as "zh-TW"). Left out, "09:30" or "9:30 AM" as before. */
+  locale?: string
   className?: string
   id?: string
   "aria-label"?: string
   disabled?: boolean
 }) {
+  const l = { ...defaultTimePickerLabels, ...labels }
   const f = useField()
   const uid = React.useId()
   const triggerId = id ?? f?.id ?? `${uid}-t`
@@ -218,7 +240,7 @@ export function TimePicker({
             </span>
           )}
           <span id={`${uid}-v`} className="truncate tabular-nums">
-            {value ? formatTime(value, hour12) : placeholder}
+            {value ? formatTime(value, hour12, locale) : (placeholder ?? l.placeholder)}
           </span>
         </button>
       </PopoverTrigger>
@@ -226,7 +248,7 @@ export function TimePicker({
       <PopoverContent align="start" aria-labelledby={triggerId} className="w-48 p-1">
         <div
           role="listbox"
-          aria-label={ariaLabel ?? "Times"}
+          aria-label={ariaLabel ?? l.times}
           data-nav={nav}
           className="group/times flex max-h-64 flex-col overflow-y-auto"
           onKeyDown={onKeyDown}
@@ -260,7 +282,7 @@ export function TimePicker({
                   setOpen(false)
                 }}
               >
-                {formatTime(t, hour12)}
+                {formatTime(t, hour12, locale)}
                 {selected && <Check aria-hidden="true" className="size-4" />}
               </button>
             )

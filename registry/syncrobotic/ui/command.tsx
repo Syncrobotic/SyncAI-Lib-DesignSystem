@@ -1,4 +1,4 @@
-// @syncrobotic/command v0.17.3 · update: npx shadcn add @syncrobotic/command --overwrite
+// @syncrobotic/command v0.23.0 · update: npx shadcn add @syncrobotic/command --overwrite
 "use client"
 
 import * as React from "react"
@@ -77,6 +77,18 @@ export function Command({ className, onKeyDown, onPointerMove, onFocus, ref, ...
   )
 }
 
+export type CommandDialogLabels = {
+  /** The palette's name for screen readers. */
+  title: string
+  /** Read after the name: what can be searched. */
+  description: string
+}
+
+export const defaultCommandDialogLabels: CommandDialogLabels = {
+  title: "Search",
+  description: "Search pages, robots and actions",
+}
+
 /**
  * The palette: opens from a search field or ⌘K / Ctrl+K, near the top of the screen so the list grows downwards
  * without the input moving. Appears and leaves like every overlay (--motion-base); Esc closes and returns focus.
@@ -84,17 +96,23 @@ export function Command({ className, onKeyDown, onPointerMove, onFocus, ref, ...
 export function CommandDialog({
   open,
   onOpenChange,
-  title = "Search",
-  description = "Search pages, robots and actions",
+  title,
+  description,
+  labels,
   children,
   className,
   ...props
 }: React.ComponentProps<typeof CommandPrimitive> & {
   open?: boolean
   onOpenChange?: (open: boolean) => void
+  /** Same as `labels.title`, and wins over it. */
   title?: string
+  /** Same as `labels.description`, and wins over it. */
   description?: string
+  /** The words it says, to translate them. */
+  labels?: Partial<CommandDialogLabels>
 }) {
+  const l = { ...defaultCommandDialogLabels, ...labels }
   // The palette has no trigger of its own (it opens from ⌘K or a field), so Radix has nowhere to return focus. Remember
   // what had focus while it was closed and go back there on close. The listener stops in the layout cleanup, before an
   // autoFocus inside the palette can be mistaken for the element to return to, and ignores the palette while it leaves.
@@ -126,8 +144,8 @@ export function CommandDialog({
             "data-[state=open]:animate-appear data-[state=closed]:animate-disappear",
           )}
         >
-          <DialogPrimitive.Title className="sr-only">{title}</DialogPrimitive.Title>
-          <DialogPrimitive.Description className="sr-only">{description}</DialogPrimitive.Description>
+          <DialogPrimitive.Title className="sr-only">{title ?? l.title}</DialogPrimitive.Title>
+          <DialogPrimitive.Description className="sr-only">{description ?? l.description}</DialogPrimitive.Description>
           <Command className={className} {...props}>
             {children}
           </Command>

@@ -1,4 +1,4 @@
-// @syncrobotic/chip-group v0.15.0 · update: npx shadcn add @syncrobotic/chip-group --overwrite
+// @syncrobotic/chip-group v0.23.0 · update: npx shadcn add @syncrobotic/chip-group --overwrite
 "use client"
 
 import * as React from "react"
@@ -24,6 +24,18 @@ const chip = cn(
 const countCls =
   "tabular-nums text-muted-foreground [[data-state=on]_&]:text-primary-foreground [[aria-current=page]_&]:text-primary-foreground"
 
+export type ChipGroupLabels = {
+  /** The button that unfolds the chips past `max`: "4 more". */
+  more: (hidden: number) => string
+  /** The same button once unfolded. */
+  less: string
+}
+
+export const defaultChipGroupLabels: ChipGroupLabels = {
+  more: (n) => `${n} more`,
+  less: "Show fewer",
+}
+
 /**
  * One choice among several, as a row of chips with how many results each gives: a facet, a level, a saved view. Long
  * rows fold after `max` chips behind "N more"; the selected chip always stays visible. Chips with `href` are links
@@ -36,8 +48,10 @@ export function ChipGroup({
   label,
   max,
   allowNone = true,
-  moreLabel = (n) => `${n} more`,
-  lessLabel = "Show fewer",
+  moreLabel,
+  lessLabel,
+  labels,
+  locale,
   linkAs: Link = "a",
   className,
 }: {
@@ -50,12 +64,21 @@ export function ChipGroup({
   max?: number
   /** Pressing the selected chip clears the choice. */
   allowNone?: boolean
+  /** Same as `labels.more`, and wins over it. */
   moreLabel?: (hidden: number) => string
+  /** Same as `labels.less`, and wins over it. */
   lessLabel?: string
+  /** The words it says, to translate them. */
+  labels?: Partial<ChipGroupLabels>
+  /** Formats the counts (a BCP 47 tag such as "zh-TW"). Left out, the browser's language. */
+  locale?: string
   /** Your router's link (e.g. next/link), for chips with href. */
   linkAs?: React.ElementType
   className?: string
 }) {
+  const l = { ...defaultChipGroupLabels, ...labels }
+  const moreText = moreLabel ?? l.more
+  const less = lessLabel ?? l.less
   const [open, setOpen] = React.useState(false)
   // Folding again: the extra chips fade out where they are (disappear), then the row closes up. If animations never
   // run, the safety delay folds it anyway.
@@ -95,13 +118,13 @@ export function ChipGroup({
         aria-expanded={expanded}
         className={cn(chip, "press text-muted-foreground ring-transparent")}
       >
-        {expanded ? lessLabel : moreLabel(hidden)}
+        {expanded ? less : moreText(hidden)}
       </button>
     ) : null
   const inner = (c: Chip) => (
     <>
       {c.label}
-      {c.count !== undefined && <span className={countCls}>{c.count.toLocaleString()}</span>}
+      {c.count !== undefined && <span className={countCls}>{c.count.toLocaleString(locale)}</span>}
     </>
   )
 

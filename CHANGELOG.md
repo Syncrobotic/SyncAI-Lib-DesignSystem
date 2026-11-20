@@ -2,6 +2,13 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **Localisation: every word the kit says can be translated without editing its source.** Components that showed or announced fixed English now take `labels`, the kit's existing pattern: an exported `<Name>Labels` type and English `default<Name>Labels`, merged under a partial `labels` prop, with functions for words that hold a number or a name. New in 0.23.0: Autocomplete, Breadcrumb, ChipGroup, CommandDialog, CopyButton, DataGrid (every part, `selectColumn` and `expandColumn` included; DataGridPagination passes Pagination's), DatePicker and DateRangePicker, DialogContent, PhoneInput, Questionnaire and QuestionField, RouteProgress, SearchField, Spinner, Attachment, Stepper and StepperCompact, Sortable (its drag announcements), Trace and TraceHeader (status words, counts, durations), TimePicker. The defaults are today's words; single props such as `label`, `placeholder` and `closeLabel` still work and win.
+- **`locale` where a component formats a number, a day or a time itself:** ChipGroup, Filters, LoadMore and ShareBar (numbers; left out, the browser's language as before), DatePicker and DateRangePicker (the trigger's day with Intl, plus `calendarLocale` for react-day-picker's calendar), TimePicker (times with Intl), PhoneInput (country names and their order; English when left out). Calendar lets a react-day-picker locale such as `zhTW` name its days.
+- **Docs: Localisation** (Getting started): why labels and locale, the pattern, a worked zh-TW example, and every component's keys with their English defaults, generated from the source (`npm run props` now records each labels prop's keys in site/props.json).
+
 ## 0.22.4 · 2026-11-20
 
 Docs site only: no item changed, nothing to re-install.

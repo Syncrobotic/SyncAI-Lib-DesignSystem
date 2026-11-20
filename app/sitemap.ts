@@ -11,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/", priority: 1 },
     { path: "/docs/installation", priority: 0.8 },
     { path: "/docs/nextjs", priority: 0.7 },
+    { path: "/docs/localisation", priority: 0.7 },
     { path: "/docs/tokens", priority: 0.7 },
     { path: "/docs/upgrading", priority: 0.7 },
     { path: "/docs/foundations", priority: 0.9 },

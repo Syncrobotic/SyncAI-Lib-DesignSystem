@@ -1,4 +1,4 @@
-// @syncrobotic/share-bar v0.22.0 · update: npx shadcn add @syncrobotic/share-bar --overwrite
+// @syncrobotic/share-bar v0.23.0 · update: npx shadcn add @syncrobotic/share-bar --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
@@ -27,7 +27,6 @@ export type ShareSegment = {
   tone?: keyof typeof tones
 }
 
-const fmt = (n: number) => n.toLocaleString()
 
 /**
  * How a whole splits, as one thin bar: segments in the chart palette, 2 px apart, each with its share on hover. Light
@@ -41,6 +40,7 @@ export function ShareBar({
   legend = false,
   unit,
   size = "md",
+  locale,
   className,
 }: {
   segments: ShareSegment[]
@@ -54,8 +54,12 @@ export function ShareBar({
   unit?: string
   /** sm: 8 px, for a table cell; md: 10 px. */
   size?: "sm" | "md"
+  /** Formats the numbers and shares (a BCP 47 tag such as "zh-TW"). Left out, the browser's language. */
+  locale?: string
   className?: string
 }) {
+  const fmt = (n: number) => n.toLocaleString(locale)
+  const share = (n: number) => n.toLocaleString(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1, useGrouping: false })
   const total = totalProp ?? segments.reduce((n, s) => n + s.value, 0)
   const shown = segments.map((s, i) => ({ ...s, tone: s.tone ?? (Math.min(i + 1, 4) as 1 | 2 | 3 | 4) })).filter((s) => s.value > 0)
   const rest = total - shown.reduce((n, s) => n + s.value, 0)
@@ -68,7 +72,7 @@ export function ShareBar({
       className={cn("flex w-full gap-0.5 overflow-hidden rounded-full", size === "sm" ? "h-2" : "h-2.5", !legend && className)}
     >
       {shown.map((s) => (
-        <span key={s.key} title={`${s.label}: ${fmt(s.value)} (${pct(s.value).toFixed(1)} %)`} className={cn("h-full", tones[s.tone])} style={{ width: `${pct(s.value)}%` }} />
+        <span key={s.key} title={`${s.label}: ${fmt(s.value)} (${share(pct(s.value))} %)`} className={cn("h-full", tones[s.tone])} style={{ width: `${pct(s.value)}%` }} />
       ))}
       {/* The part of the whole not shown is the track; the 2 px gaps between parts show the surface, so Other never merges
           with its neighbour or with the track. */}
