@@ -567,8 +567,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.22.0",
         "changelog": [
+          {
+            "version": "0.22.0",
+            "date": "2026-11-20",
+            "note": "IslandAlarm follows the alarm redesign: never tinted (the edge, glyph and priority word carry the colour), the time first in tabular figures, a lighter Acknowledge."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -1992,8 +1997,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.22.0",
         "changelog": [
+          {
+            "version": "0.22.0",
+            "date": "2026-11-20",
+            "note": "Redesign: one list of aligned rows (glyph, time, priority and title, state and actions). Colour only on the glyph and the priority word, no tinted rows; unacknowledged is a bold title and a solid bar, cleared-not-acknowledged a dashed bar, acknowledged regular and grey with `acknowledgedAt`. Lighter Acknowledge, `onAcknowledgeAll` in the header, focus moves to the next Acknowledge. New: `acknowledgedAt`, `clearedAt`, `onAcknowledgeAll`, labels `clearedWhen`, `acknowledgeAll`, `acknowledgeShown`, `acknowledgedCount`."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -4801,8 +4811,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.22.0",
         "changelog": [
+          {
+            "version": "0.22.0",
+            "date": "2026-11-20",
+            "note": "The alarm list in its redesigned form: times to the second, when each alarm was acknowledged, and Acknowledge all."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",

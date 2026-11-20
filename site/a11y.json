@@ -343,9 +343,10 @@
       "heading",
       "list",
       "listitem",
-      "region"
+      "region",
+      "status"
     ],
-    "tabStops": 16,
+    "tabStops": 17,
     "live": true
   },
   "toast": {

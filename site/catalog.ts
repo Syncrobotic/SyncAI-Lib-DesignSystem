@@ -650,7 +650,9 @@ const entries: Record<string, Entry> = {
       "Only for an abnormal condition that needs an operator to act. No action, no alarm: log it instead.",
       "Three priorities, each with its own shape, colour and word: critical (act now), high (act within minutes), low (act when convenient).",
       "Stays until the condition clears and someone acknowledges it. Acknowledging records that it was seen; it does not clear it.",
-      "Never auto-dismissed, never a toast, never blinking: the bar and the word “Unacknowledged” carry the state; only critical alarms are also tinted.",
+      "Never auto-dismissed, never a toast, never blinking, never a tinted row. Colour is only on the glyph and the priority word. Unacknowledged: bold title and a solid bar in the priority's colour. Cleared but not acknowledged: still bold, the bar dashed, and it says when it cleared. Acknowledged: regular and grey, with when (“Acknowledged 13:42”, from `acknowledgedAt`).",
+      "Time comes first, in tabular figures, so order and age read down the column. Below 576 px of width the row reflows: the time under the title, the state and buttons on a line of their own.",
+      "“Acknowledge all” appears with two or more unacknowledged alarms in view and takes only those: never shelved, suppressed or out-of-service alarms, and in a flood the folded low ones only while their group is open (it then reads “Acknowledge 2 shown”). Screen readers hear how many were acknowledged.",
       "One alarm per root cause. If the robot is offline, do not also raise camera lost and lidar lost.",
       "Shelving hides a nuisance alarm for a set time and it comes back on its own; it is never permanent and never for critical alarms. Suppressed by design (the app's logic) and out of service (maintenance) are counted under the list, not hidden silently.",
       "Pass `raisedAt` so a flood (over 10 alarms in 10 minutes) is named and the low ones fold away; then fix the root cause the flood points to.",
@@ -958,6 +960,11 @@ export type Item = (typeof registry.items)[number] & Entry
 
 // What each component does with the keyboard beyond Tab. Radix supplies most of it; these tables say so out loud.
 const keyboard: Record<string, [string, string][]> = {
+  alarm: [
+    ["Tab", "Move through each row's buttons, in the list's order (most urgent first)"],
+    ["Enter / Space", "Acknowledge; focus moves to the next Acknowledge, or to the list's heading after the last"],
+    ["Enter / Space on a group", "Open or close the folded low alarms or the shelved group"],
+  ],
   trace: [
     ["Tab", "Focus a step that opens"],
     ["Enter / Space", "Open or close its details"],

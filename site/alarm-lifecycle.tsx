@@ -5,7 +5,7 @@ import { Alarm } from "@/registry/syncrobotic/ui/alarm"
 
 const steps = [
   { active: true, acknowledged: false, name: "1 · Raised", note: "The condition starts. Strongest form; sound plays for critical and high." },
-  { active: true, acknowledged: true, name: "2 · Acknowledged", note: "An operator has seen it. Sound stops; the alarm stays because the condition is still there." },
+  { active: true, acknowledged: true, name: "2 · Acknowledged", note: "An operator has seen it. Sound stops, the title turns regular and grey and says when; the alarm stays because the condition is still there." },
   { active: false, acknowledged: true, name: "3 · Cleared", note: "The condition is gone and it was acknowledged: it leaves the list for the history." },
 ] as const
 
@@ -13,7 +13,7 @@ const steps = [
 export function AlarmLifecycle() {
   const [i, setI] = React.useState(0)
   const [skipped, setSkipped] = React.useState(false)
-  const s = skipped ? { active: false, acknowledged: false, name: "Cleared, not acknowledged", note: "It cleared on its own. It stays, quieter, until someone acknowledges it, so nothing is missed." } : steps[i]
+  const s = skipped ? { active: false, acknowledged: false, name: "Cleared, not acknowledged", note: "It cleared on its own. It stays, still bold, its bar dashed and saying when it cleared, until someone acknowledges it, so nothing is missed." } : steps[i]
   return (
     <div className="flex flex-col gap-4">
       <div className="min-h-(--h-row)">
@@ -25,6 +25,8 @@ export function AlarmLifecycle() {
             time="14:05:44"
             active={s.active}
             acknowledged={s.acknowledged}
+            acknowledgedAt="14:06"
+            clearedAt="14:07"
             onAcknowledge={() => (skipped ? (setSkipped(false), setI(2)) : setI(1))}
           />
         ) : (

@@ -42,7 +42,7 @@
     {
      "name": "time",
      "type": "string",
-     "description": "When it was raised, already formatted by the app: \"14:02:31\"."
+     "description": "When it was raised, already formatted by the app: \"14:02:31\". Shown first, in tabular figures."
     },
     {
      "name": "title",
@@ -67,6 +67,16 @@
      "type": "boolean",
      "required": true,
      "description": "An operator has acknowledged it."
+    },
+    {
+     "name": "acknowledgedAt",
+     "type": "string",
+     "description": "When it was acknowledged, already formatted: \"13:42\". Shown as \"Acknowledged 13:42\"."
+    },
+    {
+     "name": "clearedAt",
+     "type": "string",
+     "description": "When the condition cleared, already formatted (\"14:07\"). Shown while a cleared alarm waits for acknowledgement."
     },
     {
      "name": "shelvedUntil",
@@ -145,6 +155,11 @@
      "description": ""
     },
     {
+     "name": "onAcknowledgeAll",
+     "type": "(ids: string[]) => void",
+     "description": "\"Acknowledge all\" in the header, shown while two or more alarms in view are unacknowledged. It is called with the ids of those alarms only: never shelved, suppressed or out-of-service ones, and the low alarms folded in a flood only while their group is open. Without it, the button calls `onAcknowledge` once per id."
+    },
+    {
      "name": "onShelve",
      "type": "(id: string) => void",
      "description": ""
@@ -156,7 +171,7 @@
     },
     {
      "name": "labels",
-     "type": "Partial<AlarmLabels> & { title?: string; summary?: (active: number, unacknowledged: number) => string; none?: string; shelvedGroup?: (count: number) => string; hidden?: (suppressed: number, outOfService: number) => string; flood?: (count: number, minutes: number) => string; lowGroup?: (count: number) => string; many?: (count: number) => string; }",
+     "type": "Partial<AlarmLabels> & { title?: string; summary?: (active: number, unacknowledged: number) => string; none?: string; acknowledgeAll?: string; acknowledgeShown?: (count: number) => string; acknowledgedCount?: (count: number) => string; shelvedGroup?: (count: number) => string; hidden?: (suppressed: number, outOfService: number) => string; flood?: (count: number, minutes: number) => string; lowGroup?: (count: number) => string; many?: (count: number) => string; }",
      "description": ""
     },
     {
