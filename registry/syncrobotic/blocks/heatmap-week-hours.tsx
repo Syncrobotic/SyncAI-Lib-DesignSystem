@@ -1,4 +1,4 @@
-// @syncrobotic/heatmap-week-hours v0.22.0 · update: npx shadcn add @syncrobotic/heatmap-week-hours --overwrite
+// @syncrobotic/heatmap-week-hours v0.22.2 · update: npx shadcn add @syncrobotic/heatmap-week-hours --overwrite
 "use client"
 
 import * as React from "react"
@@ -12,19 +12,22 @@ const hours = Array.from({ length: 12 }, (_, i) => i * 2)
 // Sample data: incidents per day and 2-hour slot over the last four weeks.
 const count = (d: number, h: number) =>
   Math.max(0, Math.round(3 * Math.sin((h - 14) / 5) + (h >= 20 ? 3 : 0) + (d === 4 ? 2 : 0) - (d >= 5 ? 1 : 0) + ((d * 3 + h) % 4) / 2 - 1))
-const grid = days.map((_, d) => hours.map((h) => count(d, h)))
-const max = Math.max(...grid.flat())
+// null is no data (here: the fleet server was down early on Sunday), never drawn as none.
+const grid: (number | null)[][] = days.map((_, d) => hours.map((h) => (d === 6 && h >= 2 && h <= 4 ? null : count(d, h))))
+const max = Math.max(...grid.flat().map((v) => v ?? 0))
 // The kit's sequential heatmap scale: the accent's ramp, mixed into the track colour, from the bare track at none (a grey
 // cell that still reads as a cell on the card, 1.5:1 and more) to the full accent at the most: light to dark in light,
 // dark to light in dark, so more is always further from the card. No number is written on a cell here, so the ramp runs
 // to the end; heatmap-zones, whose cells carry their number, stops at 60 %.
 const shade = (v: number) => `color-mix(in oklab, var(--chart-1) ${Math.round((v / max) * 100)}%, var(--track))`
+// No data (null) is not none: the theme's no-data hatch (3:1 outline and lines), so a gap never passes for a quiet hour.
+const fmt = (v: number | null) => (v === null ? "no data" : `${v} ${v === 1 ? "incident" : "incidents"}`)
 
 /** When incidents happen: days by 2-hour slots, one sequential hue, the busiest slot named in words. */
 export function HeatmapWeekHours() {
   const [view, setView] = React.useState("chart")
   let peak = { d: 0, h: 0, v: -1 }
-  grid.forEach((row, d) => row.forEach((v, i) => v > peak.v && (peak = { d, h: hours[i], v })))
+  grid.forEach((row, d) => row.forEach((v, i) => v !== null && v > peak.v && (peak = { d, h: hours[i], v })))
   return (
     <TooltipProvider delayDuration={100}>
       <Card>
@@ -57,10 +60,10 @@ export function HeatmapWeekHours() {
                     {grid[di].map((v, hi) => (
                       <Tooltip key={hi}>
                         <TooltipTrigger asChild>
-                          <span className="h-6 rounded-xs" style={{ background: shade(v) }} />
+                          <span className={v === null ? "no-data h-6 rounded-xs" : "h-6 rounded-xs"} style={v === null ? undefined : { background: shade(v) }} />
                         </TooltipTrigger>
                         <TooltipContent>
-                          {d} {String(hours[hi]).padStart(2, "0")}:00 · {v} {v === 1 ? "incident" : "incidents"}
+                          {d} {String(hours[hi]).padStart(2, "0")}:00 · {fmt(v)}
                         </TooltipContent>
                       </Tooltip>
                     ))}
@@ -74,6 +77,8 @@ export function HeatmapWeekHours() {
                 <span key={f} aria-hidden="true" className="h-3 w-5 rounded-xs" style={{ background: shade(f * max) }} />
               ))}
               More
+              <span aria-hidden="true" className="no-data ml-2 h-3 w-5 rounded-xs" />
+              No data
             </span>
           </>
         ) : (
@@ -95,7 +100,14 @@ export function HeatmapWeekHours() {
                   <TableCell className="font-medium">{d}</TableCell>
                   {grid[di].map((v, hi) => (
                     <TableCell key={hi} className="text-right tabular-nums">
-                      {v}
+                      {v === null ? (
+                        <>
+                          <span aria-hidden="true">—</span>
+                          <span className="sr-only">No data</span>
+                        </>
+                      ) : (
+                        v
+                      )}
                     </TableCell>
                   ))}
                 </TableRow>
@@ -103,7 +115,7 @@ export function HeatmapWeekHours() {
             </TableBody>
           </Table>
         )}
-        <p className="sr-only">Incidents are most frequent in the evening, especially on Fridays. The busiest slot is listed above.</p>
+        <p className="sr-only">Incidents are most frequent in the evening, especially on Fridays. The busiest slot is listed above. Sunday 02:00 to 06:00 has no data.</p>
       </Card>
     </TooltipProvider>
   )

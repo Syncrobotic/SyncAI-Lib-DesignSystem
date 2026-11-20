@@ -1,7 +1,7 @@
 {
   "syncrobotic-theme": {
-    "version": "0.22.1",
-    "hash": "24d476a13e08e456"
+    "version": "0.22.2",
+    "hash": "33f6196a2388b1ae"
   },
   "cn": {
     "version": "0.5.0",
@@ -188,8 +188,8 @@
     "hash": "5599e73c521ec230"
   },
   "alarm": {
-    "version": "0.22.1",
-    "hash": "795df427634e870d"
+    "version": "0.22.2",
+    "hash": "16afb511aec2879a"
   },
   "toast": {
     "version": "0.17.3",
@@ -440,8 +440,8 @@
     "hash": "981a0f3eae7d6769"
   },
   "app-shell": {
-    "version": "0.17.2",
-    "hash": "e32f758fa8dd4af1"
+    "version": "0.22.2",
+    "hash": "4704746318d84b6b"
   },
   "top-bar-shell": {
     "version": "0.17.3",
@@ -584,12 +584,12 @@
     "hash": "440f60d80040b1b8"
   },
   "heatmap-week-hours": {
-    "version": "0.22.0",
-    "hash": "3824c601d0b2b600"
+    "version": "0.22.2",
+    "hash": "e06d7f6ef1e95eec"
   },
   "heatmap-zones": {
-    "version": "0.22.0",
-    "hash": "4313229823c2aa59"
+    "version": "0.22.2",
+    "hash": "b11b12238e018870"
   },
   "histogram-battery": {
     "version": "0.22.0",

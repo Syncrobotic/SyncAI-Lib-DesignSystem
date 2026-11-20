@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell v0.17.2 · update: npx shadcn add @syncrobotic/app-shell --overwrite
+// @syncrobotic/app-shell v0.22.2 · update: npx shadcn add @syncrobotic/app-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -9,7 +9,6 @@ import {
   ChevronDown,
   ChevronsUpDown,
   CirclePlus,
-  CheckCheck,
   LayoutDashboard,
   LogOut,
   Map,
@@ -124,7 +123,7 @@ export const sampleSearch: AppSearch = {
       scope: "actions",
       items: [
         { label: "New mission", icon: CirclePlus, href: "#missions/new" },
-        { label: "Acknowledge all alarms", icon: CheckCheck, href: "#alarms" },
+        { label: "Review alarms", icon: Bell, href: "#alarms" },
       ],
     },
   ],

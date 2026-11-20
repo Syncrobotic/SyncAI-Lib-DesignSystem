@@ -157,7 +157,7 @@
     {
      "name": "onAcknowledgeAll",
      "type": "(ids: string[]) => void",
-     "description": "\"Acknowledge all\" in the header, shown while two or more alarms in view are unacknowledged. It is called with the ids of those alarms only: never shelved, suppressed or out-of-service ones, and the low alarms folded in a flood only while their group is open. Without it, the button calls `onAcknowledge` once per id."
+     "description": "\"Acknowledge all\" in the header: only when you pass it, since a product may require every alarm to be read and acknowledged on its own. Shown while two or more alarms it may take are unacknowledged and in view. It is called with those ids only: never a critical alarm (each is acknowledged on its own row), never shelved, suppressed or out-of-service ones, and the low alarms folded in a flood only while their group is open."
     },
     {
      "name": "onShelve",
@@ -171,7 +171,7 @@
     },
     {
      "name": "labels",
-     "type": "Partial<AlarmLabels> & { title?: string; summary?: (active: number, unacknowledged: number) => string; none?: string; acknowledgeAll?: string; acknowledgeShown?: (count: number) => string; acknowledgedCount?: (count: number) => string; shelvedGroup?: (count: number) => string; hidden?: (suppressed: number, outOfService: number) => string; flood?: (count: number, minutes: number) => string; lowGroup?: (count: number) => string; many?: (count: number) => string; loading?: string; errorEmpty?: string; errorStale?: string; updatedAt?: (time: string) => string; retry?: string; }",
+     "type": "Partial<AlarmLabels> & { title?: string; summary?: (active: number, unacknowledged: number) => string; none?: string; acknowledgeAll?: string; acknowledgeShown?: (count: number) => string; acknowledgeNonCritical?: (count: number) => string; acknowledgedCount?: (count: number) => string; shelvedGroup?: (count: number) => string; hidden?: (suppressed: number, outOfService: number) => string; flood?: (count: number, minutes: number) => string; lowGroup?: (count: number) => string; many?: (count: number) => string; loading?: string; errorEmpty?: string; errorStale?: string; updatedAt?: (time: string) => string; retry?: string; }",
      "description": ""
     },
     {

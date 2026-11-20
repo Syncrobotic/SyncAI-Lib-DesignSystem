@@ -643,7 +643,7 @@ export const overviews: Record<string, Overview> = {
     notes: [
       "Alarms are for what a person must act on, by ISA-18.2 priority (critical, high, low). Never show them as toasts.",
       "AlarmList sorts and announces new alarms itself; give it the data and onAcknowledge, and `acknowledgedAt` once acknowledged so the row says when.",
-      "`onAcknowledgeAll` receives the ids in view (never shelved ones); without it, “Acknowledge all” calls onAcknowledge per id.",
+      "“Acknowledge all” appears only with `onAcknowledgeAll`, which receives the ids in view: never critical (acknowledged row by row), shelved, suppressed or out-of-service ones.",
     ],
   },
   alert: {

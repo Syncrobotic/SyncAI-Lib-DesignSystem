@@ -2,6 +2,18 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.22.2 · 2026-11-20
+
+Missing data that looked like zero, and a bulk acknowledge that could take a critical alarm.
+
+### Changed
+- **`alarm` 0.22.2: "Acknowledge all" is opt-in and never takes a critical alarm.** It appeared whenever `onAcknowledge` was passed, so every product got bulk acknowledgement whether its procedures allowed it or not, and it took critical alarms with the rest. Now it appears only when you pass `onAcknowledgeAll`, and it never takes a critical alarm: each is read and acknowledged on its own row (ISA-18.2). While a critical alarm is unacknowledged the button reads "Acknowledge 3 non-critical" (label `acknowledgeNonCritical`). **Migrate:** if you relied on the button calling `onAcknowledge` per id, pass `onAcknowledgeAll={(ids) => ids.forEach(onAcknowledge)}`; if your procedures require every alarm on its own, pass nothing.
+- **`app-shell` 0.22.2**: the command palette's "Acknowledge all alarms" is "Review alarms"; it only ever went to the alarms.
+- **No data is not zero** (`syncrobotic-theme` 0.22.2, `heatmap-week-hours`, `heatmap-zones` 0.22.2). An empty heatmap cell (the bare track, about 1.7:1) meant both "none" and, in products, "no reading". New theme utility `no-data`: a hatch and inset outline in the field-edge colour (3:1). Both heatmaps take `null` as no data: the hatch, "No data" in the tooltip and to screen readers, a dash in the week-hours table, and a legend entry. Zero stays the bare track. The data-visualisation rules say so.
+
+### Docs and CI
+- `lint:versions` also fails when `package-lock.json` and `package.json` disagree on the kit's version (the lock had stayed at 0.19.0); bump both with `npm version <x> --no-git-tag-version`.
+
 ## 0.22.1 · 2026-11-20
 
 Three things 0.22.0 left open: a chart grey too faint to see, two alarm shapes too alike, and an alarm list that could say "no alarms" when it did not know.

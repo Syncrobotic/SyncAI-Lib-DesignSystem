@@ -1,4 +1,4 @@
-// @syncrobotic/alarm v0.22.1 · update: npx shadcn add @syncrobotic/alarm --overwrite
+// @syncrobotic/alarm v0.22.2 · update: npx shadcn add @syncrobotic/alarm --overwrite
 "use client"
 
 import * as React from "react"
@@ -352,9 +352,10 @@ type AlarmListProps = {
   alarms: AlarmData[]
   onAcknowledge?: (id: string) => void
   /**
-   * "Acknowledge all" in the header, shown while two or more alarms in view are unacknowledged. It is called with the
-   * ids of those alarms only: never shelved, suppressed or out-of-service ones, and the low alarms folded in a flood
-   * only while their group is open. Without it, the button calls `onAcknowledge` once per id.
+   * "Acknowledge all" in the header: only when you pass it, since a product may require every alarm to be read and
+   * acknowledged on its own. Shown while two or more alarms it may take are unacknowledged and in view. It is called with
+   * those ids only: never a critical alarm (each is acknowledged on its own row), never shelved, suppressed or
+   * out-of-service ones, and the low alarms folded in a flood only while their group is open.
    */
   onAcknowledgeAll?: (ids: string[]) => void
   onShelve?: (id: string) => void
@@ -367,6 +368,8 @@ type AlarmListProps = {
     acknowledgeAll?: string
     /** The same button when some are out of view (folded low alarms in a flood): "Acknowledge 2 shown". */
     acknowledgeShown?: (count: number) => string
+    /** The same button while critical alarms are unacknowledged, which it leaves to their own rows: "Acknowledge 3 non-critical". */
+    acknowledgeNonCritical?: (count: number) => string
     /** Announced after "Acknowledge all": "3 alarms acknowledged". */
     acknowledgedCount?: (count: number) => string
     /** "Shelved · 2" */
@@ -439,6 +442,7 @@ export function AlarmList({
     none: "No active alarms",
     acknowledgeAll: "Acknowledge all",
     acknowledgeShown: (n: number) => `Acknowledge ${n} shown`,
+    acknowledgeNonCritical: (n: number) => `Acknowledge ${n} non-critical`,
     acknowledgedCount: (n: number) => `${n} alarm${n === 1 ? "" : "s"} acknowledged`,
     shelvedGroup: (n: number) => `Shelved · ${n}`,
     hidden: (sup: number, oos: number) => [sup && `${sup} suppressed by design`, oos && `${oos} out of service`].filter(Boolean).join(" · "),
@@ -481,8 +485,10 @@ export function AlarmList({
   const [lowOpen, setLowOpen] = React.useState(false)
 
   // Acknowledge all takes only what the operator can see: the live rows, and the folded low ones while their group is open.
-  const inView = [...open, ...(lowOpen ? folded : [])].filter((r) => !r.leaving && !r.item.acknowledged).map((r) => r.item.id)
-  const acknowledgeAll = onAcknowledgeAll ?? (onAcknowledge ? (ids: string[]) => ids.forEach(onAcknowledge) : undefined)
+  // Never a critical alarm: each one is read and acknowledged on its own row (ISA-18.2).
+  const inViewRows = [...open, ...(lowOpen ? folded : [])].filter((r) => !r.leaving && !r.item.acknowledged)
+  const inView = inViewRows.filter((r) => r.item.priority !== "critical").map((r) => r.item.id)
+  const criticalLeft = inViewRows.some((r) => r.item.priority === "critical")
   const [status, setStatus] = React.useState("")
 
   // After an Acknowledge button leaves (its alarm was acknowledged), focus goes to the next one, or to the heading,
@@ -547,19 +553,19 @@ export function AlarmList({
             ))}
           </span>
         </div>
-        {acknowledgeAll && inView.length >= 2 && (
+        {onAcknowledgeAll && inView.length >= 2 && (
           <button
             type="button"
             onClick={() => {
-              acknowledgeAll(inView)
+              onAcknowledgeAll(inView)
               setStatus(l.acknowledgedCount(inView.length))
               // The button leaves with the alarms it acknowledged; the heading keeps the keyboard in the list.
               heading.current?.focus()
             }}
             className={cn(rowButton, "ring-input")}
           >
-            {/* Honest about its reach: with alarms folded out of view it says how many it will take. */}
-            {inView.length < unack ? l.acknowledgeShown(inView.length) : l.acknowledgeAll}
+            {/* Honest about its reach: with critical alarms left to their rows, or alarms folded out of view, it says how many it will take. */}
+            {criticalLeft ? l.acknowledgeNonCritical(inView.length) : inView.length < unack ? l.acknowledgeShown(inView.length) : l.acknowledgeAll}
           </button>
         )}
       </div>
