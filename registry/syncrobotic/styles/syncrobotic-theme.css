@@ -1,4 +1,4 @@
-/* @syncrobotic/syncrobotic-theme v0.22.1 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
+/* @syncrobotic/syncrobotic-theme v0.22.2 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
 /*
  * SYNCROBOTIC theme (see CHANGELOG.md for its version history)
  * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
@@ -538,6 +538,13 @@
   &:active:not(:disabled):not([aria-disabled="true"]) {
     scale: 0.97;
   }
+}
+
+/* No data: a hatch in the field-edge colour (3:1) with an inset outline, for a chart cell or bar that has no value. Not
+   the same as zero, which is drawn as zero; a gap must never pass for a quiet hour. Works in every mode and in print. */
+@utility no-data {
+  background-image: repeating-linear-gradient(135deg, var(--input) 0 1px, transparent 1px 5px);
+  box-shadow: inset 0 0 0 1px var(--input);
 }
 
 /* --h-sm is for a mouse only: on any coarse pointer it is 44, so nothing interactive is ever smaller than a finger

@@ -110,12 +110,12 @@ describe("Acknowledge all", () => {
     render(
       <AlarmList
         feedback={false}
-        alarms={[b("1", "high"), b("2", "critical"), b("3", "low", { shelvedUntil: "15:30" }), b("4", "high", { suppressed: true }), b("5", "low", { outOfService: true })]}
+        alarms={[b("1", "high"), b("2", "low"), b("3", "low", { shelvedUntil: "15:30" }), b("4", "high", { suppressed: true }), b("5", "low", { outOfService: true })]}
         onAcknowledgeAll={all}
       />,
     )
     fireEvent.click(screen.getByRole("button", { name: "Acknowledge all" }))
-    expect(all).toHaveBeenCalledWith(["2", "1"])
+    expect(all).toHaveBeenCalledWith(["1", "2"])
     expect(screen.getByRole("status").textContent).toBe("2 alarms acknowledged")
     expect(document.activeElement).toBe(screen.getByRole("heading", { name: "Alarms" }))
   })
@@ -124,16 +124,25 @@ describe("Acknowledge all", () => {
     const all = vi.fn()
     const now = 1_000_000_000
     const lows = Array.from({ length: 11 }, (_, i) => b(`l${i}`, "low", { raisedAt: now }))
-    render(<AlarmList feedback={false} now={now} alarms={[b("c", "critical", { raisedAt: now }), b("h", "high", { raisedAt: now }), ...lows]} onAcknowledgeAll={all} />)
+    render(<AlarmList feedback={false} now={now} alarms={[b("h", "high", { raisedAt: now }), b("h2", "high", { raisedAt: now }), ...lows]} onAcknowledgeAll={all} />)
     fireEvent.click(screen.getByRole("button", { name: "Acknowledge 2 shown" }))
-    expect(all).toHaveBeenCalledWith(["c", "h"])
+    expect(all.mock.calls[0][0].sort()).toEqual(["h", "h2"])
   })
 
-  it("falls back to onAcknowledge for each alarm", () => {
-    const one = vi.fn()
-    render(<AlarmList feedback={false} alarms={[b("1", "high"), b("2", "low")]} onAcknowledge={one} />)
-    fireEvent.click(screen.getByRole("button", { name: "Acknowledge all" }))
-    expect(one.mock.calls.map((c) => c[0])).toEqual(["1", "2"])
+  it("appears only when onAcknowledgeAll is passed, not from onAcknowledge alone", () => {
+    render(<AlarmList feedback={false} alarms={[b("1", "high"), b("2", "low")]} onAcknowledge={() => {}} />)
+    expect(screen.queryByRole("button", { name: /Acknowledge all|non-critical|shown/ })).toBeNull()
+  })
+
+  it("never takes a critical alarm: each is acknowledged on its own row, and the button says so", () => {
+    const all = vi.fn()
+    const { rerender } = render(<AlarmList feedback={false} alarms={[b("c", "critical"), b("1", "high")]} onAcknowledge={() => {}} onAcknowledgeAll={all} />)
+    // One critical and one other: nothing for the button to take in bulk.
+    expect(screen.queryByRole("button", { name: /Acknowledge (all|\d)/ })).toBeNull()
+    rerender(<AlarmList feedback={false} alarms={[b("c", "critical"), b("1", "high"), b("2", "low")]} onAcknowledge={() => {}} onAcknowledgeAll={all} />)
+    fireEvent.click(screen.getByRole("button", { name: "Acknowledge 2 non-critical" }))
+    expect(all).toHaveBeenCalledWith(["1", "2"])
+    expect(screen.getByRole("button", { name: /^Acknowledge\W+Alarm c$/ })).toBeTruthy()
   })
 
   it("moves focus to the next Acknowledge after one is used, not to the top of the page", () => {

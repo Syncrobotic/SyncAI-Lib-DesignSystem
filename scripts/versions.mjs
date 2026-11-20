@@ -53,6 +53,12 @@ for (const item of registry.items) {
   if (!WRITE && (!was || was.hash !== h || was.version !== version)) errors.push(`${item.name}: ${LOCK} is stale. Run npm run versions`)
 }
 
+// The kit's own version: package.json and package-lock.json move together (npm version <x> --no-git-tag-version).
+const pkg = JSON.parse(readFileSync("package.json", "utf8"))
+const pkgLock = existsSync("package-lock.json") ? JSON.parse(readFileSync("package-lock.json", "utf8")) : null
+if (pkgLock && (pkgLock.version !== pkg.version || pkgLock.packages?.[""]?.version !== pkg.version))
+  errors.push(`package-lock.json says ${pkgLock.version}, package.json ${pkg.version}. Run npm version ${pkg.version} --no-git-tag-version --allow-same-version`)
+
 // --write refuses to record a change that skipped its bump, so the lock can never hide one.
 const unbumped = errors.filter((e) => e.includes("files changed but version"))
 if (WRITE && unbumped.length === 0 && errors.every((e) => !e.includes("meta."))) {
