@@ -159,7 +159,7 @@ import {
   ZoomIn,
   ZoomOut,
 } from "lucide-react"
-import { ChargingDock, EStopPressed, MobileRobot, RobotArm, SafetyZone } from "@/registry/syncrobotic/ui/robot-icons"
+import { ChargingDock, DiamondAlert, EStopPressed, MobileRobot, RobotArm, SafetyZone } from "@/registry/syncrobotic/ui/robot-icons"
 
 /**
  * The icon set: every Lucide icon the kit uses, each with the one thing it means. The import list above is also the
@@ -182,6 +182,7 @@ export const iconGroups: IconGroup[] = [
       e(ChargingDock, "The dock: where a robot charges; send it there"),
       e(EStopPressed, "A physical emergency stop was pressed on the machine"),
       e(SafetyZone, "A safety zone: no entry or reduced speed"),
+      e(DiamondAlert, "A low-priority alarm: its own shape beside the critical octagon and the high triangle"),
     ],
   },
   {
@@ -253,7 +254,7 @@ export const iconGroups: IconGroup[] = [
     icons: [
       e(OctagonAlert, "Critical alarm, stopped by a fault"),
       e(TriangleAlert, "Warning"),
-      e(CircleAlert, "Failed, or a field is wrong; a low-priority alarm (its own shape beside high and critical)"),
+      e(CircleAlert, "Failed, or a field is wrong"),
       e(CircleCheck, "Done"),
       e(CircleDashed, "Not enough samples to judge: no verdict yet"),
       e(Info, "Information"),

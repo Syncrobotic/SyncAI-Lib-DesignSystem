@@ -1,6 +1,7 @@
 import Link from "next/link"
-import { ArrowRight, Bell, Bot, CircleAlert, Map, OctagonAlert, TriangleAlert, Wifi } from "lucide-react"
+import { ArrowRight, Bell, Bot, Map, OctagonAlert, TriangleAlert, Wifi } from "lucide-react"
 import { AppearItem, Reveal } from "./appear"
+import { DiamondAlert } from "@/registry/syncrobotic/ui/robot-icons"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { type FoundationSlug, foundations } from "./foundations"
 import { contrast, px, themeValue } from "./theme-tokens"
@@ -80,7 +81,7 @@ const previews: Record<FoundationSlug, React.ReactNode> = {
         <TriangleAlert aria-hidden className="size-4" /> High
       </span>
       <span className="flex items-center gap-2 text-neutral">
-        <CircleAlert aria-hidden className="size-4" /> Low
+        <DiamondAlert aria-hidden className="size-4" /> Low
       </span>
     </div>
   ),

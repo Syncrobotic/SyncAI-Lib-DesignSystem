@@ -328,9 +328,8 @@ export default function DataVisualisationPage() {
         <p className="text-sm text-muted-foreground">
           Contrast against a card, light · dark. The accent is the SYNCROBOTIC brand indigo ({hex(1, "light")} in light, the same hue in every mode), chroma{" "}
           {chroma(hex(1, "light")).toFixed(2)}; the greys are {chroma(hex(2, "light")).toFixed(2)} or less, so only the series that matters has colour. The
-          accent and the two graphite steps are at least 3:1, the minimum for a mark. Other is quieter on purpose (
-          {contrast("chart-4", "card", "light")!.toFixed(1)}:1 in light, {contrast("chart-4", "card", "dark")!.toFixed(1)}:1 in dark): it recedes, it is always named in the legend and the table, and a 2 px gap in the card
-          colour sets it off. The baseline is the graphite mid, always dashed.
+          accent and all three graphite steps are at least 3:1, the minimum for a mark. Other is the quietest of them (
+          {contrast("chart-4", "card", "light")!.toFixed(1)}:1 in light, {contrast("chart-4", "card", "dark")!.toFixed(1)}:1 in dark): it recedes, and is still a shape you can see on its own. The baseline is the graphite mid, always dashed.
         </p>
       </Section>
 

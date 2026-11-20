@@ -171,7 +171,7 @@
     },
     {
      "name": "labels",
-     "type": "Partial<AlarmLabels> & { title?: string; summary?: (active: number, unacknowledged: number) => string; none?: string; acknowledgeAll?: string; acknowledgeShown?: (count: number) => string; acknowledgedCount?: (count: number) => string; shelvedGroup?: (count: number) => string; hidden?: (suppressed: number, outOfService: number) => string; flood?: (count: number, minutes: number) => string; lowGroup?: (count: number) => string; many?: (count: number) => string; }",
+     "type": "Partial<AlarmLabels> & { title?: string; summary?: (active: number, unacknowledged: number) => string; none?: string; acknowledgeAll?: string; acknowledgeShown?: (count: number) => string; acknowledgedCount?: (count: number) => string; shelvedGroup?: (count: number) => string; hidden?: (suppressed: number, outOfService: number) => string; flood?: (count: number, minutes: number) => string; lowGroup?: (count: number) => string; many?: (count: number) => string; loading?: string; errorEmpty?: string; errorStale?: string; updatedAt?: (time: string) => string; retry?: string; }",
      "description": ""
     },
     {
@@ -190,6 +190,22 @@
      "type": "boolean",
      "default": "true",
      "description": "Buzz and sound for a new critical or high alarm (the `feedback` patterns). On by default; turn off where the list is a record, not a live feed."
+    },
+    {
+     "name": "status",
+     "type": "\"ready\" | \"loading\" | \"error\"",
+     "default": "\"ready\"",
+     "description": "Where the alarms come from. \"loading\": rows held by placeholders, never \"No active alarms\". \"error\": the list says it could not load or update, keeps the alarms it already has (an old list beats an empty one), and offers `onRetry`."
+    },
+    {
+     "name": "onRetry",
+     "type": "() => void",
+     "description": ""
+    },
+    {
+     "name": "updatedAt",
+     "type": "string",
+     "description": "When the alarms were last loaded, shown with an error: \"Last updated 13:42\"."
     }
    ],
    "inherits": []

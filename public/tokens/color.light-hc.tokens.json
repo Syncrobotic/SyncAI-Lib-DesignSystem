@@ -155,15 +155,15 @@
     },
     "chart-2": {
       "$type": "color",
-      "$value": "#26262b"
+      "$value": "#2b2b2f"
     },
     "chart-3": {
       "$type": "color",
-      "$value": "#62626b"
+      "$value": "#59595e"
     },
     "chart-4": {
       "$type": "color",
-      "$value": "#909097"
+      "$value": "#85868b"
     },
     "chart-5": {
       "$type": "color",
