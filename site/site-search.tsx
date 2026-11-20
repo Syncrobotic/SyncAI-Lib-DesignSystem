@@ -81,12 +81,16 @@ export function SiteSearch() {
         type="button"
         onClick={() => setOpen(true)}
         onPointerEnter={() => void load()}
+        // The name starts with the word on the button (WCAG 2.5.3); the key cap is a hint, not part of the name.
         aria-label="Search the docs"
+        aria-keyshortcuts="Meta+K Control+K"
         className="press flex size-(--h-md) items-center justify-center gap-2 rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground md:h-(--h-sm) md:w-auto md:justify-start md:bg-secondary md:pr-2 md:pl-3 md:text-sm"
       >
         <Search aria-hidden="true" className="size-4" />
         <span className="hidden md:inline">Search</span>
-        <Kbd className="ml-4 hidden md:inline-flex">⌘K</Kbd>
+        {/* The key cap is drawn by CSS, not written as text: it is a hint beside the name, and text inside the button would
+            have to be part of its name (WCAG 2.5.3, label in name). aria-keyshortcuts says the shortcut instead. */}
+        <Kbd aria-hidden="true" data-keys="⌘K" className="ml-4 hidden after:content-[attr(data-keys)] md:inline-flex" />
       </button>
       <CommandDialog open={open} onOpenChange={setOpen} title="Search the docs" description="Components, blocks, foundations and icons" shouldFilter={false}>
         <CommandInput value={query} onValueChange={setQuery} placeholder="Search components, blocks, rules, icons" />

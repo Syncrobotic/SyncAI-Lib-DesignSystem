@@ -1,4 +1,4 @@
-// @syncrobotic/code-block v0.18.0 · update: npx shadcn add @syncrobotic/code-block --overwrite
+// @syncrobotic/code-block v0.19.0 · update: npx shadcn add @syncrobotic/code-block --overwrite
 "use client"
 
 import * as React from "react"
@@ -9,6 +9,8 @@ import { CopyButton } from "@/registry/syncrobotic/ui/copy-button"
 import { scrollFadeMask, useScrollEdges } from "@/registry/syncrobotic/ui/table"
 
 export type CodeBlockLabels = {
+  /** The copy button's name, from the block's title when it has one: (title) => "Copy " + title. */
+  copy: (title?: string) => string
   /** Said after a copy. */
   copied: string
   /** Said when the browser refused the copy. */
@@ -22,6 +24,7 @@ export type CodeBlockLabels = {
 }
 
 const defaultLabels: CodeBlockLabels = {
+  copy: (title) => (title ? `Copy ${title}` : "Copy code"),
   copied: "Copied",
   failed: "Could not copy: select the text and copy it",
   show: "Show value",
@@ -85,7 +88,7 @@ export function CodeBlock({
   lineNumbers?: boolean
   /** Hide the value behind dots, with a Show toggle; Copy still copies the real value. */
   secret?: boolean
-  /** The copy button's name. Defaults to "Copy <title>" or "Copy code"; pass your own in other languages. */
+  /** The copy button's name, as is. Without it the name comes from `labels.copy(title)` ("Copy <title>", "Copy code"). */
   copyLabel?: string
   labels?: Partial<CodeBlockLabels>
   /** Highlighted code (a `<pre>` from shiki or similar) shown in place of the plain text. */
@@ -157,7 +160,7 @@ export function CodeBlock({
               </span>
             </Button>
           )}
-          <CopyButton value={code} label={copyLabel ?? (title ? `Copy ${title}` : "Copy code")} copiedLabel={labels.copied} failedLabel={labels.failed} />
+          <CopyButton value={code} label={copyLabel ?? labels.copy(title)} copiedLabel={labels.copied} failedLabel={labels.failed} />
         </div>
       </div>
       <div data-slot="code-block-body" className="flex">
