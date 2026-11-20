@@ -1,23 +1,64 @@
-// @syncrobotic/chart v0.17.2 · update: npx shadcn add @syncrobotic/chart --overwrite
+// @syncrobotic/chart v0.22.0 · update: npx shadcn add @syncrobotic/chart --overwrite
 "use client"
 
 import * as React from "react"
-import { Legend, ResponsiveContainer, Tooltip, type LegendProps, type TooltipContentProps } from "recharts"
+import { Area, Bar, Legend, Line, ResponsiveContainer, Tooltip, type LegendProps, type TooltipContentProps } from "recharts"
 import { cn } from "@/lib/utils"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
 
 /**
- * One entry per series. `color` is the slot in the categorical palette (--chart-1…5), assigned in a fixed order and
- * kept with the series: a filter that hides one series never repaints the others. Five is the limit; fold the rest into
- * "Other" or split the chart.
+ * One entry per series, the one the reader should look at first. `color` is the slot in the palette, graphite and one
+ * accent: 1 the accent (the series that matters), 2 and 3 graphite, 4 the light grey for "Other", 5 the baseline (an
+ * earlier period or a plan). Keep the slot with the series: a filter that hides one series never repaints the others.
+ * The order also sets the line style (`chartDash`): first solid, second dashed, third dotted. Three series and Other is
+ * the limit; fold the rest into "Other" or split the chart into small multiples.
  */
 export type ChartConfig = Record<string, { label: string; color: 1 | 2 | 3 | 4 | 5; unit?: string }>
 
-const ChartContext = React.createContext<ChartConfig | null>(null)
-export const useChartConfig = () => {
-  const config = React.useContext(ChartContext)
-  if (!config) throw new Error("Chart parts must be inside <ChartContainer>")
-  return config
+/** Line styles by series order: solid, dashed (6 4), dotted (1.5 3.5). A fourth line (Other) is solid, in light grey. */
+export const chartDashes = [undefined, "6 4", "1.5 3.5"] as const
+
+/**
+ * The line style of a series, from its place in the config: undefined (solid) for the first, then dashed, then dotted.
+ * ChartContainer applies it to every Line and Area outline that does not set `strokeDasharray` itself, and the legend
+ * and tooltip draw it, so two series are told apart without colour.
+ */
+export const chartDash = (config: ChartConfig, key: string): string | undefined => chartDashes[Object.keys(config).indexOf(key)]
+
+type Marks = Record<string, "line" | "bar">
+const ChartContext = React.createContext<{ config: ChartConfig; marks: Marks } | null>(null)
+const useChart = () => {
+  const chart = React.useContext(ChartContext)
+  if (!chart) throw new Error("Chart parts must be inside <ChartContainer>")
+  return chart
+}
+export const useChartConfig = () => useChart().config
+
+/**
+ * Gives each Line and unstacked Area its line style by series order (unless it sets one), opens grouped bars to the kit's 2 px
+ * gap, and notes which series are lines and which are bars, so the legend draws the right swatch.
+ */
+function withSeriesStyles(chart: React.ReactElement, config: ChartConfig) {
+  const marks: Marks = {}
+  const props = chart.props as { children?: React.ReactNode; barGap?: number }
+  const children = React.Children.map(props.children, (child) => {
+    if (!React.isValidElement(child)) return child
+    const p = child.props as { dataKey?: unknown; strokeDasharray?: string; stackId?: unknown }
+    const key = typeof p.dataKey === "string" && p.dataKey in config ? p.dataKey : null
+    if (!key) return child
+    // Bars, and stacked areas (bands of a whole, set apart by a 2 px stroke in the card colour), are told apart by their
+    // fill and their place in the stack: a square swatch, no dash.
+    if (child.type === Bar || (child.type === Area && p.stackId != null)) {
+      marks[key] = "bar"
+      return child
+    }
+    if (child.type !== Line && child.type !== Area) return child
+    marks[key] = "line"
+    const dash = chartDash(config, key)
+    return p.strokeDasharray === undefined && dash ? React.cloneElement(child as React.ReactElement<{ strokeDasharray?: string }>, { strokeDasharray: dash }) : child
+  })
+  const hasBars = Object.values(marks).includes("bar")
+  return { marks, chart: React.cloneElement(chart as React.ReactElement<{ barGap?: number }>, hasBars && props.barGap === undefined ? { barGap: 2 } : {}, children) }
 }
 
 /**
@@ -32,8 +73,9 @@ export const chartNumber = (n: number | string) => {
 
 /**
  * Sizes a Recharts chart to its box and maps each series to its palette slot as `var(--color-<key>)`, so marks write
- * `stroke="var(--color-speed)"`. Axis text, grid and tooltip use the theme's text and line tokens, so the chart reads the
- * same in light and dark. Give it a height (class or style); the width follows the container.
+ * `stroke="var(--color-speed)"`. Lines and area outlines get their line style by series order (see `chartDash`), and
+ * grouped bars a 2 px gap. Axis text, grid and tooltip use the theme's text and line tokens, so the chart reads the same
+ * in light and dark. Give it a height (class or style); the width follows the container.
  */
 export function ChartContainer({
   config,
@@ -43,8 +85,9 @@ export function ChartContainer({
   ...props
 }: React.ComponentProps<"div"> & { config: ChartConfig; children: React.ReactElement; /** What the chart shows, for screen readers. */ label: string }) {
   const vars = Object.fromEntries(Object.entries(config).map(([k, v]) => [`--color-${k}`, `var(--chart-${v.color})`])) as React.CSSProperties
+  const { chart, marks } = withSeriesStyles(children, config)
   return (
-    <ChartContext.Provider value={config}>
+    <ChartContext.Provider value={{ config, marks }}>
       <div
         data-slot="chart"
         role="figure"
@@ -61,7 +104,7 @@ export function ChartContainer({
         {...props}
       >
         <ResponsiveContainer width="100%" height="100%">
-          {children}
+          {chart}
         </ResponsiveContainer>
       </div>
     </ChartContext.Provider>
@@ -82,9 +125,21 @@ export function ChartTooltip(props: React.ComponentProps<typeof Tooltip>) {
   return <Tooltip isAnimationActive={false} content={<ChartTooltipContent />} {...props} />
 }
 
+/** The swatch for a series: a short stretch of its line, in its line style, for lines and areas; a square for bars. */
+export function ChartSwatch({ dataKey }: { dataKey: string }) {
+  const { config, marks } = useChart()
+  if (marks[dataKey] === "line")
+    return (
+      <svg aria-hidden="true" viewBox="0 0 20 12" className="h-3 w-5 shrink-0">
+        <line x1="0" y1="6" x2="20" y2="6" stroke={`var(--color-${dataKey})`} strokeWidth="2" strokeDasharray={chartDash(config, dataKey)} />
+      </svg>
+    )
+  return <span aria-hidden="true" className="size-3 shrink-0 rounded-xs" style={{ background: `var(--color-${dataKey})` }} />
+}
+
 /**
  * The card under the pointer: the x value, then one row per series with its swatch, name and value.
- * Text stays in text colours; the swatch alone carries the series colour.
+ * Text stays in text colours; the swatch alone carries the series colour and line style.
  */
 export function ChartTooltipContent({
   active,
@@ -107,7 +162,7 @@ export function ChartTooltipContent({
           const c = config[key]
           return (
             <li key={key} className="flex items-center gap-2">
-              <span aria-hidden="true" className="size-3 shrink-0 rounded-xs" style={{ background: `var(--color-${key})` }} />
+              <ChartSwatch dataKey={key} />
               <span className="flex-1 text-muted-foreground">{c?.label ?? key}</span>
               <span className="font-mono font-medium tabular-nums">
                 {formatter ? formatter(Number(p.value), key) : `${typeof p.value === "number" ? chartNumber(p.value) : p.value}${c?.unit ? ` ${c.unit}` : ""}`}
@@ -120,7 +175,7 @@ export function ChartTooltipContent({
   )
 }
 
-/** Always shown for two series or more, above the plot, so a series is never identified by colour alone. */
+/** Always shown for two series or more, above the plot, with each series' line style, so a series is never identified by colour alone. */
 export function ChartLegend(props: Omit<LegendProps, "ref">) {
   return <Legend verticalAlign="top" align="left" content={<ChartLegendContent />} {...props} />
 }
@@ -128,7 +183,7 @@ export function ChartLegend(props: Omit<LegendProps, "ref">) {
 export function ChartLegendContent({ payload }: { payload?: readonly { dataKey?: unknown; value?: unknown }[] }) {
   const config = useChartConfig()
   if (!payload?.length) return null
-  // In the order the series are configured, which is the palette order, whatever order Recharts draws them in.
+  // In the order the series are configured, which is the order of emphasis, whatever order Recharts draws them in.
   const keys = Object.keys(config)
   const items = [...payload].sort((a, b) => keys.indexOf(String(a.dataKey)) - keys.indexOf(String(b.dataKey)))
   return (
@@ -137,7 +192,7 @@ export function ChartLegendContent({ payload }: { payload?: readonly { dataKey?:
         const key = String(p.dataKey)
         return (
           <li key={key} className="flex items-center gap-2 text-muted-foreground">
-            <span aria-hidden="true" className="size-3 rounded-xs" style={{ background: `var(--color-${key})` }} />
+            <ChartSwatch dataKey={key} />
             {config[key]?.label ?? key}
           </li>
         )
@@ -147,7 +202,7 @@ export function ChartLegendContent({ payload }: { payload?: readonly { dataKey?:
 }
 
 /**
- * The same data as a table: for exact values, screen readers and anyone who cannot tell two hues apart.
+ * The same data as a table: for exact values, screen readers and anyone who cannot tell two series apart.
  * Offer it beside every chart (a Chart / Table switch).
  */
 export function ChartTable<T extends Record<string, unknown>>({

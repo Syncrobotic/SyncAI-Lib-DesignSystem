@@ -1,4 +1,4 @@
-// @syncrobotic/island v0.17.3 · update: npx shadcn add @syncrobotic/island --overwrite
+// @syncrobotic/island v0.22.0 · update: npx shadcn add @syncrobotic/island --overwrite
 "use client"
 
 import * as React from "react"
@@ -254,7 +254,8 @@ export function IslandAlarm({ alarms, onAcknowledge, onShowAll, labels, feedback
       className={cn(
         "flex min-h-(--h-row) flex-wrap items-center gap-2 rounded-md px-2 py-2",
         presence.leaving ? "animate-disappear" : "animate-appear",
-        top.priority === "critical" ? p.tint : "bg-muted",
+        // Never tinted, as in AlarmList: the tray's edge, the glyph and the word carry the priority's colour.
+        "bg-muted",
       )}
     >
       <span className={cn("flex size-8 shrink-0 items-center justify-center", p.text)}>
@@ -263,12 +264,15 @@ export function IslandAlarm({ alarms, onAcknowledge, onShowAll, labels, feedback
       {/* The alarm is never cut: two lines, and the buttons move to their own row before they squeeze it under 160 px. */}
       <span className="flex min-w-0 flex-1 basis-40 flex-col">
         <span className="line-clamp-2 text-sm font-bold break-words">
-          {/* The separator is held to the title (no-break space after it), so the first line never ends on a bare "·". */}
-          <span className={p.text}>{l[top.priority]}</span> {"\u00b7\u00a0"}
+          <span className={cn("mr-2 font-medium", p.text)}>{l[top.priority]}</span>
+          <span className="sr-only">: </span>
           {top.title}
         </span>
         <span className="truncate text-xs text-muted-foreground">
-          {[top.source, top.time, others > 0 && !onShowAll ? l.more(others) : null].filter(Boolean).join(" · ")}
+          {/* Time first, in tabular figures, as in AlarmList's rows. */}
+          {top.time && <span className="font-mono tabular-nums">{top.time}</span>}
+          {top.time && (top.source || (others > 0 && !onShowAll)) && " · "}
+          {[top.source, others > 0 && !onShowAll ? l.more(others) : null].filter(Boolean).join(" · ")}
         </span>
       </span>
       {((others > 0 && onShowAll) || onAcknowledge) && (
@@ -283,7 +287,8 @@ export function IslandAlarm({ alarms, onAcknowledge, onShowAll, labels, feedback
             <button
               type="button"
               onClick={() => onAcknowledge(top.id)}
-              className="press h-(--h-sm) shrink-0 rounded-xs px-3 text-sm font-medium ring-1 ring-foreground ring-inset"
+              // Light, as in AlarmList: the bold title and the edge already say it is waiting.
+              className="press h-(--h-sm) shrink-0 rounded-xs bg-card px-3 text-sm font-medium ring-1 ring-input ring-inset hover:bg-accent"
             >
               {l.acknowledge}
             </button>

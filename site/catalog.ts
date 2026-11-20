@@ -650,7 +650,9 @@ const entries: Record<string, Entry> = {
       "Only for an abnormal condition that needs an operator to act. No action, no alarm: log it instead.",
       "Three priorities, each with its own shape, colour and word: critical (act now), high (act within minutes), low (act when convenient).",
       "Stays until the condition clears and someone acknowledges it. Acknowledging records that it was seen; it does not clear it.",
-      "Never auto-dismissed, never a toast, never blinking: the bar and the word “Unacknowledged” carry the state; only critical alarms are also tinted.",
+      "Never auto-dismissed, never a toast, never blinking, never a tinted row. Colour is only on the glyph and the priority word. Unacknowledged: bold title and a solid bar in the priority's colour. Cleared but not acknowledged: still bold, the bar dashed, and it says when it cleared. Acknowledged: regular and grey, with when (“Acknowledged 13:42”, from `acknowledgedAt`).",
+      "Time comes first, in tabular figures, so order and age read down the column. Below 576 px of width the row reflows: the time under the title, the state and buttons on a line of their own.",
+      "“Acknowledge all” appears with two or more unacknowledged alarms in view and takes only those: never shelved, suppressed or out-of-service alarms, and in a flood the folded low ones only while their group is open (it then reads “Acknowledge 2 shown”). Screen readers hear how many were acknowledged.",
       "One alarm per root cause. If the robot is offline, do not also raise camera lost and lidar lost.",
       "Shelving hides a nuisance alarm for a set time and it comes back on its own; it is never permanent and never for critical alarms. Suppressed by design (the app's logic) and out of service (maintenance) are counted under the list, not hidden silently.",
       "Pass `raisedAt` so a flood (over 10 alarms in 10 minutes) is named and the low ones fold away; then fix the root cause the flood points to.",
@@ -660,7 +662,7 @@ const entries: Record<string, Entry> = {
     group: "Display",
     examples: { file: "data-pieces", prefix: "ShareBar" },
     rules: [
-      "How a whole splits into a few parts (up to five, then “Other”). For values over time or many categories, use a chart.",
+      "How a whole splits into a few parts (up to three, then “Other”): the first in the accent, then two greys, then the light grey for Other. For values over time or many categories, use a chart.",
       "Colours follow the order you give, never the size, and are never status colours.",
       "Outside a table cell, show the legend: identity never rests on colour alone. In a table, the column header names the parts.",
     ],
@@ -837,11 +839,14 @@ const entries: Record<string, Entry> = {
     wide: true,
     examples: { file: "charts", prefix: "Chart" },
     rules: [
-      "Colour is the series' identity, not its rank: slots --chart-1…5 in a fixed order, kept with the series when others are filtered out. Never a status colour as a series.",
-      "Two series or more: a legend above the plot. One series: no legend; the title names it.",
-      "Every chart with axes (line, area, bar, heatmap) has a table view (ChartTable), for exact values and for anyone who cannot tell two hues apart. Sparklines, rings (radial) and status strips write their numbers in words instead.",
+      "Graphite and one accent: the series the reader should look at is --chart-1 (the brand indigo), the others graphite (2, 3), Other the light grey (4), a baseline or earlier period 5. Kept with the series when others are filtered out. Never a status colour as a series.",
+      "Three series and Other at most: fold the rest into Other, highlight one and grey the rest, or split into small multiples.",
+      "Line style follows the series order, set by the chart: solid, dashed (6 4), dotted (1.5 3.5). Pass strokeDasharray yourself only to override it.",
+      "Filled marks (stacked bars, stacked areas) take the accent, then the mid grey (3) and Other (4): a large area in the strong grey (2) outweighs the accent, near-black in light and near-white in dark. The strong grey is for thin lines.",
+      "Two series or more: a legend above the plot, with each series' line style. One series: no legend; the title names it.",
+      "Every chart with axes (line, area, bar, heatmap) has a table view (ChartTable), for exact values and for anyone who cannot tell two series apart. Sparklines, rings (radial) and status strips write their numbers in words instead.",
       "One y axis. Two measures on different scales are two charts.",
-      "Lines 2 px; bars with 4 px rounded data ends and a 2 px gap; a horizontal hairline grid; no axis lines.",
+      "Lines 2 px; bars with 4 px rounded data ends and a 2 px gap in the card colour between bars and segments; a horizontal hairline grid; no axis lines.",
       "The chart fades in when it mounts (--motion-base); marks do not animate, because Recharts cannot use the motion tokens. Nothing moves under reduced motion.",
     ],
   },
@@ -956,6 +961,11 @@ export type Item = (typeof registry.items)[number] & Entry
 
 // What each component does with the keyboard beyond Tab. Radix supplies most of it; these tables say so out loud.
 const keyboard: Record<string, [string, string][]> = {
+  alarm: [
+    ["Tab", "Move through each row's buttons, in the list's order (most urgent first)"],
+    ["Enter / Space", "Acknowledge; focus moves to the next Acknowledge, or to the list's heading after the last"],
+    ["Enter / Space on a group", "Open or close the folded low alarms or the shelved group"],
+  ],
   trace: [
     ["Tab", "Focus a step that opens"],
     ["Enter / Space", "Open or close its details"],

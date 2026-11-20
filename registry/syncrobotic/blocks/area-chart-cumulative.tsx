@@ -1,4 +1,4 @@
-// @syncrobotic/area-chart-cumulative v0.17.2 · update: npx shadcn add @syncrobotic/area-chart-cumulative --overwrite
+// @syncrobotic/area-chart-cumulative v0.22.0 · update: npx shadcn add @syncrobotic/area-chart-cumulative --overwrite
 "use client"
 
 import * as React from "react"
@@ -46,7 +46,7 @@ export function AreaChartCumulative() {
             <ChartTooltip labelFormatter={date} />
             <ChartLegend />
             <Area dataKey="done" type="linear" stroke="var(--color-done)" strokeWidth={2} fill="var(--color-done)" fillOpacity={0.12} {...chartMotion} />
-            <Line dataKey="plan" stroke="var(--color-plan)" strokeWidth={2} strokeDasharray="4 4" dot={false} {...chartMotion} />
+            <Line dataKey="plan" stroke="var(--color-plan)" strokeWidth={2} dot={false} {...chartMotion} />
           </AreaChart>
         </ChartContainer>
       ) : (
