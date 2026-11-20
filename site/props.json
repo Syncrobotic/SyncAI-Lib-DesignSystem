@@ -683,6 +683,54 @@
    ]
   }
  ],
+ "banner": [
+  {
+   "name": "Banner",
+   "props": [
+    {
+     "name": "tone",
+     "type": "\"neutral\" | \"info\" | \"warning\" | \"danger\"",
+     "default": "\"neutral\"",
+     "description": "neutral (default) for news and calm conditions; info only while a process runs; warning before something is lost; danger when the app cannot work."
+    },
+    {
+     "name": "icon",
+     "type": "ElementType",
+     "description": "Replaces the tone's icon with one that says what it is about: Wrench for maintenance, Lock for read-only, CloudOff for offline."
+    },
+    {
+     "name": "title",
+     "type": "ReactNode",
+     "description": "The condition in a few words, in bold: \"Read-only mode\". The children say what it means and until when."
+    },
+    {
+     "name": "action",
+     "type": "ReactNode",
+     "description": "One next step: a Button (size md, variant outline) or a link through `<Button asChild>`. Named by its result: \"Upgrade plan\", not \"Learn more\"."
+    },
+    {
+     "name": "onDismiss",
+     "type": "() => void",
+     "description": "Shows a close button. Remembering that it was closed (and for how long) is yours: set `open` false and store it. Leave it out for a condition that ends by itself (offline, read-only)."
+    },
+    {
+     "name": "dismissLabel",
+     "type": "string",
+     "default": "\"Dismiss\"",
+     "description": "The close button's name for screen readers."
+    },
+    {
+     "name": "open",
+     "type": "boolean",
+     "default": "true",
+     "description": "false hides it with the disappear movement. Default true."
+    }
+   ],
+   "inherits": [
+    "<div> (except title)"
+   ]
+  }
+ ],
  "breadcrumb": [
   {
    "name": "Breadcrumb",
@@ -1264,6 +1312,112 @@
    "props": [],
    "inherits": [
     "<kbd>"
+   ]
+  }
+ ],
+ "context-menu": [
+  {
+   "name": "ContextMenu",
+   "props": [],
+   "inherits": [
+    "Radix ContextMenu.Root"
+   ]
+  },
+  {
+   "name": "ContextMenuTrigger",
+   "props": [],
+   "inherits": [
+    "Radix ContextMenu.Trigger"
+   ]
+  },
+  {
+   "name": "ContextMenuGroup",
+   "props": [],
+   "inherits": [
+    "Radix ContextMenu.Group"
+   ]
+  },
+  {
+   "name": "ContextMenuRadioGroup",
+   "props": [],
+   "inherits": [
+    "Radix ContextMenu.RadioGroup"
+   ]
+  },
+  {
+   "name": "ContextMenuSub",
+   "props": [],
+   "inherits": [
+    "Radix ContextMenu.Sub"
+   ]
+  },
+  {
+   "name": "ContextMenuContent",
+   "props": [],
+   "inherits": [
+    "Radix ContextMenu.Content"
+   ]
+  },
+  {
+   "name": "ContextMenuSubContent",
+   "props": [],
+   "inherits": [
+    "Radix ContextMenu.SubContent"
+   ]
+  },
+  {
+   "name": "ContextMenuItem",
+   "props": [
+    {
+     "name": "destructive",
+     "type": "boolean",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "Radix ContextMenu.Item"
+   ]
+  },
+  {
+   "name": "ContextMenuCheckboxItem",
+   "props": [],
+   "inherits": [
+    "Radix ContextMenu.CheckboxItem"
+   ]
+  },
+  {
+   "name": "ContextMenuRadioItem",
+   "props": [],
+   "inherits": [
+    "Radix ContextMenu.RadioItem"
+   ]
+  },
+  {
+   "name": "ContextMenuSubTrigger",
+   "props": [],
+   "inherits": [
+    "Radix ContextMenu.SubTrigger"
+   ]
+  },
+  {
+   "name": "ContextMenuLabel",
+   "props": [],
+   "inherits": [
+    "Radix ContextMenu.Label"
+   ]
+  },
+  {
+   "name": "ContextMenuSeparator",
+   "props": [],
+   "inherits": [
+    "Radix ContextMenu.Separator"
+   ]
+  },
+  {
+   "name": "ContextMenuShortcut",
+   "props": [],
+   "inherits": [
+    "<span>"
    ]
   }
  ],
@@ -2047,6 +2201,29 @@
     }
    ],
    "inherits": []
+  }
+ ],
+ "hover-card": [
+  {
+   "name": "HoverCard",
+   "props": [],
+   "inherits": [
+    "Radix HoverCard.Root"
+   ]
+  },
+  {
+   "name": "HoverCardTrigger",
+   "props": [],
+   "inherits": [
+    "Radix HoverCard.Trigger"
+   ]
+  },
+  {
+   "name": "HoverCardContent",
+   "props": [],
+   "inherits": [
+    "Radix HoverCard.Content"
+   ]
   }
  ],
  "icon-tile": [

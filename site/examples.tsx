@@ -53,6 +53,9 @@ import * as s_attachment from "@/stories/attachment.stories"
 import * as s_file_type from "@/stories/file-type.stories"
 import * as s_hooks from "@/stories/hooks.stories"
 import * as s_metric_card from "@/stories/metric-card.stories"
+import * as s_context_menu from "@/stories/context-menu.stories"
+import * as s_hover_card from "@/stories/hover-card.stories"
+import * as s_banner from "@/stories/banner.stories"
 import type { StoryFile } from "./catalog"
 
 type Meta = { component?: React.ComponentType<Record<string, unknown>>; args?: Record<string, unknown> }
@@ -112,6 +115,9 @@ const files: Record<StoryFile, StoryModule> = {
   "route-progress": s_route_progress as unknown as StoryModule,
   hooks: s_hooks as unknown as StoryModule,
   "metric-card": s_metric_card as unknown as StoryModule,
+  "context-menu": s_context_menu as unknown as StoryModule,
+  "hover-card": s_hover_card as unknown as StoryModule,
+  banner: s_banner as unknown as StoryModule,
 }
 
 // Same rule as Storybook: story args override meta args; a story's own render wins over meta.component.

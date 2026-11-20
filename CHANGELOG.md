@@ -2,6 +2,13 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **`context-menu`** (beta): the menu a right-click, a long press on touch, or Shift+F10 opens on a row or card. It looks and moves exactly like `dropdown-menu` (items, destructive items, checkbox and radio items, labels, separators, shortcuts, submenus; the keyboard ring only in keyboard use). A shortcut only: the same actions are always on a visible control, such as the row's ⋯ menu.
+- **`hover-card`** (beta): a preview of what a link leads to, on hover and keyboard focus, in the popover's look (500 ms before it opens, 300 ms before it closes). Preview only: nothing in it is a control, and everything in it is on the page the link opens.
+- **`banner`** (beta): a full-width notice at the top of the page or app about the app itself: maintenance, read-only mode, a trial ending, no connection. Alert's tones (neutral, info, warning, danger; `role="alert"` only for danger), an icon that names the subject, one action, an optional close button whose dismissal the app remembers (`onDismiss`, `open`), enter and exit movements. Wraps on a 375 px phone with 44 px targets; the docs show how to sit it above `app-shell` with `--app-shell-height`.
+
 ## 0.20.0 · 2026-11-20
 
 ### Added
