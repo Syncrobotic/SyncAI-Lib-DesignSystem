@@ -11,6 +11,7 @@ export type StoryFile =
   | "list"
   | "actions"
   | "inputs"
+  | "form"
   | "display"
   | "feedback"
   | "navigation"
@@ -458,6 +459,21 @@ const entries: Record<string, Entry> = {
     rules: [
       "The error replaces the hint in the same line, so the layout does not jump.",
       "Say how to fix it (“At least 8 characters”), not just that it is wrong.",
+    ],
+  },
+  form: {
+    group: "Inputs",
+    examples: { file: "form", prefix: "Form" },
+    rules: [
+      "No wrapper: each control goes in React Hook Form's Controller and the kit's Field (FieldSet for a group). Field wires the label, hint, error, aria-invalid and aria-describedby.",
+      "Errors wait for the first submit, then follow each change (React Hook Form's default mode). Never tell someone off while they type a first answer.",
+      "Give field.ref to something focusable, so a failed submit focuses the first field in error: {...field} on an Input, ref on a Select's trigger, ref on a group's first choice.",
+      "A refusal about one field (a name already taken) goes on that field with setError; one about the whole save goes in an Alert above the fields (setError(\"root.server\", …)). Never in a toast.",
+      "Await the save in onSubmit and pass formState.isSubmitting to the button's loading. Name the result (“Create mission”), not “Submit”. Write the messages in the schema, in the page's language.",
+    ],
+    keyboard: [
+      ["Enter", "In a text field, submits the form"],
+      ["Tab / Shift+Tab", "Moves between fields; after a failed submit, focus starts on the first field in error"],
     ],
   },
   checkbox: {

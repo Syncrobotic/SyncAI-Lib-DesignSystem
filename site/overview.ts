@@ -479,6 +479,15 @@ export const overviews: Record<string, Overview> = {
     use: ["Beside a checkbox, radio or switch to make the whole row tappable.", "Any control not wrapped in a `field`."],
     instead: ["A label with a hint and an error: `field`, which includes it."],
   },
+  form: {
+    what: "How to build a form with React Hook Form and the kit's Field, and an example to install and change. There is no form component: each control sits in a Controller and a Field, the way shadcn does it, so the kit itself depends on no form library.",
+    use: ["Create and edit forms: a mission, a robot, a site, an account.", "Any form validated by a schema (zod, valibot) through a resolver."],
+    instead: ["Filters above a list, which apply as you choose: `filter-form`.", "One field on its own with no submit (a search box): `search-field`."],
+    notes: [
+      "Installing the example brings react-hook-form, zod and @hookform/resolvers into your project; nothing else in the kit needs them. Another form library works the same way: put its error in Field's `error`.",
+      "Map `field` to each control: spread it on an Input or Textarea; `value` / `onValueChange` and `ref` on the trigger for a Select; `checked` / `onCheckedChange` for a checkbox or switch.",
+    ],
+  },
   field: {
     what: "A label, a control and one line below for the hint or the error, with ids and ARIA connected for you.",
     use: ["Every form control that needs a label, help or validation.", "Errors that grow in below the control without moving the layout."],
