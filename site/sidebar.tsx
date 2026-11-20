@@ -70,7 +70,7 @@ export function Sidebar({ scopes, switcher = false, path: frozen }: { scopes: Sc
       {/* The areas, as the header shows them on desktop: one quiet row of tabs with an underline, not a second set of
           buttons louder than the pages. On the home page there is no area yet: the four are the list. */}
       {switcher && !home && (
-        <div role="list" aria-label="Areas" className="flex gap-4 overflow-x-auto border-b border-border px-3">
+        <div role="list" aria-label="Areas" className="flex gap-4 overflow-x-auto overflow-y-hidden border-b border-border px-3">
           {scopes.map((s) => (
             <Link
               key={s.key}

@@ -1,4 +1,4 @@
-// @syncrobotic/phone-input v0.17.3 · update: npx shadcn add @syncrobotic/phone-input --overwrite
+// @syncrobotic/phone-input v0.23.0 · update: npx shadcn add @syncrobotic/phone-input --overwrite
 "use client"
 
 import * as React from "react"
@@ -10,10 +10,35 @@ import { Select, SelectContent, SelectItem, SelectTrigger } from "@/registry/syn
 export type { CountryCode }
 
 const flag = (c: string) => String.fromCodePoint(...[...c].map((ch) => 0x1f1a5 + ch.charCodeAt(0)))
-const names = typeof Intl !== "undefined" && "DisplayNames" in Intl ? new Intl.DisplayNames(["en"], { type: "region" }) : null
-const countries = getCountries()
-  .map((c) => ({ code: c, name: names?.of(c) ?? c, dial: getCountryCallingCode(c) }))
-  .sort((a, b) => a.name.localeCompare(b.name))
+type Country = { code: CountryCode; name: string; dial: string }
+const byLocale = new Map<string, Country[]>()
+/** Every country with its name in `locale`, sorted for that language; built once per language. */
+function countriesIn(locale: string) {
+  let list = byLocale.get(locale)
+  if (!list) {
+    let names: Intl.DisplayNames | null = null
+    try {
+      names = typeof Intl !== "undefined" && "DisplayNames" in Intl ? new Intl.DisplayNames([locale], { type: "region" }) : null
+    } catch {
+      names = null
+    }
+    const collator = new Intl.Collator(locale)
+    list = getCountries()
+      .map((c) => ({ code: c, name: names?.of(c) ?? c, dial: getCountryCallingCode(c) }))
+      .sort((a, b) => collator.compare(a.name, b.name))
+    byLocale.set(locale, list)
+  }
+  return list
+}
+
+export type PhoneInputLabels = {
+  /** The country menu's name for screen readers. */
+  country: string
+  /** The number box's name (unless `aria-label` or a Field names it) and its placeholder. */
+  phoneNumber: string
+}
+
+export const defaultPhoneInputLabels: PhoneInputLabels = { country: "Country", phoneNumber: "Phone number" }
 
 /** True when the number is complete and valid for its country. */
 export function isPhoneValid(e164: string | undefined) {
@@ -35,7 +60,9 @@ export function PhoneInput({
   readOnly,
   className,
   id,
-  "aria-label": ariaLabel = "Phone number",
+  "aria-label": ariaLabel,
+  labels,
+  locale = "en",
 }: {
   value?: string
   onValueChange?: (e164: string | undefined, country: CountryCode) => void
@@ -47,9 +74,16 @@ export function PhoneInput({
   readOnly?: boolean
   className?: string
   id?: string
+  /** Wins over `labels.phoneNumber` as the box's name. */
   "aria-label"?: string
+  /** The words it says, to translate them. */
+  labels?: Partial<PhoneInputLabels>
+  /** The language of the country names and their order (a BCP 47 tag such as "zh-TW"). English when left out. */
+  locale?: string
 }) {
   const f = useField()
+  const l = { ...defaultPhoneInputLabels, ...labels }
+  const countries = countriesIn(locale)
   const parsed = value ? parsePhoneNumberFromString(value) : undefined
   const [country, setCountry] = React.useState<CountryCode>(parsed?.country ?? defaultCountry)
   const [text, setText] = React.useState(parsed ? parsed.formatNational() : "")
@@ -92,7 +126,7 @@ export function PhoneInput({
         }}
       >
         <SelectTrigger
-          aria-label="Country"
+          aria-label={l.country}
           // Transparent in every state, disabled too: a fill of its own would paint over the field's inset outline, which
           // must run unbroken round both segments.
           className={cn("h-full w-auto shrink-0 gap-1 rounded-r-none bg-transparent px-3 ring-0 disabled:bg-transparent", readOnly && "disabled:opacity-100")}
@@ -120,12 +154,12 @@ export function PhoneInput({
       <input
         type="tel"
         id={id ?? f?.id}
-        aria-label={ariaLabel}
+        aria-label={ariaLabel ?? l.phoneNumber}
         aria-describedby={f?.describedBy}
         aria-invalid={f?.invalid || undefined}
         autoComplete="tel"
         inputMode="tel"
-        placeholder={placeholder ?? "Phone number"}
+        placeholder={placeholder ?? l.phoneNumber}
         disabled={disabled}
         readOnly={readOnly}
         value={text}

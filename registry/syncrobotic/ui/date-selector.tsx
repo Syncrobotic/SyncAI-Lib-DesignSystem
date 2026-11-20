@@ -1,4 +1,4 @@
-// @syncrobotic/date-selector v0.17.3 · update: npx shadcn add @syncrobotic/date-selector --overwrite
+// @syncrobotic/date-selector v0.23.0 · update: npx shadcn add @syncrobotic/date-selector --overwrite
 "use client"
 
 import * as React from "react"
@@ -16,10 +16,38 @@ export type DatePreset<T> = { label: string; value: () => T }
 const trigger =
   "press flex h-(--h-md) w-full min-w-0 items-center gap-2 rounded-sm bg-card px-3 text-left text-base ring-1 ring-input ring-inset transition-shadow duration-(--motion-fast) ease-(--ease-standard) aria-invalid:ring-2 aria-invalid:ring-danger disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:ring-border data-[empty=true]:text-muted-foreground"
 
+export type DatePickerLabels = {
+  /** DatePicker's trigger when no day is picked. */
+  pickDay: string
+  /** DateRangePicker's trigger when no range is picked. */
+  pickRange: string
+  /** The clear button's name. */
+  clear: string
+  /** Names the group of presets. */
+  presets: string
+}
+
+export const defaultDatePickerLabels: DatePickerLabels = {
+  pickDay: "Pick a day",
+  pickRange: "Pick a range",
+  clear: "Clear",
+  presets: "Presets",
+}
+
 type Common = {
+  /** Same as `labels.pickDay` (or `pickRange`), and wins over it. */
   placeholder?: string
-  /** date-fns pattern for the trigger. */
+  /** date-fns pattern for the trigger. Wins over `locale`. */
   displayFormat?: string
+  /**
+   * Writes the day on the trigger in this language with Intl ("2026年11月3日" for "zh-TW"), unless `displayFormat` is
+   * given. Left out, the trigger reads "3 Nov 2026" as before. The calendar's month and day names follow `calendarLocale`.
+   */
+  locale?: string
+  /** react-day-picker's locale for the calendar's month and day names and its labels: `import { zhTW } from "react-day-picker/locale"`. */
+  calendarLocale?: React.ComponentProps<typeof Calendar>["locale"]
+  /** The words it says, to translate them. */
+  labels?: Partial<DatePickerLabels>
   disabled?: boolean
   /** Days that cannot be picked, in react-day-picker's matcher form, e.g. `{ before: new Date() }`. */
   disabledDays?: React.ComponentProps<typeof Calendar>["disabled"]
@@ -37,8 +65,11 @@ type Common = {
 export function DatePicker({
   value,
   onValueChange,
-  placeholder = "Pick a day",
-  displayFormat = "d MMM yyyy",
+  placeholder,
+  displayFormat,
+  locale,
+  calendarLocale,
+  labels,
   presets,
   disabled,
   disabledDays,
@@ -46,6 +77,8 @@ export function DatePicker({
   className,
   ...rest
 }: Common & { value?: Date; onValueChange?: (d: Date | undefined) => void; presets?: DatePreset<Date>[] }) {
+  const l = { ...defaultDatePickerLabels, ...labels }
+  const show = dayFormatter(displayFormat, locale)
   const [open, setOpen] = React.useState(false)
   const pick = (d: Date | undefined) => {
     onValueChange?.(d)
@@ -55,15 +88,18 @@ export function DatePicker({
     <Picker
       open={open}
       setOpen={setOpen}
-      label={value ? format(value, displayFormat) : placeholder}
+      label={value ? show(value) : (placeholder ?? l.pickDay)}
       empty={!value}
       disabled={disabled}
       onClear={clearable ? () => onValueChange?.(undefined) : undefined}
+      clearLabel={l.clear}
       className={className}
       {...rest}
     >
-      {presets && <Presets presets={presets} active={(p) => !!value && isSameDay(p.value(), value)} onPick={(p) => pick(p.value())} />}
-      <Calendar mode="single" selected={value} onSelect={pick} defaultMonth={value} disabled={disabledDays} autoFocus />
+      {presets && (
+        <Presets presets={presets} label={l.presets} active={(p) => !!value && isSameDay(p.value(), value)} onPick={(p) => pick(p.value())} />
+      )}
+      <Calendar mode="single" selected={value} onSelect={pick} defaultMonth={value} disabled={disabledDays} locale={calendarLocale} autoFocus />
     </Picker>
   )
 }
@@ -72,8 +108,11 @@ export function DatePicker({
 export function DateRangePicker({
   value,
   onValueChange,
-  placeholder = "Pick a range",
-  displayFormat = "d MMM yyyy",
+  placeholder,
+  displayFormat,
+  locale,
+  calendarLocale,
+  labels,
   presets,
   numberOfMonths = 2,
   disabled,
@@ -82,12 +121,14 @@ export function DateRangePicker({
   className,
   ...rest
 }: Common & { value?: DateRange; onValueChange?: (r: DateRange | undefined) => void; presets?: DatePreset<DateRange>[]; numberOfMonths?: number }) {
+  const l = { ...defaultDatePickerLabels, ...labels }
+  const show = dayFormatter(displayFormat, locale)
   const [open, setOpen] = React.useState(false)
   const text = value?.from
     ? value.to
-      ? `${format(value.from, displayFormat)} – ${format(value.to, displayFormat)}`
-      : format(value.from, displayFormat)
-    : placeholder
+      ? rangeText(value.from, value.to, show, displayFormat, locale)
+      : show(value.from)
+    : (placeholder ?? l.pickRange)
   return (
     <Picker
       open={open}
@@ -96,12 +137,14 @@ export function DateRangePicker({
       empty={!value?.from}
       disabled={disabled}
       onClear={clearable ? () => onValueChange?.(undefined) : undefined}
+      clearLabel={l.clear}
       className={className}
       {...rest}
     >
       {presets && (
         <Presets
           presets={presets}
+          label={l.presets}
           active={(p) => {
             const r = p.value()
             return !!(value?.from && value.to && r.from && r.to && isSameDay(r.from, value.from) && isSameDay(r.to, value.to))
@@ -119,10 +162,24 @@ export function DateRangePicker({
         numberOfMonths={numberOfMonths}
         defaultMonth={value?.from}
         disabled={disabledDays}
+        locale={calendarLocale}
         autoFocus
       />
     </Picker>
   )
+}
+
+/** The trigger's words for a day: the date-fns pattern if one is given, else Intl in `locale`, else "3 Nov 2026". */
+function dayFormatter(displayFormat: string | undefined, locale: string | undefined) {
+  if (displayFormat || !locale) return (d: Date) => format(d, displayFormat ?? "d MMM yyyy")
+  const f = new Intl.DateTimeFormat(locale, { day: "numeric", month: "short", year: "numeric" })
+  return (d: Date) => f.format(d)
+}
+
+/** A range as the language writes it (Intl's formatRange) when only `locale` is given; "3 Nov 2026 – 5 Nov 2026" otherwise. */
+function rangeText(from: Date, to: Date, show: (d: Date) => string, displayFormat: string | undefined, locale: string | undefined) {
+  if (!displayFormat && locale) return new Intl.DateTimeFormat(locale, { day: "numeric", month: "short", year: "numeric" }).formatRange(from, to)
+  return `${show(from)} – ${show(to)}`
 }
 
 function Picker({
@@ -132,6 +189,7 @@ function Picker({
   empty,
   disabled,
   onClear,
+  clearLabel,
   className,
   children,
   id,
@@ -143,6 +201,7 @@ function Picker({
   empty: boolean
   disabled?: boolean
   onClear?: () => void
+  clearLabel: string
   className?: string
   children: React.ReactNode
   id?: string
@@ -192,7 +251,7 @@ function Picker({
       {onClear && (
         <button
           type="button"
-          aria-label="Clear"
+          aria-label={clearLabel}
           onClick={onClear}
           // Always rendered, like Autocomplete's, so it fades in with a value and out when cleared instead of popping;
           // hidden, it is out of the tab order and the accessibility tree.
@@ -211,9 +270,19 @@ function Picker({
   )
 }
 
-function Presets<T>({ presets, active, onPick }: { presets: DatePreset<T>[]; active: (p: DatePreset<T>) => boolean; onPick: (p: DatePreset<T>) => void }) {
+function Presets<T>({
+  presets,
+  label,
+  active,
+  onPick,
+}: {
+  presets: DatePreset<T>[]
+  label: string
+  active: (p: DatePreset<T>) => boolean
+  onPick: (p: DatePreset<T>) => void
+}) {
   return (
-    <div role="group" aria-label="Presets" className="flex gap-1 overflow-x-auto sm:w-36 sm:flex-col sm:border-r sm:border-border sm:pr-3">
+    <div role="group" aria-label={label} className="flex gap-1 overflow-x-auto sm:w-36 sm:flex-col sm:border-r sm:border-border sm:pr-3">
       {presets.map((p) => (
         <button
           key={p.label}

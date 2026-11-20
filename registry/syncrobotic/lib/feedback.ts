@@ -1,4 +1,4 @@
-// @syncrobotic/feedback v0.11.0 · update: npx shadcn add @syncrobotic/feedback --overwrite
+// @syncrobotic/feedback v0.23.0 · update: npx shadcn add @syncrobotic/feedback --overwrite
 
 /*
   Touch and sound, as tokens. An operator wearing gloves, in wind or machine noise, cannot rely on the screen to know a
@@ -20,6 +20,10 @@ export const haptics = {
   stopUnconfirmed: [200, 100, 200],
   /** Slide to release reached the end. */
   release: [30],
+  /** Manual driving began: the teleop pad was pressed. One short tick. */
+  driveStart: [15],
+  /** Manual driving ended, by release or lost input: two short ticks, so the hand knows the robot was told to stop. */
+  driveStop: [15, 60, 15],
   /** A new critical alarm: three long pulses. */
   alarmCritical: [200, 100, 200, 100, 200],
   /** A new high alarm: two medium pulses. Low alarms do not buzz. */

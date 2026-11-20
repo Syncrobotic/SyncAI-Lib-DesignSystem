@@ -26,8 +26,10 @@ import * as s_data_pieces from "@/stories/data-pieces.stories"
 import * as s_image_grid from "@/stories/image-grid.stories"
 import * as s_annotated_image from "@/stories/annotated-image.stories"
 import * as s_media_player from "@/stories/media-player.stories"
+import * as s_camera_feed from "@/stories/camera-feed.stories"
 import * as s_tree from "@/stories/tree.stories"
 import * as s_graph from "@/stories/graph.stories"
+import * as s_robot_map from "@/stories/robot-map.stories"
 import * as s_chip_group from "@/stories/chip-group.stories"
 import * as s_filter_form from "@/stories/filter-form.stories"
 import * as s_filters from "@/stories/filters.stories"
@@ -58,6 +60,7 @@ import * as s_metric_card from "@/stories/metric-card.stories"
 import * as s_context_menu from "@/stories/context-menu.stories"
 import * as s_hover_card from "@/stories/hover-card.stories"
 import * as s_banner from "@/stories/banner.stories"
+import * as s_teleop_pad from "@/stories/teleop-pad.stories"
 import type { StoryFile } from "./catalog"
 
 type Meta = { component?: React.ComponentType<Record<string, unknown>>; args?: Record<string, unknown> }
@@ -67,6 +70,7 @@ type StoryModule = { default: Meta } & Record<string, unknown>
 const files: Record<StoryFile, StoryModule> = {
   "stop-button": stop as unknown as StoryModule,
   "slide-to-release": slide as unknown as StoryModule,
+  "teleop-pad": s_teleop_pad as unknown as StoryModule,
   dock: dock as unknown as StoryModule,
   island: island as unknown as StoryModule,
   list: list as unknown as StoryModule,
@@ -109,8 +113,10 @@ const files: Record<StoryFile, StoryModule> = {
   "image-grid": s_image_grid as unknown as StoryModule,
   "annotated-image": s_annotated_image as unknown as StoryModule,
   "media-player": s_media_player as unknown as StoryModule,
+  "camera-feed": s_camera_feed as unknown as StoryModule,
   tree: s_tree as unknown as StoryModule,
   graph: s_graph as unknown as StoryModule,
+  "robot-map": s_robot_map as unknown as StoryModule,
   "chip-group": s_chip_group as unknown as StoryModule,
   "filter-form": s_filter_form as unknown as StoryModule,
   filters: s_filters as unknown as StoryModule,

@@ -34,6 +34,7 @@ const ROUND = {
   "registry/syncrobotic/ui/trace.tsx": "waterfall bar track and fill",
   "registry/syncrobotic/ui/stepper.tsx": "step circles and the compact progress track",
   "registry/syncrobotic/ui/timeline.tsx": "event dots",
+  "registry/syncrobotic/shell/teleop-pad.tsx": "joystick base, its travel rings and the knob (a thumb)",
   "stories/calendar.stories.tsx": "booked-day dot",
   "stories/display.stories.tsx": "status dot on an avatar",
   "stories/file-upload.stories.tsx": "avatar upload: the avatar is a circle",

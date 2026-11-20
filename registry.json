@@ -153,7 +153,7 @@
       "name": "feedback",
       "type": "registry:lib",
       "title": "Feedback",
-      "description": "Touch and sound as tokens: one vibration pattern per safety moment (stop sent, confirmed, unconfirmed, release, new critical or high alarm) and IEC 60601-1-8-style alarm tones from Web Audio.",
+      "description": "Touch and sound as tokens: one vibration pattern per safety moment (stop sent, confirmed, unconfirmed, release, drive start and stop, new critical or high alarm) and IEC 60601-1-8-style alarm tones from Web Audio.",
       "files": [
         {
           "path": "registry/syncrobotic/lib/feedback.ts",
@@ -161,8 +161,13 @@
         }
       ],
       "meta": {
-        "version": "0.11.0",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Two patterns for manual driving: driveStart (one short tick when the teleop pad is pressed) and driveStop (two short ticks when driving ends)."
+          },
           {
             "version": "0.11.0",
             "date": "2026-11-18",
@@ -512,6 +517,36 @@
       }
     },
     {
+      "name": "teleop-pad",
+      "type": "registry:component",
+      "title": "Teleop pad",
+      "description": "Drive a mobile robot by hand with a dead-man stick: it moves only while held and stops the moment input is let go or lost. Fixed-rate commands, dead zone, speed cap, keyboard.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/feedback"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/shell/teleop-pad.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.23.0",
+        "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "First release: a dead-man stick (pointer: touch, mouse, pen) sending { linear, angular } at rateHz while held, zero and onStop with the reason on release, pointer cancel, blur, hidden page or timeoutMs; dead zone, maxSpeed shown as a scale, keyboard drive with arrows or W A S D and Space to stop, status with icon and words, glove density, reduced motion, haptic ticks. `timeoutMs={false}` turns the pointer timeout off, for robots that run their own watchdog."
+          }
+        ]
+      }
+    },
+    {
       "name": "dock",
       "type": "registry:component",
       "title": "Dock",
@@ -800,8 +835,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: `labels.loading`; `label` still works and wins."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -923,8 +963,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: `labels` (`copy`, `copied`, `failed`, `notCopied`, which was fixed English). `label`, `copiedLabel` and `failedLabel` still work and win."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -2282,8 +2327,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "The tab list no longer scrolls 1 px vertically (overflow-y hidden), so phones no longer show a scrollbar on it."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -2377,8 +2427,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.4",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: `labels.nav` names the landmark (an `aria-label` still wins)."
+          },
           {
             "version": "0.17.4",
             "date": "2026-11-19",
@@ -2509,6 +2564,40 @@
       }
     },
     {
+      "name": "robot-map",
+      "type": "registry:ui",
+      "title": "Robot map",
+      "description": "A site floor plan in metres, drawn in SVG with no map library: zones as outlines with icon and name, planned and travelled routes, robots as status shapes with heading and name, selection, pan and zoom by drag, wheel, pinch, buttons and keys, a scale bar and an optional north arrow; RobotMapList shows the same robots as text.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/skeleton",
+        "@syncrobotic/button",
+        "@syncrobotic/button-group",
+        "@syncrobotic/robot-icons"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/robot-map.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.23.0",
+        "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "First release: the site map that lived only inside map-workspace, as a component. Site coordinates in metres over an image or SVG floor plan; zones (no entry, slow, charging, other) as hairline outlines with icon and name; planned routes dashed blue, travelled tracks solid grey; robots as their status shape with a heading tick and a name that moves aside instead of covering another; selection by a ring and weight. Pan and zoom by drag, wheel (once focused, or with Ctrl), pinch, 44 px buttons and keys (arrows, + / -, 0), gliding at --motion-base unless motion is reduced. One Tab stop; RobotMapList lists the robots with position, zone and status, and selects on the map. Scale bar, optional north arrow, empty, loading and error states."
+          }
+        ]
+      }
+    },
+    {
       "name": "dialog",
       "type": "registry:ui",
       "title": "Dialog",
@@ -2527,8 +2616,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: DialogContent takes `labels.close`; `closeLabel` still works and wins."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -2849,8 +2943,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: CommandDialog takes `labels` (`title`, `description`); the props of the same names still work and win."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -3204,8 +3303,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: `labels` (`more`, `less`; `moreLabel` and `lessLabel` still work and win). `locale` formats the counts."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -3235,8 +3339,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.0",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "`locale` formats the numbers and shares."
+          },
           {
             "version": "0.22.0",
             "date": "2026-11-20",
@@ -3272,8 +3381,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "`locale` formats the numbers; `LoadMoreLabels` and `defaultLoadMoreLabels` are exported, and the label functions receive the locale."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -3423,6 +3537,39 @@
       }
     },
     {
+      "name": "camera-feed",
+      "type": "registry:ui",
+      "title": "Camera feed",
+      "description": "A robot's live camera over a native video the app feeds (a WebRTC stream or a URL): Live with the latency, Stalled with the last frame's time when frames stop, Paused while the view is frozen here, connecting, offline and no-camera states; pause view, snapshot, mute and full screen; overlays drawn over the picture.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/spinner",
+        "@syncrobotic/skeleton",
+        "@syncrobotic/status-glyph"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/camera-feed.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.23.0",
+        "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "First release: CameraFeed (label, source, stream or src, status, latencyMs, staleAfterMs, offlineReason, onRetry, onSnapshot, audio, aspectRatio, children, labels) over a native <video> the app feeds. The header says the camera, the robot and the state by shape and word: Live with the latency, Connecting (blue spinner), Stalled · last frame 14:02:31 over a dimmed picture after staleAfterMs without a frame (requestVideoFrameCallback, else timeupdate), Paused, Camera offline with an optional Reconnect, No camera. Pause view, snapshot (PNG), mute only with audio, full screen; Space and F while focus is inside. Overlays in a layer over the picture; aspectRatio holds the layout before the first frame. No streaming library."
+          }
+        ]
+      }
+    },
+    {
       "name": "filter-form",
       "type": "registry:ui",
       "title": "Filter form",
@@ -3473,8 +3620,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.17.3",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "`locale` formats the options' counts."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -3520,8 +3672,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: `labels` (`label`, `placeholder`); the props of the same names still work and win."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -3576,8 +3733,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: `labels.loading`; `label` still works and wins."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -3609,8 +3771,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: `labels` (`AutocompleteLabels`: placeholder, empty, searching, searchingStatus, clear, showAll, suggestions). `placeholder` and `emptyText` still work and win over it."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -3700,8 +3867,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: `labels` (`country`, `phoneNumber`). `locale` names and sorts the countries in that language (English when left out, as before)."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -3750,8 +3922,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "With a react-day-picker `locale` that names its days (`zhTW` from react-day-picker/locale), the day buttons use that locale's words instead of the kit's English ones."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -3804,8 +3981,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: `labels` (`pickDay`, `pickRange`, `clear`, `presets`). `locale` writes the trigger's day with Intl (\"2026年11月3日\") unless `displayFormat` is given; `calendarLocale` takes a react-day-picker locale for the calendar. Without them nothing changes."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -3855,8 +4037,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "TimePicker takes `labels` (`placeholder`, `times`) and `locale`, which writes the times with Intl (\"上午9:30\"). `formatTime` takes an optional locale. TimeInput is unchanged: it must read back what it shows."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -3906,8 +4093,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.4",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: DataGrid takes `labels` (`DataGridLabels`) for every part: the region, empty text, resize handles, the header menu, the column menu, the selection summary, `selectColumn` and `expandColumn`. DataGridPagination passes `labels` to Pagination."
+          },
           {
             "version": "0.17.4",
             "date": "2026-11-19",
@@ -3968,8 +4160,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.1",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: `labels` (`SortableLabels`): every drag announcement and the keyboard instructions."
+          },
           {
             "version": "0.13.1",
             "date": "2026-11-19",
@@ -4083,8 +4280,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: `labels` (`AttachmentLabels`: \"Upload failed\", \"Failed\", the percentage, and the Retry, Download, Cancel, Remove and progress names)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -4142,8 +4344,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: Stepper and StepperCompact take `labels` (\"Optional\", each state as read by screen readers, \"Step 2 of 5\", the progress bar's name)."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -4324,8 +4531,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: `labels` (`QuestionnaireLabels`: the counter, progress, review list, Back, Next, Submit, \"Not answered\", the required mark…). QuestionField takes them too. `submitLabel` and `requiredMessage` still work and win."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -4370,8 +4582,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: Trace (inherited by nested traces) and TraceHeader take `labels`: the six status words, the counts and how durations are written."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -5029,7 +5246,6 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "@syncrobotic/cn",
         "@syncrobotic/app-shell",
         "@syncrobotic/island",
         "@syncrobotic/status-eyebrow",
@@ -5041,7 +5257,9 @@
         "@syncrobotic/meter",
         "@syncrobotic/robot-icons",
         "@syncrobotic/slide-to-release",
-        "@syncrobotic/feedback"
+        "@syncrobotic/feedback",
+        "@syncrobotic/robot-map",
+        "@syncrobotic/sheet"
       ],
       "files": [
         {
@@ -5050,8 +5268,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "The map is now RobotMap, the kit's one map: same layout and markers, now with heading ticks, names that move aside, the loading bay named, a scale bar, and pan and zoom (drag, wheel, pinch, buttons and keys). The map is one Tab stop; a Robots button in the top bar opens the robots as a list (RobotMapList) that selects on the map. The drawing, its resize observer and the hand-placed buttons are gone."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",

@@ -1,13 +1,29 @@
-// @syncrobotic/breadcrumb v0.17.4 · update: npx shadcn add @syncrobotic/breadcrumb --overwrite
+// @syncrobotic/breadcrumb v0.23.0 · update: npx shadcn add @syncrobotic/breadcrumb --overwrite
 import * as React from "react"
 import { ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 
+export type BreadcrumbLabels = {
+  /** The landmark's name for screen readers. */
+  nav: string
+}
+
+export const defaultBreadcrumbLabels: BreadcrumbLabels = { nav: "Breadcrumb" }
+
 /** Where this page sits: each level a link, the current page last and not a link. Separators are drawn, not read. */
-export function Breadcrumb({ className, children, ...props }: React.ComponentProps<"nav">) {
+export function Breadcrumb({
+  className,
+  children,
+  labels,
+  ...props
+}: React.ComponentProps<"nav"> & {
+  /** The words it says, to translate them. An `aria-label` wins over `labels.nav`. */
+  labels?: Partial<BreadcrumbLabels>
+}) {
   const items = React.Children.toArray(children)
+  const l = { ...defaultBreadcrumbLabels, ...labels }
   return (
-    <nav aria-label="Breadcrumb" data-slot="breadcrumb" className={cn("min-w-0", className)} {...props}>
+    <nav aria-label={l.nav} data-slot="breadcrumb" className={cn("min-w-0", className)} {...props}>
       <ol className="flex min-w-0 items-center gap-2 text-sm text-muted-foreground">
         {items.map((child, i) => (
           // Short of room, the middle levels give way first: they shrink a hundred times faster than the last, and keep a
