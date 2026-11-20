@@ -44,7 +44,7 @@ The milestones are themes, not version numbers, listed by number. 0.4 to 0.9 and
 ### 0.6 · Components teams are missing
 - [x] Combobox (`autocomplete`), date picker (`calendar`, `date-selector`), pagination, breadcrumb, stepper, file upload
 - [x] Data table with sort and pagination (`data-grid`), filters beside it (`filter-form`)
-- [ ] Form validation with React Hook Form: `field` shows errors, but no wiring or example with a form library
+- [x] Form validation with React Hook Form (`form`): Field and FieldSet wired to a form library, with examples
 - [x] Charts (`chart` and the chart items)
 - [x] Data-visualisation rules as a foundation page (palette, axes, maps and robot tracks)
 

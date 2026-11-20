@@ -11,6 +11,7 @@ export type StoryFile =
   | "list"
   | "actions"
   | "inputs"
+  | "form"
   | "display"
   | "feedback"
   | "navigation"
@@ -458,6 +459,21 @@ const entries: Record<string, Entry> = {
     rules: [
       "The error replaces the hint in the same line, so the layout does not jump.",
       "Say how to fix it (“At least 8 characters”), not just that it is wrong.",
+    ],
+  },
+  form: {
+    group: "Inputs",
+    examples: { file: "form", prefix: "Form" },
+    rules: [
+      "Errors wait for the first submit, then follow each change. Never tell someone off while they type a first answer.",
+      "A submit with errors moves focus to the first field in error; the error says how to fix it, under the field, never in a toast.",
+      "A refusal about one field (a name already taken) goes on that field with setError; one about the whole save (no connection) goes in FormMessage at the top.",
+      "Await the save in onSubmit: the button shows its spinner and blocks a second press. Name the result (“Create mission”), not “Submit”.",
+      "Write the messages in the schema, in the page's language. The form adds no words of its own.",
+    ],
+    keyboard: [
+      ["Enter", "In a text field, submits the form"],
+      ["Tab / Shift+Tab", "Moves between fields; after a failed submit, focus starts on the first field in error"],
     ],
   },
   checkbox: {

@@ -115,6 +115,10 @@
     "version": "0.8.0",
     "hash": "9e521392d3860c92"
   },
+  "form": {
+    "version": "0.20.0",
+    "hash": "fad7baf725f71306"
+  },
   "checkbox": {
     "version": "0.15.0",
     "hash": "d8fb56e081d7ff33"
