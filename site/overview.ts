@@ -480,12 +480,12 @@ export const overviews: Record<string, Overview> = {
     instead: ["A label with a hint and an error: `field`, which includes it."],
   },
   form: {
-    what: "A form whose values and validation React Hook Form keeps, drawn with the kit's Field and FieldSet: errors after the first submit, focus on the first one, server errors where they belong, and a submit button that waits for the save.",
+    what: "How to build a form with React Hook Form and the kit's Field, and an example to install and change. There is no form component: each control sits in a Controller and a Field, the way shadcn does it, so the kit itself depends on no form library.",
     use: ["Create and edit forms: a mission, a robot, a site, an account.", "Any form validated by a schema (zod, valibot) through a resolver."],
     instead: ["Filters above a list, which apply as you choose: `filter-form`.", "One field on its own with no submit (a search box): `search-field`."],
     notes: [
-      "Install react-hook-form; for a schema, also zod and @hookform/resolvers. The form itself depends on neither.",
-      "`render` gets `field`: spread it on an Input, or map it (`value` / `onValueChange` for a Select, `checked` / `onCheckedChange` for a checkbox or switch).",
+      "Installing the example brings react-hook-form, zod and @hookform/resolvers into your project; nothing else in the kit needs them. Another form library works the same way: put its error in Field's `error`.",
+      "Map `field` to each control: spread it on an Input or Textarea; `value` / `onValueChange` and `ref` on the trigger for a Select; `checked` / `onCheckedChange` for a checkbox or switch.",
     ],
   },
   field: {

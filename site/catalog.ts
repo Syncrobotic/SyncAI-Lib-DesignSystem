@@ -465,11 +465,11 @@ const entries: Record<string, Entry> = {
     group: "Inputs",
     examples: { file: "form", prefix: "Form" },
     rules: [
-      "Errors wait for the first submit, then follow each change. Never tell someone off while they type a first answer.",
-      "A submit with errors moves focus to the first field in error; the error says how to fix it, under the field, never in a toast.",
-      "A refusal about one field (a name already taken) goes on that field with setError; one about the whole save (no connection) goes in FormMessage at the top.",
-      "Await the save in onSubmit: the button shows its spinner and blocks a second press. Name the result (“Create mission”), not “Submit”.",
-      "Write the messages in the schema, in the page's language. The form adds no words of its own.",
+      "No wrapper: each control goes in React Hook Form's Controller and the kit's Field (FieldSet for a group). Field wires the label, hint, error, aria-invalid and aria-describedby.",
+      "Errors wait for the first submit, then follow each change (React Hook Form's default mode). Never tell someone off while they type a first answer.",
+      "Give field.ref to something focusable, so a failed submit focuses the first field in error: {...field} on an Input, ref on a Select's trigger, ref on a group's first choice.",
+      "A refusal about one field (a name already taken) goes on that field with setError; one about the whole save goes in an Alert above the fields (setError(\"root.server\", …)). Never in a toast.",
+      "Await the save in onSubmit and pass formState.isSubmitting to the button's loading. Name the result (“Create mission”), not “Submit”. Write the messages in the schema, in the page's language.",
     ],
     keyboard: [
       ["Enter", "In a text field, submits the form"],

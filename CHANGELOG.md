@@ -5,7 +5,8 @@ Components install as source, so a project keeps the version it installed. Re-ru
 ## 0.20.0 · 2026-11-20
 
 ### Added
-- **`form`** (beta): forms run by React Hook Form and drawn with the kit's Field. `Form` wraps useForm's result (validation after the first submit, then on each change; the browser's bubbles off; a failed submit focuses the first field in error, a Select or a group included). `FormField` and `FormFieldSet` take a `render` that gets `field`; `FormMessage` shows a whole-form error at the top (`setError("root.server", …)`); `FormSubmit` shows its spinner while the save is awaited. Examples with zod: create, server errors on a field and on the form, a group with a rule across its choices, edit with undo, and Traditional Chinese.
+- **`form`** (beta): how to build a form with React Hook Form and the kit's Field, the way shadcn does it: no wrapper component, each control in a `Controller` and a `Field` (a `FieldSet` for a group). `npx shadcn add @syncrobotic/form` installs `MissionForm`, an example to change: a zod schema, errors after the first submit, focus on the first field in error (React Hook Form's own, with `field.ref` on a Select's trigger or a group's first choice), a refused save in an Alert above the fields, and a submit button that waits. React Hook Form, zod and @hookform/resolvers come with the example only; no other item depends on them. Examples: create, server errors on a field and on the form, a group with a rule across its choices, edit with undo, and Traditional Chinese.
+- **`lint:registry`: one version range per package.** `chart` asked for any `recharts` while ten blocks asked for `recharts@^3`; it now asks for `^3` too, and the check fails when two items ask for the same package differently.
 
 ## 0.19.0 · 2026-11-20
 
