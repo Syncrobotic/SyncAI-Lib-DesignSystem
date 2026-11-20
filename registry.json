@@ -835,8 +835,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: `labels.loading`; `label` still works and wins."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -958,8 +963,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: `labels` (`copy`, `copied`, `failed`, `notCopied`, which was fixed English). `label`, `copiedLabel` and `failedLabel` still work and win."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -2417,8 +2427,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.4",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: `labels.nav` names the landmark (an `aria-label` still wins)."
+          },
           {
             "version": "0.17.4",
             "date": "2026-11-19",
@@ -2601,8 +2616,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: DialogContent takes `labels.close`; `closeLabel` still works and wins."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -2923,8 +2943,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: CommandDialog takes `labels` (`title`, `description`); the props of the same names still work and win."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -3278,8 +3303,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: `labels` (`more`, `less`; `moreLabel` and `lessLabel` still work and win). `locale` formats the counts."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -3309,8 +3339,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.0",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "`locale` formats the numbers and shares."
+          },
           {
             "version": "0.22.0",
             "date": "2026-11-20",
@@ -3346,8 +3381,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "`locale` formats the numbers; `LoadMoreLabels` and `defaultLoadMoreLabels` are exported, and the label functions receive the locale."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -3580,8 +3620,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.17.3",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "`locale` formats the options' counts."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -3627,8 +3672,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: `labels` (`label`, `placeholder`); the props of the same names still work and win."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -3683,8 +3733,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: `labels.loading`; `label` still works and wins."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -3716,8 +3771,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: `labels` (`AutocompleteLabels`: placeholder, empty, searching, searchingStatus, clear, showAll, suggestions). `placeholder` and `emptyText` still work and win over it."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -3807,8 +3867,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: `labels` (`country`, `phoneNumber`). `locale` names and sorts the countries in that language (English when left out, as before)."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -3857,8 +3922,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "With a react-day-picker `locale` that names its days (`zhTW` from react-day-picker/locale), the day buttons use that locale's words instead of the kit's English ones."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -3911,8 +3981,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: `labels` (`pickDay`, `pickRange`, `clear`, `presets`). `locale` writes the trigger's day with Intl (\"2026年11月3日\") unless `displayFormat` is given; `calendarLocale` takes a react-day-picker locale for the calendar. Without them nothing changes."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -3962,8 +4037,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "TimePicker takes `labels` (`placeholder`, `times`) and `locale`, which writes the times with Intl (\"上午9:30\"). `formatTime` takes an optional locale. TimeInput is unchanged: it must read back what it shows."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -4013,8 +4093,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.4",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: DataGrid takes `labels` (`DataGridLabels`) for every part: the region, empty text, resize handles, the header menu, the column menu, the selection summary, `selectColumn` and `expandColumn`. DataGridPagination passes `labels` to Pagination."
+          },
           {
             "version": "0.17.4",
             "date": "2026-11-19",
@@ -4075,8 +4160,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.1",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: `labels` (`SortableLabels`): every drag announcement and the keyboard instructions."
+          },
           {
             "version": "0.13.1",
             "date": "2026-11-19",
@@ -4190,8 +4280,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: `labels` (`AttachmentLabels`: \"Upload failed\", \"Failed\", the percentage, and the Retry, Download, Cancel, Remove and progress names)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -4249,8 +4344,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: Stepper and StepperCompact take `labels` (\"Optional\", each state as read by screen readers, \"Step 2 of 5\", the progress bar's name)."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -4431,8 +4531,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: `labels` (`QuestionnaireLabels`: the counter, progress, review list, Back, Next, Submit, \"Not answered\", the required mark…). QuestionField takes them too. `submitLabel` and `requiredMessage` still work and win."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -4477,8 +4582,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Every word it says can be translated without editing the source: Trace (inherited by nested traces) and TraceHeader take `labels`: the six status words, the counts and how durations are written."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",

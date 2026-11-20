@@ -1,4 +1,4 @@
-// @syncrobotic/dialog v0.7.0 · update: npx shadcn add @syncrobotic/dialog --overwrite
+// @syncrobotic/dialog v0.23.0 · update: npx shadcn add @syncrobotic/dialog --overwrite
 "use client"
 
 import * as React from "react"
@@ -20,14 +20,29 @@ export function DialogOverlay({ className, ...props }: React.ComponentProps<type
   )
 }
 
+export type DialogLabels = {
+  /** The close button's name for screen readers. */
+  close: string
+}
+
+export const defaultDialogLabels: DialogLabels = { close: "Close" }
+
 /** Centered, radius 20 (lg). On phones prefer Sheet; a dialog is for a short decision. */
 export function DialogContent({
   className,
   children,
-  closeLabel = "Close",
+  closeLabel,
   showClose = true,
+  labels,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Content> & { closeLabel?: string; showClose?: boolean }) {
+}: React.ComponentProps<typeof DialogPrimitive.Content> & {
+  /** Same as `labels.close`, and wins over it. */
+  closeLabel?: string
+  showClose?: boolean
+  /** The words it says, to translate them. */
+  labels?: Partial<DialogLabels>
+}) {
+  const l = { ...defaultDialogLabels, ...labels }
   return (
     <DialogPrimitive.Portal>
       <DialogOverlay />
@@ -44,7 +59,7 @@ export function DialogContent({
         {children}
         {showClose && (
           <DialogPrimitive.Close
-            aria-label={closeLabel}
+            aria-label={closeLabel ?? l.close}
             className="press absolute top-2 right-2 flex size-(--h-md) items-center justify-center rounded-sm text-muted-foreground hover:bg-accent"
           >
             <X aria-hidden="true" className="size-5" />

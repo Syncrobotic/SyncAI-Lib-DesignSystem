@@ -1,4 +1,4 @@
-// @syncrobotic/data-grid v0.17.4 · update: npx shadcn add @syncrobotic/data-grid --overwrite
+// @syncrobotic/data-grid v0.23.0 · update: npx shadcn add @syncrobotic/data-grid --overwrite
 "use client"
 
 import * as React from "react"
@@ -39,8 +39,58 @@ function tokenPx(el: HTMLElement | null, name: string) {
   return v.endsWith("rem") ? n * parseFloat(getComputedStyle(document.documentElement).fontSize) : n
 }
 type Variant = "default" | "striped" | "borders" | "borderless"
-type Ctx = { table: TanTable<unknown>; density: Density; variant: Variant; loading: boolean; emptyText: React.ReactNode }
+
+export type DataGridLabels = {
+  /** Names the scrolling grid when DataGridTable has no `aria-label`. */
+  region: string
+  /** In the grid when there are no rows. */
+  empty: string
+  /** A column's resize handle: "Resize Robot". */
+  resize: (column: string) => string
+  /** The column header menu. */
+  ascending: string
+  descending: string
+  unpin: string
+  pinLeft: string
+  hideColumn: string
+  /** The button that opens the column menu (DataGridColumnVisibility). */
+  columns: string
+  /** The heading inside that menu. */
+  showColumns: string
+  /** DataGridSelectionSummary: "3 of 48 selected". */
+  selected: (count: number, total: number) => string
+  /** selectColumn's checkboxes. */
+  selectAll: string
+  selectRow: string
+  /** expandColumn's header (screen readers only) and its button. */
+  details: string
+  showDetails: string
+  hideDetails: string
+}
+
+export const defaultDataGridLabels: DataGridLabels = {
+  region: "Data",
+  empty: "No rows",
+  resize: (column) => `Resize ${column}`,
+  ascending: "Ascending",
+  descending: "Descending",
+  unpin: "Unpin",
+  pinLeft: "Pin to the left",
+  hideColumn: "Hide column",
+  columns: "Columns",
+  showColumns: "Show columns",
+  selected: (count, total) => `${count} of ${total} selected`,
+  selectAll: "Select all on this page",
+  selectRow: "Select row",
+  details: "Details",
+  showDetails: "Show details",
+  hideDetails: "Hide details",
+}
+
+type Ctx = { table: TanTable<unknown>; density: Density; variant: Variant; loading: boolean; emptyText: React.ReactNode; labels: DataGridLabels }
 const GridContext = React.createContext<Ctx | null>(null)
+/** The grid's words; the defaults outside a DataGrid (a column helper used with another table). */
+const useGridLabels = () => React.useContext(GridContext)?.labels ?? defaultDataGridLabels
 const useGrid = () => {
   const c = React.useContext(GridContext)
   if (!c) throw new Error("DataGrid parts must be inside <DataGrid>")
@@ -62,7 +112,8 @@ export function DataGrid<T>({
   density: legacy,
   variant = "default",
   loading = false,
-  emptyText = "No rows",
+  emptyText,
+  labels,
   className,
   children,
 }: {
@@ -73,14 +124,18 @@ export function DataGrid<T>({
   density?: Density
   variant?: Variant
   loading?: boolean
+  /** Same as `labels.empty`, and wins over it. */
   emptyText?: React.ReactNode
+  /** The words every part of the grid says, to translate them. */
+  labels?: Partial<DataGridLabels>
   className?: string
   children: React.ReactNode
 }) {
   warnDensity("DataGrid", legacy)
   const density: Density = (size ?? (legacy === "dense" ? "sm" : "default")) === "sm" ? "dense" : "default"
+  const l = { ...defaultDataGridLabels, ...labels }
   return (
-    <GridContext.Provider value={{ table: table as TanTable<unknown>, density, variant, loading, emptyText }}>
+    <GridContext.Provider value={{ table: table as TanTable<unknown>, density, variant, loading, emptyText: emptyText ?? l.empty, labels: l }}>
       <div data-slot="data-grid" className={cn("flex w-full min-w-0 flex-col gap-3", className)}>
         {children}
       </div>
@@ -108,7 +163,7 @@ export function DataGridTable({
   className?: string
   "aria-label"?: string
 }) {
-  const { table, density, variant, loading, emptyText } = useGrid()
+  const { table, density, variant, loading, emptyText, labels: l } = useGrid()
   const scrollRef = React.useRef<HTMLDivElement>(null)
   const edges = useScrollEdges(scrollRef)
   const rows = table.getRowModel().rows
@@ -149,7 +204,7 @@ export function DataGridTable({
         ref={scrollRef}
         tabIndex={0}
         role="region"
-        aria-label={ariaLabel ?? "Data"}
+        aria-label={ariaLabel ?? l.region}
         aria-busy={loading || undefined}
         style={{ ...(maxHeight ? { maxHeight } : {}), ...scrollFadeMask(edges) }}
         // focus-ring: the frame around it draws the ring (has-[…:focus-visible]), so the fade does not hide it.
@@ -190,7 +245,7 @@ export function DataGridTable({
                       <span
                         role="separator"
                         aria-orientation="vertical"
-                        aria-label={`Resize ${String(h.column.columnDef.header ?? h.id)}`}
+                        aria-label={l.resize(String(h.column.columnDef.header ?? h.id))}
                         onMouseDown={h.getResizeHandler()}
                         onTouchStart={h.getResizeHandler()}
                         onDoubleClick={() => h.column.resetSize()}
@@ -313,6 +368,7 @@ export function DataGridTable({
  * column can do none of them.
  */
 export function DataGridColumnHeader<T>({ column, title }: { column: Column<T, unknown>; title: string }) {
+  const l = useGridLabels()
   const sorted = column.getIsSorted()
   // The swap pattern: the three arrows sit on top of each other and the current one fades and scales in at --motion-fast,
   // so a change of order is seen on the header even though the rows move at once.
@@ -343,10 +399,10 @@ export function DataGridColumnHeader<T>({ column, title }: { column: Column<T, u
         {column.getCanSort() && (
           <>
             <DropdownMenuItem onSelect={() => column.toggleSorting(false)}>
-              <ArrowUp aria-hidden="true" /> Ascending
+              <ArrowUp aria-hidden="true" /> {l.ascending}
             </DropdownMenuItem>
             <DropdownMenuItem onSelect={() => column.toggleSorting(true)}>
-              <ArrowDown aria-hidden="true" /> Descending
+              <ArrowDown aria-hidden="true" /> {l.descending}
             </DropdownMenuItem>
           </>
         )}
@@ -355,11 +411,11 @@ export function DataGridColumnHeader<T>({ column, title }: { column: Column<T, u
             <DropdownMenuSeparator />
             {column.getIsPinned() ? (
               <DropdownMenuItem onSelect={() => column.pin(false)}>
-                <PinOff aria-hidden="true" /> Unpin
+                <PinOff aria-hidden="true" /> {l.unpin}
               </DropdownMenuItem>
             ) : (
               <DropdownMenuItem onSelect={() => column.pin("left")}>
-                <Pin aria-hidden="true" /> Pin to the left
+                <Pin aria-hidden="true" /> {l.pinLeft}
               </DropdownMenuItem>
             )}
           </>
@@ -368,7 +424,7 @@ export function DataGridColumnHeader<T>({ column, title }: { column: Column<T, u
           <>
             <DropdownMenuSeparator />
             <DropdownMenuItem onSelect={() => column.toggleVisibility(false)}>
-              <EyeOff aria-hidden="true" /> Hide column
+              <EyeOff aria-hidden="true" /> {l.hideColumn}
             </DropdownMenuItem>
           </>
         )}
@@ -378,8 +434,13 @@ export function DataGridColumnHeader<T>({ column, title }: { column: Column<T, u
 }
 
 /** A menu of the hideable columns with a checkbox each. */
-export function DataGridColumnVisibility({ label = "Columns" }: { label?: string }) {
-  const { table } = useGrid()
+export function DataGridColumnVisibility({
+  label,
+}: {
+  /** Same as DataGrid's `labels.columns`, and wins over it. */
+  label?: string
+}) {
+  const { table, labels: l } = useGrid()
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -387,11 +448,11 @@ export function DataGridColumnVisibility({ label = "Columns" }: { label?: string
           type="button"
           className="press inline-flex h-(--h-sm) items-center gap-2 rounded-sm px-3 text-sm font-medium ring-1 ring-border ring-inset hover:bg-accent"
         >
-          <Columns3 aria-hidden="true" className="size-4" /> {label}
+          <Columns3 aria-hidden="true" className="size-4" /> {label ?? l.columns}
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuLabel>Show columns</DropdownMenuLabel>
+        <DropdownMenuLabel>{l.showColumns}</DropdownMenuLabel>
         {table
           .getAllLeafColumns()
           .filter((c) => c.getCanHide())
@@ -411,15 +472,31 @@ export function DataGridColumnVisibility({ label = "Columns" }: { label?: string
 }
 
 /** The kit's Pagination wired to the table's page state. */
-export function DataGridPagination({ pages = true }: { pages?: boolean }) {
+export function DataGridPagination({
+  pages = true,
+  labels,
+}: {
+  pages?: boolean
+  /** Pagination's words, to translate them. */
+  labels?: React.ComponentProps<typeof Pagination>["labels"]
+}) {
   const { table } = useGrid()
   const { pageIndex, pageSize } = table.getState().pagination
-  return <Pagination page={pageIndex} pageSize={pageSize} total={table.getRowCount()} onPageChange={(p) => table.setPageIndex(p)} pages={pages} />
+  return (
+    <Pagination
+      page={pageIndex}
+      pageSize={pageSize}
+      total={table.getRowCount()}
+      onPageChange={(p) => table.setPageIndex(p)}
+      pages={pages}
+      labels={labels}
+    />
+  )
 }
 
 /** "3 of 48 selected", for a bulk-action bar. */
 export function DataGridSelectionSummary({ children }: { children?: React.ReactNode }) {
-  const { table } = useGrid()
+  const { table, labels: l } = useGrid()
   const n = table.getSelectedRowModel().rows.length
   // The bar arrives with the first selection and leaves with the last, keeping its count while it goes.
   const { mounted, leaving, done } = usePresence(n > 0)
@@ -432,9 +509,7 @@ export function DataGridSelectionSummary({ children }: { children?: React.ReactN
       onAnimationEnd={(e) => e.target === e.currentTarget && done()}
       className={cn("flex h-(--h-md) items-center justify-between gap-3 rounded-sm bg-muted px-3 text-sm", leaving ? "animate-disappear" : "animate-appear")}
     >
-      <span className="tabular-nums">
-        {last.current} of {table.getRowCount()} selected
-      </span>
+      <span className="tabular-nums">{l.selected(last.current, table.getRowCount())}</span>
       <div className="flex items-center gap-2" inert={leaving || undefined}>
         {children}
       </div>
@@ -465,17 +540,47 @@ export function selectColumn<T>(): ColumnDef<T> {
     enableSorting: false,
     enableHiding: false,
     enableResizing: false,
-    header: ({ table }) => (
-      <Checkbox
-        aria-label="Select all on this page"
-        checked={table.getIsAllPageRowsSelected() ? true : table.getIsSomePageRowsSelected() ? "indeterminate" : false}
-        onCheckedChange={(v) => table.toggleAllPageRowsSelected(v === true)}
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox aria-label="Select row" checked={row.getIsSelected()} disabled={!row.getCanSelect()} onCheckedChange={(v) => row.toggleSelected(v === true)} />
-    ),
+    header: ({ table }) => <SelectAll table={table} />,
+    cell: ({ row }) => <SelectRow row={row} />,
   }
+}
+
+function SelectAll<T>({ table }: { table: TanTable<T> }) {
+  const l = useGridLabels()
+  return (
+    <Checkbox
+      aria-label={l.selectAll}
+      checked={table.getIsAllPageRowsSelected() ? true : table.getIsSomePageRowsSelected() ? "indeterminate" : false}
+      onCheckedChange={(v) => table.toggleAllPageRowsSelected(v === true)}
+    />
+  )
+}
+
+function SelectRow<T>({ row }: { row: Row<T> }) {
+  const l = useGridLabels()
+  return <Checkbox aria-label={l.selectRow} checked={row.getIsSelected()} disabled={!row.getCanSelect()} onCheckedChange={(v) => row.toggleSelected(v === true)} />
+}
+
+function DetailsHeader() {
+  return <span className="sr-only">{useGridLabels().details}</span>
+}
+
+function ExpandButton<T>({ row }: { row: Row<T> }) {
+  const l = useGridLabels()
+  return (
+    <button
+      type="button"
+      aria-label={row.getIsExpanded() ? l.hideDetails : l.showDetails}
+      aria-expanded={row.getIsExpanded()}
+      onClick={row.getToggleExpandedHandler()}
+      className="press -ml-2 flex size-(--h-sm) items-center justify-center rounded-xs text-muted-foreground hover:bg-accent hover:text-foreground"
+    >
+      <ChevronRight
+        aria-hidden="true"
+        className={cn("size-4 transition-transform duration-(--motion-fast) ease-(--ease-standard)", row.getIsExpanded() && "rotate-90")}
+      />
+    </button>
+  )
 }
 
 /** A chevron column that opens a row's detail (table meta.renderSubRow draws it). */
@@ -486,21 +591,7 @@ export function expandColumn<T>(): ColumnDef<T> {
     enableSorting: false,
     enableHiding: false,
     enableResizing: false,
-    header: () => <span className="sr-only">Details</span>,
-    cell: ({ row }) =>
-      row.getCanExpand() ? (
-        <button
-          type="button"
-          aria-label={row.getIsExpanded() ? "Hide details" : "Show details"}
-          aria-expanded={row.getIsExpanded()}
-          onClick={row.getToggleExpandedHandler()}
-          className="press -ml-2 flex size-(--h-sm) items-center justify-center rounded-xs text-muted-foreground hover:bg-accent hover:text-foreground"
-        >
-          <ChevronRight
-            aria-hidden="true"
-            className={cn("size-4 transition-transform duration-(--motion-fast) ease-(--ease-standard)", row.getIsExpanded() && "rotate-90")}
-          />
-        </button>
-      ) : null,
+    header: () => <DetailsHeader />,
+    cell: ({ row }) => (row.getCanExpand() ? <ExpandButton row={row} /> : null),
   }
 }
