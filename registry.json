@@ -6532,6 +6532,75 @@
       }
     },
     {
+      "name": "settings-billing",
+      "type": "registry:block",
+      "title": "Plan and billing",
+      "description": "Plan and renewal, robots and seats against what the plan includes, this period's usage, the card on file (brand and last four) and invoices with their PDFs; cancelling confirms first. No checkout or card form: those stay on your payment provider's pages.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/alert",
+        "@syncrobotic/alert-dialog",
+        "@syncrobotic/button",
+        "@syncrobotic/card",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/meter",
+        "@syncrobotic/skeleton",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/settings-billing.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.21.0",
+        "changelog": [
+          {
+            "version": "0.21.0",
+            "date": "2026-11-20",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "notification-center",
+      "type": "registry:block",
+      "title": "Notification center",
+      "description": "The bell in the top bar with its unread count, opening notifications grouped by day: a popover on wide screens, a bottom sheet on phones. Mark one or all as read, filter unread. For things worth knowing later; alarms that need action stay with Alarm and the island.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/badge",
+        "@syncrobotic/button",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/popover",
+        "@syncrobotic/segmented-control",
+        "@syncrobotic/sheet",
+        "@syncrobotic/skeleton"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/notification-center.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.21.0",
+        "changelog": [
+          {
+            "version": "0.21.0",
+            "date": "2026-11-20",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
       "name": "dialog-confirm-destructive",
       "type": "registry:block",
       "title": "Confirm a deletion",

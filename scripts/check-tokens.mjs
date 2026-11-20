@@ -23,6 +23,7 @@ const ROUND = {
   "registry/syncrobotic/shell/dock.tsx": "count badge",
   "registry/syncrobotic/shell/island.tsx": "avatar placeholder, status dot ring, unread count",
   "registry/syncrobotic/blocks/app-shell.tsx": "unread dot on a collapsed nav icon",
+  "registry/syncrobotic/blocks/notification-center.tsx": "unread dot on a notification",
   "registry/syncrobotic/ui/badge.tsx": "count badge",
   "registry/syncrobotic/ui/meter.tsx": "meter track and fill",
   "registry/syncrobotic/ui/icon-tile.tsx": "circle tile shape and the status dot",
