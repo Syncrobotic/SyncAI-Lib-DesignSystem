@@ -1194,11 +1194,13 @@
     },
     {
       "name": "form",
-      "type": "registry:ui",
+      "type": "registry:example",
       "title": "Form",
-      "description": "A form run by React Hook Form and drawn with Field: errors after the first submit, focus on the first one, server errors on the field or the form, a submit button that waits.",
+      "description": "A form to copy and change: React Hook Form's Controller around the kit's Field, a zod schema, focus on the first error, server errors on a field or the form, a submit button that waits. No form wrapper component.",
       "dependencies": [
         "react-hook-form",
+        "@hookform/resolvers",
+        "zod@^3.25",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -1206,12 +1208,16 @@
         "@syncrobotic/alert",
         "@syncrobotic/button",
         "@syncrobotic/choice-field",
-        "@syncrobotic/field"
+        "@syncrobotic/field",
+        "@syncrobotic/input",
+        "@syncrobotic/radio-group",
+        "@syncrobotic/select",
+        "@syncrobotic/textarea"
       ],
       "files": [
         {
-          "path": "registry/syncrobotic/ui/form.tsx",
-          "type": "registry:ui"
+          "path": "registry/syncrobotic/examples/form.tsx",
+          "type": "registry:component"
         }
       ],
       "meta": {
@@ -1221,7 +1227,7 @@
           {
             "version": "0.20.0",
             "date": "2026-11-20",
-            "note": "First release: Form, FormField, FormFieldSet, FormMessage and FormSubmit over React Hook Form."
+            "note": "First release: an example to install and change (MissionForm), React Hook Form's Controller around Field, as shadcn does. No wrapper component."
           }
         ]
       }
@@ -2103,7 +2109,7 @@
       "title": "Chart",
       "description": "Line, area and bar charts on Recharts, in the categorical palette, with a crosshair tooltip, a legend and a table view.",
       "dependencies": [
-        "recharts"
+        "recharts@^3"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
