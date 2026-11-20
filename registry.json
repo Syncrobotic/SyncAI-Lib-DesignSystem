@@ -3428,6 +3428,39 @@
       }
     },
     {
+      "name": "camera-feed",
+      "type": "registry:ui",
+      "title": "Camera feed",
+      "description": "A robot's live camera over a native video the app feeds (a WebRTC stream or a URL): Live with the latency, Stalled with the last frame's time when frames stop, Paused while the view is frozen here, connecting, offline and no-camera states; pause view, snapshot, mute and full screen; overlays drawn over the picture.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/spinner",
+        "@syncrobotic/skeleton",
+        "@syncrobotic/status-glyph"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/camera-feed.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.23.0",
+        "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "First release: CameraFeed (label, source, stream or src, status, latencyMs, staleAfterMs, offlineReason, onRetry, onSnapshot, audio, aspectRatio, children, labels) over a native <video> the app feeds. The header says the camera, the robot and the state by shape and word: Live with the latency, Connecting (blue spinner), Stalled · last frame 14:02:31 over a dimmed picture after staleAfterMs without a frame (requestVideoFrameCallback, else timeupdate), Paused, Camera offline with an optional Reconnect, No camera. Pause view, snapshot (PNG), mute only with audio, full screen; Space and F while focus is inside. Overlays in a layer over the picture; aspectRatio holds the layout before the first frame. No streaming library."
+          }
+        ]
+      }
+    },
+    {
       "name": "filter-form",
       "type": "registry:ui",
       "title": "Filter form",

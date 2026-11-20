@@ -327,6 +327,10 @@
     "version": "0.21.0",
     "hash": "6b96693892342739"
   },
+  "camera-feed": {
+    "version": "0.23.0",
+    "hash": "d38d9a33e6872af8"
+  },
   "filter-form": {
     "version": "0.10.0",
     "hash": "4408d94150b8f69d"
