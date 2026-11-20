@@ -78,7 +78,7 @@ export function SiteFooter() {
                     {l.external ? (
                       <a href={l.href} className={linkClass}>
                         {l.label}
-                        <ArrowUpRight aria-hidden="true" className="size-3.5" />
+                        <ArrowUpRight aria-hidden="true" className="size-4" />
                       </a>
                     ) : (
                       <Link href={l.href} className={linkClass}>

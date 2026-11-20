@@ -317,6 +317,16 @@
     "tabStops": 2,
     "live": false
   },
+  "banner": {
+    "roles": [
+      "alert",
+      "button",
+      "link",
+      "status"
+    ],
+    "tabStops": 3,
+    "live": true
+  },
   "alert": {
     "roles": [
       "alert",
@@ -427,6 +437,16 @@
     "tabStops": 10,
     "live": false
   },
+  "graph": {
+    "roles": [
+      "button",
+      "group",
+      "link",
+      "status"
+    ],
+    "tabStops": 1,
+    "live": true
+  },
   "dialog": {
     "roles": [],
     "tabStops": 0,
@@ -447,12 +467,22 @@
     "tabStops": 0,
     "live": false
   },
+  "hover-card": {
+    "roles": [],
+    "tabStops": 0,
+    "live": false
+  },
   "tooltip": {
     "roles": [],
     "tabStops": 0,
     "live": false
   },
   "dropdown-menu": {
+    "roles": [],
+    "tabStops": 0,
+    "live": false
+  },
+  "context-menu": {
     "roles": [],
     "tabStops": 0,
     "live": false
@@ -592,6 +622,18 @@
       "status"
     ],
     "tabStops": 1,
+    "live": true
+  },
+  "media-player": {
+    "roles": [
+      "button",
+      "list",
+      "listitem",
+      "region",
+      "slider",
+      "status"
+    ],
+    "tabStops": 10,
     "live": true
   },
   "filter-form": {
