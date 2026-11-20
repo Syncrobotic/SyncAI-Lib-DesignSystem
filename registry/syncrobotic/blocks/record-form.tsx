@@ -1,4 +1,4 @@
-// @syncrobotic/record-form v0.17.2 · update: npx shadcn add @syncrobotic/record-form --overwrite
+// @syncrobotic/record-form v0.21.0 · update: npx shadcn add @syncrobotic/record-form --overwrite
 "use client"
 
 import * as React from "react"
@@ -15,9 +15,20 @@ import { Toaster, toast } from "@/registry/syncrobotic/ui/toast"
 
 type Errors = Partial<Record<"name" | "robot" | "start", string>>
 
+// The rules, in one place: say how to fix it, not just that it is wrong.
+function validate(v: { name: string; robot: string; start: string }): Errors {
+  const e: Errors = {}
+  if (v.name.trim().length < 3) e.name = "At least 3 characters, e.g. “Night perimeter”"
+  if (!v.robot) e.robot = "Pick the robot that runs it"
+  if (!v.start) e.start = "Pick a start time"
+  return e
+}
+
 /**
- * Create a record (here: a patrol mission). One column, labels above fields, errors in the hint line on submit,
- * the primary action names the result. Works as an edit form by passing initial values.
+ * Create a record (here: a patrol mission). One column, labels above fields, the primary action names the result.
+ * Validation behaves like the `form` example without a form library: nothing is said before the first submit; after
+ * it, each error follows the value as it changes, and a failed submit focuses the first field in error.
+ * Works as an edit form by passing initial values.
  */
 export function RecordForm({ initial }: { initial?: { name: string; robot: string; repeat: string; start: string; notes: string } }) {
   const [name, setName] = React.useState(initial?.name ?? "")
@@ -25,18 +36,16 @@ export function RecordForm({ initial }: { initial?: { name: string; robot: strin
   const [repeat, setRepeat] = React.useState(initial?.repeat ?? "daily")
   const [start, setStart] = React.useState(initial?.start ?? "22:00")
   const [notes, setNotes] = React.useState(initial?.notes ?? "")
-  const [errors, setErrors] = React.useState<Errors>({})
+  // Errors are worked out from the values once a submit has been tried, so a fixed field clears as you type.
+  const [submitted, setSubmitted] = React.useState(false)
+  const errors = submitted ? validate({ name, robot, start }) : {}
   const [saving, setSaving] = React.useState(false)
   const form = React.useRef<HTMLFormElement>(null)
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault()
-    const next: Errors = {}
-    if (name.trim().length < 3) next.name = "At least 3 characters, e.g. “Night perimeter”"
-    if (!robot) next.robot = "Pick the robot that runs it"
-    if (!start) next.start = "Pick a start time"
-    setErrors(next)
-    if (Object.keys(next).length) {
+    setSubmitted(true)
+    if (Object.keys(validate({ name, robot, start })).length) {
       // Take the user to the first problem once the errors have rendered.
       requestAnimationFrame(() => form.current?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus())
       return

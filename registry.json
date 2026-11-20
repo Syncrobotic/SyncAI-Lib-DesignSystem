@@ -103,7 +103,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -129,7 +130,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -151,7 +153,8 @@
             "date": "2026-11-18",
             "note": "New."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -173,7 +176,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -210,7 +214,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "beta"
       },
       "registryDependencies": [
         "@syncrobotic/feedback"
@@ -237,7 +242,8 @@
             "date": "2026-11-17",
             "note": "First release."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -261,7 +267,8 @@
             "date": "2026-11-19",
             "note": "First release: useDebouncedValue and useDebouncedCallback (with cancel and flush)."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -331,7 +338,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -367,7 +375,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -392,7 +401,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -447,7 +457,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -481,7 +492,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -523,7 +535,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -606,7 +619,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -649,7 +663,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -690,7 +705,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -745,7 +761,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -770,7 +787,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -828,7 +846,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -861,7 +880,8 @@
             "date": "2026-11-17",
             "note": "First release. Presses."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -895,7 +915,8 @@
             "date": "2026-11-17",
             "note": "First release."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -977,7 +998,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -1022,7 +1044,8 @@
             "date": "2026-11-17",
             "note": "First release."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -1066,7 +1089,8 @@
             "date": "2026-11-17",
             "note": "First release."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -1111,7 +1135,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -1144,7 +1169,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -1189,7 +1215,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -1283,7 +1310,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -1331,7 +1359,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -1384,7 +1413,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -1422,7 +1452,8 @@
             "date": "2026-11-17",
             "note": "First release. FieldSet's note grows open and fades out like Field's. Icon to label 8 px (gap-2), the same in every component."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -1492,7 +1523,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -1530,7 +1562,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -1580,7 +1613,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -1610,7 +1644,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -1649,7 +1684,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -1677,7 +1713,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -1725,7 +1762,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -1751,7 +1789,8 @@
             "date": "2026-11-17",
             "note": "First release."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -1809,7 +1848,8 @@
             "date": "2026-11-17",
             "note": "First release."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -1888,7 +1928,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -1958,7 +1999,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -2017,7 +2059,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -2047,7 +2090,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -2097,7 +2141,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       },
       "dependencies": [
         "lucide-react"
@@ -2139,7 +2184,8 @@
             "date": "2026-11-17",
             "note": "First release."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -2192,7 +2238,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -2232,7 +2279,8 @@
             "date": "2026-11-17",
             "note": "First release."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -2275,7 +2323,8 @@
             "date": "2026-11-17",
             "note": "First release. Icon to label 8 px (gap-2), the same in every component."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -2319,7 +2368,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -2388,7 +2438,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -2422,7 +2473,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -2470,7 +2522,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -2508,7 +2561,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -2546,7 +2600,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -2605,7 +2660,8 @@
             "date": "2026-11-17",
             "note": "First versioned release. Earlier history is in CHANGELOG.md."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -2675,7 +2731,8 @@
             "date": "2026-11-17",
             "note": "First release. The separator inside the list is decorative, so the listbox holds only groups and options."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -2704,7 +2761,8 @@
             "date": "2026-11-17",
             "note": "New."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -2748,7 +2806,8 @@
             "date": "2026-11-17",
             "note": "New."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -2783,7 +2842,8 @@
             "date": "2026-11-17",
             "note": "New."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -2808,7 +2868,8 @@
             "date": "2026-11-18",
             "note": "New."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -2836,7 +2897,8 @@
             "date": "2026-11-17",
             "note": "New."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -2874,7 +2936,8 @@
             "date": "2026-11-17",
             "note": "New."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -2912,7 +2975,8 @@
             "date": "2026-11-17",
             "note": "New."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -2948,7 +3012,8 @@
             "date": "2026-11-18",
             "note": "New."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -2981,7 +3046,8 @@
             "date": "2026-11-18",
             "note": "New."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -3011,7 +3077,8 @@
             "date": "2026-11-18",
             "note": "New."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -3042,7 +3109,8 @@
             "date": "2026-11-18",
             "note": "New."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -3075,7 +3143,8 @@
             "date": "2026-11-18",
             "note": "New."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -3166,7 +3235,8 @@
             "date": "2026-11-18",
             "note": "New."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -3250,7 +3320,8 @@
             "date": "2026-11-18",
             "note": "New."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -3279,7 +3350,8 @@
             "date": "2026-11-18",
             "note": "New."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -3304,7 +3376,8 @@
             "date": "2026-11-18",
             "note": "New."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -3356,7 +3429,8 @@
             "date": "2026-11-17",
             "note": "New."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -3395,7 +3469,8 @@
             "date": "2026-11-17",
             "note": "New."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -3445,7 +3520,8 @@
             "date": "2026-11-17",
             "note": "New."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -3494,7 +3570,8 @@
             "date": "2026-11-17",
             "note": "New."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -3547,7 +3624,8 @@
             "date": "2026-11-17",
             "note": "New."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -3592,7 +3670,8 @@
             "date": "2026-11-17",
             "note": "New."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -3657,7 +3736,8 @@
             "date": "2026-11-17",
             "note": "New."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -3698,7 +3778,8 @@
             "date": "2026-11-17",
             "note": "New."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -3736,7 +3817,8 @@
             "date": "2026-11-17",
             "note": "New."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -3769,7 +3851,8 @@
             "date": "2026-11-17",
             "note": "New."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -3800,7 +3883,8 @@
             "date": "2026-11-17",
             "note": "New."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -3828,7 +3912,8 @@
             "date": "2026-11-17",
             "note": "New."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -3877,7 +3962,8 @@
             "date": "2026-11-17",
             "note": "New."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -3918,7 +4004,8 @@
             "date": "2026-11-17",
             "note": "New."
           }
-        ]
+        ],
+        "status": "stable"
       }
     },
     {
@@ -3953,7 +4040,8 @@
             "date": "2026-11-17",
             "note": "New."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -4002,7 +4090,8 @@
             "date": "2026-11-17",
             "note": "New."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -4050,7 +4139,8 @@
             "date": "2026-11-17",
             "note": "New."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -4105,7 +4195,8 @@
             "date": "2026-11-17",
             "note": "New."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -4136,7 +4227,8 @@
             "date": "2026-11-17",
             "note": "New."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -5086,8 +5178,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.21.0",
         "changelog": [
+          {
+            "version": "0.21.0",
+            "date": "2026-11-20",
+            "note": "Validates like the form example: nothing before the first submit, then each error follows its value; a failed submit focuses the first field in error."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -5326,7 +5423,8 @@
             "date": "2026-11-17",
             "note": "First release."
           }
-        ]
+        ],
+        "status": "beta"
       }
     },
     {
@@ -6590,8 +6688,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.21.0",
         "changelog": [
+          {
+            "version": "0.21.0",
+            "date": "2026-11-20",
+            "note": "Validates like the form example: nothing before the first submit, then each error follows its value; a failed submit now focuses the first field in error."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
