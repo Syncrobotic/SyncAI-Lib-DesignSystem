@@ -1,4 +1,4 @@
-// @syncrobotic/bar-chart-stacked v0.17.2 · update: npx shadcn add @syncrobotic/bar-chart-stacked --overwrite
+// @syncrobotic/bar-chart-stacked v0.22.0 · update: npx shadcn add @syncrobotic/bar-chart-stacked --overwrite
 "use client"
 
 import * as React from "react"
@@ -9,8 +9,8 @@ import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/u
 
 const config = {
   patrol: { label: "Patrolling", color: 1, unit: "h" },
-  charging: { label: "Charging", color: 2, unit: "h" },
-  idle: { label: "Idle", color: 3, unit: "h" },
+  charging: { label: "Charging", color: 3, unit: "h" },
+  idle: { label: "Idle", color: 4, unit: "h" },
 } satisfies ChartConfig
 // Sample data: robot hours per site this week.
 const data = ["North", "South", "Hall B", "Parking"].map((site, i) => ({

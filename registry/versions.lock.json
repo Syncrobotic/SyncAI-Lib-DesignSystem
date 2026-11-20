@@ -525,23 +525,23 @@
   },
   "area-chart-fleet-states": {
     "version": "0.22.0",
-    "hash": "0ab1aff2412f299e"
+    "hash": "2980b0707b6c9a4d"
   },
   "area-chart-cumulative": {
     "version": "0.22.0",
     "hash": "8123335cba3a0f85"
   },
   "bar-chart-missions": {
-    "version": "0.17.2",
-    "hash": "29c77e7fc8e28def"
+    "version": "0.22.0",
+    "hash": "6914096bd17ab410"
   },
   "bar-chart-ranked": {
     "version": "0.17.2",
     "hash": "eedb344ad9e98f71"
   },
   "bar-chart-stacked": {
-    "version": "0.17.2",
-    "hash": "7464ec75bde33b50"
+    "version": "0.22.0",
+    "hash": "56cb029bad7d7903"
   },
   "bar-chart-variance": {
     "version": "0.17.2",

@@ -842,6 +842,7 @@ const entries: Record<string, Entry> = {
       "Graphite and one accent: the series the reader should look at is --chart-1 (the brand indigo), the others graphite (2, 3), Other the light grey (4), a baseline or earlier period 5. Kept with the series when others are filtered out. Never a status colour as a series.",
       "Three series and Other at most: fold the rest into Other, highlight one and grey the rest, or split into small multiples.",
       "Line style follows the series order, set by the chart: solid, dashed (6 4), dotted (1.5 3.5). Pass strokeDasharray yourself only to override it.",
+      "Filled marks (stacked bars, stacked areas) take the accent, then the mid grey (3) and Other (4): a large area in the strong grey (2) outweighs the accent, near-black in light and near-white in dark. The strong grey is for thin lines.",
       "Two series or more: a legend above the plot, with each series' line style. One series: no legend; the title names it.",
       "Every chart with axes (line, area, bar, heatmap) has a table view (ChartTable), for exact values and for anyone who cannot tell two series apart. Sparklines, rings (radial) and status strips write their numbers in words instead.",
       "One y axis. Two measures on different scales are two charts.",

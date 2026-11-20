@@ -5819,7 +5819,7 @@
           {
             "version": "0.22.0",
             "date": "2026-11-20",
-            "note": "Stacked bands in solid fills (the accent, then the grey steps) set apart by a 2 px stroke in the card colour, like a stacked bar; the legend shows square swatches."
+            "note": "Stacked bands in solid fills (the accent, then the grey steps) set apart by a 2 px stroke in the card colour, like a stacked bar; the legend shows square swatches. Charging and Idle take the mid and Other greys, so the bands stay quieter than the accent in both modes."
           },
           {
             "version": "0.17.2",
@@ -5914,8 +5914,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.22.0",
         "changelog": [
+          {
+            "version": "0.22.0",
+            "date": "2026-11-20",
+            "note": "Graphite and one accent: the accent for the main series, the mid and Other greys for the rest, so a filled grey never outweighs the accent."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -5989,8 +5994,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.22.0",
         "changelog": [
+          {
+            "version": "0.22.0",
+            "date": "2026-11-20",
+            "note": "Graphite and one accent: the accent for the main series, the mid and Other greys for the rest, so a filled grey never outweighs the accent."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",

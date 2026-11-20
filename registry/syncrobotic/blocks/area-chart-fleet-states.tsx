@@ -9,8 +9,8 @@ import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/u
 
 const config = {
   patrol: { label: "Patrolling", color: 1 },
-  charging: { label: "Charging", color: 2 },
-  idle: { label: "Idle", color: 3 },
+  charging: { label: "Charging", color: 3 },
+  idle: { label: "Idle", color: 4 },
 } satisfies ChartConfig
 // Sample data: how many of 6 robots were in each state, per hour. The three always add up to the fleet.
 const data = ["06:00", "08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00"].map((t, i) => ({
