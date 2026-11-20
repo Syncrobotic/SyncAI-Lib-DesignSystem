@@ -1,20 +1,20 @@
-// @syncrobotic/load-more v0.15.0 · update: npx shadcn add @syncrobotic/load-more --overwrite
+// @syncrobotic/load-more v0.23.0 · update: npx shadcn add @syncrobotic/load-more --overwrite
 "use client"
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/registry/syncrobotic/ui/button"
 
-type Labels = {
-  /** "Showing 40 of 125" */
-  showing?: (shown: number, total: number) => string
+export type LoadMoreLabels = {
+  /** "Showing 40 of 125". `locale` is LoadMore's, for formatting the numbers. */
+  showing: (shown: number, total: number, locale?: string) => string
   /** "Show 20 more (85 left)" */
-  more?: (next: number, left: number) => string
+  more: (next: number, left: number, locale?: string) => string
 }
 
-const defaults: Required<Labels> = {
-  showing: (shown, total) => `Showing ${shown.toLocaleString()} of ${total.toLocaleString()}`,
-  more: (next, left) => `Show ${next.toLocaleString()} more (${left.toLocaleString()} left)`,
+export const defaultLoadMoreLabels: LoadMoreLabels = {
+  showing: (shown, total, locale) => `Showing ${shown.toLocaleString(locale)} of ${total.toLocaleString(locale)}`,
+  more: (next, left, locale) => `Show ${next.toLocaleString(locale)} more (${left.toLocaleString(locale)} left)`,
 }
 
 /**
@@ -32,6 +32,7 @@ export function LoadMore({
   onMore,
   loading = false,
   labels,
+  locale,
   className,
 }: {
   shown: number
@@ -41,19 +42,22 @@ export function LoadMore({
   onMore: () => void
   /** While the next batch is on its way (when it is fetched, not just revealed). */
   loading?: boolean
-  labels?: Labels
+  /** The words it says, to translate them. */
+  labels?: Partial<LoadMoreLabels>
+  /** Formats the numbers (a BCP 47 tag such as "zh-TW"). Left out, the browser's language. */
+  locale?: string
   className?: string
 }) {
-  const l = { ...defaults, ...labels }
+  const l = { ...defaultLoadMoreLabels, ...labels }
   const left = Math.max(0, total - shown)
   return (
     <div data-slot="load-more" className={cn("flex flex-col items-center gap-3", className)}>
       <p aria-live="polite" className="text-sm text-muted-foreground tabular-nums">
-        {l.showing(Math.min(shown, total), total)}
+        {l.showing(Math.min(shown, total), total, locale)}
       </p>
       {left > 0 && (
         <Button variant="secondary" className="w-full sm:w-auto" loading={loading} onClick={onMore}>
-          {l.more(Math.min(step, left), left)}
+          {l.more(Math.min(step, left), left, locale)}
         </Button>
       )}
     </div>

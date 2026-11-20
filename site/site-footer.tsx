@@ -22,6 +22,7 @@ const columns: { title: string; links: FooterLink[] }[] = [
     links: [
       { label: "Installation", href: "/docs/installation" },
       { label: "Next.js", href: "/docs/nextjs" },
+      { label: "Localisation", href: "/docs/localisation" },
       { label: "Tokens", href: "/docs/tokens" },
       { label: "Versions and upgrades", href: "/docs/upgrading" },
     ],

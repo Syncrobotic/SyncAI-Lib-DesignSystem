@@ -1,4 +1,4 @@
-// @syncrobotic/autocomplete v0.17.3 · update: npx shadcn add @syncrobotic/autocomplete --overwrite
+// @syncrobotic/autocomplete v0.23.0 · update: npx shadcn add @syncrobotic/autocomplete --overwrite
 "use client"
 
 import * as React from "react"
@@ -10,6 +10,33 @@ import { Popover, PopoverAnchor, PopoverContent } from "@/registry/syncrobotic/u
 import { Spinner } from "@/registry/syncrobotic/ui/spinner"
 
 export type AutocompleteOption = { value: string; label: string; description?: string; group?: string; disabled?: boolean }
+
+export type AutocompleteLabels = {
+  /** In the empty field. */
+  placeholder: string
+  /** In the list when nothing matches. */
+  empty: string
+  /** In the list while `loading` and nothing is shown yet. */
+  searching: string
+  /** The spinner's name while `loading`. */
+  searchingStatus: string
+  /** The clear button's name. */
+  clear: string
+  /** The chevron's name, which opens the full list. */
+  showAll: string
+  /** Names the list (and its popover) when the field has no `aria-label`. */
+  suggestions: string
+}
+
+export const defaultAutocompleteLabels: AutocompleteLabels = {
+  placeholder: "Search",
+  empty: "No matches",
+  searching: "Searching…",
+  searchingStatus: "Searching",
+  clear: "Clear",
+  showAll: "Show all",
+  suggestions: "Suggestions",
+}
 
 /**
  * A text field that suggests as you type (the WAI-ARIA combobox pattern): type to filter, arrows to move, Enter to pick,
@@ -25,8 +52,9 @@ export function Autocomplete({
   debounce = 0,
   filter = true,
   loading,
-  placeholder = "Search",
-  emptyText = "No matches",
+  placeholder,
+  emptyText,
+  labels,
   clearable = true,
   showTrigger = true,
   size = "md",
@@ -44,8 +72,12 @@ export function Autocomplete({
   /** Filter options by the typed text. Turn off when the server filters. */
   filter?: boolean
   loading?: boolean
+  /** Same as `labels.placeholder`, and wins over it. */
   placeholder?: string
+  /** Same as `labels.empty`, and wins over it. */
   emptyText?: string
+  /** The words it says, to translate them. */
+  labels?: Partial<AutocompleteLabels>
   clearable?: boolean
   /** A chevron that opens the full list. */
   showTrigger?: boolean
@@ -56,6 +88,7 @@ export function Autocomplete({
   "aria-label"?: string
 }) {
   const f = useField()
+  const l = { ...defaultAutocompleteLabels, ...labels }
   const listId = React.useId()
   const selected = options.find((o) => o.value === value)
   const [query, setQuery] = React.useState(selected?.label ?? "")
@@ -121,7 +154,7 @@ export function Autocomplete({
             aria-activedescendant={open && enabled[active] ? optionId(enabled[active]) : undefined}
             autoComplete="off"
             disabled={disabled}
-            placeholder={placeholder}
+            placeholder={placeholder ?? l.placeholder}
             value={query}
             onChange={(e) => {
               setQuery(e.target.value)
@@ -135,7 +168,7 @@ export function Autocomplete({
             // focus-ring: the field around it draws the ring (has-[input:focus-visible]).
             className="h-full min-w-0 flex-1 bg-transparent px-3 text-base outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed"
           />
-          {loading && <Spinner delay={0} className="mr-2 size-4" label="Searching" />}
+          {loading && <Spinner delay={0} className="mr-2 size-4" label={l.searchingStatus} />}
           {clearable && !disabled && (
             <button
               type="button"
@@ -143,7 +176,7 @@ export function Autocomplete({
                 "press flex size-(--h-sm) shrink-0 items-center justify-center rounded-xs text-muted-foreground transition-[opacity,visibility,background-color,color,scale] duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent hover:text-foreground",
                 query ? "visible opacity-100" : "invisible opacity-0",
               )}
-              aria-label="Clear"
+              aria-label={l.clear}
               // Always rendered, so it can fade in and out with the query instead of popping; hidden, it is out of the
               // tab order and the accessibility tree.
               aria-hidden={!query || undefined}
@@ -163,7 +196,7 @@ export function Autocomplete({
             <button
               type="button"
               tabIndex={-1}
-              aria-label="Show all"
+              aria-label={l.showAll}
               disabled={disabled}
               onClick={() => {
                 setOpen((o) => !o)
@@ -184,11 +217,11 @@ export function Autocomplete({
         onOpenAutoFocus={(e) => e.preventDefault()}
         onInteractOutside={(e) => e.target instanceof Node && inputRef.current?.parentElement?.contains(e.target) && e.preventDefault()}
         // Radix gives the panel role="dialog"; it is named like its list so it is never a nameless dialog.
-        aria-label={ariaLabel ?? "Suggestions"}
+        aria-label={ariaLabel ?? l.suggestions}
         className="w-(--radix-popover-trigger-width) min-w-56 p-1"
       >
-        <div id={listId} role="listbox" aria-label={ariaLabel ?? "Suggestions"} className="flex max-h-72 flex-col overflow-y-auto">
-          {shown.length === 0 && <p className="px-3 py-2 text-sm text-muted-foreground">{loading ? "Searching…" : emptyText}</p>}
+        <div id={listId} role="listbox" aria-label={ariaLabel ?? l.suggestions} className="flex max-h-72 flex-col overflow-y-auto">
+          {shown.length === 0 && <p className="px-3 py-2 text-sm text-muted-foreground">{loading ? l.searching : (emptyText ?? l.empty)}</p>}
           {groups.map((g) => (
             <div key={g} role={g ? "group" : undefined} aria-label={g || undefined} className="flex flex-col">
               {g && <div className="px-3 pt-2 pb-1 text-xs font-medium text-muted-foreground">{g}</div>}

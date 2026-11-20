@@ -1,4 +1,4 @@
-// @syncrobotic/filters v0.17.3 · update: npx shadcn add @syncrobotic/filters --overwrite
+// @syncrobotic/filters v0.23.0 · update: npx shadcn add @syncrobotic/filters --overwrite
 "use client"
 
 import * as React from "react"
@@ -421,6 +421,7 @@ export function Filters({
   defaultValue,
   onValueChange,
   labels: given,
+  locale,
   className,
 }: {
   fields: FilterField[]
@@ -428,6 +429,8 @@ export function Filters({
   defaultValue?: FilterRule[]
   onValueChange?: (rules: FilterRule[]) => void
   labels?: Partial<Omit<FilterLabels, "operators">> & { operators?: Partial<Record<FilterOperator, string>> }
+  /** Formats the options' counts (a BCP 47 tag such as "zh-TW"). Left out, the browser's language. */
+  locale?: string
   className?: string
 }) {
   const labels: FilterLabels = { ...defaultFilterLabels, ...given, operators: { ...defaultFilterLabels.operators, ...given?.operators } }
@@ -492,6 +495,7 @@ export function Filters({
         rule={rule}
         start={last.step}
         labels={labels}
+        locale={locale}
         onCommit={commit}
         onCancel={() => setEditing(null)}
         onCloseAutoFocus={restoreFocus}
@@ -625,6 +629,7 @@ function Picker({
   rule,
   start,
   labels,
+  locale,
   onCommit,
   onCancel,
   onCloseAutoFocus,
@@ -635,6 +640,7 @@ function Picker({
   rule: FilterRule | null
   start: Step
   labels: FilterLabels
+  locale?: string
   onCommit: (rule: FilterRule) => void
   onCancel: () => void
   onCloseAutoFocus: (e: Event) => void
@@ -741,7 +747,7 @@ function Picker({
         </Command>
       )}
       {step === "value" && field && draft.operator && (
-        <ValueStep field={field} operator={draft.operator} value={draft.value} title={title} labels={labels} onApply={(v) => finish(draft.operator!, v)} />
+        <ValueStep field={field} operator={draft.operator} value={draft.value} title={title} labels={labels} locale={locale} onApply={(v) => finish(draft.operator!, v)} />
       )}
     </PopoverContent>
   )
@@ -753,6 +759,7 @@ function ValueStep({
   value,
   title,
   labels,
+  locale,
   onApply,
 }: {
   field: FilterField
@@ -760,6 +767,7 @@ function ValueStep({
   value: FilterValue
   title: string
   labels: FilterLabels
+  locale?: string
   onApply: (value: FilterValue) => void
 }) {
   const id = React.useId()
@@ -810,7 +818,7 @@ function ValueStep({
                   {multiple && <CommandCheck checked={on} />}
                   {o.icon}
                   <span className="truncate">{o.label}</span>
-                  {o.count !== undefined && <span className="ml-auto text-xs text-muted-foreground tabular-nums">{o.count.toLocaleString()}</span>}
+                  {o.count !== undefined && <span className="ml-auto text-xs text-muted-foreground tabular-nums">{o.count.toLocaleString(locale)}</span>}
                 </CommandItem>
               )
             })}

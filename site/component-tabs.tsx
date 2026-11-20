@@ -62,7 +62,7 @@ export function ComponentTabs({ tabs }: { tabs: ComponentTab[] }) {
 
   return (
     <nav aria-label="Page sections" className="pb-6">
-      <div ref={list} className="relative flex gap-4 overflow-x-auto border-b border-border" data-underline={line ? "" : undefined}>
+      <div ref={list} className="relative flex gap-4 overflow-x-auto overflow-y-hidden border-b border-border" data-underline={line ? "" : undefined}>
         {tabs.map((t) => {
           const on = t.href === active
           return (

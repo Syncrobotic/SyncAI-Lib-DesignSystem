@@ -1,4 +1,4 @@
-// @syncrobotic/sortable v0.13.1 · update: npx shadcn add @syncrobotic/sortable --overwrite
+// @syncrobotic/sortable v0.23.0 · update: npx shadcn add @syncrobotic/sortable --overwrite
 "use client"
 
 import * as React from "react"
@@ -26,6 +26,30 @@ const SortableItemContext = React.createContext<ItemCtx | null>(null)
 const OverlayContext = React.createContext(false)
 const noop = () => () => {}
 
+export type SortableLabels = {
+  /** On lifting an item: "Picked up Dock A. Position 2 of 5." */
+  pickedUp: (name: string, position: number, total: number) => string
+  /** On each move. */
+  moved: (name: string, position: number, total: number) => string
+  /** On dropping it over a place. */
+  droppedAt: (name: string, position: number, total: number) => string
+  /** On dropping it nowhere. */
+  dropped: (name: string) => string
+  /** On Escape. */
+  cancelled: (name: string) => string
+  /** Read when a handle takes focus: how to move with the keyboard. */
+  instructions: string
+}
+
+export const defaultSortableLabels: SortableLabels = {
+  pickedUp: (name, position, total) => `Picked up ${name}. Position ${position} of ${total}.`,
+  moved: (name, position, total) => `${name} moved to position ${position} of ${total}.`,
+  droppedAt: (name, position, total) => `${name} dropped at position ${position} of ${total}.`,
+  dropped: (name) => `${name} dropped.`,
+  cancelled: (name) => `Moving ${name} cancelled.`,
+  instructions: "To reorder, press Space, move with the arrow keys, press Space again to drop, or Escape to cancel.",
+}
+
 /**
  * A list (or grid) people reorder by dragging a handle, by touch, or by keyboard: focus the handle, Space to lift, arrows
  * to move, Space to drop, Escape to cancel (dnd-kit). Each move is announced. Give `getLabel` so announcements name the
@@ -38,6 +62,7 @@ export function Sortable<T>({
   getLabel,
   layout = "list",
   renderOverlay,
+  labels,
   className,
   children,
 }: {
@@ -48,9 +73,12 @@ export function Sortable<T>({
   layout?: "list" | "grid"
   /** A copy that follows the pointer while the item stays as a faded placeholder. Without it the item itself follows. */
   renderOverlay?: (item: T) => React.ReactNode
+  /** What screen readers hear while an item moves, to translate it. */
+  labels?: Partial<SortableLabels>
   className?: string
   children: React.ReactNode
 }) {
+  const l = { ...defaultSortableLabels, ...labels }
   const [active, setActive] = React.useState<UniqueIdentifier | null>(null)
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
@@ -85,13 +113,12 @@ export function Sortable<T>({
       onDragCancel={() => setActive(null)}
       accessibility={{
         announcements: {
-          onDragStart: ({ active }) => `Picked up ${nameOf(active.id)}. Position ${ids.indexOf(active.id) + 1} of ${ids.length}.`,
-          onDragOver: ({ active, over }) => (over ? `${nameOf(active.id)} moved to position ${ids.indexOf(over.id) + 1} of ${ids.length}.` : undefined),
-          onDragEnd: ({ active, over }) =>
-            over ? `${nameOf(active.id)} dropped at position ${ids.indexOf(over.id) + 1} of ${ids.length}.` : `${nameOf(active.id)} dropped.`,
-          onDragCancel: ({ active }) => `Moving ${nameOf(active.id)} cancelled.`,
+          onDragStart: ({ active }) => l.pickedUp(nameOf(active.id), ids.indexOf(active.id) + 1, ids.length),
+          onDragOver: ({ active, over }) => (over ? l.moved(nameOf(active.id), ids.indexOf(over.id) + 1, ids.length) : undefined),
+          onDragEnd: ({ active, over }) => (over ? l.droppedAt(nameOf(active.id), ids.indexOf(over.id) + 1, ids.length) : l.dropped(nameOf(active.id))),
+          onDragCancel: ({ active }) => l.cancelled(nameOf(active.id)),
         },
-        screenReaderInstructions: { draggable: "To reorder, press Space, move with the arrow keys, press Space again to drop, or Escape to cancel." },
+        screenReaderInstructions: { draggable: l.instructions },
       }}
     >
       <OverlayContext.Provider value={!!renderOverlay}>

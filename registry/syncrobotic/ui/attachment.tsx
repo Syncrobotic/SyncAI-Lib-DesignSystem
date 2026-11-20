@@ -1,4 +1,4 @@
-// @syncrobotic/attachment v0.9.0 · update: npx shadcn add @syncrobotic/attachment --overwrite
+// @syncrobotic/attachment v0.23.0 · update: npx shadcn add @syncrobotic/attachment --overwrite
 "use client"
 
 import * as React from "react"
@@ -9,6 +9,33 @@ import { formatBytes } from "@/registry/syncrobotic/ui/file-upload"
 import { Progress } from "@/registry/syncrobotic/ui/progress"
 
 export type AttachmentStatus = "idle" | "uploading" | "done" | "error"
+
+export type AttachmentLabels = {
+  /** Under the name when the upload failed and no `error` says why. */
+  uploadFailed: string
+  /** The image variant's caption in the same case. */
+  failed: string
+  /** The progress bar's name: "Uploading report.pdf". */
+  uploading: (name: string) => string
+  /** How far the upload is: "40 %". */
+  percent: (n: number) => string
+  /** The action buttons' names, each with the file's name. */
+  retry: (name: string) => string
+  download: (name: string) => string
+  cancel: (name: string) => string
+  remove: (name: string) => string
+}
+
+export const defaultAttachmentLabels: AttachmentLabels = {
+  uploadFailed: "Upload failed",
+  failed: "Failed",
+  uploading: (name) => `Uploading ${name}`,
+  percent: (n) => `${n} %`,
+  retry: (name) => `Retry ${name}`,
+  download: (name) => `Download ${name}`,
+  cancel: (name) => `Cancel ${name}`,
+  remove: (name) => `Remove ${name}`,
+}
 
 /**
  * One file in a list, a composer or an upload queue: its type, name, size and state. Uploading shows progress, an
@@ -28,6 +55,7 @@ export function Attachment({
   onDownload,
   leaving,
   onLeft,
+  labels,
   className: classNameProp,
 }: {
   name: string
@@ -45,8 +73,11 @@ export function Attachment({
   /** Removed from the list: plays the exit, then calls onLeft. Pair with usePresenceList. */
   leaving?: boolean
   onLeft?: () => void
+  /** The words it says, to translate them. */
+  labels?: Partial<AttachmentLabels>
   className?: string
 }) {
+  const l = { ...defaultAttachmentLabels, ...labels }
   // Every attachment arrives and leaves: appear on mount, disappear when `leaving`.
   const className = cn(leaving ? "animate-disappear" : "animate-appear", classNameProp)
   const onAnimationEnd = (e: React.AnimationEvent) => {
@@ -54,17 +85,17 @@ export function Attachment({
   }
   const meta =
     status === "uploading"
-      ? `${progress ?? 0} % · ${size ? formatBytes(size) : ""}`
+      ? `${l.percent(progress ?? 0)} · ${size ? formatBytes(size) : ""}`
       : status === "error"
-        ? (error ?? "Upload failed")
+        ? (error ?? l.uploadFailed)
         : size
           ? formatBytes(size)
           : ""
   const actions = (
     <>
-      {status === "error" && onRetry && <IconAction label={`Retry ${name}`} onClick={onRetry} icon={RotateCw} />}
-      {status === "done" && onDownload && <IconAction label={`Download ${name}`} onClick={onDownload} icon={Download} />}
-      {onRemove && <IconAction label={status === "uploading" ? `Cancel ${name}` : `Remove ${name}`} onClick={onRemove} icon={X} />}
+      {status === "error" && onRetry && <IconAction label={l.retry(name)} onClick={onRetry} icon={RotateCw} />}
+      {status === "done" && onDownload && <IconAction label={l.download(name)} onClick={onDownload} icon={Download} />}
+      {onRemove && <IconAction label={status === "uploading" ? l.cancel(name) : l.remove(name)} onClick={onRemove} icon={X} />}
     </>
   )
 
@@ -82,17 +113,17 @@ export function Attachment({
           )}
           {status === "uploading" && (
             <span className="absolute inset-x-2 bottom-2">
-              <Progress value={progress} aria-label={`Uploading ${name}`} className="h-1" />
+              <Progress value={progress} aria-label={l.uploading(name)} className="h-1" />
             </span>
           )}
           {onRemove && (
             <span className="absolute top-1 right-1">
-              <IconAction label={`Remove ${name}`} onClick={onRemove} icon={X} className="bg-card shadow-overlay" />
+              <IconAction label={l.remove(name)} onClick={onRemove} icon={X} className="bg-card shadow-overlay" />
             </span>
           )}
         </div>
         <figcaption className={cn("truncate text-xs", status === "error" ? "text-danger" : "text-muted-foreground")}>
-          {status === "error" ? (error ?? "Failed") : name}
+          {status === "error" ? (error ?? l.failed) : name}
         </figcaption>
       </figure>
     )
@@ -134,8 +165,8 @@ export function Attachment({
         <span className="truncate text-sm font-medium">{name}</span>
         {status === "uploading" ? (
           <span className="flex items-center gap-2">
-            <Progress value={progress} aria-label={`Uploading ${name}`} className="h-1 flex-1" />
-            <span className="text-xs text-muted-foreground tabular-nums">{progress ?? 0} %</span>
+            <Progress value={progress} aria-label={l.uploading(name)} className="h-1 flex-1" />
+            <span className="text-xs text-muted-foreground tabular-nums">{l.percent(progress ?? 0)}</span>
           </span>
         ) : (
           <span className={cn("flex items-center gap-2 text-xs tabular-nums", status === "error" ? "text-danger" : "text-muted-foreground")}>

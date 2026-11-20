@@ -12,6 +12,7 @@
 //  4. Every chart with axes has a table view: a block that draws one (ChartContainer: line, area, bar) offers ChartTable or
 //     a Table. Sparklines, rings and status strips write their numbers in words instead (see the Data visualisation foundation).
 //  5. A graph has a text view in the same way: a block that draws one (Graph) offers GraphList.
+//  6. So does a map: a block that draws one (RobotMap) offers RobotMapList.
 //
 // Field-edge contrast (--input 3:1) is a number, so it is a unit test: tests/unit/rules.test.ts.
 //
@@ -109,6 +110,10 @@ for (const file of ROOTS.flatMap(walk)) {
   // 5: graph blocks
   if (file.includes("registry/syncrobotic/blocks/") && /<Graph\b/.test(src) && !/<GraphList\b/.test(src))
     fail(file, 1, "a graph block needs a text view: a Graph / List switch with GraphList (see the graph stories)")
+
+  // 6: map blocks. `<RobotMap\b` would also match RobotMapList, so the tag must end there.
+  if (file.includes("registry/syncrobotic/blocks/") && /<RobotMap[\s/>]/.test(src) && !/<RobotMapList\b/.test(src))
+    fail(file, 1, "a map block needs a text view: RobotMapList beside the map, or in a Robots sheet (see map-workspace)")
 }
 
 if (bad) {

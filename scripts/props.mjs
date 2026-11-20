@@ -127,6 +127,86 @@ function variantDefaults(text, sf) {
   return out
 }
 
+/**
+ * The words a `labels` prop holds: each key with its type, its English default and its JSDoc, for the Localisation page.
+ * Defaults are read where the component merges them (`const l = { ...defaultXLabels, k: v, ...labels }`), from a default
+ * written in the destructuring (`labels = { … }`), or from a `const` typed as the labels type.
+ */
+const FLAGS = ts.TypeFormatFlags.NoTruncation | ts.TypeFormatFlags.UseAliasDefinedOutsideCurrentScope
+function objectEntries(obj, sf, out = {}) {
+  for (const p of obj.properties) {
+    if (ts.isSpreadAssignment(p) && ts.isIdentifier(p.expression)) {
+      const init = constObject(p.expression)
+      if (init) objectEntries(init.node, init.sf, out)
+    } else if ((ts.isPropertyAssignment(p) || ts.isMethodDeclaration(p)) && p.name && !(p.name.getText(sf) in out))
+      out[p.name.getText(sf).replace(/"/g, "")] = clean(ts.isPropertyAssignment(p) ? p.initializer.getText(sf) : p.getText(sf))
+  }
+  return out
+}
+/** The object literal a `const` identifier was declared with, wherever it lives. */
+function constObject(id) {
+  let sym = checker.getSymbolAtLocation(id)
+  if (sym && sym.flags & ts.SymbolFlags.Alias) sym = checker.getAliasedSymbol(sym)
+  const d = sym?.declarations?.find((x) => ts.isVariableDeclaration(x) && x.initializer && ts.isObjectLiteralExpression(x.initializer))
+  return d ? { node: d.initializer, sf: d.getSourceFile() } : undefined
+}
+function labelDefaults(fn, sf, propDecl, type) {
+  const out = {}
+  const p = fn.parameters[0]
+  let local = "labels"
+  if (p && ts.isObjectBindingPattern(p.name))
+    for (const el of p.name.elements) {
+      if ((el.propertyName ?? el.name).getText(sf) !== "labels") continue
+      if (ts.isIdentifier(el.name)) local = el.name.text
+      if (el.initializer && ts.isObjectLiteralExpression(el.initializer)) objectEntries(el.initializer, sf, out)
+    }
+  fn.body?.forEachChild(function visit(n) {
+    if (ts.isObjectLiteralExpression(n) && n.properties.some((q) => ts.isSpreadAssignment(q) && q.expression.getText(sf) === local)) objectEntries(n, sf, out)
+    n.forEachChild(visit)
+  })
+  // labels?.decrease ?? "Decrease"
+  for (const m of (fn.body?.getText(sf) ?? "").matchAll(new RegExp(`\\b${local}\\?\\.(\\w+) \\?\\? ("[^"]*")`, "g"))) out[m[1]] ??= m[2]
+  if (Object.keys(out).length || !propDecl?.type) return out
+  // A const typed as the labels type, in the file that declares the type (DataGridPagination passes Pagination's).
+  const names = new Set()
+  propDecl.type.forEachChild(function refs(n) {
+    if (ts.isTypeReferenceNode(n) && ts.isIdentifier(n.typeName)) names.add(n.typeName)
+    n.forEachChild(refs)
+  })
+  if (ts.isTypeReferenceNode(propDecl.type) && ts.isIdentifier(propDecl.type.typeName)) names.add(propDecl.type.typeName)
+  // Written as another component's prop type (`React.ComponentProps<typeof Pagination>["labels"]`): the alias it resolves to.
+  const syms = [...names].map((id) => checker.getSymbolAtLocation(id))
+  for (const t of [type, ...(type.aliasTypeArguments ?? [])]) if (t.aliasSymbol) syms.push(t.aliasSymbol)
+  for (let sym of syms) {
+    if (sym && sym.flags & ts.SymbolFlags.Alias) sym = checker.getAliasedSymbol(sym)
+    const decl = sym?.declarations?.[0]
+    if (!decl || !own(decl)) continue
+    const file = decl.getSourceFile()
+    file.forEachChild(function visit(n) {
+      // Typed as the labels type, or an untyped `defaults` beside it (pagination.tsx).
+      const typed = (v) => (v.type ? new RegExp(`\\b${sym.getName()}\\b`).test(v.type.getText(file)) : /^default/.test(v.name.getText(file)))
+      if (ts.isVariableDeclaration(n) && n.initializer && ts.isObjectLiteralExpression(n.initializer) && typed(n))
+        objectEntries(n.initializer, file, out)
+      n.forEachChild(visit)
+    })
+  }
+  return out
+}
+function labelKeys(t, param, fn, sf, propDecl) {
+  const lt = checker.getNonNullableType(t)
+  const defs = labelDefaults(fn, sf, propDecl, lt)
+  return checker.getPropertiesOfType(lt).map((k) => {
+    const kt = checker.getNonNullableType(checker.getTypeOfSymbolAtLocation(k, param))
+    const name = k.getName()
+    return {
+      name,
+      type: reactNames(clean(checker.typeToString(kt, param, FLAGS))),
+      ...(defs[name] !== undefined ? { default: defs[name] } : {}),
+      description: clean(ts.displayPartsToString(k.getDocumentationComment(checker))),
+    }
+  })
+}
+
 const result = {}
 for (const sf of program.getSourceFiles().filter((s) => files.includes(path.resolve(s.fileName)))) {
   const item = fileToItem.get(path.resolve(sf.fileName))
@@ -182,6 +262,8 @@ for (const sf of program.getSourceFiles().filter((s) => files.includes(path.reso
         ...(defs[name] !== undefined ? { default: defs[name] } : {}),
         ...(optional ? {} : { required: true }),
         description: clean(ts.displayPartsToString(sym.getDocumentationComment(checker))),
+        // The words a labels prop holds, one by one, for the Localisation page.
+        ...(name === "labels" ? { keys: labelKeys(t, param, st, sf, decls.find(own)) } : {}),
       })
     }
     components.push({ name: st.name.text, props, inherits })
