@@ -107,7 +107,9 @@ export function BlockFrame({
           </TabsList>
           {tab === "preview" && (
             <div className="flex items-center gap-3 py-2">
-              <div role="group" aria-label="Device width" className="inline-flex gap-1 rounded-sm bg-muted p-1">
+              {/* On a phone only the phone view can be read (a desktop layout would be shown at a quarter), so the
+                  choice of width is not offered there; Open shows the block on its own page. */}
+              <div role="group" aria-label="Device width" className="hidden gap-1 rounded-sm bg-muted p-1 sm:inline-flex">
                 {(
                   [
                     ["desktop", Monitor],
@@ -137,11 +139,12 @@ export function BlockFrame({
             </div>
           )}
         </div>
-        <TabsContent value="preview" className="specimen p-2 sm:p-4">
+        {/* On a phone the block fills the card: no stage padding and no second frame inside the card's own border. */}
+        <TabsContent value="preview" className="specimen p-0 sm:p-4">
           <div ref={box} className="w-full">
             {/* Changing the device width resizes the frame with the sheet duration; the iframe re-lays out at the new width. */}
             <m.div
-              className="mx-auto overflow-hidden rounded-sm ring-1 ring-border"
+              className="mx-auto overflow-hidden sm:rounded-sm sm:ring-1 sm:ring-border"
               initial={false}
               animate={{ width: width * scale, height: frameH * scale }}
               transition={t.sheet}
@@ -159,7 +162,7 @@ export function BlockFrame({
               />
             </m.div>
           </div>
-          <p className="pt-2 text-center font-mono text-xs text-muted-foreground">
+          <p className="hidden pt-2 text-center font-mono text-xs text-muted-foreground sm:block">
             {width}px{scale < 1 ? ` · shown at ${Math.round(scale * 100)}%` : ""}
           </p>
         </TabsContent>
