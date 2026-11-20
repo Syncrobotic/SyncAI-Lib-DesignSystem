@@ -1,10 +1,9 @@
-// @syncrobotic/stats-filtered v0.17.2 · update: npx shadcn add @syncrobotic/stats-filtered --overwrite
+// @syncrobotic/stats-filtered v0.19.0 · update: npx shadcn add @syncrobotic/stats-filtered --overwrite
 "use client"
 
 import * as React from "react"
-import { ArrowDownRight, ArrowUpRight } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { Card } from "@/registry/syncrobotic/ui/card"
+import { MetricCard, MetricGrid } from "@/registry/syncrobotic/ui/metric-card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 
@@ -59,33 +58,27 @@ export function StatsFiltered({ className }: { className?: string }) {
           </SegmentedControl>
         </div>
       </div>
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <MetricGrid>
         {kpis.map((k) => {
           const { now, before } = k.values[range]
           const change = before === 0 ? 0 : ((now - before) / before) * 100
           const up = change >= 0
-          const worse = Math.abs(change) >= 0.5 && (k.good === "up" ? !up : up)
-          const Arrow = up ? ArrowUpRight : ArrowDownRight
+          // Under half a percent is no change: no colour, no arrow.
+          const moved = Math.abs(change) >= 0.5
+          const worse = moved && (k.good === "up" ? !up : up)
           return (
-            <Card key={k.label} className="gap-2">
-              <span className="text-sm text-muted-foreground">{k.label}</span>
-              <span className="flex items-baseline gap-1">
-                <span className="text-3xl font-bold tabular-nums">{now.toLocaleString("en")}</span>
-                {k.unit && <span className="text-sm text-muted-foreground">{k.unit}</span>}
-              </span>
-              <span className={cn("flex items-center gap-2 text-xs", worse ? "font-medium text-danger" : "text-muted-foreground")}>
-                <Arrow aria-hidden="true" className="size-4" />
-                <span className="tabular-nums">
-                  {up ? "+" : "−"}
-                  {Math.abs(change).toFixed(0)} %
-                </span>
-                <span className={worse ? "text-muted-foreground font-normal" : ""}>vs {rangeLabel[range]}</span>
-                {worse && <span className="sr-only">, worse</span>}
-              </span>
-            </Card>
+            <MetricCard
+              key={k.label}
+              label={k.label}
+              value={now.toLocaleString("en")}
+              unit={k.unit}
+              delta={moved ? `${up ? "+" : "−"}${Math.abs(change).toFixed(0)} %` : "0 %"}
+              trend={!moved ? "flat" : worse ? "bad" : "good"}
+              caption={`vs ${rangeLabel[range]}`}
+            />
           )
         })}
-      </div>
+      </MetricGrid>
     </section>
   )
 }

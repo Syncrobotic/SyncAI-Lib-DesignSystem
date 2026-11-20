@@ -1145,7 +1145,7 @@
     {
      "name": "copyLabel",
      "type": "string",
-     "description": "The copy button's name. Defaults to \"Copy <title>\" or \"Copy code\"; pass your own in other languages."
+     "description": "The copy button's name, as is. Without it the name comes from `labels.copy(title)` (\"Copy <title>\", \"Copy code\")."
     },
     {
      "name": "labels",
@@ -2809,7 +2809,7 @@
     {
      "name": "delta",
      "type": "string",
-     "description": "Change against the previous period: \"+8%\", \"−2\". A leading minus (- or −) turns the arrow down."
+     "description": "Change against the previous period: \"+8%\", \"−2\". A leading minus (- or −) turns the arrow down; no change (\"0\", \"±0 %\") has no arrow."
     },
     {
      "name": "trend",

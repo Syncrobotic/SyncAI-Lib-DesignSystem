@@ -88,8 +88,8 @@
     "hash": "7124ad1cba9f2388"
   },
   "code-block": {
-    "version": "0.18.0",
-    "hash": "40dbae18a145364b"
+    "version": "0.19.0",
+    "hash": "12cd8fac14dc5796"
   },
   "input": {
     "version": "0.17.3",
@@ -172,8 +172,8 @@
     "hash": "5a676078d68d441f"
   },
   "metric-card": {
-    "version": "0.18.0",
-    "hash": "5d631bab34a8a3a4"
+    "version": "0.19.0",
+    "hash": "ebafe89491710add"
   },
   "alert": {
     "version": "0.17.3",
@@ -528,8 +528,8 @@
     "hash": "6825dd6970310c16"
   },
   "sparkline-metric-tiles": {
-    "version": "0.9.0",
-    "hash": "0ecbab4b1697923e"
+    "version": "0.19.0",
+    "hash": "d7fba13722cea353"
   },
   "sparkline-table": {
     "version": "0.17.2",
@@ -576,8 +576,8 @@
     "hash": "40b28da97c7647d7"
   },
   "stats-filtered": {
-    "version": "0.17.2",
-    "hash": "48999c89933074de"
+    "version": "0.19.0",
+    "hash": "550c767d3eb914e3"
   },
   "card-site": {
     "version": "0.17.3",

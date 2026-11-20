@@ -919,9 +919,14 @@
         }
       ],
       "meta": {
-        "version": "0.18.0",
+        "version": "0.19.0",
         "status": "beta",
         "changelog": [
+          {
+            "version": "0.19.0",
+            "date": "2026-11-20",
+            "note": "labels.copy(title) names the copy button, so it can be translated; copyLabel still sets it as is."
+          },
           {
             "version": "0.18.0",
             "date": "2026-11-19",
@@ -1788,8 +1793,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.18.0",
+        "version": "0.19.0",
         "changelog": [
+          {
+            "version": "0.19.0",
+            "date": "2026-11-20",
+            "note": "No change (\"0\", \"±0\", \"0.0 %\") has no arrow: a change of nothing has no direction."
+          },
           {
             "version": "0.18.0",
             "date": "2026-11-19",
@@ -5738,8 +5748,7 @@
       "title": "Metric tiles",
       "description": "Three headline numbers, each with its week as a sparkline; only a change for the worse is coloured.",
       "registryDependencies": [
-        "@syncrobotic/cn",
-        "@syncrobotic/card"
+        "@syncrobotic/metric-card"
       ],
       "files": [
         {
@@ -5748,8 +5757,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.19.0",
         "changelog": [
+          {
+            "version": "0.19.0",
+            "date": "2026-11-20",
+            "note": "Built on MetricCard: label size and change position follow it, the range is the caption, and the sparkline shows from 640 px."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -6199,12 +6213,9 @@
       "type": "registry:block",
       "title": "KPIs with a range",
       "description": "A KPI row that follows a site and a time range chosen above it, each change compared with the period before.",
-      "dependencies": [
-        "lucide-react"
-      ],
       "registryDependencies": [
         "@syncrobotic/cn",
-        "@syncrobotic/card",
+        "@syncrobotic/metric-card",
         "@syncrobotic/select",
         "@syncrobotic/segmented-control"
       ],
@@ -6215,8 +6226,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.19.0",
         "changelog": [
+          {
+            "version": "0.19.0",
+            "date": "2026-11-20",
+            "note": "Built on MetricCard: the value is 24 px (the card-figure size, was 28 px) and the change sits beside the label; under half a percent is shown as no change. Two across on a phone."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",

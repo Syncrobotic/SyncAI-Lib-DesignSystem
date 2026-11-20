@@ -1,4 +1,4 @@
-// @syncrobotic/metric-card v0.18.0 · update: npx shadcn add @syncrobotic/metric-card --overwrite
+// @syncrobotic/metric-card v0.19.0 · update: npx shadcn add @syncrobotic/metric-card --overwrite
 import * as React from "react"
 import { ArrowDownRight, ArrowUpRight, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -66,7 +66,7 @@ export function MetricCard({
   value?: React.ReactNode
   /** Written small after the value: "/ 14", "h", "%". */
   unit?: string
-  /** Change against the previous period: "+8%", "−2". A leading minus (- or −) turns the arrow down. */
+  /** Change against the previous period: "+8%", "−2". A leading minus (- or −) turns the arrow down; no change ("0", "±0 %") has no arrow. */
   delta?: string
   /** Whether the change is good. Direction alone does not decide: a rise in events is bad. Only "bad" is coloured. */
   trend?: "good" | "bad" | "flat"
@@ -88,7 +88,9 @@ export function MetricCard({
 } & Omit<React.ComponentProps<"div">, "children">) {
   const l = { ...defaultLabels, ...labels }
   const missing = !loading && unavailable !== undefined
-  const Arrow = delta?.startsWith("-") || delta?.startsWith("−") ? ArrowDownRight : ArrowUpRight
+  // No change has no direction: "0", "+0", "±0", "0.0 %" get no arrow.
+  const unchanged = delta !== undefined && /^[+\-−±]?\s*0+(?:[.,]0+)?\s*%?$/.test(delta.trim())
+  const Arrow = unchanged ? null : delta?.startsWith("-") || delta?.startsWith("−") ? ArrowDownRight : ArrowUpRight
   return (
     <Card
       data-slot="metric-card"
@@ -141,7 +143,7 @@ export function MetricCard({
           delta &&
           !missing && (
             <span className={cn("inline-flex items-center gap-2 text-sm font-medium tabular-nums", trendText[trend])}>
-              <Arrow aria-hidden="true" className="size-4" />
+              {Arrow && <Arrow aria-hidden="true" className="size-4" />}
               {delta}
               {trend !== "flat" && <span className="sr-only">{trend === "good" ? l.better : l.worse}</span>}
             </span>

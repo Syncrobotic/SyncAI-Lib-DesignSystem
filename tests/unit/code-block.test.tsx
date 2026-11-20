@@ -78,6 +78,14 @@ describe("CodeBlock", () => {
     expect(screen.getByRole("button", { name: "Copy code" })).toBeTruthy()
   })
 
+  it("names the copy button from labels.copy, so it can be translated", () => {
+    render(<CodeBlock code="x" title="取用指令" labels={{ copy: (t) => `複製${t}` }} />)
+    expect(screen.getByRole("button", { name: "複製取用指令" })).toBeTruthy()
+    cleanup()
+    render(<CodeBlock code="x" />)
+    expect(screen.getByRole("button", { name: "Copy code" })).toBeTruthy()
+  })
+
   it("a command that fits is not a tab stop", () => {
     render(<CodeBlock code="npx shadcn add @syncrobotic/code-block" title="Install" wrap="words" />)
     expect(screen.getByRole("group", { name: "Install" }).hasAttribute("tabindex")).toBe(false)
