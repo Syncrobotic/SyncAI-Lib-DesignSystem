@@ -183,10 +183,12 @@ export function AuthTwoFactor({
                     }}
                     aria-invalid={error ? true : undefined}
                     aria-describedby={error ? errorId : undefined}
+                    // The six boxes share the column's width, so their edges line up with the button below.
+                    containerClassName="w-full"
                   >
-                    <InputOTPGroup>
+                    <InputOTPGroup className="w-full gap-2">
                       {[0, 1, 2, 3, 4, 5].map((i) => (
-                        <InputOTPSlot key={i} index={i} aria-invalid={error ? true : undefined} />
+                        <InputOTPSlot key={i} index={i} aria-invalid={error ? true : undefined} className="w-auto flex-1" />
                       ))}
                     </InputOTPGroup>
                   </InputOTP>
