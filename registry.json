@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.1",
+        "version": "0.22.2",
         "changelog": [
+          {
+            "version": "0.22.2",
+            "date": "2026-11-20",
+            "note": "New `no-data` utility: a hatch and inset outline in the field-edge colour (3:1), for a chart cell or bar with no value, so missing data never passes for zero."
+          },
           {
             "version": "0.22.1",
             "date": "2026-11-20",
@@ -2003,8 +2008,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.1",
+        "version": "0.22.2",
         "changelog": [
+          {
+            "version": "0.22.2",
+            "date": "2026-11-20",
+            "note": "\"Acknowledge all\" appears only when `onAcknowledgeAll` is passed (no longer from `onAcknowledge` alone), and never takes a critical alarm: each is acknowledged on its own row, and while one is unacknowledged the button reads \"Acknowledge 3 non-critical\" (label `acknowledgeNonCritical`)."
+          },
           {
             "version": "0.22.1",
             "date": "2026-11-20",
@@ -4667,8 +4677,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.22.2",
         "changelog": [
+          {
+            "version": "0.22.2",
+            "date": "2026-11-20",
+            "note": "The command palette's \"Acknowledge all alarms\" is now \"Review alarms\": it only goes to the alarms, and bulk acknowledgement never takes critical ones."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -6434,8 +6449,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.0",
+        "version": "0.22.2",
         "changelog": [
+          {
+            "version": "0.22.2",
+            "date": "2026-11-20",
+            "note": "A slot with no data (null) takes the `no-data` hatch, \"no data\" in the tooltip, a dash in the table and its own legend entry; zero stays the bare track. The sample has one gap (Sunday 02:00–06:00)."
+          },
           {
             "version": "0.22.0",
             "date": "2026-11-20",
@@ -6480,8 +6500,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.0",
+        "version": "0.22.2",
         "changelog": [
+          {
+            "version": "0.22.2",
+            "date": "2026-11-20",
+            "note": "A cell with no data (null) takes the `no-data` hatch in place of a number, read as \"No data\"; a legend entry is added. The sample has one gap (Parking, 06:00)."
+          },
           {
             "version": "0.22.0",
             "date": "2026-11-20",
