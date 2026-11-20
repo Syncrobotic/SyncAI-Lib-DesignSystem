@@ -140,8 +140,8 @@
     "hash": "14064e03debbbc84"
   },
   "slider": {
-    "version": "0.17.3",
-    "hash": "95461cafca28efe5"
+    "version": "0.21.0",
+    "hash": "37208030ee8e78b2"
   },
   "badge": {
     "version": "0.16.1",
@@ -306,6 +306,10 @@
   "annotated-image": {
     "version": "0.18.0",
     "hash": "b033c11941fbc3f8"
+  },
+  "media-player": {
+    "version": "0.21.0",
+    "hash": "6b96693892342739"
   },
   "filter-form": {
     "version": "0.10.0",
@@ -570,6 +574,10 @@
   "heatmap-zones": {
     "version": "0.17.3",
     "hash": "d65f8161c109654f"
+  },
+  "histogram-battery": {
+    "version": "0.21.0",
+    "hash": "29b1fe08835ca2b6"
   },
   "app-shell-mobile-tabs": {
     "version": "0.17.3",

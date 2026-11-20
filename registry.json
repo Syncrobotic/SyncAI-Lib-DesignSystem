@@ -1545,8 +1545,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.21.0",
         "changelog": [
+          {
+            "version": "0.21.0",
+            "date": "2026-11-20",
+            "note": "valueText: the value as screen readers say it (aria-valuetext) on a controlled slider, e.g. \"0:42 of 1:00\" on a media player's timeline instead of a bare 42."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -3211,6 +3216,38 @@
             "version": "0.18.0",
             "date": "2026-11-19",
             "note": "First release: AnnotatedImage (src or image, width, height, annotations of box, point, polygon and keypoints) with an SVG in the picture's pixel space and non-scaling strokes; predicted solid, ground truth dashed, previous dotted and faded, each on a halo; selected 3 px with handles; class words (all, selected or none); a role=img summary, or with onSelectedChange one Tab stop, arrows, Enter and Esc; overlays; loading and failed states; and AnnotationLegend for the kinds present."
+          }
+        ]
+      }
+    },
+    {
+      "name": "media-player",
+      "type": "registry:ui",
+      "title": "Media player",
+      "description": "A recorded clip (a robot's camera recording, an incident clip) with the kit's controls over a native video: play, a timeline with event markers, time, mute, speed, captions and full screen on a scrim; keys while focused; loading, buffering and unavailable states.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/slider",
+        "@syncrobotic/spinner"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/media-player.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.21.0",
+        "changelog": [
+          {
+            "version": "0.21.0",
+            "date": "2026-11-20",
+            "note": "First release: MediaPlayer (label, src, poster, duration, startAt, markers, tracks, loading, unavailable, onRetry, autoPlay, preload, labels) over a native <video>: play / pause, a timeline (the kit's Slider, read as \"0:42 of 1:00\") with marker ticks and a list of markers under the player, time in tabular numbers, mute, speed 0.5–2×, captions drawn above the controls, full screen. Space / K, ← / →, J / L, M and F while focus is in the player. Controls on a scrim in the dark theme, hidden while playing once the pointer rests, kept while a finger is on them; no autoplay under reduced motion; loading, buffering and \"Clip unavailable: …\" with a retry."
           }
         ]
       }
@@ -6259,6 +6296,37 @@
             "version": "0.9.0",
             "date": "2026-11-17",
             "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "histogram-battery",
+      "type": "registry:block",
+      "title": "Battery at docking",
+      "description": "How one value is spread: battery level at docking in equal 5 % bins, the median as a labelled dashed line, bins under 15 % in warning, counts on hover and a table view. Exports binEqualWidth and median.",
+      "dependencies": [
+        "recharts@^3",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/card",
+        "@syncrobotic/chart",
+        "@syncrobotic/segmented-control"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/histogram-battery.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.21.0",
+        "changelog": [
+          {
+            "version": "0.21.0",
+            "date": "2026-11-20",
+            "note": "First release: battery at docking in 5 % bins (binEqualWidth: each bin from ≤ v < to, the last also holds the maximum), the median and the 15 % line labelled, bins under 15 % in warning with the count in words, counts on hover, and a Chart / Table switch."
           }
         ]
       }

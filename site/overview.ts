@@ -71,6 +71,25 @@ export const overviews: Record<string, Overview> = {
       "Placeholders and tests draw the picture in code (an SVG data URI); never an external URL.",
     ],
   },
+  "media-player": {
+    what: "A recorded clip with the kit's own controls over a native video: play, a timeline with event markers, time, mute, speed, captions and full screen.",
+    use: [
+      "A robot's camera recording of a patrol or a mission.",
+      "The clip attached to an incident, opened at the moment it fired.",
+      "Reviewing what a robot saw before a stop, with its events marked on the timeline.",
+    ],
+    instead: [
+      "A live camera feed: a different component, not built yet (no timeline or speed; latency and connection state instead).",
+      "One still frame with what a model saw in it: `annotated-image`.",
+      "Many clips or pictures to pick from: `image-grid`, then the player for the one opened.",
+    ],
+    notes: [
+      "It is a wrapper over `<video>` with no player library: what plays depends on the browser. WebM (VP9) and MP4 (H.264) cover current browsers; Chromium builds without proprietary codecs, such as Playwright's, play only WebM.",
+      "Keys are captured only while focus is inside the player, so they never fight the page. The frame itself is a Tab stop; its focus ring is the page's, the controls' rings are the dark theme's.",
+      "Captions come from `tracks` (WebVTT) and are drawn by the player above the controls, one track at a time (the `default` one, else the first). The browser's own caption rendering is turned off, because it would sit under the scrim.",
+      "Every string is in `labels`, including the error reasons by MediaError code; `unavailable` is the reason when you know before loading that it cannot play.",
+    ],
+  },
   "restricted-preview": {
     what: "A preview that does not load until someone asks: restricted data, faces, number plates.",
     use: ["Thumbnails of a restricted dataset in a catalog or gallery."],

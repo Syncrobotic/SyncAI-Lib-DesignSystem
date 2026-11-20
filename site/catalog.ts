@@ -53,6 +53,7 @@ export type StoryFile =
   | "data-pieces"
   | "image-grid"
   | "annotated-image"
+  | "media-player"
   | "tree"
   | "hooks"
   | "metric-card"
@@ -680,6 +681,19 @@ const entries: Record<string, Entry> = {
       "Selectable only when something happens on select (a details panel, a review); otherwise the picture is one image with a summary.",
     ],
   },
+  "media-player": {
+    wide: true,
+    group: "Display",
+    examples: { file: "media-player", prefix: "MediaPlayer" },
+    rules: [
+      "For a recorded clip with an end. A live camera feed is a different component (not built yet): no timeline, no speed, a latency and a connection state instead.",
+      "Give `label` the clip's who, where and when (\"Patrol dog 7F3A, front camera, 14:02\"); it names the player for screen readers.",
+      "Pass `duration` from the clip's record, so the time and the markers show before the file loads; `preload=\"none\"` in a long list of clips.",
+      "Markers are events in the clip (Obstacle, Stop pressed), a word each, at most a handful. They are listed under the player too, for the keyboard and screen readers.",
+      "Never autoplay with sound. `autoPlay` starts muted and does nothing for someone who asked for reduced motion.",
+      "When the clip cannot play, say why after \"Clip unavailable:\" (not uploaded yet, expired, the robot was offline) and offer a retry only when retrying can help.",
+    ],
+  },
   alert: {
     group: "Feedback",
     examples: { file: "display", prefix: "Alert" },
@@ -1022,6 +1036,14 @@ const keyboard: Record<string, [string, string][]> = {
     ["Enter / Space", "Open the picture in the lightbox, or pick it while picking"],
     ["← / →", "In the lightbox: previous or next picture"],
     ["Esc", "Close the lightbox and return focus to the picture's tile"],
+  ],
+  "media-player": [
+    ["Space / K", "Play or pause (Space on a focused button presses that button)"],
+    ["← / →", "Back or forward 5 seconds, also on the timeline"],
+    ["J / L", "Back or forward 10 seconds"],
+    ["Home / End", "On the timeline: start or end of the clip"],
+    ["M", "Mute or unmute"],
+    ["F", "Full screen, or leave it (Esc leaves it too)"],
   ],
   "annotated-image": [
     ["Tab", "Reach the picture's annotations once; Tab again leaves"],

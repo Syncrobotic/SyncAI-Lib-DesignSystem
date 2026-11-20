@@ -5,6 +5,8 @@ import path from "node:path"
 const config: StorybookConfig = {
   stories: ["../stories/**/*.stories.@(ts|tsx)"],
   addons: ["@storybook/addon-essentials", "@storybook/addon-a11y"],
+  // The media player's sample clip, poster and captions (generated; see stories/media-player.stories.tsx).
+  staticDirs: [{ from: "../public/media", to: "/media" }],
   framework: { name: "@storybook/react-vite", options: {} },
   viteFinal: async (cfg) => {
     cfg.plugins = [...(cfg.plugins ?? []), tailwindcss()]
