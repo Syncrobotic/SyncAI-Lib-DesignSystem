@@ -38,6 +38,7 @@ export type StoryFile =
   | "item"
   | "icon-tile"
   | "kbd"
+  | "code-block"
   | "button-group"
   | "scroll-area"
   | "toggle-group"
@@ -50,7 +51,10 @@ export type StoryFile =
   | "route-progress"
   | "data-pieces"
   | "image-grid"
+  | "annotated-image"
+  | "tree"
   | "hooks"
+  | "metric-card"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
@@ -268,6 +272,16 @@ const entries: Record<string, Entry> = {
       "One key per Kbd; a chord is a KbdGroup without plus signs.",
       "Use the platform's symbols: ⌘ on Mac, Ctrl elsewhere.",
       "pressed shows the key going down (it sinks and its edge darkens) while its shortcut runs; useHotkeys returns which key that is.",
+    ],
+  },
+  "code-block": {
+    group: "Display",
+    examples: { file: "code-block", prefix: "CodeBlock" },
+    rules: [
+      "Copy copies `code` exactly, whatever the block shows: highlighted children, wrapped lines or a hidden secret.",
+      "wrap=\"words\" for shell commands, so a phone never cuts a package name in two; wrap=\"none\" for source, which scrolls sideways with a fade on the side that hides text.",
+      "A one-time secret (an API key) is `secret`: dots until Show is pressed. Never put the value in the title or a label; say beside it that it is shown once.",
+      "No highlighter inside: pass shiki's output (or any `<pre>`) as children. Line numbers only for source people discuss by line.",
     ],
   },
   "button-group": {
@@ -533,6 +547,21 @@ const entries: Record<string, Entry> = {
       "`inline` in table cells; the label is still read by screen readers.",
     ],
   },
+  "metric-card": {
+    group: "Display",
+    /** A row of cards needs the row: examples use the card's full width. */
+    wide: true,
+    examples: { file: "metric-card", prefix: "MetricCard" },
+    rules: [
+      "Only a change for the worse is coloured (`trend=\"bad\"`, danger text). Good news stays foreground and no change stays grey, so the bad number is the one people see. The trend says whether the change is good, not which way it went.",
+      "The sparkline is neutral and silent; the delta and the caption say in words what it shows. It shows from 640 px; on a phone the change sits under the label so the values line up.",
+      "A value that cannot be read is `unavailable` with the reason; never a 0 or an empty card.",
+      "`loading` keeps the label and the card's height; only the value, change and caption are bones.",
+      "`href` makes the whole card one link (pass `linkAs` for your router); give it only when a page sits behind the number.",
+      "Put the cards in a MetricGrid: two across from the smallest phone, four from 1280 px. One row under the page header, what needs someone (alarms) above it.",
+      "A level in a known range (battery, storage, signal) is a Meter, not a metric card.",
+    ],
+  },
   "description-list": {
     group: "Display",
     examples: { file: "display", prefix: "DescriptionList" },
@@ -623,6 +652,18 @@ const entries: Record<string, Entry> = {
       "Use the strip for a short row, such as what was just uploaded; for a whole dataset, the grid.",
     ],
   },
+  "annotated-image": {
+    wide: true,
+    group: "Display",
+    examples: { file: "annotated-image", prefix: "AnnotatedImage" },
+    rules: [
+      "Coordinates are the picture's own pixels; give its natural `width` and `height`. The box keeps that aspect ratio, so the marks line up at any size.",
+      "Line style says where a mark came from (predicted solid, ground truth dashed, previous dotted); the class is the word on it. Never a colour per class, never status colours.",
+      "Keep the legend (or an AnnotationLegend nearby) whenever more than one kind is on screen.",
+      "Crowded picture, or a picture shown phone-wide: `showLabels=\"selected\"`. The words are still read out in the summary or on each annotation's button.",
+      "Selectable only when something happens on select (a details panel, a review); otherwise the picture is one image with a summary.",
+    ],
+  },
   alert: {
     group: "Feedback",
     examples: { file: "display", prefix: "Alert" },
@@ -678,6 +719,17 @@ const entries: Record<string, Entry> = {
     rules: [
       "Long content most people skip: FAQs, advanced settings. Content everyone needs stays open.",
       "One open at a time only when the sections are alternatives.",
+    ],
+  },
+  tree: {
+    group: "Navigation",
+    examples: { file: "tree", prefix: "Tree" },
+    rules: [
+      "list (default) for a hierarchy people read and follow links in: lineage, an outline. select only when choosing a node is the job (a file explorer, a site picker): it is one Tab stop with arrow keys, and its nodes are not links.",
+      "A node used twice (a source under two label sets) is named again with a marker in meta, \"(listed above)\", not drawn twice in full.",
+      "meta is a count, a size or a calm state word, in muted text; never a coloured status. A disabled node says why in its meta.",
+      "Open what people came for (defaultExpanded or expandAll for short trees); a deep tree starts collapsed.",
+      "Give textValue when label is not a string, so type-ahead and screen readers have its name.",
     ],
   },
   // Overlays: the docs show the closed trigger; the *Open stories are for visual tests.
@@ -940,10 +992,27 @@ const keyboard: Record<string, [string, string][]> = {
     ["↑ / ↓", "Move between section headers"],
     ["Home / End", "First or last header"],
   ],
+  tree: [
+    ["Tab", "list: move between links and disclosure buttons. select: move into the tree (one stop) and out"],
+    ["Enter / Space", "list: open or close a branch, follow a link. select: select the focused node"],
+    ["↑ / ↓", "select: previous or next node on screen"],
+    ["→", "select: open a closed branch; on an open one, move to its first child"],
+    ["←", "select: close an open branch; otherwise move to the parent"],
+    ["Home / End", "select: first or last node on screen"],
+    ["Type letters", "select: move to the next node whose name starts with them"],
+    ["*", "select: open every branch beside the focused node"],
+  ],
   "image-grid": [
     ["Enter / Space", "Open the picture in the lightbox, or pick it while picking"],
     ["← / →", "In the lightbox: previous or next picture"],
     ["Esc", "Close the lightbox and return focus to the picture's tile"],
+  ],
+  "annotated-image": [
+    ["Tab", "Reach the picture's annotations once; Tab again leaves"],
+    ["← → / ↑ ↓", "Previous or next annotation, top to bottom and left to right"],
+    ["Home / End", "First or last annotation"],
+    ["Enter / Space", "Select the annotation"],
+    ["Esc", "Clear the selection"],
   ],
   dialog: overlayKeys,
   "alert-dialog": [
@@ -975,6 +1044,11 @@ const keyboard: Record<string, [string, string][]> = {
     ["↑ ↓", "Move between radio options"],
   ],
   "copy-button": [["Enter / Space", "Copy"]],
+  "code-block": [
+    ["Tab", "Move to Show (a secret), Copy, then the code when it scrolls"],
+    ["← / →", "Scroll the focused code sideways"],
+    ["Enter / Space", "On Show, show or hide the secret; on Copy, copy the code"],
+  ],
   filters: [
     ["Enter", "On + Filter, open the picker; on a part of a chip, reopen that step"],
     ["↑ / ↓", "Move through fields, operators or values; type to narrow them"],

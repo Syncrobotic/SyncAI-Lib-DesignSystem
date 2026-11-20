@@ -87,6 +87,10 @@
     "version": "0.10.0",
     "hash": "7124ad1cba9f2388"
   },
+  "code-block": {
+    "version": "0.18.0",
+    "hash": "40dbae18a145364b"
+  },
   "input": {
     "version": "0.17.3",
     "hash": "6e4683848db70d23"
@@ -167,6 +171,10 @@
     "version": "0.17.3",
     "hash": "5a676078d68d441f"
   },
+  "metric-card": {
+    "version": "0.18.0",
+    "hash": "5d631bab34a8a3a4"
+  },
   "alert": {
     "version": "0.17.3",
     "hash": "5599e73c521ec230"
@@ -206,6 +214,10 @@
   "accordion": {
     "version": "0.10.0",
     "hash": "a542674c1883114e"
+  },
+  "tree": {
+    "version": "0.18.0",
+    "hash": "5089f9a3c327ad33"
   },
   "dialog": {
     "version": "0.7.0",
@@ -286,6 +298,10 @@
   "image-grid": {
     "version": "0.17.3",
     "hash": "092404505fa28c94"
+  },
+  "annotated-image": {
+    "version": "0.18.0",
+    "hash": "b033c11941fbc3f8"
   },
   "filter-form": {
     "version": "0.10.0",
@@ -384,8 +400,8 @@
     "hash": "f3651ea23f66551a"
   },
   "stats-cards": {
-    "version": "0.17.1",
-    "hash": "846e0c4ce312a3b5"
+    "version": "0.18.0",
+    "hash": "795e0011de0943f7"
   },
   "fleet-table": {
     "version": "0.17.3",
