@@ -40,22 +40,26 @@ export function BlockSection({ block: b, heading: H = "h3" }: { block: (typeof b
       </div>
       <CodeBlock code={`npx shadcn add @syncrobotic/${b.name}`} lang="bash" title="Install" />
       {uses.length > 0 && (
-        <div data-wrap="free" className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-          Built from
-          {/* A dependency is a component (its page) or another block (its place on its page). */}
-          {uses.map((u) => {
-            const href = usesHref(u)
-            const chip = "inline-flex min-h-(--h-sm) items-center rounded-xs bg-muted px-2 font-mono text-xs"
-            return href ? (
-              <Link key={u} href={href} className={`${chip} hover:bg-accent`}>
-                {u}
-              </Link>
-            ) : (
-              <span key={u} className={chip}>
-                {u}
-              </span>
-            )
-          })}
+        // On a phone the label takes its own line and the chips wrap under it, so no chip lands under the label as if it
+        // were one; from 640 px the label leads the row.
+        <div className="flex flex-col gap-2 text-sm text-muted-foreground sm:flex-row sm:items-start">
+          <span className="shrink-0 sm:flex sm:min-h-(--h-sm) sm:items-center">Built from</span>
+          <div data-wrap="free" className="flex flex-wrap gap-2">
+            {/* A dependency is a component (its page) or another block (its place on its page). */}
+            {uses.map((u) => {
+              const href = usesHref(u)
+              const chip = "inline-flex min-h-(--h-sm) items-center rounded-xs bg-muted px-2 font-mono text-xs"
+              return href ? (
+                <Link key={u} href={href} className={`${chip} hover:bg-accent`}>
+                  {u}
+                </Link>
+              ) : (
+                <span key={u} className={chip}>
+                  {u}
+                </span>
+              )
+            })}
+          </div>
         </div>
       )}
       <BlockFrame
