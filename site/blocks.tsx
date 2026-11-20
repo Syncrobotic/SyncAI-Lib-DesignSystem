@@ -49,8 +49,11 @@ import { CardSite } from "@/registry/syncrobotic/blocks/card-site"
 import { CardMission } from "@/registry/syncrobotic/blocks/card-mission"
 import { AuthPasskey } from "@/registry/syncrobotic/blocks/auth-passkey"
 import { AuthInvite } from "@/registry/syncrobotic/blocks/auth-invite"
+import { AuthTwoFactor } from "@/registry/syncrobotic/blocks/auth-2fa"
 import { SettingsNotifications } from "@/registry/syncrobotic/blocks/settings-notifications"
 import { SettingsApiKeys } from "@/registry/syncrobotic/blocks/settings-api-keys"
+import { SettingsWebhooks } from "@/registry/syncrobotic/blocks/settings-webhooks"
+import { SettingsSessions } from "@/registry/syncrobotic/blocks/settings-sessions"
 import { DialogConfirmDestructive } from "@/registry/syncrobotic/blocks/dialog-confirm-destructive"
 import { DialogForm } from "@/registry/syncrobotic/blocks/dialog-form"
 import { DialogShare } from "@/registry/syncrobotic/blocks/dialog-share"
@@ -439,6 +442,7 @@ const meta: Record<string, Meta> = {
   },
   "auth-passkey": { viewport: "desktop", height: 640, render: () => <AuthPasskey /> },
   "auth-invite": { viewport: "desktop", height: 760, render: () => <AuthInvite /> },
+  "auth-2fa": { viewport: "desktop", height: 720, render: () => <AuthTwoFactor /> },
   "settings-notifications": {
     viewport: "desktop",
     thumbWidth: 960,
@@ -456,6 +460,26 @@ const meta: Record<string, Meta> = {
     render: () => (
       <div className="mx-auto max-w-3xl p-6">
         <SettingsApiKeys />
+      </div>
+    ),
+  },
+  "settings-webhooks": {
+    viewport: "desktop",
+    thumbWidth: 960,
+    height: 960,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <SettingsWebhooks />
+      </div>
+    ),
+  },
+  "settings-sessions": {
+    viewport: "desktop",
+    thumbWidth: 960,
+    height: 720,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <SettingsSessions />
       </div>
     ),
   },

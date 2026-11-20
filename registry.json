@@ -6448,6 +6448,41 @@
       }
     },
     {
+      "name": "auth-2fa",
+      "type": "registry:block",
+      "title": "Two-factor sign-in",
+      "description": "The step after the password: a 6-digit code or a recovery code, remember this browser for 30 days, errors and a pause in words, a passkey as the quicker way.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/button",
+        "@syncrobotic/checkbox",
+        "@syncrobotic/choice-field",
+        "@syncrobotic/field",
+        "@syncrobotic/input",
+        "@syncrobotic/input-otp",
+        "@syncrobotic/label",
+        "@syncrobotic/separator"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/auth-2fa.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.21.0",
+        "changelog": [
+          {
+            "version": "0.21.0",
+            "date": "2026-11-20",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
       "name": "settings-notifications",
       "type": "registry:block",
       "title": "Notification matrix",
@@ -6526,6 +6561,78 @@
           {
             "version": "0.9.0",
             "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "settings-webhooks",
+      "type": "registry:block",
+      "title": "Webhooks",
+      "description": "Endpoints with their events and state, adding one with its signing secret shown once, test events, recent deliveries, rotating and deleting.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/skeleton",
+        "@syncrobotic/alert-dialog",
+        "@syncrobotic/button",
+        "@syncrobotic/card",
+        "@syncrobotic/checkbox",
+        "@syncrobotic/choice-field",
+        "@syncrobotic/code-block",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/field",
+        "@syncrobotic/input",
+        "@syncrobotic/sheet"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/settings-webhooks.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.21.0",
+        "changelog": [
+          {
+            "version": "0.21.0",
+            "date": "2026-11-20",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "settings-sessions",
+      "type": "registry:block",
+      "title": "Signed-in browsers",
+      "description": "Where you are signed in, as browsers: sign one out, or all the others after a confirmation; browsers that skip the 2FA code for 30 days.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/skeleton",
+        "@syncrobotic/alert-dialog",
+        "@syncrobotic/badge",
+        "@syncrobotic/button",
+        "@syncrobotic/card",
+        "@syncrobotic/empty-state"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/settings-sessions.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.21.0",
+        "changelog": [
+          {
+            "version": "0.21.0",
+            "date": "2026-11-20",
             "note": "New."
           }
         ]
