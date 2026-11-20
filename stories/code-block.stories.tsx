@@ -68,17 +68,3 @@ export const CodeBlockCurl: S = {
     </div>
   ),
 }
-
-export const CodeBlockTraditionalChinese: S = {
-  render: () => (
-    <div lang="zh-Hant" className="w-md max-w-full space-y-3">
-      <p className="text-sm text-muted-foreground">在專案目錄執行這行指令，把 2026 年 11 月的棧板掃描資料匯入到 data/pallets。</p>
-      <CodeBlock
-        code="dvc import https://git.syncrobotic.me/datacore/warehouse-scans data/pallets/2026-11 --rev v3.2.0"
-        title="取用指令"
-        wrap="words"
-        labels={{ copy: (title) => (title ? `複製${title}` : "複製程式碼"), copied: "已複製", failed: "無法複製：請選取文字後手動複製", code: "程式碼" }}
-      />
-    </div>
-  ),
-}

@@ -30,6 +30,7 @@ What products were building by hand: menus, previews and banners, a lineage grap
 - **`slider`: `valueText`** sets each thumb's `aria-valuetext` on a controlled slider, so a screen reader hears "0:42 of 1:00" or "40 %" instead of a bare number.
 
 ### Docs and CI
+- Examples are in English only: the Traditional Chinese examples of `annotated-image`, `code-block`, `form`, `metric-card`, `tree` and `theme-toggle` are gone. Each component still takes its words through `labels` (or its schema, for `form`).
 - The Accessibility tab's measured data is checked in CI: a job builds the site, measures every component again and fails when `site/a11y.json` differs (only when a component or story changed). The measured file is attached to a failed run.
 - Roadmap brought up to date.
 
