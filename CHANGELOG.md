@@ -4,10 +4,13 @@ Components install as source, so a project keeps the version it installed. Re-ru
 
 ## 0.22.3 · 2026-11-20
 
-Docs site only; no item changed, nothing to re-install.
+Docs site only, on phones: no item changed, nothing to re-install.
 
 ### Fixed
 - **Phones: the page jumped when you picked a page in the navigation drawer.** The drawer's list followed the address, and the drawer only began to close once the next page had arrived. So while it faded out, its list rearranged itself under your finger: the current-page marker slid to the new item, the old page's examples folded, the new page's unfolded, and the column re-scrolled to centre it. Now the drawer starts closing on the tap and its list stays as it was when you opened it; the next time it opens, it shows where you are. Measured on an iPhone 13 viewport: layout shifts during the switch went from 8 to 0.
+
+### Changed
+- **Phones: the navigation drawer, redesigned.** The area switcher was a 2×2 block of buttons with the current one solid black (white in dark), the loudest thing in the drawer; a large "Navigation" title and a lone "Home" row took the top; the open page's examples unfolded inside the drawer and pushed the other pages away; and on the home page the drawer was nearly empty. Now the drawer starts with the logo (the way home, as in the header), the four areas are one quiet row of tabs with an underline, like a component page's tabs, the examples stay on the page, and on the home page the four areas are the list.
 
 ## 0.22.2 · 2026-11-20
 

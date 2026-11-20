@@ -1,12 +1,14 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Menu, X } from "lucide-react"
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/registry/syncrobotic/ui/sheet"
 import { site } from "./config"
 import type { Scope } from "./scopes"
 import { Sidebar } from "./sidebar"
+import { Logo } from "./logo"
 
 /**
  * Phones and tablets (below 1024 px): a menu button in the header opens the navigation from the left, as on most docs sites. It
@@ -50,8 +52,12 @@ export function NavDrawer({ scopes }: { scopes: Scope[] }) {
         <Menu aria-hidden="true" className="size-5" />
       </SheetTrigger>
       <SheetContent side="left" data-scroll className="w-[85vw] gap-6 p-4" onClick={closeOnLink}>
+        {/* The brand where the site's header has it; it is also the way home. */}
         <div className="flex items-center justify-between gap-2 pl-3">
-          <SheetTitle className="text-base">Navigation</SheetTitle>
+          <Link href="/" aria-label="Design System home" className="flex items-center">
+            <Logo />
+          </Link>
+          <SheetTitle className="sr-only">Navigation</SheetTitle>
           <SheetDescription className="sr-only">The areas of the design system and the pages of the one you are in.</SheetDescription>
           <SheetClose aria-label="Close navigation" className="press flex size-(--h-md) items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground">
             <X aria-hidden="true" className="size-5" />
