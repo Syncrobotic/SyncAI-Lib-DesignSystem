@@ -2,6 +2,17 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.22.4 · 2026-11-20
+
+Docs site only: no item changed, nothing to re-install.
+
+### Fixed
+- **The docs sidebar flashed on every page switch.** The current-page marker slid with a shared layout animation while the previous page's examples closed with a height animation above it; the column re-scrolled every frame to keep the clicked link still, and the marker, measured against the moving column, swept down the list as a grey box before settling. The marker is now static, the examples list appears and goes at once, and the column scrolls back in the same frame by however far the clicked link moved (Safari has no scroll anchoring). Recorded: 15 changing frames per switch before, 3 after.
+- **Phones: picking a page in the navigation drawer showed the old page through the drawer, then the new one over it.** The page transition is a view transition, whose snapshots paint above everything, the open drawer included. A navigation from the drawer now skips it: the tapped link is marked at once, the drawer stays until the new page is there, then slides away from it. The drawer's click handler also runs in the capture phase now; next/link prevents the default in its own handler, so the 0.22.3 handler never ran.
+
+### Changed
+- **Block pages on phones.** "Built from" takes its own line, with the chips under it, so no chip wraps to sit under the label. Below 640 px the preview shows the phone view only: the device-width switch is hidden (a desktop layout would be drawn at a quarter of its size), Open shares the row with Preview and Code, and the block fills the card with no second frame, stage padding or width caption.
+
 ## 0.22.3 · 2026-11-20
 
 Docs site only, on phones: no item changed, nothing to re-install.
