@@ -24,7 +24,8 @@ const trendText = { good: "text-foreground", bad: "text-danger", flat: "text-mut
 
 /**
  * The shape of the last values, no axes. Neutral and hidden from screen readers: the delta and caption say it in words.
- * In a narrow card it gives way (shrinks) so the value and its unit stay on one line.
+ * From 640 px it sits beside the value and gives way (shrinks) so the value and its unit stay on one line; on a phone,
+ * where a card is too narrow to share, it takes its own full-width line under the value.
  */
 function Sparkline({ series, className }: { series: number[]; className?: string }) {
   const min = Math.min(...series)
@@ -70,7 +71,7 @@ export function MetricCard({
   delta?: string
   /** Whether the change is good. Direction alone does not decide: a rise in events is bad. Only "bad" is coloured. */
   trend?: "good" | "bad" | "flat"
-  /** Last values, oldest first, drawn as a sparkline from 640 px. Two or more. */
+  /** Last values, oldest first, drawn as a sparkline: beside the value from 640 px, under it on a phone. Two or more. */
   series?: number[]
   /** One line of context under the value: "2 docked for charging", "Last 7 days". */
   caption?: React.ReactNode
@@ -118,7 +119,7 @@ export function MetricCard({
             label
           )}
         </span>
-        <div className="order-last mt-3 flex w-full items-end justify-between gap-4">
+        <div className="order-last mt-3 flex w-full items-end justify-between gap-4 max-sm:flex-col max-sm:items-stretch max-sm:gap-2">
           {loading ? (
             <>
               <Bone className="h-8 w-20" />
@@ -135,7 +136,7 @@ export function MetricCard({
               {unit && <span className="text-sm text-muted-foreground">{unit}</span>}
             </span>
           )}
-          {!loading && !missing && series && series.length > 1 && <Sparkline series={series} className="max-sm:hidden" />}
+          {!loading && !missing && series && series.length > 1 && <Sparkline series={series} className="max-sm:h-6 max-sm:w-full" />}
         </div>
         {loading ? (
           <Bone className="h-5 w-10" />

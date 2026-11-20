@@ -2820,7 +2820,7 @@
     {
      "name": "series",
      "type": "number[]",
-     "description": "Last values, oldest first, drawn as a sparkline from 640 px. Two or more."
+     "description": "Last values, oldest first, drawn as a sparkline: beside the value from 640 px, under it on a phone. Two or more."
     },
     {
      "name": "caption",
