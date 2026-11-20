@@ -23,6 +23,7 @@ import { RobotStatusCard } from "@/registry/syncrobotic/blocks/robot-status-card
 import { StatsCards } from "@/registry/syncrobotic/blocks/stats-cards"
 import { LineChartTelemetry } from "@/registry/syncrobotic/blocks/line-chart-telemetry"
 import { LineChartLimit } from "@/registry/syncrobotic/blocks/line-chart-limit"
+import { HistogramBattery } from "@/registry/syncrobotic/blocks/histogram-battery"
 import { LineChartCompare } from "@/registry/syncrobotic/blocks/line-chart-compare"
 import { AreaChartBattery } from "@/registry/syncrobotic/blocks/area-chart-battery"
 import { AreaChartFleetStates } from "@/registry/syncrobotic/blocks/area-chart-fleet-states"
@@ -96,6 +97,16 @@ const meta: Record<string, Meta> = {
     render: () => (
       <div className="mx-auto max-w-3xl p-6">
         <LineChartTelemetry />
+      </div>
+    ),
+  },
+  "histogram-battery": {
+    viewport: "desktop",
+    thumbWidth: 720,
+    height: 480,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <HistogramBattery />
       </div>
     ),
   },

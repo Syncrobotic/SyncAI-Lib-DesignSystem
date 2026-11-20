@@ -2,6 +2,16 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **`media-player`** (beta): a recorded clip (a robot's camera recording, an incident clip) with the kit's controls over a native `<video>`, no player library. Play / pause, a timeline (the kit's `Slider`, read as "0:42 of 1:00") with a tick per marker and the markers listed under the player, time in tabular numbers, mute, speed 0.5 / 1 / 1.5 / 2×, captions from WebVTT drawn above the controls, full screen. Space / K, ← / →, J / L, M and F work only while focus is in the player. The controls sit on a scrim in the dark theme so they read over a bright picture; they hide while playing once the pointer rests and stay while a finger or the keyboard is on them. `duration` shows the length and the markers before the file loads; `startAt` opens at the event; loading, buffering and "Clip unavailable: …" with a retry; `autoPlay` is muted and off under reduced motion. Not for a live camera feed, which will be its own component. A 30 KB generated sample clip, its poster and captions live in `public/media` (Storybook serves them through `staticDirs`).
+- **`histogram-battery`** (Patterns › Chart › Histogram): how one value is spread, here battery level at docking in 5 % bins on a number axis, the median and the 15 % line labelled, the bins under 15 % in warning with the count in words, counts on hover and a Chart / Table switch. Exports `binEqualWidth` (each bin holds its lower edge and not its upper; the last also holds the maximum; out-of-range values are counted apart) and `median`.
+- Icons: `Volume2`, `VolumeX`, `Captions`, `Maximize`, `Minimize` in the icon set, for the media player.
+
+### Changed
+- **`slider`: `valueText`** sets each thumb's `aria-valuetext` on a controlled slider, so a screen reader hears "0:42 of 1:00" or "40 %" instead of a bare number.
+
 ## 0.20.0 · 2026-11-20
 
 ### Added

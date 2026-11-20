@@ -25,6 +25,7 @@ import * as s_form from "@/stories/form.stories"
 import * as s_data_pieces from "@/stories/data-pieces.stories"
 import * as s_image_grid from "@/stories/image-grid.stories"
 import * as s_annotated_image from "@/stories/annotated-image.stories"
+import * as s_media_player from "@/stories/media-player.stories"
 import * as s_tree from "@/stories/tree.stories"
 import * as s_chip_group from "@/stories/chip-group.stories"
 import * as s_filter_form from "@/stories/filter-form.stories"
@@ -103,6 +104,7 @@ const files: Record<StoryFile, StoryModule> = {
   "data-pieces": s_data_pieces as unknown as StoryModule,
   "image-grid": s_image_grid as unknown as StoryModule,
   "annotated-image": s_annotated_image as unknown as StoryModule,
+  "media-player": s_media_player as unknown as StoryModule,
   tree: s_tree as unknown as StoryModule,
   "chip-group": s_chip_group as unknown as StoryModule,
   "filter-form": s_filter_form as unknown as StoryModule,

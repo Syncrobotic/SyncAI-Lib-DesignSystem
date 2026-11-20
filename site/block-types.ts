@@ -244,6 +244,21 @@ export const blockTypes: BlockType[] = [
     use: ["When things happen (day × hour).", "Where things happen (zone × time)."],
     rules: ["One hue, light to dark: darker always means more.", "A legend for the scale, and the extreme named in words or written in the cells."],
   },
+  {
+    slug: "histogram",
+    title: "Histogram",
+    group: "Patterns",
+    home: "chart",
+    description: "How one value is spread: battery at docking, mission length, label confidence, counted in equal bins.",
+    use: ["Whether most robots dock early or late, and how many cut it close.", "How long missions take, or how sure a model is, across many runs."],
+    instead: ["A count per category: Bar chart.", "One value over time: Line chart.", "A single summary number: the median in a metric card."],
+    rules: [
+      "Equal-width bins that touch, on a number axis with ticks on the bin edges; counts start at zero.",
+      "Say where an edge value goes: each bin holds its lower edge, not its upper, and the last holds the maximum (binEqualWidth).",
+      "One neutral hue. Colour a range only when it means something people act on (battery below 15 % in warning), and name it in words with its count.",
+      "The median as a labelled dashed line, in text colour. A mean only when the spread is symmetric.",
+    ],
+  },
   // Solutions
   {
     slug: "fleet-operations",
@@ -405,6 +420,7 @@ export const placement: Record<string, { type: string; fit: "screen" | "content"
   "radial-chart-capacity": { type: "radial-chart", fit: "content" },
   "heatmap-week-hours": { type: "heatmap", fit: "content" },
   "heatmap-zones": { type: "heatmap", fit: "content" },
+  "histogram-battery": { type: "histogram", fit: "content" },
 }
 
 /** Where a type is documented: its own page under Blocks, or the Patterns of the component it varies. */
