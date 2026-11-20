@@ -2,6 +2,14 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **Brand assets** (`/brand`, linked from the footer): the official SYNCROBOTIC logo kit (horizontal, stacked and compact logos, logomark, logotype) in black, grey, indigo and white as SVG and 2048 px PNG, one ZIP with full-size PNGs and the Illustrator source; the brand colours with their contrast; and how to show the brand in web and app interfaces: the product header, favicon and app icon, sign-in and splash screens, clear space and smallest sizes, and what not to do. Product photos are listed as waiting for files.
+
+### Changed
+- Docs site: the header and footer use the official logomark (the S on its own); the disc stays for favicons, app icons and avatars. The footer's nameplate is the official logotype, not the name typed in Geist.
+
 ## 0.21.0 · 2026-11-20
 
 What products were building by hand: menus, previews and banners, a lineage graph, a media player, a histogram, and the account screens every console needs.

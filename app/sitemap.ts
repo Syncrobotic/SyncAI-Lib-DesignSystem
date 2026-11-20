@@ -17,6 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...foundations.map((f) => ({ path: `/docs/foundations/${f.slug}`, priority: 0.8 })),
     { path: "/docs/components", priority: 0.9 },
     { path: "/icons", priority: 0.7 },
+    { path: "/brand", priority: 0.6 },
     { path: "/icons/lucide", priority: 0.5 },
     ...items.map((i) => ({ path: `/docs/components/${i.name}`, priority: 0.6 })),
     ...items.filter((i) => hasProps(i.name)).map((i) => ({ path: `/docs/components/${i.name}/properties`, priority: 0.5 })),
