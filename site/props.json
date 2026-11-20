@@ -867,6 +867,88 @@
    ]
   }
  ],
+ "camera-feed": [
+  {
+   "name": "CameraFeed",
+   "props": [
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "The camera's name: \"Front camera\". Names the feed with `source`."
+    },
+    {
+     "name": "source",
+     "type": "string",
+     "description": "The robot it is on: \"Patrol dog 7F3A\"."
+    },
+    {
+     "name": "stream",
+     "type": "MediaStream",
+     "description": "A WebRTC stream, set as the video's `srcObject`. The app owns the connection; the feed only shows it."
+    },
+    {
+     "name": "src",
+     "type": "string",
+     "description": "A URL the browser plays by itself (a live MP4 or WebM, or HLS where the browser supports it). Use `stream` or `src`."
+    },
+    {
+     "name": "status",
+     "type": "\"connecting\" | \"live\" | \"offline\"",
+     "description": "What the connection is doing. Defaults to `live` when there is a `stream` or `src`; with neither, \"No camera\"."
+    },
+    {
+     "name": "latencyMs",
+     "type": "number",
+     "description": "Glass-to-glass delay, measured by the app, written after \"Live\"."
+    },
+    {
+     "name": "staleAfterMs",
+     "type": "number",
+     "default": "2000",
+     "description": "With no new frame for this long, the feed says \"Stalled\" over a dimmed picture instead of freezing silently."
+    },
+    {
+     "name": "offlineReason",
+     "type": "string",
+     "description": "Why the camera is offline, written under \"Camera offline\": \"the robot is out of network range.\""
+    },
+    {
+     "name": "onRetry",
+     "type": "() => void",
+     "description": "Shows \"Reconnect\" while offline. Without it there is no button (a `src` reloads itself after a video error)."
+    },
+    {
+     "name": "onSnapshot",
+     "type": "(blob: Blob) => void",
+     "description": "Shows \"Take snapshot\": the frame on screen, drawn to a canvas, as a PNG."
+    },
+    {
+     "name": "audio",
+     "type": "boolean",
+     "default": "false",
+     "description": "The stream carries sound: adds Mute. It starts muted (browsers block sound until someone asks for it)."
+    },
+    {
+     "name": "aspectRatio",
+     "type": "number",
+     "default": "16 / 9",
+     "description": "Width over height, so the layout holds its size before the first frame. 16 / 9 by default."
+    },
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "description": "Drawn over the picture, in a layer the size of the video box: a crosshair, detection boxes."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<CameraFeedLabels>",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "card": [
   {
    "name": "Card",

@@ -79,7 +79,7 @@ export const overviews: Record<string, Overview> = {
       "Reviewing what a robot saw before a stop, with its events marked on the timeline.",
     ],
     instead: [
-      "A live camera feed: a different component, not built yet (no timeline or speed; latency and connection state instead).",
+      "A live camera feed: `camera-feed` (no timeline or speed; latency and connection state instead).",
       "One still frame with what a model saw in it: `annotated-image`.",
       "Many clips or pictures to pick from: `image-grid`, then the player for the one opened.",
     ],
@@ -88,6 +88,25 @@ export const overviews: Record<string, Overview> = {
       "Keys are captured only while focus is inside the player, so they never fight the page. The frame itself is a Tab stop; its focus ring is the page's, the controls' rings are the dark theme's.",
       "Captions come from `tracks` (WebVTT) and are drawn by the player above the controls, one track at a time (the `default` one, else the first). The browser's own caption rendering is turned off, because it would sit under the scrim.",
       "Every string is in `labels`, including the error reasons by MediaError code; `unavailable` is the reason when you know before loading that it cannot play.",
+    ],
+  },
+  "camera-feed": {
+    what: "A robot's live camera over a native video the app feeds, that always says whether the picture is live: Live with the latency, Stalled with the last frame's time, Paused, connecting, offline or no camera.",
+    use: [
+      "The camera panel of a robot's page or a teleoperation screen.",
+      "A wall of a site's cameras, one feed per robot.",
+      "Watching a robot's view with its detections drawn over it.",
+    ],
+    instead: [
+      "A recording with an end, an incident clip: `media-player`.",
+      "One still frame with what a model saw in it: `annotated-image`.",
+    ],
+    notes: [
+      "It does not connect to anything: the app sets up WebRTC (or another transport) and passes the `MediaStream`, or a URL the browser plays by itself. MJPEG and HLS libraries are out of scope.",
+      "Live, Stalled and Connecting come from the frames themselves (`requestVideoFrameCallback`, else `timeupdate`), so a stream that stays connected but stops sending pictures still reads Stalled. `status` is only what the transport knows: connecting, live or offline.",
+      "Pause view freezes this screen only; the robot keeps streaming, and the feed says Paused until it resumes.",
+      "The state is a shape and a word (a filled dot for Live, a triangle for Stalled, a slashed circle for offline); only Stalled has colour, and blue only spins while connecting. The dot never pulses.",
+      "Every string is in `labels`, including `formatTime` for the last frame's time (24-hour clock by default; pass the site's time zone if the operator is elsewhere).",
     ],
   },
   "restricted-preview": {

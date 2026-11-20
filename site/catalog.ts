@@ -54,6 +54,7 @@ export type StoryFile =
   | "image-grid"
   | "annotated-image"
   | "media-player"
+  | "camera-feed"
   | "tree"
   | "graph"
   | "hooks"
@@ -705,12 +706,26 @@ const entries: Record<string, Entry> = {
     group: "Display",
     examples: { file: "media-player", prefix: "MediaPlayer" },
     rules: [
-      "For a recorded clip with an end. A live camera feed is a different component (not built yet): no timeline, no speed, a latency and a connection state instead.",
+      "For a recorded clip with an end. A live camera is `camera-feed`: no timeline, no speed, a latency and a connection state instead.",
       "Give `label` the clip's who, where and when (\"Patrol dog 7F3A, front camera, 14:02\"); it names the player for screen readers.",
       "Pass `duration` from the clip's record, so the time and the markers show before the file loads; `preload=\"none\"` in a long list of clips.",
       "Markers are events in the clip (Obstacle, Stop pressed), a word each, at most a handful. They are listed under the player too, for the keyboard and screen readers.",
       "Never autoplay with sound. `autoPlay` starts muted and does nothing for someone who asked for reduced motion.",
       "When the clip cannot play, say why after \"Clip unavailable:\" (not uploaded yet, expired, the robot was offline) and offer a retry only when retrying can help.",
+    ],
+  },
+  "camera-feed": {
+    wide: true,
+    group: "Display",
+    examples: { file: "camera-feed", prefix: "CameraFeed" },
+    rules: [
+      "For a live camera. A recording with an end is `media-player`.",
+      "The app owns the connection (WebRTC, a gateway, a live URL); pass the `stream` or `src` and say what the connection is doing in `status`. The feed tells Live from Stalled by itself, from the frames.",
+      "Give `label` the camera and `source` the robot (\"Front camera\", \"Patrol dog 7F3A\"): the header writes both, and they name the feed for screen readers.",
+      "Pass `latencyMs` whenever you measure it: an operator driving from the picture needs to know how old it is.",
+      "Never hide a frozen picture: keep `staleAfterMs` at its 2 s default, shorter for teleoperation, longer only for a camera that sends a frame every few seconds.",
+      "Overlays (`children`) are drawn in the video box's own coordinates; they hide while there is no picture, so a box never floats over a skeleton.",
+      "Offer Reconnect (`onRetry`) only when reconnecting can help, and say why it is offline in `offlineReason` when you know.",
     ],
   },
   alert: {
@@ -1114,6 +1129,10 @@ const keyboard: Record<string, [string, string][]> = {
     ["J / L", "Back or forward 10 seconds"],
     ["Home / End", "On the timeline: start or end of the clip"],
     ["M", "Mute or unmute"],
+    ["F", "Full screen, or leave it (Esc leaves it too)"],
+  ],
+  "camera-feed": [
+    ["Space", "Pause or resume the view (Space on a focused button presses that button)"],
     ["F", "Full screen, or leave it (Esc leaves it too)"],
   ],
   "annotated-image": [
