@@ -2,6 +2,19 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Changed
+- **`alarm` redesign** (0.22.0). The same priority was said four ways (bar, icon, coloured word, tinted row), every row carried a heavy Acknowledge, the time was buried in the meta line and the state could only be read from small grey text. Now `AlarmList` is one panel of aligned rows: priority glyph → time (tabular, first, so order and age read down the column) → priority word and title, source under it → state and actions.
+  - Colour only on the glyph and the priority word; no tinted rows, critical included.
+  - Unacknowledged: bold title and a solid bar in the priority's colour. Cleared but not acknowledged: still bold, the bar dashed, "Cleared 14:07, not acknowledged". Acknowledged: regular, grey, "Acknowledged 13:42".
+  - A lighter Acknowledge per row; after it, focus moves to the next Acknowledge (or the list's heading). The header gets "Acknowledge all" with two or more unacknowledged alarms in view; it takes only those (never shelved, suppressed or out-of-service ones; folded low alarms in a flood only while their group is open, when it reads "Acknowledge 2 shown") and announces how many it acknowledged.
+  - Shelved, suppressed and out-of-service alarms stay counted in the panel's footer. Flood handling is unchanged.
+  - Below 576 px of container width the row reflows: time and source under the title, state and buttons on their own line (44 px on touch).
+  - New, all optional: `AlarmData.acknowledgedAt`, `AlarmData.clearedAt`, `AlarmList.onAcknowledgeAll(ids)` (without it, "Acknowledge all" calls `onAcknowledge` per id), labels `clearedWhen`, `acknowledgeAll`, `acknowledgeShown`, `acknowledgedCount`. `alarmPriority` gains `border`; its `tint` is no longer used by the kit. The list is now a card with its own border: drop any card you wrapped it in.
+- **`island`** (0.22.0): `IslandAlarm` follows: never tinted, the time first in tabular figures, a lighter Acknowledge.
+- **`console-overview`** (0.22.0): acknowledging records the time, and Acknowledge all is wired.
+
 ## 0.21.0 · 2026-11-20
 
 What products were building by hand: menus, previews and banners, a lineage graph, a media player, a histogram, and the account screens every console needs.

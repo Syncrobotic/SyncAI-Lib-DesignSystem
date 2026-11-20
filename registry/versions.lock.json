@@ -56,8 +56,8 @@
     "hash": "c1f253777684177c"
   },
   "island": {
-    "version": "0.17.3",
-    "hash": "40f3dc8d241ae33f"
+    "version": "0.22.0",
+    "hash": "88424c2a376587d5"
   },
   "list": {
     "version": "0.15.0",
@@ -188,8 +188,8 @@
     "hash": "5599e73c521ec230"
   },
   "alarm": {
-    "version": "0.17.3",
-    "hash": "2cfbe92a27618b54"
+    "version": "0.22.0",
+    "hash": "7ea644d9ab9a650c"
   },
   "toast": {
     "version": "0.17.3",
@@ -452,8 +452,8 @@
     "hash": "0491f88bb43f31a6"
   },
   "console-overview": {
-    "version": "0.17.2",
-    "hash": "f522c6a25f03e6e3"
+    "version": "0.22.0",
+    "hash": "7db6ea3199ad7250"
   },
   "list-detail": {
     "version": "0.17.3",

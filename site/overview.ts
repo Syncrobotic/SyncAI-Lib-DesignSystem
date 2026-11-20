@@ -642,7 +642,8 @@ export const overviews: Record<string, Overview> = {
     instead: ["Feedback on what the user just did: `toast`.", "A note about the page that needs no action: `alert`."],
     notes: [
       "Alarms are for what a person must act on, by ISA-18.2 priority (critical, high, low). Never show them as toasts.",
-      "AlarmList sorts and announces new alarms itself; give it the data and onAcknowledge.",
+      "AlarmList sorts and announces new alarms itself; give it the data and onAcknowledge, and `acknowledgedAt` once acknowledged so the row says when.",
+      "`onAcknowledgeAll` receives the ids in view (never shelved ones); without it, “Acknowledge all” calls onAcknowledge per id.",
     ],
   },
   alert: {
