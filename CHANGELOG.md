@@ -2,7 +2,12 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.22.0 · 2026-11-20
+
+Charts in graphite and the brand indigo, alarms you can scan, and the brand kit on its own page.
+
+### Added
+- **Brand assets** (`/brand`, linked from the footer): the official SYNCROBOTIC logo kit (horizontal, stacked and compact logos, logomark, logotype) in black, grey, indigo and white as SVG and 2048 px PNG, one ZIP with full-size PNGs and the Illustrator source; the brand colours with their contrast; and how to show the brand in web and app interfaces: the product header, favicon and app icon, sign-in and splash screens, clear space and smallest sizes, and what not to do. Product photos are listed as waiting for files.
 
 ### Changed
 - **Chart palette: graphite and one accent** (`syncrobotic-theme` 0.22.0). The categorical palette (purple, teal, olive, plum, grey) felt foreign to a monochrome UI. Now a chart has one series the reader should look at, in the brand indigo (`--chart-1`: #5347a8 light, #8986de dark, #3d2e8d and #b5b4ff in high contrast); the others are graphite (`--chart-2`, `--chart-3`), `--chart-4` is a light grey for Other and `--chart-5` the baseline (an alias of `--chart-3`, always dashed). The token names are unchanged; their meaning is not: code that used slots 2–5 as hues now draws them grey. Checked in all four modes against the card: any two of slots 1–3, and 3 beside 4, differ by ΔE 15 or more to normal vision and under red-green colour blindness; slots 1–3 reach 3:1 (Other sits at 2.1:1 in light and 1.9:1 in dark on purpose, always labelled; 3:1 or more in high contrast). Blue, green, amber and red stay for status.
@@ -20,6 +25,7 @@ Components install as source, so a project keeps the version it installed. Re-ru
   - New, all optional: `AlarmData.acknowledgedAt`, `AlarmData.clearedAt`, `AlarmList.onAcknowledgeAll(ids)` (without it, "Acknowledge all" calls `onAcknowledge` per id), labels `clearedWhen`, `acknowledgeAll`, `acknowledgeShown`, `acknowledgedCount`. `alarmPriority` gains `border`; its `tint` is no longer used by the kit. The list is now a card with its own border: drop any card you wrapped it in.
 - **`island`** (0.22.0): `IslandAlarm` follows: never tinted, the time first in tabular figures, a lighter Acknowledge.
 - **`console-overview`** (0.22.0): acknowledging records the time, and Acknowledge all is wired.
+- Docs site: the header and footer use the official logomark (the S on its own); the disc stays for favicons, app icons and avatars. The footer's nameplate is the official logotype, not the name typed in Geist.
 
 ## 0.21.0 · 2026-11-20
 
