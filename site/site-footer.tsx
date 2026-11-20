@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { ArrowUpRight } from "lucide-react"
 import { site } from "@/site/config"
-import { LogoMark } from "@/site/logo"
+import { BrandLogotype, BrandMark } from "@/site/logo"
 import pkg from "../package.json"
 
 type FooterLink = { label: string; href: string; external?: boolean }
@@ -14,6 +14,7 @@ const columns: { title: string; links: FooterLink[] }[] = [
       { label: "Components", href: "/docs/components" },
       { label: "Blocks", href: "/blocks" },
       { label: "Icons", href: "/icons" },
+      { label: "Brand assets", href: "/brand" },
     ],
   },
   {
@@ -58,7 +59,7 @@ export function SiteFooter() {
     <footer className="overflow-hidden border-t border-border">
       <div className="mx-auto grid max-w-6xl gap-section-sm px-4 pt-section-sm lg:grid-cols-[1fr_2fr]">
         <div className="flex flex-col gap-4">
-          <LogoMark className="size-8" />
+          <BrandMark className="h-8 self-start" />
           <p className="max-w-xs text-sm text-muted-foreground">Interfaces for the people who run robots. Written down once, installed as source.</p>
           <a
             href={`${site.repo}/releases/tag/v${pkg.version}`}
@@ -98,12 +99,10 @@ export function SiteFooter() {
           <p className="font-mono">Taipei · Made for operators outdoors</p>
         </div>
       </div>
-      {/* The wordmark, as wide as the page and cut by its bottom edge. */}
-      <div aria-hidden="true" className="pointer-events-none mx-auto max-w-6xl px-4 select-none">
-        {/* Sized to the page's width, so the word always fills the column: a measured value, not a step of the type scale. */}
-        <p className="leading-none font-bold tracking-tighter whitespace-nowrap text-border" style={{ fontSize: "clamp(3rem, 14.2vw, 11.5rem)", marginBottom: "-0.22em" }}>
-          SYNCROBOTIC
-        </p>
+      {/* The nameplate: the official logotype as wide as the column, cut by the page's bottom edge. Decoration (the mark
+          above names the company), so hidden from screen readers and drawn in the quietest ink. */}
+      <div aria-hidden="true" className="pointer-events-none mx-auto max-w-6xl overflow-hidden px-4 pt-6 select-none">
+        <BrandLogotype title="" className="-mb-[2%] h-auto w-full text-border" />
       </div>
     </footer>
   )

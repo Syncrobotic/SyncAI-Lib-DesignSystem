@@ -1,7 +1,7 @@
 {
   "syncrobotic-theme": {
-    "version": "0.17.3",
-    "hash": "ae709f5b775318a2"
+    "version": "0.22.0",
+    "hash": "d00096c9d68e147b"
   },
   "cn": {
     "version": "0.5.0",
@@ -56,8 +56,8 @@
     "hash": "c1f253777684177c"
   },
   "island": {
-    "version": "0.17.3",
-    "hash": "40f3dc8d241ae33f"
+    "version": "0.22.0",
+    "hash": "88424c2a376587d5"
   },
   "list": {
     "version": "0.15.0",
@@ -188,8 +188,8 @@
     "hash": "5599e73c521ec230"
   },
   "alarm": {
-    "version": "0.17.3",
-    "hash": "2cfbe92a27618b54"
+    "version": "0.22.0",
+    "hash": "7ea644d9ab9a650c"
   },
   "toast": {
     "version": "0.17.3",
@@ -204,8 +204,8 @@
     "hash": "c53a2b4f3f24b843"
   },
   "chart": {
-    "version": "0.17.2",
-    "hash": "7fc133ecb06fbfc5"
+    "version": "0.22.0",
+    "hash": "3bf7168182df312b"
   },
   "tabs": {
     "version": "0.17.1",
@@ -304,8 +304,8 @@
     "hash": "fc2f7c91359558de"
   },
   "share-bar": {
-    "version": "0.17.3",
-    "hash": "0677350b959c945e"
+    "version": "0.22.0",
+    "hash": "b324b5365eba4f3a"
   },
   "load-more": {
     "version": "0.15.0",
@@ -452,8 +452,8 @@
     "hash": "0491f88bb43f31a6"
   },
   "console-overview": {
-    "version": "0.17.2",
-    "hash": "f522c6a25f03e6e3"
+    "version": "0.22.0",
+    "hash": "7db6ea3199ad7250"
   },
   "list-detail": {
     "version": "0.17.3",
@@ -504,8 +504,8 @@
     "hash": "f92b1126101d0227"
   },
   "agent-skill": {
-    "version": "0.17.3",
-    "hash": "683d836c97c88f9b"
+    "version": "0.22.0",
+    "hash": "e945ec999a5c5401"
   },
   "line-chart-telemetry": {
     "version": "0.17.2",
@@ -516,32 +516,32 @@
     "hash": "ad33cea95dcddaa4"
   },
   "line-chart-compare": {
-    "version": "0.17.2",
-    "hash": "7f1ea37a7c3d6054"
+    "version": "0.22.0",
+    "hash": "4054b9ac70b0aed5"
   },
   "area-chart-battery": {
     "version": "0.17.2",
     "hash": "0c3c3c561ecd8041"
   },
   "area-chart-fleet-states": {
-    "version": "0.17.2",
-    "hash": "2797b50a47426afe"
+    "version": "0.22.0",
+    "hash": "2980b0707b6c9a4d"
   },
   "area-chart-cumulative": {
-    "version": "0.17.2",
-    "hash": "35beae83acdc4e8f"
+    "version": "0.22.0",
+    "hash": "8123335cba3a0f85"
   },
   "bar-chart-missions": {
-    "version": "0.17.2",
-    "hash": "29c77e7fc8e28def"
+    "version": "0.22.0",
+    "hash": "6914096bd17ab410"
   },
   "bar-chart-ranked": {
     "version": "0.17.2",
     "hash": "eedb344ad9e98f71"
   },
   "bar-chart-stacked": {
-    "version": "0.17.2",
-    "hash": "7464ec75bde33b50"
+    "version": "0.22.0",
+    "hash": "56cb029bad7d7903"
   },
   "bar-chart-variance": {
     "version": "0.17.2",
@@ -580,20 +580,20 @@
     "hash": "791d1e59c71448fb"
   },
   "radial-chart-capacity": {
-    "version": "0.17.3",
-    "hash": "c0c5c9dd1e6f1946"
+    "version": "0.22.0",
+    "hash": "440f60d80040b1b8"
   },
   "heatmap-week-hours": {
-    "version": "0.17.3",
-    "hash": "c44b5ad0ab7c4561"
+    "version": "0.22.0",
+    "hash": "3824c601d0b2b600"
   },
   "heatmap-zones": {
-    "version": "0.17.3",
-    "hash": "d65f8161c109654f"
+    "version": "0.22.0",
+    "hash": "4313229823c2aa59"
   },
   "histogram-battery": {
-    "version": "0.21.0",
-    "hash": "29b1fe08835ca2b6"
+    "version": "0.22.0",
+    "hash": "4e2e4ab8c03e7664"
   },
   "app-shell-mobile-tabs": {
     "version": "0.17.3",

@@ -151,23 +151,23 @@
     },
     "chart-1": {
       "$type": "color",
-      "$value": "#663e9e"
+      "$value": "#5347a8"
     },
     "chart-2": {
       "$type": "color",
-      "$value": "#00929f"
+      "$value": "#3f3f46"
     },
     "chart-3": {
       "$type": "color",
-      "$value": "#6b7f09"
+      "$value": "#82828c"
     },
     "chart-4": {
       "$type": "color",
-      "$value": "#943171"
+      "$value": "#b4b4bb"
     },
     "chart-5": {
       "$type": "color",
-      "$value": "#71717a"
+      "$value": "{color.chart-3}"
     },
     "annotate-predicted": {
       "$type": "color",

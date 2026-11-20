@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.22.0",
         "changelog": [
+          {
+            "version": "0.22.0",
+            "date": "2026-11-20",
+            "note": "New chart palette, graphite and one accent: --chart-1 is the brand indigo (#5347a8 in light) for the series the reader should look at, --chart-2 and --chart-3 graphite steps for the others, --chart-4 a light grey for Other, --chart-5 the baseline (an alias of --chart-3). Derived for dark and both high-contrast modes, and checked against each card: any two of slots 1–3, and 3 beside 4, differ by ΔE 15 or more to normal vision and under red-green colour blindness; slots 1–3 reach 3:1. The names are unchanged; their meaning is not, so a chart that used slots 2–5 as hues now draws them grey."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -562,8 +567,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.22.0",
         "changelog": [
+          {
+            "version": "0.22.0",
+            "date": "2026-11-20",
+            "note": "IslandAlarm follows the alarm redesign: never tinted (the edge, glyph and priority word carry the colour), the time first in tabular figures, a lighter Acknowledge."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -1987,8 +1997,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.22.0",
         "changelog": [
+          {
+            "version": "0.22.0",
+            "date": "2026-11-20",
+            "note": "Redesign: one list of aligned rows (glyph, time, priority and title, state and actions). Colour only on the glyph and the priority word, no tinted rows; unacknowledged is a bold title and a solid bar, cleared-not-acknowledged a dashed bar, acknowledged regular and grey with `acknowledgedAt`. Lighter Acknowledge, `onAcknowledgeAll` in the header, focus moves to the next Acknowledge. New: `acknowledgedAt`, `clearedAt`, `onAcknowledgeAll`, labels `clearedWhen`, `acknowledgeAll`, `acknowledgeShown`, `acknowledgedCount`."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -2187,7 +2202,7 @@
       "name": "chart",
       "type": "registry:ui",
       "title": "Chart",
-      "description": "Line, area and bar charts on Recharts, in the categorical palette, with a crosshair tooltip, a legend and a table view.",
+      "description": "Line, area and bar charts on Recharts, in graphite and one accent with series told apart by line style, with a crosshair tooltip, a legend and a table view.",
       "dependencies": [
         "recharts@^3"
       ],
@@ -2202,8 +2217,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.22.0",
         "changelog": [
+          {
+            "version": "0.22.0",
+            "date": "2026-11-20",
+            "note": "Line styles by series order: ChartContainer gives every Line and unstacked Area outline without its own strokeDasharray solid, dashed (6 4) or dotted (1.5 3.5) by its place in the config, opens grouped bars to a 2 px gap (stacked areas, like bars, get a square swatch and no dash), and the legend and tooltip draw each series' line (ChartSwatch). New exports chartDash, chartDashes and ChartSwatch. The palette is graphite and one accent (see the theme)."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -3178,7 +3198,7 @@
       "name": "share-bar",
       "type": "registry:ui",
       "title": "Share bar",
-      "description": "How a whole splits, as one thin bar in the chart palette: light enough for a table cell, with an optional label, total and legend.",
+      "description": "How a whole splits, as one thin bar in the chart palette (the accent, two greys, Other): light enough for a table cell, with an optional label, total and legend.",
       "registryDependencies": [
         "@syncrobotic/cn"
       ],
@@ -3189,8 +3209,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.22.0",
         "changelog": [
+          {
+            "version": "0.22.0",
+            "date": "2026-11-20",
+            "note": "Parts take the accent, two greys, then the Other grey for a fourth part and more (no fifth colour); \"other\" is --chart-4. The part not shown is its own track segment, so the 2 px gaps show the surface and Other never merges with the track."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -4786,8 +4811,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.22.0",
         "changelog": [
+          {
+            "version": "0.22.0",
+            "date": "2026-11-20",
+            "note": "The alarm list in its redesigned form: times to the second, when each alarm was acknowledged, and Acknowledge all."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -5532,8 +5562,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.22.0",
         "changelog": [
+          {
+            "version": "0.22.0",
+            "date": "2026-11-20",
+            "note": "Design language and checklist: the chart palette is graphite and one accent (the brand indigo), series told apart by line style too, three series and Other at most, heatmaps on the accent's ramp."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -5684,8 +5719,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.22.0",
         "changelog": [
+          {
+            "version": "0.22.0",
+            "date": "2026-11-20",
+            "note": "Last week takes its dashed style from the chart (6 4), like every second series; this week is the accent."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -5774,8 +5814,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.22.0",
         "changelog": [
+          {
+            "version": "0.22.0",
+            "date": "2026-11-20",
+            "note": "Stacked bands in solid fills (the accent, then the grey steps) set apart by a 2 px stroke in the card colour, like a stacked bar; the legend shows square swatches. Charging and Idle take the mid and Other greys, so the bands stay quieter than the accent in both modes."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -5819,8 +5864,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.22.0",
         "changelog": [
+          {
+            "version": "0.22.0",
+            "date": "2026-11-20",
+            "note": "The plan line takes its dashed style from the chart (6 4), like every second series."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -5864,8 +5914,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.22.0",
         "changelog": [
+          {
+            "version": "0.22.0",
+            "date": "2026-11-20",
+            "note": "Graphite and one accent: the accent for the main series, the mid and Other greys for the rest, so a filled grey never outweighs the accent."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -5939,8 +5994,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.22.0",
         "changelog": [
+          {
+            "version": "0.22.0",
+            "date": "2026-11-20",
+            "note": "Graphite and one accent: the accent for the main series, the mid and Other greys for the rest, so a filled grey never outweighs the accent."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -6310,8 +6370,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.22.0",
         "changelog": [
+          {
+            "version": "0.22.0",
+            "date": "2026-11-20",
+            "note": "Rings in the new palette: the fullest in the accent, then the two greys, in legend order."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -6353,8 +6418,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.22.0",
         "changelog": [
+          {
+            "version": "0.22.0",
+            "date": "2026-11-20",
+            "note": "The accent's ramp from the bare track to the full accent (was 55 %), so the busiest slots reach the darkest step in light and the lightest in dark."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -6394,8 +6464,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.22.0",
         "changelog": [
+          {
+            "version": "0.22.0",
+            "date": "2026-11-20",
+            "note": "The accent's ramp up to 60 % (--heat-max), 36 % in high contrast, so each written number keeps 4.5:1 on its cell in every mode."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -6440,8 +6515,13 @@
         }
       ],
       "meta": {
-        "version": "0.21.0",
+        "version": "0.22.0",
         "changelog": [
+          {
+            "version": "0.22.0",
+            "date": "2026-11-20",
+            "note": "Bins in the graphite mid (slot 3); slot 5 is now the baseline."
+          },
           {
             "version": "0.21.0",
             "date": "2026-11-20",

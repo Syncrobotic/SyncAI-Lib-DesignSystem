@@ -1,4 +1,4 @@
-// @syncrobotic/line-chart-compare v0.17.2 · update: npx shadcn add @syncrobotic/line-chart-compare --overwrite
+// @syncrobotic/line-chart-compare v0.22.0 · update: npx shadcn add @syncrobotic/line-chart-compare --overwrite
 "use client"
 
 import * as React from "react"
@@ -42,7 +42,7 @@ export function LineChartCompare() {
             <YAxis {...chartAxis} allowDecimals={false} width={40} />
             <ChartTooltip />
             <ChartLegend />
-            <Line dataKey="before" stroke="var(--color-before)" strokeWidth={2} strokeDasharray="4 4" dot={false} {...chartMotion} />
+            <Line dataKey="before" stroke="var(--color-before)" strokeWidth={2} dot={false} {...chartMotion} />
             <Line
               dataKey="now"
               stroke="var(--color-now)"

@@ -12,7 +12,7 @@ type S = StoryObj
 
 export const AlarmPriorities: S = {
   render: () => (
-    <div className="flex flex-col gap-2">
+    <div className="flex w-2xl max-w-full flex-col gap-2">
       <Alarm priority="critical" title="Collision risk · Hall B" source="Patrol dog 7F3A" time="14:02:31" active acknowledged={false} onAcknowledge={fn()} />
       <Alarm priority="high" title="Battery 12 %, 9 min left" source="Patrol dog 7F3A" time="14:01:05" active acknowledged={false} onAcknowledge={fn()} />
       <Alarm priority="low" title="Lidar cleaning due" source="Courier 2B19" time="13:40:12" active acknowledged={false} onAcknowledge={fn()} />
@@ -22,9 +22,9 @@ export const AlarmPriorities: S = {
 
 export const AlarmStates: S = {
   render: () => (
-    <div className="flex flex-col gap-2">
+    <div className="flex w-2xl max-w-full flex-col gap-2">
       <Alarm priority="high" title="Localisation degraded · Floor 3" source="Courier 2B19" time="14:05:44" active acknowledged={false} onAcknowledge={fn()} />
-      <Alarm priority="high" title="Localisation degraded · Floor 3" source="Courier 2B19" time="14:05:44" active acknowledged />
+      {/* Cleared before anyone acknowledged it: still bold, the bar dashed, and it says when it cleared. */}
       <Alarm
         priority="high"
         title="Localisation degraded · Floor 3"
@@ -32,8 +32,11 @@ export const AlarmStates: S = {
         time="14:05:44"
         active={false}
         acknowledged={false}
+        clearedAt="14:07"
         onAcknowledge={fn()}
       />
+      <Alarm priority="high" title="Localisation degraded · Floor 3" source="Courier 2B19" time="14:05:44" active acknowledged acknowledgedAt="14:06" />
+      <Alarm priority="high" title="Wi-Fi weak · Dock 2" source="Courier 2B19" time="13:58:20" active acknowledged={false} shelvedUntil="15:30" onUnshelve={fn()} />
     </div>
   ),
 }
@@ -49,6 +52,7 @@ export const AlarmWithAction: S = {
       acknowledged={false}
       action={{ label: "Open camera", onClick: fn() }}
       onAcknowledge={fn()}
+      className="w-2xl max-w-full"
     />
   ),
 }
@@ -56,12 +60,16 @@ export const AlarmWithAction: S = {
 function AlarmPanel() {
   // From the robot fleet, oldest first. The list sorts: unacknowledged, then priority, then newest.
   const [alarms, setAlarms] = React.useState<AlarmData[]>([
-    { id: "a1", priority: "low", title: "Lidar cleaning due", source: "Courier 2B19", time: "13:40", active: true, acknowledged: true },
-    { id: "a2", priority: "high", title: "Battery 12 %, 9 min left", source: "Patrol dog 7F3A", time: "14:01", active: true, acknowledged: false },
-    { id: "a3", priority: "critical", title: "Collision risk · Hall B", source: "Patrol dog 7F3A", time: "14:02", active: true, acknowledged: false },
+    { id: "a0", priority: "low", title: "Map out of date · Floor 2", source: "Courier 5C01", time: "13:31:50", active: true, acknowledged: false, shelvedUntil: "15:30" },
+    { id: "a1", priority: "low", title: "Lidar cleaning due", source: "Courier 2B19", time: "13:40:12", active: true, acknowledged: true, acknowledgedAt: "13:42" },
+    { id: "a2", priority: "high", title: "Battery 12 %, 9 min left", source: "Patrol dog 7F3A", time: "14:01:05", active: true, acknowledged: false },
+    { id: "a3", priority: "critical", title: "Collision risk · Hall B", source: "Patrol dog 7F3A", time: "14:02:31", active: true, acknowledged: false },
+    { id: "a4", priority: "high", title: "Not moving", source: "Courier 2B19", time: "13:20:02", active: true, acknowledged: false, suppressed: true },
   ])
-  const acknowledge = (id: string) => setAlarms((list) => list.map((a) => (a.id === id ? { ...a, acknowledged: true } : a)))
-  return <AlarmList alarms={alarms} onAcknowledge={acknowledge} />
+  // The app records when; the list shows it ("Acknowledged 14:03"). "Acknowledge all" passes only the alarms in view.
+  const acknowledge = (ids: string[]) =>
+    setAlarms((list) => list.map((a) => (ids.includes(a.id) ? { ...a, acknowledged: true, acknowledgedAt: "14:03" } : a)))
+  return <AlarmList className="w-2xl max-w-full" alarms={alarms} onAcknowledge={(id) => acknowledge([id])} onAcknowledgeAll={acknowledge} onUnshelve={fn()} />
 }
 
 export const AlarmListSorted: S = { render: () => <AlarmPanel /> }
@@ -78,6 +86,7 @@ function ShelvingPanel() {
   const set = (id: string, patch: Partial<AlarmData>) => setAlarms((list) => list.map((a) => (a.id === id ? { ...a, ...patch } : a)))
   return (
     <AlarmList
+      className="w-2xl max-w-full"
       alarms={alarms}
       onAcknowledge={(id) => set(id, { acknowledged: true })}
       onShelve={(id) => set(id, { shelvedUntil: "15:30" })}
@@ -106,7 +115,7 @@ const flood: AlarmData[] = [
 ]
 
 /** One network fault raises 16 alarms in a minute. Over 10 in 10 minutes is a flood: the list says so, keeps critical and high in view and folds the low ones. */
-export const AlarmListFlood: S = { render: () => <AlarmList alarms={flood} now={NOW} feedback={false} onAcknowledge={fn()} /> }
+export const AlarmListFlood: S = { render: () => <AlarmList className="w-2xl max-w-full" alarms={flood} now={NOW} feedback={false} onAcknowledge={fn()} /> }
 
 function ToastDemo() {
   return (

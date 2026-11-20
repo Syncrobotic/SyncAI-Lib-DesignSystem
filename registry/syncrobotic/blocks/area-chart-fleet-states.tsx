@@ -1,4 +1,4 @@
-// @syncrobotic/area-chart-fleet-states v0.17.2 · update: npx shadcn add @syncrobotic/area-chart-fleet-states --overwrite
+// @syncrobotic/area-chart-fleet-states v0.22.0 · update: npx shadcn add @syncrobotic/area-chart-fleet-states --overwrite
 "use client"
 
 import * as React from "react"
@@ -9,8 +9,8 @@ import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/u
 
 const config = {
   patrol: { label: "Patrolling", color: 1 },
-  charging: { label: "Charging", color: 2 },
-  idle: { label: "Idle", color: 3 },
+  charging: { label: "Charging", color: 3 },
+  idle: { label: "Idle", color: 4 },
 } satisfies ChartConfig
 // Sample data: how many of 6 robots were in each state, per hour. The three always add up to the fleet.
 const data = ["06:00", "08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20:00"].map((t, i) => ({
@@ -19,6 +19,10 @@ const data = ["06:00", "08:00", "10:00", "12:00", "14:00", "16:00", "18:00", "20
   charging: [3, 1, 1, 1, 2, 1, 2, 3][i],
   idle: [1, 1, 0, 0, 0, 0, 1, 1][i],
 }))
+
+// Stacked bands, like the segments of a stacked bar: solid fills in the accent and the grey steps, each band set off from the
+// next by a 2 px stroke in the card colour (so no dashed outlines here; the legend shows a square swatch).
+const band = (key: keyof typeof config) => ({ dataKey: key, stackId: "s", type: "stepAfter", fill: `var(--color-${key})`, fillOpacity: 1, stroke: "var(--card)", strokeWidth: 2 }) as const
 
 /** How the fleet's time splits over the day: stacked step areas, so every hour adds up to the fleet. */
 export function AreaChartFleetStates() {
@@ -48,17 +52,9 @@ export function AreaChartFleetStates() {
             <YAxis {...chartAxis} allowDecimals={false} domain={[0, 6]} width={40} />
             <ChartTooltip />
             <ChartLegend />
-            <Area dataKey="patrol" stackId="s" type="stepAfter" stroke="var(--color-patrol)" fill="var(--color-patrol)" fillOpacity={0.5} {...chartMotion} />
-            <Area
-              dataKey="charging"
-              stackId="s"
-              type="stepAfter"
-              stroke="var(--color-charging)"
-              fill="var(--color-charging)"
-              fillOpacity={0.5}
-              {...chartMotion}
-            />
-            <Area dataKey="idle" stackId="s" type="stepAfter" stroke="var(--color-idle)" fill="var(--color-idle)" fillOpacity={0.5} {...chartMotion} />
+            <Area {...band("patrol")} {...chartMotion} />
+            <Area {...band("charging")} {...chartMotion} />
+            <Area {...band("idle")} {...chartMotion} />
           </AreaChart>
         </ChartContainer>
       ) : (

@@ -30,6 +30,13 @@ describe("ShareBar", () => {
     expect(a.className).toContain("bg-chart-1")
     expect(b.className).toContain("bg-chart-2")
   })
+  it("gives a fourth part and more the Other grey, never a new colour, and shows the part not shown as the track", () => {
+    const segments = ["a", "b", "c", "d", "e"].map((key) => ({ key, label: key, value: 1 }))
+    const { container } = render(<ShareBar label="x" total={10} segments={segments} />)
+    const parts = [...container.querySelectorAll("[data-slot=share-bar] span")].map((s) => s.className)
+    expect(parts.slice(0, 5).map((c) => c.match(/bg-chart-\d/)?.[0])).toEqual(["bg-chart-1", "bg-chart-2", "bg-chart-3", "bg-chart-4", "bg-chart-4"])
+    expect(parts[5]).toContain("bg-track")
+  })
 })
 
 describe("LoadMore", () => {
