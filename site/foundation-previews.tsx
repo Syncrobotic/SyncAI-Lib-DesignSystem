@@ -89,7 +89,7 @@ const previews: Record<FoundationSlug, React.ReactNode> = {
       <line x1="0" y1="62" x2="120" y2="62" stroke="var(--border)" />
       <line x1="0" y1="32" x2="120" y2="32" stroke="var(--border)" />
       <polyline points="0,50 20,44 40,47 60,30 80,34 100,18 120,22" fill="none" stroke="var(--chart-1)" strokeWidth="2.5" />
-      <polyline points="0,58 20,54 40,56 60,48 80,50 100,42 120,44" fill="none" stroke="var(--chart-2)" strokeWidth="2.5" />
+      <polyline points="0,58 20,54 40,56 60,48 80,50 100,42 120,44" fill="none" stroke="var(--chart-2)" strokeWidth="2.5" strokeDasharray="6 4" />
     </svg>
   ),
   accessibility: (

@@ -1,4 +1,4 @@
-// @syncrobotic/heatmap-zones v0.17.3 · update: npx shadcn add @syncrobotic/heatmap-zones --overwrite
+// @syncrobotic/heatmap-zones v0.22.0 · update: npx shadcn add @syncrobotic/heatmap-zones --overwrite
 "use client"
 
 import * as React from "react"
@@ -16,15 +16,16 @@ const minutes = [
   [60, 35, 10, 12, 38, 90],
 ]
 const max = 90
-// The kit's sequential heatmap scale (the same in heatmap-week-hours): one hue mixed into the track colour, from the bare track at
-// none (a grey cell that still reads as a cell on the card, 1.5:1 and more) to 55 % at the most, so a number written on
-// a cell keeps 4.5:1 in both themes and the step from none to a little is a change of hue, not only of lightness.
-const shade = (v: number) => `color-mix(in oklab, var(--chart-1) ${Math.round((v / max) * 55)}%, var(--track))`
+// The kit's sequential heatmap scale (as in heatmap-week-hours): the accent's ramp mixed into the track colour, from the
+// bare track at none (a grey cell that still reads as a cell on the card, 1.5:1 and more) up to --heat-max: 60 %, so the
+// number written on a cell keeps 4.5:1 in light and dark; 36 % in high contrast, where the number keeps 4.5:1 against the
+// darker accent too. The step from none to a little is a change of hue, not only of lightness.
+const shade = (v: number) => `color-mix(in oklab, var(--chart-1) calc(var(--heat-max) * ${(v / max).toFixed(3)}), var(--track))`
 
 /** Where the robots spend their time: zones by time of day, with each cell's minutes written in it, so the colour only groups. */
 export function HeatmapZones() {
   return (
-    <Card className="@container gap-3">
+    <Card className="@container gap-3 [--heat-max:60%] in-data-[contrast=more]:[--heat-max:36%]">
       <CardDataHeader title="Robot presence by zone">
         <p className="text-xs text-muted-foreground">Today, minutes per 3 hours</p>
       </CardDataHeader>

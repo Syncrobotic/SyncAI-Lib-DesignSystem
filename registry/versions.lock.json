@@ -1,7 +1,7 @@
 {
   "syncrobotic-theme": {
-    "version": "0.17.3",
-    "hash": "ae709f5b775318a2"
+    "version": "0.22.0",
+    "hash": "d00096c9d68e147b"
   },
   "cn": {
     "version": "0.5.0",
@@ -204,8 +204,8 @@
     "hash": "c53a2b4f3f24b843"
   },
   "chart": {
-    "version": "0.17.2",
-    "hash": "7fc133ecb06fbfc5"
+    "version": "0.22.0",
+    "hash": "3bf7168182df312b"
   },
   "tabs": {
     "version": "0.17.1",
@@ -304,8 +304,8 @@
     "hash": "fc2f7c91359558de"
   },
   "share-bar": {
-    "version": "0.17.3",
-    "hash": "0677350b959c945e"
+    "version": "0.22.0",
+    "hash": "b324b5365eba4f3a"
   },
   "load-more": {
     "version": "0.15.0",
@@ -504,8 +504,8 @@
     "hash": "f92b1126101d0227"
   },
   "agent-skill": {
-    "version": "0.17.3",
-    "hash": "683d836c97c88f9b"
+    "version": "0.22.0",
+    "hash": "e945ec999a5c5401"
   },
   "line-chart-telemetry": {
     "version": "0.17.2",
@@ -516,20 +516,20 @@
     "hash": "ad33cea95dcddaa4"
   },
   "line-chart-compare": {
-    "version": "0.17.2",
-    "hash": "7f1ea37a7c3d6054"
+    "version": "0.22.0",
+    "hash": "4054b9ac70b0aed5"
   },
   "area-chart-battery": {
     "version": "0.17.2",
     "hash": "0c3c3c561ecd8041"
   },
   "area-chart-fleet-states": {
-    "version": "0.17.2",
-    "hash": "2797b50a47426afe"
+    "version": "0.22.0",
+    "hash": "0ab1aff2412f299e"
   },
   "area-chart-cumulative": {
-    "version": "0.17.2",
-    "hash": "35beae83acdc4e8f"
+    "version": "0.22.0",
+    "hash": "8123335cba3a0f85"
   },
   "bar-chart-missions": {
     "version": "0.17.2",
@@ -580,20 +580,20 @@
     "hash": "791d1e59c71448fb"
   },
   "radial-chart-capacity": {
-    "version": "0.17.3",
-    "hash": "c0c5c9dd1e6f1946"
+    "version": "0.22.0",
+    "hash": "440f60d80040b1b8"
   },
   "heatmap-week-hours": {
-    "version": "0.17.3",
-    "hash": "c44b5ad0ab7c4561"
+    "version": "0.22.0",
+    "hash": "3824c601d0b2b600"
   },
   "heatmap-zones": {
-    "version": "0.17.3",
-    "hash": "d65f8161c109654f"
+    "version": "0.22.0",
+    "hash": "4313229823c2aa59"
   },
   "histogram-battery": {
-    "version": "0.21.0",
-    "hash": "29b1fe08835ca2b6"
+    "version": "0.22.0",
+    "hash": "4e2e4ab8c03e7664"
   },
   "app-shell-mobile-tabs": {
     "version": "0.17.3",

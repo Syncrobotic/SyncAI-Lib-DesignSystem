@@ -2,6 +2,15 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Changed
+- **Chart palette: graphite and one accent** (`syncrobotic-theme` 0.22.0). The categorical palette (purple, teal, olive, plum, grey) felt foreign to a monochrome UI. Now a chart has one series the reader should look at, in the brand indigo (`--chart-1`: #5347a8 light, #8986de dark, #3d2e8d and #b5b4ff in high contrast); the others are graphite (`--chart-2`, `--chart-3`), `--chart-4` is a light grey for Other and `--chart-5` the baseline (an alias of `--chart-3`, always dashed). The token names are unchanged; their meaning is not: code that used slots 2–5 as hues now draws them grey. Checked in all four modes against the card: any two of slots 1–3, and 3 beside 4, differ by ΔE 15 or more to normal vision and under red-green colour blindness; slots 1–3 reach 3:1 (Other sits at 2.1:1 in light and 1.9:1 in dark on purpose, always labelled; 3:1 or more in high contrast). Blue, green, amber and red stay for status.
+- **`chart` 0.22.0: line style by series order.** `ChartContainer` gives every `Line` and `Area` outline that does not set `strokeDasharray` its style by its place in the config: solid, dashed (6 4), dotted (1.5 3.5); grouped bars get the kit's 2 px gap; the legend and tooltip draw each series' line (`ChartSwatch`). New exports `chartDash`, `chartDashes`, `ChartSwatch`. Three series and Other at most: fold the rest into Other, highlight one, or split into small multiples.
+- **`share-bar` 0.22.0**: parts take the accent, two greys, then the Other grey for a fourth part and more; `"other"` is `--chart-4`. The part not shown is its own track segment, so the gaps show the surface.
+- **Chart blocks** (0.22.0): `heatmap-week-hours` runs the accent's ramp from the track to the full accent; `heatmap-zones` up to 60 % (36 % in high contrast) so every written number keeps 4.5:1; `line-chart-compare` and `area-chart-cumulative` take their dashed second series from the chart; `histogram-battery` bins in the graphite mid; `radial-chart-capacity` rings in accent and greys; `area-chart-fleet-states` draws its stack as solid bands set apart by a 2 px card-coloured stroke, like a stacked bar. The other chart blocks keep their code and take the new palette and line styles from the theme and `chart`.
+- Docs: the **Data visualisation** foundation explains the new model (accent, greys, line style, Other, baseline) with its separation and contrast tables computed from the theme in all four modes; the design language and checklist follow.
+
 ## 0.21.0 · 2026-11-20
 
 What products were building by hand: menus, previews and banners, a lineage graph, a media player, a histogram, and the account screens every console needs.

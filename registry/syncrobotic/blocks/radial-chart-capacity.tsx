@@ -1,10 +1,11 @@
-// @syncrobotic/radial-chart-capacity v0.17.3 · update: npx shadcn add @syncrobotic/radial-chart-capacity --overwrite
+// @syncrobotic/radial-chart-capacity v0.22.0 · update: npx shadcn add @syncrobotic/radial-chart-capacity --overwrite
 "use client"
 
 import * as React from "react"
 import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 
-// Sample data: three resources of a site server, one concentric ring each, in palette order.
+// Sample data: three resources of a site server, one concentric ring each, fullest first: the accent on the outer ring,
+// then the two greys, the same order as the legend beside them.
 const rings = [
   { label: "Storage", used: 71, detail: "3.6 of 5 TB", color: "var(--chart-1)" },
   { label: "Compute", used: 48, detail: "12 of 24 cores", color: "var(--chart-2)" },

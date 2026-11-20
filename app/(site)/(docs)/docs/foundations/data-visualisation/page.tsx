@@ -4,7 +4,7 @@ import { blockHref } from "@/site/block-types"
 import { Code, DocHeader, DoDont, Pager, Section, Swatch, TokenTable } from "@/site/doc"
 import { Stage } from "@/site/examples"
 import { metaFor, neighbours } from "@/site/foundations"
-import { CVD_MIN, CVD_TARGET, chroma, NORMAL_MIN, separation } from "@/site/palette-check"
+import { CVD_TARGET, chroma, NORMAL_MIN, separation } from "@/site/palette-check"
 import { Rules } from "@/site/prose"
 import { color, contrast, type Mode } from "@/site/theme-tokens"
 
@@ -37,13 +37,13 @@ const jobs = [
     job: "Categorical",
     means: "Which series: identity, not amount",
     tokens: "--chart-1 … 5",
-    rule: "Fixed order, kept with the series when others are filtered out. Slot 5 is grey on purpose: Other, an earlier period, a baseline.",
+    rule: "Graphite and one accent. The series the reader should look at is the accent, the brand indigo; the others are graphite, told apart by line style too. Slot 4 is Other, slot 5 the baseline (an earlier period, a plan). Kept with the series when others are filtered out.",
   },
   {
     job: "Sequential",
-    means: "How much: one hue, light to dark",
-    tokens: "--foreground, or --chart-1",
-    rule: "Mixed into the card, darker always meaning more, with a Fewer–More scale. Cells with no number: ink, the calmest (heatmap-week-hours). Cells that carry their number, and anything on the map: --chart-1 up to 45 %, so the number keeps its contrast in dark and the ramp stands apart from the grey scans (heatmap-zones).",
+    means: "How much: the accent's ramp",
+    tokens: "--chart-1 into --track",
+    rule: "From the bare track at none to the full accent at the most, with a Fewer–More scale: light to dark in light, dark to light in dark, so more is always further from the card (heatmap-week-hours). Cells that carry their number stop at 60 % (36 % in high contrast), so the number keeps 4.5:1 (heatmap-zones).",
   },
   {
     job: "Status",
@@ -59,18 +59,31 @@ const jobs = [
   },
 ]
 
-const slots = [1, 2, 3, 4, 5]
+// The palette, graphite and one accent: what each slot is for and the line style it gets as a line.
+const slots = [
+  { n: 1, name: "Accent", use: "The series to look at", dash: undefined },
+  { n: 2, name: "Graphite", use: "Second series", dash: "6 4" },
+  { n: 3, name: "Graphite mid", use: "Third series", dash: "1.5 3.5" },
+  { n: 4, name: "Other", use: "What is folded together", dash: undefined },
+  { n: 5, name: "Baseline", use: "Earlier period, plan", dash: "6 4" },
+] as const
+const modes: { mode: Mode; label: string }[] = [
+  { mode: "light", label: "Light" },
+  { mode: "dark", label: "Dark" },
+  { mode: "light-hc", label: "Light, high contrast" },
+  { mode: "dark-hc", label: "Dark, high contrast" },
+]
 const hex = (n: number, mode: Mode) => color(`chart-${n}`)[mode]
-const adjacent = slots.slice(0, -1).map((n) => [n, n + 1] as const)
-const anyPair = [
+const seriesPairs = [
   [1, 2],
   [1, 3],
   [2, 3],
+  [3, 4],
 ] as const
 
 function Delta({ a, b, mode }: { a: number; b: number; mode: Mode }) {
   const s = separation(hex(a, mode), hex(b, mode))
-  const weak = s.normal < NORMAL_MIN || s.cvd < CVD_MIN
+  const weak = s.normal < NORMAL_MIN || s.cvd < NORMAL_MIN
   return (
     <span className={`font-mono text-xs whitespace-nowrap tabular-nums ${weak ? "text-danger" : ""}`}>
       {s.normal.toFixed(0)} · {s.cvd.toFixed(1)}
@@ -88,6 +101,13 @@ const PairName = ({ a, b }: { a: number; b: number }) => (
   </span>
 )
 
+/** A short stretch of a series' line, in its slot's colour and line style, as the chart legend draws it. */
+const LineSwatch = ({ n, dash }: { n: number; dash?: string }) => (
+  <svg viewBox="0 0 40 8" className="h-2 w-10 shrink-0" aria-hidden="true">
+    <line x1="0" y1="4" x2="40" y2="4" stroke={`var(--chart-${n})`} strokeWidth="2" strokeDasharray={dash} />
+  </svg>
+)
+
 // Two tiny charts for the rules below, drawn with the same tokens as the kit's charts.
 const Lines = ({ dual }: { dual?: boolean }) => (
   <svg viewBox="0 0 200 90" className="h-24 w-56" role="img" aria-label={dual ? "One chart with two y axes" : "Two charts, one axis each"}>
@@ -95,7 +115,7 @@ const Lines = ({ dual }: { dual?: boolean }) => (
       <>
         <line x1="20" y1="80" x2="180" y2="80" stroke="var(--border)" />
         <polyline points="20,60 60,50 100,55 140,30 180,35" fill="none" stroke="var(--chart-1)" strokeWidth="2" />
-        <polyline points="20,20 60,40 100,30 140,55 180,45" fill="none" stroke="var(--chart-2)" strokeWidth="2" />
+        <polyline points="20,20 60,40 100,30 140,55 180,45" fill="none" stroke="var(--chart-2)" strokeWidth="2" strokeDasharray="6 4" />
         <text x="4" y="24" className="fill-muted-foreground" fontSize="9">
           °C
         </text>
@@ -108,7 +128,7 @@ const Lines = ({ dual }: { dual?: boolean }) => (
         <line x1="10" y1="38" x2="190" y2="38" stroke="var(--border)" />
         <polyline points="10,30 55,24 100,27 145,10 190,13" fill="none" stroke="var(--chart-1)" strokeWidth="2" />
         <line x1="10" y1="86" x2="190" y2="86" stroke="var(--border)" />
-        <polyline points="10,52 55,68 100,60 145,80 190,74" fill="none" stroke="var(--chart-2)" strokeWidth="2" />
+        <polyline points="10,52 55,68 100,60 145,80 190,74" fill="none" stroke="var(--chart-2)" strokeWidth="2" strokeDasharray="6 4" />
       </>
     )}
   </svg>
@@ -289,54 +309,60 @@ export default function DataVisualisationPage() {
             </span>,
           ])}
         />
-        <div className="grid grid-cols-5 overflow-hidden rounded-md border border-border">
-          {slots.map((n) => (
-            <div key={n} className="flex flex-col">
-              <div className="h-16" style={{ background: `var(--chart-${n})` }} />
-              <div className="flex flex-col gap-0.5 bg-card p-3 text-xs">
-                <span className="font-mono">--chart-{n}</span>
+        <div className="grid grid-cols-2 overflow-hidden rounded-md border border-border sm:grid-cols-5">
+          {slots.map((s) => (
+            <div key={s.n} className="flex flex-col last:col-span-2 sm:last:col-span-1">
+              <div className="h-16" style={{ background: `var(--chart-${s.n})` }} />
+              <div className="flex flex-1 flex-col gap-1 bg-card p-3 text-xs">
+                <span className="font-medium">{s.name}</span>
+                <span className="text-muted-foreground">{s.use}</span>
+                <LineSwatch n={s.n} dash={s.dash} />
+                <span className="font-mono">--chart-{s.n}</span>
                 <span className="text-muted-foreground tabular-nums">
-                  {contrast(`chart-${n}`, "card", "light")!.toFixed(1)}:1 · {contrast(`chart-${n}`, "card", "dark")!.toFixed(1)}:1
+                  {contrast(`chart-${s.n}`, "card", "light")!.toFixed(1)}:1 · {contrast(`chart-${s.n}`, "card", "dark")!.toFixed(1)}:1
                 </span>
               </div>
             </div>
           ))}
         </div>
         <p className="text-sm text-muted-foreground">
-          Contrast against a card, light · dark. Every slot is at least 3:1, the minimum for a mark. Slot 5 has a chroma of{" "}
-          {chroma(hex(5, "light")).toFixed(2)}: grey, so Other and the earlier period recede.
+          Contrast against a card, light · dark. The accent is the SYNCROBOTIC brand indigo ({hex(1, "light")} in light, the same hue in every mode), chroma{" "}
+          {chroma(hex(1, "light")).toFixed(2)}; the greys are {chroma(hex(2, "light")).toFixed(2)} or less, so only the series that matters has colour. The
+          accent and the two graphite steps are at least 3:1, the minimum for a mark. Other is quieter on purpose (
+          {contrast("chart-4", "card", "light")!.toFixed(1)}:1 in light, {contrast("chart-4", "card", "dark")!.toFixed(1)}:1 in dark): it recedes, it is always named in the legend and the table, and a 2 px gap in the card
+          colour sets it off. The baseline is the graphite mid, always dashed.
         </p>
       </Section>
 
       <Section
         id="palette"
         title="How many series"
-        lead={`Two series are distinct when they differ by ΔE ${NORMAL_MIN} to normal vision and ${CVD_TARGET} under red-green colour blindness (${CVD_MIN}–${CVD_TARGET} is allowed only with a legend and a table, which every chart has). Measured here from the theme, ΔE normal · colour-blind, red when it fails.`}
+        lead={`Three series and Other. Any two of the accent and the two greys can sit side by side, in a legend, a stack or a crossing, so every pair must differ, and Other must differ from the grey beside it. The usual floor is ΔE ${NORMAL_MIN} to normal vision and ${CVD_TARGET} under red-green colour blindness; this palette holds ${NORMAL_MIN} for both, in every mode. Measured here from the theme, ΔE normal · colour-blind, red when it fails.`}
       >
-        <div className="grid gap-6 md:grid-cols-2">
-          <div className="flex flex-col gap-2">
-            <h3 className="font-medium">Lines, bars, stacks: up to five</h3>
-            <p className="text-sm text-muted-foreground">Only neighbouring slots touch, in a legend, a stack or a group, so neighbours are what must differ.</p>
-            <TokenTable
-              head={["Slots", "Light", "Dark"]}
-              rows={adjacent.map(([a, b]) => [<PairName key="p" a={a} b={b} />, <Delta key="l" a={a} b={b} mode="light" />, <Delta key="d" a={a} b={b} mode="dark" />])}
-            />
-          </div>
-          <div className="flex flex-col gap-2">
-            <h3 className="font-medium">Scatter and maps: up to three</h3>
-            <p className="text-sm text-muted-foreground">
-              Any two marks can sit side by side, so every pair must differ. Slots 1 and 4 do not ({separation(hex(1, "light"), hex(4, "light")).normal.toFixed(0)}{" "}
-              to normal vision), so use 1–3; for more, label marks directly or split into small multiples.
-            </p>
-            <TokenTable
-              head={["Slots", "Light", "Dark"]}
-              rows={anyPair.map(([a, b]) => [<PairName key="p" a={a} b={b} />, <Delta key="l" a={a} b={b} mode="light" />, <Delta key="d" a={a} b={b} mode="dark" />])}
-            />
-          </div>
+        <TokenTable
+          head={["Slots", ...modes.map((m) => m.label)]}
+          rows={seriesPairs.map(([a, b]) => [<PairName key="p" a={a} b={b} />, ...modes.map((m) => <Delta key={m.mode} a={a} b={b} mode={m.mode} />)])}
+        />
+        <div className="flex flex-col gap-2">
+          <h3 className="font-medium">Line style carries the series too</h3>
+          <p className="text-sm text-muted-foreground">
+            The chart gives each line and area outline its style by its place in the config, and the legend and tooltip draw it, so the series read in
+            grey print and to anyone who cannot tell the accent from a grey.
+          </p>
+          <ul className="flex flex-col gap-2 text-sm">
+            {slots.slice(0, 3).map((s) => (
+              <li key={s.n} className="flex items-center gap-3">
+                <LineSwatch n={s.n} dash={s.dash} />
+                <span className="font-medium">{s.name}</span>
+                <span className="text-muted-foreground">{s.dash ? (s.n === 2 ? "Dashed, 6 4" : "Dotted, 1.5 3.5") : "Solid"}</span>
+              </li>
+            ))}
+          </ul>
         </div>
         <p className="text-sm text-muted-foreground">
-          A sixth series is never a new colour: fold the smallest into Other (slot 5) or split the chart. Simulation: Machado, Oliveira and Fernandes (2009); ΔE
-          in OKLab.
+          A fourth series is never a new colour: fold the rest into Other (slot 4), highlight the one that matters and grey the others, or split the chart into
+          small multiples, one series each, all in the accent. Scatter plots and maps, where any two marks touch, keep to the accent and one grey. Blue, green,
+          amber and red are status, never a series. Simulation: Machado, Oliveira and Fernandes (2009); ΔE in OKLab.
         </p>
       </Section>
 
@@ -345,12 +371,12 @@ export default function DataVisualisationPage() {
         <Rules
           rules={[
             "One y axis. Two measures on different scales are two charts, stacked, sharing the time axis.",
-            "Lines 2 px. Bars start at zero, with 4 px rounded data ends and a 2 px gap in the surface colour between segments.",
+            "Lines 2 px: the first series solid, the second dashed (6 4), the third dotted (1.5 3.5); the chart sets this by series order. Bars start at zero, with 4 px rounded data ends and a 2 px gap in the surface colour between bars of a group and segments of a stack.",
             "A horizontal hairline grid (--border); no axis lines; tick labels in --muted-foreground, tabular numbers.",
             "A limit is a dashed line with its label at the end, in --muted-foreground. Only the value past it turns warning.",
-            "Two series or more: a legend above the plot. One series: no legend; the title names it. Up to four series may also be labelled at the line's end.",
+            "Two series or more: a legend above the plot, with each series' line style. One series: no legend; the title names it, in the accent. Up to three series may also be labelled at the line's end.",
             "Text is never in the series colour: values, labels and legend stay in text colours; the swatch beside them carries the identity.",
-            "Every chart with axes (line, area, bar, heatmap) has a table view (ChartTable), for exact values and for anyone who cannot tell two hues apart. Sparklines, rings (radial) and status strips write their numbers in words instead.",
+            "Every chart with axes (line, area, bar, heatmap) has a table view (ChartTable), for exact values and for anyone who cannot tell two series apart. Sparklines, rings (radial) and status strips write their numbers in words instead.",
             "No data is said in words in the plot's place, not an empty frame.",
           ]}
         />
@@ -385,7 +411,7 @@ export default function DataVisualisationPage() {
             ["Grid, zones and walls", <Code key="c">--edge, --map-point outline</Code>, "Hairlines, no fills. A safety zone is named with its icon (SafetyZone) and a word, not painted red."],
             ["Route being driven", <Code key="c">--info, dashed</Code>, "A process someone waits on: the one place blue appears on the map."],
             ["Robots", <Code key="c">StatusGlyph + ID</Code>, "The status shape and the robot's ID, as in every list; colour only when a robot needs attention. The selected one gets the focus ring's ink."],
-            ["Density over the floor", <Code key="c">--chart-1 ramp</Code>, "One hue over the grey scans, light to dark, with a scale."],
+            ["Density over the floor", <Code key="c">--chart-1 ramp</Code>, "The accent's ramp over the grey scans, with a scale: the one colour on the floor."],
           ].map((r) => r.map((c, i) => (typeof c === "string" ? <span key={i} className={i === 0 ? "font-medium" : "text-muted-foreground"}>{c}</span> : c)))}
         />
       </Section>
@@ -423,7 +449,7 @@ export default function DataVisualisationPage() {
           rules={[
             "Line style first, colour second: predicted solid 2 px, ground truth dashed (6 4) 2 px, the previous version dotted and faded (--annotate-fade), the selected one 3 px with square handles at its corners. Points: predicted a filled dot, ground truth a ring.",
             "Every stroke is drawn twice: first in --annotate-halo, 2 px wider, then in its colour. The two are at least 3:1 apart, so on a bright or a dark photo one of them shows.",
-            "Colours come from the chart palette (predicted --chart-1, ground truth --chart-2), the previous version is the muted ink and the selected one the focus ink. Never status colours: a low score is a number in the label, not a warning box.",
+            "Colours come from the chart palette (predicted --chart-1, the accent indigo, solid; ground truth --chart-2, graphite, dashed), the previous version is the muted ink and the selected one the focus ink. Never status colours: a low score is a number in the label, not a warning box.",
             "The class is a word in the label (text in --foreground on --annotate-halo), not a colour: the colours already say where a box came from.",
             "Two sources at a time, plus the selection: predicted against ground truth, or this version against the previous one. To compare more, put pictures side by side.",
             "High contrast keeps the same strokes and stops fading the previous version: nothing is translucent there.",

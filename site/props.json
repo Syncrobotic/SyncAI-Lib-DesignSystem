@@ -954,6 +954,18 @@
    ]
   },
   {
+   "name": "ChartSwatch",
+   "props": [
+    {
+     "name": "dataKey",
+     "type": "string",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
    "name": "ChartTooltipContent",
    "props": [
     {
