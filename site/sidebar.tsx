@@ -17,8 +17,10 @@ export const scopeFor = (scopes: Pick<Scope, "match">[], path: string) =>
   )
 
 /** The groups of the area you are in. On phones (`switcher`) it also offers the other areas, which the header shows on desktop. */
-export function Sidebar({ scopes, switcher = false }: { scopes: Scope[]; switcher?: boolean }) {
-  const path = usePathname()
+export function Sidebar({ scopes, switcher = false, path: frozen }: { scopes: Scope[]; switcher?: boolean; path?: string }) {
+  // The drawer passes the page it was opened on, so its list holds still while it closes on the way to another page.
+  const current = usePathname()
+  const path = frozen ?? current
   // A component page's tabs belong to its one link.
   const here = componentBase(path)
   const active = scopes[scopeFor(scopes, path)]

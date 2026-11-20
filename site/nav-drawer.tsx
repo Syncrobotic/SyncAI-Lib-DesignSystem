@@ -22,6 +22,19 @@ export function NavDrawer({ scopes }: { scopes: Scope[] }) {
     setLast(path)
     setOpen(false)
   }
+  // The list shows the page the drawer was opened on. Were it to follow the address, it would rearrange itself while the
+  // drawer fades out (the marker sliding, the examples folding and unfolding, the column re-scrolling): the jump on phones.
+  const [shown, setShown] = React.useState(path)
+  const change = (next: boolean) => {
+    if (next) setShown(path)
+    setOpen(next)
+  }
+  // Start closing on the tap itself, not when the next page arrives: a plain click on a link inside the drawer.
+  const closeOnLink = (e: React.MouseEvent) => {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+    const a = (e.target as HTMLElement).closest("a[href]")
+    if (a && !a.hasAttribute("target")) setOpen(false)
+  }
   React.useEffect(() => {
     // An in-page link (an example on this page) changes only the hash; close for that too.
     const close = () => setOpen(false)
@@ -29,14 +42,14 @@ export function NavDrawer({ scopes }: { scopes: Scope[] }) {
     return () => window.removeEventListener("hashchange", close)
   }, [])
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
+    <Sheet open={open} onOpenChange={change}>
       <SheetTrigger
         aria-label="Open navigation"
         className="press flex size-(--h-md) shrink-0 items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground lg:hidden"
       >
         <Menu aria-hidden="true" className="size-5" />
       </SheetTrigger>
-      <SheetContent side="left" data-scroll className="w-[85vw] gap-6 p-4">
+      <SheetContent side="left" data-scroll className="w-[85vw] gap-6 p-4" onClick={closeOnLink}>
         <div className="flex items-center justify-between gap-2 pl-3">
           <SheetTitle className="text-base">Navigation</SheetTitle>
           <SheetDescription className="sr-only">The areas of the design system and the pages of the one you are in.</SheetDescription>
@@ -44,7 +57,7 @@ export function NavDrawer({ scopes }: { scopes: Scope[] }) {
             <X aria-hidden="true" className="size-5" />
           </SheetClose>
         </div>
-        <Sidebar scopes={scopes} switcher />
+        <Sidebar scopes={scopes} switcher path={shown} />
         {/* On phones the header has no room for GitHub; it closes the drawer's list instead. */}
         <div className="shrink-0 border-t border-border pt-4 sm:hidden">
           <a

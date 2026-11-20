@@ -2,6 +2,13 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.22.3 · 2026-11-20
+
+Docs site only; no item changed, nothing to re-install.
+
+### Fixed
+- **Phones: the page jumped when you picked a page in the navigation drawer.** The drawer's list followed the address, and the drawer only began to close once the next page had arrived. So while it faded out, its list rearranged itself under your finger: the current-page marker slid to the new item, the old page's examples folded, the new page's unfolded, and the column re-scrolled to centre it. Now the drawer starts closing on the tap and its list stays as it was when you opened it; the next time it opens, it shows where you are. Measured on an iPhone 13 viewport: layout shifts during the switch went from 8 to 0.
+
 ## 0.22.2 · 2026-11-20
 
 Missing data that looked like zero, and a bulk acknowledge that could take a critical alarm.
