@@ -28,6 +28,7 @@ import * as s_annotated_image from "@/stories/annotated-image.stories"
 import * as s_media_player from "@/stories/media-player.stories"
 import * as s_tree from "@/stories/tree.stories"
 import * as s_graph from "@/stories/graph.stories"
+import * as s_robot_map from "@/stories/robot-map.stories"
 import * as s_chip_group from "@/stories/chip-group.stories"
 import * as s_filter_form from "@/stories/filter-form.stories"
 import * as s_filters from "@/stories/filters.stories"
@@ -111,6 +112,7 @@ const files: Record<StoryFile, StoryModule> = {
   "media-player": s_media_player as unknown as StoryModule,
   tree: s_tree as unknown as StoryModule,
   graph: s_graph as unknown as StoryModule,
+  "robot-map": s_robot_map as unknown as StoryModule,
   "chip-group": s_chip_group as unknown as StoryModule,
   "filter-form": s_filter_form as unknown as StoryModule,
   filters: s_filters as unknown as StoryModule,

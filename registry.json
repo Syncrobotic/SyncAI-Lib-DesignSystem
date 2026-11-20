@@ -2509,6 +2509,40 @@
       }
     },
     {
+      "name": "robot-map",
+      "type": "registry:ui",
+      "title": "Robot map",
+      "description": "A site floor plan in metres, drawn in SVG with no map library: zones as outlines with icon and name, planned and travelled routes, robots as status shapes with heading and name, selection, pan and zoom by drag, wheel, pinch, buttons and keys, a scale bar and an optional north arrow; RobotMapList shows the same robots as text.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/skeleton",
+        "@syncrobotic/button",
+        "@syncrobotic/button-group",
+        "@syncrobotic/robot-icons"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/robot-map.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.23.0",
+        "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "First release: the site map that lived only inside map-workspace, as a component. Site coordinates in metres over an image or SVG floor plan; zones (no entry, slow, charging, other) as hairline outlines with icon and name; planned routes dashed blue, travelled tracks solid grey; robots as their status shape with a heading tick and a name that moves aside instead of covering another; selection by a ring and weight. Pan and zoom by drag, wheel (once focused, or with Ctrl), pinch, 44 px buttons and keys (arrows, + / -, 0), gliding at --motion-base unless motion is reduced. One Tab stop; RobotMapList lists the robots with position, zone and status, and selects on the map. Scale bar, optional north arrow, empty, loading and error states."
+          }
+        ]
+      }
+    },
+    {
       "name": "dialog",
       "type": "registry:ui",
       "title": "Dialog",
@@ -5029,7 +5063,6 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "@syncrobotic/cn",
         "@syncrobotic/app-shell",
         "@syncrobotic/island",
         "@syncrobotic/status-eyebrow",
@@ -5041,7 +5074,9 @@
         "@syncrobotic/meter",
         "@syncrobotic/robot-icons",
         "@syncrobotic/slide-to-release",
-        "@syncrobotic/feedback"
+        "@syncrobotic/feedback",
+        "@syncrobotic/robot-map",
+        "@syncrobotic/sheet"
       ],
       "files": [
         {
@@ -5050,8 +5085,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "The map is now RobotMap, the kit's one map: same layout and markers, now with heading ticks, names that move aside, the loading bay named, a scale bar, and pan and zoom (drag, wheel, pinch, buttons and keys). The map is one Tab stop; a Robots button in the top bar opens the robots as a list (RobotMapList) that selects on the map. The drawing, its resize observer and the hand-placed buttons are gone."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",

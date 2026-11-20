@@ -1,0 +1,802 @@
+// @syncrobotic/robot-map v0.23.0 · update: npx shadcn add @syncrobotic/robot-map --overwrite
+"use client"
+
+import * as React from "react"
+import { Crosshair, RotateCw, ZoomIn, ZoomOut } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { StatusGlyph, statusText, type Status } from "@/registry/syncrobotic/shell/status-glyph"
+import { Bone } from "@/registry/syncrobotic/shell/skeleton"
+import { Button } from "@/registry/syncrobotic/ui/button"
+import { ButtonGroup } from "@/registry/syncrobotic/ui/button-group"
+import { ChargingDock, SafetyZone } from "@/registry/syncrobotic/ui/robot-icons"
+
+/** A point on the site, in metres from the plan's top-left corner: x to the right, y down (as the plan image is drawn). */
+export type RobotMapPoint = [x: number, y: number]
+
+export type RobotMapZoneKind = "restricted" | "slow" | "charging" | "other"
+
+/** An area of the site, drawn as a hairline outline with its icon and name; never a fill. */
+export type RobotMapZone = {
+  id: string
+  kind: RobotMapZoneKind
+  /** The corners, in metres, in order around the zone. */
+  points: RobotMapPoint[]
+  /** Its name, shown at its corner and in RobotMapList: "Cold store". Without it the kind's word (labels.zoneKind) is used; an unnamed `other` zone is only its outline. */
+  label?: string
+}
+
+export type RobotMapRobot = {
+  id: string
+  /** Shown beside the marker and in the list: the robot's ID or short name ("AMR-07"). */
+  name: string
+  /** Position in metres from the plan's top-left corner. */
+  x: number
+  y: number
+  /** Where it faces, in degrees clockwise from the top of the plan (0 up, 90 right). Leave it out when unknown. */
+  heading?: number
+  /** Its state, by shape: only warning and danger are coloured. */
+  status: Status
+  /** The state in words; without it the default word for `status` (labels.status). */
+  statusLabel?: string
+}
+
+/** A route: `planned` is where a robot is going (dashed, the in-progress blue), `travelled` where it has been (solid, grey). */
+export type RobotMapPath = { id: string; kind: "planned" | "travelled"; points: RobotMapPoint[]; robotId?: string }
+
+export type RobotMapLabels = {
+  /** Read once when focus enters the map. */
+  instructions: string
+  zoomIn: string
+  zoomOut: string
+  fit: string
+  /** Default words per status, for robots without statusLabel. */
+  status: Record<Status, string>
+  /** Default names per zone kind, and the kind's word in the list. */
+  zoneKind: Record<RobotMapZoneKind, string>
+  /** Said over the map and in the list when there are no robots. */
+  empty: string
+  loading: string
+  error: string
+  retry: string
+  /** How many robots the map shows, read with the instructions. */
+  count: (n: number) => string
+  /** The selected robot, read with the instructions. */
+  selected: (name: string, status: string) => string
+  /** Where north is, when `northDeg` is given. */
+  north: (deg: number) => string
+  /** The letter on the north arrow. */
+  northLetter: string
+  /** RobotMapList: a robot's position. */
+  position: (x: number, y: number) => string
+  /** RobotMapList: the zone a robot is in. */
+  inZone: (zone: string, kind?: string) => string
+  /** RobotMapList: the zone a robot is in, when the zone has no name. */
+  inUnnamedZone: (kind: string) => string
+  /** RobotMapList: a robot outside every zone. */
+  noZone: string
+  /** RobotMapList: which way it faces. */
+  heading: (deg: number) => string
+  /** The scale bar's length. */
+  metres: (m: number) => string
+}
+
+const metres = (n: number) => (Math.abs(n) >= 10 ? n.toFixed(0) : n.toFixed(1))
+
+const defaultLabels: RobotMapLabels = {
+  instructions: "Arrow keys move the map, plus and minus zoom, 0 shows the whole site. The robot list beside the map has the same robots as text.",
+  zoomIn: "Zoom in",
+  zoomOut: "Zoom out",
+  fit: "Show the whole site",
+  status: { active: "Working", normal: "Idle", warning: "Needs attention", danger: "Stopped", offline: "Offline" },
+  zoneKind: { restricted: "No entry", slow: "Slow zone", charging: "Charging", other: "Marked" },
+  empty: "No robots on this site right now.",
+  loading: "Loading the map",
+  error: "The map could not be loaded.",
+  retry: "Reload the map",
+  count: (n) => (n === 1 ? "1 robot" : `${n} robots`),
+  selected: (name, status) => `Selected: ${name}, ${status}`,
+  north: (deg) => `North is ${Math.round(((deg % 360) + 360) % 360)}° clockwise from the top`,
+  northLetter: "N",
+  position: (x, y) => `${metres(x)} m across, ${metres(y)} m down`,
+  inZone: (zone, kind) => (kind ? `In ${zone} (${kind.toLowerCase()})` : `In ${zone}`),
+  inUnnamedZone: (kind) => `In a ${kind.toLowerCase()} zone`,
+  noZone: "Outside the marked zones",
+  heading: (deg) => `Facing ${Math.round(((deg % 360) + 360) % 360)}°`,
+  metres: (m) => `${m} m`,
+}
+
+const merge = (given?: Partial<RobotMapLabels>): RobotMapLabels => ({
+  ...defaultLabels,
+  ...given,
+  status: { ...defaultLabels.status, ...given?.status },
+  zoneKind: { ...defaultLabels.zoneKind, ...given?.zoneKind },
+})
+
+const statusWord = (r: RobotMapRobot, labels: RobotMapLabels) => r.statusLabel ?? labels.status[r.status]
+const abnormal = (s: Status) => s === "warning" || s === "danger"
+
+/** Whether a point is inside a polygon (even-odd rule). */
+export function pointInPolygon([x, y]: RobotMapPoint, poly: RobotMapPoint[]) {
+  let inside = false
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const [xi, yi] = poly[i]
+    const [xj, yj] = poly[j]
+    if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside
+  }
+  return inside
+}
+
+/** The first zone a robot stands in, in the order given. */
+export const zoneOf = (r: RobotMapRobot, zones: RobotMapZone[]) => zones.find((z) => pointInPolygon([r.x, r.y], z.points))
+
+// ---------------------------------------------------------------------------------------------------------------------
+// The view: `k` is the zoom (1 = the whole site fits), `cx`/`cy` the point of the site, in metres, at the frame's centre.
+// Everything is drawn in screen pixels from it, so lines, markers and text keep their size at any zoom.
+// ---------------------------------------------------------------------------------------------------------------------
+
+type View = { k: number; cx: number; cy: number }
+type Size = { w: number; h: number }
+
+const MAX_ZOOM = 20
+const STEP = 1.5
+/** The space kept around the site when it fits: 16 px, the frame's padding. */
+const INSET = 16
+/** Below the site, room for the zoom buttons and scale bar (44 px and 8 px apart), so they do not cover it when it fits. */
+const BOTTOM = INSET + 44 + 8
+/** The frame point the view's centre is drawn at: the middle of the room left by the insets. */
+const anchor = ({ w, h }: Size) => ({ x: w / 2, y: (INSET + h - BOTTOM) / 2 })
+/** Steps for the grid and the scale bar, in metres. */
+const NICE = [0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000]
+
+const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v))
+
+/** The ease of --ease-standard, cubic-bezier(0.2, 0, 0, 1), solved for x by bisection. */
+function easeStandard(t: number) {
+  const bez = (a: number, b: number, s: number) => 3 * a * s * (1 - s) ** 2 + 3 * b * s ** 2 * (1 - s) + s ** 3
+  let lo = 0
+  let hi = 1
+  for (let i = 0; i < 20; i++) {
+    const mid = (lo + hi) / 2
+    if (bez(0.2, 0, mid) < t) lo = mid
+    else hi = mid
+  }
+  return bez(0, 1, (lo + hi) / 2)
+}
+
+/** A label's box on screen, to keep names from covering each other. */
+type Box = { x: number; y: number; w: number; h: number }
+const overlap = (a: Box, b: Box) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h
+
+/** The marker's disc radius and the name's line height, in px. */
+const DISC = 13
+const LINE = 20
+/** About the width of one character of 12 px monospace, plus the label's padding. */
+const charWidth = 7.5
+
+export type RobotMapProps = {
+  /** Names the map for screen readers: "Map of North site". */
+  label: string
+  /** The site's size in metres: the plan's width and height. */
+  width: number
+  height: number
+  /** The floor plan under everything: an image URL (stretched over width × height), or SVG drawn in metres. */
+  floorplan?: string | React.ReactNode
+  zones?: RobotMapZone[]
+  robots?: RobotMapRobot[]
+  paths?: RobotMapPath[]
+  /** The selected robot, controlled; null for none. Without it the map keeps its own selection. */
+  selectedId?: string | null
+  /** Called with the robot clicked, or null when the background is clicked or Esc pressed. */
+  onSelect?: (id: string | null, robot?: RobotMapRobot) => void
+  /** Where north is, in degrees clockwise from the top of the plan. Without it no north arrow is drawn. */
+  northDeg?: number
+  /** Bones in the frame while the map loads. */
+  loading?: boolean
+  /** The map could not be loaded: says so in the frame (`true` for the default words, or your own message). */
+  error?: React.ReactNode
+  /** Shows a button under the error that tries again. */
+  onRetry?: () => void
+  /** Fill the parent's height (a full-screen map) instead of keeping the site's proportions. */
+  fill?: boolean
+  labels?: Partial<RobotMapLabels>
+  className?: string
+}
+
+const frame = "relative isolate w-full overflow-hidden rounded-md bg-map ring-1 ring-border"
+
+/** The frame's size from the site's proportions: at most 75 % of the screen's height, so a tall site fits, and at least 288 px, so a wide one still has room on a phone. */
+const proportions = (width: number, height: number, fill?: boolean): React.CSSProperties | undefined =>
+  fill ? undefined : { aspectRatio: `${width} / ${height}`, maxHeight: "75svh", minHeight: "min(18rem, 75svh)" }
+
+/**
+ * A site's floor plan with its zones, routes and robots, in metres. Robots are their status shape (colour only when one
+ * needs attention), a heading tick and their name; names move aside rather than cover each other. Drag, the wheel (once
+ * the map has focus, or with Ctrl) and two fingers pan and zoom; so do the buttons and the keys. The map is one Tab stop;
+ * offer RobotMapList beside it, the same robots as text, as a chart offers its table.
+ */
+export function RobotMap({
+  label: name,
+  width,
+  height,
+  floorplan,
+  zones = [],
+  robots = [],
+  paths = [],
+  selectedId: selectedProp,
+  onSelect,
+  northDeg,
+  loading,
+  error,
+  onRetry,
+  fill,
+  labels: given,
+  className,
+}: RobotMapProps) {
+  const labels = merge(given)
+  const uid = React.useId()
+  const root = React.useRef<HTMLDivElement>(null)
+  const [selectedState, setSelectedState] = React.useState<string | null>(null)
+  const selected = selectedProp !== undefined ? selectedProp : selectedState
+  const select = (id: string | null) => {
+    if (selectedProp === undefined) setSelectedState(id)
+    onSelect?.(id, id ? robots.find((r) => r.id === id) : undefined)
+  }
+
+  // The frame's size. Until it is measured (server render, tests) the site is drawn at 640 px across.
+  const [measured, setMeasured] = React.useState<Size | null>(null)
+  const size: Size = measured ?? { w: 640, h: Math.round((640 * height) / width) }
+  React.useLayoutEffect(() => {
+    const el = root.current
+    if (!el || typeof ResizeObserver === "undefined") return
+    const update = () => {
+      const r = el.getBoundingClientRect()
+      if (r.width > 0 && r.height > 0) setMeasured({ w: r.width, h: r.height })
+    }
+    update()
+    const ro = new ResizeObserver(update)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [loading, error])
+
+  const fitView: View = { k: 1, cx: width / 2, cy: height / 2 }
+  const [view, setViewState] = React.useState<View>(fitView)
+  const viewRef = React.useRef(view)
+  const sizeRef = React.useRef(size)
+  sizeRef.current = size
+  const base = Math.max(1e-6, Math.min((size.w - 2 * INSET) / width, (size.h - INSET - BOTTOM) / height))
+  const baseRef = React.useRef(base)
+  baseRef.current = base
+
+  const limit = (v: View): View => {
+    const k = clamp(v.k, 1, MAX_ZOOM)
+    return { k, cx: clamp(v.cx, 0, width), cy: clamp(v.cy, 0, height) }
+  }
+  const frameId = React.useRef<number | undefined>(undefined)
+  const setView = (v: View) => {
+    if (frameId.current !== undefined) cancelAnimationFrame(frameId.current)
+    frameId.current = undefined
+    viewRef.current = limit(v)
+    setViewState(viewRef.current)
+  }
+  // Buttons and keys glide to the new view at --motion-base on --ease-standard; with reduced motion, or no motion token
+  // in the page, they jump. Drags and the wheel follow the hand directly.
+  const glideTo = (v: View) => {
+    const to = limit(v)
+    const el = root.current
+    const reduce = typeof window === "undefined" || window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+    const ms = el && !reduce ? parseFloat(getComputedStyle(el).getPropertyValue("--motion-base")) || 0 : 0
+    if (!ms) return setView(to)
+    const from = viewRef.current
+    const start = performance.now()
+    if (frameId.current !== undefined) cancelAnimationFrame(frameId.current)
+    const step = (now: number) => {
+      const t = Math.min(1, (now - start) / ms)
+      const e = easeStandard(t)
+      // Zoom moves on a log scale, so each step of a glide looks the same size.
+      const k = from.k * (to.k / from.k) ** e
+      viewRef.current = { k, cx: from.cx + (to.cx - from.cx) * e, cy: from.cy + (to.cy - from.cy) * e }
+      setViewState(viewRef.current)
+      frameId.current = t < 1 ? requestAnimationFrame(step) : undefined
+    }
+    frameId.current = requestAnimationFrame(step)
+  }
+  React.useEffect(() => () => {
+    if (frameId.current !== undefined) cancelAnimationFrame(frameId.current)
+  }, [])
+
+  /** The view after zooming by `factor` around a point of the frame (px), which stays where it is. */
+  const zoomed = (v: View, factor: number, px: number, py: number): View => {
+    const a = anchor(sizeRef.current)
+    const s = baseRef.current * v.k
+    const k = clamp(v.k * factor, 1, MAX_ZOOM)
+    const s2 = baseRef.current * k
+    const wx = v.cx + (px - a.x) / s
+    const wy = v.cy + (py - a.y) / s
+    return { k, cx: wx - (px - a.x) / s2, cy: wy - (py - a.y) / s2 }
+  }
+  const zoomBy = (factor: number) => {
+    const a = anchor(sizeRef.current)
+    glideTo(zoomed(viewRef.current, factor, a.x, a.y))
+  }
+  const panBy = (dx: number, dy: number) => {
+    const v = viewRef.current
+    const s = baseRef.current * v.k
+    glideTo({ ...v, cx: v.cx + dx / s, cy: v.cy + dy / s })
+  }
+
+  // The wheel zooms once the map has focus (a click or Tab put it there), or with Ctrl / ⌘ (a trackpad pinch sends
+  // Ctrl). Otherwise it scrolls the page, so a map in a long page does not trap the wheel.
+  React.useEffect(() => {
+    const el = root.current
+    if (!el) return
+    const onWheel = (e: WheelEvent) => {
+      if (!(e.ctrlKey || e.metaKey || el.contains(document.activeElement))) return
+      e.preventDefault()
+      const r = el.getBoundingClientRect()
+      const unit = e.deltaMode === 1 ? 16 : 1
+      setView(zoomed(viewRef.current, Math.exp(-e.deltaY * unit * 0.002), e.clientX - r.left, e.clientY - r.top))
+    }
+    el.addEventListener("wheel", onWheel, { passive: false })
+    return () => el.removeEventListener("wheel", onWheel)
+  })
+
+  // Drag with one pointer pans; two pinch and pan. A press that does not move selects the robot under it, or clears.
+  const pointers = React.useRef(new Map<number, { x: number; y: number }>())
+  const gesture = React.useRef<{ moved: boolean; x: number; y: number; robot: string | null } | null>(null)
+  const local = (e: React.PointerEvent) => {
+    const r = root.current!.getBoundingClientRect()
+    return { x: e.clientX - r.left, y: e.clientY - r.top }
+  }
+  const onPointerDown = (e: React.PointerEvent) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return
+    if ((e.target as HTMLElement).closest("button")) return
+    const p = local(e)
+    pointers.current.set(e.pointerId, p)
+    if (pointers.current.size === 1) {
+      const robot = (e.target as Element).closest?.("[data-robot-id]")?.getAttribute("data-robot-id") ?? null
+      gesture.current = { moved: false, x: p.x, y: p.y, robot }
+    } else if (gesture.current) gesture.current.moved = true
+    try {
+      root.current?.setPointerCapture?.(e.pointerId)
+    } catch {}
+  }
+  const onPointerMove = (e: React.PointerEvent) => {
+    const prev = pointers.current.get(e.pointerId)
+    if (!prev) return
+    const p = local(e)
+    const g = gesture.current
+    if (g && !g.moved && Math.hypot(p.x - g.x, p.y - g.y) > 4) g.moved = true
+    if (!g?.moved) return
+    const v = viewRef.current
+    const s = baseRef.current * v.k
+    if (pointers.current.size >= 2) {
+      const [a, b] = [...pointers.current.entries()].filter(([id]) => id !== e.pointerId).map(([, q]) => q)
+      const other = a ?? b
+      const before = Math.hypot(prev.x - other.x, prev.y - other.y)
+      const after = Math.hypot(p.x - other.x, p.y - other.y)
+      const mid0 = { x: (prev.x + other.x) / 2, y: (prev.y + other.y) / 2 }
+      const mid1 = { x: (p.x + other.x) / 2, y: (p.y + other.y) / 2 }
+      const z = zoomed(v, before > 0 ? after / before : 1, mid0.x, mid0.y)
+      const s2 = baseRef.current * z.k
+      setView({ ...z, cx: z.cx - (mid1.x - mid0.x) / s2, cy: z.cy - (mid1.y - mid0.y) / s2 })
+    } else setView({ ...v, cx: v.cx - (p.x - prev.x) / s, cy: v.cy - (p.y - prev.y) / s })
+    pointers.current.set(e.pointerId, p)
+  }
+  const onPointerEnd = (e: React.PointerEvent) => {
+    if (!pointers.current.delete(e.pointerId)) return
+    const g = gesture.current
+    if (pointers.current.size === 0) {
+      gesture.current = null
+      if (e.type === "pointerup" && g && !g.moved) {
+        if (g.robot) select(g.robot)
+        else if (selected) select(null)
+      }
+    }
+  }
+
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    // Only on the map itself: on its buttons the keys do what buttons do.
+    if (e.target !== e.currentTarget || e.altKey || e.ctrlKey || e.metaKey) return
+    const { w, h } = sizeRef.current
+    const step = Math.min(w, h) * 0.2
+    switch (e.key) {
+      case "ArrowLeft":
+        panBy(-step, 0)
+        break
+      case "ArrowRight":
+        panBy(step, 0)
+        break
+      case "ArrowUp":
+        panBy(0, -step)
+        break
+      case "ArrowDown":
+        panBy(0, step)
+        break
+      case "+":
+      case "=":
+        zoomBy(STEP)
+        break
+      case "-":
+      case "_":
+        zoomBy(1 / STEP)
+        break
+      case "0":
+        glideTo(fitView)
+        break
+      case "Escape":
+        // Only with a selection to clear, so Esc still closes a sheet the map sits in.
+        if (!selected) return
+        select(null)
+        break
+      default:
+        return
+    }
+    e.preventDefault()
+  }
+
+  // A robot selected from the list (or elsewhere) that is out of view: the map glides to it, keeping the zoom.
+  const s = base * view.k
+  const at = anchor(size)
+  const toScreen = (x: number, y: number): [number, number] => [at.x + (x - view.cx) * s, at.y + (y - view.cy) * s]
+  const selectedRobot = robots.find((r) => r.id === selected)
+  React.useEffect(() => {
+    if (!selectedRobot) return
+    const [x, y] = toScreen(selectedRobot.x, selectedRobot.y)
+    const m = 2 * DISC
+    if (x < m || y < m || x > size.w - m || y > size.h - m) glideTo({ ...viewRef.current, cx: selectedRobot.x, cy: selectedRobot.y })
+    // Only when the selection changes; a pan away from it afterwards is the person's choice.
+  }, [selected])
+
+  const hint = `${uid}-hint`
+  if (loading) {
+    return (
+      <div data-slot="robot-map" data-loading="" role="group" aria-label={name} aria-busy="true" style={proportions(width, height, fill)} className={cn(frame, className)}>
+        <p role="status" className="sr-only">
+          {labels.loading}
+        </p>
+        <Bone className="absolute inset-4 size-auto rounded-xs" />
+      </div>
+    )
+  }
+  if (error) {
+    return (
+      <div
+        data-slot="robot-map"
+        data-error=""
+        role="group"
+        aria-label={name}
+        style={proportions(width, height, fill)}
+        className={cn(frame, "flex flex-col items-center justify-center gap-3 p-4 text-center", className)}
+      >
+        <p role="alert" className="text-sm text-muted-foreground">
+          {error === true ? labels.error : error}
+        </p>
+        {onRetry && (
+          <Button variant="secondary" size="sm" onClick={onRetry}>
+            <RotateCw aria-hidden="true" /> {labels.retry}
+          </Button>
+        )}
+      </div>
+    )
+  }
+
+  // The grid: lines at a round number of metres, at least 40 px apart, drawn past the plan to the frame's edges.
+  const gridStep = NICE.find((n) => n * s >= 40) ?? NICE[NICE.length - 1]
+  const x0 = view.cx - at.x / s
+  const y0 = view.cy - at.y / s
+  let grid = ""
+  for (let i = Math.ceil(x0 / gridStep); i * gridStep <= x0 + size.w / s; i++) {
+    const px = Math.round(toScreen(i * gridStep, 0)[0]) + 0.5
+    grid += `M${px} 0V${size.h}`
+  }
+  for (let i = Math.ceil(y0 / gridStep); i * gridStep <= y0 + size.h / s; i++) {
+    const py = Math.round(toScreen(0, i * gridStep)[1]) + 0.5
+    grid += `M0 ${py}H${size.w}`
+  }
+  // The scale bar: the longest round length up to 120 px.
+  const scaleM = [...NICE].reverse().find((n) => n * s <= 120) ?? NICE[0]
+  const [ox, oy] = toScreen(0, 0)
+  const pts = (p: RobotMapPoint[]) => p.map(([x, y]) => toScreen(x, y).map((n) => n.toFixed(1)).join(",")).join(" ")
+
+  // Names: below the marker, else right, above, left; the first place that covers no other name or marker. The selected
+  // robot is placed first, so its name never moves aside.
+  const order = [...robots].sort((a, b) => Number(b.id === selected) - Number(a.id === selected))
+  const discs = robots.map((r) => {
+    const [x, y] = toScreen(r.x, r.y)
+    return { id: r.id, box: { x: x - DISC, y: y - DISC, w: 2 * DISC, h: 2 * DISC } }
+  })
+  // What a name must not cover either: the zone names, and the buttons and scale bar in the bottom-left corner.
+  const vertical = size.h >= 400
+  const blocked: Box[] = [
+    vertical ? { x: 0, y: size.h - INSET - 3 * 44, w: INSET + 44 + 8 + 120, h: 3 * 44 + INSET } : { x: 0, y: size.h - BOTTOM, w: INSET + 3 * 44 + 8 + 120, h: BOTTOM },
+    ...zones.flatMap((z) => {
+      const text = z.label ?? (z.kind === "other" ? undefined : labels.zoneKind[z.kind])
+      if (!text) return []
+      const [zx, zy] = toScreen(Math.min(...z.points.map((p) => p[0])), Math.min(...z.points.map((p) => p[1])))
+      return [{ x: zx + 4, y: zy + 4, w: text.length * charWidth + 32, h: LINE }]
+    }),
+  ]
+  const inFrame = (b: Box) => b.x >= 0 && b.y >= 0 && b.x + b.w <= size.w && b.y + b.h <= size.h
+  const names: Box[] = []
+  const placed = new Map<string, { x: number; y: number }>()
+  for (const r of order) {
+    const [x, y] = toScreen(r.x, r.y)
+    const text = r.name + (abnormal(r.status) || r.id === selected ? ` · ${statusWord(r, labels)}` : "")
+    const w = text.length * charWidth + 8
+    const gap = DISC + 2
+    const candidates: Box[] = [
+      { x: x - w / 2, y: y + gap, w, h: LINE },
+      { x: x + gap, y: y - LINE / 2, w, h: LINE },
+      { x: x - w / 2, y: y - gap - LINE, w, h: LINE },
+      { x: x - gap - w, y: y - LINE / 2, w, h: LINE },
+    ]
+    const others = [...names, ...blocked, ...discs.filter((d) => d.id !== r.id).map((d) => d.box)]
+    const pick = candidates.find((c) => inFrame(c) && !others.some((b) => overlap(b, c))) ?? candidates[0]
+    names.push(pick)
+    placed.set(r.id, { x: pick.x, y: pick.y })
+  }
+
+  const kindIcon = { restricted: SafetyZone, slow: SafetyZone, charging: ChargingDock, other: null }
+  const summary = [
+    robots.length ? labels.count(robots.length) : labels.empty,
+    selectedRobot ? labels.selected(selectedRobot.name, statusWord(selectedRobot, labels)) : "",
+    northDeg !== undefined ? labels.north(northDeg) : "",
+  ]
+    .filter(Boolean)
+    .join(". ")
+
+  return (
+    <div
+      ref={root}
+      data-slot="robot-map"
+      role="application"
+      aria-roledescription="map"
+      aria-label={name}
+      aria-describedby={hint}
+      tabIndex={0}
+      onKeyDown={onKeyDown}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerEnd}
+      onPointerCancel={onPointerEnd}
+      style={proportions(width, height, fill)}
+      className={cn(
+        frame,
+        "cursor-grab select-none active:cursor-grabbing",
+        // Inset, so a full-screen map shows it too; drawn over the map's layers (the frame is its own stacking context).
+        "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring",
+        // A full-screen map takes every gesture; a map in a page lets one finger scroll the page up and down.
+        fill ? "touch-none" : "touch-pan-y",
+        className,
+      )}
+    >
+      <p id={hint} className="sr-only">
+        {labels.instructions} {summary}.
+      </p>
+      <div aria-hidden="true" className={cn("absolute inset-0", !measured && "invisible")}>
+        <svg width={size.w} height={size.h} className="absolute inset-0">
+          <path d={grid} className="fill-none stroke-edge" strokeWidth="1" />
+          {typeof floorplan === "string" ? (
+            <image href={floorplan} x={ox} y={oy} width={width * s} height={height * s} preserveAspectRatio="none" />
+          ) : floorplan ? (
+            <g transform={`translate(${ox} ${oy}) scale(${s})`}>{floorplan}</g>
+          ) : null}
+          <rect x={ox} y={oy} width={width * s} height={height * s} className="fill-none stroke-map-point" strokeWidth="1" />
+          {zones.map((z) => (
+            <polygon
+              key={z.id}
+              data-zone={z.kind}
+              points={pts(z.points)}
+              // Told apart by line, never by fill: no entry 2 px solid, slow dashed, charging and other 1 px solid.
+              strokeWidth={z.kind === "restricted" ? 2 : 1.5}
+              strokeDasharray={z.kind === "slow" ? "6 4" : undefined}
+              className="fill-none stroke-map-point"
+            />
+          ))}
+          {paths.map((p) => (
+            <polyline
+              key={p.id}
+              data-path={p.kind}
+              points={pts(p.points)}
+              strokeWidth="2"
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              strokeDasharray={p.kind === "planned" ? "6 4" : undefined}
+              className={cn("fill-none", p.kind === "planned" ? "stroke-info" : "stroke-muted-foreground")}
+            />
+          ))}
+        </svg>
+
+        {zones.map((z) => {
+          const Icon = kindIcon[z.kind]
+          // An unnamed zone of no particular kind is only its outline.
+          const text = z.label ?? (z.kind === "other" ? undefined : labels.zoneKind[z.kind])
+          if (!text) return null
+          const [zx, zy] = toScreen(Math.min(...z.points.map((p) => p[0])), Math.min(...z.points.map((p) => p[1])))
+          return (
+            <span
+              key={z.id}
+              style={{ left: zx + 4, top: zy + 4 }}
+              className="pointer-events-none absolute flex items-center gap-2 rounded-2xs bg-map px-1 text-xs whitespace-nowrap text-muted-foreground"
+            >
+              {Icon && <Icon aria-hidden="true" className="size-4" />}
+              {text}
+            </span>
+          )
+        })}
+
+        {robots.map((r) => {
+          const [x, y] = toScreen(r.x, r.y)
+          const isSelected = r.id === selected
+          const spot = placed.get(r.id)!
+          return (
+            <React.Fragment key={r.id}>
+              <div
+                data-robot-id={r.id}
+                data-state={isSelected ? "selected" : undefined}
+                style={{ left: x, top: y }}
+                className="absolute flex size-(--h-md) -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center"
+              >
+                <svg viewBox="-22 -22 44 44" className={cn("absolute inset-0 size-full", abnormal(r.status) ? statusText[r.status] : r.status === "offline" ? "text-muted-foreground" : "text-foreground")}>
+                  {/* Selected: a 2 px ring in the focus ring's ink, outside the disc, so it reads without colour. */}
+                  {isSelected && <circle r={DISC + 5} className="fill-none stroke-ring" strokeWidth="2" />}
+                  {r.heading !== undefined && <path d={`M0 ${-DISC - 6}L5 ${-DISC + 1}H-5Z`} transform={`rotate(${r.heading})`} fill="currentColor" />}
+                  <circle r={DISC} className="fill-card stroke-edge" strokeWidth="1" />
+                </svg>
+                <StatusGlyph status={r.status} className="relative size-4" />
+              </div>
+              <span
+                data-robot-label={r.id}
+                style={{ left: spot.x, top: spot.y }}
+                className={cn(
+                  "pointer-events-none absolute flex h-5 items-center rounded-2xs bg-map px-1 font-mono text-xs whitespace-nowrap",
+                  isSelected ? "font-bold" : "font-medium",
+                )}
+              >
+                {r.name}
+                {(abnormal(r.status) || isSelected) && (
+                  <span className={cn("font-sans", abnormal(r.status) ? statusText[r.status] : "text-muted-foreground")}>&nbsp;· {statusWord(r, labels)}</span>
+                )}
+              </span>
+            </React.Fragment>
+          )
+        })}
+      </div>
+
+      {robots.length === 0 && (
+        <p className="absolute inset-x-4 top-4 w-fit rounded-xs bg-card px-3 py-2 text-sm text-muted-foreground ring-1 ring-border">
+          {labels.empty}
+        </p>
+      )}
+
+      {northDeg !== undefined && (
+        <div aria-hidden="true" className="absolute top-4 right-4 flex size-(--h-md) flex-col items-center justify-center rounded-md bg-card ring-1 ring-border">
+          <svg viewBox="-12 -12 24 24" className="size-6" style={{ transform: `rotate(${northDeg}deg)` }}>
+            <path d="M0 -10L5 4L0 1L-5 4Z" className="fill-foreground" />
+          </svg>
+          <span className="text-xs leading-none font-bold">{labels.northLetter}</span>
+        </div>
+      )}
+
+      {/* Bottom left, clear of the emergency stop, which products keep bottom right. */}
+      <div className="absolute bottom-4 left-4 flex items-end gap-2">
+        {/* Stacked on a tall map; in a row on a short one (a phone), where a column would cover a third of it. */}
+        <ButtonGroup orientation={vertical ? "vertical" : "horizontal"} className="shadow-float">
+          <Button variant="secondary" size="icon" aria-label={labels.zoomIn} title={labels.zoomIn} disabled={view.k >= MAX_ZOOM} onClick={() => zoomBy(STEP)}>
+            <ZoomIn aria-hidden="true" />
+          </Button>
+          <Button variant="secondary" size="icon" aria-label={labels.zoomOut} title={labels.zoomOut} disabled={view.k <= 1} onClick={() => zoomBy(1 / STEP)}>
+            <ZoomOut aria-hidden="true" />
+          </Button>
+          <Button variant="secondary" size="icon" aria-label={labels.fit} title={labels.fit} onClick={() => glideTo(fitView)}>
+            <Crosshair aria-hidden="true" />
+          </Button>
+        </ButtonGroup>
+        <div aria-hidden="true" data-slot="robot-map-scale" className="flex flex-col items-start gap-1 rounded-2xs bg-map px-1 pb-1 text-xs">
+          <span>{labels.metres(scaleM)}</span>
+          <span style={{ width: scaleM * s }} className="h-2 border-x-2 border-b-2 border-foreground" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export type RobotMapListProps = Pick<RobotMapProps, "label" | "robots" | "zones" | "selectedId" | "onSelect" | "loading" | "error" | "onRetry" | "labels" | "className">
+
+/**
+ * The map's robots as text: name, state, position, zone and heading, one row each, in the order given. Offer it beside
+ * every RobotMap (a Map / List switch, or a Robots sheet over a full-screen map), as charts offer a table: for screen
+ * readers, for exact positions, and on a phone. A row selects its robot on the map.
+ */
+export function RobotMapList({ label: name, robots = [], zones = [], selectedId, onSelect, loading, error, onRetry, labels: given, className }: RobotMapListProps) {
+  const labels = merge(given)
+  const list = "flex flex-col divide-y divide-border overflow-hidden rounded-md bg-card ring-1 ring-border"
+
+  if (loading) {
+    return (
+      <div data-slot="robot-map-list" data-loading="" aria-busy="true" className={cn(list, className)}>
+        <p role="status" className="sr-only">
+          {labels.loading}
+        </p>
+        {[0, 1, 2].map((k) => (
+          <div key={k} className="flex flex-col gap-2 px-4 py-3">
+            <Bone className="h-4 w-1/3" />
+            <Bone className="h-3 w-2/3" />
+          </div>
+        ))}
+      </div>
+    )
+  }
+  if (error) {
+    return (
+      <div data-slot="robot-map-list" data-error="" className={cn("flex flex-col items-start gap-3 rounded-md bg-card p-4 ring-1 ring-border", className)}>
+        <p role="alert" className="text-sm text-muted-foreground">
+          {error === true ? labels.error : error}
+        </p>
+        {onRetry && (
+          <Button variant="secondary" size="sm" onClick={onRetry}>
+            <RotateCw aria-hidden="true" /> {labels.retry}
+          </Button>
+        )}
+      </div>
+    )
+  }
+  if (!robots.length) {
+    return (
+      <p data-slot="robot-map-list" data-empty="" className={cn("rounded-md bg-card p-4 text-sm text-muted-foreground ring-1 ring-border", className)}>
+        {labels.empty}
+      </p>
+    )
+  }
+
+  return (
+    <ul data-slot="robot-map-list" aria-label={name} className={cn(list, className)}>
+      {robots.map((r) => {
+        const isSelected = r.id === selectedId
+        const zone = zoneOf(r, zones)
+        const kind = zone && labels.zoneKind[zone.kind]
+        const where = !zone
+          ? labels.noZone
+          : zone.label
+            ? labels.inZone(zone.label, zone.kind === "other" ? undefined : kind)
+            : labels.inUnnamedZone(kind!)
+        const word = statusWord(r, labels)
+        return (
+          <li key={r.id} className="min-w-0">
+            <button
+              type="button"
+              aria-pressed={isSelected}
+              data-robot-id={r.id}
+              onClick={() => onSelect?.(r.id, r)}
+              className={cn(
+                "press flex min-h-(--h-row) w-full border-l-2 min-w-0 flex-col items-start justify-center gap-1 px-4 py-3 text-left",
+                "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring",
+                // Selected: weight and a 2 px ink edge on the start side, not a colour.
+                isSelected ? "border-foreground bg-muted" : "border-transparent hover:bg-accent",
+              )}
+            >
+              <span className="flex min-w-0 flex-wrap items-center gap-x-4 gap-y-1">
+                <span className={cn("font-mono text-sm", isSelected ? "font-bold" : "font-medium")}>{r.name}</span>
+                <span className={cn("flex items-center gap-2 text-xs", abnormal(r.status) ? statusText[r.status] : "text-muted-foreground")}>
+                  <StatusGlyph status={r.status} />
+                  {word}
+                </span>
+              </span>
+              <span className="text-xs text-muted-foreground tabular-nums">
+                {/* Each fact keeps its words together; the line breaks between facts, never leaving "270°" alone. */}
+                {[labels.position(r.x, r.y), where, r.heading !== undefined ? labels.heading(r.heading) : ""]
+                  .filter(Boolean)
+                  .map((part, i) => (
+                    <React.Fragment key={i}>
+                      {i > 0 && " · "}
+                      <span className="whitespace-nowrap">{part}</span>
+                    </React.Fragment>
+                  ))}
+              </span>
+            </button>
+          </li>
+        )
+      })}
+    </ul>
+  )
+}

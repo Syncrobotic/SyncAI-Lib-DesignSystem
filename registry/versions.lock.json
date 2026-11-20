@@ -231,6 +231,10 @@
     "version": "0.21.0",
     "hash": "a0fbcff3afb425b6"
   },
+  "robot-map": {
+    "version": "0.23.0",
+    "hash": "9d5ce3362d046c1b"
+  },
   "dialog": {
     "version": "0.7.0",
     "hash": "7346ce6a2cccffd9"
@@ -464,8 +468,8 @@
     "hash": "8ea0dafa91ee6155"
   },
   "map-workspace": {
-    "version": "0.17.3",
-    "hash": "0fe905618d6ebaa5"
+    "version": "0.23.0",
+    "hash": "b7f661df6e7363d2"
   },
   "data-catalog": {
     "version": "0.17.2",

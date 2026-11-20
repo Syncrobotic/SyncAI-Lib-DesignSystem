@@ -2,6 +2,15 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **`robot-map` 0.23.0 (beta): the kit's site map, as a component.** It lived only as a drawing inside `map-workspace`. `RobotMap` draws a floor plan in metres (an image URL or your SVG) in plain SVG, with no map library: zones (no entry, slow, charging, other) as hairline outlines with an icon and a name, never a fill; planned routes dashed in the in-progress blue, travelled tracks solid grey; robots as their status shape with a heading tick and their name, which moves aside rather than cover another, and the state in words when a robot needs someone; selection as a ring and a bold name. Pan and zoom by drag, two fingers, the wheel (once the map has focus, or with Ctrl, so a page still scrolls past it), 44 px zoom and fit buttons, and keys (arrows, + / -, 0), gliding at `--motion-base` unless motion is reduced. A scale bar, a north arrow when `northDeg` is given, and empty, loading and error states. The map is one Tab stop; `RobotMapList` lists the same robots with position, zone, heading and state, and a row selects its robot on the map.
+- **`lint:rules`**: a block that draws a `RobotMap` must also render `RobotMapList`, as a chart block renders its table and a graph block its list.
+
+### Changed
+- **`map-workspace` 0.23.0** is built on `robot-map`: same layout, trays and markers, now with heading ticks, a named loading bay, a scale bar and pan and zoom. Its robots are listed in a Robots sheet from the top bar.
+
 ## 0.22.4 · 2026-11-20
 
 Docs site only: no item changed, nothing to re-install.
