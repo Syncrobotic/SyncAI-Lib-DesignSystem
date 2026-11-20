@@ -2,7 +2,9 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.18.1 · 2026-11-20
+
+Docs only: no component changed, so no item version moved.
 
 ### Changed
 - Docs: each component page has three tabs, each at its own address: **Overview** (examples, usage, changelog), **Properties** (`/properties`, the API reference) and **Accessibility** (`/accessibility`). The Accessibility tab is generated, not written per page: the roles a screen reader meets, measured in a browser (`npm run a11y`); the WAI-ARIA pattern each follows; the keyboard table or what Tab does; and the contrast of the colours the component uses, computed from the theme in light and dark against WCAG 2.2 AA. Switching tab keeps the head of the page still: the underline travels and the tab's content appears (--motion-base). The Markdown twin gains the same Accessibility section.
