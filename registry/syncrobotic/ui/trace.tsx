@@ -1,4 +1,4 @@
-// @syncrobotic/trace v0.17.3 · update: npx shadcn add @syncrobotic/trace --overwrite
+// @syncrobotic/trace v0.23.0 · update: npx shadcn add @syncrobotic/trace --overwrite
 "use client"
 
 import * as React from "react"
@@ -23,17 +23,33 @@ export function formatDuration(ms: number) {
   return `${Math.floor(s / 3600)} h ${String(Math.floor((s % 3600) / 60)).padStart(2, "0")} m`
 }
 
-const statusLabel: Record<TraceStatus, string> = {
+export type TraceLabels = {
+  /** Each status in words, read after a step's title and used in TraceHeader's counts. */
+  pending: string
+  running: string
+  done: string
+  warning: string
+  error: string
+  skipped: string
+  /** TraceHeader's count per status: "3 done", from the status word above. */
+  count: (n: number, status: string) => string
+  /** How long a step took, from ms: "1.2 s". */
+  duration: (ms: number) => string
+}
+
+export const defaultTraceLabels: TraceLabels = {
   pending: "Waiting",
   running: "Running",
   done: "Done",
   warning: "Warning",
   error: "Failed",
   skipped: "Skipped",
+  count: (n, status) => `${n} ${status.toLowerCase()}`,
+  duration: (ms) => formatDuration(ms),
 }
 
-type Ctx = { density: "default" | "dense"; total?: number }
-const TraceCtx = React.createContext<Ctx>({ density: "default" })
+type Ctx = { density: "default" | "dense"; total?: number; labels: TraceLabels }
+const TraceCtx = React.createContext<Ctx>({ density: "default", labels: defaultTraceLabels })
 
 const warned = new Set<string>()
 /** Says once that `density` is now `size`, so it is not confused with the theme's data-density. Development only. */
@@ -47,6 +63,7 @@ export function Trace({
   size,
   density: legacy,
   total,
+  labels,
   className,
   ...props
 }: React.ComponentProps<"ol"> & {
@@ -56,13 +73,15 @@ export function Trace({
   density?: "default" | "dense"
   /** Length of the whole run in ms. With it, steps that have `start` and `duration` draw a waterfall bar. */
   total?: number
+  /** The words it says, to translate them. Nested traces take their parent's. */
+  labels?: Partial<TraceLabels>
 }) {
   const parent = React.useContext(TraceCtx)
   warnDensity("Trace", legacy)
   const density = size ? (size === "sm" ? "dense" : "default") : legacy
   // Nested traces (sub-steps) inherit density and the run length.
   return (
-    <TraceCtx.Provider value={{ density: density ?? parent.density, total: total ?? parent.total }}>
+    <TraceCtx.Provider value={{ density: density ?? parent.density, total: total ?? parent.total, labels: { ...parent.labels, ...labels } }}>
       <ol data-slot="trace" className={cn("flex flex-col", className)} {...props} />
     </TraceCtx.Provider>
   )
@@ -116,7 +135,7 @@ export function TraceItem({
   open?: boolean
   onOpenChange?: (open: boolean) => void
 }) {
-  const { density, total } = React.useContext(TraceCtx)
+  const { density, total, labels: l } = React.useContext(TraceCtx)
   const expandable = React.Children.count(children) > 0
   const bar = !!total && start !== undefined && duration !== undefined
   // Dense only tightens the padding: a row you can open is still a full touch target.
@@ -144,7 +163,7 @@ export function TraceItem({
             {title}
           </span>
           {meta && <span className="truncate font-mono text-xs text-muted-foreground">{meta}</span>}
-          <span className="sr-only">, {statusLabel[status]}</span>
+          <span className="sr-only">, {l[status]}</span>
         </span>
         {description && <span className={cn("text-xs", status === "error" ? "text-danger" : "text-muted-foreground")}>{description}</span>}
       </span>
@@ -159,7 +178,7 @@ export function TraceItem({
       {(duration !== undefined || time) && (
         // In a waterfall the times take a fixed column, so every bar's track starts and ends at the same x.
         <span className={cn("flex shrink-0 flex-col items-end gap-1 pt-px text-xs text-muted-foreground tabular-nums", bar && "min-w-14")}>
-          {duration !== undefined && <span>{formatDuration(duration)}</span>}
+          {duration !== undefined && <span>{l.duration(duration)}</span>}
           {time && <span>{time}</span>}
         </span>
       )}
@@ -239,6 +258,7 @@ export function TraceHeader({
   status,
   duration,
   counts,
+  labels,
   className,
   children,
 }: {
@@ -246,22 +266,25 @@ export function TraceHeader({
   status: TraceStatus
   duration?: number
   counts?: Partial<Record<TraceStatus, number>>
+  /** The words it says, to translate them; inside a Trace, its labels are the starting point. */
+  labels?: Partial<TraceLabels>
   className?: string
   children?: React.ReactNode
 }) {
+  const l = { ...React.useContext(TraceCtx).labels, ...labels }
   return (
     <div data-slot="trace-header" className={cn("flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-border pb-3", className)}>
       <TraceStatusIcon status={status} />
       <span className="font-medium">
         {title}
-        <span className="sr-only">, {statusLabel[status]}</span>
+        <span className="sr-only">, {l[status]}</span>
       </span>
-      {duration !== undefined && <span className="text-sm text-muted-foreground tabular-nums">{formatDuration(duration)}</span>}
+      {duration !== undefined && <span className="text-sm text-muted-foreground tabular-nums">{l.duration(duration)}</span>}
       {counts && (
         <span className="flex gap-3 text-xs text-muted-foreground tabular-nums">
           {(Object.keys(counts) as TraceStatus[]).map((k) => (
             <span key={k} className={cn("flex items-center gap-1", k === "error" && "text-danger", k === "warning" && "text-warning")}>
-              {counts[k]} {statusLabel[k].toLowerCase()}
+              {l.count(counts[k] ?? 0, l[k])}
             </span>
           ))}
         </span>

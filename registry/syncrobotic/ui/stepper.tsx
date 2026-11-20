@@ -1,4 +1,4 @@
-// @syncrobotic/stepper v0.17.3 · update: npx shadcn add @syncrobotic/stepper --overwrite
+// @syncrobotic/stepper v0.23.0 · update: npx shadcn add @syncrobotic/stepper --overwrite
 "use client"
 
 import * as React from "react"
@@ -13,6 +13,32 @@ import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
  */
 type StepState = "done" | "current" | "upcoming" | "error"
 
+export type StepperLabels = {
+  /** Under the title of an `optional` step (when `optional` is true rather than words of its own). */
+  optional: string
+  /** Read by screen readers after each step's title, by its state. */
+  unavailable: string
+  done: string
+  error: string
+  current: string
+  upcoming: string
+  /** StepperCompact's counter: "Step 2 of 5". */
+  position: (n: number, total: number) => string
+  /** StepperCompact's progress bar name. */
+  progress: string
+}
+
+export const defaultStepperLabels: StepperLabels = {
+  optional: "Optional",
+  unavailable: "unavailable",
+  done: "completed",
+  error: "has an error",
+  current: "current step",
+  upcoming: "not started",
+  position: (n, total) => `Step ${n} of ${total}`,
+  progress: "Steps",
+}
+
 type Ctx = {
   value: number
   orientation: "horizontal" | "vertical"
@@ -21,6 +47,7 @@ type Ctx = {
   navigable: "none" | "done" | "all"
   errors: number[]
   size: "md" | "sm"
+  labels: StepperLabels
 }
 const StepperCtx = React.createContext<Ctx | null>(null)
 const useStepper = () => {
@@ -48,6 +75,7 @@ export function Stepper({
   navigable = "none",
   errors = [],
   size = "md",
+  labels,
   className,
   children,
   ...props
@@ -60,12 +88,15 @@ export function Stepper({
   /** Steps that failed validation. */
   errors?: number[]
   size?: "md" | "sm"
+  /** The words it says, to translate them. */
+  labels?: Partial<StepperLabels>
 }) {
+  const l = { ...defaultStepperLabels, ...labels }
   const items = React.Children.toArray(children).filter(React.isValidElement)
   const room = orientation === "horizontal" ? roomFor(items.length) : null
   const current = items[value - 1] as React.ReactElement<{ title?: React.ReactNode; description?: React.ReactNode }> | undefined
   return (
-    <StepperCtx.Provider value={{ value, onValueChange, orientation, navigable, errors, size }}>
+    <StepperCtx.Provider value={{ value, onValueChange, orientation, navigable, errors, size, labels: l }}>
       <ol
         data-slot="stepper"
         data-orientation={orientation}
@@ -111,7 +142,7 @@ export function StepperItem({
   optional?: boolean | string
   disabled?: boolean
 }) {
-  const { orientation, onValueChange, navigable, size, value } = useStepper()
+  const { orientation, onValueChange, navigable, size, value, labels: l } = useStepper()
   const { step, state, last, count } = React.useContext(StepCtx)
   const canJump = !disabled && !!onValueChange && step !== value && (navigable === "all" || (navigable === "done" && step < value))
   const vertical = orientation === "vertical"
@@ -129,20 +160,12 @@ export function StepperItem({
           {title}
         </span>
         {(description || optional) && (
-          <span className="text-xs text-muted-foreground">{description ?? (typeof optional === "string" ? optional : "Optional")}</span>
+          <span className="text-xs text-muted-foreground">{description ?? (typeof optional === "string" ? optional : l.optional)}</span>
         )}
       </span>
     </>
   )
-  const status = disabled
-    ? "unavailable"
-    : state === "done"
-      ? "completed"
-      : state === "error"
-        ? "has an error"
-        : state === "current"
-          ? "current step"
-          : "not started"
+  const status = disabled ? l.unavailable : l[state]
   return (
     <li
       data-slot="stepper-item"
@@ -228,19 +251,31 @@ function StepIndicator({ state, step, size, disabled }: { state: StepState; step
 }
 
 /** A thin bar of the steps for small screens: "Step 2 of 5" and the current title. */
-export function StepperCompact({ value, total, title, className }: { value: number; total: number; title?: React.ReactNode; className?: string }) {
+export function StepperCompact({
+  value,
+  total,
+  title,
+  labels,
+  className,
+}: {
+  value: number
+  total: number
+  title?: React.ReactNode
+  /** The words it says (`position`, `progress`), to translate them. */
+  labels?: Partial<StepperLabels>
+  className?: string
+}) {
+  const l = { ...defaultStepperLabels, ...labels }
   const pct = Math.min(100, Math.max(0, (Math.min(value, total) / total) * 100))
   return (
     <div data-slot="stepper-compact" className={cn("flex flex-col gap-2", className)}>
       <div className="flex items-baseline justify-between gap-2 text-sm">
         <span className="font-medium">{title}</span>
-        <span className="text-xs text-muted-foreground tabular-nums">
-          Step {Math.min(value, total)} of {total}
-        </span>
+        <span className="text-xs text-muted-foreground tabular-nums">{l.position(Math.min(value, total), total)}</span>
       </div>
       <div
         role="progressbar"
-        aria-label="Steps"
+        aria-label={l.progress}
         aria-valuemin={1}
         aria-valuemax={total}
         aria-valuenow={Math.min(value, total)}

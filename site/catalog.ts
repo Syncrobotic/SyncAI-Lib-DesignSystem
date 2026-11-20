@@ -6,6 +6,7 @@ import registry from "../registry.json"
 export type StoryFile =
   | "stop-button"
   | "slide-to-release"
+  | "teleop-pad"
   | "dock"
   | "island"
   | "list"
@@ -54,8 +55,10 @@ export type StoryFile =
   | "image-grid"
   | "annotated-image"
   | "media-player"
+  | "camera-feed"
   | "tree"
   | "graph"
+  | "robot-map"
   | "hooks"
   | "metric-card"
   | "context-menu"
@@ -705,12 +708,26 @@ const entries: Record<string, Entry> = {
     group: "Display",
     examples: { file: "media-player", prefix: "MediaPlayer" },
     rules: [
-      "For a recorded clip with an end. A live camera feed is a different component (not built yet): no timeline, no speed, a latency and a connection state instead.",
+      "For a recorded clip with an end. A live camera is `camera-feed`: no timeline, no speed, a latency and a connection state instead.",
       "Give `label` the clip's who, where and when (\"Patrol dog 7F3A, front camera, 14:02\"); it names the player for screen readers.",
       "Pass `duration` from the clip's record, so the time and the markers show before the file loads; `preload=\"none\"` in a long list of clips.",
       "Markers are events in the clip (Obstacle, Stop pressed), a word each, at most a handful. They are listed under the player too, for the keyboard and screen readers.",
       "Never autoplay with sound. `autoPlay` starts muted and does nothing for someone who asked for reduced motion.",
       "When the clip cannot play, say why after \"Clip unavailable:\" (not uploaded yet, expired, the robot was offline) and offer a retry only when retrying can help.",
+    ],
+  },
+  "camera-feed": {
+    wide: true,
+    group: "Display",
+    examples: { file: "camera-feed", prefix: "CameraFeed" },
+    rules: [
+      "For a live camera. A recording with an end is `media-player`.",
+      "The app owns the connection (WebRTC, a gateway, a live URL); pass the `stream` or `src` and say what the connection is doing in `status`. The feed tells Live from Stalled by itself, from the frames.",
+      "Give `label` the camera and `source` the robot (\"Front camera\", \"Patrol dog 7F3A\"): the header writes both, and they name the feed for screen readers.",
+      "Pass `latencyMs` whenever you measure it: an operator driving from the picture needs to know how old it is.",
+      "Never hide a frozen picture: keep `staleAfterMs` at its 2 s default, shorter for teleoperation, longer only for a camera that sends a frame every few seconds.",
+      "Overlays (`children`) are drawn in the video box's own coordinates; they hide while there is no picture, so a box never floats over a skeleton.",
+      "Offer Reconnect (`onRetry`) only when reconnecting can help, and say why it is offline in `offlineReason` when you know.",
     ],
   },
   alert: {
@@ -851,6 +868,20 @@ const entries: Record<string, Entry> = {
       "The chart fades in when it mounts (--motion-base); marks do not animate, because Recharts cannot use the motion tokens. Nothing moves under reduced motion.",
     ],
   },
+  "robot-map": {
+    group: "Charts",
+    wide: true,
+    examples: { file: "robot-map", prefix: "RobotMap" },
+    rules: [
+      "Offer RobotMapList beside every RobotMap, as a chart offers its table: a Map / List switch, the two side by side on a wide screen, or a Robots sheet over a full-screen map. The map is one Tab stop; the list is where each robot is reached by keyboard and screen reader. `lint:rules` asks for it in a block.",
+      "Each layer keeps one job (Data visualisation, Maps and robot tracks): the floor and grid grey, zones as hairline outlines with an icon and a name and never a fill, the route being driven dashed blue (the one blue on the map), the track travelled solid grey.",
+      "Robots are their status shape and name, as in every list; colour and the status word only for a robot that needs someone. Selection is a ring in the focus ring's ink and a bold name, never colour alone.",
+      "Coordinates are metres from the plan's top-left corner, x to the right and y down, as the plan image is drawn. Convert from your map frame (ROS: y up, origin anywhere) before passing them.",
+      "Bottom left holds zoom and the scale bar, so the emergency stop keeps the bottom right. Show the north arrow (`northDeg`) only when the plan is not drawn north up and people need it.",
+      "No robots is said on the map, with the plan still shown; loading keeps the frame's size; an error says what failed and offers to reload.",
+      "Up to a few hundred robots and zones: everything is redrawn on each pan. A city-scale map, tiles or GPS belong to a map library.",
+    ],
+  },
   command: {
     group: "Overlays",
     examples: { file: "overlays", prefix: "Command" },
@@ -893,6 +924,19 @@ const entries: Record<string, Entry> = {
       "Viewers can see it but cannot release.",
       "Keyboard and switch control: hold Enter or Space for 2 s.",
       "If the robot does not release, set `failed`: the thumb goes back and the label says to slide again. Never leave it on Releasing….",
+    ],
+  },
+  "teleop-pad": {
+    group: "Robot shell",
+    examples: { file: "teleop-pad", prefix: "TeleopPad" },
+    rules: [
+      "Dead man: the robot moves only while the stick is held. Release, a cancelled pointer, lost focus, a hidden page or `timeoutMs` without pointer events send a zero command at once and call onStop with the reason.",
+      "Commands go out at a fixed rate (`rateHz`, 10 by default) while held, so the robot can run its own watchdog: if commands stop arriving for a few periods, the robot must stop by itself. The pad cannot stop a robot whose link or tab has frozen.",
+      "Pressing never moves the robot: the stick starts where the finger lands, and only movement from there drives. A dead zone (10 % by default) keeps a resting thumb from creeping it.",
+      "Not an emergency stop. Put StopButton beside it, above it on a phone, on every drive screen; the pad has no red.",
+      "`maxSpeed` caps what full stick sends, and the pad draws its scale; the app still enforces the robot's own limits.",
+      "Disabled says why (`disabledReason`), in words beside a lock, and keeps its size so nothing jumps when autonomy hands back.",
+      "Outputs follow ROS REP 103: linear forward is +, angular left (counter-clockwise) is +, both −1…1 of top speed.",
     ],
   },
   dock: {
@@ -1093,6 +1137,13 @@ const keyboard: Record<string, [string, string][]> = {
     ["Space", "Select the node, links included"],
     ["Esc", "Clear the selection"],
   ],
+  "robot-map": [
+    ["Tab", "Move into the map (one stop), then to its zoom buttons"],
+    ["← / → / ↑ / ↓", "Move the map"],
+    ["+ / -", "Zoom in or out"],
+    ["0", "Show the whole site"],
+    ["Esc", "Clear the selection"],
+  ],
   tree: [
     ["Tab", "list: move between links and disclosure buttons. select: move into the tree (one stop) and out"],
     ["Enter / Space", "list: open or close a branch, follow a link. select: select the focused node"],
@@ -1114,6 +1165,10 @@ const keyboard: Record<string, [string, string][]> = {
     ["J / L", "Back or forward 10 seconds"],
     ["Home / End", "On the timeline: start or end of the clip"],
     ["M", "Mute or unmute"],
+    ["F", "Full screen, or leave it (Esc leaves it too)"],
+  ],
+  "camera-feed": [
+    ["Space", "Pause or resume the view (Space on a focused button presses that button)"],
     ["F", "Full screen, or leave it (Esc leaves it too)"],
   ],
   "annotated-image": [
@@ -1192,6 +1247,13 @@ const keyboard: Record<string, [string, string][]> = {
     ["Hold Enter / Space 2 s", "Stop all robots"],
   ],
   "slide-to-release": [["Hold Enter / Space 2 s", "Release"]],
+  "teleop-pad": [
+    ["Hold ↑ / W, ↓ / S", "Drive forward, back"],
+    ["Hold ← / A, → / D", "Turn left, right (with ↑ or ↓, curve)"],
+    ["Release every drive key", "Stop"],
+    ["Space / Esc", "Stop; keys still held do nothing until released"],
+    ["Tab away", "Stop"],
+  ],
 }
 
 export const items: Item[] = registry.items

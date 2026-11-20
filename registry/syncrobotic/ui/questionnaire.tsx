@@ -1,4 +1,4 @@
-// @syncrobotic/questionnaire v0.17.3 · update: npx shadcn add @syncrobotic/questionnaire --overwrite
+// @syncrobotic/questionnaire v0.23.0 · update: npx shadcn add @syncrobotic/questionnaire --overwrite
 "use client"
 
 import * as React from "react"
@@ -35,6 +35,55 @@ export type Question =
 
 export type Answers = Record<string, string | string[] | number | undefined>
 
+export type QuestionnaireLabels = {
+  /** The last page's button. */
+  submit: string
+  /** Under a required question left empty. */
+  required: string
+  /** The counter on the review page. */
+  review: string
+  /** The counter: "Question 2 of 5". */
+  position: (n: number, total: number) => string
+  /** Beside the counter: "40 %". */
+  percent: (n: number) => string
+  /** The progress bar's name. */
+  progress: string
+  /** Names the list on the review page. */
+  answers: string
+  /** The review page's button for each answer. */
+  edit: string
+  /** Read after Edit by screen readers only: ", question 2". */
+  editQuestion: (n: number) => string
+  back: string
+  next: string
+  /** The review page, for a question with no answer. */
+  notAnswered: string
+  /** A scale answer on the review page: "4 of 5". */
+  scaleAnswer: (value: number, max: number) => string
+  /** Under a multiple-choice question with `max`: "Up to 3." */
+  upTo: (max: number) => string
+  /** Read after a required question's title by screen readers only. */
+  requiredMark: string
+}
+
+export const defaultQuestionnaireLabels: QuestionnaireLabels = {
+  submit: "Submit",
+  required: "Answer this question to continue.",
+  review: "Review",
+  position: (n, total) => `Question ${n} of ${total}`,
+  percent: (n) => `${n} %`,
+  progress: "Progress",
+  answers: "Your answers",
+  edit: "Edit",
+  editQuestion: (n) => `, question ${n}`,
+  back: "Back",
+  next: "Next",
+  notAnswered: "Not answered",
+  scaleAnswer: (value, max) => `${value} of ${max}`,
+  upTo: (max) => `Up to ${max}.`,
+  requiredMark: " (required)",
+}
+
 const isAnswered = (q: Question, a: Answers[string]) =>
   q.type === "multiple" ? Array.isArray(a) && a.length > 0 : q.type === "text" ? typeof a === "string" && a.trim() !== "" : a !== undefined && a !== ""
 
@@ -43,8 +92,9 @@ export function Questionnaire({
   mode = "paged",
   defaultAnswers = {},
   onSubmit,
-  submitLabel = "Submit",
-  requiredMessage = "Answer this question to continue.",
+  submitLabel: submitProp,
+  requiredMessage: requiredProp,
+  labels,
   review,
   defaultStep = 0,
   className,
@@ -53,14 +103,21 @@ export function Questionnaire({
   mode?: "paged" | "list"
   defaultAnswers?: Answers
   onSubmit: (answers: Answers) => void
+  /** Same as `labels.submit`, and wins over it. */
   submitLabel?: string
+  /** Same as `labels.required`, and wins over it. */
   requiredMessage?: string
+  /** The words it says, to translate them. */
+  labels?: Partial<QuestionnaireLabels>
   /** Paged only: a last page that lists the answers, each with Edit, before Submit. */
   review?: boolean
   /** Paged only: the page to open on, from 0. The review page is questions.length. */
   defaultStep?: number
   className?: string
 }) {
+  const l = { ...defaultQuestionnaireLabels, ...labels }
+  const submitLabel = submitProp ?? l.submit
+  const requiredMessage = requiredProp ?? l.required
   const [answers, setAnswers] = React.useState<Answers>(defaultAnswers)
   const [index, setIndex] = React.useState(defaultStep)
   const [errors, setErrors] = React.useState<Record<string, boolean>>({})
@@ -95,7 +152,14 @@ export function Questionnaire({
   }
 
   const field = (q: Question) => (
-    <QuestionField key={q.id} question={q} value={answers[q.id]} onChange={(v) => set(q.id, v)} error={errors[q.id] ? requiredMessage : undefined} />
+    <QuestionField
+      key={q.id}
+      question={q}
+      value={answers[q.id]}
+      onChange={(v) => set(q.id, v)}
+      error={errors[q.id] ? requiredMessage : undefined}
+      labels={l}
+    />
   )
 
   if (mode === "list") {
@@ -147,12 +211,12 @@ export function Questionnaire({
     >
       <div className="flex flex-col gap-2">
         <div className="flex justify-between text-xs text-muted-foreground tabular-nums">
-          <span>{onReview ? "Review" : `Question ${index + 1} of ${questions.length}`}</span>
-          <span>{Math.round(pct)} %</span>
+          <span>{onReview ? l.review : l.position(index + 1, questions.length)}</span>
+          <span>{l.percent(Math.round(pct))}</span>
         </div>
         <div
           role="progressbar"
-          aria-label="Progress"
+          aria-label={l.progress}
           aria-valuemin={0}
           aria-valuemax={100}
           aria-valuenow={Math.round(pct)}
@@ -171,15 +235,16 @@ export function Questionnaire({
         className={cn("outline-none", next === null ? "animate-appear" : "animate-disappear")}
       >
         {onReview ? (
-          <ul aria-label="Your answers" className="flex flex-col">
+          <ul aria-label={l.answers} className="flex flex-col">
             {questions.map((x, i) => (
               <li key={x.id} className="flex items-start gap-3 border-b border-border py-3 last:border-b-0">
                 <div className="flex min-w-0 flex-1 flex-col gap-1">
                   <span className="text-xs text-muted-foreground">{x.title}</span>
-                  <span className="text-sm">{formatAnswer(x, answers[x.id])}</span>
+                  <span className="text-sm">{formatAnswer(x, answers[x.id], l)}</span>
                 </div>
                 <Button type="button" size="sm" variant="ghost" onClick={() => move(i)}>
-                  Edit<span className="sr-only">, question {i + 1}</span>
+                  {l.edit}
+                  <span className="sr-only">{l.editQuestion(i + 1)}</span>
                 </Button>
               </li>
             ))}
@@ -190,16 +255,16 @@ export function Questionnaire({
       </div>
       <div className="flex items-center justify-between gap-2">
         <Button type="button" variant="ghost" disabled={index === 0} onClick={() => move(index - 1)}>
-          Back
+          {l.back}
         </Button>
-        <Button type="submit">{onReview || (!review && index === questions.length - 1) ? submitLabel : "Next"}</Button>
+        <Button type="submit">{onReview || (!review && index === questions.length - 1) ? submitLabel : l.next}</Button>
       </div>
     </form>
   )
 }
 
-function formatAnswer(q: Question, a: Answers[string]): React.ReactNode {
-  if (!isAnswered(q, a)) return <span className="text-muted-foreground">Not answered</span>
+function formatAnswer(q: Question, a: Answers[string], l: QuestionnaireLabels): React.ReactNode {
+  if (!isAnswered(q, a)) return <span className="text-muted-foreground">{l.notAnswered}</span>
   if (q.type === "single") return q.options.find((o) => o.value === a)?.label ?? String(a)
   if (q.type === "multiple")
     return (a as string[]).map((v, i) => (
@@ -208,7 +273,7 @@ function formatAnswer(q: Question, a: Answers[string]): React.ReactNode {
         {q.options.find((o) => o.value === v)?.label ?? v}
       </React.Fragment>
     ))
-  if (q.type === "scale") return `${a} of ${q.max ?? 5}`
+  if (q.type === "scale") return l.scaleAnswer(a as number, q.max ?? 5)
   return String(a)
 }
 
@@ -218,18 +283,22 @@ export function QuestionField({
   value,
   onChange,
   error,
+  labels,
 }: {
   question: Question
   value: Answers[string]
   onChange: (v: Answers[string]) => void
   error?: React.ReactNode
+  /** The words it says (`requiredMark`, `upTo`), to translate them. */
+  labels?: Partial<QuestionnaireLabels>
 }) {
+  const l = { ...defaultQuestionnaireLabels, ...labels }
   const titleId = React.useId()
   const legend = (
     <span className="flex flex-col gap-1">
       <span id={titleId} className="text-base font-medium">
         {q.title}
-        {q.required && <span className="sr-only"> (required)</span>}
+        {q.required && <span className="sr-only">{l.requiredMark}</span>}
       </span>
       {q.description && <span className="text-sm font-normal text-muted-foreground">{q.description}</span>}
     </span>
@@ -254,7 +323,7 @@ export function QuestionField({
     const full = q.max !== undefined && list.length >= q.max
     return (
       <div id={id}>
-        <FieldSet legend={legend} error={error} hint={q.max ? `Up to ${q.max}.` : undefined}>
+        <FieldSet legend={legend} error={error} hint={q.max ? l.upTo(q.max) : undefined}>
           <div className="pt-1">
             {q.options.map((o) => {
               const on = list.includes(o.value)

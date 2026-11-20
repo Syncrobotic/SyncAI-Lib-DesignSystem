@@ -75,6 +75,14 @@
     "tabStops": 1,
     "live": false
   },
+  "teleop-pad": {
+    "roles": [
+      "application",
+      "status"
+    ],
+    "tabStops": 1,
+    "live": true
+  },
   "dock": {
     "roles": [
       "button",
@@ -449,6 +457,19 @@
     "tabStops": 1,
     "live": true
   },
+  "robot-map": {
+    "roles": [
+      "alert",
+      "application",
+      "button",
+      "group",
+      "list",
+      "listitem",
+      "status"
+    ],
+    "tabStops": 7,
+    "live": true
+  },
   "dialog": {
     "roles": [],
     "tabStops": 0,
@@ -636,6 +657,15 @@
       "status"
     ],
     "tabStops": 10,
+    "live": true
+  },
+  "camera-feed": {
+    "roles": [
+      "button",
+      "region",
+      "status"
+    ],
+    "tabStops": 4,
     "live": true
   },
   "filter-form": {

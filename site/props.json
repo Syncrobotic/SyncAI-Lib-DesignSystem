@@ -121,7 +121,75 @@
     {
      "name": "labels",
      "type": "Partial<AlarmLabels>",
-     "description": ""
+     "description": "",
+     "keys": [
+      {
+       "name": "critical",
+       "type": "string",
+       "default": "\"Critical\"",
+       "description": ""
+      },
+      {
+       "name": "high",
+       "type": "string",
+       "default": "\"High\"",
+       "description": ""
+      },
+      {
+       "name": "low",
+       "type": "string",
+       "default": "\"Low\"",
+       "description": ""
+      },
+      {
+       "name": "unacknowledged",
+       "type": "string",
+       "default": "\"Unacknowledged\"",
+       "description": ""
+      },
+      {
+       "name": "acknowledged",
+       "type": "string",
+       "default": "\"Acknowledged\"",
+       "description": "Alone, or before `acknowledgedAt`: \"Acknowledged 13:42\"."
+      },
+      {
+       "name": "cleared",
+       "type": "string",
+       "default": "\"Cleared, not acknowledged\"",
+       "description": "Cleared before anyone acknowledged it, when `clearedAt` is not given."
+      },
+      {
+       "name": "clearedWhen",
+       "type": "(time: string) => string",
+       "default": "(t) => `Cleared ${t}, not acknowledged`",
+       "description": "The same with the time it cleared: \"Cleared 14:07, not acknowledged\"."
+      },
+      {
+       "name": "acknowledge",
+       "type": "string",
+       "default": "\"Acknowledge\"",
+       "description": ""
+      },
+      {
+       "name": "shelve",
+       "type": "string",
+       "default": "\"Shelve\"",
+       "description": ""
+      },
+      {
+       "name": "unshelve",
+       "type": "string",
+       "default": "\"Unshelve\"",
+       "description": ""
+      },
+      {
+       "name": "shelvedUntil",
+       "type": "string",
+       "default": "\"Shelved until\"",
+       "description": "Before the time the alarm comes back: \"Shelved until 15:30\"."
+      }
+     ]
     }
    ],
    "inherits": [
@@ -172,7 +240,176 @@
     {
      "name": "labels",
      "type": "Partial<AlarmLabels> & { title?: string; summary?: (active: number, unacknowledged: number) => string; none?: string; acknowledgeAll?: string; acknowledgeShown?: (count: number) => string; acknowledgeNonCritical?: (count: number) => string; acknowledgedCount?: (count: number) => string; shelvedGroup?: (count: number) => string; hidden?: (suppressed: number, outOfService: number) => string; flood?: (count: number, minutes: number) => string; lowGroup?: (count: number) => string; many?: (count: number) => string; loading?: string; errorEmpty?: string; errorStale?: string; updatedAt?: (time: string) => string; retry?: string; }",
-     "description": ""
+     "description": "",
+     "keys": [
+      {
+       "name": "critical",
+       "type": "string",
+       "default": "\"Critical\"",
+       "description": ""
+      },
+      {
+       "name": "high",
+       "type": "string",
+       "default": "\"High\"",
+       "description": ""
+      },
+      {
+       "name": "low",
+       "type": "string",
+       "default": "\"Low\"",
+       "description": ""
+      },
+      {
+       "name": "unacknowledged",
+       "type": "string",
+       "default": "\"Unacknowledged\"",
+       "description": ""
+      },
+      {
+       "name": "acknowledged",
+       "type": "string",
+       "default": "\"Acknowledged\"",
+       "description": "Alone, or before `acknowledgedAt`: \"Acknowledged 13:42\"."
+      },
+      {
+       "name": "cleared",
+       "type": "string",
+       "default": "\"Cleared, not acknowledged\"",
+       "description": "Cleared before anyone acknowledged it, when `clearedAt` is not given."
+      },
+      {
+       "name": "clearedWhen",
+       "type": "(time: string) => string",
+       "default": "(t) => `Cleared ${t}, not acknowledged`",
+       "description": "The same with the time it cleared: \"Cleared 14:07, not acknowledged\"."
+      },
+      {
+       "name": "acknowledge",
+       "type": "string",
+       "default": "\"Acknowledge\"",
+       "description": ""
+      },
+      {
+       "name": "shelve",
+       "type": "string",
+       "default": "\"Shelve\"",
+       "description": ""
+      },
+      {
+       "name": "unshelve",
+       "type": "string",
+       "default": "\"Unshelve\"",
+       "description": ""
+      },
+      {
+       "name": "shelvedUntil",
+       "type": "string",
+       "default": "\"Shelved until\"",
+       "description": "Before the time the alarm comes back: \"Shelved until 15:30\"."
+      },
+      {
+       "name": "title",
+       "type": "string",
+       "default": "\"Alarms\"",
+       "description": ""
+      },
+      {
+       "name": "summary",
+       "type": "(active: number, unacknowledged: number) => string",
+       "description": ""
+      },
+      {
+       "name": "none",
+       "type": "string",
+       "default": "\"No active alarms\"",
+       "description": ""
+      },
+      {
+       "name": "acknowledgeAll",
+       "type": "string",
+       "default": "\"Acknowledge all\"",
+       "description": "The header button while every unacknowledged alarm is in view."
+      },
+      {
+       "name": "acknowledgeShown",
+       "type": "(count: number) => string",
+       "default": "(n: number) => `Acknowledge ${n} shown`",
+       "description": "The same button when some are out of view (folded low alarms in a flood): \"Acknowledge 2 shown\"."
+      },
+      {
+       "name": "acknowledgeNonCritical",
+       "type": "(count: number) => string",
+       "default": "(n: number) => `Acknowledge ${n} non-critical`",
+       "description": "The same button while critical alarms are unacknowledged, which it leaves to their own rows: \"Acknowledge 3 non-critical\"."
+      },
+      {
+       "name": "acknowledgedCount",
+       "type": "(count: number) => string",
+       "default": "(n: number) => `${n} alarm${n === 1 ? \"\" : \"s\"} acknowledged`",
+       "description": "Announced after \"Acknowledge all\": \"3 alarms acknowledged\"."
+      },
+      {
+       "name": "shelvedGroup",
+       "type": "(count: number) => string",
+       "default": "(n: number) => `Shelved · ${n}`",
+       "description": "\"Shelved · 2\""
+      },
+      {
+       "name": "hidden",
+       "type": "(suppressed: number, outOfService: number) => string",
+       "default": "(sup: number, oos: number) => [sup && `${sup} suppressed by design`, oos && `${oos} out of service`].filter(Boolean).join(\" · \")",
+       "description": "\"2 suppressed by design · 1 out of service\""
+      },
+      {
+       "name": "flood",
+       "type": "(count: number, minutes: number) => string",
+       "default": "(n: number, m: number) => `Alarm flood: ${n} alarms in ${m} min. Critical and high first; low alarms are grouped.`",
+       "description": "The flood banner."
+      },
+      {
+       "name": "lowGroup",
+       "type": "(count: number) => string",
+       "default": "(n: number) => `${n} low alarm${n === 1 ? \"\" : \"s\"}`",
+       "description": "\"18 low alarms\""
+      },
+      {
+       "name": "many",
+       "type": "(count: number) => string",
+       "default": "(n: number) => `${n} new alarms`",
+       "description": "Announced instead of every title when many arrive at once: \"23 new alarms\"."
+      },
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Loading alarms\"",
+       "description": "Read out while the first load runs."
+      },
+      {
+       "name": "errorEmpty",
+       "type": "string",
+       "default": "\"Could not load alarms. There may be alarms you cannot see here.\"",
+       "description": "The error with no alarms to show: it must not read as \"no alarms\"."
+      },
+      {
+       "name": "errorStale",
+       "type": "string",
+       "default": "\"Could not update alarms. This list may be out of date.\"",
+       "description": "The error while older alarms are still shown."
+      },
+      {
+       "name": "updatedAt",
+       "type": "(time: string) => string",
+       "default": "(t: string) => `Last updated ${t}`",
+       "description": "\"Last updated 13:42\""
+      },
+      {
+       "name": "retry",
+       "type": "string",
+       "default": "\"Try again\"",
+       "description": ""
+      }
+     ]
     },
     {
      "name": "flood",
@@ -387,7 +624,69 @@
     {
      "name": "labels",
      "type": "Partial<AnnotatedImageLabels>",
-     "description": ""
+     "description": "",
+     "keys": [
+      {
+       "name": "predicted",
+       "type": "string",
+       "default": "\"Predicted\"",
+       "description": "The legend's words, and the kind in each annotation's spoken name."
+      },
+      {
+       "name": "truth",
+       "type": "string",
+       "default": "\"Ground truth\"",
+       "description": ""
+      },
+      {
+       "name": "previous",
+       "type": "string",
+       "default": "\"Previous version\"",
+       "description": ""
+      },
+      {
+       "name": "legend",
+       "type": "string",
+       "default": "\"Line styles\"",
+       "description": "Names the legend for screen readers."
+      },
+      {
+       "name": "count",
+       "type": "(n: number) => string",
+       "default": "(n) => (n === 0 ? \"No annotations\" : n === 1 ? \"1 annotation\" : `${n} annotations`)",
+       "description": "\"3 annotations\"."
+      },
+      {
+       "name": "annotation",
+       "type": "(a: { label: string; kind: string; score?: string; }) => string",
+       "default": "({ label, kind, score }) => [label, kind.toLowerCase(), score].filter(Boolean).join(\", \")",
+       "description": "One annotation as it is read out: \"person, predicted, 0.92\". `kind` is the legend word; `score` is already written."
+      },
+      {
+       "name": "score",
+       "type": "(n: number) => string",
+       "default": "(n) => n.toFixed(2)",
+       "description": "A score as it is written, on the picture and read out."
+      },
+      {
+       "name": "layers",
+       "type": "(names: string[]) => string",
+       "default": "(names) => `Layers: ${names.join(\", \")}`",
+       "description": "\"Layers: depth\", read after the annotations when there are overlays."
+      },
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Loading picture\"",
+       "description": "Read out while the skeleton shows."
+      },
+      {
+       "name": "failed",
+       "type": "string",
+       "default": "\"The picture could not be loaded\"",
+       "description": "Shown in place of the picture when it cannot load."
+      }
+     ]
     }
    ],
    "inherits": []
@@ -404,7 +703,33 @@
     {
      "name": "labels",
      "type": "Partial<Pick<AnnotatedImageLabels, \"legend\" | \"previous\" | \"predicted\" | \"truth\">>",
-     "description": ""
+     "description": "",
+     "keys": [
+      {
+       "name": "legend",
+       "type": "string",
+       "default": "\"Line styles\"",
+       "description": "Names the legend for screen readers."
+      },
+      {
+       "name": "previous",
+       "type": "string",
+       "default": "\"Previous version\"",
+       "description": ""
+      },
+      {
+       "name": "predicted",
+       "type": "string",
+       "default": "\"Predicted\"",
+       "description": "The legend's words, and the kind in each annotation's spoken name."
+      },
+      {
+       "name": "truth",
+       "type": "string",
+       "default": "\"Ground truth\"",
+       "description": ""
+      }
+     ]
     }
    ],
    "inherits": []
@@ -476,6 +801,61 @@
      "name": "onLeft",
      "type": "() => void",
      "description": ""
+    },
+    {
+     "name": "labels",
+     "type": "Partial<AttachmentLabels>",
+     "description": "The words it says, to translate them.",
+     "keys": [
+      {
+       "name": "uploadFailed",
+       "type": "string",
+       "default": "\"Upload failed\"",
+       "description": "Under the name when the upload failed and no `error` says why."
+      },
+      {
+       "name": "failed",
+       "type": "string",
+       "default": "\"Failed\"",
+       "description": "The image variant's caption in the same case."
+      },
+      {
+       "name": "uploading",
+       "type": "(name: string) => string",
+       "default": "(name) => `Uploading ${name}`",
+       "description": "The progress bar's name: \"Uploading report.pdf\"."
+      },
+      {
+       "name": "percent",
+       "type": "(n: number) => string",
+       "default": "(n) => `${n} %`",
+       "description": "How far the upload is: \"40 %\"."
+      },
+      {
+       "name": "retry",
+       "type": "(name: string) => string",
+       "default": "(name) => `Retry ${name}`",
+       "description": "The action buttons' names, each with the file's name."
+      },
+      {
+       "name": "download",
+       "type": "(name: string) => string",
+       "default": "(name) => `Download ${name}`",
+       "description": ""
+      },
+      {
+       "name": "cancel",
+       "type": "(name: string) => string",
+       "default": "(name) => `Cancel ${name}`",
+       "description": ""
+      },
+      {
+       "name": "remove",
+       "type": "(name: string) => string",
+       "default": "(name) => `Remove ${name}`",
+       "description": ""
+      }
+     ]
     }
    ],
    "inherits": []
@@ -526,14 +906,61 @@
     {
      "name": "placeholder",
      "type": "string",
-     "default": "\"Search\"",
-     "description": ""
+     "description": "Same as `labels.placeholder`, and wins over it."
     },
     {
      "name": "emptyText",
      "type": "string",
-     "default": "\"No matches\"",
-     "description": ""
+     "description": "Same as `labels.empty`, and wins over it."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<AutocompleteLabels>",
+     "description": "The words it says, to translate them.",
+     "keys": [
+      {
+       "name": "placeholder",
+       "type": "string",
+       "default": "\"Search\"",
+       "description": "In the empty field."
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"No matches\"",
+       "description": "In the list when nothing matches."
+      },
+      {
+       "name": "searching",
+       "type": "string",
+       "default": "\"Searching…\"",
+       "description": "In the list while `loading` and nothing is shown yet."
+      },
+      {
+       "name": "searchingStatus",
+       "type": "string",
+       "default": "\"Searching\"",
+       "description": "The spinner's name while `loading`."
+      },
+      {
+       "name": "clear",
+       "type": "string",
+       "default": "\"Clear\"",
+       "description": "The clear button's name."
+      },
+      {
+       "name": "showAll",
+       "type": "string",
+       "default": "\"Show all\"",
+       "description": "The chevron's name, which opens the full list."
+      },
+      {
+       "name": "suggestions",
+       "type": "string",
+       "default": "\"Suggestions\"",
+       "description": "Names the list (and its popover) when the field has no `aria-label`."
+      }
+     ]
     },
     {
      "name": "clearable",
@@ -765,7 +1192,21 @@
  "breadcrumb": [
   {
    "name": "Breadcrumb",
-   "props": [],
+   "props": [
+    {
+     "name": "labels",
+     "type": "Partial<BreadcrumbLabels>",
+     "description": "The words it says, to translate them. An `aria-label` wins over `labels.nav`.",
+     "keys": [
+      {
+       "name": "nav",
+       "type": "string",
+       "default": "\"Breadcrumb\"",
+       "description": "The landmark's name for screen readers."
+      }
+     ]
+    }
+   ],
    "inherits": [
     "<nav>"
    ]
@@ -865,6 +1306,204 @@
    "inherits": [
     "DayPicker"
    ]
+  }
+ ],
+ "camera-feed": [
+  {
+   "name": "CameraFeed",
+   "props": [
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "The camera's name: \"Front camera\". Names the feed with `source`."
+    },
+    {
+     "name": "source",
+     "type": "string",
+     "description": "The robot it is on: \"Patrol dog 7F3A\"."
+    },
+    {
+     "name": "stream",
+     "type": "MediaStream",
+     "description": "A WebRTC stream, set as the video's `srcObject`. The app owns the connection; the feed only shows it."
+    },
+    {
+     "name": "src",
+     "type": "string",
+     "description": "A URL the browser plays by itself (a live MP4 or WebM, or HLS where the browser supports it). Use `stream` or `src`."
+    },
+    {
+     "name": "status",
+     "type": "\"connecting\" | \"live\" | \"offline\"",
+     "description": "What the connection is doing. Defaults to `live` when there is a `stream` or `src`; with neither, \"No camera\"."
+    },
+    {
+     "name": "latencyMs",
+     "type": "number",
+     "description": "Glass-to-glass delay, measured by the app, written after \"Live\"."
+    },
+    {
+     "name": "staleAfterMs",
+     "type": "number",
+     "default": "2000",
+     "description": "With no new frame for this long, the feed says \"Stalled\" over a dimmed picture instead of freezing silently."
+    },
+    {
+     "name": "offlineReason",
+     "type": "string",
+     "description": "Why the camera is offline, written under \"Camera offline\": \"the robot is out of network range.\""
+    },
+    {
+     "name": "onRetry",
+     "type": "() => void",
+     "description": "Shows \"Reconnect\" while offline. Without it there is no button (a `src` reloads itself after a video error)."
+    },
+    {
+     "name": "onSnapshot",
+     "type": "(blob: Blob) => void",
+     "description": "Shows \"Take snapshot\": the frame on screen, drawn to a canvas, as a PNG."
+    },
+    {
+     "name": "audio",
+     "type": "boolean",
+     "default": "false",
+     "description": "The stream carries sound: adds Mute. It starts muted (browsers block sound until someone asks for it)."
+    },
+    {
+     "name": "aspectRatio",
+     "type": "number",
+     "default": "16 / 9",
+     "description": "Width over height, so the layout holds its size before the first frame. 16 / 9 by default."
+    },
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "description": "Drawn over the picture, in a layer the size of the video box: a crosshair, detection boxes."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<CameraFeedLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "keys",
+       "type": "string",
+       "default": "\"Space pauses and resumes the view, F goes full screen. Pausing freezes this view only; the robot keeps streaming.\"",
+       "description": "Read after the feed's name: the keys it answers to."
+      },
+      {
+       "name": "live",
+       "type": "string",
+       "default": "\"Live\"",
+       "description": ""
+      },
+      {
+       "name": "latency",
+       "type": "(ms: number) => string",
+       "default": "(ms) => `${Math.round(ms)} ms`",
+       "description": "Written after \"Live\": \"180 ms\"."
+      },
+      {
+       "name": "connecting",
+       "type": "string",
+       "default": "\"Connecting\"",
+       "description": "The state word while connecting, and the line over the skeleton."
+      },
+      {
+       "name": "connectingLong",
+       "type": "string",
+       "default": "\"Connecting to camera…\"",
+       "description": "Shown in the state while connecting, after the word; the line over the skeleton says the whole thing."
+      },
+      {
+       "name": "stalled",
+       "type": "string",
+       "default": "\"Stalled\"",
+       "description": ""
+      },
+      {
+       "name": "lastFrame",
+       "type": "(time: string) => string",
+       "default": "(time) => `last frame ${time}`",
+       "description": "After \"Stalled\": when the last frame arrived."
+      },
+      {
+       "name": "formatTime",
+       "type": "(date: Date) => string",
+       "default": "(d) => [d.getHours(), d.getMinutes(), d.getSeconds()].map((n) => String(n).padStart(2, \"0\")).join(\":\")",
+       "description": "The time of the last frame. 24-hour clock by default; pass the site's own format or time zone."
+      },
+      {
+       "name": "paused",
+       "type": "string",
+       "default": "\"Paused\"",
+       "description": ""
+      },
+      {
+       "name": "offline",
+       "type": "string",
+       "default": "\"Camera offline\"",
+       "description": ""
+      },
+      {
+       "name": "noCamera",
+       "type": "string",
+       "default": "\"No camera\"",
+       "description": ""
+      },
+      {
+       "name": "retry",
+       "type": "string",
+       "default": "\"Reconnect\"",
+       "description": ""
+      },
+      {
+       "name": "pauseView",
+       "type": "string",
+       "default": "\"Pause view\"",
+       "description": ""
+      },
+      {
+       "name": "resumeView",
+       "type": "string",
+       "default": "\"Resume view\"",
+       "description": ""
+      },
+      {
+       "name": "mute",
+       "type": "string",
+       "default": "\"Mute\"",
+       "description": ""
+      },
+      {
+       "name": "unmute",
+       "type": "string",
+       "default": "\"Unmute\"",
+       "description": ""
+      },
+      {
+       "name": "snapshot",
+       "type": "string",
+       "default": "\"Take snapshot\"",
+       "description": ""
+      },
+      {
+       "name": "fullscreen",
+       "type": "string",
+       "default": "\"Full screen\"",
+       "description": ""
+      },
+      {
+       "name": "exitFullscreen",
+       "type": "string",
+       "default": "\"Leave full screen\"",
+       "description": ""
+      }
+     ]
+    }
+   ],
+   "inherits": []
   }
  ],
  "card": [
@@ -1112,14 +1751,36 @@
     {
      "name": "moreLabel",
      "type": "(hidden: number) => string",
-     "default": "(n) => `${n} more`",
-     "description": ""
+     "description": "Same as `labels.more`, and wins over it."
     },
     {
      "name": "lessLabel",
      "type": "string",
-     "default": "\"Show fewer\"",
-     "description": ""
+     "description": "Same as `labels.less`, and wins over it."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<ChipGroupLabels>",
+     "description": "The words it says, to translate them.",
+     "keys": [
+      {
+       "name": "more",
+       "type": "(hidden: number) => string",
+       "default": "(n) => `${n} more`",
+       "description": "The button that unfolds the chips past `max`: \"4 more\"."
+      },
+      {
+       "name": "less",
+       "type": "string",
+       "default": "\"Show fewer\"",
+       "description": "The same button once unfolded."
+      }
+     ]
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the counts (a BCP 47 tag such as \"zh-TW\"). Left out, the browser's language."
     },
     {
      "name": "linkAs",
@@ -1241,7 +1902,45 @@
     {
      "name": "labels",
      "type": "Partial<CodeBlockLabels>",
-     "description": ""
+     "description": "",
+     "keys": [
+      {
+       "name": "copy",
+       "type": "(title?: string) => string",
+       "default": "(title) => (title ? `Copy ${title}` : \"Copy code\")",
+       "description": "The copy button's name, from the block's title when it has one: (title) => \"Copy \" + title."
+      },
+      {
+       "name": "copied",
+       "type": "string",
+       "default": "\"Copied\"",
+       "description": "Said after a copy."
+      },
+      {
+       "name": "failed",
+       "type": "string",
+       "default": "\"Could not copy: select the text and copy it\"",
+       "description": "Said when the browser refused the copy."
+      },
+      {
+       "name": "show",
+       "type": "string",
+       "default": "\"Show value\"",
+       "description": "The secret toggle's name; aria-pressed says whether the value is shown."
+      },
+      {
+       "name": "hidden",
+       "type": "string",
+       "default": "\"Hidden\"",
+       "description": "Read in place of the dots while a secret is hidden."
+      },
+      {
+       "name": "code",
+       "type": "string",
+       "default": "\"Code\"",
+       "description": "The scroll box's name when there is no title."
+      }
+     ]
     },
     {
      "name": "children",
@@ -1266,8 +1965,7 @@
     {
      "name": "title",
      "type": "string",
-     "default": "\"Search\"",
-     "description": ""
+     "description": "Same as `labels.title`, and wins over it."
     },
     {
      "name": "open",
@@ -1282,8 +1980,26 @@
     {
      "name": "description",
      "type": "string",
-     "default": "\"Search pages, robots and actions\"",
-     "description": ""
+     "description": "Same as `labels.description`, and wins over it."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<CommandDialogLabels>",
+     "description": "The words it says, to translate them.",
+     "keys": [
+      {
+       "name": "title",
+       "type": "string",
+       "default": "\"Search\"",
+       "description": "The palette's name for screen readers."
+      },
+      {
+       "name": "description",
+       "type": "string",
+       "default": "\"Search pages, robots and actions\"",
+       "description": "Read after the name: what can be searched."
+      }
+     ]
     }
    ],
    "inherits": [
@@ -1477,20 +2193,48 @@
     {
      "name": "label",
      "type": "string",
-     "default": "\"Copy\"",
-     "description": ""
+     "description": "Same as `labels.copy`, and wins over it."
     },
     {
      "name": "copiedLabel",
      "type": "string",
-     "default": "\"Copied\"",
-     "description": ""
+     "description": "Same as `labels.copied`, and wins over it."
     },
     {
      "name": "failedLabel",
      "type": "string",
-     "default": "\"Could not copy: select the text and copy it\"",
-     "description": "Said when the browser refused (no clipboard access); it stays until the next press."
+     "description": "Same as `labels.failed`, and wins over it."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<CopyButtonLabels>",
+     "description": "The words it says, to translate them.",
+     "keys": [
+      {
+       "name": "copy",
+       "type": "string",
+       "default": "\"Copy\"",
+       "description": "The icon button's name before a press."
+      },
+      {
+       "name": "copied",
+       "type": "string",
+       "default": "\"Copied\"",
+       "description": "Said after a copy, and shown on a text button."
+      },
+      {
+       "name": "failed",
+       "type": "string",
+       "default": "\"Could not copy: select the text and copy it\"",
+       "description": "Said when the browser refused (no clipboard access); it stays until the next press."
+      },
+      {
+       "name": "notCopied",
+       "type": "string",
+       "default": "\"Not copied\"",
+       "description": "Shown on a text button when the copy failed."
+      }
+     ]
     },
     {
      "name": "children",
@@ -1542,8 +2286,110 @@
     {
      "name": "emptyText",
      "type": "ReactNode",
-     "default": "\"No rows\"",
-     "description": ""
+     "description": "Same as `labels.empty`, and wins over it."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<DataGridLabels>",
+     "description": "The words every part of the grid says, to translate them.",
+     "keys": [
+      {
+       "name": "region",
+       "type": "string",
+       "default": "\"Data\"",
+       "description": "Names the scrolling grid when DataGridTable has no `aria-label`."
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"No rows\"",
+       "description": "In the grid when there are no rows."
+      },
+      {
+       "name": "resize",
+       "type": "(column: string) => string",
+       "default": "(column) => `Resize ${column}`",
+       "description": "A column's resize handle: \"Resize Robot\"."
+      },
+      {
+       "name": "ascending",
+       "type": "string",
+       "default": "\"Ascending\"",
+       "description": "The column header menu."
+      },
+      {
+       "name": "descending",
+       "type": "string",
+       "default": "\"Descending\"",
+       "description": ""
+      },
+      {
+       "name": "unpin",
+       "type": "string",
+       "default": "\"Unpin\"",
+       "description": ""
+      },
+      {
+       "name": "pinLeft",
+       "type": "string",
+       "default": "\"Pin to the left\"",
+       "description": ""
+      },
+      {
+       "name": "hideColumn",
+       "type": "string",
+       "default": "\"Hide column\"",
+       "description": ""
+      },
+      {
+       "name": "columns",
+       "type": "string",
+       "default": "\"Columns\"",
+       "description": "The button that opens the column menu (DataGridColumnVisibility)."
+      },
+      {
+       "name": "showColumns",
+       "type": "string",
+       "default": "\"Show columns\"",
+       "description": "The heading inside that menu."
+      },
+      {
+       "name": "selected",
+       "type": "(count: number, total: number) => string",
+       "default": "(count, total) => `${count} of ${total} selected`",
+       "description": "DataGridSelectionSummary: \"3 of 48 selected\"."
+      },
+      {
+       "name": "selectAll",
+       "type": "string",
+       "default": "\"Select all on this page\"",
+       "description": "selectColumn's checkboxes."
+      },
+      {
+       "name": "selectRow",
+       "type": "string",
+       "default": "\"Select row\"",
+       "description": ""
+      },
+      {
+       "name": "details",
+       "type": "string",
+       "default": "\"Details\"",
+       "description": "expandColumn's header (screen readers only) and its button."
+      },
+      {
+       "name": "showDetails",
+       "type": "string",
+       "default": "\"Show details\"",
+       "description": ""
+      },
+      {
+       "name": "hideDetails",
+       "type": "string",
+       "default": "\"Hide details\"",
+       "description": ""
+      }
+     ]
     },
     {
      "name": "children",
@@ -1600,8 +2446,7 @@
     {
      "name": "label",
      "type": "string",
-     "default": "\"Columns\"",
-     "description": ""
+     "description": "Same as DataGrid's `labels.columns`, and wins over it."
     }
    ],
    "inherits": []
@@ -1614,6 +2459,43 @@
      "type": "boolean",
      "default": "true",
      "description": ""
+    },
+    {
+     "name": "labels",
+     "type": "Labels",
+     "description": "Pagination's words, to translate them.",
+     "keys": [
+      {
+       "name": "range",
+       "type": "(from: number, to: number, total: number) => string",
+       "default": "(from: number, to: number, total: number) => `${from}–${to} of ${total}`",
+       "description": ""
+      },
+      {
+       "name": "previous",
+       "type": "string",
+       "default": "\"Previous page\"",
+       "description": ""
+      },
+      {
+       "name": "next",
+       "type": "string",
+       "default": "\"Next page\"",
+       "description": ""
+      },
+      {
+       "name": "page",
+       "type": "(n: number) => string",
+       "default": "(n: number) => `Page ${n}`",
+       "description": ""
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"Nothing to show\"",
+       "description": ""
+      }
+     ]
     }
    ],
    "inherits": []
@@ -1637,14 +2519,53 @@
     {
      "name": "placeholder",
      "type": "string",
-     "default": "\"Pick a day\"",
-     "description": ""
+     "description": "Same as `labels.pickDay` (or `pickRange`), and wins over it."
     },
     {
      "name": "displayFormat",
      "type": "string",
-     "default": "\"d MMM yyyy\"",
-     "description": "date-fns pattern for the trigger."
+     "description": "date-fns pattern for the trigger. Wins over `locale`."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Writes the day on the trigger in this language with Intl (\"2026年11月3日\" for \"zh-TW\"), unless `displayFormat` is given. Left out, the trigger reads \"3 Nov 2026\" as before. The calendar's month and day names follow `calendarLocale`."
+    },
+    {
+     "name": "calendarLocale",
+     "type": "Partial<DayPickerLocale>",
+     "description": "react-day-picker's locale for the calendar's month and day names and its labels: `import { zhTW } from \"react-day-picker/locale\"`."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<DatePickerLabels>",
+     "description": "The words it says, to translate them.",
+     "keys": [
+      {
+       "name": "pickDay",
+       "type": "string",
+       "default": "\"Pick a day\"",
+       "description": "DatePicker's trigger when no day is picked."
+      },
+      {
+       "name": "pickRange",
+       "type": "string",
+       "default": "\"Pick a range\"",
+       "description": "DateRangePicker's trigger when no range is picked."
+      },
+      {
+       "name": "clear",
+       "type": "string",
+       "default": "\"Clear\"",
+       "description": "The clear button's name."
+      },
+      {
+       "name": "presets",
+       "type": "string",
+       "default": "\"Presets\"",
+       "description": "Names the group of presets."
+      }
+     ]
     },
     {
      "name": "disabled",
@@ -1695,14 +2616,53 @@
     {
      "name": "placeholder",
      "type": "string",
-     "default": "\"Pick a range\"",
-     "description": ""
+     "description": "Same as `labels.pickDay` (or `pickRange`), and wins over it."
     },
     {
      "name": "displayFormat",
      "type": "string",
-     "default": "\"d MMM yyyy\"",
-     "description": "date-fns pattern for the trigger."
+     "description": "date-fns pattern for the trigger. Wins over `locale`."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Writes the day on the trigger in this language with Intl (\"2026年11月3日\" for \"zh-TW\"), unless `displayFormat` is given. Left out, the trigger reads \"3 Nov 2026\" as before. The calendar's month and day names follow `calendarLocale`."
+    },
+    {
+     "name": "calendarLocale",
+     "type": "Partial<DayPickerLocale>",
+     "description": "react-day-picker's locale for the calendar's month and day names and its labels: `import { zhTW } from \"react-day-picker/locale\"`."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<DatePickerLabels>",
+     "description": "The words it says, to translate them.",
+     "keys": [
+      {
+       "name": "pickDay",
+       "type": "string",
+       "default": "\"Pick a day\"",
+       "description": "DatePicker's trigger when no day is picked."
+      },
+      {
+       "name": "pickRange",
+       "type": "string",
+       "default": "\"Pick a range\"",
+       "description": "DateRangePicker's trigger when no range is picked."
+      },
+      {
+       "name": "clear",
+       "type": "string",
+       "default": "\"Clear\"",
+       "description": "The clear button's name."
+      },
+      {
+       "name": "presets",
+       "type": "string",
+       "default": "\"Presets\"",
+       "description": "Names the group of presets."
+      }
+     ]
     },
     {
      "name": "disabled",
@@ -1815,14 +2775,26 @@
     {
      "name": "closeLabel",
      "type": "string",
-     "default": "\"Close\"",
-     "description": ""
+     "description": "Same as `labels.close`, and wins over it."
     },
     {
      "name": "showClose",
      "type": "boolean",
      "default": "true",
      "description": ""
+    },
+    {
+     "name": "labels",
+     "type": "Partial<DialogLabels>",
+     "description": "The words it says, to translate them.",
+     "keys": [
+      {
+       "name": "close",
+       "type": "string",
+       "default": "\"Close\"",
+       "description": "The close button's name for screen readers."
+      }
+     ]
     }
    ],
    "inherits": [
@@ -2240,7 +3212,152 @@
     {
      "name": "labels",
      "type": "Partial<Omit<FilterLabels, \"operators\">> & { operators?: Partial<Record<FilterOperator, string>>; }",
-     "description": ""
+     "description": "",
+     "keys": [
+      {
+       "name": "label",
+       "type": "string",
+       "default": "\"Filters\"",
+       "description": "Names the whole bar."
+      },
+      {
+       "name": "remove",
+       "type": "(rule: string) => string",
+       "default": "(rule: string) => `Remove filter: ${rule}`",
+       "description": ""
+      },
+      {
+       "name": "clear",
+       "type": "string",
+       "default": "\"Clear all\"",
+       "description": ""
+      },
+      {
+       "name": "from",
+       "type": "string",
+       "default": "\"From\"",
+       "description": ""
+      },
+      {
+       "name": "to",
+       "type": "string",
+       "default": "\"To\"",
+       "description": ""
+      },
+      {
+       "name": "matchAll",
+       "type": "string",
+       "default": "\"Active filters, all must match\"",
+       "description": "Names the list of chips, so a screen reader hears how they combine."
+      },
+      {
+       "name": "more",
+       "type": "(first: string, more: number) => string",
+       "default": "(first: string, more: number) => `${first} +${more}`",
+       "description": "Several values on a chip: the first and how many more."
+      },
+      {
+       "name": "and",
+       "type": "string",
+       "default": "\"and\"",
+       "description": "Between chips: rules combine with AND."
+      },
+      {
+       "name": "add",
+       "type": "string",
+       "default": "\"Filter\"",
+       "description": ""
+      },
+      {
+       "name": "chooseField",
+       "type": "string",
+       "default": "\"Choose a field\"",
+       "description": ""
+      },
+      {
+       "name": "chooseOperator",
+       "type": "(field: string) => string",
+       "default": "(field: string) => `${field}: choose an operator`",
+       "description": ""
+      },
+      {
+       "name": "enterValue",
+       "type": "(field: string, operator: string) => string",
+       "default": "(field: string, operator: string) => `${field} ${operator}: enter a value`",
+       "description": ""
+      },
+      {
+       "name": "chooseValue",
+       "type": "(field: string, operator: string) => string",
+       "default": "(field: string, operator: string) => `${field} ${operator}: choose a value`",
+       "description": ""
+      },
+      {
+       "name": "searchFields",
+       "type": "string",
+       "default": "\"Search fields\"",
+       "description": ""
+      },
+      {
+       "name": "searchOperators",
+       "type": "string",
+       "default": "\"Search operators\"",
+       "description": ""
+      },
+      {
+       "name": "searchOptions",
+       "type": "string",
+       "default": "\"Search values\"",
+       "description": ""
+      },
+      {
+       "name": "noMatches",
+       "type": "string",
+       "default": "\"No matches. Try another word.\"",
+       "description": ""
+      },
+      {
+       "name": "apply",
+       "type": "string",
+       "default": "\"Apply\"",
+       "description": ""
+      },
+      {
+       "name": "back",
+       "type": "string",
+       "default": "\"Back\"",
+       "description": ""
+      },
+      {
+       "name": "editField",
+       "type": "(text: string) => string",
+       "default": "(text: string) => `${text}, change field`",
+       "description": "Accessible names of the chip's parts. They start with the words shown (WCAG 2.5.3)."
+      },
+      {
+       "name": "editOperator",
+       "type": "(text: string) => string",
+       "default": "(text: string) => `${text}, change operator`",
+       "description": ""
+      },
+      {
+       "name": "editValue",
+       "type": "(text: string) => string",
+       "default": "(text: string) => `${text}, change value`",
+       "description": ""
+      },
+      {
+       "name": "operators",
+       "type": "Partial<Record<FilterOperator, string>>",
+       "default": "{ contains: \"contains\", not_contains: \"does not contain\", is: \"is\", is_not: \"is not\", any_of: \"is any of\", none_of: \"is none of\", eq: \"=\", neq: \"≠\", lt: \"<\", gt: \">\", between: \"between\", before: \"before\", after: \"after\", is_true: \"is true\", is_false: \"is false\", } as Record<FilterOperator, string>",
+       "description": ""
+      }
+     ]
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the options' counts (a BCP 47 tag such as \"zh-TW\"). Left out, the browser's language."
     }
    ],
    "inherits": []
@@ -2309,7 +3426,51 @@
     {
      "name": "labels",
      "type": "Partial<GraphLabels>",
-     "description": ""
+     "description": "",
+     "keys": [
+      {
+       "name": "from",
+       "type": "(names: string[]) => string",
+       "default": "(names) => `from ${and(names)}`",
+       "description": "The part of a node's name listing its inputs: \"from Hall B captures and Synthetic pallets v4\"."
+      },
+      {
+       "name": "to",
+       "type": "(names: string[]) => string",
+       "default": "(names) => `to ${and(names)}`",
+       "description": "The part listing its outputs: \"to Picking detector v3.2\"."
+      },
+      {
+       "name": "status",
+       "type": "Record<Status, string>",
+       "default": "{ active: \"Running\", normal: \"Done\", warning: \"Needs attention\", danger: \"Failed\", offline: \"Not run\" }",
+       "description": "Default words per status, when a node has no statusLabel."
+      },
+      {
+       "name": "instructions",
+       "type": "string",
+       "default": "\"Arrow keys move along the connections: forward to outputs, back to inputs, across to the next node in the same column.\"",
+       "description": "Read once when focus enters the graph."
+      },
+      {
+       "name": "inputs",
+       "type": "string",
+       "default": "\"Inputs\"",
+       "description": "GraphList: the headings of a node's two rows."
+      },
+      {
+       "name": "outputs",
+       "type": "string",
+       "default": "\"Outputs\"",
+       "description": ""
+      },
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Loading\"",
+       "description": "Read while `loading`."
+      }
+     ]
     }
    ],
    "inherits": []
@@ -2329,6 +3490,61 @@
      "description": "Bones in the frame while the graph loads."
     },
     {
+     "name": "empty",
+     "type": "ReactNode",
+     "default": "\"Nothing here yet.\"",
+     "description": "Shown in the frame when there are no nodes."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<GraphLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "from",
+       "type": "(names: string[]) => string",
+       "default": "(names) => `from ${and(names)}`",
+       "description": "The part of a node's name listing its inputs: \"from Hall B captures and Synthetic pallets v4\"."
+      },
+      {
+       "name": "to",
+       "type": "(names: string[]) => string",
+       "default": "(names) => `to ${and(names)}`",
+       "description": "The part listing its outputs: \"to Picking detector v3.2\"."
+      },
+      {
+       "name": "status",
+       "type": "Record<Status, string>",
+       "default": "{ active: \"Running\", normal: \"Done\", warning: \"Needs attention\", danger: \"Failed\", offline: \"Not run\" }",
+       "description": "Default words per status, when a node has no statusLabel."
+      },
+      {
+       "name": "instructions",
+       "type": "string",
+       "default": "\"Arrow keys move along the connections: forward to outputs, back to inputs, across to the next node in the same column.\"",
+       "description": "Read once when focus enters the graph."
+      },
+      {
+       "name": "inputs",
+       "type": "string",
+       "default": "\"Inputs\"",
+       "description": "GraphList: the headings of a node's two rows."
+      },
+      {
+       "name": "outputs",
+       "type": "string",
+       "default": "\"Outputs\"",
+       "description": ""
+      },
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Loading\"",
+       "description": "Read while `loading`."
+      }
+     ]
+    },
+    {
      "name": "nodes",
      "type": "GraphNode[]",
      "required": true,
@@ -2341,21 +3557,10 @@
      "description": "The connections, `{ from, to }` with `from` an input of `to`. An edge that would close a cycle is left out."
     },
     {
-     "name": "empty",
-     "type": "ReactNode",
-     "default": "\"Nothing here yet.\"",
-     "description": "Shown in the frame when there are no nodes."
-    },
-    {
      "name": "linkAs",
      "type": "ElementType",
      "default": "\"a\"",
      "description": "Your router's link (e.g. next/link), for nodes with href."
-    },
-    {
-     "name": "labels",
-     "type": "Partial<GraphLabels>",
-     "description": ""
     }
    ],
    "inherits": [
@@ -2523,7 +3728,57 @@
     {
      "name": "labels",
      "type": "Partial<ImageGridLabels>",
-     "description": ""
+     "description": "",
+     "keys": [
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Loading pictures\"",
+       "description": "Read out while the skeleton shows."
+      },
+      {
+       "name": "broken",
+       "type": "string",
+       "default": "\"Could not load\"",
+       "description": "Read before the file name of a picture that could not load."
+      },
+      {
+       "name": "reveal",
+       "type": "string",
+       "default": "\"Show picture\"",
+       "description": "The button on a hidden picture."
+      },
+      {
+       "name": "viewLarger",
+       "type": "(name: string) => string",
+       "default": "(name) => `View ${name} larger`",
+       "description": "The corner button that opens the lightbox while picking."
+      },
+      {
+       "name": "previous",
+       "type": "string",
+       "default": "\"Previous\"",
+       "description": ""
+      },
+      {
+       "name": "next",
+       "type": "string",
+       "default": "\"Next\"",
+       "description": ""
+      },
+      {
+       "name": "close",
+       "type": "string",
+       "default": "\"Close\"",
+       "description": ""
+      },
+      {
+       "name": "position",
+       "type": "(n: number, total: number) => string",
+       "default": "(n, total) => `${n} of ${total}`",
+       "description": "\"3 of 24\"."
+      }
+     ]
     }
    ],
    "inherits": []
@@ -2687,7 +3942,45 @@
     {
      "name": "labels",
      "type": "Partial<IslandLabels>",
-     "description": ""
+     "description": "",
+     "keys": [
+      {
+       "name": "attention",
+       "type": "string",
+       "default": "\"Another dog needs attention\"",
+       "description": ""
+      },
+      {
+       "name": "status",
+       "type": "string",
+       "default": "\"Device status\"",
+       "description": ""
+      },
+      {
+       "name": "offline",
+       "type": "string",
+       "default": "\"offline\"",
+       "description": ""
+      },
+      {
+       "name": "charging",
+       "type": "string",
+       "default": "\"charging\"",
+       "description": ""
+      },
+      {
+       "name": "battery",
+       "type": "(percent: number) => string",
+       "default": "(n) => `battery ${n}%`",
+       "description": ""
+      },
+      {
+       "name": "notifications",
+       "type": "(unread: number) => string",
+       "default": "(unread) => `Notifications, ${unread} unread`",
+       "description": ""
+      }
+     ]
     }
    ],
    "inherits": []
@@ -2769,7 +4062,92 @@
     {
      "name": "labels",
      "type": "Partial<AlarmLabels> & { more?: (n: number) => string; moreAlarms?: string; many?: (n: number) => string; }",
-     "description": ""
+     "description": "",
+     "keys": [
+      {
+       "name": "critical",
+       "type": "string",
+       "default": "\"Critical\"",
+       "description": ""
+      },
+      {
+       "name": "high",
+       "type": "string",
+       "default": "\"High\"",
+       "description": ""
+      },
+      {
+       "name": "low",
+       "type": "string",
+       "default": "\"Low\"",
+       "description": ""
+      },
+      {
+       "name": "unacknowledged",
+       "type": "string",
+       "default": "\"Unacknowledged\"",
+       "description": ""
+      },
+      {
+       "name": "acknowledged",
+       "type": "string",
+       "default": "\"Acknowledged\"",
+       "description": "Alone, or before `acknowledgedAt`: \"Acknowledged 13:42\"."
+      },
+      {
+       "name": "cleared",
+       "type": "string",
+       "default": "\"Cleared, not acknowledged\"",
+       "description": "Cleared before anyone acknowledged it, when `clearedAt` is not given."
+      },
+      {
+       "name": "clearedWhen",
+       "type": "(time: string) => string",
+       "default": "(t) => `Cleared ${t}, not acknowledged`",
+       "description": "The same with the time it cleared: \"Cleared 14:07, not acknowledged\"."
+      },
+      {
+       "name": "acknowledge",
+       "type": "string",
+       "default": "\"Acknowledge\"",
+       "description": ""
+      },
+      {
+       "name": "shelve",
+       "type": "string",
+       "default": "\"Shelve\"",
+       "description": ""
+      },
+      {
+       "name": "unshelve",
+       "type": "string",
+       "default": "\"Unshelve\"",
+       "description": ""
+      },
+      {
+       "name": "shelvedUntil",
+       "type": "string",
+       "default": "\"Shelved until\"",
+       "description": "Before the time the alarm comes back: \"Shelved until 15:30\"."
+      },
+      {
+       "name": "more",
+       "type": "(n: number) => string",
+       "default": "(n: number) => `+${n}`",
+       "description": ""
+      },
+      {
+       "name": "moreAlarms",
+       "type": "string",
+       "default": "\"more unacknowledged\"",
+       "description": ""
+      },
+      {
+       "name": "many",
+       "type": "(n: number) => string",
+       "description": ""
+      }
+     ]
     },
     {
      "name": "feedback",
@@ -2991,8 +4369,27 @@
     },
     {
      "name": "labels",
-     "type": "Labels",
-     "description": ""
+     "type": "Partial<LoadMoreLabels>",
+     "description": "The words it says, to translate them.",
+     "keys": [
+      {
+       "name": "showing",
+       "type": "(shown: number, total: number, locale?: string) => string",
+       "default": "(shown, total, locale) => `Showing ${shown.toLocaleString(locale)} of ${total.toLocaleString(locale)}`",
+       "description": "\"Showing 40 of 125\". `locale` is LoadMore's, for formatting the numbers."
+      },
+      {
+       "name": "more",
+       "type": "(next: number, left: number, locale?: string) => string",
+       "default": "(next, left, locale) => `Show ${next.toLocaleString(locale)} more (${left.toLocaleString(locale)} left)`",
+       "description": "\"Show 20 more (85 left)\""
+      }
+     ]
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the numbers (a BCP 47 tag such as \"zh-TW\"). Left out, the browser's language."
     }
    ],
    "inherits": []
@@ -3136,7 +4533,111 @@
     {
      "name": "labels",
      "type": "Partial<MediaPlayerLabels>",
-     "description": ""
+     "description": "",
+     "keys": [
+      {
+       "name": "keys",
+       "type": "string",
+       "default": "\"Space or K plays and pauses, the arrow keys move 5 seconds, J and L 10 seconds, M mutes, F goes full screen.\"",
+       "description": "Read after the player's name: the keys it answers to."
+      },
+      {
+       "name": "play",
+       "type": "string",
+       "default": "\"Play\"",
+       "description": ""
+      },
+      {
+       "name": "pause",
+       "type": "string",
+       "default": "\"Pause\"",
+       "description": ""
+      },
+      {
+       "name": "mute",
+       "type": "string",
+       "default": "\"Mute\"",
+       "description": ""
+      },
+      {
+       "name": "unmute",
+       "type": "string",
+       "default": "\"Unmute\"",
+       "description": ""
+      },
+      {
+       "name": "speed",
+       "type": "(rate: number) => string",
+       "default": "(rate) => `Playback speed ${rate}×`",
+       "description": "The speed button's name; it must contain the visible \"1×\"."
+      },
+      {
+       "name": "captions",
+       "type": "string",
+       "default": "\"Captions\"",
+       "description": ""
+      },
+      {
+       "name": "fullscreen",
+       "type": "string",
+       "default": "\"Full screen\"",
+       "description": ""
+      },
+      {
+       "name": "exitFullscreen",
+       "type": "string",
+       "default": "\"Leave full screen\"",
+       "description": ""
+      },
+      {
+       "name": "seek",
+       "type": "string",
+       "default": "\"Position in clip\"",
+       "description": "The timeline's name."
+      },
+      {
+       "name": "position",
+       "type": "(current: string, total: string) => string",
+       "default": "(current, total) => `${current} of ${total}`",
+       "description": "The timeline's value as read out: \"0:42 of 1:00\"."
+      },
+      {
+       "name": "markers",
+       "type": "string",
+       "default": "\"Events in this clip\"",
+       "description": "Heading of the list of markers under the player."
+      },
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Loading clip\"",
+       "description": ""
+      },
+      {
+       "name": "buffering",
+       "type": "string",
+       "default": "\"Buffering\"",
+       "description": ""
+      },
+      {
+       "name": "unavailable",
+       "type": "string",
+       "default": "\"Clip unavailable\"",
+       "description": "\"Clip unavailable\", written before the reason."
+      },
+      {
+       "name": "retry",
+       "type": "string",
+       "default": "\"Reload clip\"",
+       "description": ""
+      },
+      {
+       "name": "mediaError",
+       "type": "(code: number) => string",
+       "default": "(code) => code === 1 ? \"loading was stopped.\" : code === 2 ? \"the network dropped while it was loading.\" : code === 3 ? \"the file is damaged or this browser cannot decode it.\" : \"the file was not found, or it is not a video this browser plays.\"",
+       "description": "Why the browser could not play it, by MediaError code (1 aborted, 2 network, 3 decode, 4 not supported)."
+      }
+     ]
     }
    ],
    "inherits": []
@@ -3268,7 +4769,33 @@
     {
      "name": "labels",
      "type": "MetricCardLabels",
-     "description": "The words only screen readers hear (\", better\", \", worse\", \"Loading\", \"Not available\"), to translate them."
+     "description": "The words only screen readers hear (\", better\", \", worse\", \"Loading\", \"Not available\"), to translate them.",
+     "keys": [
+      {
+       "name": "better",
+       "type": "string",
+       "default": "\", better\"",
+       "description": "Read after a change for the better: \"+1, better\"."
+      },
+      {
+       "name": "worse",
+       "type": "string",
+       "default": "\", worse\"",
+       "description": "Read after a change for the worse: \"+6, worse\"."
+      },
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Loading\"",
+       "description": "Read in place of the value while it loads."
+      },
+      {
+       "name": "unavailable",
+       "type": "string",
+       "default": "\"Not available\"",
+       "description": "Read in place of the dash when the value is unavailable."
+      }
+     ]
     }
    ],
    "inherits": [
@@ -3415,7 +4942,21 @@
     {
      "name": "labels",
      "type": "{ decrease?: string; increase?: string; }",
-     "description": ""
+     "description": "",
+     "keys": [
+      {
+       "name": "decrease",
+       "type": "string",
+       "default": "\"Decrease\"",
+       "description": ""
+      },
+      {
+       "name": "increase",
+       "type": "string",
+       "default": "\"Increase\"",
+       "description": ""
+      }
+     ]
     }
    ],
    "inherits": [
@@ -3531,7 +5072,39 @@
     {
      "name": "labels",
      "type": "Labels",
-     "description": ""
+     "description": "",
+     "keys": [
+      {
+       "name": "range",
+       "type": "(from: number, to: number, total: number) => string",
+       "default": "(from: number, to: number, total: number) => `${from}–${to} of ${total}`",
+       "description": ""
+      },
+      {
+       "name": "previous",
+       "type": "string",
+       "default": "\"Previous page\"",
+       "description": ""
+      },
+      {
+       "name": "next",
+       "type": "string",
+       "default": "\"Next page\"",
+       "description": ""
+      },
+      {
+       "name": "page",
+       "type": "(n: number) => string",
+       "default": "(n: number) => `Page ${n}`",
+       "description": ""
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"Nothing to show\"",
+       "description": ""
+      }
+     ]
     }
    ],
    "inherits": []
@@ -3585,7 +5158,32 @@
     {
      "name": "aria-label",
      "type": "string",
-     "description": ""
+     "description": "Wins over `labels.phoneNumber` as the box's name."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<PhoneInputLabels>",
+     "description": "The words it says, to translate them.",
+     "keys": [
+      {
+       "name": "country",
+       "type": "string",
+       "default": "\"Country\"",
+       "description": "The country menu's name for screen readers."
+      },
+      {
+       "name": "phoneNumber",
+       "type": "string",
+       "default": "\"Phone number\"",
+       "description": "The number box's name (unless `aria-label` or a Field names it) and its placeholder."
+      }
+     ]
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "default": "\"en\"",
+     "description": "The language of the country names and their order (a BCP 47 tag such as \"zh-TW\"). English when left out."
     }
    ],
    "inherits": []
@@ -3668,14 +5266,109 @@
     {
      "name": "submitLabel",
      "type": "string",
-     "default": "\"Submit\"",
-     "description": ""
+     "description": "Same as `labels.submit`, and wins over it."
     },
     {
      "name": "requiredMessage",
      "type": "string",
-     "default": "\"Answer this question to continue.\"",
-     "description": ""
+     "description": "Same as `labels.required`, and wins over it."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<QuestionnaireLabels>",
+     "description": "The words it says, to translate them.",
+     "keys": [
+      {
+       "name": "submit",
+       "type": "string",
+       "default": "\"Submit\"",
+       "description": "The last page's button."
+      },
+      {
+       "name": "required",
+       "type": "string",
+       "default": "\"Answer this question to continue.\"",
+       "description": "Under a required question left empty."
+      },
+      {
+       "name": "review",
+       "type": "string",
+       "default": "\"Review\"",
+       "description": "The counter on the review page."
+      },
+      {
+       "name": "position",
+       "type": "(n: number, total: number) => string",
+       "default": "(n, total) => `Question ${n} of ${total}`",
+       "description": "The counter: \"Question 2 of 5\"."
+      },
+      {
+       "name": "percent",
+       "type": "(n: number) => string",
+       "default": "(n) => `${n} %`",
+       "description": "Beside the counter: \"40 %\"."
+      },
+      {
+       "name": "progress",
+       "type": "string",
+       "default": "\"Progress\"",
+       "description": "The progress bar's name."
+      },
+      {
+       "name": "answers",
+       "type": "string",
+       "default": "\"Your answers\"",
+       "description": "Names the list on the review page."
+      },
+      {
+       "name": "edit",
+       "type": "string",
+       "default": "\"Edit\"",
+       "description": "The review page's button for each answer."
+      },
+      {
+       "name": "editQuestion",
+       "type": "(n: number) => string",
+       "default": "(n) => `, question ${n}`",
+       "description": "Read after Edit by screen readers only: \", question 2\"."
+      },
+      {
+       "name": "back",
+       "type": "string",
+       "default": "\"Back\"",
+       "description": ""
+      },
+      {
+       "name": "next",
+       "type": "string",
+       "default": "\"Next\"",
+       "description": ""
+      },
+      {
+       "name": "notAnswered",
+       "type": "string",
+       "default": "\"Not answered\"",
+       "description": "The review page, for a question with no answer."
+      },
+      {
+       "name": "scaleAnswer",
+       "type": "(value: number, max: number) => string",
+       "default": "(value, max) => `${value} of ${max}`",
+       "description": "A scale answer on the review page: \"4 of 5\"."
+      },
+      {
+       "name": "upTo",
+       "type": "(max: number) => string",
+       "default": "(max) => `Up to ${max}.`",
+       "description": "Under a multiple-choice question with `max`: \"Up to 3.\""
+      },
+      {
+       "name": "requiredMark",
+       "type": "string",
+       "default": "\" (required)\"",
+       "description": "Read after a required question's title by screen readers only."
+      }
+     ]
     },
     {
      "name": "review",
@@ -3716,6 +5409,103 @@
      "name": "error",
      "type": "ReactNode",
      "description": ""
+    },
+    {
+     "name": "labels",
+     "type": "Partial<QuestionnaireLabels>",
+     "description": "The words it says (`requiredMark`, `upTo`), to translate them.",
+     "keys": [
+      {
+       "name": "submit",
+       "type": "string",
+       "default": "\"Submit\"",
+       "description": "The last page's button."
+      },
+      {
+       "name": "required",
+       "type": "string",
+       "default": "\"Answer this question to continue.\"",
+       "description": "Under a required question left empty."
+      },
+      {
+       "name": "review",
+       "type": "string",
+       "default": "\"Review\"",
+       "description": "The counter on the review page."
+      },
+      {
+       "name": "position",
+       "type": "(n: number, total: number) => string",
+       "default": "(n, total) => `Question ${n} of ${total}`",
+       "description": "The counter: \"Question 2 of 5\"."
+      },
+      {
+       "name": "percent",
+       "type": "(n: number) => string",
+       "default": "(n) => `${n} %`",
+       "description": "Beside the counter: \"40 %\"."
+      },
+      {
+       "name": "progress",
+       "type": "string",
+       "default": "\"Progress\"",
+       "description": "The progress bar's name."
+      },
+      {
+       "name": "answers",
+       "type": "string",
+       "default": "\"Your answers\"",
+       "description": "Names the list on the review page."
+      },
+      {
+       "name": "edit",
+       "type": "string",
+       "default": "\"Edit\"",
+       "description": "The review page's button for each answer."
+      },
+      {
+       "name": "editQuestion",
+       "type": "(n: number) => string",
+       "default": "(n) => `, question ${n}`",
+       "description": "Read after Edit by screen readers only: \", question 2\"."
+      },
+      {
+       "name": "back",
+       "type": "string",
+       "default": "\"Back\"",
+       "description": ""
+      },
+      {
+       "name": "next",
+       "type": "string",
+       "default": "\"Next\"",
+       "description": ""
+      },
+      {
+       "name": "notAnswered",
+       "type": "string",
+       "default": "\"Not answered\"",
+       "description": "The review page, for a question with no answer."
+      },
+      {
+       "name": "scaleAnswer",
+       "type": "(value: number, max: number) => string",
+       "default": "(value, max) => `${value} of ${max}`",
+       "description": "A scale answer on the review page: \"4 of 5\"."
+      },
+      {
+       "name": "upTo",
+       "type": "(max: number) => string",
+       "default": "(max) => `Up to ${max}.`",
+       "description": "Under a multiple-choice question with `max`: \"Up to 3.\""
+      },
+      {
+       "name": "requiredMark",
+       "type": "string",
+       "default": "\" (required)\"",
+       "description": "Read after a required question's title by screen readers only."
+      }
+     ]
     }
    ],
    "inherits": []
@@ -3795,6 +5585,395 @@
    "inherits": []
   }
  ],
+ "robot-map": [
+  {
+   "name": "RobotMap",
+   "props": [
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "Names the map for screen readers: \"Map of North site\"."
+    },
+    {
+     "name": "width",
+     "type": "number",
+     "required": true,
+     "description": "The site's size in metres: the plan's width and height."
+    },
+    {
+     "name": "height",
+     "type": "number",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "floorplan",
+     "type": "ReactNode",
+     "description": "The floor plan under everything: an image URL (stretched over width × height), or SVG drawn in metres."
+    },
+    {
+     "name": "zones",
+     "type": "RobotMapZone[]",
+     "default": "[]",
+     "description": ""
+    },
+    {
+     "name": "robots",
+     "type": "RobotMapRobot[]",
+     "default": "[]",
+     "description": ""
+    },
+    {
+     "name": "paths",
+     "type": "RobotMapPath[]",
+     "default": "[]",
+     "description": ""
+    },
+    {
+     "name": "selectedId",
+     "type": "string",
+     "description": "The selected robot, controlled; null for none. Without it the map keeps its own selection."
+    },
+    {
+     "name": "onSelect",
+     "type": "(id: string | null, robot?: RobotMapRobot) => void",
+     "description": "Called with the robot clicked, or null when the background is clicked or Esc pressed."
+    },
+    {
+     "name": "northDeg",
+     "type": "number",
+     "description": "Where north is, in degrees clockwise from the top of the plan. Without it no north arrow is drawn."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "description": "Bones in the frame while the map loads."
+    },
+    {
+     "name": "error",
+     "type": "ReactNode",
+     "description": "The map could not be loaded: says so in the frame (`true` for the default words, or your own message)."
+    },
+    {
+     "name": "onRetry",
+     "type": "() => void",
+     "description": "Shows a button under the error that tries again."
+    },
+    {
+     "name": "fill",
+     "type": "boolean",
+     "description": "Fill the parent's height (a full-screen map) instead of keeping the site's proportions."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<RobotMapLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "instructions",
+       "type": "string",
+       "default": "\"Arrow keys move the map, plus and minus zoom, 0 shows the whole site. The robot list beside the map has the same robots as text.\"",
+       "description": "Read once when focus enters the map."
+      },
+      {
+       "name": "zoomIn",
+       "type": "string",
+       "default": "\"Zoom in\"",
+       "description": ""
+      },
+      {
+       "name": "zoomOut",
+       "type": "string",
+       "default": "\"Zoom out\"",
+       "description": ""
+      },
+      {
+       "name": "fit",
+       "type": "string",
+       "default": "\"Show the whole site\"",
+       "description": ""
+      },
+      {
+       "name": "status",
+       "type": "Record<Status, string>",
+       "default": "{ active: \"Working\", normal: \"Idle\", warning: \"Needs attention\", danger: \"Stopped\", offline: \"Offline\" }",
+       "description": "Default words per status, for robots without statusLabel."
+      },
+      {
+       "name": "zoneKind",
+       "type": "Record<RobotMapZoneKind, string>",
+       "default": "{ restricted: \"No entry\", slow: \"Slow zone\", charging: \"Charging\", other: \"Marked\" }",
+       "description": "Default names per zone kind, and the kind's word in the list."
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"No robots on this site right now.\"",
+       "description": "Said over the map and in the list when there are no robots."
+      },
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Loading the map\"",
+       "description": ""
+      },
+      {
+       "name": "error",
+       "type": "string",
+       "default": "\"The map could not be loaded.\"",
+       "description": ""
+      },
+      {
+       "name": "retry",
+       "type": "string",
+       "default": "\"Reload the map\"",
+       "description": ""
+      },
+      {
+       "name": "count",
+       "type": "(n: number) => string",
+       "default": "(n) => (n === 1 ? \"1 robot\" : `${n} robots`)",
+       "description": "How many robots the map shows, read with the instructions."
+      },
+      {
+       "name": "selected",
+       "type": "(name: string, status: string) => string",
+       "default": "(name, status) => `Selected: ${name}, ${status}`",
+       "description": "The selected robot, read with the instructions."
+      },
+      {
+       "name": "north",
+       "type": "(deg: number) => string",
+       "default": "(deg) => `North is ${Math.round(((deg % 360) + 360) % 360)}° clockwise from the top`",
+       "description": "Where north is, when `northDeg` is given."
+      },
+      {
+       "name": "northLetter",
+       "type": "string",
+       "default": "\"N\"",
+       "description": "The letter on the north arrow."
+      },
+      {
+       "name": "position",
+       "type": "(x: number, y: number) => string",
+       "default": "(x, y) => `${metres(x)} m across, ${metres(y)} m down`",
+       "description": "RobotMapList: a robot's position."
+      },
+      {
+       "name": "inZone",
+       "type": "(zone: string, kind?: string) => string",
+       "default": "(zone, kind) => (kind ? `In ${zone} (${kind.toLowerCase()})` : `In ${zone}`)",
+       "description": "RobotMapList: the zone a robot is in."
+      },
+      {
+       "name": "inUnnamedZone",
+       "type": "(kind: string) => string",
+       "default": "(kind) => `In a ${kind.toLowerCase()} zone`",
+       "description": "RobotMapList: the zone a robot is in, when the zone has no name."
+      },
+      {
+       "name": "noZone",
+       "type": "string",
+       "default": "\"Outside the marked zones\"",
+       "description": "RobotMapList: a robot outside every zone."
+      },
+      {
+       "name": "heading",
+       "type": "(deg: number) => string",
+       "default": "(deg) => `Facing ${Math.round(((deg % 360) + 360) % 360)}°`",
+       "description": "RobotMapList: which way it faces."
+      },
+      {
+       "name": "metres",
+       "type": "(m: number) => string",
+       "default": "(m) => `${m} m`",
+       "description": "The scale bar's length."
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "RobotMapList",
+   "props": [
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "Names the map for screen readers: \"Map of North site\"."
+    },
+    {
+     "name": "onSelect",
+     "type": "(id: string | null, robot?: RobotMapRobot) => void",
+     "description": "Called with the robot clicked, or null when the background is clicked or Esc pressed."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "description": "Bones in the frame while the map loads."
+    },
+    {
+     "name": "error",
+     "type": "ReactNode",
+     "description": "The map could not be loaded: says so in the frame (`true` for the default words, or your own message)."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<RobotMapLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "instructions",
+       "type": "string",
+       "default": "\"Arrow keys move the map, plus and minus zoom, 0 shows the whole site. The robot list beside the map has the same robots as text.\"",
+       "description": "Read once when focus enters the map."
+      },
+      {
+       "name": "zoomIn",
+       "type": "string",
+       "default": "\"Zoom in\"",
+       "description": ""
+      },
+      {
+       "name": "zoomOut",
+       "type": "string",
+       "default": "\"Zoom out\"",
+       "description": ""
+      },
+      {
+       "name": "fit",
+       "type": "string",
+       "default": "\"Show the whole site\"",
+       "description": ""
+      },
+      {
+       "name": "status",
+       "type": "Record<Status, string>",
+       "default": "{ active: \"Working\", normal: \"Idle\", warning: \"Needs attention\", danger: \"Stopped\", offline: \"Offline\" }",
+       "description": "Default words per status, for robots without statusLabel."
+      },
+      {
+       "name": "zoneKind",
+       "type": "Record<RobotMapZoneKind, string>",
+       "default": "{ restricted: \"No entry\", slow: \"Slow zone\", charging: \"Charging\", other: \"Marked\" }",
+       "description": "Default names per zone kind, and the kind's word in the list."
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"No robots on this site right now.\"",
+       "description": "Said over the map and in the list when there are no robots."
+      },
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Loading the map\"",
+       "description": ""
+      },
+      {
+       "name": "error",
+       "type": "string",
+       "default": "\"The map could not be loaded.\"",
+       "description": ""
+      },
+      {
+       "name": "retry",
+       "type": "string",
+       "default": "\"Reload the map\"",
+       "description": ""
+      },
+      {
+       "name": "count",
+       "type": "(n: number) => string",
+       "default": "(n) => (n === 1 ? \"1 robot\" : `${n} robots`)",
+       "description": "How many robots the map shows, read with the instructions."
+      },
+      {
+       "name": "selected",
+       "type": "(name: string, status: string) => string",
+       "default": "(name, status) => `Selected: ${name}, ${status}`",
+       "description": "The selected robot, read with the instructions."
+      },
+      {
+       "name": "north",
+       "type": "(deg: number) => string",
+       "default": "(deg) => `North is ${Math.round(((deg % 360) + 360) % 360)}° clockwise from the top`",
+       "description": "Where north is, when `northDeg` is given."
+      },
+      {
+       "name": "northLetter",
+       "type": "string",
+       "default": "\"N\"",
+       "description": "The letter on the north arrow."
+      },
+      {
+       "name": "position",
+       "type": "(x: number, y: number) => string",
+       "default": "(x, y) => `${metres(x)} m across, ${metres(y)} m down`",
+       "description": "RobotMapList: a robot's position."
+      },
+      {
+       "name": "inZone",
+       "type": "(zone: string, kind?: string) => string",
+       "default": "(zone, kind) => (kind ? `In ${zone} (${kind.toLowerCase()})` : `In ${zone}`)",
+       "description": "RobotMapList: the zone a robot is in."
+      },
+      {
+       "name": "inUnnamedZone",
+       "type": "(kind: string) => string",
+       "default": "(kind) => `In a ${kind.toLowerCase()} zone`",
+       "description": "RobotMapList: the zone a robot is in, when the zone has no name."
+      },
+      {
+       "name": "noZone",
+       "type": "string",
+       "default": "\"Outside the marked zones\"",
+       "description": "RobotMapList: a robot outside every zone."
+      },
+      {
+       "name": "heading",
+       "type": "(deg: number) => string",
+       "default": "(deg) => `Facing ${Math.round(((deg % 360) + 360) % 360)}°`",
+       "description": "RobotMapList: which way it faces."
+      },
+      {
+       "name": "metres",
+       "type": "(m: number) => string",
+       "default": "(m) => `${m} m`",
+       "description": "The scale bar's length."
+      }
+     ]
+    },
+    {
+     "name": "robots",
+     "type": "RobotMapRobot[]",
+     "default": "[]",
+     "description": ""
+    },
+    {
+     "name": "zones",
+     "type": "RobotMapZone[]",
+     "default": "[]",
+     "description": ""
+    },
+    {
+     "name": "selectedId",
+     "type": "string",
+     "description": "The selected robot, controlled; null for none. Without it the map keeps its own selection."
+    },
+    {
+     "name": "onRetry",
+     "type": "() => void",
+     "description": "Shows a button under the error that tries again."
+    }
+   ],
+   "inherits": [
+    "Pick<RobotMapProps, \"label\" | \"robots\" | \"zones\" | \"selectedId\" | \"onSelect\" | \"loading\" | \"error\" | \"onRetry\" | \"labels\" | \"className\">"
+   ]
+  }
+ ],
  "route-progress": [
   {
    "name": "RouteProgress",
@@ -3820,8 +5999,20 @@
     {
      "name": "label",
      "type": "string",
-     "default": "\"Loading page\"",
-     "description": ""
+     "description": "Same as `labels.loading`, and wins over it."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<RouteProgressLabels>",
+     "description": "The words it says, to translate them.",
+     "keys": [
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Loading page\"",
+       "description": "The bar's name for screen readers."
+      }
+     ]
     }
    ],
    "inherits": []
@@ -3936,14 +6127,31 @@
     {
      "name": "label",
      "type": "string",
-     "default": "\"Search\"",
-     "description": ""
+     "description": "Same as `labels.label`, and wins over it."
     },
     {
      "name": "placeholder",
      "type": "string",
-     "default": "\"Search\"",
-     "description": ""
+     "description": "Same as `labels.placeholder`, and wins over it."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<SearchFieldLabels>",
+     "description": "The words it says, to translate them.",
+     "keys": [
+      {
+       "name": "label",
+       "type": "string",
+       "default": "\"Search\"",
+       "description": "Names the search landmark and the box, for screen readers."
+      },
+      {
+       "name": "placeholder",
+       "type": "string",
+       "default": "\"Search\"",
+       "description": "In the empty box."
+      }
+     ]
     },
     {
      "name": "hotkey",
@@ -4075,6 +6283,11 @@
      "type": "\"sm\" | \"md\"",
      "default": "\"md\"",
      "description": "sm: 8 px, for a table cell; md: 10 px."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the numbers and shares (a BCP 47 tag such as \"zh-TW\"). Left out, the browser's language."
     }
    ],
    "inherits": []
@@ -4283,6 +6496,49 @@
      "description": "A copy that follows the pointer while the item stays as a faded placeholder. Without it the item itself follows."
     },
     {
+     "name": "labels",
+     "type": "Partial<SortableLabels>",
+     "description": "What screen readers hear while an item moves, to translate it.",
+     "keys": [
+      {
+       "name": "pickedUp",
+       "type": "(name: string, position: number, total: number) => string",
+       "default": "(name, position, total) => `Picked up ${name}. Position ${position} of ${total}.`",
+       "description": "On lifting an item: \"Picked up Dock A. Position 2 of 5.\""
+      },
+      {
+       "name": "moved",
+       "type": "(name: string, position: number, total: number) => string",
+       "default": "(name, position, total) => `${name} moved to position ${position} of ${total}.`",
+       "description": "On each move."
+      },
+      {
+       "name": "droppedAt",
+       "type": "(name: string, position: number, total: number) => string",
+       "default": "(name, position, total) => `${name} dropped at position ${position} of ${total}.`",
+       "description": "On dropping it over a place."
+      },
+      {
+       "name": "dropped",
+       "type": "(name: string) => string",
+       "default": "(name) => `${name} dropped.`",
+       "description": "On dropping it nowhere."
+      },
+      {
+       "name": "cancelled",
+       "type": "(name: string) => string",
+       "default": "(name) => `Moving ${name} cancelled.`",
+       "description": "On Escape."
+      },
+      {
+       "name": "instructions",
+       "type": "string",
+       "default": "\"To reorder, press Space, move with the arrow keys, press Space again to drop, or Escape to cancel.\"",
+       "description": "Read when a handle takes focus: how to move with the keyboard."
+      }
+     ]
+    },
+    {
      "name": "children",
      "type": "ReactNode",
      "required": true,
@@ -4335,8 +6591,20 @@
     {
      "name": "label",
      "type": "string",
-     "default": "\"Loading\"",
-     "description": ""
+     "description": "Same as `labels.loading`, and wins over it."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<SpinnerLabels>",
+     "description": "The words it says, to translate them.",
+     "keys": [
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Loading\"",
+       "description": "The spinner's name for screen readers."
+      }
+     ]
     }
    ],
    "inherits": []
@@ -4444,6 +6712,61 @@
      "type": "\"sm\" | \"md\"",
      "default": "\"md\"",
      "description": ""
+    },
+    {
+     "name": "labels",
+     "type": "Partial<StepperLabels>",
+     "description": "The words it says, to translate them.",
+     "keys": [
+      {
+       "name": "optional",
+       "type": "string",
+       "default": "\"Optional\"",
+       "description": "Under the title of an `optional` step (when `optional` is true rather than words of its own)."
+      },
+      {
+       "name": "unavailable",
+       "type": "string",
+       "default": "\"unavailable\"",
+       "description": "Read by screen readers after each step's title, by its state."
+      },
+      {
+       "name": "done",
+       "type": "string",
+       "default": "\"completed\"",
+       "description": ""
+      },
+      {
+       "name": "error",
+       "type": "string",
+       "default": "\"has an error\"",
+       "description": ""
+      },
+      {
+       "name": "current",
+       "type": "string",
+       "default": "\"current step\"",
+       "description": ""
+      },
+      {
+       "name": "upcoming",
+       "type": "string",
+       "default": "\"not started\"",
+       "description": ""
+      },
+      {
+       "name": "position",
+       "type": "(n: number, total: number) => string",
+       "default": "(n, total) => `Step ${n} of ${total}`",
+       "description": "StepperCompact's counter: \"Step 2 of 5\"."
+      },
+      {
+       "name": "progress",
+       "type": "string",
+       "default": "\"Steps\"",
+       "description": "StepperCompact's progress bar name."
+      }
+     ]
     }
    ],
    "inherits": [
@@ -4498,6 +6821,61 @@
      "name": "title",
      "type": "ReactNode",
      "description": ""
+    },
+    {
+     "name": "labels",
+     "type": "Partial<StepperLabels>",
+     "description": "The words it says (`position`, `progress`), to translate them.",
+     "keys": [
+      {
+       "name": "optional",
+       "type": "string",
+       "default": "\"Optional\"",
+       "description": "Under the title of an `optional` step (when `optional` is true rather than words of its own)."
+      },
+      {
+       "name": "unavailable",
+       "type": "string",
+       "default": "\"unavailable\"",
+       "description": "Read by screen readers after each step's title, by its state."
+      },
+      {
+       "name": "done",
+       "type": "string",
+       "default": "\"completed\"",
+       "description": ""
+      },
+      {
+       "name": "error",
+       "type": "string",
+       "default": "\"has an error\"",
+       "description": ""
+      },
+      {
+       "name": "current",
+       "type": "string",
+       "default": "\"current step\"",
+       "description": ""
+      },
+      {
+       "name": "upcoming",
+       "type": "string",
+       "default": "\"not started\"",
+       "description": ""
+      },
+      {
+       "name": "position",
+       "type": "(n: number, total: number) => string",
+       "default": "(n, total) => `Step ${n} of ${total}`",
+       "description": "StepperCompact's counter: \"Step 2 of 5\"."
+      },
+      {
+       "name": "progress",
+       "type": "string",
+       "default": "\"Steps\"",
+       "description": "StepperCompact's progress bar name."
+      }
+     ]
     }
    ],
    "inherits": []
@@ -4538,7 +6916,57 @@
     {
      "name": "labels",
      "type": "Partial<StopButtonLabels>",
-     "description": ""
+     "description": "",
+     "keys": [
+      {
+       "name": "ready",
+       "type": "string",
+       "default": "\"Emergency stop\"",
+       "description": ""
+      },
+      {
+       "name": "idle",
+       "type": "string",
+       "default": "\"Stop\"",
+       "description": ""
+      },
+      {
+       "name": "sending",
+       "type": "string",
+       "default": "\"Sending…\"",
+       "description": ""
+      },
+      {
+       "name": "unconfirmed",
+       "type": "string",
+       "default": "\"Not confirmed, press again\"",
+       "description": ""
+      },
+      {
+       "name": "bluetooth",
+       "type": "string",
+       "default": "\"Emergency stop\"",
+       "description": ""
+      },
+      {
+       "name": "bluetooth-sent",
+       "type": "string",
+       "default": "\"Delivered over Bluetooth\"",
+       "description": ""
+      },
+      {
+       "name": "dead",
+       "type": "string",
+       "default": "\"No connection\"",
+       "description": ""
+      },
+      {
+       "name": "holdAll",
+       "type": "string",
+       "default": "\"Keep holding to stop all\"",
+       "description": ""
+      }
+     ]
     }
    ],
    "inherits": []
@@ -4692,6 +7120,138 @@
    ]
   }
  ],
+ "teleop-pad": [
+  {
+   "name": "TeleopPad",
+   "props": [
+    {
+     "name": "onCommand",
+     "type": "(command: TeleopCommand) => void",
+     "required": true,
+     "description": "Called at `rateHz` while the stick is held, the first time at the press, and once with zero at every stop."
+    },
+    {
+     "name": "onStop",
+     "type": "(reason: TeleopStopReason) => void",
+     "description": "Called once when driving ends, after the zero command, with why."
+    },
+    {
+     "name": "deadZone",
+     "type": "number",
+     "default": "0.1",
+     "description": "Fraction of the stick's travel that sends zero, so a resting thumb does not creep the robot. Default 0.1."
+    },
+    {
+     "name": "maxSpeed",
+     "type": "number",
+     "default": "1",
+     "description": "Cap, 0…1: full stick sends this fraction of top speed. Below 1 the pad draws its scale and says the limit."
+    },
+    {
+     "name": "rateHz",
+     "type": "number",
+     "default": "10",
+     "description": "Commands per second while held. Default 10. The robot should stop by itself when they stop arriving."
+    },
+    {
+     "name": "timeoutMs",
+     "type": "number | false",
+     "default": "2000",
+     "description": "Stop when no pointer event arrives for this long, in ms. Default 2000. A held key is not timed: its release is reliable. A mouse held perfectly still sends no events, so it trips this too (\"input lost\": press again). `false` turns it off: only when the robot runs its own watchdog on the command stream (it stops when commands stop arriving), which `rateHz` keeps fed while the stick is held."
+    },
+    {
+     "name": "speed",
+     "type": "number",
+     "description": "The robot's measured speed in m/s, shown while driving (\"Driving · 0.4 m/s\")."
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "default": "false",
+     "description": "The robot cannot be driven by hand now. Say why in `disabledReason`."
+    },
+    {
+     "name": "disabledReason",
+     "type": "string",
+     "description": "Shown after \"Disabled:\", e.g. \"robot in autonomous mode\"."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<TeleopPadLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "name",
+       "type": "string",
+       "default": "\"Drive the robot\"",
+       "description": "The pad's accessible name. Name the robot when there is more than one: \"Drive 7F3A\"."
+      },
+      {
+       "name": "roleDescription",
+       "type": "string",
+       "default": "\"drive pad\"",
+       "description": "Read after the role name, instead of \"application\"."
+      },
+      {
+       "name": "hint",
+       "type": "string",
+       "default": "\"Hold to drive\"",
+       "description": "First line of the description, and the status before the first drive."
+      },
+      {
+       "name": "release",
+       "type": "string",
+       "default": "\"Release to stop\"",
+       "description": ""
+      },
+      {
+       "name": "keys",
+       "type": "string",
+       "default": "\"Arrow keys or W A S D drive while held. Space stops.\"",
+       "description": ""
+      },
+      {
+       "name": "driving",
+       "type": "string",
+       "default": "\"Driving\"",
+       "description": ""
+      },
+      {
+       "name": "speedUnit",
+       "type": "string",
+       "default": "\"m/s\"",
+       "description": ""
+      },
+      {
+       "name": "stopped",
+       "type": "string",
+       "default": "\"Stopped\"",
+       "description": ""
+      },
+      {
+       "name": "lost",
+       "type": "string",
+       "default": "\"Stopped: input lost. Hold again to drive\"",
+       "description": "Stopped because input was lost (cancel, blur, hidden, timeout): the operator must lift and press again."
+      },
+      {
+       "name": "disabled",
+       "type": "string",
+       "default": "\"Disabled\"",
+       "description": ""
+      },
+      {
+       "name": "limit",
+       "type": "string",
+       "default": "\"Speed limit\"",
+       "description": "Before the cap, e.g. \"Speed limit 60 %\"."
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "text-diff": [
   {
    "name": "TextDiff",
@@ -4735,7 +7295,45 @@
     {
      "name": "labels",
      "type": "Partial<TextDiffLabels>",
-     "description": ""
+     "description": "",
+     "keys": [
+      {
+       "name": "added",
+       "type": "string",
+       "default": "\"added:\"",
+       "description": "Read before an insertion."
+      },
+      {
+       "name": "removed",
+       "type": "string",
+       "default": "\"removed:\"",
+       "description": "Read before a deletion."
+      },
+      {
+       "name": "end",
+       "type": "string",
+       "default": "\"(end)\"",
+       "description": "Read after either, so the listener hears where the change ends."
+      },
+      {
+       "name": "summary",
+       "type": "(added: number, removed: number) => string",
+       "default": "(added, removed) => [added ? `+${plural(added)}` : \"\", removed ? `−${plural(removed)}` : \"\"].filter(Boolean).join(\", \")",
+       "description": "The summary line."
+      },
+      {
+       "name": "none",
+       "type": "string",
+       "default": "\"No changes\"",
+       "description": "Instead of the summary when the texts are the same."
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"Empty\"",
+       "description": "In a side-by-side column whose text is empty."
+      }
+     ]
     }
    ],
    "inherits": [
@@ -4772,7 +7370,27 @@
      "name": "labels",
      "type": "Record<ThemeChoice, string>",
      "default": "{ light: \"Light\", system: \"Match system\", dark: \"Dark\" }",
-     "description": ""
+     "description": "",
+     "keys": [
+      {
+       "name": "light",
+       "type": "string",
+       "default": "\"Light\"",
+       "description": ""
+      },
+      {
+       "name": "system",
+       "type": "string",
+       "default": "\"Match system\"",
+       "description": ""
+      },
+      {
+       "name": "dark",
+       "type": "string",
+       "default": "\"Dark\"",
+       "description": ""
+      }
+     ]
     },
     {
      "name": "label",
@@ -4878,8 +7496,31 @@
     {
      "name": "placeholder",
      "type": "string",
-     "default": "\"Pick a time\"",
-     "description": ""
+     "description": "Same as `labels.placeholder`, and wins over it."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<TimePickerLabels>",
+     "description": "The words it says, to translate them.",
+     "keys": [
+      {
+       "name": "placeholder",
+       "type": "string",
+       "default": "\"Pick a time\"",
+       "description": "On the trigger when no time is picked."
+      },
+      {
+       "name": "times",
+       "type": "string",
+       "default": "\"Times\"",
+       "description": "Names the list of times when the picker has no `aria-label`."
+      }
+     ]
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Writes the times as this language does (a BCP 47 tag such as \"zh-TW\"). Left out, \"09:30\" or \"9:30 AM\" as before."
     },
     {
      "name": "id",
@@ -5155,6 +7796,61 @@
      "name": "total",
      "type": "number",
      "description": "Length of the whole run in ms. With it, steps that have `start` and `duration` draw a waterfall bar."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<TraceLabels>",
+     "description": "The words it says, to translate them. Nested traces take their parent's.",
+     "keys": [
+      {
+       "name": "pending",
+       "type": "string",
+       "default": "\"Waiting\"",
+       "description": "Each status in words, read after a step's title and used in TraceHeader's counts."
+      },
+      {
+       "name": "running",
+       "type": "string",
+       "default": "\"Running\"",
+       "description": ""
+      },
+      {
+       "name": "done",
+       "type": "string",
+       "default": "\"Done\"",
+       "description": ""
+      },
+      {
+       "name": "warning",
+       "type": "string",
+       "default": "\"Warning\"",
+       "description": ""
+      },
+      {
+       "name": "error",
+       "type": "string",
+       "default": "\"Failed\"",
+       "description": ""
+      },
+      {
+       "name": "skipped",
+       "type": "string",
+       "default": "\"Skipped\"",
+       "description": ""
+      },
+      {
+       "name": "count",
+       "type": "(n: number, status: string) => string",
+       "default": "(n, status) => `${n} ${status.toLowerCase()}`",
+       "description": "TraceHeader's count per status: \"3 done\", from the status word above."
+      },
+      {
+       "name": "duration",
+       "type": "(ms: number) => string",
+       "default": "(ms) => formatDuration(ms)",
+       "description": "How long a step took, from ms: \"1.2 s\"."
+      }
+     ]
     }
    ],
    "inherits": [
@@ -5299,6 +7995,61 @@
      "description": ""
     },
     {
+     "name": "labels",
+     "type": "Partial<TraceLabels>",
+     "description": "The words it says, to translate them; inside a Trace, its labels are the starting point.",
+     "keys": [
+      {
+       "name": "pending",
+       "type": "string",
+       "default": "\"Waiting\"",
+       "description": "Each status in words, read after a step's title and used in TraceHeader's counts."
+      },
+      {
+       "name": "running",
+       "type": "string",
+       "default": "\"Running\"",
+       "description": ""
+      },
+      {
+       "name": "done",
+       "type": "string",
+       "default": "\"Done\"",
+       "description": ""
+      },
+      {
+       "name": "warning",
+       "type": "string",
+       "default": "\"Warning\"",
+       "description": ""
+      },
+      {
+       "name": "error",
+       "type": "string",
+       "default": "\"Failed\"",
+       "description": ""
+      },
+      {
+       "name": "skipped",
+       "type": "string",
+       "default": "\"Skipped\"",
+       "description": ""
+      },
+      {
+       "name": "count",
+       "type": "(n: number, status: string) => string",
+       "default": "(n, status) => `${n} ${status.toLowerCase()}`",
+       "description": "TraceHeader's count per status: \"3 done\", from the status word above."
+      },
+      {
+       "name": "duration",
+       "type": "(ms: number) => string",
+       "default": "(ms) => formatDuration(ms)",
+       "description": "How long a step took, from ms: \"1.2 s\"."
+      }
+     ]
+    },
+    {
      "name": "children",
      "type": "ReactNode",
      "description": ""
@@ -5388,7 +8139,15 @@
     {
      "name": "labels",
      "type": "Partial<TreeLabels>",
-     "description": ""
+     "description": "",
+     "keys": [
+      {
+       "name": "toggle",
+       "type": "(name: string) => string",
+       "default": "(name) => `Items under ${name}`",
+       "description": "The disclosure button's name in list mode; aria-expanded says whether it is open."
+      }
+     ]
     }
    ],
    "inherits": []

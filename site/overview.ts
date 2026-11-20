@@ -79,7 +79,7 @@ export const overviews: Record<string, Overview> = {
       "Reviewing what a robot saw before a stop, with its events marked on the timeline.",
     ],
     instead: [
-      "A live camera feed: a different component, not built yet (no timeline or speed; latency and connection state instead).",
+      "A live camera feed: `camera-feed` (no timeline or speed; latency and connection state instead).",
       "One still frame with what a model saw in it: `annotated-image`.",
       "Many clips or pictures to pick from: `image-grid`, then the player for the one opened.",
     ],
@@ -88,6 +88,25 @@ export const overviews: Record<string, Overview> = {
       "Keys are captured only while focus is inside the player, so they never fight the page. The frame itself is a Tab stop; its focus ring is the page's, the controls' rings are the dark theme's.",
       "Captions come from `tracks` (WebVTT) and are drawn by the player above the controls, one track at a time (the `default` one, else the first). The browser's own caption rendering is turned off, because it would sit under the scrim.",
       "Every string is in `labels`, including the error reasons by MediaError code; `unavailable` is the reason when you know before loading that it cannot play.",
+    ],
+  },
+  "camera-feed": {
+    what: "A robot's live camera over a native video the app feeds, that always says whether the picture is live: Live with the latency, Stalled with the last frame's time, Paused, connecting, offline or no camera.",
+    use: [
+      "The camera panel of a robot's page or a teleoperation screen.",
+      "A wall of a site's cameras, one feed per robot.",
+      "Watching a robot's view with its detections drawn over it.",
+    ],
+    instead: [
+      "A recording with an end, an incident clip: `media-player`.",
+      "One still frame with what a model saw in it: `annotated-image`.",
+    ],
+    notes: [
+      "It does not connect to anything: the app sets up WebRTC (or another transport) and passes the `MediaStream`, or a URL the browser plays by itself. MJPEG and HLS libraries are out of scope.",
+      "Live, Stalled and Connecting come from the frames themselves (`requestVideoFrameCallback`, else `timeupdate`), so a stream that stays connected but stops sending pictures still reads Stalled. `status` is only what the transport knows: connecting, live or offline.",
+      "Pause view freezes this screen only; the robot keeps streaming, and the feed says Paused until it resumes.",
+      "The state is a shape and a word (a filled dot for Live, a triangle for Stalled, a slashed circle for offline); only Stalled has colour, and blue only spins while connecting. The dot never pulses.",
+      "Every string is in `labels`, including `formatTime` for the last frame's time (24-hour clock by default; pass the site's time zone if the operator is elsewhere).",
     ],
   },
   "restricted-preview": {
@@ -112,6 +131,26 @@ export const overviews: Record<string, Overview> = {
     what: "The end of a long list: how much is shown, and one button for the next batch that says how many remain.",
     use: ["Lists and galleries on a phone.", "Results that load in batches."],
     instead: ["A desktop table people jump around in: `pagination`."],
+  },
+  "robot-map": {
+    what: "A site's floor plan in metres with its zones, routes and robots, panned and zoomed in place, and a list with the same robots as text.",
+    use: [
+      "Where the fleet is on a site right now: the map page of a fleet console, a robot's detail beside its position.",
+      "A mission's route over the floor: planned (dashed) and travelled (solid).",
+      "Zones people must know about: no entry, slow, charging.",
+    ],
+    instead: [
+      "Robots across many sites, or outdoors on GPS: a map library with tiles.",
+      "Time spent per zone: a heatmap (`heatmap-zones`).",
+      "A camera picture with boxes: `annotated-image`.",
+    ],
+    notes: [
+      "Offer `RobotMapList` beside `RobotMap` and share `selectedId` / `onSelect` between them; `lint:rules` asks for it in a block.",
+      "Coordinates are metres from the plan's top-left, y down; `heading` is degrees clockwise from the top of the plan (0 up, 90 right), as the plan image is drawn. From a ROS map frame (x right, y up, yaw counter-clockwise from +x, in radians), with the plan's bottom-left at (originX, originY): `x = xRos − originX`, `y = height − (yRos − originY)`, `heading = 90 − yaw × 180 / π`.",
+      "`floorplan` is an image URL stretched over `width` × `height`, or SVG drawn in metres (add `vectorEffect=\"non-scaling-stroke\"` to keep hairlines thin when zoomed).",
+      "By default the frame keeps the site's proportions (at most 75 % of the screen's height); `fill` makes it fill its parent, for a full-screen map.",
+      "Pass `labels` (status words, zone kinds, instructions, positions, empty, loading, error) to translate.",
+    ],
   },
   graph: {
     what: "A directed graph that flows one way: boxes in columns, inputs on the left (or above), neutral lines between them, and a text view with the same nodes.",
@@ -790,6 +829,25 @@ export const overviews: Record<string, Overview> = {
     use: ["Releasing an emergency stop, where a tap would be too easy in a panic."],
     instead: ["Routine confirmations: `alert-dialog`."],
     notes: ["Viewers get `locked`."],
+  },
+  "teleop-pad": {
+    what: "A dead-man stick for driving a mobile robot by hand: it moves only while held, and stops the moment input is let go or lost.",
+    use: [
+      "Driving a robot remotely from a phone or a control-room console: out of a corner, onto a dock, past an obstacle.",
+      "Short manual moves during commissioning or maintenance.",
+    ],
+    instead: [
+      "Stopping a robot in an emergency: `stop-button`, beside the pad.",
+      "Sending a robot somewhere: a mission or a goal on the map, not manual driving.",
+      "Setting one speed or value: `slider` or `number-field`.",
+    ],
+    notes: [
+      "Run a watchdog on the robot: stop when no command has arrived for 3 periods (300 ms at 10 Hz). The pad stops on every event it can see, but a frozen tab or a dropped link sends nothing at all.",
+      "Map `{ linear, angular }` onto the robot's own limits (a Twist scaled by its top speeds); clamp there too, never trust the client alone.",
+      "`timeoutMs` (2 s) also stops a mouse held perfectly still, which sends no events (\"input lost\": press again). Turn it off with `timeoutMs={false}` only when the robot runs the watchdog above.",
+      "Pass the measured speed as `speed`, not the commanded one: the status line says what the robot does.",
+      "Name the robot in `labels.name` (\"Drive 7F3A\") when the operator can drive more than one.",
+    ],
   },
   dock: {
     what: "The bottom bar of the control app in three tiers: the state action, this page's primary action, navigation.",

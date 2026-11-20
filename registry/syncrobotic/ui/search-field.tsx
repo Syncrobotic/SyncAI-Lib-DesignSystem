@@ -1,4 +1,4 @@
-// @syncrobotic/search-field v0.10.0 · update: npx shadcn add @syncrobotic/search-field --overwrite
+// @syncrobotic/search-field v0.23.0 · update: npx shadcn add @syncrobotic/search-field --overwrite
 "use client"
 
 import * as React from "react"
@@ -8,6 +8,15 @@ import { browserNavigate, type Navigate } from "@/registry/syncrobotic/ui/filter
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { InputGroup, InputGroupAddon } from "@/registry/syncrobotic/ui/input-group"
 import { Kbd } from "@/registry/syncrobotic/ui/kbd"
+
+export type SearchFieldLabels = {
+  /** Names the search landmark and the box, for screen readers. */
+  label: string
+  /** In the empty box. */
+  placeholder: string
+}
+
+export const defaultSearchFieldLabels: SearchFieldLabels = { label: "Search", placeholder: "Search" }
 
 /**
  * The tool's one search box, in the top bar. `/` focuses it from anywhere on the page (not while typing in a field).
@@ -20,8 +29,9 @@ export function SearchField({
   live = false,
   onNavigate = browserNavigate,
   delay = 400,
-  label = "Search",
-  placeholder = "Search",
+  label: labelProp,
+  placeholder: placeholderProp,
+  labels,
   hotkey = "/",
   className,
 }: {
@@ -33,12 +43,19 @@ export function SearchField({
   live?: boolean
   onNavigate?: Navigate
   delay?: number
+  /** Same as `labels.label`, and wins over it. */
   label?: string
+  /** Same as `labels.placeholder`, and wins over it. */
   placeholder?: string
+  /** The words it says, to translate them. */
+  labels?: Partial<SearchFieldLabels>
   /** The key that focuses the box; null for none. */
   hotkey?: string | null
   className?: string
 }) {
+  const l = { ...defaultSearchFieldLabels, ...labels }
+  const label = labelProp ?? l.label
+  const placeholder = placeholderProp ?? l.placeholder
   const input = React.useRef<HTMLInputElement>(null)
   const timer = React.useRef<number | undefined>(undefined)
   const id = React.useId()
