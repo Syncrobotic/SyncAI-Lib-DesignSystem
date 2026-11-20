@@ -11,7 +11,7 @@ import { iconCount } from "@/site/icons"
 import { HeroDemo } from "@/site/hero-demo"
 import { getBlockType, placement } from "@/site/block-types"
 import { PageTransition } from "@/site/page-transition"
-import pkg from "../../package.json"
+import { SiteFooter } from "@/site/site-footer"
 
 export const metadata: Metadata = {
   title: { absolute: `${site.name} — one design language for every SYNCROBOTIC product` },
@@ -186,9 +186,9 @@ export default function HomePage() {
             </AppearItem>
           ))}
         </Reveal>
-        <p className="pt-6 text-center font-mono text-xs text-muted-foreground">Version {pkg.version}</p>
       </section>
     </main>
+    <SiteFooter />
     </PageTransition>
   )
 }
