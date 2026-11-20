@@ -2,12 +2,9 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { AnimatePresence } from "motion/react"
 import { usePathname } from "next/navigation"
 import { componentBase } from "@/site/component-tabs"
-import * as m from "motion/react-m"
 import { cn } from "@/lib/utils"
-import { patterns } from "./motion"
 import type { Scope } from "./scopes"
 
 export const scopeFor = (scopes: Pick<Scope, "match">[], path: string) =>
@@ -27,6 +24,19 @@ export function Sidebar({ scopes, switcher = false, path: frozen }: { scopes: Sc
   // The home page belongs to no area: in the drawer, Home is current and no area is selected.
   const home = path === "/"
   const nav = React.useRef<HTMLElement>(null)
+  // The link you clicked, and where it was in its column. The previous page's examples close above it, which would pull
+  // it up; before the next paint the column scrolls back by that much, so the link stays under the pointer. Browsers
+  // with scroll anchoring already do this; Safari does not.
+  const anchor = React.useRef<{ href: string; top: number } | null>(null)
+  React.useLayoutEffect(() => {
+    const a = anchor.current
+    anchor.current = null
+    const box = nav.current?.closest<HTMLElement>("[data-scroll]")
+    const link = a && nav.current?.querySelector<HTMLElement>(`a[href="${CSS.escape(a.href)}"]`)
+    if (!a || !box || !link) return
+    const moved = link.getBoundingClientRect().top - a.top
+    if (moved) box.scrollTop += moved
+  }, [path])
   // Open where you are: if the current page's link is out of view in its scrolling column (or the drawer), centre it.
   // Only that box scrolls, never the page.
   React.useEffect(() => {
@@ -47,7 +57,15 @@ export function Sidebar({ scopes, switcher = false, path: frozen }: { scopes: Sc
     box.scrollTop = Math.max(0, (i >= 0 ? rows[i].top : centred) - 12)
   }, [path])
   return (
-    <nav ref={nav} aria-label={`${active.label} navigation`} className="flex flex-col gap-6 text-sm">
+    <nav
+      ref={nav}
+      aria-label={`${active.label} navigation`}
+      className="flex flex-col gap-6 text-sm"
+      onClickCapture={(e) => {
+        const a = (e.target as HTMLElement).closest<HTMLAnchorElement>("a[href]")
+        if (a) anchor.current = { href: a.getAttribute("href")!, top: a.getBoundingClientRect().top }
+      }}
+    >
       {!switcher && <p className="px-3 text-sm font-medium text-muted-foreground">{active.label}</p>}
       {/* The areas, as the header shows them on desktop: one quiet row of tabs with an underline, not a second set of
           buttons louder than the pages. On the home page there is no area yet: the four are the list. */}
@@ -98,22 +116,16 @@ export function Sidebar({ scopes, switcher = false, path: frozen }: { scopes: Sc
                   here === l.href ? "font-medium text-foreground" : "text-muted-foreground hover:text-foreground",
                 )}
               >
-                {/* The current-page marker slides to the page you open. */}
-                {here === l.href && <m.span layoutId={`${switcher ? "m-" : ""}sidebar-marker`} aria-hidden className="absolute inset-0 rounded-xs bg-muted" />}
+                {/* The current page's marker stays put. It used to slide (a shared layout animation), but the column scrolls
+                    while the previous page's examples close, and the sliding marker was drawn against the moving column:
+                    a grey box swept down the list before it settled, the flash on every switch. */}
+                {here === l.href && <span aria-hidden className="absolute inset-0 rounded-xs bg-muted" />}
                 <span className="relative">{l.label}</span>
               </Link>
-              {/* The open page's examples grow in under it (the sheet pattern: height and opacity, --motion-sheet). */}
-              <AnimatePresence initial={false}>
-                {!switcher && here === l.href && l.sections && l.sections.length > 1 && (
-                  <m.ul
-                    key="sections"
-                    aria-label={`${l.label} examples`}
-                    initial="hidden"
-                    animate="shown"
-                    exit="hidden"
-                    variants={patterns.sheet}
-                    className="ml-3 flex flex-col overflow-hidden border-l border-border"
-                  >
+              {/* The open page's examples, under its link. They appear and go at once: a height animation here moves every
+                  link below (and, closing above, the column itself) for a third of a second on each switch. */}
+              {!switcher && here === l.href && l.sections && l.sections.length > 1 && (
+                  <ul aria-label={`${l.label} examples`} className="ml-3 flex flex-col border-l border-border">
                     {l.sections.map((s) => (
                       <li key={s.href}>
                         <Link
@@ -124,9 +136,8 @@ export function Sidebar({ scopes, switcher = false, path: frozen }: { scopes: Sc
                         </Link>
                       </li>
                     ))}
-                  </m.ul>
+                  </ul>
                 )}
-              </AnimatePresence>
             </React.Fragment>
           ))}
         </div>
