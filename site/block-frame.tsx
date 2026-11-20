@@ -107,9 +107,7 @@ export function BlockFrame({
           </TabsList>
           {tab === "preview" && (
             <div className="flex items-center gap-3 py-2">
-              {/* On a phone only the phone view can be read (a desktop layout would be shown at a quarter), so the
-                  choice of width is not offered there; Open shows the block on its own page. */}
-              <div role="group" aria-label="Device width" className="hidden gap-1 rounded-sm bg-muted p-1 sm:inline-flex">
+              <div role="group" aria-label="Device width" className="inline-flex gap-1 rounded-sm bg-muted p-1">
                 {(
                   [
                     ["desktop", Monitor],
@@ -133,18 +131,20 @@ export function BlockFrame({
                   </button>
                 ))}
               </div>
-              <a href={`/preview/${name}`} target="_blank" rel="noreferrer" className="inline-flex min-h-(--h-sm) items-center px-2 text-sm text-muted-foreground hover:text-foreground">
+              {/* At the chosen width: on a phone a desktop or tablet view opens laid out at that width, to pinch and zoom. */}
+              <a href={`/preview/${name}${vp === "mobile" ? "" : `?w=${widths[vp]}`}`} target="_blank" rel="noreferrer" className="inline-flex min-h-(--h-sm) items-center px-2 text-sm text-muted-foreground hover:text-foreground">
                 Open ↗
               </a>
             </div>
           )}
         </div>
-        {/* On a phone the block fills the card: no stage padding and no second frame inside the card's own border. */}
-        <TabsContent value="preview" className="specimen p-0 sm:p-4">
+        {/* On a phone the phone view fills the card: no stage padding and no second frame inside the card's own border.
+            A wider view, scaled down to fit, keeps its frame and says its width and scale. */}
+        <TabsContent value="preview" className={cn("specimen sm:p-4", scale < 1 ? "p-2" : "p-0")}>
           <div ref={box} className="w-full">
             {/* Changing the device width resizes the frame with the sheet duration; the iframe re-lays out at the new width. */}
             <m.div
-              className="mx-auto overflow-hidden sm:rounded-sm sm:ring-1 sm:ring-border"
+              className={cn("mx-auto overflow-hidden sm:rounded-sm sm:ring-1 sm:ring-border", scale < 1 && "rounded-sm ring-1 ring-border")}
               initial={false}
               animate={{ width: width * scale, height: frameH * scale }}
               transition={t.sheet}
@@ -162,7 +162,7 @@ export function BlockFrame({
               />
             </m.div>
           </div>
-          <p className="hidden pt-2 text-center font-mono text-xs text-muted-foreground sm:block">
+          <p className={cn("pt-2 text-center font-mono text-xs text-muted-foreground", scale < 1 ? "pb-2 sm:pb-0" : "hidden sm:block")}>
             {width}px{scale < 1 ? ` · shown at ${Math.round(scale * 100)}%` : ""}
           </p>
         </TabsContent>
