@@ -199,6 +199,20 @@
     "tabStops": 2,
     "live": false
   },
+  "form": {
+    "roles": [
+      "button",
+      "checkbox",
+      "combobox",
+      "group",
+      "radio",
+      "radiogroup",
+      "switch",
+      "textbox"
+    ],
+    "tabStops": 6,
+    "live": false
+  },
   "checkbox": {
     "roles": [
       "checkbox"

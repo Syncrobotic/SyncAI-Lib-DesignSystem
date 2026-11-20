@@ -21,6 +21,7 @@ import * as s_button_group from "@/stories/button-group.stories"
 import * as s_scroll_area from "@/stories/scroll-area.stories"
 import * as s_toggle_group from "@/stories/toggle-group.stories"
 import * as s_page_header from "@/stories/page-header.stories"
+import * as s_form from "@/stories/form.stories"
 import * as s_data_pieces from "@/stories/data-pieces.stories"
 import * as s_image_grid from "@/stories/image-grid.stories"
 import * as s_annotated_image from "@/stories/annotated-image.stories"
@@ -98,6 +99,7 @@ const files: Record<StoryFile, StoryModule> = {
   "scroll-area": s_scroll_area as unknown as StoryModule,
   "toggle-group": s_toggle_group as unknown as StoryModule,
   "page-header": s_page_header as unknown as StoryModule,
+  form: s_form as unknown as StoryModule,
   "data-pieces": s_data_pieces as unknown as StoryModule,
   "image-grid": s_image_grid as unknown as StoryModule,
   "annotated-image": s_annotated_image as unknown as StoryModule,

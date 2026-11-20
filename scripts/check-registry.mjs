@@ -66,6 +66,17 @@ for (const item of registry.items) {
     fail(item.name, `first released in ${first}: set meta.status ("beta" until a product has used it)`)
 }
 
+// One package, one version range across the registry: items installed together must not ask for different majors
+// ("recharts" in one item and "recharts@^3" in another let a project end up with either).
+const ranges = new Map()
+for (const item of registry.items)
+  for (const d of item.dependencies ?? []) {
+    const name = d.replace(/(?<=.)@.*$/, "")
+    ranges.set(name, (ranges.get(name) ?? new Map()).set(d, [...(ranges.get(name)?.get(d) ?? []), item.name]))
+  }
+for (const [name, specs] of ranges)
+  if (specs.size > 1) fail(name, `declared as ${[...specs].map(([d, items]) => `"${d}" (${items.join(", ")})`).join(" and ")}: use one range`)
+
 if (bad) {
   console.error(`\n${bad} registry problem(s)`)
   process.exit(1)
