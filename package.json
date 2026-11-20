@@ -1,6 +1,6 @@
 {
   "name": "@syncrobotic/design-system",
-  "version": "0.20.0",
+  "version": "0.21.0",
   "private": true,
   "description": "The SYNCROBOTIC design language: tokens, React components, and blocks for application screens, charts and robot operations, shipped as a shadcn/ui registry for Tailwind CSS v4.",
   "keywords": [
@@ -64,7 +64,8 @@
     "tokens": "node scripts/tokens.mjs --write",
     "test:registry": "bash scripts/registry-e2e.sh",
     "a11y": "node scripts/a11y.cjs",
-    "lint:a11y": "node scripts/a11y-check.mjs"
+    "lint:a11y": "node scripts/a11y-check.mjs",
+    "adoption": "node scripts/adoption.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

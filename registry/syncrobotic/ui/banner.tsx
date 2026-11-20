@@ -1,0 +1,80 @@
+// @syncrobotic/banner v0.21.0 · update: npx shadcn add @syncrobotic/banner --overwrite
+"use client"
+
+import * as React from "react"
+import { CircleAlert, Info, TriangleAlert, X } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
+
+export type BannerTone = "neutral" | "info" | "warning" | "danger"
+
+const tones: Record<BannerTone, { band: string; icon: string; glyph: React.ElementType }> = {
+  neutral: { band: "bg-neutral-subtle", icon: "text-neutral", glyph: Info },
+  // Blue is for a process someone is waiting on: a maintenance window under way, data syncing back. Not for news.
+  info: { band: "bg-info-subtle", icon: "text-info", glyph: Info },
+  warning: { band: "bg-warning-subtle", icon: "text-warning", glyph: TriangleAlert },
+  danger: { band: "bg-danger-subtle", icon: "text-danger", glyph: CircleAlert },
+}
+
+export type BannerProps = Omit<React.ComponentProps<"div">, "title"> & {
+  /** neutral (default) for news and calm conditions; info only while a process runs; warning before something is lost; danger when the app cannot work. */
+  tone?: BannerTone
+  /** Replaces the tone's icon with one that says what it is about: Wrench for maintenance, Lock for read-only, CloudOff for offline. */
+  icon?: React.ElementType
+  /** The condition in a few words, in bold: "Read-only mode". The children say what it means and until when. */
+  title?: React.ReactNode
+  /** One next step: a Button (size md, variant outline) or a link through `<Button asChild>`. Named by its result: "Upgrade plan", not "Learn more". */
+  action?: React.ReactNode
+  /** Shows a close button. Remembering that it was closed (and for how long) is yours: set `open` false and store it. Leave it out for a condition that ends by itself (offline, read-only). */
+  onDismiss?: () => void
+  /** The close button's name for screen readers. */
+  dismissLabel?: string
+  /** false hides it with the disappear movement. Default true. */
+  open?: boolean
+}
+
+/**
+ * A notice across the whole width of the page or the app, above everything else, about the app rather than one record:
+ * a maintenance window, read-only mode, a trial ending, no connection. It stays while its condition holds.
+ * role="status" (read politely) for neutral, info and warning; role="alert" only for danger.
+ */
+export function Banner({ tone = "neutral", icon, title, action, onDismiss, dismissLabel = "Dismiss", open = true, className, children, ...props }: BannerProps) {
+  const { mounted, leaving, done } = usePresence(open)
+  if (!mounted) return null
+  const t = tones[tone]
+  const Icon = icon ?? t.glyph
+  return (
+    <div
+      data-slot="banner"
+      data-tone={tone}
+      role={tone === "danger" ? "alert" : "status"}
+      aria-hidden={leaving || undefined}
+      onAnimationEnd={(e) => {
+        if (leaving && e.target === e.currentTarget) done()
+      }}
+      className={cn("flex w-full items-start gap-2 border-b border-border px-4 py-1", t.band, leaving ? "animate-disappear" : "animate-appear", className)}
+      {...props}
+    >
+      {/* The icon sits on the first line of words: each line of the row is a 44 px target, the words 20 px in its middle. */}
+      <Icon aria-hidden="true" className={cn("mt-3 size-5 shrink-0", t.icon)} />
+      {/* The words wrap rather than being cut; when the action would squeeze them under 240 px it moves under them. */}
+      <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-4">
+        <p className="min-w-0 flex-1 basis-60 py-3 text-sm text-pretty break-words">
+          {title && <span className="font-medium">{title} </span>}
+          {children && <span className={cn(title && "text-muted-foreground")}>{children}</span>}
+        </p>
+        {action && <div className="flex shrink-0 items-center">{action}</div>}
+      </div>
+      {onDismiss && (
+        <button
+          type="button"
+          aria-label={dismissLabel}
+          onClick={onDismiss}
+          className="press -mr-3 flex size-(--h-md) shrink-0 items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground"
+        >
+          <X aria-hidden="true" className="size-5" />
+        </button>
+      )}
+    </div>
+  )
+}

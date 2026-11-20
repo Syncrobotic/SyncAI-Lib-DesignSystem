@@ -80,6 +80,43 @@ jobs:
 
   # Installs every item into a fresh Next.js app with the shadcn CLI, then typechecks and builds it. Skipped when a pull
   # request touches nothing an installed item is made of (docs pages, the site, stories, CI).
+  # The Accessibility tab's measured roles and Tab stops (site/a11y.json) match the components as they render now.
+  # Only when something that can change them changed: components, stories, the data or its scripts.
+  a11y-data:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    container: { image: "mcr.microsoft.com/playwright:v1.65.1-noble" }
+    env: { HOME: /root }
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - id: changed
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          if [ "${{ github.event_name }}" != "pull_request" ]; then echo "run=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          files=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD")
+          if echo "$files" | grep -qE '^(registry/syncrobotic/(ui|shell|examples)/|stories/|site/a11y|scripts/a11y)'; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"; echo "No component or story changed: skipped."
+          fi
+      - if: steps.changed.outputs.run == 'true'
+        uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - if: steps.changed.outputs.run == 'true'
+        run: npm ci
+      - if: steps.changed.outputs.run == 'true'
+        run: npx next build
+      - if: steps.changed.outputs.run == 'true'
+        run: |
+          npx next start -p 3100 &
+          for _ in $(seq 1 60); do curl -sf -o /dev/null http://localhost:3100 && break; sleep 1; done
+          SITE=http://localhost:3100 OUT=a11y-measured.json node scripts/a11y.cjs
+          node scripts/a11y-check.mjs --measured a11y-measured.json
+      - uses: actions/upload-artifact@v4
+        if: failure() && steps.changed.outputs.run == 'true'
+        with: { name: a11y-measured, path: a11y-measured.json }
+
   registry-e2e:
     runs-on: ubuntu-latest
     timeout-minutes: 15

@@ -23,6 +23,7 @@ import { RobotStatusCard } from "@/registry/syncrobotic/blocks/robot-status-card
 import { StatsCards } from "@/registry/syncrobotic/blocks/stats-cards"
 import { LineChartTelemetry } from "@/registry/syncrobotic/blocks/line-chart-telemetry"
 import { LineChartLimit } from "@/registry/syncrobotic/blocks/line-chart-limit"
+import { HistogramBattery } from "@/registry/syncrobotic/blocks/histogram-battery"
 import { LineChartCompare } from "@/registry/syncrobotic/blocks/line-chart-compare"
 import { AreaChartBattery } from "@/registry/syncrobotic/blocks/area-chart-battery"
 import { AreaChartFleetStates } from "@/registry/syncrobotic/blocks/area-chart-fleet-states"
@@ -49,8 +50,13 @@ import { CardSite } from "@/registry/syncrobotic/blocks/card-site"
 import { CardMission } from "@/registry/syncrobotic/blocks/card-mission"
 import { AuthPasskey } from "@/registry/syncrobotic/blocks/auth-passkey"
 import { AuthInvite } from "@/registry/syncrobotic/blocks/auth-invite"
+import { AuthTwoFactor } from "@/registry/syncrobotic/blocks/auth-2fa"
 import { SettingsNotifications } from "@/registry/syncrobotic/blocks/settings-notifications"
 import { SettingsApiKeys } from "@/registry/syncrobotic/blocks/settings-api-keys"
+import { SettingsBilling } from "@/registry/syncrobotic/blocks/settings-billing"
+import { NotificationCenterDemo } from "./notification-center-demo"
+import { SettingsWebhooks } from "@/registry/syncrobotic/blocks/settings-webhooks"
+import { SettingsSessions } from "@/registry/syncrobotic/blocks/settings-sessions"
 import { DialogConfirmDestructive } from "@/registry/syncrobotic/blocks/dialog-confirm-destructive"
 import { DialogForm } from "@/registry/syncrobotic/blocks/dialog-form"
 import { DialogShare } from "@/registry/syncrobotic/blocks/dialog-share"
@@ -96,6 +102,16 @@ const meta: Record<string, Meta> = {
     render: () => (
       <div className="mx-auto max-w-3xl p-6">
         <LineChartTelemetry />
+      </div>
+    ),
+  },
+  "histogram-battery": {
+    viewport: "desktop",
+    thumbWidth: 720,
+    height: 480,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <HistogramBattery />
       </div>
     ),
   },
@@ -439,6 +455,7 @@ const meta: Record<string, Meta> = {
   },
   "auth-passkey": { viewport: "desktop", height: 640, render: () => <AuthPasskey /> },
   "auth-invite": { viewport: "desktop", height: 760, render: () => <AuthInvite /> },
+  "auth-2fa": { viewport: "desktop", height: 720, render: () => <AuthTwoFactor /> },
   "settings-notifications": {
     viewport: "desktop",
     thumbWidth: 960,
@@ -456,6 +473,38 @@ const meta: Record<string, Meta> = {
     render: () => (
       <div className="mx-auto max-w-3xl p-6">
         <SettingsApiKeys />
+      </div>
+    ),
+  },
+  "settings-billing": {
+    viewport: "desktop",
+    thumbWidth: 960,
+    height: 1200,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <SettingsBilling />
+      </div>
+    ),
+  },
+  // The bell in a real top bar, its popover open on load so the card shows the list, not a closed bell.
+  "notification-center": { viewport: "desktop", height: 720, thumb: { x: 760, y: 0, width: 520 }, render: () => <NotificationCenterDemo /> },
+  "settings-webhooks": {
+    viewport: "desktop",
+    thumbWidth: 960,
+    height: 960,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <SettingsWebhooks />
+      </div>
+    ),
+  },
+  "settings-sessions": {
+    viewport: "desktop",
+    thumbWidth: 960,
+    height: 720,
+    render: () => (
+      <div className="mx-auto max-w-3xl p-6">
+        <SettingsSessions />
       </div>
     ),
   },

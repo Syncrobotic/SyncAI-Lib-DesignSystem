@@ -133,61 +133,6 @@ export const TreeDisabled: S = {
   render: () => <Tree mode="select" label="Capture folders" items={restricted} defaultExpanded={["captures"]} defaultSelectedId="captures/forklift-lane" />,
 }
 
-const sites: TreeNode[] = [
-  {
-    id: "taoyuan",
-    label: "桃園物流中心",
-    icon: Warehouse,
-    meta: "6 台",
-    children: [
-      {
-        id: "taoyuan-a",
-        label: "A 區 冷藏倉",
-        icon: MapPin,
-        meta: "2 台",
-        children: [
-          { id: "amr-07", label: "AMR-07 搬運機器人", icon: MobileRobot, meta: "巡邏中" },
-          { id: "agv-02", label: "AGV-02 堆高機", icon: Forklift, meta: "充電中" },
-        ],
-      },
-      {
-        id: "taoyuan-b",
-        label: "B 區 出貨月台",
-        icon: MapPin,
-        meta: "4 台",
-        children: [
-          { id: "amr-11", label: "AMR-11 搬運機器人", icon: MobileRobot, meta: "待命" },
-          { id: "amr-12", label: "AMR-12 搬運機器人", icon: MobileRobot, meta: "任務中" },
-          { id: "agv-05", label: "AGV-05 堆高機", icon: Forklift, meta: "離線" },
-          { id: "arm-01", label: "ARM-01 撿貨手臂", icon: RobotArm, meta: "待命" },
-        ],
-      },
-    ],
-  },
-  {
-    id: "tainan",
-    label: "台南科學園區廠",
-    icon: Warehouse,
-    meta: "3 台",
-    children: [{ id: "tainan-1", label: "一號廠房", icon: MapPin, meta: "3 台", children: [] }],
-  },
-]
-
-export const TreeSitesZhHant: S = {
-  render: () => (
-    <div lang="zh-Hant">
-      <Tree
-        mode="select"
-        label="場域、區域與機器人"
-        items={sites}
-        defaultExpanded={["taoyuan", "taoyuan-a", "taoyuan-b"]}
-        defaultSelectedId="amr-12"
-        empty="尚未建立任何場域。"
-      />
-    </div>
-  ),
-}
-
 export const TreeEmpty: S = {
   render: () => <Tree label="Lineage" items={[]} empty="No sources recorded for this release yet." />,
 }

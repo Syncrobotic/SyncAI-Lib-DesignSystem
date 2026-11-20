@@ -53,9 +53,14 @@ export type StoryFile =
   | "data-pieces"
   | "image-grid"
   | "annotated-image"
+  | "media-player"
   | "tree"
+  | "graph"
   | "hooks"
   | "metric-card"
+  | "context-menu"
+  | "hover-card"
+  | "banner"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
@@ -80,6 +85,19 @@ const overlayKeys: [string, string][] = [
 ]
 
 const entries: Record<string, Entry> = {
+  graph: {
+    group: "Display",
+    wide: true,
+    examples: { file: "graph", prefix: "Graph" },
+    rules: [
+      "For a node with several inputs: lineage, a training run's inputs and outputs, a mission's parallel steps. When every node has one parent, use a Tree.",
+      "Offer GraphList beside it (a Graph / List switch), as a chart offers its table: the same nodes as text, inputs before what they feed. On a phone the list reads without scrolling sideways.",
+      "Up to about 60 nodes. A bigger graph needs a dedicated layout library and panning; show a part of it (one node's lineage) instead.",
+      "Edges are neutral; the selected node's path is drawn in the ink colour and the rest steps back. No colours per edge or per kind of node.",
+      "Status is a shape and a word; only warning and danger are coloured. Steps that did not run are grey and say so (\"Not run\").",
+      "Names fit a box: about 28 characters show in full, longer ones end in an ellipsis. Put the detail in meta, one short line.",
+    ],
+  },
   trace: {
     wide: true,
     group: "Display",
@@ -680,12 +698,38 @@ const entries: Record<string, Entry> = {
       "Selectable only when something happens on select (a details panel, a review); otherwise the picture is one image with a summary.",
     ],
   },
+  "media-player": {
+    wide: true,
+    group: "Display",
+    examples: { file: "media-player", prefix: "MediaPlayer" },
+    rules: [
+      "For a recorded clip with an end. A live camera feed is a different component (not built yet): no timeline, no speed, a latency and a connection state instead.",
+      "Give `label` the clip's who, where and when (\"Patrol dog 7F3A, front camera, 14:02\"); it names the player for screen readers.",
+      "Pass `duration` from the clip's record, so the time and the markers show before the file loads; `preload=\"none\"` in a long list of clips.",
+      "Markers are events in the clip (Obstacle, Stop pressed), a word each, at most a handful. They are listed under the player too, for the keyboard and screen readers.",
+      "Never autoplay with sound. `autoPlay` starts muted and does nothing for someone who asked for reduced motion.",
+      "When the clip cannot play, say why after \"Clip unavailable:\" (not uploaded yet, expired, the robot was offline) and offer a retry only when retrying can help.",
+    ],
+  },
   alert: {
     group: "Feedback",
     examples: { file: "display", prefix: "Alert" },
     rules: [
       "A condition on this page that stays while it is true (a licence about to expire, a form that cannot be sent). No acknowledge.",
       "If the operator must act on the robot, it is an alarm instead.",
+    ],
+  },
+  banner: {
+    group: "Feedback",
+    examples: { file: "banner", prefix: "Banner" },
+    rules: [
+      "About the app, not one record: maintenance, read-only mode, a trial ending, no connection. A condition of one page or form is an Alert in the content; the result of what someone just did is a Toast.",
+      "Full width, first in the page (or above the whole app), before the header in the DOM so it is read first. At most one at a time: show the most severe and let the next one wait.",
+      "Tone by consequence: neutral for calm conditions, info only while a process runs (syncing back, a maintenance window under way), warning before something is lost, danger when the app cannot work. Danger is a tint, never solid red. Give it an icon that names the subject (Wrench, Lock, CloudOff).",
+      "role=\"status\" for neutral, info and warning (read politely); role=\"alert\" only for danger. It is not role=\"banner\", which is the page header landmark.",
+      "One action at most, named by its result (\"Choose a plan\", \"Retry now\"): a Button, size md, outline.",
+      "Dismiss only when the condition does not need the person (news, a trial reminder). Remembering it is yours: onDismiss stores it, then pass open={false}. A condition that ends by itself (offline, read-only) has no close button and leaves when it ends.",
+      "Above the AppShell: the shell is as tall as the screen unless --app-shell-height says otherwise. Put the banner and the shell in a column as tall as the screen (flex h-dvh flex-col) and wrap the shell in min-h-0 flex-1 [--app-shell-height:100%], so a banner that wraps on a phone never pushes the shell's bottom off screen.",
     ],
   },
   toast: {
@@ -742,7 +786,7 @@ const entries: Record<string, Entry> = {
     examples: { file: "tree", prefix: "Tree" },
     rules: [
       "list (default) for a hierarchy people read and follow links in: lineage, an outline. select only when choosing a node is the job (a file explorer, a site picker): it is one Tab stop with arrow keys, and its nodes are not links.",
-      "A node used twice (a source under two label sets) is named again with a marker in meta, \"(listed above)\", not drawn twice in full.",
+      "A node used twice (a source under two label sets) is named again with a marker in meta, \"(listed above)\", not drawn twice in full. When many nodes have several parents, it is a Graph.",
       "meta is a count, a size or a calm state word, in muted text; never a coloured status. A disabled node says why in its meta.",
       "Open what people came for (defaultExpanded or expandAll for short trees); a deep tree starts collapsed.",
       "Give textValue when label is not a string, so type-ahead and screen readers have its name.",
@@ -773,6 +817,16 @@ const entries: Record<string, Entry> = {
       'The panel is a dialog, so it needs a name: aria-label on PopoverContent (usually the trigger\'s words, aria-label="Battery filter"), or aria-labelledby pointing at a heading inside it or at the trigger\'s id.',
     ],
   },
+  "hover-card": {
+    group: "Overlays",
+    examples: { file: "hover-card", prefix: "HoverCard" },
+    rules: [
+      "Preview only. Hover does not exist on touch and screen readers are not told the card is there, so nothing in it may be the only way to a fact or an action: the trigger is a real link to the page that has it all.",
+      "No controls inside: a button or link in the card cannot be reached reliably. Something to act on is a Popover (opened by a click) or the page itself.",
+      "Keyboard focus on the link opens it, Esc or moving on closes it. It waits 500 ms before opening, so a pointer crossing a list does not flash cards.",
+      "A few facts: a name, a state with its shape and word, a level as a Meter, when it was last seen. More than that is the page.",
+    ],
+  },
   tooltip: {
     group: "Overlays",
     examples: { file: "overlays", prefix: "Tooltip" },
@@ -801,6 +855,17 @@ const entries: Record<string, Entry> = {
     ],
   },
   "dropdown-menu": { group: "Overlays", examples: { file: "overlays", prefix: "DropdownMenu" }, rules: ["Destructive items go last, after a separator."] },
+  "context-menu": {
+    group: "Overlays",
+    examples: { file: "context-menu", prefix: "ContextMenu" },
+    rules: [
+      "A shortcut, never the only way: every action in it is also on a visible control (a ⋯ button with the same DropdownMenu, a toolbar, the detail page). Nobody can see that a context menu exists, and many tablets have no right-click.",
+      "Touch: pressing and holding for 700 ms opens it (Radix does this). Keyboard: Shift+F10 or the Menu key on anything focused inside the trigger area; make the area focusable only if nothing in it is.",
+      "Same items, same order as the visible menu. Destructive items go last, after a separator, in danger text.",
+      "Submenus one level deep and short; ticks for options that switch on and off, a radio group for one of several.",
+      "Leave the browser's own menu on text people copy and on links: put the trigger on the row or card, not on a field.",
+    ],
+  },
   // Robot shell
   "stop-button": {
     group: "Robot shell",
@@ -1008,6 +1073,15 @@ const keyboard: Record<string, [string, string][]> = {
     ["↑ / ↓", "Move between section headers"],
     ["Home / End", "First or last header"],
   ],
+  graph: [
+    ["Tab", "Move into the graph (one stop, on the selected node or the first) and out"],
+    ["→ / ←", "Horizontal: to an output / to an input of the focused node (the nearest one, or back where you came from)"],
+    ["↓ / ↑", "Horizontal: next or previous node in the same column. Vertical: ↓ / ↑ follow the edges and ← / → move in the row"],
+    ["Home / End", "First or last node"],
+    ["Enter", "Select the node and highlight its path, or follow it when it is a link"],
+    ["Space", "Select the node, links included"],
+    ["Esc", "Clear the selection"],
+  ],
   tree: [
     ["Tab", "list: move between links and disclosure buttons. select: move into the tree (one stop) and out"],
     ["Enter / Space", "list: open or close a branch, follow a link. select: select the focused node"],
@@ -1022,6 +1096,14 @@ const keyboard: Record<string, [string, string][]> = {
     ["Enter / Space", "Open the picture in the lightbox, or pick it while picking"],
     ["← / →", "In the lightbox: previous or next picture"],
     ["Esc", "Close the lightbox and return focus to the picture's tile"],
+  ],
+  "media-player": [
+    ["Space / K", "Play or pause (Space on a focused button presses that button)"],
+    ["← / →", "Back or forward 5 seconds, also on the timeline"],
+    ["J / L", "Back or forward 10 seconds"],
+    ["Home / End", "On the timeline: start or end of the clip"],
+    ["M", "Mute or unmute"],
+    ["F", "Full screen, or leave it (Esc leaves it too)"],
   ],
   "annotated-image": [
     ["Tab", "Reach the picture's annotations once; Tab again leaves"],
@@ -1077,6 +1159,19 @@ const keyboard: Record<string, [string, string][]> = {
     ["Enter", "Run the item"],
     ["Esc", "Close and return focus"],
   ],
+  "context-menu": [
+    ["Shift+F10 / Menu key", "Open the menu for the focused row or area"],
+    ["↑ / ↓", "Move between items"],
+    ["→ / ←", "Open or close a submenu"],
+    ["Enter / Space", "Run the item, or tick it"],
+    ["Esc", "Close and return focus"],
+  ],
+  "hover-card": [
+    ["Focus", "Show the card after a moment"],
+    ["Esc / Tab away", "Hide it"],
+    ["Enter", "Follow the link"],
+  ],
+  banner: [["Enter / Space", "On the action, run it; on the close button, dismiss the notice"]],
   toast: [
     ["F8", "Move focus to the notifications"],
     ["Esc", "Dismiss the focused notification"],

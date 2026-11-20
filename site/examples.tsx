@@ -25,7 +25,9 @@ import * as s_form from "@/stories/form.stories"
 import * as s_data_pieces from "@/stories/data-pieces.stories"
 import * as s_image_grid from "@/stories/image-grid.stories"
 import * as s_annotated_image from "@/stories/annotated-image.stories"
+import * as s_media_player from "@/stories/media-player.stories"
 import * as s_tree from "@/stories/tree.stories"
+import * as s_graph from "@/stories/graph.stories"
 import * as s_chip_group from "@/stories/chip-group.stories"
 import * as s_filter_form from "@/stories/filter-form.stories"
 import * as s_filters from "@/stories/filters.stories"
@@ -53,6 +55,9 @@ import * as s_attachment from "@/stories/attachment.stories"
 import * as s_file_type from "@/stories/file-type.stories"
 import * as s_hooks from "@/stories/hooks.stories"
 import * as s_metric_card from "@/stories/metric-card.stories"
+import * as s_context_menu from "@/stories/context-menu.stories"
+import * as s_hover_card from "@/stories/hover-card.stories"
+import * as s_banner from "@/stories/banner.stories"
 import type { StoryFile } from "./catalog"
 
 type Meta = { component?: React.ComponentType<Record<string, unknown>>; args?: Record<string, unknown> }
@@ -103,7 +108,9 @@ const files: Record<StoryFile, StoryModule> = {
   "data-pieces": s_data_pieces as unknown as StoryModule,
   "image-grid": s_image_grid as unknown as StoryModule,
   "annotated-image": s_annotated_image as unknown as StoryModule,
+  "media-player": s_media_player as unknown as StoryModule,
   tree: s_tree as unknown as StoryModule,
+  graph: s_graph as unknown as StoryModule,
   "chip-group": s_chip_group as unknown as StoryModule,
   "filter-form": s_filter_form as unknown as StoryModule,
   filters: s_filters as unknown as StoryModule,
@@ -112,6 +119,9 @@ const files: Record<StoryFile, StoryModule> = {
   "route-progress": s_route_progress as unknown as StoryModule,
   hooks: s_hooks as unknown as StoryModule,
   "metric-card": s_metric_card as unknown as StoryModule,
+  "context-menu": s_context_menu as unknown as StoryModule,
+  "hover-card": s_hover_card as unknown as StoryModule,
+  banner: s_banner as unknown as StoryModule,
 }
 
 // Same rule as Storybook: story args override meta args; a story's own render wins over meta.component.
@@ -136,7 +146,10 @@ export function Stage({ file, name, className, wide }: { file: StoryFile; name: 
         className={
           wide
             ? "w-full"
-            : "mx-auto w-fit max-w-full min-w-full text-center sm:min-w-sm [&>*]:mx-auto [&>*]:text-start"
+            : // A row of small things (badges, buttons, avatars) shrinks to its content and sits in the middle; an example with a
+              // field, a table, a card, a bar or navigation keeps the column's width, so inputs and grids still fill it. The rule
+              // has no specificity (:where), so a width the story sets itself (w-md, w-2xl) always wins.
+              "mx-auto w-fit max-w-full min-w-full text-center sm:min-w-sm [&>*]:mx-auto [&>*]:text-start [:where(&>*:not(:has(input,textarea,table,img,video,canvas,nav,[role=combobox],[role=grid],[role=tree],[role=progressbar],[role=meter],[role=slider],[data-slot=card],[data-slot=metric-card],[data-slot=table-container])))]:w-fit"
         }
       >
         {render(file, name)}
