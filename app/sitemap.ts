@@ -4,6 +4,7 @@ import { site } from "@/site/config"
 import { blocksOfType } from "@/site/blocks"
 import { blockTypes } from "@/site/block-types"
 import { foundations } from "@/site/foundations"
+import { hasA11y, hasProps } from "@/site/component-tabs-data"
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const pages = [
@@ -17,6 +18,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/icons", priority: 0.7 },
     { path: "/icons/lucide", priority: 0.5 },
     ...items.map((i) => ({ path: `/docs/components/${i.name}`, priority: 0.6 })),
+    ...items.filter((i) => hasProps(i.name)).map((i) => ({ path: `/docs/components/${i.name}/properties`, priority: 0.5 })),
+    ...items.filter((i) => hasA11y(i.name)).map((i) => ({ path: `/docs/components/${i.name}/accessibility`, priority: 0.5 })),
     { path: "/blocks", priority: 0.8 },
     ...blockTypes.filter((t) => !t.home && blocksOfType(t.slug).length > 0).map((t) => ({ path: `/blocks/${t.slug}`, priority: 0.6 })),
   ]

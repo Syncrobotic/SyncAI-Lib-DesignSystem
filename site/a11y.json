@@ -1,0 +1,810 @@
+{
+  "use-long-press": {
+    "roles": [
+      "button"
+    ],
+    "tabStops": 1,
+    "live": true
+  },
+  "use-slide-release": {
+    "roles": [
+      "slider"
+    ],
+    "tabStops": 1,
+    "live": true
+  },
+  "use-presence": {
+    "roles": [
+      "button"
+    ],
+    "tabStops": 1,
+    "live": false
+  },
+  "use-debounce": {
+    "roles": [
+      "textbox"
+    ],
+    "tabStops": 1,
+    "live": true
+  },
+  "use-hotkeys": {
+    "roles": [
+      "button"
+    ],
+    "tabStops": 2,
+    "live": true
+  },
+  "status-glyph": {
+    "roles": [
+      "cell",
+      "columnheader",
+      "list",
+      "listitem",
+      "row",
+      "rowgroup",
+      "table"
+    ],
+    "tabStops": 1,
+    "live": false
+  },
+  "status-eyebrow": {
+    "roles": [
+      "heading"
+    ],
+    "tabStops": 0,
+    "live": false
+  },
+  "tray": {
+    "roles": [],
+    "tabStops": 0,
+    "live": false
+  },
+  "stop-button": {
+    "roles": [
+      "button",
+      "figure"
+    ],
+    "tabStops": 4,
+    "live": false
+  },
+  "slide-to-release": {
+    "roles": [
+      "figure",
+      "slider"
+    ],
+    "tabStops": 1,
+    "live": false
+  },
+  "dock": {
+    "roles": [
+      "button",
+      "figure",
+      "navigation",
+      "slider"
+    ],
+    "tabStops": 15,
+    "live": false
+  },
+  "island": {
+    "roles": [
+      "button",
+      "img",
+      "status"
+    ],
+    "tabStops": 5,
+    "live": true
+  },
+  "list": {
+    "roles": [
+      "button"
+    ],
+    "tabStops": 2,
+    "live": false
+  },
+  "skeleton": {
+    "roles": [
+      "status"
+    ],
+    "tabStops": 0,
+    "live": true
+  },
+  "button": {
+    "roles": [
+      "button",
+      "link",
+      "status"
+    ],
+    "tabStops": 6,
+    "live": true
+  },
+  "spinner": {
+    "roles": [
+      "button",
+      "status"
+    ],
+    "tabStops": 0,
+    "live": true
+  },
+  "segmented-control": {
+    "roles": [
+      "radio",
+      "radiogroup"
+    ],
+    "tabStops": 2,
+    "live": false
+  },
+  "toggle": {
+    "roles": [
+      "button"
+    ],
+    "tabStops": 3,
+    "live": false
+  },
+  "copy-button": {
+    "roles": [
+      "button"
+    ],
+    "tabStops": 3,
+    "live": true
+  },
+  "code-block": {
+    "roles": [
+      "button",
+      "group"
+    ],
+    "tabStops": 2,
+    "live": true
+  },
+  "input": {
+    "roles": [
+      "searchbox",
+      "textbox"
+    ],
+    "tabStops": 2,
+    "live": false
+  },
+  "input-group": {
+    "roles": [
+      "button",
+      "searchbox",
+      "textbox"
+    ],
+    "tabStops": 2,
+    "live": false
+  },
+  "number-field": {
+    "roles": [
+      "spinbutton"
+    ],
+    "tabStops": 4,
+    "live": false
+  },
+  "textarea": {
+    "roles": [
+      "textbox"
+    ],
+    "tabStops": 1,
+    "live": false
+  },
+  "label": {
+    "roles": [],
+    "tabStops": 0,
+    "live": false
+  },
+  "field": {
+    "roles": [
+      "combobox",
+      "textbox"
+    ],
+    "tabStops": 2,
+    "live": false
+  },
+  "checkbox": {
+    "roles": [
+      "checkbox"
+    ],
+    "tabStops": 4,
+    "live": false
+  },
+  "radio-group": {
+    "roles": [
+      "radio",
+      "radiogroup"
+    ],
+    "tabStops": 1,
+    "live": false
+  },
+  "switch": {
+    "roles": [
+      "switch"
+    ],
+    "tabStops": 3,
+    "live": false
+  },
+  "choice-field": {
+    "roles": [
+      "checkbox",
+      "group",
+      "radio",
+      "switch"
+    ],
+    "tabStops": 3,
+    "live": false
+  },
+  "select": {
+    "roles": [
+      "combobox"
+    ],
+    "tabStops": 1,
+    "live": false
+  },
+  "slider": {
+    "roles": [
+      "slider"
+    ],
+    "tabStops": 3,
+    "live": false
+  },
+  "badge": {
+    "roles": [],
+    "tabStops": 0,
+    "live": false
+  },
+  "card": {
+    "roles": [
+      "button",
+      "heading"
+    ],
+    "tabStops": 2,
+    "live": false
+  },
+  "avatar": {
+    "roles": [
+      "img"
+    ],
+    "tabStops": 0,
+    "live": false
+  },
+  "separator": {
+    "roles": [],
+    "tabStops": 0,
+    "live": false
+  },
+  "progress": {
+    "roles": [
+      "progressbar"
+    ],
+    "tabStops": 0,
+    "live": false
+  },
+  "description-list": {
+    "roles": [],
+    "tabStops": 0,
+    "live": false
+  },
+  "text-diff": {
+    "roles": [
+      "region"
+    ],
+    "tabStops": 0,
+    "live": false
+  },
+  "meter": {
+    "roles": [
+      "meter"
+    ],
+    "tabStops": 0,
+    "live": false
+  },
+  "metric-card": {
+    "roles": [
+      "link"
+    ],
+    "tabStops": 2,
+    "live": false
+  },
+  "alert": {
+    "roles": [
+      "alert",
+      "button",
+      "status"
+    ],
+    "tabStops": 1,
+    "live": true
+  },
+  "alarm": {
+    "roles": [
+      "button",
+      "group",
+      "heading",
+      "list",
+      "listitem",
+      "region"
+    ],
+    "tabStops": 16,
+    "live": true
+  },
+  "toast": {
+    "roles": [
+      "button",
+      "list",
+      "listitem"
+    ],
+    "tabStops": 3,
+    "live": false
+  },
+  "empty-state": {
+    "roles": [
+      "button"
+    ],
+    "tabStops": 2,
+    "live": false
+  },
+  "table": {
+    "roles": [
+      "button",
+      "cell",
+      "columnheader",
+      "row",
+      "rowgroup",
+      "table"
+    ],
+    "tabStops": 3,
+    "live": false
+  },
+  "chart": {
+    "roles": [
+      "application",
+      "figure",
+      "list",
+      "listitem"
+    ],
+    "tabStops": 3,
+    "live": false
+  },
+  "tabs": {
+    "roles": [
+      "tab",
+      "tablist",
+      "tabpanel"
+    ],
+    "tabStops": 2,
+    "live": false
+  },
+  "pagination": {
+    "roles": [
+      "button",
+      "link",
+      "navigation"
+    ],
+    "tabStops": 7,
+    "live": true
+  },
+  "breadcrumb": {
+    "roles": [
+      "button",
+      "link",
+      "list",
+      "listitem",
+      "navigation"
+    ],
+    "tabStops": 3,
+    "live": false
+  },
+  "accordion": {
+    "roles": [
+      "button",
+      "heading",
+      "region"
+    ],
+    "tabStops": 3,
+    "live": false
+  },
+  "tree": {
+    "roles": [
+      "button",
+      "group",
+      "link",
+      "list",
+      "listitem",
+      "tree",
+      "treeitem"
+    ],
+    "tabStops": 10,
+    "live": false
+  },
+  "dialog": {
+    "roles": [],
+    "tabStops": 0,
+    "live": false
+  },
+  "alert-dialog": {
+    "roles": [],
+    "tabStops": 0,
+    "live": false
+  },
+  "sheet": {
+    "roles": [],
+    "tabStops": 0,
+    "live": false
+  },
+  "popover": {
+    "roles": [],
+    "tabStops": 0,
+    "live": false
+  },
+  "tooltip": {
+    "roles": [],
+    "tabStops": 0,
+    "live": false
+  },
+  "dropdown-menu": {
+    "roles": [],
+    "tabStops": 0,
+    "live": false
+  },
+  "command": {
+    "roles": [
+      "combobox",
+      "group",
+      "img",
+      "listbox",
+      "option",
+      "status"
+    ],
+    "tabStops": 1,
+    "live": true
+  },
+  "item": {
+    "roles": [
+      "button",
+      "link",
+      "list",
+      "listitem",
+      "progressbar",
+      "separator"
+    ],
+    "tabStops": 4,
+    "live": false
+  },
+  "icon-tile": {
+    "roles": [
+      "img",
+      "link"
+    ],
+    "tabStops": 1,
+    "live": false
+  },
+  "kbd": {
+    "roles": [],
+    "tabStops": 0,
+    "live": false
+  },
+  "button-group": {
+    "roles": [
+      "button",
+      "group",
+      "searchbox",
+      "separator"
+    ],
+    "tabStops": 5,
+    "live": true
+  },
+  "scroll-area": {
+    "roles": [
+      "cell",
+      "columnheader",
+      "figure",
+      "heading",
+      "list",
+      "listitem",
+      "row",
+      "rowgroup",
+      "table"
+    ],
+    "tabStops": 1,
+    "live": false
+  },
+  "toggle-group": {
+    "roles": [
+      "button",
+      "radio",
+      "radiogroup",
+      "toolbar"
+    ],
+    "tabStops": 1,
+    "live": false
+  },
+  "page-header": {
+    "roles": [
+      "button",
+      "heading",
+      "link",
+      "list",
+      "listitem",
+      "navigation"
+    ],
+    "tabStops": 3,
+    "live": false
+  },
+  "chip-group": {
+    "roles": [
+      "button",
+      "link",
+      "list",
+      "listitem",
+      "navigation",
+      "radio",
+      "radiogroup"
+    ],
+    "tabStops": 3,
+    "live": false
+  },
+  "share-bar": {
+    "roles": [],
+    "tabStops": 0,
+    "live": false
+  },
+  "load-more": {
+    "roles": [
+      "button",
+      "status"
+    ],
+    "tabStops": 1,
+    "live": true
+  },
+  "restricted-preview": {
+    "roles": [],
+    "tabStops": 1,
+    "live": false
+  },
+  "image-grid": {
+    "roles": [
+      "button",
+      "img",
+      "list",
+      "listitem",
+      "status"
+    ],
+    "tabStops": 24,
+    "live": true
+  },
+  "annotated-image": {
+    "roles": [
+      "button",
+      "group",
+      "list",
+      "listitem",
+      "status"
+    ],
+    "tabStops": 1,
+    "live": true
+  },
+  "filter-form": {
+    "roles": [
+      "checkbox",
+      "combobox",
+      "search",
+      "searchbox"
+    ],
+    "tabStops": 2,
+    "live": false
+  },
+  "filters": {
+    "roles": [
+      "button",
+      "group",
+      "list",
+      "listitem"
+    ],
+    "tabStops": 29,
+    "live": false
+  },
+  "search-field": {
+    "roles": [
+      "search",
+      "searchbox"
+    ],
+    "tabStops": 1,
+    "live": false
+  },
+  "theme-toggle": {
+    "roles": [
+      "radio",
+      "radiogroup"
+    ],
+    "tabStops": 1,
+    "live": false
+  },
+  "route-progress": {
+    "roles": [
+      "progressbar"
+    ],
+    "tabStops": 0,
+    "live": false
+  },
+  "autocomplete": {
+    "roles": [
+      "button",
+      "combobox"
+    ],
+    "tabStops": 2,
+    "live": false
+  },
+  "input-otp": {
+    "roles": [
+      "separator",
+      "textbox"
+    ],
+    "tabStops": 1,
+    "live": false
+  },
+  "phone-input": {
+    "roles": [
+      "combobox",
+      "textbox"
+    ],
+    "tabStops": 2,
+    "live": false
+  },
+  "calendar": {
+    "roles": [
+      "button",
+      "combobox",
+      "grid",
+      "gridcell",
+      "navigation",
+      "option",
+      "row",
+      "rowgroup",
+      "rowheader",
+      "status"
+    ],
+    "tabStops": 5,
+    "live": true
+  },
+  "date-selector": {
+    "roles": [
+      "button"
+    ],
+    "tabStops": 2,
+    "live": false
+  },
+  "time-picker": {
+    "roles": [
+      "button",
+      "group",
+      "textbox"
+    ],
+    "tabStops": 2,
+    "live": false
+  },
+  "data-grid": {
+    "roles": [
+      "button",
+      "cell",
+      "checkbox",
+      "columnheader",
+      "group",
+      "list",
+      "listitem",
+      "meter",
+      "navigation",
+      "region",
+      "row",
+      "rowgroup",
+      "searchbox",
+      "table"
+    ],
+    "tabStops": 20,
+    "live": true
+  },
+  "sortable": {
+    "roles": [
+      "button",
+      "figure",
+      "list",
+      "listitem",
+      "switch"
+    ],
+    "tabStops": 14,
+    "live": false
+  },
+  "resizable": {
+    "roles": [
+      "separator"
+    ],
+    "tabStops": 2,
+    "live": false
+  },
+  "file-upload": {
+    "roles": [
+      "button"
+    ],
+    "tabStops": 1,
+    "live": false
+  },
+  "attachment": {
+    "roles": [
+      "button",
+      "figure",
+      "progressbar"
+    ],
+    "tabStops": 6,
+    "live": false
+  },
+  "file-type": {
+    "roles": [],
+    "tabStops": 0,
+    "live": false
+  },
+  "stepper": {
+    "roles": [
+      "button",
+      "list",
+      "listitem",
+      "progressbar"
+    ],
+    "tabStops": 3,
+    "live": false
+  },
+  "timeline": {
+    "roles": [
+      "list",
+      "listitem"
+    ],
+    "tabStops": 1,
+    "live": false
+  },
+  "scrollspy": {
+    "roles": [
+      "link",
+      "list",
+      "listitem",
+      "navigation"
+    ],
+    "tabStops": 8,
+    "live": false
+  },
+  "navigation-menu": {
+    "roles": [
+      "button",
+      "img",
+      "link",
+      "list",
+      "listitem",
+      "navigation"
+    ],
+    "tabStops": 11,
+    "live": false
+  },
+  "questionnaire": {
+    "roles": [
+      "button",
+      "checkbox",
+      "group",
+      "list",
+      "listitem",
+      "progressbar",
+      "radio",
+      "radiogroup",
+      "textbox"
+    ],
+    "tabStops": 7,
+    "live": false
+  },
+  "trace": {
+    "roles": [
+      "button",
+      "list",
+      "listitem"
+    ],
+    "tabStops": 3,
+    "live": true
+  },
+  "marker": {
+    "roles": [],
+    "tabStops": 0,
+    "live": false
+  }
+}

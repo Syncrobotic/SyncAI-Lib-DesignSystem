@@ -21,6 +21,9 @@ const pages = [
 ]
 
 ;(async () => {
+  // A component page's other tabs (Properties, Accessibility) exist only for some components: take them from the sitemap.
+  const map = await fetch(SITE + '/sitemap.xml').then((r) => r.text()).catch(() => '')
+  for (const m of map.matchAll(/<loc>[^<]*?(\/docs\/components\/[\w-]+\/(?:properties|accessibility))<\/loc>/g)) pages.push(m[1])
   const b = await chromium.launch(exe ? { executablePath: exe } : {})
   const p = await b.newPage({ viewport: { width: WIDTH, height: 800 }, isMobile: true, hasTouch: true })
   const found = []

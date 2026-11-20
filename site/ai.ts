@@ -6,6 +6,7 @@ import { site } from "./config"
 import { foundations } from "./foundations"
 import { iconCount, iconGroups } from "./icons"
 import { overviews } from "./overview"
+import { a11yMarkdown } from "./a11y"
 
 // The kit as AI agents read it: llms.txt, llms-full.txt and a markdown twin of every page (its URL plus .md).
 // Everything comes from the same data the pages render, so the two never disagree.
@@ -53,6 +54,7 @@ export function componentMarkdown(name: string) {
   }
   if (item.rules?.length) out.push("", "## Rules", "", list(item.rules))
   if (item.keyboard?.length) out.push("", "## Keyboard", "", "| Keys | Action |", "| --- | --- |", ...item.keyboard.map(([k, a]) => `| ${k} | ${a} |`))
+  out.push(...a11yMarkdown(name))
   // The API, generated from the types: own props, then what the rest come from.
   const api = propsOf(name).filter((p) => p.props.length || p.inherits.length)
   if (api.length) {

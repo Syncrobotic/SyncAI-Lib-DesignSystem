@@ -4,6 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 import { AnimatePresence } from "motion/react"
 import { usePathname } from "next/navigation"
+import { componentBase } from "@/site/component-tabs"
 import * as m from "motion/react-m"
 import { cn } from "@/lib/utils"
 import { patterns } from "./motion"
@@ -18,6 +19,8 @@ export const scopeFor = (scopes: Pick<Scope, "match">[], path: string) =>
 /** The groups of the area you are in. On phones (`switcher`) it also offers the other areas, which the header shows on desktop. */
 export function Sidebar({ scopes, switcher = false }: { scopes: Scope[]; switcher?: boolean }) {
   const path = usePathname()
+  // A component page's tabs belong to its one link.
+  const here = componentBase(path)
   const active = scopes[scopeFor(scopes, path)]
   // The home page belongs to no area: in the drawer, Home is current and no area is selected.
   const home = path === "/"
@@ -25,7 +28,7 @@ export function Sidebar({ scopes, switcher = false }: { scopes: Scope[]; switche
   // Open where you are: if the current page's link is out of view in its scrolling column (or the drawer), centre it.
   // Only that box scrolls, never the page.
   React.useEffect(() => {
-    const link = nav.current?.querySelector<HTMLElement>('a[aria-current="page"]')
+    const link = nav.current?.querySelector<HTMLElement>("a[data-current]")
     const box = link?.closest<HTMLElement>("[data-scroll]")
     if (!link || !box) return
     const l = link.getBoundingClientRect()
@@ -83,19 +86,20 @@ export function Sidebar({ scopes, switcher = false }: { scopes: Scope[]; switche
             <React.Fragment key={l.href}>
               <Link
                 href={l.href}
-                aria-current={path === l.href ? "page" : undefined}
+                aria-current={path === l.href ? "page" : here === l.href ? "true" : undefined}
+                data-current={here === l.href || undefined}
                 className={cn(
                   "press relative flex h-(--h-sm) items-center rounded-xs px-3 transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent",
-                  path === l.href ? "font-medium text-foreground" : "text-muted-foreground hover:text-foreground",
+                  here === l.href ? "font-medium text-foreground" : "text-muted-foreground hover:text-foreground",
                 )}
               >
                 {/* The current-page marker slides to the page you open. */}
-                {path === l.href && <m.span layoutId={`${switcher ? "m-" : ""}sidebar-marker`} aria-hidden className="absolute inset-0 rounded-xs bg-muted" />}
+                {here === l.href && <m.span layoutId={`${switcher ? "m-" : ""}sidebar-marker`} aria-hidden className="absolute inset-0 rounded-xs bg-muted" />}
                 <span className="relative">{l.label}</span>
               </Link>
               {/* The open page's examples grow in under it (the sheet pattern: height and opacity, --motion-sheet). */}
               <AnimatePresence initial={false}>
-                {path === l.href && l.sections && l.sections.length > 1 && (
+                {here === l.href && l.sections && l.sections.length > 1 && (
                   <m.ul
                     key="sections"
                     aria-label={`${l.label} examples`}
@@ -107,12 +111,12 @@ export function Sidebar({ scopes, switcher = false }: { scopes: Scope[]; switche
                   >
                     {l.sections.map((s) => (
                       <li key={s.href}>
-                        <a
+                        <Link
                           href={s.href}
                           className="flex min-h-(--h-sm) items-center py-1 pr-2 pl-3 text-sm text-muted-foreground transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:text-foreground"
                         >
                           {s.label}
-                        </a>
+                        </Link>
                       </li>
                     ))}
                   </m.ul>
