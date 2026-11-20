@@ -31,6 +31,8 @@ jobs:
       - run: npm run lint:dtcg
       # The API reference on each component page matches the types (npm run props)
       - run: npm run lint:props
+      # Every component page's Accessibility tab has measured roles and Tab stops (scripts/a11y.cjs)
+      - run: npm run lint:a11y
       # The package version has its CHANGELOG section, so the release on main has notes
       - run: node scripts/release-notes.mjs "$(node -p "require('./package.json').version")" > /dev/null
       - run: npm run typecheck
