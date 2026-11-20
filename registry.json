@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.0",
+        "version": "0.22.1",
         "changelog": [
+          {
+            "version": "0.22.1",
+            "date": "2026-11-20",
+            "note": "Chart greys re-stepped so Other (`--chart-4`) is 3:1 on a card in every mode, like the other series, and every pair still differs by ΔE 15 (also to colour-blind eyes)."
+          },
           {
             "version": "0.22.0",
             "date": "2026-11-20",
@@ -1988,7 +1993,8 @@
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/use-presence",
-        "@syncrobotic/feedback"
+        "@syncrobotic/feedback",
+        "@syncrobotic/robot-icons"
       ],
       "files": [
         {
@@ -1997,8 +2003,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.0",
+        "version": "0.22.1",
         "changelog": [
+          {
+            "version": "0.22.1",
+            "date": "2026-11-20",
+            "note": "Low priority is a diamond (`DiamondAlert`), not a circle: at 20 px the circle read as the critical octagon. AlarmList takes `status` (\"loading\" shows placeholder rows and never \"No active alarms\"; \"error\" says the list could not load or update, keeps what it has, with `onRetry` and `updatedAt`). Labels `loading`, `errorEmpty`, `errorStale`, `updatedAt`, `retry`. `useAlarmSignals` takes `ready`: alarms that arrive with the first load do not buzz."
+          },
           {
             "version": "0.22.0",
             "date": "2026-11-20",
@@ -2994,7 +3005,7 @@
       "name": "robot-icons",
       "type": "registry:ui",
       "title": "Robot icons",
-      "description": "Robot icons Lucide lacks, drawn to its grid: robot arm, mobile robot, charging dock, physical emergency stop pressed, safety zone.",
+      "description": "Robot icons Lucide lacks, drawn to its grid: robot arm, mobile robot, charging dock, physical emergency stop pressed, safety zone, low-priority alarm.",
       "dependencies": [
         "lucide-react"
       ],
@@ -3005,8 +3016,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.22.1",
         "changelog": [
+          {
+            "version": "0.22.1",
+            "date": "2026-11-20",
+            "note": "`DiamondAlert`: the low-priority alarm glyph."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",

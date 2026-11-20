@@ -27,7 +27,7 @@ describe("chart palette", () => {
       expect(s.cvd).toBeGreaterThanOrEqual(NORMAL_MIN)
     })
     it(`${m}: the accent and the greys are visible marks on a card (3:1)`, () => {
-      for (const n of [1, 2, 3, 5]) expect(contrast(`chart-${n}`, "card", m), `chart-${n}`).toBeGreaterThanOrEqual(3)
+      for (const n of [1, 2, 3, 4, 5]) expect(contrast(`chart-${n}`, "card", m), `chart-${n}`).toBeGreaterThanOrEqual(3)
     })
     it(`${m}: the baseline is the graphite mid, by name`, () => {
       expect(hex(5, m)).toBe(hex(3, m))
@@ -40,11 +40,11 @@ describe("chart palette", () => {
       for (const n of [2, 3, 4, 5]) expect(chroma(hex(n, m)), `chart-${n} ${m}`).toBeLessThan(0.03)
     }
   })
-  it("Other recedes: below the other greys in contrast, still a shape on the card", () => {
+  it("Other recedes: the quietest grey, and still 3:1 on the card, the minimum for a mark (WCAG 1.4.11)", () => {
     for (const m of modes) {
       const other = contrast("chart-4", "card", m)!
       expect(other).toBeLessThan(contrast("chart-3", "card", m)!)
-      expect(other).toBeGreaterThanOrEqual(1.5)
+      expect(other).toBeGreaterThanOrEqual(3)
     }
   })
 })

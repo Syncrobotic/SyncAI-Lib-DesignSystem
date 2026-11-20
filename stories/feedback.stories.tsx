@@ -117,6 +117,27 @@ const flood: AlarmData[] = [
 /** One network fault raises 16 alarms in a minute. Over 10 in 10 minutes is a flood: the list says so, keeps critical and high in view and folds the low ones. */
 export const AlarmListFlood: S = { render: () => <AlarmList className="w-2xl max-w-full" alarms={flood} now={NOW} feedback={false} onAcknowledge={fn()} /> }
 
+/** Before the first load: placeholder rows in the rows' own shape. Never "No active alarms" until the alarms are known. */
+export const AlarmListLoading: S = { render: () => <AlarmList className="w-2xl max-w-full" alarms={[]} status="loading" feedback={false} /> }
+
+/**
+ * The list could not update. It keeps the alarms it has (an old list beats an empty one), says they may be out of date
+ * and when they were loaded, and offers a retry. With nothing loaded it says there may be alarms you cannot see.
+ */
+export const AlarmListError: S = {
+  render: () => (
+    <AlarmList
+      className="w-2xl max-w-full"
+      alarms={flood.slice(0, 2)}
+      status="error"
+      updatedAt="14:09"
+      onRetry={fn()}
+      feedback={false}
+      onAcknowledge={fn()}
+    />
+  ),
+}
+
 function ToastDemo() {
   return (
     <div className="grid gap-2 sm:flex sm:flex-wrap">
