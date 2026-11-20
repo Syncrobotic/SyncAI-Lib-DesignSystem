@@ -146,7 +146,7 @@ export const overviews: Record<string, Overview> = {
     ],
     notes: [
       "Offer `RobotMapList` beside `RobotMap` and share `selectedId` / `onSelect` between them; `lint:rules` asks for it in a block.",
-      "Coordinates are metres from the plan's top-left, y down; `heading` is degrees clockwise from the top of the plan. Convert from ROS (y up, counter-clockwise yaw) before passing them.",
+      "Coordinates are metres from the plan's top-left, y down; `heading` is degrees clockwise from the top of the plan (0 up, 90 right), as the plan image is drawn. From a ROS map frame (x right, y up, yaw counter-clockwise from +x, in radians), with the plan's bottom-left at (originX, originY): `x = xRos − originX`, `y = height − (yRos − originY)`, `heading = 90 − yaw × 180 / π`.",
       "`floorplan` is an image URL stretched over `width` × `height`, or SVG drawn in metres (add `vectorEffect=\"non-scaling-stroke\"` to keep hairlines thin when zoomed).",
       "By default the frame keeps the site's proportions (at most 75 % of the screen's height); `fill` makes it fill its parent, for a full-screen map.",
       "Pass `labels` (status words, zone kinds, instructions, positions, empty, loading, error) to translate.",
@@ -844,6 +844,7 @@ export const overviews: Record<string, Overview> = {
     notes: [
       "Run a watchdog on the robot: stop when no command has arrived for 3 periods (300 ms at 10 Hz). The pad stops on every event it can see, but a frozen tab or a dropped link sends nothing at all.",
       "Map `{ linear, angular }` onto the robot's own limits (a Twist scaled by its top speeds); clamp there too, never trust the client alone.",
+      "`timeoutMs` (2 s) also stops a mouse held perfectly still, which sends no events (\"input lost\": press again). Turn it off with `timeoutMs={false}` only when the robot runs the watchdog above.",
       "Pass the measured speed as `speed`, not the commanded one: the status line says what the robot does.",
       "Name the robot in `labels.name` (\"Drive 7F3A\") when the operator can drive more than one.",
     ],

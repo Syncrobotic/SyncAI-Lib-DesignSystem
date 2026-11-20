@@ -7155,9 +7155,9 @@
     },
     {
      "name": "timeoutMs",
-     "type": "number",
+     "type": "number | false",
      "default": "2000",
-     "description": "Stop when no pointer event arrives for this long, in ms. Default 2000. A held key is not timed: its release is reliable."
+     "description": "Stop when no pointer event arrives for this long, in ms. Default 2000. A held key is not timed: its release is reliable. A mouse held perfectly still sends no events, so it trips this too (\"input lost\": press again). `false` turns it off: only when the robot runs its own watchdog on the command stream (it stops when commands stop arriving), which `rateHz` keeps fed while the stick is held."
     },
     {
      "name": "speed",

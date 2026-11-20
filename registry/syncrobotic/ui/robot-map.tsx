@@ -10,7 +10,11 @@ import { Button } from "@/registry/syncrobotic/ui/button"
 import { ButtonGroup } from "@/registry/syncrobotic/ui/button-group"
 import { ChargingDock, SafetyZone } from "@/registry/syncrobotic/ui/robot-icons"
 
-/** A point on the site, in metres from the plan's top-left corner: x to the right, y down (as the plan image is drawn). */
+/**
+ * A point on the site, in metres from the plan's top-left corner: x to the right, y down (as the plan image is drawn).
+ * From a ROS map frame (y up, yaw counter-clockwise from +x in radians) whose plan has its bottom-left at
+ * (originX, originY): x = xRos − originX, y = height − (yRos − originY), heading = 90 − yaw × 180 / π.
+ */
 export type RobotMapPoint = [x: number, y: number]
 
 export type RobotMapZoneKind = "restricted" | "slow" | "charging" | "other"

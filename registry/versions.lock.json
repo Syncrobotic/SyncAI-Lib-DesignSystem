@@ -53,7 +53,7 @@
   },
   "teleop-pad": {
     "version": "0.23.0",
-    "hash": "6bad9dfaa1efb693"
+    "hash": "c9dbaaa33bb08efa"
   },
   "dock": {
     "version": "0.8.0",
@@ -237,7 +237,7 @@
   },
   "robot-map": {
     "version": "0.23.0",
-    "hash": "8655fa82271b719d"
+    "hash": "942b5e3793f7a9ad"
   },
   "dialog": {
     "version": "0.23.0",

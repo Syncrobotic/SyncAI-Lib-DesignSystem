@@ -541,7 +541,7 @@
           {
             "version": "0.23.0",
             "date": "2026-11-20",
-            "note": "First release: a dead-man stick (pointer: touch, mouse, pen) sending { linear, angular } at rateHz while held, zero and onStop with the reason on release, pointer cancel, blur, hidden page or timeoutMs; dead zone, maxSpeed shown as a scale, keyboard drive with arrows or W A S D and Space to stop, status with icon and words, glove density, reduced motion, haptic ticks."
+            "note": "First release: a dead-man stick (pointer: touch, mouse, pen) sending { linear, angular } at rateHz while held, zero and onStop with the reason on release, pointer cancel, blur, hidden page or timeoutMs; dead zone, maxSpeed shown as a scale, keyboard drive with arrows or W A S D and Space to stop, status with icon and words, glove density, reduced motion, haptic ticks. `timeoutMs={false}` turns the pointer timeout off, for robots that run their own watchdog."
           }
         ]
       }

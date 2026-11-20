@@ -168,6 +168,15 @@ describe("TeleopPad", () => {
     expect(screen.getByRole("status").textContent).toMatch(/input lost/)
   })
 
+  it("with timeoutMs={false}, a still pointer keeps driving (the robot's own watchdog guards it)", () => {
+    const { pad, onCommand, onStop } = setup({ timeoutMs: false })
+    press(pad)
+    move(pad, 0, -T)
+    act(() => vi.advanceTimersByTime(10_000))
+    expect(onStop).not.toHaveBeenCalled()
+    expect(last(onCommand)).not.toEqual(ZERO)
+  })
+
   it("ignores a second finger", () => {
     const { pad, onStop } = setup()
     press(pad)

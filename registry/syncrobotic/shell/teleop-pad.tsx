@@ -103,8 +103,13 @@ type Props = {
   maxSpeed?: number
   /** Commands per second while held. Default 10. The robot should stop by itself when they stop arriving. */
   rateHz?: number
-  /** Stop when no pointer event arrives for this long, in ms. Default 2000. A held key is not timed: its release is reliable. */
-  timeoutMs?: number
+  /**
+   * Stop when no pointer event arrives for this long, in ms. Default 2000. A held key is not timed: its release is
+   * reliable. A mouse held perfectly still sends no events, so it trips this too ("input lost": press again).
+   * `false` turns it off: only when the robot runs its own watchdog on the command stream (it stops when commands stop
+   * arriving), which `rateHz` keeps fed while the stick is held.
+   */
+  timeoutMs?: number | false
   /** The robot's measured speed in m/s, shown while driving ("Driving · 0.4 m/s"). */
   speed?: number
   /** The robot cannot be driven by hand now. Say why in `disabledReason`. */
@@ -200,7 +205,9 @@ export function TeleopPad({
 
   const armWatchdog = () => {
     if (watchdog.current !== null) window.clearTimeout(watchdog.current)
-    watchdog.current = window.setTimeout(() => stopRef.current("timeout"), latest.current.timeoutMs)
+    const ms = latest.current.timeoutMs
+    if (ms === false) return
+    watchdog.current = window.setTimeout(() => stopRef.current("timeout"), ms)
   }
 
   const aim = (x: number, y: number) => {
