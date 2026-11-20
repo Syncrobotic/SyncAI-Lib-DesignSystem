@@ -356,10 +356,11 @@ function useNeighbours(nodes: GraphNode[], layout: GraphLayout) {
 
 /** A node's accessible name: what the box shows, then where it comes from and where it goes. */
 function accessibleName(n: GraphNode, ins: GraphNode[], outs: GraphNode[], labels: GraphLabels) {
+  // In the order the box shows them (name, then status, then meta), so the spoken name starts with the words on screen.
   const parts = [n.label]
-  if (n.meta) parts.push(n.meta)
   const word = statusWord(n, labels)
   if (word) parts.push(word)
+  if (n.meta) parts.push(n.meta)
   if (ins.length) parts.push(labels.from(ins.map(label)))
   if (outs.length) parts.push(labels.to(outs.map(label)))
   return parts.join(", ")
@@ -666,6 +667,8 @@ export function Graph({
                   <span title={n.label} className={cn("truncate text-sm", isSelected ? "font-bold" : "font-medium")}>
                     {n.label}
                   </span>
+                  {/* A space between the name and the line under it, so read as text they are two words, not one. */}
+                  {(word || n.meta) && " "}
                   {(word || n.meta) && (
                     <span className="flex min-w-0 items-center gap-2 text-xs text-muted-foreground">
                       {n.status && word && (
