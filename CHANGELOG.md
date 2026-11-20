@@ -11,6 +11,10 @@ Components install as source, so a project keeps the version it installed. Re-ru
 ### Docs and CI
 - The Accessibility tab's measured data is checked in CI: a job builds the site, measures every component again and fails when `site/a11y.json` differs (only when a component or story changed). The measured file is attached to a failed run.
 - Roadmap brought up to date.
+### Added
+- **`notification-center`** (block, new type Notifications): the bell for the app's top bar (AppShell `actions`) with its unread `CountBadge`, opening the notifications grouped by day (Today, Yesterday, then the date) in a popover on wide screens and a bottom sheet on phones. Unread rows carry a dot and weight, and say "Unread" to screen readers; each says what happened, which robot and site, when, and links to the thing. Mark one or all as read, filter All / Unread, "You're all caught up", loading and error. Arrow keys, Home and End move through the list; Esc closes and returns focus to the bell. Notifications are things worth knowing later: alarms that need action stay with `alarm` and the island, and the block's description and type rules say so. `NotificationPanel` renders the list without the overlay.
+- **`settings-billing`** (block, Settings): plan and renewal, robots and seats against what the plan includes (a `Meter` that warns only past 90 %), this period's usage with its dates, the card on file as brand and last four, and invoices with tabular amounts, a status in words and icon (paid grey, due, overdue in danger text) and a PDF link each. Change plan and cancel (confirmed first, saying what stops) are entry points; there is no checkout or card form, which stay on the payment provider's pages. Money is formatted by Intl in the account's currency (USD and TWD samples). Empty, loading and error states.
+- Icon set: `CreditCard`, "A payment card, billing".
 
 ## 0.20.0 · 2026-11-20
 

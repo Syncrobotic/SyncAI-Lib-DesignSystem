@@ -607,6 +607,14 @@
     "version": "0.17.3",
     "hash": "7e3e39f1d765a2ae"
   },
+  "settings-billing": {
+    "version": "0.21.0",
+    "hash": "6a9162cec33de34a"
+  },
+  "notification-center": {
+    "version": "0.21.0",
+    "hash": "22565b947a5bc7a0"
+  },
   "dialog-confirm-destructive": {
     "version": "0.17.3",
     "hash": "ba637560f7d29bcc"

@@ -84,7 +84,8 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 | Application | Stats | `stats-cards`, `stats-meters`, `stats-filtered` |
 | Application | Card | `robot-status-card`, `card-site`, `card-mission` |
 | Application | Sign-in | `sign-in`, `auth-passkey`, `auth-invite` |
-| Application | Settings | `settings-page`, `settings-notifications`, `settings-api-keys` |
+| Application | Settings | `settings-page`, `settings-notifications`, `settings-api-keys`, `settings-billing` |
+| Application | Notifications | `notification-center` |
 | Application | Form | `record-form` |
 | Application | Empty and error states | `status-pages` |
 | Application | Landing | `marketing-hero` |
