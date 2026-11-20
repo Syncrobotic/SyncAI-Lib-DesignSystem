@@ -2049,6 +2049,123 @@
    "inherits": []
   }
  ],
+ "graph": [
+  {
+   "name": "Graph",
+   "props": [
+    {
+     "name": "nodes",
+     "type": "GraphNode[]",
+     "required": true,
+     "description": "The boxes, in any order; they are laid out in columns from the edges."
+    },
+    {
+     "name": "edges",
+     "type": "GraphEdge[]",
+     "required": true,
+     "description": "The connections, `{ from, to }` with `from` an input of `to`. An edge that would close a cycle is left out."
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "Names the graph for screen readers: \"Lineage of Picking detector v3.2\"."
+    },
+    {
+     "name": "orientation",
+     "type": "\"horizontal\" | \"vertical\"",
+     "default": "\"horizontal\"",
+     "description": "horizontal (default): inputs on the left, outputs on the right. vertical: top to bottom, for narrow, deep pipelines."
+    },
+    {
+     "name": "selectedId",
+     "type": "string",
+     "description": "The selected node, controlled; null for none. Pair with onSelectedChange."
+    },
+    {
+     "name": "defaultSelectedId",
+     "type": "string",
+     "description": "The node selected at first (uncontrolled)."
+    },
+    {
+     "name": "onSelectedChange",
+     "type": "(id: string | null, node?: GraphNode) => void",
+     "description": "Called with the node selected, or null when the selection is cleared (Esc, a click on the background, the node again)."
+    },
+    {
+     "name": "empty",
+     "type": "ReactNode",
+     "default": "\"Nothing here yet.\"",
+     "description": "Shown in the frame when there are no nodes."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "description": "Bones in the frame while the graph loads."
+    },
+    {
+     "name": "linkAs",
+     "type": "ElementType",
+     "default": "\"a\"",
+     "description": "Your router's link (e.g. next/link), for nodes with href."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<GraphLabels>",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "GraphList",
+   "props": [
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "Names the graph for screen readers: \"Lineage of Picking detector v3.2\"."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "description": "Bones in the frame while the graph loads."
+    },
+    {
+     "name": "nodes",
+     "type": "GraphNode[]",
+     "required": true,
+     "description": "The boxes, in any order; they are laid out in columns from the edges."
+    },
+    {
+     "name": "edges",
+     "type": "GraphEdge[]",
+     "required": true,
+     "description": "The connections, `{ from, to }` with `from` an input of `to`. An edge that would close a cycle is left out."
+    },
+    {
+     "name": "empty",
+     "type": "ReactNode",
+     "default": "\"Nothing here yet.\"",
+     "description": "Shown in the frame when there are no nodes."
+    },
+    {
+     "name": "linkAs",
+     "type": "ElementType",
+     "default": "\"a\"",
+     "description": "Your router's link (e.g. next/link), for nodes with href."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<GraphLabels>",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "Pick<GraphProps, \"nodes\" | \"edges\" | \"label\" | \"empty\" | \"loading\" | \"linkAs\" | \"labels\" | \"className\">"
+   ]
+  }
+ ],
  "icon-tile": [
   {
    "name": "IconTile",

@@ -223,6 +223,10 @@
     "version": "0.18.0",
     "hash": "5089f9a3c327ad33"
   },
+  "graph": {
+    "version": "0.21.0",
+    "hash": "6141e9308b139d27"
+  },
   "dialog": {
     "version": "0.7.0",
     "hash": "7346ce6a2cccffd9"

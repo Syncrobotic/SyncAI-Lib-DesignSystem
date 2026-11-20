@@ -2353,6 +2353,36 @@
       }
     },
     {
+      "name": "graph",
+      "type": "registry:ui",
+      "title": "Graph",
+      "description": "A directed acyclic graph for lineage and pipelines, laid out in layers with no layout library: boxes with name, meta, status and link, neutral edges, the selected node's path highlighted, arrow keys along the edges, and GraphList, the same graph as text.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/skeleton",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/graph.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.21.0",
+        "changelog": [
+          {
+            "version": "0.21.0",
+            "date": "2026-11-20",
+            "note": "First release: a layered layout for up to about 60 nodes (longest-path layers, barycenter ordering, edges routed between boxes), left to right or top to bottom, scrolling inside its frame with the scroll fade; one Tab stop with arrow keys along the edges; selection highlights the upstream and downstream path; each node's name lists its inputs and outputs; GraphList shows the same graph as text."
+          }
+        ]
+      }
+    },
+    {
       "name": "dialog",
       "type": "registry:ui",
       "title": "Dialog",
