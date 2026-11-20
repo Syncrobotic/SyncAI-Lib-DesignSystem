@@ -58,7 +58,7 @@ The milestones are themes, not version numbers, listed by number. 0.4 to 0.9 and
 - [x] Site search (⌘K, Ctrl+K, /) over pages, rules, components, blocks and icons
 - [x] Information architecture: Blocks hold compositions; variants of one component are Patterns on its page
 - [ ] Docs per released version
-- [ ] Adoption scanner: a script that reports registry items and versions across company repos
+- [x] Adoption scanner: a script that reports registry items and versions across company repos (`npm run adoption`)
 
 ### 0.9 · Accessibility evidence
 - [ ] Manual screen-reader and keyboard test matrix per component (VoiceOver, TalkBack, NVDA)

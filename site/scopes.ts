@@ -17,13 +17,14 @@ export const scopes: Scope[] = [
     key: "foundations",
     label: "Foundations",
     href: "/docs/foundations",
-    match: ["/docs/foundations", "/docs/installation", "/docs/tokens", "/docs/upgrading", "/docs/ai"],
+    match: ["/docs/foundations", "/docs/installation", "/docs/nextjs", "/docs/tokens", "/docs/upgrading", "/docs/ai"],
     groups: [
       {
         title: "Getting started",
         links: [
           { href: "/docs/foundations", label: "Overview" },
           { href: "/docs/installation", label: "Installation" },
+          { href: "/docs/nextjs", label: "Next.js" },
           { href: "/docs/tokens", label: "Design tokens" },
           { href: "/docs/upgrading", label: "Versions and upgrades" },
           { href: "/docs/ai", label: "For AI agents" },

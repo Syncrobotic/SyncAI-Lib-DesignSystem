@@ -41,6 +41,8 @@ npm run check:wrap       # with the site running: on a 375 px phone, no row of b
 - The registry install test runs on every pull request that touches `registry/`, `registry.json`, the package files or the TypeScript config, and is skipped otherwise.
 - `check:radius` and `check:wrap` are local only: run them before a release.
 
+Not a check, a report: `npm run adoption -- <dir …>` (or `--github <org>`, with the `gh` CLI signed in) lists the items a product has installed, from each file's version header, how far each is behind this registry and the CHANGELOG lines in between (`--json` for machines). Its logic is tested in `tests/unit/adoption.test.ts`.
+
 ### Rules the lints enforce
 
 - No arbitrary Tailwind lengths (`h-[72px]`); use tokens (`h-(--h-stop)`, `rounded-md`).

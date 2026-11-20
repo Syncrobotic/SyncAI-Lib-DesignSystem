@@ -2,6 +2,12 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- Docs: **Next.js** (`/docs/nextjs`): the kit in an App Router project. `components.json`, the theme and Geist through `next/font`, which kit components are client components (read from their files) and why pages and layouts stay on the server, the theme without a flash, `next/link` through `linkAs`, the app shell in a layout with a client frame, route progress from `useLinkStatus`, forms with a Server Function, images, and the common errors with their messages. Every snippet was built and run in a Next.js 16 app.
+- **Adoption scanner**: `npm run adoption -- <dir …>` reads the version header of every installed file and reports, per repo, each item, its installed and latest version, how many minors behind, beta or stable, and the CHANGELOG lines in between; `--github <org>` scans an organisation through the `gh` CLI (skipped when gh is missing or signed out); `--json` for machines.
+
 ## 0.20.0 · 2026-11-20
 
 ### Added
