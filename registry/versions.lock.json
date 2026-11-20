@@ -599,6 +599,10 @@
     "version": "0.17.3",
     "hash": "48f62f10d5089978"
   },
+  "auth-2fa": {
+    "version": "0.21.0",
+    "hash": "a90313d90a35dcb3"
+  },
   "settings-notifications": {
     "version": "0.17.2",
     "hash": "64de2579b94a77f7"
@@ -614,6 +618,13 @@
   "notification-center": {
     "version": "0.21.0",
     "hash": "22565b947a5bc7a0"
+  "settings-webhooks": {
+    "version": "0.21.0",
+    "hash": "b0dac00935734641"
+  },
+  "settings-sessions": {
+    "version": "0.21.0",
+    "hash": "b9dfbecd68333f59"
   },
   "dialog-confirm-destructive": {
     "version": "0.17.3",
