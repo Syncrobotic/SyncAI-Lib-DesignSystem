@@ -17,8 +17,10 @@ export const scopeFor = (scopes: Pick<Scope, "match">[], path: string) =>
   )
 
 /** The groups of the area you are in. On phones (`switcher`) it also offers the other areas, which the header shows on desktop. */
-export function Sidebar({ scopes, switcher = false }: { scopes: Scope[]; switcher?: boolean }) {
-  const path = usePathname()
+export function Sidebar({ scopes, switcher = false, path: frozen }: { scopes: Scope[]; switcher?: boolean; path?: string }) {
+  // The drawer passes the page it was opened on, so its list holds still while it closes on the way to another page.
+  const current = usePathname()
+  const path = frozen ?? current
   // A component page's tabs belong to its one link.
   const here = componentBase(path)
   const active = scopes[scopeFor(scopes, path)]
@@ -47,33 +49,36 @@ export function Sidebar({ scopes, switcher = false }: { scopes: Scope[]; switche
   return (
     <nav ref={nav} aria-label={`${active.label} navigation`} className="flex flex-col gap-6 text-sm">
       {!switcher && <p className="px-3 text-sm font-medium text-muted-foreground">{active.label}</p>}
-      {switcher && (
-        <Link
-          href="/"
-          aria-current={home ? "page" : undefined}
-          className={cn(
-            "press flex h-(--h-sm) items-center rounded-xs px-3 transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent",
-            home ? "bg-muted font-medium text-foreground" : "text-muted-foreground hover:text-foreground",
-          )}
-        >
-          Home
-        </Link>
-      )}
-      {switcher && (
-        <div role="list" aria-label="Areas" className="grid grid-cols-2 gap-1 rounded-sm bg-muted p-1">
+      {/* The areas, as the header shows them on desktop: one quiet row of tabs with an underline, not a second set of
+          buttons louder than the pages. On the home page there is no area yet: the four are the list. */}
+      {switcher && !home && (
+        <div role="list" aria-label="Areas" className="flex gap-4 overflow-x-auto border-b border-border px-3">
           {scopes.map((s) => (
             <Link
               key={s.key}
               role="listitem"
               href={s.href}
-              aria-current={!home && s.key === active.key ? "true" : undefined}
+              aria-current={s.key === active.key ? "true" : undefined}
               className={cn(
-                "press relative flex h-(--h-sm) items-center justify-center rounded-xs text-sm transition-colors duration-(--motion-fast) ease-(--ease-standard)",
-                !home && s.key === active.key ? "font-medium text-primary-foreground" : "text-muted-foreground hover:text-foreground",
+                "-mb-px inline-flex h-(--h-sm) shrink-0 items-center border-b-2 text-sm whitespace-nowrap transition-colors duration-(--motion-fast) ease-(--ease-standard)",
+                s.key === active.key ? "border-foreground font-medium text-foreground" : "border-transparent text-muted-foreground hover:text-foreground",
               )}
             >
-              {!home && s.key === active.key && <m.span layoutId="area-marker" aria-hidden className="absolute inset-0 rounded-xs bg-primary" />}
-              <span className="relative">{s.label}</span>
+              {s.label}
+            </Link>
+          ))}
+        </div>
+      )}
+      {switcher && home && (
+        <div role="list" aria-label="Areas" className="flex flex-col gap-1">
+          {scopes.map((s) => (
+            <Link
+              key={s.key}
+              role="listitem"
+              href={s.href}
+              className="press flex h-(--h-sm) items-center rounded-xs px-3 text-foreground transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent"
+            >
+              {s.label}
             </Link>
           ))}
         </div>
@@ -99,7 +104,7 @@ export function Sidebar({ scopes, switcher = false }: { scopes: Scope[]; switche
               </Link>
               {/* The open page's examples grow in under it (the sheet pattern: height and opacity, --motion-sheet). */}
               <AnimatePresence initial={false}>
-                {here === l.href && l.sections && l.sections.length > 1 && (
+                {!switcher && here === l.href && l.sections && l.sections.length > 1 && (
                   <m.ul
                     key="sections"
                     aria-label={`${l.label} examples`}
