@@ -8,8 +8,8 @@
     "hash": "0beb78557975abe0"
   },
   "feedback": {
-    "version": "0.11.0",
-    "hash": "9ff75d69d2135307"
+    "version": "0.23.0",
+    "hash": "8ec920f8618ff43d"
   },
   "use-long-press": {
     "version": "0.5.0",
@@ -50,6 +50,10 @@
   "slide-to-release": {
     "version": "0.11.1",
     "hash": "bfc221fcb6e4e7df"
+  },
+  "teleop-pad": {
+    "version": "0.23.0",
+    "hash": "6bad9dfaa1efb693"
   },
   "dock": {
     "version": "0.8.0",

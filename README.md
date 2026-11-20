@@ -69,7 +69,7 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 | Feedback | `alert`, `banner`, `alarm`, `toast`, `route-progress` |
 | Navigation | `tabs`, `pagination`, `breadcrumb`, `accordion`, `page-header`, `load-more`, `stepper`, `scrollspy`, `navigation-menu`, `tree` |
 | Overlays | `dialog`, `alert-dialog`, `sheet`, `popover`, `hover-card`, `tooltip`, `dropdown-menu`, `context-menu`, `command` |
-| Robot shell | `tray`, `stop-button`, `slide-to-release`, `dock`, `island` |
+| Robot shell | `tray`, `stop-button`, `slide-to-release`, `teleop-pad`, `dock`, `island` |
 | Icons | `robot-icons` (robot icons Lucide lacks, drawn to match) |
 | Hooks | `use-long-press`, `use-slide-release`, `use-presence`, `use-debounce`, `use-hotkeys` |
 

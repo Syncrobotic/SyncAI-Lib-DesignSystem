@@ -59,6 +59,7 @@ import * as s_metric_card from "@/stories/metric-card.stories"
 import * as s_context_menu from "@/stories/context-menu.stories"
 import * as s_hover_card from "@/stories/hover-card.stories"
 import * as s_banner from "@/stories/banner.stories"
+import * as s_teleop_pad from "@/stories/teleop-pad.stories"
 import type { StoryFile } from "./catalog"
 
 type Meta = { component?: React.ComponentType<Record<string, unknown>>; args?: Record<string, unknown> }
@@ -68,6 +69,7 @@ type StoryModule = { default: Meta } & Record<string, unknown>
 const files: Record<StoryFile, StoryModule> = {
   "stop-button": stop as unknown as StoryModule,
   "slide-to-release": slide as unknown as StoryModule,
+  "teleop-pad": s_teleop_pad as unknown as StoryModule,
   dock: dock as unknown as StoryModule,
   island: island as unknown as StoryModule,
   list: list as unknown as StoryModule,

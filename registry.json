@@ -153,7 +153,7 @@
       "name": "feedback",
       "type": "registry:lib",
       "title": "Feedback",
-      "description": "Touch and sound as tokens: one vibration pattern per safety moment (stop sent, confirmed, unconfirmed, release, new critical or high alarm) and IEC 60601-1-8-style alarm tones from Web Audio.",
+      "description": "Touch and sound as tokens: one vibration pattern per safety moment (stop sent, confirmed, unconfirmed, release, drive start and stop, new critical or high alarm) and IEC 60601-1-8-style alarm tones from Web Audio.",
       "files": [
         {
           "path": "registry/syncrobotic/lib/feedback.ts",
@@ -161,8 +161,13 @@
         }
       ],
       "meta": {
-        "version": "0.11.0",
+        "version": "0.23.0",
         "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "Two patterns for manual driving: driveStart (one short tick when the teleop pad is pressed) and driveStop (two short ticks when driving ends)."
+          },
           {
             "version": "0.11.0",
             "date": "2026-11-18",
@@ -509,6 +514,36 @@
           }
         ],
         "status": "beta"
+      }
+    },
+    {
+      "name": "teleop-pad",
+      "type": "registry:component",
+      "title": "Teleop pad",
+      "description": "Drive a mobile robot by hand with a dead-man stick: it moves only while held and stops the moment input is let go or lost. Fixed-rate commands, dead zone, speed cap, keyboard.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/feedback"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/shell/teleop-pad.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.23.0",
+        "changelog": [
+          {
+            "version": "0.23.0",
+            "date": "2026-11-20",
+            "note": "First release: a dead-man stick (pointer: touch, mouse, pen) sending { linear, angular } at rateHz while held, zero and onStop with the reason on release, pointer cancel, blur, hidden page or timeoutMs; dead zone, maxSpeed shown as a scale, keyboard drive with arrows or W A S D and Space to stop, status with icon and words, glove density, reduced motion, haptic ticks."
+          }
+        ]
       }
     },
     {

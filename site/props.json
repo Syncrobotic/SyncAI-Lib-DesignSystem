@@ -4774,6 +4774,70 @@
    ]
   }
  ],
+ "teleop-pad": [
+  {
+   "name": "TeleopPad",
+   "props": [
+    {
+     "name": "onCommand",
+     "type": "(command: TeleopCommand) => void",
+     "required": true,
+     "description": "Called at `rateHz` while the stick is held, the first time at the press, and once with zero at every stop."
+    },
+    {
+     "name": "onStop",
+     "type": "(reason: TeleopStopReason) => void",
+     "description": "Called once when driving ends, after the zero command, with why."
+    },
+    {
+     "name": "deadZone",
+     "type": "number",
+     "default": "0.1",
+     "description": "Fraction of the stick's travel that sends zero, so a resting thumb does not creep the robot. Default 0.1."
+    },
+    {
+     "name": "maxSpeed",
+     "type": "number",
+     "default": "1",
+     "description": "Cap, 0…1: full stick sends this fraction of top speed. Below 1 the pad draws its scale and says the limit."
+    },
+    {
+     "name": "rateHz",
+     "type": "number",
+     "default": "10",
+     "description": "Commands per second while held. Default 10. The robot should stop by itself when they stop arriving."
+    },
+    {
+     "name": "timeoutMs",
+     "type": "number",
+     "default": "2000",
+     "description": "Stop when no pointer event arrives for this long, in ms. Default 2000. A held key is not timed: its release is reliable."
+    },
+    {
+     "name": "speed",
+     "type": "number",
+     "description": "The robot's measured speed in m/s, shown while driving (\"Driving · 0.4 m/s\")."
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "default": "false",
+     "description": "The robot cannot be driven by hand now. Say why in `disabledReason`."
+    },
+    {
+     "name": "disabledReason",
+     "type": "string",
+     "description": "Shown after \"Disabled:\", e.g. \"robot in autonomous mode\"."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<TeleopPadLabels>",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "text-diff": [
   {
    "name": "TextDiff",
