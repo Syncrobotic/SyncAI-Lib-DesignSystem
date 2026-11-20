@@ -145,3 +145,35 @@ describe("Acknowledge all", () => {
     expect(document.activeElement).toBe(screen.getByRole("button", { name: /^Acknowledge\W+Alarm 2$/ }))
   })
 })
+
+describe("AlarmList status (0.22.1)", () => {
+  it("while loading shows placeholders and never says there are no alarms", () => {
+    const { container } = render(<AlarmList alarms={[]} status="loading" feedback={false} />)
+    expect(screen.queryByText("No active alarms")).toBeNull()
+    expect(container.querySelector("section")!.getAttribute("aria-busy")).toBe("true")
+    expect(screen.getByRole("status").textContent).toBe("Loading alarms")
+  })
+  it("with an error and nothing loaded, says alarms may be missing, as an alert, with a retry", () => {
+    const retry = vi.fn()
+    render(<AlarmList alarms={[]} status="error" onRetry={retry} updatedAt="13:42" feedback={false} />)
+    expect(screen.queryByText("No active alarms")).toBeNull()
+    const alert = screen.getByRole("alert")
+    expect(alert.textContent).toContain("There may be alarms you cannot see")
+    expect(alert.textContent).toContain("Last updated 13:42")
+    fireEvent.click(screen.getByRole("button", { name: "Try again" }))
+    expect(retry).toHaveBeenCalledOnce()
+  })
+  it("with an error, keeps the alarms it already has and says they may be out of date", () => {
+    render(<AlarmList alarms={[a("1", "high")]} status="error" feedback={false} />)
+    expect(screen.getByText("Alarm 1")).toBeTruthy()
+    expect(screen.getByRole("alert").textContent).toContain("may be out of date")
+  })
+  it("the first load is the starting point: it is not announced as new alarms", () => {
+    const { rerender } = render(<AlarmList alarms={[]} status="loading" feedback={false} />)
+    rerender(<AlarmList alarms={[a("1", "critical")]} status="ready" feedback={false} />)
+    const assertive = document.querySelector('[aria-live="assertive"]')!
+    expect(assertive.textContent).toBe("")
+    rerender(<AlarmList alarms={[a("1", "critical"), a("2", "critical")]} status="ready" feedback={false} />)
+    expect(assertive.textContent).toContain("Alarm 2")
+  })
+})

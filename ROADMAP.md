@@ -28,7 +28,7 @@ Reviewed each release, so the roadmap follows evidence rather than taste.
 
 ## Plan
 
-The milestones are themes, not version numbers, listed by number. 0.4 to 0.9 and 1.0 were planned first; 0.16 and 0.17 were added later, so 0.9 is still open while they are done. The kit is at 0.20, and the open items below are what is left of each theme. Checked 2026-11-20 (0.20).
+The milestones are themes, not version numbers, listed by number. 0.4 to 0.9 and 1.0 were planned first; 0.16 and 0.17 were added later, so 0.9 is still open while they are done. The kit is at 0.22, and the open items below are what is left of each theme. Checked 2026-11-20 (0.22.1).
 
 ### 0.4 · Alarms and feedback
 - [x] Alarms foundation, `alarm`, `toast`
@@ -57,8 +57,6 @@ The milestones are themes, not version numbers, listed by number. 0.4 to 0.9 and
 - [x] Props tables generated from the types (API reference on every component page and in its Markdown); status labels (beta, stable) per item
 - [x] Site search (⌘K, Ctrl+K, /) over pages, rules, components, blocks and icons
 - [x] Information architecture: Blocks hold compositions; variants of one component are Patterns on its page
-- [ ] Adoption scanner: a script that reports registry items and versions across company repos
-- [ ] Docs per released version
 - [x] Adoption scanner: a script that reports registry items and versions across company repos (`npm run adoption`)
 
 ### 0.9 · Accessibility evidence
@@ -84,6 +82,13 @@ The milestones are themes, not version numbers, listed by number. 0.4 to 0.9 and
 - [x] Forms with React Hook Form the way shadcn does them: Controller around Field, an installable example (`form`), no wrapper and no form library in any other item
 - [x] One version range per npm package across the registry (`lint:registry`)
 - [x] Status on every item: stable for what a product uses, beta for the rest
+
+### 0.21 – 0.22 · Filling the gaps, and the brand
+- [x] Components products asked for: `context-menu`, `hover-card`, `banner`, `graph`, `media-player`; blocks for notifications, billing, webhooks, sessions, two-factor sign-in and a battery histogram
+- [x] Accessibility data measured in CI (`a11y-data`), so the Accessibility tab cannot drift from the components
+- [x] Charts: graphite and the brand indigo (C3), every series at least 3:1 and told apart by line style too
+- [x] Alarms redesigned as aligned rows; low priority is a diamond, so no two priorities share a round outline; the list has loading and error states that never read as "no alarms"
+- [x] Brand assets page (`/brand`): logos, colours, use in web and app interfaces; product photos to follow
 
 ### 1.0 · Public, source-available
 - [x] Licence (all rights reserved, source-available), CONTRIBUTING, SECURITY

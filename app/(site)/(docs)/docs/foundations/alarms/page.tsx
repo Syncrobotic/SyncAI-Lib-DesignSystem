@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
-import { CircleAlert, OctagonAlert, TriangleAlert } from "lucide-react"
+import { OctagonAlert, TriangleAlert } from "lucide-react"
+import { DiamondAlert } from "@/registry/syncrobotic/ui/robot-icons"
 import { haptics, tones } from "@/registry/syncrobotic/lib/feedback"
 import { Alarm } from "@/registry/syncrobotic/ui/alarm"
 import { Alert, AlertDescription, AlertTitle } from "@/registry/syncrobotic/ui/alert"
@@ -23,7 +24,7 @@ const surfaces = [
 const priorities = [
   { p: "Critical", icon: OctagonAlert, cls: "text-danger", act: "Now", sound: "Every 10 s until acknowledged", share: "≤ 5 %", example: "Collision risk, person in a restricted zone, robot fell" },
   { p: "High", icon: TriangleAlert, cls: "text-warning", act: "Within minutes", sound: "Plays once", share: "≈ 15 %", example: "Battery below 15 %, localisation lost, stuck for 30 s" },
-  { p: "Low", icon: CircleAlert, cls: "text-neutral", act: "When convenient", sound: "Silent", share: "≈ 80 %", example: "Cleaning due, firmware update ready, map out of date" },
+  { p: "Low", icon: DiamondAlert, cls: "text-neutral", act: "When convenient", sound: "Silent", share: "≈ 80 %", example: "Cleaning due, firmware update ready, map out of date" },
 ]
 
 export default function AlarmsPage() {
@@ -83,6 +84,7 @@ export default function AlarmsPage() {
             ["Suppressed by design", "The app's logic: the condition does not apply now, e.g. a docked robot is not moving", "Counted under the list"],
             ["Out of service", "An authorised person, for maintenance", "Counted under the list"],
             ["Flood", "The list: over 10 alarms per operator raised in 10 minutes (ISA-18.2). A design fault to fix at the source, not a load to carry", "Named in a banner; critical and high stay in view, low alarms fold into one row; screen readers hear one count"],
+            ["Not known", "The app: the alarms are still loading, or could not be loaded or updated", "Placeholder rows while loading, never “No active alarms”. On a failure, a danger-tint banner says the list may be out of date (or that alarms may be missing), when it last updated, and offers Try again; alarms already loaded stay"],
           ]}
         />
       </Section>

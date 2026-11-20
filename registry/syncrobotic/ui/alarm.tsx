@@ -1,11 +1,12 @@
-// @syncrobotic/alarm v0.22.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
+// @syncrobotic/alarm v0.22.1 · update: npx shadcn add @syncrobotic/alarm --overwrite
 "use client"
 
 import * as React from "react"
-import { ChevronRight, CircleAlert, OctagonAlert, TriangleAlert } from "lucide-react"
+import { ChevronRight, CloudOff, OctagonAlert, TriangleAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { usePresenceList } from "@/registry/syncrobotic/hooks/use-presence"
 import { feedback as signal } from "@/registry/syncrobotic/lib/feedback"
+import { DiamondAlert } from "@/registry/syncrobotic/ui/robot-icons"
 
 /**
  * Alarms follow ISA-18.2 / IEC 62682: an alarm is an abnormal condition that needs an operator action.
@@ -33,7 +34,7 @@ export const alarmPriority = {
     rank: 1,
   },
   low: {
-    icon: CircleAlert,
+    icon: DiamondAlert,
     text: "text-neutral",
     tint: "bg-neutral-subtle",
     bar: "bg-neutral",
@@ -288,12 +289,24 @@ export const CRITICAL_REPEAT_MS = 10_000
  */
 export function useAlarmSignals(
   alarms: AlarmData[],
-  { feedback = true, flooding = false, labels }: { feedback?: boolean; flooding?: boolean; labels?: Partial<AlarmLabels> & { many?: (n: number) => string } },
+  {
+    feedback = true,
+    flooding = false,
+    ready = true,
+    labels,
+  }: {
+    feedback?: boolean
+    flooding?: boolean
+    /** False while the alarms are still loading: what arrives with the first load is the starting point, not news. */
+    ready?: boolean
+    labels?: Partial<AlarmLabels> & { many?: (n: number) => string }
+  },
 ) {
   const live = React.useMemo(() => sortAlarms(alarms), [alarms])
   const seen = React.useRef<Set<string> | null>(null)
   const [announce, setAnnounce] = React.useState({ assertive: "", polite: "" })
   React.useEffect(() => {
+    if (!ready) return
     const l = { ...defaultAlarmLabels, many: (n: number) => `${n} new alarms`, ...labels }
     const ids = new Set(live.map((a) => a.id))
     if (seen.current) {
@@ -310,9 +323,9 @@ export function useAlarmSignals(
     seen.current = ids
     // Labels are stable strings; signals depend only on which alarms are newly live.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [live])
+  }, [live, ready])
   // Critical keeps sounding until acknowledged (the Alarms foundation's promise), not only once when raised.
-  const ringing = feedback && live.some((a) => a.priority === "critical" && a.active && !a.acknowledged)
+  const ringing = feedback && ready && live.some((a) => a.priority === "critical" && a.active && !a.acknowledged)
   React.useEffect(() => {
     if (!ringing) return
     const t = setInterval(() => signal("alarmCritical"), CRITICAL_REPEAT_MS)
@@ -366,6 +379,15 @@ type AlarmListProps = {
     lowGroup?: (count: number) => string
     /** Announced instead of every title when many arrive at once: "23 new alarms". */
     many?: (count: number) => string
+    /** Read out while the first load runs. */
+    loading?: string
+    /** The error with no alarms to show: it must not read as "no alarms". */
+    errorEmpty?: string
+    /** The error while older alarms are still shown. */
+    errorStale?: string
+    /** "Last updated 13:42" */
+    updatedAt?: (time: string) => string
+    retry?: string
   }
   /**
    * More than `count` alarms raised within `minutes` is a flood (ISA-18.2: over 10 in 10 minutes per operator). The list
@@ -376,6 +398,14 @@ type AlarmListProps = {
   now?: number
   /** Buzz and sound for a new critical or high alarm (the `feedback` patterns). On by default; turn off where the list is a record, not a live feed. */
   feedback?: boolean
+  /**
+   * Where the alarms come from. "loading": rows held by placeholders, never "No active alarms". "error": the list says it
+   * could not load or update, keeps the alarms it already has (an old list beats an empty one), and offers `onRetry`.
+   */
+  status?: "ready" | "loading" | "error"
+  onRetry?: () => void
+  /** When the alarms were last loaded, shown with an error: "Last updated 13:42". */
+  updatedAt?: string
   className?: string
 }
 
@@ -398,6 +428,9 @@ export function AlarmList({
   flood = { count: 10, minutes: 10 },
   now,
   feedback = true,
+  status: source = "ready",
+  onRetry,
+  updatedAt,
   className,
 }: AlarmListProps) {
   const l = {
@@ -412,8 +445,15 @@ export function AlarmList({
     flood: (n: number, m: number) => `Alarm flood: ${n} alarms in ${m} min. Critical and high first; low alarms are grouped.`,
     lowGroup: (n: number) => `${n} low alarm${n === 1 ? "" : "s"}`,
     many: (n: number) => `${n} new alarms`,
+    loading: "Loading alarms",
+    errorEmpty: "Could not load alarms. There may be alarms you cannot see here.",
+    errorStale: "Could not update alarms. This list may be out of date.",
+    updatedAt: (t: string) => `Last updated ${t}`,
+    retry: "Try again",
     ...labels,
   }
+  const loading = source === "loading" && alarms.length === 0
+  const failed = source === "error"
   const headingId = React.useId()
   const heading = React.useRef<HTMLHeadingElement>(null)
   const listRef = React.useRef<HTMLUListElement>(null)
@@ -483,10 +523,10 @@ export function AlarmList({
   const summary = labels?.summary?.(active, unack) ?? `${active} active · ${unack} unacknowledged`
   const hidden = suppressed > 0 || outOfService > 0
 
-  const announce = useAlarmSignals(alarms, { feedback, flooding, labels })
+  const announce = useAlarmSignals(alarms, { feedback, flooding, labels, ready: !loading })
 
   return (
-    <section aria-labelledby={headingId} className={cn("@container w-full overflow-hidden rounded-md bg-card ring-1 ring-border", className)}>
+    <section aria-labelledby={headingId} aria-busy={loading || undefined} className={cn("@container w-full overflow-hidden rounded-md bg-card ring-1 ring-border", className)}>
       {/* The button keeps the title's line; on a narrow panel the counts go under the title rather than the button under everything. */}
       <div className="flex min-h-(--h-row) items-center justify-between gap-3 border-b border-border px-4 py-2">
         <div className="flex min-w-0 flex-col @md:flex-row @md:flex-wrap @md:items-baseline @md:gap-x-2">
@@ -495,7 +535,7 @@ export function AlarmList({
             {l.title}
           </h2>
           {/* Each part keeps its words together, so a narrow header breaks between "3 active ·" and "2 unacknowledged". */}
-          <span className="text-xs text-muted-foreground tabular-nums">
+          <span className={cn("text-xs text-muted-foreground tabular-nums", (loading || (failed && alarms.length === 0)) && "hidden")}>
             {summary.split(" · ").map((part, i, all) => (
               <React.Fragment key={i}>
                 <span className="whitespace-nowrap">
@@ -529,8 +569,34 @@ export function AlarmList({
           <span className="font-medium">{l.flood(recent, flood.minutes)}</span>
         </p>
       )}
-      {rendered.length === 0 ? (
-        <p className="px-4 py-4 text-sm text-muted-foreground">{l.none}</p>
+      {failed && (
+        // A tint, not solid red (solid red is the emergency stop's). Said once, as an alert: the operator must know the list cannot be trusted.
+        <div role="alert" className="flex flex-wrap items-center gap-2 border-b border-border bg-danger-subtle px-4 py-3 text-sm">
+          <CloudOff aria-hidden="true" className="size-4 shrink-0 text-danger" />
+          <span className="min-w-0 flex-1">
+            <span className="font-medium">{alarms.length ? l.errorStale : l.errorEmpty}</span>
+            {updatedAt && <span className="block text-xs text-muted-foreground">{l.updatedAt(updatedAt)}</span>}
+          </span>
+          {onRetry && (
+            <button type="button" onClick={onRetry} className={cn(rowButton, "ring-input")}>
+              {l.retry}
+            </button>
+          )}
+        </div>
+      )}
+      {loading ? (
+        // Placeholders in the rows' own shape; never "No active alarms" before the alarms are known.
+        <ul aria-hidden="true" className="divide-y divide-border">
+          {[0, 1, 2].map((i) => (
+            <li key={i} className="flex min-h-(--h-row) items-center gap-3 px-4 py-3">
+              <span className="size-5 shrink-0 animate-breath rounded-xs bg-track" />
+              <span className="h-3 w-12 animate-breath rounded-xs bg-track" />
+              <span className="h-3 w-1/2 animate-breath rounded-xs bg-track" />
+            </li>
+          ))}
+        </ul>
+      ) : rendered.length === 0 ? (
+        !failed && <p className="px-4 py-4 text-sm text-muted-foreground">{l.none}</p>
       ) : (
         open.length > 0 && (
           <ul ref={listRef} className="divide-y divide-border">
@@ -570,7 +636,7 @@ export function AlarmList({
       )}
       <AlarmAnnouncer announce={announce} />
       <p role="status" className="sr-only">
-        {status}
+        {loading ? l.loading : status}
       </p>
     </section>
   )

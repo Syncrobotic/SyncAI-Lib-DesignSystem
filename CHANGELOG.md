@@ -2,6 +2,19 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.22.1 · 2026-11-20
+
+Three things 0.22.0 left open: a chart grey too faint to see, two alarm shapes too alike, and an alarm list that could say "no alarms" when it did not know.
+
+### Changed
+- **Chart greys re-stepped** (`syncrobotic-theme` 0.22.1). Other (`--chart-4`) was 2.1:1 in light and 1.9:1 in dark, below the 3:1 a mark needs (WCAG 1.4.11): an Other bar on its own was close to invisible. Now every series, Other included, is at least 3:1 on a card in all four modes, and every pair still differs by ΔE 15 or more, to normal vision and under red-green colour blindness. Light: `--chart-2` #3a3a3f, `--chart-3` #67676c, `--chart-4` #939499. Dark: #edeef4, #babac0, #68686e (the strong grey is now the near-white one, the mid grey lighter, Other dimmer). High contrast light: #2b2b2f, #59595e, #85868b; dark: #f4f4fb, #919297, #646469. The accent is unchanged. Tested in `chart-palette.test.ts`.
+- **`alarm` 0.22.1: low priority is a diamond.** At 20 px the circle (low) and the octagon (critical) read as the same round outline; without colour, the two ends of the scale looked alike. Low is now `DiamondAlert`, a diamond with "!" drawn on Lucide's grid, so the three shapes are an octagon, a triangle and a diamond. It ships in `robot-icons` 0.22.1, which `alarm` now depends on; it is on the Icons page, and `CircleAlert` no longer means a low alarm.
+- **`AlarmList` loading and error states** (`alarm` 0.22.1). New `status`: `"loading"` shows placeholder rows in the rows' shape, sets `aria-busy` and says "Loading alarms" to screen readers, and never shows "No active alarms" before the alarms are known. `"error"` shows a danger-tint banner (`role="alert"`, not solid red): with nothing loaded, "Could not load alarms. There may be alarms you cannot see here."; with alarms already loaded, they stay and the banner says the list may be out of date. `updatedAt` adds "Last updated 13:42"; `onRetry` adds "Try again". Labels `loading`, `errorEmpty`, `errorStale`, `updatedAt`, `retry`. `useAlarmSignals` takes `ready`: the alarms that arrive with the first load are the starting point and do not buzz or get announced as new.
+
+### Docs
+- The Alarms foundation shows the diamond and adds the "Not known" state (loading, failed); the Alarm page has loading and error examples.
+- ROADMAP brought up to date: 0.21–0.22 recorded, the duplicate adoption-scanner line and the per-version docs item (moved to After 1.0) removed.
+
 ## 0.22.0 · 2026-11-20
 
 Charts in graphite and the brand indigo, alarms you can scan, and the brand kit on its own page.

@@ -1,4 +1,4 @@
-// @syncrobotic/robot-icons v0.10.0 · update: npx shadcn add @syncrobotic/robot-icons --overwrite
+// @syncrobotic/robot-icons v0.22.1 · update: npx shadcn add @syncrobotic/robot-icons --overwrite
 import { createLucideIcon } from "lucide-react"
 
 /*
@@ -61,4 +61,14 @@ export const SafetyZone = createLucideIcon("SafetyZone", [
   ["path", { d: "m8 12 4-4", key: "s12" }],
   ["path", { d: "m8 16 8-8", key: "s13" }],
   ["path", { d: "m12 16 4-4", key: "s14" }],
+])
+
+/**
+ * A low-priority alarm (Alarm's glyph for low): a diamond with "!", drawn on Lucide's grid (Lucide's Diamond plus CircleAlert's mark). Not a
+ * circle: at 20 px a circle and the critical octagon read as the same round outline.
+ */
+export const DiamondAlert = createLucideIcon("DiamondAlert", [
+  ["path", { d: "M2.7 10.3a2.41 2.41 0 0 0 0 3.41l7.59 7.59a2.41 2.41 0 0 0 3.41 0l7.59-7.59a2.41 2.41 0 0 0 0-3.41l-7.59-7.59a2.41 2.41 0 0 0-3.41 0Z", key: "da0" }],
+  ["path", { d: "M12 8v4", key: "da1" }],
+  ["path", { d: "M12 16h.01", key: "da2" }],
 ])
