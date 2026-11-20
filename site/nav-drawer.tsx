@@ -8,6 +8,7 @@ import { Sheet, SheetClose, SheetContent, SheetDescription, SheetTitle, SheetTri
 import { site } from "./config"
 import type { Scope } from "./scopes"
 import { Sidebar } from "./sidebar"
+import { quietNextPage } from "./page-transition"
 import { Logo } from "./logo"
 
 /**
@@ -31,11 +32,20 @@ export function NavDrawer({ scopes }: { scopes: Scope[] }) {
     if (next) setShown(path)
     setOpen(next)
   }
-  // Start closing on the tap itself, not when the next page arrives: a plain click on a link inside the drawer.
-  const closeOnLink = (e: React.MouseEvent) => {
-    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
-    const a = (e.target as HTMLElement).closest("a[href]")
-    if (a && !a.hasAttribute("target")) setOpen(false)
+  // A tap marks its link at once, and the drawer stays until the next page has arrived under it (the path change above
+  // closes it): it then slides away from the new page. Closing on the tap showed the old page through the sliding drawer
+  // and then swapped it for the new one, two changes for one tap. A link to the page you are on just closes.
+  const onLink = (e: React.MouseEvent) => {
+    // Capture phase: next/link prevents the default in its own handler, so a bubbling handler would see every click as
+    // already handled. Modified clicks open a new tab and leave this page alone.
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+    const a = (e.target as HTMLElement).closest<HTMLAnchorElement>("a[href]")
+    if (!a || a.hasAttribute("target")) return
+    const url = new URL(a.href)
+    if (url.origin !== location.origin) return
+    if (url.pathname === path) return setOpen(false)
+    setShown(url.pathname)
+    quietNextPage()
   }
   React.useEffect(() => {
     // An in-page link (an example on this page) changes only the hash; close for that too.
@@ -51,7 +61,7 @@ export function NavDrawer({ scopes }: { scopes: Scope[] }) {
       >
         <Menu aria-hidden="true" className="size-5" />
       </SheetTrigger>
-      <SheetContent side="left" data-scroll className="w-[85vw] gap-6 p-4" onClick={closeOnLink}>
+      <SheetContent side="left" data-scroll className="w-[85vw] gap-6 p-4" onClickCapture={onLink}>
         {/* The brand where the site's header has it; it is also the way home. */}
         <div className="flex items-center justify-between gap-2 pl-3">
           <Link href="/" aria-label="Design System home" className="flex items-center">
