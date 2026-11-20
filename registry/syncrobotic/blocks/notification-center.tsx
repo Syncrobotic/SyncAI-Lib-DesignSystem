@@ -396,7 +396,8 @@ export function NotificationCenter({
       className="press relative flex size-(--h-md) items-center justify-center rounded-sm transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent"
     >
       <Bell aria-hidden="true" className="size-5" />
-      <CountBadge count={unread} aria-hidden="true" className="absolute top-0 right-0" />
+      {/* Neutral: unread notifications are worth knowing later, not alarms (those keep the danger count). */}
+      <CountBadge count={unread} tone="neutral" aria-hidden="true" className="absolute top-0 right-0" />
     </button>
   )
 
