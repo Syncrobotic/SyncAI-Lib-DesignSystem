@@ -1,4 +1,4 @@
-// @syncrobotic/tabs v0.17.1 · update: npx shadcn add @syncrobotic/tabs --overwrite
+// @syncrobotic/tabs v0.22.5 · update: npx shadcn add @syncrobotic/tabs --overwrite
 "use client"
 
 import * as React from "react"
@@ -46,12 +46,15 @@ export function TabsList({ className, children, ...props }: React.ComponentProps
   React.useEffect(() => {
     if (line && !placed) requestAnimationFrame(() => setPlaced(true))
   }, [line, placed])
+  // overflow-x scrolls a row of many tabs. overflow-y must be hidden, not left to default: a scrolling x turns y to auto,
+  // and the triggers sit 1 px past the list's border (-mb-px, so the underline covers it), which made the list scroll
+  // 1 px vertically and phones show a scrollbar on it.
   return (
     <TabsPrimitive.List
       ref={list}
       data-slot="tabs-list"
       data-underline={line ? "" : undefined}
-      className={cn("group/tabs relative flex gap-4 overflow-x-auto border-b border-border", className)}
+      className={cn("group/tabs relative flex gap-4 overflow-x-auto overflow-y-hidden border-b border-border", className)}
       {...props}
     >
       {children}
