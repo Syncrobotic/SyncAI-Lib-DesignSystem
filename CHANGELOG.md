@@ -2,6 +2,13 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **`teleop-pad`** (beta): manual driving of a mobile robot from a phone or a console, as a dead-man stick. The robot moves only while the stick is held: release, a cancelled pointer, lost focus, a hidden page or `timeoutMs` without pointer events send a zero command at once and call `onStop` with the reason. While held, `{ linear, angular }` (−1…1, ROS REP 103 axes) goes out at a fixed `rateHz` (10) so the robot can run its own watchdog. Pressing never moves the robot (the stick starts where the finger lands); dead zone 10 %, `maxSpeed` drawn as a scale; arrow keys or W A S D while held, Space to stop; a status line with icon and words (Hold to drive, Driving · 0.4 m/s, Stopped, Disabled: reason); 56 px knob, larger in glove density; haptic ticks. The emergency stop stays StopButton, beside it.
+- **`feedback`**: `driveStart` and `driveStop` patterns (one and two short ticks) for manual driving.
+- Icons `Move` (moving under manual driving) and `CirclePause` (standing still after manual driving ended).
+
 ## 0.22.4 · 2026-11-20
 
 Docs site only: no item changed, nothing to re-install.

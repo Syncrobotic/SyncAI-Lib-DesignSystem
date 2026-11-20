@@ -791,6 +791,24 @@ export const overviews: Record<string, Overview> = {
     instead: ["Routine confirmations: `alert-dialog`."],
     notes: ["Viewers get `locked`."],
   },
+  "teleop-pad": {
+    what: "A dead-man stick for driving a mobile robot by hand: it moves only while held, and stops the moment input is let go or lost.",
+    use: [
+      "Driving a robot remotely from a phone or a control-room console: out of a corner, onto a dock, past an obstacle.",
+      "Short manual moves during commissioning or maintenance.",
+    ],
+    instead: [
+      "Stopping a robot in an emergency: `stop-button`, beside the pad.",
+      "Sending a robot somewhere: a mission or a goal on the map, not manual driving.",
+      "Setting one speed or value: `slider` or `number-field`.",
+    ],
+    notes: [
+      "Run a watchdog on the robot: stop when no command has arrived for 3 periods (300 ms at 10 Hz). The pad stops on every event it can see, but a frozen tab or a dropped link sends nothing at all.",
+      "Map `{ linear, angular }` onto the robot's own limits (a Twist scaled by its top speeds); clamp there too, never trust the client alone.",
+      "Pass the measured speed as `speed`, not the commanded one: the status line says what the robot does.",
+      "Name the robot in `labels.name` (\"Drive 7F3A\") when the operator can drive more than one.",
+    ],
+  },
   dock: {
     what: "The bottom bar of the control app in three tiers: the state action, this page's primary action, navigation.",
     use: ["Every page of the phone control app."],

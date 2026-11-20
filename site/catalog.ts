@@ -6,6 +6,7 @@ import registry from "../registry.json"
 export type StoryFile =
   | "stop-button"
   | "slide-to-release"
+  | "teleop-pad"
   | "dock"
   | "island"
   | "list"
@@ -895,6 +896,19 @@ const entries: Record<string, Entry> = {
       "If the robot does not release, set `failed`: the thumb goes back and the label says to slide again. Never leave it on Releasing….",
     ],
   },
+  "teleop-pad": {
+    group: "Robot shell",
+    examples: { file: "teleop-pad", prefix: "TeleopPad" },
+    rules: [
+      "Dead man: the robot moves only while the stick is held. Release, a cancelled pointer, lost focus, a hidden page or `timeoutMs` without pointer events send a zero command at once and call onStop with the reason.",
+      "Commands go out at a fixed rate (`rateHz`, 10 by default) while held, so the robot can run its own watchdog: if commands stop arriving for a few periods, the robot must stop by itself. The pad cannot stop a robot whose link or tab has frozen.",
+      "Pressing never moves the robot: the stick starts where the finger lands, and only movement from there drives. A dead zone (10 % by default) keeps a resting thumb from creeping it.",
+      "Not an emergency stop. Put StopButton beside it, above it on a phone, on every drive screen; the pad has no red.",
+      "`maxSpeed` caps what full stick sends, and the pad draws its scale; the app still enforces the robot's own limits.",
+      "Disabled says why (`disabledReason`), in words beside a lock, and keeps its size so nothing jumps when autonomy hands back.",
+      "Outputs follow ROS REP 103: linear forward is +, angular left (counter-clockwise) is +, both −1…1 of top speed.",
+    ],
+  },
   dock: {
     group: "Robot shell",
     examples: { file: "dock", only: ["Moving", "DockRobotStates", "DockActionStates"] },
@@ -1192,6 +1206,13 @@ const keyboard: Record<string, [string, string][]> = {
     ["Hold Enter / Space 2 s", "Stop all robots"],
   ],
   "slide-to-release": [["Hold Enter / Space 2 s", "Release"]],
+  "teleop-pad": [
+    ["Hold ↑ / W, ↓ / S", "Drive forward, back"],
+    ["Hold ← / A, → / D", "Turn left, right (with ↑ or ↓, curve)"],
+    ["Release every drive key", "Stop"],
+    ["Space / Esc", "Stop; keys still held do nothing until released"],
+    ["Tab away", "Stop"],
+  ],
 }
 
 export const items: Item[] = registry.items
