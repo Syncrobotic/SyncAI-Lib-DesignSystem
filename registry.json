@@ -1193,6 +1193,40 @@
       }
     },
     {
+      "name": "form",
+      "type": "registry:ui",
+      "title": "Form",
+      "description": "A form run by React Hook Form and drawn with Field: errors after the first submit, focus on the first one, server errors on the field or the form, a submit button that waits.",
+      "dependencies": [
+        "react-hook-form",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/alert",
+        "@syncrobotic/button",
+        "@syncrobotic/choice-field",
+        "@syncrobotic/field"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/form.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.20.0",
+        "changelog": [
+          {
+            "version": "0.20.0",
+            "date": "2026-11-20",
+            "note": "First release: Form, FormField, FormFieldSet, FormMessage and FormSubmit over React Hook Form."
+          }
+        ]
+      }
+    },
+    {
       "name": "checkbox",
       "type": "registry:ui",
       "title": "Checkbox",

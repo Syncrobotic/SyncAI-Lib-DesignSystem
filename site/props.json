@@ -2049,6 +2049,123 @@
    "inherits": []
   }
  ],
+ "form": [
+  {
+   "name": "Form",
+   "props": [
+    {
+     "name": "form",
+     "type": "UseFormReturn<T>",
+     "required": true,
+     "description": "What useForm returned."
+    },
+    {
+     "name": "onSubmit",
+     "type": "SubmitHandler<T>",
+     "required": true,
+     "description": "Called with valid values. Await the save: the submit button shows its spinner until it settles."
+    }
+   ],
+   "inherits": [
+    "<form> (except onSubmit)"
+   ]
+  },
+  {
+   "name": "FormField",
+   "props": [
+    {
+     "name": "name",
+     "type": "N",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "label",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "hint",
+     "type": "ReactNode",
+     "description": "One line under the control; an error takes its place while there is one."
+    },
+    {
+     "name": "render",
+     "type": "(props: RenderProps<T, N>) => ReactElement",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "UseControllerProps<T, N> (except name, control)"
+   ]
+  },
+  {
+   "name": "FormFieldSet",
+   "props": [
+    {
+     "name": "name",
+     "type": "N",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "legend",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "hint",
+     "type": "ReactNode",
+     "description": ""
+    },
+    {
+     "name": "render",
+     "type": "(props: RenderProps<T, N>) => ReactNode",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "UseControllerProps<T, N> (except name, control)"
+   ]
+  },
+  {
+   "name": "FormMessage",
+   "props": [],
+   "inherits": []
+  },
+  {
+   "name": "FormSubmit",
+   "props": [
+    {
+     "name": "asChild",
+     "type": "boolean",
+     "description": "Render the child element (e.g. a link) with button styles."
+    },
+    {
+     "name": "variant",
+     "type": "\"link\" | \"primary\" | \"secondary\" | \"outline\" | \"ghost\" | \"destructive\"",
+     "description": ""
+    },
+    {
+     "name": "size",
+     "type": "\"sm\" | \"md\" | \"lg\" | \"icon\" | \"icon-sm\"",
+     "description": ""
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "description": "Disables the button (no double submit) and shows a spinner after 300 ms, so quick actions never flash. It keeps its look: busy is not unavailable."
+    }
+   ],
+   "inherits": [
+    "ButtonProps (except type)"
+   ]
+  }
+ ],
  "icon-tile": [
   {
    "name": "IconTile",

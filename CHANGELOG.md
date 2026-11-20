@@ -2,6 +2,11 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.20.0 · 2026-11-20
+
+### Added
+- **`form`** (beta): forms run by React Hook Form and drawn with the kit's Field. `Form` wraps useForm's result (validation after the first submit, then on each change; the browser's bubbles off; a failed submit focuses the first field in error, a Select or a group included). `FormField` and `FormFieldSet` take a `render` that gets `field`; `FormMessage` shows a whole-form error at the top (`setError("root.server", …)`); `FormSubmit` shows its spinner while the save is awaited. Examples with zod: create, server errors on a field and on the form, a group with a rule across its choices, edit with undo, and Traditional Chinese.
+
 ## 0.19.0 · 2026-11-20
 
 Follow-ups to 0.18.0.
