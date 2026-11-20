@@ -146,7 +146,9 @@ export function Stage({ file, name, className, wide }: { file: StoryFile; name: 
         className={
           wide
             ? "w-full"
-            : "mx-auto w-fit max-w-full min-w-full text-center sm:min-w-sm [&>*]:mx-auto [&>*]:text-start"
+            : // A row of small things (badges, buttons, avatars) shrinks to its content and sits in the middle; an example with a
+              // field, a table, a card or an image keeps the column's width, so inputs and grids still fill it.
+              "mx-auto w-fit max-w-full min-w-full text-center sm:min-w-sm [&>*]:mx-auto [&>*]:w-fit [&>*]:max-w-full [&>*]:text-start [&>*:has(input,textarea,table,img,video,canvas,[role=combobox],[role=grid],[role=tree],[role=progressbar],[role=meter],[role=slider],[data-slot=card],[data-slot=metric-card],[data-slot=table-container])]:w-auto"
         }
       >
         {render(file, name)}
