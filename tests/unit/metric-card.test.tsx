@@ -53,6 +53,17 @@ describe("MetricCard trend", () => {
     expect(container.querySelector(".lucide-arrow-up-right")).not.toBeNull()
   })
 
+  it("draws no arrow when nothing changed", () => {
+    const { container, rerender } = render(<MetricCard label="Robots" value="12" delta="0" />)
+    for (const d of ["0", "+0", "±0", "0.0 %", "−0"]) {
+      rerender(<MetricCard label="Robots" value="12" delta={d} />)
+      expect(container.querySelector(".lucide-arrow-up-right, .lucide-arrow-down-right")).toBeNull()
+      expect(container.textContent).toContain(d)
+    }
+    rerender(<MetricCard label="Robots" value="12" delta="+10" />)
+    expect(container.querySelector(".lucide-arrow-up-right")).not.toBeNull()
+  })
+
   it("reads label, value, then the change", () => {
     const { container } = render(<MetricCard label="Events" value="24" delta="+6" trend="bad" caption="3 need review" />)
     expect(card(container).textContent).toBe("Events24+6, worse3 need review")

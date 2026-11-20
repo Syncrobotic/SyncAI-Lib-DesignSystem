@@ -2,6 +2,22 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.19.0 · 2026-11-20
+
+Follow-ups to 0.18.0.
+
+### Changed
+- **`stats-filtered`, `sparkline-metric-tiles`: built on `MetricCard`**, like `stats-cards`, so a KPI card looks and reads the same everywhere. Visible: the value is 24 px (the card-figure size; `stats-filtered` was 28 px), the change sits beside the label with its arrow, the range is the caption. `stats-filtered` shows a change under half a percent as no change.
+- **`code-block`: `labels.copy(title)`** names the copy button, so it can be translated with the other labels; `copyLabel` still sets the name as is.
+
+### Fixed
+- **`metric-card`: the sparkline shows on phones too**, on its own full-width line under the value (it was hidden below 640 px); from 640 px it stays beside the value. `stats-cards` and `sparkline-metric-tiles` show their trends on a phone again.
+- **`metric-card`: no change has no arrow.** "0", "±0" or "0.0 %" drew an up arrow; a change of nothing has no direction.
+- Docs: the search button's spoken name starts with the word on it, and the ⌘K key cap is a hint, not part of the name (WCAG 2.5.3); it also announces its shortcut.
+
+### Kept
+- `tree`: links in list mode stay without an underline. A tree is navigation, like the sidebar; its rows show they can be pressed by their hover fill. Underlines are for links in running text.
+
 ## 0.18.1 · 2026-11-20
 
 Docs only: no component changed, so no item version moved.

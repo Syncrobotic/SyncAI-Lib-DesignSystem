@@ -77,8 +77,7 @@ export const CodeBlockTraditionalChinese: S = {
         code="dvc import https://git.syncrobotic.me/datacore/warehouse-scans data/pallets/2026-11 --rev v3.2.0"
         title="取用指令"
         wrap="words"
-        copyLabel="複製取用指令"
-        labels={{ copied: "已複製", failed: "無法複製：請選取文字後手動複製", code: "程式碼" }}
+        labels={{ copy: (title) => (title ? `複製${title}` : "複製程式碼"), copied: "已複製", failed: "無法複製：請選取文字後手動複製", code: "程式碼" }}
       />
     </div>
   ),
