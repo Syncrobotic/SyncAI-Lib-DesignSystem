@@ -210,33 +210,3 @@ export const AnnotatedImageFailed: S = {
 }
 
 /** In Traditional Chinese: the class words, the legend and what is read out all come from `labels` and the data. */
-export const AnnotatedImageTraditionalChinese: S = {
-  render: () => (
-    <div lang="zh-Hant">
-      <AnnotatedImage
-        src={frame}
-        width={W}
-        height={H}
-        label="二號攝影機，第三走道，14:08"
-        annotations={[
-          { id: "t-person", kind: "truth", label: "人員", shape: box(118, 166, 74, 238) },
-          { id: "p-person", kind: "predicted", label: "人員", score: 0.92, shape: box(114, 160, 82, 246) },
-          { id: "v2-forklift", kind: "previous", label: "堆高機", score: 0.64, shape: box(352, 238, 190, 166) },
-          { id: "p-forklift", kind: "predicted", label: "堆高機", score: 0.88, shape: box(336, 226, 222, 182) },
-          { id: "t-pallet", kind: "truth", label: "棧板", shape: box(226, 358, 82, 62) },
-        ]}
-        labels={{
-          predicted: "模型預測",
-          truth: "人工標註",
-          previous: "上一版",
-          legend: "線條樣式",
-          count: (n) => (n === 0 ? "沒有標註" : `${n} 個標註`),
-          annotation: ({ label, kind, score }) => [label, kind, score].filter(Boolean).join("，"),
-          layers: (names) => `圖層：${names.join("、")}`,
-          loading: "正在載入圖片",
-          failed: "無法載入圖片",
-        }}
-      />
-    </div>
-  ),
-}

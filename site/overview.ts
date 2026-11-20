@@ -71,6 +71,25 @@ export const overviews: Record<string, Overview> = {
       "Placeholders and tests draw the picture in code (an SVG data URI); never an external URL.",
     ],
   },
+  "media-player": {
+    what: "A recorded clip with the kit's own controls over a native video: play, a timeline with event markers, time, mute, speed, captions and full screen.",
+    use: [
+      "A robot's camera recording of a patrol or a mission.",
+      "The clip attached to an incident, opened at the moment it fired.",
+      "Reviewing what a robot saw before a stop, with its events marked on the timeline.",
+    ],
+    instead: [
+      "A live camera feed: a different component, not built yet (no timeline or speed; latency and connection state instead).",
+      "One still frame with what a model saw in it: `annotated-image`.",
+      "Many clips or pictures to pick from: `image-grid`, then the player for the one opened.",
+    ],
+    notes: [
+      "It is a wrapper over `<video>` with no player library: what plays depends on the browser. WebM (VP9) and MP4 (H.264) cover current browsers; Chromium builds without proprietary codecs, such as Playwright's, play only WebM.",
+      "Keys are captured only while focus is inside the player, so they never fight the page. The frame itself is a Tab stop; its focus ring is the page's, the controls' rings are the dark theme's.",
+      "Captions come from `tracks` (WebVTT) and are drawn by the player above the controls, one track at a time (the `default` one, else the first). The browser's own caption rendering is turned off, because it would sit under the scrim.",
+      "Every string is in `labels`, including the error reasons by MediaError code; `unavailable` is the reason when you know before loading that it cannot play.",
+    ],
+  },
   "restricted-preview": {
     what: "A preview that does not load until someone asks: restricted data, faces, number plates.",
     use: ["Thumbnails of a restricted dataset in a catalog or gallery."],
@@ -93,6 +112,26 @@ export const overviews: Record<string, Overview> = {
     what: "The end of a long list: how much is shown, and one button for the next batch that says how many remain.",
     use: ["Lists and galleries on a phone.", "Results that load in batches."],
     instead: ["A desktop table people jump around in: `pagination`."],
+  },
+  graph: {
+    what: "A directed graph that flows one way: boxes in columns, inputs on the left (or above), neutral lines between them, and a text view with the same nodes.",
+    use: [
+      "Lineage: Dataset v3, the label sets it was built from, and the raw captures under them.",
+      "A training run's inputs (dataset, base model, config) and outputs (checkpoints, metrics, evaluations).",
+      "A mission's steps when some run in parallel and meet again.",
+    ],
+    instead: [
+      "Every node has one parent: `tree`, which reads as a list and opens and closes.",
+      "Steps in one line, one after the other: `stepper` (a flow people go through) or `trace` (a run that happened).",
+      "Events in time order: `timeline`.",
+      "More than about 60 nodes, or a graph people edit: a dedicated library (React Flow, elkjs) with panning and zoom.",
+    ],
+    notes: [
+      "Offer `GraphList` beside `Graph` (a Graph / List switch with SegmentedControl), as charts offer `ChartTable`; `lint:rules` asks for it in a block.",
+      "Edges are `{ from, to }`, where `from` is an input of `to`. An edge that closes a cycle, points at a missing node or at itself is left out, with a warning in development.",
+      "Node ids must be unique. Labels are plain text: they start each node's accessible name, which then lists its inputs and outputs (\"Box labels v7, 48,210 boxes, from Hall B captures, to Dataset v3\").",
+      "Pass `labels` (from, to, status words, instructions, inputs, outputs, loading) and `empty` to translate.",
+    ],
   },
   trace: {
     what: "The steps of a run in order, each with a status and a duration, that open to show input, output and sub-steps.",
@@ -612,6 +651,23 @@ export const overviews: Record<string, Overview> = {
     instead: ["Something a person must act on now: `alarm`.", "Feedback that goes away by itself: `toast`."],
     notes: ["An alert stays while its condition holds; it has no close button."],
   },
+  banner: {
+    what: "A notice across the full width of the page or the app, above everything else, about the app itself. It stays while its condition holds.",
+    use: [
+      "Scheduled or running maintenance, read-only mode, a trial or licence about to end, no connection to the server.",
+      "Anything every page of the app is affected by, shown once at the top instead of on each page.",
+    ],
+    instead: [
+      "A condition of one page, form or record, inside the content (a robot that is offline, a form that cannot be saved): `alert`. An Alert sits in the flow with rounded corners beside what it is about; a banner spans the app edge to edge and is about the app.",
+      "The result of what someone just did, or a minor event that passes: `toast` (the control app: the island's notices). A toast goes away by itself; a banner stays until its condition ends.",
+      "Something an operator must act on at a robot: `alarm`.",
+    ],
+    notes: [
+      "Keep `open` and the dismissal in your app (onDismiss stores it, keyed to that notice); the banner does not remember. Omit onDismiss for conditions that end by themselves.",
+      "Above AppShell, the shell must shrink by the banner's height: wrap the shell in `min-h-0 flex-1 [--app-shell-height:100%]` inside a `flex h-dvh flex-col` with the banner first. Full-screen blocks (sign-in, status pages) honour the same variable.",
+      "After a dismiss the close button is gone: move focus to the main content in onDismiss if focus was on it.",
+    ],
+  },
   toast: {
     what: "Short feedback on what the user just did, at the edge of the screen: 4 s, 8 s with an action, failures until dismissed.",
     use: ["Saved, copied, mission started, with Undo where possible."],
@@ -638,6 +694,7 @@ export const overviews: Record<string, Overview> = {
       "Where this page sits among its parents: `breadcrumb`.",
       "Sections of one page that open and close: `accordion`.",
       "Rows with columns to compare: `data-grid` with expanding rows.",
+      "Nodes with several parents (one source under two label sets, steps that run in parallel and meet): `graph`.",
     ],
     notes: [
       "Do not use select mode for a tree of links: role=\"tree\" takes the arrow keys and makes the whole tree one Tab stop, so links inside it are not followed by Enter. Use list mode, which keeps links as links.",
@@ -672,6 +729,15 @@ export const overviews: Record<string, Overview> = {
     use: ["A date picker, a short form, an explanation with a link."],
     instead: ["A name for an icon button: `tooltip`.", "A list of actions: `dropdown-menu`."],
   },
+  "hover-card": {
+    what: "A preview of what a link leads to, on hover and keyboard focus: a robot's name, state, battery and last contact beside its ID.",
+    use: ["Robot, site or dataset IDs in tables, event logs and text, where a glance saves opening the page."],
+    instead: [
+      "Anything someone needs, or anything to click: it is not on touch screens and screen readers are not told about it. Put it on the page, or in a `popover` opened by a click.",
+      "The name of an icon button: `tooltip`.",
+    ],
+    notes: ["The trigger is always a real link (asChild on an `a` or your router's Link) to a page that has everything the card shows."],
+  },
   tooltip: {
     what: "The name of an icon-only control, on hover and on keyboard focus.",
     use: ["Every icon button without a visible label."],
@@ -696,6 +762,18 @@ export const overviews: Record<string, Overview> = {
     what: "A menu of actions on an item, opened from a button. Destructive actions go last.",
     use: ["Row actions in a table, the user menu, overflow (⋯) buttons."],
     instead: ["Picking a value: `select`.", "One obvious action: a `button`."],
+  },
+  "context-menu": {
+    what: "The menu a right-click or a long press opens on an item, in the dropdown menu's look. A shortcut to actions that are also on a visible control.",
+    use: ["Rows of a robot or mission list, cards, nodes on a map or a tree: the same actions as the row's ⋯ menu, where people expect a right-click."],
+    instead: [
+      "The only way to an action: never. Add a ⋯ button with a `dropdown-menu` (same items), a toolbar button, or put it on the detail page.",
+      "One obvious action on the item: a `button` on it.",
+    ],
+    notes: [
+      "Render the same items into both menus from one list, so the ⋯ menu and the context menu cannot drift apart.",
+      "Shift+F10 and the Menu key open it from the keyboard when focus is inside the trigger: put the trigger on a row that holds a link or a button, or make the area focusable.",
+    ],
   },
   "stop-button": {
     what: "The emergency stop: one touch stops, holding 2 s stops all; lying down it becomes wake and stand up.",

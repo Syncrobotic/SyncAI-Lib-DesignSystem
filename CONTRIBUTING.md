@@ -41,6 +41,8 @@ npm run check:wrap       # with the site running: on a 375 px phone, no row of b
 - The registry install test runs on every pull request that touches `registry/`, `registry.json`, the package files or the TypeScript config, and is skipped otherwise.
 - `check:radius` and `check:wrap` are local only: run them before a release.
 
+Not a check, a report: `npm run adoption -- <dir â€¦>` (or `--github <org>`, with the `gh` CLI signed in) lists the items a product has installed, from each file's version header, how far each is behind this registry and the CHANGELOG lines in between (`--json` for machines). Its logic is tested in `tests/unit/adoption.test.ts`.
+
 ### Rules the lints enforce
 
 - No arbitrary Tailwind lengths (`h-[72px]`); use tokens (`h-(--h-stop)`, `rounded-md`).
@@ -70,7 +72,7 @@ Baselines live in `tests/__screenshots__/` and are written only by CI (Actions â
    Before you open it, check it against the rules the audit kept finding: colour only for what needs someone (calm states and offline are grey; blue only for a process being waited on); nothing focusable removes its focus ring; field edges use `--input`; a battery is a `Meter` that warns below 15 %; a chart with axes (line, area, bar, heatmap) ships a Chart / Table switch, and a sparkline, ring or status strip writes its numbers in words; every target is at least 44 px on touch; 36 (`--h-sm`) with a mouse only. The agent skill's checklist (`registry/syncrobotic/skill/references/checklist.md`) is the full list. `npm run lint:rules` checks the focus, battery and chart-table rules; where `outline-none` is right because focus shows elsewhere, say where in a `// focus-ring:` comment above it.
 6. Add a line to `CHANGELOG.md` under Unreleased, and open a pull request once `npm run ci` passes.
 
-After changing an item's files, bump its `meta.version` in `registry.json`, add a `meta.changelog` line and run `npm run versions`. After changing a component's props, run `npm run props` (CI checks the API reference matches the types). After adding a component or changing its markup, run `npm run a11y` against a running site (`SITE=http://localhost:3100 npm run a11y`): it measures the roles and Tab stops the Accessibility tab shows, into `site/a11y.json` (CI checks every component has an entry). A new item starts with `meta.status: "beta"` (lint:registry asks for it); set it to `"stable"` once a product has used it and its API has settled. After changing the theme, run `npm run tokens`.
+After changing an item's files, bump its `meta.version` in `registry.json`, add a `meta.changelog` line and run `npm run versions`. After changing a component's props, run `npm run props` (CI checks the API reference matches the types). After adding a component or changing its markup, run `npm run a11y` against a running site (`SITE=http://localhost:3100 npm run a11y`): it measures the roles and Tab stops the Accessibility tab shows, into `site/a11y.json`. CI measures again from the built site and fails when the committed data differs. A new item starts with `meta.status: "beta"` (lint:registry asks for it); set it to `"stable"` once a product has used it and its API has settled. After changing the theme, run `npm run tokens`.
 
 ## Repository layout
 

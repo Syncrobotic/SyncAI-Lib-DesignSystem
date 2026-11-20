@@ -683,6 +683,54 @@
    ]
   }
  ],
+ "banner": [
+  {
+   "name": "Banner",
+   "props": [
+    {
+     "name": "tone",
+     "type": "\"neutral\" | \"info\" | \"warning\" | \"danger\"",
+     "default": "\"neutral\"",
+     "description": "neutral (default) for news and calm conditions; info only while a process runs; warning before something is lost; danger when the app cannot work."
+    },
+    {
+     "name": "icon",
+     "type": "ElementType",
+     "description": "Replaces the tone's icon with one that says what it is about: Wrench for maintenance, Lock for read-only, CloudOff for offline."
+    },
+    {
+     "name": "title",
+     "type": "ReactNode",
+     "description": "The condition in a few words, in bold: \"Read-only mode\". The children say what it means and until when."
+    },
+    {
+     "name": "action",
+     "type": "ReactNode",
+     "description": "One next step: a Button (size md, variant outline) or a link through `<Button asChild>`. Named by its result: \"Upgrade plan\", not \"Learn more\"."
+    },
+    {
+     "name": "onDismiss",
+     "type": "() => void",
+     "description": "Shows a close button. Remembering that it was closed (and for how long) is yours: set `open` false and store it. Leave it out for a condition that ends by itself (offline, read-only)."
+    },
+    {
+     "name": "dismissLabel",
+     "type": "string",
+     "default": "\"Dismiss\"",
+     "description": "The close button's name for screen readers."
+    },
+    {
+     "name": "open",
+     "type": "boolean",
+     "default": "true",
+     "description": "false hides it with the disappear movement. Default true."
+    }
+   ],
+   "inherits": [
+    "<div> (except title)"
+   ]
+  }
+ ],
  "breadcrumb": [
   {
    "name": "Breadcrumb",
@@ -1264,6 +1312,112 @@
    "props": [],
    "inherits": [
     "<kbd>"
+   ]
+  }
+ ],
+ "context-menu": [
+  {
+   "name": "ContextMenu",
+   "props": [],
+   "inherits": [
+    "Radix ContextMenu.Root"
+   ]
+  },
+  {
+   "name": "ContextMenuTrigger",
+   "props": [],
+   "inherits": [
+    "Radix ContextMenu.Trigger"
+   ]
+  },
+  {
+   "name": "ContextMenuGroup",
+   "props": [],
+   "inherits": [
+    "Radix ContextMenu.Group"
+   ]
+  },
+  {
+   "name": "ContextMenuRadioGroup",
+   "props": [],
+   "inherits": [
+    "Radix ContextMenu.RadioGroup"
+   ]
+  },
+  {
+   "name": "ContextMenuSub",
+   "props": [],
+   "inherits": [
+    "Radix ContextMenu.Sub"
+   ]
+  },
+  {
+   "name": "ContextMenuContent",
+   "props": [],
+   "inherits": [
+    "Radix ContextMenu.Content"
+   ]
+  },
+  {
+   "name": "ContextMenuSubContent",
+   "props": [],
+   "inherits": [
+    "Radix ContextMenu.SubContent"
+   ]
+  },
+  {
+   "name": "ContextMenuItem",
+   "props": [
+    {
+     "name": "destructive",
+     "type": "boolean",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "Radix ContextMenu.Item"
+   ]
+  },
+  {
+   "name": "ContextMenuCheckboxItem",
+   "props": [],
+   "inherits": [
+    "Radix ContextMenu.CheckboxItem"
+   ]
+  },
+  {
+   "name": "ContextMenuRadioItem",
+   "props": [],
+   "inherits": [
+    "Radix ContextMenu.RadioItem"
+   ]
+  },
+  {
+   "name": "ContextMenuSubTrigger",
+   "props": [],
+   "inherits": [
+    "Radix ContextMenu.SubTrigger"
+   ]
+  },
+  {
+   "name": "ContextMenuLabel",
+   "props": [],
+   "inherits": [
+    "Radix ContextMenu.Label"
+   ]
+  },
+  {
+   "name": "ContextMenuSeparator",
+   "props": [],
+   "inherits": [
+    "Radix ContextMenu.Separator"
+   ]
+  },
+  {
+   "name": "ContextMenuShortcut",
+   "props": [],
+   "inherits": [
+    "<span>"
    ]
   }
  ],
@@ -2049,6 +2203,146 @@
    "inherits": []
   }
  ],
+ "graph": [
+  {
+   "name": "Graph",
+   "props": [
+    {
+     "name": "nodes",
+     "type": "GraphNode[]",
+     "required": true,
+     "description": "The boxes, in any order; they are laid out in columns from the edges."
+    },
+    {
+     "name": "edges",
+     "type": "GraphEdge[]",
+     "required": true,
+     "description": "The connections, `{ from, to }` with `from` an input of `to`. An edge that would close a cycle is left out."
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "Names the graph for screen readers: \"Lineage of Picking detector v3.2\"."
+    },
+    {
+     "name": "orientation",
+     "type": "\"horizontal\" | \"vertical\"",
+     "default": "\"horizontal\"",
+     "description": "horizontal (default): inputs on the left, outputs on the right. vertical: top to bottom, for narrow, deep pipelines."
+    },
+    {
+     "name": "selectedId",
+     "type": "string",
+     "description": "The selected node, controlled; null for none. Pair with onSelectedChange."
+    },
+    {
+     "name": "defaultSelectedId",
+     "type": "string",
+     "description": "The node selected at first (uncontrolled)."
+    },
+    {
+     "name": "onSelectedChange",
+     "type": "(id: string | null, node?: GraphNode) => void",
+     "description": "Called with the node selected, or null when the selection is cleared (Esc, a click on the background, the node again)."
+    },
+    {
+     "name": "empty",
+     "type": "ReactNode",
+     "default": "\"Nothing here yet.\"",
+     "description": "Shown in the frame when there are no nodes."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "description": "Bones in the frame while the graph loads."
+    },
+    {
+     "name": "linkAs",
+     "type": "ElementType",
+     "default": "\"a\"",
+     "description": "Your router's link (e.g. next/link), for nodes with href."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<GraphLabels>",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "GraphList",
+   "props": [
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "Names the graph for screen readers: \"Lineage of Picking detector v3.2\"."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "description": "Bones in the frame while the graph loads."
+    },
+    {
+     "name": "nodes",
+     "type": "GraphNode[]",
+     "required": true,
+     "description": "The boxes, in any order; they are laid out in columns from the edges."
+    },
+    {
+     "name": "edges",
+     "type": "GraphEdge[]",
+     "required": true,
+     "description": "The connections, `{ from, to }` with `from` an input of `to`. An edge that would close a cycle is left out."
+    },
+    {
+     "name": "empty",
+     "type": "ReactNode",
+     "default": "\"Nothing here yet.\"",
+     "description": "Shown in the frame when there are no nodes."
+    },
+    {
+     "name": "linkAs",
+     "type": "ElementType",
+     "default": "\"a\"",
+     "description": "Your router's link (e.g. next/link), for nodes with href."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<GraphLabels>",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "Pick<GraphProps, \"nodes\" | \"edges\" | \"label\" | \"empty\" | \"loading\" | \"linkAs\" | \"labels\" | \"className\">"
+   ]
+  }
+ ],
+ "hover-card": [
+  {
+   "name": "HoverCard",
+   "props": [],
+   "inherits": [
+    "Radix HoverCard.Root"
+   ]
+  },
+  {
+   "name": "HoverCardTrigger",
+   "props": [],
+   "inherits": [
+    "Radix HoverCard.Trigger"
+   ]
+  },
+  {
+   "name": "HoverCardContent",
+   "props": [],
+   "inherits": [
+    "Radix HoverCard.Content"
+   ]
+  }
+ ],
  "icon-tile": [
   {
    "name": "IconTile",
@@ -2724,6 +3018,85 @@
    "inherits": [
     "<div> (except title)"
    ]
+  }
+ ],
+ "media-player": [
+  {
+   "name": "MediaPlayer",
+   "props": [
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "What the clip is, for the player's name: \"Patrol dog 7F3A, front camera, 14:02\"."
+    },
+    {
+     "name": "src",
+     "type": "string",
+     "description": "The clip's URL. Leave it out while it is still being fetched (with `loading`)."
+    },
+    {
+     "name": "poster",
+     "type": "string",
+     "description": "A still shown before playing."
+    },
+    {
+     "name": "duration",
+     "type": "number",
+     "description": "Length in seconds from the clip's record, so the time and the markers show before the file's metadata arrives."
+    },
+    {
+     "name": "startAt",
+     "type": "number",
+     "description": "Where to start, in seconds: an incident clip opens at its event."
+    },
+    {
+     "name": "markers",
+     "type": "MediaMarker[]",
+     "default": "[]",
+     "description": ""
+    },
+    {
+     "name": "tracks",
+     "type": "MediaTrack[]",
+     "default": "[]",
+     "description": ""
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "default": "false",
+     "description": "The clip's URL is still being fetched."
+    },
+    {
+     "name": "unavailable",
+     "type": "string",
+     "description": "Known before loading that it cannot play: \"the robot has not uploaded it yet.\" Shown after \"Clip unavailable:\"."
+    },
+    {
+     "name": "onRetry",
+     "type": "() => void",
+     "description": "Called by the retry button. Without it, the button reloads `src`."
+    },
+    {
+     "name": "autoPlay",
+     "type": "boolean",
+     "default": "false",
+     "description": "Starts muted on load, unless the person asked for reduced motion. Off by default: a clip waits for Play."
+    },
+    {
+     "name": "preload",
+     "type": "\"metadata\" | \"none\" | \"auto\"",
+     "default": "\"metadata\"",
+     "description": "How much to fetch before Play. `metadata` (default) gets the length; `none` saves data in a long list of clips."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<MediaPlayerLabels>",
+     "description": ""
+    }
+   ],
+   "inherits": []
   }
  ],
  "meter": [
@@ -3816,6 +4189,11 @@
      "name": "thumbLabels",
      "type": "string[]",
      "description": ""
+    },
+    {
+     "name": "valueText",
+     "type": "(value: number, index: number) => string",
+     "description": "The value as screen readers say it (aria-valuetext), per thumb. Needs a controlled `value`."
     }
    ],
    "inherits": [

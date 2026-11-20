@@ -2,7 +2,7 @@
 
 # SYNCROBOTIC Design System
 
-**Interfaces for the people who run robots.** The design language behind every SYNCROBOTIC product: design tokens, 87 React components, 43 blocks and 28 patterns, shipped as a [shadcn/ui](https://ui.shadcn.com) registry for Tailwind CSS v4. Components install into your project as source you can read and change.
+**Interfaces for the people who run robots.** The design language behind every SYNCROBOTIC product: design tokens, 92 React components, 48 blocks and 29 patterns, shipped as a [shadcn/ui](https://ui.shadcn.com) registry for Tailwind CSS v4. Components install into your project as source you can read and change.
 
 [Documentation](https://design-system.syncrobotic.me) · [Components](https://design-system.syncrobotic.me/docs/components/button) · [Blocks](https://design-system.syncrobotic.me/blocks) · [Changelog](CHANGELOG.md) · [Roadmap](ROADMAP.md)
 
@@ -47,7 +47,7 @@ In a React or Next.js project with Tailwind CSS v4:
    npx shadcn add @syncrobotic/console-overview
    ```
 
-Light is the default, because it reads in daylight and glare; add `class="dark"` to `<html>` for control rooms and night shifts, `data-contrast="more"` for bright sun and low vision (7:1 text, in light or dark), and `data-density="glove"` or `"compact"` for gloved field work or a mouse-driven console. Copy is English; every visible and screen-reader string is a prop, so it localises. The [installation guide](https://design-system.syncrobotic.me/docs/installation) covers the details.
+Light is the default, because it reads in daylight and glare; add `class="dark"` to `<html>` for control rooms and night shifts, `data-contrast="more"` for bright sun and low vision (7:1 text, in light or dark), and `data-density="glove"` or `"compact"` for gloved field work or a mouse-driven console. Copy is English; every visible and screen-reader string is a prop, so it localises. The [installation guide](https://design-system.syncrobotic.me/docs/installation) covers the details. On Next.js, the [Next.js guide](https://design-system.syncrobotic.me/docs/nextjs) covers server and client components, the theme without a flash, `next/link` and the app shell in a layout.
 
 ## What's inside
 
@@ -55,7 +55,7 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 | --- | --- |
 | **Foundations** | Principles, colour, typography, spacing, radius, elevation, motion, iconography, accessibility, alarms and data visualisation, each with its tokens and the rules for using them, plus an [icon set](https://design-system.syncrobotic.me/icons) that gives each icon one meaning, with robot icons Lucide lacks drawn to match. Tokens also ship as [DTCG JSON](public/tokens) for design tools, in light, dark and high contrast. |
 | **87 components** | General UI on Radix primitives, a charts component on Recharts, building blocks for data tools (filters, data grid, text diff, image grid), and the robot shell: emergency stop, slide to release, dock and dynamic island. |
-| **43 blocks, 28 patterns** | Blocks are whole screens and sections in two groups: Application (shells, including an action-rail page, stats, cards, sign-in, settings, forms, wizards) and Solutions for robot operations (fleet operations, data operations with a keyboard-first review queue, users and access, incidents, maintenance, firmware rollout, AI agents). Patterns are ready-made uses of one component (charts, timelines, dialogs, sheets) and live on that component's page. Both install the same way. |
+| **48 blocks, 29 patterns** | Blocks are whole screens and sections in two groups: Application (shells, including an action-rail page, stats, cards, sign-in, settings, forms, wizards) and Solutions for robot operations (fleet operations, data operations with a keyboard-first review queue, users and access, incidents, maintenance, firmware rollout, AI agents). Patterns are ready-made uses of one component (charts, timelines, dialogs, sheets) and live on that component's page. Both install the same way. |
 
 <details>
 <summary>Every component, by group</summary>
@@ -64,11 +64,11 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 | --- | --- |
 | Actions | `button`, `segmented-control`, `toggle`, `copy-button`, `button-group`, `toggle-group`, `theme-toggle` |
 | Inputs | `input`, `input-group`, `number-field`, `textarea`, `label`, `field`, `form`, `checkbox`, `radio-group`, `switch`, `choice-field`, `select`, `slider`, `chip-group`, `filter-form`, `filters`, `search-field`, `autocomplete`, `input-otp`, `phone-input`, `calendar`, `date-selector`, `time-picker`, `sortable`, `file-upload`, `questionnaire` |
-| Display | `status-glyph`, `status-eyebrow`, `list`, `skeleton`, `spinner`, `badge`, `card`, `avatar`, `separator`, `progress`, `description-list`, `text-diff`, `meter`, `empty-state`, `table`, `item`, `icon-tile`, `kbd`, `scroll-area`, `share-bar`, `restricted-preview`, `image-grid`, `data-grid`, `resizable`, `attachment`, `file-type`, `timeline`, `trace`, `marker` |
+| Display | `status-glyph`, `status-eyebrow`, `list`, `skeleton`, `spinner`, `badge`, `card`, `avatar`, `separator`, `progress`, `description-list`, `text-diff`, `meter`, `empty-state`, `table`, `item`, `icon-tile`, `kbd`, `scroll-area`, `share-bar`, `restricted-preview`, `image-grid`, `data-grid`, `resizable`, `attachment`, `file-type`, `timeline`, `trace`, `marker`, `media-player`, `graph` |
 | Charts | `chart` |
-| Feedback | `alert`, `alarm`, `toast`, `route-progress` |
+| Feedback | `alert`, `banner`, `alarm`, `toast`, `route-progress` |
 | Navigation | `tabs`, `pagination`, `breadcrumb`, `accordion`, `page-header`, `load-more`, `stepper`, `scrollspy`, `navigation-menu`, `tree` |
-| Overlays | `dialog`, `alert-dialog`, `sheet`, `popover`, `tooltip`, `dropdown-menu`, `command` |
+| Overlays | `dialog`, `alert-dialog`, `sheet`, `popover`, `hover-card`, `tooltip`, `dropdown-menu`, `context-menu`, `command` |
 | Robot shell | `tray`, `stop-button`, `slide-to-release`, `dock`, `island` |
 | Icons | `robot-icons` (robot icons Lucide lacks, drawn to match) |
 | Hooks | `use-long-press`, `use-slide-release`, `use-presence`, `use-debounce`, `use-hotkeys` |
@@ -83,8 +83,9 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 | Application | App shell | `app-shell`, `top-bar-shell`, `app-shell-mobile-tabs`, `action-rail-shell` |
 | Application | Stats | `stats-cards`, `stats-meters`, `stats-filtered` |
 | Application | Card | `robot-status-card`, `card-site`, `card-mission` |
-| Application | Sign-in | `sign-in`, `auth-passkey`, `auth-invite` |
-| Application | Settings | `settings-page`, `settings-notifications`, `settings-api-keys` |
+| Application | Sign-in | `sign-in`, `auth-passkey`, `auth-invite`, `auth-2fa` |
+| Application | Settings | `settings-page`, `settings-notifications`, `settings-api-keys`, `settings-billing`, `settings-webhooks`, `settings-sessions` |
+| Application | Notifications | `notification-center` |
 | Application | Form | `record-form` |
 | Application | Empty and error states | `status-pages` |
 | Application | Landing | `marketing-hero` |
@@ -96,6 +97,7 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 | Patterns: Chart | Status tracker | `status-tracker-uptime`, `status-tracker-runs`, `status-tracker-rollout` |
 | Patterns: Chart | Radial chart | `radial-chart-battery`, `radial-chart-goal`, `radial-chart-capacity` |
 | Patterns: Chart | Heatmap | `heatmap-week-hours`, `heatmap-zones` |
+| Patterns: Chart | Histogram | `histogram-battery` |
 | Patterns: Alert dialog | Confirm a destructive action | `dialog-confirm-destructive` |
 | Patterns: Dialog | Dialog | `dialog-form`, `dialog-share` |
 | Patterns: Sheet | Sheet | `sheet-robot-detail`, `sheet-filters` |
@@ -119,6 +121,7 @@ The rules are not a style guide that drifts: checks enforce them. On every pull 
 - **Tokens only.** Lint rejects raw colours, arbitrary lengths, off-scale spacing, type sizes and weights, native number inputs (NumberField replaces them) and icons outside the icon set. A local check (`npm run check:radius`) walks the foundation, component and block pages for nested corners that break the radius rule.
 - **Installs for real.** On a pull request that touches the registry, every item is installed into a fresh Next.js app, type-checked and built.
 - **Versioned per item.** Each component carries its own version and changelog, so a team knows when to re-install. The [upgrading guide](https://design-system.syncrobotic.me/docs/upgrading) lists them.
+- **Adoption you can measure.** `npm run adoption -- ../your-app` reads the version header of every installed file and lists each item, its version, the latest, how many minors behind it is and the changelog lines in between; `--github <org>` scans every repo of an organisation through the `gh` CLI, `--json` prints it for other tools.
 
 ## For AI agents
 
