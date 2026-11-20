@@ -71,16 +71,3 @@ export const MetricCardWithoutSparkline: S = {
 }
 
 /** The same row in Traditional Chinese, with the words read aloud translated too. */
-export const MetricCardTraditionalChinese: S = {
-  render: () => {
-    const labels = { better: "，變好", worse: "，變差", loading: "載入中", unavailable: "無法取得" }
-    return (
-      <MetricGrid lang="zh-Hant">
-        <MetricCard label="上線機器人" value="12" unit="/ 14" delta="+1" trend="good" series={[9, 10, 10, 11, 11, 12, 12]} caption="2 台在充電站" labels={labels} />
-        <MetricCard label="巡邏時數" value="286" unit="小時" delta="+8%" trend="good" series={[210, 230, 228, 250, 262, 270, 286]} caption="近 7 天" labels={labels} />
-        <MetricCard label="事件" value="24" delta="+6" trend="bad" series={[12, 15, 14, 18, 16, 18, 24]} caption="3 件待審查" labels={labels} />
-        <MetricCard label="平均電量" unit="%" unavailable="車隊遙測自 14:02 起暫停" labels={labels} />
-      </MetricGrid>
-    )
-  },
-}

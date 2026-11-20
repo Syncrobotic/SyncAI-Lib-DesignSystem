@@ -20,6 +20,7 @@ const forms: { job: string; form: string; items: string[] }[] = [
   { job: "Above and below a target", form: "Bars in one hue around a drawn zero", items: ["bar-chart-variance"] },
   { job: "When something happens (day × hour)", form: "A heatmap in one hue", items: ["heatmap-week-hours"] },
   { job: "Where something happens", form: "A heatmap by zone, with each cell's number", items: ["heatmap-zones"] },
+  { job: "How one value is spread", form: "A histogram: equal bins that touch, one hue, the median drawn", items: ["histogram-battery"] },
   { job: "The steps of a run, or events in order", form: "Not a chart: a trace or a timeline", items: ["trace", "timeline"] },
   { job: "Exact values, or many columns", form: "Not a chart: a table", items: ["data-grid"] },
 ]

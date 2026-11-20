@@ -1545,8 +1545,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.21.0",
         "changelog": [
+          {
+            "version": "0.21.0",
+            "date": "2026-11-20",
+            "note": "valueText: the value as screen readers say it (aria-valuetext) on a controlled slider, e.g. \"0:42 of 1:00\" on a media player's timeline instead of a bare 42."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -1884,6 +1889,36 @@
             "version": "0.18.0",
             "date": "2026-11-19",
             "note": "First release: MetricCard (label, value and unit, delta coloured only when trend is bad with better/worse read aloud, neutral sparkline, caption; href makes the card one link; loading keeps its height; unavailable shows a dash and why) and MetricGrid, taken out of stats-cards."
+          }
+        ]
+      }
+    },
+    {
+      "name": "banner",
+      "type": "registry:ui",
+      "title": "Banner",
+      "description": "A full-width notice at the top of the page or app about the app itself: maintenance, read-only mode, a trial ending, no connection. Tones, one action, optional dismiss.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/use-presence"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/banner.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.21.0",
+        "changelog": [
+          {
+            "version": "0.21.0",
+            "date": "2026-11-20",
+            "note": "First release: neutral, info, warning and danger tones (role alert only for danger), an icon that can name the subject, one action, an optional close button (the caller remembers it), enter and exit movements, wraps at 375 px with 44 px targets."
           }
         ]
       }
@@ -2403,6 +2438,36 @@
       }
     },
     {
+      "name": "graph",
+      "type": "registry:ui",
+      "title": "Graph",
+      "description": "A directed acyclic graph for lineage and pipelines, laid out in layers with no layout library: boxes with name, meta, status and link, neutral edges, the selected node's path highlighted, arrow keys along the edges, and GraphList, the same graph as text.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/skeleton",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/graph.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.21.0",
+        "changelog": [
+          {
+            "version": "0.21.0",
+            "date": "2026-11-20",
+            "note": "First release: a layered layout for up to about 60 nodes (longest-path layers, barycenter ordering, edges routed between boxes), left to right or top to bottom, scrolling inside its frame with the scroll fade; one Tab stop with arrow keys along the edges; selection highlights the upstream and downstream path; each node's name lists its inputs and outputs; GraphList shows the same graph as text."
+          }
+        ]
+      }
+    },
+    {
       "name": "dialog",
       "type": "registry:ui",
       "title": "Dialog",
@@ -2566,6 +2631,35 @@
       }
     },
     {
+      "name": "hover-card",
+      "type": "registry:ui",
+      "title": "Hover card",
+      "description": "A preview of what a link leads to, on hover and keyboard focus. Preview only: never the only way to the facts or actions in it.",
+      "dependencies": [
+        "radix-ui"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/hover-card.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.21.0",
+        "changelog": [
+          {
+            "version": "0.21.0",
+            "date": "2026-11-20",
+            "note": "First release: Radix HoverCard in the popover's look, 500 ms before opening and 300 ms before closing."
+          }
+        ]
+      }
+    },
+    {
       "name": "tooltip",
       "type": "registry:ui",
       "title": "Tooltip",
@@ -2662,6 +2756,36 @@
           }
         ],
         "status": "stable"
+      }
+    },
+    {
+      "name": "context-menu",
+      "type": "registry:ui",
+      "title": "Context menu",
+      "description": "Actions on an item by right-click or long press, styled exactly like the dropdown menu; a shortcut to actions that are also on a visible control.",
+      "dependencies": [
+        "radix-ui",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/context-menu.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.21.0",
+        "changelog": [
+          {
+            "version": "0.21.0",
+            "date": "2026-11-20",
+            "note": "First release: Radix ContextMenu in the dropdown menu's look (items, checkbox and radio items, labels, separators, shortcuts, submenus; keyboard ring only in keyboard use). Long press opens it on touch."
+          }
+        ]
       }
     },
     {
@@ -3211,6 +3335,38 @@
             "version": "0.18.0",
             "date": "2026-11-19",
             "note": "First release: AnnotatedImage (src or image, width, height, annotations of box, point, polygon and keypoints) with an SVG in the picture's pixel space and non-scaling strokes; predicted solid, ground truth dashed, previous dotted and faded, each on a halo; selected 3 px with handles; class words (all, selected or none); a role=img summary, or with onSelectedChange one Tab stop, arrows, Enter and Esc; overlays; loading and failed states; and AnnotationLegend for the kinds present."
+          }
+        ]
+      }
+    },
+    {
+      "name": "media-player",
+      "type": "registry:ui",
+      "title": "Media player",
+      "description": "A recorded clip (a robot's camera recording, an incident clip) with the kit's controls over a native video: play, a timeline with event markers, time, mute, speed, captions and full screen on a scrim; keys while focused; loading, buffering and unavailable states.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/slider",
+        "@syncrobotic/spinner"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/media-player.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.21.0",
+        "changelog": [
+          {
+            "version": "0.21.0",
+            "date": "2026-11-20",
+            "note": "First release: MediaPlayer (label, src, poster, duration, startAt, markers, tracks, loading, unavailable, onRetry, autoPlay, preload, labels) over a native <video>: play / pause, a timeline (the kit's Slider, read as \"0:42 of 1:00\") with marker ticks and a list of markers under the player, time in tabular numbers, mute, speed 0.5–2×, captions drawn above the controls, full screen. Space / K, ← / →, J / L, M and F while focus is in the player. Controls on a scrim in the dark theme, hidden while playing once the pointer rests, kept while a finger is on them; no autoplay under reduced motion; loading, buffering and \"Clip unavailable: …\" with a retry."
           }
         ]
       }
@@ -6264,6 +6420,37 @@
       }
     },
     {
+      "name": "histogram-battery",
+      "type": "registry:block",
+      "title": "Battery at docking",
+      "description": "How one value is spread: battery level at docking in equal 5 % bins, the median as a labelled dashed line, bins under 15 % in warning, counts on hover and a table view. Exports binEqualWidth and median.",
+      "dependencies": [
+        "recharts@^3",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/card",
+        "@syncrobotic/chart",
+        "@syncrobotic/segmented-control"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/histogram-battery.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.21.0",
+        "changelog": [
+          {
+            "version": "0.21.0",
+            "date": "2026-11-20",
+            "note": "First release: battery at docking in 5 % bins (binEqualWidth: each bin from ≤ v < to, the last also holds the maximum), the median and the 15 % line labelled, bins under 15 % in warning with the count in words, counts on hover, and a Chart / Table switch."
+          }
+        ]
+      }
+    },
+    {
       "name": "app-shell-mobile-tabs",
       "type": "registry:block",
       "title": "Phone shell with tabs",
@@ -6546,6 +6733,41 @@
       }
     },
     {
+      "name": "auth-2fa",
+      "type": "registry:block",
+      "title": "Two-factor sign-in",
+      "description": "The step after the password: a 6-digit code or a recovery code, remember this browser for 30 days, errors and a pause in words, a passkey as the quicker way.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/button",
+        "@syncrobotic/checkbox",
+        "@syncrobotic/choice-field",
+        "@syncrobotic/field",
+        "@syncrobotic/input",
+        "@syncrobotic/input-otp",
+        "@syncrobotic/label",
+        "@syncrobotic/separator"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/auth-2fa.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.21.0",
+        "changelog": [
+          {
+            "version": "0.21.0",
+            "date": "2026-11-20",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
       "name": "settings-notifications",
       "type": "registry:block",
       "title": "Notification matrix",
@@ -6624,6 +6846,147 @@
           {
             "version": "0.9.0",
             "date": "2026-11-17",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "settings-webhooks",
+      "type": "registry:block",
+      "title": "Webhooks",
+      "description": "Endpoints with their events and state, adding one with its signing secret shown once, test events, recent deliveries, rotating and deleting.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/skeleton",
+        "@syncrobotic/alert-dialog",
+        "@syncrobotic/button",
+        "@syncrobotic/card",
+        "@syncrobotic/checkbox",
+        "@syncrobotic/choice-field",
+        "@syncrobotic/code-block",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/field",
+        "@syncrobotic/input",
+        "@syncrobotic/sheet"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/settings-webhooks.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.21.0",
+        "changelog": [
+          {
+            "version": "0.21.0",
+            "date": "2026-11-20",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "settings-sessions",
+      "type": "registry:block",
+      "title": "Signed-in browsers",
+      "description": "Where you are signed in, as browsers: sign one out, or all the others after a confirmation; browsers that skip the 2FA code for 30 days.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/skeleton",
+        "@syncrobotic/alert-dialog",
+        "@syncrobotic/badge",
+        "@syncrobotic/button",
+        "@syncrobotic/card",
+        "@syncrobotic/empty-state"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/settings-sessions.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.21.0",
+        "changelog": [
+          {
+            "version": "0.21.0",
+            "date": "2026-11-20",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "settings-billing",
+      "type": "registry:block",
+      "title": "Plan and billing",
+      "description": "Plan and renewal, robots and seats against what the plan includes, this period's usage, the card on file (brand and last four) and invoices with their PDFs; cancelling confirms first. No checkout or card form: those stay on your payment provider's pages.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/alert",
+        "@syncrobotic/alert-dialog",
+        "@syncrobotic/button",
+        "@syncrobotic/card",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/meter",
+        "@syncrobotic/skeleton",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/settings-billing.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.21.0",
+        "changelog": [
+          {
+            "version": "0.21.0",
+            "date": "2026-11-20",
+            "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "notification-center",
+      "type": "registry:block",
+      "title": "Notification center",
+      "description": "The bell in the top bar with its unread count, opening notifications grouped by day: a popover on wide screens, a bottom sheet on phones. Mark one or all as read, filter unread. For things worth knowing later; alarms that need action stay with Alarm and the island.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/badge",
+        "@syncrobotic/button",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/popover",
+        "@syncrobotic/segmented-control",
+        "@syncrobotic/sheet",
+        "@syncrobotic/skeleton"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/notification-center.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.21.0",
+        "changelog": [
+          {
+            "version": "0.21.0",
+            "date": "2026-11-20",
             "note": "New."
           }
         ]
