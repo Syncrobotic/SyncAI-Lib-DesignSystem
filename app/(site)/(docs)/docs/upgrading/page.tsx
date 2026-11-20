@@ -69,6 +69,9 @@ export default function UpgradingPage() {
 
       <H2 id="upgrade">Upgrade</H2>
       <CodeBlock code={steps} lang="bash" title="Terminal" />
+      <p className="pt-3 text-sm text-muted-foreground">
+        <Inline text="Across many products: in a checkout of the design system repository, `npm run adoption -- ../app-a ../app-b` (or `--github <org>` with the gh CLI) lists each product's items and versions, how far each is behind and the changelog lines in between." />
+      </p>
 
       <H2 id="current">Current versions</H2>
       <TokenTable
