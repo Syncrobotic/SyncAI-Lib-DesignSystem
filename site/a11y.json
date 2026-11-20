@@ -338,6 +338,7 @@
   },
   "alarm": {
     "roles": [
+      "alert",
       "button",
       "group",
       "heading",
