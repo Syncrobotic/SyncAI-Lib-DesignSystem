@@ -57,7 +57,6 @@ The milestones are themes, not version numbers, listed by number. 0.4 to 0.9 and
 - [x] Props tables generated from the types (API reference on every component page and in its Markdown); status labels (beta, stable) per item
 - [x] Site search (⌘K, Ctrl+K, /) over pages, rules, components, blocks and icons
 - [x] Information architecture: Blocks hold compositions; variants of one component are Patterns on its page
-- [ ] Docs per released version
 - [ ] Adoption scanner: a script that reports registry items and versions across company repos
 
 ### 0.9 · Accessibility evidence
@@ -88,3 +87,6 @@ The milestones are themes, not version numbers, listed by number. 0.4 to 0.9 and
 - [x] Licence (all rights reserved, source-available), CONTRIBUTING, SECURITY
 - [x] Production indexed by search engines with no configuration; previews stay `noindex`
 - [x] Make the repository public on GitHub
+
+### After 1.0
+- [ ] Docs kept for each major version (a frozen site for 1.x once 2.0 ships), as package libraries do. Not per minor: items install as source, so a project's own copy, its version header and the CHANGELOG already say what it has and what changed.
