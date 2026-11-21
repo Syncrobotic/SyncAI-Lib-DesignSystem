@@ -22,6 +22,9 @@ function read(): Choice {
   }
 }
 
+// The stored choice changes only through this menu, which keeps its own state, so there is nothing to subscribe to.
+const subscribeNothing = () => () => {}
+
 function apply(choice: Choice) {
   const dark = choice === "dark" || (choice === "system" && window.matchMedia(media).matches)
   document.documentElement.classList.toggle("dark", dark)
@@ -33,9 +36,11 @@ function apply(choice: Choice) {
  * beside search on a phone; the icon shows the theme in use.
  */
 export function ThemeToggle() {
-  // Known only in the browser; undefined while rendering on the server, so nothing shows as chosen until then.
-  const [choice, setChoice] = React.useState<Choice | undefined>(undefined)
-  React.useEffect(() => setChoice(read()), [])
+  // Known only in the browser; undefined while rendering on the server (and hydrating), so nothing shows as chosen until
+  // then. The stored choice is read as an external value; a choice made here wins over it.
+  const stored = React.useSyncExternalStore(subscribeNothing, read, () => undefined)
+  const [picked, setChoice] = React.useState<Choice | undefined>(undefined)
+  const choice = picked ?? stored
   // Matching the system follows it live: the page turns when the system does.
   React.useEffect(() => {
     if (choice !== "system") return

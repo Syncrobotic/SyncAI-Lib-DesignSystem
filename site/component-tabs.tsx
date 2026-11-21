@@ -31,7 +31,8 @@ export function ComponentTabs({ tabs }: { tabs: ComponentTab[] }) {
   const active = current(path, tabs)
   const base = tabs[0].href
   const list = React.useRef<HTMLDivElement>(null)
-  const carried = last?.base === base ? { x: last.x, w: last.w } : null
+  // Read once, on mount: the underline the tab before left behind, if it belongs to this set of tabs.
+  const [carried] = React.useState(() => (last?.base === base ? { x: last.x, w: last.w } : null))
   const [line, setLine] = React.useState<{ x: number; w: number } | null>(carried)
   // The first measurement places the underline without travelling; later ones animate. Carried over from the tab before,
   // it is already placed, and travels from there.
@@ -54,8 +55,8 @@ export function ComponentTabs({ tabs }: { tabs: ComponentTab[] }) {
       cancelAnimationFrame(frame)
       ro.disconnect()
     }
-    // `carried` is read on mount only, on purpose.
-  }, [active, base])
+    // `carried` is state that never changes, so listing it re-runs nothing.
+  }, [active, base, carried])
   React.useEffect(() => {
     if (line && !placed) requestAnimationFrame(() => setPlaced(true))
   }, [line, placed])
