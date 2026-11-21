@@ -6,10 +6,13 @@ import {
   rosToPlan,
   type RobotMapGrid,
   type RobotMapPath,
+  type RobotMapPoint,
+  type RobotMapPose,
   type RobotMapRobot,
   type RobotMapScan,
   type RobotMapZone,
 } from "@/registry/syncrobotic/ui/robot-map"
+import { Button } from "@/registry/syncrobotic/ui/button"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 
 const meta: Meta = { title: "Charts/Robot map" }
@@ -334,4 +337,99 @@ export const RobotMapLaserScans: S = {
       <RobotMapList label="Robots on North site" robots={gridRobots} zones={zones} />
     </div>
   ),
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// Editing. The map draws and reports; each story stands in for the app, which keeps the goal, waypoints and zones.
+// ---------------------------------------------------------------------------------------------------------------------
+
+const fmt = (n: number) => n.toFixed(1)
+
+/** Goal mode: press to place a goal for AMR-07, drag to point it. The app shows the goal it was given. */
+function GoalMode() {
+  const [goal, setGoal] = React.useState<RobotMapPose | null>({ x: 52, y: 31, heading: 90 })
+  return (
+    <div className="flex w-full flex-col gap-3">
+      <RobotMap label="Map of North site: set a goal for AMR-07" {...site} floorplan={<NorthSiteFloor />} zones={zones} robots={robots} mode="goal" goal={goal} onGoal={setGoal} />
+      <p className="text-sm text-muted-foreground tabular-nums">
+        {goal ? `Goal for AMR-07: ${fmt(goal.x)}, ${fmt(goal.y)} m${goal.heading === undefined ? ", any heading" : `, facing ${goal.heading}°`}` : "No goal set."}
+      </p>
+    </div>
+  )
+}
+
+export const RobotMapGoalMode: S = {
+  render: () => <GoalMode />,
+}
+
+/** Waypoints mode: a route drawn grey until it is sent, then blue, as the route being driven. */
+function WaypointsMode() {
+  const [points, setPoints] = React.useState<RobotMapPoint[]>([
+    [27, 24],
+    [42, 24],
+    [42, 31],
+    [52, 31],
+  ])
+  const [sent, setSent] = React.useState(false)
+  return (
+    <div className="flex w-full flex-col gap-3">
+      <RobotMap
+        label="Map of North site: AMR-07's waypoints"
+        {...site}
+        floorplan={<NorthSiteFloor />}
+        zones={zones}
+        robots={robots}
+        mode="waypoints"
+        waypoints={points}
+        onWaypointsChange={(p) => {
+          setPoints(p)
+          setSent(false)
+        }}
+        waypointsPlanned={sent}
+        snap={0.5}
+      />
+      <div className="flex items-center justify-between gap-4">
+        <p className="text-sm text-muted-foreground">{sent ? `AMR-07 is driving ${points.length} waypoints.` : `${points.length} waypoints, not sent.`}</p>
+        <Button size="sm" variant={sent ? "secondary" : "primary"} disabled={sent || points.length === 0} onClick={() => setSent(true)}>
+          Send to AMR-07
+        </Button>
+      </div>
+    </div>
+  )
+}
+
+export const RobotMapWaypointsMode: S = {
+  render: () => <WaypointsMode />,
+}
+
+/** Zone mode: click corners, close on the first. The app would ask for a name and kind; this story names it in turn. */
+function ZoneDrawing({ editable = false }: { editable?: boolean }) {
+  const [list, setList] = React.useState(zones)
+  const drawn = list.length - zones.length
+  return (
+    <div className="flex w-full flex-col gap-3">
+      <RobotMap
+        label={editable ? "Map of North site: move the zones' corners" : "Map of North site: draw a zone"}
+        {...site}
+        floorplan={<NorthSiteFloor />}
+        zones={list}
+        robots={robots}
+        mode="zone"
+        editableZones={editable}
+        onZonesChange={setList}
+        onZoneDraw={(points) => setList((l) => [...l, { id: `zone-${l.length + 1}`, kind: "slow", label: `Slow zone ${l.length - zones.length + 1}`, points }])}
+        snap={0.5}
+      />
+      <p className="text-sm text-muted-foreground">{drawn ? `${drawn} new zone${drawn === 1 ? "" : "s"} drawn.` : `${list.length} zones on this site.`}</p>
+    </div>
+  )
+}
+
+export const RobotMapZoneDrawing: S = {
+  render: () => <ZoneDrawing />,
+}
+
+/** Zone mode with editableZones: each zone's corners are handles, dragged (or picked up with Enter and moved with the arrows). */
+export const RobotMapEditableZones: S = {
+  render: () => <ZoneDrawing editable />,
 }

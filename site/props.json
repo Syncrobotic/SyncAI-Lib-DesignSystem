@@ -5691,6 +5691,58 @@
      "description": "Fill the parent's height (a full-screen map) instead of keeping the site's proportions."
     },
     {
+     "name": "mode",
+     "type": "\"view\" | \"goal\" | \"waypoints\" | \"zone\"",
+     "default": "\"view\"",
+     "description": "What a click (or Enter at the keyboard crosshair) does. `view` (the default) selects robots. `goal` places a goal and a drag points it; `waypoints` adds, moves and removes waypoints; `zone` draws a zone corner by corner. In an edit mode the primary pointer edits and the right or middle button, or two fingers, pan; the wheel and the buttons still zoom."
+    },
+    {
+     "name": "goal",
+     "type": "{ x: number; y: number; heading?: number }",
+     "description": "The goal to show, controlled: a target and the way to face, in plan metres."
+    },
+    {
+     "name": "onGoal",
+     "type": "(goal: RobotMapPose) => void",
+     "description": "Goal mode: the goal placed, on release (or Enter). `heading` is left out when the press did not drag."
+    },
+    {
+     "name": "waypoints",
+     "type": "RobotMapPoint[]",
+     "default": "[]",
+     "description": "Waypoints to show, numbered in order, controlled."
+    },
+    {
+     "name": "onWaypointsChange",
+     "type": "(waypoints: RobotMapPoint[]) => void",
+     "description": "Waypoints mode: the new list after a waypoint is added, moved (while it moves) or removed."
+    },
+    {
+     "name": "waypointsPlanned",
+     "type": "boolean",
+     "description": "The waypoints are the route a robot is driving: the line between them turns the in-progress blue. Otherwise it is grey."
+    },
+    {
+     "name": "onZoneDraw",
+     "type": "(points: RobotMapPoint[]) => void",
+     "description": "Zone mode: a new zone's corners, once it is closed. Ask for its name and kind and add it to `zones`."
+    },
+    {
+     "name": "editableZones",
+     "type": "boolean",
+     "description": "Zone mode: the corners of `zones` can be dragged (or picked up with Enter and moved with the arrows)."
+    },
+    {
+     "name": "onZonesChange",
+     "type": "(zones: RobotMapZone[]) => void",
+     "description": "The zones with a corner moved, while it moves."
+    },
+    {
+     "name": "snap",
+     "type": "number",
+     "description": "Rounds every point placed or moved to this many metres. None by default."
+    },
+    {
      "name": "labels",
      "type": "Partial<RobotMapLabels>",
      "description": "",
@@ -5831,6 +5883,150 @@
        "name": "costHigh",
        "type": "string",
        "default": "\"lethal\"",
+       "description": ""
+      },
+      {
+       "name": "at",
+       "type": "(x: number, y: number) => string",
+       "default": "(x, y) => `${x.toFixed(1)}, ${y.toFixed(1)} m`",
+       "description": "A place in metres, as the crosshair's readout and the announcements write it."
+      },
+      {
+       "name": "editKeys",
+       "type": "string",
+       "default": "\"Arrow keys move the crosshair, Shift for bigger steps; Enter or Space places, Esc cancels. Right-drag or two fingers move the map.\"",
+       "description": "The keys of an edit mode, read with the instructions."
+      },
+      {
+       "name": "goalHint",
+       "type": "string",
+       "default": "\"Press to place the goal, drag to point it. Esc cancels.\"",
+       "description": "The mode banner: what a click does and how to finish or cancel, per mode and step."
+      },
+      {
+       "name": "goalTurnHint",
+       "type": "string",
+       "default": "\"Left and right arrows turn the goal, Enter sets it, Esc cancels.\"",
+       "description": ""
+      },
+      {
+       "name": "waypointsHint",
+       "type": "string",
+       "default": "\"Click to add a waypoint, drag one to move it. Delete removes the selected one.\"",
+       "description": ""
+      },
+      {
+       "name": "carryHint",
+       "type": "string",
+       "default": "\"Arrow keys move it, Enter drops it, Esc puts it back.\"",
+       "description": ""
+      },
+      {
+       "name": "zoneHint",
+       "type": "string",
+       "default": "\"Click to place a new zone's first corner.\"",
+       "description": ""
+      },
+      {
+       "name": "zoneEditableHint",
+       "type": "string",
+       "default": "\"Click to start a new zone, or drag a corner to move it.\"",
+       "description": ""
+      },
+      {
+       "name": "zoneDrawHint",
+       "type": "string",
+       "default": "\"Click to add a corner; click the first corner or press Enter to finish. Backspace removes the last, Esc cancels.\"",
+       "description": ""
+      },
+      {
+       "name": "panHint",
+       "type": "string",
+       "default": "\"Right-drag or two fingers move the map.\"",
+       "description": "The banner's second line on a wide map: how to pan while editing."
+      },
+      {
+       "name": "goalPlaced",
+       "type": "(x: number, y: number) => string",
+       "default": "(x, y) => `Goal at ${defaultLabels.at(x, y)}. Left and right arrows turn it, Enter sets it.`",
+       "description": "Said in the live region as each edit happens."
+      },
+      {
+       "name": "goalSet",
+       "type": "(x: number, y: number, heading?: number) => string",
+       "default": "(x, y, heading) => `Goal set at ${defaultLabels.at(x, y)}${heading === undefined ? \"\" : `, heading ${Math.round(heading)}°`}`",
+       "description": ""
+      },
+      {
+       "name": "goalCancelled",
+       "type": "string",
+       "default": "\"Goal cancelled\"",
+       "description": ""
+      },
+      {
+       "name": "waypointAdded",
+       "type": "(n: number, x: number, y: number) => string",
+       "default": "(n, x, y) => `Waypoint ${n} added at ${defaultLabels.at(x, y)}`",
+       "description": ""
+      },
+      {
+       "name": "waypointPicked",
+       "type": "(n: number) => string",
+       "default": "(n) => `Waypoint ${n} picked up. Arrow keys move it, Enter drops it, Esc puts it back.`",
+       "description": ""
+      },
+      {
+       "name": "waypointMoved",
+       "type": "(n: number, x: number, y: number) => string",
+       "default": "(n, x, y) => `Waypoint ${n} moved to ${defaultLabels.at(x, y)}`",
+       "description": ""
+      },
+      {
+       "name": "waypointRemoved",
+       "type": "(n: number) => string",
+       "default": "(n) => `Waypoint ${n} removed`",
+       "description": ""
+      },
+      {
+       "name": "moveCancelled",
+       "type": "string",
+       "default": "\"Move cancelled\"",
+       "description": ""
+      },
+      {
+       "name": "cornerAdded",
+       "type": "(n: number, x: number, y: number) => string",
+       "default": "(n, x, y) => `Corner ${n} at ${defaultLabels.at(x, y)}`",
+       "description": ""
+      },
+      {
+       "name": "cornerRemoved",
+       "type": "(left: number) => string",
+       "default": "(left) => (left === 1 ? \"Last corner removed, 1 left\" : `Last corner removed, ${left} left`)",
+       "description": ""
+      },
+      {
+       "name": "cornerPicked",
+       "type": "string",
+       "default": "\"Corner picked up. Arrow keys move it, Enter drops it, Esc puts it back.\"",
+       "description": ""
+      },
+      {
+       "name": "cornerMoved",
+       "type": "(x: number, y: number) => string",
+       "default": "(x, y) => `Corner moved to ${defaultLabels.at(x, y)}`",
+       "description": ""
+      },
+      {
+       "name": "zoneDrawn",
+       "type": "(corners: number) => string",
+       "default": "(n) => `Zone drawn with ${n} corners`",
+       "description": ""
+      },
+      {
+       "name": "zoneCancelled",
+       "type": "string",
+       "default": "\"Zone cancelled\"",
        "description": ""
       }
      ]
@@ -6003,6 +6199,150 @@
        "name": "costHigh",
        "type": "string",
        "default": "\"lethal\"",
+       "description": ""
+      },
+      {
+       "name": "at",
+       "type": "(x: number, y: number) => string",
+       "default": "(x, y) => `${x.toFixed(1)}, ${y.toFixed(1)} m`",
+       "description": "A place in metres, as the crosshair's readout and the announcements write it."
+      },
+      {
+       "name": "editKeys",
+       "type": "string",
+       "default": "\"Arrow keys move the crosshair, Shift for bigger steps; Enter or Space places, Esc cancels. Right-drag or two fingers move the map.\"",
+       "description": "The keys of an edit mode, read with the instructions."
+      },
+      {
+       "name": "goalHint",
+       "type": "string",
+       "default": "\"Press to place the goal, drag to point it. Esc cancels.\"",
+       "description": "The mode banner: what a click does and how to finish or cancel, per mode and step."
+      },
+      {
+       "name": "goalTurnHint",
+       "type": "string",
+       "default": "\"Left and right arrows turn the goal, Enter sets it, Esc cancels.\"",
+       "description": ""
+      },
+      {
+       "name": "waypointsHint",
+       "type": "string",
+       "default": "\"Click to add a waypoint, drag one to move it. Delete removes the selected one.\"",
+       "description": ""
+      },
+      {
+       "name": "carryHint",
+       "type": "string",
+       "default": "\"Arrow keys move it, Enter drops it, Esc puts it back.\"",
+       "description": ""
+      },
+      {
+       "name": "zoneHint",
+       "type": "string",
+       "default": "\"Click to place a new zone's first corner.\"",
+       "description": ""
+      },
+      {
+       "name": "zoneEditableHint",
+       "type": "string",
+       "default": "\"Click to start a new zone, or drag a corner to move it.\"",
+       "description": ""
+      },
+      {
+       "name": "zoneDrawHint",
+       "type": "string",
+       "default": "\"Click to add a corner; click the first corner or press Enter to finish. Backspace removes the last, Esc cancels.\"",
+       "description": ""
+      },
+      {
+       "name": "panHint",
+       "type": "string",
+       "default": "\"Right-drag or two fingers move the map.\"",
+       "description": "The banner's second line on a wide map: how to pan while editing."
+      },
+      {
+       "name": "goalPlaced",
+       "type": "(x: number, y: number) => string",
+       "default": "(x, y) => `Goal at ${defaultLabels.at(x, y)}. Left and right arrows turn it, Enter sets it.`",
+       "description": "Said in the live region as each edit happens."
+      },
+      {
+       "name": "goalSet",
+       "type": "(x: number, y: number, heading?: number) => string",
+       "default": "(x, y, heading) => `Goal set at ${defaultLabels.at(x, y)}${heading === undefined ? \"\" : `, heading ${Math.round(heading)}°`}`",
+       "description": ""
+      },
+      {
+       "name": "goalCancelled",
+       "type": "string",
+       "default": "\"Goal cancelled\"",
+       "description": ""
+      },
+      {
+       "name": "waypointAdded",
+       "type": "(n: number, x: number, y: number) => string",
+       "default": "(n, x, y) => `Waypoint ${n} added at ${defaultLabels.at(x, y)}`",
+       "description": ""
+      },
+      {
+       "name": "waypointPicked",
+       "type": "(n: number) => string",
+       "default": "(n) => `Waypoint ${n} picked up. Arrow keys move it, Enter drops it, Esc puts it back.`",
+       "description": ""
+      },
+      {
+       "name": "waypointMoved",
+       "type": "(n: number, x: number, y: number) => string",
+       "default": "(n, x, y) => `Waypoint ${n} moved to ${defaultLabels.at(x, y)}`",
+       "description": ""
+      },
+      {
+       "name": "waypointRemoved",
+       "type": "(n: number) => string",
+       "default": "(n) => `Waypoint ${n} removed`",
+       "description": ""
+      },
+      {
+       "name": "moveCancelled",
+       "type": "string",
+       "default": "\"Move cancelled\"",
+       "description": ""
+      },
+      {
+       "name": "cornerAdded",
+       "type": "(n: number, x: number, y: number) => string",
+       "default": "(n, x, y) => `Corner ${n} at ${defaultLabels.at(x, y)}`",
+       "description": ""
+      },
+      {
+       "name": "cornerRemoved",
+       "type": "(left: number) => string",
+       "default": "(left) => (left === 1 ? \"Last corner removed, 1 left\" : `Last corner removed, ${left} left`)",
+       "description": ""
+      },
+      {
+       "name": "cornerPicked",
+       "type": "string",
+       "default": "\"Corner picked up. Arrow keys move it, Enter drops it, Esc puts it back.\"",
+       "description": ""
+      },
+      {
+       "name": "cornerMoved",
+       "type": "(x: number, y: number) => string",
+       "default": "(x, y) => `Corner moved to ${defaultLabels.at(x, y)}`",
+       "description": ""
+      },
+      {
+       "name": "zoneDrawn",
+       "type": "(corners: number) => string",
+       "default": "(n) => `Zone drawn with ${n} corners`",
+       "description": ""
+      },
+      {
+       "name": "zoneCancelled",
+       "type": "string",
+       "default": "\"Zone cancelled\"",
        "description": ""
       }
      ]
