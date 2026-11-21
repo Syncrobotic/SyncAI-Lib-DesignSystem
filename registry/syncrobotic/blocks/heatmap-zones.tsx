@@ -1,18 +1,18 @@
-// @syncrobotic/heatmap-zones v0.22.3 · update: npx shadcn add @syncrobotic/heatmap-zones --overwrite
+// @syncrobotic/heatmap-zones v0.22.4 · update: npx shadcn add @syncrobotic/heatmap-zones --overwrite
 "use client"
 
 import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
 
-const zones = ["Gate A", "Hall B", "Dock 2", "Parking", "Perimeter"]
 const slots = ["06", "09", "12", "15", "18", "21"]
 // Sample data: minutes of robot presence per zone and 3-hour slot today. null is no data (the parking camera was down at 06:00).
-const minutes: (number | null)[][] = [
-  [22, 40, 18, 25, 44, 60],
-  [10, 55, 70, 64, 30, 12],
-  [45, 20, 15, 18, 22, 50],
-  [null, 12, 30, 28, 40, 20],
-  [60, 35, 10, 12, 38, 90],
+// Each zone carries its own row, so a row is never looked up by position.
+const zones: { zone: string; minutes: (number | null)[] }[] = [
+  { zone: "Gate A", minutes: [22, 40, 18, 25, 44, 60] },
+  { zone: "Hall B", minutes: [10, 55, 70, 64, 30, 12] },
+  { zone: "Dock 2", minutes: [45, 20, 15, 18, 22, 50] },
+  { zone: "Parking", minutes: [null, 12, 30, 28, 40, 20] },
+  { zone: "Perimeter", minutes: [60, 35, 10, 12, 38, 90] },
 ]
 const max = 90
 // The kit's sequential heatmap scale (as in heatmap-week-hours): the accent's ramp mixed into the track colour, from the
@@ -46,10 +46,10 @@ export function HeatmapZones() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {zones.map((z, zi) => (
-            <TableRow key={z} className="hover:bg-transparent">
-              <TableCell className="pr-2 font-medium">{z}</TableCell>
-              {minutes[zi].map((v, si) => (
+          {zones.map(({ zone, minutes }) => (
+            <TableRow key={zone} className="hover:bg-transparent">
+              <TableCell className="pr-2 font-medium">{zone}</TableCell>
+              {minutes.map((v, si) => (
                 <TableCell key={si} className="p-0.5">
                   {v === null ? (
                     <span className="no-data flex h-8 rounded-xs">

@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell v0.22.3 · update: npx shadcn add @syncrobotic/app-shell --overwrite
+// @syncrobotic/app-shell v0.22.4 · update: npx shadcn add @syncrobotic/app-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -347,7 +347,9 @@ const isMac = () => /Mac|iPhone|iPad/.test(navigator.platform)
 export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch; linkAs?: React.ElementType }) {
   const [open, setOpen] = React.useState(false)
   const scopes = search.scopes ?? [{ value: "all", label: "Everything" }]
-  const [scope, setScope] = React.useState(scopes[0].value)
+  // The first scope is the widest one, which shows every group; an empty list falls back to the default's value.
+  const widest = scopes[0]?.value ?? "all"
+  const [scope, setScope] = React.useState(widest)
   const scopeLabel = scopes.find((s) => s.value === scope)?.label
   // The platform is read on the client only; the server, and the hydrating render, say "Ctrl K" as before.
   const mac = React.useSyncExternalStore(subscribeNothing, isMac, () => false)
@@ -362,7 +364,7 @@ export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch;
     return () => window.removeEventListener("keydown", onKey)
   }, [])
   const shortcut = mac ? "⌘K" : "Ctrl K"
-  const groups = search.groups.filter((g) => scope === scopes[0].value || g.scope === scope)
+  const groups = search.groups.filter((g) => scope === widest || g.scope === scope)
 
   const scopeMenu = (
     <DropdownMenu>

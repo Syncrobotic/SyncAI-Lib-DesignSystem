@@ -56,9 +56,12 @@ export type StoryFile =
   | "annotated-image"
   | "media-player"
   | "camera-feed"
+  | "joint-state"
   | "tree"
   | "graph"
   | "robot-map"
+  | "point-cloud"
+  | "robot-model"
   | "hooks"
   | "metric-card"
   | "context-menu"
@@ -730,6 +733,19 @@ const entries: Record<string, Entry> = {
       "Offer Reconnect (`onRetry`) only when reconnecting can help, and say why it is offline in `offlineReason` when you know.",
     ],
   },
+  "joint-state": {
+    wide: true,
+    group: "Display",
+    examples: { file: "joint-state", prefix: "JointState" },
+    rules: [
+      "For watching an arm's joints. It has nothing to press: jogging a joint is a control, with its own confirmation and a hold-to-run button.",
+      "Pass the values as ROS sends them (radians and metres) with each joint's `unit`; the panel shows degrees and millimetres. Never convert before passing them, or the limits and the position will disagree.",
+      "Give every joint its URDF `lower` and `upper`. Leave both out only for a continuous joint: it shows no track, and it can never be near a limit.",
+      "Keep `margin` at 5 % of the range unless the arm's safety configuration sets its own soft limits; then pass that fraction, so the panel warns where the controller will.",
+      "Pass `updatedAt` from the message's `header.stamp` when you have it: a robot that keeps publishing an old state still reads Stale. Keep `staleAfterMs` near three missed messages (1 s for a joint state at 10 Hz or faster).",
+      "List the joints in chain order (base to tool), as the URDF does, not alphabetically.",
+    ],
+  },
   alert: {
     group: "Feedback",
     examples: { file: "display", prefix: "Alert" },
@@ -879,7 +895,39 @@ const entries: Record<string, Entry> = {
       "Coordinates are metres from the plan's top-left corner, x to the right and y down, as the plan image is drawn. Convert from your map frame (ROS: y up, origin anywhere) before passing them.",
       "Bottom left holds zoom and the scale bar, so the emergency stop keeps the bottom right. Show the north arrow (`northDeg`) only when the plan is not drawn north up and people need it.",
       "No robots is said on the map, with the plan still shown; loading keeps the frame's size; an error says what failed and offers to reload.",
+      "An occupancy grid is the floor, in greys: free is the surface, occupied the ink, unknown the no-data hatch, never a colour that means a state. A costmap is the accent's ramp under the walls, with its legend in words.",
+      "Laser scans are small dots in a neutral ink (the accent over a grid), never a status colour; they show what a robot sees, so a scan beside the walls says its localisation has drifted.",
+      "Editing (`mode`) is controlled: the app keeps the goal, waypoints and zones and the map reports changes. One rule for panning while editing: the primary pointer edits, the right or middle button and two fingers pan. Every edit has its keys (a crosshair, Enter, Esc, Delete) and is said in words.",
+      "A route still being drawn is grey; only the route a robot is driving is blue (`waypointsPlanned`).",
       "Up to a few hundred robots and zones: everything is redrawn on each pan. A city-scale map, tiles or GPS belong to a map library.",
+    ],
+  },
+  "point-cloud": {
+    group: "Charts",
+    wide: true,
+    examples: { file: "point-cloud", prefix: "PointCloud" },
+    rules: [
+      "For what a LiDAR or depth camera sees, in 3D. A site's floor plan with robots on it is `robot-map`; a mesh or a CAD model is a different item.",
+      "Pass the points in the ROS frame they came in (REP 103: x forward, y left, z up, metres), as a `Float32Array` of x, y, z. Decode the PointCloud2 in the app; NaN points are skipped.",
+      "Colour by height unless intensity answers the question (reflective tape, glass, a retro-reflector). Colour is the accent's single-hue ramp with its scale in the footer, never a rainbow; `colorBy=\"none\"` draws the grey of a map's scans.",
+      "For a live cloud, fix `colorRange` so a colour means the same height from one scan to the next, and set `staleAfterMs` (with `receivedAt` from the message's stamp when you have it) so a frozen cloud says Stale instead of passing for live.",
+      "Give `label` the sensor and the robot (\"Front lidar, Patrol dog 7F3A\"); screen readers hear it with the point count and the extent in metres.",
+      "Keep `pointSize` at 2 px for dense clouds; 3–4 px for sparse ones. Up to about 500,000 points stay smooth to turn: thin larger clouds before passing them (a voxel grid in the app).",
+      "Bottom left holds Reset view and Fit, so the emergency stop keeps the bottom right.",
+    ],
+  },
+  "robot-model": {
+    group: "Display",
+    wide: true,
+    examples: { file: "robot-model", prefix: "RobotModel" },
+    rules: [
+      "For watching a robot's pose: an arm at work, a joint near its limit, the pose a fault stopped it in. It shows the robot and never moves it; jogging and teleoperation are other controls.",
+      "Pass `joints` as ROS sends them (radians, metres for prismatic joints); `jointStateToRecord` turns a `sensor_msgs/JointState` into the record. A value past a limit is drawn where it is, not clamped: the view shows what the robot reports.",
+      "Highlight only what needs someone (a joint near its limit, a link in fault), a handful at most. The link is drawn in the warning colour (`highlightStatus=\"danger\"` for a fault) and a callout names the joint with its value and limits, so it never rests on colour alone.",
+      "Pass `staleAfterMs` whenever the joints come from a live topic (1 s for /joint_states at 10 Hz or more), and `updatedAt` from the message's stamp: the last pose stays, dimmed, with when it arrived.",
+      "Serve meshes from your own origin: `packages` maps each `package://` name to a URL, `meshBaseUrl` is the folder for the rest. STL and COLLADA load; a file that fails is named in the error.",
+      "One view per screen. Each view holds a WebGL context and browsers allow only a few; for a fleet, list the robots and open one view for the robot chosen.",
+      "Load it lazily (`next/dynamic` or `React.lazy`): three.js is large, and only the screens that show a robot model should download it.",
     ],
   },
   command: {
@@ -1137,12 +1185,32 @@ const keyboard: Record<string, [string, string][]> = {
     ["Space", "Select the node, links included"],
     ["Esc", "Clear the selection"],
   ],
+  "point-cloud": [
+    ["Tab", "Move into the view (one stop), then to Reset view and Fit"],
+    ["← / →", "Turn the view around the cloud"],
+    ["↑ / ↓", "Look from higher or lower"],
+    ["Shift + arrows", "Move the view"],
+    ["+ / -", "Zoom in or out"],
+    ["0", "Reset the view"],
+  ],
   "robot-map": [
     ["Tab", "Move into the map (one stop), then to its zoom buttons"],
-    ["← / → / ↑ / ↓", "Move the map"],
+    ["← / → / ↑ / ↓", "Move the map; in an edit mode, move the crosshair (Shift: bigger steps), or carry what was picked up"],
     ["+ / -", "Zoom in or out"],
     ["0", "Show the whole site"],
-    ["Esc", "Clear the selection"],
+    ["Enter / Space", "Edit modes: place a goal, a waypoint or a corner; pick up or drop a waypoint or corner. Enter also closes a zone"],
+    ["← / → after placing a goal", "Turn the goal 15° (Shift: 45°); Enter sets it"],
+    ["Delete / Backspace", "Remove the selected waypoint, or the zone's last corner"],
+    ["Esc", "Cancel what is being drawn or carried; otherwise clear the selection"],
+  ],
+  "robot-model": [
+    ["Tab", "Move into the view: one stop. Its buttons are for the pointer; 0 and F do the same"],
+    ["← / →", "Turn the view around the robot"],
+    ["↑ / ↓", "Look from higher or lower"],
+    ["Shift + arrows", "Move the view"],
+    ["+ / -", "Zoom in or out (the wheel too, once the view has focus)"],
+    ["0", "Reset the view"],
+    ["F", "Fit the robot in view, in its pose now"],
   ],
   tree: [
     ["Tab", "list: move between links and disclosure buttons. select: move into the tree (one stop) and out"],

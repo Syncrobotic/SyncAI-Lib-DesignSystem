@@ -1,4 +1,4 @@
-// @syncrobotic/questionnaire v0.23.0 · update: npx shadcn add @syncrobotic/questionnaire --overwrite
+// @syncrobotic/questionnaire v0.23.1 · update: npx shadcn add @syncrobotic/questionnaire --overwrite
 "use client"
 
 import * as React from "react"
@@ -189,6 +189,7 @@ export function Questionnaire({
   }
 
   const onReview = review && index === questions.length
+  // There is no question on the review page, nor when the list is empty; both cases render without one.
   const q = questions[index]
   // One formula with the counter beside it: question 1 of 4 is 25 %, whatever comes after the questions; the review is 100 %.
   const pct = onReview ? 100 : ((index + 1) / questions.length) * 100
@@ -206,7 +207,7 @@ export function Questionnaire({
             return
           }
           onSubmit(answers)
-        } else if (flag([q])) move(index + 1)
+        } else if (q && flag([q])) move(index + 1)
       }}
     >
       <div className="flex flex-col gap-2">
@@ -250,7 +251,7 @@ export function Questionnaire({
             ))}
           </ul>
         ) : (
-          field(q)
+          q && field(q)
         )}
       </div>
       <div className="flex items-center justify-between gap-2">

@@ -1660,8 +1660,13 @@
         }
       ],
       "meta": {
-        "version": "0.21.0",
+        "version": "0.21.1",
         "changelog": [
+          {
+            "version": "0.21.1",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.21.0",
             "date": "2026-11-20",
@@ -1929,8 +1934,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.16.0",
+        "version": "0.16.1",
         "changelog": [
+          {
+            "version": "0.16.1",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.16.0",
             "date": "2026-11-19",
@@ -2338,8 +2348,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.0",
+        "version": "0.22.1",
         "changelog": [
+          {
+            "version": "0.22.1",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.22.0",
             "date": "2026-11-20",
@@ -2578,8 +2593,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.18.1",
+        "version": "0.18.2",
         "changelog": [
+          {
+            "version": "0.18.2",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.18.1",
             "date": "2026-11-21",
@@ -2613,8 +2633,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.21.1",
+        "version": "0.21.2",
         "changelog": [
+          {
+            "version": "0.21.2",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.21.1",
             "date": "2026-11-21",
@@ -2632,7 +2657,7 @@
       "name": "robot-map",
       "type": "registry:ui",
       "title": "Robot map",
-      "description": "A site floor plan in metres, drawn in SVG with no map library: zones as outlines with icon and name, planned and travelled routes, robots as status shapes with heading and name, selection, pan and zoom by drag, wheel, pinch, buttons and keys, a scale bar and an optional north arrow; RobotMapList shows the same robots as text.",
+      "description": "A site floor plan in metres, drawn in SVG with no map library: a ROS occupancy grid and costmap as the floor, laser scans, zones as outlines with icon and name, planned and travelled routes, robots as status shapes with heading and name, selection, pan and zoom by drag, wheel, pinch, buttons and keys, a scale bar and an optional north arrow; goal, waypoint and zone editing by pointer and keys; RobotMapList shows the same robots as text.",
       "dependencies": [
         "lucide-react"
       ],
@@ -2652,8 +2677,18 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.23.1",
+        "version": "0.24.0",
         "changelog": [
+          {
+            "version": "0.24.0",
+            "date": "2026-11-21",
+            "note": "Layers from ROS and editing. `grid` draws a nav_msgs/OccupancyGrid as the floor (free the map surface, occupied a muted grey at its probability, unknown the no-data hatch), rasterised once per new data array; with no width and height the grid is the plan. `costmap` lays the accent's ramp over it with a legend in words. `scans` draws sensor_msgs/LaserScans as small neutral dots from each robot's pose, one path per scan, skipping invalid readings. `mode` (view, goal, waypoints, zone) places a goal and points it, adds, moves and removes numbered waypoints (grey, blue only with waypointsPlanned) and draws zones corner by corner (`editableZones` drags existing corners), all controlled, with optional `snap`. The primary pointer edits and the right or middle button or two fingers pan; a keyboard crosshair, Enter, Esc and Delete do the same, a banner says what a click does, and each edit is announced. New helpers `gridToPlan`, `rosToPlan`, `rasteriseGrid` and `scanToPoints`."
+          },
+          {
+            "version": "0.23.2",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.23.1",
             "date": "2026-11-21",
@@ -3611,8 +3646,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.21.1",
+        "version": "0.21.2",
         "changelog": [
+          {
+            "version": "0.21.2",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.21.1",
             "date": "2026-11-21",
@@ -3660,6 +3700,108 @@
             "version": "0.23.0",
             "date": "2026-11-20",
             "note": "First release: CameraFeed (label, source, stream or src, status, latencyMs, staleAfterMs, offlineReason, onRetry, onSnapshot, audio, aspectRatio, children, labels) over a native <video> the app feeds. The header says the camera, the robot and the state by shape and word: Live with the latency, Connecting (blue spinner), Stalled · last frame 14:02:31 over a dimmed picture after staleAfterMs without a frame (requestVideoFrameCallback, else timeupdate), Paused, Camera offline with an optional Reconnect, No camera. Pause view, snapshot (PNG), mute only with audio, full screen; Space and F while focus is inside. Overlays in a layer over the picture; aspectRatio holds the layout before the first frame. No streaming library."
+          }
+        ]
+      }
+    },
+    {
+      "name": "joint-state",
+      "type": "registry:ui",
+      "title": "Joint state",
+      "description": "A robot arm's joints for monitoring (ROS sensor_msgs/JointState with the URDF's limits): each joint's position in degrees or millimetres on a thin track between its limits, velocity and effort, near-limit and at-limit in words with an icon, and loading, empty and stale states.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/skeleton",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/robot-icons"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/joint-state.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.24.0",
+        "changelog": [
+          {
+            "version": "0.24.0",
+            "date": "2026-11-21",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "point-cloud",
+      "type": "registry:ui",
+      "title": "Point cloud",
+      "description": "A LiDAR or depth point cloud (a decoded ROS PointCloud2) drawn with raw WebGL2 and no 3D library: coloured by height or intensity on the accent's single-hue ramp with its scale, a recessive ground grid, the robot at the origin and an axes gizmo in words; orbit, pan and zoom by pointer, touch and keyboard; loading, empty, error, stale and no-WebGL states.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/button-group",
+        "@syncrobotic/skeleton"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/point-cloud.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.24.0",
+        "changelog": [
+          {
+            "version": "0.24.0",
+            "date": "2026-11-21",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "robot-model",
+      "type": "registry:ui",
+      "title": "Robot model",
+      "description": "A robot's pose in 3D from its URDF and live joint values (ROS sensor_msgs/JointState), for monitoring: neutral greys from the theme, a ground grid and axes named in words; highlighted joints in a status colour with a callout naming them; orbit, pan and zoom by pointer and keys; loading, error with the failing file, empty, stale and no-WebGL states in words. The kit's one three.js item.",
+      "dependencies": [
+        "three@^0.187.0",
+        "urdf-loader@^0.13.1",
+        "lucide-react"
+      ],
+      "devDependencies": [
+        "@types/three@^0.187.0"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/button-group",
+        "@syncrobotic/spinner",
+        "@syncrobotic/skeleton"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/robot-model.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.24.0",
+        "changelog": [
+          {
+            "version": "0.24.0",
+            "date": "2026-11-21",
+            "note": "First release."
           }
         ]
       }
@@ -3715,8 +3857,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.23.1",
+        "version": "0.23.2",
         "changelog": [
+          {
+            "version": "0.23.2",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.23.1",
             "date": "2026-11-21",
@@ -4152,8 +4299,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.1",
+        "version": "0.23.2",
         "changelog": [
+          {
+            "version": "0.23.2",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.23.1",
             "date": "2026-11-21",
@@ -4213,8 +4365,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.1",
+        "version": "0.23.2",
         "changelog": [
+          {
+            "version": "0.23.2",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.23.1",
             "date": "2026-11-21",
@@ -4661,8 +4818,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.23.1",
         "changelog": [
+          {
+            "version": "0.23.1",
+            "date": "2026-11-21",
+            "note": "A paged form with no questions renders and Next does nothing, instead of throwing. Compiles with noUncheckedIndexedAccess."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -5034,8 +5196,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.3",
+        "version": "0.22.4",
         "changelog": [
+          {
+            "version": "0.22.4",
+            "date": "2026-11-21",
+            "note": "Search with no scopes falls back to all groups instead of throwing. Compiles with noUncheckedIndexedAccess."
+          },
           {
             "version": "0.22.3",
             "date": "2026-11-21",
@@ -5347,8 +5514,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -5619,8 +5791,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -5768,8 +5945,13 @@
         }
       ],
       "meta": {
-        "version": "0.21.0",
+        "version": "0.21.1",
         "changelog": [
+          {
+            "version": "0.21.1",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.21.0",
             "date": "2026-11-20",
@@ -6078,8 +6260,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -6123,8 +6310,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.0",
+        "version": "0.22.1",
         "changelog": [
+          {
+            "version": "0.22.1",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.22.0",
             "date": "2026-11-20",
@@ -6268,8 +6460,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.0",
+        "version": "0.22.1",
         "changelog": [
+          {
+            "version": "0.22.1",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.22.0",
             "date": "2026-11-20",
@@ -6318,8 +6515,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.0",
+        "version": "0.22.1",
         "changelog": [
+          {
+            "version": "0.22.1",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.22.0",
             "date": "2026-11-20",
@@ -6443,8 +6645,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -6480,8 +6687,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.1",
+        "version": "0.15.2",
         "changelog": [
+          {
+            "version": "0.15.2",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.15.1",
             "date": "2026-11-21",
@@ -6847,8 +7059,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.2",
+        "version": "0.22.3",
         "changelog": [
+          {
+            "version": "0.22.3",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.22.2",
             "date": "2026-11-20",
@@ -6898,8 +7115,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.3",
+        "version": "0.22.4",
         "changelog": [
+          {
+            "version": "0.22.4",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.22.3",
             "date": "2026-11-21",
@@ -6959,8 +7181,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.0",
+        "version": "0.22.1",
         "changelog": [
+          {
+            "version": "0.22.1",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.22.0",
             "date": "2026-11-20",
@@ -6995,8 +7222,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.17.4",
         "changelog": [
+          {
+            "version": "0.17.4",
+            "date": "2026-11-21",
+            "note": "Renders with an empty tabs list instead of throwing. Compiles with noUncheckedIndexedAccess."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -7327,8 +7559,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -7492,8 +7729,13 @@
         }
       ],
       "meta": {
-        "version": "0.21.0",
+        "version": "0.21.1",
         "changelog": [
+          {
+            "version": "0.21.1",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.21.0",
             "date": "2026-11-20",
@@ -7600,8 +7842,13 @@
         }
       ],
       "meta": {
-        "version": "0.21.0",
+        "version": "0.21.1",
         "changelog": [
+          {
+            "version": "0.21.1",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.21.0",
             "date": "2026-11-20",
@@ -7649,8 +7896,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.17.4",
         "changelog": [
+          {
+            "version": "0.17.4",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -8345,8 +8597,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.17.4",
         "changelog": [
+          {
+            "version": "0.17.4",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",

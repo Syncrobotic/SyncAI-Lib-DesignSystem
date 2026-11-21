@@ -1,4 +1,4 @@
-// @syncrobotic/filters v0.23.1 · update: npx shadcn add @syncrobotic/filters --overwrite
+// @syncrobotic/filters v0.23.2 · update: npx shadcn add @syncrobotic/filters --overwrite
 "use client"
 
 import * as React from "react"
@@ -173,7 +173,9 @@ export function matchRule(rule: FilterRule, row: object, field: FilterField): bo
       const d = toDay(raw)
       if (!d) return false
       if (op === "between") {
-        const [a, b] = [...(v as string[])].sort()
+        // Either end may come first; ISO days compare as strings, so the smaller one is the start.
+        const [from, to] = v as [string, string]
+        const [a, b] = from <= to ? [from, to] : [to, from]
         return d >= a && d <= b
       }
       const x = v as string
@@ -258,7 +260,7 @@ function parseValue(field: FilterField, operator: FilterOperator, text: string):
     case "number":
       return Number.isFinite(num(text)) ? num(text) : undefined
     case "numbers":
-      return list.length === 2 && list.every((p) => Number.isFinite(num(p))) ? [num(list[0]), num(list[1])] : undefined
+      return list.length === 2 && list.every((p) => Number.isFinite(num(p))) ? [num(list[0]!), num(list[1]!)] : undefined
     case "day":
       return DAY.test(text) ? text : undefined
     case "days":
@@ -345,8 +347,9 @@ export type FilterLabels = Omit<typeof defaultFilterLabels, "operators"> & { ope
 
 // Angles sit on the number ("-2.5°"); every other unit is one space away, as in NumberField.
 const withUnit = (n: number, unit?: string) => (unit ? `${n}${unit === "°" ? "" : " "}${unit}` : String(n))
+// Callers check the day's shape (DAY) first. A part that is missing anyway gives an invalid date, as it always has.
 const fromDay = (d: string) => {
-  const [y, m, day] = d.split("-").map(Number)
+  const [y = NaN, m = NaN, day = NaN] = d.split("-").map(Number)
   return new Date(y, m - 1, day)
 }
 
@@ -359,7 +362,7 @@ export function describeValue(rule: FilterRule, field: FilterField, labels: Pick
       return String(v)
     case "option": {
       const names = [v].flat().map((x) => field.options.find((o) => o.value === x)?.label ?? String(x))
-      return names.length > 1 ? labels.more(names[0], names.length - 1) : (names[0] ?? "")
+      return names.length > 1 ? labels.more(names[0]!, names.length - 1) : (names[0] ?? "")
     }
     case "number":
       return Array.isArray(v) ? `${v[0]} – ${withUnit(Number(v[1]), field.unit)}` : withUnit(Number(v), field.unit)

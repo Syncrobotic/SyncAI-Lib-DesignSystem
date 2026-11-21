@@ -4256,6 +4256,216 @@
    ]
   }
  ],
+ "joint-state": [
+  {
+   "name": "JointState",
+   "props": [
+    {
+     "name": "joints",
+     "type": "JointStateJoint[]",
+     "required": true,
+     "description": "The joints, in the order to list them (usually the URDF's chain order). Leave it empty while there are none."
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "description": "The arm's name, written above the list and naming the panel for screen readers: \"Arm 2 · UR10e\"."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "default": "false",
+     "description": "Waiting for the first joint state: a skeleton the size of the list."
+    },
+    {
+     "name": "updatedAt",
+     "type": "number",
+     "description": "When this joint state was measured, in ms since the epoch (the message's `header.stamp`). Given, only a new value is an update (a re-sent old message is not), and it is the time \"Stale · last update\" shows. Without it, each new `joints` array is an update. Either way the wait is timed by this browser's clock."
+    },
+    {
+     "name": "staleAfterMs",
+     "type": "number",
+     "default": "1000",
+     "description": "With no update for this long, the panel says \"Stale\" with the last update's time and dims the values."
+    },
+    {
+     "name": "margin",
+     "type": "number",
+     "default": "0.05",
+     "description": "How close to a limit counts as near, as a fraction of each joint's range."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "BCP 47 tag for the numbers and the time (\"zh-TW\", \"de\"). Left out, numbers use the browser's language."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<JointStateLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "title",
+       "type": "string",
+       "default": "\"Joint states\"",
+       "description": "The panel's name when there is no `label`."
+      },
+      {
+       "name": "joint",
+       "type": "string",
+       "default": "\"Joint\"",
+       "description": "Column headings on a wide panel; on a narrow one they are written before each value."
+      },
+      {
+       "name": "position",
+       "type": "string",
+       "default": "\"Position\"",
+       "description": ""
+      },
+      {
+       "name": "velocity",
+       "type": "string",
+       "default": "\"Velocity\"",
+       "description": ""
+      },
+      {
+       "name": "effort",
+       "type": "string",
+       "default": "\"Effort\"",
+       "description": ""
+      },
+      {
+       "name": "degrees",
+       "type": "(value: string) => string",
+       "default": "(v) => `${v}°`",
+       "description": "A revolute position, given already formatted: \"42.0\" → \"42.0°\"."
+      },
+      {
+       "name": "millimetres",
+       "type": "(value: string) => string",
+       "default": "(v) => `${v} mm`",
+       "description": "A prismatic position: \"120.5\" → \"120.5 mm\"."
+      },
+      {
+       "name": "degreesPerSecond",
+       "type": "(value: string) => string",
+       "default": "(v) => `${v} °/s`",
+       "description": ""
+      },
+      {
+       "name": "millimetresPerSecond",
+       "type": "(value: string) => string",
+       "default": "(v) => `${v} mm/s`",
+       "description": ""
+      },
+      {
+       "name": "newtonMetres",
+       "type": "(value: string) => string",
+       "default": "(v) => `${v} N·m`",
+       "description": "Effort without an effort limit, revolute."
+      },
+      {
+       "name": "newtons",
+       "type": "(value: string) => string",
+       "default": "(v) => `${v} N`",
+       "description": "Effort without an effort limit, prismatic."
+      },
+      {
+       "name": "effortPercent",
+       "type": "(value: string) => string",
+       "default": "(v) => `${v} %`",
+       "description": "Effort as a share of the effort limit: \"34\" → \"34 %\"."
+      },
+      {
+       "name": "range",
+       "type": "(lower: string, upper: string) => string",
+       "default": "(lower, upper) => `range ${lower} to ${upper}`",
+       "description": "The limits, read by screen readers (the track's end numbers are drawn for the eye)."
+      },
+      {
+       "name": "noLimits",
+       "type": "string",
+       "default": "\"No limits (continuous)\"",
+       "description": "Written where the track would be for a joint without limits."
+      },
+      {
+       "name": "nearLower",
+       "type": "string",
+       "default": "\"Near lower limit\"",
+       "description": ""
+      },
+      {
+       "name": "nearUpper",
+       "type": "string",
+       "default": "\"Near upper limit\"",
+       "description": ""
+      },
+      {
+       "name": "atLower",
+       "type": "string",
+       "default": "\"At lower limit\"",
+       "description": ""
+      },
+      {
+       "name": "atUpper",
+       "type": "string",
+       "default": "\"At upper limit\"",
+       "description": ""
+      },
+      {
+       "name": "beyondLower",
+       "type": "string",
+       "default": "\"Past lower limit\"",
+       "description": ""
+      },
+      {
+       "name": "beyondUpper",
+       "type": "string",
+       "default": "\"Past upper limit\"",
+       "description": ""
+      },
+      {
+       "name": "stale",
+       "type": "string",
+       "default": "\"Stale\"",
+       "description": ""
+      },
+      {
+       "name": "lastUpdate",
+       "type": "(time: string) => string",
+       "default": "(time) => `last update ${time}`",
+       "description": "After \"Stale\": when the last joint state arrived."
+      },
+      {
+       "name": "formatTime",
+       "type": "(date: Date, locale?: string) => string",
+       "default": "(d, locale) => locale ? d.toLocaleTimeString(locale, { hour: \"2-digit\", minute: \"2-digit\", second: \"2-digit\", hourCycle: \"h23\" }) : [d.getHours(), d.getMinutes(), d.getSeconds()].map(pad).join(\":\")",
+       "description": "The time of the last update. 24-hour clock by default; with `locale`, that locale's 24-hour time."
+      },
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Loading joint states…\"",
+       "description": ""
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"No joint states yet\"",
+       "description": ""
+      },
+      {
+       "name": "emptyHint",
+       "type": "string",
+       "default": "\"Positions show here once the robot publishes them.\"",
+       "description": ""
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "kbd": [
   {
    "name": "Kbd",
@@ -5189,6 +5399,246 @@
    "inherits": []
   }
  ],
+ "point-cloud": [
+  {
+   "name": "PointCloud",
+   "props": [
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "Names the view for screen readers, with the summary: \"Front lidar, Patrol dog 7F3A\"."
+    },
+    {
+     "name": "points",
+     "type": "Float32Array<ArrayBufferLike>",
+     "required": true,
+     "description": "The points, x, y, z interleaved, in metres, in a ROS frame (REP 103: x forward, y left, z up), as decoded from a sensor_msgs/PointCloud2. NaN points are skipped. Pass a new array for each scan: it is uploaded once, and an array changed in place is not seen."
+    },
+    {
+     "name": "intensity",
+     "type": "Float32Array<ArrayBufferLike>",
+     "description": "One intensity per point, in the same order."
+    },
+    {
+     "name": "colorBy",
+     "type": "\"height\" | \"intensity\" | \"none\"",
+     "description": "What the colour shows. Defaults to intensity when `intensity` is given, else height; intensity without the array falls back to height."
+    },
+    {
+     "name": "colorRange",
+     "type": "[number, number]",
+     "description": "Fixes the colour scale's ends (metres for height), so colours mean the same from one scan to the next. Defaults to the cloud's own range."
+    },
+    {
+     "name": "pointSize",
+     "type": "number",
+     "default": "2",
+     "description": "The points' size in CSS pixels."
+    },
+    {
+     "name": "grid",
+     "type": "boolean",
+     "default": "true",
+     "description": "The ground grid on z = 0, in hairlines."
+    },
+    {
+     "name": "axes",
+     "type": "boolean",
+     "default": "true",
+     "description": "The gizmo that says which way x, y and z point, in words."
+    },
+    {
+     "name": "robot",
+     "type": "boolean | { length: number; width: number; }",
+     "description": "The robot's footprint at the origin, facing +x: `true` for 0.9 × 0.6 m, or its own length and width in metres."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "description": "Bones in the view while the first cloud loads."
+    },
+    {
+     "name": "error",
+     "type": "ReactNode",
+     "description": "The cloud could not be loaded: `true` for the default words, or your own message."
+    },
+    {
+     "name": "onRetry",
+     "type": "() => void",
+     "description": "Shows a button under the error that tries again."
+    },
+    {
+     "name": "staleAfterMs",
+     "type": "number",
+     "description": "With no new cloud for this long, the view says \"Stale\" with when the last one arrived, and dims. Off by default."
+    },
+    {
+     "name": "receivedAt",
+     "type": "number",
+     "description": "When the cloud was taken (the message's header stamp, in ms since the epoch). Without it, when `points` arrived."
+    },
+    {
+     "name": "aspectRatio",
+     "type": "number",
+     "default": "16 / 9",
+     "description": "Width over height of the view. 16 / 9 by default."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<PointCloudLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "keys",
+       "type": "string",
+       "default": "\"Drag to rotate, right-drag or two fingers to pan; the wheel or a pinch zooms once the view has focus. Arrow keys rotate, Shift with the arrows pans, plus and minus zoom, 0 resets the view.\"",
+       "description": "Read after the summary when the view has focus: what the pointer and the keys do."
+      },
+      {
+       "name": "count",
+       "type": "(n: number) => string",
+       "default": "(n) => (n === 1 ? \"1 point\" : `${n.toLocaleString(\"en-US\")} points`)",
+       "description": "\"123,456 points\"."
+      },
+      {
+       "name": "bounds",
+       "type": "(b: PointCloudBounds) => string",
+       "default": "(b) => `x ${fixed1(b.min[0])} to ${fixed1(b.max[0])} m forward, y ${fixed1(b.min[1])} to ${fixed1(b.max[1])} m left, z ${fixed1(b.min[2])} to ${fixed1(b.max[2])} m up`",
+       "description": "The extent, read by screen readers and shown nowhere else: \"x −4.0 to 12.0 m forward, …\"."
+      },
+      {
+       "name": "robotAtOrigin",
+       "type": "string",
+       "default": "\"The robot is at the origin, facing x\"",
+       "description": "Read with the summary when `robot` is drawn."
+      },
+      {
+       "name": "frameTime",
+       "type": "(ms: number) => string",
+       "default": "(ms) => `Frame ${ms < 10 ? ms.toFixed(1) : Math.round(ms)} ms`",
+       "description": "How long the last frame took, from the start of drawing until the GPU finished it, in the footer."
+      },
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Loading the point cloud\"",
+       "description": ""
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"No points\"",
+       "description": "Said in the view when there is nothing to draw."
+      },
+      {
+       "name": "error",
+       "type": "string",
+       "default": "\"The point cloud could not be loaded.\"",
+       "description": ""
+      },
+      {
+       "name": "retry",
+       "type": "string",
+       "default": "\"Load again\"",
+       "description": ""
+      },
+      {
+       "name": "stale",
+       "type": "string",
+       "default": "\"Stale\"",
+       "description": ""
+      },
+      {
+       "name": "lastScan",
+       "type": "(time: string) => string",
+       "default": "(time) => `last scan ${time}`",
+       "description": "After \"Stale\": when the last cloud arrived."
+      },
+      {
+       "name": "formatTime",
+       "type": "(date: Date) => string",
+       "default": "(d) => [d.getHours(), d.getMinutes(), d.getSeconds()].map((n) => String(n).padStart(2, \"0\")).join(\":\")",
+       "description": "The time of the last cloud. 24-hour clock by default; pass the site's own format or time zone."
+      },
+      {
+       "name": "noWebGL",
+       "type": "string",
+       "default": "\"This browser cannot draw the 3D view.\"",
+       "description": "The browser cannot draw 3D: the first line, then why and what to do."
+      },
+      {
+       "name": "noWebGLHint",
+       "type": "string",
+       "default": "\"WebGL 2 is turned off or not supported. Turn on hardware acceleration, or open this page in a current browser.\"",
+       "description": ""
+      },
+      {
+       "name": "contextLost",
+       "type": "string",
+       "default": "\"Restoring the 3D view…\"",
+       "description": "Said while the browser gives the 3D view back after taking it away (a GPU reset, too many views open)."
+      },
+      {
+       "name": "resetView",
+       "type": "string",
+       "default": "\"Reset view\"",
+       "description": ""
+      },
+      {
+       "name": "fit",
+       "type": "string",
+       "default": "\"Fit to points\"",
+       "description": ""
+      },
+      {
+       "name": "axisX",
+       "type": "string",
+       "default": "\"x forward\"",
+       "description": "The words on the axes gizmo: each axis by its direction, so it never relies on colour."
+      },
+      {
+       "name": "axisY",
+       "type": "string",
+       "default": "\"y left\"",
+       "description": ""
+      },
+      {
+       "name": "axisZ",
+       "type": "string",
+       "default": "\"z up\"",
+       "description": ""
+      },
+      {
+       "name": "scaleHeight",
+       "type": "string",
+       "default": "\"Height\"",
+       "description": "The colour scale's name in the footer, by what it shows."
+      },
+      {
+       "name": "scaleIntensity",
+       "type": "string",
+       "default": "\"Intensity\"",
+       "description": ""
+      },
+      {
+       "name": "metres",
+       "type": "(m: number) => string",
+       "default": "(m) => `${fixed1(m)} m`",
+       "description": "The values at the colour scale's ends."
+      },
+      {
+       "name": "intensityValue",
+       "type": "(v: number) => string",
+       "default": "(v) => (Math.abs(v) >= 100 ? Math.round(v).toString() : Number(v.toPrecision(3)).toString())",
+       "description": ""
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "popover": [
   {
    "name": "Popover",
@@ -5598,19 +6048,44 @@
     {
      "name": "width",
      "type": "number",
-     "required": true,
-     "description": "The site's size in metres: the plan's width and height."
+     "description": "The site's size in metres: the plan's width and height. With `grid` and no plan of its own, leave them out: the grid's size is the plan's."
     },
     {
      "name": "height",
      "type": "number",
-     "required": true,
      "description": ""
     },
     {
      "name": "floorplan",
      "type": "ReactNode",
      "description": "The floor plan under everything: an image URL (stretched over width × height), or SVG drawn in metres."
+    },
+    {
+     "name": "grid",
+     "type": "RobotMapGrid",
+     "description": "A ROS occupancy grid drawn as the floor (under `floorplan`, when both are given): free cells are the map's surface, occupied ones a muted grey at their probability, unknown ones the no-data hatch. Drawn into an image once per new `data` array, so pass a new array for new cells and the same one otherwise."
+    },
+    {
+     "name": "costmap",
+     "type": "RobotMapGrid",
+     "description": "A ROS costmap (the same message) over the floor, in the accent's ramp from clear to strong, with a legend."
+    },
+    {
+     "name": "scans",
+     "type": "RobotMapScan[]",
+     "default": "[]",
+     "description": "Laser scans, one per robot, drawn as small dots from that robot's current position and heading. One path per scan, so 10 robots × 1080 beams stay smooth."
+    },
+    {
+     "name": "scanColor",
+     "type": "\"foreground\" | \"muted-foreground\" | \"map-point\" | \"chart-1\"",
+     "default": "\"foreground\"",
+     "description": "The dots' ink, from the tokens: the ink colour by default; never a status colour."
+    },
+    {
+     "name": "origin",
+     "type": "{ x: number; y: number; }",
+     "description": "Where the plan's bottom-left corner is in the ROS map frame, in metres: places `grid` and `costmap` on it. Without it, the grid's origin (the grid is the plan)."
     },
     {
      "name": "zones",
@@ -5664,6 +6139,58 @@
      "name": "fill",
      "type": "boolean",
      "description": "Fill the parent's height (a full-screen map) instead of keeping the site's proportions."
+    },
+    {
+     "name": "mode",
+     "type": "\"view\" | \"goal\" | \"waypoints\" | \"zone\"",
+     "default": "\"view\"",
+     "description": "What a click (or Enter at the keyboard crosshair) does. `view` (the default) selects robots. `goal` places a goal and a drag points it; `waypoints` adds, moves and removes waypoints; `zone` draws a zone corner by corner. In an edit mode the primary pointer edits and the right or middle button, or two fingers, pan; the wheel and the buttons still zoom."
+    },
+    {
+     "name": "goal",
+     "type": "{ x: number; y: number; heading?: number }",
+     "description": "The goal to show, controlled: a target and the way to face, in plan metres."
+    },
+    {
+     "name": "onGoal",
+     "type": "(goal: RobotMapPose) => void",
+     "description": "Goal mode: the goal placed, on release (or Enter). `heading` is left out when the press did not drag."
+    },
+    {
+     "name": "waypoints",
+     "type": "RobotMapPoint[]",
+     "default": "[]",
+     "description": "Waypoints to show, numbered in order, controlled."
+    },
+    {
+     "name": "onWaypointsChange",
+     "type": "(waypoints: RobotMapPoint[]) => void",
+     "description": "Waypoints mode: the new list after a waypoint is added, moved (while it moves) or removed."
+    },
+    {
+     "name": "waypointsPlanned",
+     "type": "boolean",
+     "description": "The waypoints are the route a robot is driving: the line between them turns the in-progress blue. Otherwise it is grey."
+    },
+    {
+     "name": "onZoneDraw",
+     "type": "(points: RobotMapPoint[]) => void",
+     "description": "Zone mode: a new zone's corners, once it is closed. Ask for its name and kind and add it to `zones`."
+    },
+    {
+     "name": "editableZones",
+     "type": "boolean",
+     "description": "Zone mode: the corners of `zones` can be dragged (or picked up with Enter and moved with the arrows)."
+    },
+    {
+     "name": "onZonesChange",
+     "type": "(zones: RobotMapZone[]) => void",
+     "description": "The zones with a corner moved, while it moves."
+    },
+    {
+     "name": "snap",
+     "type": "number",
+     "description": "Rounds every point placed or moved to this many metres. None by default."
     },
     {
      "name": "labels",
@@ -5789,6 +6316,168 @@
        "type": "(m: number) => string",
        "default": "(m) => `${m} m`",
        "description": "The scale bar's length."
+      },
+      {
+       "name": "costTitle",
+       "type": "string",
+       "default": "\"Cost\"",
+       "description": "The costmap's legend: its name and the two ends of its ramp (\"Cost: low → lethal\")."
+      },
+      {
+       "name": "costLow",
+       "type": "string",
+       "default": "\"low\"",
+       "description": ""
+      },
+      {
+       "name": "costHigh",
+       "type": "string",
+       "default": "\"lethal\"",
+       "description": ""
+      },
+      {
+       "name": "at",
+       "type": "(x: number, y: number) => string",
+       "default": "(x, y) => `${x.toFixed(1)}, ${y.toFixed(1)} m`",
+       "description": "A place in metres, as the crosshair's readout and the announcements write it."
+      },
+      {
+       "name": "editKeys",
+       "type": "string",
+       "default": "\"Arrow keys move the crosshair, Shift for bigger steps; Enter or Space places, Esc cancels. Right-drag or two fingers move the map.\"",
+       "description": "The keys of an edit mode, read with the instructions."
+      },
+      {
+       "name": "goalHint",
+       "type": "string",
+       "default": "\"Press to place the goal, drag to point it. Esc cancels.\"",
+       "description": "The mode banner: what a click does and how to finish or cancel, per mode and step."
+      },
+      {
+       "name": "goalTurnHint",
+       "type": "string",
+       "default": "\"Left and right arrows turn the goal, Enter sets it, Esc cancels.\"",
+       "description": ""
+      },
+      {
+       "name": "waypointsHint",
+       "type": "string",
+       "default": "\"Click to add a waypoint, drag one to move it. Delete removes the selected one.\"",
+       "description": ""
+      },
+      {
+       "name": "carryHint",
+       "type": "string",
+       "default": "\"Arrow keys move it, Enter drops it, Esc puts it back.\"",
+       "description": ""
+      },
+      {
+       "name": "zoneHint",
+       "type": "string",
+       "default": "\"Click to place a new zone's first corner.\"",
+       "description": ""
+      },
+      {
+       "name": "zoneEditableHint",
+       "type": "string",
+       "default": "\"Click to start a new zone, or drag a corner to move it.\"",
+       "description": ""
+      },
+      {
+       "name": "zoneDrawHint",
+       "type": "string",
+       "default": "\"Click to add a corner; click the first corner or press Enter to finish. Backspace removes the last, Esc cancels.\"",
+       "description": ""
+      },
+      {
+       "name": "panHint",
+       "type": "string",
+       "default": "\"Right-drag or two fingers move the map.\"",
+       "description": "The banner's second line on a wide map: how to pan while editing."
+      },
+      {
+       "name": "goalPlaced",
+       "type": "(x: number, y: number) => string",
+       "default": "(x, y) => `Goal at ${defaultLabels.at(x, y)}. Left and right arrows turn it, Enter sets it.`",
+       "description": "Said in the live region as each edit happens."
+      },
+      {
+       "name": "goalSet",
+       "type": "(x: number, y: number, heading?: number) => string",
+       "default": "(x, y, heading) => `Goal set at ${defaultLabels.at(x, y)}${heading === undefined ? \"\" : `, heading ${Math.round(heading)}°`}`",
+       "description": ""
+      },
+      {
+       "name": "goalCancelled",
+       "type": "string",
+       "default": "\"Goal cancelled\"",
+       "description": ""
+      },
+      {
+       "name": "waypointAdded",
+       "type": "(n: number, x: number, y: number) => string",
+       "default": "(n, x, y) => `Waypoint ${n} added at ${defaultLabels.at(x, y)}`",
+       "description": ""
+      },
+      {
+       "name": "waypointPicked",
+       "type": "(n: number) => string",
+       "default": "(n) => `Waypoint ${n} picked up. Arrow keys move it, Enter drops it, Esc puts it back.`",
+       "description": ""
+      },
+      {
+       "name": "waypointMoved",
+       "type": "(n: number, x: number, y: number) => string",
+       "default": "(n, x, y) => `Waypoint ${n} moved to ${defaultLabels.at(x, y)}`",
+       "description": ""
+      },
+      {
+       "name": "waypointRemoved",
+       "type": "(n: number) => string",
+       "default": "(n) => `Waypoint ${n} removed`",
+       "description": ""
+      },
+      {
+       "name": "moveCancelled",
+       "type": "string",
+       "default": "\"Move cancelled\"",
+       "description": ""
+      },
+      {
+       "name": "cornerAdded",
+       "type": "(n: number, x: number, y: number) => string",
+       "default": "(n, x, y) => `Corner ${n} at ${defaultLabels.at(x, y)}`",
+       "description": ""
+      },
+      {
+       "name": "cornerRemoved",
+       "type": "(left: number) => string",
+       "default": "(left) => (left === 1 ? \"Last corner removed, 1 left\" : `Last corner removed, ${left} left`)",
+       "description": ""
+      },
+      {
+       "name": "cornerPicked",
+       "type": "string",
+       "default": "\"Corner picked up. Arrow keys move it, Enter drops it, Esc puts it back.\"",
+       "description": ""
+      },
+      {
+       "name": "cornerMoved",
+       "type": "(x: number, y: number) => string",
+       "default": "(x, y) => `Corner moved to ${defaultLabels.at(x, y)}`",
+       "description": ""
+      },
+      {
+       "name": "zoneDrawn",
+       "type": "(corners: number) => string",
+       "default": "(n) => `Zone drawn with ${n} corners`",
+       "description": ""
+      },
+      {
+       "name": "zoneCancelled",
+       "type": "string",
+       "default": "\"Zone cancelled\"",
+       "description": ""
       }
      ]
     }
@@ -5943,6 +6632,168 @@
        "type": "(m: number) => string",
        "default": "(m) => `${m} m`",
        "description": "The scale bar's length."
+      },
+      {
+       "name": "costTitle",
+       "type": "string",
+       "default": "\"Cost\"",
+       "description": "The costmap's legend: its name and the two ends of its ramp (\"Cost: low → lethal\")."
+      },
+      {
+       "name": "costLow",
+       "type": "string",
+       "default": "\"low\"",
+       "description": ""
+      },
+      {
+       "name": "costHigh",
+       "type": "string",
+       "default": "\"lethal\"",
+       "description": ""
+      },
+      {
+       "name": "at",
+       "type": "(x: number, y: number) => string",
+       "default": "(x, y) => `${x.toFixed(1)}, ${y.toFixed(1)} m`",
+       "description": "A place in metres, as the crosshair's readout and the announcements write it."
+      },
+      {
+       "name": "editKeys",
+       "type": "string",
+       "default": "\"Arrow keys move the crosshair, Shift for bigger steps; Enter or Space places, Esc cancels. Right-drag or two fingers move the map.\"",
+       "description": "The keys of an edit mode, read with the instructions."
+      },
+      {
+       "name": "goalHint",
+       "type": "string",
+       "default": "\"Press to place the goal, drag to point it. Esc cancels.\"",
+       "description": "The mode banner: what a click does and how to finish or cancel, per mode and step."
+      },
+      {
+       "name": "goalTurnHint",
+       "type": "string",
+       "default": "\"Left and right arrows turn the goal, Enter sets it, Esc cancels.\"",
+       "description": ""
+      },
+      {
+       "name": "waypointsHint",
+       "type": "string",
+       "default": "\"Click to add a waypoint, drag one to move it. Delete removes the selected one.\"",
+       "description": ""
+      },
+      {
+       "name": "carryHint",
+       "type": "string",
+       "default": "\"Arrow keys move it, Enter drops it, Esc puts it back.\"",
+       "description": ""
+      },
+      {
+       "name": "zoneHint",
+       "type": "string",
+       "default": "\"Click to place a new zone's first corner.\"",
+       "description": ""
+      },
+      {
+       "name": "zoneEditableHint",
+       "type": "string",
+       "default": "\"Click to start a new zone, or drag a corner to move it.\"",
+       "description": ""
+      },
+      {
+       "name": "zoneDrawHint",
+       "type": "string",
+       "default": "\"Click to add a corner; click the first corner or press Enter to finish. Backspace removes the last, Esc cancels.\"",
+       "description": ""
+      },
+      {
+       "name": "panHint",
+       "type": "string",
+       "default": "\"Right-drag or two fingers move the map.\"",
+       "description": "The banner's second line on a wide map: how to pan while editing."
+      },
+      {
+       "name": "goalPlaced",
+       "type": "(x: number, y: number) => string",
+       "default": "(x, y) => `Goal at ${defaultLabels.at(x, y)}. Left and right arrows turn it, Enter sets it.`",
+       "description": "Said in the live region as each edit happens."
+      },
+      {
+       "name": "goalSet",
+       "type": "(x: number, y: number, heading?: number) => string",
+       "default": "(x, y, heading) => `Goal set at ${defaultLabels.at(x, y)}${heading === undefined ? \"\" : `, heading ${Math.round(heading)}°`}`",
+       "description": ""
+      },
+      {
+       "name": "goalCancelled",
+       "type": "string",
+       "default": "\"Goal cancelled\"",
+       "description": ""
+      },
+      {
+       "name": "waypointAdded",
+       "type": "(n: number, x: number, y: number) => string",
+       "default": "(n, x, y) => `Waypoint ${n} added at ${defaultLabels.at(x, y)}`",
+       "description": ""
+      },
+      {
+       "name": "waypointPicked",
+       "type": "(n: number) => string",
+       "default": "(n) => `Waypoint ${n} picked up. Arrow keys move it, Enter drops it, Esc puts it back.`",
+       "description": ""
+      },
+      {
+       "name": "waypointMoved",
+       "type": "(n: number, x: number, y: number) => string",
+       "default": "(n, x, y) => `Waypoint ${n} moved to ${defaultLabels.at(x, y)}`",
+       "description": ""
+      },
+      {
+       "name": "waypointRemoved",
+       "type": "(n: number) => string",
+       "default": "(n) => `Waypoint ${n} removed`",
+       "description": ""
+      },
+      {
+       "name": "moveCancelled",
+       "type": "string",
+       "default": "\"Move cancelled\"",
+       "description": ""
+      },
+      {
+       "name": "cornerAdded",
+       "type": "(n: number, x: number, y: number) => string",
+       "default": "(n, x, y) => `Corner ${n} at ${defaultLabels.at(x, y)}`",
+       "description": ""
+      },
+      {
+       "name": "cornerRemoved",
+       "type": "(left: number) => string",
+       "default": "(left) => (left === 1 ? \"Last corner removed, 1 left\" : `Last corner removed, ${left} left`)",
+       "description": ""
+      },
+      {
+       "name": "cornerPicked",
+       "type": "string",
+       "default": "\"Corner picked up. Arrow keys move it, Enter drops it, Esc puts it back.\"",
+       "description": ""
+      },
+      {
+       "name": "cornerMoved",
+       "type": "(x: number, y: number) => string",
+       "default": "(x, y) => `Corner moved to ${defaultLabels.at(x, y)}`",
+       "description": ""
+      },
+      {
+       "name": "zoneDrawn",
+       "type": "(corners: number) => string",
+       "default": "(n) => `Zone drawn with ${n} corners`",
+       "description": ""
+      },
+      {
+       "name": "zoneCancelled",
+       "type": "string",
+       "default": "\"Zone cancelled\"",
+       "description": ""
       }
      ]
     },
@@ -5972,6 +6823,268 @@
    "inherits": [
     "Pick<RobotMapProps, \"label\" | \"robots\" | \"zones\" | \"selectedId\" | \"onSelect\" | \"loading\" | \"error\" | \"onRetry\" | \"labels\" | \"className\">"
    ]
+  }
+ ],
+ "robot-model": [
+  {
+   "name": "RobotModel",
+   "props": [
+    {
+     "name": "urdf",
+     "type": "string",
+     "description": "The URDF as text. Use `urdf` or `urdfUrl`."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "default": "false",
+     "description": "The app is still getting the URDF (from a parameter server, say): shows loading until `urdf` or `urdfUrl` arrives."
+    },
+    {
+     "name": "urdfUrl",
+     "type": "string",
+     "description": "Where to fetch the URDF. Relative mesh paths resolve against its folder unless `meshBaseUrl` says otherwise."
+    },
+    {
+     "name": "packages",
+     "type": "Record<string, string>",
+     "description": "Where each `package://` package lives: `{ arm_description: \"/robots/arm_description\" }`."
+    },
+    {
+     "name": "meshBaseUrl",
+     "type": "string",
+     "description": "The folder relative mesh paths resolve against, and that holds any package not in `packages` (`<meshBaseUrl>/<package>/…`)."
+    },
+    {
+     "name": "joints",
+     "type": "Record<string, number>",
+     "description": "The joints' positions, as ROS sends them (`sensor_msgs/JointState`): radians, or metres for prismatic joints. `jointStateToRecord` converts a message."
+    },
+    {
+     "name": "highlight",
+     "type": "string[]",
+     "description": "Joint or link names to emphasise: a joint near its limit, a link in fault. Each is drawn in the status colour and named in words."
+    },
+    {
+     "name": "highlightStatus",
+     "type": "\"warning\" | \"danger\"",
+     "default": "\"warning\"",
+     "description": "The status colour of the highlight. `warning` (needs attention) by default; `danger` for a fault."
+    },
+    {
+     "name": "up",
+     "type": "\"y\" | \"z\"",
+     "default": "\"z\"",
+     "description": "Which axis of the URDF is up. ROS uses z."
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "description": "The robot's name in the header and the summary. Defaults to the URDF's `<robot name>`."
+    },
+    {
+     "name": "updatedAt",
+     "type": "number | Date",
+     "description": "When the joint values were measured (the message's stamp). Without it, the time they last changed here."
+    },
+    {
+     "name": "staleAfterMs",
+     "type": "number",
+     "description": "With no update for this long, the view says \"Stale\" with the last update's time over the last pose. Off by default."
+    },
+    {
+     "name": "webgl",
+     "type": "boolean",
+     "description": "Whether to draw in 3D. Defaults to whether the browser can (WebGL); false shows the words fallback, for a device that should not draw 3D."
+    },
+    {
+     "name": "onRetry",
+     "type": "() => void",
+     "description": "Called by \"Load again\" after an error, instead of reloading the same files."
+    },
+    {
+     "name": "aspectRatio",
+     "type": "number",
+     "default": "4 / 3",
+     "description": "Width over height of the view, so it holds its size while loading. 4 / 3 by default."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<RobotModelLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "keys",
+       "type": "string",
+       "default": "\"Drag to turn the view, right-drag to move it, and the wheel or a pinch to zoom once the view has focus. Arrow keys turn, Shift with the arrows moves, plus and minus zoom, 0 resets the view and F fits the robot. The view only shows the robot; it does not move it.\"",
+       "description": "Read after the summary when the view has focus: what the pointer and the keys do."
+      },
+      {
+       "name": "robot",
+       "type": "string",
+       "default": "\"Robot\"",
+       "description": "The name when neither `label` nor the URDF gives one."
+      },
+      {
+       "name": "jointCount",
+       "type": "(n: number) => string",
+       "default": "(n) => (n === 1 ? \"1 joint\" : `${n} joints`)",
+       "description": "\"6 joints\": the joints that move."
+      },
+      {
+       "name": "summary",
+       "type": "(robot: string, joints: number) => string",
+       "default": "(robot, n) => `${robot}, 3D view, ${n === 1 ? \"1 joint\" : `${n} joints`}`",
+       "description": "The summary the view is read as: the robot, that it is a 3D view, and how many joints move."
+      },
+      {
+       "name": "highlighted",
+       "type": "(items: string[]) => string",
+       "default": "(items) => `Highlighted: ${items.join(\"; \")}`",
+       "description": "Added to the summary when something is highlighted: each item is one joint or link, described."
+      },
+      {
+       "name": "jointValue",
+       "type": "(value: number, type: RobotModelJointType) => string",
+       "default": "(value, type) => (type === \"prismatic\" ? millimetres(value) : degrees(value))",
+       "description": "A joint's value in words: degrees for revolute joints, millimetres for prismatic ones (ROS sends radians and metres)."
+      },
+      {
+       "name": "jointDetail",
+       "type": "(value: string | undefined, lower: string | undefined, upper: string | undefined) => string",
+       "default": "(value, lower, upper) => [value && `at ${value}`, lower !== undefined && upper !== undefined && `limits ${lower} to ${upper}`].filter(Boolean).join(\", \")",
+       "description": "A highlighted joint described: its value and its limits. `value` and the limits are already in words."
+      },
+      {
+       "name": "link",
+       "type": "string",
+       "default": "\"link\"",
+       "description": "A highlighted link (not a joint) described."
+      },
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Loading robot model…\"",
+       "description": ""
+      },
+      {
+       "name": "loadingMeshes",
+       "type": "(loaded: number, total: number) => string",
+       "default": "(loaded, total) => `Loading meshes, ${loaded} of ${total}`",
+       "description": "While meshes arrive: \"Loading meshes, 3 of 7\"."
+      },
+      {
+       "name": "error",
+       "type": "string",
+       "default": "\"The robot model could not be loaded.\"",
+       "description": "The first line of the error."
+      },
+      {
+       "name": "errorDetail",
+       "type": "(path: string, reason: string) => string",
+       "default": "(path, reason) => `${path}: ${reason}`",
+       "description": "What failed, under it: the file in words and why."
+      },
+      {
+       "name": "invalidUrdf",
+       "type": "string",
+       "default": "\"not a URDF (no <robot> element, or the XML is broken)\"",
+       "description": "Why a URDF is not one: it is not XML, or it has no `<robot>`."
+      },
+      {
+       "name": "missingPackage",
+       "type": "(pkg: string) => string",
+       "default": "(pkg) => `no path given for package “${pkg}”`",
+       "description": "A `package://` path whose package has no entry in `packages` and no `meshBaseUrl` to fall back on."
+      },
+      {
+       "name": "unsupportedMesh",
+       "type": "string",
+       "default": "\"this mesh format is not supported (STL and COLLADA are)\"",
+       "description": "A mesh in a format the default loader does not read."
+      },
+      {
+       "name": "retry",
+       "type": "string",
+       "default": "\"Load again\"",
+       "description": ""
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"No robot model to show.\"",
+       "description": "With no URDF given."
+      },
+      {
+       "name": "stale",
+       "type": "string",
+       "default": "\"Stale\"",
+       "description": ""
+      },
+      {
+       "name": "lastUpdate",
+       "type": "(time: string) => string",
+       "default": "(time) => `last update ${time}`",
+       "description": "After \"Stale\": when the joints last changed."
+      },
+      {
+       "name": "formatTime",
+       "type": "(date: Date) => string",
+       "default": "(d) => [d.getHours(), d.getMinutes(), d.getSeconds()].map((n) => String(n).padStart(2, \"0\")).join(\":\")",
+       "description": "The time of the last update. 24-hour clock by default; pass the site's own format or time zone."
+      },
+      {
+       "name": "noWebgl",
+       "type": "string",
+       "default": "\"3D view unavailable: this browser cannot draw 3D (WebGL is off or not supported).\"",
+       "description": "The fallback's first line, when this browser cannot draw 3D."
+      },
+      {
+       "name": "noWebglDetail",
+       "type": "string",
+       "default": "\"The joint positions are listed below instead.\"",
+       "description": "Under it: what the person can still read."
+      },
+      {
+       "name": "jointsHeading",
+       "type": "string",
+       "default": "\"Joint positions\"",
+       "description": "The fallback's list of joints."
+      },
+      {
+       "name": "noValue",
+       "type": "string",
+       "default": "\"No value\"",
+       "description": "A joint with no value in `joints`."
+      },
+      {
+       "name": "contextLost",
+       "type": "string",
+       "default": "\"Restoring the 3D view…\"",
+       "description": "While the graphics context comes back after the GPU reset it."
+      },
+      {
+       "name": "resetView",
+       "type": "string",
+       "default": "\"Reset the view\"",
+       "description": ""
+      },
+      {
+       "name": "fitView",
+       "type": "string",
+       "default": "\"Fit the robot in view\"",
+       "description": ""
+      },
+      {
+       "name": "axes",
+       "type": "{ x: string; y: string; z: string; }",
+       "default": "{ x: \"Forward\", y: \"Left\", z: \"Up\" }",
+       "description": "The axes gizmo's words for the robot's own frame (ROS REP 103: x forward, y left, z up)."
+      }
+     ]
+    }
+   ],
+   "inherits": []
   }
  ],
  "route-progress": [

@@ -8,6 +8,7 @@ export type NavLink = {
   href: string
   label: string
   /** In-page anchors, listed under the link while its page is open. */ sections?: { href: string; label: string }[]
+  /** A beta item: its API may still change in a minor release. */ beta?: boolean
 }
 export type NavGroup = { title: string; links: NavLink[] }
 export type Scope = { key: string; label: string; href: string; match: string[]; groups: NavGroup[] }
@@ -17,13 +18,14 @@ export const scopes: Scope[] = [
     key: "foundations",
     label: "Foundations",
     href: "/docs/foundations",
-    match: ["/docs/foundations", "/docs/installation", "/docs/nextjs", "/docs/localisation", "/docs/tokens", "/docs/upgrading", "/docs/ai"],
+    match: ["/docs/foundations", "/docs/installation", "/docs/robotics", "/docs/nextjs", "/docs/localisation", "/docs/tokens", "/docs/upgrading", "/docs/ai"],
     groups: [
       {
         title: "Getting started",
         links: [
           { href: "/docs/foundations", label: "Overview" },
           { href: "/docs/installation", label: "Installation" },
+          { href: "/docs/robotics", label: "Robotics UI kit" },
           { href: "/docs/nextjs", label: "Next.js" },
           { href: "/docs/localisation", label: "Localisation" },
           { href: "/docs/tokens", label: "Design tokens" },
@@ -51,6 +53,7 @@ export const scopes: Scope[] = [
         .map((i) => ({
           href: `/docs/components/${i.name}`,
           label: i.title,
+          beta: (i as { meta?: { status?: string } }).meta?.status === "beta",
           // The page's examples, so you can jump to one; as ReUI lists them, without a second table of contents.
           // Then its pattern sets (Line chart, Heatmap…), so a chart is found under Chart, not under Blocks.
           sections: [

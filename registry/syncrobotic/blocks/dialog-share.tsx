@@ -1,4 +1,4 @@
-// @syncrobotic/dialog-share v0.17.3 · update: npx shadcn add @syncrobotic/dialog-share --overwrite
+// @syncrobotic/dialog-share v0.17.4 · update: npx shadcn add @syncrobotic/dialog-share --overwrite
 "use client"
 
 import * as React from "react"
@@ -45,7 +45,8 @@ export function DialogShare({
   const invite = (e: React.FormEvent) => {
     e.preventDefault()
     if (!/^\S+@\S+\.\S+$/.test(email)) return setError("Enter an email, e.g. name@example.com")
-    const name = email.split("@")[0].replace(/[._]/g, " ")
+    // The check above guarantees an @, so the name is everything before the first one.
+    const name = email.slice(0, email.indexOf("@")).replace(/[._]/g, " ")
     setPeople((p) => [...p, { name, initials: name.slice(0, 2).toUpperCase(), email, access: "view" }])
     setEmail("")
     setError(undefined)

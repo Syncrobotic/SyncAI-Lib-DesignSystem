@@ -10,15 +10,25 @@ export const site = {
   shortName: "SYNCROBOTIC DS",
   /** One sentence, used for meta description, Open Graph, the manifest and JSON-LD. */
   description:
-    "The SYNCROBOTIC design language: colour, type, spacing, radius and motion tokens with a high-contrast mode, React components, and blocks for application screens, colour-blind-safe charts and robot operations, shipped as a shadcn/ui registry for Tailwind CSS v4.",
+    "A robotics UI kit for React: emergency stop, teleoperation, robot map, camera feed, LiDAR point cloud, URDF robot model and alarms, with design tokens, a high-contrast mode, colour-blind-safe charts and ready-made screens, shipped as a shadcn/ui registry for Tailwind CSS v4.",
   /** Short line under the name on social cards. */
-  tagline: "One design language for every SYNCROBOTIC product. Tokens, React components, charts and ready-made screens for Tailwind CSS v4.",
+  tagline: "A robotics UI kit for React. One design language for every SYNCROBOTIC product: tokens, components, charts and ready-made screens for Tailwind CSS v4.",
   logo: "/brand/syncrobotic-mark.svg",
   url: host,
   /** Shown in install instructions. */
   registryUrl: host,
   repo: "https://github.com/Syncrobotic/SyncAI-Lib-DesignSystem",
   keywords: [
+    "robotics UI kit",
+    "robot UI",
+    "robot dashboard",
+    "robot control app",
+    "ROS",
+    "ROS 2",
+    "teleoperation",
+    "LiDAR point cloud",
+    "URDF viewer",
+    "occupancy grid",
     "design system",
     "UI kit",
     "shadcn",
@@ -29,7 +39,6 @@ export const site = {
     "React",
     "Next.js",
     "robotics",
-    "robot control app",
     "quadruped robot",
     "emergency stop",
     "design tokens",

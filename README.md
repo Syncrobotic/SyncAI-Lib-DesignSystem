@@ -2,7 +2,9 @@
 
 # SYNCROBOTIC Design System
 
-**Interfaces for the people who run robots.** The design language behind every SYNCROBOTIC product: design tokens, 92 React components, 48 blocks and 29 patterns, shipped as a [shadcn/ui](https://ui.shadcn.com) registry for Tailwind CSS v4. Components install into your project as source you can read and change.
+**A robotics UI kit for React.** Interfaces for the people who run robots: the design language behind every SYNCROBOTIC product, with design tokens, 95 React components, 48 blocks and 29 patterns, shipped as a [shadcn/ui](https://ui.shadcn.com) registry for Tailwind CSS v4. Components install into your project as source you can read and change.
+
+For robot apps it has what general UI kits leave out: an emergency stop, a fail-safe teleoperation pad, a robot map with ROS occupancy grids, laser scans and mission editing, a live camera feed, a LiDAR point cloud viewer, a URDF robot model, joint states and an alarm system. See [Robotics UI kit](https://design-system.syncrobotic.me/docs/robotics).
 
 [Documentation](https://design-system.syncrobotic.me) · [Components](https://design-system.syncrobotic.me/docs/components/button) · [Blocks](https://design-system.syncrobotic.me/blocks) · [Changelog](CHANGELOG.md) · [Roadmap](ROADMAP.md)
 
