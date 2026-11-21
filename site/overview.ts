@@ -293,10 +293,32 @@ export const overviews: Record<string, Overview> = {
     instead: ["Separate views people switch between: `tabs`."],
     notes: ["useScrollspy(ids) alone gives the current id for a custom display.", "Links move focus to the section, so keyboard users land there."],
   },
+  sidebar: {
+    what: "The main navigation of a console or dashboard: groups of links with counts, a switcher at the top and the account at the foot, collapsing to a rail of icons and becoming a sheet on phones.",
+    use: [
+      "The sections of an internal tool or a fleet console, on a laptop or a control-room screen.",
+      "Switching between sites, workspaces or robots, in its header, above the sections they share.",
+      "A section with a few pages of its own, listed under it while it is current.",
+    ],
+    instead: [
+      "The whole frame (sidebar, top bar with title, search and environment, content and footer): the `app-shell` block, built on this.",
+      "A website's header with a few areas: `navigation-menu`.",
+      "Up to four sections of a phone app, in thumb reach: the `app-shell-mobile-tabs` block.",
+      "A hierarchy from data (sites › zones › robots): `tree`.",
+      "Sections of one page: `tabs` or `scrollspy`.",
+    ],
+    notes: [
+      "One SidebarProvider around the Sidebar and the page beside it (SidebarInset); SidebarTrigger and useSidebar only work inside it. Give the provider the frame's height (`h-dvh`), or let the page scroll beside the sticky sidebar.",
+      "Each SidebarMenuButton leads with its icon and passes `tooltip` with its name: on the rail the icon is all that shows. With a link, use asChild and put the icon, a <span> with the name, then SidebarMenuBadge or SidebarMenuTag inside the link, so the count is part of its name.",
+      "Mark the current page with isActive (aria-current=\"page\"). For a page under a section, mark its SidebarMenuSubButton, give the section aria-current=\"true\", and isActive only on the rail, where its pages are hidden.",
+      "The cookie is read on the client after hydration. With server rendering, read `sidebar_state` (SIDEBAR_COOKIE_NAME) on the server and pass it as defaultOpen, so a collapsed sidebar does not open for a moment first.",
+      "Below 768 px it is a sheet, decided in JavaScript; pass isMobile to fix the form in a preview or a test.",
+    ],
+  },
   "navigation-menu": {
     what: "The top navigation of a website: links, and triggers that open panels of links with descriptions.",
     use: ["A marketing or docs site header.", "A portal with a few product areas."],
-    instead: ["An app's own sections: the app-shell block's sidebar.", "Actions on a thing: `dropdown-menu`.", "A path to the current page: `breadcrumb`."],
+    instead: ["An app's own sections: `sidebar`.", "Actions on a thing: `dropdown-menu`.", "A path to the current page: `breadcrumb`."],
     notes: [
       "Use NavigationMenuLink (or navigationMenuTriggerStyle on it) for plain top-level links.",
       "viewport={false} puts each panel under its own trigger.",

@@ -447,6 +447,18 @@
     "tabStops": 10,
     "live": false
   },
+  "sidebar": {
+    "roles": [
+      "button",
+      "heading",
+      "link",
+      "list",
+      "listitem",
+      "navigation"
+    ],
+    "tabStops": 13,
+    "live": false
+  },
   "graph": {
     "roles": [
       "button",

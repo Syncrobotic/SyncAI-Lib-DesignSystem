@@ -7491,6 +7491,296 @@
    ]
   }
  ],
+ "sidebar": [
+  {
+   "name": "SidebarProvider",
+   "props": [
+    {
+     "name": "defaultOpen",
+     "type": "boolean",
+     "default": "true",
+     "description": "Open at first on wide screens, until someone toggles it (uncontrolled). A stored choice (the cookie) wins over it."
+    },
+    {
+     "name": "open",
+     "type": "boolean",
+     "description": "Open on wide screens, controlled; pair with onOpenChange."
+    },
+    {
+     "name": "onOpenChange",
+     "type": "(open: boolean) => void",
+     "description": ""
+    },
+    {
+     "name": "defaultOpenMobile",
+     "type": "boolean",
+     "default": "false",
+     "description": "The phone sheet open at first, for previews and tests."
+    },
+    {
+     "name": "isMobile",
+     "type": "boolean",
+     "description": "The phone (sheet) or desktop (column) form, instead of following the screen's width (768 px): for a preview frame."
+    },
+    {
+     "name": "cookieName",
+     "type": "string",
+     "default": "SIDEBAR_COOKIE_NAME",
+     "description": "The cookie that keeps the choice for a week. null keeps it for this page only."
+    },
+    {
+     "name": "keyboardShortcut",
+     "type": "string | false",
+     "default": "\"mod+b\"",
+     "description": "Toggles the sidebar from anywhere on the page, except while typing. mod is ⌘ on a Mac, Ctrl elsewhere; false for none."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<SidebarLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "sidebar",
+       "type": "string",
+       "default": "\"Sidebar\"",
+       "description": "The sidebar's landmark (an aside)."
+      },
+      {
+       "name": "nav",
+       "type": "string",
+       "default": "\"Main\"",
+       "description": "The navigation landmark SidebarContent makes."
+      },
+      {
+       "name": "title",
+       "type": "string",
+       "default": "\"Navigation\"",
+       "description": "The phone sheet's title, read when it opens."
+      },
+      {
+       "name": "collapse",
+       "type": "string",
+       "default": "\"Collapse sidebar\"",
+       "description": "The trigger while the sidebar is open."
+      },
+      {
+       "name": "expand",
+       "type": "string",
+       "default": "\"Expand sidebar\"",
+       "description": "The trigger while the sidebar is a rail of icons, or hidden."
+      },
+      {
+       "name": "open",
+       "type": "string",
+       "default": "\"Open navigation\"",
+       "description": "The trigger on phones, where it opens the sheet."
+      }
+     ]
+    }
+   ],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "Sidebar",
+   "props": [
+    {
+     "name": "side",
+     "type": "\"right\" | \"left\"",
+     "default": "\"left\"",
+     "description": ""
+    },
+    {
+     "name": "variant",
+     "type": "\"floating\" | \"sidebar\"",
+     "default": "\"sidebar\"",
+     "description": "sidebar (default): a column with a hairline beside the page. floating: a raised panel (give the provider `gap-2 p-2`)."
+    },
+    {
+     "name": "collapsible",
+     "type": "\"none\" | \"icon\" | \"offcanvas\"",
+     "default": "\"icon\"",
+     "description": "icon (default): collapses to a 72 px rail of icons with tooltips. offcanvas: collapses out of view. none: always open."
+    }
+   ],
+   "inherits": [
+    "<aside>"
+   ]
+  },
+  {
+   "name": "SidebarTrigger",
+   "props": [],
+   "inherits": [
+    "<button>"
+   ]
+  },
+  {
+   "name": "SidebarInset",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "SidebarHeader",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "SidebarFooter",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "SidebarSeparator",
+   "props": [],
+   "inherits": [
+    "<hr>"
+   ]
+  },
+  {
+   "name": "SidebarContent",
+   "props": [],
+   "inherits": [
+    "<nav>"
+   ]
+  },
+  {
+   "name": "SidebarGroup",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "SidebarGroupLabel",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "SidebarGroupContent",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "SidebarMenu",
+   "props": [],
+   "inherits": [
+    "<ul>"
+   ]
+  },
+  {
+   "name": "SidebarMenuItem",
+   "props": [],
+   "inherits": [
+    "<li>"
+   ]
+  },
+  {
+   "name": "SidebarMenuButton",
+   "props": [
+    {
+     "name": "asChild",
+     "type": "boolean",
+     "default": "false",
+     "description": "Render your link (a, next/link) instead of a button, with the button's look."
+    },
+    {
+     "name": "isActive",
+     "type": "boolean",
+     "default": "false",
+     "description": "The current page: the kit's current look (muted fill and weight) and aria-current=\"page\"."
+    },
+    {
+     "name": "size",
+     "type": "\"sm\" | \"md\" | \"lg\"",
+     "default": "\"md\"",
+     "description": ""
+    },
+    {
+     "name": "tooltip",
+     "type": "ReactNode | (TooltipContentProps & RefAttributes<HTMLDivElement>)",
+     "description": "Shown beside the rail when the sidebar is collapsed: the link's name, or TooltipContent props."
+    }
+   ],
+   "inherits": [
+    "<button>"
+   ]
+  },
+  {
+   "name": "SidebarMenuBadge",
+   "props": [
+    {
+     "name": "count",
+     "type": "number",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "max",
+     "type": "number",
+     "description": ""
+    },
+    {
+     "name": "tone",
+     "type": "\"neutral\" | \"danger\"",
+     "default": "\"danger\"",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "SidebarMenuTag",
+   "props": [],
+   "inherits": [
+    "<span>"
+   ]
+  },
+  {
+   "name": "SidebarMenuSub",
+   "props": [],
+   "inherits": [
+    "<ul>"
+   ]
+  },
+  {
+   "name": "SidebarMenuSubItem",
+   "props": [],
+   "inherits": [
+    "<li>"
+   ]
+  },
+  {
+   "name": "SidebarMenuSubButton",
+   "props": [
+    {
+     "name": "asChild",
+     "type": "boolean",
+     "default": "false",
+     "description": ""
+    },
+    {
+     "name": "isActive",
+     "type": "boolean",
+     "default": "false",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<a>"
+   ]
+  }
+ ],
  "skeleton": [
   {
    "name": "Bone",

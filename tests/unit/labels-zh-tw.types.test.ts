@@ -30,6 +30,7 @@ import type { RobotMapLabels } from "@/registry/syncrobotic/ui/robot-map"
 import type { RobotModelLabels } from "@/registry/syncrobotic/ui/robot-model"
 import type { RouteProgressLabels } from "@/registry/syncrobotic/ui/route-progress"
 import type { SearchFieldLabels } from "@/registry/syncrobotic/ui/search-field"
+import type { SidebarLabels } from "@/registry/syncrobotic/ui/sidebar"
 import type { SortableLabels } from "@/registry/syncrobotic/ui/sortable"
 import type { SpinnerLabels } from "@/registry/syncrobotic/ui/spinner"
 import type { StepperLabels } from "@/registry/syncrobotic/ui/stepper"
@@ -94,6 +95,7 @@ it("fits every component's labels type", () => {
   fits<QuestionnaireLabels>()(zh.questionnaireLabels)
   fits<QuestionnaireLabels>()(zh.questionFieldLabels)
   fits<BreadcrumbLabels>()(zh.breadcrumbLabels)
+  fits<SidebarLabels>()(zh.sidebarProviderLabels)
   fits<CommandDialogLabels>()(zh.commandDialogLabels)
   fits<DialogLabels>()(zh.dialogContentLabels)
   fits<StepperLabels>()(zh.stepperLabels)

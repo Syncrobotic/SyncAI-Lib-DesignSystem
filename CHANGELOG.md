@@ -2,6 +2,15 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **`sidebar` 0.28.0 (beta):** the main navigation of a console as a component of its own, so products stop copying it out of the app shell. It follows shadcn/ui's Sidebar: `SidebarProvider`, `Sidebar`, `SidebarHeader`, `SidebarContent`, `SidebarGroup` and `SidebarGroupLabel`, `SidebarMenu`, `SidebarMenuItem`, `SidebarMenuButton` (asChild, isActive, size, tooltip), `SidebarMenuSub`, `SidebarFooter`, `SidebarTrigger`, `SidebarInset` and `useSidebar`, plus `SidebarMenuBadge` (a CountBadge, a dot on the rail) and `SidebarMenuTag` (a quiet "Beta"). A 240 px column collapses to a 72 px rail of icons with tooltips (or off canvas) and is a sheet from the edge on phones; ⌘B / Ctrl+B toggles it and the `sidebar_state` cookie keeps the choice. The current page has the kit's muted fill and weight; rows are 44 px, sub-pages 36 (44 on touch), focus rings sit inside the rows, and only the width moves, with the motion tokens.
+
+### Changed
+- **`app-shell` 0.28.0** is built on `sidebar` and about 140 lines shorter. The sidebar's toggle is in the top bar on every screen (it was a pin button in the sidebar, and a menu button on phones), ⌘B / Ctrl+B toggles it and the choice is kept. It still starts open from 1280 px and as a rail below; the rail names its icons in tooltips instead of opening over the content on hover or tap. Phones get the sheet below 768 px (was 640). Nav items take `tag` and `items` (pages under a section, shown while it is current), and `sidebarLabels` translates the sidebar's words. `SidebarUserMenu` reads the rail from the sidebar and no longer takes `collapsed` or `onOpenChange`.
+- **`labels-zh-tw` 0.28.0:** `sidebarProviderLabels`.
+
 ## 0.27.0 · 2026-11-21
 
 Connect the robotics components to a real robot over rosbridge, and a ready-made Traditional Chinese (Taiwan) label pack.
