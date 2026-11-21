@@ -360,7 +360,7 @@ function SelectTree({
           const t = typed.current
           t.text = now - t.at > 500 ? e.key : t.text + e.key
           t.at = now
-          const prefix = t.text.length > 1 && [...t.text].every((c) => c === t.text[0]) ? t.text[0] : t.text
+          const prefix = t.text.length > 1 && [...t.text].every((c) => c === t.text[0]) ? t.text.charAt(0) : t.text
           const lower = prefix.toLocaleLowerCase()
           const from = prefix.length === 1 ? at + 1 : at
           const order = [...enabled.slice(from), ...enabled.slice(0, from)]

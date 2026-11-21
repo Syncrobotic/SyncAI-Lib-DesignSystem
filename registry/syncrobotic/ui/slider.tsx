@@ -45,7 +45,8 @@ export function Slider({
         <SliderPrimitive.Thumb
           key={i}
           aria-label={nameOf(i)}
-          aria-valuetext={valueText && value ? valueText(value[i], i) : undefined}
+          // A controlled value sets the number of thumbs, so value[i] exists for every thumb drawn here.
+          aria-valuetext={valueText && value ? valueText(value[i]!, i) : undefined}
           className="block size-6 rounded-full bg-white shadow-float ring-1 ring-edge"
         />
       ))}

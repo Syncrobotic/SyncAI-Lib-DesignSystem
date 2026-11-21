@@ -38,8 +38,9 @@ export function SparklineRobotList() {
       </div>
       <ul>
         {rows.map((r) => {
-          const now = r.battery[r.battery.length - 1]
-          const low = now < 15
+          // A robot with no readings yet has no level now, and is not called low.
+          const now = r.battery.at(-1)
+          const low = now !== undefined && now < 15
           return (
             <li key={r.id} className={row}>
               <span className="flex min-w-0 flex-1 flex-col">

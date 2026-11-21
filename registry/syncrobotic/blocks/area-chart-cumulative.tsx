@@ -9,9 +9,9 @@ import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/u
 
 const config = { done: { label: "Patrolled", color: 1, unit: "km" }, plan: { label: "Plan", color: 5, unit: "km" } } satisfies ChartConfig
 // Sample data: kilometres patrolled so far this month against the plan's straight line.
-const data = Array.from({ length: 17 }, (_, i) => ({
+const data = [0, 11, 24, 33, 47, 58, 66, 79, 91, 97, 110, 124, 131, 144, 158, 166, 177].map((done, i) => ({
   d: `${i + 1}`,
-  done: Math.round([0, 11, 24, 33, 47, 58, 66, 79, 91, 97, 110, 124, 131, 144, 158, 166, 177][i]),
+  done: Math.round(done),
   plan: Math.round((i + 1) * 10),
 }))
 const date = (d: unknown) => `Nov ${d}`
@@ -21,7 +21,8 @@ const rows = data.map((r) => ({ ...r, d: date(r.d) }))
 /** Progress toward a monthly target: the running total as an area, the plan as a dashed line, the gap said in words. */
 export function AreaChartCumulative() {
   const [view, setView] = React.useState("chart")
-  const last = data[data.length - 1]
+  // Before the first day is in there is no running total yet: nothing patrolled, nothing planned.
+  const last = data.at(-1) ?? { done: 0, plan: 0 }
   const ahead = last.done - last.plan
   return (
     <Card>

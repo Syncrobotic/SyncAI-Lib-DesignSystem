@@ -26,7 +26,8 @@ export function binEqualWidth(values: readonly number[], { min, max, bins }: { m
       outside++
       continue
     }
-    out[Math.min(bins - 1, Math.floor(((v - min) * bins) / span))].count++
+    // v is within [min, max] here, so the index lands in 0 … bins − 1 and the bin exists.
+    out[Math.min(bins - 1, Math.floor(((v - min) * bins) / span))]!.count++
   }
   return { bins: out, outside }
 }
@@ -36,7 +37,8 @@ export function median(values: readonly number[]) {
   const s = [...values].sort((a, b) => a - b)
   if (s.length === 0) return NaN
   const m = s.length >> 1
-  return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2
+  // The list is not empty (checked above), so m and m − 1 are both inside it.
+  return s.length % 2 ? s[m]! : (s[m - 1]! + s[m]!) / 2
 }
 
 const config = { n: { label: "Dockings", color: 3 } } satisfies ChartConfig

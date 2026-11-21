@@ -87,11 +87,11 @@ export function RecordForm({ initial }: { initial?: { name: string; robot: strin
         <fieldset className="flex flex-col gap-2">
           <legend className="pb-2 text-sm font-medium">Repeat</legend>
           <RadioGroup value={repeat} onValueChange={setRepeat} className="flex flex-col gap-1">
-            {[
+            {([
               ["once", "Once"],
               ["daily", "Every day"],
               ["weekdays", "Weekdays"],
-            ].map(([v, l]) => (
+            ] as const).map(([v, l]) => (
               <div key={v} className="flex min-h-(--h-md) items-center gap-3">
                 <RadioGroupItem id={`repeat-${v}`} value={v} />
                 <Label htmlFor={`repeat-${v}`} className="font-normal">

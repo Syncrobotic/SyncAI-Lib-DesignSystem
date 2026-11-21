@@ -10,19 +10,24 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/registry/syncrobotic/
 /** Times are "HH:mm" strings on a 24-hour clock, the unit operators schedule in; `hour12` only changes how they read. */
 export type Time = string
 
+// The hour and minute of a Time. A malformed one ("9") has NaN for the missing part, so it reads as no time at all.
+const hourMinute = (t: Time) => {
+  const [h = NaN, m = NaN] = t.split(":").map(Number)
+  return [h, m] as const
+}
 const toMin = (t: Time) => {
-  const [h, m] = t.split(":").map(Number)
+  const [h, m] = hourMinute(t)
   return h * 60 + m
 }
 const fromMin = (m: number): Time => `${String(Math.floor(m / 60) % 24).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`
 /** "09:30", or "9:30 AM" with `hour12`. With a `locale`, the time as that language writes it ("上午9:30" for "zh-TW"). */
 export const formatTime = (t: Time, hour12 = false, locale?: string) => {
   if (locale) {
-    const [h, m] = t.split(":").map(Number)
+    const [h, m] = hourMinute(t)
     return new Intl.DateTimeFormat(locale, { hour: "numeric", minute: "2-digit", hourCycle: hour12 ? "h12" : "h23", timeZone: "UTC" }).format(Date.UTC(2000, 0, 1, h, m))
   }
   if (!hour12) return t
-  const [h, m] = t.split(":").map(Number)
+  const [h, m] = hourMinute(t)
   return `${((h + 11) % 12) + 1}:${String(m).padStart(2, "0")} ${h < 12 ? "AM" : "PM"}`
 }
 
@@ -172,7 +177,7 @@ export function TimePicker({
   const [open, setOpen] = React.useState(false)
   const slots: Time[] = []
   for (let m = toMin(min); m <= toMin(max); m += step) slots.push(fromMin(m))
-  const free = (i: number) => i >= 0 && i < slots.length && !unavailable.includes(slots[i])
+  const free = (i: number) => i >= 0 && i < slots.length && !unavailable.includes(slots[i]!)
   // The list is one Tab stop: the option that holds it is the picked one, or the first free one, and the arrow keys
   // move it (roving tabindex), as in a native select.
   const initial = () => {

@@ -225,10 +225,10 @@ export function ChartTable<T extends Record<string, unknown>>({
         <TableHeader>
           <TableRow>
             <TableHead>{xLabel}</TableHead>
-            {keys.map((k) => (
+            {Object.entries(config).map(([k, series]) => (
               <TableHead key={k} className="text-right">
-                {config[k].label}
-                {config[k].unit ? ` (${config[k].unit})` : ""}
+                {series.label}
+                {series.unit ? ` (${series.unit})` : ""}
               </TableHead>
             ))}
           </TableRow>

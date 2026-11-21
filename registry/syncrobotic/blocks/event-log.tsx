@@ -83,7 +83,7 @@ function Level({ priority }: { priority: LogEvent["priority"] }) {
   return (
     <span className={`flex items-center gap-2 text-sm font-medium ${p.text}`}>
       <p.icon aria-hidden="true" className="size-4" />
-      {priority[0].toUpperCase() + priority.slice(1)}
+      {priority.charAt(0).toUpperCase() + priority.slice(1)}
     </span>
   )
 }
