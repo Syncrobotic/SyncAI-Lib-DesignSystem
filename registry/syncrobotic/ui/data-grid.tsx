@@ -178,9 +178,12 @@ export function DataGridTable({
     overscan: 8,
   })
   const items = virtual ? virtualizer.getVirtualItems() : []
-  const padTop = virtual && items.length ? items[0].start : 0
-  const padBottom = virtual && items.length ? virtualizer.getTotalSize() - items[items.length - 1].end : 0
-  const shown = virtual ? items.map((v) => rows[v.index]) : rows
+  const first = items[0]
+  const last = items.at(-1)
+  const padTop = virtual && first ? first.start : 0
+  const padBottom = virtual && last ? virtualizer.getTotalSize() - last.end : 0
+  // The filter only drops an item whose row is gone, which the virtualizer's count (rows.length) already rules out.
+  const shown = virtual ? items.map((v) => rows[v.index]).filter((row) => row !== undefined) : rows
   const cols = table.getVisibleLeafColumns().length
   const hasFooter = table.getFooterGroups().some((g) => g.headers.some((h) => h.column.columnDef.footer))
   const cellPad = density === "dense" ? "px-3" : "px-4"

@@ -122,9 +122,11 @@ const abnormal = (s: Status) => s === "warning" || s === "danger"
 /** Whether a point is inside a polygon (even-odd rule). */
 export function pointInPolygon([x, y]: RobotMapPoint, poly: RobotMapPoint[]) {
   let inside = false
+  // Each edge runs from the previous corner j to corner i. Both are below poly.length, and the loop never runs on an
+  // empty polygon, so both corners exist.
   for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
-    const [xi, yi] = poly[i]
-    const [xj, yj] = poly[j]
+    const [xi, yi] = poly[i]!
+    const [xj, yj] = poly[j]!
     if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside
   }
   return inside
@@ -377,9 +379,9 @@ export function RobotMap({
     if (!g?.moved) return
     const v = viewRef.current
     const s = baseRef.current * v.k
-    if (pointers.current.size >= 2) {
-      const [a, b] = [...pointers.current.entries()].filter(([id]) => id !== e.pointerId).map(([, q]) => q)
-      const other = a ?? b
+    // A second pointer down makes it a pinch around the first other pointer; this pointer alone pans.
+    const other = [...pointers.current.entries()].find(([id]) => id !== e.pointerId)?.[1]
+    if (other) {
       const before = Math.hypot(prev.x - other.x, prev.y - other.y)
       const after = Math.hypot(p.x - other.x, p.y - other.y)
       const mid0 = { x: (prev.x + other.x) / 2, y: (prev.y + other.y) / 2 }
@@ -493,7 +495,8 @@ export function RobotMap({
   }
 
   // The grid: lines at a round number of metres, at least 40 px apart, drawn past the plan to the frame's edges.
-  const gridStep = NICE.find((n) => n * s >= 40) ?? NICE[NICE.length - 1]
+  // Zoomed out past the ladder, the coarsest step is used.
+  const gridStep = NICE.find((n) => n * s >= 40) ?? Math.max(...NICE)
   const x0 = view.cx - at.x / s
   const y0 = view.cy - at.y / s
   let grid = ""
@@ -505,8 +508,8 @@ export function RobotMap({
     const py = Math.round(toScreen(0, i * gridStep)[1]) + 0.5
     grid += `M0 ${py}H${size.w}`
   }
-  // The scale bar: the longest round length up to 120 px.
-  const scaleM = [...NICE].reverse().find((n) => n * s <= 120) ?? NICE[0]
+  // The scale bar: the longest round length up to 120 px, or the finest step when even that is longer.
+  const scaleM = [...NICE].reverse().find((n) => n * s <= 120) ?? Math.min(...NICE)
   const [ox, oy] = toScreen(0, 0)
   const pts = (p: RobotMapPoint[]) => p.map(([x, y]) => toScreen(x, y).map((n) => n.toFixed(1)).join(",")).join(" ")
 
@@ -528,7 +531,8 @@ export function RobotMap({
     const [x0, y0] = toScreen(Math.min(...xs), Math.min(...ys))
     const [x1, y1] = toScreen(Math.max(...xs), Math.max(...ys))
     const w = text.length * charWidth + 32
-    const corners: Box[] = [
+    // A tuple of four, so the fallback to the first corner is always there.
+    const corners: [Box, Box, Box, Box] = [
       { x: x0 + 4, y: y0 + 4, w, h: LINE },
       { x: x1 - 4 - w, y: y0 + 4, w, h: LINE },
       { x: x0 + 4, y: y1 - 4 - LINE, w, h: LINE },
@@ -550,7 +554,8 @@ export function RobotMap({
     const text = r.name + (abnormal(r.status) || r.id === selected ? ` · ${statusWord(r, labels)}` : "")
     const w = text.length * charWidth + 8
     const gap = DISC + 2
-    const candidates: Box[] = [
+    // A tuple of four, so the fallback to the first place is always there.
+    const candidates: [Box, Box, Box, Box] = [
       { x: x - w / 2, y: y + gap, w, h: LINE },
       { x: x + gap, y: y - LINE / 2, w, h: LINE },
       { x: x - w / 2, y: y - gap - LINE, w, h: LINE },
