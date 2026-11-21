@@ -1,5 +1,5 @@
 import * as React from "react"
-import { cleanup, fireEvent, render, screen, within } from "@testing-library/react"
+import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react"
 import { afterEach, describe, expect, it, vi } from "vitest"
 import {
   RobotMap,
@@ -285,6 +285,130 @@ describe("occupancy grid", () => {
     expect(out.y).toBeCloseTo(10 - (-0.4 - -2))
     expect(out.heading).toBeCloseTo(45)
     expect(rosToPlan(frame, { x: 0, y: 0, yaw: Math.PI }).heading).toBeCloseTo(270)
+  })
+
+  /**
+   * A canvas for jsdom, which has none: each encode waits until the test finishes it, so the order of encodes and images
+   * can be checked. Blob URLs are counted rather than made.
+   */
+  function fakeCanvas() {
+    const encodes: Array<(b: Blob) => void> = []
+    let n = 0
+    vi.stubGlobal(
+      "ImageData",
+      class {
+        constructor(
+          public data: Uint8ClampedArray,
+          public width: number,
+          public height: number,
+        ) {}
+      },
+    )
+    vi.stubGlobal(
+      "OffscreenCanvas",
+      class {
+        getContext() {
+          return { putImageData() {} }
+        }
+        convertToBlob() {
+          return new Promise<Blob>((done) => encodes.push(done))
+        }
+      },
+    )
+    const { createObjectURL, revokeObjectURL } = URL
+    const revoke = vi.fn()
+    URL.createObjectURL = () => `blob:grid-${++n}`
+    URL.revokeObjectURL = revoke
+    return {
+      encodes,
+      revoke,
+      finish: async (i: number) => {
+        await act(async () => {
+          encodes[i]!(new Blob())
+          await new Promise((r) => setTimeout(r, 0))
+        })
+      },
+      restore: () => {
+        URL.createObjectURL = createObjectURL
+        URL.revokeObjectURL = revokeObjectURL
+        vi.unstubAllGlobals()
+      },
+    }
+  }
+  const costImage = () => document.querySelector("[data-layer=costmap] image")?.getAttribute("href") ?? null
+  const cells = (v: number) => new Int8Array(4).fill(v)
+
+  it("shows a costmap that updates faster than it encodes: the encode in flight finishes, only the ones between are skipped", async () => {
+    const canvas = fakeCanvas()
+    try {
+      const at = (data: Int8Array) => <RobotMap label="Map of North site" width={60} height={36} costmap={{ ...grid, data }} />
+      const { rerender } = render(at(cells(10)))
+      rerender(at(cells(20)))
+      rerender(at(cells(30)))
+      // One encode at a time: the second and third grids wait.
+      expect(canvas.encodes).toHaveLength(1)
+      await canvas.finish(0)
+      expect(costImage()).toBe("blob:grid-1")
+      // Then only the latest of those that waited is drawn; the one between is skipped.
+      expect(canvas.encodes).toHaveLength(2)
+      await canvas.finish(1)
+      expect(costImage()).toBe("blob:grid-2")
+      expect(canvas.encodes).toHaveLength(2)
+    } finally {
+      canvas.restore()
+    }
+  })
+
+  it("draws the costmap over the floorplan, and between the grid's hatch and obstacles without one", async () => {
+    const canvas = fakeCanvas()
+    try {
+      const { rerender } = render(<RobotMap label="Map of North site" grid={grid} costmap={grid} floorplan="/plan.png" />)
+      await canvas.finish(0)
+      await canvas.finish(1)
+      const floor = document.querySelector('image[href="/plan.png"]')!
+      const cost = document.querySelector("[data-layer=costmap]")!
+      expect(floor.compareDocumentPosition(cost) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+      rerender(<RobotMap label="Map of North site" grid={grid} costmap={grid} />)
+      const layers = [...document.querySelectorAll("[data-layer=grid] > *")].map((el) => el.getAttribute("data-layer") ?? el.getAttribute("mask") ?? el.tagName)
+      const costAt = layers.indexOf("costmap")
+      expect(costAt).toBeGreaterThan(layers.findIndex((m) => m.includes("unknown")))
+      expect(costAt).toBeLessThan(layers.findIndex((m) => m.includes("occupied")))
+    } finally {
+      canvas.restore()
+    }
+  })
+
+  it("frees a grid's image as soon as the grid is taken away", async () => {
+    const canvas = fakeCanvas()
+    try {
+      const { rerender } = render(<RobotMap label="Map of North site" width={60} height={36} costmap={grid} />)
+      await canvas.finish(0)
+      expect(costImage()).toBe("blob:grid-1")
+      rerender(<RobotMap label="Map of North site" width={60} height={36} />)
+      expect(costImage()).toBeNull()
+      expect(canvas.revoke).toHaveBeenCalledWith("blob:grid-1")
+    } finally {
+      canvas.restore()
+    }
+  })
+
+  it("fits a plan whose size arrives after the first render, unless the view was moved", () => {
+    // 120 × 72 cells of 0.5 m: a 60 × 36 m plan, as the other tests draw.
+    const big: RobotMapGrid = { width: 120, height: 72, resolution: 0.5, origin: { x: 0, y: 0 }, data: new Int8Array(120 * 72) }
+    render(<RobotMap label="Map of North site" width={60} height={36} robots={robots} />)
+    const fitted = left("amr-07")
+    cleanup()
+    // The grid arrives after the first render: the map was a 1 m square until then.
+    const { rerender } = render(<RobotMap label="Map of North site" robots={robots} />)
+    rerender(<RobotMap label="Map of North site" grid={big} robots={robots} />)
+    expect(left("amr-07")).toBeCloseTo(fitted, 5)
+    expect((screen.getByRole("button", { name: "Zoom out" }) as HTMLButtonElement).disabled).toBe(true)
+    // Zoomed in by hand, a new size keeps that view.
+    fireEvent.keyDown(region(), { key: "+" })
+    const zoomed = left("amr-07")
+    rerender(<RobotMap label="Map of North site" width={60} height={36} robots={robots} />)
+    expect(left("amr-07")).toBeCloseTo(zoomed, 5)
+    expect((screen.getByRole("button", { name: "Zoom out" }) as HTMLButtonElement).disabled).toBe(false)
   })
 
   it("takes its size from the grid when none is given, and writes the costmap's legend in words", () => {
@@ -582,6 +706,197 @@ describe("editing", () => {
     fireEvent.pointerUp(region(), { pointerId: 1, button: 2, pointerType: "mouse", clientX: px(30, 18).clientX - 40, clientY: px(30, 18).clientY })
     expect(left("amr-07")).toBeCloseTo(before - 40, 0)
     expect(changed).not.toHaveBeenCalled()
+  })
+
+  const handleAt = (i: number) => document.querySelector<HTMLElement>(`[data-waypoint="${i}"]`)!
+  const handleIsAt = (i: number, p: RobotMapPoint) => {
+    expect(parseFloat(handleAt(i).style.left)).toBeCloseTo(px(p[0], p[1]).clientX, 3)
+    expect(parseFloat(handleAt(i).style.top)).toBeCloseTo(px(p[0], p[1]).clientY, 3)
+  }
+
+  it("a waypoint drag cancelled by pointercancel, a second finger or Esc puts it back and says so", () => {
+    render(<Editor mode="waypoints" start={[[10, 10], [20, 10]]} />)
+    // pointercancel (the browser took the gesture).
+    press(handleAt(0), px(10, 10))
+    fireEvent.pointerMove(handleAt(0), { pointerId: 1, ...px(12, 14) })
+    handleIsAt(0, [12, 14])
+    fireEvent.pointerCancel(handleAt(0), { pointerId: 1, ...px(12, 14) })
+    handleIsAt(0, [10, 10])
+    expect(said()).toBe("Move cancelled")
+    // A second finger.
+    fireEvent.pointerDown(handleAt(1), { pointerId: 1, pointerType: "touch", ...px(20, 10) })
+    fireEvent.pointerMove(handleAt(1), { pointerId: 1, pointerType: "touch", ...px(24, 12) })
+    handleIsAt(1, [24, 12])
+    fireEvent.pointerDown(region(), { pointerId: 2, pointerType: "touch", ...px(40, 30) })
+    handleIsAt(1, [20, 10])
+    fireEvent.pointerUp(region(), { pointerId: 2, pointerType: "touch", ...px(40, 30) })
+    fireEvent.pointerUp(region(), { pointerId: 1, pointerType: "touch", ...px(24, 12) })
+    handleIsAt(1, [20, 10])
+    // Esc while the mouse still holds it; the release afterwards moves nothing.
+    press(handleAt(0), px(10, 10))
+    fireEvent.pointerMove(handleAt(0), { pointerId: 1, ...px(15, 15) })
+    key("Escape")
+    handleIsAt(0, [10, 10])
+    expect(said()).toBe("Move cancelled")
+    release(handleAt(0), px(15, 15))
+    handleIsAt(0, [10, 10])
+  })
+
+  it("a zone corner's drag cancelled puts it back, by pointer and by Esc", () => {
+    render(<Editor mode="zone" editableZones />)
+    const corner = () => document.querySelector<HTMLElement>('[data-zone-vertex="cold|0"]')!
+    press(corner(), px(44, 0))
+    fireEvent.pointerMove(corner(), { pointerId: 1, ...px(42, 2) })
+    expect(parseFloat(corner().style.left)).toBeCloseTo(px(42, 2).clientX, 3)
+    fireEvent.pointerCancel(corner(), { pointerId: 1, ...px(42, 2) })
+    expect(parseFloat(corner().style.left)).toBeCloseTo(px(44, 0).clientX, 3)
+    expect(said()).toBe("Move cancelled")
+    press(corner(), px(44, 0))
+    fireEvent.pointerMove(corner(), { pointerId: 1, ...px(40, 4) })
+    key("Escape")
+    expect(parseFloat(corner().style.left)).toBeCloseTo(px(44, 0).clientX, 3)
+    expect(parseFloat(corner().style.top)).toBeCloseTo(px(44, 0).clientY, 3)
+    release(corner(), px(40, 4))
+    expect(parseFloat(corner().style.left)).toBeCloseTo(px(44, 0).clientX, 3)
+  })
+
+  /** The app drops the first waypoint as the robot reaches it, while the map has one selected or carried. */
+  function Following({ start }: { start: RobotMapPoint[] }) {
+    const [waypoints, setWaypoints] = React.useState<RobotMapPoint[]>(start)
+    return (
+      <>
+        <button type="button" onClick={() => setWaypoints((w) => w.slice(1))}>
+          Reached
+        </button>
+        <RobotMap label="Map of North site" width={60} height={36} mode="waypoints" waypoints={waypoints} onWaypointsChange={setWaypoints} />
+      </>
+    )
+  }
+  const reached = () => fireEvent.click(screen.getByRole("button", { name: "Reached" }))
+  const handlePoints = () =>
+    [...document.querySelectorAll<HTMLElement>("[data-waypoint]")].map((h) => [
+      Number((30 + (parseFloat(h.style.left) - 320) / k).toFixed(3)),
+      Number((18 + (parseFloat(h.style.top) - 166) / k).toFixed(3)),
+    ])
+
+  it("keeps the selection on the same waypoint when the app drops an earlier one, so Delete removes the one selected", () => {
+    render(<Following start={[[10, 10], [20, 10], [30, 10]]} />)
+    tap(handleAt(1), px(20, 10))
+    expect(handleAt(1).dataset.state).toBe("selected")
+    reached()
+    // Waypoint (20, 10) is now first, and still the selected one.
+    expect(handleAt(0).dataset.state).toBe("selected")
+    expect(handleAt(1).dataset.state).toBeUndefined()
+    key("Delete")
+    expect(said()).toBe("Waypoint 1 removed")
+    expect(handlePoints()).toEqual([[30, 10]])
+  })
+
+  it("lets go of a waypoint the app removed, rather than act on another", () => {
+    render(<Following start={[[10, 10], [20, 10]]} />)
+    tap(handleAt(0), px(10, 10))
+    reached()
+    expect(handleAt(0).dataset.state).toBeUndefined()
+    key("Delete")
+    expect(handlePoints()).toEqual([[20, 10]])
+  })
+
+  it("drops a carry whose waypoint the app removed, so it never moves the next waypoint picked", () => {
+    render(<Following start={[[30, 18], [40, 10]]} />)
+    fireEvent.focus(region())
+    key("Enter")
+    key("ArrowDown")
+    reached()
+    // The carried waypoint is gone: the banner no longer says the keys carry something.
+    expect(banner()).toContain("Click to add a waypoint")
+    tap(handleAt(0), px(40, 10))
+    key("Escape")
+    expect(handlePoints()).toEqual([[40, 10]])
+  })
+
+  it("Esc during a keyboard carry puts the carried waypoint back in its own slot when the list changed under it", () => {
+    render(<Following start={[[10, 10], [30, 18], [40, 10]]} />)
+    fireEvent.focus(region())
+    // The crosshair starts at the centre, (30, 18): Enter picks up waypoint 2.
+    key("Enter")
+    expect(said()).toBe("Waypoint 2 picked up. Arrow keys move it, Enter drops it, Esc puts it back.")
+    key("ArrowDown")
+    expect(handlePoints()).toEqual([[10, 10], [30, 19], [40, 10]])
+    reached()
+    key("ArrowDown")
+    expect(handlePoints()).toEqual([[30, 20], [40, 10]])
+    key("Escape")
+    expect(said()).toBe("Move cancelled")
+    expect(handlePoints()).toEqual([[30, 18], [40, 10]])
+  })
+
+  it("says where the crosshair is once the arrow keys rest, and where a goal points while it turns", () => {
+    vi.useFakeTimers()
+    try {
+      const { rerender } = render(<Editor mode="waypoints" />)
+      fireEvent.focus(region())
+      key("ArrowRight")
+      key("ArrowRight")
+      key("ArrowRight")
+      expect(said()).toBe("")
+      act(() => void vi.advanceTimersByTime(399))
+      expect(said()).toBe("")
+      act(() => void vi.advanceTimersByTime(1))
+      expect(said()).toBe("33.0, 18.0 m")
+      // Words said straight after a key drop the position still waiting, so it never lands after them.
+      key("ArrowRight")
+      key("Enter")
+      expect(said()).toBe("Waypoint 1 added at 34.0, 18.0 m")
+      act(() => void vi.advanceTimersByTime(1000))
+      expect(said()).toBe("Waypoint 1 added at 34.0, 18.0 m")
+      // Carried, the waypoint's place is said the same way.
+      key(" ")
+      key("ArrowDown")
+      act(() => void vi.advanceTimersByTime(400))
+      expect(said()).toBe("34.0, 19.0 m")
+      rerender(<Editor mode="goal" />)
+      key("Enter")
+      key("ArrowRight", { shiftKey: true })
+      key("ArrowRight")
+      act(() => void vi.advanceTimersByTime(400))
+      expect(said()).toBe("Facing 60°")
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  it("snaps to the last snap line inside an edge that is off the snap grid", () => {
+    const changed = vi.fn()
+    render(<RobotMap label="Map of North site" width={60.3} height={36} mode="waypoints" snap={0.5} onWaypointsChange={changed} />)
+    tap(region(), { clientX: 639, clientY: 166 })
+    expect(changed.mock.lastCall![0]).toEqual([[60, 18]])
+  })
+
+  it("draws the crosshair where Enter would place it, on the snap grid", () => {
+    const changed = vi.fn()
+    render(<RobotMap label="Map of North site" width={61} height={36} mode="waypoints" snap={2} onWaypointsChange={changed} />)
+    fireEvent.focus(region())
+    expect(document.querySelector("[data-slot=robot-map-cursor]")!.textContent).toBe("30.0, 18.0 m")
+    key("Enter")
+    expect(changed).toHaveBeenLastCalledWith([[30, 18]])
+  })
+
+  it("starts the crosshair again from the centre in a new mode", () => {
+    const { rerender } = render(<RobotMap label="Map of North site" width={60} height={36} mode="waypoints" />)
+    fireEvent.focus(region())
+    key("ArrowRight")
+    expect(document.querySelector("[data-slot=robot-map-cursor]")!.textContent).toBe("31.0, 18.0 m")
+    rerender(<RobotMap label="Map of North site" width={60} height={36} mode="goal" />)
+    expect(document.querySelector("[data-slot=robot-map-cursor]")!.textContent).toBe("30.0, 18.0 m")
+  })
+
+  it("sets a goal once when Enter is pressed while the pointer still holds it", () => {
+    const onGoal = vi.fn()
+    render(<Editor mode="goal" onGoal={onGoal} />)
+    press(region(), px(10, 10))
+    key("Enter")
+    release(region(), px(10, 10))
+    expect(onGoal).toHaveBeenCalledTimes(1)
   })
 
   it("a new mode drops what the last one left half drawn", () => {

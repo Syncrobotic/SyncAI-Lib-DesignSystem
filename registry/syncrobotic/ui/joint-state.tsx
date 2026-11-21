@@ -1,4 +1,4 @@
-// @syncrobotic/joint-state v0.24.0 · update: npx shadcn add @syncrobotic/joint-state --overwrite
+// @syncrobotic/joint-state v0.24.1 · update: npx shadcn add @syncrobotic/joint-state --overwrite
 "use client"
 
 import * as React from "react"
@@ -128,6 +128,10 @@ export function toDisplayUnit(value: number, unit: JointUnit = "rad"): number {
  * 0.05 flags the outer 5 % at each end as near.
  */
 export function classifyJointLimit(position: number, lower: number | undefined, upper: number | undefined, margin = 0.05): JointLimitState {
+  // An infinite limit (how some URDF tools write a continuous joint) is no limit on that side, and the margin is a share of
+  // a range that needs both, so the joint has no level rather than a range of Infinity that puts the marker nowhere.
+  if (lower !== undefined && !Number.isFinite(lower)) lower = undefined
+  if (upper !== undefined && !Number.isFinite(upper)) upper = undefined
   if (lower === undefined || upper === undefined || !(upper > lower) || !Number.isFinite(position)) return { level: "none" }
   const range = upper - lower
   // A joint on its hard stop reads a hair either side of the limit; within 0.1 % of the range it counts as on it.
@@ -142,20 +146,47 @@ export function classifyJointLimit(position: number, lower: number | undefined, 
   return { level: "within" }
 }
 
+/**
+ * The locale the numbers and the time are written in. Without one it is "en", never the runtime's default: the server and
+ * a browser set to another language would write "1,234.5" and "1.234,5", and React would find the two renders differ. A
+ * tag Intl cannot read ("en_US", "") falls back to "en" too, so a bad setting writes English rather than break the panel.
+ */
+const checkedLocales = new Map<string, string>()
+function resolveLocale(locale: string | undefined): string {
+  if (locale === undefined) return "en"
+  let ok = checkedLocales.get(locale)
+  if (ok === undefined) {
+    try {
+      ok = Intl.NumberFormat.supportedLocalesOf(locale).length > 0 ? locale : "en"
+    } catch {
+      ok = "en"
+    }
+    checkedLocales.set(locale, ok)
+  }
+  return ok
+}
+
 // One formatter per locale and precision: a panel redraws many times a second, and building Intl objects is not free.
 const formatters = new Map<string, Intl.NumberFormat>()
-function formatNumber(value: number, digits: number, locale?: string) {
-  const key = `${locale ?? ""}|${digits}`
+function formatNumber(value: number, digits: number, locale: string) {
+  const key = `${locale}|${digits}`
   let f = formatters.get(key)
   if (!f) {
     f = new Intl.NumberFormat(locale, { minimumFractionDigits: digits, maximumFractionDigits: digits })
     formatters.set(key, f)
   }
-  // Rounded first, so a reading of -0.04 shows as 0.0 rather than an alarming "-0.0".
+  // Rounded first, half away from zero on both sides, so -0.05 and 0.05 round to the same size; and a reading of -0.04
+  // shows as 0.0 rather than an alarming "-0.0". Math.round alone rounds -0.5 up to -0 but 0.5 up to 1.
   const step = 10 ** digits
-  const rounded = Math.round(value * step) / step
+  const rounded = (Math.sign(value) * Math.round(Math.abs(value) * step)) / step
   return f.format(rounded === 0 ? 0 : rounded)
 }
+
+/**
+ * What counts as a new update without a stamp: the values themselves, not the array. A parent that builds `joints` afresh
+ * on every render (a `.map` in its body) would otherwise look like an update every render and never go stale.
+ */
+const valuesKey = (joints: JointStateJoint[]) => joints.map((j) => `${j.name}:${j.position}:${j.velocity}:${j.effort}`).join("|")
 
 export type JointStateProps = {
   /** The joints, in the order to list them (usually the URDF's chain order). Leave it empty while there are none. */
@@ -166,15 +197,21 @@ export type JointStateProps = {
   loading?: boolean
   /**
    * When this joint state was measured, in ms since the epoch (the message's `header.stamp`). Given, only a new value is an
-   * update (a re-sent old message is not), and it is the time "Stale · last update" shows. Without it, each new `joints`
-   * array is an update. Either way the wait is timed by this browser's clock.
+   * update (a re-sent old message is not), and it is the time "Stale · last update" shows. Without it, a change in any
+   * joint's position, velocity or effort is an update (a new array with the same values is not), so an arm standing
+   * perfectly still reads Stale after `staleAfterMs`: pass the stamp to tell a quiet arm from a silent one. Either way the
+   * wait is timed by this browser's clock.
    */
   updatedAt?: number
-  /** With no update for this long, the panel says "Stale" with the last update's time and dims the values. */
+  /** With no update for this long, the panel says "Stale" with the last update's time and dims the values. `Infinity` never goes stale. */
   staleAfterMs?: number
   /** How close to a limit counts as near, as a fraction of each joint's range. */
   margin?: number
-  /** BCP 47 tag for the numbers and the time ("zh-TW", "de"). Left out, numbers use the browser's language. */
+  /**
+   * BCP 47 tag for the numbers and the time ("zh-TW", "de"): pass the app's locale. Left out, numbers are written in English
+   * ("en") and the time on a 24-hour clock, the same on the server and in every browser, so the page hydrates cleanly. A
+   * tag Intl cannot read falls back to "en".
+   */
   locale?: string
   labels?: Partial<JointStateLabels>
   className?: string
@@ -207,15 +244,20 @@ export function JointState({
 }: JointStateProps) {
   const l = { ...defaultJointStateLabels, ...labelsProp }
   const name = label ?? l.title
+  const numberLocale = resolveLocale(locale)
+  // The time keeps its own default (a fixed 24-hour clock) without a locale, and gets only a tag Intl can read with one.
+  const timeLocale = locale === undefined ? undefined : numberLocale
 
   // Which update went stale, and the time to show for it. Stale only while that same update is still the latest, so a new
   // update clears it in the render that brings it, without an effect setting state back.
-  // With a stamp, only a new stamp is an update, so a bridge re-sending the robot's last message still reads Stale.
-  const update: number | JointStateJoint[] = updatedAt ?? joints
-  const [staleOf, setStaleOf] = React.useState<{ update: number | JointStateJoint[]; at: number } | null>(null)
+  // With a stamp, only a new stamp is an update, so a bridge re-sending the robot's last message still reads Stale. Without
+  // one, new values are an update, compared as a string so a rebuilt array with the same values is the same update.
+  const update: number | string = updatedAt ?? valuesKey(joints)
+  const [staleOf, setStaleOf] = React.useState<{ update: number | string; at: number } | null>(null)
   const watching = !loading && joints.length > 0
   React.useEffect(() => {
-    if (!watching) return
+    // setTimeout reads Infinity (and NaN) as 0, which would make "never stale" stale at once; it waits for nothing instead.
+    if (!watching || !Number.isFinite(staleAfterMs)) return
     // The wait counts from when this browser received the update, never from the robot's stamp: the two clocks are rarely
     // in step, and a robot a few seconds ahead would otherwise never look stale, one behind always would.
     const received = Date.now()
@@ -225,7 +267,7 @@ export function JointState({
   const stale = watching && staleOf !== null && staleOf.update === update
 
   const state: JointStatePanelState = loading ? "loading" : joints.length === 0 ? "empty" : stale ? "stale" : "live"
-  const lastTime = stale && staleOf ? l.formatTime(new Date(staleOf.at), locale) : ""
+  const lastTime = stale && staleOf ? l.formatTime(new Date(staleOf.at), timeLocale) : ""
 
   const hasVelocity = joints.some((j) => j.velocity !== undefined && Number.isFinite(j.velocity))
   const hasEffort = joints.some((j) => j.effort !== undefined && Number.isFinite(j.effort))
@@ -233,7 +275,7 @@ export function JointState({
   const grid = cn("grid grid-cols-[minmax(0,1fr)_auto] gap-x-3 gap-y-1", wideGrid[columns])
 
   const position = (value: number, unit: JointUnit) => {
-    const text = formatNumber(toDisplayUnit(value, unit), 1, locale)
+    const text = formatNumber(toDisplayUnit(value, unit), 1, numberLocale)
     return unit === "m" ? l.millimetres(text) : l.degrees(text)
   }
 
@@ -296,7 +338,7 @@ export function JointState({
                 grid={grid}
                 stale={stale}
                 margin={margin}
-                locale={locale}
+                locale={numberLocale}
                 labels={l}
                 position={position}
                 hasVelocity={hasVelocity}
@@ -323,7 +365,7 @@ function JointRow({
   grid: string
   stale: boolean
   margin: number
-  locale?: string
+  locale: string
   labels: JointStateLabels
   position: (value: number, unit: JointUnit) => string
   hasVelocity: boolean

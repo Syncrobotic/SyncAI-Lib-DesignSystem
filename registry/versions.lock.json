@@ -236,8 +236,8 @@
     "hash": "8356bbb792fcb83e"
   },
   "robot-map": {
-    "version": "0.24.0",
-    "hash": "0717237cbc673653"
+    "version": "0.24.1",
+    "hash": "b2fed9905fe21660"
   },
   "dialog": {
     "version": "0.23.0",
@@ -340,8 +340,8 @@
     "hash": "33be3d7109a96b20"
   },
   "joint-state": {
-    "version": "0.24.0",
-    "hash": "eb90d198fccd5b62"
+    "version": "0.24.1",
+    "hash": "0c9123dfe7dfe87a"
   },
   "point-cloud": {
     "version": "0.24.0",
