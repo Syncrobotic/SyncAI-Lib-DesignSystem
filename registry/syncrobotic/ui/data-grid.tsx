@@ -1,5 +1,15 @@
 // @syncrobotic/data-grid v0.26.0 · update: npx shadcn add @syncrobotic/data-grid --overwrite
 "use client"
+"use no memo"
+
+// The React Compiler must leave this file alone, and "use no memo" above tells it so. TanStack Table 9 keeps one table,
+// row, column and header object for the table's whole life and answers through methods (row.getIsSelected(),
+// column.getIsSorted(), column.getIsResizing(), row.getIsExpanded()) that read its store. A compiled component caches
+// those calls against the object, which never changes, so the checkboxes, sort arrows, resize handles and details
+// would stop following the state. Left uncompiled, every part re-reads them each time it renders, and it renders
+// whenever useTable hands DataGrid a new table, which it does on every state change. DataGrid memoizes its context by
+// hand instead, so the parts skip renders that do not change the table or the grid's own props.
+// tests/unit/data-grid.compiler.test.tsx compiles this file with the compiler and checks that the grid still updates.
 
 import * as React from "react"
 import {
@@ -190,11 +200,16 @@ export function DataGrid<T extends RowData, TFeatures extends DataGridFeatures>(
 }) {
   warnDensity("DataGrid", legacy)
   const density: Density = (size ?? (legacy === "dense" ? "sm" : "default")) === "sm" ? "dense" : "default"
-  const l = { ...defaultDataGridLabels, ...labels }
-  return (
+  // Memoized by hand, since the compiler skips this file: the parts render again when the table changes (useTable
+  // returns a new one on every state change) or the grid's own props do, not on every render of the page around it.
+  const ctx = React.useMemo<Ctx>(() => {
+    const l = { ...defaultDataGridLabels, ...labels }
     // Table 9's table type is invariant in its features and row type, so a table with more features than the grid needs
     // is narrowed to the ones the parts call through unknown; dataGridFeatures in TFeatures guarantees they are there.
-    <GridContext.Provider value={{ table: table as unknown as GridTable, density, variant, loading, emptyText: emptyText ?? l.empty, labels: l }}>
+    return { table: table as unknown as GridTable, density, variant, loading, emptyText: emptyText ?? l.empty, labels: l }
+  }, [table, density, variant, loading, emptyText, labels])
+  return (
+    <GridContext.Provider value={ctx}>
       <div data-slot="data-grid" className={cn("flex w-full min-w-0 flex-col gap-3", className)}>
         {children}
       </div>
@@ -226,8 +241,9 @@ export function DataGridTable({
   const scrollRef = React.useRef<HTMLDivElement>(null)
   const edges = useScrollEdges(scrollRef)
   const rows = table.getRowModel().rows
-  // The compiler leaves this component unmemoized because the virtualizer's methods read live scroll state; that is
-  // the intended result, and there is no compiler-friendly API to use instead.
+  // The virtualizer's methods read live scroll state, so this component must not be memoized either. The file's
+  // "use no memo" already keeps the compiler away, but the lint rule reports the call regardless of that directive
+  // (eslint-plugin-react-hooks 7.1), so the suppression stays, scoped to this one line.
   // eslint-disable-next-line react-hooks/incompatible-library -- TanStack Virtual's useVirtualizer, skipped on purpose.
   const virtualizer = useVirtualizer({
     count: virtual ? rows.length : 0,
