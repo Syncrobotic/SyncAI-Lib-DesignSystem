@@ -1039,6 +1039,26 @@ const entries: Record<string, Entry> = {
       "Show the keys on screen (Kbd) and in a ? dialog: a shortcut nobody can find does not exist.",
     ],
   },
+  "use-ros": {
+    group: "Hooks",
+    wide: true,
+    examples: { file: "hooks", prefix: "UseRos" },
+    rules: [
+      "One RosProvider per rosbridge server, high in the tree; the hooks share its one connection. The whole wiring, with the safety notes, is on the Connect to ROS page (/docs/ros).",
+      "Show the connection's state in words and shape wherever the robot is driven or watched: Connected, Connecting (the blue spinner), Connection lost with Reconnect. A view that keeps the last message while the link is down must say so.",
+      "Convert a message once per message (useMemo keyed on it): robot-map draws the grid again for every new array.",
+      "Drive commands go through useRosPublisher on a Twist topic: it sends a zero Twist on unmount, on a hidden page and on a dropped link, and refuses a drive held through a drop until the stick is let go. rosbridge has no watchdog: the robot must stop by itself when commands stop arriving.",
+      "Throttle what people read (throttleMs: 200 for a scan, 1000 for a battery); never throttle what someone is steering by.",
+    ],
+  },
+  ros: {
+    group: "Hooks",
+    rules: [
+      "Pure TypeScript, no React and no npm dependency: the rosbridge v2 client (createRosConnection) and the converters. use-ros is the React layer on top.",
+      "The converters follow the components' documented conventions (robot-map's plan coordinates, REP 103, SI units); do not convert again before passing the result on.",
+      "Only JSON (compression \"none\"): CBOR and PNG compression are not read. Large clouds and maps arrive as base64 or number arrays and are decoded here.",
+    ],
+  },
   "use-debounce": {
     group: "Hooks",
     examples: { file: "hooks", prefix: "UseDebounce" },
