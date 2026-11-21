@@ -6,6 +6,7 @@ import { H2 } from "@/site/prose"
 import { a11yOf } from "@/site/a11y"
 import { hasA11y } from "@/site/component-tabs-data"
 import { Kbd } from "@/registry/syncrobotic/ui/kbd"
+import { KeyCell } from "@/site/key-cell"
 
 export const dynamicParams = false
 export const generateStaticParams = () => items.filter((i) => hasA11y(i.name)).map((i) => ({ name: i.name }))
@@ -76,16 +77,12 @@ export default async function AccessibilityPage({ params }: Props) {
               </tr>
             </thead>
             <tbody>
-              {a.keyboard.map(([keys, action]) => (
-                <tr key={keys} className="border-b border-border last:border-0">
+              {a.keyboard.map(([keys, action], i) => (
+                <tr key={i} className="border-b border-border last:border-0">
                   <td className="w-40 py-2 pr-4 pl-4 align-top sm:w-56">
-                    <span className="flex flex-wrap gap-1">
-                      {keys.split(" / ").map((k) => (
-                        <Kbd key={k}>{k}</Kbd>
-                      ))}
-                    </span>
+                    <KeyCell keys={keys} />
                   </td>
-                  <td className="py-2 pr-4 text-muted-foreground">{action}</td>
+                  <td className="py-2 pr-4 align-top leading-7 text-muted-foreground">{action}</td>
                 </tr>
               ))}
             </tbody>
