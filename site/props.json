@@ -5598,19 +5598,32 @@
     {
      "name": "width",
      "type": "number",
-     "required": true,
-     "description": "The site's size in metres: the plan's width and height."
+     "description": "The site's size in metres: the plan's width and height. With `grid` and no plan of its own, leave them out: the grid's size is the plan's."
     },
     {
      "name": "height",
      "type": "number",
-     "required": true,
      "description": ""
     },
     {
      "name": "floorplan",
      "type": "ReactNode",
      "description": "The floor plan under everything: an image URL (stretched over width × height), or SVG drawn in metres."
+    },
+    {
+     "name": "grid",
+     "type": "RobotMapGrid",
+     "description": "A ROS occupancy grid drawn as the floor (under `floorplan`, when both are given): free cells are the map's surface, occupied ones the ink colour at their probability, unknown ones the no-data hatch. Drawn into an image once per new `data` array, so pass a new array for new cells and the same one otherwise."
+    },
+    {
+     "name": "costmap",
+     "type": "RobotMapGrid",
+     "description": "A ROS costmap (the same message) over the floor, in the accent's ramp from clear to strong, with a legend."
+    },
+    {
+     "name": "origin",
+     "type": "{ x: number; y: number; }",
+     "description": "Where the plan's bottom-left corner is in the ROS map frame, in metres: places `grid` and `costmap` on it. Without it, the grid's origin (the grid is the plan)."
     },
     {
      "name": "zones",
@@ -5789,6 +5802,24 @@
        "type": "(m: number) => string",
        "default": "(m) => `${m} m`",
        "description": "The scale bar's length."
+      },
+      {
+       "name": "costTitle",
+       "type": "string",
+       "default": "\"Cost\"",
+       "description": "The costmap's legend: its name and the two ends of its ramp (\"Cost: low → lethal\")."
+      },
+      {
+       "name": "costLow",
+       "type": "string",
+       "default": "\"low\"",
+       "description": ""
+      },
+      {
+       "name": "costHigh",
+       "type": "string",
+       "default": "\"lethal\"",
+       "description": ""
       }
      ]
     }
@@ -5943,6 +5974,24 @@
        "type": "(m: number) => string",
        "default": "(m) => `${m} m`",
        "description": "The scale bar's length."
+      },
+      {
+       "name": "costTitle",
+       "type": "string",
+       "default": "\"Cost\"",
+       "description": "The costmap's legend: its name and the two ends of its ramp (\"Cost: low → lethal\")."
+      },
+      {
+       "name": "costLow",
+       "type": "string",
+       "default": "\"low\"",
+       "description": ""
+      },
+      {
+       "name": "costHigh",
+       "type": "string",
+       "default": "\"lethal\"",
+       "description": ""
       }
      ]
     },

@@ -1,4 +1,4 @@
-// @syncrobotic/robot-map v0.23.2 · update: npx shadcn add @syncrobotic/robot-map --overwrite
+// @syncrobotic/robot-map v0.24.0 · update: npx shadcn add @syncrobotic/robot-map --overwrite
 "use client"
 
 import * as React from "react"
@@ -47,6 +47,150 @@ export type RobotMapRobot = {
 /** A route: `planned` is where a robot is going (dashed, the in-progress blue), `travelled` where it has been (solid, grey). */
 export type RobotMapPath = { id: string; kind: "planned" | "travelled"; points: RobotMapPoint[]; robotId?: string }
 
+/**
+ * A ROS `nav_msgs/OccupancyGrid`, as its `info` and `data` arrive: cells row by row from the grid's origin, which is its
+ * bottom-left corner in the map frame (y up). A cell is −1 when unknown and 0–100 for the chance it is occupied.
+ */
+export type RobotMapGrid = {
+  /** Cells across and up (`info.width`, `info.height`). */
+  width: number
+  height: number
+  /** Metres per cell (`info.resolution`). */
+  resolution: number
+  /** The outer corner of the first cell in the ROS map frame, in metres (`info.origin.position`). Its yaw must be 0, as map_server and the SLAM packages write it. */
+  origin: { x: number; y: number }
+  /** Row-major from the origin: cell (column, row) is `data[row × width + column]`, row 0 at the bottom. */
+  data: Int8Array | readonly number[]
+}
+
+/** The plan in the ROS map frame: its size in metres and where its bottom-left corner is. */
+export type RobotMapFrame = { width: number; height: number; origin: { x: number; y: number } }
+
+/** A place and the way it faces, on the plan: metres from the top-left, heading clockwise from the top (0 up, 90 right). */
+export type RobotMapPose = { x: number; y: number; heading?: number }
+
+/**
+ * The plan a grid makes when it is the whole floor plan: its size in metres, and its origin as the plan's bottom-left
+ * corner. Give `width` and `height` to RobotMap (or leave them out with `grid`), and convert poses with `rosToPlan`.
+ */
+export const gridToPlan = (grid: RobotMapGrid): RobotMapFrame => ({
+  width: grid.width * grid.resolution,
+  height: grid.height * grid.resolution,
+  origin: { x: grid.origin.x, y: grid.origin.y },
+})
+
+/**
+ * A ROS pose (x, y in metres, yaw in radians counter-clockwise from +x) on the plan: `x = xRos − originX`,
+ * `y = height − (yRos − originY)`, `heading = 90 − yaw × 180 / π`, kept between 0 and 360.
+ */
+export function rosToPlan(frame: RobotMapFrame, pose: { x: number; y: number; yaw?: number }): RobotMapPose {
+  const at = { x: pose.x - frame.origin.x, y: frame.height - (pose.y - frame.origin.y) }
+  if (pose.yaw === undefined) return at
+  return { ...at, heading: (((90 - (pose.yaw * 180) / Math.PI) % 360) + 360) % 360 }
+}
+
+/** Where a grid lies on the plan, in metres from the plan's top-left: the ROS conversion applied to its corners. */
+const gridRect = (grid: RobotMapGrid, frame: RobotMapFrame) => {
+  const w = grid.width * grid.resolution
+  const h = grid.height * grid.resolution
+  // The grid's top-left is its origin raised by its own height, since the map frame's y grows up and the plan's down.
+  const topLeft = rosToPlan(frame, { x: grid.origin.x, y: grid.origin.y + h })
+  return { x: topLeft.x, y: topLeft.y, w, h }
+}
+
+/**
+ * The grid as an RGBA image, top row first (the plan's y grows down, the grid's up), in one pass over the cells. The map
+ * paints it in its own tokens through two masks of this one image, so it follows dark, light and high contrast without
+ * drawing it again:
+ *  - occupied (1–100): white at alpha value / 100; read as luminance it lays the ink colour on at that strength;
+ *  - unknown (−1): opaque black, which is no luminance (no ink) but full alpha, where the no-data hatch shows;
+ *  - free (0): transparent, the map's own surface.
+ * A cell between 1 and 99 keeps a trace of the hatch under its ink, as a cell the robot is not sure about.
+ * For a costmap (`kind: "cost"`) only costs above 0 are drawn, at alpha cost / 100; unknown is left clear.
+ */
+export function rasteriseGrid(grid: Pick<RobotMapGrid, "width" | "height" | "data">, kind: "occupancy" | "cost" = "occupancy") {
+  const { width: w, height: h, data } = grid
+  const out = new Uint8ClampedArray(w * h * 4)
+  // One 32-bit word per pixel is four times fewer writes than bytes; its byte order is the platform's.
+  const px = new Uint32Array(out.buffer)
+  const little = new Uint8Array(new Uint32Array([1]).buffer)[0] === 1
+  const word = (r: number, a: number) => (little ? ((a << 24) | (r << 16) | (r << 8) | r) >>> 0 : ((r << 24) | (r << 16) | (r << 8) | a) >>> 0)
+  const shades = Array.from({ length: 101 }, (_, v) => word(255, Math.round((v * 255) / 100)))
+  const unknown = kind === "occupancy" ? word(0, 255) : 0
+  for (let row = 0; row < h; row++) {
+    const from = row * w
+    const to = (h - 1 - row) * w
+    for (let col = 0; col < w; col++) {
+      const v = data[from + col] ?? -1
+      if (v === 0) continue
+      px[to + col] = v < 0 ? unknown : (shades[Math.min(100, Math.round(v))] ?? 0)
+    }
+  }
+  return out
+}
+
+/** The grid drawn into a PNG off the render, as a blob URL; null where there is no canvas (a server, the tests). */
+async function gridImage(grid: RobotMapGrid, kind: "occupancy" | "cost"): Promise<string | null> {
+  const { width: w, height: h } = grid
+  if (!(w > 0 && h > 0) || typeof document === "undefined" || typeof ImageData === "undefined") return null
+  const image = new ImageData(rasteriseGrid(grid, kind), w, h)
+  let blob: Blob | null = null
+  if (typeof OffscreenCanvas !== "undefined") {
+    const canvas = new OffscreenCanvas(w, h)
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return null
+    ctx.putImageData(image, 0, 0)
+    blob = await canvas.convertToBlob()
+  } else {
+    const canvas = document.createElement("canvas")
+    canvas.width = w
+    canvas.height = h
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return null
+    ctx.putImageData(image, 0, 0)
+    // toBlob encodes the PNG away from the main thread, so even a 4000 × 4000 grid blocks only for the one pass above.
+    blob = await new Promise<Blob | null>((done) => canvas.toBlob(done))
+  }
+  return blob ? URL.createObjectURL(blob) : null
+}
+
+/**
+ * A grid's image, made again only when its cells or size change (a new `data` array), not on every pan or every new
+ * object around the same cells. The previous image stays until the next one is ready, so a live costmap does not blink.
+ */
+function useGridImage(grid: RobotMapGrid | undefined, kind: "occupancy" | "cost") {
+  const [image, setImage] = React.useState<{ url: string; grid: RobotMapGrid } | null>(null)
+  const current = React.useEffectEvent(() => grid)
+  const data = grid?.data
+  const w = grid?.width
+  const h = grid?.height
+  React.useEffect(() => {
+    const g = current()
+    if (!g || !data || !w || !h) return
+    let live = true
+    gridImage(g, kind).then(
+      (url) => {
+        if (!url) return
+        if (live) setImage({ url, grid: g })
+        else URL.revokeObjectURL(url)
+      },
+      // A canvas that cannot be made (too large for the browser) leaves the layer empty rather than break the map.
+      () => {},
+    )
+    return () => {
+      live = false
+    }
+  }, [data, w, h, kind])
+  // Each URL is freed once the image after it has been drawn, or when the map goes.
+  React.useEffect(() => {
+    if (!image) return
+    return () => URL.revokeObjectURL(image.url)
+  }, [image])
+  if (!grid || !image) return null
+  // While the next image is made, the one on screen keeps the place it was made for.
+  return image.grid.data === grid.data ? { url: image.url, grid } : image
+}
+
 export type RobotMapLabels = {
   /** Read once when focus enters the map. */
   instructions: string
@@ -82,6 +226,10 @@ export type RobotMapLabels = {
   heading: (deg: number) => string
   /** The scale bar's length. */
   metres: (m: number) => string
+  /** The costmap's legend: its name and the two ends of its ramp ("Cost: low → lethal"). */
+  costTitle: string
+  costLow: string
+  costHigh: string
 }
 
 const metres = (n: number) => (Math.abs(n) >= 10 ? n.toFixed(0) : n.toFixed(1))
@@ -107,6 +255,9 @@ const defaultLabels: RobotMapLabels = {
   noZone: "Outside the marked zones",
   heading: (deg) => `Facing ${Math.round(((deg % 360) + 360) % 360)}°`,
   metres: (m) => `${m} m`,
+  costTitle: "Cost",
+  costLow: "low",
+  costHigh: "lethal",
 }
 
 const merge = (given?: Partial<RobotMapLabels>): RobotMapLabels => ({
@@ -182,11 +333,21 @@ const charWidth = 7.5
 export type RobotMapProps = {
   /** Names the map for screen readers: "Map of North site". */
   label: string
-  /** The site's size in metres: the plan's width and height. */
-  width: number
-  height: number
+  /** The site's size in metres: the plan's width and height. With `grid` and no plan of its own, leave them out: the grid's size is the plan's. */
+  width?: number
+  height?: number
   /** The floor plan under everything: an image URL (stretched over width × height), or SVG drawn in metres. */
   floorplan?: string | React.ReactNode
+  /**
+   * A ROS occupancy grid drawn as the floor (under `floorplan`, when both are given): free cells are the map's surface,
+   * occupied ones the ink colour at their probability, unknown ones the no-data hatch. Drawn into an image once per new
+   * `data` array, so pass a new array for new cells and the same one otherwise.
+   */
+  grid?: RobotMapGrid
+  /** A ROS costmap (the same message) over the floor, in the accent's ramp from clear to strong, with a legend. */
+  costmap?: RobotMapGrid
+  /** Where the plan's bottom-left corner is in the ROS map frame, in metres: places `grid` and `costmap` on it. Without it, the grid's origin (the grid is the plan). */
+  origin?: { x: number; y: number }
   zones?: RobotMapZone[]
   robots?: RobotMapRobot[]
   paths?: RobotMapPath[]
@@ -222,9 +383,12 @@ const proportions = (width: number, height: number, fill?: boolean): React.CSSPr
  */
 export function RobotMap({
   label: name,
-  width,
-  height,
+  width: widthProp,
+  height: heightProp,
   floorplan,
+  grid,
+  costmap,
+  origin,
   zones = [],
   robots = [],
   paths = [],
@@ -239,7 +403,15 @@ export function RobotMap({
   className,
 }: RobotMapProps) {
   const labels = merge(given)
-  const uid = React.useId()
+  // A grid with no size given is the whole plan; otherwise the size given wins and the grid sits on it by `origin`.
+  // Neither (a map still loading its grid) draws a 1 m square, so nothing divides by zero.
+  const width = (widthProp ?? (grid ? grid.width * grid.resolution : 0)) || 1
+  const height = (heightProp ?? (grid ? grid.height * grid.resolution : 0)) || 1
+  const frameRos: RobotMapFrame = { width, height, origin: origin ?? grid?.origin ?? { x: 0, y: 0 } }
+  const gridShown = useGridImage(grid, "occupancy")
+  const costShown = useGridImage(costmap, "cost")
+  // SVG references ids through url(#…), which reads React's id characters badly; letters, digits and dashes only.
+  const uid = React.useId().replace(/[^\w-]/g, "")
   const root = React.useRef<HTMLDivElement>(null)
   const [selectedState, setSelectedState] = React.useState<string | null>(null)
   const selected = selectedProp !== undefined ? selectedProp : selectedState
@@ -499,14 +671,14 @@ export function RobotMap({
   const gridStep = NICE.find((n) => n * s >= 40) ?? Math.max(...NICE)
   const x0 = view.cx - at.x / s
   const y0 = view.cy - at.y / s
-  let grid = ""
+  let lines = ""
   for (let i = Math.ceil(x0 / gridStep); i * gridStep <= x0 + size.w / s; i++) {
     const px = Math.round(toScreen(i * gridStep, 0)[0]) + 0.5
-    grid += `M${px} 0V${size.h}`
+    lines += `M${px} 0V${size.h}`
   }
   for (let i = Math.ceil(y0 / gridStep); i * gridStep <= y0 + size.h / s; i++) {
     const py = Math.round(toScreen(0, i * gridStep)[1]) + 0.5
-    grid += `M0 ${py}H${size.w}`
+    lines += `M0 ${py}H${size.w}`
   }
   // The scale bar: the longest round length up to 120 px, or the finest step when even that is longer.
   const scaleM = [...NICE].reverse().find((n) => n * s <= 120) ?? Math.min(...NICE)
@@ -567,6 +739,27 @@ export function RobotMap({
     placed.set(r.id, { x: pick.x, y: pick.y })
   }
 
+  /** A grid's rectangle on screen, from its rectangle on the plan. */
+  const onScreen = (g: RobotMapGrid) => {
+    const r = gridRect(g, frameRos)
+    const [x, y] = toScreen(r.x, r.y)
+    return { x, y, width: r.w * s, height: r.h * s }
+  }
+  // Nearest-neighbour once a cell is two pixels or more, so cells read as cells; smoothed below that, so a thin wall in a
+  // large grid does not vanish between the pixels it falls on.
+  const cells = (g: RobotMapGrid): React.CSSProperties => ({ imageRendering: g.resolution * s >= 2 ? "pixelated" : "auto" })
+  const costLayer = costShown && (
+    <g data-layer="costmap">
+      <defs>
+        <mask id={`${uid}-cost`} maskUnits="userSpaceOnUse" {...onScreen(costShown.grid)} style={{ maskType: "luminance" }}>
+          <image href={costShown.url} preserveAspectRatio="none" {...onScreen(costShown.grid)} style={cells(costShown.grid)} />
+        </mask>
+      </defs>
+      {/* The accent's sequential ramp, as heatmaps use it: clear at no cost, at most 60 % at lethal, so the floor and its
+          walls still read through. */}
+      <rect {...onScreen(costShown.grid)} className="fill-chart-1 opacity-60" mask={`url(#${uid}-cost)`} />
+    </g>
+  )
   const kindIcon = { restricted: SafetyZone, slow: SafetyZone, charging: ChargingDock, other: null }
   const summary = [
     robots.length ? labels.count(robots.length) : labels.empty,
@@ -606,13 +799,40 @@ export function RobotMap({
       </p>
       <div aria-hidden="true" className={cn("absolute inset-0", !measured && "invisible")}>
         <svg width={size.w} height={size.h} className="absolute inset-0">
-          <path d={grid} className="fill-none stroke-edge" strokeWidth="1" />
+          <path d={lines} className="fill-none stroke-edge" strokeWidth="1" />
+          {grid && (
+            <g data-layer="grid">
+              {/* The surface first, so free cells are the map's own colour and the background lines stop at the grid. */}
+              <rect {...onScreen(grid)} className="fill-map" />
+              {gridShown && (
+                <>
+                  <defs>
+                    <pattern id={`${uid}-hatch`} patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(45)">
+                      {/* The theme's no-data hatch (a 1 px line every 5 px in the field-edge colour), in screen pixels at any zoom. */}
+                      <line x1="0.5" y1="0" x2="0.5" y2="5" className="stroke-input" strokeWidth="1" />
+                    </pattern>
+                    <mask id={`${uid}-unknown`} maskUnits="userSpaceOnUse" {...onScreen(gridShown.grid)} style={{ maskType: "alpha" }}>
+                      <image href={gridShown.url} preserveAspectRatio="none" {...onScreen(gridShown.grid)} style={cells(gridShown.grid)} />
+                    </mask>
+                    <mask id={`${uid}-occupied`} maskUnits="userSpaceOnUse" {...onScreen(gridShown.grid)} style={{ maskType: "luminance" }}>
+                      <image href={gridShown.url} preserveAspectRatio="none" {...onScreen(gridShown.grid)} style={cells(gridShown.grid)} />
+                    </mask>
+                  </defs>
+                  <rect {...onScreen(gridShown.grid)} fill={`url(#${uid}-hatch)`} mask={`url(#${uid}-unknown)`} />
+                  {/* The costmap between the hatch and the ink, so walls and racks stay ink over their lethal cost. */}
+                  {costLayer}
+                  <rect {...onScreen(gridShown.grid)} className="fill-foreground" mask={`url(#${uid}-occupied)`} />
+                </>
+              )}
+            </g>
+          )}
           {typeof floorplan === "string" ? (
             <image href={floorplan} x={ox} y={oy} width={width * s} height={height * s} preserveAspectRatio="none" />
           ) : floorplan ? (
             <g transform={`translate(${ox} ${oy}) scale(${s})`}>{floorplan}</g>
           ) : null}
           <rect x={ox} y={oy} width={width * s} height={height * s} className="fill-none stroke-map-point" strokeWidth="1" />
+          {!gridShown && costLayer}
           {zones.map((z) => (
             <polygon
               key={z.id}
@@ -694,10 +914,19 @@ export function RobotMap({
         })}
       </div>
 
-      {robots.length === 0 && (
-        <p className="absolute inset-x-4 top-4 w-fit rounded-xs bg-card px-3 py-2 text-sm text-muted-foreground ring-1 ring-border">
-          {labels.empty}
-        </p>
+      {/* Top left, clear of the north arrow: what the map says about itself, one card under another. */}
+      {(robots.length === 0 || costmap) && (
+        <div className={cn("pointer-events-none absolute top-4 left-4 flex flex-col items-start gap-2", northDeg !== undefined ? "right-16" : "right-4")}>
+          {costmap && (
+            <p data-slot="robot-map-legend" className="flex items-center gap-2 rounded-xs bg-card px-2 py-1 text-xs text-muted-foreground ring-1 ring-border">
+              <span className="font-medium text-foreground">{labels.costTitle}</span>
+              {labels.costLow}
+              <span aria-hidden="true" className="h-2 w-12 rounded-2xs bg-map bg-linear-to-r from-transparent to-chart-1/60 ring-1 ring-border" />
+              {labels.costHigh}
+            </p>
+          )}
+          {robots.length === 0 && <p className="w-fit rounded-xs bg-card px-3 py-2 text-sm text-muted-foreground ring-1 ring-border">{labels.empty}</p>}
+        </div>
       )}
 
       {northDeg !== undefined && (

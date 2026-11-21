@@ -1,7 +1,17 @@
 import * as React from "react"
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react"
 import { afterEach, describe, expect, it, vi } from "vitest"
-import { RobotMap, RobotMapList, pointInPolygon, type RobotMapRobot, type RobotMapZone } from "@/registry/syncrobotic/ui/robot-map"
+import {
+  RobotMap,
+  RobotMapList,
+  gridToPlan,
+  pointInPolygon,
+  rasteriseGrid,
+  rosToPlan,
+  type RobotMapGrid,
+  type RobotMapRobot,
+  type RobotMapZone,
+} from "@/registry/syncrobotic/ui/robot-map"
 
 afterEach(cleanup)
 
@@ -229,5 +239,55 @@ describe("pointInPolygon", () => {
     ]
     expect(pointInPolygon([5, 5], square)).toBe(true)
     expect(pointInPolygon([15, 5], square)).toBe(false)
+  })
+})
+
+describe("occupancy grid", () => {
+  // Two rows of two cells, row 0 at the bottom as ROS sends it: [unknown, free] below, [occupied, half] above.
+  const grid: RobotMapGrid = { width: 2, height: 2, resolution: 0.5, origin: { x: -1, y: -2 }, data: new Int8Array([-1, 0, 100, 50]) }
+  const pixel = (px: Uint8ClampedArray, col: number, row: number) => [...px.slice((row * 2 + col) * 4, (row * 2 + col) * 4 + 4)]
+
+  it("rasterises each value for the two masks, top row first", () => {
+    const px = rasteriseGrid(grid)
+    // The image's top row is the grid's top row (row 1): occupied, then 50 %.
+    expect(pixel(px, 0, 0)).toEqual([255, 255, 255, 255])
+    expect(pixel(px, 1, 0)).toEqual([255, 255, 255, 128])
+    // Unknown: no luminance (no ink), full alpha (the hatch). Free: nothing, the map's surface.
+    expect(pixel(px, 0, 1)).toEqual([0, 0, 0, 255])
+    expect(pixel(px, 1, 1)).toEqual([0, 0, 0, 0])
+  })
+
+  it("draws only costs above zero on a costmap, and leaves unknown clear", () => {
+    const px = rasteriseGrid(grid, "cost")
+    expect(pixel(px, 0, 0)).toEqual([255, 255, 255, 255])
+    expect(pixel(px, 1, 0)).toEqual([255, 255, 255, 128])
+    expect(pixel(px, 0, 1)).toEqual([0, 0, 0, 0])
+    expect(pixel(px, 1, 1)).toEqual([0, 0, 0, 0])
+  })
+
+  it("rasterises a number[] the same as an Int8Array, and clamps values past 100", () => {
+    expect(rasteriseGrid({ ...grid, data: [-1, 0, 100, 50] })).toEqual(rasteriseGrid(grid))
+    expect(pixel(rasteriseGrid({ ...grid, data: [0, 0, 127, 0] }), 0, 0)).toEqual([255, 255, 255, 255])
+  })
+
+  it("maps the grid to the plan as the ROS conversion does", () => {
+    const frame = gridToPlan(grid)
+    expect(frame).toEqual({ width: 1, height: 1, origin: { x: -1, y: -2 } })
+    // The centre of cell (column 1, row 0), bottom right in the map frame, lands on the image's bottom-right pixel.
+    const p = rosToPlan(frame, { x: grid.origin.x + 1.5 * grid.resolution, y: grid.origin.y + 0.5 * grid.resolution })
+    expect(p.x).toBeCloseTo(0.75)
+    expect(p.y).toBeCloseTo(0.75)
+    // The formula in the docs: x = xRos − originX, y = height − (yRos − originY), heading = 90 − yaw × 180 / π.
+    const out = rosToPlan({ width: 20, height: 10, origin: { x: 1, y: -2 } }, { x: 3.2, y: -0.4, yaw: Math.PI / 4 })
+    expect(out.x).toBeCloseTo(3.2 - 1)
+    expect(out.y).toBeCloseTo(10 - (-0.4 - -2))
+    expect(out.heading).toBeCloseTo(45)
+    expect(rosToPlan(frame, { x: 0, y: 0, yaw: Math.PI }).heading).toBeCloseTo(270)
+  })
+
+  it("takes its size from the grid when none is given, and writes the costmap's legend in words", () => {
+    render(<RobotMap label="Map of North site" grid={grid} costmap={grid} robots={robots} />)
+    expect(document.querySelector("[data-layer=grid] rect")).not.toBeNull()
+    expect(document.querySelector("[data-slot=robot-map-legend]")!.textContent).toBe("Costlowlethal")
   })
 })

@@ -879,6 +879,7 @@ const entries: Record<string, Entry> = {
       "Coordinates are metres from the plan's top-left corner, x to the right and y down, as the plan image is drawn. Convert from your map frame (ROS: y up, origin anywhere) before passing them.",
       "Bottom left holds zoom and the scale bar, so the emergency stop keeps the bottom right. Show the north arrow (`northDeg`) only when the plan is not drawn north up and people need it.",
       "No robots is said on the map, with the plan still shown; loading keeps the frame's size; an error says what failed and offers to reload.",
+      "An occupancy grid is the floor, in greys: free is the surface, occupied the ink, unknown the no-data hatch, never a colour that means a state. A costmap is the accent's ramp under the walls, with its legend in words.",
       "Up to a few hundred robots and zones: everything is redrawn on each pan. A city-scale map, tiles or GPS belong to a map library.",
     ],
   },

@@ -1,6 +1,14 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
-import { RobotMap, RobotMapList, type RobotMapPath, type RobotMapRobot, type RobotMapZone } from "@/registry/syncrobotic/ui/robot-map"
+import {
+  RobotMap,
+  RobotMapList,
+  rosToPlan,
+  type RobotMapGrid,
+  type RobotMapPath,
+  type RobotMapRobot,
+  type RobotMapZone,
+} from "@/registry/syncrobotic/ui/robot-map"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 
 const meta: Meta = { title: "Charts/Robot map" }
@@ -171,4 +179,109 @@ export const RobotMapError: S = {
       <RobotMapList label="Robots on North site" error="Robot positions could not be loaded." onRetry={() => {}} />
     </div>
   ),
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// The same warehouse as a robot maps it: a ROS occupancy grid at 5 cm a cell (1200 × 720), made here from the plan's
+// rectangles so the stories load nothing. The map frame's origin is off the corner, as SLAM leaves it.
+// ---------------------------------------------------------------------------------------------------------------------
+
+const RES = 0.05
+const ORIGIN = { x: -12.5, y: -8 }
+/** Walls and racks in plan metres: x, y (top-left), width, height. The cold store has a door at y 14–16. */
+const solid: [number, number, number, number][] = [
+  [0, 0, 60, 0.2],
+  [0, 35.8, 60, 0.2],
+  [0, 0, 0.2, 36],
+  [59.8, 0, 0.2, 36],
+  [44, 0, 0.2, 14],
+  [44, 16, 0.2, 2],
+  [44, 17.8, 16, 0.2],
+  [0, 27.9, 10, 0.2],
+  [18, 27.9, 42, 0.2],
+  ...[14, 20, 26, 32, 38].map((x): [number, number, number, number] => [x, 6, 2, 16]),
+]
+/** How far a point is from the nearest wall or rack, in metres (0 inside one). */
+const clearance = (x: number, y: number) =>
+  Math.min(...solid.map(([rx, ry, rw, rh]) => Math.hypot(Math.max(rx - x, 0, x - rx - rw), Math.max(ry - y, 0, y - ry - rh))))
+/** A small seeded generator, so the speckle along the walls is the same on every render and screenshot. */
+const seeded = (seed: number) => () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 2 ** 32)
+
+/** Each cell from its centre on the plan; row 0 is the bottom row, as in nav_msgs/OccupancyGrid. */
+function makeGrid(resolution: number, cell: (x: number, y: number, rnd: () => number) => number): RobotMapGrid {
+  const width = Math.round(site.width / resolution)
+  const height = Math.round(site.height / resolution)
+  const data = new Int8Array(width * height)
+  const rnd = seeded(7)
+  for (let row = 0; row < height; row++)
+    for (let col = 0; col < width; col++) data[row * width + col] = cell((col + 0.5) * resolution, site.height - (row + 0.5) * resolution, rnd)
+  return { width, height, resolution, origin: ORIGIN, data }
+}
+
+let warehouse: RobotMapGrid | undefined
+/** Made once, on first use, and kept: the map draws a grid again only when its data array changes. */
+const warehouseGrid = () =>
+  (warehouse ??= makeGrid(RES, (x, y, rnd) => {
+    // Inside the cold store, beyond its door, the robot has never seen: unknown.
+    if (x > 44.2 && y < 17.8 && !(x < 47 && y > 13 && y < 17)) return -1
+    const d = clearance(x, y)
+    if (d === 0) return 100
+    // Scan noise along the walls: a few cells the robot is unsure about.
+    if (d < 0.15 && rnd() < 0.35) return 40 + Math.round(rnd() * 40)
+    return 0
+  }))
+
+let costs: RobotMapGrid | undefined
+/** The global costmap at 10 cm: lethal in a wall, falling off over 1.5 m of inflation around it. */
+const warehouseCostmap = () =>
+  (costs ??= makeGrid(0.1, (x, y) => {
+    const d = clearance(x, y)
+    if (d === 0) return 100
+    if (d < 0.35) return 99
+    return d < 1.5 ? Math.round(98 * Math.exp(-2.5 * (d - 0.35))) : 0
+  }))
+
+const frame = { width: site.width, height: site.height, origin: ORIGIN }
+/** Robots as they arrive from ROS (map frame, yaw in radians), converted for the map. */
+const fromRos = (id: string, name: string, x: number, y: number, yaw: number, status: RobotMapRobot["status"], statusLabel?: string): RobotMapRobot => {
+  const p = rosToPlan(frame, { x, y, yaw })
+  return { id, name, x: p.x, y: p.y, heading: p.heading, status, statusLabel }
+}
+const gridRobots: RobotMapRobot[] = [
+  fromRos("amr-07", "AMR-07", 10.5, 4, 0, "active", "On mission"),
+  fromRos("amr-11", "AMR-11", 28.5, 16, -Math.PI / 2, "warning", "Battery 12 %"),
+  fromRos("amr-14", "AMR-14", -9.5, 19, Math.PI / 2, "normal", "Charging"),
+]
+
+/** A grid with no plan image: the grid is the floor, its size the site's. Zones, routes and robots sit on it as on any plan. */
+function GridSite({ withCostmap = false }: { withCostmap?: boolean }) {
+  const [view, setView] = React.useState("map")
+  const [selected, setSelected] = React.useState<string | null>(null)
+  const shared = { label: "Map of North site", robots: gridRobots, zones, selectedId: selected, onSelect: (id: string | null) => setSelected(id) }
+  return (
+    <div className="flex w-full flex-col gap-3">
+      <div className="flex items-center justify-between gap-4">
+        <p className="text-sm font-medium">North site, as mapped</p>
+        <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto shrink-0">
+          <SegmentedControlItem value="map">Map</SegmentedControlItem>
+          <SegmentedControlItem value="list">List</SegmentedControlItem>
+        </SegmentedControl>
+      </div>
+      {view === "map" ? (
+        <RobotMap grid={warehouseGrid()} costmap={withCostmap ? warehouseCostmap() : undefined} paths={withCostmap ? paths : undefined} {...shared} />
+      ) : (
+        <RobotMapList {...shared} />
+      )}
+    </div>
+  )
+}
+
+/** The floor as the robots mapped it (a 1200 × 720 occupancy grid): free floor, walls and racks in ink, the unseen cold store hatched. */
+export const RobotMapOccupancyGrid: S = {
+  render: () => <GridSite />,
+}
+
+/** The global costmap over the grid, in the accent's ramp from clear to lethal, with its legend; the route being driven stays the one blue. */
+export const RobotMapCostmap: S = {
+  render: () => <GridSite withCostmap />,
 }
