@@ -1,5 +1,5 @@
 import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { FileArchive, FileImage, FileJson, FileText, FileVideo, FolderOpen } from "lucide-react"
 import { Tree, type TreeNode } from "@/registry/syncrobotic/ui/tree"
 

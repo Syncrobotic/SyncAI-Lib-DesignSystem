@@ -1,5 +1,5 @@
 import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { CircleCheck } from "lucide-react"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { QuestionField, Questionnaire, type Answers, type Question } from "@/registry/syncrobotic/ui/questionnaire"

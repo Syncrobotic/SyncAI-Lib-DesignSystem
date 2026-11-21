@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { FileTypeIcon, familyOf } from "@/registry/syncrobotic/ui/file-type"
 
 const meta: Meta = { title: "Display/File type" }

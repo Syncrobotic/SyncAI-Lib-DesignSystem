@@ -1,4 +1,4 @@
-// @syncrobotic/robot-map v0.24.0 · update: npx shadcn add @syncrobotic/robot-map --overwrite
+// @syncrobotic/robot-map v0.24.1 · update: npx shadcn add @syncrobotic/robot-map --overwrite
 "use client"
 
 import * as React from "react"
@@ -202,29 +202,56 @@ export function scanToPoints(scan: RobotMapScan, robot: RobotMapPose): RobotMapP
 /**
  * A grid's image, made again only when its cells or size change (a new `data` array), not on every pan or every new
  * object around the same cells. The previous image stays until the next one is ready, so a live costmap does not blink.
+ * One image is made at a time, and a newer grid waits for it rather than cancel it: a costmap that updates faster than its
+ * image can be encoded would otherwise cancel every encode and never show. Of the grids that arrive meanwhile only the
+ * latest is kept, so the map skips frames instead of falling behind.
  */
 function useGridImage(grid: RobotMapGrid | undefined, kind: "occupancy" | "cost") {
   const [image, setImage] = React.useState<{ url: string; grid: RobotMapGrid } | null>(null)
+  // A grid taken away takes its image with it now, so its blob URL is freed (by the effect below) and not at unmount.
+  // Adjusted while rendering, as for a prop change, so no frame draws the old image after the grid has gone.
+  if (!grid && image) setImage(null)
   const current = React.useEffectEvent(() => grid)
+  // The encode in flight and the grid waiting for it, kept across renders; `mounted` stops a late image landing after unmount.
+  const queue = React.useRef<{ busy: boolean; next: RobotMapGrid | null; mounted: boolean }>({ busy: false, next: null, mounted: true })
+  React.useEffect(() => {
+    const q = queue.current
+    q.mounted = true
+    return () => {
+      q.mounted = false
+    }
+  }, [])
   const data = grid?.data
   const w = grid?.width
   const h = grid?.height
   React.useEffect(() => {
     const g = current()
     if (!g || !data || !w || !h) return
-    let live = true
-    gridImage(g, kind).then(
-      (url) => {
-        if (!url) return
-        if (live) setImage({ url, grid: g })
-        else URL.revokeObjectURL(url)
-      },
-      // A canvas that cannot be made (too large for the browser) leaves the layer empty rather than break the map.
-      () => {},
-    )
-    return () => {
-      live = false
+    const q = queue.current
+    q.next = g
+    if (q.busy) return
+    const run = () => {
+      const next = q.next
+      q.next = null
+      q.busy = next !== null
+      if (!next) return
+      gridImage(next, kind)
+        .then(
+          (url) => {
+            if (!url) return
+            // Shown if the map still has a grid: an older image is still the newest finished one, and it keeps its place.
+            if (q.mounted && current()) setImage({ url, grid: next })
+            else URL.revokeObjectURL(url)
+          },
+          // A canvas that cannot be made (too large for the browser) leaves the layer empty rather than break the map.
+          () => {},
+        )
+        .finally(() => {
+          if (q.mounted) run()
+          else q.busy = false
+        })
     }
+    run()
   }, [data, w, h, kind])
   // Each URL is freed once the image after it has been drawn, or when the map goes.
   React.useEffect(() => {
@@ -431,14 +458,39 @@ const charWidth = 7.5
 /** What the map's pointer and keys do: look (select, pan, zoom), or draw one of the things the app owns. */
 export type RobotMapMode = "view" | "goal" | "waypoints" | "zone"
 
-/** What an edit gesture started on, kept in a ref between pointer events. */
+/**
+ * A waypoint or a zone's corner the map is working on: its index when picked, the value there (`at`, or the value it was
+ * last moved to), and the value before that move (`was`, while the app has not taken the move yet). See findPick.
+ */
+type Picked = { index: number; at: RobotMapPoint; was: RobotMapPoint }
+const samePoint = (a: RobotMapPoint | undefined, b: RobotMapPoint) => a !== undefined && a[0] === b[0] && a[1] === b[1]
+/**
+ * Where a picked point is in the list now. The app owns the list and may change it at any time (it drops waypoint 1 as the
+ * robot reaches it), so an index alone could name another point, and Delete or Esc would then act on the wrong one. The
+ * index counts while the point there is the one picked; else the one point in the list with its value, if the list moved
+ * under it; else none, and the map lets go rather than act on a point nobody picked.
+ */
+function findPick(pick: Picked | null, list: RobotMapPoint[]): number | null {
+  if (!pick) return null
+  if (samePoint(list[pick.index], pick.at) || samePoint(list[pick.index], pick.was)) return pick.index
+  for (const value of [pick.at, pick.was]) {
+    const hits = list.flatMap((q, i) => (samePoint(q, value) ? [i] : []))
+    if (hits.length === 1) return hits[0] ?? null
+  }
+  return null
+}
+
+/** What an edit gesture started on, kept in a ref between pointer events; `from` is where a dragged point was. */
 type Edit = { x: number; y: number; at: RobotMapPoint; moved: boolean } & (
   | { kind: "goal" | "add" | "close" }
-  | { kind: "waypoint"; index: number }
-  | { kind: "vertex"; zoneId: string; index: number }
+  | { kind: "waypoint"; pick: Picked; from: RobotMapPoint }
+  | { kind: "vertex"; zoneId: string; pick: Picked; from: RobotMapPoint }
 )
-/** A waypoint or a zone's corner picked up by the keys, with where it was, so Esc can put it back. */
-type Carry = { kind: "waypoint"; index: number; from: RobotMapPoint } | { kind: "vertex"; zoneId: string; index: number; from: RobotMapPoint }
+/**
+ * A waypoint or a zone's corner picked up by the keys, with where it was, so Esc can put it back. A carried waypoint is
+ * the selected one (its pick is the selection's); a corner keeps its own.
+ */
+type Carry = { kind: "waypoint"; from: RobotMapPoint } | { kind: "vertex"; zoneId: string; pick: Picked; from: RobotMapPoint }
 
 /** A handle's target: 44 px, a finger, whatever its drawing's size. */
 const HANDLE = 44
@@ -459,7 +511,11 @@ export type RobotMapProps = {
    * `data` array, so pass a new array for new cells and the same one otherwise.
    */
   grid?: RobotMapGrid
-  /** A ROS costmap (the same message) over the floor, in the accent's ramp from clear to strong, with a legend. */
+  /**
+   * A ROS costmap (the same message) over the floor, in the accent's ramp from clear to strong, with a legend. It is drawn
+   * over `floorplan` and `grid`; with a grid and no floorplan, under the grid's obstacles, so walls stay grey over their
+   * lethal cost. (A floorplan covers the grid, obstacles and all, so with both the cost is over everything on the floor.)
+   */
   costmap?: RobotMapGrid
   /** Laser scans, one per robot, drawn as small dots from that robot's current position and heading. One path per scan, so 10 robots × 1080 beams stay smooth. */
   scans?: RobotMapScan[]
@@ -496,7 +552,10 @@ export type RobotMapProps = {
   onGoal?: (goal: RobotMapPose) => void
   /** Waypoints to show, numbered in order, controlled. */
   waypoints?: RobotMapPoint[]
-  /** Waypoints mode: the new list after a waypoint is added, moved (while it moves) or removed. */
+  /**
+   * Waypoints mode: the new list after a waypoint is added, moved (while it moves) or removed. A move that is cancelled
+   * (Esc, a second finger, a cancelled pointer) sends the list again with the waypoint where it was.
+   */
   onWaypointsChange?: (waypoints: RobotMapPoint[]) => void
   /** The waypoints are the route a robot is driving: the line between them turns the in-progress blue. Otherwise it is grey. */
   waypointsPlanned?: boolean
@@ -504,7 +563,7 @@ export type RobotMapProps = {
   onZoneDraw?: (points: RobotMapPoint[]) => void
   /** Zone mode: the corners of `zones` can be dragged (or picked up with Enter and moved with the arrows). */
   editableZones?: boolean
-  /** The zones with a corner moved, while it moves. */
+  /** The zones with a corner moved, while it moves; a cancelled move sends them again with the corner where it was. */
   onZonesChange?: (zones: RobotMapZone[]) => void
   /** Rounds every point placed or moved to this many metres. None by default. */
   snap?: number
@@ -595,6 +654,19 @@ export function RobotMap({
   const fitView: View = { k: 1, cx: width / 2, cy: height / 2 }
   const [view, setViewState] = React.useState<View>(fitView)
   const viewRef = React.useRef(view)
+  // A plan whose size changes after the first render (a grid that arrives later, another site) is fitted again, but only
+  // while the view is still the untouched fit of the old size: a view someone has panned or zoomed stays theirs. Adjusted
+  // while rendering, as for a prop change, so no frame draws the new plan in the old view.
+  const [planSize, setPlanSize] = React.useState({ width, height })
+  if (planSize.width !== width || planSize.height !== height) {
+    setPlanSize({ width, height })
+    if (view.k === 1 && view.cx === planSize.width / 2 && view.cy === planSize.height / 2) setViewState(fitView)
+  }
+  // The handlers read the view from this ref. setView and the glide keep it in step; this catches the refit above, which
+  // cannot write a ref while rendering.
+  React.useLayoutEffect(() => {
+    viewRef.current = view
+  }, [view])
   const sizeRef = React.useRef(size)
   const base = Math.max(1e-6, Math.min((size.w - 2 * INSET) / width, (size.h - INSET - BOTTOM) / height))
   const baseRef = React.useRef(base)
@@ -685,13 +757,28 @@ export function RobotMap({
   const editing = mode !== "view"
   const [goalDraft, setGoalDraft] = React.useState<RobotMapPose | null>(null)
   const [corners, setCorners] = React.useState<RobotMapPoint[]>([])
-  const [activeState, setActive] = React.useState<number | null>(null)
+  const [activePick, setActive] = React.useState<Picked | null>(null)
   const [carry, setCarry] = React.useState<Carry | null>(null)
   const [cursorState, setCursor] = React.useState<RobotMapPoint | null>(null)
   const [hover, setHover] = React.useState<RobotMapPoint | null>(null)
   const [focused, setFocused] = React.useState(false)
   const [byPointer, setByPointer] = React.useState(false)
-  const [said, say] = React.useState("")
+  const [said, setSaid] = React.useState("")
+  const sayTimer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+  /** Says something now, and drops a position still waiting to be said, so older words never land after newer ones. */
+  const say = (text: string) => {
+    clearTimeout(sayTimer.current)
+    setSaid(text)
+  }
+  /**
+   * Says where the crosshair is (or where a goal points) once the arrow keys rest for 400 ms: the readout beside it is
+   * drawn for the eye, and a word for every press would bury what the person is doing.
+   */
+  const sayWhenStill = (text: string) => {
+    clearTimeout(sayTimer.current)
+    sayTimer.current = setTimeout(() => setSaid(text), 400)
+  }
+  React.useEffect(() => () => clearTimeout(sayTimer.current), [])
   // A new mode drops whatever the last one left half done. Adjusting state while rendering, as React's docs show for a
   // prop change, so the first frame of the new mode is already clean (an effect would draw one stale frame first).
   const [lastMode, setLastMode] = React.useState(mode)
@@ -702,9 +789,19 @@ export function RobotMap({
     setActive(null)
     setCarry(null)
     setHover(null)
+    // The crosshair starts again from the middle of the view, as it did when this mode first began.
+    setCursor(null)
   }
-  // The waypoint picked last, while it still exists.
-  const active = activeState !== null && activeState < waypoints.length ? activeState : null
+  // The waypoint picked last, where it is in the list now, while it is still there (see findPick).
+  const active = findPick(activePick, waypoints)
+  const zonePoints = (zoneId: string) => zones.find((z) => z.id === zoneId)?.points ?? []
+  // What the keys carry, while it is still in the app's lists; a waypoint or corner the app took away is let go.
+  const carryIndex = carry === null ? null : carry.kind === "waypoint" ? active : findPick(carry.pick, zonePoints(carry.zoneId))
+  const carrying = carryIndex === null ? null : carry
+  // A pick that lost its point is dropped for good, so it cannot come back to life on another point later: a carry that
+  // outlived its waypoint would otherwise take over the next waypoint selected, with the old one's place to go back to.
+  if (activePick && active === null) setActive(null)
+  if (carry && carryIndex === null) setCarry(null)
 
   /** A point of the frame (px) on the plan, from the view of the last commit; for handlers, not for render. */
   const planAt = (px: number, py: number): RobotMapPoint => {
@@ -714,9 +811,16 @@ export function RobotMap({
     return [v.cx + (px - a.x) / k, v.cy + (py - a.y) / k]
   }
   /** On the plan, rounded to `snap` when given, and never off its edges. */
-  const place = ([x, y]: RobotMapPoint): RobotMapPoint => {
-    const q = (n: number) => (snap ? Number((Math.round(n / snap) * snap).toFixed(6)) : n)
-    return [clamp(q(x), 0, width), clamp(q(y), 0, height)]
+  const place = ([x, y]: RobotMapPoint): RobotMapPoint => [onPlan(x, width), onPlan(y, height)]
+  const onPlan = (n: number, max: number) => {
+    if (!snap) return clamp(n, 0, max)
+    const q = (v: number) => Number((Math.round(v / snap) * snap).toFixed(6))
+    let v = q(clamp(n, 0, max))
+    // An edge that is not on the snap grid would round past the plan, and clamping that back would leave a value off the
+    // grid; it steps back to the last snap line on the plan instead. Only a snap larger than the plan is left clamped.
+    if (v > max) v = q(v - snap)
+    if (v < 0) v = q(v + snap)
+    return clamp(v, 0, max)
   }
   /** The point nearest `p` within half a 44 px target, as an index into `points`, or null. */
   const near = (p: RobotMapPoint, points: RobotMapPoint[]) => {
@@ -742,12 +846,43 @@ export function RobotMap({
   const addWaypoint = (p: RobotMapPoint) => {
     const next = [...waypoints, p]
     onWaypointsChange?.(next)
-    setActive(next.length - 1)
+    setActive({ index: next.length - 1, at: p, was: p })
     say(labels.waypointAdded(next.length, p[0], p[1]))
   }
-  const moveWaypoint = (i: number, p: RobotMapPoint) => onWaypointsChange?.(waypoints.map((w, j) => (j === i ? p : w)))
-  const moveCorner = (zoneId: string, i: number, p: RobotMapPoint) =>
+  /**
+   * Moves the picked waypoint to `p`, wherever it is in the list now, and returns the pick that finds it afterwards
+   * (whether or not the app takes the move); null, and nothing changed, when it is no longer in the list.
+   */
+  const moveWaypoint = (pick: Picked, p: RobotMapPoint): Picked | null => {
+    const i = findPick(pick, waypoints)
+    if (i === null) return null
+    onWaypointsChange?.(waypoints.map((w, j) => (j === i ? p : w)))
+    return { index: i, at: p, was: waypoints[i] ?? p }
+  }
+  /** The same for a zone's corner. */
+  const moveCorner = (zoneId: string, pick: Picked, p: RobotMapPoint): Picked | null => {
+    const points = zonePoints(zoneId)
+    const i = findPick(pick, points)
+    if (i === null) return null
     onZonesChange?.(zones.map((z) => (z.id === zoneId ? { ...z, points: z.points.map((q, j) => (j === i ? p : q)) } : z)))
+    return { index: i, at: p, was: points[i] ?? p }
+  }
+  /**
+   * A drag of a waypoint or corner that ends without a release (a second finger, pointercancel, Esc) puts it back where it
+   * was: each move was already sent to the app, so the original goes back the same way, as a cancelled goal is dropped.
+   */
+  const cancelDrag = (ed: Edit) => {
+    if (ed.kind === "goal") setGoalDraft(null)
+    if (!ed.moved) return
+    if (ed.kind === "waypoint") {
+      const back = moveWaypoint(ed.pick, ed.from)
+      if (back) setActive(back)
+      say(labels.moveCancelled)
+    } else if (ed.kind === "vertex") {
+      moveCorner(ed.zoneId, ed.pick, ed.from)
+      say(labels.moveCancelled)
+    }
+  }
   const addCorner = (p: RobotMapPoint) => {
     setCorners([...corners, p])
     say(labels.cornerAdded(corners.length + 1, p[0], p[1]))
@@ -787,13 +922,16 @@ export function RobotMap({
       if (mode === "goal") {
         edit.current = { kind: "goal", x: p.x, y: p.y, at, moved: false }
         setGoalDraft({ x: at[0], y: at[1] })
-      } else if (mode === "waypoints" && wp !== null) {
+      } else if (mode === "waypoints" && wp !== null && waypoints[Number(wp)]) {
         const i = Number(wp)
-        edit.current = { kind: "waypoint", index: i, x: p.x, y: p.y, at, moved: false }
-        setActive(i)
+        const from = waypoints[i] ?? at
+        const pick = { index: i, at: from, was: from }
+        edit.current = { kind: "waypoint", pick, from, x: p.x, y: p.y, at, moved: false }
+        setActive(pick)
       } else if (mode === "zone" && vertex !== null && corners.length === 0) {
         const [zoneId = "", i = "0"] = vertex.split("|")
-        edit.current = { kind: "vertex", zoneId, index: Number(i), x: p.x, y: p.y, at, moved: false }
+        const from = zonePoints(zoneId)[Number(i)] ?? at
+        edit.current = { kind: "vertex", zoneId, pick: { index: Number(i), at: from, was: from }, from, x: p.x, y: p.y, at, moved: false }
       } else if (mode === "zone" && first && corners.length >= 3) {
         edit.current = { kind: "close", x: p.x, y: p.y, at, moved: false }
       } else edit.current = { kind: "add", x: p.x, y: p.y, at, moved: false }
@@ -803,8 +941,8 @@ export function RobotMap({
       const robot = editing ? null : (target.closest?.("[data-robot-id]")?.getAttribute("data-robot-id") ?? null)
       gesture.current = { moved: !primary, x: p.x, y: p.y, robot }
     } else {
-      // A second finger: a pinch, and the end of whatever the first finger was drawing.
-      if (edit.current?.kind === "goal") setGoalDraft(null)
+      // A second finger: a pinch, and the end of whatever the first finger was drawing, which goes back as it was.
+      if (edit.current) cancelDrag(edit.current)
       edit.current = null
       gesture.current = { moved: true, x: p.x, y: p.y, robot: null }
     }
@@ -828,8 +966,16 @@ export function RobotMap({
       const far = Math.hypot(p.x - ed.x, p.y - ed.y) > 4
       if (far) ed.moved = true
       if (ed.kind === "goal" && Math.hypot(p.x - ed.x, p.y - ed.y) > 8) setGoalDraft({ x: ed.at[0], y: ed.at[1], heading: headingTo(p.x - ed.x, p.y - ed.y) })
-      else if (ed.kind === "waypoint" && ed.moved) moveWaypoint(ed.index, place(planAt(p.x, p.y)))
-      else if (ed.kind === "vertex" && ed.moved) moveCorner(ed.zoneId, ed.index, place(planAt(p.x, p.y)))
+      else if ((ed.kind === "waypoint" || ed.kind === "vertex") && ed.moved) {
+        const to = place(planAt(p.x, p.y))
+        const next = ed.kind === "waypoint" ? moveWaypoint(ed.pick, to) : moveCorner(ed.zoneId, ed.pick, to)
+        // The app took the point away mid-drag: the drag ends rather than move whatever took its place.
+        if (!next) edit.current = null
+        else {
+          ed.pick = next
+          if (ed.kind === "waypoint") setActive(next)
+        }
+      }
       pointers.current.set(e.pointerId, p)
       return
     }
@@ -857,7 +1003,7 @@ export function RobotMap({
     if (ed && pointers.current.size === 0) {
       edit.current = null
       if (e.type !== "pointerup") {
-        if (ed.kind === "goal") setGoalDraft(null)
+        cancelDrag(ed)
         return
       }
       const p = local(e)
@@ -868,7 +1014,7 @@ export function RobotMap({
       } else if (ed.kind === "waypoint") {
         if (ed.moved) {
           const to = place(planAt(p.x, p.y))
-          say(labels.waypointMoved(ed.index + 1, to[0], to[1]))
+          say(labels.waypointMoved((findPick(ed.pick, waypoints) ?? ed.pick.index) + 1, to[0], to[1]))
         }
       } else if (ed.kind === "vertex") {
         if (ed.moved) {
@@ -901,7 +1047,11 @@ export function RobotMap({
     if (dir) {
       // A goal placed by the keys turns with left and right before Enter sets it: 15° a press, 45° with Shift.
       if (mode === "goal" && goalDraft) {
-        if (dir[0]) setGoalDraft({ ...goalDraft, heading: (((goalDraft.heading ?? 0) + dir[0] * (e.shiftKey ? 45 : 15)) % 360 + 360) % 360 })
+        if (dir[0]) {
+          const heading = (((goalDraft.heading ?? 0) + dir[0] * (e.shiftKey ? 45 : 15)) % 360 + 360) % 360
+          setGoalDraft({ ...goalDraft, heading })
+          sayWhenStill(labels.heading(heading))
+        }
         return true
       }
       // The crosshair steps a round number of metres, about 8 px at this zoom (40 with Shift), or the snap.
@@ -917,8 +1067,14 @@ export function RobotMap({
       const sy = a.y + (next[1] - v.cy) * k
       const { w, h } = sizeRef.current
       if (sx < 48 || sy < 48 || sx > w - 48 || sy > h - BOTTOM) setView({ ...v, cx: next[0], cy: next[1] })
-      if (carry?.kind === "waypoint") moveWaypoint(carry.index, next)
-      else if (carry) moveCorner(carry.zoneId, carry.index, next)
+      if (carrying?.kind === "waypoint" && activePick) {
+        const moved = moveWaypoint(activePick, next)
+        if (moved) setActive(moved)
+      } else if (carrying?.kind === "vertex") {
+        const moved = moveCorner(carrying.zoneId, carrying.pick, next)
+        if (moved) setCarry({ ...carrying, pick: moved })
+      }
+      sayWhenStill(labels.at(next[0], next[1]))
       return true
     }
     if (e.key === "Enter" || e.key === " ") {
@@ -926,16 +1082,21 @@ export function RobotMap({
         if (!goalDraft) {
           setGoalDraft({ x: cur[0], y: cur[1], heading: 0 })
           say(labels.goalPlaced(cur[0], cur[1]))
-        } else commitGoal(goalDraft)
-      } else if (carry) {
+        } else {
+          // Enter while a pointer still holds the goal sets it once: the release that follows has nothing left to set.
+          if (edit.current?.kind === "goal") edit.current = null
+          commitGoal(goalDraft)
+        }
+      } else if (carrying) {
         setCarry(null)
-        say(carry.kind === "waypoint" ? labels.waypointMoved(carry.index + 1, cur[0], cur[1]) : labels.cornerMoved(cur[0], cur[1]))
+        say(carrying.kind === "waypoint" ? labels.waypointMoved((carryIndex ?? 0) + 1, cur[0], cur[1]) : labels.cornerMoved(cur[0], cur[1]))
       } else if (mode === "waypoints") {
         const hit = near(cur, waypoints)
-        if (hit === null) addWaypoint(cur)
+        const point = hit === null ? undefined : waypoints[hit]
+        if (hit === null || !point) addWaypoint(cur)
         else {
-          setActive(hit)
-          setCarry({ kind: "waypoint", index: hit, from: waypoints[hit] ?? cur })
+          setActive({ index: hit, at: point, was: point })
+          setCarry({ kind: "waypoint", from: point })
           say(labels.waypointPicked(hit + 1))
         }
       } else if (corners.length >= 3 && (e.key === "Enter" || near(cur, corners.slice(0, 1)) !== null)) closeZone()
@@ -943,14 +1104,14 @@ export function RobotMap({
         const hit = corners.length ? null : near(cur, zoneCorners.map((c) => c.p))
         const c = hit === null ? undefined : zoneCorners[hit]
         if (c) {
-          setCarry({ kind: "vertex", zoneId: c.zoneId, index: c.i, from: c.p })
+          setCarry({ kind: "vertex", zoneId: c.zoneId, pick: { index: c.i, at: c.p, was: c.p }, from: c.p })
           say(labels.cornerPicked)
         } else addCorner(cur)
       }
       return true
     }
     if (e.key === "Delete" || e.key === "Backspace") {
-      if (mode === "waypoints" && active !== null && !carry) {
+      if (mode === "waypoints" && active !== null && !carrying) {
         onWaypointsChange?.(waypoints.filter((_, j) => j !== active))
         setActive(null)
         say(labels.waypointRemoved(active + 1))
@@ -964,9 +1125,18 @@ export function RobotMap({
       return false
     }
     if (e.key === "Escape") {
-      if (carry) {
-        if (carry.kind === "waypoint") moveWaypoint(carry.index, carry.from)
-        else moveCorner(carry.zoneId, carry.index, carry.from)
+      // A waypoint or corner still under the pointer goes back where it was, as a cancelled carry does.
+      const ed = edit.current
+      if (ed?.kind === "waypoint" || ed?.kind === "vertex") {
+        edit.current = null
+        cancelDrag(ed)
+        return true
+      }
+      if (carrying) {
+        if (carrying.kind === "waypoint") {
+          const back = activePick && moveWaypoint(activePick, carrying.from)
+          if (back) setActive(back)
+        } else moveCorner(carrying.zoneId, carrying.pick, carrying.from)
         setCarry(null)
         say(labels.moveCancelled)
         return true
@@ -1192,7 +1362,7 @@ export function RobotMap({
   // The banner says what a click does now, and how to finish or cancel: it follows the step, not only the mode.
   const banner = !editing
     ? null
-    : carry
+    : carrying
       ? labels.carryHint
       : mode === "goal"
         ? goalDraft && !byPointer
@@ -1205,8 +1375,9 @@ export function RobotMap({
             : editableZones
               ? labels.zoneEditableHint
               : labels.zoneHint
-  // The keyboard crosshair shows while the map has focus from the keys; a pointer has its own cursor.
-  const cursor = cursorState ?? [view.cx, view.cy]
+  // The keyboard crosshair shows while the map has focus from the keys; a pointer has its own cursor. Before the first
+  // arrow it is the view's centre on the snap grid, where Enter would place it.
+  const cursor = cursorState ?? place([view.cx, view.cy])
   const showCursor = editing && focused && !byPointer
   const summary = [
     robots.length ? labels.count(robots.length) : labels.empty,
@@ -1279,8 +1450,9 @@ export function RobotMap({
                     </mask>
                   </defs>
                   <rect {...onScreen(gridShown.grid)} fill={`url(#${uid}-hatch)`} mask={`url(#${uid}-unknown)`} />
-                  {/* The costmap between the hatch and the obstacles, so walls and racks stay grey over their lethal cost. */}
-                  {costLayer}
+                  {/* The costmap between the hatch and the obstacles, so walls and racks stay grey over their lethal cost.
+                      With a floorplan it goes over the floorplan instead, which would otherwise cover it. */}
+                  {!floorplan && costLayer}
                   {/* Obstacles in the muted grey, not ink: they are the background the robots move on, and a block of ink (white
                       in dark mode) outweighed the robots and their states. Still 4.5:1 on the map, and scan dots in ink show on it. */}
                   <rect {...onScreen(gridShown.grid)} className="fill-muted-foreground" mask={`url(#${uid}-occupied)`} />
@@ -1294,7 +1466,7 @@ export function RobotMap({
             <g transform={`translate(${ox} ${oy}) scale(${s})`}>{floorplan}</g>
           ) : null}
           <rect x={ox} y={oy} width={width * s} height={height * s} className="fill-none stroke-map-point" strokeWidth="1" />
-          {!gridShown && costLayer}
+          {(floorplan || !gridShown) && costLayer}
           {zones.map((z) => (
             <polygon
               key={z.id}
@@ -1479,7 +1651,7 @@ export function RobotMap({
           zones.flatMap((z) =>
             z.points.map(([zx, zy], i) => {
               const [x, y] = toScreen(zx, zy)
-              const carried = carry?.kind === "vertex" && carry.zoneId === z.id && carry.index === i
+              const carried = carrying?.kind === "vertex" && carrying.zoneId === z.id && carryIndex === i
               return (
                 <div
                   key={`${z.id}-${i}`}

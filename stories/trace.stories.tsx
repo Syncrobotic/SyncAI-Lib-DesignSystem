@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Bot, Camera, Cpu, Database, MapPin, RotateCw, Route, Search, Wrench } from "lucide-react"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Trace, TraceCode, TraceDetail, TraceHeader, TraceItem } from "@/registry/syncrobotic/ui/trace"

@@ -1,5 +1,5 @@
 import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { ImageGrid, type ImageGridItem } from "@/registry/syncrobotic/ui/image-grid"
 import { brokenPhoto, placeholderPhoto } from "./placeholder-photos"

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import * as React from "react"
 import { RobotModel } from "@/registry/syncrobotic/ui/robot-model"
 import { demoArmPose, demoArmUrdf } from "./robot-model-arm"

@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react"
-import { fn } from "@storybook/test"
+import type { Meta, StoryObj } from "@storybook/react-vite"
+import { fn } from "storybook/test"
 import { ListGroup, ListRow } from "@/registry/syncrobotic/shell/list"
 import { InlineStatus, StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { Bone, LoadingLine } from "@/registry/syncrobotic/shell/skeleton"

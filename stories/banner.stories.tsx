@@ -1,5 +1,5 @@
 import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { CloudOff, Lock, RotateCw, Wrench } from "lucide-react"
 import { Banner } from "@/registry/syncrobotic/ui/banner"
 import { Button } from "@/registry/syncrobotic/ui/button"

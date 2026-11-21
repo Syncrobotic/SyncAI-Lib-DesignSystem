@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { BookOpen, Bot, Cpu, Joystick, Map, Menu, ShieldCheck, Warehouse } from "lucide-react"
 import { ChargingDock } from "@/registry/syncrobotic/ui/robot-icons"
 import { Button } from "@/registry/syncrobotic/ui/button"

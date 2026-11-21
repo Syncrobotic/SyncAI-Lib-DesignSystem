@@ -1,6 +1,6 @@
 import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/react"
-import { fn } from "@storybook/test"
+import type { Meta, StoryObj } from "@storybook/react-vite"
+import { fn } from "storybook/test"
 import { Alarm, AlarmList, type AlarmData } from "@/registry/syncrobotic/ui/alarm"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Toast, ToastAction, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport, Toaster, toast } from "@/registry/syncrobotic/ui/toast"

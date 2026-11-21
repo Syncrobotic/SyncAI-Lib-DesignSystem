@@ -1,5 +1,5 @@
 import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Lock, MapPin, X } from "lucide-react"
 import { Sortable, SortableHandle, SortableItem } from "@/registry/syncrobotic/ui/sortable"
 import { Switch } from "@/registry/syncrobotic/ui/switch"

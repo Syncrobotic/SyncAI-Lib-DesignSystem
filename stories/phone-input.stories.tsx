@@ -1,5 +1,5 @@
 import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { isPhoneValid, PhoneInput } from "@/registry/syncrobotic/ui/phone-input"
 

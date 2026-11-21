@@ -899,8 +899,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-21",
+            "note": "One segment always stays selected: pressing the selected one again no longer clears the choice (it called onValueChange(\"\"))."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -2677,8 +2682,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.24.0",
+        "version": "0.24.1",
         "changelog": [
+          {
+            "version": "0.24.1",
+            "date": "2026-11-21",
+            "note": "Fixes for live data and editing. A plan whose size arrives after the first render (a `grid` loaded later) is fitted again, unless someone has already panned or zoomed. A cancelled drag of a waypoint or zone corner (Esc, a second finger, pointercancel) sends the original back through onWaypointsChange / onZonesChange and says \"Move cancelled\". The selected or carried waypoint is followed by its value, so when the app changes the list (drops waypoint 1 as the robot reaches it) Delete and Esc act on that waypoint, or on none if it is gone. A fast costmap now shows: one encode at a time, the one in flight finishes and only updates between are skipped. With a floorplan the costmap is drawn over it. The keyboard crosshair's position (and a turning goal's heading) is announced once the arrows rest for 400 ms. Smaller: snap at a plan edge off the snap grid stays on the grid, the crosshair is drawn snapped where Enter places it, a new mode starts the crosshair at the centre, Enter during a pointer press sets the goal once, and a removed grid frees its image at once. Public API unchanged."
+          },
           {
             "version": "0.24.0",
             "date": "2026-11-21",
@@ -3726,8 +3736,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.24.0",
+        "version": "0.24.1",
         "changelog": [
+          {
+            "version": "0.24.1",
+            "date": "2026-11-21",
+            "note": "Without `locale`, numbers are written in English (\"en\") instead of the runtime's language, so server and browser render the same and the page hydrates without a mismatch; pass your app's locale. An invalid locale tag falls back to \"en\" instead of throwing. Without `updatedAt`, Stale now follows the values (position, velocity, effort), so a parent that rebuilds `joints` every render still sees Stale; a still arm then reads Stale too, so pass `updatedAt`. `staleAfterMs={Infinity}` never goes stale, an infinite URDF limit counts as no limit (no NaN marker), and ±0.05 round the same way."
+          },
           {
             "version": "0.24.0",
             "date": "2026-11-21",
@@ -3758,8 +3773,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.24.0",
+        "version": "0.24.1",
         "changelog": [
+          {
+            "version": "0.24.1",
+            "date": "2026-11-21",
+            "note": "A colorRange written inline no longer re-uploads the whole cloud on every render; resizing no longer flashes an empty frame; under Windows High Contrast the points stay visible (CanvasText on Canvas); a lost pointer capture ends the drag; the middle button no longer starts autoscroll; wheels that scroll by lines or pages zoom the right amount; a live cloud reuses its buffers instead of allocating new ones for each scan. Screen readers now hear a stable name (the label and “3D point cloud”) with the count and extent in the description, which changes at most every 5 s. New label `viewName`; new exports `pointCloudWheelZoom` and `pointCloudPaletteSources`; `packPointCloud` takes an optional array to pack into."
+          },
           {
             "version": "0.24.0",
             "date": "2026-11-21",
@@ -3796,8 +3816,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.24.0",
+        "version": "0.24.1",
         "changelog": [
+          {
+            "version": "0.24.1",
+            "date": "2026-11-21",
+            "note": "Stale now follows the joint values (or `updatedAt`), not the `joints` object: an inline record no longer keeps the view fresh, or flips it in and out of Stale and announces it on every render; without `updatedAt` a robot holding still goes stale. A view rebuilt after a lost context no longer stays on “Restoring the 3D view…”, and a context not back within 5 s shows an error with Load again (new label `contextFailed`). An empty URDF file is an error instead of an endless load; meshes that arrive after the view is gone are freed; mesh paths with a query string load; a theme set on any ancestor is followed; a theme colour that does not parse no longer takes the previous one."
+          },
           {
             "version": "0.24.0",
             "date": "2026-11-21",
@@ -4525,8 +4550,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.10.1",
         "changelog": [
+          {
+            "version": "0.10.1",
+            "date": "2026-11-21",
+            "note": "With multiple off, extra files are refused as \"count\" through onReject instead of dropped silently; other attributes such as aria-label reach the drop zone (an icon-only zone has a name)."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -4683,8 +4713,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.17.4",
         "changelog": [
+          {
+            "version": "0.17.4",
+            "date": "2026-11-21",
+            "note": "A warning or danger event says so to screen readers (\", warning\", \", failed\"), as Marker does; the glyph alone was visual only."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",

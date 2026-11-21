@@ -1,5 +1,5 @@
 import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { AnnotatedImage, type Annotation } from "@/registry/syncrobotic/ui/annotated-image"
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
 import { brokenPhoto } from "./placeholder-photos"

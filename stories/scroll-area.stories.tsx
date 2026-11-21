@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { ScrollArea } from "@/registry/syncrobotic/ui/scroll-area"
 
 const meta: Meta = { title: "Display/Scroll area" }

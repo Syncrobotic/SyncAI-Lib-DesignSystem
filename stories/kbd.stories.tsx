@@ -1,5 +1,5 @@
 import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Save, Search } from "lucide-react"
 import { useHotkeys } from "@/registry/syncrobotic/hooks/use-hotkeys"
 import { Button } from "@/registry/syncrobotic/ui/button"

@@ -1,4 +1,4 @@
-// @syncrobotic/segmented-control v0.17.2 · update: npx shadcn add @syncrobotic/segmented-control --overwrite
+// @syncrobotic/segmented-control v0.17.3 · update: npx shadcn add @syncrobotic/segmented-control --overwrite
 "use client"
 
 import * as React from "react"
@@ -46,8 +46,24 @@ function useThumb(root: React.RefObject<HTMLDivElement | null>) {
  * from the old segment to the new one: the Move pattern, --motion-base. Before it is measured (server render, first
  * paint) the selected segment fills itself, so it never shows unselected.
  */
-export function SegmentedControl({ className, children, ...props }: Omit<ToggleGroup.ToggleGroupSingleProps, "type">) {
+export function SegmentedControl({
+  className,
+  children,
+  value: valueProp,
+  defaultValue,
+  onValueChange,
+  ...props
+}: Omit<ToggleGroup.ToggleGroupSingleProps, "type">) {
   const root = React.useRef<HTMLDivElement>(null)
+  // One choice always stays selected: a toggle group lets the selected item be pressed off (value ""), a segmented
+  // control does not. So the group is always controlled here, and an empty value is ignored.
+  const [inner, setInner] = React.useState(defaultValue ?? "")
+  const value = valueProp ?? inner
+  const select = (next: string) => {
+    if (!next) return
+    setInner(next)
+    onValueChange?.(next)
+  }
   const thumb = useThumb(root)
   // The first measurement places the thumb without travelling; later ones animate.
   const [placed, setPlaced] = React.useState(false)
@@ -60,6 +76,8 @@ export function SegmentedControl({ className, children, ...props }: Omit<ToggleG
       data-slot="segmented-control"
       data-thumb={thumb ? "" : undefined}
       type="single"
+      value={value}
+      onValueChange={select}
       // The muted track has no edge of its own (1.35:1 on the card); in high contrast it takes the 3:1 field edge.
       className={cn(
         "group/segmented relative inline-flex h-(--h-md) w-full items-center gap-1 rounded-sm bg-muted p-1 in-data-[contrast=more]:ring-1 in-data-[contrast=more]:ring-input in-data-[contrast=more]:ring-inset",

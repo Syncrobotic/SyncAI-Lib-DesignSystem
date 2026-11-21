@@ -36,9 +36,10 @@ const config: NextConfig = {
       },
     ]
   },
-  // Stories import fn() from @storybook/test. The site only needs a no-op, not the test runtime.
+  // Stories import fn() from storybook/test (Storybook 9 folded @storybook/test into core). The site only needs a no-op,
+  // not the test runtime.
   turbopack: {
-    resolveAlias: { "@storybook/test": "./site/shims/storybook-test.ts" },
+    resolveAlias: { "storybook/test": "./site/shims/storybook-test.ts" },
   },
 }
 
