@@ -1,4 +1,4 @@
-// @syncrobotic/dialog-form v0.21.0 · update: npx shadcn add @syncrobotic/dialog-form --overwrite
+// @syncrobotic/dialog-form v0.21.1 · update: npx shadcn add @syncrobotic/dialog-form --overwrite
 "use client"
 
 import * as React from "react"
@@ -38,7 +38,8 @@ export function DialogForm({
   const [open, setOpen] = React.useState(!!defaultOpen)
   const [name, setName] = React.useState("")
   const [robot, setRobot] = React.useState("")
-  const [route, setRoute] = React.useState(routes[0])
+  // The first route is preselected; with no routes there is nothing to preselect, like the robot above.
+  const [route, setRoute] = React.useState(routes[0] ?? "")
   const [start, setStart] = React.useState("now")
   // Errors are worked out from the values once a submit has been tried, so a fixed field clears as you type.
   const [submitted, setSubmitted] = React.useState(false)

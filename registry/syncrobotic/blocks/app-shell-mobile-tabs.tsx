@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell-mobile-tabs v0.17.3 · update: npx shadcn add @syncrobotic/app-shell-mobile-tabs --overwrite
+// @syncrobotic/app-shell-mobile-tabs v0.17.4 · update: npx shadcn add @syncrobotic/app-shell-mobile-tabs --overwrite
 "use client"
 
 import * as React from "react"
@@ -70,7 +70,8 @@ export function AppShellMobileTabs({
       <header className="sticky top-0 z-10 flex min-h-(--h-lg) items-center justify-between gap-3 border-b border-border bg-background px-4 py-2">
         <div className="flex min-w-0 flex-col">
           <span className="text-xs text-muted-foreground">{product}</span>
-          <h1 className="truncate text-lg font-bold">{current.label}</h1>
+          {/* An empty tab list has no current tab, so the title is left blank rather than throwing. */}
+          <h1 className="truncate text-lg font-bold">{current?.label}</h1>
         </div>
         <Button variant="ghost" size="icon" aria-label={`Search ${product}`}>
           <Search aria-hidden="true" />

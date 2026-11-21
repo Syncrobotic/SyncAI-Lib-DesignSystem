@@ -1,4 +1,4 @@
-// @syncrobotic/chart v0.22.0 · update: npx shadcn add @syncrobotic/chart --overwrite
+// @syncrobotic/chart v0.22.1 · update: npx shadcn add @syncrobotic/chart --overwrite
 "use client"
 
 import * as React from "react"
@@ -225,10 +225,10 @@ export function ChartTable<T extends Record<string, unknown>>({
         <TableHeader>
           <TableRow>
             <TableHead>{xLabel}</TableHead>
-            {keys.map((k) => (
+            {Object.entries(config).map(([k, series]) => (
               <TableHead key={k} className="text-right">
-                {config[k].label}
-                {config[k].unit ? ` (${config[k].unit})` : ""}
+                {series.label}
+                {series.unit ? ` (${series.unit})` : ""}
               </TableHead>
             ))}
           </TableRow>

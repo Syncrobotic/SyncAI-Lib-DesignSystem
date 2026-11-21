@@ -1,4 +1,4 @@
-// @syncrobotic/bar-chart-variance v0.17.2 · update: npx shadcn add @syncrobotic/bar-chart-variance --overwrite
+// @syncrobotic/bar-chart-variance v0.17.3 · update: npx shadcn add @syncrobotic/bar-chart-variance --overwrite
 "use client"
 
 import * as React from "react"
@@ -9,7 +9,14 @@ import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/u
 
 const config = { delta: { label: "Against plan", color: 1, unit: "min" } } satisfies ChartConfig
 // Sample data: minutes each robot's patrol ran over (+) or under (−) its plan today.
-const data = ["7F3A", "DAA6", "9E37", "1715", "B54C", "5384"].map((r, i) => ({ r, delta: [-4, 2, -11, 6, 1, -2][i] }))
+const data = [
+  { r: "7F3A", delta: -4 },
+  { r: "DAA6", delta: 2 },
+  { r: "9E37", delta: -11 },
+  { r: "1715", delta: 6 },
+  { r: "B54C", delta: 1 },
+  { r: "5384", delta: -2 },
+]
 
 /** Above and below zero: one hue, the zero line drawn, the biggest miss named in words. */
 export function BarChartVariance() {

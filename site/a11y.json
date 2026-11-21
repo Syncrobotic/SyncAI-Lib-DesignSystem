@@ -668,6 +668,39 @@
     "tabStops": 4,
     "live": true
   },
+  "joint-state": {
+    "roles": [
+      "list",
+      "listitem",
+      "region",
+      "status"
+    ],
+    "tabStops": 0,
+    "live": true
+  },
+  "point-cloud": {
+    "roles": [
+      "alert",
+      "button",
+      "group",
+      "img",
+      "status"
+    ],
+    "tabStops": 3,
+    "live": true
+  },
+  "robot-model": {
+    "roles": [
+      "button",
+      "group",
+      "heading",
+      "img",
+      "region",
+      "status"
+    ],
+    "tabStops": 1,
+    "live": true
+  },
   "filter-form": {
     "roles": [
       "checkbox",

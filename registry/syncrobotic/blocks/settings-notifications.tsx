@@ -1,4 +1,4 @@
-// @syncrobotic/settings-notifications v0.17.2 · update: npx shadcn add @syncrobotic/settings-notifications --overwrite
+// @syncrobotic/settings-notifications v0.17.3 · update: npx shadcn add @syncrobotic/settings-notifications --overwrite
 "use client"
 
 import * as React from "react"
@@ -40,7 +40,10 @@ const initial: Record<string, Channel[]> = {
 export function SettingsNotifications() {
   const [on, setOn] = React.useState(initial)
   const [quiet, setQuiet] = React.useState(true)
-  const toggle = (e: string, c: Channel, v: boolean) => setOn((s) => ({ ...s, [e]: v ? [...s[e], c] : s[e].filter((x) => x !== c) }))
+  // An event missing from the starting choices simply has no channels yet.
+  const channelsOf = (s: Record<string, Channel[]>, e: string) => s[e] ?? []
+  const toggle = (e: string, c: Channel, v: boolean) =>
+    setOn((s) => ({ ...s, [e]: v ? [...channelsOf(s, e), c] : channelsOf(s, e).filter((x) => x !== c) }))
 
   return (
     <div className="flex flex-col gap-6">
@@ -85,7 +88,7 @@ export function SettingsNotifications() {
                         <span className="relative inline-flex align-middle">
                           <Checkbox
                             aria-label={`${e.label}, ${c.label}${locked ? ", always on" : ""}`}
-                            checked={locked || on[e.key].includes(c.key)}
+                            checked={locked || channelsOf(on, e.key).includes(c.key)}
                             disabled={locked}
                             onCheckedChange={(v) => toggle(e.key, c.key, v === true)}
                           />

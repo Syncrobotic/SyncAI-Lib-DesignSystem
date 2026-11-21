@@ -28,7 +28,7 @@ Reviewed each release, so the roadmap follows evidence rather than taste.
 
 ## Plan
 
-The milestones are themes, not version numbers, listed by number. 0.4 to 0.9 and 1.0 were planned first; 0.16 and 0.17 were added later, so 0.9 is still open while they are done. The kit is at 0.22, and the open items below are what is left of each theme. Checked 2026-11-20 (0.22.1).
+The milestones are themes, not version numbers, listed by number. 0.4 to 0.9 and 1.0 were planned first; 0.16 and 0.17 were added later, so 0.9 is still open while they are done. The kit is at 0.24, and the open items below are what is left of each theme. Checked 2026-11-21 (0.24.0).
 
 ### 0.4 · Alarms and feedback
 - [x] Alarms foundation, `alarm`, `toast`
@@ -89,6 +89,11 @@ The milestones are themes, not version numbers, listed by number. 0.4 to 0.9 and
 - [x] Charts: graphite and the brand indigo (C3), every series at least 3:1 and told apart by line style too
 - [x] Alarms redesigned as aligned rows; low priority is a diamond, so no two priorities share a round outline; the list has loading and error states that never read as "no alarms"
 - [x] Brand assets page (`/brand`): logos, colours, use in web and app interfaces
+
+### 0.23 – 0.24 · Robots, and the kit compiles anywhere
+- [x] Robot components: `camera-feed`, `teleop-pad`, `robot-map` (with ROS occupancy grids, laser scans and editing), `point-cloud` (WebGL2, no library), `robot-model` (URDF, the only three.js item), `joint-state`
+- [x] Every word translatable (`labels`, `locale`)
+- [x] Engineering: ESLint with the React Compiler rules, strict TypeScript, every item compiling under `noUncheckedIndexedAccess` in CI, security headers
 
 ### 1.0 · Public, source-available
 - [x] Licence (all rights reserved, source-available), CONTRIBUTING, SECURITY

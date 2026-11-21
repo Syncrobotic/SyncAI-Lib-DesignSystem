@@ -120,7 +120,10 @@ export function Sidebar({ scopes, switcher = false, path: frozen }: { scopes: Sc
                     while the previous page's examples close, and the sliding marker was drawn against the moving column:
                     a grey box swept down the list before it settled, the flash on every switch. */}
                 {here === l.href && <span aria-hidden className="absolute inset-0 rounded-xs bg-muted" />}
-                <span className="relative">{l.label}</span>
+                <span className="relative min-w-0 truncate">{l.label}</span>
+                {/* Over half the items are beta, so the mark stays quiet: small grey words, no outline, there to find
+                    rather than to catch the eye. The component page states it again beside its version. */}
+                {l.beta && <span className="relative ml-auto shrink-0 pl-2 text-xs text-muted-foreground">Beta</span>}
               </Link>
               {/* The open page's examples, under its link. They appear and go at once: a height animation here moves every
                   link below (and, closing above, the column itself) for a third of a second on each switch. */}

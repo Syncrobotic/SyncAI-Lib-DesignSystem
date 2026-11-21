@@ -1,4 +1,4 @@
-// @syncrobotic/media-player v0.21.1 · update: npx shadcn add @syncrobotic/media-player --overwrite
+// @syncrobotic/media-player v0.21.2 · update: npx shadcn add @syncrobotic/media-player --overwrite
 "use client"
 
 import * as React from "react"
@@ -262,7 +262,8 @@ export function MediaPlayer({
   const cycleRate = () => {
     const video = videoRef.current
     if (!video || !ready) return
-    const next = rates[(rates.indexOf(rate as (typeof rates)[number]) + 1) % rates.length]
+    // The index wraps with % rates.length, so it always names one of the rates (an unknown rate gives -1 + 1, the first).
+    const next = rates[(rates.indexOf(rate as (typeof rates)[number]) + 1) % rates.length]!
     video.playbackRate = next
     setRate(next)
   }
@@ -462,7 +463,10 @@ export function MediaPlayer({
                       value={[known ? Math.min(current, duration) : 0]}
                       disabled={!known}
                       valueText={(v) => l.position(formatMediaTime(v), formatMediaTime(total))}
-                      onValueChange={([v]) => seekTo(v)}
+                      // One thumb, so one value; the check only satisfies the array type.
+                      onValueChange={([v]) => {
+                        if (v !== undefined) seekTo(v)
+                      }}
                     />
                     {known &&
                       markers.map((m) => (

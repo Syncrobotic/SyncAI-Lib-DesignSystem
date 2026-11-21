@@ -1,4 +1,4 @@
-// @syncrobotic/event-log v0.17.2 · update: npx shadcn add @syncrobotic/event-log --overwrite
+// @syncrobotic/event-log v0.17.3 · update: npx shadcn add @syncrobotic/event-log --overwrite
 "use client"
 
 import * as React from "react"
@@ -83,7 +83,7 @@ function Level({ priority }: { priority: LogEvent["priority"] }) {
   return (
     <span className={`flex items-center gap-2 text-sm font-medium ${p.text}`}>
       <p.icon aria-hidden="true" className="size-4" />
-      {priority[0].toUpperCase() + priority.slice(1)}
+      {priority.charAt(0).toUpperCase() + priority.slice(1)}
     </span>
   )
 }

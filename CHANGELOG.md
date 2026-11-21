@@ -2,6 +2,29 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.24.0 · 2026-11-21
+
+Robot components for what an operator sees and does: a LiDAR point cloud, a 3D robot model, joint states, and a robot map that takes ROS grids and scans and can be edited. Every item now compiles under `noUncheckedIndexedAccess`.
+
+### Added
+- **`point-cloud`** (beta): a LiDAR or depth cloud (a decoded `sensor_msgs/PointCloud2`, REP 103 axes) in raw WebGL2, with no 3D library. Coloured by height or intensity on the accent's single hue with its scale in words, never a rainbow; a recessive ground grid, the robot at the origin, an axes gizmo in words. Orbit, pan and zoom by pointer, touch and keyboard (the wheel only once focused), Reset view and Fit at 44 px. Loading, empty, error, stale (`staleAfterMs`, `receivedAt`) and no-WebGL states; context loss handled; draws only on demand.
+- **`robot-model`** (beta): a robot's pose in 3D from its URDF (`urdf` or `urdfUrl`, `package://` through `packages`) and live joint values (`joints`, or `jointStateToRecord` from a `sensor_msgs/JointState`). Neutral greys from the theme, joints that need someone highlighted in warning or danger with a callout in words. The kit's only three.js item: `three` and `urdf-loader` install with it alone; load it lazily (on the docs site only its own page downloads three.js). Without WebGL it lists every joint in words.
+- **`joint-state`** (beta): an arm's joints for monitoring: position in degrees or millimetres on a thin track between its limits, velocity and effort; near a limit (5 % by default), at it or past it said in words with an icon; stale after `staleAfterMs` by the browser's clock. Stacks by its own width.
+- **`robot-map` 0.24.0: ROS layers and editing.**
+  - `grid` draws a `nav_msgs/OccupancyGrid` as the floor (free the map surface, occupied a muted grey at its probability, unknown the no-data hatch); with no `width`/`height` the grid is the plan. `costmap` lays the accent's ramp over it with a legend.
+  - `scans` draws `sensor_msgs/LaserScan`s from each robot's pose, one path per scan.
+  - `mode` (`goal`, `waypoints`, `zone`): place and point a goal, add, move and delete numbered waypoints, draw zones corner by corner (`editableZones` drags existing corners); controlled, with optional `snap`. The primary pointer edits; right or middle drag and two fingers pan. A keyboard crosshair with Enter, Esc and Delete does the same, a banner says what a click does, and each edit is announced.
+  - Helpers `gridToPlan`, `rosToPlan`, `rasteriseGrid`, `scanToPoints`.
+- **Docs: Robotics UI kit** (Getting started): the robot components by what an operator does, and the ROS message each one takes.
+- Docs sidebar: a quiet Beta after each beta item.
+
+### Fixed
+- **Every item compiles with `noUncheckedIndexedAccess`**, checked in CI (`tsconfig.registry.json`). Behaviour unchanged, except three crashes on an empty list: `AppShellMobileTabs` with no tabs, `AppShell` search with no scopes, a paged `Questionnaire` with no questions. Re-install the items whose version moved in this release (each one's changelog line says why).
+- `robot-map`: zone names keep clear of the mode banner and legend, as robot names do.
+
+### Changed
+- Site title, description and keywords say what the kit is (a robotics UI kit for React), for search.
+
 ## 0.23.1 · 2026-11-21
 
 Engineering: every item now passes the React Compiler's rules and compiles with `noUnusedLocals` and `noImplicitReturns`. No API changed.
