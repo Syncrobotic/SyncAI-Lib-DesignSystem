@@ -1,12 +1,11 @@
 import * as React from "react"
 import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react"
 import {
-  getCoreRowModel,
-  getExpandedRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-  type ColumnDef,
+  createExpandedRowModel,
+  createPaginatedRowModel,
+  createSortedRowModel,
+  tableFeatures,
+  useTable,
   type TableOptions,
 } from "@tanstack/react-table"
 import { afterEach, describe, expect, it } from "vitest"
@@ -17,8 +16,10 @@ import {
   DataGridPagination,
   DataGridSelectionSummary,
   DataGridTable,
+  dataGridFeatures,
   expandColumn,
   selectColumn,
+  type DataGridColumnDef,
 } from "@/registry/syncrobotic/ui/data-grid"
 
 // These pin what DataGrid does with the table a product builds, so a TanStack Table upgrade that changes the table's API
@@ -28,14 +29,22 @@ type Robot = { id: string; name: string; km: number }
 const robots: Robot[] = Array.from({ length: 12 }, (_, i) => ({ id: `r${i}`, name: `Robot ${String.fromCharCode(76 - i)}`, km: 100 + i * 10 }))
 const six = robots.slice(0, 6)
 
-type Col = ColumnDef<Robot>
+// The table a product builds: the grid's features plus the row models it wants, at module scope so they stay stable.
+const features = tableFeatures({
+  ...dataGridFeatures,
+  sortedRowModel: createSortedRowModel(),
+  paginatedRowModel: createPaginatedRowModel(),
+  expandedRowModel: createExpandedRowModel(),
+})
+type Features = typeof features
+type Col = DataGridColumnDef<Robot, Features>
 
 const columns: Col[] = [
   { accessorKey: "name", header: ({ column }) => <DataGridColumnHeader column={column} title="Robot" />, size: 200, meta: { label: "Robot" } },
   { accessorKey: "km", header: ({ column }) => <DataGridColumnHeader column={column} title="Odometer" />, size: 120, meta: { align: "right", label: "Odometer" } },
 ]
-const selectable = [selectColumn<Robot>(), ...columns]
-const expandable = [expandColumn<Robot>(), ...columns]
+const selectable = [selectColumn<Robot, Features>(), ...columns]
+const expandable = [expandColumn<Robot, Features>(), ...columns]
 const withTotals: Col[] = [
   { ...columns[0], footer: () => "Total" },
   { ...columns[1], footer: () => `${six.reduce((s, r) => s + r.km, 0)} km` },
@@ -50,19 +59,14 @@ function Grid({
 }: {
   data?: Robot[]
   cols?: Col[]
-  options?: Partial<TableOptions<Robot>>
+  options?: Partial<TableOptions<Features, Robot>>
   children?: React.ReactNode
   loading?: boolean
 }) {
-  // The table a product builds, with the row models it wants. The compiler skips this hook, as it skips any caller of
-  // useReactTable, whose table instance is mutated in place.
-  // eslint-disable-next-line react-hooks/incompatible-library -- TanStack Table's useReactTable, as a product calls it.
-  const table = useReactTable({
+  const table = useTable({
+    features,
     data,
     columns: cols,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getRowId: (r) => r.id,
     initialState: { pagination: { pageIndex: 0, pageSize: 5 } },
     ...options,
@@ -165,7 +169,6 @@ describe("DataGrid", () => {
         cols={expandable}
         options={{
           getRowCanExpand: () => true,
-          getExpandedRowModel: getExpandedRowModel(),
           meta: { renderSubRow: (row: { original: Robot }) => <p>Detail of {row.original.name}</p> },
         }}
       />,
@@ -184,8 +187,8 @@ describe("DataGrid", () => {
     expect(screen.queryByText("Detail of Robot L")).toBeNull()
   })
 
-  it("pins a column to the left edge from its menu, and unpins it", async () => {
-    render(<Grid options={{ initialState: { pagination: { pageIndex: 0, pageSize: 5 }, columnPinning: { left: ["name"] } } }} />)
+  it("pins a column to the start edge from its menu, and unpins it", async () => {
+    render(<Grid options={{ initialState: { pagination: { pageIndex: 0, pageSize: 5 }, columnPinning: { start: ["name"], end: [] } } }} />)
     const header = screen.getAllByRole("columnheader")[0]
     expect(header.style.position).toBe("sticky")
     expect(bodyRows()[0].querySelector("td")!.style.position).toBe("sticky")

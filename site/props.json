@@ -2257,7 +2257,7 @@
    "props": [
     {
      "name": "table",
-     "type": "TanTable<T>",
+     "type": "TanTable<TFeatures, T>",
      "required": true,
      "description": ""
     },
@@ -2427,7 +2427,7 @@
    "props": [
     {
      "name": "column",
-     "type": "Column<T, unknown>",
+     "type": "Column<TFeatures, T, unknown>",
      "required": true,
      "description": ""
     },

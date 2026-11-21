@@ -177,7 +177,7 @@ const entries: Record<string, Entry> = {
     group: "Display",
     examples: { file: "data-grid", prefix: "DataGrid" },
     rules: [
-      "Build the table with useReactTable; DataGrid draws it.",
+      "Build the table with useTable, with dataGridFeatures in its features; DataGrid draws it.",
       "Keep data and columns stable (module scope or useMemo). A new array each render loops once a row expands.",
       "Numbers right-aligned (meta.align) and tabular.",
       "Status cells use InlineStatus, never a coloured badge.",
