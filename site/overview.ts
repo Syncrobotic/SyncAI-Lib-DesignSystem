@@ -309,7 +309,7 @@ export const overviews: Record<string, Overview> = {
     notes: ["Answers are keyed by question id; onSubmit gets them all.", "QuestionField draws one question on its own inside your form."],
   },
   "data-grid": {
-    what: "A full data table built on TanStack Table 9: you own the table state; DataGrid, DataGridTable and their parts draw it in the kit's style.",
+    what: "A full data table built on TanStack Table: you own the table state; DataGrid, DataGridTable and their parts draw it in the kit's style.",
     use: [
       "Fleets, events and datasets people sort, select and page through.",
       "Bulk actions on selected rows.",
@@ -320,9 +320,7 @@ export const overviews: Record<string, Overview> = {
     notes: [
       "Column header: DataGridColumnHeader gives sort, pin and hide in one menu.",
       "selectColumn() and expandColumn() are ready-made columns; renderSubRow goes in the table's meta.",
-      "Spread dataGridFeatures into tableFeatures() and add the row models you need; type columns as DataGridColumnDef<Row, typeof features> and call selectColumn<Row, typeof features>().",
-      "Coming from Table 8 (data-grid 0.23 or earlier): follow \"Upgrading to TanStack Table 9\" on this page, step by step; it ends with a prompt for a coding agent and a grep checklist that must print nothing.",
-      "React Compiler: data-grid.tsx starts with \"use no memo\"; keep it. Call useTable without a selector. A cell or header of your own that reads state through a row, column or table method (row.getIsSelected(), column.getIsSorted()) wraps the read in <Subscribe source={row.table.atoms.rowSelection}> from @tanstack/react-table, or it stops updating once compiled.",
+      "Build the table with useTable({ features: tableFeatures({ ...dataGridFeatures, …row models }) }); keep the file's \"use no memo\".",
       "Give each column meta.label so the visibility menu names it.",
       "Keep getRowId stable so selection survives sorting.",
       "data and columns must keep their identity between renders; an inline array (`rows.slice(0, 6)`, `[]`) re-renders forever once state auto-resets.",
@@ -419,7 +417,7 @@ export const overviews: Record<string, Overview> = {
     notes: [
       "step sets minutes between slots; min and max bound them.",
       "TimeInput marks unreadable or out-of-range text invalid and keeps the text so it can be fixed.",
-      'A value that is not "HH:mm" inside the day ("9", "25:99", "") reads as no value: both show their placeholder. normalizeTime gives the canonical form or undefined.',
+      'A value that is not "HH:mm" reads as no value.',
     ],
   },
   item: {
@@ -576,7 +574,7 @@ export const overviews: Record<string, Overview> = {
     instead: ["A short value inline (an ID, a reference): `copy-button` beside the text.", "A value someone edits: `input` or `textarea`."],
     notes: [
       "It has no highlighter: pass shiki's `<pre>` as children (the docs site does, in site/code-block.tsx); `code` stays the plain text that Copy copies.",
-      "Call shiki with `tabindex: false`: its `<pre>` is focusable by default, a second Tab stop beside the code block's own scroll area. `defaultColor: \"light-dark()\"` gives colours that follow the theme with no stylesheet.",
+      "Call shiki with `tabindex: false`, or its `<pre>` adds a second Tab stop.",
       "Highlighted shell commands wrap by words only if each name is marked nowrap in the HTML; the docs site's CodeBlock shows how.",
     ],
   },
