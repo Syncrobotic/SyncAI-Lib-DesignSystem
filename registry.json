@@ -1341,7 +1341,7 @@
       "description": "A form to copy and change: React Hook Form's Controller around the kit's Field, a zod schema, focus on the first error, server errors on a field or the form, a submit button that waits. No form wrapper component.",
       "dependencies": [
         "react-hook-form",
-        "@hookform/resolvers",
+        "@hookform/resolvers@^7",
         "zod@^3.25",
         "lucide-react"
       ],
@@ -1364,8 +1364,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.20.1",
+        "version": "0.25.0",
         "changelog": [
+          {
+            "version": "0.25.0",
+            "date": "2026-11-21",
+            "note": "Asks for @hookform/resolvers 7 (it named no range, so a new install already got 7): run npm i @hookform/resolvers@^7 and keep your copy as it is; behaviour and messages are unchanged. zod stays ^3.25; a project on zod 4 keeps it, since zodResolver takes either with no import change."
+          },
           {
             "version": "0.20.1",
             "date": "2026-11-21",
