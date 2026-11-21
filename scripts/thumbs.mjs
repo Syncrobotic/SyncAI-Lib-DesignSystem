@@ -27,6 +27,7 @@ const VW = 800
  * Stories that make a better picture than the first one, by component. Overlays are covered by a rule instead (their
  * "…Open" story shows the overlay, not the button that opens it).
  */
+/** @type {Record<string, string>} */
 const pick = {
   // The first story is one bare tile or one bare divider; these show what the component is for.
   "icon-tile": "IconTileVariants",
@@ -35,12 +36,17 @@ const pick = {
   toast: "ToastWithUndo",
 }
 
+/** @typedef {{ name: string, file: string, prefix?: string, only?: string[] }} Component */
+/** @typedef {{ x1: number, y1: number, x2: number, y2: number }} Edges */
+/** @typedef {{ x: number, y: number, width: number, height: number }} Box */
+
 // The catalog is TypeScript that imports JSON, which Node cannot load as is; its entries are regular enough to read.
 function components() {
   const src = readFileSync("site/catalog.ts", "utf8")
   const start = src.indexOf("const entries: Record<string, Entry> = {")
   const body = src.slice(start, src.indexOf("\n}\n", start))
   const keys = [...body.matchAll(/^ {2}"?([\w-]+)"?: \{/gm)]
+  /** @type {Component[]} */
   const out = []
   keys.forEach((k, i) => {
     const chunk = body.slice(k.index, keys[i + 1]?.index)
@@ -58,17 +64,18 @@ function components() {
 }
 
 /** The story to picture: as storyNames() in site/catalog.ts, the first one the component page shows, unless an overlay has an open one. */
+/** @param {Component} c */
 function story(c) {
   const src = readFileSync(`stories/${c.file}.stories.tsx`, "utf8")
   const names = [...src.matchAll(/^export const ([^\s:=]+)\s*[:=]/gm)].map((m) => m[1])
   if (pick[c.name]) return pick[c.name]
   if (c.prefix && names.includes(`${c.prefix}Open`)) return `${c.prefix}Open`
-  const picked = c.only ? names.filter((n) => c.only.includes(n)) : c.prefix ? names.filter((n) => n.startsWith(c.prefix) && !n.endsWith("Open")) : names
+  const picked = c.only ? names.filter((n) => c.only?.includes(n)) : c.prefix ? names.filter((n) => n.startsWith(c.prefix ?? "") && !n.endsWith("Open")) : names
   if (!picked.length) throw new Error(`No stories in stories/${c.file}.stories.tsx for ${c.name}`)
   return picked[0]
 }
 
-const files = (name) => THEMES.flatMap((t) => WIDTHS.map((w) => `${name}-${t}-${w}.webp`))
+const files = (/** @type {string} */ name) => THEMES.flatMap((t) => WIDTHS.map((w) => `${name}-${t}-${w}.webp`))
 
 if (process.argv.includes("--check")) {
   const want = new Set(components().flatMap((c) => files(c.name)))
@@ -129,7 +136,7 @@ for (const c of list) {
     }
     // A picture, not a session: no focus ring or selected text left by an overlay's autofocus.
     await page.evaluate(() => {
-      document.activeElement?.blur?.()
+      /** @type {HTMLElement | null} */ (document.activeElement)?.blur?.()
       getSelection()?.removeAllRanges()
     })
     // Floating content (a popover, a menu) is placed after it mounts, on frames and observers: measure until it stops moving.
@@ -166,20 +173,22 @@ console.log(`${list.length} components, ${list.length * THEMES.length * WIDTHS.l
  * shown with the control it belongs to.
  */
 function ink() {
-  const root = document.querySelector("#storybook-root")
+  const root = /** @type {Element} */ (document.querySelector("#storybook-root"))
   const portals = [...document.body.children].filter((e) => e !== root && !/^(SCRIPT|STYLE|LINK|TEMPLATE)$/.test(e.tagName) && !e.id?.startsWith("storybook") && !/\bsb-/.test(e.className))
   const vw = document.documentElement.clientWidth
   const vh = innerHeight
-  const painted = (s) => {
+  const painted = (/** @type {CSSStyleDeclaration} */ s) => {
     const bg = s.backgroundColor.match(/[\d.]+/g)
-    return (bg && (bg.length === 3 || +bg[3] > 0)) || s.backgroundImage !== "none" || ["Top", "Right", "Bottom", "Left"].some((k) => parseFloat(s[`border${k}Width`]) > 0) || s.boxShadow !== "none"
+    return (bg && (bg.length === 3 || +bg[3] > 0)) || s.backgroundImage !== "none" || ["Top", "Right", "Bottom", "Left"].some((k) => parseFloat(/** @type {string} */ (s.getPropertyValue(`border-${k.toLowerCase()}-width`))) > 0) || s.boxShadow !== "none"
   }
   // The story wrapper itself (padded, the page colour) is the background, not the component.
   const backdrop = new Set([root, root.firstElementChild, root.firstElementChild?.firstElementChild])
   let modal = false
+  /** @type {(scope: Element, edges: [number, number]) => Edges | null} */
   const measure = (scope, [left, right]) => {
+    /** @type {Edges | null} */
     let r = null
-    const add = (b) => {
+    const add = (/** @type {DOMRect} */ b) => {
       // Off the page altogether (a chart library's text-measuring node at -20000 px) is not drawn.
       if (b.width < 1 || b.height < 1 || b.bottom + scrollY <= 0 || b.right + scrollX <= 0) return
       const x1 = Math.max(left, b.left + scrollX)
@@ -205,7 +214,7 @@ function ink() {
     const walk = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT)
     const range = document.createRange()
     for (let n = walk.nextNode(); n; n = walk.nextNode()) {
-      if (!n.textContent.trim() || n.parentElement?.closest("script, style")) continue
+      if (!n.textContent?.trim() || !n.parentElement || n.parentElement.closest("script, style")) continue
       const s = getComputedStyle(n.parentElement)
       if (s.visibility === "hidden" || +s.opacity === 0) continue
       range.selectNodeContents(n)
@@ -214,8 +223,8 @@ function ink() {
     return r
   }
   const story = measure(root, [vw / 2 - 211, vw / 2 + 211])
-  const over = portals.map((p) => measure(p, [0, vw])).filter(Boolean)
-  const boxes = modal && over.length ? over : [story, ...over].filter(Boolean)
+  const over = /** @type {Edges[]} */ (portals.map((p) => measure(p, [0, vw])).filter(Boolean))
+  const boxes = /** @type {Edges[]} */ (modal && over.length ? over : [story, ...over].filter(Boolean))
   if (!boxes.length) return null
   const x1 = Math.min(...boxes.map((b) => b.x1))
   const y1 = Math.min(...boxes.map((b) => b.y1))
@@ -225,6 +234,7 @@ function ink() {
 }
 
 /** A 16:10 crop around the box: at least MIN_W wide and centred on it; wider (up to MAX_W) when it is tall; then cut at the bottom. */
+/** @param {Box} b @param {number} pageH @param {number} vw */
 function frame(b, pageH, vw) {
   const w = Math.min(MAX_W, Math.max(MIN_W, b.width + 2 * PAD, (b.height + 2 * PAD) * RATIO))
   const h = w / RATIO
@@ -235,6 +245,7 @@ function frame(b, pageH, vw) {
 }
 
 /** Runs in the browser: the PNG scaled down to each width with the canvas's best filter, as WebP. */
+/** @param {{ png: string, widths: number[] }} input */
 async function encode({ png, widths }) {
   const img = await createImageBitmap(await (await fetch(`data:image/png;base64,${png}`)).blob())
   const out = []
@@ -242,7 +253,7 @@ async function encode({ png, widths }) {
     const c = document.createElement("canvas")
     c.width = w
     c.height = Math.round((w * 10) / 16)
-    const ctx = c.getContext("2d")
+    const ctx = /** @type {CanvasRenderingContext2D} */ (c.getContext("2d"))
     ctx.imageSmoothingQuality = "high"
     ctx.drawImage(img, 0, 0, c.width, c.height)
     out.push(c.toDataURL("image/webp", 0.8).split(",")[1])
