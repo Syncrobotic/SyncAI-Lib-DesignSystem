@@ -11,6 +11,10 @@
     "version": "0.23.0",
     "hash": "8ec920f8618ff43d"
   },
+  "labels-zh-tw": {
+    "version": "0.27.0",
+    "hash": "56e8e1abbb9d5cff"
+  },
   "use-long-press": {
     "version": "0.5.1",
     "hash": "9353a9e71f657181"
