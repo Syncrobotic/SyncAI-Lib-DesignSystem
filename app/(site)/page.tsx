@@ -64,7 +64,7 @@ export default function HomePage() {
   // The three ways in, one row each: what it is, what is in it, how many.
   const ways = [
     {
-      href: "/docs/foundations",
+      href: "/docs",
       title: "Foundations",
       count: `${foundations.length} pages`,
       body: "The rules and tokens behind every screen: principles, colour, type, spacing, radius, elevation, motion, iconography, accessibility, alarms and data visualisation.",
@@ -113,7 +113,7 @@ export default function HomePage() {
               >
                 Get started <ArrowRight aria-hidden className="size-4" />
               </Link>
-              <Link href="/docs/foundations" className="press inline-flex h-(--h-lg) items-center rounded-sm bg-secondary px-6 font-medium hover:bg-accent">
+              <Link href="/docs" className="press inline-flex h-(--h-lg) items-center rounded-sm bg-secondary px-6 font-medium hover:bg-accent">
                 Read the foundations
               </Link>
             </AppearItem>

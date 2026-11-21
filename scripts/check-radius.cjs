@@ -9,7 +9,7 @@ const exe = process.env.PW_CHROMIUM_PATH;
 const reg = JSON.parse(fs.readFileSync('registry.json', 'utf8'));
 
 
-const pages = ['/', '/blocks', '/docs/foundations', ...['principles','color','typography','spacing','elevation','motion','iconography','accessibility','alarms'].map(s=>'/docs/foundations/'+s),
+const pages = ['/', '/blocks', '/docs', ...['principles','color','typography','spacing','elevation','motion','iconography','accessibility','alarms'].map(s=>'/docs/foundations/'+s),
   ...reg.items.filter(i => ['registry:ui','registry:component'].includes(i.type) && !i.name.includes('theme')).map(i => '/docs/components/' + i.name),
   ...reg.items.filter(i => i.type === 'registry:block').map(i => '/preview/' + i.name)];
 (async () => {

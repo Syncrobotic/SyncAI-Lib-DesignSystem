@@ -3,7 +3,7 @@ import { blockGroups, blockTypes, patternsOf } from "./block-types"
 import { groups as itemGroups, items, storyNames, storyTitle } from "./catalog"
 import { foundations } from "./foundations"
 
-// The site's three areas. The header links to each; the sidebar shows only the area you are in.
+// The site's areas, as ReUI and shadcn name them: Docs, Components, Blocks. The header links to each; the sidebar shows only the area you are in.
 export type NavLink = {
   href: string
   label: string
@@ -15,15 +15,15 @@ export type Scope = { key: string; label: string; href: string; match: string[];
 
 export const scopes: Scope[] = [
   {
-    key: "foundations",
-    label: "Foundations",
-    href: "/docs/foundations",
-    match: ["/docs/foundations", "/docs/installation", "/docs/robotics", "/docs/ros", "/docs/nextjs", "/docs/localisation", "/docs/tokens", "/docs/upgrading", "/docs/ai"],
+    key: "docs",
+    label: "Docs",
+    href: "/docs",
+    match: ["/docs", "/docs/foundations", "/docs/installation", "/docs/robotics", "/docs/ros", "/docs/nextjs", "/docs/localisation", "/docs/tokens", "/docs/upgrading", "/docs/ai"],
     groups: [
       {
         title: "Getting started",
         links: [
-          { href: "/docs/foundations", label: "Overview" },
+          { href: "/docs", label: "Introduction" },
           { href: "/docs/installation", label: "Installation" },
           { href: "/docs/robotics", label: "Robotics UI kit" },
           { href: "/docs/ros", label: "Connect to ROS" },

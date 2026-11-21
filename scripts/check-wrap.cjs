@@ -14,7 +14,7 @@ const foundations = fs.readdirSync('app/(site)/(docs)/docs/foundations', { withF
 const docs = fs.readdirSync('app/(site)/(docs)/docs', { withFileTypes: true }).filter((d) => d.isDirectory() && !d.name.startsWith('[') && d.name !== 'components' && d.name !== 'foundations').map((d) => d.name)
 
 const pages = [
-  '/', '/blocks', '/icons', '/docs/foundations', '/docs/components',
+  '/', '/blocks', '/icons', '/docs', '/docs/components',
   ...foundations.map((s) => '/docs/foundations/' + s),
   ...docs.map((s) => '/docs/' + s),
   ...reg.items.filter((i) => i.type !== 'registry:block').map((i) => '/docs/components/' + i.name),

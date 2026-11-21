@@ -5,12 +5,13 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { componentBase } from "@/site/component-tabs"
 import { cn } from "@/lib/utils"
+import { inScope } from "./scope-match"
 import type { Scope } from "./scopes"
 
 export const scopeFor = (scopes: Pick<Scope, "match">[], path: string) =>
   Math.max(
     0,
-    scopes.findIndex((s) => s.match.some((m) => path === m || path.startsWith(`${m}/`))),
+    scopes.findIndex((s) => s.match.some((m) => inScope(m, path))),
   )
 
 /** The groups of the area you are in. On phones (`switcher`) it also offers the other areas, which the header shows on desktop. */

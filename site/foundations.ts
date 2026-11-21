@@ -21,7 +21,7 @@ export const foundation = (slug: FoundationSlug) => foundations.find((f) => f.sl
 
 /** Getting started, in sidebar order, then into the foundations: each page's previous and next. */
 const start = [
-  { href: "/docs/foundations", title: "Overview" },
+  { href: "/docs", title: "Introduction" },
   { href: "/docs/installation", title: "Installation" },
   { href: "/docs/robotics", title: "Robotics UI kit" },
   { href: "/docs/ros", title: "Connect to ROS" },
