@@ -4376,7 +4376,7 @@
       "title": "Data grid",
       "description": "A TanStack Table grid: sorting, pagination, selection, column menus, pinning, resizing, expandable rows, totals, loading, virtual rows.",
       "dependencies": [
-        "@tanstack/react-table@^8",
+        "@tanstack/react-table@^9",
         "@tanstack/react-virtual",
         "lucide-react"
       ],
@@ -4395,8 +4395,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.2",
+        "version": "0.25.0",
         "changelog": [
+          {
+            "version": "0.25.0",
+            "date": "2026-11-21",
+            "note": "Needs @tanstack/react-table 9: build the table with useTable({ features: tableFeatures({ ...dataGridFeatures, sortedRowModel: createSortedRowModel(), paginatedRowModel: createPaginatedRowModel() }), ... }) instead of useReactTable and get*RowModel, type columns as DataGridColumnDef<Row, typeof features> (selectColumn<Row, typeof features>()), and pin with columnPinning { start, end } instead of { left, right }. Looks the same; a resize handle is now named after its column's label."
+          },
           {
             "version": "0.23.2",
             "date": "2026-11-21",

@@ -1,12 +1,11 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import {
-  getCoreRowModel,
-  getExpandedRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-  type ColumnDef,
+  createExpandedRowModel,
+  createPaginatedRowModel,
+  createSortedRowModel,
+  tableFeatures,
+  useTable,
   type SortingState,
   type TableOptions,
 } from "@tanstack/react-table"
@@ -21,8 +20,10 @@ import {
   DataGridPagination,
   DataGridSelectionSummary,
   DataGridTable,
+  dataGridFeatures,
   expandColumn,
   selectColumn,
+  type DataGridColumnDef,
 } from "@/registry/syncrobotic/ui/data-grid"
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
 import { Filters, filterRows, type FilterField, type FilterRule } from "@/registry/syncrobotic/ui/filters"
@@ -65,13 +66,23 @@ const makeRobots = (n: number): Robot[] =>
     }
   })
 const robots = makeRobots(48)
-// useReactTable needs data and columns that keep their identity between renders (module scope or useMemo). A new array on
+// useTable needs data and columns that keep their identity between renders (module scope or useMemo). A new array on
 // every render recomputes the rows and auto-resets state, which renders again: an endless loop once a row is expanded.
 const six = robots.slice(0, 6)
 const five = robots.slice(0, 5)
 const none: Robot[] = []
 
-const columns: ColumnDef<Robot>[] = [
+// The grid's features plus client-side sorting and paging; the expandable story adds the expanded row model. Each set is
+// built once, at module scope, because the table's features must keep their identity like its data and columns.
+const features = tableFeatures({ ...dataGridFeatures, sortedRowModel: createSortedRowModel(), paginatedRowModel: createPaginatedRowModel() })
+type Features = typeof features
+type Col = DataGridColumnDef<Robot, Features>
+const expanding = tableFeatures({ ...features, expandedRowModel: createExpandedRowModel() })
+// Stories that scroll every row instead of paging. manualPagination makes the table skip its paginated row model, as
+// leaving out getPaginationRowModel did in Table 8, so these share the paged stories' features and columns.
+const unpaged: Partial<TableOptions<Features, Robot>> = { manualPagination: true }
+
+const columns: Col[] = [
   {
     accessorKey: "name",
     header: ({ column }) => <DataGridColumnHeader column={column} title="Robot" />,
@@ -105,9 +116,9 @@ const columns: ColumnDef<Robot>[] = [
 ]
 
 const firstThree = columns.slice(0, 3)
-const expandableColumns = [expandColumn<Robot>(), ...firstThree]
-const selectableColumns = [selectColumn<Robot>(), ...columns]
-const totalsColumns: ColumnDef<Robot>[] = [
+const expandableColumns = [expandColumn<Robot, Features>(), ...firstThree]
+const selectableColumns = [selectColumn<Robot, Features>(), ...columns]
+const totalsColumns: Col[] = [
   { ...columns[0], footer: () => "Total" },
   columns[1],
   { ...columns[4], footer: () => `${six.reduce((s, r) => s + r.km, 0).toLocaleString("en-US")} km` },
@@ -120,19 +131,18 @@ const totalsColumns: ColumnDef<Robot>[] = [
   },
 ]
 
-function useGrid(data: Robot[], cols: ColumnDef<Robot>[], extra: Partial<TableOptions<Robot>> = {}) {
+// The features are a parameter so a story can drop paging or add expanding; the columns are typed for the default set,
+// whose APIs every other set here contains.
+function useGrid(data: Robot[], cols: Col[], extra: Partial<TableOptions<Features, Robot>> = {}, set: Features = features) {
   const [sorting, setSorting] = React.useState<SortingState>([])
-  // The compiler leaves this hook unmemoized because the table instance is mutated in place; that is the intended
-  // result, and TanStack Table has no compiler-friendly API to use instead.
-  // eslint-disable-next-line react-hooks/incompatible-library -- TanStack Table's useReactTable, skipped on purpose.
-  return useReactTable({
+  // Table 9 keeps its state in a store and useTable subscribes to it, so it hands back a new table object on every
+  // change; the React Compiler can memoize around it, and the v8 suppression for useReactTable is no longer needed.
+  return useTable({
+    features: set,
     data,
     columns: cols,
     state: { sorting },
     onSortingChange: setSorting,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getRowId: (r) => r.id,
     initialState: { pagination: { pageSize: 8, pageIndex: 0 } },
     ...extra,
@@ -236,7 +246,6 @@ export const DataGridExpandableRows: S = {
   render: function D() {
     const table = useGrid(six, expandableColumns, {
       getRowCanExpand: () => true,
-      getExpandedRowModel: getExpandedRowModel(),
       initialState: { expanded: { [robots[0].id]: true } },
       meta: {
         renderSubRow: (row: { original: Robot }) => (
@@ -250,7 +259,7 @@ export const DataGridExpandableRows: S = {
           />
         ),
       },
-    })
+    }, expanding)
     return (
       <DataGrid table={table}>
         <DataGridTable aria-label="Robots" />
@@ -260,14 +269,14 @@ export const DataGridExpandableRows: S = {
 }
 
 // Every column plus tasks: wider than the preview, so the pinned first column has something to stay in front of.
-const pinnedColumns: ColumnDef<Robot>[] = [...columns, { ...totalsColumns[3], footer: undefined }]
+const pinnedColumns: Col[] = [...columns, { ...totalsColumns[3], footer: undefined }]
 
 export const DataGridPinnedAndResizable: S = {
   render: function D() {
     const table = useGrid(robots, pinnedColumns, {
       enableColumnResizing: true,
       columnResizeMode: "onChange",
-      initialState: { pagination: { pageSize: 6, pageIndex: 0 }, columnPinning: { left: ["name"] } },
+      initialState: { pagination: { pageSize: 6, pageIndex: 0 }, columnPinning: { start: ["name"], end: [] } },
     })
     return (
       <DataGrid table={table}>
@@ -280,7 +289,7 @@ export const DataGridPinnedAndResizable: S = {
 
 export const DataGridStickyHeader: S = {
   render: function D() {
-    const table = useGrid(robots, columns, { getPaginationRowModel: undefined })
+    const table = useGrid(robots, columns, unpaged)
     return (
       <DataGrid table={table} size="sm">
         <DataGridTable aria-label="Robots" maxHeight={320} />
@@ -292,7 +301,7 @@ export const DataGridStickyHeader: S = {
 export const DataGridVirtualRows: S = {
   render: function D() {
     const many = React.useMemo(() => makeRobots(5000), [])
-    const table = useGrid(many, columns, { getPaginationRowModel: undefined })
+    const table = useGrid(many, columns, unpaged)
     return (
       <DataGrid table={table} size="sm">
         <p className="text-sm text-muted-foreground">5 000 robots, only the rows in view are drawn.</p>
@@ -305,7 +314,7 @@ export const DataGridVirtualRows: S = {
 export const DataGridTotalsFooter: S = {
   render: function D() {
     // Robot stays pinned; where the grid scrolls, the totals are written out in one row that stays in view.
-    const table = useGrid(six, totalsColumns, { initialState: { pagination: { pageSize: 8, pageIndex: 0 }, columnPinning: { left: ["name"] } } })
+    const table = useGrid(six, totalsColumns, { initialState: { pagination: { pageSize: 8, pageIndex: 0 }, columnPinning: { start: ["name"], end: [] } } })
     return (
       <DataGrid table={table}>
         <DataGridTable aria-label="Robot mileage" />
