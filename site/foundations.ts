@@ -23,6 +23,7 @@ export const foundation = (slug: FoundationSlug) => foundations.find((f) => f.sl
 const start = [
   { href: "/docs/foundations", title: "Overview" },
   { href: "/docs/installation", title: "Installation" },
+  { href: "/docs/robotics", title: "Robotics UI kit" },
   { href: "/docs/nextjs", title: "Next.js" },
   { href: "/docs/localisation", title: "Localisation" },
   { href: "/docs/tokens", title: "Design tokens" },

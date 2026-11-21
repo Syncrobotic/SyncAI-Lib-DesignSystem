@@ -1,4 +1,4 @@
-// @syncrobotic/heatmap-week-hours v0.22.2 · update: npx shadcn add @syncrobotic/heatmap-week-hours --overwrite
+// @syncrobotic/heatmap-week-hours v0.22.3 · update: npx shadcn add @syncrobotic/heatmap-week-hours --overwrite
 "use client"
 
 import * as React from "react"
@@ -13,8 +13,13 @@ const hours = Array.from({ length: 12 }, (_, i) => i * 2)
 const count = (d: number, h: number) =>
   Math.max(0, Math.round(3 * Math.sin((h - 14) / 5) + (h >= 20 ? 3 : 0) + (d === 4 ? 2 : 0) - (d >= 5 ? 1 : 0) + ((d * 3 + h) % 4) / 2 - 1))
 // null is no data (here: the fleet server was down early on Sunday), never drawn as none.
-const grid: (number | null)[][] = days.map((_, d) => hours.map((h) => (d === 6 && h >= 2 && h <= 4 ? null : count(d, h))))
-const max = Math.max(...grid.flat().map((v) => v ?? 0))
+// Each row carries its day and each cell its hour, so drawing a cell never has to look its labels up by position.
+type Cell = { h: number; v: number | null }
+const grid: { day: string; cells: Cell[] }[] = days.map((day, d) => ({
+  day,
+  cells: hours.map((h) => ({ h, v: d === 6 && h >= 2 && h <= 4 ? null : count(d, h) })),
+}))
+const max = Math.max(...grid.flatMap((row) => row.cells.map((c) => c.v ?? 0)))
 // The kit's sequential heatmap scale: the accent's ramp, mixed into the track colour, from the bare track at none (a grey
 // cell that still reads as a cell on the card, 1.5:1 and more) to the full accent at the most: light to dark in light,
 // dark to light in dark, so more is always further from the card. No number is written on a cell here, so the ramp runs
@@ -26,8 +31,10 @@ const fmt = (v: number | null) => (v === null ? "no data" : `${v} ${v === 1 ? "i
 /** When incidents happen: days by 2-hour slots, one sequential hue, the busiest slot named in words. */
 export function HeatmapWeekHours() {
   const [view, setView] = React.useState("chart")
-  let peak = { d: 0, h: 0, v: -1 }
-  grid.forEach((row, d) => row.forEach((v, i) => v !== null && v > peak.v && (peak = { d, h: hours[i], v })))
+  let peak = { day: days[0], h: 0, v: -1 }
+  for (const { day, cells } of grid) {
+    for (const { h, v } of cells) if (v !== null && v > peak.v) peak = { day, h, v }
+  }
   return (
     <TooltipProvider delayDuration={100}>
       <Card>
@@ -41,7 +48,7 @@ export function HeatmapWeekHours() {
           }
         >
           <p className="text-xs text-muted-foreground tabular-nums">
-            Busiest: {days[peak.d]} {String(peak.h).padStart(2, "0")}:00–{String(peak.h + 2).padStart(2, "0")}:00, {peak.v} incidents
+            Busiest: {peak.day} {String(peak.h).padStart(2, "0")}:00–{String(peak.h + 2).padStart(2, "0")}:00, {peak.v} incidents
           </p>
         </CardDataHeader>
         {view === "chart" ? (
@@ -53,17 +60,17 @@ export function HeatmapWeekHours() {
                   <span key={h}>{h % 6 === 0 ? String(h).padStart(2, "0") : ""}</span>
                 ))}
               </span>
-              {days.map((d, di) => (
-                <React.Fragment key={d}>
-                  <span className="text-muted-foreground">{d}</span>
+              {grid.map(({ day, cells }) => (
+                <React.Fragment key={day}>
+                  <span className="text-muted-foreground">{day}</span>
                   <span className="grid grid-cols-12 gap-0.5">
-                    {grid[di].map((v, hi) => (
-                      <Tooltip key={hi}>
+                    {cells.map(({ h, v }) => (
+                      <Tooltip key={h}>
                         <TooltipTrigger asChild>
                           <span className={v === null ? "no-data h-6 rounded-xs" : "h-6 rounded-xs"} style={v === null ? undefined : { background: shade(v) }} />
                         </TooltipTrigger>
                         <TooltipContent>
-                          {d} {String(hours[hi]).padStart(2, "0")}:00 · {fmt(v)}
+                          {day} {String(h).padStart(2, "0")}:00 · {fmt(v)}
                         </TooltipContent>
                       </Tooltip>
                     ))}
@@ -95,11 +102,11 @@ export function HeatmapWeekHours() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {days.map((d, di) => (
-                <TableRow key={d}>
-                  <TableCell className="font-medium">{d}</TableCell>
-                  {grid[di].map((v, hi) => (
-                    <TableCell key={hi} className="text-right tabular-nums">
+              {grid.map(({ day, cells }) => (
+                <TableRow key={day}>
+                  <TableCell className="font-medium">{day}</TableCell>
+                  {cells.map(({ h, v }) => (
+                    <TableCell key={h} className="text-right tabular-nums">
                       {v === null ? (
                         <>
                           <span aria-hidden="true">—</span>

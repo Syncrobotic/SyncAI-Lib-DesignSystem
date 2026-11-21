@@ -144,8 +144,8 @@
     "hash": "14064e03debbbc84"
   },
   "slider": {
-    "version": "0.21.0",
-    "hash": "37208030ee8e78b2"
+    "version": "0.21.1",
+    "hash": "161cee64310b2399"
   },
   "badge": {
     "version": "0.16.1",
@@ -172,8 +172,8 @@
     "hash": "cf17e73d8fc26aba"
   },
   "text-diff": {
-    "version": "0.16.0",
-    "hash": "7ee216b2a2fea51a"
+    "version": "0.16.1",
+    "hash": "218b4d6431a4cec8"
   },
   "meter": {
     "version": "0.17.4",
@@ -208,8 +208,8 @@
     "hash": "c53a2b4f3f24b843"
   },
   "chart": {
-    "version": "0.22.0",
-    "hash": "3bf7168182df312b"
+    "version": "0.22.1",
+    "hash": "7e591be54e08bd72"
   },
   "tabs": {
     "version": "0.23.0",
@@ -228,16 +228,16 @@
     "hash": "a542674c1883114e"
   },
   "tree": {
-    "version": "0.18.1",
-    "hash": "717e44928988c94e"
+    "version": "0.18.2",
+    "hash": "25a769fcedbda7ae"
   },
   "graph": {
-    "version": "0.21.1",
-    "hash": "023d2330d5f053d0"
+    "version": "0.21.2",
+    "hash": "8356bbb792fcb83e"
   },
   "robot-map": {
-    "version": "0.23.1",
-    "hash": "1f49d9907ece4798"
+    "version": "0.24.0",
+    "hash": "0717237cbc673653"
   },
   "dialog": {
     "version": "0.23.0",
@@ -332,20 +332,32 @@
     "hash": "b033c11941fbc3f8"
   },
   "media-player": {
-    "version": "0.21.1",
-    "hash": "2d6cb869905354c0"
+    "version": "0.21.2",
+    "hash": "5e64e53841eec1e1"
   },
   "camera-feed": {
     "version": "0.23.1",
     "hash": "33be3d7109a96b20"
+  },
+  "joint-state": {
+    "version": "0.24.0",
+    "hash": "eb90d198fccd5b62"
+  },
+  "point-cloud": {
+    "version": "0.24.0",
+    "hash": "ce33b68a1086b0f4"
+  },
+  "robot-model": {
+    "version": "0.24.0",
+    "hash": "083e34f151addcc1"
   },
   "filter-form": {
     "version": "0.10.0",
     "hash": "4408d94150b8f69d"
   },
   "filters": {
-    "version": "0.23.1",
-    "hash": "e420108c2df07310"
+    "version": "0.23.2",
+    "hash": "f8f1309025d419e6"
   },
   "search-field": {
     "version": "0.23.0",
@@ -380,12 +392,12 @@
     "hash": "a3f5ad304748c357"
   },
   "time-picker": {
-    "version": "0.23.1",
-    "hash": "b1a97296e63452f4"
+    "version": "0.23.2",
+    "hash": "a8798641dcfad8d2"
   },
   "data-grid": {
-    "version": "0.23.1",
-    "hash": "ae818b049562f565"
+    "version": "0.23.2",
+    "hash": "c4d834f3089d0096"
   },
   "sortable": {
     "version": "0.23.0",
@@ -424,8 +436,8 @@
     "hash": "594af5c66d1fe85d"
   },
   "questionnaire": {
-    "version": "0.23.0",
-    "hash": "0b2e0be82e075b9c"
+    "version": "0.23.1",
+    "hash": "1f98c6ae3da7b5ed"
   },
   "trace": {
     "version": "0.23.0",
@@ -452,8 +464,8 @@
     "hash": "981a0f3eae7d6769"
   },
   "app-shell": {
-    "version": "0.22.3",
-    "hash": "84bb4fe75e5d421f"
+    "version": "0.22.4",
+    "hash": "8f270355d3efca19"
   },
   "top-bar-shell": {
     "version": "0.17.3",
@@ -472,8 +484,8 @@
     "hash": "38953e93b1e89bf9"
   },
   "event-log": {
-    "version": "0.17.2",
-    "hash": "8ea0dafa91ee6155"
+    "version": "0.17.3",
+    "hash": "807e58993103e3df"
   },
   "map-workspace": {
     "version": "0.23.0",
@@ -488,8 +500,8 @@
     "hash": "45ad3a966fc319ec"
   },
   "review-queue": {
-    "version": "0.17.2",
-    "hash": "c28fbb63a081787a"
+    "version": "0.17.3",
+    "hash": "684c53f92378aaa9"
   },
   "governance-todo": {
     "version": "0.17.2",
@@ -500,8 +512,8 @@
     "hash": "0a6539af3b4adda9"
   },
   "record-form": {
-    "version": "0.21.0",
-    "hash": "067f64eab908c338"
+    "version": "0.21.1",
+    "hash": "90b05a9eed3cd9d5"
   },
   "users-roles": {
     "version": "0.17.2",
@@ -524,12 +536,12 @@
     "hash": "f3f50a2d46e488db"
   },
   "line-chart-limit": {
-    "version": "0.17.2",
-    "hash": "ad33cea95dcddaa4"
+    "version": "0.17.3",
+    "hash": "072ee866b963e97b"
   },
   "line-chart-compare": {
-    "version": "0.22.0",
-    "hash": "4054b9ac70b0aed5"
+    "version": "0.22.1",
+    "hash": "6906b529ed020173"
   },
   "area-chart-battery": {
     "version": "0.17.2",
@@ -540,12 +552,12 @@
     "hash": "2980b0707b6c9a4d"
   },
   "area-chart-cumulative": {
-    "version": "0.22.0",
-    "hash": "8123335cba3a0f85"
+    "version": "0.22.1",
+    "hash": "f4b047de6fafbf46"
   },
   "bar-chart-missions": {
-    "version": "0.22.0",
-    "hash": "6914096bd17ab410"
+    "version": "0.22.1",
+    "hash": "3a93056ed6f9aedb"
   },
   "bar-chart-ranked": {
     "version": "0.17.2",
@@ -556,12 +568,12 @@
     "hash": "56cb029bad7d7903"
   },
   "bar-chart-variance": {
-    "version": "0.17.2",
-    "hash": "4c5a726b548652ae"
+    "version": "0.17.3",
+    "hash": "ec1346829d606279"
   },
   "sparkline-robot-list": {
-    "version": "0.15.1",
-    "hash": "de3ff5e9fb2de7ea"
+    "version": "0.15.2",
+    "hash": "2298d83950f8180c"
   },
   "sparkline-metric-tiles": {
     "version": "0.19.0",
@@ -596,20 +608,20 @@
     "hash": "48bcb7645422f003"
   },
   "heatmap-week-hours": {
-    "version": "0.22.2",
-    "hash": "e06d7f6ef1e95eec"
+    "version": "0.22.3",
+    "hash": "f52ec84278afcf1a"
   },
   "heatmap-zones": {
-    "version": "0.22.3",
-    "hash": "2ca2ec4fc1f0f1b6"
+    "version": "0.22.4",
+    "hash": "46b0ad1bfdb7cc45"
   },
   "histogram-battery": {
-    "version": "0.22.0",
-    "hash": "4e2e4ab8c03e7664"
+    "version": "0.22.1",
+    "hash": "6ebcd39ea6f6b58d"
   },
   "app-shell-mobile-tabs": {
-    "version": "0.17.3",
-    "hash": "da71611b2458427f"
+    "version": "0.17.4",
+    "hash": "c334c684e8ebbc7e"
   },
   "stats-meters": {
     "version": "0.17.2",
@@ -640,8 +652,8 @@
     "hash": "9d7180394bbbd6e4"
   },
   "settings-notifications": {
-    "version": "0.17.2",
-    "hash": "64de2579b94a77f7"
+    "version": "0.17.3",
+    "hash": "ab9aef56c21e9691"
   },
   "settings-api-keys": {
     "version": "0.17.3",
@@ -656,8 +668,8 @@
     "hash": "b9dfbecd68333f59"
   },
   "settings-billing": {
-    "version": "0.21.0",
-    "hash": "6a9162cec33de34a"
+    "version": "0.21.1",
+    "hash": "15eb70e9fcd03159"
   },
   "notification-center": {
     "version": "0.21.1",
@@ -668,12 +680,12 @@
     "hash": "ba637560f7d29bcc"
   },
   "dialog-form": {
-    "version": "0.21.0",
-    "hash": "d2ab2396f3090152"
+    "version": "0.21.1",
+    "hash": "67d23c767dafaa89"
   },
   "dialog-share": {
-    "version": "0.17.3",
-    "hash": "6c3b18b7696a25e3"
+    "version": "0.17.4",
+    "hash": "21c16bd8823d4816"
   },
   "sheet-robot-detail": {
     "version": "0.17.4",
@@ -732,8 +744,8 @@
     "hash": "f033eea4d3fe2c94"
   },
   "rollout-plan": {
-    "version": "0.17.3",
-    "hash": "83a8365445a873f7"
+    "version": "0.17.4",
+    "hash": "ae1ecf956582705d"
   },
   "agent-runs": {
     "version": "0.17.3",

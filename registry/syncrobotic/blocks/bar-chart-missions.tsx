@@ -1,4 +1,4 @@
-// @syncrobotic/bar-chart-missions v0.22.0 · update: npx shadcn add @syncrobotic/bar-chart-missions --overwrite
+// @syncrobotic/bar-chart-missions v0.22.1 · update: npx shadcn add @syncrobotic/bar-chart-missions --overwrite
 "use client"
 
 import * as React from "react"
@@ -9,7 +9,15 @@ import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/u
 
 const config = { done: { label: "Completed", color: 1 }, aborted: { label: "Aborted", color: 3 } } satisfies ChartConfig
 // Sample data: missions per day this week.
-const data = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d, i) => ({ d, done: [18, 22, 19, 24, 21, 12, 10][i], aborted: [2, 1, 4, 1, 3, 0, 1][i] }))
+const data = [
+  { d: "Mon", done: 18, aborted: 2 },
+  { d: "Tue", done: 22, aborted: 1 },
+  { d: "Wed", done: 19, aborted: 4 },
+  { d: "Thu", done: 24, aborted: 1 },
+  { d: "Fri", done: 21, aborted: 3 },
+  { d: "Sat", done: 12, aborted: 0 },
+  { d: "Sun", done: 10, aborted: 1 },
+]
 
 /** Two counts side by side per day: grouped bars with a 2 px gap, rounded on the data end, and a table view. */
 export function BarChartMissions() {

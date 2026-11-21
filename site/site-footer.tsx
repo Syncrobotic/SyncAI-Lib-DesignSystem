@@ -21,6 +21,7 @@ const columns: { title: string; links: FooterLink[] }[] = [
     title: "Get started",
     links: [
       { label: "Installation", href: "/docs/installation" },
+      { label: "Robotics UI kit", href: "/docs/robotics" },
       { label: "Next.js", href: "/docs/nextjs" },
       { label: "Localisation", href: "/docs/localisation" },
       { label: "Tokens", href: "/docs/tokens" },

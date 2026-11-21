@@ -1,4 +1,4 @@
-// @syncrobotic/line-chart-limit v0.17.2 · update: npx shadcn add @syncrobotic/line-chart-limit --overwrite
+// @syncrobotic/line-chart-limit v0.17.3 · update: npx shadcn add @syncrobotic/line-chart-limit --overwrite
 "use client"
 
 import * as React from "react"
@@ -11,10 +11,17 @@ import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/u
 const config = { temp: { label: "Motor", color: 1, unit: "°C" } } satisfies ChartConfig
 const limit = 60
 // Sample data: motor temperature of one robot, every 30 minutes.
-const data = ["10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00"].map((t, i) => ({
-  t,
-  temp: [42, 45, 49, 53, 58, 62, 64, 59, 55][i],
-}))
+const data = [
+  { t: "10:00", temp: 42 },
+  { t: "10:30", temp: 45 },
+  { t: "11:00", temp: 49 },
+  { t: "11:30", temp: 53 },
+  { t: "12:00", temp: 58 },
+  { t: "12:30", temp: 62 },
+  { t: "13:00", temp: 64 },
+  { t: "13:30", temp: 59 },
+  { t: "14:00", temp: 55 },
+]
 
 /**
  * One measurement against its limit: the latest value up top, the limit as a labelled dashed line. The header turns to
@@ -22,9 +29,10 @@ const data = ["10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13
  */
 export function LineChartLimit() {
   const [view, setView] = React.useState("chart")
-  const latest = data[data.length - 1].temp
+  // With no readings yet there is no latest value, and nothing can be over the limit.
+  const latest = data.at(-1)?.temp
   const peak = Math.max(...data.map((d) => d.temp))
-  const over = latest > limit
+  const over = latest !== undefined && latest > limit
   const overAt = data.filter((d) => d.temp > limit).map((d) => d.t)
   return (
     <Card>
@@ -37,7 +45,7 @@ export function LineChartLimit() {
           </SegmentedControl>
         }
       >
-        <CardFigure value={`${latest} °C`} note={`peak ${peak} °C at 13:00`} />
+        <CardFigure value={latest === undefined ? "—" : `${latest} °C`} note={`peak ${peak} °C at 13:00`} />
         {peak > limit && (
           <p className={over ? "flex items-center gap-2 text-sm text-warning" : "flex items-center gap-2 text-sm text-muted-foreground"}>
             <TriangleAlert aria-hidden="true" className="size-4" />

@@ -1,4 +1,4 @@
-// @syncrobotic/rollout-plan v0.17.3 · update: npx shadcn add @syncrobotic/rollout-plan --overwrite
+// @syncrobotic/rollout-plan v0.17.4 · update: npx shadcn add @syncrobotic/rollout-plan --overwrite
 "use client"
 
 import * as React from "react"
@@ -32,7 +32,12 @@ export function RolloutPlan() {
   const [rollback, setRollback] = React.useState(false)
   const robots = (s: Stage) => Math.max(1, Math.round((s.share / 100) * FLEET))
   const hours = stages.reduce((h, s) => h + s.wait, 0)
-  const bad = stages.some((s, i) => i > 0 && s.share <= stages[i - 1].share)
+  // Each stage must reach more of the fleet than the one before it; the first has nothing before it to compare with.
+  const bad = stages.some((s, i) => {
+    const before = stages[i - 1]
+    return before !== undefined && s.share <= before.share
+  })
+  const [first, ...later] = stages
   const watch = (s: Stage, i: number) =>
     i === stages.length - 1 ? (
       <span className="flex justify-center text-muted-foreground">—</span>
@@ -156,7 +161,7 @@ export function RolloutPlan() {
 
         <div className="flex flex-col gap-3 border-t border-border pt-4">
           <p className="text-sm">
-            {version} goes to {robots(stages[0])} robots first, then {stages.slice(1).map(robots).join(", then ")}. At least {hours} hours from start to the
+            {version} goes to {first ? robots(first) : 0} robots first, then {later.map(robots).join(", then ")}. At least {hours} hours from start to the
             whole fleet{slot === "night" ? ", updating only at night" : ""}.{" "}
             {autoPause ? "It pauses itself if a gate fails." : "It does not pause on its own: watch it."}
           </p>
