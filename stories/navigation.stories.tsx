@@ -1,5 +1,5 @@
 import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Bell, Bot, ChevronDown, Ellipsis, House, Settings } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/registry/syncrobotic/ui/dropdown-menu"
 import { Badge } from "@/registry/syncrobotic/ui/badge"

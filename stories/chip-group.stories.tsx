@@ -1,5 +1,5 @@
 import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { ChipGroup, type Chip } from "@/registry/syncrobotic/ui/chip-group"
 
 const meta: Meta = { title: "Inputs/Chip group" }

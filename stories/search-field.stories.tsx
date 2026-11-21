@@ -1,5 +1,5 @@
 import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { SearchField } from "@/registry/syncrobotic/ui/search-field"
 
 const meta: Meta = { title: "Inputs/Search field" }

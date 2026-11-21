@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react"
-import { fn } from "@storybook/test"
+import type { Meta, StoryObj } from "@storybook/react-vite"
+import { fn } from "storybook/test"
 import { Bot, CircleAlert, House, ListChecks, Pause } from "lucide-react"
 import { Dock, DockActions, DockNav, type NavItem } from "@/registry/syncrobotic/shell/dock"
 import { StopButton, WakeButton } from "@/registry/syncrobotic/shell/stop-button"

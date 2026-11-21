@@ -1,5 +1,5 @@
 import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { ThemeToggle, type ThemeChoice } from "@/registry/syncrobotic/ui/theme-toggle"
 
 const meta: Meta = { title: "Actions/Theme toggle" }

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Download, Users } from "lucide-react"
 import { Breadcrumb, BreadcrumbLink } from "@/registry/syncrobotic/ui/breadcrumb"
 import { Button } from "@/registry/syncrobotic/ui/button"
