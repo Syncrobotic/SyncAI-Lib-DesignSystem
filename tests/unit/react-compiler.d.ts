@@ -6,3 +6,9 @@ declare module "@/registry/syncrobotic/ui/data-grid?react-compiler" {
 declare module "@/registry/syncrobotic/ui/data-grid?react-compiler&without-directive" {
   export * from "@/registry/syncrobotic/ui/data-grid"
 }
+declare module "@/registry/syncrobotic/hooks/use-ros?react-compiler" {
+  export * from "@/registry/syncrobotic/hooks/use-ros"
+}
+declare module "@/registry/syncrobotic/ui/toast?react-compiler" {
+  export * from "@/registry/syncrobotic/ui/toast"
+}

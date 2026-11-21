@@ -106,6 +106,24 @@ export function ServiceLog({ table }: { table: Parameters<typeof DataGrid>[0]["t
   )
 }`
 
+const packInstall = "npx shadcn add @syncrobotic/labels-zh-tw"
+
+const packUsage = `"use client"
+
+import { StopButton } from "@/components/stop-button"
+import { TimePicker } from "@/components/ui/time-picker"
+import { locale, stopButtonLabels, timePickerLabels } from "@/lib/labels-zh-tw"
+
+export function ChargeWindow({ start, onStart, onStop }: { start?: string; onStart: (t: string) => void; onStop: () => void }) {
+  return (
+    <>
+      <StopButton labels={stopButtonLabels} onStop={onStop} />
+      {/* The words come from the pack; with locale the trigger reads "上午9:30". */}
+      <TimePicker aria-label="充電開始時間" value={start} onValueChange={onStart} hour12 locale={locale} labels={timePickerLabels} />
+    </>
+  )
+}`
+
 const intl = `// With next-intl (or any i18n library you already use),
 // build the same objects from your messages.
 const t = useTranslations("kit.dataGrid")
@@ -163,8 +181,16 @@ export default function LocalisationPage() {
         />
       </div>
 
+      <H2 id="zh-tw">Traditional Chinese, ready-made</H2>
+      <P text="For a Taiwan console, install the kit's own Traditional Chinese words instead of writing them: `labels-zh-tw` exports one object per component that takes `labels` (`dataGridLabels`, `stopButtonLabels`, `robotMapLabels`…), and `locale` (`&quot;zh-TW&quot;`). The wording is Taiwan usage (檔案, 設定, 影片, 連線, 網路) with the kit's terms: 警報 for alarm, 急停 for emergency stop, 機器人, 任務. Words that hold a number or a unit stay functions, so counts, distances and durations are written as the English ones are." />
+      <P text="Each object is typed with its component's labels type, so when an update adds a key the file stops compiling until it has the Chinese word. Spread one to change a word: `{ ...dataGridLabels, empty: &quot;沒有符合的機器人&quot; }`." />
+      <div className="flex flex-col gap-4">
+        <CodeBlock code={packInstall} lang="bash" title="Terminal" />
+        <CodeBlock code={packUsage} lang="tsx" title="app/(app)/charging/charge-window.tsx" />
+      </div>
+
       <H2 id="example">A worked example: zh-TW</H2>
-      <P text="Keep the kit's words for each language in one file and pass them where the components are used. The objects are plain data, so a Server Component can pass the strings; a function label (a count) needs a client file, like any other function prop." />
+      <P text="For another language, or for your own wording, keep the kit's words for each language in one file and pass them where the components are used. The objects are plain data, so a Server Component can pass the strings; a function label (a count) needs a client file, like any other function prop." />
       <div className="flex flex-col gap-4">
         <CodeBlock code={example} lang="ts" title="lib/kit-labels.zh-TW.ts" />
         <CodeBlock code={usage} lang="tsx" title="app/(app)/service/service-log.tsx" />

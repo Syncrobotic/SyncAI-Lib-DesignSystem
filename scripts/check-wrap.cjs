@@ -8,12 +8,13 @@ const fs = require('fs')
 const SITE = process.env.SITE || 'http://localhost:3000'
 const WIDTH = Number(process.env.WIDTH || 375)
 const exe = process.env.PW_CHROMIUM_PATH
+/** @type {import("./types.js").Registry} */
 const reg = JSON.parse(fs.readFileSync('registry.json', 'utf8'))
 const foundations = fs.readdirSync('app/(site)/(docs)/docs/foundations', { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name)
 const docs = fs.readdirSync('app/(site)/(docs)/docs', { withFileTypes: true }).filter((d) => d.isDirectory() && !d.name.startsWith('[') && d.name !== 'components' && d.name !== 'foundations').map((d) => d.name)
 
 const pages = [
-  '/', '/blocks', '/icons', '/docs/foundations', '/docs/components',
+  '/', '/blocks', '/icons', '/docs', '/docs/components',
   ...foundations.map((s) => '/docs/foundations/' + s),
   ...docs.map((s) => '/docs/' + s),
   ...reg.items.filter((i) => i.type !== 'registry:block').map((i) => '/docs/components/' + i.name),
@@ -33,6 +34,7 @@ const pages = [
     if (!r || r.status() !== 200) continue
     n++
     const hits = await p.evaluate(() => {
+      /** @type {string[]} */
       const out = []
       for (const el of document.querySelectorAll('*')) {
         const cs = getComputedStyle(el)
@@ -45,19 +47,26 @@ const pages = [
         })
         if (kids.length < 3) continue
         if (!kids.every((k) => k.matches('a,button,[role=button],[data-slot=badge]') || k.querySelector('a,button'))) continue
+        /** @type {Record<number, Element[]>} */
         const lines = {}
         for (const k of kids) (lines[Math.round(k.getBoundingClientRect().top / 4)] ??= []).push(k)
         const ls = Object.values(lines)
-        if (ls.length > 1 && ls.at(-1).length === 1 && ls.at(-2).length >= 2)
-          out.push(`alone on its line: "${(ls.at(-1)[0].textContent || '').trim().slice(0, 40)}" (${String(el.className).slice(0, 60)})`)
+        // With more than one line, the last two exist.
+        const last = /** @type {Element[]} */ (ls.at(-1))
+        const before = /** @type {Element[]} */ (ls.at(-2))
+        if (ls.length > 1 && last.length === 1 && before.length >= 2)
+          out.push(`alone on its line: "${(/** @type {Element} */ (last[0]).textContent || '').trim().slice(0, 40)}" (${String(el.className).slice(0, 60)})`)
       }
       // Text that should never reach the screen: a code comment rendered as text, or a value that did not resolve.
       const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
       let t
       while ((t = w.nextNode())) {
-        if (t.parentElement.closest('pre,code,script,style,[data-code]')) continue
-        const v = t.nodeValue.trim()
-        if (/^\/\/ |\bfocus-ring:|\[object Object\]|\bNaN\b/.test(v)) out.push(`text that should not show: "${v.slice(0, 50)}"`)
+        // A text node in the body always has a parent element and a value.
+        if (/** @type {Element} */ (t.parentElement).closest('pre,code,script,style,[data-code]')) continue
+        const v = /** @type {string} */ (t.nodeValue).trim()
+        // NaN counts only in a value (a few words, "NaN mm", "x: NaN"); prose about NaN, as the ROS and point-cloud docs have, is fine.
+        const value = v.split(/\s+/).length <= 4
+        if (/^\/\/ |\bfocus-ring:|\[object Object\]/.test(v) || (value && /\bNaN\b/.test(v))) out.push(`text that should not show: "${v.slice(0, 50)}"`)
       }
       return out
     })

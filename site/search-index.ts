@@ -20,7 +20,7 @@ function sections(slug: string) {
 /** Built once at build time and served as static JSON, so the search costs nothing until someone opens it. */
 export function buildSearchIndex(): SearchEntry[] {
   const out: SearchEntry[] = []
-  const pages = scopes.find((s) => s.key === "foundations")!.groups[0].links
+  const pages = scopes.find((s) => s.key === "docs")!.groups[0].links
   for (const p of pages) out.push({ group: "Pages", title: p.label, href: p.href })
   out.push({ group: "Pages", title: "Components", href: "/docs/components", hint: "Every component by group" }, { group: "Pages", title: "Blocks", href: "/blocks", hint: "Whole screens" })
 

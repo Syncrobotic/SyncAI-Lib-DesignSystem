@@ -15,6 +15,10 @@ const WRITE = process.argv.includes("--write")
 const OUT = "public/tokens"
 const css = readFileSync("registry/syncrobotic/styles/syncrobotic-theme.css", "utf8").replace(/\/\*[\s\S]*?\*\//g, "")
 
+/**
+ * @param {string} selector
+ * @returns {Record<string, string>}
+ */
 function block(selector) {
   const start = css.indexOf(`${selector} {`)
   if (start < 0) throw new Error(`No ${selector} block in the theme`)
@@ -37,14 +41,18 @@ const darkHc = block('[data-contrast="more"] .dark')
 const theme = block("@theme")
 
 // ---------- value conversion ----------
+/** @param {number} n */
 const hex2 = (n) => Math.round(n).toString(16).padStart(2, "0")
+/** @param {string} v */
 function color(v) {
   if (/^#[0-9a-f]{6}$/i.test(v)) return v.toLowerCase()
   const m = v.match(/^rgb\((\d+)\s+(\d+)\s+(\d+)\s*\/\s*([\d.]+)\)$/)
   if (m) return `#${hex2(+m[1])}${hex2(+m[2])}${hex2(+m[3])}${hex2(+m[4] * 255)}`
   throw new Error(`Unsupported colour ${v}`)
 }
+/** @param {string} v */
 const px = (v) => (v.endsWith("rem") ? `${parseFloat(v) * 16}px` : v)
+/** @param {string} v */
 function shadow(v) {
   const m = v.match(/^(-?[\d.]+)(?:px)?\s+(-?[\d.]+)px\s+([\d.]+)px\s+(rgb\([^)]+\))$/)
   if (!m) throw new Error(`Unsupported shadow ${v}`)
@@ -53,7 +61,9 @@ function shadow(v) {
 
 // ---------- colour sets ----------
 const colorNames = Object.keys(light).filter((k) => /^#|^rgb|^var\(--/.test(light[k]) && !k.startsWith("shadow"))
+/** @param {Record<string, string>} values */
 function colorSet(values) {
+  /** @type {Record<string, { $type: string; $value: string }>} */
   const color_ = {}
   for (const k of colorNames) {
     const v = values[k]
@@ -70,6 +80,10 @@ function colorSet(values) {
 }
 
 // ---------- core ----------
+/**
+ * @param {Record<string, string>} src
+ * @param {string} prefix
+ */
 const pick = (src, prefix) => Object.entries(src).filter(([k]) => k.startsWith(prefix))
 const core = {
   radius: Object.fromEntries(pick(theme, "radius-").map(([k, v]) => [k.slice(7), { $type: "dimension", $value: px(v) }])),
@@ -99,7 +113,7 @@ const core = {
   },
   motion: {
     duration: Object.fromEntries(pick(light, "motion-").map(([k, v]) => [k.slice(7), { $type: "duration", $value: v }])),
-    easing: { standard: { $type: "cubicBezier", $value: theme["ease-standard"].match(/[\d.]+/g).map(Number) } },
+    easing: { standard: { $type: "cubicBezier", $value: /** @type {RegExpMatchArray} */ (theme["ease-standard"].match(/[\d.]+/g)).map(Number) } },
   },
 }
 

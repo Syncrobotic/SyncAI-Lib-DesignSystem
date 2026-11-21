@@ -1,9 +1,9 @@
-// @syncrobotic/robot-model v0.24.1 · update: npx shadcn add @syncrobotic/robot-model --overwrite
+// @syncrobotic/robot-model v0.24.2 · update: npx shadcn add @syncrobotic/robot-model --overwrite
 "use client"
 
 import * as React from "react"
 import * as THREE from "three"
-import URDFLoader, { type URDFJoint, type URDFRobot } from "urdf-loader"
+import URDFLoader, { type URDFJoint, type URDFMimicJoint, type URDFRobot } from "urdf-loader"
 import { ColladaLoader } from "three/examples/jsm/loaders/ColladaLoader.js"
 import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js"
 import { Box, CircleAlert, Crosshair, OctagonAlert, Rotate3d, RotateCw, TriangleAlert } from "lucide-react"
@@ -25,10 +25,23 @@ export type RobotModelJointInfo = {
   upper?: number
   /** The link this joint moves. */
   child?: string
+  /** For a mimic joint: the joint it follows, as value = multiplier × that joint's value + offset. */
+  mimic?: { joint: string; multiplier: number; offset: number }
 }
 
-/** What the model is, as plain data: its name, the joints that move (in URDF order) and every link. */
-export type RobotModelInfo = { name: string; joints: RobotModelJointInfo[]; links: string[] }
+/**
+ * What the model is, as plain data: its name, the joints that move on their own (in URDF order) and every link.
+ * `mimics` holds the joints that follow another one (`<mimic>` in the URDF, such as a gripper's second finger): they are
+ * not counted, but they can be highlighted by name.
+ */
+export type RobotModelInfo = { name: string; joints: RobotModelJointInfo[]; links: string[]; mimics?: RobotModelJointInfo[] }
+
+/**
+ * A joint's value as ROS sends it: one number (radians, or metres for prismatic joints), or for a joint with several
+ * degrees of freedom its components in URDF order: planar is [x, y, θ], floating is [x, y, z, roll, pitch, yaw], in
+ * metres and radians. A single number for a planar or floating joint is its x.
+ */
+export type RobotModelJointValue = number | readonly number[]
 
 /** What the view shows, as `data-state` on its root. */
 export type RobotModelState = "empty" | "loading" | "error" | "ready" | "stale" | "context-lost" | "no-webgl"
@@ -50,8 +63,16 @@ export type RobotModelLabels = {
   summary: (robot: string, joints: number) => string
   /** Added to the summary when something is highlighted: each item is one joint or link, described. */
   highlighted: (items: string[]) => string
-  /** A joint's value in words: degrees for revolute joints, millimetres for prismatic ones (ROS sends radians and metres). */
+  /**
+   * A joint's value in words: degrees for revolute and continuous joints, millimetres for prismatic ones (ROS sends
+   * radians and metres). Planar and floating joints are written with `poseValue` instead.
+   */
   jointValue: (value: number, type: RobotModelJointType) => string
+  /**
+   * A planar ([x, y, θ]) or floating ([x, y, z, roll, pitch, yaw]) joint's value in words, each component with its own
+   * unit: "x 120 mm, y −40 mm, θ 30°". Components that are not finite numbers are left out.
+   */
+  poseValue: (values: readonly number[], type: "planar" | "floating") => string
   /** A highlighted joint described: its value and its limits. `value` and the limits are already in words. */
   jointDetail: (value: string | undefined, lower: string | undefined, upper: string | undefined) => string
   /** A highlighted link (not a joint) described. */
@@ -104,6 +125,24 @@ const millimetres = (m: number) => {
   return `${mm < 0 ? "−" : ""}${Math.abs(mm)} mm`
 }
 
+// The components of a planar or floating joint, in URDF order, and whether each is an angle (written in degrees) or a
+// distance (written in millimetres).
+const POSE_AXES = {
+  planar: [
+    ["x", false],
+    ["y", false],
+    ["θ", true],
+  ],
+  floating: [
+    ["x", false],
+    ["y", false],
+    ["z", false],
+    ["roll", true],
+    ["pitch", true],
+    ["yaw", true],
+  ],
+} as const satisfies Record<"planar" | "floating", readonly (readonly [string, boolean])[]>
+
 export const defaultRobotModelLabels: RobotModelLabels = {
   keys:
     "Drag to turn the view, right-drag to move it, and the wheel or a pinch to zoom once the view has focus. Arrow keys turn, Shift with the arrows moves, plus and minus zoom, 0 resets the view and F fits the robot. The view only shows the robot; it does not move it.",
@@ -111,7 +150,15 @@ export const defaultRobotModelLabels: RobotModelLabels = {
   jointCount: (n) => (n === 1 ? "1 joint" : `${n} joints`),
   summary: (robot, n) => `${robot}, 3D view, ${n === 1 ? "1 joint" : `${n} joints`}`,
   highlighted: (items) => `Highlighted: ${items.join("; ")}`,
-  jointValue: (value, type) => (type === "prismatic" ? millimetres(value) : degrees(value)),
+  // A planar or floating joint given as one number is its x, a distance.
+  jointValue: (value, type) => (type === "prismatic" || type === "planar" || type === "floating" ? millimetres(value) : degrees(value)),
+  poseValue: (values, type) =>
+    POSE_AXES[type]
+      .flatMap(([axis, angle], i) => {
+        const v = values[i]
+        return v === undefined || !Number.isFinite(v) ? [] : [`${axis} ${angle ? degrees(v) : millimetres(v)}`]
+      })
+      .join(", "),
   jointDetail: (value, lower, upper) =>
     [value && `at ${value}`, lower !== undefined && upper !== undefined && `limits ${lower} to ${upper}`].filter(Boolean).join(", "),
   link: "link",
@@ -240,39 +287,108 @@ function reasonOf(err: unknown): string {
   return String(err)
 }
 
-/** The model as plain data: its name, the joints that move (fixed ones are not counted), and its links. */
+// The joint a mimic joint follows, by name, or undefined for a joint that moves on its own.
+const mimicOf = (j: URDFJoint): URDFMimicJoint | undefined => ((j as Partial<URDFMimicJoint>).mimicJoint ? (j as URDFMimicJoint) : undefined)
+
+/**
+ * The model as plain data: its name, the joints that move on their own (fixed ones are not counted), the mimic joints
+ * that follow them, and its links.
+ */
 export function describeRobot(robot: URDFRobot): RobotModelInfo {
-  const joints = Object.values(robot.joints)
-    .filter((j) => j.jointType !== "fixed" && !("mimicJoint" in j && (j as { mimicJoint?: string }).mimicJoint))
-    .map((j): RobotModelJointInfo => {
-      const limited = j.jointType === "revolute" || j.jointType === "prismatic"
-      const child = j.children.find((c) => (c as { isURDFLink?: boolean }).isURDFLink) as { urdfName?: string } | undefined
-      return {
-        name: j.urdfName,
-        type: j.jointType,
-        lower: limited ? j.limit.lower : undefined,
-        upper: limited ? j.limit.upper : undefined,
-        child: child?.urdfName,
-      }
-    })
-  return { name: robot.robotName || "", joints, links: Object.keys(robot.links) }
+  const plain = (j: URDFJoint): RobotModelJointInfo => {
+    const limited = j.jointType === "revolute" || j.jointType === "prismatic"
+    const child = j.children.find((c) => (c as { isURDFLink?: boolean }).isURDFLink) as { urdfName?: string } | undefined
+    const m = mimicOf(j)
+    return {
+      name: j.urdfName,
+      type: j.jointType,
+      lower: limited ? j.limit.lower : undefined,
+      upper: limited ? j.limit.upper : undefined,
+      child: child?.urdfName,
+      ...(m && { mimic: { joint: m.mimicJoint, multiplier: m.multiplier, offset: m.offset } }),
+    }
+  }
+  const moving = Object.values(robot.joints).filter((j) => j.jointType !== "fixed")
+  return {
+    name: robot.robotName || "",
+    joints: moving.filter((j) => !mimicOf(j)).map(plain),
+    links: Object.keys(robot.links),
+    mimics: moving.filter((j) => mimicOf(j)).map(plain),
+  }
+}
+
+/** A joint of the model by name, whether it moves on its own or mimics another. */
+const findJoint = (info: RobotModelInfo, name: string) => info.joints.find((j) => j.name === name) ?? info.mimics?.find((j) => j.name === name)
+
+// How many components each joint type's value has; urdf-loader reads a missing component as undefined, not as "keep".
+const ARITY: Record<RobotModelJointType, number> = { revolute: 1, continuous: 1, prismatic: 1, fixed: 1, planar: 3, floating: 6 }
+
+/**
+ * A joint's value as the view shows it. A mimic joint follows the joint it mimics whenever that joint has a value (as
+ * the 3D view moves it), and reads its own entry in `joints` only when it does not.
+ */
+export function jointValueOf(name: string, info: RobotModelInfo, joints: Record<string, RobotModelJointValue> | undefined): RobotModelJointValue | undefined {
+  const seen = new Set<string>()
+  const read = (n: string): RobotModelJointValue | undefined => {
+    const m = findJoint(info, n)?.mimic
+    // urdf-loader refuses a loop of mimic joints when it parses; the set keeps a hand-built info from recursing forever.
+    if (m && !seen.has(n)) {
+      seen.add(n)
+      const driver = read(m.joint)
+      if (driver !== undefined) return typeof driver === "number" ? driver * m.multiplier + m.offset : driver.map((v) => v * m.multiplier + m.offset)
+    }
+    return joints?.[n]
+  }
+  return read(name)
+}
+
+/** A joint's value in words with the unit for its type and the right number of components, or undefined when it has none. */
+export function jointValueWords(value: RobotModelJointValue | undefined, type: RobotModelJointType, labels: Pick<RobotModelLabels, "jointValue" | "poseValue">): string | undefined {
+  if (value === undefined) return undefined
+  const list = typeof value === "number" ? [value] : value
+  if (!list.some((v) => Number.isFinite(v))) return undefined
+  if (type === "planar" || type === "floating") return labels.poseValue(list.slice(0, ARITY[type]), type)
+  const first = list[0]
+  return first === undefined || !Number.isFinite(first) ? undefined : labels.jointValue(first, type)
 }
 
 /**
- * Sets each joint from `joints` (radians, metres) and returns the names the model does not have. Limits are not applied:
- * the view shows what the robot reports, even a value past its limit.
+ * Sets each joint from `joints` (radians, metres) and returns the names the model does not have. Limits are not applied,
+ * to any joint: the view shows what the robot reports, even a value past its limit, and a mimic joint follows its
+ * driving joint's value unclamped too. A planar or floating joint takes its components as an array; a component left
+ * out or not finite keeps its last value.
+ *
+ * Mimic joints follow the joint they mimic (urdf-loader moves them with it). When `joints` has a value for both, the
+ * driving joint's wins, whatever order the record lists them in; a mimic joint's own value is used only when the joint
+ * it follows has none.
  */
-export function applyJointValues(robot: URDFRobot, joints: Record<string, number> | undefined): string[] {
+export function applyJointValues(robot: URDFRobot, joints: Record<string, RobotModelJointValue> | undefined): string[] {
   const unknown: string[] = []
+  // urdf-loader clamps any joint whose ignoreLimits is false, mimic joints included, so it is set on every joint.
+  for (const joint of Object.values(robot.joints)) joint.ignoreLimits = true
+  // How many mimic links lead from a joint back to one that moves on its own (0 for that one).
+  const depth = (joint: URDFJoint, hops = 0): number => {
+    const m = mimicOf(joint)
+    const driver = m ? robot.joints[m.mimicJoint] : undefined
+    return driver && hops < 64 ? 1 + depth(driver, hops + 1) : 0
+  }
+  const known: [URDFJoint, RobotModelJointValue][] = []
   for (const [name, value] of Object.entries(joints ?? {})) {
     const joint: URDFJoint | undefined = robot.joints[name]
-    if (!joint) {
-      unknown.push(name)
-      continue
-    }
-    if (!Number.isFinite(value)) continue
-    joint.ignoreLimits = true
-    joint.setJointValue(value)
+    if (joint) known.push([joint, value])
+    else unknown.push(name)
+  }
+  // The deepest mimic joints first and the driving joints last, so a driving joint's value is the one that stays.
+  known.sort((a, b) => depth(b[0]) - depth(a[0]))
+  for (const [joint, value] of known) {
+    const n = ARITY[joint.jointType]
+    const given = typeof value === "number" ? [value] : value
+    const list = Array.from({ length: n }, (_, i) => {
+      const v = given[i]
+      return v !== undefined && Number.isFinite(v) ? v : null
+    })
+    if (list.every((v) => v === null)) continue
+    joint.setJointValue(...list)
   }
   return unknown
 }
@@ -282,31 +398,31 @@ export function highlightedLinks(info: RobotModelInfo, names: readonly string[] 
   const out = new Set<string>()
   for (const name of names ?? []) {
     if (info.links.includes(name)) out.add(name)
-    const joint = info.joints.find((j) => j.name === name)
+    const joint = findJoint(info, name)
     if (joint?.child) out.add(joint.child)
   }
   return out
 }
 
 /** What follows a highlighted name in words ("at 156°, limits −160° to 160°"), or undefined for a name the model does not have. */
-function highlightDetail(name: string, info: RobotModelInfo, joints: Record<string, number> | undefined, labels: RobotModelLabels): string | undefined {
-  const joint = info.joints.find((j) => j.name === name)
+function highlightDetail(name: string, info: RobotModelInfo, joints: Record<string, RobotModelJointValue> | undefined, labels: RobotModelLabels): string | undefined {
+  const joint = findJoint(info, name)
   if (joint) {
-    const words = (v: number | undefined) => (v === undefined || !Number.isFinite(v) ? undefined : labels.jointValue(v, joint.type))
-    return labels.jointDetail(words(joints?.[name]), words(joint.lower), words(joint.upper))
+    const words = (v: RobotModelJointValue | undefined) => jointValueWords(v, joint.type, labels)
+    return labels.jointDetail(words(jointValueOf(name, info, joints)), words(joint.lower), words(joint.upper))
   }
   if (info.links.includes(name)) return `(${labels.link})`
   return undefined
 }
 
 /** One highlighted joint or link in words, for the callout and the summary. Names the model does not have are left out. */
-export function describeHighlight(name: string, info: RobotModelInfo, joints: Record<string, number> | undefined, labels: RobotModelLabels): string | undefined {
+export function describeHighlight(name: string, info: RobotModelInfo, joints: Record<string, RobotModelJointValue> | undefined, labels: RobotModelLabels): string | undefined {
   const detail = highlightDetail(name, info, joints, labels)
   return detail === undefined ? undefined : detail ? `${name} ${detail}` : name
 }
 
 /** What the view is read as: the robot, that it is a 3D view, how many joints move, and anything highlighted. */
-export function robotModelSummary(info: RobotModelInfo, joints: Record<string, number> | undefined, highlight: readonly string[] | undefined, labels: RobotModelLabels, name?: string): string {
+export function robotModelSummary(info: RobotModelInfo, joints: Record<string, RobotModelJointValue> | undefined, highlight: readonly string[] | undefined, labels: RobotModelLabels, name?: string): string {
   const robot = name || info.name || labels.robot
   const items = (highlight ?? []).flatMap((h) => describeHighlight(h, info, joints, labels) ?? [])
   const parts = [labels.summary(robot, info.joints.length)]
@@ -318,11 +434,12 @@ export function robotModelSummary(info: RobotModelInfo, joints: Record<string, n
  * The joint values as a string that is equal exactly when the values are, whatever object holds them and in whatever
  * order its keys come, so an update is told by value.
  */
-function jointValuesKey(joints: Record<string, number> | undefined) {
+function jointValuesKey(joints: Record<string, RobotModelJointValue> | undefined) {
   if (!joints) return ""
   return Object.keys(joints)
     .sort()
-    .map((name) => `${name}\u0000${joints[name]}`)
+    // An array joins its components with commas, so [1, 2] and 1.2 never read alike.
+    .map((name) => `${name}\u0000${String(joints[name])}`)
     .join("\u0000")
 }
 
@@ -547,8 +664,8 @@ export type RobotModelProps = {
   packages?: RobotModelPackages
   /** The folder relative mesh paths resolve against, and that holds any package not in `packages` (`<meshBaseUrl>/<package>/…`). */
   meshBaseUrl?: string
-  /** The joints' positions, as ROS sends them (`sensor_msgs/JointState`): radians, or metres for prismatic joints. `jointStateToRecord` converts a message. */
-  joints?: Record<string, number>
+  /** The joints' positions, as ROS sends them (`sensor_msgs/JointState`): radians, or metres for prismatic joints. `jointStateToRecord` converts a message. A planar joint takes [x, y, θ] and a floating one [x, y, z, roll, pitch, yaw]. */
+  joints?: Record<string, RobotModelJointValue>
   /** Joint or link names to emphasise: a joint near its limit, a link in fault. Each is drawn in the status colour and named in words. */
   highlight?: string[]
   /** The status colour of the highlight. `warning` (needs attention) by default; `danger` for a fault. */
@@ -1113,8 +1230,13 @@ export function RobotModel({
               <h3 className="text-xs font-medium text-muted-foreground">{l.jointsHeading}</h3>
               <dl className="flex flex-col divide-y divide-border text-sm">
                 {info.joints.map((j) => {
-                  const v = joints?.[j.name]
-                  const lit = highlighted.has(j.name) || (!!j.child && highlighted.has(j.child))
+                  const v = jointValueWords(joints?.[j.name], j.type, l)
+                  // The list has a row per joint that moves on its own; a highlighted mimic joint marks the row of the
+                  // joint it follows, since that is what moves it. The summary names the mimic joint itself.
+                  const lit =
+                    highlighted.has(j.name) ||
+                    (!!j.child && highlighted.has(j.child)) ||
+                    !!info.mimics?.some((m) => m.mimic?.joint === j.name && (highlighted.has(m.name) || (!!m.child && highlighted.has(m.child))))
                   return (
                     <div key={j.name} data-highlighted={lit ? "" : undefined} className="flex items-center justify-between gap-4 py-2">
                       <dt className="flex min-w-0 items-center gap-2 font-mono text-xs">
@@ -1122,7 +1244,7 @@ export function RobotModel({
                         <span className="truncate">{j.name}</span>
                       </dt>
                       <dd className="text-end tabular-nums">
-                        {v === undefined || !Number.isFinite(v) ? <span className="text-muted-foreground">{l.noValue}</span> : l.jointValue(v, j.type)}
+                        {v === undefined ? <span className="text-muted-foreground">{l.noValue}</span> : v}
                         {/* The value is already in the row; under it, only the limits it is near. */}
                         {lit && j.lower !== undefined && j.upper !== undefined && (
                           <span className={cn("block text-xs", highlightText)}>{l.jointDetail(undefined, l.jointValue(j.lower, j.type), l.jointValue(j.upper, j.type))}</span>

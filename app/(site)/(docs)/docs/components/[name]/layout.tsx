@@ -7,7 +7,6 @@ import { CodeBlock } from "@/site/code-block"
 import { PageTitle } from "@/site/prose"
 import { aiPrompt, componentMarkdown } from "@/site/ai"
 import { CopyButton } from "@/registry/syncrobotic/ui/copy-button"
-import { Badge } from "@/registry/syncrobotic/ui/badge"
 import { ComponentPanel, ComponentTabs } from "@/site/component-tabs"
 import { tabsOf } from "@/site/component-tabs-data"
 
@@ -31,23 +30,11 @@ export default async function ComponentLayout({ params, children }: Props) {
 
   return (
     <article>
-      {/* The same head on every component page: title, one line, then the version and the tools, always below. */}
-      <PageTitle title={item.title} lead={item.description} />
-      {/* On a phone the version is one line and the three tools share the next one in equal columns, so none is left alone
-          on a line of its own; from 640 px they all sit in one row. */}
-      <div className="-mt-4 flex flex-col gap-2 pb-6 sm:flex-row sm:flex-wrap sm:items-center">
-        <div className="flex items-center gap-2">
-          {meta && (
-            <a href={`/docs/components/${item.name}#changelog`} className="inline-flex h-(--h-sm) items-center font-mono text-sm text-muted-foreground tabular-nums underline-offset-4 hover:underline">
-              v{meta.version}
-            </a>
-          )}
-          {meta?.status === "beta" && (
-            <a href="/docs/upgrading#status" title="The API may still change in a minor release" className="inline-flex h-(--h-sm) items-center">
-              <Badge tone="outline">Beta</Badge>
-            </a>
-          )}
-        </div>
+      {/* The same head on every component page: the title with its version and status beside it, one line, then the tools. */}
+      <PageTitle title={item.title} lead={item.description} aside={meta && <VersionTag name={item.name} version={meta.version} beta={meta.status === "beta"} />} />
+      {/* On a phone the tools share one line in equal columns, so none is left alone on a line of its own; from 640 px they
+          sit in a row at their own widths. All three are the same height. */}
+      <div className="-mt-4 pb-6">
         <div className={`grid gap-2 sm:flex sm:flex-wrap ${inlineSource ? "grid-cols-2" : "grid-cols-3"}`}>
           {/* For AI agents: the page as markdown, or a prompt that points an agent at it. */}
           <CopyButton value={componentMarkdown(item.name) ?? ""} variant="outline" label="Copy as Markdown">
@@ -73,5 +60,24 @@ export default async function ComponentLayout({ params, children }: Props) {
       {tabs.length > 1 && <ComponentTabs tabs={tabs} />}
       <ComponentPanel>{children}</ComponentPanel>
     </article>
+  )
+}
+
+// Version and status as one tag of two halves, at the height of a tag, set beside the title: each half is a link (the
+// changelog, what Beta means), with the 44 px target drawn around it so the small tag stays easy to hit.
+function VersionTag({ name, version, beta }: { name: string; version: string; beta: boolean }) {
+  const half =
+    "relative flex items-center px-2 transition-colors duration-(--motion-fast) ease-(--ease-standard) after:absolute after:inset-x-0 after:-inset-y-2.5 hover:bg-accent hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+  return (
+    <span className="inline-flex h-(--h-tag) items-stretch rounded-xs text-xs ring-1 ring-border ring-inset">
+      <a href={`/docs/components/${name}#changelog`} aria-label={`Version ${version}, changelog`} className={`${half} rounded-s-xs font-mono text-muted-foreground tabular-nums`}>
+        v{version}
+      </a>
+      {beta && (
+        <a href="/docs/upgrading#status" title="The API may still change in a minor release" className={`${half} rounded-e-xs border-s border-border font-medium`}>
+          Beta
+        </a>
+      )}
+    </span>
   )
 }

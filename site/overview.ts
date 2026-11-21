@@ -226,7 +226,9 @@ export const overviews: Record<string, Overview> = {
       "Mesh paths may carry a query string (`base.stl?v=2`). An absolute http(s) mesh URL in a URDF is fetched as written: a plain GET, with no credentials sent to another origin (a same-origin URL carries the page's cookies, as any fetch does). Check a URDF from an untrusted source before showing it.",
       "Without WebGL (or with `webgl={false}`, for a device that should not draw 3D) it lists each joint's position in words, highlighted ones marked: the same facts, nothing hidden.",
       "The view is one Tab stop with `role=\"img\"` and a summary (robot, joint count, highlighted joints with their values). Its reset and fit buttons are out of the Tab order; 0 and F do the same.",
-      "Every string is in `labels`, including `jointValue` (degrees and millimetres by default) and `formatTime` for the last update.",
+      "Every string is in `labels`, including `jointValue` (degrees and millimetres by default), `poseValue` for planar and floating joints and `formatTime` for the last update.",
+      "Mimic joints (`<mimic>` in the URDF, such as a gripper's second finger) follow the joint they mimic, unclamped like every joint; when `joints` has both, the driving joint's value wins. They are not counted, but a mimic joint's name can be highlighted: its link is drawn, the summary gives its value, and the words fallback marks the row of the joint it follows.",
+      "A planar joint takes [x, y, θ] and a floating one [x, y, z, roll, pitch, yaw] (metres and radians); one number is x. They are written in millimetres and degrees per component (`x 120 mm, y −40 mm, θ 30°`).",
     ],
   },
   graph: {
@@ -307,7 +309,7 @@ export const overviews: Record<string, Overview> = {
     notes: ["Answers are keyed by question id; onSubmit gets them all.", "QuestionField draws one question on its own inside your form."],
   },
   "data-grid": {
-    what: "A full data table built on TanStack Table 9: you own the table state; DataGrid, DataGridTable and their parts draw it in the kit's style.",
+    what: "A full data table built on TanStack Table: you own the table state; DataGrid, DataGridTable and their parts draw it in the kit's style.",
     use: [
       "Fleets, events and datasets people sort, select and page through.",
       "Bulk actions on selected rows.",
@@ -318,9 +320,7 @@ export const overviews: Record<string, Overview> = {
     notes: [
       "Column header: DataGridColumnHeader gives sort, pin and hide in one menu.",
       "selectColumn() and expandColumn() are ready-made columns; renderSubRow goes in the table's meta.",
-      "Spread dataGridFeatures into tableFeatures() and add the row models you need; type columns as DataGridColumnDef<Row, typeof features> and call selectColumn<Row, typeof features>().",
-      "Coming from Table 8 (data-grid 0.23 or earlier): follow \"Upgrading to TanStack Table 9\" on this page, step by step; it ends with a prompt for a coding agent and a grep checklist that must print nothing.",
-      "React Compiler: data-grid.tsx starts with \"use no memo\"; keep it. Call useTable without a selector. A cell or header of your own that reads state through a row, column or table method (row.getIsSelected(), column.getIsSorted()) wraps the read in <Subscribe source={row.table.atoms.rowSelection}> from @tanstack/react-table, or it stops updating once compiled.",
+      "Build the table with useTable({ features: tableFeatures({ ...dataGridFeatures, …row models }) }); keep the file's \"use no memo\".",
       "Give each column meta.label so the visibility menu names it.",
       "Keep getRowId stable so selection survives sorting.",
       "data and columns must keep their identity between renders; an inline array (`rows.slice(0, 6)`, `[]`) re-renders forever once state auto-resets.",
@@ -417,6 +417,7 @@ export const overviews: Record<string, Overview> = {
     notes: [
       "step sets minutes between slots; min and max bound them.",
       "TimeInput marks unreadable or out-of-range text invalid and keeps the text so it can be fixed.",
+      'A value that is not "HH:mm" reads as no value.',
     ],
   },
   item: {
@@ -573,7 +574,7 @@ export const overviews: Record<string, Overview> = {
     instead: ["A short value inline (an ID, a reference): `copy-button` beside the text.", "A value someone edits: `input` or `textarea`."],
     notes: [
       "It has no highlighter: pass shiki's `<pre>` as children (the docs site does, in site/code-block.tsx); `code` stays the plain text that Copy copies.",
-      "Call shiki with `tabindex: false`: its `<pre>` is focusable by default, a second Tab stop beside the code block's own scroll area. `defaultColor: \"light-dark()\"` gives colours that follow the theme with no stylesheet.",
+      "Call shiki with `tabindex: false`, or its `<pre>` adds a second Tab stop.",
       "Highlighted shell commands wrap by words only if each name is marked nowrap in the HTML; the docs site's CodeBlock shows how.",
     ],
   },
@@ -795,7 +796,7 @@ export const overviews: Record<string, Overview> = {
     instead: ["Anything that needs a person to act: `alarm`, never a toast.", "A state of the page: `alert`."],
     notes: [
       "Only feedback on the user's own action. Anything needing action is an Alarm.",
-      "Mount <Toaster /> once; call toast() anywhere. Failures stay until dismissed.",
+      "Mount <Toaster /> once; call toast() anywhere. Failures stay until dismissed. A second Toaster (a block that brings its own) draws nothing while the first is mounted.",
     ],
   },
   tabs: {
@@ -955,6 +956,40 @@ export const overviews: Record<string, Overview> = {
     what: "A value or a function call that waits until changes pause: useDebouncedValue and useDebouncedCallback.",
     use: ["A search sent to a server when the typing stops (autocomplete's `debounce` uses it).", "Autosave after edits pause."],
     instead: ["Something the person must see at once: update it directly, never debounced."],
+  },
+  "use-ros": {
+    what: "ROS and ROS 2 data in React over rosbridge, with no ROS library: RosProvider holds one connection, useRosTopic returns a topic's latest message, useRosPublisher a stable publish function (a zero Twist when a drive stops), useRosService a call with a timeout, and useRosStatus the connection's state in words.",
+    use: [
+      "A robot's page or console fed live from its robot: the map, the pose, the scan, the joints.",
+      "Driving by hand: `teleop-pad` publishing /cmd_vel.",
+      "Calling a robot's services (dock, reset localisation) from a button.",
+    ],
+    instead: [
+      "A fleet seen through your own backend (REST, GraphQL, MQTT): pass the backend's data to the components; this connects a browser to one robot's rosbridge.",
+      "The converters alone, outside React (a worker, a server, another bridge): `ros`.",
+      "Video: `camera-feed` over WebRTC or a stream URL; rosbridge is not for frames.",
+    ],
+    notes: [
+      "Start rosbridge on the robot with `ros2 launch rosbridge_server rosbridge_websocket_launch.xml` (ROS 1: `roslaunch rosbridge_server rosbridge_websocket.launch`); it listens on ws://<robot>:9090. Use wss:// behind a TLS proxy from an https page: a browser blocks ws:// from https.",
+      "Types may be written `geometry_msgs/Twist` (works with ROS 1 and ROS 2) or `geometry_msgs/msg/Twist` (ROS 2 only).",
+      "useRosTopic returns the same object until a new message arrives, and every component on a topic shares one wire subscription (the fastest throttle any asks for). Convert in a useMemo keyed on the message.",
+      "rosbridge has no watchdog: a frozen tab or a dropped link leaves the robot with the last command it received. The hooks send a zero Twist whenever they can, but the robot must stop by itself when commands stop arriving (a base controller's cmd_vel timeout, twist_mux).",
+      "useRosPublisher returns false when a message was dropped: a drive command while the link is down (never held for later), or one after a drop or a hidden page until the app publishes a stop. teleop-pad publishes a stop when the finger lifts, so the operator lets go and presses again.",
+      "RosProvider takes `url` (it opens and closes the connection) or `connection` (one the app made with createRosConnection and opens itself, as tests do with a fake WebSocket).",
+    ],
+  },
+  ros: {
+    what: "The rosbridge v2 client and the message converters behind use-ros, in plain TypeScript: a connection that reconnects and resubscribes, and pure functions from OccupancyGrid, LaserScan, PointCloud2, JointState and poses to the components' props, and from a teleop command or a map goal back to Twist and PoseStamped.",
+    use: [
+      "Feeding `robot-map`, `point-cloud`, `joint-state` from ROS messages, whatever brought them (rosbridge, Foxglove, a recorded bag, your backend).",
+      "A rosbridge connection outside React: a worker that decodes clouds, a test, a script.",
+    ],
+    instead: ["Connecting React components: `use-ros`, which installs this."],
+    notes: [
+      "`occupancyGridToGrid` (robot-map `grid` or `costmap`), `laserScanToScan(msg, robotId)` (robot-map `scans`), `poseToRobotMapPose(msg, gridToPlan(grid))` (a robot's x, y and heading; takes Pose, PoseStamped, PoseWithCovarianceStamped or Odometry), `goalToPoseStamped(goal, frame)` (robot-map `onGoal` to /goal_pose), `pointCloud2ToPoints` (point-cloud `points` and `intensity`), `jointStateToJoints(msg, { limits })` (joint-state `joints`), `teleopToTwist(command, { maxLinear, maxAngular })`, `stampToMs(header.stamp)` (`updatedAt`). For robot-model, its own `jointStateToRecord`.",
+      "rosbridge sends `uint8[]` (PointCloud2.data) as base64 and `int8[]` (OccupancyGrid.data) as a list of numbers; the converters read either. NaN and ±Infinity in a LaserScan arrive as null (or as bare tokens, which the client reads as null) and are skipped like out-of-range readings.",
+      "A pose must be in the map frame for robot-map (/amcl_pose is; /odom drifts). A scan is drawn from the robot's centre, so transform it to the base frame first if the laser is offset.",
+    ],
   },
   "use-hotkeys": {
     what: "Keyboard shortcuts as a map of keys to handlers ({ \"1\": yes, \"mod+z\": undo, \"?\": help }), quiet while someone types, with the key being pressed for Kbd.",

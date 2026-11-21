@@ -70,7 +70,8 @@ export type StoryFile =
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
-export const groups = ["Actions", "Inputs", "Display", "Charts", "Feedback", "Navigation", "Overlays", "Robot shell", "Hooks"] as const
+// Robotics third: after the two groups every product reaches for first, and before the general ones, as the kit's reason to exist.
+export const groups = ["Actions", "Inputs", "Robotics", "Robot shell", "Data display", "Charts", "Media & files", "Feedback", "Navigation", "Overlays", "Layout", "Hooks & libraries"] as const
 export type Group = (typeof groups)[number]
 
 type Entry = {
@@ -92,7 +93,7 @@ const overlayKeys: [string, string][] = [
 
 const entries: Record<string, Entry> = {
   graph: {
-    group: "Display",
+    group: "Data display",
     wide: true,
     examples: { file: "graph", prefix: "Graph" },
     rules: [
@@ -106,7 +107,7 @@ const entries: Record<string, Entry> = {
   },
   trace: {
     wide: true,
-    group: "Display",
+    group: "Data display",
     examples: { file: "trace", prefix: "Trace" },
     rules: [
       "Done steps are a neutral check; only warnings and failures are coloured.",
@@ -116,7 +117,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   marker: {
-    group: "Display",
+    group: "Data display",
     examples: { file: "marker", prefix: "Marker" },
     rules: [
       "Marker for moments that change how the lines after it read (a takeover, a new day, unread). Not for every event.",
@@ -137,7 +138,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   timeline: {
-    group: "Display",
+    group: "Data display",
     examples: { file: "timeline", prefix: "Timeline" },
     rules: [
       "Plain events get a neutral dot. Only warning and danger events are coloured.",
@@ -174,7 +175,7 @@ const entries: Record<string, Entry> = {
   },
   "data-grid": {
     wide: true,
-    group: "Display",
+    group: "Data display",
     examples: { file: "data-grid", prefix: "DataGrid" },
     rules: [
       "Build the table with useTable, with dataGridFeatures in its features; DataGrid draws it.",
@@ -195,7 +196,7 @@ const entries: Record<string, Entry> = {
   },
   resizable: {
     wide: true,
-    group: "Display",
+    group: "Layout",
     examples: { file: "resizable", prefix: "Resizable" },
     rules: ["Set minSize so a panel never collapses into nothing by accident.", "withHandle on touch screens, where a thin line is hard to find."],
   },
@@ -205,12 +206,12 @@ const entries: Record<string, Entry> = {
     rules: ["Say what is accepted and how big, in the hint.", "Report refused files by name and reason.", "Show what was taken as Attachment rows."],
   },
   attachment: {
-    group: "Display",
+    group: "Media & files",
     examples: { file: "attachment", prefix: "Attachment" },
     rules: ["An error says why in words and offers Retry.", "Remove is always the last action, and names the file for screen readers."],
   },
   "file-type": {
-    group: "Display",
+    group: "Media & files",
     examples: { file: "file-type", prefix: "FileType" },
     rules: ["Neutral like every icon; the label tells formats apart, not colour."],
   },
@@ -260,7 +261,7 @@ const entries: Record<string, Entry> = {
     rules: ['Values are "HH:mm" on a 24-hour clock; hour12 only changes how they read.', "Taken slots stay in the list, struck through."],
   },
   item: {
-    group: "Display",
+    group: "Data display",
     examples: { file: "item", prefix: "Item" },
     rules: [
       "One row per thing: a person, a file, a service, a setting link.",
@@ -269,7 +270,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "icon-tile": {
-    group: "Display",
+    group: "Data display",
     examples: { file: "icon-tile", prefix: "IconTile" },
     rules: [
       "Neutral by default. A tone only when the tile states a status.",
@@ -279,7 +280,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "text-diff": {
-    group: "Display",
+    group: "Data display",
     /** Side by side needs the row: examples use the card's full width. */
     wide: true,
     examples: { file: "display", prefix: "TextDiff" },
@@ -291,7 +292,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   kbd: {
-    group: "Display",
+    group: "Data display",
     examples: { file: "kbd", prefix: "Kbd" },
     rules: [
       "One key per Kbd; a chord is a KbdGroup without plus signs.",
@@ -300,7 +301,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "code-block": {
-    group: "Display",
+    group: "Data display",
     examples: { file: "code-block", prefix: "CodeBlock" },
     rules: [
       "Copy copies `code` exactly, whatever the block shows: highlighted children, wrapped lines or a hidden secret.",
@@ -319,12 +320,12 @@ const entries: Record<string, Entry> = {
     ],
   },
   "scroll-area": {
-    group: "Display",
+    group: "Layout",
     examples: { file: "scroll-area", prefix: "ScrollArea" },
     rules: ["Give it a fixed height (or width) and an aria-label.", "The viewport takes focus so the keyboard can scroll it."],
   },
   "page-header": {
-    group: "Navigation",
+    group: "Layout",
     examples: { file: "page-header", prefix: "PageHeader" },
     rules: [
       "One per page, first in the content: the breadcrumb says where, the h1 says what. No label above the title.",
@@ -536,16 +537,16 @@ const entries: Record<string, Entry> = {
   slider: { group: "Inputs", examples: { file: "inputs", prefix: "Slider" }, rules: ["Always show the current value in the label next to it."] },
   // Display
   badge: {
-    group: "Display",
+    group: "Data display",
     examples: { file: "display", prefix: "Badge" },
     rules: [
       "Counts and short states. In list rows prefer Status eyebrow's InlineStatus.",
       "Test and audit results: Passed is the neutral badge with CircleCheck; Failed is tone=\"outline\" with text-danger ring-danger and CircleAlert; Not enough samples is tone=\"outline\" with text-muted-foreground and CircleDashed. Never a green pass.",
     ],
   },
-  card: { group: "Display", examples: { file: "display", prefix: "Card" }, rules: ["Never nest cards. Group rows inside one card with separators."] },
+  card: { group: "Layout", examples: { file: "display", prefix: "Card" }, rules: ["Never nest cards. Group rows inside one card with separators."] },
   avatar: {
-    group: "Display",
+    group: "Data display",
     examples: { file: "display", prefix: "Avatar" },
     rules: [
       "A person or a robot, by picture or initials. Initials when there is no picture, never an empty circle.",
@@ -555,7 +556,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   separator: {
-    group: "Display",
+    group: "Layout",
     examples: { file: "display", prefix: "Separator" },
     rules: [
       "Splits groups the eye would otherwise run together. If spacing already separates them, leave it out.",
@@ -563,7 +564,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   progress: {
-    group: "Display",
+    group: "Feedback",
     examples: { file: "display", prefix: "Progress" },
     rules: [
       "Blue: a process someone is waiting on, with an end. A level that stays (battery, storage, signal) is a Meter, not a Progress.",
@@ -571,7 +572,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   spinner: {
-    group: "Display",
+    group: "Feedback",
     examples: { file: "display", prefix: "Spinner" },
     rules: [
       "Waits 300 ms before it appears. Work that finishes sooner never flashes a spinner.",
@@ -579,7 +580,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   meter: {
-    group: "Display",
+    group: "Data display",
     examples: { file: "display", prefix: "Meter" },
     rules: [
       "For a level in a known range (battery, storage). For work under way, use Progress.",
@@ -588,7 +589,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "metric-card": {
-    group: "Display",
+    group: "Data display",
     /** A row of cards needs the row: examples use the card's full width. */
     wide: true,
     examples: { file: "metric-card", prefix: "MetricCard" },
@@ -603,21 +604,21 @@ const entries: Record<string, Entry> = {
     ],
   },
   "description-list": {
-    group: "Display",
+    group: "Data display",
     examples: { file: "display", prefix: "DescriptionList" },
     rules: ["Label above value, value in medium weight with tabular numbers.", "`tiles` only for the few numbers that matter most; everything else plain."],
   },
   "empty-state": {
-    group: "Display",
+    group: "Feedback",
     examples: { file: "display", prefix: "EmptyState" },
     rules: [
       "Says what is missing, why, and the next step as a button. Never a bare “No data”.",
       "When a filter or search caused it, the action clears it.",
     ],
   },
-  table: { group: "Display", examples: { file: "display", prefix: "Table" }, rules: ["Right-align numbers. Numbers are tabular by default."] },
+  table: { group: "Data display", examples: { file: "display", prefix: "Table" }, rules: ["Right-align numbers. Numbers are tabular by default."] },
   list: {
-    group: "Display",
+    group: "Data display",
     examples: { file: "list", only: ["GroupedList"] },
     rules: [
       "Rows of the same kind, each a whole touch target at 56 px, with its state in the trailing slot.",
@@ -625,7 +626,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "status-glyph": {
-    group: "Display",
+    group: "Data display",
     examples: { file: "display", prefix: "StatusGlyph" },
     rules: [
       "Status is a shape and a word; colour only when it is abnormal. The shape reads without colour vision: filled circle active, hollow circle normal, triangle attention, square stopped, slashed circle offline.",
@@ -633,7 +634,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "status-eyebrow": {
-    group: "Display",
+    group: "Data display",
     examples: { file: "list", only: ["StatusShapes", "StatusEyebrowOverTitle", "StatusInlineInRows"] },
     rules: [
       "A robot's state above its name, or in a row's trailing slot: shape plus word, always both.",
@@ -641,7 +642,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   skeleton: {
-    group: "Display",
+    group: "Feedback",
     examples: { file: "list", only: ["LoadingSkeleton", "SkeletonCard", "SkeletonTableRows"] },
     rules: [
       "Show what is already known; only unknown values get a skeleton.",
@@ -665,7 +666,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "share-bar": {
-    group: "Display",
+    group: "Charts",
     examples: { file: "data-pieces", prefix: "ShareBar" },
     rules: [
       "How a whole splits into a few parts (up to three, then “Other”): the first in the accent, then two greys, then the light grey for Other. For values over time or many categories, use a chart.",
@@ -674,7 +675,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "restricted-preview": {
-    group: "Display",
+    group: "Media & files",
     examples: { file: "data-pieces", prefix: "RestrictedPreview" },
     rules: [
       "For pictures someone should choose to see: restricted tiers, faces, number plates. Nothing loads until they ask.",
@@ -684,7 +685,7 @@ const entries: Record<string, Entry> = {
   },
   "image-grid": {
     wide: true,
-    group: "Display",
+    group: "Media & files",
     examples: { file: "image-grid", prefix: "ImageGrid" },
     rules: [
       "Every tile keeps its aspect box before and after the picture loads, so the grid never jumps; pictures load lazily.",
@@ -696,7 +697,7 @@ const entries: Record<string, Entry> = {
   },
   "annotated-image": {
     wide: true,
-    group: "Display",
+    group: "Media & files",
     examples: { file: "annotated-image", prefix: "AnnotatedImage" },
     rules: [
       "Coordinates are the picture's own pixels; give its natural `width` and `height`. The box keeps that aspect ratio, so the marks line up at any size.",
@@ -708,7 +709,7 @@ const entries: Record<string, Entry> = {
   },
   "media-player": {
     wide: true,
-    group: "Display",
+    group: "Media & files",
     examples: { file: "media-player", prefix: "MediaPlayer" },
     rules: [
       "For a recorded clip with an end. A live camera is `camera-feed`: no timeline, no speed, a latency and a connection state instead.",
@@ -721,7 +722,7 @@ const entries: Record<string, Entry> = {
   },
   "camera-feed": {
     wide: true,
-    group: "Display",
+    group: "Robotics",
     examples: { file: "camera-feed", prefix: "CameraFeed" },
     rules: [
       "For a live camera. A recording with an end is `media-player`.",
@@ -735,7 +736,7 @@ const entries: Record<string, Entry> = {
   },
   "joint-state": {
     wide: true,
-    group: "Display",
+    group: "Robotics",
     examples: { file: "joint-state", prefix: "JointState" },
     rules: [
       "For watching an arm's joints. It has nothing to press: jogging a joint is a control, with its own confirmation and a hold-to-run button.",
@@ -757,6 +758,8 @@ const entries: Record<string, Entry> = {
   banner: {
     group: "Feedback",
     examples: { file: "banner", prefix: "Banner" },
+    // A banner spans the page, so its examples do too, also once it is dismissed.
+    wide: true,
     rules: [
       "About the app, not one record: maintenance, read-only mode, a trial ending, no connection. A condition of one page or form is an Alert in the content; the result of what someone just did is a Toast.",
       "Full width, first in the page (or above the whole app), before the header in the DOM so it is read first. At most one at a time: show the most severe and let the next one wait.",
@@ -773,7 +776,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "The result of what the user just did, or a minor event. Web and dashboard use Toast; the control app uses the island's notices, with the same timings.",
       "4 s; 8 s when it offers an action such as Undo; failures stay until dismissed. Hovering or focusing pauses the timer.",
-      "At most three on screen. Never use a toast for an alarm.",
+      "At most three on screen, stacked with the newest in front; more wait behind and come forward as those in front go. Hovering, focusing or touching the stack spreads it out. Never use a toast for an alarm.",
     ],
   },
   // Navigation
@@ -885,7 +888,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "robot-map": {
-    group: "Charts",
+    group: "Robotics",
     wide: true,
     examples: { file: "robot-map", prefix: "RobotMap" },
     rules: [
@@ -903,7 +906,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "point-cloud": {
-    group: "Charts",
+    group: "Robotics",
     wide: true,
     examples: { file: "point-cloud", prefix: "PointCloud" },
     rules: [
@@ -917,7 +920,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "robot-model": {
-    group: "Display",
+    group: "Robotics",
     wide: true,
     examples: { file: "robot-model", prefix: "RobotModel" },
     rules: [
@@ -953,7 +956,7 @@ const entries: Record<string, Entry> = {
   },
   // Robot shell
   "stop-button": {
-    group: "Robot shell",
+    group: "Robotics",
     examples: { file: "stop-button", only: ["Ready", "StopStates", "ConnectionStates", "WakeStates"] },
     rules: [
       "UI only: it takes `state` and calls onStop, onStopAll or onWake. Sending the command, waiting for the dog and falling back to Bluetooth after 1.5 s belong to the app, which passes the result back as `state`.",
@@ -965,7 +968,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "slide-to-release": {
-    group: "Robot shell",
+    group: "Robotics",
     examples: { file: "slide-to-release", only: ["Stopped", "ReleaseStates"] },
     rules: [
       "Letting go past 85% releases; short of that the thumb springs back in 200 ms.",
@@ -975,7 +978,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "teleop-pad": {
-    group: "Robot shell",
+    group: "Robotics",
     examples: { file: "teleop-pad", prefix: "TeleopPad" },
     rules: [
       "Dead man: the robot moves only while the stick is held. Release, a cancelled pointer, lost focus, a hidden page or `timeoutMs` without pointer events send a zero command at once and call onStop with the reason.",
@@ -1012,17 +1015,17 @@ const entries: Record<string, Entry> = {
   },
   // Hooks: each has a small live demo; the source is in the Source sheet.
   "use-long-press": {
-    group: "Hooks",
+    group: "Hooks & libraries",
     examples: { file: "hooks", prefix: "UseLongPress" },
     rules: ["Returns hold progress from 0 to 1. The emergency stop uses it for hold-to-stop-all."],
   },
   "use-slide-release": {
-    group: "Hooks",
+    group: "Hooks & libraries",
     examples: { file: "hooks", prefix: "UseSlideRelease" },
     rules: ["Drag, threshold and spring-back logic behind Slide to release."],
   },
   "use-presence": {
-    group: "Hooks",
+    group: "Hooks & libraries",
     examples: { file: "hooks", prefix: "UsePresence" },
     rules: [
       "Keeps an element (usePresence) or list items (usePresenceList) mounted while they leave, so an exit plays disappear instead of vanishing.",
@@ -1030,7 +1033,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "use-hotkeys": {
-    group: "Hooks",
+    group: "Hooks & libraries",
     examples: { file: "hooks", prefix: "UseHotkeys" },
     rules: [
       "Single keys only where people work through a queue by keyboard (1 Yes, 2 No, ? help); everywhere else a shortcut takes a modifier (mod+k).",
@@ -1039,8 +1042,28 @@ const entries: Record<string, Entry> = {
       "Show the keys on screen (Kbd) and in a ? dialog: a shortcut nobody can find does not exist.",
     ],
   },
+  "use-ros": {
+    group: "Hooks & libraries",
+    wide: true,
+    examples: { file: "hooks", prefix: "UseRos" },
+    rules: [
+      "One RosProvider per rosbridge server, high in the tree; the hooks share its one connection. The whole wiring, with the safety notes, is on the Connect to ROS page (/docs/ros).",
+      "Show the connection's state in words and shape wherever the robot is driven or watched: Connected, Connecting (the blue spinner), Connection lost with Reconnect. A view that keeps the last message while the link is down must say so.",
+      "Convert a message once per message (useMemo keyed on it): robot-map draws the grid again for every new array.",
+      "Drive commands go through useRosPublisher on a Twist topic: it sends a zero Twist on unmount, on a hidden page and on a dropped link, and refuses a drive held through a drop until the stick is let go. rosbridge has no watchdog: the robot must stop by itself when commands stop arriving.",
+      "Throttle what people read (throttleMs: 200 for a scan, 1000 for a battery); never throttle what someone is steering by.",
+    ],
+  },
+  ros: {
+    group: "Hooks & libraries",
+    rules: [
+      "Pure TypeScript, no React and no npm dependency: the rosbridge v2 client (createRosConnection) and the converters. use-ros is the React layer on top.",
+      "The converters follow the components' documented conventions (robot-map's plan coordinates, REP 103, SI units); do not convert again before passing the result on.",
+      "Only JSON (compression \"none\"): CBOR and PNG compression are not read. Large clouds and maps arrive as base64 or number arrays and are decoded here.",
+    ],
+  },
   "use-debounce": {
-    group: "Hooks",
+    group: "Hooks & libraries",
     examples: { file: "hooks", prefix: "UseDebounce" },
     rules: [
       "Debounce what goes to a server (a search, an autosave), never what the person sees: the text box updates on every key.",

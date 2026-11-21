@@ -1181,7 +1181,7 @@
      "name": "open",
      "type": "boolean",
      "default": "true",
-     "description": "false hides it with the disappear movement. Default true."
+     "description": "false hides it: it fades and closes its height. Default true."
     }
    ],
    "inherits": [
@@ -6865,8 +6865,8 @@
     },
     {
      "name": "joints",
-     "type": "Record<string, number>",
-     "description": "The joints' positions, as ROS sends them (`sensor_msgs/JointState`): radians, or metres for prismatic joints. `jointStateToRecord` converts a message."
+     "type": "Record<string, RobotModelJointValue>",
+     "description": "The joints' positions, as ROS sends them (`sensor_msgs/JointState`): radians, or metres for prismatic joints. `jointStateToRecord` converts a message. A planar joint takes [x, y, θ] and a floating one [x, y, z, roll, pitch, yaw]."
     },
     {
      "name": "highlight",
@@ -6954,8 +6954,14 @@
       {
        "name": "jointValue",
        "type": "(value: number, type: RobotModelJointType) => string",
-       "default": "(value, type) => (type === \"prismatic\" ? millimetres(value) : degrees(value))",
-       "description": "A joint's value in words: degrees for revolute joints, millimetres for prismatic ones (ROS sends radians and metres)."
+       "default": "(value, type) => (type === \"prismatic\" || type === \"planar\" || type === \"floating\" ? millimetres(value) : degrees(value))",
+       "description": "A joint's value in words: degrees for revolute and continuous joints, millimetres for prismatic ones (ROS sends radians and metres). Planar and floating joints are written with `poseValue` instead."
+      },
+      {
+       "name": "poseValue",
+       "type": "(values: readonly number[], type: \"planar\" | \"floating\") => string",
+       "default": "(values, type) => POSE_AXES[type] .flatMap(([axis, angle], i) => { const v = values[i] return v === undefined || !Number.isFinite(v) ? [] : [`${axis} ${angle ? degrees(v) : millimetres(v)}`] }) .join(\", \")",
+       "description": "A planar ([x, y, θ]) or floating ([x, y, z, roll, pitch, yaw]) joint's value in words, each component with its own unit: \"x 120 mm, y −40 mm, θ 30°\". Components that are not finite numbers are left out."
       },
       {
        "name": "jointDetail",

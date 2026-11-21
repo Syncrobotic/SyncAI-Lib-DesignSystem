@@ -12,6 +12,7 @@ const { writeFileSync, readFileSync } = require("node:fs")
 
 const SITE = process.env.SITE || "http://localhost:3100"
 const exe = process.env.PW_CHROMIUM_PATH
+/** @type {import("./types.js").Registry} */
 const reg = JSON.parse(readFileSync("registry.json", "utf8"))
 // The data-slot names each component's own files declare: what "the component" is on a page.
 const slotsOf = Object.fromEntries(
@@ -27,6 +28,7 @@ const MEANINGFUL = new Set(
 ;(async () => {
   const browser = await chromium.launch(exe ? { executablePath: exe } : {})
   const page = await (await browser.newContext({ viewport: { width: 1280, height: 900 } })).newPage()
+  /** @type {Record<string, { roles: string[]; tabStops: number; live: boolean }>} */
   const out = {}
   for (const name of names) {
     const res = await page.goto(`${SITE}/docs/components/${name}`, { waitUntil: "networkidle" })
@@ -40,6 +42,7 @@ const MEANINGFUL = new Set(
     const specimens = page.locator("section[id^=example-] .specimen")
     const n = await specimens.count()
     if (!n) continue
+    /** @type {Set<string>} */
     const roles = new Set()
     let tabStops = 0
     let live = false
@@ -48,8 +51,9 @@ const MEANINGFUL = new Set(
       // The component itself, not the example around it: the outermost elements with one of its own data-slot names, marked
       // so the accessibility snapshot can be taken of each; the whole specimen when it has none.
       const count = await spec.evaluate((el, slots) => {
-        const mine = (e) => slots.includes(e.dataset.slot)
-        const all = [...el.querySelectorAll("[data-slot]")].filter(mine)
+        /** @param {HTMLElement} e */
+        const mine = (e) => slots.includes(/** @type {string} */ (e.dataset.slot))
+        const all = /** @type {HTMLElement[]} */ ([...el.querySelectorAll("[data-slot]")]).filter(mine)
         const outer = all.filter((e) => !all.some((o) => o !== e && o.contains(e)))
         outer.forEach((e, i) => e.setAttribute("data-a11y-target", String(i)))
         return outer.length
@@ -62,9 +66,11 @@ const MEANINGFUL = new Set(
         const snap = await t.ariaSnapshot().catch(() => "")
         for (const m of snap.matchAll(/^\s*- (\w+)/gm)) if (MEANINGFUL.has(m[1])) roles.add(m[1])
         const facts = await t.evaluate((el) => {
+          /** @param {HTMLElement} e */
           const visible = (e) => !!(e.offsetWidth || e.offsetHeight || e.getClientRects().length) && getComputedStyle(e).visibility !== "hidden"
           const sel = 'a[href], button, input, select, textarea, [tabindex], [contenteditable="true"]'
-          const tabbable = [el, ...el.querySelectorAll(sel)].filter(
+          // Every candidate is read as a form control: the fields it lacks (disabled, type, checked) read as undefined.
+          const tabbable = /** @type {HTMLInputElement[]} */ ([el, ...el.querySelectorAll(sel)]).filter(
             (e) =>
               e.matches(sel) && !e.disabled && e.tabIndex >= 0 && !e.closest("[inert]") && visible(e) &&
               // A radio group is one stop: unchecked radios are skipped when one is checked.

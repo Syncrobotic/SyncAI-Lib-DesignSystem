@@ -11,10 +11,10 @@ const config: NextConfig = {
   },
   // /mcp reads item sources, stories and the agent skill at request time; ship them with that function.
   outputFileTracingIncludes: { "/mcp": ["./registry/**/*", "./stories/**/*"] },
-  // /docs has no page of its own: send it to the first one.
   async redirects() {
     return [
-      { source: "/docs", destination: "/docs/foundations", permanent: false },
+      // The docs' front page moved from /docs/foundations to /docs (the foundation pages stay under /docs/foundations/).
+      { source: "/docs/foundations", destination: "/docs", permanent: true },
       // The icons moved from the foundations to an area of their own.
       { source: "/docs/icons", destination: "/icons", permanent: true },
     ]

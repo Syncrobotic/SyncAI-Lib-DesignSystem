@@ -11,24 +11,35 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs"
 
 const WRITE = process.argv.includes("--write")
 const LOCK = "registry/versions.lock.json"
+/** @type {import("./types.js").Registry} */
 const registry = JSON.parse(readFileSync("registry.json", "utf8"))
+/** @type {import("./types.js").VersionsLock} */
 const lock = existsSync(LOCK) ? JSON.parse(readFileSync(LOCK, "utf8")) : {}
 
 const HEADER = /^(\/\/ @syncrobotic\/\S+ v\S+.*\n|\/\* @syncrobotic\/\S+ v\S+.*\*\/\n)/
+/**
+ * @param {string} file
+ * @param {string} name
+ * @param {string} version
+ */
 const header = (file, name, version) => {
   // Markdown (the agent skill) carries no header: a skill file must start with its frontmatter. Its version is in the lock.
   if (file.endsWith(".md")) return ""
   const text = `@syncrobotic/${name} v${version} · update: npx shadcn add @syncrobotic/${name} --overwrite`
   return file.endsWith(".css") ? `/* ${text} */\n` : `// ${text}\n`
 }
+/** @param {string} src */
 const body = (src) => src.replace(HEADER, "")
+/** @param {import("./types.js").RegistryItem} item */
 const hash = (item) =>
   createHash("sha256")
     .update(item.files.map((f) => `${f.path}\n${body(readFileSync(f.path, "utf8"))}`).join("\n"))
     .digest("hex")
     .slice(0, 16)
 
+/** @type {string[]} */
 const errors = []
+/** @type {import("./types.js").VersionsLock} */
 const nextLock = {}
 for (const item of registry.items) {
   const version = item.meta?.version
@@ -36,7 +47,7 @@ for (const item of registry.items) {
     errors.push(`${item.name}: no meta.version in registry.json`)
     continue
   }
-  if (!item.meta.changelog?.some((c) => c.version === version)) errors.push(`${item.name}: no meta.changelog entry for ${version}`)
+  if (!item.meta?.changelog?.some((c) => c.version === version)) errors.push(`${item.name}: no meta.changelog entry for ${version}`)
 
   const h = hash(item)
   const was = lock[item.name]

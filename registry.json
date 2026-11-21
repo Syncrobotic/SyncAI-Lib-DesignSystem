@@ -183,6 +183,54 @@
       }
     },
     {
+      "name": "labels-zh-tw",
+      "type": "registry:lib",
+      "title": "Labels: Traditional Chinese (Taiwan)",
+      "description": "The kit's words in Traditional Chinese as written in Taiwan: one typed labels object per component that takes `labels` (alarms, emergency stop, teleoperation, robot map and model, data grid, filters, forms and more), with numbers and units formatted by functions as in the English defaults.",
+      "files": [
+        {
+          "path": "registry/syncrobotic/lib/labels-zh-tw.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "meta": {
+        "version": "0.27.0",
+        "changelog": [
+          {
+            "version": "0.27.0",
+            "date": "2026-11-21",
+            "note": "First release."
+          }
+        ],
+        "status": "beta"
+      }
+    },
+    {
+      "name": "ros",
+      "type": "registry:lib",
+      "title": "ROS",
+      "description": "ROS and ROS 2 over rosbridge with no ROS library: a rosbridge v2 client on the browser's WebSocket (ref-counted subscriptions and advertisements, capped jittered reconnect that resubscribes, a send queue, service calls with a timeout, a zero Twist when a velocity publisher stops or the link drops) and pure converters from OccupancyGrid, LaserScan, PointCloud2, JointState and poses to the kit's components, and from a teleop command and a map goal back to Twist and PoseStamped.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/syncrobotic/lib/ros.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "meta": {
+        "version": "0.27.0",
+        "changelog": [
+          {
+            "version": "0.27.0",
+            "date": "2026-11-21",
+            "note": "First release."
+          }
+        ],
+        "status": "beta"
+      }
+    },
+    {
       "name": "use-long-press",
       "type": "registry:hook",
       "title": "useLongPress",
@@ -306,6 +354,33 @@
             "version": "0.15.0",
             "date": "2026-11-19",
             "note": "First release: useDebouncedValue and useDebouncedCallback (with cancel and flush)."
+          }
+        ],
+        "status": "beta"
+      }
+    },
+    {
+      "name": "use-ros",
+      "type": "registry:hook",
+      "title": "useRos",
+      "description": "React hooks over the ros client: RosProvider, useRosStatus, useRosTopic (the latest message, through useSyncExternalStore), useRosPublisher (a stable publish function; a zero Twist on unmount, hidden page and dropped link for cmd_vel) and useRosService (a call with a timeout).",
+      "dependencies": [],
+      "registryDependencies": [
+        "@syncrobotic/ros"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/hooks/use-ros.tsx",
+          "type": "registry:hook"
+        }
+      ],
+      "meta": {
+        "version": "0.27.0",
+        "changelog": [
+          {
+            "version": "0.27.0",
+            "date": "2026-11-21",
+            "note": "First release."
           }
         ],
         "status": "beta"
@@ -1949,8 +2024,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.16.1",
+        "version": "0.16.2",
         "changelog": [
+          {
+            "version": "0.16.2",
+            "date": "2026-11-21",
+            "note": "`tokenize` gives back exactly its input for any text: spacing alone is one wordless token instead of none. A diff keeps that spacing as shared text, never as a word changed."
+          },
           {
             "version": "0.16.1",
             "date": "2026-11-21",
@@ -2058,8 +2138,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.21.0",
+        "version": "0.27.0",
         "changelog": [
+          {
+            "version": "0.27.0",
+            "date": "2026-11-21",
+            "note": "Opens and closes its height as it fades, so the page under it slides instead of jumping when it is dismissed or shown again."
+          },
           {
             "version": "0.21.0",
             "date": "2026-11-20",
@@ -2133,8 +2218,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.2",
+        "version": "0.27.0",
         "changelog": [
+          {
+            "version": "0.27.0",
+            "date": "2026-11-21",
+            "note": "Buttons beside Acknowledge (a custom action, Shelve) are ghost, so Acknowledge is the only outlined button in an unacknowledged row. Unshelve, alone in its row, keeps its outline."
+          },
           {
             "version": "0.22.2",
             "date": "2026-11-20",
@@ -2218,8 +2308,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.27.0",
         "changelog": [
+          {
+            "version": "0.27.0",
+            "date": "2026-11-21",
+            "note": "Toaster stacks toasts like sonner: newest in front, two more peeking behind it, the rest kept hidden (none is closed to make room) and brought forward as the front ones go; hover, focus or touch spreads the stack. Toasts arrive from the edge and the others move on transform, so a 4th no longer makes the stack jump. Only the first mounted Toaster draws (a second one drew every toast twice and paused only one copy); a swiped toast leaves from where it was let go. Toast wraps its icon and text in a [data-slot=toast-content] div."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -2608,8 +2703,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.18.2",
+        "version": "0.27.0",
         "changelog": [
+          {
+            "version": "0.27.0",
+            "date": "2026-11-21",
+            "note": "An empty folder opens and closes in place; it opened as tall as its parent folder before snapping shut."
+          },
           {
             "version": "0.18.2",
             "date": "2026-11-21",
@@ -3826,8 +3926,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.24.1",
+        "version": "0.24.2",
         "changelog": [
+          {
+            "version": "0.24.2",
+            "date": "2026-11-21",
+            "note": "Mimic joints follow the joint they mimic with limits ignored on every joint, and the driving joint's value wins over a mimic's own whatever the order; a mimic joint can be highlighted by name (`RobotModelInfo.mimics`). Planar and floating joints take [x, y, θ] and [x, y, z, roll, pitch, yaw] and are written per component in mm and ° (new `poseValue` label, `jointValueWords`, `jointValueOf`); one number no longer leaves their other components undefined."
+          },
           {
             "version": "0.24.1",
             "date": "2026-11-21",
@@ -4344,8 +4449,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.2",
+        "version": "0.23.3",
         "changelog": [
+          {
+            "version": "0.23.3",
+            "date": "2026-11-21",
+            "note": "A value that is not a time (\"9\", \"9:\", \"25:99\", \"\") reads as no value: the placeholder shows and no slot is picked, instead of a broken time on the trigger. An unpadded \"9:30\" picks the \"09:30\" slot; a malformed min, max or step falls back to its default. New `normalizeTime`."
+          },
           {
             "version": "0.23.2",
             "date": "2026-11-21",
@@ -4415,7 +4525,7 @@
           {
             "version": "0.26.0",
             "date": "2026-11-21",
-            "note": "Needs @tanstack/react-table 9 and changes your table code: useTable({ features: tableFeatures({ ...dataGridFeatures, …row models }) }) instead of useReactTable and get*RowModel, DataGridColumnDef<Row, typeof features> columns, columnPinning { start, end }. Follow the steps, agent prompt and grep checklist in \"Upgrading to TanStack Table 9\" on the data-grid page (/docs/components/data-grid#table-9). Safe under the React Compiler: the file opts out with \"use no memo\" (keep it); custom cells that read state through row or column methods subscribe with <Subscribe>. Looks the same."
+            "note": "Needs @tanstack/react-table 9: build the table with useTable and dataGridFeatures; pinning is start/end. Keep the file's \"use no memo\". Looks the same."
           },
           {
             "version": "0.23.3",
@@ -4939,8 +5049,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.27.0",
         "changelog": [
+          {
+            "version": "0.27.0",
+            "date": "2026-11-21",
+            "note": "A span with nothing under it opens and closes in place instead of as tall as its parent span."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
