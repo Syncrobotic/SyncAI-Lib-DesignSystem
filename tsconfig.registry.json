@@ -1,0 +1,11 @@
+{
+  // The registry items alone, as a strict product would compile them: items install as source, so they must build under
+  // the strictest options a product commonly sets, not only under this repo's own.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noUncheckedIndexedAccess": true,
+    "incremental": false
+  },
+  "include": ["registry"],
+  "exclude": ["node_modules"]
+}

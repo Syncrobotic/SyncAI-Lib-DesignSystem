@@ -37,6 +37,7 @@ jobs:
       - run: node scripts/release-notes.mjs "$(node -p "require('./package.json').version")" > /dev/null
       # Code correctness: the React rules of hooks (the React Compiler relies on them) and TypeScript's recommended rules
       - run: npm run lint
+      # Also the registry items alone under noUncheckedIndexedAccess, as a strict product compiles them
       - run: npm run typecheck
       # Behaviour of safety-critical interactions: stop, stop all, slide to release, keyboard and AT paths
       - run: npm test
