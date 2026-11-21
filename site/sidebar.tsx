@@ -2,11 +2,11 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useSearchParams } from "next/navigation"
 import { componentBase } from "@/site/component-tabs"
 import { cn } from "@/lib/utils"
 import { inScope } from "./scope-match"
-import type { Scope } from "./scopes"
+import type { NavLink, Scope } from "./scopes"
 
 export const scopeFor = (scopes: Pick<Scope, "match">[], path: string) =>
   Math.max(
@@ -129,23 +129,56 @@ export function Sidebar({ scopes, switcher = false, path: frozen }: { scopes: Sc
               {/* The open page's examples, under its link. They appear and go at once: a height animation here moves every
                   link below (and, closing above, the column itself) for a third of a second on each switch. */}
               {!switcher && here === l.href && l.sections && l.sections.length > 1 && (
-                  <ul aria-label={`${l.label} examples`} className="ml-3 flex flex-col border-l border-border">
-                    {l.sections.map((s) => (
-                      <li key={s.href}>
-                        <Link
-                          href={s.href}
-                          className="flex min-h-(--h-sm) items-center py-1 pr-2 pl-3 text-sm text-muted-foreground transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:text-foreground rounded-xs focus-visible:-outline-offset-2"
-                        >
-                          {s.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                // A list of filters (?category=…) marks the one in the address. Reading the address needs a Suspense
+                // boundary on a prerendered page; until it is read, the list shows with nothing marked.
+                l.sections.some((x) => x.href.includes("?")) ? (
+                  <React.Suspense fallback={<Sections label={l.label} sections={l.sections} filter />}>
+                    <FilterSections label={l.label} sections={l.sections} />
+                  </React.Suspense>
+                ) : (
+                  <Sections label={l.label} sections={l.sections} />
+                )
+              )}
             </React.Fragment>
           ))}
         </div>
       ))}
     </nav>
   )
+}
+
+type Section = NonNullable<NavLink["sections"]>[number]
+
+/** The open page's sections under its link: examples to jump to, or, on /icons, categories to filter by. */
+// A filter keeps the page where it is (scroll={false}); an example link is a jump to its anchor, so it scrolls as usual.
+function Sections({ label, sections, current, filter = false }: { label: string; sections: Section[]; current?: string; filter?: boolean }) {
+  return (
+    <ul aria-label={`${label} ${filter ? "categories" : "examples"}`} className="ml-3 flex flex-col border-l border-border">
+      {sections.map((s) => (
+        <li key={s.href}>
+          <Link
+            href={s.href}
+            scroll={filter ? false : undefined}
+            aria-current={s.href === current ? "true" : undefined}
+            className={cn(
+              "-ml-px flex min-h-(--h-sm) items-center gap-2 border-l py-1 pr-2 pl-3 text-sm transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:text-foreground focus-visible:-outline-offset-2",
+              s.href === current ? "border-foreground font-medium text-foreground" : "border-transparent text-muted-foreground",
+            )}
+          >
+            <span className="min-w-0 flex-1 truncate">{s.label}</span>
+            {s.count !== undefined && <span className="shrink-0 text-xs text-muted-foreground tabular-nums">{s.count}</span>}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+/** Sections that filter the page: the one the address names is current; with none named, the first ("All"). */
+function FilterSections({ label, sections }: { label: string; sections: Section[] }) {
+  const params = useSearchParams()
+  const path = usePathname()
+  const category = params.get("category")
+  const current = category ? `${path}?category=${category}` : sections[0]?.href
+  return <Sections label={label} sections={sections} current={current} filter />
 }

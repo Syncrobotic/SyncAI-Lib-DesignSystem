@@ -433,3 +433,9 @@ export const iconGroups: IconGroup[] = [
 ]
 
 export const iconCount = iconGroups.reduce((n, g) => n + g.icons.length, 0)
+
+/** A group's address on /icons (?category=robots-and-sites): its title in lower case, words joined by hyphens. */
+export const categorySlug = (title: string) => title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")
+
+/** The groups as the categories of /icons, in the page's order (the robots first), each with how many icons it holds. */
+export const iconCategories = iconGroups.map((g) => ({ slug: categorySlug(g.title), title: g.title, count: g.icons.length }))
