@@ -8,6 +8,7 @@ export type NavLink = {
   href: string
   label: string
   /** In-page anchors, listed under the link while its page is open. */ sections?: { href: string; label: string }[]
+  /** A beta item: its API may still change in a minor release. */ beta?: boolean
 }
 export type NavGroup = { title: string; links: NavLink[] }
 export type Scope = { key: string; label: string; href: string; match: string[]; groups: NavGroup[] }
@@ -51,6 +52,7 @@ export const scopes: Scope[] = [
         .map((i) => ({
           href: `/docs/components/${i.name}`,
           label: i.title,
+          beta: (i as { meta?: { status?: string } }).meta?.status === "beta",
           // The page's examples, so you can jump to one; as ReUI lists them, without a second table of contents.
           // Then its pattern sets (Line chart, Heatmap…), so a chart is found under Chart, not under Blocks.
           sections: [
