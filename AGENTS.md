@@ -1,6 +1,7 @@
 # Agents in this repository
 
 - How to work here (setup, the checks, the rules the lints enforce, adding a component, releases): [CONTRIBUTING.md](CONTRIBUTING.md).
+- Commit subjects and pull request titles: English Conventional Commits (`feat(scope): …`, `fix(scope): …`), never `0.x.y: …` or `Merge branch …` (CONTRIBUTING, "Branches and releases").
 - The design language and the check to run after every UI change: the agent skill in `registry/syncrobotic/skill/` (`SKILL.md`, `references/design-language.md`, `references/checklist.md`). The foundation pages on the docs site are the source of each rule.
 
 <!-- BEGIN:nextjs-agent-rules -->
