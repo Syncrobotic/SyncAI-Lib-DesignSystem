@@ -4415,7 +4415,7 @@
           {
             "version": "0.26.0",
             "date": "2026-11-21",
-            "note": "Needs @tanstack/react-table 9: build the table with useTable({ features: tableFeatures({ ...dataGridFeatures, sortedRowModel: createSortedRowModel(), paginatedRowModel: createPaginatedRowModel() }), ... }) instead of useReactTable and get*RowModel, type columns as DataGridColumnDef<Row, typeof features> (selectColumn<Row, typeof features>()), and pin with columnPinning { start, end } instead of { left, right }. Looks the same."
+            "note": "Needs @tanstack/react-table 9 and changes your table code: useTable({ features: tableFeatures({ ...dataGridFeatures, …row models }) }) instead of useReactTable and get*RowModel, DataGridColumnDef<Row, typeof features> columns, columnPinning { start, end }. Follow the steps, agent prompt and grep checklist in \"Upgrading to TanStack Table 9\" on the data-grid page (/docs/components/data-grid#table-9). Safe under the React Compiler: the file opts out with \"use no memo\" (keep it); custom cells that read state through row or column methods subscribe with <Subscribe>. Looks the same."
           },
           {
             "version": "0.23.3",

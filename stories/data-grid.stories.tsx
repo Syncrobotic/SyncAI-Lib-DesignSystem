@@ -79,7 +79,7 @@ type Features = typeof features
 type Col = DataGridColumnDef<Robot, Features>
 const expanding = tableFeatures({ ...features, expandedRowModel: createExpandedRowModel() })
 // Stories that scroll every row instead of paging. manualPagination makes the table skip its paginated row model, as
-// leaving out getPaginationRowModel did in Table 8, so these share the paged stories' features and columns.
+// leaving out the pagination row model did in Table 8, so these share the paged stories' features and columns.
 const unpaged: Partial<TableOptions<Features, Robot>> = { manualPagination: true }
 
 const columns: Col[] = [
@@ -136,7 +136,8 @@ const totalsColumns: Col[] = [
 function useGrid(data: Robot[], cols: Col[], extra: Partial<TableOptions<Features, Robot>> = {}, set: Features = features) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   // Table 9 keeps its state in a store and useTable subscribes to it, so it hands back a new table object on every
-  // change; the React Compiler can memoize around it, and the v8 suppression for useReactTable is no longer needed.
+  // change. No selector: the grid redraws when that table changes, and the React Compiler can memoize around it, so
+  // Table 8's incompatible-library suppression is no longer needed here.
   return useTable({
     features: set,
     data,
