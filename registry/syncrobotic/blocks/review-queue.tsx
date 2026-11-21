@@ -1,4 +1,4 @@
-// @syncrobotic/review-queue v0.17.2 · update: npx shadcn add @syncrobotic/review-queue --overwrite
+// @syncrobotic/review-queue v0.17.3 · update: npx shadcn add @syncrobotic/review-queue --overwrite
 "use client"
 
 import * as React from "react"

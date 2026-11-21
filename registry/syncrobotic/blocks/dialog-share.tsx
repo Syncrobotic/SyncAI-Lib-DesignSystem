@@ -1,4 +1,4 @@
-// @syncrobotic/dialog-share v0.17.3 · update: npx shadcn add @syncrobotic/dialog-share --overwrite
+// @syncrobotic/dialog-share v0.17.4 · update: npx shadcn add @syncrobotic/dialog-share --overwrite
 "use client"
 
 import * as React from "react"

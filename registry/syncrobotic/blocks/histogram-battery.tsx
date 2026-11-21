@@ -1,4 +1,4 @@
-// @syncrobotic/histogram-battery v0.22.0 · update: npx shadcn add @syncrobotic/histogram-battery --overwrite
+// @syncrobotic/histogram-battery v0.22.1 · update: npx shadcn add @syncrobotic/histogram-battery --overwrite
 "use client"
 
 import * as React from "react"

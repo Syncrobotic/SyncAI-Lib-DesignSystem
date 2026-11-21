@@ -1,4 +1,4 @@
-// @syncrobotic/graph v0.21.1 · update: npx shadcn add @syncrobotic/graph --overwrite
+// @syncrobotic/graph v0.21.2 · update: npx shadcn add @syncrobotic/graph --overwrite
 "use client"
 
 import * as React from "react"

@@ -1,4 +1,4 @@
-// @syncrobotic/line-chart-limit v0.17.2 · update: npx shadcn add @syncrobotic/line-chart-limit --overwrite
+// @syncrobotic/line-chart-limit v0.17.3 · update: npx shadcn add @syncrobotic/line-chart-limit --overwrite
 "use client"
 
 import * as React from "react"

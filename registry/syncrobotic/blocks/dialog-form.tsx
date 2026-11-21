@@ -1,4 +1,4 @@
-// @syncrobotic/dialog-form v0.21.0 · update: npx shadcn add @syncrobotic/dialog-form --overwrite
+// @syncrobotic/dialog-form v0.21.1 · update: npx shadcn add @syncrobotic/dialog-form --overwrite
 "use client"
 
 import * as React from "react"

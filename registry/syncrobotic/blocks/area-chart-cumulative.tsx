@@ -1,4 +1,4 @@
-// @syncrobotic/area-chart-cumulative v0.22.0 · update: npx shadcn add @syncrobotic/area-chart-cumulative --overwrite
+// @syncrobotic/area-chart-cumulative v0.22.1 · update: npx shadcn add @syncrobotic/area-chart-cumulative --overwrite
 "use client"
 
 import * as React from "react"

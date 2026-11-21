@@ -1,4 +1,4 @@
-// @syncrobotic/text-diff v0.16.0 · update: npx shadcn add @syncrobotic/text-diff --overwrite
+// @syncrobotic/text-diff v0.16.1 · update: npx shadcn add @syncrobotic/text-diff --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 

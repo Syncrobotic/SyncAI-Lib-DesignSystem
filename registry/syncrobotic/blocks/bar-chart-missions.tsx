@@ -1,4 +1,4 @@
-// @syncrobotic/bar-chart-missions v0.22.0 · update: npx shadcn add @syncrobotic/bar-chart-missions --overwrite
+// @syncrobotic/bar-chart-missions v0.22.1 · update: npx shadcn add @syncrobotic/bar-chart-missions --overwrite
 "use client"
 
 import * as React from "react"

@@ -1,4 +1,4 @@
-// @syncrobotic/media-player v0.21.1 · update: npx shadcn add @syncrobotic/media-player --overwrite
+// @syncrobotic/media-player v0.21.2 · update: npx shadcn add @syncrobotic/media-player --overwrite
 "use client"
 
 import * as React from "react"

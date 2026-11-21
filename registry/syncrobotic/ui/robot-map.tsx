@@ -1,4 +1,4 @@
-// @syncrobotic/robot-map v0.23.1 · update: npx shadcn add @syncrobotic/robot-map --overwrite
+// @syncrobotic/robot-map v0.23.2 · update: npx shadcn add @syncrobotic/robot-map --overwrite
 "use client"
 
 import * as React from "react"

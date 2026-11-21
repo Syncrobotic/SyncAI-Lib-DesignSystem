@@ -1,4 +1,4 @@
-// @syncrobotic/sparkline-robot-list v0.15.1 · update: npx shadcn add @syncrobotic/sparkline-robot-list --overwrite
+// @syncrobotic/sparkline-robot-list v0.15.2 · update: npx shadcn add @syncrobotic/sparkline-robot-list --overwrite
 "use client"
 
 import { cn } from "@/lib/utils"

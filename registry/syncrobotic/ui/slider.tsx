@@ -1,4 +1,4 @@
-// @syncrobotic/slider v0.21.0 · update: npx shadcn add @syncrobotic/slider --overwrite
+// @syncrobotic/slider v0.21.1 · update: npx shadcn add @syncrobotic/slider --overwrite
 "use client"
 
 import * as React from "react"

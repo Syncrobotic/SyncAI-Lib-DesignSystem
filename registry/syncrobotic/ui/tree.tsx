@@ -1,4 +1,4 @@
-// @syncrobotic/tree v0.18.1 · update: npx shadcn add @syncrobotic/tree --overwrite
+// @syncrobotic/tree v0.18.2 · update: npx shadcn add @syncrobotic/tree --overwrite
 "use client"
 
 import * as React from "react"

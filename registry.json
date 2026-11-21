@@ -1660,8 +1660,13 @@
         }
       ],
       "meta": {
-        "version": "0.21.0",
+        "version": "0.21.1",
         "changelog": [
+          {
+            "version": "0.21.1",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.21.0",
             "date": "2026-11-20",
@@ -1929,8 +1934,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.16.0",
+        "version": "0.16.1",
         "changelog": [
+          {
+            "version": "0.16.1",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.16.0",
             "date": "2026-11-19",
@@ -2338,8 +2348,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.0",
+        "version": "0.22.1",
         "changelog": [
+          {
+            "version": "0.22.1",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.22.0",
             "date": "2026-11-20",
@@ -2578,8 +2593,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.18.1",
+        "version": "0.18.2",
         "changelog": [
+          {
+            "version": "0.18.2",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.18.1",
             "date": "2026-11-21",
@@ -2613,8 +2633,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.21.1",
+        "version": "0.21.2",
         "changelog": [
+          {
+            "version": "0.21.2",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.21.1",
             "date": "2026-11-21",
@@ -2652,8 +2677,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.23.1",
+        "version": "0.23.2",
         "changelog": [
+          {
+            "version": "0.23.2",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.23.1",
             "date": "2026-11-21",
@@ -3611,8 +3641,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.21.1",
+        "version": "0.21.2",
         "changelog": [
+          {
+            "version": "0.21.2",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.21.1",
             "date": "2026-11-21",
@@ -3715,8 +3750,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.23.1",
+        "version": "0.23.2",
         "changelog": [
+          {
+            "version": "0.23.2",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.23.1",
             "date": "2026-11-21",
@@ -4152,8 +4192,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.1",
+        "version": "0.23.2",
         "changelog": [
+          {
+            "version": "0.23.2",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.23.1",
             "date": "2026-11-21",
@@ -4213,8 +4258,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.1",
+        "version": "0.23.2",
         "changelog": [
+          {
+            "version": "0.23.2",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.23.1",
             "date": "2026-11-21",
@@ -4661,8 +4711,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.23.1",
         "changelog": [
+          {
+            "version": "0.23.1",
+            "date": "2026-11-21",
+            "note": "A paged form with no questions renders and Next does nothing, instead of throwing. Compiles with noUncheckedIndexedAccess."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -5034,8 +5089,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.3",
+        "version": "0.22.4",
         "changelog": [
+          {
+            "version": "0.22.4",
+            "date": "2026-11-21",
+            "note": "Search with no scopes falls back to all groups instead of throwing. Compiles with noUncheckedIndexedAccess."
+          },
           {
             "version": "0.22.3",
             "date": "2026-11-21",
@@ -5347,8 +5407,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -5619,8 +5684,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -5768,8 +5838,13 @@
         }
       ],
       "meta": {
-        "version": "0.21.0",
+        "version": "0.21.1",
         "changelog": [
+          {
+            "version": "0.21.1",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.21.0",
             "date": "2026-11-20",
@@ -6078,8 +6153,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -6123,8 +6203,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.0",
+        "version": "0.22.1",
         "changelog": [
+          {
+            "version": "0.22.1",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.22.0",
             "date": "2026-11-20",
@@ -6268,8 +6353,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.0",
+        "version": "0.22.1",
         "changelog": [
+          {
+            "version": "0.22.1",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.22.0",
             "date": "2026-11-20",
@@ -6318,8 +6408,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.0",
+        "version": "0.22.1",
         "changelog": [
+          {
+            "version": "0.22.1",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.22.0",
             "date": "2026-11-20",
@@ -6443,8 +6538,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -6480,8 +6580,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.1",
+        "version": "0.15.2",
         "changelog": [
+          {
+            "version": "0.15.2",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.15.1",
             "date": "2026-11-21",
@@ -6847,8 +6952,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.2",
+        "version": "0.22.3",
         "changelog": [
+          {
+            "version": "0.22.3",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.22.2",
             "date": "2026-11-20",
@@ -6898,8 +7008,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.3",
+        "version": "0.22.4",
         "changelog": [
+          {
+            "version": "0.22.4",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.22.3",
             "date": "2026-11-21",
@@ -6959,8 +7074,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.0",
+        "version": "0.22.1",
         "changelog": [
+          {
+            "version": "0.22.1",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.22.0",
             "date": "2026-11-20",
@@ -6995,8 +7115,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.17.4",
         "changelog": [
+          {
+            "version": "0.17.4",
+            "date": "2026-11-21",
+            "note": "Renders with an empty tabs list instead of throwing. Compiles with noUncheckedIndexedAccess."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -7327,8 +7452,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -7492,8 +7622,13 @@
         }
       ],
       "meta": {
-        "version": "0.21.0",
+        "version": "0.21.1",
         "changelog": [
+          {
+            "version": "0.21.1",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.21.0",
             "date": "2026-11-20",
@@ -7600,8 +7735,13 @@
         }
       ],
       "meta": {
-        "version": "0.21.0",
+        "version": "0.21.1",
         "changelog": [
+          {
+            "version": "0.21.1",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.21.0",
             "date": "2026-11-20",
@@ -7649,8 +7789,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.17.4",
         "changelog": [
+          {
+            "version": "0.17.4",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -8345,8 +8490,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.17.4",
         "changelog": [
+          {
+            "version": "0.17.4",
+            "date": "2026-11-21",
+            "note": "Compiles with noUncheckedIndexedAccess, as strict products build it; behaviour unchanged."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",

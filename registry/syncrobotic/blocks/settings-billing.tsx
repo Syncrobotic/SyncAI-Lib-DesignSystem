@@ -1,4 +1,4 @@
-// @syncrobotic/settings-billing v0.21.0 · update: npx shadcn add @syncrobotic/settings-billing --overwrite
+// @syncrobotic/settings-billing v0.21.1 · update: npx shadcn add @syncrobotic/settings-billing --overwrite
 "use client"
 
 import * as React from "react"

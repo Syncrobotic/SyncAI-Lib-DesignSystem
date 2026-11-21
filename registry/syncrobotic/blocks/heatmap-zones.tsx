@@ -1,4 +1,4 @@
-// @syncrobotic/heatmap-zones v0.22.3 · update: npx shadcn add @syncrobotic/heatmap-zones --overwrite
+// @syncrobotic/heatmap-zones v0.22.4 · update: npx shadcn add @syncrobotic/heatmap-zones --overwrite
 "use client"
 
 import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
