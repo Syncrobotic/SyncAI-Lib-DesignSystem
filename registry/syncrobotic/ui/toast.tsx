@@ -1,4 +1,4 @@
-// @syncrobotic/toast v0.17.3 · update: npx shadcn add @syncrobotic/toast --overwrite
+// @syncrobotic/toast v0.27.0 · update: npx shadcn add @syncrobotic/toast --overwrite
 "use client"
 
 import * as React from "react"
@@ -33,20 +33,15 @@ let items: Item[] = []
 let next = 0
 const listeners = new Set<() => void>()
 const emit = () => listeners.forEach((l) => l())
-const MAX = 3
+const subscribe = (l: () => void) => (listeners.add(l), () => void listeners.delete(l))
 
 /**
- * Show a toast. At most three are on screen: the oldest that is not a failure makes room. Failures are never closed for
- * you, so with several at once more than three can show, until someone dismisses them. Returns its id.
+ * Show a toast. Three show at a time, newest in front; the others wait behind the third, kept with their timers running,
+ * and come forward as the ones in front go. Nothing is closed for you to make room. Returns its id.
  */
 export function toast(input: ToastInput) {
   const id = ++next
   items = [...items, { ...input, id, open: true }]
-  const open = items.filter((t) => t.open)
-  if (open.length > MAX) {
-    const drop = open.find((t) => t.tone !== "danger")
-    if (drop) items = items.map((t) => (t.id === drop.id ? { ...t, open: false } : t))
-  }
   emit()
   return id
 }
@@ -63,17 +58,28 @@ toast.clear = () => {
 }
 
 const remove = (id: number) => {
+  if (!items.some((t) => t.id === id)) return
   items = items.filter((t) => t.id !== id)
   emit()
 }
 
 function useToasts() {
   return React.useSyncExternalStore(
-    (l) => (listeners.add(l), () => listeners.delete(l)),
+    subscribe,
     () => items,
     () => items,
   )
 }
+
+// Only the first Toaster mounted draws the toasts. A block that brings its own <Toaster /> into an app that has one at the
+// root would otherwise draw every toast twice, in two stacks on top of each other, and pause only the one under the pointer.
+let toasters: symbol[] = []
+const useFirstToaster = () =>
+  React.useSyncExternalStore(
+    subscribe,
+    () => toasters[0],
+    () => undefined,
+  )
 
 // ---------- Parts ----------
 
@@ -104,16 +110,20 @@ export function Toast({ className, tone = "neutral", children, ...props }: React
       // Failures interrupt (assertive); everything else waits its turn (polite).
       type={tone === "danger" ? "foreground" : "background"}
       className={cn(
-        "relative flex items-start gap-2 rounded-md bg-float p-4 pr-(--h-md) text-sm shadow-float ring-1 ring-edge backdrop-blur-xl",
+        "relative rounded-md bg-float p-4 pr-(--h-md) text-sm shadow-float ring-1 ring-edge backdrop-blur-xl",
         tone === "danger" && "ring-danger",
         "data-[state=open]:animate-appear data-[state=closed]:animate-disappear",
-        "data-[swipe=move]:translate-x-(--radix-toast-swipe-move-x) data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-transform data-[swipe=cancel]:duration-(--motion-base) ease-(--ease-standard) data-[swipe=end]:animate-disappear",
+        // A swipe that goes far enough leaves from where the finger let go, instead of jumping back while it fades.
+        "data-[swipe=move]:translate-x-(--radix-toast-swipe-move-x) data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-transform data-[swipe=cancel]:duration-(--motion-base) ease-(--ease-standard) data-[swipe=end]:translate-x-(--radix-toast-swipe-end-x) data-[swipe=end]:animate-disappear",
         className,
       )}
       {...props}
     >
-      <Icon aria-hidden="true" className={cn("mt-0.5 size-5 shrink-0", iconColor[tone])} />
-      <div className="flex min-w-0 flex-1 flex-col gap-1">{children}</div>
+      {/* The content's own height, which the Toaster measures to stack toasts of different heights. */}
+      <div data-slot="toast-content" className="flex items-start gap-2">
+        <Icon aria-hidden="true" className={cn("mt-0.5 size-5 shrink-0", iconColor[tone])} />
+        <div className="flex min-w-0 flex-1 flex-col gap-1">{children}</div>
+      </div>
     </ToastPrimitive.Root>
   )
 }
@@ -152,35 +162,235 @@ export function ToastClose({ className, label = "Dismiss", ...props }: React.Com
   )
 }
 
-/** Mount once near the root. Renders every toast() call. `label` names the region for screen readers. */
+// ---------- The stack ----------
+// The Toaster stacks its toasts the way sonner does. Collapsed, the newest is in front at full size and two more peek
+// out above it, each a little narrower; the rest wait hidden behind them. Hovering, focusing or touching the stack
+// spreads the three into a list. A toast arrives from the screen's edge and the others move back to make room; one
+// that leaves fades while the ones behind move forward. Every move is a transition on transform, so a toast arriving
+// or leaving in the middle of another move carries on from where it is instead of jumping.
+
+/** Toasts on screen at once; the rest are kept, hidden, until one in front goes. */
+export const VISIBLE_TOASTS = 3
+const GAP = 8 // px between spread toasts: the kit's gap-2
+const PEEK = 10 // px of each toast behind that shows above the one in front of it
+const SHRINK = 0.05 // each toast behind is 5 % narrower
+
+type Place = { index: number; offset: number }
+
+// Toasts slide on transform and resize on height, at the Move pattern's pace; one that leaves goes at the exit's.
+const stacked = cn(
+  "absolute inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] origin-top overflow-hidden data-[state=open]:animate-none",
+  "transition-[transform,opacity,height,visibility] duration-(--motion-base) ease-(--ease-standard) data-[state=closed]:duration-(--motion-fast) data-[state=closed]:ease-(--ease-exit)",
+  "*:transition-opacity *:duration-(--motion-base) *:ease-(--ease-standard)",
+)
+
+function StackedToast({
+  item: t,
+  place,
+  expanded,
+  count,
+  height,
+  frontHeight,
+  dismissLabel,
+  onHeight,
+}: {
+  item: Item
+  place: Place | undefined
+  expanded: boolean
+  count: number
+  height: number
+  frontHeight: number
+  dismissLabel: string
+  onHeight: (id: number, height: number | null) => void
+}) {
+  const [node, setNode] = React.useState<HTMLLIElement | null>(null)
+  const [mounted, setMounted] = React.useState(false)
+  const [swiped, setSwiped] = React.useState(false)
+  // Where it stood while open: a toast that leaves leaves from there, while the others already move into its room.
+  const [last, setLast] = React.useState(place)
+  if (place && (place.index !== last?.index || place.offset !== last.offset)) setLast(place)
+
+  // Arrive from the edge: the first frame draws it below its place, the next lets it travel up.
+  React.useEffect(() => {
+    let second = 0
+    const first = requestAnimationFrame(() => (second = requestAnimationFrame(() => setMounted(true))))
+    return () => (cancelAnimationFrame(first), cancelAnimationFrame(second))
+  }, [])
+
+  // The content's height plus the toast's padding: its natural height, even while the stack squeezes it to the front's.
+  React.useLayoutEffect(() => {
+    const content = node?.querySelector<HTMLElement>("[data-slot=toast-content]")
+    if (!node || !content) return
+    const measure = () => {
+      const s = getComputedStyle(node)
+      onHeight(t.id, content.offsetHeight + parseFloat(s.paddingTop || "0") + parseFloat(s.paddingBottom || "0"))
+    }
+    measure()
+    if (typeof ResizeObserver === "undefined") return
+    const observer = new ResizeObserver(measure)
+    observer.observe(content)
+    return () => observer.disconnect()
+  }, [node, t.id, onHeight])
+  React.useEffect(() => () => onHeight(t.id, null), [t.id, onHeight])
+
+  // A closed toast is removed when its fade ends; this catches one that never got to fade (closed before it showed).
+  React.useEffect(() => {
+    if (t.open) return
+    const timer = setTimeout(() => remove(t.id), 1000)
+    return () => clearTimeout(timer)
+  }, [t.open, t.id])
+
+  const at = place ?? last ?? { index: 0, offset: 0 }
+  const hidden = t.open && at.index >= VISIBLE_TOASTS
+  const behind = Math.min(at.index, VISIBLE_TOASTS)
+  const resting = expanded && !hidden ? `translateY(${-at.offset}px)` : `translateY(${-behind * PEEK}px) scale(${1 - behind * SHRINK})`
+  const transform = !mounted
+    ? "translateY(100%)"
+    : t.open || swiped
+      ? resting
+      : at.index === 0
+        ? "translateY(100%)" // the front one goes back the way it came
+        : `${resting} translateY(0.5rem)`
+  // Collapsed, the toasts behind take the front one's height, so only their top edge shows above it.
+  const own = (expanded && !hidden) || at.index === 0
+  const h = own ? height : frontHeight
+  return (
+    <Toast
+      ref={setNode}
+      tone={t.tone}
+      open={t.open}
+      duration={toastDuration(t)}
+      onOpenChange={(open) => {
+        if (!open) toast.dismiss(t.id)
+      }}
+      onSwipeEnd={() => setSwiped(true)}
+      onAnimationEnd={(e) => {
+        if (!t.open && e.target === e.currentTarget) remove(t.id)
+      }}
+      data-index={at.index}
+      data-front={at.index === 0}
+      data-visible={!hidden}
+      data-expanded={expanded}
+      inert={hidden || undefined}
+      className={cn(stacked, !expanded && at.index > 0 && "*:opacity-0")}
+      style={{
+        transform,
+        opacity: !mounted || hidden ? 0 : undefined,
+        visibility: hidden ? "hidden" : undefined,
+        height: h ? `${h}px` : undefined,
+        zIndex: 2 * (count + 1 - at.index) + (t.open ? 0 : 1),
+      }}
+    >
+      <ToastTitle>{t.title}</ToastTitle>
+      {t.description && <ToastDescription>{t.description}</ToastDescription>}
+      {t.action && (
+        <ToastAction altText={t.action.altText ?? t.action.label} onClick={t.action.onClick}>
+          {t.action.label}
+        </ToastAction>
+      )}
+      <ToastClose label={dismissLabel} className="absolute top-3 right-3" />
+    </Toast>
+  )
+}
+
+/**
+ * Mount once near the root. Renders every toast() call as a stack: the newest in front, three at most on screen; hover,
+ * focus or touch spreads them out. Timers pause while the pointer or focus is on the stack and while the window is in
+ * the background. `label` names the region for screen readers. A second Toaster draws nothing while the first is mounted.
+ */
 export function Toaster({ label = "Notifications ({hotkey})", dismissLabel = "Dismiss" }: { label?: string; dismissLabel?: string }) {
   const list = useToasts()
+  const first = useFirstToaster()
+  const [me] = React.useState(() => Symbol("toaster"))
+  React.useEffect(() => {
+    toasters = [...toasters, me]
+    emit()
+    return () => {
+      toasters = toasters.filter((s) => s !== me)
+      emit()
+    }
+  }, [me])
+
+  const [heights, setHeights] = React.useState<Record<number, number>>({})
+  const onHeight = React.useCallback((id: number, height: number | null) => {
+    setHeights((was) => {
+      if (height === null) {
+        if (!(id in was)) return was
+        const { [id]: _gone, ...rest } = was
+        return rest
+      }
+      return was[id] === height ? was : { ...was, [id]: height }
+    })
+  }, [])
+
+  const [pointer, setPointer] = React.useState(false)
+  const [focus, setFocus] = React.useState(false)
+  const [region, setRegion] = React.useState<HTMLOListElement | null>(null)
+  // Native listeners: the toasts are portalled into the region, so React's own events bubble past it to the Toaster.
+  React.useEffect(() => {
+    if (!region) return
+    const on = () => setPointer(true)
+    const leave = (e: PointerEvent) => {
+      if (e.pointerType === "mouse") setPointer(false)
+    }
+    // A touch spreads the stack until the next touch outside it: a finger never leaves the way a mouse does.
+    const outside = (e: PointerEvent) => {
+      if (!region.contains(e.target as Node)) setPointer(false)
+    }
+    const focusIn = () => setFocus(true)
+    const focusOut = (e: FocusEvent) => {
+      if (!region.contains(e.relatedTarget as Node | null)) setFocus(false)
+    }
+    region.addEventListener("pointermove", on)
+    region.addEventListener("pointerdown", on)
+    region.addEventListener("pointerleave", leave)
+    region.addEventListener("focusin", focusIn)
+    region.addEventListener("focusout", focusOut)
+    document.addEventListener("pointerdown", outside)
+    return () => {
+      region.removeEventListener("pointermove", on)
+      region.removeEventListener("pointerdown", on)
+      region.removeEventListener("pointerleave", leave)
+      region.removeEventListener("focusin", focusIn)
+      region.removeEventListener("focusout", focusOut)
+      document.removeEventListener("pointerdown", outside)
+    }
+  }, [region])
+
+  const open = list.filter((t) => t.open).reverse() // newest first
+  const expanded = (pointer || focus) && open.length > 1
+  const places = new Map<number, Place>()
+  let offset = 0
+  open.forEach((t, index) => {
+    places.set(t.id, { index, offset })
+    offset += (heights[t.id] ?? 0) + GAP
+  })
+  const frontHeight = open[0] ? (heights[open[0].id] ?? 0) : 0
+  const spread = open.slice(0, VISIBLE_TOASTS).reduce((sum, t) => sum + (heights[t.id] ?? 0) + GAP, -GAP)
+  const stackHeight = Math.max(0, expanded ? spread : frontHeight + PEEK * (Math.min(open.length, VISIBLE_TOASTS) - 1))
+
+  if (first !== me) return null
   return (
     <ToastProvider label={label}>
       {list.map((t) => (
-        <Toast
+        <StackedToast
           key={t.id}
-          tone={t.tone}
-          open={t.open}
-          duration={toastDuration(t)}
-          onOpenChange={(open) => {
-            if (!open) toast.dismiss(t.id)
-          }}
-          onAnimationEnd={() => {
-            if (!t.open) remove(t.id)
-          }}
-        >
-          <ToastTitle>{t.title}</ToastTitle>
-          {t.description && <ToastDescription>{t.description}</ToastDescription>}
-          {t.action && (
-            <ToastAction altText={t.action.altText ?? t.action.label} onClick={t.action.onClick}>
-              {t.action.label}
-            </ToastAction>
-          )}
-          <ToastClose label={dismissLabel} className="absolute top-3 right-3" />
-        </Toast>
+          item={t}
+          place={places.get(t.id)}
+          expanded={expanded}
+          count={open.length}
+          height={heights[t.id] ?? 0}
+          frontHeight={frontHeight}
+          dismissLabel={dismissLabel}
+          onHeight={onHeight}
+        />
       ))}
-      <ToastViewport />
+      <ToastViewport
+        ref={setRegion}
+        data-expanded={expanded}
+        // The region covers the stack, spread or not, so the pointer does not fall through the gaps between toasts.
+        style={{ height: `calc(${stackHeight}px + 1rem + max(1rem, env(safe-area-inset-bottom)))` }}
+      />
     </ToastProvider>
   )
 }
