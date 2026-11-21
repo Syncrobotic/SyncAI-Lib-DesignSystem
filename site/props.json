@@ -3138,7 +3138,9 @@
      "description": "Replace the default content entirely (an avatar, a cover image)."
     }
    ],
-   "inherits": []
+   "inherits": [
+    "<div> (except onDrop, title, children)"
+   ]
   }
  ],
  "filter-form": [

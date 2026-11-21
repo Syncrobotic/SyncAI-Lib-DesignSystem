@@ -205,10 +205,10 @@ describe("Timeline", () => {
     expect(within(screen.getByRole("list", { name: "Empty" })).queryAllByRole("listitem")).toHaveLength(0)
   })
 
-  // BUG: the status glyph is aria-hidden and nothing else carries the tone (timeline.tsx:213-233), so a screen reader
+  // Was a bug, fixed in 0.24.1: the status glyph is aria-hidden and nothing else carries the tone (timeline.tsx:213-233), so a screen reader
   // hears a danger or warning event exactly like an ordinary one; the colour and shape are visual only. Marker does
   // this right with a visually hidden ", failed" / ", warning" (marker.tsx:81). TimelineItem should do the same.
-  it.fails("tells screen readers that an event is a warning or a failure", () => {
+  it("tells screen readers that an event is a warning or a failure", () => {
     render(
       <Timeline>
         <TimelineItem tone="danger" title="Emergency stop pressed" />

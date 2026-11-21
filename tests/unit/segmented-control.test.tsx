@@ -161,11 +161,11 @@ describe("SegmentedControl", () => {
     expect(screen.getByRole("radiogroup").hasAttribute("data-thumb")).toBe(false)
   })
 
-  // BUG: SegmentedControl passes straight through to Radix ToggleGroup type="single", which turns the selected item off
+  // Was a bug, fixed in 0.24.1: SegmentedControl passes straight through to Radix ToggleGroup type="single", which turns the selected item off
   // when it is pressed again (onItemDeactivate -> value ""). The docs call a segmented control "one choice among several
   // that stays selected" (site/overview.ts), but clicking (or Enter / Space on) the selected segment leaves nothing
   // selected and calls onValueChange(""). The component should ignore a deselect.
-  it.fails("keeps the selection when the selected segment is pressed again", () => {
+  it("keeps the selection when the selected segment is pressed again", () => {
     const onValueChange = vi.fn()
     render(<Range defaultValue="24h" onValueChange={onValueChange} />)
     fireEvent.click(radio("24 h"))

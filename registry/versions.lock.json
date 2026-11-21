@@ -80,8 +80,8 @@
     "hash": "6c973b85bdf50fa3"
   },
   "segmented-control": {
-    "version": "0.17.2",
-    "hash": "d54d225aff8a510e"
+    "version": "0.17.3",
+    "hash": "a8bb6bd8569628db"
   },
   "toggle": {
     "version": "0.10.0",
@@ -408,8 +408,8 @@
     "hash": "54a68ee91d6b7ecd"
   },
   "file-upload": {
-    "version": "0.10.0",
-    "hash": "ebaae2a3974a0971"
+    "version": "0.10.1",
+    "hash": "62c7626d4031b0d0"
   },
   "attachment": {
     "version": "0.23.1",
@@ -424,8 +424,8 @@
     "hash": "1fa9b3736ef7dcdc"
   },
   "timeline": {
-    "version": "0.17.3",
-    "hash": "ec91aaf795406194"
+    "version": "0.17.4",
+    "hash": "bdeb5287a75fa5a9"
   },
   "scrollspy": {
     "version": "0.15.0",

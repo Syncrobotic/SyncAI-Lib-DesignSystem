@@ -217,10 +217,10 @@ describe("FileUpload", () => {
     expect(screen.queryByText("Unused")).toBeNull()
   })
 
-  // BUG: with multiple={false}, take() hands over ok.slice(0, 1) and silently drops the rest (file-upload.tsx:79).
+  // Was a bug, fixed in 0.24.1: with multiple={false}, take() hands over ok.slice(0, 1) and silently drops the rest (file-upload.tsx:79).
   // The component promises to report "what it refused and why", and the catalog rule is "Report refused files by name
   // and reason", but the extra dropped files never reach onReject. They should be rejected with reason "count".
-  it.fails("reports the extra files as count rejections when multiple is false", () => {
+  it("reports the extra files as count rejections when multiple is false", () => {
     const { drop, onReject } = setup({ multiple: false })
     const b = file("b.png")
     const c = file("c.png")
@@ -231,10 +231,10 @@ describe("FileUpload", () => {
     ])
   })
 
-  // BUG: FileUpload does not accept or forward any other props to its role="button" element (file-upload.tsx:31-63,
+  // Was a bug, fixed in 0.24.1: FileUpload does not accept or forward any other props to its role="button" element (file-upload.tsx:31-63,
   // 84-117), so aria-label is silently dropped. The FileUploadAvatar story passes aria-label="Robot photo" (TypeScript
   // allows any hyphenated attribute), and a zone whose only child is an icon is then left without an accessible name.
-  it.fails("names the zone with aria-label", () => {
+  it("names the zone with aria-label", () => {
     const Loose = FileUpload as unknown as React.ComponentType<Record<string, unknown>>
     render(
       <Loose onFiles={() => {}} aria-label="Robot photo">

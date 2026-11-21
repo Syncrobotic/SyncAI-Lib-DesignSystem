@@ -899,8 +899,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-21",
+            "note": "One segment always stays selected: pressing the selected one again no longer clears the choice (it called onValueChange(\"\"))."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -4525,8 +4530,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.10.1",
         "changelog": [
+          {
+            "version": "0.10.1",
+            "date": "2026-11-21",
+            "note": "With multiple off, extra files are refused as \"count\" through onReject instead of dropped silently; other attributes such as aria-label reach the drop zone (an icon-only zone has a name)."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -4683,8 +4693,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.17.4",
         "changelog": [
+          {
+            "version": "0.17.4",
+            "date": "2026-11-21",
+            "note": "A warning or danger event says so to screen readers (\", warning\", \", failed\"), as Marker does; the glyph alone was visual only."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
