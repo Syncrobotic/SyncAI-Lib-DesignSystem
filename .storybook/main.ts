@@ -23,8 +23,9 @@ const config: StorybookConfig = {
     }
     // "use client" is for Next.js; Vite ignores it. Keep the build output quiet.
     cfg.build = cfg.build ?? {}
-    cfg.build.rollupOptions = {
-      ...cfg.build.rollupOptions,
+    // Vite 8 bundles with Rolldown; rollupOptions is a deprecated alias of rolldownOptions, which takes the same onwarn.
+    cfg.build.rolldownOptions = {
+      ...cfg.build.rolldownOptions,
       onwarn(w, warn) {
         if (w.code === "MODULE_LEVEL_DIRECTIVE" || w.code === "SOURCEMAP_ERROR") return
         warn(w)
