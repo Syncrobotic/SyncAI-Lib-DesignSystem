@@ -871,6 +871,26 @@ export const overviews: Record<string, Overview> = {
     instead: ["A single number: a stat in a `card`.", "Exact values to read or export: `table` (`ChartTable`)."],
     notes: ["Spread `chartMotion` onto marks; do not set Recharts animation timing."],
   },
+  "streaming-chart": {
+    what: "A live line chart for telemetry arriving many times a second: a time axis that keeps the last 30 s, 2 min or 10 min, pause and jump to live, limit lines, a crosshair, and a legend with each value now.",
+    use: [
+      "Motor currents, speed, a temperature or a battery's voltage on a robot's page while it works or is commissioned.",
+      "Watching a value against its limit as it happens: a motor heating up, a pack sagging under load.",
+      "Any ROS topic of numbers (std_msgs/Float64, a field of sensor_msgs/BatteryState or JointState), pushed as it arrives.",
+    ],
+    instead: [
+      "A history read afterwards (a shift, a week, a mission): `chart`, with its table.",
+      "One value now: a `metric-card`, or a `meter` for a level within a range.",
+      "A value that needs someone to act when it crosses a limit: raise an `alarm`; the chart shows the trend, the alarm asks for the action.",
+    ],
+    notes: [
+      "Never put readings in props or state: push them (`ref.current.push(values, time)`, or `subscribe={(push) => source.on(push)}` returning the cleanup). A `useRosTopic` value would render the page for every message; `ros.subscribe` in `subscribe` does not.",
+      "Keep `subscribe` stable (module level, or memoised by the React Compiler or useCallback): the chart reconnects when it changes.",
+      "`push` takes one reading per series key; a key left out has no reading this time, so series at different rates share a chart. null or NaN is a gap. A reading older than the series' newest is dropped.",
+      "The time axis follows the readings' clock, carried forward by the browser's: pass the message's stamp in ms when there is one, or leave it out for now.",
+      "Every word is in `labels`, including `formatTime`, the axis' `secondsAgo` and `minutesAgo`, `withUnit` and `reading` (what screen readers hear); `locale` formats the numbers and times. Pass the app's locale.",
+    ],
+  },
   command: {
     what: "Search and run from the keyboard: a filterable list, and the ⌘K palette that opens over any page.",
     use: ["The app's search for robots, pages and actions (AppShell `search`).", "Picking from a long list by typing."],

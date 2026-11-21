@@ -32,6 +32,7 @@ import type { RouteProgressLabels } from "@/registry/syncrobotic/ui/route-progre
 import type { SearchFieldLabels } from "@/registry/syncrobotic/ui/search-field"
 import type { SortableLabels } from "@/registry/syncrobotic/ui/sortable"
 import type { SpinnerLabels } from "@/registry/syncrobotic/ui/spinner"
+import type { StreamingChartLabels } from "@/registry/syncrobotic/ui/streaming-chart"
 import type { StepperLabels } from "@/registry/syncrobotic/ui/stepper"
 import type { TextDiffLabels } from "@/registry/syncrobotic/ui/text-diff"
 import type { ThemeChoice } from "@/registry/syncrobotic/ui/theme-toggle"
@@ -61,6 +62,7 @@ it("fits every component's labels type", () => {
   fits<IslandLabels>()(zh.islandLabels)
   fits<CameraFeedLabels>()(zh.cameraFeedLabels)
   fits<JointStateLabels>()(zh.jointStateLabels)
+  fits<StreamingChartLabels>()(zh.streamingChartLabels)
   fits<RobotModelLabels>()(zh.robotModelLabels)
   fits<PointCloudLabels>()(zh.pointCloudLabels)
   fits<RobotMapLabels>()(zh.robotMapLabels)

@@ -194,8 +194,13 @@
         }
       ],
       "meta": {
-        "version": "0.27.0",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "New streamingChartLabels for the new streaming-chart."
+          },
           {
             "version": "0.27.0",
             "date": "2026-11-21",
@@ -2487,6 +2492,39 @@
           }
         ],
         "status": "beta"
+      }
+    },
+    {
+      "name": "streaming-chart",
+      "type": "registry:ui",
+      "title": "Streaming chart",
+      "description": "A live line chart for robot telemetry at 20 to 50 Hz: drawn on a canvas from ring buffers it owns and fed by push() without a React render per reading, with a scrolling window, pause and jump to live, limit lines, a crosshair, a legend with each value now and a table view.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/button",
+        "@syncrobotic/segmented-control",
+        "@syncrobotic/table"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/streaming-chart.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.28.0",
+        "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "First release."
+          }
+        ]
       }
     },
     {
