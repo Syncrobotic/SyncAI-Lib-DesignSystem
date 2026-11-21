@@ -1,4 +1,4 @@
-// @syncrobotic/data-grid v0.23.2 · update: npx shadcn add @syncrobotic/data-grid --overwrite
+// @syncrobotic/data-grid v0.23.3 · update: npx shadcn add @syncrobotic/data-grid --overwrite
 "use client"
 
 import * as React from "react"
@@ -251,7 +251,9 @@ export function DataGridTable({
                       <span
                         role="separator"
                         aria-orientation="vertical"
-                        aria-label={l.resize(String(h.column.columnDef.header ?? h.id))}
+                        // Named in words (meta.label, a plain-text header, else the id): a header that renders a
+                        // component is a function, and stringifying it read its source code aloud.
+                        aria-label={l.resize(columnName(h.column))}
                         onMouseDown={h.getResizeHandler()}
                         onTouchStart={h.getResizeHandler()}
                         onDoubleClick={() => h.column.resetSize()}
