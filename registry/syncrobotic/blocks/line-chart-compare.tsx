@@ -9,11 +9,15 @@ import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/u
 
 const config = { now: { label: "This week", color: 1 }, before: { label: "Last week", color: 5 } } satisfies ChartConfig
 // Sample data: missions completed per day.
-const data = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d, i) => ({
-  d,
-  now: [21, 24, 19, 26, 23, 14, 12][i],
-  before: [18, 20, 21, 19, 22, 13, 11][i],
-}))
+const data = [
+  { d: "Mon", now: 21, before: 18 },
+  { d: "Tue", now: 24, before: 20 },
+  { d: "Wed", now: 19, before: 21 },
+  { d: "Thu", now: 26, before: 19 },
+  { d: "Fri", now: 23, before: 22 },
+  { d: "Sat", now: 14, before: 13 },
+  { d: "Sun", now: 12, before: 11 },
+]
 
 /** This period against the last: totals and the change up top, the earlier period dashed so it reads as the reference. */
 export function LineChartCompare() {

@@ -240,7 +240,7 @@ export function SettingsBilling({
         <Alert tone="danger">
           <CircleAlert aria-hidden="true" />
           <AlertTitle>
-            {overdue.length === 1 ? `Invoice ${overdue[0].number} is overdue` : `${overdue.length} invoices are overdue`}
+            {overdue.length === 1 ? `Invoice ${overdue[0]!.number} is overdue` : `${overdue.length} invoices are overdue`}
           </AlertTitle>
           <AlertDescription>Robots keep working on site. Settle it to keep reports and video syncing to the cloud; the PDF has the payment details.</AlertDescription>
         </Alert>

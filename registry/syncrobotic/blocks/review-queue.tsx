@@ -39,7 +39,8 @@ const scenes: Omit<ReviewItem, "id" | "file">[] = [
 export const sampleItems: ReviewItem[] = Array.from({ length: 80 }, (_, i) => ({
   id: `f${i + 1}`,
   file: `frame_${String(1040 + i * 7).padStart(6, "0")}.jpg`,
-  ...scenes[i % scenes.length],
+  // The scenes repeat; i % scenes.length is always an index into the (non-empty) list above.
+  ...scenes[i % scenes.length]!,
 }))
 const sampleAnswers: Record<string, string> = Object.fromEntries(
   sampleItems.slice(0, 11).map((it, i) => [it.id, i % 4 === 2 ? "no" : i === 7 ? "skip" : "yes"]),
@@ -93,7 +94,9 @@ export function ReviewQueue({
   const mac = React.useSyncExternalStore(subscribeNever, isMac, () => false)
 
   const item = items[position]
-  const done = position >= total
+  // Past the last item there is no item to show: that is the queue being done. Saying it this way also tells TypeScript
+  // that wherever the queue is not done, there is an item.
+  const done = item === undefined
   const answered = items.filter((it) => it.id in answers).length
   const label = (value?: string) => choices.find((c) => c.value === value)?.label ?? value
   const where = (p: number) => (p >= total ? `All ${total} reviewed.` : `${p + 1} of ${total}.`)
