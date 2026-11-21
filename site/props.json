@@ -4256,6 +4256,216 @@
    ]
   }
  ],
+ "joint-state": [
+  {
+   "name": "JointState",
+   "props": [
+    {
+     "name": "joints",
+     "type": "JointStateJoint[]",
+     "required": true,
+     "description": "The joints, in the order to list them (usually the URDF's chain order). Leave it empty while there are none."
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "description": "The arm's name, written above the list and naming the panel for screen readers: \"Arm 2 · UR10e\"."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "default": "false",
+     "description": "Waiting for the first joint state: a skeleton the size of the list."
+    },
+    {
+     "name": "updatedAt",
+     "type": "number",
+     "description": "When this joint state was measured, in ms since the epoch (the message's `header.stamp`). Given, only a new value is an update (a re-sent old message is not), and it is the time \"Stale · last update\" shows. Without it, each new `joints` array is an update. Either way the wait is timed by this browser's clock."
+    },
+    {
+     "name": "staleAfterMs",
+     "type": "number",
+     "default": "1000",
+     "description": "With no update for this long, the panel says \"Stale\" with the last update's time and dims the values."
+    },
+    {
+     "name": "margin",
+     "type": "number",
+     "default": "0.05",
+     "description": "How close to a limit counts as near, as a fraction of each joint's range."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "BCP 47 tag for the numbers and the time (\"zh-TW\", \"de\"). Left out, numbers use the browser's language."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<JointStateLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "title",
+       "type": "string",
+       "default": "\"Joint states\"",
+       "description": "The panel's name when there is no `label`."
+      },
+      {
+       "name": "joint",
+       "type": "string",
+       "default": "\"Joint\"",
+       "description": "Column headings on a wide panel; on a narrow one they are written before each value."
+      },
+      {
+       "name": "position",
+       "type": "string",
+       "default": "\"Position\"",
+       "description": ""
+      },
+      {
+       "name": "velocity",
+       "type": "string",
+       "default": "\"Velocity\"",
+       "description": ""
+      },
+      {
+       "name": "effort",
+       "type": "string",
+       "default": "\"Effort\"",
+       "description": ""
+      },
+      {
+       "name": "degrees",
+       "type": "(value: string) => string",
+       "default": "(v) => `${v}°`",
+       "description": "A revolute position, given already formatted: \"42.0\" → \"42.0°\"."
+      },
+      {
+       "name": "millimetres",
+       "type": "(value: string) => string",
+       "default": "(v) => `${v} mm`",
+       "description": "A prismatic position: \"120.5\" → \"120.5 mm\"."
+      },
+      {
+       "name": "degreesPerSecond",
+       "type": "(value: string) => string",
+       "default": "(v) => `${v} °/s`",
+       "description": ""
+      },
+      {
+       "name": "millimetresPerSecond",
+       "type": "(value: string) => string",
+       "default": "(v) => `${v} mm/s`",
+       "description": ""
+      },
+      {
+       "name": "newtonMetres",
+       "type": "(value: string) => string",
+       "default": "(v) => `${v} N·m`",
+       "description": "Effort without an effort limit, revolute."
+      },
+      {
+       "name": "newtons",
+       "type": "(value: string) => string",
+       "default": "(v) => `${v} N`",
+       "description": "Effort without an effort limit, prismatic."
+      },
+      {
+       "name": "effortPercent",
+       "type": "(value: string) => string",
+       "default": "(v) => `${v} %`",
+       "description": "Effort as a share of the effort limit: \"34\" → \"34 %\"."
+      },
+      {
+       "name": "range",
+       "type": "(lower: string, upper: string) => string",
+       "default": "(lower, upper) => `range ${lower} to ${upper}`",
+       "description": "The limits, read by screen readers (the track's end numbers are drawn for the eye)."
+      },
+      {
+       "name": "noLimits",
+       "type": "string",
+       "default": "\"No limits (continuous)\"",
+       "description": "Written where the track would be for a joint without limits."
+      },
+      {
+       "name": "nearLower",
+       "type": "string",
+       "default": "\"Near lower limit\"",
+       "description": ""
+      },
+      {
+       "name": "nearUpper",
+       "type": "string",
+       "default": "\"Near upper limit\"",
+       "description": ""
+      },
+      {
+       "name": "atLower",
+       "type": "string",
+       "default": "\"At lower limit\"",
+       "description": ""
+      },
+      {
+       "name": "atUpper",
+       "type": "string",
+       "default": "\"At upper limit\"",
+       "description": ""
+      },
+      {
+       "name": "beyondLower",
+       "type": "string",
+       "default": "\"Past lower limit\"",
+       "description": ""
+      },
+      {
+       "name": "beyondUpper",
+       "type": "string",
+       "default": "\"Past upper limit\"",
+       "description": ""
+      },
+      {
+       "name": "stale",
+       "type": "string",
+       "default": "\"Stale\"",
+       "description": ""
+      },
+      {
+       "name": "lastUpdate",
+       "type": "(time: string) => string",
+       "default": "(time) => `last update ${time}`",
+       "description": "After \"Stale\": when the last joint state arrived."
+      },
+      {
+       "name": "formatTime",
+       "type": "(date: Date, locale?: string) => string",
+       "default": "(d, locale) => locale ? d.toLocaleTimeString(locale, { hour: \"2-digit\", minute: \"2-digit\", second: \"2-digit\", hourCycle: \"h23\" }) : [d.getHours(), d.getMinutes(), d.getSeconds()].map(pad).join(\":\")",
+       "description": "The time of the last update. 24-hour clock by default; with `locale`, that locale's 24-hour time."
+      },
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Loading joint states…\"",
+       "description": ""
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"No joint states yet\"",
+       "description": ""
+      },
+      {
+       "name": "emptyHint",
+       "type": "string",
+       "default": "\"Positions show here once the robot publishes them.\"",
+       "description": ""
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "kbd": [
   {
    "name": "Kbd",

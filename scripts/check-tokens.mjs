@@ -40,6 +40,7 @@ const ROUND = {
   "stories/file-upload.stories.tsx": "avatar upload: the avatar is a circle",
   "registry/syncrobotic/blocks/wizard-commission.tsx": "dot of a self-check that has not started",
   "registry/syncrobotic/ui/questionnaire.tsx": "progress track",
+  "registry/syncrobotic/ui/joint-state.tsx": "each joint's limit track, and its skeleton",
   "site/prose.tsx": "list bullet dot",
   "app/(site)/(docs)/docs/foundations/motion/page.tsx": "timeline dot",
   "app/(site)/(docs)/docs/foundations/radius/page.tsx": "documents this rule: bullet dots and the pill-button counter-example",

@@ -3700,6 +3700,38 @@
       }
     },
     {
+      "name": "joint-state",
+      "type": "registry:ui",
+      "title": "Joint state",
+      "description": "A robot arm's joints for monitoring (ROS sensor_msgs/JointState with the URDF's limits): each joint's position in degrees or millimetres on a thin track between its limits, velocity and effort, near-limit and at-limit in words with an icon, and loading, empty and stale states.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/skeleton",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/robot-icons"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/joint-state.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.24.0",
+        "changelog": [
+          {
+            "version": "0.24.0",
+            "date": "2026-11-21",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
       "name": "filter-form",
       "type": "registry:ui",
       "title": "Filter form",

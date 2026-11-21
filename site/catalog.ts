@@ -56,6 +56,7 @@ export type StoryFile =
   | "annotated-image"
   | "media-player"
   | "camera-feed"
+  | "joint-state"
   | "tree"
   | "graph"
   | "robot-map"
@@ -728,6 +729,19 @@ const entries: Record<string, Entry> = {
       "Never hide a frozen picture: keep `staleAfterMs` at its 2 s default, shorter for teleoperation, longer only for a camera that sends a frame every few seconds.",
       "Overlays (`children`) are drawn in the video box's own coordinates; they hide while there is no picture, so a box never floats over a skeleton.",
       "Offer Reconnect (`onRetry`) only when reconnecting can help, and say why it is offline in `offlineReason` when you know.",
+    ],
+  },
+  "joint-state": {
+    wide: true,
+    group: "Display",
+    examples: { file: "joint-state", prefix: "JointState" },
+    rules: [
+      "For watching an arm's joints. It has nothing to press: jogging a joint is a control, with its own confirmation and a hold-to-run button.",
+      "Pass the values as ROS sends them (radians and metres) with each joint's `unit`; the panel shows degrees and millimetres. Never convert before passing them, or the limits and the position will disagree.",
+      "Give every joint its URDF `lower` and `upper`. Leave both out only for a continuous joint: it shows no track, and it can never be near a limit.",
+      "Keep `margin` at 5 % of the range unless the arm's safety configuration sets its own soft limits; then pass that fraction, so the panel warns where the controller will.",
+      "Pass `updatedAt` from the message's `header.stamp` when you have it: a robot that keeps publishing an old state still reads Stale. Keep `staleAfterMs` near three missed messages (1 s for a joint state at 10 Hz or faster).",
+      "List the joints in chain order (base to tool), as the URDF does, not alphabetically.",
     ],
   },
   alert: {

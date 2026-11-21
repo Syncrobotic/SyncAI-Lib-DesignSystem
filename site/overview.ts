@@ -109,6 +109,26 @@ export const overviews: Record<string, Overview> = {
       "Every string is in `labels`, including `formatTime` for the last frame's time (24-hour clock by default; pass the site's time zone if the operator is elsewhere).",
     ],
   },
+  "joint-state": {
+    what: "A robot arm's joints for monitoring: each joint's position in degrees or millimetres on a thin track between its URDF limits, with velocity and effort, and words when a joint is near, at or past a limit.",
+    use: [
+      "The arm panel of a robot's page, beside its camera.",
+      "Checking an arm's pose after a protective stop: which joint ran into its limit.",
+      "A cell's commissioning screen, watching each joint while it is homed.",
+    ],
+    instead: [
+      "One level within a range (battery, storage, a single temperature): `meter`.",
+      "Something that needs an operator to act (a joint fault, an over-torque stop): raise an `alarm`; this panel shows the pose, the alarm asks for the action.",
+      "A value's history (a joint's torque over a shift): a line chart in `chart`.",
+    ],
+    notes: [
+      "Plain props from `sensor_msgs/JointState` and the URDF: no ROS library. Map `name[i]`, `position[i]`, `velocity[i]` and `effort[i]` into one object per joint and add the URDF's `<limit lower upper effort>`.",
+      "Near is inside `margin` (a fraction of the range, 5 % by default) at either end, in warning; at is within 0.1 % of the limit, and past is beyond it, both in danger. Each says which limit in words beside its icon (triangle, octagon); the marker takes the colour, the numbers never do.",
+      "Stale comes from time alone: no new `joints` array (or, when you pass `updatedAt`, no new stamp) for `staleAfterMs`, timed by the browser's clock so a robot's clock that is off does not matter. The values stay, in grey, with the time of the last update, so a frozen arm is never mistaken for a still one.",
+      "On a narrow panel (a phone, a side column) each row stacks: name and position, then the track, then velocity and effort with their names. Wide, they line up in columns under one heading row.",
+      "Every word is in `labels`, including the units (`degrees`, `millimetres`, …) as functions of the formatted number, and `formatTime`; `locale` formats the numbers and the time.",
+    ],
+  },
   "restricted-preview": {
     what: "A preview that does not load until someone asks: restricted data, faces, number plates.",
     use: ["Thumbnails of a restricted dataset in a catalog or gallery."],
