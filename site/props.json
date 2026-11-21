@@ -5492,6 +5492,12 @@
      "description": "",
      "keys": [
       {
+       "name": "viewName",
+       "type": "string",
+       "default": "\"3D point cloud\"",
+       "description": "What the view is, read after `label` as its name: \"Front lidar, 3D point cloud\". The name stays the same while scans arrive; the count and the extent are in its description instead."
+      },
+      {
        "name": "keys",
        "type": "string",
        "default": "\"Drag to rotate, right-drag or two fingers to pan; the wheel or a pinch zooms once the view has focus. Arrow keys rotate, Shift with the arrows pans, plus and minus zoom, 0 resets the view.\"",
@@ -7064,6 +7070,12 @@
        "type": "string",
        "default": "\"Restoring the 3D view…\"",
        "description": "While the graphics context comes back after the GPU reset it."
+      },
+      {
+       "name": "contextFailed",
+       "type": "string",
+       "default": "\"The 3D view could not be restored.\"",
+       "description": "The context did not come back within a few seconds; under it, Load again draws the view anew."
       },
       {
        "name": "resetView",

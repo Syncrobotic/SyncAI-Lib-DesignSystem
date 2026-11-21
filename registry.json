@@ -3773,8 +3773,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.24.0",
+        "version": "0.24.1",
         "changelog": [
+          {
+            "version": "0.24.1",
+            "date": "2026-11-21",
+            "note": "A colorRange written inline no longer re-uploads the whole cloud on every render; resizing no longer flashes an empty frame; under Windows High Contrast the points stay visible (CanvasText on Canvas); a lost pointer capture ends the drag; the middle button no longer starts autoscroll; wheels that scroll by lines or pages zoom the right amount; a live cloud reuses its buffers instead of allocating new ones for each scan. Screen readers now hear a stable name (the label and “3D point cloud”) with the count and extent in the description, which changes at most every 5 s. New label `viewName`; new exports `pointCloudWheelZoom` and `pointCloudPaletteSources`; `packPointCloud` takes an optional array to pack into."
+          },
           {
             "version": "0.24.0",
             "date": "2026-11-21",
@@ -3811,8 +3816,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.24.0",
+        "version": "0.24.1",
         "changelog": [
+          {
+            "version": "0.24.1",
+            "date": "2026-11-21",
+            "note": "Stale now follows the joint values (or `updatedAt`), not the `joints` object: an inline record no longer keeps the view fresh, or flips it in and out of Stale and announces it on every render; without `updatedAt` a robot holding still goes stale. A view rebuilt after a lost context no longer stays on “Restoring the 3D view…”, and a context not back within 5 s shows an error with Load again (new label `contextFailed`). An empty URDF file is an error instead of an endless load; meshes that arrive after the view is gone are freed; mesh paths with a query string load; a theme set on any ancestor is followed; a theme colour that does not parse no longer takes the previous one."
+          },
           {
             "version": "0.24.0",
             "date": "2026-11-21",

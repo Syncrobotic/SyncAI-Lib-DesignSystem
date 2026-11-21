@@ -1,9 +1,11 @@
-// @syncrobotic/robot-model v0.24.0 · update: npx shadcn add @syncrobotic/robot-model --overwrite
+// @syncrobotic/robot-model v0.24.1 · update: npx shadcn add @syncrobotic/robot-model --overwrite
 "use client"
 
 import * as React from "react"
 import * as THREE from "three"
 import URDFLoader, { type URDFJoint, type URDFRobot } from "urdf-loader"
+import { ColladaLoader } from "three/examples/jsm/loaders/ColladaLoader.js"
+import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js"
 import { Box, CircleAlert, Crosshair, OctagonAlert, Rotate3d, RotateCw, TriangleAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/registry/syncrobotic/ui/button"
@@ -85,6 +87,8 @@ export type RobotModelLabels = {
   noValue: string
   /** While the graphics context comes back after the GPU reset it. */
   contextLost: string
+  /** The context did not come back within a few seconds; under it, Load again draws the view anew. */
+  contextFailed: string
   resetView: string
   fitView: string
   /** The axes gizmo's words for the robot's own frame (ROS REP 103: x forward, y left, z up). */
@@ -128,6 +132,7 @@ export const defaultRobotModelLabels: RobotModelLabels = {
   jointsHeading: "Joint positions",
   noValue: "No value",
   contextLost: "Restoring the 3D view…",
+  contextFailed: "The 3D view could not be restored.",
   resetView: "Reset the view",
   fitView: "Fit the robot in view",
   axes: { x: "Forward", y: "Left", z: "Up" },
@@ -161,8 +166,10 @@ export type ParseUrdfOptions = {
   visuals?: boolean
   /** A mesh started loading. */
   onMeshStart?: (path: string) => void
-  /** A mesh finished, with an error in words when it failed. */
+  /** A mesh finished, with an error in words when it failed. Not called once `signal` has aborted. */
   onMeshEnd?: (path: string, error?: string) => void
+  /** Aborted when the robot is no longer wanted: a mesh that arrives after it is freed instead of being added. */
+  signal?: AbortSignal
   labels?: Pick<RobotModelLabels, "invalidUrdf" | "missingPackage" | "unsupportedMesh">
 }
 
@@ -191,7 +198,6 @@ export function parseUrdf(text: string, options: ParseUrdfOptions = {}): URDFRob
     const dir = options.packages?.[pkg] ?? (options.meshBaseUrl !== undefined ? `${base}${pkg}` : undefined)
     return dir === undefined ? `${MISSING}${pkg}` : dir.replace(/\/$/, "")
   }
-  const defaultMeshLoader = loader.defaultMeshLoader.bind(loader)
   loader.loadMeshCb = (path, manager, material, done) => {
     const shown = path.startsWith(MISSING) ? `package://${path.slice(MISSING.length)}` : path
     options.onMeshStart?.(shown)
@@ -199,14 +205,26 @@ export function parseUrdf(text: string, options: ParseUrdfOptions = {}): URDFRob
       options.onMeshEnd?.(shown, l.missingPackage(path.slice(MISSING.length).split("/")[0] ?? ""))
       return
     }
-    if (!/\.(stl|dae)$/i.test(path)) {
+    // The format is read from the path without its query or fragment, so `base.stl?v=2` (a cache-busting version) loads.
+    // urdf-loader's own loader tests the whole path and would skip it without a word.
+    const format = /\.(stl|dae)$/i.exec(path.replace(/[?#].*$/, ""))?.[1]?.toLowerCase()
+    if (!format) {
       options.onMeshEnd?.(shown, l.unsupportedMesh)
       return
     }
-    defaultMeshLoader(path, manager, material, (mesh, err) => {
+    const signal = options.signal
+    const end = (mesh: THREE.Object3D | null, err?: unknown) => {
+      // The view that asked for this mesh is gone: its robot has been freed, so the mesh is freed rather than added to it.
+      if (signal?.aborted) {
+        if (mesh) disposeTree(mesh)
+        return
+      }
       if (mesh) done(mesh)
       options.onMeshEnd?.(shown, err ? reasonOf(err) : undefined)
-    })
+    }
+    if (format === "stl")
+      new STLLoader(manager).load(path, (geometry) => end(new THREE.Mesh(geometry, material ?? new THREE.MeshPhongMaterial())), undefined, (err) => end(null, err))
+    else new ColladaLoader(manager).load(path, (dae) => (dae ? end(dae.scene) : end(null, l.unsupportedMesh)), undefined, (err) => end(null, err))
   }
   // The text, not the checked document: urdf-loader tells a Document by instanceof, which fails across DOM implementations.
   return loader.parse(text)
@@ -295,6 +313,21 @@ export function robotModelSummary(info: RobotModelInfo, joints: Record<string, n
   if (items.length) parts.push(labels.highlighted(items))
   return parts.join(". ")
 }
+
+/**
+ * The joint values as a string that is equal exactly when the values are, whatever object holds them and in whatever
+ * order its keys come, so an update is told by value.
+ */
+function jointValuesKey(joints: Record<string, number> | undefined) {
+  if (!joints) return ""
+  return Object.keys(joints)
+    .sort()
+    .map((name) => `${name}\u0000${joints[name]}`)
+    .join("\u0000")
+}
+
+/** How long a lost graphics context has to come back before the view says it could not be restored. */
+const CONTEXT_RESTORE_MS = 5000
 
 // The camera. Angles are in radians: yaw around the vertical, pitch above the ground plane.
 const FOV = 35
@@ -421,11 +454,29 @@ function themeColor(el: Element, name: string, into: THREE.Color) {
   if (!value) return
   if (swatch === undefined) swatch = document.createElement("canvas").getContext("2d", { willReadFrequently: true })
   if (!swatch) return
-  swatch.clearRect(0, 0, 1, 1)
+  // A canvas ignores a colour it cannot parse and keeps the last fill, which would paint this part in the previous
+  // part's colour. Two different fills before the value tell whether it took: if it did, both read back the same.
+  swatch.fillStyle = "black"
   swatch.fillStyle = value
+  const afterBlack = swatch.fillStyle
+  swatch.fillStyle = "white"
+  swatch.fillStyle = value
+  if (swatch.fillStyle !== afterBlack) return
+  swatch.clearRect(0, 0, 1, 1)
   swatch.fillRect(0, 0, 1, 1)
   const [r = 0, g = 0, b = 0] = swatch.getImageData(0, 0, 1, 1).data
   into.setRGB(r / 255, g / 255, b / 255, THREE.SRGBColorSpace)
+}
+
+/**
+ * The theme's colours are set by a class or attribute on <html> (dark, high contrast), or on any element above the view
+ * (a dark panel inside a light page). These are the elements whose attributes are watched: the view's ancestors only, not
+ * the whole page, so a class changing elsewhere costs nothing.
+ */
+function themedAncestors(el: Element): Element[] {
+  const out: Element[] = []
+  for (let p = el.parentElement; p; p = p.parentElement) out.push(p)
+  return out
 }
 
 /** Frees the geometry and the materials of an object and everything under it, except the view's own shared materials. */
@@ -556,7 +607,10 @@ export function RobotModel({
 
   const supported = React.useSyncExternalStore(subscribeNothing, canDrawWebGL, assumeWebGL)
   const [rendererFailed, setRendererFailed] = React.useState(false)
-  const [contextLost, setContextLost] = React.useState(false)
+  // The graphics context's life: lost while the browser gives it back, failed when it has not within CONTEXT_RESTORE_MS.
+  const [context, setContext] = React.useState<"ok" | "lost" | "failed">("ok")
+  // Load again after a failed context makes a new canvas: a context the browser never gave back stays lost on its canvas.
+  const [canvasKey, setCanvasKey] = React.useState(0)
   const hasSource = !!urdf || !!urdfUrl
   const draw = hasSource && webgl !== false && supported && !rendererFailed
 
@@ -578,12 +632,16 @@ export function RobotModel({
     labelsRef.current = l
   })
 
-  // Stale: no new joints (or stamp) for staleAfterMs. A new update clears it during the render that brings it.
+  // Stale: no new joint values (or stamp) for staleAfterMs. An update is a change of value, not a new object: an inline
+  // `joints={{ ... }}` is a new object on every render of the parent, and counting those would keep the view from ever
+  // going stale, or, with an old stamp, flip it between stale and fresh on each render and announce it each time. A new
+  // update clears it during the render that brings it.
   const stamp = updatedAt instanceof Date ? updatedAt.getTime() : updatedAt
+  const jointsKey = jointValuesKey(joints)
   const [staleSince, setStaleSince] = React.useState<number | null>(null)
-  const [seen, setSeen] = React.useState({ joints, stamp })
-  if (seen.joints !== joints || seen.stamp !== stamp) {
-    setSeen({ joints, stamp })
+  const [seen, setSeen] = React.useState({ jointsKey, stamp })
+  if (seen.jointsKey !== jointsKey || seen.stamp !== stamp) {
+    setSeen({ jointsKey, stamp })
     setStaleSince(null)
   }
   React.useEffect(() => {
@@ -592,7 +650,7 @@ export function RobotModel({
     // At most staleAfterMs from now: a stamp from a robot whose clock runs ahead of this one still goes stale.
     const id = setTimeout(() => setStaleSince(last), clamp(last + staleAfterMs - Date.now(), 0, staleAfterMs))
     return () => clearTimeout(id)
-  }, [joints, stamp, staleAfterMs, hasSource])
+  }, [jointsKey, stamp, staleAfterMs, hasSource])
 
   // The renderer, scene, camera, lights and the shared materials: made once per canvas, freed on unmount.
   React.useEffect(() => {
@@ -641,6 +699,7 @@ export function RobotModel({
       highlight: "--warning",
       render,
       paint: () => {
+        painted = themeKey()
         // Two greys, alternating along the chain so neighbouring links read apart; the grid in the border's grey.
         themeColor(box, "--muted-foreground", materials.even.color)
         themeColor(box, "--map-point", materials.odd.color)
@@ -649,6 +708,16 @@ export function RobotModel({
         if (stage.grid) themeColor(box, "--border", (stage.grid.material as THREE.LineBasicMaterial).color)
         render()
       },
+    }
+    // The values the paint reads, so a watched attribute that changed something else (a layout class on an ancestor, an
+    // inline style being animated) costs one style read and no repaint.
+    let painted = ""
+    const themeKey = () => {
+      const css = getComputedStyle(box)
+      return ["--muted-foreground", "--map-point", stage.highlight, "--border"].map((n) => css.getPropertyValue(n)).join("\u0000")
+    }
+    const repaintIfChanged = () => {
+      if (themeKey() !== painted) stage.paint()
     }
     stageRef.current = stage
     stage.paint()
@@ -665,18 +734,25 @@ export function RobotModel({
     resize()
     const ro = new ResizeObserver(resize)
     ro.observe(box)
-    // The theme switches by a class or attribute on <html> (dark, high contrast), or by the system's preference.
-    const mo = new MutationObserver(stage.paint)
-    mo.observe(document.documentElement, { attributes: true, attributeFilter: ["class", "style", "data-theme", "data-contrast"] })
+    // The theme switches by a class or attribute on <html> or another element above the view (dark, high contrast), or
+    // by the system's preference.
+    const mo = new MutationObserver(repaintIfChanged)
+    for (const el of themedAncestors(box)) mo.observe(el, { attributes: true, attributeFilter: ["class", "style", "data-theme", "data-contrast"] })
     const scheme = window.matchMedia?.("(prefers-color-scheme: dark)")
     scheme?.addEventListener?.("change", stage.paint)
     // A lost context (the GPU reset, too many views open) comes back by itself; until then the view says so.
+    // If it has not come back within a few seconds it is not coming: the view says so and offers Load again, rather than
+    // a spinner that never ends.
+    let restoreTimer: ReturnType<typeof setTimeout> | undefined
     const lost = (e: Event) => {
       e.preventDefault()
-      setContextLost(true)
+      setContext("lost")
+      clearTimeout(restoreTimer)
+      restoreTimer = setTimeout(() => setContext("failed"), CONTEXT_RESTORE_MS)
     }
     const restored = () => {
-      setContextLost(false)
+      clearTimeout(restoreTimer)
+      setContext("ok")
       render()
     }
     canvas.addEventListener("webglcontextlost", lost)
@@ -688,13 +764,16 @@ export function RobotModel({
       scheme?.removeEventListener?.("change", stage.paint)
       canvas.removeEventListener("webglcontextlost", lost)
       canvas.removeEventListener("webglcontextrestored", restored)
+      clearTimeout(restoreTimer)
+      // The next renderer has a new context, so a loss reported by this one no longer applies.
+      setContext("ok")
       cancelAnimationFrame(frame)
       if (stage.grid) disposeTree(stage.grid)
       for (const m of Object.values(materials)) m.dispose()
       renderer.dispose()
       stageRef.current = null
     }
-  }, [draw])
+  }, [draw, canvasKey])
 
   // Loading: fetch the URDF when given a URL, build the robot, wait for its meshes, then measure it and fit the view.
   React.useEffect(() => {
@@ -719,7 +798,9 @@ export function RobotModel({
           return
         }
       }
-      if (!live || !text) return
+      if (!live) return
+      // An empty answer (a 200 with no body, a file that was truncated to nothing) is an error, not an endless load.
+      if (!text?.trim()) return fail(urdfUrl ?? "URDF", labelsRef.current.invalidUrdf)
       let total = 0
       let loaded = 0
       let parsed = false
@@ -746,6 +827,7 @@ export function RobotModel({
           meshBaseUrl: meshBaseUrl ?? (urdfUrl ? urlBase(urdfUrl) : undefined),
           visuals: draw,
           labels: labelsRef.current,
+          signal: ctrl.signal,
           onMeshStart: () => {
             total++
           },
@@ -804,7 +886,7 @@ export function RobotModel({
       stage.grid = null
       stage.render()
     }
-  }, [bounds, draw])
+  }, [bounds, draw, canvasKey])
 
   // Each link in its grey, highlighted links in the status colour.
   const highlightKey = (highlight ?? []).join("\u0000")
@@ -824,15 +906,16 @@ export function RobotModel({
       mesh.material = next
     })
     stage.paint()
-  }, [info, draw, highlightKey, highlightStatus])
+  }, [info, draw, highlightKey, highlightStatus, canvasKey])
 
-  // New joint values move the robot and draw one frame.
+  // New joint values move the robot and draw one frame. They are followed by value (read from the ref the layout effect
+  // has just updated), so a parent that rebuilds the same values on each render draws nothing new.
   React.useEffect(() => {
     const robot = robotRef.current
     if (!robot || !version) return
-    applyJointValues(robot, joints)
+    applyJointValues(robot, jointsRef.current)
     stageRef.current?.render()
-  }, [joints, version])
+  }, [jointsKey, version])
 
   // The camera follows the view.
   React.useEffect(() => {
@@ -845,7 +928,7 @@ export function RobotModel({
     stage.camera.updateProjectionMatrix()
     stage.camera.lookAt(...view.target)
     stage.render()
-  }, [view, version, draw])
+  }, [view, version, draw, canvasKey])
 
   const frameSize = () => {
     const el = viewportRef.current
@@ -921,17 +1004,18 @@ export function RobotModel({
 
   const isStale = staleSince !== null && (ready !== null || !draw)
   const fallback = hasSource && !draw
+  const contextFailed = draw && context === "failed"
   const state: RobotModelState = !hasSource
     ? loading
       ? "loading"
       : "empty"
-    : load.phase === "error"
+    : load.phase === "error" || contextFailed
       ? "error"
       : load.phase === "loading"
         ? "loading"
         : fallback
           ? "no-webgl"
-          : contextLost
+          : draw && context === "lost"
             ? "context-lost"
             : isStale
               ? "stale"
@@ -946,14 +1030,18 @@ export function RobotModel({
     state === "loading"
       ? l.loading
       : state === "error"
-        ? l.error
+        ? contextFailed && load.phase !== "error"
+          ? l.contextFailed
+          : l.error
         : state === "context-lost"
           ? l.contextLost
           : isStale
             ? `${l.stale}, ${l.lastUpdate(lastUpdate)}`
             : ""
   const retry = () => {
-    if (onRetry) onRetry()
+    // A failed context is this view's own trouble, not the files': a new canvas draws it again, without reloading them.
+    if (contextFailed && load.phase !== "error") setCanvasKey((n) => n + 1)
+    else if (onRetry) onRetry()
     else setAttempt((n) => n + 1)
   }
 
@@ -1089,7 +1177,7 @@ export function RobotModel({
               "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring",
             )}
           >
-            <canvas ref={canvasRef} aria-hidden="true" className={cn("block size-full", !ready && "invisible")} />
+            <canvas key={canvasKey} ref={canvasRef} aria-hidden="true" className={cn("block size-full", !ready && "invisible")} />
           </div>
         )}
 
@@ -1170,6 +1258,8 @@ export function RobotModel({
 
         {load.phase === "error" &&
           message(<CircleAlert aria-hidden="true" className="size-6 text-muted-foreground" />, l.error, <span className="font-mono text-xs">{l.errorDetail(load.path, load.reason)}</span>, retryButton)}
+
+        {contextFailed && load.phase !== "error" && message(<CircleAlert aria-hidden="true" className="size-6 text-muted-foreground" />, l.contextFailed, undefined, retryButton)}
 
         {state === "empty" && message(<Box aria-hidden="true" className="size-6 text-muted-foreground" />, l.empty)}
 
