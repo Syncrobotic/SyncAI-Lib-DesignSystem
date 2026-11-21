@@ -86,10 +86,10 @@ export default async function ComponentPage({ params }: Props) {
   const example = (n: string) => (
     <ExampleCard
       id={`example-${n}`}
-      title={storyTitle(n)}
+      title={storyTitle(n, item.name)}
       preview={<Stage file={item.examples!.file} name={n} className="w-full" wide={item.wide} />}
       install={installBlock}
-      code={<CodeBlock code={storySource(item.examples!.file, n)} title={`${storyTitle(n).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}.tsx`} />}
+      code={<CodeBlock code={storySource(item.examples!.file, n)} title={`${n.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase()}.tsx`} />}
     />
   )
   const [first, ...rest] = names

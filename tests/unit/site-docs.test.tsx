@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 import { a11yOf } from "@/site/a11y"
-import { items } from "@/site/catalog"
+import { items, storyTitle } from "@/site/catalog"
 import { KeyCell, parseKeys } from "@/site/key-cell"
 
 // The Accessibility tab keeps a measured role only when the component's source can produce it. Sources that use a
@@ -43,5 +43,28 @@ describe("keyboard tables", () => {
     expect(kbds).toEqual(["Enter", "Space", "Shift", "Tab"])
     expect(container.querySelectorAll("kbd[data-slot=kbd-group]")).toHaveLength(1)
     expect(container.textContent).toBe("Hold Enter / Space 2 s, or Shift+Tab away")
+  })
+})
+
+// Example titles were the story names spelled out: "Point cloud no web gl", "Trace ci", sixteen "Data grid …" cut short
+// in the page's contents.
+describe("example titles", () => {
+  it.each([
+    ["PointCloudNoWebGL", "point-cloud", "No WebGL"],
+    ["TraceCI", "trace", "CI"],
+    ["DataGridStriped", "data-grid", "Striped"],
+    ["InputOTPSixDigits", "input-otp", "Six digits"],
+    ["FiltersURLSynced", "filters", "URL synced"],
+    ["StreamingChartFromROS", "streaming-chart", "From ROS"],
+    ["ButtonInAForm", "button", "In a form"],
+    // Named after another component: kept whole.
+    ["InputGroupSearch", "input", "Input group search"],
+    // An override where the name cannot say it.
+    ["LogViewerZhTw", "log-viewer", "Traditional Chinese (zh-TW)"],
+  ])("%s on %s is %j", (story, component, title) => {
+    expect(storyTitle(story, component)).toBe(title)
+  })
+  it("every example title says something", () => {
+    for (const i of items) if (i.examples) for (const n of i.examples.only ?? []) expect(storyTitle(n, i.name).length).toBeGreaterThan(0)
   })
 })

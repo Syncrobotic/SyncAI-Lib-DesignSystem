@@ -1462,13 +1462,39 @@ export function storyNames(ex: Examples) {
   return picked
 }
 
-/** "ThreeTiersWithPageAction" -> "Three tiers with page action", as Storybook shows it. */
-export const storyTitle = (name: string) => {
-  const words = name
-    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
-    .replace(/([A-Z])([A-Z][a-z])/g, "$1 $2")
-    .split(" ")
-  // Proper names keep their capital: "Delivered over Bluetooth", not "bluetooth".
-  const proper = new Set(["Bluetooth", "Wi", "Fi", "AI", "URL", "SMS", "ROS"])
-  return words.map((w, i) => (i === 0 || proper.has(w) ? w : w.toLowerCase())).join(" ")
+/** An example's caption where the story's name cannot say it: component → story → caption. */
+const captions: Record<string, Record<string, string>> = {
+  "log-viewer": { LogViewerRosout: "/rosout", LogViewerZhTw: "Traditional Chinese (zh-TW)", LogViewerHundredThousand: "100,000 lines" },
+  calendar: { CalendarMonthYearDropdowns: "Month and year dropdowns" },
+  chart: { ChartAboveBelowZero: "Above and below zero" },
+  "time-picker": { TimePickerTwelveHour: "12-hour clock" },
+  diagnostics: { DiagnosticsAllOk: "All OK" },
+  "teleop-pad": { TeleopPadConsole: "On a console" },
+  "input-otp": { InputOTPPin: "PIN" },
+  "use-long-press": { UseLongPressHoldToConfirm: "Hold to confirm" },
+}
+
+// Words that keep their own spelling in a caption: proper names and acronyms.
+const spelled = new Map(["Bluetooth", "Wi", "Fi", "AI", "URL", "SMS", "ROS", "CI", "WebGL", "PGM", "OTP", "PIN", "OK", "ID", "API", "CSV", "JSON", "PDF", "URDF", "TF", "LiDAR", "GPS", "IMU"].map((w) => [w.toLowerCase(), w]))
+
+/** "ChartLine" → "chart-line": the item names in PascalCase, longest first, to tell a component's own stories apart. */
+const pascalNames = () => items.map((i) => i.name.replace(/-/g, "")).sort((a, b) => b.length - a.length)
+
+/**
+ * "ThreeTiersWithPageAction" -> "Three tiers with page action", as Storybook shows it. On a component's page (`component`)
+ * its name is dropped from the front ("DataGridStriped" → "Striped"), unless the story is named after another component
+ * ("InputGroupSearch" on Input stays "Input group search"). Acronyms keep their capitals ("PointCloudNoWebGL" → "No WebGL",
+ * "TraceCI" → "CI"); `captions` overrides the rest.
+ */
+export const storyTitle = (name: string, component?: string) => {
+  const own = component && captions[component]?.[name]
+  if (own) return own
+  let rest = name
+  if (component) {
+    const owner = pascalNames().find((p) => name.toLowerCase().startsWith(p.toLowerCase()) && name.length > p.length && /[A-Z0-9]/.test(name[p.length]))
+    if (owner && owner === component.replace(/-/g, "")) rest = name.slice(owner.length)
+  }
+  // An acronym is a run of capitals (WebGL and LiDAR included) before a capitalised word, a digit or the end.
+  const words = rest.match(/WebGL|LiDAR|[A-Z]{2,}(?=[A-Z][a-z]|\d|$)|[A-Z]?[a-z]+|[A-Z]|\d+/g) ?? [rest]
+  return words.map((w, i) => spelled.get(w.toLowerCase()) ?? (i === 0 ? w[0].toUpperCase() + w.slice(1) : w.toLowerCase())).join(" ")
 }
