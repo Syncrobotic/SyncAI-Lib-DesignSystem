@@ -2682,8 +2682,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.24.0",
+        "version": "0.24.1",
         "changelog": [
+          {
+            "version": "0.24.1",
+            "date": "2026-11-21",
+            "note": "Fixes for live data and editing. A plan whose size arrives after the first render (a `grid` loaded later) is fitted again, unless someone has already panned or zoomed. A cancelled drag of a waypoint or zone corner (Esc, a second finger, pointercancel) sends the original back through onWaypointsChange / onZonesChange and says \"Move cancelled\". The selected or carried waypoint is followed by its value, so when the app changes the list (drops waypoint 1 as the robot reaches it) Delete and Esc act on that waypoint, or on none if it is gone. A fast costmap now shows: one encode at a time, the one in flight finishes and only updates between are skipped. With a floorplan the costmap is drawn over it. The keyboard crosshair's position (and a turning goal's heading) is announced once the arrows rest for 400 ms. Smaller: snap at a plan edge off the snap grid stays on the grid, the crosshair is drawn snapped where Enter places it, a new mode starts the crosshair at the centre, Enter during a pointer press sets the goal once, and a removed grid frees its image at once. Public API unchanged."
+          },
           {
             "version": "0.24.0",
             "date": "2026-11-21",
@@ -3731,8 +3736,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.24.0",
+        "version": "0.24.1",
         "changelog": [
+          {
+            "version": "0.24.1",
+            "date": "2026-11-21",
+            "note": "Without `locale`, numbers are written in English (\"en\") instead of the runtime's language, so server and browser render the same and the page hydrates without a mismatch; pass your app's locale. An invalid locale tag falls back to \"en\" instead of throwing. Without `updatedAt`, Stale now follows the values (position, velocity, effort), so a parent that rebuilds `joints` every render still sees Stale; a still arm then reads Stale too, so pass `updatedAt`. `staleAfterMs={Infinity}` never goes stale, an infinite URDF limit counts as no limit (no NaN marker), and ±0.05 round the same way."
+          },
           {
             "version": "0.24.0",
             "date": "2026-11-21",
