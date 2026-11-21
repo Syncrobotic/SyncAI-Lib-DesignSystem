@@ -24,4 +24,21 @@ export async function openStory(page: Page, id: string, theme: (typeof themes)[n
   await page.evaluate(() => Promise.all(["400 16px Geist", "500 16px Geist", "700 16px Geist", "400 16px 'Geist Mono'"].map((f) => document.fonts.load(f))))
   await page.evaluate(() => document.fonts.ready)
   await page.clock.runFor(1000)
+  // A few stories reach their end state after something that runs on real time, not on the page clock (a video frame
+  // arriving), so a fixed second is a race. Advance the clock until that state is there.
+  const done = settled[id]
+  if (done) {
+    for (let i = 0; i < 40 && !(await page.locator(done).count()); i++) {
+      await page.waitForTimeout(50)
+      await page.clock.runFor(250)
+    }
+    // Never screenshot a state halfway: a story that does not settle is a broken story, not a different picture.
+    if (!(await page.locator(done).count())) throw new Error(`${id} did not reach ${done}`)
+  }
+}
+
+/** Story id → the selector that says it has settled, for stories whose end state does not come from the clock alone. */
+const settled: Record<string, string> = {
+  // Stalled is timed from the first frame's arrival, and frames arrive on real time.
+  "display-camera-feed--camera-feed-stalled": '[data-state="stalled"]',
 }
