@@ -514,7 +514,6 @@
     "roles": [
       "combobox",
       "group",
-      "img",
       "listbox",
       "option",
       "status"
@@ -890,7 +889,6 @@
   "navigation-menu": {
     "roles": [
       "button",
-      "img",
       "link",
       "list",
       "listitem",

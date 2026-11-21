@@ -11,8 +11,10 @@ export const metadata: Metadata = pageMeta({
 })
 
 export default function LucidePage() {
-  // The kit's meanings, so the full list can mark which icons already have one.
-  const meanings = Object.fromEntries(iconGroups.filter((g) => !g.from).flatMap((g) => g.icons.map((i) => [i.name, i.means])))
+  // The kit's meanings, so the full list can mark which icons already have one. The list names each icon by its current
+  // Lucide name (the component's displayName), which differs from the kit's import name for the icons lucide-react 1.x
+  // renamed (TriangleAlert is listed as TriangleExclamationPoint).
+  const meanings = Object.fromEntries(iconGroups.filter((g) => !g.from).flatMap((g) => g.icons.map((i) => [i.Icon.displayName ?? i.name, i.means])))
   return (
     <article className="flex flex-col gap-6">
       <DocHeader
