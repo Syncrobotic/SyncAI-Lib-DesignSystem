@@ -39,6 +39,9 @@
   "author": "SYNCROBOTIC",
   "license": "SEE LICENSE IN LICENSE",
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "shadcn build -o public/r && next build",
