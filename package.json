@@ -112,7 +112,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",
-    "@hookform/resolvers": "^5.9.2",
+    "@hookform/resolvers": "^7.0.7",
     "@playwright/test": "^1.49.1",
     "@storybook/addon-a11y": "^10.6.8",
     "@storybook/react-vite": "^10.6.8",
