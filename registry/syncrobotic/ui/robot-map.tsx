@@ -102,10 +102,10 @@ const gridRect = (grid: RobotMapGrid, frame: RobotMapFrame) => {
  * The grid as an RGBA image, top row first (the plan's y grows down, the grid's up), in one pass over the cells. The map
  * paints it in its own tokens through two masks of this one image, so it follows dark, light and high contrast without
  * drawing it again:
- *  - occupied (1–100): white at alpha value / 100; read as luminance it lays the ink colour on at that strength;
+ *  - occupied (1–100): white at alpha value / 100; read as luminance it lays the obstacle grey on at that strength;
  *  - unknown (−1): opaque black, which is no luminance (no ink) but full alpha, where the no-data hatch shows;
  *  - free (0): transparent, the map's own surface.
- * A cell between 1 and 99 keeps a trace of the hatch under its ink, as a cell the robot is not sure about.
+ * A cell between 1 and 99 keeps a trace of the hatch under its grey, as a cell the robot is not sure about.
  * For a costmap (`kind: "cost"`) only costs above 0 are drawn, at alpha cost / 100; unknown is left clear.
  */
 export function rasteriseGrid(grid: Pick<RobotMapGrid, "width" | "height" | "data">, kind: "occupancy" | "cost" = "occupancy") {
@@ -455,7 +455,7 @@ export type RobotMapProps = {
   floorplan?: string | React.ReactNode
   /**
    * A ROS occupancy grid drawn as the floor (under `floorplan`, when both are given): free cells are the map's surface,
-   * occupied ones the ink colour at their probability, unknown ones the no-data hatch. Drawn into an image once per new
+   * occupied ones a muted grey at their probability, unknown ones the no-data hatch. Drawn into an image once per new
    * `data` array, so pass a new array for new cells and the same one otherwise.
    */
   grid?: RobotMapGrid
@@ -1279,9 +1279,11 @@ export function RobotMap({
                     </mask>
                   </defs>
                   <rect {...onScreen(gridShown.grid)} fill={`url(#${uid}-hatch)`} mask={`url(#${uid}-unknown)`} />
-                  {/* The costmap between the hatch and the ink, so walls and racks stay ink over their lethal cost. */}
+                  {/* The costmap between the hatch and the obstacles, so walls and racks stay grey over their lethal cost. */}
                   {costLayer}
-                  <rect {...onScreen(gridShown.grid)} className="fill-foreground" mask={`url(#${uid}-occupied)`} />
+                  {/* Obstacles in the muted grey, not ink: they are the background the robots move on, and a block of ink (white
+                      in dark mode) outweighed the robots and their states. Still 4.5:1 on the map, and scan dots in ink show on it. */}
+                  <rect {...onScreen(gridShown.grid)} className="fill-muted-foreground" mask={`url(#${uid}-occupied)`} />
                 </>
               )}
             </g>
