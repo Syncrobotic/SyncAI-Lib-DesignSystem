@@ -20,6 +20,8 @@ export function Highlighted({ code, lang }: { code: string; lang: "bash" | "json
     lang,
     themes: { light: "github-light-high-contrast", dark: "github-dark-high-contrast" },
     defaultColor: "light-dark()",
+    // CodeBlock's scroll area is the one Tab stop; shiki's own tabindex on <pre> would add a second, useless one.
+    tabindex: false,
   })
   // A shell command wraps between words and after a "/", never inside a name, as CodeBlock's plain text does.
   if (lang === "bash")

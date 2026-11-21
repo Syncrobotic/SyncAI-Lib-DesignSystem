@@ -570,6 +570,7 @@ export const overviews: Record<string, Overview> = {
     instead: ["A short value inline (an ID, a reference): `copy-button` beside the text.", "A value someone edits: `input` or `textarea`."],
     notes: [
       "It has no highlighter: pass shiki's `<pre>` as children (the docs site does, in site/code-block.tsx); `code` stays the plain text that Copy copies.",
+      "Call shiki with `tabindex: false`: its `<pre>` is focusable by default, a second Tab stop beside the code block's own scroll area. `defaultColor: \"light-dark()\"` gives colours that follow the theme with no stylesheet.",
       "Highlighted shell commands wrap by words only if each name is marked nowrap in the HTML; the docs site's CodeBlock shows how.",
     ],
   },
