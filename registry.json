@@ -199,7 +199,7 @@
           {
             "version": "0.28.0",
             "date": "2026-11-21",
-            "note": "New streamingChartLabels for the new streaming-chart."
+            "note": "New streamingChartLabels and diagnosticsLabels for the new streaming-chart and diagnostics, and `details` in `treeLabels`."
           },
           {
             "version": "0.27.0",
@@ -214,7 +214,7 @@
       "name": "ros",
       "type": "registry:lib",
       "title": "ROS",
-      "description": "ROS and ROS 2 over rosbridge with no ROS library: a rosbridge v2 client on the browser's WebSocket (ref-counted subscriptions and advertisements, capped jittered reconnect that resubscribes, a send queue, service calls with a timeout, a zero Twist when a velocity publisher stops or the link drops) and pure converters from OccupancyGrid, LaserScan, PointCloud2, JointState and poses to the kit's components, and from a teleop command and a map goal back to Twist and PoseStamped.",
+      "description": "ROS and ROS 2 over rosbridge with no ROS library: a rosbridge v2 client on the browser's WebSocket (ref-counted subscriptions and advertisements, capped jittered reconnect that resubscribes, a send queue, service calls with a timeout, a zero Twist when a velocity publisher stops or the link drops) and pure converters from OccupancyGrid, LaserScan, PointCloud2, JointState, DiagnosticArray and poses to the kit's components, and from a teleop command and a map goal back to Twist and PoseStamped.",
       "dependencies": [],
       "registryDependencies": [],
       "files": [
@@ -224,8 +224,13 @@
         }
       ],
       "meta": {
-        "version": "0.27.0",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "`diagnosticArrayToStatuses` turns a `diagnostic_msgs/DiagnosticArray` into diagnostics' `statuses` (the level byte read however the bridge wrote it, each status stamped `receivedAt`), and `mergeDiagnostics` keeps the latest status of each name as /diagnostics arrives a few at a time."
+          },
           {
             "version": "0.27.0",
             "date": "2026-11-21",
@@ -2741,8 +2746,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.27.0",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "A node can carry `content`: a panel under it, shown while it is open (a node's details, such as a key/value table), with a disclosure button even without `children`. List mode only. New label `details` names that button (\"Details of …\")."
+          },
           {
             "version": "0.27.0",
             "date": "2026-11-21",
@@ -3900,6 +3910,43 @@
       }
     },
     {
+      "name": "diagnostics",
+      "type": "registry:ui",
+      "title": "Diagnostics",
+      "description": "A robot's hardware and software health as ROS diagnostic_msgs/DiagnosticArray reports it: the worst level and the counts first, then a tree by the names' \"/\" paths with the worst level rolled up to each group, each status as a glyph and a word that opens to its values, Stale when updates stop, a Problems filter and search by name.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/skeleton",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/badge",
+        "@syncrobotic/chip-group",
+        "@syncrobotic/description-list",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/search-field",
+        "@syncrobotic/tree"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/diagnostics.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.28.0",
+        "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
       "name": "point-cloud",
       "type": "registry:ui",
       "title": "Point cloud",
@@ -4097,8 +4144,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "`onValueChange` (with `value`, optional) filters what is already on the screen instead of navigating: called as you type, and Enter does nothing more."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",

@@ -2740,6 +2740,241 @@
    "inherits": []
   }
  ],
+ "diagnostics": [
+  {
+   "name": "Diagnostics",
+   "props": [
+    {
+     "name": "statuses",
+     "type": "DiagnosticStatus[]",
+     "required": true,
+     "description": "Every status, as the latest of each name (merge arrays as they arrive with `mergeDiagnostics` from `ros`)."
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "description": "The robot's name, written above and naming the panel for screen readers: \"AMR-07\"."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "default": "false",
+     "description": "Waiting for the first diagnostics: a skeleton the size of a short tree."
+    },
+    {
+     "name": "staleAfterMs",
+     "type": "number",
+     "default": "5000",
+     "description": "A status not updated for this long reads Stale (by its `receivedAt`). `Infinity` never times out."
+    },
+    {
+     "name": "now",
+     "type": "number",
+     "description": "The time to measure from, in ms since the epoch. Left out, the panel reads the browser's clock once a second while any status has a `receivedAt`. Pass it for a fixed picture (a test, a screenshot, a recorded bag played back)."
+    },
+    {
+     "name": "filter",
+     "type": "\"all\" | \"problems\"",
+     "description": "Which statuses the tree shows, controlled; pair with `onFilterChange`."
+    },
+    {
+     "name": "defaultFilter",
+     "type": "\"all\" | \"problems\"",
+     "default": "\"all\"",
+     "description": "The filter at first (uncontrolled)."
+    },
+    {
+     "name": "onFilterChange",
+     "type": "(filter: DiagnosticsFilter) => void",
+     "description": ""
+    },
+    {
+     "name": "query",
+     "type": "string",
+     "description": "The search text, controlled; pair with `onQueryChange`."
+    },
+    {
+     "name": "defaultQuery",
+     "type": "string",
+     "default": "\"\"",
+     "description": "The search text at first (uncontrolled)."
+    },
+    {
+     "name": "onQueryChange",
+     "type": "(query: string) => void",
+     "description": ""
+    },
+    {
+     "name": "defaultExpanded",
+     "type": "string[]",
+     "description": "Statuses and groups open at first, by name (\"/Motors/Left wheel\" opens that status's values, \"/Motors\" the group). Groups with a problem under them open by themselves; this is for anything else."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "BCP 47 tag for the numbers and the \"ago\" times (\"zh-TW\", \"de\"): pass the app's locale. Left out, English (\"en\") on the server and in every browser, so the page hydrates cleanly; a tag Intl cannot read falls back to \"en\"."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<DiagnosticsLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "title",
+       "type": "string",
+       "default": "\"Diagnostics\"",
+       "description": "The panel's name when there is no `label`."
+      },
+      {
+       "name": "ok",
+       "type": "string",
+       "default": "\"OK\"",
+       "description": ""
+      },
+      {
+       "name": "warn",
+       "type": "string",
+       "default": "\"Warning\"",
+       "description": ""
+      },
+      {
+       "name": "error",
+       "type": "string",
+       "default": "\"Error\"",
+       "description": ""
+      },
+      {
+       "name": "stale",
+       "type": "string",
+       "default": "\"Stale\"",
+       "description": ""
+      },
+      {
+       "name": "summary",
+       "type": "(problems: number, total: number, locale: string) => string",
+       "default": "(problems, total, locale) => { const f = (n: number) => n.toLocaleString(locale) if (problems === 0) return `${f(total)} ${total === 1 ? \"status\" : \"statuses\"}, nothing needs attention` return `${f(problems)} of ${f(total)} ${problems === 1 ? \"needs\" : \"need\"} attention` }",
+       "description": "Beside the worst level, at the top: \"6 of 24 need attention\", or \"All 24 OK\"."
+      },
+      {
+       "name": "updatedAgo",
+       "type": "(ms: number, locale: string) => string",
+       "default": "(ms, locale) => { const s = Math.max(0, Math.floor(ms / 1000)) const f = (n: number) => n.toLocaleString(locale) if (s < 60) return `updated ${f(s)} s ago` if (s < 3600) return `updated ${f(Math.floor(s / 60))} min ago` return `updated ${f(Math.floor(s / 3600))} h ago` }",
+       "description": "The time since a status (or, in the header, the last status) arrived: \"updated 12 s ago\"."
+      },
+      {
+       "name": "filter",
+       "type": "string",
+       "default": "\"Show\"",
+       "description": "Names the filter chips."
+      },
+      {
+       "name": "all",
+       "type": "string",
+       "default": "\"All\"",
+       "description": ""
+      },
+      {
+       "name": "problems",
+       "type": "string",
+       "default": "\"Problems\"",
+       "description": ""
+      },
+      {
+       "name": "search",
+       "type": "string",
+       "default": "\"Search diagnostics\"",
+       "description": "Names the search box."
+      },
+      {
+       "name": "searchPlaceholder",
+       "type": "string",
+       "default": "\"Filter by name or hardware ID\"",
+       "description": "In the empty search box."
+      },
+      {
+       "name": "hardwareId",
+       "type": "string",
+       "default": "\"Hardware ID\"",
+       "description": "Before a status's hardware ID, for screen readers (the badge shows the ID alone)."
+      },
+      {
+       "name": "noValues",
+       "type": "string",
+       "default": "\"No values\"",
+       "description": "Under an opened status that has no values."
+      },
+      {
+       "name": "unnamed",
+       "type": "string",
+       "default": "\"(no name)\"",
+       "description": "A status whose name is empty."
+      },
+      {
+       "name": "toggle",
+       "type": "(name: string) => string",
+       "default": "(name) => `Items under ${name}`",
+       "description": "The disclosure button of a group."
+      },
+      {
+       "name": "details",
+       "type": "(name: string) => string",
+       "default": "(name) => `Details of ${name}`",
+       "description": "The disclosure button of a status, which opens its values."
+      },
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Loading diagnostics…\"",
+       "description": ""
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"No diagnostics yet\"",
+       "description": ""
+      },
+      {
+       "name": "emptyHint",
+       "type": "string",
+       "default": "\"The robot's hardware and software checks show here once it publishes them.\"",
+       "description": ""
+      },
+      {
+       "name": "noMatch",
+       "type": "(query: string) => string",
+       "default": "(query) => `Nothing matches “${query}”`",
+       "description": "The search matches nothing."
+      },
+      {
+       "name": "noMatchHint",
+       "type": "string",
+       "default": "\"Search looks at the names and hardware IDs.\"",
+       "description": ""
+      },
+      {
+       "name": "noProblems",
+       "type": "string",
+       "default": "\"Nothing needs attention: every status is OK.\"",
+       "description": "\"Problems\" is chosen and every status is OK."
+      },
+      {
+       "name": "announceError",
+       "type": "(name: string, message: string) => string",
+       "default": "(name, message) => (message ? `Error: ${name}, ${message}` : `Error: ${name}`)",
+       "description": "Read out politely when a status turns ERROR."
+      },
+      {
+       "name": "announceErrors",
+       "type": "(count: number) => string",
+       "default": "(count) => `${count} new errors`",
+       "description": "Read out instead when more than three turn ERROR at once."
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "dialog": [
   {
    "name": "Dialog",
@@ -7291,6 +7526,16 @@
      "type": "string",
      "default": "\"/\"",
      "description": "The key that focuses the box; null for none."
+    },
+    {
+     "name": "value",
+     "type": "string",
+     "description": "With `onValueChange`: the text in the box, controlled. Left out, the box keeps its own."
+    },
+    {
+     "name": "onValueChange",
+     "type": "(value: string) => void",
+     "description": "Filters in place instead of navigating: called with the text as it is typed, on data already on the screen (a tree, a list). Enter then does nothing more, and `action`, `name`, `live` and `onNavigate` are not used."
     }
    ],
    "inherits": []
@@ -9553,6 +9798,12 @@
        "type": "(name: string) => string",
        "default": "(name) => `Items under ${name}`",
        "description": "The disclosure button's name in list mode; aria-expanded says whether it is open."
+      },
+      {
+       "name": "details",
+       "type": "(name: string) => string",
+       "default": "(name) => `Details of ${name}`",
+       "description": "The same for a node with `content` and no `children`: what opens is its details, not items under it."
       }
      ]
     }

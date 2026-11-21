@@ -163,6 +163,40 @@ export const jointStateLabels = {
   emptyHint: "機器人發布關節位置後，會顯示在這裡。",
 }
 
+export const diagnosticsLabels = {
+  title: "診斷",
+  ok: "正常",
+  warn: "警告",
+  error: "錯誤",
+  stale: "未更新",
+  summary: (problems: number, total: number, locale: string) =>
+    problems === 0 ? `共 ${total.toLocaleString(locale)} 項，沒有需要注意的項目` : `${total.toLocaleString(locale)} 項中有 ${problems.toLocaleString(locale)} 項需要注意`,
+  updatedAgo: (ms: number, locale: string) => {
+    const s = Math.max(0, Math.floor(ms / 1000))
+    if (s < 60) return `${s.toLocaleString(locale)} 秒前更新`
+    if (s < 3600) return `${Math.floor(s / 60).toLocaleString(locale)} 分鐘前更新`
+    return `${Math.floor(s / 3600).toLocaleString(locale)} 小時前更新`
+  },
+  filter: "顯示",
+  all: "全部",
+  problems: "有問題",
+  search: "搜尋診斷項目",
+  searchPlaceholder: "依名稱或硬體 ID 篩選",
+  hardwareId: "硬體 ID",
+  noValues: "沒有數值",
+  unnamed: "（未命名）",
+  toggle: (name: string) => `${name} 底下的項目`,
+  details: (name: string) => `${name} 的詳細資料`,
+  loading: "正在載入診斷資料…",
+  empty: "尚無診斷資料",
+  emptyHint: "機器人發布硬體與軟體檢查結果後，會顯示在這裡。",
+  noMatch: (query: string) => `沒有符合「${query}」的項目`,
+  noMatchHint: "搜尋範圍為名稱與硬體 ID。",
+  noProblems: "沒有需要注意的項目：全部正常。",
+  announceError: (name: string, message: string) => (message ? `錯誤：${name}，${message}` : `錯誤：${name}`),
+  announceErrors: (count: number) => `${count} 個新錯誤`,
+}
+
 // The components of a planar or floating joint, in URDF order, and whether each is an angle.
 const POSE_AXES = {
   planar: [
@@ -542,6 +576,7 @@ export const sortableLabels = {
 
 export const treeLabels = {
   toggle: (name: string) => `${name} 底下的項目`,
+  details: (name: string) => `${name} 的詳細資料`,
 }
 
 export const chipGroupLabels = {

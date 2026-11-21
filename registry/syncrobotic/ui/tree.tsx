@@ -1,4 +1,4 @@
-// @syncrobotic/tree v0.27.0 · update: npx shadcn add @syncrobotic/tree --overwrite
+// @syncrobotic/tree v0.28.0 · update: npx shadcn add @syncrobotic/tree --overwrite
 "use client"
 
 import * as React from "react"
@@ -19,14 +19,22 @@ export type TreeNode = {
   href?: string
   disabled?: boolean
   children?: TreeNode[]
+  /**
+   * list mode: a panel under the node, shown while it is open: its details (a key/value table, a log line). A node with
+   * `content` gets a disclosure button even without `children`; with both, the panel comes first, then the children.
+   * Ignored in select mode, where a tree item holds only tree items.
+   */
+  content?: React.ReactNode
 }
 
 export type TreeLabels = {
   /** The disclosure button's name in list mode; aria-expanded says whether it is open. */
   toggle: (name: string) => string
+  /** The same for a node with `content` and no `children`: what opens is its details, not items under it. */
+  details: (name: string) => string
 }
 
-const defaultLabels: TreeLabels = { toggle: (name) => `Items under ${name}` }
+const defaultLabels: TreeLabels = { toggle: (name) => `Items under ${name}`, details: (name) => `Details of ${name}` }
 
 export type TreeProps = {
   items: TreeNode[]
@@ -59,6 +67,7 @@ export type TreeProps = {
 
 const textOf = (n: TreeNode) => n.textValue ?? (typeof n.label === "string" ? n.label : "")
 const isBranch = (n: TreeNode) => Array.isArray(n.children)
+const hasContent = (n: TreeNode) => n.content !== undefined && n.content !== null && n.content !== false
 
 function branchIds(nodes: TreeNode[], out: string[] = []) {
   for (const n of nodes) {
@@ -195,7 +204,8 @@ export function Tree({
           <Meta node={n} />
         </div>
       )
-      if (!isBranch(n)) {
+      const branch = isBranch(n)
+      if (!branch && !hasContent(n)) {
         return (
           <li key={n.id} className="flex">
             {/* Leaves keep the chevron's place, so names line up with their siblings'. */}
@@ -210,7 +220,7 @@ export function Tree({
           <li>
             <div className="flex">
               <CollapsiblePrimitive.Trigger
-                aria-label={labels.toggle(text)}
+                aria-label={branch ? labels.toggle(text) : labels.details(text)}
                 className={cn(
                   "press grid size-(--h-sm) shrink-0 place-items-center rounded-xs hover:bg-accent",
                   "transition-colors duration-(--motion-fast) ease-(--ease-standard) focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring",
@@ -222,7 +232,12 @@ export function Tree({
               <div className="min-w-0 flex-1">{body}</div>
             </div>
             <CollapsiblePrimitive.Content className={content}>
-              <ul className={group}>{renderList(n.children!)}</ul>
+              {hasContent(n) && (
+                <div data-slot="tree-content" className={cn(group, "py-2 pe-2")}>
+                  {n.content}
+                </div>
+              )}
+              {branch && <ul className={group}>{renderList(n.children!)}</ul>}
             </CollapsiblePrimitive.Content>
           </li>
         </CollapsiblePrimitive.Root>

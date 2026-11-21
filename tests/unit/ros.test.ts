@@ -1,10 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import {
   createRosConnection,
+  diagnosticArrayToStatuses,
   goalToPoseStamped,
   isZeroTwist,
   jointStateToJoints,
   laserScanToScan,
+  mergeDiagnostics,
   occupancyGridToGrid,
   parseRosJson,
   pointCloud2ToPoints,
@@ -23,6 +25,7 @@ import {
 } from "@/registry/syncrobotic/lib/ros"
 import { gridToPlan, rasteriseGrid, rosToPlan, scanToPoints, type RobotMapGrid, type RobotMapPose, type RobotMapScan } from "@/registry/syncrobotic/ui/robot-map"
 import type { JointStateJoint } from "@/registry/syncrobotic/ui/joint-state"
+import type { DiagnosticStatus } from "@/registry/syncrobotic/ui/diagnostics"
 import { fakeRosbridge } from "./fake-rosbridge"
 
 // The rosbridge client against a fake socket (the server is played by the test), and the converters against messages
@@ -684,6 +687,59 @@ describe("jointStateToJoints", () => {
 
   it("lists and orders by `order`", () => {
     expect(jointStateToJoints(msg, { order: ["shoulder", "elbow", "wrist"] }).map((j) => j.name)).toEqual(["shoulder", "elbow"])
+  })
+})
+
+describe("diagnosticArrayToStatuses", () => {
+  it("maps levels, hardware_id and values, and stamps each with receivedAt", () => {
+    const statuses: DiagnosticStatus[] = diagnosticArrayToStatuses(
+      {
+        header: { stamp: { sec: 1, nanosec: 0 } },
+        status: [
+          { level: 0, name: "/Power/Battery", message: "OK", hardware_id: "bms", values: [{ key: "Voltage", value: "51.2" }] },
+          { level: 1, name: "/Motors/Lift", message: "Hot", hardware_id: "", values: [] },
+          { level: 2, name: "/Motors/Left wheel", message: "Overcurrent" },
+          { level: 3, name: "/Sensors/Lidar", message: "" },
+        ],
+      },
+      { receivedAt: 42 },
+    )
+    expect(statuses).toEqual([
+      { name: "/Power/Battery", level: "ok", message: "OK", hardwareId: "bms", values: [{ key: "Voltage", value: "51.2" }], receivedAt: 42 },
+      { name: "/Motors/Lift", level: "warn", message: "Hot", receivedAt: 42 },
+      { name: "/Motors/Left wheel", level: "error", message: "Overcurrent", receivedAt: 42 },
+      { name: "/Sensors/Lidar", level: "stale", receivedAt: 42 },
+    ])
+  })
+
+  it("reads the level byte however the bridge wrote it, and an unknown one as stale", () => {
+    const level = (l: number | string) => diagnosticArrayToStatuses({ status: [{ level: l, name: "x" }] }, { receivedAt: 0 })[0]!.level
+    expect(level("Ag==")).toBe("error")
+    expect(level("\u0001")).toBe("warn")
+    expect(level("2")).toBe("error")
+    expect(level(7)).toBe("stale")
+    expect(level(-1)).toBe("stale")
+    expect(level("not base64!")).toBe("stale")
+  })
+
+  it("stamps with the clock when no receivedAt is given", () => {
+    vi.useFakeTimers({ toFake: ["Date"] })
+    vi.setSystemTime(1_800_000_000_000)
+    expect(diagnosticArrayToStatuses({ status: [{ level: 0, name: "x" }] })[0]!.receivedAt).toBe(1_800_000_000_000)
+    vi.useRealTimers()
+  })
+
+  it("mergeDiagnostics keeps each name's latest status in its first place", () => {
+    const a = [
+      { name: "/A", level: "ok" as const },
+      { name: "/B", level: "ok" as const },
+    ]
+    expect(mergeDiagnostics(a, [])).toBe(a)
+    expect(mergeDiagnostics(a, [{ name: "/C", level: "warn" }, { name: "/A", level: "error" }])).toEqual([
+      { name: "/A", level: "error" },
+      { name: "/B", level: "ok" },
+      { name: "/C", level: "warn" },
+    ])
   })
 })
 

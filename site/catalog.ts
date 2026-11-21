@@ -57,6 +57,7 @@ export type StoryFile =
   | "media-player"
   | "camera-feed"
   | "joint-state"
+  | "diagnostics"
   | "tree"
   | "graph"
   | "robot-map"
@@ -748,6 +749,19 @@ const entries: Record<string, Entry> = {
       "List the joints in chain order (base to tool), as the URDF does, not alphabetically.",
     ],
   },
+  diagnostics: {
+    wide: true,
+    group: "Robotics",
+    examples: { file: "diagnostics", prefix: "Diagnostics" },
+    rules: [
+      "For finding what is wrong with a robot's hardware and software, not for raising it: a fault that needs someone now is an alarm too. This panel says where and why; the alarm asks for the action.",
+      "Feed it /diagnostics_agg when the robot runs the aggregator: its \"/\" names give the tree. Raw /diagnostics works too, as a flat list.",
+      "Keep every name's latest status (`mergeDiagnostics`) and stamp each with `receivedAt` when it arrives, never the header stamp. Keep `staleAfterMs` at the aggregator's timeout (5 s) unless a node publishes slower.",
+      "Colour only on the glyph and the word, and only for Warning and Error. Rows are never tinted, so a tree with several problems still reads as a list.",
+      "Do not sort the tree by level: rows that move as levels change are hard to read and to tap. The summary puts the worst first; Problems narrows the tree to it.",
+      "Put it on the robot's own page or a sheet from the fleet table, full width; on a phone it keeps the name and the word and opens a row for the message and values.",
+    ],
+  },
   alert: {
     group: "Feedback",
     examples: { file: "display", prefix: "Alert" },
@@ -829,6 +843,7 @@ const entries: Record<string, Entry> = {
       "meta is a count, a size or a calm state word, in muted text; never a coloured status. A disabled node says why in its meta.",
       "Open what people came for (defaultExpanded or expandAll for short trees); a deep tree starts collapsed.",
       "Give textValue when label is not a string, so type-ahead and screen readers have its name.",
+      "content (list mode) is a node's own details under it, opened by its disclosure button: a short key/value table, a log line. Not a second tree, and not a form.",
     ],
   },
   // Overlays: the docs show the closed trigger; the *Open stories are for visual tests.
@@ -1258,6 +1273,11 @@ const keyboard: Record<string, [string, string][]> = {
     ["+ / -", "Zoom in or out (the wheel too, once the view has focus)"],
     ["0", "Reset the view"],
     ["F", "Fit the robot in view, in its pose now"],
+  ],
+  diagnostics: [
+    ["Tab", "Move to the search box, the filter chips, then each group's and status's disclosure button"],
+    ["← / →", "On the filter chips: move between All and Problems"],
+    ["Enter / Space", "On a chip, choose it; on a disclosure button, open or close the group or the status's values"],
   ],
   tree: [
     ["Tab", "list: move between links and disclosure buttons. select: move into the tree (one stop) and out"],

@@ -6,7 +6,11 @@ Components install as source, so a project keeps the version it installed. Re-ru
 
 ### Added
 - **`streaming-chart` 0.28.0 (beta):** a live line chart for robot telemetry at 20 to 50 Hz (motor currents, speed, temperature, battery voltage). Readings go in through a stable `push(values, time)` on the ref or a `subscribe(push)` function (`ros.subscribe` fits as is), into ring buffers the chart owns, and are drawn on a canvas on requestAnimationFrame, never through a React render. A scrolling window (30 s, 2 min, 10 min), Pause that keeps buffering, ← / → through the buffer and Jump to live, limit lines and a band, a crosshair, a legend with each series' line style and value now, a table view, and screen-reader values that are polite and throttled. Draws nothing off screen or in a hidden tab, steps once a second under reduced motion, and follows the readings' own clock.
-- **`labels-zh-tw` 0.28.0:** `streamingChartLabels`.
+- **`labels-zh-tw` 0.28.0:** `streamingChartLabels`, `diagnosticsLabels`, and `details` in `treeLabels`.
+- **`diagnostics` 0.28.0 (beta):** a robot's hardware and software health as ROS `diagnostic_msgs/DiagnosticArray` reports it, the way rqt_robot_monitor shows it but in the kit's language: the worst level and the counts first, then a tree by the names' "/" paths with the worst level rolled up to each group; each status a glyph and a word (colour only on those, rows never tinted) that opens to its hardware ID and values; Stale when a status has not arrived for `staleAfterMs`, with "updated 12 s ago"; a Problems filter and search by name or hardware ID; a polite, throttled announcement when a status turns ERROR. On [Robotics UI kit](https://design-system.syncrobotic.me/docs/robotics) under The robot's state.
+- **`ros` 0.28.0:** `diagnosticArrayToStatuses` (diagnostics `statuses`, the level byte read however the bridge wrote it) and `mergeDiagnostics` (each name's latest status, as /diagnostics arrives a few at a time).
+- **`tree` 0.28.0:** a node can carry `content`, a panel shown under it while it is open (list mode), with a disclosure button even without children; label `details` names it.
+- **`search-field` 0.28.0:** `onValueChange` (with an optional `value`) filters what is on the screen instead of navigating.
 
 ## 0.27.0 · 2026-11-21
 

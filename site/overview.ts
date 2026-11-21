@@ -129,6 +129,28 @@ export const overviews: Record<string, Overview> = {
       "Every word is in `labels`, including the units (`degrees`, `millimetres`, …) as functions of the formatted number, and `formatTime`; `locale` formats the numbers and the time. Pass the app's locale: left out, numbers are written in English on the server and in every browser alike, so the page hydrates without a mismatch, and a tag Intl cannot read falls back to English.",
     ],
   },
+  diagnostics: {
+    what: "A robot's hardware and software health from ROS diagnostics: the worst level and the counts first, then a tree by name with the worst level rolled up to each group, each status a glyph and a word that opens to its values.",
+    use: [
+      "The Health tab of a robot's page: which motor, sensor, computer or node is unwell, and what it reports.",
+      "A field technician's first look at a robot that stopped: Problems narrows the tree to what is not OK.",
+      "Checking a robot after commissioning or an update: everything OK, nothing stale.",
+    ],
+    instead: [
+      "Something an operator must act on now (a motor fault that stopped the robot): raise an `alarm` as well; this panel shows the detail behind it.",
+      "One robot's state in a list of robots: `status-glyph` with a word, from the worst level here.",
+      "A reading's history (a motor's temperature over a shift): a line chart in `chart`.",
+    ],
+    notes: [
+      "Plain props from `diagnostic_msgs/DiagnosticArray`: `diagnosticArrayToStatuses(msg)` from `ros` maps it, and `mergeDiagnostics(previous, next)` keeps each name's latest status, since /diagnostics brings a few at a time. No ROS library.",
+      "The tree comes from the names' \"/\" paths, as the aggregator writes them (/diagnostics_agg). A group's level is the worst under it: Error, then Stale, then Warning, then OK. A partly stale group reads Stale, not Error as the aggregator has it, so nobody goes to fix a sensor that only stopped talking.",
+      "Stale is timed by `receivedAt` (this browser's clock when the status arrived, never the header stamp) against `staleAfterMs`, 5 s by default as in the aggregator. The panel reads the clock once a second; pass `now` for a fixed picture (tests, screenshots, a bag played back).",
+      "The summary counts each device once: leaves, and a group's own status only when it is worse than everything under it (an aggregator's missing-item error).",
+      "Groups with a problem open by themselves; anything opened or closed by hand stays that way. Problems and search open every group they keep, and remember their own choices separately from the full tree.",
+      "A status that turns ERROR is announced politely (a live region), at most once every 5 s: errors in between are read together, more than three as a count. What is in error when the data first arrives is not announced.",
+      "Every word is in `labels`, with `summary` and `updatedAgo` as functions of numbers and the locale; `locale` formats the numbers. `labels-zh-tw` has `diagnosticsLabels`.",
+    ],
+  },
   "restricted-preview": {
     what: "A preview that does not load until someone asks: restricted data, faces, number plates.",
     use: ["Thumbnails of a restricted dataset in a catalog or gallery."],
@@ -999,14 +1021,14 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   ros: {
-    what: "The rosbridge v2 client and the message converters behind use-ros, in plain TypeScript: a connection that reconnects and resubscribes, and pure functions from OccupancyGrid, LaserScan, PointCloud2, JointState and poses to the components' props, and from a teleop command or a map goal back to Twist and PoseStamped.",
+    what: "The rosbridge v2 client and the message converters behind use-ros, in plain TypeScript: a connection that reconnects and resubscribes, and pure functions from OccupancyGrid, LaserScan, PointCloud2, JointState, DiagnosticArray and poses to the components' props, and from a teleop command or a map goal back to Twist and PoseStamped.",
     use: [
-      "Feeding `robot-map`, `point-cloud`, `joint-state` from ROS messages, whatever brought them (rosbridge, Foxglove, a recorded bag, your backend).",
+      "Feeding `robot-map`, `point-cloud`, `joint-state`, `diagnostics` from ROS messages, whatever brought them (rosbridge, Foxglove, a recorded bag, your backend).",
       "A rosbridge connection outside React: a worker that decodes clouds, a test, a script.",
     ],
     instead: ["Connecting React components: `use-ros`, which installs this."],
     notes: [
-      "`occupancyGridToGrid` (robot-map `grid` or `costmap`), `laserScanToScan(msg, robotId)` (robot-map `scans`), `poseToRobotMapPose(msg, gridToPlan(grid))` (a robot's x, y and heading; takes Pose, PoseStamped, PoseWithCovarianceStamped or Odometry), `goalToPoseStamped(goal, frame)` (robot-map `onGoal` to /goal_pose), `pointCloud2ToPoints` (point-cloud `points` and `intensity`), `jointStateToJoints(msg, { limits })` (joint-state `joints`), `teleopToTwist(command, { maxLinear, maxAngular })`, `stampToMs(header.stamp)` (`updatedAt`). For robot-model, its own `jointStateToRecord`.",
+      "`occupancyGridToGrid` (robot-map `grid` or `costmap`), `laserScanToScan(msg, robotId)` (robot-map `scans`), `poseToRobotMapPose(msg, gridToPlan(grid))` (a robot's x, y and heading; takes Pose, PoseStamped, PoseWithCovarianceStamped or Odometry), `goalToPoseStamped(goal, frame)` (robot-map `onGoal` to /goal_pose), `pointCloud2ToPoints` (point-cloud `points` and `intensity`), `jointStateToJoints(msg, { limits })` (joint-state `joints`), `diagnosticArrayToStatuses(msg)` and `mergeDiagnostics(previous, next)` (diagnostics `statuses`), `teleopToTwist(command, { maxLinear, maxAngular })`, `stampToMs(header.stamp)` (`updatedAt`). For robot-model, its own `jointStateToRecord`.",
       "rosbridge sends `uint8[]` (PointCloud2.data) as base64 and `int8[]` (OccupancyGrid.data) as a list of numbers; the converters read either. NaN and ±Infinity in a LaserScan arrive as null (or as bare tokens, which the client reads as null) and are skipped like out-of-range readings.",
       "A pose must be in the map frame for robot-map (/amcl_pose is; /odom drifts). A scan is drawn from the robot's centre, so transform it to the base frame first if the laser is offset.",
     ],
