@@ -2,6 +2,13 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.24.2 · 2026-11-21
+
+### Fixed
+- **Autofilled fields keep the theme.** A field the browser filled in (a saved search, an address) turned light blue in Chrome, also in dark mode, and inside a search field or input group the blue box sat inside the field's edge. The theme now delays the browser's fill for good and keeps the text in the theme's colour, so a filled field looks like any other. Re-install `syncrobotic-theme`.
+- **The page tells the browser its colour scheme:** `color-scheme: light`, and `dark` inside `.dark`. Native parts (scrollbars, date and time pickers, autofill) now follow the theme instead of staying light on a dark page.
+- Docs: the Code block examples are highlighted the way a product does it, with shiki's output as `children` (they showed plain text, so the component looked uncoloured).
+
 ## 0.24.1 · 2026-11-21
 
 Fixes from an independent review of 0.23.1 and 0.24.0, new behaviour tests, and a sweep of every docs page; the dev tooling moves to current majors.
