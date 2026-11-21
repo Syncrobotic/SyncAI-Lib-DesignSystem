@@ -1114,7 +1114,12 @@ export function RobotMap({
     const [x, y] = toScreen(r.x, r.y)
     return { id: r.id, box: { x: x - DISC, y: y - DISC, w: 2 * DISC, h: 2 * DISC } }
   })
-  // A zone's name sits in its first inside corner that no robot covers: top left, top right, bottom left, bottom right.
+  // The banner and legend in the top-left corner, about as tall as the cards they hold: no name goes under them.
+  const cards: Box[] =
+    editing || costmap || robots.length === 0
+      ? [{ x: 0, y: 0, w: Math.min(size.w, INSET + 360), h: INSET + 36 * ((editing ? 2 : 0) + (costmap ? 1 : 0) + (robots.length ? 0 : 1)) }]
+      : []
+  // A zone's name sits in its first inside corner that no robot or card covers: top left, top right, bottom left, bottom right.
   // Robots move and a zone does not, so the name moves aside rather than hide under a robot.
   const zoneSpots = new Map<string, Box>()
   for (const z of zones) {
@@ -1132,15 +1137,14 @@ export function RobotMap({
       { x: x0 + 4, y: y1 - 4 - LINE, w, h: LINE },
       { x: x1 - 4 - w, y: y1 - 4 - LINE, w, h: LINE },
     ]
-    zoneSpots.set(z.id, spots.find((c) => !discs.some((d) => overlap(d.box, c))) ?? spots[0])
+    zoneSpots.set(z.id, spots.find((c) => !discs.some((d) => overlap(d.box, c)) && !cards.some((b) => overlap(b, c))) ?? spots[0])
   }
   // What a name must not cover either: the zone names, and the buttons and scale bar in the bottom-left corner.
   const vertical = size.h >= 400
   const blocked: Box[] = [
     vertical ? { x: 0, y: size.h - INSET - 3 * 44, w: INSET + 44 + 8 + 120, h: 3 * 44 + INSET } : { x: 0, y: size.h - BOTTOM, w: INSET + 3 * 44 + 8 + 120, h: BOTTOM },
     ...zoneSpots.values(),
-    // The banner and legend in the top-left corner, about as tall as the cards they hold.
-    ...(editing || costmap || robots.length === 0 ? [{ x: 0, y: 0, w: Math.min(size.w, INSET + 360), h: INSET + 36 * ((editing ? 2 : 0) + (costmap ? 1 : 0) + (robots.length ? 0 : 1)) }] : []),
+    ...cards,
   ]
   const inFrame = (b: Box) => b.x >= 0 && b.y >= 0 && b.x + b.w <= size.w && b.y + b.h <= size.h
   const names: Box[] = []
