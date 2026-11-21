@@ -2,6 +2,25 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.24.1 · 2026-11-21
+
+Fixes from an independent review of 0.23.1 and 0.24.0, new behaviour tests, and a sweep of every docs page; the dev tooling moves to current majors.
+
+### Fixed
+- **`robot-map` 0.24.1:** a grid that arrives after the first render is fitted (a view the person moved is left alone); a cancelled drag (second finger, pointer cancel, Esc) puts a waypoint or zone corner back and says so; the selected or carried waypoint is followed by value, so Delete never removes another one when the app changes the list; a fast-updating costmap always shows its latest finished image; the costmap draws over a floorplan; the keyboard crosshair and a carried point announce their position once the keys rest; snapping at the plan edge, the crosshair before the first key, and a goal set twice by pointer and Enter.
+- **`joint-state` 0.24.1:** numbers format in English unless `locale` is given, so the server and the browser agree (an invalid tag falls back instead of throwing); an update is detected by value, so a parent that rebuilds the array still goes stale (pass `updatedAt` so a still arm is not called stale); `staleAfterMs={Infinity}` never goes stale; an infinite limit is no limit.
+- **`point-cloud` 0.24.1:** an inline `colorRange` no longer re-uploads the cloud on every parent render; no black frame on resize; the accessible name stays stable (the count and extent are in a description updated at most every 5 s); Windows forced colours keep the cloud visible; a lost pointer capture ends the drag; live scans reuse one buffer.
+- **`robot-model` 0.24.1:** staleness follows joint values or `updatedAt`, not object identity, and is announced once; a lost WebGL context that does not come back within 5 s shows an error with Load again instead of an endless "Restoring"; an empty URDF is an error; meshes arriving after a change are freed; mesh paths with a query string load; theme changes on an ancestor repaint.
+- **`segmented-control` 0.17.3:** pressing the selected segment no longer clears the choice.
+- **`file-upload` 0.10.1:** with `multiple` off, extra files are refused as `count` instead of dropped silently; `aria-label` and other attributes reach the drop zone.
+- **`timeline` 0.17.4:** a warning or danger event says so to screen readers.
+- Docs: no sideways scroll on phones from long property defaults or identifiers; no 2 px scrollbars on data-grid examples and a code block.
+
+### Changed (repository)
+- Storybook 8.6 → 10.6, Vitest 3 → 5, Vite 6 → 8 (story ids unchanged); `@vitejs/plugin-react`, unused, removed.
+- Behaviour tests for `timeline`, `file-upload`, `scrollspy` and `segmented-control`.
+- Dependabot: weekly grouped minor and patch updates and monthly GitHub Actions updates, as pull requests into `dev`.
+
 ## 0.24.0 · 2026-11-21
 
 Robot components for what an operator sees and does: a LiDAR point cloud, a 3D robot model, joint states, and a robot map that takes ROS grids and scans and can be edited. Every item now compiles under `noUncheckedIndexedAccess`.

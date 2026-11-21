@@ -1,5 +1,5 @@
 import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Battery, BatteryCharging, Bot, Forklift, MapPin, Package, Route, Wrench } from "lucide-react"
 import { Filters, filterRows, fromSearchParams, toQueryString, type FilterField, type FilterRule } from "@/registry/syncrobotic/ui/filters"
 

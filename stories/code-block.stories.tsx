@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { CodeBlock } from "@/registry/syncrobotic/ui/code-block"
 
 const meta: Meta = { title: "Display/Code block" }

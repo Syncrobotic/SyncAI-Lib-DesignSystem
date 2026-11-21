@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { BatteryCharging, GitCommitVertical, MapPin, Rocket, Wrench } from "lucide-react"
 import { Badge } from "@/registry/syncrobotic/ui/badge"
 import { Timeline, TimelineHeading, TimelineItem } from "@/registry/syncrobotic/ui/timeline"

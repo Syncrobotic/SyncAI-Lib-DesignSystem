@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/registry/syncrobotic/ui/hover-card"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
 import { StatusGlyph, type Status } from "@/registry/syncrobotic/shell/status-glyph"

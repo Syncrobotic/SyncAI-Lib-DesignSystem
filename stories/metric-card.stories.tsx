@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { MetricCard, MetricGrid } from "@/registry/syncrobotic/ui/metric-card"
 
 const meta: Meta = { title: "Display/Metric card" }

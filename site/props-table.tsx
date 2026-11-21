@@ -125,10 +125,12 @@ function TypeWithDefault({ type, value }: { type: string; value?: string }) {
   const cut = type.lastIndexOf(" | ")
   const head = cut < 0 ? "" : type.slice(0, cut + 3)
   const tail = cut < 0 ? type : type.slice(cut + 3)
+  // A short pair stays together; a long one (an object default) may wrap, or it pushes a phone's page sideways.
+  const short = tail.length + value.length < 32
   return (
     <>
       {head}
-      <span className="whitespace-nowrap">
+      <span className={short ? "whitespace-nowrap" : undefined}>
         {tail}
         <span className="text-foreground"> = {value}</span>
       </span>

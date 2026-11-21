@@ -1,5 +1,5 @@
 import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Scrollspy, useScrollspy } from "@/registry/syncrobotic/ui/scrollspy"
 
 const meta: Meta = { title: "Navigation/Scrollspy" }

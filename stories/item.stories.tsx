@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react"
-import { fn } from "@storybook/test"
+import type { Meta, StoryObj } from "@storybook/react-vite"
+import { fn } from "storybook/test"
 import { Bell, ChevronRight, FileText, KeyRound, Map, Ellipsis, Plug, Route, Settings, ShieldCheck, Users, Wifi } from "lucide-react"
 import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"
 import { Badge, CountBadge } from "@/registry/syncrobotic/ui/badge"

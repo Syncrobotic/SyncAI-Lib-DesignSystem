@@ -1,5 +1,5 @@
 import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Eye, EyeOff, Info, Search, X } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/registry/syncrobotic/ui/tooltip"
 import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"

@@ -48,6 +48,47 @@ describe("unit conversion", () => {
     expect(rows(container)[0]!.textContent).not.toContain("-0.0°")
   })
 
+  it("rounds a half the same way on both sides of zero", () => {
+    const { container } = render(
+      <JointState
+        joints={[
+          { name: "a", position: 0, effort: 0.05 },
+          { name: "b", position: 0, effort: -0.05 },
+          { name: "c", position: 0, effort: -0.04 },
+        ]}
+      />,
+    )
+    const [a, b, c] = rows(container)
+    expect(a!.textContent).toContain("0.1 N·m")
+    expect(b!.textContent).toContain("-0.1 N·m")
+    expect(c!.textContent).toContain("0.0 N·m")
+    expect(c!.textContent).not.toContain("-0.0")
+  })
+
+  it("writes English without a locale, whatever the runtime's default language, so server and browser agree", async () => {
+    // A runtime whose default language is German, as a browser set to German is; a fresh module so no formatter is cached.
+    const Real = Intl.NumberFormat
+    class German extends Real {
+      constructor(locales?: string | string[], options?: Intl.NumberFormatOptions) {
+        super(locales ?? "de", options)
+      }
+    }
+    vi.stubGlobal("Intl", { ...Intl, NumberFormat: German })
+    try {
+      vi.resetModules()
+      const fresh = await import("@/registry/syncrobotic/ui/joint-state")
+      const { container } = render(<fresh.JointState joints={[{ name: "a1", position: deg(1234.5) }]} />)
+      expect(rows(container)[0]!.textContent).toContain("1,234.5°")
+    } finally {
+      vi.unstubAllGlobals()
+    }
+  })
+
+  it("falls back to English for a locale tag Intl cannot read, rather than throw", () => {
+    const { container } = render(<JointState locale="en_US" joints={[{ name: "a1", position: deg(1234.5) }]} />)
+    expect(rows(container)[0]!.textContent).toContain("1,234.5°")
+  })
+
   it("formats numbers in the given locale", () => {
     const { container } = render(<JointState locale="de" joints={[{ name: "a1", position: deg(1234.5), velocity: deg(0.5) }]} />)
     expect(rows(container)[0]!.textContent).toContain("1.234,5°")
@@ -79,6 +120,16 @@ describe("limit and margin classification", () => {
     expect(classifyJointLimit(0.75, lo, hi, 0.2)).toEqual({ level: "near", side: "upper" })
     expect(classifyJointLimit(0.75, lo, hi, 0.1)).toEqual({ level: "within" })
     expect(classifyJointLimit(0.99, lo, hi, 0)).toEqual({ level: "within" })
+  })
+
+  it("reads an infinite limit as no limit, so the row has no track and no NaN marker", () => {
+    expect(classifyJointLimit(0, -Infinity, 1)).toEqual({ level: "none" })
+    expect(classifyJointLimit(0, -1, Infinity)).toEqual({ level: "none" })
+    const { container } = render(<JointState joints={[{ name: "spin", position: 0, lower: -Infinity, upper: Infinity }]} />)
+    const row = rows(container)[0]!
+    expect(row.dataset.limit).toBe("none")
+    expect(row.querySelector("[data-slot=joint-state-marker]")).toBeNull()
+    expect(row.textContent).toContain("No limits (continuous)")
   })
 
   it("has no level without both limits (a continuous joint)", () => {
@@ -120,7 +171,7 @@ describe("limit and margin classification", () => {
 describe("stale timing", () => {
   const joints: JointStateJoint[] = [{ name: "elbow", position: 0.5, lower: -1, upper: 1 }]
 
-  it("goes stale after staleAfterMs without a new joints array, and a new one clears it", () => {
+  it("goes stale after staleAfterMs without new values, and new values clear it", () => {
     fakeClock()
     vi.setSystemTime(new Date(2026, 10, 21, 14, 2, 31))
     const { rerender } = render(<JointState joints={joints} />)
@@ -130,9 +181,29 @@ describe("stale timing", () => {
     act(() => void vi.advanceTimersByTime(1))
     expect(root().dataset.state).toBe("stale")
     expect(screen.getByRole("status").textContent).toBe("Stale, last update 14:02:31")
-    rerender(<JointState joints={[...joints]} />)
+    rerender(<JointState joints={[{ ...joints[0]!, position: 0.51 }]} />)
     expect(root().dataset.state).toBe("live")
     expect(screen.getByRole("status").textContent).toBe("")
+  })
+
+  it("without a stamp, a rebuilt array with the same values is not an update, so it still goes stale", () => {
+    fakeClock()
+    // A parent that maps its store into a new array on every render, as most do.
+    const { rerender } = render(<JointState joints={joints.map((j) => ({ ...j }))} />)
+    act(() => void vi.advanceTimersByTime(600))
+    rerender(<JointState joints={joints.map((j) => ({ ...j }))} />)
+    act(() => void vi.advanceTimersByTime(400))
+    expect(root().dataset.state).toBe("stale")
+    // New values are an update, in velocity and effort as well as position.
+    rerender(<JointState joints={[{ ...joints[0]!, velocity: 0.2 }]} />)
+    expect(root().dataset.state).toBe("live")
+  })
+
+  it("never goes stale with staleAfterMs={Infinity}", () => {
+    fakeClock()
+    render(<JointState joints={joints} staleAfterMs={Infinity} />)
+    act(() => void vi.advanceTimersByTime(60_000))
+    expect(root().dataset.state).toBe("live")
   })
 
   it("dims the values while stale", () => {

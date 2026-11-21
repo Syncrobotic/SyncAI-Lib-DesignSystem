@@ -3138,7 +3138,9 @@
      "description": "Replace the default content entirely (an avatar, a cover image)."
     }
    ],
-   "inherits": []
+   "inherits": [
+    "<div> (except onDrop, title, children)"
+   ]
   }
  ],
  "filter-form": [
@@ -4280,13 +4282,13 @@
     {
      "name": "updatedAt",
      "type": "number",
-     "description": "When this joint state was measured, in ms since the epoch (the message's `header.stamp`). Given, only a new value is an update (a re-sent old message is not), and it is the time \"Stale · last update\" shows. Without it, each new `joints` array is an update. Either way the wait is timed by this browser's clock."
+     "description": "When this joint state was measured, in ms since the epoch (the message's `header.stamp`). Given, only a new value is an update (a re-sent old message is not), and it is the time \"Stale · last update\" shows. Without it, a change in any joint's position, velocity or effort is an update (a new array with the same values is not), so an arm standing perfectly still reads Stale after `staleAfterMs`: pass the stamp to tell a quiet arm from a silent one. Either way the wait is timed by this browser's clock."
     },
     {
      "name": "staleAfterMs",
      "type": "number",
      "default": "1000",
-     "description": "With no update for this long, the panel says \"Stale\" with the last update's time and dims the values."
+     "description": "With no update for this long, the panel says \"Stale\" with the last update's time and dims the values. `Infinity` never goes stale."
     },
     {
      "name": "margin",
@@ -4297,7 +4299,7 @@
     {
      "name": "locale",
      "type": "string",
-     "description": "BCP 47 tag for the numbers and the time (\"zh-TW\", \"de\"). Left out, numbers use the browser's language."
+     "description": "BCP 47 tag for the numbers and the time (\"zh-TW\", \"de\"): pass the app's locale. Left out, numbers are written in English (\"en\") and the time on a 24-hour clock, the same on the server and in every browser, so the page hydrates cleanly. A tag Intl cannot read falls back to \"en\"."
     },
     {
      "name": "labels",
@@ -5490,6 +5492,12 @@
      "description": "",
      "keys": [
       {
+       "name": "viewName",
+       "type": "string",
+       "default": "\"3D point cloud\"",
+       "description": "What the view is, read after `label` as its name: \"Front lidar, 3D point cloud\". The name stays the same while scans arrive; the count and the extent are in its description instead."
+      },
+      {
        "name": "keys",
        "type": "string",
        "default": "\"Drag to rotate, right-drag or two fingers to pan; the wheel or a pinch zooms once the view has focus. Arrow keys rotate, Shift with the arrows pans, plus and minus zoom, 0 resets the view.\"",
@@ -6068,7 +6076,7 @@
     {
      "name": "costmap",
      "type": "RobotMapGrid",
-     "description": "A ROS costmap (the same message) over the floor, in the accent's ramp from clear to strong, with a legend."
+     "description": "A ROS costmap (the same message) over the floor, in the accent's ramp from clear to strong, with a legend. It is drawn over `floorplan` and `grid`; with a grid and no floorplan, under the grid's obstacles, so walls stay grey over their lethal cost. (A floorplan covers the grid, obstacles and all, so with both the cost is over everything on the floor.)"
     },
     {
      "name": "scans",
@@ -6165,7 +6173,7 @@
     {
      "name": "onWaypointsChange",
      "type": "(waypoints: RobotMapPoint[]) => void",
-     "description": "Waypoints mode: the new list after a waypoint is added, moved (while it moves) or removed."
+     "description": "Waypoints mode: the new list after a waypoint is added, moved (while it moves) or removed. A move that is cancelled (Esc, a second finger, a cancelled pointer) sends the list again with the waypoint where it was."
     },
     {
      "name": "waypointsPlanned",
@@ -6185,7 +6193,7 @@
     {
      "name": "onZonesChange",
      "type": "(zones: RobotMapZone[]) => void",
-     "description": "The zones with a corner moved, while it moves."
+     "description": "The zones with a corner moved, while it moves; a cancelled move sends them again with the corner where it was."
     },
     {
      "name": "snap",
@@ -7062,6 +7070,12 @@
        "type": "string",
        "default": "\"Restoring the 3D view…\"",
        "description": "While the graphics context comes back after the GPU reset it."
+      },
+      {
+       "name": "contextFailed",
+       "type": "string",
+       "default": "\"The 3D view could not be restored.\"",
+       "description": "The context did not come back within a few seconds; under it, Load again draws the view anew."
       },
       {
        "name": "resetView",

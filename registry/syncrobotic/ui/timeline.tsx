@@ -1,4 +1,4 @@
-// @syncrobotic/timeline v0.17.3 · update: npx shadcn add @syncrobotic/timeline --overwrite
+// @syncrobotic/timeline v0.17.4 · update: npx shadcn add @syncrobotic/timeline --overwrite
 "use client"
 
 import * as React from "react"
@@ -123,7 +123,11 @@ export function TimelineItem({
   ) : null
   const body = (
     <div className="flex min-w-0 flex-col gap-1">
-      <span className={cn("text-sm font-medium", tone === "warning" && "text-warning", tone === "danger" && "text-danger")}>{title}</span>
+      <span className={cn("text-sm font-medium", tone === "warning" && "text-warning", tone === "danger" && "text-danger")}>
+        {title}
+        {/* The glyph is hidden from screen readers, so the tone is said in words, as Marker does. */}
+        {(tone === "danger" || tone === "warning") && <span className="sr-only">, {tone === "danger" ? "failed" : "warning"}</span>}
+      </span>
       {children && <div className="text-sm text-muted-foreground">{children}</div>}
     </div>
   )

@@ -106,7 +106,8 @@ export function ServiceLog({ table }: { table: Parameters<typeof DataGrid>[0]["t
   )
 }`
 
-const intl = `// With next-intl (or any i18n library you already use), build the same objects from your messages.
+const intl = `// With next-intl (or any i18n library you already use),
+// build the same objects from your messages.
 const t = useTranslations("kit.dataGrid")
 const labels: Partial<DataGridLabels> = {
   empty: t("empty"),

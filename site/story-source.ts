@@ -97,7 +97,7 @@ function withImports(file: string, code: string) {
   const lines: string[] = []
   if (/\bReact\./.test(body)) lines.push('import * as React from "react"')
   for (const m of src.matchAll(/^import\s+(?:type\s+)?\{([^}]*)\}\s+from\s+"([^"]+)"/gm)) {
-    if (m[2].startsWith("@storybook")) continue
+    if (m[2].startsWith("@storybook") || m[2].startsWith("storybook/")) continue
     const used = m[1]
       .split(",")
       .map((n) => n.trim())
