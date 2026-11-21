@@ -1,4 +1,4 @@
-// @syncrobotic/island v0.22.0 · update: npx shadcn add @syncrobotic/island --overwrite
+// @syncrobotic/island v0.22.1 · update: npx shadcn add @syncrobotic/island --overwrite
 "use client"
 
 import * as React from "react"
@@ -79,8 +79,10 @@ export function Island({
   labels,
   className,
 }: IslandProps) {
-  const lastChildren = React.useRef<React.ReactNode>(children)
-  if (children) lastChildren.current = children
+  // The last notice or panel stays in the slot while it leaves. It is state set during render, not a ref, so the React
+  // Compiler can see the value the markup depends on.
+  const [lastChildren, setLastChildren] = React.useState<React.ReactNode>(children)
+  if (children && children !== lastChildren) setLastChildren(children)
   const slot = usePresence(!!children)
   const l = { ...defaultIslandLabels, ...labels }
   warnTone("Island", tone)
@@ -148,7 +150,7 @@ export function Island({
           className={slot.leaving ? "animate-disappear" : undefined}
           onAnimationEnd={(e) => e.target === e.currentTarget && slot.done()}
         >
-          {children ?? lastChildren.current}
+          {children ?? lastChildren}
         </div>
       )}
     </Tray>
@@ -233,10 +235,10 @@ export function IslandAlarm({ alarms, onAcknowledge, onShowAll, labels, feedback
   const announce = useAlarmSignals(alarms, { feedback, labels })
   const current = topAlarm(alarms)
   // When the last alarm is acknowledged, it fades out where it was (disappear) rather than vanishing.
-  const last = React.useRef(current)
-  if (current) last.current = current
+  const [last, setLast] = React.useState(current)
+  if (current && current !== last) setLast(current)
   const presence = usePresence(!!current)
-  const top = current ?? last.current
+  const top = current ?? last
   if (!presence.mounted || !top) return <AlarmAnnouncer announce={announce} />
   // Counted from the live list, so shelved, suppressed and out-of-service alarms are not "more" the list will not show.
   const others = sortAlarms(alarms).filter((a) => !a.acknowledged).length - 1

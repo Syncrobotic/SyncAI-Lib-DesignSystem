@@ -1,4 +1,4 @@
-// @syncrobotic/robot-map v0.23.0 · update: npx shadcn add @syncrobotic/robot-map --overwrite
+// @syncrobotic/robot-map v0.23.1 · update: npx shadcn add @syncrobotic/robot-map --overwrite
 "use client"
 
 import * as React from "react"
@@ -266,10 +266,14 @@ export function RobotMap({
   const [view, setViewState] = React.useState<View>(fitView)
   const viewRef = React.useRef(view)
   const sizeRef = React.useRef(size)
-  sizeRef.current = size
   const base = Math.max(1e-6, Math.min((size.w - 2 * INSET) / width, (size.h - INSET - BOTTOM) / height))
   const baseRef = React.useRef(base)
-  baseRef.current = base
+  // The wheel and pointer handlers read the frame's size and scale from refs; they are updated after each commit, never
+  // during render, so the React Compiler can keep this component.
+  React.useLayoutEffect(() => {
+    sizeRef.current = size
+    baseRef.current = base
+  })
 
   const limit = (v: View): View => {
     const k = clamp(v.k, 1, MAX_ZOOM)
@@ -443,12 +447,16 @@ export function RobotMap({
   const at = anchor(size)
   const toScreen = (x: number, y: number): [number, number] => [at.x + (x - view.cx) * s, at.y + (y - view.cy) * s]
   const selectedRobot = robots.find((r) => r.id === selected)
-  React.useEffect(() => {
+  // An effect event: it reads the current view and size, but only a change of selection runs it, since a pan away from
+  // the selected robot afterwards is the person's choice.
+  const glideToSelected = React.useEffectEvent(() => {
     if (!selectedRobot) return
     const [x, y] = toScreen(selectedRobot.x, selectedRobot.y)
     const m = 2 * DISC
     if (x < m || y < m || x > size.w - m || y > size.h - m) glideTo({ ...viewRef.current, cx: selectedRobot.x, cy: selectedRobot.y })
-    // Only when the selection changes; a pan away from it afterwards is the person's choice.
+  })
+  React.useEffect(() => {
+    glideToSelected()
   }, [selected])
 
   const hint = `${uid}-hint`

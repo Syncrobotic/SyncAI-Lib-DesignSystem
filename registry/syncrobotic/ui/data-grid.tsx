@@ -1,4 +1,4 @@
-// @syncrobotic/data-grid v0.23.0 · update: npx shadcn add @syncrobotic/data-grid --overwrite
+// @syncrobotic/data-grid v0.23.1 · update: npx shadcn add @syncrobotic/data-grid --overwrite
 "use client"
 
 import * as React from "react"
@@ -167,6 +167,9 @@ export function DataGridTable({
   const scrollRef = React.useRef<HTMLDivElement>(null)
   const edges = useScrollEdges(scrollRef)
   const rows = table.getRowModel().rows
+  // The compiler leaves this component unmemoized because the virtualizer's methods read live scroll state; that is
+  // the intended result, and there is no compiler-friendly API to use instead.
+  // eslint-disable-next-line react-hooks/incompatible-library -- TanStack Virtual's useVirtualizer, skipped on purpose.
   const virtualizer = useVirtualizer({
     count: virtual ? rows.length : 0,
     getScrollElement: () => scrollRef.current,
@@ -500,8 +503,9 @@ export function DataGridSelectionSummary({ children }: { children?: React.ReactN
   const n = table.getSelectedRowModel().rows.length
   // The bar arrives with the first selection and leaves with the last, keeping its count while it goes.
   const { mounted, leaving, done } = usePresence(n > 0)
-  const last = React.useRef(n)
-  if (n) last.current = n
+  // State set during render rather than a ref, so the React Compiler can see what the count depends on.
+  const [last, setLast] = React.useState(n)
+  if (n && n !== last) setLast(n)
   if (!mounted) return null
   return (
     <div
@@ -509,7 +513,7 @@ export function DataGridSelectionSummary({ children }: { children?: React.ReactN
       onAnimationEnd={(e) => e.target === e.currentTarget && done()}
       className={cn("flex h-(--h-md) items-center justify-between gap-3 rounded-sm bg-muted px-3 text-sm", leaving ? "animate-disappear" : "animate-appear")}
     >
-      <span className="tabular-nums">{l.selected(last.current, table.getRowCount())}</span>
+      <span className="tabular-nums">{l.selected(n || last, table.getRowCount())}</span>
       <div className="flex items-center gap-2" inert={leaving || undefined}>
         {children}
       </div>

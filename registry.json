@@ -551,8 +551,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.23.0",
+        "version": "0.23.1",
         "changelog": [
+          {
+            "version": "0.23.1",
+            "date": "2026-11-21",
+            "note": "The latest stop is swapped in after each commit instead of during render, and the pointer-end handlers are no longer built in render, so it is safe under the React Compiler. No visible change."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -627,8 +632,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.0",
+        "version": "0.22.1",
         "changelog": [
+          {
+            "version": "0.22.1",
+            "date": "2026-11-21",
+            "note": "The leaving notice and the last alarm are kept in state set during render instead of refs written during render, so they are safe under the React Compiler. No visible change."
+          },
           {
             "version": "0.22.0",
             "date": "2026-11-20",
@@ -1273,8 +1283,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.8.1",
         "changelog": [
+          {
+            "version": "0.8.1",
+            "date": "2026-11-21",
+            "note": "The last note is kept in state set during render instead of a ref written during render, so it is safe under the React Compiler. A fixed error still fades out while its line closes."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -1515,8 +1530,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.15.1",
         "changelog": [
+          {
+            "version": "0.15.1",
+            "date": "2026-11-21",
+            "note": "FieldSet keeps its last note in state set during render instead of a ref written during render, so it is safe under the React Compiler. No visible change."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -2602,8 +2622,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.23.0",
+        "version": "0.23.1",
         "changelog": [
+          {
+            "version": "0.23.1",
+            "date": "2026-11-21",
+            "note": "The frame size and scale refs are updated after each commit instead of during render, and gliding to a selected robot is an effect event, so it is safe under the React Compiler. No visible change."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -3474,8 +3499,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.17.3",
+        "version": "0.17.4",
         "changelog": [
+          {
+            "version": "0.17.4",
+            "date": "2026-11-21",
+            "note": "The lightbox keeps the last picture in state set during render instead of a ref written during render, so it is safe under the React Compiler. No visible change."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -3635,8 +3665,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.23.0",
+        "version": "0.23.1",
         "changelog": [
+          {
+            "version": "0.23.1",
+            "date": "2026-11-21",
+            "note": "The chip parts' click handlers are written on each button instead of being built in render, so the bar is safe under the React Compiler. No visible change."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -4108,8 +4143,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.23.1",
         "changelog": [
+          {
+            "version": "0.23.1",
+            "date": "2026-11-21",
+            "note": "The selection summary keeps its count while leaving in state set during render instead of a ref, and the table notes why the compiler skips it (TanStack Virtual). No visible change."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",

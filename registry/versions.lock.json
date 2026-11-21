@@ -52,16 +52,16 @@
     "hash": "bfc221fcb6e4e7df"
   },
   "teleop-pad": {
-    "version": "0.23.0",
-    "hash": "c9dbaaa33bb08efa"
+    "version": "0.23.1",
+    "hash": "6f047d07f7579645"
   },
   "dock": {
     "version": "0.8.0",
     "hash": "c1f253777684177c"
   },
   "island": {
-    "version": "0.22.0",
-    "hash": "88424c2a376587d5"
+    "version": "0.22.1",
+    "hash": "09f454828bdd4ee5"
   },
   "list": {
     "version": "0.15.0",
@@ -116,8 +116,8 @@
     "hash": "1dce6b1033d93e98"
   },
   "field": {
-    "version": "0.8.0",
-    "hash": "9e521392d3860c92"
+    "version": "0.8.1",
+    "hash": "c639a81309e7eedc"
   },
   "form": {
     "version": "0.20.0",
@@ -136,8 +136,8 @@
     "hash": "49439b4434ec16c7"
   },
   "choice-field": {
-    "version": "0.15.0",
-    "hash": "c19978145e9fa95a"
+    "version": "0.15.1",
+    "hash": "89dfed8616c38732"
   },
   "select": {
     "version": "0.17.4",
@@ -236,8 +236,8 @@
     "hash": "a0fbcff3afb425b6"
   },
   "robot-map": {
-    "version": "0.23.0",
-    "hash": "942b5e3793f7a9ad"
+    "version": "0.23.1",
+    "hash": "1f49d9907ece4798"
   },
   "dialog": {
     "version": "0.23.0",
@@ -324,8 +324,8 @@
     "hash": "6d75adddb09e47de"
   },
   "image-grid": {
-    "version": "0.17.3",
-    "hash": "092404505fa28c94"
+    "version": "0.17.4",
+    "hash": "967df39ff78a268b"
   },
   "annotated-image": {
     "version": "0.18.0",
@@ -344,8 +344,8 @@
     "hash": "4408d94150b8f69d"
   },
   "filters": {
-    "version": "0.23.0",
-    "hash": "b109790f076ff245"
+    "version": "0.23.1",
+    "hash": "e420108c2df07310"
   },
   "search-field": {
     "version": "0.23.0",
@@ -384,8 +384,8 @@
     "hash": "d86ecb3812684732"
   },
   "data-grid": {
-    "version": "0.23.0",
-    "hash": "b099844beeb34134"
+    "version": "0.23.1",
+    "hash": "ae818b049562f565"
   },
   "sortable": {
     "version": "0.23.0",

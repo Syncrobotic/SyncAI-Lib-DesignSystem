@@ -1,4 +1,4 @@
-// @syncrobotic/image-grid v0.17.3 · update: npx shadcn add @syncrobotic/image-grid --overwrite
+// @syncrobotic/image-grid v0.17.4 · update: npx shadcn add @syncrobotic/image-grid --overwrite
 "use client"
 
 import * as React from "react"
@@ -342,9 +342,10 @@ function Lightbox({
 }) {
   const content = React.useRef<HTMLDivElement>(null)
   // Keep the last picture while the dialog fades out, instead of an empty frame.
-  const shown = React.useRef(0)
-  if (index !== null) shown.current = index
-  const i = shown.current
+  // State set during render rather than a ref, so the React Compiler can see what the markup depends on.
+  const [shown, setShown] = React.useState(index ?? 0)
+  if (index !== null && index !== shown) setShown(index)
+  const i = index ?? shown
   const item = items[i]
   const total = items.length
   const go = (to: number) => to >= 0 && to < total && onIndexChange(to)
