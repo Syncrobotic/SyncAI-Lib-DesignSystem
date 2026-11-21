@@ -347,6 +347,10 @@
     "version": "0.24.0",
     "hash": "ce33b68a1086b0f4"
   },
+  "robot-model": {
+    "version": "0.24.0",
+    "hash": "083e34f151addcc1"
+  },
   "filter-form": {
     "version": "0.10.0",
     "hash": "4408d94150b8f69d"

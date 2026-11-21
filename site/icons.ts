@@ -208,7 +208,7 @@ export const iconGroups: IconGroup[] = [
       e(MapPinOff, "No location to show"),
       e(LocateOff, "Lost its localisation"),
       e(Navigation, "Show the robot on the map"),
-      e(Crosshair, "Centre the map"),
+      e(Crosshair, "Centre the map, or fit a 3D view to what it shows"),
       e(Warehouse, "A site"),
       e(Hand, "A person took over on site"),
       e(Joystick, "Drive remotely"),
