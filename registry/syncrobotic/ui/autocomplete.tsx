@@ -1,4 +1,4 @@
-// @syncrobotic/autocomplete v0.23.0 · update: npx shadcn add @syncrobotic/autocomplete --overwrite
+// @syncrobotic/autocomplete v0.23.1 · update: npx shadcn add @syncrobotic/autocomplete --overwrite
 "use client"
 
 import * as React from "react"
@@ -99,7 +99,13 @@ export function Autocomplete({
   const inputRef = React.useRef<HTMLInputElement>(null)
   const sendQuery = useDebouncedCallback((q: string) => onQueryChange?.(q), debounce)
 
-  React.useEffect(() => setQuery(selected?.label ?? ""), [selected?.label])
+  // A new selection (from outside or from a pick) puts its label in the field, during the render that brings it
+  // rather than in an effect that renders twice.
+  const [prevLabel, setPrevLabel] = React.useState(selected?.label)
+  if (selected?.label !== prevLabel) {
+    setPrevLabel(selected?.label)
+    setQuery(selected?.label ?? "")
+  }
 
   const typed = query !== (selected?.label ?? "")
   const shown = filter && typed ? options.filter((o) => `${o.label} ${o.description ?? ""}`.toLowerCase().includes(query.toLowerCase())) : options

@@ -189,8 +189,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.5.1",
         "changelog": [
+          {
+            "version": "0.5.1",
+            "date": "2026-11-21",
+            "note": "The frame loop is declared inside the press handler instead of referring to itself before its declaration, so it is safe under the React Compiler. No visible change."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -255,8 +260,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.8.1",
         "changelog": [
+          {
+            "version": "0.8.1",
+            "date": "2026-11-21",
+            "note": "Showing again mounts in the same render instead of an effect later, so it is safe under the React Compiler. No visible change."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -280,8 +290,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.15.1",
         "changelog": [
+          {
+            "version": "0.15.1",
+            "date": "2026-11-21",
+            "note": "useDebouncedCallback keeps its timer and pending arguments in a closure instead of refs read during render, so it is safe under the React Compiler. Same behaviour: one stable function per delay, always calling the latest fn."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -536,8 +551,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.23.0",
+        "version": "0.23.1",
         "changelog": [
+          {
+            "version": "0.23.1",
+            "date": "2026-11-21",
+            "note": "The latest stop is swapped in after each commit instead of during render, and the pointer-end handlers are no longer built in render, so it is safe under the React Compiler. No visible change."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -612,8 +632,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.0",
+        "version": "0.22.1",
         "changelog": [
+          {
+            "version": "0.22.1",
+            "date": "2026-11-21",
+            "note": "The leaving notice and the last alarm are kept in state set during render instead of refs written during render, so they are safe under the React Compiler. No visible change."
+          },
           {
             "version": "0.22.0",
             "date": "2026-11-20",
@@ -1082,8 +1107,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.17.4",
         "changelog": [
+          {
+            "version": "0.17.4",
+            "date": "2026-11-21",
+            "note": "Wiring the Field's id onto the first text box no longer reassigns a variable from a callback, so it is safe under the React Compiler. No visible change."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -1258,8 +1288,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.8.1",
         "changelog": [
+          {
+            "version": "0.8.1",
+            "date": "2026-11-21",
+            "note": "The last note is kept in state set during render instead of a ref written during render, so it is safe under the React Compiler. A fixed error still fades out while its line closes."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -1500,8 +1535,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.15.1",
         "changelog": [
+          {
+            "version": "0.15.1",
+            "date": "2026-11-21",
+            "note": "FieldSet keeps its last note in state set during render instead of a ref written during render, so it is safe under the React Compiler. No visible change."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -2523,8 +2563,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.18.0",
+        "version": "0.18.1",
         "changelog": [
+          {
+            "version": "0.18.1",
+            "date": "2026-11-21",
+            "note": "Type-ahead times letters by the key event's own timeStamp instead of calling Date.now() in the component, so it is safe under the React Compiler. Same half-second window."
+          },
           {
             "version": "0.18.0",
             "date": "2026-11-19",
@@ -2553,8 +2598,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.21.0",
+        "version": "0.21.1",
         "changelog": [
+          {
+            "version": "0.21.1",
+            "date": "2026-11-21",
+            "note": "The path walk is written as plain statements instead of a comma expression. No visible change."
+          },
           {
             "version": "0.21.0",
             "date": "2026-11-20",
@@ -2587,8 +2637,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.23.0",
+        "version": "0.23.1",
         "changelog": [
+          {
+            "version": "0.23.1",
+            "date": "2026-11-21",
+            "note": "The frame size and scale refs are updated after each commit instead of during render, and gliding to a selected robot is an effect event, so it is safe under the React Compiler. No visible change."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -3459,8 +3514,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.17.3",
+        "version": "0.17.4",
         "changelog": [
+          {
+            "version": "0.17.4",
+            "date": "2026-11-21",
+            "note": "The lightbox keeps the last picture in state set during render instead of a ref written during render, so it is safe under the React Compiler. No visible change."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -3526,8 +3586,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.21.0",
+        "version": "0.21.1",
         "changelog": [
+          {
+            "version": "0.21.1",
+            "date": "2026-11-21",
+            "note": "A duration hint that arrives later is taken in the render that brings it instead of an effect later, so it is safe under the React Compiler."
+          },
           {
             "version": "0.21.0",
             "date": "2026-11-20",
@@ -3559,8 +3624,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.23.0",
+        "version": "0.23.1",
         "changelog": [
+          {
+            "version": "0.23.1",
+            "date": "2026-11-21",
+            "note": "A new source resets the feed's state in the render that brings it instead of an effect later, and the frame callbacks' ref is updated after commit, so it is safe under the React Compiler."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -3620,8 +3690,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.23.0",
+        "version": "0.23.1",
         "changelog": [
+          {
+            "version": "0.23.1",
+            "date": "2026-11-21",
+            "note": "The chip parts' click handlers are written on each button instead of being built in render, so the bar is safe under the React Compiler. No visible change."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -3733,8 +3808,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.23.1",
         "changelog": [
+          {
+            "version": "0.23.1",
+            "date": "2026-11-21",
+            "note": "The bar leaves in the same render `active` turns false instead of an effect later, so it is safe under the React Compiler."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -3771,8 +3851,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.23.1",
         "changelog": [
+          {
+            "version": "0.23.1",
+            "date": "2026-11-21",
+            "note": "A new selection writes its label into the field in the render that brings it instead of an effect later, so it is safe under the React Compiler."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -4037,8 +4122,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.23.1",
         "changelog": [
+          {
+            "version": "0.23.1",
+            "date": "2026-11-21",
+            "note": "TimeInput rewrites its text for a new value or clock in the render that brings it instead of an effect later, so it is safe under the React Compiler."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -4093,8 +4183,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.23.1",
         "changelog": [
+          {
+            "version": "0.23.1",
+            "date": "2026-11-21",
+            "note": "The selection summary keeps its count while leaving in state set during render instead of a ref, and the table notes why the compiler skips it (TanStack Virtual). No visible change."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -4280,8 +4375,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.23.1",
         "changelog": [
+          {
+            "version": "0.23.1",
+            "date": "2026-11-21",
+            "note": "Removes a stale lint comment for a rule this kit does not use. No visible change."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -4894,8 +4994,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.2",
+        "version": "0.22.3",
         "changelog": [
+          {
+            "version": "0.22.3",
+            "date": "2026-11-21",
+            "note": "ShellSearch reads the platform for its shortcut with useSyncExternalStore instead of setting state in an effect. Still says Ctrl K until hydrated."
+          },
           {
             "version": "0.22.2",
             "date": "2026-11-20",
@@ -5119,8 +5224,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.17.4",
         "changelog": [
+          {
+            "version": "0.17.4",
+            "date": "2026-11-21",
+            "note": "A wide screen opens on the first robot from state set during render (after hydration) instead of an effect, so it is safe under the React Compiler."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -7326,8 +7436,13 @@
         }
       ],
       "meta": {
-        "version": "0.21.0",
+        "version": "0.21.1",
         "changelog": [
+          {
+            "version": "0.21.1",
+            "date": "2026-11-21",
+            "note": "A new notifications list replaces the local one in the render that brings it instead of an effect later, so it is safe under the React Compiler."
+          },
           {
             "version": "0.21.0",
             "date": "2026-11-20",

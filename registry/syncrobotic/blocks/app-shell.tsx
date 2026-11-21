@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell v0.22.2 · update: npx shadcn add @syncrobotic/app-shell --overwrite
+// @syncrobotic/app-shell v0.22.3 · update: npx shadcn add @syncrobotic/app-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -336,6 +336,10 @@ export function SidebarUserMenu({
   )
 }
 
+// The platform never changes while the page is open, so there is nothing to subscribe to.
+const subscribeNothing = () => () => {}
+const isMac = () => /Mac|iPhone|iPad/.test(navigator.platform)
+
 /**
  * The top bar's search. The field shows the scope and ⌘K; pressing it (or the shortcut anywhere) opens the palette,
  * where typing narrows the results and the scope narrows the groups. The scope can be changed in the field or the palette.
@@ -345,9 +349,9 @@ export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch;
   const scopes = search.scopes ?? [{ value: "all", label: "Everything" }]
   const [scope, setScope] = React.useState(scopes[0].value)
   const scopeLabel = scopes.find((s) => s.value === scope)?.label
-  const [mac, setMac] = React.useState(false)
+  // The platform is read on the client only; the server, and the hydrating render, say "Ctrl K" as before.
+  const mac = React.useSyncExternalStore(subscribeNothing, isMac, () => false)
   React.useEffect(() => {
-    setMac(/Mac|iPhone|iPad/.test(navigator.platform))
     const onKey = (e: KeyboardEvent) => {
       if (e.key.toLowerCase() === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault()

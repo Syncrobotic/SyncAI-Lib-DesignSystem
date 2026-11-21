@@ -1,4 +1,4 @@
-// @syncrobotic/media-player v0.21.0 · update: npx shadcn add @syncrobotic/media-player --overwrite
+// @syncrobotic/media-player v0.21.1 · update: npx shadcn add @syncrobotic/media-player --overwrite
 "use client"
 
 import * as React from "react"
@@ -161,9 +161,13 @@ export function MediaPlayer({
   const pointerType = React.useRef("mouse")
   const started = React.useRef(false)
 
-  React.useEffect(() => {
+  // A hint that arrives later fills in a duration the media has not reported yet, during the render that brings it.
+  // Object.is, because a NaN hint is never equal to itself and would otherwise set state on every render.
+  const [prevHint, setPrevHint] = React.useState(durationHint)
+  if (!Object.is(durationHint, prevHint)) {
+    setPrevHint(durationHint)
     if (Number.isFinite(durationHint)) setDuration((d) => (Number.isFinite(d) ? d : (durationHint as number)))
-  }, [durationHint])
+  }
 
   const poke = React.useCallback(() => {
     setActive(true)

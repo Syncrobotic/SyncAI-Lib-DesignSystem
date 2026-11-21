@@ -1,4 +1,4 @@
-// @syncrobotic/teleop-pad v0.23.0 · update: npx shadcn add @syncrobotic/teleop-pad --overwrite
+// @syncrobotic/teleop-pad v0.23.1 · update: npx shadcn add @syncrobotic/teleop-pad --overwrite
 "use client"
 
 import * as React from "react"
@@ -193,8 +193,11 @@ export function TeleopPad({
     setKnob({ x: 0, y: 0 })
     setStatus(reason === "disabled" ? "idle" : lost.has(reason) ? "lost" : "stopped")
   }
+  // The listeners and timers below call the latest stop. It is swapped in after each commit, never during render.
   const stopRef = React.useRef(stop)
-  stopRef.current = stop
+  React.useLayoutEffect(() => {
+    stopRef.current = stop
+  })
 
   // A fixed rate, by a self-scheduling timeout: each send queues the next, so a slow handler delays, never bunches.
   const send = () => {
@@ -274,7 +277,8 @@ export function TeleopPad({
     aim((e.clientX - p.x) / p.travel, (e.clientY - p.y) / p.travel)
   }
 
-  const onPointerEnd = (reason: TeleopStopReason) => (e: React.PointerEvent<HTMLDivElement>) => {
+  // Called from the handlers themselves, not curried in render, so building the markup never touches the refs.
+  const onPointerEnd = (e: React.PointerEvent<HTMLDivElement>, reason: TeleopStopReason) => {
     if (engaged.current === "pointer" && pointer.current?.id === e.pointerId) stop(reason)
   }
 
@@ -348,9 +352,9 @@ export function TeleopPad({
         tabIndex={0}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
-        onPointerUp={onPointerEnd("release")}
-        onPointerCancel={onPointerEnd("cancel")}
-        onLostPointerCapture={onPointerEnd("cancel")}
+        onPointerUp={(e) => onPointerEnd(e, "release")}
+        onPointerCancel={(e) => onPointerEnd(e, "cancel")}
+        onLostPointerCapture={(e) => onPointerEnd(e, "cancel")}
         onContextMenu={(e) => e.preventDefault()}
         onKeyDown={onKeyDown}
         onKeyUp={onKeyUp}

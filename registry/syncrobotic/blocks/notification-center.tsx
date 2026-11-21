@@ -1,4 +1,4 @@
-// @syncrobotic/notification-center v0.21.0 · update: npx shadcn add @syncrobotic/notification-center --overwrite
+// @syncrobotic/notification-center v0.21.1 · update: npx shadcn add @syncrobotic/notification-center --overwrite
 "use client"
 
 import * as React from "react"
@@ -360,9 +360,13 @@ export function NotificationCenter({
   ...panel
 }: NotificationCenterProps) {
   const [items, setItems] = React.useState(given ?? sampleNotifications)
-  React.useEffect(() => {
+  // A new list from the product replaces the local one (which marks rows read at once), during the render that brings
+  // it rather than in an effect that renders twice.
+  const [prevGiven, setPrevGiven] = React.useState(given)
+  if (given !== prevGiven) {
+    setPrevGiven(given)
     if (given) setItems(given)
-  }, [given])
+  }
   const [open, setOpen] = React.useState(!!defaultOpen)
   // Only the opening on load (a preview) may keep the page's focus; once someone opens it, focus goes into the list.
   const skipFocus = React.useRef(!!defaultOpen && !focusOnOpen)

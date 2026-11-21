@@ -1,4 +1,4 @@
-// @syncrobotic/camera-feed v0.23.0 · update: npx shadcn add @syncrobotic/camera-feed --overwrite
+// @syncrobotic/camera-feed v0.23.1 · update: npx shadcn add @syncrobotic/camera-feed --overwrite
 "use client"
 
 import * as React from "react"
@@ -154,8 +154,12 @@ export function CameraFeed({
   const lastFrame = React.useRef<number | null>(null)
   const staleTimer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const watching = status === "live" && hasSource && !paused && !videoError
+  // The frame and timer callbacks read whether frames are expected from a ref, updated after each commit rather than
+  // during render.
   const watchingRef = React.useRef(watching)
-  watchingRef.current = watching
+  React.useLayoutEffect(() => {
+    watchingRef.current = watching
+  })
   const flags = React.useRef({ hasFrame: false, stalled: false })
 
   const arm = React.useCallback(() => {
@@ -180,14 +184,19 @@ export function CameraFeed({
     if (watchingRef.current) arm()
   }, [arm])
 
-  // A new source starts over: connecting until its first frame.
-  React.useEffect(() => {
-    flags.current = { hasFrame: false, stalled: false }
-    lastFrame.current = null
+  // A new source starts over: connecting until its first frame. The state is reset during the render that brings the
+  // new source, so no frame is drawn with the old source's state; the refs and the video element follow in the effect.
+  const [feed, setFeed] = React.useState({ stream, src })
+  if (feed.stream !== stream || feed.src !== src) {
+    setFeed({ stream, src })
     setHasFrame(false)
     setStalledAt(null)
     setVideoError(false)
     setPaused(false)
+  }
+  React.useEffect(() => {
+    flags.current = { hasFrame: false, stalled: false }
+    lastFrame.current = null
     const video = videoRef.current
     if (!video) return
     video.srcObject = stream ?? null
