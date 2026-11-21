@@ -70,9 +70,9 @@ for (const file of ROOTS.flatMap(walk)) {
     if (/motion-ok:/.test((lines[i - 1] ?? "") + l)) return
     for (const m of l.matchAll(/(?<![\w-])(duration-\d+|ease-(?:in|out|in-out|linear)\b|delay-\d+)/g))
       fail(file, i + 1, `${m[0]}: use duration-(--motion-fast|base|sheet) and ease-(--ease-standard)`)
-    // 4. A duration token always travels with the curve; without it Tailwind's own default curve applies.
+    // 4. A duration token always travels with a curve token (standard, or exit for leaving); without it Tailwind's default applies.
     for (const m of l.matchAll(/["`][^"`\n]*duration-\(--motion-\w+\)[^"`\n]*["`]/g))
-      if (!m[0].includes("ease-(--ease-standard)")) fail(file, i + 1, "duration-(--motion-*) without ease-(--ease-standard) on the same element")
+      if (!/ease-\(--ease-(standard|exit)\)/.test(m[0])) fail(file, i + 1, "duration-(--motion-*) without ease-(--ease-standard) or, for an exit, ease-(--ease-exit) on the same element")
     // 5. Loops only while waiting: the Spinner (animate-spin), the skeleton's breath and the caret; all stop under reduced motion (theme).
     if (!file.endsWith("spinner.tsx"))
       for (const m of l.matchAll(/(?<![\w-])animate-(spin|pulse|ping|bounce)\b/g)) fail(file, i + 1, `${m[0]}: loops are only for waiting; use <Spinner /> (or Skeleton for a shape)`)

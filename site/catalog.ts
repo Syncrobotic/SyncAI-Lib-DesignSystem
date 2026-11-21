@@ -757,6 +757,8 @@ const entries: Record<string, Entry> = {
   banner: {
     group: "Feedback",
     examples: { file: "banner", prefix: "Banner" },
+    // A banner spans the page, so its examples do too, also once it is dismissed.
+    wide: true,
     rules: [
       "About the app, not one record: maintenance, read-only mode, a trial ending, no connection. A condition of one page or form is an Alert in the content; the result of what someone just did is a Toast.",
       "Full width, first in the page (or above the whole app), before the header in the DOM so it is read first. At most one at a time: show the most severe and let the next one wait.",

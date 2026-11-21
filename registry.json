@@ -2138,8 +2138,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.21.0",
+        "version": "0.27.0",
         "changelog": [
+          {
+            "version": "0.27.0",
+            "date": "2026-11-21",
+            "note": "Opens and closes its height as it fades, so the page under it slides instead of jumping when it is dismissed or shown again."
+          },
           {
             "version": "0.21.0",
             "date": "2026-11-20",
@@ -2688,8 +2693,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.18.2",
+        "version": "0.27.0",
         "changelog": [
+          {
+            "version": "0.27.0",
+            "date": "2026-11-21",
+            "note": "An empty folder opens and closes in place; it opened as tall as its parent folder before snapping shut."
+          },
           {
             "version": "0.18.2",
             "date": "2026-11-21",
@@ -5029,8 +5039,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.27.0",
         "changelog": [
+          {
+            "version": "0.27.0",
+            "date": "2026-11-21",
+            "note": "A span with nothing under it opens and closes in place instead of as tall as its parent span."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",

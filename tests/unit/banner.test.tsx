@@ -37,7 +37,10 @@ describe("Banner", () => {
     expect(screen.queryByRole("button")).toBeNull()
   })
 
-  it("calls onDismiss from a named close button, and leaves with the disappear movement once open is false", () => {
+  // jsdom has no TransitionEvent, so the property that finished is set by hand.
+  const transitionEnd = (propertyName: string) => Object.assign(new Event("transitionend", { bubbles: true }), { propertyName })
+
+  it("calls onDismiss from a named close button, and fades and closes its height once open is false", () => {
     function Dismissible({ onDismiss }: { onDismiss: () => void }) {
       const [open, setOpen] = React.useState(true)
       return (
@@ -61,9 +64,15 @@ describe("Banner", () => {
     expect(onDismiss).toHaveBeenCalledOnce()
     const leaving = document.querySelector("[data-slot=banner]")!
     expect(leaving.getAttribute("aria-hidden")).toBe("true")
-    expect(leaving.className).toContain("animate-disappear")
+    expect(leaving.className).toContain("grid-rows-[0fr]")
+    expect(leaving.className).toContain("opacity-0")
+    // The opacity ending first does not remove it; the height closing does.
     act(() => {
-      fireEvent.animationEnd(leaving)
+      fireEvent(leaving, transitionEnd("opacity"))
+    })
+    expect(document.querySelector("[data-slot=banner]")).not.toBeNull()
+    act(() => {
+      fireEvent(leaving, transitionEnd("grid-template-rows"))
     })
     expect(document.querySelector("[data-slot=banner]")).toBeNull()
   })
@@ -72,7 +81,10 @@ describe("Banner", () => {
     const { rerender } = render(<Banner open={false}>No connection to the server.</Banner>)
     expect(document.querySelector("[data-slot=banner]")).toBeNull()
     rerender(<Banner open>No connection to the server.</Banner>)
-    expect(document.querySelector("[data-slot=banner]")!.className).toContain("animate-appear")
+    // It opens from no height (@starting-style) to its own.
+    const shown = document.querySelector("[data-slot=banner]")!.className
+    expect(shown).toContain("starting:grid-rows-[0fr]")
+    expect(shown).toContain("grid-rows-[1fr]")
   })
 
   it("keeps its targets 44 px: the close button uses --h-md", () => {

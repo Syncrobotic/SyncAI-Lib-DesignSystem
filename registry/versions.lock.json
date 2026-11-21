@@ -13,7 +13,7 @@
   },
   "labels-zh-tw": {
     "version": "0.27.0",
-    "hash": "f5baa408b39e590a"
+    "hash": "136b4d86f6081b00"
   },
   "ros": {
     "version": "0.27.0",
@@ -196,8 +196,8 @@
     "hash": "45894bb1e3691d66"
   },
   "banner": {
-    "version": "0.21.0",
-    "hash": "9fd748972df04a74"
+    "version": "0.27.0",
+    "hash": "e37543f8bac4b42a"
   },
   "alert": {
     "version": "0.17.3",
@@ -240,8 +240,8 @@
     "hash": "a542674c1883114e"
   },
   "tree": {
-    "version": "0.18.2",
-    "hash": "25a769fcedbda7ae"
+    "version": "0.27.0",
+    "hash": "7cb44a42f828a3d3"
   },
   "graph": {
     "version": "0.21.2",
@@ -452,8 +452,8 @@
     "hash": "1f98c6ae3da7b5ed"
   },
   "trace": {
-    "version": "0.23.0",
-    "hash": "6e71ba17106892b1"
+    "version": "0.27.0",
+    "hash": "6f71586e77c6052b"
   },
   "marker": {
     "version": "0.13.0",

@@ -1,4 +1,4 @@
-// @syncrobotic/banner v0.21.0 · update: npx shadcn add @syncrobotic/banner --overwrite
+// @syncrobotic/banner v0.27.0 · update: npx shadcn add @syncrobotic/banner --overwrite
 "use client"
 
 import * as React from "react"
@@ -29,7 +29,7 @@ export type BannerProps = Omit<React.ComponentProps<"div">, "title"> & {
   onDismiss?: () => void
   /** The close button's name for screen readers. */
   dismissLabel?: string
-  /** false hides it with the disappear movement. Default true. */
+  /** false hides it: it fades and closes its height. Default true. */
   open?: boolean
 }
 
@@ -49,32 +49,41 @@ export function Banner({ tone = "neutral", icon, title, action, onDismiss, dismi
       data-tone={tone}
       role={tone === "danger" ? "alert" : "status"}
       aria-hidden={leaving || undefined}
-      onAnimationEnd={(e) => {
-        if (leaving && e.target === e.currentTarget) done()
+      onTransitionEnd={(e) => {
+        if (leaving && e.target === e.currentTarget && e.propertyName === "grid-template-rows") done()
       }}
-      className={cn("flex w-full items-start gap-2 border-b border-border px-4 py-1", t.band, leaving ? "animate-disappear" : "animate-appear", className)}
+      // It opens and closes its own height, so what sits under it (the whole app, at the top of the page) slides with it
+      // instead of jumping when it comes or goes.
+      className={cn(
+        "grid w-full border-b border-border transition-[grid-template-rows,opacity] duration-(--motion-base) ease-(--ease-standard) starting:grid-rows-[0fr] starting:opacity-0",
+        leaving ? "grid-rows-[0fr] opacity-0 duration-(--motion-fast) ease-(--ease-exit)" : "grid-rows-[1fr]",
+        t.band,
+        className,
+      )}
       {...props}
     >
-      {/* The icon sits on the first line of words: each line of the row is a 44 px target, the words 20 px in its middle. */}
-      <Icon aria-hidden="true" className={cn("mt-3 size-5 shrink-0", t.icon)} />
-      {/* The words wrap rather than being cut; when the action would squeeze them under 240 px it moves under them. */}
-      <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-4">
-        <p className="min-w-0 flex-1 basis-60 py-3 text-sm text-pretty break-words">
-          {title && <span className="font-medium">{title} </span>}
-          {children && <span className={cn(title && "text-muted-foreground")}>{children}</span>}
-        </p>
-        {action && <div className="flex shrink-0 items-center">{action}</div>}
+      <div className="flex min-h-0 items-start gap-2 overflow-hidden px-4 py-1">
+        {/* The icon sits on the first line of words: each line of the row is a 44 px target, the words 20 px in its middle. */}
+        <Icon aria-hidden="true" className={cn("mt-3 size-5 shrink-0", t.icon)} />
+        {/* The words wrap rather than being cut; when the action would squeeze them under 240 px it moves under them. */}
+        <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-4">
+          <p className="min-w-0 flex-1 basis-60 py-3 text-sm text-pretty break-words">
+            {title && <span className="font-medium">{title} </span>}
+            {children && <span className={cn(title && "text-muted-foreground")}>{children}</span>}
+          </p>
+          {action && <div className="flex shrink-0 items-center">{action}</div>}
+        </div>
+        {onDismiss && (
+          <button
+            type="button"
+            aria-label={dismissLabel}
+            onClick={onDismiss}
+            className="press -mr-3 flex size-(--h-md) shrink-0 items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground"
+          >
+            <X aria-hidden="true" className="size-5" />
+          </button>
+        )}
       </div>
-      {onDismiss && (
-        <button
-          type="button"
-          aria-label={dismissLabel}
-          onClick={onDismiss}
-          className="press -mr-3 flex size-(--h-md) shrink-0 items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground"
-        >
-          <X aria-hidden="true" className="size-5" />
-        </button>
-      )}
     </div>
   )
 }

@@ -14,6 +14,9 @@ Connect the robotics components to a real robot over rosbridge, and a ready-made
 - **`time-picker` 0.23.3:** a malformed value ("9", "25:99") reads as no time instead of showing NaN; a malformed `min`, `max` or `step` falls back to its default.
 - **`text-diff` 0.16.2:** text of spacing alone round-trips through `tokenize` exactly and is never shown as a word added or removed.
 - **`robot-model` 0.24.2:** mimic joints follow their driving joint unclamped and whatever the order of the record; planar and floating joints take `[x, y, θ]` and `[x, y, z, roll, pitch, yaw]` and are written with the new `poseValue` label (mm and degrees per component).
+- **`banner` 0.27.0:** opens and closes its height as it fades, so the page under it slides instead of jumping when it is dismissed or shown again.
+- **`tree` and `trace` 0.27.0:** an empty folder (or a span with nothing under it) opens and closes in place; it opened as tall as its parent before snapping shut, because Radix leaves its height variable unset at 0.
+- Docs: component pages are short again; the long Table 9 upgrade section on the data-grid page is gone. Banner and tree examples keep their width when they collapse, so they no longer jump sideways.
 - Storybook: the story frame no longer overflows a 390 px phone.
 - CI type-checks its own scripts (`tsconfig.scripts.json`, strict `checkJs`).
 

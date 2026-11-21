@@ -64,7 +64,9 @@ const pages = [
         // A text node in the body always has a parent element and a value.
         if (/** @type {Element} */ (t.parentElement).closest('pre,code,script,style,[data-code]')) continue
         const v = /** @type {string} */ (t.nodeValue).trim()
-        if (/^\/\/ |\bfocus-ring:|\[object Object\]|\bNaN\b/.test(v)) out.push(`text that should not show: "${v.slice(0, 50)}"`)
+        // NaN counts only in a value (a few words, "NaN mm", "x: NaN"); prose about NaN, as the ROS and point-cloud docs have, is fine.
+        const value = v.split(/\s+/).length <= 4
+        if (/^\/\/ |\bfocus-ring:|\[object Object\]/.test(v) || (value && /\bNaN\b/.test(v))) out.push(`text that should not show: "${v.slice(0, 50)}"`)
       }
       return out
     })
