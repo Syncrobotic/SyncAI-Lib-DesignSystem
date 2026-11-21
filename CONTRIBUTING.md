@@ -89,7 +89,9 @@ After changing an item's files, bump its `meta.version` in `registry.json`, add 
 
 ## Branches and releases
 
-`feat/*` → `dev` → `stage` → `main`, each step through a pull request with CI green.
+`feat/*` → `dev` → `stage` → `main`, each step through a pull request with CI green. Promotions into `stage` and `main` use a merge commit, never a squash.
+
+Commit subjects and pull request titles are English [Conventional Commits](https://www.conventionalcommits.org/), as in the [engineering handbook](https://github.com/Syncrobotic/SyncAI-Docs-Handbook): `feat(data-grid): keyboard row selection`, `fix(time-picker): no NaN on a malformed time`, `chore(release): 0.27.0`. The `PR title` check enforces it. The version goes in the body or the changelog, not at the start of the title. A squash merge uses the title as the commit, so the title is what lands on `dev`.
 
 When `main` gets a `package.json` version that has no tag, the `release` workflow tags it `vX.Y.Z` and publishes a GitHub Release with that version's section of `CHANGELOG.md`. CI checks that the section exists.
 
