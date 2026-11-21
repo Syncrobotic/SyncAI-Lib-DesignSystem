@@ -820,6 +820,19 @@
     "tabStops": 20,
     "live": true
   },
+  "log-viewer": {
+    "roles": [
+      "button",
+      "columnheader",
+      "grid",
+      "region",
+      "row",
+      "searchbox",
+      "status"
+    ],
+    "tabStops": 7,
+    "live": true
+  },
   "sortable": {
     "roles": [
       "button",

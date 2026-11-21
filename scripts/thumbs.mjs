@@ -184,6 +184,33 @@ function ink() {
   // The story wrapper itself (padded, the page colour) is the background, not the component.
   const backdrop = new Set([root, root.firstElementChild, root.firstElementChild?.firstElementChild])
   let modal = false
+  // What a scrolling box hides is not drawn: a virtual list keeps lines above and below its viewport. Each rect is cut to
+  // the boxes that clip it.
+  /** @type {Map<Element, DOMRect | null>} */
+  const clips = new Map()
+  /** @type {(el: Element | null) => DOMRect | null} */
+  const clipOf = (el) => {
+    if (!el || el === document.body) return null
+    if (clips.has(el)) return /** @type {DOMRect | null} */ (clips.get(el))
+    const outer = clipOf(el.parentElement)
+    const s = getComputedStyle(el)
+    let c = outer
+    if (s.overflowX !== "visible" || s.overflowY !== "visible") {
+      const b = el.getBoundingClientRect()
+      c = outer ? new DOMRect(Math.max(b.left, outer.left), Math.max(b.top, outer.top), 0, 0) : b
+      if (outer) c = new DOMRect(c.x, c.y, Math.max(0, Math.min(b.right, outer.right) - c.x), Math.max(0, Math.min(b.bottom, outer.bottom) - c.y))
+    }
+    clips.set(el, c)
+    return c
+  }
+  /** @type {(b: DOMRect, el: Element) => DOMRect} */
+  const clipped = (b, el) => {
+    const c = clipOf(el.parentElement)
+    if (!c) return b
+    const x = Math.max(b.left, c.left)
+    const y = Math.max(b.top, c.top)
+    return new DOMRect(x, y, Math.max(0, Math.min(b.right, c.right) - x), Math.max(0, Math.min(b.bottom, c.bottom) - y))
+  }
   /** @type {(scope: Element, edges: [number, number]) => Edges | null} */
   const measure = (scope, [left, right]) => {
     /** @type {Edges | null} */
@@ -209,7 +236,7 @@ function ink() {
         continue
       }
       const leaf = !el.firstElementChild || /^(svg|canvas|img|video|input|textarea|select)$/i.test(el.tagName)
-      if (leaf || painted(s)) add(b)
+      if (leaf || painted(s)) add(clipped(b, el))
     }
     const walk = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT)
     const range = document.createRange()
@@ -218,7 +245,7 @@ function ink() {
       const s = getComputedStyle(n.parentElement)
       if (s.visibility === "hidden" || +s.opacity === 0) continue
       range.selectNodeContents(n)
-      add(range.getBoundingClientRect())
+      add(clipped(range.getBoundingClientRect(), n.parentElement))
     }
     return r
   }

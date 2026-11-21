@@ -326,6 +326,28 @@ export const overviews: Record<string, Overview> = {
       "data and columns must keep their identity between renders; an inline array (`rows.slice(0, 6)`, `[]`) re-renders forever once state auto-resets.",
     ],
   },
+  "log-viewer": {
+    what: "Robot and system logs in a virtual list: filtered by level and source, searched with the matches marked, following the newest line until someone scrolls up, each line opening to its whole message and fields.",
+    use: [
+      "A robot's /rosout on its page in a fleet console, for the operator or the engineer on call.",
+      "A service's or a device's journal while commissioning or debugging.",
+      "Reading back what a robot said around an incident, from a saved log.",
+    ],
+    instead: [
+      "Conditions someone must acknowledge: `alarm`.",
+      "Records people sort, select and page: `data-grid`.",
+      "The steps of one run, with durations: `trace`.",
+      "A command and its output to copy: `code-block`.",
+    ],
+    notes: [
+      "A grid, not role=\"log\": a log region announces every line added to it, and a virtual list adds lines as it scrolls. The grid has `aria-rowcount` and each line its `aria-rowindex`, one Tab stop, and `aria-activedescendant` for the line in focus, so focus never sits on a line that scrolls away. New lines are announced in a separate status, at most every 5 s.",
+      "`createLogBuffer({ maxLines, flushMs })` is a ring buffer outside React: append from a WebSocket or ROS callback; it commits at most every `flushMs` (100) and tells its subscribers once. The viewer subscribes with useSyncExternalStore and filters only on a commit. Lines keep a sequence number, so an open or selected line stays open while older ones are dropped.",
+      "Following stops when the reader scrolls up, opens a line, moves with the keyboard or goes to a match; it resumes at the end, with End, or with the floating \"Jump to latest\". While paused, the line at the top stays put when older lines are dropped or the filters change.",
+      "Rows are measured, so wrapped and opened lines take their real height; a row is `--h-sm` (36 px with a mouse, 44 on touch).",
+      "The rows component opts out of the React Compiler (\"use no memo\") because TanStack Virtual answers through methods on one object; the rest of the viewer compiles.",
+      "Every word is in `labels`, including `ago` for time ago and `announce`; `locale` formats times and counts.",
+    ],
+  },
   sortable: {
     what: "A reorderable list or grid with a grip on each item, usable with a mouse, a finger or the keyboard.",
     use: ["Waypoint and patrol order.", "Rule priorities.", "Column order, camera layout, playlist steps."],
@@ -986,7 +1008,7 @@ export const overviews: Record<string, Overview> = {
     ],
     instead: ["Connecting React components: `use-ros`, which installs this."],
     notes: [
-      "`occupancyGridToGrid` (robot-map `grid` or `costmap`), `laserScanToScan(msg, robotId)` (robot-map `scans`), `poseToRobotMapPose(msg, gridToPlan(grid))` (a robot's x, y and heading; takes Pose, PoseStamped, PoseWithCovarianceStamped or Odometry), `goalToPoseStamped(goal, frame)` (robot-map `onGoal` to /goal_pose), `pointCloud2ToPoints` (point-cloud `points` and `intensity`), `jointStateToJoints(msg, { limits })` (joint-state `joints`), `teleopToTwist(command, { maxLinear, maxAngular })`, `stampToMs(header.stamp)` (`updatedAt`). For robot-model, its own `jointStateToRecord`.",
+      "`occupancyGridToGrid` (robot-map `grid` or `costmap`), `laserScanToScan(msg, robotId)` (robot-map `scans`), `poseToRobotMapPose(msg, gridToPlan(grid))` (a robot's x, y and heading; takes Pose, PoseStamped, PoseWithCovarianceStamped or Odometry), `goalToPoseStamped(goal, frame)` (robot-map `onGoal` to /goal_pose), `pointCloud2ToPoints` (point-cloud `points` and `intensity`), `jointStateToJoints(msg, { limits })` (joint-state `joints`), `teleopToTwist(command, { maxLinear, maxAngular })`, `rosLogToLogLine` (a /rosout message as a log-viewer line, ROS 1 or 2), `stampToMs(header.stamp)` (`updatedAt`). For robot-model, its own `jointStateToRecord`.",
       "rosbridge sends `uint8[]` (PointCloud2.data) as base64 and `int8[]` (OccupancyGrid.data) as a list of numbers; the converters read either. NaN and ±Infinity in a LaserScan arrive as null (or as bare tokens, which the client reads as null) and are skipped like out-of-range readings.",
       "A pose must be in the map frame for robot-map (/amcl_pose is; /odom drifts). A scan is drawn from the robot's centre, so transform it to the base frame first if the laser is offset.",
     ],

@@ -19,6 +19,7 @@ import type { GraphLabels } from "@/registry/syncrobotic/ui/graph"
 import type { ImageGridLabels } from "@/registry/syncrobotic/ui/image-grid"
 import type { JointStateLabels } from "@/registry/syncrobotic/ui/joint-state"
 import type { LoadMoreLabels } from "@/registry/syncrobotic/ui/load-more"
+import type { LogViewerLabels } from "@/registry/syncrobotic/ui/log-viewer"
 import type { MediaPlayerLabels } from "@/registry/syncrobotic/ui/media-player"
 import type { MetricCardLabels } from "@/registry/syncrobotic/ui/metric-card"
 import type { NumberField } from "@/registry/syncrobotic/ui/number-field"
@@ -78,6 +79,7 @@ it("fits every component's labels type", () => {
   fits<LabelsOf<typeof Pagination>>()(zh.paginationLabels)
   fits<LabelsOf<typeof DataGridPagination>>()(zh.dataGridPaginationLabels)
   fits<LoadMoreLabels>()(zh.loadMoreLabels)
+  fits<LogViewerLabels>()(zh.logViewerLabels)
   fits<MetricCardLabels>()(zh.metricCardLabels)
   fits<TextDiffLabels>()(zh.textDiffLabels)
   fits<LabelsOf<typeof Filters>>()(zh.filtersLabels)

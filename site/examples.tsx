@@ -45,6 +45,7 @@ import * as s_calendar from "@/stories/calendar.stories"
 import * as s_date_selector from "@/stories/date-selector.stories"
 import * as s_time_picker from "@/stories/time-picker.stories"
 import * as s_data_grid from "@/stories/data-grid.stories"
+import * as s_log_viewer from "@/stories/log-viewer.stories"
 import * as s_stepper from "@/stories/stepper.stories"
 import * as s_trace from "@/stories/trace.stories"
 import * as s_marker from "@/stories/marker.stories"
@@ -91,6 +92,7 @@ const files: Record<Exclude<StoryFile, LazyFile>, StoryModule> = {
   overlays: overlays as unknown as StoryModule,
   charts: charts as unknown as StoryModule,
   "data-grid": s_data_grid as unknown as StoryModule,
+  "log-viewer": s_log_viewer as unknown as StoryModule,
   stepper: s_stepper as unknown as StoryModule,
   trace: s_trace as unknown as StoryModule,
   marker: s_marker as unknown as StoryModule,

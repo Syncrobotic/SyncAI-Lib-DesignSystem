@@ -32,6 +32,7 @@ const ros: [string, string, string][] = [
   ["sensor_msgs/JointState", "joint-state, robot-model", "joints"],
   ["URDF (robot_description)", "robot-model", "urdf, urdfUrl"],
   ["geometry_msgs/Twist", "teleop-pad", "onCommand: { linear, angular }"],
+  ["rcl_interfaces/Log (/rosout)", "log-viewer", "lines, ref.append (rosLogToLogLine)"],
   ["Video (WebRTC or a URL)", "camera-feed", "stream, src"],
 ]
 

@@ -2,6 +2,13 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **`log-viewer` 0.28.0 (beta):** robot and system logs (ROS /rosout, journald, a service's own lines) in a virtual list that stays smooth with 100,000 lines. It follows the newest line until someone scrolls up, then offers "12 new · Jump to latest"; keeps the last `maxLines` in a ring buffer (`createLogBuffer`, which batches a fast stream so 1,000 lines a second render ten times a second); filters by level and source; searches with the matches marked and ↑ ↓; wraps long lines; shows clock time or time ago; opens a line for its whole message and fields; copies a line or a selection. Levels are a shape and a word, coloured only on the glyph and the word. A grid with `aria-rowcount` for screen readers, one Tab stop with the arrow keys inside, and new errors announced at most every 5 s (`announce`).
+- **`ros` 0.28.0:** `rosLogToLogLine` turns a /rosout message (ROS 2 `rcl_interfaces/msg/Log` or ROS 1 `rosgraph_msgs/Log`) into a log-viewer line.
+- **`labels-zh-tw` 0.28.0:** `logViewerLabels`.
+
 ## 0.27.0 · 2026-11-21
 
 Connect the robotics components to a real robot over rosbridge, and a ready-made Traditional Chinese (Taiwan) label pack.

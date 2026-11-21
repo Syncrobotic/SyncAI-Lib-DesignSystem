@@ -1,4 +1,4 @@
-// @syncrobotic/labels-zh-tw v0.27.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
+// @syncrobotic/labels-zh-tw v0.28.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
 // The kit's words in Traditional Chinese as written in Taiwan, one object per component that takes `labels`. Pass each
 // to its component (`<DataGrid labels={dataGridLabels} />`) with `locale="zh-TW"` where the component formats numbers,
 // days or times. The file imports no component, so it installs on its own; the kit's tests hold every object to the
@@ -455,6 +455,65 @@ export const textDiffLabels = {
   summary: (added: number, removed: number) => [added ? `+${added} 個字詞` : "", removed ? `−${removed} 個字詞` : ""].filter(Boolean).join("，"),
   none: "沒有變更",
   empty: "空白",
+}
+
+// Log levels keep the words a ROS console prints in Taiwan's offices: 除錯 (debug), 資訊, 警告, 錯誤, 嚴重 (fatal).
+export const logViewerLabels = {
+  name: "日誌",
+  debug: "除錯",
+  info: "資訊",
+  warn: "警告",
+  error: "錯誤",
+  fatal: "嚴重",
+  time: "時間",
+  level: "層級",
+  source: "來源",
+  message: "訊息",
+  search: "搜尋日誌",
+  searchPlaceholder: "搜尋訊息與來源",
+  matches: (current: number, total: number, locale: string | undefined) =>
+    total === 0 ? "沒有符合的結果" : current ? `第 ${current.toLocaleString(locale)} 筆，共 ${total.toLocaleString(locale)} 筆` : `${total.toLocaleString(locale)} 筆符合`,
+  previousMatch: "上一筆符合",
+  nextMatch: "下一筆符合",
+  levels: "層級",
+  allLevels: "所有層級",
+  levelCount: (n: number) => `${n} 個層級`,
+  sources: "來源",
+  allSources: "所有來源",
+  sourceCount: (n: number) => `${n} 個來源`,
+  count: (n: number, locale: string | undefined) => n.toLocaleString(locale),
+  viewOptions: "顯示選項",
+  wrap: "長訊息自動換行",
+  relativeTime: "顯示經過時間",
+  jumpToLatest: "跳到最新",
+  newLines: (n: number, locale: string | undefined) => `${n.toLocaleString(locale)} 行新訊息`,
+  following: "持續顯示最新",
+  paused: "已暫停",
+  total: (shown: number, total: number, locale: string | undefined) =>
+    shown === total ? `共 ${total.toLocaleString(locale)} 行` : `顯示 ${shown.toLocaleString(locale)} 行，共 ${total.toLocaleString(locale)} 行`,
+  capped: (max: number, locale: string | undefined) => `只保留最近 ${max.toLocaleString(locale)} 行`,
+  empty: "尚無日誌",
+  noMatch: "沒有符合篩選條件的行",
+  showAll: "顯示全部",
+  copyLines: (n: number) => (n === 1 ? "複製此行" : `複製 ${n} 行`),
+  copied: "已複製",
+  copyFailed: "無法複製：請選取文字後自行複製",
+  copiedLines: (n: number) => `已複製 ${n} 行`,
+  copyLine: "複製此行",
+  moreLines: (n: number) => `（另有 ${n} 行）`,
+  location: "位置",
+  function: "函式",
+  ago: (ms: number, locale: string | undefined) => {
+    const s = Math.max(0, ms) / 1000
+    const rtf = new Intl.RelativeTimeFormat(locale ?? "zh-TW", { numeric: "always", style: "narrow" })
+    if (s < 60) return rtf.format(-Number(s.toFixed(s < 10 ? 1 : 0)), "second")
+    if (s < 3600) return rtf.format(-Math.floor(s / 60), "minute")
+    if (s < 86400) return rtf.format(-Math.floor(s / 3600), "hour")
+    return rtf.format(-Math.floor(s / 86400), "day")
+  },
+  announce: ({ lines, errors, warnings }: { lines: number; errors: number; warnings: number }, locale: string | undefined) =>
+    [`${lines.toLocaleString(locale)} 行新訊息`, errors && `${errors.toLocaleString(locale)} 個錯誤`, warnings && `${warnings.toLocaleString(locale)} 個警告`].filter(Boolean).join("，"),
+  keys: "上下方向鍵在各行之間移動，按住 Shift 可選取多行，Enter 展開該行，C 複製，End 跳到最新一行，斜線鍵開始搜尋。",
 }
 
 // Every operator the filter bar offers; the types test holds it to the full FilterOperator list, so a new one cannot be

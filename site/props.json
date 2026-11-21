@@ -4607,6 +4607,391 @@
    "inherits": []
   }
  ],
+ "log-viewer": [
+  {
+   "name": "LogLevelLabel",
+   "props": [
+    {
+     "name": "level",
+     "type": "\"error\" | \"info\" | \"debug\" | \"warn\" | \"fatal\"",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "word",
+     "type": "string",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "LogViewer",
+   "props": [
+    {
+     "name": "lines",
+     "type": "readonly LogLine[]",
+     "description": "Lines, oldest first. An array that only grows appends; any other new array replaces what is shown."
+    },
+    {
+     "name": "buffer",
+     "type": "LogBuffer",
+     "description": "A buffer the app appends to (`createLogBuffer`), instead of `lines`. Its own `maxLines` applies."
+    },
+    {
+     "name": "ref",
+     "type": "((instance: LogViewerHandle | null) => void | (() => VoidOrUndefinedOnly) | DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES[keyof DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES]) | RefObject<LogViewerHandle | null>",
+     "description": "`append`, `clear` and `jumpToLatest`, for a stream that should not go through React state."
+    },
+    {
+     "name": "maxLines",
+     "type": "number",
+     "default": "10_000",
+     "description": "The most lines kept; the oldest are dropped. Default 10,000. Up to about 200,000 stay smooth."
+    },
+    {
+     "name": "defaultLevels",
+     "type": "readonly (\"error\" | \"info\" | \"debug\" | \"warn\" | \"fatal\")[]",
+     "default": "logLevels",
+     "description": "The levels shown at first. Default all."
+    },
+    {
+     "name": "defaultSources",
+     "type": "readonly string[]",
+     "default": "[]",
+     "description": "The sources shown at first. Default all."
+    },
+    {
+     "name": "defaultQuery",
+     "type": "string",
+     "default": "\"\"",
+     "description": "Search text at first."
+    },
+    {
+     "name": "defaultWrap",
+     "type": "boolean",
+     "default": "false",
+     "description": "Wrap long messages instead of cutting them at the edge."
+    },
+    {
+     "name": "defaultTimeMode",
+     "type": "\"absolute\" | \"relative\"",
+     "default": "\"absolute\"",
+     "description": "Clock time (default) or time ago."
+    },
+    {
+     "name": "defaultExpanded",
+     "type": "readonly (string | number)[]",
+     "description": "Lines (by `id`) open at first."
+    },
+    {
+     "name": "now",
+     "type": "number",
+     "description": "\"Now\" for time ago, in ms since the epoch. Without it the viewer reads the clock every second while time ago is on."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats times, and counts."
+    },
+    {
+     "name": "timeZone",
+     "type": "string",
+     "description": "The time zone times are shown in. Default the browser's."
+    },
+    {
+     "name": "announce",
+     "type": "false | \"all\" | \"errors\"",
+     "default": "\"errors\"",
+     "description": "Announce new lines to screen readers, at most every 5 s: \"errors\" (default) only when errors or fatal lines arrived, \"all\" for every batch, false never."
+    },
+    {
+     "name": "height",
+     "type": "string | number",
+     "default": "480",
+     "description": "The viewer's height (it scrolls inside). Default 480."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<LogViewerLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "name",
+       "type": "string",
+       "default": "\"Log\"",
+       "description": "The grid's name."
+      },
+      {
+       "name": "debug",
+       "type": "string",
+       "default": "\"Debug\"",
+       "description": ""
+      },
+      {
+       "name": "info",
+       "type": "string",
+       "default": "\"Info\"",
+       "description": ""
+      },
+      {
+       "name": "warn",
+       "type": "string",
+       "default": "\"Warn\"",
+       "description": ""
+      },
+      {
+       "name": "error",
+       "type": "string",
+       "default": "\"Error\"",
+       "description": ""
+      },
+      {
+       "name": "fatal",
+       "type": "string",
+       "default": "\"Fatal\"",
+       "description": ""
+      },
+      {
+       "name": "time",
+       "type": "string",
+       "default": "\"Time\"",
+       "description": "Column names, read by screen readers."
+      },
+      {
+       "name": "level",
+       "type": "string",
+       "default": "\"Level\"",
+       "description": ""
+      },
+      {
+       "name": "source",
+       "type": "string",
+       "default": "\"Source\"",
+       "description": ""
+      },
+      {
+       "name": "message",
+       "type": "string",
+       "default": "\"Message\"",
+       "description": ""
+      },
+      {
+       "name": "search",
+       "type": "string",
+       "default": "\"Search the log\"",
+       "description": ""
+      },
+      {
+       "name": "searchPlaceholder",
+       "type": "string",
+       "default": "\"Search messages and sources\"",
+       "description": ""
+      },
+      {
+       "name": "matches",
+       "type": "(current: number, total: number, locale: string | undefined) => string",
+       "default": "(current, total, locale) => total === 0 ? \"No matches\" : current ? `${current.toLocaleString(locale)} of ${total.toLocaleString(locale)}` : plural(total, \"match\", \"matches\", locale)",
+       "description": "Beside the search box: \"3 of 120\", or how many lines match before one is picked."
+      },
+      {
+       "name": "previousMatch",
+       "type": "string",
+       "default": "\"Previous match\"",
+       "description": ""
+      },
+      {
+       "name": "nextMatch",
+       "type": "string",
+       "default": "\"Next match\"",
+       "description": ""
+      },
+      {
+       "name": "levels",
+       "type": "string",
+       "default": "\"Levels\"",
+       "description": "The level menu's button: all, one or a few by name, or how many."
+      },
+      {
+       "name": "allLevels",
+       "type": "string",
+       "default": "\"All levels\"",
+       "description": ""
+      },
+      {
+       "name": "levelCount",
+       "type": "(n: number) => string",
+       "default": "(n) => `${n} levels`",
+       "description": ""
+      },
+      {
+       "name": "sources",
+       "type": "string",
+       "default": "\"Sources\"",
+       "description": ""
+      },
+      {
+       "name": "allSources",
+       "type": "string",
+       "default": "\"All sources\"",
+       "description": ""
+      },
+      {
+       "name": "sourceCount",
+       "type": "(n: number) => string",
+       "default": "(n) => `${n} sources`",
+       "description": ""
+      },
+      {
+       "name": "count",
+       "type": "(n: number, locale: string | undefined) => string",
+       "default": "(n, locale) => n.toLocaleString(locale)",
+       "description": "Shown in a menu item beside a level or a source."
+      },
+      {
+       "name": "viewOptions",
+       "type": "string",
+       "default": "\"View options\"",
+       "description": ""
+      },
+      {
+       "name": "wrap",
+       "type": "string",
+       "default": "\"Wrap long lines\"",
+       "description": ""
+      },
+      {
+       "name": "relativeTime",
+       "type": "string",
+       "default": "\"Show time ago\"",
+       "description": ""
+      },
+      {
+       "name": "jumpToLatest",
+       "type": "string",
+       "default": "\"Jump to latest\"",
+       "description": "The floating button while scrolled up: with how many new lines arrived, or without."
+      },
+      {
+       "name": "newLines",
+       "type": "(n: number, locale: string | undefined) => string",
+       "default": "(n, locale) => `${n.toLocaleString(locale)} new`",
+       "description": ""
+      },
+      {
+       "name": "following",
+       "type": "string",
+       "default": "\"Following new lines\"",
+       "description": ""
+      },
+      {
+       "name": "paused",
+       "type": "string",
+       "default": "\"Paused\"",
+       "description": ""
+      },
+      {
+       "name": "total",
+       "type": "(shown: number, total: number, locale: string | undefined) => string",
+       "default": "(shown, total, locale) => (shown === total ? plural(total, \"line\", \"lines\", locale) : `${shown.toLocaleString(locale)} of ${plural(total, \"line\", \"lines\", locale)}`)",
+       "description": "Footer: all lines, or the lines the filters show of them."
+      },
+      {
+       "name": "capped",
+       "type": "(max: number, locale: string | undefined) => string",
+       "default": "(max, locale) => `keeps the last ${max.toLocaleString(locale)}`",
+       "description": "Footer, once the buffer is full: older lines are being dropped."
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"No log lines yet\"",
+       "description": ""
+      },
+      {
+       "name": "noMatch",
+       "type": "string",
+       "default": "\"No lines match the filters\"",
+       "description": ""
+      },
+      {
+       "name": "showAll",
+       "type": "string",
+       "default": "\"Show all lines\"",
+       "description": ""
+      },
+      {
+       "name": "copyLines",
+       "type": "(n: number) => string",
+       "default": "(n) => (n === 1 ? \"Copy line\" : `Copy ${n} lines`)",
+       "description": "The footer's copy button: the selected lines, or the line in focus."
+      },
+      {
+       "name": "copied",
+       "type": "string",
+       "default": "\"Copied\"",
+       "description": ""
+      },
+      {
+       "name": "copyFailed",
+       "type": "string",
+       "default": "\"Could not copy: select the text and copy it\"",
+       "description": ""
+      },
+      {
+       "name": "copiedLines",
+       "type": "(n: number) => string",
+       "default": "(n) => (n === 1 ? \"Copied 1 line\" : `Copied ${n} lines`)",
+       "description": ""
+      },
+      {
+       "name": "copyLine",
+       "type": "string",
+       "default": "\"Copy line\"",
+       "description": ""
+      },
+      {
+       "name": "moreLines",
+       "type": "(n: number) => string",
+       "default": "(n) => `+${n} ${n === 1 ? \"line\" : \"lines\"}`",
+       "description": "A message of several lines, shown on one: what is hidden until the line is opened or wrapped."
+      },
+      {
+       "name": "location",
+       "type": "string",
+       "default": "\"Location\"",
+       "description": "Fields of an opened line."
+      },
+      {
+       "name": "function",
+       "type": "string",
+       "default": "\"Function\"",
+       "description": ""
+      },
+      {
+       "name": "ago",
+       "type": "(ms: number, locale: string | undefined) => string",
+       "default": "(ms, locale) => { const s = Math.max(0, ms) / 1000 const rtf = new Intl.RelativeTimeFormat(locale, { numeric: \"always\", style: \"narrow\" }) if (s < 60) return rtf.format(-Number(s.toFixed(s < 10 ? 1 : 0)), \"second\") if (s < 3600) return rtf.format(-Math.floor(s / 60), \"minute\") if (s < 86400) return rtf.format(-Math.floor(s / 3600), \"hour\") return rtf.format(-Math.floor(s / 86400), \"day\") }",
+       "description": "Relative time, \"4.2 s ago\"."
+      },
+      {
+       "name": "announce",
+       "type": "(counts: { lines: number; errors: number; warnings: number; }, locale: string | undefined) => string",
+       "default": "({ lines, errors, warnings }, locale) => [plural(lines, \"new line\", \"new lines\", locale), errors && plural(errors, \"error\", \"errors\", locale), warnings && plural(warnings, \"warning\", \"warnings\", locale)] .filter(Boolean) .join(\", \")",
+       "description": "Said at most every 5 s while lines stream in (see `announce`)."
+      },
+      {
+       "name": "keys",
+       "type": "string",
+       "default": "\"Up and down arrows move between lines, Shift with them selects lines, Enter opens a line, C copies, End goes to the latest line, slash searches.\"",
+       "description": "How the keyboard works, read once when the grid gets focus."
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "marker": [
   {
    "name": "Marker",

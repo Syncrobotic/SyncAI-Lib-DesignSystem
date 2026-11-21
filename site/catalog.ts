@@ -26,6 +26,7 @@ export type StoryFile =
   | "navigation-menu"
   | "questionnaire"
   | "data-grid"
+  | "log-viewer"
   | "sortable"
   | "resizable"
   | "file-upload"
@@ -183,6 +184,20 @@ const entries: Record<string, Entry> = {
       "Numbers right-aligned (meta.align) and tabular.",
       "Status cells use InlineStatus, never a coloured badge.",
       "virtual needs a maxHeight.",
+    ],
+  },
+  "log-viewer": {
+    wide: true,
+    group: "Data display",
+    examples: { file: "log-viewer", prefix: "LogViewer" },
+    rules: [
+      "For lines a program writes as it runs: ROS /rosout, journald, a service's log. Events people act on are `alarm`; a table people sort and page is `data-grid`; one run's steps are `trace`.",
+      "Stream through `createLogBuffer` (pass it as `buffer`) or the `ref` handle's `append`, never by copying a growing array into state: appends are batched, so 1,000 lines a second draw ten times a second. Convert ROS messages with `rosLogToLogLine` from `ros`.",
+      "Set `maxLines` to what the reader needs to scroll back through (10,000 by default); the oldest lines are dropped. Up to about 200,000 stay smooth; keep the full log on disk or in the backend.",
+      "Levels are a shape and a word, never a tinted row: warn is warning, error and fatal danger; debug and info stay grey.",
+      "Give `timeZone` when the people reading are not where the robot is, and say which in the page; copied lines are always ISO 8601 in UTC.",
+      "Name the sources for what they are: `labels.sources` \"Nodes\" for ROS, \"Units\" for journald.",
+      "Leave `announce` on \"errors\" (at most every 5 s); \"all\" only for a slow log, and false where an alarm already speaks for the same failure.",
     ],
   },
   sortable: {
@@ -1303,6 +1318,18 @@ const keyboard: Record<string, [string, string][]> = {
     ["Tab", "Move to Show (a secret), Copy, then the code when it scrolls"],
     ["← / →", "Scroll the focused code sideways"],
     ["Enter / Space", "On Show, show or hide the secret; on Copy, copy the code"],
+  ],
+  "log-viewer": [
+    ["Tab", "Move into the lines (one stop: the newest line, or the first in view), then to an open line's Copy button"],
+    ["↑ / ↓", "Previous or next line"],
+    ["Page Up / Page Down", "A screen up or down"],
+    ["Home / End", "First line, or the newest (End follows new lines again)"],
+    ["Shift + arrows", "Select several lines"],
+    ["Enter / Space", "Open or close the line; → opens, ← closes"],
+    ["C", "Copy the selected lines (Ctrl/⌘+C too, when no text is selected)"],
+    ["/", "Go to the search box"],
+    ["Enter / Shift+Enter", "In the search box: next or previous match"],
+    ["Esc", "Close the open line, or drop the selection back to one line"],
   ],
   filters: [
     ["Enter", "On + Filter, open the picker; on a part of a chip, reopen that step"],
