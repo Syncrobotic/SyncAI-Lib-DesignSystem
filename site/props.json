@@ -5399,6 +5399,246 @@
    "inherits": []
   }
  ],
+ "point-cloud": [
+  {
+   "name": "PointCloud",
+   "props": [
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "Names the view for screen readers, with the summary: \"Front lidar, Patrol dog 7F3A\"."
+    },
+    {
+     "name": "points",
+     "type": "Float32Array<ArrayBufferLike>",
+     "required": true,
+     "description": "The points, x, y, z interleaved, in metres, in a ROS frame (REP 103: x forward, y left, z up), as decoded from a sensor_msgs/PointCloud2. NaN points are skipped. Pass a new array for each scan: it is uploaded once, and an array changed in place is not seen."
+    },
+    {
+     "name": "intensity",
+     "type": "Float32Array<ArrayBufferLike>",
+     "description": "One intensity per point, in the same order."
+    },
+    {
+     "name": "colorBy",
+     "type": "\"height\" | \"intensity\" | \"none\"",
+     "description": "What the colour shows. Defaults to intensity when `intensity` is given, else height; intensity without the array falls back to height."
+    },
+    {
+     "name": "colorRange",
+     "type": "[number, number]",
+     "description": "Fixes the colour scale's ends (metres for height), so colours mean the same from one scan to the next. Defaults to the cloud's own range."
+    },
+    {
+     "name": "pointSize",
+     "type": "number",
+     "default": "2",
+     "description": "The points' size in CSS pixels."
+    },
+    {
+     "name": "grid",
+     "type": "boolean",
+     "default": "true",
+     "description": "The ground grid on z = 0, in hairlines."
+    },
+    {
+     "name": "axes",
+     "type": "boolean",
+     "default": "true",
+     "description": "The gizmo that says which way x, y and z point, in words."
+    },
+    {
+     "name": "robot",
+     "type": "boolean | { length: number; width: number; }",
+     "description": "The robot's footprint at the origin, facing +x: `true` for 0.9 × 0.6 m, or its own length and width in metres."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "description": "Bones in the view while the first cloud loads."
+    },
+    {
+     "name": "error",
+     "type": "ReactNode",
+     "description": "The cloud could not be loaded: `true` for the default words, or your own message."
+    },
+    {
+     "name": "onRetry",
+     "type": "() => void",
+     "description": "Shows a button under the error that tries again."
+    },
+    {
+     "name": "staleAfterMs",
+     "type": "number",
+     "description": "With no new cloud for this long, the view says \"Stale\" with when the last one arrived, and dims. Off by default."
+    },
+    {
+     "name": "receivedAt",
+     "type": "number",
+     "description": "When the cloud was taken (the message's header stamp, in ms since the epoch). Without it, when `points` arrived."
+    },
+    {
+     "name": "aspectRatio",
+     "type": "number",
+     "default": "16 / 9",
+     "description": "Width over height of the view. 16 / 9 by default."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<PointCloudLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "keys",
+       "type": "string",
+       "default": "\"Drag to rotate, right-drag or two fingers to pan; the wheel or a pinch zooms once the view has focus. Arrow keys rotate, Shift with the arrows pans, plus and minus zoom, 0 resets the view.\"",
+       "description": "Read after the summary when the view has focus: what the pointer and the keys do."
+      },
+      {
+       "name": "count",
+       "type": "(n: number) => string",
+       "default": "(n) => (n === 1 ? \"1 point\" : `${n.toLocaleString(\"en-US\")} points`)",
+       "description": "\"123,456 points\"."
+      },
+      {
+       "name": "bounds",
+       "type": "(b: PointCloudBounds) => string",
+       "default": "(b) => `x ${fixed1(b.min[0])} to ${fixed1(b.max[0])} m forward, y ${fixed1(b.min[1])} to ${fixed1(b.max[1])} m left, z ${fixed1(b.min[2])} to ${fixed1(b.max[2])} m up`",
+       "description": "The extent, read by screen readers and shown nowhere else: \"x −4.0 to 12.0 m forward, …\"."
+      },
+      {
+       "name": "robotAtOrigin",
+       "type": "string",
+       "default": "\"The robot is at the origin, facing x\"",
+       "description": "Read with the summary when `robot` is drawn."
+      },
+      {
+       "name": "frameTime",
+       "type": "(ms: number) => string",
+       "default": "(ms) => `Frame ${ms < 10 ? ms.toFixed(1) : Math.round(ms)} ms`",
+       "description": "How long the last frame took, from the start of drawing until the GPU finished it, in the footer."
+      },
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Loading the point cloud\"",
+       "description": ""
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"No points\"",
+       "description": "Said in the view when there is nothing to draw."
+      },
+      {
+       "name": "error",
+       "type": "string",
+       "default": "\"The point cloud could not be loaded.\"",
+       "description": ""
+      },
+      {
+       "name": "retry",
+       "type": "string",
+       "default": "\"Load again\"",
+       "description": ""
+      },
+      {
+       "name": "stale",
+       "type": "string",
+       "default": "\"Stale\"",
+       "description": ""
+      },
+      {
+       "name": "lastScan",
+       "type": "(time: string) => string",
+       "default": "(time) => `last scan ${time}`",
+       "description": "After \"Stale\": when the last cloud arrived."
+      },
+      {
+       "name": "formatTime",
+       "type": "(date: Date) => string",
+       "default": "(d) => [d.getHours(), d.getMinutes(), d.getSeconds()].map((n) => String(n).padStart(2, \"0\")).join(\":\")",
+       "description": "The time of the last cloud. 24-hour clock by default; pass the site's own format or time zone."
+      },
+      {
+       "name": "noWebGL",
+       "type": "string",
+       "default": "\"This browser cannot draw the 3D view.\"",
+       "description": "The browser cannot draw 3D: the first line, then why and what to do."
+      },
+      {
+       "name": "noWebGLHint",
+       "type": "string",
+       "default": "\"WebGL 2 is turned off or not supported. Turn on hardware acceleration, or open this page in a current browser.\"",
+       "description": ""
+      },
+      {
+       "name": "contextLost",
+       "type": "string",
+       "default": "\"Restoring the 3D view…\"",
+       "description": "Said while the browser gives the 3D view back after taking it away (a GPU reset, too many views open)."
+      },
+      {
+       "name": "resetView",
+       "type": "string",
+       "default": "\"Reset view\"",
+       "description": ""
+      },
+      {
+       "name": "fit",
+       "type": "string",
+       "default": "\"Fit to points\"",
+       "description": ""
+      },
+      {
+       "name": "axisX",
+       "type": "string",
+       "default": "\"x forward\"",
+       "description": "The words on the axes gizmo: each axis by its direction, so it never relies on colour."
+      },
+      {
+       "name": "axisY",
+       "type": "string",
+       "default": "\"y left\"",
+       "description": ""
+      },
+      {
+       "name": "axisZ",
+       "type": "string",
+       "default": "\"z up\"",
+       "description": ""
+      },
+      {
+       "name": "scaleHeight",
+       "type": "string",
+       "default": "\"Height\"",
+       "description": "The colour scale's name in the footer, by what it shows."
+      },
+      {
+       "name": "scaleIntensity",
+       "type": "string",
+       "default": "\"Intensity\"",
+       "description": ""
+      },
+      {
+       "name": "metres",
+       "type": "(m: number) => string",
+       "default": "(m) => `${fixed1(m)} m`",
+       "description": "The values at the colour scale's ends."
+      },
+      {
+       "name": "intensityValue",
+       "type": "(v: number) => string",
+       "default": "(v) => (Math.abs(v) >= 100 ? Math.round(v).toString() : Number(v.toPrecision(3)).toString())",
+       "description": ""
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "popover": [
   {
    "name": "Popover",
