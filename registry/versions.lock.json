@@ -339,6 +339,10 @@
     "version": "0.23.1",
     "hash": "33be3d7109a96b20"
   },
+  "joint-state": {
+    "version": "0.24.0",
+    "hash": "eb90d198fccd5b62"
+  },
   "filter-form": {
     "version": "0.10.0",
     "hash": "4408d94150b8f69d"

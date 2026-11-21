@@ -668,6 +668,16 @@
     "tabStops": 4,
     "live": true
   },
+  "joint-state": {
+    "roles": [
+      "list",
+      "listitem",
+      "region",
+      "status"
+    ],
+    "tabStops": 0,
+    "live": true
+  },
   "filter-form": {
     "roles": [
       "checkbox",
