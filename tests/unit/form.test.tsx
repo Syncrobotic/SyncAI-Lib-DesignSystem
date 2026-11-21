@@ -66,6 +66,34 @@ describe("form example (MissionForm)", () => {
     await waitFor(() => expect(button.getAttribute("aria-busy")).toBeNull())
   })
 
+  // The next three go through zodResolver from @hookform/resolvers: they pin down that the schema's own messages, its
+  // trim and its output reach the form unchanged, whichever major of the resolver is installed.
+  it("shows each schema message under its field, the length limit on notes included", async () => {
+    render(<MissionForm defaultValues={{ ...filled, notes: "x".repeat(201) }} />)
+    await submit()
+    const notes = screen.getByLabelText("Notes")
+    await waitFor(() => expect(notes.getAttribute("aria-invalid")).toBe("true"))
+    expect(document.getElementById(notes.getAttribute("aria-describedby")!)!.textContent).toContain("200 characters at most")
+    // Only the field in error is marked; the valid ones say nothing.
+    expect(screen.getByLabelText("Mission name").getAttribute("aria-invalid")).toBeNull()
+  })
+
+  it("trims the name before checking its length, so spaces alone do not pass", async () => {
+    const saved: MissionValues[] = []
+    render(<MissionForm defaultValues={{ ...filled, name: "     " }} onSave={async (v) => void saved.push(v)} />)
+    await submit()
+    await waitFor(() => expect(screen.getByLabelText("Mission name").getAttribute("aria-invalid")).toBe("true"))
+    expect(saved).toEqual([])
+  })
+
+  it("saves the schema's output: the name trimmed, the other values as entered", async () => {
+    const saved: MissionValues[] = []
+    render(<MissionForm defaultValues={{ ...filled, name: "  Night patrol  " }} onSave={async (v) => void saved.push(v)} />)
+    await submit()
+    await waitFor(() => expect(saved).toHaveLength(1))
+    expect(saved[0]).toEqual({ ...filled, name: "Night patrol" })
+  })
+
   it("turns the browser's own validation off", () => {
     const { container } = render(<MissionForm />)
     expect(container.querySelector("form")!.noValidate).toBe(true)

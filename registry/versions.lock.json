@@ -120,8 +120,8 @@
     "hash": "c639a81309e7eedc"
   },
   "form": {
-    "version": "0.20.1",
-    "hash": "12cd80ed317e91bd"
+    "version": "0.25.0",
+    "hash": "f5cd1cd7a3d4437d"
   },
   "checkbox": {
     "version": "0.15.0",
@@ -384,12 +384,12 @@
     "hash": "14eb94e7b053fc0b"
   },
   "calendar": {
-    "version": "0.23.0",
-    "hash": "f12ec8aae0cce4b0"
+    "version": "0.25.0",
+    "hash": "66f8054b38d7b158"
   },
   "date-selector": {
-    "version": "0.23.0",
-    "hash": "a3f5ad304748c357"
+    "version": "0.25.0",
+    "hash": "60a5f053320a96cf"
   },
   "time-picker": {
     "version": "0.23.2",

@@ -1341,7 +1341,7 @@
       "description": "A form to copy and change: React Hook Form's Controller around the kit's Field, a zod schema, focus on the first error, server errors on a field or the form, a submit button that waits. No form wrapper component.",
       "dependencies": [
         "react-hook-form",
-        "@hookform/resolvers",
+        "@hookform/resolvers@^7",
         "zod@^3.25",
         "lucide-react"
       ],
@@ -1364,8 +1364,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.20.1",
+        "version": "0.25.0",
         "changelog": [
+          {
+            "version": "0.25.0",
+            "date": "2026-11-21",
+            "note": "Asks for @hookform/resolvers 7 (it named no range, so a new install already got 7): run npm i @hookform/resolvers@^7 and keep your copy as it is; behaviour and messages are unchanged. zod stays ^3.25; a project on zod 4 keeps it, since zodResolver takes either with no import change."
+          },
           {
             "version": "0.20.1",
             "date": "2026-11-21",
@@ -4201,7 +4206,7 @@
       "title": "Calendar",
       "description": "A month grid for one day, several days or a range; 36 px days with a mouse, 44 px on touch.",
       "dependencies": [
-        "react-day-picker@^9",
+        "react-day-picker@^10",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -4214,8 +4219,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.25.0",
         "changelog": [
+          {
+            "version": "0.25.0",
+            "date": "2026-11-21",
+            "note": "Runs on react-day-picker 10: run npm i react-day-picker@^10 with the update; it looks and behaves the same. Props removed in v10 no longer type-check: fromMonth/fromYear and toMonth/toYear become startMonth and endMonth, fromDate/toDate become startMonth/endMonth plus hidden={{ before }} / {{ after }}, initialFocus becomes autoFocus, onDayKeyUp/onDayPointer*/onDayTouch* are gone, and old classNames keys (day_selected, caption, head_cell…) take their v9 names (selected, month_caption, weekday…). Persian, Hijri and other non-Gregorian calendars moved to @daypicker/* packages."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -4256,7 +4266,7 @@
       "title": "Date selector",
       "description": "DatePicker and DateRangePicker: a field that opens a calendar, with presets and clear.",
       "dependencies": [
-        "react-day-picker@^9",
+        "react-day-picker@^10",
         "date-fns",
         "lucide-react"
       ],
@@ -4273,8 +4283,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.25.0",
         "changelog": [
+          {
+            "version": "0.25.0",
+            "date": "2026-11-21",
+            "note": "Runs on react-day-picker 10: update it together with @syncrobotic/calendar and run npm i react-day-picker@^10; its props, look and keyboard are unchanged. Import calendarLocale per language, as v10 documents it: import { zhTW } from \"react-day-picker/locale/zh-TW\" (react-day-picker/locale still exports it)."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
