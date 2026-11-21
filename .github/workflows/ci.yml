@@ -35,6 +35,8 @@ jobs:
       - run: npm run lint:a11y
       # The package version has its CHANGELOG section, so the release on main has notes
       - run: node scripts/release-notes.mjs "$(node -p "require('./package.json').version")" > /dev/null
+      # Code correctness: the React rules of hooks (the React Compiler relies on them) and TypeScript's recommended rules
+      - run: npm run lint
       - run: npm run typecheck
       # Behaviour of safety-critical interactions: stop, stop all, slide to release, keyboard and AT paths
       - run: npm test
