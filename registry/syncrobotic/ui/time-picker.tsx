@@ -1,4 +1,4 @@
-// @syncrobotic/time-picker v0.23.0 · update: npx shadcn add @syncrobotic/time-picker --overwrite
+// @syncrobotic/time-picker v0.23.1 · update: npx shadcn add @syncrobotic/time-picker --overwrite
 "use client"
 
 import * as React from "react"
@@ -72,7 +72,13 @@ export function TimeInput({
   const f = useField()
   const [text, setText] = React.useState(value ? formatTime(value, hour12) : "")
   const [bad, setBad] = React.useState(false)
-  React.useEffect(() => setText(value ? formatTime(value, hour12) : ""), [value, hour12])
+  // A new value or clock from outside rewrites the text, during the render that brings it rather than in an effect
+  // that renders twice.
+  const [prev, setPrev] = React.useState({ value, hour12 })
+  if (prev.value !== value || prev.hour12 !== hour12) {
+    setPrev({ value, hour12 })
+    setText(value ? formatTime(value, hour12) : "")
+  }
   const commit = () => {
     if (!text.trim()) {
       setBad(false)

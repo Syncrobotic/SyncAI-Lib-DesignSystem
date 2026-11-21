@@ -3571,8 +3571,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.21.0",
+        "version": "0.21.1",
         "changelog": [
+          {
+            "version": "0.21.1",
+            "date": "2026-11-21",
+            "note": "A duration hint that arrives later is taken in the render that brings it instead of an effect later, so it is safe under the React Compiler."
+          },
           {
             "version": "0.21.0",
             "date": "2026-11-20",
@@ -3604,8 +3609,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.23.0",
+        "version": "0.23.1",
         "changelog": [
+          {
+            "version": "0.23.1",
+            "date": "2026-11-21",
+            "note": "A new source resets the feed's state in the render that brings it instead of an effect later, and the frame callbacks' ref is updated after commit, so it is safe under the React Compiler."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -3783,8 +3793,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.23.1",
         "changelog": [
+          {
+            "version": "0.23.1",
+            "date": "2026-11-21",
+            "note": "The bar leaves in the same render `active` turns false instead of an effect later, so it is safe under the React Compiler."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -3821,8 +3836,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.23.1",
         "changelog": [
+          {
+            "version": "0.23.1",
+            "date": "2026-11-21",
+            "note": "A new selection writes its label into the field in the render that brings it instead of an effect later, so it is safe under the React Compiler."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -4087,8 +4107,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.23.1",
         "changelog": [
+          {
+            "version": "0.23.1",
+            "date": "2026-11-21",
+            "note": "TimeInput rewrites its text for a new value or clock in the render that brings it instead of an effect later, so it is safe under the React Compiler."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -4949,8 +4974,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.2",
+        "version": "0.22.3",
         "changelog": [
+          {
+            "version": "0.22.3",
+            "date": "2026-11-21",
+            "note": "ShellSearch reads the platform for its shortcut with useSyncExternalStore instead of setting state in an effect. Still says Ctrl K until hydrated."
+          },
           {
             "version": "0.22.2",
             "date": "2026-11-20",
@@ -5174,8 +5204,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.17.4",
         "changelog": [
+          {
+            "version": "0.17.4",
+            "date": "2026-11-21",
+            "note": "A wide screen opens on the first robot from state set during render (after hydration) instead of an effect, so it is safe under the React Compiler."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -7381,8 +7416,13 @@
         }
       ],
       "meta": {
-        "version": "0.21.0",
+        "version": "0.21.1",
         "changelog": [
+          {
+            "version": "0.21.1",
+            "date": "2026-11-21",
+            "note": "A new notifications list replaces the local one in the render that brings it instead of an effect later, so it is safe under the React Compiler."
+          },
           {
             "version": "0.21.0",
             "date": "2026-11-20",
