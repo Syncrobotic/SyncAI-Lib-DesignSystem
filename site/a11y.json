@@ -514,7 +514,6 @@
     "roles": [
       "combobox",
       "group",
-      "img",
       "listbox",
       "option",
       "status"
@@ -815,6 +814,7 @@
       "row",
       "rowgroup",
       "searchbox",
+      "separator",
       "table"
     ],
     "tabStops": 20,
@@ -890,7 +890,6 @@
   "navigation-menu": {
     "roles": [
       "button",
-      "img",
       "link",
       "list",
       "listitem",

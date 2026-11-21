@@ -6,7 +6,7 @@ import { ChargingDock } from "@/registry/syncrobotic/ui/robot-icons"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { Code, DocHeader, DoDont, Pager, Section, Specimen, TokenTable } from "@/site/doc"
 import { metaFor, neighbours } from "@/site/foundations"
-import { iconCount } from "@/site/icons"
+import { iconCount, iconName } from "@/site/icons"
 
 export const metadata: Metadata = metaFor("iconography")
 
@@ -31,7 +31,7 @@ export default function IconographyPage() {
             {set.map((Icon, i) => (
               <figure key={i} className="flex aspect-square flex-col items-center justify-center gap-2 rounded-sm bg-card p-2 ring-1 ring-border">
                 <Icon aria-hidden className="size-6" />
-                <figcaption className="w-full truncate text-center font-mono text-xs text-muted-foreground">{Icon.displayName}</figcaption>
+                <figcaption className="w-full truncate text-center font-mono text-xs text-muted-foreground">{iconName(Icon)}</figcaption>
               </figure>
             ))}
           </div>

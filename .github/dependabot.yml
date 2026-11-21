@@ -14,6 +14,14 @@ updates:
     groups:
       minor-and-patch:
         update-types: [minor, patch]
+    # Held majors: each forces products to rewrite code for no visible gain (Table 9 changes how every table is set
+    # up; Panels 4 halves the keyboard step and resets saved layouts). Migrations are ready on the branches
+    # deps/table9-panels4; lift these when a product needs them or the old major stops getting fixes.
+    ignore:
+      - dependency-name: "@tanstack/react-table"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: react-resizable-panels
+        update-types: ["version-update:semver-major"]
     commit-message:
       prefix: deps
   - package-ecosystem: github-actions

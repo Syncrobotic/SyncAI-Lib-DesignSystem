@@ -173,7 +173,26 @@ import { ChargingDock, DiamondAlert, EStopPressed, MobileRobot, RobotArm, Safety
 export type IconEntry = { name: string; Icon: LucideIcon; means: string }
 export type IconGroup = { title: string; icons: IconEntry[]; /** Where the group imports from, when not lucide-react. */ from?: string }
 
-const e = (Icon: LucideIcon, means: string): IconEntry => ({ name: Icon.displayName ?? "", Icon, means })
+// lucide-react 1.x renamed these icons and keeps the old names as aliases of the same component, so their displayName is
+// the new name. The kit imports them by the old names, which work on every lucide-react from 0.x on (the new ones need
+// 1.68 or later), and the page and the allowlist must show the name a product imports.
+// The map is globalThis.Map because Map in this file is the Lucide icon.
+const importedAs = new globalThis.Map<LucideIcon, string>([
+  [CircleAlert, "CircleAlert"],
+  [FileAudio, "FileAudio"],
+  [FileJson, "FileJson"],
+  [FileVideo, "FileVideo"],
+  [Fingerprint, "Fingerprint"],
+  [FlipHorizontal, "FlipHorizontal"],
+  [FlipVertical, "FlipVertical"],
+  [History, "History"],
+  [OctagonAlert, "OctagonAlert"],
+  [Trash2, "Trash2"],
+  [TriangleAlert, "TriangleAlert"],
+])
+/** The name the kit imports an icon by. */
+export const iconName = (Icon: LucideIcon) => importedAs.get(Icon) ?? Icon.displayName ?? ""
+const e = (Icon: LucideIcon, means: string): IconEntry => ({ name: iconName(Icon), Icon, means })
 
 export const iconGroups: IconGroup[] = [
   {

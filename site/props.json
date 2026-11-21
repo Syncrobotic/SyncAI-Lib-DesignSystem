@@ -2534,7 +2534,7 @@
     {
      "name": "calendarLocale",
      "type": "Partial<DayPickerLocale>",
-     "description": "react-day-picker's locale for the calendar's month and day names and its labels: `import { zhTW } from \"react-day-picker/locale\"`."
+     "description": "react-day-picker's locale for the calendar's month and day names and its labels: `import { zhTW } from \"react-day-picker/locale/zh-TW\"`."
     },
     {
      "name": "labels",
@@ -2631,7 +2631,7 @@
     {
      "name": "calendarLocale",
      "type": "Partial<DayPickerLocale>",
-     "description": "react-day-picker's locale for the calendar's month and day names and its labels: `import { zhTW } from \"react-day-picker/locale\"`."
+     "description": "react-day-picker's locale for the calendar's month and day names and its labels: `import { zhTW } from \"react-day-picker/locale/zh-TW\"`."
     },
     {
      "name": "labels",
