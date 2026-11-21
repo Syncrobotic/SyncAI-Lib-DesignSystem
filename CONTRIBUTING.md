@@ -21,7 +21,7 @@ npm run lint:rules       # focus never removed, battery thresholds, a chart with
 npm run lint:motion      # durations and easing outside the motion tokens, buttons without press feedback
 npm run lint:versions    # an item changed without a version bump and changelog line
 npm run lint:dtcg        # the DTCG token files out of date with the theme
-npm run typecheck
+npm run typecheck        # the site, the registry as a strict product compiles it, and the CI scripts through their JSDoc types
 npm test                 # behaviour tests (Vitest)
 npm run build            # registry JSON in public/r, and the docs site
 npm run build-storybook

@@ -60,7 +60,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build -o storybook-static",
     "registry:build": "shadcn build -o public/r",
-    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.registry.json",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.registry.json && tsc -p tsconfig.scripts.json",
     "lint": "eslint .",
     "lint:tokens": "node scripts/check-tokens.mjs",
     "test:stories": "playwright test tests/stories.spec.ts",

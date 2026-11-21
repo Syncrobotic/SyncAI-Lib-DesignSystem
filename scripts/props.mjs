@@ -15,7 +15,9 @@ const OUT = "site/props.json"
 const ROOT = process.cwd()
 const DIRS = ["registry/syncrobotic/ui", "registry/syncrobotic/shell"]
 
+/** @type {import("./types.js").Registry} */
 const registry = JSON.parse(readFileSync("registry.json", "utf8"))
+/** @type {Map<string, string>} */
 const fileToItem = new Map()
 for (const i of registry.items) for (const f of i.files ?? []) fileToItem.set(path.resolve(f.path), i.name)
 
@@ -24,16 +26,22 @@ const files = DIRS.flatMap((d) =>
     .filter((f) => f.endsWith(".tsx"))
     .map((f) => path.resolve(d, f)),
 )
-const config = ts.getParsedCommandLineOfConfigFile("tsconfig.json", {}, { ...ts.sys, onUnRecoverableConfigFileDiagnostic: () => {} })
+// The repository's own tsconfig.json always parses; were it missing, reading its options below fails loudly, as it should.
+const config = /** @type {ts.ParsedCommandLine} */ (ts.getParsedCommandLineOfConfigFile("tsconfig.json", {}, { ...ts.sys, onUnRecoverableConfigFileDiagnostic: () => {} }))
 const program = ts.createProgram(files, { ...config.options, noEmit: true })
 const checker = program.getTypeChecker()
+/** @param {ts.Node} decl */
 const own = (decl) => {
   const f = decl.getSourceFile().fileName
   return f.startsWith(ROOT) && !f.includes("node_modules")
 }
+/** @param {string} s */
 const clean = (s) => s.replace(/\s+/g, " ").replace(/import\("[^"]+"\)\./g, "").trim()
 
-/** React's own types as a reader writes them: the checker expands ReactNode into its eight-member union. */
+/**
+ * React's own types as a reader writes them: the checker expands ReactNode into its eight-member union.
+ * @param {string} s
+ */
 const reactNames = (s) =>
   s
     .replace(/React\.ReactElement<unknown, string \| React\.JSXElementConstructor<any>>/g, "ReactElement")
@@ -43,7 +51,12 @@ const reactNames = (s) =>
 
 /** Small local aliases (`type Tone = "a" | "b"`) are printed as what they stand for; longer ones keep their name. */
 const ALIAS_MAX = 64
+/** @type {Map<string, string | null>} */
 const aliases = new Map()
+/**
+ * @param {string} name
+ * @param {ts.SourceFile} sf
+ */
 function aliasText(name, sf) {
   const key = `${sf.fileName}#${name}`
   if (!aliases.has(key)) {
@@ -55,9 +68,14 @@ function aliasText(name, sf) {
   return aliases.get(key)
 }
 
-/** "React.ComponentProps<typeof DialogPrimitive.Content>" → "Radix Dialog.Content"; "<button>" for elements. */
+/**
+ * "React.ComponentProps<typeof DialogPrimitive.Content>" → "Radix Dialog.Content"; "<button>" for elements.
+ * @param {string} text
+ * @param {ts.SourceFile} sf
+ */
 function inheritedName(text, sf) {
   let t = text.replace(/\s+/g, " ")
+  /** @type {string[]} */
   let except = []
   const omit = t.match(/^Omit<(.+), ((?:"[^"]+"\s*\|?\s*)+)>$/)
   if (omit) {
@@ -79,7 +97,15 @@ function inheritedName(text, sf) {
   return except.length ? `${name} (except ${except.join(", ")})` : name
 }
 
-/** Flatten the param's annotation into intersection parts, following local type aliases. */
+/** @typedef {{ kind: "own" } | { kind: "inherit"; text: string; sf: ts.SourceFile } | { kind: "variants"; text: string }} Part */
+
+/**
+ * Flatten the param's annotation into intersection parts, following local type aliases.
+ * @param {ts.TypeNode | undefined} node
+ * @param {ts.SourceFile} sf
+ * @param {Set<string>} [seen]
+ * @returns {Part[]}
+ */
 function parts(node, sf, seen = new Set()) {
   if (!node) return []
   if (ts.isParenthesizedTypeNode(node)) return parts(node.type, sf, seen)
@@ -92,6 +118,7 @@ function parts(node, sf, seen = new Set()) {
       seen.add(name)
       if (ts.isTypeAliasDeclaration(decl)) return parts(decl.type, decl.getSourceFile(), seen)
       if (ts.isInterfaceDeclaration(decl)) {
+        /** @type {Part[]} */
         const heritage = (decl.heritageClauses ?? []).flatMap((h) => h.types.map((t) => ({ kind: "inherit", text: t.getText(decl.getSourceFile()), sf: decl.getSourceFile() })))
         return [{ kind: "own" }, ...heritage]
       }
@@ -103,17 +130,31 @@ function parts(node, sf, seen = new Set()) {
   return [{ kind: "inherit", text, sf }]
 }
 
-/** Defaults written in the destructuring (`size = "md"`) and in a cva's defaultVariants. */
+/**
+ * Defaults written in the destructuring (`size = "md"`) and in a cva's defaultVariants.
+ * @param {ts.FunctionDeclaration} fn
+ * @param {ts.SourceFile} sf
+ */
 function defaults(fn, sf) {
+  /** @type {Record<string, string>} */
   const out = {}
   const p = fn.parameters[0]
   if (p && ts.isObjectBindingPattern(p.name))
-    for (const el of p.name.elements) if (el.initializer && ts.isIdentifier(el.propertyName ?? el.name)) out[(el.propertyName ?? el.name).text] = clean(el.initializer.getText(sf))
+    for (const el of p.name.elements) {
+      // Named once, so the identifier check narrows the very node whose text is read.
+      const key = el.propertyName ?? el.name
+      if (el.initializer && ts.isIdentifier(key)) out[key.text] = clean(el.initializer.getText(sf))
+    }
   return out
 }
+/**
+ * @param {string} text
+ * @param {ts.SourceFile} sf
+ */
 function variantDefaults(text, sf) {
   const m = text.match(/typeof (\w+)/)
   if (!m) return {}
+  /** @type {Record<string, string>} */
   const out = {}
   sf.forEachChild(function visit(n) {
     if (ts.isVariableDeclaration(n) && ts.isIdentifier(n.name) && n.name.text === m[1] && n.initializer && ts.isCallExpression(n.initializer)) {
@@ -133,6 +174,12 @@ function variantDefaults(text, sf) {
  * written in the destructuring (`labels = { … }`), or from a `const` typed as the labels type.
  */
 const FLAGS = ts.TypeFormatFlags.NoTruncation | ts.TypeFormatFlags.UseAliasDefinedOutsideCurrentScope
+/**
+ * @param {ts.ObjectLiteralExpression} obj
+ * @param {ts.SourceFile} sf
+ * @param {Record<string, string>} [out]
+ * @returns {Record<string, string>}
+ */
 function objectEntries(obj, sf, out = {}) {
   for (const p of obj.properties) {
     if (ts.isSpreadAssignment(p) && ts.isIdentifier(p.expression)) {
@@ -143,14 +190,29 @@ function objectEntries(obj, sf, out = {}) {
   }
   return out
 }
-/** The object literal a `const` identifier was declared with, wherever it lives. */
+/**
+ * The object literal a `const` identifier was declared with, wherever it lives.
+ * @param {ts.Identifier} id
+ */
 function constObject(id) {
   let sym = checker.getSymbolAtLocation(id)
   if (sym && sym.flags & ts.SymbolFlags.Alias) sym = checker.getAliasedSymbol(sym)
-  const d = sym?.declarations?.find((x) => ts.isVariableDeclaration(x) && x.initializer && ts.isObjectLiteralExpression(x.initializer))
+  const d = sym?.declarations?.find(
+    /** @returns {x is ts.VariableDeclaration & { initializer: ts.ObjectLiteralExpression }} */
+    (x) => ts.isVariableDeclaration(x) && !!x.initializer && ts.isObjectLiteralExpression(x.initializer),
+  )
   return d ? { node: d.initializer, sf: d.getSourceFile() } : undefined
 }
+/** @typedef {ts.Declaration & { type?: ts.TypeNode }} PropDecl */
+
+/**
+ * @param {ts.FunctionDeclaration} fn
+ * @param {ts.SourceFile} sf
+ * @param {PropDecl | undefined} propDecl
+ * @param {ts.Type} type
+ */
 function labelDefaults(fn, sf, propDecl, type) {
+  /** @type {Record<string, string>} */
   const out = {}
   const p = fn.parameters[0]
   let local = "labels"
@@ -168,6 +230,7 @@ function labelDefaults(fn, sf, propDecl, type) {
   for (const m of (fn.body?.getText(sf) ?? "").matchAll(new RegExp(`\\b${local}\\?\\.(\\w+) \\?\\? ("[^"]*")`, "g"))) out[m[1]] ??= m[2]
   if (Object.keys(out).length || !propDecl?.type) return out
   // A const typed as the labels type, in the file that declares the type (DataGridPagination passes Pagination's).
+  /** @type {Set<ts.Identifier>} */
   const names = new Set()
   propDecl.type.forEachChild(function refs(n) {
     if (ts.isTypeReferenceNode(n) && ts.isIdentifier(n.typeName)) names.add(n.typeName)
@@ -182,9 +245,12 @@ function labelDefaults(fn, sf, propDecl, type) {
     const decl = sym?.declarations?.[0]
     if (!decl || !own(decl)) continue
     const file = decl.getSourceFile()
+    // `sym` is set here: a symbol without one has no declaration and was skipped above.
+    const symbol = /** @type {ts.Symbol} */ (sym)
     file.forEachChild(function visit(n) {
       // Typed as the labels type, or an untyped `defaults` beside it (pagination.tsx).
-      const typed = (v) => (v.type ? new RegExp(`\\b${sym.getName()}\\b`).test(v.type.getText(file)) : /^default/.test(v.name.getText(file)))
+      /** @param {ts.VariableDeclaration} v */
+      const typed = (v) => (v.type ? new RegExp(`\\b${symbol.getName()}\\b`).test(v.type.getText(file)) : /^default/.test(v.name.getText(file)))
       if (ts.isVariableDeclaration(n) && n.initializer && ts.isObjectLiteralExpression(n.initializer) && typed(n))
         objectEntries(n.initializer, file, out)
       n.forEachChild(visit)
@@ -192,6 +258,13 @@ function labelDefaults(fn, sf, propDecl, type) {
   }
   return out
 }
+/**
+ * @param {ts.Type} t
+ * @param {ts.ParameterDeclaration} param
+ * @param {ts.FunctionDeclaration} fn
+ * @param {ts.SourceFile} sf
+ * @param {PropDecl | undefined} propDecl
+ */
 function labelKeys(t, param, fn, sf, propDecl) {
   const lt = checker.getNonNullableType(t)
   const defs = labelDefaults(fn, sf, propDecl, lt)
@@ -207,13 +280,17 @@ function labelKeys(t, param, fn, sf, propDecl) {
   })
 }
 
+/** @typedef {{ name: string; props: Record<string, unknown>[]; inherits: string[] }} ComponentProps */
+/** @type {Record<string, ComponentProps[]>} */
 const result = {}
 for (const sf of program.getSourceFiles().filter((s) => files.includes(path.resolve(s.fileName)))) {
   const item = fileToItem.get(path.resolve(sf.fileName))
   if (!item) continue
+  /** @type {ComponentProps[]} */
   const components = []
   for (const st of sf.statements) {
-    const exported = ts.getCombinedModifierFlags(st) & ts.ModifierFlags.Export
+    // Every statement kind carries modifier flags; the checker's signature asks for a declaration only by its type.
+    const exported = ts.getCombinedModifierFlags(/** @type {ts.Declaration} */ (/** @type {ts.Node} */ (st))) & ts.ModifierFlags.Export
     if (!exported) continue
     // export const Dialog = DialogPrimitive.Root
     if (ts.isVariableStatement(st)) {
@@ -235,8 +312,10 @@ for (const sf of program.getSourceFiles().filter((s) => files.includes(path.reso
     const vdefs = Object.assign({}, ...ps.filter((p) => p.kind === "variants").map((p) => variantDefaults(p.text, sf)))
     const defs = { ...vdefs, ...defaults(st, sf) }
     const type = checker.getTypeAtLocation(param)
+    /** @type {Record<string, unknown>[]} */
     const props = []
     for (const sym of checker.getPropertiesOfType(type)) {
+      /** @type {PropDecl[]} */
       const decls = sym.declarations ?? []
       // Ours: declared in this repository (a cva's variants resolve to the cva config, also ours).
       if (!decls.length || !decls.some(own)) continue

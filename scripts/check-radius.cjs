@@ -5,6 +5,7 @@
 const { chromium } = require('playwright'); const fs = require('fs');
 const SITE = process.env.SITE || 'http://localhost:3000';
 const exe = process.env.PW_CHROMIUM_PATH;
+/** @type {import("./types.js").Registry} */
 const reg = JSON.parse(fs.readFileSync('registry.json', 'utf8'));
 
 
@@ -21,12 +22,12 @@ const pages = ['/', '/blocks', '/docs/foundations', ...['principles','color','ty
     if (!r || r.status() !== 200) continue; n++;
     await p.waitForTimeout(400);
     const hits = await p.evaluate(() => {
-      const cs = e => getComputedStyle(e);
-      const surf = e => { const s = cs(e); if (s.display === 'none' || s.visibility === 'hidden' || +s.opacity === 0) return false;
+      const cs = (/** @type {Element} */ e) => getComputedStyle(e);
+      const surf = (/** @type {Element} */ e) => { const s = cs(e); if (s.display === 'none' || s.visibility === 'hidden' || +s.opacity === 0) return false;
         const bg = s.backgroundColor; const hasBg = bg && bg !== 'transparent' && !/,\s*0\)$/.test(bg);
         const hasB = parseFloat(s.borderTopWidth) > 0 && s.borderTopStyle !== 'none'; return hasBg || hasB || s.boxShadow !== 'none' };
-      const rad = e => parseFloat(cs(e).borderTopLeftRadius) || 0;
-      const sig = e => (e.getAttribute('data-slot') ? '[' + e.getAttribute('data-slot') + '] ' : '') + e.tagName.toLowerCase() + '.' + (typeof e.className === 'string' ? e.className : '').split(/\s+/).filter(c => /rounded|ring|border|bg-|shadow|p-|px-|py-/.test(c)).slice(0, 6).join('.');
+      const rad = (/** @type {Element} */ e) => parseFloat(cs(e).borderTopLeftRadius) || 0;
+      const sig = (/** @type {Element} */ e) => (e.getAttribute('data-slot') ? '[' + e.getAttribute('data-slot') + '] ' : '') + e.tagName.toLowerCase() + '.' + (typeof e.className === 'string' ? e.className : '').split(/\s+/).filter(c => /rounded|ring|border|bg-|shadow|p-|px-|py-/.test(c)).slice(0, 6).join('.');
       const out = [];
       for (const e of document.querySelectorAll('body *')) {
         const ri = rad(e); if (!ri || !surf(e)) continue;
