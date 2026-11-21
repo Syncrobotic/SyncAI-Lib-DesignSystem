@@ -45,6 +45,7 @@ const ROUND = {
   "app/(site)/(docs)/docs/foundations/motion/page.tsx": "timeline dot",
   "app/(site)/(docs)/docs/foundations/radius/page.tsx": "documents this rule: bullet dots and the pill-button counter-example",
 }
+/** @type {{ name: string; re: RegExp; test?: (m: RegExpMatchArray) => boolean; file?: (f: string) => boolean }[]} */
 const rules = [
   {
     name: "Arbitrary length (use a token such as h-(--h-stop), text-3xl or rounded-md)",
@@ -73,6 +74,7 @@ const rules = [
 ]
 
 // The icon set (site/icons.ts) is the allowlist for Lucide: one icon per meaning, so a new icon is a reviewed change there.
+/** @param {string} src */
 const iconImport = (src) =>
   [...src.matchAll(/import\s*\{([^}]*)\}\s*from\s*"lucide-react"/g)].flatMap((m) =>
     m[1]
@@ -84,6 +86,10 @@ const iconImport = (src) =>
 const ICONS = new Set(iconImport(readFileSync("site/icons.ts", "utf8")).map((i) => i.name))
 const ICON_TYPES = new Set(["LucideIcon", "LucideProps", "createLucideIcon"])
 
+/**
+ * @param {string} dir
+ * @returns {string[]}
+ */
 function walk(dir) {
   return readdirSync(dir).flatMap((f) => {
     const p = join(dir, f)

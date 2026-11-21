@@ -8,6 +8,7 @@ import { readFileSync, readdirSync, statSync } from "node:fs"
 import { join } from "node:path"
 
 const ROOTS = process.argv.slice(2).length ? process.argv.slice(2) : ["registry"]
+/** @type {(dir: string) => string[]} */
 const walk = (dir) =>
   readdirSync(dir).flatMap((f) => {
     const p = join(dir, f)
@@ -15,6 +16,11 @@ const walk = (dir) =>
   })
 
 let bad = 0
+/**
+ * @param {string} file
+ * @param {number} line
+ * @param {string} msg
+ */
 const fail = (file, line, msg) => {
   console.error(`${file}:${line}  ${msg}`)
   bad++
@@ -24,9 +30,14 @@ for (const file of ROOTS.flatMap(walk)) {
   const src = readFileSync(file, "utf8")
   const lines = src.split("\n")
   // Class helpers defined in the file (const base = "press …", const zone = (z) => cn("press …"), const sides = { … animate-… })
+  /** @param {string} word */
   const helpers = (word) => [...src.matchAll(/(?:const|let)\s+(\w+)\s*=\s*(\{\n[\s\S]*?\n\}|[^\n]*)/g)].filter((m) => m[2].includes(word)).map((m) => m[1])
   const pressHelpers = helpers("press")
   const animHelpers = helpers("animate-")
+  /**
+   * @param {string} text
+   * @param {string[]} names
+   */
   const uses = (text, names) => names.some((n) => new RegExp(`[({\\[,\\s]${n}\\b`).test(text))
 
   // 1. Overlay contents and scrims

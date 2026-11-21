@@ -23,10 +23,12 @@ const preview: Preview = {
         if (more) document.documentElement.dataset.contrast = "more"
         else delete document.documentElement.dataset.contrast
       }, [dark, more])
-      // Phone width, so components are judged at the size they ship at.
+      // Phone width, so components are judged at the size they ship at. The frame is at most 390 px rather than exactly
+      // 390 px: a fixed width plus the 16 px padding made the page 16 px wider than a 390 px phone, so every story
+      // scrolled sideways there. The story screenshots run at 422 px (390 plus the padding), where it is still 390 px.
       return (
         <div className="min-h-screen bg-background p-4 font-sans text-foreground">
-          <div className="mx-auto w-[390px]">
+          <div className="mx-auto w-full max-w-[390px] min-w-0">
             <Story />
           </div>
         </div>

@@ -183,6 +183,71 @@
       }
     },
     {
+      "name": "labels-zh-tw",
+      "type": "registry:lib",
+      "title": "Labels: Traditional Chinese (Taiwan)",
+      "description": "The kit's words in Traditional Chinese as written in Taiwan: one typed labels object per component that takes `labels` (alarms, emergency stop, teleoperation, robot map and model, data grid, filters, forms and more), with numbers and units formatted by functions as in the English defaults.",
+      "registryDependencies": [
+        "@syncrobotic/alarm",
+        "@syncrobotic/annotated-image",
+        "@syncrobotic/attachment",
+        "@syncrobotic/autocomplete",
+        "@syncrobotic/breadcrumb",
+        "@syncrobotic/camera-feed",
+        "@syncrobotic/chip-group",
+        "@syncrobotic/code-block",
+        "@syncrobotic/command",
+        "@syncrobotic/copy-button",
+        "@syncrobotic/data-grid",
+        "@syncrobotic/date-selector",
+        "@syncrobotic/dialog",
+        "@syncrobotic/filters",
+        "@syncrobotic/graph",
+        "@syncrobotic/image-grid",
+        "@syncrobotic/island",
+        "@syncrobotic/joint-state",
+        "@syncrobotic/load-more",
+        "@syncrobotic/media-player",
+        "@syncrobotic/metric-card",
+        "@syncrobotic/number-field",
+        "@syncrobotic/pagination",
+        "@syncrobotic/phone-input",
+        "@syncrobotic/point-cloud",
+        "@syncrobotic/questionnaire",
+        "@syncrobotic/robot-map",
+        "@syncrobotic/robot-model",
+        "@syncrobotic/route-progress",
+        "@syncrobotic/search-field",
+        "@syncrobotic/sortable",
+        "@syncrobotic/spinner",
+        "@syncrobotic/stepper",
+        "@syncrobotic/stop-button",
+        "@syncrobotic/teleop-pad",
+        "@syncrobotic/text-diff",
+        "@syncrobotic/theme-toggle",
+        "@syncrobotic/time-picker",
+        "@syncrobotic/trace",
+        "@syncrobotic/tree"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/lib/labels-zh-tw.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "meta": {
+        "version": "0.27.0",
+        "changelog": [
+          {
+            "version": "0.27.0",
+            "date": "2026-11-21",
+            "note": "First release."
+          }
+        ],
+        "status": "beta"
+      }
+    },
+    {
       "name": "ros",
       "type": "registry:lib",
       "title": "ROS",
@@ -2001,8 +2066,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.16.1",
+        "version": "0.16.2",
         "changelog": [
+          {
+            "version": "0.16.2",
+            "date": "2026-11-21",
+            "note": "`tokenize` gives back exactly its input for any text: spacing alone is one wordless token instead of none. A diff keeps that spacing as shared text, never as a word changed."
+          },
           {
             "version": "0.16.1",
             "date": "2026-11-21",
@@ -3878,8 +3948,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.24.1",
+        "version": "0.24.2",
         "changelog": [
+          {
+            "version": "0.24.2",
+            "date": "2026-11-21",
+            "note": "Mimic joints follow the joint they mimic with limits ignored on every joint, and the driving joint's value wins over a mimic's own whatever the order; a mimic joint can be highlighted by name (`RobotModelInfo.mimics`). Planar and floating joints take [x, y, θ] and [x, y, z, roll, pitch, yaw] and are written per component in mm and ° (new `poseValue` label, `jointValueWords`, `jointValueOf`); one number no longer leaves their other components undefined."
+          },
           {
             "version": "0.24.1",
             "date": "2026-11-21",
@@ -4396,8 +4471,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.2",
+        "version": "0.23.3",
         "changelog": [
+          {
+            "version": "0.23.3",
+            "date": "2026-11-21",
+            "note": "A value that is not a time (\"9\", \"9:\", \"25:99\", \"\") reads as no value: the placeholder shows and no slot is picked, instead of a broken time on the trigger. An unpadded \"9:30\" picks the \"09:30\" slot; a malformed min, max or step falls back to its default. New `normalizeTime`."
+          },
           {
             "version": "0.23.2",
             "date": "2026-11-21",

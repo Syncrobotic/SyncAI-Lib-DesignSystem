@@ -16,9 +16,32 @@ describe("tokenize", () => {
   it("makes each Chinese or Japanese character a word", () => {
     expect(tokenize("一台堆高機 moves").map((x) => x.word)).toEqual(["一", "台", "堆", "高", "機", "moves"])
   })
-  it("has no words in an empty or blank text", () => {
+  it("has no tokens in an empty text, and one wordless token for spacing alone", () => {
     expect(tokenize("")).toEqual([])
-    expect(tokenize("   ")).toEqual([])
+    expect(tokenize("   ")).toEqual([{ word: "", text: "   " }])
+    expect(tokenize(" \n\t")).toEqual([{ word: "", text: " \n\t" }])
+  })
+  it("gives back exactly the input for many generated texts", () => {
+    // A small seeded generator (mulberry32), so a failure names a string that can be reproduced.
+    let seed = 0x5eed
+    const random = () => {
+      seed = (seed + 0x6d2b79f5) | 0
+      let t = Math.imul(seed ^ (seed >>> 15), 1 | seed)
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+    }
+    // Latin words, punctuation, CJK and full-width forms, emoji (surrogate pairs) and every kind of spacing, including
+    // the ideographic space and no-break space.
+    const alphabet = ["a", "Z", "9", ".", ",", "-", "é", "一", "台", "機", "の", "カ", "！", "（", "😀", "𠀋", " ", "  ", "\n", "\t", "\r\n", "\u3000", "\u00a0"]
+    const pick = () => alphabet[Math.floor(random() * alphabet.length)]!
+    const fixed = ["", " ", "  ", "\n", " a", "a ", "  a  b  ", "\u3000一台\u3000", " 一 ", "a\n\n"]
+    const generated = Array.from({ length: 2000 }, () => Array.from({ length: Math.floor(random() * 12) }, pick).join(""))
+    for (const input of [...fixed, ...generated]) {
+      const tokens = tokenize(input)
+      expect(tokens.map((x) => x.text).join(""), JSON.stringify(input)).toBe(input)
+      // Only a text of spacing alone has a wordless token, and then it is the only one.
+      expect(tokens.filter((x) => !x.word).length, JSON.stringify(input)).toBe(input.trim() || !input ? 0 : 1)
+    }
   })
 })
 
@@ -63,6 +86,18 @@ describe("diffWords", () => {
     expect(diffWords("", "")).toEqual([])
     expect(diffWords("", "new caption").map((p) => p.type)).toEqual(["added"])
     expect(diffWords("old caption", "").map((p) => p.type)).toEqual(["removed"])
+  })
+  it("keeps a text of spacing alone, as shared spacing and not as a word changed", () => {
+    expect(diffWords("  ", " ")).toEqual([{ type: "same", text: " ", words: 0 }])
+    expect(diffWords("", "  ")).toEqual([{ type: "same", text: "  ", words: 0 }])
+    expect(diffWords("  ", "")).toEqual([])
+    const parts = diffWords("cup", " ")
+    expect(side(parts, "added")).toBe(" ")
+    expect(diffStats(parts)).toEqual({ added: 0, removed: 1 })
+  })
+  it("rebuilds the after text for generated pairs, spacing alone included", () => {
+    const texts = ["", " ", "  ", "a", " a ", "a  b", "一台 機", "\n", "a\n"]
+    for (const before of texts) for (const after of texts) expect(side(diffWords(before, after), "added")).toBe(after)
   })
   it("diffs Chinese by character", () => {
     expect(diffStats(diffWords("一台堆高機", "兩台堆高機"))).toEqual({ added: 1, removed: 1 })

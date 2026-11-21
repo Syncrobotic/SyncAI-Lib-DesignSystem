@@ -11,6 +11,10 @@
     "version": "0.23.0",
     "hash": "8ec920f8618ff43d"
   },
+  "labels-zh-tw": {
+    "version": "0.27.0",
+    "hash": "56e8e1abbb9d5cff"
+  },
   "ros": {
     "version": "0.27.0",
     "hash": "04719fe9d7491577"
@@ -180,8 +184,8 @@
     "hash": "cf17e73d8fc26aba"
   },
   "text-diff": {
-    "version": "0.16.1",
-    "hash": "218b4d6431a4cec8"
+    "version": "0.16.2",
+    "hash": "44d6294977873b90"
   },
   "meter": {
     "version": "0.17.4",
@@ -356,8 +360,8 @@
     "hash": "2408604ba0e89408"
   },
   "robot-model": {
-    "version": "0.24.1",
-    "hash": "f7c17c61b2ed6e9f"
+    "version": "0.24.2",
+    "hash": "d2e6305e854e8ef5"
   },
   "filter-form": {
     "version": "0.10.0",
@@ -400,8 +404,8 @@
     "hash": "60a5f053320a96cf"
   },
   "time-picker": {
-    "version": "0.23.2",
-    "hash": "a8798641dcfad8d2"
+    "version": "0.23.3",
+    "hash": "d33ad72857379192"
   },
   "data-grid": {
     "version": "0.26.0",
