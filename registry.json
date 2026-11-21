@@ -4344,8 +4344,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.2",
+        "version": "0.23.3",
         "changelog": [
+          {
+            "version": "0.23.3",
+            "date": "2026-11-21",
+            "note": "A value that is not a time (\"9\", \"9:\", \"25:99\", \"\") reads as no value: the placeholder shows and no slot is picked, instead of a broken time on the trigger. An unpadded \"9:30\" picks the \"09:30\" slot; a malformed min, max or step falls back to its default. New `normalizeTime`."
+          },
           {
             "version": "0.23.2",
             "date": "2026-11-21",

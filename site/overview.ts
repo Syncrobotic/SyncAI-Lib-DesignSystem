@@ -417,6 +417,7 @@ export const overviews: Record<string, Overview> = {
     notes: [
       "step sets minutes between slots; min and max bound them.",
       "TimeInput marks unreadable or out-of-range text invalid and keeps the text so it can be fixed.",
+      'A value that is not "HH:mm" inside the day ("9", "25:99", "") reads as no value: both show their placeholder. normalizeTime gives the canonical form or undefined.',
     ],
   },
   item: {
