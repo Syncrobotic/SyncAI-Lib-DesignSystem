@@ -100,8 +100,8 @@
     "hash": "6e4683848db70d23"
   },
   "input-group": {
-    "version": "0.17.3",
-    "hash": "710758bb51253e6f"
+    "version": "0.17.4",
+    "hash": "88e18fccd340527f"
   },
   "number-field": {
     "version": "0.17.2",
@@ -228,12 +228,12 @@
     "hash": "a542674c1883114e"
   },
   "tree": {
-    "version": "0.18.0",
-    "hash": "5089f9a3c327ad33"
+    "version": "0.18.1",
+    "hash": "717e44928988c94e"
   },
   "graph": {
-    "version": "0.21.0",
-    "hash": "a0fbcff3afb425b6"
+    "version": "0.21.1",
+    "hash": "023d2330d5f053d0"
   },
   "robot-map": {
     "version": "0.23.1",
@@ -400,8 +400,8 @@
     "hash": "ebaae2a3974a0971"
   },
   "attachment": {
-    "version": "0.23.0",
-    "hash": "df074e2797f8ef04"
+    "version": "0.23.1",
+    "hash": "0456b2169820f584"
   },
   "file-type": {
     "version": "0.9.0",

@@ -1107,8 +1107,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.17.4",
         "changelog": [
+          {
+            "version": "0.17.4",
+            "date": "2026-11-21",
+            "note": "Wiring the Field's id onto the first text box no longer reassigns a variable from a callback, so it is safe under the React Compiler. No visible change."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -2558,8 +2563,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.18.0",
+        "version": "0.18.1",
         "changelog": [
+          {
+            "version": "0.18.1",
+            "date": "2026-11-21",
+            "note": "Type-ahead times letters by the key event's own timeStamp instead of calling Date.now() in the component, so it is safe under the React Compiler. Same half-second window."
+          },
           {
             "version": "0.18.0",
             "date": "2026-11-19",
@@ -2588,8 +2598,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.21.0",
+        "version": "0.21.1",
         "changelog": [
+          {
+            "version": "0.21.1",
+            "date": "2026-11-21",
+            "note": "The path walk is written as plain statements instead of a comma expression. No visible change."
+          },
           {
             "version": "0.21.0",
             "date": "2026-11-20",
@@ -4360,8 +4375,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.23.1",
         "changelog": [
+          {
+            "version": "0.23.1",
+            "date": "2026-11-21",
+            "note": "Removes a stale lint comment for a rule this kit does not use. No visible change."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
