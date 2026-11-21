@@ -13,11 +13,11 @@
   },
   "labels-zh-tw": {
     "version": "0.28.0",
-    "hash": "13ff4b88ac5d142a"
+    "hash": "d1e3f1f98d33796d"
   },
   "ros": {
     "version": "0.28.0",
-    "hash": "7b7ec2dff589b489"
+    "hash": "4bcd3c707283d90b"
   },
   "use-long-press": {
     "version": "0.5.1",
@@ -422,6 +422,10 @@
   "data-grid": {
     "version": "0.26.0",
     "hash": "b2dd714be4e364f0"
+  },
+  "log-viewer": {
+    "version": "0.28.0",
+    "hash": "8075c462c2086b2f"
   },
   "sortable": {
     "version": "0.23.0",

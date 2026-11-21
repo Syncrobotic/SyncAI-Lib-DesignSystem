@@ -12,6 +12,9 @@ declare module "@/registry/syncrobotic/hooks/use-ros?react-compiler" {
 declare module "@/registry/syncrobotic/ui/sidebar?react-compiler" {
   export * from "@/registry/syncrobotic/ui/sidebar"
 }
+declare module "@/registry/syncrobotic/ui/log-viewer?react-compiler" {
+  export * from "@/registry/syncrobotic/ui/log-viewer"
+}
 declare module "@/registry/syncrobotic/ui/toast?react-compiler" {
   export * from "@/registry/syncrobotic/ui/toast"
 }

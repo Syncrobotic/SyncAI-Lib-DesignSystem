@@ -199,7 +199,7 @@
           {
             "version": "0.28.0",
             "date": "2026-11-21",
-            "note": "New streamingChartLabels, diagnosticsLabels for the new streaming-chart and diagnostics, sidebarProviderLabels for the new sidebar, and `details` in `treeLabels`."
+            "note": "New streamingChartLabels, diagnosticsLabels for the new streaming-chart and diagnostics, sidebarProviderLabels for the new sidebar, logViewerLabels for the new log-viewer, and `details` in `treeLabels`."
           },
           {
             "version": "0.27.0",
@@ -214,7 +214,7 @@
       "name": "ros",
       "type": "registry:lib",
       "title": "ROS",
-      "description": "ROS and ROS 2 over rosbridge with no ROS library: a rosbridge v2 client on the browser's WebSocket (ref-counted subscriptions and advertisements, capped jittered reconnect that resubscribes, a send queue, service calls with a timeout, a zero Twist when a velocity publisher stops or the link drops) and pure converters from OccupancyGrid, LaserScan, PointCloud2, JointState, DiagnosticArray and poses to the kit's components, and from a teleop command and a map goal back to Twist and PoseStamped.",
+      "description": "ROS and ROS 2 over rosbridge with no ROS library: a rosbridge v2 client on the browser's WebSocket (ref-counted subscriptions and advertisements, capped jittered reconnect that resubscribes, a send queue, service calls with a timeout, a zero Twist when a velocity publisher stops or the link drops) and pure converters from OccupancyGrid, LaserScan, PointCloud2, JointState, DiagnosticArray, /rosout Log and poses to the kit's components, and from a teleop command and a map goal back to Twist and PoseStamped.",
       "dependencies": [],
       "registryDependencies": [],
       "files": [
@@ -229,7 +229,7 @@
           {
             "version": "0.28.0",
             "date": "2026-11-21",
-            "note": "`diagnosticArrayToStatuses` turns a `diagnostic_msgs/DiagnosticArray` into diagnostics' `statuses` (the level byte read however the bridge wrote it, each status stamped `receivedAt`), and `mergeDiagnostics` keeps the latest status of each name as /diagnostics arrives a few at a time."
+            "note": "`diagnosticArrayToStatuses` turns a `diagnostic_msgs/DiagnosticArray` into diagnostics' `statuses` (the level byte read however the bridge wrote it, each status stamped `receivedAt`), and `mergeDiagnostics` keeps the latest status of each name as /diagnostics arrives a few at a time; `rosLogToLogLine` turns a /rosout message (ROS 2 `rcl_interfaces/msg/Log` or ROS 1 `rosgraph_msgs/Log`) into log-viewer's LogLine: the stamp in ms, the level as a word, the node as the source, and the file, function and line."
           },
           {
             "version": "0.27.0",
@@ -4708,6 +4708,42 @@
           }
         ],
         "status": "beta"
+      }
+    },
+    {
+      "name": "log-viewer",
+      "type": "registry:ui",
+      "title": "Log viewer",
+      "description": "Robot and system logs (ROS /rosout, journald, a service's lines): a virtual list that stays smooth with 100,000 lines, follows the newest line until someone scrolls up (\"12 new · Jump to latest\"), keeps the last maxLines in a ring buffer, filters by level and source, searches with the matches marked and next/previous, wraps long lines, shows clock time or time ago, opens a line for its whole message and fields, and copies a line or a selection. Levels by shape and word; lines from props or an imperative append that batches a fast stream.",
+      "dependencies": [
+        "@tanstack/react-virtual",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/use-presence",
+        "@syncrobotic/button",
+        "@syncrobotic/copy-button",
+        "@syncrobotic/dropdown-menu",
+        "@syncrobotic/input",
+        "@syncrobotic/input-group"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/log-viewer.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.28.0",
+        "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "First release."
+          }
+        ]
       }
     },
     {

@@ -12,6 +12,7 @@ import {
   pointCloud2ToPoints,
   poseToRobotMapPose,
   quaternionToYaw,
+  rosLogToLogLine,
   RosConnectionError,
   RosServiceError,
   RosTimeoutError,
@@ -26,6 +27,7 @@ import {
 import { gridToPlan, rasteriseGrid, rosToPlan, scanToPoints, type RobotMapGrid, type RobotMapPose, type RobotMapScan } from "@/registry/syncrobotic/ui/robot-map"
 import type { JointStateJoint } from "@/registry/syncrobotic/ui/joint-state"
 import type { DiagnosticStatus } from "@/registry/syncrobotic/ui/diagnostics"
+import type { LogLine } from "@/registry/syncrobotic/ui/log-viewer"
 import { fakeRosbridge } from "./fake-rosbridge"
 
 // The rosbridge client against a fake socket (the server is played by the test), and the converters against messages
@@ -748,5 +750,26 @@ describe("stampToMs", () => {
     expect(stampToMs({ sec: 1700000000, nanosec: 500_000_000 })).toBe(1700000000500)
     expect(stampToMs({ secs: 2, nsecs: 1_000_000 })).toBe(2001)
     expect(stampToMs(undefined)).toBeUndefined()
+  })
+})
+
+describe("rosLogToLogLine", () => {
+  it("reads a ROS 2 rcl_interfaces/msg/Log as a log-viewer line", () => {
+    const msg = { stamp: { sec: 1700000000, nanosec: 250_000_000 }, level: 40, name: "planner_server", msg: "No valid path", file: "planner_server.cpp", function: "computePlan", line: 466 }
+    const line: LogLine = rosLogToLogLine(msg)
+    expect(line).toEqual({ time: 1700000000250, level: "error", source: "planner_server", message: "No valid path", file: "planner_server.cpp", function: "computePlan", line: 466 })
+    expect([10, 20, 30, 40, 50].map((level) => rosLogToLogLine({ ...msg, level }).level)).toEqual(["debug", "info", "warn", "error", "fatal"])
+    // A level between the named ones takes the one below it.
+    expect(rosLogToLogLine({ ...msg, level: 35 }).level).toBe("warn")
+  })
+
+  it("reads a ROS 1 rosgraph_msgs/Log, its header stamp and topics", () => {
+    const msg = { header: { stamp: { secs: 2, nsecs: 1_000_000 } }, level: 4, name: "/amcl", msg: "No laser scan received", file: "", function: "", line: 0, topics: ["/rosout", "/amcl_pose"] }
+    expect(rosLogToLogLine(msg)).toEqual({ time: 2001, level: "warn", source: "/amcl", message: "No laser scan received", fields: { topics: "/rosout, /amcl_pose" } })
+    expect([1, 2, 4, 8, 16].map((level) => rosLogToLogLine({ ...msg, level }).level)).toEqual(["debug", "info", "warn", "error", "fatal"])
+  })
+
+  it("falls back to when it was received for a message with no stamp", () => {
+    expect(rosLogToLogLine({ level: 20, msg: "ok" }, { receivedAt: 5 })).toEqual({ time: 5, level: "info", message: "ok" })
   })
 })

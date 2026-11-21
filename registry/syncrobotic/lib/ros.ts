@@ -781,6 +781,23 @@ export type RosDiagnosticStatus = {
 /** `diagnostic_msgs/DiagnosticArray`, from /diagnostics (each node's own) or /diagnostics_agg (the aggregator's tree). */
 export type RosDiagnosticArray = { header?: RosHeader; status: readonly RosDiagnosticStatus[] }
 
+/**
+ * A log line from `/rosout`: ROS 2's `rcl_interfaces/msg/Log` (`stamp`, levels 10 to 50) or ROS 1's `rosgraph_msgs/Log`
+ * (`header.stamp`, levels 1, 2, 4, 8, 16).
+ */
+export type RosLog = {
+  stamp?: RosTime
+  header?: RosHeader
+  level: number
+  name?: string
+  msg: string
+  file?: string
+  function?: string
+  line?: number
+  /** ROS 1 only: the topics the node publishes. */
+  topics?: readonly string[]
+}
+
 // --- Converters ----------------------------------------------------------------------------------------------------
 // Pure functions from ROS messages to the props the components take, by the conventions their docs state (robot-map's
 // plan coordinates, point-cloud's REP 103 frame, joint-state's SI units). The output types are written out here rather
@@ -1069,6 +1086,41 @@ export function mergeDiagnostics<T extends { name: string }>(previous: readonly 
   const next = new Map(previous.map((s) => [s.name, s]))
   for (const s of incoming) next.set(s.name, s)
   return [...next.values()]
+}
+
+/** log-viewer's `LogLine`. */
+export type RosLogLine = {
+  id?: string | number
+  time: number
+  level: "debug" | "info" | "warn" | "error" | "fatal"
+  source?: string
+  message: string
+  file?: string
+  function?: string
+  line?: number
+  fields?: Record<string, string | number | boolean>
+}
+
+/**
+ * A `/rosout` message (ROS 2 `rcl_interfaces/msg/Log` or ROS 1 `rosgraph_msgs/Log`) as log-viewer's `LogLine`: the stamp in
+ * ms since the epoch (`receivedAt`, default now, when it has none), the level as a word, the node's name as the source,
+ * and the file, function and line it was written from. The two versions' level numbers do not overlap (ROS 2: 10, 20,
+ * 30, 40, 50; ROS 1: 1, 2, 4, 8, 16), so one function reads both; a number in between takes the level below it.
+ */
+export function rosLogToLogLine(message: RosLog, options: { receivedAt?: number } = {}): RosLogLine {
+  const n = Number(message.level)
+  const ros1 = n === 1 || n === 2 || n === 4 || n === 8 || n === 16
+  const level: RosLogLine["level"] = ros1
+    ? n >= 16 ? "fatal" : n >= 8 ? "error" : n >= 4 ? "warn" : n >= 2 ? "info" : "debug"
+    : n >= 50 ? "fatal" : n >= 40 ? "error" : n >= 30 ? "warn" : n >= 20 ? "info" : "debug"
+  const time = stampToMs(message.stamp ?? message.header?.stamp) ?? options.receivedAt ?? Date.now()
+  const line: RosLogLine = { time, level, message: String(message.msg ?? "") }
+  if (message.name) line.source = message.name
+  if (message.file) line.file = message.file
+  if (message.function) line.function = message.function
+  if (typeof message.line === "number" && message.line > 0) line.line = message.line
+  if (message.topics?.length) line.fields = { topics: message.topics.join(", ") }
+  return line
 }
 
 /** A `geometry_msgs/Twist` with every component 0: stop. */

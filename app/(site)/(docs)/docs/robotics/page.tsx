@@ -34,6 +34,7 @@ const ros: [string, string, string][] = [
   ["diagnostic_msgs/DiagnosticArray", "diagnostics", "statuses"],
   ["URDF (robot_description)", "robot-model", "urdf, urdfUrl"],
   ["geometry_msgs/Twist", "teleop-pad", "onCommand: { linear, angular }"],
+  ["rcl_interfaces/Log (/rosout)", "log-viewer", "lines, ref.append (rosLogToLogLine)"],
   ["Video (WebRTC or a URL)", "camera-feed", "stream, src"],
 ]
 
