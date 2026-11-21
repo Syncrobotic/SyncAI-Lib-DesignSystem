@@ -3831,8 +3831,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.24.1",
+        "version": "0.24.2",
         "changelog": [
+          {
+            "version": "0.24.2",
+            "date": "2026-11-21",
+            "note": "Mimic joints follow the joint they mimic with limits ignored on every joint, and the driving joint's value wins over a mimic's own whatever the order; a mimic joint can be highlighted by name (`RobotModelInfo.mimics`). Planar and floating joints take [x, y, θ] and [x, y, z, roll, pitch, yaw] and are written per component in mm and ° (new `poseValue` label, `jointValueWords`, `jointValueOf`); one number no longer leaves their other components undefined."
+          },
           {
             "version": "0.24.1",
             "date": "2026-11-21",

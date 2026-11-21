@@ -226,7 +226,9 @@ export const overviews: Record<string, Overview> = {
       "Mesh paths may carry a query string (`base.stl?v=2`). An absolute http(s) mesh URL in a URDF is fetched as written: a plain GET, with no credentials sent to another origin (a same-origin URL carries the page's cookies, as any fetch does). Check a URDF from an untrusted source before showing it.",
       "Without WebGL (or with `webgl={false}`, for a device that should not draw 3D) it lists each joint's position in words, highlighted ones marked: the same facts, nothing hidden.",
       "The view is one Tab stop with `role=\"img\"` and a summary (robot, joint count, highlighted joints with their values). Its reset and fit buttons are out of the Tab order; 0 and F do the same.",
-      "Every string is in `labels`, including `jointValue` (degrees and millimetres by default) and `formatTime` for the last update.",
+      "Every string is in `labels`, including `jointValue` (degrees and millimetres by default), `poseValue` for planar and floating joints and `formatTime` for the last update.",
+      "Mimic joints (`<mimic>` in the URDF, such as a gripper's second finger) follow the joint they mimic, unclamped like every joint; when `joints` has both, the driving joint's value wins. They are not counted, but a mimic joint's name can be highlighted: its link is drawn, the summary gives its value, and the words fallback marks the row of the joint it follows.",
+      "A planar joint takes [x, y, θ] and a floating one [x, y, z, roll, pitch, yaw] (metres and radians); one number is x. They are written in millimetres and degrees per component (`x 120 mm, y −40 mm, θ 30°`).",
     ],
   },
   graph: {
