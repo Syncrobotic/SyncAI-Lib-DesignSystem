@@ -130,7 +130,7 @@
     "shadcn": "^3.0.0",
     "storybook": "^10.6.8",
     "tailwindcss": "^4.0.0",
-    "typescript": "^5.7.0",
+    "typescript": "^7.0.2",
     "typescript-eslint": "^8.73.0",
     "vite": "^8.3.8",
     "vitest": "^5.1.1",
