@@ -8134,6 +8134,280 @@
    "inherits": []
   }
  ],
+ "streaming-chart": [
+  {
+   "name": "StreamingChart",
+   "props": [
+    {
+     "name": "config",
+     "type": "StreamingChartConfig",
+     "required": true,
+     "description": "The series, in order of emphasis: the first is the accent and solid, then dashed, then dotted."
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "What the chart shows, for screen readers: \"Drive motor currents, Patrol dog 7F3A\"."
+    },
+    {
+     "name": "ref",
+     "type": "((instance: StreamingChartHandle | null) => void | (() => VoidOrUndefinedOnly) | DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES[keyof DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES]) | RefObject<StreamingChartHandle | null>",
+     "description": "push, clear, pause and resume, called from anywhere without rendering."
+    },
+    {
+     "name": "subscribe",
+     "type": "(push: StreamingChartPush) => (() => void) | void",
+     "description": "Connects a source once: called with the chart's `push` when it mounts (and again if this function changes); return the function that disconnects. Keep it stable (a module-level function, or one the React Compiler memoises), or every render reconnects. `(push) => ros.subscribe(\"/battery\", \"sensor_msgs/BatteryState\", (m) => push({ voltage: m.voltage }))`."
+    },
+    {
+     "name": "windows",
+     "type": "number[]",
+     "default": "DEFAULT_WINDOWS",
+     "description": "The windows to choose from, in ms. One window hides the switch."
+    },
+    {
+     "name": "window",
+     "type": "number",
+     "description": "The window shown, in ms (controlled)."
+    },
+    {
+     "name": "defaultWindow",
+     "type": "number",
+     "description": ""
+    },
+    {
+     "name": "onWindowChange",
+     "type": "(ms: number) => void",
+     "description": ""
+    },
+    {
+     "name": "paused",
+     "type": "boolean",
+     "description": "Frozen (controlled). Readings keep arriving into the buffer while paused."
+    },
+    {
+     "name": "defaultPaused",
+     "type": "boolean",
+     "default": "false",
+     "description": ""
+    },
+    {
+     "name": "onPausedChange",
+     "type": "(paused: boolean) => void",
+     "description": ""
+    },
+    {
+     "name": "domain",
+     "type": "readonly [number, number]",
+     "description": "A fixed value range. Without it the range follows what is in view, in round steps; fix it for a value with known bounds."
+    },
+    {
+     "name": "limits",
+     "type": "readonly StreamingChartLimit[]",
+     "default": "NO_LIMITS",
+     "description": ""
+    },
+    {
+     "name": "band",
+     "type": "{ from: number; to: number; label?: string }",
+     "description": ""
+    },
+    {
+     "name": "capacity",
+     "type": "number",
+     "default": "DEFAULT_CAPACITY",
+     "description": "Readings kept per series. The default, 36 000, holds 10 minutes at 60 Hz; longer windows at high rates need more."
+    },
+    {
+     "name": "staleAfterMs",
+     "type": "number",
+     "default": "2000",
+     "description": "With no reading for this long the chart says so, and a gap this long breaks the line instead of joining across it."
+    },
+    {
+     "name": "announceEveryMs",
+     "type": "number",
+     "default": "5000",
+     "description": "How often screen readers hear the current values while focus is on the chart. A crossed limit is said at once."
+    },
+    {
+     "name": "controls",
+     "type": "boolean",
+     "default": "true",
+     "description": "The window switch, the Chart / Table switch and Pause. Off for small multiples driven by one set of controls."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "BCP 47 tag for numbers and times (\"zh-TW\", \"de\"): pass the app's locale. Left out, English on the server and in every browser alike; a tag Intl cannot read falls back to English."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<StreamingChartLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "live",
+       "type": "string",
+       "default": "\"Live\"",
+       "description": ""
+      },
+      {
+       "name": "paused",
+       "type": "string",
+       "default": "\"Paused\"",
+       "description": ""
+      },
+      {
+       "name": "waiting",
+       "type": "string",
+       "default": "\"Waiting for data\"",
+       "description": ""
+      },
+      {
+       "name": "stale",
+       "type": "string",
+       "default": "\"No new data\"",
+       "description": "No reading for `staleAfterMs`."
+      },
+      {
+       "name": "lastSample",
+       "type": "(time: string) => string",
+       "default": "(time) => `last reading ${time}`",
+       "description": "After Stale: when the last reading was taken."
+      },
+      {
+       "name": "pause",
+       "type": "string",
+       "default": "\"Pause\"",
+       "description": ""
+      },
+      {
+       "name": "resume",
+       "type": "string",
+       "default": "\"Resume\"",
+       "description": ""
+      },
+      {
+       "name": "jumpToLive",
+       "type": "string",
+       "default": "\"Jump to live\"",
+       "description": "On the button while the view has been moved back in time."
+      },
+      {
+       "name": "window",
+       "type": "string",
+       "default": "\"Time window\"",
+       "description": "Names the window switch."
+      },
+      {
+       "name": "windowOption",
+       "type": "(ms: number) => string",
+       "default": "(ms) => (ms < 60_000 ? `${Math.round(ms / 1000)} s` : ms < 3_600_000 ? `${Math.round(ms / 60_000)} min` : `${Math.round(ms / 3_600_000)} h`)",
+       "description": "A window, as written on its segment: 30 000 → \"30 s\", 120 000 → \"2 min\"."
+      },
+      {
+       "name": "view",
+       "type": "string",
+       "default": "\"Show as\"",
+       "description": "Names the Chart / Table switch."
+      },
+      {
+       "name": "chart",
+       "type": "string",
+       "default": "\"Chart\"",
+       "description": ""
+      },
+      {
+       "name": "table",
+       "type": "string",
+       "default": "\"Table\"",
+       "description": ""
+      },
+      {
+       "name": "time",
+       "type": "string",
+       "default": "\"Time\"",
+       "description": "The table's first column."
+      },
+      {
+       "name": "now",
+       "type": "string",
+       "default": "\"Now\"",
+       "description": "The time axis's right end while live."
+      },
+      {
+       "name": "secondsAgo",
+       "type": "(value: string) => string",
+       "default": "(v) => `−${v} s`",
+       "description": "A time axis tick, given the number already formatted: \"30\" → \"−30 s\"."
+      },
+      {
+       "name": "minutesAgo",
+       "type": "(value: string) => string",
+       "default": "(v) => `−${v} min`",
+       "description": ""
+      },
+      {
+       "name": "overLimit",
+       "type": "string",
+       "default": "\"Over limit\"",
+       "description": ""
+      },
+      {
+       "name": "underLimit",
+       "type": "string",
+       "default": "\"Under limit\"",
+       "description": ""
+      },
+      {
+       "name": "limit",
+       "type": "(value: string) => string",
+       "default": "(v) => `Limit ${v}`",
+       "description": "A limit line without its own label: \"60 °C\" → \"Limit 60 °C\"."
+      },
+      {
+       "name": "withUnit",
+       "type": "(value: string, unit: string) => string",
+       "default": "(v, unit) => (unit === \"°\" ? `${v}°` : `${v} ${unit}`)",
+       "description": "A value with its unit: (\"12.4\", \"A\") → \"12.4 A\"; degrees take no space: \"42.0°\"."
+      },
+      {
+       "name": "noValue",
+       "type": "string",
+       "default": "\"–\"",
+       "description": "Where a series has no reading."
+      },
+      {
+       "name": "reading",
+       "type": "(series: string, value: string) => string",
+       "default": "(series, value) => `${series} ${value}`",
+       "description": "A series and its value, as screen readers hear the current values: (\"Left motor\", \"12.4 A\") → \"Left motor 12.4 A\"."
+      },
+      {
+       "name": "keys",
+       "type": "string",
+       "default": "\"Space pauses or resumes. Left and right arrows move back and forward in time. End returns to live.\"",
+       "description": "How to use the chart from the keyboard, read when it takes focus."
+      },
+      {
+       "name": "formatTime",
+       "type": "(date: Date, locale?: string) => string",
+       "default": "(d, locale) => locale ? d.toLocaleTimeString(locale, { hour: \"2-digit\", minute: \"2-digit\", second: \"2-digit\", hourCycle: \"h23\" }) : [d.getHours(), d.getMinutes(), d.getSeconds()].map(pad).join(\":\")",
+       "description": "A time of day, 24-hour with seconds by default; with `locale`, that locale's 24-hour time."
+      }
+     ]
+    },
+    {
+     "name": "plotClassName",
+     "type": "string",
+     "description": "The plot's height. Defaults to h-64."
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "switch": [
   {
    "name": "Switch",

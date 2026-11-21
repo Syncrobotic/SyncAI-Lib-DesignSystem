@@ -2,6 +2,12 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **`streaming-chart` 0.28.0 (beta):** a live line chart for robot telemetry at 20 to 50 Hz (motor currents, speed, temperature, battery voltage). Readings go in through a stable `push(values, time)` on the ref or a `subscribe(push)` function (`ros.subscribe` fits as is), into ring buffers the chart owns, and are drawn on a canvas on requestAnimationFrame, never through a React render. A scrolling window (30 s, 2 min, 10 min), Pause that keeps buffering, ← / → through the buffer and Jump to live, limit lines and a band, a crosshair, a legend with each series' line style and value now, a table view, and screen-reader values that are polite and throttled. Draws nothing off screen or in a hidden tab, steps once a second under reduced motion, and follows the readings' own clock.
+- **`labels-zh-tw` 0.28.0:** `streamingChartLabels`.
+
 ## 0.27.0 · 2026-11-21
 
 Connect the robotics components to a real robot over rosbridge, and a ready-made Traditional Chinese (Taiwan) label pack.

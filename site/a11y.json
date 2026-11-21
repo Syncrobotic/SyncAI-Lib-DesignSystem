@@ -396,6 +396,19 @@
     "tabStops": 3,
     "live": false
   },
+  "streaming-chart": {
+    "roles": [
+      "button",
+      "figure",
+      "list",
+      "listitem",
+      "radio",
+      "radiogroup",
+      "status"
+    ],
+    "tabStops": 6,
+    "live": true
+  },
   "tabs": {
     "roles": [
       "tab",

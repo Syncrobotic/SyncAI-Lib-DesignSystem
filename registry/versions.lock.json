@@ -12,8 +12,8 @@
     "hash": "8ec920f8618ff43d"
   },
   "labels-zh-tw": {
-    "version": "0.27.0",
-    "hash": "136b4d86f6081b00"
+    "version": "0.28.0",
+    "hash": "c9bdddd9e5ca9d89"
   },
   "ros": {
     "version": "0.27.0",
@@ -222,6 +222,10 @@
   "chart": {
     "version": "0.22.1",
     "hash": "7e591be54e08bd72"
+  },
+  "streaming-chart": {
+    "version": "0.28.0",
+    "hash": "2890d601acd64b13"
   },
   "tabs": {
     "version": "0.23.0",

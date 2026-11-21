@@ -67,6 +67,7 @@ export type StoryFile =
   | "context-menu"
   | "hover-card"
   | "banner"
+  | "streaming-chart"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
@@ -887,6 +888,23 @@ const entries: Record<string, Entry> = {
       "The chart fades in when it mounts (--motion-base); marks do not animate, because Recharts cannot use the motion tokens. Nothing moves under reduced motion.",
     ],
   },
+  "streaming-chart": {
+    group: "Charts",
+    wide: true,
+    examples: { file: "streaming-chart", prefix: "StreamingChart" },
+    rules: [
+      "For values arriving many times a second that someone watches as they happen: motor currents, speed, a temperature, a battery's voltage. A history read afterwards (a shift, a week) is `chart`; one value now is a `metric-card` or a `meter`.",
+      "Push readings, never pass them as props: `ref.current.push({ left: 12.4 })`, or a `subscribe` function that gets `push` once and returns its cleanup. The chart keeps them in its own ring buffers and draws on the next frame; a reading never renders React.",
+      "Stamp each reading with the message's time (`header.stamp` through `stampToMs`) when it has one: the time axis follows the readings' own clock, so a robot whose clock is off by seconds still draws at the right edge.",
+      "One unit per chart, as every chart has one y axis: three motor currents together, but speed, temperature and voltage as three charts (small multiples), driven by one set of controls through `window` and `paused` with `controls={false}` on the others.",
+      "The palette and line styles are `chart`'s: the series to watch is slot 1, solid; the next two graphite, dashed then dotted; three series and Other at most. Never a status colour for a series.",
+      "Fix `domain` for a value with known bounds (a current's range, a pack's voltage), so the lines do not jump as the range follows the data. Without it the range rounds to steps around what is in view and the limits.",
+      "A limit is a dashed line with its label at the end; only the legend says a series is past it, in words beside a warning triangle, and screen readers hear it once as it crosses. `over: \"below\"` for a floor (a battery voltage).",
+      "Keep `staleAfterMs` near three missed readings at the stream's rate (the default 2 s suits 2 Hz and faster). Silence breaks the line and says No new data with the last reading's time, instead of drawing a flat line across it.",
+      "Pause freezes the view only: readings keep arriving into the buffer, which holds `capacity` readings per series (10 minutes at 60 Hz by default). Raise it for a longer window at a high rate.",
+      "Under reduced motion the view steps once a second instead of gliding. Off screen and in a hidden tab nothing is drawn.",
+    ],
+  },
   "robot-map": {
     group: "Robotics",
     wide: true,
@@ -1208,6 +1226,12 @@ const keyboard: Record<string, [string, string][]> = {
     ["Space", "Select the node, links included"],
     ["Esc", "Clear the selection"],
   ],
+  "streaming-chart": [
+    ["Tab", "Move to the window, the Chart / Table switch, Pause, then the plot"],
+    ["Space", "On the plot, pause or resume"],
+    ["← / →", "On the plot, move the view back or forward in time by a tenth of the window, pausing it (Shift: half the window)"],
+    ["End", "On the plot, jump back to live"],
+  ],
   "point-cloud": [
     ["Tab", "Move into the view (one stop), then to Reset view and Fit"],
     ["← / →", "Turn the view around the cloud"],
@@ -1377,6 +1401,6 @@ export const storyTitle = (name: string) => {
     .replace(/([A-Z])([A-Z][a-z])/g, "$1 $2")
     .split(" ")
   // Proper names keep their capital: "Delivered over Bluetooth", not "bluetooth".
-  const proper = new Set(["Bluetooth", "Wi", "Fi", "AI", "URL", "SMS"])
+  const proper = new Set(["Bluetooth", "Wi", "Fi", "AI", "URL", "SMS", "ROS"])
   return words.map((w, i) => (i === 0 || proper.has(w) ? w : w.toLowerCase())).join(" ")
 }

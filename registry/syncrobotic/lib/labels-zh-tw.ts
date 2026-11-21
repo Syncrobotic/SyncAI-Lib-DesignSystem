@@ -1,4 +1,4 @@
-// @syncrobotic/labels-zh-tw v0.27.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
+// @syncrobotic/labels-zh-tw v0.28.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
 // The kit's words in Traditional Chinese as written in Taiwan, one object per component that takes `labels`. Pass each
 // to its component (`<DataGrid labels={dataGridLabels} />`) with `locale="zh-TW"` where the component formats numbers,
 // days or times. The file imports no component, so it installs on its own; the kit's tests hold every object to the
@@ -439,6 +439,34 @@ export const dataGridPaginationLabels = paginationLabels
 export const loadMoreLabels = {
   showing: (shown: number, total: number, locale: string | undefined) => `已顯示 ${shown.toLocaleString(locale)} / ${total.toLocaleString(locale)} 筆`,
   more: (next: number, left: number, locale: string | undefined) => `再顯示 ${next.toLocaleString(locale)} 筆（剩 ${left.toLocaleString(locale)} 筆）`,
+}
+
+export const streamingChartLabels = {
+  live: "即時",
+  paused: "已暫停",
+  waiting: "等待資料",
+  stale: "沒有新資料",
+  lastSample: (time: string) => `最後讀數 ${time}`,
+  pause: "暫停",
+  resume: "繼續",
+  jumpToLive: "回到即時",
+  window: "時間範圍",
+  windowOption: (ms: number) => (ms < 60_000 ? `${Math.round(ms / 1000)} 秒` : ms < 3_600_000 ? `${Math.round(ms / 60_000)} 分鐘` : `${Math.round(ms / 3_600_000)} 小時`),
+  view: "顯示方式",
+  chart: "圖表",
+  table: "表格",
+  time: "時間",
+  now: "現在",
+  secondsAgo: (v: string) => `−${v} 秒`,
+  minutesAgo: (v: string) => `−${v} 分`,
+  overLimit: "超過上限",
+  underLimit: "低於下限",
+  limit: (v: string) => `上限 ${v}`,
+  withUnit: (v: string, unit: string) => (unit === "°" ? `${v}°` : `${v} ${unit}`),
+  noValue: "–",
+  reading: (series: string, value: string) => `${series} ${value}`,
+  keys: "空白鍵暫停或繼續。左右方向鍵在時間上往前或往後移動。End 鍵回到即時。",
+  formatTime: (d: Date, locale: string | undefined) => (locale ? d.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23" }) : clock(d)),
 }
 
 export const metricCardLabels = {
