@@ -11,6 +11,10 @@
     "version": "0.23.0",
     "hash": "8ec920f8618ff43d"
   },
+  "ros": {
+    "version": "0.27.0",
+    "hash": "04719fe9d7491577"
+  },
   "use-long-press": {
     "version": "0.5.1",
     "hash": "9353a9e71f657181"
@@ -26,6 +30,10 @@
   "use-debounce": {
     "version": "0.15.1",
     "hash": "2587f5cfedc35e8a"
+  },
+  "use-ros": {
+    "version": "0.27.0",
+    "hash": "dece211c4e61f8c4"
   },
   "use-hotkeys": {
     "version": "0.16.0",

@@ -183,6 +183,31 @@
       }
     },
     {
+      "name": "ros",
+      "type": "registry:lib",
+      "title": "ROS",
+      "description": "ROS and ROS 2 over rosbridge with no ROS library: a rosbridge v2 client on the browser's WebSocket (ref-counted subscriptions and advertisements, capped jittered reconnect that resubscribes, a send queue, service calls with a timeout, a zero Twist when a velocity publisher stops or the link drops) and pure converters from OccupancyGrid, LaserScan, PointCloud2, JointState and poses to the kit's components, and from a teleop command and a map goal back to Twist and PoseStamped.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/syncrobotic/lib/ros.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "meta": {
+        "version": "0.27.0",
+        "changelog": [
+          {
+            "version": "0.27.0",
+            "date": "2026-11-21",
+            "note": "First release."
+          }
+        ],
+        "status": "beta"
+      }
+    },
+    {
       "name": "use-long-press",
       "type": "registry:hook",
       "title": "useLongPress",
@@ -306,6 +331,33 @@
             "version": "0.15.0",
             "date": "2026-11-19",
             "note": "First release: useDebouncedValue and useDebouncedCallback (with cancel and flush)."
+          }
+        ],
+        "status": "beta"
+      }
+    },
+    {
+      "name": "use-ros",
+      "type": "registry:hook",
+      "title": "useRos",
+      "description": "React hooks over the ros client: RosProvider, useRosStatus, useRosTopic (the latest message, through useSyncExternalStore), useRosPublisher (a stable publish function; a zero Twist on unmount, hidden page and dropped link for cmd_vel) and useRosService (a call with a timeout).",
+      "dependencies": [],
+      "registryDependencies": [
+        "@syncrobotic/ros"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/hooks/use-ros.tsx",
+          "type": "registry:hook"
+        }
+      ],
+      "meta": {
+        "version": "0.27.0",
+        "changelog": [
+          {
+            "version": "0.27.0",
+            "date": "2026-11-21",
+            "note": "First release."
           }
         ],
         "status": "beta"
