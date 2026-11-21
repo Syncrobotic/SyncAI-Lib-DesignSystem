@@ -1,7 +1,6 @@
-// @syncrobotic/agent-trace v0.17.2 · update: npx shadcn add @syncrobotic/agent-trace --overwrite
+// @syncrobotic/agent-trace v0.17.3 · update: npx shadcn add @syncrobotic/agent-trace --overwrite
 "use client"
 
-import * as React from "react"
 import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"

@@ -1,4 +1,4 @@
-// @syncrobotic/field v0.8.0 · update: npx shadcn add @syncrobotic/field --overwrite
+// @syncrobotic/field v0.8.1 · update: npx shadcn add @syncrobotic/field --overwrite
 "use client"
 
 import * as React from "react"
@@ -40,9 +40,10 @@ export function Field({
   const noteId = `${id}-note`
   const note = error ?? hint
   // The last note stays in the collapsing line, fading out, so an error that is fixed leaves instead of vanishing.
-  const last = React.useRef<{ note: React.ReactNode; error: boolean }>({ note: null, error: false })
-  if (note) last.current = { note, error: !!error }
-  const shown = note ? { note, error: !!error } : last.current
+  // It is state set during render, not a ref, so the React Compiler can see the value the markup depends on.
+  const [last, setLast] = React.useState<{ note: React.ReactNode; error: boolean }>({ note: null, error: false })
+  if (note && (last.note !== note || last.error !== !!error)) setLast({ note, error: !!error })
+  const shown = note ? { note, error: !!error } : last
   return (
     <FieldContext.Provider value={{ id, describedBy: note ? noteId : undefined, invalid: error ? true : undefined }}>
       <div data-slot="field" className={cn("flex flex-col gap-2", className)}>

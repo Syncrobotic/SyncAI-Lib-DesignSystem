@@ -1,4 +1,4 @@
-// @syncrobotic/form v0.20.0 · update: npx shadcn add @syncrobotic/form --overwrite
+// @syncrobotic/form v0.20.1 · update: npx shadcn add @syncrobotic/form --overwrite
 "use client"
 
 // A form with React Hook Form and zod, drawn with the kit's Field: an example to copy and change, not a component.
@@ -14,7 +14,6 @@
 // - A refusal from the server goes where it belongs: form.setError("name", …) on a field, form.setError("root.server",
 //   …) for the whole save, shown above the fields as an Alert.
 // - The submit button shows its spinner while onSubmit is awaited: loading={formState.isSubmitting}.
-import * as React from "react"
 import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"

@@ -1,7 +1,6 @@
-// @syncrobotic/status-tracker-rollout v0.17.3 · update: npx shadcn add @syncrobotic/status-tracker-rollout --overwrite
+// @syncrobotic/status-tracker-rollout v0.17.4 · update: npx shadcn add @syncrobotic/status-tracker-rollout --overwrite
 "use client"
 
-import * as React from "react"
 import { Check } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"

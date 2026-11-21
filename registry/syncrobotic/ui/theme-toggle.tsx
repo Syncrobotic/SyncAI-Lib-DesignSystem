@@ -1,7 +1,6 @@
-// @syncrobotic/theme-toggle v0.10.0 · update: npx shadcn add @syncrobotic/theme-toggle --overwrite
+// @syncrobotic/theme-toggle v0.10.1 · update: npx shadcn add @syncrobotic/theme-toggle --overwrite
 "use client"
 
-import * as React from "react"
 import { Monitor, Moon, Sun } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"

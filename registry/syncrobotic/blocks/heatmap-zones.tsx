@@ -1,7 +1,6 @@
-// @syncrobotic/heatmap-zones v0.22.2 · update: npx shadcn add @syncrobotic/heatmap-zones --overwrite
+// @syncrobotic/heatmap-zones v0.22.3 · update: npx shadcn add @syncrobotic/heatmap-zones --overwrite
 "use client"
 
-import * as React from "react"
 import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
 

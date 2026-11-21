@@ -7,6 +7,9 @@ on:
 
 permissions:
   contents: write
+  # A push made with this workflow's token starts no workflows, so the pull request would wait on a check that never runs.
+  # Dispatching ci is the one start that token is allowed: its checks land on the new commit.
+  actions: write
 
 jobs:
   update:
@@ -32,3 +35,11 @@ jobs:
           git diff --cached --quiet && echo "Baselines unchanged" && exit 0
           git commit -m "Visual baselines from CI"
           git push
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+        id: commit
+      - if: steps.commit.outputs.pushed == 'true'
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: >-
+          node -e 'fetch(`https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/actions/workflows/ci.yml/dispatches`,
+          { method: "POST", headers: { authorization: `Bearer ${process.env.GH_TOKEN}`, accept: "application/vnd.github+json" },
+          body: JSON.stringify({ ref: process.env.GITHUB_REF_NAME }) }).then((r) => { console.log("dispatch ci:", r.status); if (r.status !== 204) process.exit(1) })'

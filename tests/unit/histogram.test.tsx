@@ -1,4 +1,3 @@
-import * as React from "react"
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react"
 import { afterEach, describe, expect, it } from "vitest"
 import { HistogramBattery, binEqualWidth, median } from "@/registry/syncrobotic/blocks/histogram-battery"

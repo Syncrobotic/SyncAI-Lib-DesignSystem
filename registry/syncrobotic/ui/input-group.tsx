@@ -1,4 +1,4 @@
-// @syncrobotic/input-group v0.17.3 · update: npx shadcn add @syncrobotic/input-group --overwrite
+// @syncrobotic/input-group v0.17.4 · update: npx shadcn add @syncrobotic/input-group --overwrite
 "use client"
 
 import * as React from "react"
@@ -20,10 +20,12 @@ export function InputGroup({
   ...props
 }: React.ComponentProps<"div">) {
   // A Field around the group hands it the id, description and error state; they belong to the text box inside.
-  let given = false
+  // Only the first text box gets them. The flag is a property of a local object rather than a reassigned variable, so
+  // the React Compiler can see that the callback only runs during this render.
+  const wiring = { given: false }
   const content = React.Children.map(children, (child) => {
     if (
-      given ||
+      wiring.given ||
       !React.isValidElement<Record<string, unknown>>(child) ||
       typeof child.type === "string" ||
       child.type === InputGroupAddon ||
@@ -32,7 +34,7 @@ export function InputGroup({
     )
       return child
     if (!(id || describedBy || invalid)) return child
-    given = true
+    wiring.given = true
     return React.cloneElement(child, {
       id: (child.props.id as string | undefined) ?? id,
       "aria-describedby": (child.props["aria-describedby"] as string | undefined) ?? describedBy,

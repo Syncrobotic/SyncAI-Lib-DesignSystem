@@ -1,4 +1,4 @@
-// @syncrobotic/use-presence v0.8.0 · update: npx shadcn add @syncrobotic/use-presence --overwrite
+// @syncrobotic/use-presence v0.8.1 · update: npx shadcn add @syncrobotic/use-presence --overwrite
 "use client"
 
 import * as React from "react"
@@ -12,11 +12,10 @@ const SAFETY_MS = 400
  */
 export function usePresence(show: boolean) {
   const [mounted, setMounted] = React.useState(show)
+  // Showing again mounts it in the same render (state set during render), not in an effect that renders twice.
+  if (show && !mounted) setMounted(true)
   React.useEffect(() => {
-    if (show) {
-      setMounted(true)
-      return
-    }
+    if (show) return
     const t = window.setTimeout(() => setMounted(false), SAFETY_MS)
     return () => window.clearTimeout(t)
   }, [show])

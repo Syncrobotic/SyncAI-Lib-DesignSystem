@@ -1,5 +1,4 @@
-// @syncrobotic/robot-status-card v0.15.0 · update: npx shadcn add @syncrobotic/robot-status-card --overwrite
-import * as React from "react"
+// @syncrobotic/robot-status-card v0.15.1 · update: npx shadcn add @syncrobotic/robot-status-card --overwrite
 import { Battery, BatteryCharging, MapPin, Navigation, Wifi, WifiOff } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"

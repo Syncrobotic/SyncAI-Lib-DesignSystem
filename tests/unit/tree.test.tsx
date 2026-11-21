@@ -176,23 +176,34 @@ describe("Tree, select mode", () => {
   })
 
   it("type-ahead moves to the next name starting with the letters, and cycles on a repeated letter", () => {
+    // Type-ahead times the letters by each key event's own timeStamp, so the test sets it on the event it sends.
     let now = 10_000
-    const clock = vi.spyOn(Date, "now").mockImplementation(() => now)
+    const typeKey = (k: string) => {
+      const e = new KeyboardEvent("keydown", { key: k, bubbles: true, cancelable: true })
+      Object.defineProperty(e, "timeStamp", { value: now })
+      fireEvent(document.activeElement!, e)
+    }
     setup()
     item("images").focus()
-    key("r")
+    typeKey("r")
     expect(focused()).toBe("README.md")
-    key("r")
+    now += 100
+    typeKey("r")
     expect(focused()).toBe("raw.tar")
-    key("r")
+    now += 100
+    typeKey("r")
     expect(focused()).toBe("README.md")
     // A pause starts a new search; letters typed together narrow it.
     now += 1000
-    key("b")
+    typeKey("b")
     expect(focused()).toBe("b.jpg")
-    key("o")
+    now += 100
+    typeKey("o")
     expect(focused()).toBe("boxes.json")
-    clock.mockRestore()
+    // Under half a second still narrows; a pause of more than half a second starts again from the next match.
+    now += 600
+    typeKey("r")
+    expect(focused()).toBe("README.md")
   })
 
   it("type-ahead uses textValue when the label is not a string, and skips disabled nodes", () => {
