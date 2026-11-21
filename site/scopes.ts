@@ -2,12 +2,13 @@ import { blocksOfType } from "./blocks"
 import { blockGroups, blockTypes, patternsOf } from "./block-types"
 import { groups as itemGroups, items, storyNames, storyTitle } from "./catalog"
 import { foundations } from "./foundations"
+import { iconCategories, iconCount } from "./icons"
 
 // The site's three areas. The header links to each; the sidebar shows only the area you are in.
 export type NavLink = {
   href: string
   label: string
-  /** In-page anchors, listed under the link while its page is open. */ sections?: { href: string; label: string }[]
+  /** In-page anchors or filters (?category=…), listed under the link while its page is open; `count` shows beside one. */ sections?: { href: string; label: string; count?: number }[]
   /** A beta item: its API may still change in a minor release. */ beta?: boolean
 }
 export type NavGroup = { title: string; links: NavLink[] }
@@ -97,7 +98,12 @@ export const scopes: Scope[] = [
       {
         title: "Browse",
         links: [
-          { href: "/icons", label: "Kit icons" },
+          {
+            href: "/icons",
+            label: "Kit icons",
+            // The categories, as the page's sections: picking one filters the grid (the gallery reads ?category=).
+            sections: [{ href: "/icons", label: "All icons", count: iconCount }, ...iconCategories.map((c) => ({ href: `/icons?category=${c.slug}`, label: c.title, count: c.count }))],
+          },
           { href: "/icons/lucide", label: "All Lucide" },
         ],
       },

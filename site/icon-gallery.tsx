@@ -2,9 +2,11 @@
 
 import * as React from "react"
 import Link from "next/link"
+import { usePathname, useSearchParams } from "next/navigation"
 import { Search, TriangleAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/registry/syncrobotic/ui/button"
+import { ChipGroup } from "@/registry/syncrobotic/ui/chip-group"
 import { CopyButton } from "@/registry/syncrobotic/ui/copy-button"
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { InputGroup, InputGroupAddon } from "@/registry/syncrobotic/ui/input-group"
@@ -21,7 +23,9 @@ export type GalleryIcon = {
   /** Where it imports from. */
   from: "lucide-react" | "@/components/ui/robot-icons"
 }
-export type GalleryGroup = { title: string; icons: GalleryIcon[]; note?: React.ReactNode }
+/** A group of icons; with a `slug` it is a category the grid can be filtered to (?category=slug). */
+export type GalleryGroup = { title: string; slug?: string; icons: GalleryIcon[]; note?: React.ReactNode }
+type GalleryProps = { groups: GalleryGroup[]; total: number; placeholder: string; /** Dot the icons the kit has given a meaning (the full Lucide list). */ markKit?: boolean }
 
 // The kit's three icon sizes (Iconography), each tied to the controls it sits in.
 const sizes = [
@@ -44,13 +48,37 @@ function linkTo(name: string | null) {
 
 const tileFor = (name: string) => document.querySelector<HTMLElement>(`[data-icon="${CSS.escape(name)}"]`)
 
+// A category is a link that changes only the address: the page stays where it is, and the gallery scrolls itself.
+function StayLink(props: React.ComponentProps<typeof Link>) {
+  return <Link scroll={false} {...props} />
+}
+
 /**
- * Icons as a dense grid of square tiles, drawing and name only. Search matches the name and, in the kit's set, the
- * meaning ("dock" finds ChargingDock). Picking a tile opens its details in the site's side panel, the one the Code button
- * opens: the drawing at the kit's sizes, what it means, and what to copy. The address names the open icon, so it can be
- * linked; closing the panel puts focus back on the tile.
+ * The gallery, filtered to the category in the address (?category=robots-and-sites). The page is prerendered without
+ * one, so the address is read under a Suspense boundary whose fallback is the whole gallery: the HTML holds every icon,
+ * and a link to a category narrows it as soon as the page runs.
  */
-export function IconGallery({ groups, total, placeholder, markKit = false }: { groups: GalleryGroup[]; total: number; placeholder: string; /** Dot the icons the kit has given a meaning (the full Lucide list). */ markKit?: boolean }) {
+export function IconGallery(props: GalleryProps) {
+  return (
+    <React.Suspense fallback={<Gallery {...props} category={null} />}>
+      <GalleryInAddress {...props} />
+    </React.Suspense>
+  )
+}
+
+function GalleryInAddress(props: GalleryProps) {
+  const category = useSearchParams().get("category")
+  return <Gallery {...props} category={category} />
+}
+
+/**
+ * Icons as a dense grid of square tiles: the drawing at rest, its name on hover or keyboard focus. Categories filter the
+ * grid (the sidebar lists them on a wide screen, chips above the grid on a narrow one), and search works within the one
+ * picked: it matches the name and, in the kit's set, the meaning ("dock" finds ChargingDock). Picking a tile opens its
+ * details in the site's side panel, the one the Code button opens: the drawing at the kit's sizes, what it means, and
+ * what to copy. The address names the open icon, so it can be linked; closing the panel puts focus back on the tile.
+ */
+function Gallery({ groups, total, placeholder, markKit = false, category }: GalleryProps & { category: string | null }) {
   const [query, setQuery] = React.useState("")
   const [size, setSize] = React.useState<Size>("24")
   // The icon stays picked while the panel animates shut, so its content does not blank mid-exit.
@@ -86,8 +114,22 @@ export function IconGallery({ groups, total, placeholder, markKit = false }: { g
     if (!next) linkTo(null)
   }
 
+  // Picking a category from far down the page: bring the top of the results back into view, under the search.
+  const results = React.useRef<HTMLDivElement>(null)
+  React.useEffect(() => {
+    const top = results.current?.getBoundingClientRect().top
+    if (top !== undefined && top < 0) results.current?.scrollIntoView({ block: "start" })
+    // The row of chips scrolls sideways: keep the picked one in view.
+    const chip = document.querySelector<HTMLElement>('[data-slot="chip-group"] [aria-current="page"]')
+    const row = chip?.closest("ul")
+    if (chip && row) row.scrollLeft = chip.offsetLeft - row.clientWidth / 2 + chip.offsetWidth / 2
+  }, [category])
+  const path = usePathname()
+
+  const categories = groups.filter((g) => g.slug)
+  const inCategory = categories.find((g) => g.slug === category)
   const q = query.trim().toLowerCase()
-  const shown = groups
+  const shown = (inCategory ? [inCategory] : groups)
     .map((g) => ({
       ...g,
       // Best match first: the exact name, then names that start with the query, then the rest (Battery before BatteryWarning).
@@ -101,6 +143,8 @@ export function IconGallery({ groups, total, placeholder, markKit = false }: { g
     }))
     .filter((g) => g.icons.length > 0)
   const count = shown.reduce((n, g) => n + g.icons.length, 0)
+  const of = inCategory ? inCategory.icons.length : total
+  const where = inCategory ? ` in ${inCategory.title}` : ""
   const current = sizes.find((s) => s.value === size)!
 
   return (
@@ -121,8 +165,20 @@ export function IconGallery({ groups, total, placeholder, markKit = false }: { g
         </SegmentedControl>
       </div>
 
+      {/* On a narrow screen the sidebar is folded away, so the categories sit above the grid as one row that scrolls sideways. */}
+      {categories.length > 1 && (
+        <ChipGroup
+          label="Categories"
+          linkAs={StayLink}
+          value={inCategory?.slug ?? "all"}
+          items={[{ value: "all", label: "All", count: total, href: path }, ...categories.map((g) => ({ value: g.slug!, label: g.title, count: g.icons.length, href: `${path}?category=${g.slug}` }))]}
+          className="-mx-4 lg:hidden [&_a]:h-(--h-md) [&_ul]:flex-nowrap [&_ul]:overflow-x-auto [&_ul]:px-4 [&_ul]:py-1"
+        />
+      )}
+
+      <div ref={results} className="flex scroll-mt-24 flex-col gap-6">
       <p aria-live="polite" className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground tabular-nums">
-        {q ? `${count} of ${total} icons` : `${total} icons`}
+        {q ? `${count} of ${of} icons${where}` : `${of} icons${where}`}
         {markKit && (
           <span className="inline-flex items-center gap-2">
             <span aria-hidden className="size-1.5 rounded-full bg-foreground" /> In the kit, with a meaning
@@ -133,12 +189,18 @@ export function IconGallery({ groups, total, placeholder, markKit = false }: { g
       {shown.length === 0 && (
         <div className="flex flex-col items-start gap-3 border-y border-border py-8">
           <p className="text-sm text-muted-foreground">
-            No icon matches “{query.trim()}”. Search for the thing it stands for{markKit ? "" : ", or look through every Lucide icon"}.
+            No icon matches “{query.trim()}”{where}. Search for the thing it stands for{markKit ? "" : ", or look through every Lucide icon"}.
           </p>
           <div className="flex flex-wrap gap-2">
-            <Button variant="secondary" size="sm" onClick={() => setQuery("")}>
-              Clear search
-            </Button>
+            {inCategory ? (
+              <Button variant="secondary" size="sm" asChild>
+                <StayLink href={path}>Search every category</StayLink>
+              </Button>
+            ) : (
+              <Button variant="secondary" size="sm" onClick={() => setQuery("")}>
+                Clear search
+              </Button>
+            )}
             {!markKit && (
               <Button variant="ghost" size="sm" asChild>
                 <Link href="/icons/lucide">All Lucide icons</Link>
@@ -150,7 +212,7 @@ export function IconGallery({ groups, total, placeholder, markKit = false }: { g
 
       {shown.map((g) => (
         <section key={g.title} aria-label={g.title} className="flex flex-col gap-3">
-          {groups.length > 1 && (
+          {groups.length > 1 && !inCategory && (
             <div className="flex flex-col gap-1">
               <h2 className="text-sm font-bold">
                 {g.title} <span className="font-normal text-muted-foreground tabular-nums">{g.icons.length}</span>
@@ -158,7 +220,7 @@ export function IconGallery({ groups, total, placeholder, markKit = false }: { g
               {g.note && <p className="text-sm text-muted-foreground">{g.note}</p>}
             </div>
           )}
-          {/* Square tiles, drawing and name only: the meaning is one tap away in the details, and search still finds it. */}
+          {/* Square tiles, the drawing alone at rest; the name shows on hover and keyboard focus, and in the details. */}
           <ul className="grid grid-cols-[repeat(auto-fill,minmax(5rem,1fr))] gap-2 sm:grid-cols-[repeat(auto-fill,minmax(6rem,1fr))]">
             {g.icons.map((i) => (
               <li key={i.name} style={{ contentVisibility: "auto", containIntrinsicSize: "auto 5rem auto 5rem" }}>
@@ -170,13 +232,23 @@ export function IconGallery({ groups, total, placeholder, markKit = false }: { g
                   data-icon={i.name}
                   aria-label={i.means ? `${i.name}: ${i.means}` : i.name}
                   onClick={() => pick(i)}
-                  className="press group relative flex aspect-square w-full flex-col items-center justify-center gap-3 rounded-md bg-card p-2 ring-1 ring-border transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent aria-pressed:ring-2 aria-pressed:ring-foreground"
+                  className="press group relative flex aspect-square w-full items-center justify-center rounded-md bg-card p-2 ring-1 ring-border transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent aria-pressed:ring-2 aria-pressed:ring-foreground"
                 >
-                  <span aria-hidden className={cn("flex size-6 items-center justify-center", current.glyph)}>
+                  {/* The drawing moves up to make room when the name shows, so the two never overlap. */}
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "flex size-6 items-center justify-center transition-transform duration-(--motion-fast) ease-(--ease-standard) group-hover:-translate-y-2 group-focus-visible:-translate-y-2 group-aria-pressed:-translate-y-2",
+                      current.glyph,
+                    )}
+                  >
                     {i.glyph}
                   </span>
-                  {/* The whole name, over two lines if it needs them: a touch screen has no tooltip to show the rest. */}
-                  <span className="line-clamp-2 w-full text-center font-mono text-xs text-muted-foreground transition-colors duration-(--motion-fast) ease-(--ease-standard) group-hover:text-foreground">
+                  {/* The name, over two lines if it needs them. The tile's accessible name already says it, so this is for the eye. */}
+                  <span
+                    aria-hidden
+                    className="absolute inset-x-1 bottom-2 line-clamp-2 text-center font-mono text-xs text-muted-foreground opacity-0 transition-opacity duration-(--motion-fast) ease-(--ease-standard) group-hover:opacity-100 group-focus-visible:opacity-100 group-aria-pressed:opacity-100"
+                  >
                     {/* Breaks only between words of the name: Battery|Charging, never BatteryChar|ging. */}
                     {i.name.split(/(?=[A-Z])/).map((w, k) => (
                       <React.Fragment key={k}>
@@ -193,6 +265,7 @@ export function IconGallery({ groups, total, placeholder, markKit = false }: { g
           </ul>
         </section>
       ))}
+      </div>
 
       <Sheet open={open} onOpenChange={onOpenChange}>
         {picked && (

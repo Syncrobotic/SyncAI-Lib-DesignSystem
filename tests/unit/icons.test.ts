@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs"
 import { describe, expect, it } from "vitest"
-import { iconCount, iconGroups } from "@/site/icons"
+import { iconCategories, iconCount, iconGroups } from "@/site/icons"
 
 const all = iconGroups.flatMap((g) => g.icons)
 
@@ -10,6 +10,11 @@ describe("icon set", () => {
     expect(names.every(Boolean)).toBe(true)
     expect(new Set(names).size).toBe(names.length)
     expect(iconCount).toBe(names.length)
+  })
+  it("puts every icon in exactly one category, each with its own address", () => {
+    expect(iconCategories.reduce((n, c) => n + c.count, 0)).toBe(iconCount)
+    expect(new Set(iconCategories.map((c) => c.slug)).size).toBe(iconCategories.length)
+    expect(iconCategories.every((c) => /^[a-z0-9]+(-[a-z0-9]+)*$/.test(c.slug))).toBe(true)
   })
   it("gives each meaning one icon", () => {
     const means = all.map((i) => i.means.toLowerCase())
