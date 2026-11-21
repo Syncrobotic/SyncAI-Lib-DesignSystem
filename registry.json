@@ -3665,6 +3665,38 @@
       }
     },
     {
+      "name": "point-cloud",
+      "type": "registry:ui",
+      "title": "Point cloud",
+      "description": "A LiDAR or depth point cloud (a decoded ROS PointCloud2) drawn with raw WebGL2 and no 3D library: coloured by height or intensity on the accent's single-hue ramp with its scale, a recessive ground grid, the robot at the origin and an axes gizmo in words; orbit, pan and zoom by pointer, touch and keyboard; loading, empty, error, stale and no-WebGL states.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/button-group",
+        "@syncrobotic/skeleton"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/point-cloud.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.24.0",
+        "changelog": [
+          {
+            "version": "0.24.0",
+            "date": "2026-11-21",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
       "name": "filter-form",
       "type": "registry:ui",
       "title": "Filter form",

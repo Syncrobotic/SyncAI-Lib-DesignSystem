@@ -668,6 +668,17 @@
     "tabStops": 4,
     "live": true
   },
+  "point-cloud": {
+    "roles": [
+      "alert",
+      "button",
+      "group",
+      "img",
+      "status"
+    ],
+    "tabStops": 3,
+    "live": true
+  },
   "filter-form": {
     "roles": [
       "checkbox",

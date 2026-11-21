@@ -152,6 +152,28 @@ export const overviews: Record<string, Overview> = {
       "Pass `labels` (status words, zone kinds, instructions, positions, empty, loading, error) to translate.",
     ],
   },
+  "point-cloud": {
+    what: "A LiDAR or depth point cloud in 3D, drawn with WebGL2: coloured by height or intensity on one hue, over a ground grid, with the robot at the origin; turned, panned and zoomed by pointer, touch and keyboard.",
+    use: [
+      "What a robot's LiDAR sees right now, beside its camera on a robot's page or a teleoperation screen.",
+      "Checking a depth camera's mounting or calibration: is the floor flat, are the shelves where they should be.",
+      "Reviewing a saved scan after an incident or while building a map.",
+    ],
+    instead: [
+      "Where robots are on a site, in 2D: `robot-map`.",
+      "What a camera sees: `camera-feed`, or `annotated-image` for one frame with detections.",
+      "A mesh, a CAD model or a robot's URDF: a 3D-model item built on three.js, not this viewer.",
+    ],
+    notes: [
+      "No 3D library: raw WebGL2, one interleaved vertex buffer (x, y, z and the colour position) drawn as `gl.POINTS` in one call. A new `points` array is uploaded once; the camera only redraws, on demand, while someone moves it.",
+      "The camera fits the first cloud that has points and then stays where the person left it, so a live cloud at 10 Hz never yanks the view. Reset view goes back to the first angle; Fit keeps the angle and frames the cloud.",
+      "The wheel zooms only once the view has focus (or with Ctrl, a trackpad pinch); one finger scrolls the page past it until it is tapped, as `robot-map` does.",
+      "Colours come from the theme (`--chart-1` into `--track`, starting at 20 %), read again when the theme or contrast changes. The footer shows the scale with its ends in words, the point count and, once the camera has moved, how long the last frame took from the start of drawing until the GPU finished it.",
+      "Without WebGL2 it says so in words and still gives screen readers the point count and extent. Its buffers, programs and timers are freed on unmount; a context the GPU takes away is asked back, and everything is rebuilt and uploaded again when it returns.",
+      "The pure parts are exported (`pointCloudBounds`, `fitPointCloudCamera`, `orbitPointCloudCamera`, `panPointCloudCamera`, `zoomPointCloudCamera`, `pointCloudCameraForKey`, `pointCloudColorRange`, `packPointCloud`) for apps that frame their own overlays or decode in a worker.",
+      "Every string is in `labels`, including the axes' words and `formatTime` for the last scan's time.",
+    ],
+  },
   graph: {
     what: "A directed graph that flows one way: boxes in columns, inputs on the left (or above), neutral lines between them, and a text view with the same nodes.",
     use: [

@@ -59,6 +59,7 @@ export type StoryFile =
   | "tree"
   | "graph"
   | "robot-map"
+  | "point-cloud"
   | "hooks"
   | "metric-card"
   | "context-menu"
@@ -882,6 +883,20 @@ const entries: Record<string, Entry> = {
       "Up to a few hundred robots and zones: everything is redrawn on each pan. A city-scale map, tiles or GPS belong to a map library.",
     ],
   },
+  "point-cloud": {
+    group: "Charts",
+    wide: true,
+    examples: { file: "point-cloud", prefix: "PointCloud" },
+    rules: [
+      "For what a LiDAR or depth camera sees, in 3D. A site's floor plan with robots on it is `robot-map`; a mesh or a CAD model is a different item.",
+      "Pass the points in the ROS frame they came in (REP 103: x forward, y left, z up, metres), as a `Float32Array` of x, y, z. Decode the PointCloud2 in the app; NaN points are skipped.",
+      "Colour by height unless intensity answers the question (reflective tape, glass, a retro-reflector). Colour is the accent's single-hue ramp with its scale in the footer, never a rainbow; `colorBy=\"none\"` draws the grey of a map's scans.",
+      "For a live cloud, fix `colorRange` so a colour means the same height from one scan to the next, and set `staleAfterMs` (with `receivedAt` from the message's stamp when you have it) so a frozen cloud says Stale instead of passing for live.",
+      "Give `label` the sensor and the robot (\"Front lidar, Patrol dog 7F3A\"); screen readers hear it with the point count and the extent in metres.",
+      "Keep `pointSize` at 2 px for dense clouds; 3–4 px for sparse ones. Up to about 500,000 points stay smooth to turn: thin larger clouds before passing them (a voxel grid in the app).",
+      "Bottom left holds Reset view and Fit, so the emergency stop keeps the bottom right.",
+    ],
+  },
   command: {
     group: "Overlays",
     examples: { file: "overlays", prefix: "Command" },
@@ -1136,6 +1151,14 @@ const keyboard: Record<string, [string, string][]> = {
     ["Enter", "Select the node and highlight its path, or follow it when it is a link"],
     ["Space", "Select the node, links included"],
     ["Esc", "Clear the selection"],
+  ],
+  "point-cloud": [
+    ["Tab", "Move into the view (one stop), then to Reset view and Fit"],
+    ["← / →", "Turn the view around the cloud"],
+    ["↑ / ↓", "Look from higher or lower"],
+    ["Shift + arrows", "Move the view"],
+    ["+ / -", "Zoom in or out"],
+    ["0", "Reset the view"],
   ],
   "robot-map": [
     ["Tab", "Move into the map (one stop), then to its zoom buttons"],

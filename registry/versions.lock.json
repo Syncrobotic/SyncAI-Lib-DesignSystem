@@ -339,6 +339,10 @@
     "version": "0.23.1",
     "hash": "33be3d7109a96b20"
   },
+  "point-cloud": {
+    "version": "0.24.0",
+    "hash": "ce33b68a1086b0f4"
+  },
   "filter-form": {
     "version": "0.10.0",
     "hash": "4408d94150b8f69d"
