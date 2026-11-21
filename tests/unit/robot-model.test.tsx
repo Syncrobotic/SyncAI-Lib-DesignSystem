@@ -273,7 +273,7 @@ describe("RobotModel states", () => {
     })
     expect(container.querySelector("[data-slot=robot-model-state]")!.textContent).toBe("Stale · last update 14:02:31")
     expect(screen.getByRole("status").textContent).toBe("Stale, last update 14:02:31")
-    rerender(<RobotModel urdf={demoArmUrdf} joints={{ ...demoArmPose }} staleAfterMs={1000} />)
+    rerender(<RobotModel urdf={demoArmUrdf} joints={{ ...demoArmPose, elbow: demoArmPose.elbow + 0.01 }} staleAfterMs={1000} />)
     expect(container.querySelector("[data-slot=robot-model-state]")).toBeNull()
   })
 
@@ -299,5 +299,90 @@ describe("RobotModel states", () => {
     expect(screen.getByText("· 6 個關節", { exact: false })).toBeTruthy()
     expect(screen.getByRole("region", { name: "關節位置" })).toBeTruthy()
     expect(screen.getByText("無法顯示 3D。")).toBeTruthy()
+  })
+})
+
+describe("RobotModel: what counts as an update", () => {
+  it("does not take a new object with the same joint values for an update, so an inline joints prop still goes stale", async () => {
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout", "Date"] })
+    vi.setSystemTime(new Date(2026, 10, 21, 14, 2, 31))
+    const { container, rerender } = render(<RobotModel urdf={demoArmUrdf} joints={{ ...demoArmPose }} staleAfterMs={1000} />)
+    const stale = () => container.querySelector("[data-slot=robot-model-state]")?.textContent ?? null
+    // A parent that renders every 100 ms with the same values, built anew each time.
+    for (let i = 0; i < 15; i++) {
+      rerender(<RobotModel urdf={demoArmUrdf} joints={{ ...demoArmPose }} staleAfterMs={1000} />)
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(100)
+      })
+    }
+    expect(stale()).toBe("Stale · last update 14:02:31")
+    // A changed value is an update.
+    rerender(<RobotModel urdf={demoArmUrdf} joints={{ ...demoArmPose, elbow: 1.2 }} staleAfterMs={1000} />)
+    expect(stale()).toBeNull()
+  })
+
+  it("with an old stamp, stays stale across renders that bring the same values, and announces it once", async () => {
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout", "Date"] })
+    vi.setSystemTime(new Date(2026, 10, 21, 14, 5, 0))
+    const at = new Date(2026, 10, 21, 14, 2, 31).getTime()
+    const view = () => <RobotModel urdf={demoArmUrdf} joints={{ ...demoArmPose }} updatedAt={at} staleAfterMs={1000} />
+    const { container, rerender } = render(view())
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(10)
+    })
+    const status = screen.getByRole("status")
+    expect(status.textContent).toBe("Stale, last update 14:02:31")
+    const said: string[] = []
+    const mo = new MutationObserver(() => said.push(status.textContent ?? ""))
+    mo.observe(status, { childList: true, characterData: true, subtree: true })
+    for (let i = 0; i < 5; i++) {
+      rerender(view())
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(10)
+      })
+      expect(container.querySelector("[data-slot=robot-model-state]")?.textContent).toContain("14:02:31")
+    }
+    mo.disconnect()
+    expect(said).toEqual([])
+  })
+})
+
+describe("RobotModel: loading edge cases", () => {
+  it("says an empty URDF file is not one, instead of loading forever", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => new Response("", { status: 200 })))
+    const { container } = render(<RobotModel urdfUrl="/robots/empty.urdf" />)
+    await flush()
+    expect(container.querySelector("[data-slot=robot-model]")!.getAttribute("data-state")).toBe("error")
+    expect(screen.getByText(`/robots/empty.urdf: ${defaultRobotModelLabels.invalidUrdf}`)).toBeTruthy()
+    vi.unstubAllGlobals()
+  })
+
+  it("loads a mesh whose path has a query string, reading the format without it", () => {
+    vi.stubGlobal("fetch", vi.fn(() => new Promise<Response>(() => {})))
+    const starts: string[] = []
+    const ends: [string, string | undefined][] = []
+    parseUrdf(meshUrdf("meshes/base.stl?v=2"), { meshBaseUrl: "https://robots.example/bot", onMeshStart: (p) => starts.push(p), onMeshEnd: (p, e) => ends.push([p, e]) })
+    expect(starts).toEqual(["https://robots.example/bot/meshes/base.stl?v=2"])
+    // Not refused as an unsupported format: it is being fetched.
+    expect(ends).toEqual([])
+    vi.unstubAllGlobals()
+  })
+
+  it("reports nothing for a mesh that arrives after the view stopped wanting it", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => new Response("", { status: 404, statusText: "Not Found" })))
+    const load = (url: string, signal?: AbortSignal) => {
+      const ends: string[] = []
+      parseUrdf(meshUrdf(url), { signal, onMeshEnd: (p) => ends.push(p) })
+      return ends
+    }
+    const ctrl = new AbortController()
+    const aborted = load("https://robots.example/a/gone.stl", ctrl.signal)
+    ctrl.abort()
+    const wanted = load("https://robots.example/b/gone.stl")
+    await flush()
+    await flush()
+    expect(wanted).toEqual(["https://robots.example/b/gone.stl"])
+    expect(aborted).toEqual([])
+    vi.unstubAllGlobals()
   })
 })

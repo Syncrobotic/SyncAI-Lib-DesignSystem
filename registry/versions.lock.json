@@ -344,12 +344,12 @@
     "hash": "eb90d198fccd5b62"
   },
   "point-cloud": {
-    "version": "0.24.0",
-    "hash": "ce33b68a1086b0f4"
+    "version": "0.24.1",
+    "hash": "2408604ba0e89408"
   },
   "robot-model": {
-    "version": "0.24.0",
-    "hash": "083e34f151addcc1"
+    "version": "0.24.1",
+    "hash": "f7c17c61b2ed6e9f"
   },
   "filter-form": {
     "version": "0.10.0",
