@@ -1,0 +1,546 @@
+// @syncrobotic/sidebar v0.28.0 · update: npx shadcn add @syncrobotic/sidebar --overwrite
+"use client"
+
+import * as React from "react"
+import { Slot } from "radix-ui"
+import { Menu } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { CountBadge } from "@/registry/syncrobotic/ui/badge"
+import { Sheet, SheetContent, SheetTitle } from "@/registry/syncrobotic/ui/sheet"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/registry/syncrobotic/ui/tooltip"
+import { isMac, parseCombo, useHotkeys } from "@/registry/syncrobotic/hooks/use-hotkeys"
+
+/** The cookie that keeps the sidebar open or collapsed between visits ("true" or "false"). Read it on the server and pass it as `defaultOpen`. */
+export const SIDEBAR_COOKIE_NAME = "sidebar_state"
+const COOKIE_MAX_AGE = 60 * 60 * 24 * 7
+// Below md (768 px) the sidebar is a sheet from the screen's edge; the classes below use the same breakpoint (md:).
+const MOBILE_QUERY = "(max-width: 767px)"
+
+export type SidebarLabels = {
+  /** The sidebar's landmark (an aside). */
+  sidebar: string
+  /** The navigation landmark SidebarContent makes. */
+  nav: string
+  /** The phone sheet's title, read when it opens. */
+  title: string
+  /** The trigger while the sidebar is open. */
+  collapse: string
+  /** The trigger while the sidebar is a rail of icons, or hidden. */
+  expand: string
+  /** The trigger on phones, where it opens the sheet. */
+  open: string
+}
+
+const defaultLabels: SidebarLabels = {
+  sidebar: "Sidebar",
+  nav: "Main",
+  title: "Navigation",
+  collapse: "Collapse sidebar",
+  expand: "Expand sidebar",
+  open: "Open navigation",
+}
+
+type SidebarContextValue = {
+  /** expanded or collapsed, on wide screens. Phones use openMobile. */
+  state: "expanded" | "collapsed"
+  open: boolean
+  setOpen: (open: boolean) => void
+  openMobile: boolean
+  setOpenMobile: (open: boolean) => void
+  isMobile: boolean
+  toggleSidebar: () => void
+  labels: SidebarLabels
+  /** The shortcut as people read it ("⌘B", "Ctrl B"), or null when there is none. */
+  shortcut: string | null
+  /** The shortcut for aria-keyshortcuts ("Meta+B", "Control+B"). */
+  keyshortcuts: string | undefined
+  /** true when the provider was told phone or desktop, instead of reading the screen. */
+  forced: boolean
+}
+
+const SidebarContext = React.createContext<SidebarContextValue | null>(null)
+
+/** The sidebar's state and its setters, for any component inside a SidebarProvider. */
+export function useSidebar() {
+  const context = React.use(SidebarContext)
+  if (!context) throw new Error("useSidebar must be used within a SidebarProvider.")
+  return context
+}
+
+// The cookie, as an external store: a write notifies every provider, and the server (and the hydrating render) reads none,
+// so the first paint is defaultOpen and the stored choice follows. Pass the cookie as defaultOpen to avoid that step.
+const cookieListeners = new Set<() => void>()
+const subscribeCookie = (onChange: () => void) => {
+  cookieListeners.add(onChange)
+  return () => {
+    cookieListeners.delete(onChange)
+  }
+}
+function readCookie(name: string) {
+  for (const part of document.cookie.split(";")) {
+    const [key, ...value] = part.trim().split("=")
+    if (key === name) return value.join("=")
+  }
+  return null
+}
+function writeCookie(name: string, value: boolean) {
+  document.cookie = `${name}=${value}; path=/; max-age=${COOKIE_MAX_AGE}; samesite=lax`
+  for (const listener of cookieListeners) listener()
+}
+
+const subscribeMobile = (onChange: () => void) => {
+  const query = window.matchMedia(MOBILE_QUERY)
+  query.addEventListener("change", onChange)
+  return () => query.removeEventListener("change", onChange)
+}
+const mobileNow = () => window.matchMedia(MOBILE_QUERY).matches
+// The platform never changes while the page is open, so there is nothing to subscribe to.
+const subscribeNothing = () => () => {}
+
+/** "mod+b" as people read it on this platform, and as aria-keyshortcuts names it. */
+function describeShortcut(combo: string, mac: boolean) {
+  const c = parseCombo(combo)
+  const key = c.key.length === 1 ? c.key.toUpperCase() : c.key.charAt(0).toUpperCase() + c.key.slice(1)
+  const read: string[] = []
+  const aria: string[] = []
+  if (c.ctrl || (c.mod && !mac)) {
+    read.push(mac ? "⌃" : "Ctrl")
+    aria.push("Control")
+  }
+  if (c.meta || (c.mod && mac)) {
+    read.push("⌘")
+    aria.push("Meta")
+  }
+  if (c.alt) {
+    read.push(mac ? "⌥" : "Alt")
+    aria.push("Alt")
+  }
+  if (c.shift) {
+    read.push(mac ? "⇧" : "Shift")
+    aria.push("Shift")
+  }
+  return { read: mac ? [...read, key].join("") : [...read, key].join(" "), aria: [...aria, key].join("+") }
+}
+
+type SidebarProviderProps = React.ComponentProps<"div"> & {
+  /** Open at first on wide screens, until someone toggles it (uncontrolled). A stored choice (the cookie) wins over it. */
+  defaultOpen?: boolean
+  /** Open on wide screens, controlled; pair with onOpenChange. */
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+  /** The phone sheet open at first, for previews and tests. */
+  defaultOpenMobile?: boolean
+  /** The phone (sheet) or desktop (column) form, instead of following the screen's width (768 px): for a preview frame. */
+  isMobile?: boolean
+  /** The cookie that keeps the choice for a week. null keeps it for this page only. */
+  cookieName?: string | null
+  /** Toggles the sidebar from anywhere on the page, except while typing. mod is ⌘ on a Mac, Ctrl elsewhere; false for none. */
+  keyboardShortcut?: string | false
+  labels?: Partial<SidebarLabels>
+}
+
+/**
+ * Holds the sidebar's state for everything inside it: the Sidebar, its trigger and the page beside it. Lays them out in a
+ * row; give it the frame's height (`h-dvh`) or let the page scroll beside a sticky sidebar.
+ */
+export function SidebarProvider({
+  defaultOpen = true,
+  open: openProp,
+  onOpenChange,
+  defaultOpenMobile = false,
+  isMobile: mobileProp,
+  cookieName = SIDEBAR_COOKIE_NAME,
+  keyboardShortcut = "mod+b",
+  labels: given,
+  className,
+  children,
+  ...props
+}: SidebarProviderProps) {
+  const labels = { ...defaultLabels, ...given }
+  const screenMobile = React.useSyncExternalStore(subscribeMobile, mobileNow, () => false)
+  const isMobile = mobileProp ?? screenMobile
+  const stored = React.useSyncExternalStore(subscribeCookie, () => (cookieName ? readCookie(cookieName) : null), () => null)
+  // The person's choice on this page; until there is one, the cookie, then defaultOpen (which may follow the screen).
+  const [choice, setChoice] = React.useState<boolean | null>(null)
+  const open = openProp ?? choice ?? (stored === "true" ? true : stored === "false" ? false : defaultOpen)
+  const [openMobile, setOpenMobile] = React.useState(defaultOpenMobile)
+
+  const setOpen = (value: boolean) => {
+    if (openProp === undefined) setChoice(value)
+    if (cookieName) writeCookie(cookieName, value)
+    onOpenChange?.(value)
+  }
+  const toggleSidebar = () => (isMobile ? setOpenMobile(!openMobile) : setOpen(!open))
+
+  useHotkeys(keyboardShortcut ? { [keyboardShortcut]: toggleSidebar } : {}, { enabled: !!keyboardShortcut })
+  // Read on the client only; the server and the hydrating render say "Ctrl B".
+  const mac = React.useSyncExternalStore(subscribeNothing, isMac, () => false)
+  const shortcut = keyboardShortcut ? describeShortcut(keyboardShortcut, mac) : null
+
+  const value: SidebarContextValue = {
+    state: open ? "expanded" : "collapsed",
+    open,
+    setOpen,
+    openMobile,
+    setOpenMobile,
+    isMobile,
+    toggleSidebar,
+    labels,
+    shortcut: shortcut?.read ?? null,
+    keyshortcuts: shortcut?.aria,
+    forced: mobileProp !== undefined,
+  }
+
+  return (
+    <SidebarContext value={value}>
+      <div data-slot="sidebar-wrapper" className={cn("flex w-full", className)} {...props}>
+        {children}
+      </div>
+    </SidebarContext>
+  )
+}
+
+type SidebarProps = React.ComponentProps<"aside"> & {
+  side?: "left" | "right"
+  /** sidebar (default): a column with a hairline beside the page. floating: a raised panel (give the provider `gap-2 p-2`). */
+  variant?: "sidebar" | "floating"
+  /** icon (default): collapses to a 72 px rail of icons with tooltips. offcanvas: collapses out of view. none: always open. */
+  collapsible?: "icon" | "offcanvas" | "none"
+}
+
+/**
+ * The main navigation of a console: a 240 px column that collapses to a 72 px rail of icons, and a sheet from the screen's
+ * edge on phones. Children are SidebarHeader, SidebarContent and SidebarFooter, the same on every screen.
+ */
+export function Sidebar({ side = "left", variant = "sidebar", collapsible = "icon", className, children, ...props }: SidebarProps) {
+  const { state, isMobile, openMobile, setOpenMobile, labels, forced } = useSidebar()
+
+  if (isMobile && collapsible !== "none") {
+    return (
+      <Sheet open={openMobile} onOpenChange={setOpenMobile}>
+        <SheetContent side={side} aria-describedby={undefined} className="w-72 gap-0 p-0">
+          <SheetTitle className="sr-only">{labels.title}</SheetTitle>
+          <aside
+            data-slot="sidebar"
+            data-mobile="true"
+            data-state="expanded"
+            data-side={side}
+            aria-label={labels.sidebar}
+            className="group/sidebar flex min-h-full flex-col text-foreground"
+            {...props}
+          >
+            {children}
+          </aside>
+        </SheetContent>
+      </Sheet>
+    )
+  }
+
+  const collapsed = collapsible !== "none" && state === "collapsed"
+  const hidden = collapsed && collapsible === "offcanvas"
+  return (
+    <aside
+      data-slot="sidebar"
+      data-state={collapsed ? "collapsed" : "expanded"}
+      data-collapsible={collapsed ? collapsible : ""}
+      data-variant={variant}
+      data-side={side}
+      aria-label={labels.sidebar}
+      className={cn(
+        // Sticky and as tall as the screen when the page scrolls; as tall as the frame when the provider has a height.
+        "group/sidebar sticky top-0 h-svh max-h-full shrink-0 flex-col overflow-hidden bg-card text-foreground",
+        // Before hydration a phone cannot be told from the server, so the column hides below md by CSS; the sheet takes over.
+        forced ? "flex" : "hidden md:flex",
+        // The frame's width is what moves (--motion-sheet); icons stay on the rail's centre line and words fade.
+        "transition-[width] duration-(--motion-sheet) ease-(--ease-standard) motion-reduce:transition-none",
+        collapsed ? (hidden ? "w-0" : "w-18") : "w-60",
+        variant === "floating" ? "rounded-md ring-1 ring-border" : side === "left" ? "border-e border-border" : "border-s border-border",
+        hidden && "border-0 ring-0",
+        className,
+      )}
+      {...props}
+    >
+      {/* Off canvas, the column keeps its width while the frame closes over it, and nothing in it can be reached. */}
+      <div inert={hidden} className={cn("flex h-full min-h-0 flex-col", collapsible === "offcanvas" ? "w-60" : "w-full")}>
+        {children}
+      </div>
+    </aside>
+  )
+}
+
+/**
+ * The trigger's icon: a panel whose sidebar column is filled while the sidebar is open and hollow when it is a rail. The
+ * fill swaps at --motion-fast (the swap pattern), 2 px stroke like every icon.
+ */
+function SidebarIcon({ open }: { open: boolean }) {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="size-5">
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <path
+        d="M4 4h5v16H4z"
+        stroke="none"
+        fill="currentColor"
+        className={cn("transition-opacity duration-(--motion-fast) ease-(--ease-standard)", open ? "opacity-100" : "opacity-0")}
+      />
+      <path d="M9 3v18" />
+    </svg>
+  )
+}
+
+/** Opens and closes the sidebar: collapse or expand on wide screens, the sheet on phones. Its tooltip names the shortcut. */
+export function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<"button">) {
+  const { isMobile, open, toggleSidebar, labels, shortcut, keyshortcuts } = useSidebar()
+  const label = isMobile ? labels.open : open ? labels.collapse : labels.expand
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button
+          type="button"
+          data-slot="sidebar-trigger"
+          aria-label={label}
+          aria-keyshortcuts={keyshortcuts}
+          className={cn(
+            "press flex size-(--h-md) shrink-0 items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:-outline-offset-2",
+            "transition-colors duration-(--motion-fast) ease-(--ease-standard)",
+            className,
+          )}
+          onClick={(e) => {
+            onClick?.(e)
+            if (!e.defaultPrevented) toggleSidebar()
+          }}
+          {...props}
+        >
+          {isMobile ? <Menu aria-hidden="true" className="size-5" /> : <SidebarIcon open={open} />}
+        </button>
+      </TooltipTrigger>
+      {/* Touch screens never show a tooltip; the button's name says the same. */}
+      <TooltipContent>
+        <span className="flex items-center gap-2">
+          {label}
+          {shortcut && !isMobile && <kbd className="font-sans">{shortcut}</kbd>}
+        </span>
+      </TooltipContent>
+    </Tooltip>
+  )
+}
+
+/** The page beside the sidebar: a column that takes the rest of the row. A div, so the page keeps its own header and main. */
+export function SidebarInset({ className, ...props }: React.ComponentProps<"div">) {
+  return <div data-slot="sidebar-inset" className={cn("flex min-h-0 min-w-0 flex-1 flex-col", className)} {...props} />
+}
+
+/** The top of the sidebar: the product's mark and name, or a workspace or robot switcher (a size="lg" SidebarMenuButton). */
+export function SidebarHeader({ className, ...props }: React.ComponentProps<"div">) {
+  return <div data-slot="sidebar-header" className={cn("flex shrink-0 flex-col gap-2 px-3 py-2", className)} {...props} />
+}
+
+/** The foot of the sidebar: who is signed in, with the account menu. */
+export function SidebarFooter({ className, ...props }: React.ComponentProps<"div">) {
+  return <div data-slot="sidebar-footer" className={cn("flex shrink-0 flex-col gap-2 px-3 py-2", className)} {...props} />
+}
+
+/** A hairline between parts of the sidebar, inset to the rail's edges. */
+export function SidebarSeparator({ className, ...props }: React.ComponentProps<"hr">) {
+  return <hr data-slot="sidebar-separator" className={cn("mx-3 border-border", className)} {...props} />
+}
+
+/** The scrolling middle: the groups of links, in a navigation landmark ("Main"; pass aria-label to rename it). */
+export function SidebarContent({ className, ...props }: React.ComponentProps<"nav">) {
+  const { labels } = useSidebar()
+  return (
+    <nav
+      data-slot="sidebar-content"
+      aria-label={labels.nav}
+      className={cn("flex min-h-0 flex-1 flex-col gap-4 overflow-x-hidden overflow-y-auto px-3 py-2", className)}
+      {...props}
+    />
+  )
+}
+
+/** One group of links, under an optional SidebarGroupLabel. Groups are 16 px apart. */
+export function SidebarGroup({ className, ...props }: React.ComponentProps<"div">) {
+  return <div data-slot="sidebar-group" className={cn("flex min-w-0 flex-col gap-1", className)} {...props} />
+}
+
+// Words beside the rail's icons are always rendered, so opening the rail never moves the icons: the column of icons stays on
+// its centre line and the words fade (--motion-base) while the frame's width moves.
+const fade = "whitespace-nowrap transition-opacity duration-(--motion-base) ease-(--ease-standard) group-data-[collapsible=icon]/sidebar:opacity-0"
+
+/**
+ * A group's name. As a rail, it gives way to a short centred line, so groups stay apart without a clipped word; the two
+ * cross-fade. The line sits 4 px into the 20 px row, 20 px from the icon above and below.
+ */
+export function SidebarGroupLabel({ className, children, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div data-slot="sidebar-group-label" className={cn("relative flex h-5 shrink-0 items-center px-3 text-xs font-medium text-muted-foreground", className)} {...props}>
+      <span className={cn("min-w-0 truncate", fade)}>{children}</span>
+      <span
+        aria-hidden="true"
+        className="absolute top-1 left-3 h-px w-6 bg-border opacity-0 transition-opacity duration-(--motion-base) ease-(--ease-standard) group-data-[collapsible=icon]/sidebar:opacity-100"
+      />
+    </div>
+  )
+}
+
+export function SidebarGroupContent({ className, ...props }: React.ComponentProps<"div">) {
+  return <div data-slot="sidebar-group-content" className={cn("min-w-0", className)} {...props} />
+}
+
+/** A list of links. */
+export function SidebarMenu({ className, ...props }: React.ComponentProps<"ul">) {
+  return <ul data-slot="sidebar-menu" className={cn("flex min-w-0 flex-col gap-1", className)} {...props} />
+}
+
+export function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
+  return <li data-slot="sidebar-menu-item" className={cn("relative min-w-0", className)} {...props} />
+}
+
+/** On phones, following a link closes the sheet, so the page it opens is not under it. */
+function useCloseOnNavigate(onClick?: React.MouseEventHandler<HTMLElement>) {
+  const { isMobile, setOpenMobile } = useSidebar()
+  return (e: React.MouseEvent<HTMLElement>) => {
+    onClick?.(e)
+    if (isMobile && !e.defaultPrevented && e.currentTarget.matches("a[href]")) setOpenMobile(false)
+  }
+}
+
+const buttonSizes = {
+  /** 36 px with a mouse, 44 on touch. */
+  sm: "h-(--h-sm)",
+  /** 44 px: the main links. */
+  md: "h-(--h-md)",
+  /** 56 px: a switcher in the header, the account in the footer. Leads with a 32 px mark or avatar, on the rail's centre line. */
+  lg: "h-(--h-row) px-2",
+} as const
+
+type SidebarMenuButtonProps = React.ComponentProps<"button"> & {
+  /** Render your link (a, next/link) instead of a button, with the button's look. */
+  asChild?: boolean
+  /** The current page: the kit's current look (muted fill and weight) and aria-current="page". */
+  isActive?: boolean
+  size?: keyof typeof buttonSizes
+  /** Shown beside the rail when the sidebar is collapsed: the link's name, or TooltipContent props. */
+  tooltip?: React.ReactNode | React.ComponentProps<typeof TooltipContent>
+}
+
+/**
+ * A link or button in the sidebar. Its first child is the icon (20 px) or, at size="lg", a 32 px mark; the next is the
+ * name, then an optional SidebarMenuBadge or SidebarMenuTag. As a rail, only the first child shows, with the tooltip.
+ */
+export function SidebarMenuButton({ asChild = false, isActive = false, size = "md", tooltip, className, onClick, ...props }: SidebarMenuButtonProps) {
+  const { state, isMobile } = useSidebar()
+  const handleClick = useCloseOnNavigate(onClick)
+  const Comp = asChild ? Slot.Root : "button"
+  const button = (
+    <Comp
+      data-slot="sidebar-menu-button"
+      data-size={size}
+      data-active={isActive || undefined}
+      aria-current={isActive ? "page" : undefined}
+      type={asChild ? undefined : "button"}
+      onClick={handleClick}
+      className={cn(
+        "press relative flex w-full min-w-0 items-center gap-2 overflow-hidden rounded-sm px-3 text-start text-sm text-muted-foreground",
+        "transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent hover:text-foreground data-[state=open]:bg-accent",
+        // Current page: muted fill and weight, and it stays put on hover. Hover elsewhere is the lighter accent.
+        "data-[active=true]:bg-muted data-[active=true]:font-medium data-[active=true]:text-foreground data-[active=true]:hover:bg-muted",
+        // Focus rings sit inside the item (-outline-offset-2), so they never stick out of the column or get clipped by it.
+        "focus-visible:-outline-offset-2 disabled:pointer-events-none disabled:text-disabled aria-disabled:pointer-events-none aria-disabled:text-disabled",
+        // The icon is a 24 px box 12 px in: its centre is the rail's centre line (36 px). Other icons are 16 px.
+        "[&>svg]:shrink-0 [&>svg:first-child]:mx-0.5 [&>svg:first-child]:size-5 [&>svg:not(:first-child)]:size-4",
+        "[&>span:nth-child(2)]:min-w-0 [&>span:nth-child(2)]:flex-1 [&>span:nth-child(2)]:truncate",
+        // Everything after the icon fades on the rail, except what is marked to stay (a count's dot).
+        "[&>:not(:first-child)]:whitespace-nowrap [&>:not(:first-child)]:transition-opacity [&>:not(:first-child)]:duration-(--motion-base) [&>:not(:first-child)]:ease-(--ease-standard)",
+        "group-data-[collapsible=icon]/sidebar:[&>:not(:first-child):not([data-sidebar-keep])]:opacity-0",
+        buttonSizes[size],
+        className,
+      )}
+      {...props}
+    />
+  )
+  if (!tooltip) return button
+  const content = typeof tooltip === "object" && tooltip !== null && !Array.isArray(tooltip) && !React.isValidElement(tooltip) ? (tooltip as React.ComponentProps<typeof TooltipContent>) : { children: tooltip }
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>{button}</TooltipTrigger>
+      {/* Only the rail needs names beside its icons; open, the words are on screen. */}
+      {state === "collapsed" && !isMobile && <TooltipContent side="right" align="center" {...content} />}
+    </Tooltip>
+  )
+}
+
+/**
+ * A count on a link: unacknowledged alarms, unread events. A CountBadge at the end of the row (danger tint, or neutral);
+ * on the rail, a dot on the icon's corner instead. Put it inside the SidebarMenuButton, so the count is part of the link's
+ * name ("Alarms 2").
+ */
+export function SidebarMenuBadge({ count, max, tone = "danger", className }: { count: number; max?: number; tone?: "danger" | "neutral"; className?: string }) {
+  if (count <= 0) return null
+  return (
+    <>
+      <CountBadge count={count} max={max} tone={tone} className={className} />
+      <span
+        aria-hidden="true"
+        data-sidebar-keep=""
+        data-slot="sidebar-menu-dot"
+        className={cn(
+          "pointer-events-none absolute top-2 left-8 size-2 rounded-full opacity-0 ring-1 transition-opacity duration-(--motion-base) ease-(--ease-standard) group-data-[collapsible=icon]/sidebar:opacity-100",
+          tone === "danger" ? "bg-danger-subtle ring-danger" : "bg-muted ring-muted-foreground",
+        )}
+      />
+    </>
+  )
+}
+
+/** A quiet word at the end of a link ("Beta", "New"): small grey text, no outline, there to find rather than to catch the eye. */
+export function SidebarMenuTag({ className, ...props }: React.ComponentProps<"span">) {
+  return <span data-slot="sidebar-menu-tag" className={cn("shrink-0 text-xs font-normal text-muted-foreground", className)} {...props} />
+}
+
+/**
+ * The links under a link: the pages of a section. They hang from a guide line under the parent's icon, as in a Tree, and
+ * are hidden on the rail (the parent is the way in). Show them while their section is current.
+ */
+export function SidebarMenuSub({ className, ...props }: React.ComponentProps<"ul">) {
+  return (
+    <ul
+      data-slot="sidebar-menu-sub"
+      className={cn("ms-6 mt-1 flex min-w-0 flex-col gap-1 border-s border-border ps-2 group-data-[collapsible=icon]/sidebar:hidden", className)}
+      {...props}
+    />
+  )
+}
+
+export function SidebarMenuSubItem({ className, ...props }: React.ComponentProps<"li">) {
+  return <li data-slot="sidebar-menu-sub-item" className={cn("min-w-0", className)} {...props} />
+}
+
+/** A link under a link: 36 px with a mouse, 44 on touch. First child is the name; a SidebarMenuBadge or SidebarMenuTag may follow. */
+export function SidebarMenuSubButton({
+  asChild = false,
+  isActive = false,
+  className,
+  onClick,
+  ...props
+}: React.ComponentProps<"a"> & { asChild?: boolean; isActive?: boolean }) {
+  const handleClick = useCloseOnNavigate(onClick)
+  const Comp = asChild ? Slot.Root : "a"
+  return (
+    <Comp
+      data-slot="sidebar-menu-sub-button"
+      data-active={isActive || undefined}
+      aria-current={isActive ? "page" : undefined}
+      onClick={handleClick}
+      className={cn(
+        "press flex h-(--h-sm) min-w-0 items-center gap-2 rounded-xs px-3 text-sm text-muted-foreground",
+        "transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent hover:text-foreground focus-visible:-outline-offset-2",
+        "data-[active=true]:bg-muted data-[active=true]:font-medium data-[active=true]:text-foreground data-[active=true]:hover:bg-muted",
+        "[&>span:first-child]:min-w-0 [&>span:first-child]:flex-1 [&>span:first-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
+        // A count's dot is for the rail, where sub-links are hidden.
+        "[&>[data-sidebar-keep]]:hidden",
+        className,
+      )}
+      {...props}
+    />
+  )
+}

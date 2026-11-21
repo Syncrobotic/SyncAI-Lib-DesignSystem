@@ -59,6 +59,7 @@ export type StoryFile =
   | "joint-state"
   | "diagnostics"
   | "tree"
+  | "sidebar"
   | "graph"
   | "robot-map"
   | "point-cloud"
@@ -846,6 +847,20 @@ const entries: Record<string, Entry> = {
       "content (list mode) is a node's own details under it, opened by its disclosure button: a short key/value table, a log line. Not a second tree, and not a form.",
     ],
   },
+  sidebar: {
+    group: "Navigation",
+    /** A console frame: the sidebar beside a page needs the card's full width. */
+    wide: true,
+    examples: { file: "sidebar", prefix: "Sidebar" },
+    rules: [
+      "For an app's sections: the main navigation of a console. Pages of one section go under it (SidebarMenuSub), shown while the section is current; never more than two levels.",
+      "Current page: isActive, the kit's muted fill and weight. Hover is the lighter accent. Never a colour, never a bar beside the item.",
+      "Counts are SidebarMenuBadge: danger only for what needs someone (unacknowledged alarms), neutral for the rest. Tags (\"Beta\", \"New\") are SidebarMenuTag, small grey words.",
+      "Every item leads with an icon and has a tooltip: collapsed, the rail shows only the icons. Group names give way to a short line.",
+      "A switcher for sites, workspaces or robots goes in SidebarHeader as a size=\"lg\" button that opens a menu; the account goes in SidebarFooter the same way.",
+      "Open by default on wide screens, a rail below about 1280 px. People choose with the trigger or ⌘B / Ctrl+B, and the cookie keeps it.",
+    ],
+  },
   // Overlays: the docs show the closed trigger; the *Open stories are for visual tests.
   dialog: { group: "Overlays", examples: { file: "overlays", prefix: "Dialog" }, rules: ["A short decision. On phones prefer Sheet for anything longer."] },
   "alert-dialog": {
@@ -1288,6 +1303,12 @@ const keyboard: Record<string, [string, string][]> = {
     ["Home / End", "select: first or last node on screen"],
     ["Type letters", "select: move to the next node whose name starts with them"],
     ["*", "select: open every branch beside the focused node"],
+  ],
+  sidebar: [
+    ["⌘B / Ctrl+B", "Collapse the sidebar to its rail, or open it; on a phone, open or close the sheet. Not while typing"],
+    ["Tab", "Move through the switcher, the links and the account, top to bottom"],
+    ["Enter", "Follow the link; on the switcher or the account, open its menu"],
+    ["Esc", "On a phone, close the sheet and return focus to the trigger"],
   ],
   "image-grid": [
     ["Enter / Space", "Open the picture in the lightbox, or pick it while picking"],

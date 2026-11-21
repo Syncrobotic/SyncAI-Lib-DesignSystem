@@ -199,7 +199,7 @@
           {
             "version": "0.28.0",
             "date": "2026-11-21",
-            "note": "New streamingChartLabels and diagnosticsLabels for the new streaming-chart and diagnostics, and `details` in `treeLabels`."
+            "note": "New streamingChartLabels, diagnosticsLabels for the new streaming-chart and diagnostics, sidebarProviderLabels for the new sidebar, and `details` in `treeLabels`."
           },
           {
             "version": "0.27.0",
@@ -2772,6 +2772,40 @@
             "version": "0.18.0",
             "date": "2026-11-19",
             "note": "First release: a hierarchy from data in two modes. list is a nested list with a guide line per level, a disclosure button per branch and links in the normal Tab order; select is a WAI-ARIA tree with one Tab stop, arrow keys, Home and End, type-ahead, * and one selected node."
+          }
+        ]
+      }
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:ui",
+      "title": "Sidebar",
+      "description": "The main navigation of a console: a column of grouped links with counts, tags and nested pages, a header for a workspace or robot switcher and a footer for the account. Collapses to a rail of icons with tooltips (⌘B / Ctrl+B, kept in a cookie) and is a sheet on phones.",
+      "dependencies": [
+        "radix-ui",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/badge",
+        "@syncrobotic/sheet",
+        "@syncrobotic/tooltip",
+        "@syncrobotic/use-hotkeys"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/sidebar.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.28.0",
+        "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "First release, in shadcn/ui's composition (SidebarProvider, Sidebar, SidebarHeader, SidebarContent, SidebarGroup, SidebarMenu, SidebarMenuButton, SidebarMenuSub, SidebarFooter, SidebarTrigger, useSidebar). A 240 px column that collapses to a 72 px rail of icons with tooltips, or off canvas; a sheet from the edge on phones. ⌘B / Ctrl+B toggles it and a cookie keeps the choice. The current page has the kit's muted fill and weight, counts are CountBadges (a dot on the rail), tags are quiet grey words, rows are 44 px and focus rings sit inside them."
           }
         ]
       }
@@ -5444,7 +5478,7 @@
       "name": "app-shell",
       "type": "registry:block",
       "title": "App shell",
-      "description": "The frame of an internal tool: collapsible sidebar (a drawer on phones), top bar with title, environment, search and user, and the page.",
+      "description": "The frame of an internal tool: the kit's Sidebar (a rail of icons below 1280 px, a sheet on phones), top bar with sidebar trigger, title, environment, search and actions, and the page.",
       "dependencies": [
         "lucide-react"
       ],
@@ -5452,8 +5486,8 @@
         "@syncrobotic/cn",
         "@syncrobotic/avatar",
         "@syncrobotic/badge",
+        "@syncrobotic/sidebar",
         "@syncrobotic/input",
-        "@syncrobotic/sheet",
         "@syncrobotic/dropdown-menu",
         "@syncrobotic/command",
         "@syncrobotic/input-group",
@@ -5466,8 +5500,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.4",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Built on the new `sidebar` component instead of its own: about 140 lines shorter. The sidebar toggle moves to the top bar (SidebarTrigger) on every screen, ⌘B / Ctrl+B toggles it, and the choice is kept in a cookie (it still starts open from 1280 px and as a rail below). The rail names its icons with tooltips instead of opening over the content on hover or tap. Phones get the sheet below 768 px (was 640). Nav items take `tag` (a quiet \"Beta\") and `items` (pages listed under their section while it is current); `sidebarLabels` translates the sidebar's words. SidebarUserMenu reads the rail from the sidebar and no longer takes `collapsed` or `onOpenChange`."
+          },
           {
             "version": "0.22.4",
             "date": "2026-11-21",

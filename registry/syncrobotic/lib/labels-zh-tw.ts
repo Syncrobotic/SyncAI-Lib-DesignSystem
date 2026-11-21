@@ -650,6 +650,15 @@ export const questionFieldLabels = questionnaireLabels
 
 export const breadcrumbLabels = { nav: "導覽路徑" }
 
+export const sidebarProviderLabels = {
+  sidebar: "側邊欄",
+  nav: "主要導覽",
+  title: "導覽",
+  collapse: "收合側邊欄",
+  expand: "展開側邊欄",
+  open: "開啟導覽",
+}
+
 export const commandDialogLabels = {
   title: "搜尋",
   description: "搜尋頁面、機器人與操作",

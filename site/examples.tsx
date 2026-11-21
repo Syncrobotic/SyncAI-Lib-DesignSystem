@@ -30,6 +30,7 @@ import * as s_camera_feed from "@/stories/camera-feed.stories"
 import * as s_joint_state from "@/stories/joint-state.stories"
 import * as s_diagnostics from "@/stories/diagnostics.stories"
 import * as s_tree from "@/stories/tree.stories"
+import * as s_sidebar from "@/stories/sidebar.stories"
 import * as s_graph from "@/stories/graph.stories"
 import * as s_robot_map from "@/stories/robot-map.stories"
 import * as s_point_cloud from "@/stories/point-cloud.stories"
@@ -128,6 +129,7 @@ const files: Record<Exclude<StoryFile, LazyFile>, StoryModule> = {
   "joint-state": s_joint_state as unknown as StoryModule,
   diagnostics: s_diagnostics as unknown as StoryModule,
   tree: s_tree as unknown as StoryModule,
+  sidebar: s_sidebar as unknown as StoryModule,
   graph: s_graph as unknown as StoryModule,
   "robot-map": s_robot_map as unknown as StoryModule,
   "point-cloud": s_point_cloud as unknown as StoryModule,

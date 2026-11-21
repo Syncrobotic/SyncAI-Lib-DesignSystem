@@ -13,7 +13,7 @@
   },
   "labels-zh-tw": {
     "version": "0.28.0",
-    "hash": "e17a1c433986e69d"
+    "hash": "13ff4b88ac5d142a"
   },
   "ros": {
     "version": "0.28.0",
@@ -246,6 +246,10 @@
   "tree": {
     "version": "0.28.0",
     "hash": "48c6a8a7b2b612aa"
+  },
+  "sidebar": {
+    "version": "0.28.0",
+    "hash": "5ac26f49febc3cc8"
   },
   "graph": {
     "version": "0.21.2",
@@ -484,8 +488,8 @@
     "hash": "981a0f3eae7d6769"
   },
   "app-shell": {
-    "version": "0.22.4",
-    "hash": "8f270355d3efca19"
+    "version": "0.28.0",
+    "hash": "4de85dbce2bdaa21"
   },
   "top-bar-shell": {
     "version": "0.17.3",
