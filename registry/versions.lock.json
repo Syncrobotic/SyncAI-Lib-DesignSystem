@@ -384,12 +384,12 @@
     "hash": "14eb94e7b053fc0b"
   },
   "calendar": {
-    "version": "0.23.0",
-    "hash": "f12ec8aae0cce4b0"
+    "version": "0.25.0",
+    "hash": "66f8054b38d7b158"
   },
   "date-selector": {
-    "version": "0.23.0",
-    "hash": "a3f5ad304748c357"
+    "version": "0.25.0",
+    "hash": "60a5f053320a96cf"
   },
   "time-picker": {
     "version": "0.23.2",
