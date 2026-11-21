@@ -1,4 +1,4 @@
-// @syncrobotic/file-upload v0.10.0 · update: npx shadcn add @syncrobotic/file-upload --overwrite
+// @syncrobotic/file-upload v0.10.1 · update: npx shadcn add @syncrobotic/file-upload --overwrite
 "use client"
 
 import * as React from "react"
@@ -42,7 +42,8 @@ export function FileUpload({
   compact = false,
   className,
   children,
-}: {
+  ...rest
+}: Omit<React.ComponentProps<"div">, "onDrop" | "title" | "children"> & {
   onFiles: (files: File[]) => void
   onReject?: (rejections: FileRejection[]) => void
   /** Same syntax as <input accept>: "image/*,.pgm". */
@@ -70,18 +71,22 @@ export function FileUpload({
     const files = Array.from(list)
     const ok: File[] = []
     const rejected: FileRejection[] = []
+    // One file when multiple is off: the rest are refused as "count", never dropped without a word.
+    const limit = multiple ? maxFiles : 1
     for (const f of files) {
       if (!matchesAccept(f, accept)) rejected.push({ file: f, reason: "type" })
       else if (maxSize && f.size > maxSize) rejected.push({ file: f, reason: "size" })
-      else if (maxFiles && ok.length >= maxFiles) rejected.push({ file: f, reason: "count" })
+      else if (limit && ok.length >= limit) rejected.push({ file: f, reason: "count" })
       else ok.push(f)
     }
-    if (ok.length) onFiles(multiple ? ok : ok.slice(0, 1))
+    if (ok.length) onFiles(ok)
     if (rejected.length) onReject?.(rejected)
   }
 
   return (
     <div
+      // Other attributes (aria-label for a zone that shows only an icon or an avatar, data-*, id) reach the zone.
+      {...rest}
       role="button"
       tabIndex={disabled ? -1 : 0}
       aria-disabled={disabled || undefined}

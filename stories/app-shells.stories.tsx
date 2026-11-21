@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { ConsoleOverview } from "@/registry/syncrobotic/blocks/console-overview"
 import { EventLog } from "@/registry/syncrobotic/blocks/event-log"
 import { ListDetail } from "@/registry/syncrobotic/blocks/list-detail"

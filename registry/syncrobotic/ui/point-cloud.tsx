@@ -1,4 +1,4 @@
-// @syncrobotic/point-cloud v0.24.0 · update: npx shadcn add @syncrobotic/point-cloud --overwrite
+// @syncrobotic/point-cloud v0.24.1 · update: npx shadcn add @syncrobotic/point-cloud --overwrite
 "use client"
 
 import * as React from "react"
@@ -24,6 +24,11 @@ export type PointCloudBounds = { min: [number, number, number]; max: [number, nu
 export type PointCloudCamera = { target: [number, number, number]; yaw: number; pitch: number; distance: number }
 
 export type PointCloudLabels = {
+  /**
+   * What the view is, read after `label` as its name: "Front lidar, 3D point cloud". The name stays the same while scans
+   * arrive; the count and the extent are in its description instead.
+   */
+  viewName: string
   /** Read after the summary when the view has focus: what the pointer and the keys do. */
   keys: string
   /** "123,456 points". */
@@ -66,6 +71,7 @@ export type PointCloudLabels = {
 const fixed1 = (n: number) => (Object.is(Math.round(n * 10), -0) ? 0 : n).toFixed(1)
 
 export const defaultPointCloudLabels: PointCloudLabels = {
+  viewName: "3D point cloud",
   keys: "Drag to rotate, right-drag or two fingers to pan; the wheel or a pinch zooms once the view has focus. Arrow keys rotate, Shift with the arrows pans, plus and minus zoom, 0 resets the view.",
   count: (n) => (n === 1 ? "1 point" : `${n.toLocaleString("en-US")} points`),
   bounds: (b) =>
@@ -126,6 +132,13 @@ const RAMP_FLOOR = 20
 
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v))
 
+/**
+ * How often, at most, the description with the point count and the extent changes while the view stays in one state. A
+ * live cloud changes them with every scan, and a screen reader that follows the description would otherwise hear them
+ * at the sensor's rate.
+ */
+const SUMMARY_EVERY_MS = 5000
+
 /** The extent of the finite points (a decoded PointCloud2 often carries NaN for rays that hit nothing), or null for none. */
 export function pointCloudBounds(points: Float32Array): PointCloudBounds | null {
   let x0 = Infinity
@@ -180,6 +193,15 @@ export function fitPointCloudCamera(bounds: PointCloudBounds | null, aspect: num
 /** The camera turned by a drag of `dx`, `dy` pixels: right turns the cloud with the hand, down raises the eye. */
 export function orbitPointCloudCamera(c: PointCloudCamera, dx: number, dy: number): PointCloudCamera {
   return { ...c, yaw: c.yaw - dx * DRAG_TURN, pitch: clamp(c.pitch + dy * DRAG_TURN, -PITCH_LIMIT, PITCH_LIMIT) }
+}
+
+/**
+ * The zoom factor for one wheel event: its delta in pixels, lines (16 px each) or pages (`pageHeight` pixels each, the
+ * view's height), so a mouse that scrolls by lines or pages zooms about as far per notch as one that scrolls by pixels.
+ */
+export function pointCloudWheelZoom(deltaY: number, deltaMode: number, pageHeight: number) {
+  const unit = deltaMode === 1 ? 16 : deltaMode === 2 ? Math.max(1, pageHeight) : 1
+  return Math.exp(-deltaY * unit * 0.002)
 }
 
 /** The camera moved closer by `factor` (above 1 zooms in, below 1 out). */
@@ -281,11 +303,19 @@ export function pointCloudRampPosition(value: number, range: [number, number] | 
 
 /**
  * The vertex buffer: x, y, z and the ramp position of each finite point, interleaved, so one buffer and one draw call
- * carry the whole cloud. Points with a NaN or infinite coordinate are left out.
+ * carry the whole cloud. Points with a NaN or infinite coordinate are left out. When `into` is large enough the points are
+ * packed into it instead of a new array, so a live cloud of the same size does not allocate megabytes on every scan; the
+ * result is then a view of `into` and is overwritten by the next pack into it.
  */
-export function packPointCloud(points: Float32Array, colorBy: PointCloudColorBy, intensity?: Float32Array, range?: [number, number] | null) {
+export function packPointCloud(
+  points: Float32Array,
+  colorBy: PointCloudColorBy,
+  intensity?: Float32Array,
+  range?: [number, number] | null,
+  into?: Float32Array,
+) {
   const n = Math.floor(points.length / 3)
-  const out = new Float32Array(n * 4)
+  const out = into && into.length >= n * 4 ? into : new Float32Array(n * 4)
   let count = 0
   for (let i = 0; i < n; i++) {
     const x = points[i * 3]!
@@ -300,7 +330,7 @@ export function packPointCloud(points: Float32Array, colorBy: PointCloudColorBy,
     out[o + 3] = colorBy === "none" ? 0 : pointCloudRampPosition(v, range ?? null)
     count++
   }
-  return { data: count === n ? out : out.subarray(0, count * 4), count }
+  return { data: count * 4 === out.length ? out : out.subarray(0, count * 4), count }
 }
 
 /** The ground grid on z = 0: a round step that gives at most about 24 lines a side, past the cloud and the origin by one step. */
@@ -489,15 +519,30 @@ function compile(gl: WebGL2RenderingContext, vs: string, fs: string) {
 
 type Resources = {
   gl: WebGL2RenderingContext
-  points: { program: WebGLProgram; vao: WebGLVertexArrayObject; buffer: WebGLBuffer; mvp: WebGLUniformLocation | null; size: WebGLUniformLocation | null; ramp: WebGLUniformLocation | null; round: WebGLUniformLocation | null }
+  points: {
+    program: WebGLProgram
+    vao: WebGLVertexArrayObject
+    buffer: WebGLBuffer
+    /** The bytes the points' buffer holds, so a scan that fits is written into it rather than the buffer being made again. */
+    capacity: number
+    mvp: WebGLUniformLocation | null
+    size: WebGLUniformLocation | null
+    ramp: WebGLUniformLocation | null
+    round: WebGLUniformLocation | null
+  }
   lines: { program: WebGLProgram; vao: WebGLVertexArrayObject; buffer: WebGLBuffer; mvp: WebGLUniformLocation | null; color: WebGLUniformLocation | null }
   maxPointSize: number
 }
 
 function createResources(gl: WebGL2RenderingContext): Resources | null {
   const pp = compile(gl, POINTS_VS, POINTS_FS)
+  if (!pp) return null
   const lp = compile(gl, LINES_VS, LINES_FS)
-  if (!pp || !lp) return null
+  if (!lp) {
+    // The first program linked, so it holds GPU memory that nothing else would free once this returns null.
+    gl.deleteProgram(pp)
+    return null
+  }
   const vao = (stride: number, size: number) => {
     const v = gl.createVertexArray()
     const b = gl.createBuffer()
@@ -514,6 +559,7 @@ function createResources(gl: WebGL2RenderingContext): Resources | null {
     points: {
       program: pp,
       ...vao(16, 4),
+      capacity: 0,
       mvp: gl.getUniformLocation(pp, "u_mvp"),
       size: gl.getUniformLocation(pp, "u_size"),
       ramp: gl.getUniformLocation(pp, "u_ramp"),
@@ -633,7 +679,13 @@ class Renderer {
     const r = this.res!
     const { gl } = r
     gl.bindBuffer(gl.ARRAY_BUFFER, r.points.buffer)
-    gl.bufferData(gl.ARRAY_BUFFER, scene.packed.data, gl.STATIC_DRAW)
+    // A live cloud replaces the points many times a second: the buffer is marked dynamic, and a scan that fits in it is
+    // written over the last one instead of the driver allocating a new buffer for each.
+    const data = scene.packed.data
+    if (data.byteLength > r.points.capacity) {
+      gl.bufferData(gl.ARRAY_BUFFER, data, gl.DYNAMIC_DRAW)
+      r.points.capacity = data.byteLength
+    } else if (data.byteLength) gl.bufferSubData(gl.ARRAY_BUFFER, 0, data)
     const grid = scene.grid ?? new Float32Array(0)
     const robot = scene.robot ?? new Float32Array(0)
     const lines = new Float32Array(grid.length + robot.length)
@@ -694,8 +746,14 @@ class Renderer {
     const w = Math.max(1, Math.round(this.canvas.clientWidth * dpr))
     const h = Math.max(1, Math.round(this.canvas.clientHeight * dpr))
     if (this.canvas.width !== w || this.canvas.height !== h) {
+      // Setting the size clears the drawing buffer. Drawing now, in the same task, means the cleared buffer is never
+      // shown; waiting for the next frame would flash the bare background for a frame on every resize.
       this.canvas.width = w
       this.canvas.height = h
+      cancelAnimationFrame(this.frame)
+      this.frame = 0
+      this.draw()
+      return
     }
     this.requestDraw()
   }
@@ -788,10 +846,28 @@ class Renderer {
   }
 }
 
+/**
+ * The CSS colours the view is drawn with: the theme's tokens, or, under forced colours (Windows High Contrast), system
+ * colours, because there the theme's tokens may all resolve to one colour and the points would vanish into the
+ * background. Forced colours draw the points in CanvasText on Canvas, the grid in GrayText and the robot in Highlight, so
+ * the cloud stays visible in any contrast theme, in one colour, as forced colours draw everything else.
+ */
+export function pointCloudPaletteSources(colorBy: PointCloudColorBy, forced = false) {
+  if (forced) return { background: "Canvas", grid: "GrayText", robot: "Highlight", ramp: Array<string>(RAMP_STOPS).fill("CanvasText") }
+  const ramp = Array.from({ length: RAMP_STOPS }, (_, i) => {
+    if (colorBy === "none") return "var(--map-point)"
+    const pct = RAMP_FLOOR + ((100 - RAMP_FLOOR) * i) / (RAMP_STOPS - 1)
+    return `color-mix(in oklab, var(--chart-1) ${pct.toFixed(2)}%, var(--track))`
+  })
+  return { background: "var(--map)", grid: "var(--edge)", robot: "var(--foreground)", ramp }
+}
+
 /** Reads the theme's colours as numbers, through a 1 × 1 canvas, so any colour syntax the theme uses (hex, oklch, color-mix) works. */
-function readPalette(el: HTMLElement, colorBy: PointCloudColorBy): Palette | null {
+function readPalette(el: HTMLElement, colorBy: PointCloudColorBy, forced: boolean): Palette | null {
   const probe = document.createElement("span")
   probe.style.display = "none"
+  // Under forced colours the browser would otherwise replace the probe's colour with a system colour, whatever it asks for.
+  probe.style.setProperty("forced-color-adjust", "none")
   el.appendChild(probe)
   const paint = document.createElement("canvas").getContext("2d", { willReadFrequently: true })
   const read = (css: string): Rgba => {
@@ -805,14 +881,16 @@ function readPalette(el: HTMLElement, colorBy: PointCloudColorBy): Palette | nul
     const d = paint.getImageData(0, 0, 1, 1).data
     return [d[0]! / 255, d[1]! / 255, d[2]! / 255, d[3]! / 255]
   }
+  const sources = pointCloudPaletteSources(colorBy, forced)
   const ramp = new Float32Array(RAMP_STOPS * 3)
-  const flat = colorBy === "none" ? read("var(--map-point)") : null
-  for (let i = 0; i < RAMP_STOPS; i++) {
-    const pct = RAMP_FLOOR + ((100 - RAMP_FLOOR) * i) / (RAMP_STOPS - 1)
-    const c = flat ?? read(`color-mix(in oklab, var(--chart-1) ${pct.toFixed(2)}%, var(--track))`)
+  // A colour repeated at every stop (colorBy none, or forced colours) is read once.
+  const seen = new Map<string, Rgba>()
+  sources.ramp.forEach((css, i) => {
+    const c = seen.get(css) ?? read(css)
+    seen.set(css, c)
     ramp.set(c.slice(0, 3), i * 3)
-  }
-  const palette: Palette = { background: read("var(--map)"), grid: read("var(--edge)"), robot: read("var(--foreground)"), ramp }
+  })
+  const palette: Palette = { background: read(sources.background), grid: read(sources.grid), robot: read(sources.robot), ramp }
   probe.remove()
   return paint ? palette : null
 }
@@ -907,6 +985,7 @@ export function PointCloud({
 }: PointCloudProps) {
   const l = { ...defaultPointCloudLabels, ...labelsProp }
   const keysId = React.useId()
+  const summaryId = React.useId()
   const rootRef = React.useRef<HTMLDivElement>(null)
   const surfaceRef = React.useRef<HTMLDivElement>(null)
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
@@ -916,7 +995,14 @@ export function PointCloud({
 
   const colorBy: PointCloudColorBy = colorByProp === "intensity" && !intensity ? "height" : (colorByProp ?? (intensity ? "intensity" : "height"))
   const bounds = React.useMemo(() => pointCloudBounds(points), [points])
-  const range = React.useMemo(() => pointCloudColorRange(points, colorBy, intensity, colorRange), [points, colorBy, intensity, colorRange])
+  // The fixed range is followed by its two numbers, not the array: an inline `colorRange={[0, 3]}` is a new array on every
+  // render of the parent, and depending on it would pack and upload the whole cloud again each time.
+  const rangeLo = colorRange?.[0]
+  const rangeHi = colorRange?.[1]
+  const range = React.useMemo(
+    () => pointCloudColorRange(points, colorBy, intensity, rangeLo !== undefined && rangeHi !== undefined ? [rangeLo, rangeHi] : undefined),
+    [points, colorBy, intensity, rangeLo, rangeHi],
+  )
   const footprint = robot === true ? { length: 0.9, width: 0.6 } : robot || null
   const robotLength = footprint?.length
   const robotWidth = footprint?.width
@@ -980,13 +1066,16 @@ export function PointCloud({
     const apply = () => {
       const r = renderer.current
       if (!r) return
-      r.palette = readPalette(root, colorBy)
+      const forced = window.matchMedia?.("(forced-colors: active)")?.matches ?? false
+      r.palette = readPalette(root, colorBy, forced)
       r.requestDraw()
     }
     apply()
     const mo = new MutationObserver(apply)
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ["class", "style", "data-theme", "data-contrast"] })
-    const queries = ["(prefers-color-scheme: dark)", "(prefers-contrast: more)"].map((q) => window.matchMedia?.(q)).filter((q) => !!q)
+    const queries = ["(prefers-color-scheme: dark)", "(prefers-contrast: more)", "(forced-colors: active)"]
+      .map((q) => window.matchMedia?.(q))
+      .filter((q) => !!q)
     queries.forEach((q) => q.addEventListener("change", apply))
     return () => {
       mo.disconnect()
@@ -994,12 +1083,17 @@ export function PointCloud({
     }
   }, [gl, colorBy])
 
-  // A new cloud (or a new way to colour it) is packed and uploaded once; nothing is uploaded while the camera moves.
+  // A new cloud (or a new way to colour it) is packed and uploaded once; nothing is uploaded while the camera moves. The
+  // packing reuses one array while the clouds fit in it: the renderer keeps only the latest scene, so overwriting the
+  // last one loses nothing.
+  const scratch = React.useRef<Float32Array | null>(null)
   React.useEffect(() => {
     const r = renderer.current
     if (!r) return
+    const need = Math.floor(points.length / 3) * 4
+    if (!scratch.current || scratch.current.length < need) scratch.current = new Float32Array(need)
     r.setScene({
-      packed: packPointCloud(points, colorBy, intensity, range),
+      packed: packPointCloud(points, colorBy, intensity, range, scratch.current),
       grid: grid ? pointCloudGrid(bounds).lines : null,
       robot: robotLength && robotWidth ? robotLines({ length: robotLength, width: robotWidth }) : null,
       bounds,
@@ -1053,19 +1147,22 @@ export function PointCloud({
       const r = renderer.current
       if (!r || !(e.ctrlKey || e.metaKey || el.contains(document.activeElement))) return
       e.preventDefault()
-      const unit = e.deltaMode === 1 ? 16 : 1
-      r.setCamera(zoomPointCloudCamera(r.camera, Math.exp(-e.deltaY * unit * 0.002)))
+      r.setCamera(zoomPointCloudCamera(r.camera, pointCloudWheelZoom(e.deltaY, e.deltaMode, r.viewHeight)))
     }
     el.addEventListener("wheel", onWheel, { passive: false })
     return () => el.removeEventListener("wheel", onWheel)
   }, [interactive])
 
   // One pointer orbits (with the right button, the middle one or Shift, it pans); two pinch to zoom and pan together.
-  const pointers = React.useRef(new Map<number, { x: number; y: number }>())
+  // The Map is made on first use, where useRef(new Map()) would make one on every render and throw it away.
+  const pointerMap = React.useRef<Map<number, { x: number; y: number }> | null>(null)
+  const held = () => (pointerMap.current ??= new Map())
   const panning = React.useRef(false)
   const onPointerDown = (e: React.PointerEvent) => {
     if (!interactive) return
-    pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
+    // The middle button would otherwise start the browser's autoscroll on Windows, which takes the drag away from the pan.
+    if (e.pointerType === "mouse" && e.button === 1) e.preventDefault()
+    held().set(e.pointerId, { x: e.clientX, y: e.clientY })
     panning.current = e.pointerType === "mouse" && (e.button === 2 || e.button === 1 || e.shiftKey)
     try {
       e.currentTarget.setPointerCapture(e.pointerId)
@@ -1073,11 +1170,12 @@ export function PointCloud({
   }
   const onPointerMove = (e: React.PointerEvent) => {
     const r = renderer.current
-    const prev = pointers.current.get(e.pointerId)
+    const pointers = held()
+    const prev = pointers.get(e.pointerId)
     if (!r || !prev) return
     const p = { x: e.clientX, y: e.clientY }
-    if (pointers.current.size >= 2) {
-      const other = [...pointers.current.entries()].find(([id]) => id !== e.pointerId)?.[1]
+    if (pointers.size >= 2) {
+      const other = [...pointers.entries()].find(([id]) => id !== e.pointerId)?.[1]
       if (other) {
         const before = Math.hypot(prev.x - other.x, prev.y - other.y)
         const after = Math.hypot(p.x - other.x, p.y - other.y)
@@ -1087,11 +1185,14 @@ export function PointCloud({
       }
     } else if (panning.current) r.setCamera(panPointCloudCamera(r.camera, p.x - prev.x, p.y - prev.y, r.viewHeight))
     else r.setCamera(orbitPointCloudCamera(r.camera, p.x - prev.x, p.y - prev.y))
-    pointers.current.set(e.pointerId, p)
+    pointers.set(e.pointerId, p)
   }
+  // Also on a lost capture (the browser or another element took the pointer): without it the pointer would stay held,
+  // and moving over the view afterwards, with no button down, would still turn the camera.
   const onPointerEnd = (e: React.PointerEvent) => {
-    pointers.current.delete(e.pointerId)
-    if (pointers.current.size === 0) panning.current = false
+    const pointers = held()
+    pointers.delete(e.pointerId)
+    if (pointers.size === 0) panning.current = false
   }
 
   const onKeyDown = (e: React.KeyboardEvent) => {
@@ -1130,6 +1231,19 @@ export function PointCloud({
   const statusLine =
     state === "loading" ? l.loading : gl === "lost" ? l.contextLost : lastScan
 
+  // The description: the summary at once when the view's state changes, and otherwise at most every SUMMARY_EVERY_MS, so a
+  // live cloud's count and extent do not change it at the sensor's rate. The state is compared during render, as the
+  // stale flag is, so a new state never waits for an effect.
+  const summaryState = `${state} ${gl} ${stale}`
+  const [described, setDescribed] = React.useState({ state: summaryState, text: summary, at: 0 })
+  if (described.state !== summaryState) setDescribed({ state: summaryState, text: summary, at: described.at })
+  React.useEffect(() => {
+    if (described.text === summary) return
+    const wait = Math.max(0, described.at + SUMMARY_EVERY_MS - Date.now())
+    const id = setTimeout(() => setDescribed((d) => ({ ...d, text: summary, at: Date.now() })), wait)
+    return () => clearTimeout(id)
+  }, [summary, described])
+
   return (
     <div
       ref={rootRef}
@@ -1140,6 +1254,10 @@ export function PointCloud({
     >
       <span id={keysId} className="sr-only">
         {l.keys}
+      </span>
+      {/* Read only as the view's description (a hidden element still describes), so browsing does not read it twice. */}
+      <span id={summaryId} hidden>
+        {described.text}
       </span>
       {/* Spoken when it changes: loading, a stale cloud, the view coming back after the GPU let it go. */}
       <span role="status" className="sr-only">
@@ -1154,14 +1272,16 @@ export function PointCloud({
         <div
           ref={surfaceRef}
           role="img"
-          aria-label={`${label}. ${summary}.`}
-          aria-describedby={interactive ? keysId : undefined}
+          // The name stays the same while scans arrive; what changes (the count, the extent) is in the description.
+          aria-label={`${label}, ${l.viewName}`}
+          aria-describedby={interactive ? `${summaryId} ${keysId}` : summaryId}
           tabIndex={interactive ? 0 : undefined}
           onKeyDown={onKeyDown}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerEnd}
           onPointerCancel={onPointerEnd}
+          onLostPointerCapture={onPointerEnd}
           onContextMenu={(e) => {
             if (interactive) e.preventDefault()
           }}

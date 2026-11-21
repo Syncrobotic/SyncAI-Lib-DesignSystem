@@ -80,8 +80,8 @@
     "hash": "6c973b85bdf50fa3"
   },
   "segmented-control": {
-    "version": "0.17.2",
-    "hash": "d54d225aff8a510e"
+    "version": "0.17.3",
+    "hash": "a8bb6bd8569628db"
   },
   "toggle": {
     "version": "0.10.0",
@@ -236,8 +236,8 @@
     "hash": "8356bbb792fcb83e"
   },
   "robot-map": {
-    "version": "0.24.0",
-    "hash": "0717237cbc673653"
+    "version": "0.24.1",
+    "hash": "b2fed9905fe21660"
   },
   "dialog": {
     "version": "0.23.0",
@@ -340,16 +340,16 @@
     "hash": "33be3d7109a96b20"
   },
   "joint-state": {
-    "version": "0.24.0",
-    "hash": "eb90d198fccd5b62"
+    "version": "0.24.1",
+    "hash": "0c9123dfe7dfe87a"
   },
   "point-cloud": {
-    "version": "0.24.0",
-    "hash": "ce33b68a1086b0f4"
+    "version": "0.24.1",
+    "hash": "2408604ba0e89408"
   },
   "robot-model": {
-    "version": "0.24.0",
-    "hash": "083e34f151addcc1"
+    "version": "0.24.1",
+    "hash": "f7c17c61b2ed6e9f"
   },
   "filter-form": {
     "version": "0.10.0",
@@ -408,8 +408,8 @@
     "hash": "54a68ee91d6b7ecd"
   },
   "file-upload": {
-    "version": "0.10.0",
-    "hash": "ebaae2a3974a0971"
+    "version": "0.10.1",
+    "hash": "62c7626d4031b0d0"
   },
   "attachment": {
     "version": "0.23.1",
@@ -424,8 +424,8 @@
     "hash": "1fa9b3736ef7dcdc"
   },
   "timeline": {
-    "version": "0.17.3",
-    "hash": "ec91aaf795406194"
+    "version": "0.17.4",
+    "hash": "bdeb5287a75fa5a9"
   },
   "scrollspy": {
     "version": "0.15.0",

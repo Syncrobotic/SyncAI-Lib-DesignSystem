@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react"
-import { fn } from "@storybook/test"
+import type { Meta, StoryObj } from "@storybook/react-vite"
+import { fn } from "storybook/test"
 import { Bluetooth, Check, CircleAlert, Square, Zap } from "lucide-react"
 import { Island, IslandAlarm, IslandNotice } from "@/registry/syncrobotic/shell/island"
 import { alarmEdge, topAlarm, type AlarmData } from "@/registry/syncrobotic/ui/alarm"

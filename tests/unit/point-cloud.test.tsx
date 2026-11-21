@@ -15,6 +15,8 @@ import {
   pointCloudGrid,
   pointCloudRampPosition,
   zoomPointCloudCamera,
+  pointCloudPaletteSources,
+  pointCloudWheelZoom,
   type PointCloudCamera,
 } from "@/registry/syncrobotic/ui/point-cloud"
 
@@ -23,6 +25,13 @@ import {
 const FOV = (50 * Math.PI) / 180
 const cloud = (...xyz: number[]) => new Float32Array(xyz)
 const close = (a: number, b: number) => expect(a).toBeCloseTo(b, 6)
+/** The text an element is described by: each id in aria-describedby, in order. */
+const description = (el: Element) =>
+  (el.getAttribute("aria-describedby") ?? "")
+    .split(" ")
+    .filter(Boolean)
+    .map((id) => document.getElementById(id)?.textContent ?? "")
+    .join(" ")
 
 afterEach(() => {
   cleanup()
@@ -214,13 +223,14 @@ describe("PointCloud without WebGL2", () => {
   })
   const pts = cloud(0, -1, 0, 4, 1, 2)
 
-  it("says so in words, and still gives the count and extent to screen readers", () => {
+  it("says so in words, and still gives the count and extent to screen readers, in the description", () => {
     const { container } = render(<PointCloud label="Front lidar" points={pts} robot />)
     expect(container.querySelector("[data-slot=point-cloud]")!.getAttribute("data-state")).toBe("no-webgl")
     expect(screen.getByText(defaultPointCloudLabels.noWebGL)).toBeTruthy()
     const img = screen.getByRole("img")
-    expect(img.getAttribute("aria-label")).toBe(
-      "Front lidar. This browser cannot draw the 3D view. 2 points. x 0.0 to 4.0 m forward, y -1.0 to 1.0 m left, z 0.0 to 2.0 m up. The robot is at the origin, facing x.",
+    expect(img.getAttribute("aria-label")).toBe("Front lidar, 3D point cloud")
+    expect(description(img)).toBe(
+      "This browser cannot draw the 3D view. 2 points. x 0.0 to 4.0 m forward, y -1.0 to 1.0 m left, z 0.0 to 2.0 m up. The robot is at the origin, facing x",
     )
   })
 
@@ -239,7 +249,7 @@ describe("PointCloud without WebGL2", () => {
       />,
     )
     expect(screen.getByText("Ce navigateur ne peut pas afficher la 3D.")).toBeTruthy()
-    expect(screen.getByRole("img").getAttribute("aria-label")).toContain("2 points. étendue")
+    expect(description(screen.getByRole("img"))).toContain("2 points. étendue")
   })
 })
 
@@ -356,5 +366,201 @@ describe("PointCloud with WebGL2", () => {
     expect(wheel(true)).toBe(false)
     act(() => img.focus())
     expect(wheel()).toBe(false)
+  })
+})
+
+/**
+ * A WebGL2 stand-in that records each call by name, with constants as their own names (so DYNAMIC_DRAW and STATIC_DRAW
+ * tell apart), and a 2D context for the theme's colours, so the view has a palette and really draws.
+ */
+function recordingGl(options: { failLinkAfter?: number } = {}) {
+  const calls: { name: string; args: unknown[] }[] = []
+  let links = 0
+  const gl = new Proxy({} as Record<string, unknown>, {
+    get: (_, prop) => {
+      if (typeof prop !== "string") return undefined
+      if (/^[A-Z_0-9]+$/.test(prop)) return prop
+      return (...args: unknown[]) => {
+        calls.push({ name: prop, args })
+        if (prop === "isContextLost") return false
+        if (prop === "getParameter") return null
+        if (prop === "getProgramParameter") return options.failLinkAfter === undefined || ++links <= options.failLinkAfter
+        if (prop === "getSyncParameter") return "SIGNALED"
+        return {}
+      }
+    },
+  })
+  const paint = {
+    fillStyle: "",
+    clearRect: () => {},
+    fillRect: () => {},
+    getImageData: () => ({ data: new Uint8ClampedArray([40, 80, 120, 255]) }),
+  }
+  vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockImplementation(((type: string) => (type === "webgl2" ? gl : type === "2d" ? paint : null)) as never)
+  const count = (name: string, arg?: unknown) => calls.filter((c) => c.name === name && (arg === undefined || c.args.includes(arg))).length
+  return { calls, count, reset: () => void (calls.length = 0) }
+}
+
+/** Runs the frames the view asked for (requestAnimationFrame is faked, with the timers). */
+const nextFrame = () => act(() => void vi.advanceTimersByTime(20))
+
+describe("PointCloud: what a live view costs", () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+  const pts = cloud(0, 0, 0, 4, 2, 1)
+
+  it("packs and uploads the cloud once, though an inline colorRange is a new array on every render", () => {
+    const gl = recordingGl()
+    const { rerender } = render(<PointCloud label="Front lidar" points={pts} colorRange={[0, 3]} />)
+    const uploads = gl.count("bufferData") + gl.count("bufferSubData")
+    expect(uploads).toBeGreaterThan(0)
+    for (let i = 0; i < 3; i++) rerender(<PointCloud label="Front lidar" points={pts} colorRange={[0, 3]} />)
+    expect(gl.count("bufferData") + gl.count("bufferSubData")).toBe(uploads)
+    // A different range is a different colouring: that one is uploaded.
+    rerender(<PointCloud label="Front lidar" points={pts} colorRange={[0, 4]} />)
+    expect(gl.count("bufferData") + gl.count("bufferSubData")).toBeGreaterThan(uploads)
+  })
+
+  it("keeps the points in a dynamic buffer and writes a scan of the same size into it, without a new buffer", () => {
+    const gl = recordingGl()
+    const { rerender } = render(<PointCloud label="Front lidar" points={pts} />)
+    expect(gl.count("bufferData", "DYNAMIC_DRAW")).toBe(1)
+    rerender(<PointCloud label="Front lidar" points={cloud(1, 1, 1, 5, 3, 2)} />)
+    expect(gl.count("bufferData", "DYNAMIC_DRAW")).toBe(1)
+    expect(gl.count("bufferSubData")).toBe(1)
+    // A bigger scan needs a bigger buffer.
+    rerender(<PointCloud label="Front lidar" points={cloud(1, 1, 1, 5, 3, 2, 6, 6, 6)} />)
+    expect(gl.count("bufferData", "DYNAMIC_DRAW")).toBe(2)
+  })
+
+  it("packs into the array it is given when it is large enough", () => {
+    const into = new Float32Array(16)
+    const packed = packPointCloud(cloud(0, 0, 0, NaN, 0, 0, 1, 1, 1), "height", undefined, [0, 1], into)
+    expect(packed.data.buffer).toBe(into.buffer)
+    expect(packed.count).toBe(2)
+    expect([...packed.data]).toEqual([0, 0, 0, 0, 1, 1, 1, 1])
+    // Too small: a new array, and the one given is left alone.
+    const small = new Float32Array(4)
+    expect(packPointCloud(cloud(0, 0, 0, 1, 1, 1), "height", undefined, null, small).data.buffer).not.toBe(small.buffer)
+  })
+
+  it("draws in the same task as a resize, so the cleared buffer is never shown", () => {
+    let onResize: () => void = () => {}
+    vi.stubGlobal(
+      "ResizeObserver",
+      class {
+        constructor(cb: () => void) {
+          onResize = cb
+        }
+        observe() {}
+        disconnect() {}
+      },
+    )
+    const gl = recordingGl()
+    const { container } = render(<PointCloud label="Front lidar" points={pts} />)
+    nextFrame()
+    const canvas = container.querySelector("canvas")!
+    Object.defineProperty(canvas, "clientWidth", { configurable: true, value: 640 })
+    Object.defineProperty(canvas, "clientHeight", { configurable: true, value: 360 })
+    gl.reset()
+    act(() => onResize())
+    expect(canvas.width).toBeGreaterThanOrEqual(640)
+    expect(gl.count("clear")).toBe(1)
+    expect(gl.count("drawArrays")).toBeGreaterThan(0)
+    vi.unstubAllGlobals()
+  })
+
+  it("frees the first shader program when the second fails to link", () => {
+    const gl = recordingGl({ failLinkAfter: 1 })
+    const { container } = render(<PointCloud label="Front lidar" points={pts} />)
+    expect(container.querySelector("[data-slot=point-cloud]")!.getAttribute("data-state")).toBe("no-webgl")
+    // One for the program that failed, one for the program that linked before it.
+    expect(gl.count("deleteProgram")).toBe(2)
+  })
+})
+
+describe("PointCloud: pointer, wheel and forced colours", () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+  const pts = cloud(0, 0, 0, 4, 2, 1)
+  const gizmo = (container: HTMLElement) => [...container.querySelectorAll("[data-slot=point-cloud-axes] line")].map((l) => l.getAttribute("x2")).join()
+
+  it("ends the drag when the pointer capture is lost, so moving over the view afterwards does not turn it", () => {
+    recordingGl()
+    const { container } = render(<PointCloud label="Front lidar" points={pts} />)
+    nextFrame()
+    const img = screen.getByRole("img")
+    const before = gizmo(container)
+    fireEvent.pointerDown(img, { pointerId: 1, pointerType: "mouse", button: 0, clientX: 100, clientY: 100 })
+    fireEvent.lostPointerCapture(img, { pointerId: 1 })
+    fireEvent.pointerMove(img, { pointerId: 1, pointerType: "mouse", clientX: 220, clientY: 100 })
+    nextFrame()
+    expect(gizmo(container)).toBe(before)
+    // The same drag with the capture kept does turn it: the check above is not vacuous.
+    fireEvent.pointerDown(img, { pointerId: 2, pointerType: "mouse", button: 0, clientX: 100, clientY: 100 })
+    fireEvent.pointerMove(img, { pointerId: 2, pointerType: "mouse", clientX: 220, clientY: 100 })
+    nextFrame()
+    expect(gizmo(container)).not.toBe(before)
+  })
+
+  it("keeps the middle button's press from starting the browser's autoscroll", () => {
+    recordingGl()
+    render(<PointCloud label="Front lidar" points={pts} />)
+    const img = screen.getByRole("img")
+    expect(fireEvent.pointerDown(img, { pointerId: 1, pointerType: "mouse", button: 1 })).toBe(false)
+    expect(fireEvent.pointerDown(img, { pointerId: 2, pointerType: "mouse", button: 0 })).toBe(true)
+  })
+
+  it("zooms as far for a wheel that scrolls by lines or pages as for one that scrolls by pixels", () => {
+    expect(pointCloudWheelZoom(100, 0, 400)).toBeCloseTo(Math.exp(-0.2))
+    expect(pointCloudWheelZoom(3, 1, 400)).toBeCloseTo(Math.exp(-3 * 16 * 0.002))
+    expect(pointCloudWheelZoom(1, 2, 400)).toBeCloseTo(Math.exp(-400 * 0.002))
+    expect(pointCloudWheelZoom(-1, 2, 400)).toBeGreaterThan(1)
+  })
+
+  it("draws in system colours under forced colours, and reads the colours again when forced colours turn on or off", () => {
+    const forced = pointCloudPaletteSources("height", true)
+    expect(forced.background).toBe("Canvas")
+    expect(new Set(forced.ramp)).toEqual(new Set(["CanvasText"]))
+    expect(forced.grid).not.toBe(forced.background)
+    const themed = pointCloudPaletteSources("height")
+    expect(themed.ramp[0]).toContain("var(--chart-1) 20.00%")
+    expect(themed.ramp.at(-1)).toContain("var(--chart-1) 100.00%")
+    expect(new Set(pointCloudPaletteSources("none").ramp)).toEqual(new Set(["var(--map-point)"]))
+
+    const listened: string[] = []
+    vi.stubGlobal("matchMedia", (q: string) => ({ matches: false, media: q, addEventListener: () => listened.push(q), removeEventListener: () => {} }))
+    recordingGl()
+    render(<PointCloud label="Front lidar" points={pts} />)
+    expect(listened).toContain("(forced-colors: active)")
+    vi.unstubAllGlobals()
+  })
+})
+
+describe("PointCloud: what a screen reader hears while scans arrive", () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  it("keeps the name the same, and changes the count in the description at most every few seconds", () => {
+    recordingGl()
+    const scan = (n: number) => new Float32Array(Array.from({ length: n * 3 }, (_, i) => i % 5))
+    const { rerender } = render(<PointCloud label="Front lidar" points={scan(10)} />)
+    const img = screen.getByRole("img")
+    expect(img.getAttribute("aria-label")).toBe("Front lidar, 3D point cloud")
+    expect(description(img)).toContain("10 points")
+    // Scans at 10 Hz for half a second: the name never changes; the description takes the first and then holds.
+    for (let i = 11; i < 16; i++) {
+      rerender(<PointCloud label="Front lidar" points={scan(i)} />)
+      act(() => void vi.advanceTimersByTime(100))
+      expect(img.getAttribute("aria-label")).toBe("Front lidar, 3D point cloud")
+    }
+    expect(description(img)).toContain("11 points")
+    act(() => void vi.advanceTimersByTime(5000))
+    expect(description(img)).toContain("15 points")
+    // The key instructions are in the description too, once the view can be used.
+    expect(description(img)).toContain(defaultPointCloudLabels.keys)
   })
 })

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { MediaPlayer, type MediaMarker } from "@/registry/syncrobotic/ui/media-player"
 
 const meta: Meta = { title: "Display/Media player" }

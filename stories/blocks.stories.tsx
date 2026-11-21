@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { FleetTable } from "@/registry/syncrobotic/blocks/fleet-table"
 import { MarketingHero } from "@/registry/syncrobotic/blocks/marketing-hero"
 import { NotificationCenter, NotificationPanel, sampleNotifications, sampleNow } from "@/registry/syncrobotic/blocks/notification-center"

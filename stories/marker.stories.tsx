@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Bot, Hand, OctagonAlert, Play, Terminal, Wrench } from "lucide-react"
 import { Marker, MarkerRow } from "@/registry/syncrobotic/ui/marker"
 

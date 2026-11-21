@@ -1,5 +1,5 @@
 import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { ChevronsRight, Wifi } from "lucide-react"
 import { Tray } from "@/registry/syncrobotic/shell/tray"
 import { useLongPress } from "@/registry/syncrobotic/hooks/use-long-press"

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Paperclip, Send } from "lucide-react"
 import { Attachment } from "@/registry/syncrobotic/ui/attachment"
 import { Button } from "@/registry/syncrobotic/ui/button"
