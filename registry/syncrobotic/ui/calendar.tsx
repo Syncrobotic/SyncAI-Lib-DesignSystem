@@ -1,4 +1,4 @@
-// @syncrobotic/calendar v0.23.0 · update: npx shadcn add @syncrobotic/calendar --overwrite
+// @syncrobotic/calendar v0.25.0 · update: npx shadcn add @syncrobotic/calendar --overwrite
 "use client"
 
 import * as React from "react"
@@ -26,7 +26,8 @@ export function Calendar({ className, classNames, showOutsideDays, weekStartsOn 
   const outside = showOutsideDays ?? (props.numberOfMonths ?? 1) < 2
   return (
     <DayPicker
-      // A locale from react-day-picker/locale brings its own day names in its language; the kit's (English) one yields to it.
+      // A locale from react-day-picker (react-day-picker/locale/zh-TW, for example) brings its own day names in its
+      // language; the kit's (English) one yields to it.
       labels={{ ...(props.locale?.labels?.labelDayButton ? {} : { labelDayButton }), ...labels }}
       data-slot="calendar"
       showOutsideDays={outside}

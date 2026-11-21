@@ -79,9 +79,24 @@ function demoStreamStore(stopAfter?: number) {
     const startClock = fixed ? STILL_AT : now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds()
     const s = canvas.captureStream(0)
     const track = s.getVideoTracks()[0] as MediaStreamTrack & { requestFrame?: () => void }
+    // In the still, a camera that hangs stops once the feed has shown its picture, not after a time: the first frames can
+    // be sent before the video element is listening, and a feed that never saw a frame never goes stale. The picture is
+    // the same each time, so the screenshot does not depend on when it stopped.
+    // "Shown" is the signal CameraFeed itself watches: the video element presenting a frame.
+    let shown = false
+    let watching: HTMLVideoElement | undefined
     const send = () => {
       const elapsed = (Date.now() - startedAt) / 1000
-      if (stopAfter !== undefined && elapsed > (fixed ? 0 : stopAfter)) return
+      if (stopAfter !== undefined && fixed) {
+        if (shown) return
+        const video = [...document.querySelectorAll("video")].find((v) => v.srcObject === s)
+        if (video && video !== watching && typeof video.requestVideoFrameCallback === "function") {
+          watching = video
+          video.requestVideoFrameCallback(() => {
+            shown = true
+          })
+        }
+      } else if (stopAfter !== undefined && elapsed > stopAfter) return
       drawAisle(ctx, startClock + (fixed ? 0 : elapsed))
       track.requestFrame?.()
     }

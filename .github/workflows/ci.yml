@@ -15,8 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with: { node-version: 22, cache: npm }
       - run: npm ci
       - run: npm run lint:tokens
@@ -44,7 +44,7 @@ jobs:
       # Registry JSON + docs site (Next.js)
       - run: npm run build
       - run: npm run build-storybook
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with: { name: registry, path: public/r }
 
   # Story checks: every story, dark and light, opened once for its screenshot (against the committed baselines in
@@ -63,19 +63,19 @@ jobs:
         shard: [1, 2, 3, 4]
     env: { HOME: /root }
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with: { node-version: 22, cache: npm }
       - run: npm ci
       - run: npm run build-storybook
       - run: npx playwright test --update-snapshots=missing --shard=${{ matrix.shard }}/4
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: visual-baseline-${{ matrix.shard }}
           path: tests/__screenshots__
           if-no-files-found: ignore
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: story-test-results-${{ matrix.shard }}
@@ -91,7 +91,7 @@ jobs:
     container: { image: "mcr.microsoft.com/playwright:v1.65.1-noble" }
     env: { HOME: /root }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with: { fetch-depth: 0 }
       - id: changed
         run: |
@@ -104,7 +104,7 @@ jobs:
             echo "run=false" >> "$GITHUB_OUTPUT"; echo "No component or story changed: skipped."
           fi
       - if: steps.changed.outputs.run == 'true'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with: { node-version: 22, cache: npm }
       - if: steps.changed.outputs.run == 'true'
         run: npm ci
@@ -116,7 +116,7 @@ jobs:
           for _ in $(seq 1 60); do curl -sf -o /dev/null http://localhost:3100 && break; sleep 1; done
           SITE=http://localhost:3100 OUT=a11y-measured.json node scripts/a11y.cjs
           node scripts/a11y-check.mjs --measured a11y-measured.json
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: failure() && steps.changed.outputs.run == 'true'
         with: { name: a11y-measured, path: a11y-measured.json }
 
@@ -124,7 +124,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with: { fetch-depth: 0 }
       - id: changed
         run: |
@@ -136,7 +136,7 @@ jobs:
             echo "registry=false" >> "$GITHUB_OUTPUT"; echo "No registry files changed: skipped."
           fi
       - if: steps.changed.outputs.registry == 'true'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with: { node-version: 22, cache: npm }
       - if: steps.changed.outputs.registry == 'true'
         run: npm ci

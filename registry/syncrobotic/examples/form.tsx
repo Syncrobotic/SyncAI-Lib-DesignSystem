@@ -1,4 +1,4 @@
-// @syncrobotic/form v0.20.1 · update: npx shadcn add @syncrobotic/form --overwrite
+// @syncrobotic/form v0.25.0 · update: npx shadcn add @syncrobotic/form --overwrite
 "use client"
 
 // A form with React Hook Form and zod, drawn with the kit's Field: an example to copy and change, not a component.
@@ -15,6 +15,8 @@
 //   …) for the whole save, shown above the fields as an Alert.
 // - The submit button shows its spinner while onSubmit is awaited: loading={formState.isSubmitting}.
 import { Controller, useForm } from "react-hook-form"
+// @hookform/resolvers 7 takes a zod 3 schema (zod 3.25 or later) and a zod 4 one through the same zodResolver, so this
+// file works unchanged on either: a project already on zod 4 keeps its zod and needs no other import.
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { CircleAlert } from "lucide-react"

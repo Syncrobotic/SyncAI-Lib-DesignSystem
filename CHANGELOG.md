@@ -2,6 +2,21 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.25.0 · 2026-11-21
+
+Dependencies move to current majors where products gain from it or lose nothing; two are held on purpose.
+
+### Changed
+- **`calendar` and `date-selector` 0.25.0 need `react-day-picker` 10** (`npm i react-day-picker@^10`, then re-install both). DatePicker and DateRangePicker take the same props and render the same calendar. Calendar passes its props to DayPicker, so props v10 removed stop type-checking: `fromMonth`/`fromYear`/`toMonth`/`toYear` become `startMonth`/`endMonth`; `fromDate`/`toDate` become `startMonth`/`endMonth` with `hidden={{ before }}`/`{{ after }}`; `initialFocus` becomes `autoFocus`; v8-style classNames keys and the `onDayPointer*`/`onDayTouch*` handlers are gone; non-Gregorian calendars come from `@daypicker/*`. Locales can be imported per language (`react-day-picker/locale/zh-TW`); the combined import still works.
+- **`form` 0.25.0 names `@hookform/resolvers@^7`** (it named no range before, so recent installs already had 7). Its zod resolver is unchanged and works with zod 3.25+ and zod 4.
+- **The repo develops against `lucide-react` 1.x**, as products installing items already do (items name lucide with no range). Kit code keeps its icon names, which lucide 1.x still exports, so no item changed and no minimum lucide version is needed. lucide 1.x redrew some icons (CreditCard, Rocket, Plug, Warehouse and others) and hides icons with no label from screen readers by default (`aria-hidden`).
+
+### Fixed
+- **`data-grid` 0.23.3:** a column's resize handle is named after the column ("Resize Robot"); screen readers heard the header function's source code. New behaviour tests for paging, sorting, visibility, selection, expanding, pinning, resizing, totals, loading and empty.
+
+### Held
+- **`@tanstack/react-table` 9 and `react-resizable-panels` 4 are not adopted yet.** Table 9 makes every product rewrite its table setup for no visible gain; Panels 4 halves the keyboard resize step and resets saved layouts. Both migrations are done and kept for when a product needs them or the old majors stop getting fixes; Dependabot ignores their majors until then.
+
 ## 0.24.2 · 2026-11-21
 
 ### Fixed

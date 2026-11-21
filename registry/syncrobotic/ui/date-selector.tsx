@@ -1,4 +1,4 @@
-// @syncrobotic/date-selector v0.23.0 · update: npx shadcn add @syncrobotic/date-selector --overwrite
+// @syncrobotic/date-selector v0.25.0 · update: npx shadcn add @syncrobotic/date-selector --overwrite
 "use client"
 
 import * as React from "react"
@@ -44,7 +44,7 @@ type Common = {
    * given. Left out, the trigger reads "3 Nov 2026" as before. The calendar's month and day names follow `calendarLocale`.
    */
   locale?: string
-  /** react-day-picker's locale for the calendar's month and day names and its labels: `import { zhTW } from "react-day-picker/locale"`. */
+  /** react-day-picker's locale for the calendar's month and day names and its labels: `import { zhTW } from "react-day-picker/locale/zh-TW"`. */
   calendarLocale?: React.ComponentProps<typeof Calendar>["locale"]
   /** The words it says, to translate them. */
   labels?: Partial<DatePickerLabels>

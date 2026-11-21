@@ -14,7 +14,7 @@ function Drawing({ nodes }: { nodes: LucideNode }) {
   )
 }
 
-/** The full Lucide list, fetched only on this tab (about 1,500 drawings), with the kit's set marked. */
+/** The full Lucide list, fetched only on this tab (about 2,100 drawings), with the kit's set marked. */
 export function LucideGallery({ meanings }: { meanings: Record<string, string> }) {
   const [icons, setIcons] = React.useState<GalleryIcon[] | null>(null)
   const [failed, setFailed] = React.useState(false)
