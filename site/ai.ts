@@ -5,6 +5,7 @@ import { groups, items, getItem, readSource, storyNames, storyTitle } from "./ca
 import { site } from "./config"
 import { foundations } from "./foundations"
 import { iconCount, iconGroups } from "./icons"
+import { migrations } from "./migrations"
 import { overviews } from "./overview"
 import { a11yMarkdown } from "./a11y"
 
@@ -69,6 +70,49 @@ export function componentMarkdown(name: string) {
   if (item.examples)
     out.push("", "## Examples", "", ...storyNames(item.examples).map((n) => `- ${storyTitle(n)}: ${url(`/docs/components/${name}#example-${n}`)}`))
   if (!item.examples) out.push("", "## Source", "", "```tsx", readSource(item.files[0].path).trim(), "```")
+  // The upgrade guide in full: agents migrating a product read this twin, not the page.
+  const m = migrations[name]
+  if (m)
+    out.push(
+      "",
+      `## ${m.title}`,
+      "",
+      m.lead,
+      "",
+      ...m.steps.map((s, i) => `${i + 1}. ${s}`),
+      "",
+      `Before (${m.from}):`,
+      "",
+      "```tsx",
+      m.before,
+      "```",
+      "",
+      `After (${m.to}):`,
+      "",
+      "```tsx",
+      m.after,
+      "```",
+      "",
+      "### With the React Compiler",
+      "",
+      list(m.compiler),
+      "",
+      "```tsx",
+      m.compilerExample,
+      "```",
+      "",
+      "### Hand it to a coding agent",
+      "",
+      "```text",
+      m.prompt,
+      "```",
+      "",
+      "### Check that nothing is left",
+      "",
+      "```bash",
+      m.grep,
+      "```",
+    )
   if (meta?.changelog?.length) out.push("", "## Changelog", "", ...meta.changelog.slice(0, 5).map((c) => `- ${c.version} (${c.date}): ${c.note}`))
   out.push("", `Index: ${url("/llms.txt")}`)
   return out.join("\n") + "\n"

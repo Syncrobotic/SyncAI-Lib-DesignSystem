@@ -1,5 +1,5 @@
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react"
-import { getCoreRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table"
+import { useTable } from "@tanstack/react-table"
 import { zhTW } from "react-day-picker/locale"
 import { afterEach, describe, expect, it } from "vitest"
 import { Attachment } from "@/registry/syncrobotic/ui/attachment"
@@ -9,7 +9,7 @@ import { Calendar } from "@/registry/syncrobotic/ui/calendar"
 import { ChipGroup } from "@/registry/syncrobotic/ui/chip-group"
 import { CommandDialog, CommandList } from "@/registry/syncrobotic/ui/command"
 import { CopyButton } from "@/registry/syncrobotic/ui/copy-button"
-import { DataGrid, DataGridTable, selectColumn } from "@/registry/syncrobotic/ui/data-grid"
+import { DataGrid, DataGridTable, dataGridFeatures, selectColumn, type DataGridColumnDef } from "@/registry/syncrobotic/ui/data-grid"
 import { DatePicker } from "@/registry/syncrobotic/ui/date-selector"
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/registry/syncrobotic/ui/dialog"
 import { Filters, type FilterField } from "@/registry/syncrobotic/ui/filters"
@@ -100,9 +100,9 @@ describe("labels reach the DOM", () => {
 
   it("DataGrid", () => {
     type Row = { name: string }
-    const columns: ColumnDef<Row>[] = [selectColumn<Row>(), { accessorKey: "name", header: "Robot" }]
+    const columns: DataGridColumnDef<Row>[] = [selectColumn<Row>(), { accessorKey: "name", header: "Robot" }]
     function Grid() {
-      const table = useReactTable<Row>({ data: [], columns, getCoreRowModel: getCoreRowModel() })
+      const table = useTable({ features: dataGridFeatures, data: [] as Row[], columns })
       return (
         <DataGrid table={table} labels={{ region: "資料", empty: "沒有資料", selectAll: "全選本頁" }}>
           <DataGridTable />

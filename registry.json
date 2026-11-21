@@ -4391,7 +4391,7 @@
       "title": "Data grid",
       "description": "A TanStack Table grid: sorting, pagination, selection, column menus, pinning, resizing, expandable rows, totals, loading, virtual rows.",
       "dependencies": [
-        "@tanstack/react-table@^8",
+        "@tanstack/react-table@^9",
         "@tanstack/react-virtual",
         "lucide-react"
       ],
@@ -4410,8 +4410,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.3",
+        "version": "0.26.0",
         "changelog": [
+          {
+            "version": "0.26.0",
+            "date": "2026-11-21",
+            "note": "Needs @tanstack/react-table 9 and changes your table code: useTable({ features: tableFeatures({ ...dataGridFeatures, …row models }) }) instead of useReactTable and get*RowModel, DataGridColumnDef<Row, typeof features> columns, columnPinning { start, end }. Follow the steps, agent prompt and grep checklist in \"Upgrading to TanStack Table 9\" on the data-grid page (/docs/components/data-grid#table-9). Safe under the React Compiler: the file opts out with \"use no memo\" (keep it); custom cells that read state through row or column methods subscribe with <Subscribe>. Looks the same."
+          },
           {
             "version": "0.23.3",
             "date": "2026-11-21",

@@ -2,6 +2,15 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.26.0 · 2026-11-21
+
+`data-grid` moves to TanStack Table 9. The grid looks and behaves the same; the table you build for it changes, once.
+
+### Changed
+- **`data-grid` 0.26.0 needs `@tanstack/react-table` 9.** You still own the table: build it with `useTable({ features, … })`, where `features` starts from the exported `dataGridFeatures` (every feature and sort function the grid's parts call) plus the row models you use. Column types take the features (`DataGridColumnDef<Row, typeof features>`), pinning is `start`/`end`, and `table.getState()` is gone. The data-grid page has the full guide: [Upgrading to TanStack Table 9](https://design-system.syncrobotic.me/docs/components/data-grid#table-9), with before-and-after code, a prompt to hand a coding agent, and a grep checklist that must print nothing when you are done.
+- **React Compiler:** `data-grid.tsx` starts with `"use no memo"`. Table 9 keeps one row, column and header object for the table's life and answers state through methods, which compiled code would cache. Keep the directive in your copy. Call `useTable` without a selector, and in your own cells read state through `<Subscribe source={row.table.atoms.…}>`. A test now compiles the grid with the React Compiler and checks that sorting, selection, expanding and resizing update; without the directive it fails.
+- Dependabot no longer holds `@tanstack/react-table` majors; `react-resizable-panels` 4 stays held.
+
 ## 0.25.0 · 2026-11-21
 
 Dependencies move to current majors where products gain from it or lose nothing; two are held on purpose.

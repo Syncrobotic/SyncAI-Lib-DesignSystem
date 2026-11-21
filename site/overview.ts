@@ -307,7 +307,7 @@ export const overviews: Record<string, Overview> = {
     notes: ["Answers are keyed by question id; onSubmit gets them all.", "QuestionField draws one question on its own inside your form."],
   },
   "data-grid": {
-    what: "A full data table built on TanStack Table: you own the table state; DataGrid, DataGridTable and their parts draw it in the kit's style.",
+    what: "A full data table built on TanStack Table 9: you own the table state; DataGrid, DataGridTable and their parts draw it in the kit's style.",
     use: [
       "Fleets, events and datasets people sort, select and page through.",
       "Bulk actions on selected rows.",
@@ -318,6 +318,9 @@ export const overviews: Record<string, Overview> = {
     notes: [
       "Column header: DataGridColumnHeader gives sort, pin and hide in one menu.",
       "selectColumn() and expandColumn() are ready-made columns; renderSubRow goes in the table's meta.",
+      "Spread dataGridFeatures into tableFeatures() and add the row models you need; type columns as DataGridColumnDef<Row, typeof features> and call selectColumn<Row, typeof features>().",
+      "Coming from Table 8 (data-grid 0.23 or earlier): follow \"Upgrading to TanStack Table 9\" on this page, step by step; it ends with a prompt for a coding agent and a grep checklist that must print nothing.",
+      "React Compiler: data-grid.tsx starts with \"use no memo\"; keep it. Call useTable without a selector. A cell or header of your own that reads state through a row, column or table method (row.getIsSelected(), column.getIsSorted()) wraps the read in <Subscribe source={row.table.atoms.rowSelection}> from @tanstack/react-table, or it stops updating once compiled.",
       "Give each column meta.label so the visibility menu names it.",
       "Keep getRowId stable so selection survives sorting.",
       "data and columns must keep their identity between renders; an inline array (`rows.slice(0, 6)`, `[]`) re-renders forever once state auto-resets.",

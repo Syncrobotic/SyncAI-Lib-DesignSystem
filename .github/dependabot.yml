@@ -14,12 +14,10 @@ updates:
     groups:
       minor-and-patch:
         update-types: [minor, patch]
-    # Held majors: each forces products to rewrite code for no visible gain (Table 9 changes how every table is set
-    # up; Panels 4 halves the keyboard step and resets saved layouts). Migrations are ready on the branches
-    # deps/table9-panels4; lift these when a product needs them or the old major stops getting fixes.
+    # Held major: it forces products to rewrite code for no visible gain (Panels 4 halves the keyboard step and resets
+    # saved layouts). Its migration is ready on the branch deps/table9-panels4; lift this when a product needs it or
+    # Panels 3 stops getting fixes. TanStack Table is no longer held: data-grid moved to Table 9 in 0.26.0.
     ignore:
-      - dependency-name: "@tanstack/react-table"
-        update-types: ["version-update:semver-major"]
       - dependency-name: react-resizable-panels
         update-types: ["version-update:semver-major"]
     commit-message:
