@@ -1,8 +1,27 @@
-// @syncrobotic/data-grid v0.23.3 · update: npx shadcn add @syncrobotic/data-grid --overwrite
+// @syncrobotic/data-grid v0.26.0 · update: npx shadcn add @syncrobotic/data-grid --overwrite
 "use client"
 
 import * as React from "react"
-import { flexRender, type Column, type ColumnDef, type Row, type Table as TanTable } from "@tanstack/react-table"
+import {
+  columnPinningFeature,
+  columnResizingFeature,
+  columnSizingFeature,
+  columnVisibilityFeature,
+  flexRender,
+  rowExpandingFeature,
+  rowPaginationFeature,
+  rowSelectionFeature,
+  rowSortingFeature,
+  sortFn_alphanumeric,
+  sortFn_datetime,
+  sortFn_text,
+  tableFeatures,
+  type Column,
+  type ColumnDef,
+  type Row,
+  type RowData,
+  type Table as TanTable,
+} from "@tanstack/react-table"
 import { useVirtualizer } from "@tanstack/react-virtual"
 import { ArrowDown, ArrowUp, ArrowUpDown, ChevronRight, Columns3, EyeOff, Pin, PinOff } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -21,6 +40,42 @@ import { Pagination } from "@/registry/syncrobotic/ui/pagination"
 import { scrollFadeMask, useScrollEdges } from "@/registry/syncrobotic/ui/table"
 
 type Density = "default" | "dense"
+
+// The TanStack Table features the grid's parts call. Table 9 gives a table only the APIs of the features it registers.
+const gridFeatures = tableFeatures({
+  columnVisibilityFeature,
+  columnPinningFeature,
+  columnSizingFeature,
+  columnResizingFeature,
+  rowSortingFeature,
+  rowPaginationFeature,
+  rowSelectionFeature,
+  rowExpandingFeature,
+})
+/** The features a table given to DataGrid has at least: the parts call their APIs. Yours may have more. */
+export type DataGridFeatures = typeof gridFeatures
+
+/**
+ * Everything a table needs for DataGrid: the features its parts call (sorting, pagination, selection, expanding, column
+ * visibility, pinning, sizing and resizing) and the sort functions that a column's automatic sort picks from, which
+ * Table 9 no longer bundles (text, mixed text and numbers, dates; numbers need none). Spread it into your table's
+ * features and add the row models you want:
+ * `tableFeatures({ ...dataGridFeatures, sortedRowModel: createSortedRowModel(), paginatedRowModel: createPaginatedRowModel() })`.
+ * With sort functions of your own, keep these beside them: `sortFns: { ...dataGridFeatures.sortFns, byBattery }`.
+ */
+export const dataGridFeatures = tableFeatures({
+  ...gridFeatures,
+  sortFns: { alphanumeric: sortFn_alphanumeric, text: sortFn_text, datetime: sortFn_datetime },
+})
+/**
+ * A column of a DataGrid table. Table 9's ColumnDef takes the table's features first; this keeps the one-argument form
+ * (`DataGridColumnDef<Robot>`) for a table built on dataGridFeatures, and takes your own features as the second.
+ */
+export type DataGridColumnDef<TData extends RowData, TFeatures extends DataGridFeatures = typeof dataGridFeatures> = ColumnDef<TFeatures, TData>
+// The parts share the table through context, where its row type is erased; RowData is the widest row Table 9 allows.
+type GridTable = TanTable<DataGridFeatures, RowData>
+type GridColumn = Column<DataGridFeatures, RowData, unknown>
+type GridRow = Row<DataGridFeatures, RowData>
 
 const warned = new Set<string>()
 /** Says once that `density` is now `size`, so it is not confused with the theme's data-density. Development only. */
@@ -87,7 +142,7 @@ export const defaultDataGridLabels: DataGridLabels = {
   hideDetails: "Hide details",
 }
 
-type Ctx = { table: TanTable<unknown>; density: Density; variant: Variant; loading: boolean; emptyText: React.ReactNode; labels: DataGridLabels }
+type Ctx = { table: GridTable; density: Density; variant: Variant; loading: boolean; emptyText: React.ReactNode; labels: DataGridLabels }
 const GridContext = React.createContext<Ctx | null>(null)
 /** The grid's words; the defaults outside a DataGrid (a column helper used with another table). */
 const useGridLabels = () => React.useContext(GridContext)?.labels ?? defaultDataGridLabels
@@ -98,15 +153,17 @@ const useGrid = () => {
 }
 
 /**
- * A data table on TanStack Table: sorting, pagination, selection, column visibility, pinning and resizing, expandable
- * rows, totals, a loading state, and virtual scrolling for thousands of rows. You build the table with useReactTable
- * and these parts draw it in the kit's style: rows 56 px (44 dense), numbers tabular and right-aligned, selection on the
- * accent fill. For a handful of static rows, Table is enough.
+ * A data table on TanStack Table 9: sorting, pagination, selection, column visibility, pinning and resizing, expandable
+ * rows, totals, a loading state, and virtual scrolling for thousands of rows. You build the table with useTable, with
+ * dataGridFeatures among its features, and these parts draw it in the kit's style: rows 56 px (44 dense), numbers
+ * tabular and right-aligned, selection on the accent fill. For a handful of static rows, Table is enough.
  *
- * Pass useReactTable data and columns that keep their identity between renders (module scope or useMemo): a new array
- * on every render recomputes the rows, TanStack auto-resets state, and the component renders again without end.
+ * Pass useTable data and columns that keep their identity between renders (module scope or useMemo): a new array on
+ * every render recomputes the rows, TanStack auto-resets state, and the component renders again without end. Keep
+ * useTable's default state selector, or one that selects every slice the grid shows: the grid redraws when the table
+ * you pass changes, and a narrower selector leaves it showing old state.
  */
-export function DataGrid<T>({
+export function DataGrid<T extends RowData, TFeatures extends DataGridFeatures>({
   table,
   size,
   density: legacy,
@@ -117,7 +174,7 @@ export function DataGrid<T>({
   className,
   children,
 }: {
-  table: TanTable<T>
+  table: TanTable<TFeatures, T>
   /** sm: 44 px rows for long lists on a desktop. Separate from the theme's data-density, which this follows too. */
   size?: "default" | "sm"
   /** @deprecated Use `size="sm"`. */
@@ -135,7 +192,9 @@ export function DataGrid<T>({
   const density: Density = (size ?? (legacy === "dense" ? "sm" : "default")) === "sm" ? "dense" : "default"
   const l = { ...defaultDataGridLabels, ...labels }
   return (
-    <GridContext.Provider value={{ table: table as TanTable<unknown>, density, variant, loading, emptyText: emptyText ?? l.empty, labels: l }}>
+    // Table 9's table type is invariant in its features and row type, so a table with more features than the grid needs
+    // is narrowed to the ones the parts call through unknown; dataGridFeatures in TFeatures guarantees they are there.
+    <GridContext.Provider value={{ table: table as unknown as GridTable, density, variant, loading, emptyText: emptyText ?? l.empty, labels: l }}>
       <div data-slot="data-grid" className={cn("flex w-full min-w-0 flex-col gap-3", className)}>
         {children}
       </div>
@@ -143,10 +202,10 @@ export function DataGrid<T>({
   )
 }
 
-const meta = (c: Column<unknown>) =>
+const meta = (c: GridColumn) =>
   (c.columnDef.meta ?? {}) as { align?: "left" | "right"; headerClassName?: string; cellClassName?: string; label?: string }
 /** A column's name in words: meta.label, else a plain-text header, else its id. */
-const columnName = (c: Column<unknown>) => meta(c).label ?? (typeof c.columnDef.header === "string" ? c.columnDef.header : c.id)
+const columnName = (c: GridColumn) => meta(c).label ?? (typeof c.columnDef.header === "string" ? c.columnDef.header : c.id)
 
 /**
  * The grid itself. `maxHeight` makes the body scroll under a sticky header; `virtual` renders only the rows in view
@@ -190,10 +249,14 @@ export function DataGridTable({
   // When the grid scrolls sideways its totals are usually off to the side, so they are written out in one row that stays
   // in view. Whether it scrolls depends on the space it is given (a card, a tablet, a phone), not on the screen's width.
   const overflows = edges.start || edges.end
-  const pinStyle = (c: Column<unknown>): React.CSSProperties | undefined => {
+  // Table 9 pins to the logical start and end, so the offsets go on the inline start and end: the same as left and right
+  // in a left-to-right page, and mirrored in a right-to-left one.
+  const pinStyle = (c: GridColumn): React.CSSProperties | undefined => {
     const p = c.getIsPinned()
     if (!p) return undefined
-    return { position: "sticky", [p]: p === "left" ? c.getStart("left") : c.getAfter("right"), zIndex: 1 }
+    return p === "start"
+      ? { position: "sticky", insetInlineStart: c.getStart("start"), zIndex: 1 }
+      : { position: "sticky", insetInlineEnd: c.getAfter("end"), zIndex: 1 }
   }
 
   return (
@@ -271,7 +334,8 @@ export function DataGridTable({
           <tbody className="bg-card">
             {padTop > 0 && <tr aria-hidden="true" style={{ height: padTop }} />}
             {loading &&
-              Array.from({ length: Math.min(table.getState().pagination?.pageSize ?? 5, 8) }, (_, i) => (
+              // A snapshot read is enough: the grid redraws whenever the table it is given changes.
+              Array.from({ length: Math.min(table.store.state.pagination?.pageSize ?? 5, 8) }, (_, i) => (
                 <tr key={`sk-${i}`} aria-hidden="true">
                   {table.getVisibleLeafColumns().map((c) => (
                     <td key={c.id} className={cn(cellPad, density === "dense" ? "h-(--h-md)" : "h-(--h-row)", "border-b border-border")}>
@@ -323,7 +387,7 @@ export function DataGridTable({
                     <SubRow
                       row={row}
                       cols={cols}
-                      render={(table.options.meta as { renderSubRow?: (r: Row<unknown>) => React.ReactNode } | undefined)?.renderSubRow}
+                      render={(table.options.meta as { renderSubRow?: (r: GridRow) => React.ReactNode } | undefined)?.renderSubRow}
                     />
                   )}
                 </React.Fragment>
@@ -375,7 +439,15 @@ export function DataGridTable({
  * A column header with sorting (click toggles, and a menu offers both orders), hiding and pinning. Plain text if the
  * column can do none of them.
  */
-export function DataGridColumnHeader<T>({ column, title }: { column: Column<T, unknown>; title: string }) {
+export function DataGridColumnHeader<T extends RowData, TFeatures extends DataGridFeatures>({
+  column: col,
+  title,
+}: {
+  column: Column<TFeatures, T, unknown>
+  title: string
+}) {
+  // The same narrowing as DataGrid's: the column has the grid's features at least.
+  const column = col as unknown as GridColumn
   const l = useGridLabels()
   const sorted = column.getIsSorted()
   // The swap pattern: the three arrows sit on top of each other and the current one fades and scales in at --motion-fast,
@@ -422,7 +494,7 @@ export function DataGridColumnHeader<T>({ column, title }: { column: Column<T, u
                 <PinOff aria-hidden="true" /> {l.unpin}
               </DropdownMenuItem>
             ) : (
-              <DropdownMenuItem onSelect={() => column.pin("left")}>
+              <DropdownMenuItem onSelect={() => column.pin("start")}>
                 <Pin aria-hidden="true" /> {l.pinLeft}
               </DropdownMenuItem>
             )}
@@ -489,7 +561,7 @@ export function DataGridPagination({
   labels?: React.ComponentProps<typeof Pagination>["labels"]
 }) {
   const { table } = useGrid()
-  const { pageIndex, pageSize } = table.getState().pagination
+  const { pageIndex, pageSize } = table.store.state.pagination
   return (
     <Pagination
       page={pageIndex}
@@ -527,7 +599,7 @@ export function DataGridSelectionSummary({ children }: { children?: React.ReactN
 }
 
 // An expanded row's detail: arrives under the row and leaves before the row closes up.
-function SubRow({ row, cols, render }: { row: Row<unknown>; cols: number; render?: (r: Row<unknown>) => React.ReactNode }) {
+function SubRow({ row, cols, render }: { row: GridRow; cols: number; render?: (r: GridRow) => React.ReactNode }) {
   const { mounted, leaving, done } = usePresence(row.getIsExpanded())
   if (!mounted || !render) return null
   return (
@@ -541,9 +613,12 @@ function SubRow({ row, cols, render }: { row: Row<unknown>; cols: number; render
   )
 }
 
-/** A checkbox column for row selection; the header box selects the page. */
-export function selectColumn<T>(): ColumnDef<T> {
-  return {
+/**
+ * A checkbox column for row selection; the header box selects the page. `selectColumn<Robot>()` fits a table built on
+ * dataGridFeatures; with features of your own, name them too: `selectColumn<Robot, typeof features>()`.
+ */
+export function selectColumn<T extends RowData, TFeatures extends DataGridFeatures = typeof dataGridFeatures>(): ColumnDef<TFeatures, T> {
+  const column: ColumnDef<DataGridFeatures, RowData> = {
     id: "select",
     size: 48,
     enableSorting: false,
@@ -552,9 +627,12 @@ export function selectColumn<T>(): ColumnDef<T> {
     header: ({ table }) => <SelectAll table={table} />,
     cell: ({ row }) => <SelectRow row={row} />,
   }
+  // Written against the grid's own features and the widest row, and handed back as the caller's column: a column
+  // type in Table 9 is invariant in both, and this column only calls APIs that dataGridFeatures guarantees.
+  return column as unknown as ColumnDef<TFeatures, T>
 }
 
-function SelectAll<T>({ table }: { table: TanTable<T> }) {
+function SelectAll({ table }: { table: GridTable }) {
   const l = useGridLabels()
   return (
     <Checkbox
@@ -565,7 +643,7 @@ function SelectAll<T>({ table }: { table: TanTable<T> }) {
   )
 }
 
-function SelectRow<T>({ row }: { row: Row<T> }) {
+function SelectRow({ row }: { row: GridRow }) {
   const l = useGridLabels()
   return <Checkbox aria-label={l.selectRow} checked={row.getIsSelected()} disabled={!row.getCanSelect()} onCheckedChange={(v) => row.toggleSelected(v === true)} />
 }
@@ -574,7 +652,7 @@ function DetailsHeader() {
   return <span className="sr-only">{useGridLabels().details}</span>
 }
 
-function ExpandButton<T>({ row }: { row: Row<T> }) {
+function ExpandButton({ row }: { row: GridRow }) {
   const l = useGridLabels()
   return (
     <button
@@ -592,9 +670,9 @@ function ExpandButton<T>({ row }: { row: Row<T> }) {
   )
 }
 
-/** A chevron column that opens a row's detail (table meta.renderSubRow draws it). */
-export function expandColumn<T>(): ColumnDef<T> {
-  return {
+/** A chevron column that opens a row's detail (table meta.renderSubRow draws it). Its type arguments are selectColumn's. */
+export function expandColumn<T extends RowData, TFeatures extends DataGridFeatures = typeof dataGridFeatures>(): ColumnDef<TFeatures, T> {
+  const column: ColumnDef<DataGridFeatures, RowData> = {
     id: "expand",
     size: 48,
     enableSorting: false,
@@ -603,4 +681,6 @@ export function expandColumn<T>(): ColumnDef<T> {
     header: () => <DetailsHeader />,
     cell: ({ row }) => (row.getCanExpand() ? <ExpandButton row={row} /> : null),
   }
+  // Handed back as the caller's column for the reason given in selectColumn.
+  return column as unknown as ColumnDef<TFeatures, T>
 }
