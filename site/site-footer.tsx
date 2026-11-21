@@ -10,7 +10,7 @@ const columns: { title: string; links: FooterLink[] }[] = [
   {
     title: "Design system",
     links: [
-      { label: "Foundations", href: "/docs/foundations" },
+      { label: "Docs", href: "/docs" },
       { label: "Components", href: "/docs/components" },
       { label: "Blocks", href: "/blocks" },
       { label: "Icons", href: "/icons" },
@@ -22,6 +22,7 @@ const columns: { title: string; links: FooterLink[] }[] = [
     links: [
       { label: "Installation", href: "/docs/installation" },
       { label: "Robotics UI kit", href: "/docs/robotics" },
+      { label: "Connect to ROS", href: "/docs/ros" },
       { label: "Next.js", href: "/docs/nextjs" },
       { label: "Localisation", href: "/docs/localisation" },
       { label: "Tokens", href: "/docs/tokens" },

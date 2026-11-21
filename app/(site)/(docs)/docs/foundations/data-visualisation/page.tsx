@@ -280,7 +280,7 @@ export default function DataVisualisationPage() {
             <span key="f" className="text-muted-foreground">
               {f.form}
             </span>,
-            <span key="i" className="flex flex-wrap gap-x-3 gap-y-1">
+            <span key="i" className="flex flex-col gap-1">
               {f.items.map((n) => (
                 <ItemLink key={n} name={n} />
               ))}

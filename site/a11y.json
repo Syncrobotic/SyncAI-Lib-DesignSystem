@@ -926,5 +926,18 @@
     "roles": [],
     "tabStops": 0,
     "live": false
+  },
+  "use-ros": {
+    "roles": [
+      "application",
+      "button",
+      "group",
+      "list",
+      "listitem",
+      "region",
+      "status"
+    ],
+    "tabStops": 8,
+    "live": true
   }
 }

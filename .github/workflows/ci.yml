@@ -33,6 +33,8 @@ jobs:
       - run: npm run lint:props
       # Every component page's Accessibility tab has measured roles and Tab stops (scripts/a11y.cjs)
       - run: npm run lint:a11y
+      # Every component with examples has its picture on /docs/components, light and dark (scripts/thumbs.mjs)
+      - run: npm run lint:thumbs
       # The package version has its CHANGELOG section, so the release on main has notes
       - run: node scripts/release-notes.mjs "$(node -p "require('./package.json').version")" > /dev/null
       # Code correctness: the React rules of hooks (the React Compiler relies on them) and TypeScript's recommended rules

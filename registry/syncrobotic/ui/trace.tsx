@@ -1,4 +1,4 @@
-// @syncrobotic/trace v0.23.0 · update: npx shadcn add @syncrobotic/trace --overwrite
+// @syncrobotic/trace v0.27.0 · update: npx shadcn add @syncrobotic/trace --overwrite
 "use client"
 
 import * as React from "react"
@@ -211,7 +211,8 @@ export function TraceItem({
           >
             {head}
           </CollapsiblePrimitive.Trigger>
-          <CollapsiblePrimitive.Content className="overflow-hidden data-[state=closed]:animate-collapse data-[state=open]:animate-expand">
+          {/* 0 is the fallback height: Radix leaves the variable unset at 0, and a nested span would inherit its parent's. */}
+          <CollapsiblePrimitive.Content className="overflow-hidden [--radix-collapsible-content-height:0px] data-[state=closed]:animate-collapse data-[state=open]:animate-expand">
             <div className="flex gap-2 pb-2">
               {/* Indented under the title: the status column's width, then the same gap. */}
               <span aria-hidden="true" className="w-5 shrink-0" />

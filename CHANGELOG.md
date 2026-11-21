@@ -2,12 +2,32 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.27.0 · 2026-11-21
+
+Connect the robotics components to a real robot over rosbridge, and a ready-made Traditional Chinese (Taiwan) label pack.
+
+### Added
+- **`ros` and `use-ros` 0.27.0 (beta):** a rosbridge v2 connection over a plain WebSocket, with no ROS library. `RosProvider`, `useRosStatus`, `useRosTopic`, `useRosPublisher` and `useRosService`, plus converters from each message to the component that shows it: `occupancyGridToGrid` and `laserScanToScan` (robot-map), `pointCloud2ToPoints` (point-cloud), `jointStateToJoints` (joint-state, robot-model), `poseToRobotMapPose`, `goalToPoseStamped` and `teleopToTwist` (teleop-pad). A publisher of `Twist` sends a zero command when it stops. New page [Connect to ROS](https://design-system.syncrobotic.me/docs/ros) with the rosbridge setup for ROS 2 and ROS 1, a live example against a simulated bridge, and the safety notes for driving over a browser: rosbridge has no watchdog, so the robot must time out its own commands.
+- **`labels-zh-tw` 0.27.0 (beta):** the kit's words in Traditional Chinese as written in Taiwan, one object per component that takes `labels` (`dataGridLabels`, `stopButtonLabels`, `robotMapLabels`…), and `locale`. It imports no component, so it installs on its own; the kit's tests hold every object to the component's labels type, so a new key cannot ship untranslated. See [Localisation](https://design-system.syncrobotic.me/docs/localisation).
+
+### Fixed
+- **`time-picker` 0.23.3:** a malformed value ("9", "25:99") reads as no time instead of showing NaN; a malformed `min`, `max` or `step` falls back to its default.
+- **`text-diff` 0.16.2:** text of spacing alone round-trips through `tokenize` exactly and is never shown as a word added or removed.
+- **`robot-model` 0.24.2:** mimic joints follow their driving joint unclamped and whatever the order of the record; planar and floating joints take `[x, y, θ]` and `[x, y, z, roll, pitch, yaw]` and are written with the new `poseValue` label (mm and degrees per component).
+- **`alarm` 0.27.0:** buttons beside Acknowledge (a custom action, Shelve) are ghost, so Acknowledge is the only outlined button in an unacknowledged row; Unshelve, alone in its row, keeps its outline.
+- **`toast` 0.27.0:** toasts stack as in sonner: the newest in front, two more peeking behind, the rest waiting; hovering, focusing or touching spreads them into a list and pauses their timers. A 4th toast no longer makes the others jump or closes the oldest, and a second `<Toaster />` no longer draws every toast twice (which let a hovered toast close anyway).
+- **`banner` 0.27.0:** opens and closes its height as it fades, so the page under it slides instead of jumping when it is dismissed or shown again.
+- **`tree` and `trace` 0.27.0:** an empty folder (or a span with nothing under it) opens and closes in place; it opened as tall as its parent before snapping shut, because Radix leaves its height variable unset at 0.
+- Docs: component pages are short again; the long Table 9 upgrade section on the data-grid page is gone. Banner and tree examples keep their width when they collapse, so they no longer jump sideways.
+- Storybook: the story frame no longer overflows a 390 px phone.
+- CI type-checks its own scripts (`tsconfig.scripts.json`, strict `checkJs`).
+
 ## 0.26.0 · 2026-11-21
 
 `data-grid` moves to TanStack Table 9. The grid looks and behaves the same; the table you build for it changes, once.
 
 ### Changed
-- **`data-grid` 0.26.0 needs `@tanstack/react-table` 9.** You still own the table: build it with `useTable({ features, … })`, where `features` starts from the exported `dataGridFeatures` (every feature and sort function the grid's parts call) plus the row models you use. Column types take the features (`DataGridColumnDef<Row, typeof features>`), pinning is `start`/`end`, and `table.getState()` is gone. The data-grid page has the full guide: [Upgrading to TanStack Table 9](https://design-system.syncrobotic.me/docs/components/data-grid#table-9), with before-and-after code, a prompt to hand a coding agent, and a grep checklist that must print nothing when you are done.
+- **`data-grid` 0.26.0 needs `@tanstack/react-table` 9.** You still own the table: build it with `useTable({ features, … })`, where `features` starts from the exported `dataGridFeatures` (every feature and sort function the grid's parts call) plus the row models you use. Column types take the features (`DataGridColumnDef<Row, typeof features>`), pinning is `start`/`end`, and `table.getState()` is gone.
 - **React Compiler:** `data-grid.tsx` starts with `"use no memo"`. Table 9 keeps one row, column and header object for the table's life and answers state through methods, which compiled code would cache. Keep the directive in your copy. Call `useTable` without a selector, and in your own cells read state through `<Subscribe source={row.table.atoms.…}>`. A test now compiles the grid with the React Compiler and checks that sorting, selection, expanding and resizing update; without the directive it fails.
 - Dependabot no longer holds `@tanstack/react-table` majors; `react-resizable-panels` 4 stays held.
 

@@ -1,4 +1,4 @@
-// @syncrobotic/alarm v0.22.2 · update: npx shadcn add @syncrobotic/alarm --overwrite
+// @syncrobotic/alarm v0.27.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
 "use client"
 
 import * as React from "react"
@@ -124,7 +124,8 @@ type AlarmProps = Omit<AlarmData, "id"> & {
  */
 const keepLastWord = (text: string) => text.replace(/ (\S{1,3})$/, "\u00a0$1").replace(/ \u00b7 /g, "\u00a0\u00b7 ")
 
-// Light row buttons: one quiet outline, so a list of ten alarms is not a column of heavy boxes. 44 px on touch (--h-sm).
+// Light row buttons, 44 px on touch (--h-sm). Beside Acknowledge the others are ghost (ring-transparent), so the one thing
+// every unacknowledged row asks for is the only box in it; alone in a row (Unshelve) a button keeps its quiet outline.
 const rowButton = "press h-(--h-sm) shrink-0 rounded-xs px-3 text-sm font-medium ring-1 ring-inset hover:bg-accent"
 
 /**
@@ -227,12 +228,12 @@ export function Alarm({
           </span>
           <span className="ml-auto flex flex-wrap justify-end gap-2 empty:hidden">
             {action && (
-              <button type="button" onClick={action.onClick} className={cn(rowButton, "ring-border")}>
+              <button type="button" onClick={action.onClick} className={cn(rowButton, "ring-transparent")}>
                 {action.label}
               </button>
             )}
             {!shelved && onShelve && priority !== "critical" && (
-              <button type="button" onClick={onShelve} className={cn(rowButton, "ring-border")}>
+              <button type="button" onClick={onShelve} className={cn(rowButton, "ring-transparent")}>
                 {l.shelve}
                 <span className="sr-only">: {title}</span>
               </button>

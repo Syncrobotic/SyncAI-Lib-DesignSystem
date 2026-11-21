@@ -11,6 +11,7 @@ import { Button } from "@/registry/syncrobotic/ui/button"
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Kbd } from "@/registry/syncrobotic/ui/kbd"
+import { RosConsoleDemo } from "./ros-demo"
 
 // The tray and the hooks: each a small live demo of what it does on screen. The source of each is in the Source sheet.
 const meta: Meta = { title: "Robot shell/Tray and hooks" }
@@ -174,4 +175,13 @@ export const UseHotkeysReview: S = {
       </div>
     )
   },
+}
+
+/**
+ * useRos against a rosbridge played in the browser: the map, the robot's pose and its laser scan come in, the pad sends
+ * /cmd_vel, Dock calls a service, and the arm's /joint_states fill the panel. Drop the link to watch it reconnect and
+ * resubscribe; a drive held through the drop is refused until the stick is let go.
+ */
+export const UseRosConsole: S = {
+  render: () => <RosConsoleDemo className="w-5xl max-w-full" />,
 }

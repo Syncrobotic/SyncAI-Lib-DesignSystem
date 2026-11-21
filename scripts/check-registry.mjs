@@ -3,13 +3,20 @@
 // (directly or through one), and files that use React hooks or handlers must start with "use client".
 import { readFileSync } from "node:fs"
 
+/** @type {import("./types.js").Registry} */
 const registry = JSON.parse(readFileSync("registry.json", "utf8"))
 const byPath = new Map(registry.items.flatMap((i) => i.files.map((f) => [f.path.replace(/\.tsx?$/, ""), i.name])))
 const byName = new Map(registry.items.map((i) => [i.name, i]))
 const BUILTIN = new Set(["react", "react-dom"])
 const pkg = JSON.parse(readFileSync("package.json", "utf8"))
+/** @param {string} v */
 const minor = (v) => v.split(".").slice(0, 2).join(".")
 
+/**
+ * @param {string} name
+ * @param {Set<string>} [seen]
+ * @returns {Set<string>}
+ */
 function closure(name, seen = new Set()) {
   for (const d of byName.get(name)?.registryDependencies ?? []) {
     const n = d.replace("@syncrobotic/", "")
@@ -22,6 +29,10 @@ function closure(name, seen = new Set()) {
 }
 
 let bad = 0
+/**
+ * @param {string} item
+ * @param {string} msg
+ */
 const fail = (item, msg) => {
   console.error(`${item}: ${msg}`)
   bad++
@@ -29,6 +40,7 @@ const fail = (item, msg) => {
 
 for (const item of registry.items) {
   // A dependency may carry a version range ("react-day-picker@^9"); compare by package name.
+  /** @param {string} d */
   const pkgName = (d) => d.replace(/(?<=.)@.*$/, "")
   const deps = new Set((item.dependencies ?? []).map(pkgName))
   const reach = closure(item.name)
@@ -68,6 +80,7 @@ for (const item of registry.items) {
 
 // One package, one version range across the registry: items installed together must not ask for different majors
 // ("recharts" in one item and "recharts@^3" in another let a project end up with either).
+/** @type {Map<string, Map<string, string[]>>} */
 const ranges = new Map()
 for (const item of registry.items)
   for (const d of item.dependencies ?? []) {

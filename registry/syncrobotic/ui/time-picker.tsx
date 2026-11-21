@@ -1,4 +1,4 @@
-// @syncrobotic/time-picker v0.23.2 · update: npx shadcn add @syncrobotic/time-picker --overwrite
+// @syncrobotic/time-picker v0.23.3 · update: npx shadcn add @syncrobotic/time-picker --overwrite
 "use client"
 
 import * as React from "react"
@@ -10,24 +10,37 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/registry/syncrobotic/
 /** Times are "HH:mm" strings on a 24-hour clock, the unit operators schedule in; `hour12` only changes how they read. */
 export type Time = string
 
-// The hour and minute of a Time. A malformed one ("9") has NaN for the missing part, so it reads as no time at all.
-const hourMinute = (t: Time) => {
-  const [h = NaN, m = NaN] = t.split(":").map(Number)
-  return [h, m] as const
+// The hour and minute of a Time, or null when it is not one. Only "H:mm" or "HH:mm" inside the day reads as a time:
+// "9", "9:", "25:99" and "" are null, so a malformed value shows as no time at all instead of "9:NaN AM".
+const hourMinute = (t: Time | undefined): readonly [number, number] | null => {
+  const m = /^(\d{1,2}):(\d{2})$/.exec(t?.trim() ?? "")
+  if (!m) return null
+  const h = Number(m[1])
+  const min = Number(m[2])
+  return h <= 23 && min <= 59 ? ([h, min] as const) : null
 }
-const toMin = (t: Time) => {
-  const [h, m] = hourMinute(t)
-  return h * 60 + m
+const toMin = (t: Time | undefined) => {
+  const hm = hourMinute(t)
+  return hm ? hm[0] * 60 + hm[1] : null
 }
 const fromMin = (m: number): Time => `${String(Math.floor(m / 60) % 24).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`
-/** "09:30", or "9:30 AM" with `hour12`. With a `locale`, the time as that language writes it ("上午9:30" for "zh-TW"). */
+/** The canonical "HH:mm" form of a Time ("9:30" reads as "09:30"), or undefined when it is not a time. */
+export const normalizeTime = (t: Time | undefined): Time | undefined => {
+  const m = toMin(t)
+  return m === null ? undefined : fromMin(m)
+}
+/**
+ * "09:30", or "9:30 AM" with `hour12`. With a `locale`, the time as that language writes it ("上午9:30" for "zh-TW").
+ * A value that is not a time formats as "", so callers show their placeholder and never "NaN".
+ */
 export const formatTime = (t: Time, hour12 = false, locale?: string) => {
+  const hm = hourMinute(t)
+  if (!hm) return ""
+  const [h, m] = hm
   if (locale) {
-    const [h, m] = hourMinute(t)
     return new Intl.DateTimeFormat(locale, { hour: "numeric", minute: "2-digit", hourCycle: hour12 ? "h12" : "h23", timeZone: "UTC" }).format(Date.UTC(2000, 0, 1, h, m))
   }
-  if (!hour12) return t
-  const [h, m] = hourMinute(t)
+  if (!hour12) return fromMin(h * 60 + m)
   return `${((h + 11) % 12) + 1}:${String(m).padStart(2, "0")} ${h < 12 ? "AM" : "PM"}`
 }
 
@@ -75,6 +88,7 @@ export function TimeInput({
   disabled?: boolean
 }) {
   const f = useField()
+  // A value that is not a time shows as an empty field (its placeholder), the same as no value.
   const [text, setText] = React.useState(value ? formatTime(value, hour12) : "")
   const [bad, setBad] = React.useState(false)
   // A new value or clock from outside rewrites the text, during the render that brings it rather than in an effect
@@ -90,7 +104,11 @@ export function TimeInput({
       return onValueChange?.(undefined)
     }
     const t = parseTime(text)
-    const ok = !!t && (!min || toMin(t) >= toMin(min)) && (!max || toMin(t) <= toMin(max))
+    // A malformed min or max bounds nothing, the same as leaving it out.
+    const at = toMin(t ?? undefined)
+    const lo = toMin(min)
+    const hi = toMin(max)
+    const ok = !!t && at !== null && (lo === null || at >= lo) && (hi === null || at <= hi)
     setBad(!ok)
     if (ok) {
       onValueChange?.(t)
@@ -171,17 +189,24 @@ export function TimePicker({
   disabled?: boolean
 }) {
   const l = { ...defaultTimePickerLabels, ...labels }
+  // A value that is not a time is treated as no value: the trigger shows the placeholder and no slot is picked.
+  const picked = normalizeTime(value)
   const f = useField()
   const uid = React.useId()
   const triggerId = id ?? f?.id ?? `${uid}-t`
   const [open, setOpen] = React.useState(false)
   const slots: Time[] = []
-  for (let m = toMin(min); m <= toMin(max); m += step) slots.push(fromMin(m))
+  // A malformed bound falls back to the edge of the day, and a step below one minute to one, so the list is never
+  // empty or endless because of a typo.
+  const from = toMin(min) ?? 0
+  const to = toMin(max) ?? 23 * 60 + 59
+  const every = Number.isFinite(step) && step >= 1 ? step : 1
+  for (let m = from; m <= to; m += every) slots.push(fromMin(m))
   const free = (i: number) => i >= 0 && i < slots.length && !unavailable.includes(slots[i]!)
   // The list is one Tab stop: the option that holds it is the picked one, or the first free one, and the arrow keys
   // move it (roving tabindex), as in a native select.
   const initial = () => {
-    const at = value ? slots.indexOf(value) : -1
+    const at = picked ? slots.indexOf(picked) : -1
     return free(at) ? at : slots.findIndex((_, i) => free(i))
   }
   const [active, setActive] = React.useState(initial)
@@ -239,7 +264,7 @@ export function TimePicker({
           aria-describedby={f?.describedBy}
           aria-invalid={f?.invalid || undefined}
           disabled={disabled}
-          data-empty={!value}
+          data-empty={!picked}
           className={cn(field, "press text-left data-[empty=true]:text-muted-foreground disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:ring-border", className)}
           onPointerDown={() => setNav("pointer")}
           onKeyDown={() => setNav("key")}
@@ -251,7 +276,7 @@ export function TimePicker({
             </span>
           )}
           <span id={`${uid}-v`} className="truncate tabular-nums">
-            {value ? formatTime(value, hour12, locale) : (placeholder ?? l.placeholder)}
+            {picked ? formatTime(picked, hour12, locale) : (placeholder ?? l.placeholder)}
           </span>
         </button>
       </PopoverTrigger>
@@ -268,7 +293,7 @@ export function TimePicker({
         >
           {slots.map((t, i) => {
             const taken = unavailable.includes(t)
-            const selected = t === value
+            const selected = t === picked
             return (
               <button
                 key={t}

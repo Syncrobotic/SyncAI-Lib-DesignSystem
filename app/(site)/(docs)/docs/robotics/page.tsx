@@ -98,6 +98,14 @@ export default function RoboticsPage() {
           </tbody>
         </table>
       </div>
+      <p className="max-w-2xl pt-4 text-pretty">
+        To get them there from a robot, <Inline text="`use-ros`" /> connects over rosbridge with no ROS library and converts each message
+        on the way: see{" "}
+        <Link href="/docs/ros" className="underline underline-offset-4">
+          Connect to ROS
+        </Link>
+        , with a live example and the safety notes for driving over a browser.
+      </p>
 
       <H2 id="install">Install</H2>
       <p className="max-w-2xl pb-4 text-pretty">

@@ -11,6 +11,14 @@
     "version": "0.23.0",
     "hash": "8ec920f8618ff43d"
   },
+  "labels-zh-tw": {
+    "version": "0.27.0",
+    "hash": "136b4d86f6081b00"
+  },
+  "ros": {
+    "version": "0.27.0",
+    "hash": "04719fe9d7491577"
+  },
   "use-long-press": {
     "version": "0.5.1",
     "hash": "9353a9e71f657181"
@@ -26,6 +34,10 @@
   "use-debounce": {
     "version": "0.15.1",
     "hash": "2587f5cfedc35e8a"
+  },
+  "use-ros": {
+    "version": "0.27.0",
+    "hash": "dece211c4e61f8c4"
   },
   "use-hotkeys": {
     "version": "0.16.0",
@@ -172,8 +184,8 @@
     "hash": "cf17e73d8fc26aba"
   },
   "text-diff": {
-    "version": "0.16.1",
-    "hash": "218b4d6431a4cec8"
+    "version": "0.16.2",
+    "hash": "44d6294977873b90"
   },
   "meter": {
     "version": "0.17.4",
@@ -184,20 +196,20 @@
     "hash": "45894bb1e3691d66"
   },
   "banner": {
-    "version": "0.21.0",
-    "hash": "9fd748972df04a74"
+    "version": "0.27.0",
+    "hash": "e37543f8bac4b42a"
   },
   "alert": {
     "version": "0.17.3",
     "hash": "5599e73c521ec230"
   },
   "alarm": {
-    "version": "0.22.2",
-    "hash": "16afb511aec2879a"
+    "version": "0.27.0",
+    "hash": "19c5640d2c7f629c"
   },
   "toast": {
-    "version": "0.17.3",
-    "hash": "72dbafc1173e3ec7"
+    "version": "0.27.0",
+    "hash": "1357f53d47eb730f"
   },
   "empty-state": {
     "version": "0.17.3",
@@ -228,8 +240,8 @@
     "hash": "a542674c1883114e"
   },
   "tree": {
-    "version": "0.18.2",
-    "hash": "25a769fcedbda7ae"
+    "version": "0.27.0",
+    "hash": "7cb44a42f828a3d3"
   },
   "graph": {
     "version": "0.21.2",
@@ -348,8 +360,8 @@
     "hash": "2408604ba0e89408"
   },
   "robot-model": {
-    "version": "0.24.1",
-    "hash": "f7c17c61b2ed6e9f"
+    "version": "0.24.2",
+    "hash": "d2e6305e854e8ef5"
   },
   "filter-form": {
     "version": "0.10.0",
@@ -392,8 +404,8 @@
     "hash": "60a5f053320a96cf"
   },
   "time-picker": {
-    "version": "0.23.2",
-    "hash": "a8798641dcfad8d2"
+    "version": "0.23.3",
+    "hash": "d33ad72857379192"
   },
   "data-grid": {
     "version": "0.26.0",
@@ -440,8 +452,8 @@
     "hash": "1f98c6ae3da7b5ed"
   },
   "trace": {
-    "version": "0.23.0",
-    "hash": "6e71ba17106892b1"
+    "version": "0.27.0",
+    "hash": "6f71586e77c6052b"
   },
   "marker": {
     "version": "0.13.0",

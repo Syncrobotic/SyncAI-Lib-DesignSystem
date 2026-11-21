@@ -78,7 +78,7 @@ export function storySource(file: string, name: string) {
 }
 
 /** Where a registry file lands once installed with the shadcn CLI, so the imports in a copied example resolve. */
-const installed = (from: string) =>
+export const installed = (from: string) =>
   from
     .replace("@/registry/syncrobotic/ui/", "@/components/ui/")
     .replace("@/registry/syncrobotic/shell/", "@/components/")

@@ -145,7 +145,7 @@ export type A11y = {
 /** Null for hooks and anything that renders nothing of its own. */
 export function a11yOf(name: string): A11y | null {
   const item = getItem(name)
-  if (!item || item.group === "Hooks") return null
+  if (!item || item.group === "Hooks & libraries") return null
   const own = item.files.map((f) => readSource(f.path)).join("\n")
   const all = sources(name).join("\n")
   const m = (measured as Record<string, Measured>)[name] ?? { roles: [], tabStops: 0, live: false }

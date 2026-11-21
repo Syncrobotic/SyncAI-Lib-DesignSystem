@@ -2,6 +2,7 @@
 import { readFileSync, writeFileSync } from "node:fs"
 const src = readFileSync("site/brand-paths.ts", "utf8")
 const mod = await import("data:text/javascript," + encodeURIComponent(src.replace(/export const/g, "export const").replace(/: \w+(\[\])?(?= =)/g, "")))
+/** @type {{ MARK_DISC: { d: string; transform: string }; MARK_STROKES: { d: string; transform: string }[] }} */
 const { MARK_DISC, MARK_STROKES } = mod
 // Favicon: the official mark, unchanged, on a tile whose corner follows the radius scale
 // (rounded-xl, 24 px at a 108 px icon = 22 % of the side).
