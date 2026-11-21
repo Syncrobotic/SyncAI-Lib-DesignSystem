@@ -9,6 +9,37 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/registry/syncrobotic
 type File = { name: string; code: React.ReactNode }
 
 /**
+ * The site's side panel: the kit's Sheet from the right, full width on a phone and up to 768 px beside the page, with a
+ * sticky header naming what it shows and a close button. The Code sheet and the icon details both open in it, so the two
+ * look and behave the same.
+ */
+export function SidePanelContent({
+  title,
+  description,
+  actions,
+  children,
+  ...props
+}: Omit<React.ComponentProps<typeof SheetContent>, "title" | "side"> & { title: string; description: string; actions?: React.ReactNode }) {
+  return (
+    <SheetContent side="right" className="max-w-none gap-0 p-0 sm:max-w-3xl" {...props}>
+      <div className="sticky top-0 z-10 flex items-center gap-3 border-b border-border bg-popover py-2 pr-2 pl-6">
+        <div className="min-w-0 flex-1">
+          <SheetTitle className="truncate font-mono text-sm font-medium">{title}</SheetTitle>
+          <SheetDescription className="sr-only">{description}</SheetDescription>
+        </div>
+        {actions}
+        <SheetClose asChild>
+          <Button variant="ghost" size="icon" aria-label="Close">
+            <X aria-hidden="true" />
+          </Button>
+        </SheetClose>
+      </div>
+      {children}
+    </SheetContent>
+  )
+}
+
+/**
  * Code opens in a panel from the right, so the preview it belongs to stays in view beside it.
  * Install on top, then the code (one tab per file). Phones get the panel at full width.
  * The code is highlighted on the server and handed in as nodes, so opening it waits for nothing.
@@ -37,26 +68,22 @@ export function CodeSheet({
           <Code aria-hidden="true" className="size-4" /> {label}
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="max-w-none gap-0 p-0 sm:max-w-3xl">
-        <div className="sticky top-0 z-10 flex items-center gap-3 border-b border-border bg-popover py-2 pr-2 pl-6">
-          <div className="min-w-0 flex-1">
-            <SheetTitle className="truncate font-mono text-sm font-medium">{title}</SheetTitle>
-            <SheetDescription className="sr-only">Install command and source code for {title}.</SheetDescription>
-          </div>
-          {meta && <span className="font-mono text-xs text-muted-foreground tabular-nums">{meta}</span>}
-          {href && (
-            <Button asChild variant="ghost" size="sm">
-              <a href={href} target="_blank" rel="noreferrer">
-                GitHub <ExternalLink aria-hidden="true" className="size-4" />
-              </a>
-            </Button>
-          )}
-          <SheetClose asChild>
-            <Button variant="ghost" size="icon" aria-label="Close">
-              <X aria-hidden="true" />
-            </Button>
-          </SheetClose>
-        </div>
+      <SidePanelContent
+        title={title}
+        description={`Install command and source code for ${title}.`}
+        actions={
+          <>
+            {meta && <span className="font-mono text-xs text-muted-foreground tabular-nums">{meta}</span>}
+            {href && (
+              <Button asChild variant="ghost" size="sm">
+                <a href={href} target="_blank" rel="noreferrer">
+                  GitHub <ExternalLink aria-hidden="true" className="size-4" />
+                </a>
+              </Button>
+            )}
+          </>
+        }
+      >
         <div className="flex flex-col gap-6 p-6">
           <section aria-label="Install" className="flex flex-col gap-2">
             <h3 className="text-sm font-medium">Install</h3>
@@ -84,7 +111,7 @@ export function CodeSheet({
             )}
           </section>
         </div>
-      </SheetContent>
+      </SidePanelContent>
     </Sheet>
   )
 }
