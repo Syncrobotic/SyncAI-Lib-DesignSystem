@@ -1,4 +1,4 @@
-// @syncrobotic/tree v0.18.2 · update: npx shadcn add @syncrobotic/tree --overwrite
+// @syncrobotic/tree v0.27.0 · update: npx shadcn add @syncrobotic/tree --overwrite
 "use client"
 
 import * as React from "react"
@@ -83,7 +83,9 @@ const group = "ms-[calc(var(--h-sm)/2)] border-s border-border ps-2"
 const row = "flex h-(--h-sm) min-w-0 items-center gap-2 rounded-xs text-sm"
 const chevron = (open: boolean) =>
   cn("size-4 shrink-0 text-muted-foreground transition-transform duration-(--motion-base) ease-(--ease-standard) motion-reduce:transition-none", !open && "-rotate-90")
-const content = "overflow-hidden data-[state=open]:animate-expand data-[state=closed]:animate-collapse"
+// Radix leaves its height variable unset when the content measures 0 (an empty folder), so a nested branch would inherit
+// its parent's height and open that far before snapping shut. 0 here is the fallback; Radix's own inline value wins.
+const content = "overflow-hidden [--radix-collapsible-content-height:0px] data-[state=open]:animate-expand data-[state=closed]:animate-collapse"
 
 function Label({ node, id }: { node: TreeNode; id?: string }) {
   const Icon = node.icon

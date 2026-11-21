@@ -1,4 +1,4 @@
-// @syncrobotic/text-diff v0.16.1 · update: npx shadcn add @syncrobotic/text-diff --overwrite
+// @syncrobotic/text-diff v0.16.2 · update: npx shadcn add @syncrobotic/text-diff --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
@@ -10,12 +10,18 @@ export type DiffPart = { type: "same" | "added" | "removed"; text: string; words
 const CJK = "\\u3040-\\u30ff\\u3400-\\u4dbf\\u4e00-\\u9fff\\uf900-\\ufaff\\uff01-\\uff60"
 const WORD = new RegExp(`([${CJK}]|[^\\s${CJK}]+)(\\s*)`, "g")
 
-/** Words, each with the spacing that follows it, so joining their `text` gives back the original. */
-export function tokenize(text: string) {
-  const tokens = [...text.matchAll(WORD)].map((m) => ({ word: m[1], text: m[0] }))
-  const lead = text.match(/^\s*/)![0]
+/**
+ * Words, each with the spacing that follows it, so joining their `text` gives back the original for any input. Spacing
+ * before the first word joins that word. A text of spacing alone is one token with an empty `word`: it is no word to
+ * diff, but dropping it would lose the text.
+ */
+export function tokenize(text: string): { word: string; text: string }[] {
+  const tokens = [...text.matchAll(WORD)].map((m) => ({ word: m[1] ?? "", text: m[0] }))
+  const lead = text.match(/^\s*/)?.[0] ?? ""
   const first = tokens[0]
-  if (first && lead) first.text = lead + first.text
+  if (!lead) return tokens
+  if (!first) return [{ word: "", text: lead }]
+  first.text = lead + first.text
   return tokens
 }
 
@@ -43,15 +49,25 @@ export function diffWords(before: string, after: string): DiffPart[] {
     endA--
     endB--
   }
-  const ops: { type: DiffPart["type"]; text: string }[] = []
+  // `words` is 0 for a token of spacing alone, so it never counts as a word changed.
+  const ops: { type: DiffPart["type"]; text: string; words: number }[] = []
+  const op = (type: DiffPart["type"], t: { word: string; text: string }) => {
+    // Spacing is not a change: after-text spacing reads as shared (the result reads as the new text, as for shared
+    // words), and before-text spacing has nothing to show.
+    if (!t.word) {
+      if (type !== "removed") ops.push({ type: "same", text: t.text, words: 0 })
+      return
+    }
+    ops.push({ type, text: t.text, words: 1 })
+  }
   // Shared words take the after text's spacing: the result reads as the new text.
-  for (let i = 0; i < start; i++) ops.push({ type: "same", text: at(b, i).text })
+  for (let i = 0; i < start; i++) op("same", at(b, i))
 
   const n = endA - start
   const m = endB - start
   if (n * m > MAX_CELLS) {
-    for (let i = start; i < endA; i++) ops.push({ type: "removed", text: at(a, i).text })
-    for (let j = start; j < endB; j++) ops.push({ type: "added", text: at(b, j).text })
+    for (let i = start; i < endA; i++) op("removed", at(a, i))
+    for (let j = start; j < endB; j++) op("added", at(b, j))
   } else {
     // lcs[i][j]: length of the longest common subsequence of a[start+i…] and b[start+j…], filled from the end.
     const lcs = Array.from({ length: n + 1 }, () => new Uint32Array(m + 1))
@@ -65,31 +81,31 @@ export function diffWords(before: string, after: string): DiffPart[] {
     let j = 0
     while (i < n || j < m) {
       if (i < n && j < m && at(a, start + i).word === at(b, start + j).word) {
-        ops.push({ type: "same", text: at(b, start + j).text })
+        op("same", at(b, start + j))
         i++
         j++
       } else if (j >= m || (i < n && at(at(lcs, i + 1), j) >= at(at(lcs, i), j + 1))) {
-        ops.push({ type: "removed", text: at(a, start + i).text })
+        op("removed", at(a, start + i))
         i++
       } else {
-        ops.push({ type: "added", text: at(b, start + j).text })
+        op("added", at(b, start + j))
         j++
       }
     }
   }
-  for (let j = endB; j < b.length; j++) ops.push({ type: "same", text: at(b, j).text })
+  for (let j = endB; j < b.length; j++) op("same", at(b, j))
 
   // Merge runs, and order each change as removed, then added, so "the red cup" → "a blue cup" reads "~~the red~~ a blue".
   const parts: DiffPart[] = []
   let k = 0
   while (k < ops.length) {
-    const op = at(ops, k)
-    if (op.type === "same") {
+    const next = at(ops, k)
+    if (next.type === "same") {
       const last = parts[parts.length - 1]
       if (last?.type === "same") {
-        last.text += op.text
-        last.words++
-      } else parts.push({ type: "same", text: op.text, words: 1 })
+        last.text += next.text
+        last.words += next.words
+      } else parts.push({ type: "same", text: next.text, words: next.words })
       k++
       continue
     }

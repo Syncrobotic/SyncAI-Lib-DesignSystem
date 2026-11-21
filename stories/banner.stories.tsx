@@ -12,7 +12,7 @@ function Maintenance() {
   // Remembering the dismissal is the app's job: here in state, in a real app in storage, keyed to this maintenance window.
   const [open, setOpen] = React.useState(true)
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex w-full flex-col gap-4">
       <Banner icon={Wrench} title="Maintenance on Sunday, 02:00–04:00 UTC." open={open} onDismiss={() => setOpen(false)} dismissLabel="Dismiss maintenance notice">
         Robots keep patrolling. The dashboard and the API are unavailable for up to 2 hours.
       </Banner>
@@ -89,8 +89,8 @@ export const BannerAboveAppShell: S = {
       <div className="min-h-0 flex-1 [--app-shell-height:100%]">
         {/* Your AppShell goes here; it fills h-[var(--app-shell-height,100dvh)]. */}
         <div className="flex h-[var(--app-shell-height,100dvh)] gap-2 bg-background p-2">
-          <div className="hidden w-48 shrink-0 rounded-md bg-card p-4 text-sm text-muted-foreground ring-1 ring-border sm:block">Navigation</div>
-          <div className="flex min-w-0 flex-1 flex-col gap-2 rounded-md bg-card p-4 text-sm ring-1 ring-border">
+          <div className="hidden w-48 shrink-0 rounded-sm bg-card p-4 text-sm text-muted-foreground ring-1 ring-border sm:block">Navigation</div>
+          <div className="flex min-w-0 flex-1 flex-col gap-2 rounded-sm bg-card p-4 text-sm ring-1 ring-border">
             <p className="font-medium">Overview</p>
             <p className="text-muted-foreground">The shell ends at the bottom of the frame, under the banner, whatever the banner's height.</p>
           </div>

@@ -4,12 +4,13 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import * as m from "motion/react-m"
 import { cn } from "@/lib/utils"
+import { inScope } from "./scope-match"
 import type { Scope } from "./scopes"
 
 /** Header area links. The marker of the area you are in slides to the new one: a selection moving is a state change. */
 export function HeaderNav({ links }: { links: Pick<Scope, "key" | "label" | "href" | "match">[] }) {
   const path = usePathname()
-  const current = links.findIndex((s) => s.match.some((m) => path === m || path.startsWith(`${m}/`)))
+  const current = links.findIndex((s) => s.match.some((m) => inScope(m, path)))
   return (
     <nav aria-label="Main" className="hidden items-center gap-1 text-sm lg:flex">
       {links.map((l, i) => (

@@ -1,6 +1,6 @@
 {
   "name": "@syncrobotic/design-system",
-  "version": "0.26.0",
+  "version": "0.27.0",
   "private": true,
   "description": "A robotics UI kit for React: emergency stop, teleoperation, robot map, camera feed, LiDAR point cloud, URDF robot model and alarms, with design tokens and ready-made screens, shipped as a shadcn/ui registry for Tailwind CSS v4.",
   "keywords": [
@@ -60,11 +60,11 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build -o storybook-static",
     "registry:build": "shadcn build -o public/r",
-    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.registry.json",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.registry.json && tsc -p tsconfig.scripts.json",
     "lint": "eslint .",
     "lint:tokens": "node scripts/check-tokens.mjs",
     "test:stories": "playwright test tests/stories.spec.ts",
-    "ci": "npm run lint:tokens && npm run lint:registry && npm run lint:rules && npm run lint:motion && npm run lint:versions && npm run lint:dtcg && npm run lint:props && npm run lint:a11y && npm run lint && npm run typecheck && npm test && npm run build && npm run build-storybook",
+    "ci": "npm run lint:tokens && npm run lint:registry && npm run lint:rules && npm run lint:motion && npm run lint:versions && npm run lint:dtcg && npm run lint:props && npm run lint:a11y && npm run lint:thumbs && npm run lint && npm run typecheck && npm test && npm run build && npm run build-storybook",
     "test": "vitest run",
     "lint:registry": "node scripts/check-registry.mjs",
     "lint:rules": "node scripts/check-rules.mjs",
@@ -80,6 +80,8 @@
     "test:registry": "bash scripts/registry-e2e.sh",
     "a11y": "node scripts/a11y.cjs",
     "lint:a11y": "node scripts/a11y-check.mjs",
+    "thumbs": "node scripts/thumbs.mjs",
+    "lint:thumbs": "node scripts/thumbs.mjs --check",
     "adoption": "node scripts/adoption.mjs"
   },
   "dependencies": {
@@ -96,7 +98,7 @@
     "input-otp": "^1.5.0",
     "libphonenumber-js": "^1.13.16",
     "lucide-react": "^1.77.0",
-    "motion": "^12.43.0",
+    "motion": "^14.14.0",
     "next": "^16.4.6",
     "radix-ui": "^1.8.1",
     "react": "^19.0.0",
@@ -129,7 +131,7 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "happy-dom": "^21.0.4",
     "http-server": "^14.1.1",
-    "shadcn": "^3.0.0",
+    "shadcn": "^4.23.0",
     "storybook": "^10.6.8",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.7.0",

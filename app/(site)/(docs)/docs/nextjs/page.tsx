@@ -280,7 +280,7 @@ const startsClient = (path: string) => /^["']use client["']/.test(readSource(pat
 
 // The components that have a page, by whether their file starts with "use client" (the same test as lint:registry).
 const components = items
-  .filter((i) => i.group !== "Hooks")
+  .filter((i) => i.group !== "Hooks & libraries")
   .sort((a, b) => a.name.localeCompare(b.name))
   .map((i) => ({ name: i.name, client: (i as unknown as RegistryItem).files.some((f) => /\.tsx?$/.test(f.path) && startsClient(f.path)) }))
 const clientNames = components.filter((c) => c.client).map((c) => c.name)

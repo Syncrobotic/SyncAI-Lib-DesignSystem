@@ -1,7 +1,9 @@
 // Every rendered component has a measured entry in site/a11y.json (scripts/a11y.cjs writes it from a running site).
 import { readFileSync } from "node:fs"
 
+/** @type {import("./types.js").Registry} */
 const reg = JSON.parse(readFileSync("registry.json", "utf8"))
+/** @type {Record<string, unknown>} */
 const data = JSON.parse(readFileSync("site/a11y.json", "utf8"))
 const missing = reg.items
   .filter((i) => (i.type === "registry:ui" || i.type === "registry:component") && i.meta?.examples !== false)
@@ -16,6 +18,7 @@ if (real.length) {
 // With --measured <file> (CI writes one from the built site), the committed data must equal what the browser measures now.
 const at = process.argv.indexOf("--measured")
 if (at > 0) {
+  /** @type {Record<string, unknown>} */
   const now = JSON.parse(readFileSync(process.argv[at + 1], "utf8"))
   const names = [...new Set([...Object.keys(data), ...Object.keys(now)])].sort()
   const stale = names.filter((n) => JSON.stringify(data[n]) !== JSON.stringify(now[n]))

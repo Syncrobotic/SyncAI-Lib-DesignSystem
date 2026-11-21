@@ -8,6 +8,7 @@ import { readFileSync, readdirSync, statSync } from "node:fs"
 import { join } from "node:path"
 
 const ROOTS = process.argv.slice(2).length ? process.argv.slice(2) : ["registry"]
+/** @type {(dir: string) => string[]} */
 const walk = (dir) =>
   readdirSync(dir).flatMap((f) => {
     const p = join(dir, f)
@@ -15,6 +16,11 @@ const walk = (dir) =>
   })
 
 let bad = 0
+/**
+ * @param {string} file
+ * @param {number} line
+ * @param {string} msg
+ */
 const fail = (file, line, msg) => {
   console.error(`${file}:${line}  ${msg}`)
   bad++
@@ -24,9 +30,14 @@ for (const file of ROOTS.flatMap(walk)) {
   const src = readFileSync(file, "utf8")
   const lines = src.split("\n")
   // Class helpers defined in the file (const base = "press …", const zone = (z) => cn("press …"), const sides = { … animate-… })
+  /** @param {string} word */
   const helpers = (word) => [...src.matchAll(/(?:const|let)\s+(\w+)\s*=\s*(\{\n[\s\S]*?\n\}|[^\n]*)/g)].filter((m) => m[2].includes(word)).map((m) => m[1])
   const pressHelpers = helpers("press")
   const animHelpers = helpers("animate-")
+  /**
+   * @param {string} text
+   * @param {string[]} names
+   */
   const uses = (text, names) => names.some((n) => new RegExp(`[({\\[,\\s]${n}\\b`).test(text))
 
   // 1. Overlay contents and scrims
@@ -59,9 +70,9 @@ for (const file of ROOTS.flatMap(walk)) {
     if (/motion-ok:/.test((lines[i - 1] ?? "") + l)) return
     for (const m of l.matchAll(/(?<![\w-])(duration-\d+|ease-(?:in|out|in-out|linear)\b|delay-\d+)/g))
       fail(file, i + 1, `${m[0]}: use duration-(--motion-fast|base|sheet) and ease-(--ease-standard)`)
-    // 4. A duration token always travels with the curve; without it Tailwind's own default curve applies.
+    // 4. A duration token always travels with a curve token (standard, or exit for leaving); without it Tailwind's default applies.
     for (const m of l.matchAll(/["`][^"`\n]*duration-\(--motion-\w+\)[^"`\n]*["`]/g))
-      if (!m[0].includes("ease-(--ease-standard)")) fail(file, i + 1, "duration-(--motion-*) without ease-(--ease-standard) on the same element")
+      if (!/ease-\(--ease-(standard|exit)\)/.test(m[0])) fail(file, i + 1, "duration-(--motion-*) without ease-(--ease-standard) or, for an exit, ease-(--ease-exit) on the same element")
     // 5. Loops only while waiting: the Spinner (animate-spin), the skeleton's breath and the caret; all stop under reduced motion (theme).
     if (!file.endsWith("spinner.tsx"))
       for (const m of l.matchAll(/(?<![\w-])animate-(spin|pulse|ping|bounce)\b/g)) fail(file, i + 1, `${m[0]}: loops are only for waiting; use <Spinner /> (or Skeleton for a shape)`)

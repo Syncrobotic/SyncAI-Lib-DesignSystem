@@ -6,7 +6,6 @@ import { blockHref } from "@/site/block-types"
 import { getItem } from "@/site/catalog"
 import { CodeBlock } from "@/site/code-block"
 import { pageMeta } from "@/site/config"
-import { migrations } from "@/site/migrations"
 import { TokenTable, Pager } from "@/site/doc"
 import { H2, Inline, PageTitle } from "@/site/prose"
 
@@ -73,23 +72,6 @@ export default function UpgradingPage() {
       <p className="pt-3 text-sm text-muted-foreground">
         <Inline text="Across many products: in a checkout of the design system repository, `npm run adoption -- ../app-a ../app-b` (or `--github <org>` with the gh CLI) lists each product's items and versions, how far each is behind and the changelog lines in between." />
       </p>
-
-      <H2 id="guides">Upgrades that change your code</H2>
-      <p className="max-w-3xl pb-3 text-base">
-        <Inline text="When a new version needs changes in the code that uses an item, its page has a guide: the steps, a prompt for a coding agent and a checklist that must find nothing once you are done." />
-      </p>
-      <ul className="flex flex-col gap-2 text-sm">
-        {Object.entries(migrations).map(([name, m]) => (
-          <li key={name}>
-            <Link
-              href={`/docs/components/${name}#${m.id}`}
-              className="inline-flex min-h-(--h-sm) items-center underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground"
-            >
-              {getItem(name)?.title ?? name}: {m.title}
-            </Link>
-          </li>
-        ))}
-      </ul>
 
       <H2 id="current">Current versions</H2>
       <TokenTable

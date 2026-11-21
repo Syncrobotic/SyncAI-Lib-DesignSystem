@@ -8,9 +8,8 @@ import { CodeBlock } from "@/site/code-block"
 import { Reveal, AppearItem } from "@/site/appear"
 import { ExampleCard } from "@/site/example-card"
 import { Stage } from "@/site/examples"
-import { Dot, H2, Inline, Rules, Unbroken } from "@/site/prose"
+import { Dot, H2, Rules, Unbroken } from "@/site/prose"
 import { storySource } from "@/site/story-source"
-import { migrations } from "@/site/migrations"
 import { overviews } from "@/site/overview"
 import { getItem as findItem } from "@/site/catalog"
 import { BlockSection } from "@/site/block-section"
@@ -47,7 +46,7 @@ type Props = { params: Promise<{ name: string }> }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const item = getItem((await params).name)
   if (!item) return {}
-  const title = `${item.title} — React ${item.group === "Hooks" ? "hook" : "component"}`
+  const title = `${item.title} — React ${item.group === "Hooks & libraries" ? "hook" : "component"}`
   return pageMeta({ title, description: item.description ?? `${item.title} for the SYNCROBOTIC design system.`, path: `/docs/components/${item.name}` })
 }
 
@@ -71,8 +70,6 @@ export default async function ComponentPage({ params }: Props) {
   const deps = [...(("dependencies" in item && item.dependencies) || []), ...(("registryDependencies" in item && item.registryDependencies) || [])]
 
   const overview = overviews[item.name]
-  // An upgrade that makes products change their own code: its steps, a prompt for an agent and a grep checklist.
-  const migration = migrations[item.name]
   // Skip the overview's line when it only repeats the description above, word for word or nearly.
   const what = overview && !repeats(overview.what, item.description ?? "")
   const install = `npx shadcn add @syncrobotic/${item.name}`
@@ -220,41 +217,6 @@ export default async function ComponentPage({ params }: Props) {
               <Rules rules={item.rules} />
             </AppearItem>
           </Reveal>
-        </>
-      )}
-
-      {migration && (
-        <>
-          <H2 id={migration.id}>{migration.title}</H2>
-          <p className="max-w-3xl pb-4 text-base">
-            <Inline text={migration.lead} />
-          </p>
-          <ol className="flex max-w-3xl list-decimal flex-col gap-2 pl-6 text-sm marker:text-muted-foreground">
-            {migration.steps.map((s) => (
-              <li key={s} className="pl-1">
-                <Inline text={s} />
-              </li>
-            ))}
-          </ol>
-          <div className="flex flex-col gap-4 pt-6">
-            <CodeBlock code={migration.before} title={`Before · ${migration.from}`} />
-            <CodeBlock code={migration.after} title={`After · ${migration.to}`} />
-          </div>
-          <h3 id={`${migration.id}-compiler`} className="scroll-mt-20 pt-8 pb-3 text-lg font-bold">
-            With the React Compiler
-          </h3>
-          <Rules rules={migration.compiler} />
-          <div className="pt-4">
-            <CodeBlock code={migration.compilerExample} title="picked-cell.tsx" />
-          </div>
-          <h3 id={`${migration.id}-prompt`} className="scroll-mt-20 pt-8 pb-3 text-lg font-bold">
-            Hand it to a coding agent
-          </h3>
-          <CodeBlock code={migration.prompt} lang="bash" title="Prompt" />
-          <h3 id={`${migration.id}-check`} className="scroll-mt-20 pt-8 pb-3 text-lg font-bold">
-            Check that nothing is left
-          </h3>
-          <CodeBlock code={migration.grep} lang="bash" title="Terminal" />
         </>
       )}
 

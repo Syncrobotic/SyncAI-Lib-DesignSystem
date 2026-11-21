@@ -2,12 +2,13 @@ import { blocksOfType } from "./blocks"
 import { blockGroups, blockTypes, patternsOf } from "./block-types"
 import { groups as itemGroups, items, storyNames, storyTitle } from "./catalog"
 import { foundations } from "./foundations"
+import { iconCategories, iconCount } from "./icons"
 
-// The site's three areas. The header links to each; the sidebar shows only the area you are in.
+// The site's areas, as ReUI and shadcn name them: Docs, Components, Blocks. The header links to each; the sidebar shows only the area you are in.
 export type NavLink = {
   href: string
   label: string
-  /** In-page anchors, listed under the link while its page is open. */ sections?: { href: string; label: string }[]
+  /** In-page anchors or filters (?category=…), listed under the link while its page is open; `count` shows beside one. */ sections?: { href: string; label: string; count?: number }[]
   /** A beta item: its API may still change in a minor release. */ beta?: boolean
 }
 export type NavGroup = { title: string; links: NavLink[] }
@@ -15,17 +16,18 @@ export type Scope = { key: string; label: string; href: string; match: string[];
 
 export const scopes: Scope[] = [
   {
-    key: "foundations",
-    label: "Foundations",
-    href: "/docs/foundations",
-    match: ["/docs/foundations", "/docs/installation", "/docs/robotics", "/docs/nextjs", "/docs/localisation", "/docs/tokens", "/docs/upgrading", "/docs/ai"],
+    key: "docs",
+    label: "Docs",
+    href: "/docs",
+    match: ["/docs", "/docs/foundations", "/docs/installation", "/docs/robotics", "/docs/ros", "/docs/nextjs", "/docs/localisation", "/docs/tokens", "/docs/upgrading", "/docs/ai"],
     groups: [
       {
         title: "Getting started",
         links: [
-          { href: "/docs/foundations", label: "Overview" },
+          { href: "/docs", label: "Introduction" },
           { href: "/docs/installation", label: "Installation" },
           { href: "/docs/robotics", label: "Robotics UI kit" },
+          { href: "/docs/ros", label: "Connect to ROS" },
           { href: "/docs/nextjs", label: "Next.js" },
           { href: "/docs/localisation", label: "Localisation" },
           { href: "/docs/tokens", label: "Design tokens" },
@@ -97,7 +99,12 @@ export const scopes: Scope[] = [
       {
         title: "Browse",
         links: [
-          { href: "/icons", label: "Kit icons" },
+          {
+            href: "/icons",
+            label: "Kit icons",
+            // The categories, as the page's sections: picking one filters the grid (the gallery reads ?category=).
+            sections: [{ href: "/icons", label: "All icons", count: iconCount }, ...iconCategories.map((c) => ({ href: `/icons?category=${c.slug}`, label: c.title, count: c.count }))],
+          },
           { href: "/icons/lucide", label: "All Lucide" },
         ],
       },

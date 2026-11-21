@@ -41,7 +41,7 @@ const lineage: TreeNode[] = [
 ]
 
 export const TreeLineage: S = {
-  render: () => <Tree label="Lineage of Picking detector v3.2" items={lineage} expandAll />,
+  render: () => <Tree className="w-full max-w-sm" label="Lineage of Picking detector v3.2" items={lineage} expandAll />,
 }
 
 const collections: TreeNode[] = [
@@ -69,7 +69,7 @@ const collections: TreeNode[] = [
 ]
 
 export const TreeCollapsed: S = {
-  render: () => <Tree label="Collections" items={collections} />,
+  render: () => <Tree className="w-full max-w-sm" label="Collections" items={collections} />,
 }
 
 const files: TreeNode[] = [
@@ -103,7 +103,7 @@ function Explorer() {
   const [selected, setSelected] = React.useState("labels/boxes.json")
   return (
     <div className="flex flex-col gap-2">
-      <Tree mode="select" label="Dataset files" items={files} defaultExpanded={["images", "labels"]} selectedId={selected} onSelectedChange={setSelected} />
+      <Tree className="w-full max-w-sm" mode="select" label="Dataset files" items={files} defaultExpanded={["images", "labels"]} selectedId={selected} onSelectedChange={setSelected} />
       <p className="text-xs text-muted-foreground">
         Open: <span className="font-medium text-foreground">{selected}</span>
       </p>
@@ -129,7 +129,7 @@ const restricted: TreeNode[] = [
 ]
 
 export const TreeDisabled: S = {
-  render: () => <Tree mode="select" label="Capture folders" items={restricted} defaultExpanded={["captures"]} defaultSelectedId="captures/forklift-lane" />,
+  render: () => <Tree className="w-full max-w-sm" mode="select" label="Capture folders" items={restricted} defaultExpanded={["captures"]} defaultSelectedId="captures/forklift-lane" />,
 }
 
 export const TreeEmpty: S = {

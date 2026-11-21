@@ -19,9 +19,17 @@ const ROOT = fileURLToPath(new URL("..", import.meta.url))
 
 // ---------- Pure logic (unit-tested in tests/unit/adoption.test.ts) ----------
 
+// Only the fields of a registry item the scanner reads, so the tests can pass small items without files.
+/** @typedef {{ name: string; type: string; meta?: { status?: string; version?: string; changelog?: import("./types.js").ChangelogEntry[] } }} Item */
+/** @typedef {{ version: string; lines: string[] }} Section */
+/** @typedef {{ behind: boolean; ahead: boolean; majors: number; minors: number; patches: number }} Distance */
+/** @typedef {{ name: string; version: string; file: string }} Found */
+/** @typedef {{ version: string; text: string | undefined; source: string }} Change */
+
 // The header within the first lines of a file: `// @syncrobotic/<name> v<version>`, or the same in a CSS comment.
 const HEADER = /^\s*(?:\/\/|\/\*)\s*@syncrobotic\/([a-z0-9][a-z0-9-]*)\s+v(\d+\.\d+\.\d+)\b/
 
+/** @param {string} text */
 export function parseHeader(text) {
   for (const line of text.replace(/^﻿/, "").split("\n").slice(0, 3)) {
     const m = HEADER.exec(line)
@@ -30,16 +38,26 @@ export function parseHeader(text) {
   return null
 }
 
+/** @param {string} v */
 const parts = (v) => v.split(".").map(Number)
 
-/** -1, 0 or 1, like a sort comparator. */
+/**
+ * -1, 0 or 1, like a sort comparator.
+ * @param {string} a
+ * @param {string} b
+ */
 export function compareVersions(a, b) {
   const [x, y] = [parts(a), parts(b)]
   for (let i = 0; i < 3; i++) if (x[i] !== y[i]) return x[i] < y[i] ? -1 : 1
   return 0
 }
 
-/** How far `installed` is from `latest`: whole majors, minors within the same major, patches within the same minor. */
+/**
+ * How far `installed` is from `latest`: whole majors, minors within the same major, patches within the same minor.
+ * @param {string} installed
+ * @param {string} latest
+ * @returns {Distance}
+ */
 export function distance(installed, latest) {
   const [a, b] = [parts(installed), parts(latest)]
   const cmp = compareVersions(installed, latest)
@@ -49,7 +67,12 @@ export function distance(installed, latest) {
   return { behind: true, ahead: false, majors: 0, minors: 0, patches: b[2] - a[2] }
 }
 
+/**
+ * @param {number} n
+ * @param {string} word
+ */
 const plural = (n, word) => `${n} ${word}${n === 1 ? "" : "s"}`
+/** @param {Distance} d */
 export function describeDistance(d) {
   if (d.ahead) return "ahead"
   if (!d.behind) return "current"
@@ -59,8 +82,11 @@ export function describeDistance(d) {
 }
 
 /** CHANGELOG.md as sections: "## 0.18.0 · 2026-11-19" up to the next "## " (as scripts/release-notes.mjs reads it). */
+/** @param {string} text */
 export function parseChangelog(text) {
+  /** @type {Section[]} */
   const sections = []
+  /** @type {Section | null} */
   let current = null
   for (const line of text.split("\n")) {
     if (line.startsWith("## ")) {
@@ -76,10 +102,14 @@ export function parseChangelog(text) {
  * What changed for `name` after `from`, up to and including `to`, oldest first. For each version: the CHANGELOG.md
  * bullets that name the item in backticks (`tree`, **`tree`**); where none do, the item's own registry changelog note
  * for that version (the theme, for one, is mostly called "the theme" in CHANGELOG.md).
+ * @param {{ sections: Section[]; item: Item | undefined; name: string; from: string; to: string }} args
+ * @returns {Change[]}
  */
 export function changesBetween({ sections, item, name, from, to }) {
+  /** @param {string} v */
   const inRange = (v) => compareVersions(v, from) > 0 && compareVersions(v, to) <= 0
   const mark = "`" + name + "`"
+  /** @type {Map<string, string[]>} */
   const bullets = new Map()
   for (const s of sections.filter((s) => inRange(s.version))) {
     const hits = s.lines.filter((l) => l.startsWith("- ") && l.includes(mark)).map((l) => l.slice(2).trim())
@@ -89,12 +119,15 @@ export function changesBetween({ sections, item, name, from, to }) {
   const versions = [...new Set([...bullets.keys(), ...notes.keys()])].sort(compareVersions)
   return versions.flatMap((v) =>
     bullets.has(v)
-      ? bullets.get(v).map((text) => ({ version: v, text, source: "CHANGELOG.md" }))
+      ? /** @type {string[]} */ (bullets.get(v)).map((text) => ({ version: v, text, source: "CHANGELOG.md" }))
       : [{ version: v, text: notes.get(v), source: "registry.json" }],
   )
 }
 
-/** beta / stable from meta.status; blocks have no status (you copy them and make them yours). */
+/**
+ * beta / stable from meta.status; blocks have no status (you copy them and make them yours).
+ * @param {Item | undefined} item
+ */
 export function statusOf(item) {
   if (!item) return "unknown"
   if (item.meta?.status === "beta") return "beta"
@@ -105,9 +138,13 @@ export function statusOf(item) {
 /**
  * One repo's report from the headers found in it ({ name, version, file }), against the registry and the changelog.
  * An item installed in several files at different versions is reported at its oldest, with every version listed.
+ * @param {Found[]} found
+ * @param {{ items: Item[] }} registry
+ * @param {Section[]} sections
  */
 export function report(found, registry, sections) {
   const byName = new Map(registry.items.map((i) => [i.name, i]))
+  /** @type {Map<string, { name: string; versions: Set<string>; files: string[] }>} */
   const grouped = new Map()
   for (const f of found) {
     const g = grouped.get(f.name) ?? { name: f.name, versions: new Set(), files: [] }
@@ -133,8 +170,9 @@ export function report(found, registry, sections) {
         majorsBehind: d?.majors ?? 0,
         minorsBehind: d?.minors ?? 0,
         patchesBehind: d?.patches ?? 0,
-        state: !item ? "not in registry" : describeDistance(d),
-        changes: d?.behind ? changesBetween({ sections, item, name: g.name, from: installed, to: latest }) : [],
+        // An item in the registry has a version, so `d` and `latest` are set wherever they are read below.
+        state: !item ? "not in registry" : describeDistance(/** @type {Distance} */ (d)),
+        changes: d?.behind ? changesBetween({ sections, item, name: g.name, from: installed, to: /** @type {string} */ (latest) }) : [],
         files: g.files.sort(),
       }
     })
@@ -151,8 +189,14 @@ export function report(found, registry, sections) {
   }
 }
 
-/** Across repos: how many use each item, and how many of those are behind. */
+/** @typedef {ReturnType<typeof report>} Report */
+
+/**
+ * Across repos: how many use each item, and how many of those are behind.
+ * @param {(Report & { repo?: string })[]} repos
+ */
 export function summarize(repos) {
+  /** @type {Map<string, { name: string; repos: number; behind: number; latest: string | null; status: string }>} */
   const use = new Map()
   for (const r of repos)
     for (const i of r.items) {
@@ -177,6 +221,7 @@ export function summarize(repos) {
 const SKIP = new Set(["node_modules", ".git", ".next", ".turbo", ".vercel", "dist", "build", "out", "coverage", "storybook-static", ".cache"])
 const SOURCE = /\.(tsx?|jsx?|mjs|cjs|css|scss)$/
 
+/** @param {string} file */
 function head(file) {
   const fd = openSync(file, "r")
   try {
@@ -188,9 +233,14 @@ function head(file) {
   }
 }
 
-/** Every header under `dir`, skipping dependencies and build output. Symlinks are not followed. */
+/**
+ * Every header under `dir`, skipping dependencies and build output. Symlinks are not followed.
+ * @param {string} dir
+ */
 export function scanDir(dir) {
+  /** @type {Found[]} */
   const found = []
+  /** @param {string} d */
   const walk = (d) => {
     let entries
     try {
@@ -212,9 +262,11 @@ export function scanDir(dir) {
   return found
 }
 
+/** @param {string[]} args */
 function gh(args) {
   const r = spawnSync("gh", args, { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 })
-  if (r.error) return { ok: false, missing: r.error.code === "ENOENT", out: "", err: String(r.error.message) }
+  // A failed spawn is a system error, which carries the errno code (ENOENT when gh is not installed).
+  if (r.error) return { ok: false, missing: /** @type {NodeJS.ErrnoException} */ (r.error).code === "ENOENT", out: "", err: String(r.error.message) }
   return { ok: r.status === 0, missing: false, out: r.stdout, err: r.stderr }
 }
 
@@ -222,6 +274,7 @@ function gh(args) {
  * Every repo of `org` with a file mentioning "@syncrobotic/", through GitHub code search (default branches only; the
  * API returns at most 1000 results). Each hit's first line is read to find its header. Null when gh is missing or not
  * signed in: the scan goes on with the local directories.
+ * @param {string} org
  */
 export function scanGithub(org, log = console.error) {
   const auth = gh(["auth", "status"])
@@ -244,6 +297,7 @@ export function scanGithub(org, log = console.error) {
     log(`--github ${org}: code search failed: ${search.err.trim().split("\n")[0]}`)
     return null
   }
+  /** @type {Map<string, Found[]>} */
   const repos = new Map()
   for (const line of search.out.split("\n").filter(Boolean)) {
     const [repo, path, sha] = line.split("\t")
@@ -252,22 +306,33 @@ export function scanGithub(org, log = console.error) {
     if (!blob.ok) continue
     const h = parseHeader(Buffer.from(blob.out.replace(/\s/g, ""), "base64").toString("utf8"))
     if (!h) continue
-    if (!repos.has(repo)) repos.set(repo, [])
-    repos.get(repo).push({ ...h, file: path })
+    const list = repos.get(repo) ?? []
+    repos.set(repo, list)
+    list.push({ ...h, file: path })
   }
   return [...repos.entries()].map(([repo, found]) => ({ repo, source: `github:${repo}`, found }))
 }
 
 // ---------- Output ----------
 
+/** @param {string[][]} rows */
 function table(rows) {
   const widths = rows[0].map((_, c) => Math.max(...rows.map((r) => r[c].length)))
   return rows.map((r) => "  " + r.map((cell, c) => cell.padEnd(widths[c])).join("  ").trimEnd()).join("\n")
 }
 
+/**
+ * @param {string} s
+ * @param {number} [n]
+ */
 const clip = (s, n = 180) => (s.length > n ? s.slice(0, n - 1) + "…" : s)
 
+/**
+ * @param {(Report & { repo: string; source: string })[]} repos
+ * @param {ReturnType<typeof summarize>} summary
+ */
 export function formatText(repos, summary) {
+  /** @type {string[]} */
   const out = []
   for (const r of repos) {
     out.push(`${r.repo}  (${r.source})`)
@@ -292,7 +357,8 @@ export function formatText(repos, summary) {
       out.push("", "  Changes since the installed version:")
       for (const i of late) {
         out.push(`  ${i.name} ${i.installed} → ${i.latest}   npx shadcn add @syncrobotic/${i.name} --overwrite`)
-        for (const c of i.changes) out.push(`    ${c.version}  ${clip(c.text)}`)
+        // Each change has its text: a CHANGELOG.md bullet, or the registry note for a version that has one.
+        for (const c of i.changes) out.push(`    ${c.version}  ${clip(/** @type {string} */ (c.text))}`)
         if (!i.changes.length) out.push("    (no changelog lines found)")
       }
     }
@@ -310,7 +376,9 @@ export function formatText(repos, summary) {
 
 // ---------- CLI ----------
 
+/** @param {string[]} argv */
 function parseArgs(argv) {
+  /** @type {{ dirs: string[]; orgs: string[]; json: boolean; help: boolean }} */
   const opts = { dirs: [], orgs: [], json: false, help: false }
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i]
@@ -341,16 +409,19 @@ function main() {
   try {
     opts = parseArgs(process.argv.slice(2))
   } catch (e) {
-    console.error(`${e.message}\n\n${usage}`)
+    // parseArgs throws only its own Errors.
+    console.error(`${/** @type {Error} */ (e).message}\n\n${usage}`)
     process.exit(2)
   }
   if (opts.help) {
     console.log(usage)
     return
   }
+  /** @type {{ items: Item[] }} */
   const registry = JSON.parse(readFileSync(join(ROOT, "registry.json"), "utf8"))
   const sections = parseChangelog(readFileSync(join(ROOT, "CHANGELOG.md"), "utf8"))
 
+  /** @type {{ repo: string; source: string; found: Found[] }[]} */
   const sources = []
   for (const d of opts.dirs) {
     const abs = resolve(d)

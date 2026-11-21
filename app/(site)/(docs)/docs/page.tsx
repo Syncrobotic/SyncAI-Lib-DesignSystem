@@ -7,7 +7,7 @@ import { foundations, startNeighbours } from "@/site/foundations"
 const description =
   "The SYNCROBOTIC design language: principles, colour, typography, spacing, radius, elevation, motion, iconography, accessibility, alarms and data visualisation, shared by every product team."
 
-export const metadata: Metadata = pageMeta({ title: "Foundations — design language", description, path: "/docs/foundations" })
+export const metadata: Metadata = pageMeta({ title: "Docs", description, path: "/docs" })
 
 export default function FoundationsPage() {
   return (
@@ -34,7 +34,7 @@ export default function FoundationsPage() {
           ))}
         </div>
       </Section>
-      <Pager {...startNeighbours("/docs/foundations")} />
+      <Pager {...startNeighbours("/docs")} />
     </article>
   )
 }

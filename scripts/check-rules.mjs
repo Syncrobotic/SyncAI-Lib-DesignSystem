@@ -21,6 +21,7 @@ import { readFileSync, readdirSync, statSync } from "node:fs"
 import { join } from "node:path"
 
 const ROOTS = process.argv.slice(2).length ? process.argv.slice(2) : ["registry", "site", "app", "stories"]
+/** @type {(dir: string) => string[]} */
 const walk = (dir) =>
   readdirSync(dir).flatMap((f) => {
     const p = join(dir, f)
@@ -28,6 +29,11 @@ const walk = (dir) =>
   })
 
 let bad = 0
+/**
+ * @param {string} file
+ * @param {number} line
+ * @param {string} msg
+ */
 const fail = (file, line, msg) => {
   console.error(`${file}:${line}  ${msg}`)
   bad++
@@ -39,6 +45,10 @@ const STATE = /(?:^|:)(?:focus-visible|focus|focus-within|data-\[highlighted\]|d
 const WRAPPER = /(?:^|:)(?:has-focus-visible|has-\[[^\]]*focus-visible[^\]]*\])(?::|$)/
 const DRAWS = /^-?(?:outline-(?!none$|hidden$|offset)|outline$|ring(?:-|$)|border(?:-|$)|underline|decoration-|shadow)/
 // Splits a class at its last colon outside brackets: variants, then the utility.
+/**
+ * @param {string} token
+ * @returns {[string, string]}
+ */
 const split = (token) => {
   let depth = 0
   for (let i = token.length - 1; i >= 0; i--) {
@@ -49,6 +59,7 @@ const split = (token) => {
   }
   return ["", token]
 }
+/** @param {string} text */
 export const showsFocus = (text) =>
   text
     .split(/[\s"'`,{}]+/)
@@ -77,7 +88,12 @@ for (const file of ROOTS.flatMap(walk)) {
       }
       // A class list split over several strings in cn(…): look at its neighbours too.
       // Only lines that are themselves class strings (each starts with a quote), not a neighbouring element.
+      /**
+       * @param {number} from
+       * @param {number} step
+       */
       const strings = (from, step) => {
+        /** @type {string[]} */
         const out = []
         for (let j = from; j >= 0 && j < lines.length && Math.abs(j - i) <= 3; j += step) {
           if (!/^\s*["'`]/.test(lines[j])) break

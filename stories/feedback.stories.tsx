@@ -252,7 +252,7 @@ function QueueDemo() {
       >
         Finish 4 patrols at once
       </Button>
-      <p className="text-xs text-muted-foreground">At most three show; the oldest makes room.</p>
+      <p className="text-xs text-muted-foreground">Three show, newest in front; the fourth waits behind them. Hover the stack to spread it out.</p>
       <Toaster />
     </div>
   )
