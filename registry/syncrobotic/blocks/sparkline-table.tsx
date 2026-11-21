@@ -1,7 +1,6 @@
-// @syncrobotic/sparkline-table v0.17.2 · update: npx shadcn add @syncrobotic/sparkline-table --overwrite
+// @syncrobotic/sparkline-table v0.17.3 · update: npx shadcn add @syncrobotic/sparkline-table --overwrite
 "use client"
 
-import * as React from "react"
 import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
 

@@ -27,6 +27,9 @@ const sizes = [
   { value: "24", cls: "[&_svg]:size-6" },
 ] as const
 
+// Whether this is the client never changes once it is, so there is nothing to subscribe to.
+const subscribeNothing = () => () => {}
+
 /**
  * Icons as a grid of tiles. Search matches the name and, in the kit's set, the meaning ("dock" finds ChargingDock).
  * Picking a tile opens its details: the drawing at every size, what it means, and what to copy. On wide screens the
@@ -36,15 +39,19 @@ export function IconGallery({ groups, total, placeholder, markKit = false }: { g
   const [query, setQuery] = React.useState("")
   const [size, setSize] = React.useState<(typeof sizes)[number]["value"]>("24")
   const [picked, setPicked] = React.useState<GalleryIcon | null>(null)
-  // Arriving from the site search (?icon=Battery): find that icon and open its details.
-  React.useEffect(() => {
+  // Arriving from the site search (?icon=Battery): find that icon and open its details. It is done once per groups, on
+  // the client after hydration, during render rather than in an effect that renders twice.
+  const client = React.useSyncExternalStore(subscribeNothing, () => true, () => false)
+  const [seeded, setSeeded] = React.useState<GalleryGroup[] | null>(null)
+  if (client && seeded !== groups) {
+    setSeeded(groups)
     const name = new URLSearchParams(window.location.search).get("icon")
-    if (!name) return
-    const hit = groups.flatMap((g) => g.icons).find((i) => i.name === name)
-    if (!hit) return
-    setQuery(name)
-    setPicked(hit)
-  }, [groups])
+    const hit = name ? groups.flatMap((g) => g.icons).find((i) => i.name === name) : undefined
+    if (name && hit) {
+      setQuery(name)
+      setPicked(hit)
+    }
+  }
   React.useEffect(() => {
     if (!picked) return
     const close = (e: KeyboardEvent) => e.key === "Escape" && setPicked(null)

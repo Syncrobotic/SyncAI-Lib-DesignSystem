@@ -1,7 +1,6 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react"
-import { FileArchive, FileImage, FileJson, FileText, FileVideo, FolderOpen, Forklift, MapPin, Warehouse } from "lucide-react"
-import { MobileRobot, RobotArm } from "@/registry/syncrobotic/ui/robot-icons"
+import { FileArchive, FileImage, FileJson, FileText, FileVideo, FolderOpen } from "lucide-react"
 import { Tree, type TreeNode } from "@/registry/syncrobotic/ui/tree"
 
 const meta: Meta = { title: "Navigation/Tree" }

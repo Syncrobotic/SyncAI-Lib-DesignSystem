@@ -88,7 +88,7 @@ The milestones are themes, not version numbers, listed by number. 0.4 to 0.9 and
 - [x] Accessibility data measured in CI (`a11y-data`), so the Accessibility tab cannot drift from the components
 - [x] Charts: graphite and the brand indigo (C3), every series at least 3:1 and told apart by line style too
 - [x] Alarms redesigned as aligned rows; low priority is a diamond, so no two priorities share a round outline; the list has loading and error states that never read as "no alarms"
-- [x] Brand assets page (`/brand`): logos, colours, use in web and app interfaces; product photos to follow
+- [x] Brand assets page (`/brand`): logos, colours, use in web and app interfaces
 
 ### 1.0 · Public, source-available
 - [x] Licence (all rights reserved, source-available), CONTRIBUTING, SECURITY

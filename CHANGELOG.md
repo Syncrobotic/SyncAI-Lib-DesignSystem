@@ -2,6 +2,29 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.23.1 · 2026-11-21
+
+Engineering: every item now passes the React Compiler's rules and compiles with `noUnusedLocals` and `noImplicitReturns`. No API changed.
+
+### Fixed
+- **Safe under the React Compiler.** A product that builds with `reactCompiler: true` compiles the kit's source with its own; components that read or wrote refs while rendering, set state synchronously in an effect, or called `Date.now()` during render were skipped or could misbehave. Fixed with React's own patterns, behaviour unchanged except that a reset on a new prop now lands in the same render instead of one commit later (no stale frame):
+  - state kept from the previous render instead of a ref: `field`, `choice-field` (a fixed error fades out), `island`, `image-grid` (the lightbox's last picture), `data-grid` (the selection count while it leaves);
+  - a reset when a prop changes, during render: `autocomplete`, `time-picker`, `media-player`, `route-progress`, `notification-center`, `camera-feed`, `use-presence`;
+  - `useSyncExternalStore` for browser-only facts: `app-shell` (Mac or not), `list-detail` (the first robot selected on wide screens);
+  - latest values in a layout effect or `useEffectEvent`: `teleop-pad`, `robot-map`, `camera-feed`; `use-debounce` keeps its timer in a closure; `use-long-press` declares its loop where it is used; `input-group`, `tree` (type-ahead times by the key event), `graph`, `filters`, `attachment`.
+  - `data-grid`'s virtualiser (TanStack Virtual) is a library the compiler cannot optimise; it is left uncompiled on purpose, with the reason in the source.
+- **Compiles with `noUnusedLocals` and `noImplicitReturns`:** no unused React import in `agent-trace`, `card-mission`, `card-site`, `heatmap-zones`, `radial-chart-capacity`, `robot-status-card`, `sheet-robot-detail`, `sparkline-robot-list`, `sparkline-table`, `stats-cards`, `stats-meters`, `status-tracker-rollout`, `status-tracker-runs`, `form`, `status-glyph`, `load-more`, `meter`, `share-bar`, `theme-toggle`; `settings-webhooks` returns explicitly.
+
+Re-install the items above (`npx shadcn add @syncrobotic/<item> --overwrite`); the version in each file's header says whether you have it.
+
+### Changed (repository)
+- **ESLint** (TypeScript recommended, React hooks with the compiler rules) runs in CI as `npm run lint`.
+- **TypeScript:** `noUnusedLocals`, `noUnusedParameters`, `noImplicitReturns`, `noFallthroughCasesInSwitch`, `noImplicitOverride`; no `baseUrl` (deprecated in TypeScript 6).
+- **Docs site security headers:** `frame-ancestors 'self'`, `X-Frame-Options`, `nosniff`, `Referrer-Policy`, `Permissions-Policy` (fullscreen and the clipboard stay allowed).
+- **visual-baseline** starts `ci` on the commit it pushes, so a release no longer waits on a check that never runs.
+- Node 22 pinned (`.nvmrc`, `engines`).
+- `/brand`: the product-photos placeholder is gone; no photos are planned.
+
 ## 0.23.0 · 2026-11-20
 
 What robot products need that no other kit has (a live camera, a dead-man drive pad, a site map), and every component's words translatable.

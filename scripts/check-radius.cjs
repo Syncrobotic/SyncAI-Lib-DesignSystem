@@ -47,7 +47,7 @@ const pages = ['/', '/blocks', '/docs/foundations', ...['principles','color','ty
     for (const h of hits) { const k = h.inner + ' IN ' + h.outer; if (!found.has(k)) found.set(k, { ...h, pages: [] }); const f = found.get(k); if (f.pages.length < 3 && !f.pages.includes(u)) f.pages.push(u) }
   }
   console.log('pages checked', n, 'distinct issues', found.size);
-  for (const [k, v] of found) console.log(`inner r${v.ri} in outer r${v.ro}, gap ${v.gap} → inner should be ≤ ${v.want}\n   ${v.inner}\n   in ${v.outer}\n   e.g. ${v.pages.join(' ')}`);
+  for (const v of found.values()) console.log(`inner r${v.ri} in outer r${v.ro}, gap ${v.gap} → inner should be ≤ ${v.want}\n   ${v.inner}\n   in ${v.outer}\n   e.g. ${v.pages.join(' ')}`);
   await b.close();
   process.exit(found.size ? 1 : 0);
 })();

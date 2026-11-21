@@ -1,4 +1,4 @@
-// @syncrobotic/attachment v0.23.0 · update: npx shadcn add @syncrobotic/attachment --overwrite
+// @syncrobotic/attachment v0.23.1 · update: npx shadcn add @syncrobotic/attachment --overwrite
 "use client"
 
 import * as React from "react"
@@ -104,7 +104,6 @@ export function Attachment({
       <figure data-slot="attachment" data-status={status} onAnimationEnd={onAnimationEnd} className={cn("group relative flex w-28 flex-col gap-1", className)}>
         <div className={cn("relative aspect-square overflow-hidden rounded-sm bg-muted ring-1 ring-border", status === "error" && "ring-2 ring-danger")}>
           {previewUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element -- a local object URL preview
             <img src={previewUrl} alt="" className="size-full object-cover" />
           ) : (
             <span className="flex size-full items-center justify-center">

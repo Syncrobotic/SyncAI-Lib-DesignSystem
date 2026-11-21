@@ -1,7 +1,6 @@
-// @syncrobotic/status-tracker-runs v0.17.2 · update: npx shadcn add @syncrobotic/status-tracker-runs --overwrite
+// @syncrobotic/status-tracker-runs v0.17.3 · update: npx shadcn add @syncrobotic/status-tracker-runs --overwrite
 "use client"
 
-import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 

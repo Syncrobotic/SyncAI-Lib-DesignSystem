@@ -1,4 +1,4 @@
-// @syncrobotic/list-detail v0.17.3 · update: npx shadcn add @syncrobotic/list-detail --overwrite
+// @syncrobotic/list-detail v0.17.4 · update: npx shadcn add @syncrobotic/list-detail --overwrite
 "use client"
 
 import * as React from "react"
@@ -25,14 +25,21 @@ const status: Record<Robot["status"], { tone: Status; label: string }> = {
   offline: { tone: "offline", label: "Offline" },
 }
 
+// Whether this is the client never changes once it is, so there is nothing to subscribe to.
+const subscribeNothing = () => () => {}
+
 /** List and detail: pick a robot on the left, read and act on it on the right. On phones the detail replaces the list. */
 export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
   const [query, setQuery] = React.useState("")
   const [selected, setSelected] = React.useState<string | null>(null)
-  // Wide screens open on the first robot; phones start on the list.
-  React.useEffect(() => {
+  // Wide screens open on the first robot; phones start on the list. It is decided once per robots list, on the client
+  // (the server and the hydrating render start on the list), during render rather than in an effect that renders twice.
+  const client = React.useSyncExternalStore(subscribeNothing, () => true, () => false)
+  const [seeded, setSeeded] = React.useState<Robot[] | null>(null)
+  if (client && seeded !== robots) {
+    setSeeded(robots)
     if (window.matchMedia("(min-width: 48rem)").matches) setSelected((s) => s ?? robots[0]?.id ?? null)
-  }, [robots])
+  }
   const shown = robots.filter((r) => `${r.name} ${r.site}`.toLowerCase().includes(query.toLowerCase()))
   const robot = robots.find((r) => r.id === selected)
 

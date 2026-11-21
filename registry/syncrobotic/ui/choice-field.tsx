@@ -1,4 +1,4 @@
-// @syncrobotic/choice-field v0.15.0 · update: npx shadcn add @syncrobotic/choice-field --overwrite
+// @syncrobotic/choice-field v0.15.1 · update: npx shadcn add @syncrobotic/choice-field --overwrite
 "use client"
 
 import * as React from "react"
@@ -24,9 +24,11 @@ export function FieldSet({
 }) {
   const id = React.useId()
   const note = error ?? hint
-  const last = React.useRef<{ note: React.ReactNode; error: boolean }>({ note: null, error: false })
-  if (note) last.current = { note, error: !!error }
-  const shown = note ? { note, error: !!error } : last.current
+  // The last note stays in the closing line while it fades. It is state set during render, not a ref, so the React
+  // Compiler can see the value the markup depends on.
+  const [last, setLast] = React.useState<{ note: React.ReactNode; error: boolean }>({ note: null, error: false })
+  if (note && (last.note !== note || last.error !== !!error)) setLast({ note, error: !!error })
+  const shown = note ? { note, error: !!error } : last
   return (
     <fieldset
       data-slot="fieldset"

@@ -19,6 +19,23 @@ const config: NextConfig = {
       { source: "/docs/icons", destination: "/icons", permanent: true },
     ]
   },
+  // Security headers on every response. The docs show blocks in iframes of their own pages, so framing is allowed from
+  // this origin only. No script-src: the theme script runs inline before paint, and a nonce would make every page dynamic.
+  // Fullscreen (media player, camera feed) and the clipboard (copy buttons) stay allowed.
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "Content-Security-Policy", value: "frame-ancestors 'self'; base-uri 'self'; object-src 'none'; form-action 'self'" },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()" },
+        ],
+      },
+    ]
+  },
   // Stories import fn() from @storybook/test. The site only needs a no-op, not the test runtime.
   turbopack: {
     resolveAlias: { "@storybook/test": "./site/shims/storybook-test.ts" },

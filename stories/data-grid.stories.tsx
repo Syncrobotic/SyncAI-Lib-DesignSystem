@@ -122,6 +122,9 @@ const totalsColumns: ColumnDef<Robot>[] = [
 
 function useGrid(data: Robot[], cols: ColumnDef<Robot>[], extra: Partial<TableOptions<Robot>> = {}) {
   const [sorting, setSorting] = React.useState<SortingState>([])
+  // The compiler leaves this hook unmemoized because the table instance is mutated in place; that is the intended
+  // result, and TanStack Table has no compiler-friendly API to use instead.
+  // eslint-disable-next-line react-hooks/incompatible-library -- TanStack Table's useReactTable, skipped on purpose.
   return useReactTable({
     data,
     columns: cols,

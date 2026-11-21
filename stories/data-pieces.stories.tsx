@@ -92,7 +92,6 @@ function Mosaic({ prefix }: { prefix: string }) {
   return (
     <span aria-label="Four sample images" role="img" className="grid aspect-4/3 w-full grid-cols-2 grid-rows-2 gap-px overflow-hidden rounded-sm bg-border">
       {[0, 1, 2, 3].map((i) => (
-        // eslint-disable-next-line @next/next/no-img-element -- a drawn placeholder, not a page image
         <img key={i} src={placeholderPhoto(i + 2, `${prefix}-${i + 1}`)} alt="" className="size-full object-cover" />
       ))}
     </span>

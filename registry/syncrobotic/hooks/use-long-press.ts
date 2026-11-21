@@ -1,4 +1,4 @@
-// @syncrobotic/use-long-press v0.5.0 · update: npx shadcn add @syncrobotic/use-long-press --overwrite
+// @syncrobotic/use-long-press v0.5.1 · update: npx shadcn add @syncrobotic/use-long-press --overwrite
 "use client"
 
 import * as React from "react"
@@ -35,20 +35,6 @@ export function useLongPress({ onPress, onLongPress, duration = 2000, showAfter 
     setProgress(0)
   }, [])
 
-  const tick = React.useCallback(() => {
-    const elapsed = performance.now() - start.current
-    if (elapsed >= duration) {
-      if (!fired.current) {
-        fired.current = true
-        onLongPress()
-      }
-      stop()
-      return
-    }
-    setProgress(elapsed < showAfter ? 0 : (elapsed - showAfter) / (duration - showAfter))
-    frame.current = requestAnimationFrame(tick)
-  }, [duration, showAfter, onLongPress, stop])
-
   React.useEffect(() => stop, [stop])
 
   const begin = () => {
@@ -56,6 +42,21 @@ export function useLongPress({ onPress, onLongPress, duration = 2000, showAfter 
     start.current = performance.now()
     onPress?.()
     if (frame.current !== null) cancelAnimationFrame(frame.current)
+    // The frame loop is declared inside the handler, so it can schedule itself without referring to a value before
+    // its declaration, and it runs with the options of the render the press began in.
+    const tick = () => {
+      const elapsed = performance.now() - start.current
+      if (elapsed >= duration) {
+        if (!fired.current) {
+          fired.current = true
+          onLongPress()
+        }
+        stop()
+        return
+      }
+      setProgress(elapsed < showAfter ? 0 : (elapsed - showAfter) / (duration - showAfter))
+      frame.current = requestAnimationFrame(tick)
+    }
     frame.current = requestAnimationFrame(tick)
   }
 

@@ -1,7 +1,6 @@
-// @syncrobotic/radial-chart-capacity v0.22.0 · update: npx shadcn add @syncrobotic/radial-chart-capacity --overwrite
+// @syncrobotic/radial-chart-capacity v0.22.1 · update: npx shadcn add @syncrobotic/radial-chart-capacity --overwrite
 "use client"
 
-import * as React from "react"
 import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 
 // Sample data: three resources of a site server, one concentric ring each, fullest first: the accent on the outer ring,

@@ -1,4 +1,4 @@
-// @syncrobotic/graph v0.21.0 · update: npx shadcn add @syncrobotic/graph --overwrite
+// @syncrobotic/graph v0.21.1 · update: npx shadcn add @syncrobotic/graph --overwrite
 "use client"
 
 import * as React from "react"
@@ -460,7 +460,13 @@ export function Graph({
     const walk = (start: string, next: (id: string) => string[]) => {
       const found = new Set<string>()
       const stack = [start]
-      while (stack.length) for (const v of next(stack.pop()!)) if (!found.has(v)) found.add(v), stack.push(v)
+      while (stack.length) {
+        for (const v of next(stack.pop()!)) {
+          if (found.has(v)) continue
+          found.add(v)
+          stack.push(v)
+        }
+      }
       return found
     }
     return { up: walk(active, inputs), down: walk(active, outputs) }
