@@ -5974,6 +5974,268 @@
    ]
   }
  ],
+ "robot-model": [
+  {
+   "name": "RobotModel",
+   "props": [
+    {
+     "name": "urdf",
+     "type": "string",
+     "description": "The URDF as text. Use `urdf` or `urdfUrl`."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "default": "false",
+     "description": "The app is still getting the URDF (from a parameter server, say): shows loading until `urdf` or `urdfUrl` arrives."
+    },
+    {
+     "name": "urdfUrl",
+     "type": "string",
+     "description": "Where to fetch the URDF. Relative mesh paths resolve against its folder unless `meshBaseUrl` says otherwise."
+    },
+    {
+     "name": "packages",
+     "type": "Record<string, string>",
+     "description": "Where each `package://` package lives: `{ arm_description: \"/robots/arm_description\" }`."
+    },
+    {
+     "name": "meshBaseUrl",
+     "type": "string",
+     "description": "The folder relative mesh paths resolve against, and that holds any package not in `packages` (`<meshBaseUrl>/<package>/…`)."
+    },
+    {
+     "name": "joints",
+     "type": "Record<string, number>",
+     "description": "The joints' positions, as ROS sends them (`sensor_msgs/JointState`): radians, or metres for prismatic joints. `jointStateToRecord` converts a message."
+    },
+    {
+     "name": "highlight",
+     "type": "string[]",
+     "description": "Joint or link names to emphasise: a joint near its limit, a link in fault. Each is drawn in the status colour and named in words."
+    },
+    {
+     "name": "highlightStatus",
+     "type": "\"warning\" | \"danger\"",
+     "default": "\"warning\"",
+     "description": "The status colour of the highlight. `warning` (needs attention) by default; `danger` for a fault."
+    },
+    {
+     "name": "up",
+     "type": "\"y\" | \"z\"",
+     "default": "\"z\"",
+     "description": "Which axis of the URDF is up. ROS uses z."
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "description": "The robot's name in the header and the summary. Defaults to the URDF's `<robot name>`."
+    },
+    {
+     "name": "updatedAt",
+     "type": "number | Date",
+     "description": "When the joint values were measured (the message's stamp). Without it, the time they last changed here."
+    },
+    {
+     "name": "staleAfterMs",
+     "type": "number",
+     "description": "With no update for this long, the view says \"Stale\" with the last update's time over the last pose. Off by default."
+    },
+    {
+     "name": "webgl",
+     "type": "boolean",
+     "description": "Whether to draw in 3D. Defaults to whether the browser can (WebGL); false shows the words fallback, for a device that should not draw 3D."
+    },
+    {
+     "name": "onRetry",
+     "type": "() => void",
+     "description": "Called by \"Load again\" after an error, instead of reloading the same files."
+    },
+    {
+     "name": "aspectRatio",
+     "type": "number",
+     "default": "4 / 3",
+     "description": "Width over height of the view, so it holds its size while loading. 4 / 3 by default."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<RobotModelLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "keys",
+       "type": "string",
+       "default": "\"Drag to turn the view, right-drag to move it, and the wheel or a pinch to zoom once the view has focus. Arrow keys turn, Shift with the arrows moves, plus and minus zoom, 0 resets the view and F fits the robot. The view only shows the robot; it does not move it.\"",
+       "description": "Read after the summary when the view has focus: what the pointer and the keys do."
+      },
+      {
+       "name": "robot",
+       "type": "string",
+       "default": "\"Robot\"",
+       "description": "The name when neither `label` nor the URDF gives one."
+      },
+      {
+       "name": "jointCount",
+       "type": "(n: number) => string",
+       "default": "(n) => (n === 1 ? \"1 joint\" : `${n} joints`)",
+       "description": "\"6 joints\": the joints that move."
+      },
+      {
+       "name": "summary",
+       "type": "(robot: string, joints: number) => string",
+       "default": "(robot, n) => `${robot}, 3D view, ${n === 1 ? \"1 joint\" : `${n} joints`}`",
+       "description": "The summary the view is read as: the robot, that it is a 3D view, and how many joints move."
+      },
+      {
+       "name": "highlighted",
+       "type": "(items: string[]) => string",
+       "default": "(items) => `Highlighted: ${items.join(\"; \")}`",
+       "description": "Added to the summary when something is highlighted: each item is one joint or link, described."
+      },
+      {
+       "name": "jointValue",
+       "type": "(value: number, type: RobotModelJointType) => string",
+       "default": "(value, type) => (type === \"prismatic\" ? millimetres(value) : degrees(value))",
+       "description": "A joint's value in words: degrees for revolute joints, millimetres for prismatic ones (ROS sends radians and metres)."
+      },
+      {
+       "name": "jointDetail",
+       "type": "(value: string | undefined, lower: string | undefined, upper: string | undefined) => string",
+       "default": "(value, lower, upper) => [value && `at ${value}`, lower !== undefined && upper !== undefined && `limits ${lower} to ${upper}`].filter(Boolean).join(\", \")",
+       "description": "A highlighted joint described: its value and its limits. `value` and the limits are already in words."
+      },
+      {
+       "name": "link",
+       "type": "string",
+       "default": "\"link\"",
+       "description": "A highlighted link (not a joint) described."
+      },
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Loading robot model…\"",
+       "description": ""
+      },
+      {
+       "name": "loadingMeshes",
+       "type": "(loaded: number, total: number) => string",
+       "default": "(loaded, total) => `Loading meshes, ${loaded} of ${total}`",
+       "description": "While meshes arrive: \"Loading meshes, 3 of 7\"."
+      },
+      {
+       "name": "error",
+       "type": "string",
+       "default": "\"The robot model could not be loaded.\"",
+       "description": "The first line of the error."
+      },
+      {
+       "name": "errorDetail",
+       "type": "(path: string, reason: string) => string",
+       "default": "(path, reason) => `${path}: ${reason}`",
+       "description": "What failed, under it: the file in words and why."
+      },
+      {
+       "name": "invalidUrdf",
+       "type": "string",
+       "default": "\"not a URDF (no <robot> element, or the XML is broken)\"",
+       "description": "Why a URDF is not one: it is not XML, or it has no `<robot>`."
+      },
+      {
+       "name": "missingPackage",
+       "type": "(pkg: string) => string",
+       "default": "(pkg) => `no path given for package “${pkg}”`",
+       "description": "A `package://` path whose package has no entry in `packages` and no `meshBaseUrl` to fall back on."
+      },
+      {
+       "name": "unsupportedMesh",
+       "type": "string",
+       "default": "\"this mesh format is not supported (STL and COLLADA are)\"",
+       "description": "A mesh in a format the default loader does not read."
+      },
+      {
+       "name": "retry",
+       "type": "string",
+       "default": "\"Load again\"",
+       "description": ""
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"No robot model to show.\"",
+       "description": "With no URDF given."
+      },
+      {
+       "name": "stale",
+       "type": "string",
+       "default": "\"Stale\"",
+       "description": ""
+      },
+      {
+       "name": "lastUpdate",
+       "type": "(time: string) => string",
+       "default": "(time) => `last update ${time}`",
+       "description": "After \"Stale\": when the joints last changed."
+      },
+      {
+       "name": "formatTime",
+       "type": "(date: Date) => string",
+       "default": "(d) => [d.getHours(), d.getMinutes(), d.getSeconds()].map((n) => String(n).padStart(2, \"0\")).join(\":\")",
+       "description": "The time of the last update. 24-hour clock by default; pass the site's own format or time zone."
+      },
+      {
+       "name": "noWebgl",
+       "type": "string",
+       "default": "\"3D view unavailable: this browser cannot draw 3D (WebGL is off or not supported).\"",
+       "description": "The fallback's first line, when this browser cannot draw 3D."
+      },
+      {
+       "name": "noWebglDetail",
+       "type": "string",
+       "default": "\"The joint positions are listed below instead.\"",
+       "description": "Under it: what the person can still read."
+      },
+      {
+       "name": "jointsHeading",
+       "type": "string",
+       "default": "\"Joint positions\"",
+       "description": "The fallback's list of joints."
+      },
+      {
+       "name": "noValue",
+       "type": "string",
+       "default": "\"No value\"",
+       "description": "A joint with no value in `joints`."
+      },
+      {
+       "name": "contextLost",
+       "type": "string",
+       "default": "\"Restoring the 3D view…\"",
+       "description": "While the graphics context comes back after the GPU reset it."
+      },
+      {
+       "name": "resetView",
+       "type": "string",
+       "default": "\"Reset the view\"",
+       "description": ""
+      },
+      {
+       "name": "fitView",
+       "type": "string",
+       "default": "\"Fit the robot in view\"",
+       "description": ""
+      },
+      {
+       "name": "axes",
+       "type": "{ x: string; y: string; z: string; }",
+       "default": "{ x: \"Forward\", y: \"Left\", z: \"Up\" }",
+       "description": "The axes gizmo's words for the robot's own frame (ROS REP 103: x forward, y left, z up)."
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "route-progress": [
   {
    "name": "RouteProgress",

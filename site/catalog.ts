@@ -59,6 +59,7 @@ export type StoryFile =
   | "tree"
   | "graph"
   | "robot-map"
+  | "robot-model"
   | "hooks"
   | "metric-card"
   | "context-menu"
@@ -882,6 +883,20 @@ const entries: Record<string, Entry> = {
       "Up to a few hundred robots and zones: everything is redrawn on each pan. A city-scale map, tiles or GPS belong to a map library.",
     ],
   },
+  "robot-model": {
+    group: "Display",
+    wide: true,
+    examples: { file: "robot-model", prefix: "RobotModel" },
+    rules: [
+      "For watching a robot's pose: an arm at work, a joint near its limit, the pose a fault stopped it in. It shows the robot and never moves it; jogging and teleoperation are other controls.",
+      "Pass `joints` as ROS sends them (radians, metres for prismatic joints); `jointStateToRecord` turns a `sensor_msgs/JointState` into the record. A value past a limit is drawn where it is, not clamped: the view shows what the robot reports.",
+      "Highlight only what needs someone (a joint near its limit, a link in fault), a handful at most. The link is drawn in the warning colour (`highlightStatus=\"danger\"` for a fault) and a callout names the joint with its value and limits, so it never rests on colour alone.",
+      "Pass `staleAfterMs` whenever the joints come from a live topic (1 s for /joint_states at 10 Hz or more), and `updatedAt` from the message's stamp: the last pose stays, dimmed, with when it arrived.",
+      "Serve meshes from your own origin: `packages` maps each `package://` name to a URL, `meshBaseUrl` is the folder for the rest. STL and COLLADA load; a file that fails is named in the error.",
+      "One view per screen. Each view holds a WebGL context and browsers allow only a few; for a fleet, list the robots and open one view for the robot chosen.",
+      "Load it lazily (`next/dynamic` or `React.lazy`): three.js is large, and only the screens that show a robot model should download it.",
+    ],
+  },
   command: {
     group: "Overlays",
     examples: { file: "overlays", prefix: "Command" },
@@ -1143,6 +1158,15 @@ const keyboard: Record<string, [string, string][]> = {
     ["+ / -", "Zoom in or out"],
     ["0", "Show the whole site"],
     ["Esc", "Clear the selection"],
+  ],
+  "robot-model": [
+    ["Tab", "Move into the view: one stop. Its buttons are for the pointer; 0 and F do the same"],
+    ["← / →", "Turn the view around the robot"],
+    ["↑ / ↓", "Look from higher or lower"],
+    ["Shift + arrows", "Move the view"],
+    ["+ / -", "Zoom in or out (the wheel too, once the view has focus)"],
+    ["0", "Reset the view"],
+    ["F", "Fit the robot in view, in its pose now"],
   ],
   tree: [
     ["Tab", "list: move between links and disclosure buttons. select: move into the tree (one stop) and out"],

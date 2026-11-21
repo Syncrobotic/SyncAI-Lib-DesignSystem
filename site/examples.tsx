@@ -67,7 +67,14 @@ type Meta = { component?: React.ComponentType<Record<string, unknown>>; args?: R
 type Story = { args?: Record<string, unknown>; render?: (args: Record<string, unknown>) => React.ReactNode }
 type StoryModule = { default: Meta } & Record<string, unknown>
 
-const files: Record<StoryFile, StoryModule> = {
+// Story files loaded on demand, so their libraries reach only the page that shows them. robot-model draws with three.js,
+// which no other page should download; a static import here would put it in every component page's bundle.
+const lazyFiles = {
+  "robot-model": () => import("@/stories/robot-model.stories"),
+} satisfies Partial<Record<StoryFile, () => Promise<unknown>>>
+type LazyFile = keyof typeof lazyFiles
+
+const files: Record<Exclude<StoryFile, LazyFile>, StoryModule> = {
   "stop-button": stop as unknown as StoryModule,
   "slide-to-release": slide as unknown as StoryModule,
   "teleop-pad": s_teleop_pad as unknown as StoryModule,
@@ -130,9 +137,34 @@ const files: Record<StoryFile, StoryModule> = {
   banner: s_banner as unknown as StoryModule,
 }
 
-// Same rule as Storybook: story args override meta args; a story's own render wins over meta.component.
+// One React.lazy per lazy file, made once at module scope: the import starts the first time one of its stories renders.
+const lazyStories = Object.fromEntries(
+  Object.entries(lazyFiles).map(([file, load]) => [
+    file,
+    React.lazy(async () => {
+      const mod = (await load()) as unknown as StoryModule
+      return { default: ({ name }: { name: string }) => renderStory(mod, name) }
+    }),
+  ]),
+) as Record<LazyFile, React.LazyExoticComponent<(props: { name: string }) => React.ReactNode>>
+
+const isLazy = (file: StoryFile): file is LazyFile => file in lazyFiles
+
 function render(file: StoryFile, name: string) {
-  const mod = files[file]
+  if (isLazy(file)) {
+    const Story = lazyStories[file]
+    // While the chunk loads, a quiet block the size of a typical example, so the page does not jump when it arrives.
+    return (
+      <React.Suspense fallback={<div aria-hidden="true" className="aspect-4/3 w-full animate-breath rounded-md bg-track" />}>
+        <Story name={name} />
+      </React.Suspense>
+    )
+  }
+  return renderStory(files[file], name)
+}
+
+// Same rule as Storybook: story args override meta args; a story's own render wins over meta.component.
+function renderStory(mod: StoryModule, name: string) {
   const meta = mod.default
   const story = (mod[name] ?? {}) as Story
   const args = { ...meta.args, ...story.args }

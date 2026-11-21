@@ -668,6 +668,18 @@
     "tabStops": 4,
     "live": true
   },
+  "robot-model": {
+    "roles": [
+      "button",
+      "group",
+      "heading",
+      "img",
+      "region",
+      "status"
+    ],
+    "tabStops": 1,
+    "live": true
+  },
   "filter-form": {
     "roles": [
       "checkbox",

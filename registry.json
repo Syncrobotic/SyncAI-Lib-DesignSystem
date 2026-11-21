@@ -3665,6 +3665,41 @@
       }
     },
     {
+      "name": "robot-model",
+      "type": "registry:ui",
+      "title": "Robot model",
+      "description": "A robot's pose in 3D from its URDF and live joint values (ROS sensor_msgs/JointState), for monitoring: neutral greys from the theme, a ground grid and axes named in words; highlighted joints in a status colour with a callout naming them; orbit, pan and zoom by pointer and keys; loading, error with the failing file, empty, stale and no-WebGL states in words. The kit's one three.js item.",
+      "dependencies": [
+        "three@^0.187.0",
+        "urdf-loader@^0.13.1",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/button-group",
+        "@syncrobotic/spinner",
+        "@syncrobotic/skeleton"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/robot-model.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.24.0",
+        "changelog": [
+          {
+            "version": "0.24.0",
+            "date": "2026-11-21",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
       "name": "filter-form",
       "type": "registry:ui",
       "title": "Filter form",

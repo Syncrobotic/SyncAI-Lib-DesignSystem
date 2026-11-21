@@ -152,6 +152,28 @@ export const overviews: Record<string, Overview> = {
       "Pass `labels` (status words, zone kinds, instructions, positions, empty, loading, error) to translate.",
     ],
   },
+  "robot-model": {
+    what: "A robot's pose in 3D from its URDF and live joint values, for monitoring: neutral greys, a ground grid, axes named in words, and the joints that need someone highlighted and named.",
+    use: [
+      "An arm's pose on its robot page, from /joint_states.",
+      "Showing which joint is near its limit, or the pose a robot stopped in, beside the alarm that says so.",
+      "Checking a robot's description: that the URDF loads and its joints turn the right way.",
+    ],
+    instead: [
+      "Where robots are on a site: `robot-map`.",
+      "What the robot sees: `camera-feed`.",
+      "A few joint values to read at a glance: `data-pieces` or a table, which need no 3D.",
+    ],
+    notes: [
+      "The kit's only three.js item: `three` and `urdf-loader` install with it and nowhere else. Load the component lazily (`next/dynamic` with `ssr: false`, or `React.lazy`) so other screens do not download three.js.",
+      "The URDF comes as text (`urdf`) or a URL (`urdfUrl`); while the app is still fetching it, pass `loading`. `package://` paths resolve through `packages` (a map of package name to URL) or under `meshBaseUrl`.",
+      "`up` is `\"z\"` for ROS (REP 103: x forward, y left, z up), and the axes gizmo says Forward, Left and Up. Pass `\"y\"` for a model exported y-up.",
+      "It draws only when something changes (joints, camera, size, theme) and frees its geometry, materials and WebGL context on unmount. A lost context says so and comes back by itself.",
+      "Without WebGL (or with `webgl={false}`, for a device that should not draw 3D) it lists each joint's position in words, highlighted ones marked: the same facts, nothing hidden.",
+      "The view is one Tab stop with `role=\"img\"` and a summary (robot, joint count, highlighted joints with their values). Its reset and fit buttons are out of the Tab order; 0 and F do the same.",
+      "Every string is in `labels`, including `jointValue` (degrees and millimetres by default) and `formatTime` for the last update.",
+    ],
+  },
   graph: {
     what: "A directed graph that flows one way: boxes in columns, inputs on the left (or above), neutral lines between them, and a text view with the same nodes.",
     use: [
