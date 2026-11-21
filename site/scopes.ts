@@ -18,7 +18,7 @@ export const scopes: Scope[] = [
     key: "foundations",
     label: "Foundations",
     href: "/docs/foundations",
-    match: ["/docs/foundations", "/docs/installation", "/docs/robotics", "/docs/nextjs", "/docs/localisation", "/docs/tokens", "/docs/upgrading", "/docs/ai"],
+    match: ["/docs/foundations", "/docs/installation", "/docs/robotics", "/docs/ros", "/docs/nextjs", "/docs/localisation", "/docs/tokens", "/docs/upgrading", "/docs/ai"],
     groups: [
       {
         title: "Getting started",
@@ -26,6 +26,7 @@ export const scopes: Scope[] = [
           { href: "/docs/foundations", label: "Overview" },
           { href: "/docs/installation", label: "Installation" },
           { href: "/docs/robotics", label: "Robotics UI kit" },
+          { href: "/docs/ros", label: "Connect to ROS" },
           { href: "/docs/nextjs", label: "Next.js" },
           { href: "/docs/localisation", label: "Localisation" },
           { href: "/docs/tokens", label: "Design tokens" },
