@@ -2,6 +2,21 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.27.0 · 2026-11-21
+
+Connect the robotics components to a real robot over rosbridge, and a ready-made Traditional Chinese (Taiwan) label pack.
+
+### Added
+- **`ros` and `use-ros` 0.27.0 (beta):** a rosbridge v2 connection over a plain WebSocket, with no ROS library. `RosProvider`, `useRosStatus`, `useRosTopic`, `useRosPublisher` and `useRosService`, plus converters from each message to the component that shows it: `occupancyGridToGrid` and `laserScanToScan` (robot-map), `pointCloud2ToPoints` (point-cloud), `jointStateToJoints` (joint-state, robot-model), `poseToRobotMapPose`, `goalToPoseStamped` and `teleopToTwist` (teleop-pad). A publisher of `Twist` sends a zero command when it stops. New page [Connect to ROS](https://design-system.syncrobotic.me/docs/ros) with the rosbridge setup for ROS 2 and ROS 1, a live example against a simulated bridge, and the safety notes for driving over a browser: rosbridge has no watchdog, so the robot must time out its own commands.
+- **`labels-zh-tw` 0.27.0 (beta):** the kit's words in Traditional Chinese as written in Taiwan, one object per component that takes `labels` (`dataGridLabels`, `stopButtonLabels`, `robotMapLabels`…), and `locale`. It imports no component, so it installs on its own; the kit's tests hold every object to the component's labels type, so a new key cannot ship untranslated. See [Localisation](https://design-system.syncrobotic.me/docs/localisation).
+
+### Fixed
+- **`time-picker` 0.23.3:** a malformed value ("9", "25:99") reads as no time instead of showing NaN; a malformed `min`, `max` or `step` falls back to its default.
+- **`text-diff` 0.16.2:** text of spacing alone round-trips through `tokenize` exactly and is never shown as a word added or removed.
+- **`robot-model` 0.24.2:** mimic joints follow their driving joint unclamped and whatever the order of the record; planar and floating joints take `[x, y, θ]` and `[x, y, z, roll, pitch, yaw]` and are written with the new `poseValue` label (mm and degrees per component).
+- Storybook: the story frame no longer overflows a 390 px phone.
+- CI type-checks its own scripts (`tsconfig.scripts.json`, strict `checkJs`).
+
 ## 0.26.0 · 2026-11-21
 
 `data-grid` moves to TanStack Table 9. The grid looks and behaves the same; the table you build for it changes, once.
