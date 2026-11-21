@@ -89,7 +89,7 @@ export const questionnaire: Partial<QuestionnaireLabels> = {
 
 const usage = `"use client"
 
-import { zhTW } from "react-day-picker/locale"
+import { zhTW } from "react-day-picker/locale/zh-TW"
 import { DataGrid, DataGridTable } from "@/components/ui/data-grid"
 import { DatePicker } from "@/components/ui/date-selector"
 import * as zh from "@/lib/kit-labels.zh-TW"
@@ -186,7 +186,7 @@ export default function LocalisationPage() {
       />
       <P
         className="pt-3"
-        text="Calendar takes react-day-picker's own `locale` and `labels` (`import { zhTW } from &quot;react-day-picker/locale&quot;`): month names, weekdays and its buttons follow it."
+        text="Calendar takes react-day-picker's own `locale` and `labels` (`import { zhTW } from &quot;react-day-picker/locale/zh-TW&quot;`, one module per language; `react-day-picker/locale` exports the same objects): month names, weekdays and its buttons follow it."
       />
 
       <H2 id="labels">Every component&apos;s labels</H2>
