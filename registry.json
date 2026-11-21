@@ -1949,8 +1949,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.16.1",
+        "version": "0.16.2",
         "changelog": [
+          {
+            "version": "0.16.2",
+            "date": "2026-11-21",
+            "note": "`tokenize` gives back exactly its input for any text: spacing alone is one wordless token instead of none. A diff keeps that spacing as shared text, never as a word changed."
+          },
           {
             "version": "0.16.1",
             "date": "2026-11-21",
