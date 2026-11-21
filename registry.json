@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.2",
+        "version": "0.22.3",
         "changelog": [
+          {
+            "version": "0.22.3",
+            "date": "2026-11-21",
+            "note": "A field the browser autofills keeps the theme's background and text colour (Chrome painted it light blue, also in dark mode). The page tells the browser its colour scheme (light, dark inside .dark), so native scrollbars, pickers and autofill follow the theme."
+          },
           {
             "version": "0.22.2",
             "date": "2026-11-20",
