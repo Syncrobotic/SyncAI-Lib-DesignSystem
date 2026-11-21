@@ -4,11 +4,11 @@ import { groups, items } from "@/site/catalog"
 import { pageMeta } from "@/site/config"
 import { DocHeader } from "@/site/doc"
 
-const count = items.filter((i) => i.group !== "Hooks").length
+const count = items.filter((i) => i.group !== "Hooks & libraries").length
 
 export const metadata: Metadata = pageMeta({
   title: "Components",
-  description: `All ${count} SYNCROBOTIC components by group, each with what it is for: general UI on Radix, charts, building blocks for data tools and the robot shell.`,
+  description: `All ${count} SYNCROBOTIC components by group, each with what it is for: actions and inputs, robotics and the robot shell, data display, charts, media, feedback, navigation, overlays and layout.`,
   path: "/docs/components",
 })
 
@@ -18,7 +18,7 @@ export default function ComponentsIndex() {
     <article className="flex flex-col gap-8">
       <DocHeader
         title="Components"
-        lead={`${count} components built on the tokens, by group: general UI for any product, charts, building blocks for data tools, and the robot shell for control apps.`}
+        lead={`${count} components built on the tokens, by group: actions and inputs every product needs, then the robotics components and the robot shell, then data, charts, media, feedback, navigation, overlays and layout.`}
       />
       {groups.map((g) => {
         const list = items.filter((i) => i.group === g)
