@@ -12,12 +12,12 @@
     "hash": "8ec920f8618ff43d"
   },
   "labels-zh-tw": {
-    "version": "0.27.0",
-    "hash": "136b4d86f6081b00"
+    "version": "0.28.0",
+    "hash": "65216b380ece8b57"
   },
   "ros": {
-    "version": "0.27.0",
-    "hash": "04719fe9d7491577"
+    "version": "0.28.0",
+    "hash": "7b7ec2dff589b489"
   },
   "use-long-press": {
     "version": "0.5.1",
@@ -240,8 +240,8 @@
     "hash": "a542674c1883114e"
   },
   "tree": {
-    "version": "0.27.0",
-    "hash": "7cb44a42f828a3d3"
+    "version": "0.28.0",
+    "hash": "48c6a8a7b2b612aa"
   },
   "graph": {
     "version": "0.21.2",
@@ -355,6 +355,10 @@
     "version": "0.24.1",
     "hash": "0c9123dfe7dfe87a"
   },
+  "diagnostics": {
+    "version": "0.28.0",
+    "hash": "e8b2244050fff0da"
+  },
   "point-cloud": {
     "version": "0.24.1",
     "hash": "2408604ba0e89408"
@@ -372,8 +376,8 @@
     "hash": "f8f1309025d419e6"
   },
   "search-field": {
-    "version": "0.23.0",
-    "hash": "401e548d052aca9d"
+    "version": "0.28.0",
+    "hash": "a1eca6a8afdf4f83"
   },
   "theme-toggle": {
     "version": "0.10.1",

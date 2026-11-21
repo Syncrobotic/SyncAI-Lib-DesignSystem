@@ -677,6 +677,21 @@
     "tabStops": 0,
     "live": true
   },
+  "diagnostics": {
+    "roles": [
+      "button",
+      "list",
+      "listitem",
+      "radio",
+      "radiogroup",
+      "region",
+      "search",
+      "searchbox",
+      "status"
+    ],
+    "tabStops": 23,
+    "live": true
+  },
   "point-cloud": {
     "roles": [
       "alert",

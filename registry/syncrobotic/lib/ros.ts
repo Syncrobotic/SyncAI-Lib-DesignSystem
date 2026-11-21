@@ -1,4 +1,4 @@
-// @syncrobotic/ros v0.27.0 · update: npx shadcn add @syncrobotic/ros --overwrite
+// @syncrobotic/ros v0.28.0 · update: npx shadcn add @syncrobotic/ros --overwrite
 /*
   ROS and ROS 2 in the browser, without a ROS library: the rosbridge v2 protocol (rosbridge_suite, which serves both ROS 1
   and ROS 2) spoken directly over the browser's WebSocket, and pure converters from the messages to the props the kit's
@@ -766,6 +766,21 @@ export type RosJointState = {
   effort?: readonly (number | null)[]
 }
 
+/**
+ * `diagnostic_msgs/DiagnosticStatus`. `level` is a `byte`: a number from rosbridge for ROS 1, and for ROS 2 a number or,
+ * from some bridges, a one-character or base64 string.
+ */
+export type RosDiagnosticStatus = {
+  level: number | string
+  name: string
+  message?: string
+  hardware_id?: string
+  values?: readonly { key: string; value: string }[]
+}
+
+/** `diagnostic_msgs/DiagnosticArray`, from /diagnostics (each node's own) or /diagnostics_agg (the aggregator's tree). */
+export type RosDiagnosticArray = { header?: RosHeader; status: readonly RosDiagnosticStatus[] }
+
 // --- Converters ----------------------------------------------------------------------------------------------------
 // Pure functions from ROS messages to the props the components take, by the conventions their docs state (robot-map's
 // plan coordinates, point-cloud's REP 103 frame, joint-state's SI units). The output types are written out here rather
@@ -998,6 +1013,62 @@ export function jointStateToJoints(message: RosJointState, options: { limits?: R
     out.push(joint)
   }
   return out
+}
+
+/** diagnostics' `DiagnosticStatus`. */
+export type RosDiagnostic = {
+  name: string
+  level: "ok" | "warn" | "error" | "stale"
+  message?: string
+  hardwareId?: string
+  values?: { key: string; value: string }[]
+  receivedAt?: number
+}
+
+const DIAGNOSTIC_LEVELS = ["ok", "warn", "error", "stale"] as const
+
+/**
+ * A DiagnosticStatus `level` byte as a number, however the bridge wrote it: 2, "2", "\u0002", or base64 ("Ag==", how
+ * rosbridge for ROS 2 sends a `byte`). NaN when it cannot be read.
+ */
+function diagnosticLevelByte(level: number | string): number {
+  if (typeof level === "number") return level
+  if (/^\d+$/.test(level)) return Number(level)
+  if (level.length === 1) return level.charCodeAt(0)
+  try {
+    return rosBytes(level)[0] ?? NaN
+  } catch {
+    return NaN
+  }
+}
+
+/**
+ * A `diagnostic_msgs/DiagnosticArray` as diagnostics' `statuses`: level 0–3 as "ok", "warn", "error", "stale", and
+ * `hardware_id` as `hardwareId`. A level outside 0–3 reads "stale": the robot said something the panel cannot read, so
+ * it shows as unknown rather than fine. Each status is stamped `receivedAt` (by default `Date.now()`), so call this when
+ * the message arrives, in the subscription's callback, not while rendering.
+ */
+export function diagnosticArrayToStatuses(message: RosDiagnosticArray, options: { receivedAt?: number } = {}): RosDiagnostic[] {
+  const receivedAt = options.receivedAt ?? Date.now()
+  return message.status.map((s) => {
+    const out: RosDiagnostic = { name: s.name, level: DIAGNOSTIC_LEVELS[diagnosticLevelByte(s.level)] ?? "stale", receivedAt }
+    if (s.message) out.message = s.message
+    if (s.hardware_id) out.hardwareId = s.hardware_id
+    if (s.values?.length) out.values = s.values.map(({ key, value }) => ({ key, value: String(value) }))
+    return out
+  })
+}
+
+/**
+ * The latest status of each name, after `incoming` arrives: /diagnostics carries a few statuses per message (each node
+ * publishes its own), so the panel needs every name's last one. Names already known keep their place; new ones go last.
+ * Returns `previous` itself when `incoming` is empty.
+ */
+export function mergeDiagnostics<T extends { name: string }>(previous: readonly T[], incoming: readonly T[]): T[] {
+  if (incoming.length === 0) return previous as T[]
+  const next = new Map(previous.map((s) => [s.name, s]))
+  for (const s of incoming) next.set(s.name, s)
+  return [...next.values()]
 }
 
 /** A `geometry_msgs/Twist` with every component 0: stop. */

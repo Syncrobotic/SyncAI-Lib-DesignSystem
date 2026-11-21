@@ -13,6 +13,7 @@ import type { CommandDialogLabels } from "@/registry/syncrobotic/ui/command"
 import type { CopyButtonLabels } from "@/registry/syncrobotic/ui/copy-button"
 import type { DataGridLabels, DataGridPagination } from "@/registry/syncrobotic/ui/data-grid"
 import type { DatePickerLabels } from "@/registry/syncrobotic/ui/date-selector"
+import type { DiagnosticsLabels } from "@/registry/syncrobotic/ui/diagnostics"
 import type { DialogLabels } from "@/registry/syncrobotic/ui/dialog"
 import type { FilterOperator, Filters } from "@/registry/syncrobotic/ui/filters"
 import type { GraphLabels } from "@/registry/syncrobotic/ui/graph"
@@ -61,6 +62,7 @@ it("fits every component's labels type", () => {
   fits<IslandLabels>()(zh.islandLabels)
   fits<CameraFeedLabels>()(zh.cameraFeedLabels)
   fits<JointStateLabels>()(zh.jointStateLabels)
+  fits<DiagnosticsLabels>()(zh.diagnosticsLabels)
   fits<RobotModelLabels>()(zh.robotModelLabels)
   fits<PointCloudLabels>()(zh.pointCloudLabels)
   fits<RobotMapLabels>()(zh.robotMapLabels)
