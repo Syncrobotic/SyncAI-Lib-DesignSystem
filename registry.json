@@ -4410,8 +4410,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.2",
+        "version": "0.23.3",
         "changelog": [
+          {
+            "version": "0.23.3",
+            "date": "2026-11-21",
+            "note": "A column's resize handle is named after the column (\"Resize Robot\", from meta.label or a plain-text header) instead of reading out the header function's source. Nothing to change in your code."
+          },
           {
             "version": "0.23.2",
             "date": "2026-11-21",

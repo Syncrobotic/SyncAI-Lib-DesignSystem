@@ -814,6 +814,7 @@
       "row",
       "rowgroup",
       "searchbox",
+      "separator",
       "table"
     ],
     "tabStops": 20,
