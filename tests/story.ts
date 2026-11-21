@@ -13,6 +13,19 @@ export const themes = ["dark", "light"] as const
  * Waiting for these instead of "networkidle" saves its fixed 500 ms per test, which over 500 tests was minutes.
  */
 export async function openStory(page: Page, id: string, theme: (typeof themes)[number]) {
+  // A story with a declared end state that depends on real time (a video frame) gets three openings: the browser now
+  // and then drops the only frame it was sent. A story that is really broken fails all three.
+  const attempts = settled[id] ? 3 : 1
+  for (let attempt = 1; ; attempt++) {
+    try {
+      return await openOnce(page, id, theme)
+    } catch (error) {
+      if (attempt >= attempts) throw error
+    }
+  }
+}
+
+async function openOnce(page: Page, id: string, theme: (typeof themes)[number]) {
   // Some UI appears on a timer (the button spinner after 300 ms, presence safety after 400 ms). Control the clock and
   // run it past them, so a screenshot never depends on how fast the machine was when it was taken.
   await page.clock.install()
