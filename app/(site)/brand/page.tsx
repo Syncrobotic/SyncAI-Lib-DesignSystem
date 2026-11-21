@@ -230,15 +230,8 @@ export default function BrandPage() {
           ))}
         </ul>
 
-        <H2 id="images">Product images and icons</H2>
+        <H2 id="icons">Icons</H2>
         <div className="grid gap-4 sm:grid-cols-2">
-          <div className="flex flex-col gap-2 rounded-md border border-dashed border-input p-6">
-            <span className="font-bold">Product photos</span>
-            <p className="text-sm text-muted-foreground">
-              Waiting for files: each robot model from the front, the side and three-quarters, on a transparent background, at least
-              3000 px wide. They will be listed here with their downloads.
-            </p>
-          </div>
           <div className="flex flex-col gap-2 rounded-md border border-border bg-card p-6">
             <span className="font-bold">Interface icons</span>
             <p className="text-sm text-muted-foreground">

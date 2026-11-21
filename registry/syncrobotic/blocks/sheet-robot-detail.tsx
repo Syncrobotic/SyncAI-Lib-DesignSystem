@@ -1,7 +1,6 @@
-// @syncrobotic/sheet-robot-detail v0.17.3 · update: npx shadcn add @syncrobotic/sheet-robot-detail --overwrite
+// @syncrobotic/sheet-robot-detail v0.17.4 · update: npx shadcn add @syncrobotic/sheet-robot-detail --overwrite
 "use client"
 
-import * as React from "react"
 import { Camera, X } from "lucide-react"
 import { ChargingDock } from "@/registry/syncrobotic/ui/robot-icons"
 import { StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"

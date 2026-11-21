@@ -1,4 +1,4 @@
-// @syncrobotic/route-progress v0.23.0 · update: npx shadcn add @syncrobotic/route-progress --overwrite
+// @syncrobotic/route-progress v0.23.1 · update: npx shadcn add @syncrobotic/route-progress --overwrite
 "use client"
 
 import * as React from "react"
@@ -36,11 +36,10 @@ export function RouteProgress({
 }) {
   const l = { ...defaultRouteProgressLabels, ...labels }
   const [shown, setShown] = React.useState(false)
+  // The page is in: the bar goes in the same render, not one effect later.
+  if (!active && shown) setShown(false)
   React.useEffect(() => {
-    if (!active) {
-      setShown(false)
-      return
-    }
+    if (!active) return
     const show = window.setTimeout(() => setShown(true), delay)
     const stop = window.setTimeout(() => setShown(false), giveUp)
     return () => {

@@ -1,4 +1,3 @@
-import * as React from "react"
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { getCoreRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table"
 import { zhTW } from "react-day-picker/locale"

@@ -1,4 +1,4 @@
-// @syncrobotic/filters v0.23.0 · update: npx shadcn add @syncrobotic/filters --overwrite
+// @syncrobotic/filters v0.23.1 · update: npx shadcn add @syncrobotic/filters --overwrite
 "use client"
 
 import * as React from "react"
@@ -387,7 +387,8 @@ type Editing = { id: string | null; step: Step }
 
 // One part of a chip. The inset ring keeps a focused part's outline inside the chip, clear of its neighbours.
 // Several values: the first name truncates, the count after it ("+1") always stays in view.
-function ValueText({ rule, field, labels, text }: { rule: FilterRule; field: FilterField; labels: Pick<FilterLabels, "more">; text: string }) {
+// The text is already built with labels.more (describeValue), so a translation is applied there; this only splits it.
+function ValueText({ rule, field, text }: { rule: FilterRule; field: FilterField; text: string }) {
   const v = rule.value
   if (field.type === "option" && Array.isArray(v) && v.length > 1) {
     const first = field.options.find((o) => o.value === v[0])?.label ?? String(v[0])
@@ -523,9 +524,11 @@ export function Filters({
               "aria-haspopup": "dialog" as const,
               "aria-expanded": isOpen && editing?.step === step,
               "data-state": isOpen && editing?.step === step ? "open" : "closed",
-              // Another part of the open chip switches the picker to that step in place; the part already open closes it.
-              onClick: (e: React.MouseEvent<HTMLButtonElement>) => (isOpen && editing?.step === step ? setEditing(null) : open(r.id, step, e.currentTarget)),
             })
+            // Another part of the open chip switches the picker to that step in place; the part already open closes it.
+            // The handler is written on each button rather than returned by part(), which runs during render, so the
+            // React Compiler can tell that the refs open() writes are only touched on a click.
+            const toggle = (step: Step, el: HTMLElement) => (isOpen && editing?.step === step ? setEditing(null) : open(r.id, step, el))
             return (
               <li
                 key={r.id}
@@ -548,17 +551,17 @@ export function Filters({
                       data-rule={r.id}
                       className="flex h-(--h-sm) max-w-full min-w-0 items-stretch overflow-hidden rounded-xs bg-card ring-1 ring-border ring-inset [&>*+*]:border-l [&>*+*]:border-border"
                     >
-                      <button {...part("field")} aria-label={labels.editField(field.label)} className={cn(segment, "shrink-0")}>
+                      <button {...part("field")} onClick={(e) => toggle("field", e.currentTarget)} aria-label={labels.editField(field.label)} className={cn(segment, "shrink-0")}>
                         {field.icon}
                         {field.label}
                       </button>
-                      <button {...part("operator")} aria-label={labels.editOperator(op)} className={cn(segment, "shrink-0 text-muted-foreground")}>
+                      <button {...part("operator")} onClick={(e) => toggle("operator", e.currentTarget)} aria-label={labels.editOperator(op)} className={cn(segment, "shrink-0 text-muted-foreground")}>
                         {op}
                       </button>
                       {val && (
-                        <button {...part("value")} aria-label={labels.editValue(val)} className={cn(segment, "font-medium")}>
+                        <button {...part("value")} onClick={(e) => toggle("value", e.currentTarget)} aria-label={labels.editValue(val)} className={cn(segment, "font-medium")}>
                           {field.type === "option" && !field.multiple && field.options.find((o) => o.value === r.value)?.icon}
-                          <ValueText rule={r} field={field} labels={labels} text={val} />
+                          <ValueText rule={r} field={field} text={val} />
                         </button>
                       )}
                       <button

@@ -1,4 +1,4 @@
-// @syncrobotic/tree v0.18.0 · update: npx shadcn add @syncrobotic/tree --overwrite
+// @syncrobotic/tree v0.18.1 · update: npx shadcn add @syncrobotic/tree --overwrite
 "use client"
 
 import * as React from "react"
@@ -354,7 +354,9 @@ function SelectTree({
         handled = false
         // Type-ahead: letters typed within half a second build a prefix; the same letter again goes to the next match.
         if (e.key.length === 1 && e.key.trim()) {
-          const now = Date.now()
+          // The key event's own time, not a clock read: it is the moment the letter was typed, and keeps the handler
+          // pure for the React Compiler. The first letter starts afresh either way, since the prefix begins empty.
+          const now = e.timeStamp
           const t = typed.current
           t.text = now - t.at > 500 ? e.key : t.text + e.key
           t.at = now

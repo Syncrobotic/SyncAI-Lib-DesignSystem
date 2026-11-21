@@ -1,5 +1,4 @@
-// @syncrobotic/stats-cards v0.18.0 · update: npx shadcn add @syncrobotic/stats-cards --overwrite
-import * as React from "react"
+// @syncrobotic/stats-cards v0.18.1 · update: npx shadcn add @syncrobotic/stats-cards --overwrite
 import { MetricCard, MetricGrid } from "@/registry/syncrobotic/ui/metric-card"
 
 export type Stat = {

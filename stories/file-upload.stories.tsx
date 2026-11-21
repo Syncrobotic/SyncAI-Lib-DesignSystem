@@ -69,7 +69,6 @@ export const FileUploadSingleImage: S = {
     return (
       <FileUpload multiple={false} accept="image/*" onFiles={([f]) => setUrl(URL.createObjectURL(f))} className="size-40 p-0">
         {url ? (
-          // eslint-disable-next-line @next/next/no-img-element -- local preview
           <img src={url} alt="Site photo" className="size-full rounded-md object-cover" />
         ) : (
           <span className="flex flex-col items-center gap-2 text-muted-foreground">
@@ -111,7 +110,6 @@ export const FileUploadAvatar: S = {
           aria-label="Robot photo"
         >
           {url ? (
-            // eslint-disable-next-line @next/next/no-img-element -- local preview
             <img src={url} alt="" className="size-full rounded-full object-cover" />
           ) : (
             <ImagePlus aria-hidden="true" className="size-6 text-muted-foreground" />

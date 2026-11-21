@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react"
-import * as React from "react"
 import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
@@ -11,7 +10,6 @@ import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
 import { ChoiceField, FieldSet } from "@/registry/syncrobotic/ui/choice-field"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
 import { Switch } from "@/registry/syncrobotic/ui/switch"
 
 const meta: Meta = { title: "Inputs/Form" }

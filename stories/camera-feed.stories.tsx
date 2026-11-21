@@ -61,15 +61,18 @@ function drawAisle(ctx: CanvasRenderingContext2D, t: number) {
   ctx.fillText(`CAM 1  ${clock(t)}`, 12, 24)
 }
 
-/** A live stream from a drawn camera. `stopAfter` (seconds) stops sending frames, as a camera that hangs does. */
-function useDemoStream({ stopAfter }: { stopAfter?: number } = {}) {
-  const [stream, setStream] = React.useState<MediaStream | null>(null)
-  React.useEffect(() => {
+/**
+ * A drawn camera as an external store: subscribing starts the stream, unsubscribing stops it. useSyncExternalStore then
+ * hands the stream to the story without setting state inside an effect.
+ */
+function demoStreamStore(stopAfter?: number) {
+  let stream: MediaStream | null = null
+  const subscribe = (onChange: () => void) => {
     const canvas = document.createElement("canvas")
     canvas.width = 640
     canvas.height = 360
     const ctx = canvas.getContext("2d")
-    if (!ctx || typeof canvas.captureStream !== "function") return
+    if (!ctx || typeof canvas.captureStream !== "function") return () => {}
     const fixed = still()
     const startedAt = Date.now()
     const now = new Date()
@@ -84,13 +87,21 @@ function useDemoStream({ stopAfter }: { stopAfter?: number } = {}) {
     }
     send()
     const id = setInterval(send, 100)
-    setStream(s)
+    stream = s
+    onChange()
     return () => {
       clearInterval(id)
       s.getTracks().forEach((t) => t.stop())
+      stream = null
     }
-  }, [stopAfter])
-  return stream
+  }
+  return { subscribe, getSnapshot: () => stream }
+}
+
+/** A live stream from a drawn camera. `stopAfter` (seconds) stops sending frames, as a camera that hangs does. */
+function useDemoStream({ stopAfter }: { stopAfter?: number } = {}) {
+  const store = React.useMemo(() => demoStreamStore(stopAfter), [stopAfter])
+  return React.useSyncExternalStore(store.subscribe, store.getSnapshot, () => null)
 }
 
 /** In the still, the feed's clock is the drawn camera's, so the last frame's time matches the picture in the screenshot. */
