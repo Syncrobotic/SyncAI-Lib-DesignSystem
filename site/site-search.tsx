@@ -13,18 +13,24 @@ const fold = (t: string) => t.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim()
 
 /**
  * Every word must appear (fuzzy letter-skipping found "Accessibility" for "fleet table"). The title outranks the text:
- * exact, then starting with the query, then containing every word; a match only in the description comes last.
+ * exact, then starting with the query, then containing every word. Then the description, which says what the thing is:
+ * its first sentence first ("A level within a known range, like battery…" is the Meter), then the rest of it, and last
+ * the words it is also found by (uses, group, address), where "battery" is only an example of something else.
  */
-function score(e: SearchEntry, q: string) {
+export function score(e: SearchEntry, q: string) {
   const words = q.split(" ")
   const title = fold(e.title)
   const squashed = title.replace(/ /g, "")
-  const rest = fold(`${e.hint ?? ""} ${e.text ?? ""} ${e.href}`)
-  if (!words.every((w) => title.includes(w) || squashed.includes(w) || rest.includes(w))) return 0
+  const hint = fold(e.hint ?? "")
+  const lead = fold((e.hint ?? "").split(/(?<=[.:;])\s/)[0])
+  const rest = fold(`${e.text ?? ""} ${e.href}`)
+  if (!words.every((w) => title.includes(w) || squashed.includes(w) || hint.includes(w) || rest.includes(w))) return 0
   if (title === q || squashed === q.replace(/ /g, "")) return 100
   if (title.startsWith(q) || squashed.startsWith(q.replace(/ /g, ""))) return 80
   if (words.every((w) => title.includes(w))) return 60
   if (words.some((w) => title.includes(w))) return 40
+  if (words.every((w) => lead.includes(w))) return 30
+  if (words.every((w) => hint.includes(w))) return 25
   return 20
 }
 
@@ -45,7 +51,10 @@ export function SiteSearch() {
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const typing = e.target instanceof HTMLElement && (e.target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName))
-      if ((e.key === "k" && (e.metaKey || e.ctrlKey)) || (e.key === "/" && !typing)) {
+      // `/` gives way to an example that answers it itself: a SearchField on the page takes `/` as its own shortcut, and
+      // a component that handled the key (the log viewer's search) has already prevented it. ⌘K and Ctrl+K still open.
+      const slash = e.key === "/" && !typing && !e.defaultPrevented && !document.querySelector("[data-slot=search-field]")
+      if ((e.key === "k" && (e.metaKey || e.ctrlKey)) || slash) {
         e.preventDefault()
         setOpen((o) => !o)
       }
