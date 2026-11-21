@@ -1,18 +1,19 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { CodeBlock } from "@/registry/syncrobotic/ui/code-block"
+import { Highlighted } from "@/stories/highlight"
 
 const meta: Meta = { title: "Display/Code block" }
 export default meta
 type S = StoryObj
 
+const dvcImport = "dvc import https://git.syncrobotic.me/datacore/warehouse-scans data/pallets/2026-11 --rev v3.2.0"
+
 export const CodeBlockCommand: S = {
   render: () => (
     <div className="w-md max-w-full">
-      <CodeBlock
-        code="dvc import https://git.syncrobotic.me/datacore/warehouse-scans data/pallets/2026-11 --rev v3.2.0"
-        title="Terminal"
-        wrap="words"
-      />
+      <CodeBlock code={dvcImport} title="Terminal" language="bash" wrap="words">
+        <Highlighted code={dvcImport} lang="bash" />
+      </CodeBlock>
     </div>
   ),
 }
@@ -28,7 +29,9 @@ const deviceResponse = `{
 export const CodeBlockScrolls: S = {
   render: () => (
     <div className="w-md max-w-full">
-      <CodeBlock code={deviceResponse} language="json" />
+      <CodeBlock code={deviceResponse} language="json">
+        <Highlighted code={deviceResponse} lang="json" />
+      </CodeBlock>
     </div>
   ),
 }
@@ -42,7 +45,9 @@ console.log(devices.items.map((d) => d.name))`
 export const CodeBlockWithTitle: S = {
   render: () => (
     <div className="w-md max-w-full">
-      <CodeBlock code={missionTs} title="list-devices.ts" lineNumbers />
+      <CodeBlock code={missionTs} title="list-devices.ts" language="ts" lineNumbers>
+        <Highlighted code={missionTs} lang="tsx" />
+      </CodeBlock>
     </div>
   ),
 }
@@ -56,15 +61,15 @@ export const CodeBlockSecret: S = {
   ),
 }
 
+const curl = `curl https://portal.syncrobotic.me/api/v1/projects/prj_warehouse_north/devices \\
+  -H "Authorization: Bearer $LOCALMIND_API_KEY"`
+
 export const CodeBlockCurl: S = {
   render: () => (
     <div className="w-md max-w-full">
-      <CodeBlock
-        code={`curl https://portal.syncrobotic.me/api/v1/projects/prj_warehouse_north/devices \\
-  -H "Authorization: Bearer $LOCALMIND_API_KEY"`}
-        title="Terminal"
-        wrap="words"
-      />
+      <CodeBlock code={curl} title="Terminal" language="bash" wrap="words">
+        <Highlighted code={curl} lang="bash" />
+      </CodeBlock>
     </div>
   ),
 }

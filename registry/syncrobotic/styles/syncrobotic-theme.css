@@ -1,4 +1,4 @@
-/* @syncrobotic/syncrobotic-theme v0.22.2 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
+/* @syncrobotic/syncrobotic-theme v0.22.3 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
 /*
  * SYNCROBOTIC theme (see CHANGELOG.md for its version history)
  * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
@@ -558,6 +558,37 @@
 @layer base {
   fieldset {
     min-width: 0;
+  }
+}
+
+/* The browser draws native parts (scrollbars, date and time pickers, autofill) for the theme it is told, so it is told:
+   light by default, dark inside .dark. Without it a dark page got light scrollbars and a light-blue autofill box. */
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+  .dark {
+    color-scheme: dark;
+  }
+}
+
+/* A field the browser filled in (a saved address, a remembered search) looks like any filled field. The browser's own
+   light-blue fill is set with !important and cannot be replaced as a background; a long transition delays it for good,
+   so the field keeps its own background, transparent inside a group (Search field, Input group) as on a card. Painting
+   over it instead would cover the edge of the group around the field. Blue here would mean a process being waited on.
+   The text keeps the theme's colour. !important outranks the transition utilities a field may carry. */
+@layer base {
+  input:-webkit-autofill,
+  input:autofill,
+  textarea:-webkit-autofill,
+  textarea:autofill,
+  select:-webkit-autofill,
+  select:autofill {
+    transition: background-color 600000s step-end 0s, color 600000s step-end 0s !important;
+    -webkit-text-fill-color: var(--foreground);
+    caret-color: var(--foreground);
+    /* Firefox tints a filled field with a filter instead. */
+    filter: none;
   }
 }
 
