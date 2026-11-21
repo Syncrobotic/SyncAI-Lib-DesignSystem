@@ -775,7 +775,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "The result of what the user just did, or a minor event. Web and dashboard use Toast; the control app uses the island's notices, with the same timings.",
       "4 s; 8 s when it offers an action such as Undo; failures stay until dismissed. Hovering or focusing pauses the timer.",
-      "At most three on screen. Never use a toast for an alarm.",
+      "At most three on screen, stacked with the newest in front; more wait behind and come forward as those in front go. Hovering, focusing or touching the stack spreads it out. Never use a toast for an alarm.",
     ],
   },
   // Navigation

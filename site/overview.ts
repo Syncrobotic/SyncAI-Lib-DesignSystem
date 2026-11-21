@@ -796,7 +796,7 @@ export const overviews: Record<string, Overview> = {
     instead: ["Anything that needs a person to act: `alarm`, never a toast.", "A state of the page: `alert`."],
     notes: [
       "Only feedback on the user's own action. Anything needing action is an Alarm.",
-      "Mount <Toaster /> once; call toast() anywhere. Failures stay until dismissed.",
+      "Mount <Toaster /> once; call toast() anywhere. Failures stay until dismissed. A second Toaster (a block that brings its own) draws nothing while the first is mounted.",
     ],
   },
   tabs: {

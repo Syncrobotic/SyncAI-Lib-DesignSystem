@@ -2308,8 +2308,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.27.0",
         "changelog": [
+          {
+            "version": "0.27.0",
+            "date": "2026-11-21",
+            "note": "Toaster stacks toasts like sonner: newest in front, two more peeking behind it, the rest kept hidden (none is closed to make room) and brought forward as the front ones go; hover, focus or touch spreads the stack. Toasts arrive from the edge and the others move on transform, so a 4th no longer makes the stack jump. Only the first mounted Toaster draws (a second one drew every toast twice and paused only one copy); a swiped toast leaves from where it was let go. Toast wraps its icon and text in a [data-slot=toast-content] div."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
