@@ -2218,8 +2218,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.2",
+        "version": "0.27.0",
         "changelog": [
+          {
+            "version": "0.27.0",
+            "date": "2026-11-21",
+            "note": "Buttons beside Acknowledge (a custom action, Shelve) are ghost, so Acknowledge is the only outlined button in an unacknowledged row. Unshelve, alone in its row, keeps its outline."
+          },
           {
             "version": "0.22.2",
             "date": "2026-11-20",
