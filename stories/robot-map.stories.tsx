@@ -7,6 +7,7 @@ import {
   type RobotMapGrid,
   type RobotMapPath,
   type RobotMapRobot,
+  type RobotMapScan,
   type RobotMapZone,
 } from "@/registry/syncrobotic/ui/robot-map"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
@@ -284,4 +285,53 @@ export const RobotMapOccupancyGrid: S = {
 /** The global costmap over the grid, in the accent's ramp from clear to lethal, with its legend; the route being driven stays the one blue. */
 export const RobotMapCostmap: S = {
   render: () => <GridSite withCostmap />,
+}
+
+/** How far a beam from (x, y) along (dx, dy) on the plan travels before it meets a wall or rack (slab test per box). */
+function cast(x: number, y: number, dx: number, dy: number) {
+  let best = Infinity
+  for (const [rx, ry, rw, rh] of solid) {
+    const tx1 = (rx - x) / dx
+    const tx2 = (rx + rw - x) / dx
+    const ty1 = (ry - y) / dy
+    const ty2 = (ry + rh - y) / dy
+    const near = Math.max(Math.min(tx1, tx2), Math.min(ty1, ty2))
+    const far = Math.min(Math.max(tx1, tx2), Math.max(ty1, ty2))
+    if (far >= Math.max(near, 0) && near < best) best = Math.max(near, 0)
+  }
+  return best
+}
+
+/** A 270° lidar with 1080 beams and a 12 m reach, as a ROS driver publishes it: misses past its reach are Infinity. */
+function lidar(robot: RobotMapRobot): RobotMapScan {
+  const rnd = seeded(robot.id.length * 31 + Math.round(robot.x))
+  const angleMin = (-3 * Math.PI) / 4
+  const angleIncrement = ((3 * Math.PI) / 2) / 1080
+  // AMR-11's localisation has drifted 3°: its scan lands beside the walls it sees, which is what scans on a map are for.
+  const drift = robot.id === "amr-11" ? (3 * Math.PI) / 180 : 0
+  const yaw = ((90 - (robot.heading ?? 0)) * Math.PI) / 180 + drift
+  const ranges = new Float32Array(1080)
+  for (let i = 0; i < 1080; i++) {
+    const a = yaw + angleMin + i * angleIncrement
+    const r = cast(robot.x, robot.y, Math.cos(a), -Math.sin(a))
+    // A little range noise, and now and then a beam with no return (NaN), which the map skips.
+    ranges[i] = rnd() < 0.01 ? NaN : r > 12 ? Infinity : r + (rnd() - 0.5) * 0.04
+  }
+  return { robotId: robot.id, angleMin, angleIncrement, ranges, rangeMin: 0.05, rangeMax: 12 }
+}
+
+let scans: RobotMapScan[] | undefined
+const robotScans = () => (scans ??= gridRobots.map(lidar))
+
+/**
+ * Three robots' laser scans over the grid: small dots, one path per scan, thin enough to show the map under them. Over a grid,
+ * whose walls are already ink, the dots take the accent (scanColor="chart-1") so a hit reads against the wall it lands on.
+ */
+export const RobotMapLaserScans: S = {
+  render: () => (
+    <div className="flex w-full flex-col gap-3">
+      <RobotMap label="Map of North site with laser scans" grid={warehouseGrid()} zones={zones} robots={gridRobots} scans={robotScans()} scanColor="chart-1" />
+      <RobotMapList label="Robots on North site" robots={gridRobots} zones={zones} />
+    </div>
+  ),
 }

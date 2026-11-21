@@ -5621,6 +5621,18 @@
      "description": "A ROS costmap (the same message) over the floor, in the accent's ramp from clear to strong, with a legend."
     },
     {
+     "name": "scans",
+     "type": "RobotMapScan[]",
+     "default": "[]",
+     "description": "Laser scans, one per robot, drawn as small dots from that robot's current position and heading. One path per scan, so 10 robots × 1080 beams stay smooth."
+    },
+    {
+     "name": "scanColor",
+     "type": "\"foreground\" | \"muted-foreground\" | \"map-point\" | \"chart-1\"",
+     "default": "\"foreground\"",
+     "description": "The dots' ink, from the tokens: the ink colour by default; never a status colour."
+    },
+    {
      "name": "origin",
      "type": "{ x: number; y: number; }",
      "description": "Where the plan's bottom-left corner is in the ROS map frame, in metres: places `grid` and `costmap` on it. Without it, the grid's origin (the grid is the plan)."

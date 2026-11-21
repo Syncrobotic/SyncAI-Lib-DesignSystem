@@ -155,6 +155,51 @@ async function gridImage(grid: RobotMapGrid, kind: "occupancy" | "cost"): Promis
 }
 
 /**
+ * A ROS `sensor_msgs/LaserScan` from one robot, as it arrives: beam i points `angleMin + i × angleIncrement` radians
+ * counter-clockwise from the robot's forward axis and measured `ranges[i]` metres.
+ */
+export type RobotMapScan = {
+  /** The robot it was taken from: the scan is drawn from that robot's current x, y and heading. */
+  robotId: string
+  angleMin: number
+  angleIncrement: number
+  ranges: Float32Array | readonly number[]
+  /** Readings outside rangeMin–rangeMax (and NaN or ±Infinity, no return) are not drawn, as ROS defines them. */
+  rangeMin: number
+  rangeMax: number
+}
+
+/** The ink a scan's dots are drawn in: neutral tokens and the chart accent only, never a status colour. */
+export type RobotMapScanColor = "foreground" | "muted-foreground" | "map-point" | "chart-1"
+const scanStroke: Record<RobotMapScanColor, string> = {
+  foreground: "stroke-foreground",
+  "muted-foreground": "stroke-muted-foreground",
+  "map-point": "stroke-map-point",
+  "chart-1": "stroke-chart-1",
+}
+
+/**
+ * Each valid reading of a scan as a point on the plan, from the robot's pose. The beam's angle turns from the robot's
+ * heading the ROS way (counter-clockwise), which on a plan drawn y down is a turn to the left of where it faces. A robot
+ * with no heading has no frame for its scan, so nothing is returned. The laser is taken to sit at the robot's centre.
+ */
+export function scanToPoints(scan: RobotMapScan, robot: RobotMapPose): RobotMapPoint[] {
+  if (robot.heading === undefined) return []
+  // The heading's yaw in the map frame, in radians counter-clockwise from +x.
+  const yaw = ((90 - robot.heading) * Math.PI) / 180
+  const out: RobotMapPoint[] = []
+  const { ranges, angleMin, angleIncrement, rangeMin, rangeMax } = scan
+  for (let i = 0; i < ranges.length; i++) {
+    const r = ranges[i] ?? NaN
+    // NaN and ±Infinity fail both comparisons or the second, so they are skipped with the out-of-range values.
+    if (!(r >= rangeMin && r <= rangeMax)) continue
+    const a = yaw + angleMin + i * angleIncrement
+    out.push([robot.x + r * Math.cos(a), robot.y - r * Math.sin(a)])
+  }
+  return out
+}
+
+/**
  * A grid's image, made again only when its cells or size change (a new `data` array), not on every pan or every new
  * object around the same cells. The previous image stays until the next one is ready, so a live costmap does not blink.
  */
@@ -346,6 +391,10 @@ export type RobotMapProps = {
   grid?: RobotMapGrid
   /** A ROS costmap (the same message) over the floor, in the accent's ramp from clear to strong, with a legend. */
   costmap?: RobotMapGrid
+  /** Laser scans, one per robot, drawn as small dots from that robot's current position and heading. One path per scan, so 10 robots × 1080 beams stay smooth. */
+  scans?: RobotMapScan[]
+  /** The dots' ink, from the tokens: the ink colour by default; never a status colour. */
+  scanColor?: RobotMapScanColor
   /** Where the plan's bottom-left corner is in the ROS map frame, in metres: places `grid` and `costmap` on it. Without it, the grid's origin (the grid is the plan). */
   origin?: { x: number; y: number }
   zones?: RobotMapZone[]
@@ -388,6 +437,8 @@ export function RobotMap({
   floorplan,
   grid,
   costmap,
+  scans = [],
+  scanColor = "foreground",
   origin,
   zones = [],
   robots = [],
@@ -844,6 +895,17 @@ export function RobotMap({
               className="fill-none stroke-map-point"
             />
           ))}
+          {scans.map((scan, k) => {
+            const robot = robots.find((r) => r.id === scan.robotId)
+            if (!robot) return null
+            // A dot is a zero-length segment with a round cap: one path per scan, however many beams it has.
+            let d = ""
+            for (const [x, y] of scanToPoints(scan, robot)) {
+              const [px, py] = toScreen(x, y)
+              d += `M${px.toFixed(1)} ${py.toFixed(1)}h0`
+            }
+            return <path key={`${scan.robotId}-${k}`} data-scan={scan.robotId} d={d} strokeWidth="3" strokeLinecap="round" className={cn("fill-none opacity-80", scanStroke[scanColor])} />
+          })}
           {paths.map((p) => (
             <polyline
               key={p.id}

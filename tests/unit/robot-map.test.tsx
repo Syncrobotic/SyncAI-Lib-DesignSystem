@@ -8,6 +8,7 @@ import {
   pointInPolygon,
   rasteriseGrid,
   rosToPlan,
+  scanToPoints,
   type RobotMapGrid,
   type RobotMapRobot,
   type RobotMapZone,
@@ -289,5 +290,50 @@ describe("occupancy grid", () => {
     render(<RobotMap label="Map of North site" grid={grid} costmap={grid} robots={robots} />)
     expect(document.querySelector("[data-layer=grid] rect")).not.toBeNull()
     expect(document.querySelector("[data-slot=robot-map-legend]")!.textContent).toBe("Costlowlethal")
+  })
+})
+
+describe("laser scans", () => {
+  const scan = {
+    robotId: "amr-07",
+    angleMin: -Math.PI / 2,
+    angleIncrement: Math.PI / 2,
+    // Right, ahead, left; then readings the map must skip: no return, out of reach, too close, and the end of the array.
+    ranges: [1, 2, 3, NaN, Infinity, 0.01, 50],
+    rangeMin: 0.1,
+    rangeMax: 10,
+  }
+
+  it("projects each beam from the robot's pose and skips NaN, Infinity and out-of-range readings", () => {
+    // Facing right (90°): the beam ahead goes right, the ROS left (counter-clockwise) goes up the plan.
+    const pts = scanToPoints({ ...scan, ranges: scan.ranges.slice(0, 3) }, { x: 10, y: 10, heading: 90 })
+    expect(pts).toHaveLength(3)
+    const [right, ahead, left] = pts as [[number, number], [number, number], [number, number]]
+    expect(right[0]).toBeCloseTo(10)
+    expect(right[1]).toBeCloseTo(11)
+    expect(ahead[0]).toBeCloseTo(12)
+    expect(ahead[1]).toBeCloseTo(10)
+    expect(left[0]).toBeCloseTo(10)
+    expect(left[1]).toBeCloseTo(7)
+    // Beams 3 to 6 are all invalid, so a Float32Array of the whole scan gives the same three points.
+    expect(scanToPoints({ ...scan, angleIncrement: Math.PI / 2, ranges: Float32Array.from(scan.ranges) }, { x: 10, y: 10, heading: 90 })).toHaveLength(3)
+    // Facing up (0°), the beam ahead goes up the plan.
+    const [, up] = scanToPoints(scan, { x: 0, y: 5, heading: 0 }) as [[number, number], [number, number]]
+    expect(up[0]).toBeCloseTo(0)
+    expect(up[1]).toBeCloseTo(3)
+    // No heading, no frame to draw it in.
+    expect(scanToPoints(scan, { x: 0, y: 0 })).toEqual([])
+  })
+
+  it("draws one path per scan, of dots, in a neutral ink", () => {
+    render(<RobotMap label="Map of North site" width={60} height={36} robots={robots} scans={[scan, { ...scan, robotId: "amr-14" }, { ...scan, robotId: "gone" }]} />)
+    const drawn = document.querySelectorAll("[data-scan]")
+    // amr-14 and amr-07 have headings; a scan from a robot not on the map is not drawn.
+    expect(drawn).toHaveLength(2)
+    const d = drawn[0]!.getAttribute("d")!
+    expect(d.match(/M/g)).toHaveLength(3)
+    expect(d).toContain("h0")
+    expect(drawn[0]!.getAttribute("class")).toContain("stroke-foreground")
+    expect(drawn[0]!.getAttribute("class")).not.toMatch(/info|warning|danger|stop/)
   })
 })

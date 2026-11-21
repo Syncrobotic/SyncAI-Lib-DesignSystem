@@ -2657,7 +2657,7 @@
       "name": "robot-map",
       "type": "registry:ui",
       "title": "Robot map",
-      "description": "A site floor plan in metres, drawn in SVG with no map library: a ROS occupancy grid and costmap as the floor, zones as outlines with icon and name, planned and travelled routes, robots as status shapes with heading and name, selection, pan and zoom by drag, wheel, pinch, buttons and keys, a scale bar and an optional north arrow; RobotMapList shows the same robots as text.",
+      "description": "A site floor plan in metres, drawn in SVG with no map library: a ROS occupancy grid and costmap as the floor, laser scans, zones as outlines with icon and name, planned and travelled routes, robots as status shapes with heading and name, selection, pan and zoom by drag, wheel, pinch, buttons and keys, a scale bar and an optional north arrow; RobotMapList shows the same robots as text.",
       "dependencies": [
         "lucide-react"
       ],
@@ -2682,7 +2682,7 @@
           {
             "version": "0.24.0",
             "date": "2026-11-21",
-            "note": "Layers from ROS: `grid` draws a nav_msgs/OccupancyGrid as the floor (free the map surface, occupied the ink at its probability, unknown the no-data hatch), rasterised once per new data array; with no width and height the grid is the plan. `costmap` lays the accent's ramp over it with a legend in words. New helpers `gridToPlan`, `rosToPlan` and `rasteriseGrid`."
+            "note": "Layers from ROS: `grid` draws a nav_msgs/OccupancyGrid as the floor (free the map surface, occupied the ink at its probability, unknown the no-data hatch), rasterised once per new data array; with no width and height the grid is the plan. `costmap` lays the accent's ramp over it with a legend in words. `scans` draws sensor_msgs/LaserScans as small neutral dots from each robot's pose, one path per scan, skipping NaN, Infinity and out-of-range readings (`scanColor` from the tokens). New helpers `gridToPlan`, `rosToPlan`, `rasteriseGrid` and `scanToPoints`."
           },
           {
             "version": "0.23.2",
