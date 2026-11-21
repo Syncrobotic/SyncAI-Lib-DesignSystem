@@ -189,8 +189,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.0",
+        "version": "0.5.1",
         "changelog": [
+          {
+            "version": "0.5.1",
+            "date": "2026-11-21",
+            "note": "The frame loop is declared inside the press handler instead of referring to itself before its declaration, so it is safe under the React Compiler. No visible change."
+          },
           {
             "version": "0.5.0",
             "date": "2026-11-17",
@@ -255,8 +260,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.8.1",
         "changelog": [
+          {
+            "version": "0.8.1",
+            "date": "2026-11-21",
+            "note": "Showing again mounts in the same render instead of an effect later, so it is safe under the React Compiler. No visible change."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -280,8 +290,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.15.1",
         "changelog": [
+          {
+            "version": "0.15.1",
+            "date": "2026-11-21",
+            "note": "useDebouncedCallback keeps its timer and pending arguments in a closure instead of refs read during render, so it is safe under the React Compiler. Same behaviour: one stable function per delay, always calling the latest fn."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",

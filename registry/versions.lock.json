@@ -12,20 +12,20 @@
     "hash": "8ec920f8618ff43d"
   },
   "use-long-press": {
-    "version": "0.5.0",
-    "hash": "f9fc6f352b80a160"
+    "version": "0.5.1",
+    "hash": "9353a9e71f657181"
   },
   "use-slide-release": {
     "version": "0.11.1",
     "hash": "9033117864602a03"
   },
   "use-presence": {
-    "version": "0.8.0",
-    "hash": "a0d4130094efa1db"
+    "version": "0.8.1",
+    "hash": "2d5d00e9957743b6"
   },
   "use-debounce": {
-    "version": "0.15.0",
-    "hash": "ca537110acc20ac6"
+    "version": "0.15.1",
+    "hash": "2587f5cfedc35e8a"
   },
   "use-hotkeys": {
     "version": "0.16.0",
