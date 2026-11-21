@@ -87,7 +87,7 @@ const columns: ColumnDef<Robot>[] = [
     meta: { label: "Status" },
   },
   // Status right after the name, so it stays in view when a narrow screen shows only the first columns.
-  { accessorKey: "site", header: ({ column }) => <DataGridColumnHeader column={column} title="Site" />, size: 150, meta: { label: "Site" } },
+  { accessorKey: "site", header: ({ column }) => <DataGridColumnHeader column={column} title="Site" />, size: 140, meta: { label: "Site" } },
   {
     accessorKey: "battery",
     header: ({ column }) => <DataGridColumnHeader column={column} title="Battery" />,

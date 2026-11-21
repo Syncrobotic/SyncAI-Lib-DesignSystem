@@ -10,7 +10,8 @@ export function Unbroken({ text }: { text: string }) {
       {parts.map((p, i) => (
         <React.Fragment key={i}>
           {i > 0 && <wbr />}
-          <span className="whitespace-nowrap">{p}</span>
+          {/* A long identifier (acknowledgeNonCritical) may break where it must, or it pushes a phone's page sideways. */}
+          <span className={p.length > 18 ? undefined : "whitespace-nowrap"}>{p}</span>
         </React.Fragment>
       ))}
     </>
