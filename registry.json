@@ -4509,7 +4509,7 @@
       "title": "Resizable",
       "description": "Panels resized by dragging the line between them or with the arrow keys, horizontal, vertical or nested (react-resizable-panels).",
       "dependencies": [
-        "react-resizable-panels@^3"
+        "react-resizable-panels@^4"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -4521,8 +4521,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.25.0",
         "changelog": [
+          {
+            "version": "0.25.0",
+            "date": "2026-11-21",
+            "note": "Needs react-resizable-panels 4: direction, autoSaveId and percent sizes as numbers work as before (orientation is the new name for direction); move a Panel ref to panelRef, onLayout to onLayoutChanged (a map of panel id to percent), and read onResize's size as { asPercentage, inPixels }; drop order and keyboardResizeBy. Sizes saved by version 3 are not read once. Looks the same; an arrow key moves the handle 5 %."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",

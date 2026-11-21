@@ -334,7 +334,11 @@ export const overviews: Record<string, Overview> = {
     what: "A layout of panels whose sizes the user changes by dragging or with the keyboard.",
     use: ["A map beside a robot list.", "A camera above an event log.", "An editor beside its preview."],
     instead: ["A panel that slides in over content: `sheet`.", "Fixed app chrome: the app-shell block."],
-    notes: ["autoSaveId on the group remembers sizes in the browser.", "collapsible panels collapse when dragged past their minSize."],
+    notes: [
+      "autoSaveId on the group remembers sizes in the browser.",
+      "collapsible panels collapse when dragged past their minSize.",
+      "Sizes given as numbers are percentages; a string takes a unit (\"240px\", \"20rem\").",
+    ],
   },
   "file-upload": {
     what: "An area that takes files by drop or by the picker, validates them, and hands the accepted ones to you.",

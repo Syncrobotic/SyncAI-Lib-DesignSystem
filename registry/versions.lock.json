@@ -404,8 +404,8 @@
     "hash": "9ede15f8f46efb96"
   },
   "resizable": {
-    "version": "0.17.3",
-    "hash": "54a68ee91d6b7ecd"
+    "version": "0.25.0",
+    "hash": "86eca7bb52edc724"
   },
   "file-upload": {
     "version": "0.10.1",

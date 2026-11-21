@@ -5988,9 +5988,27 @@
  "resizable": [
   {
    "name": "ResizablePanelGroup",
+   "props": [
+    {
+     "name": "direction",
+     "type": "\"vertical\" | \"horizontal\"",
+     "description": "The version 3 name for `orientation`, still read so existing layouts keep their direction."
+    },
+    {
+     "name": "autoSaveId",
+     "type": "string",
+     "description": "Remembers the panel sizes in localStorage under this key."
+    }
+   ],
+   "inherits": [
+    "Group"
+   ]
+  },
+  {
+   "name": "ResizablePanel",
    "props": [],
    "inherits": [
-    "PanelGroup"
+    "Panel"
    ]
   },
   {
@@ -6003,7 +6021,7 @@
     }
    ],
    "inherits": [
-    "PanelResizeHandle"
+    "Separator"
    ]
   }
  ],
