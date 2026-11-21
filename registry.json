@@ -3778,6 +3778,9 @@
         "urdf-loader@^0.13.1",
         "lucide-react"
       ],
+      "devDependencies": [
+        "@types/three@^0.187.0"
+      ],
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/button",
