@@ -39,10 +39,17 @@ export function Inline({ text }: { text: string }) {
   )
 }
 
-export function PageTitle({ title, lead }: { title: string; lead?: string }) {
+export function PageTitle({ title, lead, aside }: { title: string; lead?: string; /** Beside the title: a component's version and status. */ aside?: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-2 pb-8">
-      <h1 className="text-3xl font-bold">{title}</h1>
+      {aside ? (
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+          <h1 className="text-3xl font-bold">{title}</h1>
+          {aside}
+        </div>
+      ) : (
+        <h1 className="text-3xl font-bold">{title}</h1>
+      )}
       {lead && <p className="max-w-2xl text-lg text-pretty text-muted-foreground">{lead}</p>}
     </div>
   )
