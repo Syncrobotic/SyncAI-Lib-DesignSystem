@@ -1,4 +1,4 @@
-// @syncrobotic/robot-map v0.23.2 · update: npx shadcn add @syncrobotic/robot-map --overwrite
+// @syncrobotic/robot-map v0.24.0 · update: npx shadcn add @syncrobotic/robot-map --overwrite
 "use client"
 
 import * as React from "react"
@@ -47,6 +47,195 @@ export type RobotMapRobot = {
 /** A route: `planned` is where a robot is going (dashed, the in-progress blue), `travelled` where it has been (solid, grey). */
 export type RobotMapPath = { id: string; kind: "planned" | "travelled"; points: RobotMapPoint[]; robotId?: string }
 
+/**
+ * A ROS `nav_msgs/OccupancyGrid`, as its `info` and `data` arrive: cells row by row from the grid's origin, which is its
+ * bottom-left corner in the map frame (y up). A cell is −1 when unknown and 0–100 for the chance it is occupied.
+ */
+export type RobotMapGrid = {
+  /** Cells across and up (`info.width`, `info.height`). */
+  width: number
+  height: number
+  /** Metres per cell (`info.resolution`). */
+  resolution: number
+  /** The outer corner of the first cell in the ROS map frame, in metres (`info.origin.position`). Its yaw must be 0, as map_server and the SLAM packages write it. */
+  origin: { x: number; y: number }
+  /** Row-major from the origin: cell (column, row) is `data[row × width + column]`, row 0 at the bottom. */
+  data: Int8Array | readonly number[]
+}
+
+/** The plan in the ROS map frame: its size in metres and where its bottom-left corner is. */
+export type RobotMapFrame = { width: number; height: number; origin: { x: number; y: number } }
+
+/** A place and the way it faces, on the plan: metres from the top-left, heading clockwise from the top (0 up, 90 right). */
+export type RobotMapPose = { x: number; y: number; heading?: number }
+
+/**
+ * The plan a grid makes when it is the whole floor plan: its size in metres, and its origin as the plan's bottom-left
+ * corner. Give `width` and `height` to RobotMap (or leave them out with `grid`), and convert poses with `rosToPlan`.
+ */
+export const gridToPlan = (grid: RobotMapGrid): RobotMapFrame => ({
+  width: grid.width * grid.resolution,
+  height: grid.height * grid.resolution,
+  origin: { x: grid.origin.x, y: grid.origin.y },
+})
+
+/**
+ * A ROS pose (x, y in metres, yaw in radians counter-clockwise from +x) on the plan: `x = xRos − originX`,
+ * `y = height − (yRos − originY)`, `heading = 90 − yaw × 180 / π`, kept between 0 and 360.
+ */
+export function rosToPlan(frame: RobotMapFrame, pose: { x: number; y: number; yaw?: number }): RobotMapPose {
+  const at = { x: pose.x - frame.origin.x, y: frame.height - (pose.y - frame.origin.y) }
+  if (pose.yaw === undefined) return at
+  return { ...at, heading: (((90 - (pose.yaw * 180) / Math.PI) % 360) + 360) % 360 }
+}
+
+/** Where a grid lies on the plan, in metres from the plan's top-left: the ROS conversion applied to its corners. */
+const gridRect = (grid: RobotMapGrid, frame: RobotMapFrame) => {
+  const w = grid.width * grid.resolution
+  const h = grid.height * grid.resolution
+  // The grid's top-left is its origin raised by its own height, since the map frame's y grows up and the plan's down.
+  const topLeft = rosToPlan(frame, { x: grid.origin.x, y: grid.origin.y + h })
+  return { x: topLeft.x, y: topLeft.y, w, h }
+}
+
+/**
+ * The grid as an RGBA image, top row first (the plan's y grows down, the grid's up), in one pass over the cells. The map
+ * paints it in its own tokens through two masks of this one image, so it follows dark, light and high contrast without
+ * drawing it again:
+ *  - occupied (1–100): white at alpha value / 100; read as luminance it lays the ink colour on at that strength;
+ *  - unknown (−1): opaque black, which is no luminance (no ink) but full alpha, where the no-data hatch shows;
+ *  - free (0): transparent, the map's own surface.
+ * A cell between 1 and 99 keeps a trace of the hatch under its ink, as a cell the robot is not sure about.
+ * For a costmap (`kind: "cost"`) only costs above 0 are drawn, at alpha cost / 100; unknown is left clear.
+ */
+export function rasteriseGrid(grid: Pick<RobotMapGrid, "width" | "height" | "data">, kind: "occupancy" | "cost" = "occupancy") {
+  const { width: w, height: h, data } = grid
+  const out = new Uint8ClampedArray(w * h * 4)
+  // One 32-bit word per pixel is four times fewer writes than bytes; its byte order is the platform's.
+  const px = new Uint32Array(out.buffer)
+  const little = new Uint8Array(new Uint32Array([1]).buffer)[0] === 1
+  const word = (r: number, a: number) => (little ? ((a << 24) | (r << 16) | (r << 8) | r) >>> 0 : ((r << 24) | (r << 16) | (r << 8) | a) >>> 0)
+  const shades = Array.from({ length: 101 }, (_, v) => word(255, Math.round((v * 255) / 100)))
+  const unknown = kind === "occupancy" ? word(0, 255) : 0
+  for (let row = 0; row < h; row++) {
+    const from = row * w
+    const to = (h - 1 - row) * w
+    for (let col = 0; col < w; col++) {
+      const v = data[from + col] ?? -1
+      if (v === 0) continue
+      px[to + col] = v < 0 ? unknown : (shades[Math.min(100, Math.round(v))] ?? 0)
+    }
+  }
+  return out
+}
+
+/** The grid drawn into a PNG off the render, as a blob URL; null where there is no canvas (a server, the tests). */
+async function gridImage(grid: RobotMapGrid, kind: "occupancy" | "cost"): Promise<string | null> {
+  const { width: w, height: h } = grid
+  if (!(w > 0 && h > 0) || typeof document === "undefined" || typeof ImageData === "undefined") return null
+  const image = new ImageData(rasteriseGrid(grid, kind), w, h)
+  let blob: Blob | null = null
+  if (typeof OffscreenCanvas !== "undefined") {
+    const canvas = new OffscreenCanvas(w, h)
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return null
+    ctx.putImageData(image, 0, 0)
+    blob = await canvas.convertToBlob()
+  } else {
+    const canvas = document.createElement("canvas")
+    canvas.width = w
+    canvas.height = h
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return null
+    ctx.putImageData(image, 0, 0)
+    // toBlob encodes the PNG away from the main thread, so even a 4000 × 4000 grid blocks only for the one pass above.
+    blob = await new Promise<Blob | null>((done) => canvas.toBlob(done))
+  }
+  return blob ? URL.createObjectURL(blob) : null
+}
+
+/**
+ * A ROS `sensor_msgs/LaserScan` from one robot, as it arrives: beam i points `angleMin + i × angleIncrement` radians
+ * counter-clockwise from the robot's forward axis and measured `ranges[i]` metres.
+ */
+export type RobotMapScan = {
+  /** The robot it was taken from: the scan is drawn from that robot's current x, y and heading. */
+  robotId: string
+  angleMin: number
+  angleIncrement: number
+  ranges: Float32Array | readonly number[]
+  /** Readings outside rangeMin–rangeMax (and NaN or ±Infinity, no return) are not drawn, as ROS defines them. */
+  rangeMin: number
+  rangeMax: number
+}
+
+/** The ink a scan's dots are drawn in: neutral tokens and the chart accent only, never a status colour. */
+export type RobotMapScanColor = "foreground" | "muted-foreground" | "map-point" | "chart-1"
+const scanStroke: Record<RobotMapScanColor, string> = {
+  foreground: "stroke-foreground",
+  "muted-foreground": "stroke-muted-foreground",
+  "map-point": "stroke-map-point",
+  "chart-1": "stroke-chart-1",
+}
+
+/**
+ * Each valid reading of a scan as a point on the plan, from the robot's pose. The beam's angle turns from the robot's
+ * heading the ROS way (counter-clockwise), which on a plan drawn y down is a turn to the left of where it faces. A robot
+ * with no heading has no frame for its scan, so nothing is returned. The laser is taken to sit at the robot's centre.
+ */
+export function scanToPoints(scan: RobotMapScan, robot: RobotMapPose): RobotMapPoint[] {
+  if (robot.heading === undefined) return []
+  // The heading's yaw in the map frame, in radians counter-clockwise from +x.
+  const yaw = ((90 - robot.heading) * Math.PI) / 180
+  const out: RobotMapPoint[] = []
+  const { ranges, angleMin, angleIncrement, rangeMin, rangeMax } = scan
+  for (let i = 0; i < ranges.length; i++) {
+    const r = ranges[i] ?? NaN
+    // NaN and ±Infinity fail both comparisons or the second, so they are skipped with the out-of-range values.
+    if (!(r >= rangeMin && r <= rangeMax)) continue
+    const a = yaw + angleMin + i * angleIncrement
+    out.push([robot.x + r * Math.cos(a), robot.y - r * Math.sin(a)])
+  }
+  return out
+}
+
+/**
+ * A grid's image, made again only when its cells or size change (a new `data` array), not on every pan or every new
+ * object around the same cells. The previous image stays until the next one is ready, so a live costmap does not blink.
+ */
+function useGridImage(grid: RobotMapGrid | undefined, kind: "occupancy" | "cost") {
+  const [image, setImage] = React.useState<{ url: string; grid: RobotMapGrid } | null>(null)
+  const current = React.useEffectEvent(() => grid)
+  const data = grid?.data
+  const w = grid?.width
+  const h = grid?.height
+  React.useEffect(() => {
+    const g = current()
+    if (!g || !data || !w || !h) return
+    let live = true
+    gridImage(g, kind).then(
+      (url) => {
+        if (!url) return
+        if (live) setImage({ url, grid: g })
+        else URL.revokeObjectURL(url)
+      },
+      // A canvas that cannot be made (too large for the browser) leaves the layer empty rather than break the map.
+      () => {},
+    )
+    return () => {
+      live = false
+    }
+  }, [data, w, h, kind])
+  // Each URL is freed once the image after it has been drawn, or when the map goes.
+  React.useEffect(() => {
+    if (!image) return
+    return () => URL.revokeObjectURL(image.url)
+  }, [image])
+  if (!grid || !image) return null
+  // While the next image is made, the one on screen keeps the place it was made for.
+  return image.grid.data === grid.data ? { url: image.url, grid } : image
+}
+
 export type RobotMapLabels = {
   /** Read once when focus enters the map. */
   instructions: string
@@ -82,6 +271,39 @@ export type RobotMapLabels = {
   heading: (deg: number) => string
   /** The scale bar's length. */
   metres: (m: number) => string
+  /** The costmap's legend: its name and the two ends of its ramp ("Cost: low → lethal"). */
+  costTitle: string
+  costLow: string
+  costHigh: string
+  /** A place in metres, as the crosshair's readout and the announcements write it. */
+  at: (x: number, y: number) => string
+  /** The keys of an edit mode, read with the instructions. */
+  editKeys: string
+  /** The mode banner: what a click does and how to finish or cancel, per mode and step. */
+  goalHint: string
+  goalTurnHint: string
+  waypointsHint: string
+  carryHint: string
+  zoneHint: string
+  zoneEditableHint: string
+  zoneDrawHint: string
+  /** The banner's second line on a wide map: how to pan while editing. */
+  panHint: string
+  /** Said in the live region as each edit happens. */
+  goalPlaced: (x: number, y: number) => string
+  goalSet: (x: number, y: number, heading?: number) => string
+  goalCancelled: string
+  waypointAdded: (n: number, x: number, y: number) => string
+  waypointPicked: (n: number) => string
+  waypointMoved: (n: number, x: number, y: number) => string
+  waypointRemoved: (n: number) => string
+  moveCancelled: string
+  cornerAdded: (n: number, x: number, y: number) => string
+  cornerRemoved: (left: number) => string
+  cornerPicked: string
+  cornerMoved: (x: number, y: number) => string
+  zoneDrawn: (corners: number) => string
+  zoneCancelled: string
 }
 
 const metres = (n: number) => (Math.abs(n) >= 10 ? n.toFixed(0) : n.toFixed(1))
@@ -107,6 +329,33 @@ const defaultLabels: RobotMapLabels = {
   noZone: "Outside the marked zones",
   heading: (deg) => `Facing ${Math.round(((deg % 360) + 360) % 360)}°`,
   metres: (m) => `${m} m`,
+  costTitle: "Cost",
+  costLow: "low",
+  costHigh: "lethal",
+  at: (x, y) => `${x.toFixed(1)}, ${y.toFixed(1)} m`,
+  editKeys: "Arrow keys move the crosshair, Shift for bigger steps; Enter or Space places, Esc cancels. Right-drag or two fingers move the map.",
+  goalHint: "Press to place the goal, drag to point it. Esc cancels.",
+  goalTurnHint: "Left and right arrows turn the goal, Enter sets it, Esc cancels.",
+  waypointsHint: "Click to add a waypoint, drag one to move it. Delete removes the selected one.",
+  carryHint: "Arrow keys move it, Enter drops it, Esc puts it back.",
+  zoneHint: "Click to place a new zone's first corner.",
+  zoneEditableHint: "Click to start a new zone, or drag a corner to move it.",
+  zoneDrawHint: "Click to add a corner; click the first corner or press Enter to finish. Backspace removes the last, Esc cancels.",
+  panHint: "Right-drag or two fingers move the map.",
+  goalPlaced: (x, y) => `Goal at ${defaultLabels.at(x, y)}. Left and right arrows turn it, Enter sets it.`,
+  goalSet: (x, y, heading) => `Goal set at ${defaultLabels.at(x, y)}${heading === undefined ? "" : `, heading ${Math.round(heading)}°`}`,
+  goalCancelled: "Goal cancelled",
+  waypointAdded: (n, x, y) => `Waypoint ${n} added at ${defaultLabels.at(x, y)}`,
+  waypointPicked: (n) => `Waypoint ${n} picked up. Arrow keys move it, Enter drops it, Esc puts it back.`,
+  waypointMoved: (n, x, y) => `Waypoint ${n} moved to ${defaultLabels.at(x, y)}`,
+  waypointRemoved: (n) => `Waypoint ${n} removed`,
+  moveCancelled: "Move cancelled",
+  cornerAdded: (n, x, y) => `Corner ${n} at ${defaultLabels.at(x, y)}`,
+  cornerRemoved: (left) => (left === 1 ? "Last corner removed, 1 left" : `Last corner removed, ${left} left`),
+  cornerPicked: "Corner picked up. Arrow keys move it, Enter drops it, Esc puts it back.",
+  cornerMoved: (x, y) => `Corner moved to ${defaultLabels.at(x, y)}`,
+  zoneDrawn: (n) => `Zone drawn with ${n} corners`,
+  zoneCancelled: "Zone cancelled",
 }
 
 const merge = (given?: Partial<RobotMapLabels>): RobotMapLabels => ({
@@ -179,14 +428,45 @@ const LINE = 20
 /** About the width of one character of 12 px monospace, plus the label's padding. */
 const charWidth = 7.5
 
+/** What the map's pointer and keys do: look (select, pan, zoom), or draw one of the things the app owns. */
+export type RobotMapMode = "view" | "goal" | "waypoints" | "zone"
+
+/** What an edit gesture started on, kept in a ref between pointer events. */
+type Edit = { x: number; y: number; at: RobotMapPoint; moved: boolean } & (
+  | { kind: "goal" | "add" | "close" }
+  | { kind: "waypoint"; index: number }
+  | { kind: "vertex"; zoneId: string; index: number }
+)
+/** A waypoint or a zone's corner picked up by the keys, with where it was, so Esc can put it back. */
+type Carry = { kind: "waypoint"; index: number; from: RobotMapPoint } | { kind: "vertex"; zoneId: string; index: number; from: RobotMapPoint }
+
+/** A handle's target: 44 px, a finger, whatever its drawing's size. */
+const HANDLE = 44
+/** The crosshair's steps, in metres: the first that moves it about 8 px (40 with Shift) at the zoom. */
+const CURSOR_STEPS = [0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50]
+
 export type RobotMapProps = {
   /** Names the map for screen readers: "Map of North site". */
   label: string
-  /** The site's size in metres: the plan's width and height. */
-  width: number
-  height: number
+  /** The site's size in metres: the plan's width and height. With `grid` and no plan of its own, leave them out: the grid's size is the plan's. */
+  width?: number
+  height?: number
   /** The floor plan under everything: an image URL (stretched over width × height), or SVG drawn in metres. */
   floorplan?: string | React.ReactNode
+  /**
+   * A ROS occupancy grid drawn as the floor (under `floorplan`, when both are given): free cells are the map's surface,
+   * occupied ones the ink colour at their probability, unknown ones the no-data hatch. Drawn into an image once per new
+   * `data` array, so pass a new array for new cells and the same one otherwise.
+   */
+  grid?: RobotMapGrid
+  /** A ROS costmap (the same message) over the floor, in the accent's ramp from clear to strong, with a legend. */
+  costmap?: RobotMapGrid
+  /** Laser scans, one per robot, drawn as small dots from that robot's current position and heading. One path per scan, so 10 robots × 1080 beams stay smooth. */
+  scans?: RobotMapScan[]
+  /** The dots' ink, from the tokens: the ink colour by default; never a status colour. */
+  scanColor?: RobotMapScanColor
+  /** Where the plan's bottom-left corner is in the ROS map frame, in metres: places `grid` and `costmap` on it. Without it, the grid's origin (the grid is the plan). */
+  origin?: { x: number; y: number }
   zones?: RobotMapZone[]
   robots?: RobotMapRobot[]
   paths?: RobotMapPath[]
@@ -204,6 +484,30 @@ export type RobotMapProps = {
   onRetry?: () => void
   /** Fill the parent's height (a full-screen map) instead of keeping the site's proportions. */
   fill?: boolean
+  /**
+   * What a click (or Enter at the keyboard crosshair) does. `view` (the default) selects robots. `goal` places a goal and
+   * a drag points it; `waypoints` adds, moves and removes waypoints; `zone` draws a zone corner by corner. In an edit mode
+   * the primary pointer edits and the right or middle button, or two fingers, pan; the wheel and the buttons still zoom.
+   */
+  mode?: RobotMapMode
+  /** The goal to show, controlled: a target and the way to face, in plan metres. */
+  goal?: RobotMapPose | null
+  /** Goal mode: the goal placed, on release (or Enter). `heading` is left out when the press did not drag. */
+  onGoal?: (goal: RobotMapPose) => void
+  /** Waypoints to show, numbered in order, controlled. */
+  waypoints?: RobotMapPoint[]
+  /** Waypoints mode: the new list after a waypoint is added, moved (while it moves) or removed. */
+  onWaypointsChange?: (waypoints: RobotMapPoint[]) => void
+  /** The waypoints are the route a robot is driving: the line between them turns the in-progress blue. Otherwise it is grey. */
+  waypointsPlanned?: boolean
+  /** Zone mode: a new zone's corners, once it is closed. Ask for its name and kind and add it to `zones`. */
+  onZoneDraw?: (points: RobotMapPoint[]) => void
+  /** Zone mode: the corners of `zones` can be dragged (or picked up with Enter and moved with the arrows). */
+  editableZones?: boolean
+  /** The zones with a corner moved, while it moves. */
+  onZonesChange?: (zones: RobotMapZone[]) => void
+  /** Rounds every point placed or moved to this many metres. None by default. */
+  snap?: number
   labels?: Partial<RobotMapLabels>
   className?: string
 }
@@ -218,13 +522,19 @@ const proportions = (width: number, height: number, fill?: boolean): React.CSSPr
  * A site's floor plan with its zones, routes and robots, in metres. Robots are their status shape (colour only when one
  * needs attention), a heading tick and their name; names move aside rather than cover each other. Drag, the wheel (once
  * the map has focus, or with Ctrl) and two fingers pan and zoom; so do the buttons and the keys. The map is one Tab stop;
- * offer RobotMapList beside it, the same robots as text, as a chart offers its table.
+ * offer RobotMapList beside it, the same robots as text, as a chart offers its table. Under the robots it can draw a ROS
+ * occupancy grid, a costmap and laser scans; with `mode` it places a goal, waypoints or a zone, by pointer or by keys.
  */
 export function RobotMap({
   label: name,
-  width,
-  height,
+  width: widthProp,
+  height: heightProp,
   floorplan,
+  grid,
+  costmap,
+  scans = [],
+  scanColor = "foreground",
+  origin,
   zones = [],
   robots = [],
   paths = [],
@@ -235,11 +545,29 @@ export function RobotMap({
   error,
   onRetry,
   fill,
+  mode = "view",
+  goal,
+  onGoal,
+  waypoints = [],
+  onWaypointsChange,
+  waypointsPlanned,
+  onZoneDraw,
+  editableZones,
+  onZonesChange,
+  snap,
   labels: given,
   className,
 }: RobotMapProps) {
   const labels = merge(given)
-  const uid = React.useId()
+  // A grid with no size given is the whole plan; otherwise the size given wins and the grid sits on it by `origin`.
+  // Neither (a map still loading its grid) draws a 1 m square, so nothing divides by zero.
+  const width = (widthProp ?? (grid ? grid.width * grid.resolution : 0)) || 1
+  const height = (heightProp ?? (grid ? grid.height * grid.resolution : 0)) || 1
+  const frameRos: RobotMapFrame = { width, height, origin: origin ?? grid?.origin ?? { x: 0, y: 0 } }
+  const gridShown = useGridImage(grid, "occupancy")
+  const costShown = useGridImage(costmap, "cost")
+  // SVG references ids through url(#…), which reads React's id characters badly; letters, digits and dashes only.
+  const uid = React.useId().replace(/[^\w-]/g, "")
   const root = React.useRef<HTMLDivElement>(null)
   const [selectedState, setSelectedState] = React.useState<string | null>(null)
   const selected = selectedProp !== undefined ? selectedProp : selectedState
@@ -297,9 +625,11 @@ export function RobotMap({
     const ms = el && !reduce ? parseFloat(getComputedStyle(el).getPropertyValue("--motion-base")) || 0 : 0
     if (!ms) return setView(to)
     const from = viewRef.current
-    const start = performance.now()
+    // The glide starts on its first frame's timestamp, so the clock is read by the browser, not by this function.
+    let start: number | undefined
     if (frameId.current !== undefined) cancelAnimationFrame(frameId.current)
     const step = (now: number) => {
+      start ??= now
       const t = Math.min(1, (now - start) / ms)
       const e = easeStandard(t)
       // Zoom moves on a log scale, so each step of a glide looks the same size.
@@ -350,30 +680,159 @@ export function RobotMap({
     return () => el.removeEventListener("wheel", onWheel)
   })
 
+  // Editing. The app owns the data (goal, waypoints, zones); the map keeps only what is half done: a goal being pointed,
+  // a zone's corners before it closes, the waypoint or corner being carried by the keys, and the keyboard crosshair.
+  const editing = mode !== "view"
+  const [goalDraft, setGoalDraft] = React.useState<RobotMapPose | null>(null)
+  const [corners, setCorners] = React.useState<RobotMapPoint[]>([])
+  const [activeState, setActive] = React.useState<number | null>(null)
+  const [carry, setCarry] = React.useState<Carry | null>(null)
+  const [cursorState, setCursor] = React.useState<RobotMapPoint | null>(null)
+  const [hover, setHover] = React.useState<RobotMapPoint | null>(null)
+  const [focused, setFocused] = React.useState(false)
+  const [byPointer, setByPointer] = React.useState(false)
+  const [said, say] = React.useState("")
+  // A new mode drops whatever the last one left half done. Adjusting state while rendering, as React's docs show for a
+  // prop change, so the first frame of the new mode is already clean (an effect would draw one stale frame first).
+  const [lastMode, setLastMode] = React.useState(mode)
+  if (lastMode !== mode) {
+    setLastMode(mode)
+    setGoalDraft(null)
+    setCorners([])
+    setActive(null)
+    setCarry(null)
+    setHover(null)
+  }
+  // The waypoint picked last, while it still exists.
+  const active = activeState !== null && activeState < waypoints.length ? activeState : null
+
+  /** A point of the frame (px) on the plan, from the view of the last commit; for handlers, not for render. */
+  const planAt = (px: number, py: number): RobotMapPoint => {
+    const v = viewRef.current
+    const a = anchor(sizeRef.current)
+    const k = baseRef.current * v.k
+    return [v.cx + (px - a.x) / k, v.cy + (py - a.y) / k]
+  }
+  /** On the plan, rounded to `snap` when given, and never off its edges. */
+  const place = ([x, y]: RobotMapPoint): RobotMapPoint => {
+    const q = (n: number) => (snap ? Number((Math.round(n / snap) * snap).toFixed(6)) : n)
+    return [clamp(q(x), 0, width), clamp(q(y), 0, height)]
+  }
+  /** The point nearest `p` within half a 44 px target, as an index into `points`, or null. */
+  const near = (p: RobotMapPoint, points: RobotMapPoint[]) => {
+    const reach = HANDLE / 2 / (baseRef.current * viewRef.current.k)
+    let best: number | null = null
+    let bestD = reach
+    points.forEach(([x, y], i) => {
+      const d = Math.hypot(x - p[0], y - p[1])
+      if (d <= bestD) {
+        best = i
+        bestD = d
+      }
+    })
+    return best
+  }
+  const headingTo = (dx: number, dy: number) => Math.round(((Math.atan2(dx, -dy) * 180) / Math.PI + 360) % 360)
+
+  const commitGoal = (g: RobotMapPose) => {
+    setGoalDraft(null)
+    onGoal?.(g)
+    say(labels.goalSet(g.x, g.y, g.heading))
+  }
+  const addWaypoint = (p: RobotMapPoint) => {
+    const next = [...waypoints, p]
+    onWaypointsChange?.(next)
+    setActive(next.length - 1)
+    say(labels.waypointAdded(next.length, p[0], p[1]))
+  }
+  const moveWaypoint = (i: number, p: RobotMapPoint) => onWaypointsChange?.(waypoints.map((w, j) => (j === i ? p : w)))
+  const moveCorner = (zoneId: string, i: number, p: RobotMapPoint) =>
+    onZonesChange?.(zones.map((z) => (z.id === zoneId ? { ...z, points: z.points.map((q, j) => (j === i ? p : q)) } : z)))
+  const addCorner = (p: RobotMapPoint) => {
+    setCorners([...corners, p])
+    say(labels.cornerAdded(corners.length + 1, p[0], p[1]))
+  }
+  const closeZone = () => {
+    onZoneDraw?.(corners)
+    say(labels.zoneDrawn(corners.length))
+    setCorners([])
+  }
+  /** Every corner of the zones that can be edited, flat, for finding the one under the crosshair. */
+  const zoneCorners = editableZones ? zones.flatMap((z) => z.points.map((p, i) => ({ zoneId: z.id, i, p }))) : []
+
   // Drag with one pointer pans; two pinch and pan. A press that does not move selects the robot under it, or clears.
+  // In an edit mode the primary pointer (left button, one finger, a pen) edits, and everything else pans: the right or
+  // middle button, or a second finger (which also cancels what the first had started).
   const pointers = React.useRef(new Map<number, { x: number; y: number }>())
   const gesture = React.useRef<{ moved: boolean; x: number; y: number; robot: string | null } | null>(null)
+  const edit = React.useRef<Edit | null>(null)
   const local = (e: React.PointerEvent) => {
     const r = root.current!.getBoundingClientRect()
     return { x: e.clientX - r.left, y: e.clientY - r.top }
   }
   const onPointerDown = (e: React.PointerEvent) => {
-    if (e.pointerType === "mouse" && e.button !== 0) return
+    const primary = !(e.pointerType === "mouse" && e.button !== 0)
+    if (!primary && !editing) return
     if ((e.target as HTMLElement).closest("button")) return
     const p = local(e)
     pointers.current.set(e.pointerId, p)
-    if (pointers.current.size === 1) {
-      const robot = (e.target as Element).closest?.("[data-robot-id]")?.getAttribute("data-robot-id") ?? null
-      gesture.current = { moved: false, x: p.x, y: p.y, robot }
-    } else if (gesture.current) gesture.current.moved = true
+    if (!byPointer) setByPointer(true)
+    const target = e.target as Element
+    if (editing && primary && pointers.current.size === 1) {
+      const at = place(planAt(p.x, p.y))
+      const hit = (attr: string) => target.closest?.(`[${attr}]`)?.getAttribute(attr) ?? null
+      const wp = hit("data-waypoint")
+      const vertex = hit("data-zone-vertex")
+      const first = hit("data-draft-corner") === "0"
+      if (mode === "goal") {
+        edit.current = { kind: "goal", x: p.x, y: p.y, at, moved: false }
+        setGoalDraft({ x: at[0], y: at[1] })
+      } else if (mode === "waypoints" && wp !== null) {
+        const i = Number(wp)
+        edit.current = { kind: "waypoint", index: i, x: p.x, y: p.y, at, moved: false }
+        setActive(i)
+      } else if (mode === "zone" && vertex !== null && corners.length === 0) {
+        const [zoneId = "", i = "0"] = vertex.split("|")
+        edit.current = { kind: "vertex", zoneId, index: Number(i), x: p.x, y: p.y, at, moved: false }
+      } else if (mode === "zone" && first && corners.length >= 3) {
+        edit.current = { kind: "close", x: p.x, y: p.y, at, moved: false }
+      } else edit.current = { kind: "add", x: p.x, y: p.y, at, moved: false }
+      setCursor(at)
+    } else if (pointers.current.size === 1) {
+      // The right or middle button pans from the first pixel; a click with it means nothing.
+      const robot = editing ? null : (target.closest?.("[data-robot-id]")?.getAttribute("data-robot-id") ?? null)
+      gesture.current = { moved: !primary, x: p.x, y: p.y, robot }
+    } else {
+      // A second finger: a pinch, and the end of whatever the first finger was drawing.
+      if (edit.current?.kind === "goal") setGoalDraft(null)
+      edit.current = null
+      gesture.current = { moved: true, x: p.x, y: p.y, robot: null }
+    }
     try {
       root.current?.setPointerCapture?.(e.pointerId)
     } catch {}
   }
   const onPointerMove = (e: React.PointerEvent) => {
     const prev = pointers.current.get(e.pointerId)
-    if (!prev) return
+    // A mouse over a zone being drawn: the edge to the next corner follows it.
+    if (!prev) {
+      if (mode === "zone" && corners.length && e.pointerType === "mouse") {
+        const p = local(e)
+        setHover(place(planAt(p.x, p.y)))
+      }
+      return
+    }
     const p = local(e)
+    const ed = edit.current
+    if (ed) {
+      const far = Math.hypot(p.x - ed.x, p.y - ed.y) > 4
+      if (far) ed.moved = true
+      if (ed.kind === "goal" && Math.hypot(p.x - ed.x, p.y - ed.y) > 8) setGoalDraft({ x: ed.at[0], y: ed.at[1], heading: headingTo(p.x - ed.x, p.y - ed.y) })
+      else if (ed.kind === "waypoint" && ed.moved) moveWaypoint(ed.index, place(planAt(p.x, p.y)))
+      else if (ed.kind === "vertex" && ed.moved) moveCorner(ed.zoneId, ed.index, place(planAt(p.x, p.y)))
+      pointers.current.set(e.pointerId, p)
+      return
+    }
     const g = gesture.current
     if (g && !g.moved && Math.hypot(p.x - g.x, p.y - g.y) > 4) g.moved = true
     if (!g?.moved) return
@@ -394,19 +853,154 @@ export function RobotMap({
   }
   const onPointerEnd = (e: React.PointerEvent) => {
     if (!pointers.current.delete(e.pointerId)) return
+    const ed = edit.current
+    if (ed && pointers.current.size === 0) {
+      edit.current = null
+      if (e.type !== "pointerup") {
+        if (ed.kind === "goal") setGoalDraft(null)
+        return
+      }
+      const p = local(e)
+      if (ed.kind === "goal") {
+        // Released where it was pressed: a goal with no heading, for the planner to choose.
+        const dragged = Math.hypot(p.x - ed.x, p.y - ed.y) > 8
+        commitGoal({ x: ed.at[0], y: ed.at[1], ...(dragged ? { heading: headingTo(p.x - ed.x, p.y - ed.y) } : {}) })
+      } else if (ed.kind === "waypoint") {
+        if (ed.moved) {
+          const to = place(planAt(p.x, p.y))
+          say(labels.waypointMoved(ed.index + 1, to[0], to[1]))
+        }
+      } else if (ed.kind === "vertex") {
+        if (ed.moved) {
+          const to = place(planAt(p.x, p.y))
+          say(labels.cornerMoved(to[0], to[1]))
+        }
+      } else if (!ed.moved) {
+        // A drag on the empty map adds nothing: only a click does.
+        if (ed.kind === "close") closeZone()
+        else if (mode === "waypoints") addWaypoint(ed.at)
+        else if (mode === "zone") addCorner(ed.at)
+      }
+      return
+    }
     const g = gesture.current
     if (pointers.current.size === 0) {
       gesture.current = null
-      if (e.type === "pointerup" && g && !g.moved) {
+      if (e.type === "pointerup" && g && !g.moved && !editing) {
         if (g.robot) select(g.robot)
         else if (selected) select(null)
       }
     }
   }
 
+  /** The keys of an edit mode; true when the key was used, so the map's own keys (zoom, Esc to clear) get the rest. */
+  const editKey = (e: React.KeyboardEvent): boolean => {
+    const cur = cursorState ?? place([viewRef.current.cx, viewRef.current.cy])
+    const dirs: Record<string, [number, number]> = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }
+    const dir = dirs[e.key]
+    if (dir) {
+      // A goal placed by the keys turns with left and right before Enter sets it: 15° a press, 45° with Shift.
+      if (mode === "goal" && goalDraft) {
+        if (dir[0]) setGoalDraft({ ...goalDraft, heading: (((goalDraft.heading ?? 0) + dir[0] * (e.shiftKey ? 45 : 15)) % 360 + 360) % 360 })
+        return true
+      }
+      // The crosshair steps a round number of metres, about 8 px at this zoom (40 with Shift), or the snap.
+      const k = baseRef.current * viewRef.current.k
+      let step = CURSOR_STEPS.find((n) => n * k >= (e.shiftKey ? 40 : 8)) ?? CURSOR_STEPS[CURSOR_STEPS.length - 1]!
+      if (snap) step = Math.max(snap, Math.round(step / snap) * snap)
+      const next = place([cur[0] + dir[0] * step, cur[1] + dir[1] * step])
+      setCursor(next)
+      // The view follows the crosshair when it nears the frame's edge, so the keys alone reach the whole site.
+      const v = viewRef.current
+      const a = anchor(sizeRef.current)
+      const sx = a.x + (next[0] - v.cx) * k
+      const sy = a.y + (next[1] - v.cy) * k
+      const { w, h } = sizeRef.current
+      if (sx < 48 || sy < 48 || sx > w - 48 || sy > h - BOTTOM) setView({ ...v, cx: next[0], cy: next[1] })
+      if (carry?.kind === "waypoint") moveWaypoint(carry.index, next)
+      else if (carry) moveCorner(carry.zoneId, carry.index, next)
+      return true
+    }
+    if (e.key === "Enter" || e.key === " ") {
+      if (mode === "goal") {
+        if (!goalDraft) {
+          setGoalDraft({ x: cur[0], y: cur[1], heading: 0 })
+          say(labels.goalPlaced(cur[0], cur[1]))
+        } else commitGoal(goalDraft)
+      } else if (carry) {
+        setCarry(null)
+        say(carry.kind === "waypoint" ? labels.waypointMoved(carry.index + 1, cur[0], cur[1]) : labels.cornerMoved(cur[0], cur[1]))
+      } else if (mode === "waypoints") {
+        const hit = near(cur, waypoints)
+        if (hit === null) addWaypoint(cur)
+        else {
+          setActive(hit)
+          setCarry({ kind: "waypoint", index: hit, from: waypoints[hit] ?? cur })
+          say(labels.waypointPicked(hit + 1))
+        }
+      } else if (corners.length >= 3 && (e.key === "Enter" || near(cur, corners.slice(0, 1)) !== null)) closeZone()
+      else {
+        const hit = corners.length ? null : near(cur, zoneCorners.map((c) => c.p))
+        const c = hit === null ? undefined : zoneCorners[hit]
+        if (c) {
+          setCarry({ kind: "vertex", zoneId: c.zoneId, index: c.i, from: c.p })
+          say(labels.cornerPicked)
+        } else addCorner(cur)
+      }
+      return true
+    }
+    if (e.key === "Delete" || e.key === "Backspace") {
+      if (mode === "waypoints" && active !== null && !carry) {
+        onWaypointsChange?.(waypoints.filter((_, j) => j !== active))
+        setActive(null)
+        say(labels.waypointRemoved(active + 1))
+        return true
+      }
+      if (mode === "zone" && corners.length) {
+        setCorners(corners.slice(0, -1))
+        say(labels.cornerRemoved(corners.length - 1))
+        return true
+      }
+      return false
+    }
+    if (e.key === "Escape") {
+      if (carry) {
+        if (carry.kind === "waypoint") moveWaypoint(carry.index, carry.from)
+        else moveCorner(carry.zoneId, carry.index, carry.from)
+        setCarry(null)
+        say(labels.moveCancelled)
+        return true
+      }
+      if (goalDraft || edit.current?.kind === "goal") {
+        edit.current = null
+        setGoalDraft(null)
+        say(labels.goalCancelled)
+        return true
+      }
+      if (corners.length) {
+        setCorners([])
+        setHover(null)
+        say(labels.zoneCancelled)
+        return true
+      }
+      if (active !== null) {
+        setActive(null)
+        return true
+      }
+    }
+    return false
+  }
+
   const onKeyDown = (e: React.KeyboardEvent) => {
     // Only on the map itself: on its buttons the keys do what buttons do.
     if (e.target !== e.currentTarget || e.altKey || e.ctrlKey || e.metaKey) return
+    if (editing) {
+      if (byPointer) setByPointer(false)
+      if (editKey(e)) {
+        e.preventDefault()
+        return
+      }
+    }
     const { w, h } = sizeRef.current
     const step = Math.min(w, h) * 0.2
     switch (e.key) {
@@ -499,14 +1093,14 @@ export function RobotMap({
   const gridStep = NICE.find((n) => n * s >= 40) ?? Math.max(...NICE)
   const x0 = view.cx - at.x / s
   const y0 = view.cy - at.y / s
-  let grid = ""
+  let lines = ""
   for (let i = Math.ceil(x0 / gridStep); i * gridStep <= x0 + size.w / s; i++) {
     const px = Math.round(toScreen(i * gridStep, 0)[0]) + 0.5
-    grid += `M${px} 0V${size.h}`
+    lines += `M${px} 0V${size.h}`
   }
   for (let i = Math.ceil(y0 / gridStep); i * gridStep <= y0 + size.h / s; i++) {
     const py = Math.round(toScreen(0, i * gridStep)[1]) + 0.5
-    grid += `M0 ${py}H${size.w}`
+    lines += `M0 ${py}H${size.w}`
   }
   // The scale bar: the longest round length up to 120 px, or the finest step when even that is longer.
   const scaleM = [...NICE].reverse().find((n) => n * s <= 120) ?? Math.min(...NICE)
@@ -532,19 +1126,21 @@ export function RobotMap({
     const [x1, y1] = toScreen(Math.max(...xs), Math.max(...ys))
     const w = text.length * charWidth + 32
     // A tuple of four, so the fallback to the first corner is always there.
-    const corners: [Box, Box, Box, Box] = [
+    const spots: [Box, Box, Box, Box] = [
       { x: x0 + 4, y: y0 + 4, w, h: LINE },
       { x: x1 - 4 - w, y: y0 + 4, w, h: LINE },
       { x: x0 + 4, y: y1 - 4 - LINE, w, h: LINE },
       { x: x1 - 4 - w, y: y1 - 4 - LINE, w, h: LINE },
     ]
-    zoneSpots.set(z.id, corners.find((c) => !discs.some((d) => overlap(d.box, c))) ?? corners[0])
+    zoneSpots.set(z.id, spots.find((c) => !discs.some((d) => overlap(d.box, c))) ?? spots[0])
   }
   // What a name must not cover either: the zone names, and the buttons and scale bar in the bottom-left corner.
   const vertical = size.h >= 400
   const blocked: Box[] = [
     vertical ? { x: 0, y: size.h - INSET - 3 * 44, w: INSET + 44 + 8 + 120, h: 3 * 44 + INSET } : { x: 0, y: size.h - BOTTOM, w: INSET + 3 * 44 + 8 + 120, h: BOTTOM },
     ...zoneSpots.values(),
+    // The banner and legend in the top-left corner, about as tall as the cards they hold.
+    ...(editing || costmap || robots.length === 0 ? [{ x: 0, y: 0, w: Math.min(size.w, INSET + 360), h: INSET + 36 * ((editing ? 2 : 0) + (costmap ? 1 : 0) + (robots.length ? 0 : 1)) }] : []),
   ]
   const inFrame = (b: Box) => b.x >= 0 && b.y >= 0 && b.x + b.w <= size.w && b.y + b.h <= size.h
   const names: Box[] = []
@@ -567,11 +1163,53 @@ export function RobotMap({
     placed.set(r.id, { x: pick.x, y: pick.y })
   }
 
+  /** A grid's rectangle on screen, from its rectangle on the plan. */
+  const onScreen = (g: RobotMapGrid) => {
+    const r = gridRect(g, frameRos)
+    const [x, y] = toScreen(r.x, r.y)
+    return { x, y, width: r.w * s, height: r.h * s }
+  }
+  // Nearest-neighbour once a cell is two pixels or more, so cells read as cells; smoothed below that, so a thin wall in a
+  // large grid does not vanish between the pixels it falls on.
+  const cells = (g: RobotMapGrid): React.CSSProperties => ({ imageRendering: g.resolution * s >= 2 ? "pixelated" : "auto" })
+  const costLayer = costShown && (
+    <g data-layer="costmap">
+      <defs>
+        <mask id={`${uid}-cost`} maskUnits="userSpaceOnUse" {...onScreen(costShown.grid)} style={{ maskType: "luminance" }}>
+          <image href={costShown.url} preserveAspectRatio="none" {...onScreen(costShown.grid)} style={cells(costShown.grid)} />
+        </mask>
+      </defs>
+      {/* The accent's sequential ramp, as heatmaps use it: clear at no cost, at most 60 % at lethal, so the floor and its
+          walls still read through. */}
+      <rect {...onScreen(costShown.grid)} className="fill-chart-1 opacity-60" mask={`url(#${uid}-cost)`} />
+    </g>
+  )
   const kindIcon = { restricted: SafetyZone, slow: SafetyZone, charging: ChargingDock, other: null }
+  // The banner says what a click does now, and how to finish or cancel: it follows the step, not only the mode.
+  const banner = !editing
+    ? null
+    : carry
+      ? labels.carryHint
+      : mode === "goal"
+        ? goalDraft && !byPointer
+          ? labels.goalTurnHint
+          : labels.goalHint
+        : mode === "waypoints"
+          ? labels.waypointsHint
+          : corners.length
+            ? labels.zoneDrawHint
+            : editableZones
+              ? labels.zoneEditableHint
+              : labels.zoneHint
+  // The keyboard crosshair shows while the map has focus from the keys; a pointer has its own cursor.
+  const cursor = cursorState ?? [view.cx, view.cy]
+  const showCursor = editing && focused && !byPointer
   const summary = [
     robots.length ? labels.count(robots.length) : labels.empty,
     selectedRobot ? labels.selected(selectedRobot.name, statusWord(selectedRobot, labels)) : "",
     northDeg !== undefined ? labels.north(northDeg) : "",
+    banner ?? "",
+    editing ? labels.editKeys : "",
   ]
     .filter(Boolean)
     .join(". ")
@@ -590,29 +1228,67 @@ export function RobotMap({
       onPointerMove={onPointerMove}
       onPointerUp={onPointerEnd}
       onPointerCancel={onPointerEnd}
+      onPointerLeave={() => hover && setHover(null)}
+      // The right button pans while editing, so it opens no menu over the map.
+      onContextMenu={editing ? (e) => e.preventDefault() : undefined}
+      onFocus={(e) => setFocused(e.target === e.currentTarget)}
+      onBlur={(e) => e.target === e.currentTarget && setFocused(false)}
+      data-mode={mode}
       style={proportions(width, height, fill)}
       className={cn(
         frame,
-        "cursor-grab select-none active:cursor-grabbing",
+        editing ? "cursor-crosshair select-none" : "cursor-grab select-none active:cursor-grabbing",
         // Inset, so a full-screen map shows it too; drawn over the map's layers (the frame is its own stacking context).
         "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring",
         // A full-screen map takes every gesture; a map in a page lets one finger scroll the page up and down.
-        fill ? "touch-none" : "touch-pan-y",
+        // While editing, one finger draws, so the page does not take it to scroll.
+        fill || editing ? "touch-none" : "touch-pan-y",
         className,
       )}
     >
       <p id={hint} className="sr-only">
         {labels.instructions} {summary}.
       </p>
+      {/* Each placement in words, as it happens: polite, so it waits for the instructions to finish. */}
+      <p data-slot="robot-map-announce" aria-live="polite" className="sr-only">
+        {said}
+      </p>
       <div aria-hidden="true" className={cn("absolute inset-0", !measured && "invisible")}>
         <svg width={size.w} height={size.h} className="absolute inset-0">
-          <path d={grid} className="fill-none stroke-edge" strokeWidth="1" />
+          <path d={lines} className="fill-none stroke-edge" strokeWidth="1" />
+          {grid && (
+            <g data-layer="grid">
+              {/* The surface first, so free cells are the map's own colour and the background lines stop at the grid. */}
+              <rect {...onScreen(grid)} className="fill-map" />
+              {gridShown && (
+                <>
+                  <defs>
+                    <pattern id={`${uid}-hatch`} patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(45)">
+                      {/* The theme's no-data hatch (a 1 px line every 5 px in the field-edge colour), in screen pixels at any zoom. */}
+                      <line x1="0.5" y1="0" x2="0.5" y2="5" className="stroke-input" strokeWidth="1" />
+                    </pattern>
+                    <mask id={`${uid}-unknown`} maskUnits="userSpaceOnUse" {...onScreen(gridShown.grid)} style={{ maskType: "alpha" }}>
+                      <image href={gridShown.url} preserveAspectRatio="none" {...onScreen(gridShown.grid)} style={cells(gridShown.grid)} />
+                    </mask>
+                    <mask id={`${uid}-occupied`} maskUnits="userSpaceOnUse" {...onScreen(gridShown.grid)} style={{ maskType: "luminance" }}>
+                      <image href={gridShown.url} preserveAspectRatio="none" {...onScreen(gridShown.grid)} style={cells(gridShown.grid)} />
+                    </mask>
+                  </defs>
+                  <rect {...onScreen(gridShown.grid)} fill={`url(#${uid}-hatch)`} mask={`url(#${uid}-unknown)`} />
+                  {/* The costmap between the hatch and the ink, so walls and racks stay ink over their lethal cost. */}
+                  {costLayer}
+                  <rect {...onScreen(gridShown.grid)} className="fill-foreground" mask={`url(#${uid}-occupied)`} />
+                </>
+              )}
+            </g>
+          )}
           {typeof floorplan === "string" ? (
             <image href={floorplan} x={ox} y={oy} width={width * s} height={height * s} preserveAspectRatio="none" />
           ) : floorplan ? (
             <g transform={`translate(${ox} ${oy}) scale(${s})`}>{floorplan}</g>
           ) : null}
           <rect x={ox} y={oy} width={width * s} height={height * s} className="fill-none stroke-map-point" strokeWidth="1" />
+          {!gridShown && costLayer}
           {zones.map((z) => (
             <polygon
               key={z.id}
@@ -624,6 +1300,17 @@ export function RobotMap({
               className="fill-none stroke-map-point"
             />
           ))}
+          {scans.map((scan, k) => {
+            const robot = robots.find((r) => r.id === scan.robotId)
+            if (!robot) return null
+            // A dot is a zero-length segment with a round cap: one path per scan, however many beams it has.
+            let d = ""
+            for (const [x, y] of scanToPoints(scan, robot)) {
+              const [px, py] = toScreen(x, y)
+              d += `M${px.toFixed(1)} ${py.toFixed(1)}h0`
+            }
+            return <path key={`${scan.robotId}-${k}`} data-scan={scan.robotId} d={d} strokeWidth="3" strokeLinecap="round" className={cn("fill-none opacity-80", scanStroke[scanColor])} />
+          })}
           {paths.map((p) => (
             <polyline
               key={p.id}
@@ -636,6 +1323,51 @@ export function RobotMap({
               className={cn("fill-none", p.kind === "planned" ? "stroke-info" : "stroke-muted-foreground")}
             />
           ))}
+          {waypoints.length > 1 && (
+            <polyline
+              data-path="waypoints"
+              points={pts(waypoints)}
+              strokeWidth="2"
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              strokeDasharray="6 4"
+              // Blue only when it is the route being driven; a route still being drawn is grey.
+              className={cn("fill-none", waypointsPlanned ? "stroke-info" : "stroke-muted-foreground")}
+            />
+          )}
+          {corners.length > 0 && (
+            <polyline
+              data-draft="zone"
+              points={pts([...corners, ...(showCursor ? [cursor] : hover ? [hover] : [])])}
+              strokeWidth="1.5"
+              strokeDasharray="4 3"
+              className="fill-none stroke-foreground"
+            />
+          )}
+          {[goal ? { g: goal, draft: false } : null, goalDraft ? { g: goalDraft, draft: true } : null].map((item) => {
+            if (!item) return null
+            const [x, y] = toScreen(item.g.x, item.g.y)
+            return (
+              <g key={item.draft ? "draft" : "goal"} data-goal={item.draft ? "draft" : "set"} transform={`translate(${x.toFixed(1)} ${y.toFixed(1)})`}>
+                {item.g.heading !== undefined && (
+                  <g transform={`rotate(${item.g.heading})`}>
+                    {/* The arrow over a halo in the map's colour, so it reads on walls and on the floor alike. */}
+                    <path d="M0 -7V-30M-6 -23L0 -31L6 -23" className="fill-none stroke-map" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M0 -7V-30M-6 -23L0 -31L6 -23" className="fill-none stroke-foreground" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </g>
+                )}
+                <circle r="7" className="fill-card stroke-foreground" strokeWidth="2" strokeDasharray={item.draft ? "3 2" : undefined} />
+                <circle r="2.5" className="fill-foreground" />
+              </g>
+            )
+          })}
+          {showCursor && (
+            <g data-cursor="" transform={`translate(${toScreen(cursor[0], cursor[1]).map((n) => n.toFixed(1)).join(" ")})`}>
+              <path d="M-14 0H-5M5 0H14M0 -14V-5M0 5V14" className="fill-none stroke-map" strokeWidth="4" strokeLinecap="round" />
+              <path d="M-14 0H-5M5 0H14M0 -14V-5M0 5V14" className="fill-none stroke-foreground" strokeWidth="1.5" strokeLinecap="round" />
+              <circle r="2" className="fill-foreground" />
+            </g>
+          )}
         </svg>
 
         {zones.map((z) => {
@@ -666,7 +1398,7 @@ export function RobotMap({
                 data-robot-id={r.id}
                 data-state={isSelected ? "selected" : undefined}
                 style={{ left: x, top: y }}
-                className="absolute flex size-(--h-md) -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center"
+                className={cn("absolute flex size-(--h-md) -translate-x-1/2 -translate-y-1/2 items-center justify-center", editing ? "pointer-events-none" : "cursor-pointer")}
               >
                 <svg viewBox="-22 -22 44 44" className={cn("absolute inset-0 size-full", abnormal(r.status) ? statusText[r.status] : r.status === "offline" ? "text-muted-foreground" : "text-foreground")}>
                   {/* Selected: a 2 px ring in the focus ring's ink, outside the disc, so it reads without colour. */}
@@ -692,12 +1424,106 @@ export function RobotMap({
             </React.Fragment>
           )
         })}
+
+        {/* Handles: a 36 px target with a mouse and 44 on touch (--h-sm), around a smaller drawing. Only the mode that
+            edits them takes the pointer; otherwise they are drawn and the click goes to the map. */}
+        {waypoints.map(([wx, wy], i) => {
+          const [x, y] = toScreen(wx, wy)
+          return (
+            <div
+              key={i}
+              data-waypoint={i}
+              data-state={active === i && mode === "waypoints" ? "selected" : undefined}
+              style={{ left: x, top: y }}
+              className={cn("absolute flex size-(--h-sm) -translate-x-1/2 -translate-y-1/2 items-center justify-center", mode === "waypoints" ? "cursor-move" : "pointer-events-none")}
+            >
+              <svg viewBox="-12 -12 24 24" className="size-6 overflow-visible">
+                {/* Selected: the focus ring's ink outside the disc, as a selected robot. */}
+                {active === i && mode === "waypoints" && <circle r="14" className="fill-none stroke-ring" strokeWidth="2" />}
+                <circle r="10" className="fill-card stroke-foreground" strokeWidth="1.5" />
+                <text textAnchor="middle" dominantBaseline="central" className="fill-foreground font-mono text-xs font-medium">
+                  {i + 1}
+                </text>
+              </svg>
+            </div>
+          )
+        })}
+        {mode === "zone" &&
+          corners.map(([cx, cy], i) => {
+            const [x, y] = toScreen(cx, cy)
+            // The first corner closes the zone once there are three: drawn larger, with the ring, so it reads as a target.
+            const closes = i === 0 && corners.length >= 3
+            return (
+              <div
+                key={i}
+                data-draft-corner={i}
+                style={{ left: x, top: y }}
+                className={cn("absolute flex size-(--h-sm) -translate-x-1/2 -translate-y-1/2 items-center justify-center", closes ? "cursor-pointer" : "pointer-events-none")}
+              >
+                <svg viewBox="-12 -12 24 24" className="size-6 overflow-visible">
+                  {closes && <circle r="10" className="fill-none stroke-ring" strokeWidth="2" />}
+                  <rect x="-4" y="-4" width="8" height="8" className="fill-card stroke-foreground" strokeWidth="1.5" />
+                </svg>
+              </div>
+            )
+          })}
+        {mode === "zone" &&
+          editableZones &&
+          corners.length === 0 &&
+          zones.flatMap((z) =>
+            z.points.map(([zx, zy], i) => {
+              const [x, y] = toScreen(zx, zy)
+              const carried = carry?.kind === "vertex" && carry.zoneId === z.id && carry.index === i
+              return (
+                <div
+                  key={`${z.id}-${i}`}
+                  data-zone-vertex={`${z.id}|${i}`}
+                  style={{ left: x, top: y }}
+                  className="absolute flex size-(--h-sm) -translate-x-1/2 -translate-y-1/2 cursor-move items-center justify-center"
+                >
+                  <svg viewBox="-12 -12 24 24" className="size-6 overflow-visible">
+                    {carried && <circle r="10" className="fill-none stroke-ring" strokeWidth="2" />}
+                    <rect x="-4" y="-4" width="8" height="8" className="fill-card stroke-foreground" strokeWidth="1.5" />
+                  </svg>
+                </div>
+              )
+            }),
+          )}
+        {showCursor && (
+          <span
+            data-slot="robot-map-cursor"
+            style={{ left: toScreen(cursor[0], cursor[1])[0] + 12, top: toScreen(cursor[0], cursor[1])[1] + 12 }}
+            className="pointer-events-none absolute rounded-2xs bg-map px-1 font-mono text-xs whitespace-nowrap tabular-nums"
+          >
+            {labels.at(cursor[0], cursor[1])}
+          </span>
+        )}
       </div>
 
-      {robots.length === 0 && (
-        <p className="absolute inset-x-4 top-4 w-fit rounded-xs bg-card px-3 py-2 text-sm text-muted-foreground ring-1 ring-border">
-          {labels.empty}
-        </p>
+      {/* Top left, clear of the north arrow: what the map says about itself, one card under another. */}
+      {(robots.length === 0 || costmap || banner) && (
+        <div className={cn("pointer-events-none absolute top-4 left-4 flex flex-col items-start gap-2", northDeg !== undefined ? "right-16" : "right-4")}>
+          {banner && (
+            // Smaller on a phone-sized map, where two lines of 14 px would cover a third of it.
+            <p
+              data-slot="robot-map-mode"
+              className={cn("flex max-w-full flex-col gap-1 rounded-xs bg-card shadow-float ring-1 ring-border", size.w >= 480 ? "px-3 py-2 text-sm" : "px-2 py-1 text-xs")}
+            >
+              <span>{banner}</span>
+              {/* How to pan while editing, where there is room for it; the instructions say it to screen readers. */}
+              {size.w >= 480 && <span className="text-xs text-muted-foreground">{labels.panHint}</span>}
+            </p>
+          )}
+          {costmap && (
+            <p data-slot="robot-map-legend" className="flex items-center gap-2 rounded-xs bg-card px-2 py-1 text-xs text-muted-foreground ring-1 ring-border">
+              <span className="font-medium text-foreground">{labels.costTitle}</span>
+              {labels.costLow}
+              <span aria-hidden="true" className="h-2 w-12 rounded-2xs bg-map bg-linear-to-r from-transparent to-chart-1/60 ring-1 ring-border" />
+              {labels.costHigh}
+            </p>
+          )}
+          {robots.length === 0 && <p className="w-fit rounded-xs bg-card px-3 py-2 text-sm text-muted-foreground ring-1 ring-border">{labels.empty}</p>}
+        </div>
       )}
 
       {northDeg !== undefined && (
