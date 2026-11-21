@@ -1,5 +1,4 @@
-// @syncrobotic/status-glyph v0.13.0 · update: npx shadcn add @syncrobotic/status-glyph --overwrite
-import * as React from "react"
+// @syncrobotic/status-glyph v0.13.1 · update: npx shadcn add @syncrobotic/status-glyph --overwrite
 import { cn } from "@/lib/utils"
 
 export type Tone = "info" | "success" | "warning" | "danger" | "neutral"

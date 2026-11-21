@@ -1,7 +1,6 @@
-// @syncrobotic/card-mission v0.17.2 · update: npx shadcn add @syncrobotic/card-mission --overwrite
+// @syncrobotic/card-mission v0.17.3 · update: npx shadcn add @syncrobotic/card-mission --overwrite
 "use client"
 
-import * as React from "react"
 import { Bot, Clock, Route } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"

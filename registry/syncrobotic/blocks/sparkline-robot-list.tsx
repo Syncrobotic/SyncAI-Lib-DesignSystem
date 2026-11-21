@@ -1,7 +1,6 @@
-// @syncrobotic/sparkline-robot-list v0.15.0 · update: npx shadcn add @syncrobotic/sparkline-robot-list --overwrite
+// @syncrobotic/sparkline-robot-list v0.15.1 · update: npx shadcn add @syncrobotic/sparkline-robot-list --overwrite
 "use client"
 
-import * as React from "react"
 import { cn } from "@/lib/utils"
 import { StatusGlyph, type Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Card } from "@/registry/syncrobotic/ui/card"

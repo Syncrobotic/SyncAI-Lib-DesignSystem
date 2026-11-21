@@ -1,5 +1,4 @@
-// @syncrobotic/stats-meters v0.17.1 · update: npx shadcn add @syncrobotic/stats-meters --overwrite
-import * as React from "react"
+// @syncrobotic/stats-meters v0.17.2 · update: npx shadcn add @syncrobotic/stats-meters --overwrite
 import { cn } from "@/lib/utils"
 import { Card } from "@/registry/syncrobotic/ui/card"
 import { Meter } from "@/registry/syncrobotic/ui/meter"

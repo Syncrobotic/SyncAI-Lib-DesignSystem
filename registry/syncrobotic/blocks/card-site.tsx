@@ -1,5 +1,4 @@
-// @syncrobotic/card-site v0.17.3 · update: npx shadcn add @syncrobotic/card-site --overwrite
-import * as React from "react"
+// @syncrobotic/card-site v0.17.4 · update: npx shadcn add @syncrobotic/card-site --overwrite
 import { ChevronRight, MapPin } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"

@@ -346,8 +346,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.13.1",
         "changelog": [
+          {
+            "version": "0.13.1",
+            "date": "2026-11-21",
+            "note": "No unused React import, so the file compiles in projects with noUnusedLocals."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -1349,8 +1354,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.20.0",
+        "version": "0.20.1",
         "changelog": [
+          {
+            "version": "0.20.1",
+            "date": "2026-11-21",
+            "note": "No unused React import, so the file compiles in projects with noUnusedLocals."
+          },
           {
             "version": "0.20.0",
             "date": "2026-11-20",
@@ -1946,8 +1956,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.17.4",
         "changelog": [
+          {
+            "version": "0.17.4",
+            "date": "2026-11-21",
+            "note": "No unused React import, so the file compiles in projects with noUnusedLocals."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -3394,8 +3409,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.23.1",
         "changelog": [
+          {
+            "version": "0.23.1",
+            "date": "2026-11-21",
+            "note": "No unused React import, so the file compiles in projects with noUnusedLocals."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -3436,8 +3456,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.23.1",
         "changelog": [
+          {
+            "version": "0.23.1",
+            "date": "2026-11-21",
+            "note": "No unused React import, so the file compiles in projects with noUnusedLocals."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -3782,8 +3807,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.10.1",
         "changelog": [
+          {
+            "version": "0.10.1",
+            "date": "2026-11-21",
+            "note": "No unused React import, so the file compiles in projects with noUnusedLocals."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -4771,8 +4801,13 @@
         }
       ],
       "meta": {
-        "version": "0.18.0",
+        "version": "0.18.1",
         "changelog": [
+          {
+            "version": "0.18.1",
+            "date": "2026-11-21",
+            "note": "No unused React import, so the file compiles in projects with noUnusedLocals."
+          },
           {
             "version": "0.18.0",
             "date": "2026-11-19",
@@ -4897,8 +4932,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.15.1",
         "changelog": [
+          {
+            "version": "0.15.1",
+            "date": "2026-11-21",
+            "note": "No unused React import, so the file compiles in projects with noUnusedLocals."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -6440,8 +6480,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.15.1",
         "changelog": [
+          {
+            "version": "0.15.1",
+            "date": "2026-11-21",
+            "note": "No unused React import, so the file compiles in projects with noUnusedLocals."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -6506,8 +6551,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-21",
+            "note": "No unused React import, so the file compiles in projects with noUnusedLocals."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -6579,8 +6629,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-21",
+            "note": "No unused React import, so the file compiles in projects with noUnusedLocals."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -6613,8 +6668,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.17.4",
         "changelog": [
+          {
+            "version": "0.17.4",
+            "date": "2026-11-21",
+            "note": "No unused React import, so the file compiles in projects with noUnusedLocals."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -6734,8 +6794,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.0",
+        "version": "0.22.1",
         "changelog": [
+          {
+            "version": "0.22.1",
+            "date": "2026-11-21",
+            "note": "No unused React import, so the file compiles in projects with noUnusedLocals."
+          },
           {
             "version": "0.22.0",
             "date": "2026-11-20",
@@ -6833,8 +6898,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.2",
+        "version": "0.22.3",
         "changelog": [
+          {
+            "version": "0.22.3",
+            "date": "2026-11-21",
+            "note": "No unused React import, so the file compiles in projects with noUnusedLocals."
+          },
           {
             "version": "0.22.2",
             "date": "2026-11-20",
@@ -6972,8 +7042,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.17.2",
         "changelog": [
+          {
+            "version": "0.17.2",
+            "date": "2026-11-21",
+            "note": "No unused React import, so the file compiles in projects with noUnusedLocals."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -7046,8 +7121,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.17.4",
         "changelog": [
+          {
+            "version": "0.17.4",
+            "date": "2026-11-21",
+            "note": "No unused React import, so the file compiles in projects with noUnusedLocals."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -7094,8 +7174,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-21",
+            "note": "No unused React import, so the file compiles in projects with noUnusedLocals."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -7334,8 +7419,13 @@
         }
       ],
       "meta": {
-        "version": "0.21.0",
+        "version": "0.21.1",
         "changelog": [
+          {
+            "version": "0.21.1",
+            "date": "2026-11-21",
+            "note": "validateUrl returns undefined explicitly, so the block compiles in projects with noImplicitReturns."
+          },
           {
             "version": "0.21.0",
             "date": "2026-11-20",
@@ -7603,8 +7693,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.17.4",
         "changelog": [
+          {
+            "version": "0.17.4",
+            "date": "2026-11-21",
+            "note": "No unused React import, so the file compiles in projects with noUnusedLocals."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -8343,8 +8438,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.17.3",
         "changelog": [
+          {
+            "version": "0.17.3",
+            "date": "2026-11-21",
+            "note": "No unused React import, so the file compiles in projects with noUnusedLocals."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
