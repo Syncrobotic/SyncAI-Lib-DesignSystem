@@ -14,13 +14,18 @@ const WORD = new RegExp(`([${CJK}]|[^\\s${CJK}]+)(\\s*)`, "g")
 export function tokenize(text: string) {
   const tokens = [...text.matchAll(WORD)].map((m) => ({ word: m[1], text: m[0] }))
   const lead = text.match(/^\s*/)![0]
-  if (tokens.length && lead) tokens[0].text = lead + tokens[0].text
+  const first = tokens[0]
+  if (first && lead) first.text = lead + first.text
   return tokens
 }
 
 // Past this many cells (about 2,000 words against 2,000) the table would cost more than the answer is worth: the
 // middle that differs is then shown as removed and added whole.
 const MAX_CELLS = 4_000_000
+
+// The diff below reads the token lists, the LCS table and the op list only at indices its loops have already bounded by
+// their lengths, which noUncheckedIndexedAccess cannot see. `at` states that bound once, instead of a `!` on every read.
+const at = <T,>(list: ArrayLike<T>, i: number): T => list[i] as T
 
 /**
  * Word-level diff of two texts, by longest common subsequence. Runs of the same kind are merged; within a change the
@@ -31,62 +36,69 @@ export function diffWords(before: string, after: string): DiffPart[] {
   const b = tokenize(after)
   // Shared start and end need no table.
   let start = 0
-  while (start < a.length && start < b.length && a[start].word === b[start].word) start++
+  while (start < a.length && start < b.length && at(a, start).word === at(b, start).word) start++
   let endA = a.length
   let endB = b.length
-  while (endA > start && endB > start && a[endA - 1].word === b[endB - 1].word) {
+  while (endA > start && endB > start && at(a, endA - 1).word === at(b, endB - 1).word) {
     endA--
     endB--
   }
   const ops: { type: DiffPart["type"]; text: string }[] = []
   // Shared words take the after text's spacing: the result reads as the new text.
-  for (let i = 0; i < start; i++) ops.push({ type: "same", text: b[i].text })
+  for (let i = 0; i < start; i++) ops.push({ type: "same", text: at(b, i).text })
 
   const n = endA - start
   const m = endB - start
   if (n * m > MAX_CELLS) {
-    for (let i = start; i < endA; i++) ops.push({ type: "removed", text: a[i].text })
-    for (let j = start; j < endB; j++) ops.push({ type: "added", text: b[j].text })
+    for (let i = start; i < endA; i++) ops.push({ type: "removed", text: at(a, i).text })
+    for (let j = start; j < endB; j++) ops.push({ type: "added", text: at(b, j).text })
   } else {
     // lcs[i][j]: length of the longest common subsequence of a[start+i…] and b[start+j…], filled from the end.
     const lcs = Array.from({ length: n + 1 }, () => new Uint32Array(m + 1))
-    for (let i = n - 1; i >= 0; i--)
+    for (let i = n - 1; i >= 0; i--) {
+      const row = at(lcs, i)
+      const below = at(lcs, i + 1)
       for (let j = m - 1; j >= 0; j--)
-        lcs[i][j] = a[start + i].word === b[start + j].word ? lcs[i + 1][j + 1] + 1 : Math.max(lcs[i + 1][j], lcs[i][j + 1])
+        row[j] = at(a, start + i).word === at(b, start + j).word ? at(below, j + 1) + 1 : Math.max(at(below, j), at(row, j + 1))
+    }
     let i = 0
     let j = 0
     while (i < n || j < m) {
-      if (i < n && j < m && a[start + i].word === b[start + j].word) {
-        ops.push({ type: "same", text: b[start + j].text })
+      if (i < n && j < m && at(a, start + i).word === at(b, start + j).word) {
+        ops.push({ type: "same", text: at(b, start + j).text })
         i++
         j++
-      } else if (j >= m || (i < n && lcs[i + 1][j] >= lcs[i][j + 1])) {
-        ops.push({ type: "removed", text: a[start + i].text })
+      } else if (j >= m || (i < n && at(at(lcs, i + 1), j) >= at(at(lcs, i), j + 1))) {
+        ops.push({ type: "removed", text: at(a, start + i).text })
         i++
       } else {
-        ops.push({ type: "added", text: b[start + j].text })
+        ops.push({ type: "added", text: at(b, start + j).text })
         j++
       }
     }
   }
-  for (let j = endB; j < b.length; j++) ops.push({ type: "same", text: b[j].text })
+  for (let j = endB; j < b.length; j++) ops.push({ type: "same", text: at(b, j).text })
 
   // Merge runs, and order each change as removed, then added, so "the red cup" → "a blue cup" reads "~~the red~~ a blue".
   const parts: DiffPart[] = []
   let k = 0
   while (k < ops.length) {
-    if (ops[k].type === "same") {
+    const op = at(ops, k)
+    if (op.type === "same") {
       const last = parts[parts.length - 1]
       if (last?.type === "same") {
-        last.text += ops[k].text
+        last.text += op.text
         last.words++
-      } else parts.push({ type: "same", text: ops[k].text, words: 1 })
+      } else parts.push({ type: "same", text: op.text, words: 1 })
       k++
       continue
     }
     const removed: string[] = []
     const added: string[] = []
-    while (k < ops.length && ops[k].type !== "same") (ops[k].type === "removed" ? removed : added).push(ops[k++].text)
+    while (k < ops.length && at(ops, k).type !== "same") {
+      const change = at(ops, k++)
+      ;(change.type === "removed" ? removed : added).push(change.text)
+    }
     if (removed.length) parts.push({ type: "removed", text: removed.join(""), words: removed.length })
     if (added.length) parts.push({ type: "added", text: added.join(""), words: added.length })
   }

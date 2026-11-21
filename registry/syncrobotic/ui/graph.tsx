@@ -80,6 +80,12 @@ export type GraphLayoutNode = { id: string; layer: number; order: number; x: num
 export type GraphLayoutEdge = { from: string; to: string; points: [number, number][] }
 export type GraphLayout = { nodes: GraphLayoutNode[]; edges: GraphLayoutEdge[]; width: number; height: number; dropped: GraphEdge[] }
 
+// The layout works on dense arrays indexed by node or item number (0 … n - 1, 0 … total - 1), by layer, or by a loop
+// counter bounded by the array's own length, so every read below is in range. noUncheckedIndexedAccess cannot see those
+// bounds; `nth` states them once, instead of a `!` on every read. Writes that read and assign in one step (`x[i] -= d`)
+// carry their own `!` for the same reason.
+const nth = <T,>(list: readonly T[], i: number): T => list[i] as T
+
 const warn = (msg: string) => {
   if (process.env.NODE_ENV !== "production") console.warn(`Graph: ${msg}`)
 }
@@ -87,19 +93,19 @@ const warn = (msg: string) => {
 /** Smallest total squared move from `want`, keeping order and at least `sep[i]` between item i and i + 1. */
 function place(want: number[], sep: number[], weight: number[]) {
   const off = [0]
-  for (let i = 1; i < want.length; i++) off[i] = off[i - 1] + sep[i - 1]
+  for (let i = 1; i < want.length; i++) off[i] = nth(off, i - 1) + nth(sep, i - 1)
   const blocks: { sum: number; w: number; n: number }[] = []
   want.forEach((d, i) => {
-    blocks.push({ sum: (d - off[i]) * weight[i], w: weight[i], n: 1 })
+    blocks.push({ sum: (d - nth(off, i)) * nth(weight, i), w: nth(weight, i), n: 1 })
     while (blocks.length > 1) {
-      const b = blocks[blocks.length - 1]
-      const a = blocks[blocks.length - 2]
+      const b = nth(blocks, blocks.length - 1)
+      const a = nth(blocks, blocks.length - 2)
       if (a.sum / a.w <= b.sum / b.w) break
       blocks.splice(-2, 2, { sum: a.sum + b.sum, w: a.w + b.w, n: a.n + b.n })
     }
   })
   const out: number[] = []
-  for (const b of blocks) for (let k = 0; k < b.n; k++) out.push(b.sum / b.w + off[out.length])
+  for (const b of blocks) for (let k = 0; k < b.n; k++) out.push(b.sum / b.w + nth(off, out.length))
   return out
 }
 
@@ -140,7 +146,7 @@ export function layoutGraph(
     const k = `${a} ${b}`
     if (seen.has(k)) continue
     seen.add(k)
-    out[a].push(b)
+    nth(out, a).push(b)
   }
 
   // 1. Break cycles: depth first, in the order the nodes were given; an edge back to a node still open closes a cycle.
@@ -148,10 +154,10 @@ export function layoutGraph(
   const kept: [number, number][] = []
   const visit = (u: number) => {
     state[u] = 1
-    for (const v of out[u]) {
+    for (const v of nth(out, u)) {
       if (state[v] === 1) {
-        dropped.push({ from: ids[u], to: ids[v] })
-        warn(`the edge ${ids[u]} → ${ids[v]} closes a cycle; a graph flows one way, so it is left out.`)
+        dropped.push({ from: nth(ids, u), to: nth(ids, v) })
+        warn(`the edge ${nth(ids, u)} → ${nth(ids, v)} closes a cycle; a graph flows one way, so it is left out.`)
         continue
       }
       kept.push([u, v])
@@ -164,8 +170,8 @@ export function layoutGraph(
   const parents: number[][] = ids.map(() => [])
   const children: number[][] = ids.map(() => [])
   for (const [a, b] of kept) {
-    parents[b].push(a)
-    children[a].push(b)
+    nth(parents, b).push(a)
+    nth(children, a).push(b)
   }
 
   // 2. Longest-path layers, in topological order (Kahn, stable to the given order).
@@ -175,12 +181,15 @@ export function layoutGraph(
   while (queue.length) {
     const u = queue.shift()!
     topo.push(u)
-    for (const v of children[u]) if (--indeg[v] === 0) queue.push(v)
+    for (const v of nth(children, u)) if (--indeg[v]! === 0) queue.push(v)
   }
   const layer = new Array<number>(n).fill(0)
-  for (const u of topo) for (const v of children[u]) layer[v] = Math.max(layer[v], layer[u] + 1)
+  for (const u of topo) for (const v of nth(children, u)) layer[v] = Math.max(nth(layer, v), nth(layer, u) + 1)
   // A source that only feeds a late node sits just before it, not far left with one long edge.
-  for (const u of topo) if (!parents[u].length && children[u].length) layer[u] = Math.min(...children[u].map((v) => layer[v])) - 1
+  for (const u of topo) {
+    const outputs = nth(children, u)
+    if (!nth(parents, u).length && outputs.length) layer[u] = Math.min(...outputs.map((v) => nth(layer, v))) - 1
+  }
 
   // 3. Items: the real nodes, then a dummy point per layer an edge crosses. Chains run from an edge's source to its target.
   const itemLayer = [...layer]
@@ -189,7 +198,7 @@ export function layoutGraph(
   const chains: { from: number; to: number; items: number[] }[] = []
   for (const [a, b] of kept) {
     const items = [a]
-    for (let l = layer[a] + 1; l < layer[b]; l++) {
+    for (let l = nth(layer, a) + 1; l < nth(layer, b); l++) {
       itemLayer.push(l)
       pred.push([])
       succ.push([])
@@ -197,15 +206,17 @@ export function layoutGraph(
     }
     items.push(b)
     for (let k = 0; k + 1 < items.length; k++) {
-      succ[items[k]].push(items[k + 1])
-      pred[items[k + 1]].push(items[k])
+      const u = nth(items, k)
+      const v = nth(items, k + 1)
+      nth(succ, u).push(v)
+      nth(pred, v).push(u)
     }
     chains.push({ from: a, to: b, items })
   }
   const total = itemLayer.length
   const real = (i: number) => i < n
   const layers: number[][] = []
-  for (let i = 0; i < total; i++) (layers[itemLayer[i]] ??= []).push(i)
+  for (const [i, l] of itemLayer.entries()) (layers[l] ??= []).push(i)
   for (let l = 0; l < layers.length; l++) layers[l] ??= []
 
   // 4. Order within layers.
@@ -216,16 +227,26 @@ export function layoutGraph(
     let c = 0
     for (let l = 0; l + 1 < layers.length; l++) {
       const segs: [number, number][] = []
-      for (const u of layers[l]) for (const v of succ[u]) segs.push([pos[u], pos[v]])
-      for (let i = 0; i < segs.length; i++)
-        for (let j = i + 1; j < segs.length; j++) if ((segs[i][0] - segs[j][0]) * (segs[i][1] - segs[j][1]) < 0) c++
+      for (const u of nth(layers, l)) for (const v of nth(succ, u)) segs.push([nth(pos, u), nth(pos, v)])
+      for (let i = 0; i < segs.length; i++) {
+        const [u0, u1] = nth(segs, i)
+        for (let j = i + 1; j < segs.length; j++) {
+          const [v0, v1] = nth(segs, j)
+          if ((u0 - v0) * (u1 - v1) < 0) c++
+        }
+      }
     }
     return c
   }
   const sortBy = (l: number, nbrs: number[][]) => {
-    const bary = new Map(layers[l].map((i) => [i, nbrs[i].length ? nbrs[i].reduce((s, j) => s + pos[j], 0) / nbrs[i].length : pos[i]]))
-    layers[l] = [...layers[l]].sort((a, b) => bary.get(a)! - bary.get(b)!)
-    layers[l].forEach((i, k) => (pos[i] = k))
+    const bary = new Map(
+      nth(layers, l).map((i) => {
+        const m = nth(nbrs, i)
+        return [i, m.length ? m.reduce((s, j) => s + nth(pos, j), 0) / m.length : nth(pos, i)]
+      }),
+    )
+    layers[l] = [...nth(layers, l)].sort((a, b) => bary.get(a)! - bary.get(b)!)
+    nth(layers, l).forEach((i, k) => (pos[i] = k))
   }
   let best = layers.map((ls) => [...ls])
   let bestCount = crossings()
@@ -249,37 +270,37 @@ export function layoutGraph(
   for (const ls of layers) {
     let at = 0
     ls.forEach((i, k) => {
-      if (k) at += gapBetween(ls[k - 1], i)
+      if (k) at += gapBetween(nth(ls, k - 1), i)
       c[i] = at
     })
-    for (const i of ls) c[i] -= at / 2
+    for (const i of ls) c[i]! -= at / 2
   }
   const relax = (ls: number[], nbrs: (i: number) => number[]) => {
     if (!ls.length) return
     const want = ls.map((i) => {
       const m = nbrs(i)
-      return m.length ? m.reduce((s, j) => s + c[j], 0) / m.length : c[i]
+      return m.length ? m.reduce((s, j) => s + nth(c, j), 0) / m.length : nth(c, i)
     })
     const placed = place(
       want,
-      ls.slice(1).map((i, k) => gapBetween(ls[k], i)),
+      ls.slice(1).map((i, k) => gapBetween(nth(ls, k), i)),
       ls.map((i) => (real(i) ? 1 : 0.5)),
     )
-    ls.forEach((i, k) => (c[i] = placed[k]))
+    ls.forEach((i, k) => (c[i] = nth(placed, k)))
   }
   for (let iter = 0; iter < 10; iter++) {
-    if (iter % 2 === 0) for (let l = 1; l < layers.length; l++) relax(layers[l], (i) => pred[i])
-    else for (let l = layers.length - 2; l >= 0; l--) relax(layers[l], (i) => succ[i])
+    if (iter % 2 === 0) for (let l = 1; l < layers.length; l++) relax(nth(layers, l), (i) => nth(pred, i))
+    else for (let l = layers.length - 2; l >= 0; l--) relax(nth(layers, l), (i) => nth(succ, i))
   }
-  for (const ls of layers) relax(ls, (i) => [...pred[i], ...succ[i]])
+  for (const ls of layers) relax(ls, (i) => [...nth(pred, i), ...nth(succ, i)])
   let min = Infinity
   let max = -Infinity
-  for (let i = 0; i < total; i++) {
-    min = Math.min(min, c[i] - size(i) / 2)
-    max = Math.max(max, c[i] + size(i) / 2)
+  for (const [i, centre] of c.entries()) {
+    min = Math.min(min, centre - size(i) / 2)
+    max = Math.max(max, centre + size(i) / 2)
   }
   if (!total) min = max = 0
-  for (let i = 0; i < total; i++) c[i] = Math.round(c[i] - min)
+  for (const [i, centre] of c.entries()) c[i] = Math.round(centre - min)
 
   // Main axis: one column (or row) per layer.
   const main = horizontal ? SIZE.width : SIZE.height
@@ -291,15 +312,15 @@ export function layoutGraph(
   layers.forEach((ls, l) =>
     ls.forEach((i) => {
       if (!real(i)) return
-      const [x, y] = pt(start(l), c[i] - cross / 2)
-      laidOut.push({ id: ids[i], layer: l, order: pos[i], x, y, width: SIZE.width, height: SIZE.height })
+      const [x, y] = pt(start(l), nth(c, i) - cross / 2)
+      laidOut.push({ id: nth(ids, i), layer: l, order: nth(pos, i), x, y, width: SIZE.width, height: SIZE.height })
     }),
   )
   const laidEdges: GraphLayoutEdge[] = chains.map(({ from, to, items }) => {
-    const points: [number, number][] = [pt(start(itemLayer[from]) + main, c[from])]
-    for (const d of items.slice(1, -1)) points.push(pt(start(itemLayer[d]), c[d]), pt(start(itemLayer[d]) + main, c[d]))
-    points.push(pt(start(itemLayer[to]), c[to]))
-    return { from: ids[from], to: ids[to], points }
+    const points: [number, number][] = [pt(start(nth(itemLayer, from)) + main, nth(c, from))]
+    for (const d of items.slice(1, -1)) points.push(pt(start(nth(itemLayer, d)), nth(c, d)), pt(start(nth(itemLayer, d)) + main, nth(c, d)))
+    points.push(pt(start(nth(itemLayer, to)), nth(c, to)))
+    return { from: nth(ids, from), to: nth(ids, to), points }
   })
   const extentMain = layers.length ? start(layers.length - 1) + main : 0
   const extentCross = Math.round(max - min)
@@ -314,10 +335,13 @@ export function layoutGraph(
 
 /** The SVG path of a laid-out edge: curves across the gaps, straight through the columns it passes. */
 function edgePath(points: [number, number][], horizontal: boolean) {
-  let d = `M${points[0][0]} ${points[0][1]}`
+  // layoutGraph gives every edge at least two points; an edge without any simply draws nothing.
+  const [first] = points
+  if (!first) return ""
+  let d = `M${first[0]} ${first[1]}`
   for (let k = 1; k < points.length; k++) {
-    const [x0, y0] = points[k - 1]
-    const [x1, y1] = points[k]
+    const [x0, y0] = nth(points, k - 1)
+    const [x1, y1] = nth(points, k)
     if (k % 2 === 0) {
       d += ` L${x1} ${y1}`
       continue
@@ -516,8 +540,9 @@ export function Graph({
   const moveTo = (to: string | undefined, from?: string, forward?: boolean) => {
     if (!to) return
     const t = trail.current
+    const last = t[t.length - 1]
     if (from === undefined || forward === undefined) trail.current = []
-    else if (t.length && t[t.length - 1].to === from && t[t.length - 1].from === to && t[t.length - 1].forward !== forward) t.pop()
+    else if (last && last.to === from && last.from === to && last.forward !== forward) t.pop()
     else t.push({ from, to, forward })
     setFocused(to)
     setPreview(to)
