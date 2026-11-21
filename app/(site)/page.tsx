@@ -14,7 +14,7 @@ import { PageTransition } from "@/site/page-transition"
 import { SiteFooter } from "@/site/site-footer"
 
 export const metadata: Metadata = {
-  title: { absolute: `${site.name} — one design language for every SYNCROBOTIC product` },
+  title: { absolute: `${site.name} — robotics UI kit for React and shadcn/ui` },
   alternates: { canonical: "/" },
 }
 
@@ -27,6 +27,7 @@ const jsonLd = {
     {
       "@type": "SoftwareSourceCode",
       name: site.name,
+      alternateName: "Robotics UI kit for React",
       description: site.description,
       codeRepository: site.repo,
       programmingLanguage: ["TypeScript", "CSS"],
@@ -101,7 +102,7 @@ export default function HomePage() {
             </AppearItem>
             <AppearItem>
               <p className="max-w-xl text-lg text-pretty text-muted-foreground">
-                The SYNCROBOTIC design language, written down once: tokens, {componentCount} React components and {blockCount} blocks for fleet consoles and the
+                A robotics UI kit for React, written down once: tokens, {componentCount} components and {blockCount} blocks for fleet consoles and the
                 apps operators hold outdoors.
               </p>
             </AppearItem>

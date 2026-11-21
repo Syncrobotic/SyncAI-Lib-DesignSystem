@@ -6063,7 +6063,7 @@
     {
      "name": "grid",
      "type": "RobotMapGrid",
-     "description": "A ROS occupancy grid drawn as the floor (under `floorplan`, when both are given): free cells are the map's surface, occupied ones the ink colour at their probability, unknown ones the no-data hatch. Drawn into an image once per new `data` array, so pass a new array for new cells and the same one otherwise."
+     "description": "A ROS occupancy grid drawn as the floor (under `floorplan`, when both are given): free cells are the map's surface, occupied ones a muted grey at their probability, unknown ones the no-data hatch. Drawn into an image once per new `data` array, so pass a new array for new cells and the same one otherwise."
     },
     {
      "name": "costmap",
