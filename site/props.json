@@ -1181,7 +1181,7 @@
      "name": "open",
      "type": "boolean",
      "default": "true",
-     "description": "false hides it with the disappear movement. Default true."
+     "description": "false hides it: it fades and closes its height. Default true."
     }
    ],
    "inherits": [
