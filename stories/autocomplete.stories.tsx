@@ -1,5 +1,5 @@
 import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Autocomplete, type AutocompleteOption } from "@/registry/syncrobotic/ui/autocomplete"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Field } from "@/registry/syncrobotic/ui/field"

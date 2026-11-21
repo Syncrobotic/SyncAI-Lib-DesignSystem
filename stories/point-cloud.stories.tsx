@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { PointCloud } from "@/registry/syncrobotic/ui/point-cloud"
 
 const meta: Meta = { title: "Charts/Point cloud" }

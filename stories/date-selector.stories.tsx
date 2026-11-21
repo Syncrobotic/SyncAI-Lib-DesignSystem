@@ -1,5 +1,5 @@
 import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { addDays, startOfMonth, subDays } from "date-fns"
 import { DatePicker, DateRangePicker, type DateRange } from "@/registry/syncrobotic/ui/date-selector"
 import { Field } from "@/registry/syncrobotic/ui/field"

@@ -4,7 +4,9 @@ import path from "node:path"
 
 const config: StorybookConfig = {
   stories: ["../stories/**/*.stories.@(ts|tsx)"],
-  addons: ["@storybook/addon-essentials", "@storybook/addon-a11y"],
+  // Storybook 9 moved the essentials (controls, actions, viewport, backgrounds, toolbars) into core, so only the a11y
+  // addon is listed. Docs is not added back: no story uses autodocs or MDX, and its index entries would change the ids.
+  addons: ["@storybook/addon-a11y"],
   // The media player's sample clip, poster and captions (generated; see stories/media-player.stories.tsx).
   staticDirs: [{ from: "../public/media", to: "/media" }],
   framework: { name: "@storybook/react-vite", options: {} },
@@ -15,8 +17,9 @@ const config: StorybookConfig = {
     cfg.resolve = cfg.resolve ?? {}
     cfg.resolve.alias = {
       ...(cfg.resolve.alias as Record<string, string>),
-      "@/lib": path.resolve(__dirname, "../lib"),
-      "@/registry": path.resolve(__dirname, "../registry"),
+      // Storybook 10 loads this file as native ESM, where __dirname does not exist; Node 22 has import.meta.dirname.
+      "@/lib": path.resolve(import.meta.dirname, "../lib"),
+      "@/registry": path.resolve(import.meta.dirname, "../registry"),
     }
     // "use client" is for Next.js; Vite ignores it. Keep the build output quiet.
     cfg.build = cfg.build ?? {}

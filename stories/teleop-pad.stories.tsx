@@ -1,6 +1,6 @@
 import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/react"
-import { fn } from "@storybook/test"
+import type { Meta, StoryObj } from "@storybook/react-vite"
+import { fn } from "storybook/test"
 import { TeleopPad, type TeleopCommand } from "@/registry/syncrobotic/shell/teleop-pad"
 import { StopButton } from "@/registry/syncrobotic/shell/stop-button"
 

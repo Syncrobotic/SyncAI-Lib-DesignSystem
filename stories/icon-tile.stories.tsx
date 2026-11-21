@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Battery, Bot, Camera, CircleCheck, Cpu, FolderOpen, Map, OctagonAlert, Radar, Router, TriangleAlert, Wifi } from "lucide-react"
 import { IconTile, IconTileDot } from "@/registry/syncrobotic/ui/icon-tile"
 

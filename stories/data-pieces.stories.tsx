@@ -1,5 +1,5 @@
 import * as React from "react"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { cn } from "@/lib/utils"
 import { LoadMore } from "@/registry/syncrobotic/ui/load-more"
 import { RestrictedPreview } from "@/registry/syncrobotic/ui/restricted-preview"
