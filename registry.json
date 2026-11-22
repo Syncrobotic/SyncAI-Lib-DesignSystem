@@ -199,8 +199,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.29.0",
         "changelog": [
+          {
+            "version": "0.29.0",
+            "date": "2026-11-22",
+            "note": "`waypointEditorLabels` for the new waypoint-editor."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -219,7 +224,7 @@
       "name": "ros",
       "type": "registry:lib",
       "title": "ROS",
-      "description": "ROS and ROS 2 over rosbridge with no ROS library: a rosbridge v2 client on the browser's WebSocket (ref-counted subscriptions and advertisements, capped jittered reconnect that resubscribes, a send queue, service calls with a timeout, a zero Twist when a velocity publisher stops or the link drops) and pure converters from OccupancyGrid, LaserScan, PointCloud2, JointState, DiagnosticArray, /rosout Log and poses to the kit's components, and from a teleop command and a map goal back to Twist and PoseStamped.",
+      "description": "ROS and ROS 2 over rosbridge with no ROS library: a rosbridge v2 client on the browser's WebSocket (ref-counted subscriptions and advertisements, capped jittered reconnect that resubscribes, a send queue, service calls with a timeout, a zero Twist when a velocity publisher stops or the link drops) and pure converters from OccupancyGrid, LaserScan, PointCloud2, JointState, DiagnosticArray, /rosout Log and poses to the kit's components, and from a teleop command, a map goal and a waypoint route back to Twist, PoseStamped, nav_msgs/Path and Nav2's NavigateThroughPoses goal (and the route back from them).",
       "dependencies": [],
       "registryDependencies": [],
       "files": [
@@ -229,8 +234,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.29.0",
         "changelog": [
+          {
+            "version": "0.29.0",
+            "date": "2026-11-22",
+            "note": "`waypointsToPath` and `waypointsToNavigateThroughPoses` turn waypoint-editor's route into a `nav_msgs/Path` and the goal of Nav2's NavigateThroughPoses (PoseStamped in the map frame; a waypoint without a heading faces the next one), and `pathToWaypoints` and `navigateThroughPosesToWaypoints` turn them back (Kilted's `nav_msgs/Goals` too)."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -2960,8 +2970,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.28.0",
+        "version": "0.29.0",
         "changelog": [
+          {
+            "version": "0.29.0",
+            "date": "2026-11-22",
+            "note": "Waypoints a list beside the map can drive: `selectedWaypoint` and `onWaypointSelect` select a waypoint from either side (and, given, a click selects one in view mode too); `onWaypointEdit` says which waypoint was added, moved or removed, by index; `waypointMarks` draws a waypoint's heading tick and the warning shape for a problem. In an edit mode the plan now fits below the mode banner, which covered points along its top edge."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -2991,6 +3006,44 @@
             "version": "0.23.0",
             "date": "2026-11-20",
             "note": "First release: the site map that lived only inside map-workspace, as a component. Site coordinates in metres over an image or SVG floor plan; zones (no entry, slow, charging, other) as hairline outlines with icon and name; planned routes dashed blue, travelled tracks solid grey; robots as their status shape with a heading tick and a name that moves aside instead of covering another; selection by a ring and weight. Pan and zoom by drag, wheel (once focused, or with Ctrl), pinch, 44 px buttons and keys (arrows, + / -, 0), gliding at --motion-base unless motion is reduced. One Tab stop; RobotMapList lists the robots with position, zone and status, and selects on the map. Scale bar, optional north arrow, empty, loading and error states."
+          }
+        ]
+      }
+    },
+    {
+      "name": "waypoint-editor",
+      "type": "registry:ui",
+      "title": "Waypoint editor",
+      "description": "Plan a robot's route as an ordered list of waypoints, edited in a list and on robot-map together: each waypoint a name, a place in metres (or latitude and longitude), an optional heading, an action on arrival (wait, dock, take a photo, custom) and a dwell time. Reorder by drag or keys, add by clicking the map or a button, delete with Undo, duplicate; a row and its point select each other. Problems (outside the map, in a keep-out zone, too close, no name) show inline and Save says why it is disabled. Distance and estimated time, unsaved changes with Save and Cancel, a read-only mode, list first on a phone with the map a tab.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/field",
+        "@syncrobotic/input",
+        "@syncrobotic/number-field",
+        "@syncrobotic/robot-map",
+        "@syncrobotic/segmented-control",
+        "@syncrobotic/select",
+        "@syncrobotic/sortable",
+        "@syncrobotic/toast"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/waypoint-editor.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.29.0",
+        "changelog": [
+          {
+            "version": "0.29.0",
+            "date": "2026-11-22",
+            "note": "First release."
           }
         ]
       }

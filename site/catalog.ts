@@ -63,6 +63,7 @@ export type StoryFile =
   | "sidebar"
   | "graph"
   | "robot-map"
+  | "waypoint-editor"
   | "point-cloud"
   | "robot-model"
   | "hooks"
@@ -976,6 +977,21 @@ const entries: Record<string, Entry> = {
       "Up to a few hundred robots and zones: everything is redrawn on each pan. A city-scale map, tiles or GPS belong to a map library.",
     ],
   },
+  "waypoint-editor": {
+    group: "Robotics",
+    wide: true,
+    examples: { file: "waypoint-editor", prefix: "WaypointEditor" },
+    rules: [
+      "For planning a route before it is sent. A route being driven is `robot-map` `paths` (dashed blue); the editor's route is grey, as a route still being drawn.",
+      "Keep the saved route in `value` and save in `onSave`; never write the draft back into `value` on every change, or Cancel and the unsaved state have nothing to compare with.",
+      "Pass the map's `zones`: `restricted` zones are keep-out, and a waypoint inside one cannot be saved. Check again on the server with `validateWaypoints`.",
+      "Problems are the warning shape and words on the row, the warning shape on the point, never a tinted row; Save stays visible, disabled, with the reason beside it.",
+      "Delete and Cancel offer Undo in a toast: mount a `Toaster` once in the app.",
+      "Give `speed` the robot's cruise speed on this site, so the estimate means something; say what `dwell` covers (docking, a photo) in your own help text.",
+      "Viewers get `readOnly`: the same list, map and details, without handles, Add, Save or Cancel.",
+      "Send it with `waypointsToNavigateThroughPoses` (or `waypointsToPath`) from `ros`; run each waypoint's action in the app or the robot's mission layer.",
+    ],
+  },
   "point-cloud": {
     group: "Robotics",
     wide: true,
@@ -1317,6 +1333,14 @@ const keyboard: Record<string, [string, string][]> = {
     ["`←` / `→` after placing a goal", "Turn the goal 15° (Shift: 45°); Enter sets it"],
     ["`Delete` / `Backspace`", "Remove the selected waypoint, or the zone's last corner"],
     ["`Esc`", "Cancel what is being drawn or carried; otherwise clear the selection"],
+  ],
+  "waypoint-editor": [
+    ["`Tab`", "Move through Add waypoint, then each row's handle and row; the open row's fields, Duplicate and Delete; then the map and Save"],
+    ["`Space` on a handle", "Lift the waypoint; `↑` / `↓` move it, `Space` drops it, `Esc` cancels (each move is announced)"],
+    ["`Enter` / `Space` on a row", "Open or close its fields; its point is selected on the map"],
+    ["`Delete` / `Backspace` on a row", "Delete the waypoint (Undo in the toast); focus moves to the next row"],
+    ["`↑` / `↓` in a number field", "Step the value (Shift: a larger step)"],
+    ["`←` `→` `↑` `↓`, `Enter`, `Delete` on the map", "The map's own keys: arrows move the crosshair, Enter adds a waypoint or picks one up, Delete removes the selected one (with Undo)"],
   ],
   "robot-model": [
     ["`Tab`", "Move into the view: one stop. Its buttons are for the pointer; 0 and F do the same"],

@@ -12,12 +12,12 @@
     "hash": "8ec920f8618ff43d"
   },
   "labels-zh-tw": {
-    "version": "0.28.0",
-    "hash": "40d028b636d7ae25"
+    "version": "0.29.0",
+    "hash": "4a4f5c22cfedbff5"
   },
   "ros": {
-    "version": "0.28.0",
-    "hash": "4bcd3c707283d90b"
+    "version": "0.29.0",
+    "hash": "c41f65b2c8b8256b"
   },
   "use-long-press": {
     "version": "0.5.1",
@@ -256,8 +256,12 @@
     "hash": "8356bbb792fcb83e"
   },
   "robot-map": {
-    "version": "0.28.0",
-    "hash": "ad3ae9cd687bf83d"
+    "version": "0.29.0",
+    "hash": "eb2278e7335b83da"
+  },
+  "waypoint-editor": {
+    "version": "0.29.0",
+    "hash": "f58197ab9563acee"
   },
   "dialog": {
     "version": "0.23.0",

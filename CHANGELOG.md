@@ -2,6 +2,14 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **`waypoint-editor` 0.29.0 (beta):** plan a robot's route as an ordered list of waypoints, edited in a list and on `robot-map` together. Each waypoint has a name, a place in metres on the plan (or latitude and longitude: `at.kind`), an optional heading, an action on arrival (wait N s, dock, take a photo, custom) and a dwell time. Reorder by the handle (drag, touch or Space and the arrows), add by clicking the map or Add waypoint, delete with Undo in a toast, duplicate; a row and its point select each other. Problems (outside the map, inside a no-entry zone, too close to the one before, a missing name) show on the row and the point, and Save says why it is disabled. Distance and estimated time from `speed`, unsaved changes with Save and Cancel (Cancel has Undo too), `readOnly` for viewers; narrower than 768 px the list comes first and the map is a tab. `validateWaypoints`, `routeDistance` and `routeDuration` are exported.
+- **`robot-map` 0.29.0:** for a list beside the map: `selectedWaypoint` / `onWaypointSelect` share the waypoint selection (a click selects one in view mode too), `onWaypointEdit` says which waypoint was added, moved or removed, and `waypointMarks` draws a waypoint's heading tick and a problem's warning shape. In an edit mode the plan fits below the mode banner, which used to cover points along the plan's top edge.
+- **`ros` 0.29.0:** `waypointsToPath` and `waypointsToNavigateThroughPoses` send waypoint-editor's route as a `nav_msgs/Path` or the goal of Nav2's NavigateThroughPoses (PoseStamped in the map frame; a waypoint without a heading faces the next), and `pathToWaypoints` / `navigateThroughPosesToWaypoints` bring one back (Kilted's `nav_msgs/Goals` too).
+- **`labels-zh-tw` 0.29.0:** `waypointEditorLabels`.
+
 ## 0.28.0 · 2026-11-22
 
 Four new components for robot consoles (streaming chart, log viewer, diagnostics, sidebar) and the fixes from a page-by-page audit of every component, block and docs page. Read **Changed** before upgrading: a few defaults and words change.

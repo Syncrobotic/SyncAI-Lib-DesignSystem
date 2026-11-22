@@ -24,3 +24,6 @@ declare module "@/registry/syncrobotic/ui/streaming-chart?react-compiler" {
 declare module "@/registry/syncrobotic/ui/diagnostics?react-compiler" {
   export * from "@/registry/syncrobotic/ui/diagnostics"
 }
+declare module "@/registry/syncrobotic/ui/waypoint-editor?react-compiler" {
+  export * from "@/registry/syncrobotic/ui/waypoint-editor"
+}

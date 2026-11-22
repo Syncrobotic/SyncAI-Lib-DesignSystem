@@ -1,4 +1,4 @@
-// @syncrobotic/labels-zh-tw v0.28.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
+// @syncrobotic/labels-zh-tw v0.29.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
 // The kit's words in Traditional Chinese as written in Taiwan, one object per component that takes `labels`. Pass each
 // to its component (`<DataGrid labels={dataGridLabels} />`) with `locale="zh-TW"` where the component formats numbers,
 // days or times. The file imports no component, so it installs on its own; the kit's tests hold every object to the
@@ -336,6 +336,84 @@ export const robotMapLabels = {
 }
 
 export const robotMapListLabels = robotMapLabels
+
+// 航點 (waypoint) and 路線 (route), as robot-map says them; 停留 for dwell, the word a dispatcher uses for time at a stop.
+const routeNumber = (n: number, locale: string | undefined, digits = 1) => n.toLocaleString(locale ?? "zh-TW", { minimumFractionDigits: digits, maximumFractionDigits: digits })
+export const waypointEditorLabels = {
+  name: "路線",
+  map: "路線地圖",
+  showAs: "顯示方式",
+  listTab: "清單",
+  mapTab: "地圖",
+  add: "新增航點",
+  empty: "尚無航點。點一下地圖或「新增航點」開始規劃路線。",
+  defaultName: (n: number) => `航點 ${n}`,
+  copyName: (name: string) => `${name} 副本`,
+  move: (name: string) => `移動 ${name}`,
+  rowKeys: "Enter 開啟詳細資料，Delete 刪除此航點。",
+  fieldName: "名稱",
+  x: "X",
+  y: "Y",
+  lat: "緯度",
+  lon: "經度",
+  heading: "朝向",
+  headingHint: "留空表示不限朝向。",
+  action: "抵達時",
+  actions: { none: "不執行動作", wait: "等待", dock: "回充電座", photo: "拍照", custom: "自訂動作" },
+  waitFor: "等待時間",
+  customName: "動作名稱",
+  dwell: "停留",
+  dwellHint: "完成動作後再停留的時間。",
+  duplicate: "複製航點",
+  remove: "刪除",
+  removed: (name: string) => `已刪除 ${name}`,
+  undo: "復原",
+  position: (x: number, y: number, locale: string | undefined) => `${routeNumber(x, locale)}, ${routeNumber(y, locale)} m`,
+  geoPosition: (lat: number, lon: number, locale: string | undefined) => `${routeNumber(lat, locale, 6)}, ${routeNumber(lon, locale, 6)}`,
+  headingShort: (deg: number) => `朝向 ${compass(deg)}°`,
+  actionShort: (a: { type: string; seconds?: number; name?: string }, locale: string | undefined) =>
+    a.type === "wait" ? `等待 ${(a.seconds ?? 0).toLocaleString(locale ?? "zh-TW")} 秒` : a.type === "dock" ? "回充電座" : a.type === "photo" ? "拍照" : a.type === "custom" ? a.name || "自訂動作" : "",
+  dwellShort: (s: number, locale: string | undefined) => `停留 ${s.toLocaleString(locale ?? "zh-TW")} 秒`,
+  problem: (p: { kind: string; zone?: string; distance?: number }, min: number, locale: string | undefined) =>
+    p.kind === "noName"
+      ? "缺少名稱"
+      : p.kind === "noActionName"
+        ? "缺少動作名稱"
+        : p.kind === "invalid"
+          ? "位置不是數字"
+          : p.kind === "outside"
+            ? "超出地圖範圍"
+            : p.kind === "keepOut"
+              ? `位於${p.zone ?? "禁入區"}內`
+              : `距上一個航點 ${routeNumber(p.distance ?? 0, locale, 2)} m（至少需 ${routeNumber(min, locale)} m）`,
+  count: (n: number, locale: string | undefined) => `${n.toLocaleString(locale ?? "zh-TW")} 個航點`,
+  distanceTitle: "距離",
+  durationTitle: "預估時間",
+  distance: (m: number, locale: string | undefined) => (m >= 1000 ? `${routeNumber(m / 1000, locale, 2)} km` : `${routeNumber(m, locale)} m`),
+  duration: (s: number, locale: string | undefined) => {
+    const t = Math.round(s)
+    const n = (v: number) => v.toLocaleString(locale ?? "zh-TW")
+    if (t < 60) return `約 ${n(t)} 秒`
+    const h = Math.floor(t / 3600)
+    const m = Math.floor((t % 3600) / 60)
+    return h ? `約 ${n(h)} 小時 ${n(m)} 分` : `約 ${n(m)} 分 ${n(t % 60)} 秒`
+  },
+  unsaved: "有未儲存的變更",
+  saved: "沒有未儲存的變更",
+  save: "儲存路線",
+  cancel: "取消",
+  noChanges: "沒有要儲存的變更",
+  needsWaypoint: "請先新增航點再儲存",
+  blocked: (n: number, locale: string | undefined) => `請先修正 ${n.toLocaleString(locale ?? "zh-TW")} 個問題再儲存`,
+  saveFailed: "無法儲存路線，請再試一次。",
+  savedNotice: "已儲存路線",
+  discarded: "已捨棄變更",
+  problems: (n: number, locale: string | undefined) => (n === 0 ? "已沒有問題" : `${n.toLocaleString(locale ?? "zh-TW")} 個問題`),
+  added: (name: string, n: number) => `已新增 ${name}，為第 ${n} 個航點`,
+  duplicated: (name: string, n: number) => `已新增 ${name}，為第 ${n} 個航點`,
+  readOnly: "僅供檢視：你無法變更這條路線。",
+  details: "詳細資料",
+}
 
 export const annotatedImageLabels = {
   predicted: "預測",
