@@ -87,17 +87,17 @@ export function snippet(text: string) {
 
 /**
  * Page metadata with the shared Open Graph and Twitter fields.
- * Next.js replaces a parent's openGraph object instead of merging it, so every page goes through here. The image is
- * left to the opengraph-image files: the nearest one up the route is the page's own card (components and blocks), or
- * the site's.
+ * Next.js replaces a parent's openGraph object instead of merging it, so every page goes through here. `image` is the
+ * page's own social card (app/og: components and blocks); without one, the site's.
  */
-export function pageMeta({ title, description, path }: { title: string; description: string; path: string }) {
+export function pageMeta({ title, description, path, image }: { title: string; description: string; path: string; image?: string }) {
   const d = snippet(description)
+  const images = [{ url: image ?? "/opengraph-image", width: 1200, height: 630, alt: title }]
   return {
     title,
     description: d,
     alternates: { canonical: path },
-    openGraph: { type: "website" as const, locale: "en_US", siteName: site.name, title, description: d, url: path },
-    twitter: { card: "summary_large_image" as const, title, description: d },
+    openGraph: { type: "website" as const, locale: "en_US", siteName: site.name, title, description: d, url: path, images },
+    twitter: { card: "summary_large_image" as const, title, description: d, images: [image ?? "/twitter-image"] },
   }
 }

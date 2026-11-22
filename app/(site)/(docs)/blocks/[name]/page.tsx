@@ -22,7 +22,7 @@ type Props = { params: Promise<{ name: string }> }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const t = getBlockType((await params).name)
   if (!t) return {}
-  return pageMeta({ title: `${t.title} blocks`, description: t.description, path: `/blocks/${t.slug}` })
+  return pageMeta({ title: `${t.title} blocks`, description: t.description, path: `/blocks/${t.slug}`, image: `/og/blocks/${t.slug}` })
 }
 
 export default async function BlockTypePage({ params }: Props) {

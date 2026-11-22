@@ -7332,6 +7332,12 @@
      "type": "string",
      "default": "\"About this page\"",
      "description": "Names the row of meta pills for screen readers."
+    },
+    {
+     "name": "as",
+     "type": "\"h2\" | \"h1\"",
+     "default": "\"h1\"",
+     "description": "The title's heading level: h1 for the page's own header, h2 for one under another h1 (a sheet, a tab, an example)."
     }
    ],
    "inherits": []
