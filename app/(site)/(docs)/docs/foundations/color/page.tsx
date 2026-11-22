@@ -11,6 +11,8 @@ import { color, contrast } from "@/site/theme-tokens"
 
 export const metadata: Metadata = metaFor("color")
 
+const fmt = (r: number | null) => (r ? `${r.toFixed(1)}:1` : "—")
+
 const neutrals = ["background", "card", "secondary", "border", "muted-foreground", "foreground"]
 const tones = [
   { t: "info", means: "A process someone is waiting on: progress, a running stage, a command being sent. Never a state." },
@@ -58,9 +60,26 @@ const groups: { title: string; tokens: string[]; use: Record<string, string> }[]
     use: { stop: "Emergency stop only", "stop-deep": "A stop that holds: Slide to release behind a stopped robot, and a stop sent over Bluetooth with its tag" },
   },
   {
-    title: "Map and overlays",
-    tokens: ["map", "map-point", "float", "edge", "scrim"],
-    use: { map: "Map surface", "map-point": "Point cloud", float: "Trays over the map", edge: "Tray outline", scrim: "Behind dialogs and sheets" },
+    title: "Map, media and overlays",
+    tokens: ["map", "map-point", "float", "edge", "scrim", "letterbox"],
+    use: {
+      map: "Map surface",
+      "map-point": "Point cloud",
+      float: "Trays over the map",
+      edge: "Tray outline",
+      scrim: "Behind dialogs and sheets, and under words and controls over a picture",
+      letterbox: "The bars around a picture that does not fill its frame (video, camera, image viewers): the dark page colour in both themes, black in high contrast",
+    },
+  },
+  {
+    title: "Ink on chart colours",
+    tokens: [1, 2, 3, 4, 5].map((n) => `chart-${n}-foreground`),
+    use: Object.fromEntries(
+      [1, 2, 3, 4, 5].map((n) => [
+        `chart-${n}-foreground`,
+        `Words and numbers on --chart-${n} (a value inside a bar, a filled legend chip): ${fmt(contrast(`chart-${n}-foreground`, `chart-${n}`, "light"))} light, ${fmt(contrast(`chart-${n}-foreground`, `chart-${n}`, "dark"))} dark, 4.5:1 or more in high contrast too`,
+      ]),
+    ),
   },
 ]
 
@@ -73,11 +92,7 @@ const utility = (t: string) =>
       ? `border-${t}`
       : t === "ring" || t === "edge"
         ? `ring-${t}`
-        : t === "scrim"
-          ? "bg-(--scrim)"
-          : `bg-${t}`
-
-const fmt = (r: number | null) => (r ? `${r.toFixed(1)}:1` : "—")
+        : `bg-${t}`
 
 export default function ColorPage() {
   return (

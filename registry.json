@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.30.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "`--chart-1-foreground` … `--chart-5-foreground` (utilities `text-chart-N-foreground`): ink for words and numbers on a chart colour, 4.5:1 or more on it in light, dark and both high-contrast modes. `--color-scrim` (`bg-scrim`) and a new `--letterbox` (`bg-letterbox`) for the bars around a picture: the dark page colour, black in high contrast. Issue #302."
+          },
           {
             "version": "0.30.0",
             "date": "2026-11-22",
@@ -4137,8 +4142,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.28.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "Uses the theme's `bg-scrim` and `bg-letterbox` (needs `syncrobotic-theme` 0.31.0); looks the same. Issue #302."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -6975,8 +6985,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "Design language: `bg-scrim`, `bg-letterbox` and the chart inks (`text-chart-N-foreground`)."
+          },
           {
             "version": "0.22.0",
             "date": "2026-11-20",

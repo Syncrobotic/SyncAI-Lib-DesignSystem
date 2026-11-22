@@ -329,7 +329,9 @@ export default function DataVisualisationPage() {
           Contrast against a card, light · dark. The accent is the SYNCROBOTIC brand indigo ({hex(1, "light")} in light, the same hue in every mode), chroma{" "}
           {chroma(hex(1, "light")).toFixed(2)}; the greys are {chroma(hex(2, "light")).toFixed(2)} or less, so only the series that matters has colour. The
           accent and all three graphite steps are at least 3:1, the minimum for a mark. Other is the quietest of them (
-          {contrast("chart-4", "card", "light")!.toFixed(1)}:1 in light, {contrast("chart-4", "card", "dark")!.toFixed(1)}:1 in dark): it recedes, and is still a shape you can see on its own. The baseline is the graphite mid, always dashed.
+          {contrast("chart-4", "card", "light")!.toFixed(1)}:1 in light, {contrast("chart-4", "card", "dark")!.toFixed(1)}:1 in dark): it recedes, and is still a shape you can see on its own. The baseline is the graphite mid, always dashed. Words and
+          numbers drawn on a chart colour take its ink, <Code>text-chart-1-foreground</Code> to <Code>text-chart-5-foreground</Code>: white or
+          near-black, 4.5:1 or more on its colour in every mode.
         </p>
       </Section>
 

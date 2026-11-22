@@ -141,6 +141,10 @@
       "$type": "color",
       "$value": "#00000099"
     },
+    "letterbox": {
+      "$type": "color",
+      "$value": "#000000"
+    },
     "float": {
       "$type": "color",
       "$value": "#ffffffff"
@@ -168,6 +172,26 @@
     "chart-5": {
       "$type": "color",
       "$value": "{color.chart-3}"
+    },
+    "chart-1-foreground": {
+      "$type": "color",
+      "$value": "#ffffff"
+    },
+    "chart-2-foreground": {
+      "$type": "color",
+      "$value": "#ffffff"
+    },
+    "chart-3-foreground": {
+      "$type": "color",
+      "$value": "#ffffff"
+    },
+    "chart-4-foreground": {
+      "$type": "color",
+      "$value": "#000000"
+    },
+    "chart-5-foreground": {
+      "$type": "color",
+      "$value": "{color.chart-3-foreground}"
     },
     "annotate-predicted": {
       "$type": "color",
