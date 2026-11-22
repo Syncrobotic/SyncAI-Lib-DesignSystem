@@ -1141,7 +1141,8 @@ function LogRows({
         ref={scrollRef}
         // focus-ring: the frame around the grid draws it (has-[…:focus-visible]), and the line in focus its own.
         className="group/grid relative h-full overflow-auto overscroll-contain outline-none [overflow-anchor:none]"
-        role="grid"
+        // A treegrid, not a grid: only a treegrid's rows may say whether they are open (aria-expanded), and each line opens.
+        role="treegrid"
         tabIndex={0}
         aria-label={l.name}
         aria-rowcount={seqs.length + 1}
@@ -1175,7 +1176,7 @@ function LogRows({
           }
         }}
       >
-        <div role="row" aria-rowindex={1} className="sr-only">
+        <div role="row" aria-rowindex={1} aria-level={1} className="sr-only">
           <span role="columnheader">{l.time}</span>
           <span role="columnheader">{l.level}</span>
           <span role="columnheader">{l.source}</span>
@@ -1262,6 +1263,7 @@ const LogRow = React.memo(function LogRow({
       ref={ref}
       id={rowId}
       role="row"
+      aria-level={1}
       data-index={index}
       data-seq={seq}
       aria-rowindex={index + 2}

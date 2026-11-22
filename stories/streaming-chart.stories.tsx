@@ -30,7 +30,8 @@ function play(push: StreamingChartPush, make: (i: number) => StreamingChartSampl
     for (; i <= upTo; i++) push(make(i), EPOCH + i * dt)
   }
   tick(0)
-  if (!live) return () => {}
+  // An automated browser (the visual checks) gets the history only, so every screenshot shows the same picture.
+  if (!live || (typeof navigator !== "undefined" && navigator.webdriver)) return () => {}
   const started = performance.now()
   const id = setInterval(() => tick(Math.floor((performance.now() - started) / dt)), 20)
   return () => clearInterval(id)

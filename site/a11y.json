@@ -867,12 +867,12 @@
     "roles": [
       "button",
       "columnheader",
-      "grid",
       "gridcell",
       "region",
       "row",
       "searchbox",
-      "status"
+      "status",
+      "treegrid"
     ],
     "tabStops": 7,
     "live": true

@@ -29,6 +29,9 @@ async function openOnce(page: Page, id: string, theme: (typeof themes)[number]) 
   // Some UI appears on a timer (the button spinner after 300 ms, presence safety after 400 ms). Control the clock and
   // run it past them, so a screenshot never depends on how fast the machine was when it was taken.
   await page.clock.install()
+  // A few stories draw against the clock itself (a chart whose time axis scrolls with it): stop it at a fixed instant, so
+  // the time that passes while the page loads cannot move the picture. The second below still runs.
+  if (frozen.has(id)) await page.clock.pauseAt(new Date(Date.now() + 60_000))
   await page.emulateMedia({ reducedMotion: "reduce" })
   await page.goto(`/iframe.html?id=${id}&viewMode=story&globals=theme:${theme}`)
   await page.waitForSelector("#storybook-root > *")
@@ -49,6 +52,9 @@ async function openOnce(page: Page, id: string, theme: (typeof themes)[number]) 
     if (!(await page.locator(done).count())) throw new Error(`${id} did not reach ${done}`)
   }
 }
+
+/** Stories that draw against the clock and are shot with it paused (see openOnce). */
+const frozen = new Set(["charts-streaming-chart--streaming-chart-default", "charts-streaming-chart--streaming-chart-stale"])
 
 /** Story id → the selector that says it has settled, for stories whose end state does not come from the clock alone. */
 const settled: Record<string, string> = {

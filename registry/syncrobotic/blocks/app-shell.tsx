@@ -299,8 +299,9 @@ export function SidebarUserMenu({ user, items = sampleUserMenu, linkAs: Link = "
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        {/* The name includes the initials the avatar shows, so people using speech input can say what they see (WCAG 2.5.3). */}
-        <SidebarMenuButton size="lg" tooltip={user.name} aria-label={`${user.name}, ${user.initials}, account menu`} className="text-foreground">
+        {/* Named by what it shows (initials, name, email) and then what it opens, so speech input can say what is on screen
+            (WCAG 2.5.3): no aria-label that would reorder the words. */}
+        <SidebarMenuButton size="lg" tooltip={user.name} className="text-foreground">
           <Avatar>
             <AvatarFallback>{user.initials}</AvatarFallback>
           </Avatar>
@@ -308,6 +309,7 @@ export function SidebarUserMenu({ user, items = sampleUserMenu, linkAs: Link = "
             <span className="truncate text-sm font-medium">{user.name}</span>
             {user.email && <span className="truncate text-xs text-muted-foreground">{user.email}</span>}
           </span>
+          <span className="sr-only">, account menu</span>
           <ChevronsUpDown aria-hidden="true" className="text-muted-foreground" />
         </SidebarMenuButton>
       </DropdownMenuTrigger>

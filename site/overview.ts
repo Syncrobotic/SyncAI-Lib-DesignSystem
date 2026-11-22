@@ -384,7 +384,7 @@ export const overviews: Record<string, Overview> = {
       "A command and its output to copy: `code-block`.",
     ],
     notes: [
-      "A grid, not role=\"log\": a log region announces every line added to it, and a virtual list adds lines as it scrolls. The grid has `aria-rowcount` and each line its `aria-rowindex`, one Tab stop, and `aria-activedescendant` for the line in focus, so focus never sits on a line that scrolls away. New lines are announced in a separate status, at most every 5 s.",
+      "A treegrid, not role=\"log\": a log region announces every line added to it, and a virtual list adds lines as it scrolls; a treegrid rather than a grid because each line opens (aria-expanded). It has `aria-rowcount` and each line its `aria-rowindex`, one Tab stop, and `aria-activedescendant` for the line in focus, so focus never sits on a line that scrolls away. New lines are announced in a separate status, at most every 5 s.",
       "`createLogBuffer({ maxLines, flushMs })` is a ring buffer outside React: append from a WebSocket or ROS callback; it commits at most every `flushMs` (100) and tells its subscribers once. The viewer subscribes with useSyncExternalStore and filters only on a commit. Lines keep a sequence number, so an open or selected line stays open while older ones are dropped.",
       "Following stops when the reader scrolls up, opens a line, moves with the keyboard or goes to a match; it resumes at the end, with End, or with the floating \"Jump to latest\". While paused, the line at the top stays put when older lines are dropped or the filters change.",
       "Rows are measured, so wrapped and opened lines take their real height; a row is `--h-sm` (36 px with a mouse, 44 on touch).",

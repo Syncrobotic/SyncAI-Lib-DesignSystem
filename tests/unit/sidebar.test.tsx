@@ -237,7 +237,7 @@ describe("app shell on the sidebar", () => {
     )
     expect(screen.getByRole("link", { name: "Robots" }).getAttribute("aria-current")).toBe("page")
     expect(screen.getByRole("link", { name: "Alarms 2" })).toBeTruthy()
-    expect(screen.getByRole("button", { name: "Mei Lin, ML, account menu" })).toBeTruthy()
+    expect(screen.getByRole("button", { name: "ML Mei Lin mei.lin@example.com , account menu" })).toBeTruthy()
     // The test screen is 1024 px wide, under 1280: the shell starts as a rail.
     expect(aside().dataset.state).toBe("collapsed")
     fireEvent.click(screen.getByRole("button", { name: "Expand sidebar" }))

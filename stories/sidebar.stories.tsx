@@ -173,7 +173,7 @@ function Account() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <SidebarMenuButton size="lg" tooltip="Mei Lin" aria-label="Mei Lin, ML, account menu" className="text-foreground">
+        <SidebarMenuButton size="lg" tooltip="Mei Lin" className="text-foreground">
           <Avatar>
             <AvatarFallback>ML</AvatarFallback>
           </Avatar>
@@ -181,6 +181,7 @@ function Account() {
             <span className="truncate text-sm font-medium">Mei Lin</span>
             <span className="truncate text-xs text-muted-foreground">mei.lin@example.com</span>
           </span>
+          <span className="sr-only">, account menu</span>
           <ChevronsUpDown aria-hidden="true" className="text-muted-foreground" />
         </SidebarMenuButton>
       </DropdownMenuTrigger>
