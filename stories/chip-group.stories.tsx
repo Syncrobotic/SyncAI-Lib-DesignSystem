@@ -60,3 +60,29 @@ export const ChipGroupLevels: S = {
     return <Levels />
   },
 }
+
+export const ChipGroupMultiple: S = {
+  render: () => {
+    function AnyOf() {
+      const [v, setV] = React.useState<string[]>(["detect", "segment"])
+      return <ChipGroup type="multiple" label="Task" items={tasks} value={v} onValueChange={setV} max={4} />
+    }
+    return <AnyOf />
+  },
+}
+
+// Filter links on a page whose navigation already marks the page: the chosen link says aria-current="true", not "page".
+export const ChipGroupFilterLinks: S = {
+  render: () => (
+    <ChipGroup
+      label="Source"
+      value="fleet"
+      current="true"
+      items={[
+        { value: "all", label: "All", count: 1204, href: "#source=all", props: { "data-filter": "source" } },
+        { value: "fleet", label: "Fleet cameras", count: 812, href: "#source=fleet", props: { "data-filter": "source" } },
+        { value: "partner", label: "Partner uploads", count: 392, href: "#source=partner", props: { "data-filter": "source" } },
+      ]}
+    />
+  ),
+}

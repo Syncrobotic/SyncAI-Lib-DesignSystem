@@ -27,6 +27,7 @@ const files = {
   charts: () => import("@/stories/charts.stories"),
   "data-grid": () => import("@/stories/data-grid.stories"),
   "log-viewer": () => import("@/stories/log-viewer.stories"),
+  "streaming-text": () => import("@/stories/streaming-text.stories"),
   stepper: () => import("@/stories/stepper.stories"),
   trace: () => import("@/stories/trace.stories"),
   marker: () => import("@/stories/marker.stories"),
@@ -57,6 +58,7 @@ const files = {
   "data-pieces": () => import("@/stories/data-pieces.stories"),
   "image-grid": () => import("@/stories/image-grid.stories"),
   "annotated-image": () => import("@/stories/annotated-image.stories"),
+  "grounded-text": () => import("@/stories/grounded-text.stories"),
   "media-player": () => import("@/stories/media-player.stories"),
   "camera-feed": () => import("@/stories/camera-feed.stories"),
   "camera-wall": () => import("@/stories/camera-wall.stories"),
@@ -82,6 +84,7 @@ const files = {
   banner: () => import("@/stories/banner.stories"),
   "streaming-chart": () => import("@/stories/streaming-chart.stories"),
   attitude: () => import("@/stories/attitude.stories"),
+  "tier-badge": () => import("@/stories/tier-badge.stories"),
 } satisfies Record<StoryFile, () => Promise<unknown>>
 
 // One React.lazy per file, made once at module scope: the import starts the first time one of its stories renders.

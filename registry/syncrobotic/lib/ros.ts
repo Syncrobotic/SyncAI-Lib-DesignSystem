@@ -1,4 +1,4 @@
-// @syncrobotic/ros v0.29.0 · update: npx shadcn add @syncrobotic/ros --overwrite
+// @syncrobotic/ros v0.31.0 · update: npx shadcn add @syncrobotic/ros --overwrite
 /*
   ROS and ROS 2 in the browser, without a ROS library: the rosbridge v2 protocol (rosbridge_suite, which serves both ROS 1
   and ROS 2) spoken directly over the browser's WebSocket, and pure converters from the messages to the props the kit's
@@ -1409,6 +1409,53 @@ export function rosLogToLogLine(message: RosLog, options: { receivedAt?: number 
   if (typeof message.line === "number" && message.line > 0) line.line = message.line
   if (message.topics?.length) line.fields = { topics: message.topics.join(", ") }
   return line
+}
+
+// --- Detections: vision_msgs on a picture ------------------------------------------------------------------------
+
+/** A `vision_msgs/Detection2D`: ROS 2 (Humble on: `center.position`, `hypothesis.class_id`) or older (`center.x`, `id`). */
+export type RosDetection2D = {
+  id?: string
+  results?: readonly { hypothesis?: { class_id: string; score: number }; id?: string | number; score?: number }[]
+  bbox: { center: { position?: { x: number; y: number }; x?: number; y?: number; theta?: number }; size_x: number; size_y: number }
+}
+export type RosDetection2DArray = { header?: RosHeader; detections: readonly RosDetection2D[] }
+
+/** annotated-image's `Annotation` for a box (and the marks grounded-text's spans point at). */
+export type RosAnnotation = {
+  id: string
+  kind: "predicted" | "truth" | "previous"
+  label: string
+  score?: number
+  shape: { type: "box"; x: number; y: number; width: number; height: number }
+}
+
+/**
+ * A `vision_msgs/Detection2DArray` as annotated-image's `annotations` (and the marks grounded-text's spans point at): each
+ * detection a box in the image's pixels, labelled with its best hypothesis's class (through `classes` when the ids are
+ * numbers or codes) and score. The id is the detection's own `id` when it has one, else `${prefix}${index}`. A rotated box
+ * (`theta`) is drawn upright.
+ */
+export function detection2DArrayToAnnotations(
+  message: RosDetection2DArray,
+  options: { kind?: RosAnnotation["kind"]; classes?: Record<string, string>; prefix?: string } = {},
+): RosAnnotation[] {
+  const { kind = "predicted", classes, prefix = "d" } = options
+  return message.detections.map((d, i) => {
+    const best = [...(d.results ?? [])]
+      .map((r) => ({ cls: String(r.hypothesis?.class_id ?? r.id ?? ""), score: r.hypothesis?.score ?? r.score }))
+      .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))[0]
+    const cx = d.bbox.center.position?.x ?? d.bbox.center.x ?? 0
+    const cy = d.bbox.center.position?.y ?? d.bbox.center.y ?? 0
+    const a: RosAnnotation = {
+      id: d.id || `${prefix}${i}`,
+      kind,
+      label: best ? (classes?.[best.cls] ?? best.cls) : "",
+      shape: { type: "box", x: cx - d.bbox.size_x / 2, y: cy - d.bbox.size_y / 2, width: d.bbox.size_x, height: d.bbox.size_y },
+    }
+    if (best?.score !== undefined) a.score = best.score
+    return a
+  })
 }
 
 // --- Video: image topics through web_video_server --------------------------------------------------------------------

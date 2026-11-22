@@ -1,4 +1,4 @@
-// @syncrobotic/geo-map v0.29.0 · update: npx shadcn add @syncrobotic/geo-map --overwrite
+// @syncrobotic/geo-map v0.31.0 · update: npx shadcn add @syncrobotic/geo-map --overwrite
 "use client"
 
 import * as React from "react"
@@ -1225,6 +1225,7 @@ export function GeoMap({
           const spot = placed.get(r.id)!
           return (
             <span
+              key={r.id}
               data-robot-label={r.id}
               style={{ left: spot.x, top: spot.y }}
               className={cn("pointer-events-none absolute flex h-5 items-center rounded-2xs bg-map px-1 font-mono text-xs whitespace-nowrap", isSelected ? "font-bold" : "font-medium")}

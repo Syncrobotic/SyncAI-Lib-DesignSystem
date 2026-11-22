@@ -70,6 +70,9 @@ export default function RadiusPage() {
             text: "Repeat the outer radius inside. The gap pinches at the corners and the shapes look misaligned.",
           }}
         />
+        <p className="text-sm text-muted-foreground">
+          A child that fills its parent edge to edge, with no padding between them, takes the parent&apos;s corner with <Code>rounded-[inherit]</Code>: a scroll viewport, an avatar&apos;s picture, a link&apos;s hit area stretched over a card. It is the parent&apos;s step, not a new one, so <Code>lint:tokens</Code> allows it, and a product lint that enforces the scale should allow it by rule.
+        </p>
       </Section>
 
       <Section id="full" title="Full: only for things that are round" lead="`rounded-full` is not a seventh step. Round by nature: avatars, dots and bullets, switch and radio, tracks and thumbs (slider, progress, meter, scrollbar), count badges, step circles, grips and grabbers. Never a container, card or button.">

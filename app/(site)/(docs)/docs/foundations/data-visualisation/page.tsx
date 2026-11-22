@@ -329,7 +329,9 @@ export default function DataVisualisationPage() {
           Contrast against a card, light · dark. The accent is the SYNCROBOTIC brand indigo ({hex(1, "light")} in light, the same hue in every mode), chroma{" "}
           {chroma(hex(1, "light")).toFixed(2)}; the greys are {chroma(hex(2, "light")).toFixed(2)} or less, so only the series that matters has colour. The
           accent and all three graphite steps are at least 3:1, the minimum for a mark. Other is the quietest of them (
-          {contrast("chart-4", "card", "light")!.toFixed(1)}:1 in light, {contrast("chart-4", "card", "dark")!.toFixed(1)}:1 in dark): it recedes, and is still a shape you can see on its own. The baseline is the graphite mid, always dashed.
+          {contrast("chart-4", "card", "light")!.toFixed(1)}:1 in light, {contrast("chart-4", "card", "dark")!.toFixed(1)}:1 in dark): it recedes, and is still a shape you can see on its own. The baseline is the graphite mid, always dashed. Words and
+          numbers drawn on a chart colour take its ink, <Code>text-chart-1-foreground</Code> to <Code>text-chart-5-foreground</Code>: white or
+          near-black, 4.5:1 or more on its colour in every mode.
         </p>
       </Section>
 
@@ -451,6 +453,7 @@ export default function DataVisualisationPage() {
             "Colours come from the chart palette (predicted --chart-1, the accent indigo, solid; ground truth --chart-2, graphite, dashed), the previous version is the muted ink and the selected one the focus ink. Never status colours: a low score is a number in the label, not a warning box.",
             "The class is a word in the label (text in --foreground on --annotate-halo), not a colour: the colours already say where a box came from.",
             "Two sources at a time, plus the selection: predicted against ground truth, or this version against the previous one. To compare more, put pictures side by side.",
+            "Linked marks (the ones a hovered word or row points at, as in grounded-text) are highlighted in the selected ink at 3 px, keeping their line style, with no handles; the rest fade to --annotate-fade. Never a colour per link.",
             "High contrast keeps the same strokes and stops fading the previous version: nothing is translucent there.",
           ]}
         />

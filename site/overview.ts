@@ -11,9 +11,9 @@ export const overviews: Record<string, Overview> = {
     instead: ["A title inside a card: the card's own heading.", "The app's own frame: `app-shell`."],
   },
   "chip-group": {
-    what: "One choice among several, shown as chips with their counts, folded after a few.",
-    use: ["A quick filter above a list: task, site, tier.", "Saved views as links, so the choice lives in the URL."],
-    instead: ["Several choices at once: checkboxes in a `field`.", "Two to four views of the same data: `segmented-control`."],
+    what: "One choice among several, or any of several with `type=\"multiple\"`, shown as chips with their counts, folded after a few.",
+    use: ["A quick filter above a list: task, site, tier.", "A facet where people pick two or three values at once.", "Saved views as links, so the choice lives in the URL."],
+    instead: ["A long list of options to tick: checkboxes in a `field`.", "A query of several fields and rules: `filters`.", "Two to four views of the same data: `segmented-control`."],
   },
   "filter-form": {
     what: "Filters kept in the URL: a GET form that applies itself as you type or pick, and works without JavaScript.",
@@ -54,7 +54,7 @@ export const overviews: Record<string, Overview> = {
   },
   "share-bar": {
     what: "How a whole splits into a few parts, as one thin bar, light enough for a table cell.",
-    use: ["Images by use, label sources, a dataset's tiers.", "Inside a table cell without a legend, or on its own with `legend`."],
+    use: ["Images by use, label sources, a dataset's tiers.", "Inside a table cell without a legend, or on its own with `legend`.", "Parts people follow to a filtered list: `href` on a segment makes its legend entry a link."],
     instead: ["Values over time or many categories: `chart`.", "A single level within a range: `meter`."],
   },
   "annotated-image": {
@@ -69,6 +69,22 @@ export const overviews: Record<string, Overview> = {
       "Annotation coordinates are image pixels, not percentages or CSS pixels; `width` and `height` are the picture's natural size.",
       "Without `onSelectedChange` the picture is one role=img with a generated summary; with it, a group of buttons with aria-pressed. Do not wrap it in another button.",
       "Placeholders and tests draw the picture in code (an SVG data URI); never an external URL.",
+      "`highlighted` and `onActiveChange` link the marks to something outside the picture; `grounded-text` uses them for words.",
+    ],
+  },
+  "grounded-text": {
+    what: "Text whose words point at places on a picture, linked both ways: hover or focus a word and its marks light up; hover a mark and its words do.",
+    use: [
+      "A vision-language model's caption, where each object's name matches a box.",
+      "A model's reasoning with grounding, where \"8 zebras\" is linked to 8 points.",
+      "A review or evaluation note beside an annotated frame.",
+    ],
+    instead: ["A picture with marks and no text: `annotated-image`.", "Marks listed with their details: `annotated-image` with a details panel on select."],
+    notes: [
+      "Offsets are character offsets into `text` (JavaScript string indices, as Python's `start_idx` / `end_idx` for text without emoji). Spans must not overlap.",
+      "`fromGrounding(text, groundings, { width, height, scale })` builds `annotations` and `spans`; `scale` is the range of the model's coordinates (1, 100, 1000), left out for pixels.",
+      "Spans are role=button with aria-pressed (pinned), each described by where its marks are; marks are described by their words. Do not wrap either in a link or another button.",
+      "The picture's words come from `imageLabels` (`annotatedImageLabels` in labels-zh-tw), the links' from `labels` (`groundedTextLabels`).",
     ],
   },
   "media-player": {
@@ -461,6 +477,28 @@ export const overviews: Record<string, Overview> = {
       "Every word is in `labels`, including `ago` for time ago and `announce`; `locale` formats times and counts.",
     ],
   },
+  "streaming-text": {
+    what: "A model's answer as it streams in: plain text that grows in place under a calm status row (queue position, Thinking, Generating with Stop) that becomes the final state in the same place: done with its timing, stopped or failed with the partial answer kept.",
+    use: [
+      "A VLM's caption, count or answer about a camera frame, in a playground or on a robot's page.",
+      "An LLM's reply in an operator's assistant, where the answer arrives over server-sent events.",
+      "Any single answer that takes seconds and should show it is working and can be stopped.",
+    ],
+    instead: [
+      "Numbers arriving over time: `streaming-chart`.",
+      "Lines a program writes as it runs: `log-viewer`.",
+      "Work with a known end and no text to show yet: `progress` or a Button's `loading`.",
+      "Formatted documents (headings, tables, code): render them with your own markdown renderer once done; this shows plain text.",
+    ],
+    notes: [
+      "Controlled: the product appends each chunk to `text` and sets `phase`. React batches the renders, and each paragraph is its own element, so only the last one changes while it grows. There is no imperative append: token rates do not need one.",
+      "The status row keeps its height (`--h-md`) in every phase and sits above the text, so Stop never moves while the answer grows; the Spinner appears after 300 ms in a fixed box and stands still under reduced motion.",
+      "The status words are a polite live region (role=status): each phase is said once. With `announce=\"text\"` (default) a second polite region reads the answer in whole sentences, at most every `announceEveryMs` (5 s), and the rest when it ends; an answer that mounts finished is not read.",
+      "When Stop leaves with the phase it ended and had focus, focus moves to the status words (tabIndex -1), not the top of the page.",
+      "Timing: durations given (`durationMs`, `firstTokenMs`) win over the timestamps (`startedAt`, `firstTokenAt`, `finishedAt`); `streamingTextTiming` and `formatDuration` are exported.",
+      "Every word is in `labels` (`streamingTextLabels` in `labels-zh-tw`), including `queued`, `done` and `stopped` as functions; `locale` formats the numbers.",
+    ],
+  },
   sortable: {
     what: "A reorderable list or grid with a grip on each item, usable with a mouse, a finger or the keyboard.",
     use: ["Waypoint and patrol order.", "Rule priorities.", "Column order, camera layout, playlist steps."],
@@ -676,6 +714,7 @@ export const overviews: Record<string, Overview> = {
     notes: [
       "Do not pass a tone: colour comes from `low` and `critical`.",
       "For values where higher is worse, set higherIsWorse.",
+      "Numbers are written as given; pass `locale` (and `format` for a short form such as 412K) for counts in the thousands. `aria-valuenow` stays the raw number.",
     ],
   },
   "description-list": {
@@ -692,7 +731,7 @@ export const overviews: Record<string, Overview> = {
     what: "Where you are in a long list, and how to move through it.",
     use: ["Tables and lists with more rows than fit."],
     instead: ["A short list: show it all.", "Finding one record: `command` or a search field."],
-    notes: ["Pages are zero-based in code, one-based on screen."],
+    notes: ["Pages are zero-based in code, one-based on screen.", "Pass `labels` to translate every word, the landmark's name (`nav`) included; `paginationLabels` in labels-zh-tw has them all."],
   },
   "copy-button": {
     what: "Copies a value and confirms it in place: the icon becomes a check for 1.5 s.",
@@ -833,6 +872,12 @@ export const overviews: Record<string, Overview> = {
       "For counts use CountBadge, never a Badge with a number and never a solid red circle.",
     ],
   },
+  "tier-badge": {
+    what: "A dataset's licence tier as a tag: its code (T0 to T3) and what it means, Commercial to On-premises only.",
+    use: ["The Tier column of a data catalog, compact.", "Beside a dataset's name on its page, with the words.", "A release check that lists what each dataset may be used for."],
+    instead: ["A dataset's state (blocks release, held back): `status-eyebrow` (InlineStatus).", "Any other category: `badge` with tone neutral or outline."],
+    notes: ["The tiers and their words are fixed (`Tier`, `tiers`); `labels` changes only the words."],
+  },
   card: {
     what: "One raised surface that holds a group of related content.",
     use: ["A robot's summary, a KPI, a settings section."],
@@ -936,8 +981,11 @@ export const overviews: Record<string, Overview> = {
   },
   tabs: {
     what: "Sections of one page under a row of labels; one section shows at a time.",
-    use: ["A robot's Overview, Sensors and Logs."],
+    use: ["A robot's Overview, Sensors and Logs.", "A long detail page (a dataset's Overview, Browse and Versions) with `sticky`, so the row stays under the top bar."],
     instead: ["Two to four views of the same data: `segmented-control`.", "Sections the user may want open together: `accordion`."],
+    notes: [
+      "`<TabsList sticky>` pins at `top: var(--shell-top, 0)` on `var(--shell-surface)`, under the bar. The shells set both; outside a shell set them yourself on an ancestor.",
+    ],
   },
   tree: {
     what: "A hierarchy from data, with a guide line per level: a nested list of links people open and close, or a tree widget to pick one node in.",
@@ -1163,7 +1211,7 @@ export const overviews: Record<string, Overview> = {
     ],
     instead: ["Connecting React components: `use-ros`, which installs this."],
     notes: [
-      "`occupancyGridToGrid` (robot-map `grid` or `costmap`), `laserScanToScan(msg, robotId)` (robot-map `scans`), `poseToRobotMapPose(msg, gridToPlan(grid))` (a robot's x, y and heading; takes Pose, PoseStamped, PoseWithCovarianceStamped or Odometry), `goalToPoseStamped(goal, frame)` (robot-map `onGoal` to /goal_pose), `pointCloud2ToPoints` (point-cloud `points` and `intensity`), `jointStateToJoints(msg, { limits })` (joint-state `joints`), `diagnosticArrayToStatuses(msg)` and `mergeDiagnostics(previous, next)` (diagnostics `statuses`), `imuToAttitude(msg)` (attitude's roll, pitch and heading in degrees; `quaternionToEuler` for the radians), `odometryToSpeed(msg)` (Gauge's speed in m/s), `teleopToTwist(command, { maxLinear, maxAngular })`, `rosLogToLogLine` (a /rosout message as a log-viewer line, ROS 1 or 2), `waypointsToPath(waypoints, frame)` and `waypointsToNavigateThroughPoses(waypoints, frame)` (waypoint-editor `onSave` to a `nav_msgs/Path` or Nav2 NavigateThroughPoses goal; a waypoint without a heading faces the next), `pathToWaypoints` and `navigateThroughPosesToWaypoints` (back to `value`), `stampToMs(header.stamp)` (`updatedAt`). For robot-model, its own `jointStateToRecord`.",
+      "`occupancyGridToGrid` (robot-map `grid` or `costmap`), `laserScanToScan(msg, robotId)` (robot-map `scans`), `poseToRobotMapPose(msg, gridToPlan(grid))` (a robot's x, y and heading; takes Pose, PoseStamped, PoseWithCovarianceStamped or Odometry), `goalToPoseStamped(goal, frame)` (robot-map `onGoal` to /goal_pose), `pointCloud2ToPoints` (point-cloud `points` and `intensity`), `jointStateToJoints(msg, { limits })` (joint-state `joints`), `diagnosticArrayToStatuses(msg)` and `mergeDiagnostics(previous, next)` (diagnostics `statuses`), `imuToAttitude(msg)` (attitude's roll, pitch and heading in degrees; `quaternionToEuler` for the radians), `odometryToSpeed(msg)` (Gauge's speed in m/s), `teleopToTwist(command, { maxLinear, maxAngular })`, `rosLogToLogLine` (a /rosout message as a log-viewer line, ROS 1 or 2), `waypointsToPath(waypoints, frame)` and `waypointsToNavigateThroughPoses(waypoints, frame)` (waypoint-editor `onSave` to a `nav_msgs/Path` or Nav2 NavigateThroughPoses goal; a waypoint without a heading faces the next), `pathToWaypoints` and `navigateThroughPosesToWaypoints` (back to `value`), `detection2DArrayToAnnotations(msg, { classes })` (a `vision_msgs/Detection2DArray` as annotated-image `annotations`, which grounded-text links to), `stampToMs(header.stamp)` (`updatedAt`). For robot-model, its own `jointStateToRecord`.",
       "rosbridge sends `uint8[]` (PointCloud2.data) as base64 and `int8[]` (OccupancyGrid.data) as a list of numbers; the converters read either. NaN and ±Infinity in a LaserScan arrive as null (or as bare tokens, which the client reads as null) and are skipped like out-of-range readings.",
       "A pose must be in the map frame for robot-map (/amcl_pose is; /odom drifts). A scan is drawn from the robot's centre, so transform it to the base frame first if the laser is offset.",
     ],

@@ -18,6 +18,7 @@ import type { DiagnosticsLabels } from "@/registry/syncrobotic/ui/diagnostics"
 import type { DialogLabels } from "@/registry/syncrobotic/ui/dialog"
 import type { FilterOperator, Filters } from "@/registry/syncrobotic/ui/filters"
 import type { GraphLabels } from "@/registry/syncrobotic/ui/graph"
+import type { GroundedTextLabels } from "@/registry/syncrobotic/ui/grounded-text"
 import type { ImageGridLabels } from "@/registry/syncrobotic/ui/image-grid"
 import type { JointStateLabels } from "@/registry/syncrobotic/ui/joint-state"
 import type { LoadMoreLabels } from "@/registry/syncrobotic/ui/load-more"
@@ -39,9 +40,12 @@ import type { SidebarLabels } from "@/registry/syncrobotic/ui/sidebar"
 import type { SortableLabels } from "@/registry/syncrobotic/ui/sortable"
 import type { SpinnerLabels } from "@/registry/syncrobotic/ui/spinner"
 import type { StreamingChartLabels } from "@/registry/syncrobotic/ui/streaming-chart"
+import type { StreamingTextLabels } from "@/registry/syncrobotic/ui/streaming-text"
 import type { AttitudeIndicatorLabels, GaugeLabels } from "@/registry/syncrobotic/ui/attitude"
+import type { TierBadgeLabels } from "@/registry/syncrobotic/ui/tier-badge"
 import type { StepperLabels } from "@/registry/syncrobotic/ui/stepper"
 import type { TextDiffLabels } from "@/registry/syncrobotic/ui/text-diff"
+import type { MeterLabels } from "@/registry/syncrobotic/ui/meter"
 import type { ThemeChoice } from "@/registry/syncrobotic/ui/theme-toggle"
 import type { TimePickerLabels } from "@/registry/syncrobotic/ui/time-picker"
 import type { TraceLabels } from "@/registry/syncrobotic/ui/trace"
@@ -49,6 +53,7 @@ import type { TreeLabels } from "@/registry/syncrobotic/ui/tree"
 import type { IslandAlarm, IslandLabels } from "@/registry/syncrobotic/shell/island"
 import type { StopButtonLabels } from "@/registry/syncrobotic/shell/stop-button"
 import type { TeleopPadLabels } from "@/registry/syncrobotic/shell/teleop-pad"
+import type { TopBarShellLabels } from "@/registry/syncrobotic/blocks/top-bar-shell"
 import { expect, it } from "vitest"
 import * as zh from "@/registry/syncrobotic/lib/labels-zh-tw"
 
@@ -72,6 +77,7 @@ it("fits every component's labels type", () => {
   fits<CameraFeedLabels>()(zh.cameraFeedStateLineLabels)
   fits<JointStateLabels>()(zh.jointStateLabels)
   fits<StreamingChartLabels>()(zh.streamingChartLabels)
+  fits<StreamingTextLabels>()(zh.streamingTextLabels)
   fits<AttitudeIndicatorLabels>()(zh.attitudeIndicatorLabels)
   fits<GaugeLabels>()(zh.gaugeLabels)
   fits<DiagnosticsLabels>()(zh.diagnosticsLabels)
@@ -82,6 +88,7 @@ it("fits every component's labels type", () => {
   fits<GeoMapLabels>()(zh.geoMapLabels)
   fits<GeoMapLabels>()(zh.geoMapListLabels)
   fits<AnnotatedImageLabels>()(zh.annotatedImageLabels)
+  fits<GroundedTextLabels>()(zh.groundedTextLabels)
   fits<Pick<AnnotatedImageLabels, "legend" | "previous" | "predicted" | "truth">>()(zh.annotationLegendLabels)
   fits<GraphLabels>()(zh.graphLabels)
   fits<GraphLabels>()(zh.graphListLabels)
@@ -90,12 +97,14 @@ it("fits every component's labels type", () => {
   fits<MediaPlayerLabels>()(zh.mediaPlayerLabels)
   fits<ImageGridLabels>()(zh.imageGridLabels)
   fits<AttachmentLabels>()(zh.attachmentLabels)
+  fits<TierBadgeLabels>()(zh.tierBadgeLabels)
   fits<DataGridLabels>()(zh.dataGridLabels)
   fits<LabelsOf<typeof Pagination>>()(zh.paginationLabels)
   fits<LabelsOf<typeof DataGridPagination>>()(zh.dataGridPaginationLabels)
   fits<LoadMoreLabels>()(zh.loadMoreLabels)
   fits<LogViewerLabels>()(zh.logViewerLabels)
   fits<WaypointEditorLabels>()(zh.waypointEditorLabels)
+  fits<MeterLabels>()(zh.meterLabels)
   fits<MetricCardLabels>()(zh.metricCardLabels)
   fits<TextDiffLabels>()(zh.textDiffLabels)
   fits<LabelsOf<typeof Filters>>()(zh.filtersLabels)
@@ -113,6 +122,7 @@ it("fits every component's labels type", () => {
   fits<QuestionnaireLabels>()(zh.questionFieldLabels)
   fits<BreadcrumbLabels>()(zh.breadcrumbLabels)
   fits<SidebarLabels>()(zh.sidebarProviderLabels)
+  fits<TopBarShellLabels>()(zh.topBarShellLabels)
   fits<CommandDialogLabels>()(zh.commandDialogLabels)
   fits<DialogLabels>()(zh.dialogContentLabels)
   fits<StepperLabels>()(zh.stepperLabels)

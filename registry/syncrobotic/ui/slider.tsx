@@ -1,4 +1,4 @@
-// @syncrobotic/slider v0.21.1 · update: npx shadcn add @syncrobotic/slider --overwrite
+// @syncrobotic/slider v0.31.0 · update: npx shadcn add @syncrobotic/slider --overwrite
 "use client"
 
 import * as React from "react"
@@ -47,7 +47,7 @@ export function Slider({
           aria-label={nameOf(i)}
           // A controlled value sets the number of thumbs, so value[i] exists for every thumb drawn here.
           aria-valuetext={valueText && value ? valueText(value[i]!, i) : undefined}
-          className="block size-6 rounded-full bg-white shadow-float ring-1 ring-edge"
+          className="block size-6 rounded-full bg-thumb shadow-float ring-1 ring-edge"
         />
       ))}
     </SliderPrimitive.Root>

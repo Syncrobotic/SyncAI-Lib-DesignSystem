@@ -602,6 +602,24 @@ export const CardEmpty: S = {
   ),
 }
 
+// A card right under the page's h1 is an h2, so the outline skips no level. The size does not change with the level.
+export const CardHeadingLevel: S = {
+  render: () => (
+    <Card>
+      <CardHeader>
+        <CardTitle as="h2">Storage</CardTitle>
+        <CardDescription>Right under the page title, so its title is an h2</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-muted-foreground">Recordings</span>
+          <span className="tabular-nums">412 GB of 1 TB</span>
+        </div>
+      </CardContent>
+    </Card>
+  ),
+}
+
 export const SeparatorVertical: S = {
   render: () => (
     <div className="flex h-6 items-center gap-3 text-sm">
@@ -698,6 +716,28 @@ export const MeterGrid: S = {
       <Meter label="Signal" value={54} low={40} critical={20} />
       <Meter label="Storage used" value={81} low={80} critical={95} higherIsWorse />
       <Meter label="CPU" value={36} low={80} critical={95} higherIsWorse />
+    </div>
+  ),
+}
+
+export const MeterThresholds: S = {
+  // A tick at low and at critical shows how close the level is before it crosses; colour still means crossed.
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <Meter label="Storage used" value={78} low={80} critical={95} higherIsWorse showThresholds />
+      <Meter label="Storage used" value={88} low={80} critical={95} higherIsWorse showThresholds />
+      <Meter label="Battery" value={72} low={15} showThresholds />
+      <Meter label="Battery, Patrol dog 7F3A" value={72} low={15} showThresholds inline />
+    </div>
+  ),
+}
+
+export const MeterFormatted: S = {
+  // Counts in the hundreds of thousands: locale writes the separators, format can shorten them.
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <Meter label="Labelled images" value={412345} max={1000000} low={900000} higherIsWorse unit="items" showMax locale="en-US" />
+      <Meter label="Labelled images" value={412345} max={1000000} low={900000} higherIsWorse unit="items" showMax locale="en-US" format={{ notation: "compact" }} />
     </div>
   ),
 }
