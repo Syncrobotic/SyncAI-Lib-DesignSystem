@@ -21,6 +21,7 @@ import {
 } from "@/registry/syncrobotic/lib/ros"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { TeleopPad, type TeleopCommand } from "@/registry/syncrobotic/shell/teleop-pad"
+import { cn } from "@/lib/utils"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { JointState } from "@/registry/syncrobotic/ui/joint-state"
 import { gridToPlan, RobotMap, RobotMapList, type RobotMapPose, type RobotMapRobot } from "@/registry/syncrobotic/ui/robot-map"
@@ -30,44 +31,59 @@ import { Spinner } from "@/registry/syncrobotic/ui/spinner"
 // pad driving /cmd_vel, and the arm's /joint_states. The docs page shows this file as it is and runs it against a
 // rosbridge played in the browser.
 
-/** The connection in words and shape: the blue spinner only while connecting, grey when lost, and a way to try now. */
+/**
+ * The connection in words and shape: the blue spinner while connecting, grey when it has given up, and a way to try now.
+ * While it retries, the line holds still: the backoff flips the state between a failed attempt (error, waiting) and the
+ * next one (connecting) every second or so, and both read "Reconnecting, attempt N" with the same spinner and the same
+ * Retry now button, so nothing on the line blinks.
+ */
 export function RosConnectionLine() {
   const status = useRosStatus()
   const ros = useRosConnection()
-  const word = {
-    open: "Connected",
-    connecting: status.attempt > 0 ? "Reconnecting" : "Connecting",
-    error: "Connection lost",
-    closed: "Disconnected",
-  }[status.state]
+  const retrying = (status.state === "connecting" && status.attempt > 0) || (status.state === "error" && status.retryAt !== undefined)
+  const word =
+    status.state === "open"
+      ? "Connected"
+      : retrying
+        ? `Reconnecting, attempt ${status.attempt}`
+        : status.state === "connecting"
+          ? "Connecting"
+          : status.state === "error"
+            ? "Connection lost"
+            : "Disconnected"
   return (
     <div className="flex min-h-(--h-sm) flex-wrap items-center gap-x-3 gap-y-1 text-sm">
       <p role="status" className="flex items-center gap-2">
-        {status.state === "connecting" ? (
+        {status.state === "connecting" || retrying ? (
           <span aria-hidden="true" className="flex">
             <Spinner className="size-4 text-info" delay={0} />
           </span>
         ) : (
           <StatusGlyph status={status.state === "open" ? "active" : "offline"} />
         )}
-        <span className={status.state === "open" ? "font-medium" : "text-muted-foreground"}>{word}</span>
+        <span className={cn("tabular-nums", status.state === "open" ? "font-medium" : "text-muted-foreground")}>{word}</span>
         <span className="font-mono text-xs text-muted-foreground">
           {ros.url}
           {status.state === "open" && status.latencyMs !== undefined && ` · ${status.latencyMs} ms`}
         </span>
       </p>
-      {(status.state === "error" || status.state === "closed") && (
+      {(retrying || status.state === "error" || status.state === "closed") && (
         <Button variant="outline" size="sm" onClick={ros.reconnectNow}>
           <RotateCw aria-hidden="true" />
-          Reconnect
+          {retrying ? "Retry now" : "Reconnect"}
         </Button>
       )}
     </div>
   )
 }
 
-/** The map, where the robot is and what its laser sees; in goal mode a click sends it a Nav2 goal on /goal_pose. */
+/**
+ * The map, where the robot is and what its laser sees; in goal mode a click sends it a Nav2 goal on /goal_pose. Without
+ * the link, the last pose is not where the robot is now: the robot turns offline at its last known place, the old scan
+ * is taken away, the map says so and no goal can be set.
+ */
 export function SiteMap({ robotId = "amr-7", name = "AMR-07" }: { robotId?: string; name?: string }) {
+  const live = useRosStatus().state === "open"
   const map = useRosTopic<RosOccupancyGrid>("/map", "nav_msgs/OccupancyGrid")
   const amcl = useRosTopic<RosPoseLike>("/amcl_pose", "geometry_msgs/PoseWithCovarianceStamped")
   // People read a scan; nobody steers by it at 40 Hz. Five a second is plenty and spares the link.
@@ -80,10 +96,21 @@ export function SiteMap({ robotId = "amr-7", name = "AMR-07" }: { robotId?: stri
   // Each conversion runs once per message: robot-map draws the grid again for every new array.
   const grid = React.useMemo(() => (map ? occupancyGridToGrid(map) : undefined), [map])
   const frame = React.useMemo(() => (grid ? gridToPlan(grid) : undefined), [grid])
-  const scans = React.useMemo(() => (scan ? [laserScanToScan(scan, robotId)] : []), [scan, robotId])
+  const scans = React.useMemo(() => (scan && live ? [laserScanToScan(scan, robotId)] : []), [scan, live, robotId])
   const robots = React.useMemo<RobotMapRobot[]>(
-    () => (frame && amcl ? [{ id: robotId, name, status: "normal", statusLabel: "Ready", ...poseToRobotMapPose(amcl, frame) }] : []),
-    [frame, amcl, robotId, name],
+    () =>
+      frame && amcl
+        ? [
+            {
+              id: robotId,
+              name,
+              status: live ? "normal" : "offline",
+              statusLabel: live ? "Ready" : "Link lost · last known position",
+              ...poseToRobotMapPose(amcl, frame),
+            },
+          ]
+        : [],
+    [frame, amcl, live, robotId, name],
   )
 
   const onGoal = (g: RobotMapPose) => {
@@ -95,10 +122,16 @@ export function SiteMap({ robotId = "amr-7", name = "AMR-07" }: { robotId?: stri
 
   return (
     <div className="flex min-w-0 flex-col gap-3">
-      <div className="flex justify-end">
-        <Button variant="outline" size="sm" onClick={() => setPicking((p) => !p)} disabled={!frame}>
+      <div className="flex min-h-(--h-sm) flex-wrap items-center justify-end gap-x-3 gap-y-1">
+        {frame && !live && (
+          <p className="mr-auto flex items-center gap-2 text-sm text-muted-foreground">
+            <StatusGlyph status="offline" />
+            Last known map and position: nothing updates until the link is back
+          </p>
+        )}
+        <Button variant="outline" size="sm" onClick={() => setPicking((p) => !p)} disabled={!frame || !live}>
           <Crosshair aria-hidden="true" />
-          {picking ? "Cancel goal" : "Set a goal"}
+          {picking && live ? "Cancel goal" : "Set a goal"}
         </Button>
       </div>
       <RobotMap
@@ -109,7 +142,7 @@ export function SiteMap({ robotId = "amr-7", name = "AMR-07" }: { robotId?: stri
         loading={!grid}
         selectedId={selected}
         onSelect={setSelected}
-        mode={picking ? "goal" : "view"}
+        mode={picking && live ? "goal" : "view"}
         goal={goal}
         onGoal={onGoal}
       />

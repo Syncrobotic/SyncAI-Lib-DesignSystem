@@ -1073,6 +1073,12 @@
      "type": "\"sm\" | \"md\" | \"lg\" | \"xl\"",
      "default": "\"md\"",
      "description": ""
+    },
+    {
+     "name": "shape",
+     "type": "\"circle\" | \"square\"",
+     "default": "\"circle\"",
+     "description": ""
     }
    ],
    "inherits": [
@@ -2269,7 +2275,7 @@
     {
      "name": "density",
      "type": "\"default\" | \"dense\"",
-     "description": ""
+     "description": "Deprecated: Use `size=\"sm\"`."
     },
     {
      "name": "variant",
@@ -2312,6 +2318,12 @@
        "description": "A column's resize handle: \"Resize Robot\"."
       },
       {
+       "name": "width",
+       "type": "(px: number) => string",
+       "default": "(px) => `${px} px`",
+       "description": "The handle's value, the column's width: \"200 px\"."
+      },
+      {
        "name": "ascending",
        "type": "string",
        "default": "\"Ascending\"",
@@ -2339,6 +2351,24 @@
        "name": "hideColumn",
        "type": "string",
        "default": "\"Hide column\"",
+       "description": ""
+      },
+      {
+       "name": "wider",
+       "type": "string",
+       "default": "\"Wider\"",
+       "description": "The column menu's width items, for whoever cannot drag the edge."
+      },
+      {
+       "name": "narrower",
+       "type": "string",
+       "default": "\"Narrower\"",
+       "description": ""
+      },
+      {
+       "name": "resetWidth",
+       "type": "string",
+       "default": "\"Reset width\"",
        "description": ""
       },
       {
@@ -2370,6 +2400,12 @@
        "type": "string",
        "default": "\"Select row\"",
        "description": ""
+      },
+      {
+       "name": "cannotSelect",
+       "type": "string",
+       "default": "\"cannot be selected\"",
+       "description": "Read after selectRow on a row that cannot be selected, when selectColumn gives no reason of its own."
       },
       {
        "name": "details",
@@ -2732,7 +2768,7 @@
     },
     {
      "name": "variant",
-     "type": "\"plain\" | \"tiles\"",
+     "type": "\"plain\" | \"tiles\" | \"bare\"",
      "default": "\"plain\"",
      "description": ""
     }
@@ -4120,7 +4156,7 @@
     {
      "name": "tone",
      "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
-     "description": ""
+     "description": "Deprecated: Use `status`."
     },
     {
      "name": "attention",
@@ -5261,14 +5297,19 @@
    "name": "MarkerRow",
    "props": [
     {
+     "name": "status",
+     "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
+     "description": "The line's status, drawn as its glyph: only warning and danger are coloured."
+    },
+    {
      "name": "tone",
      "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
-     "description": ""
+     "description": "Deprecated: Use `status` (info → active, success → normal, neutral → offline)."
     },
     {
      "name": "icon",
      "type": "ReactNode",
-     "description": "An icon for the kind of line, used when there is no tone."
+     "description": "An icon for the kind of line, used when there is no status."
     },
     {
      "name": "title",
@@ -5523,7 +5564,13 @@
      "name": "unit",
      "type": "string",
      "default": "\"%\"",
-     "description": ""
+     "description": "Written after the value: \"%\" (the default, written \"72 %\"), \"°C\", \"GB\". Leading spaces are ignored."
+    },
+    {
+     "name": "showMax",
+     "type": "boolean",
+     "default": "false",
+     "description": "Write the range's end beside the value (\"412 of 512 GB\"), for an amount whose total matters, such as storage."
     },
     {
      "name": "inline",
@@ -5558,7 +5605,7 @@
     {
      "name": "delta",
      "type": "string",
-     "description": "Change against the previous period: \"+8%\", \"−2\". A leading minus (- or −) turns the arrow down; no change (\"0\", \"±0 %\") has no arrow."
+     "description": "Change against the previous period: \"+8 %\", \"−2\". A leading minus (- or −) turns the arrow down; no change (\"0\", \"±0 %\") has no arrow."
     },
     {
      "name": "trend",
@@ -8418,7 +8465,7 @@
     {
      "name": "onCard",
      "type": "boolean",
-     "description": ""
+     "description": "Deprecated: Bones read on every surface now; kept so older call sites still compile."
     }
    ],
    "inherits": []
@@ -8675,7 +8722,7 @@
     {
      "name": "tone",
      "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
-     "description": ""
+     "description": "Deprecated: Use `status`."
     },
     {
      "name": "children",
@@ -8716,12 +8763,12 @@
     {
      "name": "status",
      "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
-     "description": ""
+     "description": "active (busy), normal, warning, danger or offline."
     },
     {
      "name": "tone",
      "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
-     "description": ""
+     "description": "Deprecated: Use `status` (info → active, success → normal, neutral → offline)."
     }
    ],
    "inherits": []
@@ -9892,7 +9939,7 @@
     {
      "name": "density",
      "type": "\"default\" | \"dense\"",
-     "description": ""
+     "description": "Deprecated: Use `size=\"sm\"`."
     }
    ],
    "inherits": [
@@ -9913,9 +9960,14 @@
      "description": "Machine-readable time for the <time> element."
     },
     {
+     "name": "status",
+     "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
+     "description": "A status, drawn as its glyph: only warning and danger are coloured. Leave empty for an ordinary event."
+    },
+    {
      "name": "tone",
      "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
-     "description": "A status, drawn as its glyph. Leave empty for an ordinary event."
+     "description": "Deprecated: Use `status` (info → active, success → normal, neutral → offline)."
     },
     {
      "name": "icon",
@@ -10117,7 +10169,7 @@
     {
      "name": "density",
      "type": "\"default\" | \"dense\"",
-     "description": ""
+     "description": "Deprecated: Use `size=\"sm\"`."
     },
     {
      "name": "total",
@@ -10224,7 +10276,7 @@
     {
      "name": "icon",
      "type": "ReactNode",
-     "description": "Replaces the status mark with an icon for the kind of step; the status is still announced."
+     "description": "An icon for the kind of step (a tool, a robot), shown in place of the done check. Any other status keeps its mark (spinner, warning, failure, waiting, skipped), so a step that needs someone never looks finished."
     },
     {
      "name": "duration",

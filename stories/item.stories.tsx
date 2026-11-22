@@ -27,13 +27,20 @@ type S = StoryObj
 export const ItemVariants: S = {
   render: () => (
     <div className="flex flex-col gap-3">
-      {(["default", "outline", "muted"] as const).map((v) => (
+      {/* default sits in a list that already has a surface, outline stands on the page, muted is a quieter, grouped row. */}
+      {(
+        [
+          ["default", "Night patrol · North gate", "Runs every night at 22:00."],
+          ["outline", "Morning sweep · Hall B", "Runs on weekdays at 06:30."],
+          ["muted", "Perimeter check · Parking lot", "Paused until 1 December."],
+        ] as const
+      ).map(([v, title, when]) => (
         <Item key={v} variant={v}>
           <ItemContent>
             <ItemTitle>
-              <span>Night patrol · North gate</span>
+              <span>{title}</span>
             </ItemTitle>
-            <ItemDescription>Variant: {v}. Runs every night at 22:00.</ItemDescription>
+            <ItemDescription>{when}</ItemDescription>
           </ItemContent>
         </Item>
       ))}

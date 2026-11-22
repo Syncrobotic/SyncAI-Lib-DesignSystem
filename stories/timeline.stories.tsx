@@ -22,14 +22,14 @@ export const TimelineDefault: S = {
 export const TimelineIncident: S = {
   render: () => (
     <Timeline>
-      <TimelineItem time="14:02:31" tone="danger" title="Emergency stop pressed">
+      <TimelineItem time="14:02:31" status="danger" title="Emergency stop pressed">
         Operator Lin stopped Patrol dog 7F3A from the console.
       </TimelineItem>
-      <TimelineItem time="14:01:58" tone="warning" title="Obstacle in path">
+      <TimelineItem time="14:01:58" status="warning" title="Obstacle in path">
         Pallet blocking corridor B-4. Robot slowed to 0.3 m/s.
       </TimelineItem>
-      <TimelineItem time="14:00:10" tone="info" title="Patrol started" />
-      <TimelineItem time="13:58:00" tone="success" title="Docked, charged" />
+      <TimelineItem time="14:00:10" status="active" title="Patrol started" />
+      <TimelineItem time="13:58:00" status="normal" title="Docked, charged" />
     </Timeline>
   ),
 }
@@ -54,7 +54,7 @@ export const TimelineGroupedByDay: S = {
       <TimelineItem time="10:40" title="Returned to dock" />
       <TimelineItem time="09:12" title="North gate patrol done" />
       <TimelineHeading>Yesterday</TimelineHeading>
-      <TimelineItem time="17:55" tone="warning" title="Battery 18 %" />
+      <TimelineItem time="17:55" status="warning" title="Battery 12 %" />
       <TimelineItem time="16:20" title="Hall B patrol done" />
     </Timeline>
   ),
@@ -78,7 +78,7 @@ export const TimelineHorizontal: S = {
       <TimelineItem time="Oct 30" title="Ordered" />
       <TimelineItem time="Nov 4" title="Shipped" />
       <TimelineItem time="Nov 10" title="On site" />
-      <TimelineItem time="Nov 12" tone="info" title="Commissioning" />
+      <TimelineItem time="Nov 12" status="active" title="Commissioning" />
     </Timeline>
   ),
 }

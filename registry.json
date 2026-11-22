@@ -199,7 +199,7 @@
           {
             "version": "0.28.0",
             "date": "2026-11-21",
-            "note": "New streamingChartLabels, diagnosticsLabels for the new streaming-chart and diagnostics, sidebarProviderLabels for the new sidebar, logViewerLabels for the new log-viewer, and `details` in `treeLabels`."
+            "note": "New streamingChartLabels, diagnosticsLabels for the new streaming-chart and diagnostics, sidebarProviderLabels for the new sidebar, logViewerLabels for the new log-viewer, and `details` in `treeLabels`. dataGridLabels has width, wider, narrower, resetWidth and cannotSelect for the data grid's new resize and selection words."
           },
           {
             "version": "0.27.0",
@@ -425,7 +425,7 @@
       "name": "status-glyph",
       "type": "registry:component",
       "title": "Status glyph",
-      "description": "Status as shape plus colour: filled circle in progress, hollow circle normal, triangle attention, square stopped, slashed circle offline.",
+      "description": "Status as a shape, coloured only when abnormal: filled circle busy, hollow circle normal, triangle attention, square stopped, slashed circle offline (grey).",
       "registryDependencies": [
         "@syncrobotic/cn"
       ],
@@ -436,8 +436,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.1",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Docs: the glyph is hidden from screen readers (say the status in words), active is \"busy\" everywhere, and offline is grey, never coloured; `tone` is marked deprecated in its props."
+          },
           {
             "version": "0.13.1",
             "date": "2026-11-21",
@@ -1892,8 +1897,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "A group of square avatars (things) sits side by side 4 px apart instead of overlapping, so initials are never cut; its +N is square too. AvatarGroupCount takes `shape`."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -2007,8 +2017,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "New `variant=\"bare\"`: no surface of its own, for inside a card or an expanded table row, so cards never nest."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -2071,8 +2086,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.4",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "With `higherIsWorse` a warning is read as \"high\", not \"low\"; a unit given with a leading space (\" °C\") no longer doubles the space. New `showMax` writes the total: \"412 of 512 GB\"."
+          },
           {
             "version": "0.17.4",
             "date": "2026-11-21",
@@ -2113,8 +2133,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.19.0",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "The cards of a MetricGrid share their rows (subgrid), so a label on two lines or a change on its own line moves every value in the row together: values stay on one line."
+          },
           {
             "version": "0.19.0",
             "date": "2026-11-20",
@@ -3355,8 +3380,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "`variant=\"raised\"` drops its overlay shadow: a tile is a surface, and surfaces carry none."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -3396,8 +3426,13 @@
         }
       ],
       "meta": {
-        "version": "0.16.0",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "New `useModKey()` gives ⌘ on Apple platforms and Ctrl elsewhere. The file now starts with \"use client\"."
+          },
           {
             "version": "0.16.0",
             "date": "2026-11-19",
@@ -4644,8 +4679,13 @@
         }
       ],
       "meta": {
-        "version": "0.26.0",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Column edges are focusable separators (← → resize 16 px, Shift 64 px, Home to the minimum, Enter resets) with a 24 px hit area, 44 px on touch, and the column menu offers Wider, Narrower and Reset width. Pinned columns draw their edge, the scroll fade starts after them, and pinning holds from 448 px wide only. Selected rows carry the ink bar on their first cell, pinned cells included. `selectColumn({ reason })` says why a row cannot be selected, on a grey box. New labels: width, wider, narrower, resetWidth, cannotSelect."
+          },
           {
             "version": "0.26.0",
             "date": "2026-11-21",
@@ -5013,8 +5053,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.4",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "TimelineItem takes `status` (active, normal, warning, danger, offline); `tone` still works until 1.0 and warns once in development."
+          },
           {
             "version": "0.17.4",
             "date": "2026-11-21",
@@ -5209,8 +5254,13 @@
         }
       ],
       "meta": {
-        "version": "0.27.0",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "A step's `icon` replaces only the done check: a running, warning, failed, waiting or skipped step keeps its status mark, so a warning never looks finished."
+          },
           {
             "version": "0.27.0",
             "date": "2026-11-21",
@@ -5271,8 +5321,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "MarkerRow takes `status` (active, normal, warning, danger, offline); `tone` still works until 1.0 and warns once in development. Marker spans its container, so its lines never collapse to nothing."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -8290,8 +8345,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.4",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Its timeline uses `status` instead of the deprecated `tone`. Looks the same."
+          },
           {
             "version": "0.17.4",
             "date": "2026-11-21",

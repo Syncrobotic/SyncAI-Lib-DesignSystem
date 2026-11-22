@@ -24,8 +24,6 @@ export default async function ComponentLayout({ params, children }: Props) {
       code: <CodeBlock code={readSource(f.path)} lang={f.path.endsWith(".ts") ? "ts" : "tsx"} title={f.path} />,
     })),
   )
-  // Hooks (and the tray) have no examples: their source is the page, so it stays inline.
-  const inlineSource = !item.examples
   const tabs = tabsOf(item.name)
 
   return (
@@ -35,7 +33,7 @@ export default async function ComponentLayout({ params, children }: Props) {
       {/* On a phone the tools share one line in equal columns, so none is left alone on a line of its own; from 640 px they
           sit in a row at their own widths. All three are the same height. */}
       <div className="-mt-4 pb-6">
-        <div className={`grid gap-2 sm:flex sm:flex-wrap ${inlineSource ? "grid-cols-2" : "grid-cols-3"}`}>
+        <div className="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap">
           {/* For AI agents: the page as markdown, or a prompt that points an agent at it. */}
           <CopyButton value={componentMarkdown(item.name) ?? ""} variant="outline" label="Copy as Markdown">
             Markdown
@@ -43,17 +41,16 @@ export default async function ComponentLayout({ params, children }: Props) {
           <CopyButton value={aiPrompt(item.title, `/docs/components/${item.name}`, item.name)} variant="outline" label="Copy prompt for AI">
             Prompt
           </CopyButton>
-          {!inlineSource && (
-            <CodeSheet
-              label="Source"
-              variant="outline"
-              title={`${item.name}${sourceFiles.length > 1 ? ` · ${sourceFiles.length} files` : ".tsx"}`}
-              meta={meta ? `v${meta.version}` : undefined}
-              install={installBlock}
-              files={sourceFiles}
-              href={`${site.repo}/blob/main/${item.files[0].path}`}
-            />
-          )}
+          {/* Every item's source is here, a library's too (ros is a thousand lines): the page shows its API instead. */}
+          <CodeSheet
+            label="Source"
+            variant="outline"
+            title={`${item.name}${sourceFiles.length > 1 ? ` · ${sourceFiles.length} files` : item.files[0].path.endsWith(".ts") ? ".ts" : ".tsx"}`}
+            meta={meta ? `v${meta.version}` : undefined}
+            install={installBlock}
+            files={sourceFiles}
+            href={`${site.repo}/blob/main/${item.files[0].path}`}
+          />
         </div>
       </div>
 

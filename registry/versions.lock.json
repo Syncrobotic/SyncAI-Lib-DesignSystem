@@ -13,7 +13,7 @@
   },
   "labels-zh-tw": {
     "version": "0.28.0",
-    "hash": "d1e3f1f98d33796d"
+    "hash": "53957219c9153816"
   },
   "ros": {
     "version": "0.28.0",
@@ -44,8 +44,8 @@
     "hash": "86bab888e47c15ba"
   },
   "status-glyph": {
-    "version": "0.13.1",
-    "hash": "25c73a567847e098"
+    "version": "0.28.0",
+    "hash": "c502899831e0d82b"
   },
   "status-eyebrow": {
     "version": "0.13.0",
@@ -168,8 +168,8 @@
     "hash": "99e28a3e45be13af"
   },
   "avatar": {
-    "version": "0.17.3",
-    "hash": "122d0b558da01f44"
+    "version": "0.28.0",
+    "hash": "bc283e6501a6702a"
   },
   "separator": {
     "version": "0.5.0",
@@ -180,20 +180,20 @@
     "hash": "a948d6a3a61eb91c"
   },
   "description-list": {
-    "version": "0.8.0",
-    "hash": "cf17e73d8fc26aba"
+    "version": "0.28.0",
+    "hash": "5ca008f24941d434"
   },
   "text-diff": {
     "version": "0.16.2",
     "hash": "44d6294977873b90"
   },
   "meter": {
-    "version": "0.17.4",
-    "hash": "b71aa23d3901cd37"
+    "version": "0.28.0",
+    "hash": "b9a260f0aac9ad88"
   },
   "metric-card": {
-    "version": "0.19.0",
-    "hash": "45894bb1e3691d66"
+    "version": "0.28.0",
+    "hash": "410d32297a069212"
   },
   "banner": {
     "version": "0.27.0",
@@ -300,12 +300,12 @@
     "hash": "d0e5f2ecc5b1a1bd"
   },
   "icon-tile": {
-    "version": "0.17.2",
-    "hash": "9b71092e194e611f"
+    "version": "0.28.0",
+    "hash": "01cb225fbc79551e"
   },
   "kbd": {
-    "version": "0.16.0",
-    "hash": "1d20484af6d07d39"
+    "version": "0.28.0",
+    "hash": "ab6debab304e90bd"
   },
   "robot-icons": {
     "version": "0.22.1",
@@ -420,8 +420,8 @@
     "hash": "d33ad72857379192"
   },
   "data-grid": {
-    "version": "0.26.0",
-    "hash": "b2dd714be4e364f0"
+    "version": "0.28.0",
+    "hash": "a7912503e0ec4761"
   },
   "log-viewer": {
     "version": "0.28.0",
@@ -452,8 +452,8 @@
     "hash": "1fa9b3736ef7dcdc"
   },
   "timeline": {
-    "version": "0.17.4",
-    "hash": "bdeb5287a75fa5a9"
+    "version": "0.28.0",
+    "hash": "850306c0988f500d"
   },
   "scrollspy": {
     "version": "0.15.0",
@@ -468,12 +468,12 @@
     "hash": "1f98c6ae3da7b5ed"
   },
   "trace": {
-    "version": "0.27.0",
-    "hash": "6f71586e77c6052b"
+    "version": "0.28.0",
+    "hash": "34efe081d65023bf"
   },
   "marker": {
-    "version": "0.13.0",
-    "hash": "f3651ea23f66551a"
+    "version": "0.28.0",
+    "hash": "3953ef61525244e2"
   },
   "stats-cards": {
     "version": "0.18.1",
@@ -716,8 +716,8 @@
     "hash": "21c16bd8823d4816"
   },
   "sheet-robot-detail": {
-    "version": "0.17.4",
-    "hash": "8f18d04c2f7266a4"
+    "version": "0.28.0",
+    "hash": "c67c604fb6b9cd21"
   },
   "sheet-filters": {
     "version": "0.17.3",

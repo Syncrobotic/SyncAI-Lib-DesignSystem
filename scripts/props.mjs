@@ -39,6 +39,19 @@ const own = (decl) => {
 const clean = (s) => s.replace(/\s+/g, " ").replace(/import\("[^"]+"\)\./g, "").trim()
 
 /**
+ * A prop's JSDoc, and its @deprecated note in front of it: "Deprecated: Use `status`." A deprecated prop says so on the
+ * Properties tab, not only in an editor's strikethrough.
+ * @param {ts.Symbol} sym
+ */
+const described = (sym) => {
+  const doc = clean(ts.displayPartsToString(sym.getDocumentationComment(checker)))
+  const tag = sym.getJsDocTags(checker).find((t) => t.name === "deprecated")
+  if (!tag) return doc
+  const why = clean(ts.displayPartsToString(tag.text ?? []))
+  return [`Deprecated${why ? `: ${why}` : "."}`, doc].filter(Boolean).join(" ")
+}
+
+/**
  * React's own types as a reader writes them: the checker expands ReactNode into its eight-member union.
  * @param {string} s
  */
@@ -340,7 +353,7 @@ for (const sf of program.getSourceFiles().filter((s) => files.includes(path.reso
         type: typeText,
         ...(defs[name] !== undefined ? { default: defs[name] } : {}),
         ...(optional ? {} : { required: true }),
-        description: clean(ts.displayPartsToString(sym.getDocumentationComment(checker))),
+        description: described(sym),
         // The words a labels prop holds, one by one, for the Localisation page.
         ...(name === "labels" ? { keys: labelKeys(t, param, st, sf, decls.find(own)) } : {}),
       })
