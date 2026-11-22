@@ -50,7 +50,9 @@ describe("camera-wall, compiled", () => {
     frame("AMR 3")
     act(() => vi.advanceTimersByTime(600))
     expect(order()).toEqual(["AMR 3", "AMR 2", "AMR 1"])
-    expect(tiles()[1]!.querySelector("[role=button]")!.getAttribute("aria-label")).toBe("Front camera, AMR 2, Stalled, last frame 14:02:31")
+    const tile = tiles()[1]!.querySelector("[role=button]")!
+    expect(tile.textContent).toContain("Stalled")
+    expect(tile.querySelector(".sr-only")!.textContent).toBe(", last frame 14:02:31")
   })
 
   it("opens and closes a camera, moving the live slot and the quality with it", () => {

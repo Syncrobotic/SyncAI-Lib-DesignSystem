@@ -336,7 +336,7 @@
     "hash": "9e167fac95f73352"
   },
   "page-header": {
-    "version": "0.30.0",
+    "version": "0.29.0",
     "hash": "95b2a43b9b02c857"
   },
   "chip-group": {
@@ -373,7 +373,7 @@
   },
   "camera-wall": {
     "version": "0.29.0",
-    "hash": "d373eb64b32d7094"
+    "hash": "adf8f0f93b48cf5d"
   },
   "joint-state": {
     "version": "0.24.1",

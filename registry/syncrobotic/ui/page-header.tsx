@@ -1,4 +1,4 @@
-// @syncrobotic/page-header v0.30.0 · update: npx shadcn add @syncrobotic/page-header --overwrite
+// @syncrobotic/page-header v0.29.0 · update: npx shadcn add @syncrobotic/page-header --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { StatusGlyph, type Tone, toStatus } from "@/registry/syncrobotic/shell/status-glyph"

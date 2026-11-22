@@ -663,19 +663,15 @@ function Tile({
 }) {
   const still = React.useRef<HTMLCanvasElement>(null)
   const stack = React.useRef<HTMLDivElement>(null)
-  const word =
-    !playing
-      ? `${feedLabels.paused}, ${l.pausedToSave}`
-      : state === "stalled" && lastFrameAt !== null
-        ? `${feedLabels.stalled}, ${feedLabels.lastFrame(feedLabels.formatTime(new Date(lastFrameAt)))}`
-        : cameraFeedStateWord(state, feedLabels)
-  const alarm = camera.alarm ? `, ${l.alarm(l[camera.alarm.priority], camera.alarm.title)}` : ""
+  // The tile is named by its words, as they are on screen (name and robot, state, the alarm), so the name a voice-control
+  // user reads off it is the one that works. The picture's own overlays repeat the state and are left out of the name;
+  // a stalled feed's last frame time is added, and a paused tile says why instead of repeating Paused.
+  const lastFrame = playing && state === "stalled" && lastFrameAt !== null ? feedLabels.lastFrame(feedLabels.formatTime(new Date(lastFrameAt))) : null
   return (
     <li data-slot="camera-wall-tile" data-camera-id={camera.id} data-state={state} className={cn("min-w-0", className)}>
       <div
         role="button"
         tabIndex={tabbable ? 0 : -1}
-        aria-label={`${nameOf(camera)}, ${word}${alarm}`}
         aria-describedby={keysId}
         onClick={onOpen}
         onKeyDown={onKeyDown}
@@ -688,7 +684,10 @@ function Tile({
             <span className="font-medium">{camera.label}</span>
             {camera.source && <span className="text-muted-foreground"> · {camera.source}</span>}
           </p>
-          <CameraFeedStateLine state={state} labels={feedLabels} className="shrink-0" />
+          <span aria-hidden={playing ? undefined : true} className="flex shrink-0">
+            <CameraFeedStateLine state={state} labels={feedLabels} />
+          </span>
+          {lastFrame && <span className="sr-only">, {lastFrame}</span>}
         </div>
         <div ref={stack} className="relative mt-auto">
           {playing ? (
@@ -774,8 +773,10 @@ function TileFeed({
       onGoneRef.current()
     }
   }, [stack, still])
+  // The picture repeats the tile's state in its overlays; the tile names it once, from its own line.
   return (
-    <CameraFeed
+    <div aria-hidden="true">
+      <CameraFeed
       bare
       label={camera.label}
       source={camera.source}
@@ -787,6 +788,7 @@ function TileFeed({
       aspectRatio={aspectRatio}
       labels={feedLabels}
       onStateChange={onStateChange}
-    />
+      />
+    </div>
   )
 }

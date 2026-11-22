@@ -21,7 +21,16 @@ const source = (camera: CameraWallCamera, { quality }: { quality: string }) => (
 
 const tiles = () => [...document.querySelectorAll<HTMLElement>("[data-slot=camera-wall-tile]")]
 const tileButtons = () => tiles().map((t) => t.querySelector<HTMLElement>("[role=button]")!)
-const names = () => tileButtons().map((b) => b.getAttribute("aria-label"))
+// A tile's name comes from its content: its text, without what is hidden or hidden from screen readers.
+const nameFrom = (el: HTMLElement) => {
+  const copy = el.cloneNode(true) as HTMLElement
+  copy.querySelectorAll('[aria-hidden="true"], [hidden]').forEach((n) => n.remove())
+  const walker = document.createTreeWalker(copy, NodeFilter.SHOW_TEXT)
+  const parts: string[] = []
+  while (walker.nextNode()) parts.push(walker.currentNode.textContent!)
+  return parts.join(" ").replace(/\s+/g, " ").replace(/ ,/g, ",").trim()
+}
+const names = () => tileButtons().map(nameFrom)
 const order = () => tiles().map((t) => t.dataset.cameraId)
 const videoOf = (id: string) => document.querySelector<HTMLVideoElement>(`[data-camera-id="${id}"] video`)
 const frame = (v: HTMLVideoElement | null) => act(() => void v!.dispatchEvent(new Event("timeupdate")))
@@ -41,9 +50,9 @@ describe("CameraWall tiles", () => {
   it("names each tile with its camera, robot and state, and its alarm in words", () => {
     render(<CameraWall cameras={[cam("Forklift 2", { alarm: { priority: "critical", title: "Obstacle in path" } }), cam("AMR 1")]} getSource={source} />)
     expect(screen.getByRole("region", { name: "Cameras" })).toBeTruthy()
-    expect(names()).toEqual(["Front camera, Forklift 2, Connecting, Critical · Obstacle in path", "Front camera, AMR 1, Connecting"])
+    expect(names()).toEqual(["Front camera · Forklift 2 Connecting Critical · Obstacle in path", "Front camera · AMR 1 Connecting"])
     frame(videoOf("AMR 1"))
-    expect(names()[1]).toBe("Front camera, AMR 1, Live")
+    expect(names()[1]).toBe("Front camera · AMR 1 Live")
     // The alarm is a shape and a word on the picture, not a tinted tile.
     const marker = tiles()[0]!.querySelector("[data-slot=camera-wall-alarm]")!
     expect(marker.textContent).toBe("Critical · Obstacle in path")
@@ -79,7 +88,7 @@ describe("CameraWall tiles", () => {
     frame(videoOf("Bravo"))
     act(() => vi.advanceTimersByTime(600))
     expect(order()).toEqual(["Charlie", "Alpha", "Bravo"])
-    expect(names()[0]).toBe("Front camera, Charlie, Stalled, last frame 14:02:31")
+    expect(names()[0]).toBe("Front camera · Charlie Stalled, last frame 14:02:31")
     fireEvent.click(screen.getByRole("button", { name: /Needs attention/ }))
     expect(order()).toEqual(["Charlie"])
   })
@@ -104,7 +113,7 @@ describe("CameraWall bandwidth", () => {
       { id: "AMR 2", quality: "low" },
     ])
     expect(screen.getAllByText("Paused to save bandwidth")).toHaveLength(3)
-    expect(names()[4]).toBe("Front camera, AMR 5, Paused, Paused to save bandwidth")
+    expect(names()[4]).toBe("Front camera · AMR 5 Paused to save bandwidth")
   })
 
   it("never spends a live slot on an offline camera", () => {
@@ -221,6 +230,6 @@ describe("CameraWall announcements", () => {
     )
     expect(screen.getByRole("region", { name: "攝影機" })).toBeTruthy()
     expect(within(tiles()[1]!).getByText("為節省頻寬已暫停")).toBeTruthy()
-    expect(names()).toEqual(["Front camera, AMR 1, 連線中", "Front camera, AMR 2, 已暫停, 為節省頻寬已暫停"])
+    expect(names()).toEqual(["Front camera · AMR 1 連線中", "Front camera · AMR 2 為節省頻寬已暫停"])
   })
 })
