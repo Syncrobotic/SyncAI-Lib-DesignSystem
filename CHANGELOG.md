@@ -11,6 +11,8 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - **`labels-zh-tw` 0.29.0:** `waypointEditorLabels`.
 
 ### Fixed
+- **`route-progress` 0.29.0:** when the page is in, the bar grows from where it got to and fades, instead of jumping to the full width; under reduced motion it is the whole width at once, not a fixed 60 % that read as real progress; it sits below the safe area on a full-screen page.
+- Docs: the site shows the top loader when the next page takes longer than 300 ms to arrive.
 - Docs: rows that scroll sideways on a phone (icon categories, page tabs, the drawer's area tabs) no longer show a scrollbar pressed against them; their edges fade where more is hidden.
 - Docs: on a phone, long groups on the components index (Inputs: 26 cards) stayed blank; a section now arrives once any part of it scrolls into view.
 

@@ -1,4 +1,4 @@
-// @syncrobotic/route-progress v0.28.0 · update: npx shadcn add @syncrobotic/route-progress --overwrite
+// @syncrobotic/route-progress v0.29.0 · update: npx shadcn add @syncrobotic/route-progress --overwrite
 "use client"
 
 import * as React from "react"
@@ -15,7 +15,7 @@ export const defaultRouteProgressLabels: RouteProgressLabels = { loading: "Loadi
  * A thin bar along the top while the next page loads: a process someone is waiting on, so it is blue. It appears only
  * after `delay` (a quick page never flashes it), creeps towards the end without reaching it, and gives up after
  * `giveUp` in case the navigation never reports back. When the page is in it fills the width and fades, so the wait
- * visibly ends instead of the bar vanishing mid-way. Drive `active` from your router: true when a navigation starts,
+ * visibly ends instead of the bar vanishing mid-way: from where it got to, never in a jump. Drive `active` from your router: true when a navigation starts,
  * false when the new page is in.
  */
 export function RouteProgress({
@@ -55,26 +55,37 @@ export function RouteProgress({
     const gone = window.setTimeout(() => setPhase("hidden"), 1000)
     return () => window.clearTimeout(gone)
   }, [phase])
+  // When the page is in, the bar grows from where it is to the full width, then fades: one movement, no jump.
+  const bar = React.useRef<HTMLDivElement>(null)
+  React.useLayoutEffect(() => {
+    const el = bar.current
+    if (phase !== "done" || !el) return
+    // Hold the place the creep reached (the animation stops here), then run to the end on the standard curve.
+    const from = getComputedStyle(el).scale
+    el.style.animation = "none"
+    el.style.scale = from === "none" ? "1 1" : from
+    void el.offsetWidth
+    el.style.transition = "scale var(--motion-fast) var(--ease-standard)"
+    el.style.scale = "1 1"
+  }, [phase])
   if (phase === "hidden") return null
-  if (phase === "done")
-    return (
-      <div
-        aria-hidden="true"
-        data-slot="route-progress"
-        data-state="done"
-        onAnimationEnd={(e) => {
-          if (e.target === e.currentTarget) setPhase("hidden")
-        }}
-        className={cn("pointer-events-none fixed inset-x-0 top-0 z-60 h-1 animate-disappear", className)}
-      >
-        {/* Finished: the whole width, while it fades on the exit's pace. */}
-        <div className="h-full bg-info" />
-      </div>
-    )
+  const done = phase === "done"
   return (
-    <div role="progressbar" aria-label={label ?? l.loading} data-slot="route-progress" className={cn("pointer-events-none fixed inset-x-0 top-0 z-60 h-1", className)}>
-      {/* Creeps to 90 % over 8 s on the standard curve; under reduced motion it sits at 60 %. */}
-      <div className="h-full origin-left scale-x-60 bg-info motion-safe:animate-route-progress" />
+    <div
+      role={done ? undefined : "progressbar"}
+      aria-label={done ? undefined : (label ?? l.loading)}
+      aria-hidden={done || undefined}
+      data-slot="route-progress"
+      data-state={done ? "done" : "running"}
+      onAnimationEnd={(e) => {
+        if (done && e.target === e.currentTarget) setPhase("hidden")
+      }}
+      // Below the status bar and a notch when the page runs full screen (safe area).
+      className={cn("pointer-events-none fixed inset-x-0 top-[env(safe-area-inset-top)] z-60 h-1", done && "animate-disappear [animation-delay:var(--motion-fast)]", className)}
+    >
+      {/* Creeps towards 90 % over 8 s and never claims to be done. Under reduced motion there is no creep to watch, so the
+          bar is the whole width at once: it says "loading" without pretending to know how far. */}
+      <div ref={bar} className="h-full origin-left bg-info motion-safe:scale-x-10 motion-safe:animate-route-progress" />
     </div>
   )
 }

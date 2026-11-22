@@ -4453,8 +4453,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.29.0",
         "changelog": [
+          {
+            "version": "0.29.0",
+            "date": "2026-11-22",
+            "note": "When the page is in, the bar grows from where it got to and then fades, instead of jumping to the full width. Under reduced motion it shows the whole width at once rather than a fixed 60 % that read as real progress. It sits below the safe area (notch, status bar) when the page runs full screen."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
