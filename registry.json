@@ -989,8 +989,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "value, defaultValue and onValueChange are its own documented props (one segment always stays selected); behaviour unchanged."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-21",
@@ -1053,8 +1058,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Disabled and on reads as disabled: a grey fill (muted-foreground) instead of the inverted one, like a disabled checked switch."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -1088,8 +1098,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "A text button keeps its width when its word changes to Copied or Not copied (all three share one cell), and its name is the shown word once, not \"Copied Copied\": the announcement now sits beside the button."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -4116,8 +4131,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.23.2",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "The bar can shrink in a toolbar row (min-w-0): on a phone a long rule's value truncates and its remove button stays on screen."
+          },
           {
             "version": "0.23.2",
             "date": "2026-11-21",
@@ -4218,8 +4238,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.1",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "value is optional: leave it out until the stored choice is known (the type said it was required)."
+          },
           {
             "version": "0.10.1",
             "date": "2026-11-21",
@@ -4393,8 +4418,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Inside a Field the number box is named by the Field's label (\"On-call phone\"), as documented; it was always \"Phone number\". Alone it is still \"Phone number\"."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -4512,8 +4542,13 @@
         }
       ],
       "meta": {
-        "version": "0.25.0",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "New `today` prop: the day the calendar marks as today, so presets built from the app's today agree with it. DateRangePicker shows one month below 640 px, so the popover fits a phone; two (numberOfMonths) from there up."
+          },
           {
             "version": "0.25.0",
             "date": "2026-11-21",
@@ -4767,8 +4802,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Picking an item up announces only the pick-up, not a move to the place it is already in. New SortablePosition writes an item's place and follows a drag as it goes. A focused handle at the edge of a scrolling list is scrolled in with room for its focus ring."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -5153,8 +5193,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.1",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "The last button says what it does by default: \"Send answers\" instead of \"Submit\" (labels.submit or submitLabel still set it)."
+          },
           {
             "version": "0.23.1",
             "date": "2026-11-21",

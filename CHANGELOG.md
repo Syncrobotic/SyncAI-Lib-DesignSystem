@@ -31,6 +31,15 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - **`robot-status-card`, `stats-cards` and `sparkline-metric-tiles` 0.28.0:** percentages read "72 %", and changes carry their unit ("+0.4 pp", "−6 s", "−2 pp").
 - **`app-shell` 0.28.0:** `sampleNav` lists every page the templates show, so `incident-queue`, `incident-detail`, `maintenance-due`, `maintenance-work-order`, `rollout-overview`, `rollout-plan`, `users-audit-log`, `users-invitations` and `users-roles` (0.28.0) each mark their own page in the sidebar instead of a neighbour's.
 - **`agent-trace` 0.28.0:** titled "Route planner run", with the run's id as a fact beside the steps. **`line-chart-compare` 0.28.0:** the y axis ticks at 0, 10, 20 and 30.
+- **`date-selector` 0.28.0:** DateRangePicker shows one month below 640 px, so on a phone the popover, its second arrow and its presets stay on screen (two months were 656 px wide). New `today` prop, so presets built from the app's today ("Today", "Last 7 days") agree with the day the calendar marks.
+- **`filters` 0.28.0:** on a phone a long rule's value truncates and its remove button stays reachable; the bar can shrink inside a toolbar row.
+- **`sortable` 0.28.0:** picking an item up no longer also announces "moved to position 2" when nothing has moved. A focused handle at the edge of a scrolling list is scrolled in with its focus ring visible. New `SortablePosition` writes an item's place and follows a drag as it goes.
+- **`copy-button` 0.28.0:** a text button keeps its width when "Copy install command" changes to "Copied", and is named "Copied" once instead of "Copied Copied".
+- **`toggle` 0.28.0:** disabled and on no longer looks like an enabled toggle: a grey fill, like a disabled checked switch.
+- **`phone-input` 0.28.0:** inside a Field the number box is named by the Field's label, as documented; it was always "Phone number".
+- **`questionnaire` 0.28.0:** the last button says "Send answers" by default instead of "Submit".
+- **`theme-toggle` 0.28.0:** `value` is optional, as the docs say (leave it out until the stored choice is known). `segmented-control` 0.28.0 documents `value`, `defaultValue` and `onValueChange` as its own props.
+- Docs: the Accessibility tabs of Theme toggle, Chip group and Search field list their keys. Props tables keep a prop's own `| null` (Number field's `value`, Graph's `selectedId`…). Examples: the sortable camera grid and the full-width buttons have a width of their own instead of collapsing; Filters examples fit a phone; Delete in Button with icon is destructive and the icon buttons wrap as a pair; autocomplete, phone, date, time and one-time-code examples have visible labels; the saved-alerts form uses a checkbox (a switch acts at once) and Top speed is a Number field in m/s; "40 %" is spaced like the kit's other percentages; error messages end with a full stop; file-type tiles say their format and file refusals have an icon; toggle sizes are named by size; the long sortable list cuts a row so it reads as scrollable.
 
 ## 0.27.0 · 2026-11-21
 

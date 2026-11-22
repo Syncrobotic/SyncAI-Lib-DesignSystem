@@ -8,12 +8,18 @@ const meta: Meta = { title: "Inputs/Date selector" }
 export default meta
 type S = StoryObj
 
+// The examples' today. The pickers are given it too (today={day}), so the calendar marks the same day the presets call
+// "Today", whatever day the page is read on.
 const day = new Date(2026, 10, 17)
 
 export const DatePickerDefault: S = {
   render: function D() {
     const [d, setD] = React.useState<Date | undefined>()
-    return <DatePicker value={d} onValueChange={setD} aria-label="Mission day" />
+    return (
+      <Field label="Mission day">
+        <DatePicker value={d} onValueChange={setD} today={day} />
+      </Field>
+    )
   },
 }
 
@@ -22,7 +28,7 @@ export const DatePickerInField: S = {
     const [d, setD] = React.useState<Date | undefined>(day)
     return (
       <Field label="Start on" hint="The mission runs from this day.">
-        <DatePicker value={d} onValueChange={setD} clearable />
+        <DatePicker value={d} onValueChange={setD} today={day} clearable />
       </Field>
     )
   },
@@ -33,7 +39,7 @@ export const DatePickerFutureOnly: S = {
     const [d, setD] = React.useState<Date | undefined>()
     return (
       <Field label="Maintenance day" hint="Past days and weekends are closed.">
-        <DatePicker value={d} onValueChange={setD} disabledDays={[{ before: day }, { dayOfWeek: [0, 6] }]} />
+        <DatePicker value={d} onValueChange={setD} today={day} disabledDays={[{ before: day }, { dayOfWeek: [0, 6] }]} />
       </Field>
     )
   },
@@ -43,16 +49,18 @@ export const DatePickerPresets: S = {
   render: function D() {
     const [d, setD] = React.useState<Date | undefined>(day)
     return (
-      <DatePicker
-        value={d}
-        onValueChange={setD}
-        aria-label="Report day"
-        presets={[
-          { label: "Today", value: () => day },
-          { label: "Yesterday", value: () => subDays(day, 1) },
-          { label: "A week ago", value: () => subDays(day, 7) },
-        ]}
-      />
+      <Field label="Report day">
+        <DatePicker
+          value={d}
+          onValueChange={setD}
+          today={day}
+          presets={[
+            { label: "Today", value: () => day },
+            { label: "Yesterday", value: () => subDays(day, 1) },
+            { label: "A week ago", value: () => subDays(day, 7) },
+          ]}
+        />
+      </Field>
     )
   },
 }
@@ -60,19 +68,27 @@ export const DatePickerPresets: S = {
 export const DatePickerError: S = {
   render: () => (
     <Field label="Licence renewal" error="Pick a day before the licence ends on 19 Nov.">
-      <DatePicker value={addDays(day, 10)} />
+      <DatePicker value={addDays(day, 10)} today={day} />
     </Field>
   ),
 }
 
 export const DatePickerDisabled: S = {
-  render: () => <DatePicker value={day} disabled aria-label="Created on" />,
+  render: () => (
+    <Field label="Created on" hint="Set when the mission was created.">
+      <DatePicker value={day} disabled />
+    </Field>
+  ),
 }
 
 export const DateRangePickerDefault: S = {
   render: function R() {
     const [r, setR] = React.useState<DateRange | undefined>({ from: subDays(day, 6), to: day })
-    return <DateRangePicker value={r} onValueChange={setR} aria-label="Event range" clearable />
+    return (
+      <Field label="Event range">
+        <DateRangePicker value={r} onValueChange={setR} today={day} clearable />
+      </Field>
+    )
   },
 }
 
@@ -84,6 +100,7 @@ export const DateRangePickerPresets: S = {
         <DateRangePicker
           value={r}
           onValueChange={setR}
+          today={day}
           presets={[
             { label: "Today", value: () => ({ from: day, to: day }) },
             { label: "Last 7 days", value: () => ({ from: subDays(day, 6), to: day }) },
@@ -100,7 +117,11 @@ export const DateRangePickerPresets: S = {
 export const DatePickerShortFormat: S = {
   render: function D() {
     const [d, setD] = React.useState<Date | undefined>(day)
-    return <DatePicker value={d} onValueChange={setD} displayFormat="EEE d MMM" aria-label="Patrol day" className="w-44" />
+    return (
+      <Field label="Patrol day" className="w-44">
+        <DatePicker value={d} onValueChange={setD} today={day} displayFormat="EEE d MMM" />
+      </Field>
+    )
   },
 }
 
@@ -110,7 +131,7 @@ export const DatePickerWeekdays: S = {
     const [d, setD] = React.useState<Date | undefined>()
     return (
       <Field label="Service visit" hint="Technicians come Monday to Friday.">
-        <DatePicker value={d} onValueChange={setD} disabledDays={[{ before: day }, { dayOfWeek: [0, 6] }]} clearable />
+        <DatePicker value={d} onValueChange={setD} today={day} disabledDays={[{ before: day }, { dayOfWeek: [0, 6] }]} clearable />
       </Field>
     )
   },
@@ -120,7 +141,11 @@ export const DatePickerWeekdays: S = {
 export const DateRangePickerOneMonth: S = {
   render: function R() {
     const [r, setR] = React.useState<DateRange | undefined>({ from: startOfMonth(day), to: day })
-    return <DateRangePicker value={r} onValueChange={setR} numberOfMonths={1} aria-label="Report range" />
+    return (
+      <Field label="Report range">
+        <DateRangePicker value={r} onValueChange={setR} today={day} numberOfMonths={1} />
+      </Field>
+    )
   },
 }
 
@@ -128,7 +153,7 @@ export const DateRangePickerOneMonth: S = {
 export const DateRangePickerError: S = {
   render: () => (
     <Field label="Export events" error="Exports cover at most 31 days. Shorten the range.">
-      <DateRangePicker value={{ from: subDays(day, 45), to: day }} />
+      <DateRangePicker value={{ from: subDays(day, 45), to: day }} today={day} />
     </Field>
   ),
 }

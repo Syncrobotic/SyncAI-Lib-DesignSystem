@@ -589,7 +589,7 @@
     },
     {
      "name": "selectedId",
-     "type": "string",
+     "type": "string | null",
      "default": "null",
      "description": "The annotation drawn as selected: 3 px in the focus ink, with handles."
     },
@@ -1325,7 +1325,7 @@
     },
     {
      "name": "stream",
-     "type": "MediaStream",
+     "type": "MediaStream | null",
      "description": "A WebRTC stream, set as the video's `srcObject`. The app owns the connection; the feed only shows it."
     },
     {
@@ -2578,6 +2578,11 @@
      "description": "Days that cannot be picked, in react-day-picker's matcher form, e.g. `{ before: new Date() }`."
     },
     {
+     "name": "today",
+     "type": "Date",
+     "description": "The day the calendar marks as today. Left out, the device's today. Give it when the app's today differs (a site in another time zone, a fixed day in a demo or a test), and build presets from the same day, so \"Today\" and the calendar's today agree."
+    },
+    {
      "name": "clearable",
      "type": "boolean",
      "description": "Shows an × to clear the value."
@@ -2673,6 +2678,11 @@
      "name": "disabledDays",
      "type": "Matcher | Matcher[]",
      "description": "Days that cannot be picked, in react-day-picker's matcher form, e.g. `{ before: new Date() }`."
+    },
+    {
+     "name": "today",
+     "type": "Date",
+     "description": "The day the calendar marks as today. Left out, the device's today. Give it when the app's today differs (a site in another time zone, a fixed day in a demo or a test), and build presets from the same day, so \"Today\" and the calendar's today agree."
     },
     {
      "name": "clearable",
@@ -3630,7 +3640,7 @@
     },
     {
      "name": "selectedId",
-     "type": "string",
+     "type": "string | null",
      "description": "The selected node, controlled; null for none. Pair with onSelectedChange."
     },
     {
@@ -4152,7 +4162,7 @@
     },
     {
      "name": "open",
-     "type": "\"name\" | \"status\" | \"bell\"",
+     "type": "\"name\" | \"status\" | \"bell\" | null",
      "default": "null",
      "description": "Which zone is expanded. Each zone has its own panel."
     },
@@ -5730,12 +5740,12 @@
    "props": [
     {
      "name": "value",
-     "type": "number",
+     "type": "number | null",
      "description": ""
     },
     {
      "name": "defaultValue",
-     "type": "number",
+     "type": "number | null",
      "default": "null",
      "description": ""
     },
@@ -6359,7 +6369,7 @@
       {
        "name": "submit",
        "type": "string",
-       "default": "\"Submit\"",
+       "default": "\"Send answers\"",
        "description": "The last page's button."
       },
       {
@@ -6451,7 +6461,7 @@
     {
      "name": "review",
      "type": "boolean",
-     "description": "Paged only: a last page that lists the answers, each with Edit, before Submit."
+     "description": "Paged only: a last page that lists the answers, each with Edit, before the last button."
     },
     {
      "name": "defaultStep",
@@ -6496,7 +6506,7 @@
       {
        "name": "submit",
        "type": "string",
-       "default": "\"Submit\"",
+       "default": "\"Send answers\"",
        "description": "The last page's button."
       },
       {
@@ -6735,7 +6745,7 @@
     },
     {
      "name": "selectedId",
-     "type": "string",
+     "type": "string | null",
      "description": "The selected robot, controlled; null for none. Without it the map keeps its own selection."
     },
     {
@@ -6776,7 +6786,7 @@
     },
     {
      "name": "goal",
-     "type": "{ x: number; y: number; heading?: number }",
+     "type": "{ x: number; y: number; heading?: number } | null",
      "description": "The goal to show, controlled: a target and the way to face, in plan metres."
     },
     {
@@ -7439,7 +7449,7 @@
     },
     {
      "name": "selectedId",
-     "type": "string",
+     "type": "string | null",
      "description": "The selected robot, controlled; null for none. Without it the map keeps its own selection."
     },
     {
@@ -7908,7 +7918,7 @@
     },
     {
      "name": "hotkey",
-     "type": "string",
+     "type": "string | null",
      "default": "\"/\"",
      "description": "The key that focuses the box; null for none."
     },
@@ -7929,9 +7939,25 @@
  "segmented-control": [
   {
    "name": "SegmentedControl",
-   "props": [],
+   "props": [
+    {
+     "name": "value",
+     "type": "string",
+     "description": "The selected segment, controlled. One always stays selected: pressing it again does not clear it."
+    },
+    {
+     "name": "defaultValue",
+     "type": "string",
+     "description": "The segment selected at first, when `value` is not given."
+    },
+    {
+     "name": "onValueChange",
+     "type": "(value: string) => void",
+     "description": "Called with the newly selected segment's value, never with an empty one."
+    }
+   ],
    "inherits": [
-    "ToggleGroup.ToggleGroupSingleProps (except type)"
+    "ToggleGroup.ToggleGroupSingleProps (except type, value, defaultValue, onValueChange)"
    ]
   },
   {
@@ -8154,7 +8180,7 @@
     },
     {
      "name": "cookieName",
-     "type": "string",
+     "type": "string | null",
      "default": "SIDEBAR_COOKIE_NAME",
      "description": "The cookie that keeps the choice for a week. null keeps it for this page only."
     },
@@ -8614,6 +8640,18 @@
      "type": "ReactNode",
      "required": true,
      "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "SortablePosition",
+   "props": [
+    {
+     "name": "format",
+     "type": "(position: number) => ReactNode",
+     "default": "(n) => n",
+     "description": "Writes the number, e.g. (n) => `Step ${n}`. Left out, the bare number."
     }
    ],
    "inherits": []
@@ -9684,8 +9722,7 @@
     {
      "name": "value",
      "type": "\"light\" | \"system\" | \"dark\"",
-     "required": true,
-     "description": ""
+     "description": "The stored choice. Leave it out (or undefined) until it is known in the browser: nothing shows as selected."
     },
     {
      "name": "onValueChange",

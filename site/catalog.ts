@@ -1230,6 +1230,18 @@ const keyboard: Record<string, [string, string][]> = {
     ["← / →", "Move to the previous or next segment"],
     ["Enter / Space", "Select the focused segment"],
   ],
+  "theme-toggle": [
+    ["← / →", "Move to the previous or next choice"],
+    ["Enter / Space", "Choose the focused one"],
+  ],
+  "chip-group": [
+    ["← / →", "Move between the chips (one Tab stop for the group; N more is a stop of its own)"],
+    ["Enter / Space", "Choose the focused chip; on the chosen one, clear the choice"],
+  ],
+  "search-field": [
+    ["/", "Focus the search box from anywhere on the page, except while typing in a field"],
+    ["Enter", "Open the results page with the query"],
+  ],
   toggle: [["Enter / Space", "Turn on or off"]],
   "number-field": [
     ["↑ / ↓", "Step up or down"],

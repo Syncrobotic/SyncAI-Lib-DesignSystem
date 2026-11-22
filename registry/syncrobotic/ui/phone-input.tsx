@@ -1,4 +1,4 @@
-// @syncrobotic/phone-input v0.23.0 · update: npx shadcn add @syncrobotic/phone-input --overwrite
+// @syncrobotic/phone-input v0.28.0 · update: npx shadcn add @syncrobotic/phone-input --overwrite
 "use client"
 
 import * as React from "react"
@@ -154,7 +154,9 @@ export function PhoneInput({
       <input
         type="tel"
         id={id ?? f?.id}
-        aria-label={ariaLabel ?? l.phoneNumber}
+        // Inside a Field its label names the box, so the name is what people see ("On-call phone"); a fixed aria-label
+        // would override it. Alone, without aria-label, it is "Phone number".
+        aria-label={ariaLabel ?? (f ? undefined : l.phoneNumber)}
         aria-describedby={f?.describedBy}
         aria-invalid={f?.invalid || undefined}
         autoComplete="tel"

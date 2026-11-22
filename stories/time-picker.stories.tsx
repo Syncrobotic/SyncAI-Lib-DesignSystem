@@ -10,7 +10,11 @@ type S = StoryObj
 export const TimePickerSlots: S = {
   render: function T() {
     const [t, setT] = React.useState<string | undefined>("22:00")
-    return <TimePicker value={t} onValueChange={setT} aria-label="Patrol starts" />
+    return (
+      <Field label="Patrol starts">
+        <TimePicker value={t} onValueChange={setT} />
+      </Field>
+    )
   },
 }
 
@@ -39,7 +43,11 @@ export const TimePickerOpeningHours: S = {
 export const TimePickerTwelveHour: S = {
   render: function T() {
     const [t, setT] = React.useState<string | undefined>("21:30")
-    return <TimePicker value={t} onValueChange={setT} hour12 aria-label="Quiet hours start" />
+    return (
+      <Field label="Quiet hours start">
+        <TimePicker value={t} onValueChange={setT} hour12 />
+      </Field>
+    )
   },
 }
 
@@ -47,7 +55,7 @@ export const TimeInputTyped: S = {
   render: function T() {
     const [t, setT] = React.useState<string | undefined>("09:30")
     return (
-      <Field label="Report sent at" hint='Type "930", "9:30" or "21.30".'>
+      <Field label="Report sent at" hint="Type “930”, “9:30” or “21.30”.">
         <TimeInput value={t} onValueChange={setT} />
       </Field>
     )
