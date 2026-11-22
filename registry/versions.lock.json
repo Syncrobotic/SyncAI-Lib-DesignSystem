@@ -12,8 +12,8 @@
     "hash": "8ec920f8618ff43d"
   },
   "labels-zh-tw": {
-    "version": "0.29.0",
-    "hash": "ed0b299aca6806e0"
+    "version": "0.31.0",
+    "hash": "f399a33380b511f3"
   },
   "ros": {
     "version": "0.29.0",
@@ -340,8 +340,8 @@
     "hash": "95b2a43b9b02c857"
   },
   "chip-group": {
-    "version": "0.23.0",
-    "hash": "7e1ae6fcd7f42355"
+    "version": "0.31.0",
+    "hash": "a3c064188b102da4"
   },
   "share-bar": {
     "version": "0.23.1",

@@ -2,6 +2,12 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **`chip-group` 0.31.0:** `type="multiple"` for any of several values in one facet: `value` and `onValueChange` take a list, the chips are pressed buttons, and chosen links say "selected" instead of aria-current (new label `selected`, in `labels-zh-tw` too); `max` keeps every chosen chip in view. Issue #304.
+- **`chip-group` 0.31.0:** `props` on a chip are spread on its button or link (`data-*`, `title`, `aria-describedby`), and `current` sets the chosen link's aria-current (`"page"`, the default, `"true"` or `"location"`), so a row of filter links no longer marks a second current page. Issue #305.
+
 ## 0.30.0 · 2026-11-22
 
 A menu for the theme toggle, tabs in the phone drawer, two accessibility fixes from a product team (dark predicted annotations, Escape in a native dialog) and a much lighter docs site.

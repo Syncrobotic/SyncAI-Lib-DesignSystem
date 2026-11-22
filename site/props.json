@@ -2477,16 +2477,6 @@
      "description": ""
     },
     {
-     "name": "value",
-     "type": "string",
-     "description": ""
-    },
-    {
-     "name": "onValueChange",
-     "type": "(value: string | undefined) => void",
-     "description": ""
-    },
-    {
      "name": "label",
      "type": "string",
      "required": true,
@@ -2501,7 +2491,7 @@
      "name": "allowNone",
      "type": "boolean",
      "default": "true",
-     "description": "Pressing the selected chip clears the choice."
+     "description": "Pressing the last chosen chip clears the choice. With `false`, one chip always stays chosen."
     },
     {
      "name": "moreLabel",
@@ -2529,6 +2519,12 @@
        "type": "string",
        "default": "\"Show fewer\"",
        "description": "The same button once unfolded."
+      },
+      {
+       "name": "selected",
+       "type": "string",
+       "default": "\"selected\"",
+       "description": "Read after each chosen link when several can be chosen (`type=\"multiple\"` with `href`), where aria-current does not fit."
       }
      ]
     },
@@ -2542,6 +2538,27 @@
      "type": "ElementType",
      "default": "\"a\"",
      "description": "Your router's link (e.g. next/link), for chips with href."
+    },
+    {
+     "name": "current",
+     "type": "\"true\" | \"page\" | \"location\"",
+     "default": "\"page\"",
+     "description": "The aria-current of the chosen link (one choice, chips with href): \"page\" (the default) for views that are pages; \"true\" for a row of filter links on a page whose navigation already marks the page."
+    },
+    {
+     "name": "type",
+     "type": "\"single\" | \"multiple\"",
+     "description": "\"single\" (the default): one choice, `value` is a string. \"multiple\": any number, `value` is a list."
+    },
+    {
+     "name": "value",
+     "type": "string | string[]",
+     "description": "The chosen chip's value; with type=\"multiple\", the chosen chips' values."
+    },
+    {
+     "name": "onValueChange",
+     "type": "((value: string | undefined) => void) | ((value: string[]) => void)",
+     "description": "Called with the new choice: the value, or undefined once cleared; with type=\"multiple\", the list."
     }
    ],
    "inherits": []

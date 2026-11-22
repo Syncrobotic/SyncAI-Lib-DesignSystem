@@ -665,7 +665,8 @@
       "listitem",
       "navigation",
       "radio",
-      "radiogroup"
+      "radiogroup",
+      "toolbar"
     ],
     "tabStops": 3,
     "live": false

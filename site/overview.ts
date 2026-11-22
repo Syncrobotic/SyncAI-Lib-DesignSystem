@@ -11,9 +11,9 @@ export const overviews: Record<string, Overview> = {
     instead: ["A title inside a card: the card's own heading.", "The app's own frame: `app-shell`."],
   },
   "chip-group": {
-    what: "One choice among several, shown as chips with their counts, folded after a few.",
-    use: ["A quick filter above a list: task, site, tier.", "Saved views as links, so the choice lives in the URL."],
-    instead: ["Several choices at once: checkboxes in a `field`.", "Two to four views of the same data: `segmented-control`."],
+    what: "One choice among several, or any of several with `type=\"multiple\"`, shown as chips with their counts, folded after a few.",
+    use: ["A quick filter above a list: task, site, tier.", "A facet where people pick two or three values at once.", "Saved views as links, so the choice lives in the URL."],
+    instead: ["A long list of options to tick: checkboxes in a `field`.", "A query of several fields and rules: `filters`.", "Two to four views of the same data: `segmented-control`."],
   },
   "filter-form": {
     what: "Filters kept in the URL: a GET form that applies itself as you type or pick, and works without JavaScript.",

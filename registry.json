@@ -204,8 +204,13 @@
         }
       ],
       "meta": {
-        "version": "0.29.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "`chipGroupLabels.selected`."
+          },
           {
             "version": "0.29.0",
             "date": "2026-11-22",
@@ -3855,7 +3860,7 @@
       "name": "chip-group",
       "type": "registry:ui",
       "title": "Chip group",
-      "description": "One choice among several as chips with counts, folded after N; or links, so a filter lives in the URL. Selected is inverted.",
+      "description": "One choice among several, or any of several with type=\"multiple\", as chips with counts, folded after N; or links, so a filter lives in the URL (current sets their aria-current). Per-chip props for data-* hooks and titles. Selected is inverted.",
       "dependencies": [
         "radix-ui"
       ],
@@ -3869,8 +3874,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "Several choices at once: `type=\"multiple\"` takes and gives `value` as a list (a ToggleGroup of pressed buttons; links say \"selected\" instead of aria-current, new label `selected`); `max` keeps every chosen chip. `current` sets the chosen link's aria-current (\"page\", the default, \"true\" or \"location\"), and a chip's `props` are spread on its button or link (`data-*`, `title`, `aria-describedby`). Issues #304, #305."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",

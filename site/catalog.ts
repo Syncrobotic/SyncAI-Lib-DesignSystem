@@ -364,10 +364,11 @@ const entries: Record<string, Entry> = {
     group: "Inputs",
     examples: { file: "chip-group", prefix: "ChipGroup" },
     rules: [
-      "One choice among several, with the count each gives. For several choices at once use checkboxes in a FieldSet.",
+      "One choice among several, with the count each gives. `type=\"multiple\"` for any of several values in one facet (\"detection or segmentation\"); `value` is then a list. For a long list of options use checkboxes in a FieldSet.",
       "Selected is inverted, like a selected segment.",
-      "Fold long rows with max; the selected chip always stays visible.",
-      "Chips with href are links: the filter lives in the URL and works without JavaScript.",
+      "Fold long rows with max; chosen chips always stay visible.",
+      "Chips with href are links: the filter lives in the URL and works without JavaScript. The chosen link is aria-current=\"page\"; give `current=\"true\"` to a row of filter links on a page whose navigation already marks the page. With `type=\"multiple\"` each link's href adds or removes its value, and chosen links say \"selected\" instead.",
+      "`props` on a chip puts `data-*` hooks, a `title` or `aria-describedby` on its button or link.",
     ],
   },
   "filter-form": {
@@ -1311,7 +1312,7 @@ const keyboard: Record<string, [string, string][]> = {
   ],
   "chip-group": [
     ["`←` / `→`", "Move between the chips (one Tab stop for the group; N more is a stop of its own)"],
-    ["`Enter` / `Space`", "Choose the focused chip; on the chosen one, clear the choice"],
+    ["`Enter` / `Space`", "Choose the focused chip; on the chosen one, clear the choice. With several at once, turn the focused chip on or off"],
   ],
   "search-field": [
     ["`/`", "Focus the search box from anywhere on the page, except while typing in a field"],
