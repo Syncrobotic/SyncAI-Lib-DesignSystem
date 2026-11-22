@@ -199,8 +199,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.29.0",
         "changelog": [
+          {
+            "version": "0.29.0",
+            "date": "2026-11-22",
+            "note": "New `attitudeIndicatorLabels` and `gaugeLabels` for the new attitude item."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -219,7 +224,7 @@
       "name": "ros",
       "type": "registry:lib",
       "title": "ROS",
-      "description": "ROS and ROS 2 over rosbridge with no ROS library: a rosbridge v2 client on the browser's WebSocket (ref-counted subscriptions and advertisements, capped jittered reconnect that resubscribes, a send queue, service calls with a timeout, a zero Twist when a velocity publisher stops or the link drops) and pure converters from OccupancyGrid, LaserScan, PointCloud2, JointState, DiagnosticArray, /rosout Log and poses to the kit's components, and from a teleop command and a map goal back to Twist and PoseStamped.",
+      "description": "ROS and ROS 2 over rosbridge with no ROS library: a rosbridge v2 client on the browser's WebSocket (ref-counted subscriptions and advertisements, capped jittered reconnect that resubscribes, a send queue, service calls with a timeout, a zero Twist when a velocity publisher stops or the link drops) and pure converters from OccupancyGrid, LaserScan, PointCloud2, JointState, Imu, Odometry, DiagnosticArray, /rosout Log and poses to the kit's components, and from a teleop command and a map goal back to Twist and PoseStamped.",
       "dependencies": [],
       "registryDependencies": [],
       "files": [
@@ -229,8 +234,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.29.0",
         "changelog": [
+          {
+            "version": "0.29.0",
+            "date": "2026-11-22",
+            "note": "`imuToAttitude` turns a `sensor_msgs/Imu` into roll and pitch in degrees (REP 103 signs) and a compass heading (ENU, REP 145; `{ heading: false }` for an IMU without a magnetometer), for attitude's AttitudeIndicator; `quaternionToEuler` gives roll, pitch and yaw as tf2's getRPY does; `odometryToSpeed` turns `nav_msgs/Odometry` (or a Twist) into a speed in m/s for attitude's Gauge."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -2131,8 +2141,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.29.0",
         "changelog": [
+          {
+            "version": "0.29.0",
+            "date": "2026-11-22",
+            "note": "Exports `meterTone` and `meterSaid`, the thresholds and the words of `aria-valuetext`, so `attitude`'s Gauge reads a level exactly as Meter does. No change to Meter itself."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -2609,6 +2624,37 @@
             "version": "0.28.0",
             "date": "2026-11-21",
             "note": "First release. Narrower than 36 rem, the window and Chart / Table switches fold into a View options menu (⋯) beside Pause, so the toolbar stays one row; new label `viewOptions`."
+          }
+        ]
+      }
+    },
+    {
+      "name": "attitude",
+      "type": "registry:ui",
+      "title": "Attitude",
+      "description": "A robot's attitude and its gauges: AttitudeIndicator draws roll and pitch as an artificial horizon and the heading on a compass ring, with the values in degrees and words and tip-over limits; Gauge draws one value with a known range on a dial with Meter's thresholds. Both take push() at 20 to 50 Hz without a React render per reading.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/meter"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/attitude.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.29.0",
+        "changelog": [
+          {
+            "version": "0.29.0",
+            "date": "2026-11-22",
+            "note": "First release."
           }
         ]
       }

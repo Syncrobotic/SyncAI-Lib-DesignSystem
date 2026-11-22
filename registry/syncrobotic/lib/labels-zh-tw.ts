@@ -1,4 +1,4 @@
-// @syncrobotic/labels-zh-tw v0.28.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
+// @syncrobotic/labels-zh-tw v0.29.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
 // The kit's words in Traditional Chinese as written in Taiwan, one object per component that takes `labels`. Pass each
 // to its component (`<DataGrid labels={dataGridLabels} />`) with `locale="zh-TW"` where the component formats numbers,
 // days or times. The file imports no component, so it installs on its own; the kit's tests hold every object to the
@@ -507,6 +507,46 @@ export const streamingChartLabels = {
   noValue: "–",
   reading: (series: string, value: string) => `${series} ${value}`,
   keys: "空白鍵暫停或繼續。左右方向鍵在時間上往前或往後移動。End 鍵回到即時。",
+  formatTime: (d: Date, locale: string | undefined) => (locale ? d.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23" }) : clock(d)),
+}
+
+// Attitude in the words of Taiwan's flight instruments: 滾轉 (roll), 俯仰 (pitch), 航向 (heading); the nose 抬頭 or 低頭.
+export const attitudeIndicatorLabels = {
+  roll: "滾轉",
+  pitch: "俯仰",
+  heading: "航向",
+  degrees: (v: string) => `${v}°`,
+  directed: (v: string, d: string) => `${d} ${v}`,
+  left: "向左",
+  right: "向右",
+  noseUp: "抬頭",
+  noseDown: "低頭",
+  compassPoints: ["北", "東北", "東", "東南", "南", "西南", "西", "西北"],
+  headingText: (v: string, p: string) => `${v}（${p}）`,
+  overLimit: "超過限制",
+  critical: "嚴重",
+  withState: (v: string, s: string) => `${v}，${s}`,
+  withinLimits: "滾轉與俯仰皆在限制內",
+  noValue: "–",
+  waiting: "等待資料",
+  stale: "資料過時",
+  lastUpdate: (time: string) => `最後更新 ${time}`,
+  summary: ({ roll, pitch, heading }: { roll?: string; pitch?: string; heading?: string }) =>
+    [roll && `滾轉 ${roll}`, pitch && `俯仰 ${pitch}`, heading && `航向 ${heading}`].filter(Boolean).join("，"),
+  formatTime: (d: Date, locale: string | undefined) => (locale ? d.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23" }) : clock(d)),
+}
+
+export const gaugeLabels = {
+  withUnit: (v: string, unit: string) => (!unit ? v : unit === "°" ? `${v}°` : `${v} ${unit}`),
+  high: "偏高",
+  low: "偏低",
+  critical: "嚴重",
+  backToNormal: "已恢復正常",
+  withState: (v: string, s: string) => `${v}，${s}`,
+  noValue: "–",
+  waiting: "等待資料",
+  stale: "資料過時",
+  lastUpdate: (time: string) => `最後更新 ${time}`,
   formatTime: (d: Date, locale: string | undefined) => (locale ? d.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23" }) : clock(d)),
 }
 

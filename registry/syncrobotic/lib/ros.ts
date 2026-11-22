@@ -1,4 +1,4 @@
-// @syncrobotic/ros v0.28.0 · update: npx shadcn add @syncrobotic/ros --overwrite
+// @syncrobotic/ros v0.29.0 · update: npx shadcn add @syncrobotic/ros --overwrite
 /*
   ROS and ROS 2 in the browser, without a ROS library: the rosbridge v2 protocol (rosbridge_suite, which serves both ROS 1
   and ROS 2) spoken directly over the browser's WebSocket, and pure converters from the messages to the props the kit's
@@ -724,6 +724,26 @@ export type RosPoseStamped = { header: RosHeader; pose: RosPose }
 export type RosPoseLike = RosPose | { pose: RosPose } | { pose: { pose: RosPose } }
 export type RosTwist = { linear: RosVector3; angular: RosVector3 }
 
+/**
+ * `sensor_msgs/Imu`. Only the orientation is read; by REP 145 an `orientation_covariance` starting with −1 means the
+ * IMU gives no orientation (a gyro and accelerometer alone).
+ */
+export type RosImu = {
+  header?: RosHeader
+  orientation: RosQuaternion
+  orientation_covariance?: ArrayLike<number>
+  angular_velocity?: RosVector3
+  linear_acceleration?: RosVector3
+}
+
+/** `nav_msgs/Odometry`: the pose in `header.frame_id` and the twist in `child_frame_id` (the robot's base). */
+export type RosOdometry = {
+  header?: RosHeader
+  child_frame_id?: string
+  pose: { pose: RosPose }
+  twist: { twist: RosTwist }
+}
+
 /** `uint8[]` arrives as a base64 string; a client or an older bridge may send a list of numbers. */
 export type RosBytes = string | ArrayLike<number>
 
@@ -857,6 +877,64 @@ export function poseToRobotMapPose(message: RosPoseLike, frame: RosPlanFrame): R
     y: frame.height - (pose.position.y - frame.origin.y),
     heading: (((90 - (yaw * 180) / Math.PI) % 360) + 360) % 360,
   }
+}
+
+/**
+ * Roll, pitch and yaw of a quaternion, in radians, in the order tf2's `getRPY` uses (yaw about z, then pitch about the new
+ * y, then roll about the new x). REP 103, x forward, y left, z up: positive roll lowers the right side, positive pitch
+ * lowers the nose, positive yaw turns left (counter-clockwise from above). The quaternion need not be normalised.
+ */
+export function quaternionToEuler(q: RosQuaternion): { roll: number; pitch: number; yaw: number } {
+  const n = Math.hypot(q.x, q.y, q.z, q.w) || 1
+  const x = q.x / n
+  const y = q.y / n
+  const z = q.z / n
+  const w = q.w / n
+  const roll = Math.atan2(2 * (w * x + y * z), 1 - 2 * (x * x + y * y))
+  // Clamped: rounding can carry the sine a hair past ±1 at ±90° pitch, where asin would be NaN.
+  const pitch = Math.asin(Math.min(1, Math.max(-1, 2 * (w * y - z * x))))
+  const yaw = Math.atan2(2 * (w * z + x * y), 1 - 2 * (y * y + z * z))
+  return { roll, pitch, yaw }
+}
+
+/** attitude's `AttitudeSample`: degrees, REP 103 signs; `heading` clockwise from north, 0–360. */
+export type RosAttitude = { roll?: number; pitch?: number; heading?: number }
+
+/**
+ * A `sensor_msgs/Imu` as attitude's AttitudeIndicator takes it: roll and pitch in degrees with REP 103's signs (positive
+ * roll is the right side down, positive pitch the nose down) and, by default, a compass heading in degrees clockwise from
+ * north. The heading assumes the orientation is in an east-north-up frame, as REP 103 and REP 145 have it for an IMU
+ * fused with a magnetometer: heading = 90 − yaw. An IMU without one drifts in yaw from where it started; pass
+ * `{ heading: false }` and the indicator shows no compass. An IMU that gives no orientation (`orientation_covariance[0]`
+ * is −1) or a quaternion that is not finite gives `{}`, which changes nothing when pushed.
+ */
+export function imuToAttitude(message: RosImu, options: { heading?: boolean } = {}): RosAttitude {
+  const q = message.orientation
+  if (!q || message.orientation_covariance?.[0] === -1) return {}
+  if (![q.x, q.y, q.z, q.w].every(Number.isFinite) || Math.hypot(q.x, q.y, q.z, q.w) === 0) return {}
+  const { roll, pitch, yaw } = quaternionToEuler(q)
+  const deg = 180 / Math.PI
+  const out: RosAttitude = { roll: roll * deg, pitch: pitch * deg }
+  if (options.heading !== false) out.heading = (((90 - yaw * deg) % 360) + 360) % 360
+  return out
+}
+
+/**
+ * The robot's speed in m/s from `nav_msgs/Odometry` (or a TwistStamped, or a Twist), for attitude's Gauge: the length of
+ * the twist's linear x and y, so a holonomic base moving sideways has a speed too. The twist is in the robot's own frame
+ * (`child_frame_id`), as REP 105 has it. `{ signed: true }` gives linear x alone with its sign instead, negative when
+ * reversing, for a gauge whose range runs below zero.
+ */
+export function odometryToSpeed(message: RosOdometry | { twist: RosTwist } | RosTwist, options: { signed?: boolean } = {}): number {
+  let t: unknown = message
+  // Unwrap `twist` until the object has `linear`: Odometry nests it twice (TwistWithCovariance), TwistStamped once.
+  for (let i = 0; i < 3 && t && typeof t === "object" && !("linear" in t) && "twist" in t; i++) t = (t as { twist: unknown }).twist
+  const linear = (t as Partial<RosTwist> | undefined)?.linear
+  const x = Number(linear?.x ?? 0)
+  const y = Number(linear?.y ?? 0)
+  if (options.signed) return Number.isFinite(x) ? x : NaN
+  const v = Math.hypot(x, y)
+  return Number.isFinite(v) ? v : NaN
 }
 
 /**

@@ -3,14 +3,17 @@ import {
   createRosConnection,
   diagnosticArrayToStatuses,
   goalToPoseStamped,
+  imuToAttitude,
   isZeroTwist,
   jointStateToJoints,
   laserScanToScan,
   mergeDiagnostics,
   occupancyGridToGrid,
+  odometryToSpeed,
   parseRosJson,
   pointCloud2ToPoints,
   poseToRobotMapPose,
+  quaternionToEuler,
   quaternionToYaw,
   rosLogToLogLine,
   RosConnectionError,
@@ -28,6 +31,7 @@ import { gridToPlan, rasteriseGrid, rosToPlan, scanToPoints, type RobotMapGrid, 
 import type { JointStateJoint } from "@/registry/syncrobotic/ui/joint-state"
 import type { DiagnosticStatus } from "@/registry/syncrobotic/ui/diagnostics"
 import type { LogLine } from "@/registry/syncrobotic/ui/log-viewer"
+import type { AttitudeSample } from "@/registry/syncrobotic/ui/attitude"
 import { fakeRosbridge } from "./fake-rosbridge"
 
 // The rosbridge client against a fake socket (the server is played by the test), and the converters against messages
@@ -771,5 +775,80 @@ describe("rosLogToLogLine", () => {
 
   it("falls back to when it was received for a message with no stamp", () => {
     expect(rosLogToLogLine({ level: 20, msg: "ok" }, { receivedAt: 5 })).toEqual({ time: 5, level: "info", message: "ok" })
+  })
+})
+
+/** A quaternion for roll, pitch and yaw in degrees, composed as tf2's setRPY does (z, then y, then x). */
+const rpy = (roll: number, pitch: number, yaw: number) => {
+  const r = (roll * Math.PI) / 360
+  const p = (pitch * Math.PI) / 360
+  const y = (yaw * Math.PI) / 360
+  const [cr, sr, cp, sp, cy, sy] = [Math.cos(r), Math.sin(r), Math.cos(p), Math.sin(p), Math.cos(y), Math.sin(y)]
+  return { w: cr * cp * cy + sr * sp * sy, x: sr * cp * cy - cr * sp * sy, y: cr * sp * cy + sr * cp * sy, z: cr * cp * sy - sr * sp * cy }
+}
+
+describe("imuToAttitude", () => {
+  it("reads roll, pitch and yaw back as tf2's getRPY does", () => {
+    const e = quaternionToEuler(rpy(12, -7, 135))
+    expect((e.roll * 180) / Math.PI).toBeCloseTo(12, 6)
+    expect((e.pitch * 180) / Math.PI).toBeCloseTo(-7, 6)
+    expect((e.yaw * 180) / Math.PI).toBeCloseTo(135, 6)
+  })
+
+  it("keeps REP 103's signs: right side down and nose down are positive", () => {
+    // A rotation about +x (forward) lifts the left side: right side down.
+    const right = imuToAttitude({ orientation: { x: Math.sin(Math.PI / 24), y: 0, z: 0, w: Math.cos(Math.PI / 24) } })
+    expect(right.roll).toBeCloseTo(15, 6)
+    // A rotation about +y (left) lowers the nose.
+    const down = imuToAttitude({ orientation: { x: 0, y: Math.sin(Math.PI / 36), z: 0, w: Math.cos(Math.PI / 36) } })
+    expect(down.pitch).toBeCloseTo(10, 6)
+  })
+
+  it("gives a compass heading from an east-north-up yaw: east is 90°, north 0°, west 270°", () => {
+    expect(imuToAttitude({ orientation: rpy(0, 0, 0) }).heading).toBeCloseTo(90, 6)
+    expect(imuToAttitude({ orientation: rpy(0, 0, 90) }).heading).toBeCloseTo(0, 6)
+    expect(imuToAttitude({ orientation: rpy(0, 0, 180) }).heading).toBeCloseTo(270, 6)
+    expect(imuToAttitude({ orientation: rpy(0, 0, -91) }).heading).toBeCloseTo(181, 6)
+    expect(imuToAttitude({ orientation: rpy(3, 4, 90) }, { heading: false })).not.toHaveProperty("heading")
+  })
+
+  it("reads a quaternion that is not normalised, and gives nothing for an IMU without orientation", () => {
+    const q = rpy(20, 5, 0)
+    const a = imuToAttitude({ orientation: { x: q.x * 3, y: q.y * 3, z: q.z * 3, w: q.w * 3 } })
+    expect(a.roll).toBeCloseTo(20, 6)
+    expect(a.pitch).toBeCloseTo(5, 6)
+    expect(imuToAttitude({ orientation: q, orientation_covariance: [-1, 0, 0, 0, 0, 0, 0, 0, 0] })).toEqual({})
+    expect(imuToAttitude({ orientation: { x: 0, y: 0, z: 0, w: 0 } })).toEqual({})
+    expect(imuToAttitude({ orientation: { x: NaN, y: 0, z: 0, w: 1 } })).toEqual({})
+  })
+
+  it("never gives NaN at a pitch of 90°", () => {
+    const a = imuToAttitude({ orientation: { x: 0, y: Math.SQRT1_2 + 1e-12, z: 0, w: Math.SQRT1_2 } })
+    expect(Number.isNaN(a.pitch)).toBe(false)
+    expect(a.pitch).toBeCloseTo(90, 3)
+  })
+
+  it("is assignable to attitude's push", () => {
+    const sample: AttitudeSample = imuToAttitude({ orientation: rpy(1, 2, 3) })
+    expect(sample.roll).toBeCloseTo(1, 6)
+  })
+})
+
+describe("odometryToSpeed", () => {
+  const twist = (x: number, y = 0): RosTwist => ({ linear: { x, y, z: 0 }, angular: { x: 0, y: 0, z: 0.4 } })
+  it("is the length of the planar linear velocity, from Odometry, TwistStamped or Twist", () => {
+    const odom = { pose: { pose: { position: { x: 0, y: 0 }, orientation: { x: 0, y: 0, z: 0, w: 1 } } }, twist: { twist: twist(0.6, 0.8) } }
+    expect(odometryToSpeed(odom)).toBeCloseTo(1, 9)
+    expect(odometryToSpeed({ twist: twist(-1.2) })).toBeCloseTo(1.2, 9)
+    expect(odometryToSpeed(twist(0.5))).toBeCloseTo(0.5, 9)
+  })
+
+  it("keeps the sign of linear x with signed, for reversing", () => {
+    expect(odometryToSpeed({ twist: { twist: twist(-0.7, 0.3) } } as never, { signed: true })).toBeCloseTo(-0.7, 9)
+  })
+
+  it("is NaN for a twist that is not a number, and 0 for one with nothing set", () => {
+    expect(odometryToSpeed(twist(NaN))).toBeNaN()
+    expect(odometryToSpeed({ twist: {} } as never)).toBe(0)
   })
 })

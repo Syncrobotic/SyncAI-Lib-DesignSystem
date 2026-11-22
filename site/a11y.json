@@ -409,6 +409,16 @@
     "tabStops": 6,
     "live": true
   },
+  "attitude": {
+    "roles": [
+      "group",
+      "img",
+      "meter",
+      "status"
+    ],
+    "tabStops": 0,
+    "live": true
+  },
   "tabs": {
     "roles": [
       "tab",

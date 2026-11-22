@@ -861,6 +861,377 @@
    "inherits": []
   }
  ],
+ "attitude": [
+  {
+   "name": "AttitudeIndicator",
+   "props": [
+    {
+     "name": "roll",
+     "type": "number",
+     "description": "Degrees, REP 103: positive is the right side down. For a stream, push instead (`ref` or `subscribe`)."
+    },
+    {
+     "name": "pitch",
+     "type": "number",
+     "description": "Degrees, REP 103: positive is the nose down."
+    },
+    {
+     "name": "heading",
+     "type": "number",
+     "description": "Compass heading in degrees, clockwise from north. Left out (and never pushed), the ring shows no compass."
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "What the instrument shows, for screen readers: \"Attitude, Patrol dog 7F3A\"."
+    },
+    {
+     "name": "ref",
+     "type": "((instance: AttitudeHandle | null) => void | (() => VoidOrUndefinedOnly) | DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES[keyof DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES]) | RefObject<AttitudeHandle | null>",
+     "description": "push and clear, called from anywhere without rendering."
+    },
+    {
+     "name": "subscribe",
+     "type": "(push: AttitudeHandle[\"push\"]) => (() => void) | void",
+     "description": "Connects a source once: called with `push` when it mounts (and again if this function changes); return the function that disconnects. Keep it stable (module level, or one the React Compiler memoises). `(push) => ros.subscribe(\"/imu/data\", \"sensor_msgs/Imu\", (m) => push(imuToAttitude(m), stampToMs(m.header?.stamp)))`."
+    },
+    {
+     "name": "limits",
+     "type": "{ roll?: AttitudeLimit; pitch?: AttitudeLimit }",
+     "description": "Warning and critical limits for roll and pitch, either side of level. Marked on the drawing; past one, the value says so."
+    },
+    {
+     "name": "updatedAt",
+     "type": "number",
+     "description": "When the props' reading was taken (the message's stamp): a new stamp is an update, and it is the time Stale shows."
+    },
+    {
+     "name": "staleAfterMs",
+     "type": "number",
+     "description": "With no update for this long, the instrument dims and says Stale with the last update's time. Left out, never stale."
+    },
+    {
+     "name": "announceEveryMs",
+     "type": "number",
+     "default": "5000",
+     "description": "How often, at most, screen readers hear a limit crossed (a step up to critical is said at once)."
+    },
+    {
+     "name": "size",
+     "type": "\"md\" | \"lg\"",
+     "default": "\"md\"",
+     "description": "md 192 px (the default) or lg 256 px."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "BCP 47 tag for numbers and times (\"zh-TW\"): pass the app's locale. Left out, English on the server and in every browser."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<AttitudeIndicatorLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "roll",
+       "type": "string",
+       "default": "\"Roll\"",
+       "description": ""
+      },
+      {
+       "name": "pitch",
+       "type": "string",
+       "default": "\"Pitch\"",
+       "description": ""
+      },
+      {
+       "name": "heading",
+       "type": "string",
+       "default": "\"Heading\"",
+       "description": ""
+      },
+      {
+       "name": "degrees",
+       "type": "(value: string) => string",
+       "default": "(v) => `${v}°`",
+       "description": "A value in degrees, given already formatted: \"12\" → \"12°\"."
+      },
+      {
+       "name": "directed",
+       "type": "(value: string, direction: string) => string",
+       "default": "(v, d) => `${v} ${d}`",
+       "description": "Roll with its side down: (\"12°\", \"left\") → \"12° left\"."
+      },
+      {
+       "name": "left",
+       "type": "string",
+       "default": "\"left\"",
+       "description": "Which side is down."
+      },
+      {
+       "name": "right",
+       "type": "string",
+       "default": "\"right\"",
+       "description": ""
+      },
+      {
+       "name": "noseUp",
+       "type": "string",
+       "default": "\"nose up\"",
+       "description": ""
+      },
+      {
+       "name": "noseDown",
+       "type": "string",
+       "default": "\"nose down\"",
+       "description": ""
+      },
+      {
+       "name": "compassPoints",
+       "type": "readonly string[]",
+       "default": "[\"N\", \"NE\", \"E\", \"SE\", \"S\", \"SW\", \"W\", \"NW\"]",
+       "description": "The 8 compass points from north, clockwise: N, NE, E, SE, S, SW, W, NW. N, E, S and W are drawn on the ring."
+      },
+      {
+       "name": "headingText",
+       "type": "(value: string, point: string) => string",
+       "default": "(v, p) => `${v} ${p}`",
+       "description": "A heading with its compass point: (\"271°\", \"W\") → \"271° W\"."
+      },
+      {
+       "name": "overLimit",
+       "type": "string",
+       "default": "\"Over limit\"",
+       "description": "Past a `warning` limit."
+      },
+      {
+       "name": "critical",
+       "type": "string",
+       "default": "\"Critical\"",
+       "description": "Past a `critical` limit."
+      },
+      {
+       "name": "withState",
+       "type": "(value: string, state: string) => string",
+       "default": "(v, s) => `${v}, ${s.toLowerCase()}`",
+       "description": "A value with the limit it is past, as screen readers hear it: (\"27° right\", \"Over limit\") → \"27° right, over limit\"."
+      },
+      {
+       "name": "withinLimits",
+       "type": "string",
+       "default": "\"Roll and pitch within limits\"",
+       "description": "Said when everything is back within its limits."
+      },
+      {
+       "name": "noValue",
+       "type": "string",
+       "default": "\"–\"",
+       "description": "Where a value is unknown."
+      },
+      {
+       "name": "waiting",
+       "type": "string",
+       "default": "\"Waiting for data\"",
+       "description": ""
+      },
+      {
+       "name": "stale",
+       "type": "string",
+       "default": "\"Stale\"",
+       "description": ""
+      },
+      {
+       "name": "lastUpdate",
+       "type": "(time: string) => string",
+       "default": "(time) => `last update ${time}`",
+       "description": "After \"Stale\": when the last reading was taken."
+      },
+      {
+       "name": "summary",
+       "type": "(parts: { roll?: string; pitch?: string; heading?: string; }) => string",
+       "default": "({ roll, pitch, heading }) => { const s = [roll && `roll ${roll}`, pitch && `pitch ${pitch}`, heading && `heading ${heading}`].filter(Boolean).join(\", \") return s.charAt(0).toUpperCase() + s.slice(1) }",
+       "description": "The values in one sentence, as screen readers hear the instrument: \"Roll 12° left, pitch 3° nose down, heading 271° W\"."
+      },
+      {
+       "name": "formatTime",
+       "type": "(date: Date, locale?: string) => string",
+       "default": "clockTime",
+       "description": "A time of day, 24-hour with seconds by default; with `locale`, that locale's 24-hour time."
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "Gauge",
+   "props": [
+    {
+     "name": "value",
+     "type": "number",
+     "description": "The value now. For a stream, push instead (`ref` or `subscribe`)."
+    },
+    {
+     "name": "min",
+     "type": "number",
+     "default": "0",
+     "description": ""
+    },
+    {
+     "name": "max",
+     "type": "number",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "low",
+     "type": "number",
+     "description": "Warning from here: below it, or at and above it when `higherIsWorse` (Meter's thresholds, Meter's words)."
+    },
+    {
+     "name": "critical",
+     "type": "number",
+     "description": "Danger from here."
+    },
+    {
+     "name": "higherIsWorse",
+     "type": "boolean",
+     "default": "false",
+     "description": "A value that is worse as it rises: a temperature, a current, a speed over a limit."
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "What is measured: \"Speed\", \"Left motor temperature\". Written under the dial, and read with the value."
+    },
+    {
+     "name": "unit",
+     "type": "string",
+     "default": "\"\"",
+     "description": "Written under the number and after it for screen readers: \"m/s\", \"°C\", \"A\"."
+    },
+    {
+     "name": "digits",
+     "type": "number",
+     "default": "1",
+     "description": "Decimals. Defaults to 1."
+    },
+    {
+     "name": "size",
+     "type": "\"sm\" | \"md\" | \"lg\"",
+     "default": "\"md\"",
+     "description": "sm 96 px, md 144 px (the default), lg 192 px."
+    },
+    {
+     "name": "ref",
+     "type": "((instance: GaugeHandle | null) => void | (() => VoidOrUndefinedOnly) | DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES[keyof DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES]) | RefObject<GaugeHandle | null>",
+     "description": ""
+    },
+    {
+     "name": "subscribe",
+     "type": "(push: GaugeHandle[\"push\"]) => (() => void) | void",
+     "description": "Connects a source once, as AttitudeIndicator's: `(push) => ros.subscribe(\"/odom\", \"nav_msgs/Odometry\", (m) => push(odometryToSpeed(m), stampToMs(m.header?.stamp)))`. Keep it stable."
+    },
+    {
+     "name": "updatedAt",
+     "type": "number",
+     "description": ""
+    },
+    {
+     "name": "staleAfterMs",
+     "type": "number",
+     "description": "With no update for this long the gauge dims and says Stale. Left out, never stale."
+    },
+    {
+     "name": "announceEveryMs",
+     "type": "number",
+     "default": "5000",
+     "description": ""
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "labels",
+     "type": "Partial<GaugeLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "withUnit",
+       "type": "(value: string, unit: string) => string",
+       "default": "(v, unit) => (!unit ? v : unit === \"°\" ? `${v}°` : `${v} ${unit}`)",
+       "description": "A value with its unit, for screen readers: (\"1.2\", \"m/s\") → \"1.2 m/s\"; degrees take no space: \"42°\"."
+      },
+      {
+       "name": "high",
+       "type": "string",
+       "default": "\"High\"",
+       "description": "Past `low` when higher is worse (a temperature, a current), shown beside the warning triangle."
+      },
+      {
+       "name": "low",
+       "type": "string",
+       "default": "\"Low\"",
+       "description": "Past `low` when lower is worse (a battery, a pressure)."
+      },
+      {
+       "name": "critical",
+       "type": "string",
+       "default": "\"Critical\"",
+       "description": "Past `critical`."
+      },
+      {
+       "name": "backToNormal",
+       "type": "string",
+       "default": "\"back to normal\"",
+       "description": "Said when the value is back within its thresholds."
+      },
+      {
+       "name": "withState",
+       "type": "(value: string, state: string) => string",
+       "default": "(v, s) => `${v}, ${s.toLowerCase()}`",
+       "description": "A reading with a state, for screen readers: (\"1.2 m/s\", \"Stale\") → \"1.2 m/s, stale\"."
+      },
+      {
+       "name": "noValue",
+       "type": "string",
+       "default": "\"–\"",
+       "description": ""
+      },
+      {
+       "name": "waiting",
+       "type": "string",
+       "default": "\"Waiting for data\"",
+       "description": ""
+      },
+      {
+       "name": "stale",
+       "type": "string",
+       "default": "\"Stale\"",
+       "description": ""
+      },
+      {
+       "name": "lastUpdate",
+       "type": "(time: string) => string",
+       "default": "(time) => `last update ${time}`",
+       "description": ""
+      },
+      {
+       "name": "formatTime",
+       "type": "(date: Date, locale?: string) => string",
+       "default": "clockTime",
+       "description": ""
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "autocomplete": [
   {
    "name": "Autocomplete",
@@ -8186,7 +8557,7 @@
    "props": [
     {
      "name": "side",
-     "type": "\"bottom\" | \"right\" | \"left\"",
+     "type": "\"left\" | \"right\" | \"bottom\"",
      "default": "\"bottom\"",
      "description": ""
     }
@@ -8320,7 +8691,7 @@
    "props": [
     {
      "name": "side",
-     "type": "\"right\" | \"left\"",
+     "type": "\"left\" | \"right\"",
      "default": "\"left\"",
      "description": ""
     },

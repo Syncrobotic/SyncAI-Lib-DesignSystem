@@ -957,6 +957,28 @@ export const overviews: Record<string, Overview> = {
       "Every word is in `labels`, including `formatTime`, the axis' `secondsAgo` and `minutesAgo`, `withUnit` and `reading` (what screen readers hear); `locale` formats the numbers and times. Pass the app's locale.",
     ],
   },
+  attitude: {
+    what: "Two instruments for a robot's state now: AttitudeIndicator (roll and pitch on an artificial horizon, the heading on a compass ring, each also written in degrees and words) and Gauge (one value with a known range on a dial, with Meter's thresholds).",
+    use: [
+      "A legged or tracked robot on rough ground or a slope: how far it leans, against its tip-over limit.",
+      "An AMR on a ramp or a dock plate: pitch and roll while it climbs.",
+      "A robot's speed, a motor's temperature or a wheel's current at a glance, beside the drive controls or on a robot's page.",
+    ],
+    instead: [
+      "A level that stays (battery, storage, signal): `meter`, a bar, which reads faster in a list.",
+      "How a value moved over the last minutes: `streaming-chart`.",
+      "A limit crossed that needs someone to act: raise an `alarm` too; the instrument shows where, the alarm asks for the action.",
+      "A pose on a map: `robot-map`; the arm's joints: `joint-state`.",
+    ],
+    notes: [
+      "Plain props for a fixed reading; for a stream, `push` on the ref or `subscribe={(push) => ros.subscribe(\"/imu/data\", \"sensor_msgs/Imu\", (m) => push(imuToAttitude(m), stampToMs(m.header?.stamp)))}`. A reading moves the drawing on the next frame without a React render; the numbers render at most four times a second, and at once when a limit is crossed.",
+      "Degrees, REP 103 signs: positive roll is the right side down, positive pitch the nose down; `heading` is clockwise from north (`imuToAttitude` gives 90 − yaw, the IMU's orientation being east-north-up). Direction is always said in words, so the sign never has to be read.",
+      "`limits.roll` and `limits.pitch` take `warning` and `critical`, the same either side of level. Gauge takes Meter's `low`, `critical` and `higherIsWorse` and reads them with Meter's own functions (`meterTone`, `meterSaid`), so a 74 °C motor is \"High\" on both.",
+      "Stale is timed by when this browser received the reading, never by the stamp; the stamp is the time Stale shows. Without `staleAfterMs` it never goes stale.",
+      "The attitude is a role=img whose name is the whole reading in words, with the readouts as text beside it; Gauge is a role=meter with `aria-valuetext` (\"73.8 °C, high\"). A limit crossed is announced politely, at most every `announceEveryMs` (5 s), at once when it turns critical; what is already past a limit when the data arrives is shown, not announced.",
+      "Every word is in `labels` (`attitudeIndicatorLabels`, `gaugeLabels` in `labels-zh-tw`), including the compass points and `summary`, what screen readers hear; `locale` formats the numbers and the time.",
+    ],
+  },
   command: {
     what: "Search and run from the keyboard: a filterable list, and the ⌘K palette that opens over any page.",
     use: ["The app's search for robots, pages and actions (AppShell `search`).", "Picking from a long list by typing."],
@@ -1065,14 +1087,14 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   ros: {
-    what: "The rosbridge v2 client and the message converters behind use-ros, in plain TypeScript: a connection that reconnects and resubscribes, and pure functions from OccupancyGrid, LaserScan, PointCloud2, JointState, DiagnosticArray and poses to the components' props, and from a teleop command or a map goal back to Twist and PoseStamped.",
+    what: "The rosbridge v2 client and the message converters behind use-ros, in plain TypeScript: a connection that reconnects and resubscribes, and pure functions from OccupancyGrid, LaserScan, PointCloud2, JointState, Imu, Odometry, DiagnosticArray and poses to the components' props, and from a teleop command or a map goal back to Twist and PoseStamped.",
     use: [
-      "Feeding `robot-map`, `point-cloud`, `joint-state`, `diagnostics` from ROS messages, whatever brought them (rosbridge, Foxglove, a recorded bag, your backend).",
+      "Feeding `robot-map`, `point-cloud`, `joint-state`, `diagnostics`, `attitude` from ROS messages, whatever brought them (rosbridge, Foxglove, a recorded bag, your backend).",
       "A rosbridge connection outside React: a worker that decodes clouds, a test, a script.",
     ],
     instead: ["Connecting React components: `use-ros`, which installs this."],
     notes: [
-      "`occupancyGridToGrid` (robot-map `grid` or `costmap`), `laserScanToScan(msg, robotId)` (robot-map `scans`), `poseToRobotMapPose(msg, gridToPlan(grid))` (a robot's x, y and heading; takes Pose, PoseStamped, PoseWithCovarianceStamped or Odometry), `goalToPoseStamped(goal, frame)` (robot-map `onGoal` to /goal_pose), `pointCloud2ToPoints` (point-cloud `points` and `intensity`), `jointStateToJoints(msg, { limits })` (joint-state `joints`), `diagnosticArrayToStatuses(msg)` and `mergeDiagnostics(previous, next)` (diagnostics `statuses`), `teleopToTwist(command, { maxLinear, maxAngular })`, `rosLogToLogLine` (a /rosout message as a log-viewer line, ROS 1 or 2), `stampToMs(header.stamp)` (`updatedAt`). For robot-model, its own `jointStateToRecord`.",
+      "`occupancyGridToGrid` (robot-map `grid` or `costmap`), `laserScanToScan(msg, robotId)` (robot-map `scans`), `poseToRobotMapPose(msg, gridToPlan(grid))` (a robot's x, y and heading; takes Pose, PoseStamped, PoseWithCovarianceStamped or Odometry), `goalToPoseStamped(goal, frame)` (robot-map `onGoal` to /goal_pose), `pointCloud2ToPoints` (point-cloud `points` and `intensity`), `jointStateToJoints(msg, { limits })` (joint-state `joints`), `diagnosticArrayToStatuses(msg)` and `mergeDiagnostics(previous, next)` (diagnostics `statuses`), `imuToAttitude(msg)` (attitude's roll, pitch and heading in degrees; `quaternionToEuler` for the radians), `odometryToSpeed(msg)` (Gauge's speed in m/s), `teleopToTwist(command, { maxLinear, maxAngular })`, `rosLogToLogLine` (a /rosout message as a log-viewer line, ROS 1 or 2), `stampToMs(header.stamp)` (`updatedAt`). For robot-model, its own `jointStateToRecord`.",
       "rosbridge sends `uint8[]` (PointCloud2.data) as base64 and `int8[]` (OccupancyGrid.data) as a list of numbers; the converters read either. NaN and ±Infinity in a LaserScan arrive as null (or as bare tokens, which the client reads as null) and are skipped like out-of-range readings.",
       "A pose must be in the map frame for robot-map (/amcl_pose is; /odom drifts). A scan is drawn from the robot's centre, so transform it to the base frame first if the laser is offset.",
     ],

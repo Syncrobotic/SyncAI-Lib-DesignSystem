@@ -2,6 +2,14 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **`attitude` 0.29.0 (beta):** two instruments for a robot's state now, in the kit's chart language (graphite and one accent, no gradients) and always written out in numbers and words. `AttitudeIndicator` draws roll and pitch as an artificial horizon and the heading on a compass ring, with "Roll 12° left", "Pitch 3° nose down" and "Heading 271° W" beside it; roll and pitch `limits` (a tip-over warning at 25°, a critical angle) are marked with the kit's triangle and square and turn the value, the mark and the robot's symbol warning or danger only once crossed, with a word. `Gauge` draws one value with a known range on a 270° dial in three sizes, with Meter's `low`, `critical` and `higherIsWorse` and Meter's words ("High", "Low", "Critical"; `aria-valuetext` "73.8 °C, high"). Both take props, or `push` on the ref and `subscribe` at 20 to 50 Hz: the drawing follows every frame without a React render and the numbers render at most four times a second. Stale after `staleAfterMs`, no sweep animation, the drawing steps with the numbers under reduced motion, and a crossed limit is announced politely, at most every 5 s. On [Robotics UI kit](https://design-system.syncrobotic.me/docs/robotics) under The robot's state.
+- **`ros` 0.29.0:** `imuToAttitude` (sensor_msgs/Imu to roll, pitch and a compass heading in degrees, REP 103 and 145), `quaternionToEuler` and `odometryToSpeed` (nav_msgs/Odometry's twist to m/s).
+- **`meter` 0.29.0:** exports `meterTone` and `meterSaid`, which `attitude`'s Gauge reuses; Meter itself is unchanged.
+- **`labels-zh-tw` 0.29.0:** `attitudeIndicatorLabels` and `gaugeLabels`.
+
 ## 0.28.0 · 2026-11-22
 
 Four new components for robot consoles (streaming chart, log viewer, diagnostics, sidebar) and the fixes from a page-by-page audit of every component, block and docs page. Read **Changed** before upgrading: a few defaults and words change.
