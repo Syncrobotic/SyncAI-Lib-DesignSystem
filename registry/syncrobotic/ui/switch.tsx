@@ -1,4 +1,4 @@
-// @syncrobotic/switch v0.17.1 · update: npx shadcn add @syncrobotic/switch --overwrite
+// @syncrobotic/switch v0.31.0 · update: npx shadcn add @syncrobotic/switch --overwrite
 "use client"
 
 import * as React from "react"
@@ -21,7 +21,7 @@ export function Switch({ className, ...props }: React.ComponentProps<typeof Swit
     >
       <SwitchPrimitive.Thumb
         className={cn(
-          "pointer-events-none block size-6 rounded-full bg-white shadow-float data-[state=checked]:bg-primary-foreground",
+          "pointer-events-none block size-6 rounded-full bg-thumb shadow-float data-[state=checked]:bg-primary-foreground",
           "transition-transform duration-(--motion-base) ease-(--ease-standard) data-[state=checked]:translate-x-5",
         )}
       />

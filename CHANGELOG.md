@@ -2,6 +2,15 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Fixed
+- **`kbd` 0.31.0:** a key inside a tooltip shows in dark: its cap and edge are the tooltip's text colour, faint (`primary-foreground` at 15 % and 20 %), instead of white on the near-white dark tooltip (1.0:1 before). Issue #301.
+- **`slider` 0.31.0, `switch` 0.31.0:** the thumb is the new `--thumb` token instead of a raw white; it looks the same. Issue #301.
+- **`syncrobotic-theme` 0.31.0:** new `--thumb` (`bg-thumb`), white in every mode, so a theme or contrast mode can change the knob of a slider or switch. Issue #301.
+- **`geo-map` 0.31.0:** each robot's name label has a `key` (react/jsx-key). Issue #301.
+- **`agent-skill` 0.31.0, Radius foundation:** `rounded-[inherit]` is allowed on a child that fills its parent edge to edge (scroll viewport, avatar picture, a stretched link), so a product lint can allow it by rule. Issue #301.
+
 ## 0.30.0 · 2026-11-22
 
 A menu for the theme toggle, tabs in the phone drawer, two accessibility fixes from a product team (dark predicted annotations, Escape in a native dialog) and a much lighter docs site.

@@ -81,6 +81,10 @@
       "$type": "color",
       "$value": "#3f3f46"
     },
+    "thumb": {
+      "$type": "color",
+      "$value": "#ffffff"
+    },
     "info": {
       "$type": "color",
       "$value": "#7da4e6"

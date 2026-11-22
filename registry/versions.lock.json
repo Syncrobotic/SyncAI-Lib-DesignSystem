@@ -1,7 +1,7 @@
 {
   "syncrobotic-theme": {
-    "version": "0.30.0",
-    "hash": "f6bfe816589e896f"
+    "version": "0.31.0",
+    "hash": "56118eb4032e25e5"
   },
   "cn": {
     "version": "0.5.0",
@@ -88,8 +88,8 @@
     "hash": "939af3f1ab76abb6"
   },
   "geo-map": {
-    "version": "0.29.0",
-    "hash": "2ae65b5cc1c39666"
+    "version": "0.31.0",
+    "hash": "d8a0a5c553cc1346"
   },
   "spinner": {
     "version": "0.23.0",
@@ -148,8 +148,8 @@
     "hash": "ef34189d92ad4b30"
   },
   "switch": {
-    "version": "0.17.1",
-    "hash": "49439b4434ec16c7"
+    "version": "0.31.0",
+    "hash": "c5d7e919c6f976dd"
   },
   "choice-field": {
     "version": "0.15.1",
@@ -160,8 +160,8 @@
     "hash": "14064e03debbbc84"
   },
   "slider": {
-    "version": "0.21.1",
-    "hash": "161cee64310b2399"
+    "version": "0.31.0",
+    "hash": "b4040da405239ed3"
   },
   "badge": {
     "version": "0.16.1",
@@ -316,8 +316,8 @@
     "hash": "01cb225fbc79551e"
   },
   "kbd": {
-    "version": "0.28.0",
-    "hash": "ab6debab304e90bd"
+    "version": "0.31.0",
+    "hash": "56c7e529e087c9d5"
   },
   "robot-icons": {
     "version": "0.22.1",
@@ -572,8 +572,8 @@
     "hash": "f92b1126101d0227"
   },
   "agent-skill": {
-    "version": "0.22.0",
-    "hash": "e945ec999a5c5401"
+    "version": "0.31.0",
+    "hash": "1410355b968ef8ea"
   },
   "line-chart-telemetry": {
     "version": "0.17.2",

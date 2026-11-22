@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.30.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "New `--thumb` (`bg-thumb`): the knob you drag on a slider and a switch that is off; white in every mode, as before, but a theme can now change it. Issue #301."
+          },
           {
             "version": "0.30.0",
             "date": "2026-11-22",
@@ -1014,8 +1019,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.29.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "Each robot's name label has a `key`, so a product on eslint-config-next (react/jsx-key) gets no error from the unmodified file. Issue #301."
+          },
           {
             "version": "0.29.0",
             "date": "2026-11-22",
@@ -1690,8 +1700,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "The knob while off is the new `--thumb` token (`bg-thumb`) instead of a raw white; it looks the same. Issue #301."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -1859,8 +1874,13 @@
         }
       ],
       "meta": {
-        "version": "0.21.1",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "The thumb is the new `--thumb` token (`bg-thumb`) instead of a raw white; it looks the same. Issue #301."
+          },
           {
             "version": "0.21.1",
             "date": "2026-11-21",
@@ -3640,8 +3660,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "In a tooltip the key cap and its edge take the tooltip's text colour (`primary-foreground` at 15 % and 20 %) instead of white, so they show in dark, where the tooltip is near-white (1.0:1 before, now 1.4:1 and 1.6:1; the key itself 13.7:1). Issue #301."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -6955,8 +6980,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "Radius: `rounded-[inherit]` is allowed on a child that fills its parent edge to edge (a scroll viewport, an avatar's picture, a stretched link's hit area), so a product lint that enforces the scale can allow it by rule. Issue #301."
+          },
           {
             "version": "0.22.0",
             "date": "2026-11-20",
