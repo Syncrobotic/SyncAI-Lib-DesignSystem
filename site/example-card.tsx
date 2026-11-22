@@ -8,7 +8,10 @@ export function ExampleCard({
   preview,
   code,
   install,
+  level = 3,
 }: {
+  /** The title's heading level: 2 for the example at the top of a page, before its first h2; 3 under a section. */
+  level?: 2 | 3
   id: string
   title: string
   preview: React.ReactNode
@@ -17,6 +20,7 @@ export function ExampleCard({
 }) {
   // "Button variants" -> button-variants.tsx: a file name you could save it as.
   const file = `${title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}.tsx`
+  const Heading = level === 2 ? "h2" : "h3"
   return (
     <section id={id} aria-labelledby={`${id}-title`} className="scroll-mt-20 overflow-hidden rounded-md border border-border bg-card">
       <div className="specimen flex min-h-32 items-center justify-center p-4 sm:min-h-48 sm:p-8">
@@ -24,9 +28,9 @@ export function ExampleCard({
         <div className="w-full">{preview}</div>
       </div>
       <div className="flex items-center justify-between gap-4 border-t border-border py-1 pr-1 pl-4">
-        <h3 id={`${id}-title`} className="truncate text-sm text-muted-foreground">
+        <Heading id={`${id}-title`} className="truncate text-sm text-muted-foreground">
           {title}
-        </h3>
+        </Heading>
         <CodeSheet title={file} install={install} files={[{ name: file, code }]} />
       </div>
     </section>
