@@ -2,7 +2,9 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.31.0 · 2026-11-22
+
+Two components for model answers (streaming text, text linked to marks on a picture), a tier badge, and 13 fixes and options asked for by product teams: heading levels, sticky tabs under the shell, multi-select chips, formatted meters, chart inks and more.
 
 ### Added
 - **`chip-group` 0.31.0:** `type="multiple"` for any of several values in one facet: `value` and `onValueChange` take a list, the chips are pressed buttons, and chosen links say "selected" instead of aria-current (new label `selected`, in `labels-zh-tw` too); `max` keeps every chosen chip in view. Issue #304.
