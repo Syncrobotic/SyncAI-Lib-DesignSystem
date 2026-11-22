@@ -204,7 +204,7 @@
           {
             "version": "0.29.0",
             "date": "2026-11-22",
-            "note": "`waypointEditorLabels` for the new waypoint-editor. `cameraWallLabels` for the new camera-wall."
+            "note": "`waypointEditorLabels` for the new waypoint-editor. `cameraWallLabels` for the new camera-wall. New geoMapLabels (and geoMapListLabels) for the new geo-map: fixes (RTK 固定解, 未定位), coordinates as 北緯 / 東經, headings with the compass point, and the goal card."
           },
           {
             "version": "0.28.0",
@@ -224,7 +224,7 @@
       "name": "ros",
       "type": "registry:lib",
       "title": "ROS",
-      "description": "ROS and ROS 2 over rosbridge with no ROS library: a rosbridge v2 client on the browser's WebSocket (ref-counted subscriptions and advertisements, capped jittered reconnect that resubscribes, a send queue, service calls with a timeout, a zero Twist when a velocity publisher stops or the link drops) and pure converters from OccupancyGrid, LaserScan, PointCloud2, JointState, DiagnosticArray, /rosout Log and poses to the kit's components, a web_video_server URL for an image topic, and from a teleop command, a map goal and a waypoint route back to Twist, PoseStamped, nav_msgs/Path and Nav2's NavigateThroughPoses goal (and the route back from them).",
+      "description": "ROS and ROS 2 over rosbridge with no ROS library: a rosbridge v2 client on the browser's WebSocket (ref-counted subscriptions and advertisements, capped jittered reconnect that resubscribes, a send queue, service calls with a timeout, a zero Twist when a velocity publisher stops or the link drops) and pure converters from OccupancyGrid, LaserScan, PointCloud2, JointState, NavSatFix and GeoPoint, DiagnosticArray, /rosout Log and poses to the kit's components, a web_video_server URL for an image topic, and from a teleop command, a map goal and a waypoint route back to Twist, PoseStamped, nav_msgs/Path and Nav2's NavigateThroughPoses goal (and the route back from them).",
       "dependencies": [],
       "registryDependencies": [],
       "files": [
@@ -239,7 +239,7 @@
           {
             "version": "0.29.0",
             "date": "2026-11-22",
-            "note": "`waypointsToPath` and `waypointsToNavigateThroughPoses` turn waypoint-editor's route into a `nav_msgs/Path` and the goal of Nav2's NavigateThroughPoses (PoseStamped in the map frame; a waypoint without a heading faces the next one), and `pathToWaypoints` and `navigateThroughPosesToWaypoints` turn them back (Kilted's `nav_msgs/Goals` too). `webVideoServerSrc(server, topic, { quality })` builds the web_video_server URL a `<video>` plays for a `sensor_msgs/Image` topic (VP8 WebM by default, H.264 for Safari), sized by camera-wall's quality hint (`webVideoQuality`: low 640×360, high 1280×720)."
+            "note": "`waypointsToPath` and `waypointsToNavigateThroughPoses` turn waypoint-editor's route into a `nav_msgs/Path` and the goal of Nav2's NavigateThroughPoses (PoseStamped in the map frame; a waypoint without a heading faces the next one), and `pathToWaypoints` and `navigateThroughPosesToWaypoints` turn them back (Kilted's `nav_msgs/Goals` too). `webVideoServerSrc(server, topic, { quality })` builds the web_video_server URL a `<video>` plays for a `sensor_msgs/Image` topic (VP8 WebM by default, H.264 for Safari), sized by camera-wall's quality hint (`webVideoQuality`: low 640×360, high 1280×720). `navSatFixToGeo` turns a `sensor_msgs/NavSatFix` into geo-map's robot fields (`lat`, `lon`, the fix in words from the status and covariance, and the horizontal accuracy in metres); `geoPointToGeo` reads a `geographic_msgs/GeoPoint`, GeoPose or GeoPoseStamped; `geoGoalToGeoPoseStamped` and `geoGoalToNavSatFix` send a geo-map goal back; `enuYawToHeading` and `headingToEnuYaw` convert between ENU yaw and compass headings."
           },
           {
             "version": "0.28.0",
@@ -983,6 +983,40 @@
           }
         ],
         "status": "stable"
+      }
+    },
+    {
+      "name": "geo-map",
+      "type": "registry:ui",
+      "title": "Geo map",
+      "description": "An outdoor map in latitude and longitude for robots that work outside (patrol, agriculture, delivery), drawn in SVG with no map library: Web Mercator raster tiles from your own tile server ({z}/{x}/{y}) with their attribution, or a coordinate grid that needs no network; robots as status shapes with heading, an accuracy circle and their GPS fix in words; geofences (keep-outs hatched), a route with numbered waypoints and trails; pan and zoom by drag, wheel, pinch, buttons and keys, a scale bar in m and km; a goal placed by pointer or keys and sent on confirm; GeoMapList shows the same robots as text.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/skeleton",
+        "@syncrobotic/button",
+        "@syncrobotic/button-group",
+        "@syncrobotic/robot-icons"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/geo-map.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.29.0",
+        "changelog": [
+          {
+            "version": "0.29.0",
+            "date": "2026-11-22",
+            "note": "First release."
+          }
+        ]
       }
     },
     {

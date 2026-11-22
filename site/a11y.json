@@ -125,6 +125,19 @@
     "tabStops": 6,
     "live": true
   },
+  "geo-map": {
+    "roles": [
+      "alert",
+      "application",
+      "button",
+      "group",
+      "list",
+      "listitem",
+      "status"
+    ],
+    "tabStops": 9,
+    "live": true
+  },
   "spinner": {
     "roles": [
       "button",

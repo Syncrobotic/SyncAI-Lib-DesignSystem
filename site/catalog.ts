@@ -65,6 +65,7 @@ export type StoryFile =
   | "graph"
   | "robot-map"
   | "waypoint-editor"
+  | "geo-map"
   | "point-cloud"
   | "robot-model"
   | "hooks"
@@ -989,7 +990,23 @@ const entries: Record<string, Entry> = {
       "Laser scans are small dots in a neutral ink (the accent over a grid), never a status colour; they show what a robot sees, so a scan beside the walls says its localisation has drifted.",
       "Editing (`mode`) is controlled: the app keeps the goal, waypoints and zones and the map reports changes. One rule for panning while editing: the primary pointer edits, the right or middle button and two fingers pan. Every edit has its keys (a crosshair, Enter, Esc, Delete) and is said in words.",
       "A route still being drawn is grey; only the route a robot is driving is blue (`waypointsPlanned`).",
-      "Up to a few hundred robots and zones: everything is redrawn on each pan. A city-scale map, tiles or GPS belong to a map library.",
+      "Up to a few hundred robots and zones: everything is redrawn on each pan. Robots outdoors on GPS, over tiles, are `geo-map`; a city-scale map belongs to a map library.",
+    ],
+  },
+  "geo-map": {
+    group: "Robotics",
+    wide: true,
+    examples: { file: "geo-map", prefix: "GeoMap" },
+    rules: [
+      "For robots that work outside on satellite positioning (patrol, agriculture, delivery), in latitude and longitude. A site's floor plan in metres, indoors, is `robot-map`.",
+      "Offer GeoMapList beside every GeoMap, as a chart offers its table: a Map / List switch, or the two side by side on a wide screen. The map is one Tab stop; the list is where each robot and its coordinates are reached by keyboard and screen reader.",
+      "Bring your own tile server: pass its `{z}/{x}/{y}` template as `tileUrl` and its licence's words as `attribution`. OpenStreetMap's public tile servers forbid heavy use and apps that do not identify themselves; never ship them as a default. Choose a dark style for the dark theme.",
+      "Without `tileUrl` the map draws a coordinate grid in degrees and needs no network, for robots and control rooms that are offline or air-gapped. If every tile fails, it falls back to the grid and says so.",
+      "Robots are their status shape and name, as on robot-map; colour and the status word only for a robot that needs someone. Each robot's fix is words (RTK fixed, GPS fix · ±3 m, No fix), and its accuracy a grey circle once it is larger than the marker. No fix is the one fix in the warning colour, with LocateOff in the list and a dashed marker at its last place.",
+      "Geofences are outlines, never a fill: the work area dashed grey, a keep-out solid ink and hatched, never red. The route being driven is dashed blue (`routeActive`), the one blue on the map; a route not yet sent and the trails are grey.",
+      "Goal mode asks before it sends: a click places the goal (a drag points it), and a card shows its coordinates, Send and Cancel. A goal in a keep-out or outside the work area cannot be sent: Send is disabled with the reason beside it (Inside Pond, a keep-out area), Enter does nothing but say it, and placing the goal somewhere allowed turns Send back on. Enter places and sends from the keyboard. `confirmGoal={false}` sends on release, as robot-map does, except where it cannot be sent: there it shows and says the same reason.",
+      "Bottom left holds zoom, the scale bar (m or km at the view's latitude) and the attribution, so the emergency stop keeps the bottom right. The map is north up: no north arrow.",
+      "Up to a few hundred robots, fences and route points; everything is redrawn on each pan. Vector tiles, a site that crosses the antimeridian, or a globe belong to a map library.",
     ],
   },
   "waypoint-editor": {
@@ -1330,6 +1347,15 @@ const keyboard: Record<string, [string, string][]> = {
     ["`Space`", "On the plot, pause or resume"],
     ["`←` / `→`", "On the plot, move the view back or forward in time by a tenth of the window, pausing it (Shift: half the window)"],
     ["`End`", "On the plot, jump back to live"],
+  ],
+  "geo-map": [
+    ["`Tab`", "Move into the map (one stop), then to its zoom buttons; with a goal placed, to Cancel and Send goal"],
+    ["`←` `→` `↑` `↓`", "Move the map; in goal mode, move the crosshair (Shift: bigger steps)"],
+    ["`+` / `-`", "Zoom in or out a level"],
+    ["`0`", "Show all robots"],
+    ["`Enter` / `Space`", "Goal mode: place the goal at the crosshair; once placed, send it"],
+    ["`←` / `→` after placing a goal", "Turn the goal 15° (Shift: 45°)"],
+    ["`Esc`", "Cancel the goal; otherwise clear the selection"],
   ],
   "point-cloud": [
     ["`Tab`", "Move into the view (one stop), then to Reset view and Fit"],

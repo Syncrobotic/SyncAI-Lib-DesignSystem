@@ -133,7 +133,7 @@ for (const c of list) {
     await page.addStyleTag({ content: "#storybook-root > div { padding-top: 200px !important; padding-bottom: 400px !important }" })
     await page.clock.runFor(1000)
     // Canvas and media stories draw on frames and loads the paused clock does not drive.
-    if (/robot-model|point-cloud|robot-map|camera-feed|camera-wall|media-player|annotated-image|image-grid/.test(c.file)) {
+    if (/robot-model|point-cloud|robot-map|geo-map|camera-feed|camera-wall|media-player|annotated-image|image-grid/.test(c.file)) {
       await page.waitForTimeout(1500)
       await page.clock.runFor(500)
     }

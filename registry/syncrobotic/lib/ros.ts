@@ -798,9 +798,31 @@ export type RosLog = {
   topics?: readonly string[]
 }
 
+/**
+ * `sensor_msgs/NavSatFix`, from a GNSS receiver's driver. `status.status` is −1 no fix, 0 a fix, 1 SBAS (differential), 2
+ * GBAS (RTK: ublox and NMEA drivers report both RTK fixed and float as 2); ROS 2 Jazzy adds −2, unknown.
+ * `position_covariance` is in m², east-north-up, row-major; `position_covariance_type` 0 unknown, 1 approximated (from
+ * HDOP), 2 diagonal known, 3 known.
+ */
+export type RosNavSatFix = {
+  header?: RosHeader
+  status: { status: number; service?: number }
+  latitude: number
+  longitude: number
+  altitude?: number
+  position_covariance?: ArrayLike<number>
+  position_covariance_type?: number
+}
+
+/** `geographic_msgs/GeoPoint`: WGS 84 degrees, altitude in metres above the ellipsoid. */
+export type RosGeoPoint = { latitude: number; longitude: number; altitude?: number }
+/** `geographic_msgs/GeoPose` (Nav2's GPS waypoint follower takes a list of them), and a GeoPoseStamped. */
+export type RosGeoPose = { position: Required<RosGeoPoint>; orientation: RosQuaternion }
+export type RosGeoPoseStamped = { header: RosHeader; pose: RosGeoPose }
+
 // --- Converters ----------------------------------------------------------------------------------------------------
 // Pure functions from ROS messages to the props the components take, by the conventions their docs state (robot-map's
-// plan coordinates, point-cloud's REP 103 frame, joint-state's SI units). The output types are written out here rather
+// plan coordinates, geo-map's degrees and compass headings, point-cloud's REP 103 frame, joint-state's SI units). The output types are written out here rather
 // than imported, so this file installs without the components; tests check they stay assignable to the components' types.
 
 /** Bytes from a base64 string or a list of numbers. */
@@ -976,6 +998,93 @@ export function navigateThroughPosesToWaypoints(
 ): RosRouteWaypoint[] {
   const poses = Array.isArray(goal.poses) ? goal.poses : (goal.poses as { goals: readonly RosPoseLike[] }).goals
   return pathToWaypoints({ poses }, frame, options)
+}
+
+/** geo-map's `GeoFix`. */
+export type RosGeoFix = "rtk-fixed" | "rtk-float" | "dgps" | "gps" | "none"
+
+/** A robot's place for geo-map: `lat`, `lon`, `fix` and `accuracy` are GeoMapRobot's fields; spread it into the robot. */
+export type RosGeoPosition = { lat: number; lon: number; fix: RosGeoFix; accuracy?: number; altitude?: number; time?: number }
+
+/**
+ * A `sensor_msgs/NavSatFix` as geo-map's robot fields: `lat` and `lon`, the fix in geo-map's words, and `accuracy`, the
+ * horizontal accuracy in metres, √(σ²east + σ²north) from the covariance (left out when its type is unknown). The status
+ * maps −2 and −1 → "none", 0 → "gps", 1 → "dgps", and 2 → "rtk-fixed" when the accuracy is within `rtkFixedWithin`
+ * (default 0.05 m), else "rtk-float": NavSatFix has no field that tells fixed from float, so the covariance decides. A
+ * latitude or longitude that is not a number is also "none". `altitude` is passed on, and `time` is the stamp in ms.
+ */
+export function navSatFixToGeo(message: RosNavSatFix, options: { rtkFixedWithin?: number } = {}): RosGeoPosition {
+  const cov = message.position_covariance
+  const h = (message.position_covariance_type ?? 0) > 0 && cov ? Math.sqrt((cov[0] ?? NaN) + (cov[4] ?? NaN)) : NaN
+  const accuracy = Number.isFinite(h) ? h : undefined
+  const status = Number(message.status?.status)
+  const valid = Number.isFinite(message.latitude) && Number.isFinite(message.longitude)
+  const fix: RosGeoFix =
+    !valid || !(status >= 0)
+      ? "none"
+      : status >= 2
+        ? accuracy !== undefined && accuracy <= (options.rtkFixedWithin ?? 0.05)
+          ? "rtk-fixed"
+          : "rtk-float"
+        : status >= 1
+          ? "dgps"
+          : "gps"
+  const out: RosGeoPosition = { lat: message.latitude, lon: message.longitude, fix }
+  if (accuracy !== undefined && fix !== "none") out.accuracy = accuracy
+  if (typeof message.altitude === "number" && Number.isFinite(message.altitude)) out.altitude = message.altitude
+  const time = stampToMs(message.header?.stamp)
+  if (time !== undefined) out.time = time
+  return out
+}
+
+/** The latitude and longitude of a `geographic_msgs/GeoPoint`, or of the GeoPose or GeoPoseStamped around one. */
+export function geoPointToGeo(message: RosGeoPoint | { position: RosGeoPoint } | { pose: { position: RosGeoPoint } }): { lat: number; lon: number } {
+  const p: RosGeoPoint = "pose" in message ? message.pose.position : "position" in message ? message.position : message
+  return { lat: p.latitude, lon: p.longitude }
+}
+
+/** A heading clockwise from north in degrees (geo-map's), from a yaw in ENU (REP 103: radians counter-clockwise from east). */
+export const enuYawToHeading = (yaw: number) => (((90 - (yaw * 180) / Math.PI) % 360) + 360) % 360
+
+/** A yaw in ENU (radians counter-clockwise from east), from a heading clockwise from north in degrees. */
+export const headingToEnuYaw = (heading: number) => ((90 - heading) * Math.PI) / 180
+
+/**
+ * A goal placed on geo-map (`onGoal`) as a `geographic_msgs/GeoPoseStamped`: the heading as a yaw in ENU (REP 103), or
+ * facing east without one. `altitude` defaults to 0: the message's own "unknown" is NaN, which JSON cannot carry, and a
+ * ground robot's planner ignores it. The stamp is left out unless given, as `goalToPoseStamped` does.
+ */
+export function geoGoalToGeoPoseStamped(
+  goal: { lat: number; lon: number; heading?: number },
+  options: { frameId?: string; stamp?: RosTime; altitude?: number } = {},
+): RosGeoPoseStamped {
+  const header: RosHeader = { frame_id: options.frameId ?? "wgs84" }
+  if (options.stamp) header.stamp = options.stamp
+  return {
+    header,
+    pose: {
+      position: { latitude: goal.lat, longitude: goal.lon, altitude: options.altitude ?? 0 },
+      orientation: yawToQuaternion(goal.heading === undefined ? 0 : headingToEnuYaw(goal.heading)),
+    },
+  }
+}
+
+/**
+ * A goal placed on geo-map as a `sensor_msgs/NavSatFix`, for waypoint followers that take one: status 0 (a fix), service
+ * 1 (GPS) and the covariance unknown (type 0). A NavSatFix has no heading, so the goal's is dropped.
+ */
+export function geoGoalToNavSatFix(goal: { lat: number; lon: number }, options: { frameId?: string; stamp?: RosTime; altitude?: number } = {}): RosNavSatFix & { header: RosHeader } {
+  const header: RosHeader = { frame_id: options.frameId ?? "wgs84" }
+  if (options.stamp) header.stamp = options.stamp
+  return {
+    header,
+    status: { status: 0, service: 1 },
+    latitude: goal.lat,
+    longitude: goal.lon,
+    altitude: options.altitude ?? 0,
+    position_covariance: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    position_covariance_type: 0,
+  }
 }
 
 /** robot-map's `RobotMapGrid`. */

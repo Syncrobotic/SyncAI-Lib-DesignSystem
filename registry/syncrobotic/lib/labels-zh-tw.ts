@@ -448,6 +448,55 @@ export const waypointEditorLabels = {
   details: "詳細資料",
 }
 
+// The outdoor map writes coordinates with fixed decimals and no grouping, in the locale's digits.
+const geoNumber = (n: number, max: number, locale: string | undefined, min = max) =>
+  n.toLocaleString(locale ?? "en", { minimumFractionDigits: min, maximumFractionDigits: max, useGrouping: false })
+const geoCompass = ["北", "東北", "東", "東南", "南", "西南", "西", "西北"]
+
+export const geoMapLabels = {
+  instructions: "方向鍵移動地圖，加號與減號縮放，0 顯示所有機器人。地圖旁的機器人清單以文字列出相同的機器人。",
+  zoomIn: "放大",
+  zoomOut: "縮小",
+  fit: "顯示所有機器人",
+  status: robotMapLabels.status,
+  fix: { "rtk-fixed": "RTK 固定解", "rtk-float": "RTK 浮動解", dgps: "DGPS 定位", gps: "GPS 定位", none: "未定位" },
+  fixWithAccuracy: (fix: string, accuracy: string) => `${fix} · ${accuracy}`,
+  accuracy: (m: number, locale: string | undefined) =>
+    m < 1 ? `±${geoNumber(Math.max(1, Math.round(m * 100)), 0, locale)} cm` : `±${geoNumber(m, m < 10 ? 1 : 0, locale, 0)} m`,
+  fenceKind: { allowed: "作業區", "keep-out": "禁入區" },
+  empty: "此地圖目前沒有機器人。",
+  loading: "正在載入地圖",
+  error: "無法載入地圖。",
+  retry: "重新載入",
+  tilesFailed: "無法載入地圖圖磚，改以座標格線顯示。",
+  count: (n: number) => `${n} 台機器人`,
+  selected: (name: string, status: string) => `已選取：${name}，${status}`,
+  latitude: (deg: number, digits: number, locale: string | undefined) => `${deg < 0 ? "南緯" : "北緯"} ${geoNumber(Math.abs(deg), digits, locale)}°`,
+  longitude: (deg: number, digits: number, locale: string | undefined) => `${deg < 0 ? "西經" : "東經"} ${geoNumber(Math.abs(deg), digits, locale)}°`,
+  position: (lat: string, lon: string) => `${lat}，${lon}`,
+  heading: (deg: number) => `航向 ${compass(deg)}°（${geoCompass[Math.round(compass(deg) / 45) % 8]}）`,
+  inFence: (name: string, kind: string) => `位於 ${name}（${kind}）`,
+  inUnnamedFence: (kind: string) => `位於${kind}內`,
+  outsideAllowed: "在作業區外",
+  distance: (m: number, locale: string | undefined) => (m >= 1000 ? `${geoNumber(m / 1000, 1, locale, 0)} km` : `${geoNumber(m, m < 1 ? 1 : 0, locale, 0)} m`),
+  editKeys: "方向鍵移動十字準線，按住 Shift 可加大步距；Enter 或空白鍵放置目標點，Esc 取消。按右鍵拖曳或用兩指可移動地圖。",
+  goalHint: "點一下放置目標點，拖曳以設定方向。Esc 取消。",
+  goalConfirm: "要送出這個目標點嗎？",
+  goalConfirmKeys: "左右方向鍵旋轉方向，Enter 送出，Esc 取消。",
+  send: "送出目標點",
+  cancel: "取消",
+  goalInKeepOut: (fence: string) => `位於禁入區 ${fence} 內`,
+  goalOutsideAllowed: (area: string | undefined) => (area ? `在作業區 ${area} 外` : "在作業區外"),
+  goalPlaced: (position: string) => `目標點位於 ${position}。Enter 送出，Esc 取消。`,
+  goalBlocked: (position: string, reason: string) => `目標點位於 ${position}。${reason}，無法送出。請重新放置，或按 Esc 取消。`,
+  goalNotSent: (reason: string) => `${reason}，無法送出這個目標點。`,
+  goalSet: (position: string, heading: number | undefined) => `已送出目標點：${position}${heading === undefined ? "" : `，航向 ${compass(heading)}°`}`,
+  goalCancelled: "已取消目標點",
+  fixChanged: (name: string, fix: string) => `${name}：${fix}`,
+}
+
+export const geoMapListLabels = geoMapLabels
+
 export const annotatedImageLabels = {
   predicted: "預測",
   truth: "真實標註",

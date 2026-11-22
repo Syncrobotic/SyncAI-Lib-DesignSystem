@@ -66,4 +66,6 @@ const settled: Record<string, string> = {
   "display-camera-feed--camera-feed-stalled": '[data-state="stalled"]',
   // The same for one tile of the wall; the other tiles are Live once their first frame has arrived.
   "display-camera-wall--camera-wall-stalled": '[data-slot="camera-wall-tile"][data-state="stalled"]',
+  // Tiles load as images, on real time; the map says when every tile in view has loaded.
+  "charts-geo-map--geo-map-tiles": '[data-tiles="ready"]',
 }
