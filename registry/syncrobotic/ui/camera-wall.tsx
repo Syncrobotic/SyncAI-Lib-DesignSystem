@@ -599,12 +599,23 @@ function tileButton(root: HTMLElement, id: string) {
   return null
 }
 
-function AlarmMarker({ alarm, labels: l, className }: { alarm: NonNullable<CameraWallCamera["alarm"]>; labels: CameraWallLabels; className?: string }) {
+function AlarmMarker({
+  alarm,
+  labels: l,
+  wrap = false,
+  className,
+}: {
+  alarm: NonNullable<CameraWallCamera["alarm"]>
+  labels: CameraWallLabels
+  /** Wrap a long title onto more lines instead of cutting it (the marker on a tile's picture keeps to half its width). */
+  wrap?: boolean
+  className?: string
+}) {
   const Icon = alarmIcon[alarm.priority]
   return (
-    <p data-slot="camera-wall-alarm" data-priority={alarm.priority} className={cn("flex min-w-0 items-center gap-2 text-sm", className)}>
-      <Icon aria-hidden="true" className={cn("size-4 shrink-0", alarmText[alarm.priority])} />
-      <span className="truncate">
+    <p data-slot="camera-wall-alarm" data-priority={alarm.priority} className={cn("flex min-w-0 gap-2 text-sm", wrap ? "items-start" : "items-center", className)}>
+      <Icon aria-hidden="true" className={cn("size-4 shrink-0", wrap && "mt-0.5", alarmText[alarm.priority])} />
+      <span className={wrap ? "min-w-0 break-words" : "truncate"}>
         <span className={cn("font-medium", alarmText[alarm.priority])}>{l[alarm.priority]}</span> · {alarm.title}
       </span>
     </p>
@@ -714,8 +725,10 @@ function Tile({
             </div>
           )}
           {camera.alarm && (
-            <div className="dark pointer-events-none absolute inset-x-2 top-2 flex text-foreground">
-              <AlarmMarker alarm={camera.alarm} labels={l} className="rounded-sm bg-background px-2 py-1" />
+            // Top-right, in the right half: a camera burns its name and clock into the top-left, and camera-feed draws nothing
+            // in this corner (Paused sits top-left, the controls along the bottom, Stalled and Connecting in the middle).
+            <div className="dark pointer-events-none absolute top-2 right-2 flex w-1/2 justify-end text-foreground">
+              <AlarmMarker alarm={camera.alarm} labels={l} wrap className="rounded-sm bg-background px-2 py-1" />
             </div>
           )}
         </div>

@@ -128,7 +128,7 @@ export const overviews: Record<string, Overview> = {
       "Layout from the container's width, not the screen's: columns by count (1, 2×2, 3×3, 4×4) and by width (tiles at least 240 px), a page of cols × cols; under 560 px a list of tiles, and a focused camera takes the whole width. Full screen is the focused feed's own button (F).",
       "Each tile is a button in one roving Tab stop (arrows by tile and by row, Home, End, Page Up and Down), named with its camera, robot, state and alarm. Enter opens it large and moves focus to the feed; Esc comes back to the same tile, on its page.",
       "State changes are announced in one polite status, batched, at most every `announceEveryMs` (5 s): a camera that stalls, goes offline or comes back, each camera once in its latest state. Connecting to Live is not news.",
-      "Status is camera-feed's shape and word on each tile; the alarm marker is the priority's shape and word on the picture (octagon critical, triangle high, diamond low), never a tinted tile.",
+      "Status is camera-feed's shape and word on each tile; the alarm marker is the priority's shape and word in the picture's top-right corner, clear of the camera's burnt-in clock and of what camera-feed draws (octagon critical, triangle high, diamond low), never a tinted tile. The large view writes it beside All cameras, off the picture.",
     ],
   },
   "joint-state": {
