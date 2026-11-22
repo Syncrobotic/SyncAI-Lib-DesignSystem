@@ -53,6 +53,8 @@
      picture, a resize grip, the blocks of an illustration. 1.5:1 on the card and the page, so the shape reads as a shape;
      where the shape alone carries meaning (a bar at 0 %, a selected row) it also gets an edge at 3:1 (--input, --foreground). */
   --track: #c4c4ca;
+  /* The knob you drag on a slider or a switch that is off: white in every mode, so it reads on the track and on the filled part. */
+  --thumb: #ffffff;
 
   --info: #2952b8;
   --info-subtle: #e4e9f4;
@@ -171,6 +173,7 @@
   --ring: var(--foreground);
   --disabled: #7c7c84;
   --track: #3f3f46;
+  --thumb: #ffffff;
 
   --info: #7da4e6;
   --info-subtle: #1a2233;
@@ -242,6 +245,7 @@
   --ring: var(--foreground);
   --disabled: #74747c;
   --track: #b4b4bb;
+  --thumb: #ffffff;
 
   --info: #1d3d8f;
   --success: #0a4a32;
@@ -303,6 +307,7 @@
   --ring: var(--foreground);
   --disabled: #808088;
   --track: #4a4a52;
+  --thumb: #ffffff;
 
   --info: #a9c4f2;
   --info-subtle: #1a2233;
@@ -365,6 +370,7 @@
   --color-ring: var(--ring);
   --color-disabled: var(--disabled);
   --color-track: var(--track);
+  --color-thumb: var(--thumb);
 
   /* Usage: <Badge className="bg-info-subtle text-info"> */
   --color-info: var(--info);

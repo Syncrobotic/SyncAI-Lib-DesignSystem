@@ -24,7 +24,7 @@ const tones = [
 const groups: { title: string; tokens: string[]; use: Record<string, string> }[] = [
   {
     title: "Surface and text",
-    tokens: ["background", "card", "popover", "secondary", "muted", "track", "border", "input", "foreground", "muted-foreground", "disabled"],
+    tokens: ["background", "card", "popover", "secondary", "muted", "track", "thumb", "border", "input", "foreground", "muted-foreground", "disabled"],
     use: {
       background: "Page only. Never fill a control with it: a field on a panel takes the panel's surface (card) and an input edge, or it reads as a hole",
       card: "Cards, list groups, app-shell panels, and the fields on them",
@@ -32,6 +32,7 @@ const groups: { title: string; tokens: string[]; use: Record<string, string> }[]
       secondary: "Secondary buttons",
       muted: "Current page in navigation (hover is accent), disabled fields, table headers",
       track: "The empty part of a slider, progress, meter or ring; skeleton bones, avatars without a picture, grips: 1.5:1 on the card and the page, so the shape reads",
+      thumb: "The knob you drag: a slider's thumb, a switch's knob while it is off. White in every mode, with an edge, so it reads on the track and on the filled part",
       border: "Dividers, outlines",
       input: "The edge of anything you fill in or tick: fields, checkboxes, radios, a switch that is off. 3:1, since on a card the edge is all that shows the control",
       foreground: "Body text",

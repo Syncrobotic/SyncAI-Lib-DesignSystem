@@ -641,6 +641,7 @@ export const dataGridLabels = {
 }
 
 export const paginationLabels = {
+  nav: "分頁",
   range: (from: number, to: number, total: number) => `第 ${from}–${to} 筆，共 ${total} 筆`,
   previous: "上一頁",
   next: "下一頁",
@@ -969,6 +970,12 @@ export const questionFieldLabels = questionnaireLabels
 // ---------- Navigation, overlays and feedback ----------
 
 export const breadcrumbLabels = { nav: "導覽路徑" }
+
+export const topBarShellLabels = {
+  nav: "主要導覽",
+  openNav: "開啟導覽",
+  accountMenu: "帳號選單",
+}
 
 export const sidebarProviderLabels = {
   sidebar: "側邊欄",

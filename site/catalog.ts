@@ -600,7 +600,14 @@ const entries: Record<string, Entry> = {
       "T0 is grey, the restricted tiers outlined. A tier is a category, not a state: never a status colour, never red for T3.",
     ],
   },
-  card: { group: "Layout", examples: { file: "display", prefix: "Card" }, rules: ["Never nest cards. Group rows inside one card with separators."] },
+  card: {
+    group: "Layout",
+    examples: { file: "display", prefix: "Card" },
+    rules: [
+      "Never nest cards. Group rows inside one card with separators.",
+      "The title is an h3. Set `as` on CardTitle (`titleAs` on CardDataHeader) to the level the page needs: h2 for a card right under the h1, h4 inside a section under an h3. The size stays the same.",
+    ],
+  },
   avatar: {
     group: "Data display",
     examples: { file: "display", prefix: "Avatar" },
@@ -885,7 +892,11 @@ const entries: Record<string, Entry> = {
   breadcrumb: {
     group: "Navigation",
     examples: { file: "navigation", prefix: "Breadcrumb" },
-    rules: ["Each level is a link; the current page is last and is not.", "In an app shell, pass it as `breadcrumb`: the top bar's title is the current page."],
+    rules: [
+      "Each level is a link; the current page is last and is not.",
+      "In an app shell, pass it as `breadcrumb`: the top bar's title is the current page.",
+      "It needs no set width: stretched or as wide as its content, every level shows in full while the row has room. Short of room, the first level keeps its name or a third of the row, whichever is less, and the current page takes what is left.",
+    ],
   },
   pagination: {
     group: "Navigation",
@@ -920,6 +931,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "Long content most people skip: FAQs, advanced settings. Content everyone needs stays open.",
       "One open at a time only when the sections are alternatives.",
+      "Each trigger sits in an h3. Set `as` on AccordionTrigger to the level the page needs: h2 right under the h1, h4 inside a section under an h3.",
     ],
   },
   tree: {

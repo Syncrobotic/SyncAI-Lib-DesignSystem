@@ -21,7 +21,7 @@
           {
             "version": "0.31.0",
             "date": "2026-11-22",
-            "note": "`--chart-1-foreground` … `--chart-5-foreground` (utilities `text-chart-N-foreground`): ink for words and numbers on a chart colour, 4.5:1 or more on it in light, dark and both high-contrast modes. `--color-scrim` (`bg-scrim`) and a new `--letterbox` (`bg-letterbox`) for the bars around a picture: the dark page colour, black in high contrast. Issue #302."
+            "note": "`--chart-1-foreground` … `--chart-5-foreground` (utilities `text-chart-N-foreground`): ink for words and numbers on a chart colour, 4.5:1 or more on it in light, dark and both high-contrast modes. `--color-scrim` (`bg-scrim`) and a new `--letterbox` (`bg-letterbox`) for the bars around a picture: the dark page colour, black in high contrast. Issue #302. New `--thumb` (`bg-thumb`): the knob you drag on a slider and a switch that is off; white in every mode, as before, but a theme can now change it. Issue #301."
           },
           {
             "version": "0.30.0",
@@ -214,7 +214,7 @@
           {
             "version": "0.31.0",
             "date": "2026-11-22",
-            "note": "`chipGroupLabels.selected`. `meterLabels`. `tierBadgeLabels` for the new tier-badge (可商用, 非商用, 受限, 僅限地端). `streamingTextLabels` for the new streaming-text. `groundedTextLabels` for the new grounded-text (圖上 8 個點, 文字中：8 隻斑馬)."
+            "note": "`chipGroupLabels.selected`. `meterLabels`. `tierBadgeLabels` for the new tier-badge (可商用, 非商用, 受限, 僅限地端). `streamingTextLabels` for the new streaming-text. `groundedTextLabels` for the new grounded-text (圖上 8 個點, 文字中：8 隻斑馬). `topBarShellLabels`, and `paginationLabels.nav` (分頁). Issue #293."
           },
           {
             "version": "0.29.0",
@@ -1029,8 +1029,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.29.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "Each robot's name label has a `key`, so a product on eslint-config-next (react/jsx-key) gets no error from the unmodified file. Issue #301."
+          },
           {
             "version": "0.29.0",
             "date": "2026-11-22",
@@ -1705,8 +1710,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "The knob while off is the new `--thumb` token (`bg-thumb`) instead of a raw white; it looks the same. Issue #301."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -1874,8 +1884,13 @@
         }
       ],
       "meta": {
-        "version": "0.21.1",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "The thumb is the new `--thumb` token (`bg-thumb`) instead of a raw white; it looks the same. Issue #301."
+          },
           {
             "version": "0.21.1",
             "date": "2026-11-21",
@@ -1997,8 +2012,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "CardTitle takes `as` (\"h2\" | \"h3\" | \"h4\", h3 by default) and CardDataHeader `titleAs`, so a card right under the h1 or deep in a section keeps the outline in order; the size does not change. Issue #303."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -2828,8 +2848,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "`labels.nav` names the landmark (English default \"Pagination\"), so a translated product no longer announces it in English; DataGridPagination passes it through. Issue #293."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -2872,8 +2897,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "The first level no longer truncates with room to spare when the breadcrumb is as wide as its content (a column with items-start, an inline block, an absolutely placed header, a grid cell, the app shell's top bar): it starts from its own width and, short of room, gives way to a third of the row or its name, whichever is less. A stretched breadcrumb (page-header) looks the same, except that a long first level is no longer cut while the row has room. Issue #307."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -2922,8 +2952,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "AccordionTrigger takes `as` (\"h2\" | \"h3\" | \"h4\", h3 by default): the level of the heading it sits in (Radix Header with asChild); the look does not change. Issue #303."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -3691,8 +3726,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "In a tooltip the key cap and its edge take the tooltip's text colour (`primary-foreground` at 15 % and 20 %) instead of white, so they show in dark, where the tooltip is near-white (1.0:1 before, now 1.4:1 and 1.6:1; the key itself 13.7:1). Issue #301."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -6165,7 +6205,7 @@
       "name": "top-bar-shell",
       "type": "registry:block",
       "title": "Top-bar shell",
-      "description": "The frame for a tool or site without a sidebar: links, search and user in a top bar that starts on the content's edge and gathers into a floating panel as wide as the content column on scroll, then the content and a footer. The logo links home, the main element has an id for a skip link, the phone drawer closes when a link in it is followed.",
+      "description": "The frame for a tool or site without a sidebar: links, search and user in a top bar that starts on the content's edge and gathers into a floating panel as wide as the content column on scroll, then the content and a footer. The logo links home, the main element has an id for a skip link, the phone drawer closes when a link in it is followed. Its screen-reader words (the links' landmark, the menu button, the account button) go through `labels`.",
       "dependencies": [
         "lucide-react"
       ],
@@ -6188,7 +6228,7 @@
           {
             "version": "0.31.0",
             "date": "2026-11-22",
-            "note": "`home` sets where the logo links (default: the first link, as before). `mainId` puts an id on `<main>` for a skip link (default \"main\"). The phone drawer closes when a link in it is followed, so it no longer stays open over the new page on a client router (Next.js, React Router); a modified click (new tab) leaves it open. The root sets `--shell-top` (the floating bar's bottom edge, `--h-row` + 8 px) and `--shell-surface`, so a sticky tab row or a filter bar pins under the bar."
+            "note": "`home` sets where the logo links (default: the first link, as before). `mainId` puts an id on `<main>` for a skip link (default \"main\"). The phone drawer closes when a link in it is followed, so it no longer stays open over the new page on a client router (Next.js, React Router); a modified click (new tab) leaves it open. The root sets `--shell-top` (the floating bar's bottom edge, `--h-row` + 8 px) and `--shell-surface`, so a sticky tab row or a filter bar pins under the bar. New `labels` (`nav`, `openNav`, `accountMenu`; English defaults \"Main\", \"Open navigation\", \"account menu\") for the navigation landmark, the phone menu button and the account button, which were fixed English. Issue #293."
           },
           {
             "version": "0.17.3",
@@ -7116,7 +7156,7 @@
           {
             "version": "0.31.0",
             "date": "2026-11-22",
-            "note": "Design language: `bg-scrim`, `bg-letterbox` and the chart inks (`text-chart-N-foreground`). Design language: `--shell-top` and `--shell-surface`, set by every shell, for pinning a tab row (TabsList sticky) or a filter bar under the top bar. Skill: the data blocks' `…Content` exports, to use inside a product's own frame instead of a second shell. The checklist names StreamingText for a model's streamed answer. Design language: marks linked to something outside the picture (a hovered word, a row) are highlighted in the selected ink at 3 px, keeping their line style, and the rest fade (grounded-text); never a colour per link."
+            "note": "Design language: `bg-scrim`, `bg-letterbox` and the chart inks (`text-chart-N-foreground`). Design language: `--shell-top` and `--shell-surface`, set by every shell, for pinning a tab row (TabsList sticky) or a filter bar under the top bar. Skill: the data blocks' `…Content` exports, to use inside a product's own frame instead of a second shell. The checklist names StreamingText for a model's streamed answer. Design language: marks linked to something outside the picture (a hovered word, a row) are highlighted in the selected ink at 3 px, keeping their line style, and the rest fade (grounded-text); never a colour per link. Radius: `rounded-[inherit]` is allowed on a child that fills its parent edge to edge (a scroll viewport, an avatar's picture, a stretched link's hit area), so a product lint that enforces the scale can allow it by rule. Issue #301. Checklist: CardTitle, AccordionTrigger and PageHeader take `as`, CardDataHeader `titleAs`, so headings skip no level. Issue #303."
           },
           {
             "version": "0.22.0",

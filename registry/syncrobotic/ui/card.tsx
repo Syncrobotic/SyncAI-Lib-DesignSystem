@@ -1,4 +1,4 @@
-// @syncrobotic/card v0.17.2 · update: npx shadcn add @syncrobotic/card --overwrite
+// @syncrobotic/card v0.31.0 · update: npx shadcn add @syncrobotic/card --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
@@ -11,8 +11,16 @@ export function CardHeader({ className, ...props }: React.ComponentProps<"div">)
   return <div data-slot="card-header" className={cn("flex flex-col gap-1", className)} {...props} />
 }
 
-export function CardTitle({ className, ...props }: React.ComponentProps<"h3">) {
-  return <h3 data-slot="card-title" className={cn("text-lg font-bold", className)} {...props} />
+/** A card's heading. `as` sets its level so the page outline has no gap; the size stays the same. */
+export function CardTitle({
+  as: Heading = "h3",
+  className,
+  ...props
+}: React.ComponentProps<"h3"> & {
+  /** The heading level: h3 by default; h2 for a card right under the page's h1, h4 for one in a section under an h3. */
+  as?: "h2" | "h3" | "h4"
+}) {
+  return <Heading data-slot="card-title" className={cn("text-lg font-bold", className)} {...props} />
 }
 
 export function CardDescription({ className, ...props }: React.ComponentProps<"p">) {
@@ -35,11 +43,14 @@ export function CardFooter({ className, ...props }: React.ComponentProps<"div">)
  */
 export function CardDataHeader({
   title,
+  titleAs: Heading = "h3",
   actions,
   className,
   children,
 }: {
   title: React.ReactNode
+  /** The title's heading level: h3 by default; h2 for a card right under the page's h1, h4 for one under an h3. */
+  titleAs?: "h2" | "h3" | "h4"
   /** Controls: the Chart / Table switch, a range. */
   actions?: React.ReactNode
   className?: string
@@ -50,7 +61,7 @@ export function CardDataHeader({
     <div data-slot="card-data-header" className={cn("@container", className)}>
       <div className="flex flex-col gap-3 @md:flex-row @md:items-start @md:justify-between">
         <div className="flex min-w-0 flex-col gap-1">
-          <h3 className="text-sm font-medium">{title}</h3>
+          <Heading className="text-sm font-medium">{title}</Heading>
           {children}
         </div>
         {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}

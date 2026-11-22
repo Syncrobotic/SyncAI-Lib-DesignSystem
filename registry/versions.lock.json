@@ -1,7 +1,7 @@
 {
   "syncrobotic-theme": {
     "version": "0.31.0",
-    "hash": "fe1ad29e9769d2a8"
+    "hash": "a4ad129f3e2be32e"
   },
   "cn": {
     "version": "0.5.0",
@@ -13,7 +13,7 @@
   },
   "labels-zh-tw": {
     "version": "0.31.0",
-    "hash": "f2af23e63d3a9d1d"
+    "hash": "699a5c367f302b20"
   },
   "ros": {
     "version": "0.31.0",
@@ -88,8 +88,8 @@
     "hash": "939af3f1ab76abb6"
   },
   "geo-map": {
-    "version": "0.29.0",
-    "hash": "2ae65b5cc1c39666"
+    "version": "0.31.0",
+    "hash": "d8a0a5c553cc1346"
   },
   "spinner": {
     "version": "0.23.0",
@@ -148,8 +148,8 @@
     "hash": "ef34189d92ad4b30"
   },
   "switch": {
-    "version": "0.17.1",
-    "hash": "49439b4434ec16c7"
+    "version": "0.31.0",
+    "hash": "c5d7e919c6f976dd"
   },
   "choice-field": {
     "version": "0.15.1",
@@ -160,8 +160,8 @@
     "hash": "14064e03debbbc84"
   },
   "slider": {
-    "version": "0.21.1",
-    "hash": "161cee64310b2399"
+    "version": "0.31.0",
+    "hash": "b4040da405239ed3"
   },
   "badge": {
     "version": "0.16.1",
@@ -172,8 +172,8 @@
     "hash": "aaf74a6dbe1ca2a8"
   },
   "card": {
-    "version": "0.17.2",
-    "hash": "99e28a3e45be13af"
+    "version": "0.31.0",
+    "hash": "5bd1a99fbe3264b9"
   },
   "avatar": {
     "version": "0.28.0",
@@ -244,16 +244,16 @@
     "hash": "c81fdc70faff14fd"
   },
   "pagination": {
-    "version": "0.28.0",
-    "hash": "bf422b42fab8c5c4"
+    "version": "0.31.0",
+    "hash": "8cabaadc90977469"
   },
   "breadcrumb": {
-    "version": "0.23.0",
-    "hash": "dbe1fe7c218252dc"
+    "version": "0.31.0",
+    "hash": "c52e80882c0a83ab"
   },
   "accordion": {
-    "version": "0.10.0",
-    "hash": "a542674c1883114e"
+    "version": "0.31.0",
+    "hash": "749a7d0d9c7841ce"
   },
   "tree": {
     "version": "0.28.0",
@@ -320,8 +320,8 @@
     "hash": "01cb225fbc79551e"
   },
   "kbd": {
-    "version": "0.28.0",
-    "hash": "ab6debab304e90bd"
+    "version": "0.31.0",
+    "hash": "56c7e529e087c9d5"
   },
   "robot-icons": {
     "version": "0.22.1",
@@ -525,7 +525,7 @@
   },
   "top-bar-shell": {
     "version": "0.31.0",
-    "hash": "81f60ea4d2e14016"
+    "hash": "13b018697da0e515"
   },
   "action-rail-shell": {
     "version": "0.17.3",
@@ -585,7 +585,7 @@
   },
   "agent-skill": {
     "version": "0.31.0",
-    "hash": "c390331122cf6eca"
+    "hash": "9b5746a3da00fae8"
   },
   "line-chart-telemetry": {
     "version": "0.17.2",

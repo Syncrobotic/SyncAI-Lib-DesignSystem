@@ -50,6 +50,8 @@ const ROUND = {
 const rules = [
   {
     name: "Arbitrary length (use a token such as h-(--h-stop), text-3xl or rounded-md)",
+    // rounded-[inherit] has no length, so it passes: a child that fills its parent edge to edge clips to the parent's step
+    // (Radius foundation, #concentric).
     // Grid templates describe columns, not a size of the scale, so they are allowed.
     re: /(?<![\w-])(?![\w:-]*grid-(?:cols|rows)-\[)[\w:-]+-\[(?![^\]]*env\(safe-area)[^\]]*\d(?:px|rem|em)[^\]]*\]/g,
   },

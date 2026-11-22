@@ -4,6 +4,7 @@ import { zhTW } from "react-day-picker/locale"
 import { afterEach, describe, expect, it } from "vitest"
 import { Attachment } from "@/registry/syncrobotic/ui/attachment"
 import { Autocomplete } from "@/registry/syncrobotic/ui/autocomplete"
+import { TopBarShell, type TopBarShellLabels } from "@/registry/syncrobotic/blocks/top-bar-shell"
 import { Breadcrumb, BreadcrumbPage } from "@/registry/syncrobotic/ui/breadcrumb"
 import { Calendar } from "@/registry/syncrobotic/ui/calendar"
 import { ChipGroup } from "@/registry/syncrobotic/ui/chip-group"
@@ -14,6 +15,7 @@ import { DatePicker } from "@/registry/syncrobotic/ui/date-selector"
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/registry/syncrobotic/ui/dialog"
 import { Filters, type FilterField } from "@/registry/syncrobotic/ui/filters"
 import { LoadMore } from "@/registry/syncrobotic/ui/load-more"
+import { Pagination } from "@/registry/syncrobotic/ui/pagination"
 import { PhoneInput } from "@/registry/syncrobotic/ui/phone-input"
 import { Questionnaire } from "@/registry/syncrobotic/ui/questionnaire"
 import { RouteProgress } from "@/registry/syncrobotic/ui/route-progress"
@@ -65,6 +67,30 @@ describe("labels reach the DOM", () => {
       </Breadcrumb>,
     )
     expect(screen.getByRole("navigation", { name: "導覽路徑" })).toBeTruthy()
+  })
+
+  it("Pagination names its landmark through labels.nav (#293)", () => {
+    const { rerender } = render(<Pagination page={0} pageSize={10} total={48} />)
+    expect(screen.getByRole("navigation", { name: "Pagination" })).toBeTruthy()
+    rerender(<Pagination page={0} pageSize={10} total={48} labels={{ nav: "分頁", previous: "上一頁" }} />)
+    expect(screen.getByRole("navigation", { name: "分頁" })).toBeTruthy()
+    expect(screen.getByRole("button", { name: "上一頁" })).toBeTruthy()
+  })
+
+  it("TopBarShell names its navigation, menu button and account button through labels (#293)", () => {
+    const shell = (labels?: Partial<TopBarShellLabels>) => (
+      <TopBarShell product="Fleet" links={[{ label: "Robots", href: "#robots" }]} user={{ name: "Ada Lovelace", initials: "AL" }} labels={labels}>
+        <p>Content</p>
+      </TopBarShell>
+    )
+    const { rerender } = render(shell())
+    expect(screen.getByRole("navigation", { name: "Main" })).toBeTruthy()
+    expect(screen.getByRole("button", { name: "Open navigation" })).toBeTruthy()
+    expect(screen.getByRole("button", { name: "Ada Lovelace, AL, account menu" })).toBeTruthy()
+    rerender(shell({ nav: "主要導覽", openNav: "開啟導覽", accountMenu: "帳號選單" }))
+    expect(screen.getByRole("navigation", { name: "主要導覽" })).toBeTruthy()
+    expect(screen.getByRole("button", { name: "開啟導覽" })).toBeTruthy()
+    expect(screen.getByRole("button", { name: "Ada Lovelace, AL, 帳號選單" })).toBeTruthy()
   })
 
   it("CopyButton", () => {

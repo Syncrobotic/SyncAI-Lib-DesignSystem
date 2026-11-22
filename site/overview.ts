@@ -731,7 +731,7 @@ export const overviews: Record<string, Overview> = {
     what: "Where you are in a long list, and how to move through it.",
     use: ["Tables and lists with more rows than fit."],
     instead: ["A short list: show it all.", "Finding one record: `command` or a search field."],
-    notes: ["Pages are zero-based in code, one-based on screen."],
+    notes: ["Pages are zero-based in code, one-based on screen.", "Pass `labels` to translate every word, the landmark's name (`nav`) included; `paginationLabels` in labels-zh-tw has them all."],
   },
   "copy-button": {
     what: "Copies a value and confirms it in place: the icon becomes a check for 1.5 s.",

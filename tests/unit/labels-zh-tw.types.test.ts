@@ -53,6 +53,7 @@ import type { TreeLabels } from "@/registry/syncrobotic/ui/tree"
 import type { IslandAlarm, IslandLabels } from "@/registry/syncrobotic/shell/island"
 import type { StopButtonLabels } from "@/registry/syncrobotic/shell/stop-button"
 import type { TeleopPadLabels } from "@/registry/syncrobotic/shell/teleop-pad"
+import type { TopBarShellLabels } from "@/registry/syncrobotic/blocks/top-bar-shell"
 import { expect, it } from "vitest"
 import * as zh from "@/registry/syncrobotic/lib/labels-zh-tw"
 
@@ -121,6 +122,7 @@ it("fits every component's labels type", () => {
   fits<QuestionnaireLabels>()(zh.questionFieldLabels)
   fits<BreadcrumbLabels>()(zh.breadcrumbLabels)
   fits<SidebarLabels>()(zh.sidebarProviderLabels)
+  fits<TopBarShellLabels>()(zh.topBarShellLabels)
   fits<CommandDialogLabels>()(zh.commandDialogLabels)
   fits<DialogLabels>()(zh.dialogContentLabels)
   fits<StepperLabels>()(zh.stepperLabels)
