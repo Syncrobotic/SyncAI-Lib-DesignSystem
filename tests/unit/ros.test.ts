@@ -20,6 +20,10 @@ import {
   teleopToTwist,
   yawToQuaternion,
   zeroTwist,
+  waypointsToPath,
+  waypointsToNavigateThroughPoses,
+  pathToWaypoints,
+  navigateThroughPosesToWaypoints,
   type RosConnectionOptions,
   type RosPointCloud2,
   type RosTwist,
@@ -28,6 +32,7 @@ import { gridToPlan, rasteriseGrid, rosToPlan, scanToPoints, type RobotMapGrid, 
 import type { JointStateJoint } from "@/registry/syncrobotic/ui/joint-state"
 import type { DiagnosticStatus } from "@/registry/syncrobotic/ui/diagnostics"
 import type { LogLine } from "@/registry/syncrobotic/ui/log-viewer"
+import type { Waypoint } from "@/registry/syncrobotic/ui/waypoint-editor"
 import { fakeRosbridge } from "./fake-rosbridge"
 
 // The rosbridge client against a fake socket (the server is played by the test), and the converters against messages
@@ -771,5 +776,58 @@ describe("rosLogToLogLine", () => {
 
   it("falls back to when it was received for a message with no stamp", () => {
     expect(rosLogToLogLine({ level: 20, msg: "ok" }, { receivedAt: 5 })).toEqual({ time: 5, level: "info", message: "ok" })
+  })
+})
+
+describe("waypoint routes", () => {
+  // A 60 × 36 m plan whose bottom-left is at (-10, -5) in the map frame.
+  const frame = { width: 60, height: 36, origin: { x: -10, y: -5 } }
+  const route: Waypoint[] = [
+    { id: "a", name: "Dock exit", at: { kind: "plan", x: 10, y: 30 }, heading: 90, action: { type: "none" } },
+    { id: "b", name: "Aisle", at: { kind: "plan", x: 20, y: 30 }, action: { type: "photo" }, dwell: 5 },
+    { id: "c", name: "Bay", at: { kind: "plan", x: 30, y: 30 }, action: { type: "dock" } },
+  ]
+
+  it("writes a nav_msgs/Path in the map frame, a waypoint without a heading facing the next", () => {
+    const path = waypointsToPath(route, frame, { stamp: { sec: 3, nanosec: 0 } })
+    expect(path.header).toEqual({ frame_id: "map", stamp: { sec: 3, nanosec: 0 } })
+    expect(path.poses).toHaveLength(3)
+    // x = 10 − 10 = 0; y = −5 + 36 − 30 = 1.
+    expect(path.poses[0]!.pose.position).toEqual({ x: 0, y: 1, z: 0 })
+    expect(path.poses[0]!.header.frame_id).toBe("map")
+    // Heading 90 (right on the plan) is yaw 0 (+x); without a heading, towards the next (right: yaw 0), and the last
+    // faces on along the last leg.
+    for (const p of path.poses) expect(quaternionToYaw(p.pose.orientation)).toBeCloseTo(0, 6)
+    // Up the plan is +y in the map frame: yaw π/2.
+    const up = waypointsToPath([route[0]!, { ...route[1]!, at: { kind: "plan", x: 10, y: 20 } }, { ...route[2]!, at: { kind: "plan", x: 10, y: 10 } }], frame)
+    expect(quaternionToYaw(up.poses[1]!.pose.orientation)).toBeCloseTo(Math.PI / 2, 6)
+    expect(quaternionToYaw(up.poses[2]!.pose.orientation)).toBeCloseTo(Math.PI / 2, 6)
+    // faceAlong: false leaves them facing +x.
+    const plain = waypointsToPath([route[1]!, { ...route[2]!, at: { kind: "plan", x: 20, y: 10 } }], frame, { faceAlong: false })
+    expect(quaternionToYaw(plain.poses[0]!.pose.orientation)).toBeCloseTo(0, 6)
+  })
+
+  it("writes Nav2's NavigateThroughPoses goal, and reads it and a Path back as waypoints", () => {
+    const goal = waypointsToNavigateThroughPoses(route, frame)
+    expect(goal.behavior_tree).toBe("")
+    expect(goal.poses.map((p) => p.pose.position)).toEqual(waypointsToPath(route, frame).poses.map((p) => p.pose.position))
+    const back: Waypoint[] = navigateThroughPosesToWaypoints(goal, frame, { name: (i) => route[i]!.name, id: (i) => route[i]!.id })
+    back.forEach((w, i) => {
+      expect(w.id).toBe(route[i]!.id)
+      expect(w.name).toBe(route[i]!.name)
+      expect(w.action).toEqual({ type: "none" })
+      const at = w.at as { x: number; y: number }
+      const was = route[i]!.at as { x: number; y: number }
+      expect(at.x).toBeCloseTo(was.x, 6)
+      expect(at.y).toBeCloseTo(was.y, 6)
+      expect(w.heading).toBeCloseTo(90, 6)
+    })
+    // Kilted wraps the poses in nav_msgs/Goals.
+    expect(navigateThroughPosesToWaypoints({ poses: { goals: goal.poses } }, frame)).toEqual(pathToWaypoints({ poses: goal.poses }, frame))
+    expect(pathToWaypoints({ poses: goal.poses }, frame)[1]!.name).toBe("Waypoint 2")
+  })
+
+  it("refuses geo waypoints, which have no place in the map frame", () => {
+    expect(() => waypointsToPath([{ at: { kind: "geo", lat: 25, lon: 121 } }], frame)).toThrow(/geo waypoint/)
   })
 })

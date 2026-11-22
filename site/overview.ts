@@ -201,7 +201,31 @@ export const overviews: Record<string, Overview> = {
       "Keyboard parity: in an edit mode the arrow keys move a crosshair (about 8 px a press, 40 with Shift, or the `snap`), with its position written beside it, and the view follows it to the edge. Enter or Space places; for a goal, left and right then turn it 15° (45° with Shift) and Enter sets it. Enter or Space on a waypoint, or on a zone's corner with `editableZones`, picks it up; arrows carry it, Enter drops it, Esc puts it back. Delete or Backspace removes the selected waypoint, or a zone's last corner; Enter closes a zone of three corners or more; Esc cancels. Each step is said in an aria-live region (\"Goal set at 12.4, 8.0 m, heading 90°\"), and the crosshair's position (or a turning goal's heading) once the arrow keys rest for 400 ms.",
       "A banner in the top-left corner says what a click does now and how to finish or cancel; on a map 480 px wide or more it also says how to pan. Handles are 36 px targets with a mouse and 44 on touch (`--h-sm`), around a smaller drawing. `snap` (metres) rounds every point placed or moved; none by default. Points are kept on the plan.",
       "The waypoints' line is dashed grey while it is being drawn and the in-progress blue only with `waypointsPlanned`, once it is the route being driven. Goals and waypoints are ink, never a status colour; a drawn zone is a hairline outline like the others.",
+      "For waypoints that carry more than a point (names, actions), `onWaypointEdit` says which one was added, moved or removed, by index; `selectedWaypoint` / `onWaypointSelect` share the selection with a list beside the map (a click selects a waypoint in `view` mode too, once `onWaypointSelect` is given); `waypointMarks` draws each waypoint's heading tick and the warning shape for a problem the list words. `waypoint-editor` uses all three.",
       "Pass `labels` (status words, zone kinds, instructions, positions, empty, loading, error) to translate.",
+    ],
+  },
+  "waypoint-editor": {
+    what: "A robot's route as an ordered list of waypoints, edited in a list and on the robot map together: names, places, headings, actions on arrival and dwell times, with the problems that stop it saving shown where they are.",
+    use: [
+      "Planning a patrol or delivery route on a site before sending it to a robot.",
+      "Changing a saved route: a new stop, a different order, a photo at the bay door.",
+      "Showing a route to someone who can read it but not change it (`readOnly`).",
+    ],
+    instead: [
+      "Watching a route being driven: `robot-map` with `paths` (and `route-progress` for how far along).",
+      "One goal, sent now: `robot-map` with `mode=\"goal\"`.",
+      "Reordering a plain list with no places: `sortable`.",
+    ],
+    notes: [
+      "`value` is the saved route; the editor keeps a draft and calls `onSave` with it. Return a promise to keep Save busy; a rejection keeps the draft and says so. A new `value` replaces a clean draft and leaves one with unsaved changes alone. `onDirtyChange` lets the app warn before leaving; `defaultDraft` restores a draft kept across a reload.",
+      "A waypoint is `{ id, name, at, heading?, action, dwell? }`. `at` is `{ kind: \"plan\", x, y }` in robot-map's metres (y down) or `{ kind: \"geo\", lat, lon }`; the map draws plan waypoints only, and distances use the haversine for geo legs. `action` is `none`, `wait` (seconds), `dock`, `photo` or `custom` (a name the app runs); `dwell` is time to stay after it.",
+      "Problems come from `validateWaypoints(waypoints, { width, height, zones, minSpacing })`, exported for a server to check again: no name, a custom action with no name, a position that is not a number, outside the plan, inside a `restricted` zone, or closer than `minSpacing` (0.5 m) to the waypoint before. Each shows on its row (the warning triangle and words) and on its point; Save stays disabled and says why beside it.",
+      "The estimate is the distance at `speed` (m/s) plus each wait and dwell (`routeDistance`, `routeDuration`). Docking and photos take what `dwell` says.",
+      "Delete and Cancel throw nothing away silently: both show a toast with Undo, so the app needs a `Toaster`. Duplicate puts the copy 1 m beside the original (twice `minSpacing`), never on top of it.",
+      "Keyboard: each row is a handle (Space, arrows, Space: sortable's keys and announcements) and a button that opens its fields; Delete on the row removes it with Undo, and focus moves to the next row. The map keeps its own keys. The editor's own messages (added, duplicated, saved, the number of problems once typing rests) go through one polite live region, at most one a second.",
+      "Narrower than 768 px (a container query, so a sheet or a side panel counts) the list comes first and the map is a tab; the selected waypoint shows under the map with a Details button back to its row.",
+      "ROS: `waypointsToPath` and `waypointsToNavigateThroughPoses` (from `ros`) send the route as `nav_msgs/Path` or Nav2's NavigateThroughPoses goal in the map frame; `pathToWaypoints` and `navigateThroughPosesToWaypoints` bring one back. Actions are the app's to run.",
     ],
   },
   "point-cloud": {
@@ -1072,7 +1096,7 @@ export const overviews: Record<string, Overview> = {
     ],
     instead: ["Connecting React components: `use-ros`, which installs this."],
     notes: [
-      "`occupancyGridToGrid` (robot-map `grid` or `costmap`), `laserScanToScan(msg, robotId)` (robot-map `scans`), `poseToRobotMapPose(msg, gridToPlan(grid))` (a robot's x, y and heading; takes Pose, PoseStamped, PoseWithCovarianceStamped or Odometry), `goalToPoseStamped(goal, frame)` (robot-map `onGoal` to /goal_pose), `pointCloud2ToPoints` (point-cloud `points` and `intensity`), `jointStateToJoints(msg, { limits })` (joint-state `joints`), `diagnosticArrayToStatuses(msg)` and `mergeDiagnostics(previous, next)` (diagnostics `statuses`), `teleopToTwist(command, { maxLinear, maxAngular })`, `rosLogToLogLine` (a /rosout message as a log-viewer line, ROS 1 or 2), `stampToMs(header.stamp)` (`updatedAt`). For robot-model, its own `jointStateToRecord`.",
+      "`occupancyGridToGrid` (robot-map `grid` or `costmap`), `laserScanToScan(msg, robotId)` (robot-map `scans`), `poseToRobotMapPose(msg, gridToPlan(grid))` (a robot's x, y and heading; takes Pose, PoseStamped, PoseWithCovarianceStamped or Odometry), `goalToPoseStamped(goal, frame)` (robot-map `onGoal` to /goal_pose), `pointCloud2ToPoints` (point-cloud `points` and `intensity`), `jointStateToJoints(msg, { limits })` (joint-state `joints`), `diagnosticArrayToStatuses(msg)` and `mergeDiagnostics(previous, next)` (diagnostics `statuses`), `teleopToTwist(command, { maxLinear, maxAngular })`, `rosLogToLogLine` (a /rosout message as a log-viewer line, ROS 1 or 2), `waypointsToPath(waypoints, frame)` and `waypointsToNavigateThroughPoses(waypoints, frame)` (waypoint-editor `onSave` to a `nav_msgs/Path` or Nav2 NavigateThroughPoses goal; a waypoint without a heading faces the next), `pathToWaypoints` and `navigateThroughPosesToWaypoints` (back to `value`), `stampToMs(header.stamp)` (`updatedAt`). For robot-model, its own `jointStateToRecord`.",
       "rosbridge sends `uint8[]` (PointCloud2.data) as base64 and `int8[]` (OccupancyGrid.data) as a list of numbers; the converters read either. NaN and ±Infinity in a LaserScan arrive as null (or as bare tokens, which the client reads as null) and are skipped like out-of-range readings.",
       "A pose must be in the map frame for robot-map (/amcl_pose is; /odom drifts). A scan is drawn from the robot's centre, so transform it to the base frame first if the laser is offset.",
     ],

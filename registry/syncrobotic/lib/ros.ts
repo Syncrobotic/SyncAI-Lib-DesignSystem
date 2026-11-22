@@ -1,4 +1,4 @@
-// @syncrobotic/ros v0.28.0 · update: npx shadcn add @syncrobotic/ros --overwrite
+// @syncrobotic/ros v0.29.0 · update: npx shadcn add @syncrobotic/ros --overwrite
 /*
   ROS and ROS 2 in the browser, without a ROS library: the rosbridge v2 protocol (rosbridge_suite, which serves both ROS 1
   and ROS 2) spoken directly over the browser's WebSocket, and pure converters from the messages to the props the kit's
@@ -875,6 +875,107 @@ export function goalToPoseStamped(goal: RosPlanPose, frame: RosPlanFrame, option
       orientation: yawToQuaternion(yaw),
     },
   }
+}
+
+/** `nav_msgs/Path`: poses in order, each a PoseStamped, under one header. */
+export type RosPath = { header: RosHeader; poses: RosPoseStamped[] }
+
+/**
+ * The goal of Nav2's `NavigateThroughPoses` action: the poses to drive through, in order, and the behaviour tree to use
+ * ("" for the navigator's default). Humble to Jazzy take `poses` as a `geometry_msgs/PoseStamped[]`; Kilted wraps the
+ * same list in a `nav_msgs/Goals` (`{ header, goals }`), which `navigateThroughPosesToWaypoints` reads too.
+ */
+export type RosNavigateThroughPosesGoal = { poses: RosPoseStamped[]; behavior_tree: string }
+
+/** waypoint-editor's `WaypointCoordinate`: metres on robot-map's plan, or latitude and longitude for a geographic map. */
+export type RosRouteCoordinate = { kind: "plan"; x: number; y: number } | { kind: "geo"; lat: number; lon: number }
+
+/** waypoint-editor's `Waypoint`, as these converters write it: a name, a place, a heading, and no action yet. */
+export type RosRouteWaypoint = { id: string; name: string; at: RosRouteCoordinate; heading?: number; action: { type: "none" }; dwell?: number }
+
+/** The plan degrees (clockwise from the top) from one point to another; 0 when they are the same point. */
+const planHeading = (from: { x: number; y: number }, to: { x: number; y: number }) =>
+  from.x === to.x && from.y === to.y ? 0 : ((((Math.atan2(to.x - from.x, from.y - to.y) * 180) / Math.PI) % 360) + 360) % 360
+
+/**
+ * The route's poses in the map frame, one per waypoint, by `goalToPoseStamped`. A waypoint with no heading faces the next
+ * one (the last faces on along the last leg), as a robot driving the route would, unless `faceAlong` is false (then +x).
+ * Throws on a `geo` waypoint: latitude and longitude are not in the map frame.
+ */
+function routePoses(waypoints: readonly { at: RosRouteCoordinate; heading?: number }[], frame: RosPlanFrame, options: { frameId?: string; stamp?: RosTime; faceAlong?: boolean }) {
+  const points = waypoints.map((w) => {
+    if (w.at.kind !== "plan") throw new Error("A geo waypoint has no place in the map frame: convert it with your map's projection first.")
+    return { x: w.at.x, y: w.at.y }
+  })
+  return waypoints.map((w, i) => {
+    const here = points[i]!
+    let heading = w.heading
+    if (heading === undefined && options.faceAlong !== false && points.length > 1) {
+      const next = points[i + 1]
+      const prev = points[i - 1]
+      heading = next ? planHeading(here, next) : prev ? planHeading(prev, here) : undefined
+    }
+    return goalToPoseStamped({ ...here, ...(heading === undefined ? {} : { heading }) }, frame, options)
+  })
+}
+
+/**
+ * waypoint-editor's route as a `nav_msgs/Path` in the map frame (`frameId`, "map" by default), for a planner, a
+ * follower or a recorded route. Headings as `routePoses` sets them: a waypoint without one faces the next.
+ */
+export function waypointsToPath(
+  waypoints: readonly { at: RosRouteCoordinate; heading?: number }[],
+  frame: RosPlanFrame,
+  options: { frameId?: string; stamp?: RosTime; faceAlong?: boolean } = {},
+): RosPath {
+  const header: RosHeader = { frame_id: options.frameId ?? "map" }
+  if (options.stamp) header.stamp = options.stamp
+  return { header, poses: routePoses(waypoints, frame, options) }
+}
+
+/**
+ * waypoint-editor's route as the goal of Nav2's `NavigateThroughPoses` (send it to /navigate_through_poses): every
+ * waypoint a PoseStamped in the map frame, in order. The actions at each waypoint are the app's to run (Nav2's waypoint
+ * follower runs task plugins per pose; NavigateThroughPoses does not stop at them).
+ */
+export function waypointsToNavigateThroughPoses(
+  waypoints: readonly { at: RosRouteCoordinate; heading?: number }[],
+  frame: RosPlanFrame,
+  options: { frameId?: string; stamp?: RosTime; faceAlong?: boolean; behaviorTree?: string } = {},
+): RosNavigateThroughPosesGoal {
+  return { poses: routePoses(waypoints, frame, options), behavior_tree: options.behaviorTree ?? "" }
+}
+
+/**
+ * Poses back as waypoint-editor's waypoints, on the plan: each pose by `poseToRobotMapPose`, named `Waypoint 1`, `2`…
+ * (or by `name`), with ids `wp-1`, `wp-2`… (or by `id`) and no action. The poses must be in the map frame.
+ */
+export function pathToWaypoints(
+  message: { poses: readonly RosPoseLike[] },
+  frame: RosPlanFrame,
+  options: { name?: (index: number) => string; id?: (index: number) => string } = {},
+): RosRouteWaypoint[] {
+  return message.poses.map((p, i) => {
+    const pose = poseToRobotMapPose(p, frame)
+    const waypoint: RosRouteWaypoint = {
+      id: options.id ? options.id(i) : `wp-${i + 1}`,
+      name: options.name ? options.name(i) : `Waypoint ${i + 1}`,
+      at: { kind: "plan", x: pose.x, y: pose.y },
+      action: { type: "none" },
+    }
+    if (pose.heading !== undefined) waypoint.heading = pose.heading
+    return waypoint
+  })
+}
+
+/** A `NavigateThroughPoses` goal back as waypoints, as `pathToWaypoints`: `poses` as a list (Humble to Jazzy) or a `nav_msgs/Goals` (Kilted). */
+export function navigateThroughPosesToWaypoints(
+  goal: { poses: readonly RosPoseLike[] | { goals: readonly RosPoseLike[] } },
+  frame: RosPlanFrame,
+  options: { name?: (index: number) => string; id?: (index: number) => string } = {},
+): RosRouteWaypoint[] {
+  const poses = Array.isArray(goal.poses) ? goal.poses : (goal.poses as { goals: readonly RosPoseLike[] }).goals
+  return pathToWaypoints({ poses }, frame, options)
 }
 
 /** robot-map's `RobotMapGrid`. */

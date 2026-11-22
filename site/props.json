@@ -6883,6 +6883,26 @@
      "description": "Waypoints mode: the new list after a waypoint is added, moved (while it moves) or removed. A move that is cancelled (Esc, a second finger, a cancelled pointer) sends the list again with the waypoint where it was."
     },
     {
+     "name": "onWaypointEdit",
+     "type": "(edit: RobotMapWaypointEdit) => void",
+     "description": "Waypoints mode: each add, move and remove by its index, sent with `onWaypointsChange`."
+    },
+    {
+     "name": "selectedWaypoint",
+     "type": "number | null",
+     "description": "The selected waypoint's index, controlled (null for none): a list beside the map selects it there. Without it the map keeps its own selection. Given, the selection ring shows in every mode."
+    },
+    {
+     "name": "onWaypointSelect",
+     "type": "(index: number | null) => void",
+     "description": "Called with the waypoint selected on the map (clicked, added, picked up with Enter), or null when the selection is cleared (Esc, removed). Given, a click on a waypoint selects it in `view` mode too, as on a read-only route."
+    },
+    {
+     "name": "waypointMarks",
+     "type": "(RobotMapWaypointMark | undefined)[]",
+     "description": "Per waypoint, in the same order: its heading tick and whether it has a problem."
+    },
+    {
      "name": "waypointsPlanned",
      "type": "boolean",
      "description": "The waypoints are the route a robot is driving: the line between them turns the in-progress blue. Otherwise it is grey."
@@ -10618,6 +10638,407 @@
        "description": "The same for a node with `content` and no `children`: what opens is its details, not items under it."
       }
      ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "waypoint-editor": [
+  {
+   "name": "WaypointEditor",
+   "props": [
+    {
+     "name": "value",
+     "type": "Waypoint[]",
+     "required": true,
+     "description": "The saved route. The editor edits a draft of it; a new `value` replaces the draft unless it has unsaved changes."
+    },
+    {
+     "name": "defaultDraft",
+     "type": "Waypoint[]",
+     "description": "A draft to start from instead of `value`, such as one kept across a reload: it counts as unsaved changes."
+    },
+    {
+     "name": "defaultSelected",
+     "type": "string",
+     "description": "The waypoint selected at first (its id), with its details open."
+    },
+    {
+     "name": "onSave",
+     "type": "(waypoints: Waypoint[]) => void | Promise<unknown>",
+     "description": "Save: called with the draft. Return a promise to keep Save busy until it settles; a rejection keeps the draft and says so."
+    },
+    {
+     "name": "onCancel",
+     "type": "() => void",
+     "description": "Cancel: the draft goes back to `value` (with Undo in a toast), then this is called, e.g. to close the editor."
+    },
+    {
+     "name": "onDirtyChange",
+     "type": "(dirty: boolean) => void",
+     "description": "Called when the draft gains or loses unsaved changes: warn before leaving the page with it."
+    },
+    {
+     "name": "map",
+     "type": "WaypointEditorMap",
+     "description": "The plan to draw the route on (robot-map's props). Without it the editor is the list alone."
+    },
+    {
+     "name": "speed",
+     "type": "number",
+     "description": "Cruise speed in m/s, for the estimated time. Without it only the distance is shown."
+    },
+    {
+     "name": "minSpacing",
+     "type": "number",
+     "default": "0.5",
+     "description": "Metres a waypoint must be from the one before it. 0.5 by default."
+    },
+    {
+     "name": "readOnly",
+     "type": "boolean",
+     "description": "For viewers: the route, the map and the details, without anything that changes them."
+    },
+    {
+     "name": "createId",
+     "type": "() => string",
+     "description": "A new waypoint's id. By default one unique to this editor."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<WaypointEditorLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "name",
+       "type": "string",
+       "default": "\"Route\"",
+       "description": "The list's name: \"Route\"."
+      },
+      {
+       "name": "map",
+       "type": "string",
+       "default": "\"Route map\"",
+       "description": "The map's name for screen readers."
+      },
+      {
+       "name": "showAs",
+       "type": "string",
+       "default": "\"Show as\"",
+       "description": "The List / Map switch on a narrow editor."
+      },
+      {
+       "name": "listTab",
+       "type": "string",
+       "default": "\"List\"",
+       "description": ""
+      },
+      {
+       "name": "mapTab",
+       "type": "string",
+       "default": "\"Map\"",
+       "description": ""
+      },
+      {
+       "name": "add",
+       "type": "string",
+       "default": "\"Add waypoint\"",
+       "description": ""
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"No waypoints yet. Click the map or Add waypoint to start the route.\"",
+       "description": ""
+      },
+      {
+       "name": "defaultName",
+       "type": "(n: number) => string",
+       "default": "(n) => `Waypoint ${n}`",
+       "description": "A new waypoint's name, by its place: \"Waypoint 4\"."
+      },
+      {
+       "name": "copyName",
+       "type": "(name: string) => string",
+       "default": "(name) => `${name} copy`",
+       "description": "A duplicate's name."
+      },
+      {
+       "name": "move",
+       "type": "(name: string) => string",
+       "default": "(name) => `Move ${name}`",
+       "description": "The drag handle's name."
+      },
+      {
+       "name": "rowKeys",
+       "type": "string",
+       "default": "\"Enter opens its details, Delete removes it.\"",
+       "description": "Read with a row: what its keys do."
+      },
+      {
+       "name": "fieldName",
+       "type": "string",
+       "default": "\"Name\"",
+       "description": ""
+      },
+      {
+       "name": "x",
+       "type": "string",
+       "default": "\"X\"",
+       "description": ""
+      },
+      {
+       "name": "y",
+       "type": "string",
+       "default": "\"Y\"",
+       "description": ""
+      },
+      {
+       "name": "lat",
+       "type": "string",
+       "default": "\"Latitude\"",
+       "description": ""
+      },
+      {
+       "name": "lon",
+       "type": "string",
+       "default": "\"Longitude\"",
+       "description": ""
+      },
+      {
+       "name": "heading",
+       "type": "string",
+       "default": "\"Heading\"",
+       "description": ""
+      },
+      {
+       "name": "headingHint",
+       "type": "string",
+       "default": "\"Leave empty for any heading.\"",
+       "description": ""
+      },
+      {
+       "name": "action",
+       "type": "string",
+       "default": "\"On arrival\"",
+       "description": ""
+      },
+      {
+       "name": "actions",
+       "type": "Record<\"none\" | \"wait\" | \"dock\" | \"photo\" | \"custom\", string>",
+       "default": "{ none: \"Nothing\", wait: \"Wait\", dock: \"Dock\", photo: \"Take a photo\", custom: \"Custom action\" }",
+       "description": ""
+      },
+      {
+       "name": "waitFor",
+       "type": "string",
+       "default": "\"Wait for\"",
+       "description": ""
+      },
+      {
+       "name": "customName",
+       "type": "string",
+       "default": "\"Action name\"",
+       "description": ""
+      },
+      {
+       "name": "dwell",
+       "type": "string",
+       "default": "\"Dwell\"",
+       "description": ""
+      },
+      {
+       "name": "dwellHint",
+       "type": "string",
+       "default": "\"Time to stay after the action.\"",
+       "description": ""
+      },
+      {
+       "name": "duplicate",
+       "type": "string",
+       "default": "\"Duplicate\"",
+       "description": ""
+      },
+      {
+       "name": "remove",
+       "type": "string",
+       "default": "\"Delete\"",
+       "description": ""
+      },
+      {
+       "name": "removed",
+       "type": "(name: string) => string",
+       "default": "(name) => `${name} deleted`",
+       "description": "The toast after a delete, with Undo."
+      },
+      {
+       "name": "undo",
+       "type": "string",
+       "default": "\"Undo\"",
+       "description": ""
+      },
+      {
+       "name": "position",
+       "type": "(x: number, y: number, locale: string | undefined) => string",
+       "default": "(x, y, locale) => `${num(x, locale)}, ${num(y, locale)} m`",
+       "description": "A waypoint's place, in the row."
+      },
+      {
+       "name": "geoPosition",
+       "type": "(lat: number, lon: number, locale: string | undefined) => string",
+       "default": "(lat, lon, locale) => `${num(lat, locale, 6)}, ${num(lon, locale, 6)}`",
+       "description": ""
+      },
+      {
+       "name": "headingShort",
+       "type": "(deg: number, locale: string | undefined) => string",
+       "default": "(deg, locale) => `facing ${Math.round(deg).toLocaleString(locale)}°`",
+       "description": ""
+      },
+      {
+       "name": "actionShort",
+       "type": "(action: WaypointAction, locale: string | undefined) => string",
+       "default": "(a, locale) => a.type === \"wait\" ? `Wait ${a.seconds.toLocaleString(locale)} s` : a.type === \"dock\" ? \"Dock\" : a.type === \"photo\" ? \"Photo\" : a.type === \"custom\" ? a.name || \"Custom action\" : \"\"",
+       "description": "The action in the row: \"Wait 30 s\", \"Dock\", the custom action's name."
+      },
+      {
+       "name": "dwellShort",
+       "type": "(seconds: number, locale: string | undefined) => string",
+       "default": "(s, locale) => `stay ${s.toLocaleString(locale)} s`",
+       "description": ""
+      },
+      {
+       "name": "problem",
+       "type": "(p: WaypointProblem, minSpacing: number, locale: string | undefined) => string",
+       "default": "(p, min, locale) => p.kind === \"noName\" ? \"Name missing\" : p.kind === \"noActionName\" ? \"Action name missing\" : p.kind === \"invalid\" ? \"Position is not a number\" : p.kind === \"outside\" ? \"Outside the map\" : p.kind === \"keepOut\" ? `Inside ${p.zone ?? \"a no-entry zone\"}` : `${num(p.distance ?? 0, locale, 2)} m from the one before (at least ${num(min, locale)} m)`",
+       "description": ""
+      },
+      {
+       "name": "count",
+       "type": "(n: number, locale: string | undefined) => string",
+       "default": "(n, locale) => (n === 1 ? \"1 waypoint\" : `${n.toLocaleString(locale)} waypoints`)",
+       "description": ""
+      },
+      {
+       "name": "distanceTitle",
+       "type": "string",
+       "default": "\"Distance\"",
+       "description": ""
+      },
+      {
+       "name": "durationTitle",
+       "type": "string",
+       "default": "\"Estimated time\"",
+       "description": ""
+      },
+      {
+       "name": "distance",
+       "type": "(metres: number, locale: string | undefined) => string",
+       "default": "(m, locale) => (m >= 1000 ? `${num(m / 1000, locale, 2)} km` : `${num(m, locale)} m`)",
+       "description": ""
+      },
+      {
+       "name": "duration",
+       "type": "(seconds: number, locale: string | undefined) => string",
+       "default": "(s, locale) => { const t = Math.round(s) if (t < 60) return `about ${t.toLocaleString(locale)} s` const h = Math.floor(t / 3600) const m = Math.floor((t % 3600) / 60) return h ? `about ${h.toLocaleString(locale)} h ${m.toLocaleString(locale)} min` : `about ${m.toLocaleString(locale)} min ${(t % 60).toLocaleString(locale)} s` }",
+       "description": ""
+      },
+      {
+       "name": "unsaved",
+       "type": "string",
+       "default": "\"Unsaved changes\"",
+       "description": "The draft differs from the saved route."
+      },
+      {
+       "name": "saved",
+       "type": "string",
+       "default": "\"No unsaved changes\"",
+       "description": ""
+      },
+      {
+       "name": "save",
+       "type": "string",
+       "default": "\"Save route\"",
+       "description": ""
+      },
+      {
+       "name": "cancel",
+       "type": "string",
+       "default": "\"Cancel\"",
+       "description": ""
+      },
+      {
+       "name": "noChanges",
+       "type": "string",
+       "default": "\"No changes to save\"",
+       "description": "Why Save is disabled, beside it."
+      },
+      {
+       "name": "needsWaypoint",
+       "type": "string",
+       "default": "\"Add a waypoint to save\"",
+       "description": ""
+      },
+      {
+       "name": "blocked",
+       "type": "(problems: number, locale: string | undefined) => string",
+       "default": "(n, locale) => (n === 1 ? \"Fix 1 problem to save\" : `Fix ${n.toLocaleString(locale)} problems to save`)",
+       "description": ""
+      },
+      {
+       "name": "saveFailed",
+       "type": "string",
+       "default": "\"The route could not be saved. Try again.\"",
+       "description": ""
+      },
+      {
+       "name": "savedNotice",
+       "type": "string",
+       "default": "\"Route saved\"",
+       "description": "Said once the save went through."
+      },
+      {
+       "name": "discarded",
+       "type": "string",
+       "default": "\"Changes discarded\"",
+       "description": "The toast after Cancel threw changes away, with Undo."
+      },
+      {
+       "name": "problems",
+       "type": "(n: number, locale: string | undefined) => string",
+       "default": "(n, locale) => (n === 0 ? \"No problems left\" : n === 1 ? \"1 problem\" : `${n.toLocaleString(locale)} problems`)",
+       "description": "Said (throttled) when the number of problems changes."
+      },
+      {
+       "name": "added",
+       "type": "(name: string, n: number) => string",
+       "default": "(name, n) => `${name} added as waypoint ${n}`",
+       "description": ""
+      },
+      {
+       "name": "duplicated",
+       "type": "(name: string, n: number) => string",
+       "default": "(name, n) => `${name} added as waypoint ${n}`",
+       "description": ""
+      },
+      {
+       "name": "readOnly",
+       "type": "string",
+       "default": "\"View only: you cannot change this route.\"",
+       "description": "A read-only editor says so above the list."
+      },
+      {
+       "name": "details",
+       "type": "string",
+       "default": "\"Details\"",
+       "description": "The selected waypoint under the map on a narrow editor: the button that opens it in the list."
+      }
+     ]
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats numbers (BCP 47, \"zh-TW\")."
     }
    ],
    "inherits": []

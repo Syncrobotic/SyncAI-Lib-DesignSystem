@@ -1,4 +1,4 @@
-// @syncrobotic/robot-map v0.28.0 · update: npx shadcn add @syncrobotic/robot-map --overwrite
+// @syncrobotic/robot-map v0.29.0 · update: npx shadcn add @syncrobotic/robot-map --overwrite
 "use client"
 
 import * as React from "react"
@@ -417,7 +417,8 @@ export const zoneOf = (r: RobotMapRobot, zones: RobotMapZone[]) => zones.find((z
 // ---------------------------------------------------------------------------------------------------------------------
 
 type View = { k: number; cx: number; cy: number }
-type Size = { w: number; h: number }
+/** The frame in px; `top` is where the plan may start when it fits (below an edit mode's banner), 16 px by default. */
+type Size = { w: number; h: number; top?: number }
 
 const MAX_ZOOM = 20
 const STEP = 1.5
@@ -426,7 +427,7 @@ const INSET = 16
 /** Below the site, room for the zoom buttons and scale bar (44 px and 8 px apart), so they do not cover it when it fits. */
 const BOTTOM = INSET + 44 + 8
 /** The frame point the view's centre is drawn at: the middle of the room left by the insets. */
-const anchor = ({ w, h }: Size) => ({ x: w / 2, y: (INSET + h - BOTTOM) / 2 })
+const anchor = ({ w, h, top = INSET }: Size) => ({ x: w / 2, y: (top + h - BOTTOM) / 2 })
 /** Steps for the grid and the scale bar, in metres. */
 const NICE = [0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000]
 
@@ -491,6 +492,23 @@ type Edit = { x: number; y: number; at: RobotMapPoint; moved: boolean } & (
  * the selected one (its pick is the selection's); a corner keeps its own.
  */
 type Carry = { kind: "waypoint"; from: RobotMapPoint } | { kind: "vertex"; zoneId: string; pick: Picked; from: RobotMapPoint }
+
+/**
+ * One waypoint edit made on the map, by its place in the list: for an app whose waypoints carry more than a point (a name,
+ * an action) and so must know which one was added, moved or removed. Sent just before `onWaypointsChange`.
+ */
+export type RobotMapWaypointEdit =
+  | { type: "add"; index: number; point: RobotMapPoint }
+  | { type: "move"; index: number; point: RobotMapPoint }
+  | { type: "remove"; index: number }
+
+/** How one waypoint is drawn beside its number: the way to face on arrival (a tick), and a problem (the warning shape). */
+export type RobotMapWaypointMark = {
+  /** Degrees clockwise from the top of the plan, as a robot's heading. */
+  heading?: number
+  /** The waypoint has a problem the app says in words elsewhere (the list beside the map): the warning shape, never colour alone. */
+  problem?: boolean
+}
 
 /** A handle's target: 44 px, a finger, whatever its drawing's size. */
 const HANDLE = 44
@@ -557,6 +575,20 @@ export type RobotMapProps = {
    * (Esc, a second finger, a cancelled pointer) sends the list again with the waypoint where it was.
    */
   onWaypointsChange?: (waypoints: RobotMapPoint[]) => void
+  /** Waypoints mode: each add, move and remove by its index, sent with `onWaypointsChange`. */
+  onWaypointEdit?: (edit: RobotMapWaypointEdit) => void
+  /**
+   * The selected waypoint's index, controlled (null for none): a list beside the map selects it there. Without it the map
+   * keeps its own selection. Given, the selection ring shows in every mode.
+   */
+  selectedWaypoint?: number | null
+  /**
+   * Called with the waypoint selected on the map (clicked, added, picked up with Enter), or null when the selection is
+   * cleared (Esc, removed). Given, a click on a waypoint selects it in `view` mode too, as on a read-only route.
+   */
+  onWaypointSelect?: (index: number | null) => void
+  /** Per waypoint, in the same order: its heading tick and whether it has a problem. */
+  waypointMarks?: (RobotMapWaypointMark | undefined)[]
   /** The waypoints are the route a robot is driving: the line between them turns the in-progress blue. Otherwise it is grey. */
   waypointsPlanned?: boolean
   /** Zone mode: a new zone's corners, once it is closed. Ask for its name and kind and add it to `zones`. */
@@ -609,6 +641,10 @@ export function RobotMap({
   onGoal,
   waypoints = [],
   onWaypointsChange,
+  onWaypointEdit,
+  selectedWaypoint,
+  onWaypointSelect,
+  waypointMarks,
   waypointsPlanned,
   onZoneDraw,
   editableZones,
@@ -667,13 +703,29 @@ export function RobotMap({
   React.useLayoutEffect(() => {
     viewRef.current = view
   }, [view])
-  const sizeRef = React.useRef(size)
-  const base = Math.max(1e-6, Math.min((size.w - 2 * INSET) / width, (size.h - INSET - BOTTOM) / height))
+  // An edit mode's banner sits in the top-left corner; the plan fits below it, so the banner never covers the points
+  // being edited at the plan's top edge. Measured as it appears and as it resizes (its words wrap with the frame's width).
+  const [bannerH, setBannerH] = React.useState(0)
+  const bannerEl = (el: HTMLParagraphElement | null) => {
+    // Reads `mode`, so a compiled map makes a new callback (and measures again) in each mode.
+    if (!el || mode === "view") return
+    // The tallest it has been in this mode: its words change as an edit goes on, and the plan must not jump under the hand.
+    const read = () => setBannerH((h) => Math.max(h, el.offsetHeight))
+    read()
+    if (typeof ResizeObserver === "undefined") return
+    const ro = new ResizeObserver(read)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }
+  // Only while the banner is there: in view mode the plan has the whole frame again.
+  const framed: Size = { ...size, top: mode !== "view" && bannerH ? INSET + bannerH + 8 : INSET }
+  const sizeRef = React.useRef(framed)
+  const base = Math.max(1e-6, Math.min((size.w - 2 * INSET) / width, (size.h - (framed.top ?? INSET) - BOTTOM) / height))
   const baseRef = React.useRef(base)
   // The wheel and pointer handlers read the frame's size and scale from refs; they are updated after each commit, never
   // during render, so the React Compiler can keep this component.
   React.useLayoutEffect(() => {
-    sizeRef.current = size
+    sizeRef.current = framed
     baseRef.current = base
   })
 
@@ -791,16 +843,32 @@ export function RobotMap({
     setHover(null)
     // The crosshair starts again from the middle of the view, as it did when this mode first began.
     setCursor(null)
+    setBannerH(0)
   }
-  // The waypoint picked last, where it is in the list now, while it is still there (see findPick).
-  const active = findPick(activePick, waypoints)
+  // The waypoint picked last, where it is in the list now, while it is still there (see findPick). With
+  // `selectedWaypoint` the app says which one it is, and the map takes its word for it.
+  const controlledPick = selectedWaypoint !== undefined
+  const active = controlledPick
+    ? selectedWaypoint !== null && selectedWaypoint >= 0 && selectedWaypoint < waypoints.length
+      ? selectedWaypoint
+      : null
+    : findPick(activePick, waypoints)
+  const activeAt = active === null ? undefined : waypoints[active]
+  // The selected waypoint as a pick, for moves and the carry: when controlled, the app's index and its point now.
+  const activeNow: Picked | null = active === null || !activeAt ? null : controlledPick ? { index: active, at: activeAt, was: activeAt } : activePick
+  /** Selects a waypoint (or none), and tells the app when it is another one than before. */
+  const choose = (pick: Picked | null) => {
+    setActive(pick)
+    const index = pick?.index ?? null
+    if (index !== active) onWaypointSelect?.(index)
+  }
   const zonePoints = (zoneId: string) => zones.find((z) => z.id === zoneId)?.points ?? []
   // What the keys carry, while it is still in the app's lists; a waypoint or corner the app took away is let go.
   const carryIndex = carry === null ? null : carry.kind === "waypoint" ? active : findPick(carry.pick, zonePoints(carry.zoneId))
   const carrying = carryIndex === null ? null : carry
   // A pick that lost its point is dropped for good, so it cannot come back to life on another point later: a carry that
   // outlived its waypoint would otherwise take over the next waypoint selected, with the old one's place to go back to.
-  if (activePick && active === null) setActive(null)
+  if (!controlledPick && activePick && active === null) setActive(null)
   if (carry && carryIndex === null) setCarry(null)
 
   /** A point of the frame (px) on the plan, from the view of the last commit; for handlers, not for render. */
@@ -845,8 +913,9 @@ export function RobotMap({
   }
   const addWaypoint = (p: RobotMapPoint) => {
     const next = [...waypoints, p]
+    onWaypointEdit?.({ type: "add", index: waypoints.length, point: p })
     onWaypointsChange?.(next)
-    setActive({ index: next.length - 1, at: p, was: p })
+    choose({ index: next.length - 1, at: p, was: p })
     say(labels.waypointAdded(next.length, p[0], p[1]))
   }
   /**
@@ -856,6 +925,7 @@ export function RobotMap({
   const moveWaypoint = (pick: Picked, p: RobotMapPoint): Picked | null => {
     const i = findPick(pick, waypoints)
     if (i === null) return null
+    onWaypointEdit?.({ type: "move", index: i, point: p })
     onWaypointsChange?.(waypoints.map((w, j) => (j === i ? p : w)))
     return { index: i, at: p, was: waypoints[i] ?? p }
   }
@@ -876,7 +946,7 @@ export function RobotMap({
     if (!ed.moved) return
     if (ed.kind === "waypoint") {
       const back = moveWaypoint(ed.pick, ed.from)
-      if (back) setActive(back)
+      if (back) choose(back)
       say(labels.moveCancelled)
     } else if (ed.kind === "vertex") {
       moveCorner(ed.zoneId, ed.pick, ed.from)
@@ -899,7 +969,7 @@ export function RobotMap({
   // In an edit mode the primary pointer (left button, one finger, a pen) edits, and everything else pans: the right or
   // middle button, or a second finger (which also cancels what the first had started).
   const pointers = React.useRef(new Map<number, { x: number; y: number }>())
-  const gesture = React.useRef<{ moved: boolean; x: number; y: number; robot: string | null } | null>(null)
+  const gesture = React.useRef<{ moved: boolean; x: number; y: number; robot: string | null; waypoint?: number } | null>(null)
   const edit = React.useRef<Edit | null>(null)
   const local = (e: React.PointerEvent) => {
     const r = root.current!.getBoundingClientRect()
@@ -927,7 +997,7 @@ export function RobotMap({
         const from = waypoints[i] ?? at
         const pick = { index: i, at: from, was: from }
         edit.current = { kind: "waypoint", pick, from, x: p.x, y: p.y, at, moved: false }
-        setActive(pick)
+        choose(pick)
       } else if (mode === "zone" && vertex !== null && corners.length === 0) {
         const [zoneId = "", i = "0"] = vertex.split("|")
         const from = zonePoints(zoneId)[Number(i)] ?? at
@@ -939,7 +1009,9 @@ export function RobotMap({
     } else if (pointers.current.size === 1) {
       // The right or middle button pans from the first pixel; a click with it means nothing.
       const robot = editing ? null : (target.closest?.("[data-robot-id]")?.getAttribute("data-robot-id") ?? null)
-      gesture.current = { moved: !primary, x: p.x, y: p.y, robot }
+      // In view mode a waypoint selects when the app listens for it (a read-only route beside its list).
+      const wp = !editing && onWaypointSelect ? target.closest?.("[data-waypoint]")?.getAttribute("data-waypoint") : null
+      gesture.current = { moved: !primary, x: p.x, y: p.y, robot, ...(wp != null ? { waypoint: Number(wp) } : {}) }
     } else {
       // A second finger: a pinch, and the end of whatever the first finger was drawing, which goes back as it was.
       if (edit.current) cancelDrag(edit.current)
@@ -973,7 +1045,7 @@ export function RobotMap({
         if (!next) edit.current = null
         else {
           ed.pick = next
-          if (ed.kind === "waypoint") setActive(next)
+          if (ed.kind === "waypoint") choose(next)
         }
       }
       pointers.current.set(e.pointerId, p)
@@ -1033,7 +1105,9 @@ export function RobotMap({
     if (pointers.current.size === 0) {
       gesture.current = null
       if (e.type === "pointerup" && g && !g.moved && !editing) {
-        if (g.robot) select(g.robot)
+        const point = g.waypoint === undefined ? undefined : waypoints[g.waypoint]
+        if (g.waypoint !== undefined && point) choose({ index: g.waypoint, at: point, was: point })
+        else if (g.robot) select(g.robot)
         else if (selected) select(null)
       }
     }
@@ -1067,9 +1141,9 @@ export function RobotMap({
       const sy = a.y + (next[1] - v.cy) * k
       const { w, h } = sizeRef.current
       if (sx < 48 || sy < 48 || sx > w - 48 || sy > h - BOTTOM) setView({ ...v, cx: next[0], cy: next[1] })
-      if (carrying?.kind === "waypoint" && activePick) {
-        const moved = moveWaypoint(activePick, next)
-        if (moved) setActive(moved)
+      if (carrying?.kind === "waypoint" && activeNow) {
+        const moved = moveWaypoint(activeNow, next)
+        if (moved) choose(moved)
       } else if (carrying?.kind === "vertex") {
         const moved = moveCorner(carrying.zoneId, carrying.pick, next)
         if (moved) setCarry({ ...carrying, pick: moved })
@@ -1095,7 +1169,7 @@ export function RobotMap({
         const point = hit === null ? undefined : waypoints[hit]
         if (hit === null || !point) addWaypoint(cur)
         else {
-          setActive({ index: hit, at: point, was: point })
+          choose({ index: hit, at: point, was: point })
           setCarry({ kind: "waypoint", from: point })
           say(labels.waypointPicked(hit + 1))
         }
@@ -1112,8 +1186,9 @@ export function RobotMap({
     }
     if (e.key === "Delete" || e.key === "Backspace") {
       if (mode === "waypoints" && active !== null && !carrying) {
+        onWaypointEdit?.({ type: "remove", index: active })
         onWaypointsChange?.(waypoints.filter((_, j) => j !== active))
-        setActive(null)
+        choose(null)
         say(labels.waypointRemoved(active + 1))
         return true
       }
@@ -1134,8 +1209,8 @@ export function RobotMap({
       }
       if (carrying) {
         if (carrying.kind === "waypoint") {
-          const back = activePick && moveWaypoint(activePick, carrying.from)
-          if (back) setActive(back)
+          const back = activeNow && moveWaypoint(activeNow, carrying.from)
+          if (back) choose(back)
         } else moveCorner(carrying.zoneId, carrying.pick, carrying.from)
         setCarry(null)
         say(labels.moveCancelled)
@@ -1154,7 +1229,7 @@ export function RobotMap({
         return true
       }
       if (active !== null) {
-        setActive(null)
+        choose(null)
         return true
       }
     }
@@ -1210,7 +1285,7 @@ export function RobotMap({
 
   // A robot selected from the list (or elsewhere) that is out of view: the map glides to it, keeping the zoom.
   const s = base * view.k
-  const at = anchor(size)
+  const at = anchor(framed)
   const toScreen = (x: number, y: number): [number, number] => [at.x + (x - view.cx) * s, at.y + (y - view.cy) * s]
   const selectedRobot = robots.find((r) => r.id === selected)
   // An effect event: it reads the current view and size, but only a change of selection runs it, since a pan away from
@@ -1411,7 +1486,9 @@ export function RobotMap({
       onFocus={(e) => setFocused(e.target === e.currentTarget)}
       onBlur={(e) => e.target === e.currentTarget && setFocused(false)}
       data-mode={mode}
-      style={proportions(width, height, fill)}
+      // Kept to the site's proportions, a frame grows by the edit banner's height (padding on a content-box), so the plan keeps
+      // its full width below the banner instead of shrinking to fit under it.
+      style={!fill && framed.top !== INSET ? { ...proportions(width, height), boxSizing: "content-box", paddingTop: (framed.top ?? INSET) - INSET } : proportions(width, height, fill)}
       className={cn(
         frame,
         editing ? "cursor-crosshair select-none" : "cursor-grab select-none active:cursor-grabbing",
@@ -1609,22 +1686,38 @@ export function RobotMap({
             edits them takes the pointer; otherwise they are drawn and the click goes to the map. */}
         {waypoints.map(([wx, wy], i) => {
           const [x, y] = toScreen(wx, wy)
+          const isActive = active === i && (mode === "waypoints" || controlledPick)
+          const mark = waypointMarks?.[i]
           return (
             <div
               key={i}
               data-waypoint={i}
-              data-state={active === i && mode === "waypoints" ? "selected" : undefined}
+              data-state={isActive ? "selected" : undefined}
+              data-problem={mark?.problem ? "" : undefined}
               style={{ left: x, top: y }}
-              className={cn("absolute flex size-(--h-sm) -translate-x-1/2 -translate-y-1/2 items-center justify-center", mode === "waypoints" ? "cursor-move" : "pointer-events-none")}
+              className={cn(
+                "absolute flex size-(--h-sm) -translate-x-1/2 -translate-y-1/2 items-center justify-center",
+                mode === "waypoints" ? "cursor-move" : mode === "view" && onWaypointSelect ? "cursor-pointer" : "pointer-events-none",
+              )}
             >
               <svg viewBox="-12 -12 24 24" className="size-6 overflow-visible">
+                {/* Where to face on arrival: a tick outside the selection ring, as a robot's heading, over a halo in the map's colour. */}
+                {mark?.heading !== undefined && (
+                  <path d="M0 -23L5 -16H-5Z" transform={`rotate(${mark.heading})`} className="fill-foreground stroke-map" strokeWidth="2" strokeLinejoin="round" paintOrder="stroke" />
+                )}
                 {/* Selected: the focus ring's ink outside the disc, as a selected robot. */}
-                {active === i && mode === "waypoints" && <circle r="14" className="fill-none stroke-ring" strokeWidth="2" />}
+                {isActive && <circle r="14" className="fill-none stroke-ring" strokeWidth="2" />}
                 <circle r="10" className="fill-card stroke-foreground" strokeWidth="1.5" />
                 <text textAnchor="middle" dominantBaseline="central" className="fill-foreground font-mono text-xs font-medium">
                   {i + 1}
                 </text>
               </svg>
+              {/* A problem: the warning shape on the disc's corner, over a halo in the map's colour; the words are in the list. */}
+              {mark?.problem && (
+                <svg aria-hidden="true" viewBox="0 0 12 12" className="absolute top-0 right-0 size-3 overflow-visible text-warning">
+                  <path d="M6 1 11 10.5H1Z" fill="currentColor" className="stroke-map" strokeWidth="2" strokeLinejoin="round" paintOrder="stroke" />
+                </svg>
+              )}
             </div>
           )
         })}
@@ -1686,6 +1779,7 @@ export function RobotMap({
           {banner && (
             // Smaller on a phone-sized map, where two lines of 14 px would cover a third of it.
             <p
+              ref={bannerEl}
               data-slot="robot-map-mode"
               className={cn("flex max-w-full flex-col gap-1 rounded-xs bg-card shadow-float ring-1 ring-border", size.w >= 480 ? "px-3 py-2 text-sm" : "px-2 py-1 text-xs")}
             >

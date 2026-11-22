@@ -495,6 +495,22 @@
     "tabStops": 7,
     "live": true
   },
+  "waypoint-editor": {
+    "roles": [
+      "application",
+      "button",
+      "combobox",
+      "group",
+      "list",
+      "listitem",
+      "region",
+      "spinbutton",
+      "status",
+      "textbox"
+    ],
+    "tabStops": 25,
+    "live": true
+  },
   "dialog": {
     "roles": [],
     "tabStops": 0,
