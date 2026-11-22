@@ -461,6 +461,28 @@ export const overviews: Record<string, Overview> = {
       "Every word is in `labels`, including `ago` for time ago and `announce`; `locale` formats times and counts.",
     ],
   },
+  "streaming-text": {
+    what: "A model's answer as it streams in: plain text that grows in place under a calm status row (queue position, Thinking, Generating with Stop) that becomes the final state in the same place: done with its timing, stopped or failed with the partial answer kept.",
+    use: [
+      "A VLM's caption, count or answer about a camera frame, in a playground or on a robot's page.",
+      "An LLM's reply in an operator's assistant, where the answer arrives over server-sent events.",
+      "Any single answer that takes seconds and should show it is working and can be stopped.",
+    ],
+    instead: [
+      "Numbers arriving over time: `streaming-chart`.",
+      "Lines a program writes as it runs: `log-viewer`.",
+      "Work with a known end and no text to show yet: `progress` or a Button's `loading`.",
+      "Formatted documents (headings, tables, code): render them with your own markdown renderer once done; this shows plain text.",
+    ],
+    notes: [
+      "Controlled: the product appends each chunk to `text` and sets `phase`. React batches the renders, and each paragraph is its own element, so only the last one changes while it grows. There is no imperative append: token rates do not need one.",
+      "The status row keeps its height (`--h-md`) in every phase and sits above the text, so Stop never moves while the answer grows; the Spinner appears after 300 ms in a fixed box and stands still under reduced motion.",
+      "The status words are a polite live region (role=status): each phase is said once. With `announce=\"text\"` (default) a second polite region reads the answer in whole sentences, at most every `announceEveryMs` (5 s), and the rest when it ends; an answer that mounts finished is not read.",
+      "When Stop leaves with the phase it ended and had focus, focus moves to the status words (tabIndex -1), not the top of the page.",
+      "Timing: durations given (`durationMs`, `firstTokenMs`) win over the timestamps (`startedAt`, `firstTokenAt`, `finishedAt`); `streamingTextTiming` and `formatDuration` are exported.",
+      "Every word is in `labels` (`streamingTextLabels` in `labels-zh-tw`), including `queued`, `done` and `stopped` as functions; `locale` formats the numbers.",
+    ],
+  },
   sortable: {
     what: "A reorderable list or grid with a grip on each item, usable with a mouse, a finger or the keyboard.",
     use: ["Waypoint and patrol order.", "Rule priorities.", "Column order, camera layout, playlist steps."],

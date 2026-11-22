@@ -214,7 +214,7 @@
           {
             "version": "0.31.0",
             "date": "2026-11-22",
-            "note": "`chipGroupLabels.selected`. `meterLabels`. `tierBadgeLabels` for the new tier-badge (可商用, 非商用, 受限, 僅限地端)."
+            "note": "`chipGroupLabels.selected`. `meterLabels`. `tierBadgeLabels` for the new tier-badge (可商用, 非商用, 受限, 僅限地端). `streamingTextLabels` for the new streaming-text."
           },
           {
             "version": "0.29.0",
@@ -5168,6 +5168,37 @@
       }
     },
     {
+      "name": "streaming-text",
+      "type": "registry:ui",
+      "title": "Streaming text",
+      "description": "A model's answer as it streams in, token by token. The text grows in place under a calm status row: the queue position, Generating with Stop, then \"Done in 2.4 s · first token 0.3 s\", Stopped or Failed with the partial answer kept. A reasoning part stays apart, closed, and screen readers hear whole sentences, never every token.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/spinner"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/streaming-text.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.31.0",
+        "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
       "name": "sortable",
       "type": "registry:ui",
       "title": "Sortable",
@@ -7047,7 +7078,7 @@
           {
             "version": "0.31.0",
             "date": "2026-11-22",
-            "note": "Design language: `bg-scrim`, `bg-letterbox` and the chart inks (`text-chart-N-foreground`). Design language: `--shell-top` and `--shell-surface`, set by every shell, for pinning a tab row (TabsList sticky) or a filter bar under the top bar. Skill: the data blocks' `…Content` exports, to use inside a product's own frame instead of a second shell."
+            "note": "Design language: `bg-scrim`, `bg-letterbox` and the chart inks (`text-chart-N-foreground`). Design language: `--shell-top` and `--shell-surface`, set by every shell, for pinning a tab row (TabsList sticky) or a filter bar under the top bar. Skill: the data blocks' `…Content` exports, to use inside a product's own frame instead of a second shell. The checklist names StreamingText for a model's streamed answer."
           },
           {
             "version": "0.22.0",

@@ -19,6 +19,10 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - **`data-catalog`, `dataset-detail`, `governance-todo` 0.31.0:** each exports its content without the sample shell (`DataCatalogContent`, `DatasetDetailContent`, `GovernanceTodoContent`, same props), to drop into a product's own frame such as `top-bar-shell`. `DataCatalog`, `DatasetDetail` and `GovernanceTodo` render as before. Issue #291
 - **`labels-zh-tw` 0.31.0:** `tierBadgeLabels`. Issue #291
 - **`agent-skill` 0.31.0:** the skill points to the data blocks' content exports for use inside a product's own frame. Issue #291
+- **`streaming-text` 0.31.0 (beta):** a model's answer as it streams in token by token (server-sent events from a VLM or LLM). Pass the text so far and a `phase`: queued (with `queuePosition` and Cancel), streaming (Generating, or Thinking while only the reasoning part streams, with Stop), then done ("Done in 2.4 s · first token 0.3 s", from timestamps or the server's durations, formatted by `locale`), stopped or error (the partial text kept and said to be incomplete; Failed in the danger colour with its message and Try again). Plain text with paragraphs, no markdown. Calm while it waits: a grey Spinner after 300 ms and a word, no blinking caret; the status row sits above the text and keeps its height, so Stop never moves while the answer grows. A `reasoning` part sits apart behind a Reasoning button, closed. Screen readers hear each phase once and the answer in whole sentences, at most every 5 s. Issue #288.
+- **`labels-zh-tw` 0.31.0:** `streamingTextLabels`.
+- **`agent-skill` 0.31.0:** the checklist names StreamingText for a model's streamed answer.
+- Icon set: `CircleStop`, stopped by someone before it finished (never the emergency stop).
 
 ## 0.30.0 · 2026-11-22
 

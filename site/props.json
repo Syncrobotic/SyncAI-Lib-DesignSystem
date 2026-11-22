@@ -10976,6 +10976,195 @@
    "inherits": []
   }
  ],
+ "streaming-text": [
+  {
+   "name": "StreamingText",
+   "props": [
+    {
+     "name": "text",
+     "type": "string",
+     "required": true,
+     "description": "The answer so far, as plain text. Append each chunk to it; blank lines start paragraphs. No markdown is parsed."
+    },
+    {
+     "name": "phase",
+     "type": "\"done\" | \"error\" | \"queued\" | \"streaming\" | \"stopped\"",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "queuePosition",
+     "type": "number",
+     "description": "While queued: the place in the queue, 1 being next."
+    },
+    {
+     "name": "onStop",
+     "type": "() => void",
+     "description": "Shows Stop while streaming (Cancel while queued). The product aborts the request and sets `phase` to \"stopped\"."
+    },
+    {
+     "name": "onRetry",
+     "type": "() => void",
+     "description": "After an error: shows Try again."
+    },
+    {
+     "name": "error",
+     "type": "string",
+     "description": "The error, in words, after \"Failed\"."
+    },
+    {
+     "name": "reasoning",
+     "type": "string",
+     "description": "A reasoning part the model streams before the answer: shown apart, under a Reasoning button, closed by default."
+    },
+    {
+     "name": "defaultReasoningOpen",
+     "type": "boolean",
+     "default": "false",
+     "description": "Open the reasoning part at first."
+    },
+    {
+     "name": "startedAt",
+     "type": "number",
+     "description": "When the request was sent, when the first token arrived and when it ended, in ms (Date.now() or performance.now())."
+    },
+    {
+     "name": "firstTokenAt",
+     "type": "number",
+     "description": ""
+    },
+    {
+     "name": "finishedAt",
+     "type": "number",
+     "description": ""
+    },
+    {
+     "name": "durationMs",
+     "type": "number",
+     "description": "Durations the server reports, in ms; they win over the timestamps."
+    },
+    {
+     "name": "firstTokenMs",
+     "type": "number",
+     "description": ""
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "description": "The answer's name for screen readers (\"Caption\", \"Answer from PerceptionVLM\"). Wins over `labels.name`."
+    },
+    {
+     "name": "announce",
+     "type": "false | \"text\" | \"status\"",
+     "default": "\"text\"",
+     "description": "Read the answer aloud in sentences while it streams (\"text\", default), say only the phases (\"status\"), or nothing."
+    },
+    {
+     "name": "announceEveryMs",
+     "type": "number",
+     "default": "5000",
+     "description": "The shortest time between two readings of the answer. Default 5,000 ms."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the times and the queue position."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<StreamingTextLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "name",
+       "type": "string",
+       "default": "\"Answer\"",
+       "description": "The answer's name, for screen readers."
+      },
+      {
+       "name": "queued",
+       "type": "(position: number | undefined, locale: string | undefined) => string",
+       "default": "(position, locale) => (position === undefined ? \"Waiting in the queue\" : position <= 1 ? \"Next in the queue\" : `Number ${position.toLocaleString(locale)} in the queue`)",
+       "description": "In the queue: with the place in it (1 is next), or without one."
+      },
+      {
+       "name": "thinking",
+       "type": "string",
+       "default": "\"Thinking\"",
+       "description": "Streaming the reasoning part, before the first word of the answer."
+      },
+      {
+       "name": "generating",
+       "type": "string",
+       "default": "\"Generating\"",
+       "description": ""
+      },
+      {
+       "name": "done",
+       "type": "(timing: StreamingTextTiming, locale: string | undefined) => string",
+       "default": "({ durationMs, firstTokenMs }, locale) => [durationMs === undefined ? \"Done\" : `Done in ${formatDuration(durationMs, locale)}`, firstTokenMs !== undefined && `first token ${formatDuration(firstTokenMs, locale)}`] .filter(Boolean) .join(\" · \")",
+       "description": "Finished: with how long it took and how long until the first token, when known."
+      },
+      {
+       "name": "stopped",
+       "type": "(timing: StreamingTextTiming & { empty: boolean; }, locale: string | undefined) => string",
+       "default": "({ durationMs, empty }, locale) => empty ? \"Cancelled before the answer started\" : [durationMs === undefined ? \"Stopped\" : `Stopped after ${formatDuration(durationMs, locale)}`, \"answer incomplete\"].join(\" · \")",
+       "description": "Stopped by someone: with how long it ran, and whether any answer had arrived."
+      },
+      {
+       "name": "failed",
+       "type": "string",
+       "default": "\"Failed\"",
+       "description": "The word for an error, in the danger colour; the error's own message follows it."
+      },
+      {
+       "name": "incomplete",
+       "type": "string",
+       "default": "\"answer incomplete\"",
+       "description": "After an error's message when part of the answer had arrived."
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"The answer has no text\"",
+       "description": "Done, with no text at all."
+      },
+      {
+       "name": "stop",
+       "type": "string",
+       "default": "\"Stop generating\"",
+       "description": "The button while streaming, and while queued."
+      },
+      {
+       "name": "cancel",
+       "type": "string",
+       "default": "\"Cancel\"",
+       "description": ""
+      },
+      {
+       "name": "retry",
+       "type": "string",
+       "default": "\"Try again\"",
+       "description": ""
+      },
+      {
+       "name": "reasoningToggle",
+       "type": "string",
+       "default": "\"Reasoning\"",
+       "description": "The button that shows or hides the reasoning part."
+      },
+      {
+       "name": "duration",
+       "type": "(ms: number, locale: string | undefined) => string",
+       "default": "formatDuration",
+       "description": "A duration: \"2.4 s\", \"1 min 12 s\"."
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "switch": [
   {
    "name": "Switch",

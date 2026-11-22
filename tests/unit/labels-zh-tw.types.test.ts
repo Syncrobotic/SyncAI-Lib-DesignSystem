@@ -39,6 +39,7 @@ import type { SidebarLabels } from "@/registry/syncrobotic/ui/sidebar"
 import type { SortableLabels } from "@/registry/syncrobotic/ui/sortable"
 import type { SpinnerLabels } from "@/registry/syncrobotic/ui/spinner"
 import type { StreamingChartLabels } from "@/registry/syncrobotic/ui/streaming-chart"
+import type { StreamingTextLabels } from "@/registry/syncrobotic/ui/streaming-text"
 import type { AttitudeIndicatorLabels, GaugeLabels } from "@/registry/syncrobotic/ui/attitude"
 import type { TierBadgeLabels } from "@/registry/syncrobotic/ui/tier-badge"
 import type { StepperLabels } from "@/registry/syncrobotic/ui/stepper"
@@ -74,6 +75,7 @@ it("fits every component's labels type", () => {
   fits<CameraFeedLabels>()(zh.cameraFeedStateLineLabels)
   fits<JointStateLabels>()(zh.jointStateLabels)
   fits<StreamingChartLabels>()(zh.streamingChartLabels)
+  fits<StreamingTextLabels>()(zh.streamingTextLabels)
   fits<AttitudeIndicatorLabels>()(zh.attitudeIndicatorLabels)
   fits<GaugeLabels>()(zh.gaugeLabels)
   fits<DiagnosticsLabels>()(zh.diagnosticsLabels)

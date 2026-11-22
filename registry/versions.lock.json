@@ -13,7 +13,7 @@
   },
   "labels-zh-tw": {
     "version": "0.31.0",
-    "hash": "6146e3d959e23974"
+    "hash": "4c6b54f941b9f60e"
   },
   "ros": {
     "version": "0.29.0",
@@ -447,6 +447,10 @@
     "version": "0.28.0",
     "hash": "65ddfe1b8e1c4103"
   },
+  "streaming-text": {
+    "version": "0.31.0",
+    "hash": "6bebe1135cb978a7"
+  },
   "sortable": {
     "version": "0.28.0",
     "hash": "b3674cbd09fd2a92"
@@ -577,7 +581,7 @@
   },
   "agent-skill": {
     "version": "0.31.0",
-    "hash": "c937afa4ad2cf4bc"
+    "hash": "90d2c6a9340565f5"
   },
   "line-chart-telemetry": {
     "version": "0.17.2",

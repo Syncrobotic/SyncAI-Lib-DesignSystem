@@ -27,6 +27,7 @@ export type StoryFile =
   | "questionnaire"
   | "data-grid"
   | "log-viewer"
+  | "streaming-text"
   | "sortable"
   | "resizable"
   | "file-upload"
@@ -211,6 +212,21 @@ const entries: Record<string, Entry> = {
       "Give `timeZone` when the people reading are not where the robot is, and say which in the page; copied lines are always ISO 8601 in UTC.",
       "Name the sources for what they are: `labels.sources` \"Nodes\" for ROS, \"Units\" for journald.",
       "Leave `announce` on \"errors\" (at most every 5 s); \"all\" only for a slow log, and false where an alarm already speaks for the same failure.",
+    ],
+  },
+  "streaming-text": {
+    wide: true,
+    group: "Data display",
+    examples: { file: "streaming-text", prefix: "StreamingText" },
+    rules: [
+      "For one answer that a model streams token by token: a VLM's caption, count or answer to a query, an LLM's reply. Numbers over time are `streaming-chart`; lines a program writes are `log-viewer`.",
+      "Append each chunk to one string and pass it as `text` with the `phase`. Plain text only: blank lines start paragraphs, no markdown is parsed.",
+      "Set `phase` from the request: \"queued\" with `queuePosition` (1 is next), \"streaming\", then \"done\", \"stopped\" or \"error\" with `error` in words. Stopped and failed keep the partial text and say it is incomplete.",
+      "Give `onStop` and abort the request in it, then set \"stopped\". Give `onRetry` for an error. Try again shows only after an error, never after Stop, so a second tap on Stop cannot start a new answer.",
+      "Pass `startedAt`, `firstTokenAt` and `finishedAt` (or the server's `durationMs` and `firstTokenMs`): done says \"Done in 2.4 s · first token 0.3 s\". Without them it says Done.",
+      "A reasoning part goes in `reasoning`, never into `text`: it streams first, sits apart behind a Reasoning button, closed, and the status says Thinking until the answer starts.",
+      "Calm while it waits: grey Spinner and a word, no blinking caret, no blue. Colour only on an error's glyph and word.",
+      "Leave `announce` on \"text\": screen readers hear each phase once and the answer in whole sentences, at most every 5 s. \"status\" where the answer is read elsewhere.",
     ],
   },
   sortable: {
@@ -1528,6 +1544,10 @@ const keyboard: Record<string, [string, string][]> = {
     ["`Enter` / `Shift`+`Enter`", "In the search box: next or previous match"],
     ["`Esc`", "Close the open line, or drop the selection back to one line"],
   ],
+  "streaming-text": [
+    ["`Tab`", "Move to Stop (Cancel while queued), the Reasoning button and Try again after an error"],
+    ["`Enter` / `Space`", "Stop, open or close the reasoning, or try again"],
+  ],
   filters: [
     ["`Enter`", "On + Filter, open the picker; on a part of a chip, reopen that step"],
     ["`↑` / `↓`", "Move through fields, operators or values; type to narrow them"],
@@ -1606,6 +1626,7 @@ export function storyNames(ex: Examples) {
 /** An example's caption where the story's name cannot say it: component → story → caption. */
 const captions: Record<string, Record<string, string>> = {
   "log-viewer": { LogViewerRosout: "/rosout", LogViewerZhTw: "Traditional Chinese (zh-TW)", LogViewerHundredThousand: "100,000 lines" },
+  "streaming-text": { StreamingTextZhTw: "Traditional Chinese (zh-TW)" },
   calendar: { CalendarMonthYearDropdowns: "Month and year dropdowns" },
   chart: { ChartAboveBelowZero: "Above and below zero" },
   "time-picker": { TimePickerTwelveHour: "12-hour clock" },
