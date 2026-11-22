@@ -152,7 +152,7 @@ function ToastDemo() {
       </Button>
       <Button
         variant="secondary"
-        onClick={() => toast({ tone: "danger", title: "Couldn't upload the map", description: "Check the connection and try again." })}
+        onClick={() => toast({ tone: "danger", title: "Could not upload the map", description: "Check the connection and try again." })}
       >
         Upload map
       </Button>
@@ -179,7 +179,7 @@ export const ToastOpen: S = {
         <ToastClose className="absolute top-3 right-3" />
       </Toast>
       <Toast tone="danger" open duration={Infinity}>
-        <ToastTitle>Couldn&apos;t upload the map</ToastTitle>
+        <ToastTitle>Could not upload the map</ToastTitle>
         <ToastDescription>Check the connection and try again.</ToastDescription>
         <ToastClose className="absolute top-3 right-3" />
       </Toast>
@@ -194,7 +194,7 @@ function InPlace({ label, children }: { label: string; children: React.ReactNode
     <ToastProvider label={label}>
       {children}
       {/* The width toasts have on screen (24rem), so a long failure and a one-word "Copied" are the same size here. */}
-      <ToastViewport className="static w-sm max-w-full p-0" />
+      <ToastViewport className="static w-full max-w-sm p-0" />
     </ToastProvider>
   )
 }
@@ -218,9 +218,9 @@ export const ToastFailureWithRetry: S = {
   render: () => (
     <InPlace label="Failure example">
       <Toast tone="danger" open duration={Infinity}>
-        <ToastTitle>Couldn&apos;t send the route to 2 robots</ToastTitle>
+        <ToastTitle>Could not send the route to 2 robots</ToastTitle>
         <ToastDescription>Courier 9E37 and Courier 1715 are offline. It will be sent when they reconnect.</ToastDescription>
-        <ToastAction altText="Retry sending the route">Retry now</ToastAction>
+        <ToastAction altText="Try sending the route again">Try again</ToastAction>
         <ToastClose className="absolute top-3 right-3" />
       </Toast>
     </InPlace>

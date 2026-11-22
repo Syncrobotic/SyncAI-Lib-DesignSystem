@@ -1159,7 +1159,7 @@
     {
      "name": "title",
      "type": "ReactNode",
-     "description": "The condition in a few words, in bold: \"Read-only mode\". The children say what it means and until when."
+     "description": "The condition in a few words, set in medium weight like an Alert's title: \"Read-only mode\". The children say what it means and until when."
     },
     {
      "name": "action",
@@ -1169,7 +1169,7 @@
     {
      "name": "onDismiss",
      "type": "() => void",
-     "description": "Shows a close button. Remembering that it was closed (and for how long) is yours: set `open` false and store it. Leave it out for a condition that ends by itself (offline, read-only)."
+     "description": "Shows a close button. Remembering that it was closed (and for how long) is yours: set `open` false and store it. Leave it out for a condition that ends by itself (offline, read-only). Closed with focus on its close button, focus moves on to what comes after the banner on the page (or before it, at the end), never back to the top of the page."
     },
     {
      "name": "dismissLabel",
@@ -2028,9 +2028,15 @@
   },
   {
    "name": "CommandEmpty",
-   "props": [],
+   "props": [
+    {
+     "name": "children",
+     "type": "ReactNode | ((query: string) => ReactNode)",
+     "description": ""
+    }
+   ],
    "inherits": [
-    "CommandPrimitive.Empty"
+    "CommandPrimitive.Empty (except children)"
    ]
   },
   {
@@ -2467,9 +2473,9 @@
      "keys": [
       {
        "name": "range",
-       "type": "(from: number, to: number, total: number) => string",
-       "default": "(from: number, to: number, total: number) => `${from}–${to} of ${total}`",
-       "description": ""
+       "type": "(from: number, to: number, total: number, locale?: string) => string",
+       "default": "(from: number, to: number, total: number, locale?: string) => `${from.toLocaleString(locale)}–${to.toLocaleString(locale)} of ${total.toLocaleString(locale)}`",
+       "description": "\"1,201–1,220 of 1,240\". `locale` is Pagination's, for formatting the numbers."
       },
       {
        "name": "previous",
@@ -5918,9 +5924,9 @@
      "keys": [
       {
        "name": "range",
-       "type": "(from: number, to: number, total: number) => string",
-       "default": "(from: number, to: number, total: number) => `${from}–${to} of ${total}`",
-       "description": ""
+       "type": "(from: number, to: number, total: number, locale?: string) => string",
+       "default": "(from: number, to: number, total: number, locale?: string) => `${from.toLocaleString(locale)}–${to.toLocaleString(locale)} of ${total.toLocaleString(locale)}`",
+       "description": "\"1,201–1,220 of 1,240\". `locale` is Pagination's, for formatting the numbers."
       },
       {
        "name": "previous",
@@ -5947,6 +5953,11 @@
        "description": ""
       }
      ]
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the numbers, with the language's thousands separator (a BCP 47 tag such as \"zh-TW\"). Left out, the browser's language."
     }
    ],
    "inherits": []
@@ -10492,7 +10503,7 @@
      "name": "empty",
      "type": "ReactNode",
      "default": "\"Nothing here yet.\"",
-     "description": "Shown instead of the tree when items is empty."
+     "description": "Shown instead of the tree when items is empty, and under an open branch with nothing in it (`children: []`)."
     },
     {
      "name": "linkAs",

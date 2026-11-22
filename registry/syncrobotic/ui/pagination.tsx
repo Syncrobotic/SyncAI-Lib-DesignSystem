@@ -1,4 +1,4 @@
-// @syncrobotic/pagination v0.15.0 · update: npx shadcn add @syncrobotic/pagination --overwrite
+// @syncrobotic/pagination v0.28.0 · update: npx shadcn add @syncrobotic/pagination --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,10 +7,18 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import type { Navigate } from "@/registry/syncrobotic/ui/filter-form"
 
-type Labels = { range?: (from: number, to: number, total: number) => string; previous?: string; next?: string; page?: (n: number) => string; empty?: string }
+type Labels = {
+  /** "1,201–1,220 of 1,240". `locale` is Pagination's, for formatting the numbers. */
+  range?: (from: number, to: number, total: number, locale?: string) => string
+  previous?: string
+  next?: string
+  page?: (n: number) => string
+  empty?: string
+}
 
 const defaults = {
-  range: (from: number, to: number, total: number) => `${from}–${to} of ${total}`,
+  range: (from: number, to: number, total: number, locale?: string) =>
+    `${from.toLocaleString(locale)}–${to.toLocaleString(locale)} of ${total.toLocaleString(locale)}`,
   previous: "Previous page",
   next: "Next page",
   page: (n: number) => `Page ${n}`,
@@ -45,6 +53,7 @@ export function Pagination({
   onNavigate,
   pages = false,
   labels,
+  locale,
   className,
 }: {
   page: number
@@ -59,6 +68,8 @@ export function Pagination({
   /** Show numbered page buttons between previous and next. */
   pages?: boolean
   labels?: Labels
+  /** Formats the numbers, with the language's thousands separator (a BCP 47 tag such as "zh-TW"). Left out, the browser's language. */
+  locale?: string
   className?: string
 }) {
   const l = { ...defaults, ...labels }
@@ -100,7 +111,7 @@ export function Pagination({
       className={cn("@container flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-sm text-muted-foreground", className)}
     >
       <span aria-live="polite" className="whitespace-nowrap tabular-nums">
-        {total === 0 ? l.empty : l.range(from, to, total)}
+        {total === 0 ? l.empty : l.range(from, to, total, locale)}
       </span>
       <div className="flex shrink-0 items-center gap-1" /* icon-gap-ok: 4 px between page buttons, not an icon and its label */>
         {go(page - 1, { variant: "outline", size: "icon-sm", "aria-label": l.previous, disabled: page <= 0 }, <ChevronLeft aria-hidden="true" />)}
@@ -121,7 +132,7 @@ export function Pagination({
                     "aria-current": n === page ? "page" : undefined,
                     className: cn("tabular-nums", n === page ? "font-medium text-foreground" : "hidden @xl:inline-flex"),
                   },
-                  n + 1,
+                  (n + 1).toLocaleString(locale),
                 )}
               </React.Fragment>
             ),

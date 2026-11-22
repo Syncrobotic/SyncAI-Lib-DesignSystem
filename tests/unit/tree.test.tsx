@@ -73,6 +73,15 @@ describe("Tree, list mode", () => {
     expect(screen.getByText("No sources yet.")).toBeTruthy()
   })
 
+  it("says an open branch is empty instead of opening to nothing, in both modes", () => {
+    const items = [{ id: "archive", label: "Archived", children: [] }]
+    const { rerender } = render(<Tree label="Collections" items={items} empty="Nothing in it yet." defaultExpanded={["archive"]} />)
+    expect(screen.getByText("Nothing in it yet.")).toBeTruthy()
+    rerender(<Tree key="select" mode="select" label="Collections" items={items} empty="Nothing in it yet." defaultExpanded={["archive"]} />)
+    expect(screen.getByText("Nothing in it yet.")).toBeTruthy()
+    expect(screen.getByRole("treeitem", { name: "Archived" })).toBeTruthy()
+  })
+
   it("follows controlled expansion", () => {
     const change = vi.fn()
     render(<Tree label="Lineage" items={lineage} expanded={[]} onExpandedChange={change} />)

@@ -49,6 +49,15 @@ describe("LoadMore", () => {
     expect(screen.queryByRole("button")).toBeNull()
     expect(screen.getByText("Showing 53 of 53")).toBeTruthy()
   })
+
+  it("moves focus to the count when the last press removes the button, instead of losing it to the page", () => {
+    const { rerender } = render(<LoadMore shown={40} total={53} step={20} onMore={() => {}} />)
+    const button = screen.getByRole("button", { name: "Show 13 more (13 left)" })
+    button.focus()
+    fireEvent.click(button)
+    rerender(<LoadMore shown={53} total={53} step={20} onMore={() => {}} />)
+    expect(document.activeElement).toBe(screen.getByText("Showing 53 of 53"))
+  })
 })
 
 describe("RestrictedPreview", () => {

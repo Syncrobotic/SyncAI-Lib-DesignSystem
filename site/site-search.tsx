@@ -95,7 +95,7 @@ export function SiteSearch() {
       <CommandDialog open={open} onOpenChange={setOpen} title="Search the docs" description="Components, blocks, foundations and icons" shouldFilter={false}>
         <CommandInput value={query} onValueChange={setQuery} placeholder="Search components, blocks, rules, icons" />
         <CommandList>
-          <CommandEmpty>{index ? "Nothing matches. Try a component, a rule or an icon's meaning." : "Loading…"}</CommandEmpty>
+          <CommandEmpty>{(query) => (index ? `Nothing matches “${query}”. Try a component, a rule or an icon's meaning.` : "Loading…")}</CommandEmpty>
           {groupOrder.map((g) => {
             const list = shown.filter((e) => e.group === g).slice(0, cap[g])
             if (list.length === 0) return null

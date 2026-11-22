@@ -1,4 +1,4 @@
-// @syncrobotic/scrollspy v0.15.0 · update: npx shadcn add @syncrobotic/scrollspy --overwrite
+// @syncrobotic/scrollspy v0.28.0 · update: npx shadcn add @syncrobotic/scrollspy --overwrite
 "use client"
 
 import * as React from "react"
@@ -21,8 +21,11 @@ export function useScrollspy(ids: string[], { offset = 96, root }: { offset?: nu
       const top = container ? container.getBoundingClientRect().top : 0
       const scrolled = container ? container.scrollTop + container.clientHeight : window.scrollY + window.innerHeight
       const height = container ? container.scrollHeight : document.documentElement.scrollHeight
+      const view = container ? container.clientHeight : window.innerHeight
       const list = key.split("|")
-      if (height - scrolled < 2) return setActive(list[list.length - 1])
+      // At the end the last section wins, but only where there is something to scroll: on a page that fits, "at the end"
+      // is true from the start and would mark the last section before anyone has read a line.
+      if (height > view + 1 && height - scrolled < 2) return setActive(list[list.length - 1])
       let current = list[0]
       for (const id of list) {
         const el = document.getElementById(id)

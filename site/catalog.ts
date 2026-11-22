@@ -796,7 +796,7 @@ const entries: Record<string, Entry> = {
       "Full width, first in the page (or above the whole app), before the header in the DOM so it is read first. At most one at a time: show the most severe and let the next one wait.",
       "Tone by consequence: neutral for calm conditions, info only while a process runs (syncing back, a maintenance window under way), warning before something is lost, danger when the app cannot work. Danger is a tint, never solid red. Give it an icon that names the subject (Wrench, Lock, CloudOff).",
       "role=\"status\" for neutral, info and warning (read politely); role=\"alert\" only for danger. It is not role=\"banner\", which is the page header landmark.",
-      "One action at most, named by its result (\"Choose a plan\", \"Retry now\"): a Button, size md, outline.",
+      "One action at most, named by its result (\"Choose a plan\", \"Try again\"): a Button, size md, outline.",
       "Dismiss only when the condition does not need the person (news, a trial reminder). Remembering it is yours: onDismiss stores it, then pass open={false}. A condition that ends by itself (offline, read-only) has no close button and leaves when it ends.",
       "Above the AppShell: the shell is as tall as the screen unless --app-shell-height says otherwise. Put the banner and the shell in a column as tall as the screen (flex h-dvh flex-col) and wrap the shell in min-h-0 flex-1 [--app-shell-height:100%], so a banner that wraps on a phone never pushes the shell's bottom off screen.",
     ],

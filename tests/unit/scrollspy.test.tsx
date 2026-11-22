@@ -114,6 +114,13 @@ describe("Scrollspy", () => {
     expect(current()).toEqual(["Cells"])
   })
 
+  it("marks the first section, not the last, on a page with nothing to scroll", () => {
+    // Everything fits: the page is no taller than the window, so being "at the bottom" says nothing about which section is read.
+    Object.assign(layout, { viewport: 900, page: 900, tops: { overview: 0, battery: 200, cells: 400, logs: 600 } })
+    render(<Page />)
+    expect(current()).toEqual(["Overview"])
+  })
+
   it("measures once per frame, however many scroll events arrive", () => {
     render(<Page />)
     const rect = vi.mocked(HTMLElement.prototype.getBoundingClientRect)

@@ -40,6 +40,18 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - **`questionnaire` 0.28.0:** the last button says "Send answers" by default instead of "Submit".
 - **`theme-toggle` 0.28.0:** `value` is optional, as the docs say (leave it out until the stored choice is known). `segmented-control` 0.28.0 documents `value`, `defaultValue` and `onValueChange` as its own props.
 - Docs: the Accessibility tabs of Theme toggle, Chip group and Search field list their keys. Props tables keep a prop's own `| null` (Number field's `value`, Graph's `selectedId`…). Examples: the sortable camera grid and the full-width buttons have a width of their own instead of collapsing; Filters examples fit a phone; Delete in Button with icon is destructive and the icon buttons wrap as a pair; autocomplete, phone, date, time and one-time-code examples have visible labels; the saved-alerts form uses a checkbox (a switch acts at once) and Top speed is a Number field in m/s; "40 %" is spaced like the kit's other percentages; error messages end with a full stop; file-type tiles say their format and file refusals have an icon; toggle sizes are named by size; the long sortable list cuts a row so it reads as scrollable.
+- **`sheet` 0.28.0:** SheetFooter pins to the sheet's bottom edge; it covered the last field and its focus ring by 8 px even when everything fit.
+- **`toast` 0.28.0:** dismissing a toast with the pointer no longer leaves the stack spread and its timers paused until a click elsewhere: focus a click brings is ignored and the region's is handed back. On a phone the stack is full width with even 16 px gutters, and the in-place examples no longer clip at 390 px.
+- **`navigation-menu` 0.28.0:** with `viewport={false}` a panel floats over the page at every width (on phones it pushed the page down) and hangs from the menu's left edge; a menu that starts open switches panels at once instead of closing and reopening, and a new panel's links are no longer faded in from nothing. The column and tag examples fit a phone.
+- **`tree` 0.28.0:** an open branch with nothing in it shows the `empty` text instead of opening to nothing.
+- **`banner` 0.28.0:** closing it with focus on its close button moves focus to what follows it on the page; the example's "Show the notice again" button returns focus to the banner.
+- **`load-more` 0.28.0:** when the last press removes the button, focus moves to the count instead of the top of the page.
+- **`command` 0.28.0:** `CommandEmpty` takes a function of the query so the no-match line says what was typed (used in the examples, the docs search and `app-shell`); `CommandSeparator` hides while a query filters the list.
+- **`stepper` 0.28.0:** on a narrow stepper a failed step's title and reason show under the row, not only a red cross.
+- **`route-progress` 0.28.0:** when the page is in, the bar fills the width and fades instead of vanishing mid-way.
+- **`scrollspy` 0.28.0:** on a page or panel with nothing to scroll, the first section is current at load instead of the last.
+- **`pagination` 0.28.0:** `locale` formats the numbers with a thousands separator ("1,201–1,220 of 1,240").
+- Scrollspy examples hide the rail below `sm` (use pills on phones). Error copy in the feedback, banner and toast examples says "Could not" and "Try again", as the components' own defaults do (alarm, empty state).
 
 ## 0.27.0 · 2026-11-21
 

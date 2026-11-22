@@ -57,7 +57,7 @@ export type TreeProps = {
   /** select mode: the node selected at first (uncontrolled). */
   defaultSelectedId?: string
   onSelectedChange?: (id: string, node: TreeNode) => void
-  /** Shown instead of the tree when items is empty. */
+  /** Shown instead of the tree when items is empty, and under an open branch with nothing in it (`children: []`). */
   empty?: React.ReactNode
   /** Your router's link (e.g. next/link), for nodes with href in list mode. */
   linkAs?: React.ElementType
@@ -95,6 +95,15 @@ const chevron = (open: boolean) =>
 // Radix leaves its height variable unset when the content measures 0 (an empty folder), so a nested branch would inherit
 // its parent's height and open that far before snapping shut. 0 here is the fallback; Radix's own inline value wins.
 const content = "overflow-hidden [--radix-collapsible-content-height:0px] data-[state=open]:animate-expand data-[state=closed]:animate-collapse"
+
+// An open branch with nothing in it says so, on the guide line where its children would be, instead of opening to nothing.
+function EmptyBranch({ children }: { children: React.ReactNode }) {
+  return (
+    <p data-slot="tree-empty" className={cn(group, "py-2 pe-2 text-sm text-muted-foreground")}>
+      {children}
+    </p>
+  )
+}
 
 function Label({ node, id }: { node: TreeNode; id?: string }) {
   const Icon = node.icon
@@ -174,6 +183,7 @@ export function Tree({
         selectedProp={selectedProp}
         defaultSelectedId={defaultSelectedId}
         onSelectedChange={onSelectedChange}
+        empty={empty}
         className={className}
       />
     )
@@ -237,7 +247,7 @@ export function Tree({
                   {n.content}
                 </div>
               )}
-              {branch && <ul className={group}>{renderList(n.children!)}</ul>}
+              {branch && (n.children!.length ? <ul className={group}>{renderList(n.children!)}</ul> : <EmptyBranch>{empty}</EmptyBranch>)}
             </CollapsiblePrimitive.Content>
           </li>
         </CollapsiblePrimitive.Root>
@@ -263,6 +273,7 @@ function SelectTree({
   selectedProp,
   defaultSelectedId,
   onSelectedChange,
+  empty,
   className,
 }: {
   items: TreeNode[]
@@ -274,6 +285,7 @@ function SelectTree({
   selectedProp?: string
   defaultSelectedId?: string
   onSelectedChange?: (id: string, node: TreeNode) => void
+  empty: React.ReactNode
   className?: string
 }) {
   const uid = React.useId()
@@ -456,9 +468,14 @@ function SelectTree({
           </div>
           {branch && (
             <CollapsiblePrimitive.Content className={content}>
-              <ul role="group" className={group}>
-                {level(n.children!, depth + 1)}
-              </ul>
+              {n.children!.length ? (
+                <ul role="group" className={group}>
+                  {level(n.children!, depth + 1)}
+                </ul>
+              ) : (
+                // Not a group: a tree's group holds only tree items. The item is named by its label, not this text.
+                <EmptyBranch>{empty}</EmptyBranch>
+              )}
             </CollapsiblePrimitive.Content>
           )}
         </li>

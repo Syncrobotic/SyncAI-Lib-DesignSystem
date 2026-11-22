@@ -313,7 +313,7 @@ export const overviews: Record<string, Overview> = {
     what: "An On this page list that marks the section being read and scrolls to a section when clicked.",
     use: ["Long settings or detail pages.", "Docs pages.", "A robot's detail panel with many sections."],
     instead: ["Separate views people switch between: `tabs`."],
-    notes: ["useScrollspy(ids) alone gives the current id for a custom display.", "Links move focus to the section, so keyboard users land there."],
+    notes: ["useScrollspy(ids) alone gives the current id for a custom display.", "The rail sits beside the content only from sm up (`hidden sm:flex`): on a phone it would leave the content a column a few words wide. Use `variant=\"pills\"` above the content there.", "Links move focus to the section, so keyboard users land there."],
   },
   sidebar: {
     what: "The main navigation of a console or dashboard: groups of links with counts, a switcher at the top and the account at the foot, collapsing to a rail of icons and becoming a sheet on phones.",

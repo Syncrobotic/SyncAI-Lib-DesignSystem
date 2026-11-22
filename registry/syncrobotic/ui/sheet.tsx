@@ -1,4 +1,4 @@
-// @syncrobotic/sheet v0.17.3 · update: npx shadcn add @syncrobotic/sheet --overwrite
+// @syncrobotic/sheet v0.28.0 · update: npx shadcn add @syncrobotic/sheet --overwrite
 "use client"
 
 import * as React from "react"
@@ -60,7 +60,9 @@ export function SheetHeader({ className, ...props }: React.ComponentProps<"div">
  * the bottom edge with the sheet's own padding under it, so the primary action is never cut in half.
  */
 export function SheetFooter({ className, ...props }: React.ComponentProps<"div">) {
-  return <div className={cn("sticky bottom-0 z-10 -mx-6 mt-auto -mb-6 flex flex-col gap-2 bg-popover px-6 pt-2 pb-6", className)} {...props} />
+  // It pins to the scroller's edge, where -mb-6 puts it in the flow, not 24 px up at its padding: pinned there it would
+  // cover the last field and its focus ring even when everything fits.
+  return <div className={cn("sticky -bottom-6 z-10 -mx-6 mt-auto -mb-6 flex flex-col gap-2 bg-popover px-6 pt-2 pb-6", className)} {...props} />
 }
 
 export function SheetTitle({ className, ...props }: React.ComponentProps<typeof SheetPrimitive.Title>) {

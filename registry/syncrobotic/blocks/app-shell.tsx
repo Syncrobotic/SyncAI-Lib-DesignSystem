@@ -424,7 +424,7 @@ export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch;
       <CommandDialog open={open} onOpenChange={setOpen} title="Search" description={search.placeholder}>
         <CommandInput placeholder={search.placeholder ?? "Search"} end={scopes.length > 1 ? scopeMenu : undefined} />
         <CommandList>
-          <CommandEmpty>No match in {scopeLabel?.toLowerCase()}. Try another word, or search everything.</CommandEmpty>
+          <CommandEmpty>{(query) => `No match for “${query}” in ${scopeLabel?.toLowerCase()}. Try another word, or search everything.`}</CommandEmpty>
           {groups.map((g) => (
             <CommandGroup key={g.heading} heading={g.heading}>
               {g.items.map((item) => (
