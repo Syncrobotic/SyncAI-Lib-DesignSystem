@@ -1,4 +1,4 @@
-// @syncrobotic/tooltip v0.7.0 · update: npx shadcn add @syncrobotic/tooltip --overwrite
+// @syncrobotic/tooltip v0.30.0 · update: npx shadcn add @syncrobotic/tooltip --overwrite
 "use client"
 
 import * as React from "react"
@@ -23,12 +23,28 @@ export function Tooltip(props: React.ComponentProps<typeof TooltipPrimitive.Root
 
 export const TooltipTrigger = TooltipPrimitive.Trigger
 
-export function TooltipContent({ className, sideOffset = 8, ...props }: React.ComponentProps<typeof TooltipPrimitive.Content>) {
+/**
+ * Escape inside a native <dialog>: the dialog closes (and the tooltip with it). Radix's layer would take the key for the
+ * tooltip alone and cancel it, so the dialog never saw it and Escape no longer closed it. Here the dialog is asked to
+ * close as if it had the key itself: a `cancel` event it can refuse, then close.
+ */
+function escapeToDialog(e: KeyboardEvent) {
+  const dialog = (document.activeElement as HTMLElement | null)?.closest("dialog[open]") as HTMLDialogElement | null
+  if (!dialog) return
+  e.preventDefault()
+  if (dialog.dispatchEvent(new Event("cancel", { cancelable: true }))) dialog.close()
+}
+
+export function TooltipContent({ className, sideOffset = 8, onEscapeKeyDown, ...props }: React.ComponentProps<typeof TooltipPrimitive.Content>) {
   return (
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Content
         data-slot="tooltip-content"
         sideOffset={sideOffset}
+        onEscapeKeyDown={(e) => {
+          onEscapeKeyDown?.(e)
+          if (!e.defaultPrevented) escapeToDialog(e)
+        }}
         className={cn(
           "z-50 rounded-xs bg-primary px-2 py-1 text-xs font-medium text-primary-foreground data-[state=delayed-open]:animate-appear data-[state=instant-open]:animate-appear data-[state=closed]:animate-disappear",
           className,

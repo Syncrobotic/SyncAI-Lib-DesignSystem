@@ -825,6 +825,7 @@
   },
   "theme-toggle": {
     "roles": [
+      "button",
       "radio",
       "radiogroup"
     ],

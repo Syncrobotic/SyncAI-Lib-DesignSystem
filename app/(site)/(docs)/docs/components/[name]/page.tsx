@@ -8,6 +8,7 @@ import { CodeBlock } from "@/site/code-block"
 import { Reveal, AppearItem } from "@/site/appear"
 import { ExampleCard } from "@/site/example-card"
 import { Stage } from "@/site/examples"
+import { WhenNear } from "@/site/when-near"
 import { Dot, H2, Rules, Unbroken } from "@/site/prose"
 import { storySource } from "@/site/story-source"
 import { overviews } from "@/site/overview"
@@ -81,11 +82,21 @@ export default async function ComponentPage({ params }: Props) {
   const classes = api.filter((e) => e.kind === "class")
   const types = api.filter((e) => e.kind === "type")
   // The first example opens the page, under the title: what it looks like comes before how to install it.
-  const example = (n: string) => (
+  const example = (n: string, level?: 2 | 3) => (
     <ExampleCard
+      level={level}
       id={`example-${n}`}
       title={storyTitle(n, item.name)}
-      preview={<Stage file={item.examples!.file} name={n} className="w-full" wide={item.wide} />}
+      preview={
+        // Every example after the first draws once it nears the screen (site/when-near.tsx).
+        level === 2 ? (
+          <Stage file={item.examples!.file} name={n} className="w-full" wide={item.wide} />
+        ) : (
+          <WhenNear>
+            <Stage file={item.examples!.file} name={n} className="w-full" wide={item.wide} />
+          </WhenNear>
+        )
+      }
       install={installBlock}
       code={<CodeBlock code={storySource(item.examples!.file, n)} title={`${n.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase()}.tsx`} />}
     />
@@ -94,7 +105,7 @@ export default async function ComponentPage({ params }: Props) {
 
   return (
     <>
-      {first && example(first)}
+      {first && example(first, 2)}
 
       <div className={first ? "pt-8" : undefined}>
         <CodeBlock code={install} lang="bash" title="Install" />

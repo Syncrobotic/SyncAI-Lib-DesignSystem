@@ -171,7 +171,7 @@
     },
     "annotate-predicted": {
       "$type": "color",
-      "$value": "{color.chart-1}"
+      "$value": "#b5b4ff"
     },
     "annotate-truth": {
       "$type": "color",

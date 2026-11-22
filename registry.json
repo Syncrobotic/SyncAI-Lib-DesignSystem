@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.30.0",
         "changelog": [
+          {
+            "version": "0.30.0",
+            "date": "2026-11-22",
+            "note": "Dark theme: `--annotate-predicted` is the high-contrast indigo (#b5b4ff), so a predicted box keeps 3:1 against the photo around it, not only against its halo."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -3338,8 +3343,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.30.0",
         "changelog": [
+          {
+            "version": "0.30.0",
+            "date": "2026-11-22",
+            "note": "Escape inside a native <dialog> closes the dialog (a cancel it can refuse), instead of being taken by the tooltip alone."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
@@ -4523,7 +4533,8 @@
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
-        "@syncrobotic/segmented-control"
+        "@syncrobotic/segmented-control",
+        "@syncrobotic/dropdown-menu"
       ],
       "files": [
         {
@@ -4532,8 +4543,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.30.0",
         "changelog": [
+          {
+            "version": "0.30.0",
+            "date": "2026-11-22",
+            "note": "`variant=\"menu\"`: one icon button showing the choice, which opens Light, Match system and Dark as a menu."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
