@@ -334,6 +334,10 @@ for (const sf of program.getSourceFiles().filter((s) => files.includes(path.reso
         const expanded = decl ? aliasText(typeText, decl.getSourceFile()) : aliasText(typeText, sf)
         if (expanded && expanded.length <= ALIAS_MAX) typeText = expanded
       }
+      // A `| null` the prop declares itself (`value?: number | null`, where null means empty) is part of its type: it is
+      // written back after the rest. Only an optional prop's `| undefined` goes, which the "required" column says.
+      const ownNull = decls.some((d) => own(d) && !!d.type && ts.isUnionTypeNode(d.type) && d.type.types.some((x) => ts.isLiteralTypeNode(x) && x.literal.kind === ts.SyntaxKind.NullKeyword))
+      if (ownNull && !/\bnull$/.test(typeText)) typeText = `${typeText} | null`
       const optional = (sym.flags & ts.SymbolFlags.Optional) !== 0
       props.push({
         name,

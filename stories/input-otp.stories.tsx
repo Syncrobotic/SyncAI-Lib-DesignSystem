@@ -1,6 +1,7 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Button } from "@/registry/syncrobotic/ui/button"
+import { Field } from "@/registry/syncrobotic/ui/field"
 import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot, REGEXP_ONLY_DIGITS, REGEXP_ONLY_DIGITS_AND_CHARS } from "@/registry/syncrobotic/ui/input-otp"
 
 const meta: Meta = { title: "Inputs/Input OTP" }
@@ -9,39 +10,42 @@ type S = StoryObj
 
 export const InputOTPSixDigits: S = {
   render: () => (
-    <InputOTP maxLength={6} pattern={REGEXP_ONLY_DIGITS} aria-label="Verification code">
-      <InputOTPGroup>
-        {[0, 1, 2, 3, 4, 5].map((i) => (
-          <InputOTPSlot key={i} index={i} />
-        ))}
-      </InputOTPGroup>
-    </InputOTP>
+    <Field label="Verification code">
+      <InputOTP maxLength={6} pattern={REGEXP_ONLY_DIGITS}>
+        <InputOTPGroup>
+          {[0, 1, 2, 3, 4, 5].map((i) => (
+            <InputOTPSlot key={i} index={i} />
+          ))}
+        </InputOTPGroup>
+      </InputOTP>
+    </Field>
   ),
 }
 
 export const InputOTPWithSeparator: S = {
   render: () => (
-    <InputOTP maxLength={6} pattern={REGEXP_ONLY_DIGITS} aria-label="Verification code">
-      <InputOTPGroup>
-        {[0, 1, 2].map((i) => (
-          <InputOTPSlot key={i} index={i} />
-        ))}
-      </InputOTPGroup>
-      <InputOTPSeparator />
-      <InputOTPGroup>
-        {[3, 4, 5].map((i) => (
-          <InputOTPSlot key={i} index={i} />
-        ))}
-      </InputOTPGroup>
-    </InputOTP>
+    <Field label="Verification code">
+      <InputOTP maxLength={6} pattern={REGEXP_ONLY_DIGITS}>
+        <InputOTPGroup>
+          {[0, 1, 2].map((i) => (
+            <InputOTPSlot key={i} index={i} />
+          ))}
+        </InputOTPGroup>
+        <InputOTPSeparator />
+        <InputOTPGroup>
+          {[3, 4, 5].map((i) => (
+            <InputOTPSlot key={i} index={i} />
+          ))}
+        </InputOTPGroup>
+      </InputOTP>
+    </Field>
   ),
 }
 
 export const InputOTPPairingCode: S = {
   render: () => (
-    <div className="flex flex-col gap-2">
-      <span className="text-sm font-medium">Pairing code on the robot's screen</span>
-      <InputOTP maxLength={8} pattern={REGEXP_ONLY_DIGITS_AND_CHARS} inputMode="text" aria-label="Pairing code" onChange={() => {}}>
+    <Field label="Pairing code on the robot’s screen" hint="Letters and numbers, as shown on Patrol dog 7F3A.">
+      <InputOTP maxLength={8} pattern={REGEXP_ONLY_DIGITS_AND_CHARS} inputMode="text" onChange={() => {}}>
         <InputOTPGroup>
           {[0, 1, 2, 3].map((i) => (
             <InputOTPSlot key={i} index={i} />
@@ -54,32 +58,35 @@ export const InputOTPPairingCode: S = {
           ))}
         </InputOTPGroup>
       </InputOTP>
-      <p className="text-xs text-muted-foreground">Letters and numbers, as shown on Patrol dog 7F3A.</p>
-    </div>
+    </Field>
   ),
 }
 
 export const InputOTPPin: S = {
   render: () => (
-    <InputOTP maxLength={4} pattern={REGEXP_ONLY_DIGITS} aria-label="Release PIN" containerClassName="[&_[data-slot=input-otp-slot]]:text-transparent">
-      <InputOTPGroup>
-        {[0, 1, 2, 3].map((i) => (
-          <InputOTPSlot key={i} index={i} />
-        ))}
-      </InputOTPGroup>
-    </InputOTP>
+    <Field label="Release PIN">
+      <InputOTP maxLength={4} pattern={REGEXP_ONLY_DIGITS} containerClassName="[&_[data-slot=input-otp-slot]]:text-transparent">
+        <InputOTPGroup>
+          {[0, 1, 2, 3].map((i) => (
+            <InputOTPSlot key={i} index={i} />
+          ))}
+        </InputOTPGroup>
+      </InputOTP>
+    </Field>
   ),
 }
 
 export const InputOTPFilled: S = {
   render: () => (
-    <InputOTP maxLength={6} value="482913" aria-label="Verification code" onChange={() => {}}>
-      <InputOTPGroup>
-        {[0, 1, 2, 3, 4, 5].map((i) => (
-          <InputOTPSlot key={i} index={i} />
-        ))}
-      </InputOTPGroup>
-    </InputOTP>
+    <Field label="Verification code">
+      <InputOTP maxLength={6} value="482913" onChange={() => {}}>
+        <InputOTPGroup>
+          {[0, 1, 2, 3, 4, 5].map((i) => (
+            <InputOTPSlot key={i} index={i} />
+          ))}
+        </InputOTPGroup>
+      </InputOTP>
+    </Field>
   ),
 }
 

@@ -1,4 +1,4 @@
-// @syncrobotic/date-selector v0.25.0 · update: npx shadcn add @syncrobotic/date-selector --overwrite
+// @syncrobotic/date-selector v0.28.0 · update: npx shadcn add @syncrobotic/date-selector --overwrite
 "use client"
 
 import * as React from "react"
@@ -51,6 +51,12 @@ type Common = {
   disabled?: boolean
   /** Days that cannot be picked, in react-day-picker's matcher form, e.g. `{ before: new Date() }`. */
   disabledDays?: React.ComponentProps<typeof Calendar>["disabled"]
+  /**
+   * The day the calendar marks as today. Left out, the device's today. Give it when the app's today differs (a site in
+   * another time zone, a fixed day in a demo or a test), and build presets from the same day, so "Today" and the
+   * calendar's today agree.
+   */
+  today?: Date
   /** Shows an × to clear the value. */
   clearable?: boolean
   className?: string
@@ -73,6 +79,7 @@ export function DatePicker({
   presets,
   disabled,
   disabledDays,
+  today,
   clearable,
   className,
   ...rest
@@ -99,12 +106,15 @@ export function DatePicker({
       {presets && (
         <Presets presets={presets} label={l.presets} active={(p) => !!value && isSameDay(p.value(), value)} onPick={(p) => pick(p.value())} />
       )}
-      <Calendar mode="single" selected={value} onSelect={pick} defaultMonth={value} disabled={disabledDays} locale={calendarLocale} autoFocus />
+      <Calendar mode="single" selected={value} onSelect={pick} defaultMonth={value} disabled={disabledDays} today={today} locale={calendarLocale} autoFocus />
     </Picker>
   )
 }
 
-/** A field that opens a calendar for a from–to range, two months wide on larger screens, with optional presets. */
+/**
+ * A field that opens a calendar for a from–to range, with optional presets. Two months side by side (`numberOfMonths`)
+ * from 640 px up; on a phone one month, which fits the screen, and the arrows reach the next.
+ */
 export function DateRangePicker({
   value,
   onValueChange,
@@ -117,6 +127,7 @@ export function DateRangePicker({
   numberOfMonths = 2,
   disabled,
   disabledDays,
+  today,
   clearable,
   className,
   ...rest
@@ -124,6 +135,7 @@ export function DateRangePicker({
   const l = { ...defaultDatePickerLabels, ...labels }
   const show = dayFormatter(displayFormat, locale)
   const [open, setOpen] = React.useState(false)
+  const wide = useWide()
   const text = value?.from
     ? value.to
       ? rangeText(value.from, value.to, show, displayFormat, locale)
@@ -159,15 +171,32 @@ export function DateRangePicker({
         mode="range"
         selected={value}
         onSelect={onValueChange}
-        numberOfMonths={numberOfMonths}
+        numberOfMonths={wide ? numberOfMonths : 1}
         defaultMonth={value?.from}
         disabled={disabledDays}
+        today={today}
         locale={calendarLocale}
         autoFocus
       />
     </Picker>
   )
 }
+
+// Two months are 656 px with the presets beside them: wider than a phone. Below Tailwind's sm (640 px) the range picker
+// shows one. The calendar renders only once opened, in the browser, so the server's answer is never seen. Without
+// matchMedia (an old test environment) it stays wide, as before.
+const wideQuery = "(min-width: 40rem)"
+const subscribeWide = (onChange: () => void) => {
+  const m = typeof window.matchMedia === "function" ? window.matchMedia(wideQuery) : null
+  m?.addEventListener("change", onChange)
+  return () => m?.removeEventListener("change", onChange)
+}
+const useWide = () =>
+  React.useSyncExternalStore(
+    subscribeWide,
+    () => (typeof window.matchMedia === "function" ? window.matchMedia(wideQuery).matches : true),
+    () => true,
+  )
 
 /** The trigger's words for a day: the date-fns pattern if one is given, else Intl in `locale`, else "3 Nov 2026". */
 function dayFormatter(displayFormat: string | undefined, locale: string | undefined) {

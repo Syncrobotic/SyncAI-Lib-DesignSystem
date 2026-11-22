@@ -1,7 +1,7 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Lock, MapPin, X } from "lucide-react"
-import { Sortable, SortableHandle, SortableItem } from "@/registry/syncrobotic/ui/sortable"
+import { Sortable, SortableHandle, SortableItem, SortablePosition } from "@/registry/syncrobotic/ui/sortable"
 import { Switch } from "@/registry/syncrobotic/ui/switch"
 
 const meta: Meta = { title: "Inputs/Sortable" }
@@ -26,11 +26,13 @@ export const SortableWaypoints: S = {
       <div className="flex flex-col gap-2">
         <span className="text-sm font-medium">Patrol order</span>
         <Sortable value={stops} onValueChange={setStops} getId={(s) => s.id} getLabel={(s) => s.name}>
-          {stops.map((s, i) => (
+          {stops.map((s) => (
             <SortableItem key={s.id} id={s.id}>
               <div className={row}>
                 <SortableHandle label={`Move ${s.name}`} />
-                <span className="flex size-6 shrink-0 items-center justify-center rounded-xs bg-muted text-xs font-medium tabular-nums">{i + 1}</span>
+                <span className="flex size-6 shrink-0 items-center justify-center rounded-xs bg-muted text-xs font-medium tabular-nums">
+                  <SortablePosition />
+                </span>
                 <span className="flex-1 truncate text-sm font-medium">{s.name}</span>
                 <span className="text-xs text-muted-foreground">{s.wait}</span>
               </div>
@@ -114,7 +116,8 @@ export const SortableGrid: S = {
   render: function G() {
     const [cams, setCams] = React.useState(["Front", "Rear", "Left", "Right", "Thermal", "Arm"].map((n, i) => ({ id: String(i), name: n })))
     return (
-      <Sortable value={cams} onValueChange={setCams} getId={(c) => c.id} getLabel={(c) => `${c.name} camera`} layout="grid">
+      // A width of its own: a grid of tiles has no natural width, and shrunk to fit its content the tiles collapse.
+      <Sortable value={cams} onValueChange={setCams} getId={(c) => c.id} getLabel={(c) => `${c.name} camera`} layout="grid" className="w-lg max-w-full">
         {cams.map((c) => (
           <SortableItem key={c.id} id={c.id}>
             <figure className="flex flex-col gap-2 rounded-sm bg-card p-2 ring-1 ring-border">
@@ -156,12 +159,14 @@ export const SortableFiles: S = {
     const [files, setFiles] = React.useState(["intro.mp4", "hall-b-walkthrough.mp4", "safety-briefing.pdf"].map((n) => ({ id: n, name: n })))
     return (
       <Sortable value={files} onValueChange={setFiles} getId={(f) => f.id} getLabel={(f) => f.name}>
-        {files.map((f, i) => (
+        {files.map((f) => (
           <SortableItem key={f.id} id={f.id}>
             <div className={row}>
               <SortableHandle label={`Move ${f.name}`} />
               <span className="flex-1 truncate font-mono text-sm">{f.name}</span>
-              <span className="text-xs text-muted-foreground">Step {i + 1}</span>
+              <span className="text-xs text-muted-foreground tabular-nums">
+                <SortablePosition format={(n) => `Step ${n}`} />
+              </span>
             </div>
           </SortableItem>
         ))}
@@ -176,11 +181,13 @@ export const SortableRemovable: S = {
     const [stops, setStops] = React.useState(route)
     return (
       <Sortable value={stops} onValueChange={setStops} getId={(s) => s.id} getLabel={(s) => s.name}>
-        {stops.map((s, i) => (
+        {stops.map((s) => (
           <SortableItem key={s.id} id={s.id}>
             <div className={row}>
               <SortableHandle label={`Move ${s.name}`} />
-              <span className="w-6 text-xs text-muted-foreground tabular-nums">{i + 1}.</span>
+              <span className="w-6 text-xs text-muted-foreground tabular-nums">
+                <SortablePosition format={(n) => `${n}.`} />
+              </span>
               <span className="flex-1 truncate text-sm">{s.name}</span>
               <button
                 type="button"
@@ -241,12 +248,12 @@ export const SortableColumnsWithVisibility: S = {
   },
 }
 
-/** A longer list in a fixed-height box: dragging near an edge scrolls it. */
+/** A longer list in a fixed-height box: dragging near an edge scrolls it. The box cuts a row in half, so it reads as more below. */
 export const SortableLongList: S = {
   render: function L() {
     const [items, setItems] = React.useState(Array.from({ length: 14 }, (_, i) => ({ id: String(i), name: `Waypoint ${i + 1}` })))
     return (
-      <div className="h-72 overflow-y-auto rounded-md p-2 ring-1 ring-border" tabIndex={0} aria-label="Waypoints">
+      <div className="h-56 overflow-y-auto rounded-md p-2 ring-1 ring-border" tabIndex={0} aria-label="Waypoints">
         <Sortable value={items} onValueChange={setItems} getId={(x) => x.id} getLabel={(x) => x.name} className="gap-1">
           {items.map((x) => (
             <SortableItem key={x.id} id={x.id}>
@@ -299,11 +306,13 @@ export const SortableChips: S = {
     const [tags, setTags] = React.useState(["People", "Forklifts", "Doors", "Spills", "Boxes"].map((n) => ({ id: n, name: n })))
     return (
       <Sortable value={tags} onValueChange={setTags} getId={(x) => x.id} getLabel={(x) => x.name} layout="grid" className="grid-cols-3">
-        {tags.map((x, i) => (
+        {tags.map((x) => (
           <SortableItem key={x.id} id={x.id}>
             <div className="flex h-(--h-md) items-center gap-1 rounded-sm pr-3 text-sm ring-1 ring-border ring-inset">
               <SortableHandle label={`Move ${x.name}`} />
-              <span className="text-xs text-muted-foreground tabular-nums">{i + 1}</span>
+              <span className="text-xs text-muted-foreground tabular-nums">
+                <SortablePosition />
+              </span>
               {x.name}
             </div>
           </SortableItem>
