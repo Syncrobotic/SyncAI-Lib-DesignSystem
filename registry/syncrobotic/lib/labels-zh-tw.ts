@@ -517,6 +517,12 @@ export const annotationLegendLabels = {
   truth: annotatedImageLabels.truth,
 }
 
+export const groundedTextLabels = {
+  marks: ({ points, boxes, shapes }: { points: number; boxes: number; shapes: number }) =>
+    `圖上 ${[boxes && `${boxes} 個框`, points && `${points} 個點`, shapes && `${shapes} 個標註`].filter(Boolean).join("和 ")}`,
+  linked: (words: string[]) => `文字中：${words.join("；")}`,
+}
+
 export const graphLabels = {
   from: (names: string[]) => `來自 ${list(names)}`,
   to: (names: string[]) => `通往 ${list(names)}`,

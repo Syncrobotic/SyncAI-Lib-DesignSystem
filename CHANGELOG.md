@@ -23,6 +23,10 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - **`labels-zh-tw` 0.31.0:** `streamingTextLabels`.
 - **`agent-skill` 0.31.0:** the checklist names StreamingText for a model's streamed answer.
 - Icon set: `CircleStop`, stopped by someone before it finished (never the emergency stop).
+- **`grounded-text` 0.31.0 (beta):** text whose words point at places on a picture, as a vision-language model answers: a caption whose object names match boxes, reasoning where "8 zebras" is linked to 8 points. Hover or focus a span and its marks are highlighted in the selected ink while the rest fade; hover or focus a mark and its spans are. A click, tap, Enter or Space pins one; again or Esc lets it go. Spans are underlined Tab stops described by where their marks are ("8 points on the image"); marks are described by their words. Beside the picture from 48 rem, under it on a phone. `fromGrounding` reads a model's offsets and points or boxes (pixels, 0–1, percent or 0–1000). Issue #287.
+- **`annotated-image` 0.31.0:** `highlighted` draws a set of annotations in the selected ink and fades the rest; `onActiveChange` reports the annotation under the mouse or keyboard; an annotation's `description` is read after its name.
+- **`ros` 0.31.0:** `detection2DArrayToAnnotations` turns a `vision_msgs/Detection2DArray` into annotated-image boxes.
+- **`labels-zh-tw` 0.31.0:** `groundedTextLabels`.
 
 ## 0.30.0 · 2026-11-22
 

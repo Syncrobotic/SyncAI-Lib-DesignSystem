@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import {
   createRosConnection,
+  detection2DArrayToAnnotations,
   diagnosticArrayToStatuses,
   enuYawToHeading,
   geoGoalToGeoPoseStamped,
@@ -1003,5 +1004,25 @@ describe("odometryToSpeed", () => {
   it("is NaN for a twist that is not a number, and 0 for one with nothing set", () => {
     expect(odometryToSpeed(twist(NaN))).toBeNaN()
     expect(odometryToSpeed({ twist: {} } as never)).toBe(0)
+  })
+})
+
+describe("detection2DArrayToAnnotations", () => {
+  it("reads ROS 2 detections as boxes in pixels, with the best class and its score", () => {
+    const a = detection2DArrayToAnnotations(
+      {
+        detections: [
+          { id: "7", bbox: { center: { position: { x: 150, y: 100 }, theta: 0 }, size_x: 100, size_y: 60 }, results: [{ hypothesis: { class_id: "1", score: 0.4 } }, { hypothesis: { class_id: "2", score: 0.9 } }] },
+          { bbox: { center: { x: 50, y: 50 }, size_x: 20, size_y: 10 }, results: [{ id: "forklift", score: 0.7 }] },
+          { bbox: { center: { x: 0, y: 0 }, size_x: 4, size_y: 4 } },
+        ],
+      },
+      { classes: { "2": "zebra" } },
+    )
+    expect(a).toEqual([
+      { id: "7", kind: "predicted", label: "zebra", score: 0.9, shape: { type: "box", x: 100, y: 70, width: 100, height: 60 } },
+      { id: "d1", kind: "predicted", label: "forklift", score: 0.7, shape: { type: "box", x: 40, y: 45, width: 20, height: 10 } },
+      { id: "d2", kind: "predicted", label: "", shape: { type: "box", x: -2, y: -2, width: 4, height: 4 } },
+    ])
   })
 })

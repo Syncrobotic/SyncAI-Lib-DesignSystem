@@ -13,11 +13,11 @@
   },
   "labels-zh-tw": {
     "version": "0.31.0",
-    "hash": "4c6b54f941b9f60e"
+    "hash": "f2af23e63d3a9d1d"
   },
   "ros": {
-    "version": "0.29.0",
-    "hash": "37a5a16c5edd4154"
+    "version": "0.31.0",
+    "hash": "956f5e43b65b3b8a"
   },
   "use-long-press": {
     "version": "0.5.1",
@@ -364,8 +364,12 @@
     "hash": "c5aa2b556e06541b"
   },
   "annotated-image": {
-    "version": "0.18.0",
-    "hash": "b033c11941fbc3f8"
+    "version": "0.31.0",
+    "hash": "9117e7979bf68098"
+  },
+  "grounded-text": {
+    "version": "0.31.0",
+    "hash": "bb239a407de38afd"
   },
   "media-player": {
     "version": "0.31.0",
@@ -581,7 +585,7 @@
   },
   "agent-skill": {
     "version": "0.31.0",
-    "hash": "90d2c6a9340565f5"
+    "hash": "c390331122cf6eca"
   },
   "line-chart-telemetry": {
     "version": "0.17.2",

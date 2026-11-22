@@ -214,7 +214,7 @@
           {
             "version": "0.31.0",
             "date": "2026-11-22",
-            "note": "`chipGroupLabels.selected`. `meterLabels`. `tierBadgeLabels` for the new tier-badge (可商用, 非商用, 受限, 僅限地端). `streamingTextLabels` for the new streaming-text."
+            "note": "`chipGroupLabels.selected`. `meterLabels`. `tierBadgeLabels` for the new tier-badge (可商用, 非商用, 受限, 僅限地端). `streamingTextLabels` for the new streaming-text. `groundedTextLabels` for the new grounded-text (圖上 8 個點, 文字中：8 隻斑馬)."
           },
           {
             "version": "0.29.0",
@@ -249,8 +249,13 @@
         }
       ],
       "meta": {
-        "version": "0.29.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "`detection2DArrayToAnnotations` turns a `vision_msgs/Detection2DArray` (ROS 2 Humble on, or the older layout) into annotated-image's boxes, labelled with each detection's best class (through `classes`) and score, for annotated-image and the marks grounded-text's spans point at."
+          },
           {
             "version": "0.29.0",
             "date": "2026-11-22",
@@ -4141,12 +4146,45 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.18.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "`highlighted` draws a set of annotations in the selected ink at 3 px, in their own line style and without handles, and fades the rest to `--annotate-fade` (`showLabels=\"selected\"` shows their words too); `onActiveChange` reports the annotation under the mouse, or else the one with keyboard focus; an annotation's `description` is read after its name on its button. For grounded-text."
+          },
           {
             "version": "0.18.0",
             "date": "2026-11-19",
             "note": "First release: AnnotatedImage (src or image, width, height, annotations of box, point, polygon and keypoints) with an SVG in the picture's pixel space and non-scaling strokes; predicted solid, ground truth dashed, previous dotted and faded, each on a halo; selected 3 px with handles; class words (all, selected or none); a role=img summary, or with onSelectedChange one Tab stop, arrows, Enter and Esc; overlays; loading and failed states; and AnnotationLegend for the kinds present."
+          }
+        ]
+      }
+    },
+    {
+      "name": "grounded-text",
+      "type": "registry:ui",
+      "title": "Grounded text",
+      "description": "Text whose words point at places on a picture, as a vision-language model answers: hover, focus or tap a span to highlight its boxes or points, and a mark to highlight its words. Built on annotated-image; `fromGrounding` reads a model's offsets and coordinates.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/annotated-image"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/grounded-text.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.31.0",
+        "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "First release."
           }
         ]
       }
@@ -7078,7 +7116,7 @@
           {
             "version": "0.31.0",
             "date": "2026-11-22",
-            "note": "Design language: `bg-scrim`, `bg-letterbox` and the chart inks (`text-chart-N-foreground`). Design language: `--shell-top` and `--shell-surface`, set by every shell, for pinning a tab row (TabsList sticky) or a filter bar under the top bar. Skill: the data blocks' `…Content` exports, to use inside a product's own frame instead of a second shell. The checklist names StreamingText for a model's streamed answer."
+            "note": "Design language: `bg-scrim`, `bg-letterbox` and the chart inks (`text-chart-N-foreground`). Design language: `--shell-top` and `--shell-surface`, set by every shell, for pinning a tab row (TabsList sticky) or a filter bar under the top bar. Skill: the data blocks' `…Content` exports, to use inside a product's own frame instead of a second shell. The checklist names StreamingText for a model's streamed answer. Design language: marks linked to something outside the picture (a hovered word, a row) are highlighted in the selected ink at 3 px, keeping their line style, and the rest fade (grounded-text); never a colour per link."
           },
           {
             "version": "0.22.0",

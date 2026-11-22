@@ -58,6 +58,7 @@ const files = {
   "data-pieces": () => import("@/stories/data-pieces.stories"),
   "image-grid": () => import("@/stories/image-grid.stories"),
   "annotated-image": () => import("@/stories/annotated-image.stories"),
+  "grounded-text": () => import("@/stories/grounded-text.stories"),
   "media-player": () => import("@/stories/media-player.stories"),
   "camera-feed": () => import("@/stories/camera-feed.stories"),
   "camera-wall": () => import("@/stories/camera-wall.stories"),

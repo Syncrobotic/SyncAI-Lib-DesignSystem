@@ -18,7 +18,7 @@ export const metadata: Metadata = { ...pageMeta({ title: `${title} for React`, d
 const sections: { id: string; title: string; lead: string; items: string[] }[] = [
   { id: "safety", title: "Safety", lead: "Stopping comes first: the stop is always on screen, and a dangerous action needs a deliberate gesture.", items: ["stop-button", "slide-to-release", "alarm"] },
   { id: "driving", title: "Driving and missions", lead: "Manual driving that stops the robot the moment the finger lifts, and a map to send it somewhere: a floor plan indoors, latitude and longitude outside.", items: ["teleop-pad", "robot-map", "geo-map", "waypoint-editor"] },
-  { id: "seeing", title: "What the robot sees", lead: "The camera, a wall of a fleet's cameras, the LiDAR and the map it built, each saying in words whether the picture is live.", items: ["camera-feed", "camera-wall", "point-cloud", "annotated-image"] },
+  { id: "seeing", title: "What the robot sees", lead: "The camera, a wall of a fleet's cameras, the LiDAR and the map it built, each saying in words whether the picture is live.", items: ["camera-feed", "camera-wall", "point-cloud", "annotated-image", "grounded-text"] },
   { id: "state", title: "The robot's state", lead: "Pose, attitude, joints, live telemetry, health, battery and status, in shapes and words rather than colour alone.", items: ["robot-model", "attitude", "joint-state", "streaming-chart", "diagnostics", "status-glyph", "meter", "metric-card"] },
   { id: "shell", title: "App shell for robot apps", lead: "The frame of a control app held outdoors: a dynamic island for the one thing that matters now, a dock and trays.", items: ["island", "dock", "tray", "list"] },
 ]
@@ -42,6 +42,7 @@ const ros: [string, string, string][] = [
   ["rcl_interfaces/Log (/rosout)", "log-viewer", "lines, ref.append (rosLogToLogLine)"],
   ["Video (WebRTC or a URL)", "camera-feed", "stream, src"],
   ["sensor_msgs/Image (web_video_server or WebRTC)", "camera-feed, camera-wall", "src, getSource (webVideoServerSrc)"],
+  ["vision_msgs/Detection2DArray", "annotated-image, grounded-text", "annotations (detection2DArrayToAnnotations)"],
 ]
 
 export default function RoboticsPage() {

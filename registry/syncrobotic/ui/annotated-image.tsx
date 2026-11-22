@@ -1,4 +1,4 @@
-// @syncrobotic/annotated-image v0.18.0 · update: npx shadcn add @syncrobotic/annotated-image --overwrite
+// @syncrobotic/annotated-image v0.31.0 · update: npx shadcn add @syncrobotic/annotated-image --overwrite
 "use client"
 
 import * as React from "react"
@@ -25,6 +25,8 @@ export type Annotation = {
   /** The model's confidence, 0–1; written after the label ("person 0.92"). */
   score?: number
   shape: AnnotationShape
+  /** Read after the annotation's name on its button, e.g. where it is in a text beside the picture ("In the text: 8 zebras"). */
+  description?: string
 }
 
 /** A raster layer drawn between the picture and the marks: a depth map, a segmentation mask. */
@@ -124,22 +126,27 @@ const corners = (shape: AnnotationShape): [number, number][] =>
 const nub = (pts: [number, number][]) => pts.map(([x, y]) => `M${x} ${y}h0`).join("")
 const ns = { vectorEffect: "non-scaling-stroke", fill: "none" } as const
 
-/** One annotation as drawn: each line twice (the halo, 2 px wider, under the ink), then its dots, then handles if selected. */
-function Mark({ a, selected }: { a: Annotation; selected: boolean }) {
+/**
+ * One annotation as drawn: each line twice (the halo, 2 px wider, under the ink), then its dots, then handles if selected.
+ * Highlighted is the selected ink at 3 px that keeps its kind's line style and has no handles; dimmed fades it.
+ */
+function Mark({ a, selected, highlighted = false, dimmed = false }: { a: Annotation; selected: boolean; highlighted?: boolean; dimmed?: boolean }) {
   const s = style[a.kind]
   const d = lines(a.shape)
   const pts = dots(a.shape)
-  const width = selected ? 3 : 2
-  const ink = selected ? "stroke-annotate-selected" : s.ink
+  const lit = selected || highlighted
+  const width = lit ? 3 : 2
+  const ink = lit ? "stroke-annotate-selected" : s.ink
   const dash = selected ? undefined : s.dash
   const cap = selected ? undefined : s.cap
   const point = a.shape.type === "point"
-  // Dot sizes (diameters): a point is 10, a keypoint 8; the previous version smaller; selected 12. Ground truth is a ring:
-  // the ink, then the halo inside it.
-  const size = selected ? (point ? 12 : 8) : a.kind === "previous" ? (point ? 6 : 5) : point ? 10 : 8
+  // Dot sizes (diameters): a point is 10, a keypoint 8; the previous version smaller; selected and highlighted 12. Ground
+  // truth is a ring: the ink, then the halo inside it.
+  const size = lit ? (point ? 12 : 8) : a.kind === "previous" ? (point ? 6 : 5) : point ? 10 : 8
   const ring = !selected ? a.kind === "truth" : point
+  const faded = !lit && (dimmed || a.kind === "previous")
   return (
-    <g data-kind={a.kind} data-selected={selected || undefined} style={a.kind === "previous" && !selected ? fade : undefined}>
+    <g data-id={a.id} data-kind={a.kind} data-selected={selected || undefined} data-highlighted={(highlighted && !selected) || undefined} style={faded ? fade : undefined}>
       {d && (
         <>
           <path d={d} {...ns} className="stroke-annotate-halo" strokeWidth={width + 2} strokeDasharray={dash} strokeLinecap={cap} />
@@ -150,7 +157,7 @@ function Mark({ a, selected }: { a: Annotation; selected: boolean }) {
         <>
           <path d={nub(pts)} {...ns} className="stroke-annotate-halo" strokeWidth={size + 3} strokeLinecap="round" />
           <path d={nub(pts)} {...ns} className={ink} strokeWidth={size} strokeLinecap="round" />
-          {ring && <path d={nub(pts)} {...ns} className="stroke-annotate-halo" strokeWidth={size - (selected ? 6 : 4)} strokeLinecap="round" />}
+          {ring && <path d={nub(pts)} {...ns} className="stroke-annotate-halo" strokeWidth={size - (lit ? 6 : 4)} strokeLinecap="round" />}
         </>
       )}
       {selected && corners(a.shape).length > 0 && (
@@ -180,6 +187,16 @@ type AnnotatedImageProps = {
   selectedId?: string | null
   /** Makes each annotation a button (one Tab stop, arrows move, Enter selects, Esc clears). Without it nothing is focusable. */
   onSelectedChange?: (id: string | null) => void
+  /**
+   * Annotations drawn highlighted (the selected ink at 3 px, in their own line style, without handles), e.g. the ones a
+   * hovered word links to. While any is, the others fade to `--annotate-fade`.
+   */
+  highlighted?: readonly string[]
+  /**
+   * The annotation under the mouse, or else the one with keyboard focus; `null` when neither. Touch does not hover: a tap
+   * selects. Needs `onSelectedChange` (the annotations are buttons only then).
+   */
+  onActiveChange?: (id: string | null) => void
   /** Which class words show on the picture. `selected` keeps a crowded picture readable; the words are still read out. */
   showLabels?: "all" | "selected" | "none"
   /** The line-style legend under the picture, for the kinds present. On by default; off when the page has its own. */
@@ -208,6 +225,8 @@ export function AnnotatedImage({
   annotations,
   selectedId = null,
   onSelectedChange,
+  highlighted = [],
+  onActiveChange,
   showLabels = "all",
   legend = true,
   overlays = [],
@@ -220,6 +239,8 @@ export function AnnotatedImage({
   const failed = !!src && failedSrc === src
   const [active, setActive] = React.useState<string | null>(null)
   const [focused, setFocused] = React.useState<string | null>(null)
+  const [hovered, setHovered] = React.useState<string | null>(null)
+  const describedBy = React.useId()
   const nodes = React.useRef(new Map<string, SVGGElement>())
   const selectable = !!onSelectedChange
   const ratio = { aspectRatio: `${width} / ${height}` }
@@ -295,10 +316,21 @@ export function AnnotatedImage({
     }
   }
 
-  // Paint order: the previous version at the bottom, then ground truth, then predictions; the selected one on top.
-  const painted = kinds.flatMap((k) => ordered.filter((o) => o.a.kind === k && o.a.id !== selected))
+  // Hover first, then keyboard focus: what the pointer is on is what the reader is looking at.
+  const report = (hover: string | null, focus: string | null) => {
+    const before = hovered ?? focused
+    const after = hover ?? focus
+    if (after !== before) onActiveChange?.(after)
+  }
+
+  // Paint order: the previous version at the bottom, then ground truth, then predictions; highlighted above the rest and
+  // the selected one on top.
+  const lit = new Set(highlighted.filter((id) => ids.includes(id)))
+  const dimming = lit.size > 0
+  const painted = kinds.flatMap((k) => ordered.filter((o) => o.a.kind === k && o.a.id !== selected && !lit.has(o.a.id)))
+  const raised = kinds.flatMap((k) => ordered.filter((o) => o.a.kind === k && o.a.id !== selected && lit.has(o.a.id)))
   const selectedMark = ordered.find((o) => o.a.id === selected)
-  const tagged = ordered.filter((o) => showLabels === "all" || (showLabels === "selected" && o.a.id === selected))
+  const tagged = ordered.filter((o) => showLabels === "all" || (showLabels === "selected" && (o.a.id === selected || lit.has(o.a.id))))
   const focusedBox = focused ? ordered.find((o) => o.a.id === focused)?.box : undefined
   const present = kinds.filter((k) => annotations.some((a) => a.kind === k))
 
@@ -331,7 +363,10 @@ export function AnnotatedImage({
 
         <svg aria-hidden="true" viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none" className="pointer-events-none absolute inset-0 size-full overflow-visible">
           {painted.map((o) => (
-            <Mark key={o.a.id} a={o.a} selected={false} />
+            <Mark key={o.a.id} a={o.a} selected={false} dimmed={dimming} />
+          ))}
+          {raised.map((o) => (
+            <Mark key={o.a.id} a={o.a} selected={false} highlighted />
           ))}
           {selectedMark && <Mark a={selectedMark.a} selected />}
         </svg>
@@ -393,7 +428,7 @@ export function AnnotatedImage({
             // A click on the picture itself, away from every shape, clears the selection.
             onClick={(e) => e.target === e.currentTarget && selected !== null && onSelectedChange?.(null)}
           >
-            {ordered.map(({ a }) => {
+            {ordered.map(({ a }, i) => {
               const d = lines(a.shape)
               const pts = dots(a.shape)
               return (
@@ -406,6 +441,7 @@ export function AnnotatedImage({
                   role="button"
                   tabIndex={a.id === tabStop ? 0 : -1}
                   aria-label={spoken(a)}
+                  aria-describedby={a.description ? `${describedBy}-${i}` : undefined}
                   aria-pressed={a.id === selected}
                   onClick={() => {
                     setActive(a.id)
@@ -414,9 +450,24 @@ export function AnnotatedImage({
                   onKeyDown={(e) => onKey(e, a.id)}
                   onFocus={(e) => {
                     setActive(a.id)
-                    if (keyboardFocus(e.currentTarget)) setFocused(a.id)
+                    if (!keyboardFocus(e.currentTarget)) return
+                    setFocused(a.id)
+                    report(hovered, a.id)
                   }}
-                  onBlur={() => setFocused(null)}
+                  onBlur={() => {
+                    setFocused(null)
+                    report(hovered, null)
+                  }}
+                  onPointerEnter={(e) => {
+                    if (e.pointerType === "touch") return
+                    setHovered(a.id)
+                    report(a.id, focused)
+                  }}
+                  onPointerLeave={(e) => {
+                    if (e.pointerType === "touch") return
+                    setHovered(null)
+                    report(null, focused)
+                  }}
                   // focus-ring: drawn as an HTML frame around the shape (focusedBox above), in the focus ink between two halo
                   // lines; the browser's own outline would be a thin line that disappears on a dark photo.
                   className="cursor-pointer outline-none"
@@ -451,6 +502,11 @@ export function AnnotatedImage({
               )
             })}
           </svg>
+        )}
+        {selectable && annotations.some((a) => a.description) && (
+          <div hidden>
+            {ordered.map(({ a }, i) => a.description && <span key={a.id} id={`${describedBy}-${i}`}>{a.description}</span>)}
+          </div>
         )}
       </div>
       {legend && present.length > 0 && <AnnotationLegend kinds={present} labels={labels} />}
