@@ -2,6 +2,14 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **`streaming-text` 0.31.0 (beta):** a model's answer as it streams in token by token (server-sent events from a VLM or LLM). Pass the text so far and a `phase`: queued (with `queuePosition` and Cancel), streaming (Generating, or Thinking while only the reasoning part streams, with Stop), then done ("Done in 2.4 s · first token 0.3 s", from timestamps or the server's durations, formatted by `locale`), stopped or error (the partial text kept and said to be incomplete; Failed in the danger colour with its message and Try again). Plain text with paragraphs, no markdown. Calm while it waits: a grey Spinner after 300 ms and a word, no blinking caret; the status row sits above the text and keeps its height, so Stop never moves while the answer grows. A `reasoning` part sits apart behind a Reasoning button, closed. Screen readers hear each phase once and the answer in whole sentences, at most every 5 s. Issue #288.
+- **`labels-zh-tw` 0.31.0:** `streamingTextLabels`.
+- **`agent-skill` 0.31.0:** the checklist names StreamingText for a model's streamed answer.
+- Icon set: `CircleStop`, stopped by someone before it finished (never the emergency stop).
+
 ## 0.30.0 · 2026-11-22
 
 A menu for the theme toggle, tabs in the phone drawer, two accessibility fixes from a product team (dark predicted annotations, Escape in a native dialog) and a much lighter docs site.

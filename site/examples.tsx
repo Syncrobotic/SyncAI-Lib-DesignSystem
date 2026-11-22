@@ -27,6 +27,7 @@ const files = {
   charts: () => import("@/stories/charts.stories"),
   "data-grid": () => import("@/stories/data-grid.stories"),
   "log-viewer": () => import("@/stories/log-viewer.stories"),
+  "streaming-text": () => import("@/stories/streaming-text.stories"),
   stepper: () => import("@/stories/stepper.stories"),
   trace: () => import("@/stories/trace.stories"),
   marker: () => import("@/stories/marker.stories"),

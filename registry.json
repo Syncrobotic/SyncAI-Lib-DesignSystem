@@ -204,8 +204,13 @@
         }
       ],
       "meta": {
-        "version": "0.29.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "`streamingTextLabels` for the new streaming-text."
+          },
           {
             "version": "0.29.0",
             "date": "2026-11-22",
@@ -5107,6 +5112,37 @@
       }
     },
     {
+      "name": "streaming-text",
+      "type": "registry:ui",
+      "title": "Streaming text",
+      "description": "A model's answer as it streams in, token by token. The text grows in place under a calm status row: the queue position, Generating with Stop, then \"Done in 2.4 s · first token 0.3 s\", Stopped or Failed with the partial answer kept. A reasoning part stays apart, closed, and screen readers hear whole sentences, never every token.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/spinner"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/streaming-text.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.31.0",
+        "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
       "name": "sortable",
       "type": "registry:ui",
       "title": "Sortable",
@@ -6955,8 +6991,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "The checklist names StreamingText for a model's streamed answer."
+          },
           {
             "version": "0.22.0",
             "date": "2026-11-20",

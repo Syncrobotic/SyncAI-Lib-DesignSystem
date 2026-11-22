@@ -931,6 +931,15 @@
     "tabStops": 7,
     "live": true
   },
+  "streaming-text": {
+    "roles": [
+      "article",
+      "button",
+      "status"
+    ],
+    "tabStops": 2,
+    "live": true
+  },
   "sortable": {
     "roles": [
       "button",
