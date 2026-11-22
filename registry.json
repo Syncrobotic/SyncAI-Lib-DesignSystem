@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.3",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "High contrast defines --stop and --stop-deep: white on the stop reaches 7:1 (it was 4.8:1), on the deep red 13.7:1."
+          },
           {
             "version": "0.22.3",
             "date": "2026-11-21",
@@ -199,7 +204,7 @@
           {
             "version": "0.28.0",
             "date": "2026-11-21",
-            "note": "New streamingChartLabels, diagnosticsLabels for the new streaming-chart and diagnostics, sidebarProviderLabels for the new sidebar, logViewerLabels for the new log-viewer, and `details` in `treeLabels`. dataGridLabels has width, wider, narrower, resetWidth and cannotSelect for the data grid's new resize and selection words."
+            "note": "New streamingChartLabels, diagnosticsLabels for the new streaming-chart and diagnostics, sidebarProviderLabels for the new sidebar, logViewerLabels for the new log-viewer, and `details` in `treeLabels`. dataGridLabels has width, wider, narrower, resetWidth and cannotSelect for the data grid's new resize and selection words. Adds `batteryUnknown` to islandLabels and `viewOptions` to streamingChartLabels; the Bluetooth-only stop says 藍牙 and the map's retry says 重新載入."
           },
           {
             "version": "0.27.0",
@@ -280,8 +285,13 @@
         }
       ],
       "meta": {
-        "version": "0.11.1",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Safety: a keyboard hold is cancelled when focus leaves the track or the page is hidden (a held Enter followed by Tab used to release 2 s later anyway). The thumb travels while the key is held, so the keyboard shows its progress, and aria-valuenow with it."
+          },
           {
             "version": "0.11.1",
             "date": "2026-11-18",
@@ -560,8 +570,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "The hold-to-stop-all fill is opaque --stop-deep, so the label keeps its contrast over it (it was white at 20 %, 3.8:1). The label no longer moves when “Keep holding” takes over. Bluetooth only says so in words (“Emergency stop · Bluetooth”). The tag shows on the deep red of a stop delivered over Bluetooth."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -615,8 +630,13 @@
         }
       ],
       "meta": {
-        "version": "0.11.1",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Safety: a keyboard hold is cancelled on blur and when the page is hidden. The thumb travels while Enter or Space is held; `keyboardHint` (read after the label) tells a screen reader to hold; `releasing` shows the released state without a slide. The fill, the tag and the locked thumb are opaque (high contrast allows nothing translucent)."
+          },
           {
             "version": "0.11.1",
             "date": "2026-11-18",
@@ -651,8 +671,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.23.1",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Disabled, its description says why and no longer reads out the drive keys."
+          },
           {
             "version": "0.23.1",
             "date": "2026-11-21",
@@ -732,8 +757,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.1",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "`battery` has no default: without a reading the island says the level is unknown (“–%”, “battery unknown”) instead of showing 72 %. A robot without a picture gets a square avatar with its initials, not an empty circle. The bell is a 44 px square target (it was 36 px wide). New label `batteryUnknown`."
+          },
           {
             "version": "0.22.1",
             "date": "2026-11-21",
@@ -2561,6 +2591,7 @@
         "@syncrobotic/cn",
         "@syncrobotic/status-glyph",
         "@syncrobotic/button",
+        "@syncrobotic/dropdown-menu",
         "@syncrobotic/segmented-control",
         "@syncrobotic/table"
       ],
@@ -2577,7 +2608,7 @@
           {
             "version": "0.28.0",
             "date": "2026-11-21",
-            "note": "First release."
+            "note": "First release. Narrower than 36 rem, the window and Chart / Table switches fold into a View options menu (⋯) beside Pause, so the toolbar stays one row; new label `viewOptions`."
           }
         ]
       }
@@ -2929,8 +2960,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.24.1",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "The error shows the alert glyph above its words, as the point cloud and robot model do, and the retry button says “Load again”."
+          },
           {
             "version": "0.24.1",
             "date": "2026-11-21",
@@ -3219,8 +3255,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.4",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "New DropdownMenuRadioGroup and DropdownMenuRadioItem: one of several in a menu, with a check beside the chosen item."
+          },
           {
             "version": "0.17.4",
             "date": "2026-11-19",
@@ -3570,8 +3611,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Horizontal and both: takes its container's width by default, so a row wider than the page scrolls instead of growing the area to fit it."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -3856,8 +3902,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.17.4",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Pick one (`selection=\"single\"`) is a radio group: `role=\"radio\"` with `aria-checked`, one Tab stop, the arrow keys, Home and End move and pick, a round mark instead of a box, and picking the picked tile again keeps it."
+          },
           {
             "version": "0.17.4",
             "date": "2026-11-21",
@@ -3928,8 +3979,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.21.2",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Opens at `startAt` on a server-rendered page too (the picture stayed at 0:00 under a time reading 0:40). The Clip unavailable notice sits on its own surface, so its reason reads (it was 3.2:1 over a bright frame). Marker ticks on the timeline are 24 × 24 targets (they were 24 × 16)."
+          },
           {
             "version": "0.21.2",
             "date": "2026-11-21",
@@ -4055,7 +4111,7 @@
           {
             "version": "0.28.0",
             "date": "2026-11-21",
-            "note": "First release."
+            "note": "First release. A value that is a plain number with an optional unit is grouped in `locale` (“1204553 ticks” → “1,204,553 ticks”); versions, IDs and words are shown as sent (`formatDiagnosticValue`)."
           }
         ]
       }
@@ -4125,8 +4181,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.24.2",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Stale is said once, in the header's state line, not again over the view (the dimmed pose stays)."
+          },
           {
             "version": "0.24.2",
             "date": "2026-11-21",
@@ -5007,8 +5068,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.1",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "A long file name is cut in the middle, so its extension always shows; the whole name is in the title."
+          },
           {
             "version": "0.23.1",
             "date": "2026-11-21",
@@ -7117,8 +7183,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "British spelling in the sample data (“Lost localisation”)."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",

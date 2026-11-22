@@ -21,7 +21,7 @@ const drag = (thumb: HTMLElement, fraction: number) => {
 }
 
 describe("SlideToRelease", () => {
-  beforeEach(() => vi.useFakeTimers())
+  beforeEach(() => vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout", "requestAnimationFrame", "cancelAnimationFrame", "performance"] }))
   afterEach(() => {
     cleanup()
     vi.useRealTimers()
@@ -85,6 +85,55 @@ describe("SlideToRelease", () => {
     fireEvent.keyUp(slider, { key: " " })
     act(() => vi.advanceTimersByTime(2000))
     expect(onRelease).not.toHaveBeenCalled()
+  })
+
+  // Safety: a hold that outlives the operator's attention must not release. Tab away, another window, or the page going
+  // to the background while Enter is down used to release 2 s later anyway (no key up ever reaches the track).
+  it("cancels the keyboard hold when focus leaves the track", () => {
+    const onRelease = vi.fn()
+    render(<SlideToRelease onRelease={onRelease} />)
+    const slider = screen.getByRole("slider")
+    slider.focus()
+    fireEvent.keyDown(slider, { key: "Enter" })
+    act(() => vi.advanceTimersByTime(200))
+    fireEvent.blur(slider)
+    act(() => vi.advanceTimersByTime(3000))
+    expect(onRelease).not.toHaveBeenCalled()
+    expect(slider.getAttribute("aria-valuenow")).toBe("0")
+  })
+
+  it("cancels the keyboard hold when the page is hidden", () => {
+    const onRelease = vi.fn()
+    render(<SlideToRelease onRelease={onRelease} />)
+    const slider = screen.getByRole("slider")
+    fireEvent.keyDown(slider, { key: " " })
+    act(() => vi.advanceTimersByTime(500))
+    Object.defineProperty(document, "hidden", { configurable: true, get: () => true })
+    act(() => {
+      document.dispatchEvent(new Event("visibilitychange"))
+    })
+    act(() => vi.advanceTimersByTime(3000))
+    delete (document as { hidden?: boolean }).hidden
+    expect(onRelease).not.toHaveBeenCalled()
+  })
+
+  it("shows the keyboard hold's progress: the thumb travels and aria-valuenow rises", () => {
+    render(<SlideToRelease onRelease={() => {}} />)
+    const slider = screen.getByRole("slider")
+    fireEvent.keyDown(slider, { key: "Enter" })
+    act(() => vi.advanceTimersByTime(1000))
+    const now = Number(slider.getAttribute("aria-valuenow"))
+    expect(now).toBeGreaterThanOrEqual(40)
+    expect(now).toBeLessThan(100)
+    fireEvent.keyUp(slider, { key: "Enter" })
+    expect(slider.getAttribute("aria-valuenow")).toBe("0")
+  })
+
+  it("tells a screen reader how to release from the keyboard", () => {
+    render(<SlideToRelease onRelease={() => {}} />)
+    const id = screen.getByRole("slider").getAttribute("aria-describedby")
+    expect(id).toBeTruthy()
+    expect(document.getElementById(id!)?.textContent).toBe("Hold Enter or Space for 2 seconds")
   })
 
   it("cannot be released by viewers (locked)", () => {

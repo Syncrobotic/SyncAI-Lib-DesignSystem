@@ -1,4 +1,4 @@
-// @syncrobotic/media-player v0.21.2 · update: npx shadcn add @syncrobotic/media-player --overwrite
+// @syncrobotic/media-player v0.28.0 · update: npx shadcn add @syncrobotic/media-player --overwrite
 "use client"
 
 import * as React from "react"
@@ -168,6 +168,19 @@ export function MediaPlayer({
     setPrevHint(durationHint)
     if (Number.isFinite(durationHint)) setDuration((d) => (Number.isFinite(d) ? d : (durationHint as number)))
   }
+
+  // Seek to startAt once the media can seek, unless someone has already played or moved it.
+  const openAtStart = (v: HTMLVideoElement) => {
+    if (startAt && !started.current && v.currentTime === 0) v.currentTime = startAt
+  }
+  // On a server-rendered page the browser can load the metadata before React attaches onLoadedMetadata, so that event
+  // never reaches the player and the picture stayed at 0:00 under a time reading startAt. Seek on mount when it already can.
+  React.useEffect(() => {
+    const v = videoRef.current
+    if (v && v.readyState >= 1) openAtStart(v)
+    // Mount only: later metadata goes through onLoadedMetadata.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const poke = React.useCallback(() => {
     setActive(true)
@@ -392,7 +405,7 @@ export function MediaPlayer({
             onLoadedMetadata={(e) => {
               const v = e.currentTarget
               if (Number.isFinite(v.duration)) setDuration(v.duration)
-              if (startAt && !started.current && v.currentTime === 0) v.currentTime = startAt
+              openAtStart(v)
             }}
             onDurationChange={(e) => {
               if (Number.isFinite(e.currentTarget.duration)) setDuration(e.currentTarget.duration)
@@ -422,7 +435,8 @@ export function MediaPlayer({
 
           {failed && (
             <div className="absolute inset-0 grid place-items-center bg-(--scrim) p-4">
-              <div role={errorCode !== null ? "alert" : undefined} className="flex max-w-sm flex-col items-center gap-3 text-center">
+              {/* Its own opaque surface, as the camera feed's notices: secondary text on the scrim over a bright frame fell to 3.2:1. */}
+              <div role={errorCode !== null ? "alert" : undefined} className="flex max-w-sm flex-col items-center gap-3 rounded-md bg-background p-4 text-center">
                 <CircleAlert aria-hidden="true" className="size-6" />
                 <p className="text-sm text-pretty">
                   <span className="font-medium">{l.unavailable}:</span>{" "}
@@ -471,6 +485,8 @@ export function MediaPlayer({
                     {known &&
                       markers.map((m) => (
                         // Pointer shortcut only: the list under the player names each marker for keyboard and screen readers.
+                        // 24 × 24 (WCAG 2.5.8): the tick is drawn in its top two thirds, so the lower part only widens the
+                        // target over the track, where a press near a marker lands on the marker.
                         <button
                           key={m.id ?? `${m.time}-${m.label}`}
                           type="button"
@@ -479,7 +495,7 @@ export function MediaPlayer({
                           title={`${m.label} · ${formatMediaTime(m.time)}`}
                           onClick={() => seekTo(m.time)}
                           style={{ left: `${Math.min(1, m.time / duration) * 100}%` }}
-                          className="press absolute top-0 flex h-4 w-6 -translate-x-1/2 items-end justify-center"
+                          className="press absolute top-0 flex size-6 -translate-x-1/2 items-start justify-center pt-1"
                         >
                           <span className="h-3 w-0.5 rounded-xs bg-foreground" />
                         </button>

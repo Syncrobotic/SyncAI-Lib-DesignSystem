@@ -3,7 +3,7 @@ import { notFound } from "next/navigation"
 import { pageMeta } from "@/site/config"
 import { getItem, items } from "@/site/catalog"
 import { H2 } from "@/site/prose"
-import { a11yOf } from "@/site/a11y"
+import { a11yOf, keyParts } from "@/site/a11y"
 import { hasA11y } from "@/site/component-tabs-data"
 import { Kbd } from "@/registry/syncrobotic/ui/kbd"
 
@@ -67,6 +67,7 @@ export default async function AccessibilityPage({ params }: Props) {
             .
           </li>
         )}
+        {a.patternNote && <li>{a.patternNote}</li>}
         {a.live && <li>Announces changes through a live region, so a screen reader reads an update without focus moving to it.</li>}
       </ul>
 
@@ -84,10 +85,16 @@ export default async function AccessibilityPage({ params }: Props) {
               {a.keyboard.map(([keys, action]) => (
                 <tr key={keys} className="border-b border-border last:border-0">
                   <td className="w-40 py-2 pr-4 pl-4 align-top sm:w-56">
-                    <span className="flex flex-wrap gap-1">
-                      {keys.split(" / ").map((k) => (
-                        <Kbd key={k}>{k}</Kbd>
-                      ))}
+                    <span className="flex flex-wrap items-center gap-1">
+                      {keyParts(keys).map((p, i) =>
+                        p.key ? (
+                          <Kbd key={i}>{p.text}</Kbd>
+                        ) : (
+                          <span key={i} className="text-muted-foreground">
+                            {p.text}
+                          </span>
+                        ),
+                      )}
                     </span>
                   </td>
                   <td className="py-2 pr-4 text-muted-foreground">{action}</td>

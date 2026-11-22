@@ -81,7 +81,7 @@ export const stopButtonLabels = {
   idle: "停止",
   sending: "傳送中…",
   unconfirmed: "未確認，請再按一次",
-  bluetooth: "急停",
+  bluetooth: "急停 · 藍牙",
   "bluetooth-sent": "已透過藍牙送出",
   dead: "無連線",
   holdAll: "持續按住以停止全部",
@@ -107,6 +107,7 @@ export const islandLabels = {
   offline: "離線",
   charging: "充電中",
   battery: (percent: number) => `電量 ${percent}%`,
+  batteryUnknown: "電量未知",
   notifications: (unread: number) => `通知，${unread} 則未讀`,
 }
 
@@ -294,7 +295,7 @@ export const robotMapLabels = {
   empty: "此場域目前沒有機器人。",
   loading: "正在載入地圖",
   error: "無法載入地圖。",
-  retry: "重新載入地圖",
+  retry: "重新載入",
   count: (n: number) => `${n} 台機器人`,
   selected: (name: string, status: string) => `已選取：${name}，${status}`,
   north: (deg: number) => `北方位於畫面上方順時針 ${compass(deg)}°`,
@@ -492,6 +493,7 @@ export const streamingChartLabels = {
   window: "時間範圍",
   windowOption: (ms: number) => (ms < 60_000 ? `${Math.round(ms / 1000)} 秒` : ms < 3_600_000 ? `${Math.round(ms / 60_000)} 分鐘` : `${Math.round(ms / 3_600_000)} 小時`),
   view: "顯示方式",
+  viewOptions: "顯示選項",
   chart: "圖表",
   table: "表格",
   time: "時間",

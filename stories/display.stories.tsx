@@ -1,6 +1,6 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { Battery, Bot, CircleAlert, Info, Lock, MapPinOff, RotateCw, SearchX, TriangleAlert, Wifi, WifiOff } from "lucide-react"
+import { Battery, Bot, CalendarDays, CircleAlert, Info, Lock, MapPinOff, RotateCw, SearchX, TriangleAlert, Wifi, WifiOff } from "lucide-react"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { Alert, AlertDescription, AlertTitle } from "@/registry/syncrobotic/ui/alert"
@@ -596,7 +596,7 @@ export const CardEmpty: S = {
         <CardTitle>Scheduled missions</CardTitle>
       </CardHeader>
       <CardContent>
-        <EmptyState icon={SearchX} title="Nothing scheduled" description="Missions you schedule for this site appear here." />
+        <EmptyState icon={CalendarDays} title="Nothing scheduled" description="Missions you schedule for this site appear here." />
       </CardContent>
     </Card>
   ),

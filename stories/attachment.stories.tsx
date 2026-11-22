@@ -25,7 +25,7 @@ export const AttachmentChips: S = {
     <div className="flex flex-wrap gap-2">
       <Attachment variant="chip" name="door-3.jpg" size={1.2 * 1024 ** 2} onRemove={noop} />
       <Attachment variant="chip" name="lidar-scan.pcd" status="uploading" progress={30} size={24 * 1024 ** 2} onRemove={noop} />
-      <Attachment variant="chip" name="notes.txt" status="error" error="Upload failed" onRetry={noop} onRemove={noop} />
+      <Attachment variant="chip" name="notes.txt" status="error" error="Connection lost, try again" onRetry={noop} onRemove={noop} />
     </div>
   ),
 }

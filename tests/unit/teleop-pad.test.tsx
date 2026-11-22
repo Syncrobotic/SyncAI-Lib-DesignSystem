@@ -185,6 +185,13 @@ describe("TeleopPad", () => {
     expect(onStop).not.toHaveBeenCalled()
   })
 
+  it("disabled, its description says why and does not read out the drive keys", () => {
+    const { pad, rerender, onCommand, onStop } = setup()
+    rerender(<TeleopPad onCommand={onCommand} onStop={onStop} disabled disabledReason="robot in autonomous mode" />)
+    const desc = document.getElementById(pad.getAttribute("aria-describedby")!)!.textContent
+    expect(desc).toBe("Disabled: robot in autonomous mode.")
+  })
+
   it("stops with zero when disabled while driving, and cannot be driven while disabled", () => {
     const { pad, onCommand, onStop, rerender } = setup()
     press(pad)

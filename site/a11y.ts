@@ -97,6 +97,25 @@ const primitiveRoles: Record<string, string[]> = {
   Command: ["combobox", "listbox", "option", "group"],
 }
 
+/** Components a shell part is built to hold in a slot rather than install: their colours are on screen inside it. */
+const slotted: Record<string, string[]> = { dock: ["stop-button", "slide-to-release"] }
+
+/**
+ * Roles used for what screen readers do with them rather than for the pattern's keys: the pattern is replaced by a note.
+ * Slide to release is a slider so a screen reader passes a held Enter or Space through to it (as a button, browse mode
+ * would turn the press into a click); it has none of the Slider pattern's arrow keys, since a release is never a step.
+ */
+const roleNotes: Record<string, { role: string; note: string }> = {
+  "slide-to-release": {
+    role: "slider",
+    note: "The slider role is there so a screen reader passes a held Enter or Space through to the track. It does not follow the Slider pattern: the arrow keys do nothing, because a release is never a step. A pointer slides; the keyboard holds.",
+  },
+  dock: {
+    role: "slider",
+    note: "Slide to release, in the dock while the robot is stopped, uses the slider role so a screen reader passes a held Enter or Space through to it; the arrow keys do nothing.",
+  },
+}
+
 /** The component's own source plus the kit components it installs, a level at a time. */
 function sources(name: string, seen = new Set<string>()): string[] {
   if (seen.has(name)) return []
@@ -131,6 +150,9 @@ const contrastRules: { test: RegExp; label: string; applies: string; fg: string;
   { test: /(border|ring)-input\b/, label: "Control edge", applies: "The outline that shows where to type or press", fg: "input", bg: ["background", "card"], need: 3, wcag: [SC_NONTEXT] },
   // The theme draws every :focus-visible outline (2 px, --ring), so this row is added for anything that takes focus.
   { test: /$^/, label: "Keyboard focus ring", applies: "Focus visible, on every control in it", fg: "ring", bg: ["background", "card"], need: 3, wcag: [SC_NONTEXT] },
+  // The stop's label is 18 px bold: normal text under WCAG, so 4.5:1 (high contrast holds it to 7:1).
+  { test: /bg-stop\b/, label: "Stop label", applies: "White label on the red stop", fg: "white", bg: ["stop"], need: 4.5, wcag: [SC_TEXT] },
+  { test: /bg-stop-deep\b/, label: "Label on the deep red", applies: "White label on the hold fill, slide to release and a stop delivered over Bluetooth", fg: "white", bg: ["stop-deep"], need: 4.5, wcag: [SC_TEXT] },
   { test: /text-disabled|disabled:/, label: "Disabled", applies: "Disabled controls (the kit still keeps 3:1)", fg: "disabled", bg: ["background", "card"], need: null, wcag: [SC_TEXT, SC_NONTEXT] },
 ]
 
@@ -144,6 +166,8 @@ export type A11y = {
   /** Hidden from screen readers: it repeats a word that is written beside it. */
   hidden: boolean
   patterns: { title: string; href: string }[]
+  /** Why a role is used without its pattern's keys, when one is. */
+  patternNote?: string
   tabStops: number
   live: boolean
   keyboard: Item["keyboard"]
@@ -154,7 +178,7 @@ export type A11y = {
 export function a11yOf(name: string): A11y | null {
   const item = getItem(name)
   if (!item || item.group === "Hooks & libraries") return null
-  const own = item.files.map((f) => readSource(f.path)).join("\n")
+  const own = [...item.files.map((f) => readSource(f.path)), ...(slotted[name] ?? []).flatMap((n) => getItem(n)?.files.map((f) => readSource(f.path)) ?? [])].join("\n")
   const all = sources(name).join("\n")
   const m = (measured as Record<string, Measured>)[name] ?? { roles: [], tabStops: 0, live: false }
 
@@ -173,7 +197,8 @@ export function a11yOf(name: string): A11y | null {
 
   const patterns = new Map<string, string>()
   for (const p of ownPrimitives) if (primitivePattern[p]) patterns.set(primitivePattern[p][0], `${APG}/${primitivePattern[p][1]}/`)
-  for (const r of roles) if (rolePattern[r] && ![...patterns.keys()].some((k) => k.startsWith(rolePattern[r][0]))) patterns.set(rolePattern[r][0], `${APG}/${rolePattern[r][1]}/`)
+  const roleNote = roleNotes[name]
+  for (const r of roles) if (r !== roleNote?.role && rolePattern[r] && ![...patterns.keys()].some((k) => k.startsWith(rolePattern[r][0]))) patterns.set(rolePattern[r][0], `${APG}/${rolePattern[r][1]}/`)
   // A component that is a button or a link also contains one: name the main pattern first and drop generic ones when a
   // composite pattern is already there.
   if (patterns.size > 1) for (const g of ["Button", "Link", "Landmarks"]) patterns.delete(g)
@@ -230,6 +255,7 @@ export function a11yOf(name: string): A11y | null {
     roles,
     hidden: decorative.has(name),
     patterns: [...patterns].map(([title, href]) => ({ title, href })),
+    patternNote: roleNote?.note,
     tabStops,
     live: m.live,
     keyboard: item.keyboard,
@@ -244,9 +270,33 @@ export function a11yMarkdown(name: string): string[] {
   const out = ["", "## Accessibility", ""]
   if (a.roles.length) out.push(`- Roles: ${a.roles.map((r) => `\`${r}\``).join(", ")}`)
   if (a.patterns.length) out.push(`- WAI-ARIA patterns: ${a.patterns.map((p) => `[${p.title}](${p.href})`).join(", ")}`)
+  if (a.patternNote) out.push(`- ${a.patternNote}`)
   if (a.live) out.push("- Announces changes through a live region.")
   if (!a.keyboard?.length) out.push(a.tabStops ? `- Keyboard: no keys of its own; Tab reaches each control.` : "- Keyboard: nothing in it takes focus.")
   if (a.contrast.length)
     out.push("", "| Contrast | Applies to | Needs | Light | Dark |", "| --- | --- | --- | --- | --- |", ...a.contrast.map((c) => `| ${c.label} | ${c.applies} | ${c.need} | ${c.light.toFixed(1)}:1 | ${c.dark.toFixed(1)}:1 |`))
   return out
+}
+
+/**
+ * A keyboard row's keys, split into the keys themselves (drawn as keycaps) and the words around them ("Hold", "2 s",
+ * "on a group", "away"), so a phrase is never drawn as a key. "/" and "," between alternatives are words too.
+ */
+export function keyParts(keys: string): { text: string; key: boolean }[] {
+  // Whole-string single keys that would otherwise read as separators.
+  if (keys === "/" || keys === "*") return [{ text: keys, key: true }]
+  const named = /^(Enter|Space|Tab|Esc|Escape|Home|End|Backspace|Delete|PageUp|PageDown|Page Up|Page Down|Arrow keys|Arrow (Up|Down|Left|Right)|Up|Down|Left|Right|Menu key|Shift|Ctrl|Alt|F\d+)$/
+  const isKey = (t: string) => named.test(t) || /^\S+\+\S+$/.test(t) || /^⌘\S+$/.test(t) || (t.length === 1 && !/[a-z]/.test(t))
+  const parts: { text: string; key: boolean }[] = []
+  const push = (text: string, key: boolean) => {
+    const last = parts.at(-1)
+    if (!key && last && !last.key) last.text += text
+    else parts.push({ text, key })
+  }
+  // Multi-word keys and durations first, then single words; whitespace and separators stay as words.
+  for (const m of keys.matchAll(/Page (?:Up|Down)|Arrow (?:keys|Up|Down|Left|Right)|Menu key|\d+(?:\.\d+)? s\b|\s+\/\s+|,\s*|\s+|[^\s,]+/g)) {
+    const t = m[0]
+    push(t, !/^\s|^,|\d s$/.test(t) && isKey(t))
+  }
+  return parts
 }

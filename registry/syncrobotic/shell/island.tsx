@@ -1,4 +1,4 @@
-// @syncrobotic/island v0.22.1 · update: npx shadcn add @syncrobotic/island --overwrite
+// @syncrobotic/island v0.28.0 · update: npx shadcn add @syncrobotic/island --overwrite
 "use client"
 
 import * as React from "react"
@@ -19,6 +19,8 @@ export type IslandLabels = {
   offline: string
   charging: string
   battery: (percent: number) => string
+  /** No battery reading yet (or the robot does not report one). */
+  batteryUnknown: string
   notifications: (unread: number) => string
 }
 
@@ -28,6 +30,7 @@ export const defaultIslandLabels: IslandLabels = {
   offline: "offline",
   charging: "charging",
   battery: (n) => `battery ${n}%`,
+  batteryUnknown: "battery unknown",
   notifications: (unread) => `Notifications, ${unread} unread`,
 }
 
@@ -41,6 +44,7 @@ type IslandProps = {
   /** Another dog needs attention: a triangle after the name. Show it only for new issues. */
   attention?: boolean
   online?: boolean
+  /** Percent. Leave it out until the robot reports one: the island says the level is unknown instead of inventing one. */
   battery?: number
   charging?: boolean
   unread?: number
@@ -68,7 +72,7 @@ export function Island({
   tone,
   attention,
   online = true,
-  battery = 72,
+  battery,
   charging,
   unread = 0,
   open = null,
@@ -90,7 +94,8 @@ export function Island({
   const toggle = (z: Zone) => onOpenChange?.(open === z ? null : z)
   const zone = (z: Zone) => cn("press flex h-(--h-md) items-center gap-2 rounded-md px-2", open === z && "bg-muted")
   // Warning below 15 %, the fleet-wide battery threshold (never danger: a low battery is not a fault).
-  const low = battery < 15
+  const known = battery !== undefined && Number.isFinite(battery)
+  const low = known && battery < 15
   const BatteryIcon = charging ? BatteryCharging : Battery
   return (
     <Tray
@@ -104,7 +109,12 @@ export function Island({
       <div className="flex h-(--h-md) items-center gap-1">
         <button type="button" aria-expanded={open === "name"} onClick={() => toggle("name")} className={cn(zone("name"), "min-w-0 flex-1 text-left")}>
           <span className="relative shrink-0">
-            {avatar ?? <span className="block size-8 rounded-full bg-track" />}
+            {/* A robot is a thing, so its avatar is square (people are round), with initials rather than an empty shape. */}
+            {avatar ?? (
+              <span aria-hidden="true" className="flex size-8 items-center justify-center rounded-xs bg-track text-xs font-medium">
+                {initialsOf(name)}
+              </span>
+            )}
             <StatusGlyph status={status} className="absolute -right-0.5 -bottom-0.5 rounded-full bg-float" />
           </span>
           <span className="truncate text-sm font-medium">{name}</span>
@@ -115,7 +125,7 @@ export function Island({
           type="button"
           aria-expanded={open === "status"}
           // Every state the icons show is also said: offline and charging matter as much as a low battery.
-          aria-label={loading ? l.status : [l.status, !online && l.offline, charging && l.charging, (low || charging) && l.battery(battery)].filter(Boolean).join(", ")}
+          aria-label={loading ? l.status : [l.status, !online && l.offline, charging && l.charging, !known ? l.batteryUnknown : (low || charging) && l.battery(battery)].filter(Boolean).join(", ")}
           onClick={() => toggle("status")}
           className={zone("status")}
         >
@@ -127,8 +137,9 @@ export function Island({
           ) : (
             <>
               {online ? <Wifi aria-hidden="true" className="size-4" /> : <WifiOff aria-hidden="true" className="size-4 text-muted-foreground" />}
-              <BatteryIcon aria-hidden="true" className={cn("size-5", low && "text-warning")} />
+              <BatteryIcon aria-hidden="true" className={cn("size-5", low && "text-warning", !known && "text-muted-foreground")} />
               {low && <span className="text-xs font-medium text-warning">{battery}%</span>}
+              {!known && <span className="text-xs text-muted-foreground tabular-nums">–%</span>}
             </>
           )}
         </button>
@@ -137,7 +148,8 @@ export function Island({
           aria-expanded={open === "bell"}
           aria-label={l.notifications(unread)}
           onClick={() => toggle("bell")}
-          className={cn(zone("bell"), "relative")}
+          // As wide as it is tall: the bell alone was a 36 px target.
+          className={cn(zone("bell"), "relative min-w-(--h-md) justify-center")}
         >
           <Bell aria-hidden="true" className="size-5" />
           {unread > 0 && <CountBadge count={unread} className="absolute top-0 right-0" />}
@@ -155,6 +167,12 @@ export function Island({
       )}
     </Tray>
   )
+}
+
+/** Two letters for an avatar without a picture: the first letters of the first two words ("Patrol dog 7F3A" → "PD"). */
+function initialsOf(name: string) {
+  const [first = "", second] = name.trim().split(/\s+/)
+  return (second ? first.slice(0, 1) + second.slice(0, 1) : first.slice(0, 2)).toUpperCase()
 }
 
 type NoticeProps = {

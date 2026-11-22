@@ -1,4 +1,4 @@
-// @syncrobotic/teleop-pad v0.23.1 · update: npx shadcn add @syncrobotic/teleop-pad --overwrite
+// @syncrobotic/teleop-pad v0.28.0 · update: npx shadcn add @syncrobotic/teleop-pad --overwrite
 "use client"
 
 import * as React from "react"
@@ -406,10 +406,9 @@ export function TeleopPad({
         </span>
       </div>
 
+      {/* Disabled, it says why and nothing more: reading the drive keys of a pad that cannot drive only misleads. */}
       <span id={descId} className="sr-only">
-        {disabled ? `${disabledText}. ` : `${l.hint}. ${l.release}. `}
-        {l.keys}
-        {limit ? ` ${limit}.` : ""}
+        {disabled ? `${disabledText}.` : `${l.hint}. ${l.release}. ${l.keys}${limit ? ` ${limit}.` : ""}`}
       </span>
 
       <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-sm">

@@ -1,4 +1,4 @@
-// @syncrobotic/use-slide-release v0.11.1 · update: npx shadcn add @syncrobotic/use-slide-release --overwrite
+// @syncrobotic/use-slide-release v0.28.0 · update: npx shadcn add @syncrobotic/use-slide-release --overwrite
 "use client"
 
 import * as React from "react"
@@ -10,7 +10,10 @@ type Options = {
   threshold?: number
   /** Horizontal movement in px before the thumb moves, so a tap or a slip does nothing. Then it follows the finger 1:1. Default 8. */
   startAfter?: number
-  /** Keyboard / switch-control fallback: hold Enter or Space this long to release. Default 2000. */
+  /**
+   * Keyboard / switch-control fallback: hold Enter or Space this long to release. Default 2000. The thumb travels while
+   * the key is held; letting go, moving focus away or the page being hidden cancels the hold.
+   */
   holdFallback?: number
   disabled?: boolean
 }
@@ -87,21 +90,60 @@ export function useSlideRelease({
     armed.current = false
   }
 
+  const keyFrame = React.useRef<number | null>(null)
+
+  // Ends a keyboard hold without releasing: the key went up, focus left the track or the page was hidden. A hold whose
+  // key up never arrives (Tab away, another window, the phone locked) must not release on its own 2 s later.
+  const cancelHold = React.useCallback(() => {
+    if (keyTimer.current === null) return
+    window.clearTimeout(keyTimer.current)
+    keyTimer.current = null
+    if (keyFrame.current !== null) cancelAnimationFrame(keyFrame.current)
+    keyFrame.current = null
+    setDragging(false)
+    positionRef.current = 0
+    setPositionState(0)
+  }, [])
+
   const onKeyDown = (e: React.KeyboardEvent) => {
-    if (disabled || released || (e.key !== "Enter" && e.key !== " ") || keyTimer.current !== null) return
+    if (disabled || released || (e.key !== "Enter" && e.key !== " ")) return
     e.preventDefault()
+    if (keyTimer.current !== null) return
+    const start = performance.now()
     keyTimer.current = window.setTimeout(() => {
       keyTimer.current = null
+      if (keyFrame.current !== null) cancelAnimationFrame(keyFrame.current)
+      keyFrame.current = null
+      setDragging(false)
       finish()
     }, holdFallback)
+    // Drawn like a drag (no transition lagging behind each frame); cancelling springs it back.
+    setDragging(true)
+    // The thumb travels with the hold, so the keyboard shows its progress the way a drag does (and aria-valuenow with it).
+    // The timer above decides the release; the frames only draw it.
+    const tick = () => {
+      const p = Math.min(0.99, (performance.now() - start) / holdFallback)
+      positionRef.current = p
+      setPositionState(p)
+      keyFrame.current = requestAnimationFrame(tick)
+    }
+    keyFrame.current = requestAnimationFrame(tick)
   }
 
-  const onKeyUp = () => {
-    if (keyTimer.current !== null) window.clearTimeout(keyTimer.current)
-    keyTimer.current = null
+  const onKeyUp = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") cancelHold()
   }
 
-  React.useEffect(() => () => onKeyUp(), [])
+  React.useEffect(() => {
+    const onVisibility = () => {
+      if (document.hidden) cancelHold()
+    }
+    document.addEventListener("visibilitychange", onVisibility)
+    return () => {
+      document.removeEventListener("visibilitychange", onVisibility)
+      cancelHold()
+    }
+  }, [cancelHold])
 
   // Back to the start, e.g. when the release did not go through. Stable, so an effect can depend on it.
   const reset = React.useCallback(() => {
@@ -118,6 +160,6 @@ export function useSlideRelease({
     released,
     reset,
     thumbHandlers: { onPointerDown, onPointerMove, onPointerUp: end, onPointerCancel: end },
-    trackHandlers: { onKeyDown, onKeyUp },
+    trackHandlers: { onKeyDown, onKeyUp, onBlur: cancelHold },
   }
 }

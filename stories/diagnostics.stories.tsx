@@ -64,9 +64,12 @@ export const DiagnosticsDefault: S = {
   render: () => <Diagnostics label="AMR-07" statuses={amr} now={now} className="w-3xl max-w-full" />,
 }
 
-/** A status opened: its whole message, hardware ID, when it arrived and its values. */
+/**
+ * A status opened: its whole message, hardware ID, when it arrived and its values. A plain number is grouped in the
+ * locale ("1,204,553 ticks"); a version, an ID or a flag is shown as the robot sent it.
+ */
 export const DiagnosticsDetails: S = {
-  render: () => <Diagnostics label="AMR-07" statuses={amr} now={now} defaultExpanded={["/Motors/Left wheel"]} className="w-3xl max-w-full" />,
+  render: () => <Diagnostics label="AMR-07" statuses={amr} now={now} locale="en" defaultExpanded={["/Motors/Left wheel"]} className="w-3xl max-w-full" />,
 }
 
 /** Problems only: what is not OK, under the groups that hold it. */

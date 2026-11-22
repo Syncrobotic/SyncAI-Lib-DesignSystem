@@ -293,6 +293,24 @@ describe("StreamingChart", () => {
     expect(screen.getByRole("radio", { name: "表格" })).toBeTruthy()
   })
 
+  // Narrow (under 36 rem), the window and Chart / Table switches fold into a menu beside Pause, so the toolbar stays one
+  // row. Which one shows is CSS (a container query); both are wired the same, and the menu is checked here.
+  it("puts the window and the view in a menu (⋯) for narrow charts, beside Pause", () => {
+    const onWindowChange = vi.fn()
+    render(<Chart onWindowChange={onWindowChange} />)
+    const more = screen.getByRole("button", { name: "View options" })
+    expect(more.className).toContain("@xl:hidden")
+    expect(document.querySelector("[aria-label=\"Time window\"]")!.className).toContain("@xl:inline-flex")
+    fireEvent.keyDown(more, { key: "Enter" })
+    expect(screen.getByRole("menuitemradio", { name: "30 s" }).getAttribute("aria-checked")).toBe("true")
+    fireEvent.click(screen.getByRole("menuitemradio", { name: "10 min" }))
+    expect(onWindowChange).toHaveBeenCalledWith(600_000)
+    fireEvent.keyDown(screen.getByRole("button", { name: "View options" }), { key: "Enter" })
+    fireEvent.click(screen.getByRole("menuitemradio", { name: "Table" }))
+    run(10)
+    expect(screen.getAllByRole("row").length).toBeGreaterThan(0)
+  })
+
   it("lets the parent drive the window and the pause", () => {
     const onPausedChange = vi.fn()
     const onWindowChange = vi.fn()

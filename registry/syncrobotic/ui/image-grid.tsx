@@ -1,4 +1,4 @@
-// @syncrobotic/image-grid v0.17.4 · update: npx shadcn add @syncrobotic/image-grid --overwrite
+// @syncrobotic/image-grid v0.28.0 · update: npx shadcn add @syncrobotic/image-grid --overwrite
 "use client"
 
 import * as React from "react"
@@ -94,7 +94,8 @@ type ImageGridProps = {
 /**
  * Many pictures at once: a dataset's images, the frames of a run, what was just uploaded. Tiles hold their shape
  * (`aspect`) and load lazily. A tile opens a lightbox (← → to move, Esc to close, focus returns to the tile), or, with
- * `selection`, is picked: ringed in the focus ink with a check, `aria-pressed`. Hidden pictures stay unloaded behind
+ * `selection`, is picked: ringed in the focus ink with a check. Many: each tile is a toggle (`aria-pressed`, a box). One: the
+ * tiles are a radio group (`role="radio"`, a round mark, one Tab stop; the arrow keys, Home and End move and pick). Hidden pictures stay unloaded behind
  * RestrictedPreview until someone asks; one that fails shows its file name. Neutral throughout: colour is for faults.
  */
 export function ImageGrid({
@@ -124,6 +125,7 @@ export function ImageGrid({
   const tiles = React.useRef(new Map<string, HTMLLIElement>())
   const focusAfterReveal = React.useRef<string | null>(null)
   const picking = selection !== "none"
+  const single = selection === "single"
   const strip = layout === "strip"
 
   const markBroken = (id: string) => setBroken((s) => (s.has(id) ? s : new Set(s).add(id)))
@@ -142,10 +144,34 @@ export function ImageGrid({
 
   const toggle = (id: string) => {
     const on = selected.includes(id)
-    const next = selection === "single" ? (on ? [] : [id]) : on ? selected.filter((s) => s !== id) : [...selected, id]
+    // Pick one is a radio group: picking the picked tile again keeps it. Another tile moves the pick.
+    if (single && on) return
+    const next = single ? [id] : on ? selected.filter((s) => s !== id) : [...selected, id]
     if (selectedProp === undefined) setSelectedState(next)
     onSelectedChange?.(next)
   }
+  // Pick one: one Tab stop, on the picked tile (or the first that shows), and the arrow keys move and pick, as radios do.
+  const shown = (item: ImageGridItem) => !item.restricted || revealed.has(item.id)
+  const tabStop = single ? (items.find((x) => selected.includes(x.id) && shown(x)) ?? items.find(shown))?.id : undefined
+  const onRadioKey = (e: React.KeyboardEvent, id: string) => {
+    const order = items.filter(shown).map((x) => x.id)
+    const at = order.indexOf(id)
+    const to =
+      e.key === "ArrowRight" || e.key === "ArrowDown"
+        ? order[(at + 1) % order.length]
+        : e.key === "ArrowLeft" || e.key === "ArrowUp"
+          ? order[(at - 1 + order.length) % order.length]
+          : e.key === "Home"
+            ? order[0]
+            : e.key === "End"
+              ? order.at(-1)
+              : undefined
+    if (to === undefined) return
+    e.preventDefault()
+    if (!selected.includes(to)) toggle(to)
+    tiles.current.get(to)?.querySelector<HTMLElement>("[role=radio]")?.focus()
+  }
+
   const show = (i: number) => {
     last.current = i
     setOpen(i)
@@ -177,7 +203,7 @@ export function ImageGrid({
 
   return (
     <div data-slot="image-grid">
-      <ul aria-label={label} className={listClass}>
+      <ul role={single ? "radiogroup" : undefined} aria-label={label} className={listClass}>
         {items.map((item, i) => {
           const isSelected = selected.includes(item.id)
           const isBroken = broken.has(item.id)
@@ -211,6 +237,7 @@ export function ImageGrid({
                 if (el) tiles.current.set(item.id, el)
                 else tiles.current.delete(item.id)
               }}
+              role={single ? "none" : undefined}
               className={itemClass}
             >
               <RestrictedPreview
@@ -223,13 +250,17 @@ export function ImageGrid({
                 {interactive ? (
                   <button
                     type="button"
-                    aria-pressed={picking ? isSelected : undefined}
+                    role={single ? "radio" : undefined}
+                    aria-checked={single ? isSelected : undefined}
+                    aria-pressed={picking && !single ? isSelected : undefined}
                     aria-haspopup={picking ? undefined : "dialog"}
+                    tabIndex={single ? (item.id === tabStop ? 0 : -1) : undefined}
+                    onKeyDown={single ? (e) => onRadioKey(e, item.id) : undefined}
                     onClick={() => (picking ? toggle(item.id) : show(i))}
                     className="press relative block w-full rounded-sm"
                   >
                     {face}
-                    {picking && <Picked on={isSelected} />}
+                    {picking && <Picked on={isSelected} round={single} />}
                   </button>
                 ) : (
                   face
@@ -294,25 +325,41 @@ function Broken({ name, label, large }: { name: string; label: string; large?: b
   )
 }
 
-/** Picked: a ring in the focus ink with a card-coloured line inside it, so it shows on light and dark pictures, and a check. */
-function Picked({ on }: { on: boolean }) {
+/**
+ * Picked: a ring in the focus ink with a card-coloured line inside it, so it shows on light and dark pictures, and a mark:
+ * a box with a check when many can be picked, a round radio with a dot when only one can.
+ */
+function Picked({ on, round }: { on: boolean; round?: boolean }) {
   const swap = "transition-opacity duration-(--motion-fast) ease-(--ease-standard)"
   return (
     <>
       <span aria-hidden="true" className={cn("pointer-events-none absolute inset-0 rounded-sm ring-4 ring-ring ring-inset", swap, on ? "opacity-100" : "opacity-0")} />
       <span aria-hidden="true" className={cn("pointer-events-none absolute inset-1 rounded-xs ring-2 ring-card ring-inset", swap, on ? "opacity-100" : "opacity-0")} />
-      <span
-        aria-hidden="true"
-        className={cn(
-          "absolute top-2 left-2 flex size-6 items-center justify-center rounded-2xs ring-1",
-          "transition-colors duration-(--motion-fast) ease-(--ease-standard)",
-          // Not picked: an empty box, a card-coloured line with a foreground edge, so it reads on light and dark pictures
-          // without becoming a solid square.
-          on ? "bg-primary text-primary-foreground ring-card" : "text-transparent ring-2 ring-card ring-inset outline-1 outline-foreground",
-        )}
-      >
-        <Check className="size-4" />
-      </span>
+      {round ? (
+        <span
+          aria-hidden="true"
+          className={cn(
+            "absolute top-2 left-2 flex size-6 items-center justify-center rounded-full",
+            "transition-colors duration-(--motion-fast) ease-(--ease-standard)",
+            on ? "bg-primary ring-1 ring-card" : "ring-2 ring-card ring-inset outline-1 outline-foreground",
+          )}
+        >
+          <span className={cn("size-2 rounded-full bg-primary-foreground", swap, on ? "opacity-100" : "opacity-0")} />
+        </span>
+      ) : (
+        <span
+          aria-hidden="true"
+          className={cn(
+            "absolute top-2 left-2 flex size-6 items-center justify-center rounded-2xs ring-1",
+            "transition-colors duration-(--motion-fast) ease-(--ease-standard)",
+            // Not picked: an empty box, a card-coloured line with a foreground edge, so it reads on light and dark pictures
+            // without becoming a solid square.
+            on ? "bg-primary text-primary-foreground ring-card" : "text-transparent ring-2 ring-card ring-inset outline-1 outline-foreground",
+          )}
+        >
+          <Check className="size-4" />
+        </span>
+      )}
     </>
   )
 }

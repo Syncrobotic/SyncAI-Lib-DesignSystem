@@ -3217,6 +3217,13 @@
    ]
   },
   {
+   "name": "DropdownMenuRadioGroup",
+   "props": [],
+   "inherits": [
+    "Radix DropdownMenu.RadioGroup"
+   ]
+  },
+  {
    "name": "DropdownMenuContent",
    "props": [],
    "inherits": [
@@ -3241,6 +3248,13 @@
    "props": [],
    "inherits": [
     "Radix DropdownMenu.CheckboxItem"
+   ]
+  },
+  {
+   "name": "DropdownMenuRadioItem",
+   "props": [],
+   "inherits": [
+    "Radix DropdownMenu.RadioItem"
    ]
   },
   {
@@ -4188,8 +4202,7 @@
     {
      "name": "battery",
      "type": "number",
-     "default": "72",
-     "description": ""
+     "description": "Percent. Leave it out until the robot reports one: the island says the level is unknown instead of inventing one."
     },
     {
      "name": "charging",
@@ -4262,6 +4275,12 @@
        "type": "(percent: number) => string",
        "default": "(n) => `battery ${n}%`",
        "description": ""
+      },
+      {
+       "name": "batteryUnknown",
+       "type": "string",
+       "default": "\"battery unknown\"",
+       "description": "No battery reading yet (or the robot does not report one)."
       },
       {
        "name": "notifications",
@@ -6950,7 +6969,7 @@
       {
        "name": "retry",
        "type": "string",
-       "default": "\"Reload the map\"",
+       "default": "\"Load again\"",
        "description": ""
       },
       {
@@ -7266,7 +7285,7 @@
       {
        "name": "retry",
        "type": "string",
-       "default": "\"Reload the map\"",
+       "default": "\"Load again\"",
        "description": ""
       },
       {
@@ -8559,6 +8578,12 @@
      "description": "Shown after release while waiting for the dog."
     },
     {
+     "name": "releasing",
+     "type": "boolean",
+     "default": "false",
+     "description": "Show the released state (thumb at the end, `releasingLabel`) without a slide, e.g. when the screen is drawn again while a release the operator already made is still waiting for the robot."
+    },
+    {
      "name": "failed",
      "type": "boolean",
      "default": "false",
@@ -8569,6 +8594,12 @@
      "type": "string",
      "default": "\"Not released, slide again\"",
      "description": "Shown while `failed`."
+    },
+    {
+     "name": "keyboardHint",
+     "type": "string",
+     "default": "\"Hold Enter or Space for 2 seconds\"",
+     "description": "Read by a screen reader after the label: how to release without a pointer."
     }
    ],
    "inherits": []
@@ -9094,7 +9125,7 @@
       {
        "name": "bluetooth",
        "type": "string",
-       "default": "\"Emergency stop\"",
+       "default": "\"Emergency stop · Bluetooth\"",
        "description": ""
       },
       {
@@ -9328,6 +9359,12 @@
        "type": "string",
        "default": "\"Show as\"",
        "description": "Names the Chart / Table switch."
+      },
+      {
+       "name": "viewOptions",
+       "type": "string",
+       "default": "\"View options\"",
+       "description": "The menu (⋯) that holds the window and Chart / Table switches on a narrow chart."
       },
       {
        "name": "chart",
