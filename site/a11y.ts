@@ -218,7 +218,10 @@ export function a11yOf(name: string): A11y | null {
   const roles = [...new Set([...m.roles.filter((r) => possible.has(r)), ...closed.filter((r) => r !== "button")])].sort()
 
   const patterns = new Map<string, string>()
-  for (const p of ownPrimitives) if (primitivePattern[p]) patterns.set(primitivePattern[p][0], `${APG}/${primitivePattern[p][1]}/`)
+  // A toggle group is a toolbar only when it renders one; a single-choice one (a segmented control) is a radio group,
+  // which its roles name below.
+  const shows = (p: string) => p !== "ToggleGroup" || roles.includes("toolbar")
+  for (const p of ownPrimitives) if (primitivePattern[p] && shows(p)) patterns.set(primitivePattern[p][0], `${APG}/${primitivePattern[p][1]}/`)
   for (const r of roles) if (rolePattern[r] && ![...patterns.keys()].some((k) => k.startsWith(rolePattern[r][0]))) patterns.set(rolePattern[r][0], `${APG}/${rolePattern[r][1]}/`)
   // A component that is a button or a link also contains one: name the main pattern first and drop generic ones when a
   // composite pattern is already there.

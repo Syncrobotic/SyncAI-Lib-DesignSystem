@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { Alarm } from "@/registry/syncrobotic/ui/alarm"
+import { Button } from "@/registry/syncrobotic/ui/button"
 
 const steps = [
   { active: true, acknowledged: false, name: "1 · Raised", note: "The condition starts. Strongest form; sound plays for critical and high." },
@@ -14,6 +15,14 @@ export function AlarmLifecycle() {
   const [i, setI] = React.useState(0)
   const [skipped, setSkipped] = React.useState(false)
   const s = skipped ? { active: false, acknowledged: false, name: "Cleared, not acknowledged", note: "It cleared on its own. It stays, still bold, its bar dashed and saying when it cleared, until someone acknowledges it, so nothing is missed." } : steps[i]
+  // Why the step buttons are off at this point of the walk, said beside them.
+  const why = skipped
+    ? "Acknowledge the alarm to finish, or start again."
+    : i === 0
+      ? "Condition clears waits for an acknowledgement: acknowledge the alarm first."
+      : i === 1
+        ? "Clears before acknowledged is the other path: start again to take it."
+        : "Both paths are done: start again to walk it once more."
   return (
     <div className="flex flex-col gap-4">
       <div className="min-h-(--h-row)">
@@ -36,23 +45,27 @@ export function AlarmLifecycle() {
       <p aria-live="polite" className="text-sm">
         <span className="font-medium">{s.name}.</span> <span className="text-muted-foreground">{s.note}</span>
       </p>
-      <div className="flex flex-wrap gap-2">
-        <button type="button" className="press h-(--h-sm) rounded-sm bg-secondary px-3 text-sm font-medium hover:bg-accent disabled:opacity-50" disabled={i !== 1 || skipped} onClick={() => setI(2)}>
-          Condition clears
-        </button>
-        <button type="button" className="press h-(--h-sm) rounded-sm bg-secondary px-3 text-sm font-medium hover:bg-accent disabled:opacity-50" disabled={i !== 0 || skipped} onClick={() => setSkipped(true)}>
-          Clears before acknowledged
-        </button>
-        <button
-          type="button"
-          className="press h-(--h-sm) rounded-sm px-3 text-sm font-medium ring-1 ring-border ring-inset hover:bg-accent"
-          onClick={() => {
-            setI(0)
-            setSkipped(false)
-          }}
-        >
-          Start again
-        </button>
+      {/* Kit buttons: a disabled one keeps its words readable (muted fill), and the line under them says why it is off. */}
+      <div className="flex flex-col gap-2">
+        <div className="flex flex-wrap gap-2">
+          <Button variant="secondary" size="sm" disabled={i !== 1 || skipped} onClick={() => setI(2)}>
+            Condition clears
+          </Button>
+          <Button variant="secondary" size="sm" disabled={i !== 0 || skipped} onClick={() => setSkipped(true)}>
+            Clears before acknowledged
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              setI(0)
+              setSkipped(false)
+            }}
+          >
+            Start again
+          </Button>
+        </div>
+        {why && <p className="text-xs text-muted-foreground">{why}</p>}
       </div>
     </div>
   )

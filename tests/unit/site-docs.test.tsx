@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest"
 import { a11yOf } from "@/site/a11y"
 import { items, storyTitle } from "@/site/catalog"
 import { KeyCell, parseKeys } from "@/site/key-cell"
+import { AlarmLifecycle } from "@/site/alarm-lifecycle"
 
 // The Accessibility tab keeps a measured role only when the component's source can produce it. Sources that use a
 // primitive without renaming it (import { ToggleGroup } from "radix-ui"), an npm widget or a wrapper's slot used to
@@ -24,6 +25,7 @@ describe("Accessibility tab roles", () => {
   })
   it("a segmented control is not called a toolbar it never renders", () => {
     expect(roles("segmented-control")).not.toContain("toolbar")
+    expect(a11yOf("segmented-control")!.patterns.map((p) => p.title)).toEqual(["Radio group"])
   })
 })
 
@@ -66,5 +68,16 @@ describe("example titles", () => {
   })
   it("every example title says something", () => {
     for (const i of items) if (i.examples) for (const n of i.examples.only ?? []) expect(storyTitle(n, i.name).length).toBeGreaterThan(0)
+  })
+})
+
+// The alarm lifecycle demo greyed its step buttons out with opacity and never said why.
+describe("alarm lifecycle demo", () => {
+  it("says why a step button is off, and keeps its words readable", () => {
+    const { getByRole, getByText } = render(<AlarmLifecycle />)
+    const clears = getByRole("button", { name: "Condition clears" })
+    expect(clears).toHaveProperty("disabled", true)
+    expect(clears.className).not.toContain("opacity")
+    expect(getByText(/acknowledge the alarm first/)).toBeTruthy()
   })
 })

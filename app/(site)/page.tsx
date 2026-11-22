@@ -64,7 +64,7 @@ export default function HomePage() {
   // The three ways in, one row each: what it is, what is in it, how many.
   const ways = [
     {
-      href: "/docs",
+      href: "/docs/foundations/principles",
       title: "Foundations",
       count: `${foundations.length} pages`,
       body: "The rules and tokens behind every screen: principles, colour, type, spacing, radius, elevation, motion, iconography, accessibility, alarms and data visualisation.",
@@ -89,9 +89,12 @@ export default function HomePage() {
     },
   ]
   return (
+    <>
+    {/* Outside PageTransition, a client component: React does not run a <script> rendered on the client and says so in
+        the console. Here it is server HTML only. */}
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     <PageTransition>
     <main id="content" className="pb-section">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* First screen: what it is and how to start on the left, the working stop it is about on the right. */}
       <section className="border-b border-border">
@@ -191,5 +194,6 @@ export default function HomePage() {
     </main>
     <SiteFooter />
     </PageTransition>
+    </>
   )
 }
