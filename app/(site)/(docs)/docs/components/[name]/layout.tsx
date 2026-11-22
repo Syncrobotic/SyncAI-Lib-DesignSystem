@@ -5,6 +5,7 @@ import { CodeSheet } from "@/site/code-sheet"
 import { getItem, readSource } from "@/site/catalog"
 import { CodeBlock } from "@/site/code-block"
 import { PageTitle } from "@/site/prose"
+import { DocJsonLd } from "@/site/json-ld"
 import { aiPrompt, componentMarkdown } from "@/site/ai"
 import { CopyButton } from "@/registry/syncrobotic/ui/copy-button"
 import { ComponentPanel, ComponentTabs } from "@/site/component-tabs"
@@ -28,6 +29,13 @@ export default async function ComponentLayout({ params, children }: Props) {
 
   return (
     <article>
+      <DocJsonLd
+        trail={[
+          { name: "Components", path: "/docs/components" },
+          { name: item.title, path: `/docs/components/${item.name}` },
+        ]}
+        description={item.description}
+      />
       {/* The same head on every component page: the title with its version and status beside it, one line, then the tools. */}
       <PageTitle title={item.title} lead={item.description} aside={meta && <VersionTag name={item.name} version={meta.version} beta={meta.status === "beta"} />} />
       {/* On a phone the tools share one line in equal columns, so none is left alone on a line of its own; from 640 px they
@@ -67,8 +75,9 @@ function VersionTag({ name, version, beta }: { name: string; version: string; be
     "relative flex items-center px-2 transition-colors duration-(--motion-fast) ease-(--ease-standard) after:absolute after:inset-x-0 after:-inset-y-2.5 hover:bg-accent hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
   return (
     <span className="inline-flex h-(--h-tag) items-stretch rounded-xs text-xs ring-1 ring-border ring-inset">
-      <a href={`/docs/components/${name}#changelog`} aria-label={`Version ${version}, changelog`} className={`${half} rounded-s-xs font-mono text-muted-foreground tabular-nums`}>
+      <a href={`/docs/components/${name}#changelog`} className={`${half} rounded-s-xs font-mono text-muted-foreground tabular-nums`}>
         v{version}
+        <span className="sr-only">, changelog</span>
       </a>
       {beta && (
         <a href="/docs/upgrading#status" title="The API may still change in a minor release" className={`${half} rounded-e-xs border-s border-border font-medium`}>

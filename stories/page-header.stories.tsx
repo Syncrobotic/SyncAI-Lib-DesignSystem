@@ -9,12 +9,13 @@ export default meta
 type S = StoryObj
 
 export const PageHeaderBasic: S = {
-  render: () => <PageHeader title="Catalog" description="Every dataset the team can use, with its licence tier and what it is for." />,
+  render: () => <PageHeader as="h2" title="Catalog" description="Every dataset the team can use, with its licence tier and what it is for." />,
 }
 
 export const PageHeaderWithMeta: S = {
   render: () => (
     <PageHeader
+      as="h2"
       title="Catalog"
       description="Every dataset the team can use, with its licence tier and what it is for."
       meta={
@@ -31,6 +32,7 @@ export const PageHeaderWithMeta: S = {
 export const PageHeaderDetail: S = {
   render: () => (
     <PageHeader
+      as="h2"
       breadcrumb={
         <Breadcrumb>
           <BreadcrumbLink href="#catalog">Catalog</BreadcrumbLink>

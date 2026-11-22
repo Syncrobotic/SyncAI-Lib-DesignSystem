@@ -60,17 +60,44 @@ export const site = {
   public: process.env.VERCEL_ENV === "production",
 }
 
+const SNIPPET_MIN = 70
+const SNIPPET_MAX = 160
+const SNIPPET_TAIL = "Part of the SYNCROBOTIC Design System, a robotics UI kit for React."
+
+/**
+ * A description fit for a search result, which shows about 160 characters. A longer one keeps its whole sentences that
+ * fit (or is cut at a clause, with an ellipsis); a one-liner shorter than 70 says where it comes from, so the result
+ * still tells a searcher what this is. Backticks (code in the docs) are dropped.
+ */
+export function snippet(text: string) {
+  const t = text.replace(/`/g, "").replace(/\s+/g, " ").trim()
+  if (t.length < SNIPPET_MIN) return `${/[.!?]$/.test(t) ? t : `${t}.`} ${SNIPPET_TAIL}`
+  if (t.length <= SNIPPET_MAX) return t
+  let out = ""
+  for (const sentence of t.match(/[^.!?]+[.!?]+(?=\s|$)/g) ?? []) {
+    if ((out + sentence).trim().length > SNIPPET_MAX) break
+    out += sentence
+  }
+  out = out.trim()
+  if (out.length >= SNIPPET_MIN) return out
+  const cut = t.slice(0, SNIPPET_MAX - 1)
+  const clause = Math.max(cut.lastIndexOf(", "), cut.lastIndexOf(": "), cut.lastIndexOf("; "))
+  return `${(clause > SNIPPET_MIN ? cut.slice(0, clause) : cut.slice(0, cut.lastIndexOf(" "))).replace(/[,:;]$/, "")}…`
+}
+
 /**
  * Page metadata with the shared Open Graph and Twitter fields.
- * Next.js replaces a parent's openGraph object instead of merging it, so every page goes through here.
+ * Next.js replaces a parent's openGraph object instead of merging it, so every page goes through here. `image` is the
+ * page's own social card (app/og: components and blocks); without one, the site's.
  */
-export function pageMeta({ title, description, path }: { title: string; description: string; path: string }) {
-  const images = [{ url: "/opengraph-image", width: 1200, height: 630, alt: site.name }]
+export function pageMeta({ title, description, path, image }: { title: string; description: string; path: string; image?: string }) {
+  const d = snippet(description)
+  const images = [{ url: image ?? "/opengraph-image", width: 1200, height: 630, alt: title }]
   return {
     title,
-    description,
+    description: d,
     alternates: { canonical: path },
-    openGraph: { type: "website" as const, locale: "en_US", siteName: site.name, title, description, url: path, images },
-    twitter: { card: "summary_large_image" as const, title, description, images: ["/twitter-image"] },
+    openGraph: { type: "website" as const, locale: "en_US", siteName: site.name, title, description: d, url: path, images },
+    twitter: { card: "summary_large_image" as const, title, description: d, images: [image ?? "/twitter-image"] },
   }
 }
