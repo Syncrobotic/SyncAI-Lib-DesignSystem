@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.30.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "`--chart-1-foreground` … `--chart-5-foreground` (utilities `text-chart-N-foreground`): ink for words and numbers on a chart colour, 4.5:1 or more on it in light, dark and both high-contrast modes. `--color-scrim` (`bg-scrim`) and a new `--letterbox` (`bg-letterbox`) for the bars around a picture: the dark page colour, black in high contrast. Issue #302. New `--thumb` (`bg-thumb`): the knob you drag on a slider and a switch that is off; white in every mode, as before, but a theme can now change it. Issue #301."
+          },
           {
             "version": "0.30.0",
             "date": "2026-11-22",
@@ -204,8 +209,13 @@
         }
       ],
       "meta": {
-        "version": "0.29.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "`chipGroupLabels.selected`. `meterLabels`. `tierBadgeLabels` for the new tier-badge (可商用, 非商用, 受限, 僅限地端). `streamingTextLabels` for the new streaming-text. `groundedTextLabels` for the new grounded-text (圖上 8 個點, 文字中：8 隻斑馬). `topBarShellLabels`, and `paginationLabels.nav` (分頁). Issue #293."
+          },
           {
             "version": "0.29.0",
             "date": "2026-11-22",
@@ -239,8 +249,13 @@
         }
       ],
       "meta": {
-        "version": "0.29.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "`detection2DArrayToAnnotations` turns a `vision_msgs/Detection2DArray` (ROS 2 Humble on, or the older layout) into annotated-image's boxes, labelled with each detection's best class (through `classes`) and score, for annotated-image and the marks grounded-text's spans point at."
+          },
           {
             "version": "0.29.0",
             "date": "2026-11-22",
@@ -1014,8 +1029,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.29.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "Each robot's name label has a `key`, so a product on eslint-config-next (react/jsx-key) gets no error from the unmodified file. Issue #301."
+          },
           {
             "version": "0.29.0",
             "date": "2026-11-22",
@@ -1690,8 +1710,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.1",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "The knob while off is the new `--thumb` token (`bg-thumb`) instead of a raw white; it looks the same. Issue #301."
+          },
           {
             "version": "0.17.1",
             "date": "2026-11-19",
@@ -1859,8 +1884,13 @@
         }
       ],
       "meta": {
-        "version": "0.21.1",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "The thumb is the new `--thumb` token (`bg-thumb`) instead of a raw white; it looks the same. Issue #301."
+          },
           {
             "version": "0.21.1",
             "date": "2026-11-21",
@@ -1942,6 +1972,32 @@
       }
     },
     {
+      "name": "tier-badge",
+      "type": "registry:ui",
+      "title": "Tier badge",
+      "description": "A dataset's licence tier as a tag: the code in mono and what it means (\"T1 · Non-commercial\"), or the code alone in a table column (compact, still read out in words). T0 is grey, restricted tiers outlined, never a status colour. The words translate (labels).",
+      "registryDependencies": [
+        "@syncrobotic/badge"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/tier-badge.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.31.0",
+        "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "First release: moved out of data-catalog, so the badge installs on its own. `labels` for the tier words; `compact` keeps the words for screen readers."
+          }
+        ]
+      }
+    },
+    {
       "name": "card",
       "type": "registry:ui",
       "title": "Card",
@@ -1956,8 +2012,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "CardTitle takes `as` (\"h2\" | \"h3\" | \"h4\", h3 by default) and CardDataHeader `titleAs`, so a card right under the h1 or deep in a section keeps the outline in order; the size does not change. Issue #303."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -2168,7 +2229,7 @@
       "name": "meter",
       "type": "registry:ui",
       "title": "Meter",
-      "description": "A level within a known range, neutral until it crosses a threshold; inline for table cells.",
+      "description": "A level within a known range, neutral until it crosses a threshold; inline for table cells. Ticks at the thresholds with showThresholds; locale and format for big counts.",
       "dependencies": [],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -2180,8 +2241,13 @@
         }
       ],
       "meta": {
-        "version": "0.29.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "`locale` and `format` (Intl.NumberFormatOptions) write the value and the range's end in the text and aria-valuetext (412,345 of 1,000,000 items; 412K); numbers stay as given without them. `showThresholds` draws a grey 1 px tick at `low` and `critical`. `labels` translates \"of\" and the low, high and critical words. Issue #306."
+          },
           {
             "version": "0.29.0",
             "date": "2026-11-22",
@@ -2702,7 +2768,7 @@
       "name": "tabs",
       "type": "registry:ui",
       "title": "Tabs",
-      "description": "Sections of one page.",
+      "description": "Sections of one page. Sticky keeps the row under the shell's top bar over long sections.",
       "dependencies": [
         "radix-ui"
       ],
@@ -2716,8 +2782,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "`sticky` on TabsList keeps the row in view while the page scrolls: it pins under the shell's top bar (`--shell-top`, 0 without a shell) on the shell's surface (`--shell-surface`), with its hairline, below the bar. Picking a tab while stuck scrolls back to the start of the tabs."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -2777,8 +2848,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "`labels.nav` names the landmark (English default \"Pagination\"), so a translated product no longer announces it in English; DataGridPagination passes it through. Issue #293."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -2821,8 +2897,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "The first level no longer truncates with room to spare when the breadcrumb is as wide as its content (a column with items-start, an inline block, an absolutely placed header, a grid cell, the app shell's top bar): it starts from its own width and, short of room, gives way to a third of the row or its name, whichever is less. A stretched breadcrumb (page-header) looks the same, except that a long first level is no longer cut while the row has room. Issue #307."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -2871,8 +2952,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "AccordionTrigger takes `as` (\"h2\" | \"h3\" | \"h4\", h3 by default): the level of the heading it sits in (Radix Header with asChild); the look does not change. Issue #303."
+          },
           {
             "version": "0.10.0",
             "date": "2026-11-18",
@@ -3640,8 +3726,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "In a tooltip the key cap and its edge take the tooltip's text colour (`primary-foreground` at 15 % and 20 %) instead of white, so they show in dark, where the tooltip is near-white (1.0:1 before, now 1.4:1 and 1.6:1; the key itself 13.7:1). Issue #301."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -3855,7 +3946,7 @@
       "name": "chip-group",
       "type": "registry:ui",
       "title": "Chip group",
-      "description": "One choice among several as chips with counts, folded after N; or links, so a filter lives in the URL. Selected is inverted.",
+      "description": "One choice among several, or any of several with type=\"multiple\", as chips with counts, folded after N; or links, so a filter lives in the URL (current sets their aria-current). Per-chip props for data-* hooks and titles. Selected is inverted.",
       "dependencies": [
         "radix-ui"
       ],
@@ -3869,8 +3960,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "Several choices at once: `type=\"multiple\"` takes and gives `value` as a list (a ToggleGroup of pressed buttons; links say \"selected\" instead of aria-current, new label `selected`); `max` keeps every chosen chip. `current` sets the chosen link's aria-current (\"page\", the default, \"true\" or \"location\"), and a chip's `props` are spread on its button or link (`data-*`, `title`, `aria-describedby`). Issues #304, #305."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -3894,7 +3990,7 @@
       "name": "share-bar",
       "type": "registry:ui",
       "title": "Share bar",
-      "description": "How a whole splits, as one thin bar in the chart palette (the accent, two greys, Other): light enough for a table cell, with an optional label, total and legend.",
+      "description": "How a whole splits, as one thin bar in the chart palette (the accent, two greys, Other): light enough for a table cell, with an optional label, total and legend, whose entries link to each part with href.",
       "registryDependencies": [
         "@syncrobotic/cn"
       ],
@@ -3905,8 +4001,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.1",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "`href` on a segment makes its legend entry a link through `linkAs` (default \"a\"), named with its share (\"Source A 4,200, 42 %\"); the bar stays one picture. Without `href`, no change. Issue #296."
+          },
           {
             "version": "0.23.1",
             "date": "2026-11-21",
@@ -4085,12 +4186,45 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.18.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "`highlighted` draws a set of annotations in the selected ink at 3 px, in their own line style and without handles, and fades the rest to `--annotate-fade` (`showLabels=\"selected\"` shows their words too); `onActiveChange` reports the annotation under the mouse, or else the one with keyboard focus; an annotation's `description` is read after its name on its button. For grounded-text."
+          },
           {
             "version": "0.18.0",
             "date": "2026-11-19",
             "note": "First release: AnnotatedImage (src or image, width, height, annotations of box, point, polygon and keypoints) with an SVG in the picture's pixel space and non-scaling strokes; predicted solid, ground truth dashed, previous dotted and faded, each on a halo; selected 3 px with handles; class words (all, selected or none); a role=img summary, or with onSelectedChange one Tab stop, arrows, Enter and Esc; overlays; loading and failed states; and AnnotationLegend for the kinds present."
+          }
+        ]
+      }
+    },
+    {
+      "name": "grounded-text",
+      "type": "registry:ui",
+      "title": "Grounded text",
+      "description": "Text whose words point at places on a picture, as a vision-language model answers: hover, focus or tap a span to highlight its boxes or points, and a mark to highlight its words. Built on annotated-image; `fromGrounding` reads a model's offsets and coordinates.",
+      "dependencies": [],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/annotated-image"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/grounded-text.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.31.0",
+        "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "First release."
           }
         ]
       }
@@ -4117,8 +4251,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.28.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "Uses the theme's `bg-scrim` and `bg-letterbox` (needs `syncrobotic-theme` 0.31.0); looks the same. Issue #302."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -5107,6 +5246,37 @@
       }
     },
     {
+      "name": "streaming-text",
+      "type": "registry:ui",
+      "title": "Streaming text",
+      "description": "A model's answer as it streams in, token by token. The text grows in place under a calm status row: the queue position, Generating with Stop, then \"Done in 2.4 s · first token 0.3 s\", Stopped or Failed with the partial answer kept. A reasoning part stays apart, closed, and screen readers hear whole sentences, never every token.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/spinner"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/streaming-text.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.31.0",
+        "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "First release."
+          }
+        ]
+      }
+    },
+    {
       "name": "sortable",
       "type": "registry:ui",
       "title": "Sortable",
@@ -5961,8 +6131,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "The root sets `--shell-top` (0: the page scrolls inside main, below the bar) and `--shell-surface` (card when inset, else background), so a sticky tab row (TabsList sticky) pins at the top of the content."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -6030,7 +6205,7 @@
       "name": "top-bar-shell",
       "type": "registry:block",
       "title": "Top-bar shell",
-      "description": "The frame for a tool or site without a sidebar: links, search and user in a top bar that starts on the content's edge and gathers into a floating panel as wide as the content column on scroll, then the content and a footer.",
+      "description": "The frame for a tool or site without a sidebar: links, search and user in a top bar that starts on the content's edge and gathers into a floating panel as wide as the content column on scroll, then the content and a footer. The logo links home, the main element has an id for a skip link, the phone drawer closes when a link in it is followed. Its screen-reader words (the links' landmark, the menu button, the account button) go through `labels`.",
       "dependencies": [
         "lucide-react"
       ],
@@ -6048,8 +6223,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "`home` sets where the logo links (default: the first link, as before). `mainId` puts an id on `<main>` for a skip link (default \"main\"). The phone drawer closes when a link in it is followed, so it no longer stays open over the new page on a client router (Next.js, React Router); a modified click (new tab) leaves it open. The root sets `--shell-top` (the floating bar's bottom edge, `--h-row` + 8 px) and `--shell-surface`, so a sticky tab row or a filter bar pins under the bar. New `labels` (`nav`, `openNav`, `accountMenu`; English defaults \"Main\", \"Open navigation\", \"account menu\") for the navigation landmark, the phone menu button and the account button, which were fixed English. Issue #293."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -6445,14 +6625,13 @@
       "name": "data-catalog",
       "type": "registry:block",
       "title": "Data catalog",
-      "description": "Datasets one row each: filter by tier, use and task (a drawer on phones), search, sort. Only restricted tiers carry colour.",
+      "description": "Datasets one row each: filter by tier, use and task (a drawer on phones), search, sort. Only restricted tiers carry colour. DataCatalogContent drops the sample frame, for your own shell.",
       "dependencies": [
         "lucide-react"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/app-shell",
-        "@syncrobotic/badge",
         "@syncrobotic/button",
         "@syncrobotic/checkbox",
         "@syncrobotic/empty-state",
@@ -6461,7 +6640,8 @@
         "@syncrobotic/sheet",
         "@syncrobotic/table",
         "@syncrobotic/input-group",
-        "@syncrobotic/choice-field"
+        "@syncrobotic/choice-field",
+        "@syncrobotic/tier-badge"
       ],
       "files": [
         {
@@ -6470,8 +6650,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "`DataCatalogContent` is the catalog without its frame (same props), for a product's own shell such as top-bar-shell; `DataCatalog` is that content in the sample AppShell, unchanged. `TierBadge`, `tiers` and `Tier` moved to the new `tier-badge` item and are re-exported from here; a compact tier badge still says its words to screen readers."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -6509,7 +6694,7 @@
       "name": "dataset-detail",
       "type": "registry:block",
       "title": "Dataset detail",
-      "description": "One dataset: release verdict, open issues, counts and splits, an annotated browse grid with layer toggles, lineage and compliance.",
+      "description": "One dataset: release verdict, open issues, counts and splits, an annotated browse grid with layer toggles, lineage and compliance. DatasetDetailContent drops the sample frame, for your own shell.",
       "dependencies": [
         "lucide-react"
       ],
@@ -6525,7 +6710,8 @@
         "@syncrobotic/toggle",
         "@syncrobotic/breadcrumb",
         "@syncrobotic/copy-button",
-        "@syncrobotic/description-list"
+        "@syncrobotic/description-list",
+        "@syncrobotic/tier-badge"
       ],
       "files": [
         {
@@ -6534,8 +6720,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "`DatasetDetailContent` is the page without its frame (same props), for a product's own shell such as top-bar-shell; `DatasetDetail` is that content in the sample AppShell, unchanged. The tier badge comes from the new `tier-badge` item."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -6616,7 +6807,7 @@
       "name": "governance-todo",
       "type": "registry:block",
       "title": "Governance to-do",
-      "description": "What needs a maintainer or the compliance reviewer, most blocking first; done items leave the list.",
+      "description": "What needs a maintainer or the compliance reviewer, most blocking first; done items leave the list. Read-only for viewers, app-owned completion, and GovernanceTodoContent drops the sample frame, for your own shell.",
       "dependencies": [
         "lucide-react"
       ],
@@ -6638,8 +6829,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "`readOnly` hides the row actions and keeps the layout, for people who only read the list. `onDone(id)` hands completion to the app: the action calls it, and the row leaves when `todos` no longer has it (the block's own done list is not used). `GovernanceTodoContent` is the list without its frame (same props), for a product's own shell such as top-bar-shell; `GovernanceTodo` is that content in the sample AppShell, unchanged."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -6955,8 +7151,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "Design language: `bg-scrim`, `bg-letterbox` and the chart inks (`text-chart-N-foreground`). Design language: `--shell-top` and `--shell-surface`, set by every shell, for pinning a tab row (TabsList sticky) or a filter bar under the top bar. Skill: the data blocks' `…Content` exports, to use inside a product's own frame instead of a second shell. The checklist names StreamingText for a model's streamed answer. Design language: marks linked to something outside the picture (a hovered word, a row) are highlighted in the selected ink at 3 px, keeping their line style, and the rest fade (grounded-text); never a colour per link. Radius: `rounded-[inherit]` is allowed on a child that fills its parent edge to edge (a scroll viewport, an avatar's picture, a stretched link's hit area), so a product lint that enforces the scale can allow it by rule. Issue #301. Checklist: CardTitle, AccordionTrigger and PageHeader take `as`, CardDataHeader `titleAs`, so headings skip no level. Issue #303."
+          },
           {
             "version": "0.22.0",
             "date": "2026-11-20",
@@ -8050,8 +8251,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.4",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "The root sets `--shell-top` to the top bar's measured height and `--shell-surface`, so a sticky tab row pins under it; the bar sits above pinned rows (z-20)."
+          },
           {
             "version": "0.17.4",
             "date": "2026-11-21",

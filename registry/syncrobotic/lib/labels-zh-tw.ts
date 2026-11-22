@@ -1,4 +1,4 @@
-// @syncrobotic/labels-zh-tw v0.29.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
+// @syncrobotic/labels-zh-tw v0.31.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
 // The kit's words in Traditional Chinese as written in Taiwan, one object per component that takes `labels`. Pass each
 // to its component (`<DataGrid labels={dataGridLabels} />`) with `locale="zh-TW"` where the component formats numbers,
 // days or times. The file imports no component, so it installs on its own; the kit's tests hold every object to the
@@ -517,6 +517,12 @@ export const annotationLegendLabels = {
   truth: annotatedImageLabels.truth,
 }
 
+export const groundedTextLabels = {
+  marks: ({ points, boxes, shapes }: { points: number; boxes: number; shapes: number }) =>
+    `圖上 ${[boxes && `${boxes} 個框`, points && `${points} 個點`, shapes && `${shapes} 個標註`].filter(Boolean).join("和 ")}`,
+  linked: (words: string[]) => `文字中：${words.join("；")}`,
+}
+
 export const graphLabels = {
   from: (names: string[]) => `來自 ${list(names)}`,
   to: (names: string[]) => `通往 ${list(names)}`,
@@ -602,6 +608,14 @@ export const attachmentLabels = {
 
 // ---------- Data ----------
 
+// A dataset's licence tier, after its code (T0 · 可商用).
+export const tierBadgeLabels = {
+  T0: "可商用",
+  T1: "非商用",
+  T2: "受限",
+  T3: "僅限地端",
+}
+
 export const dataGridLabels = {
   region: "資料",
   empty: "沒有資料",
@@ -627,6 +641,7 @@ export const dataGridLabels = {
 }
 
 export const paginationLabels = {
+  nav: "分頁",
   range: (from: number, to: number, total: number) => `第 ${from}–${to} 筆，共 ${total} 筆`,
   previous: "上一頁",
   next: "下一頁",
@@ -710,6 +725,13 @@ export const gaugeLabels = {
   formatTime: (d: Date, locale: string | undefined) => (locale ? d.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23" }) : clock(d)),
 }
 
+export const meterLabels = {
+  range: (value: string, max: string) => `${value} / ${max}`,
+  critical: "嚴重",
+  high: "偏高",
+  low: "偏低",
+}
+
 export const metricCardLabels = {
   better: "，較佳",
   worse: "，較差",
@@ -785,6 +807,38 @@ export const logViewerLabels = {
   keys: "上下方向鍵在各行之間移動，按住 Shift 可選取多行，Enter 展開該行，C 複製，End 跳到最新一行，斜線鍵開始搜尋。",
 }
 
+// A model's answer as it streams: 生成 (generate), 推理 (reasoning), 首個 token (first token, the term engineers use).
+const streamDuration = (ms: number, locale: string | undefined) => {
+  const s = Math.max(0, ms) / 1000
+  const n = (v: number, digits = 0) => v.toLocaleString(locale ?? "zh-TW", { minimumFractionDigits: digits, maximumFractionDigits: digits })
+  if (s < 10) return `${n(s, 1)} 秒`
+  if (s < 60) return `${n(Math.round(s))} 秒`
+  const whole = Math.round(s)
+  return whole % 60 ? `${n(Math.floor(whole / 60))} 分 ${n(whole % 60)} 秒` : `${n(whole / 60)} 分鐘`
+}
+
+export const streamingTextLabels = {
+  name: "回答",
+  queued: (position: number | undefined, locale: string | undefined) =>
+    position === undefined ? "排隊等候中" : position <= 1 ? "下一個就輪到" : `排隊中，第 ${position.toLocaleString(locale ?? "zh-TW")} 位`,
+  thinking: "思考中",
+  generating: "生成中",
+  done: ({ durationMs, firstTokenMs }: { durationMs?: number; firstTokenMs?: number }, locale: string | undefined) =>
+    [durationMs === undefined ? "已完成" : `已完成，耗時 ${streamDuration(durationMs, locale)}`, firstTokenMs !== undefined && `首個 token ${streamDuration(firstTokenMs, locale)}`]
+      .filter(Boolean)
+      .join(" · "),
+  stopped: ({ durationMs, empty }: { durationMs?: number; empty: boolean }, locale: string | undefined) =>
+    empty ? "已在回答開始前取消" : [durationMs === undefined ? "已停止" : `已在 ${streamDuration(durationMs, locale)} 後停止`, "回答不完整"].join(" · "),
+  failed: "失敗",
+  incomplete: "回答不完整",
+  empty: "回答沒有內容",
+  stop: "停止生成",
+  cancel: "取消",
+  retry: "重試",
+  reasoningToggle: "推理過程",
+  duration: streamDuration,
+}
+
 // Every operator the filter bar offers; the types test holds it to the full FilterOperator list, so a new one cannot be
 // left in English.
 const filterOperators = {
@@ -848,6 +902,7 @@ export const treeLabels = {
 export const chipGroupLabels = {
   more: (hidden: number) => `另外 ${hidden} 個`,
   less: "顯示較少",
+  selected: "已選取",
 }
 
 // ---------- Inputs ----------
@@ -915,6 +970,12 @@ export const questionFieldLabels = questionnaireLabels
 // ---------- Navigation, overlays and feedback ----------
 
 export const breadcrumbLabels = { nav: "導覽路徑" }
+
+export const topBarShellLabels = {
+  nav: "主要導覽",
+  openNav: "開啟導覽",
+  accountMenu: "帳號選單",
+}
 
 export const sidebarProviderLabels = {
   sidebar: "側邊欄",

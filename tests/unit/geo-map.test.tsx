@@ -99,6 +99,14 @@ describe("GeoMap", () => {
     expect(within(map).getAllByRole("button").map((b) => b.getAttribute("aria-label"))).toEqual(["Zoom in", "Zoom out", "Show all robots"])
   })
 
+  it("keys every robot's name label, so React and react/jsx-key have nothing to say (#301)", () => {
+    const error = vi.spyOn(console, "error").mockImplementation(() => {})
+    render(<GeoMap label="Map of Solar farm" robots={robots} fences={fences} />)
+    expect(document.querySelectorAll("[data-robot-label]")).toHaveLength(3)
+    expect(error.mock.calls.flat().join(" ")).not.toMatch(/unique "key"/)
+    error.mockRestore()
+  })
+
   it("names abnormal robots' state and a lost fix on the map; calm ones are their shape and name", () => {
     render(<GeoMap label="Map of Solar farm" robots={robots} />)
     expect(document.querySelector('[data-robot-label="p2"]')!.textContent).toBe("Patrol-2\u00a0· Battery 14 %")

@@ -25,6 +25,24 @@ export const ShareBarLegend: S = {
   ),
 }
 
+/** Each part links to the catalog filtered to it: the legend entries are the links, the bar stays one picture. */
+export const ShareBarLinks: S = {
+  render: () => (
+    <div className="max-w-md">
+      <ShareBar
+        label="Items by source"
+        unit="items"
+        legend
+        segments={[
+          { key: "fleet", label: "Fleet cameras", value: 5060, href: "#source=fleet" },
+          { key: "partner", label: "Partner uploads", value: 3640, href: "#source=partner" },
+          { key: "synthetic", label: "Synthetic", value: 1300, href: "#source=synthetic" },
+        ]}
+      />
+    </div>
+  ),
+}
+
 /** Thin, in table cells: where each dataset's labels came from. The column header names the parts. */
 export const ShareBarInTable: S = {
   render: () => (

@@ -1,4 +1,4 @@
-// @syncrobotic/top-bar-shell v0.17.3 · update: npx shadcn add @syncrobotic/top-bar-shell --overwrite
+// @syncrobotic/top-bar-shell v0.31.0 · update: npx shadcn add @syncrobotic/top-bar-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -18,6 +18,17 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/registry/syncro
 
 export type TopBarLink = { label: string; href: string }
 
+export type TopBarShellLabels = {
+  /** The navigation landmark around the links, in the bar and in the phone drawer. */
+  nav: string
+  /** The menu button that opens the drawer on phones. */
+  openNav: string
+  /** Read after the user's name and initials on the account button: "Ada Lovelace, AL, account menu". */
+  accountMenu: string
+}
+
+export const defaultTopBarShellLabels: TopBarShellLabels = { nav: "Main", openNav: "Open navigation", accountMenu: "account menu" }
+
 type TopBarShellProps = {
   product: string
   /** Mark before the name, at 28 px. */
@@ -31,8 +42,14 @@ type TopBarShellProps = {
   user?: AppUser
   userMenu?: AppUserMenuItem[]
   linkAs?: React.ElementType
+  /** Where the logo and name link to. Defaults to the first link's href. */
+  home?: string
+  /** The id on `<main>`, for a skip link (`<a href="#main">`). */
+  mainId?: string
   /** End of the page: version, copyright, links. No line above it. */
   footer?: React.ReactNode
+  /** The words it says to screen readers, to translate them (topBarShellLabels in labels-zh-tw). */
+  labels?: Partial<TopBarShellLabels>
   children: React.ReactNode
 }
 
@@ -52,10 +69,21 @@ export function TopBarShell({
   user,
   userMenu = sampleUserMenu,
   linkAs: Link = "a",
+  home = links[0]?.href ?? "#",
+  mainId = "main",
   footer,
+  labels,
   children,
 }: TopBarShellProps) {
+  const l = { ...defaultTopBarShellLabels, ...labels }
   const [scrolled, setScrolled] = React.useState(false)
+  // The drawer is controlled so that following a link closes it: a client router (Next.js, React Router) keeps the
+  // shell mounted, and the drawer would stay open over the new page. Modified clicks open a new tab, so it stays.
+  const [drawer, setDrawer] = React.useState(false)
+  const closeOnLink = (e: React.MouseEvent) => {
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+    if (e.target instanceof Element && e.target.closest("a[href]")) setDrawer(false)
+  }
   React.useEffect(() => {
     const on = () => setScrolled(window.scrollY > 8)
     on()
@@ -64,7 +92,7 @@ export function TopBarShell({
   }, [])
 
   const nav = (vertical?: boolean) => (
-    <nav aria-label="Main" className={cn("flex gap-1 text-sm", vertical ? "flex-col" : "items-center")}>
+    <nav aria-label={l.nav}className={cn("flex gap-1 text-sm", vertical ? "flex-col" : "items-center")}>
       {links.map((l) => {
         const active = l.href === current
         return (
@@ -86,7 +114,9 @@ export function TopBarShell({
   )
 
   return (
-    <div className="flex min-h-[var(--app-shell-height,100dvh)] flex-col bg-background text-foreground">
+    // --shell-top is the bar's bottom edge once it floats (its height and the 8 px it moves down): a sticky tab row
+    // (TabsList sticky) or a product's filter bar pins there, on --shell-surface.
+    <div className="flex min-h-[var(--app-shell-height,100dvh)] flex-col bg-background text-foreground [--shell-surface:var(--color-background)] [--shell-top:calc(var(--h-row)+--spacing(2))]">
       <header className="pointer-events-none sticky top-0 z-20 mx-auto h-(--h-row) w-full max-w-6xl px-6">
         <div
           className={cn(
@@ -97,23 +127,23 @@ export function TopBarShell({
             scrolled ? "mx-0 translate-y-2 bg-card ring-border" : "-mx-4 translate-y-0 bg-transparent ring-transparent",
           )}
         >
-          <Sheet>
+          <Sheet open={drawer} onOpenChange={setDrawer}>
             <SheetTrigger asChild>
               <button
                 type="button"
-                aria-label="Open navigation"
+                aria-label={l.openNav}
                 className="press -ml-3 flex size-(--h-md) items-center justify-center rounded-sm hover:bg-accent md:hidden"
               >
                 <Menu aria-hidden="true" className="size-5" />
               </button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-72">
+            <SheetContent side="left" className="w-72" onClick={closeOnLink}>
               <SheetTitle className="pb-4">{product}</SheetTitle>
               {nav(true)}
             </SheetContent>
           </Sheet>
           {/* The brand is a link home: a full-height target (44, 48 in gloves), not the 28 px of the logo. */}
-          <Link href={links[0]?.href ?? "#"} className="flex min-h-(--h-md) shrink-0 items-center gap-2 rounded-xs">
+          <Link href={home} className="flex min-h-(--h-md) shrink-0 items-center gap-2 rounded-xs">
             {logo}
             <span className="text-sm font-bold">{product}</span>
           </Link>
@@ -126,7 +156,7 @@ export function TopBarShell({
                 <DropdownMenuTrigger asChild>
                   <button
                     type="button"
-                    aria-label={`${user.name}, ${user.initials}, account menu`}
+                    aria-label={`${user.name}, ${user.initials}, ${l.accountMenu}`}
                     className="press flex size-(--h-md) items-center justify-center rounded-sm hover:bg-accent"
                   >
                     <Avatar>
@@ -164,7 +194,7 @@ export function TopBarShell({
           </div>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-8">{children}</main>
+      <main id={mainId} className="mx-auto w-full max-w-6xl flex-1 px-6 py-8">{children}</main>
       {footer && (
         <footer className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-1 px-6 py-6 text-xs text-muted-foreground">
           {footer}

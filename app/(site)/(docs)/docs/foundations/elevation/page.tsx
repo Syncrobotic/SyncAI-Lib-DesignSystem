@@ -8,7 +8,7 @@ export const metadata: Metadata = metaFor("elevation")
 const layers = [
   { n: "0", name: "Surface", recipe: "bg-card ring-1 ring-border", use: "Cards, list groups, tables. Sits in the page.", shadow: "none" },
   { n: "1", name: "Float", recipe: "bg-float shadow-float ring-1 ring-edge backdrop-blur-xl", use: "Island and dock over the map. Translucent so the map stays visible.", shadow: "shadow-float" },
-  { n: "2", name: "Overlay", recipe: "bg-popover shadow-overlay ring-1 ring-border + bg-(--scrim) behind", use: "Dialogs, sheets, menus. Blocks or covers the page.", shadow: "shadow-overlay" },
+  { n: "2", name: "Overlay", recipe: "bg-popover shadow-overlay ring-1 ring-border + bg-scrim behind", use: "Dialogs, sheets, menus. Blocks or covers the page.", shadow: "shadow-overlay" },
 ]
 
 export default function ElevationPage() {

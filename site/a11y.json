@@ -285,6 +285,11 @@
     "tabStops": 0,
     "live": false
   },
+  "tier-badge": {
+    "roles": [],
+    "tabStops": 0,
+    "live": false
+  },
   "card": {
     "roles": [
       "button",
@@ -665,7 +670,8 @@
       "listitem",
       "navigation",
       "radio",
-      "radiogroup"
+      "radiogroup",
+      "toolbar"
     ],
     "tabStops": 3,
     "live": false
@@ -711,6 +717,16 @@
     ],
     "tabStops": 1,
     "live": true
+  },
+  "grounded-text": {
+    "roles": [
+      "button",
+      "group",
+      "list",
+      "listitem"
+    ],
+    "tabStops": 15,
+    "live": false
   },
   "media-player": {
     "roles": [
@@ -929,6 +945,15 @@
       "treegrid"
     ],
     "tabStops": 7,
+    "live": true
+  },
+  "streaming-text": {
+    "roles": [
+      "article",
+      "button",
+      "status"
+    ],
+    "tabStops": 2,
     "live": true
   },
   "sortable": {

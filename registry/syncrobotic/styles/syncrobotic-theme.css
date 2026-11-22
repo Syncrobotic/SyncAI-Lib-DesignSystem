@@ -1,4 +1,4 @@
-/* @syncrobotic/syncrobotic-theme v0.30.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
+/* @syncrobotic/syncrobotic-theme v0.31.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
 /*
  * SYNCROBOTIC theme (see CHANGELOG.md for its version history)
  * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
@@ -53,6 +53,8 @@
      picture, a resize grip, the blocks of an illustration. 1.5:1 on the card and the page, so the shape reads as a shape;
      where the shape alone carries meaning (a bar at 0 %, a selected row) it also gets an edge at 3:1 (--input, --foreground). */
   --track: #c4c4ca;
+  /* The knob you drag on a slider or a switch that is off: white in every mode, so it reads on the track and on the filled part. */
+  --thumb: #ffffff;
 
   --info: #2952b8;
   --info-subtle: #e4e9f4;
@@ -74,6 +76,9 @@
   --map: #f1f2f5;
   --map-point: #7b8190;
   --scrim: rgb(9 9 11 / 0.45);
+  /* The bars around a picture that does not fill its frame (video, camera, image viewers): the dark page colour in every
+     theme, so a frame reads as a screen, not as a card. Black in high contrast. */
+  --letterbox: #09090b;
   --float: rgb(255 255 255 / 0.9);
   --edge: rgb(9 9 11 / 0.14);
   --shadow-float: 0 8px 24px rgb(9 9 11 / 0.12);
@@ -100,6 +105,13 @@
   --chart-3: #67676c;
   --chart-4: #939499;
   --chart-5: var(--chart-3);
+  /* Ink for numbers and words drawn on a chart colour (a value inside a bar, a filled legend chip): white or near-black,
+     whichever reaches 4.5:1 on that colour in this mode. Pairs with --chart-N in every block below. */
+  --chart-1-foreground: #ffffff;
+  --chart-2-foreground: #ffffff;
+  --chart-3-foreground: #ffffff;
+  --chart-4-foreground: #09090b;
+  --chart-5-foreground: var(--chart-3-foreground);
 
   /* Annotations on images: boxes and points drawn over camera pictures. Told apart first by line style (predicted solid
      2 px, ground truth dashed 2 px, previous dotted and faded, selected 3 px with handles) and only then by these colours,
@@ -161,6 +173,7 @@
   --ring: var(--foreground);
   --disabled: #7c7c84;
   --track: #3f3f46;
+  --thumb: #ffffff;
 
   --info: #7da4e6;
   --info-subtle: #1a2233;
@@ -182,6 +195,11 @@
   --chart-3: #babac0;
   --chart-4: #68686e;
   --chart-5: var(--chart-3);
+  --chart-1-foreground: #09090b;
+  --chart-2-foreground: #09090b;
+  --chart-3-foreground: #09090b;
+  --chart-4-foreground: #ffffff;
+  --chart-5-foreground: var(--chart-3-foreground);
 
   /* Lighter strokes over a black halo. Predicted is the high-contrast indigo rather than the chart indigo, since on a photo the stroke meets
      the pixels around it as well as its halo, and the chart indigo fell to 2.3:1 on mid-dark indoor pictures (4.6 now). */
@@ -194,6 +212,7 @@
   --map: #0d0d10;
   --map-point: #6f7682;
   --scrim: rgb(0 0 0 / 0.66);
+  --letterbox: #09090b;
   --float: rgb(32 32 38 / 0.86);
   --edge: rgb(255 255 255 / 0.12);
   --shadow-float: 0 8px 24px rgb(0 0 0 / 0.32);
@@ -226,6 +245,7 @@
   --ring: var(--foreground);
   --disabled: #74747c;
   --track: #b4b4bb;
+  --thumb: #ffffff;
 
   --info: #1d3d8f;
   --success: #0a4a32;
@@ -240,6 +260,7 @@
 
   --map-point: #4b5160;
   --scrim: rgb(0 0 0 / 0.6);
+  --letterbox: #000000;
   --float: rgb(255 255 255 / 1);
   --edge: rgb(0 0 0 / 0.55);
 
@@ -249,6 +270,11 @@
   --chart-3: #59595e;
   --chart-4: #85868b;
   --chart-5: var(--chart-3);
+  --chart-1-foreground: #ffffff;
+  --chart-2-foreground: #ffffff;
+  --chart-3-foreground: #ffffff;
+  --chart-4-foreground: #000000;
+  --chart-5-foreground: var(--chart-3-foreground);
 
   --annotate-predicted: var(--chart-1);
   --annotate-truth: var(--chart-2);
@@ -281,6 +307,7 @@
   --ring: var(--foreground);
   --disabled: #808088;
   --track: #4a4a52;
+  --thumb: #ffffff;
 
   --info: #a9c4f2;
   --info-subtle: #1a2233;
@@ -298,6 +325,7 @@
 
   --map-point: #9aa1ad;
   --scrim: rgb(0 0 0 / 0.8);
+  --letterbox: #000000;
   --float: rgb(18 18 21 / 1);
   --edge: rgb(255 255 255 / 0.55);
 
@@ -306,6 +334,11 @@
   --chart-3: #919297;
   --chart-4: #646469;
   --chart-5: var(--chart-3);
+  --chart-1-foreground: #000000;
+  --chart-2-foreground: #000000;
+  --chart-3-foreground: #000000;
+  --chart-4-foreground: #ffffff;
+  --chart-5-foreground: var(--chart-3-foreground);
 
   --annotate-predicted: var(--chart-1);
   --annotate-truth: var(--chart-2);
@@ -337,6 +370,7 @@
   --color-ring: var(--ring);
   --color-disabled: var(--disabled);
   --color-track: var(--track);
+  --color-thumb: var(--thumb);
 
   /* Usage: <Badge className="bg-info-subtle text-info"> */
   --color-info: var(--info);
@@ -355,6 +389,9 @@
   --color-map-point: var(--map-point);
   --color-float: var(--float);
   --color-edge: var(--edge);
+  /* Usage: bg-scrim behind a modal overlay or under words over a picture; bg-letterbox around a picture in its frame. */
+  --color-scrim: var(--scrim);
+  --color-letterbox: var(--letterbox);
 
   --shadow-float: var(--shadow-float);
   --shadow-overlay: var(--shadow-overlay);
@@ -368,6 +405,12 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+  /* Usage: bg-chart-1 text-chart-1-foreground. Words and numbers drawn on a chart colour only. */
+  --color-chart-1-foreground: var(--chart-1-foreground);
+  --color-chart-2-foreground: var(--chart-2-foreground);
+  --color-chart-3-foreground: var(--chart-3-foreground);
+  --color-chart-4-foreground: var(--chart-4-foreground);
+  --color-chart-5-foreground: var(--chart-5-foreground);
 
   /* Usage: stroke-annotate-truth over stroke-annotate-halo. Annotations on images only. */
   --color-annotate-predicted: var(--annotate-predicted);

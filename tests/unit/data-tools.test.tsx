@@ -1,11 +1,14 @@
-import { act, fireEvent, render, screen } from "@testing-library/react"
+import { act, cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { afterEach, describe, expect, it, vi } from "vitest"
 import { ChipGroup } from "@/registry/syncrobotic/ui/chip-group"
 import { FilterForm, filterUrl } from "@/registry/syncrobotic/ui/filter-form"
 import { RouteProgress } from "@/registry/syncrobotic/ui/route-progress"
 import { SearchField } from "@/registry/syncrobotic/ui/search-field"
 
-afterEach(() => vi.useRealTimers())
+afterEach(() => {
+  cleanup()
+  vi.useRealTimers()
+})
 
 describe("filterUrl", () => {
   it("keeps non-empty fields in order and drops the page number", () => {
@@ -56,6 +59,46 @@ describe("ChipGroup", () => {
     render(<ChipGroup label="Saved views" value="b" items={items.slice(0, 2).map((c) => ({ ...c, href: `#${c.value}` }))} />)
     expect(screen.getByRole("link", { name: /B/ }).getAttribute("aria-current")).toBe("page")
     expect(screen.getByRole("link", { name: /A/ }).getAttribute("aria-current")).toBeNull()
+  })
+  it("takes the aria-current value, so a filter row does not mark a second page", () => {
+    render(<ChipGroup label="Filters" value="b" current="true" items={items.slice(0, 2).map((c) => ({ ...c, href: `#${c.value}` }))} />)
+    expect(screen.getByRole("link", { name: /B/ }).getAttribute("aria-current")).toBe("true")
+  })
+  it("spreads each chip's props on its button or link, under the group's own attributes", () => {
+    const withProps = items.slice(0, 2).map((c) => ({ ...c, props: { "data-testid": `chip-${c.value}`, title: `Only ${c.label}`, className: "extra" } }))
+    const { unmount } = render(<ChipGroup label="Task" items={withProps} value="a" onValueChange={() => {}} />)
+    const a = screen.getByTestId("chip-a")
+    expect(a.getAttribute("title")).toBe("Only A")
+    expect(a.className).toContain("extra")
+    expect(a.className).toContain("h-(--h-sm)")
+    expect(a.getAttribute("data-state")).toBe("on")
+    unmount()
+    render(<ChipGroup label="Views" value="b" items={withProps.map((c) => ({ ...c, href: `#${c.value}`, props: { ...c.props, "aria-current": "false" as const } }))} />)
+    expect(screen.getByTestId("chip-b").getAttribute("aria-current")).toBe("page")
+    expect(screen.getByTestId("chip-b").getAttribute("href")).toBe("#b")
+  })
+  it("chooses several with type multiple, as pressed buttons, and keeps every chosen chip when folded", () => {
+    const change = vi.fn()
+    render(<ChipGroup type="multiple" label="Task" items={items} value={["a", "e"]} max={2} onValueChange={change} />)
+    const buttons = screen.getAllByRole("button", { pressed: true })
+    expect(buttons.map((b) => b.textContent)).toEqual(["A0", "E4"])
+    expect(screen.getByRole("button", { name: /^B/ }).getAttribute("aria-pressed")).toBe("false")
+    expect(screen.getByRole("button", { name: "2 more" })).toBeTruthy()
+    fireEvent.click(screen.getByRole("button", { name: /^B/ }))
+    expect(change).toHaveBeenLastCalledWith(["a", "e", "b"])
+  })
+  it("keeps one chosen with allowNone false in multiple", () => {
+    const change = vi.fn()
+    render(<ChipGroup type="multiple" allowNone={false} label="Task" items={items} value={["a"]} onValueChange={change} />)
+    fireEvent.click(screen.getByRole("button", { name: /^A/ }))
+    expect(change).not.toHaveBeenCalled()
+  })
+  it("marks several chosen links as selected, not current", () => {
+    render(<ChipGroup type="multiple" label="Task" value={["a", "b"]} items={items.slice(0, 3).map((c) => ({ ...c, href: `#${c.value}` }))} />)
+    const a = screen.getByRole("link", { name: /^A.*selected$/ })
+    expect(a.getAttribute("aria-current")).toBeNull()
+    expect(a.getAttribute("data-state")).toBe("on")
+    expect(screen.getByRole("link", { name: /^C/ }).getAttribute("data-state")).toBeNull()
   })
 })
 
