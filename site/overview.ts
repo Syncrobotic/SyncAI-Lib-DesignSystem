@@ -69,6 +69,22 @@ export const overviews: Record<string, Overview> = {
       "Annotation coordinates are image pixels, not percentages or CSS pixels; `width` and `height` are the picture's natural size.",
       "Without `onSelectedChange` the picture is one role=img with a generated summary; with it, a group of buttons with aria-pressed. Do not wrap it in another button.",
       "Placeholders and tests draw the picture in code (an SVG data URI); never an external URL.",
+      "`highlighted` and `onActiveChange` link the marks to something outside the picture; `grounded-text` uses them for words.",
+    ],
+  },
+  "grounded-text": {
+    what: "Text whose words point at places on a picture, linked both ways: hover or focus a word and its marks light up; hover a mark and its words do.",
+    use: [
+      "A vision-language model's caption, where each object's name matches a box.",
+      "A model's reasoning with grounding, where \"8 zebras\" is linked to 8 points.",
+      "A review or evaluation note beside an annotated frame.",
+    ],
+    instead: ["A picture with marks and no text: `annotated-image`.", "Marks listed with their details: `annotated-image` with a details panel on select."],
+    notes: [
+      "Offsets are character offsets into `text` (JavaScript string indices, as Python's `start_idx` / `end_idx` for text without emoji). Spans must not overlap.",
+      "`fromGrounding(text, groundings, { width, height, scale })` builds `annotations` and `spans`; `scale` is the range of the model's coordinates (1, 100, 1000), left out for pixels.",
+      "Spans are role=button with aria-pressed (pinned), each described by where its marks are; marks are described by their words. Do not wrap either in a link or another button.",
+      "The picture's words come from `imageLabels` (`annotatedImageLabels` in labels-zh-tw), the links' from `labels` (`groundedTextLabels`).",
     ],
   },
   "media-player": {
@@ -1163,7 +1179,7 @@ export const overviews: Record<string, Overview> = {
     ],
     instead: ["Connecting React components: `use-ros`, which installs this."],
     notes: [
-      "`occupancyGridToGrid` (robot-map `grid` or `costmap`), `laserScanToScan(msg, robotId)` (robot-map `scans`), `poseToRobotMapPose(msg, gridToPlan(grid))` (a robot's x, y and heading; takes Pose, PoseStamped, PoseWithCovarianceStamped or Odometry), `goalToPoseStamped(goal, frame)` (robot-map `onGoal` to /goal_pose), `pointCloud2ToPoints` (point-cloud `points` and `intensity`), `jointStateToJoints(msg, { limits })` (joint-state `joints`), `diagnosticArrayToStatuses(msg)` and `mergeDiagnostics(previous, next)` (diagnostics `statuses`), `imuToAttitude(msg)` (attitude's roll, pitch and heading in degrees; `quaternionToEuler` for the radians), `odometryToSpeed(msg)` (Gauge's speed in m/s), `teleopToTwist(command, { maxLinear, maxAngular })`, `rosLogToLogLine` (a /rosout message as a log-viewer line, ROS 1 or 2), `waypointsToPath(waypoints, frame)` and `waypointsToNavigateThroughPoses(waypoints, frame)` (waypoint-editor `onSave` to a `nav_msgs/Path` or Nav2 NavigateThroughPoses goal; a waypoint without a heading faces the next), `pathToWaypoints` and `navigateThroughPosesToWaypoints` (back to `value`), `stampToMs(header.stamp)` (`updatedAt`). For robot-model, its own `jointStateToRecord`.",
+      "`occupancyGridToGrid` (robot-map `grid` or `costmap`), `laserScanToScan(msg, robotId)` (robot-map `scans`), `poseToRobotMapPose(msg, gridToPlan(grid))` (a robot's x, y and heading; takes Pose, PoseStamped, PoseWithCovarianceStamped or Odometry), `goalToPoseStamped(goal, frame)` (robot-map `onGoal` to /goal_pose), `pointCloud2ToPoints` (point-cloud `points` and `intensity`), `jointStateToJoints(msg, { limits })` (joint-state `joints`), `diagnosticArrayToStatuses(msg)` and `mergeDiagnostics(previous, next)` (diagnostics `statuses`), `imuToAttitude(msg)` (attitude's roll, pitch and heading in degrees; `quaternionToEuler` for the radians), `odometryToSpeed(msg)` (Gauge's speed in m/s), `teleopToTwist(command, { maxLinear, maxAngular })`, `rosLogToLogLine` (a /rosout message as a log-viewer line, ROS 1 or 2), `waypointsToPath(waypoints, frame)` and `waypointsToNavigateThroughPoses(waypoints, frame)` (waypoint-editor `onSave` to a `nav_msgs/Path` or Nav2 NavigateThroughPoses goal; a waypoint without a heading faces the next), `pathToWaypoints` and `navigateThroughPosesToWaypoints` (back to `value`), `detection2DArrayToAnnotations(msg, { classes })` (a `vision_msgs/Detection2DArray` as annotated-image `annotations`, which grounded-text links to), `stampToMs(header.stamp)` (`updatedAt`). For robot-model, its own `jointStateToRecord`.",
       "rosbridge sends `uint8[]` (PointCloud2.data) as base64 and `int8[]` (OccupancyGrid.data) as a list of numbers; the converters read either. NaN and ±Infinity in a LaserScan arrive as null (or as bare tokens, which the client reads as null) and are skipped like out-of-range readings.",
       "A pose must be in the map frame for robot-map (/amcl_pose is; /odom drifts). A scan is drawn from the robot's centre, so transform it to the base frame first if the laser is offset.",
     ],

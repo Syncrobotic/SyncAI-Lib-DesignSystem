@@ -2,35 +2,16 @@ import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { AnnotatedImage, type Annotation } from "@/registry/syncrobotic/ui/annotated-image"
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
-import { brokenPhoto } from "./placeholder-photos"
+import { brokenPhoto, warehouseFrame } from "./placeholder-photos"
 
 const meta: Meta = { title: "Display/Annotated image" }
 export default meta
 type S = StoryObj
 
-// A camera frame drawn in code (named colours: a camera picture does not follow the theme), 640 × 480, with things at known
-// places so the annotations below land on them: a person on the left, a pallet in the middle, a forklift on the right
-// and dark shelving behind it, so the marks show on bright and dark parts of the picture.
 const W = 640
 const H = 480
 const svg = (body: string) => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}">${body}</svg>`)}`
-const frame = svg(
-  `<rect width="640" height="290" fill="lightsteelblue"/><rect y="290" width="640" height="190" fill="tan"/>` +
-    `<rect x="0" y="60" width="96" height="230" fill="slategray"/><rect x="520" y="40" width="120" height="250" fill="darkslategray"/>` +
-    `<rect x="530" y="110" width="100" height="8" fill="black"/><rect x="530" y="190" width="100" height="8" fill="black"/>` +
-    `<line x1="300" y1="290" x2="210" y2="480" stroke="white" stroke-width="6" stroke-dasharray="20 14" opacity="0.7"/>` +
-    // The person.
-    `<circle cx="155" cy="190" r="20" fill="wheat"/><rect x="132" y="210" width="46" height="122" rx="8" fill="navy"/>` +
-    `<rect x="122" y="216" width="10" height="92" rx="5" fill="navy"/><rect x="178" y="216" width="10" height="92" rx="5" fill="navy"/>` +
-    `<rect x="136" y="330" width="14" height="72" fill="midnightblue"/><rect x="160" y="330" width="14" height="72" fill="midnightblue"/>` +
-    `<rect x="128" y="236" width="54" height="10" fill="orange"/>` +
-    // The pallet.
-    `<rect x="232" y="362" width="70" height="40" fill="sienna"/><rect x="228" y="402" width="78" height="16" fill="saddlebrown"/>` +
-    // The forklift.
-    `<rect x="470" y="222" width="18" height="168" fill="dimgray"/><rect x="330" y="296" width="140" height="94" rx="6" fill="goldenrod"/>` +
-    `<polyline points="340,296 352,236 452,236 462,296" fill="none" stroke="black" stroke-width="6"/>` +
-    `<rect x="488" y="372" width="72" height="8" fill="dimgray"/><circle cx="364" cy="394" r="18" fill="black"/><circle cx="440" cy="394" r="18" fill="black"/>`,
-)
+const frame = warehouseFrame
 // A depth map of the same frame, near is light: what a stereo camera adds beside the picture.
 const depth = svg(
   `<defs><linearGradient id="d" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="black"/><stop offset="1" stop-color="white"/></linearGradient></defs>` +

@@ -712,6 +712,16 @@
     "tabStops": 1,
     "live": true
   },
+  "grounded-text": {
+    "roles": [
+      "button",
+      "group",
+      "list",
+      "listitem"
+    ],
+    "tabStops": 15,
+    "live": false
+  },
   "media-player": {
     "roles": [
       "button",

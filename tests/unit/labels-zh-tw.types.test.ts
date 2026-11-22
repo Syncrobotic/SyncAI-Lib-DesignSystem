@@ -18,6 +18,7 @@ import type { DiagnosticsLabels } from "@/registry/syncrobotic/ui/diagnostics"
 import type { DialogLabels } from "@/registry/syncrobotic/ui/dialog"
 import type { FilterOperator, Filters } from "@/registry/syncrobotic/ui/filters"
 import type { GraphLabels } from "@/registry/syncrobotic/ui/graph"
+import type { GroundedTextLabels } from "@/registry/syncrobotic/ui/grounded-text"
 import type { ImageGridLabels } from "@/registry/syncrobotic/ui/image-grid"
 import type { JointStateLabels } from "@/registry/syncrobotic/ui/joint-state"
 import type { LoadMoreLabels } from "@/registry/syncrobotic/ui/load-more"
@@ -82,6 +83,7 @@ it("fits every component's labels type", () => {
   fits<GeoMapLabels>()(zh.geoMapLabels)
   fits<GeoMapLabels>()(zh.geoMapListLabels)
   fits<AnnotatedImageLabels>()(zh.annotatedImageLabels)
+  fits<GroundedTextLabels>()(zh.groundedTextLabels)
   fits<Pick<AnnotatedImageLabels, "legend" | "previous" | "predicted" | "truth">>()(zh.annotationLegendLabels)
   fits<GraphLabels>()(zh.graphLabels)
   fits<GraphLabels>()(zh.graphListLabels)

@@ -12,12 +12,12 @@
     "hash": "8ec920f8618ff43d"
   },
   "labels-zh-tw": {
-    "version": "0.29.0",
-    "hash": "ed0b299aca6806e0"
+    "version": "0.31.0",
+    "hash": "170546b1bd9419a0"
   },
   "ros": {
-    "version": "0.29.0",
-    "hash": "37a5a16c5edd4154"
+    "version": "0.31.0",
+    "hash": "956f5e43b65b3b8a"
   },
   "use-long-press": {
     "version": "0.5.1",
@@ -360,8 +360,12 @@
     "hash": "c5aa2b556e06541b"
   },
   "annotated-image": {
-    "version": "0.18.0",
-    "hash": "b033c11941fbc3f8"
+    "version": "0.31.0",
+    "hash": "9117e7979bf68098"
+  },
+  "grounded-text": {
+    "version": "0.31.0",
+    "hash": "91b14fc79d7e932e"
   },
   "media-player": {
     "version": "0.28.0",
@@ -572,8 +576,8 @@
     "hash": "f92b1126101d0227"
   },
   "agent-skill": {
-    "version": "0.22.0",
-    "hash": "e945ec999a5c5401"
+    "version": "0.31.0",
+    "hash": "2ae8d0868d693c62"
   },
   "line-chart-telemetry": {
     "version": "0.17.2",

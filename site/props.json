@@ -599,6 +599,17 @@
      "description": "Makes each annotation a button (one Tab stop, arrows move, Enter selects, Esc clears). Without it nothing is focusable."
     },
     {
+     "name": "highlighted",
+     "type": "readonly string[]",
+     "default": "[]",
+     "description": "Annotations drawn highlighted (the selected ink at 3 px, in their own line style, without handles), e.g. the ones a hovered word links to. While any is, the others fade to `--annotate-fade`."
+    },
+    {
+     "name": "onActiveChange",
+     "type": "(id: string | null) => void",
+     "description": "The annotation under the mouse, or else the one with keyboard focus; `null` when neither. Touch does not hover: a tap selects. Needs `onSelectedChange` (the annotations are buttons only then)."
+    },
+    {
      "name": "showLabels",
      "type": "\"none\" | \"all\" | \"selected\"",
      "default": "\"all\"",
@@ -5288,6 +5299,122 @@
    "inherits": [
     "Pick<GraphProps, \"nodes\" | \"edges\" | \"label\" | \"empty\" | \"loading\" | \"linkAs\" | \"labels\" | \"className\">"
    ]
+  }
+ ],
+ "grounded-text": [
+  {
+   "name": "GroundedText",
+   "props": [
+    {
+     "name": "text",
+     "type": "string",
+     "required": true,
+     "description": "The answer or caption. Line breaks are kept."
+    },
+    {
+     "name": "spans",
+     "type": "GroundedSpan[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "annotations",
+     "type": "Annotation[]",
+     "required": true,
+     "description": "The marks the spans point at (points, boxes or any shape), in the picture's pixels. `fromGrounding` builds both."
+    },
+    {
+     "name": "src",
+     "type": "string",
+     "description": "The picture, as in annotated-image: `src` or `image`, its natural `width` and `height`, and what it is in `label`."
+    },
+    {
+     "name": "image",
+     "type": "ReactNode",
+     "description": ""
+    },
+    {
+     "name": "width",
+     "type": "number",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "height",
+     "type": "number",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "showLabels",
+     "type": "\"none\" | \"all\" | \"selected\"",
+     "default": "\"none\"",
+     "description": "Class words on the picture. None by default: the text says what each mark is; \"selected\" shows the highlighted ones."
+    },
+    {
+     "name": "legend",
+     "type": "boolean",
+     "default": "false",
+     "description": "annotated-image's line-style legend, for the kinds present. Off by default: a model's answer has one kind."
+    },
+    {
+     "name": "overlays",
+     "type": "AnnotationOverlay[]",
+     "description": ""
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "description": ""
+    },
+    {
+     "name": "defaultPinned",
+     "type": "{ span: number } | { mark: string } | null",
+     "default": "null",
+     "description": "Pinned at first (uncontrolled), or controlled with `onPinnedChange`."
+    },
+    {
+     "name": "pinned",
+     "type": "{ span: number } | { mark: string } | null",
+     "description": ""
+    },
+    {
+     "name": "onPinnedChange",
+     "type": "(pin: GroundedPin | null) => void",
+     "description": ""
+    },
+    {
+     "name": "labels",
+     "type": "Partial<GroundedTextLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "marks",
+       "type": "(count: { points: number; boxes: number; shapes: number; }) => string",
+       "default": "({ points, boxes, shapes }) => { const parts = [boxes && plural(boxes, \"box\", \"boxes\"), points && plural(points, \"point\", \"points\"), shapes && plural(shapes, \"shape\", \"shapes\")].filter(Boolean) return `${parts.join(\" and \")} on the image` }",
+       "description": "A span's description, read after its words: \"8 points on the image\", \"2 boxes and 1 point on the image\"."
+      },
+      {
+       "name": "linked",
+       "type": "(words: string[]) => string",
+       "default": "(words) => `In the text: ${words.join(\"; \")}`",
+       "description": "A mark's description, read after its name: the words that point at it."
+      }
+     ]
+    },
+    {
+     "name": "imageLabels",
+     "type": "Partial<AnnotatedImageLabels>",
+     "description": "annotated-image's words (`annotatedImageLabels` in labels-zh-tw)."
+    }
+   ],
+   "inherits": []
   }
  ],
  "hover-card": [

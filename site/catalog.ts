@@ -55,6 +55,7 @@ export type StoryFile =
   | "data-pieces"
   | "image-grid"
   | "annotated-image"
+  | "grounded-text"
   | "media-player"
   | "camera-feed"
   | "camera-wall"
@@ -735,6 +736,20 @@ const entries: Record<string, Entry> = {
       "Keep the legend (or an AnnotationLegend nearby) whenever more than one kind is on screen.",
       "Crowded picture, or a picture shown phone-wide: `showLabels=\"selected\"`. The words are still read out in the summary or on each annotation's button.",
       "Selectable only when something happens on select (a details panel, a review); otherwise the picture is one image with a summary.",
+      "To point at marks from outside the picture (a hovered word, a table row), pass their ids as `highlighted`: they draw in the selected ink and the rest fade. `onActiveChange` says which mark the pointer or keyboard is on.",
+    ],
+  },
+  "grounded-text": {
+    wide: true,
+    group: "Media & files",
+    examples: { file: "grounded-text", prefix: "GroundedText" },
+    rules: [
+      "For text that names places on a picture: a model's caption or reasoning, a review note. A picture with marks and no text is `annotated-image`.",
+      "Pass the model's offsets as they come (`start`, `end`, or `fromGrounding` for `start_idx`, `end_idx` and points or boxes in pixels, 0–1, percent or 0–1000). Spans must not overlap; a span that does starts where the one before ends.",
+      "Give every span the ids of all its marks, and every mark a span. A span whose marks are not on the picture is plain text.",
+      "Highlighting is the selected ink at 3 px with the rest faded, never a colour per span. In high contrast nothing fades; the width carries it.",
+      "Class words on the picture are off: the text names each mark. Turn on `showLabels=\"selected\"` when the words differ from the text (a model's class next to a person's note).",
+      "Put it in a card at least 48 rem wide to see the text beside the picture; narrower, the text goes under it.",
     ],
   },
   "media-player": {
@@ -1465,6 +1480,12 @@ const keyboard: Record<string, [string, string][]> = {
     ["`Home` / `End`", "First or last annotation"],
     ["`Enter` / `Space`", "Select the annotation"],
     ["`Esc`", "Clear the selection"],
+  ],
+  "grounded-text": [
+    ["`Tab`", "Reach the picture's marks once, then each linked span in reading order; focus shows what it links to"],
+    ["`←` `→` / `↑` `↓`", "On the picture: previous or next mark (as annotated-image)"],
+    ["`Enter` / `Space`", "Pin the span or mark, so its links stay highlighted; again to let go"],
+    ["`Esc`", "Let go of what is pinned"],
   ],
   dialog: overlayKeys,
   "alert-dialog": [
