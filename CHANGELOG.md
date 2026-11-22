@@ -11,6 +11,7 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - **`labels-zh-tw` 0.29.0:** `waypointEditorLabels`.
 
 ### Fixed
+- Docs: rows that scroll sideways on a phone (icon categories, page tabs, the drawer's area tabs) no longer show a scrollbar pressed against them; their edges fade where more is hidden.
 - Docs: on a phone, long groups on the components index (Inputs: 26 cards) stayed blank; a section now arrives once any part of it scrolls into view.
 
 ## 0.28.0 · 2026-11-22
