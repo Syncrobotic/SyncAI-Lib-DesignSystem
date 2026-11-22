@@ -1,4 +1,5 @@
-// @syncrobotic/share-bar v0.23.1 · update: npx shadcn add @syncrobotic/share-bar --overwrite
+// @syncrobotic/share-bar v0.31.0 · update: npx shadcn add @syncrobotic/share-bar --overwrite
+import type * as React from "react"
 import { cn } from "@/lib/utils"
 
 /**
@@ -24,13 +25,16 @@ export type ShareSegment = {
    * fold the rest into one "Other" segment.
    */
   tone?: keyof typeof tones
+  /** Where this part leads, such as the list filtered to it: its legend entry becomes a link named with its share. */
+  href?: string
 }
 
 
 /**
  * How a whole splits, as one thin bar: segments in the chart palette, 2 px apart, each with its share on hover. Light
  * enough for a table cell. Read by screen readers as one sentence; identity never rests on colour alone, so outside a
- * table cell show the `legend`, which names every value.
+ * table cell show the `legend`, which names every value. A segment with `href` makes its legend entry a link ("Source A
+ * 1,204, 42 %"); the bar itself stays one picture, so each part has one target.
  */
 export function ShareBar({
   segments,
@@ -40,6 +44,7 @@ export function ShareBar({
   unit,
   size = "md",
   locale,
+  linkAs: Link = "a",
   className,
 }: {
   segments: ShareSegment[]
@@ -55,10 +60,14 @@ export function ShareBar({
   size?: "sm" | "md"
   /** Formats the numbers and shares (a BCP 47 tag such as "zh-TW"). Left out, the browser's language. */
   locale?: string
+  /** Your router's link (e.g. next/link), for segments with href. */
+  linkAs?: React.ElementType
   className?: string
 }) {
   const fmt = (n: number) => n.toLocaleString(locale)
   const share = (n: number) => n.toLocaleString(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1, useGrouping: false })
+  // In a link's name: whole numbers as they are ("42 %"), others to one decimal.
+  const said = (n: number) => n.toLocaleString(locale, { maximumFractionDigits: 1, useGrouping: false })
   const total = totalProp ?? segments.reduce((n, s) => n + s.value, 0)
   const shown = segments.map((s, i) => ({ ...s, tone: s.tone ?? (Math.min(i + 1, 4) as 1 | 2 | 3 | 4) })).filter((s) => s.value > 0)
   const rest = total - shown.reduce((n, s) => n + s.value, 0)
@@ -90,12 +99,32 @@ export function ShareBar({
       </div>
       {bar}
       <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
-        {shown.map((s) => (
-          <li key={s.key} className="inline-flex items-center gap-2 tabular-nums">
-            <span aria-hidden="true" className={cn("size-2 rounded-full", tones[s.tone])} />
-            {s.label} {fmt(s.value)}
-          </li>
-        ))}
+        {shown.map((s) => {
+          const key = <span aria-hidden="true" className={cn("size-2 shrink-0 rounded-full", tones[s.tone])} />
+          return (
+            <li key={s.key} className="inline-flex items-center gap-2 tabular-nums">
+              {s.href ? (
+                // The whole entry is the target, 36 px tall with a mouse and 44 on touch (--h-sm); the share is read after
+                // what it shows, so the name starts with the words on screen.
+                <Link
+                  href={s.href}
+                  className="inline-flex min-h-(--h-sm) items-center gap-2 rounded-2xs text-foreground underline decoration-muted-foreground underline-offset-4 transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:decoration-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                >
+                  {key}
+                  <span>
+                    {s.label} {fmt(s.value)}
+                    <span className="sr-only">, {said(pct(s.value))} %</span>
+                  </span>
+                </Link>
+              ) : (
+                <>
+                  {key}
+                  {s.label} {fmt(s.value)}
+                </>
+              )}
+            </li>
+          )
+        })}
       </ul>
     </div>
   )

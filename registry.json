@@ -3909,7 +3909,7 @@
       "name": "share-bar",
       "type": "registry:ui",
       "title": "Share bar",
-      "description": "How a whole splits, as one thin bar in the chart palette (the accent, two greys, Other): light enough for a table cell, with an optional label, total and legend.",
+      "description": "How a whole splits, as one thin bar in the chart palette (the accent, two greys, Other): light enough for a table cell, with an optional label, total and legend, whose entries link to each part with href.",
       "registryDependencies": [
         "@syncrobotic/cn"
       ],
@@ -3920,8 +3920,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.1",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "`href` on a segment makes its legend entry a link through `linkAs` (default \"a\"), named with its share (\"Source A 4,200, 42 %\"); the bar stays one picture. Without `href`, no change. Issue #296."
+          },
           {
             "version": "0.23.1",
             "date": "2026-11-21",

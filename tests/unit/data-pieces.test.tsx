@@ -1,3 +1,4 @@
+import type * as React from "react"
 import { cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { afterEach, describe, expect, it, vi } from "vitest"
 import { LoadMore } from "@/registry/syncrobotic/ui/load-more"
@@ -36,6 +37,34 @@ describe("ShareBar", () => {
     const parts = [...container.querySelectorAll("[data-slot=share-bar] span")].map((s) => s.className)
     expect(parts.slice(0, 5).map((c) => c.match(/bg-chart-\d/)?.[0])).toEqual(["bg-chart-1", "bg-chart-2", "bg-chart-3", "bg-chart-4", "bg-chart-4"])
     expect(parts[5]).toContain("bg-track")
+  })
+  it("makes the legend entry of a part with href a link named with its share, and leaves the bar a picture", () => {
+    const Router = ({ href, ...rest }: React.ComponentProps<"a">) => <a data-router="" href={`/app${href}`} {...rest} />
+    const { container } = render(
+      <ShareBar
+        label="Items by source"
+        legend
+        locale="de"
+        linkAs={Router}
+        segments={[
+          { key: "a", label: "Source A", value: 4200, href: "?source=a" },
+          { key: "b", label: "Source B", value: 4133 },
+          { key: "c", label: "Source C", value: 1667, href: "?source=c" },
+        ]}
+      />,
+    )
+    const links = screen.getAllByRole("link")
+    expect(links).toHaveLength(2)
+    expect(links[0].getAttribute("href")).toBe("/app?source=a")
+    expect(links[0].hasAttribute("data-router")).toBe(true)
+    expect(links[0].textContent).toBe("Source A 4.200, 42 %")
+    expect(links[1].textContent).toContain(", 16,7 %")
+    expect(container.querySelector("[data-slot=share-bar] a")).toBeNull()
+    expect(screen.getByText(/Source B/).closest("a")).toBeNull()
+  })
+  it("draws plain links by default", () => {
+    render(<ShareBar label="x" legend segments={[{ key: "a", label: "A", value: 1, href: "/a" }]} />)
+    expect(screen.getByRole("link").tagName).toBe("A")
   })
 })
 

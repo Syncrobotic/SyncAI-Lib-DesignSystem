@@ -9663,6 +9663,12 @@
      "name": "locale",
      "type": "string",
      "description": "Formats the numbers and shares (a BCP 47 tag such as \"zh-TW\"). Left out, the browser's language."
+    },
+    {
+     "name": "linkAs",
+     "type": "ElementType",
+     "default": "\"a\"",
+     "description": "Your router's link (e.g. next/link), for segments with href."
     }
    ],
    "inherits": []
