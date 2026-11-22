@@ -13,11 +13,11 @@
   },
   "labels-zh-tw": {
     "version": "0.29.0",
-    "hash": "321dc7f2c09a6dd9"
+    "hash": "ed0b299aca6806e0"
   },
   "ros": {
     "version": "0.29.0",
-    "hash": "38b7f337f4b2b62d"
+    "hash": "37a5a16c5edd4154"
   },
   "use-long-press": {
     "version": "0.5.1",
@@ -192,8 +192,8 @@
     "hash": "44d6294977873b90"
   },
   "meter": {
-    "version": "0.28.0",
-    "hash": "b9a260f0aac9ad88"
+    "version": "0.29.0",
+    "hash": "96aaa89dc20ae37a"
   },
   "metric-card": {
     "version": "0.28.0",
@@ -230,6 +230,10 @@
   "streaming-chart": {
     "version": "0.28.0",
     "hash": "a74802379e67f112"
+  },
+  "attitude": {
+    "version": "0.29.0",
+    "hash": "6bcbe053d67712e3"
   },
   "tabs": {
     "version": "0.23.0",

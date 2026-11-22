@@ -69,6 +69,7 @@ import * as s_context_menu from "@/stories/context-menu.stories"
 import * as s_hover_card from "@/stories/hover-card.stories"
 import * as s_banner from "@/stories/banner.stories"
 import * as s_streaming_chart from "@/stories/streaming-chart.stories"
+import * as s_attitude from "@/stories/attitude.stories"
 import * as s_teleop_pad from "@/stories/teleop-pad.stories"
 import type { StoryFile } from "./catalog"
 
@@ -153,6 +154,7 @@ const files: Record<Exclude<StoryFile, LazyFile>, StoryModule> = {
   "hover-card": s_hover_card as unknown as StoryModule,
   banner: s_banner as unknown as StoryModule,
   "streaming-chart": s_streaming_chart as unknown as StoryModule,
+  attitude: s_attitude as unknown as StoryModule,
 }
 
 // One React.lazy per lazy file, made once at module scope: the import starts the first time one of its stories renders.

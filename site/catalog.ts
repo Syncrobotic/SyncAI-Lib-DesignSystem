@@ -74,6 +74,7 @@ export type StoryFile =
   | "hover-card"
   | "banner"
   | "streaming-chart"
+  | "attitude"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
@@ -975,6 +976,21 @@ const entries: Record<string, Entry> = {
       "Under reduced motion the view steps once a second instead of gliding. Off screen and in a hidden tab nothing is drawn.",
     ],
   },
+  attitude: {
+    group: "Robotics",
+    examples: { file: "attitude", prefix: "Attitude" },
+    rules: [
+      "AttitudeIndicator for a robot that can tip or slide: a legged robot on rough ground, an AMR on a ramp, a tracked robot on a slope. Gauge for one value now with a known range that someone glances at (speed, a motor's temperature, a wheel's current); a level that stays (battery, storage) is a `meter`, a history is `streaming-chart`.",
+      "Angles in degrees with REP 103's signs: positive roll is the right side down, positive pitch the nose down. `imuToAttitude(msg)` from `ros` gives them from a sensor_msgs/Imu; never flip pitch to nose-up-positive in the app, the words (\"nose up\", \"nose down\") already say it.",
+      "Set `limits` from the robot's datasheet: a tip-over warning (`roll.warning`, 25° on the patrol dog) and the angle it must not pass (`critical`). They are marked with the kit's status shapes (triangle, square) and stay grey until crossed; past one the value, the mark and the robot's symbol turn warning or danger and a word says so. Colour never alone.",
+      "Gauge takes Meter's thresholds as they are: `low` warns, `critical` is danger, `higherIsWorse` for a value that heats up or fills up. The arc stays graphite while normal, like Meter's bar; the indigo accent is only the horizon line, the mark to read.",
+      "Push a stream, never pass it as props: `ref.current.push({ roll, pitch, heading }, stamp)` or a `subscribe` that gets `push` once. The drawing follows every frame; the numbers are written four times a second, so they can be read, and at once when a limit is crossed.",
+      "Pass `staleAfterMs` whenever the values come from a live topic (about three missed messages): a frozen attitude dims and says Stale with the last update's time instead of passing for live.",
+      "Heading only from an IMU fused with a magnetometer (or a localisation in a map frame): an IMU alone drifts in yaw. Pass `{ heading: false }` to `imuToAttitude` and the ring shows no compass.",
+      "Not a control: nothing in either instrument takes focus. Screen readers hear the attitude as one sentence (\"Roll 12° left, pitch 3° nose down, heading 271° W\") and each Gauge as a meter; a crossed limit is said politely, at most every 5 s, at once when it turns critical.",
+      "No sweep: values move straight to where they are, and under reduced motion the drawing steps with the numbers instead of following every frame.",
+    ],
+  },
   "robot-map": {
     group: "Robotics",
     wide: true,
@@ -1357,6 +1373,7 @@ const keyboard: Record<string, [string, string][]> = {
     ["`←` / `→` after placing a goal", "Turn the goal 15° (Shift: 45°)"],
     ["`Esc`", "Cancel the goal; otherwise clear the selection"],
   ],
+  attitude: [["`Tab`", "Passes over both instruments: they show and never control, so nothing in them takes focus"]],
   "point-cloud": [
     ["`Tab`", "Move into the view (one stop), then to Reset view and Fit"],
     ["`←` / `→`", "Turn the view around the cloud"],
