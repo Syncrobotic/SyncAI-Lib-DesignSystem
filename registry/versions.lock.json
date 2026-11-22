@@ -425,7 +425,7 @@
   },
   "log-viewer": {
     "version": "0.28.0",
-    "hash": "8075c462c2086b2f"
+    "hash": "65ddfe1b8e1c4103"
   },
   "sortable": {
     "version": "0.28.0",
@@ -493,7 +493,7 @@
   },
   "app-shell": {
     "version": "0.28.0",
-    "hash": "3914c36cb62b5a4a"
+    "hash": "eb915c61efb87735"
   },
   "top-bar-shell": {
     "version": "0.17.3",

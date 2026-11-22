@@ -37,7 +37,7 @@ afterEach(() => {
   vi.useRealTimers()
 })
 
-const grid = () => screen.getByRole("grid")
+const grid = () => screen.getByRole("treegrid")
 const shownLines = () => within(grid()).queryAllByRole("row").filter((r) => r.hasAttribute("data-seq"))
 const footer = () => screen.getByText(/^(Following new lines|Paused)$/).parentElement!
 
@@ -287,7 +287,7 @@ describe("LogViewer", { timeout: 20_000 }, () => {
 
   it("takes every word from labels, as the zh-TW pack gives them", () => {
     render(<LogViewer lines={make(5)} labels={zh.logViewerLabels} locale={zh.locale} />)
-    expect(screen.getByRole("grid", { name: "日誌" })).toBeTruthy()
+    expect(screen.getByRole("treegrid", { name: "日誌" })).toBeTruthy()
     expect(screen.getByRole("searchbox", { name: "搜尋日誌" })).toBeTruthy()
     expect(screen.getByRole("button", { name: "層級: 所有層級" })).toBeTruthy()
     expect(within(grid()).getByText("嚴重")).toBeTruthy()

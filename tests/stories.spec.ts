@@ -37,6 +37,8 @@ for (const theme of themes) {
       await openStory(page, s.id, theme)
       await expect(page).toHaveScreenshot(`${s.id}-${theme}.png`, { fullPage: true })
       if (!axe) return
+      // A story shot with the clock paused (tests/story.ts, frozen) lets it run again: axe waits on timers of its own.
+      await page.clock.resume()
       const { violations } = await analyze(page)
       expect(violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(" ")).join(" | ")}`)).toEqual([])
     })

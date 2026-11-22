@@ -5,7 +5,7 @@ import { vi } from "vitest"
 // measure), and a scrollTop that is clamped and fires a scroll event as the browser's does. Shared by the log viewer's
 // tests and its compiled twin.
 export function layOut() {
-  const grid = (el: Element) => el.getAttribute("role") === "grid"
+  const grid = (el: Element) => el.getAttribute("role") === "treegrid"
   const line = (el: Element) => el.getAttribute("role") === "row" && el.hasAttribute("data-index")
   const spacerHeight = (el: Element) => parseFloat((el.querySelector(":scope > .relative") as HTMLElement | null)?.style.height ?? "0") || 0
   const scrollHeight = (el: Element) => Math.max(360, spacerHeight(el))
