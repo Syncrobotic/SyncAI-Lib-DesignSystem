@@ -183,7 +183,7 @@
   --chart-4: #68686e;
   --chart-5: var(--chart-3);
 
-  /* Lighter strokes over a black halo. Predicted is the high-contrast indigo, not --chart-1: on a photo the stroke meets
+  /* Lighter strokes over a black halo. Predicted is the high-contrast indigo rather than the chart indigo, since on a photo the stroke meets
      the pixels around it as well as its halo, and the chart indigo fell to 2.3:1 on mid-dark indoor pictures (4.6 now). */
   --annotate-predicted: #b5b4ff;
   --annotate-truth: var(--chart-2);
