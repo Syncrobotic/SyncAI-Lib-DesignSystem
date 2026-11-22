@@ -13,6 +13,7 @@ import { UsersRoles } from "@/registry/syncrobotic/blocks/users-roles"
 import { MapWorkspace } from "@/registry/syncrobotic/blocks/map-workspace"
 import { TopBarShell } from "@/registry/syncrobotic/blocks/top-bar-shell"
 import { sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/registry/syncrobotic/ui/tabs"
 
 // Whole screens for internal tools, full screen like a real page. The docs site frames them at desktop, tablet and phone widths.
 const meta: Meta = { title: "App shells", parameters: { layout: "fullscreen" } }
@@ -62,5 +63,47 @@ export const TopBarShellScreen: S = {
         <div className="flex h-64 items-center justify-center rounded-md text-sm text-muted-foreground ring-1 ring-border ring-dashed">Your page</div>
       </TopBarShell>
     </>
+  ),
+}
+
+// A long detail page in the top-bar shell: TabsList sticky pins the tab row under the floating bar (--shell-top) once the
+// page scrolls, so another tab is one tap away from anywhere in the first.
+export const TopBarShellStickyTabs: S = {
+  render: () => (
+    <TopBarShell
+      product="DataCore"
+      links={[
+        { label: "Catalog", href: "#catalog" },
+        { label: "Releases", href: "#releases" },
+        { label: "Governance", href: "#governance" },
+      ]}
+      current="#catalog"
+      user={sampleUser}
+    >
+      <div className="flex flex-col gap-6">
+        <h1 className="text-3xl font-bold">Night parking lot people</h1>
+        <Tabs defaultValue="overview">
+          <TabsList sticky aria-label="Dataset">
+            {["Overview", "Browse", "Stats", "Versions", "Lineage", "Compliance"].map((t) => (
+              <TabsTrigger key={t} value={t.toLowerCase()}>
+                {t}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          <TabsContent value="overview" className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            {Array.from({ length: 48 }, (_, i) => (
+              <div key={i} className="flex aspect-video items-end rounded-sm bg-muted p-2 font-mono text-xs text-muted-foreground">
+                frame-{String(1024 + i * 37).padStart(6, "0")}
+              </div>
+            ))}
+          </TabsContent>
+          {["browse", "stats", "versions", "lineage", "compliance"].map((v) => (
+            <TabsContent key={v} value={v} className="text-sm text-muted-foreground">
+              {v}
+            </TabsContent>
+          ))}
+        </Tabs>
+      </div>
+    </TopBarShell>
   ),
 }

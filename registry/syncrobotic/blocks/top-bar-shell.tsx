@@ -99,7 +99,9 @@ export function TopBarShell({
   )
 
   return (
-    <div className="flex min-h-[var(--app-shell-height,100dvh)] flex-col bg-background text-foreground">
+    // --shell-top is the bar's bottom edge once it floats (its height and the 8 px it moves down): a sticky tab row
+    // (TabsList sticky) or a product's filter bar pins there, on --shell-surface.
+    <div className="flex min-h-[var(--app-shell-height,100dvh)] flex-col bg-background text-foreground [--shell-surface:var(--color-background)] [--shell-top:calc(var(--h-row)+--spacing(2))]">
       <header className="pointer-events-none sticky top-0 z-20 mx-auto h-(--h-row) w-full max-w-6xl px-6">
         <div
           className={cn(

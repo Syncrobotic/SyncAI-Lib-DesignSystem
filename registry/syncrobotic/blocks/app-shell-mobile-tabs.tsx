@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell-mobile-tabs v0.17.4 · update: npx shadcn add @syncrobotic/app-shell-mobile-tabs --overwrite
+// @syncrobotic/app-shell-mobile-tabs v0.31.0 · update: npx shadcn add @syncrobotic/app-shell-mobile-tabs --overwrite
 "use client"
 
 import * as React from "react"
@@ -65,9 +65,23 @@ export function AppShellMobileTabs({
 }) {
   const [active, setActive] = React.useState(defaultTab)
   const current = tabs.find((t) => t.key === active) ?? tabs[0]
+  // The bar's height follows its two lines of text, so it is measured: --shell-top is its bottom edge, where a sticky
+  // tab row (TabsList sticky) or a product's filter bar pins under it.
+  const bar = React.useRef<HTMLElement>(null)
+  const [barHeight, setBarHeight] = React.useState<number | null>(null)
+  React.useLayoutEffect(() => {
+    const el = bar.current
+    if (!el) return
+    const ro = new ResizeObserver(() => setBarHeight(el.offsetHeight))
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
   return (
-    <div className="flex min-h-[var(--app-shell-height,100dvh)] flex-col bg-background">
-      <header className="sticky top-0 z-10 flex min-h-(--h-lg) items-center justify-between gap-3 border-b border-border bg-background px-4 py-2">
+    <div
+      style={barHeight === null ? undefined : ({ "--shell-top": `${barHeight}px` } as React.CSSProperties)}
+      className="flex min-h-[var(--app-shell-height,100dvh)] flex-col bg-background [--shell-surface:var(--color-background)] [--shell-top:var(--h-lg)]"
+    >
+      <header ref={bar} className="sticky top-0 z-20 flex min-h-(--h-lg) items-center justify-between gap-3 border-b border-border bg-background px-4 py-2">
         <div className="flex min-w-0 flex-col">
           <span className="text-xs text-muted-foreground">{product}</span>
           {/* An empty tab list has no current tab, so the title is left blank rather than throwing. */}

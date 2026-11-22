@@ -6,6 +6,9 @@ Components install as source, so a project keeps the version it installed. Re-ru
 
 ### Added
 - **`top-bar-shell` 0.31.0:** `home` sets where the logo links (default: the first link, as before), and `<main>` has an id for a skip link (`mainId`, default "main"). The phone drawer closes when a link in it is followed, so on a client router (Next.js, React Router) it no longer stays open over the new page; a modified click (new tab) leaves it open. Issue #292
+- **`tabs` 0.31.0:** `<TabsList sticky>` keeps the tab row in view over long sections: it pins under the shell's top bar (`top: var(--shell-top, 0)`), on the shell's surface, with its hairline, below the bar. Picking a tab while it is stuck scrolls back to the start of the tabs. Issue #294
+- **`top-bar-shell`, `app-shell`, `app-shell-mobile-tabs` 0.31.0:** each shell's root sets `--shell-top` (its bar's bottom edge in the scrolling area) and `--shell-surface` (the colour behind the page), so a sticky tab row, or a product's own filter bar, pins under the bar. The phone shell's bar now sits above pinned rows (z-20). Issue #294
+- **`agent-skill` 0.31.0:** the design language documents `--shell-top` and `--shell-surface` and how to pin a row under the bar. Issue #294
 
 ## 0.30.0 · 2026-11-22
 

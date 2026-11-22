@@ -11005,7 +11005,13 @@
   },
   {
    "name": "TabsList",
-   "props": [],
+   "props": [
+    {
+     "name": "sticky",
+     "type": "boolean",
+     "description": "Keep the row in view while the page scrolls. It sticks under the shell's top bar (`--shell-top`, which the shells set; 0 without one), on the shell's surface (`--shell-surface`, else the background), with its hairline, below the bar. Picking a tab while it is stuck scrolls back to the start of the tabs."
+    }
+   ],
    "inherits": [
     "Radix Tabs.List"
    ]

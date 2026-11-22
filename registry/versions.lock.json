@@ -236,8 +236,8 @@
     "hash": "6bcbe053d67712e3"
   },
   "tabs": {
-    "version": "0.23.0",
-    "hash": "15934ce34803cf0c"
+    "version": "0.31.0",
+    "hash": "c81fdc70faff14fd"
   },
   "pagination": {
     "version": "0.28.0",
@@ -508,12 +508,12 @@
     "hash": "b5d221d88156088f"
   },
   "app-shell": {
-    "version": "0.28.0",
-    "hash": "eb915c61efb87735"
+    "version": "0.31.0",
+    "hash": "69aa1307c77e1c9a"
   },
   "top-bar-shell": {
     "version": "0.31.0",
-    "hash": "1a4aa2de2226eed6"
+    "hash": "81f60ea4d2e14016"
   },
   "action-rail-shell": {
     "version": "0.17.3",
@@ -572,8 +572,8 @@
     "hash": "f92b1126101d0227"
   },
   "agent-skill": {
-    "version": "0.22.0",
-    "hash": "e945ec999a5c5401"
+    "version": "0.31.0",
+    "hash": "b47bdebc9acd476b"
   },
   "line-chart-telemetry": {
     "version": "0.17.2",
@@ -664,8 +664,8 @@
     "hash": "6ebcd39ea6f6b58d"
   },
   "app-shell-mobile-tabs": {
-    "version": "0.17.4",
-    "hash": "c334c684e8ebbc7e"
+    "version": "0.31.0",
+    "hash": "c40f311d58cff0c9"
   },
   "stats-meters": {
     "version": "0.17.2",

@@ -936,8 +936,11 @@ export const overviews: Record<string, Overview> = {
   },
   tabs: {
     what: "Sections of one page under a row of labels; one section shows at a time.",
-    use: ["A robot's Overview, Sensors and Logs."],
+    use: ["A robot's Overview, Sensors and Logs.", "A long detail page (a dataset's Overview, Browse and Versions) with `sticky`, so the row stays under the top bar."],
     instead: ["Two to four views of the same data: `segmented-control`.", "Sections the user may want open together: `accordion`."],
+    notes: [
+      "`<TabsList sticky>` pins at `top: var(--shell-top, 0)` on `var(--shell-surface)`, under the bar. The shells set both; outside a shell set them yourself on an ancestor.",
+    ],
   },
   tree: {
     what: "A hierarchy from data, with a guide line per level: a nested list of links people open and close, or a tree widget to pick one node in.",

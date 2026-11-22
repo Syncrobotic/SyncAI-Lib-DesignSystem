@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell v0.28.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
+// @syncrobotic/app-shell v0.31.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -515,10 +515,15 @@ export function AppShell({
 
   return (
     // The screen's height, unless the page puts something above the shell (a banner): it sets --app-shell-height.
+    // The page scrolls inside <main>, below the top bar, so what pins to the top (TabsList sticky) pins at 0
+    // (--shell-top), on the content panel's surface (--shell-surface).
     <SidebarProvider
       defaultOpen={wide}
       labels={sidebarLabels}
-      className={cn("h-[var(--app-shell-height,100dvh)] bg-background text-foreground", inset && "gap-2 p-2")}
+      className={cn(
+        "h-[var(--app-shell-height,100dvh)] bg-background text-foreground [--shell-top:0]",
+        inset ? "gap-2 p-2 [--shell-surface:var(--color-card)]" : "[--shell-surface:var(--color-background)]",
+      )}
     >
       <Sidebar variant={inset ? "floating" : "sidebar"}>
         {/* The brand row is as tall as the top bar, so their edges line up across the gap. The logo sits in a 48 px box
