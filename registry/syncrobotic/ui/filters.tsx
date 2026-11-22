@@ -1,4 +1,4 @@
-// @syncrobotic/filters v0.23.2 · update: npx shadcn add @syncrobotic/filters --overwrite
+// @syncrobotic/filters v0.28.0 · update: npx shadcn add @syncrobotic/filters --overwrite
 "use client"
 
 import * as React from "react"
@@ -513,7 +513,9 @@ export function Filters({
     )
 
   return (
-    <div role="group" aria-label={labels.label} data-slot="filters" className={cn("flex flex-wrap items-center gap-2", className)}>
+    // min-w-0: in a toolbar row the bar may be narrower than its longest chip, so a long chip shrinks (its value
+    // truncates) and its × stays on screen instead of the row running off a phone.
+    <div role="group" aria-label={labels.label} data-slot="filters" className={cn("flex min-w-0 flex-wrap items-center gap-2", className)}>
       {rendered.length > 0 && (
         <ul aria-label={labels.matchAll} className="contents">
           {rendered.map(({ item: r, leaving }, i) => {

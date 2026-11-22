@@ -14,7 +14,43 @@ export const scopeFor = (scopes: Pick<Scope, "match">[], path: string) =>
     scopes.findIndex((s) => s.match.some((m) => inScope(m, path))),
   )
 
-/** The groups of the area you are in. On phones (`switcher`) it also offers the other areas, which the header shows on desktop. */
+/**
+ * The areas, as the header shows them on desktop: one quiet row of tabs with an underline, not a second set of buttons
+ * louder than the pages. The drawer holds it in its fixed header, above the list that scrolls; its baseline is the
+ * header's edge, drawn once the list has scrolled under it (`edge`). On the home page there is no area yet, so there are
+ * no tabs: the Sidebar lists the four instead.
+ */
+export function AreaTabs({ scopes, path, edge }: { scopes: Scope[]; path: string; edge: boolean }) {
+  const active = scopes[scopeFor(scopes, path)]
+  return (
+    <div
+      role="list"
+      aria-label="Areas"
+      className={cn(
+        "flex gap-4 overflow-x-auto overflow-y-hidden border-b px-3 transition-colors duration-(--motion-fast) ease-(--ease-standard)",
+        edge ? "border-border" : "border-transparent",
+      )}
+    >
+      {scopes.map((s) => (
+        <Link
+          key={s.key}
+          role="listitem"
+          href={s.href}
+          aria-current={s.key === active.key ? "true" : undefined}
+          className={cn(
+            // The ring sits inside the tab: the row scrolls sideways, so it clips anything drawn outside it.
+            "-mb-px inline-flex h-(--h-md) shrink-0 items-center border-b-2 text-sm whitespace-nowrap transition-colors duration-(--motion-fast) ease-(--ease-standard) focus-visible:-outline-offset-2",
+            s.key === active.key ? "border-foreground font-medium text-foreground" : "border-transparent text-muted-foreground hover:text-foreground",
+          )}
+        >
+          {s.label}
+        </Link>
+      ))}
+    </div>
+  )
+}
+
+/** The groups of the area you are in. In the drawer (`switcher`) on the home page, the four areas instead. */
 export function Sidebar({ scopes, switcher = false, path: frozen }: { scopes: Scope[]; switcher?: boolean; path?: string }) {
   // The drawer passes the page it was opened on, so its list holds still while it closes on the way to another page.
   const current = usePathname()
@@ -68,26 +104,6 @@ export function Sidebar({ scopes, switcher = false, path: frozen }: { scopes: Sc
       }}
     >
       {!switcher && <p className="px-3 text-sm font-medium text-muted-foreground">{active.label}</p>}
-      {/* The areas, as the header shows them on desktop: one quiet row of tabs with an underline, not a second set of
-          buttons louder than the pages. On the home page there is no area yet: the four are the list. */}
-      {switcher && !home && (
-        <div role="list" aria-label="Areas" className="flex gap-4 overflow-x-auto overflow-y-hidden border-b border-border px-3">
-          {scopes.map((s) => (
-            <Link
-              key={s.key}
-              role="listitem"
-              href={s.href}
-              aria-current={s.key === active.key ? "true" : undefined}
-              className={cn(
-                "-mb-px inline-flex h-(--h-sm) shrink-0 items-center border-b-2 text-sm whitespace-nowrap transition-colors duration-(--motion-fast) ease-(--ease-standard)",
-                s.key === active.key ? "border-foreground font-medium text-foreground" : "border-transparent text-muted-foreground hover:text-foreground",
-              )}
-            >
-              {s.label}
-            </Link>
-          ))}
-        </div>
-      )}
       {switcher && home && (
         <div role="list" aria-label="Areas" className="flex flex-col gap-1">
           {scopes.map((s) => (

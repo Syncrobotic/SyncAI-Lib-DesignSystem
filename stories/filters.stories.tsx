@@ -81,7 +81,7 @@ export const FiltersBasic: S = {
   render: function B() {
     const [rules, setRules] = React.useState<FilterRule[]>([{ id: "a", field: "status", operator: "any_of", value: ["attention", "stopped"] }])
     return (
-      <div className="flex flex-col gap-3">
+      <div className="flex w-full flex-col gap-3">
         <Filters fields={basicFields} value={rules} onValueChange={setRules} />
         <Count rules={rules} fields={basicFields} />
       </div>
@@ -100,7 +100,7 @@ export const FiltersAllFieldTypes: S = {
       { id: "b", field: "charging", operator: "is_false", value: null },
     ])
     return (
-      <div className="flex flex-col gap-3">
+      <div className="flex w-full flex-col gap-3">
         <Filters fields={allFields} value={rules} onValueChange={setRules} />
         <Count rules={rules} fields={allFields} />
       </div>
@@ -115,7 +115,7 @@ export const FiltersURLSynced: S = {
     const [query, setQuery] = React.useState("status=any_of:attention,stopped&battery=lt:30")
     const rules = fromSearchParams(query, allFields)
     return (
-      <div className="flex flex-col gap-3">
+      <div className="flex w-full flex-col gap-3">
         <Filters fields={allFields} value={rules} onValueChange={(r) => setQuery(toQueryString(r))} />
         <Count rules={rules} fields={allFields} />
         <code aria-live="polite" className="rounded-xs bg-muted px-2 py-1 font-mono text-xs break-all">
@@ -130,7 +130,7 @@ export const FiltersEmpty: S = {
   render: function E() {
     const [rules, setRules] = React.useState<FilterRule[]>([])
     return (
-      <div className="flex flex-col gap-3">
+      <div className="flex w-full flex-col gap-3">
         <Filters fields={allFields} value={rules} onValueChange={setRules} />
         <Count rules={rules} fields={allFields} />
       </div>
@@ -150,7 +150,7 @@ export const FiltersManyRulesWrapping: S = {
       { id: "7", field: "charging", operator: "is_false", value: null },
     ])
     return (
-      <div className="flex flex-col gap-3">
+      <div className="flex w-full flex-col gap-3">
         <Filters fields={allFields} value={rules} onValueChange={setRules} />
         <Count rules={rules} fields={allFields} />
       </div>

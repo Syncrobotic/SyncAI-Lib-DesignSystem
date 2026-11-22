@@ -140,11 +140,11 @@ describe("DataGrid compiled with the React Compiler", () => {
     fireEvent.mouseDown(handle, { clientX: 200 })
     fireEvent.mouseMove(document, { clientX: 260 })
     await flush()
-    expect(screen.getByRole("separator", { name: "Resize Robot" }).classList.contains("bg-ring")).toBe(true)
+    expect(screen.getByRole("separator", { name: "Resize Robot" }).firstElementChild?.classList.contains("bg-ring")).toBe(true)
     expect(robotHeader().style.width).toBe("260px")
     fireEvent.mouseUp(document, { clientX: 260 })
     await flush()
-    expect(screen.getByRole("separator", { name: "Resize Robot" }).classList.contains("bg-ring")).toBe(false)
+    expect(screen.getByRole("separator", { name: "Resize Robot" }).firstElementChild?.classList.contains("bg-ring")).toBe(false)
     expect(robotHeader().style.width).toBe("260px")
   })
 

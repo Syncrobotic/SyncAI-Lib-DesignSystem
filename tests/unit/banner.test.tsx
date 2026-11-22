@@ -77,6 +77,28 @@ describe("Banner", () => {
     expect(document.querySelector("[data-slot=banner]")).toBeNull()
   })
 
+  it("moves focus on to what follows it when it closes with focus on its close button", () => {
+    function Page() {
+      const [open, setOpen] = React.useState(true)
+      return (
+        <>
+          <button type="button">Before</button>
+          <Banner open={open} onDismiss={() => setOpen(false)} dismissLabel="Dismiss notice">
+            Maintenance on Sunday.
+          </Banner>
+          {!open && <button type="button">Show it again</button>}
+          <button type="button">After</button>
+        </>
+      )
+    }
+    render(<Page />)
+    const close = screen.getByRole("button", { name: "Dismiss notice" })
+    close.focus()
+    fireEvent.click(close)
+    // What the app drew in its place counts: the first Tab stop after the banner.
+    expect(document.activeElement).toBe(screen.getByRole("button", { name: "Show it again" }))
+  })
+
   it("renders nothing while closed, and appears when open turns true", () => {
     const { rerender } = render(<Banner open={false}>No connection to the server.</Banner>)
     expect(document.querySelector("[data-slot=banner]")).toBeNull()

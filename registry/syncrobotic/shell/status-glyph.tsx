@@ -1,4 +1,4 @@
-// @syncrobotic/status-glyph v0.13.1 · update: npx shadcn add @syncrobotic/status-glyph --overwrite
+// @syncrobotic/status-glyph v0.28.0 · update: npx shadcn add @syncrobotic/status-glyph --overwrite
 import { cn } from "@/lib/utils"
 
 export type Tone = "info" | "success" | "warning" | "danger" | "neutral"
@@ -34,11 +34,21 @@ const color: Record<Status, string> = {
 }
 
 /**
- * Status is always shape + colour, never colour alone:
- * filled circle = active (busy), hollow circle = normal, triangle = attention,
- * square = stopped, slashed circle = offline.
+ * Status is a shape, and a colour only when it is abnormal: filled circle = active (busy), hollow circle = normal,
+ * triangle = attention (warning colour), square = stopped (danger colour), slashed circle = offline (grey). It is hidden
+ * from screen readers: say the status in words beside it.
  */
-export function StatusGlyph({ status: given, tone, className }: { status?: Status; /** @deprecated Use `status`. */ tone?: Tone; className?: string }) {
+export function StatusGlyph({
+  status: given,
+  tone,
+  className,
+}: {
+  /** active (busy), normal, warning, danger or offline. */
+  status?: Status
+  /** @deprecated Use `status` (info → active, success → normal, neutral → offline). */
+  tone?: Tone
+  className?: string
+}) {
   warnTone("StatusGlyph", tone)
   const status = given ?? toStatus(tone ?? "neutral")
   return (

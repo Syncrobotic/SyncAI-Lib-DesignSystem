@@ -77,7 +77,7 @@ export default function MotionPage() {
       <Section
         id="patterns"
         title="Patterns"
-        lead="Six patterns cover every state change; the table under In the components lists them and where each is used. This site shows five here: pages and tab panels appear, the mobile menu opens as a sheet, controls press, icons swap, and the current-page marker moves."
+        lead="Six patterns cover every state change, and the table further down, In the components, says where each one is used. This site uses five of them: pages and tab panels appear, the phone menu opens as a sheet, controls press, icons swap, and the underline under a component page's tabs moves."
       >
         <MotionPatterns />
         <p className="text-sm text-muted-foreground">

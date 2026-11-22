@@ -9,6 +9,18 @@ declare module "@/registry/syncrobotic/ui/data-grid?react-compiler&without-direc
 declare module "@/registry/syncrobotic/hooks/use-ros?react-compiler" {
   export * from "@/registry/syncrobotic/hooks/use-ros"
 }
+declare module "@/registry/syncrobotic/ui/sidebar?react-compiler" {
+  export * from "@/registry/syncrobotic/ui/sidebar"
+}
+declare module "@/registry/syncrobotic/ui/log-viewer?react-compiler" {
+  export * from "@/registry/syncrobotic/ui/log-viewer"
+}
 declare module "@/registry/syncrobotic/ui/toast?react-compiler" {
   export * from "@/registry/syncrobotic/ui/toast"
+}
+declare module "@/registry/syncrobotic/ui/streaming-chart?react-compiler" {
+  export * from "@/registry/syncrobotic/ui/streaming-chart"
+}
+declare module "@/registry/syncrobotic/ui/diagnostics?react-compiler" {
+  export * from "@/registry/syncrobotic/ui/diagnostics"
 }

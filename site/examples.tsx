@@ -28,7 +28,9 @@ import * as s_annotated_image from "@/stories/annotated-image.stories"
 import * as s_media_player from "@/stories/media-player.stories"
 import * as s_camera_feed from "@/stories/camera-feed.stories"
 import * as s_joint_state from "@/stories/joint-state.stories"
+import * as s_diagnostics from "@/stories/diagnostics.stories"
 import * as s_tree from "@/stories/tree.stories"
+import * as s_sidebar from "@/stories/sidebar.stories"
 import * as s_graph from "@/stories/graph.stories"
 import * as s_robot_map from "@/stories/robot-map.stories"
 import * as s_point_cloud from "@/stories/point-cloud.stories"
@@ -45,6 +47,7 @@ import * as s_calendar from "@/stories/calendar.stories"
 import * as s_date_selector from "@/stories/date-selector.stories"
 import * as s_time_picker from "@/stories/time-picker.stories"
 import * as s_data_grid from "@/stories/data-grid.stories"
+import * as s_log_viewer from "@/stories/log-viewer.stories"
 import * as s_stepper from "@/stories/stepper.stories"
 import * as s_trace from "@/stories/trace.stories"
 import * as s_marker from "@/stories/marker.stories"
@@ -62,6 +65,7 @@ import * as s_metric_card from "@/stories/metric-card.stories"
 import * as s_context_menu from "@/stories/context-menu.stories"
 import * as s_hover_card from "@/stories/hover-card.stories"
 import * as s_banner from "@/stories/banner.stories"
+import * as s_streaming_chart from "@/stories/streaming-chart.stories"
 import * as s_teleop_pad from "@/stories/teleop-pad.stories"
 import type { StoryFile } from "./catalog"
 
@@ -91,6 +95,7 @@ const files: Record<Exclude<StoryFile, LazyFile>, StoryModule> = {
   overlays: overlays as unknown as StoryModule,
   charts: charts as unknown as StoryModule,
   "data-grid": s_data_grid as unknown as StoryModule,
+  "log-viewer": s_log_viewer as unknown as StoryModule,
   stepper: s_stepper as unknown as StoryModule,
   trace: s_trace as unknown as StoryModule,
   marker: s_marker as unknown as StoryModule,
@@ -124,7 +129,9 @@ const files: Record<Exclude<StoryFile, LazyFile>, StoryModule> = {
   "media-player": s_media_player as unknown as StoryModule,
   "camera-feed": s_camera_feed as unknown as StoryModule,
   "joint-state": s_joint_state as unknown as StoryModule,
+  diagnostics: s_diagnostics as unknown as StoryModule,
   tree: s_tree as unknown as StoryModule,
+  sidebar: s_sidebar as unknown as StoryModule,
   graph: s_graph as unknown as StoryModule,
   "robot-map": s_robot_map as unknown as StoryModule,
   "point-cloud": s_point_cloud as unknown as StoryModule,
@@ -139,6 +146,7 @@ const files: Record<Exclude<StoryFile, LazyFile>, StoryModule> = {
   "context-menu": s_context_menu as unknown as StoryModule,
   "hover-card": s_hover_card as unknown as StoryModule,
   banner: s_banner as unknown as StoryModule,
+  "streaming-chart": s_streaming_chart as unknown as StoryModule,
 }
 
 // One React.lazy per lazy file, made once at module scope: the import starts the first time one of its stories renders.

@@ -1,9 +1,10 @@
-// @syncrobotic/maintenance-due v0.17.3 · update: npx shadcn add @syncrobotic/maintenance-due --overwrite
+// @syncrobotic/maintenance-due v0.28.0 · update: npx shadcn add @syncrobotic/maintenance-due --overwrite
 "use client"
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
+import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
@@ -12,23 +13,48 @@ type Due = { robot: string; task: string; hours: number; every: number; due: str
 
 // Sample data: hours run since the last service, against the interval. Past 90 % is due soon; past 100 % is overdue.
 const initial: Due[] = [
-  { robot: "Patrol dog 9E37", task: "Leg joints and bearings", hours: 212, every: 200, due: "Overdue by 12 h" },
+  { robot: "Patrol dog 9E37", task: "Leg joints and bearings", hours: 212, every: 200, due: "12 h over" },
   { robot: "Patrol dog 7F3A", task: "Lidar clean and calibrate", hours: 186, every: 200, due: "In about 2 days" },
   { robot: "Patrol dog 1715", task: "Battery health check", hours: 140, every: 250, due: "In about 9 days", booked: "Thu 26 Nov" },
   { robot: "Patrol dog DAA6", task: "Leg joints and bearings", hours: 64, every: 200, due: "In about 3 weeks" },
 ]
 
-const dueTone = (pct: number) => (pct >= 100 ? "font-medium text-danger" : pct >= 90 ? "text-warning" : "text-muted-foreground")
+// Past the interval is overdue, past 90 % is due soon: each a shape and a word in its colour. The when stays grey.
+const dueState = (pct: number) =>
+  pct >= 100
+    ? ({ status: "danger", word: "Overdue", text: "text-danger" } as const)
+    : pct >= 90
+      ? ({ status: "warning", word: "Due soon", text: "text-warning" } as const)
+      : undefined
+
+function DueText({ pct, due }: { pct: number; due: string }) {
+  const s = dueState(pct)
+  return (
+    <span className="text-muted-foreground">
+      {s && (
+        <>
+          <span className={cn("inline-flex items-center gap-2 font-medium", s.text)}>
+            <StatusGlyph status={s.status} />
+            {s.word}
+          </span>
+          {" · "}
+        </>
+      )}
+      {due}
+    </span>
+  )
+}
 
 /**
  * Service that is coming due, by hours run rather than by date: each robot's meter fills towards its interval and turns
- * amber near it and red past it. Overdue first. Booking a slot is the one action; it takes the robot off missions then.
+ * to warning near it and danger past it, and the due column says so in a word. Overdue first. Booking a slot is the one
+ * action; it takes the robot off missions then.
  */
 export function MaintenanceDue() {
   const [rows, setRows] = React.useState(initial)
   const sorted = [...rows].sort((a, b) => b.hours / b.every - a.hours / a.every)
   return (
-    <AppShell product="Fleet console" nav={sampleNav} current="#robots" title="Maintenance" user={sampleUser}>
+    <AppShell product="Fleet console" nav={sampleNav} current="#maintenance" title="Maintenance" user={sampleUser}>
       <div className="flex flex-col gap-4">
         <p className="text-sm text-muted-foreground">1 overdue · 1 due this week · intervals from the manufacturer&apos;s service plan</p>
         <Table>
@@ -67,15 +93,17 @@ export function MaintenanceDue() {
                     <span className="block text-xs text-muted-foreground lg:hidden">{r.task}</span>
                     <span className="mt-2 flex flex-col gap-1 sm:hidden">
                       {meter}
-                      <span className={cn("text-xs", dueTone(pct))}>
-                        {r.due}
-                        {r.booked && <span className="font-normal text-muted-foreground"> · booked {r.booked}</span>}
+                      <span className="text-xs">
+                        <DueText pct={pct} due={r.due} />
+                        {r.booked && <span className="text-muted-foreground"> · booked {r.booked}</span>}
                       </span>
                     </span>
                   </TableCell>
                   <TableCell className="hidden lg:table-cell">{r.task}</TableCell>
                   <TableCell className="hidden sm:table-cell">{meter}</TableCell>
-                  <TableCell className={cn("hidden sm:table-cell", dueTone(pct))}>{r.due}</TableCell>
+                  <TableCell className="hidden sm:table-cell">
+                    <DueText pct={pct} due={r.due} />
+                  </TableCell>
                   <TableCell className="text-right max-sm:w-0 max-sm:pl-0">
                     {r.booked ? (
                       <span className="text-sm text-muted-foreground max-sm:hidden">Booked {r.booked}</span>

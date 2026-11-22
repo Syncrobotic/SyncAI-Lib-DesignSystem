@@ -63,7 +63,9 @@ export function ComponentTabs({ tabs }: { tabs: ComponentTab[] }) {
 
   return (
     <nav aria-label="Page sections" className="pb-6">
-      <div ref={list} className="relative flex gap-4 overflow-x-auto overflow-y-hidden border-b border-border" data-underline={line ? "" : undefined}>
+      {/* The row scrolls sideways on a phone, so it clips anything drawn outside it: each tab draws its focus ring inside
+          itself (-outline-offset-2), with 4 px of room either side of its label. */}
+      <div ref={list} className="relative flex gap-2 overflow-x-auto overflow-y-hidden border-b border-border" data-underline={line ? "" : undefined}>
         {tabs.map((t) => {
           const on = t.href === active
           return (
@@ -73,7 +75,7 @@ export function ComponentTabs({ tabs }: { tabs: ComponentTab[] }) {
               scroll={false}
               aria-current={on ? "page" : undefined}
               className={cn(
-                "-mb-px inline-flex h-(--h-md) items-center border-b-2 border-transparent text-sm whitespace-nowrap text-muted-foreground",
+                "-mb-px inline-flex h-(--h-md) items-center rounded-t-2xs border-b-2 border-transparent px-1 text-sm focus-visible:-outline-offset-2 whitespace-nowrap text-muted-foreground",
                 "transition-colors duration-(--motion-base) ease-(--ease-standard) hover:text-foreground",
                 on && "font-medium text-foreground",
                 // Until the underline is measured, the current tab draws its own; then the travelling one does.

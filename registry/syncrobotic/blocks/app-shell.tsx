@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell v0.22.4 · update: npx shadcn add @syncrobotic/app-shell --overwrite
+// @syncrobotic/app-shell v0.28.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -12,7 +12,6 @@ import {
   LayoutDashboard,
   LogOut,
   Map,
-  Menu,
   ScrollText,
   Search,
   Settings,
@@ -21,7 +20,7 @@ import {
   type LucideIcon,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { Badge, CountBadge } from "@/registry/syncrobotic/ui/badge"
+import { Badge } from "@/registry/syncrobotic/ui/badge"
 import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"
 import {
   DropdownMenu,
@@ -35,9 +34,41 @@ import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, C
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { InputGroup, InputGroupAddon } from "@/registry/syncrobotic/ui/input-group"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/registry/syncrobotic/ui/sheet"
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuBadge,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+  SidebarMenuTag,
+  SidebarProvider,
+  SidebarTrigger,
+  useSidebar,
+  type SidebarLabels,
+} from "@/registry/syncrobotic/ui/sidebar"
 
-export type AppNavItem = { label: string; href: string; icon: LucideIcon; /** A count, e.g. unacknowledged alarms. */ count?: number }
+/** A page under a nav item, shown under it while its section is current. */
+export type AppNavSubItem = { label: string; href: string; count?: number; tag?: string }
+export type AppNavItem = {
+  label: string
+  href: string
+  icon: LucideIcon
+  /** A count, e.g. unacknowledged alarms. */
+  count?: number
+  /** A quiet word after the name: "Beta", "New". */
+  tag?: string
+  /** Pages of this section, listed under it while it (or one of them) is current. */
+  items?: AppNavSubItem[]
+}
 export type AppNavGroup = { label?: string; items: AppNavItem[] }
 export type AppUser = { name: string; initials: string; email?: string }
 /** One row of the user menu. Sign out goes last; it is not destructive, so it is not red. */
@@ -69,23 +100,43 @@ export type AppSearch = {
   groups: AppSearchGroup[]
 }
 
-/** Navigation shared by the engineering-tool templates. Replace with your own. */
+/**
+ * Navigation shared by the engineering-tool templates: every page a template shows is in it, so each one marks its own
+ * place (a section's pages show under it while one of them is current). Replace with your own.
+ */
 export const sampleNav: AppNavGroup[] = [
   {
     items: [
       { label: "Overview", href: "#overview", icon: LayoutDashboard },
-      { label: "Robots", href: "#robots", icon: Bot },
+      {
+        label: "Robots",
+        href: "#robots",
+        icon: Bot,
+        items: [
+          { label: "Maintenance", href: "#maintenance" },
+          { label: "Rollouts", href: "#rollouts" },
+        ],
+      },
       { label: "Map", href: "#map", icon: Map },
     ],
   },
   {
     label: "Operations",
     items: [
-      { label: "Alarms", href: "#alarms", icon: Bell, count: 2 },
+      { label: "Alarms", href: "#alarms", icon: Bell, count: 2, items: [{ label: "Incidents", href: "#incidents" }] },
       { label: "Schedule", href: "#schedule", icon: CalendarDays },
       { label: "Agents", href: "#agents", icon: Sparkles },
       { label: "Event log", href: "#events", icon: ScrollText },
-      { label: "Settings", href: "#settings", icon: Settings },
+      {
+        label: "Settings",
+        href: "#settings",
+        icon: Settings,
+        items: [
+          { label: "Users", href: "#users" },
+          { label: "Invitations", href: "#invitations" },
+          { label: "Audit log", href: "#audit-log" },
+        ],
+      },
     ],
   },
 ]
@@ -182,132 +233,87 @@ type AppShellProps = {
   layout?: "flush" | "inset"
   /** End of the content: version, copyright, links. Scrolls with the page, never overlaps it. */
   footer?: React.ReactNode
+  /** The sidebar's words (its trigger, landmarks and phone sheet), e.g. sidebarProviderLabels from labels-zh-tw. */
+  sidebarLabels?: Partial<SidebarLabels>
   children: React.ReactNode
 }
 
-/**
- * Text beside the rail's icons. It is always rendered, so opening the rail never moves the icons or the logo: the
- * column of icons stays on the rail's centre line and the words fade in (--motion-base). The frame's width is what moves.
- */
-const reveal = (shown: boolean) =>
-  cn("whitespace-nowrap transition-opacity duration-(--motion-base) ease-(--ease-standard) motion-reduce:transition-none", shown ? "opacity-100" : "opacity-0")
-
-function Nav({
-  nav,
-  current,
-  collapsed,
-  linkAs: Link = "a",
-  onNavigate,
-}: {
-  nav: AppNavGroup[]
-  current?: string
-  collapsed?: boolean
-  linkAs?: React.ElementType
-  onNavigate?: (e: React.MouseEvent) => void
-}) {
-  return (
-    <nav aria-label="Main" className="flex flex-col gap-4">
-      {nav.map((g, i) => (
-        <div key={g.label ?? i} className="flex flex-col gap-1">
-          {/* Collapsed, a group label would be a clipped word; keep its height so icons do not jump when the rail opens. */}
-          {g.label && (
-            // Collapsed, the group's name gives way to a short centred line, so groups stay apart on the rail without a
-            // clipped word; the two cross-fade as the rail opens. The line sits 4 px into the 20 px row so it is 20 px from
-            // the icon above (16 px group gap + 4) and 20 px from the icon below (16 + the 4 px item gap): even on both sides.
-            <div className="relative h-5">
-              <p className={cn("px-3 text-xs font-medium text-muted-foreground", reveal(!collapsed))}>{g.label}</p>
-              <span
-                aria-hidden="true"
-                className={cn(
-                  "absolute top-1 left-3 h-px w-6 bg-border transition-opacity duration-(--motion-base) ease-(--ease-standard)",
-                  collapsed ? "opacity-100" : "opacity-0",
-                )}
-              />
-            </div>
-          )}
-          {g.items.map((item) => {
-            const active = item.href === current
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={onNavigate}
-                aria-current={active ? "page" : undefined}
-                aria-label={collapsed ? (item.count ? `${item.label}, ${item.count}` : item.label) : undefined}
-                title={collapsed ? item.label : undefined}
-                className={cn(
-                  "press relative flex h-(--h-md) items-center gap-2 rounded-sm px-3 text-sm",
-                  // Current page: muted fill and weight. Hover: the lighter accent, so the two never look alike.
-                  active ? "bg-muted font-medium text-foreground" : "text-muted-foreground hover:bg-accent hover:text-foreground",
-                )}
+function AppNav({ nav, current, linkAs: Link = "a" }: { nav: AppNavGroup[]; current?: string; linkAs?: React.ElementType }) {
+  const { state, isMobile } = useSidebar()
+  const rail = state === "collapsed" && !isMobile
+  return nav.map((g, i) => (
+    <SidebarGroup key={g.label ?? i}>
+      {g.label && <SidebarGroupLabel>{g.label}</SidebarGroupLabel>}
+      <SidebarMenu>
+        {g.items.map((item) => {
+          const inSection = item.items?.some((s) => s.href === current) ?? false
+          return (
+            <SidebarMenuItem key={item.href}>
+              {/* A page under this one is current: open, the section is in ink and its pages show below it; as a rail,
+                  the section's icon takes the current look, since its pages are hidden. */}
+              <SidebarMenuButton
+                asChild
+                isActive={item.href === current || (rail && inSection)}
+                aria-current={item.href === current ? "page" : inSection ? "true" : undefined}
+                tooltip={item.label}
+                className={cn(inSection && "text-foreground")}
               >
-                {/* 24 px box 12 px into a 48 px item: the icon's centre sits on the rail's centre line (36 px). */}
-                <span className="flex size-6 shrink-0 items-center justify-center">
-                  <item.icon aria-hidden="true" className="size-5" />
-                </span>
-                <span className={cn("flex-1", reveal(!collapsed))}>{item.label}</span>
-                {item.count ? (
-                  <>
-                    <span
-                      aria-hidden="true"
-                      className={cn(
-                        "absolute top-2 left-8 size-2 rounded-full bg-danger-subtle ring-1 ring-danger transition-opacity duration-(--motion-base) ease-(--ease-standard)",
-                        !collapsed && "opacity-0",
-                      )}
-                    />
-                    <CountBadge count={item.count} className={reveal(!collapsed)} />
-                  </>
-                ) : null}
-              </Link>
-            )
-          })}
-        </div>
-      ))}
-    </nav>
-  )
+                <Link href={item.href}>
+                  <item.icon aria-hidden="true" />
+                  <span>{item.label}</span>
+                  {item.tag && <SidebarMenuTag>{item.tag}</SidebarMenuTag>}
+                  {item.count ? <SidebarMenuBadge count={item.count} /> : null}
+                </Link>
+              </SidebarMenuButton>
+              {item.items && item.items.length > 0 && (item.href === current || inSection) && (
+                <SidebarMenuSub>
+                  {item.items.map((sub) => (
+                    <SidebarMenuSubItem key={sub.href}>
+                      <SidebarMenuSubButton asChild isActive={sub.href === current}>
+                        <Link href={sub.href}>
+                          <span>{sub.label}</span>
+                          {sub.tag && <SidebarMenuTag>{sub.tag}</SidebarMenuTag>}
+                          {sub.count ? <SidebarMenuBadge count={sub.count} /> : null}
+                        </Link>
+                      </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                  ))}
+                </SidebarMenuSub>
+              )}
+            </SidebarMenuItem>
+          )
+        })}
+      </SidebarMenu>
+    </SidebarGroup>
+  ))
 }
 
 /**
  * Who is signed in, at the foot of the sidebar: one button with avatar, name and email that opens the account menu
- * upwards. Collapsed, only the avatar shows and the name is its label. The same control in every tool.
+ * upwards. As a rail only the avatar shows, with the name as its tooltip. The same control in every tool. It reads the
+ * sidebar's state, so it goes inside a SidebarProvider (the AppShell has one).
  */
-export function SidebarUserMenu({
-  user,
-  items = sampleUserMenu,
-  collapsed,
-  linkAs: Link = "a",
-  onOpenChange,
-}: {
-  user: AppUser
-  items?: AppUserMenuItem[]
-  collapsed?: boolean
-  linkAs?: React.ElementType
-  onOpenChange?: (open: boolean) => void
-}) {
+export function SidebarUserMenu({ user, items = sampleUserMenu, linkAs: Link = "a" }: { user: AppUser; items?: AppUserMenuItem[]; linkAs?: React.ElementType }) {
+  const { state, isMobile } = useSidebar()
+  const rail = state === "collapsed" && !isMobile
   return (
-    <DropdownMenu onOpenChange={onOpenChange}>
+    <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button
-          type="button"
-          aria-label={collapsed ? `${user.name}, ${user.initials}, account menu` : undefined}
-          className={cn(
-            "press flex w-full items-center gap-3 rounded-xs px-3 text-left hover:bg-accent data-[state=open]:bg-accent",
-            // As a rail only the avatar shows, so the row is 44 px; opening it grows to 56 for the name and email (--motion-sheet).
-            "transition-[height] duration-(--motion-sheet) ease-(--ease-standard) motion-reduce:transition-none",
-            collapsed ? "h-(--h-md)" : "h-(--h-row)",
-          )}
-        >
+        {/* Named by what it shows (initials, name, email) and then what it opens, so speech input can say what is on screen
+            (WCAG 2.5.3): no aria-label that would reorder the words. */}
+        <SidebarMenuButton size="lg" tooltip={user.name} className="text-foreground">
           <Avatar>
             <AvatarFallback>{user.initials}</AvatarFallback>
           </Avatar>
-          <span className={cn("flex min-w-0 flex-1 flex-col", reveal(!collapsed))}>
+          <span className="flex flex-col">
             <span className="truncate text-sm font-medium">{user.name}</span>
             {user.email && <span className="truncate text-xs text-muted-foreground">{user.email}</span>}
           </span>
-          <ChevronsUpDown aria-hidden="true" className={cn("size-4 shrink-0 text-muted-foreground", reveal(!collapsed))} />
-        </button>
+          <span className="sr-only">, account menu</span>
+          <ChevronsUpDown aria-hidden="true" className="text-muted-foreground" />
+        </SidebarMenuButton>
       </DropdownMenuTrigger>
-      <DropdownMenuContent side={collapsed ? "right" : "top"} align={collapsed ? "end" : "start"} className="w-(--radix-dropdown-menu-trigger-width) min-w-56">
+      <DropdownMenuContent side={rail ? "right" : "top"} align={rail ? "end" : "start"} className="w-(--radix-dropdown-menu-trigger-width) min-w-56">
         <DropdownMenuLabel className="flex flex-col">
           <span className="truncate text-sm font-medium text-foreground">{user.name}</span>
           {user.email && <span className="truncate text-xs font-normal text-muted-foreground">{user.email}</span>}
@@ -420,7 +426,7 @@ export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch;
       <CommandDialog open={open} onOpenChange={setOpen} title="Search" description={search.placeholder}>
         <CommandInput placeholder={search.placeholder ?? "Search"} end={scopes.length > 1 ? scopeMenu : undefined} />
         <CommandList>
-          <CommandEmpty>No match in {scopeLabel?.toLowerCase()}. Try another word, or search everything.</CommandEmpty>
+          <CommandEmpty>{(query) => `No match for “${query}” in ${scopeLabel?.toLowerCase()}. Try another word, or search everything.`}</CommandEmpty>
           {groups.map((g) => (
             <CommandGroup key={g.heading} heading={g.heading}>
               {g.items.map((item) => (
@@ -466,62 +472,22 @@ export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch;
   )
 }
 
-/**
- * The pin button's icon: a panel whose sidebar column is filled while the sidebar is kept open and hollow when it is a
- * rail. The fill swaps at --motion-fast (the swap pattern), 2 px stroke like every icon.
- */
-function SidebarIcon({ pinned }: { pinned: boolean }) {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="size-5"
-    >
-      <rect x="3" y="3" width="18" height="18" rx="2" />
-      <path
-        d="M4 4h5v16H4z"
-        stroke="none"
-        fill="currentColor"
-        className={cn("transition-opacity duration-(--motion-fast) ease-(--ease-standard)", pinned ? "opacity-100" : "opacity-0")}
-      />
-      <path d="M9 3v18" />
-    </svg>
-  )
+// Open on wide screens (1280 px and up) and a rail below, until the person chooses: the sidebar keeps that in its cookie.
+const WIDE = "(min-width: 1280px)"
+const subscribeWide = (onChange: () => void) => {
+  const query = window.matchMedia(WIDE)
+  query.addEventListener("change", onChange)
+  return () => query.removeEventListener("change", onChange)
 }
-
-/** Which way the collapsed rail opens: by hover where there is a mouse, by a tap on touch tablets. */
-function usePointerMode() {
-  const [mode, setMode] = React.useState<{ hover: boolean; wide: boolean }>({ hover: true, wide: true })
-  React.useEffect(() => {
-    const hover = window.matchMedia("(hover: hover) and (pointer: fine)")
-    const wide = window.matchMedia("(min-width: 1280px)")
-    const update = () => setMode({ hover: hover.matches, wide: wide.matches })
-    update()
-    hover.addEventListener("change", update)
-    wide.addEventListener("change", update)
-    return () => {
-      hover.removeEventListener("change", update)
-      wide.removeEventListener("change", update)
-    }
-  }, [])
-  return mode
-}
-
-const isControl = (el: EventTarget | null) => el instanceof Element && !!el.closest("a, button, input, select, textarea, [role=button], [role=menuitem]")
+const wideNow = () => window.matchMedia(WIDE).matches
 
 /**
  * The frame of an internal tool, in three zones: the sidebar (navigation, with the user menu at its foot), the top bar
- * (page title, environment, search, actions), and the content with its footer.
+ * (sidebar trigger, page title, environment, search, actions), and the content with its footer.
  *
- * Sidebar: open on wide screens (1280 px and up); a 72 px rail of icons below that, showing the logo at the top.
- * The rail opens over the content without moving it: on hover with a mouse, on a tap on touch tablets (a tap on an
- * icon opens the rail first, the next one navigates; a tap outside closes it). The pin button keeps it open.
- * Phones get a drawer from the menu button. `layout="inset"` floats the sidebar, the top bar and the content as separate panels.
+ * The sidebar is the kit's Sidebar: open on wide screens (1280 px and up) and a 72 px rail of icons with tooltips below
+ * that, until the person toggles it (the top bar's trigger, or ⌘B / Ctrl+B); the choice is kept in a cookie. Phones get
+ * it as a sheet from the left. `layout="inset"` floats the sidebar, the top bar and the content as separate panels.
  */
 export function AppShell({
   product,
@@ -540,114 +506,51 @@ export function AppShell({
   bleed,
   layout = "inset",
   footer,
+  sidebarLabels,
   children,
 }: AppShellProps) {
-  const { hover, wide } = usePointerMode()
-  // null: follow the screen (open when wide). A press of the pin button makes it the person's choice.
-  const [pinned, setPinned] = React.useState<boolean | null>(null)
-  const open = pinned ?? wide
-  const [peek, setPeek] = React.useState<"closed" | "hover" | "tap">("closed")
-  const [menuOpen, setMenuOpen] = React.useState(false)
-  const expanded = open || peek !== "closed"
-  const aside = React.useRef<HTMLElement>(null)
+  const wide = React.useSyncExternalStore(subscribeWide, wideNow, () => true)
   const env = environment ? environments[environment] : null
   const inset = layout === "inset"
 
-  // A tap outside closes a rail opened by tap.
-  React.useEffect(() => {
-    if (peek !== "tap") return
-    const close = (e: PointerEvent) => {
-      if (!aside.current?.contains(e.target as Node)) setPeek("closed")
-    }
-    document.addEventListener("pointerdown", close)
-    return () => document.removeEventListener("pointerdown", close)
-  }, [peek])
-
-  const tapMode = !open && !hover
-  const onNavigate = (e: React.MouseEvent) => {
-    if (tapMode && peek === "closed") {
-      e.preventDefault()
-      setPeek("tap")
-      return
-    }
-    setPeek("closed")
-  }
-
-  // The logo sits in a 48 px box 12 px in, so its centre is the rail's centre line, open or closed; only the name moves.
-  const brand = (
-    <span className="flex min-w-0 items-center">
-      <span className="flex w-12 shrink-0 items-center justify-center">
-        {logo ?? (
-          <span aria-hidden="true" className="flex size-7 items-center justify-center rounded-sm bg-primary text-sm font-bold text-primary-foreground">
-            {product.slice(0, 1)}
-          </span>
-        )}
-      </span>
-      <span className={cn("truncate text-sm font-bold", reveal(expanded))}>{product}</span>
-    </span>
-  )
-
   return (
     // The screen's height, unless the page puts something above the shell (a banner): it sets --app-shell-height.
-    <div className={cn("flex h-[var(--app-shell-height,100dvh)] bg-background text-foreground", inset && "gap-2 p-2")}>
-      {/* The sidebar's place in the layout: as wide as the pinned state. When the rail peeks open, the panel grows over the content. */}
-      <div className={cn("relative hidden shrink-0 transition-[width] duration-(--motion-sheet) ease-(--ease-standard) sm:block", open ? "w-60" : "w-18")}>
-        <aside
-          ref={aside}
-          aria-label="Sidebar"
-          onMouseEnter={() => !open && hover && setPeek("hover")}
-          onMouseLeave={() => peek === "hover" && !menuOpen && setPeek("closed")}
-          onPointerDown={(e) => tapMode && peek === "closed" && !isControl(e.target) && setPeek("tap")}
-          className={cn(
-            "absolute inset-y-0 left-0 z-30 flex flex-col overflow-hidden bg-card",
-            "transition-[width,box-shadow] duration-(--motion-sheet) ease-(--ease-standard)",
-            expanded ? "w-60" : "w-18",
-            inset ? "rounded-md ring-1 ring-border" : "border-r border-border",
-            peek !== "closed" && "shadow-float",
-          )}
-        >
-          {/* Flush: lined, level with the top bar's line. Inset: no lines; on the rail, groups are set apart by short lines
-              where their names were. */}
-          <div className={cn("flex h-(--h-row) shrink-0 items-center gap-2 border-b px-3", inset ? "border-transparent" : "border-border")}>
-            <span className="min-w-0 flex-1">{brand}</span>
-            <span inert={!expanded} className={cn("shrink-0", reveal(expanded))}>
-              <button
-                type="button"
-                aria-label={open ? "Collapse sidebar" : "Keep sidebar open"}
-                aria-pressed={open}
-                onClick={() => {
-                  setPinned(!open)
-                  setPeek("closed")
-                }}
-                className="press flex size-(--h-md) shrink-0 items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground"
-              >
-                <SidebarIcon pinned={open} />
-              </button>
+    <SidebarProvider
+      defaultOpen={wide}
+      labels={sidebarLabels}
+      className={cn("h-[var(--app-shell-height,100dvh)] bg-background text-foreground", inset && "gap-2 p-2")}
+    >
+      <Sidebar variant={inset ? "floating" : "sidebar"}>
+        {/* The brand row is as tall as the top bar, so their edges line up across the gap. The logo sits in a 48 px box
+            12 px in, so its centre is the rail's centre line, open or closed; only the name fades. Flush: lined, level
+            with the top bar's line. */}
+        <SidebarHeader className={cn("h-(--h-row) justify-center border-b py-0", inset ? "border-transparent" : "border-border")}>
+          <span className="flex min-w-0 items-center">
+            <span className="flex w-12 shrink-0 items-center justify-center">
+              {logo ?? (
+                <span aria-hidden="true" className="flex size-7 items-center justify-center rounded-sm bg-primary text-sm font-bold text-primary-foreground">
+                  {product.slice(0, 1)}
+                </span>
+              )}
             </span>
-          </div>
-          <div className="flex-1 overflow-x-hidden overflow-y-auto px-3 py-2">
-            <Nav nav={nav} current={current} collapsed={!expanded} linkAs={linkAs} onNavigate={onNavigate} />
-          </div>
-          {user && (
-            <div className={cn("shrink-0 border-t p-2", inset ? "border-transparent" : "border-border")}>
-              <SidebarUserMenu
-                user={user}
-                items={userMenu}
-                collapsed={!expanded}
-                linkAs={linkAs}
-                onOpenChange={(o) => {
-                  setMenuOpen(o)
-                  if (!o && peek === "hover" && !aside.current?.matches(":hover")) setPeek("closed")
-                }}
-              />
-            </div>
-          )}
-        </aside>
-      </div>
+            <span className="truncate text-sm font-bold whitespace-nowrap transition-opacity duration-(--motion-base) ease-(--ease-standard) group-data-[collapsible=icon]/sidebar:opacity-0">
+              {product}
+            </span>
+          </span>
+        </SidebarHeader>
+        <SidebarContent>
+          <AppNav nav={nav} current={current} linkAs={linkAs} />
+        </SidebarContent>
+        {user && (
+          <SidebarFooter className={cn("border-t", inset ? "border-transparent" : "border-border")}>
+            <SidebarUserMenu user={user} items={userMenu} linkAs={linkAs} />
+          </SidebarFooter>
+        )}
+      </Sidebar>
 
       {/* Inset: the top bar and the content are two panels, 8 px apart, so the bar never reads as part of the page.
           The bar's panel is as tall as the sidebar's brand row, so their bottom edges line up across the gap. */}
-      <div className={cn("flex min-w-0 flex-1 flex-col", inset && "gap-2")}>
+      <SidebarInset className={cn(inset && "gap-2")}>
         <header
           className={cn(
             "flex h-(--h-row) shrink-0 items-center gap-3",
@@ -655,26 +558,7 @@ export function AppShell({
             inset ? "rounded-md bg-card ring-1 ring-border" : "border-b border-border",
           )}
         >
-          <Sheet>
-            <SheetTrigger asChild>
-              <button
-                type="button"
-                aria-label="Open navigation"
-                className="press -ml-3 flex size-(--h-md) items-center justify-center rounded-sm hover:bg-accent sm:hidden"
-              >
-                <Menu aria-hidden="true" className="size-5" />
-              </button>
-            </SheetTrigger>
-            <SheetContent side="left" className="w-72">
-              <SheetTitle className="pb-4">{product}</SheetTitle>
-              <Nav nav={nav} current={current} linkAs={linkAs} />
-              {user && (
-                <div className="mt-auto pt-3">
-                  <SidebarUserMenu user={user} items={userMenu} linkAs={linkAs} />
-                </div>
-              )}
-            </SheetContent>
-          </Sheet>
+          <SidebarTrigger className="-ms-2" />
           {breadcrumb && <div className="hidden min-w-0 shrink items-center gap-1 md:flex">{breadcrumb}</div>}
           <h1 className="truncate text-lg font-bold">{title}</h1>
           {/* On phones the title keeps the room; the environment shows from 640 px. */}
@@ -706,7 +590,7 @@ export function AppShell({
             </footer>
           )}
         </main>
-      </div>
-    </div>
+      </SidebarInset>
+    </SidebarProvider>
   )
 }

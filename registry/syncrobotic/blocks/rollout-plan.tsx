@@ -1,4 +1,4 @@
-// @syncrobotic/rollout-plan v0.17.4 · update: npx shadcn add @syncrobotic/rollout-plan --overwrite
+// @syncrobotic/rollout-plan v0.28.0 · update: npx shadcn add @syncrobotic/rollout-plan --overwrite
 "use client"
 
 import * as React from "react"
@@ -54,7 +54,7 @@ export function RolloutPlan() {
     )
 
   return (
-    <AppShell product="Fleet console" nav={sampleNav} current="#robots" title="New rollout" user={sampleUser}>
+    <AppShell product="Fleet console" nav={sampleNav} current="#rollouts" title="New rollout" user={sampleUser}>
       <div className="flex max-w-3xl flex-col gap-6">
         <div className="grid gap-4 sm:grid-cols-2">
           <Field label="Firmware" hint="Release notes: lidar drift fix, faster docking.">

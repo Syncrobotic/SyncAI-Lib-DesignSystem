@@ -1,4 +1,4 @@
-// @syncrobotic/attachment v0.23.1 · update: npx shadcn add @syncrobotic/attachment --overwrite
+// @syncrobotic/attachment v0.28.0 · update: npx shadcn add @syncrobotic/attachment --overwrite
 "use client"
 
 import * as React from "react"
@@ -121,8 +121,8 @@ export function Attachment({
             </span>
           )}
         </div>
-        <figcaption className={cn("truncate text-xs", status === "error" ? "text-danger" : "text-muted-foreground")}>
-          {status === "error" ? (error ?? l.failed) : name}
+        <figcaption className={cn("min-w-0 truncate text-xs", status === "error" ? "text-danger" : "text-muted-foreground")}>
+          {status === "error" ? (error ?? l.failed) : <FileName name={name} />}
         </figcaption>
       </figure>
     )
@@ -141,7 +141,7 @@ export function Attachment({
       >
         <FileTypeIcon name={name} variant="icon" size="sm" />
         <span className="flex min-w-0 flex-col leading-tight">
-          <span className="truncate text-sm">{name}</span>
+          <FileName name={name} className="text-sm" />
           {meta && <span className={cn("truncate text-xs tabular-nums", status === "error" ? "text-danger" : "text-muted-foreground")}>{meta}</span>}
         </span>
         {actions}
@@ -161,7 +161,7 @@ export function Attachment({
     >
       <FileTypeIcon name={name} size="md" />
       <div className="flex min-w-0 flex-1 flex-col gap-1">
-        <span className="truncate text-sm font-medium">{name}</span>
+        <FileName name={name} className="text-sm font-medium" />
         {status === "uploading" ? (
           <span className="flex items-center gap-2">
             <Progress value={progress} aria-label={l.uploading(name)} className="h-1 flex-1" />
@@ -176,6 +176,22 @@ export function Attachment({
       </div>
       <div className="flex shrink-0 items-center">{actions}</div>
     </div>
+  )
+}
+
+/**
+ * A file name that is cut in the middle, not at the end: the extension always shows ("taipei-warehouse-…final.pdf"),
+ * since it says what the file is. The whole name is in the title, for a pointer.
+ */
+function FileName({ name, className }: { name: string; className?: string }) {
+  const dot = name.lastIndexOf(".")
+  // No extension, or a name that starts with its only dot (".env"): an ordinary end cut.
+  const ext = dot > 0 && name.length - dot <= 8 ? name.slice(dot) : ""
+  return (
+    <span title={name} className={cn("flex min-w-0", className)}>
+      <span className="truncate">{ext ? name.slice(0, dot) : name}</span>
+      {ext && <span className="shrink-0">{ext}</span>}
+    </span>
   )
 }
 

@@ -28,6 +28,7 @@ import {
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
 import { Filters, filterRows, type FilterField, type FilterRule } from "@/registry/syncrobotic/ui/filters"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
+import { SearchField } from "@/registry/syncrobotic/ui/search-field"
 
 const meta: Meta = { title: "Display/Data grid" }
 export default meta
@@ -117,7 +118,10 @@ const columns: Col[] = [
 
 const firstThree = columns.slice(0, 3)
 const expandableColumns = [expandColumn<Robot, Features>(), ...firstThree]
-const selectableColumns = [selectColumn<Robot, Features>(), ...columns]
+const selectableColumns = [
+  selectColumn<Robot, Features>({ reason: (r) => (r.status === "offline" ? "offline robots cannot be selected" : undefined) }),
+  ...columns,
+]
 const totalsColumns: Col[] = [
   { ...columns[0], footer: () => "Total" },
   columns[1],
@@ -176,6 +180,8 @@ export const DataGridSelection: S = {
           </Button>
         </DataGridSelectionSummary>
         <DataGridTable aria-label="Robots" />
+        {/* The reason a box is grey, said on the page as well as in each box's name. */}
+        <p className="text-xs text-muted-foreground">Offline robots cannot be selected: they would not receive the command.</p>
         <DataGridPagination />
       </DataGrid>
     )
@@ -250,8 +256,10 @@ export const DataGridExpandableRows: S = {
       initialState: { expanded: { [robots[0].id]: true } },
       meta: {
         renderSubRow: (row: { original: Robot }) => (
+          // bare: the expanded row is already a surface, so the list draws no card of its own inside it.
           <DescriptionList
             columns={3}
+            variant="bare"
             items={[
               { label: "Battery", value: `${row.original.battery} %` },
               { label: "Odometer", value: `${row.original.km} km` },
@@ -282,7 +290,10 @@ export const DataGridPinnedAndResizable: S = {
     return (
       <DataGrid table={table}>
         <DataGridTable aria-label="Robots" />
-        <p className="text-xs text-muted-foreground">Robot stays pinned while the rest scrolls. Drag a column edge to resize; double-click resets it.</p>
+        <p className="text-xs text-muted-foreground">
+          Robot stays pinned while the rest scrolls (on a phone every column scrolls). Drag a column edge, or Tab to it and press ← or →, to resize; double-click
+          or Enter resets it. The column menu has the same.
+        </p>
       </DataGrid>
     )
   },
@@ -353,15 +364,9 @@ export const DataGridToolbar: S = {
     const table = useGrid(data, columns, { initialState: { pagination: { pageSize: 6, pageIndex: 0 } } })
     return (
       <DataGrid table={table}>
+        {/* The search takes the whole first row on a phone, the buttons the row under it. */}
         <div className="flex flex-wrap items-center gap-2">
-          <input
-            type="search"
-            aria-label="Filter robots"
-            placeholder="Filter robots"
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            className="h-(--h-sm) min-w-0 flex-1 rounded-sm bg-card px-3 text-sm ring-1 ring-input ring-inset"
-          />
+          <SearchField label="Filter robots" placeholder="Filter robots" hotkey={null} value={q} onValueChange={setQ} className="basis-full sm:basis-0 sm:flex-1" />
           <DataGridColumnVisibility />
           <Button size="sm" variant="outline">
             <Download aria-hidden="true" /> Export

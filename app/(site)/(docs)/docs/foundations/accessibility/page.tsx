@@ -30,15 +30,16 @@ const pairs: { fg: string; bg: string; use: string }[] = [
 // UI parts: WCAG 1.4.11 asks 3:1 for what identifies a control. Field edges meet it in every theme; card and divider edges
 // only group things (the content inside identifies them), so they stay quiet.
 const edges = [
-  { fg: "border", bg: "background", use: "Card and divider edge" },
-  { fg: "input", bg: "card", use: "Field, checkbox and switch edge on a card" },
-  { fg: "input", bg: "background", use: "Field edge on the page" },
+  { fg: "border", bg: "background", use: "Card and divider edge", ui: true },
+  { fg: "input", bg: "card", use: "Field, checkbox and switch edge on a card", ui: true },
+  { fg: "input", bg: "background", use: "Field edge on the page", ui: true },
 ]
 
-function Ratio({ fg, bg, mode }: { fg: string; bg: string; mode: Mode }) {
+/** A ratio and its grade. Text is graded on the WCAG text levels; a UI part (`ui`, an edge) passes at 3:1 and has no AA large. */
+function Ratio({ fg, bg, mode, ui = false }: { fg: string; bg: string; mode: Mode; ui?: boolean }) {
   const r = contrast(fg, bg, mode)
   if (r === null) return <span className="text-muted-foreground">—</span>
-  const l = level(r)
+  const l = ui ? (r >= 3 ? "Pass" : "Fail") : level(r)
   return (
     <span className="flex items-center gap-2">
       <span className="font-mono text-xs">{r.toFixed(1)}:1</span>
@@ -124,7 +125,7 @@ export default function AccessibilityPage() {
       <Section
         id="high-contrast"
         title="High contrast"
-        lead={"For a tablet in bright sun, glare on an outdoor robot's screen, and low vision. Put `data-contrast=\"more\"` on `<html>` or on a container, in light or dark. Text and status reach 7:1 on every surface they sit on, field and card edges reach 3:1 so they show without their fill, and trays over the map turn opaque. Meanings stay the same: blue is still a process, solid red still only the stop."}
+        lead={"For a tablet in bright sun, glare on an outdoor robot's screen, and low vision. Put `data-contrast=\"more\"` on `<html>` or on a container, in light or dark. Text and status reach 7:1 on every surface they sit on (the emergency stop's label is held to 4.5:1, as in every theme: its ratio is in the table below), field and card edges reach 3:1 so they show without their fill, and trays over the map turn opaque. Meanings stay the same: blue is still a process, solid red still only the stop."}
       >
         <Specimen>
           <ContrastDemo />

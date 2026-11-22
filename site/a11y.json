@@ -72,7 +72,7 @@
       "figure",
       "slider"
     ],
-    "tabStops": 1,
+    "tabStops": 3,
     "live": false
   },
   "teleop-pad": {
@@ -215,7 +215,7 @@
       "group",
       "radio",
       "radiogroup",
-      "switch",
+      "spinbutton",
       "textbox"
     ],
     "tabStops": 6,
@@ -396,6 +396,19 @@
     "tabStops": 3,
     "live": false
   },
+  "streaming-chart": {
+    "roles": [
+      "button",
+      "figure",
+      "list",
+      "listitem",
+      "radio",
+      "radiogroup",
+      "status"
+    ],
+    "tabStops": 6,
+    "live": true
+  },
   "tabs": {
     "roles": [
       "tab",
@@ -445,6 +458,18 @@
       "treeitem"
     ],
     "tabStops": 10,
+    "live": false
+  },
+  "sidebar": {
+    "roles": [
+      "button",
+      "heading",
+      "link",
+      "list",
+      "listitem",
+      "navigation"
+    ],
+    "tabStops": 13,
     "live": false
   },
   "graph": {
@@ -630,6 +655,8 @@
       "img",
       "list",
       "listitem",
+      "radio",
+      "radiogroup",
       "status"
     ],
     "tabStops": 24,
@@ -675,6 +702,21 @@
       "status"
     ],
     "tabStops": 0,
+    "live": true
+  },
+  "diagnostics": {
+    "roles": [
+      "button",
+      "list",
+      "listitem",
+      "radio",
+      "radiogroup",
+      "region",
+      "search",
+      "searchbox",
+      "status"
+    ],
+    "tabStops": 23,
     "live": true
   },
   "point-cloud": {
@@ -813,11 +855,26 @@
       "region",
       "row",
       "rowgroup",
+      "search",
       "searchbox",
       "separator",
       "table"
     ],
-    "tabStops": 20,
+    "tabStops": 25,
+    "live": true
+  },
+  "log-viewer": {
+    "roles": [
+      "button",
+      "columnheader",
+      "gridcell",
+      "region",
+      "row",
+      "searchbox",
+      "status",
+      "treegrid"
+    ],
+    "tabStops": 7,
     "live": true
   },
   "sortable": {
@@ -919,7 +976,7 @@
       "list",
       "listitem"
     ],
-    "tabStops": 3,
+    "tabStops": 4,
     "live": true
   },
   "marker": {

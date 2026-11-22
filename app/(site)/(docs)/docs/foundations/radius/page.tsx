@@ -103,7 +103,7 @@ export default function RadiusPage() {
             <span className="flex size-16 items-center justify-center bg-foreground" style={{ borderRadius: "22%" }}>
               <LogoMark title="" className="size-12 [&_path:first-child]:fill-background [&_path:not(:first-child)]:fill-foreground" />
             </span>
-            <figcaption className="text-xs text-muted-foreground">Favicon tile: corner 22 % of the side</figcaption>
+            <figcaption className="text-xs text-muted-foreground">Favicon: the disc on a tile, corner 22 % of the side</figcaption>
           </figure>
         </Specimen>
         <p className="text-sm text-muted-foreground">

@@ -5,7 +5,7 @@ import { useHotkeys } from "@/registry/syncrobotic/hooks/use-hotkeys"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { InputGroup, InputGroupAddon } from "@/registry/syncrobotic/ui/input-group"
-import { Kbd, KbdGroup } from "@/registry/syncrobotic/ui/kbd"
+import { Kbd, KbdGroup, useModKey } from "@/registry/syncrobotic/ui/kbd"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/registry/syncrobotic/ui/tooltip"
 
 const meta: Meta = { title: "Display/Kbd" }
@@ -68,23 +68,27 @@ export const KbdArrows: S = {
 }
 
 export const KbdInInput: S = {
-  render: () => (
-    <InputGroup>
-      <InputGroupAddon>
-        <Search aria-hidden="true" />
-      </InputGroupAddon>
-      <Input type="search" aria-label="Search robots" placeholder="Search robots" />
-      <InputGroupAddon>
-        <KbdGroup>
-          <Kbd>⌘</Kbd>
-          <Kbd>K</Kbd>
-        </KbdGroup>
-      </InputGroupAddon>
-    </InputGroup>
-  ),
+  render: function Demo() {
+    const mod = useModKey()
+    return (
+      <InputGroup>
+        <InputGroupAddon>
+          <Search aria-hidden="true" />
+        </InputGroupAddon>
+        <Input type="search" aria-label="Search robots" placeholder="Search robots" />
+        <InputGroupAddon>
+          <KbdGroup>
+            <Kbd>{mod}</Kbd>
+            <Kbd>K</Kbd>
+          </KbdGroup>
+        </InputGroupAddon>
+      </InputGroup>
+    )
+  },
 }
 
 function SaveWithTooltip({ open }: { open?: boolean }) {
+  const mod = useModKey()
   return (
     <TooltipProvider>
       <Tooltip defaultOpen={open}>
@@ -97,7 +101,7 @@ function SaveWithTooltip({ open }: { open?: boolean }) {
           <span className="flex items-center gap-2">
             Save route
             <KbdGroup>
-              <Kbd>⌘</Kbd>
+              <Kbd>{mod}</Kbd>
               <Kbd>S</Kbd>
             </KbdGroup>
           </span>
@@ -126,29 +130,35 @@ export const KbdInTooltipOpen: S = {
   ),
 }
 
+/** "Hold" is how the key is pressed, a word beside it, not a key of its own. */
 export const KbdShortcutList: S = {
-  render: () => (
-    <dl className="flex w-72 flex-col text-sm">
-      {[
-        ["Stop this robot", ["Space"]],
-        ["Stop all robots", ["Hold", "Space"]],
-        ["Search", ["⌘", "K"]],
-        ["Next alarm", ["J"]],
-        ["Acknowledge", ["A"]],
-      ].map(([label, keys]) => (
-        <div key={label as string} className="flex h-(--h-md) items-center justify-between border-b border-border last:border-b-0">
-          <dt>{label as string}</dt>
-          <dd>
-            <KbdGroup>
-              {(keys as string[]).map((k) => (
-                <Kbd key={k}>{k}</Kbd>
-              ))}
-            </KbdGroup>
-          </dd>
-        </div>
-      ))}
-    </dl>
-  ),
+  render: function Demo() {
+    const mod = useModKey()
+    const shortcuts: { label: string; keys: string[]; hold?: boolean }[] = [
+      { label: "Stop this robot", keys: ["Space"] },
+      { label: "Stop all robots", keys: ["Space"], hold: true },
+      { label: "Search", keys: [mod, "K"] },
+      { label: "Next alarm", keys: ["J"] },
+      { label: "Acknowledge", keys: ["A"] },
+    ]
+    return (
+      <dl className="flex w-72 flex-col text-sm">
+        {shortcuts.map(({ label, keys, hold }) => (
+          <div key={label} className="flex h-(--h-md) items-center justify-between border-b border-border last:border-b-0">
+            <dt>{label}</dt>
+            <dd className="flex items-center gap-2 text-xs text-muted-foreground">
+              {hold && "Hold"}
+              <KbdGroup>
+                {keys.map((k) => (
+                  <Kbd key={k}>{k}</Kbd>
+                ))}
+              </KbdGroup>
+            </dd>
+          </div>
+        ))}
+      </dl>
+    )
+  },
 }
 
 /** A key going down: it sinks and its edge thickens to the text colour, so it reads without colour. */

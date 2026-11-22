@@ -1,12 +1,17 @@
-// @syncrobotic/status-tracker-runs v0.17.3 · update: npx shadcn add @syncrobotic/status-tracker-runs --overwrite
+// @syncrobotic/status-tracker-runs v0.28.0 · update: npx shadcn add @syncrobotic/status-tracker-runs --overwrite
 "use client"
 
 import { cn } from "@/lib/utils"
+import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 
 type Run = "ok" | "partial" | "failed"
 // A run that passed is calm grey, opaque and 3:1 on the card (--input, the field-edge grey); only the others take colour.
 const cell: Record<Run, string> = { ok: "bg-input", partial: "bg-warning", failed: "bg-danger" }
+const outcome = {
+  partial: { status: "warning", label: "Partial", text: "text-warning" },
+  failed: { status: "danger", label: "Failed", text: "text-danger" },
+} as const
 // Sample data: the last 20 runs of each route, oldest first.
 const seq = (s: string): Run[] => s.split("").map((c) => (c === "x" ? "failed" : c === "~" ? "partial" : "ok"))
 const routes = [
@@ -23,14 +28,23 @@ export function StatusTrackerRuns() {
       <ul className="flex flex-col divide-y divide-border">
         {routes.map((r) => {
           const ok = r.runs.filter((x) => x === "ok").length
-          const lastBad = r.runs[r.runs.length - 1] !== "ok"
+          const last = r.runs[r.runs.length - 1]!
           return (
             <li key={r.name} className="flex flex-wrap items-center gap-x-4 gap-y-2 py-3 first:pt-0 last:pb-0">
               <span className="flex w-48 min-w-0 flex-col">
                 <span className="text-sm font-medium">{r.name}</span>
-                <span className={cn("text-xs", lastBad ? "text-danger" : "text-muted-foreground")}>
+                {/* The time stays grey; only the outcome of a run that did not pass is a shape and a word in colour. */}
+                <span className="text-xs text-muted-foreground">
                   Last run {r.last}
-                  {lastBad ? " · failed" : ""}
+                  {last !== "ok" && (
+                    <>
+                      {" · "}
+                      <span className={cn("inline-flex items-center gap-2 font-medium", outcome[last].text)}>
+                        <StatusGlyph status={outcome[last].status} />
+                        {outcome[last].label}
+                      </span>
+                    </>
+                  )}
                 </span>
               </span>
               {/* The strip takes the rest of the row, its count right after it; on a phone the two wrap together. */}

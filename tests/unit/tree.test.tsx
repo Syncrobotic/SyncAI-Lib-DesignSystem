@@ -73,12 +73,39 @@ describe("Tree, list mode", () => {
     expect(screen.getByText("No sources yet.")).toBeTruthy()
   })
 
+  it("says an open branch is empty instead of opening to nothing, in both modes", () => {
+    const items = [{ id: "archive", label: "Archived", children: [] }]
+    const { rerender } = render(<Tree label="Collections" items={items} empty="Nothing in it yet." defaultExpanded={["archive"]} />)
+    expect(screen.getByText("Nothing in it yet.")).toBeTruthy()
+    rerender(<Tree key="select" mode="select" label="Collections" items={items} empty="Nothing in it yet." defaultExpanded={["archive"]} />)
+    expect(screen.getByText("Nothing in it yet.")).toBeTruthy()
+    expect(screen.getByRole("treeitem", { name: "Archived" })).toBeTruthy()
+  })
+
   it("follows controlled expansion", () => {
     const change = vi.fn()
     render(<Tree label="Lineage" items={lineage} expanded={[]} onExpandedChange={change} />)
     fireEvent.click(screen.getByRole("button", { name: "Items under Release v3" }))
     expect(change).toHaveBeenCalledWith(["release"])
     expect(screen.getByRole("button", { name: "Items under Release v3" }).getAttribute("aria-expanded")).toBe("false")
+  })
+
+  it("opens a node's content with its own button, before its children", () => {
+    const items: TreeNode[] = [
+      { id: "leaf", label: "Left wheel", content: <p>Current 18.6 A</p> },
+      { id: "both", label: "Motors", content: <p>Missing item</p>, children: [{ id: "lift", label: "Lift" }] },
+      { id: "plain", label: "IMU" },
+    ]
+    render(<Tree label="Diagnostics" items={items} labels={{ details: (n) => `About ${n}` }} />)
+    expect(screen.queryByRole("button", { name: /IMU/ })).toBeNull()
+    const details = screen.getByRole("button", { name: "About Left wheel" })
+    expect(screen.queryByText("Current 18.6 A")).toBeNull()
+    fireEvent.click(details)
+    expect(details.getAttribute("aria-expanded")).toBe("true")
+    expect(screen.getByText("Current 18.6 A")).toBeTruthy()
+    fireEvent.click(screen.getByRole("button", { name: "Items under Motors" }))
+    const both = screen.getByText("Missing item")
+    expect(both.compareDocumentPosition(screen.getByText("Lift")) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })
 })
 

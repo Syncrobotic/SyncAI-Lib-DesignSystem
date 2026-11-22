@@ -1,4 +1,4 @@
-// @syncrobotic/stepper v0.23.0 · update: npx shadcn add @syncrobotic/stepper --overwrite
+// @syncrobotic/stepper v0.28.0 · update: npx shadcn add @syncrobotic/stepper --overwrite
 "use client"
 
 import * as React from "react"
@@ -119,6 +119,20 @@ export function Stepper({
           <li aria-hidden="true" data-slot="stepper-current" className={cn("col-span-full mt-2 flex flex-col items-center gap-1 text-center", room[1])}>
             <span className="text-sm font-medium text-foreground">{current.props.title}</span>
             {current.props.description && <span className="text-xs text-muted-foreground">{current.props.description}</span>}
+            {/* A failed step's cross says only that something is wrong: here it says which step and why. */}
+            {errors
+              .filter((step) => step !== value && items[step - 1])
+              .map((step) => {
+                const failed = items[step - 1] as React.ReactElement<{ title?: React.ReactNode; description?: React.ReactNode }>
+                return (
+                  <span key={step} data-slot="stepper-error" className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <X aria-hidden="true" className="size-4 shrink-0 text-danger" />
+                    <span>
+                      <span className="font-medium text-foreground">{failed.props.title}</span> · {failed.props.description ?? l.error}
+                    </span>
+                  </span>
+                )
+              })}
           </li>
         )}
       </ol>

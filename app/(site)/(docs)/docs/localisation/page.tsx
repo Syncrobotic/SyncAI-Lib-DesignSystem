@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { cn } from "@/lib/utils"
 import { getItem } from "@/site/catalog"
 import { CodeBlock } from "@/site/code-block"
 import { pageMeta } from "@/site/config"
@@ -138,7 +139,7 @@ const linkCls = "whitespace-nowrap font-mono text-sm underline decoration-muted-
 function ItemLink({ item, names }: { item: string; names: string[] }) {
   const text = names.join(", ")
   return getItem(item) ? (
-    <Link href={`/docs/components/${item}`} className={linkCls}>
+    <Link href={`/docs/components/${item}`} className={cn(linkCls, "inline-flex min-h-(--h-sm) items-center")}>
       {text}
     </Link>
   ) : (

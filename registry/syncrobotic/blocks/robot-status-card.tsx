@@ -1,4 +1,4 @@
-// @syncrobotic/robot-status-card v0.15.1 · update: npx shadcn add @syncrobotic/robot-status-card --overwrite
+// @syncrobotic/robot-status-card v0.28.0 · update: npx shadcn add @syncrobotic/robot-status-card --overwrite
 import { Battery, BatteryCharging, MapPin, Navigation, Wifi, WifiOff } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
@@ -60,7 +60,7 @@ export function RobotStatusCard({
           <dt className="text-xs text-muted-foreground">Battery</dt>
           <dd className={cn("flex items-center gap-2 font-medium", low && "text-warning")}>
             <BatteryIcon aria-hidden="true" className="size-4" />
-            {robot.battery}%
+            {robot.battery} %
           </dd>
         </div>
         <div className="flex flex-col gap-1 rounded-sm bg-muted p-3">
@@ -83,7 +83,7 @@ export function RobotStatusCard({
             <span className="font-medium">{robot.task.name}</span>
             <span className="text-muted-foreground">{robot.task.eta}</span>
           </div>
-          <Progress value={robot.task.progress} aria-label={`${robot.task.name}, ${robot.task.progress}%`} />
+          <Progress value={robot.task.progress} aria-label={`${robot.task.name}, ${robot.task.progress} %`} />
         </div>
       )}
 

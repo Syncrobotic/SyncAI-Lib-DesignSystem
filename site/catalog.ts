@@ -26,6 +26,7 @@ export type StoryFile =
   | "navigation-menu"
   | "questionnaire"
   | "data-grid"
+  | "log-viewer"
   | "sortable"
   | "resizable"
   | "file-upload"
@@ -57,7 +58,9 @@ export type StoryFile =
   | "media-player"
   | "camera-feed"
   | "joint-state"
+  | "diagnostics"
   | "tree"
+  | "sidebar"
   | "graph"
   | "robot-map"
   | "point-cloud"
@@ -67,6 +70,7 @@ export type StoryFile =
   | "context-menu"
   | "hover-card"
   | "banner"
+  | "streaming-chart"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
@@ -87,8 +91,8 @@ type Entry = {
 
 // Shared by every Radix overlay that traps focus.
 const overlayKeys: [string, string][] = [
-  ["Esc", "Close and return focus to the control that opened it"],
-  ["Tab / Shift+Tab", "Move between controls inside; focus stays inside until it closes"],
+  ["`Esc`", "Close and return focus to the control that opened it"],
+  ["`Tab` / `Shift`+`Tab`", "Move between controls inside; focus stays inside until it closes"],
 ]
 
 const entries: Record<string, Entry> = {
@@ -98,7 +102,7 @@ const entries: Record<string, Entry> = {
     examples: { file: "graph", prefix: "Graph" },
     rules: [
       "For a node with several inputs: lineage, a training run's inputs and outputs, a mission's parallel steps. When every node has one parent, use a Tree.",
-      "Offer GraphList beside it (a Graph / List switch), as a chart offers its table: the same nodes as text, inputs before what they feed. On a phone the list reads without scrolling sideways.",
+      "Offer GraphList beside it (a Graph / List switch), as a chart offers its table: the same nodes as text, inputs before what they feed. On a phone the list reads without scrolling sideways, so start there on the list.",
       "Up to about 60 nodes. A bigger graph needs a dedicated layout library and panning; show a part of it (one node's lineage) instead.",
       "Edges are neutral; the selected node's path is drawn in the ink colour and the rest steps back. No colours per edge or per kind of node.",
       "Status is a shape and a word; only warning and danger are coloured. Steps that did not run are grey and say so (\"Not run\").",
@@ -111,9 +115,10 @@ const entries: Record<string, Entry> = {
     examples: { file: "trace", prefix: "Trace" },
     rules: [
       "Done steps are a neutral check; only warnings and failures are coloured.",
+      "An `icon` for the kind of step replaces the done check only: running, warning, failed, waiting and skipped steps keep their mark.",
       "A failed step says why in its description; the raw error goes in a TraceCode inside it.",
       "Open the step that needs attention by default, nothing else.",
-      "total plus start and duration draw the waterfall; leave them out for a plain list.",
+      "`total` plus each step's `start` and `duration` draw the waterfall; leave them out for a plain list.",
     ],
   },
   marker: {
@@ -178,11 +183,29 @@ const entries: Record<string, Entry> = {
     group: "Data display",
     examples: { file: "data-grid", prefix: "DataGrid" },
     rules: [
-      "Build the table with useTable, with dataGridFeatures in its features; DataGrid draws it.",
+      "Build the table with `useTable`, with `dataGridFeatures` in its features; `DataGrid` draws it.",
       "Keep data and columns stable (module scope or useMemo). A new array each render loops once a row expands.",
-      "Numbers right-aligned (meta.align) and tabular.",
-      "Status cells use InlineStatus, never a coloured badge.",
-      "virtual needs a maxHeight.",
+      "Numbers right-aligned (`meta.align`) and tabular.",
+      "Status cells use `InlineStatus`, never a coloured badge.",
+      "A `virtual` grid needs a `maxHeight`.",
+      "A resizable column is resized by dragging its edge, by the arrow keys on the edge, or from its menu (Wider, Narrower, Reset width), so touch and keyboard need no drag.",
+      "Pin one column, the one that names the row. Pinning holds from 448 px wide; on a phone every column scrolls.",
+      "A row that cannot be selected says why: selectColumn's `reason`, and a line beside the grid.",
+      "An expanded row is already a surface: a DescriptionList inside it is `variant=\"bare\"`, never a card in the row.",
+    ],
+  },
+  "log-viewer": {
+    wide: true,
+    group: "Data display",
+    examples: { file: "log-viewer", prefix: "LogViewer" },
+    rules: [
+      "For lines a program writes as it runs: ROS /rosout, journald, a service's log. Events people act on are `alarm`; a table people sort and page is `data-grid`; one run's steps are `trace`.",
+      "Stream through `createLogBuffer` (pass it as `buffer`) or the `ref` handle's `append`, never by copying a growing array into state: appends are batched, so 1,000 lines a second draw ten times a second. Convert ROS messages with `rosLogToLogLine` from `ros`.",
+      "Set `maxLines` to what the reader needs to scroll back through (10,000 by default); the oldest lines are dropped. Up to about 200,000 stay smooth; keep the full log on disk or in the backend.",
+      "Levels are a shape and a word, never a tinted row: warn is warning, error and fatal danger; debug and info stay grey.",
+      "Give `timeZone` when the people reading are not where the robot is, and say which in the page; copied lines are always ISO 8601 in UTC.",
+      "Name the sources for what they are: `labels.sources` \"Nodes\" for ROS, \"Units\" for journald.",
+      "Leave `announce` on \"errors\" (at most every 5 s); \"all\" only for a slow log, and false where an alarm already speaks for the same failure.",
     ],
   },
   sortable: {
@@ -191,7 +214,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "Only the handle drags; the rest of the row stays clickable.",
       "Give getLabel so moves are announced by name.",
-      "Keyboard: Space to lift, arrows to move, Space to drop, Escape to cancel.",
+      "Keyboard: Space to lift, arrows to move, Space to drop, Esc to cancel.",
     ],
   },
   resizable: {
@@ -295,9 +318,9 @@ const entries: Record<string, Entry> = {
     group: "Data display",
     examples: { file: "kbd", prefix: "Kbd" },
     rules: [
-      "One key per Kbd; a chord is a KbdGroup without plus signs.",
-      "Use the platform's symbols: ⌘ on Mac, Ctrl elsewhere.",
-      "pressed shows the key going down (it sinks and its edge darkens) while its shortcut runs; useHotkeys returns which key that is.",
+      "One key per Kbd; a chord is a KbdGroup without plus signs. How it is pressed (Hold, Double-press) is a word beside the key, not a Kbd.",
+      "Use the platform's symbols: ⌘ on Mac, Ctrl elsewhere. `useModKey()` gives the right one.",
+      "`pressed` shows the key going down (it sinks and its edge darkens) while its shortcut runs; `useHotkeys` returns which key that is.",
     ],
   },
   "code-block": {
@@ -305,7 +328,7 @@ const entries: Record<string, Entry> = {
     examples: { file: "code-block", prefix: "CodeBlock" },
     rules: [
       "Copy copies `code` exactly, whatever the block shows: highlighted children, wrapped lines or a hidden secret.",
-      "wrap=\"words\" for shell commands, so a phone never cuts a package name in two; wrap=\"none\" for source, which scrolls sideways with a fade on the side that hides text.",
+      "`wrap=\"words\"` for shell commands, so a phone never cuts a package name in two; `wrap=\"none\"` for source, which scrolls sideways with a fade on the side that hides text.",
       "A one-time secret (an API key) is `secret`: dots until Show is pressed. Never put the value in the title or a label; say beside it that it is shown once.",
       "No highlighter inside: pass shiki's output (or any `<pre>`) as children. Line numbers only for source people discuss by line.",
     ],
@@ -540,8 +563,9 @@ const entries: Record<string, Entry> = {
     group: "Data display",
     examples: { file: "display", prefix: "Badge" },
     rules: [
-      "Counts and short states. In list rows prefer Status eyebrow's InlineStatus.",
-      "Test and audit results: Passed is the neutral badge with CircleCheck; Failed is tone=\"outline\" with text-danger ring-danger and CircleAlert; Not enough samples is tone=\"outline\" with text-muted-foreground and CircleDashed. Never a green pass.",
+      "Short states and labels. In list rows prefer `status-eyebrow`'s `InlineStatus`; a count is a `CountBadge`.",
+      "Test and audit results are a `ResultBadge`: `result=\"passed\"` (grey with a check), `\"failed\"` (danger outline) or `\"insufficient\"` (grey, dashed circle). Never a green pass.",
+      "`tone=\"success\"` renders grey, as `neutral` does: a state is never green. Use `neutral`.",
     ],
   },
   card: { group: "Layout", examples: { file: "display", prefix: "Card" }, rules: ["Never nest cards. Group rows inside one card with separators."] },
@@ -586,6 +610,7 @@ const entries: Record<string, Entry> = {
       "For a level in a known range (battery, storage). For work under way, use Progress.",
       "Neutral while normal; warning past `low`, danger past `critical`; the value is always written. A battery takes only `low` (15 %): a low battery needs attention, it is not a failure, so it turns warning and never danger. Danger is for a level that breaks something, like full storage.",
       "`inline` in table cells; the label is still read by screen readers.",
+      "With `higherIsWorse` (temperature, storage) the warning is read as high, not low. `showMax` writes the total for an amount whose total matters: 412 of 512 GB.",
     ],
   },
   "metric-card": {
@@ -606,7 +631,7 @@ const entries: Record<string, Entry> = {
   "description-list": {
     group: "Data display",
     examples: { file: "display", prefix: "DescriptionList" },
-    rules: ["Label above value, value in medium weight with tabular numbers.", "`tiles` only for the few numbers that matter most; everything else plain."],
+    rules: ["Label above value, value in medium weight with tabular numbers.", "`tiles` only for the few numbers that matter most; everything else plain.", "`bare` inside something that is already a surface (a card, an expanded table row), so cards never nest."],
   },
   "empty-state": {
     group: "Feedback",
@@ -629,7 +654,8 @@ const entries: Record<string, Entry> = {
     group: "Data display",
     examples: { file: "display", prefix: "StatusGlyph" },
     rules: [
-      "Status is a shape and a word; colour only when it is abnormal. The shape reads without colour vision: filled circle active, hollow circle normal, triangle attention, square stopped, slashed circle offline.",
+      "Status is a shape and a word; colour only when it is abnormal. The shape reads without colour vision: filled circle active (busy), hollow circle normal, triangle attention, square stopped, slashed circle offline (grey).",
+      "The glyph is hidden from screen readers: write the status in words beside it, or use `status-eyebrow`, which does.",
       "Pass `status`: active, normal, warning, danger or offline. The old `tone` (info, success, warning, danger, neutral) still works until 1.0 and warns once in development.",
     ],
   },
@@ -747,6 +773,19 @@ const entries: Record<string, Entry> = {
       "List the joints in chain order (base to tool), as the URDF does, not alphabetically.",
     ],
   },
+  diagnostics: {
+    wide: true,
+    group: "Robotics",
+    examples: { file: "diagnostics", prefix: "Diagnostics" },
+    rules: [
+      "For finding what is wrong with a robot's hardware and software, not for raising it: a fault that needs someone now is an alarm too. This panel says where and why; the alarm asks for the action.",
+      "Feed it /diagnostics_agg when the robot runs the aggregator: its \"/\" names give the tree. Raw /diagnostics works too, as a flat list.",
+      "Keep every name's latest status (`mergeDiagnostics`) and stamp each with `receivedAt` when it arrives, never the header stamp. Keep `staleAfterMs` at the aggregator's timeout (5 s) unless a node publishes slower.",
+      "Colour only on the glyph and the word, and only for Warning and Error. Rows are never tinted, so a tree with several problems still reads as a list.",
+      "Do not sort the tree by level: rows that move as levels change are hard to read and to tap. The summary puts the worst first; Problems narrows the tree to it.",
+      "Put it on the robot's own page or a sheet from the fleet table, full width; on a phone it keeps the name and the word and opens a row for the message and values.",
+    ],
+  },
   alert: {
     group: "Feedback",
     examples: { file: "display", prefix: "Alert" },
@@ -765,7 +804,7 @@ const entries: Record<string, Entry> = {
       "Full width, first in the page (or above the whole app), before the header in the DOM so it is read first. At most one at a time: show the most severe and let the next one wait.",
       "Tone by consequence: neutral for calm conditions, info only while a process runs (syncing back, a maintenance window under way), warning before something is lost, danger when the app cannot work. Danger is a tint, never solid red. Give it an icon that names the subject (Wrench, Lock, CloudOff).",
       "role=\"status\" for neutral, info and warning (read politely); role=\"alert\" only for danger. It is not role=\"banner\", which is the page header landmark.",
-      "One action at most, named by its result (\"Choose a plan\", \"Retry now\"): a Button, size md, outline.",
+      "One action at most, named by its result (\"Choose a plan\", \"Try again\"): a Button, size md, outline.",
       "Dismiss only when the condition does not need the person (news, a trial reminder). Remembering it is yours: onDismiss stores it, then pass open={false}. A condition that ends by itself (offline, read-only) has no close button and leaves when it ends.",
       "Above the AppShell: the shell is as tall as the screen unless --app-shell-height says otherwise. Put the banner and the shell in a column as tall as the screen (flex h-dvh flex-col) and wrap the shell in min-h-0 flex-1 [--app-shell-height:100%], so a banner that wraps on a phone never pushes the shell's bottom off screen.",
     ],
@@ -828,6 +867,21 @@ const entries: Record<string, Entry> = {
       "meta is a count, a size or a calm state word, in muted text; never a coloured status. A disabled node says why in its meta.",
       "Open what people came for (defaultExpanded or expandAll for short trees); a deep tree starts collapsed.",
       "Give textValue when label is not a string, so type-ahead and screen readers have its name.",
+      "content (list mode) is a node's own details under it, opened by its disclosure button: a short key/value table, a log line. Not a second tree, and not a form.",
+    ],
+  },
+  sidebar: {
+    group: "Navigation",
+    /** A console frame: the sidebar beside a page needs the card's full width. */
+    wide: true,
+    examples: { file: "sidebar", prefix: "Sidebar" },
+    rules: [
+      "For an app's sections: the main navigation of a console. Pages of one section go under it (SidebarMenuSub), shown while the section is current; never more than two levels.",
+      "Current page: isActive, the kit's muted fill and weight. Hover is the lighter accent. Never a colour, never a bar beside the item.",
+      "Counts are SidebarMenuBadge: danger only for what needs someone (unacknowledged alarms), neutral for the rest. Tags (\"Beta\", \"New\") are SidebarMenuTag, small grey words.",
+      "Every item leads with an icon and has a tooltip: collapsed, the rail shows only the icons. Group names give way to a short line.",
+      "A switcher for sites, workspaces or robots goes in SidebarHeader as a size=\"lg\" button that opens a menu; the account goes in SidebarFooter the same way.",
+      "Open by default on wide screens, a rail below about 1280 px. People choose with the trigger or ⌘B / Ctrl+B, and the cookie keeps it.",
     ],
   },
   // Overlays: the docs show the closed trigger; the *Open stories are for visual tests.
@@ -885,6 +939,23 @@ const entries: Record<string, Entry> = {
       "One y axis. Two measures on different scales are two charts.",
       "Lines 2 px; bars with 4 px rounded data ends and a 2 px gap in the card colour between bars and segments; a horizontal hairline grid; no axis lines.",
       "The chart fades in when it mounts (--motion-base); marks do not animate, because Recharts cannot use the motion tokens. Nothing moves under reduced motion.",
+    ],
+  },
+  "streaming-chart": {
+    group: "Charts",
+    wide: true,
+    examples: { file: "streaming-chart", prefix: "StreamingChart" },
+    rules: [
+      "For values arriving many times a second that someone watches as they happen: motor currents, speed, a temperature, a battery's voltage. A history read afterwards (a shift, a week) is `chart`; one value now is a `metric-card` or a `meter`.",
+      "Push readings, never pass them as props: `ref.current.push({ left: 12.4 })`, or a `subscribe` function that gets `push` once and returns its cleanup. The chart keeps them in its own ring buffers and draws on the next frame; a reading never renders React.",
+      "Stamp each reading with the message's time (`header.stamp` through `stampToMs`) when it has one: the time axis follows the readings' own clock, so a robot whose clock is off by seconds still draws at the right edge.",
+      "One unit per chart, as every chart has one y axis: three motor currents together, but speed, temperature and voltage as three charts (small multiples), driven by one set of controls through `window` and `paused` with `controls={false}` on the others.",
+      "The palette and line styles are `chart`'s: the series to watch is slot 1, solid; the next two graphite, dashed then dotted; three series and Other at most. Never a status colour for a series.",
+      "Fix `domain` for a value with known bounds (a current's range, a pack's voltage), so the lines do not jump as the range follows the data. Without it the range rounds to steps around what is in view and the limits.",
+      "A limit is a dashed line with its label at the end; only the legend says a series is past it, in words beside a warning triangle, and screen readers hear it once as it crosses. `over: \"below\"` for a floor (a battery voltage).",
+      "Keep `staleAfterMs` near three missed readings at the stream's rate (the default 2 s suits 2 Hz and faster). Silence breaks the line and says No new data with the last reading's time, instead of drawing a flat line across it.",
+      "Pause freezes the view only: readings keep arriving into the buffer, which holds `capacity` readings per series (10 minutes at 60 Hz by default). Raise it for a longer window at a high rate.",
+      "Under reduced motion the view steps once a second instead of gliding. Off screen and in a hidden tab nothing is drawn.",
     ],
   },
   "robot-map": {
@@ -973,7 +1044,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "Letting go past 85% releases; short of that the thumb springs back in 200 ms.",
       "Viewers can see it but cannot release.",
-      "Keyboard and switch control: hold Enter or Space for 2 s.",
+      "Keyboard and switch control: hold Enter or Space for 2 s; the thumb travels while the key is held. Letting go, moving focus away or the page going to the background cancels the hold, so a held key never releases on its own.",
       "If the robot does not release, set `failed`: the thumb goes back and the label says to slide again. Never leave it on Releasing….",
     ],
   },
@@ -1078,272 +1149,322 @@ export type Item = (typeof registry.items)[number] & Entry
 // What each component does with the keyboard beyond Tab. Radix supplies most of it; these tables say so out loud.
 const keyboard: Record<string, [string, string][]> = {
   alarm: [
-    ["Tab", "Move through each row's buttons, in the list's order (most urgent first)"],
-    ["Enter / Space", "Acknowledge; focus moves to the next Acknowledge, or to the list's heading after the last"],
-    ["Enter / Space on a group", "Open or close the folded low alarms or the shelved group"],
+    ["`Tab`", "Move through each row's buttons, in the list's order (most urgent first)"],
+    ["`Enter` / `Space`", "Acknowledge; focus moves to the next Acknowledge, or to the list's heading after the last"],
+    ["`Enter` / `Space` on a group", "Open or close the folded low alarms or the shelved group"],
   ],
   trace: [
-    ["Tab", "Focus a step that opens"],
-    ["Enter / Space", "Open or close its details"],
+    ["`Tab`", "Focus a step that opens"],
+    ["`Enter` / `Space`", "Open or close its details"],
   ],
   stepper: [
-    ["Tab", "Focus a step people may go back to"],
-    ["Enter / Space", "Go to that step"],
+    ["`Tab`", "Focus a step people may go back to"],
+    ["`Enter` / `Space`", "Go to that step"],
   ],
   scrollspy: [
-    ["Tab", "Focus a section link"],
-    ["Enter", "Scroll to the section and move focus to it"],
+    ["`Tab`", "Focus a section link"],
+    ["`Enter`", "Scroll to the section and move focus to it"],
   ],
   "navigation-menu": [
-    ["Enter / Space", "Open a panel"],
-    ["Arrow keys", "Move between top-level items"],
-    ["Tab", "Move into an open panel"],
-    ["Escape", "Close the panel"],
+    ["`Enter` / `Space`", "Open a panel"],
+    ["`←` `→` `↑` `↓`", "Move between top-level items"],
+    ["`Tab`", "Move into an open panel"],
+    ["`Esc`", "Close the panel"],
   ],
   questionnaire: [
-    ["Arrow keys", "Choose an option or a point on a scale"],
-    ["Space", "Tick a checkbox"],
-    ["Enter", "Next, or send on the last page"],
+    ["`←` `→` `↑` `↓`", "Choose an option or a point on a scale"],
+    ["`Space`", "Tick a checkbox"],
+    ["`Enter`", "Next, or send on the last page"],
   ],
   "data-grid": [
-    ["Tab", "Focus the grid region, then the headers and cells' controls"],
-    ["Arrow keys", "Scroll the region"],
-    ["Enter / Space", "Open a column menu, toggle a checkbox"],
+    ["`Tab`", "Focus the grid region, then each header's menu and column edge, then the cells' controls"],
+    ["`←` `→` `↑` `↓`", "Scroll the region"],
+    ["`Enter` / `Space`", "Open a column menu, toggle a checkbox"],
+    ["`←` / `→` on a column edge", "Narrow or widen the column by 16 px (`Shift`: 64 px)"],
+    ["`Home` on a column edge", "The column's narrowest width"],
+    ["`Enter` on a column edge", "Back to the column's first width"],
   ],
   sortable: [
-    ["Space", "Lift or drop the focused item"],
-    ["Arrow keys", "Move the lifted item"],
-    ["Escape", "Cancel the move"],
+    ["`Space`", "Lift or drop the focused item"],
+    ["`←` `→` `↑` `↓`", "Move the lifted item"],
+    ["`Esc`", "Cancel the move"],
   ],
   resizable: [
-    ["Tab", "Focus a handle"],
-    ["Arrow keys", "Resize"],
-    ["Home / End", "Collapse or expand fully"],
-    ["Enter", "Toggle a collapsible panel"],
+    ["`Tab`", "Focus a handle"],
+    ["`←` `→` `↑` `↓`", "Resize"],
+    ["`Home` / `End`", "Collapse or expand fully"],
+    ["`Enter`", "Toggle a collapsible panel"],
   ],
   "file-upload": [
-    ["Tab", "Focus the drop zone"],
-    ["Enter / Space", "Open the file picker"],
+    ["`Tab`", "Focus the drop zone"],
+    ["`Enter` / `Space`", "Open the file picker"],
   ],
   autocomplete: [
-    ["Arrow Down / Up", "Open the list, move between options"],
-    ["Enter", "Pick the highlighted option"],
-    ["Escape", "Close and restore the picked value"],
+    ["`↓` / `↑`", "Open the list, move between options"],
+    ["`Enter`", "Pick the highlighted option"],
+    ["`Esc`", "Close and restore the picked value"],
   ],
   "input-otp": [
     ["Type", "Fill the next box"],
-    ["Backspace", "Clear the previous box"],
-    ["Arrow Left / Right", "Move between boxes"],
+    ["`Backspace`", "Clear the previous box"],
+    ["`←` / `→`", "Move between boxes"],
   ],
   calendar: [
-    ["Arrow keys", "Move by day or week"],
-    ["Page Up / Page Down", "Previous or next month"],
-    ["Home / End", "Start or end of the week"],
-    ["Enter / Space", "Pick the focused day"],
+    ["`←` `→` `↑` `↓`", "Move by day or week"],
+    ["`PageUp` / `PageDown`", "Previous or next month"],
+    ["`Home` / `End`", "Start or end of the week"],
+    ["`Enter` / `Space`", "Pick the focused day"],
   ],
   "time-picker": [
-    ["Enter", "Commit the typed time (TimeInput)"],
-    ["Tab", "Leave the field; the time is read on blur"],
-    ["Enter / Space", "Open the list of slots (TimePicker)"],
-    ["Tab", "In the list: one stop, on the picked slot (or the first free one)"],
-    ["↑ / ↓", "Previous or next free slot"],
-    ["Page Up / Page Down", "Six slots back or forward"],
-    ["Home / End", "First or last free slot"],
-    ["Enter / Space", "Pick the focused slot and close"],
-    ["Esc", "Close and return focus"],
+    ["`Enter`", "Commit the typed time (TimeInput)"],
+    ["`Tab`", "Leave the field; the time is read on blur"],
+    ["`Enter` / `Space`", "Open the list of slots (TimePicker)"],
+    ["`Tab`", "In the list: one stop, on the picked slot (or the first free one)"],
+    ["`↑` / `↓`", "Previous or next free slot"],
+    ["`PageUp` / `PageDown`", "Six slots back or forward"],
+    ["`Home` / `End`", "First or last free slot"],
+    ["`Enter` / `Space`", "Pick the focused slot and close"],
+    ["`Esc`", "Close and return focus"],
   ],
   "scroll-area": [
-    ["Tab", "Focus the scroll region"],
-    ["Arrow keys", "Scroll"],
-    ["Page Up / Page Down", "Scroll by a page"],
+    ["`Tab`", "Focus the scroll region"],
+    ["`←` `→` `↑` `↓`", "Scroll"],
+    ["`PageUp` / `PageDown`", "Scroll by a page"],
   ],
   "toggle-group": [
-    ["Tab", "Move into the group"],
-    ["Arrow keys", "Move between items"],
-    ["Enter / Space", "Turn the focused item on or off"],
+    ["`Tab`", "Move into the group"],
+    ["`←` `→` `↑` `↓`", "Move between items"],
+    ["`Enter` / `Space`", "Turn the focused item on or off"],
   ],
-  button: [["Enter / Space", "Activate"]],
+  button: [["`Enter` / `Space`", "Activate"]],
   "segmented-control": [
-    ["← / →", "Move to the previous or next segment"],
-    ["Enter / Space", "Select the focused segment"],
+    ["`←` / `→`", "Move to the previous or next segment"],
+    ["`Enter` / `Space`", "Select the focused segment"],
   ],
-  toggle: [["Enter / Space", "Turn on or off"]],
+  "theme-toggle": [
+    ["`←` / `→`", "Move to the previous or next choice"],
+    ["`Enter` / `Space`", "Choose the focused one"],
+  ],
+  "chip-group": [
+    ["`←` / `→`", "Move between the chips (one Tab stop for the group; N more is a stop of its own)"],
+    ["`Enter` / `Space`", "Choose the focused chip; on the chosen one, clear the choice"],
+  ],
+  "search-field": [
+    ["`/`", "Focus the search box from anywhere on the page, except while typing in a field"],
+    ["`Enter`", "Open the results page with the query"],
+  ],
+  toggle: [["`Enter` / `Space`", "Turn on or off"]],
   "number-field": [
-    ["↑ / ↓", "Step up or down"],
-    ["Shift+↑ / Shift+↓", "Step by the large step"],
-    ["PageUp / PageDown", "Step by the large step"],
-    ["Home / End", "Go to the minimum or maximum"],
-    ["Enter", "Keep the typed value (kept in range)"],
+    ["`↑` / `↓`", "Step up or down"],
+    ["`Shift`+`↑` / `Shift`+`↓`", "Step by the large step"],
+    ["`PageUp` / `PageDown`", "Step by the large step"],
+    ["`Home` / `End`", "Go to the minimum or maximum"],
+    ["`Enter`", "Keep the typed value (kept in range)"],
   ],
-  checkbox: [["Space", "Check or uncheck"]],
-  "radio-group": [["↑ ↓ / ← →", "Move to and select the previous or next option"]],
-  switch: [["Enter / Space", "Turn on or off"]],
+  checkbox: [["`Space`", "Check or uncheck"]],
+  "radio-group": [["`↑` `↓` / `←` `→`", "Move to and select the previous or next option"]],
+  switch: [["`Enter` / `Space`", "Turn on or off"]],
   select: [
-    ["Enter / Space / ↓", "Open the list"],
-    ["↑ / ↓", "Move between options"],
+    ["`Enter` / `Space` / `↓`", "Open the list"],
+    ["`↑` / `↓`", "Move between options"],
     ["Type a letter", "Jump to the first option starting with it"],
-    ["Enter", "Choose"],
-    ["Esc", "Close without changing"],
+    ["`Enter`", "Choose"],
+    ["`Esc`", "Close without changing"],
   ],
   slider: [
-    ["← → / ↑ ↓", "Step down or up"],
-    ["PageUp / PageDown", "Step by 10%"],
-    ["Home / End", "Go to the minimum or maximum"],
+    ["`←` `→` / `↑` `↓`", "Step down or up"],
+    ["`PageUp` / `PageDown`", "Step by 10%"],
+    ["`Home` / `End`", "Go to the minimum or maximum"],
   ],
   tabs: [
-    ["← / →", "Move to and open the previous or next tab"],
-    ["Home / End", "First or last tab"],
+    ["`←` / `→`", "Move to and open the previous or next tab"],
+    ["`Home` / `End`", "First or last tab"],
   ],
   accordion: [
-    ["Enter / Space", "Open or close the section"],
-    ["↑ / ↓", "Move between section headers"],
-    ["Home / End", "First or last header"],
+    ["`Enter` / `Space`", "Open or close the section"],
+    ["`↑` / `↓`", "Move between section headers"],
+    ["`Home` / `End`", "First or last header"],
   ],
   graph: [
-    ["Tab", "Move into the graph (one stop, on the selected node or the first) and out"],
-    ["→ / ←", "Horizontal: to an output / to an input of the focused node (the nearest one, or back where you came from)"],
-    ["↓ / ↑", "Horizontal: next or previous node in the same column. Vertical: ↓ / ↑ follow the edges and ← / → move in the row"],
-    ["Home / End", "First or last node"],
-    ["Enter", "Select the node and highlight its path, or follow it when it is a link"],
-    ["Space", "Select the node, links included"],
-    ["Esc", "Clear the selection"],
+    ["`Tab`", "Move into the graph (one stop, on the selected node or the first) and out"],
+    ["`→` / `←`", "Horizontal: to an output / to an input of the focused node (the nearest one, or back where you came from)"],
+    ["`↓` / `↑`", "Horizontal: next or previous node in the same column. Vertical: ↓ / ↑ follow the edges and ← / → move in the row"],
+    ["`Home` / `End`", "First or last node"],
+    ["`Enter`", "Select the node and highlight its path, or follow it when it is a link"],
+    ["`Space`", "Select the node, links included"],
+    ["`Esc`", "Clear the selection"],
+  ],
+  "streaming-chart": [
+    ["`Tab`", "Move to the window, the Chart / Table switch, Pause, then the plot. Under 36 rem wide: the View options menu (⋯, both switches), Pause, then the plot"],
+    ["`Space`", "On the plot, pause or resume"],
+    ["`←` / `→`", "On the plot, move the view back or forward in time by a tenth of the window, pausing it (Shift: half the window)"],
+    ["`End`", "On the plot, jump back to live"],
   ],
   "point-cloud": [
-    ["Tab", "Move into the view (one stop), then to Reset view and Fit"],
-    ["← / →", "Turn the view around the cloud"],
-    ["↑ / ↓", "Look from higher or lower"],
-    ["Shift + arrows", "Move the view"],
-    ["+ / -", "Zoom in or out"],
-    ["0", "Reset the view"],
+    ["`Tab`", "Move into the view (one stop), then to Reset view and Fit"],
+    ["`←` / `→`", "Turn the view around the cloud"],
+    ["`↑` / `↓`", "Look from higher or lower"],
+    ["`Shift` + an arrow key", "Move the view"],
+    ["`+` / `-`", "Zoom in or out"],
+    ["`0`", "Reset the view"],
   ],
   "robot-map": [
-    ["Tab", "Move into the map (one stop), then to its zoom buttons"],
-    ["← / → / ↑ / ↓", "Move the map; in an edit mode, move the crosshair (Shift: bigger steps), or carry what was picked up"],
-    ["+ / -", "Zoom in or out"],
-    ["0", "Show the whole site"],
-    ["Enter / Space", "Edit modes: place a goal, a waypoint or a corner; pick up or drop a waypoint or corner. Enter also closes a zone"],
-    ["← / → after placing a goal", "Turn the goal 15° (Shift: 45°); Enter sets it"],
-    ["Delete / Backspace", "Remove the selected waypoint, or the zone's last corner"],
-    ["Esc", "Cancel what is being drawn or carried; otherwise clear the selection"],
+    ["`Tab`", "Move into the map (one stop), then to its zoom buttons"],
+    ["`←` `→` `↑` `↓`", "Move the map; in an edit mode, move the crosshair (Shift: bigger steps), or carry what was picked up"],
+    ["`+` / `-`", "Zoom in or out"],
+    ["`0`", "Show the whole site"],
+    ["`Enter` / `Space`", "Edit modes: place a goal, a waypoint or a corner; pick up or drop a waypoint or corner. Enter also closes a zone"],
+    ["`←` / `→` after placing a goal", "Turn the goal 15° (Shift: 45°); Enter sets it"],
+    ["`Delete` / `Backspace`", "Remove the selected waypoint, or the zone's last corner"],
+    ["`Esc`", "Cancel what is being drawn or carried; otherwise clear the selection"],
   ],
   "robot-model": [
-    ["Tab", "Move into the view: one stop. Its buttons are for the pointer; 0 and F do the same"],
-    ["← / →", "Turn the view around the robot"],
-    ["↑ / ↓", "Look from higher or lower"],
-    ["Shift + arrows", "Move the view"],
-    ["+ / -", "Zoom in or out (the wheel too, once the view has focus)"],
-    ["0", "Reset the view"],
-    ["F", "Fit the robot in view, in its pose now"],
+    ["`Tab`", "Move into the view: one stop. Its buttons are for the pointer; 0 and F do the same"],
+    ["`←` / `→`", "Turn the view around the robot"],
+    ["`↑` / `↓`", "Look from higher or lower"],
+    ["`Shift` + an arrow key", "Move the view"],
+    ["`+` / `-`", "Zoom in or out (the wheel too, once the view has focus)"],
+    ["`0`", "Reset the view"],
+    ["`F`", "Fit the robot in view, in its pose now"],
+  ],
+  diagnostics: [
+    ["`Tab`", "Move to the search box, the filter chips, then each group's and status's disclosure button"],
+    ["`←` / `→`", "On the filter chips: move between All and Problems"],
+    ["`Enter` / `Space`", "On a chip, choose it; on a disclosure button, open or close the group or the status's values"],
   ],
   tree: [
-    ["Tab", "list: move between links and disclosure buttons. select: move into the tree (one stop) and out"],
-    ["Enter / Space", "list: open or close a branch, follow a link. select: select the focused node"],
-    ["↑ / ↓", "select: previous or next node on screen"],
-    ["→", "select: open a closed branch; on an open one, move to its first child"],
-    ["←", "select: close an open branch; otherwise move to the parent"],
-    ["Home / End", "select: first or last node on screen"],
+    ["`Tab`", "list: move between links and disclosure buttons. select: move into the tree (one stop) and out"],
+    ["`Enter` / `Space`", "list: open or close a branch, follow a link. select: select the focused node"],
+    ["`↑` / `↓`", "select: previous or next node on screen"],
+    ["`→`", "select: open a closed branch; on an open one, move to its first child"],
+    ["`←`", "select: close an open branch; otherwise move to the parent"],
+    ["`Home` / `End`", "select: first or last node on screen"],
     ["Type letters", "select: move to the next node whose name starts with them"],
-    ["*", "select: open every branch beside the focused node"],
+    ["`*`", "select: open every branch beside the focused node"],
+  ],
+  sidebar: [
+    ["`⌘`+`B` / `Ctrl`+`B`", "Collapse the sidebar to its rail, or open it; on a phone, open or close the sheet. Not while typing"],
+    ["`Tab`", "Move through the switcher, the links and the account, top to bottom"],
+    ["`Enter`", "Follow the link; on the switcher or the account, open its menu"],
+    ["`Esc`", "On a phone, close the sheet and return focus to the trigger"],
   ],
   "image-grid": [
-    ["Enter / Space", "Open the picture in the lightbox, or pick it while picking"],
-    ["← / →", "In the lightbox: previous or next picture"],
-    ["Esc", "Close the lightbox and return focus to the picture's tile"],
+    ["`Enter` / `Space`", "Open the picture in the lightbox, or pick it while picking"],
+    ["`←` `→` / `↑` `↓`", "Pick one (a radio group, one Tab stop): move to the previous or next picture and pick it"],
+    ["`Home` / `End`", "Pick one: the first or last picture"],
+    ["`←` / `→`", "In the lightbox: previous or next picture"],
+    ["`Esc`", "Close the lightbox and return focus to the picture's tile"],
   ],
   "media-player": [
-    ["Space / K", "Play or pause (Space on a focused button presses that button)"],
-    ["← / →", "Back or forward 5 seconds, also on the timeline"],
-    ["J / L", "Back or forward 10 seconds"],
-    ["Home / End", "On the timeline: start or end of the clip"],
-    ["M", "Mute or unmute"],
-    ["F", "Full screen, or leave it (Esc leaves it too)"],
+    ["`Space` / `K`", "Play or pause (Space on a focused button presses that button)"],
+    ["`←` / `→`", "Back or forward 5 seconds, also on the timeline"],
+    ["`J` / `L`", "Back or forward 10 seconds"],
+    ["`Home` / `End`", "On the timeline: start or end of the clip"],
+    ["`M`", "Mute or unmute"],
+    ["`F`", "Full screen, or leave it (Esc leaves it too)"],
   ],
   "camera-feed": [
-    ["Space", "Pause or resume the view (Space on a focused button presses that button)"],
-    ["F", "Full screen, or leave it (Esc leaves it too)"],
+    ["`Space`", "Pause or resume the view (Space on a focused button presses that button)"],
+    ["`F`", "Full screen, or leave it (Esc leaves it too)"],
   ],
   "annotated-image": [
-    ["Tab", "Reach the picture's annotations once; Tab again leaves"],
-    ["← → / ↑ ↓", "Previous or next annotation, top to bottom and left to right"],
-    ["Home / End", "First or last annotation"],
-    ["Enter / Space", "Select the annotation"],
-    ["Esc", "Clear the selection"],
+    ["`Tab`", "Reach the picture's annotations once; Tab again leaves"],
+    ["`←` `→` / `↑` `↓`", "Previous or next annotation, top to bottom and left to right"],
+    ["`Home` / `End`", "First or last annotation"],
+    ["`Enter` / `Space`", "Select the annotation"],
+    ["`Esc`", "Clear the selection"],
   ],
   dialog: overlayKeys,
   "alert-dialog": [
-    ["Esc", "Cancel"],
-    ["Tab / Shift+Tab", "Move between the actions; Cancel has focus first"],
+    ["`Esc`", "Cancel"],
+    ["`Tab` / `Shift`+`Tab`", "Move between the actions; Cancel has focus first"],
   ],
   sheet: overlayKeys,
-  popover: [["Esc", "Close and return focus"]],
+  popover: [["`Esc`", "Close and return focus"]],
   tooltip: [
     ["Focus", "Show"],
-    ["Esc", "Hide"],
+    ["`Esc`", "Hide"],
   ],
   command: [
-    ["⌘K / Ctrl+K", "Open or close the palette"],
-    ["↑ / ↓", "Move between results"],
-    ["Enter", "Run the highlighted result"],
-    ["Esc", "Close and return focus"],
+    ["`⌘`+`K` / `Ctrl`+`K`", "Open or close the palette"],
+    ["`↑` / `↓`", "Move between results"],
+    ["`Enter`", "Run the highlighted result"],
+    ["`Esc`", "Close and return focus"],
   ],
   pagination: [
-    ["Tab", "Move between previous, the pages and next"],
-    ["Enter / Space", "Go to that page"],
+    ["`Tab`", "Move between previous, the pages and next"],
+    ["`Enter` / `Space`", "Go to that page"],
   ],
   breadcrumb: [
-    ["Tab", "Move between the levels"],
-    ["Enter", "Open that level"],
+    ["`Tab`", "Move between the levels"],
+    ["`Enter`", "Open that level"],
   ],
   "choice-field": [
-    ["Space", "Toggle the focused checkbox or switch"],
-    ["↑ ↓", "Move between radio options"],
+    ["`Space`", "Toggle the focused checkbox or switch"],
+    ["`↑` / `↓`", "Move between radio options"],
   ],
-  "copy-button": [["Enter / Space", "Copy"]],
+  "copy-button": [["`Enter` / `Space`", "Copy"]],
   "code-block": [
-    ["Tab", "Move to Show (a secret), Copy, then the code when it scrolls"],
-    ["← / →", "Scroll the focused code sideways"],
-    ["Enter / Space", "On Show, show or hide the secret; on Copy, copy the code"],
+    ["`Tab`", "Move to Show (a secret), Copy, then the code when it scrolls"],
+    ["`←` / `→`", "Scroll the focused code sideways"],
+    ["`Enter` / `Space`", "On Show, show or hide the secret; on Copy, copy the code"],
+  ],
+  "log-viewer": [
+    ["`Tab`", "Move into the lines (one stop: the newest line, or the first in view), then to an open line's Copy button"],
+    ["`↑` / `↓`", "Previous or next line"],
+    ["`PageUp` / `PageDown`", "A screen up or down"],
+    ["`Home` / `End`", "First line, or the newest (End follows new lines again)"],
+    ["`Shift` + an arrow key", "Select several lines"],
+    ["`Enter` / `Space`", "Open or close the line; → opens, ← closes"],
+    ["`C`", "Copy the selected lines (Ctrl/⌘+C too, when no text is selected)"],
+    ["`/`", "Go to the search box"],
+    ["`Enter` / `Shift`+`Enter`", "In the search box: next or previous match"],
+    ["`Esc`", "Close the open line, or drop the selection back to one line"],
   ],
   filters: [
-    ["Enter", "On + Filter, open the picker; on a part of a chip, reopen that step"],
-    ["↑ / ↓", "Move through fields, operators or values; type to narrow them"],
-    ["Enter", "Choose and go to the next step; in a value box, apply"],
-    ["Esc", "Back one step; at the first step, close and return focus"],
+    ["`Enter`", "On + Filter, open the picker; on a part of a chip, reopen that step"],
+    ["`↑` / `↓`", "Move through fields, operators or values; type to narrow them"],
+    ["`Enter`", "Choose and go to the next step; in a value box, apply"],
+    ["`Esc`", "Back one step; at the first step, close and return focus"],
   ],
   "dropdown-menu": [
-    ["Enter / Space / ↓", "Open the menu"],
-    ["↑ / ↓", "Move between items"],
-    ["Enter", "Run the item"],
-    ["Esc", "Close and return focus"],
+    ["`Enter` / `Space` / `↓`", "Open the menu"],
+    ["`↑` / `↓`", "Move between items"],
+    ["`Enter`", "Run the item"],
+    ["`Esc`", "Close and return focus"],
   ],
   "context-menu": [
-    ["Shift+F10 / Menu key", "Open the menu for the focused row or area"],
-    ["↑ / ↓", "Move between items"],
-    ["→ / ←", "Open or close a submenu"],
-    ["Enter / Space", "Run the item, or tick it"],
-    ["Esc", "Close and return focus"],
+    ["`Shift`+`F10` / `Menu`", "Open the menu for the focused row or area"],
+    ["`↑` / `↓`", "Move between items"],
+    ["`→` / `←`", "Open or close a submenu"],
+    ["`Enter` / `Space`", "Run the item, or tick it"],
+    ["`Esc`", "Close and return focus"],
   ],
   "hover-card": [
     ["Focus", "Show the card after a moment"],
-    ["Esc / Tab away", "Hide it"],
-    ["Enter", "Follow the link"],
+    ["`Esc` / `Tab` away", "Hide it"],
+    ["`Enter`", "Follow the link"],
   ],
-  banner: [["Enter / Space", "On the action, run it; on the close button, dismiss the notice"]],
+  banner: [["`Enter` / `Space`", "On the action, run it; on the close button, dismiss the notice"]],
   toast: [
-    ["F8", "Move focus to the notifications"],
-    ["Esc", "Dismiss the focused notification"],
+    ["`F8`", "Move focus to the notifications"],
+    ["`Esc`", "Dismiss the focused notification"],
   ],
   "stop-button": [
-    ["Enter / Space", "Stop this robot"],
-    ["Hold Enter / Space 2 s", "Stop all robots"],
+    ["`Enter` / `Space`", "Stop this robot"],
+    ["Hold `Enter` / `Space` 2 s", "Stop all robots"],
   ],
-  "slide-to-release": [["Hold Enter / Space 2 s", "Release"]],
+  "slide-to-release": [
+    ["Hold `Enter` / `Space` 2 s", "Release; the thumb travels while the key is held"],
+    ["Let go, or `Tab` away", "Cancel the hold: the thumb springs back. The page going to the background cancels it too"],
+    ["`←` `→` `↑` `↓`", "Nothing: a release is never a step"],
+  ],
   "teleop-pad": [
-    ["Hold ↑ / W, ↓ / S", "Drive forward, back"],
-    ["Hold ← / A, → / D", "Turn left, right (with ↑ or ↓, curve)"],
+    ["Hold `↑` / `W`, `↓` / `S`", "Drive forward, back"],
+    ["Hold `←` / `A`, `→` / `D`", "Turn left, right (with ↑ or ↓, curve)"],
     ["Release every drive key", "Stop"],
-    ["Space / Esc", "Stop; keys still held do nothing until released"],
-    ["Tab away", "Stop"],
+    ["`Space` / `Esc`", "Stop; keys still held do nothing until released"],
+    ["`Tab` away", "Stop"],
   ],
 }
 
@@ -1370,13 +1491,39 @@ export function storyNames(ex: Examples) {
   return picked
 }
 
-/** "ThreeTiersWithPageAction" -> "Three tiers with page action", as Storybook shows it. */
-export const storyTitle = (name: string) => {
-  const words = name
-    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
-    .replace(/([A-Z])([A-Z][a-z])/g, "$1 $2")
-    .split(" ")
-  // Proper names keep their capital: "Delivered over Bluetooth", not "bluetooth".
-  const proper = new Set(["Bluetooth", "Wi", "Fi", "AI", "URL", "SMS"])
-  return words.map((w, i) => (i === 0 || proper.has(w) ? w : w.toLowerCase())).join(" ")
+/** An example's caption where the story's name cannot say it: component → story → caption. */
+const captions: Record<string, Record<string, string>> = {
+  "log-viewer": { LogViewerRosout: "/rosout", LogViewerZhTw: "Traditional Chinese (zh-TW)", LogViewerHundredThousand: "100,000 lines" },
+  calendar: { CalendarMonthYearDropdowns: "Month and year dropdowns" },
+  chart: { ChartAboveBelowZero: "Above and below zero" },
+  "time-picker": { TimePickerTwelveHour: "12-hour clock" },
+  diagnostics: { DiagnosticsAllOk: "All OK" },
+  "teleop-pad": { TeleopPadConsole: "On a console" },
+  "input-otp": { InputOTPPin: "PIN" },
+  "use-long-press": { UseLongPressHoldToConfirm: "Hold to confirm" },
+}
+
+// Words that keep their own spelling in a caption: proper names and acronyms.
+const spelled = new Map(["Bluetooth", "Wi", "Fi", "AI", "URL", "SMS", "ROS", "CI", "WebGL", "PGM", "OTP", "PIN", "OK", "ID", "API", "CSV", "JSON", "PDF", "URDF", "TF", "LiDAR", "GPS", "IMU"].map((w) => [w.toLowerCase(), w]))
+
+/** "ChartLine" → "chart-line": the item names in PascalCase, longest first, to tell a component's own stories apart. */
+const pascalNames = () => items.map((i) => i.name.replace(/-/g, "")).sort((a, b) => b.length - a.length)
+
+/**
+ * "ThreeTiersWithPageAction" -> "Three tiers with page action", as Storybook shows it. On a component's page (`component`)
+ * its name is dropped from the front ("DataGridStriped" → "Striped"), unless the story is named after another component
+ * ("InputGroupSearch" on Input stays "Input group search"). Acronyms keep their capitals ("PointCloudNoWebGL" → "No WebGL",
+ * "TraceCI" → "CI"); `captions` overrides the rest.
+ */
+export const storyTitle = (name: string, component?: string) => {
+  const own = component && captions[component]?.[name]
+  if (own) return own
+  let rest = name
+  if (component) {
+    const owner = pascalNames().find((p) => name.toLowerCase().startsWith(p.toLowerCase()) && name.length > p.length && /[A-Z0-9]/.test(name[p.length]))
+    if (owner && owner === component.replace(/-/g, "")) rest = name.slice(owner.length)
+  }
+  // An acronym is a run of capitals (WebGL and LiDAR included) before a capitalised word, a digit or the end.
+  const words = rest.match(/WebGL|LiDAR|[A-Z]{2,}(?=[A-Z][a-z]|\d|$)|[A-Z]?[a-z]+|[A-Z]|\d+/g) ?? [rest]
+  return words.map((w, i) => spelled.get(w.toLowerCase()) ?? (i === 0 ? w[0].toUpperCase() + w.slice(1) : w.toLowerCase())).join(" ")
 }

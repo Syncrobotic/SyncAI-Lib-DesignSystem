@@ -1,4 +1,4 @@
-// @syncrobotic/incident-queue v0.17.3 · update: npx shadcn add @syncrobotic/incident-queue --overwrite
+// @syncrobotic/incident-queue v0.28.0 · update: npx shadcn add @syncrobotic/incident-queue --overwrite
 "use client"
 
 import * as React from "react"
@@ -80,7 +80,7 @@ export function IncidentQueue() {
     <AppShell
       product="Fleet console"
       nav={sampleNav}
-      current="#alarms"
+      current="#incidents"
       title="Incidents"
       user={sampleUser}
       actions={

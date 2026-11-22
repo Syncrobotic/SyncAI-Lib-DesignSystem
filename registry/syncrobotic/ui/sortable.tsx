@@ -1,4 +1,4 @@
-// @syncrobotic/sortable v0.23.0 · update: npx shadcn add @syncrobotic/sortable --overwrite
+// @syncrobotic/sortable v0.28.0 · update: npx shadcn add @syncrobotic/sortable --overwrite
 "use client"
 
 import * as React from "react"
@@ -20,7 +20,13 @@ import { CSS } from "@dnd-kit/utilities"
 import { GripVertical } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-type ItemCtx = { attributes: ReturnType<typeof useSortable>["attributes"]; listeners: ReturnType<typeof useSortable>["listeners"]; isDragging: boolean }
+type ItemCtx = {
+  attributes: ReturnType<typeof useSortable>["attributes"]
+  listeners: ReturnType<typeof useSortable>["listeners"]
+  isDragging: boolean
+  /** Where the item sits now, from 1, following a drag as it goes. */
+  position: number
+}
 const SortableItemContext = React.createContext<ItemCtx | null>(null)
 // Whether a drag overlay follows the pointer; without one the item itself does.
 const OverlayContext = React.createContext(false)
@@ -80,6 +86,9 @@ export function Sortable<T>({
 }) {
   const l = { ...defaultSortableLabels, ...labels }
   const [active, setActive] = React.useState<UniqueIdentifier | null>(null)
+  // The place last announced. dnd-kit reports the lifted item over its own place as soon as it is picked up; that is no
+  // move, so it is not announced as one (only a return to it after moving away is).
+  const lastOver = React.useRef<UniqueIdentifier | null>(null)
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
     useSensor(TouchSensor, { activationConstraint: { delay: 150, tolerance: 6 } }),
@@ -113,8 +122,15 @@ export function Sortable<T>({
       onDragCancel={() => setActive(null)}
       accessibility={{
         announcements: {
-          onDragStart: ({ active }) => l.pickedUp(nameOf(active.id), ids.indexOf(active.id) + 1, ids.length),
-          onDragOver: ({ active, over }) => (over ? l.moved(nameOf(active.id), ids.indexOf(over.id) + 1, ids.length) : undefined),
+          onDragStart: ({ active }) => {
+            lastOver.current = active.id
+            return l.pickedUp(nameOf(active.id), ids.indexOf(active.id) + 1, ids.length)
+          },
+          onDragOver: ({ active, over }) => {
+            if (!over || over.id === lastOver.current) return undefined
+            lastOver.current = over.id
+            return l.moved(nameOf(active.id), ids.indexOf(over.id) + 1, ids.length)
+          },
           onDragEnd: ({ active, over }) => (over ? l.droppedAt(nameOf(active.id), ids.indexOf(over.id) + 1, ids.length) : l.dropped(nameOf(active.id))),
           onDragCancel: ({ active }) => l.cancelled(nameOf(active.id)),
         },
@@ -135,7 +151,7 @@ export function Sortable<T>({
 
 /** One reorderable entry. Put a SortableHandle inside it; the rest of the row stays clickable. */
 export function SortableItem({ id, className, children }: { id: UniqueIdentifier; className?: string; children: React.ReactNode }) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id })
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging, newIndex } = useSortable({ id })
   const overlay = React.useContext(OverlayContext)
   return (
     <li
@@ -151,9 +167,23 @@ export function SortableItem({ id, className, children }: { id: UniqueIdentifier
         className,
       )}
     >
-      <SortableItemContext.Provider value={{ attributes, listeners, isDragging }}>{children}</SortableItemContext.Provider>
+      <SortableItemContext.Provider value={{ attributes, listeners, isDragging, position: newIndex + 1 }}>{children}</SortableItemContext.Provider>
     </li>
   )
+}
+
+/**
+ * The place of the enclosing SortableItem, from 1: a number shown on each item ("1", "Step 2"). It follows a drag as it
+ * goes, so the numbers move with the order instead of waiting for the drop.
+ */
+export function SortablePosition({
+  format = (n) => n,
+}: {
+  /** Writes the number, e.g. (n) => `Step ${n}`. Left out, the bare number. */
+  format?: (position: number) => React.ReactNode
+}) {
+  const position = React.useContext(SortableItemContext)?.position ?? 0
+  return <>{format(position)}</>
 }
 
 /** The grip people drag or focus to move the item. 44 px on touch. */
@@ -166,7 +196,8 @@ export function SortableHandle({ label, className }: { label: string; className?
       {...ctx?.attributes}
       {...ctx?.listeners}
       className={cn(
-        "press flex size-(--h-sm) shrink-0 cursor-grab touch-none items-center justify-center rounded-2xs text-muted-foreground hover:bg-accent hover:text-foreground active:cursor-grabbing",
+        // scroll-my-2: focused at the edge of a scrolling list, it is scrolled in with room for its focus ring.
+        "press flex size-(--h-sm) shrink-0 scroll-my-2 cursor-grab touch-none items-center justify-center rounded-2xs text-muted-foreground hover:bg-accent hover:text-foreground active:cursor-grabbing",
         className,
       )}
     >

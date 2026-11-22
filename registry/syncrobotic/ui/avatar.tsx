@@ -1,4 +1,4 @@
-// @syncrobotic/avatar v0.17.3 · update: npx shadcn add @syncrobotic/avatar --overwrite
+// @syncrobotic/avatar v0.28.0 · update: npx shadcn add @syncrobotic/avatar --overwrite
 "use client"
 
 import * as React from "react"
@@ -82,10 +82,10 @@ export function AvatarBadge({ status, className, children, ...props }: React.Com
 }
 
 /**
- * A row of overlapping avatars. With `max`, the ones past it fold into a "+N" avatar; give `label` (who they are, in
- * words) so a screen reader hears everyone, not just the faces shown. Each avatar is ringed 2 px in the page colour
- * (on a card, pass `*:data-[slot=avatar]:ring-card`) and overlaps the next by 4 px, so the stack reads as separate faces
- * and no initials are cut.
+ * A row of avatars. With `max`, the ones past it fold into a "+N" avatar; give `label` (who they are, in words) so a
+ * screen reader hears everyone, not just the faces shown. Round avatars (people) are ringed 2 px in the page colour (on a
+ * card, pass `*:data-[slot=avatar]:ring-card`) and overlap the next by 4 px, so the stack reads as separate faces. Square
+ * ones (things) sit side by side 4 px apart instead: a square's initials reach its edges, and an overlap would cut them.
  */
 export function AvatarGroup({
   max,
@@ -99,28 +99,41 @@ export function AvatarGroup({
   const rest = all.length - shown.length
   const first = all[0]
   const size = React.isValidElement<{ size?: keyof typeof sizes }>(first) ? first.props.size : undefined
+  const square = React.isValidElement<{ shape?: "circle" | "square" }>(first) && first.props.shape === "square"
   return (
     <div
       data-slot="avatar-group"
       role={label ? "group" : undefined}
       aria-label={label}
-      className={cn("flex items-center -space-x-1 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background", className)}
+      className={cn("flex items-center", square ? "gap-1" : "-space-x-1 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background", className)}
       {...props}
     >
       {shown}
-      {rest > 0 && <AvatarGroupCount size={size}>+{rest}</AvatarGroupCount>}
+      {rest > 0 && (
+        <AvatarGroupCount size={size} shape={square ? "square" : "circle"}>
+          +{rest}
+        </AvatarGroupCount>
+      )}
     </div>
   )
 }
 
-/** The "+N" at the end of a group: how many more there are. */
-export function AvatarGroupCount({ size = "md", className, children, ...props }: React.ComponentProps<"span"> & { size?: keyof typeof sizes }) {
+/** The "+N" at the end of a group: how many more there are, in the group's shape. */
+export function AvatarGroupCount({
+  size = "md",
+  shape = "circle",
+  className,
+  children,
+  ...props
+}: React.ComponentProps<"span"> & { size?: keyof typeof sizes; shape?: "circle" | "square" }) {
   return (
     <span
       data-slot="avatar"
       data-size={size}
+      data-shape={shape}
       className={cn(
-        "relative flex shrink-0 items-center justify-center rounded-full bg-track font-medium text-foreground tabular-nums",
+        "relative flex shrink-0 items-center justify-center bg-track font-medium text-foreground tabular-nums",
+        shape === "circle" ? "rounded-full" : size === "sm" ? "rounded-2xs" : "rounded-xs",
         sizes[size],
         className,
       )}

@@ -1,6 +1,6 @@
-// @syncrobotic/marker v0.13.0 · update: npx shadcn add @syncrobotic/marker --overwrite
+// @syncrobotic/marker v0.28.0 · update: npx shadcn add @syncrobotic/marker --overwrite
 import * as React from "react"
-import { StatusGlyph, type Tone, toStatus } from "@/registry/syncrobotic/shell/status-glyph"
+import { type Status, StatusGlyph, type Tone, toStatus, warnTone } from "@/registry/syncrobotic/shell/status-glyph"
 import { cn } from "@/lib/utils"
 
 /**
@@ -23,7 +23,8 @@ export function Marker({
   align?: "start" | "center"
 }) {
   return (
-    <div data-slot="marker" className={cn("flex min-h-8 items-center gap-3 text-xs", className)} {...props}>
+    // As wide as its container: the lines either side of the label fill what is left, even where the parent shrinks to fit.
+    <div data-slot="marker" className={cn("flex min-h-8 w-full items-center gap-3 text-xs", className)} {...props}>
       {align === "center" && <span aria-hidden="true" className="h-px flex-1 bg-border" />}
       <span
         className={cn(
@@ -46,6 +47,7 @@ export function Marker({
  * The status is a glyph, so a long log of normal lines stays quiet.
  */
 export function MarkerRow({
+  status: given,
   tone,
   icon,
   title,
@@ -55,19 +57,24 @@ export function MarkerRow({
   children,
   ...props
 }: Omit<React.ComponentProps<"div">, "title"> & {
+  /** The line's status, drawn as its glyph: only warning and danger are coloured. */
+  status?: Status
+  /** @deprecated Use `status` (info → active, success → normal, neutral → offline). */
   tone?: Tone
-  /** An icon for the kind of line, used when there is no tone. */
+  /** An icon for the kind of line, used when there is no status. */
   icon?: React.ReactNode
   title: React.ReactNode
   /** Arguments, an id, a path: shown in monospace after the title. */
   detail?: React.ReactNode
   time?: React.ReactNode
 }) {
+  warnTone("MarkerRow", tone)
+  const status = given ?? (tone ? toStatus(tone) : undefined)
   return (
     <div data-slot="marker-row" className={cn("flex min-h-8 min-w-0 items-center gap-2 text-sm", className)} {...props}>
-      {tone ? (
+      {status ? (
         <span className="grid size-4 shrink-0 place-items-center">
-          <StatusGlyph status={toStatus(tone)} />
+          <StatusGlyph status={status} />
         </span>
       ) : (
         icon && (
@@ -76,9 +83,9 @@ export function MarkerRow({
           </span>
         )
       )}
-      <span className={cn("shrink-0 font-medium", tone === "danger" && "text-danger", tone === "warning" && "text-warning")}>
+      <span className={cn("shrink-0 font-medium", status === "danger" && "text-danger", status === "warning" && "text-warning")}>
         {title}
-        {(tone === "danger" || tone === "warning") && <span className="sr-only">, {tone === "danger" ? "failed" : "warning"}</span>}
+        {(status === "danger" || status === "warning") && <span className="sr-only">, {status === "danger" ? "failed" : "warning"}</span>}
       </span>
       {detail && <span className="min-w-0 truncate font-mono text-xs text-muted-foreground">{detail}</span>}
       {children}

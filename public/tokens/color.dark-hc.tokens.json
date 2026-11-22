@@ -123,11 +123,11 @@
     },
     "stop": {
       "$type": "color",
-      "$value": "#dc2626"
+      "$value": "#a51b1b"
     },
     "stop-deep": {
       "$type": "color",
-      "$value": "#7f1d1d"
+      "$value": "#5c1010"
     },
     "map": {
       "$type": "color",

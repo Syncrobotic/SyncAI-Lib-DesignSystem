@@ -39,6 +39,19 @@ const own = (decl) => {
 const clean = (s) => s.replace(/\s+/g, " ").replace(/import\("[^"]+"\)\./g, "").trim()
 
 /**
+ * A prop's JSDoc, and its @deprecated note in front of it: "Deprecated: Use `status`." A deprecated prop says so on the
+ * Properties tab, not only in an editor's strikethrough.
+ * @param {ts.Symbol} sym
+ */
+const described = (sym) => {
+  const doc = clean(ts.displayPartsToString(sym.getDocumentationComment(checker)))
+  const tag = sym.getJsDocTags(checker).find((t) => t.name === "deprecated")
+  if (!tag) return doc
+  const why = clean(ts.displayPartsToString(tag.text ?? []))
+  return [`Deprecated${why ? `: ${why}` : "."}`, doc].filter(Boolean).join(" ")
+}
+
+/**
  * React's own types as a reader writes them: the checker expands ReactNode into its eight-member union.
  * @param {string} s
  */
@@ -334,13 +347,17 @@ for (const sf of program.getSourceFiles().filter((s) => files.includes(path.reso
         const expanded = decl ? aliasText(typeText, decl.getSourceFile()) : aliasText(typeText, sf)
         if (expanded && expanded.length <= ALIAS_MAX) typeText = expanded
       }
+      // A `| null` the prop declares itself (`value?: number | null`, where null means empty) is part of its type: it is
+      // written back after the rest. Only an optional prop's `| undefined` goes, which the "required" column says.
+      const ownNull = decls.some((d) => own(d) && !!d.type && ts.isUnionTypeNode(d.type) && d.type.types.some((x) => ts.isLiteralTypeNode(x) && x.literal.kind === ts.SyntaxKind.NullKeyword))
+      if (ownNull && !/\bnull$/.test(typeText)) typeText = `${typeText} | null`
       const optional = (sym.flags & ts.SymbolFlags.Optional) !== 0
       props.push({
         name,
         type: typeText,
         ...(defs[name] !== undefined ? { default: defs[name] } : {}),
         ...(optional ? {} : { required: true }),
-        description: clean(ts.displayPartsToString(sym.getDocumentationComment(checker))),
+        description: described(sym),
         // The words a labels prop holds, one by one, for the Localisation page.
         ...(name === "labels" ? { keys: labelKeys(t, param, st, sf, decls.find(own)) } : {}),
       })
