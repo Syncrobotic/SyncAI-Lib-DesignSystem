@@ -1,4 +1,4 @@
-// @syncrobotic/breadcrumb v0.23.0 · update: npx shadcn add @syncrobotic/breadcrumb --overwrite
+// @syncrobotic/breadcrumb v0.31.0 · update: npx shadcn add @syncrobotic/breadcrumb --overwrite
 import * as React from "react"
 import { ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -26,16 +26,18 @@ export function Breadcrumb({
     <nav aria-label={l.nav} data-slot="breadcrumb" className={cn("min-w-0", className)} {...props}>
       <ol className="flex min-w-0 items-center gap-2 text-sm text-muted-foreground">
         {items.map((child, i) => (
-          // Short of room, the middle levels give way first: they shrink a hundred times faster than the last, and keep a
+          // Nothing gives way while the row has room, whatever sets its width (a stretched header, or one as wide as its
+          // content). Short of room, the middle levels give way first: they shrink far faster than the others, and keep a
           // few letters and their ellipsis (the name never goes under 3ch). The floor is on the name, not the item, so a
-          // short name (two characters) is never padded out to it. The first level, usually one short word, keeps its width
-          // up to a third of the row; the current page takes what is left.
+          // short name (two characters) is never padded out to it. The first level, usually one short word, goes next, and
+          // never under a third of the row or its own width, whichever is less: its width is a third, which only sets that
+          // floor (flexbox's automatic minimum), while it starts from its content. The current page takes what is left.
           <li
             key={i}
             className={cn(
               "flex min-w-0 items-center gap-2",
-              i === 0 && items.length > 1 && "max-w-1/3 shrink-0",
-              i > 0 && i < items.length - 1 && "min-w-auto shrink-100 [&>[data-slot=breadcrumb-link]]:min-w-[3ch] [&>[data-slot=breadcrumb-page]]:min-w-[3ch]",
+              i === 0 && items.length > 1 && "w-1/3 min-w-auto shrink-100 basis-[content]",
+              i > 0 && i < items.length - 1 && "min-w-auto shrink-1000 [&>[data-slot=breadcrumb-link]]:min-w-[3ch] [&>[data-slot=breadcrumb-page]]:min-w-[3ch]",
             )}
           >
             {i > 0 && <ChevronRight aria-hidden="true" className="size-4 shrink-0" />}

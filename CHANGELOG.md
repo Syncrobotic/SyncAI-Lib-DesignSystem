@@ -12,6 +12,7 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - **`kbd` 0.31.0:** a key inside a tooltip shows in dark: its cap and edge are the tooltip's text colour, faint (`primary-foreground` at 15 % and 20 %), instead of white on the near-white dark tooltip (1.0:1 before). Issue #301.
 - **`slider` 0.31.0, `switch` 0.31.0:** the thumb is the new `--thumb` token instead of a raw white; it looks the same. Issue #301.
 - **`syncrobotic-theme` 0.31.0:** new `--thumb` (`bg-thumb`), white in every mode, so a theme or contrast mode can change the knob of a slider or switch. Issue #301.
+- **`breadcrumb` 0.31.0:** the first level no longer truncates with room to spare when the breadcrumb is as wide as its content (a column with `items-start`, an inline block, an absolutely placed header, a grid cell, the app shell's top bar). It starts from its own width and, only when the row is short of room, gives way to a third of the row or its name, whichever is less. In a stretched row (page-header) nothing changes, except that a long first level is no longer cut while there is room. Issue #307.
 - **`geo-map` 0.31.0:** each robot's name label has a `key` (react/jsx-key). Issue #301.
 - **`agent-skill` 0.31.0, Radius foundation:** `rounded-[inherit]` is allowed on a child that fills its parent edge to edge (scroll viewport, avatar picture, a stretched link), so a product lint can allow it by rule. Issue #301.
 

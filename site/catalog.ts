@@ -847,7 +847,11 @@ const entries: Record<string, Entry> = {
   breadcrumb: {
     group: "Navigation",
     examples: { file: "navigation", prefix: "Breadcrumb" },
-    rules: ["Each level is a link; the current page is last and is not.", "In an app shell, pass it as `breadcrumb`: the top bar's title is the current page."],
+    rules: [
+      "Each level is a link; the current page is last and is not.",
+      "In an app shell, pass it as `breadcrumb`: the top bar's title is the current page.",
+      "It needs no set width: stretched or as wide as its content, every level shows in full while the row has room. Short of room, the first level keeps its name or a third of the row, whichever is less, and the current page takes what is left.",
+    ],
   },
   pagination: {
     group: "Navigation",

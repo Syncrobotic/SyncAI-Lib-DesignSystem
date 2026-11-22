@@ -2846,8 +2846,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "The first level no longer truncates with room to spare when the breadcrumb is as wide as its content (a column with items-start, an inline block, an absolutely placed header, a grid cell, the app shell's top bar): it starts from its own width and, short of room, gives way to a third of the row or its name, whichever is less. A stretched breadcrumb (page-header) looks the same, except that a long first level is no longer cut while the row has room. Issue #307."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",

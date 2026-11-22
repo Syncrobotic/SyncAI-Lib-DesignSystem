@@ -220,6 +220,19 @@ export const BreadcrumbWithSwitcher: S = {
   ),
 }
 
+/** In a header as wide as its content (here a column with items-start), every level shows in full: the first gives way only when the row is short of room. */
+export const BreadcrumbContentWidth: S = {
+  render: () => (
+    <div className="flex flex-col items-start gap-2">
+      <Breadcrumb>
+        <BreadcrumbLink href="#catalog">Data catalog</BreadcrumbLink>
+        <BreadcrumbPage>night-run-v3</BreadcrumbPage>
+      </Breadcrumb>
+      <h2 className="text-xl font-bold">night-run-v3</h2>
+    </div>
+  ),
+}
+
 /** In a narrow space each level truncates; the full name stays in the link. */
 export const BreadcrumbTruncated: S = {
   render: () => (
