@@ -2,7 +2,9 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.30.0 · 2026-11-22
+
+A menu for the theme toggle, tabs in the phone drawer, two accessibility fixes from a product team (dark predicted annotations, Escape in a native dialog) and a much lighter docs site.
 
 ### Added
 - **`theme-toggle` 0.30.0:** `variant="menu"`, one icon button that shows the choice and opens Light, Match system and Dark as a menu (the docs site's header uses it).
