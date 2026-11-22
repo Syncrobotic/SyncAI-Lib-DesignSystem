@@ -1,4 +1,4 @@
-// @syncrobotic/navigation-menu v0.17.3 · update: npx shadcn add @syncrobotic/navigation-menu --overwrite
+// @syncrobotic/navigation-menu v0.28.0 · update: npx shadcn add @syncrobotic/navigation-menu --overwrite
 "use client"
 
 import * as React from "react"
@@ -14,16 +14,27 @@ export function NavigationMenu({
   className,
   children,
   viewport = true,
+  delayDuration = 200,
+  onValueChange,
   ...props
 }: React.ComponentProps<typeof NavPrimitive.Root> & {
   /** One shared panel that resizes between menus (default). false draws each panel under its own trigger. */
   viewport?: boolean
 }) {
+  // Radix skips its hover delay only after a panel has opened through it, so a menu that starts open (defaultValue or
+  // value) would close for a moment when the pointer moves to the next trigger: the close (150 ms) beats the delayed
+  // open (200 ms). Until the first change, a menu that starts open switches panels at once, as an open one should.
+  const [startedOpen, setStartedOpen] = React.useState(() => Boolean(props.defaultValue || props.value))
   return (
     <NavPrimitive.Root
       data-slot="navigation-menu"
       data-viewport={viewport}
       className={cn("group/navigation-menu relative z-10 flex max-w-max flex-1 items-center justify-center", className)}
+      delayDuration={startedOpen ? 0 : delayDuration}
+      onValueChange={(value) => {
+        setStartedOpen(false)
+        onValueChange?.(value)
+      }}
       {...props}
     >
       {children}
@@ -37,7 +48,15 @@ export function NavigationMenuList({ className, ...props }: React.ComponentProps
 }
 
 export function NavigationMenuItem({ className, ...props }: React.ComponentProps<typeof NavPrimitive.Item>) {
-  return <NavPrimitive.Item data-slot="navigation-menu-item" className={cn("relative", className)} {...props} />
+  // Without the shared viewport a panel hangs from its own item; on a phone, from the menu's left edge instead, so a
+  // panel under a trigger near the right edge does not run off the screen.
+  return (
+    <NavPrimitive.Item
+      data-slot="navigation-menu-item"
+      className={cn("relative group-data-[viewport=false]/navigation-menu:max-md:static", className)}
+      {...props}
+    />
+  )
 }
 
 const itemStyle = cn(
@@ -67,9 +86,13 @@ export function NavigationMenuContent({ className, ...props }: React.ComponentPr
       data-slot="navigation-menu-content"
       className={cn(
         "top-0 left-0 w-full p-2 md:absolute md:w-auto",
-        "data-[motion^=from-]:animate-appear data-[motion^=to-]:animate-disappear",
-        // Without the shared viewport each panel is its own popover.
-        "group-data-[viewport=false]/navigation-menu:top-full group-data-[viewport=false]/navigation-menu:mt-2 group-data-[viewport=false]/navigation-menu:rounded-md",
+        // Moving between triggers, the new panel's links are drawn at once while the shared panel resizes around them.
+        // Radix drops the old panel's links in the same frame, so fading the new ones in from 0 emptied the panel for a
+        // moment between the two. The panel itself still appears and disappears.
+        "data-[motion^=to-]:animate-disappear",
+        // Without the shared viewport each panel is its own popover, over the page at every width.
+        "group-data-[viewport=false]/navigation-menu:absolute group-data-[viewport=false]/navigation-menu:top-full group-data-[viewport=false]/navigation-menu:z-50 group-data-[viewport=false]/navigation-menu:w-auto",
+        "group-data-[viewport=false]/navigation-menu:mt-2 group-data-[viewport=false]/navigation-menu:rounded-md",
         "group-data-[viewport=false]/navigation-menu:bg-popover group-data-[viewport=false]/navigation-menu:shadow-overlay group-data-[viewport=false]/navigation-menu:ring-1 group-data-[viewport=false]/navigation-menu:ring-border",
         "group-data-[viewport=false]/navigation-menu:data-[state=open]:animate-appear group-data-[viewport=false]/navigation-menu:data-[state=closed]:animate-disappear",
         className,

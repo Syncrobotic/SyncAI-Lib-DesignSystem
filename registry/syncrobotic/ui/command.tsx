@@ -1,8 +1,8 @@
-// @syncrobotic/command v0.23.0 · update: npx shadcn add @syncrobotic/command --overwrite
+// @syncrobotic/command v0.28.0 · update: npx shadcn add @syncrobotic/command --overwrite
 "use client"
 
 import * as React from "react"
-import { Command as CommandPrimitive } from "cmdk"
+import { Command as CommandPrimitive, useCommandState } from "cmdk"
 import { Dialog as DialogPrimitive } from "radix-ui"
 import { Check, Search } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -182,14 +182,20 @@ export function CommandList({ className, ...props }: React.ComponentProps<typeof
 
 /**
  * Say what was searched and what to try instead, not just "No results". Also the place for a loading line.
+ * Pass a function to say the words that were typed: `{(query) => `No robot matches “${query}”.`}`.
  * It is a disabled option, so the list is never an empty listbox and screen readers read the message.
  */
-export function CommandEmpty({ className, children, ...props }: React.ComponentProps<typeof CommandPrimitive.Empty>) {
+export function CommandEmpty({
+  className,
+  children,
+  ...props
+}: Omit<React.ComponentProps<typeof CommandPrimitive.Empty>, "children"> & { children?: React.ReactNode | ((query: string) => React.ReactNode) }) {
+  const query = useCommandState((state) => state.search)
   // cmdk forces role="presentation" on Empty itself, so the option is the element inside it.
   return (
     <CommandPrimitive.Empty data-slot="command-empty" {...props}>
       <div role="option" aria-disabled="true" aria-selected="false" className={cn("px-3 py-8 text-center text-sm text-muted-foreground", className)}>
-        {children}
+        {typeof children === "function" ? children(query.trim()) : children}
       </div>
     </CommandPrimitive.Empty>
   )
@@ -210,9 +216,12 @@ export function CommandGroup({ className, ...props }: React.ComponentProps<typeo
 
 /**
  * A line between groups. Inside a listbox only options and groups are allowed, so it is decorative (the groups already
- * have headings for screen readers) rather than cmdk's role="separator".
+ * have headings for screen readers) rather than cmdk's role="separator". While a query filters the list it is hidden,
+ * as cmdk's own is: the groups it stood between may be gone, and a line under nothing is noise.
  */
 export function CommandSeparator({ className, ...props }: React.ComponentProps<"div">) {
+  const filtering = useCommandState((state) => state.search !== "")
+  if (filtering) return null
   return <div aria-hidden="true" data-slot="command-separator" className={cn("-mx-2 my-2 h-px bg-border", className)} {...props} />
 }
 

@@ -334,7 +334,7 @@ export const DropdownMenuWithCheckboxes: S = {
 
 const PaletteResults = () => (
   <>
-    <CommandEmpty>No robot, page or action matches. Try a robot ID such as 7F3A.</CommandEmpty>
+    <CommandEmpty>{(query) => `No robot, page or action matches “${query}”. Try a robot ID such as 7F3A.`}</CommandEmpty>
     <CommandGroup heading="Robots">
       <CommandItem value="Patrol dog 7F3A">
         <Bot /> <span className="flex-1">Patrol dog 7F3A</span>
@@ -504,7 +504,7 @@ export const CommandWithStatus: S = {
     <Command className="max-w-md rounded-md ring-1 ring-border">
       <CommandInput placeholder="Find a robot" />
       <CommandList>
-        <CommandEmpty>No robot matches.</CommandEmpty>
+        <CommandEmpty>{(query) => `No robot matches “${query}”. Try a robot ID such as 7F3A.`}</CommandEmpty>
         <CommandGroup heading="Robots">
           {[
             ["Patrol dog 7F3A", "info", "Patrolling"],
@@ -530,7 +530,7 @@ export const CommandNoResults: S = {
     <Command className="max-w-md rounded-md ring-1 ring-border">
       <CommandInput placeholder="Find a robot" value="gate x" readOnly />
       <CommandList>
-        <CommandEmpty>No robot, page or action matches “gate x”. Try a robot ID such as 7F3A.</CommandEmpty>
+        <CommandEmpty>{(query) => `No robot, page or action matches “${query}”. Try a robot ID such as 7F3A.`}</CommandEmpty>
         <CommandGroup heading="Robots">
           <CommandItem value="Patrol dog 7F3A">Patrol dog 7F3A</CommandItem>
         </CommandGroup>
@@ -588,7 +588,7 @@ export const CommandNestedPages: S = {
         )}
         <CommandInput value={q} onValueChange={setQ} placeholder={robot ? `Action for ${robot}` : "Find a robot"} />
         <CommandList>
-          <CommandEmpty>Nothing matches.</CommandEmpty>
+          <CommandEmpty>{(query) => (robot ? `No action for ${robot} matches “${query}”.` : `No robot matches “${query}”.`)}</CommandEmpty>
           {robot ? (
             <CommandGroup heading="Actions">
               <CommandItem>

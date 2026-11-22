@@ -2148,8 +2148,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.27.0",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Closing it with focus on its close button moves focus on to what follows it on the page instead of losing it to the top of the page. The title's doc says medium weight, as it renders."
+          },
           {
             "version": "0.27.0",
             "date": "2026-11-21",
@@ -2318,8 +2323,13 @@
         }
       ],
       "meta": {
-        "version": "0.27.0",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "After a toast is dismissed with the pointer, the stack collapses and the timers run again once the pointer leaves (focus a click brought no longer holds them). On a phone the stack is full width with even 16 px gutters."
+          },
           {
             "version": "0.27.0",
             "date": "2026-11-21",
@@ -2611,8 +2621,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "`locale` formats the numbers with the language's thousands separator (\"1,201–1,220 of 1,240\"); the range label receives it."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -2751,7 +2766,7 @@
           {
             "version": "0.28.0",
             "date": "2026-11-21",
-            "note": "A node can carry `content`: a panel under it, shown while it is open (a node's details, such as a key/value table), with a disclosure button even without `children`. List mode only. New label `details` names that button (\"Details of …\")."
+            "note": "A node can carry `content`: a panel under it, shown while it is open (a node's details, such as a key/value table), with a disclosure button even without `children`. List mode only. New label `details` names that button (\"Details of …\"). An open branch with nothing in it shows the `empty` text under it instead of opening to nothing, in both modes."
           },
           {
             "version": "0.27.0",
@@ -3002,8 +3017,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "SheetFooter pins to the sheet's bottom edge, so it no longer covers the last field and its focus ring."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -3250,8 +3270,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "CommandEmpty takes a function of the query, so the no-match line can say what was typed; CommandSeparator hides while a query filters the list, so no line is left under nothing."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -3693,8 +3718,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.1",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "When the last press removes the button, focus moves to the count (read out) instead of falling to the top of the page."
+          },
           {
             "version": "0.23.1",
             "date": "2026-11-21",
@@ -4249,8 +4279,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.1",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "When the page is in, the bar fills the width and fades instead of vanishing mid-way."
+          },
           {
             "version": "0.23.1",
             "date": "2026-11-21",
@@ -4961,8 +4996,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "On a narrow stepper, a failed step's title and reason show under the row, so the cross is never shown without its reason."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -5059,8 +5099,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-22",
+            "note": "On a page or panel with nothing to scroll, the first section is current at load, not the last."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -5099,8 +5144,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "With viewport={false} a panel floats over the page at every width (on phones it pushed the page down) and on a phone hangs from the menu's left edge; moving between triggers no longer empties the panel for a moment, and a menu that starts open switches panels at once instead of closing in between."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -5541,7 +5591,7 @@
           {
             "version": "0.28.0",
             "date": "2026-11-21",
-            "note": "Built on the new `sidebar` component instead of its own: about 140 lines shorter. The sidebar toggle moves to the top bar (SidebarTrigger) on every screen, ⌘B / Ctrl+B toggles it, and the choice is kept in a cookie (it still starts open from 1280 px and as a rail below). The rail names its icons with tooltips instead of opening over the content on hover or tap. Phones get the sheet below 768 px (was 640). Nav items take `tag` (a quiet \"Beta\") and `items` (pages listed under their section while it is current); `sidebarLabels` translates the sidebar's words. SidebarUserMenu reads the rail from the sidebar and no longer takes `collapsed` or `onOpenChange`."
+            "note": "Built on the new `sidebar` component instead of its own: about 140 lines shorter. The sidebar toggle moves to the top bar (SidebarTrigger) on every screen, ⌘B / Ctrl+B toggles it, and the choice is kept in a cookie (it still starts open from 1280 px and as a rail below). The rail names its icons with tooltips instead of opening over the content on hover or tap. Phones get the sheet below 768 px (was 640). Nav items take `tag` (a quiet \"Beta\") and `items` (pages listed under their section while it is current); `sidebarLabels` translates the sidebar's words. SidebarUserMenu reads the rail from the sidebar and no longer takes `collapsed` or `onOpenChange`. The search palette's no-match line says the words that were typed."
           },
           {
             "version": "0.22.4",

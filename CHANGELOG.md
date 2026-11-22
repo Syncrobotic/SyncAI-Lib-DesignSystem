@@ -17,6 +17,20 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - **`app-shell` 0.28.0** is built on `sidebar` and about 140 lines shorter. The sidebar's toggle is in the top bar on every screen (it was a pin button in the sidebar, and a menu button on phones), ⌘B / Ctrl+B toggles it and the choice is kept. It still starts open from 1280 px and as a rail below; the rail names its icons in tooltips instead of opening over the content on hover or tap. Phones get the sheet below 768 px (was 640). Nav items take `tag` and `items` (pages under a section, shown while it is current), and `sidebarLabels` translates the sidebar's words. `SidebarUserMenu` reads the rail from the sidebar and no longer takes `collapsed` or `onOpenChange`.
 - **`log-viewer` 0.28.0 (beta):** robot and system logs (ROS /rosout, journald, a service's own lines) in a virtual list that stays smooth with 100,000 lines. It follows the newest line until someone scrolls up, then offers "12 new · Jump to latest"; keeps the last `maxLines` in a ring buffer (`createLogBuffer`, which batches a fast stream so 1,000 lines a second render ten times a second); filters by level and source; searches with the matches marked and ↑ ↓; wraps long lines; shows clock time or time ago; opens a line for its whole message and fields; copies a line or a selection. Levels are a shape and a word, coloured only on the glyph and the word. A grid with `aria-rowcount` for screen readers, one Tab stop with the arrow keys inside, and new errors announced at most every 5 s (`announce`).
 
+### Fixed
+- **`sheet` 0.28.0:** SheetFooter pins to the sheet's bottom edge; it covered the last field and its focus ring by 8 px even when everything fit.
+- **`toast` 0.28.0:** dismissing a toast with the pointer no longer leaves the stack spread and its timers paused until a click elsewhere: focus a click brings is ignored and the region's is handed back. On a phone the stack is full width with even 16 px gutters, and the in-place examples no longer clip at 390 px.
+- **`navigation-menu` 0.28.0:** with `viewport={false}` a panel floats over the page at every width (on phones it pushed the page down) and hangs from the menu's left edge; a menu that starts open switches panels at once instead of closing and reopening, and a new panel's links are no longer faded in from nothing. The column and tag examples fit a phone.
+- **`tree` 0.28.0:** an open branch with nothing in it shows the `empty` text instead of opening to nothing.
+- **`banner` 0.28.0:** closing it with focus on its close button moves focus to what follows it on the page; the example's "Show the notice again" button returns focus to the banner.
+- **`load-more` 0.28.0:** when the last press removes the button, focus moves to the count instead of the top of the page.
+- **`command` 0.28.0:** `CommandEmpty` takes a function of the query so the no-match line says what was typed (used in the examples, the docs search and `app-shell`); `CommandSeparator` hides while a query filters the list.
+- **`stepper` 0.28.0:** on a narrow stepper a failed step's title and reason show under the row, not only a red cross.
+- **`route-progress` 0.28.0:** when the page is in, the bar fills the width and fades instead of vanishing mid-way.
+- **`scrollspy` 0.28.0:** on a page or panel with nothing to scroll, the first section is current at load instead of the last.
+- **`pagination` 0.28.0:** `locale` formats the numbers with a thousands separator ("1,201–1,220 of 1,240").
+- Scrollspy examples hide the rail below `sm` (use pills on phones). Error copy in the feedback, banner and toast examples says "Could not" and "Try again", as the components' own defaults do (alarm, empty state).
+
 ## 0.27.0 · 2026-11-21
 
 Connect the robotics components to a real robot over rosbridge, and a ready-made Traditional Chinese (Taiwan) label pack.

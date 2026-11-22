@@ -295,7 +295,7 @@ export const NavigationMenuColumns: S = {
           <NavigationMenuItem value="docs">
             <NavigationMenuTrigger>Docs</NavigationMenuTrigger>
             <NavigationMenuContent>
-              <div className="grid w-80 grid-cols-3 gap-2 p-1 @xl:w-120 @xl:gap-4 @xl:p-2">
+              <div className="grid w-72 grid-cols-3 gap-2 p-1 @xl:w-120 @xl:gap-4 @xl:p-2">
                 {[
                   ["Start", ["Install", "First robot", "First map"]],
                   ["Operate", ["Patrols", "Alarms", "Handover"]],
@@ -378,7 +378,7 @@ export const NavigationMenuWithTags: S = {
           <NavigationMenuItem value="features">
             <NavigationMenuTrigger>Features</NavigationMenuTrigger>
             <NavigationMenuContent>
-              <ul className="flex w-80 flex-col">
+              <ul className="flex w-72 flex-col @xl:w-80">
                 {[
                   { icon: <Map />, t: "Live map", d: "Every robot, door and lift in one view.", tag: "" },
                   { icon: <Joystick />, t: "Remote takeover", d: "Drive from the browser when needed.", tag: "New" },
