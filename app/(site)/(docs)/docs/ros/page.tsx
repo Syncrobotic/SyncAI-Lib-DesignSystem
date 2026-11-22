@@ -48,6 +48,7 @@ const conversions: [string, string, string, string][] = [
   ["nav_msgs/Path, NavigateThroughPoses goal", "a saved route", "pathToWaypoints(msg, frame), navigateThroughPosesToWaypoints(goal, frame)", "WaypointEditor value"],
   ["rcl_interfaces/Log", "/rosout", "rosLogToLogLine(msg)", "LogViewer ref.append, or a createLogBuffer"],
   ["sensor_msgs/Image (not over rosbridge)", "/camera/image_raw", "webVideoServerSrc(server, topic, { quality })", "CameraFeed src, CameraWall getSource"],
+  ["vision_msgs/Detection2DArray", "/detections", "detection2DArrayToAnnotations(msg, { classes })", "AnnotatedImage annotations, GroundedText annotations"],
   ["geometry_msgs/Twist (out)", "/cmd_vel", "teleopToTwist(command, { maxLinear, maxAngular })", "from TeleopPad onCommand"],
   ["std_msgs/Header", "any", "stampToMs(msg.header.stamp)", "updatedAt (stale detection)"],
 ]

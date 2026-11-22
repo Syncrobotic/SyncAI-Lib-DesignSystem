@@ -1,0 +1,48 @@
+// @syncrobotic/tier-badge v0.31.0 · update: npx shadcn add @syncrobotic/tier-badge --overwrite
+import { Badge } from "@/registry/syncrobotic/ui/badge"
+
+/** A dataset's licence tier: T0 may enter product releases, T1–T3 restrict what you may do with it. */
+export type Tier = "T0" | "T1" | "T2" | "T3"
+
+/** The words for each tier, after its code. */
+export type TierBadgeLabels = Record<Tier, string>
+
+export const tierBadgeLabels: TierBadgeLabels = {
+  T0: "Commercial",
+  T1: "Non-commercial",
+  T2: "Restricted",
+  T3: "On-premises only",
+}
+
+/** Licence tiers. Only the restricted ones carry colour: they are the ones that change what you may do. */
+export const tiers: Record<Tier, { label: string; tone: "neutral" | "outline" | "warning" | "danger" }> = {
+  T0: { label: tierBadgeLabels.T0, tone: "neutral" },
+  T1: { label: tierBadgeLabels.T1, tone: "outline" },
+  T2: { label: tierBadgeLabels.T2, tone: "outline" },
+  T3: { label: tierBadgeLabels.T3, tone: "outline" },
+}
+
+type TierBadgeProps = {
+  /** The dataset's licence tier, T0 to T3. */
+  tier: Tier
+  /** The code alone on screen, for a column headed Tier. Screen readers still hear the words. */
+  compact?: boolean
+  /** The words for each tier (English by default; `tierBadgeLabels` in labels-zh-tw). */
+  labels?: Partial<TierBadgeLabels>
+}
+
+/**
+ * A dataset's licence tier as a tag: its code in mono and what it means ("T1 · Non-commercial"). `compact` shows the code
+ * alone on screen (a screen reader still hears the words), for a table column whose header says Tier. T0 is a grey tag, the restricted tiers outlined: a tier is a
+ * category, never a status colour.
+ */
+export function TierBadge({ tier, compact, labels }: TierBadgeProps) {
+  const label = labels?.[tier] ?? tierBadgeLabels[tier]
+  return (
+    <Badge tone={tiers[tier].tone}>
+      <span className="font-mono">{tier}</span>
+      {/* Compact still says what the code means to a screen reader. */}
+      <span className={compact ? "sr-only" : undefined}> · {label}</span>
+    </Badge>
+  )
+}

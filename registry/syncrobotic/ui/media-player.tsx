@@ -1,4 +1,4 @@
-// @syncrobotic/media-player v0.28.0 · update: npx shadcn add @syncrobotic/media-player --overwrite
+// @syncrobotic/media-player v0.31.0 · update: npx shadcn add @syncrobotic/media-player --overwrite
 "use client"
 
 import * as React from "react"
@@ -385,7 +385,7 @@ export function MediaPlayer({
         </span>
         {/* The player is always dark, like any video surface: the controls take the dark theme's tokens (white ink on
             the scrim) whatever the page's theme. The frame itself stays outside it, so its focus ring keeps the page's ink. */}
-        <div className="dark absolute inset-0 bg-background text-foreground">
+        <div className="dark absolute inset-0 bg-letterbox text-foreground">
           <video
             ref={videoRef}
             src={loading ? undefined : src}
@@ -426,7 +426,7 @@ export function MediaPlayer({
 
           {(loading || buffering) && (
             <div className="pointer-events-none absolute inset-0 grid place-items-center">
-              <span className="flex items-center gap-2 rounded-sm bg-(--scrim) px-3 py-2 text-sm">
+              <span className="flex items-center gap-2 rounded-sm bg-scrim px-3 py-2 text-sm">
                 <Spinner className="size-5" label={loading ? l.loading : l.buffering} />
                 {loading && <span aria-hidden="true">{l.loading}</span>}
               </span>
@@ -434,7 +434,7 @@ export function MediaPlayer({
           )}
 
           {failed && (
-            <div className="absolute inset-0 grid place-items-center bg-(--scrim) p-4">
+            <div className="absolute inset-0 grid place-items-center bg-scrim p-4">
               {/* Its own opaque surface, as the camera feed's notices: secondary text on the scrim over a bright frame fell to 3.2:1. */}
               <div role={errorCode !== null ? "alert" : undefined} className="flex max-w-sm flex-col items-center gap-3 rounded-md bg-background p-4 text-center">
                 <CircleAlert aria-hidden="true" className="size-6" />
@@ -455,13 +455,13 @@ export function MediaPlayer({
           {ready && (
             <div className="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center">
               {captionsOn && cue && (
-                <p className="mx-4 mb-2 whitespace-pre-line rounded-xs bg-(--scrim) px-2 py-1 text-center text-sm text-pretty">{cue}</p>
+                <p className="mx-4 mb-2 whitespace-pre-line rounded-xs bg-scrim px-2 py-1 text-center text-sm text-pretty">{cue}</p>
               )}
               <div
                 data-slot="media-player-controls"
                 onPointerDown={() => setHolding(true)}
                 className={cn(
-                  "w-full bg-(--scrim) px-2 transition-opacity duration-(--motion-base) ease-(--ease-standard)",
+                  "w-full bg-scrim px-2 transition-opacity duration-(--motion-base) ease-(--ease-standard)",
                   shown ? "pointer-events-auto opacity-100" : "opacity-0",
                 )}
               >

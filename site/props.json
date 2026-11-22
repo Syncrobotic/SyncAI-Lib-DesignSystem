@@ -17,7 +17,14 @@
   },
   {
    "name": "AccordionTrigger",
-   "props": [],
+   "props": [
+    {
+     "name": "as",
+     "type": "\"h2\" | \"h3\" | \"h4\"",
+     "default": "\"h3\"",
+     "description": "The level of the heading the trigger sits in: h3 by default; h2 under the page's h1, h4 under an h3. The look stays the same."
+    }
+   ],
    "inherits": [
     "Radix Accordion.Trigger"
    ]
@@ -597,6 +604,17 @@
      "name": "onSelectedChange",
      "type": "(id: string | null) => void",
      "description": "Makes each annotation a button (one Tab stop, arrows move, Enter selects, Esc clears). Without it nothing is focusable."
+    },
+    {
+     "name": "highlighted",
+     "type": "readonly string[]",
+     "default": "[]",
+     "description": "Annotations drawn highlighted (the selected ink at 3 px, in their own line style, without handles), e.g. the ones a hovered word links to. While any is, the others fade to `--annotate-fade`."
+    },
+    {
+     "name": "onActiveChange",
+     "type": "(id: string | null) => void",
+     "description": "The annotation under the mouse, or else the one with keyboard focus; `null` when neither. Touch does not hover: a tap selects. Needs `onSelectedChange` (the annotations are buttons only then)."
     },
     {
      "name": "showLabels",
@@ -2278,7 +2296,14 @@
   },
   {
    "name": "CardTitle",
-   "props": [],
+   "props": [
+    {
+     "name": "as",
+     "type": "\"h2\" | \"h3\" | \"h4\"",
+     "default": "\"h3\"",
+     "description": "The heading level: h3 by default; h2 for a card right under the page's h1, h4 for one in a section under an h3."
+    }
+   ],
    "inherits": [
     "<h3>"
    ]
@@ -2312,6 +2337,12 @@
      "type": "ReactNode",
      "required": true,
      "description": ""
+    },
+    {
+     "name": "titleAs",
+     "type": "\"h2\" | \"h3\" | \"h4\"",
+     "default": "\"h3\"",
+     "description": "The title's heading level: h3 by default; h2 for a card right under the page's h1, h4 for one under an h3."
     },
     {
      "name": "actions",
@@ -2477,16 +2508,6 @@
      "description": ""
     },
     {
-     "name": "value",
-     "type": "string",
-     "description": ""
-    },
-    {
-     "name": "onValueChange",
-     "type": "(value: string | undefined) => void",
-     "description": ""
-    },
-    {
      "name": "label",
      "type": "string",
      "required": true,
@@ -2501,7 +2522,7 @@
      "name": "allowNone",
      "type": "boolean",
      "default": "true",
-     "description": "Pressing the selected chip clears the choice."
+     "description": "Pressing the last chosen chip clears the choice. With `false`, one chip always stays chosen."
     },
     {
      "name": "moreLabel",
@@ -2529,6 +2550,12 @@
        "type": "string",
        "default": "\"Show fewer\"",
        "description": "The same button once unfolded."
+      },
+      {
+       "name": "selected",
+       "type": "string",
+       "default": "\"selected\"",
+       "description": "Read after each chosen link when several can be chosen (`type=\"multiple\"` with `href`), where aria-current does not fit."
       }
      ]
     },
@@ -2542,6 +2569,27 @@
      "type": "ElementType",
      "default": "\"a\"",
      "description": "Your router's link (e.g. next/link), for chips with href."
+    },
+    {
+     "name": "current",
+     "type": "\"true\" | \"page\" | \"location\"",
+     "default": "\"page\"",
+     "description": "The aria-current of the chosen link (one choice, chips with href): \"page\" (the default) for views that are pages; \"true\" for a row of filter links on a page whose navigation already marks the page."
+    },
+    {
+     "name": "type",
+     "type": "\"single\" | \"multiple\"",
+     "description": "\"single\" (the default): one choice, `value` is a string. \"multiple\": any number, `value` is a list."
+    },
+    {
+     "name": "value",
+     "type": "string | string[]",
+     "description": "The chosen chip's value; with type=\"multiple\", the chosen chips' values."
+    },
+    {
+     "name": "onValueChange",
+     "type": "((value: string | undefined) => void) | ((value: string[]) => void)",
+     "description": "Called with the new choice: the value, or undefined once cleared; with type=\"multiple\", the list."
     }
    ],
    "inherits": []
@@ -3256,6 +3304,12 @@
      "type": "Labels",
      "description": "Pagination's words, to translate them.",
      "keys": [
+      {
+       "name": "nav",
+       "type": "string",
+       "default": "\"Pagination\"",
+       "description": "The landmark's name for screen readers."
+      },
       {
        "name": "range",
        "type": "(from: number, to: number, total: number, locale?: string) => string",
@@ -5290,6 +5344,122 @@
    ]
   }
  ],
+ "grounded-text": [
+  {
+   "name": "GroundedText",
+   "props": [
+    {
+     "name": "text",
+     "type": "string",
+     "required": true,
+     "description": "The answer or caption. Line breaks are kept."
+    },
+    {
+     "name": "spans",
+     "type": "GroundedSpan[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "annotations",
+     "type": "Annotation[]",
+     "required": true,
+     "description": "The marks the spans point at (points, boxes or any shape), in the picture's pixels. `fromGrounding` builds both."
+    },
+    {
+     "name": "src",
+     "type": "string",
+     "description": "The picture, as in annotated-image: `src` or `image`, its natural `width` and `height`, and what it is in `label`."
+    },
+    {
+     "name": "image",
+     "type": "ReactNode",
+     "description": ""
+    },
+    {
+     "name": "width",
+     "type": "number",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "height",
+     "type": "number",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "showLabels",
+     "type": "\"none\" | \"all\" | \"selected\"",
+     "default": "\"none\"",
+     "description": "Class words on the picture. None by default: the text says what each mark is; \"selected\" shows the highlighted ones."
+    },
+    {
+     "name": "legend",
+     "type": "boolean",
+     "default": "false",
+     "description": "annotated-image's line-style legend, for the kinds present. Off by default: a model's answer has one kind."
+    },
+    {
+     "name": "overlays",
+     "type": "AnnotationOverlay[]",
+     "description": ""
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "description": ""
+    },
+    {
+     "name": "defaultPinned",
+     "type": "{ span: number } | { mark: string } | null",
+     "default": "null",
+     "description": "Pinned at first (uncontrolled), or controlled with `onPinnedChange`."
+    },
+    {
+     "name": "pinned",
+     "type": "{ span: number } | { mark: string } | null",
+     "description": ""
+    },
+    {
+     "name": "onPinnedChange",
+     "type": "(pin: GroundedPin | null) => void",
+     "description": ""
+    },
+    {
+     "name": "labels",
+     "type": "Partial<GroundedTextLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "marks",
+       "type": "(count: { points: number; boxes: number; shapes: number; }) => string",
+       "default": "({ points, boxes, shapes }) => { const parts = [boxes && plural(boxes, \"box\", \"boxes\"), points && plural(points, \"point\", \"points\"), shapes && plural(shapes, \"shape\", \"shapes\")].filter(Boolean) return `${parts.join(\" and \")} on the image` }",
+       "description": "A span's description, read after its words: \"8 points on the image\", \"2 boxes and 1 point on the image\"."
+      },
+      {
+       "name": "linked",
+       "type": "(words: string[]) => string",
+       "default": "(words) => `In the text: ${words.join(\"; \")}`",
+       "description": "A mark's description, read after its name: the words that point at it."
+      }
+     ]
+    },
+    {
+     "name": "imageLabels",
+     "type": "Partial<AnnotatedImageLabels>",
+     "description": "annotated-image's words (`annotatedImageLabels` in labels-zh-tw)."
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "hover-card": [
   {
    "name": "HoverCard",
@@ -7031,6 +7201,53 @@
      "type": "boolean",
      "default": "false",
      "description": "One line for table cells: bar and value, the label only read by screen readers."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the value and the range's end (a BCP 47 tag such as \"zh-TW\"): \"412,345 of 1,000,000 items\"."
+    },
+    {
+     "name": "format",
+     "type": "Intl.NumberFormatOptions",
+     "description": "How to write the value and the range's end, e.g. `{ notation: \"compact\" }` (412K) or `{ maximumFractionDigits: 1 }`."
+    },
+    {
+     "name": "showThresholds",
+     "type": "boolean",
+     "default": "false",
+     "description": "Mark `low` and `critical` on the track with a thin tick, so a reader sees how close the level is before it crosses."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<MeterLabels>",
+     "description": "The words it says, to translate them.",
+     "keys": [
+      {
+       "name": "range",
+       "type": "(value: string, max: string) => string",
+       "default": "(value, max) => `${value} of ${max}`",
+       "description": "The value with the range's end, for `showMax`: \"412 of 512\". Both come formatted."
+      },
+      {
+       "name": "critical",
+       "type": "string",
+       "default": "\"critical\"",
+       "description": "Read after the value once past `critical`."
+      },
+      {
+       "name": "high",
+       "type": "string",
+       "default": "\"high\"",
+       "description": "Read after the value past `low` when `higherIsWorse`."
+      },
+      {
+       "name": "low",
+       "type": "string",
+       "default": "\"low\"",
+       "description": "Read after the value past `low`."
+      }
+     ]
     }
    ],
    "inherits": []
@@ -7413,6 +7630,12 @@
      "type": "Labels",
      "description": "",
      "keys": [
+      {
+       "name": "nav",
+       "type": "string",
+       "default": "\"Pagination\"",
+       "description": "The landmark's name for screen readers."
+      },
       {
        "name": "range",
        "type": "(from: number, to: number, total: number, locale?: string) => string",
@@ -9599,6 +9822,12 @@
      "name": "locale",
      "type": "string",
      "description": "Formats the numbers and shares (a BCP 47 tag such as \"zh-TW\"). Left out, the browser's language."
+    },
+    {
+     "name": "linkAs",
+     "type": "ElementType",
+     "default": "\"a\"",
+     "description": "Your router's link (e.g. next/link), for segments with href."
     }
    ],
    "inherits": []
@@ -10906,6 +11135,195 @@
    "inherits": []
   }
  ],
+ "streaming-text": [
+  {
+   "name": "StreamingText",
+   "props": [
+    {
+     "name": "text",
+     "type": "string",
+     "required": true,
+     "description": "The answer so far, as plain text. Append each chunk to it; blank lines start paragraphs. No markdown is parsed."
+    },
+    {
+     "name": "phase",
+     "type": "\"done\" | \"error\" | \"queued\" | \"streaming\" | \"stopped\"",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "queuePosition",
+     "type": "number",
+     "description": "While queued: the place in the queue, 1 being next."
+    },
+    {
+     "name": "onStop",
+     "type": "() => void",
+     "description": "Shows Stop while streaming (Cancel while queued). The product aborts the request and sets `phase` to \"stopped\"."
+    },
+    {
+     "name": "onRetry",
+     "type": "() => void",
+     "description": "After an error: shows Try again."
+    },
+    {
+     "name": "error",
+     "type": "string",
+     "description": "The error, in words, after \"Failed\"."
+    },
+    {
+     "name": "reasoning",
+     "type": "string",
+     "description": "A reasoning part the model streams before the answer: shown apart, under a Reasoning button, closed by default."
+    },
+    {
+     "name": "defaultReasoningOpen",
+     "type": "boolean",
+     "default": "false",
+     "description": "Open the reasoning part at first."
+    },
+    {
+     "name": "startedAt",
+     "type": "number",
+     "description": "When the request was sent, when the first token arrived and when it ended, in ms (Date.now() or performance.now())."
+    },
+    {
+     "name": "firstTokenAt",
+     "type": "number",
+     "description": ""
+    },
+    {
+     "name": "finishedAt",
+     "type": "number",
+     "description": ""
+    },
+    {
+     "name": "durationMs",
+     "type": "number",
+     "description": "Durations the server reports, in ms; they win over the timestamps."
+    },
+    {
+     "name": "firstTokenMs",
+     "type": "number",
+     "description": ""
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "description": "The answer's name for screen readers (\"Caption\", \"Answer from PerceptionVLM\"). Wins over `labels.name`."
+    },
+    {
+     "name": "announce",
+     "type": "false | \"text\" | \"status\"",
+     "default": "\"text\"",
+     "description": "Read the answer aloud in sentences while it streams (\"text\", default), say only the phases (\"status\"), or nothing."
+    },
+    {
+     "name": "announceEveryMs",
+     "type": "number",
+     "default": "5000",
+     "description": "The shortest time between two readings of the answer. Default 5,000 ms."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the times and the queue position."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<StreamingTextLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "name",
+       "type": "string",
+       "default": "\"Answer\"",
+       "description": "The answer's name, for screen readers."
+      },
+      {
+       "name": "queued",
+       "type": "(position: number | undefined, locale: string | undefined) => string",
+       "default": "(position, locale) => (position === undefined ? \"Waiting in the queue\" : position <= 1 ? \"Next in the queue\" : `Number ${position.toLocaleString(locale)} in the queue`)",
+       "description": "In the queue: with the place in it (1 is next), or without one."
+      },
+      {
+       "name": "thinking",
+       "type": "string",
+       "default": "\"Thinking\"",
+       "description": "Streaming the reasoning part, before the first word of the answer."
+      },
+      {
+       "name": "generating",
+       "type": "string",
+       "default": "\"Generating\"",
+       "description": ""
+      },
+      {
+       "name": "done",
+       "type": "(timing: StreamingTextTiming, locale: string | undefined) => string",
+       "default": "({ durationMs, firstTokenMs }, locale) => [durationMs === undefined ? \"Done\" : `Done in ${formatDuration(durationMs, locale)}`, firstTokenMs !== undefined && `first token ${formatDuration(firstTokenMs, locale)}`] .filter(Boolean) .join(\" · \")",
+       "description": "Finished: with how long it took and how long until the first token, when known."
+      },
+      {
+       "name": "stopped",
+       "type": "(timing: StreamingTextTiming & { empty: boolean; }, locale: string | undefined) => string",
+       "default": "({ durationMs, empty }, locale) => empty ? \"Cancelled before the answer started\" : [durationMs === undefined ? \"Stopped\" : `Stopped after ${formatDuration(durationMs, locale)}`, \"answer incomplete\"].join(\" · \")",
+       "description": "Stopped by someone: with how long it ran, and whether any answer had arrived."
+      },
+      {
+       "name": "failed",
+       "type": "string",
+       "default": "\"Failed\"",
+       "description": "The word for an error, in the danger colour; the error's own message follows it."
+      },
+      {
+       "name": "incomplete",
+       "type": "string",
+       "default": "\"answer incomplete\"",
+       "description": "After an error's message when part of the answer had arrived."
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"The answer has no text\"",
+       "description": "Done, with no text at all."
+      },
+      {
+       "name": "stop",
+       "type": "string",
+       "default": "\"Stop generating\"",
+       "description": "The button while streaming, and while queued."
+      },
+      {
+       "name": "cancel",
+       "type": "string",
+       "default": "\"Cancel\"",
+       "description": ""
+      },
+      {
+       "name": "retry",
+       "type": "string",
+       "default": "\"Try again\"",
+       "description": ""
+      },
+      {
+       "name": "reasoningToggle",
+       "type": "string",
+       "default": "\"Reasoning\"",
+       "description": "The button that shows or hides the reasoning part."
+      },
+      {
+       "name": "duration",
+       "type": "(ms: number, locale: string | undefined) => string",
+       "default": "formatDuration",
+       "description": "A duration: \"2.4 s\", \"1 min 12 s\"."
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "switch": [
   {
    "name": "Switch",
@@ -11005,7 +11423,13 @@
   },
   {
    "name": "TabsList",
-   "props": [],
+   "props": [
+    {
+     "name": "sticky",
+     "type": "boolean",
+     "description": "Keep the row in view while the page scrolls. It sticks under the shell's top bar (`--shell-top`, which the shells set; 0 without one), on the shell's surface (`--shell-surface`, else the background), with its hairline, below the bar. Picking a tab while it is stuck scrolls back to the start of the tabs."
+    }
+   ],
    "inherits": [
     "Radix Tabs.List"
    ]
@@ -11313,6 +11737,56 @@
      "type": "\"center\" | \"end\" | \"start\"",
      "default": "\"end\"",
      "description": "The menu's edge that lines up with the button (menu only)."
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "tier-badge": [
+  {
+   "name": "TierBadge",
+   "props": [
+    {
+     "name": "tier",
+     "type": "\"T0\" | \"T1\" | \"T2\" | \"T3\"",
+     "required": true,
+     "description": "The dataset's licence tier, T0 to T3."
+    },
+    {
+     "name": "compact",
+     "type": "boolean",
+     "description": "The code alone on screen, for a column headed Tier. Screen readers still hear the words."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<TierBadgeLabels>",
+     "description": "The words for each tier (English by default; `tierBadgeLabels` in labels-zh-tw).",
+     "keys": [
+      {
+       "name": "T0",
+       "type": "string",
+       "default": "\"Commercial\"",
+       "description": ""
+      },
+      {
+       "name": "T1",
+       "type": "string",
+       "default": "\"Non-commercial\"",
+       "description": ""
+      },
+      {
+       "name": "T2",
+       "type": "string",
+       "default": "\"Restricted\"",
+       "description": ""
+      },
+      {
+       "name": "T3",
+       "type": "string",
+       "default": "\"On-premises only\"",
+       "description": ""
+      }
+     ]
     }
    ],
    "inherits": []

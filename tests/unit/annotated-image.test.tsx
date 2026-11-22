@@ -144,3 +144,48 @@ describe("AnnotatedImage", () => {
     expect((svg.querySelector('[data-kind="previous"]') as SVGGElement).style.opacity).toBe("var(--annotate-fade)")
   })
 })
+
+describe("AnnotatedImage, linked from outside", () => {
+  const lit = (c: HTMLElement) => [...c.querySelectorAll<SVGGElement>("svg[aria-hidden] g[data-highlighted]")].map((g) => g.dataset.id)
+  const faded = (c: HTMLElement) => [...c.querySelectorAll<SVGGElement>("svg[aria-hidden] g[data-kind]")].filter((g) => g.style.opacity).map((g) => g.dataset.id)
+
+  it("draws highlighted annotations in the selected ink at 3 px, in their own line style, and fades the rest", () => {
+    const { container } = render(<AnnotatedImage src={src} width={640} height={480} label="Camera 2" annotations={annotations} highlighted={["fork", "nope"]} />)
+    expect(lit(container)).toEqual(["fork"])
+    expect(faded(container).sort()).toEqual(["person", "spill"])
+    const ink = container.querySelector('g[data-id="fork"] path.stroke-annotate-selected')!
+    expect(ink.getAttribute("stroke-width")).toBe("3")
+    expect(ink.getAttribute("stroke-dasharray")).toBe("6 4")
+    // No handles: those mean selected.
+    expect(container.querySelectorAll('g[data-id="fork"] path[stroke-linecap="square"]')).toHaveLength(0)
+  })
+
+  it("shows the highlighted ones' words with showLabels=\"selected\"", () => {
+    const { container } = render(<AnnotatedImage src={src} width={640} height={480} label="Camera 2" annotations={annotations} highlighted={["spill"]} showLabels="selected" />)
+    expect([...container.querySelectorAll("span.absolute.block")].map((s) => s.textContent)).toEqual(["spill 0.60"])
+  })
+
+  it("reports the annotation under the mouse (not a touch), and its description is read after its name", () => {
+    const active = vi.fn()
+    render(
+      <AnnotatedImage
+        src={src}
+        width={640}
+        height={480}
+        label="Camera 2"
+        annotations={annotations.map((a) => (a.id === "spill" ? { ...a, description: "In the text: a wet patch" } : a))}
+        onSelectedChange={() => {}}
+        onActiveChange={active}
+      />,
+    )
+    const spill = screen.getByRole("button", { name: "spill, predicted, 0.60" })
+    expect(document.getElementById(spill.getAttribute("aria-describedby")!)!.textContent).toBe("In the text: a wet patch")
+    expect(screen.getByRole("button", { name: "forklift, ground truth" }).getAttribute("aria-describedby")).toBeNull()
+    fireEvent.pointerEnter(spill, { pointerType: "touch" })
+    expect(active).not.toHaveBeenCalled()
+    fireEvent.pointerEnter(spill, { pointerType: "mouse" })
+    expect(active).toHaveBeenLastCalledWith("spill")
+    fireEvent.pointerLeave(spill, { pointerType: "mouse" })
+    expect(active).toHaveBeenLastCalledWith(null)
+  })
+})

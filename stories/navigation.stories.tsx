@@ -7,6 +7,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/registry/syncrobotic/ui/tabs"
 import { Breadcrumb, BreadcrumbLink, BreadcrumbPage } from "@/registry/syncrobotic/ui/breadcrumb"
 import { Pagination } from "@/registry/syncrobotic/ui/pagination"
+import { locale as zhTW, paginationLabels } from "@/registry/syncrobotic/lib/labels-zh-tw"
 
 const meta: Meta = { title: "Navigation" }
 export default meta
@@ -82,6 +83,54 @@ export const TabsWithIconsAndCounts: S = {
   ),
 }
 
+// Sticky: the row stays at the top while the long tab scrolls (here inside a box; in a shell, under its top bar at
+// --shell-top). Scroll down, then pick Sensors: the page goes back to the start of the tabs.
+export const TabsSticky: S = {
+  render: () => (
+    <div className="h-80 overflow-y-auto rounded-md bg-background px-4 ring-1 ring-border">
+      <Tabs defaultValue="events">
+        <TabsList sticky aria-label="Robot 7F3A">
+          <TabsTrigger value="events">Events</TabsTrigger>
+          <TabsTrigger value="sensors">Sensors</TabsTrigger>
+          <TabsTrigger value="logs">Logs</TabsTrigger>
+        </TabsList>
+        <TabsContent value="events">
+          <div className="flex flex-col text-sm">
+            {Array.from({ length: 16 }, (_, i) => (
+              <p key={i} className="flex min-h-(--h-row) items-center justify-between gap-3 border-b border-border last:border-b-0">
+                <span>Patrol lap {16 - i} finished</span>
+                <span className="font-mono text-xs text-muted-foreground tabular-nums">{`${String(21 - Math.floor(i / 2)).padStart(2, "0")}:${i % 2 ? "30" : "00"}`}</span>
+              </p>
+            ))}
+          </div>
+        </TabsContent>
+        <TabsContent value="sensors" className="text-sm text-muted-foreground">
+          LiDAR, 4 cameras, IMU
+        </TabsContent>
+        <TabsContent value="logs" className="text-sm text-muted-foreground">
+          12 lines since 06:00
+        </TabsContent>
+      </Tabs>
+    </div>
+  ),
+}
+
+// Right under the page's h1, the triggers sit in h2s, so the outline skips no level. The look does not change.
+export const AccordionHeadingLevel: S = {
+  render: () => (
+    <Accordion type="single" collapsible>
+      <AccordionItem value="licence">
+        <AccordionTrigger as="h2">Licence</AccordionTrigger>
+        <AccordionContent>Internal use only. Ask the data team before sharing a recording outside the company.</AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="retention">
+        <AccordionTrigger as="h2">Retention</AccordionTrigger>
+        <AccordionContent>Recordings are kept for 90 days, then deleted unless a mission report links to them.</AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  ),
+}
+
 export const AccordionMultiple: S = {
   render: () => (
     <Accordion type="multiple" defaultValue={["night", "weekend"]}>
@@ -139,6 +188,18 @@ export const PaginationCompact: S = {
       <PaginationDemo pages total={240} />
     </div>
   ),
+}
+
+/** In Traditional Chinese, from the zh-TW label pack: the landmark is named 分頁 as well as the buttons. */
+export const PaginationZhTw: S = {
+  render: function Render() {
+    const [page, setPage] = React.useState(0)
+    return (
+      <div className={wide}>
+        <Pagination page={page} pageSize={10} total={240} onPageChange={setPage} pages labels={paginationLabels} locale={zhTW} />
+      </div>
+    )
+  },
 }
 
 export const BreadcrumbWithIcon: S = {
@@ -201,6 +262,19 @@ export const BreadcrumbWithSwitcher: S = {
         </DropdownMenuContent>
       </DropdownMenu>
     </Breadcrumb>
+  ),
+}
+
+/** In a header as wide as its content (here a column with items-start), every level shows in full: the first gives way only when the row is short of room. */
+export const BreadcrumbContentWidth: S = {
+  render: () => (
+    <div className="flex flex-col items-start gap-2">
+      <Breadcrumb>
+        <BreadcrumbLink href="#catalog">Data catalog</BreadcrumbLink>
+        <BreadcrumbPage>night-run-v3</BreadcrumbPage>
+      </Breadcrumb>
+      <h2 className="text-xl font-bold">night-run-v3</h2>
+    </div>
   ),
 }
 

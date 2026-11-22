@@ -1,9 +1,10 @@
-// @syncrobotic/dataset-detail v0.17.3 · update: npx shadcn add @syncrobotic/dataset-detail --overwrite
+// @syncrobotic/dataset-detail v0.31.0 · update: npx shadcn add @syncrobotic/dataset-detail --overwrite
 "use client"
 
 import * as React from "react"
 import { ArrowRight, TriangleAlert } from "lucide-react"
-import { dataNav, TierBadge, type Tier } from "@/registry/syncrobotic/blocks/data-catalog"
+import { dataNav } from "@/registry/syncrobotic/blocks/data-catalog"
+import { TierBadge, type Tier } from "@/registry/syncrobotic/ui/tier-badge"
 import { Breadcrumb, BreadcrumbLink, BreadcrumbPage } from "@/registry/syncrobotic/ui/breadcrumb"
 import { CopyButton } from "@/registry/syncrobotic/ui/copy-button"
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
@@ -85,126 +86,135 @@ function Frame({ s, boxes, labels }: { s: Sample; boxes: boolean; labels: boolea
   )
 }
 
-/**
- * One dataset: what it is, whether it may enter a release and why, what is in it, where it came from and where it goes.
- * Browse shows the items with their annotations; layers toggle on and off.
- */
-export function DatasetDetail({ name = "Night parking lot people", reference = "people/night-parking@v3", tier = "T0" as Tier }) {
+export type DatasetDetailProps = { name?: string; reference?: string; tier?: Tier }
+
+/** One dataset without a frame: put it in your own shell (top-bar-shell, app-shell). */
+export function DatasetDetailContent({ name = "Night parking lot people", reference = "people/night-parking@v3", tier = "T0" }: DatasetDetailProps) {
   const [boxes, setBoxes] = React.useState(true)
   const [labels, setLabels] = React.useState(true)
 
   return (
-    <AppShell product="DataCore" nav={dataNav} current="#catalog" title="Catalog" user={sampleUser}>
-      <div className="flex flex-col gap-6">
-        <Breadcrumb>
-          <BreadcrumbLink href="#catalog">Catalog</BreadcrumbLink>
-          <BreadcrumbLink href="#people">people</BreadcrumbLink>
-          <BreadcrumbPage>night-parking@v3</BreadcrumbPage>
-        </Breadcrumb>
+    <div className="flex flex-col gap-6">
+      <Breadcrumb>
+        <BreadcrumbLink href="#catalog">Catalog</BreadcrumbLink>
+        <BreadcrumbLink href="#people">people</BreadcrumbLink>
+        <BreadcrumbPage>night-parking@v3</BreadcrumbPage>
+      </Breadcrumb>
 
-        <header className="flex flex-col gap-3">
-          <div className="flex flex-wrap items-center gap-3">
-            <h2 className="text-3xl font-bold">{name}</h2>
-            <TierBadge tier={tier} />
-          </div>
-          <p className="flex flex-wrap items-center gap-2 font-mono text-sm text-muted-foreground">
-            {reference}
-            <CopyButton value={reference} label="Copy reference" />
-          </p>
-          <InlineStatus status="normal">May enter product releases</InlineStatus>
-        </header>
+      <header className="flex flex-col gap-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <h2 className="text-3xl font-bold">{name}</h2>
+          <TierBadge tier={tier} />
+        </div>
+        <p className="flex flex-wrap items-center gap-2 font-mono text-sm text-muted-foreground">
+          {reference}
+          <CopyButton value={reference} label="Copy reference" />
+        </p>
+        <InlineStatus status="normal">May enter product releases</InlineStatus>
+      </header>
 
-        <Tabs defaultValue="overview">
-          <TabsList aria-label="Dataset">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="browse">Browse</TabsTrigger>
-            <TabsTrigger value="lineage">Lineage</TabsTrigger>
-            <TabsTrigger value="compliance">Compliance</TabsTrigger>
-          </TabsList>
+      <Tabs defaultValue="overview">
+        <TabsList aria-label="Dataset">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="browse">Browse</TabsTrigger>
+          <TabsTrigger value="lineage">Lineage</TabsTrigger>
+          <TabsTrigger value="compliance">Compliance</TabsTrigger>
+        </TabsList>
 
-          <TabsContent value="overview" className="flex flex-col gap-6">
-            <Alert tone="warning">
-              <TriangleAlert aria-hidden="true" />
-              <AlertTitle>1 open issue</AlertTitle>
-              <AlertDescription>Consent for site B is not recorded. Items from site B are held back until it is.</AlertDescription>
-            </Alert>
-            <DescriptionList
-              columns={4}
-              items={[
-                { label: "Items", value: "48,210" },
-                { label: "Classes", value: "2" },
-                { label: "Owner", value: "Data team" },
-                { label: "Updated", value: "2026-11-14" },
-              ]}
-            />
-            <section aria-labelledby="splits" className="flex flex-col gap-2">
-              <h3 id="splits" className="text-sm font-bold">
-                Splits
-              </h3>
-              {/* Each split is its own segment, 2 px apart, in three steps of grey that stay apart from one another and from
-                  the card; none of them is the empty track. */}
-              <div className="flex h-2 gap-0.5 overflow-hidden rounded-xs" role="img" aria-label="train 80 %, val 10 %, test 10 %">
-                <span className="bg-foreground" style={{ width: "80%" }} />
-                <span className="bg-muted-foreground" style={{ width: "10%" }} />
-                <span className="bg-input" style={{ width: "10%" }} />
-              </div>
-              <ul className="flex gap-4 text-xs text-muted-foreground">
-                {splits.map((s) => (
-                  <li key={s.name} className="tabular-nums">
-                    {s.name} {s.share} %
-                  </li>
-                ))}
-              </ul>
-            </section>
-          </TabsContent>
-
-          <TabsContent value="browse" className="flex flex-col gap-4">
-            <div role="group" aria-label="Layers" className="flex flex-wrap items-center gap-2">
-              <span className="text-sm text-muted-foreground">Show</span>
-              <Toggle size="sm" pressed={boxes} onPressedChange={setBoxes}>
-                Boxes
-              </Toggle>
-              <Toggle size="sm" pressed={labels} onPressedChange={setLabels} disabled={!boxes}>
-                Labels
-              </Toggle>
+        <TabsContent value="overview" className="flex flex-col gap-6">
+          <Alert tone="warning">
+            <TriangleAlert aria-hidden="true" />
+            <AlertTitle>1 open issue</AlertTitle>
+            <AlertDescription>Consent for site B is not recorded. Items from site B are held back until it is.</AlertDescription>
+          </Alert>
+          <DescriptionList
+            columns={4}
+            items={[
+              { label: "Items", value: "48,210" },
+              { label: "Classes", value: "2" },
+              { label: "Owner", value: "Data team" },
+              { label: "Updated", value: "2026-11-14" },
+            ]}
+          />
+          <section aria-labelledby="splits" className="flex flex-col gap-2">
+            <h3 id="splits" className="text-sm font-bold">
+              Splits
+            </h3>
+            {/* Each split is its own segment, 2 px apart, in three steps of grey that stay apart from one another and from
+                the card; none of them is the empty track. */}
+            <div className="flex h-2 gap-0.5 overflow-hidden rounded-xs" role="img" aria-label="train 80 %, val 10 %, test 10 %">
+              <span className="bg-foreground" style={{ width: "80%" }} />
+              <span className="bg-muted-foreground" style={{ width: "10%" }} />
+              <span className="bg-input" style={{ width: "10%" }} />
             </div>
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-              {samples.map((s) => (
-                <Frame key={s.id} s={s} boxes={boxes} labels={labels} />
-              ))}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="lineage">
-            <ol className="flex flex-col rounded-md bg-card ring-1 ring-border">
-              {lineage.map((l, i) => (
-                <li key={l.ref}>
-                  {i > 0 && <Separator />}
-                  <div className="flex min-h-(--h-row) items-center gap-3 px-4">
-                    <span className="w-24 shrink-0 text-xs text-muted-foreground">{l.kind}</span>
-                    <span className={l.kind === "This dataset" ? "font-mono text-sm font-bold" : "font-mono text-sm"}>{l.ref}</span>
-                    {i < lineage.length - 1 && <ArrowRight aria-hidden="true" className="ml-auto size-4 text-muted-foreground" />}
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </TabsContent>
-
-          <TabsContent value="compliance">
-            <ul className="flex flex-col rounded-md bg-card ring-1 ring-border">
-              {reviews.map((r, i) => (
-                <li key={r.check}>
-                  {i > 0 && <Separator />}
-                  <div className="flex min-h-(--h-row) items-center justify-between gap-3 px-4 text-sm">
-                    {r.check}
-                    <InlineStatus status={r.state === "passed" ? "normal" : "warning"}>{r.state === "passed" ? "Passed" : "Open"}</InlineStatus>
-                  </div>
+            <ul className="flex gap-4 text-xs text-muted-foreground">
+              {splits.map((s) => (
+                <li key={s.name} className="tabular-nums">
+                  {s.name} {s.share} %
                 </li>
               ))}
             </ul>
-          </TabsContent>
-        </Tabs>
-      </div>
+          </section>
+        </TabsContent>
+
+        <TabsContent value="browse" className="flex flex-col gap-4">
+          <div role="group" aria-label="Layers" className="flex flex-wrap items-center gap-2">
+            <span className="text-sm text-muted-foreground">Show</span>
+            <Toggle size="sm" pressed={boxes} onPressedChange={setBoxes}>
+              Boxes
+            </Toggle>
+            <Toggle size="sm" pressed={labels} onPressedChange={setLabels} disabled={!boxes}>
+              Labels
+            </Toggle>
+          </div>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            {samples.map((s) => (
+              <Frame key={s.id} s={s} boxes={boxes} labels={labels} />
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="lineage">
+          <ol className="flex flex-col rounded-md bg-card ring-1 ring-border">
+            {lineage.map((l, i) => (
+              <li key={l.ref}>
+                {i > 0 && <Separator />}
+                <div className="flex min-h-(--h-row) items-center gap-3 px-4">
+                  <span className="w-24 shrink-0 text-xs text-muted-foreground">{l.kind}</span>
+                  <span className={l.kind === "This dataset" ? "font-mono text-sm font-bold" : "font-mono text-sm"}>{l.ref}</span>
+                  {i < lineage.length - 1 && <ArrowRight aria-hidden="true" className="ml-auto size-4 text-muted-foreground" />}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </TabsContent>
+
+        <TabsContent value="compliance">
+          <ul className="flex flex-col rounded-md bg-card ring-1 ring-border">
+            {reviews.map((r, i) => (
+              <li key={r.check}>
+                {i > 0 && <Separator />}
+                <div className="flex min-h-(--h-row) items-center justify-between gap-3 px-4 text-sm">
+                  {r.check}
+                  <InlineStatus status={r.state === "passed" ? "normal" : "warning"}>{r.state === "passed" ? "Passed" : "Open"}</InlineStatus>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </TabsContent>
+      </Tabs>
+    </div>
+  )
+}
+
+/**
+ * One dataset: what it is, whether it may enter a release and why, what is in it, where it came from and where it goes.
+ * Browse shows the items with their annotations; layers toggle on and off.
+ */
+export function DatasetDetail(props: DatasetDetailProps) {
+  return (
+    <AppShell product="DataCore" nav={dataNav} current="#catalog" title="Catalog" user={sampleUser}>
+      <DatasetDetailContent {...props} />
     </AppShell>
   )
 }

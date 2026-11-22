@@ -138,6 +138,8 @@ function parts(node, sf, seen = new Set()) {
     }
   }
   if (ts.isTypeLiteralNode(node)) return [{ kind: "own" }]
+  // A discriminated union of our own shapes (`type: "single" | "multiple"`): its props are listed as the component's own.
+  if (ts.isUnionTypeNode(node) && node.types.every((t) => parts(t, sf, new Set(seen)).every((p) => p.kind === "own"))) return [{ kind: "own" }]
   const text = node.getText(sf)
   if (/^VariantProps</.test(text)) return [{ kind: "variants", text }]
   return [{ kind: "inherit", text, sf }]

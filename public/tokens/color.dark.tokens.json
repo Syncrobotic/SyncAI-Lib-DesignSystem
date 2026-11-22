@@ -81,6 +81,10 @@
       "$type": "color",
       "$value": "#3f3f46"
     },
+    "thumb": {
+      "$type": "color",
+      "$value": "#ffffff"
+    },
     "info": {
       "$type": "color",
       "$value": "#7da4e6"
@@ -141,6 +145,10 @@
       "$type": "color",
       "$value": "#000000a8"
     },
+    "letterbox": {
+      "$type": "color",
+      "$value": "#09090b"
+    },
     "float": {
       "$type": "color",
       "$value": "#202026db"
@@ -168,6 +176,26 @@
     "chart-5": {
       "$type": "color",
       "$value": "{color.chart-3}"
+    },
+    "chart-1-foreground": {
+      "$type": "color",
+      "$value": "#09090b"
+    },
+    "chart-2-foreground": {
+      "$type": "color",
+      "$value": "#09090b"
+    },
+    "chart-3-foreground": {
+      "$type": "color",
+      "$value": "#09090b"
+    },
+    "chart-4-foreground": {
+      "$type": "color",
+      "$value": "#ffffff"
+    },
+    "chart-5-foreground": {
+      "$type": "color",
+      "$value": "{color.chart-3-foreground}"
     },
     "annotate-predicted": {
       "$type": "color",

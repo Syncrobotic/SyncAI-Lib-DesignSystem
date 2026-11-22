@@ -41,6 +41,33 @@ describe("Meter says what its colour means", () => {
     expect(m.getAttribute("data-tone")).toBe("normal")
     expect(m.getAttribute("aria-valuetext")).toBe("412 of 512 GB")
   })
+
+  it("writes numbers as given by default, and formats value and total with locale and format", () => {
+    const { rerender } = render(<Meter label="Items" value={412345} max={1000000} unit="items" showMax />)
+    expect(screen.getByRole("meter").getAttribute("aria-valuetext")).toBe("412345 of 1000000 items")
+    rerender(<Meter label="Items" value={412345} max={1000000} unit="items" showMax locale="en-US" />)
+    expect(screen.getByRole("meter").getAttribute("aria-valuetext")).toBe("412,345 of 1,000,000 items")
+    expect(screen.getByText("412,345 of 1,000,000 items")).toBeTruthy()
+    rerender(<Meter label="Items" value={412345} max={1000000} unit="items" showMax locale="en-US" format={{ notation: "compact" }} />)
+    expect(screen.getByRole("meter").getAttribute("aria-valuetext")).toBe("412K of 1M items")
+    rerender(<Meter label="Items" value={412345} max={1000000} unit="items" showMax locale="de" labels={{ range: (v, m) => `${v} / ${m}` }} />)
+    expect(screen.getByRole("meter").getAttribute("aria-valuetext")).toBe("412.345 / 1.000.000 items")
+    rerender(<Meter label="Storage" value={97} low={80} critical={95} higherIsWorse labels={{ critical: "kritisch" }} />)
+    expect(screen.getByRole("meter").getAttribute("aria-valuetext")).toBe("97 %, kritisch")
+  })
+
+  it("marks the thresholds with ticks only when asked, without changing what it says", () => {
+    const { container, rerender } = render(<Meter label="Storage used" value={78} low={80} critical={95} higherIsWorse />)
+    expect(container.querySelectorAll("[data-threshold]")).toHaveLength(0)
+    rerender(<Meter label="Storage used" value={78} low={80} critical={95} higherIsWorse showThresholds />)
+    const ticks = [...container.querySelectorAll<HTMLElement>("[data-threshold]")]
+    expect(ticks.map((t) => t.style.left)).toEqual(["80%", "95%"])
+    expect(ticks[0].className).toContain("border-muted-foreground")
+    expect(ticks[0].closest("[aria-hidden]")).toBeTruthy()
+    expect(screen.getByRole("meter").getAttribute("aria-valuetext")).toBe("78 %")
+    rerender(<Meter label="Temperature" value={40} min={20} max={120} low={60} unit="°C" showThresholds />)
+    expect([...container.querySelectorAll<HTMLElement>("[data-threshold]")].map((t) => t.style.left)).toEqual(["40%"])
+  })
 })
 
 describe("Trace keeps the status mark with a custom icon", () => {

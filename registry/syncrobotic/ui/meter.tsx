@@ -1,4 +1,4 @@
-// @syncrobotic/meter v0.29.0 · update: npx shadcn add @syncrobotic/meter --overwrite
+// @syncrobotic/meter v0.31.0 · update: npx shadcn add @syncrobotic/meter --overwrite
 import { cn } from "@/lib/utils"
 
 /** How a level reads: neutral, or past a threshold. */
@@ -25,6 +25,24 @@ export function meterSaid(
   return tone === "normal" ? "" : `, ${tone === "danger" ? words.critical : higherIsWorse ? words.high : words.low}`
 }
 
+export type MeterLabels = {
+  /** The value with the range's end, for `showMax`: "412 of 512". Both come formatted. */
+  range: (value: string, max: string) => string
+  /** Read after the value once past `critical`. */
+  critical: string
+  /** Read after the value past `low` when `higherIsWorse`. */
+  high: string
+  /** Read after the value past `low`. */
+  low: string
+}
+
+export const defaultMeterLabels: MeterLabels = {
+  range: (value, max) => `${value} of ${max}`,
+  critical: "critical",
+  high: "high",
+  low: "low",
+}
+
 /**
  * A level within a known range: battery, storage, signal. Neutral while normal; it turns warning below `low` and danger
  * below `critical` (or above `high` / `critical` when `higherIsWorse`), so colour appears only when something is wrong,
@@ -41,6 +59,10 @@ export function Meter({
   unit = "%",
   inline = false,
   showMax = false,
+  locale,
+  format,
+  showThresholds = false,
+  labels,
   className,
 }: {
   value: number
@@ -59,17 +81,30 @@ export function Meter({
   showMax?: boolean
   /** One line for table cells: bar and value, the label only read by screen readers. */
   inline?: boolean
+  /** Formats the value and the range's end (a BCP 47 tag such as "zh-TW"): "412,345 of 1,000,000 items". */
+  locale?: string
+  /** How to write the value and the range's end, e.g. `{ notation: "compact" }` (412K) or `{ maximumFractionDigits: 1 }`. */
+  format?: Intl.NumberFormatOptions
+  /** Mark `low` and `critical` on the track with a thin tick, so a reader sees how close the level is before it crosses. */
+  showThresholds?: boolean
+  /** The words it says, to translate them. */
+  labels?: Partial<MeterLabels>
   className?: string
 }) {
   const tone = meterTone(value, { low, critical, higherIsWorse })
   const pct = Math.min(100, Math.max(0, ((value - min) / (max - min)) * 100))
   const u = unit.trim()
   const suffix = u ? ` ${u}` : ""
-  const text = showMax ? `${value} of ${max}${suffix}` : `${value}${suffix}`
+  // Written as given unless a locale or a format is asked for, so a number never changes between server and browser.
+  const num = (n: number) => (locale !== undefined || format ? n.toLocaleString(locale, format) : String(n))
+  const l = { ...defaultMeterLabels, ...labels }
+  const text = `${showMax ? l.range(num(value), num(max)) : num(value)}${suffix}`
   // What the colour means, in words: a level that runs out is low; one that fills up or heats up is high.
-  const said = meterSaid(tone, higherIsWorse)
-  const bar = (
-    <span aria-hidden="true" className={cn("relative block h-2 overflow-hidden rounded-full bg-track", inline ? "w-20" : "w-full")}>
+  const said = meterSaid(tone, higherIsWorse, l)
+  const at = (n: number) => Math.min(100, Math.max(0, ((n - min) / (max - min)) * 100))
+  const ticks = showThresholds ? [low, critical].filter((n): n is number => n !== undefined) : []
+  const track = (
+    <span aria-hidden={ticks.length ? undefined : "true"} className={cn("relative block h-2 overflow-hidden rounded-full bg-track", inline && !ticks.length ? "w-20" : "w-full")}>
       <span
         className={cn(
           "absolute inset-y-0 left-0 rounded-full transition-[width] duration-(--motion-base) ease-(--ease-standard)",
@@ -78,6 +113,18 @@ export function Meter({
         style={{ width: `${pct}%` }}
       />
     </span>
+  )
+  // A threshold is a 1 px tick 8 px taller than the track (padding keeps it inside the meter), so its ends show over the fill too. Grey, not the warning
+  // colour: colour still means crossed. Drawn as a border, which forced colours keep.
+  const bar = ticks.length ? (
+    <span aria-hidden="true" className={cn("relative block py-1", inline ? "w-20" : "w-full")}>
+      {track}
+      {ticks.map((n, i) => (
+        <span key={i} data-threshold="" className="absolute top-1/2 h-4 -translate-x-1/2 -translate-y-1/2 border-l border-muted-foreground" style={{ left: `${at(n)}%` }} />
+      ))}
+    </span>
+  ) : (
+    track
   )
   const valueText = (
     <span className={cn("tabular-nums", tone === "danger" ? "text-danger" : tone === "warning" ? "text-warning" : inline ? "text-muted-foreground" : "")}>

@@ -27,6 +27,7 @@ export type StoryFile =
   | "questionnaire"
   | "data-grid"
   | "log-viewer"
+  | "streaming-text"
   | "sortable"
   | "resizable"
   | "file-upload"
@@ -55,6 +56,7 @@ export type StoryFile =
   | "data-pieces"
   | "image-grid"
   | "annotated-image"
+  | "grounded-text"
   | "media-player"
   | "camera-feed"
   | "camera-wall"
@@ -75,6 +77,7 @@ export type StoryFile =
   | "banner"
   | "streaming-chart"
   | "attitude"
+  | "tier-badge"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
@@ -210,6 +213,21 @@ const entries: Record<string, Entry> = {
       "Give `timeZone` when the people reading are not where the robot is, and say which in the page; copied lines are always ISO 8601 in UTC.",
       "Name the sources for what they are: `labels.sources` \"Nodes\" for ROS, \"Units\" for journald.",
       "Leave `announce` on \"errors\" (at most every 5 s); \"all\" only for a slow log, and false where an alarm already speaks for the same failure.",
+    ],
+  },
+  "streaming-text": {
+    wide: true,
+    group: "Data display",
+    examples: { file: "streaming-text", prefix: "StreamingText" },
+    rules: [
+      "For one answer that a model streams token by token: a VLM's caption, count or answer to a query, an LLM's reply. Numbers over time are `streaming-chart`; lines a program writes are `log-viewer`.",
+      "Append each chunk to one string and pass it as `text` with the `phase`. Plain text only: blank lines start paragraphs, no markdown is parsed.",
+      "Set `phase` from the request: \"queued\" with `queuePosition` (1 is next), \"streaming\", then \"done\", \"stopped\" or \"error\" with `error` in words. Stopped and failed keep the partial text and say it is incomplete.",
+      "Give `onStop` and abort the request in it, then set \"stopped\". Give `onRetry` for an error. Try again shows only after an error, never after Stop, so a second tap on Stop cannot start a new answer.",
+      "Pass `startedAt`, `firstTokenAt` and `finishedAt` (or the server's `durationMs` and `firstTokenMs`): done says \"Done in 2.4 s · first token 0.3 s\". Without them it says Done.",
+      "A reasoning part goes in `reasoning`, never into `text`: it streams first, sits apart behind a Reasoning button, closed, and the status says Thinking until the answer starts.",
+      "Calm while it waits: grey Spinner and a word, no blinking caret, no blue. Colour only on an error's glyph and word.",
+      "Leave `announce` on \"text\": screen readers hear each phase once and the answer in whole sentences, at most every 5 s. \"status\" where the answer is read elsewhere.",
     ],
   },
   sortable: {
@@ -364,10 +382,11 @@ const entries: Record<string, Entry> = {
     group: "Inputs",
     examples: { file: "chip-group", prefix: "ChipGroup" },
     rules: [
-      "One choice among several, with the count each gives. For several choices at once use checkboxes in a FieldSet.",
+      "One choice among several, with the count each gives. `type=\"multiple\"` for any of several values in one facet (\"detection or segmentation\"); `value` is then a list. For a long list of options use checkboxes in a FieldSet.",
       "Selected is inverted, like a selected segment.",
-      "Fold long rows with max; the selected chip always stays visible.",
-      "Chips with href are links: the filter lives in the URL and works without JavaScript.",
+      "Fold long rows with max; chosen chips always stay visible.",
+      "Chips with href are links: the filter lives in the URL and works without JavaScript. The chosen link is aria-current=\"page\"; give `current=\"true\"` to a row of filter links on a page whose navigation already marks the page. With `type=\"multiple\"` each link's href adds or removes its value, and chosen links say \"selected\" instead.",
+      "`props` on a chip puts `data-*` hooks, a `title` or `aria-describedby` on its button or link.",
     ],
   },
   "filter-form": {
@@ -572,7 +591,23 @@ const entries: Record<string, Entry> = {
       "`tone=\"success\"` renders grey, as `neutral` does: a state is never green. Use `neutral`.",
     ],
   },
-  card: { group: "Layout", examples: { file: "display", prefix: "Card" }, rules: ["Never nest cards. Group rows inside one card with separators."] },
+  "tier-badge": {
+    group: "Data display",
+    examples: { file: "tier-badge", prefix: "TierBadge" },
+    rules: [
+      "A dataset's licence tier, wherever the dataset is named: a row, a page header, a release check.",
+      "With its words by default; `compact` (the code alone) only in a column headed Tier. Screen readers hear the words either way.",
+      "T0 is grey, the restricted tiers outlined. A tier is a category, not a state: never a status colour, never red for T3.",
+    ],
+  },
+  card: {
+    group: "Layout",
+    examples: { file: "display", prefix: "Card" },
+    rules: [
+      "Never nest cards. Group rows inside one card with separators.",
+      "The title is an h3. Set `as` on CardTitle (`titleAs` on CardDataHeader) to the level the page needs: h2 for a card right under the h1, h4 inside a section under an h3. The size stays the same.",
+    ],
+  },
   avatar: {
     group: "Data display",
     examples: { file: "display", prefix: "Avatar" },
@@ -615,6 +650,8 @@ const entries: Record<string, Entry> = {
       "Neutral while normal; warning past `low`, danger past `critical`; the value is always written. A battery takes only `low` (15 %): a low battery needs attention, it is not a failure, so it turns warning and never danger. Danger is for a level that breaks something, like full storage.",
       "`inline` in table cells; the label is still read by screen readers.",
       "With `higherIsWorse` (temperature, storage) the warning is read as high, not low. `showMax` writes the total for an amount whose total matters: 412 of 512 GB.",
+      "`showThresholds` draws a grey tick at `low` and `critical` where how close the limit is matters, as on a quota. The tick stays grey: colour still means crossed.",
+      "Pass `locale` for big counts (412,345 of 1,000,000 items), and `format` to shorten them (`{ notation: \"compact\" }`: 412K of 1M).",
     ],
   },
   "metric-card": {
@@ -702,6 +739,7 @@ const entries: Record<string, Entry> = {
       "How a whole splits into a few parts (up to three, then “Other”): the first in the accent, then two greys, then the light grey for Other. For values over time or many categories, use a chart.",
       "Colours follow the order you give, never the size, and are never status colours.",
       "Outside a table cell, show the legend: identity never rests on colour alone. In a table, the column header names the parts.",
+      "Give a segment `href` when its part is a view to follow (the list filtered to it): its legend entry becomes the link, named with its share (\"Fleet cameras 5,060, 51 %\"). The bar stays one picture, so each part has one target. Pass `linkAs` for your router.",
     ],
   },
   "restricted-preview": {
@@ -735,6 +773,20 @@ const entries: Record<string, Entry> = {
       "Keep the legend (or an AnnotationLegend nearby) whenever more than one kind is on screen.",
       "Crowded picture, or a picture shown phone-wide: `showLabels=\"selected\"`. The words are still read out in the summary or on each annotation's button.",
       "Selectable only when something happens on select (a details panel, a review); otherwise the picture is one image with a summary.",
+      "To point at marks from outside the picture (a hovered word, a table row), pass their ids as `highlighted`: they draw in the selected ink and the rest fade. `onActiveChange` says which mark the pointer or keyboard is on.",
+    ],
+  },
+  "grounded-text": {
+    wide: true,
+    group: "Media & files",
+    examples: { file: "grounded-text", prefix: "GroundedText" },
+    rules: [
+      "For text that names places on a picture: a model's caption or reasoning, a review note. A picture with marks and no text is `annotated-image`.",
+      "Pass the model's offsets as they come (`start`, `end`, or `fromGrounding` for `start_idx`, `end_idx` and points or boxes in pixels, 0–1, percent or 0–1000). Spans must not overlap; a span that does starts where the one before ends.",
+      "Give every span the ids of all its marks, and every mark a span. A span whose marks are not on the picture is plain text.",
+      "Highlighting is the selected ink at 3 px with the rest faded, never a colour per span. In high contrast nothing fades; the width carries it.",
+      "Class words on the picture are off: the text names each mark. Turn on `showLabels=\"selected\"` when the words differ from the text (a model's class next to a person's note).",
+      "Put it in a card at least 48 rem wide to see the text beside the picture; narrower, the text goes under it.",
     ],
   },
   "media-player": {
@@ -840,7 +892,11 @@ const entries: Record<string, Entry> = {
   breadcrumb: {
     group: "Navigation",
     examples: { file: "navigation", prefix: "Breadcrumb" },
-    rules: ["Each level is a link; the current page is last and is not.", "In an app shell, pass it as `breadcrumb`: the top bar's title is the current page."],
+    rules: [
+      "Each level is a link; the current page is last and is not.",
+      "In an app shell, pass it as `breadcrumb`: the top bar's title is the current page.",
+      "It needs no set width: stretched or as wide as its content, every level shows in full while the row has room. Short of room, the first level keeps its name or a third of the row, whichever is less, and the current page takes what is left.",
+    ],
   },
   pagination: {
     group: "Navigation",
@@ -866,6 +922,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "Switch between views of the same thing, all at the same level. Not for steps (Stepper) or for moving between pages.",
       "Keep the labels short and the order stable.",
+      "Over long sections, `sticky` on TabsList keeps the row in view under the shell's top bar. One sticky row per page; picking a tab while it is stuck goes back to the start of the tabs.",
     ],
   },
   accordion: {
@@ -874,6 +931,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "Long content most people skip: FAQs, advanced settings. Content everyone needs stays open.",
       "One open at a time only when the sections are alternatives.",
+      "Each trigger sits in an h3. Set `as` on AccordionTrigger to the level the page needs: h2 right under the h1, h4 inside a section under an h3.",
     ],
   },
   tree: {
@@ -1311,7 +1369,7 @@ const keyboard: Record<string, [string, string][]> = {
   ],
   "chip-group": [
     ["`←` / `→`", "Move between the chips (one Tab stop for the group; N more is a stop of its own)"],
-    ["`Enter` / `Space`", "Choose the focused chip; on the chosen one, clear the choice"],
+    ["`Enter` / `Space`", "Choose the focused chip; on the chosen one, clear the choice. With several at once, turn the focused chip on or off"],
   ],
   "search-field": [
     ["`/`", "Focus the search box from anywhere on the page, except while typing in a field"],
@@ -1466,6 +1524,12 @@ const keyboard: Record<string, [string, string][]> = {
     ["`Enter` / `Space`", "Select the annotation"],
     ["`Esc`", "Clear the selection"],
   ],
+  "grounded-text": [
+    ["`Tab`", "Reach the picture's marks once, then each linked span in reading order; focus shows what it links to"],
+    ["`←` `→` / `↑` `↓`", "On the picture: previous or next mark (as annotated-image)"],
+    ["`Enter` / `Space`", "Pin the span or mark, so its links stay highlighted; again to let go"],
+    ["`Esc`", "Let go of what is pinned"],
+  ],
   dialog: overlayKeys,
   "alert-dialog": [
     ["`Esc`", "Cancel"],
@@ -1512,6 +1576,10 @@ const keyboard: Record<string, [string, string][]> = {
     ["`/`", "Go to the search box"],
     ["`Enter` / `Shift`+`Enter`", "In the search box: next or previous match"],
     ["`Esc`", "Close the open line, or drop the selection back to one line"],
+  ],
+  "streaming-text": [
+    ["`Tab`", "Move to Stop (Cancel while queued), the Reasoning button and Try again after an error"],
+    ["`Enter` / `Space`", "Stop, open or close the reasoning, or try again"],
   ],
   filters: [
     ["`Enter`", "On + Filter, open the picker; on a part of a chip, reopen that step"],
@@ -1591,12 +1659,14 @@ export function storyNames(ex: Examples) {
 /** An example's caption where the story's name cannot say it: component → story → caption. */
 const captions: Record<string, Record<string, string>> = {
   "log-viewer": { LogViewerRosout: "/rosout", LogViewerZhTw: "Traditional Chinese (zh-TW)", LogViewerHundredThousand: "100,000 lines" },
+  "streaming-text": { StreamingTextZhTw: "Traditional Chinese (zh-TW)" },
   calendar: { CalendarMonthYearDropdowns: "Month and year dropdowns" },
   chart: { ChartAboveBelowZero: "Above and below zero" },
   "time-picker": { TimePickerTwelveHour: "12-hour clock" },
   diagnostics: { DiagnosticsAllOk: "All OK" },
   "teleop-pad": { TeleopPadConsole: "On a console" },
   "input-otp": { InputOTPPin: "PIN" },
+  "tier-badge": { TierBadgeZhTw: "Traditional Chinese (zh-TW)" },
   "use-long-press": { UseLongPressHoldToConfirm: "Hold to confirm" },
 }
 
