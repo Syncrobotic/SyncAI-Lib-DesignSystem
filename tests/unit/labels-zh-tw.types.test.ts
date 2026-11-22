@@ -42,6 +42,7 @@ import type { StreamingChartLabels } from "@/registry/syncrobotic/ui/streaming-c
 import type { AttitudeIndicatorLabels, GaugeLabels } from "@/registry/syncrobotic/ui/attitude"
 import type { StepperLabels } from "@/registry/syncrobotic/ui/stepper"
 import type { TextDiffLabels } from "@/registry/syncrobotic/ui/text-diff"
+import type { MeterLabels } from "@/registry/syncrobotic/ui/meter"
 import type { ThemeChoice } from "@/registry/syncrobotic/ui/theme-toggle"
 import type { TimePickerLabels } from "@/registry/syncrobotic/ui/time-picker"
 import type { TraceLabels } from "@/registry/syncrobotic/ui/trace"
@@ -96,6 +97,7 @@ it("fits every component's labels type", () => {
   fits<LoadMoreLabels>()(zh.loadMoreLabels)
   fits<LogViewerLabels>()(zh.logViewerLabels)
   fits<WaypointEditorLabels>()(zh.waypointEditorLabels)
+  fits<MeterLabels>()(zh.meterLabels)
   fits<MetricCardLabels>()(zh.metricCardLabels)
   fits<TextDiffLabels>()(zh.textDiffLabels)
   fits<LabelsOf<typeof Filters>>()(zh.filtersLabels)

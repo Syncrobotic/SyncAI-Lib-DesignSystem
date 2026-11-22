@@ -7048,6 +7048,53 @@
      "type": "boolean",
      "default": "false",
      "description": "One line for table cells: bar and value, the label only read by screen readers."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the value and the range's end (a BCP 47 tag such as \"zh-TW\"): \"412,345 of 1,000,000 items\"."
+    },
+    {
+     "name": "format",
+     "type": "Intl.NumberFormatOptions",
+     "description": "How to write the value and the range's end, e.g. `{ notation: \"compact\" }` (412K) or `{ maximumFractionDigits: 1 }`."
+    },
+    {
+     "name": "showThresholds",
+     "type": "boolean",
+     "default": "false",
+     "description": "Mark `low` and `critical` on the track with a thin tick, so a reader sees how close the level is before it crosses."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<MeterLabels>",
+     "description": "The words it says, to translate them.",
+     "keys": [
+      {
+       "name": "range",
+       "type": "(value: string, max: string) => string",
+       "default": "(value, max) => `${value} of ${max}`",
+       "description": "The value with the range's end, for `showMax`: \"412 of 512\". Both come formatted."
+      },
+      {
+       "name": "critical",
+       "type": "string",
+       "default": "\"critical\"",
+       "description": "Read after the value once past `critical`."
+      },
+      {
+       "name": "high",
+       "type": "string",
+       "default": "\"high\"",
+       "description": "Read after the value past `low` when `higherIsWorse`."
+      },
+      {
+       "name": "low",
+       "type": "string",
+       "default": "\"low\"",
+       "description": "Read after the value past `low`."
+      }
+     ]
     }
    ],
    "inherits": []

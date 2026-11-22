@@ -209,7 +209,7 @@
           {
             "version": "0.31.0",
             "date": "2026-11-22",
-            "note": "`chipGroupLabels.selected`."
+            "note": "`chipGroupLabels.selected`. `meterLabels`."
           },
           {
             "version": "0.29.0",
@@ -2173,7 +2173,7 @@
       "name": "meter",
       "type": "registry:ui",
       "title": "Meter",
-      "description": "A level within a known range, neutral until it crosses a threshold; inline for table cells.",
+      "description": "A level within a known range, neutral until it crosses a threshold; inline for table cells. Ticks at the thresholds with showThresholds; locale and format for big counts.",
       "dependencies": [],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -2185,8 +2185,13 @@
         }
       ],
       "meta": {
-        "version": "0.29.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "`locale` and `format` (Intl.NumberFormatOptions) write the value and the range's end in the text and aria-valuetext (412,345 of 1,000,000 items; 412K); numbers stay as given without them. `showThresholds` draws a grey 1 px tick at `low` and `critical`. `labels` translates \"of\" and the low, high and critical words. Issue #306."
+          },
           {
             "version": "0.29.0",
             "date": "2026-11-22",

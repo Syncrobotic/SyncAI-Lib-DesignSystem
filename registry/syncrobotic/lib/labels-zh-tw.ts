@@ -710,6 +710,13 @@ export const gaugeLabels = {
   formatTime: (d: Date, locale: string | undefined) => (locale ? d.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23" }) : clock(d)),
 }
 
+export const meterLabels = {
+  range: (value: string, max: string) => `${value} / ${max}`,
+  critical: "嚴重",
+  high: "偏高",
+  low: "偏低",
+}
+
 export const metricCardLabels = {
   better: "，較佳",
   worse: "，較差",

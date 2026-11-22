@@ -7,6 +7,7 @@ Components install as source, so a project keeps the version it installed. Re-ru
 ### Added
 - **`chip-group` 0.31.0:** `type="multiple"` for any of several values in one facet: `value` and `onValueChange` take a list, the chips are pressed buttons, and chosen links say "selected" instead of aria-current (new label `selected`, in `labels-zh-tw` too); `max` keeps every chosen chip in view. Issue #304.
 - **`chip-group` 0.31.0:** `props` on a chip are spread on its button or link (`data-*`, `title`, `aria-describedby`), and `current` sets the chosen link's aria-current (`"page"`, the default, `"true"` or `"location"`), so a row of filter links no longer marks a second current page. Issue #305.
+- **`meter` 0.31.0:** `locale` and `format` (Intl.NumberFormatOptions) write the value and the range's end in the text and in aria-valuetext ("412,345 of 1,000,000 items", or "412K of 1M" with `{ notation: "compact" }`); without them numbers are written as given, as before. `showThresholds` draws a 1 px grey tick at `low` and `critical`, so a quota shows how close it is before it turns warning. `labels` translates "of" and the low, high and critical words (`meterLabels` in `labels-zh-tw`). Issue #306.
 
 ## 0.30.0 · 2026-11-22
 

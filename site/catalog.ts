@@ -616,6 +616,8 @@ const entries: Record<string, Entry> = {
       "Neutral while normal; warning past `low`, danger past `critical`; the value is always written. A battery takes only `low` (15 %): a low battery needs attention, it is not a failure, so it turns warning and never danger. Danger is for a level that breaks something, like full storage.",
       "`inline` in table cells; the label is still read by screen readers.",
       "With `higherIsWorse` (temperature, storage) the warning is read as high, not low. `showMax` writes the total for an amount whose total matters: 412 of 512 GB.",
+      "`showThresholds` draws a grey tick at `low` and `critical` where how close the limit is matters, as on a quota. The tick stays grey: colour still means crossed.",
+      "Pass `locale` for big counts (412,345 of 1,000,000 items), and `format` to shorten them (`{ notation: \"compact\" }`: 412K of 1M).",
     ],
   },
   "metric-card": {

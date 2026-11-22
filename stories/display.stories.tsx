@@ -702,6 +702,28 @@ export const MeterGrid: S = {
   ),
 }
 
+export const MeterThresholds: S = {
+  // A tick at low and at critical shows how close the level is before it crosses; colour still means crossed.
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <Meter label="Storage used" value={78} low={80} critical={95} higherIsWorse showThresholds />
+      <Meter label="Storage used" value={88} low={80} critical={95} higherIsWorse showThresholds />
+      <Meter label="Battery" value={72} low={15} showThresholds />
+      <Meter label="Battery, Patrol dog 7F3A" value={72} low={15} showThresholds inline />
+    </div>
+  ),
+}
+
+export const MeterFormatted: S = {
+  // Counts in the hundreds of thousands: locale writes the separators, format can shorten them.
+  render: () => (
+    <div className="flex flex-col gap-4">
+      <Meter label="Labelled images" value={412345} max={1000000} low={900000} higherIsWorse unit="items" showMax locale="en-US" />
+      <Meter label="Labelled images" value={412345} max={1000000} low={900000} higherIsWorse unit="items" showMax locale="en-US" format={{ notation: "compact" }} />
+    </div>
+  ),
+}
+
 export const DescriptionListTwoColumns: S = {
   render: () => (
     <DescriptionList

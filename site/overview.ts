@@ -676,6 +676,7 @@ export const overviews: Record<string, Overview> = {
     notes: [
       "Do not pass a tone: colour comes from `low` and `critical`.",
       "For values where higher is worse, set higherIsWorse.",
+      "Numbers are written as given; pass `locale` (and `format` for a short form such as 412K) for counts in the thousands. `aria-valuenow` stays the raw number.",
     ],
   },
   "description-list": {
