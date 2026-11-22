@@ -215,7 +215,7 @@
       "group",
       "radio",
       "radiogroup",
-      "switch",
+      "spinbutton",
       "textbox"
     ],
     "tabStops": 6,
@@ -868,6 +868,7 @@
       "button",
       "columnheader",
       "grid",
+      "gridcell",
       "region",
       "row",
       "searchbox",
