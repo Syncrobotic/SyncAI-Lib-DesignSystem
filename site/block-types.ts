@@ -38,6 +38,7 @@ export const blockTypes: BlockType[] = [
       "The current page is marked in the navigation and named in the top bar.",
       "On phones the sidebar becomes a drawer; nothing is hidden for good. The drawer floats 8 px from the edges, the shell's gutter.",
       "A top bar over plain content starts on the content's edge and, on scroll, gathers into a floating panel as wide as the content column.",
+      "The logo goes home (`home`), `<main>` has an id for a skip link (`mainId`, \"main\"), and following a link in the phone drawer closes it, on any router.",
       "The action rail holds only the next step: one large primary button and a few small actions, never filters or facts. On phones it is a bar fixed above the safe area, and the page is padded so it never covers content.",
       "← and Esc go back up a level wherever there is a back button, except while typing or when an overlay is open.",
     ],

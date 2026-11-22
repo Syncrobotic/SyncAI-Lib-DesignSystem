@@ -2,6 +2,11 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **`top-bar-shell` 0.31.0:** `home` sets where the logo links (default: the first link, as before), and `<main>` has an id for a skip link (`mainId`, default "main"). The phone drawer closes when a link in it is followed, so on a client router (Next.js, React Router) it no longer stays open over the new page; a modified click (new tab) leaves it open. Issue #292
+
 ## 0.30.0 · 2026-11-22
 
 A menu for the theme toggle, tabs in the phone drawer, two accessibility fixes from a product team (dark predicted annotations, Escape in a native dialog) and a much lighter docs site.

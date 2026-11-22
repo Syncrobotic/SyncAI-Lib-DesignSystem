@@ -6030,7 +6030,7 @@
       "name": "top-bar-shell",
       "type": "registry:block",
       "title": "Top-bar shell",
-      "description": "The frame for a tool or site without a sidebar: links, search and user in a top bar that starts on the content's edge and gathers into a floating panel as wide as the content column on scroll, then the content and a footer.",
+      "description": "The frame for a tool or site without a sidebar: links, search and user in a top bar that starts on the content's edge and gathers into a floating panel as wide as the content column on scroll, then the content and a footer. `home` is where the logo links; `<main>` has an id (`mainId`, \"main\") for a skip link; the phone drawer closes when a link in it is followed.",
       "dependencies": [
         "lucide-react"
       ],
@@ -6048,8 +6048,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "`home` sets where the logo links (default: the first link, as before). `mainId` puts an id on `<main>` for a skip link (default \"main\"). The phone drawer closes when a link in it is followed, so it no longer stays open over the new page on a client router (Next.js, React Router); a modified click (new tab) leaves it open."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
