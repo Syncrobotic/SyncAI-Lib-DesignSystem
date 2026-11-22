@@ -21,6 +21,18 @@ declare module "@/registry/syncrobotic/ui/toast?react-compiler" {
 declare module "@/registry/syncrobotic/ui/streaming-chart?react-compiler" {
   export * from "@/registry/syncrobotic/ui/streaming-chart"
 }
+declare module "@/registry/syncrobotic/ui/geo-map?react-compiler" {
+  export * from "@/registry/syncrobotic/ui/geo-map"
+}
 declare module "@/registry/syncrobotic/ui/diagnostics?react-compiler" {
   export * from "@/registry/syncrobotic/ui/diagnostics"
+}
+declare module "@/registry/syncrobotic/ui/waypoint-editor?react-compiler" {
+  export * from "@/registry/syncrobotic/ui/waypoint-editor"
+}
+declare module "@/registry/syncrobotic/ui/camera-wall?react-compiler" {
+  export * from "@/registry/syncrobotic/ui/camera-wall"
+}
+declare module "@/registry/syncrobotic/ui/attitude?react-compiler" {
+  export * from "@/registry/syncrobotic/ui/attitude"
 }

@@ -172,7 +172,7 @@ function Gallery({ groups, total, placeholder, markKit = false, category }: Gall
           linkAs={StayLink}
           value={inCategory?.slug ?? "all"}
           items={[{ value: "all", label: "All", count: total, href: path }, ...categories.map((g) => ({ value: g.slug!, label: g.title, count: g.icons.length, href: `${path}?category=${g.slug}` }))]}
-          className="-mx-4 lg:hidden [&_a]:h-(--h-md) [&_ul]:flex-nowrap [&_ul]:overflow-x-auto [&_ul]:px-4 [&_ul]:py-1"
+          className="-mx-4 lg:hidden [&_a]:h-(--h-md) [&_ul]:scroll-row [&_ul]:flex-nowrap [&_ul]:overflow-x-auto [&_ul]:px-4 [&_ul]:py-1"
         />
       )}
 

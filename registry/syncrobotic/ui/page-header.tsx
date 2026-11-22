@@ -1,4 +1,4 @@
-// @syncrobotic/page-header v0.17.3 · update: npx shadcn add @syncrobotic/page-header --overwrite
+// @syncrobotic/page-header v0.29.0 · update: npx shadcn add @syncrobotic/page-header --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { StatusGlyph, type Tone, toStatus } from "@/registry/syncrobotic/shell/status-glyph"
@@ -14,6 +14,7 @@ export function PageHeader({
   meta,
   actions,
   metaLabel = "About this page",
+  as: Heading = "h1",
   className,
 }: {
   title: React.ReactNode
@@ -26,6 +27,8 @@ export function PageHeader({
   actions?: React.ReactNode
   /** Names the row of meta pills for screen readers. */
   metaLabel?: string
+  /** The title's heading level: h1 for the page's own header, h2 for one under another h1 (a sheet, a tab, an example). */
+  as?: "h1" | "h2"
   className?: string
 }) {
   return (
@@ -33,7 +36,7 @@ export function PageHeader({
       {breadcrumb}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex max-w-3xl min-w-0 flex-col gap-2">
-          <h1 className="text-3xl font-bold tracking-tight text-balance">{title}</h1>
+          <Heading className="text-3xl font-bold tracking-tight text-balance">{title}</Heading>
           {description && <p className="text-base text-pretty text-muted-foreground">{description}</p>}
         </div>
         {actions && <div className="flex shrink-0 flex-wrap gap-2">{actions}</div>}

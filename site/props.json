@@ -861,6 +861,377 @@
    "inherits": []
   }
  ],
+ "attitude": [
+  {
+   "name": "AttitudeIndicator",
+   "props": [
+    {
+     "name": "roll",
+     "type": "number",
+     "description": "Degrees, REP 103: positive is the right side down. For a stream, push instead (`ref` or `subscribe`)."
+    },
+    {
+     "name": "pitch",
+     "type": "number",
+     "description": "Degrees, REP 103: positive is the nose down."
+    },
+    {
+     "name": "heading",
+     "type": "number",
+     "description": "Compass heading in degrees, clockwise from north. Left out (and never pushed), the ring shows no compass."
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "What the instrument shows, for screen readers: \"Attitude, Patrol dog 7F3A\"."
+    },
+    {
+     "name": "ref",
+     "type": "((instance: AttitudeHandle | null) => void | (() => VoidOrUndefinedOnly) | DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES[keyof DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES]) | RefObject<AttitudeHandle | null>",
+     "description": "push and clear, called from anywhere without rendering."
+    },
+    {
+     "name": "subscribe",
+     "type": "(push: AttitudeHandle[\"push\"]) => (() => void) | void",
+     "description": "Connects a source once: called with `push` when it mounts (and again if this function changes); return the function that disconnects. Keep it stable (module level, or one the React Compiler memoises). `(push) => ros.subscribe(\"/imu/data\", \"sensor_msgs/Imu\", (m) => push(imuToAttitude(m), stampToMs(m.header?.stamp)))`."
+    },
+    {
+     "name": "limits",
+     "type": "{ roll?: AttitudeLimit; pitch?: AttitudeLimit }",
+     "description": "Warning and critical limits for roll and pitch, either side of level. Marked on the drawing; past one, the value says so."
+    },
+    {
+     "name": "updatedAt",
+     "type": "number",
+     "description": "When the props' reading was taken (the message's stamp): a new stamp is an update, and it is the time Stale shows."
+    },
+    {
+     "name": "staleAfterMs",
+     "type": "number",
+     "description": "With no update for this long, the instrument dims and says Stale with the last update's time. Left out, never stale."
+    },
+    {
+     "name": "announceEveryMs",
+     "type": "number",
+     "default": "5000",
+     "description": "How often, at most, screen readers hear a limit crossed (a step up to critical is said at once)."
+    },
+    {
+     "name": "size",
+     "type": "\"md\" | \"lg\"",
+     "default": "\"md\"",
+     "description": "md 192 px (the default) or lg 256 px."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "BCP 47 tag for numbers and times (\"zh-TW\"): pass the app's locale. Left out, English on the server and in every browser."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<AttitudeIndicatorLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "roll",
+       "type": "string",
+       "default": "\"Roll\"",
+       "description": ""
+      },
+      {
+       "name": "pitch",
+       "type": "string",
+       "default": "\"Pitch\"",
+       "description": ""
+      },
+      {
+       "name": "heading",
+       "type": "string",
+       "default": "\"Heading\"",
+       "description": ""
+      },
+      {
+       "name": "degrees",
+       "type": "(value: string) => string",
+       "default": "(v) => `${v}°`",
+       "description": "A value in degrees, given already formatted: \"12\" → \"12°\"."
+      },
+      {
+       "name": "directed",
+       "type": "(value: string, direction: string) => string",
+       "default": "(v, d) => `${v} ${d}`",
+       "description": "Roll with its side down: (\"12°\", \"left\") → \"12° left\"."
+      },
+      {
+       "name": "left",
+       "type": "string",
+       "default": "\"left\"",
+       "description": "Which side is down."
+      },
+      {
+       "name": "right",
+       "type": "string",
+       "default": "\"right\"",
+       "description": ""
+      },
+      {
+       "name": "noseUp",
+       "type": "string",
+       "default": "\"nose up\"",
+       "description": ""
+      },
+      {
+       "name": "noseDown",
+       "type": "string",
+       "default": "\"nose down\"",
+       "description": ""
+      },
+      {
+       "name": "compassPoints",
+       "type": "readonly string[]",
+       "default": "[\"N\", \"NE\", \"E\", \"SE\", \"S\", \"SW\", \"W\", \"NW\"]",
+       "description": "The 8 compass points from north, clockwise: N, NE, E, SE, S, SW, W, NW. N, E, S and W are drawn on the ring."
+      },
+      {
+       "name": "headingText",
+       "type": "(value: string, point: string) => string",
+       "default": "(v, p) => `${v} ${p}`",
+       "description": "A heading with its compass point: (\"271°\", \"W\") → \"271° W\"."
+      },
+      {
+       "name": "overLimit",
+       "type": "string",
+       "default": "\"Over limit\"",
+       "description": "Past a `warning` limit."
+      },
+      {
+       "name": "critical",
+       "type": "string",
+       "default": "\"Critical\"",
+       "description": "Past a `critical` limit."
+      },
+      {
+       "name": "withState",
+       "type": "(value: string, state: string) => string",
+       "default": "(v, s) => `${v}, ${s.toLowerCase()}`",
+       "description": "A value with the limit it is past, as screen readers hear it: (\"27° right\", \"Over limit\") → \"27° right, over limit\"."
+      },
+      {
+       "name": "withinLimits",
+       "type": "string",
+       "default": "\"Roll and pitch within limits\"",
+       "description": "Said when everything is back within its limits."
+      },
+      {
+       "name": "noValue",
+       "type": "string",
+       "default": "\"–\"",
+       "description": "Where a value is unknown."
+      },
+      {
+       "name": "waiting",
+       "type": "string",
+       "default": "\"Waiting for data\"",
+       "description": ""
+      },
+      {
+       "name": "stale",
+       "type": "string",
+       "default": "\"Stale\"",
+       "description": ""
+      },
+      {
+       "name": "lastUpdate",
+       "type": "(time: string) => string",
+       "default": "(time) => `last update ${time}`",
+       "description": "After \"Stale\": when the last reading was taken."
+      },
+      {
+       "name": "summary",
+       "type": "(parts: { roll?: string; pitch?: string; heading?: string; }) => string",
+       "default": "({ roll, pitch, heading }) => { const s = [roll && `roll ${roll}`, pitch && `pitch ${pitch}`, heading && `heading ${heading}`].filter(Boolean).join(\", \") return s.charAt(0).toUpperCase() + s.slice(1) }",
+       "description": "The values in one sentence, as screen readers hear the instrument: \"Roll 12° left, pitch 3° nose down, heading 271° W\"."
+      },
+      {
+       "name": "formatTime",
+       "type": "(date: Date, locale?: string) => string",
+       "default": "clockTime",
+       "description": "A time of day, 24-hour with seconds by default; with `locale`, that locale's 24-hour time."
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "Gauge",
+   "props": [
+    {
+     "name": "value",
+     "type": "number",
+     "description": "The value now. For a stream, push instead (`ref` or `subscribe`)."
+    },
+    {
+     "name": "min",
+     "type": "number",
+     "default": "0",
+     "description": ""
+    },
+    {
+     "name": "max",
+     "type": "number",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "low",
+     "type": "number",
+     "description": "Warning from here: below it, or at and above it when `higherIsWorse` (Meter's thresholds, Meter's words)."
+    },
+    {
+     "name": "critical",
+     "type": "number",
+     "description": "Danger from here."
+    },
+    {
+     "name": "higherIsWorse",
+     "type": "boolean",
+     "default": "false",
+     "description": "A value that is worse as it rises: a temperature, a current, a speed over a limit."
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "What is measured: \"Speed\", \"Left motor temperature\". Written under the dial, and read with the value."
+    },
+    {
+     "name": "unit",
+     "type": "string",
+     "default": "\"\"",
+     "description": "Written under the number and after it for screen readers: \"m/s\", \"°C\", \"A\"."
+    },
+    {
+     "name": "digits",
+     "type": "number",
+     "default": "1",
+     "description": "Decimals. Defaults to 1."
+    },
+    {
+     "name": "size",
+     "type": "\"sm\" | \"md\" | \"lg\"",
+     "default": "\"md\"",
+     "description": "sm 96 px, md 144 px (the default), lg 192 px."
+    },
+    {
+     "name": "ref",
+     "type": "((instance: GaugeHandle | null) => void | (() => VoidOrUndefinedOnly) | DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES[keyof DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES]) | RefObject<GaugeHandle | null>",
+     "description": ""
+    },
+    {
+     "name": "subscribe",
+     "type": "(push: GaugeHandle[\"push\"]) => (() => void) | void",
+     "description": "Connects a source once, as AttitudeIndicator's: `(push) => ros.subscribe(\"/odom\", \"nav_msgs/Odometry\", (m) => push(odometryToSpeed(m), stampToMs(m.header?.stamp)))`. Keep it stable."
+    },
+    {
+     "name": "updatedAt",
+     "type": "number",
+     "description": ""
+    },
+    {
+     "name": "staleAfterMs",
+     "type": "number",
+     "description": "With no update for this long the gauge dims and says Stale. Left out, never stale."
+    },
+    {
+     "name": "announceEveryMs",
+     "type": "number",
+     "default": "5000",
+     "description": ""
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": ""
+    },
+    {
+     "name": "labels",
+     "type": "Partial<GaugeLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "withUnit",
+       "type": "(value: string, unit: string) => string",
+       "default": "(v, unit) => (!unit ? v : unit === \"°\" ? `${v}°` : `${v} ${unit}`)",
+       "description": "A value with its unit, for screen readers: (\"1.2\", \"m/s\") → \"1.2 m/s\"; degrees take no space: \"42°\"."
+      },
+      {
+       "name": "high",
+       "type": "string",
+       "default": "\"High\"",
+       "description": "Past `low` when higher is worse (a temperature, a current), shown beside the warning triangle."
+      },
+      {
+       "name": "low",
+       "type": "string",
+       "default": "\"Low\"",
+       "description": "Past `low` when lower is worse (a battery, a pressure)."
+      },
+      {
+       "name": "critical",
+       "type": "string",
+       "default": "\"Critical\"",
+       "description": "Past `critical`."
+      },
+      {
+       "name": "backToNormal",
+       "type": "string",
+       "default": "\"back to normal\"",
+       "description": "Said when the value is back within its thresholds."
+      },
+      {
+       "name": "withState",
+       "type": "(value: string, state: string) => string",
+       "default": "(v, s) => `${v}, ${s.toLowerCase()}`",
+       "description": "A reading with a state, for screen readers: (\"1.2 m/s\", \"Stale\") → \"1.2 m/s, stale\"."
+      },
+      {
+       "name": "noValue",
+       "type": "string",
+       "default": "\"–\"",
+       "description": ""
+      },
+      {
+       "name": "waiting",
+       "type": "string",
+       "default": "\"Waiting for data\"",
+       "description": ""
+      },
+      {
+       "name": "stale",
+       "type": "string",
+       "default": "\"Stale\"",
+       "description": ""
+      },
+      {
+       "name": "lastUpdate",
+       "type": "(time: string) => string",
+       "default": "(time) => `last update ${time}`",
+       "description": ""
+      },
+      {
+       "name": "formatTime",
+       "type": "(date: Date, locale?: string) => string",
+       "default": "clockTime",
+       "description": ""
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "autocomplete": [
   {
    "name": "Autocomplete",
@@ -1316,76 +1687,18 @@
  ],
  "camera-feed": [
   {
-   "name": "CameraFeed",
+   "name": "CameraFeedStateLine",
    "props": [
     {
-     "name": "label",
-     "type": "string",
+     "name": "state",
+     "type": "CameraFeedState",
      "required": true,
-     "description": "The camera's name: \"Front camera\". Names the feed with `source`."
-    },
-    {
-     "name": "source",
-     "type": "string",
-     "description": "The robot it is on: \"Patrol dog 7F3A\"."
-    },
-    {
-     "name": "stream",
-     "type": "MediaStream | null",
-     "description": "A WebRTC stream, set as the video's `srcObject`. The app owns the connection; the feed only shows it."
-    },
-    {
-     "name": "src",
-     "type": "string",
-     "description": "A URL the browser plays by itself (a live MP4 or WebM, or HLS where the browser supports it). Use `stream` or `src`."
-    },
-    {
-     "name": "status",
-     "type": "\"connecting\" | \"live\" | \"offline\"",
-     "description": "What the connection is doing. Defaults to `live` when there is a `stream` or `src`; with neither, \"No camera\"."
+     "description": ""
     },
     {
      "name": "latencyMs",
      "type": "number",
-     "description": "Glass-to-glass delay, measured by the app, written after \"Live\"."
-    },
-    {
-     "name": "staleAfterMs",
-     "type": "number",
-     "default": "2000",
-     "description": "With no new frame for this long, the feed says \"Stalled\" over a dimmed picture instead of freezing silently."
-    },
-    {
-     "name": "offlineReason",
-     "type": "string",
-     "description": "Why the camera is offline, written under \"Camera offline\": \"the robot is out of network range.\""
-    },
-    {
-     "name": "onRetry",
-     "type": "() => void",
-     "description": "Shows \"Reconnect\" while offline. Without it there is no button (a `src` reloads itself after a video error)."
-    },
-    {
-     "name": "onSnapshot",
-     "type": "(blob: Blob) => void",
-     "description": "Shows \"Take snapshot\": the frame on screen, drawn to a canvas, as a PNG."
-    },
-    {
-     "name": "audio",
-     "type": "boolean",
-     "default": "false",
-     "description": "The stream carries sound: adds Mute. It starts muted (browsers block sound until someone asks for it)."
-    },
-    {
-     "name": "aspectRatio",
-     "type": "number",
-     "default": "16 / 9",
-     "description": "Width over height, so the layout holds its size before the first frame. 16 / 9 by default."
-    },
-    {
-     "name": "children",
-     "type": "ReactNode",
-     "description": "Drawn over the picture, in a layer the size of the video box: a crosshair, detection boxes."
+     "description": "Written after \"Live\": \"· 180 ms\"."
     },
     {
      "name": "labels",
@@ -1507,6 +1820,442 @@
        "description": ""
       }
      ]
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "CameraFeed",
+   "props": [
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "The camera's name: \"Front camera\". Names the feed with `source`."
+    },
+    {
+     "name": "source",
+     "type": "string",
+     "description": "The robot it is on: \"Patrol dog 7F3A\"."
+    },
+    {
+     "name": "stream",
+     "type": "MediaStream | null",
+     "description": "A WebRTC stream, set as the video's `srcObject`. The app owns the connection; the feed only shows it."
+    },
+    {
+     "name": "src",
+     "type": "string",
+     "description": "A URL the browser plays by itself (a live MP4 or WebM, or HLS where the browser supports it). Use `stream` or `src`."
+    },
+    {
+     "name": "status",
+     "type": "\"connecting\" | \"live\" | \"offline\"",
+     "description": "What the connection is doing. Defaults to `live` when there is a `stream` or `src`; with neither, \"No camera\"."
+    },
+    {
+     "name": "latencyMs",
+     "type": "number",
+     "description": "Glass-to-glass delay, measured by the app, written after \"Live\"."
+    },
+    {
+     "name": "staleAfterMs",
+     "type": "number",
+     "default": "2000",
+     "description": "With no new frame for this long, the feed says \"Stalled\" over a dimmed picture instead of freezing silently."
+    },
+    {
+     "name": "offlineReason",
+     "type": "string",
+     "description": "Why the camera is offline, written under \"Camera offline\": \"the robot is out of network range.\""
+    },
+    {
+     "name": "onRetry",
+     "type": "() => void",
+     "description": "Shows \"Reconnect\" while offline. Without it there is no button (a `src` reloads itself after a video error)."
+    },
+    {
+     "name": "onSnapshot",
+     "type": "(blob: Blob) => void",
+     "description": "Shows \"Take snapshot\": the frame on screen, drawn to a canvas, as a PNG."
+    },
+    {
+     "name": "audio",
+     "type": "boolean",
+     "default": "false",
+     "description": "The stream carries sound: adds Mute. It starts muted (browsers block sound until someone asks for it)."
+    },
+    {
+     "name": "aspectRatio",
+     "type": "number",
+     "default": "16 / 9",
+     "description": "Width over height, so the layout holds its size before the first frame. 16 / 9 by default."
+    },
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "description": "Drawn over the picture, in a layer the size of the video box: a crosshair, detection boxes."
+    },
+    {
+     "name": "bare",
+     "type": "boolean",
+     "default": "false",
+     "description": "Just the picture: no header, no controls, no keys, no Tab stop and nothing announced. For a feed inside something that names it, says its state and takes the keyboard itself, such as a tile of `camera-wall`."
+    },
+    {
+     "name": "onStateChange",
+     "type": "(state: CameraFeedState, lastFrameAt: number | null) => void",
+     "description": "Called after the state changes, with when the last frame arrived (ms since the epoch) while it is Stalled."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<CameraFeedLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "keys",
+       "type": "string",
+       "default": "\"Space pauses and resumes the view, F goes full screen. Pausing freezes this view only; the robot keeps streaming.\"",
+       "description": "Read after the feed's name: the keys it answers to."
+      },
+      {
+       "name": "live",
+       "type": "string",
+       "default": "\"Live\"",
+       "description": ""
+      },
+      {
+       "name": "latency",
+       "type": "(ms: number) => string",
+       "default": "(ms) => `${Math.round(ms)} ms`",
+       "description": "Written after \"Live\": \"180 ms\"."
+      },
+      {
+       "name": "connecting",
+       "type": "string",
+       "default": "\"Connecting\"",
+       "description": "The state word while connecting, and the line over the skeleton."
+      },
+      {
+       "name": "connectingLong",
+       "type": "string",
+       "default": "\"Connecting to camera…\"",
+       "description": "Shown in the state while connecting, after the word; the line over the skeleton says the whole thing."
+      },
+      {
+       "name": "stalled",
+       "type": "string",
+       "default": "\"Stalled\"",
+       "description": ""
+      },
+      {
+       "name": "lastFrame",
+       "type": "(time: string) => string",
+       "default": "(time) => `last frame ${time}`",
+       "description": "After \"Stalled\": when the last frame arrived."
+      },
+      {
+       "name": "formatTime",
+       "type": "(date: Date) => string",
+       "default": "(d) => [d.getHours(), d.getMinutes(), d.getSeconds()].map((n) => String(n).padStart(2, \"0\")).join(\":\")",
+       "description": "The time of the last frame. 24-hour clock by default; pass the site's own format or time zone."
+      },
+      {
+       "name": "paused",
+       "type": "string",
+       "default": "\"Paused\"",
+       "description": ""
+      },
+      {
+       "name": "offline",
+       "type": "string",
+       "default": "\"Camera offline\"",
+       "description": ""
+      },
+      {
+       "name": "noCamera",
+       "type": "string",
+       "default": "\"No camera\"",
+       "description": ""
+      },
+      {
+       "name": "retry",
+       "type": "string",
+       "default": "\"Reconnect\"",
+       "description": ""
+      },
+      {
+       "name": "pauseView",
+       "type": "string",
+       "default": "\"Pause view\"",
+       "description": ""
+      },
+      {
+       "name": "resumeView",
+       "type": "string",
+       "default": "\"Resume view\"",
+       "description": ""
+      },
+      {
+       "name": "mute",
+       "type": "string",
+       "default": "\"Mute\"",
+       "description": ""
+      },
+      {
+       "name": "unmute",
+       "type": "string",
+       "default": "\"Unmute\"",
+       "description": ""
+      },
+      {
+       "name": "snapshot",
+       "type": "string",
+       "default": "\"Take snapshot\"",
+       "description": ""
+      },
+      {
+       "name": "fullscreen",
+       "type": "string",
+       "default": "\"Full screen\"",
+       "description": ""
+      },
+      {
+       "name": "exitFullscreen",
+       "type": "string",
+       "default": "\"Leave full screen\"",
+       "description": ""
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "camera-wall": [
+  {
+   "name": "CameraWall",
+   "props": [
+    {
+     "name": "cameras",
+     "type": "CameraWallCamera[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "getSource",
+     "type": "(camera: CameraWallCamera, options: { quality: CameraWallQuality; }) => CameraWallSource | null | undefined",
+     "required": true,
+     "description": "The product's source function: what to play for a camera, at a quality. The wall calls it on render, only for the cameras it plays, so return the same stream for the same camera and quality (keep them in a cache), and open connections there lazily. `onLiveChange` says which are playing, to close the rest."
+    },
+    {
+     "name": "maxLive",
+     "type": "number",
+     "default": "9",
+     "description": "At most this many streams play at once: the focused camera first, then tiles in order. The rest show their last still."
+    },
+    {
+     "name": "onLiveChange",
+     "type": "(live: { id: string; quality: CameraWallQuality; }[]) => void",
+     "description": "Called with the cameras playing and the quality each was asked for, whenever that changes."
+    },
+    {
+     "name": "focused",
+     "type": "string | null",
+     "description": "The camera shown large, controlled. `null` is the grid."
+    },
+    {
+     "name": "defaultFocused",
+     "type": "string | null",
+     "default": "null",
+     "description": "The camera shown large at first, when `focused` is not given."
+    },
+    {
+     "name": "onFocusedChange",
+     "type": "(id: string | null) => void",
+     "description": ""
+    },
+    {
+     "name": "defaultSort",
+     "type": "\"attention\" | \"name\"",
+     "default": "\"attention\"",
+     "description": "Attention first (alarms, offline, stalled, then by name) or by name."
+    },
+    {
+     "name": "defaultNeedsAttention",
+     "type": "boolean",
+     "default": "false",
+     "description": "Start with only the cameras that need attention."
+    },
+    {
+     "name": "pageSize",
+     "type": "number",
+     "description": "Tiles per page. By default the grid's own: 4, 9 or 16, and 6 in the phone list."
+    },
+    {
+     "name": "staleAfterMs",
+     "type": "number",
+     "description": "With no new frame for this long, a feed says Stalled. Passed to every feed."
+    },
+    {
+     "name": "aspectRatio",
+     "type": "number",
+     "default": "16 / 9",
+     "description": "Width over height of every picture. 16 / 9 by default."
+    },
+    {
+     "name": "onSnapshot",
+     "type": "(camera: CameraWallCamera, blob: Blob) => void",
+     "description": "Shows \"Take snapshot\" on the focused camera."
+    },
+    {
+     "name": "onRetry",
+     "type": "(camera: CameraWallCamera) => void",
+     "description": "Shows Reconnect on the focused camera while it is offline."
+    },
+    {
+     "name": "announceEveryMs",
+     "type": "number",
+     "default": "5000",
+     "description": "State changes are announced politely, at most this often (ms)."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<CameraWallLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "name",
+       "type": "string",
+       "default": "\"Cameras\"",
+       "description": "Names the wall for screen readers."
+      },
+      {
+       "name": "keys",
+       "type": "string",
+       "default": "\"Arrow keys move between cameras, Enter shows one large, Esc goes back to all cameras.\"",
+       "description": "Read after a tile's name: the keys the tiles answer to."
+      },
+      {
+       "name": "pausedToSave",
+       "type": "string",
+       "default": "\"Paused to save bandwidth\"",
+       "description": "Over a tile's last frame when it is not live because `maxLive` streams already are."
+      },
+      {
+       "name": "sort",
+       "type": "string",
+       "default": "\"Sort cameras\"",
+       "description": "The sort control's name."
+      },
+      {
+       "name": "attentionFirst",
+       "type": "string",
+       "default": "\"Attention first\"",
+       "description": ""
+      },
+      {
+       "name": "byName",
+       "type": "string",
+       "default": "\"Name\"",
+       "description": ""
+      },
+      {
+       "name": "needsAttention",
+       "type": "string",
+       "default": "\"Needs attention\"",
+       "description": "The filter that keeps only cameras with an alarm, offline or stalled."
+      },
+      {
+       "name": "count",
+       "type": "(n: number, locale: string | undefined) => string",
+       "default": "(n, locale) => n.toLocaleString(locale)",
+       "description": ""
+      },
+      {
+       "name": "allCameras",
+       "type": "string",
+       "default": "\"All cameras\"",
+       "description": "Back from one camera to the grid."
+      },
+      {
+       "name": "critical",
+       "type": "string",
+       "default": "\"Critical\"",
+       "description": ""
+      },
+      {
+       "name": "high",
+       "type": "string",
+       "default": "\"High\"",
+       "description": ""
+      },
+      {
+       "name": "low",
+       "type": "string",
+       "default": "\"Low\"",
+       "description": ""
+      },
+      {
+       "name": "alarm",
+       "type": "(priority: string, title: string) => string",
+       "default": "(priority, title) => `${priority} · ${title}`",
+       "description": "A tile's alarm: \"Critical · Obstacle in path\"."
+      },
+      {
+       "name": "range",
+       "type": "(from: number, to: number, total: number, locale?: string) => string",
+       "default": "(from, to, total, locale) => `${from.toLocaleString(locale)}–${to.toLocaleString(locale)} of ${total.toLocaleString(locale)} cameras`",
+       "description": ""
+      },
+      {
+       "name": "previousPage",
+       "type": "string",
+       "default": "\"Previous cameras\"",
+       "description": ""
+      },
+      {
+       "name": "nextPage",
+       "type": "string",
+       "default": "\"Next cameras\"",
+       "description": ""
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"No cameras\"",
+       "description": ""
+      },
+      {
+       "name": "noneNeedAttention",
+       "type": "string",
+       "default": "\"No camera needs attention\"",
+       "description": ""
+      },
+      {
+       "name": "showAll",
+       "type": "string",
+       "default": "\"Show all cameras\"",
+       "description": ""
+      },
+      {
+       "name": "announce",
+       "type": "(changes: { name: string; state: string; }[], locale: string | undefined) => string",
+       "default": "(changes, locale) => { const shown = changes.slice(0, 3).map((c) => `${c.name}: ${c.state}.`) const more = changes.length - shown.length return [...shown, more > 0 ? `${more.toLocaleString(locale)} more ${more === 1 ? \"camera\" : \"cameras\"} changed.` : \"\"].filter(Boolean).join(\" \") }",
+       "description": "One polite announcement for the state changes since the last one: \"Front camera, Patrol dog 7F3A: Stalled.\""
+      },
+      {
+       "name": "feed",
+       "type": "Partial<CameraFeedLabels>",
+       "default": "{}",
+       "description": "The state words, from camera-feed."
+      }
+     ]
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the counts and page ranges (a BCP 47 tag such as \"zh-TW\")."
     }
    ],
    "inherits": []
@@ -3664,6 +4413,676 @@
     }
    ],
    "inherits": []
+  }
+ ],
+ "geo-map": [
+  {
+   "name": "GeoMap",
+   "props": [
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "Names the map for screen readers: \"Map of the orchard\"."
+    },
+    {
+     "name": "robots",
+     "type": "GeoMapRobot[]",
+     "default": "[]",
+     "description": ""
+    },
+    {
+     "name": "fences",
+     "type": "GeoMapFence[]",
+     "default": "[]",
+     "description": ""
+    },
+    {
+     "name": "route",
+     "type": "GeoPoint[]",
+     "default": "[]",
+     "description": "A route, numbered from its first waypoint: dashed grey, or the in-progress blue with `routeActive`."
+    },
+    {
+     "name": "routeActive",
+     "type": "boolean",
+     "description": "The route is the one a robot is driving now: its line turns the in-progress blue."
+    },
+    {
+     "name": "tileUrl",
+     "type": "string | ((tile: GeoMapTile) => string)",
+     "description": "Raster tiles: a URL template with {z}, {x} and {y} (`https://tiles.example.com/{z}/{x}/{y}.png`), or a function from a tile to its URL (signed URLs, a local cache). Bring your own tile server: OpenStreetMap's public servers forbid heavy use and apps that do not identify themselves. Without it the map draws a coordinate grid, which needs no network."
+    },
+    {
+     "name": "attribution",
+     "type": "ReactNode",
+     "description": "Who the tiles are from, shown on the map as their licence asks: \"© OpenStreetMap contributors\"."
+    },
+    {
+     "name": "tileSize",
+     "type": "number",
+     "default": "256",
+     "description": "Tile width in pixels: 256 (the default) or 512."
+    },
+    {
+     "name": "tileMaxZoom",
+     "type": "number",
+     "default": "19",
+     "description": "The deepest zoom level the tile server has; past it, its tiles are drawn larger. Default 19."
+    },
+    {
+     "name": "center",
+     "type": "{ lat: number; lon: number }",
+     "description": "The first view, before anyone pans or zooms. Without it the map fits the robots, the fences and the route."
+    },
+    {
+     "name": "zoom",
+     "type": "number",
+     "description": ""
+    },
+    {
+     "name": "minZoom",
+     "type": "number",
+     "default": "2",
+     "description": "Zoom limits of the view. Defaults 2 and 22."
+    },
+    {
+     "name": "maxZoom",
+     "type": "number",
+     "default": "22",
+     "description": ""
+    },
+    {
+     "name": "selectedId",
+     "type": "string | null",
+     "description": "The selected robot, controlled; null for none. Without it the map keeps its own selection."
+    },
+    {
+     "name": "onSelect",
+     "type": "(id: string | null, robot?: GeoMapRobot) => void",
+     "description": "Called with the robot clicked, or null when the background is clicked or Esc pressed."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "description": "Bones in the frame while the map loads."
+    },
+    {
+     "name": "error",
+     "type": "ReactNode",
+     "description": "The map could not be loaded: says so in the frame (`true` for the default words, or your own message)."
+    },
+    {
+     "name": "onRetry",
+     "type": "() => void",
+     "description": ""
+    },
+    {
+     "name": "fill",
+     "type": "boolean",
+     "description": "Fill the parent's height (a full-screen map) instead of a 16:10 frame."
+    },
+    {
+     "name": "mode",
+     "type": "\"view\" | \"goal\"",
+     "default": "\"view\"",
+     "description": "`goal`: a click (or Enter at the keyboard crosshair) places a goal, a drag points it, and the goal is sent on confirm."
+    },
+    {
+     "name": "goal",
+     "type": "{ lat: number; lon: number; heading?: number } | null",
+     "description": "The goal to show, controlled."
+    },
+    {
+     "name": "onGoal",
+     "type": "(goal: GeoMapGoal) => void",
+     "description": "Goal mode: the goal, once confirmed (Send, or Enter). `heading` is left out when nobody pointed it."
+    },
+    {
+     "name": "confirmGoal",
+     "type": "boolean",
+     "default": "true",
+     "description": "Ask before sending a goal placed with the pointer (default true). With false a release sends it, as robot-map does."
+    },
+    {
+     "name": "announceEveryMs",
+     "type": "number",
+     "default": "3000",
+     "description": "Robots' fix changes are said at most this often, gathered into one sentence. Default 3000 ms."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats coordinates, accuracy and distances. Pass the app's locale beside its labels."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<GeoMapLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "instructions",
+       "type": "string",
+       "default": "\"Arrow keys move the map, plus and minus zoom, 0 shows all robots. The robot list beside the map has the same robots as text.\"",
+       "description": "Read once when focus enters the map."
+      },
+      {
+       "name": "zoomIn",
+       "type": "string",
+       "default": "\"Zoom in\"",
+       "description": ""
+      },
+      {
+       "name": "zoomOut",
+       "type": "string",
+       "default": "\"Zoom out\"",
+       "description": ""
+      },
+      {
+       "name": "fit",
+       "type": "string",
+       "default": "\"Show all robots\"",
+       "description": ""
+      },
+      {
+       "name": "status",
+       "type": "Record<Status, string>",
+       "default": "{ active: \"Working\", normal: \"Idle\", warning: \"Needs attention\", danger: \"Stopped\", offline: \"Offline\" }",
+       "description": "Default words per status, for robots without statusLabel."
+      },
+      {
+       "name": "fix",
+       "type": "Record<GeoFix, string>",
+       "default": "{ \"rtk-fixed\": \"RTK fixed\", \"rtk-float\": \"RTK float\", dgps: \"DGPS fix\", gps: \"GPS fix\", none: \"No fix\" }",
+       "description": "The fix in words: \"RTK fixed\", \"GPS fix\", \"No fix\"."
+      },
+      {
+       "name": "fixWithAccuracy",
+       "type": "(fix: string, accuracy: string) => string",
+       "default": "(fix, accuracy) => `${fix} · ${accuracy}`",
+       "description": "A fix and its accuracy together: \"GPS fix · ±3 m\"."
+      },
+      {
+       "name": "accuracy",
+       "type": "(metres: number, locale?: string) => string",
+       "default": "(m, locale) => m < 1 ? `±${formatGeoNumber(Math.max(1, Math.round(m * 100)), 0, locale)} cm` : `±${formatGeoNumber(m, m < 10 ? 1 : 0, locale, 0)} m`",
+       "description": "Horizontal accuracy: \"±2 cm\", \"±0.4 m\", \"±3 m\"."
+      },
+      {
+       "name": "fenceKind",
+       "type": "Record<GeoMapFenceKind, string>",
+       "default": "{ allowed: \"Work area\", \"keep-out\": \"Keep out\" }",
+       "description": "The fence kinds' words, for unnamed fences and in the list."
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"No robots on this map right now.\"",
+       "description": "Said over the map and in the list when there are no robots."
+      },
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Loading the map\"",
+       "description": ""
+      },
+      {
+       "name": "error",
+       "type": "string",
+       "default": "\"The map could not be loaded.\"",
+       "description": ""
+      },
+      {
+       "name": "retry",
+       "type": "string",
+       "default": "\"Load again\"",
+       "description": ""
+      },
+      {
+       "name": "tilesFailed",
+       "type": "string",
+       "default": "\"Map tiles could not be loaded. Showing the coordinate grid.\"",
+       "description": "Over the map when tiles were asked for and none could be loaded: it falls back to the coordinate grid."
+      },
+      {
+       "name": "count",
+       "type": "(n: number) => string",
+       "default": "(n) => (n === 1 ? \"1 robot\" : `${n} robots`)",
+       "description": "How many robots the map shows, read with the instructions."
+      },
+      {
+       "name": "selected",
+       "type": "(name: string, status: string) => string",
+       "default": "(name, status) => `Selected: ${name}, ${status}`",
+       "description": "The selected robot, read with the instructions."
+      },
+      {
+       "name": "latitude",
+       "type": "(deg: number, digits: number, locale?: string) => string",
+       "default": "(deg, digits, locale) => `${formatGeoNumber(Math.abs(deg), digits, locale)}° ${deg < 0 ? \"S\" : \"N\"}`",
+       "description": "A latitude with `digits` decimals: \"24.900120° N\"."
+      },
+      {
+       "name": "longitude",
+       "type": "(deg: number, digits: number, locale?: string) => string",
+       "default": "(deg, digits, locale) => `${formatGeoNumber(Math.abs(deg), digits, locale)}° ${deg < 0 ? \"W\" : \"E\"}`",
+       "description": ""
+      },
+      {
+       "name": "position",
+       "type": "(lat: string, lon: string) => string",
+       "default": "(lat, lon) => `${lat}, ${lon}`",
+       "description": "A place in words, as the list, the crosshair, the goal card and the announcements write it."
+      },
+      {
+       "name": "heading",
+       "type": "(deg: number) => string",
+       "default": "(deg) => `Heading ${deg360(deg)}° ${compassPoints[Math.round(deg360(deg) / 45) % 8]}`",
+       "description": "Which way a robot or a goal faces: \"Heading 90° E\"."
+      },
+      {
+       "name": "inFence",
+       "type": "(name: string, kind: string) => string",
+       "default": "(name, kind) => `In ${name} (${kind.toLowerCase()})`",
+       "description": "GeoMapList: the fence a robot is in."
+      },
+      {
+       "name": "inUnnamedFence",
+       "type": "(kind: string) => string",
+       "default": "(kind) => `In a ${kind.toLowerCase()} area`",
+       "description": "GeoMapList: the fence a robot is in, when the fence has no name."
+      },
+      {
+       "name": "outsideAllowed",
+       "type": "string",
+       "default": "\"Outside the work area\"",
+       "description": "GeoMapList: a robot outside every allowed area, when there are allowed areas."
+      },
+      {
+       "name": "distance",
+       "type": "(metres: number, locale?: string) => string",
+       "default": "(m, locale) => (m >= 1000 ? `${formatGeoNumber(m / 1000, 1, locale, 0)} km` : `${formatGeoNumber(m, m < 1 ? 1 : 0, locale, 0)} m`)",
+       "description": "The scale bar's length: \"50 m\", \"2 km\"."
+      },
+      {
+       "name": "editKeys",
+       "type": "string",
+       "default": "\"Arrow keys move the crosshair, Shift for bigger steps; Enter or Space places the goal, Esc cancels. Right-drag or two fingers move the map.\"",
+       "description": "The keys of goal mode, read with the instructions."
+      },
+      {
+       "name": "goalHint",
+       "type": "string",
+       "default": "\"Click to place the goal, drag to point it. Esc cancels.\"",
+       "description": "The banner in goal mode, before a goal is placed."
+      },
+      {
+       "name": "goalConfirm",
+       "type": "string",
+       "default": "\"Send this goal?\"",
+       "description": "The confirm card's title, and its line on how to turn, send or cancel from the keyboard."
+      },
+      {
+       "name": "goalConfirmKeys",
+       "type": "string",
+       "default": "\"Left and right arrows turn it, Enter sends, Esc cancels.\"",
+       "description": ""
+      },
+      {
+       "name": "send",
+       "type": "string",
+       "default": "\"Send goal\"",
+       "description": ""
+      },
+      {
+       "name": "cancel",
+       "type": "string",
+       "default": "\"Cancel\"",
+       "description": ""
+      },
+      {
+       "name": "goalInKeepOut",
+       "type": "(fence: string) => string",
+       "default": "(fence) => `Inside ${fence}, a keep-out area`",
+       "description": "The confirm card's warnings: the goal is in a keep-out, or outside every allowed area."
+      },
+      {
+       "name": "goalOutsideAllowed",
+       "type": "(area?: string) => string",
+       "default": "(area) => (area ? `Outside ${area}, the work area` : \"Outside the work area\")",
+       "description": "`area` is the work area's name when there is one allowed fence with a name."
+      },
+      {
+       "name": "goalPlaced",
+       "type": "(position: string) => string",
+       "default": "(position) => `Goal at ${position}. Enter sends it, Esc cancels.`",
+       "description": "Said in the live region as goal mode is used."
+      },
+      {
+       "name": "goalBlocked",
+       "type": "(position: string, reason: string) => string",
+       "default": "(position, reason) => `Goal at ${position}. ${reason}: it cannot be sent. Place it again, or press Esc.`",
+       "description": "Said when a goal is placed where it cannot be sent, with the card's reason."
+      },
+      {
+       "name": "goalNotSent",
+       "type": "(reason: string) => string",
+       "default": "(reason) => `${reason}: this goal cannot be sent.`",
+       "description": "Said when Send (or Enter) is tried on a goal that cannot be sent."
+      },
+      {
+       "name": "goalSet",
+       "type": "(position: string, heading?: number) => string",
+       "default": "(position, heading) => `Goal sent: ${position}${heading === undefined ? \"\" : `, heading ${deg360(heading)}°`}`",
+       "description": ""
+      },
+      {
+       "name": "goalCancelled",
+       "type": "string",
+       "default": "\"Goal cancelled\"",
+       "description": ""
+      },
+      {
+       "name": "fixChanged",
+       "type": "(name: string, fix: string) => string",
+       "default": "(name, fix) => `${name}: ${fix}`",
+       "description": "Said when robots' fixes change, gathered and at most once per `announceEveryMs`: \"Patrol-2: No fix\"."
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "GeoMapList",
+   "props": [
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "Names the map for screen readers: \"Map of the orchard\"."
+    },
+    {
+     "name": "onSelect",
+     "type": "(id: string | null, robot?: GeoMapRobot) => void",
+     "description": "Called with the robot clicked, or null when the background is clicked or Esc pressed."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "description": "Bones in the frame while the map loads."
+    },
+    {
+     "name": "error",
+     "type": "ReactNode",
+     "description": "The map could not be loaded: says so in the frame (`true` for the default words, or your own message)."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<GeoMapLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "instructions",
+       "type": "string",
+       "default": "\"Arrow keys move the map, plus and minus zoom, 0 shows all robots. The robot list beside the map has the same robots as text.\"",
+       "description": "Read once when focus enters the map."
+      },
+      {
+       "name": "zoomIn",
+       "type": "string",
+       "default": "\"Zoom in\"",
+       "description": ""
+      },
+      {
+       "name": "zoomOut",
+       "type": "string",
+       "default": "\"Zoom out\"",
+       "description": ""
+      },
+      {
+       "name": "fit",
+       "type": "string",
+       "default": "\"Show all robots\"",
+       "description": ""
+      },
+      {
+       "name": "status",
+       "type": "Record<Status, string>",
+       "default": "{ active: \"Working\", normal: \"Idle\", warning: \"Needs attention\", danger: \"Stopped\", offline: \"Offline\" }",
+       "description": "Default words per status, for robots without statusLabel."
+      },
+      {
+       "name": "fix",
+       "type": "Record<GeoFix, string>",
+       "default": "{ \"rtk-fixed\": \"RTK fixed\", \"rtk-float\": \"RTK float\", dgps: \"DGPS fix\", gps: \"GPS fix\", none: \"No fix\" }",
+       "description": "The fix in words: \"RTK fixed\", \"GPS fix\", \"No fix\"."
+      },
+      {
+       "name": "fixWithAccuracy",
+       "type": "(fix: string, accuracy: string) => string",
+       "default": "(fix, accuracy) => `${fix} · ${accuracy}`",
+       "description": "A fix and its accuracy together: \"GPS fix · ±3 m\"."
+      },
+      {
+       "name": "accuracy",
+       "type": "(metres: number, locale?: string) => string",
+       "default": "(m, locale) => m < 1 ? `±${formatGeoNumber(Math.max(1, Math.round(m * 100)), 0, locale)} cm` : `±${formatGeoNumber(m, m < 10 ? 1 : 0, locale, 0)} m`",
+       "description": "Horizontal accuracy: \"±2 cm\", \"±0.4 m\", \"±3 m\"."
+      },
+      {
+       "name": "fenceKind",
+       "type": "Record<GeoMapFenceKind, string>",
+       "default": "{ allowed: \"Work area\", \"keep-out\": \"Keep out\" }",
+       "description": "The fence kinds' words, for unnamed fences and in the list."
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"No robots on this map right now.\"",
+       "description": "Said over the map and in the list when there are no robots."
+      },
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Loading the map\"",
+       "description": ""
+      },
+      {
+       "name": "error",
+       "type": "string",
+       "default": "\"The map could not be loaded.\"",
+       "description": ""
+      },
+      {
+       "name": "retry",
+       "type": "string",
+       "default": "\"Load again\"",
+       "description": ""
+      },
+      {
+       "name": "tilesFailed",
+       "type": "string",
+       "default": "\"Map tiles could not be loaded. Showing the coordinate grid.\"",
+       "description": "Over the map when tiles were asked for and none could be loaded: it falls back to the coordinate grid."
+      },
+      {
+       "name": "count",
+       "type": "(n: number) => string",
+       "default": "(n) => (n === 1 ? \"1 robot\" : `${n} robots`)",
+       "description": "How many robots the map shows, read with the instructions."
+      },
+      {
+       "name": "selected",
+       "type": "(name: string, status: string) => string",
+       "default": "(name, status) => `Selected: ${name}, ${status}`",
+       "description": "The selected robot, read with the instructions."
+      },
+      {
+       "name": "latitude",
+       "type": "(deg: number, digits: number, locale?: string) => string",
+       "default": "(deg, digits, locale) => `${formatGeoNumber(Math.abs(deg), digits, locale)}° ${deg < 0 ? \"S\" : \"N\"}`",
+       "description": "A latitude with `digits` decimals: \"24.900120° N\"."
+      },
+      {
+       "name": "longitude",
+       "type": "(deg: number, digits: number, locale?: string) => string",
+       "default": "(deg, digits, locale) => `${formatGeoNumber(Math.abs(deg), digits, locale)}° ${deg < 0 ? \"W\" : \"E\"}`",
+       "description": ""
+      },
+      {
+       "name": "position",
+       "type": "(lat: string, lon: string) => string",
+       "default": "(lat, lon) => `${lat}, ${lon}`",
+       "description": "A place in words, as the list, the crosshair, the goal card and the announcements write it."
+      },
+      {
+       "name": "heading",
+       "type": "(deg: number) => string",
+       "default": "(deg) => `Heading ${deg360(deg)}° ${compassPoints[Math.round(deg360(deg) / 45) % 8]}`",
+       "description": "Which way a robot or a goal faces: \"Heading 90° E\"."
+      },
+      {
+       "name": "inFence",
+       "type": "(name: string, kind: string) => string",
+       "default": "(name, kind) => `In ${name} (${kind.toLowerCase()})`",
+       "description": "GeoMapList: the fence a robot is in."
+      },
+      {
+       "name": "inUnnamedFence",
+       "type": "(kind: string) => string",
+       "default": "(kind) => `In a ${kind.toLowerCase()} area`",
+       "description": "GeoMapList: the fence a robot is in, when the fence has no name."
+      },
+      {
+       "name": "outsideAllowed",
+       "type": "string",
+       "default": "\"Outside the work area\"",
+       "description": "GeoMapList: a robot outside every allowed area, when there are allowed areas."
+      },
+      {
+       "name": "distance",
+       "type": "(metres: number, locale?: string) => string",
+       "default": "(m, locale) => (m >= 1000 ? `${formatGeoNumber(m / 1000, 1, locale, 0)} km` : `${formatGeoNumber(m, m < 1 ? 1 : 0, locale, 0)} m`)",
+       "description": "The scale bar's length: \"50 m\", \"2 km\"."
+      },
+      {
+       "name": "editKeys",
+       "type": "string",
+       "default": "\"Arrow keys move the crosshair, Shift for bigger steps; Enter or Space places the goal, Esc cancels. Right-drag or two fingers move the map.\"",
+       "description": "The keys of goal mode, read with the instructions."
+      },
+      {
+       "name": "goalHint",
+       "type": "string",
+       "default": "\"Click to place the goal, drag to point it. Esc cancels.\"",
+       "description": "The banner in goal mode, before a goal is placed."
+      },
+      {
+       "name": "goalConfirm",
+       "type": "string",
+       "default": "\"Send this goal?\"",
+       "description": "The confirm card's title, and its line on how to turn, send or cancel from the keyboard."
+      },
+      {
+       "name": "goalConfirmKeys",
+       "type": "string",
+       "default": "\"Left and right arrows turn it, Enter sends, Esc cancels.\"",
+       "description": ""
+      },
+      {
+       "name": "send",
+       "type": "string",
+       "default": "\"Send goal\"",
+       "description": ""
+      },
+      {
+       "name": "cancel",
+       "type": "string",
+       "default": "\"Cancel\"",
+       "description": ""
+      },
+      {
+       "name": "goalInKeepOut",
+       "type": "(fence: string) => string",
+       "default": "(fence) => `Inside ${fence}, a keep-out area`",
+       "description": "The confirm card's warnings: the goal is in a keep-out, or outside every allowed area."
+      },
+      {
+       "name": "goalOutsideAllowed",
+       "type": "(area?: string) => string",
+       "default": "(area) => (area ? `Outside ${area}, the work area` : \"Outside the work area\")",
+       "description": "`area` is the work area's name when there is one allowed fence with a name."
+      },
+      {
+       "name": "goalPlaced",
+       "type": "(position: string) => string",
+       "default": "(position) => `Goal at ${position}. Enter sends it, Esc cancels.`",
+       "description": "Said in the live region as goal mode is used."
+      },
+      {
+       "name": "goalBlocked",
+       "type": "(position: string, reason: string) => string",
+       "default": "(position, reason) => `Goal at ${position}. ${reason}: it cannot be sent. Place it again, or press Esc.`",
+       "description": "Said when a goal is placed where it cannot be sent, with the card's reason."
+      },
+      {
+       "name": "goalNotSent",
+       "type": "(reason: string) => string",
+       "default": "(reason) => `${reason}: this goal cannot be sent.`",
+       "description": "Said when Send (or Enter) is tried on a goal that cannot be sent."
+      },
+      {
+       "name": "goalSet",
+       "type": "(position: string, heading?: number) => string",
+       "default": "(position, heading) => `Goal sent: ${position}${heading === undefined ? \"\" : `, heading ${deg360(heading)}°`}`",
+       "description": ""
+      },
+      {
+       "name": "goalCancelled",
+       "type": "string",
+       "default": "\"Goal cancelled\"",
+       "description": ""
+      },
+      {
+       "name": "fixChanged",
+       "type": "(name: string, fix: string) => string",
+       "default": "(name, fix) => `${name}: ${fix}`",
+       "description": "Said when robots' fixes change, gathered and at most once per `announceEveryMs`: \"Patrol-2: No fix\"."
+      }
+     ]
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats coordinates, accuracy and distances. Pass the app's locale beside its labels."
+    },
+    {
+     "name": "robots",
+     "type": "GeoMapRobot[]",
+     "default": "[]",
+     "description": ""
+    },
+    {
+     "name": "fences",
+     "type": "GeoMapFence[]",
+     "default": "[]",
+     "description": ""
+    },
+    {
+     "name": "selectedId",
+     "type": "string | null",
+     "description": "The selected robot, controlled; null for none. Without it the map keeps its own selection."
+    },
+    {
+     "name": "onRetry",
+     "type": "() => void",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "Pick<GeoMapProps, \"label\" | \"robots\" | \"fences\" | \"selectedId\" | \"onSelect\" | \"loading\" | \"error\" | \"onRetry\" | \"locale\" | \"labels\" | \"className\">"
+   ]
   }
  ],
  "graph": [
@@ -5913,6 +7332,12 @@
      "type": "string",
      "default": "\"About this page\"",
      "description": "Names the row of meta pills for screen readers."
+    },
+    {
+     "name": "as",
+     "type": "\"h2\" | \"h1\"",
+     "default": "\"h1\"",
+     "description": "The title's heading level: h1 for the page's own header, h2 for one under another h1 (a sheet, a tab, an example)."
     }
    ],
    "inherits": []
@@ -6883,6 +8308,26 @@
      "description": "Waypoints mode: the new list after a waypoint is added, moved (while it moves) or removed. A move that is cancelled (Esc, a second finger, a cancelled pointer) sends the list again with the waypoint where it was."
     },
     {
+     "name": "onWaypointEdit",
+     "type": "(edit: RobotMapWaypointEdit) => void",
+     "description": "Waypoints mode: each add, move and remove by its index, sent with `onWaypointsChange`."
+    },
+    {
+     "name": "selectedWaypoint",
+     "type": "number | null",
+     "description": "The selected waypoint's index, controlled (null for none): a list beside the map selects it there. Without it the map keeps its own selection. Given, the selection ring shows in every mode."
+    },
+    {
+     "name": "onWaypointSelect",
+     "type": "(index: number | null) => void",
+     "description": "Called with the waypoint selected on the map (clicked, added, picked up with Enter), or null when the selection is cleared (Esc, removed). Given, a click on a waypoint selects it in `view` mode too, as on a read-only route."
+    },
+    {
+     "name": "waypointMarks",
+     "type": "(RobotMapWaypointMark | undefined)[]",
+     "description": "Per waypoint, in the same order: its heading tick and whether it has a problem."
+    },
+    {
      "name": "waypointsPlanned",
      "type": "boolean",
      "description": "The waypoints are the route a robot is driving: the line between them turns the in-progress blue. Otherwise it is grey."
@@ -7519,12 +8964,6 @@
      "description": ""
     },
     {
-     "name": "zones",
-     "type": "RobotMapZone[]",
-     "default": "[]",
-     "description": ""
-    },
-    {
      "name": "selectedId",
      "type": "string | null",
      "description": "The selected robot, controlled; null for none. Without it the map keeps its own selection."
@@ -7533,6 +8972,12 @@
      "name": "onRetry",
      "type": "() => void",
      "description": "Shows a button under the error that tries again."
+    },
+    {
+     "name": "zones",
+     "type": "RobotMapZone[]",
+     "default": "[]",
+     "description": ""
     }
    ],
    "inherits": [
@@ -8186,7 +9631,7 @@
    "props": [
     {
      "name": "side",
-     "type": "\"bottom\" | \"right\" | \"left\"",
+     "type": "\"left\" | \"right\" | \"bottom\"",
      "default": "\"bottom\"",
      "description": ""
     }
@@ -8320,7 +9765,7 @@
    "props": [
     {
      "name": "side",
-     "type": "\"right\" | \"left\"",
+     "type": "\"left\" | \"right\"",
      "default": "\"left\"",
      "description": ""
     },
@@ -10618,6 +12063,407 @@
        "description": "The same for a node with `content` and no `children`: what opens is its details, not items under it."
       }
      ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "waypoint-editor": [
+  {
+   "name": "WaypointEditor",
+   "props": [
+    {
+     "name": "value",
+     "type": "Waypoint[]",
+     "required": true,
+     "description": "The saved route. The editor edits a draft of it; a new `value` replaces the draft unless it has unsaved changes."
+    },
+    {
+     "name": "defaultDraft",
+     "type": "Waypoint[]",
+     "description": "A draft to start from instead of `value`, such as one kept across a reload: it counts as unsaved changes."
+    },
+    {
+     "name": "defaultSelected",
+     "type": "string",
+     "description": "The waypoint selected at first (its id), with its details open."
+    },
+    {
+     "name": "onSave",
+     "type": "(waypoints: Waypoint[]) => void | Promise<unknown>",
+     "description": "Save: called with the draft. Return a promise to keep Save busy until it settles; a rejection keeps the draft and says so."
+    },
+    {
+     "name": "onCancel",
+     "type": "() => void",
+     "description": "Cancel: the draft goes back to `value` (with Undo in a toast), then this is called, e.g. to close the editor."
+    },
+    {
+     "name": "onDirtyChange",
+     "type": "(dirty: boolean) => void",
+     "description": "Called when the draft gains or loses unsaved changes: warn before leaving the page with it."
+    },
+    {
+     "name": "map",
+     "type": "WaypointEditorMap",
+     "description": "The plan to draw the route on (robot-map's props). Without it the editor is the list alone."
+    },
+    {
+     "name": "speed",
+     "type": "number",
+     "description": "Cruise speed in m/s, for the estimated time. Without it only the distance is shown."
+    },
+    {
+     "name": "minSpacing",
+     "type": "number",
+     "default": "0.5",
+     "description": "Metres a waypoint must be from the one before it. 0.5 by default."
+    },
+    {
+     "name": "readOnly",
+     "type": "boolean",
+     "description": "For viewers: the route, the map and the details, without anything that changes them."
+    },
+    {
+     "name": "createId",
+     "type": "() => string",
+     "description": "A new waypoint's id. By default one unique to this editor."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<WaypointEditorLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "name",
+       "type": "string",
+       "default": "\"Route\"",
+       "description": "The list's name: \"Route\"."
+      },
+      {
+       "name": "map",
+       "type": "string",
+       "default": "\"Route map\"",
+       "description": "The map's name for screen readers."
+      },
+      {
+       "name": "showAs",
+       "type": "string",
+       "default": "\"Show as\"",
+       "description": "The List / Map switch on a narrow editor."
+      },
+      {
+       "name": "listTab",
+       "type": "string",
+       "default": "\"List\"",
+       "description": ""
+      },
+      {
+       "name": "mapTab",
+       "type": "string",
+       "default": "\"Map\"",
+       "description": ""
+      },
+      {
+       "name": "add",
+       "type": "string",
+       "default": "\"Add waypoint\"",
+       "description": ""
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"No waypoints yet. Click the map or Add waypoint to start the route.\"",
+       "description": ""
+      },
+      {
+       "name": "defaultName",
+       "type": "(n: number) => string",
+       "default": "(n) => `Waypoint ${n}`",
+       "description": "A new waypoint's name, by its place: \"Waypoint 4\"."
+      },
+      {
+       "name": "copyName",
+       "type": "(name: string) => string",
+       "default": "(name) => `${name} copy`",
+       "description": "A duplicate's name."
+      },
+      {
+       "name": "move",
+       "type": "(name: string) => string",
+       "default": "(name) => `Move ${name}`",
+       "description": "The drag handle's name."
+      },
+      {
+       "name": "rowKeys",
+       "type": "string",
+       "default": "\"Enter opens its details, Delete removes it.\"",
+       "description": "Read with a row: what its keys do."
+      },
+      {
+       "name": "fieldName",
+       "type": "string",
+       "default": "\"Name\"",
+       "description": ""
+      },
+      {
+       "name": "x",
+       "type": "string",
+       "default": "\"X\"",
+       "description": ""
+      },
+      {
+       "name": "y",
+       "type": "string",
+       "default": "\"Y\"",
+       "description": ""
+      },
+      {
+       "name": "lat",
+       "type": "string",
+       "default": "\"Latitude\"",
+       "description": ""
+      },
+      {
+       "name": "lon",
+       "type": "string",
+       "default": "\"Longitude\"",
+       "description": ""
+      },
+      {
+       "name": "heading",
+       "type": "string",
+       "default": "\"Heading\"",
+       "description": ""
+      },
+      {
+       "name": "headingHint",
+       "type": "string",
+       "default": "\"Leave empty for any heading.\"",
+       "description": ""
+      },
+      {
+       "name": "action",
+       "type": "string",
+       "default": "\"On arrival\"",
+       "description": ""
+      },
+      {
+       "name": "actions",
+       "type": "Record<\"none\" | \"wait\" | \"dock\" | \"photo\" | \"custom\", string>",
+       "default": "{ none: \"Nothing\", wait: \"Wait\", dock: \"Dock\", photo: \"Take a photo\", custom: \"Custom action\" }",
+       "description": ""
+      },
+      {
+       "name": "waitFor",
+       "type": "string",
+       "default": "\"Wait for\"",
+       "description": ""
+      },
+      {
+       "name": "customName",
+       "type": "string",
+       "default": "\"Action name\"",
+       "description": ""
+      },
+      {
+       "name": "dwell",
+       "type": "string",
+       "default": "\"Dwell\"",
+       "description": ""
+      },
+      {
+       "name": "dwellHint",
+       "type": "string",
+       "default": "\"Time to stay after the action.\"",
+       "description": ""
+      },
+      {
+       "name": "duplicate",
+       "type": "string",
+       "default": "\"Duplicate\"",
+       "description": ""
+      },
+      {
+       "name": "remove",
+       "type": "string",
+       "default": "\"Delete\"",
+       "description": ""
+      },
+      {
+       "name": "removed",
+       "type": "(name: string) => string",
+       "default": "(name) => `${name} deleted`",
+       "description": "The toast after a delete, with Undo."
+      },
+      {
+       "name": "undo",
+       "type": "string",
+       "default": "\"Undo\"",
+       "description": ""
+      },
+      {
+       "name": "position",
+       "type": "(x: number, y: number, locale: string | undefined) => string",
+       "default": "(x, y, locale) => `${num(x, locale)}, ${num(y, locale)} m`",
+       "description": "A waypoint's place, in the row."
+      },
+      {
+       "name": "geoPosition",
+       "type": "(lat: number, lon: number, locale: string | undefined) => string",
+       "default": "(lat, lon, locale) => `${num(lat, locale, 6)}, ${num(lon, locale, 6)}`",
+       "description": ""
+      },
+      {
+       "name": "headingShort",
+       "type": "(deg: number, locale: string | undefined) => string",
+       "default": "(deg, locale) => `facing ${Math.round(deg).toLocaleString(locale)}°`",
+       "description": ""
+      },
+      {
+       "name": "actionShort",
+       "type": "(action: WaypointAction, locale: string | undefined) => string",
+       "default": "(a, locale) => a.type === \"wait\" ? `Wait ${a.seconds.toLocaleString(locale)} s` : a.type === \"dock\" ? \"Dock\" : a.type === \"photo\" ? \"Photo\" : a.type === \"custom\" ? a.name || \"Custom action\" : \"\"",
+       "description": "The action in the row: \"Wait 30 s\", \"Dock\", the custom action's name."
+      },
+      {
+       "name": "dwellShort",
+       "type": "(seconds: number, locale: string | undefined) => string",
+       "default": "(s, locale) => `stay ${s.toLocaleString(locale)} s`",
+       "description": ""
+      },
+      {
+       "name": "problem",
+       "type": "(p: WaypointProblem, minSpacing: number, locale: string | undefined) => string",
+       "default": "(p, min, locale) => p.kind === \"noName\" ? \"Name missing\" : p.kind === \"noActionName\" ? \"Action name missing\" : p.kind === \"invalid\" ? \"Position is not a number\" : p.kind === \"outside\" ? \"Outside the map\" : p.kind === \"keepOut\" ? `Inside ${p.zone ?? \"a no-entry zone\"}` : `${num(p.distance ?? 0, locale, 2)} m from the one before (at least ${num(min, locale)} m)`",
+       "description": ""
+      },
+      {
+       "name": "count",
+       "type": "(n: number, locale: string | undefined) => string",
+       "default": "(n, locale) => (n === 1 ? \"1 waypoint\" : `${n.toLocaleString(locale)} waypoints`)",
+       "description": ""
+      },
+      {
+       "name": "distanceTitle",
+       "type": "string",
+       "default": "\"Distance\"",
+       "description": ""
+      },
+      {
+       "name": "durationTitle",
+       "type": "string",
+       "default": "\"Estimated time\"",
+       "description": ""
+      },
+      {
+       "name": "distance",
+       "type": "(metres: number, locale: string | undefined) => string",
+       "default": "(m, locale) => (m >= 1000 ? `${num(m / 1000, locale, 2)} km` : `${num(m, locale)} m`)",
+       "description": ""
+      },
+      {
+       "name": "duration",
+       "type": "(seconds: number, locale: string | undefined) => string",
+       "default": "(s, locale) => { const t = Math.round(s) if (t < 60) return `about ${t.toLocaleString(locale)} s` const h = Math.floor(t / 3600) const m = Math.floor((t % 3600) / 60) return h ? `about ${h.toLocaleString(locale)} h ${m.toLocaleString(locale)} min` : `about ${m.toLocaleString(locale)} min ${(t % 60).toLocaleString(locale)} s` }",
+       "description": ""
+      },
+      {
+       "name": "unsaved",
+       "type": "string",
+       "default": "\"Unsaved changes\"",
+       "description": "The draft differs from the saved route."
+      },
+      {
+       "name": "saved",
+       "type": "string",
+       "default": "\"No unsaved changes\"",
+       "description": ""
+      },
+      {
+       "name": "save",
+       "type": "string",
+       "default": "\"Save route\"",
+       "description": ""
+      },
+      {
+       "name": "cancel",
+       "type": "string",
+       "default": "\"Cancel\"",
+       "description": ""
+      },
+      {
+       "name": "noChanges",
+       "type": "string",
+       "default": "\"No changes to save\"",
+       "description": "Why Save is disabled, beside it."
+      },
+      {
+       "name": "needsWaypoint",
+       "type": "string",
+       "default": "\"Add a waypoint to save\"",
+       "description": ""
+      },
+      {
+       "name": "blocked",
+       "type": "(problems: number, locale: string | undefined) => string",
+       "default": "(n, locale) => (n === 1 ? \"Fix 1 problem to save\" : `Fix ${n.toLocaleString(locale)} problems to save`)",
+       "description": ""
+      },
+      {
+       "name": "saveFailed",
+       "type": "string",
+       "default": "\"The route could not be saved. Try again.\"",
+       "description": ""
+      },
+      {
+       "name": "savedNotice",
+       "type": "string",
+       "default": "\"Route saved\"",
+       "description": "Said once the save went through."
+      },
+      {
+       "name": "discarded",
+       "type": "string",
+       "default": "\"Changes discarded\"",
+       "description": "The toast after Cancel threw changes away, with Undo."
+      },
+      {
+       "name": "problems",
+       "type": "(n: number, locale: string | undefined) => string",
+       "default": "(n, locale) => (n === 0 ? \"No problems left\" : n === 1 ? \"1 problem\" : `${n.toLocaleString(locale)} problems`)",
+       "description": "Said (throttled) when the number of problems changes."
+      },
+      {
+       "name": "added",
+       "type": "(name: string, n: number) => string",
+       "default": "(name, n) => `${name} added as waypoint ${n}`",
+       "description": ""
+      },
+      {
+       "name": "duplicated",
+       "type": "(name: string, n: number) => string",
+       "default": "(name, n) => `${name} added as waypoint ${n}`",
+       "description": ""
+      },
+      {
+       "name": "readOnly",
+       "type": "string",
+       "default": "\"View only: you cannot change this route.\"",
+       "description": "A read-only editor says so above the list."
+      },
+      {
+       "name": "details",
+       "type": "string",
+       "default": "\"Details\"",
+       "description": "The selected waypoint under the map on a narrow editor: the button that opens it in the list."
+      }
+     ]
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats numbers (BCP 47, \"zh-TW\")."
     }
    ],
    "inherits": []

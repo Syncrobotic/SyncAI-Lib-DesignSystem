@@ -65,7 +65,7 @@ export function ComponentTabs({ tabs }: { tabs: ComponentTab[] }) {
     <nav aria-label="Page sections" className="pb-6">
       {/* The row scrolls sideways on a phone, so it clips anything drawn outside it: each tab draws its focus ring inside
           itself (-outline-offset-2), with 4 px of room either side of its label. */}
-      <div ref={list} className="relative flex gap-2 overflow-x-auto overflow-y-hidden border-b border-border" data-underline={line ? "" : undefined}>
+      <div ref={list} className="scroll-row relative flex gap-2 overflow-x-auto overflow-y-hidden border-b border-border" data-underline={line ? "" : undefined}>
         {tabs.map((t) => {
           const on = t.href === active
           return (
