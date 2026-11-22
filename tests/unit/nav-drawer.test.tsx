@@ -28,7 +28,7 @@ describe("NavDrawer", () => {
     expect(list).not.toBe(dialog)
     const close = screen.getByRole("button", { name: "Close navigation" })
     expect(list.contains(close)).toBe(false)
-    expect(list.contains(screen.getByRole("list", { name: "Areas" }))).toBe(false)
+    expect(list.contains(screen.getByRole("tablist", { name: "Areas" }))).toBe(false)
     expect(list.contains(screen.getByRole("link", { name: "C40" }))).toBe(true)
     expect(document.activeElement).toBe(close)
   })
@@ -37,7 +37,7 @@ describe("NavDrawer", () => {
     render(<NavDrawer scopes={scopes} />)
     await act(async () => fireEvent.click(screen.getByRole("button", { name: "Open navigation" })))
     const list = screen.getByRole("dialog").querySelector<HTMLElement>("[data-scroll]")!
-    const tabs = screen.getByRole("list", { name: "Areas" })
+    const tabs = screen.getByRole("tablist", { name: "Areas" })
     act(() => {
       list.scrollTop = 0
       fireEvent.scroll(list)
@@ -48,5 +48,20 @@ describe("NavDrawer", () => {
       fireEvent.scroll(list)
     })
     expect(tabs.className).toContain("border-border")
+  })
+
+  it("switches area with a tab, without leaving the page", async () => {
+    render(<NavDrawer scopes={scopes} />)
+    await act(async () => fireEvent.click(screen.getByRole("button", { name: "Open navigation" })))
+    expect(screen.getByRole("tab", { name: "Components" }).getAttribute("aria-selected")).toBe("true")
+    const docs = screen.getByRole("tab", { name: "Docs" })
+    expect(docs.tagName).toBe("BUTTON")
+    act(() => fireEvent.click(docs))
+    expect(docs.getAttribute("aria-selected")).toBe("true")
+    expect(screen.getByRole("tabpanel", { name: "Docs" })).toBeTruthy()
+    expect(screen.getByRole("link", { name: "Introduction" })).toBeTruthy()
+    expect(screen.queryByRole("link", { name: "C40" })).toBeNull()
+    act(() => fireEvent.keyDown(docs, { key: "ArrowRight" }))
+    expect(screen.getByRole("tab", { name: "Components" }).getAttribute("aria-selected")).toBe("true")
   })
 })
