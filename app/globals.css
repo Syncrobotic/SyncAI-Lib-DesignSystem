@@ -180,3 +180,44 @@ html {
     --sidebar-fade: 1rem;
   }
 }
+
+/* A row that scrolls sideways on a touch screen (category chips, tabs): no scrollbar pressed against the row, and the
+   edges fade where more is hidden, so the cut-off chip itself says the row scrolls. Each edge fades only while there is
+   something past it (a scroll-driven animation); without that support the right edge fades, as most rows start left.
+   A utility, so a variant can put it on a child (`[&_ul]:scroll-row`). */
+@property --row-fade-start {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+@property --row-fade-end {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 1.5rem;
+}
+@utility scroll-row {
+  scrollbar-width: none;
+  mask-image: linear-gradient(to right, transparent, #000 var(--row-fade-start), #000 calc(100% - var(--row-fade-end)), transparent);
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  @supports (animation-timeline: scroll()) {
+    animation: scroll-row linear both;
+    animation-timeline: scroll(self inline);
+  }
+}
+@keyframes scroll-row {
+  from {
+    --row-fade-start: 0px;
+    --row-fade-end: 1.5rem;
+  }
+  4%,
+  96% {
+    --row-fade-start: 1.5rem;
+    --row-fade-end: 1.5rem;
+  }
+  to {
+    --row-fade-start: 1.5rem;
+    --row-fade-end: 0px;
+  }
+}

@@ -1,4 +1,4 @@
-// @syncrobotic/labels-zh-tw v0.28.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
+// @syncrobotic/labels-zh-tw v0.29.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
 // The kit's words in Traditional Chinese as written in Taiwan, one object per component that takes `labels`. Pass each
 // to its component (`<DataGrid labels={dataGridLabels} />`) with `locale="zh-TW"` where the component formats numbers,
 // days or times. The file imports no component, so it installs on its own; the kit's tests hold every object to the
@@ -133,6 +133,39 @@ export const cameraFeedLabels = {
   snapshot: "拍攝快照",
   fullscreen: "全螢幕",
   exitFullscreen: "離開全螢幕",
+}
+
+// CameraFeedStateLine (a wall tile's state) takes the same words as the feed.
+export const cameraFeedStateLineLabels = cameraFeedLabels
+
+// 頻寬 (bandwidth) and 攝影機 (camera) as Taiwan writes them; alarm priorities as the alarm list says them.
+export const cameraWallLabels = {
+  name: "攝影機",
+  keys: "方向鍵在各攝影機之間移動，Enter 放大顯示，Esc 回到所有攝影機。",
+  pausedToSave: "為節省頻寬已暫停",
+  sort: "攝影機排序",
+  attentionFirst: "需處理優先",
+  byName: "名稱",
+  needsAttention: "需要處理",
+  count: (n: number, locale: string | undefined) => n.toLocaleString(locale),
+  allCameras: "所有攝影機",
+  critical: "緊急",
+  high: "高",
+  low: "低",
+  alarm: (priority: string, title: string) => `${priority}・${title}`,
+  range: (from: number, to: number, total: number, locale?: string) =>
+    `第 ${from.toLocaleString(locale)}–${to.toLocaleString(locale)} 台，共 ${total.toLocaleString(locale)} 台攝影機`,
+  previousPage: "上一頁攝影機",
+  nextPage: "下一頁攝影機",
+  empty: "沒有攝影機",
+  noneNeedAttention: "目前沒有需要處理的攝影機",
+  showAll: "顯示所有攝影機",
+  announce: (changes: { name: string; state: string }[], locale: string | undefined) => {
+    const shown = changes.slice(0, 3).map((c) => `${c.name}：${c.state}。`)
+    const more = changes.length - shown.length
+    return shown.join("") + (more > 0 ? `另有 ${more.toLocaleString(locale)} 台攝影機狀態改變。` : "")
+  },
+  feed: cameraFeedLabels,
 }
 
 export const jointStateLabels = {
@@ -337,6 +370,133 @@ export const robotMapLabels = {
 
 export const robotMapListLabels = robotMapLabels
 
+// 航點 (waypoint) and 路線 (route), as robot-map says them; 停留 for dwell, the word a dispatcher uses for time at a stop.
+const routeNumber = (n: number, locale: string | undefined, digits = 1) => n.toLocaleString(locale ?? "zh-TW", { minimumFractionDigits: digits, maximumFractionDigits: digits })
+export const waypointEditorLabels = {
+  name: "路線",
+  map: "路線地圖",
+  showAs: "顯示方式",
+  listTab: "清單",
+  mapTab: "地圖",
+  add: "新增航點",
+  empty: "尚無航點。點一下地圖或「新增航點」開始規劃路線。",
+  defaultName: (n: number) => `航點 ${n}`,
+  copyName: (name: string) => `${name} 副本`,
+  move: (name: string) => `移動 ${name}`,
+  rowKeys: "Enter 開啟詳細資料，Delete 刪除此航點。",
+  fieldName: "名稱",
+  x: "X",
+  y: "Y",
+  lat: "緯度",
+  lon: "經度",
+  heading: "朝向",
+  headingHint: "留空表示不限朝向。",
+  action: "抵達時",
+  actions: { none: "不執行動作", wait: "等待", dock: "回充電座", photo: "拍照", custom: "自訂動作" },
+  waitFor: "等待時間",
+  customName: "動作名稱",
+  dwell: "停留",
+  dwellHint: "完成動作後再停留的時間。",
+  duplicate: "複製航點",
+  remove: "刪除",
+  removed: (name: string) => `已刪除 ${name}`,
+  undo: "復原",
+  position: (x: number, y: number, locale: string | undefined) => `${routeNumber(x, locale)}, ${routeNumber(y, locale)} m`,
+  geoPosition: (lat: number, lon: number, locale: string | undefined) => `${routeNumber(lat, locale, 6)}, ${routeNumber(lon, locale, 6)}`,
+  headingShort: (deg: number) => `朝向 ${compass(deg)}°`,
+  actionShort: (a: { type: string; seconds?: number; name?: string }, locale: string | undefined) =>
+    a.type === "wait" ? `等待 ${(a.seconds ?? 0).toLocaleString(locale ?? "zh-TW")} 秒` : a.type === "dock" ? "回充電座" : a.type === "photo" ? "拍照" : a.type === "custom" ? a.name || "自訂動作" : "",
+  dwellShort: (s: number, locale: string | undefined) => `停留 ${s.toLocaleString(locale ?? "zh-TW")} 秒`,
+  problem: (p: { kind: string; zone?: string; distance?: number }, min: number, locale: string | undefined) =>
+    p.kind === "noName"
+      ? "缺少名稱"
+      : p.kind === "noActionName"
+        ? "缺少動作名稱"
+        : p.kind === "invalid"
+          ? "位置不是數字"
+          : p.kind === "outside"
+            ? "超出地圖範圍"
+            : p.kind === "keepOut"
+              ? `位於${p.zone ?? "禁入區"}內`
+              : `距上一個航點 ${routeNumber(p.distance ?? 0, locale, 2)} m（至少需 ${routeNumber(min, locale)} m）`,
+  count: (n: number, locale: string | undefined) => `${n.toLocaleString(locale ?? "zh-TW")} 個航點`,
+  distanceTitle: "距離",
+  durationTitle: "預估時間",
+  distance: (m: number, locale: string | undefined) => (m >= 1000 ? `${routeNumber(m / 1000, locale, 2)} km` : `${routeNumber(m, locale)} m`),
+  duration: (s: number, locale: string | undefined) => {
+    const t = Math.round(s)
+    const n = (v: number) => v.toLocaleString(locale ?? "zh-TW")
+    if (t < 60) return `約 ${n(t)} 秒`
+    const h = Math.floor(t / 3600)
+    const m = Math.floor((t % 3600) / 60)
+    return h ? `約 ${n(h)} 小時 ${n(m)} 分` : `約 ${n(m)} 分 ${n(t % 60)} 秒`
+  },
+  unsaved: "有未儲存的變更",
+  saved: "沒有未儲存的變更",
+  save: "儲存路線",
+  cancel: "取消",
+  noChanges: "沒有要儲存的變更",
+  needsWaypoint: "請先新增航點再儲存",
+  blocked: (n: number, locale: string | undefined) => `請先修正 ${n.toLocaleString(locale ?? "zh-TW")} 個問題再儲存`,
+  saveFailed: "無法儲存路線，請再試一次。",
+  savedNotice: "已儲存路線",
+  discarded: "已捨棄變更",
+  problems: (n: number, locale: string | undefined) => (n === 0 ? "已沒有問題" : `${n.toLocaleString(locale ?? "zh-TW")} 個問題`),
+  added: (name: string, n: number) => `已新增 ${name}，為第 ${n} 個航點`,
+  duplicated: (name: string, n: number) => `已新增 ${name}，為第 ${n} 個航點`,
+  readOnly: "僅供檢視：你無法變更這條路線。",
+  details: "詳細資料",
+}
+
+// The outdoor map writes coordinates with fixed decimals and no grouping, in the locale's digits.
+const geoNumber = (n: number, max: number, locale: string | undefined, min = max) =>
+  n.toLocaleString(locale ?? "en", { minimumFractionDigits: min, maximumFractionDigits: max, useGrouping: false })
+const geoCompass = ["北", "東北", "東", "東南", "南", "西南", "西", "西北"]
+
+export const geoMapLabels = {
+  instructions: "方向鍵移動地圖，加號與減號縮放，0 顯示所有機器人。地圖旁的機器人清單以文字列出相同的機器人。",
+  zoomIn: "放大",
+  zoomOut: "縮小",
+  fit: "顯示所有機器人",
+  status: robotMapLabels.status,
+  fix: { "rtk-fixed": "RTK 固定解", "rtk-float": "RTK 浮動解", dgps: "DGPS 定位", gps: "GPS 定位", none: "未定位" },
+  fixWithAccuracy: (fix: string, accuracy: string) => `${fix} · ${accuracy}`,
+  accuracy: (m: number, locale: string | undefined) =>
+    m < 1 ? `±${geoNumber(Math.max(1, Math.round(m * 100)), 0, locale)} cm` : `±${geoNumber(m, m < 10 ? 1 : 0, locale, 0)} m`,
+  fenceKind: { allowed: "作業區", "keep-out": "禁入區" },
+  empty: "此地圖目前沒有機器人。",
+  loading: "正在載入地圖",
+  error: "無法載入地圖。",
+  retry: "重新載入",
+  tilesFailed: "無法載入地圖圖磚，改以座標格線顯示。",
+  count: (n: number) => `${n} 台機器人`,
+  selected: (name: string, status: string) => `已選取：${name}，${status}`,
+  latitude: (deg: number, digits: number, locale: string | undefined) => `${deg < 0 ? "南緯" : "北緯"} ${geoNumber(Math.abs(deg), digits, locale)}°`,
+  longitude: (deg: number, digits: number, locale: string | undefined) => `${deg < 0 ? "西經" : "東經"} ${geoNumber(Math.abs(deg), digits, locale)}°`,
+  position: (lat: string, lon: string) => `${lat}，${lon}`,
+  heading: (deg: number) => `航向 ${compass(deg)}°（${geoCompass[Math.round(compass(deg) / 45) % 8]}）`,
+  inFence: (name: string, kind: string) => `位於 ${name}（${kind}）`,
+  inUnnamedFence: (kind: string) => `位於${kind}內`,
+  outsideAllowed: "在作業區外",
+  distance: (m: number, locale: string | undefined) => (m >= 1000 ? `${geoNumber(m / 1000, 1, locale, 0)} km` : `${geoNumber(m, m < 1 ? 1 : 0, locale, 0)} m`),
+  editKeys: "方向鍵移動十字準線，按住 Shift 可加大步距；Enter 或空白鍵放置目標點，Esc 取消。按右鍵拖曳或用兩指可移動地圖。",
+  goalHint: "點一下放置目標點，拖曳以設定方向。Esc 取消。",
+  goalConfirm: "要送出這個目標點嗎？",
+  goalConfirmKeys: "左右方向鍵旋轉方向，Enter 送出，Esc 取消。",
+  send: "送出目標點",
+  cancel: "取消",
+  goalInKeepOut: (fence: string) => `位於禁入區 ${fence} 內`,
+  goalOutsideAllowed: (area: string | undefined) => (area ? `在作業區 ${area} 外` : "在作業區外"),
+  goalPlaced: (position: string) => `目標點位於 ${position}。Enter 送出，Esc 取消。`,
+  goalBlocked: (position: string, reason: string) => `目標點位於 ${position}。${reason}，無法送出。請重新放置，或按 Esc 取消。`,
+  goalNotSent: (reason: string) => `${reason}，無法送出這個目標點。`,
+  goalSet: (position: string, heading: number | undefined) => `已送出目標點：${position}${heading === undefined ? "" : `，航向 ${compass(heading)}°`}`,
+  goalCancelled: "已取消目標點",
+  fixChanged: (name: string, fix: string) => `${name}：${fix}`,
+}
+
+export const geoMapListLabels = geoMapLabels
+
 export const annotatedImageLabels = {
   predicted: "預測",
   truth: "真實標註",
@@ -507,6 +667,46 @@ export const streamingChartLabels = {
   noValue: "–",
   reading: (series: string, value: string) => `${series} ${value}`,
   keys: "空白鍵暫停或繼續。左右方向鍵在時間上往前或往後移動。End 鍵回到即時。",
+  formatTime: (d: Date, locale: string | undefined) => (locale ? d.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23" }) : clock(d)),
+}
+
+// Attitude in the words of Taiwan's flight instruments: 滾轉 (roll), 俯仰 (pitch), 航向 (heading); the nose 抬頭 or 低頭.
+export const attitudeIndicatorLabels = {
+  roll: "滾轉",
+  pitch: "俯仰",
+  heading: "航向",
+  degrees: (v: string) => `${v}°`,
+  directed: (v: string, d: string) => `${d} ${v}`,
+  left: "向左",
+  right: "向右",
+  noseUp: "抬頭",
+  noseDown: "低頭",
+  compassPoints: ["北", "東北", "東", "東南", "南", "西南", "西", "西北"],
+  headingText: (v: string, p: string) => `${v}（${p}）`,
+  overLimit: "超過限制",
+  critical: "嚴重",
+  withState: (v: string, s: string) => `${v}，${s}`,
+  withinLimits: "滾轉與俯仰皆在限制內",
+  noValue: "–",
+  waiting: "等待資料",
+  stale: "資料過時",
+  lastUpdate: (time: string) => `最後更新 ${time}`,
+  summary: ({ roll, pitch, heading }: { roll?: string; pitch?: string; heading?: string }) =>
+    [roll && `滾轉 ${roll}`, pitch && `俯仰 ${pitch}`, heading && `航向 ${heading}`].filter(Boolean).join("，"),
+  formatTime: (d: Date, locale: string | undefined) => (locale ? d.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23" }) : clock(d)),
+}
+
+export const gaugeLabels = {
+  withUnit: (v: string, unit: string) => (!unit ? v : unit === "°" ? `${v}°` : `${v} ${unit}`),
+  high: "偏高",
+  low: "偏低",
+  critical: "嚴重",
+  backToNormal: "已恢復正常",
+  withState: (v: string, s: string) => `${v}，${s}`,
+  noValue: "–",
+  waiting: "等待資料",
+  stale: "資料過時",
+  lastUpdate: (time: string) => `最後更新 ${time}`,
   formatTime: (d: Date, locale: string | undefined) => (locale ? d.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23" }) : clock(d)),
 }
 

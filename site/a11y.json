@@ -125,6 +125,19 @@
     "tabStops": 6,
     "live": true
   },
+  "geo-map": {
+    "roles": [
+      "alert",
+      "application",
+      "button",
+      "group",
+      "list",
+      "listitem",
+      "status"
+    ],
+    "tabStops": 9,
+    "live": true
+  },
   "spinner": {
     "roles": [
       "button",
@@ -409,6 +422,16 @@
     "tabStops": 6,
     "live": true
   },
+  "attitude": {
+    "roles": [
+      "group",
+      "img",
+      "meter",
+      "status"
+    ],
+    "tabStops": 0,
+    "live": true
+  },
   "tabs": {
     "roles": [
       "tab",
@@ -493,6 +516,22 @@
       "status"
     ],
     "tabStops": 7,
+    "live": true
+  },
+  "waypoint-editor": {
+    "roles": [
+      "application",
+      "button",
+      "combobox",
+      "group",
+      "list",
+      "listitem",
+      "region",
+      "spinbutton",
+      "status",
+      "textbox"
+    ],
+    "tabStops": 25,
     "live": true
   },
   "dialog": {
@@ -692,6 +731,20 @@
       "status"
     ],
     "tabStops": 4,
+    "live": true
+  },
+  "camera-wall": {
+    "roles": [
+      "button",
+      "list",
+      "listitem",
+      "navigation",
+      "radio",
+      "radiogroup",
+      "region",
+      "status"
+    ],
+    "tabStops": 5,
     "live": true
   },
   "joint-state": {

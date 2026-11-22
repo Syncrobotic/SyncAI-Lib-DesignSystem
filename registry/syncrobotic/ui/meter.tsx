@@ -1,5 +1,29 @@
-// @syncrobotic/meter v0.28.0 · update: npx shadcn add @syncrobotic/meter --overwrite
+// @syncrobotic/meter v0.29.0 · update: npx shadcn add @syncrobotic/meter --overwrite
 import { cn } from "@/lib/utils"
+
+/** How a level reads: neutral, or past a threshold. */
+export type MeterTone = "normal" | "warning" | "danger"
+
+/**
+ * The tone of a level by Meter's thresholds: danger from `critical`, warning from `low`, below them (or at and above them
+ * when `higherIsWorse`). Shared with `attitude`'s Gauge, so a level means the same on a bar and on a dial.
+ */
+export function meterTone(value: number, { low, critical, higherIsWorse = false }: { low?: number; critical?: number; higherIsWorse?: boolean }): MeterTone {
+  const worse = (a: number, b: number) => (higherIsWorse ? a >= b : a < b)
+  return critical !== undefined && worse(value, critical) ? "danger" : low !== undefined && worse(value, low) ? "warning" : "normal"
+}
+
+/**
+ * What the colour means, in words, after the value in `aria-valuetext`: ", critical", or ", high" for a level that fills up
+ * or heats up (`higherIsWorse`) and ", low" for one that runs out; "" while normal. `words` translates them.
+ */
+export function meterSaid(
+  tone: MeterTone,
+  higherIsWorse = false,
+  words: { critical: string; high: string; low: string } = { critical: "critical", high: "high", low: "low" },
+): string {
+  return tone === "normal" ? "" : `, ${tone === "danger" ? words.critical : higherIsWorse ? words.high : words.low}`
+}
 
 /**
  * A level within a known range: battery, storage, signal. Neutral while normal; it turns warning below `low` and danger
@@ -37,14 +61,13 @@ export function Meter({
   inline?: boolean
   className?: string
 }) {
-  const worse = (a: number, b: number) => (higherIsWorse ? a >= b : a < b)
-  const tone = critical !== undefined && worse(value, critical) ? "danger" : low !== undefined && worse(value, low) ? "warning" : "normal"
+  const tone = meterTone(value, { low, critical, higherIsWorse })
   const pct = Math.min(100, Math.max(0, ((value - min) / (max - min)) * 100))
   const u = unit.trim()
   const suffix = u ? ` ${u}` : ""
   const text = showMax ? `${value} of ${max}${suffix}` : `${value}${suffix}`
   // What the colour means, in words: a level that runs out is low; one that fills up or heats up is high.
-  const said = tone === "normal" ? "" : tone === "danger" ? ", critical" : higherIsWorse ? ", high" : ", low"
+  const said = meterSaid(tone, higherIsWorse)
   const bar = (
     <span aria-hidden="true" className={cn("relative block h-2 overflow-hidden rounded-full bg-track", inline ? "w-20" : "w-full")}>
       <span

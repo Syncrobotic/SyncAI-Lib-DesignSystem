@@ -1,3 +1,4 @@
+import { PageLoader } from "@/site/page-loader"
 import { Quiet } from "@/site/quiet"
 import { SiteHeader } from "@/site/site-header"
 
@@ -11,6 +12,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         Skip to content
       </a>
       <Quiet />
+      <PageLoader />
       <SiteHeader />
       {children}
     </>

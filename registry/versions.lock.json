@@ -12,12 +12,12 @@
     "hash": "8ec920f8618ff43d"
   },
   "labels-zh-tw": {
-    "version": "0.28.0",
-    "hash": "40d028b636d7ae25"
+    "version": "0.29.0",
+    "hash": "ed0b299aca6806e0"
   },
   "ros": {
-    "version": "0.28.0",
-    "hash": "4bcd3c707283d90b"
+    "version": "0.29.0",
+    "hash": "37a5a16c5edd4154"
   },
   "use-long-press": {
     "version": "0.5.1",
@@ -86,6 +86,10 @@
   "button": {
     "version": "0.17.1",
     "hash": "939af3f1ab76abb6"
+  },
+  "geo-map": {
+    "version": "0.29.0",
+    "hash": "2ae65b5cc1c39666"
   },
   "spinner": {
     "version": "0.23.0",
@@ -188,8 +192,8 @@
     "hash": "44d6294977873b90"
   },
   "meter": {
-    "version": "0.28.0",
-    "hash": "b9a260f0aac9ad88"
+    "version": "0.29.0",
+    "hash": "96aaa89dc20ae37a"
   },
   "metric-card": {
     "version": "0.28.0",
@@ -227,6 +231,10 @@
     "version": "0.28.0",
     "hash": "a74802379e67f112"
   },
+  "attitude": {
+    "version": "0.29.0",
+    "hash": "6bcbe053d67712e3"
+  },
   "tabs": {
     "version": "0.23.0",
     "hash": "15934ce34803cf0c"
@@ -256,8 +264,12 @@
     "hash": "8356bbb792fcb83e"
   },
   "robot-map": {
-    "version": "0.28.0",
-    "hash": "ad3ae9cd687bf83d"
+    "version": "0.29.0",
+    "hash": "eb2278e7335b83da"
+  },
+  "waypoint-editor": {
+    "version": "0.29.0",
+    "hash": "f58197ab9563acee"
   },
   "dialog": {
     "version": "0.23.0",
@@ -356,8 +368,12 @@
     "hash": "8bbf62a62a655912"
   },
   "camera-feed": {
-    "version": "0.23.1",
-    "hash": "33be3d7109a96b20"
+    "version": "0.29.0",
+    "hash": "8036f5c14bd86b13"
+  },
+  "camera-wall": {
+    "version": "0.29.0",
+    "hash": "d373eb64b32d7094"
   },
   "joint-state": {
     "version": "0.24.1",
@@ -392,8 +408,8 @@
     "hash": "f14f16e24501829c"
   },
   "route-progress": {
-    "version": "0.28.0",
-    "hash": "4e70994b9ab79900"
+    "version": "0.29.0",
+    "hash": "11a278885017a03b"
   },
   "autocomplete": {
     "version": "0.23.1",

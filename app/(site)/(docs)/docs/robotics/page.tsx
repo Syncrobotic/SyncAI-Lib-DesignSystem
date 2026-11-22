@@ -10,16 +10,16 @@ import { H2, Inline, PageTitle } from "@/site/prose"
 
 const title = "Robotics UI kit"
 const description =
-  "A robotics UI kit for React: emergency stop, teleoperation pad, robot map with occupancy grids and laser scans, camera feed, LiDAR point cloud, URDF robot model, joint states, diagnostics and alarms, as shadcn/ui components for Tailwind CSS v4."
+  "A robotics UI kit for React: emergency stop, teleoperation pad, robot map with occupancy grids and laser scans, camera feed, LiDAR point cloud, URDF robot model, attitude indicator and gauges, joint states, diagnostics and alarms, as shadcn/ui components for Tailwind CSS v4."
 
 export const metadata: Metadata = { ...pageMeta({ title: `${title} for React`, description, path: "/docs/robotics" }), keywords: ["robotics UI kit", "robot UI", "robot dashboard", "ROS", "ROS 2", "teleoperation", "fleet management"] }
 
 // What an operator does with a robot, in that order: stop it first, then drive it, see what it sees, read its state.
 const sections: { id: string; title: string; lead: string; items: string[] }[] = [
   { id: "safety", title: "Safety", lead: "Stopping comes first: the stop is always on screen, and a dangerous action needs a deliberate gesture.", items: ["stop-button", "slide-to-release", "alarm"] },
-  { id: "driving", title: "Driving and missions", lead: "Manual driving that stops the robot the moment the finger lifts, and a map to send it somewhere.", items: ["teleop-pad", "robot-map"] },
-  { id: "seeing", title: "What the robot sees", lead: "The camera, the LiDAR and the map it built, each saying in words whether the picture is live.", items: ["camera-feed", "point-cloud", "annotated-image"] },
-  { id: "state", title: "The robot's state", lead: "Pose, joints, live telemetry, health, battery and status, in shapes and words rather than colour alone.", items: ["robot-model", "joint-state", "streaming-chart", "diagnostics", "status-glyph", "meter", "metric-card"] },
+  { id: "driving", title: "Driving and missions", lead: "Manual driving that stops the robot the moment the finger lifts, and a map to send it somewhere: a floor plan indoors, latitude and longitude outside.", items: ["teleop-pad", "robot-map", "geo-map", "waypoint-editor"] },
+  { id: "seeing", title: "What the robot sees", lead: "The camera, a wall of a fleet's cameras, the LiDAR and the map it built, each saying in words whether the picture is live.", items: ["camera-feed", "camera-wall", "point-cloud", "annotated-image"] },
+  { id: "state", title: "The robot's state", lead: "Pose, attitude, joints, live telemetry, health, battery and status, in shapes and words rather than colour alone.", items: ["robot-model", "attitude", "joint-state", "streaming-chart", "diagnostics", "status-glyph", "meter", "metric-card"] },
   { id: "shell", title: "App shell for robot apps", lead: "The frame of a control app held outdoors: a dynamic island for the one thing that matters now, a dock and trays.", items: ["island", "dock", "tray", "list"] },
 ]
 
@@ -28,14 +28,20 @@ const ros: [string, string, string][] = [
   ["nav_msgs/OccupancyGrid", "robot-map", "grid, costmap"],
   ["sensor_msgs/LaserScan", "robot-map", "scans"],
   ["geometry_msgs/PoseStamped (goal)", "robot-map", "mode=\"goal\", onGoal"],
+  ["nav_msgs/Path, NavigateThroughPoses goal", "waypoint-editor", "onSave (waypointsToPath, waypointsToNavigateThroughPoses), value (pathToWaypoints)"],
+  ["sensor_msgs/NavSatFix", "geo-map", "robots: lat, lon, fix, accuracy (navSatFixToGeo)"],
+  ["geographic_msgs/GeoPoint, GeoPoseStamped (goal)", "geo-map", "route, fences (geoPointToGeo); mode=\"goal\", onGoal (geoGoalToGeoPoseStamped)"],
   ["sensor_msgs/PointCloud2 (decoded)", "point-cloud", "points, intensity"],
   ["sensor_msgs/JointState", "joint-state, robot-model", "joints"],
   ["std_msgs/Float64, BatteryState, any topic of numbers", "streaming-chart", "push, subscribe"],
+  ["sensor_msgs/Imu", "attitude (AttitudeIndicator)", "roll, pitch, heading, push (imuToAttitude)"],
+  ["nav_msgs/Odometry (twist)", "attitude (Gauge)", "value, push (odometryToSpeed)"],
   ["diagnostic_msgs/DiagnosticArray", "diagnostics", "statuses"],
   ["URDF (robot_description)", "robot-model", "urdf, urdfUrl"],
   ["geometry_msgs/Twist", "teleop-pad", "onCommand: { linear, angular }"],
   ["rcl_interfaces/Log (/rosout)", "log-viewer", "lines, ref.append (rosLogToLogLine)"],
   ["Video (WebRTC or a URL)", "camera-feed", "stream, src"],
+  ["sensor_msgs/Image (web_video_server or WebRTC)", "camera-feed, camera-wall", "src, getSource (webVideoServerSrc)"],
 ]
 
 export default function RoboticsPage() {

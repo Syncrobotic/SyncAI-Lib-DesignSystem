@@ -7,6 +7,7 @@ import type { AttachmentLabels } from "@/registry/syncrobotic/ui/attachment"
 import type { AutocompleteLabels } from "@/registry/syncrobotic/ui/autocomplete"
 import type { BreadcrumbLabels } from "@/registry/syncrobotic/ui/breadcrumb"
 import type { CameraFeedLabels } from "@/registry/syncrobotic/ui/camera-feed"
+import type { CameraWallLabels } from "@/registry/syncrobotic/ui/camera-wall"
 import type { ChipGroupLabels } from "@/registry/syncrobotic/ui/chip-group"
 import type { CodeBlockLabels } from "@/registry/syncrobotic/ui/code-block"
 import type { CommandDialogLabels } from "@/registry/syncrobotic/ui/command"
@@ -21,6 +22,7 @@ import type { ImageGridLabels } from "@/registry/syncrobotic/ui/image-grid"
 import type { JointStateLabels } from "@/registry/syncrobotic/ui/joint-state"
 import type { LoadMoreLabels } from "@/registry/syncrobotic/ui/load-more"
 import type { LogViewerLabels } from "@/registry/syncrobotic/ui/log-viewer"
+import type { WaypointEditorLabels } from "@/registry/syncrobotic/ui/waypoint-editor"
 import type { MediaPlayerLabels } from "@/registry/syncrobotic/ui/media-player"
 import type { MetricCardLabels } from "@/registry/syncrobotic/ui/metric-card"
 import type { NumberField } from "@/registry/syncrobotic/ui/number-field"
@@ -29,6 +31,7 @@ import type { PhoneInputLabels } from "@/registry/syncrobotic/ui/phone-input"
 import type { PointCloudLabels } from "@/registry/syncrobotic/ui/point-cloud"
 import type { QuestionnaireLabels } from "@/registry/syncrobotic/ui/questionnaire"
 import type { RobotMapLabels } from "@/registry/syncrobotic/ui/robot-map"
+import type { GeoMapLabels } from "@/registry/syncrobotic/ui/geo-map"
 import type { RobotModelLabels } from "@/registry/syncrobotic/ui/robot-model"
 import type { RouteProgressLabels } from "@/registry/syncrobotic/ui/route-progress"
 import type { SearchFieldLabels } from "@/registry/syncrobotic/ui/search-field"
@@ -36,6 +39,7 @@ import type { SidebarLabels } from "@/registry/syncrobotic/ui/sidebar"
 import type { SortableLabels } from "@/registry/syncrobotic/ui/sortable"
 import type { SpinnerLabels } from "@/registry/syncrobotic/ui/spinner"
 import type { StreamingChartLabels } from "@/registry/syncrobotic/ui/streaming-chart"
+import type { AttitudeIndicatorLabels, GaugeLabels } from "@/registry/syncrobotic/ui/attitude"
 import type { StepperLabels } from "@/registry/syncrobotic/ui/stepper"
 import type { TextDiffLabels } from "@/registry/syncrobotic/ui/text-diff"
 import type { ThemeChoice } from "@/registry/syncrobotic/ui/theme-toggle"
@@ -64,13 +68,19 @@ it("fits every component's labels type", () => {
   fits<TeleopPadLabels>()(zh.teleopPadLabels)
   fits<IslandLabels>()(zh.islandLabels)
   fits<CameraFeedLabels>()(zh.cameraFeedLabels)
+  fits<CameraWallLabels>()(zh.cameraWallLabels)
+  fits<CameraFeedLabels>()(zh.cameraFeedStateLineLabels)
   fits<JointStateLabels>()(zh.jointStateLabels)
   fits<StreamingChartLabels>()(zh.streamingChartLabels)
+  fits<AttitudeIndicatorLabels>()(zh.attitudeIndicatorLabels)
+  fits<GaugeLabels>()(zh.gaugeLabels)
   fits<DiagnosticsLabels>()(zh.diagnosticsLabels)
   fits<RobotModelLabels>()(zh.robotModelLabels)
   fits<PointCloudLabels>()(zh.pointCloudLabels)
   fits<RobotMapLabels>()(zh.robotMapLabels)
   fits<RobotMapLabels>()(zh.robotMapListLabels)
+  fits<GeoMapLabels>()(zh.geoMapLabels)
+  fits<GeoMapLabels>()(zh.geoMapListLabels)
   fits<AnnotatedImageLabels>()(zh.annotatedImageLabels)
   fits<Pick<AnnotatedImageLabels, "legend" | "previous" | "predicted" | "truth">>()(zh.annotationLegendLabels)
   fits<GraphLabels>()(zh.graphLabels)
@@ -85,6 +95,7 @@ it("fits every component's labels type", () => {
   fits<LabelsOf<typeof DataGridPagination>>()(zh.dataGridPaginationLabels)
   fits<LoadMoreLabels>()(zh.loadMoreLabels)
   fits<LogViewerLabels>()(zh.logViewerLabels)
+  fits<WaypointEditorLabels>()(zh.waypointEditorLabels)
   fits<MetricCardLabels>()(zh.metricCardLabels)
   fits<TextDiffLabels>()(zh.textDiffLabels)
   fits<LabelsOf<typeof Filters>>()(zh.filtersLabels)

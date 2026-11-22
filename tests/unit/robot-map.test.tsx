@@ -907,4 +907,90 @@ describe("editing", () => {
     rerender(<RobotMap label="Map of North site" width={60} height={36} mode="zone" />)
     expect(document.querySelector('[data-draft="zone"]')).toBeNull()
   })
+
+  describe("a waypoint list beside the map", () => {
+    const start: RobotMapPoint[] = [
+      [10, 10],
+      [20, 10],
+      [30, 10],
+    ]
+    /** The app keeps the points and the selection, as waypoint-editor does. */
+    function Listed({ onEdit, mode = "waypoints" }: { onEdit?: (e: unknown) => void; mode?: "view" | "waypoints" }) {
+      const [points, setPoints] = React.useState(start)
+      const [sel, setSel] = React.useState<number | null>(null)
+      return (
+        <>
+          <RobotMap
+            label="Map of North site"
+            width={60}
+            height={36}
+            mode={mode}
+            waypoints={points}
+            onWaypointsChange={setPoints}
+            onWaypointEdit={onEdit}
+            selectedWaypoint={sel}
+            onWaypointSelect={setSel}
+            waypointMarks={[{ heading: 90 }, { problem: true }]}
+          />
+          <button type="button" onClick={() => setSel(2)}>
+            Select 3
+          </button>
+          <output>{sel === null ? "none" : sel}</output>
+        </>
+      )
+    }
+    const shown = () => document.querySelector("output")!.textContent
+    const handleAt = (i: number) => document.querySelector<HTMLElement>(`[data-waypoint="${i}"]`)!
+
+    it("selects from the app's side, and tells the app what the map selects", () => {
+      render(<Listed />)
+      fireEvent.click(screen.getByRole("button", { name: "Select 3" }))
+      expect(handleAt(2).getAttribute("data-state")).toBe("selected")
+      // Esc on the map clears it, and says so to the app.
+      fireEvent.focus(region())
+      key("Escape")
+      expect(shown()).toBe("none")
+      press(handleAt(0), px(10, 10))
+      release(handleAt(0), px(10, 10))
+      expect(shown()).toBe("0")
+      expect(handleAt(0).getAttribute("data-state")).toBe("selected")
+    })
+
+    it("reports each add, move and remove by index", () => {
+      const onEdit = vi.fn()
+      render(<Listed onEdit={onEdit} />)
+      tap(region(), px(40, 20))
+      expect(onEdit).toHaveBeenLastCalledWith({ type: "add", index: 3, point: [40, 20] })
+      expect(shown()).toBe("3")
+      press(handleAt(1), px(20, 10))
+      fireEvent.pointerMove(handleAt(1), { pointerId: 1, pointerType: "mouse", ...px(20, 15) })
+      release(handleAt(1), px(20, 15))
+      expect(onEdit).toHaveBeenLastCalledWith({ type: "move", index: 1, point: [20, 15] })
+      fireEvent.focus(region())
+      key("Delete")
+      expect(onEdit).toHaveBeenLastCalledWith({ type: "remove", index: 1 })
+      expect(shown()).toBe("none")
+      expect(document.querySelectorAll("[data-waypoint]")).toHaveLength(3)
+    })
+
+    it("draws a heading tick and the problem shape from waypointMarks", () => {
+      render(<Listed />)
+      expect(handleAt(0).querySelector('path[transform="rotate(90)"]')).not.toBeNull()
+      expect(handleAt(1).hasAttribute("data-problem")).toBe(true)
+      expect(handleAt(1).querySelector(".text-warning")).not.toBeNull()
+      expect(handleAt(2).hasAttribute("data-problem")).toBe(false)
+    })
+
+    it("in view mode a click selects a waypoint once the app listens, and edits nothing", () => {
+      const onEdit = vi.fn()
+      render(<Listed mode="view" onEdit={onEdit} />)
+      expect(handleAt(1).className).toContain("cursor-pointer")
+      tap(handleAt(1), px(20, 10))
+      expect(shown()).toBe("1")
+      expect(handleAt(1).getAttribute("data-state")).toBe("selected")
+      tap(region(), px(40, 20))
+      expect(onEdit).not.toHaveBeenCalled()
+      expect(document.querySelectorAll("[data-waypoint]")).toHaveLength(3)
+    })
+  })
 })

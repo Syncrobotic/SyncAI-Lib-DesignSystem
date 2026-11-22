@@ -27,12 +27,15 @@ import * as s_image_grid from "@/stories/image-grid.stories"
 import * as s_annotated_image from "@/stories/annotated-image.stories"
 import * as s_media_player from "@/stories/media-player.stories"
 import * as s_camera_feed from "@/stories/camera-feed.stories"
+import * as s_camera_wall from "@/stories/camera-wall.stories"
 import * as s_joint_state from "@/stories/joint-state.stories"
 import * as s_diagnostics from "@/stories/diagnostics.stories"
 import * as s_tree from "@/stories/tree.stories"
 import * as s_sidebar from "@/stories/sidebar.stories"
 import * as s_graph from "@/stories/graph.stories"
 import * as s_robot_map from "@/stories/robot-map.stories"
+import * as s_waypoint_editor from "@/stories/waypoint-editor.stories"
+import * as s_geo_map from "@/stories/geo-map.stories"
 import * as s_point_cloud from "@/stories/point-cloud.stories"
 import * as s_chip_group from "@/stories/chip-group.stories"
 import * as s_filter_form from "@/stories/filter-form.stories"
@@ -66,6 +69,7 @@ import * as s_context_menu from "@/stories/context-menu.stories"
 import * as s_hover_card from "@/stories/hover-card.stories"
 import * as s_banner from "@/stories/banner.stories"
 import * as s_streaming_chart from "@/stories/streaming-chart.stories"
+import * as s_attitude from "@/stories/attitude.stories"
 import * as s_teleop_pad from "@/stories/teleop-pad.stories"
 import type { StoryFile } from "./catalog"
 
@@ -128,12 +132,15 @@ const files: Record<Exclude<StoryFile, LazyFile>, StoryModule> = {
   "annotated-image": s_annotated_image as unknown as StoryModule,
   "media-player": s_media_player as unknown as StoryModule,
   "camera-feed": s_camera_feed as unknown as StoryModule,
+  "camera-wall": s_camera_wall as unknown as StoryModule,
   "joint-state": s_joint_state as unknown as StoryModule,
   diagnostics: s_diagnostics as unknown as StoryModule,
   tree: s_tree as unknown as StoryModule,
   sidebar: s_sidebar as unknown as StoryModule,
   graph: s_graph as unknown as StoryModule,
   "robot-map": s_robot_map as unknown as StoryModule,
+  "waypoint-editor": s_waypoint_editor as unknown as StoryModule,
+  "geo-map": s_geo_map as unknown as StoryModule,
   "point-cloud": s_point_cloud as unknown as StoryModule,
   "chip-group": s_chip_group as unknown as StoryModule,
   "filter-form": s_filter_form as unknown as StoryModule,
@@ -147,6 +154,7 @@ const files: Record<Exclude<StoryFile, LazyFile>, StoryModule> = {
   "hover-card": s_hover_card as unknown as StoryModule,
   banner: s_banner as unknown as StoryModule,
   "streaming-chart": s_streaming_chart as unknown as StoryModule,
+  attitude: s_attitude as unknown as StoryModule,
 }
 
 // One React.lazy per lazy file, made once at module scope: the import starts the first time one of its stories renders.

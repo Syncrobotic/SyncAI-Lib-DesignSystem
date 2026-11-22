@@ -1,4 +1,4 @@
-// @syncrobotic/camera-feed v0.23.1 · update: npx shadcn add @syncrobotic/camera-feed --overwrite
+// @syncrobotic/camera-feed v0.29.0 · update: npx shadcn add @syncrobotic/camera-feed --overwrite
 "use client"
 
 import * as React from "react"
@@ -68,6 +68,60 @@ export const defaultCameraFeedLabels: CameraFeedLabels = {
   exitFullscreen: "Leave full screen",
 }
 
+/** The word camera-feed writes for a state: "Live", "Stalled", "Camera offline". */
+export function cameraFeedStateWord(state: CameraFeedState, labels?: Partial<CameraFeedLabels>) {
+  const l = { ...defaultCameraFeedLabels, ...labels }
+  const word: Record<CameraFeedState, string> = {
+    none: l.noCamera,
+    connecting: l.connecting,
+    live: l.live,
+    stalled: l.stalled,
+    paused: l.paused,
+    offline: l.offline,
+  }
+  return word[state]
+}
+
+/**
+ * A feed's state as its header writes it: a shape and a word, with the latency after Live. Only Stalled has colour (on
+ * the glyph and the word); blue only spins while connecting. Exported for views that show many feeds, such as
+ * `camera-wall`, so every tile says its state the same way.
+ */
+export function CameraFeedStateLine({
+  state,
+  latencyMs,
+  labels,
+  className,
+}: {
+  state: CameraFeedState
+  /** Written after "Live": "· 180 ms". */
+  latencyMs?: number
+  labels?: Partial<CameraFeedLabels>
+  className?: string
+}) {
+  const l = { ...defaultCameraFeedLabels, ...labels }
+  return (
+    <p data-slot="camera-feed-state" className={cn("flex items-center gap-2", state === "stalled" ? "text-warning" : "text-muted-foreground", className)}>
+      {state === "connecting" ? (
+        <span aria-hidden="true" className="flex">
+          <Spinner className="size-4 text-info" delay={0} label={l.connectingLong} />
+        </span>
+      ) : state === "paused" ? (
+        <Pause aria-hidden="true" className="size-4" />
+      ) : (
+        <StatusGlyph
+          status={state === "live" ? "active" : state === "stalled" ? "warning" : "offline"}
+          className={state === "live" ? "text-foreground" : undefined}
+        />
+      )}
+      <span className={cn(state === "live" && "font-medium text-foreground")}>{cameraFeedStateWord(state, l)}</span>
+      {state === "live" && latencyMs !== undefined && Number.isFinite(latencyMs) && (
+        <span className="font-mono text-xs tabular-nums">· {l.latency(latencyMs)}</span>
+      )}
+    </p>
+  )
+}
+
 /** How long controls stay after the pointer stops moving. */
 const IDLE_MS = 2500
 
@@ -104,6 +158,13 @@ export type CameraFeedProps = {
   aspectRatio?: number
   /** Drawn over the picture, in a layer the size of the video box: a crosshair, detection boxes. */
   children?: React.ReactNode
+  /**
+   * Just the picture: no header, no controls, no keys, no Tab stop and nothing announced. For a feed inside something
+   * that names it, says its state and takes the keyboard itself, such as a tile of `camera-wall`.
+   */
+  bare?: boolean
+  /** Called after the state changes, with when the last frame arrived (ms since the epoch) while it is Stalled. */
+  onStateChange?: (state: CameraFeedState, lastFrameAt: number | null) => void
   labels?: Partial<CameraFeedLabels>
   className?: string
 }
@@ -127,6 +188,8 @@ export function CameraFeed({
   audio = false,
   aspectRatio = 16 / 9,
   children,
+  bare = false,
+  onStateChange,
   labels: labelsProp,
   className,
 }: CameraFeedProps) {
@@ -324,25 +387,25 @@ export function CameraFeed({
   const lastFrameTime = stalledAt !== null ? l.formatTime(new Date(stalledAt)) : ""
   const name = source ? `${label}, ${source}` : label
 
-  const stateWord: Record<CameraFeedState, string> = {
-    none: l.noCamera,
-    connecting: l.connecting,
-    live: l.live,
-    stalled: l.stalled,
-    paused: l.paused,
-    offline: l.offline,
-  }
+  // Read from a ref updated after each commit, so a new function on each render does not report the state again.
+  const onStateChangeRef = React.useRef(onStateChange)
+  React.useLayoutEffect(() => {
+    onStateChangeRef.current = onStateChange
+  })
+  React.useEffect(() => {
+    onStateChangeRef.current?.(state, stalledAt)
+  }, [state, stalledAt])
 
   return (
     <div
       ref={rootRef}
       data-slot="camera-feed"
       data-state={state}
-      role="region"
-      aria-label={name}
-      aria-describedby={keysId}
-      tabIndex={0}
-      onKeyDownCapture={onKeyDownCapture}
+      role={bare ? undefined : "region"}
+      aria-label={bare ? undefined : name}
+      aria-describedby={bare ? undefined : keysId}
+      tabIndex={bare ? undefined : 0}
+      onKeyDownCapture={bare ? undefined : onKeyDownCapture}
       onPointerMove={(e) => {
         if (e.pointerType === "mouse") poke()
       }}
@@ -359,37 +422,24 @@ export function CameraFeed({
         className,
       )}
     >
-      <span id={keysId} className="sr-only">
-        {l.keys}
-      </span>
+      {!bare && (
+        <span id={keysId} className="sr-only">
+          {l.keys}
+        </span>
+      )}
       {/* Spoken when the state changes; the visible line below also carries the latency, which changes too often to read out. */}
-      <span role="status" className="sr-only">
-        {state === "stalled" ? `${l.stalled}, ${l.lastFrame(lastFrameTime)}` : stateWord[state]}
-      </span>
+      {!bare && (
+        <span role="status" className="sr-only">
+          {state === "stalled" ? `${l.stalled}, ${l.lastFrame(lastFrameTime)}` : cameraFeedStateWord(state, l)}
+        </span>
+      )}
 
-      <div data-slot="camera-feed-header" className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 text-sm">
+      <div data-slot="camera-feed-header" hidden={bare} className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 text-sm">
         <p className="min-w-0">
           <span className="font-medium">{label}</span>
           {source && <span className="text-muted-foreground"> · {source}</span>}
         </p>
-        <p data-slot="camera-feed-state" className={cn("flex items-center gap-2", state === "stalled" ? "text-warning" : "text-muted-foreground")}>
-          {state === "connecting" ? (
-            <span aria-hidden="true" className="flex">
-              <Spinner className="size-4 text-info" delay={0} label={l.connectingLong} />
-            </span>
-          ) : state === "paused" ? (
-            <Pause aria-hidden="true" className="size-4" />
-          ) : (
-            <StatusGlyph
-              status={state === "live" ? "active" : state === "stalled" ? "warning" : "offline"}
-              className={state === "live" ? "text-foreground" : undefined}
-            />
-          )}
-          <span className={cn(state === "live" && "font-medium text-foreground")}>{stateWord[state]}</span>
-          {state === "live" && latencyMs !== undefined && Number.isFinite(latencyMs) && (
-            <span className="font-mono text-xs tabular-nums">· {l.latency(latencyMs)}</span>
-          )}
-        </p>
+        <CameraFeedStateLine state={state} latencyMs={latencyMs} labels={l} />
       </div>
 
       <div
@@ -462,7 +512,7 @@ export function CameraFeed({
                   <span className="font-medium">{state === "offline" ? l.offline : l.noCamera}</span>
                   {state === "offline" && offlineReason && <span className="block text-muted-foreground">{offlineReason}</span>}
                 </p>
-                {state === "offline" && (onRetry || (videoError && src && !stream)) && (
+                {state === "offline" && !bare && (onRetry || (videoError && src && !stream)) && (
                   <Button variant="outline" onClick={retry}>
                     <RotateCw aria-hidden="true" />
                     {l.retry}
@@ -472,7 +522,7 @@ export function CameraFeed({
             </div>
           )}
 
-          {picture && (
+          {picture && !bare && (
             <div
               data-slot="camera-feed-controls"
               data-controls={shown ? "shown" : "hidden"}
