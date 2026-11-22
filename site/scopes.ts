@@ -1,4 +1,4 @@
-import { blocksOfType } from "./blocks"
+import { blockListOfType as blocksOfType } from "./block-list"
 import { blockGroups, blockTypes, patternsOf } from "./block-types"
 import { groups as itemGroups, items, storyNames, storyTitle } from "./catalog"
 import { foundations } from "./foundations"

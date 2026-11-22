@@ -1,85 +1,10 @@
 import registry from "../registry.json"
 import { placement } from "./block-types"
+import { blockList } from "./block-list"
 import type { ThumbView } from "./block-thumb"
-import { AppShellDemo } from "./app-shell-demo"
-import { TopBarShellDemo } from "./top-bar-shell-demo"
-import { ActionRailShellDemo } from "./action-rail-shell-demo"
-import { SignIn } from "@/registry/syncrobotic/blocks/sign-in"
-import { ErrorPage, LoadingPage, NoAccessPage, NotFoundPage, OfflinePage } from "@/registry/syncrobotic/blocks/status-pages"
-import { RecordForm } from "@/registry/syncrobotic/blocks/record-form"
-import { SettingsPage } from "@/registry/syncrobotic/blocks/settings-page"
-import { UsersRoles } from "@/registry/syncrobotic/blocks/users-roles"
-import { DataCatalog } from "@/registry/syncrobotic/blocks/data-catalog"
-import { DatasetDetail } from "@/registry/syncrobotic/blocks/dataset-detail"
-import { GovernanceTodo } from "@/registry/syncrobotic/blocks/governance-todo"
-import { ReviewQueue } from "@/registry/syncrobotic/blocks/review-queue"
-import { ConsoleOverview } from "@/registry/syncrobotic/blocks/console-overview"
-import { EventLog } from "@/registry/syncrobotic/blocks/event-log"
-import { ListDetail } from "@/registry/syncrobotic/blocks/list-detail"
-import { MapWorkspace } from "@/registry/syncrobotic/blocks/map-workspace"
-import { FleetTable } from "@/registry/syncrobotic/blocks/fleet-table"
-import { MarketingHero } from "@/registry/syncrobotic/blocks/marketing-hero"
-import { RobotStatusCard } from "@/registry/syncrobotic/blocks/robot-status-card"
-import { StatsCards } from "@/registry/syncrobotic/blocks/stats-cards"
-import { LineChartTelemetry } from "@/registry/syncrobotic/blocks/line-chart-telemetry"
-import { LineChartLimit } from "@/registry/syncrobotic/blocks/line-chart-limit"
-import { HistogramBattery } from "@/registry/syncrobotic/blocks/histogram-battery"
-import { LineChartCompare } from "@/registry/syncrobotic/blocks/line-chart-compare"
-import { AreaChartBattery } from "@/registry/syncrobotic/blocks/area-chart-battery"
-import { AreaChartFleetStates } from "@/registry/syncrobotic/blocks/area-chart-fleet-states"
-import { AreaChartCumulative } from "@/registry/syncrobotic/blocks/area-chart-cumulative"
-import { BarChartMissions } from "@/registry/syncrobotic/blocks/bar-chart-missions"
-import { BarChartRanked } from "@/registry/syncrobotic/blocks/bar-chart-ranked"
-import { BarChartStacked } from "@/registry/syncrobotic/blocks/bar-chart-stacked"
-import { BarChartVariance } from "@/registry/syncrobotic/blocks/bar-chart-variance"
-import { SparklineRobotList } from "@/registry/syncrobotic/blocks/sparkline-robot-list"
-import { SparklineMetricTiles } from "@/registry/syncrobotic/blocks/sparkline-metric-tiles"
-import { SparklineTable } from "@/registry/syncrobotic/blocks/sparkline-table"
-import { StatusTrackerUptime } from "@/registry/syncrobotic/blocks/status-tracker-uptime"
-import { StatusTrackerRuns } from "@/registry/syncrobotic/blocks/status-tracker-runs"
-import { StatusTrackerRollout } from "@/registry/syncrobotic/blocks/status-tracker-rollout"
-import { RadialChartBattery } from "@/registry/syncrobotic/blocks/radial-chart-battery"
-import { RadialChartGoal } from "@/registry/syncrobotic/blocks/radial-chart-goal"
-import { RadialChartCapacity } from "@/registry/syncrobotic/blocks/radial-chart-capacity"
-import { HeatmapWeekHours } from "@/registry/syncrobotic/blocks/heatmap-week-hours"
-import { HeatmapZones } from "@/registry/syncrobotic/blocks/heatmap-zones"
-import { AppShellMobileTabs } from "@/registry/syncrobotic/blocks/app-shell-mobile-tabs"
-import { StatsMeters } from "@/registry/syncrobotic/blocks/stats-meters"
-import { StatsFiltered } from "@/registry/syncrobotic/blocks/stats-filtered"
-import { CardSite } from "@/registry/syncrobotic/blocks/card-site"
-import { CardMission } from "@/registry/syncrobotic/blocks/card-mission"
-import { AuthPasskey } from "@/registry/syncrobotic/blocks/auth-passkey"
-import { AuthInvite } from "@/registry/syncrobotic/blocks/auth-invite"
-import { AuthTwoFactor } from "@/registry/syncrobotic/blocks/auth-2fa"
-import { SettingsNotifications } from "@/registry/syncrobotic/blocks/settings-notifications"
-import { SettingsApiKeys } from "@/registry/syncrobotic/blocks/settings-api-keys"
-import { SettingsBilling } from "@/registry/syncrobotic/blocks/settings-billing"
-import { NotificationCenterDemo } from "./notification-center-demo"
-import { SettingsWebhooks } from "@/registry/syncrobotic/blocks/settings-webhooks"
-import { SettingsSessions } from "@/registry/syncrobotic/blocks/settings-sessions"
-import { DialogConfirmDestructive } from "@/registry/syncrobotic/blocks/dialog-confirm-destructive"
-import { DialogForm } from "@/registry/syncrobotic/blocks/dialog-form"
-import { DialogShare } from "@/registry/syncrobotic/blocks/dialog-share"
-import { SheetRobotDetail } from "@/registry/syncrobotic/blocks/sheet-robot-detail"
-import { SheetFilters } from "@/registry/syncrobotic/blocks/sheet-filters"
-import { TimelineActivity } from "@/registry/syncrobotic/blocks/timeline-activity"
-import { TimelineAudit } from "@/registry/syncrobotic/blocks/timeline-audit"
-import { WizardCommission } from "@/registry/syncrobotic/blocks/wizard-commission"
-import { WizardImport } from "@/registry/syncrobotic/blocks/wizard-import"
-import { MissionSchedule } from "@/registry/syncrobotic/blocks/mission-schedule"
-import { UsersInvitations } from "@/registry/syncrobotic/blocks/users-invitations"
-import { UsersAuditLog } from "@/registry/syncrobotic/blocks/users-audit-log"
-import { IncidentQueue } from "@/registry/syncrobotic/blocks/incident-queue"
-import { IncidentDetail } from "@/registry/syncrobotic/blocks/incident-detail"
-import { MaintenanceDue } from "@/registry/syncrobotic/blocks/maintenance-due"
-import { MaintenanceWorkOrder } from "@/registry/syncrobotic/blocks/maintenance-work-order"
-import { RolloutOverview } from "@/registry/syncrobotic/blocks/rollout-overview"
-import { RolloutPlan } from "@/registry/syncrobotic/blocks/rollout-plan"
-import { AgentRuns } from "@/registry/syncrobotic/blocks/agent-runs"
-import { AgentTrace } from "@/registry/syncrobotic/blocks/agent-trace"
-import { AgentApproval } from "@/registry/syncrobotic/blocks/agent-approval"
 
-// Blocks are composed sections. Each renders alone at /preview/<name> so the docs can frame it at any width.
+// Blocks are composed sections. Each renders alone at /preview/<name> (its component in site/block-renders.tsx) so the
+// docs can frame it at any width. This file is data only: a page that lists or frames blocks does not load them.
 type Meta = {
   viewport: "desktop" | "mobile"
   /** Width the overview thumbnail renders at. Charts are dashboard cards, so they render at a card's width, not a screen's. */
@@ -90,7 +15,6 @@ type Meta = {
   cover?: boolean
   /** Starting height. Sections then grow or shrink to their content; app shells fill this height like a screen. */
   height: number
-  render: () => React.ReactNode
 }
 
 const meta: Record<string, Meta> = {
@@ -98,448 +22,238 @@ const meta: Record<string, Meta> = {
   "line-chart-telemetry": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <LineChartTelemetry />
-      </div>
-    ),
+    height: 480
   },
   "histogram-battery": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <HistogramBattery />
-      </div>
-    ),
+    height: 480
   },
   "line-chart-limit": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <LineChartLimit />
-      </div>
-    ),
+    height: 480
   },
   "line-chart-compare": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <LineChartCompare />
-      </div>
-    ),
+    height: 480
   },
   "area-chart-battery": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <AreaChartBattery />
-      </div>
-    ),
+    height: 480
   },
   "area-chart-fleet-states": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <AreaChartFleetStates />
-      </div>
-    ),
+    height: 480
   },
   "area-chart-cumulative": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <AreaChartCumulative />
-      </div>
-    ),
+    height: 480
   },
   "bar-chart-missions": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <BarChartMissions />
-      </div>
-    ),
+    height: 480
   },
   "bar-chart-ranked": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <BarChartRanked />
-      </div>
-    ),
+    height: 480
   },
   "bar-chart-stacked": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <BarChartStacked />
-      </div>
-    ),
+    height: 480
   },
   "bar-chart-variance": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <BarChartVariance />
-      </div>
-    ),
+    height: 480
   },
   "sparkline-robot-list": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <SparklineRobotList />
-      </div>
-    ),
+    height: 480
   },
   "sparkline-metric-tiles": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <SparklineMetricTiles />
-      </div>
-    ),
+    height: 480
   },
   "sparkline-table": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <SparklineTable />
-      </div>
-    ),
+    height: 480
   },
   "status-tracker-uptime": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <StatusTrackerUptime />
-      </div>
-    ),
+    height: 480
   },
   "status-tracker-runs": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <StatusTrackerRuns />
-      </div>
-    ),
+    height: 480
   },
   "status-tracker-rollout": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <StatusTrackerRollout />
-      </div>
-    ),
+    height: 480
   },
   "radial-chart-battery": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <RadialChartBattery />
-      </div>
-    ),
+    height: 480
   },
   "radial-chart-goal": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <RadialChartGoal />
-      </div>
-    ),
+    height: 480
   },
   "radial-chart-capacity": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <RadialChartCapacity />
-      </div>
-    ),
+    height: 480
   },
   "heatmap-week-hours": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <HeatmapWeekHours />
-      </div>
-    ),
+    height: 480
   },
   "heatmap-zones": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <HeatmapZones />
-      </div>
-    ),
+    height: 480
   },
   // App shells: whole screens for internal engineering tools. Install one, replace the sample data, and you have a prototype.
   "app-shell": {
     viewport: "desktop",
-    height: 720,
-    render: () => <AppShellDemo />,
+    height: 720
   },
   // Data tools: internal tools for datasets, after DataCore. Same shell, same rules.
-  "data-catalog": { viewport: "desktop", height: 760, render: () => <DataCatalog /> },
-  "dataset-detail": { viewport: "desktop", height: 820, render: () => <DatasetDetail /> },
-  "governance-todo": { viewport: "desktop", height: 600, render: () => <GovernanceTodo /> },
+  "data-catalog": { viewport: "desktop", height: 760},
+  "dataset-detail": { viewport: "desktop", height: 820},
+  "governance-todo": { viewport: "desktop", height: 600},
   // Keyboard review: a focused screen of its own, without the shell, so nothing competes with the item.
-  "review-queue": { viewport: "desktop", thumbWidth: 960, height: 820, render: () => <ReviewQueue /> },
-  "settings-page": { viewport: "desktop", height: 820, render: () => <SettingsPage /> },
-  "record-form": { viewport: "desktop", height: 820, render: () => <RecordForm /> },
-  "users-roles": { viewport: "desktop", height: 620, render: () => <UsersRoles /> },
-  "sign-in": { viewport: "desktop", height: 640, thumb: { x: 400, y: 112, width: 480 }, render: () => <SignIn /> },
+  "review-queue": { viewport: "desktop", thumbWidth: 960, height: 820},
+  "settings-page": { viewport: "desktop", height: 820},
+  "record-form": { viewport: "desktop", height: 820},
+  "users-roles": { viewport: "desktop", height: 620},
+  "sign-in": { viewport: "desktop", height: 640, thumb: { x: 400, y: 112, width: 480 }},
   "status-pages": {
     viewport: "desktop",
     height: 640,
-    thumb: { x: 84, y: 72, width: 480 },
-    render: () => (
-      // Five states, each named above its frame: the loading one is a state on show, not the preview still loading.
-      <div className="flex flex-col gap-4 bg-background p-4">
-        <div className="grid gap-4 md:grid-cols-2">
-          {(
-            [
-              [NotFoundPage, "Not found"],
-              [NoAccessPage, "No access"],
-              [ErrorPage, "Error"],
-              [OfflinePage, "Offline"],
-            ] as const
-          ).map(([Page, name]) => (
-            <figure key={name} className="flex flex-col gap-2">
-              <figcaption className="text-xs font-medium text-muted-foreground">{name}</figcaption>
-              <div className="overflow-hidden rounded-md ring-1 ring-border">
-                <Page fill="parent" />
-              </div>
-            </figure>
-          ))}
-        </div>
-        <figure className="flex flex-col gap-2">
-          <figcaption className="text-xs font-medium text-muted-foreground">Loading</figcaption>
-          <div className="overflow-hidden rounded-md ring-1 ring-border">
-            <LoadingPage fill="parent" />
-          </div>
-        </figure>
-      </div>
-    ),
+    thumb: { x: 84, y: 72, width: 480 }
   },
-  "top-bar-shell": { viewport: "desktop", height: 720, render: () => <TopBarShellDemo /> },
+  "top-bar-shell": { viewport: "desktop", height: 720},
   // The bare shells hold an empty page; this one holds frames and its next step, so it stands for the type on /blocks.
-  "action-rail-shell": { viewport: "desktop", height: 720, cover: true, thumb: { x: 704, width: 576 }, render: () => <ActionRailShellDemo /> },
-  "console-overview": { viewport: "desktop", height: 900, render: () => <ConsoleOverview /> },
-  "list-detail": { viewport: "desktop", height: 720, render: () => <ListDetail /> },
-  "event-log": { viewport: "desktop", height: 720, render: () => <EventLog /> },
-  "map-workspace": { viewport: "desktop", height: 720, render: () => <MapWorkspace /> },
+  "action-rail-shell": { viewport: "desktop", height: 720, cover: true, thumb: { x: 704, width: 576 }},
+  "console-overview": { viewport: "desktop", height: 900},
+  "list-detail": { viewport: "desktop", height: 720},
+  "event-log": { viewport: "desktop", height: 720},
+  "map-workspace": { viewport: "desktop", height: 720},
 
   "stats-cards": {
     viewport: "desktop",
     height: 520,
-    thumb: { x: 8, y: -36, width: 400 },
-    render: () => (
-      <div className="p-6">
-        <StatsCards />
-      </div>
-    ),
+    thumb: { x: 8, y: -36, width: 400 }
   },
   "fleet-table": {
     viewport: "desktop",
-    height: 640,
-    render: () => (
-      <div className="p-6">
-        <FleetTable />
-      </div>
-    ),
+    height: 640
   },
   "robot-status-card": {
     viewport: "mobile",
-    height: 640,
-    render: () => (
-      <div className="flex justify-center p-4">
-        <RobotStatusCard />
-      </div>
-    ),
+    height: 640
   },
-  "marketing-hero": { viewport: "desktop", height: 760, thumb: { x: 56, y: 104, width: 600 }, render: () => <MarketingHero /> },
+  "marketing-hero": { viewport: "desktop", height: 760, thumb: { x: 56, y: 104, width: 600 }},
   // Solutions, batch 4: whole screens in the app shell.
-  "mission-schedule": { viewport: "desktop", height: 720, render: () => <MissionSchedule /> },
-  "users-invitations": { viewport: "desktop", height: 680, render: () => <UsersInvitations /> },
-  "users-audit-log": { viewport: "desktop", height: 680, render: () => <UsersAuditLog /> },
-  "incident-queue": { viewport: "desktop", height: 620, render: () => <IncidentQueue /> },
-  "incident-detail": { viewport: "desktop", height: 900, render: () => <IncidentDetail /> },
-  "maintenance-due": { viewport: "desktop", height: 600, render: () => <MaintenanceDue /> },
-  "maintenance-work-order": { viewport: "desktop", height: 1000, render: () => <MaintenanceWorkOrder /> },
-  "rollout-overview": { viewport: "desktop", height: 900, render: () => <RolloutOverview /> },
-  "rollout-plan": { viewport: "desktop", height: 960, render: () => <RolloutPlan /> },
-  "agent-runs": { viewport: "desktop", height: 620, render: () => <AgentRuns /> },
-  "agent-trace": { viewport: "desktop", height: 820, render: () => <AgentTrace /> },
-  "agent-approval": { viewport: "desktop", height: 880, render: () => <AgentApproval /> },
+  "mission-schedule": { viewport: "desktop", height: 720},
+  "users-invitations": { viewport: "desktop", height: 680},
+  "users-audit-log": { viewport: "desktop", height: 680},
+  "incident-queue": { viewport: "desktop", height: 620},
+  "incident-detail": { viewport: "desktop", height: 900},
+  "maintenance-due": { viewport: "desktop", height: 600},
+  "maintenance-work-order": { viewport: "desktop", height: 1000},
+  "rollout-overview": { viewport: "desktop", height: 900},
+  "rollout-plan": { viewport: "desktop", height: 960},
+  "agent-runs": { viewport: "desktop", height: 620},
+  "agent-trace": { viewport: "desktop", height: 820},
+  "agent-approval": { viewport: "desktop", height: 880},
   // Application, batch 3. Dialogs and sheets open on load in the preview without taking the page's focus.
-  "app-shell-mobile-tabs": { viewport: "mobile", height: 720, render: () => <AppShellMobileTabs /> },
+  "app-shell-mobile-tabs": { viewport: "mobile", height: 720},
   "stats-meters": {
     viewport: "desktop",
-    height: 320,
-    render: () => (
-      <div className="p-6">
-        <StatsMeters />
-      </div>
-    ),
+    height: 320
   },
   "stats-filtered": {
     viewport: "desktop",
-    height: 360,
-    render: () => (
-      <div className="p-6">
-        <StatsFiltered />
-      </div>
-    ),
+    height: 360
   },
   "card-site": {
     viewport: "desktop",
-    height: 400,
-    render: () => (
-      <div className="p-6">
-        <CardSite />
-      </div>
-    ),
+    height: 400
   },
   "card-mission": {
     viewport: "desktop",
     thumbWidth: 960,
-    height: 480,
-    render: () => (
-      <div className="mx-auto max-w-4xl p-6">
-        <CardMission />
-      </div>
-    ),
+    height: 480
   },
-  "auth-passkey": { viewport: "desktop", height: 640, render: () => <AuthPasskey /> },
-  "auth-invite": { viewport: "desktop", height: 760, render: () => <AuthInvite /> },
-  "auth-2fa": { viewport: "desktop", height: 720, render: () => <AuthTwoFactor /> },
+  "auth-passkey": { viewport: "desktop", height: 640},
+  "auth-invite": { viewport: "desktop", height: 760},
+  "auth-2fa": { viewport: "desktop", height: 720},
   "settings-notifications": {
     viewport: "desktop",
     thumbWidth: 960,
-    height: 640,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <SettingsNotifications />
-      </div>
-    ),
+    height: 640
   },
   "settings-api-keys": {
     viewport: "desktop",
     thumbWidth: 960,
-    height: 480,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <SettingsApiKeys />
-      </div>
-    ),
+    height: 480
   },
   "settings-billing": {
     viewport: "desktop",
     thumbWidth: 960,
-    height: 1200,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <SettingsBilling />
-      </div>
-    ),
+    height: 1200
   },
   // The bell in a real top bar, its popover open on load so the card shows the list, not a closed bell.
-  "notification-center": { viewport: "desktop", height: 720, thumb: { x: 760, y: 0, width: 520 }, render: () => <NotificationCenterDemo /> },
+  "notification-center": { viewport: "desktop", height: 720, thumb: { x: 760, y: 0, width: 520 }},
   "settings-webhooks": {
     viewport: "desktop",
     thumbWidth: 960,
-    height: 960,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <SettingsWebhooks />
-      </div>
-    ),
+    height: 960
   },
   "settings-sessions": {
     viewport: "desktop",
     thumbWidth: 960,
-    height: 720,
-    render: () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <SettingsSessions />
-      </div>
-    ),
+    height: 720
   },
   "dialog-confirm-destructive": {
     viewport: "desktop",
     thumbWidth: 960,
-    height: 640,
-    render: () => <DialogConfirmDestructive defaultOpen focusOnOpen={false} />,
+    height: 640
   },
-  "dialog-form": { viewport: "desktop", thumbWidth: 960, height: 600, render: () => <DialogForm defaultOpen focusOnOpen={false} /> },
-  "dialog-share": { viewport: "desktop", thumbWidth: 960, height: 680, render: () => <DialogShare defaultOpen focusOnOpen={false} /> },
-  "sheet-robot-detail": { viewport: "desktop", thumbWidth: 960, height: 760, render: () => <SheetRobotDetail defaultOpen focusOnOpen={false} /> },
-  "sheet-filters": { viewport: "mobile", height: 760, render: () => <SheetFilters defaultOpen focusOnOpen={false} /> },
+  "dialog-form": { viewport: "desktop", thumbWidth: 960, height: 600},
+  "dialog-share": { viewport: "desktop", thumbWidth: 960, height: 680},
+  "sheet-robot-detail": { viewport: "desktop", thumbWidth: 960, height: 760},
+  "sheet-filters": { viewport: "mobile", height: 760},
   "timeline-activity": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 560,
-    render: () => (
-      <div className="p-6">
-        <TimelineActivity className="mx-auto" />
-      </div>
-    ),
+    height: 560
   },
   "timeline-audit": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 520,
-    render: () => (
-      <div className="p-6">
-        <TimelineAudit className="mx-auto" />
-      </div>
-    ),
+    height: 520
   },
-  "wizard-commission": { viewport: "desktop", height: 520, thumb: { x: 296, width: 560 }, render: () => <WizardCommission /> },
-  "wizard-import": { viewport: "desktop", thumbWidth: 960, height: 760, render: () => <WizardImport /> },
+  "wizard-commission": { viewport: "desktop", height: 520, thumb: { x: 296, width: 560 }},
+  "wizard-import": { viewport: "desktop", thumbWidth: 960, height: 760},
 }
 
 // Screens in the app shell: their /blocks card skips the sidebar (the same on every one) for the page's title and first panel.
@@ -568,6 +282,9 @@ const inShell = new Set([
   "users-invitations",
   "users-roles",
 ])
+
+// The navigation lists blocks from site/block-list.ts, which does not import them; each one listed there needs a preview here.
+for (const b of blockList) if (!(b.name in meta)) throw new Error(`Block ${b.name} has a place (block-types.ts) but no preview (site/blocks.tsx)`)
 
 export const blocks = Object.keys(placement)
   .map((name) => registry.items.find((i) => i.type === "registry:block" && i.name === name))
