@@ -59,7 +59,7 @@ export const scopes: Scope[] = [
           // The page's examples, so you can jump to one; as ReUI lists them, without a second table of contents.
           // Then its pattern sets (Line chart, Heatmap…), so a chart is found under Chart, not under Blocks.
           sections: [
-            ...(i.examples ? storyNames(i.examples).map((n) => ({ href: `/docs/components/${i.name}#example-${n}`, label: storyTitle(n) })) : []),
+            ...(i.examples ? storyNames(i.examples).map((n) => ({ href: `/docs/components/${i.name}#example-${n}`, label: storyTitle(n, i.name) })) : []),
             ...patternsOf(i.name)
               .filter((t) => blocksOfType(t.slug).length > 0)
               .map((t) => ({ href: `/docs/components/${i.name}#${t.slug}`, label: t.title })),

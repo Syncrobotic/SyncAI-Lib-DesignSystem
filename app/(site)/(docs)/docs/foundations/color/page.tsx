@@ -1,5 +1,6 @@
 import * as React from "react"
 import type { Metadata } from "next"
+import Link from "next/link"
 import { CircleAlert } from "lucide-react"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { Badge, ResultBadge } from "@/registry/syncrobotic/ui/badge"
@@ -12,11 +13,11 @@ export const metadata: Metadata = metaFor("color")
 
 const neutrals = ["background", "card", "secondary", "border", "muted-foreground", "foreground"]
 const tones = [
-  { t: "info", means: "A process someone is waiting on: progress, a running stage, a command being sent. Never a state" },
+  { t: "info", means: "A process someone is waiting on: progress, a running stage, a command being sent. Never a state." },
   { t: "success", means: "Just done: a confirmation that comes and goes (toast, alert). A calm state stays grey." },
-  { t: "warning", means: "Needs attention soon" },
+  { t: "warning", means: "Needs attention soon: low battery, a degraded sensor." },
   { t: "danger", means: "Needs someone now: stopped, failed." },
-  { t: "neutral", means: "Offline, inactive" },
+  { t: "neutral", means: "Offline, inactive: grey, with its shape and its word." },
 ]
 const groups: { title: string; tokens: string[]; use: Record<string, string> }[] = [
   {
@@ -54,7 +55,7 @@ const groups: { title: string; tokens: string[]; use: Record<string, string> }[]
   {
     title: "Emergency stop",
     tokens: ["stop", "stop-deep"],
-    use: { stop: "Emergency stop only", "stop-deep": "Stopped state, sent over Bluetooth" },
+    use: { stop: "Emergency stop only", "stop-deep": "A stop that holds: Slide to release behind a stopped robot, and a stop sent over Bluetooth with its tag" },
   },
   {
     title: "Map and overlays",
@@ -66,7 +67,9 @@ const groups: { title: string; tokens: string[]; use: Record<string, string> }[]
 const utility = (t: string) =>
   t.endsWith("foreground")
     ? `text-${t}`
-    : t === "border" || t === "input"
+    : t === "disabled"
+      ? "text-disabled"
+      : t === "border" || t === "input"
       ? `border-${t}`
       : t === "ring" || t === "edge"
         ? `ring-${t}`
@@ -336,7 +339,11 @@ export default function ColorPage() {
         </div>
         <p className="text-sm text-muted-foreground">
           Text on <Code>--background</Code>: foreground {fmt(contrast("foreground", "background", "dark"))} dark,{" "}
-          {fmt(contrast("foreground", "background", "light"))} light. Full table on the Accessibility page.
+          {fmt(contrast("foreground", "background", "light"))} light. Every pair, in light, dark and high contrast, is on the{" "}
+          <Link href="/docs/foundations/accessibility#contrast" className="underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground">
+            Accessibility page
+          </Link>
+          .
         </p>
       </Section>
 

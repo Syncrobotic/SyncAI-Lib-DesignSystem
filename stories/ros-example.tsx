@@ -59,7 +59,7 @@ export function RosConnectionLine() {
             <Spinner className="size-4 text-info" delay={0} />
           </span>
         ) : (
-          <StatusGlyph status={status.state === "open" ? "active" : "offline"} />
+          <StatusGlyph status={status.state === "open" ? "normal" : "offline"} />
         )}
         <span className={cn("tabular-nums", status.state === "open" ? "font-medium" : "text-muted-foreground")}>{word}</span>
         <span className="font-mono text-xs text-muted-foreground">

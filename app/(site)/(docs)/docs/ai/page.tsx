@@ -43,7 +43,7 @@ export default function AiPage() {
 
       <H2 id="prompt">Starting an agent</H2>
       <CodeBlock
-        lang="bash"
+        lang="text"
         title="Prompt"
         code={`Build this screen with the SYNCROBOTIC design system.
 Read ${site.url}/llms.txt, start from the closest block, and read the .md twin of every component you use.

@@ -17,6 +17,7 @@ const primitivePattern: Record<string, [title: string, slug: string]> = {
   Collapsible: ["Disclosure", "disclosure"],
   Dialog: ["Dialog (modal)", "dialog-modal"],
   DropdownMenu: ["Menu button", "menu-button"],
+  ContextMenu: ["Menu", "menubar"],
   NavigationMenu: ["Disclosure navigation", "disclosure"],
   Popover: ["Dialog (non-modal)", "dialog-modal"],
   Progress: ["Meter / progress", "meter"],
@@ -55,7 +56,8 @@ const rolePattern: Record<string, [string, string]> = {
 const tagRoles: [RegExp, string[]][] = [
   // The element written as a tag, or as a string for a polymorphic `Comp` ("button", "a").
   [/<button\b|["']button["']|<Button\b|Trigger\b|<CopyButton\b/, ["button"]],
-  [/<a\b|["']a["']|href=|linkAs|<Link\b/, ["link"]],
+  // asChild: the part renders the product's own element, a link in the examples (<Button asChild><a …>).
+  [/<a\b|["']a["']|href=|linkAs|<Link\b|\basChild\b/, ["link"]],
   [/<input\b|["']input["']|<Input\b/, ["textbox", "searchbox", "checkbox", "radio", "spinbutton", "slider", "combobox"]],
   [/<textarea\b/, ["textbox"]],
   [/<table\b|<Table\b/, ["table", "row", "rowgroup", "cell", "columnheader", "rowheader"]],
@@ -64,6 +66,7 @@ const tagRoles: [RegExp, string[]][] = [
   [/<h[1-6]\b|<CardTitle\b/, ["heading"]],
   [/<nav\b/, ["navigation"]],
   [/<section\b/, ["region"]],
+  [/<fieldset\b|<details\b/, ["group"]],
   [/<figure\b/, ["figure"]],
   [/<img\b|<svg\b[^>]*role="img"|<AvatarPrimitive\.Image/, ["img"]],
   [/<progress\b/, ["progressbar"]],
@@ -77,9 +80,11 @@ const primitiveRoles: Record<string, string[]> = {
   Accordion: ["button", "heading", "region"],
   AlertDialog: ["alertdialog", "button"],
   Checkbox: ["checkbox"],
-  Collapsible: ["button", "region"],
+  // Radix Collapsible's content has no role of its own (Accordion's is a region).
+  Collapsible: ["button"],
   Dialog: ["dialog", "button", "heading"],
   DropdownMenu: ["menu", "menuitem", "menuitemcheckbox", "menuitemradio", "button", "group", "separator"],
+  ContextMenu: ["menu", "menuitem", "menuitemcheckbox", "menuitemradio", "group", "separator"],
   NavigationMenu: ["navigation", "button", "link", "list", "listitem"],
   Popover: ["dialog", "button"],
   Progress: ["progressbar"],
@@ -126,7 +131,54 @@ function sources(name: string, seen = new Set<string>()): string[] {
   return [...item.files.map((f) => readSource(f.path)), ...deps.flatMap((d) => sources(d, seen))]
 }
 
-const primitivesIn = (src: string) => [...new Set([...src.matchAll(/\b(\w+) as \w+Primitive\b/g)].map((m) => m[1]))]
+/**
+ * The primitives a source uses: `import { Dialog as DialogPrimitive } from "radix-ui"`, `import { ToggleGroup } from
+ * "radix-ui"` and `import { Command as CommandPrimitive } from "cmdk"`.
+ */
+const primitivesIn = (src: string) =>
+  [
+    ...new Set([
+      ...[...src.matchAll(/\b(\w+) as \w+Primitive\b/g)].map((m) => m[1]),
+      ...[...src.matchAll(/import\s*\{([^}]*)\}\s*from\s*"radix-ui"/g)].flatMap((m) =>
+        m[1]
+          .split(",")
+          .map((n) => n.trim().split(/\s+as\s+/)[0])
+          .filter(Boolean),
+      ),
+    ]),
+  ]
+
+/** Primitives whose roles only show once opened, so they count even when every example was closed. */
+const opens = new Set(["AlertDialog", "Command", "ContextMenu", "Dialog", "DropdownMenu", "Popover", "Select", "Toast", "Tooltip"])
+
+/** Roles an npm package renders for the component (a third-party widget the kit styles). */
+const packageRoles: Record<string, string[]> = {
+  "react-day-picker": ["grid", "gridcell", "row", "rowgroup", "columnheader", "rowheader", "navigation", "button", "combobox", "option", "status"],
+  "input-otp": ["textbox"],
+  "react-resizable-panels": ["separator"],
+  recharts: ["application"],
+}
+
+/**
+ * Wrappers made to hold one kind of control, which the product passes in: their examples measure the control's roles,
+ * and those are the wrapper's too (a ChoiceField is always a checkbox, radio or switch with its label).
+ */
+const holds: Record<string, string[]> = {
+  "choice-field": ["checkbox", "radio", "switch"],
+  "input-group": ["textbox", "searchbox"],
+  "filter-form": ["searchbox", "combobox", "checkbox"],
+}
+
+/** The npm packages the component and the kit components it installs depend on. */
+function packages(name: string, seen = new Set<string>()): string[] {
+  if (seen.has(name)) return []
+  seen.add(name)
+  const item = getItem(name)
+  if (!item) return []
+  const deps = (("registryDependencies" in item && item.registryDependencies) || []).map((d) => d.replace("@syncrobotic/", ""))
+  const own = (("dependencies" in item && item.dependencies) || []).map((d) => d.replace(/(.)@.*$/, "$1"))
+  return [...own, ...deps.flatMap((d) => packages(d, seen))]
+}
 
 type Measured = { roles: string[]; tabStops: number; live: boolean }
 
@@ -185,18 +237,26 @@ export function a11yOf(name: string): A11y | null {
   // A role counts when something in the component (or a kit part it installs) can produce it.
   const possible = new Set<string>([
     ...[...all.matchAll(/role="(\w+)"/g)].map((x) => x[1]),
+    // A role chosen at run time: role={tone === "danger" ? "alert" : "status"}.
+    ...[...all.matchAll(/role=\{([^}]*)\}/g)].flatMap((x) => [...x[1].matchAll(/"(\w+)"/g)].map((y) => y[1])),
     ...tagRoles.filter(([re]) => re.test(all)).flatMap(([, r]) => r),
     ...primitivesIn(all).flatMap((p) => primitiveRoles[p] ?? []),
+    ...packages(name).flatMap((p) => packageRoles[p] ?? []),
+    ...(holds[name] ?? []),
   ])
   const ownPrimitives = primitivesIn(own)
   // A mark hidden from screen readers cannot take focus: Tab stops measured around it (a table in its example) are the
   // example's, not its own.
   const tabStops = decorative.has(name) ? 0 : m.tabStops
   // Roles of a primitive that only shows when opened (a dialog, a menu) are part of it even if the examples were closed.
-  const roles = [...new Set([...m.roles.filter((r) => possible.has(r)), ...ownPrimitives.flatMap((p) => primitiveRoles[p] ?? []).filter((r) => r !== "button")])].sort()
+  const closed = ownPrimitives.filter((p) => opens.has(p)).flatMap((p) => primitiveRoles[p] ?? [])
+  const roles = [...new Set([...m.roles.filter((r) => possible.has(r)), ...closed.filter((r) => r !== "button")])].sort()
 
   const patterns = new Map<string, string>()
-  for (const p of ownPrimitives) if (primitivePattern[p]) patterns.set(primitivePattern[p][0], `${APG}/${primitivePattern[p][1]}/`)
+  // A toggle group is a toolbar only when it renders one; a single-choice one (a segmented control) is a radio group,
+  // which its roles name below.
+  const shows = (p: string) => p !== "ToggleGroup" || roles.includes("toolbar")
+  for (const p of ownPrimitives) if (primitivePattern[p] && shows(p)) patterns.set(primitivePattern[p][0], `${APG}/${primitivePattern[p][1]}/`)
   const roleNote = roleNotes[name]
   for (const r of roles) if (r !== roleNote?.role && rolePattern[r] && ![...patterns.keys()].some((k) => k.startsWith(rolePattern[r][0]))) patterns.set(rolePattern[r][0], `${APG}/${rolePattern[r][1]}/`)
   // A component that is a button or a link also contains one: name the main pattern first and drop generic ones when a
@@ -276,27 +336,4 @@ export function a11yMarkdown(name: string): string[] {
   if (a.contrast.length)
     out.push("", "| Contrast | Applies to | Needs | Light | Dark |", "| --- | --- | --- | --- | --- |", ...a.contrast.map((c) => `| ${c.label} | ${c.applies} | ${c.need} | ${c.light.toFixed(1)}:1 | ${c.dark.toFixed(1)}:1 |`))
   return out
-}
-
-/**
- * A keyboard row's keys, split into the keys themselves (drawn as keycaps) and the words around them ("Hold", "2 s",
- * "on a group", "away"), so a phrase is never drawn as a key. "/" and "," between alternatives are words too.
- */
-export function keyParts(keys: string): { text: string; key: boolean }[] {
-  // Whole-string single keys that would otherwise read as separators.
-  if (keys === "/" || keys === "*") return [{ text: keys, key: true }]
-  const named = /^(Enter|Space|Tab|Esc|Escape|Home|End|Backspace|Delete|PageUp|PageDown|Page Up|Page Down|Arrow keys|Arrow (Up|Down|Left|Right)|Up|Down|Left|Right|Menu key|Shift|Ctrl|Alt|F\d+)$/
-  const isKey = (t: string) => named.test(t) || /^\S+\+\S+$/.test(t) || /^⌘\S+$/.test(t) || (t.length === 1 && !/[a-z]/.test(t))
-  const parts: { text: string; key: boolean }[] = []
-  const push = (text: string, key: boolean) => {
-    const last = parts.at(-1)
-    if (!key && last && !last.key) last.text += text
-    else parts.push({ text, key })
-  }
-  // Multi-word keys and durations first, then single words; whitespace and separators stay as words.
-  for (const m of keys.matchAll(/Page (?:Up|Down)|Arrow (?:keys|Up|Down|Left|Right)|Menu key|\d+(?:\.\d+)? s\b|\s+\/\s+|,\s*|\s+|[^\s,]+/g)) {
-    const t = m[0]
-    push(t, !/^\s|^,|\d s$/.test(t) && isKey(t))
-  }
-  return parts
 }
