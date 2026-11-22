@@ -1316,76 +1316,18 @@
  ],
  "camera-feed": [
   {
-   "name": "CameraFeed",
+   "name": "CameraFeedStateLine",
    "props": [
     {
-     "name": "label",
-     "type": "string",
+     "name": "state",
+     "type": "CameraFeedState",
      "required": true,
-     "description": "The camera's name: \"Front camera\". Names the feed with `source`."
-    },
-    {
-     "name": "source",
-     "type": "string",
-     "description": "The robot it is on: \"Patrol dog 7F3A\"."
-    },
-    {
-     "name": "stream",
-     "type": "MediaStream | null",
-     "description": "A WebRTC stream, set as the video's `srcObject`. The app owns the connection; the feed only shows it."
-    },
-    {
-     "name": "src",
-     "type": "string",
-     "description": "A URL the browser plays by itself (a live MP4 or WebM, or HLS where the browser supports it). Use `stream` or `src`."
-    },
-    {
-     "name": "status",
-     "type": "\"connecting\" | \"live\" | \"offline\"",
-     "description": "What the connection is doing. Defaults to `live` when there is a `stream` or `src`; with neither, \"No camera\"."
+     "description": ""
     },
     {
      "name": "latencyMs",
      "type": "number",
-     "description": "Glass-to-glass delay, measured by the app, written after \"Live\"."
-    },
-    {
-     "name": "staleAfterMs",
-     "type": "number",
-     "default": "2000",
-     "description": "With no new frame for this long, the feed says \"Stalled\" over a dimmed picture instead of freezing silently."
-    },
-    {
-     "name": "offlineReason",
-     "type": "string",
-     "description": "Why the camera is offline, written under \"Camera offline\": \"the robot is out of network range.\""
-    },
-    {
-     "name": "onRetry",
-     "type": "() => void",
-     "description": "Shows \"Reconnect\" while offline. Without it there is no button (a `src` reloads itself after a video error)."
-    },
-    {
-     "name": "onSnapshot",
-     "type": "(blob: Blob) => void",
-     "description": "Shows \"Take snapshot\": the frame on screen, drawn to a canvas, as a PNG."
-    },
-    {
-     "name": "audio",
-     "type": "boolean",
-     "default": "false",
-     "description": "The stream carries sound: adds Mute. It starts muted (browsers block sound until someone asks for it)."
-    },
-    {
-     "name": "aspectRatio",
-     "type": "number",
-     "default": "16 / 9",
-     "description": "Width over height, so the layout holds its size before the first frame. 16 / 9 by default."
-    },
-    {
-     "name": "children",
-     "type": "ReactNode",
-     "description": "Drawn over the picture, in a layer the size of the video box: a crosshair, detection boxes."
+     "description": "Written after \"Live\": \"· 180 ms\"."
     },
     {
      "name": "labels",
@@ -1507,6 +1449,442 @@
        "description": ""
       }
      ]
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "CameraFeed",
+   "props": [
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "The camera's name: \"Front camera\". Names the feed with `source`."
+    },
+    {
+     "name": "source",
+     "type": "string",
+     "description": "The robot it is on: \"Patrol dog 7F3A\"."
+    },
+    {
+     "name": "stream",
+     "type": "MediaStream | null",
+     "description": "A WebRTC stream, set as the video's `srcObject`. The app owns the connection; the feed only shows it."
+    },
+    {
+     "name": "src",
+     "type": "string",
+     "description": "A URL the browser plays by itself (a live MP4 or WebM, or HLS where the browser supports it). Use `stream` or `src`."
+    },
+    {
+     "name": "status",
+     "type": "\"connecting\" | \"live\" | \"offline\"",
+     "description": "What the connection is doing. Defaults to `live` when there is a `stream` or `src`; with neither, \"No camera\"."
+    },
+    {
+     "name": "latencyMs",
+     "type": "number",
+     "description": "Glass-to-glass delay, measured by the app, written after \"Live\"."
+    },
+    {
+     "name": "staleAfterMs",
+     "type": "number",
+     "default": "2000",
+     "description": "With no new frame for this long, the feed says \"Stalled\" over a dimmed picture instead of freezing silently."
+    },
+    {
+     "name": "offlineReason",
+     "type": "string",
+     "description": "Why the camera is offline, written under \"Camera offline\": \"the robot is out of network range.\""
+    },
+    {
+     "name": "onRetry",
+     "type": "() => void",
+     "description": "Shows \"Reconnect\" while offline. Without it there is no button (a `src` reloads itself after a video error)."
+    },
+    {
+     "name": "onSnapshot",
+     "type": "(blob: Blob) => void",
+     "description": "Shows \"Take snapshot\": the frame on screen, drawn to a canvas, as a PNG."
+    },
+    {
+     "name": "audio",
+     "type": "boolean",
+     "default": "false",
+     "description": "The stream carries sound: adds Mute. It starts muted (browsers block sound until someone asks for it)."
+    },
+    {
+     "name": "aspectRatio",
+     "type": "number",
+     "default": "16 / 9",
+     "description": "Width over height, so the layout holds its size before the first frame. 16 / 9 by default."
+    },
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "description": "Drawn over the picture, in a layer the size of the video box: a crosshair, detection boxes."
+    },
+    {
+     "name": "bare",
+     "type": "boolean",
+     "default": "false",
+     "description": "Just the picture: no header, no controls, no keys, no Tab stop and nothing announced. For a feed inside something that names it, says its state and takes the keyboard itself, such as a tile of `camera-wall`."
+    },
+    {
+     "name": "onStateChange",
+     "type": "(state: CameraFeedState, lastFrameAt: number | null) => void",
+     "description": "Called after the state changes, with when the last frame arrived (ms since the epoch) while it is Stalled."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<CameraFeedLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "keys",
+       "type": "string",
+       "default": "\"Space pauses and resumes the view, F goes full screen. Pausing freezes this view only; the robot keeps streaming.\"",
+       "description": "Read after the feed's name: the keys it answers to."
+      },
+      {
+       "name": "live",
+       "type": "string",
+       "default": "\"Live\"",
+       "description": ""
+      },
+      {
+       "name": "latency",
+       "type": "(ms: number) => string",
+       "default": "(ms) => `${Math.round(ms)} ms`",
+       "description": "Written after \"Live\": \"180 ms\"."
+      },
+      {
+       "name": "connecting",
+       "type": "string",
+       "default": "\"Connecting\"",
+       "description": "The state word while connecting, and the line over the skeleton."
+      },
+      {
+       "name": "connectingLong",
+       "type": "string",
+       "default": "\"Connecting to camera…\"",
+       "description": "Shown in the state while connecting, after the word; the line over the skeleton says the whole thing."
+      },
+      {
+       "name": "stalled",
+       "type": "string",
+       "default": "\"Stalled\"",
+       "description": ""
+      },
+      {
+       "name": "lastFrame",
+       "type": "(time: string) => string",
+       "default": "(time) => `last frame ${time}`",
+       "description": "After \"Stalled\": when the last frame arrived."
+      },
+      {
+       "name": "formatTime",
+       "type": "(date: Date) => string",
+       "default": "(d) => [d.getHours(), d.getMinutes(), d.getSeconds()].map((n) => String(n).padStart(2, \"0\")).join(\":\")",
+       "description": "The time of the last frame. 24-hour clock by default; pass the site's own format or time zone."
+      },
+      {
+       "name": "paused",
+       "type": "string",
+       "default": "\"Paused\"",
+       "description": ""
+      },
+      {
+       "name": "offline",
+       "type": "string",
+       "default": "\"Camera offline\"",
+       "description": ""
+      },
+      {
+       "name": "noCamera",
+       "type": "string",
+       "default": "\"No camera\"",
+       "description": ""
+      },
+      {
+       "name": "retry",
+       "type": "string",
+       "default": "\"Reconnect\"",
+       "description": ""
+      },
+      {
+       "name": "pauseView",
+       "type": "string",
+       "default": "\"Pause view\"",
+       "description": ""
+      },
+      {
+       "name": "resumeView",
+       "type": "string",
+       "default": "\"Resume view\"",
+       "description": ""
+      },
+      {
+       "name": "mute",
+       "type": "string",
+       "default": "\"Mute\"",
+       "description": ""
+      },
+      {
+       "name": "unmute",
+       "type": "string",
+       "default": "\"Unmute\"",
+       "description": ""
+      },
+      {
+       "name": "snapshot",
+       "type": "string",
+       "default": "\"Take snapshot\"",
+       "description": ""
+      },
+      {
+       "name": "fullscreen",
+       "type": "string",
+       "default": "\"Full screen\"",
+       "description": ""
+      },
+      {
+       "name": "exitFullscreen",
+       "type": "string",
+       "default": "\"Leave full screen\"",
+       "description": ""
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "camera-wall": [
+  {
+   "name": "CameraWall",
+   "props": [
+    {
+     "name": "cameras",
+     "type": "CameraWallCamera[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "getSource",
+     "type": "(camera: CameraWallCamera, options: { quality: CameraWallQuality; }) => CameraWallSource | null | undefined",
+     "required": true,
+     "description": "The product's source function: what to play for a camera, at a quality. The wall calls it on render, only for the cameras it plays, so return the same stream for the same camera and quality (keep them in a cache), and open connections there lazily. `onLiveChange` says which are playing, to close the rest."
+    },
+    {
+     "name": "maxLive",
+     "type": "number",
+     "default": "9",
+     "description": "At most this many streams play at once: the focused camera first, then tiles in order. The rest show their last still."
+    },
+    {
+     "name": "onLiveChange",
+     "type": "(live: { id: string; quality: CameraWallQuality; }[]) => void",
+     "description": "Called with the cameras playing and the quality each was asked for, whenever that changes."
+    },
+    {
+     "name": "focused",
+     "type": "string | null",
+     "description": "The camera shown large, controlled. `null` is the grid."
+    },
+    {
+     "name": "defaultFocused",
+     "type": "string | null",
+     "default": "null",
+     "description": "The camera shown large at first, when `focused` is not given."
+    },
+    {
+     "name": "onFocusedChange",
+     "type": "(id: string | null) => void",
+     "description": ""
+    },
+    {
+     "name": "defaultSort",
+     "type": "\"attention\" | \"name\"",
+     "default": "\"attention\"",
+     "description": "Attention first (alarms, offline, stalled, then by name) or by name."
+    },
+    {
+     "name": "defaultNeedsAttention",
+     "type": "boolean",
+     "default": "false",
+     "description": "Start with only the cameras that need attention."
+    },
+    {
+     "name": "pageSize",
+     "type": "number",
+     "description": "Tiles per page. By default the grid's own: 4, 9 or 16, and 6 in the phone list."
+    },
+    {
+     "name": "staleAfterMs",
+     "type": "number",
+     "description": "With no new frame for this long, a feed says Stalled. Passed to every feed."
+    },
+    {
+     "name": "aspectRatio",
+     "type": "number",
+     "default": "16 / 9",
+     "description": "Width over height of every picture. 16 / 9 by default."
+    },
+    {
+     "name": "onSnapshot",
+     "type": "(camera: CameraWallCamera, blob: Blob) => void",
+     "description": "Shows \"Take snapshot\" on the focused camera."
+    },
+    {
+     "name": "onRetry",
+     "type": "(camera: CameraWallCamera) => void",
+     "description": "Shows Reconnect on the focused camera while it is offline."
+    },
+    {
+     "name": "announceEveryMs",
+     "type": "number",
+     "default": "5000",
+     "description": "State changes are announced politely, at most this often (ms)."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<CameraWallLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "name",
+       "type": "string",
+       "default": "\"Cameras\"",
+       "description": "Names the wall for screen readers."
+      },
+      {
+       "name": "keys",
+       "type": "string",
+       "default": "\"Arrow keys move between cameras, Enter shows one large, Esc goes back to all cameras.\"",
+       "description": "Read after a tile's name: the keys the tiles answer to."
+      },
+      {
+       "name": "pausedToSave",
+       "type": "string",
+       "default": "\"Paused to save bandwidth\"",
+       "description": "Over a tile's last frame when it is not live because `maxLive` streams already are."
+      },
+      {
+       "name": "sort",
+       "type": "string",
+       "default": "\"Sort cameras\"",
+       "description": "The sort control's name."
+      },
+      {
+       "name": "attentionFirst",
+       "type": "string",
+       "default": "\"Attention first\"",
+       "description": ""
+      },
+      {
+       "name": "byName",
+       "type": "string",
+       "default": "\"Name\"",
+       "description": ""
+      },
+      {
+       "name": "needsAttention",
+       "type": "string",
+       "default": "\"Needs attention\"",
+       "description": "The filter that keeps only cameras with an alarm, offline or stalled."
+      },
+      {
+       "name": "count",
+       "type": "(n: number, locale: string | undefined) => string",
+       "default": "(n, locale) => n.toLocaleString(locale)",
+       "description": ""
+      },
+      {
+       "name": "allCameras",
+       "type": "string",
+       "default": "\"All cameras\"",
+       "description": "Back from one camera to the grid."
+      },
+      {
+       "name": "critical",
+       "type": "string",
+       "default": "\"Critical\"",
+       "description": ""
+      },
+      {
+       "name": "high",
+       "type": "string",
+       "default": "\"High\"",
+       "description": ""
+      },
+      {
+       "name": "low",
+       "type": "string",
+       "default": "\"Low\"",
+       "description": ""
+      },
+      {
+       "name": "alarm",
+       "type": "(priority: string, title: string) => string",
+       "default": "(priority, title) => `${priority} · ${title}`",
+       "description": "A tile's alarm: \"Critical · Obstacle in path\"."
+      },
+      {
+       "name": "range",
+       "type": "(from: number, to: number, total: number, locale?: string) => string",
+       "default": "(from, to, total, locale) => `${from.toLocaleString(locale)}–${to.toLocaleString(locale)} of ${total.toLocaleString(locale)} cameras`",
+       "description": ""
+      },
+      {
+       "name": "previousPage",
+       "type": "string",
+       "default": "\"Previous cameras\"",
+       "description": ""
+      },
+      {
+       "name": "nextPage",
+       "type": "string",
+       "default": "\"Next cameras\"",
+       "description": ""
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"No cameras\"",
+       "description": ""
+      },
+      {
+       "name": "noneNeedAttention",
+       "type": "string",
+       "default": "\"No camera needs attention\"",
+       "description": ""
+      },
+      {
+       "name": "showAll",
+       "type": "string",
+       "default": "\"Show all cameras\"",
+       "description": ""
+      },
+      {
+       "name": "announce",
+       "type": "(changes: { name: string; state: string; }[], locale: string | undefined) => string",
+       "default": "(changes, locale) => { const shown = changes.slice(0, 3).map((c) => `${c.name}: ${c.state}.`) const more = changes.length - shown.length return [...shown, more > 0 ? `${more.toLocaleString(locale)} more ${more === 1 ? \"camera\" : \"cameras\"} changed.` : \"\"].filter(Boolean).join(\" \") }",
+       "description": "One polite announcement for the state changes since the last one: \"Front camera, Patrol dog 7F3A: Stalled.\""
+      },
+      {
+       "name": "feed",
+       "type": "Partial<CameraFeedLabels>",
+       "default": "{}",
+       "description": "The state words, from camera-feed."
+      }
+     ]
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the counts and page ranges (a BCP 47 tag such as \"zh-TW\")."
     }
    ],
    "inherits": []

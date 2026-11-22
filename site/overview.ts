@@ -94,7 +94,7 @@ export const overviews: Record<string, Overview> = {
     what: "A robot's live camera over a native video the app feeds, that always says whether the picture is live: Live with the latency, Stalled with the last frame's time, Paused, connecting, offline or no camera.",
     use: [
       "The camera panel of a robot's page or a teleoperation screen.",
-      "A wall of a site's cameras, one feed per robot.",
+      "A robot's view beside its map or its controls; for many cameras at once, `camera-wall`.",
       "Watching a robot's view with its detections drawn over it.",
     ],
     instead: [
@@ -107,6 +107,28 @@ export const overviews: Record<string, Overview> = {
       "Pause view freezes this screen only; the robot keeps streaming, and the feed says Paused until it resumes.",
       "The state is a shape and a word (a filled dot for Live, a triangle for Stalled, a slashed circle for offline); only Stalled has colour, and blue only spins while connecting. The dot never pulses.",
       "Every string is in `labels`, including `formatTime` for the last frame's time (24-hour clock by default; pass the site's time zone if the operator is elsewhere).",
+      "`bare` is just the picture, for a feed inside something that names it and takes the keyboard (camera-wall's tiles); `onStateChange` reports each state once.",
+    ],
+  },
+  "camera-wall": {
+    what: "Many robot cameras at once, each a camera-feed: an auto grid that pages, one camera focused large with a strip of the rest, attention first, and only as many streams playing as the site can carry.",
+    use: [
+      "A control room's wall of a site's robots, watched for anything that needs someone.",
+      "Checking every robot of a fleet before a shift, then opening the one that looks wrong.",
+      "A supervisor's tablet with the robots on one floor.",
+    ],
+    instead: [
+      "One robot's camera on its page or a teleoperation screen: `camera-feed`.",
+      "Recorded clips of an incident: `media-player`, or `image-grid` for stills.",
+      "Robots' positions rather than their pictures: `robot-map`.",
+    ],
+    notes: [
+      "It connects to nothing: `getSource(camera, { quality })` returns what camera-feed plays (a WebRTC MediaStream or a URL), and is called on render only for the cameras playing. Keep streams in a cache keyed by camera and quality; `onLiveChange` lists what plays, to close the rest.",
+      "What plays: the focused camera first, then tiles in the order shown, at most `maxLive`, skipping tiles off screen (one IntersectionObserver) and offline cameras. Tiles behind the focused camera (a phone, full screen) are not drawn. A tile that stops playing keeps its last frame, drawn to a canvas before the stream is let go (or its `poster`), dimmed under \"Paused to save bandwidth\".",
+      "Layout from the container's width, not the screen's: columns by count (1, 2×2, 3×3, 4×4) and by width (tiles at least 240 px), a page of cols × cols; under 560 px a list of tiles, and a focused camera takes the whole width. Full screen is the focused feed's own button (F).",
+      "Each tile is a button in one roving Tab stop (arrows by tile and by row, Home, End, Page Up and Down), named with its camera, robot, state and alarm. Enter opens it large and moves focus to the feed; Esc comes back to the same tile, on its page.",
+      "State changes are announced in one polite status, batched, at most every `announceEveryMs` (5 s): a camera that stalls, goes offline or comes back, each camera once in its latest state. Connecting to Live is not news.",
+      "Status is camera-feed's shape and word on each tile; the alarm marker is the priority's shape and word in the picture's top-right corner, clear of the camera's burnt-in clock and of what camera-feed draws (octagon critical, triangle high, diamond low), never a tinted tile. The large view writes it beside All cameras, off the picture.",
     ],
   },
   "joint-state": {
@@ -1077,7 +1099,7 @@ export const overviews: Record<string, Overview> = {
     instead: [
       "A fleet seen through your own backend (REST, GraphQL, MQTT): pass the backend's data to the components; this connects a browser to one robot's rosbridge.",
       "The converters alone, outside React (a worker, a server, another bridge): `ros`.",
-      "Video: `camera-feed` over WebRTC or a stream URL; rosbridge is not for frames.",
+      "Video: `camera-feed` or `camera-wall` over WebRTC or a stream URL; rosbridge is not for frames. `webVideoServerSrc(server, topic, { quality })` builds the web_video_server URL for an image topic.",
     ],
     notes: [
       "Start rosbridge on the robot with `ros2 launch rosbridge_server rosbridge_websocket_launch.xml` (ROS 1: `roslaunch rosbridge_server rosbridge_websocket.launch`); it listens on ws://<robot>:9090. Use wss:// behind a TLS proxy from an https page: a browser blocks ws:// from https.",

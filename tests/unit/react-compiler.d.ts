@@ -27,3 +27,6 @@ declare module "@/registry/syncrobotic/ui/diagnostics?react-compiler" {
 declare module "@/registry/syncrobotic/ui/waypoint-editor?react-compiler" {
   export * from "@/registry/syncrobotic/ui/waypoint-editor"
 }
+declare module "@/registry/syncrobotic/ui/camera-wall?react-compiler" {
+  export * from "@/registry/syncrobotic/ui/camera-wall"
+}

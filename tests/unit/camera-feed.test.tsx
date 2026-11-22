@@ -230,3 +230,44 @@ describe("CameraFeed labels", () => {
     expect(screen.getByText("dernière image 2:02:31 PM")).toBeTruthy()
   })
 })
+
+describe("CameraFeed bare and onStateChange (0.29.0)", () => {
+  it("bare is just the picture: no header, controls, Tab stop, keys or announcement", () => {
+    const { container } = render(<CameraFeed bare label="Front camera" source="Patrol dog 7F3A" src="/live.webm" />)
+    const root = container.querySelector<HTMLElement>("[data-slot=camera-feed]")!
+    expect(root.getAttribute("role")).toBeNull()
+    expect(root.hasAttribute("tabindex")).toBe(false)
+    expect(root.hasAttribute("aria-describedby")).toBe(false)
+    expect(container.querySelector<HTMLElement>("[data-slot=camera-feed-header]")!.hidden).toBe(true)
+    expect(screen.queryByRole("status")).toBeNull()
+    act(() => void container.querySelector("video")!.dispatchEvent(new Event("timeupdate")))
+    expect(root.getAttribute("data-state")).toBe("live")
+    expect(container.querySelectorAll("button")).toHaveLength(0)
+    fireEvent.keyDown(root, { key: " " })
+    expect(root.getAttribute("data-state")).toBe("live")
+  })
+
+  it("bare offers no Reconnect while offline: what holds it decides", () => {
+    render(<CameraFeed bare label="Front camera" status="offline" offlineReason="Out of range." onRetry={() => {}} />)
+    expect(screen.getByText("Out of range.")).toBeTruthy()
+    expect(screen.queryByRole("button", { name: "Reconnect" })).toBeNull()
+  })
+
+  it("reports each state once, with the last frame's time while stalled", () => {
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout", "Date"] })
+    vi.setSystemTime(new Date(2026, 10, 20, 14, 2, 31))
+    const onStateChange = vi.fn()
+    const { frame, rerender } = setup({ onStateChange })
+    expect(onStateChange.mock.calls).toEqual([["connecting", null]])
+    frame()
+    frame()
+    // A new function on each render does not report the same state again.
+    rerender(<CameraFeed label="Front camera" source="Patrol dog 7F3A" src="/live.webm" onStateChange={(...a) => onStateChange(...a)} />)
+    act(() => vi.advanceTimersByTime(2000))
+    expect(onStateChange.mock.calls).toEqual([
+      ["connecting", null],
+      ["live", null],
+      ["stalled", new Date(2026, 10, 20, 14, 2, 31).getTime()],
+    ])
+  })
+})

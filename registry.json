@@ -204,7 +204,7 @@
           {
             "version": "0.29.0",
             "date": "2026-11-22",
-            "note": "`waypointEditorLabels` for the new waypoint-editor."
+            "note": "`waypointEditorLabels` for the new waypoint-editor. `cameraWallLabels` for the new camera-wall."
           },
           {
             "version": "0.28.0",
@@ -224,7 +224,7 @@
       "name": "ros",
       "type": "registry:lib",
       "title": "ROS",
-      "description": "ROS and ROS 2 over rosbridge with no ROS library: a rosbridge v2 client on the browser's WebSocket (ref-counted subscriptions and advertisements, capped jittered reconnect that resubscribes, a send queue, service calls with a timeout, a zero Twist when a velocity publisher stops or the link drops) and pure converters from OccupancyGrid, LaserScan, PointCloud2, JointState, DiagnosticArray, /rosout Log and poses to the kit's components, and from a teleop command, a map goal and a waypoint route back to Twist, PoseStamped, nav_msgs/Path and Nav2's NavigateThroughPoses goal (and the route back from them).",
+      "description": "ROS and ROS 2 over rosbridge with no ROS library: a rosbridge v2 client on the browser's WebSocket (ref-counted subscriptions and advertisements, capped jittered reconnect that resubscribes, a send queue, service calls with a timeout, a zero Twist when a velocity publisher stops or the link drops) and pure converters from OccupancyGrid, LaserScan, PointCloud2, JointState, DiagnosticArray, /rosout Log and poses to the kit's components, a web_video_server URL for an image topic, and from a teleop command, a map goal and a waypoint route back to Twist, PoseStamped, nav_msgs/Path and Nav2's NavigateThroughPoses goal (and the route back from them).",
       "dependencies": [],
       "registryDependencies": [],
       "files": [
@@ -239,7 +239,7 @@
           {
             "version": "0.29.0",
             "date": "2026-11-22",
-            "note": "`waypointsToPath` and `waypointsToNavigateThroughPoses` turn waypoint-editor's route into a `nav_msgs/Path` and the goal of Nav2's NavigateThroughPoses (PoseStamped in the map frame; a waypoint without a heading faces the next one), and `pathToWaypoints` and `navigateThroughPosesToWaypoints` turn them back (Kilted's `nav_msgs/Goals` too)."
+            "note": "`waypointsToPath` and `waypointsToNavigateThroughPoses` turn waypoint-editor's route into a `nav_msgs/Path` and the goal of Nav2's NavigateThroughPoses (PoseStamped in the map frame; a waypoint without a heading faces the next one), and `pathToWaypoints` and `navigateThroughPosesToWaypoints` turn them back (Kilted's `nav_msgs/Goals` too). `webVideoServerSrc(server, topic, { quality })` builds the web_video_server URL a `<video>` plays for a `sensor_msgs/Image` topic (VP8 WebM by default, H.264 for Safari), sized by camera-wall's quality hint (`webVideoQuality`: low 640×360, high 1280×720)."
           },
           {
             "version": "0.28.0",
@@ -4080,8 +4080,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.23.1",
+        "version": "0.29.0",
         "changelog": [
+          {
+            "version": "0.29.0",
+            "date": "2026-11-22",
+            "note": "`bare` shows just the picture (no header, controls, keys, Tab stop or announcement) for a feed inside something that names it and takes the keyboard, such as a camera-wall tile; `onStateChange(state, lastFrameAt)` reports each state once; `CameraFeedStateLine` and `cameraFeedStateWord` export the header's state (shape and word) so a wall's tiles say it the same way."
+          },
           {
             "version": "0.23.1",
             "date": "2026-11-21",
@@ -4091,6 +4096,41 @@
             "version": "0.23.0",
             "date": "2026-11-20",
             "note": "First release: CameraFeed (label, source, stream or src, status, latencyMs, staleAfterMs, offlineReason, onRetry, onSnapshot, audio, aspectRatio, children, labels) over a native <video> the app feeds. The header says the camera, the robot and the state by shape and word: Live with the latency, Connecting (blue spinner), Stalled · last frame 14:02:31 over a dimmed picture after staleAfterMs without a frame (requestVideoFrameCallback, else timeupdate), Paused, Camera offline with an optional Reconnect, No camera. Pause view, snapshot (PNG), mute only with audio, full screen; Space and F while focus is inside. Overlays in a layer over the picture; aspectRatio holds the layout before the first frame. No streaming library."
+          }
+        ]
+      }
+    },
+    {
+      "name": "camera-wall",
+      "type": "registry:ui",
+      "title": "Camera wall",
+      "description": "Many robot cameras at once, each a camera-feed: an auto grid (1, 2×2, 3×3, 4×4 by count and width) with a page control, one camera focused large with a strip of the rest (click or Enter, Esc back, full screen), and a vertical list on phones. Tiles off screen or behind the focused one pause, only the focused camera asks the product's source function for high quality, and at most maxLive stream at once; the rest keep their last still, \"Paused to save bandwidth\". Each tile says its camera, robot and state (Live, Stalled · last frame 14:02:31, offline) and its robot's alarm by shape and word; sorted attention first or by name, filtered to what needs attention; arrow keys between tiles; state changes announced politely, throttled.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/camera-feed",
+        "@syncrobotic/pagination",
+        "@syncrobotic/robot-icons",
+        "@syncrobotic/segmented-control",
+        "@syncrobotic/toggle"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/camera-wall.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.29.0",
+        "changelog": [
+          {
+            "version": "0.29.0",
+            "date": "2026-11-22",
+            "note": "First release."
           }
         ]
       }

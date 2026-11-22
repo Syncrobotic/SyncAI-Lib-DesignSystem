@@ -13,11 +13,11 @@
   },
   "labels-zh-tw": {
     "version": "0.29.0",
-    "hash": "4a4f5c22cfedbff5"
+    "hash": "6ebfcbb6f95cd703"
   },
   "ros": {
     "version": "0.29.0",
-    "hash": "c41f65b2c8b8256b"
+    "hash": "8e97483a8e42fad8"
   },
   "use-long-press": {
     "version": "0.5.1",
@@ -360,8 +360,12 @@
     "hash": "8bbf62a62a655912"
   },
   "camera-feed": {
-    "version": "0.23.1",
-    "hash": "33be3d7109a96b20"
+    "version": "0.29.0",
+    "hash": "8036f5c14bd86b13"
+  },
+  "camera-wall": {
+    "version": "0.29.0",
+    "hash": "d373eb64b32d7094"
   },
   "joint-state": {
     "version": "0.24.1",

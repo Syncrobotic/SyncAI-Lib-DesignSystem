@@ -1224,6 +1224,39 @@ export function rosLogToLogLine(message: RosLog, options: { receivedAt?: number 
   return line
 }
 
+// --- Video: image topics through web_video_server --------------------------------------------------------------------
+
+/** The size and bitrate web_video_server encodes at, for camera-wall's `quality` hint. */
+export const webVideoQuality = {
+  low: { width: 640, height: 360, bitrate: 300_000 },
+  high: { width: 1280, height: 720, bitrate: 2_000_000 },
+} as const
+
+/**
+ * The URL a `<video>` plays for a `sensor_msgs/Image` topic, through web_video_server on the robot
+ * (`ros2 run web_video_server web_video_server`, port 8080): a camera-feed `src`, or what camera-wall's source function
+ * returns for a camera and its `quality` ("low" for a tile, "high" for the focused camera). Images never go over rosbridge:
+ * a JSON frame per image is far too slow. `type` is the encoding: "vp8" (WebM, plays everywhere but Safari) by default,
+ * "h264" (MP4) for Safari. MJPEG is not a video a `<video>` plays. For WebRTC (webrtc_ros, a media gateway) the app owns
+ * the connection and passes the MediaStream instead.
+ */
+export function webVideoServerSrc(
+  server: string,
+  topic: string,
+  options: { quality?: keyof typeof webVideoQuality; type?: "vp8" | "vp9" | "h264"; width?: number; height?: number; bitrate?: number; transport?: "raw" | "compressed" } = {},
+): string {
+  const preset = webVideoQuality[options.quality ?? "low"]
+  const params = new URLSearchParams({
+    topic,
+    type: options.type ?? "vp8",
+    width: String(options.width ?? preset.width),
+    height: String(options.height ?? preset.height),
+    bitrate: String(options.bitrate ?? preset.bitrate),
+  })
+  if (options.transport) params.set("default_transport", options.transport)
+  return `${server.replace(/\/+$/, "")}/stream?${params}`
+}
+
 /** A `geometry_msgs/Twist` with every component 0: stop. */
 export const zeroTwist = (): RosTwist => ({ linear: { x: 0, y: 0, z: 0 }, angular: { x: 0, y: 0, z: 0 } })
 

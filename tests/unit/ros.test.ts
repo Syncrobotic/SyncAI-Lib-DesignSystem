@@ -18,6 +18,7 @@ import {
   RosTimeoutError,
   stampToMs,
   teleopToTwist,
+  webVideoServerSrc,
   yawToQuaternion,
   zeroTwist,
   waypointsToPath,
@@ -829,5 +830,23 @@ describe("waypoint routes", () => {
 
   it("refuses geo waypoints, which have no place in the map frame", () => {
     expect(() => waypointsToPath([{ at: { kind: "geo", lat: 25, lon: 121 } }], frame)).toThrow(/geo waypoint/)
+  })
+})
+
+describe("webVideoServerSrc", () => {
+  it("builds the web_video_server URL a video plays for an image topic, sized by the wall's quality", () => {
+    expect(webVideoServerSrc("http://robot-7f3a.local:8080/", "/front/image_raw")).toBe(
+      "http://robot-7f3a.local:8080/stream?topic=%2Ffront%2Fimage_raw&type=vp8&width=640&height=360&bitrate=300000",
+    )
+    const high = new URL(webVideoServerSrc("http://robot:8080", "/front/image_raw", { quality: "high", type: "h264", transport: "compressed" }))
+    expect(Object.fromEntries(high.searchParams)).toEqual({
+      topic: "/front/image_raw",
+      type: "h264",
+      width: "1280",
+      height: "720",
+      bitrate: "2000000",
+      default_transport: "compressed",
+    })
+    expect(new URL(webVideoServerSrc("http://robot:8080", "/cam", { width: 320, height: 240 })).searchParams.get("width")).toBe("320")
   })
 })
