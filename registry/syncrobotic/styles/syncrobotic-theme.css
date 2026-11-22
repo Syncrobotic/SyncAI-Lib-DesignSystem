@@ -1,4 +1,4 @@
-/* @syncrobotic/syncrobotic-theme v0.28.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
+/* @syncrobotic/syncrobotic-theme v0.30.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
 /*
  * SYNCROBOTIC theme (see CHANGELOG.md for its version history)
  * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
@@ -183,8 +183,9 @@
   --chart-4: #68686e;
   --chart-5: var(--chart-3);
 
-  /* Lighter strokes over a black halo. */
-  --annotate-predicted: var(--chart-1);
+  /* Lighter strokes over a black halo. Predicted is the high-contrast indigo, not --chart-1: on a photo the stroke meets
+     the pixels around it as well as its halo, and the chart indigo fell to 2.3:1 on mid-dark indoor pictures (4.6 now). */
+  --annotate-predicted: #b5b4ff;
   --annotate-truth: var(--chart-2);
   --annotate-previous: var(--muted-foreground);
   --annotate-selected: var(--ring);

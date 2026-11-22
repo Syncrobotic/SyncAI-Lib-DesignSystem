@@ -8,6 +8,7 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - **`theme-toggle` 0.30.0:** `variant="menu"`, one icon button that shows the choice and opens Light, Match system and Dark as a menu (the docs site's header uses it).
 
 ### Fixed
+- **`syncrobotic-theme` 0.30.0:** in the dark theme a predicted annotation is drawn in the high-contrast indigo (#b5b4ff), so it keeps 3:1 against the photo around it (2.3:1 before on mid-dark pictures). Issue #285.
 - **Docs site, phones:** the navigation drawer's areas are tabs: choosing one shows its pages under them without leaving the page, and the home page's drawer has the same tabs (Docs first).
 - **Docs site:** pages show their server HTML at once instead of fading in after the scripts, and each page loads only its own examples (initial JavaScript about 290 KB gzipped, from 580 to 900 KB); examples past the first, and block previews, draw once they near the screen.
 

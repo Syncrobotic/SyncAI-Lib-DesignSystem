@@ -16,8 +16,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.30.0",
         "changelog": [
+          {
+            "version": "0.30.0",
+            "date": "2026-11-22",
+            "note": "Dark theme: `--annotate-predicted` is the high-contrast indigo (#b5b4ff), so a predicted box keeps 3:1 against the photo around it, not only against its halo."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
