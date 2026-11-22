@@ -204,6 +204,29 @@ export const overviews: Record<string, Overview> = {
       "Pass `labels` (status words, zone kinds, instructions, positions, empty, loading, error) to translate.",
     ],
   },
+  "geo-map": {
+    what: "An outdoor map in latitude and longitude for robots that work outside: tiles from your own server or a coordinate grid that needs no network, robots with their GPS fix and accuracy, geofences, a route and trails, a goal sent on confirm, and a list with the same robots as text.",
+    use: [
+      "A patrol, farm or delivery fleet on satellite positioning: where each robot is, how good its fix is, and whether it is inside its work area.",
+      "A robot that is offline or air-gapped: the grid in degrees needs no tile server.",
+      "Sending a robot to a place on the map (Nav2's GPS waypoints, a GeoPoseStamped goal).",
+    ],
+    instead: [
+      "A site's floor plan in metres, indoors: `robot-map`.",
+      "Vector tiles, search, routing on roads, or a site across the antimeridian: a map library.",
+      "One robot's position as a value: a `metric-card` with its coordinates in words.",
+    ],
+    notes: [
+      "Offer `GeoMapList` beside `GeoMap` and share `selectedId` / `onSelect` between them.",
+      "Coordinates are WGS 84 degrees as objects (`{ lat, lon }`), never pairs, so the order is never in doubt (GeoJSON writes lon, lat). `heading` is degrees clockwise from true north. From ROS (REP 103, ENU), `enuYawToHeading(yaw)`; from `sensor_msgs/NavSatFix`, spread `navSatFixToGeo(msg)` into the robot for `lat`, `lon`, `fix` and `accuracy`. Send a goal with `geoGoalToGeoPoseStamped(goal)` (or `geoGoalToNavSatFix`).",
+      "`fix` is `rtk-fixed`, `rtk-float`, `dgps`, `gps` or `none`; `accuracy` is the horizontal accuracy in metres. NavSatFix cannot tell RTK fixed from float: `navSatFixToGeo` calls a GBAS fix within 5 cm fixed (`rtkFixedWithin`) and float otherwise.",
+      "`tileUrl` is a template with {z}, {x} and {y}, or a function from a tile to its URL (signed URLs, a local cache). `tileSize` 256 or 512; past `tileMaxZoom` the deepest tiles are drawn larger. OpenStreetMap's public tile servers forbid heavy use: run or buy a tile server, and pass its licence's words as `attribution`. Tiles are images in the page: the docs' stories use a test set made by `scripts/geo-tiles.mjs`, never a real server.",
+      "The first view fits the whole working area (robots, fences and route), unless `center` and `zoom` are given; it is then kept, so robots driving about do not pull the map along. 0 and the fit button show all robots. The map is Web Mercator, north up, zoom 2 to 22 by default (`minZoom`, `maxZoom`).",
+      "`data-tiles` on the map is `loading` or `ready` (every tile in view loaded or failed), for tests and screenshots that wait for the picture.",
+      "Goal mode is controlled: the map draws the app's `goal` and reports `onGoal` once confirmed; it keeps only the goal placed and not yet sent. Every step is said in an aria-live region; the crosshair's coordinates once the arrows rest for 400 ms. Robots' fix changes are said too, gathered into one sentence and at most once per `announceEveryMs` (3 s).",
+      "Pass `labels` and `locale` to translate and format coordinates, accuracy and distances (`geoMapLabels` in `labels-zh-tw`).",
+    ],
+  },
   "point-cloud": {
     what: "A LiDAR or depth point cloud in 3D, drawn with WebGL2: coloured by height or intensity on one hue, over a ground grid, with the robot at the origin; turned, panned and zoomed by pointer, touch and keyboard.",
     use: [

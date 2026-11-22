@@ -3666,6 +3666,652 @@
    "inherits": []
   }
  ],
+ "geo-map": [
+  {
+   "name": "GeoMap",
+   "props": [
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "Names the map for screen readers: \"Map of the orchard\"."
+    },
+    {
+     "name": "robots",
+     "type": "GeoMapRobot[]",
+     "default": "[]",
+     "description": ""
+    },
+    {
+     "name": "fences",
+     "type": "GeoMapFence[]",
+     "default": "[]",
+     "description": ""
+    },
+    {
+     "name": "route",
+     "type": "GeoPoint[]",
+     "default": "[]",
+     "description": "A route, numbered from its first waypoint: dashed grey, or the in-progress blue with `routeActive`."
+    },
+    {
+     "name": "routeActive",
+     "type": "boolean",
+     "description": "The route is the one a robot is driving now: its line turns the in-progress blue."
+    },
+    {
+     "name": "tileUrl",
+     "type": "string | ((tile: GeoMapTile) => string)",
+     "description": "Raster tiles: a URL template with {z}, {x} and {y} (`https://tiles.example.com/{z}/{x}/{y}.png`), or a function from a tile to its URL (signed URLs, a local cache). Bring your own tile server: OpenStreetMap's public servers forbid heavy use and apps that do not identify themselves. Without it the map draws a coordinate grid, which needs no network."
+    },
+    {
+     "name": "attribution",
+     "type": "ReactNode",
+     "description": "Who the tiles are from, shown on the map as their licence asks: \"© OpenStreetMap contributors\"."
+    },
+    {
+     "name": "tileSize",
+     "type": "number",
+     "default": "256",
+     "description": "Tile width in pixels: 256 (the default) or 512."
+    },
+    {
+     "name": "tileMaxZoom",
+     "type": "number",
+     "default": "19",
+     "description": "The deepest zoom level the tile server has; past it, its tiles are drawn larger. Default 19."
+    },
+    {
+     "name": "center",
+     "type": "{ lat: number; lon: number }",
+     "description": "The first view, before anyone pans or zooms. Without it the map fits the robots, the fences and the route."
+    },
+    {
+     "name": "zoom",
+     "type": "number",
+     "description": ""
+    },
+    {
+     "name": "minZoom",
+     "type": "number",
+     "default": "2",
+     "description": "Zoom limits of the view. Defaults 2 and 22."
+    },
+    {
+     "name": "maxZoom",
+     "type": "number",
+     "default": "22",
+     "description": ""
+    },
+    {
+     "name": "selectedId",
+     "type": "string | null",
+     "description": "The selected robot, controlled; null for none. Without it the map keeps its own selection."
+    },
+    {
+     "name": "onSelect",
+     "type": "(id: string | null, robot?: GeoMapRobot) => void",
+     "description": "Called with the robot clicked, or null when the background is clicked or Esc pressed."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "description": "Bones in the frame while the map loads."
+    },
+    {
+     "name": "error",
+     "type": "ReactNode",
+     "description": "The map could not be loaded: says so in the frame (`true` for the default words, or your own message)."
+    },
+    {
+     "name": "onRetry",
+     "type": "() => void",
+     "description": ""
+    },
+    {
+     "name": "fill",
+     "type": "boolean",
+     "description": "Fill the parent's height (a full-screen map) instead of a 16:10 frame."
+    },
+    {
+     "name": "mode",
+     "type": "\"view\" | \"goal\"",
+     "default": "\"view\"",
+     "description": "`goal`: a click (or Enter at the keyboard crosshair) places a goal, a drag points it, and the goal is sent on confirm."
+    },
+    {
+     "name": "goal",
+     "type": "{ lat: number; lon: number; heading?: number } | null",
+     "description": "The goal to show, controlled."
+    },
+    {
+     "name": "onGoal",
+     "type": "(goal: GeoMapGoal) => void",
+     "description": "Goal mode: the goal, once confirmed (Send, or Enter). `heading` is left out when nobody pointed it."
+    },
+    {
+     "name": "confirmGoal",
+     "type": "boolean",
+     "default": "true",
+     "description": "Ask before sending a goal placed with the pointer (default true). With false a release sends it, as robot-map does."
+    },
+    {
+     "name": "announceEveryMs",
+     "type": "number",
+     "default": "3000",
+     "description": "Robots' fix changes are said at most this often, gathered into one sentence. Default 3000 ms."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats coordinates, accuracy and distances. Pass the app's locale beside its labels."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<GeoMapLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "instructions",
+       "type": "string",
+       "default": "\"Arrow keys move the map, plus and minus zoom, 0 shows all robots. The robot list beside the map has the same robots as text.\"",
+       "description": "Read once when focus enters the map."
+      },
+      {
+       "name": "zoomIn",
+       "type": "string",
+       "default": "\"Zoom in\"",
+       "description": ""
+      },
+      {
+       "name": "zoomOut",
+       "type": "string",
+       "default": "\"Zoom out\"",
+       "description": ""
+      },
+      {
+       "name": "fit",
+       "type": "string",
+       "default": "\"Show all robots\"",
+       "description": ""
+      },
+      {
+       "name": "status",
+       "type": "Record<Status, string>",
+       "default": "{ active: \"Working\", normal: \"Idle\", warning: \"Needs attention\", danger: \"Stopped\", offline: \"Offline\" }",
+       "description": "Default words per status, for robots without statusLabel."
+      },
+      {
+       "name": "fix",
+       "type": "Record<GeoFix, string>",
+       "default": "{ \"rtk-fixed\": \"RTK fixed\", \"rtk-float\": \"RTK float\", dgps: \"DGPS fix\", gps: \"GPS fix\", none: \"No fix\" }",
+       "description": "The fix in words: \"RTK fixed\", \"GPS fix\", \"No fix\"."
+      },
+      {
+       "name": "fixWithAccuracy",
+       "type": "(fix: string, accuracy: string) => string",
+       "default": "(fix, accuracy) => `${fix} · ${accuracy}`",
+       "description": "A fix and its accuracy together: \"GPS fix · ±3 m\"."
+      },
+      {
+       "name": "accuracy",
+       "type": "(metres: number, locale?: string) => string",
+       "default": "(m, locale) => m < 1 ? `±${formatGeoNumber(Math.max(1, Math.round(m * 100)), 0, locale)} cm` : `±${formatGeoNumber(m, m < 10 ? 1 : 0, locale, 0)} m`",
+       "description": "Horizontal accuracy: \"±2 cm\", \"±0.4 m\", \"±3 m\"."
+      },
+      {
+       "name": "fenceKind",
+       "type": "Record<GeoMapFenceKind, string>",
+       "default": "{ allowed: \"Work area\", \"keep-out\": \"Keep out\" }",
+       "description": "The fence kinds' words, for unnamed fences and in the list."
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"No robots on this map right now.\"",
+       "description": "Said over the map and in the list when there are no robots."
+      },
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Loading the map\"",
+       "description": ""
+      },
+      {
+       "name": "error",
+       "type": "string",
+       "default": "\"The map could not be loaded.\"",
+       "description": ""
+      },
+      {
+       "name": "retry",
+       "type": "string",
+       "default": "\"Load again\"",
+       "description": ""
+      },
+      {
+       "name": "tilesFailed",
+       "type": "string",
+       "default": "\"Map tiles could not be loaded. Showing the coordinate grid.\"",
+       "description": "Over the map when tiles were asked for and none could be loaded: it falls back to the coordinate grid."
+      },
+      {
+       "name": "count",
+       "type": "(n: number) => string",
+       "default": "(n) => (n === 1 ? \"1 robot\" : `${n} robots`)",
+       "description": "How many robots the map shows, read with the instructions."
+      },
+      {
+       "name": "selected",
+       "type": "(name: string, status: string) => string",
+       "default": "(name, status) => `Selected: ${name}, ${status}`",
+       "description": "The selected robot, read with the instructions."
+      },
+      {
+       "name": "latitude",
+       "type": "(deg: number, digits: number, locale?: string) => string",
+       "default": "(deg, digits, locale) => `${formatGeoNumber(Math.abs(deg), digits, locale)}° ${deg < 0 ? \"S\" : \"N\"}`",
+       "description": "A latitude with `digits` decimals: \"24.900120° N\"."
+      },
+      {
+       "name": "longitude",
+       "type": "(deg: number, digits: number, locale?: string) => string",
+       "default": "(deg, digits, locale) => `${formatGeoNumber(Math.abs(deg), digits, locale)}° ${deg < 0 ? \"W\" : \"E\"}`",
+       "description": ""
+      },
+      {
+       "name": "position",
+       "type": "(lat: string, lon: string) => string",
+       "default": "(lat, lon) => `${lat}, ${lon}`",
+       "description": "A place in words, as the list, the crosshair, the goal card and the announcements write it."
+      },
+      {
+       "name": "heading",
+       "type": "(deg: number) => string",
+       "default": "(deg) => `Heading ${deg360(deg)}° ${compassPoints[Math.round(deg360(deg) / 45) % 8]}`",
+       "description": "Which way a robot or a goal faces: \"Heading 90° E\"."
+      },
+      {
+       "name": "inFence",
+       "type": "(name: string, kind: string) => string",
+       "default": "(name, kind) => `In ${name} (${kind.toLowerCase()})`",
+       "description": "GeoMapList: the fence a robot is in."
+      },
+      {
+       "name": "inUnnamedFence",
+       "type": "(kind: string) => string",
+       "default": "(kind) => `In a ${kind.toLowerCase()} area`",
+       "description": "GeoMapList: the fence a robot is in, when the fence has no name."
+      },
+      {
+       "name": "outsideAllowed",
+       "type": "string",
+       "default": "\"Outside the work area\"",
+       "description": "GeoMapList: a robot outside every allowed area, when there are allowed areas."
+      },
+      {
+       "name": "distance",
+       "type": "(metres: number, locale?: string) => string",
+       "default": "(m, locale) => (m >= 1000 ? `${formatGeoNumber(m / 1000, 1, locale, 0)} km` : `${formatGeoNumber(m, m < 1 ? 1 : 0, locale, 0)} m`)",
+       "description": "The scale bar's length: \"50 m\", \"2 km\"."
+      },
+      {
+       "name": "editKeys",
+       "type": "string",
+       "default": "\"Arrow keys move the crosshair, Shift for bigger steps; Enter or Space places the goal, Esc cancels. Right-drag or two fingers move the map.\"",
+       "description": "The keys of goal mode, read with the instructions."
+      },
+      {
+       "name": "goalHint",
+       "type": "string",
+       "default": "\"Click to place the goal, drag to point it. Esc cancels.\"",
+       "description": "The banner in goal mode, before a goal is placed."
+      },
+      {
+       "name": "goalConfirm",
+       "type": "string",
+       "default": "\"Send this goal?\"",
+       "description": "The confirm card's title, and its line on how to turn, send or cancel from the keyboard."
+      },
+      {
+       "name": "goalConfirmKeys",
+       "type": "string",
+       "default": "\"Left and right arrows turn it, Enter sends, Esc cancels.\"",
+       "description": ""
+      },
+      {
+       "name": "send",
+       "type": "string",
+       "default": "\"Send goal\"",
+       "description": ""
+      },
+      {
+       "name": "cancel",
+       "type": "string",
+       "default": "\"Cancel\"",
+       "description": ""
+      },
+      {
+       "name": "goalInKeepOut",
+       "type": "(fence: string) => string",
+       "default": "(fence) => `Inside ${fence}, a keep-out area`",
+       "description": "The confirm card's warnings: the goal is in a keep-out, or outside every allowed area."
+      },
+      {
+       "name": "goalOutsideAllowed",
+       "type": "string",
+       "default": "\"Outside the work area\"",
+       "description": ""
+      },
+      {
+       "name": "goalPlaced",
+       "type": "(position: string) => string",
+       "default": "(position) => `Goal at ${position}. Enter sends it, Esc cancels.`",
+       "description": "Said in the live region as goal mode is used."
+      },
+      {
+       "name": "goalSet",
+       "type": "(position: string, heading?: number) => string",
+       "default": "(position, heading) => `Goal sent: ${position}${heading === undefined ? \"\" : `, heading ${deg360(heading)}°`}`",
+       "description": ""
+      },
+      {
+       "name": "goalCancelled",
+       "type": "string",
+       "default": "\"Goal cancelled\"",
+       "description": ""
+      },
+      {
+       "name": "fixChanged",
+       "type": "(name: string, fix: string) => string",
+       "default": "(name, fix) => `${name}: ${fix}`",
+       "description": "Said when robots' fixes change, gathered and at most once per `announceEveryMs`: \"Patrol-2: No fix\"."
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "GeoMapList",
+   "props": [
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "Names the map for screen readers: \"Map of the orchard\"."
+    },
+    {
+     "name": "onSelect",
+     "type": "(id: string | null, robot?: GeoMapRobot) => void",
+     "description": "Called with the robot clicked, or null when the background is clicked or Esc pressed."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "description": "Bones in the frame while the map loads."
+    },
+    {
+     "name": "error",
+     "type": "ReactNode",
+     "description": "The map could not be loaded: says so in the frame (`true` for the default words, or your own message)."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<GeoMapLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "instructions",
+       "type": "string",
+       "default": "\"Arrow keys move the map, plus and minus zoom, 0 shows all robots. The robot list beside the map has the same robots as text.\"",
+       "description": "Read once when focus enters the map."
+      },
+      {
+       "name": "zoomIn",
+       "type": "string",
+       "default": "\"Zoom in\"",
+       "description": ""
+      },
+      {
+       "name": "zoomOut",
+       "type": "string",
+       "default": "\"Zoom out\"",
+       "description": ""
+      },
+      {
+       "name": "fit",
+       "type": "string",
+       "default": "\"Show all robots\"",
+       "description": ""
+      },
+      {
+       "name": "status",
+       "type": "Record<Status, string>",
+       "default": "{ active: \"Working\", normal: \"Idle\", warning: \"Needs attention\", danger: \"Stopped\", offline: \"Offline\" }",
+       "description": "Default words per status, for robots without statusLabel."
+      },
+      {
+       "name": "fix",
+       "type": "Record<GeoFix, string>",
+       "default": "{ \"rtk-fixed\": \"RTK fixed\", \"rtk-float\": \"RTK float\", dgps: \"DGPS fix\", gps: \"GPS fix\", none: \"No fix\" }",
+       "description": "The fix in words: \"RTK fixed\", \"GPS fix\", \"No fix\"."
+      },
+      {
+       "name": "fixWithAccuracy",
+       "type": "(fix: string, accuracy: string) => string",
+       "default": "(fix, accuracy) => `${fix} · ${accuracy}`",
+       "description": "A fix and its accuracy together: \"GPS fix · ±3 m\"."
+      },
+      {
+       "name": "accuracy",
+       "type": "(metres: number, locale?: string) => string",
+       "default": "(m, locale) => m < 1 ? `±${formatGeoNumber(Math.max(1, Math.round(m * 100)), 0, locale)} cm` : `±${formatGeoNumber(m, m < 10 ? 1 : 0, locale, 0)} m`",
+       "description": "Horizontal accuracy: \"±2 cm\", \"±0.4 m\", \"±3 m\"."
+      },
+      {
+       "name": "fenceKind",
+       "type": "Record<GeoMapFenceKind, string>",
+       "default": "{ allowed: \"Work area\", \"keep-out\": \"Keep out\" }",
+       "description": "The fence kinds' words, for unnamed fences and in the list."
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"No robots on this map right now.\"",
+       "description": "Said over the map and in the list when there are no robots."
+      },
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Loading the map\"",
+       "description": ""
+      },
+      {
+       "name": "error",
+       "type": "string",
+       "default": "\"The map could not be loaded.\"",
+       "description": ""
+      },
+      {
+       "name": "retry",
+       "type": "string",
+       "default": "\"Load again\"",
+       "description": ""
+      },
+      {
+       "name": "tilesFailed",
+       "type": "string",
+       "default": "\"Map tiles could not be loaded. Showing the coordinate grid.\"",
+       "description": "Over the map when tiles were asked for and none could be loaded: it falls back to the coordinate grid."
+      },
+      {
+       "name": "count",
+       "type": "(n: number) => string",
+       "default": "(n) => (n === 1 ? \"1 robot\" : `${n} robots`)",
+       "description": "How many robots the map shows, read with the instructions."
+      },
+      {
+       "name": "selected",
+       "type": "(name: string, status: string) => string",
+       "default": "(name, status) => `Selected: ${name}, ${status}`",
+       "description": "The selected robot, read with the instructions."
+      },
+      {
+       "name": "latitude",
+       "type": "(deg: number, digits: number, locale?: string) => string",
+       "default": "(deg, digits, locale) => `${formatGeoNumber(Math.abs(deg), digits, locale)}° ${deg < 0 ? \"S\" : \"N\"}`",
+       "description": "A latitude with `digits` decimals: \"24.900120° N\"."
+      },
+      {
+       "name": "longitude",
+       "type": "(deg: number, digits: number, locale?: string) => string",
+       "default": "(deg, digits, locale) => `${formatGeoNumber(Math.abs(deg), digits, locale)}° ${deg < 0 ? \"W\" : \"E\"}`",
+       "description": ""
+      },
+      {
+       "name": "position",
+       "type": "(lat: string, lon: string) => string",
+       "default": "(lat, lon) => `${lat}, ${lon}`",
+       "description": "A place in words, as the list, the crosshair, the goal card and the announcements write it."
+      },
+      {
+       "name": "heading",
+       "type": "(deg: number) => string",
+       "default": "(deg) => `Heading ${deg360(deg)}° ${compassPoints[Math.round(deg360(deg) / 45) % 8]}`",
+       "description": "Which way a robot or a goal faces: \"Heading 90° E\"."
+      },
+      {
+       "name": "inFence",
+       "type": "(name: string, kind: string) => string",
+       "default": "(name, kind) => `In ${name} (${kind.toLowerCase()})`",
+       "description": "GeoMapList: the fence a robot is in."
+      },
+      {
+       "name": "inUnnamedFence",
+       "type": "(kind: string) => string",
+       "default": "(kind) => `In a ${kind.toLowerCase()} area`",
+       "description": "GeoMapList: the fence a robot is in, when the fence has no name."
+      },
+      {
+       "name": "outsideAllowed",
+       "type": "string",
+       "default": "\"Outside the work area\"",
+       "description": "GeoMapList: a robot outside every allowed area, when there are allowed areas."
+      },
+      {
+       "name": "distance",
+       "type": "(metres: number, locale?: string) => string",
+       "default": "(m, locale) => (m >= 1000 ? `${formatGeoNumber(m / 1000, 1, locale, 0)} km` : `${formatGeoNumber(m, m < 1 ? 1 : 0, locale, 0)} m`)",
+       "description": "The scale bar's length: \"50 m\", \"2 km\"."
+      },
+      {
+       "name": "editKeys",
+       "type": "string",
+       "default": "\"Arrow keys move the crosshair, Shift for bigger steps; Enter or Space places the goal, Esc cancels. Right-drag or two fingers move the map.\"",
+       "description": "The keys of goal mode, read with the instructions."
+      },
+      {
+       "name": "goalHint",
+       "type": "string",
+       "default": "\"Click to place the goal, drag to point it. Esc cancels.\"",
+       "description": "The banner in goal mode, before a goal is placed."
+      },
+      {
+       "name": "goalConfirm",
+       "type": "string",
+       "default": "\"Send this goal?\"",
+       "description": "The confirm card's title, and its line on how to turn, send or cancel from the keyboard."
+      },
+      {
+       "name": "goalConfirmKeys",
+       "type": "string",
+       "default": "\"Left and right arrows turn it, Enter sends, Esc cancels.\"",
+       "description": ""
+      },
+      {
+       "name": "send",
+       "type": "string",
+       "default": "\"Send goal\"",
+       "description": ""
+      },
+      {
+       "name": "cancel",
+       "type": "string",
+       "default": "\"Cancel\"",
+       "description": ""
+      },
+      {
+       "name": "goalInKeepOut",
+       "type": "(fence: string) => string",
+       "default": "(fence) => `Inside ${fence}, a keep-out area`",
+       "description": "The confirm card's warnings: the goal is in a keep-out, or outside every allowed area."
+      },
+      {
+       "name": "goalOutsideAllowed",
+       "type": "string",
+       "default": "\"Outside the work area\"",
+       "description": ""
+      },
+      {
+       "name": "goalPlaced",
+       "type": "(position: string) => string",
+       "default": "(position) => `Goal at ${position}. Enter sends it, Esc cancels.`",
+       "description": "Said in the live region as goal mode is used."
+      },
+      {
+       "name": "goalSet",
+       "type": "(position: string, heading?: number) => string",
+       "default": "(position, heading) => `Goal sent: ${position}${heading === undefined ? \"\" : `, heading ${deg360(heading)}°`}`",
+       "description": ""
+      },
+      {
+       "name": "goalCancelled",
+       "type": "string",
+       "default": "\"Goal cancelled\"",
+       "description": ""
+      },
+      {
+       "name": "fixChanged",
+       "type": "(name: string, fix: string) => string",
+       "default": "(name, fix) => `${name}: ${fix}`",
+       "description": "Said when robots' fixes change, gathered and at most once per `announceEveryMs`: \"Patrol-2: No fix\"."
+      }
+     ]
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats coordinates, accuracy and distances. Pass the app's locale beside its labels."
+    },
+    {
+     "name": "robots",
+     "type": "GeoMapRobot[]",
+     "default": "[]",
+     "description": ""
+    },
+    {
+     "name": "fences",
+     "type": "GeoMapFence[]",
+     "default": "[]",
+     "description": ""
+    },
+    {
+     "name": "selectedId",
+     "type": "string | null",
+     "description": "The selected robot, controlled; null for none. Without it the map keeps its own selection."
+    },
+    {
+     "name": "onRetry",
+     "type": "() => void",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "Pick<GeoMapProps, \"label\" | \"robots\" | \"fences\" | \"selectedId\" | \"onSelect\" | \"loading\" | \"error\" | \"onRetry\" | \"locale\" | \"labels\" | \"className\">"
+   ]
+  }
+ ],
  "graph": [
   {
    "name": "Graph",
@@ -7519,12 +8165,6 @@
      "description": ""
     },
     {
-     "name": "zones",
-     "type": "RobotMapZone[]",
-     "default": "[]",
-     "description": ""
-    },
-    {
      "name": "selectedId",
      "type": "string | null",
      "description": "The selected robot, controlled; null for none. Without it the map keeps its own selection."
@@ -7533,6 +8173,12 @@
      "name": "onRetry",
      "type": "() => void",
      "description": "Shows a button under the error that tries again."
+    },
+    {
+     "name": "zones",
+     "type": "RobotMapZone[]",
+     "default": "[]",
+     "description": ""
     }
    ],
    "inherits": [

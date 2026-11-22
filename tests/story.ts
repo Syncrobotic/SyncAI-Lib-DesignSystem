@@ -54,4 +54,6 @@ async function openOnce(page: Page, id: string, theme: (typeof themes)[number]) 
 const settled: Record<string, string> = {
   // Stalled is timed from the first frame's arrival, and frames arrive on real time.
   "display-camera-feed--camera-feed-stalled": '[data-state="stalled"]',
+  // Tiles load as images, on real time; the map says when every tile in view has loaded.
+  "charts-geo-map--geo-map-tiles": '[data-tiles="ready"]',
 }

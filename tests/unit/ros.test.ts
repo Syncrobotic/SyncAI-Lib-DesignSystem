@@ -2,11 +2,17 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import {
   createRosConnection,
   diagnosticArrayToStatuses,
+  enuYawToHeading,
+  geoGoalToGeoPoseStamped,
+  geoGoalToNavSatFix,
+  geoPointToGeo,
   goalToPoseStamped,
+  headingToEnuYaw,
   isZeroTwist,
   jointStateToJoints,
   laserScanToScan,
   mergeDiagnostics,
+  navSatFixToGeo,
   occupancyGridToGrid,
   parseRosJson,
   pointCloud2ToPoints,
@@ -21,6 +27,7 @@ import {
   yawToQuaternion,
   zeroTwist,
   type RosConnectionOptions,
+  type RosNavSatFix,
   type RosPointCloud2,
   type RosTwist,
 } from "@/registry/syncrobotic/lib/ros"
@@ -28,6 +35,7 @@ import { gridToPlan, rasteriseGrid, rosToPlan, scanToPoints, type RobotMapGrid, 
 import type { JointStateJoint } from "@/registry/syncrobotic/ui/joint-state"
 import type { DiagnosticStatus } from "@/registry/syncrobotic/ui/diagnostics"
 import type { LogLine } from "@/registry/syncrobotic/ui/log-viewer"
+import type { GeoMapGoal, GeoMapRobot, GeoPoint } from "@/registry/syncrobotic/ui/geo-map"
 import { fakeRosbridge } from "./fake-rosbridge"
 
 // The rosbridge client against a fake socket (the server is played by the test), and the converters against messages
@@ -771,5 +779,73 @@ describe("rosLogToLogLine", () => {
 
   it("falls back to when it was received for a message with no stamp", () => {
     expect(rosLogToLogLine({ level: 20, msg: "ok" }, { receivedAt: 5 })).toEqual({ time: 5, level: "info", message: "ok" })
+  })
+})
+
+describe("geo converters", () => {
+  const fix = (status: number, sigma?: number): RosNavSatFix => ({
+    header: { stamp: { sec: 10, nanosec: 500_000_000 }, frame_id: "gps" },
+    status: { status, service: 1 },
+    latitude: 24.9,
+    longitude: 121.2,
+    altitude: 112.5,
+    position_covariance: sigma === undefined ? [0, 0, 0, 0, 0, 0, 0, 0, 0] : [sigma ** 2, 0, 0, 0, sigma ** 2, 0, 0, 0, 4 * sigma ** 2],
+    position_covariance_type: sigma === undefined ? 0 : 2,
+  })
+
+  it("reads a NavSatFix as geo-map's robot fields: the fix in words and the horizontal accuracy", () => {
+    const robot: GeoMapRobot = { id: "a", name: "A", status: "active", ...navSatFixToGeo(fix(2, 0.01)) }
+    expect(robot.fix).toBe("rtk-fixed")
+    expect(robot.accuracy).toBeCloseTo(Math.SQRT2 * 0.01, 9)
+    expect(navSatFixToGeo(fix(2, 0.01))).toMatchObject({ lat: 24.9, lon: 121.2, altitude: 112.5, time: 10500 })
+    // GBAS past the RTK-fixed threshold is float; the threshold can be set.
+    expect(navSatFixToGeo(fix(2, 0.3)).fix).toBe("rtk-float")
+    expect(navSatFixToGeo(fix(2, 0.3), { rtkFixedWithin: 1 }).fix).toBe("rtk-fixed")
+    expect(navSatFixToGeo(fix(2)).fix).toBe("rtk-float")
+    expect(navSatFixToGeo(fix(1, 0.7)).fix).toBe("dgps")
+    expect(navSatFixToGeo(fix(0, 2)).fix).toBe("gps")
+    expect(navSatFixToGeo(fix(0, 2)).accuracy).toBeCloseTo(2 * Math.SQRT2, 9)
+    // Unknown covariance: no accuracy.
+    expect(navSatFixToGeo(fix(0)).accuracy).toBeUndefined()
+    // No fix (−1), unknown (−2, ROS 2 Jazzy) and NaN coordinates are no fix, with no accuracy.
+    expect(navSatFixToGeo(fix(-1, 3))).toMatchObject({ fix: "none" })
+    expect(navSatFixToGeo(fix(-1, 3)).accuracy).toBeUndefined()
+    expect(navSatFixToGeo(fix(-2)).fix).toBe("none")
+    expect(navSatFixToGeo({ ...fix(0), latitude: NaN }).fix).toBe("none")
+  })
+
+  it("reads a GeoPoint, a GeoPose and a GeoPoseStamped", () => {
+    const p = { latitude: 1, longitude: 2, altitude: 3 }
+    const point: GeoPoint = geoPointToGeo(p)
+    expect(point).toEqual({ lat: 1, lon: 2 })
+    expect(geoPointToGeo({ position: p })).toEqual({ lat: 1, lon: 2 })
+    expect(geoPointToGeo({ pose: { position: p } })).toEqual({ lat: 1, lon: 2 })
+  })
+
+  it("turns compass headings and ENU yaw into each other", () => {
+    expect(enuYawToHeading(0)).toBeCloseTo(90)
+    expect(enuYawToHeading(Math.PI / 2)).toBeCloseTo(0)
+    expect(enuYawToHeading(Math.PI)).toBeCloseTo(270)
+    expect(headingToEnuYaw(0)).toBeCloseTo(Math.PI / 2)
+    expect(enuYawToHeading(headingToEnuYaw(123))).toBeCloseTo(123)
+  })
+
+  it("sends a geo-map goal as a GeoPoseStamped or a NavSatFix", () => {
+    const goal: GeoMapGoal = { lat: 24.9, lon: 121.2, heading: 90 }
+    const pose = geoGoalToGeoPoseStamped(goal)
+    expect(pose.header).toEqual({ frame_id: "wgs84" })
+    expect(pose.pose.position).toEqual({ latitude: 24.9, longitude: 121.2, altitude: 0 })
+    // Heading 90° (east) is yaw 0 in ENU: the identity quaternion.
+    expect(quaternionToYaw(pose.pose.orientation)).toBeCloseTo(0)
+    expect(quaternionToYaw(geoGoalToGeoPoseStamped({ ...goal, heading: 0 }).pose.orientation)).toBeCloseTo(Math.PI / 2)
+    expect(geoGoalToGeoPoseStamped({ lat: 1, lon: 2 }, { frameId: "earth", stamp: { sec: 1, nanosec: 0 }, altitude: 50 })).toMatchObject({
+      header: { frame_id: "earth", stamp: { sec: 1, nanosec: 0 } },
+      pose: { position: { altitude: 50 } },
+    })
+    const nav = geoGoalToNavSatFix(goal)
+    expect(nav).toMatchObject({ status: { status: 0, service: 1 }, latitude: 24.9, longitude: 121.2, altitude: 0, position_covariance_type: 0 })
+    expect(nav.position_covariance).toHaveLength(9)
+    // A NavSatFix read back is the same place.
+    expect(navSatFixToGeo(nav)).toMatchObject({ lat: 24.9, lon: 121.2, fix: "gps" })
   })
 })

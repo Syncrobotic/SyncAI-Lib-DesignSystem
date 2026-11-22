@@ -21,6 +21,9 @@ declare module "@/registry/syncrobotic/ui/toast?react-compiler" {
 declare module "@/registry/syncrobotic/ui/streaming-chart?react-compiler" {
   export * from "@/registry/syncrobotic/ui/streaming-chart"
 }
+declare module "@/registry/syncrobotic/ui/geo-map?react-compiler" {
+  export * from "@/registry/syncrobotic/ui/geo-map"
+}
 declare module "@/registry/syncrobotic/ui/diagnostics?react-compiler" {
   export * from "@/registry/syncrobotic/ui/diagnostics"
 }

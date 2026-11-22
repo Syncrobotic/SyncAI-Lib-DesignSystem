@@ -29,6 +29,7 @@ import type { PhoneInputLabels } from "@/registry/syncrobotic/ui/phone-input"
 import type { PointCloudLabels } from "@/registry/syncrobotic/ui/point-cloud"
 import type { QuestionnaireLabels } from "@/registry/syncrobotic/ui/questionnaire"
 import type { RobotMapLabels } from "@/registry/syncrobotic/ui/robot-map"
+import type { GeoMapLabels } from "@/registry/syncrobotic/ui/geo-map"
 import type { RobotModelLabels } from "@/registry/syncrobotic/ui/robot-model"
 import type { RouteProgressLabels } from "@/registry/syncrobotic/ui/route-progress"
 import type { SearchFieldLabels } from "@/registry/syncrobotic/ui/search-field"
@@ -71,6 +72,8 @@ it("fits every component's labels type", () => {
   fits<PointCloudLabels>()(zh.pointCloudLabels)
   fits<RobotMapLabels>()(zh.robotMapLabels)
   fits<RobotMapLabels>()(zh.robotMapListLabels)
+  fits<GeoMapLabels>()(zh.geoMapLabels)
+  fits<GeoMapLabels>()(zh.geoMapListLabels)
   fits<AnnotatedImageLabels>()(zh.annotatedImageLabels)
   fits<Pick<AnnotatedImageLabels, "legend" | "previous" | "predicted" | "truth">>()(zh.annotationLegendLabels)
   fits<GraphLabels>()(zh.graphLabels)

@@ -2,6 +2,13 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **`geo-map` 0.29.0 (beta):** an outdoor map in latitude and longitude for robots that work outside (security patrol, agriculture, delivery), beside `robot-map`'s indoor floor plan and in its look. No map library: Web Mercator and slippy-map raster tiles drawn in SVG from your own tile server (`tileUrl` with {z}/{x}/{y}, or a function) with its `attribution`, or, with no tiles or when none load, a coordinate grid in degrees that needs no network, for robots that are offline or air-gapped. OpenStreetMap's public tile servers forbid heavy use: bring your own. Robots are their status shape with a heading tick, an accuracy circle and their GPS fix in words (RTK fixed, GPS fix · ±3 m, No fix); geofences are outlines (keep-outs hatched, never red); a route with numbered waypoints, blue only while it is driven, and each robot's trail. Pan by drag and arrow keys, zoom by wheel, pinch, + / - and buttons, 0 fits the robots, a scale bar in m and km. Goal mode places a goal by pointer or keys and sends it on confirm, warning when it is in a keep-out or outside the work area. `GeoMapList` writes the robots with their coordinates as text; fix changes are announced, gathered and throttled. On [Robotics UI kit](https://design-system.syncrobotic.me/docs/robotics) under Driving and missions.
+- **`ros` 0.29.0:** `navSatFixToGeo` (a `sensor_msgs/NavSatFix` to geo-map's `lat`, `lon`, `fix` and `accuracy`), `geoPointToGeo` (`geographic_msgs/GeoPoint`, GeoPose, GeoPoseStamped), `geoGoalToGeoPoseStamped` and `geoGoalToNavSatFix` (a geo-map goal back to ROS), `enuYawToHeading` and `headingToEnuYaw`.
+- **`labels-zh-tw` 0.29.0:** `geoMapLabels` and `geoMapListLabels`.
+
 ## 0.28.0 · 2026-11-22
 
 Four new components for robot consoles (streaming chart, log viewer, diagnostics, sidebar) and the fixes from a page-by-page audit of every component, block and docs page. Read **Changed** before upgrading: a few defaults and words change.

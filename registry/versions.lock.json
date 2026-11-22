@@ -12,12 +12,12 @@
     "hash": "8ec920f8618ff43d"
   },
   "labels-zh-tw": {
-    "version": "0.28.0",
-    "hash": "40d028b636d7ae25"
+    "version": "0.29.0",
+    "hash": "a9b8a1d5feb892ce"
   },
   "ros": {
-    "version": "0.28.0",
-    "hash": "4bcd3c707283d90b"
+    "version": "0.29.0",
+    "hash": "0ce713a6ffc2bc96"
   },
   "use-long-press": {
     "version": "0.5.1",
@@ -86,6 +86,10 @@
   "button": {
     "version": "0.17.1",
     "hash": "939af3f1ab76abb6"
+  },
+  "geo-map": {
+    "version": "0.29.0",
+    "hash": "da9a2c0c255e6d31"
   },
   "spinner": {
     "version": "0.23.0",
