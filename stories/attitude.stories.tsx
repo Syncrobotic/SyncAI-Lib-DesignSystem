@@ -20,8 +20,12 @@ const animate = () =>
 const dogLimits: AttitudeLimits = { roll: { warning: 25, critical: 35 }, pitch: { warning: 20, critical: 30 } }
 
 /** Level enough: 12° to the left, nose 3° down, heading west. Every value is written beside the drawing. */
-export const AttitudeDefault: S = {
-  render: () => <AttitudeIndicator label="Attitude, Patrol dog 7F3A" roll={-12} pitch={3} heading={271} limits={dogLimits} />,
+export const AttitudeDefault: StoryObj<{ roll: number; pitch: number; heading: number; size: "md" | "lg" }> = {
+  // Args, so any pose can be opened from the URL (…&args=roll:-27;pitch:15;size:lg) to check the drawing at it.
+  args: { roll: -12, pitch: 3, heading: 271, size: "md" },
+  render: ({ roll, pitch, heading, size }) => (
+    <AttitudeIndicator label="Attitude, Patrol dog 7F3A" roll={Number(roll)} pitch={Number(pitch)} heading={Number(heading)} size={size} limits={dogLimits} />
+  ),
 }
 
 /** Past the 25° roll warning: the value, the bank pointer, the robot's symbol and the limit's triangle turn warning, and say so. */

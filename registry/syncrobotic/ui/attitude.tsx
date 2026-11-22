@@ -410,10 +410,31 @@ export type AttitudeIndicatorProps = {
 type AttitudeReading = { roll: number | undefined; pitch: number | undefined; heading: number | undefined }
 
 const INSTRUMENT_PX = { md: 192, lg: 256 } as const
-/** Pitch shown either side of the horizon's centre: the disc's radius is this many degrees. */
-const PITCH_SPAN = 35
 const ROLL_TICKS = [-60, -45, -30, -20, -10, 0, 10, 20, 30, 45, 60]
-const LADDER = [-80, -70, -60, -50, -40, -30, -20, -10, -5, 5, 10, 20, 30, 40, 50, 60, 70, 80]
+/** Rungs every 10°; only ±10 and ±20 carry a number, the ones read most. */
+const LADDER = [-80, -70, -60, -50, -40, -30, -20, -10, 10, 20, 30, 40, 50, 60, 70, 80]
+const LADDER_LABELLED = new Set([-20, -10, 10, 20])
+/** A bank tick this close to a limit gives the limit's mark its room. */
+const TICK_CLEARANCE = 7
+
+/**
+ * The instrument's geometry in CSS pixels, from the outside in (md: c 96, R 66, ladder 42):
+ * 8 px for the heading mark above the ring; the compass ring (ticks, then the letters inside them); the horizon disc,
+ * whose outer 24 px hold the bank scale, its limit marks and pointer, and the robot's wings; and the ladder's disc inside
+ * that, where the pitch rungs and their numbers live. `k` is px per degree of pitch, so the ±20° rungs and their numbers
+ * fit inside the ladder's disc when level.
+ */
+function instrumentGeometry(size: keyof typeof INSTRUMENT_PX) {
+  const px = INSTRUMENT_PX[size]
+  const c = px / 2
+  const ring = c - 8
+  const R = c - 30
+  const ladder = R - 24
+  // The limit marks on the bank scale, about the kit's 12 px status glyph: big enough to read, placed on the disc's edge so a
+  // warning and a critical limit 10° apart (the patrol dog's 25° and 35°) stay two shapes at md.
+  const mark = size === "lg" ? 12 : 10
+  return { px, c, ring, R, ladder, k: ladder / 32, mark }
+}
 
 const axisTone = (v: number | undefined, limit: AttitudeLimit | undefined): MeterTone =>
   v === undefined || !limit ? "normal" : meterTone(Math.abs(v), { low: limit.warning, critical: limit.critical, higherIsWorse: true })
@@ -491,7 +512,7 @@ export function AttitudeIndicator({
   const svgRef = React.useRef<SVGSVGElement>(null)
   const compassG = React.useRef<SVGGElement>(null)
   React.useEffect(() => {
-    const k = (INSTRUMENT_PX[size] / 2 - 28) / PITCH_SPAN
+    const { k } = instrumentGeometry(size)
     const draw = (v: AttitudeReading) => {
       const svg = svgRef.current
       if (!svg) return
@@ -552,12 +573,10 @@ export function AttitudeIndicator({
   const staleText = stale ? `${l.stale}, ${l.lastUpdate(l.formatTime(new Date(stale.at), timeLocale))}` : ""
 
   // The drawing's geometry, in CSS pixels (the viewBox is the instrument's own size, so text is drawn at 12 px).
-  const px = INSTRUMENT_PX[size]
-  const c = px / 2
-  const R = c - 28
-  const k = R / PITCH_SPAN
+  const { px, c, ring, R, ladder, k, mark } = instrumentGeometry(size)
   const rollLimit = limits?.roll
   const pitchLimit = limits?.pitch
+  const rollMarks = [rollLimit?.warning, rollLimit?.critical].filter((v) => v !== undefined)
   // The drawing's transforms come from the props only: a pushed reading is drawn by the engine, and React leaves an
   // attribute alone while the prop behind it does not change, so the two never fight.
   const headingShown = heading ?? shown.heading
@@ -585,38 +604,35 @@ export function AttitudeIndicator({
         data-slot="attitude-instrument"
         className={cn("shrink-0", size === "lg" ? "size-64" : "size-48", stale && "opacity-50")}
       >
-        <svg ref={svgRef} aria-hidden="true" viewBox={`${-c} ${-c} ${px} ${px}`} className="size-full overflow-visible">
-          <Horizon
-            R={R}
-            k={k}
-            roll={roll}
-            pitch={pitch}
-            rollTone={rollTone}
-            pitchTone={pitchTone}
-            pitchLimit={pitchLimit}
-            locale={locale}
-          />
-          {/* The bank scale, fixed to the frame: the pointer on the horizon turns against it. Limits are the kit's status
-              shapes (a triangle for warning, a square for critical), coloured once the roll is past them. */}
+        <svg ref={svgRef} aria-hidden="true" viewBox={`${-c} ${-c} ${px} ${px}`} className="size-full">
+          <Horizon R={R} ladder={ladder} k={k} roll={roll} pitch={pitch} rollTone={rollTone} pitchTone={pitchTone} pitchLimit={pitchLimit} locale={locale} />
+          {/* The bank scale, fixed to the frame: the pointer on the horizon turns against it. Its limits are the kit's status
+              shapes at the glyph's size (a triangle for warning, a square for critical), grey until the roll is past them;
+              the ticks nearest a limit give it room. */}
           <g data-slot="attitude-roll-scale">
-            {ROLL_TICKS.filter((a) => !rollLimit || (Math.abs(a) !== rollLimit.warning && Math.abs(a) !== rollLimit.critical)).map((a) => {
+            {ROLL_TICKS.filter((a) => !rollMarks.some((m) => Math.abs(Math.abs(a) - m) < TICK_CLEARANCE)).map((a) => {
               const major = a % 30 === 0
               const p1 = polar(a, R)
-              const p2 = polar(a, R - (major ? 12 : 8))
+              const p2 = polar(a, R - (major ? 10 : 6))
               return <line key={a} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} strokeWidth={2} className="stroke-muted-foreground" />
             })}
-            {rollLimit?.warning !== undefined &&
-              [-1, 1].map((s) => {
-                const p = polar(s * rollLimit.warning!, R - 6)
-                return <LimitMark key={`w${s}`} x={p.x} y={p.y} kind="warning" on={rollTone !== "normal"} />
-              })}
-            {rollLimit?.critical !== undefined &&
-              [-1, 1].map((s) => {
-                const p = polar(s * rollLimit.critical!, R - 6)
-                return <LimitMark key={`c${s}`} x={p.x} y={p.y} kind="danger" on={rollTone === "danger"} />
-              })}
+            {(
+              [
+                ["warning", rollLimit?.warning],
+                ["danger", rollLimit?.critical],
+              ] as const
+            ).map(([kind, v]) =>
+              v === undefined
+                ? null
+                : [-1, 1].map((s) => {
+                    const p = polar(s * v, R - mark / 2 - 0.5)
+                    const on = kind === "danger" ? rollTone === "danger" : rollTone !== "normal"
+                    return <LimitMark key={`${kind}${s}`} x={p.x} y={p.y} kind={kind} on={on} size={mark} />
+                  }),
+            )}
           </g>
-          {/* The robot, fixed: wings and a centre dot in the ink, in the tone's colour past a limit. */}
+          {/* The robot, fixed: a centre dot and wings in the ring between the ladder and the disc's edge, so no rung or
+              number ever runs under them. In the ink, in the tone's colour past a limit. */}
           <g
             data-slot="attitude-robot"
             className={cn("stroke-foreground", worst === "warning" && "stroke-warning", worst === "danger" && "stroke-danger")}
@@ -624,12 +640,13 @@ export function AttitudeIndicator({
             strokeLinecap="round"
             fill="none"
           >
-            <path d={`M${-R * 0.62} 0H${-R * 0.22}M${R * 0.22} 0H${R * 0.62}`} />
+            <path d={`M${-(R - 6)} 0H${-(ladder + 4)}M${ladder + 4} 0H${R - 6}`} />
             <circle r={2} />
           </g>
-          {/* The compass ring: the card turns so the heading is under the mark at the top. */}
-          <circle r={c - 1} fill="none" strokeWidth={1} className="stroke-border" />
           <circle r={R} fill="none" strokeWidth={1} className="stroke-border" />
+          {/* The compass ring: the card turns so the heading is under the mark above the ring; the letters sit inside the
+              ticks and turn back to stay upright, and the mark never covers one. */}
+          <circle r={ring} fill="none" strokeWidth={1} className="stroke-border" />
           <g
             ref={compassG}
             data-slot="attitude-compass"
@@ -638,12 +655,12 @@ export function AttitudeIndicator({
           >
             {Array.from({ length: 36 }, (_, i) => i * 10).map((a) => {
               if (a % 90 === 0) return null
-              const p1 = polar(a, c - 2)
-              const p2 = polar(a, c - (a % 30 === 0 ? 10 : 6))
+              const p1 = polar(a, ring - 1)
+              const p2 = polar(a, ring - (a % 30 === 0 ? 9 : 5))
               return <line key={a} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} strokeWidth={a % 30 === 0 ? 2 : 1} className="stroke-muted-foreground" />
             })}
             {cardinal.map((name, i) => {
-              const p = polar(i * 90, c - 13)
+              const p = polar(i * 90, ring - 12)
               return (
                 <text
                   key={i}
@@ -662,7 +679,7 @@ export function AttitudeIndicator({
           </g>
           <path
             data-slot="attitude-lubber"
-            d={`M0 ${-(c - 18)}L5 ${-(c - 6)}H-5Z`}
+            d={`M0 ${-(ring + 1)}L5 ${-(c - 1)}H-5Z`}
             visibility={headingShown === undefined ? "hidden" : undefined}
             className="fill-foreground"
           />
@@ -700,11 +717,13 @@ export function AttitudeIndicator({
 
 /**
  * The moving part, in two layers that turn and slide together: the ground and the horizon line on the whole disc, with the
- * bank pointer; and the pitch ladder with its limit lines on a smaller disc inside it, so the ladder never runs into the
- * bank scale. Each layer is clipped in the frame's coordinates, outside its own transforms.
+ * bank pointer; and the pitch ladder with its limit lines on a smaller disc inside it, clear of the bank scale and the
+ * robot's wings. Each layer is clipped in the frame's coordinates, outside its own transforms. A rung's number sits past
+ * its right end, so it never lies on a line, and a pitch limit is a dashed rung.
  */
 function Horizon({
   R,
+  ladder,
   k,
   roll,
   pitch,
@@ -714,6 +733,7 @@ function Horizon({
   locale,
 }: {
   R: number
+  ladder: number
   k: number
   roll: number | undefined
   pitch: number | undefined
@@ -729,6 +749,8 @@ function Horizon({
   const far = R * 6
   const rollAt = `rotate(${-(roll ?? 0)})`
   const pitchAt = `translate(0 ${-clampPitch(pitch ?? 0) * k})`
+  const w = ladder * 0.2
+  const limitsAt = [pitchLimit?.warning, pitchLimit?.critical]
   return (
     <>
       <defs>
@@ -736,7 +758,7 @@ function Horizon({
           <circle r={R} />
         </clipPath>
         <clipPath id={inner}>
-          <circle r={R - 22} />
+          <circle r={ladder} />
         </clipPath>
       </defs>
       <g clipPath={`url(#${disc})`}>
@@ -747,10 +769,10 @@ function Horizon({
             {/* The horizon: the one accent, the mark to read. */}
             <line data-slot="attitude-horizon" x1={-far} x2={far} y1={0} y2={0} strokeWidth={2} style={{ stroke: "var(--chart-1)" }} />
           </g>
-          {/* The bank pointer turns with the horizon and points at the scale. */}
+          {/* The bank pointer turns with the horizon and points at the scale, inside the limit marks. */}
           <path
             data-slot="attitude-roll-pointer"
-            d={`M0 ${-(R - 13)}L6 ${-(R - 22)}H-6Z`}
+            d={`M0 ${-(R - 14)}L6 ${-(R - 22)}H-6Z`}
             className={cn("fill-foreground", rollTone === "warning" && "fill-warning", rollTone === "danger" && "fill-danger")}
           />
         </g>
@@ -759,29 +781,21 @@ function Horizon({
         <g data-slot="attitude-roll-layer" transform={rollAt}>
           <g data-slot="attitude-pitch-layer" transform={pitchAt}>
             {LADDER.map((p) => {
-              const ten = p % 10 === 0
-              const w = R * (ten ? 0.22 : 0.1)
               const y = -p * k
               return (
-                <g key={p}>
+                <g key={p} data-slot="attitude-rung">
                   {/* A limit draws its own dashed line here instead. */}
-                  {Math.abs(p) !== pitchLimit?.warning && Math.abs(p) !== pitchLimit?.critical && (
-                    <line x1={-w} x2={w} y1={y} y2={y} strokeWidth={1} className="stroke-muted-foreground" />
-                  )}
-                  {ten && (
-                    <>
-                      <text x={-w - 4} y={y} textAnchor="end" dominantBaseline="central" className="fill-muted-foreground text-xs tabular-nums">
-                        {formatReading(Math.abs(p), 0, locale)}
-                      </text>
-                      <text x={w + 4} y={y} textAnchor="start" dominantBaseline="central" className="fill-muted-foreground text-xs tabular-nums">
-                        {formatReading(Math.abs(p), 0, locale)}
-                      </text>
-                    </>
+                  {!limitsAt.includes(Math.abs(p)) && <line x1={-w} x2={w} y1={y} y2={y} strokeWidth={1} className="stroke-muted-foreground" />}
+                  {LADDER_LABELLED.has(p) && (
+                    <text x={w + 4} y={y} textAnchor="start" dominantBaseline="central" className="fill-muted-foreground text-xs tabular-nums">
+                      {formatReading(Math.abs(p), 0, locale)}
+                    </text>
                   )}
                 </g>
               )
             })}
-            {/* Pitch limits: dashed lines across the ladder, as a chart draws its limits, with the status shape at the end. */}
+            {/* Pitch limits: dashed rungs, as a chart draws its limits, in the tone's colour once crossed. No mark: on a
+                ladder that slides, a shape at the rung's end is cut by the disc or crowds the centre; the readout says it. */}
             {(
               [
                 ["warning", pitchLimit?.warning],
@@ -794,17 +808,16 @@ function Horizon({
                     const y = -s * v * k
                     const on = kind === "danger" ? pitchTone === "danger" : pitchTone !== "normal"
                     return (
-                      <g key={`${kind}${s}`}>
+                      <g key={`${kind}${s}`} data-slot="attitude-pitch-limit">
                         <line
-                          x1={-R * 0.45}
-                          x2={R * 0.45}
+                          x1={-w}
+                          x2={w}
                           y1={y}
                           y2={y}
                           strokeWidth={2}
-                          strokeDasharray="4 4"
+                          strokeDasharray="3 3"
                           className={cn("stroke-muted-foreground", on && (kind === "danger" ? "stroke-danger" : "stroke-warning"))}
                         />
-                        <LimitMark x={R * 0.45 + 6} y={y} kind={kind} on={on} />
                       </g>
                     )
                   }),
