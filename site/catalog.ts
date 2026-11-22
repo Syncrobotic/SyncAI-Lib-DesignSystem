@@ -57,6 +57,7 @@ export type StoryFile =
   | "annotated-image"
   | "media-player"
   | "camera-feed"
+  | "camera-wall"
   | "joint-state"
   | "diagnostics"
   | "tree"
@@ -760,6 +761,20 @@ const entries: Record<string, Entry> = {
       "Offer Reconnect (`onRetry`) only when reconnecting can help, and say why it is offline in `offlineReason` when you know.",
     ],
   },
+  "camera-wall": {
+    wide: true,
+    group: "Robotics",
+    examples: { file: "camera-wall", prefix: "CameraWall" },
+    rules: [
+      "For watching several robots' cameras at once (4 to 16 on a screen). One camera on a robot's page is `camera-feed`.",
+      "`getSource(camera, { quality })` is the product's: return the same stream (or URL) for the same camera and quality, from a cache, and open connections lazily. Close what `onLiveChange` no longer lists. For ROS image topics, `webVideoServerSrc` from `ros` builds the URL.",
+      "Only the focused camera asks for \"high\"; tiles ask for \"low\". Serve a smaller stream for low (640×360 or less): sixteen full-size streams decode slower than any screen can show them.",
+      "Set `maxLive` to what the operator's machine and the site's uplink can carry (9 by default); the rest show their last still with \"Paused to save bandwidth\", and focusing one plays it. Give each camera a `poster` (a snapshot URL) so a paused tile is never blank.",
+      "Pass the robot's most urgent active alarm as `alarm` (priority and title): it sorts the tile first and marks it by shape and word. The alarm list announces alarms; the wall announces only cameras that stall, go offline or come back.",
+      "Keep the default sort, attention first, on a wall people watch for problems; by name suits a wall people search.",
+      "Give every camera a stable `id` and the same `label` and `source` as its robot's page, so the tile, the large view and the screen reader say the same name.",
+    ],
+  },
   "joint-state": {
     wide: true,
     group: "Robotics",
@@ -1366,6 +1381,16 @@ const keyboard: Record<string, [string, string][]> = {
   "camera-feed": [
     ["`Space`", "Pause or resume the view (Space on a focused button presses that button)"],
     ["`F`", "Full screen, or leave it (Esc leaves it too)"],
+  ],
+  "camera-wall": [
+    ["`Tab`", "Reach the cameras once (the last one you were on); Tab again leaves"],
+    ["`←` `→`", "Previous or next camera"],
+    ["`↑` `↓`", "The camera above or below, in the grid"],
+    ["`Home` / `End`", "First or last camera on the page"],
+    ["`PageUp` / `PageDown`", "Previous or next page of cameras"],
+    ["`Enter` / `Space`", "Show the camera large, with the rest in a strip"],
+    ["`Esc`", "Back to all cameras, on the page of the one you showed"],
+    ["`Space` / `F`", "On the large camera: pause the view, full screen (as camera-feed)"],
   ],
   "annotated-image": [
     ["`Tab`", "Reach the picture's annotations once; Tab again leaves"],

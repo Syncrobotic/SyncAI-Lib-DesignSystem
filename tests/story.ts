@@ -54,4 +54,6 @@ async function openOnce(page: Page, id: string, theme: (typeof themes)[number]) 
 const settled: Record<string, string> = {
   // Stalled is timed from the first frame's arrival, and frames arrive on real time.
   "display-camera-feed--camera-feed-stalled": '[data-state="stalled"]',
+  // The same for one tile of the wall; the other tiles are Live once their first frame has arrived.
+  "display-camera-wall--camera-wall-stalled": '[data-slot="camera-wall-tile"][data-state="stalled"]',
 }

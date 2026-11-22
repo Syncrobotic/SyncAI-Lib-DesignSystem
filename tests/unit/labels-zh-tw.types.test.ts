@@ -7,6 +7,7 @@ import type { AttachmentLabels } from "@/registry/syncrobotic/ui/attachment"
 import type { AutocompleteLabels } from "@/registry/syncrobotic/ui/autocomplete"
 import type { BreadcrumbLabels } from "@/registry/syncrobotic/ui/breadcrumb"
 import type { CameraFeedLabels } from "@/registry/syncrobotic/ui/camera-feed"
+import type { CameraWallLabels } from "@/registry/syncrobotic/ui/camera-wall"
 import type { ChipGroupLabels } from "@/registry/syncrobotic/ui/chip-group"
 import type { CodeBlockLabels } from "@/registry/syncrobotic/ui/code-block"
 import type { CommandDialogLabels } from "@/registry/syncrobotic/ui/command"
@@ -64,6 +65,8 @@ it("fits every component's labels type", () => {
   fits<TeleopPadLabels>()(zh.teleopPadLabels)
   fits<IslandLabels>()(zh.islandLabels)
   fits<CameraFeedLabels>()(zh.cameraFeedLabels)
+  fits<CameraWallLabels>()(zh.cameraWallLabels)
+  fits<CameraFeedLabels>()(zh.cameraFeedStateLineLabels)
   fits<JointStateLabels>()(zh.jointStateLabels)
   fits<StreamingChartLabels>()(zh.streamingChartLabels)
   fits<DiagnosticsLabels>()(zh.diagnosticsLabels)

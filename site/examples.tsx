@@ -27,6 +27,7 @@ import * as s_image_grid from "@/stories/image-grid.stories"
 import * as s_annotated_image from "@/stories/annotated-image.stories"
 import * as s_media_player from "@/stories/media-player.stories"
 import * as s_camera_feed from "@/stories/camera-feed.stories"
+import * as s_camera_wall from "@/stories/camera-wall.stories"
 import * as s_joint_state from "@/stories/joint-state.stories"
 import * as s_diagnostics from "@/stories/diagnostics.stories"
 import * as s_tree from "@/stories/tree.stories"
@@ -128,6 +129,7 @@ const files: Record<Exclude<StoryFile, LazyFile>, StoryModule> = {
   "annotated-image": s_annotated_image as unknown as StoryModule,
   "media-player": s_media_player as unknown as StoryModule,
   "camera-feed": s_camera_feed as unknown as StoryModule,
+  "camera-wall": s_camera_wall as unknown as StoryModule,
   "joint-state": s_joint_state as unknown as StoryModule,
   diagnostics: s_diagnostics as unknown as StoryModule,
   tree: s_tree as unknown as StoryModule,

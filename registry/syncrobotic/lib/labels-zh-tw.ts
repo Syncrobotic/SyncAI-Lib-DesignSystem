@@ -1,4 +1,4 @@
-// @syncrobotic/labels-zh-tw v0.28.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
+// @syncrobotic/labels-zh-tw v0.29.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
 // The kit's words in Traditional Chinese as written in Taiwan, one object per component that takes `labels`. Pass each
 // to its component (`<DataGrid labels={dataGridLabels} />`) with `locale="zh-TW"` where the component formats numbers,
 // days or times. The file imports no component, so it installs on its own; the kit's tests hold every object to the
@@ -133,6 +133,39 @@ export const cameraFeedLabels = {
   snapshot: "拍攝快照",
   fullscreen: "全螢幕",
   exitFullscreen: "離開全螢幕",
+}
+
+// CameraFeedStateLine (a wall tile's state) takes the same words as the feed.
+export const cameraFeedStateLineLabels = cameraFeedLabels
+
+// 頻寬 (bandwidth) and 攝影機 (camera) as Taiwan writes them; alarm priorities as the alarm list says them.
+export const cameraWallLabels = {
+  name: "攝影機",
+  keys: "方向鍵在各攝影機之間移動，Enter 放大顯示，Esc 回到所有攝影機。",
+  pausedToSave: "為節省頻寬已暫停",
+  sort: "攝影機排序",
+  attentionFirst: "需處理優先",
+  byName: "名稱",
+  needsAttention: "需要處理",
+  count: (n: number, locale: string | undefined) => n.toLocaleString(locale),
+  allCameras: "所有攝影機",
+  critical: "緊急",
+  high: "高",
+  low: "低",
+  alarm: (priority: string, title: string) => `${priority}・${title}`,
+  range: (from: number, to: number, total: number, locale?: string) =>
+    `第 ${from.toLocaleString(locale)}–${to.toLocaleString(locale)} 台，共 ${total.toLocaleString(locale)} 台攝影機`,
+  previousPage: "上一頁攝影機",
+  nextPage: "下一頁攝影機",
+  empty: "沒有攝影機",
+  noneNeedAttention: "目前沒有需要處理的攝影機",
+  showAll: "顯示所有攝影機",
+  announce: (changes: { name: string; state: string }[], locale: string | undefined) => {
+    const shown = changes.slice(0, 3).map((c) => `${c.name}：${c.state}。`)
+    const more = changes.length - shown.length
+    return shown.join("") + (more > 0 ? `另有 ${more.toLocaleString(locale)} 台攝影機狀態改變。` : "")
+  },
+  feed: cameraFeedLabels,
 }
 
 export const jointStateLabels = {

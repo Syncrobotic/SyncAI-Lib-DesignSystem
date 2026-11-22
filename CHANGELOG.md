@@ -2,6 +2,14 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **`camera-wall` 0.29.0 (beta):** many robot cameras at once, each a camera-feed. An auto grid (1, 2×2, 3×3, 4×4 by count and container width) with a page control; click or Enter shows one camera large with a strip of the rest, Esc goes back, and the large feed has its own full screen; on a phone a list of tiles, and a focused camera takes the whole width. Tiles off screen or behind the focused one pause, only the focused camera asks the product's source function for high quality (`getSource(camera, { quality })`), and at most `maxLive` stream at once; the rest keep their last frame (or `poster`) under "Paused to save bandwidth", and `onLiveChange` says which play so the product can close the rest. Each tile says its camera, robot and state as camera-feed does (Live, Stalled · last frame 14:02:31, Camera offline) and marks its robot's alarm by shape and word, never a tinted tile. Sorted attention first (alarms, offline, stalled) or by name, filtered to what needs attention; arrow keys between tiles as one Tab stop; cameras that stall, go offline or come back announced politely, batched at most every 5 s. On [Robotics UI kit](https://design-system.syncrobotic.me/docs/robotics) under What the robot sees.
+- **`camera-feed` 0.29.0:** `bare` (just the picture, for a feed inside something that names it and takes the keyboard), `onStateChange`, and `CameraFeedStateLine` / `cameraFeedStateWord`, so a wall's tiles say the state the same way.
+- **`ros` 0.29.0:** `webVideoServerSrc(server, topic, { quality })`, the web_video_server URL a `<video>` plays for a `sensor_msgs/Image` topic, sized by camera-wall's quality hint.
+- **`labels-zh-tw` 0.29.0:** `cameraWallLabels`.
+
 ## 0.28.0 · 2026-11-22
 
 Four new components for robot consoles (streaming chart, log viewer, diagnostics, sidebar) and the fixes from a page-by-page audit of every component, block and docs page. Read **Changed** before upgrading: a few defaults and words change.

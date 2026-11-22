@@ -694,6 +694,20 @@
     "tabStops": 4,
     "live": true
   },
+  "camera-wall": {
+    "roles": [
+      "button",
+      "list",
+      "listitem",
+      "navigation",
+      "radio",
+      "radiogroup",
+      "region",
+      "status"
+    ],
+    "tabStops": 5,
+    "live": true
+  },
   "joint-state": {
     "roles": [
       "list",

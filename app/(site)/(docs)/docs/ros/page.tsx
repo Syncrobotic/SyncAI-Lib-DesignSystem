@@ -44,6 +44,7 @@ const conversions: [string, string, string, string][] = [
   ["sensor_msgs/JointState", "/joint_states", "jointStateToJoints(msg, { limits })", "JointState joints"],
   ["sensor_msgs/JointState", "/joint_states", "jointStateToRecord(msg) (robot-model)", "RobotModel joints"],
   ["rcl_interfaces/Log", "/rosout", "rosLogToLogLine(msg)", "LogViewer ref.append, or a createLogBuffer"],
+  ["sensor_msgs/Image (not over rosbridge)", "/camera/image_raw", "webVideoServerSrc(server, topic, { quality })", "CameraFeed src, CameraWall getSource"],
   ["geometry_msgs/Twist (out)", "/cmd_vel", "teleopToTwist(command, { maxLinear, maxAngular })", "from TeleopPad onCommand"],
   ["std_msgs/Header", "any", "stampToMs(msg.header.stamp)", "updatedAt (stale detection)"],
 ]
