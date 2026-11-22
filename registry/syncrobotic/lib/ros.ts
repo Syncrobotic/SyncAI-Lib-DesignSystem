@@ -1,4 +1,4 @@
-// @syncrobotic/ros v0.28.0 · update: npx shadcn add @syncrobotic/ros --overwrite
+// @syncrobotic/ros v0.29.0 · update: npx shadcn add @syncrobotic/ros --overwrite
 /*
   ROS and ROS 2 in the browser, without a ROS library: the rosbridge v2 protocol (rosbridge_suite, which serves both ROS 1
   and ROS 2) spoken directly over the browser's WebSocket, and pure converters from the messages to the props the kit's
@@ -724,6 +724,26 @@ export type RosPoseStamped = { header: RosHeader; pose: RosPose }
 export type RosPoseLike = RosPose | { pose: RosPose } | { pose: { pose: RosPose } }
 export type RosTwist = { linear: RosVector3; angular: RosVector3 }
 
+/**
+ * `sensor_msgs/Imu`. Only the orientation is read; by REP 145 an `orientation_covariance` starting with −1 means the
+ * IMU gives no orientation (a gyro and accelerometer alone).
+ */
+export type RosImu = {
+  header?: RosHeader
+  orientation: RosQuaternion
+  orientation_covariance?: ArrayLike<number>
+  angular_velocity?: RosVector3
+  linear_acceleration?: RosVector3
+}
+
+/** `nav_msgs/Odometry`: the pose in `header.frame_id` and the twist in `child_frame_id` (the robot's base). */
+export type RosOdometry = {
+  header?: RosHeader
+  child_frame_id?: string
+  pose: { pose: RosPose }
+  twist: { twist: RosTwist }
+}
+
 /** `uint8[]` arrives as a base64 string; a client or an older bridge may send a list of numbers. */
 export type RosBytes = string | ArrayLike<number>
 
@@ -798,9 +818,31 @@ export type RosLog = {
   topics?: readonly string[]
 }
 
+/**
+ * `sensor_msgs/NavSatFix`, from a GNSS receiver's driver. `status.status` is −1 no fix, 0 a fix, 1 SBAS (differential), 2
+ * GBAS (RTK: ublox and NMEA drivers report both RTK fixed and float as 2); ROS 2 Jazzy adds −2, unknown.
+ * `position_covariance` is in m², east-north-up, row-major; `position_covariance_type` 0 unknown, 1 approximated (from
+ * HDOP), 2 diagonal known, 3 known.
+ */
+export type RosNavSatFix = {
+  header?: RosHeader
+  status: { status: number; service?: number }
+  latitude: number
+  longitude: number
+  altitude?: number
+  position_covariance?: ArrayLike<number>
+  position_covariance_type?: number
+}
+
+/** `geographic_msgs/GeoPoint`: WGS 84 degrees, altitude in metres above the ellipsoid. */
+export type RosGeoPoint = { latitude: number; longitude: number; altitude?: number }
+/** `geographic_msgs/GeoPose` (Nav2's GPS waypoint follower takes a list of them), and a GeoPoseStamped. */
+export type RosGeoPose = { position: Required<RosGeoPoint>; orientation: RosQuaternion }
+export type RosGeoPoseStamped = { header: RosHeader; pose: RosGeoPose }
+
 // --- Converters ----------------------------------------------------------------------------------------------------
 // Pure functions from ROS messages to the props the components take, by the conventions their docs state (robot-map's
-// plan coordinates, point-cloud's REP 103 frame, joint-state's SI units). The output types are written out here rather
+// plan coordinates, geo-map's degrees and compass headings, point-cloud's REP 103 frame, joint-state's SI units). The output types are written out here rather
 // than imported, so this file installs without the components; tests check they stay assignable to the components' types.
 
 /** Bytes from a base64 string or a list of numbers. */
@@ -860,6 +902,64 @@ export function poseToRobotMapPose(message: RosPoseLike, frame: RosPlanFrame): R
 }
 
 /**
+ * Roll, pitch and yaw of a quaternion, in radians, in the order tf2's `getRPY` uses (yaw about z, then pitch about the new
+ * y, then roll about the new x). REP 103, x forward, y left, z up: positive roll lowers the right side, positive pitch
+ * lowers the nose, positive yaw turns left (counter-clockwise from above). The quaternion need not be normalised.
+ */
+export function quaternionToEuler(q: RosQuaternion): { roll: number; pitch: number; yaw: number } {
+  const n = Math.hypot(q.x, q.y, q.z, q.w) || 1
+  const x = q.x / n
+  const y = q.y / n
+  const z = q.z / n
+  const w = q.w / n
+  const roll = Math.atan2(2 * (w * x + y * z), 1 - 2 * (x * x + y * y))
+  // Clamped: rounding can carry the sine a hair past ±1 at ±90° pitch, where asin would be NaN.
+  const pitch = Math.asin(Math.min(1, Math.max(-1, 2 * (w * y - z * x))))
+  const yaw = Math.atan2(2 * (w * z + x * y), 1 - 2 * (y * y + z * z))
+  return { roll, pitch, yaw }
+}
+
+/** attitude's `AttitudeSample`: degrees, REP 103 signs; `heading` clockwise from north, 0–360. */
+export type RosAttitude = { roll?: number; pitch?: number; heading?: number }
+
+/**
+ * A `sensor_msgs/Imu` as attitude's AttitudeIndicator takes it: roll and pitch in degrees with REP 103's signs (positive
+ * roll is the right side down, positive pitch the nose down) and, by default, a compass heading in degrees clockwise from
+ * north. The heading assumes the orientation is in an east-north-up frame, as REP 103 and REP 145 have it for an IMU
+ * fused with a magnetometer: heading = 90 − yaw. An IMU without one drifts in yaw from where it started; pass
+ * `{ heading: false }` and the indicator shows no compass. An IMU that gives no orientation (`orientation_covariance[0]`
+ * is −1) or a quaternion that is not finite gives `{}`, which changes nothing when pushed.
+ */
+export function imuToAttitude(message: RosImu, options: { heading?: boolean } = {}): RosAttitude {
+  const q = message.orientation
+  if (!q || message.orientation_covariance?.[0] === -1) return {}
+  if (![q.x, q.y, q.z, q.w].every(Number.isFinite) || Math.hypot(q.x, q.y, q.z, q.w) === 0) return {}
+  const { roll, pitch, yaw } = quaternionToEuler(q)
+  const deg = 180 / Math.PI
+  const out: RosAttitude = { roll: roll * deg, pitch: pitch * deg }
+  if (options.heading !== false) out.heading = (((90 - yaw * deg) % 360) + 360) % 360
+  return out
+}
+
+/**
+ * The robot's speed in m/s from `nav_msgs/Odometry` (or a TwistStamped, or a Twist), for attitude's Gauge: the length of
+ * the twist's linear x and y, so a holonomic base moving sideways has a speed too. The twist is in the robot's own frame
+ * (`child_frame_id`), as REP 105 has it. `{ signed: true }` gives linear x alone with its sign instead, negative when
+ * reversing, for a gauge whose range runs below zero.
+ */
+export function odometryToSpeed(message: RosOdometry | { twist: RosTwist } | RosTwist, options: { signed?: boolean } = {}): number {
+  let t: unknown = message
+  // Unwrap `twist` until the object has `linear`: Odometry nests it twice (TwistWithCovariance), TwistStamped once.
+  for (let i = 0; i < 3 && t && typeof t === "object" && !("linear" in t) && "twist" in t; i++) t = (t as { twist: unknown }).twist
+  const linear = (t as Partial<RosTwist> | undefined)?.linear
+  const x = Number(linear?.x ?? 0)
+  const y = Number(linear?.y ?? 0)
+  if (options.signed) return Number.isFinite(x) ? x : NaN
+  const v = Math.hypot(x, y)
+  return Number.isFinite(v) ? v : NaN
+}
+
+/**
  * A goal placed on robot-map (`onGoal`) as a `geometry_msgs/PoseStamped` in the map frame: the inverse of
  * `poseToRobotMapPose`. Without a heading the goal faces +x. The stamp is left out unless given, and rosbridge for ROS 2
  * fills in the current time; ROS 1 leaves it at zero, which Nav2 and move_base read as "latest".
@@ -874,6 +974,194 @@ export function goalToPoseStamped(goal: RosPlanPose, frame: RosPlanFrame, option
       position: { x: goal.x + frame.origin.x, y: frame.origin.y + frame.height - goal.y, z: 0 },
       orientation: yawToQuaternion(yaw),
     },
+  }
+}
+
+/** `nav_msgs/Path`: poses in order, each a PoseStamped, under one header. */
+export type RosPath = { header: RosHeader; poses: RosPoseStamped[] }
+
+/**
+ * The goal of Nav2's `NavigateThroughPoses` action: the poses to drive through, in order, and the behaviour tree to use
+ * ("" for the navigator's default). Humble to Jazzy take `poses` as a `geometry_msgs/PoseStamped[]`; Kilted wraps the
+ * same list in a `nav_msgs/Goals` (`{ header, goals }`), which `navigateThroughPosesToWaypoints` reads too.
+ */
+export type RosNavigateThroughPosesGoal = { poses: RosPoseStamped[]; behavior_tree: string }
+
+/** waypoint-editor's `WaypointCoordinate`: metres on robot-map's plan, or latitude and longitude for a geographic map. */
+export type RosRouteCoordinate = { kind: "plan"; x: number; y: number } | { kind: "geo"; lat: number; lon: number }
+
+/** waypoint-editor's `Waypoint`, as these converters write it: a name, a place, a heading, and no action yet. */
+export type RosRouteWaypoint = { id: string; name: string; at: RosRouteCoordinate; heading?: number; action: { type: "none" }; dwell?: number }
+
+/** The plan degrees (clockwise from the top) from one point to another; 0 when they are the same point. */
+const planHeading = (from: { x: number; y: number }, to: { x: number; y: number }) =>
+  from.x === to.x && from.y === to.y ? 0 : ((((Math.atan2(to.x - from.x, from.y - to.y) * 180) / Math.PI) % 360) + 360) % 360
+
+/**
+ * The route's poses in the map frame, one per waypoint, by `goalToPoseStamped`. A waypoint with no heading faces the next
+ * one (the last faces on along the last leg), as a robot driving the route would, unless `faceAlong` is false (then +x).
+ * Throws on a `geo` waypoint: latitude and longitude are not in the map frame.
+ */
+function routePoses(waypoints: readonly { at: RosRouteCoordinate; heading?: number }[], frame: RosPlanFrame, options: { frameId?: string; stamp?: RosTime; faceAlong?: boolean }) {
+  const points = waypoints.map((w) => {
+    if (w.at.kind !== "plan") throw new Error("A geo waypoint has no place in the map frame: convert it with your map's projection first.")
+    return { x: w.at.x, y: w.at.y }
+  })
+  return waypoints.map((w, i) => {
+    const here = points[i]!
+    let heading = w.heading
+    if (heading === undefined && options.faceAlong !== false && points.length > 1) {
+      const next = points[i + 1]
+      const prev = points[i - 1]
+      heading = next ? planHeading(here, next) : prev ? planHeading(prev, here) : undefined
+    }
+    return goalToPoseStamped({ ...here, ...(heading === undefined ? {} : { heading }) }, frame, options)
+  })
+}
+
+/**
+ * waypoint-editor's route as a `nav_msgs/Path` in the map frame (`frameId`, "map" by default), for a planner, a
+ * follower or a recorded route. Headings as `routePoses` sets them: a waypoint without one faces the next.
+ */
+export function waypointsToPath(
+  waypoints: readonly { at: RosRouteCoordinate; heading?: number }[],
+  frame: RosPlanFrame,
+  options: { frameId?: string; stamp?: RosTime; faceAlong?: boolean } = {},
+): RosPath {
+  const header: RosHeader = { frame_id: options.frameId ?? "map" }
+  if (options.stamp) header.stamp = options.stamp
+  return { header, poses: routePoses(waypoints, frame, options) }
+}
+
+/**
+ * waypoint-editor's route as the goal of Nav2's `NavigateThroughPoses` (send it to /navigate_through_poses): every
+ * waypoint a PoseStamped in the map frame, in order. The actions at each waypoint are the app's to run (Nav2's waypoint
+ * follower runs task plugins per pose; NavigateThroughPoses does not stop at them).
+ */
+export function waypointsToNavigateThroughPoses(
+  waypoints: readonly { at: RosRouteCoordinate; heading?: number }[],
+  frame: RosPlanFrame,
+  options: { frameId?: string; stamp?: RosTime; faceAlong?: boolean; behaviorTree?: string } = {},
+): RosNavigateThroughPosesGoal {
+  return { poses: routePoses(waypoints, frame, options), behavior_tree: options.behaviorTree ?? "" }
+}
+
+/**
+ * Poses back as waypoint-editor's waypoints, on the plan: each pose by `poseToRobotMapPose`, named `Waypoint 1`, `2`…
+ * (or by `name`), with ids `wp-1`, `wp-2`… (or by `id`) and no action. The poses must be in the map frame.
+ */
+export function pathToWaypoints(
+  message: { poses: readonly RosPoseLike[] },
+  frame: RosPlanFrame,
+  options: { name?: (index: number) => string; id?: (index: number) => string } = {},
+): RosRouteWaypoint[] {
+  return message.poses.map((p, i) => {
+    const pose = poseToRobotMapPose(p, frame)
+    const waypoint: RosRouteWaypoint = {
+      id: options.id ? options.id(i) : `wp-${i + 1}`,
+      name: options.name ? options.name(i) : `Waypoint ${i + 1}`,
+      at: { kind: "plan", x: pose.x, y: pose.y },
+      action: { type: "none" },
+    }
+    if (pose.heading !== undefined) waypoint.heading = pose.heading
+    return waypoint
+  })
+}
+
+/** A `NavigateThroughPoses` goal back as waypoints, as `pathToWaypoints`: `poses` as a list (Humble to Jazzy) or a `nav_msgs/Goals` (Kilted). */
+export function navigateThroughPosesToWaypoints(
+  goal: { poses: readonly RosPoseLike[] | { goals: readonly RosPoseLike[] } },
+  frame: RosPlanFrame,
+  options: { name?: (index: number) => string; id?: (index: number) => string } = {},
+): RosRouteWaypoint[] {
+  const poses = Array.isArray(goal.poses) ? goal.poses : (goal.poses as { goals: readonly RosPoseLike[] }).goals
+  return pathToWaypoints({ poses }, frame, options)
+}
+
+/** geo-map's `GeoFix`. */
+export type RosGeoFix = "rtk-fixed" | "rtk-float" | "dgps" | "gps" | "none"
+
+/** A robot's place for geo-map: `lat`, `lon`, `fix` and `accuracy` are GeoMapRobot's fields; spread it into the robot. */
+export type RosGeoPosition = { lat: number; lon: number; fix: RosGeoFix; accuracy?: number; altitude?: number; time?: number }
+
+/**
+ * A `sensor_msgs/NavSatFix` as geo-map's robot fields: `lat` and `lon`, the fix in geo-map's words, and `accuracy`, the
+ * horizontal accuracy in metres, √(σ²east + σ²north) from the covariance (left out when its type is unknown). The status
+ * maps −2 and −1 → "none", 0 → "gps", 1 → "dgps", and 2 → "rtk-fixed" when the accuracy is within `rtkFixedWithin`
+ * (default 0.05 m), else "rtk-float": NavSatFix has no field that tells fixed from float, so the covariance decides. A
+ * latitude or longitude that is not a number is also "none". `altitude` is passed on, and `time` is the stamp in ms.
+ */
+export function navSatFixToGeo(message: RosNavSatFix, options: { rtkFixedWithin?: number } = {}): RosGeoPosition {
+  const cov = message.position_covariance
+  const h = (message.position_covariance_type ?? 0) > 0 && cov ? Math.sqrt((cov[0] ?? NaN) + (cov[4] ?? NaN)) : NaN
+  const accuracy = Number.isFinite(h) ? h : undefined
+  const status = Number(message.status?.status)
+  const valid = Number.isFinite(message.latitude) && Number.isFinite(message.longitude)
+  const fix: RosGeoFix =
+    !valid || !(status >= 0)
+      ? "none"
+      : status >= 2
+        ? accuracy !== undefined && accuracy <= (options.rtkFixedWithin ?? 0.05)
+          ? "rtk-fixed"
+          : "rtk-float"
+        : status >= 1
+          ? "dgps"
+          : "gps"
+  const out: RosGeoPosition = { lat: message.latitude, lon: message.longitude, fix }
+  if (accuracy !== undefined && fix !== "none") out.accuracy = accuracy
+  if (typeof message.altitude === "number" && Number.isFinite(message.altitude)) out.altitude = message.altitude
+  const time = stampToMs(message.header?.stamp)
+  if (time !== undefined) out.time = time
+  return out
+}
+
+/** The latitude and longitude of a `geographic_msgs/GeoPoint`, or of the GeoPose or GeoPoseStamped around one. */
+export function geoPointToGeo(message: RosGeoPoint | { position: RosGeoPoint } | { pose: { position: RosGeoPoint } }): { lat: number; lon: number } {
+  const p: RosGeoPoint = "pose" in message ? message.pose.position : "position" in message ? message.position : message
+  return { lat: p.latitude, lon: p.longitude }
+}
+
+/** A heading clockwise from north in degrees (geo-map's), from a yaw in ENU (REP 103: radians counter-clockwise from east). */
+export const enuYawToHeading = (yaw: number) => (((90 - (yaw * 180) / Math.PI) % 360) + 360) % 360
+
+/** A yaw in ENU (radians counter-clockwise from east), from a heading clockwise from north in degrees. */
+export const headingToEnuYaw = (heading: number) => ((90 - heading) * Math.PI) / 180
+
+/**
+ * A goal placed on geo-map (`onGoal`) as a `geographic_msgs/GeoPoseStamped`: the heading as a yaw in ENU (REP 103), or
+ * facing east without one. `altitude` defaults to 0: the message's own "unknown" is NaN, which JSON cannot carry, and a
+ * ground robot's planner ignores it. The stamp is left out unless given, as `goalToPoseStamped` does.
+ */
+export function geoGoalToGeoPoseStamped(
+  goal: { lat: number; lon: number; heading?: number },
+  options: { frameId?: string; stamp?: RosTime; altitude?: number } = {},
+): RosGeoPoseStamped {
+  const header: RosHeader = { frame_id: options.frameId ?? "wgs84" }
+  if (options.stamp) header.stamp = options.stamp
+  return {
+    header,
+    pose: {
+      position: { latitude: goal.lat, longitude: goal.lon, altitude: options.altitude ?? 0 },
+      orientation: yawToQuaternion(goal.heading === undefined ? 0 : headingToEnuYaw(goal.heading)),
+    },
+  }
+}
+
+/**
+ * A goal placed on geo-map as a `sensor_msgs/NavSatFix`, for waypoint followers that take one: status 0 (a fix), service
+ * 1 (GPS) and the covariance unknown (type 0). A NavSatFix has no heading, so the goal's is dropped.
+ */
+export function geoGoalToNavSatFix(goal: { lat: number; lon: number }, options: { frameId?: string; stamp?: RosTime; altitude?: number } = {}): RosNavSatFix & { header: RosHeader } {
+  const header: RosHeader = { frame_id: options.frameId ?? "wgs84" }
+  if (options.stamp) header.stamp = options.stamp
+  return {
+    header,
+    status: { status: 0, service: 1 },
+    latitude: goal.lat,
+    longitude: goal.lon,
+    altitude: options.altitude ?? 0,
+    position_covariance: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    position_covariance_type: 0,
   }
 }
 
@@ -1121,6 +1409,39 @@ export function rosLogToLogLine(message: RosLog, options: { receivedAt?: number 
   if (typeof message.line === "number" && message.line > 0) line.line = message.line
   if (message.topics?.length) line.fields = { topics: message.topics.join(", ") }
   return line
+}
+
+// --- Video: image topics through web_video_server --------------------------------------------------------------------
+
+/** The size and bitrate web_video_server encodes at, for camera-wall's `quality` hint. */
+export const webVideoQuality = {
+  low: { width: 640, height: 360, bitrate: 300_000 },
+  high: { width: 1280, height: 720, bitrate: 2_000_000 },
+} as const
+
+/**
+ * The URL a `<video>` plays for a `sensor_msgs/Image` topic, through web_video_server on the robot
+ * (`ros2 run web_video_server web_video_server`, port 8080): a camera-feed `src`, or what camera-wall's source function
+ * returns for a camera and its `quality` ("low" for a tile, "high" for the focused camera). Images never go over rosbridge:
+ * a JSON frame per image is far too slow. `type` is the encoding: "vp8" (WebM, plays everywhere but Safari) by default,
+ * "h264" (MP4) for Safari. MJPEG is not a video a `<video>` plays. For WebRTC (webrtc_ros, a media gateway) the app owns
+ * the connection and passes the MediaStream instead.
+ */
+export function webVideoServerSrc(
+  server: string,
+  topic: string,
+  options: { quality?: keyof typeof webVideoQuality; type?: "vp8" | "vp9" | "h264"; width?: number; height?: number; bitrate?: number; transport?: "raw" | "compressed" } = {},
+): string {
+  const preset = webVideoQuality[options.quality ?? "low"]
+  const params = new URLSearchParams({
+    topic,
+    type: options.type ?? "vp8",
+    width: String(options.width ?? preset.width),
+    height: String(options.height ?? preset.height),
+    bitrate: String(options.bitrate ?? preset.bitrate),
+  })
+  if (options.transport) params.set("default_transport", options.transport)
+  return `${server.replace(/\/+$/, "")}/stream?${params}`
 }
 
 /** A `geometry_msgs/Twist` with every component 0: stop. */

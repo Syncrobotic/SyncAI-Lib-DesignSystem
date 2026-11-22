@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const item = getItem((await params).name)
   if (!item) return {}
   const title = `${item.title} — React ${item.group === "Hooks & libraries" ? "hook" : "component"}`
-  return pageMeta({ title, description: item.description ?? `${item.title} for the SYNCROBOTIC design system.`, path: `/docs/components/${item.name}` })
+  return pageMeta({ title, description: item.description ?? `${item.title} for the SYNCROBOTIC design system.`, path: `/docs/components/${item.name}`, image: `/og/components/${item.name}` })
 }
 
 /** Whether two lines say the same thing: one contains the other, or they share their first six words. */

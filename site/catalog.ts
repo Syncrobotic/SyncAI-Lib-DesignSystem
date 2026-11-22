@@ -57,12 +57,15 @@ export type StoryFile =
   | "annotated-image"
   | "media-player"
   | "camera-feed"
+  | "camera-wall"
   | "joint-state"
   | "diagnostics"
   | "tree"
   | "sidebar"
   | "graph"
   | "robot-map"
+  | "waypoint-editor"
+  | "geo-map"
   | "point-cloud"
   | "robot-model"
   | "hooks"
@@ -71,6 +74,7 @@ export type StoryFile =
   | "hover-card"
   | "banner"
   | "streaming-chart"
+  | "attitude"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
@@ -760,6 +764,20 @@ const entries: Record<string, Entry> = {
       "Offer Reconnect (`onRetry`) only when reconnecting can help, and say why it is offline in `offlineReason` when you know.",
     ],
   },
+  "camera-wall": {
+    wide: true,
+    group: "Robotics",
+    examples: { file: "camera-wall", prefix: "CameraWall" },
+    rules: [
+      "For watching several robots' cameras at once (4 to 16 on a screen). One camera on a robot's page is `camera-feed`.",
+      "`getSource(camera, { quality })` is the product's: return the same stream (or URL) for the same camera and quality, from a cache, and open connections lazily. Close what `onLiveChange` no longer lists. For ROS image topics, `webVideoServerSrc` from `ros` builds the URL.",
+      "Only the focused camera asks for \"high\"; tiles ask for \"low\". Serve a smaller stream for low (640×360 or less): sixteen full-size streams decode slower than any screen can show them.",
+      "Set `maxLive` to what the operator's machine and the site's uplink can carry (9 by default); the rest show their last still with \"Paused to save bandwidth\", and focusing one plays it. Give each camera a `poster` (a snapshot URL) so a paused tile is never blank.",
+      "Pass the robot's most urgent active alarm as `alarm` (priority and title): it sorts the tile first and marks it by shape and word. The alarm list announces alarms; the wall announces only cameras that stall, go offline or come back.",
+      "Keep the default sort, attention first, on a wall people watch for problems; by name suits a wall people search.",
+      "Give every camera a stable `id` and the same `label` and `source` as its robot's page, so the tile, the large view and the screen reader say the same name.",
+    ],
+  },
   "joint-state": {
     wide: true,
     group: "Robotics",
@@ -958,6 +976,21 @@ const entries: Record<string, Entry> = {
       "Under reduced motion the view steps once a second instead of gliding. Off screen and in a hidden tab nothing is drawn.",
     ],
   },
+  attitude: {
+    group: "Robotics",
+    examples: { file: "attitude", prefix: "Attitude" },
+    rules: [
+      "AttitudeIndicator for a robot that can tip or slide: a legged robot on rough ground, an AMR on a ramp, a tracked robot on a slope. Gauge for one value now with a known range that someone glances at (speed, a motor's temperature, a wheel's current); a level that stays (battery, storage) is a `meter`, a history is `streaming-chart`.",
+      "Angles in degrees with REP 103's signs: positive roll is the right side down, positive pitch the nose down. `imuToAttitude(msg)` from `ros` gives them from a sensor_msgs/Imu; never flip pitch to nose-up-positive in the app, the words (\"nose up\", \"nose down\") already say it.",
+      "Set `limits` from the robot's datasheet: a tip-over warning (`roll.warning`, 25° on the patrol dog) and the angle it must not pass (`critical`). They are marked with the kit's status shapes (triangle, square) and stay grey until crossed; past one the value, the mark and the robot's symbol turn warning or danger and a word says so. Colour never alone.",
+      "Gauge takes Meter's thresholds as they are: `low` warns, `critical` is danger, `higherIsWorse` for a value that heats up or fills up. The arc stays graphite while normal, like Meter's bar; the indigo accent is only the horizon line, the mark to read.",
+      "Push a stream, never pass it as props: `ref.current.push({ roll, pitch, heading }, stamp)` or a `subscribe` that gets `push` once. The drawing follows every frame; the numbers are written four times a second, so they can be read, and at once when a limit is crossed.",
+      "Pass `staleAfterMs` whenever the values come from a live topic (about three missed messages): a frozen attitude dims and says Stale with the last update's time instead of passing for live.",
+      "Heading only from an IMU fused with a magnetometer (or a localisation in a map frame): an IMU alone drifts in yaw. Pass `{ heading: false }` to `imuToAttitude` and the ring shows no compass.",
+      "Not a control: nothing in either instrument takes focus. Screen readers hear the attitude as one sentence (\"Roll 12° left, pitch 3° nose down, heading 271° W\") and each Gauge as a meter; a crossed limit is said politely, at most every 5 s, at once when it turns critical.",
+      "No sweep: values move straight to where they are, and under reduced motion the drawing steps with the numbers instead of following every frame.",
+    ],
+  },
   "robot-map": {
     group: "Robotics",
     wide: true,
@@ -973,7 +1006,38 @@ const entries: Record<string, Entry> = {
       "Laser scans are small dots in a neutral ink (the accent over a grid), never a status colour; they show what a robot sees, so a scan beside the walls says its localisation has drifted.",
       "Editing (`mode`) is controlled: the app keeps the goal, waypoints and zones and the map reports changes. One rule for panning while editing: the primary pointer edits, the right or middle button and two fingers pan. Every edit has its keys (a crosshair, Enter, Esc, Delete) and is said in words.",
       "A route still being drawn is grey; only the route a robot is driving is blue (`waypointsPlanned`).",
-      "Up to a few hundred robots and zones: everything is redrawn on each pan. A city-scale map, tiles or GPS belong to a map library.",
+      "Up to a few hundred robots and zones: everything is redrawn on each pan. Robots outdoors on GPS, over tiles, are `geo-map`; a city-scale map belongs to a map library.",
+    ],
+  },
+  "geo-map": {
+    group: "Robotics",
+    wide: true,
+    examples: { file: "geo-map", prefix: "GeoMap" },
+    rules: [
+      "For robots that work outside on satellite positioning (patrol, agriculture, delivery), in latitude and longitude. A site's floor plan in metres, indoors, is `robot-map`.",
+      "Offer GeoMapList beside every GeoMap, as a chart offers its table: a Map / List switch, or the two side by side on a wide screen. The map is one Tab stop; the list is where each robot and its coordinates are reached by keyboard and screen reader.",
+      "Bring your own tile server: pass its `{z}/{x}/{y}` template as `tileUrl` and its licence's words as `attribution`. OpenStreetMap's public tile servers forbid heavy use and apps that do not identify themselves; never ship them as a default. Choose a dark style for the dark theme.",
+      "Without `tileUrl` the map draws a coordinate grid in degrees and needs no network, for robots and control rooms that are offline or air-gapped. If every tile fails, it falls back to the grid and says so.",
+      "Robots are their status shape and name, as on robot-map; colour and the status word only for a robot that needs someone. Each robot's fix is words (RTK fixed, GPS fix · ±3 m, No fix), and its accuracy a grey circle once it is larger than the marker. No fix is the one fix in the warning colour, with LocateOff in the list and a dashed marker at its last place.",
+      "Geofences are outlines, never a fill: the work area dashed grey, a keep-out solid ink and hatched, never red. The route being driven is dashed blue (`routeActive`), the one blue on the map; a route not yet sent and the trails are grey.",
+      "Goal mode asks before it sends: a click places the goal (a drag points it), and a card shows its coordinates, Send and Cancel. A goal in a keep-out or outside the work area cannot be sent: Send is disabled with the reason beside it (Inside Pond, a keep-out area), Enter does nothing but say it, and placing the goal somewhere allowed turns Send back on. Enter places and sends from the keyboard. `confirmGoal={false}` sends on release, as robot-map does, except where it cannot be sent: there it shows and says the same reason.",
+      "Bottom left holds zoom, the scale bar (m or km at the view's latitude) and the attribution, so the emergency stop keeps the bottom right. The map is north up: no north arrow.",
+      "Up to a few hundred robots, fences and route points; everything is redrawn on each pan. Vector tiles, a site that crosses the antimeridian, or a globe belong to a map library.",
+    ],
+  },
+  "waypoint-editor": {
+    group: "Robotics",
+    wide: true,
+    examples: { file: "waypoint-editor", prefix: "WaypointEditor" },
+    rules: [
+      "For planning a route before it is sent. A route being driven is `robot-map` `paths` (dashed blue); the editor's route is grey, as a route still being drawn.",
+      "Keep the saved route in `value` and save in `onSave`; never write the draft back into `value` on every change, or Cancel and the unsaved state have nothing to compare with.",
+      "Pass the map's `zones`: `restricted` zones are keep-out, and a waypoint inside one cannot be saved. Check again on the server with `validateWaypoints`.",
+      "Problems are the warning shape and words on the row, the warning shape on the point, never a tinted row; Save stays visible, disabled, with the reason beside it.",
+      "Delete and Cancel offer Undo in a toast: mount a `Toaster` once in the app.",
+      "Give `speed` the robot's cruise speed on this site, so the estimate means something; say what `dwell` covers (docking, a photo) in your own help text.",
+      "Viewers get `readOnly`: the same list, map and details, without handles, Add, Save or Cancel.",
+      "Send it with `waypointsToNavigateThroughPoses` (or `waypointsToPath`) from `ros`; run each waypoint's action in the app or the robot's mission layer.",
     ],
   },
   "point-cloud": {
@@ -1300,6 +1364,16 @@ const keyboard: Record<string, [string, string][]> = {
     ["`←` / `→`", "On the plot, move the view back or forward in time by a tenth of the window, pausing it (Shift: half the window)"],
     ["`End`", "On the plot, jump back to live"],
   ],
+  "geo-map": [
+    ["`Tab`", "Move into the map (one stop), then to its zoom buttons; with a goal placed, to Cancel and Send goal"],
+    ["`←` `→` `↑` `↓`", "Move the map; in goal mode, move the crosshair (Shift: bigger steps)"],
+    ["`+` / `-`", "Zoom in or out a level"],
+    ["`0`", "Show all robots"],
+    ["`Enter` / `Space`", "Goal mode: place the goal at the crosshair; once placed, send it"],
+    ["`←` / `→` after placing a goal", "Turn the goal 15° (Shift: 45°)"],
+    ["`Esc`", "Cancel the goal; otherwise clear the selection"],
+  ],
+  attitude: [["`Tab`", "Passes over both instruments: they show and never control, so nothing in them takes focus"]],
   "point-cloud": [
     ["`Tab`", "Move into the view (one stop), then to Reset view and Fit"],
     ["`←` / `→`", "Turn the view around the cloud"],
@@ -1317,6 +1391,14 @@ const keyboard: Record<string, [string, string][]> = {
     ["`←` / `→` after placing a goal", "Turn the goal 15° (Shift: 45°); Enter sets it"],
     ["`Delete` / `Backspace`", "Remove the selected waypoint, or the zone's last corner"],
     ["`Esc`", "Cancel what is being drawn or carried; otherwise clear the selection"],
+  ],
+  "waypoint-editor": [
+    ["`Tab`", "Move through Add waypoint, then each row's handle and row; the open row's fields, Duplicate and Delete; then the map and Save"],
+    ["`Space` on a handle", "Lift the waypoint; `↑` / `↓` move it, `Space` drops it, `Esc` cancels (each move is announced)"],
+    ["`Enter` / `Space` on a row", "Open or close its fields; its point is selected on the map"],
+    ["`Delete` / `Backspace` on a row", "Delete the waypoint (Undo in the toast); focus moves to the next row"],
+    ["`↑` / `↓` in a number field", "Step the value (Shift: a larger step)"],
+    ["`←` `→` `↑` `↓`, `Enter`, `Delete` on the map", "The map's own keys: arrows move the crosshair, Enter adds a waypoint or picks one up, Delete removes the selected one (with Undo)"],
   ],
   "robot-model": [
     ["`Tab`", "Move into the view: one stop. Its buttons are for the pointer; 0 and F do the same"],
@@ -1366,6 +1448,16 @@ const keyboard: Record<string, [string, string][]> = {
   "camera-feed": [
     ["`Space`", "Pause or resume the view (Space on a focused button presses that button)"],
     ["`F`", "Full screen, or leave it (Esc leaves it too)"],
+  ],
+  "camera-wall": [
+    ["`Tab`", "Reach the cameras once (the last one you were on); Tab again leaves"],
+    ["`←` `→`", "Previous or next camera"],
+    ["`↑` `↓`", "The camera above or below, in the grid"],
+    ["`Home` / `End`", "First or last camera on the page"],
+    ["`PageUp` / `PageDown`", "Previous or next page of cameras"],
+    ["`Enter` / `Space`", "Show the camera large, with the rest in a strip"],
+    ["`Esc`", "Back to all cameras, on the page of the one you showed"],
+    ["`Space` / `F`", "On the large camera: pause the view, full screen (as camera-feed)"],
   ],
   "annotated-image": [
     ["`Tab`", "Reach the picture's annotations once; Tab again leaves"],

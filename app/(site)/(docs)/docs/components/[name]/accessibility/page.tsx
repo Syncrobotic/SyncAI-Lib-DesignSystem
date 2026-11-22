@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return pageMeta({
     title: `${item.title} accessibility`,
     description: `${item.title}: roles, WAI-ARIA pattern, keyboard and colour contrast in light and dark.`,
-    path: `/docs/components/${item.name}/accessibility`,
+    path: `/docs/components/${item.name}/accessibility`, image: `/og/components/${item.name}`,
   })
 }
 

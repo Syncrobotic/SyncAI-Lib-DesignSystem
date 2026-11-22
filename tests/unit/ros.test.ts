@@ -2,15 +2,24 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import {
   createRosConnection,
   diagnosticArrayToStatuses,
+  enuYawToHeading,
+  geoGoalToGeoPoseStamped,
+  geoGoalToNavSatFix,
+  geoPointToGeo,
   goalToPoseStamped,
+  headingToEnuYaw,
+  imuToAttitude,
   isZeroTwist,
   jointStateToJoints,
   laserScanToScan,
   mergeDiagnostics,
+  navSatFixToGeo,
   occupancyGridToGrid,
+  odometryToSpeed,
   parseRosJson,
   pointCloud2ToPoints,
   poseToRobotMapPose,
+  quaternionToEuler,
   quaternionToYaw,
   rosLogToLogLine,
   RosConnectionError,
@@ -18,9 +27,15 @@ import {
   RosTimeoutError,
   stampToMs,
   teleopToTwist,
+  webVideoServerSrc,
   yawToQuaternion,
   zeroTwist,
+  waypointsToPath,
+  waypointsToNavigateThroughPoses,
+  pathToWaypoints,
+  navigateThroughPosesToWaypoints,
   type RosConnectionOptions,
+  type RosNavSatFix,
   type RosPointCloud2,
   type RosTwist,
 } from "@/registry/syncrobotic/lib/ros"
@@ -28,6 +43,9 @@ import { gridToPlan, rasteriseGrid, rosToPlan, scanToPoints, type RobotMapGrid, 
 import type { JointStateJoint } from "@/registry/syncrobotic/ui/joint-state"
 import type { DiagnosticStatus } from "@/registry/syncrobotic/ui/diagnostics"
 import type { LogLine } from "@/registry/syncrobotic/ui/log-viewer"
+import type { Waypoint } from "@/registry/syncrobotic/ui/waypoint-editor"
+import type { GeoMapGoal, GeoMapRobot, GeoPoint } from "@/registry/syncrobotic/ui/geo-map"
+import type { AttitudeSample } from "@/registry/syncrobotic/ui/attitude"
 import { fakeRosbridge } from "./fake-rosbridge"
 
 // The rosbridge client against a fake socket (the server is played by the test), and the converters against messages
@@ -771,5 +789,219 @@ describe("rosLogToLogLine", () => {
 
   it("falls back to when it was received for a message with no stamp", () => {
     expect(rosLogToLogLine({ level: 20, msg: "ok" }, { receivedAt: 5 })).toEqual({ time: 5, level: "info", message: "ok" })
+  })
+})
+
+describe("waypoint routes", () => {
+  // A 60 × 36 m plan whose bottom-left is at (-10, -5) in the map frame.
+  const frame = { width: 60, height: 36, origin: { x: -10, y: -5 } }
+  const route: Waypoint[] = [
+    { id: "a", name: "Dock exit", at: { kind: "plan", x: 10, y: 30 }, heading: 90, action: { type: "none" } },
+    { id: "b", name: "Aisle", at: { kind: "plan", x: 20, y: 30 }, action: { type: "photo" }, dwell: 5 },
+    { id: "c", name: "Bay", at: { kind: "plan", x: 30, y: 30 }, action: { type: "dock" } },
+  ]
+
+  it("writes a nav_msgs/Path in the map frame, a waypoint without a heading facing the next", () => {
+    const path = waypointsToPath(route, frame, { stamp: { sec: 3, nanosec: 0 } })
+    expect(path.header).toEqual({ frame_id: "map", stamp: { sec: 3, nanosec: 0 } })
+    expect(path.poses).toHaveLength(3)
+    // x = 10 − 10 = 0; y = −5 + 36 − 30 = 1.
+    expect(path.poses[0]!.pose.position).toEqual({ x: 0, y: 1, z: 0 })
+    expect(path.poses[0]!.header.frame_id).toBe("map")
+    // Heading 90 (right on the plan) is yaw 0 (+x); without a heading, towards the next (right: yaw 0), and the last
+    // faces on along the last leg.
+    for (const p of path.poses) expect(quaternionToYaw(p.pose.orientation)).toBeCloseTo(0, 6)
+    // Up the plan is +y in the map frame: yaw π/2.
+    const up = waypointsToPath([route[0]!, { ...route[1]!, at: { kind: "plan", x: 10, y: 20 } }, { ...route[2]!, at: { kind: "plan", x: 10, y: 10 } }], frame)
+    expect(quaternionToYaw(up.poses[1]!.pose.orientation)).toBeCloseTo(Math.PI / 2, 6)
+    expect(quaternionToYaw(up.poses[2]!.pose.orientation)).toBeCloseTo(Math.PI / 2, 6)
+    // faceAlong: false leaves them facing +x.
+    const plain = waypointsToPath([route[1]!, { ...route[2]!, at: { kind: "plan", x: 20, y: 10 } }], frame, { faceAlong: false })
+    expect(quaternionToYaw(plain.poses[0]!.pose.orientation)).toBeCloseTo(0, 6)
+  })
+
+  it("writes Nav2's NavigateThroughPoses goal, and reads it and a Path back as waypoints", () => {
+    const goal = waypointsToNavigateThroughPoses(route, frame)
+    expect(goal.behavior_tree).toBe("")
+    expect(goal.poses.map((p) => p.pose.position)).toEqual(waypointsToPath(route, frame).poses.map((p) => p.pose.position))
+    const back: Waypoint[] = navigateThroughPosesToWaypoints(goal, frame, { name: (i) => route[i]!.name, id: (i) => route[i]!.id })
+    back.forEach((w, i) => {
+      expect(w.id).toBe(route[i]!.id)
+      expect(w.name).toBe(route[i]!.name)
+      expect(w.action).toEqual({ type: "none" })
+      const at = w.at as { x: number; y: number }
+      const was = route[i]!.at as { x: number; y: number }
+      expect(at.x).toBeCloseTo(was.x, 6)
+      expect(at.y).toBeCloseTo(was.y, 6)
+      expect(w.heading).toBeCloseTo(90, 6)
+    })
+    // Kilted wraps the poses in nav_msgs/Goals.
+    expect(navigateThroughPosesToWaypoints({ poses: { goals: goal.poses } }, frame)).toEqual(pathToWaypoints({ poses: goal.poses }, frame))
+    expect(pathToWaypoints({ poses: goal.poses }, frame)[1]!.name).toBe("Waypoint 2")
+  })
+
+  it("refuses geo waypoints, which have no place in the map frame", () => {
+    expect(() => waypointsToPath([{ at: { kind: "geo", lat: 25, lon: 121 } }], frame)).toThrow(/geo waypoint/)
+  })
+})
+
+describe("webVideoServerSrc", () => {
+  it("builds the web_video_server URL a video plays for an image topic, sized by the wall's quality", () => {
+    expect(webVideoServerSrc("http://robot-7f3a.local:8080/", "/front/image_raw")).toBe(
+      "http://robot-7f3a.local:8080/stream?topic=%2Ffront%2Fimage_raw&type=vp8&width=640&height=360&bitrate=300000",
+    )
+    const high = new URL(webVideoServerSrc("http://robot:8080", "/front/image_raw", { quality: "high", type: "h264", transport: "compressed" }))
+    expect(Object.fromEntries(high.searchParams)).toEqual({
+      topic: "/front/image_raw",
+      type: "h264",
+      width: "1280",
+      height: "720",
+      bitrate: "2000000",
+      default_transport: "compressed",
+    })
+    expect(new URL(webVideoServerSrc("http://robot:8080", "/cam", { width: 320, height: 240 })).searchParams.get("width")).toBe("320")
+  })
+})
+
+describe("geo converters", () => {
+  const fix = (status: number, sigma?: number): RosNavSatFix => ({
+    header: { stamp: { sec: 10, nanosec: 500_000_000 }, frame_id: "gps" },
+    status: { status, service: 1 },
+    latitude: 24.9,
+    longitude: 121.2,
+    altitude: 112.5,
+    position_covariance: sigma === undefined ? [0, 0, 0, 0, 0, 0, 0, 0, 0] : [sigma ** 2, 0, 0, 0, sigma ** 2, 0, 0, 0, 4 * sigma ** 2],
+    position_covariance_type: sigma === undefined ? 0 : 2,
+  })
+
+  it("reads a NavSatFix as geo-map's robot fields: the fix in words and the horizontal accuracy", () => {
+    const robot: GeoMapRobot = { id: "a", name: "A", status: "active", ...navSatFixToGeo(fix(2, 0.01)) }
+    expect(robot.fix).toBe("rtk-fixed")
+    expect(robot.accuracy).toBeCloseTo(Math.SQRT2 * 0.01, 9)
+    expect(navSatFixToGeo(fix(2, 0.01))).toMatchObject({ lat: 24.9, lon: 121.2, altitude: 112.5, time: 10500 })
+    // GBAS past the RTK-fixed threshold is float; the threshold can be set.
+    expect(navSatFixToGeo(fix(2, 0.3)).fix).toBe("rtk-float")
+    expect(navSatFixToGeo(fix(2, 0.3), { rtkFixedWithin: 1 }).fix).toBe("rtk-fixed")
+    expect(navSatFixToGeo(fix(2)).fix).toBe("rtk-float")
+    expect(navSatFixToGeo(fix(1, 0.7)).fix).toBe("dgps")
+    expect(navSatFixToGeo(fix(0, 2)).fix).toBe("gps")
+    expect(navSatFixToGeo(fix(0, 2)).accuracy).toBeCloseTo(2 * Math.SQRT2, 9)
+    // Unknown covariance: no accuracy.
+    expect(navSatFixToGeo(fix(0)).accuracy).toBeUndefined()
+    // No fix (−1), unknown (−2, ROS 2 Jazzy) and NaN coordinates are no fix, with no accuracy.
+    expect(navSatFixToGeo(fix(-1, 3))).toMatchObject({ fix: "none" })
+    expect(navSatFixToGeo(fix(-1, 3)).accuracy).toBeUndefined()
+    expect(navSatFixToGeo(fix(-2)).fix).toBe("none")
+    expect(navSatFixToGeo({ ...fix(0), latitude: NaN }).fix).toBe("none")
+  })
+
+  it("reads a GeoPoint, a GeoPose and a GeoPoseStamped", () => {
+    const p = { latitude: 1, longitude: 2, altitude: 3 }
+    const point: GeoPoint = geoPointToGeo(p)
+    expect(point).toEqual({ lat: 1, lon: 2 })
+    expect(geoPointToGeo({ position: p })).toEqual({ lat: 1, lon: 2 })
+    expect(geoPointToGeo({ pose: { position: p } })).toEqual({ lat: 1, lon: 2 })
+  })
+
+  it("turns compass headings and ENU yaw into each other", () => {
+    expect(enuYawToHeading(0)).toBeCloseTo(90)
+    expect(enuYawToHeading(Math.PI / 2)).toBeCloseTo(0)
+    expect(enuYawToHeading(Math.PI)).toBeCloseTo(270)
+    expect(headingToEnuYaw(0)).toBeCloseTo(Math.PI / 2)
+    expect(enuYawToHeading(headingToEnuYaw(123))).toBeCloseTo(123)
+  })
+
+  it("sends a geo-map goal as a GeoPoseStamped or a NavSatFix", () => {
+    const goal: GeoMapGoal = { lat: 24.9, lon: 121.2, heading: 90 }
+    const pose = geoGoalToGeoPoseStamped(goal)
+    expect(pose.header).toEqual({ frame_id: "wgs84" })
+    expect(pose.pose.position).toEqual({ latitude: 24.9, longitude: 121.2, altitude: 0 })
+    // Heading 90° (east) is yaw 0 in ENU: the identity quaternion.
+    expect(quaternionToYaw(pose.pose.orientation)).toBeCloseTo(0)
+    expect(quaternionToYaw(geoGoalToGeoPoseStamped({ ...goal, heading: 0 }).pose.orientation)).toBeCloseTo(Math.PI / 2)
+    expect(geoGoalToGeoPoseStamped({ lat: 1, lon: 2 }, { frameId: "earth", stamp: { sec: 1, nanosec: 0 }, altitude: 50 })).toMatchObject({
+      header: { frame_id: "earth", stamp: { sec: 1, nanosec: 0 } },
+      pose: { position: { altitude: 50 } },
+    })
+    const nav = geoGoalToNavSatFix(goal)
+    expect(nav).toMatchObject({ status: { status: 0, service: 1 }, latitude: 24.9, longitude: 121.2, altitude: 0, position_covariance_type: 0 })
+    expect(nav.position_covariance).toHaveLength(9)
+    // A NavSatFix read back is the same place.
+    expect(navSatFixToGeo(nav)).toMatchObject({ lat: 24.9, lon: 121.2, fix: "gps" })
+  })
+})
+
+/** A quaternion for roll, pitch and yaw in degrees, composed as tf2's setRPY does (z, then y, then x). */
+const rpy = (roll: number, pitch: number, yaw: number) => {
+  const r = (roll * Math.PI) / 360
+  const p = (pitch * Math.PI) / 360
+  const y = (yaw * Math.PI) / 360
+  const [cr, sr, cp, sp, cy, sy] = [Math.cos(r), Math.sin(r), Math.cos(p), Math.sin(p), Math.cos(y), Math.sin(y)]
+  return { w: cr * cp * cy + sr * sp * sy, x: sr * cp * cy - cr * sp * sy, y: cr * sp * cy + sr * cp * sy, z: cr * cp * sy - sr * sp * cy }
+}
+
+describe("imuToAttitude", () => {
+  it("reads roll, pitch and yaw back as tf2's getRPY does", () => {
+    const e = quaternionToEuler(rpy(12, -7, 135))
+    expect((e.roll * 180) / Math.PI).toBeCloseTo(12, 6)
+    expect((e.pitch * 180) / Math.PI).toBeCloseTo(-7, 6)
+    expect((e.yaw * 180) / Math.PI).toBeCloseTo(135, 6)
+  })
+
+  it("keeps REP 103's signs: right side down and nose down are positive", () => {
+    // A rotation about +x (forward) lifts the left side: right side down.
+    const right = imuToAttitude({ orientation: { x: Math.sin(Math.PI / 24), y: 0, z: 0, w: Math.cos(Math.PI / 24) } })
+    expect(right.roll).toBeCloseTo(15, 6)
+    // A rotation about +y (left) lowers the nose.
+    const down = imuToAttitude({ orientation: { x: 0, y: Math.sin(Math.PI / 36), z: 0, w: Math.cos(Math.PI / 36) } })
+    expect(down.pitch).toBeCloseTo(10, 6)
+  })
+
+  it("gives a compass heading from an east-north-up yaw: east is 90°, north 0°, west 270°", () => {
+    expect(imuToAttitude({ orientation: rpy(0, 0, 0) }).heading).toBeCloseTo(90, 6)
+    expect(imuToAttitude({ orientation: rpy(0, 0, 90) }).heading).toBeCloseTo(0, 6)
+    expect(imuToAttitude({ orientation: rpy(0, 0, 180) }).heading).toBeCloseTo(270, 6)
+    expect(imuToAttitude({ orientation: rpy(0, 0, -91) }).heading).toBeCloseTo(181, 6)
+    expect(imuToAttitude({ orientation: rpy(3, 4, 90) }, { heading: false })).not.toHaveProperty("heading")
+  })
+
+  it("reads a quaternion that is not normalised, and gives nothing for an IMU without orientation", () => {
+    const q = rpy(20, 5, 0)
+    const a = imuToAttitude({ orientation: { x: q.x * 3, y: q.y * 3, z: q.z * 3, w: q.w * 3 } })
+    expect(a.roll).toBeCloseTo(20, 6)
+    expect(a.pitch).toBeCloseTo(5, 6)
+    expect(imuToAttitude({ orientation: q, orientation_covariance: [-1, 0, 0, 0, 0, 0, 0, 0, 0] })).toEqual({})
+    expect(imuToAttitude({ orientation: { x: 0, y: 0, z: 0, w: 0 } })).toEqual({})
+    expect(imuToAttitude({ orientation: { x: NaN, y: 0, z: 0, w: 1 } })).toEqual({})
+  })
+
+  it("never gives NaN at a pitch of 90°", () => {
+    const a = imuToAttitude({ orientation: { x: 0, y: Math.SQRT1_2 + 1e-12, z: 0, w: Math.SQRT1_2 } })
+    expect(Number.isNaN(a.pitch)).toBe(false)
+    expect(a.pitch).toBeCloseTo(90, 3)
+  })
+
+  it("is assignable to attitude's push", () => {
+    const sample: AttitudeSample = imuToAttitude({ orientation: rpy(1, 2, 3) })
+    expect(sample.roll).toBeCloseTo(1, 6)
+  })
+})
+
+describe("odometryToSpeed", () => {
+  const twist = (x: number, y = 0): RosTwist => ({ linear: { x, y, z: 0 }, angular: { x: 0, y: 0, z: 0.4 } })
+  it("is the length of the planar linear velocity, from Odometry, TwistStamped or Twist", () => {
+    const odom = { pose: { pose: { position: { x: 0, y: 0 }, orientation: { x: 0, y: 0, z: 0, w: 1 } } }, twist: { twist: twist(0.6, 0.8) } }
+    expect(odometryToSpeed(odom)).toBeCloseTo(1, 9)
+    expect(odometryToSpeed({ twist: twist(-1.2) })).toBeCloseTo(1.2, 9)
+    expect(odometryToSpeed(twist(0.5))).toBeCloseTo(0.5, 9)
+  })
+
+  it("keeps the sign of linear x with signed, for reversing", () => {
+    expect(odometryToSpeed({ twist: { twist: twist(-0.7, 0.3) } } as never, { signed: true })).toBeCloseTo(-0.7, 9)
+  })
+
+  it("is NaN for a twist that is not a number, and 0 for one with nothing set", () => {
+    expect(odometryToSpeed(twist(NaN))).toBeNaN()
+    expect(odometryToSpeed({ twist: {} } as never)).toBe(0)
   })
 })

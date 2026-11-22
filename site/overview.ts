@@ -94,7 +94,7 @@ export const overviews: Record<string, Overview> = {
     what: "A robot's live camera over a native video the app feeds, that always says whether the picture is live: Live with the latency, Stalled with the last frame's time, Paused, connecting, offline or no camera.",
     use: [
       "The camera panel of a robot's page or a teleoperation screen.",
-      "A wall of a site's cameras, one feed per robot.",
+      "A robot's view beside its map or its controls; for many cameras at once, `camera-wall`.",
       "Watching a robot's view with its detections drawn over it.",
     ],
     instead: [
@@ -107,6 +107,28 @@ export const overviews: Record<string, Overview> = {
       "Pause view freezes this screen only; the robot keeps streaming, and the feed says Paused until it resumes.",
       "The state is a shape and a word (a filled dot for Live, a triangle for Stalled, a slashed circle for offline); only Stalled has colour, and blue only spins while connecting. The dot never pulses.",
       "Every string is in `labels`, including `formatTime` for the last frame's time (24-hour clock by default; pass the site's time zone if the operator is elsewhere).",
+      "`bare` is just the picture, for a feed inside something that names it and takes the keyboard (camera-wall's tiles); `onStateChange` reports each state once.",
+    ],
+  },
+  "camera-wall": {
+    what: "Many robot cameras at once, each a camera-feed: an auto grid that pages, one camera focused large with a strip of the rest, attention first, and only as many streams playing as the site can carry.",
+    use: [
+      "A control room's wall of a site's robots, watched for anything that needs someone.",
+      "Checking every robot of a fleet before a shift, then opening the one that looks wrong.",
+      "A supervisor's tablet with the robots on one floor.",
+    ],
+    instead: [
+      "One robot's camera on its page or a teleoperation screen: `camera-feed`.",
+      "Recorded clips of an incident: `media-player`, or `image-grid` for stills.",
+      "Robots' positions rather than their pictures: `robot-map`.",
+    ],
+    notes: [
+      "It connects to nothing: `getSource(camera, { quality })` returns what camera-feed plays (a WebRTC MediaStream or a URL), and is called on render only for the cameras playing. Keep streams in a cache keyed by camera and quality; `onLiveChange` lists what plays, to close the rest.",
+      "What plays: the focused camera first, then tiles in the order shown, at most `maxLive`, skipping tiles off screen (one IntersectionObserver) and offline cameras. Tiles behind the focused camera (a phone, full screen) are not drawn. A tile that stops playing keeps its last frame, drawn to a canvas before the stream is let go (or its `poster`), dimmed under \"Paused to save bandwidth\".",
+      "Layout from the container's width, not the screen's: columns by count (1, 2×2, 3×3, 4×4) and by width (tiles at least 240 px), a page of cols × cols; under 560 px a list of tiles, and a focused camera takes the whole width. Full screen is the focused feed's own button (F).",
+      "Each tile is a button in one roving Tab stop (arrows by tile and by row, Home, End, Page Up and Down), named with its camera, robot, state and alarm. Enter opens it large and moves focus to the feed; Esc comes back to the same tile, on its page.",
+      "State changes are announced in one polite status, batched, at most every `announceEveryMs` (5 s): a camera that stalls, goes offline or comes back, each camera once in its latest state. Connecting to Live is not news.",
+      "Status is camera-feed's shape and word on each tile; the alarm marker is the priority's shape and word in the picture's top-right corner, clear of the camera's burnt-in clock and of what camera-feed draws (octagon critical, triangle high, diamond low), never a tinted tile. The large view writes it beside All cameras, off the picture.",
     ],
   },
   "joint-state": {
@@ -201,7 +223,54 @@ export const overviews: Record<string, Overview> = {
       "Keyboard parity: in an edit mode the arrow keys move a crosshair (about 8 px a press, 40 with Shift, or the `snap`), with its position written beside it, and the view follows it to the edge. Enter or Space places; for a goal, left and right then turn it 15° (45° with Shift) and Enter sets it. Enter or Space on a waypoint, or on a zone's corner with `editableZones`, picks it up; arrows carry it, Enter drops it, Esc puts it back. Delete or Backspace removes the selected waypoint, or a zone's last corner; Enter closes a zone of three corners or more; Esc cancels. Each step is said in an aria-live region (\"Goal set at 12.4, 8.0 m, heading 90°\"), and the crosshair's position (or a turning goal's heading) once the arrow keys rest for 400 ms.",
       "A banner in the top-left corner says what a click does now and how to finish or cancel; on a map 480 px wide or more it also says how to pan. Handles are 36 px targets with a mouse and 44 on touch (`--h-sm`), around a smaller drawing. `snap` (metres) rounds every point placed or moved; none by default. Points are kept on the plan.",
       "The waypoints' line is dashed grey while it is being drawn and the in-progress blue only with `waypointsPlanned`, once it is the route being driven. Goals and waypoints are ink, never a status colour; a drawn zone is a hairline outline like the others.",
+      "For waypoints that carry more than a point (names, actions), `onWaypointEdit` says which one was added, moved or removed, by index; `selectedWaypoint` / `onWaypointSelect` share the selection with a list beside the map (a click selects a waypoint in `view` mode too, once `onWaypointSelect` is given); `waypointMarks` draws each waypoint's heading tick and the warning shape for a problem the list words. `waypoint-editor` uses all three.",
       "Pass `labels` (status words, zone kinds, instructions, positions, empty, loading, error) to translate.",
+    ],
+  },
+  "waypoint-editor": {
+    what: "A robot's route as an ordered list of waypoints, edited in a list and on the robot map together: names, places, headings, actions on arrival and dwell times, with the problems that stop it saving shown where they are.",
+    use: [
+      "Planning a patrol or delivery route on a site before sending it to a robot.",
+      "Changing a saved route: a new stop, a different order, a photo at the bay door.",
+      "Showing a route to someone who can read it but not change it (`readOnly`).",
+    ],
+    instead: [
+      "Watching a route being driven: `robot-map` with `paths` (and `route-progress` for how far along).",
+      "One goal, sent now: `robot-map` with `mode=\"goal\"`.",
+      "Reordering a plain list with no places: `sortable`.",
+    ],
+    notes: [
+      "`value` is the saved route; the editor keeps a draft and calls `onSave` with it. Return a promise to keep Save busy; a rejection keeps the draft and says so. A new `value` replaces a clean draft and leaves one with unsaved changes alone. `onDirtyChange` lets the app warn before leaving; `defaultDraft` restores a draft kept across a reload.",
+      "A waypoint is `{ id, name, at, heading?, action, dwell? }`. `at` is `{ kind: \"plan\", x, y }` in robot-map's metres (y down) or `{ kind: \"geo\", lat, lon }`; the map draws plan waypoints only, and distances use the haversine for geo legs. `action` is `none`, `wait` (seconds), `dock`, `photo` or `custom` (a name the app runs); `dwell` is time to stay after it.",
+      "Problems come from `validateWaypoints(waypoints, { width, height, zones, minSpacing })`, exported for a server to check again: no name, a custom action with no name, a position that is not a number, outside the plan, inside a `restricted` zone, or closer than `minSpacing` (0.5 m) to the waypoint before. Each shows on its row (the warning triangle and words) and on its point; Save stays disabled and says why beside it.",
+      "The estimate is the distance at `speed` (m/s) plus each wait and dwell (`routeDistance`, `routeDuration`). Docking and photos take what `dwell` says.",
+      "Delete and Cancel throw nothing away silently: both show a toast with Undo, so the app needs a `Toaster`. Duplicate puts the copy 1 m beside the original (twice `minSpacing`), never on top of it.",
+      "Keyboard: each row is a handle (Space, arrows, Space: sortable's keys and announcements) and a button that opens its fields; Delete on the row removes it with Undo, and focus moves to the next row. The map keeps its own keys. The editor's own messages (added, duplicated, saved, the number of problems once typing rests) go through one polite live region, at most one a second.",
+      "Narrower than 768 px (a container query, so a sheet or a side panel counts) the list comes first and the map is a tab; the selected waypoint shows under the map with a Details button back to its row.",
+      "ROS: `waypointsToPath` and `waypointsToNavigateThroughPoses` (from `ros`) send the route as `nav_msgs/Path` or Nav2's NavigateThroughPoses goal in the map frame; `pathToWaypoints` and `navigateThroughPosesToWaypoints` bring one back. Actions are the app's to run.",
+    ],
+  },
+  "geo-map": {
+    what: "An outdoor map in latitude and longitude for robots that work outside: tiles from your own server or a coordinate grid that needs no network, robots with their GPS fix and accuracy, geofences, a route and trails, a goal sent on confirm, and a list with the same robots as text.",
+    use: [
+      "A patrol, farm or delivery fleet on satellite positioning: where each robot is, how good its fix is, and whether it is inside its work area.",
+      "A robot that is offline or air-gapped: the grid in degrees needs no tile server.",
+      "Sending a robot to a place on the map (Nav2's GPS waypoints, a GeoPoseStamped goal).",
+    ],
+    instead: [
+      "A site's floor plan in metres, indoors: `robot-map`.",
+      "Vector tiles, search, routing on roads, or a site across the antimeridian: a map library.",
+      "One robot's position as a value: a `metric-card` with its coordinates in words.",
+    ],
+    notes: [
+      "Offer `GeoMapList` beside `GeoMap` and share `selectedId` / `onSelect` between them.",
+      "Coordinates are WGS 84 degrees as objects (`{ lat, lon }`), never pairs, so the order is never in doubt (GeoJSON writes lon, lat). `heading` is degrees clockwise from true north. From ROS (REP 103, ENU), `enuYawToHeading(yaw)`; from `sensor_msgs/NavSatFix`, spread `navSatFixToGeo(msg)` into the robot for `lat`, `lon`, `fix` and `accuracy`. Send a goal with `geoGoalToGeoPoseStamped(goal)` (or `geoGoalToNavSatFix`).",
+      "`fix` is `rtk-fixed`, `rtk-float`, `dgps`, `gps` or `none`; `accuracy` is the horizontal accuracy in metres. NavSatFix cannot tell RTK fixed from float: `navSatFixToGeo` calls a GBAS fix within 5 cm fixed (`rtkFixedWithin`) and float otherwise.",
+      "`tileUrl` is a template with {z}, {x} and {y}, or a function from a tile to its URL (signed URLs, a local cache). `tileSize` 256 or 512; past `tileMaxZoom` the deepest tiles are drawn larger. OpenStreetMap's public tile servers forbid heavy use: run or buy a tile server, and pass its licence's words as `attribution`. Tiles are images in the page: the docs' stories use a test set made by `scripts/geo-tiles.mjs`, never a real server.",
+      "The first view fits the whole working area (robots, fences and route), unless `center` and `zoom` are given; it is then kept, so robots driving about do not pull the map along. 0 and the fit button show all robots. The map is Web Mercator, north up, zoom 2 to 22 by default (`minZoom`, `maxZoom`).",
+      "`data-tiles` on the map is `loading` or `ready` (every tile in view loaded or failed), for tests and screenshots that wait for the picture.",
+      "Goal mode is controlled: the map draws the app's `goal` and reports `onGoal` once confirmed; it keeps only the goal placed and not yet sent. It never reports a goal inside a keep-out or outside every allowed fence: the reason (`goalInKeepOut`, `goalOutsideAllowed`) is shown beside the disabled Send and said, and the app still checks the goal on its side. Every step is said in an aria-live region; the crosshair's coordinates once the arrows rest for 400 ms. Robots' fix changes are said too, gathered into one sentence and at most once per `announceEveryMs` (3 s).",
+      "Pass `labels` and `locale` to translate and format coordinates, accuracy and distances (`geoMapLabels` in `labels-zh-tw`).",
     ],
   },
   "point-cloud": {
@@ -957,6 +1026,28 @@ export const overviews: Record<string, Overview> = {
       "Every word is in `labels`, including `formatTime`, the axis' `secondsAgo` and `minutesAgo`, `withUnit` and `reading` (what screen readers hear); `locale` formats the numbers and times. Pass the app's locale.",
     ],
   },
+  attitude: {
+    what: "Two instruments for a robot's state now: AttitudeIndicator (roll and pitch on an artificial horizon, the heading on a compass ring, each also written in degrees and words) and Gauge (one value with a known range on a dial, with Meter's thresholds).",
+    use: [
+      "A legged or tracked robot on rough ground or a slope: how far it leans, against its tip-over limit.",
+      "An AMR on a ramp or a dock plate: pitch and roll while it climbs.",
+      "A robot's speed, a motor's temperature or a wheel's current at a glance, beside the drive controls or on a robot's page.",
+    ],
+    instead: [
+      "A level that stays (battery, storage, signal): `meter`, a bar, which reads faster in a list.",
+      "How a value moved over the last minutes: `streaming-chart`.",
+      "A limit crossed that needs someone to act: raise an `alarm` too; the instrument shows where, the alarm asks for the action.",
+      "A pose on a map: `robot-map`; the arm's joints: `joint-state`.",
+    ],
+    notes: [
+      "Plain props for a fixed reading; for a stream, `push` on the ref or `subscribe={(push) => ros.subscribe(\"/imu/data\", \"sensor_msgs/Imu\", (m) => push(imuToAttitude(m), stampToMs(m.header?.stamp)))}`. A reading moves the drawing on the next frame without a React render; the numbers render at most four times a second, and at once when a limit is crossed.",
+      "Degrees, REP 103 signs: positive roll is the right side down, positive pitch the nose down; `heading` is clockwise from north (`imuToAttitude` gives 90 − yaw, the IMU's orientation being east-north-up). Direction is always said in words, so the sign never has to be read.",
+      "`limits.roll` and `limits.pitch` take `warning` and `critical`, the same either side of level. Gauge takes Meter's `low`, `critical` and `higherIsWorse` and reads them with Meter's own functions (`meterTone`, `meterSaid`), so a 74 °C motor is \"High\" on both.",
+      "Stale is timed by when this browser received the reading, never by the stamp; the stamp is the time Stale shows. Without `staleAfterMs` it never goes stale.",
+      "The attitude is a role=img whose name is the whole reading in words, with the readouts as text beside it; Gauge is a role=meter with `aria-valuetext` (\"73.8 °C, high\"). A limit crossed is announced politely, at most every `announceEveryMs` (5 s), at once when it turns critical; what is already past a limit when the data arrives is shown, not announced.",
+      "Every word is in `labels` (`attitudeIndicatorLabels`, `gaugeLabels` in `labels-zh-tw`), including the compass points and `summary`, what screen readers hear; `locale` formats the numbers and the time.",
+    ],
+  },
   command: {
     what: "Search and run from the keyboard: a filterable list, and the ⌘K palette that opens over any page.",
     use: ["The app's search for robots, pages and actions (AppShell `search`).", "Picking from a long list by typing."],
@@ -1053,7 +1144,7 @@ export const overviews: Record<string, Overview> = {
     instead: [
       "A fleet seen through your own backend (REST, GraphQL, MQTT): pass the backend's data to the components; this connects a browser to one robot's rosbridge.",
       "The converters alone, outside React (a worker, a server, another bridge): `ros`.",
-      "Video: `camera-feed` over WebRTC or a stream URL; rosbridge is not for frames.",
+      "Video: `camera-feed` or `camera-wall` over WebRTC or a stream URL; rosbridge is not for frames. `webVideoServerSrc(server, topic, { quality })` builds the web_video_server URL for an image topic.",
     ],
     notes: [
       "Start rosbridge on the robot with `ros2 launch rosbridge_server rosbridge_websocket_launch.xml` (ROS 1: `roslaunch rosbridge_server rosbridge_websocket.launch`); it listens on ws://<robot>:9090. Use wss:// behind a TLS proxy from an https page: a browser blocks ws:// from https.",
@@ -1065,14 +1156,14 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   ros: {
-    what: "The rosbridge v2 client and the message converters behind use-ros, in plain TypeScript: a connection that reconnects and resubscribes, and pure functions from OccupancyGrid, LaserScan, PointCloud2, JointState, DiagnosticArray and poses to the components' props, and from a teleop command or a map goal back to Twist and PoseStamped.",
+    what: "The rosbridge v2 client and the message converters behind use-ros, in plain TypeScript: a connection that reconnects and resubscribes, and pure functions from OccupancyGrid, LaserScan, PointCloud2, JointState, Imu, Odometry, DiagnosticArray and poses to the components' props, and from a teleop command or a map goal back to Twist and PoseStamped.",
     use: [
-      "Feeding `robot-map`, `point-cloud`, `joint-state`, `diagnostics` from ROS messages, whatever brought them (rosbridge, Foxglove, a recorded bag, your backend).",
+      "Feeding `robot-map`, `point-cloud`, `joint-state`, `diagnostics`, `attitude` from ROS messages, whatever brought them (rosbridge, Foxglove, a recorded bag, your backend).",
       "A rosbridge connection outside React: a worker that decodes clouds, a test, a script.",
     ],
     instead: ["Connecting React components: `use-ros`, which installs this."],
     notes: [
-      "`occupancyGridToGrid` (robot-map `grid` or `costmap`), `laserScanToScan(msg, robotId)` (robot-map `scans`), `poseToRobotMapPose(msg, gridToPlan(grid))` (a robot's x, y and heading; takes Pose, PoseStamped, PoseWithCovarianceStamped or Odometry), `goalToPoseStamped(goal, frame)` (robot-map `onGoal` to /goal_pose), `pointCloud2ToPoints` (point-cloud `points` and `intensity`), `jointStateToJoints(msg, { limits })` (joint-state `joints`), `diagnosticArrayToStatuses(msg)` and `mergeDiagnostics(previous, next)` (diagnostics `statuses`), `teleopToTwist(command, { maxLinear, maxAngular })`, `rosLogToLogLine` (a /rosout message as a log-viewer line, ROS 1 or 2), `stampToMs(header.stamp)` (`updatedAt`). For robot-model, its own `jointStateToRecord`.",
+      "`occupancyGridToGrid` (robot-map `grid` or `costmap`), `laserScanToScan(msg, robotId)` (robot-map `scans`), `poseToRobotMapPose(msg, gridToPlan(grid))` (a robot's x, y and heading; takes Pose, PoseStamped, PoseWithCovarianceStamped or Odometry), `goalToPoseStamped(goal, frame)` (robot-map `onGoal` to /goal_pose), `pointCloud2ToPoints` (point-cloud `points` and `intensity`), `jointStateToJoints(msg, { limits })` (joint-state `joints`), `diagnosticArrayToStatuses(msg)` and `mergeDiagnostics(previous, next)` (diagnostics `statuses`), `imuToAttitude(msg)` (attitude's roll, pitch and heading in degrees; `quaternionToEuler` for the radians), `odometryToSpeed(msg)` (Gauge's speed in m/s), `teleopToTwist(command, { maxLinear, maxAngular })`, `rosLogToLogLine` (a /rosout message as a log-viewer line, ROS 1 or 2), `waypointsToPath(waypoints, frame)` and `waypointsToNavigateThroughPoses(waypoints, frame)` (waypoint-editor `onSave` to a `nav_msgs/Path` or Nav2 NavigateThroughPoses goal; a waypoint without a heading faces the next), `pathToWaypoints` and `navigateThroughPosesToWaypoints` (back to `value`), `stampToMs(header.stamp)` (`updatedAt`). For robot-model, its own `jointStateToRecord`.",
       "rosbridge sends `uint8[]` (PointCloud2.data) as base64 and `int8[]` (OccupancyGrid.data) as a list of numbers; the converters read either. NaN and ±Infinity in a LaserScan arrive as null (or as bare tokens, which the client reads as null) and are skipped like out-of-range readings.",
       "A pose must be in the map frame for robot-map (/amcl_pose is; /odom drifts). A scan is drawn from the robot's centre, so transform it to the base frame first if the laser is offset.",
     ],

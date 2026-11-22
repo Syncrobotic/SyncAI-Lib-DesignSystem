@@ -27,7 +27,7 @@ export function AreaTabs({ scopes, path, edge }: { scopes: Scope[]; path: string
       role="list"
       aria-label="Areas"
       className={cn(
-        "flex gap-4 overflow-x-auto overflow-y-hidden border-b px-3 transition-colors duration-(--motion-fast) ease-(--ease-standard)",
+        "scroll-row flex gap-4 overflow-x-auto overflow-y-hidden border-b px-3 transition-colors duration-(--motion-fast) ease-(--ease-standard)",
         edge ? "border-border" : "border-transparent",
       )}
     >
