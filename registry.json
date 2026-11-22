@@ -3343,8 +3343,13 @@
         }
       ],
       "meta": {
-        "version": "0.7.0",
+        "version": "0.30.0",
         "changelog": [
+          {
+            "version": "0.30.0",
+            "date": "2026-11-22",
+            "note": "Escape inside a native <dialog> closes the dialog (a cancel it can refuse), instead of being taken by the tooltip alone."
+          },
           {
             "version": "0.7.0",
             "date": "2026-11-17",
