@@ -10,6 +10,9 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - **`ros` 0.29.0:** `waypointsToPath` and `waypointsToNavigateThroughPoses` send waypoint-editor's route as a `nav_msgs/Path` or the goal of Nav2's NavigateThroughPoses (PoseStamped in the map frame; a waypoint without a heading faces the next), and `pathToWaypoints` / `navigateThroughPosesToWaypoints` bring one back (Kilted's `nav_msgs/Goals` too).
 - **`labels-zh-tw` 0.29.0:** `waypointEditorLabels`.
 
+### Fixed
+- Docs: on a phone, long groups on the components index (Inputs: 26 cards) stayed blank; a section now arrives once any part of it scrolls into view.
+
 ## 0.28.0 · 2026-11-22
 
 Four new components for robot consoles (streaming chart, log viewer, diagnostics, sidebar) and the fixes from a page-by-page audit of every component, block and docs page. Read **Changed** before upgrading: a few defaults and words change.

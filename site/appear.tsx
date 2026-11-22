@@ -40,7 +40,9 @@ export function Reveal({ children, className, stagger: s = 0.04 }: { children: R
         setState("playing")
         io.disconnect()
       },
-      { threshold: 0.15 },
+      // Any part in view, once its top is past the bottom tenth of the screen. Not a share of the section: a tall grid on a
+      // phone (26 cards, ten screens high) never shows 15 % of itself at once, and stayed hidden.
+      { threshold: 0, rootMargin: "0px 0px -10% 0px" },
     )
     io.observe(el)
     return () => io.disconnect()
