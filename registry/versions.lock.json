@@ -168,8 +168,8 @@
     "hash": "9f704a562bd27a1b"
   },
   "card": {
-    "version": "0.17.2",
-    "hash": "99e28a3e45be13af"
+    "version": "0.31.0",
+    "hash": "5bd1a99fbe3264b9"
   },
   "avatar": {
     "version": "0.28.0",
@@ -248,8 +248,8 @@
     "hash": "dbe1fe7c218252dc"
   },
   "accordion": {
-    "version": "0.10.0",
-    "hash": "a542674c1883114e"
+    "version": "0.31.0",
+    "hash": "749a7d0d9c7841ce"
   },
   "tree": {
     "version": "0.28.0",
@@ -573,7 +573,7 @@
   },
   "agent-skill": {
     "version": "0.31.0",
-    "hash": "1410355b968ef8ea"
+    "hash": "af558c98a08301e8"
   },
   "line-chart-telemetry": {
     "version": "0.17.2",

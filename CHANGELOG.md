@@ -4,6 +4,10 @@ Components install as source, so a project keeps the version it installed. Re-ru
 
 ## Unreleased
 
+### Added
+- **`card` 0.31.0:** `CardTitle` takes `as` (`"h2" | "h3" | "h4"`, h3 by default) and `CardDataHeader` takes `titleAs`, so a card right under the page's h1, or deep in a section, keeps the heading outline in order. The size does not change. Issue #303.
+- **`accordion` 0.31.0:** `AccordionTrigger` takes `as` (`"h2" | "h3" | "h4"`, h3 by default), the level of the heading it sits in. The look does not change. Issue #303.
+
 ### Fixed
 - **`kbd` 0.31.0:** a key inside a tooltip shows in dark: its cap and edge are the tooltip's text colour, faint (`primary-foreground` at 15 % and 20 %), instead of white on the near-white dark tooltip (1.0:1 before). Issue #301.
 - **`slider` 0.31.0, `switch` 0.31.0:** the thumb is the new `--thumb` token instead of a raw white; it looks the same. Issue #301.

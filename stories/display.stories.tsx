@@ -602,6 +602,24 @@ export const CardEmpty: S = {
   ),
 }
 
+// A card right under the page's h1 is an h2, so the outline skips no level. The size does not change with the level.
+export const CardHeadingLevel: S = {
+  render: () => (
+    <Card>
+      <CardHeader>
+        <CardTitle as="h2">Storage</CardTitle>
+        <CardDescription>Right under the page title, so its title is an h2</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-muted-foreground">Recordings</span>
+          <span className="tabular-nums">412 GB of 1 TB</span>
+        </div>
+      </CardContent>
+    </Card>
+  ),
+}
+
 export const SeparatorVertical: S = {
   render: () => (
     <div className="flex h-6 items-center gap-3 text-sm">

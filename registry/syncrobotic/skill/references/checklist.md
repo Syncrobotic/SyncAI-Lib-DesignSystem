@@ -9,6 +9,6 @@ Run through each line for the files you changed, fix what fails, then report.
 5. Every chart with axes (line, area, bar, heatmap) has a table view; chart colour is only on the series that matters (`--chart-1`), the rest graphite, three series and Other at most; sparklines, rings and status strips write their numbers in words instead; field edges use `--input`; nothing focusable removes its focus ring (`outline-none` only with a visible replacement).
 6. Each registry part is used as documented in its `.md` twin (Field around controls, InputGroup for icons in inputs, Meter for levels, CountBadge for counts, Alarm for what needs action, NumberField for numbers).
 7. Enter and exit both animate; loops only while waiting (Spinner, skeleton, caret); reduced motion is respected.
-8. Icons come from the icon set, one meaning each; icon-only buttons have an aria-label; images have alt; headings are in order; focus is visible.
+8. Icons come from the icon set, one meaning each; icon-only buttons have an aria-label; images have alt; headings are in order (no skipped level: CardTitle, AccordionTrigger and PageHeader take `as`, CardDataHeader `titleAs`, so a card or accordion right under the h1 is an h2); focus is visible.
 9. Empty, loading and error states exist for every list, table and page you touched.
 10. Light and dark both read correctly (the theme does this if you used tokens).

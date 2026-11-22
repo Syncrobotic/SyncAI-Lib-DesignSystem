@@ -82,6 +82,22 @@ export const TabsWithIconsAndCounts: S = {
   ),
 }
 
+// Right under the page's h1, the triggers sit in h2s, so the outline skips no level. The look does not change.
+export const AccordionHeadingLevel: S = {
+  render: () => (
+    <Accordion type="single" collapsible>
+      <AccordionItem value="licence">
+        <AccordionTrigger as="h2">Licence</AccordionTrigger>
+        <AccordionContent>Internal use only. Ask the data team before sharing a recording outside the company.</AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="retention">
+        <AccordionTrigger as="h2">Retention</AccordionTrigger>
+        <AccordionContent>Recordings are kept for 90 days, then deleted unless a mission report links to them.</AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  ),
+}
+
 export const AccordionMultiple: S = {
   render: () => (
     <Accordion type="multiple" defaultValue={["night", "weekend"]}>

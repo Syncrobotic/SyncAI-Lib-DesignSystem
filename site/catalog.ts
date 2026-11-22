@@ -572,7 +572,14 @@ const entries: Record<string, Entry> = {
       "`tone=\"success\"` renders grey, as `neutral` does: a state is never green. Use `neutral`.",
     ],
   },
-  card: { group: "Layout", examples: { file: "display", prefix: "Card" }, rules: ["Never nest cards. Group rows inside one card with separators."] },
+  card: {
+    group: "Layout",
+    examples: { file: "display", prefix: "Card" },
+    rules: [
+      "Never nest cards. Group rows inside one card with separators.",
+      "The title is an h3. Set `as` on CardTitle (`titleAs` on CardDataHeader) to the level the page needs: h2 for a card right under the h1, h4 inside a section under an h3. The size stays the same.",
+    ],
+  },
   avatar: {
     group: "Data display",
     examples: { file: "display", prefix: "Avatar" },
@@ -874,6 +881,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "Long content most people skip: FAQs, advanced settings. Content everyone needs stays open.",
       "One open at a time only when the sections are alternatives.",
+      "Each trigger sits in an h3. Set `as` on AccordionTrigger to the level the page needs: h2 right under the h1, h4 inside a section under an h3.",
     ],
   },
   tree: {

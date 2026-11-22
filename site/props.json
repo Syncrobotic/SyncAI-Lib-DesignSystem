@@ -17,7 +17,14 @@
   },
   {
    "name": "AccordionTrigger",
-   "props": [],
+   "props": [
+    {
+     "name": "as",
+     "type": "\"h2\" | \"h3\" | \"h4\"",
+     "default": "\"h3\"",
+     "description": "The level of the heading the trigger sits in: h3 by default; h2 under the page's h1, h4 under an h3. The look stays the same."
+    }
+   ],
    "inherits": [
     "Radix Accordion.Trigger"
    ]
@@ -2278,7 +2285,14 @@
   },
   {
    "name": "CardTitle",
-   "props": [],
+   "props": [
+    {
+     "name": "as",
+     "type": "\"h2\" | \"h3\" | \"h4\"",
+     "default": "\"h3\"",
+     "description": "The heading level: h3 by default; h2 for a card right under the page's h1, h4 for one in a section under an h3."
+    }
+   ],
    "inherits": [
     "<h3>"
    ]
@@ -2312,6 +2326,12 @@
      "type": "ReactNode",
      "required": true,
      "description": ""
+    },
+    {
+     "name": "titleAs",
+     "type": "\"h2\" | \"h3\" | \"h4\"",
+     "default": "\"h3\"",
+     "description": "The title's heading level: h3 by default; h2 for a card right under the page's h1, h4 for one under an h3."
     },
     {
      "name": "actions",
