@@ -1,10 +1,24 @@
-// @syncrobotic/banner v0.27.0 · update: npx shadcn add @syncrobotic/banner --overwrite
+// @syncrobotic/banner v0.28.0 · update: npx shadcn add @syncrobotic/banner --overwrite
 "use client"
 
 import * as React from "react"
 import { CircleAlert, Info, TriangleAlert, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
+
+const tabbable = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+
+// Where focus goes when the banner holding it closes: the first Tab stop after it that takes focus, else the last before it.
+function moveFocusOn(banner: HTMLElement) {
+  const stops = [...document.querySelectorAll<HTMLElement>(tabbable)].filter((el) => !banner.contains(el) && !el.closest("[inert], [aria-hidden=true], [hidden]"))
+  const after = stops.filter((el) => banner.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING)
+  const before = stops.filter((el) => banner.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_PRECEDING).reverse()
+  // One that is not drawn (display: none) refuses focus; try the next.
+  for (const el of [...after, ...before]) {
+    el.focus()
+    if (document.activeElement === el) return
+  }
+}
 
 export type BannerTone = "neutral" | "info" | "warning" | "danger"
 
@@ -21,11 +35,15 @@ export type BannerProps = Omit<React.ComponentProps<"div">, "title"> & {
   tone?: BannerTone
   /** Replaces the tone's icon with one that says what it is about: Wrench for maintenance, Lock for read-only, CloudOff for offline. */
   icon?: React.ElementType
-  /** The condition in a few words, in bold: "Read-only mode". The children say what it means and until when. */
+  /** The condition in a few words, set in medium weight like an Alert's title: "Read-only mode". The children say what it means and until when. */
   title?: React.ReactNode
   /** One next step: a Button (size md, variant outline) or a link through `<Button asChild>`. Named by its result: "Upgrade plan", not "Learn more". */
   action?: React.ReactNode
-  /** Shows a close button. Remembering that it was closed (and for how long) is yours: set `open` false and store it. Leave it out for a condition that ends by itself (offline, read-only). */
+  /**
+   * Shows a close button. Remembering that it was closed (and for how long) is yours: set `open` false and store it. Leave
+   * it out for a condition that ends by itself (offline, read-only). Closed with focus on its close button, focus moves on to what comes
+   * after the banner on the page (or before it, at the end), never back to the top of the page.
+   */
   onDismiss?: () => void
   /** The close button's name for screen readers. */
   dismissLabel?: string
@@ -40,6 +58,14 @@ export type BannerProps = Omit<React.ComponentProps<"div">, "title"> & {
  */
 export function Banner({ tone = "neutral", icon, title, action, onDismiss, dismissLabel = "Dismiss", open = true, className, children, ...props }: BannerProps) {
   const { mounted, leaving, done } = usePresence(open)
+  const close = React.useRef<HTMLButtonElement>(null)
+  // Once it is closed (after the app has drawn whatever replaces it), focus left on its close button moves on.
+  React.useEffect(() => {
+    const button = close.current
+    const banner = button?.closest<HTMLElement>("[data-slot=banner]")
+    if (open || !button || !banner || document.activeElement !== button) return
+    moveFocusOn(banner)
+  }, [open])
   if (!mounted) return null
   const t = tones[tone]
   const Icon = icon ?? t.glyph
@@ -75,6 +101,7 @@ export function Banner({ tone = "neutral", icon, title, action, onDismiss, dismi
         </div>
         {onDismiss && (
           <button
+            ref={close}
             type="button"
             aria-label={dismissLabel}
             onClick={onDismiss}

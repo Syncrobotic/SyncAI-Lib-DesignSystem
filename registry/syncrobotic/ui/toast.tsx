@@ -1,4 +1,4 @@
-// @syncrobotic/toast v0.27.0 · update: npx shadcn add @syncrobotic/toast --overwrite
+// @syncrobotic/toast v0.28.0 · update: npx shadcn add @syncrobotic/toast --overwrite
 "use client"
 
 import * as React from "react"
@@ -93,7 +93,8 @@ export function ToastViewport({ className, ...props }: React.ComponentProps<type
       data-slot="toast-viewport"
       className={cn(
         // focus-ring: F8 lands on the region and Tab moves into the notices, which show their own rings.
-        "fixed right-0 bottom-0 z-50 m-0 flex w-full max-w-sm list-none flex-col gap-2 p-4 outline-none",
+        // Full width on a phone, so its gutters match (16 px each side); 24rem at the right from sm up.
+        "fixed right-0 bottom-0 z-50 m-0 flex w-full list-none flex-col gap-2 p-4 outline-none sm:max-w-sm",
         "pb-[max(1rem,env(safe-area-inset-bottom))]",
         className,
       )}
@@ -337,7 +338,18 @@ export function Toaster({ label = "Notifications ({hotkey})", dismissLabel = "Di
     const outside = (e: PointerEvent) => {
       if (!region.contains(e.target as Node)) setPointer(false)
     }
-    const focusIn = () => setFocus(true)
+    // Focus counts only when it came from the keyboard. A click focuses the button it lands on, and closing that toast
+    // moves focus to the region; held there, it would keep the stack spread and Radix's timers paused after the pointer
+    // left, until a click somewhere else. So focus a click brought is ignored, and the region's is handed back.
+    let viaPointer = false
+    const pointerDown = () => (viaPointer = true)
+    const keyDown = () => (viaPointer = false)
+    let handBack = 0
+    const focusIn = (e: FocusEvent) => {
+      if (!viaPointer) return setFocus(true)
+      // After Radix has paused on this focus (it listens further up), so its focusout resumes the timers.
+      if (e.target === region) handBack = window.setTimeout(() => document.activeElement === region && region.blur())
+    }
     const focusOut = (e: FocusEvent) => {
       if (!region.contains(e.relatedTarget as Node | null)) setFocus(false)
     }
@@ -347,7 +359,12 @@ export function Toaster({ label = "Notifications ({hotkey})", dismissLabel = "Di
     region.addEventListener("focusin", focusIn)
     region.addEventListener("focusout", focusOut)
     document.addEventListener("pointerdown", outside)
+    document.addEventListener("pointerdown", pointerDown, true)
+    document.addEventListener("keydown", keyDown, true)
     return () => {
+      clearTimeout(handBack)
+      document.removeEventListener("pointerdown", pointerDown, true)
+      document.removeEventListener("keydown", keyDown, true)
       region.removeEventListener("pointermove", on)
       region.removeEventListener("pointerdown", on)
       region.removeEventListener("pointerleave", leave)

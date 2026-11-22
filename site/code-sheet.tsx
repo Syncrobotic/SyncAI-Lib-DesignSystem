@@ -24,7 +24,8 @@ export function SidePanelContent({
     <SheetContent side="right" className="max-w-none gap-0 p-0 sm:max-w-3xl" {...props}>
       <div className="sticky top-0 z-10 flex items-center gap-3 border-b border-border bg-popover py-2 pr-2 pl-6">
         <div className="min-w-0 flex-1">
-          <SheetTitle className="truncate font-mono text-sm font-medium">{title}</SheetTitle>
+          {/* A sheet title is xl, bold, like every sheet's; mono, since what it names is code (a component, a file, an icon). */}
+          <SheetTitle className="truncate font-mono text-xl font-bold">{title}</SheetTitle>
           <SheetDescription className="sr-only">{description}</SheetDescription>
         </div>
         {actions}

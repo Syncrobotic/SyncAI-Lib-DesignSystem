@@ -2,7 +2,7 @@ import * as React from "react"
 import Link from "next/link"
 import { Check, X } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { Inline } from "./prose"
+import { Inline, Unbroken } from "./prose"
 
 // Building blocks for the design-language pages: specimens, do/don't pairs and token tables.
 
@@ -114,7 +114,7 @@ export function TokenTable({ head, rows }: { head: string[]; rows: React.ReactNo
               {r.slice(1).map((c, j) => (
                 <React.Fragment key={j}>
                   <dt className="text-xs text-muted-foreground">{head[j + 1]}</dt>
-                  <dd className="min-w-0">{c}</dd>
+                  <dd className="min-w-0 wrap-anywhere">{c}</dd>
                 </React.Fragment>
               ))}
             </dl>
@@ -125,7 +125,12 @@ export function TokenTable({ head, rows }: { head: string[]; rows: React.ReactNo
   )
 }
 
-export const Code = ({ children }: { children: React.ReactNode }) => <code className="font-mono text-xs">{children}</code>
+// A token or class never splits at its hyphens (h-(-- / h-md)): text goes through Unbroken, which wraps only at a space or "/".
+export function Code({ children }: { children: React.ReactNode }) {
+  const parts = React.Children.toArray(children)
+  const text = parts.every((c) => typeof c === "string" || typeof c === "number") ? parts.join("") : null
+  return <code className="font-mono text-xs">{text !== null ? <Unbroken text={text} /> : children}</code>
+}
 
 /** A swatch painted with the literal value, so light and dark can sit side by side. */
 export function Swatch({ value, className }: { value: string; className?: string }) {

@@ -24,7 +24,7 @@ export const GroupedList: S = {
   render: () => (
     <ListGroup>
       <ListRow title="Network" meta="Good signal" trailing="SyncAI-Office" chevron onClick={fn()} />
-      <ListRow title="License" meta="Pro · expires 11/19" trailing={<InlineStatus status="warning">5 days left</InlineStatus>} chevron onClick={fn()} />
+      <ListRow title="Licence" meta="Pro · expires 11/19" trailing={<InlineStatus status="warning">5 days left</InlineStatus>} chevron onClick={fn()} />
       <ListRow title="Night shift · Pixel 8" meta="Operator" trailing={<InlineStatus status="normal">Online</InlineStatus>} />
     </ListGroup>
   ),

@@ -1,3 +1,4 @@
+import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { fn } from "storybook/test"
 import { Bot, CircleAlert, House, ListChecks, Pause } from "lucide-react"
@@ -15,6 +16,29 @@ const items: NavItem[] = [
 // Each example names its nav so a page showing several docks has unique landmarks.
 const nav = (example: string) => <DockNav items={items} active="home" onSelect={fn()} label={`Primary, ${example}`} />
 
+/**
+ * The stop's own flow, so the example never sits on Releasing…: released, the robot answers after a moment and the dock
+ * shows the stop again; stop it and the slide comes back.
+ */
+function StoppedFlow({ example }: { example: string }) {
+  const [stopped, setStopped] = React.useState(true)
+  const timer = React.useRef<number | undefined>(undefined)
+  React.useEffect(() => () => window.clearTimeout(timer.current), [])
+  return (
+    <Dock
+      className="static"
+      state={
+        stopped ? (
+          <SlideToRelease tag="7F3A" onRelease={() => (timer.current = window.setTimeout(() => setStopped(false), 1500))} />
+        ) : (
+          <StopButton tag="7F3A" onStop={() => setStopped(true)} />
+        )
+      }
+      nav={nav(example)}
+    />
+  )
+}
+
 const meta: Meta = { title: "Shell/Dock" }
 export default meta
 type S = StoryObj
@@ -24,7 +48,7 @@ export const StandingStill: S = {
   render: () => <Dock className="static" state={<StopButton state="idle" tag="7F3A" onStop={fn()} />} nav={nav("standing still")} />,
 }
 export const LyingDown: S = { render: () => <Dock className="static" state={<WakeButton onWake={fn()} />} nav={nav("lying down")} /> }
-export const Stopped: S = { render: () => <Dock className="static" state={<SlideToRelease tag="7F3A" onRelease={fn()} />} nav={nav("stopped")} /> }
+export const Stopped: S = { render: () => <StoppedFlow example="stopped" /> }
 export const ThreeTiersWithPageAction: S = {
   render: () => (
     <Dock
@@ -61,7 +85,7 @@ export const DockRobotStates: S = {
       items={[
         ["Standing still", <Dock key="s" className="static" state={<StopButton state="idle" tag="7F3A" onStop={fn()} />} nav={nav("standing still")} />],
         ["Lying down", <Dock key="l" className="static" state={<WakeButton onWake={fn()} />} nav={nav("lying down")} />],
-        ["Stopped", <Dock key="t" className="static" state={<SlideToRelease tag="7F3A" onRelease={fn()} />} nav={nav("stopped")} />],
+        ["Stopped", <StoppedFlow key="t" example="stopped" />],
       ]}
     />
   ),

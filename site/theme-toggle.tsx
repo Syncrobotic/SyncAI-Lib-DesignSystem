@@ -12,6 +12,8 @@ const choices: { value: Choice; label: string; Icon: typeof Sun }[] = [
 ]
 const icon = "absolute size-5 transition-[rotate,scale,opacity] duration-(--motion-base) ease-(--ease-standard)"
 const media = "(prefers-color-scheme: dark)"
+// While the choice is to match the system, the Monitor shows instead of the Sun or the Moon.
+const notSystem = "group-data-[choice=system]:scale-60 group-data-[choice=system]:opacity-0"
 
 function read(): Choice {
   try {
@@ -33,7 +35,7 @@ function apply(choice: Choice) {
 /**
  * Three choices, like the registry's ThemeToggle: light, match the system, dark. Products default to light (:root); this
  * docs site's own menu alone defaults to match the system. In the header it is one button that opens them, so it fits
- * beside search on a phone; the icon shows the theme in use.
+ * beside search on a phone; its icon shows the choice.
  */
 export function ThemeToggle() {
   // Known only in the browser; undefined while rendering on the server (and hydrating), so nothing shows as chosen until
@@ -61,11 +63,15 @@ export function ThemeToggle() {
     <DropdownMenu>
       <DropdownMenuTrigger
         aria-label="Theme"
-        className="press relative inline-flex size-(--h-md) items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground"
+        data-choice={choice}
+        className="group press relative inline-flex size-(--h-md) items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground"
       >
-        {/* The theme lives in the html class, so the swap is CSS: one icon turns out as the other turns in, at --motion-base. */}
-        <Sun aria-hidden="true" className={`${icon} scale-60 -rotate-90 opacity-0 dark:scale-100 dark:rotate-0 dark:opacity-100`} />
-        <Moon aria-hidden="true" className={`${icon} scale-100 rotate-0 opacity-100 dark:scale-60 dark:rotate-90 dark:opacity-0`} />
+        {/* The icon is the choice, as in the menu: Sun for light, Moon for dark, Monitor for match the system. Light and dark
+            follow the html class, so they are right before the stored choice is read; the swap is CSS, one icon turning
+            out as the other turns in, at --motion-base. */}
+        <Sun aria-hidden="true" className={`${icon} scale-100 rotate-0 opacity-100 dark:scale-60 dark:-rotate-90 dark:opacity-0 ${notSystem}`} />
+        <Moon aria-hidden="true" className={`${icon} scale-60 rotate-90 opacity-0 dark:scale-100 dark:rotate-0 dark:opacity-100 ${notSystem}`} />
+        <Monitor aria-hidden="true" className={`${icon} scale-60 opacity-0 group-data-[choice=system]:scale-100 group-data-[choice=system]:opacity-100`} />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         {choices.map(({ value, label, Icon }) => (

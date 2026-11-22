@@ -108,7 +108,7 @@ export const ScrollspyNoTitle: S = {
     const items = sections.slice(0, 3).map((s) => ({ ...s, id: `n-${s.id}` }))
     return (
       <div className="flex h-64 gap-6 overflow-hidden rounded-md bg-card p-4 ring-1 ring-border">
-        <Scrollspy items={items} root={ref} offset={24} title={null} aria-label="Sections" className="w-32 shrink-0" />
+        <Scrollspy items={items} root={ref} offset={24} title={null} aria-label="Sections" className="hidden w-32 shrink-0 sm:flex" />
         <div
           ref={ref}
           tabIndex={0}
@@ -173,7 +173,7 @@ export const ScrollspyLongNames: S = {
     ]
     return (
       <div className="flex h-64 gap-6 overflow-hidden rounded-md bg-card p-4 ring-1 ring-border">
-        <Scrollspy items={items} root={ref} offset={24} className="w-40 shrink-0" />
+        <Scrollspy items={items} root={ref} offset={24} className="hidden w-40 shrink-0 sm:flex" />
         <div
           ref={ref}
           tabIndex={0}

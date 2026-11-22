@@ -7,17 +7,19 @@ import { alarmEdge, topAlarm, type AlarmData } from "@/registry/syncrobotic/ui/a
 const meta: Meta<typeof Island> = {
   title: "Shell/Dynamic island",
   component: Island,
-  args: { name: "Patrol dog 7F3A", status: "active", unread: 2, className: "static" },
+  args: { name: "Patrol dog 7F3A", status: "active", battery: 72, unread: 2, className: "static" },
 }
 export default meta
 type S = StoryObj<typeof Island>
 
 export const Default: S = {}
 export const AnotherDogNeedsAttention: S = { args: { attention: true } }
-export const LowBattery: S = { args: { battery: 18 } }
+export const LowBattery: S = { args: { battery: 12 } }
+/** No reading yet: the level is unknown, never a made-up number. */
+export const BatteryUnknown: S = { args: { battery: undefined } }
 export const Loading: S = { args: { loading: true, status: "offline", unread: 0 } }
 export const Notice: S = {
-  args: { children: <IslandNotice tone="success" icon={Check} title="Parking lot patrol saved" meta="Next run 11/16 02:00" onDismiss={fn()} /> },
+  args: { children: <IslandNotice tone="success" icon={Check} title="Parking lot patrol saved" meta="Next run 16 Nov 02:00" onDismiss={fn()} /> },
 }
 export const Reversible: S = {
   args: {

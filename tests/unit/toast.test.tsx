@@ -89,6 +89,50 @@ describe("toast", () => {
     expect(["Saved", "Copied"].map(state)).not.toContain("open")
   })
 
+  it("collapses and runs the timers again after a toast is dismissed with the pointer", () => {
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout", "Date", "requestAnimationFrame", "cancelAnimationFrame"] })
+    render(<Toaster />)
+    act(() => {
+      toast({ title: "Saved" })
+      toast({ title: "Copied" })
+      toast({ title: "Sent" })
+    })
+    const close = li("Sent")!.querySelector("[data-slot=toast-close]") as HTMLElement
+    // A mouse click: the pointer arrives, presses (the browser focuses the button), clicks, and leaves.
+    act(() => {
+      fireEvent.pointerMove(screen.getByRole("region"))
+      fireEvent.pointerMove(viewport())
+      fireEvent.pointerDown(close, { pointerType: "mouse" })
+      close.focus()
+      fireEvent.click(close)
+    })
+    expect(state("Sent")).not.toBe("open")
+    act(() => {
+      fireEvent.pointerLeave(screen.getByRole("region"), { pointerType: "mouse" })
+      fireEvent.pointerLeave(viewport(), { pointerType: "mouse" })
+    })
+    // Focus that a click put on the stack does not hold it spread, nor its timers paused.
+    expect(viewport().getAttribute("data-expanded")).toBe("false")
+    act(() => vi.advanceTimersByTime(4100))
+    expect(["Saved", "Copied"].map(state)).not.toContain("open")
+  })
+
+  it("stays spread, timers paused, while the keyboard is in the stack", () => {
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout", "Date", "requestAnimationFrame", "cancelAnimationFrame"] })
+    render(<Toaster />)
+    act(() => {
+      toast({ title: "Saved" })
+      toast({ title: "Copied" })
+    })
+    act(() => {
+      fireEvent.keyDown(document, { key: "F8" })
+      viewport().focus()
+    })
+    expect(viewport().getAttribute("data-expanded")).toBe("true")
+    act(() => vi.advanceTimersByTime(10_000))
+    expect(["Saved", "Copied"].map(state)).toEqual(["open", "open"])
+  })
+
   it("draws each toast once when more than one Toaster is mounted", () => {
     render(
       <>

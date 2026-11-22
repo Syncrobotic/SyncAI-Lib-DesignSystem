@@ -1,4 +1,4 @@
-// @syncrobotic/scroll-area v0.17.3 · update: npx shadcn add @syncrobotic/scroll-area --overwrite
+// @syncrobotic/scroll-area v0.28.0 · update: npx shadcn add @syncrobotic/scroll-area --overwrite
 "use client"
 
 import * as React from "react"
@@ -26,7 +26,13 @@ export function ScrollArea({
   const viewport = React.useRef<HTMLDivElement>(null)
   const edges = useHiddenEdges(viewport, fade ? (orientation === "horizontal" ? "x" : "y") : null)
   return (
-    <ScrollAreaPrimitive.Root data-slot="scroll-area" className={cn("relative overflow-hidden", className)} {...props}>
+    <ScrollAreaPrimitive.Root
+      data-slot="scroll-area"
+      // Sideways, it takes its container's width: sized by its content (a row of tiles, a wide table) it would grow to
+      // fit them, and nothing would be left to scroll.
+      className={cn("relative overflow-hidden", orientation !== "vertical" && "w-full max-w-full", className)}
+      {...props}
+    >
       <ScrollAreaPrimitive.Viewport
         ref={viewport}
         data-slot="scroll-area-viewport"

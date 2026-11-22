@@ -1,10 +1,11 @@
-// @syncrobotic/card-mission v0.17.3 · update: npx shadcn add @syncrobotic/card-mission --overwrite
+// @syncrobotic/card-mission v0.28.0 · update: npx shadcn add @syncrobotic/card-mission --overwrite
 "use client"
 
-import { Bot, Clock, Route } from "lucide-react"
+import { Bot, Clock, Route, TriangleAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
 import type { Status } from "@/registry/syncrobotic/shell/status-glyph"
+import { Alert, AlertTitle } from "@/registry/syncrobotic/ui/alert"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Card } from "@/registry/syncrobotic/ui/card"
 import { Progress } from "@/registry/syncrobotic/ui/progress"
@@ -80,7 +81,13 @@ export function CardMission({ missions = sampleMissions, className }: { missions
               </div>
               <Progress value={pct} tone={paused ? "neutral" : "info"} aria-label={`${m.name} progress`} />
             </div>
-            {m.reason && <p className="rounded-sm bg-warning-subtle p-3 text-sm text-warning">{m.reason}</p>}
+            {/* Why it is blocked, as the system's warning note: the icon carries the colour, the words stay in ink. */}
+            {m.reason && (
+              <Alert tone="warning">
+                <TriangleAlert aria-hidden="true" />
+                <AlertTitle>{m.reason}</AlertTitle>
+              </Alert>
+            )}
             {/* One action set per card, at the finger's 44 px: the next step as the primary (a paused mission's fix) or none,
                 then Open map in the same secondary style on every card. */}
             <div className="flex flex-wrap gap-2">

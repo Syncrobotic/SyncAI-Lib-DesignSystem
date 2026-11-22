@@ -13,12 +13,14 @@ import type { CommandDialogLabels } from "@/registry/syncrobotic/ui/command"
 import type { CopyButtonLabels } from "@/registry/syncrobotic/ui/copy-button"
 import type { DataGridLabels, DataGridPagination } from "@/registry/syncrobotic/ui/data-grid"
 import type { DatePickerLabels } from "@/registry/syncrobotic/ui/date-selector"
+import type { DiagnosticsLabels } from "@/registry/syncrobotic/ui/diagnostics"
 import type { DialogLabels } from "@/registry/syncrobotic/ui/dialog"
 import type { FilterOperator, Filters } from "@/registry/syncrobotic/ui/filters"
 import type { GraphLabels } from "@/registry/syncrobotic/ui/graph"
 import type { ImageGridLabels } from "@/registry/syncrobotic/ui/image-grid"
 import type { JointStateLabels } from "@/registry/syncrobotic/ui/joint-state"
 import type { LoadMoreLabels } from "@/registry/syncrobotic/ui/load-more"
+import type { LogViewerLabels } from "@/registry/syncrobotic/ui/log-viewer"
 import type { MediaPlayerLabels } from "@/registry/syncrobotic/ui/media-player"
 import type { MetricCardLabels } from "@/registry/syncrobotic/ui/metric-card"
 import type { NumberField } from "@/registry/syncrobotic/ui/number-field"
@@ -30,8 +32,10 @@ import type { RobotMapLabels } from "@/registry/syncrobotic/ui/robot-map"
 import type { RobotModelLabels } from "@/registry/syncrobotic/ui/robot-model"
 import type { RouteProgressLabels } from "@/registry/syncrobotic/ui/route-progress"
 import type { SearchFieldLabels } from "@/registry/syncrobotic/ui/search-field"
+import type { SidebarLabels } from "@/registry/syncrobotic/ui/sidebar"
 import type { SortableLabels } from "@/registry/syncrobotic/ui/sortable"
 import type { SpinnerLabels } from "@/registry/syncrobotic/ui/spinner"
+import type { StreamingChartLabels } from "@/registry/syncrobotic/ui/streaming-chart"
 import type { StepperLabels } from "@/registry/syncrobotic/ui/stepper"
 import type { TextDiffLabels } from "@/registry/syncrobotic/ui/text-diff"
 import type { ThemeChoice } from "@/registry/syncrobotic/ui/theme-toggle"
@@ -61,6 +65,8 @@ it("fits every component's labels type", () => {
   fits<IslandLabels>()(zh.islandLabels)
   fits<CameraFeedLabels>()(zh.cameraFeedLabels)
   fits<JointStateLabels>()(zh.jointStateLabels)
+  fits<StreamingChartLabels>()(zh.streamingChartLabels)
+  fits<DiagnosticsLabels>()(zh.diagnosticsLabels)
   fits<RobotModelLabels>()(zh.robotModelLabels)
   fits<PointCloudLabels>()(zh.pointCloudLabels)
   fits<RobotMapLabels>()(zh.robotMapLabels)
@@ -78,6 +84,7 @@ it("fits every component's labels type", () => {
   fits<LabelsOf<typeof Pagination>>()(zh.paginationLabels)
   fits<LabelsOf<typeof DataGridPagination>>()(zh.dataGridPaginationLabels)
   fits<LoadMoreLabels>()(zh.loadMoreLabels)
+  fits<LogViewerLabels>()(zh.logViewerLabels)
   fits<MetricCardLabels>()(zh.metricCardLabels)
   fits<TextDiffLabels>()(zh.textDiffLabels)
   fits<LabelsOf<typeof Filters>>()(zh.filtersLabels)
@@ -94,6 +101,7 @@ it("fits every component's labels type", () => {
   fits<QuestionnaireLabels>()(zh.questionnaireLabels)
   fits<QuestionnaireLabels>()(zh.questionFieldLabels)
   fits<BreadcrumbLabels>()(zh.breadcrumbLabels)
+  fits<SidebarLabels>()(zh.sidebarProviderLabels)
   fits<CommandDialogLabels>()(zh.commandDialogLabels)
   fits<DialogLabels>()(zh.dialogContentLabels)
   fits<StepperLabels>()(zh.stepperLabels)

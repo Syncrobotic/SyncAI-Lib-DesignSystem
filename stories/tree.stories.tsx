@@ -119,10 +119,20 @@ const restricted: TreeNode[] = [
     label: "captures",
     icon: FolderOpen,
     children: [
-      { id: "captures/forklift-lane", label: "forklift-lane", icon: FolderOpen, meta: "1,840 files", children: [] },
+      {
+        id: "captures/forklift-lane",
+        label: "forklift-lane",
+        icon: FolderOpen,
+        meta: "2 files",
+        children: [
+          { id: "captures/forklift-lane/0412.jpg", label: "lane_0412.jpg", icon: FileImage, meta: "2.4 MB" },
+          { id: "captures/forklift-lane/0413.jpg", label: "lane_0413.jpg", icon: FileImage, meta: "2.3 MB" },
+        ],
+      },
       { id: "captures/faces", label: "faces", icon: FolderOpen, meta: "T2 · no access", disabled: true, children: [] },
       { id: "captures/plates", label: "number-plates", icon: FolderOpen, meta: "T2 · no access", disabled: true, children: [] },
-      { id: "captures/shelves", label: "shelves", icon: FolderOpen, meta: "920 files", children: [] },
+      // Open it: an empty folder says so instead of opening to nothing.
+      { id: "captures/shelves", label: "shelves", icon: FolderOpen, meta: "0 files", children: [] },
     ],
   },
   { id: "manifest.json", label: "manifest.json", icon: FileJson, meta: "12 KB" },

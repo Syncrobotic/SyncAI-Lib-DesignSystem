@@ -11,13 +11,20 @@ type S = StoryObj
 function Maintenance() {
   // Remembering the dismissal is the app's job: here in state, in a real app in storage, keyed to this maintenance window.
   const [open, setOpen] = React.useState(true)
+  const frame = React.useRef<HTMLDivElement>(null)
+  // Closing the banner puts focus on the button below it; showing it again puts focus back on its close button, so a
+  // keyboard never loses its place when either one goes.
+  const show = () => {
+    setOpen(true)
+    requestAnimationFrame(() => frame.current?.querySelector<HTMLElement>("[data-slot=banner] button")?.focus())
+  }
   return (
-    <div className="flex w-full flex-col gap-4">
+    <div ref={frame} className="flex w-full flex-col gap-4">
       <Banner icon={Wrench} title="Maintenance on Sunday, 02:00–04:00 UTC." open={open} onDismiss={() => setOpen(false)} dismissLabel="Dismiss maintenance notice">
         Robots keep patrolling. The dashboard and the API are unavailable for up to 2 hours.
       </Banner>
       {!open && (
-        <Button variant="outline" className="self-start" onClick={() => setOpen(true)}>
+        <Button variant="outline" className="self-start" onClick={show}>
           Show the notice again
         </Button>
       )}
@@ -65,7 +72,7 @@ export const BannerTones: S = {
         title="No connection to the server."
         action={
           <Button variant="outline">
-            <RotateCw aria-hidden="true" /> Retry now
+            <RotateCw aria-hidden="true" /> Try again
           </Button>
         }
       >

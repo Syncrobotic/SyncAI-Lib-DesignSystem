@@ -31,9 +31,14 @@ describe("high contrast", () => {
     it(`${mode}: edges reach 3:1, so a field shows without its fill`, () => {
       for (const [fg, bg] of edges) expect(contrast(fg, bg, mode), `${fg} on ${bg}`).toBeGreaterThanOrEqual(3)
     })
-    // 18 px bold is under WCAG's large text (24 px, or 18.66 px bold), so the label is held to 4.5:1.
-    it(`${mode}: the stop label still reads (18 px bold is normal text, 4.5:1)`, () => {
-      expect(contrast("white", "stop", mode)).toBeGreaterThanOrEqual(4.5)
+    // 18 px bold is under WCAG's large text (24 px, or 18.66 px bold); high contrast promises 7:1 for text, the stop included,
+    // on the stop and on the deep red its hold fill, a delivered-over-Bluetooth stop and slide to release are drawn in.
+    it(`${mode}: the stop label reaches 7:1 on --stop and --stop-deep`, () => {
+      expect(contrast("white", "stop", mode)).toBeGreaterThanOrEqual(7)
+      expect(contrast("white", "stop-deep", mode)).toBeGreaterThanOrEqual(7)
+    })
+    it(`${mode}: the hold fill (--stop-deep) still shows on the stop`, () => {
+      expect(contrast("stop", "stop-deep", mode)).toBeGreaterThanOrEqual(1.5)
     })
   }
 })

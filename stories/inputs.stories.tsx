@@ -26,7 +26,7 @@ export const InputStates: S = {
       <Field label="Robot name" hint="Shown on the island and in event logs">
         <Input defaultValue="Patrol dog 7F3A" />
       </Field>
-      <Field label="Wi-Fi password" error="At least 8 characters">
+      <Field label="Wi-Fi password" error="At least 8 characters.">
         <Input type="password" defaultValue="1234" />
       </Field>
       <Field label="Serial number">
@@ -191,7 +191,7 @@ export const NumberFieldInterval: S = {
 
 export const NumberFieldError: S = {
   render: () => (
-    <Field label="Return to dock below" error="Must be at least 10 %, or the robot may not reach the dock">
+    <Field label="Return to dock below" error="At least 10 %, or the robot may not reach the dock.">
       <NumberField defaultValue={5} min={0} max={50} unit="%" className="w-56" />
     </Field>
   ),
@@ -202,7 +202,7 @@ export const NumberFieldError: S = {
 function ValidateOnBlur() {
   const [name, setName] = React.useState("D")
   const [touched, setTouched] = React.useState(true)
-  const error = touched && name.trim().length < 3 ? "At least 3 characters, e.g. “Dock A”" : undefined
+  const error = touched && name.trim().length < 3 ? "At least 3 characters, e.g. “Dock A”." : undefined
   return (
     <Field label="Dock name" error={error}>
       <Input value={name} onChange={(e) => setName(e.target.value)} onBlur={() => setTouched(true)} />
@@ -215,7 +215,7 @@ export const InputErrorOnBlur: S = { render: () => <ValidateOnBlur /> }
 
 export const InputError: S = {
   render: () => (
-    <Field label="Robot name" error="Already used by another robot on this site">
+    <Field label="Robot name" error="Already used by another robot on this site.">
       <Input defaultValue="Patrol dog 7F3A" />
     </Field>
   ),
@@ -223,8 +223,8 @@ export const InputError: S = {
 
 export const TextareaWithError: S = {
   render: () => (
-    <Field label="Reason for override" error="Explain why, so the next shift knows. At least 10 characters">
-      <Textarea defaultValue="Test" />
+    <Field label="Reason for override" error="Explain why, so the next shift knows. At least 10 characters.">
+      <Textarea defaultValue="Sensor" />
     </Field>
   ),
 }
@@ -250,7 +250,7 @@ export const FieldStates: S = {
       <Field label="Dock name" hint="Visible on the map">
         <Input defaultValue="Dock A" />
       </Field>
-      <Field label="Dock ID" error="This ID is already used by Dock B">
+      <Field label="Dock ID" error="This ID is already used by Dock B.">
         <Input defaultValue="D-01" />
       </Field>
     </div>
@@ -285,7 +285,7 @@ export const RadioGroupCards: S = {
       {[
         { v: "quiet", t: "Quiet", d: "Slower, quieter gait. For offices at night." },
         { v: "balanced", t: "Balanced", d: "Default speed and battery use." },
-        { v: "fast", t: "Fast", d: "Covers more ground; about 30% shorter battery life." },
+        { v: "fast", t: "Fast", d: "Covers more ground; about 30 % shorter battery life." },
       ].map((o) => (
         <Label
           key={o.v}
@@ -307,7 +307,7 @@ export const SwitchSettingsList: S = {
   render: () => (
     <div className="flex flex-col rounded-md bg-card px-4 ring-1 ring-border">
       {[
-        { id: "ss1", t: "Auto-return at 20% battery", d: "Recommended", on: true },
+        { id: "ss1", t: "Auto-return at 20 % battery", d: "Recommended", on: true },
         { id: "ss2", t: "Patrol during rain", d: "IP67, but slower on wet ground" },
         { id: "ss3", t: "Night lights", d: "Turns on below 10 lux", on: true },
       ].map((x) => (
@@ -363,7 +363,7 @@ export const SelectStates: S = {
         </SelectContent>
       </Select>
       <Select>
-        <Field label="Return dock" error="Choose a dock before starting">
+        <Field label="Return dock" error="Choose a dock before starting.">
           <SelectTrigger>
             <SelectValue placeholder="Choose a dock" />
           </SelectTrigger>
@@ -380,7 +380,7 @@ export const SelectStates: S = {
 export const SliderDisabled: S = {
   render: () => (
     <div className="flex flex-col gap-1">
-      <Label>Speaker volume · 40% (muted at night)</Label>
+      <Label>Speaker volume · 40 % (muted at night)</Label>
       <Slider defaultValue={[40]} disabled aria-label="Speaker volume" />
     </div>
   ),
@@ -401,7 +401,7 @@ export const FieldWithSelect: S = {
           </SelectContent>
         </Select>
       </Field>
-      <Field label="Return dock" error="Choose a dock before starting">
+      <Field label="Return dock" error="Choose a dock before starting.">
         <Select>
           <SelectTrigger>
             <SelectValue placeholder="Choose a dock" />

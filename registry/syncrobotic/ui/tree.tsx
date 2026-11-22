@@ -1,4 +1,4 @@
-// @syncrobotic/tree v0.27.0 · update: npx shadcn add @syncrobotic/tree --overwrite
+// @syncrobotic/tree v0.28.0 · update: npx shadcn add @syncrobotic/tree --overwrite
 "use client"
 
 import * as React from "react"
@@ -19,14 +19,22 @@ export type TreeNode = {
   href?: string
   disabled?: boolean
   children?: TreeNode[]
+  /**
+   * list mode: a panel under the node, shown while it is open: its details (a key/value table, a log line). A node with
+   * `content` gets a disclosure button even without `children`; with both, the panel comes first, then the children.
+   * Ignored in select mode, where a tree item holds only tree items.
+   */
+  content?: React.ReactNode
 }
 
 export type TreeLabels = {
   /** The disclosure button's name in list mode; aria-expanded says whether it is open. */
   toggle: (name: string) => string
+  /** The same for a node with `content` and no `children`: what opens is its details, not items under it. */
+  details: (name: string) => string
 }
 
-const defaultLabels: TreeLabels = { toggle: (name) => `Items under ${name}` }
+const defaultLabels: TreeLabels = { toggle: (name) => `Items under ${name}`, details: (name) => `Details of ${name}` }
 
 export type TreeProps = {
   items: TreeNode[]
@@ -49,7 +57,7 @@ export type TreeProps = {
   /** select mode: the node selected at first (uncontrolled). */
   defaultSelectedId?: string
   onSelectedChange?: (id: string, node: TreeNode) => void
-  /** Shown instead of the tree when items is empty. */
+  /** Shown instead of the tree when items is empty, and under an open branch with nothing in it (`children: []`). */
   empty?: React.ReactNode
   /** Your router's link (e.g. next/link), for nodes with href in list mode. */
   linkAs?: React.ElementType
@@ -59,6 +67,7 @@ export type TreeProps = {
 
 const textOf = (n: TreeNode) => n.textValue ?? (typeof n.label === "string" ? n.label : "")
 const isBranch = (n: TreeNode) => Array.isArray(n.children)
+const hasContent = (n: TreeNode) => n.content !== undefined && n.content !== null && n.content !== false
 
 function branchIds(nodes: TreeNode[], out: string[] = []) {
   for (const n of nodes) {
@@ -86,6 +95,15 @@ const chevron = (open: boolean) =>
 // Radix leaves its height variable unset when the content measures 0 (an empty folder), so a nested branch would inherit
 // its parent's height and open that far before snapping shut. 0 here is the fallback; Radix's own inline value wins.
 const content = "overflow-hidden [--radix-collapsible-content-height:0px] data-[state=open]:animate-expand data-[state=closed]:animate-collapse"
+
+// An open branch with nothing in it says so, on the guide line where its children would be, instead of opening to nothing.
+function EmptyBranch({ children }: { children: React.ReactNode }) {
+  return (
+    <p data-slot="tree-empty" className={cn(group, "py-2 pe-2 text-sm text-muted-foreground")}>
+      {children}
+    </p>
+  )
+}
 
 function Label({ node, id }: { node: TreeNode; id?: string }) {
   const Icon = node.icon
@@ -165,6 +183,7 @@ export function Tree({
         selectedProp={selectedProp}
         defaultSelectedId={defaultSelectedId}
         onSelectedChange={onSelectedChange}
+        empty={empty}
         className={className}
       />
     )
@@ -195,7 +214,8 @@ export function Tree({
           <Meta node={n} />
         </div>
       )
-      if (!isBranch(n)) {
+      const branch = isBranch(n)
+      if (!branch && !hasContent(n)) {
         return (
           <li key={n.id} className="flex">
             {/* Leaves keep the chevron's place, so names line up with their siblings'. */}
@@ -210,7 +230,7 @@ export function Tree({
           <li>
             <div className="flex">
               <CollapsiblePrimitive.Trigger
-                aria-label={labels.toggle(text)}
+                aria-label={branch ? labels.toggle(text) : labels.details(text)}
                 className={cn(
                   "press grid size-(--h-sm) shrink-0 place-items-center rounded-xs hover:bg-accent",
                   "transition-colors duration-(--motion-fast) ease-(--ease-standard) focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring",
@@ -222,7 +242,12 @@ export function Tree({
               <div className="min-w-0 flex-1">{body}</div>
             </div>
             <CollapsiblePrimitive.Content className={content}>
-              <ul className={group}>{renderList(n.children!)}</ul>
+              {hasContent(n) && (
+                <div data-slot="tree-content" className={cn(group, "py-2 pe-2")}>
+                  {n.content}
+                </div>
+              )}
+              {branch && (n.children!.length ? <ul className={group}>{renderList(n.children!)}</ul> : <EmptyBranch>{empty}</EmptyBranch>)}
             </CollapsiblePrimitive.Content>
           </li>
         </CollapsiblePrimitive.Root>
@@ -248,6 +273,7 @@ function SelectTree({
   selectedProp,
   defaultSelectedId,
   onSelectedChange,
+  empty,
   className,
 }: {
   items: TreeNode[]
@@ -259,6 +285,7 @@ function SelectTree({
   selectedProp?: string
   defaultSelectedId?: string
   onSelectedChange?: (id: string, node: TreeNode) => void
+  empty: React.ReactNode
   className?: string
 }) {
   const uid = React.useId()
@@ -441,9 +468,14 @@ function SelectTree({
           </div>
           {branch && (
             <CollapsiblePrimitive.Content className={content}>
-              <ul role="group" className={group}>
-                {level(n.children!, depth + 1)}
-              </ul>
+              {n.children!.length ? (
+                <ul role="group" className={group}>
+                  {level(n.children!, depth + 1)}
+                </ul>
+              ) : (
+                // Not a group: a tree's group holds only tree items. The item is named by its label, not this text.
+                <EmptyBranch>{empty}</EmptyBranch>
+              )}
             </CollapsiblePrimitive.Content>
           )}
         </li>

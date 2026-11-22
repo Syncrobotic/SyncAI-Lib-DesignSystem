@@ -1,4 +1,4 @@
-// @syncrobotic/labels-zh-tw v0.27.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
+// @syncrobotic/labels-zh-tw v0.28.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
 // The kit's words in Traditional Chinese as written in Taiwan, one object per component that takes `labels`. Pass each
 // to its component (`<DataGrid labels={dataGridLabels} />`) with `locale="zh-TW"` where the component formats numbers,
 // days or times. The file imports no component, so it installs on its own; the kit's tests hold every object to the
@@ -81,7 +81,7 @@ export const stopButtonLabels = {
   idle: "停止",
   sending: "傳送中…",
   unconfirmed: "未確認，請再按一次",
-  bluetooth: "急停",
+  bluetooth: "急停 · 藍牙",
   "bluetooth-sent": "已透過藍牙送出",
   dead: "無連線",
   holdAll: "持續按住以停止全部",
@@ -107,6 +107,7 @@ export const islandLabels = {
   offline: "離線",
   charging: "充電中",
   battery: (percent: number) => `電量 ${percent}%`,
+  batteryUnknown: "電量未知",
   notifications: (unread: number) => `通知，${unread} 則未讀`,
 }
 
@@ -161,6 +162,40 @@ export const jointStateLabels = {
   loading: "正在載入關節狀態…",
   empty: "尚無關節狀態",
   emptyHint: "機器人發布關節位置後，會顯示在這裡。",
+}
+
+export const diagnosticsLabels = {
+  title: "診斷",
+  ok: "正常",
+  warn: "警告",
+  error: "錯誤",
+  stale: "未更新",
+  summary: (problems: number, total: number, locale: string) =>
+    problems === 0 ? `共 ${total.toLocaleString(locale)} 項，沒有需要注意的項目` : `${total.toLocaleString(locale)} 項中有 ${problems.toLocaleString(locale)} 項需要注意`,
+  updatedAgo: (ms: number, locale: string) => {
+    const s = Math.max(0, Math.floor(ms / 1000))
+    if (s < 60) return `${s.toLocaleString(locale)} 秒前更新`
+    if (s < 3600) return `${Math.floor(s / 60).toLocaleString(locale)} 分鐘前更新`
+    return `${Math.floor(s / 3600).toLocaleString(locale)} 小時前更新`
+  },
+  filter: "顯示",
+  all: "全部",
+  problems: "有問題",
+  search: "搜尋診斷項目",
+  searchPlaceholder: "依名稱或硬體 ID 篩選",
+  hardwareId: "硬體 ID",
+  noValues: "沒有數值",
+  unnamed: "（未命名）",
+  toggle: (name: string) => `${name} 底下的項目`,
+  details: (name: string) => `${name} 的詳細資料`,
+  loading: "正在載入診斷資料…",
+  empty: "尚無診斷資料",
+  emptyHint: "機器人發布硬體與軟體檢查結果後，會顯示在這裡。",
+  noMatch: (query: string) => `沒有符合「${query}」的項目`,
+  noMatchHint: "搜尋範圍為名稱與硬體 ID。",
+  noProblems: "沒有需要注意的項目：全部正常。",
+  announceError: (name: string, message: string) => (message ? `錯誤：${name}，${message}` : `錯誤：${name}`),
+  announceErrors: (count: number) => `${count} 個新錯誤`,
 }
 
 // The components of a planar or floating joint, in URDF order, and whether each is an angle.
@@ -260,7 +295,7 @@ export const robotMapLabels = {
   empty: "此場域目前沒有機器人。",
   loading: "正在載入地圖",
   error: "無法載入地圖。",
-  retry: "重新載入地圖",
+  retry: "重新載入",
   count: (n: number) => `${n} 台機器人`,
   selected: (name: string, status: string) => `已選取：${name}，${status}`,
   north: (deg: number) => `北方位於畫面上方順時針 ${compass(deg)}°`,
@@ -411,16 +446,21 @@ export const dataGridLabels = {
   region: "資料",
   empty: "沒有資料",
   resize: (column: string) => `調整「${column}」欄寬`,
+  width: (px: number) => `${px} px`,
   ascending: "遞增排序",
   descending: "遞減排序",
   unpin: "取消固定",
   pinLeft: "固定在左側",
   hideColumn: "隱藏此欄",
+  wider: "加寬",
+  narrower: "縮窄",
+  resetWidth: "恢復欄寬",
   columns: "欄位",
   showColumns: "顯示欄位",
   selected: (count: number, total: number) => `已選取 ${count} / ${total}`,
   selectAll: "選取本頁全部",
   selectRow: "選取此列",
+  cannotSelect: "無法選取",
   details: "詳細資料",
   showDetails: "顯示詳細資料",
   hideDetails: "隱藏詳細資料",
@@ -441,6 +481,35 @@ export const loadMoreLabels = {
   more: (next: number, left: number, locale: string | undefined) => `再顯示 ${next.toLocaleString(locale)} 筆（剩 ${left.toLocaleString(locale)} 筆）`,
 }
 
+export const streamingChartLabels = {
+  live: "即時",
+  paused: "已暫停",
+  waiting: "等待資料",
+  stale: "沒有新資料",
+  lastSample: (time: string) => `最後讀數 ${time}`,
+  pause: "暫停",
+  resume: "繼續",
+  jumpToLive: "回到即時",
+  window: "時間範圍",
+  windowOption: (ms: number) => (ms < 60_000 ? `${Math.round(ms / 1000)} 秒` : ms < 3_600_000 ? `${Math.round(ms / 60_000)} 分鐘` : `${Math.round(ms / 3_600_000)} 小時`),
+  view: "顯示方式",
+  viewOptions: "顯示選項",
+  chart: "圖表",
+  table: "表格",
+  time: "時間",
+  now: "現在",
+  secondsAgo: (v: string) => `−${v} 秒`,
+  minutesAgo: (v: string) => `−${v} 分`,
+  overLimit: "超過上限",
+  underLimit: "低於下限",
+  limit: (v: string) => `上限 ${v}`,
+  withUnit: (v: string, unit: string) => (unit === "°" ? `${v}°` : `${v} ${unit}`),
+  noValue: "–",
+  reading: (series: string, value: string) => `${series} ${value}`,
+  keys: "空白鍵暫停或繼續。左右方向鍵在時間上往前或往後移動。End 鍵回到即時。",
+  formatTime: (d: Date, locale: string | undefined) => (locale ? d.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23" }) : clock(d)),
+}
+
 export const metricCardLabels = {
   better: "，較佳",
   worse: "，較差",
@@ -455,6 +524,65 @@ export const textDiffLabels = {
   summary: (added: number, removed: number) => [added ? `+${added} 個字詞` : "", removed ? `−${removed} 個字詞` : ""].filter(Boolean).join("，"),
   none: "沒有變更",
   empty: "空白",
+}
+
+// Log levels keep the words a ROS console prints in Taiwan's offices: 除錯 (debug), 資訊, 警告, 錯誤, 嚴重 (fatal).
+export const logViewerLabels = {
+  name: "日誌",
+  debug: "除錯",
+  info: "資訊",
+  warn: "警告",
+  error: "錯誤",
+  fatal: "嚴重",
+  time: "時間",
+  level: "層級",
+  source: "來源",
+  message: "訊息",
+  search: "搜尋日誌",
+  searchPlaceholder: "搜尋訊息與來源",
+  matches: (current: number, total: number, locale: string | undefined) =>
+    total === 0 ? "沒有符合的結果" : current ? `第 ${current.toLocaleString(locale)} 筆，共 ${total.toLocaleString(locale)} 筆` : `${total.toLocaleString(locale)} 筆符合`,
+  previousMatch: "上一筆符合",
+  nextMatch: "下一筆符合",
+  levels: "層級",
+  allLevels: "所有層級",
+  levelCount: (n: number) => `${n} 個層級`,
+  sources: "來源",
+  allSources: "所有來源",
+  sourceCount: (n: number) => `${n} 個來源`,
+  count: (n: number, locale: string | undefined) => n.toLocaleString(locale),
+  viewOptions: "顯示選項",
+  wrap: "長訊息自動換行",
+  relativeTime: "顯示經過時間",
+  jumpToLatest: "跳到最新",
+  newLines: (n: number, locale: string | undefined) => `${n.toLocaleString(locale)} 行新訊息`,
+  following: "持續顯示最新",
+  paused: "已暫停",
+  total: (shown: number, total: number, locale: string | undefined) =>
+    shown === total ? `共 ${total.toLocaleString(locale)} 行` : `顯示 ${shown.toLocaleString(locale)} 行，共 ${total.toLocaleString(locale)} 行`,
+  capped: (max: number, locale: string | undefined) => `只保留最近 ${max.toLocaleString(locale)} 行`,
+  empty: "尚無日誌",
+  noMatch: "沒有符合篩選條件的行",
+  showAll: "顯示全部",
+  copyLines: (n: number) => (n === 1 ? "複製此行" : `複製 ${n} 行`),
+  copied: "已複製",
+  copyFailed: "無法複製：請選取文字後自行複製",
+  copiedLines: (n: number) => `已複製 ${n} 行`,
+  copyLine: "複製此行",
+  moreLines: (n: number) => `（另有 ${n} 行）`,
+  location: "位置",
+  function: "函式",
+  ago: (ms: number, locale: string | undefined) => {
+    const s = Math.max(0, ms) / 1000
+    const rtf = new Intl.RelativeTimeFormat(locale ?? "zh-TW", { numeric: "always", style: "narrow" })
+    if (s < 60) return rtf.format(-Number(s.toFixed(s < 10 ? 1 : 0)), "second")
+    if (s < 3600) return rtf.format(-Math.floor(s / 60), "minute")
+    if (s < 86400) return rtf.format(-Math.floor(s / 3600), "hour")
+    return rtf.format(-Math.floor(s / 86400), "day")
+  },
+  announce: ({ lines, errors, warnings }: { lines: number; errors: number; warnings: number }, locale: string | undefined) =>
+    [`${lines.toLocaleString(locale)} 行新訊息`, errors && `${errors.toLocaleString(locale)} 個錯誤`, warnings && `${warnings.toLocaleString(locale)} 個警告`].filter(Boolean).join("，"),
+  keys: "上下方向鍵在各行之間移動，按住 Shift 可選取多行，Enter 展開該行，C 複製，End 跳到最新一行，斜線鍵開始搜尋。",
 }
 
 // Every operator the filter bar offers; the types test holds it to the full FilterOperator list, so a new one cannot be
@@ -514,6 +642,7 @@ export const sortableLabels = {
 
 export const treeLabels = {
   toggle: (name: string) => `${name} 底下的項目`,
+  details: (name: string) => `${name} 的詳細資料`,
 }
 
 export const chipGroupLabels = {
@@ -586,6 +715,15 @@ export const questionFieldLabels = questionnaireLabels
 // ---------- Navigation, overlays and feedback ----------
 
 export const breadcrumbLabels = { nav: "導覽路徑" }
+
+export const sidebarProviderLabels = {
+  sidebar: "側邊欄",
+  nav: "主要導覽",
+  title: "導覽",
+  collapse: "收合側邊欄",
+  expand: "展開側邊欄",
+  open: "開啟導覽",
+}
 
 export const commandDialogLabels = {
   title: "搜尋",

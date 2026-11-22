@@ -15,20 +15,35 @@ describe("ImageGrid", () => {
     expect(screen.getByRole("list", { name: "Frames" }).children).toHaveLength(5)
   })
 
-  it("picks one at a time, or many, with aria-pressed", () => {
+  it("picks one as a radio group: one Tab stop, the arrows move and pick, picking again keeps it", () => {
     const one = vi.fn()
-    const { rerender } = render(<ImageGrid label="Frames" items={items} selection="single" onSelectedChange={one} />)
-    fireEvent.click(screen.getByRole("button", { name: "Frame 1" }))
-    fireEvent.click(screen.getByRole("button", { name: "Frame 2" }))
+    render(<ImageGrid label="Frames" items={items} selection="single" onSelectedChange={one} />)
+    expect(screen.getByRole("radiogroup", { name: "Frames" })).toBeTruthy()
+    const radios = screen.getAllByRole("radio")
+    expect(radios.map((r) => r.tabIndex)).toEqual([0, -1, -1])
+    fireEvent.click(screen.getByRole("radio", { name: "Frame 1" }))
+    fireEvent.click(screen.getByRole("radio", { name: "Frame 2" }))
     expect(one).toHaveBeenLastCalledWith(["b"])
-    expect(screen.getByRole("button", { name: "Frame 2" }).getAttribute("aria-pressed")).toBe("true")
-    expect(screen.getByRole("button", { name: "Frame 1" }).getAttribute("aria-pressed")).toBe("false")
+    expect(screen.getByRole("radio", { name: "Frame 2" }).getAttribute("aria-checked")).toBe("true")
+    expect(screen.getByRole("radio", { name: "Frame 1" }).getAttribute("aria-checked")).toBe("false")
+    expect(screen.getAllByRole("radio").map((r) => r.tabIndex)).toEqual([-1, 0, -1])
+    one.mockClear()
+    fireEvent.click(screen.getByRole("radio", { name: "Frame 2" }))
+    expect(one).not.toHaveBeenCalled()
+    fireEvent.keyDown(screen.getByRole("radio", { name: "Frame 2" }), { key: "ArrowRight" })
+    expect(one).toHaveBeenLastCalledWith(["c"])
+    expect(document.activeElement).toBe(screen.getByRole("radio", { name: "Frame 3" }))
+    fireEvent.keyDown(screen.getByRole("radio", { name: "Frame 3" }), { key: "Home" })
+    expect(one).toHaveBeenLastCalledWith(["a"])
+  })
 
+  it("picks many with toggles (aria-pressed)", () => {
     const many = vi.fn()
-    rerender(<ImageGrid key="m" label="Frames" items={items} selection="multiple" onSelectedChange={many} />)
+    render(<ImageGrid label="Frames" items={items} selection="multiple" onSelectedChange={many} />)
     fireEvent.click(screen.getByRole("button", { name: "Frame 1" }))
     fireEvent.click(screen.getByRole("button", { name: "Frame 3" }))
     expect(many).toHaveBeenLastCalledWith(["a", "c"])
+    expect(screen.getByRole("button", { name: "Frame 3" }).getAttribute("aria-pressed")).toBe("true")
   })
 
   it("shows the file name when a picture cannot load", () => {

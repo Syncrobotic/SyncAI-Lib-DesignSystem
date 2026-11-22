@@ -1,4 +1,4 @@
-// @syncrobotic/stop-button v0.17.3 · update: npx shadcn add @syncrobotic/stop-button --overwrite
+// @syncrobotic/stop-button v0.28.0 · update: npx shadcn add @syncrobotic/stop-button --overwrite
 "use client"
 
 import * as React from "react"
@@ -34,7 +34,7 @@ export const defaultStopButtonLabels: StopButtonLabels = {
   idle: "Stop",
   sending: "Sending…",
   unconfirmed: "Not confirmed, press again",
-  bluetooth: "Emergency stop",
+  bluetooth: "Emergency stop · Bluetooth",
   "bluetooth-sent": "Delivered over Bluetooth",
   dead: "No connection",
   holdAll: "Keep holding to stop all",
@@ -81,8 +81,7 @@ export function StopButton({ state = "ready", tag, onStop, onStopAll, holdAllMs 
     duration: holdAllMs,
   })
   const holdingAll = Boolean(onStopAll) && holding
-  const text = holdingAll ? l.holdAll : l[state]
-  const Icon = holdingAll ? Square : icons[state]
+  const Icon = icons[state]
   const pale = state === "idle"
   const disabled = state === "dead"
 
@@ -100,19 +99,30 @@ export function StopButton({ state = "ready", tag, onStop, onStopAll, holdAllMs 
         className,
       )}
     >
+      {/* Opaque, so the label keeps its contrast over the fill (white on --stop-deep), high contrast included. */}
+      {holdingAll && <span aria-hidden="true" className="absolute inset-y-0 left-0 bg-stop-deep" style={{ width: `${progress * 100}%` }} />}
+      {/* The row stays where it is while "Keep holding" shows over it, centred on the button, so nothing jumps. */}
+      <span className={cn("relative flex items-center gap-2", holdingAll && "invisible")}>
+        <Icon aria-hidden="true" className="size-5" strokeWidth={2} />
+        <span className="text-lg font-bold">{l[state]}</span>
+        {tag && !disabled && <span className="sr-only">, </span>}
+        {tag && !disabled && <Tag tag={tag} className={pale ? "ring-1 ring-danger ring-inset" : state === "bluetooth-sent" ? "ring-1 ring-white ring-inset" : "bg-stop-deep"} />}
+      </span>
       {holdingAll && (
-        <span aria-hidden="true" className="absolute inset-y-0 left-0 bg-white/20" style={{ width: `${progress * 100}%` }} />
-      )}
-      <Icon aria-hidden="true" className="relative size-5" strokeWidth={2} />
-      <span className="relative text-lg font-bold">{text}</span>
-      {tag && !disabled && <span className="sr-only">, </span>}
-      {tag && !disabled && (
-        <span className={cn("relative inline-flex h-(--h-tag) items-center rounded-xs px-2 text-xs font-medium", pale ? "ring-1 ring-danger ring-inset" : "bg-stop-deep")}>
-          {tag}
+        <span className="absolute inset-0 flex items-center justify-center gap-2">
+          <Square aria-hidden="true" className="size-5" strokeWidth={2} />
+          <span className="text-lg font-bold">{l.holdAll}</span>
+          {/* The hold fill passes under it: a deep-red tag would vanish there, so it takes a white outline. */}
+          {tag && <Tag tag={tag} className="ring-1 ring-white ring-inset" />}
         </span>
       )}
     </button>
   )
+}
+
+// On the deep red (delivered over Bluetooth) a deep-red tag would vanish: there it takes a white outline instead.
+function Tag({ tag, className }: { tag: string; className: string }) {
+  return <span className={cn("inline-flex h-(--h-tag) items-center rounded-xs px-2 text-xs font-medium", className)}>{tag}</span>
 }
 
 /** Shown when the dog is lying down (charging or resting): the motors hold no force, so there is no stop. */

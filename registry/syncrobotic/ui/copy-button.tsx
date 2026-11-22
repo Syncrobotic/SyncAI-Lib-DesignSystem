@@ -1,4 +1,4 @@
-// @syncrobotic/copy-button v0.23.0 · update: npx shadcn add @syncrobotic/copy-button --overwrite
+// @syncrobotic/copy-button v0.28.0 · update: npx shadcn add @syncrobotic/copy-button --overwrite
 "use client"
 
 import * as React from "react"
@@ -97,29 +97,48 @@ export function CopyButton({
   const shown = (s: typeof state) => (state === s ? "scale-100 opacity-100" : "scale-60 opacity-0")
   const said = state === "done" ? copied : state === "failed" ? failed : ""
   return (
-    <Button
-      variant={variant}
-      size={children ? "sm" : "icon-sm"}
-      aria-label={children ? undefined : state === "idle" ? copy : said}
-      onClick={async () => {
-        window.clearTimeout(timer.current)
-        const ok = await copyText(value)
-        setState(ok ? "done" : "failed")
-        // A success fades back; a failure stays, so it is not missed.
-        if (ok) timer.current = window.setTimeout(() => setState("idle"), 1500)
-      }}
-      className={className}
-    >
-      <span className="relative flex size-4 items-center justify-center">
-        <Copy aria-hidden="true" className={cn(icon, "size-4", shown("idle"))} />
-        <Check aria-hidden="true" className={cn(icon, "size-4", shown("done"))} />
-        <CircleAlert aria-hidden="true" className={cn(icon, "size-4 text-warning", shown("failed"))} />
-      </span>
-      {children && <span>{state === "done" ? copied : state === "failed" ? l.notCopied : children}</span>}
-      {/* The result is announced for icon and text buttons alike. */}
+    <>
+      <Button
+        variant={variant}
+        size={children ? "sm" : "icon-sm"}
+        aria-label={children ? undefined : state === "idle" ? copy : said}
+        onClick={async () => {
+          window.clearTimeout(timer.current)
+          const ok = await copyText(value)
+          setState(ok ? "done" : "failed")
+          // A success fades back; a failure stays, so it is not missed.
+          if (ok) timer.current = window.setTimeout(() => setState("idle"), 1500)
+        }}
+        className={className}
+      >
+        <span className="relative flex size-4 items-center justify-center">
+          <Copy aria-hidden="true" className={cn(icon, "size-4", shown("idle"))} />
+          <Check aria-hidden="true" className={cn(icon, "size-4", shown("done"))} />
+          <CircleAlert aria-hidden="true" className={cn(icon, "size-4 text-warning", shown("failed"))} />
+        </span>
+        {/* The three words share one cell, so the button is as wide as the longest and keeps its width when the word
+            changes; the ones not shown are hidden from sight and from its name. */}
+        {children && (
+          <span className="grid">
+            {(
+              [
+                ["idle", children],
+                ["done", copied],
+                ["failed", l.notCopied],
+              ] as const
+            ).map(([s, text]) => (
+              <span key={s} aria-hidden={state !== s || undefined} className={cn("col-start-1 row-start-1 text-center", state !== s && "invisible")}>
+                {text}
+              </span>
+            ))}
+          </span>
+        )}
+      </Button>
+      {/* The result is announced for icon and text buttons alike. It sits beside the button, not in it: inside, a text
+          button's name would become "Copied Copied". */}
       <span aria-live="polite" className="sr-only">
         {said}
       </span>
-    </Button>
+    </>
   )
 }

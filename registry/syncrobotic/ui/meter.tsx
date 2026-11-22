@@ -1,4 +1,4 @@
-// @syncrobotic/meter v0.17.4 · update: npx shadcn add @syncrobotic/meter --overwrite
+// @syncrobotic/meter v0.28.0 · update: npx shadcn add @syncrobotic/meter --overwrite
 import { cn } from "@/lib/utils"
 
 /**
@@ -16,6 +16,7 @@ export function Meter({
   label,
   unit = "%",
   inline = false,
+  showMax = false,
   className,
 }: {
   value: number
@@ -28,7 +29,10 @@ export function Meter({
   higherIsWorse?: boolean
   /** What is measured, e.g. "Battery". Shown above the bar, and read with the value. */
   label: string
+  /** Written after the value: "%" (the default, written "72 %"), "°C", "GB". Leading spaces are ignored. */
   unit?: string
+  /** Write the range's end beside the value ("412 of 512 GB"), for an amount whose total matters, such as storage. */
+  showMax?: boolean
   /** One line for table cells: bar and value, the label only read by screen readers. */
   inline?: boolean
   className?: string
@@ -36,7 +40,11 @@ export function Meter({
   const worse = (a: number, b: number) => (higherIsWorse ? a >= b : a < b)
   const tone = critical !== undefined && worse(value, critical) ? "danger" : low !== undefined && worse(value, low) ? "warning" : "normal"
   const pct = Math.min(100, Math.max(0, ((value - min) / (max - min)) * 100))
-  const text = `${value}${unit === "%" ? " %" : unit ? ` ${unit}` : ""}`
+  const u = unit.trim()
+  const suffix = u ? ` ${u}` : ""
+  const text = showMax ? `${value} of ${max}${suffix}` : `${value}${suffix}`
+  // What the colour means, in words: a level that runs out is low; one that fills up or heats up is high.
+  const said = tone === "normal" ? "" : tone === "danger" ? ", critical" : higherIsWorse ? ", high" : ", low"
   const bar = (
     <span aria-hidden="true" className={cn("relative block h-2 overflow-hidden rounded-full bg-track", inline ? "w-20" : "w-full")}>
       <span
@@ -60,7 +68,7 @@ export function Meter({
       aria-valuenow={value}
       aria-valuemin={min}
       aria-valuemax={max}
-      aria-valuetext={`${text}${tone === "normal" ? "" : tone === "warning" ? ", low" : ", critical"}`}
+      aria-valuetext={`${text}${said}`}
       data-slot="meter"
       data-tone={tone}
       className={cn(inline ? "flex items-center gap-2 text-sm" : "flex flex-col gap-2", className)}

@@ -6,6 +6,7 @@ import { H2 } from "@/site/prose"
 import { a11yOf } from "@/site/a11y"
 import { hasA11y } from "@/site/component-tabs-data"
 import { Kbd } from "@/registry/syncrobotic/ui/kbd"
+import { KeyCell } from "@/site/key-cell"
 
 export const dynamicParams = false
 export const generateStaticParams = () => items.filter((i) => hasA11y(i.name)).map((i) => ({ name: i.name }))
@@ -36,7 +37,12 @@ export default async function AccessibilityPage({ params }: Props) {
       <p className="max-w-3xl pb-3 text-sm text-muted-foreground">
         What a screen reader is told each part is, measured in the examples on the Overview tab.
       </p>
-      {a.roles.length ? (
+      {a.hidden ? (
+        <p className="text-sm">
+          Hidden from screen readers (<code className="rounded-xs bg-muted px-1 font-mono text-sm">aria-hidden</code>): it repeats a word, so
+          write that word beside it. Status eyebrow does.
+        </p>
+      ) : a.roles.length ? (
         <ul aria-label="Roles" className="flex flex-wrap gap-2" data-wrap="free">
           {a.roles.map((r) => (
             <li key={r}>
@@ -62,6 +68,7 @@ export default async function AccessibilityPage({ params }: Props) {
             .
           </li>
         )}
+        {a.patternNote && <li>{a.patternNote}</li>}
         {a.live && <li>Announces changes through a live region, so a screen reader reads an update without focus moving to it.</li>}
       </ul>
 
@@ -76,16 +83,12 @@ export default async function AccessibilityPage({ params }: Props) {
               </tr>
             </thead>
             <tbody>
-              {a.keyboard.map(([keys, action]) => (
-                <tr key={keys} className="border-b border-border last:border-0">
+              {a.keyboard.map(([keys, action], i) => (
+                <tr key={i} className="border-b border-border last:border-0">
                   <td className="w-40 py-2 pr-4 pl-4 align-top sm:w-56">
-                    <span className="flex flex-wrap gap-1">
-                      {keys.split(" / ").map((k) => (
-                        <Kbd key={k}>{k}</Kbd>
-                      ))}
-                    </span>
+                    <KeyCell keys={keys} />
                   </td>
-                  <td className="py-2 pr-4 text-muted-foreground">{action}</td>
+                  <td className="py-2 pr-4 align-top leading-7 text-muted-foreground">{action}</td>
                 </tr>
               ))}
             </tbody>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import { startNeighbours } from "@/site/foundations"
 import { Pager } from "@/site/doc"
 import { CodeBlock } from "@/site/code-block"
@@ -54,7 +55,11 @@ export default function InstallationPage() {
 
       <H2 id="localise">5. Localise</H2>
       <p className="text-sm">
-        <Inline text={'Default copy is English. Every visible and screen-reader string can be replaced through props, e.g. `<StopButton labels={{ ready: "Parada de emergencia" }} />`.'} />
+        <Inline text={'Default copy is English. Every visible and screen-reader string can be replaced through props, e.g. `<StopButton labels={{ ready: "急停" }} />` for Traditional Chinese.'} />{" "}
+        <Link href="/docs/localisation" className="underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground">
+          Localisation
+        </Link>{" "}
+        has every component&apos;s strings and a complete zh-TW set.
       </p>
 
       <H2 id="notes">Notes</H2>

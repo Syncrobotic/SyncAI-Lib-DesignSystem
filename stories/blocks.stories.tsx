@@ -20,7 +20,7 @@ export const RobotStatusLowBattery: S = {
       robot={{
         name: "Patrol dog 9C44",
         state: { tone: "warning", label: "Low battery" },
-        battery: 18,
+        battery: 14,
         online: true,
         signal: "Weak",
         location: "Parking lot · 340 m from dock",

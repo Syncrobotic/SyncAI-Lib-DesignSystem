@@ -1,4 +1,4 @@
-// @syncrobotic/dropdown-menu v0.17.4 · update: npx shadcn add @syncrobotic/dropdown-menu --overwrite
+// @syncrobotic/dropdown-menu v0.28.0 · update: npx shadcn add @syncrobotic/dropdown-menu --overwrite
 "use client"
 
 import * as React from "react"
@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils"
 export const DropdownMenu = MenuPrimitive.Root
 export const DropdownMenuTrigger = MenuPrimitive.Trigger
 export const DropdownMenuGroup = MenuPrimitive.Group
+/** One of several, like a segmented control folded into a menu: a check beside the chosen item. */
+export const DropdownMenuRadioGroup = MenuPrimitive.RadioGroup
 
 // How the list was opened: keys or a pointer, the last one used anywhere on the page. Opened by a click, the list shows no
 // ring until a key moves in it; opened from the keyboard, the ring is there at once.
@@ -69,6 +71,19 @@ export function DropdownMenuCheckboxItem({ className, children, ...props }: Reac
         </MenuPrimitive.ItemIndicator>
       </span>
     </MenuPrimitive.CheckboxItem>
+  )
+}
+
+export function DropdownMenuRadioItem({ className, children, ...props }: React.ComponentProps<typeof MenuPrimitive.RadioItem>) {
+  return (
+    <MenuPrimitive.RadioItem className={cn(item, "pr-8", className)} {...props}>
+      {children}
+      <span className="absolute right-3 flex items-center">
+        <MenuPrimitive.ItemIndicator>
+          <Check aria-hidden="true" />
+        </MenuPrimitive.ItemIndicator>
+      </span>
+    </MenuPrimitive.RadioItem>
   )
 }
 

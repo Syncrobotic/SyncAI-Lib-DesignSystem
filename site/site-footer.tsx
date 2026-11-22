@@ -25,7 +25,7 @@ const columns: { title: string; links: FooterLink[] }[] = [
       { label: "Connect to ROS", href: "/docs/ros" },
       { label: "Next.js", href: "/docs/nextjs" },
       { label: "Localisation", href: "/docs/localisation" },
-      { label: "Tokens", href: "/docs/tokens" },
+      { label: "Design tokens", href: "/docs/tokens" },
       { label: "Versions and upgrades", href: "/docs/upgrading" },
     ],
   },
@@ -33,7 +33,7 @@ const columns: { title: string; links: FooterLink[] }[] = [
     title: "For agents",
     links: [
       { label: "llms.txt", href: "/llms.txt" },
-      { label: "Using with AI", href: "/docs/ai" },
+      { label: "For AI agents", href: "/docs/ai" },
       { label: "MCP server", href: "/docs/ai#mcp" },
       { label: "Registry index", href: "/r/registry.json" },
     ],
@@ -66,7 +66,7 @@ export function SiteFooter() {
           <p className="max-w-xs text-sm text-muted-foreground">Interfaces for the people who run robots. Written down once, installed as source.</p>
           <a
             href={`${site.repo}/releases/tag/v${pkg.version}`}
-            className="inline-flex w-fit items-center gap-2 rounded-sm border border-border px-3 py-1 font-mono text-xs text-muted-foreground transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:text-foreground"
+            className="inline-flex h-(--h-sm) w-fit items-center gap-2 rounded-sm border border-border px-3 font-mono text-xs text-muted-foreground transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:text-foreground"
           >
             <span aria-hidden="true" className="size-1.5 rounded-full bg-foreground" />v{pkg.version}
             <span className="sr-only">, release notes</span>

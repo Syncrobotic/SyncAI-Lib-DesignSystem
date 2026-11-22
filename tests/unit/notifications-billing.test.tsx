@@ -126,14 +126,14 @@ describe("notification center", () => {
 describe("settings billing", () => {
   const invoice = (status: Invoice["status"]): Invoice => ({ id: "x", number: "INV-1", date: "2026-11-01", dueDate: "2026-12-01", amount: 10, status, pdfHref: "#" })
 
-  it("words each invoice status, with its own icon; only overdue is in danger text", () => {
+  it("words each invoice status, with its own icon; only overdue is in colour, warning (robots keep working)", () => {
     expect(invoiceStatusText(invoice("paid"))).toBe("Paid")
     expect(invoiceStatusText(invoice("due"))).toBe("Due 1 Dec 2026")
     expect(invoiceStatusText(invoice("overdue"))).toBe("Overdue since 1 Dec 2026")
     expect(new Set(Object.values(invoiceStatus).map((s) => s.icon)).size).toBe(3)
     expect(invoiceStatus.paid.className).toContain("text-muted-foreground")
-    expect(invoiceStatus.overdue.className).toContain("text-danger")
-    expect(invoiceStatus.due.className).not.toContain("danger")
+    expect(invoiceStatus.overdue.className).toContain("text-warning")
+    expect(Object.values(invoiceStatus).some((s) => s.className.includes("danger"))).toBe(false)
   })
 
   it("formats money with Intl in the account's currency", () => {
@@ -149,7 +149,11 @@ describe("settings billing", () => {
 
   it("lists invoices with a PDF link each, and says when one is overdue", () => {
     render(<SettingsBilling />)
-    expect(screen.getByText("Invoice INV-2026-0131 is overdue")).toBeTruthy()
+    const note = screen.getByText("Invoice INV-2026-0131 is overdue").closest("[data-slot=alert]")!
+    // A warning, not an alarm: the robots keep working, so it is never role=alert (read out over everything on load).
+    expect(note.getAttribute("role")).toBe("status")
+    expect(screen.queryByRole("alert")).toBeNull()
+
     expect(screen.getAllByRole("link", { name: /Download invoice INV-2026-\d+ \(PDF\)/ })).toHaveLength(sampleBilling.invoices.length)
   })
 

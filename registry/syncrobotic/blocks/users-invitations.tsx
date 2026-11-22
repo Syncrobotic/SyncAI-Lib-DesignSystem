@@ -1,4 +1,4 @@
-// @syncrobotic/users-invitations v0.17.3 · update: npx shadcn add @syncrobotic/users-invitations --overwrite
+// @syncrobotic/users-invitations v0.28.0 · update: npx shadcn add @syncrobotic/users-invitations --overwrite
 "use client"
 
 import * as React from "react"
@@ -80,7 +80,7 @@ export function UsersInvitations() {
   }
 
   return (
-    <AppShell product="Fleet console" nav={sampleNav} current="#settings" title="Invitations" user={sampleUser}>
+    <AppShell product="Fleet console" nav={sampleNav} current="#invitations" title="Invitations" user={sampleUser}>
       <div className="flex flex-col gap-6">
         <form noValidate onSubmit={send} className="flex flex-col gap-3 rounded-md bg-card p-4 ring-1 ring-border">
           <h2 className="text-sm font-medium">Invite someone</h2>

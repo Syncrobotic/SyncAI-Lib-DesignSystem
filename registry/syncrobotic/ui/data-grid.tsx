@@ -1,4 +1,4 @@
-// @syncrobotic/data-grid v0.26.0 · update: npx shadcn add @syncrobotic/data-grid --overwrite
+// @syncrobotic/data-grid v0.28.0 · update: npx shadcn add @syncrobotic/data-grid --overwrite
 "use client"
 "use no memo"
 
@@ -33,7 +33,7 @@ import {
   type Table as TanTable,
 } from "@tanstack/react-table"
 import { useVirtualizer } from "@tanstack/react-virtual"
-import { ArrowDown, ArrowUp, ArrowUpDown, ChevronRight, Columns3, EyeOff, Pin, PinOff } from "lucide-react"
+import { ArrowDown, ArrowUp, ArrowUpDown, ChevronRight, ChevronsLeftRight, ChevronsRightLeft, Columns3, EyeOff, Pin, PinOff, Undo2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
 import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
@@ -47,7 +47,7 @@ import {
   DropdownMenuTrigger,
 } from "@/registry/syncrobotic/ui/dropdown-menu"
 import { Pagination } from "@/registry/syncrobotic/ui/pagination"
-import { scrollFadeMask, useScrollEdges } from "@/registry/syncrobotic/ui/table"
+import { useScrollEdges } from "@/registry/syncrobotic/ui/table"
 
 type Density = "default" | "dense"
 
@@ -112,12 +112,18 @@ export type DataGridLabels = {
   empty: string
   /** A column's resize handle: "Resize Robot". */
   resize: (column: string) => string
+  /** The handle's value, the column's width: "200 px". */
+  width: (px: number) => string
   /** The column header menu. */
   ascending: string
   descending: string
   unpin: string
   pinLeft: string
   hideColumn: string
+  /** The column menu's width items, for whoever cannot drag the edge. */
+  wider: string
+  narrower: string
+  resetWidth: string
   /** The button that opens the column menu (DataGridColumnVisibility). */
   columns: string
   /** The heading inside that menu. */
@@ -127,6 +133,8 @@ export type DataGridLabels = {
   /** selectColumn's checkboxes. */
   selectAll: string
   selectRow: string
+  /** Read after selectRow on a row that cannot be selected, when selectColumn gives no reason of its own. */
+  cannotSelect: string
   /** expandColumn's header (screen readers only) and its button. */
   details: string
   showDetails: string
@@ -137,16 +145,21 @@ export const defaultDataGridLabels: DataGridLabels = {
   region: "Data",
   empty: "No rows",
   resize: (column) => `Resize ${column}`,
+  width: (px) => `${px} px`,
   ascending: "Ascending",
   descending: "Descending",
   unpin: "Unpin",
   pinLeft: "Pin to the left",
   hideColumn: "Hide column",
+  wider: "Wider",
+  narrower: "Narrower",
+  resetWidth: "Reset width",
   columns: "Columns",
   showColumns: "Show columns",
   selected: (count, total) => `${count} of ${total} selected`,
   selectAll: "Select all on this page",
   selectRow: "Select row",
+  cannotSelect: "cannot be selected",
   details: "Details",
   showDetails: "Show details",
   hideDetails: "Hide details",
@@ -222,6 +235,88 @@ const meta = (c: GridColumn) =>
 /** A column's name in words: meta.label, else a plain-text header, else its id. */
 const columnName = (c: GridColumn) => meta(c).label ?? (typeof c.columnDef.header === "string" ? c.columnDef.header : c.id)
 
+/** How far one arrow key press moves a column's edge, in px; Shift and the column menu move it four times as far. */
+const RESIZE_STEP = 16
+/** A column's width limits: its minSize and maxSize, else TanStack's defaults (20, unbounded). */
+const sizeLimits = (c: GridColumn) => ({ min: c.columnDef.minSize ?? 20, max: c.columnDef.maxSize ?? Number.MAX_SAFE_INTEGER })
+/** Moves a column's edge by `delta` px within its limits: the arrow keys on the edge, and the column menu. */
+function resizeBy(c: GridColumn, delta: number) {
+  const { min, max } = sizeLimits(c)
+  const next = Math.min(max, Math.max(min, Math.round(c.getSize() + delta)))
+  c.table.setColumnSizing((old) => ({ ...old, [c.id]: next }))
+}
+
+/**
+ * A column's right edge, to drag or to move with the keyboard: a focusable separator (Tab reaches it, ← and → move it
+ * 16 px, Shift 64 px, Home and End to its limits, Enter or a double-click back to its first width). The line is 4 px;
+ * the area that answers the pointer is 24 px, and 44 px (--h-md) on touch, centred on the edge.
+ */
+function ResizeHandle({ column, handler, label: l }: { column: GridColumn; handler: (e: unknown) => void; label: DataGridLabels }) {
+  const size = column.getSize()
+  const { min, max } = sizeLimits(column)
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    const step = e.shiftKey ? RESIZE_STEP * 4 : RESIZE_STEP
+    // Moving the edge right widens the column in a left-to-right page; in a right-to-left one the edge is on the left.
+    const rtl = getComputedStyle(e.currentTarget).direction === "rtl"
+    const by =
+      e.key === "ArrowRight" ? (rtl ? -step : step) : e.key === "ArrowLeft" ? (rtl ? step : -step) : e.key === "Home" ? min - size : e.key === "End" && max < Number.MAX_SAFE_INTEGER ? max - size : 0
+    if (by) {
+      e.preventDefault()
+      resizeBy(column, by)
+    } else if (e.key === "Enter") {
+      e.preventDefault()
+      column.resetSize()
+    }
+  }
+  return (
+    <span
+      role="separator"
+      tabIndex={0}
+      aria-orientation="vertical"
+      // Named in words (meta.label, a plain-text header, else the id): a header that renders a component is a
+      // function, and stringifying it read its source code aloud.
+      aria-label={l.resize(columnName(column))}
+      aria-valuenow={size}
+      aria-valuemin={min}
+      aria-valuemax={max < Number.MAX_SAFE_INTEGER ? max : undefined}
+      aria-valuetext={l.width(size)}
+      onMouseDown={handler}
+      onTouchStart={handler}
+      onDoubleClick={() => column.resetSize()}
+      onKeyDown={onKeyDown}
+      // The last column's edge stays inside the grid, so it never adds a sliver of sideways scroll.
+      className={cn(
+        "group/resize absolute inset-y-0 end-0 z-2 flex w-6 translate-x-1/2 cursor-col-resize touch-none justify-center rounded-xs select-none pointer-coarse:w-(--h-md) rtl:-translate-x-1/2",
+        "group-last/th:translate-x-0 group-last/th:justify-end",
+        "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring",
+      )}
+    >
+      <span
+        aria-hidden="true"
+        className={cn(
+          "my-2 w-1 rounded-xs transition-colors duration-(--motion-fast) ease-(--ease-standard) group-hover/resize:bg-ring group-focus-visible/resize:bg-ring",
+          column.getIsResizing() && "bg-ring",
+        )}
+      />
+    </span>
+  )
+}
+
+/**
+ * The scrolling box's fade (Table's scrollFadeMask), starting where the pinned columns end rather than at the frame's
+ * edge: the pinned columns stay solid and the rows scrolling out from behind them fade in. The offsets are the
+ * --fade-start and --fade-end variables, set only where pinning holds.
+ */
+function pinnedFadeMask({ start, end }: { start: boolean; end: boolean }): React.CSSProperties | undefined {
+  if (!start && !end) return undefined
+  const s = "var(--fade-start, 0px)"
+  const e = "var(--fade-end, 0px)"
+  const image = `linear-gradient(to right, ${start ? `black ${s}, transparent ${s}, black calc(${s} + 2rem)` : "black, black"}, ${
+    end ? `black calc(100% - ${e} - 2rem), transparent calc(100% - ${e}), black calc(100% - ${e})` : "black"
+  })`
+  return { maskImage: image, WebkitMaskImage: image }
+}
+
 /**
  * The grid itself. `maxHeight` makes the body scroll under a sticky header; `virtual` renders only the rows in view
  * (give it a maxHeight), for thousands of rows.
@@ -267,13 +362,28 @@ export function DataGridTable({
   const overflows = edges.start || edges.end
   // Table 9 pins to the logical start and end, so the offsets go on the inline start and end: the same as left and right
   // in a left-to-right page, and mirrored in a right-to-left one.
-  const pinStyle = (c: GridColumn): React.CSSProperties | undefined => {
+  //
+  // Pinning holds only where the grid is at least 448 px wide (@md on the frame). On a phone two pinned columns fill
+  // the screen and leave nothing to scroll, so there every column scrolls. The offset is a variable the classes read,
+  // since an inline style cannot ask the container's width.
+  const pinStyle = (c: GridColumn) => {
+    const p = c.getIsPinned()
+    if (!p) return undefined
+    return { "--pin": `${p === "start" ? c.getStart("start") : c.getAfter("end")}px` } as React.CSSProperties
+  }
+  // The edge between the pinned columns and those scrolling behind them is drawn, so the pinned ones read as fixed.
+  const pinClass = (c: GridColumn) => {
     const p = c.getIsPinned()
     if (!p) return undefined
     return p === "start"
-      ? { position: "sticky", insetInlineStart: c.getStart("start"), zIndex: 1 }
-      : { position: "sticky", insetInlineEnd: c.getAfter("end"), zIndex: 1 }
+      ? cn("@md:sticky @md:start-(--pin) @md:z-1", table.getStartVisibleLeafColumns().at(-1)?.id === c.id && "@md:border-e @md:border-border")
+      : cn("@md:sticky @md:end-(--pin) @md:z-1", table.getEndVisibleLeafColumns()[0]?.id === c.id && "@md:border-s @md:border-border")
   }
+  const pinned = table.getIsSomeColumnsPinned()
+  const pinnedWidths = {
+    "--pinned-start": `${pinned ? table.getStartTotalSize() : 0}px`,
+    "--pinned-end": `${pinned ? table.getEndTotalSize() : 0}px`,
+  } as React.CSSProperties
 
   return (
     // The frame draws the edge and the focus ring; the scrolling box fades the columns it still hides (a phone shows only
@@ -281,7 +391,7 @@ export function DataGridTable({
     <div
       data-slot="data-grid-frame"
       className={cn(
-        "relative w-full rounded-md has-[>[role=region]:focus-visible]:outline-2 has-[>[role=region]:focus-visible]:outline-offset-2 has-[>[role=region]:focus-visible]:outline-ring",
+        "@container relative w-full rounded-md has-[>[role=region]:focus-visible]:outline-2 has-[>[role=region]:focus-visible]:outline-offset-2 has-[>[role=region]:focus-visible]:outline-ring",
         variant !== "borderless" && "ring-1 ring-border",
       )}
     >
@@ -291,12 +401,9 @@ export function DataGridTable({
         role="region"
         aria-label={ariaLabel ?? l.region}
         aria-busy={loading || undefined}
-        style={{ ...(maxHeight ? { maxHeight } : {}), ...scrollFadeMask(edges) }}
+        style={{ ...(maxHeight ? { maxHeight } : {}), ...pinnedWidths, ...pinnedFadeMask(edges) }}
         // focus-ring: the frame around it draws the ring (has-[…:focus-visible]), so the fade does not hide it.
-        className={cn(
-          "@container relative w-full overflow-auto rounded-md outline-none",
-          className,
-        )}
+        className={cn("relative w-full overflow-auto rounded-md outline-none @md:[--fade-end:var(--pinned-end)] @md:[--fade-start:var(--pinned-start)]", className)}
       >
         <table className="w-full caption-bottom border-separate border-spacing-0 text-sm" style={{ minWidth: table.getTotalSize() }}>
           <thead className={cn(variant !== "borderless" && "bg-muted", maxHeight && "sticky top-0 z-10")}>
@@ -317,31 +424,17 @@ export function DataGridTable({
                     }
                     style={{ width: h.getSize(), ...pinStyle(h.column) }}
                     className={cn(
-                      "relative h-(--h-md) border-b border-border text-left align-middle text-xs font-medium whitespace-nowrap text-muted-foreground",
+                      "group/th relative h-(--h-md) border-b border-border text-left align-middle text-xs font-medium whitespace-nowrap text-muted-foreground",
                       cellPad,
                       variant === "borders" && "border-r last:border-r-0",
                       h.column.getIsPinned() && "bg-muted",
+                      pinClass(h.column),
                       meta(h.column).align === "right" && "text-right",
                       meta(h.column).headerClassName,
                     )}
                   >
                     {h.isPlaceholder ? null : flexRender(h.column.columnDef.header, h.getContext())}
-                    {h.column.getCanResize() && (
-                      <span
-                        role="separator"
-                        aria-orientation="vertical"
-                        // Named in words (meta.label, a plain-text header, else the id): a header that renders a
-                        // component is a function, and stringifying it read its source code aloud.
-                        aria-label={l.resize(columnName(h.column))}
-                        onMouseDown={h.getResizeHandler()}
-                        onTouchStart={h.getResizeHandler()}
-                        onDoubleClick={() => h.column.resetSize()}
-                        className={cn(
-                          "absolute top-2 right-0 bottom-2 w-1 cursor-col-resize touch-none rounded-xs select-none hover:bg-ring",
-                          h.column.getIsResizing() && "bg-ring",
-                        )}
-                      />
-                    )}
+                    {h.column.getCanResize() && <ResizeHandle column={h.column} handler={h.getResizeHandler()} label={l} />}
                   </th>
                 ))}
               </tr>
@@ -376,8 +469,10 @@ export function DataGridTable({
                 <React.Fragment key={row.id}>
                   <tr
                     data-state={row.getIsSelected() ? "selected" : undefined}
+                    // Selected: the accent fill and a bar in the ink colour on the first cell, as Table marks it, so a
+                    // selected row never reads as a fill under the pointer. Pinned cells paint their own fill and take it too.
                     className={cn(
-                      "transition-colors duration-(--motion-fast) ease-(--ease-standard) data-[state=selected]:bg-accent",
+                      "group/row transition-colors duration-(--motion-fast) ease-(--ease-standard) data-[state=selected]:bg-accent data-[state=selected]:*:first:shadow-selected",
                       variant === "striped" && "even:bg-muted/50",
                     )}
                   >
@@ -390,7 +485,8 @@ export function DataGridTable({
                           density === "dense" ? "h-(--h-md)" : "h-(--h-row)",
                           cellPad,
                           variant === "borders" && "border-r last:border-r-0",
-                          cell.column.getIsPinned() && "bg-card",
+                          cell.column.getIsPinned() && "bg-card group-data-[state=selected]/row:bg-accent",
+                          pinClass(cell.column),
                           meta(cell.column).align === "right" && "text-right tabular-nums",
                           meta(cell.column).cellClassName,
                         )}
@@ -452,8 +548,8 @@ export function DataGridTable({
 }
 
 /**
- * A column header with sorting (click toggles, and a menu offers both orders), hiding and pinning. Plain text if the
- * column can do none of them.
+ * A column header that opens a menu on click: both sort orders, pinning, the column's width (for whoever cannot drag
+ * its edge) and hiding. Plain text if the column can do none of them.
  */
 export function DataGridColumnHeader<T extends RowData, TFeatures extends DataGridFeatures>({
   column: col,
@@ -470,7 +566,8 @@ export function DataGridColumnHeader<T extends RowData, TFeatures extends DataGr
   // so a change of order is seen on the header even though the rows move at once.
   const swap = "absolute transition-[opacity,scale] duration-(--motion-fast) ease-(--ease-standard)"
   const shown = (s: false | "asc" | "desc") => (sorted === s ? "scale-100 opacity-100" : "scale-60 opacity-0")
-  if (!column.getCanSort() && !column.getCanHide() && !column.getCanPin()) return <>{title}</>
+  const resizable = column.getCanResize()
+  if (!column.getCanSort() && !column.getCanHide() && !column.getCanPin() && !resizable) return <>{title}</>
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -514,6 +611,20 @@ export function DataGridColumnHeader<T extends RowData, TFeatures extends DataGr
                 <Pin aria-hidden="true" /> {l.pinLeft}
               </DropdownMenuItem>
             )}
+          </>
+        )}
+        {resizable && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onSelect={() => resizeBy(column, RESIZE_STEP * 4)}>
+              <ChevronsLeftRight aria-hidden="true" /> {l.wider}
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => resizeBy(column, -RESIZE_STEP * 4)}>
+              <ChevronsRightLeft aria-hidden="true" /> {l.narrower}
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => column.resetSize()}>
+              <Undo2 aria-hidden="true" /> {l.resetWidth}
+            </DropdownMenuItem>
           </>
         )}
         {column.getCanHide() && (
@@ -631,9 +742,16 @@ function SubRow({ row, cols, render }: { row: GridRow; cols: number; render?: (r
 
 /**
  * A checkbox column for row selection; the header box selects the page. `selectColumn<Robot>()` fits a table built on
- * dataGridFeatures; with features of your own, name them too: `selectColumn<Robot, typeof features>()`.
+ * dataGridFeatures; with features of your own, name them too: `selectColumn<Robot, typeof features>()`. A row that
+ * enableRowSelection turns away gets a grey box that says why: give `reason` ("Offline robots cannot be selected"),
+ * read by screen readers and shown on hover; say it on the page too, beside the grid.
  */
-export function selectColumn<T extends RowData, TFeatures extends DataGridFeatures = typeof dataGridFeatures>(): ColumnDef<TFeatures, T> {
+export function selectColumn<T extends RowData, TFeatures extends DataGridFeatures = typeof dataGridFeatures>({
+  reason,
+}: {
+  /** Why a row cannot be selected, in words. */
+  reason?: (row: T) => string | undefined
+} = {}): ColumnDef<TFeatures, T> {
   const column: ColumnDef<DataGridFeatures, RowData> = {
     id: "select",
     size: 48,
@@ -641,7 +759,7 @@ export function selectColumn<T extends RowData, TFeatures extends DataGridFeatur
     enableHiding: false,
     enableResizing: false,
     header: ({ table }) => <SelectAll table={table} />,
-    cell: ({ row }) => <SelectRow row={row} />,
+    cell: ({ row }) => <SelectRow row={row} reason={reason as ((row: RowData) => string | undefined) | undefined} />,
   }
   // Written against the grid's own features and the widest row, and handed back as the caller's column: a column
   // type in Table 9 is invariant in both, and this column only calls APIs that dataGridFeatures guarantees.
@@ -659,9 +777,17 @@ function SelectAll({ table }: { table: GridTable }) {
   )
 }
 
-function SelectRow({ row }: { row: GridRow }) {
+function SelectRow({ row, reason }: { row: GridRow; reason?: (row: RowData) => string | undefined }) {
   const l = useGridLabels()
-  return <Checkbox aria-label={l.selectRow} checked={row.getIsSelected()} disabled={!row.getCanSelect()} onCheckedChange={(v) => row.toggleSelected(v === true)} />
+  if (row.getCanSelect()) return <Checkbox aria-label={l.selectRow} checked={row.getIsSelected()} onCheckedChange={(v) => row.toggleSelected(v === true)} />
+  const why = reason?.(row.original) ?? l.cannotSelect
+  // A box that cannot be ticked is filled grey, as a disabled field is, so it does not pass for an empty one; the
+  // reason is in its name and, for the pointer, on the cell (a disabled control gets no hover of its own).
+  return (
+    <span title={why} className="inline-flex">
+      <Checkbox aria-label={`${l.selectRow}, ${why}`} checked={row.getIsSelected()} disabled className="disabled:bg-muted" />
+    </span>
+  )
 }
 
 function DetailsHeader() {

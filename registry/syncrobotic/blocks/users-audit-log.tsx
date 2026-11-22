@@ -1,4 +1,4 @@
-// @syncrobotic/users-audit-log v0.17.3 · update: npx shadcn add @syncrobotic/users-audit-log --overwrite
+// @syncrobotic/users-audit-log v0.28.0 · update: npx shadcn add @syncrobotic/users-audit-log --overwrite
 "use client"
 
 import * as React from "react"
@@ -87,7 +87,7 @@ export function UsersAuditLog() {
     <AppShell
       product="Fleet console"
       nav={sampleNav}
-      current="#events"
+      current="#audit-log"
       title="Audit log"
       user={sampleUser}
       actions={

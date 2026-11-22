@@ -203,7 +203,7 @@ describe("RobotMap", () => {
     expect(screen.getByRole("status").textContent).toBe("Loading the map")
     rerender(<RobotMap label="Map of North site" width={60} height={36} error onRetry={retry} />)
     expect(screen.getByRole("alert").textContent).toBe("The map could not be loaded.")
-    fireEvent.click(screen.getByRole("button", { name: "Reload the map" }))
+    fireEvent.click(screen.getByRole("button", { name: "Load again" }))
     expect(retry).toHaveBeenCalled()
   })
 })

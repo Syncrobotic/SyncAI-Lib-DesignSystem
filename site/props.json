@@ -589,7 +589,7 @@
     },
     {
      "name": "selectedId",
-     "type": "string",
+     "type": "string | null",
      "default": "null",
      "description": "The annotation drawn as selected: 3 px in the focus ink, with handles."
     },
@@ -1073,6 +1073,12 @@
      "type": "\"sm\" | \"md\" | \"lg\" | \"xl\"",
      "default": "\"md\"",
      "description": ""
+    },
+    {
+     "name": "shape",
+     "type": "\"circle\" | \"square\"",
+     "default": "\"circle\"",
+     "description": ""
     }
    ],
    "inherits": [
@@ -1159,7 +1165,7 @@
     {
      "name": "title",
      "type": "ReactNode",
-     "description": "The condition in a few words, in bold: \"Read-only mode\". The children say what it means and until when."
+     "description": "The condition in a few words, set in medium weight like an Alert's title: \"Read-only mode\". The children say what it means and until when."
     },
     {
      "name": "action",
@@ -1169,7 +1175,7 @@
     {
      "name": "onDismiss",
      "type": "() => void",
-     "description": "Shows a close button. Remembering that it was closed (and for how long) is yours: set `open` false and store it. Leave it out for a condition that ends by itself (offline, read-only)."
+     "description": "Shows a close button. Remembering that it was closed (and for how long) is yours: set `open` false and store it. Leave it out for a condition that ends by itself (offline, read-only). Closed with focus on its close button, focus moves on to what comes after the banner on the page (or before it, at the end), never back to the top of the page."
     },
     {
      "name": "dismissLabel",
@@ -1325,7 +1331,7 @@
     },
     {
      "name": "stream",
-     "type": "MediaStream",
+     "type": "MediaStream | null",
      "description": "A WebRTC stream, set as the video's `srcObject`. The app owns the connection; the feed only shows it."
     },
     {
@@ -2028,9 +2034,15 @@
   },
   {
    "name": "CommandEmpty",
-   "props": [],
+   "props": [
+    {
+     "name": "children",
+     "type": "ReactNode | ((query: string) => ReactNode)",
+     "description": ""
+    }
+   ],
    "inherits": [
-    "CommandPrimitive.Empty"
+    "CommandPrimitive.Empty (except children)"
    ]
   },
   {
@@ -2269,7 +2281,7 @@
     {
      "name": "density",
      "type": "\"default\" | \"dense\"",
-     "description": ""
+     "description": "Deprecated: Use `size=\"sm\"`."
     },
     {
      "name": "variant",
@@ -2312,6 +2324,12 @@
        "description": "A column's resize handle: \"Resize Robot\"."
       },
       {
+       "name": "width",
+       "type": "(px: number) => string",
+       "default": "(px) => `${px} px`",
+       "description": "The handle's value, the column's width: \"200 px\"."
+      },
+      {
        "name": "ascending",
        "type": "string",
        "default": "\"Ascending\"",
@@ -2339,6 +2357,24 @@
        "name": "hideColumn",
        "type": "string",
        "default": "\"Hide column\"",
+       "description": ""
+      },
+      {
+       "name": "wider",
+       "type": "string",
+       "default": "\"Wider\"",
+       "description": "The column menu's width items, for whoever cannot drag the edge."
+      },
+      {
+       "name": "narrower",
+       "type": "string",
+       "default": "\"Narrower\"",
+       "description": ""
+      },
+      {
+       "name": "resetWidth",
+       "type": "string",
+       "default": "\"Reset width\"",
        "description": ""
       },
       {
@@ -2370,6 +2406,12 @@
        "type": "string",
        "default": "\"Select row\"",
        "description": ""
+      },
+      {
+       "name": "cannotSelect",
+       "type": "string",
+       "default": "\"cannot be selected\"",
+       "description": "Read after selectRow on a row that cannot be selected, when selectColumn gives no reason of its own."
       },
       {
        "name": "details",
@@ -2467,9 +2509,9 @@
      "keys": [
       {
        "name": "range",
-       "type": "(from: number, to: number, total: number) => string",
-       "default": "(from: number, to: number, total: number) => `${from}–${to} of ${total}`",
-       "description": ""
+       "type": "(from: number, to: number, total: number, locale?: string) => string",
+       "default": "(from: number, to: number, total: number, locale?: string) => `${from.toLocaleString(locale)}–${to.toLocaleString(locale)} of ${total.toLocaleString(locale)}`",
+       "description": "\"1,201–1,220 of 1,240\". `locale` is Pagination's, for formatting the numbers."
       },
       {
        "name": "previous",
@@ -2578,6 +2620,11 @@
      "description": "Days that cannot be picked, in react-day-picker's matcher form, e.g. `{ before: new Date() }`."
     },
     {
+     "name": "today",
+     "type": "Date",
+     "description": "The day the calendar marks as today. Left out, the device's today. Give it when the app's today differs (a site in another time zone, a fixed day in a demo or a test), and build presets from the same day, so \"Today\" and the calendar's today agree."
+    },
+    {
      "name": "clearable",
      "type": "boolean",
      "description": "Shows an × to clear the value."
@@ -2675,6 +2722,11 @@
      "description": "Days that cannot be picked, in react-day-picker's matcher form, e.g. `{ before: new Date() }`."
     },
     {
+     "name": "today",
+     "type": "Date",
+     "description": "The day the calendar marks as today. Left out, the device's today. Give it when the app's today differs (a site in another time zone, a fixed day in a demo or a test), and build presets from the same day, so \"Today\" and the calendar's today agree."
+    },
+    {
      "name": "clearable",
      "type": "boolean",
      "description": "Shows an × to clear the value."
@@ -2732,9 +2784,244 @@
     },
     {
      "name": "variant",
-     "type": "\"plain\" | \"tiles\"",
+     "type": "\"plain\" | \"tiles\" | \"bare\"",
      "default": "\"plain\"",
      "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "diagnostics": [
+  {
+   "name": "Diagnostics",
+   "props": [
+    {
+     "name": "statuses",
+     "type": "DiagnosticStatus[]",
+     "required": true,
+     "description": "Every status, as the latest of each name (merge arrays as they arrive with `mergeDiagnostics` from `ros`)."
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "description": "The robot's name, written above and naming the panel for screen readers: \"AMR-07\"."
+    },
+    {
+     "name": "loading",
+     "type": "boolean",
+     "default": "false",
+     "description": "Waiting for the first diagnostics: a skeleton the size of a short tree."
+    },
+    {
+     "name": "staleAfterMs",
+     "type": "number",
+     "default": "5000",
+     "description": "A status not updated for this long reads Stale (by its `receivedAt`). `Infinity` never times out."
+    },
+    {
+     "name": "now",
+     "type": "number",
+     "description": "The time to measure from, in ms since the epoch. Left out, the panel reads the browser's clock once a second while any status has a `receivedAt`. Pass it for a fixed picture (a test, a screenshot, a recorded bag played back)."
+    },
+    {
+     "name": "filter",
+     "type": "\"all\" | \"problems\"",
+     "description": "Which statuses the tree shows, controlled; pair with `onFilterChange`."
+    },
+    {
+     "name": "defaultFilter",
+     "type": "\"all\" | \"problems\"",
+     "default": "\"all\"",
+     "description": "The filter at first (uncontrolled)."
+    },
+    {
+     "name": "onFilterChange",
+     "type": "(filter: DiagnosticsFilter) => void",
+     "description": ""
+    },
+    {
+     "name": "query",
+     "type": "string",
+     "description": "The search text, controlled; pair with `onQueryChange`."
+    },
+    {
+     "name": "defaultQuery",
+     "type": "string",
+     "default": "\"\"",
+     "description": "The search text at first (uncontrolled)."
+    },
+    {
+     "name": "onQueryChange",
+     "type": "(query: string) => void",
+     "description": ""
+    },
+    {
+     "name": "defaultExpanded",
+     "type": "string[]",
+     "description": "Statuses and groups open at first, by name (\"/Motors/Left wheel\" opens that status's values, \"/Motors\" the group). Groups with a problem under them open by themselves; this is for anything else."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "BCP 47 tag for the numbers and the \"ago\" times (\"zh-TW\", \"de\"): pass the app's locale. Left out, English (\"en\") on the server and in every browser, so the page hydrates cleanly; a tag Intl cannot read falls back to \"en\"."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<DiagnosticsLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "title",
+       "type": "string",
+       "default": "\"Diagnostics\"",
+       "description": "The panel's name when there is no `label`."
+      },
+      {
+       "name": "ok",
+       "type": "string",
+       "default": "\"OK\"",
+       "description": ""
+      },
+      {
+       "name": "warn",
+       "type": "string",
+       "default": "\"Warning\"",
+       "description": ""
+      },
+      {
+       "name": "error",
+       "type": "string",
+       "default": "\"Error\"",
+       "description": ""
+      },
+      {
+       "name": "stale",
+       "type": "string",
+       "default": "\"Stale\"",
+       "description": ""
+      },
+      {
+       "name": "summary",
+       "type": "(problems: number, total: number, locale: string) => string",
+       "default": "(problems, total, locale) => { const f = (n: number) => n.toLocaleString(locale) if (problems === 0) return `${f(total)} ${total === 1 ? \"status\" : \"statuses\"}, nothing needs attention` return `${f(problems)} of ${f(total)} ${problems === 1 ? \"needs\" : \"need\"} attention` }",
+       "description": "Beside the worst level, at the top: \"6 of 24 need attention\", or \"All 24 OK\"."
+      },
+      {
+       "name": "updatedAgo",
+       "type": "(ms: number, locale: string) => string",
+       "default": "(ms, locale) => { const s = Math.max(0, Math.floor(ms / 1000)) const f = (n: number) => n.toLocaleString(locale) if (s < 60) return `updated ${f(s)} s ago` if (s < 3600) return `updated ${f(Math.floor(s / 60))} min ago` return `updated ${f(Math.floor(s / 3600))} h ago` }",
+       "description": "The time since a status (or, in the header, the last status) arrived: \"updated 12 s ago\"."
+      },
+      {
+       "name": "filter",
+       "type": "string",
+       "default": "\"Show\"",
+       "description": "Names the filter chips."
+      },
+      {
+       "name": "all",
+       "type": "string",
+       "default": "\"All\"",
+       "description": ""
+      },
+      {
+       "name": "problems",
+       "type": "string",
+       "default": "\"Problems\"",
+       "description": ""
+      },
+      {
+       "name": "search",
+       "type": "string",
+       "default": "\"Search diagnostics\"",
+       "description": "Names the search box."
+      },
+      {
+       "name": "searchPlaceholder",
+       "type": "string",
+       "default": "\"Filter by name or hardware ID\"",
+       "description": "In the empty search box."
+      },
+      {
+       "name": "hardwareId",
+       "type": "string",
+       "default": "\"Hardware ID\"",
+       "description": "Before a status's hardware ID, for screen readers (the badge shows the ID alone)."
+      },
+      {
+       "name": "noValues",
+       "type": "string",
+       "default": "\"No values\"",
+       "description": "Under an opened status that has no values."
+      },
+      {
+       "name": "unnamed",
+       "type": "string",
+       "default": "\"(no name)\"",
+       "description": "A status whose name is empty."
+      },
+      {
+       "name": "toggle",
+       "type": "(name: string) => string",
+       "default": "(name) => `Items under ${name}`",
+       "description": "The disclosure button of a group."
+      },
+      {
+       "name": "details",
+       "type": "(name: string) => string",
+       "default": "(name) => `Details of ${name}`",
+       "description": "The disclosure button of a status, which opens its values."
+      },
+      {
+       "name": "loading",
+       "type": "string",
+       "default": "\"Loading diagnostics…\"",
+       "description": ""
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"No diagnostics yet\"",
+       "description": ""
+      },
+      {
+       "name": "emptyHint",
+       "type": "string",
+       "default": "\"The robot's hardware and software checks show here once it publishes them.\"",
+       "description": ""
+      },
+      {
+       "name": "noMatch",
+       "type": "(query: string) => string",
+       "default": "(query) => `Nothing matches “${query}”`",
+       "description": "The search matches nothing."
+      },
+      {
+       "name": "noMatchHint",
+       "type": "string",
+       "default": "\"Search looks at the names and hardware IDs.\"",
+       "description": ""
+      },
+      {
+       "name": "noProblems",
+       "type": "string",
+       "default": "\"Nothing needs attention: every status is OK.\"",
+       "description": "\"Problems\" is chosen and every status is OK."
+      },
+      {
+       "name": "announceError",
+       "type": "(name: string, message: string) => string",
+       "default": "(name, message) => (message ? `Error: ${name}, ${message}` : `Error: ${name}`)",
+       "description": "Read out politely when a status turns ERROR."
+      },
+      {
+       "name": "announceErrors",
+       "type": "(count: number) => string",
+       "default": "(count) => `${count} new errors`",
+       "description": "Read out instead when more than three turn ERROR at once."
+      }
+     ]
     }
    ],
    "inherits": []
@@ -2930,6 +3217,13 @@
    ]
   },
   {
+   "name": "DropdownMenuRadioGroup",
+   "props": [],
+   "inherits": [
+    "Radix DropdownMenu.RadioGroup"
+   ]
+  },
+  {
    "name": "DropdownMenuContent",
    "props": [],
    "inherits": [
@@ -2954,6 +3248,13 @@
    "props": [],
    "inherits": [
     "Radix DropdownMenu.CheckboxItem"
+   ]
+  },
+  {
+   "name": "DropdownMenuRadioItem",
+   "props": [],
+   "inherits": [
+    "Radix DropdownMenu.RadioItem"
    ]
   },
   {
@@ -3395,7 +3696,7 @@
     },
     {
      "name": "selectedId",
-     "type": "string",
+     "type": "string | null",
      "description": "The selected node, controlled; null for none. Pair with onSelectedChange."
     },
     {
@@ -3885,7 +4186,7 @@
     {
      "name": "tone",
      "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
-     "description": ""
+     "description": "Deprecated: Use `status`."
     },
     {
      "name": "attention",
@@ -3901,8 +4202,7 @@
     {
      "name": "battery",
      "type": "number",
-     "default": "72",
-     "description": ""
+     "description": "Percent. Leave it out until the robot reports one: the island says the level is unknown instead of inventing one."
     },
     {
      "name": "charging",
@@ -3917,7 +4217,7 @@
     },
     {
      "name": "open",
-     "type": "\"name\" | \"status\" | \"bell\"",
+     "type": "\"name\" | \"status\" | \"bell\" | null",
      "default": "null",
      "description": "Which zone is expanded. Each zone has its own panel."
     },
@@ -3975,6 +4275,12 @@
        "type": "(percent: number) => string",
        "default": "(n) => `battery ${n}%`",
        "description": ""
+      },
+      {
+       "name": "batteryUnknown",
+       "type": "string",
+       "default": "\"battery unknown\"",
+       "description": "No battery reading yet (or the robot does not report one)."
       },
       {
        "name": "notifications",
@@ -4607,6 +4913,391 @@
    "inherits": []
   }
  ],
+ "log-viewer": [
+  {
+   "name": "LogLevelLabel",
+   "props": [
+    {
+     "name": "level",
+     "type": "\"error\" | \"info\" | \"warn\" | \"debug\" | \"fatal\"",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "word",
+     "type": "string",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "LogViewer",
+   "props": [
+    {
+     "name": "lines",
+     "type": "readonly LogLine[]",
+     "description": "Lines, oldest first. An array that only grows appends; any other new array replaces what is shown."
+    },
+    {
+     "name": "buffer",
+     "type": "LogBuffer",
+     "description": "A buffer the app appends to (`createLogBuffer`), instead of `lines`. Its own `maxLines` applies."
+    },
+    {
+     "name": "ref",
+     "type": "((instance: LogViewerHandle | null) => void | (() => VoidOrUndefinedOnly) | DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES[keyof DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES]) | RefObject<LogViewerHandle | null>",
+     "description": "`append`, `clear` and `jumpToLatest`, for a stream that should not go through React state."
+    },
+    {
+     "name": "maxLines",
+     "type": "number",
+     "default": "10_000",
+     "description": "The most lines kept; the oldest are dropped. Default 10,000. Up to about 200,000 stay smooth."
+    },
+    {
+     "name": "defaultLevels",
+     "type": "readonly (\"error\" | \"info\" | \"warn\" | \"debug\" | \"fatal\")[]",
+     "default": "logLevels",
+     "description": "The levels shown at first. Default all."
+    },
+    {
+     "name": "defaultSources",
+     "type": "readonly string[]",
+     "default": "[]",
+     "description": "The sources shown at first. Default all."
+    },
+    {
+     "name": "defaultQuery",
+     "type": "string",
+     "default": "\"\"",
+     "description": "Search text at first."
+    },
+    {
+     "name": "defaultWrap",
+     "type": "boolean",
+     "default": "false",
+     "description": "Wrap long messages instead of cutting them at the edge."
+    },
+    {
+     "name": "defaultTimeMode",
+     "type": "\"absolute\" | \"relative\"",
+     "default": "\"absolute\"",
+     "description": "Clock time (default) or time ago."
+    },
+    {
+     "name": "defaultExpanded",
+     "type": "readonly (string | number)[]",
+     "description": "Lines (by `id`) open at first."
+    },
+    {
+     "name": "now",
+     "type": "number",
+     "description": "\"Now\" for time ago, in ms since the epoch. Without it the viewer reads the clock every second while time ago is on."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats times, and counts."
+    },
+    {
+     "name": "timeZone",
+     "type": "string",
+     "description": "The time zone times are shown in. Default the browser's."
+    },
+    {
+     "name": "announce",
+     "type": "false | \"all\" | \"errors\"",
+     "default": "\"errors\"",
+     "description": "Announce new lines to screen readers, at most every 5 s: \"errors\" (default) only when errors or fatal lines arrived, \"all\" for every batch, false never."
+    },
+    {
+     "name": "height",
+     "type": "string | number",
+     "default": "480",
+     "description": "The viewer's height (it scrolls inside). Default 480."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<LogViewerLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "name",
+       "type": "string",
+       "default": "\"Log\"",
+       "description": "The grid's name."
+      },
+      {
+       "name": "debug",
+       "type": "string",
+       "default": "\"Debug\"",
+       "description": ""
+      },
+      {
+       "name": "info",
+       "type": "string",
+       "default": "\"Info\"",
+       "description": ""
+      },
+      {
+       "name": "warn",
+       "type": "string",
+       "default": "\"Warn\"",
+       "description": ""
+      },
+      {
+       "name": "error",
+       "type": "string",
+       "default": "\"Error\"",
+       "description": ""
+      },
+      {
+       "name": "fatal",
+       "type": "string",
+       "default": "\"Fatal\"",
+       "description": ""
+      },
+      {
+       "name": "time",
+       "type": "string",
+       "default": "\"Time\"",
+       "description": "Column names, read by screen readers."
+      },
+      {
+       "name": "level",
+       "type": "string",
+       "default": "\"Level\"",
+       "description": ""
+      },
+      {
+       "name": "source",
+       "type": "string",
+       "default": "\"Source\"",
+       "description": ""
+      },
+      {
+       "name": "message",
+       "type": "string",
+       "default": "\"Message\"",
+       "description": ""
+      },
+      {
+       "name": "search",
+       "type": "string",
+       "default": "\"Search the log\"",
+       "description": ""
+      },
+      {
+       "name": "searchPlaceholder",
+       "type": "string",
+       "default": "\"Search messages and sources\"",
+       "description": ""
+      },
+      {
+       "name": "matches",
+       "type": "(current: number, total: number, locale: string | undefined) => string",
+       "default": "(current, total, locale) => total === 0 ? \"No matches\" : current ? `${current.toLocaleString(locale)} of ${total.toLocaleString(locale)}` : plural(total, \"match\", \"matches\", locale)",
+       "description": "Beside the search box: \"3 of 120\", or how many lines match before one is picked."
+      },
+      {
+       "name": "previousMatch",
+       "type": "string",
+       "default": "\"Previous match\"",
+       "description": ""
+      },
+      {
+       "name": "nextMatch",
+       "type": "string",
+       "default": "\"Next match\"",
+       "description": ""
+      },
+      {
+       "name": "levels",
+       "type": "string",
+       "default": "\"Levels\"",
+       "description": "The level menu's button: all, one or a few by name, or how many."
+      },
+      {
+       "name": "allLevels",
+       "type": "string",
+       "default": "\"All levels\"",
+       "description": ""
+      },
+      {
+       "name": "levelCount",
+       "type": "(n: number) => string",
+       "default": "(n) => `${n} levels`",
+       "description": ""
+      },
+      {
+       "name": "sources",
+       "type": "string",
+       "default": "\"Sources\"",
+       "description": ""
+      },
+      {
+       "name": "allSources",
+       "type": "string",
+       "default": "\"All sources\"",
+       "description": ""
+      },
+      {
+       "name": "sourceCount",
+       "type": "(n: number) => string",
+       "default": "(n) => `${n} sources`",
+       "description": ""
+      },
+      {
+       "name": "count",
+       "type": "(n: number, locale: string | undefined) => string",
+       "default": "(n, locale) => n.toLocaleString(locale)",
+       "description": "Shown in a menu item beside a level or a source."
+      },
+      {
+       "name": "viewOptions",
+       "type": "string",
+       "default": "\"View options\"",
+       "description": ""
+      },
+      {
+       "name": "wrap",
+       "type": "string",
+       "default": "\"Wrap long lines\"",
+       "description": ""
+      },
+      {
+       "name": "relativeTime",
+       "type": "string",
+       "default": "\"Show time ago\"",
+       "description": ""
+      },
+      {
+       "name": "jumpToLatest",
+       "type": "string",
+       "default": "\"Jump to latest\"",
+       "description": "The floating button while scrolled up: with how many new lines arrived, or without."
+      },
+      {
+       "name": "newLines",
+       "type": "(n: number, locale: string | undefined) => string",
+       "default": "(n, locale) => `${n.toLocaleString(locale)} new`",
+       "description": ""
+      },
+      {
+       "name": "following",
+       "type": "string",
+       "default": "\"Following new lines\"",
+       "description": ""
+      },
+      {
+       "name": "paused",
+       "type": "string",
+       "default": "\"Paused\"",
+       "description": ""
+      },
+      {
+       "name": "total",
+       "type": "(shown: number, total: number, locale: string | undefined) => string",
+       "default": "(shown, total, locale) => (shown === total ? plural(total, \"line\", \"lines\", locale) : `${shown.toLocaleString(locale)} of ${plural(total, \"line\", \"lines\", locale)}`)",
+       "description": "Footer: all lines, or the lines the filters show of them."
+      },
+      {
+       "name": "capped",
+       "type": "(max: number, locale: string | undefined) => string",
+       "default": "(max, locale) => `keeps the last ${max.toLocaleString(locale)}`",
+       "description": "Footer, once the buffer is full: older lines are being dropped."
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"No log lines yet\"",
+       "description": ""
+      },
+      {
+       "name": "noMatch",
+       "type": "string",
+       "default": "\"No lines match the filters\"",
+       "description": ""
+      },
+      {
+       "name": "showAll",
+       "type": "string",
+       "default": "\"Show all lines\"",
+       "description": ""
+      },
+      {
+       "name": "copyLines",
+       "type": "(n: number) => string",
+       "default": "(n) => (n === 1 ? \"Copy line\" : `Copy ${n} lines`)",
+       "description": "The footer's copy button: the selected lines, or the line in focus."
+      },
+      {
+       "name": "copied",
+       "type": "string",
+       "default": "\"Copied\"",
+       "description": ""
+      },
+      {
+       "name": "copyFailed",
+       "type": "string",
+       "default": "\"Could not copy: select the text and copy it\"",
+       "description": ""
+      },
+      {
+       "name": "copiedLines",
+       "type": "(n: number) => string",
+       "default": "(n) => (n === 1 ? \"Copied 1 line\" : `Copied ${n} lines`)",
+       "description": ""
+      },
+      {
+       "name": "copyLine",
+       "type": "string",
+       "default": "\"Copy line\"",
+       "description": ""
+      },
+      {
+       "name": "moreLines",
+       "type": "(n: number) => string",
+       "default": "(n) => `+${n} ${n === 1 ? \"line\" : \"lines\"}`",
+       "description": "A message of several lines, shown on one: what is hidden until the line is opened or wrapped."
+      },
+      {
+       "name": "location",
+       "type": "string",
+       "default": "\"Location\"",
+       "description": "Fields of an opened line."
+      },
+      {
+       "name": "function",
+       "type": "string",
+       "default": "\"Function\"",
+       "description": ""
+      },
+      {
+       "name": "ago",
+       "type": "(ms: number, locale: string | undefined) => string",
+       "default": "(ms, locale) => { const s = Math.max(0, ms) / 1000 const rtf = new Intl.RelativeTimeFormat(locale, { numeric: \"always\", style: \"narrow\" }) if (s < 60) return rtf.format(-Number(s.toFixed(s < 10 ? 1 : 0)), \"second\") if (s < 3600) return rtf.format(-Math.floor(s / 60), \"minute\") if (s < 86400) return rtf.format(-Math.floor(s / 3600), \"hour\") return rtf.format(-Math.floor(s / 86400), \"day\") }",
+       "description": "Relative time, \"4.2 s ago\"."
+      },
+      {
+       "name": "announce",
+       "type": "(counts: { lines: number; errors: number; warnings: number; }, locale: string | undefined) => string",
+       "default": "({ lines, errors, warnings }, locale) => [plural(lines, \"new line\", \"new lines\", locale), errors && plural(errors, \"error\", \"errors\", locale), warnings && plural(warnings, \"warning\", \"warnings\", locale)] .filter(Boolean) .join(\", \")",
+       "description": "Said at most every 5 s while lines stream in (see `announce`)."
+      },
+      {
+       "name": "keys",
+       "type": "string",
+       "default": "\"Up and down arrows move between lines, Shift with them selects lines, Enter opens a line, C copies, End goes to the latest line, slash searches.\"",
+       "description": "How the keyboard works, read once when the grid gets focus."
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "marker": [
   {
    "name": "Marker",
@@ -4641,14 +5332,19 @@
    "name": "MarkerRow",
    "props": [
     {
+     "name": "status",
+     "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
+     "description": "The line's status, drawn as its glyph: only warning and danger are coloured."
+    },
+    {
      "name": "tone",
      "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
-     "description": ""
+     "description": "Deprecated: Use `status` (info → active, success → normal, neutral → offline)."
     },
     {
      "name": "icon",
      "type": "ReactNode",
-     "description": "An icon for the kind of line, used when there is no tone."
+     "description": "An icon for the kind of line, used when there is no status."
     },
     {
      "name": "title",
@@ -4903,7 +5599,13 @@
      "name": "unit",
      "type": "string",
      "default": "\"%\"",
-     "description": ""
+     "description": "Written after the value: \"%\" (the default, written \"72 %\"), \"°C\", \"GB\". Leading spaces are ignored."
+    },
+    {
+     "name": "showMax",
+     "type": "boolean",
+     "default": "false",
+     "description": "Write the range's end beside the value (\"412 of 512 GB\"), for an amount whose total matters, such as storage."
     },
     {
      "name": "inline",
@@ -4938,7 +5640,7 @@
     {
      "name": "delta",
      "type": "string",
-     "description": "Change against the previous period: \"+8%\", \"−2\". A leading minus (- or −) turns the arrow down; no change (\"0\", \"±0 %\") has no arrow."
+     "description": "Change against the previous period: \"+8 %\", \"−2\". A leading minus (- or −) turns the arrow down; no change (\"0\", \"±0 %\") has no arrow."
     },
     {
      "name": "trend",
@@ -5110,12 +5812,12 @@
    "props": [
     {
      "name": "value",
-     "type": "number",
+     "type": "number | null",
      "description": ""
     },
     {
      "name": "defaultValue",
-     "type": "number",
+     "type": "number | null",
      "default": "null",
      "description": ""
     },
@@ -5288,9 +5990,9 @@
      "keys": [
       {
        "name": "range",
-       "type": "(from: number, to: number, total: number) => string",
-       "default": "(from: number, to: number, total: number) => `${from}–${to} of ${total}`",
-       "description": ""
+       "type": "(from: number, to: number, total: number, locale?: string) => string",
+       "default": "(from: number, to: number, total: number, locale?: string) => `${from.toLocaleString(locale)}–${to.toLocaleString(locale)} of ${total.toLocaleString(locale)}`",
+       "description": "\"1,201–1,220 of 1,240\". `locale` is Pagination's, for formatting the numbers."
       },
       {
        "name": "previous",
@@ -5317,6 +6019,11 @@
        "description": ""
       }
      ]
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the numbers, with the language's thousands separator (a BCP 47 tag such as \"zh-TW\"). Left out, the browser's language."
     }
    ],
    "inherits": []
@@ -5739,7 +6446,7 @@
       {
        "name": "submit",
        "type": "string",
-       "default": "\"Submit\"",
+       "default": "\"Send answers\"",
        "description": "The last page's button."
       },
       {
@@ -5831,7 +6538,7 @@
     {
      "name": "review",
      "type": "boolean",
-     "description": "Paged only: a last page that lists the answers, each with Edit, before Submit."
+     "description": "Paged only: a last page that lists the answers, each with Edit, before the last button."
     },
     {
      "name": "defaultStep",
@@ -5876,7 +6583,7 @@
       {
        "name": "submit",
        "type": "string",
-       "default": "\"Submit\"",
+       "default": "\"Send answers\"",
        "description": "The last page's button."
       },
       {
@@ -6115,7 +6822,7 @@
     },
     {
      "name": "selectedId",
-     "type": "string",
+     "type": "string | null",
      "description": "The selected robot, controlled; null for none. Without it the map keeps its own selection."
     },
     {
@@ -6156,7 +6863,7 @@
     },
     {
      "name": "goal",
-     "type": "{ x: number; y: number; heading?: number }",
+     "type": "{ x: number; y: number; heading?: number } | null",
      "description": "The goal to show, controlled: a target and the way to face, in plan metres."
     },
     {
@@ -6262,7 +6969,7 @@
       {
        "name": "retry",
        "type": "string",
-       "default": "\"Reload the map\"",
+       "default": "\"Load again\"",
        "description": ""
       },
       {
@@ -6578,7 +7285,7 @@
       {
        "name": "retry",
        "type": "string",
-       "default": "\"Reload the map\"",
+       "default": "\"Load again\"",
        "description": ""
       },
       {
@@ -6819,7 +7526,7 @@
     },
     {
      "name": "selectedId",
-     "type": "string",
+     "type": "string | null",
      "description": "The selected robot, controlled; null for none. Without it the map keeps its own selection."
     },
     {
@@ -7288,9 +7995,19 @@
     },
     {
      "name": "hotkey",
-     "type": "string",
+     "type": "string | null",
      "default": "\"/\"",
      "description": "The key that focuses the box; null for none."
+    },
+    {
+     "name": "value",
+     "type": "string",
+     "description": "With `onValueChange`: the text in the box, controlled. Left out, the box keeps its own."
+    },
+    {
+     "name": "onValueChange",
+     "type": "(value: string) => void",
+     "description": "Filters in place instead of navigating: called with the text as it is typed, on data already on the screen (a tree, a list). Enter then does nothing more, and `action`, `name`, `live` and `onNavigate` are not used."
     }
    ],
    "inherits": []
@@ -7299,9 +8016,25 @@
  "segmented-control": [
   {
    "name": "SegmentedControl",
-   "props": [],
+   "props": [
+    {
+     "name": "value",
+     "type": "string",
+     "description": "The selected segment, controlled. One always stays selected: pressing it again does not clear it."
+    },
+    {
+     "name": "defaultValue",
+     "type": "string",
+     "description": "The segment selected at first, when `value` is not given."
+    },
+    {
+     "name": "onValueChange",
+     "type": "(value: string) => void",
+     "description": "Called with the newly selected segment's value, never with an empty one."
+    }
+   ],
    "inherits": [
-    "ToggleGroup.ToggleGroupSingleProps (except type)"
+    "ToggleGroup.ToggleGroupSingleProps (except type, value, defaultValue, onValueChange)"
    ]
   },
   {
@@ -7491,6 +8224,296 @@
    ]
   }
  ],
+ "sidebar": [
+  {
+   "name": "SidebarProvider",
+   "props": [
+    {
+     "name": "defaultOpen",
+     "type": "boolean",
+     "default": "true",
+     "description": "Open at first on wide screens, until someone toggles it (uncontrolled). A stored choice (the cookie) wins over it."
+    },
+    {
+     "name": "open",
+     "type": "boolean",
+     "description": "Open on wide screens, controlled; pair with onOpenChange."
+    },
+    {
+     "name": "onOpenChange",
+     "type": "(open: boolean) => void",
+     "description": ""
+    },
+    {
+     "name": "defaultOpenMobile",
+     "type": "boolean",
+     "default": "false",
+     "description": "The phone sheet open at first, for previews and tests."
+    },
+    {
+     "name": "isMobile",
+     "type": "boolean",
+     "description": "The phone (sheet) or desktop (column) form, instead of following the screen's width (768 px): for a preview frame."
+    },
+    {
+     "name": "cookieName",
+     "type": "string | null",
+     "default": "SIDEBAR_COOKIE_NAME",
+     "description": "The cookie that keeps the choice for a week. null keeps it for this page only."
+    },
+    {
+     "name": "keyboardShortcut",
+     "type": "string | false",
+     "default": "\"mod+b\"",
+     "description": "Toggles the sidebar from anywhere on the page, except while typing. mod is ⌘ on a Mac, Ctrl elsewhere; false for none."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<SidebarLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "sidebar",
+       "type": "string",
+       "default": "\"Sidebar\"",
+       "description": "The sidebar's landmark (an aside)."
+      },
+      {
+       "name": "nav",
+       "type": "string",
+       "default": "\"Main\"",
+       "description": "The navigation landmark SidebarContent makes."
+      },
+      {
+       "name": "title",
+       "type": "string",
+       "default": "\"Navigation\"",
+       "description": "The phone sheet's title, read when it opens."
+      },
+      {
+       "name": "collapse",
+       "type": "string",
+       "default": "\"Collapse sidebar\"",
+       "description": "The trigger while the sidebar is open."
+      },
+      {
+       "name": "expand",
+       "type": "string",
+       "default": "\"Expand sidebar\"",
+       "description": "The trigger while the sidebar is a rail of icons, or hidden."
+      },
+      {
+       "name": "open",
+       "type": "string",
+       "default": "\"Open navigation\"",
+       "description": "The trigger on phones, where it opens the sheet."
+      }
+     ]
+    }
+   ],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "Sidebar",
+   "props": [
+    {
+     "name": "side",
+     "type": "\"right\" | \"left\"",
+     "default": "\"left\"",
+     "description": ""
+    },
+    {
+     "name": "variant",
+     "type": "\"floating\" | \"sidebar\"",
+     "default": "\"sidebar\"",
+     "description": "sidebar (default): a column with a hairline beside the page. floating: a raised panel (give the provider `gap-2 p-2`)."
+    },
+    {
+     "name": "collapsible",
+     "type": "\"none\" | \"icon\" | \"offcanvas\"",
+     "default": "\"icon\"",
+     "description": "icon (default): collapses to a 72 px rail of icons with tooltips. offcanvas: collapses out of view. none: always open."
+    }
+   ],
+   "inherits": [
+    "<aside>"
+   ]
+  },
+  {
+   "name": "SidebarTrigger",
+   "props": [],
+   "inherits": [
+    "<button>"
+   ]
+  },
+  {
+   "name": "SidebarInset",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "SidebarHeader",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "SidebarFooter",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "SidebarSeparator",
+   "props": [],
+   "inherits": [
+    "<hr>"
+   ]
+  },
+  {
+   "name": "SidebarContent",
+   "props": [],
+   "inherits": [
+    "<nav>"
+   ]
+  },
+  {
+   "name": "SidebarGroup",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "SidebarGroupLabel",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "SidebarGroupContent",
+   "props": [],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "SidebarMenu",
+   "props": [],
+   "inherits": [
+    "<ul>"
+   ]
+  },
+  {
+   "name": "SidebarMenuItem",
+   "props": [],
+   "inherits": [
+    "<li>"
+   ]
+  },
+  {
+   "name": "SidebarMenuButton",
+   "props": [
+    {
+     "name": "asChild",
+     "type": "boolean",
+     "default": "false",
+     "description": "Render your link (a, next/link) instead of a button, with the button's look."
+    },
+    {
+     "name": "isActive",
+     "type": "boolean",
+     "default": "false",
+     "description": "The current page: the kit's current look (muted fill and weight) and aria-current=\"page\"."
+    },
+    {
+     "name": "size",
+     "type": "\"sm\" | \"md\" | \"lg\"",
+     "default": "\"md\"",
+     "description": ""
+    },
+    {
+     "name": "tooltip",
+     "type": "ReactNode | (TooltipContentProps & RefAttributes<HTMLDivElement>)",
+     "description": "Shown beside the rail when the sidebar is collapsed: the link's name, or TooltipContent props."
+    }
+   ],
+   "inherits": [
+    "<button>"
+   ]
+  },
+  {
+   "name": "SidebarMenuBadge",
+   "props": [
+    {
+     "name": "count",
+     "type": "number",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "max",
+     "type": "number",
+     "description": ""
+    },
+    {
+     "name": "tone",
+     "type": "\"neutral\" | \"danger\"",
+     "default": "\"danger\"",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "SidebarMenuTag",
+   "props": [],
+   "inherits": [
+    "<span>"
+   ]
+  },
+  {
+   "name": "SidebarMenuSub",
+   "props": [],
+   "inherits": [
+    "<ul>"
+   ]
+  },
+  {
+   "name": "SidebarMenuSubItem",
+   "props": [],
+   "inherits": [
+    "<li>"
+   ]
+  },
+  {
+   "name": "SidebarMenuSubButton",
+   "props": [
+    {
+     "name": "asChild",
+     "type": "boolean",
+     "default": "false",
+     "description": ""
+    },
+    {
+     "name": "isActive",
+     "type": "boolean",
+     "default": "false",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "<a>"
+   ]
+  }
+ ],
  "skeleton": [
   {
    "name": "Bone",
@@ -7498,7 +8521,7 @@
     {
      "name": "onCard",
      "type": "boolean",
-     "description": ""
+     "description": "Deprecated: Bones read on every surface now; kept so older call sites still compile."
     }
    ],
    "inherits": []
@@ -7555,6 +8578,12 @@
      "description": "Shown after release while waiting for the dog."
     },
     {
+     "name": "releasing",
+     "type": "boolean",
+     "default": "false",
+     "description": "Show the released state (thumb at the end, `releasingLabel`) without a slide, e.g. when the screen is drawn again while a release the operator already made is still waiting for the robot."
+    },
+    {
      "name": "failed",
      "type": "boolean",
      "default": "false",
@@ -7565,6 +8594,12 @@
      "type": "string",
      "default": "\"Not released, slide again\"",
      "description": "Shown while `failed`."
+    },
+    {
+     "name": "keyboardHint",
+     "type": "string",
+     "default": "\"Hold Enter or Space for 2 seconds\"",
+     "description": "Read by a screen reader after the label: how to release without a pointer."
     }
    ],
    "inherits": []
@@ -7699,6 +8734,18 @@
    "inherits": []
   },
   {
+   "name": "SortablePosition",
+   "props": [
+    {
+     "name": "format",
+     "type": "(position: number) => ReactNode",
+     "default": "(n) => n",
+     "description": "Writes the number, e.g. (n) => `Step ${n}`. Left out, the bare number."
+    }
+   ],
+   "inherits": []
+  },
+  {
    "name": "SortableHandle",
    "props": [
     {
@@ -7755,7 +8802,7 @@
     {
      "name": "tone",
      "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
-     "description": ""
+     "description": "Deprecated: Use `status`."
     },
     {
      "name": "children",
@@ -7796,12 +8843,12 @@
     {
      "name": "status",
      "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
-     "description": ""
+     "description": "active (busy), normal, warning, danger or offline."
     },
     {
      "name": "tone",
      "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
-     "description": ""
+     "description": "Deprecated: Use `status` (info → active, success → normal, neutral → offline)."
     }
    ],
    "inherits": []
@@ -8078,7 +9125,7 @@
       {
        "name": "bluetooth",
        "type": "string",
-       "default": "\"Emergency stop\"",
+       "default": "\"Emergency stop · Bluetooth\"",
        "description": ""
       },
       {
@@ -8129,6 +9176,286 @@
      "type": "string",
      "default": "\"Battery low. Charge to 25% to stand up\"",
      "description": "Shown under the label while disabled."
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "streaming-chart": [
+  {
+   "name": "StreamingChart",
+   "props": [
+    {
+     "name": "config",
+     "type": "StreamingChartConfig",
+     "required": true,
+     "description": "The series, in order of emphasis: the first is the accent and solid, then dashed, then dotted."
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "What the chart shows, for screen readers: \"Drive motor currents, Patrol dog 7F3A\"."
+    },
+    {
+     "name": "ref",
+     "type": "((instance: StreamingChartHandle | null) => void | (() => VoidOrUndefinedOnly) | DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES[keyof DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES]) | RefObject<StreamingChartHandle | null>",
+     "description": "push, clear, pause and resume, called from anywhere without rendering."
+    },
+    {
+     "name": "subscribe",
+     "type": "(push: StreamingChartPush) => (() => void) | void",
+     "description": "Connects a source once: called with the chart's `push` when it mounts (and again if this function changes); return the function that disconnects. Keep it stable (a module-level function, or one the React Compiler memoises), or every render reconnects. `(push) => ros.subscribe(\"/battery\", \"sensor_msgs/BatteryState\", (m) => push({ voltage: m.voltage }))`."
+    },
+    {
+     "name": "windows",
+     "type": "number[]",
+     "default": "DEFAULT_WINDOWS",
+     "description": "The windows to choose from, in ms. One window hides the switch."
+    },
+    {
+     "name": "window",
+     "type": "number",
+     "description": "The window shown, in ms (controlled)."
+    },
+    {
+     "name": "defaultWindow",
+     "type": "number",
+     "description": ""
+    },
+    {
+     "name": "onWindowChange",
+     "type": "(ms: number) => void",
+     "description": ""
+    },
+    {
+     "name": "paused",
+     "type": "boolean",
+     "description": "Frozen (controlled). Readings keep arriving into the buffer while paused."
+    },
+    {
+     "name": "defaultPaused",
+     "type": "boolean",
+     "default": "false",
+     "description": ""
+    },
+    {
+     "name": "onPausedChange",
+     "type": "(paused: boolean) => void",
+     "description": ""
+    },
+    {
+     "name": "domain",
+     "type": "readonly [number, number]",
+     "description": "A fixed value range. Without it the range follows what is in view, in round steps; fix it for a value with known bounds."
+    },
+    {
+     "name": "limits",
+     "type": "readonly StreamingChartLimit[]",
+     "default": "NO_LIMITS",
+     "description": ""
+    },
+    {
+     "name": "band",
+     "type": "{ from: number; to: number; label?: string }",
+     "description": ""
+    },
+    {
+     "name": "capacity",
+     "type": "number",
+     "default": "DEFAULT_CAPACITY",
+     "description": "Readings kept per series. The default, 36 000, holds 10 minutes at 60 Hz; longer windows at high rates need more."
+    },
+    {
+     "name": "staleAfterMs",
+     "type": "number",
+     "default": "2000",
+     "description": "With no reading for this long the chart says so, and a gap this long breaks the line instead of joining across it."
+    },
+    {
+     "name": "announceEveryMs",
+     "type": "number",
+     "default": "5000",
+     "description": "How often screen readers hear the current values while focus is on the chart. A crossed limit is said at once."
+    },
+    {
+     "name": "controls",
+     "type": "boolean",
+     "default": "true",
+     "description": "The window switch, the Chart / Table switch and Pause. Off for small multiples driven by one set of controls."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "BCP 47 tag for numbers and times (\"zh-TW\", \"de\"): pass the app's locale. Left out, English on the server and in every browser alike; a tag Intl cannot read falls back to English."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<StreamingChartLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "live",
+       "type": "string",
+       "default": "\"Live\"",
+       "description": ""
+      },
+      {
+       "name": "paused",
+       "type": "string",
+       "default": "\"Paused\"",
+       "description": ""
+      },
+      {
+       "name": "waiting",
+       "type": "string",
+       "default": "\"Waiting for data\"",
+       "description": ""
+      },
+      {
+       "name": "stale",
+       "type": "string",
+       "default": "\"No new data\"",
+       "description": "No reading for `staleAfterMs`."
+      },
+      {
+       "name": "lastSample",
+       "type": "(time: string) => string",
+       "default": "(time) => `last reading ${time}`",
+       "description": "After Stale: when the last reading was taken."
+      },
+      {
+       "name": "pause",
+       "type": "string",
+       "default": "\"Pause\"",
+       "description": ""
+      },
+      {
+       "name": "resume",
+       "type": "string",
+       "default": "\"Resume\"",
+       "description": ""
+      },
+      {
+       "name": "jumpToLive",
+       "type": "string",
+       "default": "\"Jump to live\"",
+       "description": "On the button while the view has been moved back in time."
+      },
+      {
+       "name": "window",
+       "type": "string",
+       "default": "\"Time window\"",
+       "description": "Names the window switch."
+      },
+      {
+       "name": "windowOption",
+       "type": "(ms: number) => string",
+       "default": "(ms) => (ms < 60_000 ? `${Math.round(ms / 1000)} s` : ms < 3_600_000 ? `${Math.round(ms / 60_000)} min` : `${Math.round(ms / 3_600_000)} h`)",
+       "description": "A window, as written on its segment: 30 000 → \"30 s\", 120 000 → \"2 min\"."
+      },
+      {
+       "name": "view",
+       "type": "string",
+       "default": "\"Show as\"",
+       "description": "Names the Chart / Table switch."
+      },
+      {
+       "name": "viewOptions",
+       "type": "string",
+       "default": "\"View options\"",
+       "description": "The menu (⋯) that holds the window and Chart / Table switches on a narrow chart."
+      },
+      {
+       "name": "chart",
+       "type": "string",
+       "default": "\"Chart\"",
+       "description": ""
+      },
+      {
+       "name": "table",
+       "type": "string",
+       "default": "\"Table\"",
+       "description": ""
+      },
+      {
+       "name": "time",
+       "type": "string",
+       "default": "\"Time\"",
+       "description": "The table's first column."
+      },
+      {
+       "name": "now",
+       "type": "string",
+       "default": "\"Now\"",
+       "description": "The time axis's right end while live."
+      },
+      {
+       "name": "secondsAgo",
+       "type": "(value: string) => string",
+       "default": "(v) => `−${v} s`",
+       "description": "A time axis tick, given the number already formatted: \"30\" → \"−30 s\"."
+      },
+      {
+       "name": "minutesAgo",
+       "type": "(value: string) => string",
+       "default": "(v) => `−${v} min`",
+       "description": ""
+      },
+      {
+       "name": "overLimit",
+       "type": "string",
+       "default": "\"Over limit\"",
+       "description": ""
+      },
+      {
+       "name": "underLimit",
+       "type": "string",
+       "default": "\"Under limit\"",
+       "description": ""
+      },
+      {
+       "name": "limit",
+       "type": "(value: string) => string",
+       "default": "(v) => `Limit ${v}`",
+       "description": "A limit line without its own label: \"60 °C\" → \"Limit 60 °C\"."
+      },
+      {
+       "name": "withUnit",
+       "type": "(value: string, unit: string) => string",
+       "default": "(v, unit) => (unit === \"°\" ? `${v}°` : `${v} ${unit}`)",
+       "description": "A value with its unit: (\"12.4\", \"A\") → \"12.4 A\"; degrees take no space: \"42.0°\"."
+      },
+      {
+       "name": "noValue",
+       "type": "string",
+       "default": "\"–\"",
+       "description": "Where a series has no reading."
+      },
+      {
+       "name": "reading",
+       "type": "(series: string, value: string) => string",
+       "default": "(series, value) => `${series} ${value}`",
+       "description": "A series and its value, as screen readers hear the current values: (\"Left motor\", \"12.4 A\") → \"Left motor 12.4 A\"."
+      },
+      {
+       "name": "keys",
+       "type": "string",
+       "default": "\"Space pauses or resumes. Left and right arrows move back and forward in time. End returns to live.\"",
+       "description": "How to use the chart from the keyboard, read when it takes focus."
+      },
+      {
+       "name": "formatTime",
+       "type": "(date: Date, locale?: string) => string",
+       "default": "(d, locale) => locale ? d.toLocaleTimeString(locale, { hour: \"2-digit\", minute: \"2-digit\", second: \"2-digit\", hourCycle: \"h23\" }) : [d.getHours(), d.getMinutes(), d.getSeconds()].map(pad).join(\":\")",
+       "description": "A time of day, 24-hour with seconds by default; with `locale`, that locale's 24-hour time."
+      }
+     ]
+    },
+    {
+     "name": "plotClassName",
+     "type": "string",
+     "description": "The plot's height. Defaults to h-64."
     }
    ],
    "inherits": []
@@ -8490,8 +9817,7 @@
     {
      "name": "value",
      "type": "\"light\" | \"system\" | \"dark\"",
-     "required": true,
-     "description": ""
+     "description": "The stored choice. Leave it out (or undefined) until it is known in the browser: nothing shows as selected."
     },
     {
      "name": "onValueChange",
@@ -8698,7 +10024,7 @@
     {
      "name": "density",
      "type": "\"default\" | \"dense\"",
-     "description": ""
+     "description": "Deprecated: Use `size=\"sm\"`."
     }
    ],
    "inherits": [
@@ -8719,9 +10045,14 @@
      "description": "Machine-readable time for the <time> element."
     },
     {
+     "name": "status",
+     "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
+     "description": "A status, drawn as its glyph: only warning and danger are coloured. Leave empty for an ordinary event."
+    },
+    {
      "name": "tone",
      "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
-     "description": "A status, drawn as its glyph. Leave empty for an ordinary event."
+     "description": "Deprecated: Use `status` (info → active, success → normal, neutral → offline)."
     },
     {
      "name": "icon",
@@ -8923,7 +10254,7 @@
     {
      "name": "density",
      "type": "\"default\" | \"dense\"",
-     "description": ""
+     "description": "Deprecated: Use `size=\"sm\"`."
     },
     {
      "name": "total",
@@ -9030,7 +10361,7 @@
     {
      "name": "icon",
      "type": "ReactNode",
-     "description": "Replaces the status mark with an icon for the kind of step; the status is still announced."
+     "description": "An icon for the kind of step (a tool, a robot), shown in place of the done check. Any other status keeps its mark (spinner, warning, failure, waiting, skipped), so a step that needs someone never looks finished."
     },
     {
      "name": "duration",
@@ -9261,7 +10592,7 @@
      "name": "empty",
      "type": "ReactNode",
      "default": "\"Nothing here yet.\"",
-     "description": "Shown instead of the tree when items is empty."
+     "description": "Shown instead of the tree when items is empty, and under an open branch with nothing in it (`children: []`)."
     },
     {
      "name": "linkAs",
@@ -9279,6 +10610,12 @@
        "type": "(name: string) => string",
        "default": "(name) => `Items under ${name}`",
        "description": "The disclosure button's name in list mode; aria-expanded says whether it is open."
+      },
+      {
+       "name": "details",
+       "type": "(name: string) => string",
+       "default": "(name) => `Details of ${name}`",
+       "description": "The same for a node with `content` and no `children`: what opens is its details, not items under it."
       }
      ]
     }
