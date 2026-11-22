@@ -1,4 +1,4 @@
-// @syncrobotic/icon-tile v0.17.2 · update: npx shadcn add @syncrobotic/icon-tile --overwrite
+// @syncrobotic/icon-tile v0.28.0 · update: npx shadcn add @syncrobotic/icon-tile --overwrite
 import * as React from "react"
 import { Slot } from "radix-ui"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -13,7 +13,8 @@ export const iconTileVariants = cva("relative inline-flex shrink-0 items-center 
     variant: {
       outline: "bg-card text-foreground ring-1 ring-border ring-inset",
       muted: "bg-muted text-muted-foreground",
-      raised: "bg-card text-foreground shadow-overlay ring-1 ring-border",
+      // A card surface lifted off a muted or busy background by its edge alone: surfaces carry no shadow (Elevation).
+      raised: "bg-card text-foreground ring-1 ring-border",
       soft: "",
       solid: "",
     },

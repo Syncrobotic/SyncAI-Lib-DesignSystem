@@ -111,6 +111,9 @@ const primitivesIn = (src: string) => [...new Set([...src.matchAll(/\b(\w+) as \
 
 type Measured = { roles: string[]; tabStops: number; live: boolean }
 
+/** Marks hidden from screen readers (aria-hidden) that repeat a word written beside them. */
+const decorative = new Set(["status-glyph"])
+
 export type ContrastRow = { label: string; applies: string; need: string; light: number; dark: number; pass: boolean; wcag: [string, string][] }
 
 const SC_TEXT: [string, string] = ["1.4.3 Contrast (Minimum)", "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html"]
@@ -122,6 +125,9 @@ const contrastRules: { test: RegExp; label: string; applies: string; fg: string;
   { test: /text-muted-foreground/, label: "Secondary text", applies: "Hints, meta, captions", fg: "muted-foreground", bg: ["background", "card"], need: 4.5, wcag: [SC_TEXT] },
   { test: /bg-primary\b/, label: "Primary fill", applies: "Text on the primary action", fg: "primary-foreground", bg: ["primary"], need: 4.5, wcag: [SC_TEXT] },
   { test: /text-danger\b/, label: "Danger text", applies: "Errors, worse-than-before figures", fg: "danger", bg: ["background", "card"], need: 4.5, wcag: [SC_TEXT] },
+  { test: /text-warning\b/, label: "Warning text", applies: "Needs-attention words and shapes", fg: "warning", bg: ["background", "card"], need: 4.5, wcag: [SC_TEXT] },
+  // Tracks are quiet on purpose (1.5:1, the Colour foundation); the bar on them is what has to read.
+  { test: /bg-track\b/, label: "Track", applies: "The empty part of a bar, ring or slider", fg: "track", bg: ["background", "card"], need: null, wcag: [SC_NONTEXT] },
   { test: /(border|ring)-input\b/, label: "Control edge", applies: "The outline that shows where to type or press", fg: "input", bg: ["background", "card"], need: 3, wcag: [SC_NONTEXT] },
   // The theme draws every :focus-visible outline (2 px, --ring), so this row is added for anything that takes focus.
   { test: /$^/, label: "Keyboard focus ring", applies: "Focus visible, on every control in it", fg: "ring", bg: ["background", "card"], need: 3, wcag: [SC_NONTEXT] },
@@ -135,6 +141,8 @@ function worst(fg: string, bgs: string[], mode: Mode) {
 
 export type A11y = {
   roles: string[]
+  /** Hidden from screen readers: it repeats a word that is written beside it. */
+  hidden: boolean
   patterns: { title: string; href: string }[]
   tabStops: number
   live: boolean
@@ -157,6 +165,9 @@ export function a11yOf(name: string): A11y | null {
     ...primitivesIn(all).flatMap((p) => primitiveRoles[p] ?? []),
   ])
   const ownPrimitives = primitivesIn(own)
+  // A mark hidden from screen readers cannot take focus: Tab stops measured around it (a table in its example) are the
+  // example's, not its own.
+  const tabStops = decorative.has(name) ? 0 : m.tabStops
   // Roles of a primitive that only shows when opened (a dialog, a menu) are part of it even if the examples were closed.
   const roles = [...new Set([...m.roles.filter((r) => possible.has(r)), ...ownPrimitives.flatMap((p) => primitiveRoles[p] ?? []).filter((r) => r !== "button")])].sort()
 
@@ -168,7 +179,7 @@ export function a11yOf(name: string): A11y | null {
   if (patterns.size > 1) for (const g of ["Button", "Link", "Landmarks"]) patterns.delete(g)
 
   const contrastRows: ContrastRow[] = contrastRules
-    .filter((r) => r.test.test(own) || (r.label === "Keyboard focus ring" && (m.tabStops > 0 || !!item.keyboard?.length)))
+    .filter((r) => r.test.test(own) || (r.label === "Keyboard focus ring" && (tabStops > 0 || !!item.keyboard?.length)))
     .map((r) => {
       const light = worst(r.fg, r.bg, "light")
       const dark = worst(r.fg, r.bg, "dark")
@@ -183,6 +194,22 @@ export function a11yOf(name: string): A11y | null {
         wcag: r.wcag,
       }
     })
+
+  // A bar on its track (meter, progress): each fill the component draws, against the track, the worst of them shown.
+  const fills = /bg-track\b/.test(own) ? [...new Set([...own.matchAll(/\bbg-(muted-foreground|foreground|warning|danger|info)\b/g)].map((x) => x[1]!))] : []
+  if (fills.length) {
+    const light = Math.min(...fills.map((f) => contrast(f, "track", "light") ?? NaN))
+    const dark = Math.min(...fills.map((f) => contrast(f, "track", "dark") ?? NaN))
+    contrastRows.push({
+      label: "Bar on its track",
+      applies: `The filled part (${fills.join(", ")}) against the track`,
+      need: "3:1",
+      light,
+      dark,
+      pass: Math.min(light, dark) >= 3,
+      wcag: [SC_NONTEXT],
+    })
+  }
 
   // Status pairs: a tone's text on its own tint ("bg-warning-subtle text-warning"), the way badges, alerts and chips use them.
   for (const tone of [...new Set([...own.matchAll(/bg-(\w+)-subtle\b[^"`]*?\btext-\1\b/g)].map((x) => x[1]))]) {
@@ -201,8 +228,9 @@ export function a11yOf(name: string): A11y | null {
 
   return {
     roles,
+    hidden: decorative.has(name),
     patterns: [...patterns].map(([title, href]) => ({ title, href })),
-    tabStops: m.tabStops,
+    tabStops,
     live: m.live,
     keyboard: item.keyboard,
     contrast: contrastRows,

@@ -853,11 +853,12 @@
       "region",
       "row",
       "rowgroup",
+      "search",
       "searchbox",
       "separator",
       "table"
     ],
-    "tabStops": 20,
+    "tabStops": 25,
     "live": true
   },
   "log-viewer": {
@@ -972,7 +973,7 @@
       "list",
       "listitem"
     ],
-    "tabStops": 3,
+    "tabStops": 4,
     "live": true
   },
   "marker": {

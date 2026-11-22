@@ -15,6 +15,7 @@ import { getItem as findItem } from "@/site/catalog"
 import { BlockSection } from "@/site/block-section"
 import { patternsOf } from "@/site/block-types"
 import { blocksOfType } from "@/site/blocks"
+import { apiOf } from "@/site/source-api"
 
 /** `name` becomes a link to that component's page; other backticked words stay code. */
 function Linked({ text }: { text: string }) {
@@ -74,14 +75,11 @@ export default async function ComponentPage({ params }: Props) {
   const what = overview && !repeats(overview.what, item.description ?? "")
   const install = `npx shadcn add @syncrobotic/${item.name}`
   const installBlock = <CodeBlock code={install} lang="bash" title="Terminal" />
-  const sourceFiles = await Promise.all(
-    item.files.map(async (f) => ({
-      name: f.path.split("/").pop()!,
-      code: <CodeBlock code={readSource(f.path)} lang={f.path.endsWith(".ts") ? "ts" : "tsx"} title={f.path} />,
-    })),
-  )
-  // Hooks (and the tray) have no examples: their source is the page, so it stays inline.
-  const inlineSource = !item.examples
+  // A library with no examples (ros) shows what it exports here; its source, a thousand lines, is in the Source sheet.
+  const api = item.examples ? [] : item.files.flatMap((f) => apiOf(readSource(f.path)))
+  const functions = api.filter((e) => e.kind === "function" || e.kind === "const")
+  const classes = api.filter((e) => e.kind === "class")
+  const types = api.filter((e) => e.kind === "type")
   // The first example opens the page, under the title: what it looks like comes before how to install it.
   const example = (n: string) => (
     <ExampleCard
@@ -220,14 +218,44 @@ export default async function ComponentPage({ params }: Props) {
         </>
       )}
 
-      {inlineSource && (
+      {api.length > 0 && (
         <>
-          <H2 id="source">Source</H2>
-          <div className="flex flex-col gap-4">
-            {sourceFiles.map((f) => (
-              <React.Fragment key={f.name}>{f.code}</React.Fragment>
+          <H2 id="api">API</H2>
+          <p className="max-w-2xl pb-4 text-sm text-pretty text-muted-foreground">
+            What the file exports. The source is in the Source sheet above
+            {item.name === "ros" && (
+              <>
+                ; how it fits together, with the safety notes, is on{" "}
+                <a href="/docs/ros" className="text-foreground underline underline-offset-4">
+                  Connect to ROS
+                </a>
+              </>
+            )}
+            .
+          </p>
+          <dl className="flex flex-col divide-y divide-border rounded-md bg-card ring-1 ring-border">
+            {[...functions, ...classes].map((e) => (
+              <div key={e.name} className="flex flex-col gap-1 p-4">
+                <dt className="font-mono text-xs break-words">
+                  <span className="font-medium text-foreground">{e.kind === "class" ? `class ${e.name}` : e.name}</span>
+                  {e.signature && <span className="text-muted-foreground">{e.signature.slice(e.name.length)}</span>}
+                </dt>
+                {e.summary && <dd className="text-sm text-muted-foreground">{e.summary}</dd>}
+              </div>
             ))}
-          </div>
+          </dl>
+          {types.length > 0 && (
+            <>
+              <h3 className="pt-6 pb-2 text-sm font-bold">Types</h3>
+              <p className="flex flex-wrap gap-2">
+                {types.map((t) => (
+                  <code key={t.name} title={t.summary} className="rounded-xs bg-muted px-1 font-mono text-xs">
+                    {t.name}
+                  </code>
+                ))}
+              </p>
+            </>
+          )}
         </>
       )}
 

@@ -1,4 +1,4 @@
-// @syncrobotic/metric-card v0.19.0 · update: npx shadcn add @syncrobotic/metric-card --overwrite
+// @syncrobotic/metric-card v0.28.0 · update: npx shadcn add @syncrobotic/metric-card --overwrite
 import * as React from "react"
 import { ArrowDownRight, ArrowUpRight, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -67,7 +67,7 @@ export function MetricCard({
   value?: React.ReactNode
   /** Written small after the value: "/ 14", "h", "%". */
   unit?: string
-  /** Change against the previous period: "+8%", "−2". A leading minus (- or −) turns the arrow down; no change ("0", "±0 %") has no arrow. */
+  /** Change against the previous period: "+8 %", "−2". A leading minus (- or −) turns the arrow down; no change ("0", "±0 %") has no arrow. */
   delta?: string
   /** Whether the change is good. Direction alone does not decide: a rise in events is bad. Only "bad" is coloured. */
   trend?: "good" | "bad" | "flat"
@@ -97,8 +97,11 @@ export function MetricCard({
       data-slot="metric-card"
       data-trend={delta && !loading && !missing ? trend : undefined}
       aria-busy={loading || undefined}
+      // In a MetricGrid each card takes two of the grid's rows (subgrid): its head (label, change, value) and its caption.
+      // The heads of a row share one height and each value sits at the bottom of its head, so a label on two lines or a
+      // change on a line of its own moves every value in the row down together: the values stay on one line.
       className={cn(
-        "gap-3",
+        "gap-3 [[data-slot=metric-grid]>&]:row-span-2 [[data-slot=metric-grid]>&]:grid [[data-slot=metric-grid]>&]:grid-cols-1 [[data-slot=metric-grid]>&]:grid-rows-subgrid",
         href && "press relative hover:ring-muted-foreground has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-ring",
         className,
       )}
@@ -107,7 +110,7 @@ export function MetricCard({
       {/* Label, value, then the change in the DOM, so a screen reader hears "Events, 24, +6, worse". The change is drawn at
           the top right (order-last puts the value row under both). On a phone it sits under the label in every card, so the
           values of a row line up; a label too long to share its line pushes the change under it (flex-wrap). */}
-      <div className="flex flex-wrap items-center justify-between gap-x-2 max-sm:flex-col max-sm:items-start">
+      <div className="flex h-full flex-wrap content-between items-center justify-between gap-x-2 max-sm:flex-col max-sm:flex-nowrap max-sm:items-start">
         <span className="text-sm text-muted-foreground">
           {href ? (
             // focus-ring: the whole card draws the ring (has-[a:focus-visible] on the card), since the link covers it.

@@ -52,6 +52,19 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - **`scrollspy` 0.28.0:** on a page or panel with nothing to scroll, the first section is current at load instead of the last.
 - **`pagination` 0.28.0:** `locale` formats the numbers with a thousands separator ("1,201–1,220 of 1,240").
 - Scrollspy examples hide the rail below `sm` (use pills on phones). Error copy in the feedback, banner and toast examples says "Could not" and "Try again", as the components' own defaults do (alarm, empty state).
+- **`meter` 0.28.0:** a higher-is-worse level (temperature, storage) past `low` is read as "high", not "low"; a unit with a leading space no longer doubles it ("48 °C"); new `showMax` writes the total ("412 of 512 GB"). The storage example warns at 90 % instead of always reading critical.
+- **`trace` 0.28.0:** a custom `icon` replaces only the done check; a running step keeps its spinner and a warning or failure its mark. The expandable example opens the failed step, not the done one.
+- **`data-grid` 0.28.0:** columns resize without dragging: each edge is a focusable separator (← → 16 px, Shift 64 px, Home, Enter resets) with a 24 px hit area (44 px on touch), and the column menu has Wider, Narrower and Reset width. Pinned columns show their edge and the scroll fade starts after them; pinning holds from 448 px wide, so a phone never fills with pinned columns. A selected row is marked by the ink bar on its first cell (pinned cells keep the selected fill), and a row that cannot be selected is a grey box that says why (`selectColumn({ reason })`). The column header's JSDoc says a click opens the menu.
+- **`description-list` 0.28.0:** `variant="bare"`, so the data grid's expanded row no longer nests a card.
+- **`metric-card` 0.28.0:** values in a MetricGrid row line up even when one label wraps or one card has no change.
+- **`avatar` 0.28.0:** square avatars in a group sit side by side, so their initials are no longer cut.
+- **`marker` and `timeline` 0.28.0:** MarkerRow and TimelineItem take `status`, and the examples no longer use the deprecated `tone="info"` / `"success"`; Marker's lines show even where its parent shrinks to fit.
+- **`icon-tile` 0.28.0:** `raised` has no overlay shadow (surfaces carry none).
+- **`kbd` 0.28.0:** `useModKey()` for ⌘ or Ctrl; the examples follow the platform, and "Hold" in a shortcut list is a word, not a key.
+- **`status-glyph` 0.28.0:** docs say it is hidden from screen readers and offline is grey; "busy" is its one word for active; its Accessibility tab no longer lists the example table's Tab stop, and shows warning text contrast.
+- **`sheet-robot-detail` 0.28.0:** its timeline uses `status`.
+- Examples: a battery warns below 15 % (badge, table, description list, timeline, marker now show 12 %); the metric-card row has no battery level (a level is a Meter); the use-long-press fill shows on the hover colour; the use-ros console says Reconnecting, attempt N with a steady Retry now through the backoff, and shows the map's robot offline at its last known place, without its old scan, while the link is down; the data grid's toolbar uses SearchField, full width on a phone; the graph examples start on the list on a phone and the top-to-bottom one is no longer clipped; numbers and spelling follow the docs ("1,284 km", "+8 %", "Licence").
+- Docs: the ros page lists its API (functions with their first line, types) with the source in the Source sheet, instead of 1,150 lines inline. Accessibility tabs add warning text, track and bar-on-track contrast rows; Properties tabs say which props are deprecated. Code listings draw keywords in the brand indigo instead of red. Usage rules write identifiers as code.
 
 ## 0.27.0 · 2026-11-21
 

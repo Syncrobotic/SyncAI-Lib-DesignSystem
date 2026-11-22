@@ -102,7 +102,7 @@ const entries: Record<string, Entry> = {
     examples: { file: "graph", prefix: "Graph" },
     rules: [
       "For a node with several inputs: lineage, a training run's inputs and outputs, a mission's parallel steps. When every node has one parent, use a Tree.",
-      "Offer GraphList beside it (a Graph / List switch), as a chart offers its table: the same nodes as text, inputs before what they feed. On a phone the list reads without scrolling sideways.",
+      "Offer GraphList beside it (a Graph / List switch), as a chart offers its table: the same nodes as text, inputs before what they feed. On a phone the list reads without scrolling sideways, so start there on the list.",
       "Up to about 60 nodes. A bigger graph needs a dedicated layout library and panning; show a part of it (one node's lineage) instead.",
       "Edges are neutral; the selected node's path is drawn in the ink colour and the rest steps back. No colours per edge or per kind of node.",
       "Status is a shape and a word; only warning and danger are coloured. Steps that did not run are grey and say so (\"Not run\").",
@@ -115,9 +115,10 @@ const entries: Record<string, Entry> = {
     examples: { file: "trace", prefix: "Trace" },
     rules: [
       "Done steps are a neutral check; only warnings and failures are coloured.",
+      "An `icon` for the kind of step replaces the done check only: running, warning, failed, waiting and skipped steps keep their mark.",
       "A failed step says why in its description; the raw error goes in a TraceCode inside it.",
       "Open the step that needs attention by default, nothing else.",
-      "total plus start and duration draw the waterfall; leave them out for a plain list.",
+      "`total` plus each step's `start` and `duration` draw the waterfall; leave them out for a plain list.",
     ],
   },
   marker: {
@@ -182,11 +183,15 @@ const entries: Record<string, Entry> = {
     group: "Data display",
     examples: { file: "data-grid", prefix: "DataGrid" },
     rules: [
-      "Build the table with useTable, with dataGridFeatures in its features; DataGrid draws it.",
+      "Build the table with `useTable`, with `dataGridFeatures` in its features; `DataGrid` draws it.",
       "Keep data and columns stable (module scope or useMemo). A new array each render loops once a row expands.",
-      "Numbers right-aligned (meta.align) and tabular.",
-      "Status cells use InlineStatus, never a coloured badge.",
-      "virtual needs a maxHeight.",
+      "Numbers right-aligned (`meta.align`) and tabular.",
+      "Status cells use `InlineStatus`, never a coloured badge.",
+      "A `virtual` grid needs a `maxHeight`.",
+      "A resizable column is resized by dragging its edge, by the arrow keys on the edge, or from its menu (Wider, Narrower, Reset width), so touch and keyboard need no drag.",
+      "Pin one column, the one that names the row. Pinning holds from 448 px wide; on a phone every column scrolls.",
+      "A row that cannot be selected says why: selectColumn's `reason`, and a line beside the grid.",
+      "An expanded row is already a surface: a DescriptionList inside it is `variant=\"bare\"`, never a card in the row.",
     ],
   },
   "log-viewer": {
@@ -313,9 +318,9 @@ const entries: Record<string, Entry> = {
     group: "Data display",
     examples: { file: "kbd", prefix: "Kbd" },
     rules: [
-      "One key per Kbd; a chord is a KbdGroup without plus signs.",
-      "Use the platform's symbols: ⌘ on Mac, Ctrl elsewhere.",
-      "pressed shows the key going down (it sinks and its edge darkens) while its shortcut runs; useHotkeys returns which key that is.",
+      "One key per Kbd; a chord is a KbdGroup without plus signs. How it is pressed (Hold, Double-press) is a word beside the key, not a Kbd.",
+      "Use the platform's symbols: ⌘ on Mac, Ctrl elsewhere. `useModKey()` gives the right one.",
+      "`pressed` shows the key going down (it sinks and its edge darkens) while its shortcut runs; `useHotkeys` returns which key that is.",
     ],
   },
   "code-block": {
@@ -323,7 +328,7 @@ const entries: Record<string, Entry> = {
     examples: { file: "code-block", prefix: "CodeBlock" },
     rules: [
       "Copy copies `code` exactly, whatever the block shows: highlighted children, wrapped lines or a hidden secret.",
-      "wrap=\"words\" for shell commands, so a phone never cuts a package name in two; wrap=\"none\" for source, which scrolls sideways with a fade on the side that hides text.",
+      "`wrap=\"words\"` for shell commands, so a phone never cuts a package name in two; `wrap=\"none\"` for source, which scrolls sideways with a fade on the side that hides text.",
       "A one-time secret (an API key) is `secret`: dots until Show is pressed. Never put the value in the title or a label; say beside it that it is shown once.",
       "No highlighter inside: pass shiki's output (or any `<pre>`) as children. Line numbers only for source people discuss by line.",
     ],
@@ -558,8 +563,9 @@ const entries: Record<string, Entry> = {
     group: "Data display",
     examples: { file: "display", prefix: "Badge" },
     rules: [
-      "Counts and short states. In list rows prefer Status eyebrow's InlineStatus.",
-      "Test and audit results: Passed is the neutral badge with CircleCheck; Failed is tone=\"outline\" with text-danger ring-danger and CircleAlert; Not enough samples is tone=\"outline\" with text-muted-foreground and CircleDashed. Never a green pass.",
+      "Short states and labels. In list rows prefer `status-eyebrow`'s `InlineStatus`; a count is a `CountBadge`.",
+      "Test and audit results are a `ResultBadge`: `result=\"passed\"` (grey with a check), `\"failed\"` (danger outline) or `\"insufficient\"` (grey, dashed circle). Never a green pass.",
+      "`tone=\"success\"` renders grey, as `neutral` does: a state is never green. Use `neutral`.",
     ],
   },
   card: { group: "Layout", examples: { file: "display", prefix: "Card" }, rules: ["Never nest cards. Group rows inside one card with separators."] },
@@ -604,6 +610,7 @@ const entries: Record<string, Entry> = {
       "For a level in a known range (battery, storage). For work under way, use Progress.",
       "Neutral while normal; warning past `low`, danger past `critical`; the value is always written. A battery takes only `low` (15 %): a low battery needs attention, it is not a failure, so it turns warning and never danger. Danger is for a level that breaks something, like full storage.",
       "`inline` in table cells; the label is still read by screen readers.",
+      "With `higherIsWorse` (temperature, storage) the warning is read as high, not low. `showMax` writes the total for an amount whose total matters: 412 of 512 GB.",
     ],
   },
   "metric-card": {
@@ -624,7 +631,7 @@ const entries: Record<string, Entry> = {
   "description-list": {
     group: "Data display",
     examples: { file: "display", prefix: "DescriptionList" },
-    rules: ["Label above value, value in medium weight with tabular numbers.", "`tiles` only for the few numbers that matter most; everything else plain."],
+    rules: ["Label above value, value in medium weight with tabular numbers.", "`tiles` only for the few numbers that matter most; everything else plain.", "`bare` inside something that is already a surface (a card, an expanded table row), so cards never nest."],
   },
   "empty-state": {
     group: "Feedback",
@@ -647,7 +654,8 @@ const entries: Record<string, Entry> = {
     group: "Data display",
     examples: { file: "display", prefix: "StatusGlyph" },
     rules: [
-      "Status is a shape and a word; colour only when it is abnormal. The shape reads without colour vision: filled circle active, hollow circle normal, triangle attention, square stopped, slashed circle offline.",
+      "Status is a shape and a word; colour only when it is abnormal. The shape reads without colour vision: filled circle active (busy), hollow circle normal, triangle attention, square stopped, slashed circle offline (grey).",
+      "The glyph is hidden from screen readers: write the status in words beside it, or use `status-eyebrow`, which does.",
       "Pass `status`: active, normal, warning, danger or offline. The old `tone` (info, success, warning, danger, neutral) still works until 1.0 and warns once in development.",
     ],
   },
@@ -1169,9 +1177,12 @@ const keyboard: Record<string, [string, string][]> = {
     ["Enter", "Next, or send on the last page"],
   ],
   "data-grid": [
-    ["Tab", "Focus the grid region, then the headers and cells' controls"],
+    ["Tab", "Focus the grid region, then each header's menu and column edge, then the cells' controls"],
     ["Arrow keys", "Scroll the region"],
     ["Enter / Space", "Open a column menu, toggle a checkbox"],
+    ["← / → on a column edge", "Narrow or widen the column by 16 px (Shift: 64 px)"],
+    ["Home on a column edge", "The column's narrowest width"],
+    ["Enter on a column edge", "Back to the column's first width"],
   ],
   sortable: [
     ["Space", "Lift or drop the focused item"],

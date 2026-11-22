@@ -5,14 +5,15 @@ const meta: Meta = { title: "Display/Metric card" }
 export default meta
 type S = StoryObj
 
-/** The row under a dashboard's page header: four numbers, two across on a phone. Only the rise in events is coloured. */
+/** The row under a dashboard's page header: four numbers, two across on a phone. Only the rise in events is coloured; the values stay on one line. */
 export const MetricCardRow: S = {
   render: () => (
     <MetricGrid>
       <MetricCard label="Robots online" value="12" unit="/ 14" delta="+1" trend="good" series={[9, 10, 10, 11, 11, 12, 12]} caption="2 docked for charging" />
-      <MetricCard label="Patrol hours" value="286" unit="h" delta="+8%" trend="good" series={[210, 230, 228, 250, 262, 270, 286]} caption="Last 7 days" />
+      <MetricCard label="Patrol hours" value="286" unit="h" delta="+8 %" trend="good" series={[210, 230, 228, 250, 262, 270, 286]} caption="Last 7 days" />
       <MetricCard label="Events" value="24" delta="+6" trend="bad" series={[12, 15, 14, 18, 16, 18, 24]} caption="3 need review" />
-      <MetricCard label="Avg. battery" value="71" unit="%" delta="−2%" trend="flat" series={[76, 75, 74, 72, 73, 72, 71]} caption="Lowest: 9C44 at 18%" />
+      {/* A count or a total, never a level: a battery or storage level is a Meter. */}
+      <MetricCard label="Distance driven" value="1,284" unit="km" delta="−2 %" trend="flat" series={[1340, 1322, 1310, 1296, 1301, 1290, 1284]} caption="Last 7 days" />
     </MetricGrid>
   ),
 }
@@ -23,7 +24,7 @@ export const MetricCardTrends: S = {
     <MetricGrid className="xl:grid-cols-3">
       <MetricCard label="Unplanned stops" value="3" delta="−4" trend="good" caption="Against last week" />
       <MetricCard label="Events" value="24" delta="+6" trend="bad" caption="Against last week" />
-      <MetricCard label="Missions done" value="968" delta="+0.2%" trend="flat" caption="Against last week" />
+      <MetricCard label="Missions done" value="968" delta="+0.2 %" trend="flat" caption="Against last week" />
     </MetricGrid>
   ),
 }
@@ -45,7 +46,7 @@ export const MetricCardLoading: S = {
       <MetricCard label="Robots online" loading />
       <MetricCard label="Patrol hours" loading />
       <MetricCard label="Events" loading />
-      <MetricCard label="Avg. battery" loading />
+      <MetricCard label="Distance driven" loading />
     </MetricGrid>
   ),
 }
@@ -55,7 +56,7 @@ export const MetricCardUnavailable: S = {
   render: () => (
     <MetricGrid>
       <MetricCard label="Robots online" value="12" unit="/ 14" delta="+1" trend="good" caption="2 docked for charging" />
-      <MetricCard label="Avg. battery" unit="%" unavailable="Fleet telemetry paused since 14:02" />
+      <MetricCard label="Distance driven" unit="km" unavailable="Fleet telemetry paused since 14:02" />
     </MetricGrid>
   ),
 }
@@ -69,5 +70,3 @@ export const MetricCardWithoutSparkline: S = {
     </MetricGrid>
   ),
 }
-
-/** The same row in Traditional Chinese, with the words read aloud translated too. */

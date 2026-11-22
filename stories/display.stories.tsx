@@ -26,7 +26,6 @@ export const BadgeTones: S = {
   render: () => (
     <div className="flex flex-wrap gap-2">
       <Badge tone="info">Updating</Badge>
-      <Badge tone="success">Passed</Badge>
       <Badge tone="warning">Low battery</Badge>
       <Badge tone="danger">3 events</Badge>
       <Badge>Offline</Badge>
@@ -74,7 +73,7 @@ export const AlertTones: S = {
       </Alert>
       <Alert tone="warning">
         <TriangleAlert aria-hidden="true" />
-        <AlertTitle>License expires in 5 days</AlertTitle>
+        <AlertTitle>Licence expires in 5 days</AlertTitle>
         <AlertDescription>Patrols stop when it expires.</AlertDescription>
       </Alert>
       <Alert tone="danger">
@@ -146,7 +145,7 @@ export const TableDefault: S = {
         {[
           { id: "7F3A", tone: "active" as const, s: "Patrolling", b: 72 },
           { id: "2B10", tone: "normal" as const, s: "Docked", b: 100 },
-          { id: "9C44", tone: "warning" as const, s: "Low battery", b: 18 },
+          { id: "9C44", tone: "warning" as const, s: "Low battery", b: 12 },
         ].map((r) => (
           <TableRow key={r.id}>
             <TableCell className="font-medium">{r.id}</TableCell>
@@ -169,7 +168,7 @@ export const BadgeWithStatusAndCount: S = {
         <StatusGlyph status="active" /> Patrolling
       </Badge>
       <Badge tone="warning">
-        <Battery aria-hidden="true" /> 18%
+        <Battery aria-hidden="true" /> 12 %
       </Badge>
       <span className="inline-flex items-center gap-2 text-sm">
         Events <CountBadge count={12} />
@@ -680,15 +679,16 @@ export const SpinnerSizes: S = {
 export const MeterHigherIsWorse: S = {
   render: () => (
     <div className="flex flex-col gap-4">
-      <Meter label="Motor temperature" value={48} max={90} low={60} critical={75} higherIsWorse unit=" °C" />
-      <Meter label="Motor temperature" value={68} max={90} low={60} critical={75} higherIsWorse unit=" °C" />
-      <Meter label="Motor temperature" value={81} max={90} low={60} critical={75} higherIsWorse unit=" °C" />
+      <Meter label="Motor temperature" value={48} max={90} low={60} critical={75} higherIsWorse unit="°C" />
+      <Meter label="Motor temperature" value={68} max={90} low={60} critical={75} higherIsWorse unit="°C" />
+      <Meter label="Motor temperature" value={81} max={90} low={60} critical={75} higherIsWorse unit="°C" />
     </div>
   ),
 }
 
 export const MeterStorage: S = {
-  render: () => <Meter label="Recording storage" value={412} max={512} low={0} critical={0} higherIsWorse unit=" GB" />,
+  // Storage warns when 90 % full and is critical at 95 %; showMax writes the total beside what is used.
+  render: () => <Meter label="Recording storage" value={412} max={512} low={461} critical={486} higherIsWorse unit="GB" showMax />,
 }
 
 export const MeterGrid: S = {
@@ -723,8 +723,8 @@ export const DescriptionListWithStatus: S = {
       items={[
         { label: "State", value: <InlineStatus status="warning">Needs attention</InlineStatus> },
         { label: "Licence", value: <Badge tone="outline">Pro</Badge> },
-        { label: "Battery", value: "18 %" },
-        { label: "Odometer", value: "1 284 km" },
+        { label: "Battery", value: "12 %" },
+        { label: "Odometer", value: "1,284 km" },
       ]}
     />
   ),
@@ -735,7 +735,7 @@ export const StatusGlyphTones: S = {
     <ul className="flex flex-col gap-2 text-sm">
       {(
         [
-          ["active", "In progress"],
+          ["active", "Busy"],
           ["normal", "Normal"],
           ["warning", "Needs attention"],
           ["danger", "Stopped"],

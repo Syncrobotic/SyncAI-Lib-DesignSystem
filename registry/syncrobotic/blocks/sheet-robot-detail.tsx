@@ -70,7 +70,7 @@ export function SheetRobotDetail({
               Last events
             </h3>
             <Timeline size="sm">
-              <TimelineItem time="21:46" dateTime="2026-11-17T21:46" tone="warning" title="Stopped: door C3 closed" />
+              <TimelineItem time="21:46" dateTime="2026-11-17T21:46" status="warning" title="Stopped: door C3 closed" />
               <TimelineItem time="21:41" dateTime="2026-11-17T21:41" title="Checkpoint 2 passed" />
               <TimelineItem time="21:33" dateTime="2026-11-17T21:33" title="Left Dock 1" />
             </Timeline>

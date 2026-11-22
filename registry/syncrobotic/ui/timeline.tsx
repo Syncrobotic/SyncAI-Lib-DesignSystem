@@ -1,8 +1,8 @@
-// @syncrobotic/timeline v0.17.4 · update: npx shadcn add @syncrobotic/timeline --overwrite
+// @syncrobotic/timeline v0.28.0 · update: npx shadcn add @syncrobotic/timeline --overwrite
 "use client"
 
 import * as React from "react"
-import { StatusGlyph, type Tone, toStatus } from "@/registry/syncrobotic/shell/status-glyph"
+import { type Status, StatusGlyph, type Tone, toStatus, warnTone } from "@/registry/syncrobotic/shell/status-glyph"
 import { cn } from "@/lib/utils"
 
 /**
@@ -87,6 +87,7 @@ function useMoreToTheRight(ref: React.RefObject<HTMLElement | null>, watch: bool
 export function TimelineItem({
   time,
   dateTime,
+  status: given,
   tone,
   icon,
   title,
@@ -98,13 +99,17 @@ export function TimelineItem({
   time?: React.ReactNode
   /** Machine-readable time for the <time> element. */
   dateTime?: string
-  /** A status, drawn as its glyph. Leave empty for an ordinary event. */
+  /** A status, drawn as its glyph: only warning and danger are coloured. Leave empty for an ordinary event. */
+  status?: Status
+  /** @deprecated Use `status` (info → active, success → normal, neutral → offline). */
   tone?: Tone
   /** An icon instead of a dot, e.g. for kinds of event. */
   icon?: React.ReactNode
   title: React.ReactNode
 }) {
   const { orientation, align, density } = React.useContext(TimelineCtx)
+  warnTone("TimelineItem", tone)
+  const status = given ?? (tone ? toStatus(tone) : undefined)
   const marker = (
     <span
       aria-hidden="true"
@@ -113,7 +118,7 @@ export function TimelineItem({
         icon ? "size-8 text-muted-foreground ring-1 ring-border [&_svg]:size-4" : "size-4",
       )}
     >
-      {icon ?? (tone ? <StatusGlyph status={toStatus(tone)} /> : <span className="size-2 rounded-full bg-muted-foreground" />)}
+      {icon ?? (status ? <StatusGlyph status={status} /> : <span className="size-2 rounded-full bg-muted-foreground" />)}
     </span>
   )
   const timeEl = time ? (
@@ -123,10 +128,10 @@ export function TimelineItem({
   ) : null
   const body = (
     <div className="flex min-w-0 flex-col gap-1">
-      <span className={cn("text-sm font-medium", tone === "warning" && "text-warning", tone === "danger" && "text-danger")}>
+      <span className={cn("text-sm font-medium", status === "warning" && "text-warning", status === "danger" && "text-danger")}>
         {title}
-        {/* The glyph is hidden from screen readers, so the tone is said in words, as Marker does. */}
-        {(tone === "danger" || tone === "warning") && <span className="sr-only">, {tone === "danger" ? "failed" : "warning"}</span>}
+        {/* The glyph is hidden from screen readers, so the status is said in words, as Marker does. */}
+        {(status === "danger" || status === "warning") && <span className="sr-only">, {status === "danger" ? "failed" : "warning"}</span>}
       </span>
       {children && <div className="text-sm text-muted-foreground">{children}</div>}
     </div>

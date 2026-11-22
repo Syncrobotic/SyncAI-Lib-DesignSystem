@@ -7,9 +7,19 @@ const meta: Meta = { title: "Display/Graph" }
 export default meta
 type S = StoryObj
 
-/** A graph with its text view, as a chart has its table: a Graph / List switch above it. */
+// Under 640 px: a phone, where the list reads without scrolling sideways. The server and the first render say no.
+const phoneQuery = "(max-width: 639px)"
+const subscribePhone = (notify: () => void) => {
+  const mq = window.matchMedia(phoneQuery)
+  mq.addEventListener("change", notify)
+  return () => mq.removeEventListener("change", notify)
+}
+
+/** A graph with its text view, as a chart has its table: a Graph / List switch above it. A phone starts on the list. */
 function WithList({ title, nodes, edges, label, defaultSelectedId }: { title: string; nodes: GraphNode[]; edges: GraphEdge[]; label: string; defaultSelectedId?: string }) {
-  const [view, setView] = React.useState("graph")
+  const phone = React.useSyncExternalStore(subscribePhone, () => window.matchMedia(phoneQuery).matches, () => false)
+  const [picked, setView] = React.useState<string | null>(null)
+  const view = picked ?? (phone ? "list" : "graph")
   return (
     <div className="flex w-full flex-col gap-3">
       <div className="flex items-center justify-between gap-4">
@@ -103,7 +113,7 @@ const missionEdges: GraphEdge[] = [
 
 export const GraphTopToBottom: S = {
   render: () => (
-    <div className="w-full max-w-md">
+    <div className="w-full max-w-lg">
       <Graph orientation="vertical" label="Steps of mission Stock count, Aisle 12" nodes={missionNodes} edges={missionEdges} />
     </div>
   ),

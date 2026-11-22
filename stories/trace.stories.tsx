@@ -34,13 +34,13 @@ export const TraceFailedStep: S = {
 export const TraceExpandable: S = {
   render: () => (
     <Trace>
-      <TraceItem status="done" title="Plan route" meta="planner" duration={1260} defaultOpen>
+      <TraceItem status="done" title="Plan route" meta="planner" duration={1260}>
         <TraceDetail label="Input">From dock 2 to door 3, avoiding zone C</TraceDetail>
         <TraceDetail label="Output">
           <TraceCode>{`{ "waypoints": 14, "length_m": 212.4, "eta_s": 168 }`}</TraceCode>
         </TraceDetail>
       </TraceItem>
-      <TraceItem status="error" title="Open door 3" meta="door-api" duration={5000} description="Timed out after 5 s.">
+      <TraceItem status="error" title="Open door 3" meta="door-api" duration={5000} description="Timed out after 5 s." defaultOpen>
         <TraceDetail label="Request">
           <TraceCode>POST /doors/3/open {`{ "badge": "robot-7F3A" }`}</TraceCode>
         </TraceDetail>

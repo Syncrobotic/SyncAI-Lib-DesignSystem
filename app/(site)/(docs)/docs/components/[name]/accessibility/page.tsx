@@ -36,7 +36,12 @@ export default async function AccessibilityPage({ params }: Props) {
       <p className="max-w-3xl pb-3 text-sm text-muted-foreground">
         What a screen reader is told each part is, measured in the examples on the Overview tab.
       </p>
-      {a.roles.length ? (
+      {a.hidden ? (
+        <p className="text-sm">
+          Hidden from screen readers (<code className="rounded-xs bg-muted px-1 font-mono text-sm">aria-hidden</code>): it repeats a word, so
+          write that word beside it. Status eyebrow does.
+        </p>
+      ) : a.roles.length ? (
         <ul aria-label="Roles" className="flex flex-wrap gap-2" data-wrap="free">
           {a.roles.map((r) => (
             <li key={r}>
