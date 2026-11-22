@@ -3,6 +3,7 @@ import Link from "next/link"
 import { Check, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Inline, Unbroken } from "./prose"
+import { DocJsonLd, type Crumb } from "./json-ld"
 
 // Building blocks for the design-language pages: specimens, do/don't pairs and token tables.
 
@@ -137,8 +138,21 @@ export function Swatch({ value, className }: { value: string; className?: string
   return <span className={cn("inline-block size-6 shrink-0 rounded-xs border border-edge align-middle", className)} style={{ background: value }} />
 }
 
-export function Pager({ prev, next }: { prev?: { href: string; title: string }; next?: { href: string; title: string } }) {
+export function Pager({
+  prev,
+  next,
+  trail,
+  description,
+}: {
+  prev?: { href: string; title: string }
+  next?: { href: string; title: string }
+  /** The page's place in the docs, for search engines (DocJsonLd). */
+  trail?: Crumb[]
+  description?: string
+}) {
   return (
+    <>
+    {trail && <DocJsonLd trail={trail} description={description} />}
     <nav aria-label="Pagination" className="mt-section-sm grid gap-4 border-t border-border pt-8 sm:grid-cols-2">
       {prev ? (
         <Link href={prev.href} className="press flex flex-col gap-1 rounded-md border border-border p-4 hover:border-muted-foreground">
@@ -155,5 +169,6 @@ export function Pager({ prev, next }: { prev?: { href: string; title: string }; 
         </Link>
       )}
     </nav>
+    </>
   )
 }

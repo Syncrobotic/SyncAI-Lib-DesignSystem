@@ -35,13 +35,18 @@ const start = [
 export function startNeighbours(href: string) {
   const i = start.findIndex((p) => p.href === href)
   const first = { href: `/docs/foundations/${foundations[0].slug}`, title: foundations[0].title }
-  return { prev: start[i - 1], next: start[i + 1] ?? first }
+  const trail = [{ name: "Docs", path: "/docs" }, ...(href === "/docs" ? [] : [{ name: start[i].title, path: href }])]
+  return { prev: start[i - 1], next: start[i + 1] ?? first, trail }
 }
 
 export function neighbours(slug: FoundationSlug) {
   const i = foundations.findIndex((f) => f.slug === slug)
   const link = (f?: (typeof foundations)[number]) => (f ? { href: `/docs/foundations/${f.slug}`, title: f.title } : undefined)
+  const f = foundations[i]
+  const path = `/docs/foundations/${f.slug}`
   return {
+    trail: [{ name: "Docs", path: "/docs" }, { name: f.title, path }],
+    description: f.lead,
     prev: i === 0 ? start[start.length - 1] : link(foundations[i - 1]),
     next: i === foundations.length - 1 ? { href: "/docs/components", title: "Components" } : link(foundations[i + 1]),
   }

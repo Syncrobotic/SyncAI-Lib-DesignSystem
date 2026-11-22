@@ -6,6 +6,7 @@ import { blockHref, blockTypes, getBlockType, typeHref } from "@/site/block-type
 import { BlockSection } from "@/site/block-section"
 import { Dot, H2, PageTitle, Rules } from "@/site/prose"
 import { AppearItem, Reveal } from "@/site/appear"
+import { DocJsonLd } from "@/site/json-ld"
 
 // One page per block type, like one page per component: every block of the type, each with its preview, code and install.
 // A block's own name still works as a URL (old links, the markdown twins) and leads to its place on the type page.
@@ -38,6 +39,13 @@ export default async function BlockTypePage({ params }: Props) {
 
   return (
     <article>
+      <DocJsonLd
+        trail={[
+          { name: "Blocks", path: "/blocks" },
+          { name: `${type.title} blocks`, path: `/blocks/${type.slug}` },
+        ]}
+        description={type.description}
+      />
       <PageTitle title={type.title} lead={type.description} />
 
       <section aria-labelledby="overview" className="grid gap-6 sm:grid-cols-2">
