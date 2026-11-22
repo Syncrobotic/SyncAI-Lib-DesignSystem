@@ -1,186 +1,114 @@
 "use client"
 
 import * as React from "react"
-import * as actions from "@/stories/actions.stories"
-import * as charts from "@/stories/charts.stories"
-import * as display from "@/stories/display.stories"
-import * as dock from "@/stories/dock.stories"
-import * as feedback from "@/stories/feedback.stories"
-import * as inputs from "@/stories/inputs.stories"
-import * as island from "@/stories/island.stories"
-import * as list from "@/stories/list.stories"
-import * as navigation from "@/stories/navigation.stories"
-import * as overlays from "@/stories/overlays.stories"
-import * as slide from "@/stories/slide-to-release.stories"
-import * as stop from "@/stories/stop-button.stories"
-import * as s_item from "@/stories/item.stories"
-import * as s_icon_tile from "@/stories/icon-tile.stories"
-import * as s_kbd from "@/stories/kbd.stories"
-import * as s_code_block from "@/stories/code-block.stories"
-import * as s_button_group from "@/stories/button-group.stories"
-import * as s_scroll_area from "@/stories/scroll-area.stories"
-import * as s_toggle_group from "@/stories/toggle-group.stories"
-import * as s_page_header from "@/stories/page-header.stories"
-import * as s_form from "@/stories/form.stories"
-import * as s_data_pieces from "@/stories/data-pieces.stories"
-import * as s_image_grid from "@/stories/image-grid.stories"
-import * as s_annotated_image from "@/stories/annotated-image.stories"
-import * as s_media_player from "@/stories/media-player.stories"
-import * as s_camera_feed from "@/stories/camera-feed.stories"
-import * as s_camera_wall from "@/stories/camera-wall.stories"
-import * as s_joint_state from "@/stories/joint-state.stories"
-import * as s_diagnostics from "@/stories/diagnostics.stories"
-import * as s_tree from "@/stories/tree.stories"
-import * as s_sidebar from "@/stories/sidebar.stories"
-import * as s_graph from "@/stories/graph.stories"
-import * as s_robot_map from "@/stories/robot-map.stories"
-import * as s_waypoint_editor from "@/stories/waypoint-editor.stories"
-import * as s_geo_map from "@/stories/geo-map.stories"
-import * as s_point_cloud from "@/stories/point-cloud.stories"
-import * as s_chip_group from "@/stories/chip-group.stories"
-import * as s_filter_form from "@/stories/filter-form.stories"
-import * as s_filters from "@/stories/filters.stories"
-import * as s_search_field from "@/stories/search-field.stories"
-import * as s_theme_toggle from "@/stories/theme-toggle.stories"
-import * as s_route_progress from "@/stories/route-progress.stories"
-import * as s_autocomplete from "@/stories/autocomplete.stories"
-import * as s_input_otp from "@/stories/input-otp.stories"
-import * as s_phone_input from "@/stories/phone-input.stories"
-import * as s_calendar from "@/stories/calendar.stories"
-import * as s_date_selector from "@/stories/date-selector.stories"
-import * as s_time_picker from "@/stories/time-picker.stories"
-import * as s_data_grid from "@/stories/data-grid.stories"
-import * as s_log_viewer from "@/stories/log-viewer.stories"
-import * as s_stepper from "@/stories/stepper.stories"
-import * as s_trace from "@/stories/trace.stories"
-import * as s_marker from "@/stories/marker.stories"
-import * as s_timeline from "@/stories/timeline.stories"
-import * as s_scrollspy from "@/stories/scrollspy.stories"
-import * as s_navigation_menu from "@/stories/navigation-menu.stories"
-import * as s_questionnaire from "@/stories/questionnaire.stories"
-import * as s_sortable from "@/stories/sortable.stories"
-import * as s_resizable from "@/stories/resizable.stories"
-import * as s_file_upload from "@/stories/file-upload.stories"
-import * as s_attachment from "@/stories/attachment.stories"
-import * as s_file_type from "@/stories/file-type.stories"
-import * as s_hooks from "@/stories/hooks.stories"
-import * as s_metric_card from "@/stories/metric-card.stories"
-import * as s_context_menu from "@/stories/context-menu.stories"
-import * as s_hover_card from "@/stories/hover-card.stories"
-import * as s_banner from "@/stories/banner.stories"
-import * as s_streaming_chart from "@/stories/streaming-chart.stories"
-import * as s_attitude from "@/stories/attitude.stories"
-import * as s_teleop_pad from "@/stories/teleop-pad.stories"
 import type { StoryFile } from "./catalog"
 
 type Meta = { component?: React.ComponentType<Record<string, unknown>>; args?: Record<string, unknown> }
 type Story = { args?: Record<string, unknown>; render?: (args: Record<string, unknown>) => React.ReactNode }
 type StoryModule = { default: Meta } & Record<string, unknown>
 
-// Story files loaded on demand, so their libraries reach only the page that shows them. robot-model draws with three.js,
-// which no other page should download; a static import here would put it in every component page's bundle.
-const lazyFiles = {
+// Each story file loads on demand, so a page downloads only the examples it shows (and their libraries: three.js,
+// recharts, the code highlighter). On the server the import resolves before the HTML is sent, so the examples are in it;
+// in the browser they hydrate once their file has arrived, and until then the server's HTML stays as it is.
+const files = {
   "robot-model": () => import("@/stories/robot-model.stories"),
-} satisfies Partial<Record<StoryFile, () => Promise<unknown>>>
-type LazyFile = keyof typeof lazyFiles
+  "stop-button": () => import("@/stories/stop-button.stories"),
+  "slide-to-release": () => import("@/stories/slide-to-release.stories"),
+  "teleop-pad": () => import("@/stories/teleop-pad.stories"),
+  dock: () => import("@/stories/dock.stories"),
+  island: () => import("@/stories/island.stories"),
+  list: () => import("@/stories/list.stories"),
+  actions: () => import("@/stories/actions.stories"),
+  inputs: () => import("@/stories/inputs.stories"),
+  display: () => import("@/stories/display.stories"),
+  feedback: () => import("@/stories/feedback.stories"),
+  navigation: () => import("@/stories/navigation.stories"),
+  overlays: () => import("@/stories/overlays.stories"),
+  charts: () => import("@/stories/charts.stories"),
+  "data-grid": () => import("@/stories/data-grid.stories"),
+  "log-viewer": () => import("@/stories/log-viewer.stories"),
+  stepper: () => import("@/stories/stepper.stories"),
+  trace: () => import("@/stories/trace.stories"),
+  marker: () => import("@/stories/marker.stories"),
+  timeline: () => import("@/stories/timeline.stories"),
+  scrollspy: () => import("@/stories/scrollspy.stories"),
+  "navigation-menu": () => import("@/stories/navigation-menu.stories"),
+  questionnaire: () => import("@/stories/questionnaire.stories"),
+  sortable: () => import("@/stories/sortable.stories"),
+  resizable: () => import("@/stories/resizable.stories"),
+  "file-upload": () => import("@/stories/file-upload.stories"),
+  attachment: () => import("@/stories/attachment.stories"),
+  "file-type": () => import("@/stories/file-type.stories"),
+  autocomplete: () => import("@/stories/autocomplete.stories"),
+  "input-otp": () => import("@/stories/input-otp.stories"),
+  "phone-input": () => import("@/stories/phone-input.stories"),
+  calendar: () => import("@/stories/calendar.stories"),
+  "date-selector": () => import("@/stories/date-selector.stories"),
+  "time-picker": () => import("@/stories/time-picker.stories"),
+  item: () => import("@/stories/item.stories"),
+  "icon-tile": () => import("@/stories/icon-tile.stories"),
+  kbd: () => import("@/stories/kbd.stories"),
+  "code-block": () => import("@/stories/code-block.stories"),
+  "button-group": () => import("@/stories/button-group.stories"),
+  "scroll-area": () => import("@/stories/scroll-area.stories"),
+  "toggle-group": () => import("@/stories/toggle-group.stories"),
+  "page-header": () => import("@/stories/page-header.stories"),
+  form: () => import("@/stories/form.stories"),
+  "data-pieces": () => import("@/stories/data-pieces.stories"),
+  "image-grid": () => import("@/stories/image-grid.stories"),
+  "annotated-image": () => import("@/stories/annotated-image.stories"),
+  "media-player": () => import("@/stories/media-player.stories"),
+  "camera-feed": () => import("@/stories/camera-feed.stories"),
+  "camera-wall": () => import("@/stories/camera-wall.stories"),
+  "joint-state": () => import("@/stories/joint-state.stories"),
+  diagnostics: () => import("@/stories/diagnostics.stories"),
+  tree: () => import("@/stories/tree.stories"),
+  sidebar: () => import("@/stories/sidebar.stories"),
+  graph: () => import("@/stories/graph.stories"),
+  "robot-map": () => import("@/stories/robot-map.stories"),
+  "waypoint-editor": () => import("@/stories/waypoint-editor.stories"),
+  "geo-map": () => import("@/stories/geo-map.stories"),
+  "point-cloud": () => import("@/stories/point-cloud.stories"),
+  "chip-group": () => import("@/stories/chip-group.stories"),
+  "filter-form": () => import("@/stories/filter-form.stories"),
+  filters: () => import("@/stories/filters.stories"),
+  "search-field": () => import("@/stories/search-field.stories"),
+  "theme-toggle": () => import("@/stories/theme-toggle.stories"),
+  "route-progress": () => import("@/stories/route-progress.stories"),
+  hooks: () => import("@/stories/hooks.stories"),
+  "metric-card": () => import("@/stories/metric-card.stories"),
+  "context-menu": () => import("@/stories/context-menu.stories"),
+  "hover-card": () => import("@/stories/hover-card.stories"),
+  banner: () => import("@/stories/banner.stories"),
+  "streaming-chart": () => import("@/stories/streaming-chart.stories"),
+  attitude: () => import("@/stories/attitude.stories"),
+} satisfies Record<StoryFile, () => Promise<unknown>>
 
-const files: Record<Exclude<StoryFile, LazyFile>, StoryModule> = {
-  "stop-button": stop as unknown as StoryModule,
-  "slide-to-release": slide as unknown as StoryModule,
-  "teleop-pad": s_teleop_pad as unknown as StoryModule,
-  dock: dock as unknown as StoryModule,
-  island: island as unknown as StoryModule,
-  list: list as unknown as StoryModule,
-  actions: actions as unknown as StoryModule,
-  inputs: inputs as unknown as StoryModule,
-  display: display as unknown as StoryModule,
-  feedback: feedback as unknown as StoryModule,
-  navigation: navigation as unknown as StoryModule,
-  overlays: overlays as unknown as StoryModule,
-  charts: charts as unknown as StoryModule,
-  "data-grid": s_data_grid as unknown as StoryModule,
-  "log-viewer": s_log_viewer as unknown as StoryModule,
-  stepper: s_stepper as unknown as StoryModule,
-  trace: s_trace as unknown as StoryModule,
-  marker: s_marker as unknown as StoryModule,
-  timeline: s_timeline as unknown as StoryModule,
-  scrollspy: s_scrollspy as unknown as StoryModule,
-  "navigation-menu": s_navigation_menu as unknown as StoryModule,
-  questionnaire: s_questionnaire as unknown as StoryModule,
-  sortable: s_sortable as unknown as StoryModule,
-  resizable: s_resizable as unknown as StoryModule,
-  "file-upload": s_file_upload as unknown as StoryModule,
-  attachment: s_attachment as unknown as StoryModule,
-  "file-type": s_file_type as unknown as StoryModule,
-  autocomplete: s_autocomplete as unknown as StoryModule,
-  "input-otp": s_input_otp as unknown as StoryModule,
-  "phone-input": s_phone_input as unknown as StoryModule,
-  calendar: s_calendar as unknown as StoryModule,
-  "date-selector": s_date_selector as unknown as StoryModule,
-  "time-picker": s_time_picker as unknown as StoryModule,
-  item: s_item as unknown as StoryModule,
-  "icon-tile": s_icon_tile as unknown as StoryModule,
-  kbd: s_kbd as unknown as StoryModule,
-  "code-block": s_code_block as unknown as StoryModule,
-  "button-group": s_button_group as unknown as StoryModule,
-  "scroll-area": s_scroll_area as unknown as StoryModule,
-  "toggle-group": s_toggle_group as unknown as StoryModule,
-  "page-header": s_page_header as unknown as StoryModule,
-  form: s_form as unknown as StoryModule,
-  "data-pieces": s_data_pieces as unknown as StoryModule,
-  "image-grid": s_image_grid as unknown as StoryModule,
-  "annotated-image": s_annotated_image as unknown as StoryModule,
-  "media-player": s_media_player as unknown as StoryModule,
-  "camera-feed": s_camera_feed as unknown as StoryModule,
-  "camera-wall": s_camera_wall as unknown as StoryModule,
-  "joint-state": s_joint_state as unknown as StoryModule,
-  diagnostics: s_diagnostics as unknown as StoryModule,
-  tree: s_tree as unknown as StoryModule,
-  sidebar: s_sidebar as unknown as StoryModule,
-  graph: s_graph as unknown as StoryModule,
-  "robot-map": s_robot_map as unknown as StoryModule,
-  "waypoint-editor": s_waypoint_editor as unknown as StoryModule,
-  "geo-map": s_geo_map as unknown as StoryModule,
-  "point-cloud": s_point_cloud as unknown as StoryModule,
-  "chip-group": s_chip_group as unknown as StoryModule,
-  "filter-form": s_filter_form as unknown as StoryModule,
-  filters: s_filters as unknown as StoryModule,
-  "search-field": s_search_field as unknown as StoryModule,
-  "theme-toggle": s_theme_toggle as unknown as StoryModule,
-  "route-progress": s_route_progress as unknown as StoryModule,
-  hooks: s_hooks as unknown as StoryModule,
-  "metric-card": s_metric_card as unknown as StoryModule,
-  "context-menu": s_context_menu as unknown as StoryModule,
-  "hover-card": s_hover_card as unknown as StoryModule,
-  banner: s_banner as unknown as StoryModule,
-  "streaming-chart": s_streaming_chart as unknown as StoryModule,
-  attitude: s_attitude as unknown as StoryModule,
-}
-
-// One React.lazy per lazy file, made once at module scope: the import starts the first time one of its stories renders.
+// One React.lazy per file, made once at module scope: the import starts the first time one of its stories renders.
 const lazyStories = Object.fromEntries(
-  Object.entries(lazyFiles).map(([file, load]) => [
+  Object.entries(files).map(([file, load]) => [
     file,
     React.lazy(async () => {
       const mod = (await load()) as unknown as StoryModule
       return { default: ({ name }: { name: string }) => renderStory(mod, name) }
     }),
   ]),
-) as Record<LazyFile, React.LazyExoticComponent<(props: { name: string }) => React.ReactNode>>
+) as Record<StoryFile, React.LazyExoticComponent<(props: { name: string }) => React.ReactNode>>
 
-const isLazy = (file: StoryFile): file is LazyFile => file in lazyFiles
+// On the server every story file is imported once, before the first page, and each example renders in place. No Suspense
+// boundary around it: React streams a large finished boundary as a placeholder and swaps it in with a script, which moved
+// everything under it. In the browser a story file loads on demand; while it does, hydration keeps the server's HTML, and
+// a navigation (a transition) keeps the page you are leaving until the new page's examples are there.
+const onServer = typeof window === "undefined"
+const loaded: Partial<Record<StoryFile, StoryModule>> = {}
+if (onServer)
+  await Promise.all(Object.entries(files).map(async ([file, load]) => (loaded[file as StoryFile] = (await load()) as unknown as StoryModule)))
 
 function render(file: StoryFile, name: string) {
-  if (isLazy(file)) {
-    const Story = lazyStories[file]
-    // While the chunk loads, a quiet block the size of a typical example, so the page does not jump when it arrives.
-    return (
-      <React.Suspense fallback={<div aria-hidden="true" className="aspect-4/3 w-full animate-breath rounded-md bg-track" />}>
-        <Story name={name} />
-      </React.Suspense>
-    )
-  }
-  return renderStory(files[file], name)
+  const ready = onServer ? loaded[file] : undefined
+  if (ready) return renderStory(ready, name)
+  const Story = lazyStories[file]
+  return <Story name={name} />
 }
 
 // Same rule as Storybook: story args override meta args; a story's own render wins over meta.component.

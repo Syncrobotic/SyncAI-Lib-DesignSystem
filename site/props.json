@@ -11300,7 +11300,19 @@
      "name": "label",
      "type": "string",
      "default": "\"Theme\"",
-     "description": "Names the group."
+     "description": "Names the group, or the menu's button."
+    },
+    {
+     "name": "variant",
+     "type": "\"menu\" | \"segmented\"",
+     "default": "\"segmented\"",
+     "description": "Three segments side by side, or one button that opens them as a menu."
+    },
+    {
+     "name": "align",
+     "type": "\"center\" | \"end\" | \"start\"",
+     "default": "\"end\"",
+     "description": "The menu's edge that lines up with the button (menu only)."
     }
    ],
    "inherits": []

@@ -153,6 +153,9 @@ export function BlockFrame({
                 ref={frame}
                 src={`/preview/${name}`}
                 title={`${name} preview at ${width} pixels`}
+                // A frame runs the whole site's scripts on the page's main thread; a chart's page has a dozen. Only the ones near
+                // the screen load.
+                loading="lazy"
                 onLoad={(e) => {
                   e.currentTarget.contentDocument?.documentElement.classList.toggle("dark", document.documentElement.classList.contains("dark"))
                   measure(e.currentTarget)

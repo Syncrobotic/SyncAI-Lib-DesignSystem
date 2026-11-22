@@ -1560,10 +1560,15 @@ const keyboard: Record<string, [string, string][]> = {
   ],
 }
 
+// Robotics in the order an operator meets them, as on /docs/robotics: stop it, drive it and send it, see what it sees,
+// read its state. Other groups keep the registry's order.
+const robotics = ["stop-button", "slide-to-release", "teleop-pad", "robot-map", "geo-map", "waypoint-editor", "camera-feed", "camera-wall", "point-cloud", "robot-model", "attitude", "joint-state", "diagnostics"]
+const within = (name: string) => (robotics.includes(name) ? robotics.indexOf(name) : 0)
+
 export const items: Item[] = registry.items
   .filter((i) => i.name in entries)
   .map((i) => ({ ...i, ...entries[i.name], keyboard: keyboard[i.name] }))
-  .sort((a, b) => groups.indexOf(a.group) - groups.indexOf(b.group))
+  .sort((a, b) => groups.indexOf(a.group) - groups.indexOf(b.group) || within(a.name) - within(b.name))
 
 export const getItem = (name: string) => items.find((i) => i.name === name)
 

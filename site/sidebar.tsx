@@ -15,51 +15,63 @@ export const scopeFor = (scopes: Pick<Scope, "match">[], path: string) =>
   )
 
 /**
- * The areas, as the header shows them on desktop: one quiet row of tabs with an underline, not a second set of buttons
- * louder than the pages. The drawer holds it in its fixed header, above the list that scrolls; its baseline is the
- * header's edge, drawn once the list has scrolled under it (`edge`). On the home page there is no area yet, so there are
- * no tabs: the Sidebar lists the four instead.
+ * The areas in the drawer: real tabs, as the header's row shows them on desktop (an underline, quiet). Choosing one shows
+ * its pages under the tabs without leaving the page you are on; the list is the tab panel. Its baseline is the drawer
+ * header's edge, drawn once the list has scrolled under it (`edge`). Arrow keys, Home and End move between tabs.
  */
-export function AreaTabs({ scopes, path, edge }: { scopes: Scope[]; path: string; edge: boolean }) {
-  const active = scopes[scopeFor(scopes, path)]
+export function AreaTabs({ scopes, area, onArea, panel, edge }: { scopes: Scope[]; area: string; onArea: (key: string) => void; panel: string; edge: boolean }) {
+  const tabs = React.useRef<HTMLDivElement>(null)
+  const move = (e: React.KeyboardEvent) => {
+    const i = scopes.findIndex((s) => s.key === area)
+    const next = e.key === "ArrowRight" ? i + 1 : e.key === "ArrowLeft" ? i - 1 : e.key === "Home" ? 0 : e.key === "End" ? scopes.length - 1 : null
+    if (next === null) return
+    e.preventDefault()
+    const key = scopes[(next + scopes.length) % scopes.length].key
+    onArea(key)
+    tabs.current?.querySelector<HTMLElement>(`[data-area="${key}"]`)?.focus()
+  }
   return (
     <div
-      role="list"
+      ref={tabs}
+      role="tablist"
       aria-label="Areas"
+      onKeyDown={move}
       className={cn(
         "scroll-row flex gap-4 overflow-x-auto overflow-y-hidden border-b px-3 transition-colors duration-(--motion-fast) ease-(--ease-standard)",
         edge ? "border-border" : "border-transparent",
       )}
     >
       {scopes.map((s) => (
-        <Link
+        <button
           key={s.key}
-          role="listitem"
-          href={s.href}
-          aria-current={s.key === active.key ? "true" : undefined}
+          type="button"
+          role="tab"
+          data-area={s.key}
+          aria-selected={s.key === area}
+          aria-controls={panel}
+          tabIndex={s.key === area ? 0 : -1}
+          onClick={() => onArea(s.key)}
           className={cn(
             // The ring sits inside the tab: the row scrolls sideways, so it clips anything drawn outside it.
             "-mb-px inline-flex h-(--h-md) shrink-0 items-center border-b-2 text-sm whitespace-nowrap transition-colors duration-(--motion-fast) ease-(--ease-standard) focus-visible:-outline-offset-2",
-            s.key === active.key ? "border-foreground font-medium text-foreground" : "border-transparent text-muted-foreground hover:text-foreground",
+            s.key === area ? "border-foreground font-medium text-foreground" : "border-transparent text-muted-foreground hover:text-foreground",
           )}
         >
           {s.label}
-        </Link>
+        </button>
       ))}
     </div>
   )
 }
 
-/** The groups of the area you are in. In the drawer (`switcher`) on the home page, the four areas instead. */
-export function Sidebar({ scopes, switcher = false, path: frozen }: { scopes: Scope[]; switcher?: boolean; path?: string }) {
+/** The groups of the area you are in; in the drawer (`switcher`), of the area its tabs have chosen (`area`). */
+export function Sidebar({ scopes, switcher = false, path: frozen, area }: { scopes: Scope[]; switcher?: boolean; path?: string; area?: string }) {
   // The drawer passes the page it was opened on, so its list holds still while it closes on the way to another page.
   const current = usePathname()
   const path = frozen ?? current
   // A component page's tabs belong to its one link.
   const here = componentBase(path)
-  const active = scopes[scopeFor(scopes, path)]
-  // The home page belongs to no area: in the drawer, Home is current and no area is selected.
-  const home = path === "/"
+  const active = scopes.find((s) => s.key === area) ?? scopes[scopeFor(scopes, path)]
   const nav = React.useRef<HTMLElement>(null)
   // The link you clicked, and where it was in its column. The previous page's examples close above it, which would pull
   // it up; before the next paint the column scrolls back by that much, so the link stays under the pointer. Browsers
@@ -92,7 +104,7 @@ export function Sidebar({ scopes, switcher = false, path: frozen }: { scopes: Sc
     // A group's first page starts the column with its group's name, never with the name cut off above it.
     if (i > 0 && rows[i - 1].heading && rows[i].top - rows[i - 1].top < 40) i -= 1
     box.scrollTop = Math.max(0, (i >= 0 ? rows[i].top : centred) - 12)
-  }, [path])
+  }, [path, area])
   return (
     <nav
       ref={nav}
@@ -104,21 +116,7 @@ export function Sidebar({ scopes, switcher = false, path: frozen }: { scopes: Sc
       }}
     >
       {!switcher && <p className="px-3 text-sm font-medium text-muted-foreground">{active.label}</p>}
-      {switcher && home && (
-        <div role="list" aria-label="Areas" className="flex flex-col gap-1">
-          {scopes.map((s) => (
-            <Link
-              key={s.key}
-              role="listitem"
-              href={s.href}
-              className="press flex h-(--h-sm) items-center rounded-xs px-3 text-foreground transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent focus-visible:-outline-offset-2"
-            >
-              {s.label}
-            </Link>
-          ))}
-        </div>
-      )}
-      {!(home && switcher) && active.groups.map((g, gi) => (
+      {active.groups.map((g, gi) => (
         // Groups are split by a hairline, and the group's name is in ink while its pages are grey: two levels, not one.
         <div key={g.title} className={cn("flex flex-col gap-1", gi > 0 && "border-t border-border pt-4")}>
           <p className="px-3 pb-1 text-xs font-bold text-foreground">{g.title}</p>
