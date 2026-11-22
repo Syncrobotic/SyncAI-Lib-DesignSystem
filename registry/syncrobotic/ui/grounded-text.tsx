@@ -238,7 +238,7 @@ export function GroundedText({
         />
         <p
           data-slot="grounded-text-text"
-          className="min-w-0 text-base leading-7 break-words whitespace-pre-line any-pointer-coarse:leading-(--h-md)"
+          className="min-w-0 text-base leading-7 break-words whitespace-pre-line"
         >
           {cut.map((r) => {
             const t = text.slice(r.from, r.to)
@@ -276,11 +276,12 @@ export function GroundedText({
                 }}
                 onBlur={() => setSpanFocus(null)}
                 // Underlined so it reads as linked without colour: dotted and quiet at rest, solid and thick in the focus
-                // ink when lit. On touch each line is 44 px and the padding fills it, so a tap lands on the span.
+                // ink when lit. The text keeps its reading leading on touch too (inline targets in a sentence are exempt from the
+                // 44 px rule, WCAG 2.5.8); its padding reaches into the gap between lines, without moving them, so a tap still lands.
                 className={cn(
                   "cursor-pointer rounded-2xs underline decoration-muted-foreground decoration-dotted decoration-1 underline-offset-4 box-decoration-clone",
                   "transition-[background-color,text-decoration-color] duration-(--motion-fast) ease-(--ease-standard)",
-                  "hover:decoration-foreground focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-ring any-pointer-coarse:py-3",
+                  "hover:decoration-foreground focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-ring any-pointer-coarse:py-1",
                   "aria-pressed:decoration-solid aria-pressed:decoration-2 aria-pressed:decoration-annotate-selected",
                   lit && "bg-accent decoration-solid decoration-2 decoration-annotate-selected",
                 )}
