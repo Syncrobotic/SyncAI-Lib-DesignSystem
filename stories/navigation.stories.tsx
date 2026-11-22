@@ -82,6 +82,38 @@ export const TabsWithIconsAndCounts: S = {
   ),
 }
 
+// Sticky: the row stays at the top while the long tab scrolls (here inside a box; in a shell, under its top bar at
+// --shell-top). Scroll down, then pick Sensors: the page goes back to the start of the tabs.
+export const TabsSticky: S = {
+  render: () => (
+    <div className="h-80 overflow-y-auto rounded-md bg-background px-4 ring-1 ring-border">
+      <Tabs defaultValue="events">
+        <TabsList sticky aria-label="Robot 7F3A">
+          <TabsTrigger value="events">Events</TabsTrigger>
+          <TabsTrigger value="sensors">Sensors</TabsTrigger>
+          <TabsTrigger value="logs">Logs</TabsTrigger>
+        </TabsList>
+        <TabsContent value="events">
+          <div className="flex flex-col text-sm">
+            {Array.from({ length: 16 }, (_, i) => (
+              <p key={i} className="flex min-h-(--h-row) items-center justify-between gap-3 border-b border-border last:border-b-0">
+                <span>Patrol lap {16 - i} finished</span>
+                <span className="font-mono text-xs text-muted-foreground tabular-nums">{`${String(21 - Math.floor(i / 2)).padStart(2, "0")}:${i % 2 ? "30" : "00"}`}</span>
+              </p>
+            ))}
+          </div>
+        </TabsContent>
+        <TabsContent value="sensors" className="text-sm text-muted-foreground">
+          LiDAR, 4 cameras, IMU
+        </TabsContent>
+        <TabsContent value="logs" className="text-sm text-muted-foreground">
+          12 lines since 06:00
+        </TabsContent>
+      </Tabs>
+    </div>
+  ),
+}
+
 export const AccordionMultiple: S = {
   render: () => (
     <Accordion type="multiple" defaultValue={["night", "weekend"]}>

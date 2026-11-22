@@ -834,6 +834,12 @@ export const overviews: Record<string, Overview> = {
       "For counts use CountBadge, never a Badge with a number and never a solid red circle.",
     ],
   },
+  "tier-badge": {
+    what: "A dataset's licence tier as a tag: its code (T0 to T3) and what it means, Commercial to On-premises only.",
+    use: ["The Tier column of a data catalog, compact.", "Beside a dataset's name on its page, with the words.", "A release check that lists what each dataset may be used for."],
+    instead: ["A dataset's state (blocks release, held back): `status-eyebrow` (InlineStatus).", "Any other category: `badge` with tone neutral or outline."],
+    notes: ["The tiers and their words are fixed (`Tier`, `tiers`); `labels` changes only the words."],
+  },
   card: {
     what: "One raised surface that holds a group of related content.",
     use: ["A robot's summary, a KPI, a settings section."],
@@ -937,8 +943,11 @@ export const overviews: Record<string, Overview> = {
   },
   tabs: {
     what: "Sections of one page under a row of labels; one section shows at a time.",
-    use: ["A robot's Overview, Sensors and Logs."],
+    use: ["A robot's Overview, Sensors and Logs.", "A long detail page (a dataset's Overview, Browse and Versions) with `sticky`, so the row stays under the top bar."],
     instead: ["Two to four views of the same data: `segmented-control`.", "Sections the user may want open together: `accordion`."],
+    notes: [
+      "`<TabsList sticky>` pins at `top: var(--shell-top, 0)` on `var(--shell-surface)`, under the bar. The shells set both; outside a shell set them yourself on an ancestor.",
+    ],
   },
   tree: {
     what: "A hierarchy from data, with a guide line per level: a nested list of links people open and close, or a tree widget to pick one node in.",

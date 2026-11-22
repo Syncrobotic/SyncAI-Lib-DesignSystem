@@ -285,6 +285,11 @@
     "tabStops": 0,
     "live": false
   },
+  "tier-badge": {
+    "roles": [],
+    "tabStops": 0,
+    "live": false
+  },
   "card": {
     "roles": [
       "button",

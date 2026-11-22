@@ -602,6 +602,14 @@ export const attachmentLabels = {
 
 // ---------- Data ----------
 
+// A dataset's licence tier, after its code (T0 · 可商用).
+export const tierBadgeLabels = {
+  T0: "可商用",
+  T1: "非商用",
+  T2: "受限",
+  T3: "僅限地端",
+}
+
 export const dataGridLabels = {
   region: "資料",
   empty: "沒有資料",

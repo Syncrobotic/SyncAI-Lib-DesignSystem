@@ -1,4 +1,4 @@
-// @syncrobotic/tabs v0.23.0 · update: npx shadcn add @syncrobotic/tabs --overwrite
+// @syncrobotic/tabs v0.31.0 · update: npx shadcn add @syncrobotic/tabs --overwrite
 "use client"
 
 import * as React from "react"
@@ -37,10 +37,57 @@ function useUnderline(list: React.RefObject<HTMLDivElement | null>) {
   return line
 }
 
+/** The nearest ancestor that scrolls, or null for the page itself. */
+function scroller(el: HTMLElement) {
+  for (let p = el.parentElement; p; p = p.parentElement) {
+    const { overflowY } = getComputedStyle(p)
+    if ((overflowY === "auto" || overflowY === "scroll") && p.scrollHeight > p.clientHeight) return p
+  }
+  return null
+}
+
+/**
+ * A sticky list, picked while stuck: the reader was deep in the last tab, so the page scrolls back until the tabs sit in
+ * their own place again and the new tab reads from its start. A jump, not an animation: it is where the content starts.
+ */
+function useBackToStart(list: React.RefObject<HTMLDivElement | null>, on: boolean) {
+  React.useEffect(() => {
+    const el = list.current
+    if (!on || !el) return
+    const activeNow = () => el.querySelector(':scope > [data-slot="tabs-trigger"][data-state="active"]')
+    let active = activeNow()
+    const mo = new MutationObserver(() => {
+      const next = activeNow()
+      if (next === active) return
+      active = next
+      const root = el.parentElement
+      if (!root) return
+      // Stuck: the tabs' own section has scrolled up past the list. Not stuck, the two tops are level and nothing moves.
+      const by = root.getBoundingClientRect().top - el.getBoundingClientRect().top
+      if (by > -1) return
+      const box = scroller(el)
+      if (box) box.scrollBy({ top: by })
+      else window.scrollBy({ top: by })
+    })
+    mo.observe(el, { subtree: true, attributes: true, attributeFilter: ["data-state"] })
+    return () => mo.disconnect()
+  }, [list, on])
+}
+
+type TabsListProps = React.ComponentProps<typeof TabsPrimitive.List> & {
+  /**
+   * Keep the row in view while the page scrolls. It sticks under the shell's top bar (`--shell-top`, which the shells
+   * set; 0 without one), on the shell's surface (`--shell-surface`, else the background), with its hairline, below the
+   * bar. Picking a tab while it is stuck scrolls back to the start of the tabs.
+   */
+  sticky?: boolean
+}
+
 /** The tabs in a row over a hairline. The underline travels to the tab you pick: the Move pattern, --motion-base. */
-export function TabsList({ className, children, ...props }: React.ComponentProps<typeof TabsPrimitive.List>) {
+export function TabsList({ className, children, sticky, ...props }: TabsListProps) {
   const list = React.useRef<HTMLDivElement>(null)
   const line = useUnderline(list)
+  useBackToStart(list, !!sticky)
   // The first measurement places the underline without travelling; later ones animate.
   const [placed, setPlaced] = React.useState(false)
   React.useEffect(() => {
@@ -54,7 +101,13 @@ export function TabsList({ className, children, ...props }: React.ComponentProps
       ref={list}
       data-slot="tabs-list"
       data-underline={line ? "" : undefined}
-      className={cn("group/tabs relative flex gap-4 overflow-x-auto overflow-y-hidden border-b border-border", className)}
+      data-sticky={sticky ? "" : undefined}
+      className={cn(
+        "group/tabs flex gap-4 overflow-x-auto overflow-y-hidden border-b border-border",
+        // Sticky is still a positioned box, so the underline measures from it as before. Under the bars (z-20), over the page.
+        sticky ? "sticky top-[var(--shell-top,0)] z-10 bg-[var(--shell-surface,var(--color-background))]" : "relative",
+        className,
+      )}
       {...props}
     >
       {children}

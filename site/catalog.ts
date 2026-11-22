@@ -75,6 +75,7 @@ export type StoryFile =
   | "banner"
   | "streaming-chart"
   | "attitude"
+  | "tier-badge"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
@@ -573,6 +574,15 @@ const entries: Record<string, Entry> = {
       "`tone=\"success\"` renders grey, as `neutral` does: a state is never green. Use `neutral`.",
     ],
   },
+  "tier-badge": {
+    group: "Data display",
+    examples: { file: "tier-badge", prefix: "TierBadge" },
+    rules: [
+      "A dataset's licence tier, wherever the dataset is named: a row, a page header, a release check.",
+      "With its words by default; `compact` (the code alone) only in a column headed Tier. Screen readers hear the words either way.",
+      "T0 is grey, the restricted tiers outlined. A tier is a category, not a state: never a status colour, never red for T3.",
+    ],
+  },
   card: { group: "Layout", examples: { file: "display", prefix: "Card" }, rules: ["Never nest cards. Group rows inside one card with separators."] },
   avatar: {
     group: "Data display",
@@ -870,6 +880,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "Switch between views of the same thing, all at the same level. Not for steps (Stepper) or for moving between pages.",
       "Keep the labels short and the order stable.",
+      "Over long sections, `sticky` on TabsList keeps the row in view under the shell's top bar. One sticky row per page; picking a tab while it is stuck goes back to the start of the tabs.",
     ],
   },
   accordion: {
@@ -1601,6 +1612,7 @@ const captions: Record<string, Record<string, string>> = {
   diagnostics: { DiagnosticsAllOk: "All OK" },
   "teleop-pad": { TeleopPadConsole: "On a console" },
   "input-otp": { InputOTPPin: "PIN" },
+  "tier-badge": { TierBadgeZhTw: "Traditional Chinese (zh-TW)" },
   "use-long-press": { UseLongPressHoldToConfirm: "Hold to confirm" },
 }
 

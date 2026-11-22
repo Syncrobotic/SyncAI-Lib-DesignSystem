@@ -82,6 +82,7 @@ const files = {
   banner: () => import("@/stories/banner.stories"),
   "streaming-chart": () => import("@/stories/streaming-chart.stories"),
   attitude: () => import("@/stories/attitude.stories"),
+  "tier-badge": () => import("@/stories/tier-badge.stories"),
 } satisfies Record<StoryFile, () => Promise<unknown>>
 
 // One React.lazy per file, made once at module scope: the import starts the first time one of its stories renders.

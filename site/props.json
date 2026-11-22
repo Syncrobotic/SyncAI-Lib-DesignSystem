@@ -11075,7 +11075,13 @@
   },
   {
    "name": "TabsList",
-   "props": [],
+   "props": [
+    {
+     "name": "sticky",
+     "type": "boolean",
+     "description": "Keep the row in view while the page scrolls. It sticks under the shell's top bar (`--shell-top`, which the shells set; 0 without one), on the shell's surface (`--shell-surface`, else the background), with its hairline, below the bar. Picking a tab while it is stuck scrolls back to the start of the tabs."
+    }
+   ],
    "inherits": [
     "Radix Tabs.List"
    ]
@@ -11383,6 +11389,56 @@
      "type": "\"center\" | \"end\" | \"start\"",
      "default": "\"end\"",
      "description": "The menu's edge that lines up with the button (menu only)."
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "tier-badge": [
+  {
+   "name": "TierBadge",
+   "props": [
+    {
+     "name": "tier",
+     "type": "\"T0\" | \"T1\" | \"T2\" | \"T3\"",
+     "required": true,
+     "description": "The dataset's licence tier, T0 to T3."
+    },
+    {
+     "name": "compact",
+     "type": "boolean",
+     "description": "The code alone on screen, for a column headed Tier. Screen readers still hear the words."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<TierBadgeLabels>",
+     "description": "The words for each tier (English by default; `tierBadgeLabels` in labels-zh-tw).",
+     "keys": [
+      {
+       "name": "T0",
+       "type": "string",
+       "default": "\"Commercial\"",
+       "description": ""
+      },
+      {
+       "name": "T1",
+       "type": "string",
+       "default": "\"Non-commercial\"",
+       "description": ""
+      },
+      {
+       "name": "T2",
+       "type": "string",
+       "default": "\"Restricted\"",
+       "description": ""
+      },
+      {
+       "name": "T3",
+       "type": "string",
+       "default": "\"On-premises only\"",
+       "description": ""
+      }
+     ]
     }
    ],
    "inherits": []

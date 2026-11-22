@@ -1,4 +1,4 @@
-// @syncrobotic/data-catalog v0.17.2 · update: npx shadcn add @syncrobotic/data-catalog --overwrite
+// @syncrobotic/data-catalog v0.31.0 · update: npx shadcn add @syncrobotic/data-catalog --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,7 +6,7 @@ import { Database, Grid3x3, SlidersHorizontal, Plus, ScrollText, Search, SearchX
 import { cn } from "@/lib/utils"
 import { ChoiceField, FieldSet } from "@/registry/syncrobotic/ui/choice-field"
 import { AppShell, type AppNavGroup, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
-import { Badge } from "@/registry/syncrobotic/ui/badge"
+import { TierBadge, tiers, type Tier } from "@/registry/syncrobotic/ui/tier-badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
@@ -27,23 +27,8 @@ export const dataNav: AppNavGroup[] = [
   },
 ]
 
-export type Tier = "T0" | "T1" | "T2" | "T3"
-/** Licence tiers. Only the restricted ones carry colour: they are the ones that change what you may do. */
-export const tiers: Record<Tier, { label: string; tone: "neutral" | "outline" | "warning" | "danger" }> = {
-  T0: { label: "Commercial", tone: "neutral" },
-  T1: { label: "Non-commercial", tone: "outline" },
-  T2: { label: "Restricted", tone: "outline" },
-  T3: { label: "On-premises only", tone: "outline" },
-}
-
-export function TierBadge({ tier, compact }: { tier: Tier; compact?: boolean }) {
-  return (
-    <Badge tone={tiers[tier].tone}>
-      <span className="font-mono">{tier}</span>
-      {!compact && <span> · {tiers[tier].label}</span>}
-    </Badge>
-  )
-}
+// The tier badge is its own item (tier-badge). Re-exported so code that imported it from here keeps working.
+export { TierBadge, tiers, type Tier } from "@/registry/syncrobotic/ui/tier-badge"
 
 export type Dataset = {
   ref: string
@@ -154,8 +139,13 @@ function Facets({ data, picks, onPick }: { data: Dataset[]; picks: Picks; onPick
   )
 }
 
-/** Data catalog: filter by tier, use and task, search, sort, read one row per dataset. On phones the filters open in a drawer. */
-export function DataCatalog({ datasets = sampleDatasets }: { datasets?: Dataset[] }) {
+export type DataCatalogProps = { datasets?: Dataset[] }
+
+/**
+ * The catalog without a frame: filters, search, the table. Put it in your own shell (top-bar-shell, app-shell) with the
+ * page's title and its New dataset action there.
+ */
+export function DataCatalogContent({ datasets = sampleDatasets }: DataCatalogProps) {
   const [query, setQuery] = React.useState("")
   const [picks, setPicks] = React.useState<Picks>({ tier: [], use: [], task: [] })
   const [sort, setSort] = React.useState<{ key: SortKey; dir: 1 | -1 }>({ key: "name", dir: 1 })
@@ -173,6 +163,91 @@ export function DataCatalog({ datasets = sampleDatasets }: { datasets?: Dataset[
   })
 
   return (
+    <div className="flex gap-8">
+      <aside aria-label="Filters" className="hidden w-56 shrink-0 lg:block">
+        <Facets data={datasets} picks={picks} onPick={pick} />
+      </aside>
+      <div className="flex min-w-0 flex-1 flex-col gap-4">
+        <div className="flex gap-2">
+          <InputGroup>
+            <InputGroupAddon>
+              <Search aria-hidden="true" />
+            </InputGroupAddon>
+            <Input
+              type="search"
+              aria-label="Search datasets"
+              placeholder="Search datasets"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          </InputGroup>
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="secondary" className="lg:hidden">
+                <SlidersHorizontal aria-hidden="true" /> Filters{active ? ` · ${active}` : ""}
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-80">
+              <SheetTitle className="pb-4">Filters</SheetTitle>
+              <Facets data={datasets} picks={picks} onPick={pick} />
+            </SheetContent>
+          </Sheet>
+        </div>
+        <p className="text-sm text-muted-foreground" aria-live="polite">
+          {rows.length} of {datasets.length} datasets
+        </p>
+        {rows.length === 0 ? (
+          <EmptyState icon={SearchX} title="No datasets match" description="Clear a filter or search for something broader." />
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead {...sortProps("name")}>Dataset</TableHead>
+                <TableHead className="hidden sm:table-cell">Tier</TableHead>
+                <TableHead className="hidden md:table-cell">Task</TableHead>
+                <TableHead className="hidden md:table-cell">Use</TableHead>
+                <TableHead className="hidden xl:table-cell">Owner</TableHead>
+                <TableHead {...sortProps("items")} className="text-right">
+                  Items
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {rows.map((d) => (
+                <TableRow key={d.ref}>
+                  <TableCell className="py-2 max-sm:whitespace-normal">
+                    {/* At least the control height (44, 48 in gloves): two short lines alone are a 36 px target. */}
+                    <a href={`#${d.ref}`} className="flex min-h-(--h-md) flex-col justify-center hover:underline">
+                      <span className="font-medium">{d.name}</span>
+                      <span className="font-mono text-xs break-all text-muted-foreground">
+                        {d.ref}@{d.version}
+                      </span>
+                    </a>
+                    {/* On a phone the tier sits under the name; it is a column from 640 px, so the items count never clips. */}
+                    <span className="mt-1 flex sm:hidden">
+                      <TierBadge tier={d.tier} compact />
+                    </span>
+                  </TableCell>
+                  <TableCell className="hidden sm:table-cell">
+                    <TierBadge tier={d.tier} compact />
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">{d.task}</TableCell>
+                  <TableCell className="hidden md:table-cell">{d.use}</TableCell>
+                  <TableCell className={cn("hidden text-muted-foreground xl:table-cell")}>{d.owner}</TableCell>
+                  <TableCell className="text-right tabular-nums">{d.items.toLocaleString("en-US")}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
+      </div>
+    </div>
+  )
+}
+
+/** Data catalog: filter by tier, use and task, search, sort, read one row per dataset. On phones the filters open in a drawer. */
+export function DataCatalog(props: DataCatalogProps) {
+  return (
     <AppShell
       product="DataCore"
       nav={dataNav}
@@ -185,85 +260,7 @@ export function DataCatalog({ datasets = sampleDatasets }: { datasets?: Dataset[
         </Button>
       }
     >
-      <div className="flex gap-8">
-        <aside aria-label="Filters" className="hidden w-56 shrink-0 lg:block">
-          <Facets data={datasets} picks={picks} onPick={pick} />
-        </aside>
-        <div className="flex min-w-0 flex-1 flex-col gap-4">
-          <div className="flex gap-2">
-            <InputGroup>
-              <InputGroupAddon>
-                <Search aria-hidden="true" />
-              </InputGroupAddon>
-              <Input
-                type="search"
-                aria-label="Search datasets"
-                placeholder="Search datasets"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-              />
-            </InputGroup>
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="secondary" className="lg:hidden">
-                  <SlidersHorizontal aria-hidden="true" /> Filters{active ? ` · ${active}` : ""}
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left" className="w-80">
-                <SheetTitle className="pb-4">Filters</SheetTitle>
-                <Facets data={datasets} picks={picks} onPick={pick} />
-              </SheetContent>
-            </Sheet>
-          </div>
-          <p className="text-sm text-muted-foreground" aria-live="polite">
-            {rows.length} of {datasets.length} datasets
-          </p>
-          {rows.length === 0 ? (
-            <EmptyState icon={SearchX} title="No datasets match" description="Clear a filter or search for something broader." />
-          ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead {...sortProps("name")}>Dataset</TableHead>
-                  <TableHead className="hidden sm:table-cell">Tier</TableHead>
-                  <TableHead className="hidden md:table-cell">Task</TableHead>
-                  <TableHead className="hidden md:table-cell">Use</TableHead>
-                  <TableHead className="hidden xl:table-cell">Owner</TableHead>
-                  <TableHead {...sortProps("items")} className="text-right">
-                    Items
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {rows.map((d) => (
-                  <TableRow key={d.ref}>
-                    <TableCell className="py-2 max-sm:whitespace-normal">
-                      {/* At least the control height (44, 48 in gloves): two short lines alone are a 36 px target. */}
-                      <a href={`#${d.ref}`} className="flex min-h-(--h-md) flex-col justify-center hover:underline">
-                        <span className="font-medium">{d.name}</span>
-                        <span className="font-mono text-xs break-all text-muted-foreground">
-                          {d.ref}@{d.version}
-                        </span>
-                      </a>
-                      {/* On a phone the tier sits under the name; it is a column from 640 px, so the items count never clips. */}
-                      <span className="mt-1 flex sm:hidden">
-                        <TierBadge tier={d.tier} compact />
-                      </span>
-                    </TableCell>
-                    <TableCell className="hidden sm:table-cell">
-                      <TierBadge tier={d.tier} compact />
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell">{d.task}</TableCell>
-                    <TableCell className="hidden md:table-cell">{d.use}</TableCell>
-                    <TableCell className={cn("hidden text-muted-foreground xl:table-cell")}>{d.owner}</TableCell>
-                    <TableCell className="text-right tabular-nums">{d.items.toLocaleString("en-US")}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          )}
-        </div>
-      </div>
+      <DataCatalogContent {...props} />
     </AppShell>
   )
 }

@@ -40,6 +40,7 @@ import type { SortableLabels } from "@/registry/syncrobotic/ui/sortable"
 import type { SpinnerLabels } from "@/registry/syncrobotic/ui/spinner"
 import type { StreamingChartLabels } from "@/registry/syncrobotic/ui/streaming-chart"
 import type { AttitudeIndicatorLabels, GaugeLabels } from "@/registry/syncrobotic/ui/attitude"
+import type { TierBadgeLabels } from "@/registry/syncrobotic/ui/tier-badge"
 import type { StepperLabels } from "@/registry/syncrobotic/ui/stepper"
 import type { TextDiffLabels } from "@/registry/syncrobotic/ui/text-diff"
 import type { MeterLabels } from "@/registry/syncrobotic/ui/meter"
@@ -91,6 +92,7 @@ it("fits every component's labels type", () => {
   fits<MediaPlayerLabels>()(zh.mediaPlayerLabels)
   fits<ImageGridLabels>()(zh.imageGridLabels)
   fits<AttachmentLabels>()(zh.attachmentLabels)
+  fits<TierBadgeLabels>()(zh.tierBadgeLabels)
   fits<DataGridLabels>()(zh.dataGridLabels)
   fits<LabelsOf<typeof Pagination>>()(zh.paginationLabels)
   fits<LabelsOf<typeof DataGridPagination>>()(zh.dataGridPaginationLabels)
