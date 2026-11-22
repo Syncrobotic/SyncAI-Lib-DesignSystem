@@ -12,8 +12,8 @@
     "hash": "8ec920f8618ff43d"
   },
   "labels-zh-tw": {
-    "version": "0.29.0",
-    "hash": "ed0b299aca6806e0"
+    "version": "0.31.0",
+    "hash": "24afd923fedd467a"
   },
   "ros": {
     "version": "0.29.0",
@@ -240,8 +240,8 @@
     "hash": "15934ce34803cf0c"
   },
   "pagination": {
-    "version": "0.28.0",
-    "hash": "bf422b42fab8c5c4"
+    "version": "0.31.0",
+    "hash": "8cabaadc90977469"
   },
   "breadcrumb": {
     "version": "0.31.0",
@@ -512,8 +512,8 @@
     "hash": "eb915c61efb87735"
   },
   "top-bar-shell": {
-    "version": "0.17.3",
-    "hash": "7fb616190df01558"
+    "version": "0.31.0",
+    "hash": "a66a8dd5b6d1113e"
   },
   "action-rail-shell": {
     "version": "0.17.3",

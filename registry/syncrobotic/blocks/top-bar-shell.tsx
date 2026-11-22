@@ -1,4 +1,4 @@
-// @syncrobotic/top-bar-shell v0.17.3 · update: npx shadcn add @syncrobotic/top-bar-shell --overwrite
+// @syncrobotic/top-bar-shell v0.31.0 · update: npx shadcn add @syncrobotic/top-bar-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -18,6 +18,17 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/registry/syncro
 
 export type TopBarLink = { label: string; href: string }
 
+export type TopBarShellLabels = {
+  /** The navigation landmark around the links, in the bar and in the phone drawer. */
+  nav: string
+  /** The menu button that opens the drawer on phones. */
+  openNav: string
+  /** Read after the user's name and initials on the account button: "Ada Lovelace, AL, account menu". */
+  accountMenu: string
+}
+
+export const defaultTopBarShellLabels: TopBarShellLabels = { nav: "Main", openNav: "Open navigation", accountMenu: "account menu" }
+
 type TopBarShellProps = {
   product: string
   /** Mark before the name, at 28 px. */
@@ -33,6 +44,8 @@ type TopBarShellProps = {
   linkAs?: React.ElementType
   /** End of the page: version, copyright, links. No line above it. */
   footer?: React.ReactNode
+  /** The words it says to screen readers, to translate them (topBarShellLabels in labels-zh-tw). */
+  labels?: Partial<TopBarShellLabels>
   children: React.ReactNode
 }
 
@@ -53,8 +66,10 @@ export function TopBarShell({
   userMenu = sampleUserMenu,
   linkAs: Link = "a",
   footer,
+  labels,
   children,
 }: TopBarShellProps) {
+  const l = { ...defaultTopBarShellLabels, ...labels }
   const [scrolled, setScrolled] = React.useState(false)
   React.useEffect(() => {
     const on = () => setScrolled(window.scrollY > 8)
@@ -64,7 +79,7 @@ export function TopBarShell({
   }, [])
 
   const nav = (vertical?: boolean) => (
-    <nav aria-label="Main" className={cn("flex gap-1 text-sm", vertical ? "flex-col" : "items-center")}>
+    <nav aria-label={l.nav}className={cn("flex gap-1 text-sm", vertical ? "flex-col" : "items-center")}>
       {links.map((l) => {
         const active = l.href === current
         return (
@@ -101,7 +116,7 @@ export function TopBarShell({
             <SheetTrigger asChild>
               <button
                 type="button"
-                aria-label="Open navigation"
+                aria-label={l.openNav}
                 className="press -ml-3 flex size-(--h-md) items-center justify-center rounded-sm hover:bg-accent md:hidden"
               >
                 <Menu aria-hidden="true" className="size-5" />
@@ -126,7 +141,7 @@ export function TopBarShell({
                 <DropdownMenuTrigger asChild>
                   <button
                     type="button"
-                    aria-label={`${user.name}, ${user.initials}, account menu`}
+                    aria-label={`${user.name}, ${user.initials}, ${l.accountMenu}`}
                     className="press flex size-(--h-md) items-center justify-center rounded-sm hover:bg-accent"
                   >
                     <Avatar>

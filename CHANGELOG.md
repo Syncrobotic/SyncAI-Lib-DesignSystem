@@ -13,6 +13,9 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - **`slider` 0.31.0, `switch` 0.31.0:** the thumb is the new `--thumb` token instead of a raw white; it looks the same. Issue #301.
 - **`syncrobotic-theme` 0.31.0:** new `--thumb` (`bg-thumb`), white in every mode, so a theme or contrast mode can change the knob of a slider or switch. Issue #301.
 - **`breadcrumb` 0.31.0:** the first level no longer truncates with room to spare when the breadcrumb is as wide as its content (a column with `items-start`, an inline block, an absolutely placed header, a grid cell, the app shell's top bar). It starts from its own width and, only when the row is short of room, gives way to a third of the row or its name, whichever is less. In a stretched row (page-header) nothing changes, except that a long first level is no longer cut while there is room. Issue #307.
+- **`top-bar-shell` 0.31.0:** new `labels` (`nav`, `openNav`, `accountMenu`; English defaults "Main", "Open navigation", "account menu") for the navigation landmark, the phone menu button and the account button, which screen readers heard in English whatever the product's language. Issue #293.
+- **`pagination` 0.31.0:** `labels.nav` names the landmark (default "Pagination"); `DataGridPagination` passes it through. Issue #293.
+- **`labels-zh-tw` 0.31.0:** `topBarShellLabels`, and `nav` (分頁) in `paginationLabels`. Issue #293.
 - **`geo-map` 0.31.0:** each robot's name label has a `key` (react/jsx-key). Issue #301.
 - **`agent-skill` 0.31.0, Radius foundation:** `rounded-[inherit]` is allowed on a child that fills its parent edge to edge (scroll viewport, avatar picture, a stretched link), so a product lint can allow it by rule. Issue #301.
 

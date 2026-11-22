@@ -3277,6 +3277,12 @@
      "description": "Pagination's words, to translate them.",
      "keys": [
       {
+       "name": "nav",
+       "type": "string",
+       "default": "\"Pagination\"",
+       "description": "The landmark's name for screen readers."
+      },
+      {
        "name": "range",
        "type": "(from: number, to: number, total: number, locale?: string) => string",
        "default": "(from: number, to: number, total: number, locale?: string) => `${from.toLocaleString(locale)}–${to.toLocaleString(locale)} of ${total.toLocaleString(locale)}`",
@@ -7433,6 +7439,12 @@
      "type": "Labels",
      "description": "",
      "keys": [
+      {
+       "name": "nav",
+       "type": "string",
+       "default": "\"Pagination\"",
+       "description": "The landmark's name for screen readers."
+      },
       {
        "name": "range",
        "type": "(from: number, to: number, total: number, locale?: string) => string",

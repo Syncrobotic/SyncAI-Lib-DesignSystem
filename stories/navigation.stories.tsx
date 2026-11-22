@@ -7,6 +7,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/registry/syncrobotic/ui/tabs"
 import { Breadcrumb, BreadcrumbLink, BreadcrumbPage } from "@/registry/syncrobotic/ui/breadcrumb"
 import { Pagination } from "@/registry/syncrobotic/ui/pagination"
+import { locale as zhTW, paginationLabels } from "@/registry/syncrobotic/lib/labels-zh-tw"
 
 const meta: Meta = { title: "Navigation" }
 export default meta
@@ -155,6 +156,18 @@ export const PaginationCompact: S = {
       <PaginationDemo pages total={240} />
     </div>
   ),
+}
+
+/** In Traditional Chinese, from the zh-TW label pack: the landmark is named 分頁 as well as the buttons. */
+export const PaginationZhTw: S = {
+  render: function Render() {
+    const [page, setPage] = React.useState(0)
+    return (
+      <div className={wide}>
+        <Pagination page={page} pageSize={10} total={240} onPageChange={setPage} pages labels={paginationLabels} locale={zhTW} />
+      </div>
+    )
+  },
 }
 
 export const BreadcrumbWithIcon: S = {

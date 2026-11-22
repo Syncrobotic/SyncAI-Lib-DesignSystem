@@ -1,4 +1,4 @@
-// @syncrobotic/pagination v0.28.0 · update: npx shadcn add @syncrobotic/pagination --overwrite
+// @syncrobotic/pagination v0.31.0 · update: npx shadcn add @syncrobotic/pagination --overwrite
 "use client"
 
 import * as React from "react"
@@ -8,6 +8,8 @@ import { Button } from "@/registry/syncrobotic/ui/button"
 import type { Navigate } from "@/registry/syncrobotic/ui/filter-form"
 
 type Labels = {
+  /** The landmark's name for screen readers. */
+  nav?: string
   /** "1,201–1,220 of 1,240". `locale` is Pagination's, for formatting the numbers. */
   range?: (from: number, to: number, total: number, locale?: string) => string
   previous?: string
@@ -17,6 +19,7 @@ type Labels = {
 }
 
 const defaults = {
+  nav: "Pagination",
   range: (from: number, to: number, total: number, locale?: string) =>
     `${from.toLocaleString(locale)}–${to.toLocaleString(locale)} of ${total.toLocaleString(locale)}`,
   previous: "Previous page",
@@ -106,7 +109,7 @@ export function Pagination({
     // numbered pages fold to the current one between previous and next. The range never wraps; if even the compact row
     // does not fit, the buttons move under it.
     <nav
-      aria-label="Pagination"
+      aria-label={l.nav}
       data-slot="pagination"
       className={cn("@container flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-sm text-muted-foreground", className)}
     >
