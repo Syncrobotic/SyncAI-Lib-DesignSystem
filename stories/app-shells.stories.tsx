@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import { ConsoleOverview } from "@/registry/syncrobotic/blocks/console-overview"
 import { EventLog } from "@/registry/syncrobotic/blocks/event-log"
 import { ListDetail } from "@/registry/syncrobotic/blocks/list-detail"
-import { DataCatalog } from "@/registry/syncrobotic/blocks/data-catalog"
+import { DataCatalog, DataCatalogContent } from "@/registry/syncrobotic/blocks/data-catalog"
 import { DatasetDetail } from "@/registry/syncrobotic/blocks/dataset-detail"
 import { GovernanceTodo } from "@/registry/syncrobotic/blocks/governance-todo"
 import { SignIn } from "@/registry/syncrobotic/blocks/sign-in"
@@ -28,6 +28,23 @@ export const MapWorkspaceScreen: S = { render: () => <MapWorkspace /> }
 export const DataCatalogScreen: S = { render: () => <DataCatalog /> }
 export const DatasetDetailScreen: S = { render: () => <DatasetDetail /> }
 export const GovernanceTodoScreen: S = { render: () => <GovernanceTodo /> }
+// The catalog's content in a product's own frame: DataCatalogContent has no shell of its own.
+export const DataCatalogInTopBarShell: S = {
+  render: () => (
+    <TopBarShell
+      product="DataCore"
+      links={[
+        { label: "Catalog", href: "#catalog" },
+        { label: "Releases", href: "#releases" },
+        { label: "Governance", href: "#governance" },
+      ]}
+      current="#catalog"
+      user={sampleUser}
+    >
+      <DataCatalogContent />
+    </TopBarShell>
+  ),
+}
 // For people who only read the list: no row actions, the rows keep their layout.
 export const GovernanceTodoReadOnly: S = { render: () => <GovernanceTodo readOnly /> }
 export const SettingsScreen: S = { render: () => <SettingsPage /> }

@@ -308,7 +308,8 @@ export const blockTypes: BlockType[] = [
     description: "Robot datasets as a product: the catalog, one dataset's release readiness, the governance to-do, and labels reviewed by keyboard.",
     use: ["Teams that collect, label and release robot data.", "Checking a model's captions or answers one image at a time."],
     rules: [
-      "Only restricted tiers are coloured.",
+      "Only restricted tiers are coloured. The tier is the `tier-badge` component, on its own or in these blocks.",
+      "Each block's `…Content` (DataCatalogContent, DatasetDetailContent, GovernanceTodoContent) is the page without the sample shell: put it in your own frame.",
       "A release verdict says what blocks it, not just that it is blocked.",
       "A to-do only offers an action the viewer can take: `readOnly` for people who only read it, `onDone` when the app decides what done means.",
       "A review queue answers with single keys (1, 2, 3), shows each key on its button, and undoes with Backspace or ⌘Z / Ctrl+Z. ? lists the keys.",

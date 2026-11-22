@@ -12,8 +12,8 @@
     "hash": "8ec920f8618ff43d"
   },
   "labels-zh-tw": {
-    "version": "0.29.0",
-    "hash": "ed0b299aca6806e0"
+    "version": "0.31.0",
+    "hash": "214582fd0bb515a9"
   },
   "ros": {
     "version": "0.29.0",
@@ -166,6 +166,10 @@
   "badge": {
     "version": "0.16.1",
     "hash": "9f704a562bd27a1b"
+  },
+  "tier-badge": {
+    "version": "0.31.0",
+    "hash": "aaf74a6dbe1ca2a8"
   },
   "card": {
     "version": "0.17.2",
@@ -536,12 +540,12 @@
     "hash": "0906087725321427"
   },
   "data-catalog": {
-    "version": "0.17.2",
-    "hash": "7df768a27b774d22"
+    "version": "0.31.0",
+    "hash": "93555c70b5ea4698"
   },
   "dataset-detail": {
-    "version": "0.17.3",
-    "hash": "45ad3a966fc319ec"
+    "version": "0.31.0",
+    "hash": "5ee3e71b9b0ff31c"
   },
   "review-queue": {
     "version": "0.17.3",
@@ -549,7 +553,7 @@
   },
   "governance-todo": {
     "version": "0.31.0",
-    "hash": "3101dc2036f897cd"
+    "hash": "ae7c35f5a2accfd3"
   },
   "settings-page": {
     "version": "0.28.0",
@@ -573,7 +577,7 @@
   },
   "agent-skill": {
     "version": "0.31.0",
-    "hash": "b47bdebc9acd476b"
+    "hash": "2f7b4e2016f544ac"
   },
   "line-chart-telemetry": {
     "version": "0.17.2",

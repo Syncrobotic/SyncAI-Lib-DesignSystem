@@ -11324,6 +11324,56 @@
    "inherits": []
   }
  ],
+ "tier-badge": [
+  {
+   "name": "TierBadge",
+   "props": [
+    {
+     "name": "tier",
+     "type": "\"T0\" | \"T1\" | \"T2\" | \"T3\"",
+     "required": true,
+     "description": "The dataset's licence tier, T0 to T3."
+    },
+    {
+     "name": "compact",
+     "type": "boolean",
+     "description": "The code alone on screen, for a column headed Tier. Screen readers still hear the words."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<TierBadgeLabels>",
+     "description": "The words for each tier (English by default; `tierBadgeLabels` in labels-zh-tw).",
+     "keys": [
+      {
+       "name": "T0",
+       "type": "string",
+       "default": "\"Commercial\"",
+       "description": ""
+      },
+      {
+       "name": "T1",
+       "type": "string",
+       "default": "\"Non-commercial\"",
+       "description": ""
+      },
+      {
+       "name": "T2",
+       "type": "string",
+       "default": "\"Restricted\"",
+       "description": ""
+      },
+      {
+       "name": "T3",
+       "type": "string",
+       "default": "\"On-premises only\"",
+       "description": ""
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "time-picker": [
   {
    "name": "TimeInput",

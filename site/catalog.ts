@@ -75,6 +75,7 @@ export type StoryFile =
   | "banner"
   | "streaming-chart"
   | "attitude"
+  | "tier-badge"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
@@ -570,6 +571,15 @@ const entries: Record<string, Entry> = {
       "Short states and labels. In list rows prefer `status-eyebrow`'s `InlineStatus`; a count is a `CountBadge`.",
       "Test and audit results are a `ResultBadge`: `result=\"passed\"` (grey with a check), `\"failed\"` (danger outline) or `\"insufficient\"` (grey, dashed circle). Never a green pass.",
       "`tone=\"success\"` renders grey, as `neutral` does: a state is never green. Use `neutral`.",
+    ],
+  },
+  "tier-badge": {
+    group: "Data display",
+    examples: { file: "tier-badge", prefix: "TierBadge" },
+    rules: [
+      "A dataset's licence tier, wherever the dataset is named: a row, a page header, a release check.",
+      "With its words by default; `compact` (the code alone) only in a column headed Tier. Screen readers hear the words either way.",
+      "T0 is grey, the restricted tiers outlined. A tier is a category, not a state: never a status colour, never red for T3.",
     ],
   },
   card: { group: "Layout", examples: { file: "display", prefix: "Card" }, rules: ["Never nest cards. Group rows inside one card with separators."] },
@@ -1598,6 +1608,7 @@ const captions: Record<string, Record<string, string>> = {
   diagnostics: { DiagnosticsAllOk: "All OK" },
   "teleop-pad": { TeleopPadConsole: "On a console" },
   "input-otp": { InputOTPPin: "PIN" },
+  "tier-badge": { TierBadgeZhTw: "Traditional Chinese (zh-TW)" },
   "use-long-press": { UseLongPressHoldToConfirm: "Hold to confirm" },
 }
 

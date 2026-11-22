@@ -10,6 +10,10 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - **`top-bar-shell`, `app-shell`, `app-shell-mobile-tabs` 0.31.0:** each shell's root sets `--shell-top` (its bar's bottom edge in the scrolling area) and `--shell-surface` (the colour behind the page), so a sticky tab row, or a product's own filter bar, pins under the bar. The phone shell's bar now sits above pinned rows (z-20). Issue #294
 - **`agent-skill` 0.31.0:** the design language documents `--shell-top` and `--shell-surface` and how to pin a row under the bar. Issue #294
 - **`governance-todo` 0.31.0:** `readOnly` hides the row actions and keeps the layout, for people who only read the list (the work is done elsewhere). `onDone(id)` hands completion to the app: the action calls it, and the row leaves when `todos` no longer has it. Issue #295
+- **`tier-badge` 0.31.0 (beta):** a dataset's licence tier as a tag, moved out of `data-catalog` so it installs on its own: the code and its words ("T1 · Non-commercial"), or the code alone in a Tier column (`compact`, still read out in words); `labels` for the words. `data-catalog` re-exports `TierBadge`, `tiers` and `Tier`. Issue #291
+- **`data-catalog`, `dataset-detail`, `governance-todo` 0.31.0:** each exports its content without the sample shell (`DataCatalogContent`, `DatasetDetailContent`, `GovernanceTodoContent`, same props), to drop into a product's own frame such as `top-bar-shell`. `DataCatalog`, `DatasetDetail` and `GovernanceTodo` render as before. Issue #291
+- **`labels-zh-tw` 0.31.0:** `tierBadgeLabels`. Issue #291
+- **`agent-skill` 0.31.0:** the skill points to the data blocks' content exports for use inside a product's own frame. Issue #291
 
 ## 0.30.0 · 2026-11-22
 

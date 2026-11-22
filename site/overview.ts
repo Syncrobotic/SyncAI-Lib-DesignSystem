@@ -833,6 +833,12 @@ export const overviews: Record<string, Overview> = {
       "For counts use CountBadge, never a Badge with a number and never a solid red circle.",
     ],
   },
+  "tier-badge": {
+    what: "A dataset's licence tier as a tag: its code (T0 to T3) and what it means, Commercial to On-premises only.",
+    use: ["The Tier column of a data catalog, compact.", "Beside a dataset's name on its page, with the words.", "A release check that lists what each dataset may be used for."],
+    instead: ["A dataset's state (blocks release, held back): `status-eyebrow` (InlineStatus).", "Any other category: `badge` with tone neutral or outline."],
+    notes: ["The tiers and their words are fixed (`Tier`, `tiers`); `labels` changes only the words."],
+  },
   card: {
     what: "One raised surface that holds a group of related content.",
     use: ["A robot's summary, a KPI, a settings section."],

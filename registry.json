@@ -204,8 +204,13 @@
         }
       ],
       "meta": {
-        "version": "0.29.0",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "`tierBadgeLabels` for the new tier-badge (可商用, 非商用, 受限, 僅限地端)."
+          },
           {
             "version": "0.29.0",
             "date": "2026-11-22",
@@ -1942,6 +1947,32 @@
       }
     },
     {
+      "name": "tier-badge",
+      "type": "registry:ui",
+      "title": "Tier badge",
+      "description": "A dataset's licence tier as a tag: the code in mono and what it means (\"T1 · Non-commercial\"), or the code alone in a table column (compact, still read out in words). T0 is grey, restricted tiers outlined, never a status colour. The words translate (labels).",
+      "registryDependencies": [
+        "@syncrobotic/badge"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/tier-badge.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.31.0",
+        "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "First release: moved out of data-catalog, so the badge installs on its own. `labels` for the tier words; `compact` keeps the words for screen readers."
+          }
+        ]
+      }
+    },
+    {
       "name": "card",
       "type": "registry:ui",
       "title": "Card",
@@ -2702,7 +2733,7 @@
       "name": "tabs",
       "type": "registry:ui",
       "title": "Tabs",
-      "description": "Sections of one page. `sticky` keeps the row under the shell's top bar over long sections.",
+      "description": "Sections of one page. Sticky keeps the row under the shell's top bar over long sections.",
       "dependencies": [
         "radix-ui"
       ],
@@ -6040,7 +6071,7 @@
       "name": "top-bar-shell",
       "type": "registry:block",
       "title": "Top-bar shell",
-      "description": "The frame for a tool or site without a sidebar: links, search and user in a top bar that starts on the content's edge and gathers into a floating panel as wide as the content column on scroll, then the content and a footer. `home` is where the logo links; `<main>` has an id (`mainId`, \"main\") for a skip link; the phone drawer closes when a link in it is followed.",
+      "description": "The frame for a tool or site without a sidebar: links, search and user in a top bar that starts on the content's edge and gathers into a floating panel as wide as the content column on scroll, then the content and a footer. The logo links home, the main element has an id for a skip link, the phone drawer closes when a link in it is followed.",
       "dependencies": [
         "lucide-react"
       ],
@@ -6460,14 +6491,13 @@
       "name": "data-catalog",
       "type": "registry:block",
       "title": "Data catalog",
-      "description": "Datasets one row each: filter by tier, use and task (a drawer on phones), search, sort. Only restricted tiers carry colour.",
+      "description": "Datasets one row each: filter by tier, use and task (a drawer on phones), search, sort. Only restricted tiers carry colour. DataCatalogContent drops the sample frame, for your own shell.",
       "dependencies": [
         "lucide-react"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/app-shell",
-        "@syncrobotic/badge",
         "@syncrobotic/button",
         "@syncrobotic/checkbox",
         "@syncrobotic/empty-state",
@@ -6476,7 +6506,8 @@
         "@syncrobotic/sheet",
         "@syncrobotic/table",
         "@syncrobotic/input-group",
-        "@syncrobotic/choice-field"
+        "@syncrobotic/choice-field",
+        "@syncrobotic/tier-badge"
       ],
       "files": [
         {
@@ -6485,8 +6516,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "`DataCatalogContent` is the catalog without its frame (same props), for a product's own shell such as top-bar-shell; `DataCatalog` is that content in the sample AppShell, unchanged. `TierBadge`, `tiers` and `Tier` moved to the new `tier-badge` item and are re-exported from here; a compact tier badge still says its words to screen readers."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -6524,7 +6560,7 @@
       "name": "dataset-detail",
       "type": "registry:block",
       "title": "Dataset detail",
-      "description": "One dataset: release verdict, open issues, counts and splits, an annotated browse grid with layer toggles, lineage and compliance.",
+      "description": "One dataset: release verdict, open issues, counts and splits, an annotated browse grid with layer toggles, lineage and compliance. DatasetDetailContent drops the sample frame, for your own shell.",
       "dependencies": [
         "lucide-react"
       ],
@@ -6540,7 +6576,8 @@
         "@syncrobotic/toggle",
         "@syncrobotic/breadcrumb",
         "@syncrobotic/copy-button",
-        "@syncrobotic/description-list"
+        "@syncrobotic/description-list",
+        "@syncrobotic/tier-badge"
       ],
       "files": [
         {
@@ -6549,8 +6586,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "`DatasetDetailContent` is the page without its frame (same props), for a product's own shell such as top-bar-shell; `DatasetDetail` is that content in the sample AppShell, unchanged. The tier badge comes from the new `tier-badge` item."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -6631,7 +6673,7 @@
       "name": "governance-todo",
       "type": "registry:block",
       "title": "Governance to-do",
-      "description": "What needs a maintainer or the compliance reviewer, most blocking first; done items leave the list. `readOnly` for viewers who only read it; `onDone` when the app owns completion.",
+      "description": "What needs a maintainer or the compliance reviewer, most blocking first; done items leave the list. Read-only for viewers, app-owned completion, and GovernanceTodoContent drops the sample frame, for your own shell.",
       "dependencies": [
         "lucide-react"
       ],
@@ -6658,7 +6700,7 @@
           {
             "version": "0.31.0",
             "date": "2026-11-22",
-            "note": "`readOnly` hides the row actions and keeps the layout, for people who only read the list. `onDone(id)` hands completion to the app: the action calls it, and the row leaves when `todos` no longer has it (the block's own done list is not used)."
+            "note": "`readOnly` hides the row actions and keeps the layout, for people who only read the list. `onDone(id)` hands completion to the app: the action calls it, and the row leaves when `todos` no longer has it (the block's own done list is not used). `GovernanceTodoContent` is the list without its frame (same props), for a product's own shell such as top-bar-shell; `GovernanceTodo` is that content in the sample AppShell, unchanged."
           },
           {
             "version": "0.17.2",
@@ -6980,7 +7022,7 @@
           {
             "version": "0.31.0",
             "date": "2026-11-22",
-            "note": "Design language: `--shell-top` and `--shell-surface`, set by every shell, for pinning a tab row (TabsList sticky) or a filter bar under the top bar."
+            "note": "Design language: `--shell-top` and `--shell-surface`, set by every shell, for pinning a tab row (TabsList sticky) or a filter bar under the top bar. Skill: the data blocks' `…Content` exports, to use inside a product's own frame instead of a second shell."
           },
           {
             "version": "0.22.0",

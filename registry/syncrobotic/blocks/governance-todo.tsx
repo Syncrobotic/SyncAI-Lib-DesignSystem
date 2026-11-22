@@ -61,8 +61,8 @@ export type GovernanceTodoProps = {
   onDone?: (id: string) => void
 }
 
-/** Governance to-do: what needs a maintainer or the compliance reviewer, most blocking first. Done items leave the list. */
-export function GovernanceTodo({ todos = sampleTodos, readOnly, onDone }: GovernanceTodoProps) {
+/** The to-do without a frame: put it in your own shell (top-bar-shell, app-shell). */
+export function GovernanceTodoContent({ todos = sampleTodos, readOnly, onDone }: GovernanceTodoProps) {
   const [who, setWho] = React.useState<"all" | Todo["who"]>("all")
   const [done, setDone] = React.useState<string[]>([])
   const open = onDone ? todos : todos.filter((t) => !done.includes(t.id))
@@ -73,45 +73,52 @@ export function GovernanceTodo({ todos = sampleTodos, readOnly, onDone }: Govern
   const { rendered, done: finish } = usePresenceList(shown, (t) => t.id)
 
   return (
-    <AppShell product="DataCore" nav={dataNav} current="#governance" title="Governance" user={sampleUser}>
-      <div className="flex max-w-4xl flex-col gap-4">
-        <SegmentedControl value={who} onValueChange={(v) => v && setWho(v as typeof who)} aria-label="Owner" className="sm:w-auto sm:self-start">
-          <SegmentedControlItem value="all">All {open.length}</SegmentedControlItem>
-          <SegmentedControlItem value="Maintainer">Maintainers {count("Maintainer")}</SegmentedControlItem>
-          <SegmentedControlItem value="Compliance">Compliance {count("Compliance")}</SegmentedControlItem>
-        </SegmentedControl>
+    <div className="flex max-w-4xl flex-col gap-4">
+      <SegmentedControl value={who} onValueChange={(v) => v && setWho(v as typeof who)} aria-label="Owner" className="sm:w-auto sm:self-start">
+        <SegmentedControlItem value="all">All {open.length}</SegmentedControlItem>
+        <SegmentedControlItem value="Maintainer">Maintainers {count("Maintainer")}</SegmentedControlItem>
+        <SegmentedControlItem value="Compliance">Compliance {count("Compliance")}</SegmentedControlItem>
+      </SegmentedControl>
 
-        {rendered.length === 0 ? (
-          <EmptyState icon={CircleCheck} title="Nothing to do" description="Every dataset is ready for the releases it is meant for." />
-        ) : (
-          <ul aria-label="To-do" className="flex flex-col rounded-md bg-card ring-1 ring-border">
-            {rendered.map(({ item: t, leaving }, i) => (
-              <li
-                key={t.id}
-                aria-hidden={leaving || undefined}
-                className={leaving ? "animate-disappear" : "animate-appear"}
-                onAnimationEnd={(e) => leaving && e.target === e.currentTarget && finish(t.id)}
-              >
-                {i > 0 && <Separator />}
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3">
-                  <div className="flex min-w-0 flex-1 basis-64 flex-col gap-1">
-                    <span className="text-sm font-medium">{t.what}</span>
-                    <span className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                      <span className="font-mono">{t.dataset}</span> · {t.who}
-                    </span>
-                  </div>
-                  <InlineStatus status={t.state.tone}>{t.state.label}</InlineStatus>
-                  {!readOnly && (
-                    <Button variant="secondary" size="sm" onClick={() => (onDone ? onDone(t.id) : setDone((d) => [...d, t.id]))}>
-                      {t.action}
-                    </Button>
-                  )}
+      {rendered.length === 0 ? (
+        <EmptyState icon={CircleCheck} title="Nothing to do" description="Every dataset is ready for the releases it is meant for." />
+      ) : (
+        <ul aria-label="To-do" className="flex flex-col rounded-md bg-card ring-1 ring-border">
+          {rendered.map(({ item: t, leaving }, i) => (
+            <li
+              key={t.id}
+              aria-hidden={leaving || undefined}
+              className={leaving ? "animate-disappear" : "animate-appear"}
+              onAnimationEnd={(e) => leaving && e.target === e.currentTarget && finish(t.id)}
+            >
+              {i > 0 && <Separator />}
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3">
+                <div className="flex min-w-0 flex-1 basis-64 flex-col gap-1">
+                  <span className="text-sm font-medium">{t.what}</span>
+                  <span className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                    <span className="font-mono">{t.dataset}</span> · {t.who}
+                  </span>
                 </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+                <InlineStatus status={t.state.tone}>{t.state.label}</InlineStatus>
+                {!readOnly && (
+                  <Button variant="secondary" size="sm" onClick={() => (onDone ? onDone(t.id) : setDone((d) => [...d, t.id]))}>
+                    {t.action}
+                  </Button>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+/** Governance to-do: what needs a maintainer or the compliance reviewer, most blocking first. Done items leave the list. */
+export function GovernanceTodo(props: GovernanceTodoProps) {
+  return (
+    <AppShell product="DataCore" nav={dataNav} current="#governance" title="Governance" user={sampleUser}>
+      <GovernanceTodoContent {...props} />
     </AppShell>
   )
 }
