@@ -2,7 +2,9 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.29.0 · 2026-11-22
+
+Four new components for robot consoles: waypoint editor, camera wall, outdoor GPS map and attitude indicator, plus a top loader for slow page changes on the docs site.
 
 ### Added
 - **`waypoint-editor` 0.29.0 (beta):** plan a robot's route as an ordered list of waypoints, edited in a list and on `robot-map` together. Each waypoint has a name, a place in metres on the plan (or latitude and longitude: `at.kind`), an optional heading, an action on arrival (wait N s, dock, take a photo, custom) and a dwell time. Reorder by the handle (drag, touch or Space and the arrows), add by clicking the map or Add waypoint, delete with Undo in a toast, duplicate; a row and its point select each other. Problems (outside the map, inside a no-entry zone, too close to the one before, a missing name) show on the row and the point, and Save says why it is disabled. Distance and estimated time from `speed`, unsaved changes with Save and Cancel (Cancel has Undo too), `readOnly` for viewers; narrower than 768 px the list comes first and the map is a tab. `validateWaypoints`, `routeDistance` and `routeDuration` are exported.
