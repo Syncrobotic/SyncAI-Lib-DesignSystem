@@ -1,4 +1,4 @@
-// @syncrobotic/settings-page v0.17.2 · update: npx shadcn add @syncrobotic/settings-page --overwrite
+// @syncrobotic/settings-page v0.28.0 · update: npx shadcn add @syncrobotic/settings-page --overwrite
 "use client"
 
 import * as React from "react"
@@ -20,6 +20,7 @@ import { Button } from "@/registry/syncrobotic/ui/button"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { ChoiceField } from "@/registry/syncrobotic/ui/choice-field"
+import { Scrollspy } from "@/registry/syncrobotic/ui/scrollspy"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
 import { Switch } from "@/registry/syncrobotic/ui/switch"
 import { Toaster, toast } from "@/registry/syncrobotic/ui/toast"
@@ -74,30 +75,36 @@ export function SettingsPage() {
   // The save bar leaves the way it came (disappear), after Save or Discard.
   const saveBar = usePresence(dirty)
 
+  const siteField = React.useRef<HTMLInputElement>(null)
+  // The shell's content is what scrolls; the section links follow it. Found from the page's own element when it mounts.
+  const scroller = React.useRef<HTMLElement | null>(null)
+
   const save = () => {
-    if (site.trim().length < 2) return setError("At least 2 characters")
+    if (site.trim().length < 2) {
+      setError("At least 2 characters")
+      // A failed save takes you to the first field to fix, as a form's submit does, and its error is read with it.
+      siteField.current?.focus()
+      return
+    }
     setError(null)
     toast({ tone: "success", title: "Settings saved" })
   }
 
   return (
     <AppShell product="Fleet console" nav={sampleNav} current="#settings" title="Settings" user={sampleUser}>
-      <div className="flex max-w-4xl flex-col gap-8">
-        <nav aria-label="Settings sections" className="flex gap-1 overflow-x-auto">
-          {sections.map((s) => (
-            <a
-              key={s.id}
-              href={`#${s.id}`}
-              className="press flex h-(--h-sm) shrink-0 items-center rounded-xs px-3 text-sm text-muted-foreground hover:bg-accent hover:text-foreground"
-            >
-              {s.label}
-            </a>
-          ))}
-        </nav>
+      <div
+        ref={(el) => {
+          scroller.current = el?.closest("main") ?? null
+        }}
+        className="flex max-w-4xl flex-col gap-8"
+      >
+        {/* Where you are on the page: the section being read is marked (aria-current), so the links never pass for tabs
+            with none chosen. */}
+        <Scrollspy items={sections} root={scroller} offset={48} title="Settings sections" variant="pills" />
 
         <Section id="general" title="General" description="How this site is named and which clock its schedules use.">
           <Field label="Site name" error={error ?? undefined} hint="Shown on the island and in reports.">
-            <Input value={site} onChange={(e) => setSite(e.target.value)} />
+            <Input ref={siteField} value={site} onChange={(e) => setSite(e.target.value)} />
           </Field>
           <Field label="Time zone">
             <Select value={timezone} onValueChange={setTimezone}>

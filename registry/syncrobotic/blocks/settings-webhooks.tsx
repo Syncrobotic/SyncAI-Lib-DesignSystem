@@ -1,4 +1,4 @@
-// @syncrobotic/settings-webhooks v0.21.1 · update: npx shadcn add @syncrobotic/settings-webhooks --overwrite
+// @syncrobotic/settings-webhooks v0.28.0 · update: npx shadcn add @syncrobotic/settings-webhooks --overwrite
 "use client"
 
 import * as React from "react"
@@ -156,13 +156,15 @@ function validateUrl(value: string, taken: string[]) {
 }
 
 function EndpointStatus({ endpoint: e }: { endpoint: WebhookEndpoint }) {
-  // Calm states are grey; only a failing endpoint needs someone, so only it gets colour, always with an icon and words.
+  // Calm states are grey; only a failing endpoint needs someone, so only it gets colour: its icon and the word Failing.
+  // Since when and the last error are the details, in grey.
   if (e.status === "failing")
     return (
-      <span className="flex items-start gap-2 text-xs text-danger">
-        <CircleAlert aria-hidden="true" className="size-4 shrink-0" />
+      <span className="flex items-start gap-2 text-xs text-muted-foreground">
+        <CircleAlert aria-hidden="true" className="size-4 shrink-0 text-danger" />
         <span>
-          Failing{e.failingSince && ` since ${e.failingSince}`}
+          <span className="font-medium text-danger">Failing</span>
+          {e.failingSince && ` since ${e.failingSince}`}
           {e.lastError && ` · Last error: ${e.lastError}`}
         </span>
       </span>
@@ -307,8 +309,8 @@ function DeleteEndpoint({ endpoint, onDelete }: { endpoint: WebhookEndpoint; onD
   return (
     <AlertDialog onOpenChange={() => setTyped("")}>
       <AlertDialogTrigger asChild>
-        {/* Neutral on the page; red is for the confirmation, where the endpoint is actually deleted. */}
-        <Button variant="outline" size="sm">
+        {/* A destructive action looks it on the page too (danger outline and text); the confirmation asks for the name. */}
+        <Button variant="destructive" size="sm">
           Delete endpoint
         </Button>
       </AlertDialogTrigger>

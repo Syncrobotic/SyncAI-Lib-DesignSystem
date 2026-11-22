@@ -100,23 +100,43 @@ export type AppSearch = {
   groups: AppSearchGroup[]
 }
 
-/** Navigation shared by the engineering-tool templates. Replace with your own. */
+/**
+ * Navigation shared by the engineering-tool templates: every page a template shows is in it, so each one marks its own
+ * place (a section's pages show under it while one of them is current). Replace with your own.
+ */
 export const sampleNav: AppNavGroup[] = [
   {
     items: [
       { label: "Overview", href: "#overview", icon: LayoutDashboard },
-      { label: "Robots", href: "#robots", icon: Bot },
+      {
+        label: "Robots",
+        href: "#robots",
+        icon: Bot,
+        items: [
+          { label: "Maintenance", href: "#maintenance" },
+          { label: "Rollouts", href: "#rollouts" },
+        ],
+      },
       { label: "Map", href: "#map", icon: Map },
     ],
   },
   {
     label: "Operations",
     items: [
-      { label: "Alarms", href: "#alarms", icon: Bell, count: 2 },
+      { label: "Alarms", href: "#alarms", icon: Bell, count: 2, items: [{ label: "Incidents", href: "#incidents" }] },
       { label: "Schedule", href: "#schedule", icon: CalendarDays },
       { label: "Agents", href: "#agents", icon: Sparkles },
       { label: "Event log", href: "#events", icon: ScrollText },
-      { label: "Settings", href: "#settings", icon: Settings },
+      {
+        label: "Settings",
+        href: "#settings",
+        icon: Settings,
+        items: [
+          { label: "Users", href: "#users" },
+          { label: "Invitations", href: "#invitations" },
+          { label: "Audit log", href: "#audit-log" },
+        ],
+      },
     ],
   },
 ]

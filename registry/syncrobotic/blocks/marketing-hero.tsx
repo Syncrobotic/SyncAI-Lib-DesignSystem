@@ -1,4 +1,4 @@
-// @syncrobotic/marketing-hero v0.13.0 · update: npx shadcn add @syncrobotic/marketing-hero --overwrite
+// @syncrobotic/marketing-hero v0.28.0 · update: npx shadcn add @syncrobotic/marketing-hero --overwrite
 import * as React from "react"
 import { ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -37,7 +37,9 @@ export function MarketingHero({
           <Badge tone="outline">{eyebrow}</Badge>
           <h1 className="text-3xl font-bold tracking-tight md:text-5xl">{title}</h1>
           <p className="max-w-lg text-lg text-muted-foreground">{lead}</p>
-          <div className="flex flex-wrap gap-3">
+          {/* Below 640 px the two stack at full width, one per line by design; beside each other they would wrap one
+              alone onto a second line. */}
+          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap">
             <Button size="lg" asChild>
               <a href={primary.href}>
                 {primary.label} <ArrowRight aria-hidden="true" className="size-5" />

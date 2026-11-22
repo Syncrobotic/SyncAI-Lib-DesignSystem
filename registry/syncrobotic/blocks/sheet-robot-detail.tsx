@@ -1,9 +1,13 @@
-// @syncrobotic/sheet-robot-detail v0.17.4 · update: npx shadcn add @syncrobotic/sheet-robot-detail --overwrite
+// @syncrobotic/sheet-robot-detail v0.28.0 · update: npx shadcn add @syncrobotic/sheet-robot-detail --overwrite
 "use client"
 
+import * as React from "react"
 import { Camera, X } from "lucide-react"
+import { feedback } from "@/registry/syncrobotic/lib/feedback"
 import { ChargingDock } from "@/registry/syncrobotic/ui/robot-icons"
+import { SlideToRelease } from "@/registry/syncrobotic/shell/slide-to-release"
 import { StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
+import { StopButton } from "@/registry/syncrobotic/shell/stop-button"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
@@ -12,7 +16,8 @@ import { Timeline, TimelineItem } from "@/registry/syncrobotic/ui/timeline"
 
 /**
  * One robot in a side panel, over the list or map it was picked from, so you never lose your place. State and name
- * first, the levels that decide the next action, the last events, and the actions at the bottom in thumb reach.
+ * first, the levels that decide the next action, the last events, and the actions at the bottom in thumb reach. The
+ * sheet's scrim covers the app's own stop, so the robot's emergency stop comes with it, above the actions.
  */
 export function SheetRobotDetail({
   defaultOpen,
@@ -22,6 +27,9 @@ export function SheetRobotDetail({
   /** false for previews that open on load, so the page around them keeps its focus. */
   focusOnOpen?: boolean
 }) {
+  // The stop as in the dock. The robot stands still at the door, so it starts pale ("idle"); a touch stops it, it
+  // confirms, and slide to release lets it go again.
+  const [stop, setStop] = React.useState<"idle" | "sending" | "stopped">("idle")
   return (
     <div className="flex min-h-[var(--app-shell-height,100dvh)] items-start bg-background p-6">
       <Sheet defaultOpen={defaultOpen}>
@@ -69,6 +77,22 @@ export function SheetRobotDetail({
           </section>
 
           <SheetFooter className="mt-auto">
+            {stop === "stopped" ? (
+              <SlideToRelease tag="9E37" onRelease={() => window.setTimeout(() => setStop("idle"), 500)} />
+            ) : (
+              <StopButton
+                state={stop}
+                tag="9E37"
+                onStop={() => {
+                  setStop("sending")
+                  // The robot confirms: the app says so to the hand, then offers release.
+                  window.setTimeout(() => {
+                    feedback("stopConfirmed")
+                    setStop("stopped")
+                  }, 800)
+                }}
+              />
+            )}
             <Button>
               <ChargingDock aria-hidden="true" />
               Send to dock

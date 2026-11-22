@@ -1,8 +1,8 @@
-// @syncrobotic/event-log v0.17.3 · update: npx shadcn add @syncrobotic/event-log --overwrite
+// @syncrobotic/event-log v0.28.0 · update: npx shadcn add @syncrobotic/event-log --overwrite
 "use client"
 
 import * as React from "react"
-import { Download, Search, SearchX } from "lucide-react"
+import { ChevronRight, Download, Search, SearchX } from "lucide-react"
 import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { alarmPriority, type AlarmPriority } from "@/registry/syncrobotic/ui/alarm"
 import { Button } from "@/registry/syncrobotic/ui/button"
@@ -33,7 +33,7 @@ export const sampleEvents: LogEvent[] = [
     priority: "high",
     source: "9C44",
     message: "Battery below 15 %",
-    detail: "18 % at 14:01. Estimated 12 min left. Return-to-dock suggested.",
+    detail: "14 % at 14:01. Estimated 12 min left. Return-to-dock suggested.",
   },
   { id: "e3", time: "13:58:12", age: "1h", priority: "info", source: "7F3A", message: "Route Perimeter B started", detail: "6 waypoints, 1.2 km. ETA 14:31." },
   {
@@ -88,7 +88,7 @@ function Level({ priority }: { priority: LogEvent["priority"] }) {
   )
 }
 
-/** Event log: filter by time, level and text, read the table, open one event in a side sheet. */
+/** Event log: filter by time, level and text, read the table, open one event in a side sheet by its whole row. */
 export function EventLog({ events = sampleEvents }: { events?: LogEvent[] }) {
   const [range, setRange] = React.useState<keyof typeof ranges>("24h")
   const [level, setLevel] = React.useState<string>("all")
@@ -156,11 +156,19 @@ export function EventLog({ events = sampleEvents }: { events?: LogEvent[] }) {
                 <TableHead className="hidden w-28 sm:table-cell">Level</TableHead>
                 <TableHead className="hidden w-24 md:table-cell">Source</TableHead>
                 <TableHead>Message</TableHead>
+                <TableHead className="w-12 max-sm:pr-2 max-sm:pl-0">
+                  <span className="sr-only">Details</span>
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {rows.map((e) => (
-                <TableRow key={e.id}>
+                // The whole row opens the event, as a card opens its site: the message is the button's text, and the button
+                // stretches over the row (after:inset-0), so the target is the row's 56 px, not the message's line.
+                <TableRow
+                  key={e.id}
+                  className="relative hover:bg-accent has-[button:focus-visible]:outline-2 has-[button:focus-visible]:-outline-offset-2 has-[button:focus-visible]:outline-ring"
+                >
                   <TableCell className="py-2 align-top font-mono text-sm tabular-nums sm:align-middle">
                     {e.time}
                     {/* On a phone the level sits under the time, and the source under the message. */}
@@ -173,10 +181,15 @@ export function EventLog({ events = sampleEvents }: { events?: LogEvent[] }) {
                   </TableCell>
                   <TableCell className="hidden font-mono text-sm md:table-cell">{e.source}</TableCell>
                   <TableCell className="py-2 max-md:whitespace-normal">
-                    <button type="button" onClick={() => setOpen(e)} className="press text-left text-sm underline-offset-4 hover:underline">
+                    {/* focus-ring: the row draws the ring (has-[button:focus-visible] on TableRow), since the button covers it. No press:
+                        a scale would make the button the box its overlay fills, and shrink the target mid-tap. */}
+                    <button type="button" onClick={() => setOpen(e)} className="text-left text-sm underline-offset-4 outline-none after:absolute after:inset-0 hover:underline">
                       {e.message}
                     </button>
                     <span className="block font-mono text-xs text-muted-foreground md:hidden">{e.source}</span>
+                  </TableCell>
+                  <TableCell className="w-12 text-muted-foreground max-sm:pr-2 max-sm:pl-0">
+                    <ChevronRight aria-hidden="true" className="size-5" />
                   </TableCell>
                 </TableRow>
               ))}

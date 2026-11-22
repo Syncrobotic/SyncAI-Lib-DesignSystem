@@ -1,4 +1,4 @@
-// @syncrobotic/users-roles v0.17.2 · update: npx shadcn add @syncrobotic/users-roles --overwrite
+// @syncrobotic/users-roles v0.28.0 · update: npx shadcn add @syncrobotic/users-roles --overwrite
 "use client"
 
 import * as React from "react"
@@ -75,7 +75,7 @@ export function UsersRoles() {
     <AppShell
       product="Fleet console"
       nav={sampleNav}
-      current="#settings"
+      current="#users"
       title="Users"
       user={sampleUser}
       actions={

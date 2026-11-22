@@ -1,8 +1,8 @@
-// @syncrobotic/settings-billing v0.21.1 · update: npx shadcn add @syncrobotic/settings-billing --overwrite
+// @syncrobotic/settings-billing v0.28.0 · update: npx shadcn add @syncrobotic/settings-billing --overwrite
 "use client"
 
 import * as React from "react"
-import { CircleAlert, CircleCheck, Clock, CreditCard, Download, FileText, RotateCw } from "lucide-react"
+import { CircleAlert, CircleCheck, Clock, CreditCard, Download, FileText, RotateCw, TriangleAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Bone, LoadingLine } from "@/registry/syncrobotic/shell/skeleton"
 import { Alert, AlertDescription, AlertTitle } from "@/registry/syncrobotic/ui/alert"
@@ -94,12 +94,12 @@ const formatRange = (start: string, end: string, locale: string) => `${formatDat
 
 /**
  * The words, icon and colour of an invoice's status. Paid is a calm, lasting state: grey with a check. Due is plain text
- * with a clock. Overdue needs someone: danger text with an alert icon, never a filled red.
+ * with a clock. Overdue needs someone, but the robots keep working: warning text with a warning icon, never danger.
  */
 export const invoiceStatus = {
   paid: { label: "Paid", icon: CircleCheck, className: "text-muted-foreground" },
   due: { label: "Due", icon: Clock, className: "text-foreground" },
-  overdue: { label: "Overdue", icon: CircleAlert, className: "font-medium text-danger" },
+  overdue: { label: "Overdue", icon: TriangleAlert, className: "font-medium text-warning" },
 } as const
 
 /** The status as it reads in the table: "Paid", "Due 1 Dec 2026", "Overdue since 1 Nov 2026". */
@@ -237,8 +237,8 @@ export function SettingsBilling({
       {header}
 
       {overdue.length > 0 && (
-        <Alert tone="danger">
-          <CircleAlert aria-hidden="true" />
+        <Alert tone="warning">
+          <TriangleAlert aria-hidden="true" />
           <AlertTitle>
             {overdue.length === 1 ? `Invoice ${overdue[0]!.number} is overdue` : `${overdue.length} invoices are overdue`}
           </AlertTitle>

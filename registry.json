@@ -5303,8 +5303,13 @@
         }
       ],
       "meta": {
-        "version": "0.18.1",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Percentages read \"8 %\" with a space; a change in a percentage is in points (\"−2 pp\"). 9C44 reads 14 %."
+          },
           {
             "version": "0.18.1",
             "date": "2026-11-21",
@@ -5342,7 +5347,7 @@
       "name": "fleet-table",
       "type": "registry:block",
       "title": "Fleet table",
-      "description": "Search, filter by state, paginate and act on rows. Status as shape plus word, low battery in warning.",
+      "description": "Search, filter by state, paginate and act on rows. Status as shape plus word, low battery in warning. A section, not a screen: the screen it sits in carries the emergency stop (the app shell's, as in console-overview).",
       "dependencies": [
         "lucide-react"
       ],
@@ -5367,8 +5372,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "9C44's battery is 14 %, under the 15 % warning, as in its alarm. The description says the screen it sits in carries the emergency stop."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -5416,7 +5426,7 @@
       "name": "robot-status-card",
       "type": "registry:block",
       "title": "Robot status card",
-      "description": "One robot on a phone: state, battery, connection, location, current task and the next actions.",
+      "description": "One robot on a phone: state, battery, connection, location, current task and the next actions. It never stops the robot itself: the app's dock carries the emergency stop, one tap away.",
       "dependencies": [
         "lucide-react"
       ],
@@ -5434,8 +5444,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.1",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Percentages read \"72 %\" with a space, as everywhere else. The description says the app's dock carries the emergency stop."
+          },
           {
             "version": "0.15.1",
             "date": "2026-11-21",
@@ -5485,8 +5500,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Below 640 px the two calls to action stack at full width instead of each wrapping alone onto its line."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -5541,7 +5561,7 @@
           {
             "version": "0.28.0",
             "date": "2026-11-21",
-            "note": "Built on the new `sidebar` component instead of its own: about 140 lines shorter. The sidebar toggle moves to the top bar (SidebarTrigger) on every screen, ⌘B / Ctrl+B toggles it, and the choice is kept in a cookie (it still starts open from 1280 px and as a rail below). The rail names its icons with tooltips instead of opening over the content on hover or tap. Phones get the sheet below 768 px (was 640). Nav items take `tag` (a quiet \"Beta\") and `items` (pages listed under their section while it is current); `sidebarLabels` translates the sidebar's words. SidebarUserMenu reads the rail from the sidebar and no longer takes `collapsed` or `onOpenChange`."
+            "note": "Built on the new `sidebar` component instead of its own: about 140 lines shorter. The sidebar toggle moves to the top bar (SidebarTrigger) on every screen, ⌘B / Ctrl+B toggles it, and the choice is kept in a cookie (it still starts open from 1280 px and as a rail below). The rail names its icons with tooltips instead of opening over the content on hover or tap. Phones get the sheet below 768 px (was 640). Nav items take `tag` (a quiet \"Beta\") and `items` (pages listed under their section while it is current); `sidebarLabels` translates the sidebar's words. SidebarUserMenu reads the rail from the sidebar and no longer takes `collapsed` or `onOpenChange`. sampleNav lists every page the templates show (Maintenance and Rollouts under Robots, Incidents under Alarms, Users, Invitations and Audit log under Settings), so each marks its own place."
           },
           {
             "version": "0.22.4",
@@ -5707,7 +5727,10 @@
         "@syncrobotic/stats-cards",
         "@syncrobotic/fleet-table",
         "@syncrobotic/alarm",
-        "@syncrobotic/button"
+        "@syncrobotic/button",
+        "@syncrobotic/stop-button",
+        "@syncrobotic/slide-to-release",
+        "@syncrobotic/feedback"
       ],
       "files": [
         {
@@ -5716,8 +5739,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.0",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "The site's emergency stop (all robots) sticks to the bottom of the page, one tap away while it scrolls; slide to release once stopped. 9C44's battery alarm reads 14 %."
+          },
           {
             "version": "0.22.0",
             "date": "2026-11-20",
@@ -5767,7 +5795,10 @@
         "@syncrobotic/input-group",
         "@syncrobotic/description-list",
         "@syncrobotic/meter",
-        "@syncrobotic/robot-icons"
+        "@syncrobotic/robot-icons",
+        "@syncrobotic/stop-button",
+        "@syncrobotic/slide-to-release",
+        "@syncrobotic/feedback"
       ],
       "files": [
         {
@@ -5776,8 +5807,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.4",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "The picked robot's emergency stop sits at the foot of its detail and stays on screen; a stopped robot offers slide to release, an offline one says the stop cannot reach it."
+          },
           {
             "version": "0.17.4",
             "date": "2026-11-21",
@@ -5859,8 +5895,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "The whole 56 px row opens an event, with a chevron at its end, instead of the message's one line of text. 9C44's battery reads 14 %, as on the overview and the fleet table."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-21",
@@ -5935,8 +5976,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "9C44's battery reads 14 %, as on the overview, the event log and the fleet table."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -6230,7 +6276,8 @@
         "@syncrobotic/switch",
         "@syncrobotic/toast",
         "@syncrobotic/choice-field",
-        "@syncrobotic/use-presence"
+        "@syncrobotic/use-presence",
+        "@syncrobotic/scrollspy"
       ],
       "files": [
         {
@@ -6239,8 +6286,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "The section links are a Scrollspy: the section being read is marked. A failed save puts focus on the first field to fix."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -6350,8 +6402,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Current page in the nav is Users, under Settings."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -6655,8 +6712,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.1",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "The y axis ticks at 0, 10, 20 and 30."
+          },
           {
             "version": "0.22.1",
             "date": "2026-11-21",
@@ -7077,8 +7139,13 @@
         }
       ],
       "meta": {
-        "version": "0.19.0",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Changes carry their unit: \"+0.4 pp\" uptime, \"−6 s\" response."
+          },
           {
             "version": "0.19.0",
             "date": "2026-11-20",
@@ -7177,7 +7244,8 @@
       "description": "The last 20 runs of each route as a strip, newest on the right, with the pass count.",
       "registryDependencies": [
         "@syncrobotic/cn",
-        "@syncrobotic/card"
+        "@syncrobotic/card",
+        "@syncrobotic/status-glyph"
       ],
       "files": [
         {
@@ -7186,8 +7254,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Only the outcome word and its shape are in colour (\"Failed\", \"Partial\"); the last run's time stays grey."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-21",
@@ -7698,8 +7771,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.4",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "What needs someone is in ink after the state's shape, instead of a whole line in warning."
+          },
           {
             "version": "0.17.4",
             "date": "2026-11-21",
@@ -7742,7 +7820,8 @@
         "@syncrobotic/status-glyph",
         "@syncrobotic/button",
         "@syncrobotic/card",
-        "@syncrobotic/progress"
+        "@syncrobotic/progress",
+        "@syncrobotic/alert"
       ],
       "files": [
         {
@@ -7751,8 +7830,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Why a mission is blocked is a warning Alert (icon in colour, words in ink) instead of a whole sentence in warning text."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-21",
@@ -8001,8 +8085,13 @@
         }
       ],
       "meta": {
-        "version": "0.21.1",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Delete endpoint is a destructive button on the page too. A failing endpoint colours its icon and the word Failing; since when and the last error stay grey."
+          },
           {
             "version": "0.21.1",
             "date": "2026-11-21",
@@ -8074,8 +8163,13 @@
         }
       ],
       "meta": {
-        "version": "0.21.1",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "An overdue invoice is a warning (robots keep working), never danger or role=alert: the note, and Overdue in the table with a warning icon."
+          },
           {
             "version": "0.21.1",
             "date": "2026-11-21",
@@ -8281,7 +8375,10 @@
         "@syncrobotic/meter",
         "@syncrobotic/sheet",
         "@syncrobotic/timeline",
-        "@syncrobotic/robot-icons"
+        "@syncrobotic/robot-icons",
+        "@syncrobotic/stop-button",
+        "@syncrobotic/slide-to-release",
+        "@syncrobotic/feedback"
       ],
       "files": [
         {
@@ -8290,8 +8387,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.4",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "The robot's emergency stop comes with the sheet, above its actions: the sheet's scrim covers the app's own."
+          },
           {
             "version": "0.17.4",
             "date": "2026-11-21",
@@ -8508,8 +8610,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Steps two and three say nothing about the file until there is one, and a disabled Next says \"Choose a CSV file first\" beside it."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -8535,7 +8642,8 @@
         "@syncrobotic/cn",
         "@syncrobotic/app-shell",
         "@syncrobotic/button",
-        "@syncrobotic/segmented-control"
+        "@syncrobotic/segmented-control",
+        "@syncrobotic/alert"
       ],
       "files": [
         {
@@ -8544,8 +8652,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Every mission says its state in a word, on the timeline too, and the key names states, never colours. Missions are wide enough for their names; the one the now-line crosses is running. A mission that cannot run is a warning Alert."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -8602,8 +8715,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Current page in the nav is Invitations, under Settings."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -8654,8 +8772,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Current page in the nav is Audit log, under Settings."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -8703,8 +8826,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Current page in the nav is Incidents, under Alarms."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -8756,8 +8884,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Current page in the nav is Incidents, under Alarms."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -8795,8 +8928,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "The due column says Overdue or Due soon as a shape and a word in colour; when it is due stays grey. Current page in the nav is Maintenance."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -8846,8 +8984,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Current page in the nav is Maintenance, under Robots."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -8890,8 +9033,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Current page in the nav is Rollouts, under Robots."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -8942,8 +9090,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.4",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "Current page in the nav is Rollouts, under Robots."
+          },
           {
             "version": "0.17.4",
             "date": "2026-11-21",
@@ -9040,8 +9193,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.28.0",
         "changelog": [
+          {
+            "version": "0.28.0",
+            "date": "2026-11-21",
+            "note": "The page is titled by what it is (\"Route planner run\"); the run's id is a fact beside the steps."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-21",

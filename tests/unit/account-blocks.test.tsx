@@ -51,7 +51,11 @@ describe("SettingsWebhooks", () => {
 
   it("marks a failing endpoint in words and opens a failed delivery to its response", () => {
     render(<SettingsWebhooks />)
-    expect(screen.getByText(/Failing since Today, 09:15 · Last error: 503 Service Unavailable/)).toBeTruthy()
+    // Only the word Failing is in danger; since when and the last error are grey details beside it.
+    const word = screen.getByText("Failing")
+    expect(word.className).toContain("text-danger")
+    expect(word.parentElement?.textContent).toBe("Failing since Today, 09:15 · Last error: 503 Service Unavailable")
+    expect(word.parentElement?.className ?? "").not.toContain("text-danger")
     const failed = screen.getByRole("button", { name: /502.*failed/ })
     expect(failed.getAttribute("aria-expanded")).toBe("false")
     fireEvent.click(failed)

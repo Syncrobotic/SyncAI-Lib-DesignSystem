@@ -1,4 +1,4 @@
-// @syncrobotic/rollout-overview v0.17.3 · update: npx shadcn add @syncrobotic/rollout-overview --overwrite
+// @syncrobotic/rollout-overview v0.28.0 · update: npx shadcn add @syncrobotic/rollout-overview --overwrite
 "use client"
 
 import * as React from "react"
@@ -50,7 +50,7 @@ export function RolloutOverview() {
     <AppShell
       product="Fleet console"
       nav={sampleNav}
-      current="#robots"
+      current="#rollouts"
       title="Firmware 2.4.1"
       user={sampleUser}
       actions={

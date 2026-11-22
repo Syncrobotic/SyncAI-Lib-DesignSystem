@@ -1,8 +1,8 @@
-// @syncrobotic/card-site v0.17.4 · update: npx shadcn add @syncrobotic/card-site --overwrite
+// @syncrobotic/card-site v0.28.0 · update: npx shadcn add @syncrobotic/card-site --overwrite
 import { ChevronRight, MapPin } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
-import type { Status } from "@/registry/syncrobotic/shell/status-glyph"
+import { StatusGlyph, type Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Card } from "@/registry/syncrobotic/ui/card"
 
 export type Site = {
@@ -83,7 +83,15 @@ export function CardSite({ sites = sampleSites, className }: { sites?: Site[]; c
                 <dd className="font-medium tabular-nums">{s.missionsToday}</dd>
               </div>
             </dl>
-            <p className={cn("text-sm", s.attention ? "text-warning" : "text-muted-foreground")}>{s.attention ?? "Nothing needs you."}</p>
+            {/* What needs someone is in ink, after the state's shape; the colour is the shape's and the state word's above. */}
+            {s.attention ? (
+              <p className="flex items-center gap-2 text-sm">
+                <StatusGlyph status={s.state.tone} />
+                {s.attention}
+              </p>
+            ) : (
+              <p className="text-sm text-muted-foreground">Nothing needs you.</p>
+            )}
           </Card>
         </li>
       ))}

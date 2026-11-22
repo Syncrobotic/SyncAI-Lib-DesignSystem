@@ -1,4 +1,4 @@
-// @syncrobotic/fleet-table v0.17.3 · update: npx shadcn add @syncrobotic/fleet-table --overwrite
+// @syncrobotic/fleet-table v0.28.0 · update: npx shadcn add @syncrobotic/fleet-table --overwrite
 "use client"
 
 import * as React from "react"
@@ -35,7 +35,7 @@ const status: Record<Robot["status"], { tone: Status; label: string }> = {
 export const sampleRobots: Robot[] = [
   { id: "7F3A", name: "Patrol dog 7F3A", status: "patrolling", battery: 72, site: "North gate", lastSeen: "now" },
   { id: "2B10", name: "Patrol dog 2B10", status: "docked", battery: 100, site: "Dock A", lastSeen: "now" },
-  { id: "9C44", name: "Patrol dog 9C44", status: "attention", battery: 18, site: "Parking lot", lastSeen: "1 min ago" },
+  { id: "9C44", name: "Patrol dog 9C44", status: "attention", battery: 14, site: "Parking lot", lastSeen: "1 min ago" },
   { id: "4D21", name: "Patrol dog 4D21", status: "stopped", battery: 64, site: "Warehouse", lastSeen: "now" },
   { id: "1A08", name: "Patrol dog 1A08", status: "patrolling", battery: 55, site: "Perimeter", lastSeen: "now" },
   { id: "6E77", name: "Patrol dog 6E77", status: "offline", battery: 0, site: "Dock B", lastSeen: "3 h ago" },
@@ -51,7 +51,12 @@ const matches: Record<Filter, (r: Robot) => boolean> = {
   offline: (r) => r.status === "offline",
 }
 
-/** The fleet at a glance: search, filter by state, page through, act on a row. On phones, status moves under the name and site and last seen hide. */
+/**
+ * The fleet at a glance: search, filter by state, page through, act on a row. On phones, status moves under the name
+ * and site and last seen hide. A section, not a screen: the screen it sits in carries the emergency stop, one tap away
+ * (the app shell's, as in console-overview); the table never stops a robot itself.
+ */
+
 export function FleetTable({ robots = sampleRobots, pageSize = 5, onOpen }: { robots?: Robot[]; pageSize?: number; onOpen?: (r: Robot) => void }) {
   const [query, setQuery] = React.useState("")
   const [filter, setFilter] = React.useState<Filter>("all")
