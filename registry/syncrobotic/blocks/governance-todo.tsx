@@ -1,4 +1,4 @@
-// @syncrobotic/governance-todo v0.17.2 · update: npx shadcn add @syncrobotic/governance-todo --overwrite
+// @syncrobotic/governance-todo v0.31.0 · update: npx shadcn add @syncrobotic/governance-todo --overwrite
 "use client"
 
 import * as React from "react"
@@ -50,11 +50,22 @@ export const sampleTodos: Todo[] = [
   },
 ]
 
+export type GovernanceTodoProps = {
+  todos?: Todo[]
+  /** No row actions, for people who only read the list (the work is done elsewhere: a pipeline, a pull request). Rows keep their layout. */
+  readOnly?: boolean
+  /**
+   * The app owns completion: a row's action calls this with its id, and the row leaves when `todos` no longer has it.
+   * Without it, the block hides a done row itself.
+   */
+  onDone?: (id: string) => void
+}
+
 /** Governance to-do: what needs a maintainer or the compliance reviewer, most blocking first. Done items leave the list. */
-export function GovernanceTodo({ todos = sampleTodos }: { todos?: Todo[] }) {
+export function GovernanceTodo({ todos = sampleTodos, readOnly, onDone }: GovernanceTodoProps) {
   const [who, setWho] = React.useState<"all" | Todo["who"]>("all")
   const [done, setDone] = React.useState<string[]>([])
-  const open = todos.filter((t) => !done.includes(t.id))
+  const open = onDone ? todos : todos.filter((t) => !done.includes(t.id))
   const shown = open.filter((t) => who === "all" || t.who === who)
   const count = (w: Todo["who"]) => open.filter((t) => t.who === w).length
 
@@ -90,9 +101,11 @@ export function GovernanceTodo({ todos = sampleTodos }: { todos?: Todo[] }) {
                     </span>
                   </div>
                   <InlineStatus status={t.state.tone}>{t.state.label}</InlineStatus>
-                  <Button variant="secondary" size="sm" onClick={() => setDone((d) => [...d, t.id])}>
-                    {t.action}
-                  </Button>
+                  {!readOnly && (
+                    <Button variant="secondary" size="sm" onClick={() => (onDone ? onDone(t.id) : setDone((d) => [...d, t.id]))}>
+                      {t.action}
+                    </Button>
+                  )}
                 </div>
               </li>
             ))}

@@ -28,6 +28,8 @@ export const MapWorkspaceScreen: S = { render: () => <MapWorkspace /> }
 export const DataCatalogScreen: S = { render: () => <DataCatalog /> }
 export const DatasetDetailScreen: S = { render: () => <DatasetDetail /> }
 export const GovernanceTodoScreen: S = { render: () => <GovernanceTodo /> }
+// For people who only read the list: no row actions, the rows keep their layout.
+export const GovernanceTodoReadOnly: S = { render: () => <GovernanceTodo readOnly /> }
 export const SettingsScreen: S = { render: () => <SettingsPage /> }
 export const RecordFormScreen: S = { render: () => <RecordForm /> }
 export const UsersRolesScreen: S = { render: () => <UsersRoles /> }

@@ -6631,7 +6631,7 @@
       "name": "governance-todo",
       "type": "registry:block",
       "title": "Governance to-do",
-      "description": "What needs a maintainer or the compliance reviewer, most blocking first; done items leave the list.",
+      "description": "What needs a maintainer or the compliance reviewer, most blocking first; done items leave the list. `readOnly` for viewers who only read it; `onDone` when the app owns completion.",
       "dependencies": [
         "lucide-react"
       ],
@@ -6653,8 +6653,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.31.0",
         "changelog": [
+          {
+            "version": "0.31.0",
+            "date": "2026-11-22",
+            "note": "`readOnly` hides the row actions and keeps the layout, for people who only read the list. `onDone(id)` hands completion to the app: the action calls it, and the row leaves when `todos` no longer has it (the block's own done list is not used)."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",

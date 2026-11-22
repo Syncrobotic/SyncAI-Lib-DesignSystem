@@ -310,6 +310,7 @@ export const blockTypes: BlockType[] = [
     rules: [
       "Only restricted tiers are coloured.",
       "A release verdict says what blocks it, not just that it is blocked.",
+      "A to-do only offers an action the viewer can take: `readOnly` for people who only read it, `onDone` when the app decides what done means.",
       "A review queue answers with single keys (1, 2, 3), shows each key on its button, and undoes with Backspace or ⌘Z / Ctrl+Z. ? lists the keys.",
     ],
   },
