@@ -8,6 +8,7 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - **`theme-toggle` 0.30.0:** `variant="menu"`, one icon button that shows the choice and opens Light, Match system and Dark as a menu (the docs site's header uses it).
 
 ### Fixed
+- **Docs site, phones:** the navigation drawer's areas are tabs: choosing one shows its pages under them without leaving the page, and the home page's drawer has the same tabs (Docs first).
 - **Docs site:** pages show their server HTML at once instead of fading in after the scripts, and each page loads only its own examples (initial JavaScript about 290 KB gzipped, from 580 to 900 KB).
 
 ## 0.29.0 · 2026-11-22
