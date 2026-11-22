@@ -3999,15 +3999,27 @@
       },
       {
        "name": "goalOutsideAllowed",
-       "type": "string",
-       "default": "\"Outside the work area\"",
-       "description": ""
+       "type": "(area?: string) => string",
+       "default": "(area) => (area ? `Outside ${area}, the work area` : \"Outside the work area\")",
+       "description": "`area` is the work area's name when there is one allowed fence with a name."
       },
       {
        "name": "goalPlaced",
        "type": "(position: string) => string",
        "default": "(position) => `Goal at ${position}. Enter sends it, Esc cancels.`",
        "description": "Said in the live region as goal mode is used."
+      },
+      {
+       "name": "goalBlocked",
+       "type": "(position: string, reason: string) => string",
+       "default": "(position, reason) => `Goal at ${position}. ${reason}: it cannot be sent. Place it again, or press Esc.`",
+       "description": "Said when a goal is placed where it cannot be sent, with the card's reason."
+      },
+      {
+       "name": "goalNotSent",
+       "type": "(reason: string) => string",
+       "default": "(reason) => `${reason}: this goal cannot be sent.`",
+       "description": "Said when Send (or Enter) is tried on a goal that cannot be sent."
       },
       {
        "name": "goalSet",
@@ -4249,15 +4261,27 @@
       },
       {
        "name": "goalOutsideAllowed",
-       "type": "string",
-       "default": "\"Outside the work area\"",
-       "description": ""
+       "type": "(area?: string) => string",
+       "default": "(area) => (area ? `Outside ${area}, the work area` : \"Outside the work area\")",
+       "description": "`area` is the work area's name when there is one allowed fence with a name."
       },
       {
        "name": "goalPlaced",
        "type": "(position: string) => string",
        "default": "(position) => `Goal at ${position}. Enter sends it, Esc cancels.`",
        "description": "Said in the live region as goal mode is used."
+      },
+      {
+       "name": "goalBlocked",
+       "type": "(position: string, reason: string) => string",
+       "default": "(position, reason) => `Goal at ${position}. ${reason}: it cannot be sent. Place it again, or press Esc.`",
+       "description": "Said when a goal is placed where it cannot be sent, with the card's reason."
+      },
+      {
+       "name": "goalNotSent",
+       "type": "(reason: string) => string",
+       "default": "(reason) => `${reason}: this goal cannot be sent.`",
+       "description": "Said when Send (or Enter) is tried on a goal that cannot be sent."
       },
       {
        "name": "goalSet",

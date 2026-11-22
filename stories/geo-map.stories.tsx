@@ -202,12 +202,12 @@ export const GeoMapFixQuality: S = {
 // keeps the goal and would publish `geoGoalToGeoPoseStamped(goal)`.
 // ---------------------------------------------------------------------------------------------------------------------
 
-function GoalMode() {
+function GoalMode({ confirmGoal = true }: { confirmGoal?: boolean }) {
   const [goal, setGoal] = React.useState<GeoMapGoal | null>(null)
   const sent = goal ? geoGoalToGeoPoseStamped(goal) : null
   return (
     <div className="flex w-full flex-col gap-3">
-      <GeoMap label="Map of Solar farm: send Patrol-3 somewhere" robots={patrolRobots} fences={patrolFences} mode="goal" goal={goal} onGoal={setGoal} />
+      <GeoMap label="Map of Solar farm: send Patrol-3 somewhere" robots={patrolRobots} fences={patrolFences} mode="goal" goal={goal} onGoal={setGoal} confirmGoal={confirmGoal} />
       <p className="text-sm text-muted-foreground tabular-nums">
         {sent
           ? `Sent to Patrol-3: ${sent.pose.position.latitude.toFixed(6)}, ${sent.pose.position.longitude.toFixed(6)}${goal?.heading === undefined ? ", any heading" : `, heading ${goal.heading}°`}`
@@ -217,9 +217,17 @@ function GoalMode() {
   )
 }
 
-/** Goal mode: the goal is placed, then sent on confirm. Inside the substation or outside the farm, the card says so first. */
+/**
+ * Goal mode: the goal is placed, then sent on confirm. Inside the substation or outside the farm it cannot be sent: Send is
+ * off, with the reason beside it, until the goal is placed again somewhere allowed.
+ */
 export const GeoMapGoalMode: S = {
   render: () => <GoalMode />,
+}
+
+/** Without the card (`confirmGoal={false}`) a click sends at once; inside the substation or outside the farm it sends nothing and says why. */
+export const GeoMapGoalWithoutConfirm: S = {
+  render: () => <GoalMode confirmGoal={false} />,
 }
 
 /** No robots: the fences still show, and the map says there are none rather than look empty. */

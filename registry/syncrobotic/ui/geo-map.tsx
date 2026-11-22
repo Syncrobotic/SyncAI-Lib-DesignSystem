@@ -193,9 +193,14 @@ export type GeoMapLabels = {
   cancel: string
   /** The confirm card's warnings: the goal is in a keep-out, or outside every allowed area. */
   goalInKeepOut: (fence: string) => string
-  goalOutsideAllowed: string
+  /** `area` is the work area's name when there is one allowed fence with a name. */
+  goalOutsideAllowed: (area?: string) => string
   /** Said in the live region as goal mode is used. */
   goalPlaced: (position: string) => string
+  /** Said when a goal is placed where it cannot be sent, with the card's reason. */
+  goalBlocked: (position: string, reason: string) => string
+  /** Said when Send (or Enter) is tried on a goal that cannot be sent. */
+  goalNotSent: (reason: string) => string
   goalSet: (position: string, heading?: number) => string
   goalCancelled: string
   /** Said when robots' fixes change, gathered and at most once per `announceEveryMs`: "Patrol-2: No fix". */
@@ -235,8 +240,10 @@ const defaultLabels: GeoMapLabels = {
   send: "Send goal",
   cancel: "Cancel",
   goalInKeepOut: (fence) => `Inside ${fence}, a keep-out area`,
-  goalOutsideAllowed: "Outside the work area",
+  goalOutsideAllowed: (area) => (area ? `Outside ${area}, the work area` : "Outside the work area"),
   goalPlaced: (position) => `Goal at ${position}. Enter sends it, Esc cancels.`,
+  goalBlocked: (position, reason) => `Goal at ${position}. ${reason}: it cannot be sent. Place it again, or press Esc.`,
+  goalNotSent: (reason) => `${reason}: this goal cannot be sent.`,
   goalSet: (position, heading) => `Goal sent: ${position}${heading === undefined ? "" : `, heading ${deg360(heading)}°`}`,
   goalCancelled: "Goal cancelled",
   fixChanged: (name, fix) => `${name}: ${fix}`,
@@ -376,8 +383,11 @@ const frame = "relative isolate w-full overflow-hidden rounded-md bg-map ring-1 
 /** 16:10, at most 75 % of the screen's height and at least 288 px, so a phone still has room for it. */
 const proportions = (fill?: boolean): React.CSSProperties | undefined => (fill ? undefined : { aspectRatio: "16 / 10", maxHeight: "75svh", minHeight: "min(18rem, 75svh)" })
 
-/** A goal placed and not yet sent; `placed` once the press that placed it is over (a drag still points it). */
-type Draft = { at: [number, number]; heading?: number; placed?: boolean }
+/**
+ * A goal placed and not yet sent; `placed` once the press that placed it is over (a drag still points it), `byKeys` when
+ * the keys placed it (it then always asks before sending, as Enter is the confirm).
+ */
+type Draft = { at: [number, number]; heading?: number; placed?: boolean; byKeys?: boolean }
 
 /**
  * An outdoor map in latitude and longitude for robots that work outside (patrol, agriculture, delivery), drawn in SVG
@@ -603,8 +613,25 @@ export function GeoMap({
   /** On screen, north is up and Mercator keeps angles, so a drag's direction is its bearing. */
   const headingTo = (dx: number, dy: number) => Math.round(((Math.atan2(dx, -dy) * 180) / Math.PI + 360) % 360)
   const draftGoal = (d: Draft): GeoMapGoal => ({ ...geoOf(d.at), ...(d.heading === undefined ? {} : { heading: d.heading }) })
+  const allowedFences = fences.filter((f) => f.kind === "allowed")
+  /**
+   * Why a goal here cannot be sent, or null: it is in a keep-out, or outside every allowed area. The robot must not be
+   * sent there from this map, so Send and Enter stay off until the goal is placed again somewhere allowed.
+   */
+  const blockedAt = (at: GeoPoint): string | null => {
+    const keepOut = fences.find((f) => f.kind === "keep-out" && geoPointInPolygon(at, f.points))
+    if (keepOut) return labels.goalInKeepOut(keepOut.label ?? labels.fenceKind["keep-out"])
+    if (allowedFences.length && !allowedFences.some((f) => geoPointInPolygon(at, f.points)))
+      return labels.goalOutsideAllowed(allowedFences.length === 1 ? allowedFences[0]!.label : undefined)
+    return null
+  }
   const commitGoal = (d: Draft) => {
     const g = draftGoal(d)
+    const reason = blockedAt(g)
+    if (reason) {
+      say(labels.goalNotSent(reason))
+      return
+    }
     setDraft(null)
     onGoal?.(g)
     say(labels.goalSet(where(g, labels, locale), g.heading))
@@ -618,8 +645,10 @@ export function GeoMap({
     const { w, h } = sizeRef.current
     const below = INSET + (w >= 480 ? 176 : 140)
     const y = a.y + (d.at[1] - v.y) * s
-    if (y < below + 24 && h - BOTTOM > below + 24) glideTo({ ...v, y: v.y - (below + (h - BOTTOM - below) / 2 - y) / s })
-    say(labels.goalPlaced(where(geoOf(d.at), labels, locale)))
+    if ((confirmGoal || d.byKeys) && y < below + 24 && h - BOTTOM > below + 24) glideTo({ ...v, y: v.y - (below + (h - BOTTOM - below) / 2 - y) / s })
+    const reason = blockedAt(geoOf(d.at))
+    const position = where(geoOf(d.at), labels, locale)
+    say(reason ? labels.goalBlocked(position, reason) : labels.goalPlaced(position))
   }
   const cancelDraft = () => {
     setDraft(null)
@@ -700,7 +729,8 @@ export function GeoMap({
       }
       const p = local(e)
       const d: Draft = { at: ed.at, ...(Math.hypot(p.x - ed.x, p.y - ed.y) > 8 ? { heading: headingTo(p.x - ed.x, p.y - ed.y) } : {}) }
-      if (confirmGoal) placeDraft(d)
+      // Without the card a release sends at once, unless the goal cannot be sent: then it stays, with the reason.
+      if (confirmGoal || blockedAt(geoOf(d.at))) placeDraft(d)
       else commitGoal(d)
       return
     }
@@ -744,8 +774,8 @@ export function GeoMap({
       return true
     }
     if (e.key === "Enter" || e.key === " ") {
-      if (draft) commitGoal(draft)
-      else placeDraft({ at: cur })
+      if (draft?.placed) commitGoal(draft)
+      else placeDraft({ at: cur, byKeys: true })
       return true
     }
     if (e.key === "Escape" && (draft || edit.current)) {
@@ -915,9 +945,9 @@ export function GeoMap({
     const [x, y] = geoToScreen(r)
     return { id: r.id, box: { x: x - DISC, y: y - DISC, w: 2 * DISC, h: 2 * DISC } }
   })
-  const showConfirm = editing && draft?.placed === true
+  const showConfirm = editing && draft?.placed === true && (confirmGoal || draft.byKeys === true)
   const banner = editing && !draft ? labels.goalHint : null
-  const cardRows = (banner ? 2 : 0) + (showConfirm ? 4 : 0) + (tilesFailed ? 1 : 0) + (robots.length ? 0 : 1)
+  const cardRows = (banner ? 2 : 0) + (showConfirm ? 4 : 0) + (draft?.placed && !showConfirm ? 1 : 0) + (tilesFailed ? 1 : 0) + (robots.length ? 0 : 1)
   const cards: Box[] = cardRows ? [{ x: 0, y: 0, w: Math.min(size.w, INSET + 360), h: INSET + 36 * cardRows }] : []
   // The route's numbered waypoints and the goal stay readable: no name or fence label is put over one.
   const box = ([wx, wy]: [number, number], r: number): Box => {
@@ -974,10 +1004,9 @@ export function GeoMap({
 
   // The goal card's warnings: a keep-out it falls in, or outside every allowed area.
   const draftAt = draft ? geoOf(draft.at) : null
-  const keepOut = draftAt ? fences.find((f) => f.kind === "keep-out" && geoPointInPolygon(draftAt, f.points)) : undefined
-  const allowedFences = fences.filter((f) => f.kind === "allowed")
-  const outside = draftAt && allowedFences.length > 0 && !allowedFences.some((f) => geoPointInPolygon(draftAt, f.points))
-  const warning = keepOut ? labels.goalInKeepOut(keepOut.label ?? labels.fenceKind["keep-out"]) : outside ? labels.goalOutsideAllowed : null
+  const warning = draftAt ? blockedAt(draftAt) : null
+  // Without the card (confirmGoal={false}), a goal that could not be sent stays on the map with its reason beside it.
+  const blockedNotice = editing && draft?.placed === true && !showConfirm && warning
 
   const cursor = cursorState ?? [view.x, view.y]
   const showCursor = editing && focused && !byPointer && !draft
@@ -1220,7 +1249,7 @@ export function GeoMap({
         )}
       </div>
 
-      {(banner || showConfirm || tilesFailed || robots.length === 0) && (
+      {(banner || showConfirm || blockedNotice || tilesFailed || robots.length === 0) && (
         <div className="pointer-events-none absolute top-4 right-4 left-4 flex flex-col items-start gap-2">
           {banner && (
             <p data-slot="geo-map-mode" className={cn("flex max-w-full flex-col gap-1 rounded-xs bg-card shadow-float ring-1 ring-border", size.w >= 480 ? "px-3 py-2 text-sm" : "px-2 py-1 text-xs")}>
@@ -1240,22 +1269,29 @@ export function GeoMap({
                 {where(draftAt, labels, locale)}
                 {draft?.heading !== undefined && ` · ${labels.heading(draft.heading)}`}
               </p>
+              {!warning && size.w >= 480 && <p className="text-xs text-muted-foreground">{labels.goalConfirmKeys}</p>}
+              {/* Disabled with its reason beside it, and as its description: a goal here must not be sent. */}
               {warning && (
-                <p data-slot="geo-map-confirm-warning" className="flex items-center gap-2 text-xs text-warning">
+                <p id={`${uid}-blocked`} data-slot="geo-map-confirm-warning" className="flex items-center gap-2 text-xs text-warning">
                   <TriangleAlert aria-hidden="true" className="size-4 shrink-0" />
                   {warning}
                 </p>
               )}
-              {size.w >= 480 && <p className="text-xs text-muted-foreground">{labels.goalConfirmKeys}</p>}
               <div className="flex flex-wrap justify-end gap-2">
                 <Button variant="secondary" size="sm" onClick={cancelDraft}>
                   {labels.cancel}
                 </Button>
-                <Button size="sm" onClick={() => draft && commitGoal(draft)}>
+                <Button size="sm" disabled={!!warning} aria-describedby={warning ? `${uid}-blocked` : undefined} onClick={() => draft && commitGoal(draft)}>
                   {labels.send}
                 </Button>
               </div>
             </div>
+          )}
+          {blockedNotice && (
+            <p data-slot="geo-map-blocked" className="flex w-fit items-center gap-2 rounded-xs bg-card px-3 py-2 text-sm text-warning shadow-float ring-1 ring-border">
+              <TriangleAlert aria-hidden="true" className="size-4 shrink-0" />
+              {warning}
+            </p>
           )}
           {tilesFailed && <p className="w-fit rounded-xs bg-card px-3 py-2 text-sm text-muted-foreground ring-1 ring-border">{labels.tilesFailed}</p>}
           {robots.length === 0 && <p className="w-fit rounded-xs bg-card px-3 py-2 text-sm text-muted-foreground ring-1 ring-border">{labels.empty}</p>}

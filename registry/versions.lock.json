@@ -13,7 +13,7 @@
   },
   "labels-zh-tw": {
     "version": "0.29.0",
-    "hash": "a9b8a1d5feb892ce"
+    "hash": "55fa1e45a10e4ec4"
   },
   "ros": {
     "version": "0.29.0",
@@ -89,7 +89,7 @@
   },
   "geo-map": {
     "version": "0.29.0",
-    "hash": "da9a2c0c255e6d31"
+    "hash": "2ae65b5cc1c39666"
   },
   "spinner": {
     "version": "0.23.0",

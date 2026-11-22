@@ -323,6 +323,12 @@ describe("goal mode", () => {
     const [x, y] = projectGeo(p)
     return { clientX: 320 + (x - cx) * s, clientY: 174 + (y - cy) * s }
   }
+  /** Where a place is on screen now, measured from Patrol-1's marker (at the centre), so it holds after the map glides. */
+  const onMap = (p: GeoPoint) => {
+    const [x, y] = projectGeo(p)
+    const m = document.querySelector<HTMLElement>('[data-robot-id="p1"]')!
+    return { clientX: parseFloat(m.style.left) + (x - cx) * s, clientY: parseFloat(m.style.top) + (y - cy) * s }
+  }
   const geoAt = (clientX: number, clientY: number) => unprojectGeo(cx + (clientX - 320) / s, cy + (clientY - 174) / s)
   const press = (p: { clientX: number; clientY: number }) => fireEvent.pointerDown(region(), { pointerId: 1, button: 0, pointerType: "mouse", ...p })
   const release = (p: { clientX: number; clientY: number }) => fireEvent.pointerUp(region(), { pointerId: 1, button: 0, pointerType: "mouse", ...p })
@@ -367,16 +373,56 @@ describe("goal mode", () => {
     expect(said()).toBe("Goal cancelled")
   })
 
-  it("warns in the card when the goal is in a keep-out or outside the work area", () => {
-    render(<GeoMap label="Map of Solar farm" robots={robots} fences={fences} center={C} zoom={18} mode="goal" />)
-    const p = screenOf(at(150, 70))
+  it("a goal in a keep-out or outside the work area cannot be sent, and says why beside Send", () => {
+    const onGoal = vi.fn()
+    render(<GeoMap label="Map of Solar farm" robots={robots} fences={fences} center={C} zoom={18} mode="goal" onGoal={onGoal} />)
+    const send = () => within(card() as HTMLElement).getByRole("button", { name: "Send goal" }) as HTMLButtonElement
+    const reason = () => document.querySelector("[data-slot=geo-map-confirm-warning]")?.textContent ?? null
+    const p = onMap(at(150, 70))
     press(p)
     release(p)
-    expect(document.querySelector("[data-slot=geo-map-confirm-warning]")!.textContent).toBe("Inside Substation, a keep-out area")
-    const q = screenOf(at(0, 200))
+    expect(reason()).toBe("Inside Substation, a keep-out area")
+    expect(send().disabled).toBe(true)
+    // The reason is the button's description, and it is said.
+    expect(document.getElementById(send().getAttribute("aria-describedby")!)!.textContent).toBe("Inside Substation, a keep-out area")
+    expect(said()).toContain("Inside Substation, a keep-out area")
+    // Enter does not send it either.
+    key("Enter")
+    expect(onGoal).not.toHaveBeenCalled()
+    expect(said()).toContain("cannot be sent")
+    // Outside the work area: the area is named.
+    const q = onMap(at(0, 200))
     press(q)
     release(q)
-    expect(document.querySelector("[data-slot=geo-map-confirm-warning]")!.textContent).toBe("Outside the work area")
+    expect(reason()).toBe("Outside Solar farm, the work area")
+    expect(send().disabled).toBe(true)
+    // Moved to an allowed place: Send works again.
+    const r = onMap(at(-50, -50))
+    press(r)
+    release(r)
+    expect(reason()).toBeNull()
+    expect(send().disabled).toBe(false)
+    expect(send().hasAttribute("aria-describedby")).toBe(false)
+    key("Enter")
+    expect(onGoal).toHaveBeenCalledTimes(1)
+  })
+
+  it("with confirmGoal={false} a click in a keep-out sends nothing and says why", () => {
+    const onGoal = vi.fn()
+    render(<GeoMap label="Map of Solar farm" robots={robots} fences={fences} center={C} zoom={18} mode="goal" onGoal={onGoal} confirmGoal={false} />)
+    const p = onMap(at(150, 70))
+    press(p)
+    release(p)
+    expect(onGoal).not.toHaveBeenCalled()
+    expect(card()).toBeNull()
+    expect(document.querySelector("[data-slot=geo-map-blocked]")!.textContent).toBe("Inside Substation, a keep-out area")
+    expect(said()).toContain("Inside Substation, a keep-out area")
+    // An allowed place sends at once, and the notice goes.
+    const q = onMap(at(-50, -50))
+    press(q)
+    release(q)
+    expect(onGoal).toHaveBeenCalledTimes(1)
+    expect(document.querySelector("[data-slot=geo-map-blocked]")).toBeNull()
   })
 
   it("with confirmGoal={false} a release sends it, as robot-map does", () => {
