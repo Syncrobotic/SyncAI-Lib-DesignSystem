@@ -1,4 +1,4 @@
-// @syncrobotic/robot-model v0.24.2 · update: npx shadcn add @syncrobotic/robot-model --overwrite
+// @syncrobotic/robot-model v0.28.0 · update: npx shadcn add @syncrobotic/robot-model --overwrite
 "use client"
 
 import * as React from "react"
@@ -1304,7 +1304,8 @@ export function RobotModel({
         )}
 
         {ready && isStale && (
-          // Over the last pose, which stays visible underneath: never a silent freeze.
+          // Over the last pose, which stays visible underneath: never a silent freeze. The words are said once, in the
+          // header's state line above the view, not again over it.
           <div className="pointer-events-none absolute inset-0 bg-(--scrim)" />
         )}
 
@@ -1342,16 +1343,6 @@ export function RobotModel({
               </li>
             ))}
           </ul>
-        )}
-
-        {ready && isStale && (
-          // Bottom right, beside the view buttons, so it covers as little of the pose as it can.
-          <p className="pointer-events-none absolute right-4 bottom-4 left-28 ml-auto flex w-fit items-center gap-2 rounded-sm bg-background px-3 py-2 text-sm">
-            <TriangleAlert aria-hidden="true" className="size-4 text-warning" />
-            <span>
-              <span className="font-medium">{l.stale}</span> · <span className="tabular-nums">{l.lastUpdate(lastUpdate)}</span>
-            </span>
-          </p>
         )}
 
         {ready && (

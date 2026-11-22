@@ -1,7 +1,7 @@
 {
   "syncrobotic-theme": {
-    "version": "0.22.3",
-    "hash": "4f394f190b14767d"
+    "version": "0.28.0",
+    "hash": "80fdf00fe17a0b82"
   },
   "cn": {
     "version": "0.5.0",
@@ -13,7 +13,7 @@
   },
   "labels-zh-tw": {
     "version": "0.28.0",
-    "hash": "d1e3f1f98d33796d"
+    "hash": "b2f68fe0ba724759"
   },
   "ros": {
     "version": "0.28.0",
@@ -24,8 +24,8 @@
     "hash": "9353a9e71f657181"
   },
   "use-slide-release": {
-    "version": "0.11.1",
-    "hash": "9033117864602a03"
+    "version": "0.28.0",
+    "hash": "5106ade8ca1faff5"
   },
   "use-presence": {
     "version": "0.8.1",
@@ -56,24 +56,24 @@
     "hash": "2813a626bd3abfad"
   },
   "stop-button": {
-    "version": "0.17.3",
-    "hash": "2f0344c208fb6198"
+    "version": "0.28.0",
+    "hash": "6d1f910ab8483821"
   },
   "slide-to-release": {
-    "version": "0.11.1",
-    "hash": "bfc221fcb6e4e7df"
+    "version": "0.28.0",
+    "hash": "0400ef24e80c8d2f"
   },
   "teleop-pad": {
-    "version": "0.23.1",
-    "hash": "6f047d07f7579645"
+    "version": "0.28.0",
+    "hash": "17014d31cb4c5b93"
   },
   "dock": {
     "version": "0.8.0",
     "hash": "c1f253777684177c"
   },
   "island": {
-    "version": "0.22.1",
-    "hash": "09f454828bdd4ee5"
+    "version": "0.28.0",
+    "hash": "27df128530cef4d8"
   },
   "list": {
     "version": "0.15.0",
@@ -225,7 +225,7 @@
   },
   "streaming-chart": {
     "version": "0.28.0",
-    "hash": "2890d601acd64b13"
+    "hash": "a74802379e67f112"
   },
   "tabs": {
     "version": "0.23.0",
@@ -256,8 +256,8 @@
     "hash": "8356bbb792fcb83e"
   },
   "robot-map": {
-    "version": "0.24.1",
-    "hash": "b2fed9905fe21660"
+    "version": "0.28.0",
+    "hash": "ad3ae9cd687bf83d"
   },
   "dialog": {
     "version": "0.23.0",
@@ -284,8 +284,8 @@
     "hash": "7dd7e3177ffd2874"
   },
   "dropdown-menu": {
-    "version": "0.17.4",
-    "hash": "18d0ebad899715de"
+    "version": "0.28.0",
+    "hash": "99ac9b8b668f0926"
   },
   "context-menu": {
     "version": "0.21.0",
@@ -316,8 +316,8 @@
     "hash": "8e7f546fe1ffe696"
   },
   "scroll-area": {
-    "version": "0.17.3",
-    "hash": "52b3a31249760f0b"
+    "version": "0.28.0",
+    "hash": "c818115eecf626bf"
   },
   "toggle-group": {
     "version": "0.17.3",
@@ -344,16 +344,16 @@
     "hash": "6d75adddb09e47de"
   },
   "image-grid": {
-    "version": "0.17.4",
-    "hash": "967df39ff78a268b"
+    "version": "0.28.0",
+    "hash": "c5aa2b556e06541b"
   },
   "annotated-image": {
     "version": "0.18.0",
     "hash": "b033c11941fbc3f8"
   },
   "media-player": {
-    "version": "0.21.2",
-    "hash": "5e64e53841eec1e1"
+    "version": "0.28.0",
+    "hash": "8bbf62a62a655912"
   },
   "camera-feed": {
     "version": "0.23.1",
@@ -365,15 +365,15 @@
   },
   "diagnostics": {
     "version": "0.28.0",
-    "hash": "e8b2244050fff0da"
+    "hash": "7ce204e76cc56d10"
   },
   "point-cloud": {
     "version": "0.24.1",
     "hash": "2408604ba0e89408"
   },
   "robot-model": {
-    "version": "0.24.2",
-    "hash": "d2e6305e854e8ef5"
+    "version": "0.28.0",
+    "hash": "61667b3e4ffd0dcd"
   },
   "filter-form": {
     "version": "0.10.0",
@@ -440,8 +440,8 @@
     "hash": "62c7626d4031b0d0"
   },
   "attachment": {
-    "version": "0.23.1",
-    "hash": "0456b2169820f584"
+    "version": "0.28.0",
+    "hash": "7d785135d7be8503"
   },
   "file-type": {
     "version": "0.9.0",
@@ -588,8 +588,8 @@
     "hash": "3a93056ed6f9aedb"
   },
   "bar-chart-ranked": {
-    "version": "0.17.2",
-    "hash": "eedb344ad9e98f71"
+    "version": "0.28.0",
+    "hash": "79d857eb92141d3f"
   },
   "bar-chart-stacked": {
     "version": "0.22.0",

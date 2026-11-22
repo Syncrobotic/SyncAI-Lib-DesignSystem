@@ -1,8 +1,8 @@
-// @syncrobotic/robot-map v0.24.1 · update: npx shadcn add @syncrobotic/robot-map --overwrite
+// @syncrobotic/robot-map v0.28.0 · update: npx shadcn add @syncrobotic/robot-map --overwrite
 "use client"
 
 import * as React from "react"
-import { Crosshair, RotateCw, ZoomIn, ZoomOut } from "lucide-react"
+import { CircleAlert, Crosshair, RotateCw, ZoomIn, ZoomOut } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { StatusGlyph, statusText, type Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Bone } from "@/registry/syncrobotic/shell/skeleton"
@@ -345,7 +345,7 @@ const defaultLabels: RobotMapLabels = {
   empty: "No robots on this site right now.",
   loading: "Loading the map",
   error: "The map could not be loaded.",
-  retry: "Reload the map",
+  retry: "Load again",
   count: (n) => (n === 1 ? "1 robot" : `${n} robots`),
   selected: (name, status) => `Selected: ${name}, ${status}`,
   north: (deg) => `North is ${Math.round(((deg % 360) + 360) % 360)}° clockwise from the top`,
@@ -1246,7 +1246,9 @@ export function RobotMap({
         style={proportions(width, height, fill)}
         className={cn(frame, "flex flex-col items-center justify-center gap-3 p-4 text-center", className)}
       >
-        <p role="alert" className="text-sm text-muted-foreground">
+        {/* The same shape and words as the point cloud's and the robot model's errors. */}
+        <CircleAlert aria-hidden="true" className="size-6 text-muted-foreground" />
+        <p role="alert" className="text-sm text-pretty">
           {error === true ? labels.error : error}
         </p>
         {onRetry && (
@@ -1765,7 +1767,8 @@ export function RobotMapList({ label: name, robots = [], zones = [], selectedId,
   if (error) {
     return (
       <div data-slot="robot-map-list" data-error="" className={cn("flex flex-col items-start gap-3 rounded-md bg-card p-4 ring-1 ring-border", className)}>
-        <p role="alert" className="text-sm text-muted-foreground">
+        <p role="alert" className="flex items-center gap-2 text-sm">
+          <CircleAlert aria-hidden="true" className="size-4 shrink-0 text-muted-foreground" />
           {error === true ? labels.error : error}
         </p>
         {onRetry && (

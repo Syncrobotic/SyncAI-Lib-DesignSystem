@@ -275,6 +275,26 @@ function resolveLocale(locale: string | undefined): string {
   return ok
 }
 
+// A plain number, with an optional sign and an optional unit after it that has no digits: "1204553 ticks", "-8.4 A",
+// "64 %", "412". Not a version ("2.4.1"), a hex ID ("0x21"), a number already grouped ("1,204") or a word.
+const PLAIN_NUMBER = /^([-+−]?)(0|[1-9]\d*)(?:\.(\d+))?(\s*[^\d\s.,][^\d]*)?$/
+
+/**
+ * A status value as people read it: a plain number (with an optional unit) is grouped and written in `locale`
+ * ("1204553 ticks" → "1,204,553 ticks" in English, "1.204.553 ticks" in German), keeping its decimals and its sign.
+ * Anything else (a version, an ID, a flag, a sentence) is shown exactly as the robot sent it.
+ */
+export function formatDiagnosticValue(value: string, locale = "en"): string {
+  const m = PLAIN_NUMBER.exec(value.trim())
+  if (!m) return value
+  const [, sign, whole, decimals = "", unit = ""] = m
+  const n = Number(`${whole}${decimals ? `.${decimals}` : ""}`)
+  if (!Number.isFinite(n)) return value
+  const digits = decimals.length
+  const text = n.toLocaleString(resolveLocale(locale), { minimumFractionDigits: digits, maximumFractionDigits: digits })
+  return `${sign}${text}${unit}`
+}
+
 export type DiagnosticsProps = {
   /** Every status, as the latest of each name (merge arrays as they arrive with `mergeDiagnostics` from `ros`). */
   statuses: DiagnosticStatus[]
@@ -496,7 +516,7 @@ export function Diagnostics({
           </span>
         </span>
       ),
-      content: status ? <Details status={status} ago={ago(status.receivedAt)} labels={l} /> : undefined,
+      content: status ? <Details status={status} ago={ago(status.receivedAt)} locale={numberLocale} labels={l} /> : undefined,
       children: node.children.length ? node.children.map(toTreeNode) : undefined,
     }
   }
@@ -604,7 +624,7 @@ export function Diagnostics({
 }
 
 /** An opened status: its whole message, its hardware ID, when it arrived and its values. */
-function Details({ status, ago, labels: l }: { status: DiagnosticStatus; ago: string | null; labels: DiagnosticsLabels }) {
+function Details({ status, ago, locale, labels: l }: { status: DiagnosticStatus; ago: string | null; locale: string; labels: DiagnosticsLabels }) {
   const values = status.values ?? []
   return (
     <div data-slot="diagnostics-details" className="flex flex-col gap-2">
@@ -621,7 +641,10 @@ function Details({ status, ago, labels: l }: { status: DiagnosticStatus; ago: st
         </p>
       )}
       {values.length ? (
-        <DescriptionList columns={2} items={values.map((v) => ({ label: v.key, value: <span className="wrap-anywhere">{v.value}</span> }))} />
+        <DescriptionList
+          columns={2}
+          items={values.map((v) => ({ label: v.key, value: <span className="wrap-anywhere tabular-nums">{formatDiagnosticValue(v.value, locale)}</span> }))}
+        />
       ) : (
         <p className="text-muted-foreground">{l.noValues}</p>
       )}

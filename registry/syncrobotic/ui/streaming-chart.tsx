@@ -2,10 +2,19 @@
 "use client"
 
 import * as React from "react"
-import { Pause, Play, TriangleAlert } from "lucide-react"
+import { Ellipsis, Pause, Play, TriangleAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/registry/syncrobotic/ui/dropdown-menu"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
 
@@ -76,6 +85,8 @@ export type StreamingChartLabels = {
   windowOption: (ms: number) => string
   /** Names the Chart / Table switch. */
   view: string
+  /** The menu (⋯) that holds the window and Chart / Table switches on a narrow chart. */
+  viewOptions: string
   chart: string
   table: string
   /** The table's first column. */
@@ -115,6 +126,7 @@ export const defaultStreamingChartLabels: StreamingChartLabels = {
   window: "Time window",
   windowOption: (ms) => (ms < 60_000 ? `${Math.round(ms / 1000)} s` : ms < 3_600_000 ? `${Math.round(ms / 60_000)} min` : `${Math.round(ms / 3_600_000)} h`),
   view: "Show as",
+  viewOptions: "View options",
   chart: "Chart",
   table: "Table",
   time: "Time",
@@ -1270,7 +1282,7 @@ export function StreamingChart({
   const staleText = `${l.stale} · ${Number.isFinite(staleAt) ? l.lastSample(l.formatTime(new Date(staleAt), timeLocale)) : ""}`
 
   return (
-    <div ref={rootRef} data-slot="streaming-chart" data-state={state} className={cn("flex min-w-0 flex-col gap-3 text-sm", className)}>
+    <div ref={rootRef} data-slot="streaming-chart" data-state={state} className={cn("@container flex min-w-0 flex-col gap-3 text-sm", className)}>
       {/* Spoken when the data stops or the view is paused, and emptied while live, so a running chart says nothing here.
           The time the paused view ends is written by the engine into its span, as the view moves. */}
       <span role="status" className="sr-only">
@@ -1287,11 +1299,13 @@ export function StreamingChart({
       {/* The current values, said politely: a crossed limit at once, the rest every few seconds while focus is on the chart. */}
       <span data-slot="streaming-chart-announcer" aria-live="polite" className="sr-only" />
 
-      <div data-slot="streaming-chart-toolbar" className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+      {/* One row at every width. From 36 rem the window and Chart / Table switches show; narrower, they fold into a menu
+          (⋯) beside Pause, so the status and Pause stay in view and the plot is not pushed down by three rows of buttons. */}
+      <div data-slot="streaming-chart-toolbar" className="flex items-center justify-between gap-x-4">
         <p
           data-slot="streaming-chart-status"
           aria-hidden="true"
-          className={cn("flex min-h-(--h-sm) items-center gap-2", state === "stale" ? "text-warning" : "text-muted-foreground")}
+          className={cn("flex min-h-(--h-sm) min-w-0 items-center gap-2", state === "stale" ? "text-warning" : "text-muted-foreground")}
         >
           {state === "paused" ? (
             <Pause aria-hidden="true" className="size-4" />
@@ -1315,9 +1329,14 @@ export function StreamingChart({
           </span>
         </p>
         {controls && (
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2">
             {windows.length > 1 && (
-              <SegmentedControl value={String(windowMs)} onValueChange={(v) => v && chooseWindow(Number(v))} aria-label={l.window} className="h-(--h-sm) w-auto">
+              <SegmentedControl
+                value={String(windowMs)}
+                onValueChange={(v) => v && chooseWindow(Number(v))}
+                aria-label={l.window}
+                className="hidden h-(--h-sm) w-auto @xl:inline-flex"
+              >
                 {windows.map((ms) => (
                   <SegmentedControlItem key={ms} value={String(ms)} className="tabular-nums">
                     {l.windowOption(ms)}
@@ -1325,10 +1344,42 @@ export function StreamingChart({
                 ))}
               </SegmentedControl>
             )}
-            <SegmentedControl value={view} onValueChange={(v) => v && setView(v === "table" ? "table" : "chart")} aria-label={l.view} className="h-(--h-sm) w-auto">
+            <SegmentedControl
+              value={view}
+              onValueChange={(v) => v && setView(v === "table" ? "table" : "chart")}
+              aria-label={l.view}
+              className="hidden h-(--h-sm) w-auto @xl:inline-flex"
+            >
               <SegmentedControlItem value="chart">{l.chart}</SegmentedControlItem>
               <SegmentedControlItem value="table">{l.table}</SegmentedControlItem>
             </SegmentedControl>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="icon-sm" aria-label={l.viewOptions} data-slot="streaming-chart-more" className="@xl:hidden">
+                  <Ellipsis aria-hidden="true" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {windows.length > 1 && (
+                  <>
+                    <DropdownMenuLabel>{l.window}</DropdownMenuLabel>
+                    <DropdownMenuRadioGroup value={String(windowMs)} onValueChange={(v) => chooseWindow(Number(v))}>
+                      {windows.map((ms) => (
+                        <DropdownMenuRadioItem key={ms} value={String(ms)} className="tabular-nums">
+                          {l.windowOption(ms)}
+                        </DropdownMenuRadioItem>
+                      ))}
+                    </DropdownMenuRadioGroup>
+                    <DropdownMenuSeparator />
+                  </>
+                )}
+                <DropdownMenuLabel>{l.view}</DropdownMenuLabel>
+                <DropdownMenuRadioGroup value={view} onValueChange={(v) => setView(v === "table" ? "table" : "chart")}>
+                  <DropdownMenuRadioItem value="chart">{l.chart}</DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="table">{l.table}</DropdownMenuRadioItem>
+                </DropdownMenuRadioGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <Button variant="outline" size="sm" data-slot="streaming-chart-pause" onClick={() => setPaused(!paused)}>
               {paused ? <Play aria-hidden="true" /> : <Pause aria-hidden="true" />}
               {paused ? (behind ? l.jumpToLive : l.resume) : l.pause}

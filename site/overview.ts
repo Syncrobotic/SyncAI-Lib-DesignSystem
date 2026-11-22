@@ -989,7 +989,7 @@ export const overviews: Record<string, Overview> = {
     instead: ["Any other destructive action: `button` with the destructive variant. Solid red belongs to the stop alone."],
     notes: [
       "UI only. Send the stop command, wait for the dog, fall back to Bluetooth after 1.5 s in the app, and pass the result back as `state`.",
-      "Solid red belongs to this button alone. Fixed at 56 px (--h-stop).",
+      "Its height is --h-stop: 56 px, 64 px in glove density. It never shrinks, compact density included.",
     ],
   },
   "slide-to-release": {

@@ -1,4 +1,4 @@
-/* @syncrobotic/syncrobotic-theme v0.22.3 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
+/* @syncrobotic/syncrobotic-theme v0.28.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
 /*
  * SYNCROBOTIC theme (see CHANGELOG.md for its version history)
  * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
@@ -232,6 +232,11 @@
   --danger: #6e000f;
   --neutral: #3f3f46;
 
+  /* The stop's label (18 px bold, normal text) reaches 7:1 too: white on --stop 7.6:1, on --stop-deep 13.7:1. The deep red
+     stays 1.8:1 from the stop, so the hold's fill still shows as a shape. */
+  --stop: #a51b1b;
+  --stop-deep: #5c1010;
+
   --map-point: #4b5160;
   --scrim: rgb(0 0 0 / 0.6);
   --float: rgb(255 255 255 / 1);
@@ -286,6 +291,9 @@
   --danger-subtle: #321c1c;
   --neutral: #d4d4d8;
   --neutral-subtle: #1c1c21;
+
+  --stop: #a51b1b;
+  --stop-deep: #5c1010;
 
   --map-point: #9aa1ad;
   --scrim: rgb(0 0 0 / 0.8);

@@ -1036,7 +1036,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "Letting go past 85% releases; short of that the thumb springs back in 200 ms.",
       "Viewers can see it but cannot release.",
-      "Keyboard and switch control: hold Enter or Space for 2 s.",
+      "Keyboard and switch control: hold Enter or Space for 2 s; the thumb travels while the key is held. Letting go, moving focus away or the page going to the background cancels the hold, so a held key never releases on its own.",
       "If the robot does not release, set `failed`: the thumb goes back and the label says to slide again. Never leave it on Releasing….",
     ],
   },
@@ -1272,7 +1272,7 @@ const keyboard: Record<string, [string, string][]> = {
     ["Esc", "Clear the selection"],
   ],
   "streaming-chart": [
-    ["Tab", "Move to the window, the Chart / Table switch, Pause, then the plot"],
+    ["Tab", "Move to the window, the Chart / Table switch, Pause, then the plot. Under 36 rem wide: the View options menu (⋯, both switches), Pause, then the plot"],
     ["Space", "On the plot, pause or resume"],
     ["← / →", "On the plot, move the view back or forward in time by a tenth of the window, pausing it (Shift: half the window)"],
     ["End", "On the plot, jump back to live"],
@@ -1281,7 +1281,7 @@ const keyboard: Record<string, [string, string][]> = {
     ["Tab", "Move into the view (one stop), then to Reset view and Fit"],
     ["← / →", "Turn the view around the cloud"],
     ["↑ / ↓", "Look from higher or lower"],
-    ["Shift + arrows", "Move the view"],
+    ["Shift+arrow keys", "Move the view"],
     ["+ / -", "Zoom in or out"],
     ["0", "Reset the view"],
   ],
@@ -1299,7 +1299,7 @@ const keyboard: Record<string, [string, string][]> = {
     ["Tab", "Move into the view: one stop. Its buttons are for the pointer; 0 and F do the same"],
     ["← / →", "Turn the view around the robot"],
     ["↑ / ↓", "Look from higher or lower"],
-    ["Shift + arrows", "Move the view"],
+    ["Shift+arrow keys", "Move the view"],
     ["+ / -", "Zoom in or out (the wheel too, once the view has focus)"],
     ["0", "Reset the view"],
     ["F", "Fit the robot in view, in its pose now"],
@@ -1327,6 +1327,8 @@ const keyboard: Record<string, [string, string][]> = {
   ],
   "image-grid": [
     ["Enter / Space", "Open the picture in the lightbox, or pick it while picking"],
+    ["← → / ↑ ↓", "Pick one (a radio group, one Tab stop): move to the previous or next picture and pick it"],
+    ["Home / End", "Pick one: the first or last picture"],
     ["← / →", "In the lightbox: previous or next picture"],
     ["Esc", "Close the lightbox and return focus to the picture's tile"],
   ],
@@ -1389,7 +1391,7 @@ const keyboard: Record<string, [string, string][]> = {
     ["↑ / ↓", "Previous or next line"],
     ["Page Up / Page Down", "A screen up or down"],
     ["Home / End", "First line, or the newest (End follows new lines again)"],
-    ["Shift + arrows", "Select several lines"],
+    ["Shift+arrow keys", "Select several lines"],
     ["Enter / Space", "Open or close the line; → opens, ← closes"],
     ["C", "Copy the selected lines (Ctrl/⌘+C too, when no text is selected)"],
     ["/", "Go to the search box"],
@@ -1429,7 +1431,11 @@ const keyboard: Record<string, [string, string][]> = {
     ["Enter / Space", "Stop this robot"],
     ["Hold Enter / Space 2 s", "Stop all robots"],
   ],
-  "slide-to-release": [["Hold Enter / Space 2 s", "Release"]],
+  "slide-to-release": [
+    ["Hold Enter / Space 2 s", "Release; the thumb travels while the key is held"],
+    ["Let go, Tab away", "Cancel the hold: the thumb springs back. The page going to the background cancels it too"],
+    ["Arrow keys", "Nothing: a release is never a step"],
+  ],
   "teleop-pad": [
     ["Hold ↑ / W, ↓ / S", "Drive forward, back"],
     ["Hold ← / A, → / D", "Turn left, right (with ↑ or ↓, curve)"],
@@ -1467,8 +1473,10 @@ export const storyTitle = (name: string) => {
   const words = name
     .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
     .replace(/([A-Z])([A-Z][a-z])/g, "$1 $2")
+    // Names written with an inner capital stay one word: "No WebGL", not "no web gl".
+    .replace(/\bWeb GL\b/g, "WebGL")
     .split(" ")
-  // Proper names keep their capital: "Delivered over Bluetooth", not "bluetooth".
-  const proper = new Set(["Bluetooth", "Wi", "Fi", "AI", "URL", "SMS", "ROS"])
-  return words.map((w, i) => (i === 0 || proper.has(w) ? w : w.toLowerCase())).join(" ")
+  // Proper names keep their capital: "Delivered over Bluetooth", not "bluetooth"; so do acronyms ("OTP", "URDF").
+  const proper = new Set(["Bluetooth", "Wi", "Fi", "WebGL"])
+  return words.map((w, i) => (i === 0 || proper.has(w) || /^[A-Z0-9]{2,}$/.test(w) ? w : w.toLowerCase())).join(" ")
 }

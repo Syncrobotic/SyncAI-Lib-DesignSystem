@@ -16,6 +16,7 @@ const ROUND = {
   "registry/syncrobotic/ui/share-bar.tsx": "the bar is a track, and its legend keys are dots",
   "site/icon-gallery.tsx": "the dot that marks the icons the kit has given a meaning",
   "registry/syncrobotic/ui/avatar.tsx": "avatar",
+  "registry/syncrobotic/ui/image-grid.tsx": "the pick-one mark is a radio, with its dot",
   "registry/syncrobotic/ui/switch.tsx": "switch track and thumb",
   "registry/syncrobotic/ui/radio-group.tsx": "radio and its dot",
   "registry/syncrobotic/ui/slider.tsx": "slider track and thumb",

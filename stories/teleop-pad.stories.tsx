@@ -19,7 +19,7 @@ export const TeleopPadDefault: S = {}
  * A simulated robot behind the pad: it ramps toward the commanded speed (top speed 1.2 m/s) and the pad shows what it
  * measures. The line under it is what goes out, ten times a second while held.
  */
-export const TeleopPadDriving: S = { render: () => <SimulatedRobot /> }
+export const TeleopPadDrivingASimulatedRobot: S = { render: () => <SimulatedRobot /> }
 
 /** A cap of 60 %: full stick sends 0.6. The rings mark the scale and the line under the pad says the limit. */
 export const TeleopPadSpeedLimit: S = { args: { maxSpeed: 0.6 } }

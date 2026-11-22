@@ -8,6 +8,7 @@ import {
   diagnosticLevelOf,
   diagnosticsId,
   filterDiagnosticsTree,
+  formatDiagnosticValue,
   type DiagnosticStatus,
   type DiagnosticsNode,
 } from "@/registry/syncrobotic/ui/diagnostics"
@@ -206,6 +207,25 @@ describe("filtering", () => {
     expect(details.textContent).toContain("can0:0x21")
     expect(details.querySelector("dt")!.textContent).toBe("Current")
     expect(details.querySelector("dd")!.textContent).toBe("18.6 A")
+  })
+
+  it("groups a plain number in the locale, unit and decimals kept, and leaves any other value as sent", () => {
+    expect(formatDiagnosticValue("1204553 ticks")).toBe("1,204,553 ticks")
+    expect(formatDiagnosticValue("1204553 ticks", "de")).toBe("1.204.553 ticks")
+    expect(formatDiagnosticValue("15.0 A", "de")).toBe("15,0 A")
+    expect(formatDiagnosticValue("-8.4 A")).toBe("-8.4 A")
+    expect(formatDiagnosticValue("−12500 Pa")).toBe("−12,500 Pa")
+    expect(formatDiagnosticValue("64 %")).toBe("64 %")
+    expect(formatDiagnosticValue("412")).toBe("412")
+    expect(formatDiagnosticValue("31 °C")).toBe("31 °C")
+    for (const raw of ["2.4.1", "0x21", "OVERCURRENT", "1,204", "007", "1e-5", "Wi-Fi, −58 dBm", ""]) expect(formatDiagnosticValue(raw)).toBe(raw)
+  })
+
+  it("shows a status's numeric values grouped in its locale", () => {
+    const encoder: DiagnosticStatus[] = [{ name: "/Motors/Left wheel", level: "ok", receivedAt: at(1), values: [{ key: "Encoder", value: "1204553 ticks" }, { key: "Firmware", value: "2.4.1" }] }]
+    render(<Diagnostics statuses={encoder} now={NOW} locale="zh-TW" defaultExpanded={["/Motors", "/Motors/Left wheel"]} />)
+    const dds = [...document.querySelectorAll("[data-slot=diagnostics-details] dd")].map((d) => d.textContent)
+    expect(dds).toEqual(["1,204,553 ticks", "2.4.1"])
   })
 
   it("keeps a group closed by hand closed when its level changes", () => {

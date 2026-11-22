@@ -1,4 +1,4 @@
-// @syncrobotic/bar-chart-ranked v0.17.2 · update: npx shadcn add @syncrobotic/bar-chart-ranked --overwrite
+// @syncrobotic/bar-chart-ranked v0.28.0 · update: npx shadcn add @syncrobotic/bar-chart-ranked --overwrite
 "use client"
 
 import * as React from "react"
@@ -13,7 +13,7 @@ const data = [
   { cause: "Blocked path", n: 23 },
   { cause: "Door closed", n: 14 },
   { cause: "Low battery", n: 9 },
-  { cause: "Lost localization", n: 5 },
+  { cause: "Lost localisation", n: 5 },
   { cause: "Other", n: 3 },
 ]
 

@@ -223,6 +223,18 @@ describe("MediaPlayer states", () => {
     const { container } = setup({ startAt: 40 })
     expect(time(container)).toEqual(["0:40", "1:00"])
   })
+
+  // A server-rendered page: the browser loads the metadata before React attaches its listeners, so loadedmetadata has
+  // already fired by the time the player mounts. The picture must still be at startAt, not at 0:00 under a "0:40".
+  it("seeks to startAt when the metadata arrived before it mounted", () => {
+    Object.defineProperty(HTMLMediaElement.prototype, "readyState", { configurable: true, get: () => 1 })
+    try {
+      const { video } = setup({ startAt: 40 })
+      expect(video.currentTime).toBe(40)
+    } finally {
+      delete (HTMLMediaElement.prototype as { readyState?: number }).readyState
+    }
+  })
 })
 
 describe("MediaPlayer autoplay and controls", () => {
