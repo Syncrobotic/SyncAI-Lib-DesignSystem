@@ -1,4 +1,4 @@
-// @syncrobotic/questionnaire v0.23.1 · update: npx shadcn add @syncrobotic/questionnaire --overwrite
+// @syncrobotic/questionnaire v0.28.0 · update: npx shadcn add @syncrobotic/questionnaire --overwrite
 "use client"
 
 import * as React from "react"
@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils"
 /**
  * A short set of questions answered in order: a pre-shift checklist, a site survey, feedback after an incident.
  * Paged shows one question at a time with a progress bar; list shows them all on one form.
- * Required questions block Next and Submit with a message under the question, never a shake.
+ * Required questions block Next and the last button (Send answers) with a message under the question, never a shake.
  */
 export type QuestionOption = { value: string; label: React.ReactNode; description?: React.ReactNode }
 export type Question =
@@ -67,7 +67,7 @@ export type QuestionnaireLabels = {
 }
 
 export const defaultQuestionnaireLabels: QuestionnaireLabels = {
-  submit: "Submit",
+  submit: "Send answers",
   required: "Answer this question to continue.",
   review: "Review",
   position: (n, total) => `Question ${n} of ${total}`,
@@ -109,7 +109,7 @@ export function Questionnaire({
   requiredMessage?: string
   /** The words it says, to translate them. */
   labels?: Partial<QuestionnaireLabels>
-  /** Paged only: a last page that lists the answers, each with Edit, before Submit. */
+  /** Paged only: a last page that lists the answers, each with Edit, before the last button. */
   review?: boolean
   /** Paged only: the page to open on, from 0. The review page is questions.length. */
   defaultStep?: number

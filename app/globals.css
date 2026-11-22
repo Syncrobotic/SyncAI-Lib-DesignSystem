@@ -53,6 +53,14 @@ html {
 .dark .code span {
   color: var(--shiki-dark);
 }
+/* GitHub's themes draw keywords (import, const, return) red, which here means danger: every listing would read as an
+   error. Keywords take the brand indigo instead (--chart-1, 4.7:1 or more on the code's surfaces in both themes). */
+.code span[style*="--shiki-light:#A0111F"] {
+  color: var(--chart-1);
+}
+.dark .code span[style*="--shiki-dark:#FF9492"] {
+  color: var(--chart-1);
+}
 
 /* Exhibits sit on the page background, a step below the card around them. No pattern: the component is the subject. */
 .specimen {

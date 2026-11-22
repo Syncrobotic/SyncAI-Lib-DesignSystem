@@ -94,4 +94,19 @@ describe("RouteProgress", () => {
     rerender(<RouteProgress active={false} delay={300} />)
     expect(screen.queryByRole("progressbar")).toBeNull()
   })
+
+  it("runs to the end and fades when the page is in, instead of vanishing mid-way", () => {
+    vi.useFakeTimers()
+    const { rerender, container } = render(<RouteProgress active delay={300} />)
+    act(() => vi.advanceTimersByTime(300))
+    rerender(<RouteProgress active={false} delay={300} />)
+    const done = container.querySelector("[data-slot=route-progress]") as HTMLElement
+    expect(done.getAttribute("data-state")).toBe("done")
+    expect(done.className).toContain("animate-disappear")
+    expect(done.firstElementChild!.className).not.toContain("scale-x-60")
+    act(() => {
+      fireEvent.animationEnd(done)
+    })
+    expect(container.querySelector("[data-slot=route-progress]")).toBeNull()
+  })
 })

@@ -1,9 +1,12 @@
-// @syncrobotic/kbd v0.16.0 · update: npx shadcn add @syncrobotic/kbd --overwrite
+// @syncrobotic/kbd v0.28.0 · update: npx shadcn add @syncrobotic/kbd --overwrite
+"use client"
+
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
 /**
- * A key on the keyboard, in shortcuts and instructions: ⌘K, Esc, Hold Space. One key per Kbd; a chord is a KbdGroup.
+ * A key on the keyboard, in shortcuts and instructions: ⌘K, Esc, Space. One key per Kbd; a chord is a KbdGroup. How a
+ * key is pressed ("Hold", "Double-press") is a word beside it, never a Kbd.
  * On a dark surface (a tooltip) it inverts with the surface by inheriting the text colour.
  * `pressed` shows the key going down while its shortcut runs (useHotkeys returns which one): it sinks, and its edge
  * thickens to the text colour, so the change is size and weight, not colour alone.
@@ -21,6 +24,20 @@ export function Kbd({ className, pressed, ...props }: React.ComponentProps<"kbd"
       )}
       {...props}
     />
+  )
+}
+
+const noSubscribe = () => () => {}
+
+/**
+ * The platform's modifier key for a shortcut: "⌘" on a Mac, iPhone or iPad, "Ctrl" elsewhere. The server and the first
+ * render say "⌘"; the browser's own answer follows at once.
+ */
+export function useModKey() {
+  return React.useSyncExternalStore(
+    noSubscribe,
+    () => (/Mac|iPhone|iPad/.test(navigator.platform) ? "⌘" : "Ctrl"),
+    () => "⌘",
   )
 }
 

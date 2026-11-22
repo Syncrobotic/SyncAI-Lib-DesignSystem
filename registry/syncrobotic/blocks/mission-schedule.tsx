@@ -1,10 +1,11 @@
-// @syncrobotic/mission-schedule v0.17.3 · update: npx shadcn add @syncrobotic/mission-schedule --overwrite
+// @syncrobotic/mission-schedule v0.28.0 · update: npx shadcn add @syncrobotic/mission-schedule --overwrite
 "use client"
 
 import * as React from "react"
-import { Plus } from "lucide-react"
+import { Plus, TriangleAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
+import { Alert, AlertDescription, AlertTitle } from "@/registry/syncrobotic/ui/alert"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 
@@ -39,11 +40,11 @@ const nights: Record<"tonight" | "tomorrow", Lane[]> = {
       robot: "Patrol dog 1715",
       slots: [
         { name: "Car park", start: 0.5, end: 2.5, state: "done" },
-        { name: "Car park", start: 4, end: 6, state: "planned" },
+        { name: "Car park", start: 4, end: 6, state: "running" },
         { name: "Car park", start: 9, end: 11, state: "planned" },
       ],
     },
-    { robot: "Patrol dog DAA6", slots: [{ name: "Server room", start: 2, end: 3, state: "done" }] },
+    { robot: "Patrol dog DAA6", slots: [{ name: "Server room", start: 1.5, end: 3.5, state: "done" }] },
   ],
   tomorrow: [
     { robot: "Patrol dog 7F3A", slots: [{ name: "Perimeter", start: 1, end: 3, state: "planned" }] },
@@ -59,6 +60,8 @@ const clock = (h: number) => {
   return `${String(Math.floor(t)).padStart(2, "0")}:${t % 1 ? "30" : "00"}`
 }
 const stateWord = { done: "Done", running: "Running now", planned: "Planned", conflict: "Cannot run as planned" } as const
+// The word inside a timeline bar, where a 2-hour bar holds about 12 characters.
+const shortWord = { done: "Done", running: "Running", planned: "Planned", conflict: "Cannot run" } as const
 const slotStyle = {
   done: "bg-muted text-muted-foreground",
   running: "bg-info-subtle text-foreground ring-1 ring-info ring-inset",
@@ -67,8 +70,9 @@ const slotStyle = {
 } as const
 
 /**
- * A night's missions, one lane per robot across the hours. Done missions are muted, the running one is the only blue,
- * planned ones are outlined; a mission that cannot run as planned is the only thing in warning, with the reason written out.
+ * A night's missions, one lane per robot across the hours. Every mission says its state in a word; done missions are
+ * muted, running ones are the only blue, planned ones are outlined; a mission that cannot run as planned is the only
+ * thing in warning, with the reason written out above the schedule.
  */
 export function MissionSchedule() {
   const [night, setNight] = React.useState<"tonight" | "tomorrow">("tonight")
@@ -99,9 +103,13 @@ export function MissionSchedule() {
         </div>
 
         {conflicts.map((c) => (
-          <p key={c.robot + c.start} role="status" className="rounded-sm bg-warning-subtle p-3 text-sm text-warning">
-            {c.robot}, {c.name} at {clock(c.start)}: {c.note}.
-          </p>
+          <Alert key={c.robot + c.start} tone="warning">
+            <TriangleAlert aria-hidden="true" />
+            <AlertTitle>
+              {c.robot}, {c.name} at {clock(c.start)} cannot run as planned
+            </AlertTitle>
+            <AlertDescription>{c.note}.</AlertDescription>
+          </Alert>
         ))}
 
         {/*
@@ -120,7 +128,7 @@ export function MissionSchedule() {
                     <li key={s.start} className={cn("flex min-h-(--h-md) items-center justify-between gap-3 rounded-xs px-3 py-2 text-sm", slotStyle[s.state])}>
                       <span className="flex min-w-0 flex-col">
                         <span className="font-medium">{s.name}</span>
-                        {s.state !== "planned" && <span className="text-xs text-muted-foreground">{stateWord[s.state]}</span>}
+                        <span className="text-xs text-muted-foreground">{stateWord[s.state]}</span>
                       </span>
                       <span className="shrink-0 tabular-nums">
                         {clock(s.start)}–{clock(s.end)}
@@ -154,28 +162,33 @@ export function MissionSchedule() {
               {lanes.map((l) => (
                 <li key={l.robot} className="grid grid-cols-[10rem_1fr] items-center border-b border-border pr-4 last:border-b-0">
                   <span className="px-4 text-sm font-medium">{l.robot}</span>
-                  <div className="relative h-14">
+                  <div className="relative h-20">
                     {now !== undefined && <span aria-hidden="true" className="absolute inset-y-0 w-px bg-foreground" style={{ left: `${(now / HOURS) * 100}%` }} />}
                     {l.slots.length === 0 && <span className="absolute inset-y-0 left-2 flex items-center text-xs text-muted-foreground">No missions</span>}
                     <ul aria-label={`${l.robot} missions`}>
                       {l.slots.map((s) => {
-                        // Name over time, two lines, inside the bar it names. A short mission keeps its label inside too,
-                        // cut with an ellipsis where the bar is narrow, and its full name and time in the tooltip: a
-                        // label beside the bar read as a label for the empty space next to it.
+                        // Name, state word and time, three lines inside the bar they name, so a state never rests on its
+                        // fill alone. A mission is at least two hours wide in the sample, which holds its name; a shorter
+                        // one in your data is cut with an ellipsis and keeps its full name, state and time in the tooltip:
+                        // a label beside the bar read as a label for the empty space next to it.
                         const short = s.end - s.start < 1.5
                         return (
                           <li
                             key={s.start}
-                            title={`${s.name}, ${clock(s.start)}–${clock(s.end)}`}
+                            title={`${s.name}, ${stateWord[s.state].toLowerCase()}, ${clock(s.start)}–${clock(s.end)}`}
                             className={cn("absolute inset-y-2 flex flex-col justify-center rounded-xs text-xs leading-4", short ? "px-1" : "px-2", slotStyle[s.state])}
                             style={{ left: `${(s.start / HOURS) * 100}%`, width: `${((s.end - s.start) / HOURS) * 100}%` }}
                           >
                             <span className="flex min-w-0 flex-col">
                               <span className="truncate font-medium">{s.name}</span>
-                              <span className="truncate tabular-nums">
+                              <span className="truncate">
+                                <span className="sr-only">, </span>
+                                {shortWord[s.state]}
+                                <span className="sr-only">, </span>
+                              </span>
+                              <span className="truncate text-muted-foreground tabular-nums">
                                 {clock(s.start)}–{clock(s.end)}
                               </span>
-                              <span className="sr-only">, {stateWord[s.state].toLowerCase()}</span>
                             </span>
                           </li>
                         )
@@ -187,7 +200,21 @@ export function MissionSchedule() {
             </ul>
           </div>
         </div>
-        <p className="hidden text-xs text-muted-foreground lg:block">Muted: done. Blue: running now (the line is the time). Outlined: planned. Amber: cannot run as planned.</p>
+        {/* The key names states, never colours: each swatch is drawn as its bars are, and the word is the one in them. */}
+        <ul aria-label="Key" className="hidden flex-wrap items-center gap-x-4 gap-y-2 text-xs text-muted-foreground lg:flex">
+          {(["done", "running", "planned", "conflict"] as const).map((k) => (
+            <li key={k} className="flex items-center gap-2">
+              <span aria-hidden="true" className={cn("h-3 w-6 rounded-2xs", slotStyle[k])} />
+              {stateWord[k]}
+            </li>
+          ))}
+          {now !== undefined && (
+            <li className="flex items-center gap-2">
+              <span aria-hidden="true" className="h-3 w-px bg-foreground" />
+              Now
+            </li>
+          )}
+        </ul>
       </div>
     </AppShell>
   )

@@ -69,7 +69,7 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 | Display | `status-glyph`, `status-eyebrow`, `list`, `skeleton`, `spinner`, `badge`, `card`, `avatar`, `separator`, `progress`, `description-list`, `text-diff`, `meter`, `empty-state`, `table`, `item`, `icon-tile`, `kbd`, `scroll-area`, `share-bar`, `restricted-preview`, `image-grid`, `data-grid`, `resizable`, `attachment`, `file-type`, `timeline`, `trace`, `marker`, `media-player`, `camera-feed`, `graph` |
 | Charts | `chart`, `robot-map` |
 | Feedback | `alert`, `banner`, `alarm`, `toast`, `route-progress` |
-| Navigation | `tabs`, `pagination`, `breadcrumb`, `accordion`, `page-header`, `load-more`, `stepper`, `scrollspy`, `navigation-menu`, `tree` |
+| Navigation | `tabs`, `pagination`, `breadcrumb`, `accordion`, `page-header`, `load-more`, `stepper`, `scrollspy`, `navigation-menu`, `tree`, `sidebar` |
 | Overlays | `dialog`, `alert-dialog`, `sheet`, `popover`, `hover-card`, `tooltip`, `dropdown-menu`, `context-menu`, `command` |
 | Robot shell | `tray`, `stop-button`, `slide-to-release`, `teleop-pad`, `dock`, `island` |
 | Icons | `robot-icons` (robot icons Lucide lacks, drawn to match) |

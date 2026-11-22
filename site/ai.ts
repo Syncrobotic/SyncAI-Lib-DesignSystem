@@ -67,7 +67,7 @@ export function componentMarkdown(name: string) {
     }
   }
   if (item.examples)
-    out.push("", "## Examples", "", ...storyNames(item.examples).map((n) => `- ${storyTitle(n)}: ${url(`/docs/components/${name}#example-${n}`)}`))
+    out.push("", "## Examples", "", ...storyNames(item.examples).map((n) => `- ${storyTitle(n, name)}: ${url(`/docs/components/${name}#example-${n}`)}`))
   if (!item.examples) out.push("", "## Source", "", "```tsx", readSource(item.files[0].path).trim(), "```")
   if (meta?.changelog?.length) out.push("", "## Changelog", "", ...meta.changelog.slice(0, 5).map((c) => `- ${c.version} (${c.date}): ${c.note}`))
   out.push("", `Index: ${url("/llms.txt")}`)

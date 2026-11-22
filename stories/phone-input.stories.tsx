@@ -12,7 +12,9 @@ export const PhoneInputDefault: S = {
     const [v, setV] = React.useState<string | undefined>()
     return (
       <div className="flex flex-col gap-2">
-        <PhoneInput value={v} onValueChange={setV} />
+        <Field label="Phone">
+          <PhoneInput value={v} onValueChange={setV} />
+        </Field>
         <p className="font-mono text-xs text-muted-foreground">Stored as: {v ?? "—"}</p>
       </div>
     )
@@ -46,17 +48,33 @@ export const PhoneInputValidated: S = {
 }
 
 export const PhoneInputOtherCountry: S = {
-  render: () => <PhoneInput defaultCountry="JP" aria-label="Tokyo site phone" />,
+  render: () => (
+    <Field label="Tokyo site phone">
+      <PhoneInput defaultCountry="JP" />
+    </Field>
+  ),
 }
 
 export const PhoneInputLimitedCountries: S = {
-  render: () => <PhoneInput defaultCountry="TW" countryOptions={["TW", "JP", "SG", "US"]} aria-label="Support phone" />,
+  render: () => (
+    <Field label="Support phone" hint="Support lines run in Taiwan, Japan, Singapore and the US.">
+      <PhoneInput defaultCountry="TW" countryOptions={["TW", "JP", "SG", "US"]} />
+    </Field>
+  ),
 }
 
 export const PhoneInputReadOnly: S = {
-  render: () => <PhoneInput value="+6591234567" readOnly aria-label="Account phone" />,
+  render: () => (
+    <Field label="Account phone" hint="Change it in your account settings.">
+      <PhoneInput value="+6591234567" readOnly />
+    </Field>
+  ),
 }
 
 export const PhoneInputDisabled: S = {
-  render: () => <PhoneInput disabled aria-label="Phone" />,
+  render: () => (
+    <Field label="Phone" hint="Text alerts are off for this site.">
+      <PhoneInput disabled />
+    </Field>
+  ),
 }

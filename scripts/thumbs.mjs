@@ -16,8 +16,10 @@ const THEMES = ["light", "dark"]
 /** Output widths in pixels (16:10). A card is 17 to 24 rem wide: 1x screens take the first, 2x the second. */
 const WIDTHS = [400, 800]
 const RATIO = 16 / 10
-/** The crop of the story in CSS pixels: at least MIN_W wide (a lone button is shown larger, never past 1.25x), at most its 422 px page. */
-const MIN_W = 320
+/**
+ * The crop of the story in CSS pixels: always its 422 px page, so every picture on /docs/components is at one scale (a
+ * lone checkbox used to be shown 1.3 times larger than a form beside it, its text 16 px against 11).
+ */
 const MAX_W = 422
 const PAD = 20
 /** The browser is wider than the story's page, so a small component can sit in the middle of its frame. */
@@ -93,7 +95,8 @@ if (process.argv.includes("--check")) {
 }
 
 const { chromium } = await import("playwright")
-const PORT = 6008
+// THUMBS_PORT: another port when 6008 is taken (several checkouts on one machine).
+const PORT = Number(process.env.THUMBS_PORT ?? 6008)
 const BASE = `http://127.0.0.1:${PORT}`
 const index = JSON.parse(readFileSync("storybook-static/index.json", "utf8"))
 const ids = new Map(Object.values(index.entries).map((e) => [`${e.importPath}#${e.exportName}`, e.id]))
@@ -150,6 +153,10 @@ for (const c of list) {
     }
     if (!box) throw new Error(`${c.name}: ${name} draws nothing`)
     const clip = frame(box, await page.evaluate(() => document.documentElement.scrollHeight), vw)
+    // A tall story is cut at the frame's bottom. Where that line runs through a field or a line of text, the picture
+    // fades out above it into the page colour, so nothing reads as half a control.
+    const through = box.rows.filter(([y1, y2]) => y1 < clip.y + clip.height && y2 > clip.y + clip.height).map(([y1]) => y1)
+    if (through.length) await page.evaluate(fade, { top: Math.max(clip.y, Math.min(...through) - 24), bottom: clip.y + clip.height, x: clip.x, width: clip.width })
     const png = await page.screenshot({ clip, fullPage: true })
     await page.close()
     const webp = await encoder.evaluate(encode, { png: png.toString("base64"), widths: WIDTHS })
@@ -184,6 +191,36 @@ function ink() {
   // The story wrapper itself (padded, the page colour) is the background, not the component.
   const backdrop = new Set([root, root.firstElementChild, root.firstElementChild?.firstElementChild])
   let modal = false
+  // What a scrolling box hides is not drawn: a virtual list keeps lines above and below its viewport. Each rect is cut to
+  // the boxes that clip it.
+  /** @type {Map<Element, DOMRect | null>} */
+  const clips = new Map()
+  /** @type {(el: Element | null) => DOMRect | null} */
+  const clipOf = (el) => {
+    if (!el || el === document.body) return null
+    if (clips.has(el)) return /** @type {DOMRect | null} */ (clips.get(el))
+    const outer = clipOf(el.parentElement)
+    const s = getComputedStyle(el)
+    let c = outer
+    if (s.overflowX !== "visible" || s.overflowY !== "visible") {
+      const b = el.getBoundingClientRect()
+      c = outer ? new DOMRect(Math.max(b.left, outer.left), Math.max(b.top, outer.top), 0, 0) : b
+      if (outer) c = new DOMRect(c.x, c.y, Math.max(0, Math.min(b.right, outer.right) - c.x), Math.max(0, Math.min(b.bottom, outer.bottom) - c.y))
+    }
+    clips.set(el, c)
+    return c
+  }
+  /** @type {(b: DOMRect, el: Element) => DOMRect} */
+  const clipped = (b, el) => {
+    const c = clipOf(el.parentElement)
+    if (!c) return b
+    const x = Math.max(b.left, c.left)
+    const y = Math.max(b.top, c.top)
+    return new DOMRect(x, y, Math.max(0, Math.min(b.right, c.right) - x), Math.max(0, Math.min(b.bottom, c.bottom) - y))
+  }
+  /** The vertical extent of each line of text and each leaf (a field, an icon), to tell where a cut runs through one. */
+  /** @type {[number, number][]} */
+  const rows = []
   /** @type {(scope: Element, edges: [number, number]) => Edges | null} */
   const measure = (scope, [left, right]) => {
     /** @type {Edges | null} */
@@ -196,6 +233,7 @@ function ink() {
       if (x2 <= x1) return
       const y1 = b.top + scrollY
       const y2 = b.bottom + scrollY
+      rows.push([y1, y2])
       r = r ? { x1: Math.min(r.x1, x1), y1: Math.min(r.y1, y1), x2: Math.max(r.x2, x2), y2: Math.max(r.y2, y2) } : { x1, y1, x2, y2 }
     }
     for (const el of [scope, ...scope.querySelectorAll("*")]) {
@@ -209,7 +247,7 @@ function ink() {
         continue
       }
       const leaf = !el.firstElementChild || /^(svg|canvas|img|video|input|textarea|select)$/i.test(el.tagName)
-      if (leaf || painted(s)) add(b)
+      if (leaf || painted(s)) add(clipped(b, el))
     }
     const walk = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT)
     const range = document.createRange()
@@ -218,7 +256,7 @@ function ink() {
       const s = getComputedStyle(n.parentElement)
       if (s.visibility === "hidden" || +s.opacity === 0) continue
       range.selectNodeContents(n)
-      add(range.getBoundingClientRect())
+      add(clipped(range.getBoundingClientRect(), n.parentElement))
     }
     return r
   }
@@ -230,13 +268,22 @@ function ink() {
   const y1 = Math.min(...boxes.map((b) => b.y1))
   const x2 = Math.max(...boxes.map((b) => b.x2))
   const y2 = Math.max(...boxes.map((b) => b.y2))
-  return { x: x1, y: y1, width: x2 - x1, height: y2 - y1 }
+  return { x: x1, y: y1, width: x2 - x1, height: y2 - y1, rows }
 }
 
-/** A 16:10 crop around the box: at least MIN_W wide and centred on it; wider (up to MAX_W) when it is tall; then cut at the bottom. */
+/** Runs in the story: a fade from transparent to the page colour over the band [top, bottom], above everything. */
+/** @param {{ top: number, bottom: number, x: number, width: number }} band */
+function fade({ top, bottom, x, width }) {
+  const el = document.createElement("div")
+  const bg = getComputedStyle(document.body).backgroundColor
+  el.style.cssText = `position:absolute;z-index:2147483647;pointer-events:none;left:${x}px;width:${width}px;top:${top}px;height:${bottom - top}px;background:linear-gradient(to bottom, transparent, ${bg} 75%)`
+  document.body.append(el)
+}
+
+/** A 16:10 crop of the story's page width, centred on the box; a tall box is cut at the bottom. */
 /** @param {Box} b @param {number} pageH @param {number} vw */
 function frame(b, pageH, vw) {
-  const w = Math.min(MAX_W, Math.max(MIN_W, b.width + 2 * PAD, (b.height + 2 * PAD) * RATIO))
+  const w = MAX_W
   const h = w / RATIO
   const x = Math.min(vw - w, Math.max(0, b.x + b.width / 2 - w / 2))
   const tall = b.height + 2 * PAD > h

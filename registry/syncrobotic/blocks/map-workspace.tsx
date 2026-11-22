@@ -1,4 +1,4 @@
-// @syncrobotic/map-workspace v0.23.0 · update: npx shadcn add @syncrobotic/map-workspace --overwrite
+// @syncrobotic/map-workspace v0.28.0 · update: npx shadcn add @syncrobotic/map-workspace --overwrite
 "use client"
 
 import * as React from "react"
@@ -35,7 +35,7 @@ const robots: MapRobot[] = [
       [70, 60],
     ],
   },
-  { id: "9C44", x: 72, y: 22, tone: "warning", status: "Needs attention", battery: 18 },
+  { id: "9C44", x: 72, y: 22, tone: "warning", status: "Needs attention", battery: 14 },
   { id: "4D21", x: 48, y: 70, tone: "danger", status: "Stopped", battery: 64 },
   { id: "2B10", x: 85, y: 78, tone: "normal", status: "Docked", battery: 100 },
 ]
@@ -60,7 +60,7 @@ const mapRobots: RobotMapRobot[] = robots.map((r) => ({ id: r.id, name: r.id, x:
 
 const alarms: AlarmData[] = [
   { id: "a1", priority: "critical", title: "Emergency stop", source: "4D21, Warehouse", time: "14:02", active: true, acknowledged: false },
-  { id: "a2", priority: "high", title: "Battery 18 %", source: "9C44", time: "14:01", active: true, acknowledged: false },
+  { id: "a2", priority: "high", title: "Battery 14 %", source: "9C44", time: "14:01", active: true, acknowledged: false },
 ]
 
 /**

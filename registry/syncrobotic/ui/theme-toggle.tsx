@@ -1,4 +1,4 @@
-// @syncrobotic/theme-toggle v0.10.1 · update: npx shadcn add @syncrobotic/theme-toggle --overwrite
+// @syncrobotic/theme-toggle v0.28.0 · update: npx shadcn add @syncrobotic/theme-toggle --overwrite
 "use client"
 
 import { Monitor, Moon, Sun } from "lucide-react"
@@ -21,7 +21,8 @@ export function ThemeToggle({
   label = "Theme",
   className,
 }: {
-  value: ThemeChoice | undefined
+  /** The stored choice. Leave it out (or undefined) until it is known in the browser: nothing shows as selected. */
+  value?: ThemeChoice
   onValueChange: (value: ThemeChoice) => void
   labels?: Record<ThemeChoice, string>
   /** Names the group. */

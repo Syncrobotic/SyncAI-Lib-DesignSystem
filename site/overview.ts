@@ -129,6 +129,28 @@ export const overviews: Record<string, Overview> = {
       "Every word is in `labels`, including the units (`degrees`, `millimetres`, …) as functions of the formatted number, and `formatTime`; `locale` formats the numbers and the time. Pass the app's locale: left out, numbers are written in English on the server and in every browser alike, so the page hydrates without a mismatch, and a tag Intl cannot read falls back to English.",
     ],
   },
+  diagnostics: {
+    what: "A robot's hardware and software health from ROS diagnostics: the worst level and the counts first, then a tree by name with the worst level rolled up to each group, each status a glyph and a word that opens to its values.",
+    use: [
+      "The Health tab of a robot's page: which motor, sensor, computer or node is unwell, and what it reports.",
+      "A field technician's first look at a robot that stopped: Problems narrows the tree to what is not OK.",
+      "Checking a robot after commissioning or an update: everything OK, nothing stale.",
+    ],
+    instead: [
+      "Something an operator must act on now (a motor fault that stopped the robot): raise an `alarm` as well; this panel shows the detail behind it.",
+      "One robot's state in a list of robots: `status-glyph` with a word, from the worst level here.",
+      "A reading's history (a motor's temperature over a shift): a line chart in `chart`.",
+    ],
+    notes: [
+      "Plain props from `diagnostic_msgs/DiagnosticArray`: `diagnosticArrayToStatuses(msg)` from `ros` maps it, and `mergeDiagnostics(previous, next)` keeps each name's latest status, since /diagnostics brings a few at a time. No ROS library.",
+      "The tree comes from the names' \"/\" paths, as the aggregator writes them (/diagnostics_agg). A group's level is the worst under it: Error, then Stale, then Warning, then OK. A partly stale group reads Stale, not Error as the aggregator has it, so nobody goes to fix a sensor that only stopped talking.",
+      "Stale is timed by `receivedAt` (this browser's clock when the status arrived, never the header stamp) against `staleAfterMs`, 5 s by default as in the aggregator. The panel reads the clock once a second; pass `now` for a fixed picture (tests, screenshots, a bag played back).",
+      "The summary counts each device once: leaves, and a group's own status only when it is worse than everything under it (an aggregator's missing-item error).",
+      "Groups with a problem open by themselves; anything opened or closed by hand stays that way. Problems and search open every group they keep, and remember their own choices separately from the full tree.",
+      "A status that turns ERROR is announced politely (a live region), at most once every 5 s: errors in between are read together, more than three as a count. What is in error when the data first arrives is not announced.",
+      "Every word is in `labels`, with `summary` and `updatedAgo` as functions of numbers and the locale; `locale` formats the numbers. `labels-zh-tw` has `diagnosticsLabels`.",
+    ],
+  },
   "restricted-preview": {
     what: "A preview that does not load until someone asks: restricted data, faces, number plates.",
     use: ["Thumbnails of a restricted dataset in a catalog or gallery."],
@@ -291,12 +313,34 @@ export const overviews: Record<string, Overview> = {
     what: "An On this page list that marks the section being read and scrolls to a section when clicked.",
     use: ["Long settings or detail pages.", "Docs pages.", "A robot's detail panel with many sections."],
     instead: ["Separate views people switch between: `tabs`."],
-    notes: ["useScrollspy(ids) alone gives the current id for a custom display.", "Links move focus to the section, so keyboard users land there."],
+    notes: ["useScrollspy(ids) alone gives the current id for a custom display.", "The rail sits beside the content only from sm up (`hidden sm:flex`): on a phone it would leave the content a column a few words wide. Use `variant=\"pills\"` above the content there.", "Links move focus to the section, so keyboard users land there."],
+  },
+  sidebar: {
+    what: "The main navigation of a console or dashboard: groups of links with counts, a switcher at the top and the account at the foot, collapsing to a rail of icons and becoming a sheet on phones.",
+    use: [
+      "The sections of an internal tool or a fleet console, on a laptop or a control-room screen.",
+      "Switching between sites, workspaces or robots, in its header, above the sections they share.",
+      "A section with a few pages of its own, listed under it while it is current.",
+    ],
+    instead: [
+      "The whole frame (sidebar, top bar with title, search and environment, content and footer): the `app-shell` block, built on this.",
+      "A website's header with a few areas: `navigation-menu`.",
+      "Up to four sections of a phone app, in thumb reach: the `app-shell-mobile-tabs` block.",
+      "A hierarchy from data (sites › zones › robots): `tree`.",
+      "Sections of one page: `tabs` or `scrollspy`.",
+    ],
+    notes: [
+      "One SidebarProvider around the Sidebar and the page beside it (SidebarInset); SidebarTrigger and useSidebar only work inside it. Give the provider the frame's height (`h-dvh`), or let the page scroll beside the sticky sidebar.",
+      "Each SidebarMenuButton leads with its icon and passes `tooltip` with its name: on the rail the icon is all that shows. With a link, use asChild and put the icon, a <span> with the name, then SidebarMenuBadge or SidebarMenuTag inside the link, so the count is part of its name.",
+      "Mark the current page with isActive (aria-current=\"page\"). For a page under a section, mark its SidebarMenuSubButton, give the section aria-current=\"true\", and isActive only on the rail, where its pages are hidden.",
+      "The cookie is read on the client after hydration. With server rendering, read `sidebar_state` (SIDEBAR_COOKIE_NAME) on the server and pass it as defaultOpen, so a collapsed sidebar does not open for a moment first.",
+      "Below 768 px it is a sheet, decided in JavaScript; pass isMobile to fix the form in a preview or a test.",
+    ],
   },
   "navigation-menu": {
     what: "The top navigation of a website: links, and triggers that open panels of links with descriptions.",
     use: ["A marketing or docs site header.", "A portal with a few product areas."],
-    instead: ["An app's own sections: the app-shell block's sidebar.", "Actions on a thing: `dropdown-menu`.", "A path to the current page: `breadcrumb`."],
+    instead: ["An app's own sections: `sidebar`.", "Actions on a thing: `dropdown-menu`.", "A path to the current page: `breadcrumb`."],
     notes: [
       "Use NavigationMenuLink (or navigationMenuTriggerStyle on it) for plain top-level links.",
       "viewport={false} puts each panel under its own trigger.",
@@ -324,6 +368,28 @@ export const overviews: Record<string, Overview> = {
       "Give each column meta.label so the visibility menu names it.",
       "Keep getRowId stable so selection survives sorting.",
       "data and columns must keep their identity between renders; an inline array (`rows.slice(0, 6)`, `[]`) re-renders forever once state auto-resets.",
+    ],
+  },
+  "log-viewer": {
+    what: "Robot and system logs in a virtual list: filtered by level and source, searched with the matches marked, following the newest line until someone scrolls up, each line opening to its whole message and fields.",
+    use: [
+      "A robot's /rosout on its page in a fleet console, for the operator or the engineer on call.",
+      "A service's or a device's journal while commissioning or debugging.",
+      "Reading back what a robot said around an incident, from a saved log.",
+    ],
+    instead: [
+      "Conditions someone must acknowledge: `alarm`.",
+      "Records people sort, select and page: `data-grid`.",
+      "The steps of one run, with durations: `trace`.",
+      "A command and its output to copy: `code-block`.",
+    ],
+    notes: [
+      "A grid, not role=\"log\": a log region announces every line added to it, and a virtual list adds lines as it scrolls. The grid has `aria-rowcount` and each line its `aria-rowindex`, one Tab stop, and `aria-activedescendant` for the line in focus, so focus never sits on a line that scrolls away. New lines are announced in a separate status, at most every 5 s.",
+      "`createLogBuffer({ maxLines, flushMs })` is a ring buffer outside React: append from a WebSocket or ROS callback; it commits at most every `flushMs` (100) and tells its subscribers once. The viewer subscribes with useSyncExternalStore and filters only on a commit. Lines keep a sequence number, so an open or selected line stays open while older ones are dropped.",
+      "Following stops when the reader scrolls up, opens a line, moves with the keyboard or goes to a match; it resumes at the end, with End, or with the floating \"Jump to latest\". While paused, the line at the top stays put when older lines are dropped or the filters change.",
+      "Rows are measured, so wrapped and opened lines take their real height; a row is `--h-sm` (36 px with a mouse, 44 on touch).",
+      "The rows component opts out of the React Compiler (\"use no memo\") because TanStack Virtual answers through methods on one object; the rest of the viewer compiles.",
+      "Every word is in `labels`, including `ago` for time ago and `announce`; `locale` formats times and counts.",
     ],
   },
   sortable: {
@@ -871,6 +937,26 @@ export const overviews: Record<string, Overview> = {
     instead: ["A single number: a stat in a `card`.", "Exact values to read or export: `table` (`ChartTable`)."],
     notes: ["Spread `chartMotion` onto marks; do not set Recharts animation timing."],
   },
+  "streaming-chart": {
+    what: "A live line chart for telemetry arriving many times a second: a time axis that keeps the last 30 s, 2 min or 10 min, pause and jump to live, limit lines, a crosshair, and a legend with each value now.",
+    use: [
+      "Motor currents, speed, a temperature or a battery's voltage on a robot's page while it works or is commissioned.",
+      "Watching a value against its limit as it happens: a motor heating up, a pack sagging under load.",
+      "Any ROS topic of numbers (std_msgs/Float64, a field of sensor_msgs/BatteryState or JointState), pushed as it arrives.",
+    ],
+    instead: [
+      "A history read afterwards (a shift, a week, a mission): `chart`, with its table.",
+      "One value now: a `metric-card`, or a `meter` for a level within a range.",
+      "A value that needs someone to act when it crosses a limit: raise an `alarm`; the chart shows the trend, the alarm asks for the action.",
+    ],
+    notes: [
+      "Never put readings in props or state: push them (`ref.current.push(values, time)`, or `subscribe={(push) => source.on(push)}` returning the cleanup). A `useRosTopic` value would render the page for every message; `ros.subscribe` in `subscribe` does not.",
+      "Keep `subscribe` stable (module level, or memoised by the React Compiler or useCallback): the chart reconnects when it changes.",
+      "`push` takes one reading per series key; a key left out has no reading this time, so series at different rates share a chart. null or NaN is a gap. A reading older than the series' newest is dropped.",
+      "The time axis follows the readings' clock, carried forward by the browser's: pass the message's stamp in ms when there is one, or leave it out for now.",
+      "Every word is in `labels`, including `formatTime`, the axis' `secondsAgo` and `minutesAgo`, `withUnit` and `reading` (what screen readers hear); `locale` formats the numbers and times. Pass the app's locale.",
+    ],
+  },
   command: {
     what: "Search and run from the keyboard: a filterable list, and the ⌘K palette that opens over any page.",
     use: ["The app's search for robots, pages and actions (AppShell `search`).", "Picking from a long list by typing."],
@@ -903,7 +989,7 @@ export const overviews: Record<string, Overview> = {
     instead: ["Any other destructive action: `button` with the destructive variant. Solid red belongs to the stop alone."],
     notes: [
       "UI only. Send the stop command, wait for the dog, fall back to Bluetooth after 1.5 s in the app, and pass the result back as `state`.",
-      "Solid red belongs to this button alone. Fixed at 56 px (--h-stop).",
+      "Its height is --h-stop: 56 px, 64 px in glove density. It never shrinks, compact density included.",
     ],
   },
   "slide-to-release": {
@@ -979,14 +1065,14 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   ros: {
-    what: "The rosbridge v2 client and the message converters behind use-ros, in plain TypeScript: a connection that reconnects and resubscribes, and pure functions from OccupancyGrid, LaserScan, PointCloud2, JointState and poses to the components' props, and from a teleop command or a map goal back to Twist and PoseStamped.",
+    what: "The rosbridge v2 client and the message converters behind use-ros, in plain TypeScript: a connection that reconnects and resubscribes, and pure functions from OccupancyGrid, LaserScan, PointCloud2, JointState, DiagnosticArray and poses to the components' props, and from a teleop command or a map goal back to Twist and PoseStamped.",
     use: [
-      "Feeding `robot-map`, `point-cloud`, `joint-state` from ROS messages, whatever brought them (rosbridge, Foxglove, a recorded bag, your backend).",
+      "Feeding `robot-map`, `point-cloud`, `joint-state`, `diagnostics` from ROS messages, whatever brought them (rosbridge, Foxglove, a recorded bag, your backend).",
       "A rosbridge connection outside React: a worker that decodes clouds, a test, a script.",
     ],
     instead: ["Connecting React components: `use-ros`, which installs this."],
     notes: [
-      "`occupancyGridToGrid` (robot-map `grid` or `costmap`), `laserScanToScan(msg, robotId)` (robot-map `scans`), `poseToRobotMapPose(msg, gridToPlan(grid))` (a robot's x, y and heading; takes Pose, PoseStamped, PoseWithCovarianceStamped or Odometry), `goalToPoseStamped(goal, frame)` (robot-map `onGoal` to /goal_pose), `pointCloud2ToPoints` (point-cloud `points` and `intensity`), `jointStateToJoints(msg, { limits })` (joint-state `joints`), `teleopToTwist(command, { maxLinear, maxAngular })`, `stampToMs(header.stamp)` (`updatedAt`). For robot-model, its own `jointStateToRecord`.",
+      "`occupancyGridToGrid` (robot-map `grid` or `costmap`), `laserScanToScan(msg, robotId)` (robot-map `scans`), `poseToRobotMapPose(msg, gridToPlan(grid))` (a robot's x, y and heading; takes Pose, PoseStamped, PoseWithCovarianceStamped or Odometry), `goalToPoseStamped(goal, frame)` (robot-map `onGoal` to /goal_pose), `pointCloud2ToPoints` (point-cloud `points` and `intensity`), `jointStateToJoints(msg, { limits })` (joint-state `joints`), `diagnosticArrayToStatuses(msg)` and `mergeDiagnostics(previous, next)` (diagnostics `statuses`), `teleopToTwist(command, { maxLinear, maxAngular })`, `rosLogToLogLine` (a /rosout message as a log-viewer line, ROS 1 or 2), `stampToMs(header.stamp)` (`updatedAt`). For robot-model, its own `jointStateToRecord`.",
       "rosbridge sends `uint8[]` (PointCloud2.data) as base64 and `int8[]` (OccupancyGrid.data) as a list of numbers; the converters read either. NaN and ±Infinity in a LaserScan arrive as null (or as bare tokens, which the client reads as null) and are skipped like out-of-range readings.",
       "A pose must be in the map frame for robot-map (/amcl_pose is; /odom drifts). A scan is drawn from the robot's centre, so transform it to the base frame first if the laser is offset.",
     ],

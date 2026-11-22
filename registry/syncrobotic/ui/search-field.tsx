@@ -1,4 +1,4 @@
-// @syncrobotic/search-field v0.23.0 · update: npx shadcn add @syncrobotic/search-field --overwrite
+// @syncrobotic/search-field v0.28.0 · update: npx shadcn add @syncrobotic/search-field --overwrite
 "use client"
 
 import * as React from "react"
@@ -21,7 +21,8 @@ export const defaultSearchFieldLabels: SearchFieldLabels = { label: "Search", pl
 /**
  * The tool's one search box, in the top bar. `/` focuses it from anywhere on the page (not while typing in a field).
  * Enter opens the results page; on the results page (`live`) it holds the query from the URL and applies itself a moment
- * after typing stops, refining one history entry. Without JavaScript it is a GET form to `action`.
+ * after typing stops, refining one history entry. Without JavaScript it is a GET form to `action`. With `onValueChange`
+ * it filters what is already on the screen instead, and never navigates.
  */
 export function SearchField({
   action = "/search",
@@ -33,6 +34,8 @@ export function SearchField({
   placeholder: placeholderProp,
   labels,
   hotkey = "/",
+  value,
+  onValueChange,
   className,
 }: {
   /** The results page. */
@@ -51,6 +54,13 @@ export function SearchField({
   labels?: Partial<SearchFieldLabels>
   /** The key that focuses the box; null for none. */
   hotkey?: string | null
+  /** With `onValueChange`: the text in the box, controlled. Left out, the box keeps its own. */
+  value?: string
+  /**
+   * Filters in place instead of navigating: called with the text as it is typed, on data already on the screen (a tree, a
+   * list). Enter then does nothing more, and `action`, `name`, `live` and `onNavigate` are not used.
+   */
+  onValueChange?: (value: string) => void
   className?: string
 }) {
   const l = { ...defaultSearchFieldLabels, ...labels }
@@ -99,13 +109,13 @@ export function SearchField({
       data-slot="search-field"
       className={cn("relative w-full", className)}
       onInput={() => {
-        if (!live) return
+        if (!live || onValueChange) return
         window.clearTimeout(timer.current)
         timer.current = window.setTimeout(() => go(true), delay)
       }}
       onSubmit={(e) => {
         e.preventDefault()
-        go(live)
+        if (!onValueChange) go(live)
       }}
     >
       <label htmlFor={id} className="sr-only">
@@ -115,7 +125,15 @@ export function SearchField({
         <InputGroupAddon>
           <Search aria-hidden="true" />
         </InputGroupAddon>
-        <Input ref={input} id={id} name={name} type="search" autoComplete="off" placeholder={placeholder} />
+        <Input
+          ref={input}
+          id={id}
+          name={name}
+          type="search"
+          autoComplete="off"
+          placeholder={placeholder}
+          {...(onValueChange ? { value, onChange: (e: React.ChangeEvent<HTMLInputElement>) => onValueChange(e.target.value) } : {})}
+        />
         {hotkey && (
           <InputGroupAddon aria-hidden="true" className="max-md:hidden">
             <Kbd>{hotkey}</Kbd>

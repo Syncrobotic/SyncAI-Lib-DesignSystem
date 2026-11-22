@@ -10,7 +10,7 @@ import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
 import { ChoiceField, FieldSet } from "@/registry/syncrobotic/ui/choice-field"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
-import { Switch } from "@/registry/syncrobotic/ui/switch"
+import { NumberField } from "@/registry/syncrobotic/ui/number-field"
 
 const meta: Meta = { title: "Inputs/Form" }
 export default meta
@@ -64,7 +64,8 @@ function RenameRobot() {
 
 export const FormServerErrors: S = { render: () => <RenameRobot /> }
 
-// ---------- A group with a rule across its choices, and a switch ----------
+// ---------- A group with a rule across its choices, and a single checkbox ----------
+// Both are saved with the button, so the on/off choice is a checkbox: a switch acts the moment it is flipped.
 
 const alerts = z.object({
   channels: z.array(z.string()).min(1, "Choose at least one way to be told"),
@@ -112,8 +113,7 @@ function AlertChannels() {
             <ChoiceField
               label="No texts from 22:00 to 07:00"
               description="Stops still come through."
-              controlAt="end"
-              control={<Switch ref={field.ref} checked={field.value} onCheckedChange={field.onChange} />}
+              control={<Checkbox ref={field.ref} checked={field.value} onCheckedChange={(on) => field.onChange(on === true)} />}
             />
           </FieldSet>
         )}
@@ -131,7 +131,7 @@ export const FormChoices: S = { render: () => <AlertChannels /> }
 
 const site = z.object({
   name: z.string().trim().min(2, "At least 2 characters"),
-  speed: z.coerce.number({ invalid_type_error: "A number, in metres per second" }).min(0.2, "At least 0.2 m/s").max(1.5, "At most 1.5 m/s indoors"),
+  speed: z.number({ invalid_type_error: "Enter a speed, in metres per second." }).min(0.2, "At least 0.2 m/s.").max(1.5, "At most 1.5 m/s indoors."),
 })
 type Site = z.infer<typeof site>
 
@@ -153,8 +153,20 @@ function EditSite() {
         name="speed"
         control={form.control}
         render={({ field, fieldState }) => (
-          <Field label="Top speed" hint="Metres per second, 0.2 to 1.5." error={fieldState.error?.message}>
-            <Input {...field} inputMode="decimal" className="w-32" />
+          // A number with a unit and a range is a NumberField: it steps, keeps the value in range and reads "0.8 m/s".
+          <Field label="Top speed" hint="0.2 to 1.5 m/s indoors." error={fieldState.error?.message}>
+            <NumberField
+              ref={field.ref}
+              name={field.name}
+              value={field.value}
+              onValueChange={(v) => field.onChange(v)}
+              onBlur={field.onBlur}
+              min={0.2}
+              max={1.5}
+              step={0.1}
+              unit="m/s"
+              className="w-56"
+            />
           </Field>
         )}
       />

@@ -1,4 +1,4 @@
-// @syncrobotic/console-overview v0.22.0 · update: npx shadcn add @syncrobotic/console-overview --overwrite
+// @syncrobotic/console-overview v0.28.0 · update: npx shadcn add @syncrobotic/console-overview --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,21 +6,29 @@ import { Plus } from "lucide-react"
 import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { FleetTable } from "@/registry/syncrobotic/blocks/fleet-table"
 import { StatsCards } from "@/registry/syncrobotic/blocks/stats-cards"
+import { feedback } from "@/registry/syncrobotic/lib/feedback"
+import { SlideToRelease } from "@/registry/syncrobotic/shell/slide-to-release"
+import { StopButton } from "@/registry/syncrobotic/shell/stop-button"
 import { AlarmList, type AlarmData } from "@/registry/syncrobotic/ui/alarm"
 import { Button } from "@/registry/syncrobotic/ui/button"
 
 const sampleAlarms: AlarmData[] = [
   { id: "a1", priority: "low", title: "Lidar cleaning due", source: "Patrol dog 2B10", time: "13:40:12", active: true, acknowledged: true, acknowledgedAt: "13:42" },
-  { id: "a2", priority: "high", title: "Battery 18 %, 12 min left", source: "Patrol dog 9C44", time: "14:01:05", active: true, acknowledged: false },
+  { id: "a2", priority: "high", title: "Battery 14 %, 12 min left", source: "Patrol dog 9C44", time: "14:01:05", active: true, acknowledged: false },
   { id: "a3", priority: "critical", title: "Emergency stop · Warehouse", source: "Patrol dog 4D21", time: "14:02:31", active: true, acknowledged: false },
 ]
 
 /** The time an operator acknowledged, as the list shows it: "14:03". */
 const clock = () => new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })
 
-/** Operations console: what needs a person first, then the fleet's numbers and the robots, on one screen. */
+/**
+ * Operations console: what needs a person first, then the fleet's numbers and the robots, on one screen. The site's
+ * emergency stop stays at the bottom of the screen while the page scrolls, one tap away.
+ */
 export function ConsoleOverview() {
   const [alarms, setAlarms] = React.useState(sampleAlarms)
+  // The stop as in the dock: ready, sending until the robots confirm, then stopped with slide to release.
+  const [stop, setStop] = React.useState<"ready" | "sending" | "stopped">("ready")
   // One update for one or many: the row's Acknowledge and the header's "Acknowledge all" both record when.
   const acknowledge = (ids: string[]) => {
     const at = clock()
@@ -52,6 +60,26 @@ export function ConsoleOverview() {
         <section aria-label="Robots" className="min-w-0">
           <FleetTable />
         </section>
+        {/* The stop for every robot on the site sticks to the bottom of the scrolling page (full width on a phone, the
+            corner from 640 px), so it is one tap away wherever the reader is, as in the dock and the map workspace. */}
+        <div className="sticky bottom-4 z-10 sm:ml-auto sm:w-72">
+          {stop === "stopped" ? (
+            <SlideToRelease tag="All robots" onRelease={() => window.setTimeout(() => setStop("ready"), 500)} />
+          ) : (
+            <StopButton
+              state={stop}
+              tag="All robots"
+              onStop={() => {
+                setStop("sending")
+                // The robots confirm: the app says so to the hand, then offers release.
+                window.setTimeout(() => {
+                  feedback("stopConfirmed")
+                  setStop("stopped")
+                }, 800)
+              }}
+            />
+          )}
+        </div>
       </div>
     </AppShell>
   )

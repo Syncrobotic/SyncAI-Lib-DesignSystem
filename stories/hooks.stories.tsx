@@ -48,7 +48,8 @@ export const UseLongPressHoldToConfirm: S = {
           {...handlers}
           className="press relative h-(--h-md) touch-none overflow-hidden rounded-sm px-4 text-sm font-medium ring-1 ring-border ring-inset select-none hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
         >
-          <span aria-hidden="true" className="absolute inset-y-0 left-0 bg-muted" style={{ width: `${progress * 100}%` }} />
+          {/* The fill is the track colour: it shows on the card and on the hover fill (--accent) the held button has. */}
+          <span aria-hidden="true" className="absolute inset-y-0 left-0 bg-track" style={{ width: `${progress * 100}%` }} />
           <span className="relative">Hold to clear the log</span>
         </button>
         <p className="text-sm text-muted-foreground tabular-nums" aria-live="polite">

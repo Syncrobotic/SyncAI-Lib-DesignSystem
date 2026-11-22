@@ -1,6 +1,7 @@
-// @syncrobotic/load-more v0.23.1 · update: npx shadcn add @syncrobotic/load-more --overwrite
+// @syncrobotic/load-more v0.28.0 · update: npx shadcn add @syncrobotic/load-more --overwrite
 "use client"
 
+import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/registry/syncrobotic/ui/button"
 
@@ -19,7 +20,8 @@ export const defaultLoadMoreLabels: LoadMoreLabels = {
 /**
  * The end of a long list on a phone or in a gallery: how much is shown, and one button for the next batch that says how
  * many it adds and how many remain. Gone once everything is shown. Pages (Pagination) suit a desktop table; this suits
- * scrolling. Focus stays on the button, so the next press is where the thumb already is.
+ * scrolling. Focus stays on the button, so the next press is where the thumb already is; when the last press removes it,
+ * focus moves to the count ("Showing 125 of 125"), which is read out, instead of falling to the top of the page.
  *
  * The rows a press adds should arrive, not pop in: give the items past the first batch `animate-appear`
  * (`i >= firstBatch && "animate-appear"`). It runs once, when a row mounts, so rows already shown stay still.
@@ -49,13 +51,34 @@ export function LoadMore({
 }) {
   const l = { ...defaultLoadMoreLabels, ...labels }
   const left = Math.max(0, total - shown)
+  const status = React.useRef<HTMLParagraphElement>(null)
+  const pressed = React.useRef(false)
+  React.useEffect(() => {
+    if (left > 0 || !pressed.current) return
+    pressed.current = false
+    // Only when focus went with the button: never take it from somewhere the user has moved on to.
+    if (!document.activeElement || document.activeElement === document.body) status.current?.focus()
+  }, [left])
   return (
     <div data-slot="load-more" className={cn("flex flex-col items-center gap-3", className)}>
-      <p aria-live="polite" className="text-sm text-muted-foreground tabular-nums">
+      <p
+        ref={status}
+        tabIndex={-1}
+        aria-live="polite"
+        className="rounded-xs text-sm text-muted-foreground tabular-nums focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+      >
         {l.showing(Math.min(shown, total), total, locale)}
       </p>
       {left > 0 && (
-        <Button variant="secondary" className="w-full sm:w-auto" loading={loading} onClick={onMore}>
+        <Button
+          variant="secondary"
+          className="w-full sm:w-auto"
+          loading={loading}
+          onClick={(e) => {
+            pressed.current = document.activeElement === e.currentTarget
+            onMore()
+          }}
+        >
           {l.more(Math.min(step, left), left, locale)}
         </Button>
       )}

@@ -1,6 +1,6 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { Camera, ImagePlus, Map } from "lucide-react"
+import { Camera, CircleAlert, ImagePlus, Map } from "lucide-react"
 import { usePresenceList } from "@/registry/syncrobotic/hooks/use-presence"
 import { Attachment } from "@/registry/syncrobotic/ui/attachment"
 import { FileTypeIcon } from "@/registry/syncrobotic/ui/file-type"
@@ -53,7 +53,13 @@ export const FileUploadMaps: S = {
           hint=".pgm with its .yaml, or a .pcd point cloud, up to 200 MB"
           maxSize={200 * 1024 ** 2}
         />
-        {error && <p className="text-xs text-danger">{error}</p>}
+        {/* A refusal has an icon and words, never colour alone, as a Field writes its error. */}
+        {error && (
+          <p className="flex items-start gap-2 text-xs text-danger">
+            <CircleAlert aria-hidden="true" className="size-4 shrink-0" />
+            <span>{error}.</span>
+          </p>
+        )}
       </div>
     )
   },
@@ -141,7 +147,12 @@ export const FileUploadMaxFiles: S = {
           hint={`${files.length} of 3`}
           compact
         />
-        {error && <p className="text-xs text-danger">{error}</p>}
+        {error && (
+          <p className="flex items-start gap-2 text-xs text-danger">
+            <CircleAlert aria-hidden="true" className="size-4 shrink-0" />
+            <span>{error}.</span>
+          </p>
+        )}
         {files.map((f) => (
           <Attachment key={f.name} name={f.name} size={f.size} onRemove={() => setFiles((p) => p.filter((x) => x !== f))} />
         ))}
@@ -206,7 +217,8 @@ export const FileUploadFormats: S = {
       <span className="flex flex-col items-center gap-3">
         <span className="flex gap-2">
           {["mcap", "bag", "db3"].map((e) => (
-            <FileTypeIcon key={e} name={e} size="md" />
+            // Large tiles write the extension on the icon: three log formats share one glyph, the words tell them apart.
+            <FileTypeIcon key={e} name={e} size="lg" />
           ))}
         </span>
         <span className="text-sm font-medium">Drop a robot log</span>
@@ -222,8 +234,12 @@ export const FileUploadRejected: S = {
     <div className="flex flex-col gap-2">
       <FileUpload onFiles={() => {}} accept=".pgm,.yaml" title="Drop a site map" hint=".pgm with its .yaml, up to 200 MB" icon={Map} />
       <ul className="flex flex-col gap-1 text-xs text-danger">
-        <li>floor-plan.pdf is not a supported type.</li>
-        <li>full-scan.pgm is too large (412 MB, limit 200 MB).</li>
+        {["floor-plan.pdf is not a supported type.", "full-scan.pgm is too large (412 MB, limit 200 MB)."].map((why) => (
+          <li key={why} className="flex items-start gap-2">
+            <CircleAlert aria-hidden="true" className="size-4 shrink-0" />
+            {why}
+          </li>
+        ))}
       </ul>
     </div>
   ),

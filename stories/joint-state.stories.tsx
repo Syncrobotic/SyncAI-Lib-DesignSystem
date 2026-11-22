@@ -19,23 +19,25 @@ const arm: JointStateJoint[] = [
 ]
 
 /**
- * Publishes the same joint state again every 200 ms, as a robot does, so the panel stays live (not stale) in the docs.
- * The values never change, so every screenshot is the same.
+ * Publishes the same joint state again every 200 ms with a new stamp, as a robot does, so the panel stays live (not
+ * stale) in the docs. Without a stamp the panel counts only changed values as an update, so the same values re-sent read
+ * Stale after a second; a still arm stays live because its stamp moves. The values never change, so every screenshot is
+ * the same (the stamp is shown only once the panel is stale).
  */
 function useLive(joints: JointStateJoint[]) {
-  const [live, setLive] = React.useState(joints)
+  const [stamp, setStamp] = React.useState(() => Date.now())
   React.useEffect(() => {
-    const id = setInterval(() => setLive([...joints]), 200)
+    const id = setInterval(() => setStamp(Date.now()), 200)
     return () => clearInterval(id)
   }, [joints])
-  return live
+  return { joints, updatedAt: stamp }
 }
 
 /** A 6-DOF arm in a normal pose: every joint well inside its limits, so nothing is coloured. */
 export const JointStateDefault: S = {
   render: function Render() {
-    const joints = useLive(arm)
-    return <JointState label="Arm 2 · UR10e" joints={joints} className="w-3xl max-w-full" />
+    const live = useLive(arm)
+    return <JointState label="Arm 2 · UR10e" {...live} className="w-3xl max-w-full" />
   },
 }
 
@@ -46,8 +48,8 @@ const nearLimit: JointStateJoint[] = arm.map((j) =>
 /** The elbow and the last wrist joint inside the 5 % margin: each says which limit, in words, beside a warning triangle. */
 export const JointStateNearLimit: S = {
   render: function Render() {
-    const joints = useLive(nearLimit)
-    return <JointState label="Arm 2 · UR10e" joints={joints} className="w-3xl max-w-full" />
+    const live = useLive(nearLimit)
+    return <JointState label="Arm 2 · UR10e" {...live} className="w-3xl max-w-full" />
   },
 }
 
@@ -62,8 +64,8 @@ const atLimit: JointStateJoint[] = arm.map((j) =>
 /** On a limit and past one: the danger octagon and the words; the marker stays pinned to the end it reached. */
 export const JointStateAtLimit: S = {
   render: function Render() {
-    const joints = useLive(atLimit)
-    return <JointState label="Arm 2 · UR10e" joints={joints} className="w-3xl max-w-full" />
+    const live = useLive(atLimit)
+    return <JointState label="Arm 2 · UR10e" {...live} className="w-3xl max-w-full" />
   },
 }
 
@@ -80,8 +82,8 @@ const gantry: JointStateJoint[] = [
 /** Prismatic axes in millimetres beside revolute joints in degrees; a continuous joint has no track; raw effort without a limit. */
 export const JointStateMixed: S = {
   render: function Render() {
-    const joints = useLive(gantry)
-    return <JointState label="Gantry 1" joints={joints} className="w-3xl max-w-full" />
+    const live = useLive(gantry)
+    return <JointState label="Gantry 1" {...live} className="w-3xl max-w-full" />
   },
 }
 

@@ -1,4 +1,4 @@
-// @syncrobotic/trace v0.27.0 · update: npx shadcn add @syncrobotic/trace --overwrite
+// @syncrobotic/trace v0.28.0 · update: npx shadcn add @syncrobotic/trace --overwrite
 "use client"
 
 import * as React from "react"
@@ -123,7 +123,10 @@ export function TraceItem({
   description?: React.ReactNode
   /** A muted detail beside the title: the tool, the robot, the model. */
   meta?: React.ReactNode
-  /** Replaces the status mark with an icon for the kind of step; the status is still announced. */
+  /**
+   * An icon for the kind of step (a tool, a robot), shown in place of the done check. Any other status keeps its mark
+   * (spinner, warning, failure, waiting, skipped), so a step that needs someone never looks finished.
+   */
   icon?: React.ReactNode
   /** In ms. */
   duration?: number
@@ -143,8 +146,9 @@ export function TraceItem({
   const head = (
     <>
       <span className={cn("relative z-10 flex shrink-0 items-center bg-background", density === "dense" ? "h-6" : "h-5")}>
-        {icon ? (
-          <span aria-hidden="true" className={cn("grid size-5 place-items-center text-muted-foreground [&_svg]:size-4", status === "error" && "text-danger")}>
+        {/* The kind-of-step icon stands in for the done check only: a spinner, a warning or a failure always shows. */}
+        {icon && status === "done" ? (
+          <span aria-hidden="true" className="grid size-5 place-items-center text-muted-foreground [&_svg]:size-4">
             {icon}
           </span>
         ) : (

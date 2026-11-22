@@ -177,8 +177,9 @@ function Gallery({ groups, total, placeholder, markKit = false, category }: Gall
       )}
 
       <div ref={results} className="flex scroll-mt-24 flex-col gap-6">
-      <p aria-live="polite" className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground tabular-nums">
-        {q ? `${count} of ${of} icons${where}` : `${of} icons${where}`}
+      {/* Only the count is live, so a screen reader hears the new count as you type, not the legend each time. */}
+      <p className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground tabular-nums">
+        <span aria-live="polite">{q ? `${count} of ${of} icons${where}` : `${of} icons${where}`}</span>
         {markKit && (
           <span className="inline-flex items-center gap-2">
             <span aria-hidden className="size-1.5 rounded-full bg-foreground" /> In the kit, with a meaning
@@ -220,7 +221,8 @@ function Gallery({ groups, total, placeholder, markKit = false, category }: Gall
               {g.note && <p className="text-sm text-muted-foreground">{g.note}</p>}
             </div>
           )}
-          {/* Square tiles, the drawing alone at rest; the name shows on hover and keyboard focus, and in the details. */}
+          {/* Square tiles, the drawing alone at rest; the name shows on hover and keyboard focus, and in the details. A touch screen
+              has no hover, so there (a coarse pointer) every tile shows its name. */}
           <ul className="grid grid-cols-[repeat(auto-fill,minmax(5rem,1fr))] gap-2 sm:grid-cols-[repeat(auto-fill,minmax(6rem,1fr))]">
             {g.icons.map((i) => (
               <li key={i.name} style={{ contentVisibility: "auto", containIntrinsicSize: "auto 5rem auto 5rem" }}>
@@ -237,7 +239,7 @@ function Gallery({ groups, total, placeholder, markKit = false, category }: Gall
                   <span
                     aria-hidden
                     className={cn(
-                      "flex size-6 items-center justify-center transition-transform duration-(--motion-fast) ease-(--ease-standard) group-hover:-translate-y-2 group-focus-visible:-translate-y-2 group-aria-pressed:-translate-y-2",
+                      "flex size-6 items-center justify-center transition-transform duration-(--motion-fast) ease-(--ease-standard) group-hover:-translate-y-2 group-focus-visible:-translate-y-2 group-aria-pressed:-translate-y-2 pointer-coarse:-translate-y-2",
                       current.glyph,
                     )}
                   >
@@ -246,7 +248,7 @@ function Gallery({ groups, total, placeholder, markKit = false, category }: Gall
                   {/* The name, over two lines if it needs them. The tile's accessible name already says it, so this is for the eye. */}
                   <span
                     aria-hidden
-                    className="absolute inset-x-1 bottom-2 line-clamp-2 text-center font-mono text-xs text-muted-foreground opacity-0 transition-opacity duration-(--motion-fast) ease-(--ease-standard) group-hover:opacity-100 group-focus-visible:opacity-100 group-aria-pressed:opacity-100"
+                    className="absolute inset-x-1 bottom-2 line-clamp-2 text-center font-mono text-xs text-muted-foreground opacity-0 transition-opacity duration-(--motion-fast) ease-(--ease-standard) group-hover:opacity-100 group-focus-visible:opacity-100 group-aria-pressed:opacity-100 pointer-coarse:opacity-100"
                   >
                     {/* Breaks only between words of the name: Battery|Charging, never BatteryChar|ging. */}
                     {i.name.split(/(?=[A-Z])/).map((w, k) => (
@@ -291,7 +293,7 @@ function CopyRow({ label, value, block = false }: { label: string; value: string
     <div className="flex min-w-0 items-start justify-between gap-2 rounded-sm bg-card py-1 pr-1 pl-3 ring-1 ring-border">
       <div className="flex min-w-0 flex-1 flex-col gap-1 py-2">
         <span className="text-xs text-muted-foreground">{label}</span>
-        <code className={cn("font-mono text-xs break-all", block ? "line-clamp-4" : "")}>{value}</code>
+        <code className={cn("font-mono text-xs wrap-anywhere", block ? "line-clamp-4" : "")}>{value}</code>
       </div>
       <CopyButton value={value} label={`Copy ${label.toLowerCase()}`} />
     </div>
@@ -318,13 +320,13 @@ function Details({ icon, size }: { icon: GalleryIcon; size: (typeof sizes)[numbe
         <div ref={drawing} className="specimen flex h-40 items-center sm:h-48 justify-center rounded-md ring-1 ring-border [&_svg]:size-16">
           {icon.glyph}
         </div>
-        {/* The kit's three sizes, each with where it goes: the size picked above the grid is outlined. */}
+        {/* The kit's three sizes, each with where it goes. Plain cards, all alike: they are a reference, not a choice, so none
+            looks picked (the grid's own size switch is above the grid). */}
         <ul aria-label="Sizes" className="grid gap-2 sm:grid-cols-3">
           {sizes.map((s) => (
             <li
               key={s.value}
-              aria-current={s.value === size.value ? "true" : undefined}
-              className="grid grid-cols-[1.5rem_1fr] items-center gap-x-4 gap-y-1 rounded-md bg-card px-4 py-3 ring-1 sm:flex sm:flex-col sm:gap-2 sm:px-2 sm:py-4 sm:text-center ring-border aria-[current]:ring-2 aria-[current]:ring-foreground"
+              className="grid grid-cols-[1.5rem_1fr] items-center gap-x-4 gap-y-1 rounded-md bg-card px-4 py-3 ring-1 sm:flex sm:flex-col sm:gap-2 sm:px-2 sm:py-4 sm:text-center ring-border"
             >
               <span aria-hidden className={cn("row-span-2 flex size-6 items-center justify-center", s.glyph)}>
                 {icon.glyph}

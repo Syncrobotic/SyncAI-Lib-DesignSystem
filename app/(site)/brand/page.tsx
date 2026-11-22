@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ArrowUpRight, Download, X } from "lucide-react"
+import { Download, X } from "lucide-react"
 import { pageMeta } from "@/site/config"
 import { H2, PageTitle } from "@/site/prose"
 import { BrandMark, Logo, LogoMark } from "@/site/logo"
@@ -48,6 +48,8 @@ const ratio = (a: string, b: string) => {
 }
 
 const linkClass = "inline-flex min-h-(--h-sm) items-center gap-1 text-sm underline-offset-4 hover:underline"
+// Links are underlined foreground; hover darkens the underline, not the colour.
+const pageLink = "inline-flex min-h-(--h-sm) items-center text-sm underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground"
 
 function Tile({ dark, className, children }: { dark?: boolean; className?: string; children: React.ReactNode }) {
   return (
@@ -158,7 +160,12 @@ export default function BrandPage() {
             </Tile>
             <p className="text-sm text-muted-foreground">
               Below 24 px, and wherever a platform crops to a square or a circle (browser tab, home screen, social avatar), the S sits
-              on its disc, so it reads at 16 px and keeps its shape when cropped. The disc version is not a logo for pages.{" "}
+              on its disc, so it reads at 16 px and keeps its shape when cropped. In a browser tab the disc sits on a dark tile whose
+              corners are 22 % of its side, as the{" "}
+              <Link href="/docs/foundations/radius#brand" className="underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground">
+                Radius foundation
+              </Link>{" "}
+              shows. The disc version is not a logo for pages.{" "}
               <a href="/brand/syncrobotic-mark.svg" download className="underline underline-offset-4">
                 Download the disc (SVG)
               </a>
@@ -237,9 +244,9 @@ export default function BrandPage() {
             <p className="text-sm text-muted-foreground">
               Lucide, with the meanings the kit has given its icons (stop, dock, mission, battery), and robot pictograms.
             </p>
-            <Link href="/icons" className={cn(linkClass, "w-fit")}>
+            {/* A page on this site: an underlined link, no outward arrow (that marks leaving the site). */}
+            <Link href="/icons" className={cn(pageLink, "w-fit")}>
               Open the icons
-              <ArrowUpRight aria-hidden="true" className="size-4" />
             </Link>
           </div>
         </div>

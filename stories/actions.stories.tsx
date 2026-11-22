@@ -33,6 +33,7 @@ export const ButtonSizes: S = {
   ),
 }
 
+/** Delete is destructive with or without its word. The two icon buttons wrap as a pair, so neither is left alone on a line. */
 export const ButtonWithIcon: S = {
   render: () => (
     <div className="flex flex-wrap items-center gap-3">
@@ -42,12 +43,14 @@ export const ButtonWithIcon: S = {
       <Button variant="secondary">
         <Download aria-hidden="true" /> Download
       </Button>
-      <Button variant="outline" size="icon" aria-label="Delete">
-        <Trash2 aria-hidden="true" />
-      </Button>
-      <Button variant="ghost" size="icon-sm" aria-label="Add">
-        <Plus aria-hidden="true" />
-      </Button>
+      <div className="flex items-center gap-3">
+        <Button variant="destructive" size="icon" aria-label="Delete task">
+          <Trash2 aria-hidden="true" />
+        </Button>
+        <Button variant="ghost" size="icon-sm" aria-label="Add a step">
+          <Plus aria-hidden="true" />
+        </Button>
+      </div>
     </div>
   ),
 }
@@ -127,9 +130,10 @@ export const ButtonInAForm: S = {
   ),
 }
 
+/** Full width of a phone-sized column: the column has a width of its own, which the buttons fill. */
 export const ButtonFullWidth: S = {
   render: () => (
-    <div className="flex flex-col gap-2">
+    <div className="flex w-sm max-w-full flex-col gap-2">
       <Button size="lg" className="w-full">
         Start patrol
       </Button>
@@ -183,8 +187,8 @@ export const CopyButtonDefault: S = {
 export const ToggleSizes: S = {
   render: () => (
     <div className="flex items-center gap-2">
-      <Toggle size="sm">Grid</Toggle>
-      <Toggle>Grid</Toggle>
+      <Toggle size="sm">Small 36</Toggle>
+      <Toggle>Default 44</Toggle>
     </div>
   ),
 }
@@ -210,12 +214,15 @@ export const ToggleWithIcon: S = {
   ),
 }
 
+/** Off and on, both disabled: on keeps a grey fill, like a disabled checked switch. Each points at the reason. */
 export const ToggleDisabled: S = {
   render: () => (
     <div className="flex flex-col gap-1">
-      <div className="flex items-center gap-2" aria-describedby="layers-why">
-        <Toggle disabled>Heat map</Toggle>
-        <Toggle disabled defaultPressed>
+      <div className="flex items-center gap-2">
+        <Toggle disabled aria-describedby="layers-why">
+          Heat map
+        </Toggle>
+        <Toggle disabled defaultPressed aria-describedby="layers-why">
           Lidar
         </Toggle>
       </div>

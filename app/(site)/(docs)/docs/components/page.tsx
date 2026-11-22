@@ -46,7 +46,8 @@ function Card({ item }: { item: Item }) {
       </div>
       <div className="flex flex-1 flex-col gap-1">
         <span className="font-bold group-hover:underline">{item.title}</span>
-        {item.description && <span className="line-clamp-3 text-sm text-muted-foreground">{item.description}</span>}
+        {/* The whole description: a clamp cut it mid-word, and none is longer than three sentences. */}
+        {item.description && <span className="text-sm text-muted-foreground">{item.description}</span>}
       </div>
     </Link>
   )
@@ -89,7 +90,7 @@ export default function ComponentsIndex() {
                       className="group flex min-h-(--h-row) flex-col justify-center gap-1 py-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                     >
                       <span className="font-medium group-hover:underline">{i.title}</span>
-                      {i.description && <span className="line-clamp-3 text-sm text-muted-foreground">{i.description}</span>}
+                      {i.description && <span className="text-sm text-muted-foreground">{i.description}</span>}
                     </Link>
                   </li>
                 ))}

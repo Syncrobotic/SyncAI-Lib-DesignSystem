@@ -1,4 +1,4 @@
-// @syncrobotic/incident-detail v0.17.2 · update: npx shadcn add @syncrobotic/incident-detail --overwrite
+// @syncrobotic/incident-detail v0.28.0 · update: npx shadcn add @syncrobotic/incident-detail --overwrite
 "use client"
 
 import * as React from "react"
@@ -51,7 +51,7 @@ export function IncidentDetail() {
     <AppShell
       product="Fleet console"
       nav={sampleNav}
-      current="#alarms"
+      current="#incidents"
       title="IN-2041"
       user={sampleUser}
       actions={

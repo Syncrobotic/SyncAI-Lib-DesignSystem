@@ -1,4 +1,4 @@
-// @syncrobotic/wizard-import v0.17.3 · update: npx shadcn add @syncrobotic/wizard-import --overwrite
+// @syncrobotic/wizard-import v0.28.0 · update: npx shadcn add @syncrobotic/wizard-import --overwrite
 "use client"
 
 import * as React from "react"
@@ -34,6 +34,7 @@ export function WizardImport({ onImport }: { onImport?: (count: number) => void 
   const [file, setFile] = React.useState<string | null>(null)
   const [map, setMap] = React.useState(guess)
   const [imported, setImported] = React.useState<number | null>(null)
+  const whyId = React.useId()
   const good = rows.filter((r) => !r.issue).length
   const bad = rows.length - good
 
@@ -55,12 +56,21 @@ export function WizardImport({ onImport }: { onImport?: (count: number) => void 
               {file ? <span className="font-medium">{file}</span> : <span>Choose a CSV file</span>}
               <span className="text-xs text-muted-foreground">Up to 5 MB</span>
             </button>
-            <Button className="self-start" disabled={!file} onClick={() => setStep(2)}>
-              Next
-            </Button>
+            {/* Disabled says why, beside it and to screen readers. */}
+            <div className="flex flex-wrap items-center gap-3">
+              <Button disabled={!file} aria-describedby={file ? undefined : whyId} onClick={() => setStep(2)}>
+                Next
+              </Button>
+              {!file && (
+                <span id={whyId} className="text-sm text-muted-foreground">
+                  Choose a CSV file first
+                </span>
+              )}
+            </div>
           </div>
         </StepperItem>
-        <StepperItem title="Match columns" description="4 columns found">
+        {/* What the file holds is said once it has been read, never before there is a file. */}
+        <StepperItem title="Match columns" description={file ? `${columns.length} columns found` : undefined}>
           <div className="flex flex-col gap-3">
             {columns.map((c) => (
               <div key={c} className="grid grid-cols-[8rem_1fr] items-center gap-3">
@@ -86,7 +96,7 @@ export function WizardImport({ onImport }: { onImport?: (count: number) => void 
             </Button>
           </div>
         </StepperItem>
-        <StepperItem title="Check and import" description={imported !== null ? `${imported} imported` : `${rows.length} rows`}>
+        <StepperItem title="Check and import" description={imported !== null ? `${imported} imported` : file ? `${rows.length} rows` : undefined}>
           <div className="flex flex-col gap-3">
             <p className="text-sm">
               {good} rows are ready. <span className="text-warning">{bad} row has a problem and will be skipped.</span>

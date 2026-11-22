@@ -17,6 +17,7 @@ const primitivePattern: Record<string, [title: string, slug: string]> = {
   Collapsible: ["Disclosure", "disclosure"],
   Dialog: ["Dialog (modal)", "dialog-modal"],
   DropdownMenu: ["Menu button", "menu-button"],
+  ContextMenu: ["Menu", "menubar"],
   NavigationMenu: ["Disclosure navigation", "disclosure"],
   Popover: ["Dialog (non-modal)", "dialog-modal"],
   Progress: ["Meter / progress", "meter"],
@@ -55,7 +56,8 @@ const rolePattern: Record<string, [string, string]> = {
 const tagRoles: [RegExp, string[]][] = [
   // The element written as a tag, or as a string for a polymorphic `Comp` ("button", "a").
   [/<button\b|["']button["']|<Button\b|Trigger\b|<CopyButton\b/, ["button"]],
-  [/<a\b|["']a["']|href=|linkAs|<Link\b/, ["link"]],
+  // asChild: the part renders the product's own element, a link in the examples (<Button asChild><a …>).
+  [/<a\b|["']a["']|href=|linkAs|<Link\b|\basChild\b/, ["link"]],
   [/<input\b|["']input["']|<Input\b/, ["textbox", "searchbox", "checkbox", "radio", "spinbutton", "slider", "combobox"]],
   [/<textarea\b/, ["textbox"]],
   [/<table\b|<Table\b/, ["table", "row", "rowgroup", "cell", "columnheader", "rowheader"]],
@@ -64,6 +66,7 @@ const tagRoles: [RegExp, string[]][] = [
   [/<h[1-6]\b|<CardTitle\b/, ["heading"]],
   [/<nav\b/, ["navigation"]],
   [/<section\b/, ["region"]],
+  [/<fieldset\b|<details\b/, ["group"]],
   [/<figure\b/, ["figure"]],
   [/<img\b|<svg\b[^>]*role="img"|<AvatarPrimitive\.Image/, ["img"]],
   [/<progress\b/, ["progressbar"]],
@@ -77,9 +80,11 @@ const primitiveRoles: Record<string, string[]> = {
   Accordion: ["button", "heading", "region"],
   AlertDialog: ["alertdialog", "button"],
   Checkbox: ["checkbox"],
-  Collapsible: ["button", "region"],
+  // Radix Collapsible's content has no role of its own (Accordion's is a region).
+  Collapsible: ["button"],
   Dialog: ["dialog", "button", "heading"],
   DropdownMenu: ["menu", "menuitem", "menuitemcheckbox", "menuitemradio", "button", "group", "separator"],
+  ContextMenu: ["menu", "menuitem", "menuitemcheckbox", "menuitemradio", "group", "separator"],
   NavigationMenu: ["navigation", "button", "link", "list", "listitem"],
   Popover: ["dialog", "button"],
   Progress: ["progressbar"],
@@ -97,6 +102,25 @@ const primitiveRoles: Record<string, string[]> = {
   Command: ["combobox", "listbox", "option", "group"],
 }
 
+/** Components a shell part is built to hold in a slot rather than install: their colours are on screen inside it. */
+const slotted: Record<string, string[]> = { dock: ["stop-button", "slide-to-release"] }
+
+/**
+ * Roles used for what screen readers do with them rather than for the pattern's keys: the pattern is replaced by a note.
+ * Slide to release is a slider so a screen reader passes a held Enter or Space through to it (as a button, browse mode
+ * would turn the press into a click); it has none of the Slider pattern's arrow keys, since a release is never a step.
+ */
+const roleNotes: Record<string, { role: string; note: string }> = {
+  "slide-to-release": {
+    role: "slider",
+    note: "The slider role is there so a screen reader passes a held Enter or Space through to the track. It does not follow the Slider pattern: the arrow keys do nothing, because a release is never a step. A pointer slides; the keyboard holds.",
+  },
+  dock: {
+    role: "slider",
+    note: "Slide to release, in the dock while the robot is stopped, uses the slider role so a screen reader passes a held Enter or Space through to it; the arrow keys do nothing.",
+  },
+}
+
 /** The component's own source plus the kit components it installs, a level at a time. */
 function sources(name: string, seen = new Set<string>()): string[] {
   if (seen.has(name)) return []
@@ -107,9 +131,59 @@ function sources(name: string, seen = new Set<string>()): string[] {
   return [...item.files.map((f) => readSource(f.path)), ...deps.flatMap((d) => sources(d, seen))]
 }
 
-const primitivesIn = (src: string) => [...new Set([...src.matchAll(/\b(\w+) as \w+Primitive\b/g)].map((m) => m[1]))]
+/**
+ * The primitives a source uses: `import { Dialog as DialogPrimitive } from "radix-ui"`, `import { ToggleGroup } from
+ * "radix-ui"` and `import { Command as CommandPrimitive } from "cmdk"`.
+ */
+const primitivesIn = (src: string) =>
+  [
+    ...new Set([
+      ...[...src.matchAll(/\b(\w+) as \w+Primitive\b/g)].map((m) => m[1]),
+      ...[...src.matchAll(/import\s*\{([^}]*)\}\s*from\s*"radix-ui"/g)].flatMap((m) =>
+        m[1]
+          .split(",")
+          .map((n) => n.trim().split(/\s+as\s+/)[0])
+          .filter(Boolean),
+      ),
+    ]),
+  ]
+
+/** Primitives whose roles only show once opened, so they count even when every example was closed. */
+const opens = new Set(["AlertDialog", "Command", "ContextMenu", "Dialog", "DropdownMenu", "Popover", "Select", "Toast", "Tooltip"])
+
+/** Roles an npm package renders for the component (a third-party widget the kit styles). */
+const packageRoles: Record<string, string[]> = {
+  "react-day-picker": ["grid", "gridcell", "row", "rowgroup", "columnheader", "rowheader", "navigation", "button", "combobox", "option", "status"],
+  "input-otp": ["textbox"],
+  "react-resizable-panels": ["separator"],
+  recharts: ["application"],
+}
+
+/**
+ * Wrappers made to hold one kind of control, which the product passes in: their examples measure the control's roles,
+ * and those are the wrapper's too (a ChoiceField is always a checkbox, radio or switch with its label).
+ */
+const holds: Record<string, string[]> = {
+  "choice-field": ["checkbox", "radio", "switch"],
+  "input-group": ["textbox", "searchbox"],
+  "filter-form": ["searchbox", "combobox", "checkbox"],
+}
+
+/** The npm packages the component and the kit components it installs depend on. */
+function packages(name: string, seen = new Set<string>()): string[] {
+  if (seen.has(name)) return []
+  seen.add(name)
+  const item = getItem(name)
+  if (!item) return []
+  const deps = (("registryDependencies" in item && item.registryDependencies) || []).map((d) => d.replace("@syncrobotic/", ""))
+  const own = (("dependencies" in item && item.dependencies) || []).map((d) => d.replace(/(.)@.*$/, "$1"))
+  return [...own, ...deps.flatMap((d) => packages(d, seen))]
+}
 
 type Measured = { roles: string[]; tabStops: number; live: boolean }
+
+/** Marks hidden from screen readers (aria-hidden) that repeat a word written beside them. */
+const decorative = new Set(["status-glyph"])
 
 export type ContrastRow = { label: string; applies: string; need: string; light: number; dark: number; pass: boolean; wcag: [string, string][] }
 
@@ -122,9 +196,15 @@ const contrastRules: { test: RegExp; label: string; applies: string; fg: string;
   { test: /text-muted-foreground/, label: "Secondary text", applies: "Hints, meta, captions", fg: "muted-foreground", bg: ["background", "card"], need: 4.5, wcag: [SC_TEXT] },
   { test: /bg-primary\b/, label: "Primary fill", applies: "Text on the primary action", fg: "primary-foreground", bg: ["primary"], need: 4.5, wcag: [SC_TEXT] },
   { test: /text-danger\b/, label: "Danger text", applies: "Errors, worse-than-before figures", fg: "danger", bg: ["background", "card"], need: 4.5, wcag: [SC_TEXT] },
+  { test: /text-warning\b/, label: "Warning text", applies: "Needs-attention words and shapes", fg: "warning", bg: ["background", "card"], need: 4.5, wcag: [SC_TEXT] },
+  // Tracks are quiet on purpose (1.5:1, the Colour foundation); the bar on them is what has to read.
+  { test: /bg-track\b/, label: "Track", applies: "The empty part of a bar, ring or slider", fg: "track", bg: ["background", "card"], need: null, wcag: [SC_NONTEXT] },
   { test: /(border|ring)-input\b/, label: "Control edge", applies: "The outline that shows where to type or press", fg: "input", bg: ["background", "card"], need: 3, wcag: [SC_NONTEXT] },
   // The theme draws every :focus-visible outline (2 px, --ring), so this row is added for anything that takes focus.
   { test: /$^/, label: "Keyboard focus ring", applies: "Focus visible, on every control in it", fg: "ring", bg: ["background", "card"], need: 3, wcag: [SC_NONTEXT] },
+  // The stop's label is 18 px bold: normal text under WCAG, so 4.5:1 (high contrast holds it to 7:1).
+  { test: /bg-stop\b/, label: "Stop label", applies: "White label on the red stop", fg: "white", bg: ["stop"], need: 4.5, wcag: [SC_TEXT] },
+  { test: /bg-stop-deep\b/, label: "Label on the deep red", applies: "White label on the hold fill, slide to release and a stop delivered over Bluetooth", fg: "white", bg: ["stop-deep"], need: 4.5, wcag: [SC_TEXT] },
   { test: /text-disabled|disabled:/, label: "Disabled", applies: "Disabled controls (the kit still keeps 3:1)", fg: "disabled", bg: ["background", "card"], need: null, wcag: [SC_TEXT, SC_NONTEXT] },
 ]
 
@@ -135,7 +215,11 @@ function worst(fg: string, bgs: string[], mode: Mode) {
 
 export type A11y = {
   roles: string[]
+  /** Hidden from screen readers: it repeats a word that is written beside it. */
+  hidden: boolean
   patterns: { title: string; href: string }[]
+  /** Why a role is used without its pattern's keys, when one is. */
+  patternNote?: string
   tabStops: number
   live: boolean
   keyboard: Item["keyboard"]
@@ -146,29 +230,41 @@ export type A11y = {
 export function a11yOf(name: string): A11y | null {
   const item = getItem(name)
   if (!item || item.group === "Hooks & libraries") return null
-  const own = item.files.map((f) => readSource(f.path)).join("\n")
+  const own = [...item.files.map((f) => readSource(f.path)), ...(slotted[name] ?? []).flatMap((n) => getItem(n)?.files.map((f) => readSource(f.path)) ?? [])].join("\n")
   const all = sources(name).join("\n")
   const m = (measured as Record<string, Measured>)[name] ?? { roles: [], tabStops: 0, live: false }
 
   // A role counts when something in the component (or a kit part it installs) can produce it.
   const possible = new Set<string>([
     ...[...all.matchAll(/role="(\w+)"/g)].map((x) => x[1]),
+    // A role chosen at run time: role={tone === "danger" ? "alert" : "status"}.
+    ...[...all.matchAll(/role=\{([^}]*)\}/g)].flatMap((x) => [...x[1].matchAll(/"(\w+)"/g)].map((y) => y[1])),
     ...tagRoles.filter(([re]) => re.test(all)).flatMap(([, r]) => r),
     ...primitivesIn(all).flatMap((p) => primitiveRoles[p] ?? []),
+    ...packages(name).flatMap((p) => packageRoles[p] ?? []),
+    ...(holds[name] ?? []),
   ])
   const ownPrimitives = primitivesIn(own)
+  // A mark hidden from screen readers cannot take focus: Tab stops measured around it (a table in its example) are the
+  // example's, not its own.
+  const tabStops = decorative.has(name) ? 0 : m.tabStops
   // Roles of a primitive that only shows when opened (a dialog, a menu) are part of it even if the examples were closed.
-  const roles = [...new Set([...m.roles.filter((r) => possible.has(r)), ...ownPrimitives.flatMap((p) => primitiveRoles[p] ?? []).filter((r) => r !== "button")])].sort()
+  const closed = ownPrimitives.filter((p) => opens.has(p)).flatMap((p) => primitiveRoles[p] ?? [])
+  const roles = [...new Set([...m.roles.filter((r) => possible.has(r)), ...closed.filter((r) => r !== "button")])].sort()
 
   const patterns = new Map<string, string>()
-  for (const p of ownPrimitives) if (primitivePattern[p]) patterns.set(primitivePattern[p][0], `${APG}/${primitivePattern[p][1]}/`)
-  for (const r of roles) if (rolePattern[r] && ![...patterns.keys()].some((k) => k.startsWith(rolePattern[r][0]))) patterns.set(rolePattern[r][0], `${APG}/${rolePattern[r][1]}/`)
+  // A toggle group is a toolbar only when it renders one; a single-choice one (a segmented control) is a radio group,
+  // which its roles name below.
+  const shows = (p: string) => p !== "ToggleGroup" || roles.includes("toolbar")
+  for (const p of ownPrimitives) if (primitivePattern[p] && shows(p)) patterns.set(primitivePattern[p][0], `${APG}/${primitivePattern[p][1]}/`)
+  const roleNote = roleNotes[name]
+  for (const r of roles) if (r !== roleNote?.role && rolePattern[r] && ![...patterns.keys()].some((k) => k.startsWith(rolePattern[r][0]))) patterns.set(rolePattern[r][0], `${APG}/${rolePattern[r][1]}/`)
   // A component that is a button or a link also contains one: name the main pattern first and drop generic ones when a
   // composite pattern is already there.
   if (patterns.size > 1) for (const g of ["Button", "Link", "Landmarks"]) patterns.delete(g)
 
   const contrastRows: ContrastRow[] = contrastRules
-    .filter((r) => r.test.test(own) || (r.label === "Keyboard focus ring" && (m.tabStops > 0 || !!item.keyboard?.length)))
+    .filter((r) => r.test.test(own) || (r.label === "Keyboard focus ring" && (tabStops > 0 || !!item.keyboard?.length)))
     .map((r) => {
       const light = worst(r.fg, r.bg, "light")
       const dark = worst(r.fg, r.bg, "dark")
@@ -183,6 +279,22 @@ export function a11yOf(name: string): A11y | null {
         wcag: r.wcag,
       }
     })
+
+  // A bar on its track (meter, progress): each fill the component draws, against the track, the worst of them shown.
+  const fills = /bg-track\b/.test(own) ? [...new Set([...own.matchAll(/\bbg-(muted-foreground|foreground|warning|danger|info)\b/g)].map((x) => x[1]!))] : []
+  if (fills.length) {
+    const light = Math.min(...fills.map((f) => contrast(f, "track", "light") ?? NaN))
+    const dark = Math.min(...fills.map((f) => contrast(f, "track", "dark") ?? NaN))
+    contrastRows.push({
+      label: "Bar on its track",
+      applies: `The filled part (${fills.join(", ")}) against the track`,
+      need: "3:1",
+      light,
+      dark,
+      pass: Math.min(light, dark) >= 3,
+      wcag: [SC_NONTEXT],
+    })
+  }
 
   // Status pairs: a tone's text on its own tint ("bg-warning-subtle text-warning"), the way badges, alerts and chips use them.
   for (const tone of [...new Set([...own.matchAll(/bg-(\w+)-subtle\b[^"`]*?\btext-\1\b/g)].map((x) => x[1]))]) {
@@ -201,8 +313,10 @@ export function a11yOf(name: string): A11y | null {
 
   return {
     roles,
+    hidden: decorative.has(name),
     patterns: [...patterns].map(([title, href]) => ({ title, href })),
-    tabStops: m.tabStops,
+    patternNote: roleNote?.note,
+    tabStops,
     live: m.live,
     keyboard: item.keyboard,
     contrast: contrastRows,
@@ -216,6 +330,7 @@ export function a11yMarkdown(name: string): string[] {
   const out = ["", "## Accessibility", ""]
   if (a.roles.length) out.push(`- Roles: ${a.roles.map((r) => `\`${r}\``).join(", ")}`)
   if (a.patterns.length) out.push(`- WAI-ARIA patterns: ${a.patterns.map((p) => `[${p.title}](${p.href})`).join(", ")}`)
+  if (a.patternNote) out.push(`- ${a.patternNote}`)
   if (a.live) out.push("- Announces changes through a live region.")
   if (!a.keyboard?.length) out.push(a.tabStops ? `- Keyboard: no keys of its own; Tab reaches each control.` : "- Keyboard: nothing in it takes focus.")
   if (a.contrast.length)

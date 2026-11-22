@@ -1,15 +1,18 @@
-// @syncrobotic/list-detail v0.17.4 · update: npx shadcn add @syncrobotic/list-detail --overwrite
+// @syncrobotic/list-detail v0.28.0 · update: npx shadcn add @syncrobotic/list-detail --overwrite
 "use client"
 
 import * as React from "react"
 import { ArrowLeft, MapPin, Pause, Search } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { feedback } from "@/registry/syncrobotic/lib/feedback"
 import { ChargingDock } from "@/registry/syncrobotic/ui/robot-icons"
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
 import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { sampleRobots, type Robot } from "@/registry/syncrobotic/blocks/fleet-table"
+import { SlideToRelease } from "@/registry/syncrobotic/shell/slide-to-release"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
+import { StopButton } from "@/registry/syncrobotic/shell/stop-button"
 import type { Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
@@ -28,7 +31,11 @@ const status: Record<Robot["status"], { tone: Status; label: string }> = {
 // Whether this is the client never changes once it is, so there is nothing to subscribe to.
 const subscribeNothing = () => () => {}
 
-/** List and detail: pick a robot on the left, read and act on it on the right. On phones the detail replaces the list. */
+/**
+ * List and detail: pick a robot on the left, read and act on it on the right. On phones the detail replaces the list.
+ * The picked robot's emergency stop sits at the foot of its detail and stays on screen while it scrolls; a stopped
+ * robot offers slide to release there instead.
+ */
 export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
   const [query, setQuery] = React.useState("")
   const [selected, setSelected] = React.useState<string | null>(null)
@@ -42,6 +49,9 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
   }
   const shown = robots.filter((r) => `${r.name} ${r.site}`.toLowerCase().includes(query.toLowerCase()))
   const robot = robots.find((r) => r.id === selected)
+  // The stop as in the dock, per robot: ready, sending until the robot confirms, then stopped with slide to release.
+  const [stops, setStops] = React.useState<Record<string, "sending" | "stopped" | "released">>({})
+  const stopOf = (r: Robot) => stops[r.id] ?? (r.status === "stopped" ? "stopped" : undefined)
 
   return (
     <AppShell product="Fleet console" nav={sampleNav} current="#robots" title="Robots" environment="staging" user={sampleUser} bleed>
@@ -80,7 +90,7 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
 
         <section aria-label="Robot detail" className={cn("min-w-0 flex-1 overflow-y-auto p-6", !robot && "hidden md:block")}>
           {robot ? (
-            <div className="flex flex-col gap-6">
+            <div className="flex min-h-full flex-col gap-6">
               <div className="flex flex-wrap items-start gap-3">
                 <Button variant="ghost" size="icon-sm" aria-label="Back to robots" className="md:hidden" onClick={() => setSelected(null)}>
                   <ArrowLeft aria-hidden="true" />
@@ -125,6 +135,30 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
                     </li>
                   ))}
                 </ul>
+              </div>
+              <div className="sticky bottom-0 mt-auto sm:max-w-sm">
+                {stopOf(robot) === "stopped" ? (
+                  <SlideToRelease
+                    key={robot.id}
+                    tag={robot.id}
+                    onRelease={() => window.setTimeout(() => setStops((s) => ({ ...s, [robot.id]: "released" })), 500)}
+                  />
+                ) : (
+                  <StopButton
+                    // Offline, the stop cannot reach the robot and says so; docked, it stands still: the pale stop.
+                    state={robot.status === "offline" ? "dead" : stopOf(robot) === "sending" ? "sending" : robot.status === "docked" ? "idle" : "ready"}
+                    tag={robot.id}
+                    onStop={() => {
+                      const id = robot.id
+                      setStops((s) => ({ ...s, [id]: "sending" }))
+                      // The robot confirms: the app says so to the hand, then offers release.
+                      window.setTimeout(() => {
+                        feedback("stopConfirmed")
+                        setStops((s) => ({ ...s, [id]: "stopped" }))
+                      }, 800)
+                    }}
+                  />
+                )}
               </div>
             </div>
           ) : (

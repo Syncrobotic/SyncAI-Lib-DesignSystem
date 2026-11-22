@@ -157,7 +157,7 @@ describe("DataGrid", () => {
 
   it("keeps a row that cannot be selected disabled", () => {
     render(<Grid cols={selectable} options={{ enableRowSelection: (r) => r.original.id !== "r1" }} />)
-    const boxes = screen.getAllByRole("checkbox", { name: "Select row" })
+    const boxes = screen.getAllByRole("checkbox", { name: /^Select row/ })
     expect(boxes[0].hasAttribute("disabled")).toBe(false)
     expect(boxes[1].hasAttribute("disabled")).toBe(true)
   })
@@ -188,20 +188,23 @@ describe("DataGrid", () => {
   })
 
   it("pins a column to the start edge from its menu, and unpins it", async () => {
+    // Pinning is a class that holds where the grid is 448 px wide or more (@md): on a phone every column scrolls.
+    const sticky = (el: Element) => el.className.split(" ").includes("@md:sticky")
     render(<Grid options={{ initialState: { pagination: { pageIndex: 0, pageSize: 5 }, columnPinning: { start: ["name"], end: [] } } }} />)
     const header = screen.getAllByRole("columnheader")[0]
-    expect(header.style.position).toBe("sticky")
-    expect(bodyRows()[0].querySelector("td")!.style.position).toBe("sticky")
+    expect(sticky(header)).toBe(true)
+    expect(sticky(bodyRows()[0].querySelector("td")!)).toBe(true)
+    expect(header.style.getPropertyValue("--pin")).toBe("0px")
     await openMenu("Robot")
     fireEvent.click(screen.getByRole("menuitem", { name: "Unpin" }))
     await flush()
-    expect(header.style.position).toBe("")
+    expect(sticky(header)).toBe(false)
     fireEvent.pointerDown(document.body)
     await openMenu("Odometer")
     fireEvent.click(screen.getByRole("menuitem", { name: "Pin to the left" }))
     await flush()
     expect(headers()[0].textContent).toContain("Odometer")
-    expect(headers()[0].style.position).toBe("sticky")
+    expect(sticky(headers()[0])).toBe(true)
   })
 
   it("sizes columns from their definitions and gives each a named resize handle", () => {

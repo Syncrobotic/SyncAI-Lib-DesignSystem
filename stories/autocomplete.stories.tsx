@@ -21,7 +21,11 @@ const sites = ["North gate", "Hall B", "Warehouse 3", "Parking lot", "Perimeter"
 export const AutocompleteDefault: S = {
   render: function A() {
     const [v, setV] = React.useState<string | undefined>()
-    return <Autocomplete options={sites} value={v} onValueChange={setV} placeholder="Search sites" aria-label="Site" />
+    return (
+      <Field label="Site">
+        <Autocomplete options={sites} value={v} onValueChange={setV} placeholder="Search sites" />
+      </Field>
+    )
   },
 }
 
@@ -39,7 +43,11 @@ export const AutocompleteGroups: S = {
 export const AutocompleteNoTrigger: S = {
   render: function A() {
     const [v, setV] = React.useState<string | undefined>()
-    return <Autocomplete options={sites} value={v} onValueChange={setV} showTrigger={false} placeholder="Type a site" aria-label="Site" />
+    return (
+      <Field label="Site">
+        <Autocomplete options={sites} value={v} onValueChange={setV} showTrigger={false} placeholder="Type a site" />
+      </Field>
+    )
   },
 }
 
@@ -63,18 +71,19 @@ export const AutocompleteServerSearch: S = {
       setLoading(false)
     }
     return (
-      <Autocomplete
-        options={found}
-        value={v}
-        onValueChange={setV}
-        filter={false}
-        loading={loading}
-        debounce={300}
-        emptyText="Type at least 2 letters"
-        placeholder="Search operators"
-        aria-label="Operator"
-        onQueryChange={search}
-      />
+      <Field label="Operator" hint="Searches the directory from 2 letters.">
+        <Autocomplete
+          options={found}
+          value={v}
+          onValueChange={setV}
+          filter={false}
+          loading={loading}
+          debounce={300}
+          emptyText="Type at least 2 letters"
+          placeholder="Search operators"
+          onQueryChange={search}
+        />
+      </Field>
     )
   },
 }
@@ -102,12 +111,9 @@ export const AutocompleteSmall: S = {
 
 export const AutocompleteDisabled: S = {
   render: () => (
-    <div className="flex flex-col gap-1">
-      <Autocomplete options={sites} value="Hall B" disabled aria-label="Site" aria-describedby="site-why" />
-      <p id="site-why" className="text-xs text-muted-foreground">
-        The site is set by the robot&apos;s map and cannot change during a mission.
-      </p>
-    </div>
+    <Field label="Site" hint="Set by the robot’s map; it cannot change during a mission.">
+      <Autocomplete options={sites} value="Hall B" disabled />
+    </Field>
   ),
 }
 
@@ -153,7 +159,11 @@ const many: AutocompleteOption[] = Array.from({ length: 120 }, (_, i) => {
 export const AutocompleteLongList: S = {
   render: function A() {
     const [v, setV] = React.useState<string | undefined>()
-    return <Autocomplete options={many} value={v} onValueChange={setV} placeholder="Search 120 robots" aria-label="Robot" />
+    return (
+      <Field label="Robot">
+        <Autocomplete options={many} value={v} onValueChange={setV} placeholder="Search 120 robots" />
+      </Field>
+    )
   },
 }
 
@@ -165,7 +175,11 @@ export const AutocompleteRecent: S = {
       ...["Hall B", "North gate"].map((s) => ({ value: `r-${s}`, label: s, group: "Recent" })),
       ...sites.map((s) => ({ ...s, group: "All sites" })),
     ]
-    return <Autocomplete options={options} value={v} onValueChange={setV} placeholder="Go to a site" aria-label="Site" />
+    return (
+      <Field label="Site">
+        <Autocomplete options={options} value={v} onValueChange={setV} placeholder="Go to a site" />
+      </Field>
+    )
   },
 }
 
@@ -185,6 +199,10 @@ export const AutocompleteRequired: S = {
 export const AutocompleteDescriptions: S = {
   render: function A() {
     const [v, setV] = React.useState<string | undefined>("9c44")
-    return <Autocomplete options={robots.map(({ group: _g, ...r }) => r)} value={v} onValueChange={setV} placeholder="Search robots" aria-label="Robot" />
+    return (
+      <Field label="Robot">
+        <Autocomplete options={robots.map(({ group: _g, ...r }) => r)} value={v} onValueChange={setV} placeholder="Search robots" />
+      </Field>
+    )
   },
 }

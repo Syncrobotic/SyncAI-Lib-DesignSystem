@@ -1,4 +1,4 @@
-// @syncrobotic/segmented-control v0.17.3 · update: npx shadcn add @syncrobotic/segmented-control --overwrite
+// @syncrobotic/segmented-control v0.28.0 · update: npx shadcn add @syncrobotic/segmented-control --overwrite
 "use client"
 
 import * as React from "react"
@@ -53,7 +53,14 @@ export function SegmentedControl({
   defaultValue,
   onValueChange,
   ...props
-}: Omit<ToggleGroup.ToggleGroupSingleProps, "type">) {
+}: Omit<ToggleGroup.ToggleGroupSingleProps, "type" | "value" | "defaultValue" | "onValueChange"> & {
+  /** The selected segment, controlled. One always stays selected: pressing it again does not clear it. */
+  value?: string
+  /** The segment selected at first, when `value` is not given. */
+  defaultValue?: string
+  /** Called with the newly selected segment's value, never with an empty one. */
+  onValueChange?: (value: string) => void
+}) {
   const root = React.useRef<HTMLDivElement>(null)
   // One choice always stays selected: a toggle group lets the selected item be pressed off (value ""), a segmented
   // control does not. So the group is always controlled here, and an empty value is ignored.

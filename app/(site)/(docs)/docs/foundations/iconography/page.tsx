@@ -83,14 +83,18 @@ export default function IconographyPage() {
       </Section>
 
       <Section id="sizes" title="Sizes">
-        <Specimen className="flex flex-wrap items-end gap-8">
+        {/* Columns start together and each icon sits on one baseline in a 24 px box, so the labels line up under icons of
+            three sizes (the columns used to end together and their labels did not). */}
+        <Specimen className="flex flex-wrap items-start gap-8">
           {[
             { cls: "size-4", px: 16, use: "Inside 36 px controls, menus, inline" },
             { cls: "size-5", px: 20, use: "Inside 44–56 px controls, dock tabs" },
             { cls: "size-6", px: 24, use: "Standalone, empty states" },
           ].map((s) => (
             <div key={s.cls} className="flex flex-col items-start gap-3">
-              <Bot aria-hidden className={s.cls} />
+              <span className="flex h-6 items-end">
+                <Bot aria-hidden className={s.cls} />
+              </span>
               <span className="font-mono text-xs">
                 {s.cls} · {s.px}
               </span>
