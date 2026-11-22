@@ -98,12 +98,19 @@ export function ComponentTabs({ tabs }: { tabs: ComponentTab[] }) {
   )
 }
 
-/** A tab's content arrives (the Appear pattern: 8 px rise and fade, --motion-base); keyed by path, so each switch plays it. */
+const subscribeNothing = () => () => {}
+
+/**
+ * A tab's content arrives (the Appear pattern: 8 px rise and fade, --motion-base); keyed by path, so each switch plays it.
+ * Not on the page's first load: the server's HTML is shown as it is, not held at opacity 0 until the scripts have run
+ * (which made the description under the title the page's last paint on a phone).
+ */
 export function ComponentPanel({ children }: { children: React.ReactNode }) {
   const path = usePathname()
+  const hydrated = React.useSyncExternalStore(subscribeNothing, () => true, () => false)
   return (
     // A tab that opens on a heading does not add the heading's top space under the tabs.
-    <m.div key={path} initial="hidden" animate="shown" variants={patterns.appear} className="[&>h2:first-child]:pt-0">
+    <m.div key={path} initial={hydrated ? "hidden" : false} animate="shown" variants={patterns.appear} className="[&>h2:first-child]:pt-0">
       {children}
     </m.div>
   )

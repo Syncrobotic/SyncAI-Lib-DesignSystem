@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { blockHref } from "@/site/block-types"
 import { blocks, getBlock } from "@/site/blocks"
+import { blockRenders } from "@/site/block-renders"
 import { PreviewBack } from "@/site/preview-back"
 import { Quiet } from "@/site/quiet"
 
@@ -22,7 +23,7 @@ export default async function PreviewPage({ params }: { params: Promise<{ name: 
       {/* The docs frame measures this element so the preview is exactly as tall as the block. */}
       <Quiet />
       <PreviewBack href={blockHref(block.name)} />
-      <div id="block-root">{block.render()}</div>
+      <div id="block-root">{blockRenders[block.name]()}</div>
     </div>
   )
 }
