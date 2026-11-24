@@ -260,8 +260,8 @@
     "hash": "b87007fa7e434682"
   },
   "sidebar": {
-    "version": "0.28.0",
-    "hash": "5ac26f49febc3cc8"
+    "version": "0.32.0",
+    "hash": "7b2a7bc365dc125f"
   },
   "graph": {
     "version": "0.21.2",
@@ -444,12 +444,12 @@
     "hash": "d33ad72857379192"
   },
   "data-grid": {
-    "version": "0.28.0",
-    "hash": "a7912503e0ec4761"
+    "version": "0.32.0",
+    "hash": "87c2e11d53a9c373"
   },
   "log-viewer": {
-    "version": "0.28.0",
-    "hash": "65ddfe1b8e1c4103"
+    "version": "0.32.0",
+    "hash": "fc60e1ecdb52d2e7"
   },
   "streaming-text": {
     "version": "0.31.0",
@@ -520,8 +520,8 @@
     "hash": "b5d221d88156088f"
   },
   "app-shell": {
-    "version": "0.31.0",
-    "hash": "69aa1307c77e1c9a"
+    "version": "0.32.0",
+    "hash": "8e60d6d855811467"
   },
   "top-bar-shell": {
     "version": "0.31.0",
@@ -584,8 +584,8 @@
     "hash": "f92b1126101d0227"
   },
   "agent-skill": {
-    "version": "0.31.0",
-    "hash": "9b5746a3da00fae8"
+    "version": "0.32.0",
+    "hash": "1f6b074ad1b51881"
   },
   "line-chart-telemetry": {
     "version": "0.17.2",

@@ -1,4 +1,4 @@
-// @syncrobotic/sidebar v0.28.0 · update: npx shadcn add @syncrobotic/sidebar --overwrite
+// @syncrobotic/sidebar v0.32.0 · update: npx shadcn add @syncrobotic/sidebar --overwrite
 "use client"
 
 import * as React from "react"
@@ -56,6 +56,11 @@ type SidebarContextValue = {
   keyshortcuts: string | undefined
   /** true when the provider was told phone or desktop, instead of reading the screen. */
   forced: boolean
+  /**
+   * Asks for focus to go to whichever trigger shows after the next toggle: a trigger that hides itself on a toggle
+   * (SidebarTrigger `show`) calls it when pressed from the keyboard, so focus never falls to the page's start.
+   */
+  handOffFocus: () => void
 }
 
 const SidebarContext = React.createContext<SidebarContextValue | null>(null)
@@ -172,6 +177,25 @@ export function SidebarProvider({
   }
   const toggleSidebar = () => (isMobile ? setOpenMobile(!openMobile) : setOpen(!open))
 
+  // The collapse control in the sidebar's header and the expand control in the page's top bar are two buttons, one shown
+  // at a time. Pressed from the keyboard, the one that hides hands focus to the one that shows.
+  const wrapperId = React.useId()
+  const handOff = React.useRef(false)
+  const handOffFocus = () => {
+    handOff.current = true
+  }
+  React.useEffect(() => {
+    if (!handOff.current) return
+    handOff.current = false
+    const wrapper = document.querySelector(`[data-sidebar-provider="${CSS.escape(wrapperId)}"]`)
+    if (!wrapper) return
+    // The trigger that belongs to the new state: collapse while open, expand while a rail.
+    const wanted = open ? "expanded" : "collapsed"
+    const shown = (el: Element) => (typeof el.checkVisibility === "function" ? el.checkVisibility() : true)
+    const next = [...wrapper.querySelectorAll<HTMLElement>(`[data-slot=sidebar-trigger][data-show=${wanted}]`)].find(shown)
+    next?.focus({ preventScroll: true })
+  }, [open, wrapperId])
+
   useHotkeys(keyboardShortcut ? { [keyboardShortcut]: toggleSidebar } : {}, { enabled: !!keyboardShortcut })
   // Read on the client only; the server and the hydrating render say "Ctrl B".
   const mac = React.useSyncExternalStore(subscribeNothing, isMac, () => false)
@@ -189,11 +213,12 @@ export function SidebarProvider({
     shortcut: shortcut?.read ?? null,
     keyshortcuts: shortcut?.aria,
     forced: mobileProp !== undefined,
+    handOffFocus,
   }
 
   return (
     <SidebarContext value={value}>
-      <div data-slot="sidebar-wrapper" className={cn("flex w-full", className)} {...props}>
+      <div data-slot="sidebar-wrapper" data-sidebar-provider={wrapperId} className={cn("flex w-full", className)} {...props}>
         {children}
       </div>
     </SidebarContext>
@@ -248,7 +273,8 @@ export function Sidebar({ side = "left", variant = "sidebar", collapsible = "ico
       aria-label={labels.sidebar}
       className={cn(
         // Sticky and as tall as the screen when the page scrolls; as tall as the frame when the provider has a height.
-        "group/sidebar sticky top-0 h-svh max-h-full shrink-0 flex-col overflow-hidden bg-card text-foreground",
+        // Not clipped itself (the frame inside clips the column), so a SidebarRail can reach over its edge.
+        "group/sidebar sticky top-0 h-svh max-h-full shrink-0 flex-col bg-card text-foreground",
         // Before hydration a phone cannot be told from the server, so the column hides below md by CSS; the sheet takes over.
         forced ? "flex" : "hidden md:flex",
         // The frame's width is what moves (--motion-sheet); icons stay on the rail's centre line and words fade.
@@ -260,9 +286,13 @@ export function Sidebar({ side = "left", variant = "sidebar", collapsible = "ico
       )}
       {...props}
     >
-      {/* Off canvas, the column keeps its width while the frame closes over it, and nothing in it can be reached. */}
-      <div inert={hidden} className={cn("flex h-full min-h-0 flex-col", collapsible === "offcanvas" ? "w-60" : "w-full")}>
-        {children}
+      {/* The frame clips the column while its width moves. It is not positioned, so a SidebarRail (absolute, placed by the
+          aside) is not clipped by it. Off canvas, the column keeps its width while the frame closes over it, and nothing
+          in it can be reached. */}
+      <div data-slot="sidebar-frame" className="flex h-full min-h-0 w-full overflow-hidden rounded-[inherit]">
+        <div inert={hidden} className={cn("flex h-full min-h-0 shrink-0 flex-col", collapsible === "offcanvas" ? "w-60" : "w-full")}>
+          {children}
+        </div>
       </div>
     </aside>
   )
@@ -287,26 +317,49 @@ function SidebarIcon({ open }: { open: boolean }) {
   )
 }
 
-/** Opens and closes the sidebar: collapse or expand on wide screens, the sheet on phones. Its tooltip names the shortcut. */
-export function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<"button">) {
-  const { isMobile, open, toggleSidebar, labels, shortcut, keyshortcuts } = useSidebar()
+type SidebarTriggerProps = React.ComponentProps<"button"> & {
+  /**
+   * When it shows. always (default): one trigger that collapses and expands, wherever it is. The pair that puts the
+   * collapse control on the sidebar: "expanded" in SidebarHeader (shown while the sidebar is open on a wide screen,
+   * never on phones, where the sheet has its own close) and "collapsed" in the page's top bar (shown while the sidebar
+   * is a rail or hidden, and always on phones, where it is the menu button that opens the sheet).
+   */
+  show?: "always" | "expanded" | "collapsed"
+}
+
+/**
+ * Opens and closes the sidebar: collapse or expand on wide screens, the sheet on phones. Its tooltip names the shortcut.
+ * With `show`, two triggers share the job: collapse on the sidebar's header, expand (and the phone's menu) in the top bar.
+ */
+export function SidebarTrigger({ show = "always", className, onClick, ...props }: SidebarTriggerProps) {
+  const { isMobile, open, toggleSidebar, labels, shortcut, keyshortcuts, forced, handOffFocus } = useSidebar()
   const label = isMobile ? labels.open : open ? labels.collapse : labels.expand
+  // "expanded" lives in the sidebar, which phones never show as a column. "collapsed" hides while the column is open on a
+  // wide screen; until hydration a phone cannot be told from the server, so that is CSS (md:hidden), never a missing button.
+  if (show === "expanded" && (isMobile || !open)) return null
+  if (show === "collapsed" && open && !isMobile && forced) return null
+  const hideWide = show === "collapsed" && open && !isMobile
   return (
     <Tooltip>
       <TooltipTrigger asChild>
         <button
           type="button"
           data-slot="sidebar-trigger"
+          data-show={show}
           aria-label={label}
           aria-keyshortcuts={keyshortcuts}
           className={cn(
             "press flex size-(--h-md) shrink-0 items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:-outline-offset-2",
             "transition-colors duration-(--motion-fast) ease-(--ease-standard)",
+            hideWide && "md:hidden",
             className,
           )}
           onClick={(e) => {
             onClick?.(e)
-            if (!e.defaultPrevented) toggleSidebar()
+            if (e.defaultPrevented) return
+            // A press from the keyboard (detail 0) on a trigger that is about to hide: focus goes to the one that shows.
+            if (show !== "always" && e.detail === 0 && !isMobile) handOffFocus()
+            toggleSidebar()
           }}
           {...props}
         >
@@ -314,10 +367,58 @@ export function SidebarTrigger({ className, onClick, ...props }: React.Component
         </button>
       </TooltipTrigger>
       {/* Touch screens never show a tooltip; the button's name says the same. */}
-      <TooltipContent>
+      <TooltipContent side={show === "expanded" ? "right" : undefined}>
         <span className="flex items-center gap-2">
           {label}
           {shortcut && !isMobile && <kbd className="font-sans">{shortcut}</kbd>}
+        </span>
+      </TooltipContent>
+    </Tooltip>
+  )
+}
+
+/**
+ * The sidebar's edge as a control, for a mouse: a 16 px strip over the edge (4 px in, 12 px out) that shows a hairline on
+ * hover and collapses or expands the sidebar on a click, with the same tooltip and shortcut as the trigger. Put it last
+ * inside Sidebar. It is a pointer convenience beside SidebarTrigger, never instead of one: out of the Tab order and
+ * hidden from screen readers (the trigger is the way for both), and absent on touch screens and phones.
+ */
+export function SidebarRail({ className, onClick, ...props }: React.ComponentProps<"button">) {
+  const { isMobile, open, toggleSidebar, labels, shortcut } = useSidebar()
+  if (isMobile) return null
+  const label = open ? labels.collapse : labels.expand
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button
+          type="button"
+          data-slot="sidebar-rail"
+          tabIndex={-1}
+          aria-hidden="true"
+          className={cn(
+            "press absolute inset-y-0 z-10 w-4 pointer-coarse:hidden",
+            "group-data-[side=left]/sidebar:-right-3 group-data-[side=right]/sidebar:-left-3",
+            // The cursor says which way the edge goes: in while open, out while a rail.
+            "group-data-[side=left]/sidebar:cursor-w-resize group-data-[side=right]/sidebar:cursor-e-resize",
+            "group-data-[side=left]/sidebar:group-data-[state=collapsed]/sidebar:cursor-e-resize group-data-[side=right]/sidebar:group-data-[state=collapsed]/sidebar:cursor-w-resize",
+            // The hairline sits on the sidebar's edge, as the resizable handle's does, and darkens on hover.
+            "after:absolute after:inset-y-0 after:w-0.5 after:rounded-full after:bg-transparent group-data-[variant=floating]/sidebar:after:inset-y-3",
+            "group-data-[side=left]/sidebar:after:left-0.5 group-data-[side=right]/sidebar:after:right-0.5",
+            "after:transition-colors after:duration-(--motion-fast) after:ease-(--ease-standard) hover:after:bg-muted-foreground",
+            "group-data-[collapsible=offcanvas]/sidebar:hidden",
+            className,
+          )}
+          onClick={(e) => {
+            onClick?.(e)
+            if (!e.defaultPrevented) toggleSidebar()
+          }}
+          {...props}
+        />
+      </TooltipTrigger>
+      <TooltipContent side="right">
+        <span className="flex items-center gap-2">
+          {label}
+          {shortcut && <kbd className="font-sans">{shortcut}</kbd>}
         </span>
       </TooltipContent>
     </Tooltip>

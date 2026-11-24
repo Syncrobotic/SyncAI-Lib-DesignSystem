@@ -6765,7 +6765,7 @@
        "name": "jumpToLatest",
        "type": "string",
        "default": "\"Jump to latest\"",
-       "description": "The floating button while scrolled up: with how many new lines arrived, or without."
+       "description": "The footer's button while scrolled up: with how many new lines arrived, or without."
       },
       {
        "name": "newLines",
@@ -6819,7 +6819,7 @@
        "name": "copyLines",
        "type": "(n: number) => string",
        "default": "(n) => (n === 1 ? \"Copy line\" : `Copy ${n} lines`)",
-       "description": "The footer's copy button: the selected lines, or the line in focus."
+       "description": "The footer's copy button, shown while several lines are selected."
       },
       {
        "name": "copied",
@@ -10017,6 +10017,20 @@
   },
   {
    "name": "SidebarTrigger",
+   "props": [
+    {
+     "name": "show",
+     "type": "\"always\" | \"expanded\" | \"collapsed\"",
+     "default": "\"always\"",
+     "description": "When it shows. always (default): one trigger that collapses and expands, wherever it is. The pair that puts the collapse control on the sidebar: \"expanded\" in SidebarHeader (shown while the sidebar is open on a wide screen, never on phones, where the sheet has its own close) and \"collapsed\" in the page's top bar (shown while the sidebar is a rail or hidden, and always on phones, where it is the menu button that opens the sheet)."
+    }
+   ],
+   "inherits": [
+    "<button>"
+   ]
+  },
+  {
+   "name": "SidebarRail",
    "props": [],
    "inherits": [
     "<button>"

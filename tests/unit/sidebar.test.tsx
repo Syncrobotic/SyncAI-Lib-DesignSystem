@@ -244,6 +244,63 @@ describe("app shell on the sidebar", () => {
     expect(aside().dataset.state).toBe("expanded")
   })
 
+  it("puts collapse on the sidebar and expand in the top bar, and hands focus between them", () => {
+    render(
+      <AppShell product="Fleet console" nav={sampleNav} current="#robots" title="Robots">
+        page
+      </AppShell>,
+    )
+    // A rail (the test screen is under 1280 px): the sidebar has no collapse button, the top bar's first button expands.
+    const header = () => document.querySelector("header")!
+    expect(aside().querySelector("[data-slot=sidebar-trigger]")).toBeNull()
+    const expand = screen.getByRole("button", { name: "Expand sidebar" })
+    expect(header().contains(expand)).toBe(true)
+    // Pressed from the keyboard (a click with detail 0), focus moves to the collapse button that takes over.
+    act(() => expand.focus())
+    fireEvent.click(expand, { detail: 0 })
+    expect(aside().dataset.state).toBe("expanded")
+    const collapse = aside().querySelector<HTMLElement>("[data-slot=sidebar-trigger]")!
+    expect(collapse.getAttribute("aria-label")).toBe("Collapse sidebar")
+    expect(document.activeElement).toBe(collapse)
+    // The top bar's trigger stays in the page for phones before hydration, hidden from 768 px by CSS.
+    expect(header().querySelector("[data-slot=sidebar-trigger]")?.className).toContain("md:hidden")
+    fireEvent.click(collapse, { detail: 0 })
+    expect(aside().dataset.state).toBe("collapsed")
+    expect(document.activeElement).toBe(screen.getByRole("button", { name: "Expand sidebar" }))
+  })
+
+  it("makes the edge a control for a mouse, outside the Tab order and the accessibility tree", () => {
+    render(
+      <AppShell product="Fleet console" nav={sampleNav} current="#robots" title="Robots">
+        page
+      </AppShell>,
+    )
+    const rail = aside().querySelector<HTMLElement>("[data-slot=sidebar-rail]")!
+    expect(rail.getAttribute("aria-hidden")).toBe("true")
+    expect(rail.tabIndex).toBe(-1)
+    fireEvent.click(rail)
+    expect(aside().dataset.state).toBe("expanded")
+    fireEvent.click(rail)
+    expect(aside().dataset.state).toBe("collapsed")
+  })
+
+  it("on phones, the top bar's trigger is the menu button and the sidebar has no collapse button", () => {
+    render(
+      <SidebarProvider isMobile cookieName={null}>
+        <Sidebar>
+          <SidebarContent>
+            <SidebarTrigger show="expanded" />
+          </SidebarContent>
+        </Sidebar>
+        <SidebarInset>
+          <SidebarTrigger show="collapsed" />
+        </SidebarInset>
+      </SidebarProvider>,
+    )
+    expect(screen.getAllByRole("button")).toHaveLength(1)
+    expect(screen.getByRole("button", { name: "Open navigation" })).toBeTruthy()
+  })
+
   it("shows a section's pages under it while one of them is current", () => {
     const nav = [{ items: [{ ...sampleNav[0]!.items[1]!, items: [{ label: "Fleet", href: "#robots/fleet" }, { label: "Maintenance", href: "#robots/maintenance", tag: "New" }] }] }]
     const { rerender } = render(

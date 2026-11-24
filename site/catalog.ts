@@ -213,6 +213,7 @@ const entries: Record<string, Entry> = {
       "Give `timeZone` when the people reading are not where the robot is, and say which in the page; copied lines are always ISO 8601 in UTC.",
       "Name the sources for what they are: `labels.sources` \"Nodes\" for ROS, \"Units\" for journald.",
       "Leave `announce` on \"errors\" (at most every 5 s); \"all\" only for a slow log, and false where an alarm already speaks for the same failure.",
+      "An opened line is a band of its row, not a card: a hairline under the message, the fields with names under the time and values under the level, and one quiet Copy line. Nothing floats over the lines: Jump to latest and Copy for several lines sit in the footer.",
     ],
   },
   "streaming-text": {
@@ -958,6 +959,7 @@ const entries: Record<string, Entry> = {
       "Every item leads with an icon and has a tooltip: collapsed, the rail shows only the icons. Group names give way to a short line.",
       "A switcher for sites, workspaces or robots goes in SidebarHeader as a size=\"lg\" button that opens a menu; the account goes in SidebarFooter the same way.",
       "Open by default on wide screens, a rail below about 1280 px. People choose with the trigger or ⌘B / Ctrl+B, and the cookie keeps it.",
+      "Collapse belongs to the sidebar: SidebarTrigger show=\"expanded\" at the end of SidebarHeader, quiet (muted ink, no fill until hover), and SidebarRail on its edge for a mouse. While it is a rail, SidebarTrigger show=\"collapsed\" is the first thing in the page's top bar; on phones that same button is the menu that opens the sheet. Never only the edge: it is out of the Tab order and absent on touch.",
     ],
   },
   // Overlays: the docs show the closed trigger; the *Open stories are for visual tests.
@@ -1484,8 +1486,8 @@ const keyboard: Record<string, [string, string][]> = {
   ],
   sidebar: [
     ["`⌘`+`B` / `Ctrl`+`B`", "Collapse the sidebar to its rail, or open it; on a phone, open or close the sheet. Not while typing"],
-    ["`Tab`", "Move through the switcher, the links and the account, top to bottom"],
-    ["`Enter`", "Follow the link; on the switcher or the account, open its menu"],
+    ["`Tab`", "Move through the switcher, the collapse button, the links and the account, top to bottom; collapsed, the expand button is in the top bar"],
+    ["`Enter`", "Follow the link; on the switcher or the account, open its menu; on collapse or expand, toggle the sidebar and move focus to the button that takes over"],
     ["`Esc`", "On a phone, close the sheet and return focus to the trigger"],
   ],
   "image-grid": [
@@ -1566,7 +1568,7 @@ const keyboard: Record<string, [string, string][]> = {
     ["`Enter` / `Space`", "On Show, show or hide the secret; on Copy, copy the code"],
   ],
   "log-viewer": [
-    ["`Tab`", "Move into the lines (one stop: the newest line, or the first in view), then to an open line's Copy button"],
+    ["`Tab`", "Move into the lines (one stop: the newest line, or the first in view), then to an open line's Copy line, then the footer's Jump to latest and Copy lines"],
     ["`↑` / `↓`", "Previous or next line"],
     ["`PageUp` / `PageDown`", "A screen up or down"],
     ["`Home` / `End`", "First line, or the newest (End follows new lines again)"],

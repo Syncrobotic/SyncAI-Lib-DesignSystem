@@ -204,6 +204,9 @@ describe("LogViewer", { timeout: 20_000 }, () => {
       vi.advanceTimersByTime(100)
     })
     const jump = screen.getByRole("button", { name: /12 new · Jump to latest/ })
+    // Docked in the footer beside Paused, never floating over the lines.
+    expect(footer().contains(jump)).toBe(true)
+    expect(grid().contains(jump)).toBe(false)
     act(() => void fireEvent.click(jump))
     expect(footer().textContent).toContain("Following new lines")
   })
@@ -229,7 +232,12 @@ describe("LogViewer", { timeout: 20_000 }, () => {
     fireEvent.keyDown(g, { key: "Enter" })
     const open = document.querySelector("[aria-expanded=true]")!
     expect(open.textContent).toContain("node.cpp:38")
+    // One Copy line, on the open line's detail band; the footer copies only a selection of several lines.
     expect(within(open as HTMLElement).getByRole("button", { name: "Copy line" })).toBeTruthy()
+    expect(screen.getAllByRole("button", { name: "Copy line" })).toHaveLength(1)
+    // A band of the row, not a ringed card nested in it.
+    expect(open.querySelector("[data-log-detail]")).toBeTruthy()
+    expect(open.querySelector("[data-log-detail].ring-1, [data-log-detail] .ring-1")).toBeNull()
     fireEvent.keyDown(g, { key: "Escape" })
     expect(document.querySelector("[aria-expanded=true]")).toBeNull()
     fireEvent.keyDown(g, { key: "ArrowUp", shiftKey: true })

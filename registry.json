@@ -3057,8 +3057,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "SidebarTrigger `show`: \"expanded\" renders only while the column is open on a wide screen (collapse, for SidebarHeader), \"collapsed\" only while it is a rail or hidden and always on phones (expand, and the menu that opens the sheet, for the top bar); \"always\" (default) is the single trigger as before. Pressed from the keyboard, the trigger that hides moves focus to the one that shows. New SidebarRail: the sidebar's edge as a mouse control (resize cursor, hairline on hover, the trigger's tooltip, a click toggles), aria-hidden and out of the Tab order, absent on touch and phones. The Sidebar's inner frame now clips the column instead of the aside, so the rail can reach over the edge; same look."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -5138,8 +5143,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "DataGridColumnVisibility is --h-md, the height of the search field it sits beside in a toolbar (was --h-sm)."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -5235,8 +5245,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "The toolbar is one control height, the search field's --h-md: the level and source menus are default-size buttons and the view options an icon button, no longer 36 px beside a 44 px field. An opened line's detail is a band of its row instead of a ringed card under the message: a hairline, then the fields with names under the time column and values under the level column (the message cell spans the columns on a CSS subgrid), and one quiet ghost Copy line on the band. The footer's Copy shows only for a selection of two or more lines (\"Copy 3 lines\"). Jump to latest is docked in the footer beside Paused instead of floating over the lines."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -6131,8 +6146,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Collapse is on the sidebar: a quiet trigger at the end of the brand row and the edge (SidebarRail) for a mouse. While the sidebar is a rail, the expand trigger is the top bar's first button, and on phones it is the menu button that opens the sheet; while it is open, the top bar starts with the title. ⌘B / Ctrl+B and the sidebar_state cookie as before. Needs sidebar 0.32.0."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -7151,8 +7171,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "The design language says a toolbar is one height (every control --h-md beside a field, --h-sm only in a row without one) and where the app shell's collapse controls sit."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",

@@ -2,6 +2,17 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Changed
+- **`log-viewer` 0.32.0:** the toolbar is one control height, the search field's `--h-md`: the level and source menus are default-size buttons and the view options an icon button (they were 36 px beside a 44 px field).
+- **`log-viewer` 0.32.0:** an opened line's detail is a band of its row, not a ringed card under the message: a hairline, then the fields with names under the time column and values under the level column, and one quiet Copy line on the band. The footer's Copy shows only for a selection of two or more lines ("Copy 3 lines"). Jump to latest is docked in the footer beside Paused, so it never covers a line or its detail.
+- **`data-grid` 0.32.0:** `DataGridColumnVisibility` is `--h-md`, the height of the search field beside it in a toolbar (was `--h-sm`).
+- **`sidebar` 0.32.0:** `SidebarTrigger` takes `show`: `"expanded"` (collapse, in SidebarHeader; only while the column is open on a wide screen), `"collapsed"` (expand, in the top bar; only while it is a rail or hidden, and always on phones, where it opens the sheet), or `"always"` (default, as before). Pressed from the keyboard, the trigger that hides hands focus to the one that shows.
+- **`sidebar` 0.32.0:** new `SidebarRail`, the sidebar's edge as a control for a mouse: resize cursor, a hairline on hover, the trigger's tooltip, a click toggles. Out of the Tab order and the accessibility tree (the triggers are the way there), absent on touch screens and phones. The Sidebar's inner frame clips the column now, not the aside, so the rail can reach over the edge; nothing else moves.
+- **`app-shell` 0.32.0:** collapse is on the sidebar, at the end of its brand row, quiet, and on its edge for a mouse; while the sidebar is a rail, expand is the top bar's first button, and on phones that button is the menu that opens the sheet. While it is open the top bar starts with the title. ⌘B / Ctrl+B and the `sidebar_state` cookie as before. Update `sidebar` with it. Every block in the app shell takes it.
+- **`agent-skill` 0.32.0:** the design language says a toolbar is one height (every control `--h-md` beside a field; `--h-sm` only in a row without one) and where the app shell's collapse controls sit. The Spacing foundation says the same.
+
 ## 0.31.0 · 2026-11-22
 
 Two components for model answers (streaming text, text linked to marks on a picture), a tier badge, and 13 fixes and options asked for by product teams: heading levels, sticky tabs under the shell, multi-select chips, formatted meters, chart inks and more.

@@ -420,6 +420,8 @@ export const overviews: Record<string, Overview> = {
       "Mark the current page with isActive (aria-current=\"page\"). For a page under a section, mark its SidebarMenuSubButton, give the section aria-current=\"true\", and isActive only on the rail, where its pages are hidden.",
       "The cookie is read on the client after hydration. With server rendering, read `sidebar_state` (SIDEBAR_COOKIE_NAME) on the server and pass it as defaultOpen, so a collapsed sidebar does not open for a moment first.",
       "Below 768 px it is a sheet, decided in JavaScript; pass isMobile to fix the form in a preview or a test.",
+      "Two triggers share the toggle: `show=\"expanded\"` in SidebarHeader renders only while the column is open (never on phones), `show=\"collapsed\"` in the top bar only while it is a rail or hidden (always on phones; before hydration it hides by CSS from 768 px, so a phone never loads without its menu button). Pressed from the keyboard, the one that hides moves focus to the one that shows. `show=\"always\"` (default) is the single trigger as before.",
+      "SidebarRail is the edge as a control, for a mouse: a 16 px strip over the edge with the resize cursor, a hairline on hover and the trigger's tooltip. It is aria-hidden and tabIndex -1 (the triggers are the way for keyboards and screen readers) and hidden on a coarse pointer. The Sidebar no longer clips itself; an inner frame does, so the strip can reach over the edge.",
     ],
   },
   "navigation-menu": {
@@ -471,8 +473,9 @@ export const overviews: Record<string, Overview> = {
     notes: [
       "A treegrid, not role=\"log\": a log region announces every line added to it, and a virtual list adds lines as it scrolls; a treegrid rather than a grid because each line opens (aria-expanded). It has `aria-rowcount` and each line its `aria-rowindex`, one Tab stop, and `aria-activedescendant` for the line in focus, so focus never sits on a line that scrolls away. New lines are announced in a separate status, at most every 5 s.",
       "`createLogBuffer({ maxLines, flushMs })` is a ring buffer outside React: append from a WebSocket or ROS callback; it commits at most every `flushMs` (100) and tells its subscribers once. The viewer subscribes with useSyncExternalStore and filters only on a commit. Lines keep a sequence number, so an open or selected line stays open while older ones are dropped.",
-      "Following stops when the reader scrolls up, opens a line, moves with the keyboard or goes to a match; it resumes at the end, with End, or with the floating \"Jump to latest\". While paused, the line at the top stays put when older lines are dropped or the filters change.",
-      "Rows are measured, so wrapped and opened lines take their real height; a row is `--h-sm` (36 px with a mouse, 44 on touch).",
+      "Following stops when the reader scrolls up, opens a line, moves with the keyboard or goes to a match; it resumes at the end, with End, or with \"Jump to latest\" in the footer, beside Paused (docked there, so it never covers a line or an opened line's detail). While paused, the line at the top stays put when older lines are dropped or the filters change.",
+      "Rows are measured, so wrapped and opened lines take their real height; a row is `--h-sm` (36 px with a mouse, 44 on touch). The toolbar is one height, the search field's `--h-md`.",
+      "An opened line's detail is part of its row: wide, the message cell spans the time, level, source and message columns on a CSS subgrid, so the detail runs under the whole row from the time column with names under the time and values under the level. The one Copy line is on that band; the footer's Copy appears only for a selection of two lines or more (C copies one line from the keyboard).",
       "The rows component opts out of the React Compiler (\"use no memo\") because TanStack Virtual answers through methods on one object; the rest of the viewer compiles.",
       "Every word is in `labels`, including `ago` for time ago and `announce`; `locale` formats times and counts.",
     ],

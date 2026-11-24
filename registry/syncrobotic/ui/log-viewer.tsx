@@ -1,4 +1,4 @@
-// @syncrobotic/log-viewer v0.28.0 · update: npx shadcn add @syncrobotic/log-viewer --overwrite
+// @syncrobotic/log-viewer v0.32.0 · update: npx shadcn add @syncrobotic/log-viewer --overwrite
 "use client"
 
 import * as React from "react"
@@ -102,7 +102,7 @@ export type LogViewerLabels = {
   viewOptions: string
   wrap: string
   relativeTime: string
-  /** The floating button while scrolled up: with how many new lines arrived, or without. */
+  /** The footer's button while scrolled up: with how many new lines arrived, or without. */
   jumpToLatest: string
   newLines: (n: number, locale: string | undefined) => string
   following: string
@@ -114,7 +114,7 @@ export type LogViewerLabels = {
   empty: string
   noMatch: string
   showAll: string
-  /** The footer's copy button: the selected lines, or the line in focus. */
+  /** The footer's copy button, shown while several lines are selected. */
   copyLines: (n: number) => string
   copied: string
   copyFailed: string
@@ -697,6 +697,8 @@ export function LogViewer({
       style={{ height }}
       className={cn("@container flex w-full min-w-0 flex-col overflow-hidden rounded-md bg-card ring-1 ring-border", className)}
     >
+      {/* One control height across the toolbar, the field's (--h-md: 44 px, 48 with gloves), so the search and the menus
+          beside it line up, as in every toolbar of the kit that holds a field. */}
       <div className="flex flex-wrap items-center gap-2 border-b border-border p-2">
         <InputGroup className="w-full @xl:w-auto @xl:min-w-0 @xl:flex-1">
           <InputGroupAddon>
@@ -737,9 +739,9 @@ export function LogViewer({
         <div className="flex min-w-0 flex-1 items-center gap-2 @xl:flex-none">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="min-w-0" aria-label={`${l.levels}: ${levelButton}`}>
+              <Button variant="outline" className="min-w-0 px-3" aria-label={`${l.levels}: ${levelButton}`}>
                 <span className="truncate">{levelButton}</span>
-                <ChevronDown aria-hidden="true" />
+                <ChevronDown aria-hidden="true" className="size-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start">
@@ -758,9 +760,9 @@ export function LogViewer({
           </DropdownMenu>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="min-w-0" aria-label={`${l.sources}: ${sourceButton}`}>
+              <Button variant="outline" className="min-w-0 px-3" aria-label={`${l.sources}: ${sourceButton}`}>
                 <span className={cn("truncate", sources.length === 1 && "font-mono")}>{sourceButton}</span>
-                <ChevronDown aria-hidden="true" />
+                <ChevronDown aria-hidden="true" className="size-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="max-h-96 overflow-y-auto">
@@ -769,7 +771,7 @@ export function LogViewer({
           </DropdownMenu>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon-sm" aria-label={l.viewOptions} className="ml-auto">
+              <Button variant="ghost" size="icon" aria-label={l.viewOptions} className="ml-auto">
                 <Ellipsis aria-hidden="true" />
               </Button>
             </DropdownMenuTrigger>
@@ -835,25 +837,11 @@ export function LogViewer({
             initialSeq={firstOpen}
           />
         )}
-        {presence.mounted && (
-          <div className="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center px-3">
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={jumpToLatest}
-              onAnimationEnd={presence.done}
-              className={cn(
-                "pointer-events-auto bg-float shadow-float ring-1 ring-edge backdrop-blur-xl hover:bg-float",
-                presence.leaving ? "animate-disappear" : "animate-appear",
-              )}
-            >
-              <ArrowDownToLine aria-hidden="true" />
-              {newCount > 0 ? `${l.newLines(newCount, locale)} · ${l.jumpToLatest}` : l.jumpToLatest}
-            </Button>
-          </div>
-        )}
       </div>
 
+      {/* The footer holds the list's state and its two actions, so nothing floats over the lines: Jump to latest beside
+          Paused (where the reader looks to see why the list stopped), and Copy only for a selection of several lines (one
+          line is copied from its own detail, or with C). */}
       <div className="flex min-h-(--h-md) flex-wrap items-center gap-x-2 border-t border-border px-3 text-xs text-muted-foreground tabular-nums">
         <span>
           {l.total(seqs.length, total, locale)}
@@ -861,7 +849,19 @@ export function LogViewer({
         </span>
         <span aria-hidden="true">·</span>
         <span>{following ? l.following : l.paused}</span>
-        {selectedCount > 0 && (
+        {presence.mounted && (
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={jumpToLatest}
+            onAnimationEnd={presence.done}
+            className={cn("-ml-1 px-2 text-foreground", presence.leaving ? "animate-disappear" : "animate-appear")}
+          >
+            <ArrowDownToLine aria-hidden="true" />
+            {newCount > 0 ? `${l.newLines(newCount, locale)} · ${l.jumpToLatest}` : l.jumpToLatest}
+          </Button>
+        )}
+        {selectedCount > 1 && (
           <CopyButton value={selectedText()} labels={{ copied: l.copied, failed: l.copyFailed }} className="-mr-2 ml-auto">
             {l.copyLines(selectedCount)}
           </CopyButton>
@@ -1281,37 +1281,54 @@ const LogRow = React.memo(function LogRow({
     >
       <ChevronRight
         aria-hidden="true"
-        className={cn("mt-0.5 size-4 shrink-0 text-muted-foreground transition-transform duration-(--motion-fast) ease-(--ease-standard)", expanded && "rotate-90")}
+        className={cn("mt-0.5 size-4 shrink-0 text-muted-foreground transition-transform @xl:col-start-1 @xl:row-start-1 duration-(--motion-fast) ease-(--ease-standard)", expanded && "rotate-90")}
       />
       {/* Narrow: level, time and source on the first line, the message under them. Wide: one column each. */}
       <div className="flex min-w-0 items-center gap-2 @xl:contents">
-        <span role="gridcell" className="order-2 shrink-0 font-mono text-xs leading-5 text-muted-foreground tabular-nums @xl:order-none @xl:text-sm">
+        <span role="gridcell" className="order-2 shrink-0 font-mono text-xs leading-5 text-muted-foreground tabular-nums @xl:order-none @xl:col-start-2 @xl:row-start-1 @xl:text-sm">
           {time}
         </span>
-        <span role="gridcell" className="order-1 flex shrink-0 @xl:order-none">
+        <span role="gridcell" className="order-1 flex shrink-0 @xl:order-none @xl:col-start-3 @xl:row-start-1">
           <LogLevelLabel level={line.level} word={l[line.level]} />
         </span>
-        <span role="gridcell" className="order-3 min-w-0 truncate font-mono text-xs leading-5 text-muted-foreground @xl:order-none @xl:text-sm">
+        <span role="gridcell" className="order-3 min-w-0 truncate font-mono text-xs leading-5 text-muted-foreground @xl:order-none @xl:col-start-4 @xl:row-start-1 @xl:text-sm">
           {line.source ? <Marked text={line.source} query={pattern} current={current} /> : null}
         </span>
       </div>
-      <div role="gridcell" className="col-start-2 min-w-0 @xl:col-start-auto">
-        <p className={cn("font-mono text-sm leading-5", line.level === "debug" && "text-muted-foreground", wrap || expanded ? "break-words whitespace-pre-wrap" : "truncate")}>
+      {/* Wide, the message cell spans the time, level, source and message columns on a subgrid: the message sits in its own
+          column and an opened line's detail runs under the whole row, from the time column. The cell lets the pointer through
+          to the cells it lies over; its children take it back. */}
+      <div
+        role="gridcell"
+        className="col-start-2 min-w-0 @xl:pointer-events-none @xl:col-[2/-1] @xl:row-start-1 @xl:grid @xl:grid-cols-subgrid @xl:*:pointer-events-auto"
+      >
+        <p
+          className={cn(
+            "font-mono text-sm leading-5 @xl:col-start-4",
+            line.level === "debug" && "text-muted-foreground",
+            wrap || expanded ? "break-words whitespace-pre-wrap" : "truncate",
+          )}
+        >
           <Marked text={shown} query={pattern} current={current} />
           {!wrap && !expanded && rest.length > 0 && <span className="text-muted-foreground"> {l.moreLines(rest.length)}</span>}
         </p>
         {expanded && (
-          <div data-log-detail="" className="mt-2 flex animate-appear cursor-auto flex-col gap-2 pb-1">
-            {/* Name and value side by side, so a long path or function name keeps the row's width. */}
-            <dl className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-2 rounded-sm bg-card p-3 text-sm ring-1 ring-border">
+          // A band of the row, not a card in it: a hairline under the message, the fields and one quiet Copy line.
+          <div
+            data-log-detail=""
+            className="mt-2 flex animate-appear cursor-auto flex-col items-start gap-x-3 gap-y-1 border-t border-border pt-2 pb-1 @xl:col-span-full @xl:flex-row"
+          >
+            {/* Names under the time, values under the level (6.5rem and the row's 12 px gap), so they read as the row's
+                own columns; a long path or function name wraps in its value. */}
+            <dl className="grid min-w-0 flex-1 grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-1 text-sm leading-5 @xl:grid-cols-[6.5rem_minmax(0,1fr)] @xl:gap-x-3">
               {fields.map((f, i) => (
                 <React.Fragment key={i}>
-                  <dt className="text-muted-foreground">{f.label}</dt>
+                  <dt className="min-w-0 break-words text-muted-foreground">{f.label}</dt>
                   <dd className="min-w-0 tabular-nums">{f.value}</dd>
                 </React.Fragment>
               ))}
             </dl>
-            <CopyButton value={formatLogLine(line)} labels={{ copied: l.copied, failed: l.copyFailed }} variant="outline" className="self-start">
+            <CopyButton value={formatLogLine(line)} labels={{ copied: l.copied, failed: l.copyFailed }} className="-ml-3 shrink-0 @xl:-my-2 @xl:ml-0">
               {l.copyLine}
             </CopyButton>
           </div>
