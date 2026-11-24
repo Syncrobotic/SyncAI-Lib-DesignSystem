@@ -7583,6 +7583,17 @@
      "description": ""
     },
     {
+     "name": "href",
+     "type": "string",
+     "description": "Where the fact leads: the pill becomes a link, the same height on screen, with a 36 px target (44 on touch)."
+    },
+    {
+     "name": "linkAs",
+     "type": "ElementType",
+     "default": "\"a\"",
+     "description": "Your router's link (e.g. next/link), for `href`."
+    },
+    {
      "name": "children",
      "type": "ReactNode",
      "required": true,

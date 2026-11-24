@@ -3910,7 +3910,7 @@
       "name": "page-header",
       "type": "registry:ui",
       "title": "Page header",
-      "description": "The block a page opens with: breadcrumb above, one h1 and a line, meta pills, actions at the right. No label above the title.",
+      "description": "The block a page opens with: breadcrumb above, one h1 and a line, meta pills (a link with href), actions at the right. No label above the title.",
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/status-glyph"
@@ -3922,8 +3922,13 @@
         }
       ],
       "meta": {
-        "version": "0.29.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "`MetaPill` takes `href` and `linkAs` (default \"a\"): the pill becomes an underlined link inside its list item, with the focus ring and a target of --h-sm while it stays --h-tag tall. Without `href`, nothing changes. Issue #327."
+          },
           {
             "version": "0.29.0",
             "date": "2026-11-22",
