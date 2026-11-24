@@ -360,6 +360,7 @@ export const overviews: Record<string, Overview> = {
       "Offer `GraphList` beside `Graph` (a Graph / List switch with SegmentedControl), as charts offer `ChartTable`; `lint:rules` asks for it in a block.",
       "Edges are `{ from, to }`, where `from` is an input of `to`. An edge that closes a cycle, points at a missing node or at itself is left out, with a warning in development.",
       "Node ids must be unique. Labels are plain text: they start each node's accessible name, which then lists its inputs and outputs (\"Box labels v7, 48,210 boxes, from Hall B captures, to Dataset v3\").",
+      "`badge` is a string, not an element: it is drawn as the kit's outline tag and read in the node's name. Do not put a status in it; that is `status`.",
       "Pass `labels` (from, to, status words, instructions, inputs, outputs, loading) and `empty` to translate.",
     ],
   },

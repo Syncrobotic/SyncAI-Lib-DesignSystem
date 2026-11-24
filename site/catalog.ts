@@ -114,6 +114,8 @@ const entries: Record<string, Entry> = {
       "Edges are neutral; the selected node's path is drawn in the ink colour and the rest steps back. No colours per edge or per kind of node.",
       "Status is a shape and a word; only warning and danger are coloured. Steps that did not run are grey and say so (\"Not run\").",
       "Names fit a box: about 28 characters show in full, longer ones end in an ellipsis. Put the detail in meta, one short line.",
+      "A category that is not a state (an access tier, \"Deprecated\", a version channel) is a `badge`: a neutral outline tag after the name, a word or two, read after the name. Never a colour per tag.",
+      "Columns come from the layout (each node one column after its latest input), not from kinds, so they have no headings. Say what the graph holds in its title, and what each node is in its name or badge.",
     ],
   },
   trace: {

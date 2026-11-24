@@ -3077,7 +3077,7 @@
       "name": "graph",
       "type": "registry:ui",
       "title": "Graph",
-      "description": "A directed acyclic graph for lineage and pipelines, laid out in layers with no layout library: boxes with name, meta, status and link, neutral edges, the selected node's path highlighted, arrow keys along the edges, and GraphList, the same graph as text.",
+      "description": "A directed acyclic graph for lineage and pipelines, laid out in layers with no layout library: boxes with name, badge, meta, status and link, neutral edges, the selected node's path highlighted, arrow keys along the edges, and GraphList, the same graph as text.",
       "dependencies": [],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -3093,8 +3093,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.21.2",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "`badge` on a node: a short neutral outline tag after the name (an access tier, \"Deprecated\"), read after the name in the node's accessible name and shown in GraphList. Issue #318."
+          },
           {
             "version": "0.21.2",
             "date": "2026-11-21",
