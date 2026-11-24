@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import { cn } from "@/lib/utils"
 import { LoadMore } from "@/registry/syncrobotic/ui/load-more"
 import { RestrictedPreview } from "@/registry/syncrobotic/ui/restricted-preview"
-import { ShareBar } from "@/registry/syncrobotic/ui/share-bar"
+import { ShareBar, ShareLegend } from "@/registry/syncrobotic/ui/share-bar"
 import { placeholderPhoto } from "./placeholder-photos"
 
 const meta: Meta = { title: "Display/Data pieces" }
@@ -41,6 +41,36 @@ export const ShareBarLinks: S = {
       />
     </div>
   ),
+}
+
+/** A list of bars, one per task, under one ShareLegend: same segments in the same order, so the colours match. Each bar keeps its own name. */
+export const ShareBarSharedLegend: S = {
+  render: () => {
+    const parts = [
+      { key: "manual", label: "Manual" },
+      { key: "model", label: "Model" },
+      { key: "other", label: "Other", tone: "other" as const },
+    ]
+    const rows = [
+      { id: "det", name: "Detection", values: [600, 400, 0] },
+      { id: "seg", name: "Segmentation", values: [220, 760, 120] },
+      { id: "pose", name: "Pose", values: [90, 140, 40] },
+    ]
+    const max = Math.max(...rows.map((r) => r.values.reduce((a, b) => a + b, 0)))
+    return (
+      <div className="flex max-w-md flex-col gap-3">
+        <ShareLegend segments={parts} />
+        <ul className="flex flex-col gap-3 text-sm">
+          {rows.map((r) => (
+            <li key={r.id} className="grid grid-cols-[6rem_1fr] items-center gap-3">
+              <span>{r.name}</span>
+              <ShareBar label={r.name} total={max} segments={parts.map((p, i) => ({ ...p, value: r.values[i] }))} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  },
 }
 
 /** Thin, in table cells: where each dataset's labels came from. The column header names the parts. */

@@ -1,4 +1,4 @@
-// @syncrobotic/phone-input v0.28.0 · update: npx shadcn add @syncrobotic/phone-input --overwrite
+// @syncrobotic/phone-input v0.32.0 · update: npx shadcn add @syncrobotic/phone-input --overwrite
 "use client"
 
 import * as React from "react"
@@ -151,7 +151,7 @@ export function PhoneInput({
         </SelectContent>
       </Select>
       <span aria-hidden="true" className="my-2 w-px bg-border" />
-      <input
+      <input data-slot="phone-input-number"
         type="tel"
         id={id ?? f?.id}
         // Inside a Field its label names the box, so the name is what people see ("On-call phone"); a fixed aria-label

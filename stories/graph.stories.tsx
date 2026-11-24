@@ -63,6 +63,21 @@ export const GraphLineage: S = {
   render: () => <WithList title="Lineage of Dataset v3" label="Lineage of Dataset v3" nodes={lineageNodes} edges={lineageEdges} />,
 }
 
+// A tag per node for a category, not a state: the access tier, and a source that is no longer used.
+const badges: Record<string, string> = { "hall-b": "T1", "night-a": "Deprecated", synthetic: "T0", boxes: "T1", masks: "T1", dataset: "T1" }
+
+/** `badge`: a neutral outline tag after the name, for a category such as the access tier; read after the name. */
+export const GraphBadges: S = {
+  render: () => (
+    <WithList
+      title="Lineage of Dataset v3"
+      label="Lineage of Dataset v3, with access tiers"
+      nodes={lineageNodes.map((n) => ({ ...n, badge: badges[n.id] }))}
+      edges={lineageEdges}
+    />
+  ),
+}
+
 /** A node selected: its inputs and outputs, all the way up and down, in the ink colour; the rest steps back. */
 export const GraphSelected: S = {
   render: () => <Graph label="Lineage of Dataset v3" nodes={lineageNodes} edges={lineageEdges} defaultSelectedId="masks" />,

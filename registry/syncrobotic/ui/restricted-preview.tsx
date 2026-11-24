@@ -1,4 +1,4 @@
-// @syncrobotic/restricted-preview v0.15.0 · update: npx shadcn add @syncrobotic/restricted-preview --overwrite
+// @syncrobotic/restricted-preview v0.32.0 · update: npx shadcn add @syncrobotic/restricted-preview --overwrite
 "use client"
 
 import * as React from "react"
@@ -18,6 +18,7 @@ export function RestrictedPreview({
   reason,
   onReveal,
   className,
+  "data-slot": slot = "restricted-preview",
 }: {
   /** When false, the children show at once. */
   restricted: boolean
@@ -30,6 +31,8 @@ export function RestrictedPreview({
   onReveal?: () => void
   /** Size the placeholder like the preview it stands for, e.g. aspect-4/3 w-full. */
   className?: string
+  /** The reveal button's data-slot, for a component that holds it (image-grid: "image-grid-reveal"). */
+  "data-slot"?: string
 }) {
   const [shown, setShown] = React.useState(false)
   if (!restricted) return <>{children}</>
@@ -43,7 +46,7 @@ export function RestrictedPreview({
   return (
     <button
       type="button"
-      data-slot="restricted-preview"
+      data-slot={slot}
       onClick={() => {
         setShown(true)
         onReveal?.()

@@ -1,4 +1,4 @@
-// @syncrobotic/context-menu v0.21.0 · update: npx shadcn add @syncrobotic/context-menu --overwrite
+// @syncrobotic/context-menu v0.32.0 · update: npx shadcn add @syncrobotic/context-menu --overwrite
 "use client"
 
 import * as React from "react"
@@ -13,7 +13,9 @@ import { cn } from "@/lib/utils"
  */
 export const ContextMenu = MenuPrimitive.Root
 /** The area that opens the menu. Use `asChild` on the row or card it belongs to; it should be focusable for Shift+F10. */
-export const ContextMenuTrigger = MenuPrimitive.Trigger
+export function ContextMenuTrigger(props: React.ComponentProps<typeof MenuPrimitive.Trigger>) {
+  return <MenuPrimitive.Trigger data-slot="context-menu-trigger" {...props} />
+}
 export const ContextMenuGroup = MenuPrimitive.Group
 export const ContextMenuRadioGroup = MenuPrimitive.RadioGroup
 export const ContextMenuSub = MenuPrimitive.Sub

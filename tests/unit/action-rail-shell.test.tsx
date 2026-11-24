@@ -51,3 +51,35 @@ describe("ActionRailShell", () => {
     expect(back).not.toHaveBeenCalled()
   })
 })
+
+describe("ActionRailShell keys (#334)", () => {
+  const rail = (label: string, loading = false) => (
+    <ActionRailShell
+      title="Run"
+      step={{ title: "Run the model" }}
+      primary={{ label, loading }}
+      secondary={[{ id: "export", label: label === "Run" ? "Export" : "Export partial" }]}
+    >
+      <p>Content</p>
+    </ActionRailShell>
+  )
+
+  it("keeps the primary the same element, and focus on it, when its label changes", () => {
+    const { rerender } = render(rail("Run"))
+    const run = screen.getByRole("button", { name: "Run" })
+    run.focus()
+    rerender(rail("Stop", true))
+    const stop = screen.getByRole("button", { name: /Stop/ })
+    expect(stop).toBe(run)
+    expect(document.activeElement).toBe(stop)
+    rerender(rail("Run"))
+    expect(document.activeElement).toBe(screen.getByRole("button", { name: "Run" }))
+  })
+
+  it("keeps a secondary with an id the same element when its label changes", () => {
+    const { rerender } = render(rail("Run"))
+    screen.getByRole("button", { name: "Export" }).focus()
+    rerender(rail("Stop"))
+    expect(document.activeElement).toBe(screen.getByRole("button", { name: "Export partial" }))
+  })
+})

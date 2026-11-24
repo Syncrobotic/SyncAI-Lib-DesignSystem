@@ -144,3 +144,35 @@ describe("StatsCards on MetricCard", () => {
     expect(container.querySelectorAll("[class*=text-danger]")).toHaveLength(1)
   })
 })
+
+describe("MetricCard tone", () => {
+  it("is calm by default: a muted caption, no glyph", () => {
+    const { container } = render(<MetricCard label="Datasets" value="128" caption="4 added this week" />)
+    expect(container.querySelector("svg")).toBeNull()
+    expect(screen.getByText("4 added this week").className).toContain("text-muted-foreground")
+    expect(container.querySelector("[data-tone]")).toBeNull()
+  })
+  it("puts the status shape and colour on the caption only; the value stays foreground and the card is not tinted", () => {
+    const { container } = render(<MetricCard label="Needs review" value="14" caption="3 blocking a release" tone="warning" />)
+    const card = container.querySelector("[data-slot=metric-card]")!
+    expect(card.getAttribute("data-tone")).toBe("warning")
+    expect(card.className).not.toMatch(/bg-(warning|danger)/)
+    const caption = screen.getByText("3 blocking a release").parentElement!
+    expect(caption.className).toContain("text-warning")
+    expect(caption.querySelector("svg[aria-hidden=true] path")).not.toBeNull()
+    expect(screen.getByText("14").className).not.toMatch(/text-(warning|danger)/)
+  })
+  it("uses the danger colour and square for danger", () => {
+    render(<MetricCard label="Failed exports" value="2" caption="Storage quota reached" tone="danger" />)
+    const caption = screen.getByText("Storage quota reached").parentElement!
+    expect(caption.className).toContain("text-danger")
+    expect(caption.querySelector("svg rect")).not.toBeNull()
+  })
+  it("has nothing to colour while loading or unavailable", () => {
+    const { container, rerender } = render(<MetricCard label="x" caption="c" tone="warning" loading />)
+    expect(container.querySelector("[class*=text-warning]")).toBeNull()
+    rerender(<MetricCard label="x" caption="c" tone="warning" unavailable="Offline" />)
+    expect(container.querySelector("[class*=text-warning]")).toBeNull()
+    expect(container.querySelector("[data-tone]")).toBeNull()
+  })
+})

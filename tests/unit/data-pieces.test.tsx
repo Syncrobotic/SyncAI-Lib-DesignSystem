@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it, vi } from "vitest"
 import { LoadMore } from "@/registry/syncrobotic/ui/load-more"
 import { Pagination } from "@/registry/syncrobotic/ui/pagination"
 import { RestrictedPreview } from "@/registry/syncrobotic/ui/restricted-preview"
-import { ShareBar } from "@/registry/syncrobotic/ui/share-bar"
+import { ShareBar, ShareLegend, type ShareSegment } from "@/registry/syncrobotic/ui/share-bar"
 
 afterEach(cleanup)
 
@@ -65,6 +65,36 @@ describe("ShareBar", () => {
   it("draws plain links by default", () => {
     render(<ShareBar label="x" legend segments={[{ key: "a", label: "A", value: 1, href: "/a" }]} />)
     expect(screen.getByRole("link").tagName).toBe("A")
+  })
+})
+
+describe("ShareLegend", () => {
+  const parts = [
+    { key: "manual", label: "Manual" },
+    { key: "model", label: "Model" },
+    { key: "x", label: "Extra" },
+    { key: "other", label: "Other", tone: "other" as const },
+  ]
+  const dots = (root: ParentNode) => [...root.querySelectorAll("[aria-hidden=true]")].map((d) => d.className.match(/bg-chart-\d/)?.[0])
+  it("colours each entry as ShareBar colours the same segment, by order, and keeps entries whose rows are empty", () => {
+    const { container } = render(
+      <>
+        <ShareLegend segments={parts} />
+        <ShareBar label="Row" segments={parts.map((p) => ({ ...p, value: 1 }))} />
+      </>,
+    )
+    const legend = container.querySelector("[data-slot=share-legend]")!
+    const bar = [...container.querySelectorAll("[data-slot=share-bar] span")].map((s) => s.className.match(/bg-chart-\d/)?.[0])
+    expect(dots(legend)).toEqual(["bg-chart-1", "bg-chart-2", "bg-chart-3", "bg-chart-4"])
+    expect(dots(legend)).toEqual(bar)
+    expect(screen.getAllByRole("listitem").map((li) => li.textContent)).toEqual(["Manual", "Model", "Extra", "Other"])
+  })
+  it("writes a value after its label only when given, in the locale, and has no links", () => {
+    // A ShareBar segment fits as it is; its href is the bar's business, not the legend's.
+    const a: ShareSegment = { key: "a", label: "A", value: 4200, href: "/a" }
+    render(<ShareLegend locale="de" segments={[a, { key: "b", label: "B" }]} />)
+    expect(screen.getAllByRole("listitem").map((li) => li.textContent)).toEqual(["A 4.200", "B"])
+    expect(screen.queryByRole("link")).toBeNull()
   })
 })
 

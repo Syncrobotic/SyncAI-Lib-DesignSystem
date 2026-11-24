@@ -53,6 +53,16 @@ async function openOnce(page: Page, id: string, theme: (typeof themes)[number]) 
     }
     // Never screenshot a state halfway: a story that does not settle is a broken story, not a different picture.
     if (!(await page.locator(done).count())) throw new Error(`${id} did not reach ${done}`)
+    // A frame queued before the feed stalled can still arrive on real time and bring it back to Live for a moment (the
+    // 0.31 and 0.32 baselines caught it so). Let any such frame land, then run the clock past the stale limit again and
+    // check once more, so the picture is taken of the settled state.
+    await page.waitForTimeout(500)
+    await page.clock.runFor(2000)
+    for (let i = 0; i < 40 && !(await page.locator(done).count()); i++) {
+      await page.waitForTimeout(50)
+      await page.clock.runFor(250)
+    }
+    if (!(await page.locator(done).count())) throw new Error(`${id} left ${done} and did not come back`)
   }
 }
 

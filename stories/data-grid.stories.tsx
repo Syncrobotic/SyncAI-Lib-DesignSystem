@@ -364,12 +364,13 @@ export const DataGridToolbar: S = {
     const table = useGrid(data, columns, { initialState: { pagination: { pageSize: 6, pageIndex: 0 } } })
     return (
       <DataGrid table={table}>
-        {/* The search takes the whole first row on a phone, the buttons the row under it. */}
+        {/* The search takes the whole first row on a phone, the buttons the row under it. One height across the toolbar:
+            the field's (--h-md), so the buttons are the default size, not sm. */}
         <div className="flex flex-wrap items-center gap-2">
           <SearchField label="Filter robots" placeholder="Filter robots" hotkey={null} value={q} onValueChange={setQ} className="basis-full sm:basis-0 sm:flex-1" />
           <DataGridColumnVisibility />
-          <Button size="sm" variant="outline">
-            <Download aria-hidden="true" /> Export
+          <Button variant="outline" className="px-3">
+            <Download aria-hidden="true" className="size-4" /> Export
           </Button>
         </div>
         <DataGridTable aria-label="Robots" />

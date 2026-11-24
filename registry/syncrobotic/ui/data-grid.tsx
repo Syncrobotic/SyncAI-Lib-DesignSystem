@@ -1,4 +1,4 @@
-// @syncrobotic/data-grid v0.28.0 · update: npx shadcn add @syncrobotic/data-grid --overwrite
+// @syncrobotic/data-grid v0.32.0 · update: npx shadcn add @syncrobotic/data-grid --overwrite
 "use client"
 "use no memo"
 
@@ -640,7 +640,10 @@ export function DataGridColumnHeader<T extends RowData, TFeatures extends DataGr
   )
 }
 
-/** A menu of the hideable columns with a checkbox each. */
+/**
+ * A menu of the hideable columns with a checkbox each. It is a toolbar control, so it is as tall as the field beside it
+ * (--h-md), the one height of every toolbar in the kit.
+ */
 export function DataGridColumnVisibility({
   label,
 }: {
@@ -653,7 +656,7 @@ export function DataGridColumnVisibility({
       <DropdownMenuTrigger asChild>
         <button
           type="button"
-          className="press inline-flex h-(--h-sm) items-center gap-2 rounded-sm px-3 text-sm font-medium ring-1 ring-border ring-inset hover:bg-accent"
+          className="press inline-flex h-(--h-md) shrink-0 items-center gap-2 rounded-sm px-3 text-sm font-medium ring-1 ring-border ring-inset hover:bg-accent"
         >
           <Columns3 aria-hidden="true" className="size-4" /> {label ?? l.columns}
         </button>
@@ -797,7 +800,7 @@ function DetailsHeader() {
 function ExpandButton({ row }: { row: GridRow }) {
   const l = useGridLabels()
   return (
-    <button
+    <button data-slot="data-grid-expand"
       type="button"
       aria-label={row.getIsExpanded() ? l.hideDetails : l.showDetails}
       aria-expanded={row.getIsExpanded()}

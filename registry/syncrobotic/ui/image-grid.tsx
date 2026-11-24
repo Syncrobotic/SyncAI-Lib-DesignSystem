@@ -1,4 +1,4 @@
-// @syncrobotic/image-grid v0.28.0 · update: npx shadcn add @syncrobotic/image-grid --overwrite
+// @syncrobotic/image-grid v0.32.0 · update: npx shadcn add @syncrobotic/image-grid --overwrite
 "use client"
 
 import * as React from "react"
@@ -87,6 +87,12 @@ type ImageGridProps = {
   lightbox?: boolean
   /** Called when someone asks to see a hidden picture, e.g. to log the view. */
   onReveal?: (item: ImageGridItem) => void
+  /**
+   * Opens a picture your way (your own Sheet with its details) in place of the lightbox: a tile, or the corner button
+   * while picking, calls it. Your dialog then returns focus to the tile when it closes: keep `document.activeElement`
+   * here and focus it in the dialog's `onCloseAutoFocus` (a dialog opened without a trigger has nowhere to return to).
+   */
+  onOpen?: (item: ImageGridItem, index: number) => void
   labels?: Partial<ImageGridLabels>
   className?: string
 }
@@ -97,6 +103,7 @@ type ImageGridProps = {
  * `selection`, is picked: ringed in the focus ink with a check. Many: each tile is a toggle (`aria-pressed`, a box). One: the
  * tiles are a radio group (`role="radio"`, a round mark, one Tab stop; the arrow keys, Home and End move and pick). Hidden pictures stay unloaded behind
  * RestrictedPreview until someone asks; one that fails shows its file name. Neutral throughout: colour is for faults.
+ * `onOpen` hands the opening to the app (its own Sheet with the picture's details) in place of the lightbox.
  */
 export function ImageGrid({
   items,
@@ -112,6 +119,7 @@ export function ImageGrid({
   onSelectedChange,
   lightbox = true,
   onReveal,
+  onOpen,
   labels: labelsProp,
   className,
 }: ImageGridProps) {
@@ -172,7 +180,14 @@ export function ImageGrid({
     tiles.current.get(to)?.querySelector<HTMLElement>("[role=radio]")?.focus()
   }
 
+  // onOpen replaces the lightbox: the tiles still open a picture, the app decides how.
+  const opens = lightbox || !!onOpen
   const show = (i: number) => {
+    if (onOpen) {
+      const item = items[i]
+      if (item) onOpen(item, i)
+      return
+    }
     last.current = i
     setOpen(i)
   }
@@ -208,7 +223,7 @@ export function ImageGrid({
           const isSelected = selected.includes(item.id)
           const isBroken = broken.has(item.id)
           const hidden = !!item.restricted && !revealed.has(item.id)
-          const interactive = picking || lightbox
+          const interactive = picking || opens
           const face = (
             <span className={cn("block w-full overflow-hidden rounded-sm bg-muted", aspects[aspect], item.restricted && "animate-fade-in")}>
               {isBroken ? (
@@ -244,11 +259,12 @@ export function ImageGrid({
                 restricted={hidden}
                 reason={item.reason}
                 label={labels.reveal}
+                data-slot="image-grid-reveal"
                 onReveal={() => reveal(item, true)}
                 className={cn("w-full", aspects[aspect])}
               >
                 {interactive ? (
-                  <button
+                  <button data-slot="image-grid-item"
                     type="button"
                     role={single ? "radio" : undefined}
                     aria-checked={single ? isSelected : undefined}
@@ -265,9 +281,10 @@ export function ImageGrid({
                 ) : (
                   face
                 )}
-                {picking && lightbox && (
+                {picking && opens && (
                   <button
                     type="button"
+                    data-slot="image-grid-zoom"
                     aria-label={labels.viewLarger(item.name)}
                     aria-haspopup="dialog"
                     onClick={() => show(i)}
@@ -289,7 +306,7 @@ export function ImageGrid({
         })}
       </ul>
 
-      {lightbox && (
+      {lightbox && !onOpen && (
         <Lightbox
           items={items}
           index={open}

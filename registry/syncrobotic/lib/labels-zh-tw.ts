@@ -1,4 +1,4 @@
-// @syncrobotic/labels-zh-tw v0.31.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
+// @syncrobotic/labels-zh-tw v0.32.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
 // The kit's words in Traditional Chinese as written in Taiwan, one object per component that takes `labels`. Pass each
 // to its component (`<DataGrid labels={dataGridLabels} />`) with `locale="zh-TW"` where the component formats numbers,
 // days or times. The file imports no component, so it installs on its own; the kit's tests hold every object to the
@@ -640,9 +640,17 @@ export const dataGridLabels = {
   hideDetails: "隱藏詳細資料",
 }
 
+/** ShellSearch (app-shell's search): pass as `search.labels`. */
+export const shellSearchLabels = {
+  search: "搜尋",
+  scope: (scope: string) => `搜尋範圍：${scope}`,
+  empty: (query: string, scope: string) => `在「${scope}」中找不到「${query}」。換個關鍵字，或搜尋全部。`,
+}
+
 export const paginationLabels = {
   nav: "分頁",
-  range: (from: number, to: number, total: number) => `第 ${from}–${to} 筆，共 ${total} 筆`,
+  range: (from: number, to: number, total: number, locale?: string) =>
+    `第 ${from.toLocaleString(locale)}–${to.toLocaleString(locale)} 筆，共 ${total.toLocaleString(locale)} 筆`,
   previous: "上一頁",
   next: "下一頁",
   page: (n: number) => `第 ${n} 頁`,
@@ -975,6 +983,47 @@ export const topBarShellLabels = {
   nav: "主要導覽",
   openNav: "開啟導覽",
   accountMenu: "帳號選單",
+}
+
+// status-pages: one object per page.
+export const notFoundPageLabels = {
+  code: "404",
+  title: "這個頁面不存在",
+  body: "連結可能已經過期，或它指向的機器人或資料集已被移除。",
+  primary: "前往總覽",
+  secondary: "搜尋",
+}
+
+export const noAccessPageLabels = {
+  code: "403",
+  title: "你沒有存取權限",
+  body: (role: string, admin: string) => `你的角色（${role}）無法開啟這個頁面，${admin}可以變更。`,
+  admin: "你的站台管理員",
+  primary: "申請存取權限",
+  secondary: "返回",
+}
+
+export const errorPageLabels = {
+  code: "500",
+  title: "我們這邊出了問題",
+  body: "你的工作已儲存。請再試一次；如果持續發生，請將這個參考碼提供給支援人員：",
+  primary: "再試一次",
+  secondary: "複製參考碼",
+}
+
+export const offlinePageLabels = {
+  code: "離線",
+  title: "無法連線到車隊伺服器",
+  body: "機器人會繼續執行任務，緊急停止仍可從控制 App 透過藍牙使用。這個頁面會自動重新連線。",
+  primary: "立即重試",
+}
+
+export const loadingPageLabels = {
+  what: "正在載入車隊",
+  robotsOnline: "在線機器人",
+  patrolHours: "巡邏時數",
+  events: "事件",
+  avgBattery: "平均電量",
 }
 
 export const sidebarProviderLabels = {

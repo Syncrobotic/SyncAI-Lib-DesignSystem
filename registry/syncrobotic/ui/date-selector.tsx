@@ -1,4 +1,4 @@
-// @syncrobotic/date-selector v0.28.0 · update: npx shadcn add @syncrobotic/date-selector --overwrite
+// @syncrobotic/date-selector v0.32.0 · update: npx shadcn add @syncrobotic/date-selector --overwrite
 "use client"
 
 import * as React from "react"
@@ -240,7 +240,7 @@ function Picker({
   const uid = React.useId()
   const triggerId = id ?? field?.id ?? `${uid}-t`
   return (
-    <div className={cn("relative w-full", className)}>
+    <div data-slot="date-selector" className={cn("relative w-full", className)}>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <button
@@ -278,7 +278,7 @@ function Picker({
         </PopoverContent>
       </Popover>
       {onClear && (
-        <button
+        <button data-slot="date-selector-clear"
           type="button"
           aria-label={clearLabel}
           onClick={onClear}
@@ -313,7 +313,7 @@ function Presets<T>({
   return (
     <div role="group" aria-label={label} className="flex gap-1 overflow-x-auto sm:w-36 sm:flex-col sm:border-r sm:border-border sm:pr-3">
       {presets.map((p) => (
-        <button
+        <button data-slot="date-selector-preset"
           key={p.label}
           type="button"
           aria-pressed={active(p)}

@@ -1,4 +1,4 @@
-// @syncrobotic/chip-group v0.31.0 · update: npx shadcn add @syncrobotic/chip-group --overwrite
+// @syncrobotic/chip-group v0.32.0 · update: npx shadcn add @syncrobotic/chip-group --overwrite
 "use client"
 
 import * as React from "react"
@@ -153,7 +153,7 @@ export function ChipGroup({
   const expanded = open && !closing
   const more =
     max !== undefined && items.length > max ? (
-      <button
+      <button data-slot="chip-group-more"
         type="button"
         onClick={() => (expanded ? setClosing(true) : (setOpen(true), setClosing(false)))}
         aria-expanded={expanded}
@@ -176,7 +176,7 @@ export function ChipGroup({
         <ul className="flex flex-wrap items-center gap-2">
           {shown.map(({ c, i }) => (
             <li key={c.value} {...motion(c, i)}>
-              <Link
+              <Link data-slot="chip-group-link"
                 {...c.props}
                 href={c.href}
                 // One chosen link is the current one. Several chosen are links that look pressed and say "selected":
