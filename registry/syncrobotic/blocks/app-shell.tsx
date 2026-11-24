@@ -565,9 +565,6 @@ export function AppShell({
             <span className="min-w-0 flex-1 truncate text-sm font-bold whitespace-nowrap transition-opacity duration-(--motion-base) ease-(--ease-standard) group-data-[collapsible=icon]/sidebar:opacity-0">
               {product}
             </span>
-            {/* Collapse lives on the sidebar it collapses, at the end of the brand row, quiet (muted ink, no fill until
-                hover). It shows only while the sidebar is open on a wide screen; the top bar's trigger takes over after. */}
-            <SidebarTrigger show="expanded" className="-me-1" />
           </span>
         </SidebarHeader>
         <SidebarContent>
@@ -578,7 +575,7 @@ export function AppShell({
             <SidebarUserMenu user={user} items={userMenu} linkAs={linkAs} />
           </SidebarFooter>
         )}
-        {/* The edge, for a mouse: hover shows a hairline, a click collapses or expands. */}
+        {/* Collapse and expand at the sidebar's edge: a handle in its middle (a Tab stop too), and ⌘B / Ctrl+B anywhere. */}
         <SidebarRail />
       </Sidebar>
 
@@ -592,8 +589,8 @@ export function AppShell({
             inset ? "rounded-md bg-card ring-1 ring-border" : "border-b border-border",
           )}
         >
-          {/* Expand, while the sidebar is a rail; on phones, the menu button that opens the sheet. Hidden while open. */}
-          <SidebarTrigger show="collapsed" className="-ms-2" />
+          {/* Phones only: the menu button that opens the sheet. Wide screens fold the sidebar at its edge. */}
+          <SidebarTrigger show="mobile" className="-ms-2" />
           {breadcrumb && <div className="hidden min-w-0 shrink items-center gap-1 md:flex">{breadcrumb}</div>}
           <h1 className="truncate text-lg font-bold">{title}</h1>
           {/* On phones the title keeps the room; the environment shows from 640 px. */}

@@ -3148,7 +3148,7 @@
           {
             "version": "0.32.0",
             "date": "2026-11-24",
-            "note": "SidebarTrigger `show`: \"expanded\" renders only while the column is open on a wide screen (collapse, for SidebarHeader), \"collapsed\" only while it is a rail or hidden and always on phones (expand, and the menu that opens the sheet, for the top bar); \"always\" (default) is the single trigger as before. Pressed from the keyboard, the trigger that hides moves focus to the one that shows. New SidebarRail: the sidebar's edge as a mouse control (resize cursor, hairline on hover, the trigger's tooltip, a click toggles), aria-hidden and out of the Tab order, absent on touch and phones. The Sidebar's inner frame now clips the column instead of the aside, so the rail can reach over the edge; same look."
+            "note": "Collapse at the edge: SidebarRail is a small round button half over the sidebar's edge, level with the line under the top bar (‹ to collapse, › to expand), a Tab stop named Collapse or Expand sidebar with aria-expanded, a 44 px target on touch. SidebarTrigger takes `show` (\"always\", \"expanded\", \"collapsed\" or \"mobile\", the phone's menu button only). Every control has a data-slot."
           },
           {
             "version": "0.28.0",
@@ -6413,7 +6413,7 @@
           {
             "version": "0.32.0",
             "date": "2026-11-24",
-            "note": "Collapse is on the sidebar: a quiet trigger at the end of the brand row and the edge (SidebarRail) for a mouse. While the sidebar is a rail, the expand trigger is the top bar's first button, and on phones it is the menu button that opens the sheet; while it is open, the top bar starts with the title. ⌘B / Ctrl+B and the sidebar_state cookie as before. Needs sidebar 0.32.0. ShellSearch's words go through `search.labels` (the dialog's name, the scope button, the empty result) and its buttons carry `data-slot=\"shell-search\"` / `\"shell-search-scope\"`. Issue #331."
+            "note": "The sidebar collapses at its edge (a round button half over it, level with the line under the top bar); on phones the top bar's first button opens the sheet. ⌘B / Ctrl+B and the sidebar_state cookie as before. Needs sidebar 0.32.0. ShellSearch's words go through `search.labels` (the dialog's name, the scope button, the empty result) and its buttons carry `data-slot=\"shell-search\"` / `\"shell-search-scope\"`. Issue #331."
           },
           {
             "version": "0.31.0",
@@ -7473,7 +7473,7 @@
           {
             "version": "0.32.0",
             "date": "2026-11-24",
-            "note": "The design language says a toolbar is one height (every control --h-md beside a field, --h-sm only in a row without one) and where the app shell's collapse controls sit. The checklist says a status page inside top-bar-shell takes `as=\"h1\"` and links out with `{ label, href }`. Issue #323. The design language says top-bar-shell keeps focus clear of its bar with the page's scroll padding. Issue #344. Checklist: Code for a path or key inside a sentence, with a CopyButton beside it. Collapsible for one region behind one trigger, never a raw details element."
+            "note": "The design language says a toolbar is one height (every control --h-md beside a field, --h-sm only in a row without one) and where the app shell's collapse controls sit. The checklist says a status page inside top-bar-shell takes `as=\"h1\"` and links out with `{ label, href }`. Issue #323. The design language says top-bar-shell keeps focus clear of its bar with the page's scroll padding. Issue #344. Checklist: Code for a path or key inside a sentence, with a CopyButton beside it. Collapsible for one region behind one trigger, never a raw details element. App shell: collapse is a round button on the sidebar's edge."
           },
           {
             "version": "0.31.0",

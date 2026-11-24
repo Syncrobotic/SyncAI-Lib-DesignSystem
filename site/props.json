@@ -10120,9 +10120,9 @@
    "props": [
     {
      "name": "show",
-     "type": "\"always\" | \"expanded\" | \"collapsed\"",
+     "type": "\"always\" | \"expanded\" | \"collapsed\" | \"mobile\"",
      "default": "\"always\"",
-     "description": "When it shows. always (default): one trigger that collapses and expands, wherever it is. The pair that puts the collapse control on the sidebar: \"expanded\" in SidebarHeader (shown while the sidebar is open on a wide screen, never on phones, where the sheet has its own close) and \"collapsed\" in the page's top bar (shown while the sidebar is a rail or hidden, and always on phones, where it is the menu button that opens the sheet)."
+     "description": "When it shows. always (default): one trigger that collapses and expands, wherever it is. The pair that puts the collapse control on the sidebar: \"expanded\" in SidebarHeader (shown while the sidebar is open on a wide screen, never on phones, where the sheet has its own close) and \"collapsed\" in the page's top bar (shown while the sidebar is a rail or hidden, and always on phones, where it is the menu button that opens the sheet). \"mobile\": only on phones, the menu button that opens the sheet, for a layout whose wide screens collapse and expand at the sidebar's edge (SidebarRail) instead."
     }
    ],
    "inherits": [
