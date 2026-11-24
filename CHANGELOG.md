@@ -2,7 +2,9 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.32.0 · 2026-11-24
+
+A calmer log viewer, the sidebar's collapse on the sidebar itself, accessibility fixes from product teams (focus never under a sticky bar, Escape to native dialogs, status pages in a frame), a data-slot on every control the kit draws, and small options: a shared share-bar legend, metric-card tone, MetaPill links, card media, graph badges, inline code and a collapsible.
 
 ### Changed
 - **`log-viewer` 0.32.0:** the toolbar is one control height, the search field's `--h-md`: the level and source menus are default-size buttons and the view options an icon button (they were 36 px beside a 44 px field).
