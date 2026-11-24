@@ -75,6 +75,7 @@ export function ThemeToggle({
     )
   return (
     <SegmentedControl
+      data-slot="theme-toggle"
       aria-label={label}
       value={value ?? ""}
       onValueChange={(v) => v && onValueChange(v as ThemeChoice)}

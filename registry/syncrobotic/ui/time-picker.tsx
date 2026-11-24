@@ -117,7 +117,7 @@ export function TimeInput({
   }
   const invalid = bad || f?.invalid
   return (
-    <div className={cn(field, invalid && "ring-2 ring-danger", className)}>
+    <div data-slot="time-picker" className={cn(field, invalid && "ring-2 ring-danger", className)}>
       <Clock aria-hidden="true" className="size-4 shrink-0 text-muted-foreground" />
       <input data-slot="time-picker-input"
         id={id ?? f?.id}

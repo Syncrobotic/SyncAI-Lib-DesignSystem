@@ -179,6 +179,7 @@ export function Alarm({
         : l.acknowledged
   return (
     <article
+      data-slot="alarm"
       aria-labelledby={`${id}-title`}
       aria-describedby={[time && `${id}-time`, source && `${id}-source`, `${id}-state`].filter(Boolean).join(" ")}
       data-priority={priority}
@@ -533,7 +534,7 @@ export function AlarmList({
   const announce = useAlarmSignals(alarms, { feedback, flooding, labels, ready: !loading })
 
   return (
-    <section aria-labelledby={headingId} aria-busy={loading || undefined} className={cn("@container w-full overflow-hidden rounded-md bg-card ring-1 ring-border", className)}>
+    <section data-slot="alarm-list" aria-labelledby={headingId} aria-busy={loading || undefined} className={cn("@container w-full overflow-hidden rounded-md bg-card ring-1 ring-border", className)}>
       {/* The button keeps the title's line; on a narrow panel the counts go under the title rather than the button under everything. */}
       <div className="flex min-h-(--h-row) items-center justify-between gap-3 border-b border-border px-4 py-2">
         <div className="flex min-w-0 flex-col @md:flex-row @md:flex-wrap @md:items-baseline @md:gap-x-2">

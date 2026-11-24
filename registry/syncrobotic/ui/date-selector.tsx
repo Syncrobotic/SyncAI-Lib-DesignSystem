@@ -240,7 +240,7 @@ function Picker({
   const uid = React.useId()
   const triggerId = id ?? field?.id ?? `${uid}-t`
   return (
-    <div className={cn("relative w-full", className)}>
+    <div data-slot="date-selector" className={cn("relative w-full", className)}>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <button
