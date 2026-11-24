@@ -293,7 +293,8 @@
   "card": {
     "roles": [
       "button",
-      "heading"
+      "heading",
+      "link"
     ],
     "tabStops": 2,
     "live": false
@@ -689,7 +690,10 @@
     "live": false
   },
   "share-bar": {
-    "roles": [],
+    "roles": [
+      "list",
+      "listitem"
+    ],
     "tabStops": 0,
     "live": false
   },
