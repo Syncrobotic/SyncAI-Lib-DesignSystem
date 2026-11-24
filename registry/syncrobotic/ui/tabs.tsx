@@ -1,4 +1,4 @@
-// @syncrobotic/tabs v0.31.0 · update: npx shadcn add @syncrobotic/tabs --overwrite
+// @syncrobotic/tabs v0.32.0 · update: npx shadcn add @syncrobotic/tabs --overwrite
 "use client"
 
 import * as React from "react"
@@ -83,9 +83,29 @@ type TabsListProps = React.ComponentProps<typeof TabsPrimitive.List> & {
   sticky?: boolean
 }
 
+/** Hands the list's element to a caller's ref too (a function or an object), and returns its cleanup if it has one. */
+function forward(ref: React.Ref<HTMLDivElement> | undefined, node: HTMLDivElement | null) {
+  if (typeof ref === "function") return ref(node)
+  if (ref) ref.current = node
+}
+
 /** The tabs in a row over a hairline. The underline travels to the tab you pick: the Move pattern, --motion-base. */
-export function TabsList({ className, children, sticky, ...props }: TabsListProps) {
+export function TabsList({ className, children, sticky, ref, ...props }: TabsListProps) {
   const list = React.useRef<HTMLDivElement>(null)
+  // A ref passed in is merged with the one the underline measures; spread over it, it replaced it and the underline
+  // never showed.
+  const setList = React.useCallback(
+    (node: HTMLDivElement | null) => {
+      list.current = node
+      const cleanup = forward(ref, node)
+      return () => {
+        list.current = null
+        if (typeof cleanup === "function") cleanup()
+        else forward(ref, null)
+      }
+    },
+    [ref],
+  )
   const line = useUnderline(list)
   useBackToStart(list, !!sticky)
   // The first measurement places the underline without travelling; later ones animate.
@@ -98,7 +118,7 @@ export function TabsList({ className, children, sticky, ...props }: TabsListProp
   // 1 px vertically and phones show a scrollbar on it.
   return (
     <TabsPrimitive.List
-      ref={list}
+      ref={setList}
       data-slot="tabs-list"
       data-underline={line ? "" : undefined}
       data-sticky={sticky ? "" : undefined}

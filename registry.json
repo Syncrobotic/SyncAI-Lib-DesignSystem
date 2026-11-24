@@ -2792,8 +2792,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "A `ref` passed to TabsList is merged with the one the underline measures; it replaced it, and the underline never showed. Issue #336."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",

@@ -923,6 +923,7 @@ const entries: Record<string, Entry> = {
       "Switch between views of the same thing, all at the same level. Not for steps (Stepper) or for moving between pages.",
       "Keep the labels short and the order stable.",
       "Over long sections, `sticky` on TabsList keeps the row in view under the shell's top bar. One sticky row per page; picking a tab while it is stuck goes back to the start of the tabs.",
+      "A row of links to other pages is navigation, not tabs: use ChipGroup with `href`, or NavigationMenu.",
     ],
   },
   accordion: {
