@@ -1,4 +1,4 @@
-// @syncrobotic/attachment v0.28.0 · update: npx shadcn add @syncrobotic/attachment --overwrite
+// @syncrobotic/attachment v0.32.0 · update: npx shadcn add @syncrobotic/attachment --overwrite
 "use client"
 
 import * as React from "react"
@@ -197,7 +197,7 @@ function FileName({ name, className }: { name: string; className?: string }) {
 
 function IconAction({ label, onClick, icon: Icon, className }: { label: string; onClick: () => void; icon: React.ElementType; className?: string }) {
   return (
-    <button
+    <button data-slot="attachment-action"
       type="button"
       aria-label={label}
       onClick={onClick}

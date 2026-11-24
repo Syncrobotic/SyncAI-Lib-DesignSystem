@@ -1,4 +1,4 @@
-// @syncrobotic/scrollspy v0.28.0 · update: npx shadcn add @syncrobotic/scrollspy --overwrite
+// @syncrobotic/scrollspy v0.32.0 · update: npx shadcn add @syncrobotic/scrollspy --overwrite
 "use client"
 
 import * as React from "react"
@@ -94,7 +94,7 @@ export function Scrollspy({
           const current = item.id === active
           return (
             <li key={item.id} className={cn(pills && "shrink-0")}>
-              <a
+              <a data-slot="scrollspy-link"
                 href={`#${item.id}`}
                 onClick={(e) => go(e, item.id)}
                 aria-current={current ? "location" : undefined}

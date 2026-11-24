@@ -1,4 +1,4 @@
-// @syncrobotic/graph v0.21.2 · update: npx shadcn add @syncrobotic/graph --overwrite
+// @syncrobotic/graph v0.32.0 · update: npx shadcn add @syncrobotic/graph --overwrite
 "use client"
 
 import * as React from "react"
@@ -671,6 +671,7 @@ export function Graph({
               const ins = inputs(n.id).map((x) => byId.get(x)!)
               const outs = outputs(n.id).map((x) => byId.get(x)!)
               const props = {
+                "data-slot": "graph-node",
                 "data-graph-index": i,
                 "data-graph-id": n.id,
                 "data-state": isSelected ? "selected" : lit ? "path" : dim ? "dimmed" : undefined,
@@ -799,6 +800,7 @@ export function GraphList({ nodes, edges, label: name, empty = "Nothing here yet
             <div className="flex min-w-0 flex-wrap items-center gap-x-4 gap-y-1">
               {n.href ? (
                 <Link
+                  data-slot="graph-list-link"
                   href={n.href}
                   className="rounded-2xs text-sm font-medium underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                 >

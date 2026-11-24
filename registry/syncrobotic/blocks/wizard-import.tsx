@@ -1,4 +1,4 @@
-// @syncrobotic/wizard-import v0.28.0 · update: npx shadcn add @syncrobotic/wizard-import --overwrite
+// @syncrobotic/wizard-import v0.32.0 · update: npx shadcn add @syncrobotic/wizard-import --overwrite
 "use client"
 
 import * as React from "react"
@@ -47,7 +47,7 @@ export function WizardImport({ onImport }: { onImport?: (count: number) => void 
       <Stepper value={imported !== null ? 4 : step} onValueChange={setStep} navigable="done" orientation="vertical">
         <StepperItem title="Choose a file" description={file ?? "CSV, one checkpoint per row"}>
           <div className="flex flex-col gap-3">
-            <button
+            <button data-slot="wizard-import-file"
               type="button"
               onClick={() => setFile("perimeter-checkpoints.csv")}
               className="press flex flex-col items-center gap-2 rounded-md p-6 text-sm ring-1 ring-border ring-dashed hover:bg-accent"

@@ -8393,6 +8393,11 @@
      "name": "onReveal",
      "type": "() => void",
      "description": "Called when someone asks to see it, e.g. to log the view."
+    },
+    {
+     "name": "data-slot",
+     "type": "string",
+     "description": "The reveal button's data-slot, for a component that holds it (image-grid: \"image-grid-reveal\")."
     }
    ],
    "inherits": []

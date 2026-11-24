@@ -1,4 +1,4 @@
-// @syncrobotic/data-grid v0.28.0 · update: npx shadcn add @syncrobotic/data-grid --overwrite
+// @syncrobotic/data-grid v0.32.0 · update: npx shadcn add @syncrobotic/data-grid --overwrite
 "use client"
 "use no memo"
 
@@ -797,7 +797,7 @@ function DetailsHeader() {
 function ExpandButton({ row }: { row: GridRow }) {
   const l = useGridLabels()
   return (
-    <button
+    <button data-slot="data-grid-expand"
       type="button"
       aria-label={row.getIsExpanded() ? l.hideDetails : l.showDetails}
       aria-expanded={row.getIsExpanded()}

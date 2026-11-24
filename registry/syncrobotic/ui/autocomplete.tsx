@@ -1,4 +1,4 @@
-// @syncrobotic/autocomplete v0.23.1 · update: npx shadcn add @syncrobotic/autocomplete --overwrite
+// @syncrobotic/autocomplete v0.32.0 · update: npx shadcn add @syncrobotic/autocomplete --overwrite
 "use client"
 
 import * as React from "react"
@@ -147,7 +147,7 @@ export function Autocomplete({
             className,
           )}
         >
-          <input
+          <input data-slot="autocomplete-input"
             ref={inputRef}
             id={id ?? f?.id}
             role="combobox"
@@ -176,7 +176,7 @@ export function Autocomplete({
           />
           {loading && <Spinner delay={0} className="mr-2 size-4" label={l.searchingStatus} />}
           {clearable && !disabled && (
-            <button
+            <button data-slot="autocomplete-clear"
               type="button"
               className={cn(
                 "press flex size-(--h-sm) shrink-0 items-center justify-center rounded-xs text-muted-foreground transition-[opacity,visibility,background-color,color,scale] duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent hover:text-foreground",
@@ -199,7 +199,7 @@ export function Autocomplete({
             </button>
           )}
           {showTrigger && (
-            <button
+            <button data-slot="autocomplete-trigger"
               type="button"
               tabIndex={-1}
               aria-label={l.showAll}

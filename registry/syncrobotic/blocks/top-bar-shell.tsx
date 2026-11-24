@@ -135,6 +135,7 @@ export function TopBarShell({
         return (
           <Link
             key={l.href}
+            data-slot="top-bar-link"
             href={l.href}
             aria-current={active ? "page" : undefined}
             className={cn(
@@ -171,6 +172,7 @@ export function TopBarShell({
             <SheetTrigger asChild>
               <button
                 type="button"
+                data-slot="top-bar-menu"
                 aria-label={l.openNav}
                 className="press -ml-3 flex size-(--h-md) items-center justify-center rounded-sm hover:bg-accent md:hidden"
               >
@@ -183,7 +185,7 @@ export function TopBarShell({
             </SheetContent>
           </Sheet>
           {/* The brand is a link home: a full-height target (44, 48 in gloves), not the 28 px of the logo. */}
-          <Link href={home} className="flex min-h-(--h-md) shrink-0 items-center gap-2 rounded-xs">
+          <Link href={home} data-slot="top-bar-brand" className="flex min-h-(--h-md) shrink-0 items-center gap-2 rounded-xs">
             {logo}
             <span className="text-sm font-bold">{product}</span>
           </Link>

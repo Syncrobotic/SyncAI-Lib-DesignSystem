@@ -1,4 +1,4 @@
-// @syncrobotic/share-bar v0.31.0 · update: npx shadcn add @syncrobotic/share-bar --overwrite
+// @syncrobotic/share-bar v0.32.0 · update: npx shadcn add @syncrobotic/share-bar --overwrite
 import type * as React from "react"
 import { cn } from "@/lib/utils"
 
@@ -106,7 +106,7 @@ export function ShareBar({
               {s.href ? (
                 // The whole entry is the target, 36 px tall with a mouse and 44 on touch (--h-sm); the share is read after
                 // what it shows, so the name starts with the words on screen.
-                <Link
+                <Link data-slot="share-bar-link"
                   href={s.href}
                   className="inline-flex min-h-(--h-sm) items-center gap-2 rounded-2xs text-foreground underline decoration-muted-foreground underline-offset-4 transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:decoration-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                 >

@@ -1,4 +1,4 @@
-// @syncrobotic/media-player v0.31.0 · update: npx shadcn add @syncrobotic/media-player --overwrite
+// @syncrobotic/media-player v0.32.0 · update: npx shadcn add @syncrobotic/media-player --overwrite
 "use client"
 
 import * as React from "react"
@@ -487,7 +487,7 @@ export function MediaPlayer({
                         // Pointer shortcut only: the list under the player names each marker for keyboard and screen readers.
                         // 24 × 24 (WCAG 2.5.8): the tick is drawn in its top two thirds, so the lower part only widens the
                         // target over the track, where a press near a marker lands on the marker.
-                        <button
+                        <button data-slot="media-player-marker"
                           key={m.id ?? `${m.time}-${m.label}`}
                           type="button"
                           tabIndex={-1}

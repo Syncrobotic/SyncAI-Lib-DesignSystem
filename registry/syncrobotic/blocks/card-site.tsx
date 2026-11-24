@@ -1,4 +1,4 @@
-// @syncrobotic/card-site v0.28.0 · update: npx shadcn add @syncrobotic/card-site --overwrite
+// @syncrobotic/card-site v0.32.0 · update: npx shadcn add @syncrobotic/card-site --overwrite
 import { ChevronRight, MapPin } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
@@ -60,7 +60,7 @@ export function CardSite({ sites = sampleSites, className }: { sites?: Site[]; c
                 <h3 className="truncate text-lg font-bold">
                   {/* The whole card is the link's target; the name is its text. */}
                   {/* focus-ring: the whole card draws the ring (has-[a:focus-visible] on Card), since the link covers it. */}
-                  <a href={s.href} className="outline-none after:absolute after:inset-0 after:rounded-[inherit]">
+                  <a data-slot="card-site-link" href={s.href} className="outline-none after:absolute after:inset-0 after:rounded-[inherit]">
                     {s.name}
                   </a>
                 </h3>

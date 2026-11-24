@@ -1,4 +1,4 @@
-// @syncrobotic/dropdown-menu v0.28.0 · update: npx shadcn add @syncrobotic/dropdown-menu --overwrite
+// @syncrobotic/dropdown-menu v0.32.0 · update: npx shadcn add @syncrobotic/dropdown-menu --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,7 +7,10 @@ import { Check } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export const DropdownMenu = MenuPrimitive.Root
-export const DropdownMenuTrigger = MenuPrimitive.Trigger
+/** The button that opens the menu. With `asChild`, a kit child (Button) keeps its own data-slot. */
+export function DropdownMenuTrigger(props: React.ComponentProps<typeof MenuPrimitive.Trigger>) {
+  return <MenuPrimitive.Trigger data-slot="dropdown-menu-trigger" {...props} />
+}
 export const DropdownMenuGroup = MenuPrimitive.Group
 /** One of several, like a segmented control folded into a menu: a check beside the chosen item. */
 export const DropdownMenuRadioGroup = MenuPrimitive.RadioGroup

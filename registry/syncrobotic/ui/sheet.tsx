@@ -1,4 +1,4 @@
-// @syncrobotic/sheet v0.28.0 · update: npx shadcn add @syncrobotic/sheet --overwrite
+// @syncrobotic/sheet v0.32.0 · update: npx shadcn add @syncrobotic/sheet --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,8 +6,12 @@ import { Dialog as SheetPrimitive } from "radix-ui"
 import { cn } from "@/lib/utils"
 
 export const Sheet = SheetPrimitive.Root
-export const SheetTrigger = SheetPrimitive.Trigger
-export const SheetClose = SheetPrimitive.Close
+export function SheetTrigger(props: React.ComponentProps<typeof SheetPrimitive.Trigger>) {
+  return <SheetPrimitive.Trigger data-slot="sheet-trigger" {...props} />
+}
+export function SheetClose(props: React.ComponentProps<typeof SheetPrimitive.Close>) {
+  return <SheetPrimitive.Close data-slot="sheet-close" {...props} />
+}
 
 // A sheet floats 8 px from the screen's edges, the app shell's gutter, so it reads as one more panel on the page instead
 // of a slab glued to the glass; every corner is rounded. The bottom sheet also clears the home indicator.

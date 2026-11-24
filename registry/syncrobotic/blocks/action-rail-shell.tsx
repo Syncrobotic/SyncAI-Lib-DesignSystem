@@ -173,7 +173,7 @@ export function ActionRailShell({
     >
       <header className="flex h-(--h-row) shrink-0 items-center gap-3 rounded-md bg-card px-4 ring-1 ring-border">
         {onBack && (
-          <button
+          <button data-slot="action-rail-back"
             type="button"
             aria-label={backLabel}
             aria-keyshortcuts="ArrowLeft Escape"
