@@ -56,6 +56,22 @@ export const NoAccessScreen: S = { render: () => <NoAccessPage /> }
 export const ErrorScreen: S = { render: () => <ErrorPage /> }
 export const OfflineScreen: S = { render: () => <OfflinePage /> }
 export const LoadingScreen: S = { render: () => <LoadingPage /> }
+// A 404 inside a product's frame: the shell's <main> holds it (no second main), the top bar has no page title so the page
+// gives the h1, and the ways out are links.
+export const NotFoundInTopBarShell: S = {
+  render: () => (
+    <TopBarShell
+      product="DataCore"
+      links={[
+        { label: "Catalog", href: "#catalog" },
+        { label: "Releases", href: "#releases" },
+      ]}
+      user={sampleUser}
+    >
+      <NotFoundPage fill="parent" as="h1" primary={{ label: "Go to catalog", href: "#catalog" }} secondary={{ label: "Search datasets", href: "#search" }} />
+    </TopBarShell>
+  ),
+}
 
 // The top-bar shell as a product mounts it: a skip link to <main> (its id is "main"; `mainId` changes it) and a logo that
 // goes home ("/"), not to the first link. On a phone, following a link in the drawer closes it.

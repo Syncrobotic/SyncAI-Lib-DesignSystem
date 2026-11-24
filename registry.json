@@ -214,7 +214,7 @@
           {
             "version": "0.32.0",
             "date": "2026-11-24",
-            "note": "`paginationLabels.range` groups its numbers by the locale (\"第 1,201–1,220 筆，共 12,400 筆\"), as the English default does. Issue #324."
+            "note": "`paginationLabels.range` groups its numbers by the locale (\"第 1,201–1,220 筆，共 12,400 筆\"), as the English default does. Issue #324. `notFoundPageLabels`, `noAccessPageLabels`, `errorPageLabels`, `offlinePageLabels` and `loadingPageLabels` for status-pages. Issue #323."
           },
           {
             "version": "0.31.0",
@@ -7118,8 +7118,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "`as` sets the heading (h1 or h2; default h1 on a screen of its own, h2 in a frame), so a page inside top-bar-shell, which has no title, still has an h1; `fill=\"parent\"` is a section, never a second main. `primary` and `secondary` take `{ label, href }`, a link through `linkAs` (default \"a\"), or `{ label, onClick }`; a string works as before, and `secondary={null}` leaves it out. Every word is in `labels` (`notFoundPageLabels`, `noAccessPageLabels`, `errorPageLabels`, `offlinePageLabels`, `loadingPageLabels` in labels-zh-tw). Issues #323, #345."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -7181,8 +7186,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "The checklist says a status page inside top-bar-shell takes `as=\"h1\"` and links out with `{ label, href }`. Issue #323."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",

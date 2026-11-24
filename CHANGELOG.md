@@ -5,6 +5,8 @@ Components install as source, so a project keeps the version it installed. Re-ru
 ## Unreleased
 
 ### Added
+- **`status-pages` 0.32.0:** for a status page inside a product's frame. `as` sets the heading level (`"h1"` or `"h2"`; by default h1 on a screen of its own, h2 in a frame), so a 404 inside `top-bar-shell`, which has no page title, still has an h1; `fill="parent"` stays a `<section>`, never a second `<main>`. `primary` and `secondary` take `{ label, href }`, a link through `linkAs` (default `"a"`) that opens in a new tab and works before scripts load, or `{ label, onClick }`; a string works as before, and `secondary={null}` leaves it out. Every word goes through `labels` (`notFoundPageLabels`, `noAccessPageLabels`, `errorPageLabels`, `offlinePageLabels` and `loadingPageLabels` in `labels-zh-tw` 0.32.0). Issues #323, #345
+- **`agent-skill` 0.32.0:** the checklist says a status page inside `top-bar-shell` takes `as="h1"` and links out with `{ label, href }`. Issue #323
 
 ### Fixed
 - **`labels-zh-tw` 0.32.0:** `paginationLabels.range` groups its numbers by the locale ("第 1,201–1,220 筆，共 12,400 筆"), as the English default does. Issue #324

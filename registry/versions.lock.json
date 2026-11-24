@@ -13,7 +13,7 @@
   },
   "labels-zh-tw": {
     "version": "0.32.0",
-    "hash": "316e9df7dff4ddc6"
+    "hash": "93dce76c424eeac7"
   },
   "ros": {
     "version": "0.31.0",
@@ -580,12 +580,12 @@
     "hash": "535c2ff52bd64ae7"
   },
   "status-pages": {
-    "version": "0.17.3",
-    "hash": "f92b1126101d0227"
+    "version": "0.32.0",
+    "hash": "98143b93352ba6f0"
   },
   "agent-skill": {
-    "version": "0.31.0",
-    "hash": "9b5746a3da00fae8"
+    "version": "0.32.0",
+    "hash": "354e5409fc4e3804"
   },
   "line-chart-telemetry": {
     "version": "0.17.2",

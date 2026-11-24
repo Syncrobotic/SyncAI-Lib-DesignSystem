@@ -978,6 +978,47 @@ export const topBarShellLabels = {
   accountMenu: "帳號選單",
 }
 
+// status-pages: one object per page.
+export const notFoundPageLabels = {
+  code: "404",
+  title: "這個頁面不存在",
+  body: "連結可能已經過期，或它指向的機器人或資料集已被移除。",
+  primary: "前往總覽",
+  secondary: "搜尋",
+}
+
+export const noAccessPageLabels = {
+  code: "403",
+  title: "你沒有存取權限",
+  body: (role: string, admin: string) => `你的角色（${role}）無法開啟這個頁面，${admin}可以變更。`,
+  admin: "你的站台管理員",
+  primary: "申請存取權限",
+  secondary: "返回",
+}
+
+export const errorPageLabels = {
+  code: "500",
+  title: "我們這邊出了問題",
+  body: "你的工作已儲存。請再試一次；如果持續發生，請將這個參考碼提供給支援人員：",
+  primary: "再試一次",
+  secondary: "複製參考碼",
+}
+
+export const offlinePageLabels = {
+  code: "離線",
+  title: "無法連線到車隊伺服器",
+  body: "機器人會繼續執行任務，緊急停止仍可從控制 App 透過藍牙使用。這個頁面會自動重新連線。",
+  primary: "立即重試",
+}
+
+export const loadingPageLabels = {
+  what: "正在載入車隊",
+  robotsOnline: "在線機器人",
+  patrolHours: "巡邏時數",
+  events: "事件",
+  avgBattery: "平均電量",
+}
+
 export const sidebarProviderLabels = {
   sidebar: "側邊欄",
   nav: "主要導覽",
