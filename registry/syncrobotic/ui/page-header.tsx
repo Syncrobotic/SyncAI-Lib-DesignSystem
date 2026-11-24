@@ -94,6 +94,7 @@ export function MetaPill({
   return (
     <span role="listitem" data-slot="meta-pill" className="inline-flex">
       <Link
+        data-slot="meta-pill-link"
         href={href}
         className={cn(
           pill,
