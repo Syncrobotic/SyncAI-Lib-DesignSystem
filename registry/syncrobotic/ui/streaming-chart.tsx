@@ -1,4 +1,4 @@
-// @syncrobotic/streaming-chart v0.28.0 · update: npx shadcn add @syncrobotic/streaming-chart --overwrite
+// @syncrobotic/streaming-chart v0.32.0 · update: npx shadcn add @syncrobotic/streaming-chart --overwrite
 "use client"
 
 import * as React from "react"
@@ -421,9 +421,15 @@ class StreamingEngine {
     return Number.isFinite(this.skew) ? now() + this.skew : Date.now()
   }
 
-  /** The right edge of what is shown. */
+  /**
+   * The right edge of what is shown. With reduced motion the view steps once a second, so the edge is held on whole
+   * seconds of the data's clock: the axis keeps round labels between steps, and two frames drawn a few milliseconds apart
+   * within the same second are the same picture.
+   */
   end() {
-    return this.paused ? this.viewEnd : this.liveEdge()
+    if (this.paused) return this.viewEnd
+    const edge = this.liveEdge()
+    return this.reduced ? Math.floor(edge / REDUCED_EVERY_MS) * REDUCED_EVERY_MS : edge
   }
 
   isPaused() {

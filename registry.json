@@ -2769,8 +2769,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "With reduced motion the live edge holds on whole seconds of the data's clock, so the axis keeps round labels between its once-a-second steps and the same second always draws the same picture."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
