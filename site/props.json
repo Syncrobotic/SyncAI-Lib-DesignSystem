@@ -640,6 +640,11 @@
      "description": "Show the box at the picture's aspect ratio, breathing, until the picture and its annotations arrive."
     },
     {
+     "name": "onLoadError",
+     "type": "() => void",
+     "description": "Called once when the picture from `src` fails to load and the failed state shows, e.g. to count failures or offer a retry. Not called for a picture passed as `image`, which handles its own errors."
+    },
+    {
      "name": "labels",
      "type": "Partial<AnnotatedImageLabels>",
      "description": "",

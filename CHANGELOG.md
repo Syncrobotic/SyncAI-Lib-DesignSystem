@@ -6,6 +6,7 @@ Components install as source, so a project keeps the version it installed. Re-ru
 
 ### Added
 - **`share-bar` 0.32.0:** `ShareLegend`, one legend for a list of bars (one bar per task, per class): the same segments in the same order as the bars, values optional, so the colours match by construction. Each bar keeps its own accessible name. Issue #319
+- **`annotated-image` 0.32.0:** `onLoadError` tells the app when the picture from `src` fails, once, as the kit's failed state shows, so a gallery can count failures or offer a retry without passing its own `<img>`. The picture and its overlays now load lazily (`loading="lazy"`); nothing else changes. A mark derived from another keeps its source's kind and says so in `description`. Issue #321
 
 ## 0.31.0 · 2026-11-22
 

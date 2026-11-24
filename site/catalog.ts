@@ -775,6 +775,8 @@ const entries: Record<string, Entry> = {
       "Crowded picture, or a picture shown phone-wide: `showLabels=\"selected\"`. The words are still read out in the summary or on each annotation's button.",
       "Selectable only when something happens on select (a details panel, a review); otherwise the picture is one image with a summary.",
       "To point at marks from outside the picture (a hovered word, a table row), pass their ids as `highlighted`: they draw in the selected ink and the rest fade. `onActiveChange` says which mark the pointer or keyboard is on.",
+      "The picture from `src` loads lazily. When it fails, the kit's failed state shows and `onLoadError` tells the app, to count failures or offer a retry; keep `src` rather than passing your own `image` for that.",
+      "Three kinds only. A mark derived from another (a region inferred from a box) keeps its source's kind and says so in `description`.",
     ],
   },
   "grounded-text": {

@@ -70,6 +70,7 @@ export const overviews: Record<string, Overview> = {
       "Without `onSelectedChange` the picture is one role=img with a generated summary; with it, a group of buttons with aria-pressed. Do not wrap it in another button.",
       "Placeholders and tests draw the picture in code (an SVG data URI); never an external URL.",
       "`highlighted` and `onActiveChange` link the marks to something outside the picture; `grounded-text` uses them for words.",
+      "To know a picture failed, use `onLoadError` with `src`; never pass your own `<img>` as `image` just to get its onError, which loses the failed state.",
     ],
   },
   "grounded-text": {
