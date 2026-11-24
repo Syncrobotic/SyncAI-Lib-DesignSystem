@@ -42,6 +42,7 @@ export type StoryFile =
   | "item"
   | "icon-tile"
   | "kbd"
+  | "code"
   | "code-block"
   | "button-group"
   | "scroll-area"
@@ -345,6 +346,16 @@ const entries: Record<string, Entry> = {
       "One key per Kbd; a chord is a KbdGroup without plus signs. How it is pressed (Hold, Double-press) is a word beside the key, not a Kbd.",
       "Use the platform's symbols: ⌘ on Mac, Ctrl elsewhere. `useModKey()` gives the right one.",
       "`pressed` shows the key going down (it sinks and its edge darkens) while its shortcut runs; `useHotkeys` returns which key that is.",
+    ],
+  },
+  code: {
+    group: "Data display",
+    examples: { file: "code", prefix: "Code" },
+    rules: [
+      "A path, a key, a version tag or a command inside a sentence or a cell. Code on its own lines is a CodeBlock; a key to press is a Kbd.",
+      "It takes the size of the text around it; never give it a size of its own.",
+      "No copy button inside. For a reference people paste, put a CopyButton beside it.",
+      "Words, not values to edit: a value someone changes is an Input.",
     ],
   },
   "code-block": {

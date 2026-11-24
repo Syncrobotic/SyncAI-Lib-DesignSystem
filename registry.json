@@ -3774,6 +3774,32 @@
       }
     },
     {
+      "name": "code",
+      "type": "registry:ui",
+      "title": "Code",
+      "description": "Inline code in a sentence: a path, a key, a version tag or a command, in mono on a muted tile at the size of the text around it, breaking anywhere on a phone. No copy button; put a CopyButton beside it.",
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/code.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.32.0",
+        "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "First release: inline code that takes the size of the text around it (no em values), rounded-2xs, bg-muted, px-1, font-mono, breaking anywhere. Issue #297."
+          }
+        ]
+      }
+    },
+    {
       "name": "robot-icons",
       "type": "registry:ui",
       "title": "Robot icons",
@@ -7187,8 +7213,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Checklist: Code for a path or key inside a sentence, with a CopyButton beside it."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",

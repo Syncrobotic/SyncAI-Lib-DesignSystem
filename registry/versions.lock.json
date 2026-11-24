@@ -323,6 +323,10 @@
     "version": "0.31.0",
     "hash": "56c7e529e087c9d5"
   },
+  "code": {
+    "version": "0.32.0",
+    "hash": "211c9497fbecbf66"
+  },
   "robot-icons": {
     "version": "0.22.1",
     "hash": "a85d5eb71befb97f"
@@ -584,8 +588,8 @@
     "hash": "f92b1126101d0227"
   },
   "agent-skill": {
-    "version": "0.31.0",
-    "hash": "9b5746a3da00fae8"
+    "version": "0.32.0",
+    "hash": "7902abba7232d37f"
   },
   "line-chart-telemetry": {
     "version": "0.17.2",

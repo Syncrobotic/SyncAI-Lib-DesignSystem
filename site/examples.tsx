@@ -49,6 +49,7 @@ const files = {
   item: () => import("@/stories/item.stories"),
   "icon-tile": () => import("@/stories/icon-tile.stories"),
   kbd: () => import("@/stories/kbd.stories"),
+  code: () => import("@/stories/code.stories"),
   "code-block": () => import("@/stories/code-block.stories"),
   "button-group": () => import("@/stories/button-group.stories"),
   "scroll-area": () => import("@/stories/scroll-area.stories"),

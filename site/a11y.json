@@ -615,6 +615,11 @@
     "tabStops": 0,
     "live": false
   },
+  "code": {
+    "roles": [],
+    "tabStops": 0,
+    "live": false
+  },
   "button-group": {
     "roles": [
       "button",

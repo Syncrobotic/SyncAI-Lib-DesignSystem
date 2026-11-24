@@ -646,7 +646,7 @@ export const overviews: Record<string, Overview> = {
   kbd: {
     what: "A key cap for shortcuts and keyboard instructions, alone or grouped into a chord.",
     use: ["Shortcut hints in menus, tooltips and search fields.", "A keyboard reference list.", "Instructions like Hold Space to stop all."],
-    instead: ["A code value or ID: a <code> span in font-mono."],
+    instead: ["A code value or ID in a sentence: `code`."],
     notes: [
       "Icon-only keys (arrows) need sr-only text inside; a <kbd> cannot take an aria-label.",
       "Inside a tooltip the key takes the tooltip's colours automatically.",
@@ -748,6 +748,16 @@ export const overviews: Record<string, Overview> = {
     use: ["IDs, references, install commands, coordinates."],
     instead: ["Sharing a link to the current page: the browser already does it."],
   },
+  code: {
+    what: "Inline code: a path, a key, a version tag or a command inside a sentence, in mono on a muted tile at the size of the text around it.",
+    use: [
+      "\"Set max_items in the config\": a key or a file in help text and descriptions.",
+      "A reference such as group/name@v3 in a table cell or a caption.",
+      "A short command inside a sentence.",
+    ],
+    instead: ["Code or a command on its own lines, with copy: `code-block`.", "A key to press: `kbd`.", "A value to copy: `copy-button` beside the Code."],
+    notes: ["Never set a font size or em value on it; it inherits the text's size.", "It has no copy prop: put a CopyButton beside it, never inside."],
+  },
   "code-block": {
     what: "Code or a command to read and copy, in a frame with its title and a copy button.",
     use: [
@@ -755,7 +765,7 @@ export const overviews: Record<string, Overview> = {
       "A one-time API key or webhook secret, hidden until shown.",
       "Source and API responses in docs and settings pages.",
     ],
-    instead: ["A short value inline (an ID, a reference): `copy-button` beside the text.", "A value someone edits: `input` or `textarea`."],
+    instead: ["A short value inline (an ID, a reference): `code`, with `copy-button` beside it.", "A value someone edits: `input` or `textarea`."],
     notes: [
       "It has no highlighter: pass shiki's `<pre>` as children (the docs site does, in site/code-block.tsx); `code` stays the plain text that Copy copies.",
       "Call shiki with `tabindex: false`, or its `<pre>` adds a second Tab stop.",

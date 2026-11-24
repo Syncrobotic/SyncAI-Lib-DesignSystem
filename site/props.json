@@ -2684,6 +2684,15 @@
    "inherits": []
   }
  ],
+ "code": [
+  {
+   "name": "Code",
+   "props": [],
+   "inherits": [
+    "<code>"
+   ]
+  }
+ ],
  "code-block": [
   {
    "name": "CodeBlock",
