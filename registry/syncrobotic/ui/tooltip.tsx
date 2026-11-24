@@ -1,4 +1,4 @@
-// @syncrobotic/tooltip v0.30.0 · update: npx shadcn add @syncrobotic/tooltip --overwrite
+// @syncrobotic/tooltip v0.32.0 · update: npx shadcn add @syncrobotic/tooltip --overwrite
 "use client"
 
 import * as React from "react"
@@ -21,7 +21,9 @@ export function Tooltip(props: React.ComponentProps<typeof TooltipPrimitive.Root
   )
 }
 
-export const TooltipTrigger = TooltipPrimitive.Trigger
+export function TooltipTrigger(props: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
+  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />
+}
 
 /**
  * Escape inside a native <dialog>: the dialog closes (and the tooltip with it). Radix's layer would take the key for the

@@ -26,6 +26,7 @@ import {
   SidebarMenuSubItem,
   SidebarMenuTag,
   SidebarProvider,
+  SidebarRail,
   SidebarTrigger,
   useSidebar,
 } from "@/registry/syncrobotic/ui/sidebar"
@@ -196,10 +197,26 @@ function Account() {
 }
 
 /**
- * The sample console in a 672 px frame: the sidebar, and a page with the trigger in its top bar. The frame is told whether
- * it is a phone or a desktop, so each story looks the same at any screen width; nothing is kept in a cookie.
+ * The sample console in a 672 px frame: the sidebar, and a page with a top bar. The frame is told whether it is a phone or
+ * a desktop, so each story looks the same at any screen width; nothing is kept in a cookie.
+ *
+ * Collapse is on the sidebar (the default, as the app shell does it): a quiet trigger at the end of the header
+ * (show="expanded"), the edge as a SidebarRail, and the expand trigger in the top bar only while it is a rail
+ * (show="collapsed", the menu button on a phone). `single` is the older single trigger in the top bar, which still works.
  */
-function Console({ open = true, mobile = false, openMobile = false, shortcut = false }: { open?: boolean; mobile?: boolean; openMobile?: boolean; shortcut?: boolean }) {
+function Console({
+  open = true,
+  mobile = false,
+  openMobile = false,
+  shortcut = false,
+  single = false,
+}: {
+  open?: boolean
+  mobile?: boolean
+  openMobile?: boolean
+  shortcut?: boolean
+  single?: boolean
+}) {
   return (
     <SidebarProvider
       isMobile={mobile}
@@ -210,8 +227,11 @@ function Console({ open = true, mobile = false, openMobile = false, shortcut = f
       className="h-168 overflow-hidden rounded-md bg-background ring-1 ring-border"
     >
       <Sidebar>
-        <SidebarHeader>
-          <SiteSwitcher />
+        <SidebarHeader className="flex-row items-center gap-1">
+          <div className="min-w-0 flex-1">
+            <SiteSwitcher />
+          </div>
+          {!single && <SidebarTrigger show="expanded" />}
         </SidebarHeader>
         <SidebarContent>
           <NavMain />
@@ -219,10 +239,11 @@ function Console({ open = true, mobile = false, openMobile = false, shortcut = f
         <SidebarFooter>
           <Account />
         </SidebarFooter>
+        {!single && <SidebarRail />}
       </Sidebar>
       <SidebarInset>
         <header className="flex h-(--h-row) shrink-0 items-center gap-2 border-b border-border px-3">
-          <SidebarTrigger />
+          <SidebarTrigger show={single ? "always" : "collapsed"} />
           <h2 className="truncate text-lg font-bold">Running missions</h2>
         </header>
         <div className="flex-1 p-4">
@@ -233,11 +254,20 @@ function Console({ open = true, mobile = false, openMobile = false, shortcut = f
   )
 }
 
-/** Open: a site switcher, groups with names, a section with its pages (with a count), a count and a Beta tag. ⌘B / Ctrl+B toggles it. */
+/**
+ * Open: a site switcher, groups with names, a section with its pages (with a count), a count and a Beta tag. Collapse is
+ * the quiet button at the end of the header, or the edge (hover it for the hairline); ⌘B / Ctrl+B toggles it.
+ */
 export const SidebarExpanded: S = { render: () => <Console shortcut /> }
 
-/** Collapsed to the rail: icons on one centre line, a line where each group's name was, a dot for the alarms' count, names in tooltips. */
+/**
+ * Collapsed to the rail: icons on one centre line, a line where each group's name was, a dot for the alarms' count, names
+ * in tooltips. Expand is the top bar's first button, or the edge.
+ */
 export const SidebarCollapsed: S = { render: () => <Console open={false} /> }
+
+/** One trigger in the top bar that collapses and expands (`show="always"`, the default): for a page without a header row in its sidebar. */
+export const SidebarSingleTrigger: S = { render: () => <Console single shortcut /> }
 
 /** On a phone the trigger opens the sidebar as a sheet from the left; following a link closes it. */
 export const SidebarMobile: S = { render: () => <Console mobile /> }

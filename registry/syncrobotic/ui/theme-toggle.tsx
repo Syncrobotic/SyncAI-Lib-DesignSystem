@@ -1,4 +1,4 @@
-// @syncrobotic/theme-toggle v0.30.0 · update: npx shadcn add @syncrobotic/theme-toggle --overwrite
+// @syncrobotic/theme-toggle v0.32.0 · update: npx shadcn add @syncrobotic/theme-toggle --overwrite
 "use client"
 
 import { Monitor, Moon, Sun } from "lucide-react"
@@ -46,6 +46,7 @@ export function ThemeToggle({
     return (
       <DropdownMenu>
         <DropdownMenuTrigger
+          data-slot="theme-toggle"
           aria-label={label}
           data-choice={value}
           className={cn(
@@ -74,6 +75,7 @@ export function ThemeToggle({
     )
   return (
     <SegmentedControl
+      data-slot="theme-toggle"
       aria-label={label}
       value={value ?? ""}
       onValueChange={(v) => v && onValueChange(v as ThemeChoice)}

@@ -1,4 +1,4 @@
-// @syncrobotic/table v0.17.4 · update: npx shadcn add @syncrobotic/table --overwrite
+// @syncrobotic/table v0.32.0 · update: npx shadcn add @syncrobotic/table --overwrite
 "use client"
 
 import * as React from "react"
@@ -128,6 +128,7 @@ export function TableHead({
       {sortable ? (
         <button
           type="button"
+          data-slot="table-head-sort"
           onClick={onSort}
           className={cn("press -mx-1 inline-flex h-(--h-sm) items-center gap-2 rounded-xs px-1 hover:text-foreground", sort && "text-foreground")}
         >

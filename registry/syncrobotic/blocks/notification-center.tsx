@@ -1,4 +1,4 @@
-// @syncrobotic/notification-center v0.21.1 · update: npx shadcn add @syncrobotic/notification-center --overwrite
+// @syncrobotic/notification-center v0.32.0 · update: npx shadcn add @syncrobotic/notification-center --overwrite
 "use client"
 
 import * as React from "react"
@@ -265,7 +265,7 @@ export function NotificationPanel({
               <ul className="flex flex-col">
                 {g.items.map((n) => (
                   <li key={n.id} className="flex items-start gap-1">
-                    <Link
+                    <Link data-slot="notification-center-link"
                       href={n.href}
                       data-notification-link={n.id}
                       onClick={() => {
@@ -394,7 +394,7 @@ export function NotificationCenter({
   }
 
   const bell = (
-    <button
+    <button data-slot="notification-center-trigger"
       type="button"
       aria-label={unread > 0 ? `Notifications, ${unread} unread` : "Notifications"}
       className="press relative flex size-(--h-md) items-center justify-center rounded-sm transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent"

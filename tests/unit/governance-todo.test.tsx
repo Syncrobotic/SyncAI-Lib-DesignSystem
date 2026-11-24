@@ -1,6 +1,6 @@
 import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react"
 import { afterEach, describe, expect, it, vi } from "vitest"
-import { GovernanceTodo, sampleTodos } from "@/registry/syncrobotic/blocks/governance-todo"
+import { GovernanceTodo, GovernanceTodoContent, sampleTodos } from "@/registry/syncrobotic/blocks/governance-todo"
 
 afterEach(cleanup)
 
@@ -32,5 +32,12 @@ describe("GovernanceTodo", () => {
     expect(screen.getByRole("radio", { name: `All ${sampleTodos.length}` })).toBeTruthy()
     rerender(<GovernanceTodo onDone={onDone} todos={sampleTodos.filter((t) => t.id !== "t2")} />)
     expect(screen.getByRole("radio", { name: `All ${sampleTodos.length - 1}` })).toBeTruthy()
+  })
+
+  it("fills its container: the content sets no width of its own (#337)", () => {
+    const { container } = render(<GovernanceTodoContent />)
+    const root = container.firstElementChild as HTMLElement
+    expect(root.className).not.toMatch(/(^|\s)max-w-/)
+    expect(list().className).not.toMatch(/(^|\s)max-w-/)
   })
 })

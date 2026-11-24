@@ -640,6 +640,11 @@
      "description": "Show the box at the picture's aspect ratio, breathing, until the picture and its annotations arrive."
     },
     {
+     "name": "onLoadError",
+     "type": "() => void",
+     "description": "Called once when the picture from `src` fails to load and the failed state shows, e.g. to count failures or offer a retry. Not called for a picture passed as `image`, which handles its own errors."
+    },
+    {
      "name": "labels",
      "type": "Partial<AnnotatedImageLabels>",
      "description": "",
@@ -2288,6 +2293,26 @@
    ]
   },
   {
+   "name": "CardMedia",
+   "props": [
+    {
+     "name": "inset",
+     "type": "boolean",
+     "default": "false",
+     "description": "Inside the card's padding, with its own corners, instead of edge to edge at the top."
+    },
+    {
+     "name": "aspect",
+     "type": "\"video\" | \"auto\" | \"square\" | \"4/3\"",
+     "default": "\"video\"",
+     "description": "The box's shape, kept before and after the picture loads: 16:9 by default; `auto` lets the content decide."
+    }
+   ],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
    "name": "CardHeader",
    "props": [],
    "inherits": [
@@ -2659,6 +2684,15 @@
    "inherits": []
   }
  ],
+ "code": [
+  {
+   "name": "Code",
+   "props": [],
+   "inherits": [
+    "<code>"
+   ]
+  }
+ ],
  "code-block": [
   {
    "name": "CodeBlock",
@@ -2752,6 +2786,29 @@
     }
    ],
    "inherits": []
+  }
+ ],
+ "collapsible": [
+  {
+   "name": "Collapsible",
+   "props": [],
+   "inherits": [
+    "Radix Collapsible.Root"
+   ]
+  },
+  {
+   "name": "CollapsibleTrigger",
+   "props": [],
+   "inherits": [
+    "Radix Collapsible.Trigger"
+   ]
+  },
+  {
+   "name": "CollapsibleContent",
+   "props": [],
+   "inherits": [
+    "Radix Collapsible.Content"
+   ]
   }
  ],
  "command": [
@@ -5618,6 +5675,11 @@
      "description": "Called when someone asks to see a hidden picture, e.g. to log the view."
     },
     {
+     "name": "onOpen",
+     "type": "(item: ImageGridItem, index: number) => void",
+     "description": "Opens a picture your way (your own Sheet with its details) in place of the lightbox: a tile, or the corner button while picking, calls it. Your dialog then returns focus to the tile when it closes: keep `document.activeElement` here and focus it in the dialog's `onCloseAutoFocus` (a dialog opened without a trigger has nowhere to return to)."
+    },
+    {
      "name": "labels",
      "type": "Partial<ImageGridLabels>",
      "description": "",
@@ -6765,7 +6827,7 @@
        "name": "jumpToLatest",
        "type": "string",
        "default": "\"Jump to latest\"",
-       "description": "The floating button while scrolled up: with how many new lines arrived, or without."
+       "description": "The footer's button while scrolled up: with how many new lines arrived, or without."
       },
       {
        "name": "newLines",
@@ -6819,7 +6881,7 @@
        "name": "copyLines",
        "type": "(n: number) => string",
        "default": "(n) => (n === 1 ? \"Copy line\" : `Copy ${n} lines`)",
-       "description": "The footer's copy button: the selected lines, or the line in focus."
+       "description": "The footer's copy button, shown while several lines are selected."
       },
       {
        "name": "copied",
@@ -7295,6 +7357,11 @@
      "description": "One line of context under the value: \"2 docked for charging\", \"Last 7 days\"."
     },
     {
+     "name": "tone",
+     "type": "\"warning\" | \"danger\"",
+     "description": "The number needs attention (warning) or someone now (danger): the caption takes the status glyph and colour, so it should say why (\"3 blocking a release\"). The value stays foreground. Calm by default."
+    },
+    {
      "name": "href",
      "type": "string",
      "description": "Makes the whole card one link, to the page behind the number."
@@ -7571,6 +7638,17 @@
      "name": "icon",
      "type": "ReactNode",
      "description": ""
+    },
+    {
+     "name": "href",
+     "type": "string",
+     "description": "Where the fact leads: the pill becomes a link, the same height on screen, with a 36 px target (44 on touch)."
+    },
+    {
+     "name": "linkAs",
+     "type": "ElementType",
+     "default": "\"a\"",
+     "description": "Your router's link (e.g. next/link), for `href`."
     },
     {
      "name": "children",
@@ -8393,6 +8471,11 @@
      "name": "onReveal",
      "type": "() => void",
      "description": "Called when someone asks to see it, e.g. to log the view."
+    },
+    {
+     "name": "data-slot",
+     "type": "string",
+     "description": "The reveal button's data-slot, for a component that holds it (image-grid: \"image-grid-reveal\")."
     }
    ],
    "inherits": []
@@ -9831,6 +9914,23 @@
     }
    ],
    "inherits": []
+  },
+  {
+   "name": "ShareLegend",
+   "props": [
+    {
+     "name": "segments",
+     "type": "ShareLegendSegment[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the values (a BCP 47 tag such as \"zh-TW\"). Left out, the browser's language."
+    }
+   ],
+   "inherits": []
   }
  ],
  "sheet": [
@@ -10017,6 +10117,20 @@
   },
   {
    "name": "SidebarTrigger",
+   "props": [
+    {
+     "name": "show",
+     "type": "\"always\" | \"expanded\" | \"collapsed\" | \"mobile\"",
+     "default": "\"always\"",
+     "description": "When it shows. always (default): one trigger that collapses and expands, wherever it is. The pair that puts the collapse control on the sidebar: \"expanded\" in SidebarHeader (shown while the sidebar is open on a wide screen, never on phones, where the sheet has its own close) and \"collapsed\" in the page's top bar (shown while the sidebar is a rail or hidden, and always on phones, where it is the menu button that opens the sheet). \"mobile\": only on phones, the menu button that opens the sheet, for a layout whose wide screens collapse and expand at the sidebar's edge (SidebarRail) instead."
+    }
+   ],
+   "inherits": [
+    "<button>"
+   ]
+  },
+  {
+   "name": "SidebarRail",
    "props": [],
    "inherits": [
     "<button>"

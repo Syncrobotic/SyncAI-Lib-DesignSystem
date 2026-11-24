@@ -42,6 +42,7 @@ export type StoryFile =
   | "item"
   | "icon-tile"
   | "kbd"
+  | "code"
   | "code-block"
   | "button-group"
   | "scroll-area"
@@ -63,6 +64,7 @@ export type StoryFile =
   | "joint-state"
   | "diagnostics"
   | "tree"
+  | "collapsible"
   | "sidebar"
   | "graph"
   | "robot-map"
@@ -114,6 +116,8 @@ const entries: Record<string, Entry> = {
       "Edges are neutral; the selected node's path is drawn in the ink colour and the rest steps back. No colours per edge or per kind of node.",
       "Status is a shape and a word; only warning and danger are coloured. Steps that did not run are grey and say so (\"Not run\").",
       "Names fit a box: about 28 characters show in full, longer ones end in an ellipsis. Put the detail in meta, one short line.",
+      "A category that is not a state (an access tier, \"Deprecated\", a version channel) is a `badge`: a neutral outline tag after the name, a word or two, read after the name. Never a colour per tag.",
+      "Columns come from the layout (each node one column after its latest input), not from kinds, so they have no headings. Say what the graph holds in its title, and what each node is in its name or badge.",
     ],
   },
   trace: {
@@ -213,6 +217,7 @@ const entries: Record<string, Entry> = {
       "Give `timeZone` when the people reading are not where the robot is, and say which in the page; copied lines are always ISO 8601 in UTC.",
       "Name the sources for what they are: `labels.sources` \"Nodes\" for ROS, \"Units\" for journald.",
       "Leave `announce` on \"errors\" (at most every 5 s); \"all\" only for a slow log, and false where an alarm already speaks for the same failure.",
+      "An opened line is a band of its row, not a card: a hairline under the message, the fields with names under the time and values under the level, and one quiet Copy line. Nothing floats over the lines: Jump to latest and Copy for several lines sit in the footer.",
     ],
   },
   "streaming-text": {
@@ -345,6 +350,16 @@ const entries: Record<string, Entry> = {
       "`pressed` shows the key going down (it sinks and its edge darkens) while its shortcut runs; `useHotkeys` returns which key that is.",
     ],
   },
+  code: {
+    group: "Data display",
+    examples: { file: "code", prefix: "Code" },
+    rules: [
+      "A path, a key, a version tag or a command inside a sentence or a cell. Code on its own lines is a CodeBlock; a key to press is a Kbd.",
+      "It takes the size of the text around it; never give it a size of its own.",
+      "No copy button inside. For a reference people paste, put a CopyButton beside it.",
+      "Words, not values to edit: a value someone changes is an Input.",
+    ],
+  },
   "code-block": {
     group: "Data display",
     examples: { file: "code-block", prefix: "CodeBlock" },
@@ -375,6 +390,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "One per page, first in the content: the breadcrumb says where, the h1 says what. No label above the title.",
       "Meta pills are facts (counts, owner, last update); a status pill takes a tone and only warning and danger are coloured.",
+      "A fact that leads somewhere (\"2 compliance items open\" to that tab) takes `href` (and `linkAs` for your router): the pill becomes an underlined link with the focus ring and a 36 px target (44 on touch), the same height on screen. Never wrap a pill in your own link.",
       "Actions sit at the right; the page's one primary action may be among them.",
     ],
   },
@@ -606,6 +622,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "Never nest cards. Group rows inside one card with separators.",
       "The title is an h3. Set `as` on CardTitle (`titleAs` on CardDataHeader) to the level the page needs: h2 for a card right under the h1, h4 inside a section under an h3. The size stays the same.",
+      "A cover picture is CardMedia, first in the card: edge to edge, its top corners the card's own (`rounded-[inherit]`), 16:9 unless `aspect` says otherwise. `inset` keeps it inside the padding at the image radius (12). Never round the picture yourself.",
     ],
   },
   avatar: {
@@ -661,6 +678,7 @@ const entries: Record<string, Entry> = {
     examples: { file: "metric-card", prefix: "MetricCard" },
     rules: [
       "Only a change for the worse is coloured (`trend=\"bad\"`, danger text). Good news stays foreground and no change stays grey, so the bad number is the one people see. The trend says whether the change is good, not which way it went.",
+      "A number that is itself a warning (items waiting for review, a quota near its limit) takes `tone=\"warning\"` (or `\"danger\"`): the caption gets the status shape and colour and says why. The value stays foreground; never a tinted card.",
       "The sparkline is neutral and silent; the delta and the caption say in words what it shows. From 640 px it sits beside the value; on a phone it takes its own full-width line under it, and the change sits under the label so the values line up.",
       "A value that cannot be read is `unavailable` with the reason; never a 0 or an empty card.",
       "`loading` keeps the label and the card's height; only the value, change and caption are bones.",
@@ -740,6 +758,7 @@ const entries: Record<string, Entry> = {
       "Colours follow the order you give, never the size, and are never status colours.",
       "Outside a table cell, show the legend: identity never rests on colour alone. In a table, the column header names the parts.",
       "Give a segment `href` when its part is a view to follow (the list filtered to it): its legend entry becomes the link, named with its share (\"Fleet cameras 5,060, 51 %\"). The bar stays one picture, so each part has one target. Pass `linkAs` for your router.",
+      "A list of bars (one per task, per class) has one ShareLegend above it, not a legend per row. Give it the same segments in the same order as the bars, so the colours match; each bar keeps its own name.",
     ],
   },
   "restricted-preview": {
@@ -761,6 +780,7 @@ const entries: Record<string, Entry> = {
       "Picked tiles are ringed in the focus ink with a check, never a status colour. While picking, the corner button opens the lightbox.",
       "Pictures the viewer must ask to see are `restricted`, with a `reason`; nothing loads before they ask. Log the view in `onReveal`.",
       "Use the strip for a short row, such as what was just uploaded; for a whole dataset, the grid.",
+      "When the page has its own detail view (a Sheet with the picture's labels and file), pass `onOpen(item, index)`: it replaces the lightbox, and the keys, hidden and broken tiles stay the same. Open a dialog from it, and return focus to the tile when it closes (keep `document.activeElement`, focus it in `onCloseAutoFocus`).",
     ],
   },
   "annotated-image": {
@@ -774,6 +794,8 @@ const entries: Record<string, Entry> = {
       "Crowded picture, or a picture shown phone-wide: `showLabels=\"selected\"`. The words are still read out in the summary or on each annotation's button.",
       "Selectable only when something happens on select (a details panel, a review); otherwise the picture is one image with a summary.",
       "To point at marks from outside the picture (a hovered word, a table row), pass their ids as `highlighted`: they draw in the selected ink and the rest fade. `onActiveChange` says which mark the pointer or keyboard is on.",
+      "The picture from `src` loads lazily. When it fails, the kit's failed state shows and `onLoadError` tells the app, to count failures or offer a retry; keep `src` rather than passing your own `image` for that.",
+      "Three kinds only. A mark derived from another (a region inferred from a box) keeps its source's kind and says so in `description`.",
     ],
   },
   "grounded-text": {
@@ -923,6 +945,7 @@ const entries: Record<string, Entry> = {
       "Switch between views of the same thing, all at the same level. Not for steps (Stepper) or for moving between pages.",
       "Keep the labels short and the order stable.",
       "Over long sections, `sticky` on TabsList keeps the row in view under the shell's top bar. One sticky row per page; picking a tab while it is stuck goes back to the start of the tabs.",
+      "A row of links to other pages is navigation, not tabs: use ChipGroup with `href`, or NavigationMenu.",
     ],
   },
   accordion: {
@@ -932,6 +955,16 @@ const entries: Record<string, Entry> = {
       "Long content most people skip: FAQs, advanced settings. Content everyone needs stays open.",
       "One open at a time only when the sections are alternatives.",
       "Each trigger sits in an h3. Set `as` on AccordionTrigger to the level the page needs: h2 right under the h1, h4 inside a section under an h3.",
+    ],
+  },
+  collapsible: {
+    group: "Navigation",
+    examples: { file: "collapsible", prefix: "Collapsible" },
+    rules: [
+      "One trigger that opens one region: \"More filters\", \"How to use this\", the rest of a long note. For a set of sections with headings use Accordion.",
+      "The trigger says what it opens, in a word or two; the chevron says it opens. It needs no heading: it is not a section.",
+      "Closed by default. Content most people need stays out of it.",
+      "Content open from the start (`defaultOpen`) shows at once; it animates only when someone opens or closes it.",
     ],
   },
   tree: {
@@ -958,6 +991,7 @@ const entries: Record<string, Entry> = {
       "Every item leads with an icon and has a tooltip: collapsed, the rail shows only the icons. Group names give way to a short line.",
       "A switcher for sites, workspaces or robots goes in SidebarHeader as a size=\"lg\" button that opens a menu; the account goes in SidebarFooter the same way.",
       "Open by default on wide screens, a rail below about 1280 px. People choose with the trigger or ⌘B / Ctrl+B, and the cookie keeps it.",
+      "Collapse belongs to the sidebar's edge: SidebarRail is a small round button half over it, level with the line under the top bar, ‹ to collapse and › to expand, in the Tab order and named for what it does. On phones the sidebar is a sheet: SidebarTrigger show=\"mobile\" in the top bar is its menu button.",
     ],
   },
   // Overlays: the docs show the closed trigger; the *Open stories are for visual tests.
@@ -1402,6 +1436,10 @@ const keyboard: Record<string, [string, string][]> = {
     ["`←` / `→`", "Move to and open the previous or next tab"],
     ["`Home` / `End`", "First or last tab"],
   ],
+  collapsible: [
+    ["`Tab`", "Move to the trigger, then into the open region"],
+    ["`Enter` / `Space`", "Open or close the region"],
+  ],
   accordion: [
     ["`Enter` / `Space`", "Open or close the section"],
     ["`↑` / `↓`", "Move between section headers"],
@@ -1484,12 +1522,12 @@ const keyboard: Record<string, [string, string][]> = {
   ],
   sidebar: [
     ["`⌘`+`B` / `Ctrl`+`B`", "Collapse the sidebar to its rail, or open it; on a phone, open or close the sheet. Not while typing"],
-    ["`Tab`", "Move through the switcher, the links and the account, top to bottom"],
-    ["`Enter`", "Follow the link; on the switcher or the account, open its menu"],
+    ["`Tab`", "Move through the switcher, the links, the account and the edge button, top to bottom"],
+    ["`Enter`", "Follow the link; on the switcher or the account, open its menu; on the edge button, collapse or expand the sidebar"],
     ["`Esc`", "On a phone, close the sheet and return focus to the trigger"],
   ],
   "image-grid": [
-    ["`Enter` / `Space`", "Open the picture in the lightbox, or pick it while picking"],
+    ["`Enter` / `Space`", "Open the picture in the lightbox (or your own view, with onOpen), or pick it while picking"],
     ["`←` `→` / `↑` `↓`", "Pick one (a radio group, one Tab stop): move to the previous or next picture and pick it"],
     ["`Home` / `End`", "Pick one: the first or last picture"],
     ["`←` / `→`", "In the lightbox: previous or next picture"],
@@ -1566,7 +1604,7 @@ const keyboard: Record<string, [string, string][]> = {
     ["`Enter` / `Space`", "On Show, show or hide the secret; on Copy, copy the code"],
   ],
   "log-viewer": [
-    ["`Tab`", "Move into the lines (one stop: the newest line, or the first in view), then to an open line's Copy button"],
+    ["`Tab`", "Move into the lines (one stop: the newest line, or the first in view), then to an open line's Copy line, then the footer's Jump to latest and Copy lines"],
     ["`↑` / `↓`", "Previous or next line"],
     ["`PageUp` / `PageDown`", "A screen up or down"],
     ["`Home` / `End`", "First line, or the newest (End follows new lines again)"],
@@ -1608,7 +1646,7 @@ const keyboard: Record<string, [string, string][]> = {
   banner: [["`Enter` / `Space`", "On the action, run it; on the close button, dismiss the notice"]],
   toast: [
     ["`F8`", "Move focus to the notifications"],
-    ["`Esc`", "Dismiss the focused notification"],
+    ["`Esc`", "Dismiss the focused notification. In an open dialog, close the dialog; the notification stays"],
   ],
   "stop-button": [
     ["`Enter` / `Space`", "Stop this robot"],

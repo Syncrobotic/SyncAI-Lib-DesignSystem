@@ -1,4 +1,4 @@
-// @syncrobotic/alert-dialog v0.6.0 · update: npx shadcn add @syncrobotic/alert-dialog --overwrite
+// @syncrobotic/alert-dialog v0.32.0 · update: npx shadcn add @syncrobotic/alert-dialog --overwrite
 "use client"
 
 import * as React from "react"
@@ -11,7 +11,9 @@ import { buttonVariants } from "@/registry/syncrobotic/ui/button"
  * Name the consequence in the action label ("Delete 38 GB of video"), not "OK".
  */
 export const AlertDialog = AlertDialogPrimitive.Root
-export const AlertDialogTrigger = AlertDialogPrimitive.Trigger
+export function AlertDialogTrigger(props: React.ComponentProps<typeof AlertDialogPrimitive.Trigger>) {
+  return <AlertDialogPrimitive.Trigger data-slot="alert-dialog-trigger" {...props} />
+}
 
 export function AlertDialogContent({ className, ...props }: React.ComponentProps<typeof AlertDialogPrimitive.Content>) {
   return (

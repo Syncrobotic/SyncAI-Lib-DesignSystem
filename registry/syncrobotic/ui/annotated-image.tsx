@@ -1,4 +1,4 @@
-// @syncrobotic/annotated-image v0.31.0 · update: npx shadcn add @syncrobotic/annotated-image --overwrite
+// @syncrobotic/annotated-image v0.32.0 · update: npx shadcn add @syncrobotic/annotated-image --overwrite
 "use client"
 
 import * as React from "react"
@@ -205,6 +205,11 @@ type AnnotatedImageProps = {
   overlays?: AnnotationOverlay[]
   /** Show the box at the picture's aspect ratio, breathing, until the picture and its annotations arrive. */
   loading?: boolean
+  /**
+   * Called once when the picture from `src` fails to load and the failed state shows, e.g. to count failures or offer a
+   * retry. Not called for a picture passed as `image`, which handles its own errors.
+   */
+  onLoadError?: () => void
   labels?: Partial<AnnotatedImageLabels>
   className?: string
 }
@@ -231,12 +236,19 @@ export function AnnotatedImage({
   legend = true,
   overlays = [],
   loading,
+  onLoadError,
   labels: labelsProp,
   className,
 }: AnnotatedImageProps) {
   const labels = { ...defaultLabels, ...labelsProp }
   const [failedSrc, setFailedSrc] = React.useState<string | null>(null)
   const failed = !!src && failedSrc === src
+  // Once per failed picture: the error event and the server-rendered check below can both see the same failure.
+  const fail = (from: string) => {
+    if (failedSrc === from) return
+    setFailedSrc(from)
+    onLoadError?.()
+  }
   const [active, setActive] = React.useState<string | null>(null)
   const [focused, setFocused] = React.useState<string | null>(null)
   const [hovered, setHovered] = React.useState<string | null>(null)
@@ -347,18 +359,20 @@ export function AnnotatedImage({
             <img
               src={src}
               alt=""
+              // A page of many annotated pictures fetches only those near the screen.
+              loading="lazy"
               decoding="async"
               draggable={false}
-              onError={() => setFailedSrc(src)}
+              onError={() => fail(src)}
               // A picture that failed before React attached onError (server-rendered) is caught here.
               ref={(img) => {
-                if (img?.complete && img.naturalWidth === 0 && img.currentSrc) setFailedSrc(src)
+                if (img?.complete && img.naturalWidth === 0 && img.currentSrc) fail(src)
               }}
               className="absolute inset-0 size-full"
             />
           ))}
         {overlays.map((o) => (
-          <img key={o.src} src={o.src} alt="" draggable={false} style={{ opacity: o.opacity ?? 0.5 }} className="pointer-events-none absolute inset-0 size-full" />
+          <img key={o.src} src={o.src} alt="" loading="lazy" draggable={false} style={{ opacity: o.opacity ?? 0.5 }} className="pointer-events-none absolute inset-0 size-full" />
         ))}
 
         <svg aria-hidden="true" viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none" className="pointer-events-none absolute inset-0 size-full overflow-visible">

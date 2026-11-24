@@ -1,4 +1,4 @@
-// @syncrobotic/dialog v0.23.0 · update: npx shadcn add @syncrobotic/dialog --overwrite
+// @syncrobotic/dialog v0.32.0 · update: npx shadcn add @syncrobotic/dialog --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,8 +7,12 @@ import { X } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export const Dialog = DialogPrimitive.Root
-export const DialogTrigger = DialogPrimitive.Trigger
-export const DialogClose = DialogPrimitive.Close
+export function DialogTrigger(props: React.ComponentProps<typeof DialogPrimitive.Trigger>) {
+  return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />
+}
+export function DialogClose(props: React.ComponentProps<typeof DialogPrimitive.Close>) {
+  return <DialogPrimitive.Close data-slot="dialog-close" {...props} />
+}
 
 export function DialogOverlay({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
   return (

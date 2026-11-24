@@ -240,8 +240,52 @@ describe("app shell on the sidebar", () => {
     expect(screen.getByRole("button", { name: "ML Mei Lin mei.lin@example.com , account menu" })).toBeTruthy()
     // The test screen is 1024 px wide, under 1280: the shell starts as a rail.
     expect(aside().dataset.state).toBe("collapsed")
-    fireEvent.click(screen.getByRole("button", { name: "Expand sidebar" }))
+    fireEvent.click(aside().querySelector<HTMLElement>("[data-slot=sidebar-rail]")!)
     expect(aside().dataset.state).toBe("expanded")
+  })
+
+  it("folds at the sidebar's edge: one round button, in the Tab order, named for what it does", () => {
+    render(
+      <AppShell product="Fleet console" nav={sampleNav} current="#robots" title="Robots">
+        page
+      </AppShell>,
+    )
+    // No trigger inside the sidebar; the edge button is the control on wide screens.
+    expect(aside().querySelector("[data-slot=sidebar-trigger]")).toBeNull()
+    const rail = aside().querySelector<HTMLElement>("[data-slot=sidebar-rail]")!
+    expect(rail.tagName).toBe("BUTTON")
+    expect(rail.tabIndex).toBe(0)
+    expect(rail.getAttribute("aria-hidden")).toBeNull()
+    // A rail (the test screen is under 1280 px): it expands.
+    expect(rail.getAttribute("aria-label")).toBe("Expand sidebar")
+    expect(rail.getAttribute("aria-expanded")).toBe("false")
+    fireEvent.click(rail)
+    expect(aside().dataset.state).toBe("expanded")
+    expect(rail.getAttribute("aria-label")).toBe("Collapse sidebar")
+    expect(rail.getAttribute("aria-expanded")).toBe("true")
+    fireEvent.click(rail)
+    expect(aside().dataset.state).toBe("collapsed")
+    // The top bar's trigger is the phone's menu button: in the page before hydration, hidden from 768 px by CSS.
+    const top = document.querySelector("header")!.querySelector<HTMLElement>("[data-slot=sidebar-trigger]")!
+    expect(top.dataset.show).toBe("mobile")
+    expect(top.className).toContain("md:hidden")
+  })
+
+  it("on phones, the top bar's trigger is the menu button and the sidebar has no collapse button", () => {
+    render(
+      <SidebarProvider isMobile cookieName={null}>
+        <Sidebar>
+          <SidebarContent>
+            <SidebarTrigger show="expanded" />
+          </SidebarContent>
+        </Sidebar>
+        <SidebarInset>
+          <SidebarTrigger show="collapsed" />
+        </SidebarInset>
+      </SidebarProvider>,
+    )
+    expect(screen.getAllByRole("button")).toHaveLength(1)
+    expect(screen.getByRole("button", { name: "Open navigation" })).toBeTruthy()
   })
 
   it("shows a section's pages under it while one of them is current", () => {

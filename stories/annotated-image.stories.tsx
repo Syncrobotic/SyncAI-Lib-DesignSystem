@@ -190,4 +190,38 @@ export const AnnotatedImageFailed: S = {
   render: () => <AnnotatedImage src={brokenPhoto} width={W} height={H} label="Camera 2, aisle 3, 14:08" annotations={evaluation} />,
 }
 
+function Gallery() {
+  const [failed, setFailed] = React.useState<string[]>([])
+  const pictures = [
+    { id: "c2", src: frame, label: "Camera 2, aisle 3, 14:08" },
+    { id: "c5", src: brokenPhoto, label: "Camera 5, dock, 14:08" },
+  ]
+  return (
+    <div className="flex flex-col gap-3">
+      <p role="status" className="text-sm text-muted-foreground">
+        {failed.length ? `${failed.length} of ${pictures.length} pictures could not be loaded` : `${pictures.length} pictures`}
+      </p>
+      <ul className="grid gap-4 sm:grid-cols-2">
+        {pictures.map((p) => (
+          <li key={p.id}>
+            <AnnotatedImage
+              src={p.src}
+              width={W}
+              height={H}
+              label={p.label}
+              annotations={evaluation}
+              legend={false}
+              showLabels="none"
+              onLoadError={() => setFailed((f) => (f.includes(p.id) ? f : [...f, p.id]))}
+            />
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+/** A gallery that counts its failures: `onLoadError` is called once when a picture's failed state shows. Pictures load lazily. */
+export const AnnotatedImageLoadErrors: S = { render: () => <Gallery /> }
+
 /** In Traditional Chinese: the class words, the legend and what is read out all come from `labels` and the data. */

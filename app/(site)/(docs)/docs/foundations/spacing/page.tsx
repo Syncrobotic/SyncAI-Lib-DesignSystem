@@ -73,6 +73,11 @@ export default function SpacingPage() {
             </span>,
           ])}
         />
+        <p className="mt-4 max-w-prose text-sm text-muted-foreground">
+          A toolbar is one height. Beside a field (a search, a select), every control is the field&apos;s <Code>--h-md</Code>: outline buttons at the default
+          size and <Code>size=&quot;icon&quot;</Code> for an icon, never <Code>sm</Code>. <Code>--h-sm</Code> is for a row without a field, such as the filter
+          chips, and is 44 px on touch anyway.
+        </p>
       </Section>
 
       <Section id="sections" title="Page sections" lead="Marketing pages need more air between sections than product UI. Two layout tokens cover that; never use them inside components.">

@@ -1,4 +1,4 @@
-// @syncrobotic/fleet-table v0.28.0 · update: npx shadcn add @syncrobotic/fleet-table --overwrite
+// @syncrobotic/fleet-table v0.32.0 · update: npx shadcn add @syncrobotic/fleet-table --overwrite
 "use client"
 
 import * as React from "react"
@@ -141,7 +141,7 @@ export function FleetTable({ robots = sampleRobots, pageSize = 5, onOpen }: { ro
                 <TableCell className="max-sm:py-2">
                   {/* One target for the name and, on a phone, the status under it: at least 44 px, with the row's padding
                       even above and below. */}
-                  <button type="button" onClick={() => onOpen?.(r)} className="group/name press flex min-h-(--h-md) flex-col items-start justify-center gap-1 text-left">
+                  <button data-slot="fleet-table-open" type="button" onClick={() => onOpen?.(r)} className="group/name press flex min-h-(--h-md) flex-col items-start justify-center gap-1 text-left">
                     <span className="font-medium group-hover/name:underline">{r.name}</span>
                     <span className="sm:hidden">
                       <InlineStatus status={status[r.status].tone}>{status[r.status].label}</InlineStatus>

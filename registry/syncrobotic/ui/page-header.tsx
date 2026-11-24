@@ -1,4 +1,4 @@
-// @syncrobotic/page-header v0.29.0 · update: npx shadcn add @syncrobotic/page-header --overwrite
+// @syncrobotic/page-header v0.32.0 · update: npx shadcn add @syncrobotic/page-header --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { StatusGlyph, type Tone, toStatus } from "@/registry/syncrobotic/shell/status-glyph"
@@ -52,22 +52,62 @@ export function PageHeader({
 
 /**
  * One fact about the page, as a quiet tag: "128 datasets", "Updated 2 h ago", "Owner: Data team". A status (`tone`)
- * adds its glyph; only warning and danger are coloured, like everywhere else.
+ * adds its glyph; only warning and danger are coloured, like everywhere else. With `href` the fact leads somewhere
+ * ("2 compliance items open" to the compliance tab): the pill becomes a link, underlined like every link.
  */
-export function MetaPill({ tone, icon, className, children }: { tone?: Tone; icon?: React.ReactNode; className?: string; children: React.ReactNode }) {
-  return (
-    <span
-      role="listitem"
-      data-slot="meta-pill"
-      className={cn(
-        "inline-flex h-(--h-tag) items-center gap-2 rounded-xs px-2 text-xs text-muted-foreground ring-1 ring-border ring-inset [&_svg]:size-4",
-        tone === "warning" && "text-warning",
-        tone === "danger" && "text-danger",
-        className,
-      )}
-    >
+export function MetaPill({
+  tone,
+  icon,
+  href,
+  linkAs: Link = "a",
+  className,
+  children,
+}: {
+  tone?: Tone
+  icon?: React.ReactNode
+  /** Where the fact leads: the pill becomes a link, the same height on screen, with a 36 px target (44 on touch). */
+  href?: string
+  /** Your router's link (e.g. next/link), for `href`. */
+  linkAs?: React.ElementType
+  className?: string
+  children: React.ReactNode
+}) {
+  const pill = cn(
+    "inline-flex h-(--h-tag) items-center gap-2 rounded-xs px-2 text-xs text-muted-foreground ring-1 ring-border ring-inset [&_svg]:size-4",
+    // A link's words are foreground, as every link's; a status keeps its colour.
+    href && "relative text-foreground",
+    tone === "warning" && "text-warning",
+    tone === "danger" && "text-danger",
+  )
+  const content = (
+    <>
       {tone ? <StatusGlyph status={toStatus(tone)} /> : icon}
       {children}
+    </>
+  )
+  if (!href)
+    return (
+      <span role="listitem" data-slot="meta-pill" className={cn(pill, className)}>
+        {content}
+      </span>
+    )
+  return (
+    <span role="listitem" data-slot="meta-pill" className="inline-flex">
+      <Link
+        data-slot="meta-pill-link"
+        href={href}
+        className={cn(
+          pill,
+          "underline decoration-muted-foreground underline-offset-4 transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:decoration-foreground",
+          "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+          // The target is taller than the pill: --h-sm (36 px with a mouse, 44 on touch), centred on it, so the header's
+          // rows keep their height.
+          "after:absolute after:inset-x-0 after:top-1/2 after:h-(--h-sm) after:-translate-y-1/2",
+          className,
+        )}
+      >
+        {content}
+      </Link>
     </span>
   )
 }

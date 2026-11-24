@@ -7,7 +7,11 @@ export type Overview = { what: string; use: string[]; instead?: string[]; notes?
 export const overviews: Record<string, Overview> = {
   "page-header": {
     what: "The top of a page: where it sits, what it is, the facts that frame it, and its actions.",
-    use: ["The first thing in a page's content, under the app's top bar.", "A dataset, robot or site page whose counts and owner matter at a glance."],
+    use: [
+      "The first thing in a page's content, under the app's top bar.",
+      "A dataset, robot or site page whose counts and owner matter at a glance.",
+      "A fact that opens what it counts: a MetaPill with `href`.",
+    ],
     instead: ["A title inside a card: the card's own heading.", "The app's own frame: `app-shell`."],
   },
   "chip-group": {
@@ -54,7 +58,7 @@ export const overviews: Record<string, Overview> = {
   },
   "share-bar": {
     what: "How a whole splits into a few parts, as one thin bar, light enough for a table cell.",
-    use: ["Images by use, label sources, a dataset's tiers.", "Inside a table cell without a legend, or on its own with `legend`.", "Parts people follow to a filtered list: `href` on a segment makes its legend entry a link."],
+    use: ["Images by use, label sources, a dataset's tiers.", "Inside a table cell without a legend, or on its own with `legend`.", "Parts people follow to a filtered list: `href` on a segment makes its legend entry a link.", "A list with one bar per row under one ShareLegend."],
     instead: ["Values over time or many categories: `chart`.", "A single level within a range: `meter`."],
   },
   "annotated-image": {
@@ -70,6 +74,7 @@ export const overviews: Record<string, Overview> = {
       "Without `onSelectedChange` the picture is one role=img with a generated summary; with it, a group of buttons with aria-pressed. Do not wrap it in another button.",
       "Placeholders and tests draw the picture in code (an SVG data URI); never an external URL.",
       "`highlighted` and `onActiveChange` link the marks to something outside the picture; `grounded-text` uses them for words.",
+      "To know a picture failed, use `onLoadError` with `src`; never pass your own `<img>` as `image` just to get its onError, which loses the failed state.",
     ],
   },
   "grounded-text": {
@@ -200,11 +205,13 @@ export const overviews: Record<string, Overview> = {
       "A dataset's images, the frames of a run, a camera's snapshots.",
       "Picking a cover picture, or the frames to send for labelling.",
       "What was just uploaded, as a strip under the upload field.",
+      "A gallery whose tiles open the app's own detail Sheet (with `onOpen`).",
     ],
     instead: ["Files that are not pictures, or a queue with progress: `attachment`.", "One preview someone must ask to see: `restricted-preview`."],
     notes: [
       "Placeholders and tests must not load external URLs; draw the picture in code (an SVG data URI).",
       "Selection is `aria-pressed` on each tile; do not add a separate checkbox.",
+      "For your own detail view use `onOpen`; never build a second grid beside the kit's. The tiles still say they open a dialog, so open one, and return focus to the tile when it closes.",
     ],
   },
   "load-more": {
@@ -355,6 +362,7 @@ export const overviews: Record<string, Overview> = {
       "Offer `GraphList` beside `Graph` (a Graph / List switch with SegmentedControl), as charts offer `ChartTable`; `lint:rules` asks for it in a block.",
       "Edges are `{ from, to }`, where `from` is an input of `to`. An edge that closes a cycle, points at a missing node or at itself is left out, with a warning in development.",
       "Node ids must be unique. Labels are plain text: they start each node's accessible name, which then lists its inputs and outputs (\"Box labels v7, 48,210 boxes, from Hall B captures, to Dataset v3\").",
+      "`badge` is a string, not an element: it is drawn as the kit's outline tag and read in the node's name. Do not put a status in it; that is `status`.",
       "Pass `labels` (from, to, status words, instructions, inputs, outputs, loading) and `empty` to translate.",
     ],
   },
@@ -420,6 +428,8 @@ export const overviews: Record<string, Overview> = {
       "Mark the current page with isActive (aria-current=\"page\"). For a page under a section, mark its SidebarMenuSubButton, give the section aria-current=\"true\", and isActive only on the rail, where its pages are hidden.",
       "The cookie is read on the client after hydration. With server rendering, read `sidebar_state` (SIDEBAR_COOKIE_NAME) on the server and pass it as defaultOpen, so a collapsed sidebar does not open for a moment first.",
       "Below 768 px it is a sheet, decided in JavaScript; pass isMobile to fix the form in a preview or a test.",
+      "Two triggers share the toggle: `show=\"expanded\"` in SidebarHeader renders only while the column is open (never on phones), `show=\"collapsed\"` in the top bar only while it is a rail or hidden (always on phones; before hydration it hides by CSS from 768 px, so a phone never loads without its menu button). Pressed from the keyboard, the one that hides moves focus to the one that shows. `show=\"always\"` (default) is the single trigger as before.",
+      "SidebarRail is the edge as a control, for a mouse: a 16 px strip over the edge with the resize cursor, a hairline on hover and the trigger's tooltip. It is aria-hidden and tabIndex -1 (the triggers are the way for keyboards and screen readers) and hidden on a coarse pointer. The Sidebar no longer clips itself; an inner frame does, so the strip can reach over the edge.",
     ],
   },
   "navigation-menu": {
@@ -471,8 +481,9 @@ export const overviews: Record<string, Overview> = {
     notes: [
       "A treegrid, not role=\"log\": a log region announces every line added to it, and a virtual list adds lines as it scrolls; a treegrid rather than a grid because each line opens (aria-expanded). It has `aria-rowcount` and each line its `aria-rowindex`, one Tab stop, and `aria-activedescendant` for the line in focus, so focus never sits on a line that scrolls away. New lines are announced in a separate status, at most every 5 s.",
       "`createLogBuffer({ maxLines, flushMs })` is a ring buffer outside React: append from a WebSocket or ROS callback; it commits at most every `flushMs` (100) and tells its subscribers once. The viewer subscribes with useSyncExternalStore and filters only on a commit. Lines keep a sequence number, so an open or selected line stays open while older ones are dropped.",
-      "Following stops when the reader scrolls up, opens a line, moves with the keyboard or goes to a match; it resumes at the end, with End, or with the floating \"Jump to latest\". While paused, the line at the top stays put when older lines are dropped or the filters change.",
-      "Rows are measured, so wrapped and opened lines take their real height; a row is `--h-sm` (36 px with a mouse, 44 on touch).",
+      "Following stops when the reader scrolls up, opens a line, moves with the keyboard or goes to a match; it resumes at the end, with End, or with \"Jump to latest\" in the footer, beside Paused (docked there, so it never covers a line or an opened line's detail). While paused, the line at the top stays put when older lines are dropped or the filters change.",
+      "Rows are measured, so wrapped and opened lines take their real height; a row is `--h-sm` (36 px with a mouse, 44 on touch). The toolbar is one height, the search field's `--h-md`.",
+      "An opened line's detail is part of its row: wide, the message cell spans the time, level, source and message columns on a CSS subgrid, so the detail runs under the whole row from the time column with names under the time and values under the level. The one Copy line is on that band; the footer's Copy appears only for a selection of two lines or more (C copies one line from the keyboard).",
       "The rows component opts out of the React Compiler (\"use no memo\") because TanStack Virtual answers through methods on one object; the rest of the viewer compiles.",
       "Every word is in `labels`, including `ago` for time ago and `announce`; `locale` formats times and counts.",
     ],
@@ -638,7 +649,7 @@ export const overviews: Record<string, Overview> = {
   kbd: {
     what: "A key cap for shortcuts and keyboard instructions, alone or grouped into a chord.",
     use: ["Shortcut hints in menus, tooltips and search fields.", "A keyboard reference list.", "Instructions like Hold Space to stop all."],
-    instead: ["A code value or ID: a <code> span in font-mono."],
+    instead: ["A code value or ID in a sentence: `code`."],
     notes: [
       "Icon-only keys (arrows) need sr-only text inside; a <kbd> cannot take an aria-label.",
       "Inside a tooltip the key takes the tooltip's colours automatically.",
@@ -695,6 +706,7 @@ export const overviews: Record<string, Overview> = {
     use: [
       "The row of numbers under a dashboard's page header: robots online, events, devices, API calls.",
       "A count that opens the list behind it (with `href`).",
+      "A count that needs attention, such as items waiting for review (with `tone`).",
     ],
     instead: [
       "A level in a known range (battery, storage, signal): `meter`.",
@@ -703,6 +715,7 @@ export const overviews: Record<string, Overview> = {
     ],
     notes: [
       "Set `trend` from whether the change is good for the reader, not from its sign; only \"bad\" is coloured.",
+      "`tone` colours the caption (glyph and words) and needs one that says why; never colour the value or the card yourself.",
       "Pass `unavailable` with the reason instead of value 0 when the source is down or the count is unknown.",
       "`labels` translates the words only screen readers hear (better, worse, loading, unavailable).",
     ],
@@ -738,6 +751,16 @@ export const overviews: Record<string, Overview> = {
     use: ["IDs, references, install commands, coordinates."],
     instead: ["Sharing a link to the current page: the browser already does it."],
   },
+  code: {
+    what: "Inline code: a path, a key, a version tag or a command inside a sentence, in mono on a muted tile at the size of the text around it.",
+    use: [
+      "\"Set max_items in the config\": a key or a file in help text and descriptions.",
+      "A reference such as group/name@v3 in a table cell or a caption.",
+      "A short command inside a sentence.",
+    ],
+    instead: ["Code or a command on its own lines, with copy: `code-block`.", "A key to press: `kbd`.", "A value to copy: `copy-button` beside the Code."],
+    notes: ["Never set a font size or em value on it; it inherits the text's size.", "It has no copy prop: put a CopyButton beside it, never inside."],
+  },
   "code-block": {
     what: "Code or a command to read and copy, in a frame with its title and a copy button.",
     use: [
@@ -745,7 +768,7 @@ export const overviews: Record<string, Overview> = {
       "A one-time API key or webhook secret, hidden until shown.",
       "Source and API responses in docs and settings pages.",
     ],
-    instead: ["A short value inline (an ID, a reference): `copy-button` beside the text.", "A value someone edits: `input` or `textarea`."],
+    instead: ["A short value inline (an ID, a reference): `code`, with `copy-button` beside it.", "A value someone edits: `input` or `textarea`."],
     notes: [
       "It has no highlighter: pass shiki's `<pre>` as children (the docs site does, in site/code-block.tsx); `code` stays the plain text that Copy copies.",
       "Call shiki with `tabindex: false`, or its `<pre>` adds a second Tab stop.",
@@ -880,8 +903,13 @@ export const overviews: Record<string, Overview> = {
   },
   card: {
     what: "One raised surface that holds a group of related content.",
-    use: ["A robot's summary, a KPI, a settings section."],
-    instead: ["Rows of similar items: `list` or `table` inside one card. Cards are never nested.", "Label and value pairs: `description-list`."],
+    use: ["A robot's summary, a KPI, a settings section.", "A catalog tile with a cover picture (CardMedia)."],
+    instead: [
+      "Rows of similar items: `list` or `table` inside one card. Cards are never nested.",
+      "Label and value pairs: `description-list`.",
+      "A small picture at the start of a row: `item` with ItemMedia `variant=\"image\"`.",
+      "Many pictures, picked or opened: `image-grid`.",
+    ],
   },
   avatar: {
     what: "A person's picture or initials, round; a robot, site or team, square. With a status or count badge, and groups that fold into +N.",
@@ -1010,7 +1038,17 @@ export const overviews: Record<string, Overview> = {
   accordion: {
     what: "Sections that open and close in place.",
     use: ["Long settings, FAQs, details the user rarely needs."],
-    instead: ["Sections that are each a full view: `tabs`."],
+    instead: ["Sections that are each a full view: `tabs`.", "One region behind one trigger, with no heading: `collapsible`."],
+  },
+  collapsible: {
+    what: "One trigger that opens one region in place, with the accordion's chevron and motion.",
+    use: ["\"More filters\" under a filter bar.", "\"How to use this\" on a card.", "The rest of a long note."],
+    instead: ["A set of sections with headings: `accordion`.", "A hierarchy that opens level by level: `tree`.", "Details over the page: `popover` or `sheet`."],
+    notes: [
+      "Never a native <details> or your own chevron: this keeps the kit's chevron, focus ring and motion.",
+      "Do not wrap the trigger in a heading; if the region needs one, it is an accordion section.",
+      "Put layout (gap, padding) on CollapsibleContent's className; it goes on the inner box, so the height animation stays clean.",
+    ],
   },
   dialog: {
     what: "A centered panel for a short task or decision, blocking the page until it is done or closed.",

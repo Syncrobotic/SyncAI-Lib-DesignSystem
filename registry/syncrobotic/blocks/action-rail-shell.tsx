@@ -1,4 +1,4 @@
-// @syncrobotic/action-rail-shell v0.17.3 · update: npx shadcn add @syncrobotic/action-rail-shell --overwrite
+// @syncrobotic/action-rail-shell v0.32.0 · update: npx shadcn add @syncrobotic/action-rail-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -9,6 +9,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 
 /** One action in the rail. Give `href` to navigate (through `linkAs`) or `onSelect` to act. */
 export type RailAction = {
+  /** Keeps the button the same element while its label changes (Run → Stop), so focus stays on it. Default: its place. */
+  id?: string
   label: string
   icon?: LucideIcon
   href?: string
@@ -122,7 +124,9 @@ export function ActionRailShell({
     }
   }, [])
 
-  const actionButton = (a: RailAction, primaryAction: boolean, className?: string) => {
+  // Keyed by `id` or by place, never by label: a primary that turns from Run to Stop stays the same element, so a keyboard
+  // user who pressed it keeps focus on it.
+  const actionButton = (a: RailAction, primaryAction: boolean, key: string, className?: string) => {
     const Icon = a.icon
     const content = (
       <>
@@ -137,7 +141,7 @@ export function ActionRailShell({
     }
     if (a.href && !a.disabled)
       return (
-        <Button key={a.label} asChild {...props}>
+        <Button key={key} asChild {...props}>
           <Link href={a.href} onClick={a.onSelect}>
             {content}
           </Link>
@@ -145,7 +149,7 @@ export function ActionRailShell({
       )
     return (
       <Button
-        key={a.label}
+        key={key}
         {...props}
         onClick={a.onSelect}
         disabled={a.disabled}
@@ -169,7 +173,7 @@ export function ActionRailShell({
     >
       <header className="flex h-(--h-row) shrink-0 items-center gap-3 rounded-md bg-card px-4 ring-1 ring-border">
         {onBack && (
-          <button
+          <button data-slot="action-rail-back"
             type="button"
             aria-label={backLabel}
             aria-keyshortcuts="ArrowLeft Escape"
@@ -217,8 +221,8 @@ export function ActionRailShell({
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="top" align="start">
-                  {secondary.map((a) => (
-                    <DropdownMenuItem key={a.label} asChild={!!a.href && !a.disabled} disabled={a.disabled} onSelect={a.onSelect}>
+                  {secondary.map((a, i) => (
+                    <DropdownMenuItem key={a.id ?? `secondary-${i}`}asChild={!!a.href && !a.disabled} disabled={a.disabled} onSelect={a.onSelect}>
                       {a.href && !a.disabled ? (
                         <Link href={a.href}>
                           {a.icon && <a.icon aria-hidden="true" />}
@@ -235,7 +239,7 @@ export function ActionRailShell({
                 </DropdownMenuContent>
               </DropdownMenu>
             )}
-            {actionButton(primary, true, "min-w-0 flex-1")}
+            {actionButton(primary, true, primary.id ?? "primary", "min-w-0 flex-1")}
           </div>
           {primary.disabled && primary.disabledReason && (
             <p id={reasonId} className="text-xs text-muted-foreground">
@@ -244,7 +248,7 @@ export function ActionRailShell({
           )}
 
           {secondary.length > 0 && (
-            <div className="flex flex-col gap-1 border-t border-border pt-3 max-lg:hidden">{secondary.map((a) => actionButton(a, false))}</div>
+            <div className="flex flex-col gap-1 border-t border-border pt-3 max-lg:hidden">{secondary.map((a, i) => actionButton(a, false, a.id ?? `secondary-${i}`))}</div>
           )}
         </aside>
       </div>
