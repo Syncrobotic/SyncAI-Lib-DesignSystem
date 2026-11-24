@@ -6854,8 +6854,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "GovernanceTodoContent fills its container: the 56 rem cap (max-w-4xl) is gone, so in a shell it spans the content width like the other pages. Issue #337."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
