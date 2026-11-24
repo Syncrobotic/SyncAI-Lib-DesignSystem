@@ -6267,7 +6267,7 @@
       "name": "action-rail-shell",
       "type": "registry:block",
       "title": "Action-rail shell",
-      "description": "A page whose right column holds only the next step: its title, what it does, one large primary button and a few small actions. A bar fixed to the bottom on phones; ← or Esc goes back up a level.",
+      "description": "A page whose right column holds only the next step: its title, what it does, one large primary button and a few small actions. A bar fixed to the bottom on phones; ← or Esc goes back up a level. A button keeps focus while its label changes (give an action an `id` when the list reorders).",
       "dependencies": [
         "lucide-react"
       ],
@@ -6283,8 +6283,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "The primary and the small actions keep their element when their label changes (Run → Stop), so keyboard focus stays on the button; they are keyed by place, or by the new optional `id` on RailAction. Issue #334."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
