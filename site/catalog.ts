@@ -1608,7 +1608,7 @@ const keyboard: Record<string, [string, string][]> = {
   banner: [["`Enter` / `Space`", "On the action, run it; on the close button, dismiss the notice"]],
   toast: [
     ["`F8`", "Move focus to the notifications"],
-    ["`Esc`", "Dismiss the focused notification"],
+    ["`Esc`", "Dismiss the focused notification. In an open dialog, close the dialog; the notification stays"],
   ],
   "stop-button": [
     ["`Enter` / `Space`", "Stop this robot"],

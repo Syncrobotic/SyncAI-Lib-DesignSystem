@@ -9,6 +9,7 @@ Components install as source, so a project keeps the version it installed. Re-ru
 ### Fixed
 - **`labels-zh-tw` 0.32.0:** `paginationLabels.range` groups its numbers by the locale ("第 1,201–1,220 筆，共 12,400 筆"), as the English default does. Issue #324
 - **`action-rail-shell` 0.32.0:** the primary keeps its element, and keyboard focus, when its label changes (Run → Stop and back); the small actions too. Actions are keyed by place, or by a new optional `id` on `RailAction`, never by label. Issue #334
+- **`toast` 0.32.0:** Escape inside an open native `<dialog>` closes the dialog again (it gets a `cancel` it can refuse) and leaves the toast; an open toast had taken the key for itself. Escape with focus in a toast, or outside any dialog, still dismisses it. Issue #311
 
 ## 0.31.0 · 2026-11-22
 

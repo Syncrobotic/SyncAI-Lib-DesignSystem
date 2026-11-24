@@ -2518,8 +2518,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Escape inside an open native `<dialog>` closes the dialog (it gets a `cancel` it can refuse) and the toast stays; the toast had taken the key. Escape with focus in a toast, or outside any dialog, still dismisses it. Issue #311."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
