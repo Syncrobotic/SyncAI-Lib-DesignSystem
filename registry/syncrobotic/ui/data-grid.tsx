@@ -800,7 +800,7 @@ function DetailsHeader() {
 function ExpandButton({ row }: { row: GridRow }) {
   const l = useGridLabels()
   return (
-    <button
+    <button data-slot="data-grid-expand"
       type="button"
       aria-label={row.getIsExpanded() ? l.hideDetails : l.showDetails}
       aria-expanded={row.getIsExpanded()}

@@ -1,4 +1,4 @@
-// @syncrobotic/robot-map v0.29.0 · update: npx shadcn add @syncrobotic/robot-map --overwrite
+// @syncrobotic/robot-map v0.32.0 · update: npx shadcn add @syncrobotic/robot-map --overwrite
 "use client"
 
 import * as React from "react"
@@ -1895,7 +1895,7 @@ export function RobotMapList({ label: name, robots = [], zones = [], selectedId,
         const word = statusWord(r, labels)
         return (
           <li key={r.id} className="min-w-0">
-            <button
+            <button data-slot="robot-map-list-item"
               type="button"
               aria-pressed={isSelected}
               data-robot-id={r.id}

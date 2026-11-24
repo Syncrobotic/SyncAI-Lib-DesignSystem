@@ -1,4 +1,4 @@
-// @syncrobotic/stepper v0.28.0 · update: npx shadcn add @syncrobotic/stepper --overwrite
+// @syncrobotic/stepper v0.32.0 · update: npx shadcn add @syncrobotic/stepper --overwrite
 "use client"
 
 import * as React from "react"
@@ -210,7 +210,7 @@ export function StepperItem({
       )}
       <div className={cn("flex", !vertical && "w-full justify-center")}>
         {canJump ? (
-          <button
+          <button data-slot="stepper-step"
             type="button"
             onClick={() => onValueChange?.(step)}
             className={cn(

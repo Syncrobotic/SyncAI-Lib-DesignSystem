@@ -1,4 +1,4 @@
-// @syncrobotic/sortable v0.28.0 · update: npx shadcn add @syncrobotic/sortable --overwrite
+// @syncrobotic/sortable v0.32.0 · update: npx shadcn add @syncrobotic/sortable --overwrite
 "use client"
 
 import * as React from "react"
@@ -190,7 +190,7 @@ export function SortablePosition({
 export function SortableHandle({ label, className }: { label: string; className?: string }) {
   const ctx = React.useContext(SortableItemContext)
   return (
-    <button
+    <button data-slot="sortable-handle"
       type="button"
       aria-label={label}
       {...ctx?.attributes}

@@ -1,4 +1,4 @@
-// @syncrobotic/banner v0.28.0 · update: npx shadcn add @syncrobotic/banner --overwrite
+// @syncrobotic/banner v0.32.0 · update: npx shadcn add @syncrobotic/banner --overwrite
 "use client"
 
 import * as React from "react"
@@ -100,7 +100,7 @@ export function Banner({ tone = "neutral", icon, title, action, onDismiss, dismi
           {action && <div className="flex shrink-0 items-center">{action}</div>}
         </div>
         {onDismiss && (
-          <button
+          <button data-slot="banner-close"
             ref={close}
             type="button"
             aria-label={dismissLabel}

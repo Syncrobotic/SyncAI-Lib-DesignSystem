@@ -1,4 +1,4 @@
-// @syncrobotic/alarm v0.27.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
+// @syncrobotic/alarm v0.32.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
 "use client"
 
 import * as React from "react"
@@ -228,24 +228,24 @@ export function Alarm({
           </span>
           <span className="ml-auto flex flex-wrap justify-end gap-2 empty:hidden">
             {action && (
-              <button type="button" onClick={action.onClick} className={cn(rowButton, "ring-transparent")}>
+              <button data-slot="alarm-action" type="button" onClick={action.onClick} className={cn(rowButton, "ring-transparent")}>
                 {action.label}
               </button>
             )}
             {!shelved && onShelve && priority !== "critical" && (
-              <button type="button" onClick={onShelve} className={cn(rowButton, "ring-transparent")}>
+              <button data-slot="alarm-shelve" type="button" onClick={onShelve} className={cn(rowButton, "ring-transparent")}>
                 {l.shelve}
                 <span className="sr-only">: {title}</span>
               </button>
             )}
             {shelved && onUnshelve && (
-              <button type="button" onClick={onUnshelve} className={cn(rowButton, "ring-border")}>
+              <button data-slot="alarm-unshelve" type="button" onClick={onUnshelve} className={cn(rowButton, "ring-border")}>
                 {l.unshelve}
                 <span className="sr-only">: {title}</span>
               </button>
             )}
             {loud && onAcknowledge && (
-              <button type="button" data-alarm-acknowledge="" onClick={onAcknowledge} className={cn(rowButton, "ring-input")}>
+              <button data-slot="alarm-acknowledge" type="button" data-alarm-acknowledge="" onClick={onAcknowledge} className={cn(rowButton, "ring-input")}>
                 {l.acknowledge}
                 <span className="sr-only">: {title}</span>
               </button>
@@ -555,7 +555,7 @@ export function AlarmList({
           </span>
         </div>
         {onAcknowledgeAll && inView.length >= 2 && (
-          <button
+          <button data-slot="alarm-acknowledge-all"
             type="button"
             onClick={() => {
               onAcknowledgeAll(inView)
@@ -585,7 +585,7 @@ export function AlarmList({
             {updatedAt && <span className="block text-xs text-muted-foreground">{l.updatedAt(updatedAt)}</span>}
           </span>
           {onRetry && (
-            <button type="button" onClick={onRetry} className={cn(rowButton, "ring-input")}>
+            <button data-slot="alarm-retry" type="button" onClick={onRetry} className={cn(rowButton, "ring-input")}>
               {l.retry}
             </button>
           )}

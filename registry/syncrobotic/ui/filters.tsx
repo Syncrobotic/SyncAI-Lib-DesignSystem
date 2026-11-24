@@ -1,4 +1,4 @@
-// @syncrobotic/filters v0.28.0 · update: npx shadcn add @syncrobotic/filters --overwrite
+// @syncrobotic/filters v0.32.0 · update: npx shadcn add @syncrobotic/filters --overwrite
 "use client"
 
 import * as React from "react"
@@ -556,20 +556,20 @@ export function Filters({
                       data-rule={r.id}
                       className="flex h-(--h-sm) max-w-full min-w-0 items-stretch overflow-hidden rounded-xs bg-card ring-1 ring-border ring-inset [&>*+*]:border-l [&>*+*]:border-border"
                     >
-                      <button {...part("field")} onClick={(e) => toggle("field", e.currentTarget)} aria-label={labels.editField(field.label)} className={cn(segment, "shrink-0")}>
+                      <button data-slot="filters-field" {...part("field")} onClick={(e) => toggle("field", e.currentTarget)} aria-label={labels.editField(field.label)} className={cn(segment, "shrink-0")}>
                         {field.icon}
                         {field.label}
                       </button>
-                      <button {...part("operator")} onClick={(e) => toggle("operator", e.currentTarget)} aria-label={labels.editOperator(op)} className={cn(segment, "shrink-0 text-muted-foreground")}>
+                      <button data-slot="filters-operator" {...part("operator")} onClick={(e) => toggle("operator", e.currentTarget)} aria-label={labels.editOperator(op)} className={cn(segment, "shrink-0 text-muted-foreground")}>
                         {op}
                       </button>
                       {val && (
-                        <button {...part("value")} onClick={(e) => toggle("value", e.currentTarget)} aria-label={labels.editValue(val)} className={cn(segment, "font-medium")}>
+                        <button data-slot="filters-value" {...part("value")} onClick={(e) => toggle("value", e.currentTarget)} aria-label={labels.editValue(val)} className={cn(segment, "font-medium")}>
                           {field.type === "option" && !field.multiple && field.options.find((o) => o.value === r.value)?.icon}
                           <ValueText rule={r} field={field} text={val} />
                         </button>
                       )}
-                      <button
+                      <button data-slot="filters-remove"
                         type="button"
                         ref={(el) => {
                           if (el) removeRefs.current.set(r.id, el)
@@ -715,7 +715,7 @@ function Picker({
       </p>
       {step !== "field" && field && (
         <div className="flex items-center gap-2 border-b border-border p-1 pr-3">
-          <button
+          <button data-slot="filters-back"
             type="button"
             aria-label={labels.back}
             onClick={back}

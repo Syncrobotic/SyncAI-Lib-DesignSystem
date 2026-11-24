@@ -1,4 +1,4 @@
-// @syncrobotic/image-grid v0.28.0 · update: npx shadcn add @syncrobotic/image-grid --overwrite
+// @syncrobotic/image-grid v0.32.0 · update: npx shadcn add @syncrobotic/image-grid --overwrite
 "use client"
 
 import * as React from "react"
@@ -244,11 +244,12 @@ export function ImageGrid({
                 restricted={hidden}
                 reason={item.reason}
                 label={labels.reveal}
+                data-slot="image-grid-reveal"
                 onReveal={() => reveal(item, true)}
                 className={cn("w-full", aspects[aspect])}
               >
                 {interactive ? (
-                  <button
+                  <button data-slot="image-grid-item"
                     type="button"
                     role={single ? "radio" : undefined}
                     aria-checked={single ? isSelected : undefined}
@@ -268,6 +269,7 @@ export function ImageGrid({
                 {picking && lightbox && (
                   <button
                     type="button"
+                    data-slot="image-grid-zoom"
                     aria-label={labels.viewLarger(item.name)}
                     aria-haspopup="dialog"
                     onClick={() => show(i)}

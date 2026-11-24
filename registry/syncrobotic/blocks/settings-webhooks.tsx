@@ -1,4 +1,4 @@
-// @syncrobotic/settings-webhooks v0.28.0 · update: npx shadcn add @syncrobotic/settings-webhooks --overwrite
+// @syncrobotic/settings-webhooks v0.32.0 · update: npx shadcn add @syncrobotic/settings-webhooks --overwrite
 "use client"
 
 import * as React from "react"
@@ -209,7 +209,7 @@ function DeliveryRow({ delivery: d }: { delivery: WebhookDelivery }) {
     )
   return (
     <li className="border-b border-border last:border-b-0">
-      <button type="button" aria-expanded={open} aria-controls={id} onClick={() => setOpen((o) => !o)} className={cn("press hover:bg-accent", grid)}>
+      <button data-slot="settings-webhooks-delivery" type="button" aria-expanded={open} aria-controls={id} onClick={() => setOpen((o) => !o)} className={cn("press hover:bg-accent", grid)}>
         {summary}
         <ChevronDown
           aria-hidden="true"
@@ -465,7 +465,7 @@ export function SettingsWebhooks({
                 const current = e.id === selectedId
                 return (
                   <li key={e.id} className="border-b border-border last:border-b-0">
-                    <button
+                    <button data-slot="settings-webhooks-endpoint"
                       type="button"
                       aria-current={current ? "true" : undefined}
                       onClick={() => {

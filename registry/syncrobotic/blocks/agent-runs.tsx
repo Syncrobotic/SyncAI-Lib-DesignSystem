@@ -1,4 +1,4 @@
-// @syncrobotic/agent-runs v0.17.3 · update: npx shadcn add @syncrobotic/agent-runs --overwrite
+// @syncrobotic/agent-runs v0.32.0 · update: npx shadcn add @syncrobotic/agent-runs --overwrite
 "use client"
 
 import * as React from "react"
@@ -138,7 +138,7 @@ export function AgentRuns() {
               <TableRow key={r.id}>
                 <TableCell className="py-2 whitespace-normal">
                   {/* At least the control height (44, 48 in gloves): two short lines alone are a 36 px target. */}
-                  <a href={`#${r.id}`} className="flex min-h-(--h-md) flex-col justify-center hover:underline">
+                  <a data-slot="agent-runs-link" href={`#${r.id}`} className="flex min-h-(--h-md) flex-col justify-center hover:underline">
                     <span className="font-medium">{r.goal}</span>
                     <span className="text-xs text-muted-foreground">
                       {r.agent} · <span className="font-mono">{r.id}</span>

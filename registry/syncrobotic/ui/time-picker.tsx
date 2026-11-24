@@ -1,4 +1,4 @@
-// @syncrobotic/time-picker v0.23.3 · update: npx shadcn add @syncrobotic/time-picker --overwrite
+// @syncrobotic/time-picker v0.32.0 · update: npx shadcn add @syncrobotic/time-picker --overwrite
 "use client"
 
 import * as React from "react"
@@ -119,7 +119,7 @@ export function TimeInput({
   return (
     <div className={cn(field, invalid && "ring-2 ring-danger", className)}>
       <Clock aria-hidden="true" className="size-4 shrink-0 text-muted-foreground" />
-      <input
+      <input data-slot="time-picker-input"
         id={id ?? f?.id}
         aria-label={ariaLabel}
         aria-describedby={f?.describedBy}
@@ -295,7 +295,7 @@ export function TimePicker({
             const taken = unavailable.includes(t)
             const selected = t === picked
             return (
-              <button
+              <button data-slot="time-picker-option"
                 key={t}
                 type="button"
                 tabIndex={i === active ? 0 : -1}

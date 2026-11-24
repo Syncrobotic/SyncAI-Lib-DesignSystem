@@ -1,4 +1,4 @@
-// @syncrobotic/file-upload v0.10.1 · update: npx shadcn add @syncrobotic/file-upload --overwrite
+// @syncrobotic/file-upload v0.32.0 · update: npx shadcn add @syncrobotic/file-upload --overwrite
 "use client"
 
 import * as React from "react"
@@ -120,7 +120,7 @@ export function FileUpload({
         className,
       )}
     >
-      <input
+      <input data-slot="file-upload-input"
         ref={input}
         type="file"
         hidden

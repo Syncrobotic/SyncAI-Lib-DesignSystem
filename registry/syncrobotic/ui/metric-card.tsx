@@ -1,4 +1,4 @@
-// @syncrobotic/metric-card v0.28.0 · update: npx shadcn add @syncrobotic/metric-card --overwrite
+// @syncrobotic/metric-card v0.32.0 · update: npx shadcn add @syncrobotic/metric-card --overwrite
 import * as React from "react"
 import { ArrowDownRight, ArrowUpRight, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -114,7 +114,7 @@ export function MetricCard({
         <span className="text-sm text-muted-foreground">
           {href ? (
             // focus-ring: the whole card draws the ring (has-[a:focus-visible] on the card), since the link covers it.
-            <Link href={href} className="inline-flex items-center gap-2 outline-none after:absolute after:inset-0 after:rounded-[inherit]">
+            <Link data-slot="metric-card-link" href={href} className="inline-flex items-center gap-2 outline-none after:absolute after:inset-0 after:rounded-[inherit]">
               {label}
               <ChevronRight aria-hidden="true" className="size-4 shrink-0" />
             </Link>
