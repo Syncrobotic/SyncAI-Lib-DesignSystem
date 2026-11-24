@@ -584,8 +584,10 @@
     "live": false
   },
   "tooltip": {
-    "roles": [],
-    "tabStops": 0,
+    "roles": [
+      "button"
+    ],
+    "tabStops": 3,
     "live": false
   },
   "dropdown-menu": {

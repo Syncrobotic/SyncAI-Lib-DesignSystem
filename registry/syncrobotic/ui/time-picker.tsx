@@ -258,6 +258,7 @@ export function TimePicker({
       <PopoverTrigger asChild>
         <button
           type="button"
+          data-slot="time-picker-trigger"
           id={triggerId}
           // Label then shown value, so the name contains what is on screen (WCAG 2.5.3).
           aria-labelledby={ariaLabel ? `${uid}-l ${uid}-v` : undefined}
