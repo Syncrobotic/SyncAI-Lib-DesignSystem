@@ -740,6 +740,7 @@ const entries: Record<string, Entry> = {
       "Colours follow the order you give, never the size, and are never status colours.",
       "Outside a table cell, show the legend: identity never rests on colour alone. In a table, the column header names the parts.",
       "Give a segment `href` when its part is a view to follow (the list filtered to it): its legend entry becomes the link, named with its share (\"Fleet cameras 5,060, 51 %\"). The bar stays one picture, so each part has one target. Pass `linkAs` for your router.",
+      "A list of bars (one per task, per class) has one ShareLegend above it, not a legend per row. Give it the same segments in the same order as the bars, so the colours match; each bar keeps its own name.",
     ],
   },
   "restricted-preview": {

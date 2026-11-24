@@ -1,4 +1,4 @@
-// @syncrobotic/share-bar v0.31.0 · update: npx shadcn add @syncrobotic/share-bar --overwrite
+// @syncrobotic/share-bar v0.32.0 · update: npx shadcn add @syncrobotic/share-bar --overwrite
 import type * as React from "react"
 import { cn } from "@/lib/utils"
 
@@ -29,12 +29,15 @@ export type ShareSegment = {
   href?: string
 }
 
+/** A segment's tone: its own, or its place in the list (accent, two greys, then Other). Shared, so a legend matches its bars. */
+const toneOf = (s: { tone?: keyof typeof tones }, i: number) => s.tone ?? (Math.min(i + 1, 4) as 1 | 2 | 3 | 4)
 
 /**
  * How a whole splits, as one thin bar: segments in the chart palette, 2 px apart, each with its share on hover. Light
  * enough for a table cell. Read by screen readers as one sentence; identity never rests on colour alone, so outside a
  * table cell show the `legend`, which names every value. A segment with `href` makes its legend entry a link ("Source A
- * 1,204, 42 %"); the bar itself stays one picture, so each part has one target.
+ * 1,204, 42 %"); the bar itself stays one picture, so each part has one target. For a list of bars, one ShareLegend
+ * above the list.
  */
 export function ShareBar({
   segments,
@@ -69,7 +72,7 @@ export function ShareBar({
   // In a link's name: whole numbers as they are ("42 %"), others to one decimal.
   const said = (n: number) => n.toLocaleString(locale, { maximumFractionDigits: 1, useGrouping: false })
   const total = totalProp ?? segments.reduce((n, s) => n + s.value, 0)
-  const shown = segments.map((s, i) => ({ ...s, tone: s.tone ?? (Math.min(i + 1, 4) as 1 | 2 | 3 | 4) })).filter((s) => s.value > 0)
+  const shown = segments.map((s, i) => ({ ...s, tone: toneOf(s, i) })).filter((s) => s.value > 0)
   const rest = total - shown.reduce((n, s) => n + s.value, 0)
   const pct = (v: number) => (100 * v) / Math.max(total, 1)
   const bar = (
@@ -127,5 +130,38 @@ export function ShareBar({
         })}
       </ul>
     </div>
+  )
+}
+
+export type ShareLegendSegment = Pick<ShareSegment, "key" | "label" | "tone"> & {
+  /** Shown after the label when given: a total across the list, say. */
+  value?: number
+}
+
+/**
+ * One legend for a list of ShareBars, above the list, so each row does not repeat it. Give it the same segments in the
+ * same order as the bars (values optional): the colours come from the same order, so they match. Each bar keeps its own
+ * accessible name ("Detection: Manual 60, Model 40"); the legend only shows what the colours mean.
+ */
+export function ShareLegend({
+  segments,
+  locale,
+  className,
+}: {
+  segments: ShareLegendSegment[]
+  /** Formats the values (a BCP 47 tag such as "zh-TW"). Left out, the browser's language. */
+  locale?: string
+  className?: string
+}) {
+  return (
+    <ul data-slot="share-legend" className={cn("flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground", className)}>
+      {segments.map((s, i) => (
+        <li key={s.key} className="inline-flex items-center gap-2 tabular-nums">
+          <span aria-hidden="true" className={cn("size-2 shrink-0 rounded-full", tones[toneOf(s, i)])} />
+          {s.label}
+          {s.value !== undefined && ` ${s.value.toLocaleString(locale)}`}
+        </li>
+      ))}
+    </ul>
   )
 }

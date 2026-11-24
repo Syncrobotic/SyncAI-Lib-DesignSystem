@@ -2,6 +2,11 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **`share-bar` 0.32.0:** `ShareLegend`, one legend for a list of bars (one bar per task, per class): the same segments in the same order as the bars, values optional, so the colours match by construction. Each bar keeps its own accessible name. Issue #319
+
 ## 0.31.0 · 2026-11-22
 
 Two components for model answers (streaming text, text linked to marks on a picture), a tier badge, and 13 fixes and options asked for by product teams: heading levels, sticky tabs under the shell, multi-select chips, formatted meters, chart inks and more.

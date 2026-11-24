@@ -54,7 +54,7 @@ export const overviews: Record<string, Overview> = {
   },
   "share-bar": {
     what: "How a whole splits into a few parts, as one thin bar, light enough for a table cell.",
-    use: ["Images by use, label sources, a dataset's tiers.", "Inside a table cell without a legend, or on its own with `legend`.", "Parts people follow to a filtered list: `href` on a segment makes its legend entry a link."],
+    use: ["Images by use, label sources, a dataset's tiers.", "Inside a table cell without a legend, or on its own with `legend`.", "Parts people follow to a filtered list: `href` on a segment makes its legend entry a link.", "A list with one bar per row under one ShareLegend."],
     instead: ["Values over time or many categories: `chart`.", "A single level within a range: `meter`."],
   },
   "annotated-image": {

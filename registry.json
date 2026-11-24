@@ -3990,7 +3990,7 @@
       "name": "share-bar",
       "type": "registry:ui",
       "title": "Share bar",
-      "description": "How a whole splits, as one thin bar in the chart palette (the accent, two greys, Other): light enough for a table cell, with an optional label, total and legend, whose entries link to each part with href.",
+      "description": "How a whole splits, as one thin bar in the chart palette (the accent, two greys, Other): light enough for a table cell, with an optional label, total and legend, whose entries link to each part with href. ShareLegend is one legend for a list of bars.",
       "registryDependencies": [
         "@syncrobotic/cn"
       ],
@@ -4001,8 +4001,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "`ShareLegend`: one legend for a list of bars, from the same segments in the same order (values optional), so its colours match the bars; each bar keeps its own name. Issue #319."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",

@@ -9831,6 +9831,23 @@
     }
    ],
    "inherits": []
+  },
+  {
+   "name": "ShareLegend",
+   "props": [
+    {
+     "name": "segments",
+     "type": "ShareLegendSegment[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the values (a BCP 47 tag such as \"zh-TW\"). Left out, the browser's language."
+    }
+   ],
+   "inherits": []
   }
  ],
  "sheet": [
