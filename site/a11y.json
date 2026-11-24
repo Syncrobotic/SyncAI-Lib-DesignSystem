@@ -941,7 +941,6 @@
   "time-picker": {
     "roles": [
       "button",
-      "group",
       "textbox"
     ],
     "tabStops": 2,
