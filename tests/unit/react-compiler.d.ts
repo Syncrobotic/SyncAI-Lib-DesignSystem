@@ -42,3 +42,6 @@ declare module "@/registry/syncrobotic/ui/attitude?react-compiler" {
 declare module "@/registry/syncrobotic/ui/streaming-text?react-compiler" {
   export * from "@/registry/syncrobotic/ui/streaming-text"
 }
+declare module "@/registry/syncrobotic/ui/image-grid?react-compiler" {
+  export * from "@/registry/syncrobotic/ui/image-grid"
+}

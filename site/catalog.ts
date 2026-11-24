@@ -80,6 +80,8 @@ export type StoryFile =
   | "streaming-chart"
   | "attitude"
   | "tier-badge"
+  | "bar-list"
+  | "thumbnail"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
@@ -623,6 +625,7 @@ const entries: Record<string, Entry> = {
       "Never nest cards. Group rows inside one card with separators.",
       "The title is an h3. Set `as` on CardTitle (`titleAs` on CardDataHeader) to the level the page needs: h2 for a card right under the h1, h4 inside a section under an h3. The size stays the same.",
       "A cover picture is CardMedia, first in the card: edge to edge, its top corners the card's own (`rounded-[inherit]`), 16:9 unless `aspect` says otherwise. `inset` keeps it inside the padding at the image radius (12). Never round the picture yourself.",
+      "A media card (a gallery of collections) is a pattern, not a component: CardMedia with one cover or a mosaic of up to four Thumbnails (`className=\"flex size-full rounded-none\"`), the title as the card's one link (metric-card's stretched link: `after:absolute after:inset-0` on the link, the ring on the card), one or two facts and one badge. A restricted collection shows Thumbnail's `restricted` placeholder and fetches nothing. Lay them out with `grid-cols-[repeat(auto-fill,minmax(16rem,1fr))]`.",
     ],
   },
   avatar: {
@@ -761,6 +764,18 @@ const entries: Record<string, Entry> = {
       "A list of bars (one per task, per class) has one ShareLegend above it, not a legend per row. Give it the same segments in the same order as the bars, so the colours match; each bar keeps its own name.",
     ],
   },
+  "bar-list": {
+    group: "Charts",
+    examples: { file: "bar-list", prefix: "BarList" },
+    rules: [
+      "A short ranked list of counts: items per class, files per format, the top 5 to 10. Pass the rows in the order to show them, largest first; `max` shows that many, then says how many more.",
+      "One series: every bar is `--chart-1`, scaled to the largest value. No status colours, no colour per row; a row that needs attention says so in words elsewhere.",
+      "The value is written in each row (tabular, with `locale`; `format` to shorten it), so it needs no Chart / Table switch, as a sparkline does.",
+      "No surface of its own: put it in a Card (with CardDataHeader naming it), a table cell or a sheet. `label` names the list for screen readers; show the same words as the card's title.",
+      "Give a row `href` when it leads to a view of that item (the list filtered to it): the whole row is the link, 36 px tall (44 on touch). Pass `linkAs` for your router.",
+      "A level against a known range (storage, a quota) is a Meter; values over time or a chart people explore is `chart` (bar-chart-ranked).",
+    ],
+  },
   "restricted-preview": {
     group: "Media & files",
     examples: { file: "data-pieces", prefix: "RestrictedPreview" },
@@ -768,6 +783,18 @@ const entries: Record<string, Entry> = {
       "For pictures someone should choose to see: restricted tiers, faces, number plates. Nothing loads until they ask.",
       "Neutral, not a warning colour: restricted is a property of the data, not a fault. Say why in `reason`.",
       "Each preview reveals on its own; log the reveal in `onReveal` if the data needs an audit trail.",
+    ],
+  },
+  thumbnail: {
+    group: "Media & files",
+    examples: { file: "thumbnail", prefix: "Thumbnail" },
+    rules: [
+      "One small picture at the start of a table row, a list row or a card's row. Many pictures to browse or open: ImageGrid.",
+      "Sizes come from the control scale: `sm` (--h-sm, 36 px, 44 on touch) in a table, `md` (--h-md, 44), `lg` (--h-lg, 48) in a list or a card. Never a size of your own.",
+      "Give `alt` what the picture shows, or `alt=\"\"` when the row's own words already say it.",
+      "A row the viewer may not see (faces, number plates, a restricted tier) is `restricted` with a `reason`: the neutral placeholder, named by the reason, with nothing fetched. Never a warning colour: restricted is a property of the data.",
+      "The reason is a hover tooltip and the placeholder's accessible name; touch screens show no tooltip, so where the reason matters, say it in the row too (a TierBadge).",
+      "It is not a control and never takes focus: make the row, or a link in it, the target.",
     ],
   },
   "image-grid": {
@@ -780,7 +807,8 @@ const entries: Record<string, Entry> = {
       "Picked tiles are ringed in the focus ink with a check, never a status colour. While picking, the corner button opens the lightbox.",
       "Pictures the viewer must ask to see are `restricted`, with a `reason`; nothing loads before they ask. Log the view in `onReveal`.",
       "Use the strip for a short row, such as what was just uploaded; for a whole dataset, the grid.",
-      "When the page has its own detail view (a Sheet with the picture's labels and file), pass `onOpen(item, index)`: it replaces the lightbox, and the keys, hidden and broken tiles stay the same. Open a dialog from it, and return focus to the tile when it closes (keep `document.activeElement`, focus it in `onCloseAutoFocus`).",
+      "When the page has its own detail view (a Sheet with the picture's labels and file), pass `onOpen(item, index)`: it replaces the lightbox, and the keys, hidden and broken tiles stay the same. Open a dialog from it, and give it back focus when it closes: call `restoreFocus()` on the grid's `ref` in the dialog's `onCloseAutoFocus`, after `preventDefault()`.",
+      "`renderTile(item, { onError })` draws the picture area of a tile your way, such as an AnnotatedImage with the boxes on it (no legend, no words on a small tile). The grid keeps the button, its name (the item's `alt`), the shape, picking and the hidden tile; call `onError` when your picture fails and the tile shows the grid's failed state. No controls inside a face: the tile is the button.",
     ],
   },
   "annotated-image": {
@@ -1531,8 +1559,9 @@ const keyboard: Record<string, [string, string][]> = {
     ["`←` `→` / `↑` `↓`", "Pick one (a radio group, one Tab stop): move to the previous or next picture and pick it"],
     ["`Home` / `End`", "Pick one: the first or last picture"],
     ["`←` / `→`", "In the lightbox: previous or next picture"],
-    ["`Esc`", "Close the lightbox and return focus to the picture's tile"],
+    ["`Esc`", "Close the lightbox and return focus to the picture's tile (your own dialog: `restoreFocus()`)"],
   ],
+  "bar-list": [["`Tab`", "Move between the rows that are links; `Enter` follows one"]],
   "media-player": [
     ["`Space` / `K`", "Play or pause (Space on a focused button presses that button)"],
     ["`←` / `→`", "Back or forward 5 seconds, also on the timeline"],

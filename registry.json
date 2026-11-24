@@ -209,8 +209,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.33.0",
         "changelog": [
+          {
+            "version": "0.33.0",
+            "date": "2026-11-24",
+            "note": "`barListLabels` for the new bar-list (還有 4 項, 沒有資料). Issue #308. `thumbnailLabels` for the new thumbnail (無法載入, 受限圖片). Issue #298."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -4220,6 +4225,32 @@
       }
     },
     {
+      "name": "bar-list",
+      "type": "registry:ui",
+      "title": "Bar list",
+      "description": "A short ranked list of counts (items per class, files per format) with no chart library: each row its label and value in words, a bar under it in --chart-1 scaled to the largest value, links on rows with href, \"N more\" after max. No surface of its own, so it fits in a card, a table cell or a sheet.",
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/bar-list.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.33.0",
+        "changelog": [
+          {
+            "version": "0.33.0",
+            "date": "2026-11-24",
+            "note": "First release: a `<ul>` of ranked counts, the value in each row's text (tabular, `locale` and `format`), a bar in `--chart-1` scaled to the largest value, rows with `href` as links through `linkAs` (36 px, 44 on touch), `max` then \"N more\" and the empty state through `labels`. Issue #308."
+          }
+        ]
+      }
+    },
+    {
       "name": "load-more",
       "type": "registry:ui",
       "title": "Load more",
@@ -4306,10 +4337,40 @@
       }
     },
     {
+      "name": "thumbnail",
+      "type": "registry:ui",
+      "title": "Thumbnail",
+      "description": "One small square picture for a table row, a list or a card: sm, md or lg from the control scale, rounded-xs, object-cover, lazy, ImageGrid's neutral fallback when it fails, and restricted with a reason as RestrictedPreview's placeholder at that size, fetching nothing.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/tooltip"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/thumbnail.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.33.0",
+        "changelog": [
+          {
+            "version": "0.33.0",
+            "date": "2026-11-24",
+            "note": "First release: `size` sm (--h-sm), md (--h-md) or lg (--h-lg), rounded-xs, object-cover, `loading=\"lazy\"`, the image-off fallback in the same box when the picture fails, and `restricted` with `reason`: the dashed, muted placeholder with the eye-off mark, named by the reason and showing it as a tooltip, with nothing fetched. Issue #298."
+          }
+        ]
+      }
+    },
+    {
       "name": "image-grid",
       "type": "registry:ui",
       "title": "Image grid",
-      "description": "Many pictures as a grid or a scroll-snap strip: lazy tiles that keep their aspect, skeleton, hidden and broken states, single or multiple picking, and a lightbox with arrow keys and Esc, or your own view with onOpen.",
+      "description": "Many pictures as a grid or a scroll-snap strip: lazy tiles that keep their aspect, skeleton, hidden and broken states, single or multiple picking, and a lightbox with arrow keys and Esc, or your own view with onOpen (restoreFocus on its ref returns focus to the tile) and your own tile face with renderTile.",
       "dependencies": [
         "lucide-react"
       ],
@@ -4328,8 +4389,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.32.0",
+        "version": "0.33.0",
         "changelog": [
+          {
+            "version": "0.33.0",
+            "date": "2026-11-24",
+            "note": "`renderTile(item, { onError })` draws a tile's picture area your way (an AnnotatedImage with the boxes on it); the grid keeps the button and its name (the item's `alt`), the aspect box, picking, and the hidden and failed states (`onError` shows the failed one). Focus return moves into the grid: with `onOpen`, it remembers the tile (or the corner button) that opened the picture, and `restoreFocus()` on its `ref` (`ImageGridHandle`) puts focus back there, or on the tile now in its place, from your dialog's `onCloseAutoFocus`. Issue #320."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -7468,8 +7534,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.33.0",
         "changelog": [
+          {
+            "version": "0.33.0",
+            "date": "2026-11-24",
+            "note": "Checklist: BarList for a short ranked list of counts, Thumbnail for a small picture in a row (restricted with a reason, nothing fetched), and ImageGrid's `restoreFocus()` for a dialog opened from `onOpen`. Issues #308, #298, #320."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",

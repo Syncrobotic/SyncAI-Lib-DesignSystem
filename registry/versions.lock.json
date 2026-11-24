@@ -12,8 +12,8 @@
     "hash": "8ec920f8618ff43d"
   },
   "labels-zh-tw": {
-    "version": "0.32.0",
-    "hash": "9879ad3cc920d835"
+    "version": "0.33.0",
+    "hash": "e13da9a83c5594a1"
   },
   "ros": {
     "version": "0.31.0",
@@ -359,6 +359,10 @@
     "version": "0.32.0",
     "hash": "403e8d33b18f7bce"
   },
+  "bar-list": {
+    "version": "0.33.0",
+    "hash": "85450b887d188d61"
+  },
   "load-more": {
     "version": "0.28.0",
     "hash": "32afb018bf4f8ff3"
@@ -367,9 +371,13 @@
     "version": "0.32.0",
     "hash": "b67c721473e9b755"
   },
+  "thumbnail": {
+    "version": "0.33.0",
+    "hash": "d55d642967a07668"
+  },
   "image-grid": {
-    "version": "0.32.0",
-    "hash": "a4fb885f4c28ecbe"
+    "version": "0.33.0",
+    "hash": "43d0407b61bafd29"
   },
   "annotated-image": {
     "version": "0.32.0",
@@ -592,8 +600,8 @@
     "hash": "98143b93352ba6f0"
   },
   "agent-skill": {
-    "version": "0.32.0",
-    "hash": "6e1a12318293f339"
+    "version": "0.33.0",
+    "hash": "c0c303796c1cb89f"
   },
   "line-chart-telemetry": {
     "version": "0.17.2",

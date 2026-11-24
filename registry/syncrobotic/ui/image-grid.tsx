@@ -1,4 +1,4 @@
-// @syncrobotic/image-grid v0.32.0 · update: npx shadcn add @syncrobotic/image-grid --overwrite
+// @syncrobotic/image-grid v0.33.0 · update: npx shadcn add @syncrobotic/image-grid --overwrite
 "use client"
 
 import * as React from "react"
@@ -54,6 +54,21 @@ const defaultLabels: ImageGridLabels = {
   position: (n, total) => `${n} of ${total}`,
 }
 
+/** What `ref` gives you: put focus back on the tile (or the corner button) that last opened a picture through `onOpen`. */
+export type ImageGridHandle = {
+  /**
+   * Call it when your own dialog closes, in its `onCloseAutoFocus` (with `preventDefault()`): focus returns to the control
+   * that opened it, or, if that picture is gone, the tile now in its place. Returns false when there is nothing to focus.
+   */
+  restoreFocus: () => boolean
+}
+
+/** What `renderTile` gets beside the item. */
+export type ImageGridTileContext = {
+  /** Call it when your face's picture fails to load (AnnotatedImage's `onLoadError`): the tile shows the grid's failed state. */
+  onError: () => void
+}
+
 const aspects = { square: "aspect-square", "4/3": "aspect-4/3", video: "aspect-video" } as const
 // Grid: as many columns as fit at the tile's smallest width. Strip: fixed widths, so a row of uploads keeps its rhythm.
 const gridSizes = {
@@ -89,10 +104,18 @@ type ImageGridProps = {
   onReveal?: (item: ImageGridItem) => void
   /**
    * Opens a picture your way (your own Sheet with its details) in place of the lightbox: a tile, or the corner button
-   * while picking, calls it. Your dialog then returns focus to the tile when it closes: keep `document.activeElement`
-   * here and focus it in the dialog's `onCloseAutoFocus` (a dialog opened without a trigger has nowhere to return to).
+   * while picking, calls it. The grid remembers which: when your dialog closes, call `restoreFocus()` on the grid's `ref`
+   * in its `onCloseAutoFocus` (after `preventDefault()`), since a dialog opened without a trigger has nowhere to return to.
    */
   onOpen?: (item: ImageGridItem, index: number) => void
+  /**
+   * Draws the picture area of a tile your way, e.g. an AnnotatedImage with the boxes on it, filling the tile's aspect box.
+   * The grid keeps the button, its name (the item's `alt`), the shape, picking, and the hidden and failed states. No
+   * controls inside: the tile is already the button. Call `onError` when your picture fails.
+   */
+  renderTile?: (item: ImageGridItem, context: ImageGridTileContext) => React.ReactNode
+  /** `restoreFocus()`, for a dialog of your own opened from `onOpen`. */
+  ref?: React.Ref<ImageGridHandle>
   labels?: Partial<ImageGridLabels>
   className?: string
 }
@@ -103,7 +126,8 @@ type ImageGridProps = {
  * `selection`, is picked: ringed in the focus ink with a check. Many: each tile is a toggle (`aria-pressed`, a box). One: the
  * tiles are a radio group (`role="radio"`, a round mark, one Tab stop; the arrow keys, Home and End move and pick). Hidden pictures stay unloaded behind
  * RestrictedPreview until someone asks; one that fails shows its file name. Neutral throughout: colour is for faults.
- * `onOpen` hands the opening to the app (its own Sheet with the picture's details) in place of the lightbox.
+ * `onOpen` hands the opening to the app (its own Sheet with the picture's details) in place of the lightbox, and the ref's
+ * `restoreFocus()` puts focus back on the tile when it closes. `renderTile` draws the picture area your way (the boxes on it).
  */
 export function ImageGrid({
   items,
@@ -120,6 +144,8 @@ export function ImageGrid({
   lightbox = true,
   onReveal,
   onOpen,
+  renderTile,
+  ref,
   labels: labelsProp,
   className,
 }: ImageGridProps) {
@@ -132,6 +158,8 @@ export function ImageGrid({
   const last = React.useRef(0)
   const tiles = React.useRef(new Map<string, HTMLLIElement>())
   const focusAfterReveal = React.useRef<string | null>(null)
+  // The control that last opened a picture through onOpen: the tile, or the corner button while picking.
+  const opener = React.useRef<{ id: string; index: number; zoom: boolean } | null>(null)
   const picking = selection !== "none"
   const single = selection === "single"
   const strip = layout === "strip"
@@ -182,15 +210,35 @@ export function ImageGrid({
 
   // onOpen replaces the lightbox: the tiles still open a picture, the app decides how.
   const opens = lightbox || !!onOpen
-  const show = (i: number) => {
+  const show = (i: number, zoom = false) => {
     if (onOpen) {
       const item = items[i]
-      if (item) onOpen(item, i)
+      if (!item) return
+      opener.current = { id: item.id, index: i, zoom }
+      onOpen(item, i)
       return
     }
     last.current = i
     setOpen(i)
   }
+
+  // A dialog opened without a trigger (Radix) has nowhere to return focus; the grid remembers where it was opened from.
+  React.useImperativeHandle(ref, () => ({
+    restoreFocus: () => {
+      const at = opener.current
+      if (!at) return false
+      // The picture may be gone (deleted from the Sheet): the tile now in its place, or the last one.
+      const id = tiles.current.has(at.id) ? at.id : items[Math.min(at.index, items.length - 1)]?.id
+      const tile = id === undefined ? undefined : tiles.current.get(id)
+      const target =
+        (at.zoom && id === at.id ? tile?.querySelector<HTMLElement>("[data-slot=image-grid-zoom]") : null) ??
+        tile?.querySelector<HTMLElement>("[data-slot=image-grid-item]") ??
+        tile?.querySelector<HTMLElement>("button")
+      if (!target) return false
+      target.focus()
+      return true
+    },
+  }))
 
   const listClass = cn(
     strip ? "flex snap-x snap-mandatory scroll-px-1 gap-2 overflow-x-auto p-1" : cn("grid gap-2", gridSizes[size]),
@@ -228,6 +276,9 @@ export function ImageGrid({
             <span className={cn("block w-full overflow-hidden rounded-sm bg-muted", aspects[aspect], item.restricted && "animate-fade-in")}>
               {isBroken ? (
                 <Broken name={item.name} label={labels.broken} />
+              ) : renderTile ? (
+                // The face fills the aspect box; the grid keeps the shape and the failed state.
+                <span className="block size-full [&>*]:size-full">{renderTile(item, { onError: () => markBroken(item.id) })}</span>
               ) : (
                 <img
                   src={item.src}
@@ -274,6 +325,8 @@ export function ImageGrid({
                     onKeyDown={single ? (e) => onRadioKey(e, item.id) : undefined}
                     onClick={() => (picking ? toggle(item.id) : show(i))}
                     className="press relative block w-full rounded-sm"
+                    // A face of your own may hold more words than the picture's; the tile is named by its alt either way.
+                    aria-label={renderTile && !isBroken ? item.alt : undefined}
                   >
                     {face}
                     {picking && <Picked on={isSelected} round={single} />}
@@ -287,7 +340,7 @@ export function ImageGrid({
                     data-slot="image-grid-zoom"
                     aria-label={labels.viewLarger(item.name)}
                     aria-haspopup="dialog"
-                    onClick={() => show(i)}
+                    onClick={() => show(i, true)}
                     className={cn(
                       "press absolute top-0 right-0 flex size-(--h-md) items-center justify-center rounded-sm text-foreground",
                       // On a small tile the plate sits in the corner of its 44 px target, so it covers less of the picture.

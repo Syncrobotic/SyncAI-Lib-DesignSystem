@@ -2,6 +2,16 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **`bar-list` 0.33.0 (beta):** a short ranked list of counts ("items per class", "files per format") with no chart library: a `<ul>` named by `label`, each row its label (truncating) and its value in words (tabular, `locale` and `format`), a bar under it in `--chart-1` scaled to the largest value, so it needs no table view. One series, no status or per-row colours. Rows with `href` are links through `linkAs`, 36 px tall (44 on touch); `max` shows that many, then "N more"; every word through `labels` (`barListLabels` in `labels-zh-tw` 0.33.0). No surface of its own: it fits in a card, a table cell or a sheet. Issue #308
+- **`thumbnail` 0.33.0 (beta):** one small square picture for tables, lists and cards: `size` sm (`--h-sm`), md (`--h-md`) or lg (`--h-lg`), rounded-xs, object-cover, lazy, and ImageGrid's neutral image-off fallback in the same box when it fails. `restricted` with `reason` renders RestrictedPreview's neutral placeholder at that size, named by the reason and showing it as a tooltip, and fetches nothing. Words through `labels` (`thumbnailLabels` in `labels-zh-tw` 0.33.0). Issue #298
+- **`card` docs:** the media card pattern on the card page (CardMediaGallery): CardMedia with one cover or a mosaic of up to four Thumbnails, the title as the card's one link (metric-card's stretched link), one or two facts and a tier badge, in a responsive grid; a restricted collection shows the placeholder and fetches nothing. A pattern, not a new item. Issue #309
+- **`image-grid` 0.33.0:** `renderTile(item, { onError })` draws a tile's picture area your way, such as an AnnotatedImage with the boxes on it; the grid keeps the button and its name (the item's `alt`), the aspect box, picking, and the hidden and failed states (`onError`, e.g. from AnnotatedImage's `onLoadError`, shows the failed one). Issue #320
+- **`image-grid` 0.33.0:** focus return for your own view moves into the grid: with `onOpen`, it remembers the tile (or the corner button while picking) that opened the picture, and `restoreFocus()` on its `ref` (`ImageGridHandle`) puts focus back there, or on the tile now in its place if the picture was removed. Call it in your dialog's `onCloseAutoFocus` after `preventDefault()`; keeping `document.activeElement` yourself still works. Issue #320
+- **`agent-skill` 0.33.0:** the checklist names BarList for a short ranked list of counts, Thumbnail for a small picture in a row (restricted with a reason), and ImageGrid's `restoreFocus()` for a dialog opened from `onOpen`. Issues #308, #298, #320
+
 ## 0.32.0 · 2026-11-24
 
 A calmer log viewer, the sidebar's collapse on the sidebar itself, accessibility fixes from product teams (focus never under a sticky bar, Escape to native dialogs, status pages in a frame), a data-slot on every control the kit draws, and small options: a shared share-bar legend, metric-card tone, MetaPill links, card media, graph badges, inline code and a collapsible.
