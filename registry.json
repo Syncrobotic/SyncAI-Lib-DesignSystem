@@ -2967,8 +2967,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "An item open in the server render shows open on first paint, with no animation: opening plays only once Radix has measured the content. Opening and closing by the user keep their motion. Issue #322."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",

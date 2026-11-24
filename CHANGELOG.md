@@ -11,6 +11,7 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - **`action-rail-shell` 0.32.0:** the primary keeps its element, and keyboard focus, when its label changes (Run → Stop and back); the small actions too. Actions are keyed by place, or by a new optional `id` on `RailAction`, never by label. Issue #334
 - **`toast` 0.32.0:** Escape inside an open native `<dialog>` closes the dialog again (it gets a `cancel` it can refuse) and leaves the toast; an open toast had taken the key for itself. Escape with focus in a toast, or outside any dialog, still dismisses it. Issue #311
 - **`tabs` 0.32.0:** a `ref` passed to `TabsList` gets the row and the travelling underline shows; the ref had replaced the one the underline measures, so the active tab fell back to its own border. The docs say a row of links to other pages is navigation (ChipGroup with `href`, or NavigationMenu), not tabs. Issue #336
+- **`accordion` 0.32.0:** an item open in the server render (`defaultValue`, Next.js App Router) shows open on first paint instead of playing its open animation on every page load; the expand animation waits until Radix has measured the content. Items the user opens and closes keep their motion, and reduced motion is unchanged. Issue #322
 
 ## 0.31.0 · 2026-11-22
 
