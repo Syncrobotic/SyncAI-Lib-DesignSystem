@@ -64,6 +64,7 @@ export type StoryFile =
   | "joint-state"
   | "diagnostics"
   | "tree"
+  | "collapsible"
   | "sidebar"
   | "graph"
   | "robot-map"
@@ -954,6 +955,16 @@ const entries: Record<string, Entry> = {
       "Each trigger sits in an h3. Set `as` on AccordionTrigger to the level the page needs: h2 right under the h1, h4 inside a section under an h3.",
     ],
   },
+  collapsible: {
+    group: "Navigation",
+    examples: { file: "collapsible", prefix: "Collapsible" },
+    rules: [
+      "One trigger that opens one region: \"More filters\", \"How to use this\", the rest of a long note. For a set of sections with headings use Accordion.",
+      "The trigger says what it opens, in a word or two; the chevron says it opens. It needs no heading: it is not a section.",
+      "Closed by default. Content most people need stays out of it.",
+      "Content open from the start (`defaultOpen`) shows at once; it animates only when someone opens or closes it.",
+    ],
+  },
   tree: {
     group: "Navigation",
     examples: { file: "tree", prefix: "Tree" },
@@ -1421,6 +1432,10 @@ const keyboard: Record<string, [string, string][]> = {
   tabs: [
     ["`←` / `→`", "Move to and open the previous or next tab"],
     ["`Home` / `End`", "First or last tab"],
+  ],
+  collapsible: [
+    ["`Tab`", "Move to the trigger, then into the open region"],
+    ["`Enter` / `Space`", "Open or close the region"],
   ],
   accordion: [
     ["`Enter` / `Space`", "Open or close the section"],

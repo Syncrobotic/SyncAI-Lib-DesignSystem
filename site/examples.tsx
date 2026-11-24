@@ -66,6 +66,7 @@ const files = {
   "joint-state": () => import("@/stories/joint-state.stories"),
   diagnostics: () => import("@/stories/diagnostics.stories"),
   tree: () => import("@/stories/tree.stories"),
+  collapsible: () => import("@/stories/collapsible.stories"),
   sidebar: () => import("@/stories/sidebar.stories"),
   graph: () => import("@/stories/graph.stories"),
   "robot-map": () => import("@/stories/robot-map.stories"),

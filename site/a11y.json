@@ -466,6 +466,13 @@
     "tabStops": 3,
     "live": false
   },
+  "collapsible": {
+    "roles": [
+      "button"
+    ],
+    "tabStops": 1,
+    "live": false
+  },
   "accordion": {
     "roles": [
       "button",

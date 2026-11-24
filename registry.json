@@ -2995,6 +2995,36 @@
       }
     },
     {
+      "name": "collapsible",
+      "type": "registry:ui",
+      "title": "Collapsible",
+      "description": "One region behind one trigger (More filters, How to use this, a long note), styled like accordion: the same chevron, focus ring and expand and collapse motion. The trigger needs no heading; content open in the server's HTML shows without animating.",
+      "dependencies": [
+        "radix-ui",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/collapsible.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.32.0",
+        "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "First release: Radix Collapsible styled like accordion (chevron, focus ring, animate-expand and animate-collapse, instant under reduced motion). The trigger works without a heading, and the animation waits for Radix's measured height, so content open on first paint does not grow. Issue #299."
+          }
+        ]
+      }
+    },
+    {
       "name": "tree",
       "type": "registry:ui",
       "title": "Tree",
@@ -7218,7 +7248,7 @@
           {
             "version": "0.32.0",
             "date": "2026-11-24",
-            "note": "Checklist: Code for a path or key inside a sentence, with a CopyButton beside it."
+            "note": "Checklist: Code for a path or key inside a sentence, with a CopyButton beside it. Collapsible for one region behind one trigger, never a raw details element."
           },
           {
             "version": "0.31.0",

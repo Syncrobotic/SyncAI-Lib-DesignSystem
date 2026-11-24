@@ -1035,7 +1035,17 @@ export const overviews: Record<string, Overview> = {
   accordion: {
     what: "Sections that open and close in place.",
     use: ["Long settings, FAQs, details the user rarely needs."],
-    instead: ["Sections that are each a full view: `tabs`."],
+    instead: ["Sections that are each a full view: `tabs`.", "One region behind one trigger, with no heading: `collapsible`."],
+  },
+  collapsible: {
+    what: "One trigger that opens one region in place, with the accordion's chevron and motion.",
+    use: ["\"More filters\" under a filter bar.", "\"How to use this\" on a card.", "The rest of a long note."],
+    instead: ["A set of sections with headings: `accordion`.", "A hierarchy that opens level by level: `tree`.", "Details over the page: `popover` or `sheet`."],
+    notes: [
+      "Never a native <details> or your own chevron: this keeps the kit's chevron, focus ring and motion.",
+      "Do not wrap the trigger in a heading; if the region needs one, it is an accordion section.",
+      "Put layout (gap, padding) on CollapsibleContent's className; it goes on the inner box, so the height animation stays clean.",
+    ],
   },
   dialog: {
     what: "A centered panel for a short task or decision, blocking the page until it is done or closed.",

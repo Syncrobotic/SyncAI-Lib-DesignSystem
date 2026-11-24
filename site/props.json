@@ -2788,6 +2788,29 @@
    "inherits": []
   }
  ],
+ "collapsible": [
+  {
+   "name": "Collapsible",
+   "props": [],
+   "inherits": [
+    "Radix Collapsible.Root"
+   ]
+  },
+  {
+   "name": "CollapsibleTrigger",
+   "props": [],
+   "inherits": [
+    "Radix Collapsible.Trigger"
+   ]
+  },
+  {
+   "name": "CollapsibleContent",
+   "props": [],
+   "inherits": [
+    "Radix Collapsible.Content"
+   ]
+  }
+ ],
  "command": [
   {
    "name": "Command",
