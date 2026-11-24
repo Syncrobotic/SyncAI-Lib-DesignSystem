@@ -293,7 +293,8 @@
   "card": {
     "roles": [
       "button",
-      "heading"
+      "heading",
+      "link"
     ],
     "tabStops": 2,
     "live": false
@@ -466,6 +467,13 @@
     "tabStops": 3,
     "live": false
   },
+  "collapsible": {
+    "roles": [
+      "button"
+    ],
+    "tabStops": 1,
+    "live": false
+  },
   "accordion": {
     "roles": [
       "button",
@@ -615,6 +623,11 @@
     "tabStops": 0,
     "live": false
   },
+  "code": {
+    "roles": [],
+    "tabStops": 0,
+    "live": false
+  },
   "button-group": {
     "roles": [
       "button",
@@ -677,7 +690,10 @@
     "live": false
   },
   "share-bar": {
-    "roles": [],
+    "roles": [
+      "list",
+      "listitem"
+    ],
     "tabStops": 0,
     "live": false
   },

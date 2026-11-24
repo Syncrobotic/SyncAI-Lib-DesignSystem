@@ -166,6 +166,20 @@ describe("Graph", () => {
     expect(group.querySelectorAll("path[data-edge]")).toHaveLength(edges.length)
   })
 
+  it("draws a badge as a neutral outline tag after the name, and reads it after the name", () => {
+    const tagged = nodes.map((n) => (n.id === "boxes" ? { ...n, badge: "T1" } : n.id === "dataset" ? { ...n, badge: "Deprecated" } : n))
+    render(<Graph label="Lineage" nodes={tagged} edges={edges} />)
+    const boxes = screen.getByRole("button", { name: "Box labels v7, T1, 48,210 boxes, from Synthetic pallets and Hall B captures, to Dataset v3" })
+    const tag = within(boxes).getByText("T1").parentElement!
+    expect(tag.className).toContain("ring-border")
+    expect(tag.className).not.toMatch(/bg-|text-(warning|danger|info)/)
+    // After the name, on the name's line, with a space between them for anything that reads the text.
+    expect(boxes.firstElementChild!.textContent).toBe("Box labels v7 T1")
+    expect(screen.getByRole("link", { name: "Dataset v3, Deprecated, from Box labels v7 and Edge masks v2, to Picking detector" })).toBeTruthy()
+    // A node without one is drawn as before.
+    expect(screen.getByRole("button", { name: /^Hall B captures, 12,400 frames/ }).firstElementChild!.textContent).toBe("Hall B captures")
+  })
+
   it("is one Tab stop, on the first node in reading order", () => {
     render(<Graph label="Lineage" nodes={nodes} edges={edges} />)
     const stops = [...document.querySelectorAll("[data-graph-id]")].filter((el) => el.getAttribute("tabindex") === "0")
@@ -310,6 +324,12 @@ describe("GraphList", () => {
     expect(within(masks).getByText("Inputs").nextElementSibling?.textContent).toBe("Hall B capturesNight captures")
     expect(within(masks).getByText("Outputs").nextElementSibling?.textContent).toBe("Dataset v3")
     expect(within(list).getByRole("link", { name: "Dataset v3" }).getAttribute("href")).toBe("/datasets/v3")
+  })
+
+  it("shows a node's badge after its name", () => {
+    render(<GraphList label="Lineage" nodes={nodes.map((n) => (n.id === "boxes" ? { ...n, badge: "T1" } : n))} edges={edges} />)
+    const item = screen.getAllByRole("listitem").find((li) => li.textContent?.startsWith("Box labels v7"))!
+    expect(within(item).getByText("T1").previousElementSibling?.textContent).toBe("Box labels v7")
   })
 
   it("says so when empty", () => {

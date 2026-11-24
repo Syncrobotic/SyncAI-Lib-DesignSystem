@@ -29,6 +29,17 @@ export const MetricCardTrends: S = {
   ),
 }
 
+/** A number that is itself a warning: `tone` puts the status shape and colour on the caption, which says why. The value stays foreground; the card is never tinted. */
+export const MetricCardTone: S = {
+  render: () => (
+    <MetricGrid className="xl:grid-cols-3">
+      <MetricCard label="Datasets" value="128" caption="4 added this week" />
+      <MetricCard label="Needs review" value="14" caption="3 blocking a release" tone="warning" />
+      <MetricCard label="Failed exports" value="2" caption="Storage quota reached" tone="danger" />
+    </MetricGrid>
+  ),
+}
+
 /** Each card opens the list behind its number. The whole card is the link; the ring goes round the card. */
 export const MetricCardWithLink: S = {
   render: () => (
