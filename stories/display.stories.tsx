@@ -7,7 +7,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/registry/syncrobotic/ui/a
 import { Avatar, AvatarBadge, AvatarFallback, AvatarGroup, AvatarImage } from "@/registry/syncrobotic/ui/avatar"
 import { Badge, ResultBadge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/registry/syncrobotic/ui/card"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardMedia, CardTitle } from "@/registry/syncrobotic/ui/card"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 import { Progress } from "@/registry/syncrobotic/ui/progress"
 import { Separator } from "@/registry/syncrobotic/ui/separator"
@@ -17,6 +17,7 @@ import { CountBadge } from "@/registry/syncrobotic/ui/badge"
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
 import { TextDiff } from "@/registry/syncrobotic/ui/text-diff"
+import { placeholderPhoto } from "./placeholder-photos"
 
 const meta: Meta = { title: "Display" }
 export default meta
@@ -200,6 +201,33 @@ export const CardWithList: S = {
         ))}
       </CardContent>
     </Card>
+  ),
+}
+
+/** A cover picture (CardMedia), edge to edge at the top with the card's own corners, or `inset` at the image radius; the whole card is one link. */
+export const CardWithMedia: S = {
+  render: () => (
+    <div className="grid gap-4 sm:grid-cols-2">
+      {[
+        { id: "aisles", title: "Forklift aisles v3", meta: "12,480 images · T1", inset: false, seed: 1 },
+        { id: "docks", title: "Dock cameras v2", meta: "8,200 images · T0", inset: true, seed: 4 },
+      ].map((c) => (
+        <Card key={c.id} className="press relative hover:ring-muted-foreground has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-ring">
+          <CardMedia inset={c.inset}>
+            <img src={placeholderPhoto(c.seed, c.title)} alt="" />
+          </CardMedia>
+          <CardHeader>
+            <CardTitle>
+              {/* focus-ring: the card draws the ring (has-[a:focus-visible]), since the link covers it. */}
+              <a href={`#datasets/${c.id}`} className="outline-none after:absolute after:inset-0 after:rounded-[inherit]">
+                {c.title}
+              </a>
+            </CardTitle>
+            <CardDescription>{c.meta}</CardDescription>
+          </CardHeader>
+        </Card>
+      ))}
+    </div>
   ),
 }
 

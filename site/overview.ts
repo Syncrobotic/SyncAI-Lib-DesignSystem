@@ -890,8 +890,13 @@ export const overviews: Record<string, Overview> = {
   },
   card: {
     what: "One raised surface that holds a group of related content.",
-    use: ["A robot's summary, a KPI, a settings section."],
-    instead: ["Rows of similar items: `list` or `table` inside one card. Cards are never nested.", "Label and value pairs: `description-list`."],
+    use: ["A robot's summary, a KPI, a settings section.", "A catalog tile with a cover picture (CardMedia)."],
+    instead: [
+      "Rows of similar items: `list` or `table` inside one card. Cards are never nested.",
+      "Label and value pairs: `description-list`.",
+      "A small picture at the start of a row: `item` with ItemMedia `variant=\"image\"`.",
+      "Many pictures, picked or opened: `image-grid`.",
+    ],
   },
   avatar: {
     what: "A person's picture or initials, round; a robot, site or team, square. With a status or count badge, and groups that fold into +N.",

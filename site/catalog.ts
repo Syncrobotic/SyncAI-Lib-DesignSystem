@@ -609,6 +609,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "Never nest cards. Group rows inside one card with separators.",
       "The title is an h3. Set `as` on CardTitle (`titleAs` on CardDataHeader) to the level the page needs: h2 for a card right under the h1, h4 inside a section under an h3. The size stays the same.",
+      "A cover picture is CardMedia, first in the card: edge to edge, its top corners the card's own (`rounded-[inherit]`), 16:9 unless `aspect` says otherwise. `inset` keeps it inside the padding at the image radius (12). Never round the picture yourself.",
     ],
   },
   avatar: {

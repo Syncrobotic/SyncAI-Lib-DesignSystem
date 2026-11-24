@@ -2293,6 +2293,26 @@
    ]
   },
   {
+   "name": "CardMedia",
+   "props": [
+    {
+     "name": "inset",
+     "type": "boolean",
+     "default": "false",
+     "description": "Inside the card's padding, with its own corners, instead of edge to edge at the top."
+    },
+    {
+     "name": "aspect",
+     "type": "\"video\" | \"auto\" | \"square\" | \"4/3\"",
+     "default": "\"video\"",
+     "description": "The box's shape, kept before and after the picture loads: 16:9 by default; `auto` lets the content decide."
+    }
+   ],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
    "name": "CardHeader",
    "props": [],
    "inherits": [

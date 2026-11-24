@@ -2001,7 +2001,7 @@
       "name": "card",
       "type": "registry:ui",
       "title": "Card",
-      "description": "One surface with radius 16 for a group of related content.",
+      "description": "One surface with radius 16 for a group of related content, with CardMedia for a cover picture.",
       "registryDependencies": [
         "@syncrobotic/cn"
       ],
@@ -2012,8 +2012,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "`CardMedia` for a cover picture: first in the card, edge to edge with the card's own top corners (`rounded-[inherit]`), or `inset` inside the padding at the image radius; `aspect` (video by default, 4/3, square, auto) keeps its shape before the picture loads. Issue #342."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",

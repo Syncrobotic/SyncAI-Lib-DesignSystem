@@ -1,10 +1,45 @@
-// @syncrobotic/card v0.31.0 · update: npx shadcn add @syncrobotic/card --overwrite
+// @syncrobotic/card v0.32.0 · update: npx shadcn add @syncrobotic/card --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
 /** One surface, radius 16 (md). Do not nest cards; group rows inside one card instead. */
 export function Card({ className, ...props }: React.ComponentProps<"div">) {
   return <div data-slot="card" className={cn("flex flex-col gap-4 rounded-md bg-card p-4 text-card-foreground ring-1 ring-border", className)} {...props} />
+}
+
+const mediaAspects = { video: "aspect-video", "4/3": "aspect-4/3", square: "aspect-square", auto: "" } as const
+
+/**
+ * A picture on a card: a cover across the top (first in the card, edge to edge, its top corners the card's own) or,
+ * `inset`, inside the padding at the image radius (12, as ImageGrid's tiles). It keeps its `aspect` before the picture
+ * loads, and an `<img>` or `<video>` in it fills it (object-cover). A stretched link on the card still covers it.
+ */
+export function CardMedia({
+  inset = false,
+  aspect = "video",
+  className,
+  ...props
+}: React.ComponentProps<"div"> & {
+  /** Inside the card's padding, with its own corners, instead of edge to edge at the top. */
+  inset?: boolean
+  /** The box's shape, kept before and after the picture loads: 16:9 by default; `auto` lets the content decide. */
+  aspect?: keyof typeof mediaAspects
+}) {
+  return (
+    <div
+      data-slot="card-media"
+      data-inset={inset || undefined}
+      className={cn(
+        "relative overflow-hidden bg-muted [&>img]:size-full [&>img]:object-cover [&>video]:size-full [&>video]:object-cover",
+        mediaAspects[aspect],
+        // Edge to edge: out through the card's padding (p-4); first in the card it clips to the card's top corners, the
+        // parent's own step (rounded-[inherit]), so the corners stay concentric.
+        inset ? "rounded-sm" : "-mx-4 first:-mt-4 first:rounded-t-[inherit]",
+        className,
+      )}
+      {...props}
+    />
+  )
 }
 
 export function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
