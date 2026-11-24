@@ -640,6 +640,13 @@ export const dataGridLabels = {
   hideDetails: "隱藏詳細資料",
 }
 
+/** ShellSearch (app-shell's search): pass as `search.labels`. */
+export const shellSearchLabels = {
+  search: "搜尋",
+  scope: (scope: string) => `搜尋範圍：${scope}`,
+  empty: (query: string, scope: string) => `在「${scope}」中找不到「${query}」。換個關鍵字，或搜尋全部。`,
+}
+
 export const paginationLabels = {
   nav: "分頁",
   range: (from: number, to: number, total: number, locale?: string) =>

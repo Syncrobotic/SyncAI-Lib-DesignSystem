@@ -17,10 +17,6 @@ const TAGS = new Set(["button", "a", "input", "textarea", "select"])
  * the list (the test fails on a stale entry), so the list only shrinks.
  */
 const ALLOW: Record<string, string> = {
-  // ShellSearch's two buttons (the wide field and the narrow icon). Its slot, "shell-search", comes with the app-shell
-  // search change in flight (#317, #331); remove these once app-shell has it.
-  'blocks/app-shell.tsx › button › type="button" onClick={() => setOpen(true)}': "ShellSearch field, pending #331",
-  'blocks/app-shell.tsx › button › type="button" aria-label="Search"': "ShellSearch icon button, pending #331",
 }
 
 type Miss = { key: string; line: number }

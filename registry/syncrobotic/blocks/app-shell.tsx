@@ -99,6 +99,23 @@ export type AppSearch = {
   /** What the search covers. The first is the default, e.g. "Everything". */
   scopes?: { value: string; label: string }[]
   groups: AppSearchGroup[]
+  /** The search's own words: the dialog's name, the scope button and the empty result, e.g. shellSearchLabels from labels-zh-tw. */
+  labels?: Partial<ShellSearchLabels>
+}
+
+export type ShellSearchLabels = {
+  /** The icon button's name, the dialog's title, and the field's word when `label` is not set. */
+  search: string
+  /** The scope button's name. */
+  scope: (scope: string) => string
+  /** No result for the query in the chosen scope. */
+  empty: (query: string, scope: string) => string
+}
+
+export const defaultShellSearchLabels: ShellSearchLabels = {
+  search: "Search",
+  scope: (scope) => `Search scope: ${scope}`,
+  empty: (query, scope) => `No match for “${query}” in ${scope.toLowerCase()}. Try another word, or search everything.`,
 }
 
 /**
@@ -352,6 +369,7 @@ const isMac = () => /Mac|iPhone|iPad/.test(navigator.platform)
  * where typing narrows the results and the scope narrows the groups. The scope can be changed in the field or the palette.
  */
 export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch; linkAs?: React.ElementType }) {
+  const l = { ...defaultShellSearchLabels, ...search.labels }
   const [open, setOpen] = React.useState(false)
   const scopes = search.scopes ?? [{ value: "all", label: "Everything" }]
   // The first scope is the widest one, which shows every group; an empty list falls back to the default's value.
@@ -378,7 +396,8 @@ export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch;
       <DropdownMenuTrigger asChild>
         <button
           type="button"
-          aria-label={`Search scope: ${scopeLabel}`}
+          data-slot="shell-search-scope"
+          aria-label={l.scope(scopeLabel ?? "")}
           className="press mx-1 flex h-(--h-sm) shrink-0 items-center gap-2 rounded-xs px-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground"
         >
           {scopeLabel}
@@ -406,28 +425,30 @@ export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch;
       <div className="hidden h-(--h-md) w-80 items-center rounded-sm bg-card ring-1 ring-input ring-inset lg:flex">
         <button
           type="button"
+          data-slot="shell-search"
           onClick={() => setOpen(true)}
           className="press flex h-full min-w-0 flex-1 items-center gap-2 rounded-l-sm pl-3 text-left text-sm text-muted-foreground hover:text-foreground"
         >
           <Search aria-hidden="true" className="size-4 shrink-0" />
-          <span className="truncate">{search.label ?? "Search"}</span>
+          <span className="truncate">{search.label ?? l.search}</span>
           <CommandShortcut className="mr-1">{shortcut}</CommandShortcut>
         </button>
         {scopes.length > 1 && scopeMenu}
       </div>
       <button
         type="button"
-        aria-label="Search"
+        data-slot="shell-search"
+        aria-label={l.search}
         onClick={() => setOpen(true)}
         className="press flex size-(--h-md) items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground lg:hidden"
       >
         <Search aria-hidden="true" className="size-5" />
       </button>
 
-      <CommandDialog open={open} onOpenChange={setOpen} title="Search" description={search.placeholder}>
-        <CommandInput placeholder={search.placeholder ?? "Search"} end={scopes.length > 1 ? scopeMenu : undefined} />
+      <CommandDialog open={open} onOpenChange={setOpen} title={l.search} description={search.placeholder}>
+        <CommandInput placeholder={search.placeholder ?? l.search} end={scopes.length > 1 ? scopeMenu : undefined} />
         <CommandList>
-          <CommandEmpty>{(query) => `No match for “${query}” in ${scopeLabel?.toLowerCase()}. Try another word, or search everything.`}</CommandEmpty>
+          <CommandEmpty>{(query) => l.empty(query, scopeLabel ?? "")}</CommandEmpty>
           {groups.map((g) => (
             <CommandGroup key={g.heading} heading={g.heading}>
               {g.items.map((item) => (
