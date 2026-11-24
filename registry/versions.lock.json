@@ -13,7 +13,7 @@
   },
   "labels-zh-tw": {
     "version": "0.32.0",
-    "hash": "93dce76c424eeac7"
+    "hash": "9879ad3cc920d835"
   },
   "ros": {
     "version": "0.31.0",
@@ -521,7 +521,7 @@
   },
   "app-shell": {
     "version": "0.32.0",
-    "hash": "8e60d6d855811467"
+    "hash": "ebbcf84f0deefc5b"
   },
   "top-bar-shell": {
     "version": "0.32.0",
