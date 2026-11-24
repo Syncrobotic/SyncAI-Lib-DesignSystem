@@ -1,4 +1,4 @@
-// @syncrobotic/graph v0.21.2 · update: npx shadcn add @syncrobotic/graph --overwrite
+// @syncrobotic/graph v0.32.0 · update: npx shadcn add @syncrobotic/graph --overwrite
 "use client"
 
 import * as React from "react"
@@ -21,6 +21,11 @@ export type GraphNode = {
   statusLabel?: string
   /** The node is a link (through `linkAs`): Enter or a click follows it, Space still selects it. */
   href?: string
+  /**
+   * A short tag after the name, for a fact that is a category, not a state: an access tier, "Deprecated", a version
+   * channel. A neutral outline, read after the name. Plain text, a word or two.
+   */
+  badge?: string
 }
 
 /** A connection: `from` is an input of `to`. Data flows from left to right (or top to bottom). */
@@ -378,10 +383,14 @@ function useNeighbours(nodes: GraphNode[], layout: GraphLayout) {
   }, [nodes, layout])
 }
 
+/** A node's badge: a neutral outline tag (Badge's outline tone), at most half the box, so the name keeps room. */
+const badgeTag = "inline-flex h-(--h-tag) max-w-1/2 shrink-0 items-center rounded-xs px-2 text-xs font-medium ring-1 ring-border ring-inset"
+
 /** A node's accessible name: what the box shows, then where it comes from and where it goes. */
 function accessibleName(n: GraphNode, ins: GraphNode[], outs: GraphNode[], labels: GraphLabels) {
-  // In the order the box shows them (name, then status, then meta), so the spoken name starts with the words on screen.
+  // In the order the box shows them (name and badge, then status, then meta), so the spoken name starts with the words on screen.
   const parts = [n.label]
+  if (n.badge) parts.push(n.badge)
   const word = statusWord(n, labels)
   if (word) parts.push(word)
   if (n.meta) parts.push(n.meta)
@@ -671,6 +680,7 @@ export function Graph({
               const ins = inputs(n.id).map((x) => byId.get(x)!)
               const outs = outputs(n.id).map((x) => byId.get(x)!)
               const props = {
+                "data-slot": "graph-node",
                 "data-graph-index": i,
                 "data-graph-id": n.id,
                 "data-state": isSelected ? "selected" : lit ? "path" : dim ? "dimmed" : undefined,
@@ -695,9 +705,22 @@ export function Graph({
               const body = (
                 <>
                                     {/* A long name ends in an ellipsis; the whole name is in the title and the accessible name. */}
-                  <span title={n.label} className={cn("truncate text-sm", isSelected ? "font-bold" : "font-medium")}>
-                    {n.label}
-                  </span>
+                  {n.badge ? (
+                    // The badge keeps its words and the name gives way. A space between them, so read as text they are
+                    // two words; the tag is the Badge's outline tone, in the box's text colour so it dims with it.
+                    <span className="flex min-w-0 items-center gap-2">
+                      <span title={n.label} className={cn("min-w-0 truncate text-sm", isSelected ? "font-bold" : "font-medium")}>
+                        {n.label}
+                      </span>{" "}
+                      <span title={n.badge} className={badgeTag}>
+                        <span className="truncate">{n.badge}</span>
+                      </span>
+                    </span>
+                  ) : (
+                    <span title={n.label} className={cn("truncate text-sm", isSelected ? "font-bold" : "font-medium")}>
+                      {n.label}
+                    </span>
+                  )}
                   {/* A space between the name and the line under it, so read as text they are two words, not one. */}
                   {(word || n.meta) && " "}
                   {(word || n.meta) && (
@@ -799,6 +822,7 @@ export function GraphList({ nodes, edges, label: name, empty = "Nothing here yet
             <div className="flex min-w-0 flex-wrap items-center gap-x-4 gap-y-1">
               {n.href ? (
                 <Link
+                  data-slot="graph-list-link"
                   href={n.href}
                   className="rounded-2xs text-sm font-medium underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                 >
@@ -807,6 +831,7 @@ export function GraphList({ nodes, edges, label: name, empty = "Nothing here yet
               ) : (
                 <span className="text-sm font-medium">{n.label}</span>
               )}
+              {n.badge && <span className={cn(badgeTag, "max-w-full")}>{n.badge}</span>}
               {n.status && word && (
                 <span
                   className={cn(

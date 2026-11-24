@@ -1,4 +1,4 @@
-// @syncrobotic/geo-map v0.31.0 · update: npx shadcn add @syncrobotic/geo-map --overwrite
+// @syncrobotic/geo-map v0.32.0 · update: npx shadcn add @syncrobotic/geo-map --overwrite
 "use client"
 
 import * as React from "react"
@@ -1386,7 +1386,7 @@ export function GeoMapList({ label: name, robots = [], fences = [], selectedId, 
         const lost = r.fix === "none"
         return (
           <li key={r.id} className="min-w-0">
-            <button
+            <button data-slot="geo-map-list-item"
               type="button"
               aria-pressed={isSelected}
               data-robot-id={r.id}

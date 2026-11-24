@@ -1,4 +1,4 @@
-// @syncrobotic/hover-card v0.21.0 · update: npx shadcn add @syncrobotic/hover-card --overwrite
+// @syncrobotic/hover-card v0.32.0 · update: npx shadcn add @syncrobotic/hover-card --overwrite
 "use client"
 
 import * as React from "react"
@@ -18,7 +18,9 @@ export function HoverCard({ openDelay = 500, closeDelay = 300, ...props }: React
 }
 
 /** The link it previews. Use `asChild` on a real link (an `a`, or your router's Link) that goes where the card's facts live. */
-export const HoverCardTrigger = HoverCardPrimitive.Trigger
+export function HoverCardTrigger(props: React.ComponentProps<typeof HoverCardPrimitive.Trigger>) {
+  return <HoverCardPrimitive.Trigger data-slot="hover-card-trigger" {...props} />
+}
 
 /** The card: styled like PopoverContent, 288 px wide. It keeps 8 px from the screen's edges, the app shell's gutter. */
 export function HoverCardContent({ className, align = "center", sideOffset = 8, collisionPadding = 8, ...props }: React.ComponentProps<typeof HoverCardPrimitive.Content>) {

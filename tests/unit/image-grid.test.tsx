@@ -1,6 +1,8 @@
+import * as React from "react"
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { afterEach, describe, expect, it, vi } from "vitest"
 import { ImageGrid, type ImageGridItem } from "@/registry/syncrobotic/ui/image-grid"
+import { Sheet, SheetContent, SheetDescription, SheetTitle } from "@/registry/syncrobotic/ui/sheet"
 
 afterEach(cleanup)
 
@@ -74,5 +76,65 @@ describe("ImageGrid", () => {
     fireEvent.keyDown(document.activeElement ?? document.body, { key: "Escape" })
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull())
     expect(document.activeElement).toBe(screen.getByRole("button", { name: "Frame 2" }))
+  })
+
+  it("with onOpen, a tile calls it with the item and its index instead of opening the lightbox", () => {
+    const onOpen = vi.fn()
+    render(<ImageGrid label="Frames" items={items} onOpen={onOpen} />)
+    const second = screen.getByRole("button", { name: "Frame 2" })
+    expect(second.getAttribute("aria-haspopup")).toBe("dialog")
+    fireEvent.click(second)
+    expect(onOpen).toHaveBeenCalledWith(items[1], 1)
+    expect(screen.queryByRole("dialog")).toBeNull()
+  })
+
+  it("with onOpen, tiles open even with the lightbox off, and the corner button calls it while picking", () => {
+    const onOpen = vi.fn()
+    const { rerender } = render(<ImageGrid label="Frames" items={items} lightbox={false} onOpen={onOpen} />)
+    fireEvent.click(screen.getByRole("button", { name: "Frame 3" }))
+    expect(onOpen).toHaveBeenLastCalledWith(items[2], 2)
+    rerender(<ImageGrid label="Frames" items={items} selection="multiple" onOpen={onOpen} />)
+    fireEvent.click(screen.getByRole("button", { name: "Frame 1" }))
+    expect(onOpen).toHaveBeenCalledTimes(1)
+    fireEvent.click(screen.getAllByRole("button", { name: /a\.jpg/ })[0])
+    expect(onOpen).toHaveBeenLastCalledWith(items[0], 0)
+  })
+
+  it("with onOpen, the app's own dialog returns focus to the tile it was opened from, as documented", async () => {
+    function App() {
+      const [open, setOpen] = React.useState<ImageGridItem | null>(null)
+      const opener = React.useRef<HTMLElement | null>(null)
+      return (
+        <>
+          <ImageGrid
+            label="Frames"
+            items={items}
+            onOpen={(item) => {
+              opener.current = document.activeElement as HTMLElement | null
+              setOpen(item)
+            }}
+          />
+          <Sheet open={!!open} onOpenChange={(o) => !o && setOpen(null)}>
+            <SheetContent
+              onCloseAutoFocus={(e) => {
+                e.preventDefault()
+                opener.current?.focus()
+              }}
+            >
+              <SheetTitle>{open?.name}</SheetTitle>
+              <SheetDescription>Details</SheetDescription>
+            </SheetContent>
+          </Sheet>
+        </>
+      )
+    }
+    render(<App />)
+    const second = screen.getByRole("button", { name: "Frame 2" })
+    second.focus()
+    fireEvent.click(second)
+    expect(screen.getByRole("dialog").textContent).toContain("b.jpg")
+    fireEvent.keyDown(document.activeElement ?? document.body, { key: "Escape" })
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull())
+    expect(document.activeElement).toBe(second)
   })
 })

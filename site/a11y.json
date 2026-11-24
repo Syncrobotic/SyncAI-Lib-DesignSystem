@@ -195,6 +195,7 @@
   },
   "number-field": {
     "roles": [
+      "button",
       "spinbutton"
     ],
     "tabStops": 4,
@@ -293,7 +294,8 @@
   "card": {
     "roles": [
       "button",
-      "heading"
+      "heading",
+      "link"
     ],
     "tabStops": 2,
     "live": false
@@ -466,6 +468,13 @@
     "tabStops": 3,
     "live": false
   },
+  "collapsible": {
+    "roles": [
+      "button"
+    ],
+    "tabStops": 1,
+    "live": false
+  },
   "accordion": {
     "roles": [
       "button",
@@ -540,43 +549,61 @@
     "live": true
   },
   "dialog": {
-    "roles": [],
-    "tabStops": 0,
+    "roles": [
+      "button"
+    ],
+    "tabStops": 1,
     "live": false
   },
   "alert-dialog": {
-    "roles": [],
-    "tabStops": 0,
+    "roles": [
+      "button"
+    ],
+    "tabStops": 1,
     "live": false
   },
   "sheet": {
-    "roles": [],
-    "tabStops": 0,
+    "roles": [
+      "button"
+    ],
+    "tabStops": 1,
     "live": false
   },
   "popover": {
-    "roles": [],
-    "tabStops": 0,
+    "roles": [
+      "button"
+    ],
+    "tabStops": 1,
     "live": false
   },
   "hover-card": {
-    "roles": [],
-    "tabStops": 0,
+    "roles": [
+      "link"
+    ],
+    "tabStops": 3,
     "live": false
   },
   "tooltip": {
-    "roles": [],
-    "tabStops": 0,
+    "roles": [
+      "button"
+    ],
+    "tabStops": 3,
     "live": false
   },
   "dropdown-menu": {
-    "roles": [],
-    "tabStops": 0,
+    "roles": [
+      "button"
+    ],
+    "tabStops": 1,
     "live": false
   },
   "context-menu": {
-    "roles": [],
-    "tabStops": 0,
+    "roles": [
+      "button",
+      "link",
+      "listitem"
+    ],
+    "tabStops": 6,
     "live": false
   },
   "command": {
@@ -611,6 +638,11 @@
     "live": false
   },
   "kbd": {
+    "roles": [],
+    "tabStops": 0,
+    "live": false
+  },
+  "code": {
     "roles": [],
     "tabStops": 0,
     "live": false
@@ -677,8 +709,12 @@
     "live": false
   },
   "share-bar": {
-    "roles": [],
-    "tabStops": 0,
+    "roles": [
+      "link",
+      "list",
+      "listitem"
+    ],
+    "tabStops": 3,
     "live": false
   },
   "load-more": {
@@ -905,7 +941,6 @@
   "time-picker": {
     "roles": [
       "button",
-      "group",
       "textbox"
     ],
     "tabStops": 2,

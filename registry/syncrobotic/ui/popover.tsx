@@ -1,4 +1,4 @@
-// @syncrobotic/popover v0.17.2 · update: npx shadcn add @syncrobotic/popover --overwrite
+// @syncrobotic/popover v0.32.0 · update: npx shadcn add @syncrobotic/popover --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,7 +6,9 @@ import { Popover as PopoverPrimitive } from "radix-ui"
 import { cn } from "@/lib/utils"
 
 export const Popover = PopoverPrimitive.Root
-export const PopoverTrigger = PopoverPrimitive.Trigger
+export function PopoverTrigger(props: React.ComponentProps<typeof PopoverPrimitive.Trigger>) {
+  return <PopoverPrimitive.Trigger data-slot="popover-trigger" {...props} />
+}
 export const PopoverAnchor = PopoverPrimitive.Anchor
 
 export function PopoverContent({ className, align = "center", sideOffset = 8, ...props }: React.ComponentProps<typeof PopoverPrimitive.Content>) {

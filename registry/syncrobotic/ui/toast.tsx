@@ -1,4 +1,4 @@
-// @syncrobotic/toast v0.28.0 · update: npx shadcn add @syncrobotic/toast --overwrite
+// @syncrobotic/toast v0.32.0 · update: npx shadcn add @syncrobotic/toast --overwrite
 "use client"
 
 import * as React from "react"
@@ -103,13 +103,36 @@ export function ToastViewport({ className, ...props }: React.ComponentProps<type
   )
 }
 
-export function Toast({ className, tone = "neutral", children, ...props }: React.ComponentProps<typeof ToastPrimitive.Root> & { tone?: ToastTone }) {
+/**
+ * Escape while focus is inside an open native <dialog> belongs to the dialog. An open toast listens for Escape on the
+ * whole document and took it, so the toast closed and the dialog stayed open. Here the toast keeps out of it: it stays,
+ * and the dialog is asked to close as if it had the key itself (a `cancel` event it can refuse, then close), as the
+ * tooltip does. Escape with focus in the toast, or outside any dialog, still dismisses the toast.
+ */
+function escapeToDialog(e: KeyboardEvent) {
+  const dialog = (document.activeElement as HTMLElement | null)?.closest("dialog[open]") as HTMLDialogElement | null
+  if (!dialog) return
+  e.preventDefault()
+  if (dialog.dispatchEvent(new Event("cancel", { cancelable: true }))) dialog.close()
+}
+
+export function Toast({
+  className,
+  tone = "neutral",
+  children,
+  onEscapeKeyDown,
+  ...props
+}: React.ComponentProps<typeof ToastPrimitive.Root> & { tone?: ToastTone }) {
   const Icon = icons[tone]
   return (
     <ToastPrimitive.Root
       data-slot="toast"
       // Failures interrupt (assertive); everything else waits its turn (polite).
       type={tone === "danger" ? "foreground" : "background"}
+      onEscapeKeyDown={(e) => {
+        onEscapeKeyDown?.(e)
+        if (!e.defaultPrevented) escapeToDialog(e)
+      }}
       className={cn(
         "relative rounded-md bg-float p-4 pr-(--h-md) text-sm shadow-float ring-1 ring-edge backdrop-blur-xl",
         tone === "danger" && "ring-danger",

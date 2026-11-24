@@ -1,9 +1,10 @@
-// @syncrobotic/metric-card v0.28.0 · update: npx shadcn add @syncrobotic/metric-card --overwrite
+// @syncrobotic/metric-card v0.32.0 · update: npx shadcn add @syncrobotic/metric-card --overwrite
 import * as React from "react"
 import { ArrowDownRight, ArrowUpRight, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Bone } from "@/registry/syncrobotic/shell/skeleton"
 import { Card } from "@/registry/syncrobotic/ui/card"
+import { StatusGlyph, statusText } from "@/registry/syncrobotic/shell/status-glyph"
 
 /** Words only screen readers hear, and the stand-in for a value that cannot be shown. Pass them translated. */
 export type MetricCardLabels = {
@@ -43,6 +44,8 @@ function Sparkline({ series, className }: { series: number[]; className?: string
  * worse takes colour (`trend="bad"`); good news stays foreground and no change stays grey, because a rise is not always
  * good (more events is worse). The value is the card's figure (24 px, tabular, as CardFigure). With `href` the whole card
  * is one link; `loading` keeps its height with bones; `unavailable` shows a dash and says why, never a made-up 0.
+ * A number that is itself a warning (items waiting for review, a quota near its limit) takes `tone`: the caption gets the
+ * status's shape and colour, as a MetaPill does; the value stays foreground and the card is never tinted.
  * Put several in a MetricGrid.
  */
 export function MetricCard({
@@ -53,6 +56,7 @@ export function MetricCard({
   trend = "flat",
   series,
   caption,
+  tone,
   href,
   linkAs: Link = "a",
   loading = false,
@@ -75,6 +79,11 @@ export function MetricCard({
   series?: number[]
   /** One line of context under the value: "2 docked for charging", "Last 7 days". */
   caption?: React.ReactNode
+  /**
+   * The number needs attention (warning) or someone now (danger): the caption takes the status glyph and colour, so it
+   * should say why ("3 blocking a release"). The value stays foreground. Calm by default.
+   */
+  tone?: "warning" | "danger"
   /** Makes the whole card one link, to the page behind the number. */
   href?: string
   /** Your router's link (e.g. next/link), for `href`. */
@@ -96,6 +105,7 @@ export function MetricCard({
     <Card
       data-slot="metric-card"
       data-trend={delta && !loading && !missing ? trend : undefined}
+      data-tone={tone && caption && !loading && !missing ? tone : undefined}
       aria-busy={loading || undefined}
       // In a MetricGrid each card takes two of the grid's rows (subgrid): its head (label, change, value) and its caption.
       // The heads of a row share one height and each value sits at the bottom of its head, so a label on two lines or a
@@ -114,7 +124,7 @@ export function MetricCard({
         <span className="text-sm text-muted-foreground">
           {href ? (
             // focus-ring: the whole card draws the ring (has-[a:focus-visible] on the card), since the link covers it.
-            <Link href={href} className="inline-flex items-center gap-2 outline-none after:absolute after:inset-0 after:rounded-[inherit]">
+            <Link data-slot="metric-card-link" href={href} className="inline-flex items-center gap-2 outline-none after:absolute after:inset-0 after:rounded-[inherit]">
               {label}
               <ChevronRight aria-hidden="true" className="size-4 shrink-0" />
             </Link>
@@ -159,7 +169,16 @@ export function MetricCard({
       ) : missing ? (
         <span className="text-xs text-muted-foreground">{unavailable}</span>
       ) : (
-        caption && <span className="text-xs text-muted-foreground">{caption}</span>
+        caption &&
+        (tone ? (
+          // Status is a shape and a word: the glyph and the caption in the tone's colour; nothing else on the card changes.
+          <span className={cn("flex items-center gap-2 text-xs", statusText[tone])}>
+            <StatusGlyph status={tone} />
+            <span>{caption}</span>
+          </span>
+        ) : (
+          <span className="text-xs text-muted-foreground">{caption}</span>
+        ))
       )}
     </Card>
   )

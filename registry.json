@@ -209,8 +209,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "`paginationLabels.range` groups its numbers by the locale (\"第 1,201–1,220 筆，共 12,400 筆\"), as the English default does. Issue #324. `notFoundPageLabels`, `noAccessPageLabels`, `errorPageLabels`, `offlinePageLabels` and `loadingPageLabels` for status-pages. Issue #323. `shellSearchLabels`. Issue #331."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -1029,8 +1034,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.31.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `geo-map-list-item`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -1381,8 +1391,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `number-field-decrease`, `number-field-increase`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -2001,7 +2016,7 @@
       "name": "card",
       "type": "registry:ui",
       "title": "Card",
-      "description": "One surface with radius 16 for a group of related content.",
+      "description": "One surface with radius 16 for a group of related content, with CardMedia for a cover picture.",
       "registryDependencies": [
         "@syncrobotic/cn"
       ],
@@ -2012,8 +2027,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "`CardMedia` for a cover picture: first in the card, edge to edge with the card's own top corners (`rounded-[inherit]`), or `inset` inside the padding at the image radius; `aspect` (video by default, 4/3, square, auto) keeps its shape before the picture loads. Issue #342."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -2281,14 +2301,15 @@
       "name": "metric-card",
       "type": "registry:ui",
       "title": "Metric card",
-      "description": "One headline number on a card: label, value, change and context, coloured only when the change is for the worse; a link, loading and unavailable state, and MetricGrid for the row.",
+      "description": "One headline number on a card: label, value, change and context, coloured only when the change is for the worse or the caption says the number needs attention (tone); a link, loading and unavailable state, and MetricGrid for the row.",
       "dependencies": [
         "lucide-react"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/card",
-        "@syncrobotic/skeleton"
+        "@syncrobotic/skeleton",
+        "@syncrobotic/status-glyph"
       ],
       "files": [
         {
@@ -2298,8 +2319,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `metric-card-link`, so a product's check for hand-made controls can tell them from its own. Issue #317. `tone` (\"warning\" or \"danger\") puts the status glyph and colour on the caption, for a number that is itself a warning; the value stays foreground and the card is never tinted. Issue #326."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -2338,8 +2364,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `banner-close`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -2423,8 +2454,13 @@
         }
       ],
       "meta": {
-        "version": "0.27.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `alarm-action`, `alarm-shelve`, `alarm-unshelve`, `alarm-acknowledge`, `alarm-acknowledge-all`, `alarm-retry`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.27.0",
             "date": "2026-11-21",
@@ -2513,8 +2549,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Escape inside an open native `<dialog>` closes the dialog (it gets a `cancel` it can refuse) and the toast stays; the toast had taken the key. Escape with focus in a toast, or outside any dialog, still dismisses it. Issue #311."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -2610,8 +2651,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.4",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Its controls carry a data-slot: `table-head-sort`, so a product's check for hand-made controls can tell them from its own. Issue #340."
+          },
           {
             "version": "0.17.4",
             "date": "2026-11-19",
@@ -2782,8 +2828,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "A `ref` passed to TabsList is merged with the one the underline measures; it replaced it, and the underline never showed. Issue #336."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -2952,8 +3003,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "An item open in the server render shows open on first paint, with no animation: opening plays only once Radix has measured the content. Opening and closing by the user keep their motion. Issue #322."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -2981,6 +3037,36 @@
           }
         ],
         "status": "stable"
+      }
+    },
+    {
+      "name": "collapsible",
+      "type": "registry:ui",
+      "title": "Collapsible",
+      "description": "One region behind one trigger (More filters, How to use this, a long note), styled like accordion: the same chevron, focus ring and expand and collapse motion. The trigger needs no heading; content open in the server's HTML shows without animating.",
+      "dependencies": [
+        "radix-ui",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/collapsible.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.32.0",
+        "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "First release: Radix Collapsible styled like accordion (chevron, focus ring, animate-expand and animate-collapse, instant under reduced motion). The trigger works without a heading, and the animation waits for Radix's measured height, so content open on first paint does not grow. Issue #299."
+          }
+        ]
       }
     },
     {
@@ -3057,8 +3143,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "SidebarTrigger `show`: \"expanded\" renders only while the column is open on a wide screen (collapse, for SidebarHeader), \"collapsed\" only while it is a rail or hidden and always on phones (expand, and the menu that opens the sheet, for the top bar); \"always\" (default) is the single trigger as before. Pressed from the keyboard, the trigger that hides moves focus to the one that shows. New SidebarRail: the sidebar's edge as a mouse control (resize cursor, hairline on hover, the trigger's tooltip, a click toggles), aria-hidden and out of the Tab order, absent on touch and phones. The Sidebar's inner frame now clips the column instead of the aside, so the rail can reach over the edge; same look."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -3071,7 +3162,7 @@
       "name": "graph",
       "type": "registry:ui",
       "title": "Graph",
-      "description": "A directed acyclic graph for lineage and pipelines, laid out in layers with no layout library: boxes with name, meta, status and link, neutral edges, the selected node's path highlighted, arrow keys along the edges, and GraphList, the same graph as text.",
+      "description": "A directed acyclic graph for lineage and pipelines, laid out in layers with no layout library: boxes with name, badge, meta, status and link, neutral edges, the selected node's path highlighted, arrow keys along the edges, and GraphList, the same graph as text.",
       "dependencies": [],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -3087,8 +3178,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.21.2",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Its controls carry a data-slot: `graph-node`, `graph-list-link`, so a product's check for hand-made controls can tell them from its own. Issue #317. `badge` on a node: a short neutral outline tag after the name (an access tier, \"Deprecated\"), read after the name in the node's accessible name and shown in GraphList. Issue #318."
+          },
           {
             "version": "0.21.2",
             "date": "2026-11-21",
@@ -3131,8 +3227,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.29.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `robot-map-list-item`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.29.0",
             "date": "2026-11-22",
@@ -3228,8 +3329,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Its controls carry a data-slot: `dialog-trigger`, `dialog-close`, so a product's check for hand-made controls can tell them from its own. Issue #329."
+          },
           {
             "version": "0.23.0",
             "date": "2026-11-20",
@@ -3273,8 +3379,13 @@
         }
       ],
       "meta": {
-        "version": "0.6.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Its controls carry a data-slot: `alert-dialog-trigger`, so a product's check for hand-made controls can tell them from its own. Issue #329."
+          },
           {
             "version": "0.6.0",
             "date": "2026-11-17",
@@ -3307,8 +3418,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Its controls carry a data-slot: `sheet-trigger`, `sheet-close`, so a product's check for hand-made controls can tell them from its own. Issue #329."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -3361,8 +3477,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Its controls carry a data-slot: `popover-trigger`, so a product's check for hand-made controls can tell them from its own. Issue #329."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -3401,8 +3522,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.21.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Its controls carry a data-slot: `hover-card-trigger`, so a product's check for hand-made controls can tell them from its own. Issue #329."
+          },
           {
             "version": "0.21.0",
             "date": "2026-11-20",
@@ -3429,8 +3555,13 @@
         }
       ],
       "meta": {
-        "version": "0.30.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Its controls carry a data-slot: `tooltip-trigger`, so a product's check for hand-made controls can tell them from its own. Issue #329."
+          },
           {
             "version": "0.30.0",
             "date": "2026-11-22",
@@ -3474,8 +3605,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Its controls carry a data-slot: `dropdown-menu-trigger`, so a product's check for hand-made controls can tell them from its own. Issue #329."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -3540,8 +3676,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.21.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Its controls carry a data-slot: `context-menu-trigger`, so a product's check for hand-made controls can tell them from its own. Issue #329."
+          },
           {
             "version": "0.21.0",
             "date": "2026-11-20",
@@ -3758,6 +3899,32 @@
       }
     },
     {
+      "name": "code",
+      "type": "registry:ui",
+      "title": "Code",
+      "description": "Inline code in a sentence: a path, a key, a version tag or a command, in mono on a muted tile at the size of the text around it, breaking anywhere on a phone. No copy button; put a CopyButton beside it.",
+      "registryDependencies": [
+        "@syncrobotic/cn"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/code.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.32.0",
+        "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "First release: inline code that takes the size of the text around it (no em values), rounded-2xs, bg-muted, px-1, font-mono, breaking anywhere. Issue #297."
+          }
+        ]
+      }
+    },
+    {
       "name": "robot-icons",
       "type": "registry:ui",
       "title": "Robot icons",
@@ -3904,7 +4071,7 @@
       "name": "page-header",
       "type": "registry:ui",
       "title": "Page header",
-      "description": "The block a page opens with: breadcrumb above, one h1 and a line, meta pills, actions at the right. No label above the title.",
+      "description": "The block a page opens with: breadcrumb above, one h1 and a line, meta pills (a link with href), actions at the right. No label above the title.",
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/status-glyph"
@@ -3916,8 +4083,13 @@
         }
       ],
       "meta": {
-        "version": "0.29.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "`MetaPill` takes `href` and `linkAs` (default \"a\"): the pill becomes an underlined link inside its list item, with the focus ring and a target of --h-sm while it stays --h-tag tall. Without `href`, nothing changes. Issue #327."
+          },
           {
             "version": "0.29.0",
             "date": "2026-11-22",
@@ -3960,8 +4132,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `chip-group-link`, `chip-group-more`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -3990,7 +4167,7 @@
       "name": "share-bar",
       "type": "registry:ui",
       "title": "Share bar",
-      "description": "How a whole splits, as one thin bar in the chart palette (the accent, two greys, Other): light enough for a table cell, with an optional label, total and legend, whose entries link to each part with href.",
+      "description": "How a whole splits, as one thin bar in the chart palette (the accent, two greys, Other): light enough for a table cell, with an optional label, total and legend, whose entries link to each part with href. ShareLegend is one legend for a list of bars.",
       "registryDependencies": [
         "@syncrobotic/cn"
       ],
@@ -4001,8 +4178,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `share-bar-link`, so a product's check for hand-made controls can tell them from its own. Issue #317. `ShareLegend`: one legend for a list of bars, from the same segments in the same order (values optional), so its colours match the bars; each bar keeps its own name. Issue #319."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -4102,8 +4284,13 @@
         }
       ],
       "meta": {
-        "version": "0.15.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "`data-slot` sets the reveal button's slot (default \"restricted-preview\"), so a component that holds it can name it (image-grid: \"image-grid-reveal\"). Issue #333."
+          },
           {
             "version": "0.15.0",
             "date": "2026-11-19",
@@ -4122,7 +4309,7 @@
       "name": "image-grid",
       "type": "registry:ui",
       "title": "Image grid",
-      "description": "Many pictures as a grid or a scroll-snap strip: lazy tiles that keep their aspect, skeleton, hidden and broken states, single or multiple picking, and a lightbox with arrow keys and Esc.",
+      "description": "Many pictures as a grid or a scroll-snap strip: lazy tiles that keep their aspect, skeleton, hidden and broken states, single or multiple picking, and a lightbox with arrow keys and Esc, or your own view with onOpen.",
       "dependencies": [
         "lucide-react"
       ],
@@ -4141,8 +4328,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Its controls carry a data-slot: `image-grid-item`, `image-grid-reveal`, `image-grid-zoom`, so a product's check for hand-made controls can tell them from its own. Issue #333. `onOpen(item, index)` replaces the lightbox with the app's own view (a Sheet with the picture's details): tiles, and the corner button while picking, call it; keys, hidden and broken tiles are unchanged, and the app's dialog returns focus to the tile. Issue #320."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -4170,7 +4362,7 @@
       "name": "annotated-image",
       "type": "registry:ui",
       "title": "Annotated image",
-      "description": "Boxes, points, polygons and poses over a picture, in its own pixel space: predicted solid, ground truth dashed, the previous version dotted, each on a halo; class words, a line-style legend, selection by keyboard, raster overlays, loading and failed states.",
+      "description": "Boxes, points, polygons and poses over a picture, in its own pixel space: predicted solid, ground truth dashed, the previous version dotted, each on a halo; class words, a line-style legend, selection by keyboard, raster overlays, lazy loading, loading and failed states, with onLoadError to tell the app.",
       "dependencies": [
         "lucide-react"
       ],
@@ -4186,8 +4378,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.31.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "`onLoadError` is called once when the picture from `src` fails and the failed state shows. The picture and its overlays load lazily (`loading=\"lazy\"`). Issue #321."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -4251,8 +4448,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.31.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `media-player-marker`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -4574,8 +4776,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `filters-field`, `filters-operator`, `filters-value`, `filters-remove`, `filters-back`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -4682,8 +4889,13 @@
         }
       ],
       "meta": {
-        "version": "0.30.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Its controls carry a data-slot: `theme-toggle`, so a product's check for hand-made controls can tell them from its own. Issue #329."
+          },
           {
             "version": "0.30.0",
             "date": "2026-11-22",
@@ -4776,8 +4988,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.1",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `autocomplete-input`, `autocomplete-clear`, `autocomplete-trigger`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.23.1",
             "date": "2026-11-21",
@@ -4877,8 +5094,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `phone-input-number`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -4937,8 +5159,13 @@
         }
       ],
       "meta": {
-        "version": "0.25.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `calendar-day`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.25.0",
             "date": "2026-11-21",
@@ -5001,8 +5228,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `date-selector-clear`, `date-selector-preset`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -5067,8 +5299,13 @@
         }
       ],
       "meta": {
-        "version": "0.23.3",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `time-picker-input`, `time-picker-option`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.23.3",
             "date": "2026-11-21",
@@ -5138,8 +5375,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "DataGridColumnVisibility is --h-md, the height of the search field it sits beside in a toolbar (was --h-sm). Every button, link and field it draws carries a data-slot: `data-grid-expand`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -5235,8 +5477,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "The toolbar is one control height, the search field's --h-md: the level and source menus are default-size buttons and the view options an icon button, no longer 36 px beside a 44 px field. An opened line's detail is a band of its row instead of a ringed card under the message: a hairline, then the fields with names under the time column and values under the level column (the message cell spans the columns on a CSS subgrid), and one quiet ghost Copy line on the band. The footer's Copy shows only for a selection of two or more lines (\"Copy 3 lines\"). Jump to latest is docked in the footer beside Paused instead of floating over the lines."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -5297,8 +5544,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `sortable-handle`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -5385,8 +5637,13 @@
         }
       ],
       "meta": {
-        "version": "0.10.1",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `file-upload-input`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.10.1",
             "date": "2026-11-21",
@@ -5427,8 +5684,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `attachment-action`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -5501,8 +5763,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `stepper-step`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -5609,8 +5876,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `scrollspy-link`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-22",
@@ -5947,8 +6219,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `fleet-table-open`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -6131,8 +6408,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Collapse is on the sidebar: a quiet trigger at the end of the brand row and the edge (SidebarRail) for a mouse. While the sidebar is a rail, the expand trigger is the top bar's first button, and on phones it is the menu button that opens the sheet; while it is open, the top bar starts with the title. ⌘B / Ctrl+B and the sidebar_state cookie as before. Needs sidebar 0.32.0. ShellSearch's words go through `search.labels` (the dialog's name, the scope button, the empty result) and its buttons carry `data-slot=\"shell-search\"` / `\"shell-search-scope\"`. Issue #331."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -6223,8 +6505,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "The page's `scroll-padding-top` is the bar plus 8 px (`--h-row` + 16), plus the tab row's `--h-md` while a sticky TabsList is pinned, so a control that takes focus never stops under the bar (WCAG 2.4.11); it is put back when the shell unmounts. Issue #344. Its controls carry a data-slot: `top-bar-link`, `top-bar-brand`, `top-bar-menu`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -6262,7 +6549,7 @@
       "name": "action-rail-shell",
       "type": "registry:block",
       "title": "Action-rail shell",
-      "description": "A page whose right column holds only the next step: its title, what it does, one large primary button and a few small actions. A bar fixed to the bottom on phones; ← or Esc goes back up a level.",
+      "description": "A page whose right column holds only the next step: its title, what it does, one large primary button and a few small actions. A bar fixed to the bottom on phones; ← or Esc goes back up a level. A button keeps focus while its label changes (give an action an `id` when the list reorders).",
       "dependencies": [
         "lucide-react"
       ],
@@ -6278,8 +6565,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "The primary and the small actions keep their element when their label changes (Run → Stop), so keyboard focus stays on the button; they are keyed by place, or by the new optional `id` on RailAction. Issue #334. Every button, link and field it draws carries a data-slot: `action-rail-back`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -6392,8 +6684,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `list-detail-item`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -6480,8 +6777,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `event-log-open`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -6650,8 +6952,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `data-catalog-link`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -6829,8 +7136,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "GovernanceTodoContent fills its container: the 56 rem cap (max-w-4xl) is gone, so in a shell it spans the content width like the other pages. Issue #337."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -7088,8 +7400,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "`as` sets the heading (h1 or h2; default h1 on a screen of its own, h2 in a frame), so a page inside top-bar-shell, which has no title, still has an h1; `fill=\"parent\"` is a section, never a second main. `primary` and `secondary` take `{ label, href }`, a link through `linkAs` (default \"a\"), or `{ label, onClick }`; a string works as before, and `secondary={null}` leaves it out. Every word is in `labels` (`notFoundPageLabels`, `noAccessPageLabels`, `errorPageLabels`, `offlinePageLabels`, `loadingPageLabels` in labels-zh-tw). Issues #323, #345."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -7151,8 +7468,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "The design language says a toolbar is one height (every control --h-md beside a field, --h-sm only in a row without one) and where the app shell's collapse controls sit. The checklist says a status page inside top-bar-shell takes `as=\"h1\"` and links out with `{ label, href }`. Issue #323. The design language says top-bar-shell keeps focus clear of its bar with the page's scroll padding. Issue #344. Checklist: Code for a path or key inside a sentence, with a CopyButton beside it. Collapsible for one region behind one trigger, never a raw details element."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -8387,8 +8709,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `card-site-link`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -8701,8 +9028,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `settings-webhooks-delivery`, `settings-webhooks-endpoint`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -8823,8 +9155,13 @@
         }
       ],
       "meta": {
-        "version": "0.21.1",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `notification-center-trigger`, `notification-center-link`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.21.1",
             "date": "2026-11-21",
@@ -9226,8 +9563,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `wizard-import-file`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -9442,8 +9784,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `incident-queue-link`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -9761,8 +10108,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "Every button, link and field it draws carries a data-slot: `agent-runs-link`, so a product's check for hand-made controls can tell them from its own. Issue #317."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",

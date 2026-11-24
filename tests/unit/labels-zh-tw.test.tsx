@@ -59,6 +59,11 @@ describe("labels-zh-tw", () => {
     expect(zh.alarmListLabels.hidden(2, 0)).toBe("2 個依設計抑制")
   })
 
+  it("groups the pagination range by the locale, as the English default does (#324)", () => {
+    expect(zh.paginationLabels.range(1201, 1220, 12400, "zh-TW")).toBe("第 1,201–1,220 筆，共 12,400 筆")
+    expect(zh.paginationLabels.range(1, 20, 40, "zh-TW")).toBe("第 1–20 筆，共 40 筆")
+  })
+
   it("reaches the DOM through each component's labels prop", () => {
     render(<Spinner delay={0} labels={zh.spinnerLabels} />)
     expect(screen.getByRole("status", { name: "載入中" })).toBeTruthy()

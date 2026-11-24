@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell v0.31.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
+// @syncrobotic/app-shell v0.32.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -51,6 +51,7 @@ import {
   SidebarMenuSubItem,
   SidebarMenuTag,
   SidebarProvider,
+  SidebarRail,
   SidebarTrigger,
   useSidebar,
   type SidebarLabels,
@@ -98,6 +99,23 @@ export type AppSearch = {
   /** What the search covers. The first is the default, e.g. "Everything". */
   scopes?: { value: string; label: string }[]
   groups: AppSearchGroup[]
+  /** The search's own words: the dialog's name, the scope button and the empty result, e.g. shellSearchLabels from labels-zh-tw. */
+  labels?: Partial<ShellSearchLabels>
+}
+
+export type ShellSearchLabels = {
+  /** The icon button's name, the dialog's title, and the field's word when `label` is not set. */
+  search: string
+  /** The scope button's name. */
+  scope: (scope: string) => string
+  /** No result for the query in the chosen scope. */
+  empty: (query: string, scope: string) => string
+}
+
+export const defaultShellSearchLabels: ShellSearchLabels = {
+  search: "Search",
+  scope: (scope) => `Search scope: ${scope}`,
+  empty: (query, scope) => `No match for “${query}” in ${scope.toLowerCase()}. Try another word, or search everything.`,
 }
 
 /**
@@ -351,6 +369,7 @@ const isMac = () => /Mac|iPhone|iPad/.test(navigator.platform)
  * where typing narrows the results and the scope narrows the groups. The scope can be changed in the field or the palette.
  */
 export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch; linkAs?: React.ElementType }) {
+  const l = { ...defaultShellSearchLabels, ...search.labels }
   const [open, setOpen] = React.useState(false)
   const scopes = search.scopes ?? [{ value: "all", label: "Everything" }]
   // The first scope is the widest one, which shows every group; an empty list falls back to the default's value.
@@ -377,7 +396,8 @@ export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch;
       <DropdownMenuTrigger asChild>
         <button
           type="button"
-          aria-label={`Search scope: ${scopeLabel}`}
+          data-slot="shell-search-scope"
+          aria-label={l.scope(scopeLabel ?? "")}
           className="press mx-1 flex h-(--h-sm) shrink-0 items-center gap-2 rounded-xs px-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground"
         >
           {scopeLabel}
@@ -405,28 +425,30 @@ export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch;
       <div className="hidden h-(--h-md) w-80 items-center rounded-sm bg-card ring-1 ring-input ring-inset lg:flex">
         <button
           type="button"
+          data-slot="shell-search"
           onClick={() => setOpen(true)}
           className="press flex h-full min-w-0 flex-1 items-center gap-2 rounded-l-sm pl-3 text-left text-sm text-muted-foreground hover:text-foreground"
         >
           <Search aria-hidden="true" className="size-4 shrink-0" />
-          <span className="truncate">{search.label ?? "Search"}</span>
+          <span className="truncate">{search.label ?? l.search}</span>
           <CommandShortcut className="mr-1">{shortcut}</CommandShortcut>
         </button>
         {scopes.length > 1 && scopeMenu}
       </div>
       <button
         type="button"
-        aria-label="Search"
+        data-slot="shell-search"
+        aria-label={l.search}
         onClick={() => setOpen(true)}
         className="press flex size-(--h-md) items-center justify-center rounded-sm text-muted-foreground hover:bg-accent hover:text-foreground lg:hidden"
       >
         <Search aria-hidden="true" className="size-5" />
       </button>
 
-      <CommandDialog open={open} onOpenChange={setOpen} title="Search" description={search.placeholder}>
-        <CommandInput placeholder={search.placeholder ?? "Search"} end={scopes.length > 1 ? scopeMenu : undefined} />
+      <CommandDialog open={open} onOpenChange={setOpen} title={l.search} description={search.placeholder}>
+        <CommandInput placeholder={search.placeholder ?? l.search} end={scopes.length > 1 ? scopeMenu : undefined} />
         <CommandList>
-          <CommandEmpty>{(query) => `No match for “${query}” in ${scopeLabel?.toLowerCase()}. Try another word, or search everything.`}</CommandEmpty>
+          <CommandEmpty>{(query) => l.empty(query, scopeLabel ?? "")}</CommandEmpty>
           {groups.map((g) => (
             <CommandGroup key={g.heading} heading={g.heading}>
               {g.items.map((item) => (
@@ -486,8 +508,10 @@ const wideNow = () => window.matchMedia(WIDE).matches
  * (sidebar trigger, page title, environment, search, actions), and the content with its footer.
  *
  * The sidebar is the kit's Sidebar: open on wide screens (1280 px and up) and a 72 px rail of icons with tooltips below
- * that, until the person toggles it (the top bar's trigger, or ⌘B / Ctrl+B); the choice is kept in a cookie. Phones get
- * it as a sheet from the left. `layout="inset"` floats the sidebar, the top bar and the content as separate panels.
+ * that, until the person toggles it; the choice is kept in a cookie. Collapse is on the sidebar itself: a quiet button at
+ * the end of its brand row and, for a mouse, its edge (hover shows a hairline). While it is a rail, the expand button sits
+ * at the start of the top bar, and the edge expands it too. ⌘B / Ctrl+B toggles it anywhere. Phones get it as a sheet
+ * from the left, opened by the top bar's menu button. `layout="inset"` floats the sidebar, the top bar and the content as separate panels.
  */
 export function AppShell({
   product,
@@ -530,7 +554,7 @@ export function AppShell({
             12 px in, so its centre is the rail's centre line, open or closed; only the name fades. Flush: lined, level
             with the top bar's line. */}
         <SidebarHeader className={cn("h-(--h-row) justify-center border-b py-0", inset ? "border-transparent" : "border-border")}>
-          <span className="flex min-w-0 items-center">
+          <span className="flex min-w-0 items-center gap-1">
             <span className="flex w-12 shrink-0 items-center justify-center">
               {logo ?? (
                 <span aria-hidden="true" className="flex size-7 items-center justify-center rounded-sm bg-primary text-sm font-bold text-primary-foreground">
@@ -538,9 +562,12 @@ export function AppShell({
                 </span>
               )}
             </span>
-            <span className="truncate text-sm font-bold whitespace-nowrap transition-opacity duration-(--motion-base) ease-(--ease-standard) group-data-[collapsible=icon]/sidebar:opacity-0">
+            <span className="min-w-0 flex-1 truncate text-sm font-bold whitespace-nowrap transition-opacity duration-(--motion-base) ease-(--ease-standard) group-data-[collapsible=icon]/sidebar:opacity-0">
               {product}
             </span>
+            {/* Collapse lives on the sidebar it collapses, at the end of the brand row, quiet (muted ink, no fill until
+                hover). It shows only while the sidebar is open on a wide screen; the top bar's trigger takes over after. */}
+            <SidebarTrigger show="expanded" className="-me-1" />
           </span>
         </SidebarHeader>
         <SidebarContent>
@@ -551,6 +578,8 @@ export function AppShell({
             <SidebarUserMenu user={user} items={userMenu} linkAs={linkAs} />
           </SidebarFooter>
         )}
+        {/* The edge, for a mouse: hover shows a hairline, a click collapses or expands. */}
+        <SidebarRail />
       </Sidebar>
 
       {/* Inset: the top bar and the content are two panels, 8 px apart, so the bar never reads as part of the page.
@@ -563,7 +592,8 @@ export function AppShell({
             inset ? "rounded-md bg-card ring-1 ring-border" : "border-b border-border",
           )}
         >
-          <SidebarTrigger className="-ms-2" />
+          {/* Expand, while the sidebar is a rail; on phones, the menu button that opens the sheet. Hidden while open. */}
+          <SidebarTrigger show="collapsed" className="-ms-2" />
           {breadcrumb && <div className="hidden min-w-0 shrink items-center gap-1 md:flex">{breadcrumb}</div>}
           <h1 className="truncate text-lg font-bold">{title}</h1>
           {/* On phones the title keeps the room; the environment shows from 640 px. */}

@@ -1,4 +1,4 @@
-// @syncrobotic/calendar v0.25.0 · update: npx shadcn add @syncrobotic/calendar --overwrite
+// @syncrobotic/calendar v0.32.0 · update: npx shadcn add @syncrobotic/calendar --overwrite
 "use client"
 
 import * as React from "react"
@@ -95,7 +95,7 @@ function CalendarDayButton({ className, day, modifiers, ...props }: DayButtonPro
   }, [modifiers.focused])
   const selectedSingle = modifiers.selected && !modifiers.range_start && !modifiers.range_end && !modifiers.range_middle
   return (
-    <button
+    <button data-slot="calendar-day"
       ref={ref}
       data-day={day.date.toISOString().slice(0, 10)}
       className={cn(

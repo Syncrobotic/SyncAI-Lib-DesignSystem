@@ -1,4 +1,4 @@
-// @syncrobotic/governance-todo v0.31.0 · update: npx shadcn add @syncrobotic/governance-todo --overwrite
+// @syncrobotic/governance-todo v0.32.0 · update: npx shadcn add @syncrobotic/governance-todo --overwrite
 "use client"
 
 import * as React from "react"
@@ -73,7 +73,7 @@ export function GovernanceTodoContent({ todos = sampleTodos, readOnly, onDone }:
   const { rendered, done: finish } = usePresenceList(shown, (t) => t.id)
 
   return (
-    <div className="flex max-w-4xl flex-col gap-4">
+    <div className="flex flex-col gap-4">
       <SegmentedControl value={who} onValueChange={(v) => v && setWho(v as typeof who)} aria-label="Owner" className="sm:w-auto sm:self-start">
         <SegmentedControlItem value="all">All {open.length}</SegmentedControlItem>
         <SegmentedControlItem value="Maintainer">Maintainers {count("Maintainer")}</SegmentedControlItem>

@@ -1,4 +1,4 @@
-// @syncrobotic/accordion v0.31.0 · update: npx shadcn add @syncrobotic/accordion --overwrite
+// @syncrobotic/accordion v0.32.0 · update: npx shadcn add @syncrobotic/accordion --overwrite
 "use client"
 
 import * as React from "react"
@@ -47,11 +47,16 @@ export function AccordionTrigger({
   )
 }
 
+/**
+ * Opening plays only once Radix has measured the content into --radix-collapsible-content-height. An item open in the
+ * server's HTML already says data-state="open" before any script runs, and the bare data-[state=open] animation played
+ * on every page load; it has no measured height until hydration, and from then on Radix holds its mount animation.
+ */
 export function AccordionContent({ className, children, ...props }: React.ComponentProps<typeof AccordionPrimitive.Content>) {
   return (
     <AccordionPrimitive.Content
       data-slot="accordion-content"
-      className="overflow-hidden text-sm data-[state=open]:animate-expand data-[state=closed]:animate-collapse"
+      className="overflow-hidden text-sm [&[data-state=open][style*='--radix-collapsible-content-height:']]:animate-expand data-[state=closed]:animate-collapse"
       {...props}
     >
       <div className={cn("pb-4 text-muted-foreground", className)}>{children}</div>

@@ -1,4 +1,4 @@
-// @syncrobotic/number-field v0.17.2 · update: npx shadcn add @syncrobotic/number-field --overwrite
+// @syncrobotic/number-field v0.32.0 · update: npx shadcn add @syncrobotic/number-field --overwrite
 "use client"
 
 import * as React from "react"
@@ -71,7 +71,7 @@ export function NumberField({
 
   return (
     <InputGroup className={cn("w-auto", className)}>
-      <button
+      <button data-slot="number-field-decrease"
         type="button"
         tabIndex={-1}
         aria-label={labels?.decrease ?? "Decrease"}
@@ -148,7 +148,7 @@ export function NumberField({
           </span>
         )}
       </div>
-      <button
+      <button data-slot="number-field-increase"
         type="button"
         tabIndex={-1}
         aria-label={labels?.increase ?? "Increase"}

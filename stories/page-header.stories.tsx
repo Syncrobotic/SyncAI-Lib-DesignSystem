@@ -57,3 +57,23 @@ export const PageHeaderDetail: S = {
     />
   ),
 }
+
+/** A fact that leads somewhere is a link (`href`): underlined, the same height on screen, with a 36 px target (44 on touch). */
+export const PageHeaderMetaLinks: S = {
+  render: () => (
+    <PageHeader
+      as="h2"
+      title="warehouse-forklifts"
+      description="A collection of forklift and pallet pictures from two warehouses."
+      meta={
+        <>
+          <MetaPill>12,480 images</MetaPill>
+          <MetaPill tone="warning" href="#compliance">
+            2 compliance items open
+          </MetaPill>
+          <MetaPill href="#releases">Used by 3 releases</MetaPill>
+        </>
+      }
+    />
+  ),
+}

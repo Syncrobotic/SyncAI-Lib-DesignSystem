@@ -1,4 +1,4 @@
-// @syncrobotic/event-log v0.28.0 · update: npx shadcn add @syncrobotic/event-log --overwrite
+// @syncrobotic/event-log v0.32.0 · update: npx shadcn add @syncrobotic/event-log --overwrite
 "use client"
 
 import * as React from "react"
@@ -183,7 +183,7 @@ export function EventLog({ events = sampleEvents }: { events?: LogEvent[] }) {
                   <TableCell className="py-2 max-md:whitespace-normal">
                     {/* focus-ring: the row draws the ring (has-[button:focus-visible] on TableRow), since the button covers it. No press:
                         a scale would make the button the box its overlay fills, and shrink the target mid-tap. */}
-                    <button type="button" onClick={() => setOpen(e)} className="text-left text-sm underline-offset-4 outline-none after:absolute after:inset-0 hover:underline">
+                    <button data-slot="event-log-open" type="button" onClick={() => setOpen(e)} className="text-left text-sm underline-offset-4 outline-none after:absolute after:inset-0 hover:underline">
                       {e.message}
                     </button>
                     <span className="block font-mono text-xs text-muted-foreground md:hidden">{e.source}</span>

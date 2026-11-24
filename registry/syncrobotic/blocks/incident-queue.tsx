@@ -1,4 +1,4 @@
-// @syncrobotic/incident-queue v0.28.0 · update: npx shadcn add @syncrobotic/incident-queue --overwrite
+// @syncrobotic/incident-queue v0.32.0 · update: npx shadcn add @syncrobotic/incident-queue --overwrite
 "use client"
 
 import * as React from "react"
@@ -113,7 +113,7 @@ export function IncidentQueue() {
                   <Severity severity={i.severity} />
                 </TableCell>
                 <TableCell className="py-2 max-lg:whitespace-normal">
-                  <a href={`#${i.id}`} className="flex flex-col hover:underline">
+                  <a data-slot="incident-queue-link" href={`#${i.id}`} className="flex flex-col hover:underline">
                     <span className="font-medium">{i.title}</span>
                     <span className="text-xs text-muted-foreground">
                       {/* On a phone the severity leads the id and the state and age follow on their own line; they are

@@ -121,6 +121,34 @@ describe("AnnotatedImage", () => {
     expect(screen.queryByText("person 0.92")).toBeNull()
   })
 
+  it("tells the app once when the failed state shows (onLoadError), and again for a new src that fails", () => {
+    const onLoadError = vi.fn()
+    const props = { width: 640, height: 480, label: "Camera 2", annotations, onLoadError }
+    const { container, rerender } = render(<AnnotatedImage src="data:image/png;base64,broken" {...props} />)
+    const img = container.querySelector("img")
+    if (img) {
+      fireEvent.error(img)
+      fireEvent.error(img)
+    }
+    expect(screen.getByText("The picture could not be loaded")).toBeTruthy()
+    expect(onLoadError).toHaveBeenCalledTimes(1)
+    rerender(<AnnotatedImage src="data:image/png;base64,broken2" {...props} />)
+    const next = container.querySelector("img")
+    if (next) fireEvent.error(next)
+    expect(onLoadError).toHaveBeenCalledTimes(2)
+  })
+
+  it("loads the picture and its overlays lazily, and does not call onLoadError while it loads", () => {
+    const onLoadError = vi.fn()
+    const { container } = render(
+      <AnnotatedImage src={src} overlays={[{ src, label: "Heat map" }]} width={640} height={480} label="Camera 2" annotations={annotations} onLoadError={onLoadError} />,
+    )
+    const imgs = [...container.querySelectorAll("img")]
+    expect(imgs).toHaveLength(2)
+    expect(imgs.every((i) => i.getAttribute("loading") === "lazy")).toBe(true)
+    expect(onLoadError).not.toHaveBeenCalled()
+  })
+
   it("loading: a busy box at the picture's aspect ratio that says what it waits for", () => {
     const { container } = render(<AnnotatedImage loading width={640} height={480} label="Camera 2" annotations={[]} />)
     expect(container.querySelector('[aria-busy="true"]')).toBeTruthy()
