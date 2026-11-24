@@ -2,6 +2,13 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+
+### Fixed
+- **`labels-zh-tw` 0.32.0:** `paginationLabels.range` groups its numbers by the locale ("第 1,201–1,220 筆，共 12,400 筆"), as the English default does. Issue #324
+
 ## 0.31.0 · 2026-11-22
 
 Two components for model answers (streaming text, text linked to marks on a picture), a tier badge, and 13 fixes and options asked for by product teams: heading levels, sticky tabs under the shell, multi-select chips, formatted meters, chart inks and more.

@@ -209,8 +209,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "`paginationLabels.range` groups its numbers by the locale (\"第 1,201–1,220 筆，共 12,400 筆\"), as the English default does. Issue #324."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
