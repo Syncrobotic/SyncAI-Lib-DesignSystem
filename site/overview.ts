@@ -205,11 +205,13 @@ export const overviews: Record<string, Overview> = {
       "A dataset's images, the frames of a run, a camera's snapshots.",
       "Picking a cover picture, or the frames to send for labelling.",
       "What was just uploaded, as a strip under the upload field.",
+      "A gallery whose tiles open the app's own detail Sheet (with `onOpen`).",
     ],
     instead: ["Files that are not pictures, or a queue with progress: `attachment`.", "One preview someone must ask to see: `restricted-preview`."],
     notes: [
       "Placeholders and tests must not load external URLs; draw the picture in code (an SVG data URI).",
       "Selection is `aria-pressed` on each tile; do not add a separate checkbox.",
+      "For your own detail view use `onOpen`; never build a second grid beside the kit's. The tiles still say they open a dialog, so open one, and return focus to the tile when it closes.",
     ],
   },
   "load-more": {

@@ -766,6 +766,7 @@ const entries: Record<string, Entry> = {
       "Picked tiles are ringed in the focus ink with a check, never a status colour. While picking, the corner button opens the lightbox.",
       "Pictures the viewer must ask to see are `restricted`, with a `reason`; nothing loads before they ask. Log the view in `onReveal`.",
       "Use the strip for a short row, such as what was just uploaded; for a whole dataset, the grid.",
+      "When the page has its own detail view (a Sheet with the picture's labels and file), pass `onOpen(item, index)`: it replaces the lightbox, and the keys, hidden and broken tiles stay the same. Open a dialog from it, and return focus to the tile when it closes (keep `document.activeElement`, focus it in `onCloseAutoFocus`).",
     ],
   },
   "annotated-image": {
@@ -1496,7 +1497,7 @@ const keyboard: Record<string, [string, string][]> = {
     ["`Esc`", "On a phone, close the sheet and return focus to the trigger"],
   ],
   "image-grid": [
-    ["`Enter` / `Space`", "Open the picture in the lightbox, or pick it while picking"],
+    ["`Enter` / `Space`", "Open the picture in the lightbox (or your own view, with onOpen), or pick it while picking"],
     ["`←` `→` / `↑` `↓`", "Pick one (a radio group, one Tab stop): move to the previous or next picture and pick it"],
     ["`Home` / `End`", "Pick one: the first or last picture"],
     ["`←` / `→`", "In the lightbox: previous or next picture"],

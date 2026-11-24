@@ -2,6 +2,7 @@ import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { ImageGrid, type ImageGridItem } from "@/registry/syncrobotic/ui/image-grid"
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/registry/syncrobotic/ui/sheet"
 import { brokenPhoto, placeholderPhoto } from "./placeholder-photos"
 
 const meta: Meta = { title: "Display/Image grid" }
@@ -24,6 +25,43 @@ const frames = (n: number, prefix = "aisle"): ImageGridItem[] =>
 export const ImageGridDataset: S = {
   render: () => <ImageGrid label="Images in Forklift aisles v3" items={frames(8)} />,
 }
+
+function OpenInSheet() {
+  const items = frames(8)
+  const [open, setOpen] = React.useState<ImageGridItem | null>(null)
+  // The tile that opened the sheet: focus goes back to it when the sheet closes.
+  const opener = React.useRef<HTMLElement | null>(null)
+  return (
+    <>
+      <ImageGrid
+        label="Images in Forklift aisles v3"
+        items={items}
+        onOpen={(item) => {
+          opener.current = document.activeElement as HTMLElement | null
+          setOpen(item)
+        }}
+      />
+      <Sheet open={!!open} onOpenChange={(o) => !o && setOpen(null)}>
+        <SheetContent
+          side="right"
+          onCloseAutoFocus={(e) => {
+            e.preventDefault()
+            opener.current?.focus()
+          }}
+        >
+          <SheetHeader>
+            <SheetTitle>{open?.name}</SheetTitle>
+            <SheetDescription>{open?.caption}</SheetDescription>
+          </SheetHeader>
+          {open && <img src={open.src} alt={open.alt} className="w-full rounded-sm" />}
+        </SheetContent>
+      </Sheet>
+    </>
+  )
+}
+
+/** `onOpen`: a tile opens the app's own Sheet with the picture's details instead of the lightbox; closing it returns focus to the tile. */
+export const ImageGridOpenInSheet: S = { render: () => <OpenInSheet /> }
 
 function PickOne() {
   const items = frames(6)

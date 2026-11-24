@@ -5623,6 +5623,11 @@
      "description": "Called when someone asks to see a hidden picture, e.g. to log the view."
     },
     {
+     "name": "onOpen",
+     "type": "(item: ImageGridItem, index: number) => void",
+     "description": "Opens a picture your way (your own Sheet with its details) in place of the lightbox: a tile, or the corner button while picking, calls it. Your dialog then returns focus to the tile when it closes: keep `document.activeElement` here and focus it in the dialog's `onCloseAutoFocus` (a dialog opened without a trigger has nowhere to return to)."
+    },
+    {
      "name": "labels",
      "type": "Partial<ImageGridLabels>",
      "description": "",

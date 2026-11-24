@@ -4143,7 +4143,7 @@
       "name": "image-grid",
       "type": "registry:ui",
       "title": "Image grid",
-      "description": "Many pictures as a grid or a scroll-snap strip: lazy tiles that keep their aspect, skeleton, hidden and broken states, single or multiple picking, and a lightbox with arrow keys and Esc.",
+      "description": "Many pictures as a grid or a scroll-snap strip: lazy tiles that keep their aspect, skeleton, hidden and broken states, single or multiple picking, and a lightbox with arrow keys and Esc, or your own view with onOpen.",
       "dependencies": [
         "lucide-react"
       ],
@@ -4162,8 +4162,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "`onOpen(item, index)` replaces the lightbox with the app's own view (a Sheet with the picture's details): tiles, and the corner button while picking, call it; keys, hidden and broken tiles are unchanged, and the app's dialog returns focus to the tile. Issue #320."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
