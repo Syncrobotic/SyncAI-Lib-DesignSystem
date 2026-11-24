@@ -524,8 +524,8 @@
     "hash": "69aa1307c77e1c9a"
   },
   "top-bar-shell": {
-    "version": "0.31.0",
-    "hash": "13b018697da0e515"
+    "version": "0.32.0",
+    "hash": "f4e8342cbf12f1e4"
   },
   "action-rail-shell": {
     "version": "0.32.0",
@@ -585,7 +585,7 @@
   },
   "agent-skill": {
     "version": "0.32.0",
-    "hash": "354e5409fc4e3804"
+    "hash": "47c0154d9f590547"
   },
   "line-chart-telemetry": {
     "version": "0.17.2",

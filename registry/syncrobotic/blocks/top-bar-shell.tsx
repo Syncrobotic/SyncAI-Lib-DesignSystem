@@ -1,4 +1,4 @@
-// @syncrobotic/top-bar-shell v0.31.0 · update: npx shadcn add @syncrobotic/top-bar-shell --overwrite
+// @syncrobotic/top-bar-shell v0.32.0 · update: npx shadcn add @syncrobotic/top-bar-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -28,6 +28,21 @@ export type TopBarShellLabels = {
 }
 
 export const defaultTopBarShellLabels: TopBarShellLabels = { nav: "Main", openNav: "Open navigation", accountMenu: "account menu" }
+
+/**
+ * The page's scroll-padding-top: the bar's bottom edge once it floats (--shell-top: its row and the 8 px it moves down)
+ * and 8 px of air, plus a pinned tab row (--h-md) while one is stuck under it. Tokens, so density changes it too.
+ */
+const scrollPadding = {
+  bar: "calc(var(--h-row) + var(--spacing, 0.25rem) * 4)",
+  withTabs: "calc(var(--h-row) + var(--h-md) + var(--spacing, 0.25rem) * 4)",
+}
+
+/** A sticky tab row is pinned once the tabs' own section has scrolled up past it (as tabs measures it). */
+const stuck = (list: HTMLElement) => {
+  const section = list.parentElement
+  return !!section && section.getBoundingClientRect().top < list.getBoundingClientRect().top - 1
+}
 
 type TopBarShellProps = {
   product: string
@@ -91,6 +106,28 @@ export function TopBarShell({
     return () => window.removeEventListener("scroll", on)
   }, [])
 
+  // The page scrolls under the sticky bar, so a control that takes focus near the top (Shift+Tab back up a table) would
+  // stop under it. The page's scroll padding keeps focus clear of the bar, and of a sticky tab row while it is pinned
+  // (WCAG 2.4.11), from the same tokens the bar is built of.
+  const frame = React.useRef<HTMLDivElement>(null)
+  React.useEffect(() => {
+    const el = frame.current
+    const root = document.scrollingElement instanceof HTMLElement ? document.scrollingElement : null
+    if (!el || !root) return
+    const before = root.style.scrollPaddingTop
+    const update = () => {
+      const pinned = Array.from(el.querySelectorAll<HTMLElement>('[data-slot="tabs-list"][data-sticky]')).some(stuck)
+      const next = pinned ? scrollPadding.withTabs : scrollPadding.bar
+      if (root.style.scrollPaddingTop !== next) root.style.scrollPaddingTop = next
+    }
+    update()
+    window.addEventListener("scroll", update, { passive: true })
+    return () => {
+      window.removeEventListener("scroll", update)
+      root.style.scrollPaddingTop = before
+    }
+  }, [])
+
   const nav = (vertical?: boolean) => (
     <nav aria-label={l.nav}className={cn("flex gap-1 text-sm", vertical ? "flex-col" : "items-center")}>
       {links.map((l) => {
@@ -116,7 +153,10 @@ export function TopBarShell({
   return (
     // --shell-top is the bar's bottom edge once it floats (its height and the 8 px it moves down): a sticky tab row
     // (TabsList sticky) or a product's filter bar pins there, on --shell-surface.
-    <div className="flex min-h-[var(--app-shell-height,100dvh)] flex-col bg-background text-foreground [--shell-surface:var(--color-background)] [--shell-top:calc(var(--h-row)+--spacing(2))]">
+    <div
+      ref={frame}
+      className="flex min-h-[var(--app-shell-height,100dvh)] flex-col bg-background text-foreground [--shell-surface:var(--color-background)] [--shell-top:calc(var(--h-row)+--spacing(2))]"
+    >
       <header className="pointer-events-none sticky top-0 z-20 mx-auto h-(--h-row) w-full max-w-6xl px-6">
         <div
           className={cn(

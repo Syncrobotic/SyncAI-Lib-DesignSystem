@@ -6243,8 +6243,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "The page's `scroll-padding-top` is the bar plus 8 px (`--h-row` + 16), plus the tab row's `--h-md` while a sticky TabsList is pinned, so a control that takes focus never stops under the bar (WCAG 2.4.11); it is put back when the shell unmounts. Issue #344."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -7191,7 +7196,7 @@
           {
             "version": "0.32.0",
             "date": "2026-11-24",
-            "note": "The checklist says a status page inside top-bar-shell takes `as=\"h1\"` and links out with `{ label, href }`. Issue #323."
+            "note": "The checklist says a status page inside top-bar-shell takes `as=\"h1\"` and links out with `{ label, href }`. Issue #323. The design language says top-bar-shell keeps focus clear of its bar with the page's scroll padding. Issue #344."
           },
           {
             "version": "0.31.0",

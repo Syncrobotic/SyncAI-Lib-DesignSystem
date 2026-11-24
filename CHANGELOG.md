@@ -15,6 +15,8 @@ Components install as source, so a project keeps the version it installed. Re-ru
 - **`tabs` 0.32.0:** a `ref` passed to `TabsList` gets the row and the travelling underline shows; the ref had replaced the one the underline measures, so the active tab fell back to its own border. The docs say a row of links to other pages is navigation (ChipGroup with `href`, or NavigationMenu), not tabs. Issue #336
 - **`accordion` 0.32.0:** an item open in the server render (`defaultValue`, Next.js App Router) shows open on first paint instead of playing its open animation on every page load; the expand animation waits until Radix has measured the content. Items the user opens and closes keep their motion, and reduced motion is unchanged. Issue #322
 - **`governance-todo` 0.32.0:** `GovernanceTodoContent` fills its container instead of stopping at 56 rem (`max-w-4xl`), so inside `top-bar-shell` it spans the content width like every other page. Issue #337
+- **`top-bar-shell` 0.32.0:** focus is never hidden under the sticky bar (WCAG 2.4.11): the shell sets the page's `scroll-padding-top` to the bar plus 8 px (`--h-row` + 16, from tokens), and adds the tab row's `--h-md` while a sticky `TabsList` is pinned under it, so Shift+Tab back up a table or a filter row scrolls each control clear of the bar. The page's own value comes back when the shell unmounts. Issue #344
+- **`agent-skill` 0.32.0:** the design language says top-bar-shell keeps focus clear of its bar with the page's scroll padding. Issue #344
 
 ## 0.31.0 · 2026-11-22
 
