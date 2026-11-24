@@ -3,7 +3,7 @@
 
 import * as React from "react"
 import { Slot } from "radix-ui"
-import { Menu } from "lucide-react"
+import { ChevronLeft, ChevronRight, Menu } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { CountBadge } from "@/registry/syncrobotic/ui/badge"
 import { Sheet, SheetContent, SheetTitle } from "@/registry/syncrobotic/ui/sheet"
@@ -322,9 +322,11 @@ type SidebarTriggerProps = React.ComponentProps<"button"> & {
    * When it shows. always (default): one trigger that collapses and expands, wherever it is. The pair that puts the
    * collapse control on the sidebar: "expanded" in SidebarHeader (shown while the sidebar is open on a wide screen,
    * never on phones, where the sheet has its own close) and "collapsed" in the page's top bar (shown while the sidebar
-   * is a rail or hidden, and always on phones, where it is the menu button that opens the sheet).
+   * is a rail or hidden, and always on phones, where it is the menu button that opens the sheet). "mobile": only on
+   * phones, the menu button that opens the sheet, for a layout whose wide screens collapse and expand at the
+   * sidebar's edge (SidebarRail) instead.
    */
-  show?: "always" | "expanded" | "collapsed"
+  show?: "always" | "expanded" | "collapsed" | "mobile"
 }
 
 /**
@@ -338,7 +340,8 @@ export function SidebarTrigger({ show = "always", className, onClick, ...props }
   // wide screen; until hydration a phone cannot be told from the server, so that is CSS (md:hidden), never a missing button.
   if (show === "expanded" && (isMobile || !open)) return null
   if (show === "collapsed" && open && !isMobile && forced) return null
-  const hideWide = show === "collapsed" && open && !isMobile
+  if (show === "mobile" && !isMobile && forced) return null
+  const hideWide = (show === "collapsed" && open && !isMobile) || show === "mobile"
   return (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -383,8 +386,11 @@ export function SidebarTrigger({ show = "always", className, onClick, ...props }
  * inside Sidebar. It is a pointer convenience beside SidebarTrigger, never instead of one: out of the Tab order and
  * hidden from screen readers (the trigger is the way for both), and absent on touch screens and phones.
  */
+// A round button on the sidebar's edge, half over it, level with the line between the top bar and the content: the bar
+// is --h-row (56 px) tall; beside a floating sidebar the panels are 8 px apart, so the gap's middle is 60 px down; beside
+// a sidebar column the bar's hairline is at 56 px.
 export function SidebarRail({ className, onClick, ...props }: React.ComponentProps<"button">) {
-  const { isMobile, open, toggleSidebar, labels, shortcut } = useSidebar()
+  const { isMobile, open, toggleSidebar, labels, shortcut, keyshortcuts } = useSidebar()
   if (isMobile) return null
   const label = open ? labels.collapse : labels.expand
   return (
@@ -393,18 +399,15 @@ export function SidebarRail({ className, onClick, ...props }: React.ComponentPro
         <button
           type="button"
           data-slot="sidebar-rail"
-          tabIndex={-1}
-          aria-hidden="true"
+          aria-label={label}
+          aria-expanded={open}
+          aria-keyshortcuts={keyshortcuts}
           className={cn(
-            "press absolute inset-y-0 z-10 w-4 pointer-coarse:hidden",
+            // focus-ring: on the round knob inside (group-focus-visible/rail), the shape you see.
+            "group/rail press absolute top-15 z-10 flex size-6 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full outline-none group-data-[variant=sidebar]/sidebar:top-14",
             "group-data-[side=left]/sidebar:-right-3 group-data-[side=right]/sidebar:-left-3",
-            // The cursor says which way the edge goes: in while open, out while a rail.
-            "group-data-[side=left]/sidebar:cursor-w-resize group-data-[side=right]/sidebar:cursor-e-resize",
-            "group-data-[side=left]/sidebar:group-data-[state=collapsed]/sidebar:cursor-e-resize group-data-[side=right]/sidebar:group-data-[state=collapsed]/sidebar:cursor-w-resize",
-            // The hairline sits on the sidebar's edge, as the resizable handle's does, and darkens on hover.
-            "after:absolute after:inset-y-0 after:w-0.5 after:rounded-full after:bg-transparent group-data-[variant=floating]/sidebar:after:inset-y-3",
-            "group-data-[side=left]/sidebar:after:left-0.5 group-data-[side=right]/sidebar:after:right-0.5",
-            "after:transition-colors after:duration-(--motion-fast) after:ease-(--ease-standard) hover:after:bg-muted-foreground",
+            // On a touch screen the target grows to the kit's 44 px without changing the button's size.
+            "pointer-coarse:after:absolute pointer-coarse:after:size-(--h-md) pointer-coarse:after:rounded-full",
             "group-data-[collapsible=offcanvas]/sidebar:hidden",
             className,
           )}
@@ -413,7 +416,23 @@ export function SidebarRail({ className, onClick, ...props }: React.ComponentPro
             if (!e.defaultPrevented) toggleSidebar()
           }}
           {...props}
-        />
+        >
+          {/* A small round button on the sidebar's edge, half over it: the way the sidebar goes (‹ to collapse, › to
+              expand), in the surface's colour with a hairline ring, quiet until hover or focus. */}
+          <span
+            aria-hidden="true"
+            className={cn(
+              "flex size-6 items-center justify-center rounded-full bg-card text-muted-foreground ring-1 ring-border",
+              "transition-colors duration-(--motion-fast) ease-(--ease-standard)",
+              "group-hover/rail:bg-accent group-hover/rail:text-foreground",
+              "group-focus-visible/rail:text-foreground group-focus-visible/rail:outline-2 group-focus-visible/rail:outline-offset-2 group-focus-visible/rail:outline-ring",
+            )}
+          >
+            {/* The way the sidebar goes: towards its side to collapse, away from it to expand. */}
+            <ChevronLeft className="hidden size-4 group-data-[side=left]/sidebar:group-data-[state=expanded]/sidebar:block group-data-[side=right]/sidebar:group-data-[state=collapsed]/sidebar:block" />
+            <ChevronRight className="hidden size-4 group-data-[side=left]/sidebar:group-data-[state=collapsed]/sidebar:block group-data-[side=right]/sidebar:group-data-[state=expanded]/sidebar:block" />
+          </span>
+        </button>
       </TooltipTrigger>
       <TooltipContent side="right">
         <span className="flex items-center gap-2">

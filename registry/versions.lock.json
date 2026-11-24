@@ -265,7 +265,7 @@
   },
   "sidebar": {
     "version": "0.32.0",
-    "hash": "7b2a7bc365dc125f"
+    "hash": "ed4f26f5991f7922"
   },
   "graph": {
     "version": "0.32.0",
@@ -529,7 +529,7 @@
   },
   "app-shell": {
     "version": "0.32.0",
-    "hash": "ebbcf84f0deefc5b"
+    "hash": "a310f6f5c4c76c38"
   },
   "top-bar-shell": {
     "version": "0.32.0",
@@ -593,7 +593,7 @@
   },
   "agent-skill": {
     "version": "0.32.0",
-    "hash": "5bda38518846cabc"
+    "hash": "6e1a12318293f339"
   },
   "line-chart-telemetry": {
     "version": "0.17.2",
