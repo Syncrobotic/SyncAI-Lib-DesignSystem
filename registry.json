@@ -2281,14 +2281,15 @@
       "name": "metric-card",
       "type": "registry:ui",
       "title": "Metric card",
-      "description": "One headline number on a card: label, value, change and context, coloured only when the change is for the worse; a link, loading and unavailable state, and MetricGrid for the row.",
+      "description": "One headline number on a card: label, value, change and context, coloured only when the change is for the worse or the caption says the number needs attention (tone); a link, loading and unavailable state, and MetricGrid for the row.",
       "dependencies": [
         "lucide-react"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/card",
-        "@syncrobotic/skeleton"
+        "@syncrobotic/skeleton",
+        "@syncrobotic/status-glyph"
       ],
       "files": [
         {
@@ -2298,8 +2299,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.28.0",
+        "version": "0.32.0",
         "changelog": [
+          {
+            "version": "0.32.0",
+            "date": "2026-11-24",
+            "note": "`tone` (\"warning\" or \"danger\") puts the status glyph and colour on the caption, for a number that is itself a warning; the value stays foreground and the card is never tinted. Issue #326."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",

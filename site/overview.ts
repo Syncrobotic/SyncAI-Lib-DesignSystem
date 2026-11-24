@@ -696,6 +696,7 @@ export const overviews: Record<string, Overview> = {
     use: [
       "The row of numbers under a dashboard's page header: robots online, events, devices, API calls.",
       "A count that opens the list behind it (with `href`).",
+      "A count that needs attention, such as items waiting for review (with `tone`).",
     ],
     instead: [
       "A level in a known range (battery, storage, signal): `meter`.",
@@ -704,6 +705,7 @@ export const overviews: Record<string, Overview> = {
     ],
     notes: [
       "Set `trend` from whether the change is good for the reader, not from its sign; only \"bad\" is coloured.",
+      "`tone` colours the caption (glyph and words) and needs one that says why; never colour the value or the card yourself.",
       "Pass `unavailable` with the reason instead of value 0 when the source is down or the count is unknown.",
       "`labels` translates the words only screen readers hear (better, worse, loading, unavailable).",
     ],

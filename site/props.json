@@ -7300,6 +7300,11 @@
      "description": "One line of context under the value: \"2 docked for charging\", \"Last 7 days\"."
     },
     {
+     "name": "tone",
+     "type": "\"warning\" | \"danger\"",
+     "description": "The number needs attention (warning) or someone now (danger): the caption takes the status glyph and colour, so it should say why (\"3 blocking a release\"). The value stays foreground. Calm by default."
+    },
+    {
      "name": "href",
      "type": "string",
      "description": "Makes the whole card one link, to the page behind the number."

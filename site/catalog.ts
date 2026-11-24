@@ -661,6 +661,7 @@ const entries: Record<string, Entry> = {
     examples: { file: "metric-card", prefix: "MetricCard" },
     rules: [
       "Only a change for the worse is coloured (`trend=\"bad\"`, danger text). Good news stays foreground and no change stays grey, so the bad number is the one people see. The trend says whether the change is good, not which way it went.",
+      "A number that is itself a warning (items waiting for review, a quota near its limit) takes `tone=\"warning\"` (or `\"danger\"`): the caption gets the status shape and colour and says why. The value stays foreground; never a tinted card.",
       "The sparkline is neutral and silent; the delta and the caption say in words what it shows. From 640 px it sits beside the value; on a phone it takes its own full-width line under it, and the change sits under the label so the values line up.",
       "A value that cannot be read is `unavailable` with the reason; never a 0 or an empty card.",
       "`loading` keeps the label and the card's height; only the value, change and caption are bones.",
