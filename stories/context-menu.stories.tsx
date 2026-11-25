@@ -1,6 +1,6 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { ArrowRight, Bot, Download, Ellipsis, Pause, Play, Route, Trash2 } from "lucide-react"
+import { ArrowRight, Bot, Download, Pause, Play, Route, Trash2 } from "lucide-react"
 import {
   ContextMenu,
   ContextMenuCheckboxItem,
@@ -22,6 +22,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuMoreTrigger,
   DropdownMenuTrigger,
 } from "@/registry/syncrobotic/ui/dropdown-menu"
 import { Button } from "@/registry/syncrobotic/ui/button"
@@ -112,11 +113,7 @@ function RobotList() {
               <ItemActions>
                 {/* The visible way to the same actions. Without it, nobody would know they are there, and a mouse-less tablet could not reach them. */}
                 <DropdownMenu modal={false}>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" aria-label={`Actions for ${r.name}`}>
-                      <Ellipsis aria-hidden="true" />
-                    </Button>
-                  </DropdownMenuTrigger>
+                  <DropdownMenuMoreTrigger name={r.name} />
                   <DropdownMenuContent align="end">
                     <RobotActions robot={r} parts={dropdownParts} onToggle={() => toggle(r.id)} onRemove={() => remove(r.id)} />
                   </DropdownMenuContent>

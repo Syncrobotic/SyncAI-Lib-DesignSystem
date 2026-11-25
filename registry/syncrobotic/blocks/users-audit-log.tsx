@@ -1,10 +1,11 @@
-// @syncrobotic/users-audit-log v0.28.0 · update: npx shadcn add @syncrobotic/users-audit-log --overwrite
+// @syncrobotic/users-audit-log v0.35.0 · update: npx shadcn add @syncrobotic/users-audit-log --overwrite
 "use client"
 
 import * as React from "react"
-import { Download, Search } from "lucide-react"
+import { Download, Search, SearchX } from "lucide-react"
 import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { Button } from "@/registry/syncrobotic/ui/button"
+import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
@@ -174,8 +175,8 @@ export function UsersAuditLog() {
             ))}
             {shown.length === 0 && (
               <TableRow>
-                <TableCell colSpan={6} className="py-8 text-center whitespace-normal text-muted-foreground">
-                  No entries match. Clear the search or choose Everyone.
+                <TableCell colSpan={6} className="h-auto p-0 whitespace-normal">
+                  <EmptyState size="inline" icon={SearchX} title="No entries match" description="Clear the search or choose Everyone." />
                 </TableCell>
               </TableRow>
             )}

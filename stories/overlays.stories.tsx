@@ -54,6 +54,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuMoreTrigger,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/registry/syncrobotic/ui/dropdown-menu"
@@ -167,11 +168,7 @@ export const TooltipOpen: S = { render: () => <CopyTooltip open /> }
 
 const RowMenu = ({ open }: { open?: boolean }) => (
   <DropdownMenu defaultOpen={open} modal={false}>
-    <DropdownMenuTrigger asChild>
-      <Button variant="ghost" size="icon" aria-label="More actions">
-        <Ellipsis aria-hidden="true" />
-      </Button>
-    </DropdownMenuTrigger>
+    <DropdownMenuMoreTrigger name="Route Perimeter" />
     <DropdownMenuContent align="start">
       <DropdownMenuLabel>Route · Perimeter</DropdownMenuLabel>
       <DropdownMenuItem>

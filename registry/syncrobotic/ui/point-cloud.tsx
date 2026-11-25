@@ -1,4 +1,4 @@
-// @syncrobotic/point-cloud v0.24.1 · update: npx shadcn add @syncrobotic/point-cloud --overwrite
+// @syncrobotic/point-cloud v0.35.0 · update: npx shadcn add @syncrobotic/point-cloud --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { ButtonGroup } from "@/registry/syncrobotic/ui/button-group"
 import { Bone } from "@/registry/syncrobotic/shell/skeleton"
+import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 
 /** What the points are coloured by: their height (z), the sensor's intensity, or nothing (one grey, as a map's scans). */
 export type PointCloudColorBy = "height" | "intensity" | "none"
@@ -1308,27 +1309,26 @@ export function PointCloud({
         )}
 
         {state === "error" && (
-          <div role="alert" className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-4 text-center">
-            <CircleAlert aria-hidden="true" className="size-6 text-muted-foreground" />
-            <p className="text-sm text-pretty">{error === true ? l.error : error}</p>
-            {onRetry && (
-              <Button variant="secondary" onClick={onRetry}>
-                <RotateCw aria-hidden="true" />
-                {l.retry}
-              </Button>
-            )}
+          <div role="alert" className="absolute inset-0 grid place-items-center p-4">
+            <EmptyState
+              variant="overlay"
+              icon={CircleAlert}
+              title={error === true ? l.error : error}
+              action={
+                onRetry && (
+                  <Button variant="secondary" onClick={onRetry}>
+                    <RotateCw aria-hidden="true" />
+                    {l.retry}
+                  </Button>
+                )
+              }
+            />
           </div>
         )}
 
         {(state === "empty" || state === "no-webgl") && (
           <div className="pointer-events-none absolute inset-0 grid place-items-center p-4">
-            <div className="flex max-w-sm flex-col items-center gap-3 text-center">
-              <Radar aria-hidden="true" className="size-6 text-muted-foreground" />
-              <p className="text-sm text-pretty">
-                <span className="font-medium">{state === "empty" ? l.empty : l.noWebGL}</span>
-                {state === "no-webgl" && <span className="block text-muted-foreground">{l.noWebGLHint}</span>}
-              </p>
-            </div>
+            <EmptyState variant="overlay" icon={Radar} title={state === "empty" ? l.empty : l.noWebGL} description={state === "no-webgl" ? l.noWebGLHint : undefined} />
           </div>
         )}
 

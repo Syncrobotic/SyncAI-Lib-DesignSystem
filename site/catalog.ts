@@ -329,6 +329,8 @@ const entries: Record<string, Entry> = {
       "Tones info and success render neutral: a tile stays on screen, so it is a state, and a state is grey. Only warning and danger colour it.",
       "Never solid red: a solid danger tile stays on its tint, since solid red belongs to the emergency stop.",
       "Icons inside are 16, 20 or 24 px; the size prop sets them.",
+      "Every icon on a tile is an IconTile (an empty state, a status page, a confirmation, a menu card, a row's media): never a hand-made square, whose size and corner drift. sm 32 px with an 8 px corner, md 40 and lg 48 with 12, xl 64 with 16.",
+      'An icon, never words: a robot\'s ID or initials on a tile is an Avatar (`shape="square"`), which takes the same corners.',
     ],
   },
   "text-diff": {
@@ -458,7 +460,8 @@ const entries: Record<string, Entry> = {
     group: "Actions",
     examples: { file: "toggle-group", prefix: "ToggleGroup" },
     rules: [
-      'type="single" for one choice, type="multiple" for layers or channels.',
+      'type="single" only for a tool or a mode: what the next tap on a map does, a drive mode. type="multiple" for layers, channels or filter chips.',
+      "A view of the data, a sort order or a time window (1 h, 24 h, 7 days) is not a tool: use Segmented control.",
       "On is inverted, like a selected segment.",
       "Icon-only items need an aria-label.",
     ],
@@ -478,7 +481,10 @@ const entries: Record<string, Entry> = {
   "segmented-control": {
     group: "Actions",
     examples: { file: "actions", prefix: "SegmentedControl" },
-    rules: ["For two to four views of the same data. For sections of a page, use Tabs.", "The selected segment is inverted, per the selected-state rule."],
+    rules: [
+      "For two to four views of the same data, or a time window (1 h, 24 h, 7 days). For sections of a page, use Tabs; for a tool or a mode, Toggle group.",
+      "The selected segment is inverted, per the selected-state rule.",
+    ],
   },
   "copy-button": {
     group: "Actions",
@@ -634,6 +640,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "A person or a robot, by picture or initials. Initials when there is no picture, never an empty circle.",
       "People are round; robots, sites and teams are square (shape=\"square\"), so a mixed list tells who from what before the name is read.",
+      'A robot without a picture shows its short ID (the last four characters, `className="font-mono"` on the fallback) or its initials, never a hand-made tile. Square corners follow IconTile at the same size (8 px at 32, 12 px at 40 and 48), so a robot beside an icon lines up.',
       "Pair it with the name: an avatar alone is not an identity. A status badge is said in words too, nearby or in the label.",
       "A group shows a few and folds the rest into +N (max); its label names everyone.",
     ],
@@ -701,9 +708,19 @@ const entries: Record<string, Entry> = {
     rules: [
       "Says what is missing, why, and the next step as a button. Never a bare “No data”.",
       "When a filter or search caused it, the action clears it.",
+      'Every empty place uses it, at the size of its host: `panel` (default) for a card, a page section or a dialog body; `size="inline"` in a table, a list, a toolbar region or a small panel (a bare icon, 14 px words); `variant="overlay"` over a canvas or a picture (a map, a point cloud, a 3D model, a camera), placed by the viewport\'s overlay layer. Never a hand-made icon and paragraph, a bare grey line or a boxed note.',
+      "The panel's icon sits on IconTile; inline and overlay icons are bare. Never a tile of its own.",
     ],
   },
-  table: { group: "Data display", examples: { file: "display", prefix: "Table" }, rules: ["Right-align numbers. Numbers are tabular by default."] },
+  table: {
+    group: "Data display",
+    examples: { file: "display", prefix: "Table" },
+    rules: [
+      "Right-align numbers. Numbers are tabular by default.",
+      "A row's actions sit in its last cell, TableActionsCell: a ⋯ menu (DropdownMenuMoreTrigger with the row's name) or one or two icon buttons. Its header cell takes the same padding (`w-0 pr-2 pl-0 sm:px-4`) and a visually hidden “Actions”.",
+      'No rows: one row whose cell spans every column and holds an inline EmptyState (`size="inline"`), never a bare line of grey text.',
+    ],
+  },
   list: {
     group: "Data display",
     examples: { file: "list", only: ["GroupedList"] },
@@ -1199,7 +1216,16 @@ const entries: Record<string, Entry> = {
       "The empty state says what was searched and what to try, not just “No results”.",
     ],
   },
-  "dropdown-menu": { group: "Overlays", examples: { file: "overlays", prefix: "DropdownMenu" }, rules: ["Destructive items go last, after a separator."] },
+  "dropdown-menu": {
+    group: "Overlays",
+    examples: { file: "overlays", prefix: "DropdownMenu" },
+    rules: [
+      "Destructive items go last, after a separator.",
+      "The ⋯ that opens more actions is always DropdownMenuMoreTrigger: a ghost icon button, in rows, toolbars and card headers alike. Never an outline ⋯, never a hand-made one.",
+      "Its name says whose actions they are. In a row, pass the row's name: “More actions for Patrol dog 7F3A”. In a toolbar or a card header, no name: “More actions”. A menu of view settings (wrap lines, relative time) is another meaning: the same button, named “View options”.",
+      'Size it by the row it sits in: `size="icon-sm"` (36, 44 on touch) in a table row or a toolbar with no field; the default 44 beside a field. In a table it goes in TableActionsCell.',
+    ],
+  },
   "context-menu": {
     group: "Overlays",
     examples: { file: "context-menu", prefix: "ContextMenu" },

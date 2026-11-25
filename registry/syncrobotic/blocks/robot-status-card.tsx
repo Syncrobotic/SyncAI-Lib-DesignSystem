@@ -1,8 +1,9 @@
-// @syncrobotic/robot-status-card v0.28.0 · update: npx shadcn add @syncrobotic/robot-status-card --overwrite
+// @syncrobotic/robot-status-card v0.35.0 · update: npx shadcn add @syncrobotic/robot-status-card --overwrite
 import { Battery, BatteryCharging, MapPin, Navigation, Wifi, WifiOff } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
 import type { Status } from "@/registry/syncrobotic/shell/status-glyph"
+import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Card } from "@/registry/syncrobotic/ui/card"
 import { Progress } from "@/registry/syncrobotic/ui/progress"
@@ -48,7 +49,9 @@ export function RobotStatusCard({
   return (
     <Card className={cn("w-full max-w-sm", className)}>
       <div className="flex items-start gap-3">
-        <span className="flex size-12 shrink-0 items-center justify-center rounded-sm bg-muted font-mono text-sm font-bold">{robot.name.slice(-4)}</span>
+        <Avatar shape="square" size="xl" aria-hidden="true">
+          <AvatarFallback className="font-mono">{robot.name.slice(-4)}</AvatarFallback>
+        </Avatar>
         <div className="flex min-w-0 flex-col">
           <StatusEyebrow status={robot.state.tone}>{robot.state.label}</StatusEyebrow>
           <span className="truncate text-lg font-bold">{robot.name}</span>

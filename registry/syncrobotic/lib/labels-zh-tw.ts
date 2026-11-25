@@ -1,4 +1,4 @@
-// @syncrobotic/labels-zh-tw v0.34.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
+// @syncrobotic/labels-zh-tw v0.35.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
 // The kit's words in Traditional Chinese as written in Taiwan, one object per component that takes `labels`. Pass each
 // to its component (`<DataGrid labels={dataGridLabels} />`) with `locale="zh-TW"` where the component formats numbers,
 // days or times. The file imports no component, so it installs on its own; the kit's tests hold every object to the
@@ -1060,6 +1060,11 @@ export const commandDialogLabels = {
 }
 
 export const dialogContentLabels = { close: "關閉" }
+
+export const dropdownMenuMoreTriggerLabels = {
+  more: "更多動作",
+  moreFor: (name: string) => `${name} 的更多動作`,
+}
 
 export const stepperLabels = {
   optional: "選填",

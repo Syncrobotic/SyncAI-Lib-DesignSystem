@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell-mobile-tabs v0.31.0 · update: npx shadcn add @syncrobotic/app-shell-mobile-tabs --overwrite
+// @syncrobotic/app-shell-mobile-tabs v0.35.0 · update: npx shadcn add @syncrobotic/app-shell-mobile-tabs --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,6 +6,7 @@ import { Bell, Bot, LayoutGrid, Map as MapIcon, Search } from "lucide-react"
 import { DockNav, type NavItem } from "@/registry/syncrobotic/shell/dock"
 import { StatusGlyph, type Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Tray } from "@/registry/syncrobotic/shell/tray"
+import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"
 import { Button } from "@/registry/syncrobotic/ui/button"
 
 export const sampleTabs: NavItem[] = [
@@ -31,7 +32,9 @@ function SampleRobots() {
     <ul className="flex flex-col">
       {robots.map((r) => (
         <li key={r.id} className={row}>
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-sm bg-muted font-mono text-xs font-bold">{r.id}</span>
+          <Avatar shape="square" size="lg" aria-hidden="true">
+            <AvatarFallback className="font-mono text-xs">{r.id}</AvatarFallback>
+          </Avatar>
           <span className="flex min-w-0 flex-1 flex-col">
             <span className="truncate text-sm font-medium">Patrol dog {r.id}</span>
             <span className="flex items-center gap-2 truncate text-xs text-muted-foreground">

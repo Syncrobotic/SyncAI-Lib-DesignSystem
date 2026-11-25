@@ -1,32 +1,61 @@
-// @syncrobotic/empty-state v0.17.3 · update: npx shadcn add @syncrobotic/empty-state --overwrite
+// @syncrobotic/empty-state v0.35.0 · update: npx shadcn add @syncrobotic/empty-state --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
+import { IconTile } from "@/registry/syncrobotic/ui/icon-tile"
 
-/** Say what is missing, why, and the one action that fixes it. */
+/**
+ * Say what is missing, why, and the one action that fixes it. One part for every empty place, in three sizes:
+ * - `size="panel"` (default): a card, a page section or a dialog body. The icon on a muted tile, the title at 16 px.
+ * - `size="inline"`: inside a table, a list, a toolbar region or a small panel. The icon bare, everything at 14 px.
+ * - `variant="overlay"`: over a canvas or a picture (a map, a point cloud, a 3D model, a camera). Inline words, no
+ *   padding of its own and at most 24 rem wide: the viewport's overlay layer places it and gives it a backing.
+ */
 export function EmptyState({
   icon: Icon,
   title,
   description,
   action,
+  size,
+  variant = "default",
   className,
-}: {
+  ...props
+}: Omit<React.ComponentProps<"div">, "title"> & {
   icon?: React.ElementType
   title: React.ReactNode
   description?: React.ReactNode
   action?: React.ReactNode
-  className?: string
+  /** `panel` (default) for a card or a section; `inline` inside a table, a list or a small panel. An overlay is inline unless set. */
+  size?: "panel" | "inline"
+  /** `overlay` over a canvas or a picture: no padding of its own, the host's overlay layer places it. */
+  variant?: "default" | "overlay"
 }) {
+  const overlay = variant === "overlay"
+  const s = size ?? (overlay ? "inline" : "panel")
   return (
-    <div data-slot="empty-state" className={cn("flex flex-col items-center gap-3 px-6 py-8 text-center", className)}>
-      {Icon && (
-        <span className="flex size-12 items-center justify-center rounded-sm bg-muted text-muted-foreground">
-          <Icon aria-hidden="true" className="size-6" />
-        </span>
+    <div
+      data-slot="empty-state"
+      data-size={s}
+      data-variant={variant}
+      className={cn(
+        "flex flex-col items-center text-center",
+        s === "panel" ? "gap-3" : "gap-2",
+        overlay ? "max-w-sm" : s === "panel" ? "px-6 py-8" : "px-4 py-6",
+        className,
       )}
+      {...props}
+    >
+      {Icon &&
+        (s === "panel" ? (
+          <IconTile variant="muted" size="lg">
+            <Icon aria-hidden="true" />
+          </IconTile>
+        ) : (
+          <Icon aria-hidden="true" className="size-6 shrink-0 text-muted-foreground" />
+        ))}
       <div className="flex flex-col gap-1">
         {/* Centred lines balanced, so a description never ends on one word alone. */}
-        <p className="font-medium text-balance">{title}</p>
-        {description && <p className="text-sm text-balance text-muted-foreground">{description}</p>}
+        <p className={cn("font-medium text-balance text-foreground", s === "inline" && "text-sm")}>{title}</p>
+        {description && <p className="text-sm text-balance text-muted-foreground wrap-anywhere">{description}</p>}
       </div>
       {action}
     </div>

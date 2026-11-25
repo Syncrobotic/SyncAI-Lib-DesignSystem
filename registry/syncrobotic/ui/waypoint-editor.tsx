@@ -1,8 +1,8 @@
-// @syncrobotic/waypoint-editor v0.29.0 · update: npx shadcn add @syncrobotic/waypoint-editor --overwrite
+// @syncrobotic/waypoint-editor v0.35.0 · update: npx shadcn add @syncrobotic/waypoint-editor --overwrite
 "use client"
 
 import * as React from "react"
-import { CopyPlus, Plus, Trash2, CircleAlert } from "lucide-react"
+import { CopyPlus, Plus, Trash2, CircleAlert, Waypoints } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Field } from "@/registry/syncrobotic/ui/field"
@@ -13,6 +13,7 @@ import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/u
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
 import { Sortable, SortableHandle, SortableItem, SortablePosition } from "@/registry/syncrobotic/ui/sortable"
 import { toast } from "@/registry/syncrobotic/ui/toast"
+import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 
 /**
  * Where a waypoint is. `plan`: metres on a robot-map plan, from its top-left corner, x right and y down (robot-map's
@@ -621,9 +622,9 @@ export function WaypointEditor({
           </div>
           {readOnly && <p className="text-sm text-muted-foreground">{labels.readOnly}</p>}
           {draft.length === 0 ? (
-            <p data-slot="waypoint-editor-empty" className="rounded-md bg-card p-4 text-sm text-muted-foreground ring-1 ring-border">
-              {labels.empty}
-            </p>
+            <div data-slot="waypoint-editor-empty" className="rounded-md bg-card ring-1 ring-border">
+              <EmptyState size="inline" icon={Waypoints} title={labels.empty} />
+            </div>
           ) : (
             <Sortable value={draft} onValueChange={(next) => dispatch({ type: "replace", draft: next })} getId={(w) => w.id} getLabel={(w) => w.name || labels.defaultName(draft.indexOf(w) + 1)}>
               {draft.map((w, i) => {

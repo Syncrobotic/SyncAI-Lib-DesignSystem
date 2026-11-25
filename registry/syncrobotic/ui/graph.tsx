@@ -1,4 +1,4 @@
-// @syncrobotic/graph v0.32.0 · update: npx shadcn add @syncrobotic/graph --overwrite
+// @syncrobotic/graph v0.35.0 · update: npx shadcn add @syncrobotic/graph --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils"
 import { StatusGlyph, statusText, type Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Bone } from "@/registry/syncrobotic/shell/skeleton"
 import { scrollFadeMask, useScrollEdges } from "@/registry/syncrobotic/ui/table"
+import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 
 /** One box of the graph: a dataset, a label set, a training run, a step of a mission. */
 export type GraphNode = {
@@ -530,8 +531,8 @@ export function Graph({
 
   if (!layout.nodes.length) {
     return (
-      <div data-slot="graph" data-empty="" className={cn(frame, "p-4 text-sm text-muted-foreground", className)}>
-        {empty}
+      <div data-slot="graph" data-empty="" className={cn(frame, "grid place-items-center", className)}>
+        <EmptyState size="inline" title={empty} />
       </div>
     )
   }
@@ -802,9 +803,9 @@ export function GraphList({ nodes, edges, label: name, empty = "Nothing here yet
   }
   if (!layout.nodes.length) {
     return (
-      <p data-slot="graph-list" data-empty="" className={cn("rounded-md bg-card p-4 text-sm text-muted-foreground ring-1 ring-border", className)}>
-        {empty}
-      </p>
+      <div data-slot="graph-list" data-empty="" className={cn("rounded-md bg-card ring-1 ring-border", className)}>
+        <EmptyState size="inline" title={empty} />
+      </div>
     )
   }
 
