@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Code, DocHeader, DoDont, Pager, Section, Specimen, TokenTable } from "@/site/doc"
 import { metaFor, neighbours } from "@/site/foundations"
+import { formatCount } from "@/registry/syncrobotic/lib/format-count"
 import { px, themeValue } from "@/site/theme-tokens"
 
 export const metadata: Metadata = metaFor("typography")
@@ -15,6 +16,12 @@ const scale = [
   { key: "base", cls: "text-base", role: "Body", use: "Paragraphs, inputs" },
   { key: "sm", cls: "text-sm", role: "Label", use: "Buttons, list rows, labels" },
   { key: "xs", cls: "text-xs", role: "Caption", use: "Hints, metadata, tags" },
+]
+
+// Where a count is written in full and where it may be abbreviated (#386). The examples are formatCount's own output.
+const counts = [
+  { where: "Tables, headers, detail pages, figures, a section's count", form: "Full, with grouping", n: 135287, compact: false },
+  { where: "A count on a tab, a chart's axis ticks, a compact chip", form: "Abbreviated, because space is the constraint", n: 135287, compact: true },
 ]
 
 export default function TypographyPage() {
@@ -83,7 +90,7 @@ export default function TypographyPage() {
         </div>
       </Section>
 
-      <Section id="numbers" title="Numbers" lead="Figures are tabular everywhere, so telemetry does not jitter as values change.">
+      <Section id="numbers" title="Numbers" lead="Figures are tabular everywhere, so telemetry does not jitter as values change. Counts are written in full, and abbreviated only where space is the constraint.">
         <DoDont
           good={{
             visual: (
@@ -104,6 +111,45 @@ export default function TypographyPage() {
               </div>
             ),
             text: "Switch to proportional figures for live values.",
+          }}
+        />
+        <p className="max-w-2xl text-sm text-muted-foreground">
+          A count is written in full, with grouping, wherever it is read or compared. Abbreviate it only where space is the
+          constraint, and keep the full number one step away: the table view under a chart, a tooltip on a tab. Write both with{" "}
+          <Code>formatCount(n, {"{ compact, locale }"})</Code> from <Code>@syncrobotic/format-count</Code>, never a hand-made
+          “k”: the locale decides the words (135K in English, 14萬 in Traditional Chinese).
+        </p>
+        <TokenTable
+          head={["Where", "Form", "en", "zh-TW"]}
+          rows={counts.map((c) => [
+            c.where,
+            c.form,
+            <span key="en" className="tabular-nums">
+              {formatCount(c.n, { compact: c.compact })}
+            </span>,
+            <span key="zh" className="tabular-nums">
+              {formatCount(c.n, { compact: c.compact, locale: "zh-TW" })}
+            </span>,
+          ])}
+        />
+        <DoDont
+          good={{
+            visual: (
+              <div className="flex flex-col items-end text-xl tabular-nums">
+                <span>135,287 images</span>
+                <span>1,204 labelled today</span>
+              </div>
+            ),
+            text: "Write a count in a header or a table in full: 135,287.",
+          }}
+          bad={{
+            visual: (
+              <div className="flex flex-col items-end text-xl tabular-nums">
+                <span>135k images</span>
+                <span>1.2k labelled today</span>
+              </div>
+            ),
+            text: "Abbreviate where there is room for the number: 135k hides 287 images and cannot be compared with the row below.",
           }}
         />
       </Section>

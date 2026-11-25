@@ -420,6 +420,21 @@
     "tabStops": 3,
     "live": false
   },
+  "responsive-table": {
+    "roles": [
+      "button",
+      "cell",
+      "columnheader",
+      "list",
+      "listitem",
+      "meter",
+      "row",
+      "rowgroup",
+      "table"
+    ],
+    "tabStops": 5,
+    "live": false
+  },
   "chart": {
     "roles": [
       "application",
@@ -708,6 +723,14 @@
     "tabStops": 3,
     "live": false
   },
+  "section-header": {
+    "roles": [
+      "button",
+      "heading"
+    ],
+    "tabStops": 1,
+    "live": false
+  },
   "chip-group": {
     "roles": [
       "button",
@@ -907,6 +930,15 @@
     ],
     "tabStops": 29,
     "live": true
+  },
+  "facets": {
+    "roles": [
+      "button",
+      "checkbox",
+      "group"
+    ],
+    "tabStops": 13,
+    "live": false
   },
   "search-field": {
     "roles": [

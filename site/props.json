@@ -4281,6 +4281,263 @@
    ]
   }
  ],
+ "facets": [
+  {
+   "name": "FacetList",
+   "props": [
+    {
+     "name": "facets",
+     "type": "Facet[]",
+     "required": true,
+     "description": "The facets, in the order to show them, each option with its count."
+    },
+    {
+     "name": "value",
+     "type": "Record<string, string[]>",
+     "description": "The picks, when you hold them (the URL, a query): pass the same value to `Facets` and `FacetsDrawer`."
+    },
+    {
+     "name": "defaultValue",
+     "type": "Record<string, string[]>",
+     "description": "The picks it starts with, when it holds them itself."
+    },
+    {
+     "name": "onValueChange",
+     "type": "(value: FacetValue) => void",
+     "description": "Called with the whole value after each pick: every facet's picks by its key."
+    },
+    {
+     "name": "max",
+     "type": "number",
+     "description": "Show this many options per facet, then \"Show all N\". All of them when left out."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the counts (a BCP 47 tag such as \"zh-TW\"): \"48,210\". Written as given when left out."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<FacetsLabels>",
+     "description": "The words it says, to translate them (`facetsLabels` in labels-zh-tw).",
+     "keys": [
+      {
+       "name": "title",
+       "type": "string",
+       "default": "\"Filters\"",
+       "description": "Names the column, the drawer and its button: \"Filters\"."
+      },
+      {
+       "name": "showAll",
+       "type": "(count: string) => string",
+       "default": "(count) => `Show all ${count}`",
+       "description": "The button under a folded facet: \"Show all 12\". The count comes formatted."
+      },
+      {
+       "name": "showFewer",
+       "type": "string",
+       "default": "\"Show fewer\"",
+       "description": "The same button once unfolded."
+      },
+      {
+       "name": "active",
+       "type": "string",
+       "default": "\"active\"",
+       "description": "Read after the count on the drawer's button: \"Filters 3 active\"."
+      },
+      {
+       "name": "clear",
+       "type": "string",
+       "default": "\"Clear all\"",
+       "description": "Clears every pick, in the drawer's footer."
+      },
+      {
+       "name": "done",
+       "type": "string",
+       "default": "\"Done\"",
+       "description": "Closes the drawer; the picks already apply."
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "Facets",
+   "props": [
+    {
+     "name": "facets",
+     "type": "Facet[]",
+     "required": true,
+     "description": "The facets, in the order to show them, each option with its count."
+    },
+    {
+     "name": "value",
+     "type": "Record<string, string[]>",
+     "description": "The picks, when you hold them (the URL, a query): pass the same value to `Facets` and `FacetsDrawer`."
+    },
+    {
+     "name": "defaultValue",
+     "type": "Record<string, string[]>",
+     "description": "The picks it starts with, when it holds them itself."
+    },
+    {
+     "name": "onValueChange",
+     "type": "(value: FacetValue) => void",
+     "description": "Called with the whole value after each pick: every facet's picks by its key."
+    },
+    {
+     "name": "max",
+     "type": "number",
+     "description": "Show this many options per facet, then \"Show all N\". All of them when left out."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the counts (a BCP 47 tag such as \"zh-TW\"): \"48,210\". Written as given when left out."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<FacetsLabels>",
+     "description": "The words it says, to translate them (`facetsLabels` in labels-zh-tw).",
+     "keys": [
+      {
+       "name": "title",
+       "type": "string",
+       "default": "\"Filters\"",
+       "description": "Names the column, the drawer and its button: \"Filters\"."
+      },
+      {
+       "name": "showAll",
+       "type": "(count: string) => string",
+       "default": "(count) => `Show all ${count}`",
+       "description": "The button under a folded facet: \"Show all 12\". The count comes formatted."
+      },
+      {
+       "name": "showFewer",
+       "type": "string",
+       "default": "\"Show fewer\"",
+       "description": "The same button once unfolded."
+      },
+      {
+       "name": "active",
+       "type": "string",
+       "default": "\"active\"",
+       "description": "Read after the count on the drawer's button: \"Filters 3 active\"."
+      },
+      {
+       "name": "clear",
+       "type": "string",
+       "default": "\"Clear all\"",
+       "description": "Clears every pick, in the drawer's footer."
+      },
+      {
+       "name": "done",
+       "type": "string",
+       "default": "\"Done\"",
+       "description": "Closes the drawer; the picks already apply."
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "FacetsDrawer",
+   "props": [
+    {
+     "name": "facets",
+     "type": "Facet[]",
+     "required": true,
+     "description": "The facets, in the order to show them, each option with its count."
+    },
+    {
+     "name": "value",
+     "type": "Record<string, string[]>",
+     "description": "The picks, when you hold them (the URL, a query): pass the same value to `Facets` and `FacetsDrawer`."
+    },
+    {
+     "name": "defaultValue",
+     "type": "Record<string, string[]>",
+     "description": "The picks it starts with, when it holds them itself."
+    },
+    {
+     "name": "onValueChange",
+     "type": "(value: FacetValue) => void",
+     "description": "Called with the whole value after each pick: every facet's picks by its key."
+    },
+    {
+     "name": "max",
+     "type": "number",
+     "description": "Show this many options per facet, then \"Show all N\". All of them when left out."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the counts (a BCP 47 tag such as \"zh-TW\"): \"48,210\". Written as given when left out."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<FacetsLabels>",
+     "description": "The words it says, to translate them (`facetsLabels` in labels-zh-tw).",
+     "keys": [
+      {
+       "name": "title",
+       "type": "string",
+       "default": "\"Filters\"",
+       "description": "Names the column, the drawer and its button: \"Filters\"."
+      },
+      {
+       "name": "showAll",
+       "type": "(count: string) => string",
+       "default": "(count) => `Show all ${count}`",
+       "description": "The button under a folded facet: \"Show all 12\". The count comes formatted."
+      },
+      {
+       "name": "showFewer",
+       "type": "string",
+       "default": "\"Show fewer\"",
+       "description": "The same button once unfolded."
+      },
+      {
+       "name": "active",
+       "type": "string",
+       "default": "\"active\"",
+       "description": "Read after the count on the drawer's button: \"Filters 3 active\"."
+      },
+      {
+       "name": "clear",
+       "type": "string",
+       "default": "\"Clear all\"",
+       "description": "Clears every pick, in the drawer's footer."
+      },
+      {
+       "name": "done",
+       "type": "string",
+       "default": "\"Done\"",
+       "description": "Closes the drawer; the picks already apply."
+      }
+     ]
+    },
+    {
+     "name": "defaultOpen",
+     "type": "boolean",
+     "description": "Starts with the sheet open."
+    },
+    {
+     "name": "open",
+     "type": "boolean",
+     "description": "Whether the sheet is open, when you hold it."
+    },
+    {
+     "name": "onOpenChange",
+     "type": "(open: boolean) => void",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "field": [
   {
    "name": "Field",
@@ -8746,6 +9003,72 @@
    ]
   }
  ],
+ "responsive-table": [
+  {
+   "name": "ResponsiveTable",
+   "props": [
+    {
+     "name": "rows",
+     "type": "readonly T[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "columns",
+     "type": "readonly ResponsiveTableColumn<T>[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "rowKey",
+     "type": "(row: T) => Key",
+     "required": true,
+     "description": "A stable key for each row."
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "Names the table, and the list on a phone, for screen readers (\"Robots\")."
+    },
+    {
+     "name": "onRowClick",
+     "type": "(row: T) => void",
+     "description": "Opens a row: the title cell becomes a button in the table, the whole row a button with a chevron on a phone."
+    },
+    {
+     "name": "rowActions",
+     "type": "(row: T) => ReactNode",
+     "description": "A row's ⋯ menu or one or two icon buttons (`DropdownMenuMoreTrigger` with the row's name): the table's last cell, the end of a phone row."
+    },
+    {
+     "name": "empty",
+     "type": "ReactNode",
+     "description": "What shows when there are no rows: an EmptyState with `size=\"inline\"`."
+    },
+    {
+     "name": "layout",
+     "type": "\"table\" | \"list\" | \"auto\"",
+     "default": "\"auto\"",
+     "description": "`auto` measures its own width; `table` or `list` fixes the layout (a side panel that is always narrow)."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<ResponsiveTableLabels>",
+     "description": "The words it says, to translate them.",
+     "keys": [
+      {
+       "name": "actions",
+       "type": "string",
+       "default": "\"Actions\"",
+       "description": "The hidden header of the actions column."
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "restricted-preview": [
   {
    "name": "RestrictedPreview",
@@ -10066,6 +10389,56 @@
      "name": "onValueChange",
      "type": "(value: string) => void",
      "description": "Filters in place instead of navigating: called with the text as it is typed, on data already on the screen (a tree, a list). Enter then does nothing more, and `action`, `name`, `live` and `onNavigate` are not used."
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "section-header": [
+  {
+   "name": "SectionHeader",
+   "props": [
+    {
+     "name": "title",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "variant",
+     "type": "\"page\" | \"surface\"",
+     "default": "\"page\"",
+     "description": "`page`: a section of the page, outside any card (20 px bold). `surface`: inside a card, a sheet or a panel (14 px medium)."
+    },
+    {
+     "name": "as",
+     "type": "\"h2\" | \"h3\" | \"h4\"",
+     "description": "The heading level: h2 for `page` and h3 for `surface` by default. Set it so the page's outline skips no level; the look stays the same."
+    },
+    {
+     "name": "count",
+     "type": "number",
+     "description": "How many items the section holds, after the title in muted text: full, with grouping (formatCount)."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "The locale the count is written in (English by default)."
+    },
+    {
+     "name": "description",
+     "type": "ReactNode",
+     "description": "One line under the title."
+    },
+    {
+     "name": "actions",
+     "type": "ReactNode",
+     "description": "Buttons for this section (\"View all\", \"Add\"): `size=\"sm\"` in a `surface` header."
+    },
+    {
+     "name": "id",
+     "type": "string",
+     "description": "The heading's id, for a section's `aria-labelledby`."
     }
    ],
    "inherits": []
