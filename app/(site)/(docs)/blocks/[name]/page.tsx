@@ -7,6 +7,7 @@ import { BlockSection } from "@/site/block-section"
 import { Dot, H2, PageTitle, Rules } from "@/site/prose"
 import { AppearItem, Reveal } from "@/site/appear"
 import { DocJsonLd } from "@/site/json-ld"
+import { GlobalErrorRecipe } from "@/site/global-error-recipe"
 
 // One page per block type, like one page per component: every block of the type, each with its preview, code and install.
 // A block's own name still works as a URL (old links, the markdown twins) and leads to its place on the type page.
@@ -84,6 +85,9 @@ export default async function BlockTypePage({ params }: Props) {
           <BlockSection key={b.name} block={b} />
         ))}
       </div>
+
+      {/* The status pages' Next.js recipe: what catches an error in the root layout. */}
+      {type.slug === "states" && <GlobalErrorRecipe />}
 
       {type.rules && (
         <>
