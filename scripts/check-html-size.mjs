@@ -22,7 +22,6 @@ const ceilings = {
   "/docs/upgrading": { kb: 980, why: "888 KB: the whole changelog" },
   "/docs/components/chart": { kb: 850, why: "771 KB: seven chart examples drawn as SVG and 21 chart patterns, each a live preview" },
   "/docs/components": { kb: 620, why: "561 KB: a card for every component" },
-  "/docs/nextjs": { kb: 570, why: "515 KB: 13 code listings shown on the page" },
   "/icons": { kb: 560, why: "507 KB: every robot icon drawn" },
   "/docs/foundations/color": { kb: 480, why: "430 KB: every colour token with its contrast" },
 }
