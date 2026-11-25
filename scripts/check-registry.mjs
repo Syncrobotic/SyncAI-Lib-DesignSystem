@@ -1,6 +1,8 @@
 // Fails CI when a registry item's declared dependencies drift from what its files import:
 // every npm import must be in `dependencies`, every @/registry import must be a registryDependency
-// (directly or through one), and files that use React hooks or handlers must start with "use client".
+// (directly or through one), every direct registryDependency must be imported by one of the item's files (a dependency
+// nothing imports only installs files the product never uses), every npm dependency must name a version range, and files
+// that use React hooks or handlers must start with "use client".
 import { readFileSync } from "node:fs"
 
 /** @type {import("./types.js").Registry} */
@@ -44,6 +46,8 @@ for (const item of registry.items) {
   const pkgName = (d) => d.replace(/(?<=.)@.*$/, "")
   const deps = new Set((item.dependencies ?? []).map(pkgName))
   const reach = closure(item.name)
+  /** @type {Set<string>} The registry items this item's own files import, by name. */
+  const imported = new Set()
   for (const f of item.files) {
     if (!/\.tsx?$/.test(f.path)) continue
     const src = readFileSync(f.path, "utf8")
@@ -52,6 +56,7 @@ for (const item of registry.items) {
         if (!reach.has("cn")) fail(item.name, `imports @/lib/utils but does not depend on @syncrobotic/cn`)
       } else if (spec.startsWith("@/registry/")) {
         const target = byPath.get(spec.replace("@/", ""))
+        if (target) imported.add(target)
         if (!target) fail(item.name, `imports ${spec}, which is not a registry item`)
         else if (target !== item.name && !reach.has(target)) fail(item.name, `imports ${spec} but does not depend on @syncrobotic/${target}`)
       } else if (!spec.startsWith(".")) {
@@ -66,6 +71,16 @@ for (const item of registry.items) {
       if (!src.includes(`"${d}`) && item.files.length === 1) fail(item.name, `lists ${d} in dependencies but never imports it`)
     }
   }
+
+  // The reverse: a direct registryDependency none of the item's files imports. `cn` is exempt: it is the utils every
+  // item gets, imported as @/lib/utils.
+  for (const d of item.registryDependencies ?? []) {
+    const n = d.replace("@syncrobotic/", "")
+    if (n !== "cn" && byName.has(n) && !imported.has(n)) fail(item.name, `lists ${d} in registryDependencies but none of its files imports it`)
+  }
+  // A range on every npm dependency ("cmdk@^1"): without one, `shadcn add` installs whatever is latest, a major the item
+  // was never built against.
+  for (const d of item.dependencies ?? []) if (!/.@./.test(d)) fail(item.name, `"${d}" in dependencies has no version range: write "${d}@^<major>"`)
 
   // Status: "beta" (the API may still change in a minor release) or "stable"; absent means stable. Blocks and patterns
   // are templates you copy and edit, so they carry none. A new item starts in beta: one first released in the current

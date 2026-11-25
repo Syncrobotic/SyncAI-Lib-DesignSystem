@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import * as React from "react"
 import { RobotModel } from "@/registry/syncrobotic/ui/robot-model"
 import { demoArmPose, demoArmUrdf } from "./robot-model-arm"
+import { useLiveStamp } from "./live-stamp"
 
 const meta: Meta = { title: "Display/Robot model" }
 export default meta
@@ -11,7 +12,10 @@ type S = StoryObj
 
 /** The arm's pose from its last JointState, seen from the front right. Drag to turn it, right-drag to move, wheel to zoom once focused. */
 export const RobotModelDefault: S = {
-  render: () => <RobotModel urdf={demoArmUrdf} joints={demoArmPose} />,
+  render: function Render() {
+    const stamp = useLiveStamp()
+    return <RobotModel updatedAt={stamp} urdf={demoArmUrdf} joints={demoArmPose} />
+  },
 }
 
 const reduced = () => typeof window !== "undefined" && typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -44,13 +48,16 @@ export const RobotModelAnimated: S = {
       wrist_3: 1.5 * Math.sin(t * 0.5),
     }
     // Stale is watched only while the stream runs: the paused still is a choice, not a robot gone quiet.
-    return <RobotModel urdf={demoArmUrdf} joints={joints} staleAfterMs={still ? undefined : 1000} />
+    return <RobotModel urdf={demoArmUrdf} joints={joints} staleAfterMs={still ? null : 1000} />
   },
 }
 
 /** wrist_2 is 5° from its limit: the link it turns is drawn in the warning colour, and the callout names it with its value and limits. */
 export const RobotModelHighlightedJoint: S = {
-  render: () => <RobotModel urdf={demoArmUrdf} joints={{ ...demoArmPose, wrist_2: 2.71 }} highlight={["wrist_2"]} />,
+  render: function Render() {
+    const stamp = useLiveStamp()
+    return <RobotModel updatedAt={stamp} urdf={demoArmUrdf} joints={{ ...demoArmPose, wrist_2: 2.71 }} highlight={["wrist_2"]} />
+  },
 }
 
 /** The URDF is still on its way (from a parameter server); with meshes, the line counts them in. */
@@ -82,7 +89,10 @@ export const RobotModelStale: S = {
 
 /** A browser that cannot draw 3D: it says so, and lists each joint's position in words, the highlighted one marked. */
 export const RobotModelTextFallback: S = {
-  render: () => <RobotModel urdf={demoArmUrdf} joints={{ ...demoArmPose, wrist_2: 2.71 }} highlight={["wrist_2"]} webgl={false} />,
+  render: function Render() {
+    const stamp = useLiveStamp()
+    return <RobotModel updatedAt={stamp} urdf={demoArmUrdf} joints={{ ...demoArmPose, wrist_2: 2.71 }} highlight={["wrist_2"]} webgl={false} />
+  },
 }
 
 /** Nothing to show yet: no URDF was given. */

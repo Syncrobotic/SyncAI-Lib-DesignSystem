@@ -8,6 +8,7 @@ export function ExampleCard({
   preview,
   code,
   install,
+  prefetch,
   level = 3,
 }: {
   /** The title's heading level: 2 for the example at the top of a page, before its first h2; 3 under a section. */
@@ -17,6 +18,8 @@ export function ExampleCard({
   preview: React.ReactNode
   code: React.ReactNode
   install: React.ReactNode
+  /** The code's address, loaded on hover and focus of the Code button (site/lazy-code.tsx). */
+  prefetch?: string
 }) {
   // "Button variants" -> button-variants.tsx: a file name you could save it as.
   const file = `${title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}.tsx`
@@ -31,7 +34,7 @@ export function ExampleCard({
         <Heading id={`${id}-title`} className="truncate text-sm text-muted-foreground">
           {title}
         </Heading>
-        <CodeSheet title={file} install={install} files={[{ name: file, code }]} />
+        <CodeSheet title={file} install={install} files={[{ name: file, code }]} prefetch={prefetch ? [prefetch] : undefined} />
       </div>
     </section>
   )

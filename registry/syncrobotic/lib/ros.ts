@@ -1,4 +1,4 @@
-// @syncrobotic/ros v0.31.0 · update: npx shadcn add @syncrobotic/ros --overwrite
+// @syncrobotic/ros v0.36.0 · update: npx shadcn add @syncrobotic/ros --overwrite
 /*
   ROS and ROS 2 in the browser, without a ROS library: the rosbridge v2 protocol (rosbridge_suite, which serves both ROS 1
   and ROS 2) spoken directly over the browser's WebSocket, and pure converters from the messages to the props the kit's
@@ -216,6 +216,12 @@ const TWIST_STAMPED = /^geometry_msgs\/(msg\/)?TwistStamped$/
 // A topic's advertisement outlives its last publisher by this long, so a stop published just before is delivered before
 // rosbridge tears the publisher down, and a StrictMode remount keeps the same advertisement.
 const UNADVERTISE_AFTER_MS = 500
+// A fragmented message (rosbridge's `fragment_size`) larger than this many parts is refused rather than allocated: a
+// corrupt or hostile `total` must not reserve gigabytes. 10 000 parts of rosbridge's usual 100 kB is a 1 GB message.
+const MAX_FRAGMENTS = 10_000
+// A fragmented message whose next part has not come for this long is dropped: a part lost on the way would otherwise keep
+// the rest in memory for the life of the connection.
+const FRAGMENT_TIMEOUT_MS = 10_000
 
 /** The stop message a type gets by default: a zero Twist for the velocity types, nothing for others. */
 export function defaultStopMessage(type: string): unknown {
@@ -275,7 +281,11 @@ export function createRosConnection(options: RosConnectionOptions): RosConnectio
   const ads = new Map<string, Advertisement>()
   const held: Held[] = []
   const pending = new Map<string, Pending>()
-  const fragments = new Map<string, { total: number; parts: string[]; count: number }>()
+  const fragments = new Map<string, { total: number; parts: string[]; count: number; timer: ReturnType<typeof setTimeout> | undefined }>()
+  function dropFragments() {
+    for (const f of fragments.values()) clearTimeout(f.timer)
+    fragments.clear()
+  }
   /** Publishers that stop on a dropped link: each one's stop() is called when the link is lost. */
   const stoppers = new Set<(reason: RosStopReason) => void>()
 
@@ -375,7 +385,7 @@ export function createRosConnection(options: RosConnectionOptions): RosConnectio
     // Calls already sent will never be answered on this socket.
     for (const [id, p] of pending) if (p.sent) failCall(id, new RosConnectionError("The connection closed before the service answered"))
     for (const sub of subs.values()) sub.sent = undefined
-    fragments.clear()
+    dropFragments()
     for (const stop of [...stoppers]) stop("connection-lost")
     if (!wanted) return setStatus({ state: "closed", error, retryAt: undefined, latencyMs: undefined })
     if (!backoff) return setStatus({ state: "error", error, retryAt: undefined, latencyMs: undefined })
@@ -473,12 +483,21 @@ export function createRosConnection(options: RosConnectionOptions): RosConnectio
         const id = String(m.id)
         const total = Number(m.total)
         const num = Number(m.num)
-        if (!(total > 0 && num >= 0 && num < total) || typeof m.data !== "string") return
-        const f = fragments.get(id) ?? { total, parts: new Array<string>(total).fill(""), count: 0 }
+        if (!(Number.isInteger(total) && Number.isInteger(num) && total > 0 && num >= 0 && num < total) || typeof m.data !== "string") return
+        if (total > MAX_FRAGMENTS) {
+          setStatus({ error: new RosConnectionError(`A fragmented message of ${total} parts was refused (at most ${MAX_FRAGMENTS})`) })
+          return
+        }
+        const f = fragments.get(id) ?? { total, parts: new Array<string>(total).fill(""), count: 0, timer: undefined }
+        // A part that disagrees about the count belongs to no message this one can finish.
+        if (f.total !== total) return
         fragments.set(id, f)
+        clearTimeout(f.timer)
+        f.timer = setTimeout(() => fragments.delete(id), FRAGMENT_TIMEOUT_MS)
         if (!f.parts[num]) f.count++
         f.parts[num] = m.data
         if (f.count < f.total) return
+        clearTimeout(f.timer)
         fragments.delete(id)
         try {
           handle(parseRosJson(f.parts.join("")))
@@ -547,6 +566,7 @@ export function createRosConnection(options: RosConnectionOptions): RosConnectio
     clearTimeout(beatTimer)
     for (const id of [...pending.keys()]) failCall(id, new RosConnectionError("The connection was closed"))
     for (const sub of subs.values()) sub.sent = undefined
+    dropFragments()
     setStatus({ state: "closed", attempt: 0, retryAt: undefined, latencyMs: undefined })
   }
 

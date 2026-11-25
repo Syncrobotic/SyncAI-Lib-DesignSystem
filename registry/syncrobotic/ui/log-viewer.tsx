@@ -1,4 +1,4 @@
-// @syncrobotic/log-viewer v0.35.0 · update: npx shadcn add @syncrobotic/log-viewer --overwrite
+// @syncrobotic/log-viewer v0.36.0 · update: npx shadcn add @syncrobotic/log-viewer --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,6 +6,7 @@ import { useVirtualizer } from "@tanstack/react-virtual"
 import { ArrowDownToLine, Bug, ChevronDown, ChevronRight, ChevronUp, CircleAlert, Info, OctagonAlert, ScrollText, Search, SearchX, TriangleAlert, type LucideIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
+import { useNow } from "@/registry/syncrobotic/hooks/use-now"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { CopyButton, copyText } from "@/registry/syncrobotic/ui/copy-button"
 import {
@@ -20,6 +21,7 @@ import {
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { InputGroup, InputGroupAddon, InputGroupButton } from "@/registry/syncrobotic/ui/input-group"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
+import { pad } from "@/registry/syncrobotic/lib/math"
 
 /*
   A log viewer for robot and system logs (ROS /rosout, journald, a service's own lines): a virtual list that stays smooth
@@ -439,8 +441,6 @@ function Marked({ text, query, current }: { text: string; query: RegExp | null; 
   return <>{out}</>
 }
 
-const pad = (n: number, w = 2) => String(n).padStart(w, "0")
-
 function useFormatters(locale: string | undefined, timeZone: string | undefined) {
   return React.useMemo(() => {
     const clock = new Intl.DateTimeFormat(locale, { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23", timeZone })
@@ -454,22 +454,6 @@ function useFormatters(locale: string | undefined, timeZone: string | undefined)
       full: (t: number) => (Number.isFinite(t) ? `${day.format(t)} ${clock.format(t)}.${ms(t)} ${zoneName(t)}`.trim() : "–"),
     }
   }, [locale, timeZone])
-}
-
-/** Re-renders every second while `on`, for "time ago". */
-function useNow(on: boolean, given: number | undefined) {
-  const [now, setNow] = React.useState(() => given ?? Date.now())
-  React.useEffect(() => {
-    if (!on || given !== undefined) return
-    const tick = () => setNow(Date.now())
-    const first = window.setTimeout(tick, 0)
-    const id = setInterval(tick, 1000)
-    return () => {
-      window.clearTimeout(first)
-      clearInterval(id)
-    }
-  }, [on, given])
-  return given ?? now
 }
 
 // ---------- The viewer ----------
@@ -597,7 +581,10 @@ export function LogViewer({
   const seqs = React.useMemo(() => filterLog(buffer, snapshot, { levels, sources }), [buffer, snapshot, levels, sources])
   const pattern = React.useMemo(() => logQuery(query), [query])
   const matches = React.useMemo(() => matchLog(buffer, seqs, pattern), [buffer, seqs, pattern])
-  const now = useNow(timeMode === "relative", givenNow)
+  // Read every second for "time ago" while that mode is on and no `now` is given. Null until hydrated: the server's
+  // clock is not the browser's, so until then the lines show their times of day.
+  const clock = useNow(timeMode === "relative" && givenNow === undefined ? 1000 : null)
+  const now = givenNow ?? clock
   const format = useFormatters(locale, timeZone)
   const rows = React.useRef<RowsHandle>(null)
   const searchRef = React.useRef<HTMLInputElement>(null)
@@ -808,7 +795,7 @@ export function LogViewer({
             seqs={seqs}
             labels={l}
             wrap={wrap}
-            time={timeMode === "relative" ? (t) => l.ago(now - t, locale) : format.time}
+            time={timeMode === "relative" && now !== null ? (t) => l.ago(now - t, locale) : format.time}
             fullTime={format.full}
             pattern={pattern}
             current={current}

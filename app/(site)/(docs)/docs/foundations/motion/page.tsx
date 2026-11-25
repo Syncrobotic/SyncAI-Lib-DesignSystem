@@ -146,6 +146,22 @@ export default function MotionPage() {
       </Section>
 
       <Section
+        id="docs-home"
+        title="The docs home"
+        lead="One exception, and it is not for products. This site's home page is a showcase: there, and nowhere else, sections enter as they scroll into view. Every product screen keeps the rule: movement only marks a change of state."
+      >
+        <TokenTable
+          head={["Part", "How", "Tokens"]}
+          rows={[
+            ["Each section", "Rises 24 px and fades in, once, when it first comes into view; never runs back", <Code key="c">--motion-sheet · --ease-standard</Code>],
+            ["Items in a section", "60 ms apart, in order", <Code key="c">--stagger: 0.06s</Code>],
+            ["Live specimens", "Move only because their data changed, every 2 to 4 s; still off screen, in a hidden tab and under reduced motion", "—"],
+            ["Reduced motion, print, no JavaScript", "Everything is simply there", "—"],
+          ]}
+        />
+      </Section>
+
+      <Section
         id="reduced"
         title="Reduced motion"
         lead="When the system asks for reduced motion, every duration drops to 0.01 ms and the skeleton stops breathing. State still changes; it just does not travel."

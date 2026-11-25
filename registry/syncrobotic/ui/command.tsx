@@ -1,4 +1,4 @@
-// @syncrobotic/command v0.28.0 · update: npx shadcn add @syncrobotic/command --overwrite
+// @syncrobotic/command v0.36.0 · update: npx shadcn add @syncrobotic/command --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,6 +6,7 @@ import { Command as CommandPrimitive, useCommandState } from "cmdk"
 import { Dialog as DialogPrimitive } from "radix-ui"
 import { Check, Search } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { getLastInput, trackInputModality } from "@/registry/syncrobotic/lib/input-modality"
 
 /**
  * A filterable list you drive from the keyboard: type to narrow, ↑↓ to move, Enter to run. Built on cmdk.
@@ -15,11 +16,7 @@ import { cn } from "@/lib/utils"
  */
 // The last way anyone moved on the page: keys or a pointer. A palette opened with ⌘K takes focus from the keyboard and
 // rings its row at once; one opened with a click, or a list nobody has touched, does not.
-let lastInput: "key" | "pointer" = "pointer"
-if (typeof document !== "undefined") {
-  document.addEventListener("keydown", () => (lastInput = "key"), true)
-  document.addEventListener("pointerdown", () => (lastInput = "pointer"), true)
-}
+trackInputModality()
 
 /** Scroll an item into view inside its own list only, never the page around it. */
 function scrollWithinList(el: HTMLElement) {
@@ -68,7 +65,7 @@ export function Command({ className, onKeyDown, onPointerMove, onFocus, ref, ...
         onPointerMove?.(e)
       }}
       onFocus={(e) => {
-        if (lastInput === "key") setNav("key")
+        if (getLastInput() === "key") setNav("key")
         onFocus?.(e)
       }}
       className={cn("group/command flex size-full flex-col overflow-hidden bg-popover text-popover-foreground", className)}

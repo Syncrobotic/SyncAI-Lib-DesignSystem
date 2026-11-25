@@ -5,6 +5,7 @@ import { Code, ExternalLink, X } from "lucide-react"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/registry/syncrobotic/ui/sheet"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/registry/syncrobotic/ui/tabs"
+import { loadCode } from "./lazy-code"
 
 type File = { name: string; code: React.ReactNode }
 
@@ -43,7 +44,8 @@ export function SidePanelContent({
 /**
  * Code opens in a panel from the right, so the preview it belongs to stays in view beside it.
  * Install on top, then the code (one tab per file). Phones get the panel at full width.
- * The code is highlighted on the server and handed in as nodes, so opening it waits for nothing.
+ * The code is highlighted at build time into static files (site/code-data.ts) and fetched as the pointer or focus reaches
+ * the button (`prefetch`), so it is not in the page and opening it rarely waits.
  */
 export function CodeSheet({
   label = "Code",
@@ -52,6 +54,7 @@ export function CodeSheet({
   install,
   files,
   href,
+  prefetch = [],
   variant = "ghost",
 }: {
   label?: string
@@ -60,12 +63,14 @@ export function CodeSheet({
   install: React.ReactNode
   files: File[]
   href?: string
+  /** The listings' addresses (site/lazy-code.tsx), loaded on hover and focus of the button. */
+  prefetch?: string[]
   variant?: "ghost" | "outline"
 }) {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant={variant} size="sm">
+        <Button variant={variant} size="sm" onPointerEnter={() => prefetch.forEach(loadCode)} onFocus={() => prefetch.forEach(loadCode)}>
           <Code aria-hidden="true" className="size-4" /> {label}
         </Button>
       </SheetTrigger>

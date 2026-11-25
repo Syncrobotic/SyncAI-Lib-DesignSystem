@@ -5,6 +5,9 @@
 //   npm run build-storybook && npm run thumbs          writes public/thumbs/components/<name>-<theme>-<width>.webp
 //   npm run thumbs -- button dialog                     only these
 //   npm run lint:thumbs                                 fails when a component with examples has no pictures, or one is left over
+//                                                       (and, by tests/unit/block-thumbs.test.ts, a /blocks card)
+//   npm run build && npm run thumbs -- --blocks         the /blocks cards: public/thumbs/blocks/<block>-<theme>-<width>.webp
+//                                                       (see blockThumbs below)
 //
 // The visual-baseline workflow runs it after the baselines, in the same Playwright image, and commits the result with
 // them, so the pictures change when the stories do. Taken on a laptop they differ from CI's only in font rendering.
@@ -94,6 +97,11 @@ if (process.argv.includes("--check")) {
   process.exit(0)
 }
 
+if (process.argv.includes("--blocks")) {
+  await blockThumbs()
+  process.exit(0)
+}
+
 const { chromium } = await import("playwright")
 // THUMBS_PORT: another port when 6008 is taken (several checkouts on one machine).
 const PORT = Number(process.env.THUMBS_PORT ?? 6008)
@@ -171,6 +179,116 @@ for (const c of list) {
 await browser.close()
 server.kill()
 console.log(`${list.length} components, ${list.length * THEMES.length * WIDTHS.length} files, ${Math.round(total / 1024)} KB`)
+
+/**
+ * The pictures on /blocks: each card's block, from its preview page on the built site, framed as the card used to frame
+ * the live preview (site/blocks.tsx, blockCards): a desktop screen shows one region of itself at the card's width; a
+ * section or a phone sits whole and centred at nine tenths of the card. Written to public/thumbs/blocks/<block>-<theme>-<width>.webp.
+ *
+ *   npm run build && npm run thumbs -- --blocks             starts next start on THUMBS_PORT (6009)
+ *   THUMBS_SITE=http://localhost:3000 npm run thumbs -- --blocks    a site already running
+ *
+ * Deterministic: reduced motion, the clock installed at one instant and run a fixed second (as tests/story.ts), the kit's
+ * fonts loaded. The preview is framed in an iframe of the site's own origin, as the docs frame it, so it renders as it does
+ * there (no "Back to the docs" strip, the theme set on its root).
+ */
+async function blockThumbs() {
+  const OUT_BLOCKS = "public/thumbs/blocks"
+  const FROZEN_AT = new Date("2026-11-21T14:00:00Z")
+  const port = Number(process.env.THUMBS_PORT ?? 6009)
+  const site = process.env.THUMBS_SITE ?? `http://127.0.0.1:${port}`
+  const server = process.env.THUMBS_SITE ? null : spawn("npx", ["next", "start", "-p", String(port)], { stdio: "ignore" })
+  for (let i = 0; i < 300 && !(await fetch(`${site}/block-cards.json`).then((r) => r.ok, () => false)); i++) await new Promise((r) => setTimeout(r, 200))
+  /** @type {{ name: string, width: number, height: number, fit: "screen" | "content", view: { x?: number, y?: number, width: number } | null }[]} */
+  const cards = await (await fetch(`${site}/block-cards.json`)).json()
+  const only = process.argv.slice(2).filter((a) => !a.startsWith("-"))
+  const list = cards.filter((c) => !only.length || only.includes(c.name))
+
+  const { chromium } = await import("playwright")
+  const browser = await chromium.launch(process.env.PW_CHROMIUM_PATH ? { executablePath: process.env.PW_CHROMIUM_PATH } : {})
+  // Two device pixels per CSS pixel: the narrowest region (400 px) still has the 800 wide file's pixels.
+  const shots = await browser.newContext({ viewport: { width: 1280, height: 900 }, deviceScaleFactor: 2, reducedMotion: "reduce" })
+  const encoder = await (await browser.newContext()).newPage()
+  if (!only.length) rmSync(OUT_BLOCKS, { recursive: true, force: true })
+  mkdirSync(OUT_BLOCKS, { recursive: true })
+
+  let total = 0
+  for (const c of list) {
+    for (const theme of THEMES) {
+      const page = await shots.newPage()
+      await page.setViewportSize({ width: c.width, height: c.height })
+      await page.emulateMedia({ reducedMotion: "reduce", colorScheme: theme === "dark" ? "dark" : "light" })
+      await page.addInitScript((t) => localStorage.setItem("theme", t), theme)
+      await page.clock.install({ time: FROZEN_AT })
+      // A same-origin page with nothing on it, then the preview framed in it at the block's width and height.
+      await page.goto(`${site}/robots.txt`)
+      await page.setContent(`<html style="margin:0"><body style="margin:0"><iframe id="f" src="/preview/${c.name}" style="display:block;border:0;width:${c.width}px;height:${c.height}px"></iframe></body></html>`)
+      const frame = /** @type {import("playwright").Frame} */ (await (await page.waitForSelector("#f")).contentFrame())
+      await frame.waitForSelector("#block-root > *")
+      await frame.waitForFunction((dark) => document.documentElement.classList.contains("dark") === dark, theme === "dark")
+      await frame.evaluate(() => Promise.all(["400 16px Geist", "500 16px Geist", "700 16px Geist", "400 16px 'Geist Mono'"].map((f) => document.fonts.load(f))))
+      await page.clock.runFor(1000)
+      // Maps, canvases and pictures draw on loads the paused clock does not drive.
+      await page.waitForTimeout(1500)
+      await page.clock.runFor(500)
+      await frame.evaluate(() => {
+        /** @type {HTMLElement | null} */ (document.activeElement)?.blur?.()
+        getSelection()?.removeAllRanges()
+      })
+      const { rootH, bg } = await frame.evaluate(() => {
+        const probe = document.createElement("div")
+        probe.className = "specimen"
+        document.body.append(probe)
+        const color = getComputedStyle(probe).backgroundColor
+        probe.remove()
+        return { rootH: Math.ceil(/** @type {HTMLElement} */ (document.getElementById("block-root")).getBoundingClientRect().height), bg: color }
+      })
+      // The card's box in the block's pixels: a region at its own width, or the whole block at 0.9 of the box, centred.
+      const h = c.fit === "content" && !c.view ? Math.min(c.height, rootH) : c.height
+      const box = c.view
+        ? { x: c.view.x ?? 0, y: c.view.y ?? 0, width: c.view.width }
+        : (() => {
+            const width = Math.max(c.width, h * RATIO) / 0.9
+            return { x: -(width - c.width) / 2, y: -Math.max(0, (width / RATIO - h) / 2), width }
+          })()
+      const png = await page.screenshot({ clip: { x: 0, y: 0, width: c.width, height: h } })
+      await page.close()
+      const webp = await encoder.evaluate(place, { png: png.toString("base64"), widths: WIDTHS, box, size: { width: c.width, height: h }, bg })
+      WIDTHS.forEach((w, i) => {
+        const buf = Buffer.from(webp[i], "base64")
+        total += buf.length
+        writeFileSync(`${OUT_BLOCKS}/${c.name}-${theme}-${w}.webp`, buf)
+      })
+    }
+    console.log(c.name)
+  }
+  await browser.close()
+  server?.kill()
+  console.log(`${list.length} blocks, ${list.length * THEMES.length * WIDTHS.length} files, ${Math.round(total / 1024)} KB`)
+}
+
+/**
+ * Runs in the browser: the block's picture placed in a 16:10 box of the page colour, the box given in the block's
+ * pixels, at each width, as WebP.
+ */
+/** @param {{ png: string, widths: number[], box: { x: number, y: number, width: number }, size: { width: number, height: number }, bg: string }} input */
+async function place({ png, widths, box, size, bg }) {
+  const img = await createImageBitmap(await (await fetch(`data:image/png;base64,${png}`)).blob())
+  const out = []
+  for (const w of widths) {
+    const c = document.createElement("canvas")
+    c.width = w
+    c.height = Math.round((w * 10) / 16)
+    const ctx = /** @type {CanvasRenderingContext2D} */ (c.getContext("2d"))
+    ctx.fillStyle = bg
+    ctx.fillRect(0, 0, c.width, c.height)
+    ctx.imageSmoothingQuality = "high"
+    const s = w / box.width
+    ctx.drawImage(img, -box.x * s, -box.y * s, size.width * s, size.height * s)
+    out.push(c.toDataURL("image/webp", 0.8).split(",")[1])
+  }
+  return out
+}
 
 /**
  * Runs in the story: the box of what it paints. Its text, its leaves (icons, inputs, images, canvases) and every element

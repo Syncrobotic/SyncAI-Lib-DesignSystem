@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import * as React from "react"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { items } from "@/site/catalog"
@@ -9,9 +10,11 @@ import { fast } from "@/site/foundation-previews"
 import { foundations } from "@/site/foundations"
 import { iconCount } from "@/site/icons"
 import { HeroDemo } from "@/site/hero-demo"
+import { LiveSpecimen } from "@/site/home-live"
 import { getBlockType, placement } from "@/site/block-types"
 import { PageTransition } from "@/site/page-transition"
 import { SiteFooter } from "@/site/site-footer"
+import { textLink } from "@/site/prose"
 
 export const metadata: Metadata = {
   title: { absolute: `${site.name} — robotics UI kit for React and shadcn/ui` },
@@ -59,6 +62,38 @@ const rules = [
     body: "44 px touch targets, and every status as a shape and a word, so it reads in glare and without colour vision.",
   },
 ]
+
+// The live specimens under "See it run" (site/home-live.tsx), each in a box of fixed height so its placeholder is the same.
+const live = [
+  {
+    demo: "fleet",
+    title: "A fleet on its map",
+    wide: true,
+    size: "h-148 sm:h-156 lg:h-80",
+    caption:
+      "Four robots report where they are every two seconds. A calm fleet stays grey; the one running low turns amber on the map and says why in the list, and its way home is the only blue line.",
+    links: [
+      ["Robot map", "/docs/components/robot-map"],
+      ["Meter", "/docs/components/meter"],
+    ],
+  },
+  {
+    demo: "telemetry",
+    title: "Telemetry",
+    wide: false,
+    size: "h-80",
+    caption: "Drive motor current, a reading every two seconds. When the left wheel works past its limit on the ramp, the legend says so in words.",
+    links: [["Streaming chart", "/docs/components/streaming-chart"]],
+  },
+  {
+    demo: "alarms",
+    title: "Alarms",
+    wide: false,
+    size: "h-80",
+    caption: "A critical alarm arrives, is acknowledged, clears and leaves. Rows are never tinted: priority is a shape and a word.",
+    links: [["Alarm", "/docs/components/alarm"]],
+  },
+] as const
 
 export default function HomePage() {
   // The three ways in, one row each: what it is, what is in it, how many.
@@ -131,7 +166,7 @@ export default function HomePage() {
 
       {/* How to start, straight after what it is: most visitors are here to install it. */}
       <section className="mx-auto max-w-6xl px-4 pt-section-sm">
-        <Reveal>
+        <Reveal showcase>
           <AppearItem className="grid items-center gap-8 lg:grid-cols-2">
             <div className="flex flex-col gap-3">
               <h2 className="text-2xl font-bold">Install</h2>
@@ -158,7 +193,7 @@ export default function HomePage() {
       {/* The three rules the stop above demonstrates. */}
       <section className="mx-auto max-w-6xl px-4 pt-section-sm">
         <h2 className="sr-only">Three rules</h2>
-        <Reveal className="grid border-t border-border sm:grid-cols-3 sm:gap-8">
+        <Reveal showcase className="grid border-t border-border sm:grid-cols-3 sm:gap-8">
           {rules.map((r) => (
             <AppearItem key={r.title} className="flex flex-col gap-2 border-b border-border py-6 sm:border-b-0">
               <h3 className="font-bold">{r.title}</h3>
@@ -168,9 +203,41 @@ export default function HomePage() {
         </Reveal>
       </section>
 
+      {/* The rules at work: the registry's components fed a simulated site, as a product would install and use them. */}
+      <section className="mx-auto flex max-w-6xl flex-col gap-6 px-4 pt-section-sm">
+        <div className="flex max-w-2xl flex-col gap-3">
+          <h2 className="text-2xl font-bold">See it run</h2>
+          <p className="text-muted-foreground">
+            The same components you install, fed a simulated site. Readings arrive every few seconds, as they do over a radio link, and nothing moves
+            unless the data changed.
+          </p>
+        </div>
+        <Reveal showcase className="grid gap-8 lg:grid-cols-2">
+          {live.map((d) => (
+            <AppearItem key={d.demo} className={d.wide ? "lg:col-span-2" : undefined}>
+              <figure className="flex flex-col gap-4">
+                <h3 className="font-bold">{d.title}</h3>
+                <LiveSpecimen demo={d.demo} size={d.size} />
+                <figcaption className="max-w-2xl text-sm text-pretty text-muted-foreground">
+                  {d.caption}{" "}
+                  {d.links.map(([name, href], i) => (
+                    <React.Fragment key={href}>
+                      {i > 0 && " · "}
+                      <Link href={href} className={`font-medium ${textLink}`}>
+                        {name}
+                      </Link>
+                    </React.Fragment>
+                  ))}
+                </figcaption>
+              </figure>
+            </AppearItem>
+          ))}
+        </Reveal>
+      </section>
+
       <section className="mx-auto flex max-w-6xl flex-col gap-6 px-4 pt-section-sm">
         <h2 className="text-2xl font-bold">What is inside</h2>
-        <Reveal className="flex flex-col border-t border-border">
+        <Reveal showcase className="flex flex-col border-t border-border">
           {ways.map((w) => (
             <AppearItem key={w.href}>
               <Link

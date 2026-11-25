@@ -1,4 +1,4 @@
-// @syncrobotic/camera-wall v0.35.0 · update: npx shadcn add @syncrobotic/camera-wall --overwrite
+// @syncrobotic/camera-wall v0.36.0 · update: npx shadcn add @syncrobotic/camera-wall --overwrite
 "use client"
 
 import * as React from "react"
@@ -168,8 +168,8 @@ export type CameraWallProps = {
   defaultNeedsAttention?: boolean
   /** Tiles per page. By default the grid's own: 4, 9 or 16, and 6 in the phone list. */
   pageSize?: number
-  /** With no new frame for this long, a feed says Stalled. Passed to every feed. */
-  staleAfterMs?: number
+  /** With no new frame for this long, a feed says Stalled. Passed to every feed: 2000 ms by default, `null` never. */
+  staleAfterMs?: number | null
   /** Width over height of every picture. 16 / 9 by default. */
   aspectRatio?: number
   /** Shows "Take snapshot" on the focused camera. */
@@ -658,7 +658,7 @@ function Tile({
   tabbable: boolean
   keysId: string
   aspectRatio: number
-  staleAfterMs?: number
+  staleAfterMs?: number | null
   labels: CameraWallLabels
   feedLabels: CameraFeedLabels
   onStateChange: (state: CameraFeedState, at: number | null) => void
@@ -762,7 +762,7 @@ function TileFeed({
   stream?: MediaStream
   src?: string
   aspectRatio: number
-  staleAfterMs?: number
+  staleAfterMs?: number | null
   feedLabels: CameraFeedLabels
   onStateChange: (state: CameraFeedState, at: number | null) => void
   onGone: () => void

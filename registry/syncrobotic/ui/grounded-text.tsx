@@ -1,4 +1,4 @@
-// @syncrobotic/grounded-text v0.34.0 · update: npx shadcn add @syncrobotic/grounded-text --overwrite
+// @syncrobotic/grounded-text v0.36.0 · update: npx shadcn add @syncrobotic/grounded-text --overwrite
 "use client"
 
 import * as React from "react"
@@ -10,6 +10,7 @@ import {
   type AnnotationKind,
   type AnnotationOverlay,
 } from "@/registry/syncrobotic/ui/annotated-image"
+import { prefersReducedMotion } from "@/registry/syncrobotic/hooks/use-reduced-motion"
 
 /*
   Text whose words point at places on a picture, as a vision-language model answers: a caption where each object's name
@@ -165,7 +166,7 @@ function reveal(picture: Element | null | undefined, ids: readonly string[], spa
     by = by < 0 ? Math.min(0, Math.max(by, s.bottom - port.bottom)) : Math.max(0, Math.min(by, s.top - port.top))
   }
   if (!by) return
-  const reduce = typeof window.matchMedia !== "function" || window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  const reduce = prefersReducedMotion(true)
   const options: ScrollToOptions = { top: by, behavior: reduce ? "auto" : "smooth" }
   if (scroller) scroller.scrollBy?.(options)
   else window.scrollBy?.(options)

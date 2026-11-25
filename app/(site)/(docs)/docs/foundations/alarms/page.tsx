@@ -119,7 +119,7 @@ export default function AlarmsPage() {
             "One alarm per root cause. When a robot goes offline, raise “offline”, not also “camera lost” and “lidar lost”.",
             "The title says what happened and where (“Collision risk · Hall B”); the source names the robot; the action says what to do (“Open camera”).",
             "Never auto-dismiss an alarm and never send one as a toast.",
-            "No blinking and no tinted rows. Colour is only on the glyph and the priority word. Unacknowledged is a bold title and a solid bar; cleared but not acknowledged keeps the bold with a dashed bar; acknowledged is regular and grey and says when. Sound does the interrupting.",
+            "No blinking and no tinted rows. Colour is only on the glyph and the priority word. Unacknowledged is a bold title and a solid bar (a pill inset in its own gutter, never cut by the card's corner); cleared but not acknowledged keeps the bold with a dashed bar; acknowledged is regular and grey and says when. Sound does the interrupting.",
             "Time first, in tabular figures, so order and age read down the column.",
             "“Acknowledge all” is the app's choice (onAcknowledgeAll) and never takes a critical alarm: each critical alarm is read and acknowledged on its own row. It takes only the other alarms in view, never shelved, suppressed or out-of-service ones, and says how many it acknowledged.",
             "New critical alarms are announced to screen readers assertively, others politely. `AlarmList` does this for you.",

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { PointCloud } from "@/registry/syncrobotic/ui/point-cloud"
+import { useLiveStamp } from "./live-stamp"
 
 const meta: Meta = { title: "Charts/Point cloud" }
 export default meta
@@ -81,6 +82,9 @@ function makeWarehouse(total = 100_000): Scan {
 let scan: Scan | null = null
 const warehouse = () => (scan ??= makeWarehouse())
 
+// A cloud with nothing in it, kept as one object: re-stamped every 200 ms, it is the same cloud each time.
+const EMPTY = new Float32Array(0)
+
 // When the last scan arrived in the stale story: well in the past, at a fixed local time, so its line always reads 14:02:31.
 const LAST_SCAN = new Date(2026, 0, 5, 14, 2, 31).getTime()
 
@@ -100,17 +104,19 @@ if (typeof HTMLCanvasElement !== "undefined") {
 
 /** About 100,000 points of a warehouse aisle, coloured by height: the floor lightest, the top shelves the full accent. */
 export const PointCloudByHeight: S = {
-  render: () => {
+  render: function Render() {
+    const stamp = useLiveStamp()
     const { points } = warehouse()
-    return <PointCloud label="Front lidar, Forklift 2" points={points} colorBy="height" robot />
+    return <PointCloud label="Front lidar, Forklift 2" points={points} receivedAt={stamp} colorBy="height" robot />
   },
 }
 
 /** The same scan by intensity: the reflective tape on the uprights stands out from concrete and cardboard. */
 export const PointCloudByIntensity: S = {
-  render: () => {
+  render: function Render() {
+    const stamp = useLiveStamp()
     const { points, intensity } = warehouse()
-    return <PointCloud label="Front lidar, Forklift 2" points={points} intensity={intensity} colorBy="intensity" robot />
+    return <PointCloud label="Front lidar, Forklift 2" points={points} intensity={intensity} receivedAt={stamp} colorBy="intensity" robot />
   },
 }
 
@@ -121,7 +127,10 @@ export const PointCloudLoading: S = {
 
 /** The sensor sent a cloud with nothing in range. */
 export const PointCloudEmpty: S = {
-  render: () => <PointCloud label="Front lidar, Forklift 2" points={new Float32Array(0)} />,
+  render: function Render() {
+    const stamp = useLiveStamp()
+    return <PointCloud label="Front lidar, Forklift 2" points={EMPTY} receivedAt={stamp} />
+  },
 }
 
 /** The cloud could not be loaded: what failed, and Load again because trying again can help. */
@@ -139,11 +148,12 @@ export const PointCloudStale: S = {
 
 /** A browser without WebGL2 (simulated here): it says so in words, and screen readers still get the count and extent. */
 export const PointCloudNoWebGL: S = {
-  render: () => {
+  render: function Render() {
+    const stamp = useLiveStamp()
     const { points } = warehouse()
     return (
       <div data-demo-no-webgl="">
-        <PointCloud label="Front lidar, Forklift 2" points={points} robot />
+        <PointCloud label="Front lidar, Forklift 2" points={points} receivedAt={stamp} robot />
       </div>
     )
   },
