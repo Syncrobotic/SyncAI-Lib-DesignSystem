@@ -389,11 +389,13 @@ export function MediaPlayer({
             variant="ghost"
             size="sm"
             disabled={!ready}
-            aria-label={nameOf(m)}
             onClick={() => seekTo(m.time)}
             className="col-span-2 grid w-full grid-cols-subgrid justify-items-start gap-3 px-2 text-left font-normal"
           >
+            {/* Named by what it shows (no aria-label, which would have to repeat the visible words): the time, a comma
+                for screen readers only (out of the grid, as it is absolutely placed), then the label. */}
             <span className="font-mono text-xs text-muted-foreground tabular-nums">{when(m)}</span>
+            <span className="sr-only">, </span>
             <span className="truncate">{m.label}</span>
           </Button>
         </li>

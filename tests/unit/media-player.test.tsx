@@ -48,6 +48,10 @@ const setup = (props: Partial<React.ComponentProps<typeof MediaPlayer>> = {}) =>
 const key = (el: Element, k: string) => fireEvent.keyDown(el, { key: k })
 const time = (c: HTMLElement) => ["current", "total"].map((s) => c.querySelector(`[data-slot=media-player-${s}]`)!.textContent)
 
+/** A marker's accessible name: its time, a comma, its label. A browser joins the inline spans as is; jsdom puts a space
+ * at each span's edge, so the name may read "0:42 , Obstacle" there. */
+const listed = (time: string, label: string) => new RegExp(`^${time} ?, ${label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`)
+
 describe("formatMediaTime", () => {
   it("writes a clock, with hours only when there are some", () => {
     expect(formatMediaTime(0)).toBe("0:00")
@@ -151,7 +155,7 @@ describe("MediaPlayer markers", () => {
     const { video } = setup({ markers })
     const list = screen.getByRole("list", { name: "Events in this clip" })
     const items = list.querySelectorAll("button")
-    expect([...items].map((b) => b.textContent)).toEqual(["0:02Patrol started", "0:42Obstacle"])
+    expect([...items].map((b) => b.textContent)).toEqual(["0:02, Patrol started", "0:42, Obstacle"])
     fireEvent.click(items[1])
     expect(video.currentTime).toBe(42)
   })
@@ -187,9 +191,9 @@ describe("MediaPlayer range markers", () => {
 
   it("names a window by its time range, in the list and on hover", () => {
     const { container } = setup({ markers: windows })
-    const item = screen.getByRole("button", { name: "0:12–0:30, Person in path" })
-    expect(item.textContent).toBe("0:12–0:30Person in path")
-    expect(screen.getByRole("button", { name: "0:42, Obstacle" })).toBeTruthy()
+    const item = screen.getByRole("button", { name: listed("0:12–0:30", "Person in path") })
+    expect(item.textContent).toBe("0:12–0:30, Person in path")
+    expect(screen.getByRole("button", { name: listed("0:42", "Obstacle") })).toBeTruthy()
     // The drawn label shown on hover and focus says the same.
     expect(marks(container)[0]!.textContent).toBe("0:12–0:30, Person in path")
   })
@@ -205,7 +209,7 @@ describe("MediaPlayer range markers", () => {
     expect(band!.style.left).toMatch(/^83\.3/)
     expect(Number.parseFloat(band!.style.width)).toBeCloseTo(100 / 6)
     expect(tick!.style.width).toBe("")
-    expect(screen.getByRole("button", { name: "0:20, Bump" })).toBeTruthy()
+    expect(screen.getByRole("button", { name: listed("0:20", "Bump") })).toBeTruthy()
   })
 })
 
@@ -227,7 +231,7 @@ describe("MediaPlayer marker list", () => {
     expect(disclosure.getAttribute("aria-expanded")).toBe("true")
     const list = screen.getByRole("list", { name: "Events in this clip" })
     expect(list.querySelectorAll("li")).toHaveLength(3)
-    fireEvent.click(screen.getByRole("button", { name: "0:50–0:55, Path clear" }))
+    fireEvent.click(screen.getByRole("button", { name: listed("0:50–0:55", "Path clear") }))
     expect(video.currentTime).toBe(50)
   })
 
@@ -240,8 +244,8 @@ describe("MediaPlayer marker list", () => {
     const { container, video } = setup({ markers: three, markerList: "none" })
     expect(screen.queryByRole("list")).toBeNull()
     expect(screen.queryByRole("button", { name: /markers$/ })).toBeNull()
-    const band = screen.getByRole("button", { name: "0:50–0:55, Path clear" })
-    const tick = screen.getByRole("button", { name: "0:42, Obstacle" })
+    const band = screen.getByRole("button", { name: listed("0:50–0:55", "Path clear") })
+    const tick = screen.getByRole("button", { name: listed("0:42", "Obstacle") })
     expect(band.tabIndex).toBe(0)
     expect(tick.getAttribute("aria-hidden")).toBeNull()
     expect(container.querySelectorAll("[data-slot=media-player-marker][aria-hidden]")).toHaveLength(0)
