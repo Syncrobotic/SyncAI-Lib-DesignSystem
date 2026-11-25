@@ -19,6 +19,10 @@
     "version": "0.36.0",
     "hash": "b52e10ecdfe0c777"
   },
+  "format-count": {
+    "version": "0.39.0",
+    "hash": "e24e6fcf7abf442e"
+  },
   "input-modality": {
     "version": "0.36.0",
     "hash": "18f32710c9c1f3cf"
@@ -28,8 +32,8 @@
     "hash": "03904a0793a968e9"
   },
   "labels-zh-tw": {
-    "version": "0.37.0",
-    "hash": "84aa89e213c9c9f2"
+    "version": "0.39.0",
+    "hash": "6baef1d730769954"
   },
   "ros": {
     "version": "0.36.0",
@@ -251,6 +255,10 @@
     "version": "0.35.0",
     "hash": "9f97c5ec5ac5fe3e"
   },
+  "responsive-table": {
+    "version": "0.39.0",
+    "hash": "254427343bb2b7ff"
+  },
   "chart": {
     "version": "0.22.1",
     "hash": "7e591be54e08bd72"
@@ -375,6 +383,10 @@
     "version": "0.32.0",
     "hash": "1f92ba0794ccdc8d"
   },
+  "section-header": {
+    "version": "0.39.0",
+    "hash": "352cb68c139952c1"
+  },
   "chip-group": {
     "version": "0.32.0",
     "hash": "1bd0e13d32ee59cb"
@@ -450,6 +462,10 @@
   "filters": {
     "version": "0.37.0",
     "hash": "8a5977fc8f301322"
+  },
+  "facets": {
+    "version": "0.39.0",
+    "hash": "bff24d3e34cfb09c"
   },
   "search-field": {
     "version": "0.28.0",
@@ -592,8 +608,8 @@
     "hash": "0906087725321427"
   },
   "data-catalog": {
-    "version": "0.37.0",
-    "hash": "52ed5d9973b8c517"
+    "version": "0.39.0",
+    "hash": "7a6952304f17a8f6"
   },
   "dataset-detail": {
     "version": "0.35.0",
@@ -628,8 +644,8 @@
     "hash": "26224425b5d61273"
   },
   "agent-skill": {
-    "version": "0.36.0",
-    "hash": "3078a31f1e6ff5f2"
+    "version": "0.39.0",
+    "hash": "d867aa59c0698d62"
   },
   "line-chart-telemetry": {
     "version": "0.35.0",

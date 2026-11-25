@@ -1,19 +1,17 @@
-// @syncrobotic/data-catalog v0.37.0 · update: npx shadcn add @syncrobotic/data-catalog --overwrite
+// @syncrobotic/data-catalog v0.39.0 · update: npx shadcn add @syncrobotic/data-catalog --overwrite
 "use client"
 
 import * as React from "react"
-import { ChevronRight, Database, Grid3x3, SlidersHorizontal, Plus, ScrollText, Search, SearchX, ShieldCheck } from "lucide-react"
+import { ChevronRight, Database, Grid3x3, Plus, ScrollText, Search, SearchX, ShieldCheck } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
-import { ChoiceField, FieldSet } from "@/registry/syncrobotic/ui/choice-field"
 import { AppShell, type AppNavGroup, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { TierBadge, tiers, type Tier } from "@/registry/syncrobotic/ui/tier-badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
-import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
+import { Facets, FacetsDrawer, type Facet, type FacetValue } from "@/registry/syncrobotic/ui/facets"
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { InputGroup, InputGroupAddon } from "@/registry/syncrobotic/ui/input-group"
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/registry/syncrobotic/ui/sheet"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
 
 /** Navigation shared by the data-tool blocks. */
@@ -128,32 +126,21 @@ export const sampleDatasets: Dataset[] = [
 ]
 
 type SortKey = "name" | "items"
-const facets = [
-  { key: "tier", label: "Tier", values: (["T0", "T1", "T2", "T3"] as Tier[]).map((t) => ({ value: t, label: `${t} · ${tiers[t].label}` })) },
-  { key: "use", label: "Use", values: ["Product", "Research", "Evaluation"].map((v) => ({ value: v, label: v })) },
-  { key: "task", label: "Task", values: ["Detection", "Segmentation", "Keypoints", "Depth", "Classification"].map((v) => ({ value: v, label: v })) },
-] as const
-
-type Picks = Record<(typeof facets)[number]["key"], string[]>
-
-function Facets({ data, picks, onPick }: { data: Dataset[]; picks: Picks; onPick: (key: keyof Picks, value: string, on: boolean) => void }) {
-  return (
-    <div className="flex flex-col gap-6">
-      {facets.map((f) => (
-        <FieldSet key={f.key} legend={f.label}>
-          {f.values.map((v) => (
-            <ChoiceField
-              key={v.value}
-              label={v.label}
-              trailing={data.filter((d) => d[f.key] === v.value).length}
-              control={<Checkbox checked={picks[f.key].includes(v.value)} onCheckedChange={(c) => onPick(f.key, v.value, c === true)} />}
-            />
-          ))}
-        </FieldSet>
-      ))}
-    </div>
-  )
+const facetKeys = ["tier", "use", "task"] as const
+type FacetKey = (typeof facetKeys)[number]
+const facetOptions: Record<FacetKey, { label: string; values: { value: string; label: string }[] }> = {
+  tier: { label: "Tier", values: (["T0", "T1", "T2", "T3"] as Tier[]).map((t) => ({ value: t, label: `${t} · ${tiers[t].label}` })) },
+  use: { label: "Use", values: ["Product", "Research", "Evaluation"].map((v) => ({ value: v, label: v })) },
+  task: { label: "Task", values: ["Detection", "Segmentation", "Keypoints", "Depth", "Classification"].map((v) => ({ value: v, label: v })) },
 }
+
+/** The facets with how many datasets have each value. */
+const facetsOf = (data: Dataset[]): Facet[] =>
+  facetKeys.map((key) => ({
+    key,
+    label: facetOptions[key].label,
+    options: facetOptions[key].values.map((v) => ({ ...v, count: data.filter((d) => d[key] === v.value).length })),
+  }))
 
 // The columns after the name, so a layer's row keeps the dataset row's cells at every width.
 const hiddenCells = ["hidden sm:table-cell", "hidden md:table-cell", "hidden md:table-cell", "hidden xl:table-cell"]
@@ -244,13 +231,12 @@ export type DataCatalogProps = { datasets?: Dataset[] }
  */
 export function DataCatalogContent({ datasets = sampleDatasets }: DataCatalogProps) {
   const [query, setQuery] = React.useState("")
-  const [picks, setPicks] = React.useState<Picks>({ tier: [], use: [], task: [] })
+  const [picks, setPicks] = React.useState<FacetValue>({})
   const [sort, setSort] = React.useState<{ key: SortKey; dir: 1 | -1 }>({ key: "name", dir: 1 })
 
-  const pick = (key: keyof Picks, value: string, on: boolean) => setPicks((p) => ({ ...p, [key]: on ? [...p[key], value] : p[key].filter((v) => v !== value) }))
-  const active = Object.values(picks).flat().length
+  const facets = facetsOf(datasets)
   const rows = datasets
-    .filter((d) => (Object.keys(picks) as (keyof Picks)[]).every((k) => picks[k].length === 0 || picks[k].includes(d[k])))
+    .filter((d) => facetKeys.every((k) => !picks[k]?.length || picks[k].includes(d[k])))
     .filter((d) => [d.name, d.ref, d.owner, ...(d.layers ?? []).flatMap((l) => [l.name, l.ref])].join(" ").toLowerCase().includes(query.toLowerCase()))
     .sort((a, b) => (sort.key === "items" ? a.items - b.items : a.name.localeCompare(b.name)) * sort.dir)
 
@@ -261,9 +247,7 @@ export function DataCatalogContent({ datasets = sampleDatasets }: DataCatalogPro
 
   return (
     <div className="flex gap-8">
-      <aside aria-label="Filters" className="hidden w-56 shrink-0 lg:block">
-        <Facets data={datasets} picks={picks} onPick={pick} />
-      </aside>
+      <Facets facets={facets} value={picks} onValueChange={setPicks} locale="en-US" />
       <div className="flex min-w-0 flex-1 flex-col gap-4">
         <div className="flex gap-2">
           <InputGroup>
@@ -278,17 +262,7 @@ export function DataCatalogContent({ datasets = sampleDatasets }: DataCatalogPro
               onChange={(e) => setQuery(e.target.value)}
             />
           </InputGroup>
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="secondary" className="lg:hidden">
-                <SlidersHorizontal aria-hidden="true" /> Filters{active ? ` · ${active}` : ""}
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="w-80">
-              <SheetTitle className="pb-4">Filters</SheetTitle>
-              <Facets data={datasets} picks={picks} onPick={pick} />
-            </SheetContent>
-          </Sheet>
+          <FacetsDrawer facets={facets} value={picks} onValueChange={setPicks} locale="en-US" />
         </div>
         <p className="text-sm text-muted-foreground" aria-live="polite">
           {rows.length} of {datasets.length} datasets
