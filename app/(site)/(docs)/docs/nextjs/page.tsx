@@ -427,6 +427,15 @@ export default function NextjsPage() {
         ]}
       />
 
+      <H2 id="error-pages">Error pages</H2>
+      <P text="Draw `not-found.tsx`, `error.tsx` and `global-error.tsx` with the status-pages block (`NotFoundPage`, `ErrorPage`, `StatusPage`). An error in the root layout skips every `error.tsx`, which sit inside it, and reaches only `app/global-error.tsx`: that file renders its own `<html>` and `<body>`, so it brings the font, `globals.css` and the theme script itself." />
+      <p className="max-w-3xl text-base">
+        <Link href="/blocks/states#nextjs" className="underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground">
+          The global-error recipe
+        </Link>{" "}
+        <Inline text="is on the status pages, with the theme script both files share." />
+      </p>
+
       <H2 id="errors">Common errors</H2>
       <h3 className="pt-2 pb-2 text-base font-medium">Hydration mismatch</h3>
       <P text="The server's HTML and the browser's first render differ. The usual causes:" />

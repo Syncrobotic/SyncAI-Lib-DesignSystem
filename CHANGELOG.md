@@ -4,7 +4,7 @@ Components install as source, so a project keeps the version it installed. Re-ru
 
 ## Unreleased
 
-The facet column of the data catalog is a component of its own.
+The facet column of the data catalog is a component of its own, and the status pages show the Next.js recipe for an error in the root layout.
 
 ### Added
 - **`facets` 0.39.0 (new, beta):** the facet column beside a catalog or a table, taken out of `data-catalog` so a product no longer rebuilds it (#382). `Facets` is the column from 1024 px: it pins under the shell's bar (`--shell-top`) and scrolls on its own, its height measured from whatever scrolls (the page, or app-shell's `<main>`). Each facet is a FieldSet of checkbox rows (ChoiceField) with a count on each option (`locale` groups them); `max` (or a facet's own) folds a long facet with "Show all N", picked options stay in view, and unfolding moves focus to the first option it shows. `FacetsDrawer` is the same list on phones: a Filters button with the number of picks (CountBadge) opening a bottom sheet with Clear all and Done; picks apply at once. `FacetList` is the groups alone. Every word is in `labels`; **`labels-zh-tw` 0.39.0** adds `facetsLabels` (篩選, 顯示全部 N 個).
@@ -12,6 +12,7 @@ The facet column of the data catalog is a component of its own.
 ### Changed
 - **`data-catalog` 0.39.0:** its filters are `Facets` and `FacetsDrawer`: the column is sticky with its own scroll, and below 1024 px the drawer is a bottom sheet with Clear all and Done instead of a left sheet. It installs `facets` in place of `checkbox`, `choice-field` and `sheet`.
 - **`agent-skill` 0.39.0:** the checklist names Facets for a facet column, with FacetsDrawer on phones.
+- **Docs:** the status pages (Empty and error states) have an "In Next.js" section: `app/global-error.tsx` built on `StatusPage` (#387). `error.tsx` sits inside the layout of its segment, so an error in the root layout reaches only `global-error.tsx`, which replaces the layout and so renders its own `<html>` and `<body>` with the font, `globals.css` and the theme script (in an `app/theme-script.ts` the layout shares), shows the error's digest as the reference, and offers `retry()` and a plain link home. It puts the theme back after it mounts: React gives its `<html>` only its own attributes, which drops the dark class. The files are type-checked modules in `site/snippets/`, and the recipe was built and run in a Next.js 16.4 app (an error thrown on the server and one in the browser, light and dark). The Next.js guide links to it, and the status-pages markdown twin says it.
 
 ## 0.38.0 · 2026-11-25
 

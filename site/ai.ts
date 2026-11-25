@@ -75,6 +75,13 @@ export function componentMarkdown(name: string) {
   return out.join("\n") + "\n"
 }
 
+/** Notes for one block, after the ones every block has. */
+const blockNotes: Record<string, string[]> = {
+  "status-pages": [
+    `In Next.js an error in the root layout is caught by \`app/global-error.tsx\`, never by \`error.tsx\` (which sits inside that layout). It replaces the layout, so it renders its own \`<html>\` and \`<body>\` with the font, \`globals.css\` and the theme script around StatusPage: ${url("/blocks/states#nextjs")}`,
+  ],
+}
+
 export function blockMarkdown(name: string) {
   const b = blocks.find((x) => x.name === name)
   if (!b) return null
@@ -104,6 +111,7 @@ export function blockMarkdown(name: string) {
       "",
       "- Keep the block's structure and classes; replace the sample data and the hrefs, wire your router through `linkAs` where offered.",
       "- App-shell blocks take `layout`, `search`, `breadcrumb`, `footer`, `user` and `userMenu`; read the app-shell twin before adding your own chrome.",
+      ...(blockNotes[name] ?? []).map((n) => `- ${n}`),
       "",
       `Index: ${url("/llms.txt")}`,
     ].join("\n") + "\n"
