@@ -931,6 +931,15 @@
     "tabStops": 29,
     "live": true
   },
+  "facets": {
+    "roles": [
+      "button",
+      "checkbox",
+      "group"
+    ],
+    "tabStops": 13,
+    "live": false
+  },
   "search-field": {
     "roles": [
       "search",

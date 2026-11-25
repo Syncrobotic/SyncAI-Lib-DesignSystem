@@ -37,6 +37,8 @@ const pick = {
   // The first story is one bare tile or one bare divider; these show what the component is for.
   "icon-tile": "IconTileVariants",
   marker: "MarkerInLog",
+  // The first story is the column beside a list in a scrolling box; the column alone reads at card size.
+  facets: "FacetsShowAll",
   // The first story is three buttons that raise a toast; the open one pins its toasts to the viewport's bottom edge.
   toast: "ToastWithUndo",
 }

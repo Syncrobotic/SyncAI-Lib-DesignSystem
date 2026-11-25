@@ -4281,6 +4281,263 @@
    ]
   }
  ],
+ "facets": [
+  {
+   "name": "FacetList",
+   "props": [
+    {
+     "name": "facets",
+     "type": "Facet[]",
+     "required": true,
+     "description": "The facets, in the order to show them, each option with its count."
+    },
+    {
+     "name": "value",
+     "type": "Record<string, string[]>",
+     "description": "The picks, when you hold them (the URL, a query): pass the same value to `Facets` and `FacetsDrawer`."
+    },
+    {
+     "name": "defaultValue",
+     "type": "Record<string, string[]>",
+     "description": "The picks it starts with, when it holds them itself."
+    },
+    {
+     "name": "onValueChange",
+     "type": "(value: FacetValue) => void",
+     "description": "Called with the whole value after each pick: every facet's picks by its key."
+    },
+    {
+     "name": "max",
+     "type": "number",
+     "description": "Show this many options per facet, then \"Show all N\". All of them when left out."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the counts (a BCP 47 tag such as \"zh-TW\"): \"48,210\". Written as given when left out."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<FacetsLabels>",
+     "description": "The words it says, to translate them (`facetsLabels` in labels-zh-tw).",
+     "keys": [
+      {
+       "name": "title",
+       "type": "string",
+       "default": "\"Filters\"",
+       "description": "Names the column, the drawer and its button: \"Filters\"."
+      },
+      {
+       "name": "showAll",
+       "type": "(count: string) => string",
+       "default": "(count) => `Show all ${count}`",
+       "description": "The button under a folded facet: \"Show all 12\". The count comes formatted."
+      },
+      {
+       "name": "showFewer",
+       "type": "string",
+       "default": "\"Show fewer\"",
+       "description": "The same button once unfolded."
+      },
+      {
+       "name": "active",
+       "type": "string",
+       "default": "\"active\"",
+       "description": "Read after the count on the drawer's button: \"Filters 3 active\"."
+      },
+      {
+       "name": "clear",
+       "type": "string",
+       "default": "\"Clear all\"",
+       "description": "Clears every pick, in the drawer's footer."
+      },
+      {
+       "name": "done",
+       "type": "string",
+       "default": "\"Done\"",
+       "description": "Closes the drawer; the picks already apply."
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "Facets",
+   "props": [
+    {
+     "name": "facets",
+     "type": "Facet[]",
+     "required": true,
+     "description": "The facets, in the order to show them, each option with its count."
+    },
+    {
+     "name": "value",
+     "type": "Record<string, string[]>",
+     "description": "The picks, when you hold them (the URL, a query): pass the same value to `Facets` and `FacetsDrawer`."
+    },
+    {
+     "name": "defaultValue",
+     "type": "Record<string, string[]>",
+     "description": "The picks it starts with, when it holds them itself."
+    },
+    {
+     "name": "onValueChange",
+     "type": "(value: FacetValue) => void",
+     "description": "Called with the whole value after each pick: every facet's picks by its key."
+    },
+    {
+     "name": "max",
+     "type": "number",
+     "description": "Show this many options per facet, then \"Show all N\". All of them when left out."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the counts (a BCP 47 tag such as \"zh-TW\"): \"48,210\". Written as given when left out."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<FacetsLabels>",
+     "description": "The words it says, to translate them (`facetsLabels` in labels-zh-tw).",
+     "keys": [
+      {
+       "name": "title",
+       "type": "string",
+       "default": "\"Filters\"",
+       "description": "Names the column, the drawer and its button: \"Filters\"."
+      },
+      {
+       "name": "showAll",
+       "type": "(count: string) => string",
+       "default": "(count) => `Show all ${count}`",
+       "description": "The button under a folded facet: \"Show all 12\". The count comes formatted."
+      },
+      {
+       "name": "showFewer",
+       "type": "string",
+       "default": "\"Show fewer\"",
+       "description": "The same button once unfolded."
+      },
+      {
+       "name": "active",
+       "type": "string",
+       "default": "\"active\"",
+       "description": "Read after the count on the drawer's button: \"Filters 3 active\"."
+      },
+      {
+       "name": "clear",
+       "type": "string",
+       "default": "\"Clear all\"",
+       "description": "Clears every pick, in the drawer's footer."
+      },
+      {
+       "name": "done",
+       "type": "string",
+       "default": "\"Done\"",
+       "description": "Closes the drawer; the picks already apply."
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "FacetsDrawer",
+   "props": [
+    {
+     "name": "facets",
+     "type": "Facet[]",
+     "required": true,
+     "description": "The facets, in the order to show them, each option with its count."
+    },
+    {
+     "name": "value",
+     "type": "Record<string, string[]>",
+     "description": "The picks, when you hold them (the URL, a query): pass the same value to `Facets` and `FacetsDrawer`."
+    },
+    {
+     "name": "defaultValue",
+     "type": "Record<string, string[]>",
+     "description": "The picks it starts with, when it holds them itself."
+    },
+    {
+     "name": "onValueChange",
+     "type": "(value: FacetValue) => void",
+     "description": "Called with the whole value after each pick: every facet's picks by its key."
+    },
+    {
+     "name": "max",
+     "type": "number",
+     "description": "Show this many options per facet, then \"Show all N\". All of them when left out."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the counts (a BCP 47 tag such as \"zh-TW\"): \"48,210\". Written as given when left out."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<FacetsLabels>",
+     "description": "The words it says, to translate them (`facetsLabels` in labels-zh-tw).",
+     "keys": [
+      {
+       "name": "title",
+       "type": "string",
+       "default": "\"Filters\"",
+       "description": "Names the column, the drawer and its button: \"Filters\"."
+      },
+      {
+       "name": "showAll",
+       "type": "(count: string) => string",
+       "default": "(count) => `Show all ${count}`",
+       "description": "The button under a folded facet: \"Show all 12\". The count comes formatted."
+      },
+      {
+       "name": "showFewer",
+       "type": "string",
+       "default": "\"Show fewer\"",
+       "description": "The same button once unfolded."
+      },
+      {
+       "name": "active",
+       "type": "string",
+       "default": "\"active\"",
+       "description": "Read after the count on the drawer's button: \"Filters 3 active\"."
+      },
+      {
+       "name": "clear",
+       "type": "string",
+       "default": "\"Clear all\"",
+       "description": "Clears every pick, in the drawer's footer."
+      },
+      {
+       "name": "done",
+       "type": "string",
+       "default": "\"Done\"",
+       "description": "Closes the drawer; the picks already apply."
+      }
+     ]
+    },
+    {
+     "name": "defaultOpen",
+     "type": "boolean",
+     "description": "Starts with the sheet open."
+    },
+    {
+     "name": "open",
+     "type": "boolean",
+     "description": "Whether the sheet is open, when you hold it."
+    },
+    {
+     "name": "onOpenChange",
+     "type": "(open: boolean) => void",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "field": [
   {
    "name": "Field",

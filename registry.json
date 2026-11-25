@@ -337,7 +337,7 @@
           {
             "version": "0.39.0",
             "date": "2026-11-25",
-            "note": "`responsiveTableLabels` for responsive-table (動作). Issue #383."
+            "note": "`responsiveTableLabels` for responsive-table (動作). Issue #383. `facetsLabels` for the new facets (篩選, 顯示全部 12 個, 顯示較少, 全部清除, 完成), and the same words as `facetListLabels` and `facetsDrawerLabels`. Issue #382."
           },
           {
             "version": "0.37.0",
@@ -5474,6 +5474,40 @@
       }
     },
     {
+      "name": "facets",
+      "type": "registry:ui",
+      "title": "Facets",
+      "description": "The facet column beside a catalog or a table: groups of checkboxes with a count on each option and \"Show all N\" past a limit. It pins under the shell's bar (--shell-top) and scrolls on its own; on phones FacetsDrawer opens the same list in a bottom sheet.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/badge",
+        "@syncrobotic/button",
+        "@syncrobotic/checkbox",
+        "@syncrobotic/choice-field",
+        "@syncrobotic/sheet"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/facets.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.39.0",
+        "changelog": [
+          {
+            "version": "0.39.0",
+            "date": "2026-11-25",
+            "note": "First release, taken out of data-catalog: `Facets` (the column from 1024 px, sticky under `--shell-top` with its own scroll, its height measured from what scrolls), `FacetsDrawer` (a button with the number of picks opening a bottom sheet with the same list, Clear all and Done) and `FacetList` (the groups alone). A count on each option (`locale`), `max` then \"Show all N\" with picked options always shown and focus on the first option it unfolds, words through `labels` (`facetsLabels` in labels-zh-tw). Issue #382."
+          }
+        ]
+      }
+    },
+    {
       "name": "search-field",
       "type": "registry:ui",
       "title": "Search field",
@@ -7648,13 +7682,11 @@
         "@syncrobotic/use-presence",
         "@syncrobotic/app-shell",
         "@syncrobotic/button",
-        "@syncrobotic/checkbox",
         "@syncrobotic/empty-state",
+        "@syncrobotic/facets",
         "@syncrobotic/input",
-        "@syncrobotic/sheet",
         "@syncrobotic/table",
         "@syncrobotic/input-group",
-        "@syncrobotic/choice-field",
         "@syncrobotic/tier-badge"
       ],
       "files": [
@@ -7664,8 +7696,13 @@
         }
       ],
       "meta": {
-        "version": "0.37.0",
+        "version": "0.39.0",
         "changelog": [
+          {
+            "version": "0.39.0",
+            "date": "2026-11-25",
+            "note": "The facet column is the new `facets` item: `Facets` beside the table, now sticky under the bar with its own scroll, and `FacetsDrawer` in the toolbar below 1024 px, a bottom sheet with Clear all and Done in place of the left sheet; the drawer's button counts the picks with a CountBadge. Installs `facets` in place of checkbox, choice-field and sheet. Issue #382."
+          },
           {
             "version": "0.37.0",
             "date": "2026-11-25",
@@ -8203,7 +8240,7 @@
           {
             "version": "0.39.0",
             "date": "2026-11-25",
-            "note": "The design language and the checklist: the number formatting rule. A count is written in full with grouping in tables, headers and detail, and abbreviated (135K, 14萬) only where space is the constraint (a tab's count, chart ticks, a compact chip), both through formatCount. Issue #386. Section titles are SectionHeader at typography's two levels (page 20 px bold, surface 14 px medium), and it takes `as` like the other headings. Issue #385. Checklist: ResponsiveTable for rows that phones see too, never a hidden Table beside a hand-written phone list. Issue #383. Badge, InlineStatus or plain text: a state that changes is an InlineStatus, a fixed attribute or category a neutral Badge, a count a count Badge, and the values of a table column already named by its header plain text. Issue #384."
+            "note": "The design language and the checklist: the number formatting rule. A count is written in full with grouping in tables, headers and detail, and abbreviated (135K, 14萬) only where space is the constraint (a tab's count, chart ticks, a compact chip), both through formatCount. Issue #386. Section titles are SectionHeader at typography's two levels (page 20 px bold, surface 14 px medium), and it takes `as` like the other headings. Issue #385. Checklist: ResponsiveTable for rows that phones see too, never a hidden Table beside a hand-written phone list. Issue #383. Badge, InlineStatus or plain text: a state that changes is an InlineStatus, a fixed attribute or category a neutral Badge, a count a count Badge, and the values of a table column already named by its header plain text. Issue #384. The checklist names Facets for a facet column beside a list, with FacetsDrawer on phones. Issue #382."
           },
           {
             "version": "0.36.0",

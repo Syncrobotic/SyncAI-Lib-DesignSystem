@@ -33,7 +33,7 @@
   },
   "labels-zh-tw": {
     "version": "0.39.0",
-    "hash": "6c32ccb26ec91619"
+    "hash": "6baef1d730769954"
   },
   "ros": {
     "version": "0.36.0",
@@ -463,6 +463,10 @@
     "version": "0.37.0",
     "hash": "8a5977fc8f301322"
   },
+  "facets": {
+    "version": "0.39.0",
+    "hash": "bff24d3e34cfb09c"
+  },
   "search-field": {
     "version": "0.28.0",
     "hash": "a1eca6a8afdf4f83"
@@ -604,8 +608,8 @@
     "hash": "0906087725321427"
   },
   "data-catalog": {
-    "version": "0.37.0",
-    "hash": "52ed5d9973b8c517"
+    "version": "0.39.0",
+    "hash": "7a6952304f17a8f6"
   },
   "dataset-detail": {
     "version": "0.35.0",
@@ -641,7 +645,7 @@
   },
   "agent-skill": {
     "version": "0.39.0",
-    "hash": "981c8cf113b83145"
+    "hash": "d867aa59c0698d62"
   },
   "line-chart-telemetry": {
     "version": "0.35.0",
