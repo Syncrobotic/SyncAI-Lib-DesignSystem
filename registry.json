@@ -309,8 +309,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.37.0",
         "changelog": [
+          {
+            "version": "0.37.0",
+            "date": "2026-11-26",
+            "note": "`filterViewsLabels` for filters' FilterViews (已儲存的檢視, 已修改, 還原, 儲存檢視). Issue #300."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -5299,7 +5304,7 @@
       "name": "filters",
       "type": "registry:ui",
       "title": "Filters",
-      "description": "A query people build from chips: + Filter picks a field, an operator and a value; each rule is a chip whose parts reopen that step. Rules combine with AND, live in the URL and filter rows in the browser.",
+      "description": "A query people build from chips: + Filter picks a field, an operator and a value; each rule is a chip whose parts reopen that step. Rules combine with AND, live in the URL and filter rows in the browser. FilterViews adds saved views above the bar.",
       "dependencies": [
         "date-fns@^4",
         "lucide-react@^1"
@@ -5309,7 +5314,9 @@
         "@syncrobotic/use-presence",
         "@syncrobotic/button",
         "@syncrobotic/calendar",
+        "@syncrobotic/chip-group",
         "@syncrobotic/command",
+        "@syncrobotic/field",
         "@syncrobotic/input",
         "@syncrobotic/number-field",
         "@syncrobotic/popover"
@@ -5322,8 +5329,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.32.0",
+        "version": "0.37.0",
         "changelog": [
+          {
+            "version": "0.37.0",
+            "date": "2026-11-26",
+            "note": "Saved views: `FilterViews` shows views as chips (ChipGroup) and chooses the one whose rules equal the current ones, in any order and with values in any order; once a rule changes it says Modified (announced) with Reset, which puts that view's rules back and moves focus to its chip; with `onSave`, Save view asks for a name in a popover and hands you the name and the rules (storing views stays the app's job). `rulesEqual` compares two rule lists the same way. New labels type `FilterViewsLabels`. Now installs `chip-group` and `field`. Issue #300."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -7533,12 +7545,13 @@
       "name": "data-catalog",
       "type": "registry:block",
       "title": "Data catalog",
-      "description": "Datasets one row each: filter by tier, use and task (a drawer on phones), search, sort. Only restricted tiers carry colour. DataCatalogContent drops the sample frame, for your own shell.",
+      "description": "Datasets one row each: filter by tier, use and task (a drawer on phones), search, sort; a source row unfolds its label layers. Only restricted tiers carry colour. DataCatalogContent drops the sample frame, for your own shell.",
       "dependencies": [
         "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
+        "@syncrobotic/use-presence",
         "@syncrobotic/app-shell",
         "@syncrobotic/button",
         "@syncrobotic/checkbox",
@@ -7557,8 +7570,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.37.0",
         "changelog": [
+          {
+            "version": "0.37.0",
+            "date": "2026-11-26",
+            "note": "A source dataset unfolds its label layers: `Dataset.layers` (`LabelLayer`: ref, name, version, items) adds a ghost toggle under the name (\"3 label layers\", aria-expanded, aria-controls naming the rows it shows); each layer is a row indented under its source behind a guide line, with its own link and mono ref line (`labels/coco@v2`), and on phones keeps the name and items as the dataset rows do. The layers appear and fade out; search finds a source by a layer's name or ref. Now installs `use-presence`. Issue #351."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",

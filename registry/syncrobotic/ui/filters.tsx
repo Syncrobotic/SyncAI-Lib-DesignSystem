@@ -1,17 +1,19 @@
-// @syncrobotic/filters v0.32.0 · update: npx shadcn add @syncrobotic/filters --overwrite
+// @syncrobotic/filters v0.37.0 · update: npx shadcn add @syncrobotic/filters --overwrite
 "use client"
 
 import * as React from "react"
 import { format as formatDate } from "date-fns"
-import { ChevronLeft, Plus, X } from "lucide-react"
+import { ChevronLeft, Plus, Save, Undo2, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { usePresence, usePresenceList } from "@/registry/syncrobotic/hooks/use-presence"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Calendar } from "@/registry/syncrobotic/ui/calendar"
+import { ChipGroup } from "@/registry/syncrobotic/ui/chip-group"
 import { Command, CommandCheck, CommandEmpty, CommandInput, CommandItem, CommandList } from "@/registry/syncrobotic/ui/command"
+import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { NumberField } from "@/registry/syncrobotic/ui/number-field"
-import { Popover, PopoverAnchor, PopoverContent } from "@/registry/syncrobotic/ui/popover"
+import { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from "@/registry/syncrobotic/ui/popover"
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /* The query model: plain, serialisable data. Nothing below needs React.                                              */
@@ -929,4 +931,190 @@ function ValueStep({
   }
 
   return null
+}
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/* Saved views                                                                                                        */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+/** A named set of rules people come back to: "Needs attention", "Low battery at Hall B". Kept by the app, not the kit. */
+export type FilterView = {
+  id: string
+  label: string
+  rules: FilterRule[]
+  /** How many rows the view gives, shown after its name. */
+  count?: number
+}
+
+// One rule as text that ignores its id and the order of its values ("offline,stopped" = "stopped,offline"; a range
+// [80, 20] = [20, 80], as matchRule reads it either way).
+const ruleKey = (r: FilterRule) => {
+  const v = Array.isArray(r.value) ? [...r.value].map((x) => JSON.stringify(x)).sort() : [JSON.stringify(r.value)]
+  return `${r.field}\u0000${r.operator}\u0000${v.join(",")}`
+}
+
+/**
+ * Whether two lists of rules say the same thing: the same rules in any order, each rule's values in any order. Ids
+ * are not compared, so rules read back from the URL (`status-0`) still equal the view they came from.
+ */
+export function rulesEqual(a: FilterRule[], b: FilterRule[]) {
+  if (a.length !== b.length) return false
+  const x = a.map(ruleKey).sort()
+  const y = b.map(ruleKey).sort()
+  return x.every((k, i) => k === y[i])
+}
+
+export type FilterViewsLabels = {
+  /** Names the row of views. */
+  label: string
+  /** Said when the rules no longer equal the view last chosen. */
+  modified: string
+  /** The action that puts the view's rules back. */
+  reset: string
+  /** Its accessible name, starting with the words shown (WCAG 2.5.3). */
+  resetTo: (view: string) => string
+  /** Opens the box that names a new view. */
+  save: string
+  /** The name field's label. */
+  name: string
+  /** Saves it. */
+  confirm: string
+}
+
+export const defaultFilterViewsLabels: FilterViewsLabels = {
+  label: "Saved views",
+  modified: "Modified",
+  reset: "Reset",
+  resetTo: (view) => `Reset to ${view}`,
+  save: "Save view",
+  name: "View name",
+  confirm: "Save",
+}
+
+/**
+ * Saved views above a Filters bar: one chip per view, and the view whose rules equal the current rules is chosen.
+ * Change a rule and the chip lets go, "Modified" shows beside the row with Reset, which puts that view's rules back.
+ * With `onSave`, "Save view" asks for a name and hands you the name and the rules; storing views is the app's job.
+ */
+export function FilterViews({
+  views,
+  rules,
+  onSelect,
+  onSave,
+  labels: given,
+  locale,
+  className,
+}: {
+  views: FilterView[]
+  /** The rules in force now, the same array the Filters bar shows. */
+  rules: FilterRule[]
+  /** A view was chosen, or Reset pressed: set the rules to `view.rules`. */
+  onSelect: (view: FilterView) => void
+  /** Shows "Save view". Called with the name typed and the current rules; add the view to `views` yourself. */
+  onSave?: (label: string, rules: FilterRule[]) => void
+  labels?: Partial<FilterViewsLabels>
+  /** Formats the views' counts (a BCP 47 tag such as "zh-TW"). Left out, the browser's language. */
+  locale?: string
+  className?: string
+}) {
+  const labels = { ...defaultFilterViewsLabels, ...given }
+  const rootRef = React.useRef<HTMLDivElement>(null)
+  const [lastId, setLastId] = React.useState<string | undefined>(undefined)
+  const same = (v: FilterView) => rulesEqual(v.rules, rules)
+  // Two views with the same rules: the one chosen last stays chosen.
+  const matched = views.find((v) => v.id === lastId && same(v)) ?? views.find(same)
+  // Rules that come to equal a view (a link, Back, a rule removed by hand) make it the one Reset returns to.
+  // State set during render, not in an effect, so the row never draws a frame with the old view.
+  if (matched && matched.id !== lastId) setLastId(matched.id)
+  const base = matched ? undefined : views.find((v) => v.id === lastId)
+  const modified = usePresence(base !== undefined)
+  // The view the leaving "Modified" still names while it fades.
+  const [shownBase, setShownBase] = React.useState(base)
+  if (base && (base.id !== shownBase?.id || base.label !== shownBase.label)) setShownBase(base)
+
+  const [saving, setSaving] = React.useState(false)
+  const [name, setName] = React.useState("")
+
+  const choose = (view: FilterView) => {
+    setLastId(view.id)
+    onSelect(view)
+  }
+  const reset = () => {
+    if (!base) return
+    choose(base)
+    // Reset leaves with "Modified"; focus goes to the chip it chose, never to the page.
+    const chip = [...(rootRef.current?.querySelectorAll<HTMLElement>("[data-view]") ?? [])].find((el) => el.dataset.view === base.id)
+    chip?.focus()
+  }
+
+  return (
+    <div ref={rootRef} data-slot="filter-views" className={cn("flex min-w-0 flex-wrap items-center gap-2", className)}>
+      <ChipGroup
+        label={labels.label}
+        items={views.map((v) => ({ value: v.id, label: v.label, count: v.count, props: { "data-view": v.id } }))}
+        value={matched?.id}
+        allowNone={false}
+        locale={locale}
+        onValueChange={(id) => {
+          const view = views.find((v) => v.id === id)
+          if (view) choose(view)
+        }}
+      />
+      {/* Announced once when the rules part from the view; the words on screen are the same, hidden from the reader. */}
+      <span role="status" className="sr-only">
+        {base ? labels.modified : ""}
+      </span>
+      {modified.mounted && shownBase && (
+        <div
+          inert={modified.leaving || undefined}
+          onAnimationEnd={(e) => e.target === e.currentTarget && modified.done()}
+          className={cn("flex items-center gap-2", modified.leaving ? "animate-disappear" : "animate-appear")}
+        >
+          <span aria-hidden="true" className="text-sm text-muted-foreground">
+            {labels.modified}
+          </span>
+          <Button data-slot="filter-views-reset" variant="ghost" size="sm" aria-label={labels.resetTo(shownBase.label)} onClick={reset}>
+            <Undo2 aria-hidden="true" />
+            {labels.reset}
+          </Button>
+        </div>
+      )}
+      {onSave && (
+        <Popover
+          open={saving}
+          onOpenChange={(o) => {
+            setSaving(o)
+            if (!o) setName("")
+          }}
+        >
+          <PopoverTrigger asChild>
+            <Button data-slot="filter-views-save" variant="ghost" size="sm">
+              <Save aria-hidden="true" />
+              {labels.save}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent align="start" collisionPadding={16} aria-label={labels.save} data-slot="filter-views-dialog">
+            <form
+              className="flex flex-col gap-3"
+              onSubmit={(e) => {
+                e.preventDefault()
+                const label = name.trim()
+                if (!label) return
+                onSave(label, rules)
+                setSaving(false)
+                setName("")
+              }}
+            >
+              <Field label={labels.name}>
+                <Input data-slot="filter-views-name" autoFocus value={name} onChange={(e) => setName(e.target.value)} />
+              </Field>
+              <Button data-slot="filter-views-confirm" type="submit" size="sm" disabled={!name.trim()}>
+                {labels.confirm}
+              </Button>
+            </form>
+          </PopoverContent>
+        </Popover>
+      )}
+    </div>
+  )
 }

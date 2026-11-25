@@ -1,4 +1,4 @@
-// @syncrobotic/labels-zh-tw v0.35.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
+// @syncrobotic/labels-zh-tw v0.37.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
 // The kit's words in Traditional Chinese as written in Taiwan, one object per component that takes `labels`. Pass each
 // to its component (`<DataGrid labels={dataGridLabels} />`) with `locale="zh-TW"` where the component formats numbers,
 // days or times. The file imports no component, so it installs on its own; the kit's tests hold every object to the
@@ -909,6 +909,16 @@ export const filtersLabels = {
   editOperator: (text: string) => `${text}，變更條件`,
   editValue: (text: string) => `${text}，變更值`,
   operators: filterOperators,
+}
+
+export const filterViewsLabels = {
+  label: "已儲存的檢視",
+  modified: "已修改",
+  reset: "還原",
+  resetTo: (view: string) => `還原為 ${view}`,
+  save: "儲存檢視",
+  name: "檢視名稱",
+  confirm: "儲存",
 }
 
 export const sortableLabels = {

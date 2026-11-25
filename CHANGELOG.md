@@ -2,6 +2,14 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+Saved views for the filter bar, and catalog rows that unfold their label layers.
+
+### Added
+- **`filters` 0.37.0:** `FilterViews`, saved views above a Filters bar (#300). One chip per view (ChipGroup, a radio group to screen readers); the view whose rules equal the current rules is chosen, whatever their order and the order of their values. Change a rule and the chip lets go, "Modified" shows (and is announced once) with Reset, which puts that view's rules back and moves focus to its chip. With `onSave`, Save view asks for a name in a popover and calls `onSave(name, rules)`; storing the views is the app's job. `rulesEqual` compares two rule lists the same way, ids ignored. Every word is in `labels` (`FilterViewsLabels`); **`labels-zh-tw` 0.37.0** adds `filterViewsLabels`. The filters page has a Saved views example with the rules in the URL. `filters` now installs `chip-group` and `field`.
+- **`data-catalog` 0.37.0:** a source dataset unfolds its label layers (#351). `Dataset.layers` (`LabelLayer`) adds a ghost toggle under the name, "3 label layers", with `aria-expanded` and `aria-controls` naming the rows it shows; Enter and Space toggle it and focus stays on it. Each layer is a row indented under its source behind a guide line, with its own link and mono ref line (`labels/coco@v2`); on phones it keeps the name and the items, like the dataset rows. The layers appear and fade out, and search finds a source by a layer's name or ref. The sample's night parking dataset has three layers.
+
 ## 0.36.0 · 2026-11-25
 
 Performance and stability, from an engineering audit, and the docs home in motion: live data never freezes silently, one shared copy of the runtime helpers, a hydration test, tighter registry dependencies; docs pages that load code only when opened, /blocks as pictures and block cards that go live near the screen; an alarm bar and a selected card no rounded corner cuts; and a docs home that shows the kit running.

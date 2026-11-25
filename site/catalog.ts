@@ -428,6 +428,7 @@ const entries: Record<string, Entry> = {
       "Keep the rules in the URL with toSearchParams and fromSearchParams, so a filtered view can be shared and undone with Back.",
       "Show what the rules leave (\"12 of 40 robots\") next to the bar, in a polite live region.",
       "Every label is a prop; translate the operators too.",
+      "Saved views are `FilterViews` above the bar, given the same rules. The view whose rules equal them is chosen (order does not matter); change a rule and it says Modified, with Reset. `onSave` adds Save view, which asks for a name; storing the views is the app's job.",
     ],
   },
   "search-field": {
@@ -1698,6 +1699,8 @@ const keyboard: Record<string, [string, string][]> = {
     ["`↑` / `↓`", "Move through fields, operators or values; type to narrow them"],
     ["`Enter`", "Choose and go to the next step; in a value box, apply"],
     ["`Esc`", "Back one step; at the first step, close and return focus"],
+    ["`←` / `→`", "In the saved views, move between views; `Enter` or `Space` chooses one"],
+    ["`Enter`", "On Reset, put the view's rules back and move to its chip; on Save view, open the name box, where `Enter` saves and `Esc` closes"],
   ],
   "dropdown-menu": [
     ["`Enter` / `Space` / `↓`", "Open the menu"],

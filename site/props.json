@@ -4637,6 +4637,89 @@
     }
    ],
    "inherits": []
+  },
+  {
+   "name": "FilterViews",
+   "props": [
+    {
+     "name": "views",
+     "type": "FilterView[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "rules",
+     "type": "FilterRule[]",
+     "required": true,
+     "description": "The rules in force now, the same array the Filters bar shows."
+    },
+    {
+     "name": "onSelect",
+     "type": "(view: FilterView) => void",
+     "required": true,
+     "description": "A view was chosen, or Reset pressed: set the rules to `view.rules`."
+    },
+    {
+     "name": "onSave",
+     "type": "(label: string, rules: FilterRule[]) => void",
+     "description": "Shows \"Save view\". Called with the name typed and the current rules; add the view to `views` yourself."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<FilterViewsLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "label",
+       "type": "string",
+       "default": "\"Saved views\"",
+       "description": "Names the row of views."
+      },
+      {
+       "name": "modified",
+       "type": "string",
+       "default": "\"Modified\"",
+       "description": "Said when the rules no longer equal the view last chosen."
+      },
+      {
+       "name": "reset",
+       "type": "string",
+       "default": "\"Reset\"",
+       "description": "The action that puts the view's rules back."
+      },
+      {
+       "name": "resetTo",
+       "type": "(view: string) => string",
+       "default": "(view) => `Reset to ${view}`",
+       "description": "Its accessible name, starting with the words shown (WCAG 2.5.3)."
+      },
+      {
+       "name": "save",
+       "type": "string",
+       "default": "\"Save view\"",
+       "description": "Opens the box that names a new view."
+      },
+      {
+       "name": "name",
+       "type": "string",
+       "default": "\"View name\"",
+       "description": "The name field's label."
+      },
+      {
+       "name": "confirm",
+       "type": "string",
+       "default": "\"Save\"",
+       "description": "Saves it."
+      }
+     ]
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the views' counts (a BCP 47 tag such as \"zh-TW\"). Left out, the browser's language."
+    }
+   ],
+   "inherits": []
   }
  ],
  "geo-map": [
