@@ -1,8 +1,8 @@
-// @syncrobotic/robot-status-card v0.28.0 · update: npx shadcn add @syncrobotic/robot-status-card --overwrite
+// @syncrobotic/robot-status-card v0.35.0 · update: npx shadcn add @syncrobotic/robot-status-card --overwrite
 import { Battery, BatteryCharging, MapPin, Navigation, Wifi, WifiOff } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
-import type { Status } from "@/registry/syncrobotic/shell/status-glyph"
+import { StatusGlyph, type Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Card } from "@/registry/syncrobotic/ui/card"
 import { Progress } from "@/registry/syncrobotic/ui/progress"
@@ -58,9 +58,16 @@ export function RobotStatusCard({
       <dl className="grid grid-cols-2 gap-3 text-sm">
         <div className="flex flex-col gap-1 rounded-sm bg-muted p-3">
           <dt className="text-xs text-muted-foreground">Battery</dt>
-          <dd className={cn("flex items-center gap-2 font-medium", low && "text-warning")}>
+          {/* Low is a shape and a word in the warning colour; the number stays text. */}
+          <dd className="flex flex-wrap items-center gap-2 font-medium">
             <BatteryIcon aria-hidden="true" className="size-4" />
             {robot.battery} %
+            {low && (
+              <span className="flex items-center gap-2 text-warning">
+                <StatusGlyph status="warning" />
+                Low
+              </span>
+            )}
           </dd>
         </div>
         <div className="flex flex-col gap-1 rounded-sm bg-muted p-3">

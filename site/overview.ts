@@ -359,6 +359,20 @@ export const overviews: Record<string, Overview> = {
       "Every string is in `labels`, including the axes' words and `formatTime` for the last scan's time.",
     ],
   },
+  "viewport-overlay": {
+    what: "The place and the surface for what is drawn over a map, a point cloud, a 3D view or a camera: one inset (16 px), one radius, the Float recipe, or the scrim over a picture.",
+    use: [
+      "A mode banner, a legend or a Stale notice over a map or a canvas.",
+      "The zoom and fit group in the bottom left of a view.",
+      "A message over a whole view (Reconnecting), on the scrim.",
+      "Paused, or a camera's alarm, over a video picture (`variant=\"scrim\"` or Float).",
+    ],
+    instead: [
+      "A message that a view has nothing to show: `empty-state`.",
+      "A panel beside the view, not over it: `card`.",
+      "A tray or a save bar at the bottom of a page: the Float recipe on the shell.",
+    ],
+  },
   "robot-model": {
     what: "A robot's pose in 3D from its URDF and live joint values, for monitoring: neutral greys, a ground grid, axes named in words, and the joints that need someone highlighted and named.",
     use: [

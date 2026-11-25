@@ -9939,6 +9939,54 @@
    "inherits": [
     "ToggleGroup.Item"
    ]
+  },
+  {
+   "name": "ChartViewSwitch",
+   "props": [
+    {
+     "name": "value",
+     "type": "string",
+     "required": true,
+     "description": "The view shown: \"chart\" or \"table\", or one of `views`."
+    },
+    {
+     "name": "onValueChange",
+     "type": "(value: string) => void",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "views",
+     "type": "{ value: string; label: string; }[]",
+     "description": "Other views than Chart and Table, in order: `[{ value: \"map\", label: \"Map\" }, { value: \"list\", label: \"List\" }]`."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<ChartViewSwitchLabels>",
+     "description": "The words it says, to translate them. With `views`, only `view` (the switch's name) is used.",
+     "keys": [
+      {
+       "name": "view",
+       "type": "string",
+       "default": "\"Show as\"",
+       "description": "Names the switch: \"Show as\"."
+      },
+      {
+       "name": "chart",
+       "type": "string",
+       "default": "\"Chart\"",
+       "description": ""
+      },
+      {
+       "name": "table",
+       "type": "string",
+       "default": "\"Table\"",
+       "description": ""
+      }
+     ]
+    }
+   ],
+   "inherits": []
   }
  ],
  "select": [
@@ -12866,6 +12914,47 @@
     }
    ],
    "inherits": []
+  }
+ ],
+ "viewport-overlay": [
+  {
+   "name": "ViewportOverlay",
+   "props": [
+    {
+     "name": "position",
+     "type": "ViewportOverlayPosition",
+     "default": "\"top-left\"",
+     "description": "The corner or edge: top-left (the default), top, top-right, bottom-left, bottom, bottom-right, or center (a message over the whole frame)."
+    }
+   ],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "ViewportPanel",
+   "props": [
+    {
+     "name": "as",
+     "type": "\"div\" | \"li\" | \"p\" | \"span\"",
+     "default": "\"div\"",
+     "description": "The element: a `p` for a line of words, `li` inside a list, `div` (the default) for anything with controls."
+    },
+    {
+     "name": "variant",
+     "type": "\"float\" | \"scrim\"",
+     "default": "\"float\"",
+     "description": "float (the default) over a map or a canvas; scrim for words over a picture."
+    },
+    {
+     "name": "ref",
+     "type": "((instance: HTMLElement | null) => void | (() => VoidOrUndefinedOnly) | DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES[keyof DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES]) | RefObject<HTMLElement | null>",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "HTMLElement"
+   ]
   }
  ],
  "waypoint-editor": [

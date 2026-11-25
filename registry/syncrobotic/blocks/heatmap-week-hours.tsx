@@ -1,9 +1,9 @@
-// @syncrobotic/heatmap-week-hours v0.22.3 · update: npx shadcn add @syncrobotic/heatmap-week-hours --overwrite
+// @syncrobotic/heatmap-week-hours v0.35.0 · update: npx shadcn add @syncrobotic/heatmap-week-hours --overwrite
 "use client"
 
 import * as React from "react"
 import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
-import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
+import { ChartViewSwitch } from "@/registry/syncrobotic/ui/segmented-control"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/registry/syncrobotic/ui/tooltip"
 
@@ -41,10 +41,7 @@ export function HeatmapWeekHours() {
         <CardDataHeader
           title="Incidents by time of week · last 4 weeks"
           actions={
-            <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
-              <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
-              <SegmentedControlItem value="table">Table</SegmentedControlItem>
-            </SegmentedControl>
+            <ChartViewSwitch value={view} onValueChange={setView} />
           }
         >
           <p className="text-xs text-muted-foreground tabular-nums">

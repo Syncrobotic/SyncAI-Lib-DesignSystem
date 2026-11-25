@@ -82,6 +82,7 @@ export type StoryFile =
   | "tier-badge"
   | "bar-list"
   | "thumbnail"
+  | "viewport-overlay"
 /** Stories whose export name starts with `prefix` (or exactly `only`). Overlay stories ending in "Open" are for visual tests and skipped. */
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
@@ -478,7 +479,11 @@ const entries: Record<string, Entry> = {
   "segmented-control": {
     group: "Actions",
     examples: { file: "actions", prefix: "SegmentedControl" },
-    rules: ["For two to four views of the same data. For sections of a page, use Tabs.", "The selected segment is inverted, per the selected-state rule."],
+    rules: [
+      "For two to four views of the same data. For sections of a page, use Tabs.",
+      "The selected segment is inverted, per the selected-state rule.",
+      "A switch in a card's header (Chart / Table, Map / List) is `ChartViewSwitch`, at `--h-sm` (36 px with a mouse, 44 on touch): a header holds no field. Beside a search or a select the toolbar is the field's `--h-md`; use SegmentedControl at its default height there.",
+    ],
   },
   "copy-button": {
     group: "Actions",
@@ -486,6 +491,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "The icon becomes a check for 1.5 s and the label says Copied: the swap pattern, never a toast.",
       "Icon-only needs a label that names what is copied (Copy reference).",
+      "A text button keeps the width of its longest word (Copied, Not copied) so it never jumps; the word starts 8 px after the icon and the room left over falls after it.",
     ],
   },
   toggle: {
@@ -667,7 +673,7 @@ const entries: Record<string, Entry> = {
     examples: { file: "display", prefix: "Meter" },
     rules: [
       "For a level in a known range (battery, storage). For work under way, use Progress.",
-      "Neutral while normal; warning past `low`, danger past `critical`; the value is always written. A battery takes only `low` (15 %): a low battery needs attention, it is not a failure, so it turns warning and never danger. Danger is for a level that breaks something, like full storage.",
+      "Neutral while normal; warning past `low`, danger past `critical`; the value is always written. Past a threshold the status glyph (triangle, square) stands before the value and the word (Low, Critical) beside it: only the glyph and the word take the colour, the number stays text. `inline` keeps the glyph; its word is read with the value. A battery takes only `low` (15 %): a low battery needs attention, it is not a failure, so it turns warning and never danger. Danger is for a level that breaks something, like full storage.",
       "`inline` in table cells; the label is still read by screen readers.",
       "With `higherIsWorse` (temperature, storage) the warning is read as high, not low. `showMax` writes the total for an amount whose total matters: 412 of 512 GB.",
       "`showThresholds` draws a grey tick at `low` and `critical` where how close the limit is matters, as on a quota. The tick stays grey: colour still means crossed.",
@@ -849,7 +855,7 @@ const entries: Record<string, Entry> = {
       "For a recorded clip with an end. A live camera is `camera-feed`: no timeline, no speed, a latency and a connection state instead.",
       "Give `label` the clip's who, where and when (\"Patrol dog 7F3A, front camera, 14:02\"); it names the player for screen readers.",
       "Pass `duration` from the clip's record, so the time and the markers show before the file loads; `preload=\"none\"` in a long list of clips.",
-      "Markers are events in the clip (Obstacle, Stop pressed), a word each, at most a handful. They are listed under the player too, for the keyboard and screen readers.",
+      "Markers are events in the clip (Obstacle, Stop pressed), a word each, at most a handful. They are listed under the player too, for the keyboard and screen readers. A marker is a 24 px target with a mouse and 44 px on touch (48 in gloves); it looks the same.",
       "Never autoplay with sound. `autoPlay` starts muted and does nothing for someone who asked for reduced motion.",
       "When the clip cannot play, say why after \"Clip unavailable:\" (not uploaded yet, expired, the robot was offline) and offer a retry only when retrying can help.",
     ],
@@ -1076,6 +1082,7 @@ const entries: Record<string, Entry> = {
       "No data is not zero. A missing value (null) takes the theme's `no-data` utility (a hatch and outline in the field-edge colour, 3:1), \"No data\" in the legend and tooltip, and a dash in the table; zero is drawn as zero.",
       "Two series or more: a legend above the plot, with each series' line style. One series: no legend; the title names it.",
       "Every chart with axes (line, area, bar, heatmap) has a table view (ChartTable), for exact values and for anyone who cannot tell two series apart. Sparklines, rings (radial) and status strips write their numbers in words instead.",
+      "The switch is `ChartViewSwitch` (from segmented-control) in CardDataHeader's `actions`, at `--h-sm`; another control beside it in the header (a range) is `--h-sm` too.",
       "One y axis. Two measures on different scales are two charts.",
       "Lines 2 px; bars with 4 px rounded data ends and a 2 px gap in the card colour between bars and segments; a horizontal hairline grid; no axis lines.",
       "The chart fades in when it mounts (--motion-base); marks do not animate, because Recharts cannot use the motion tokens. Nothing moves under reduced motion.",
@@ -1188,6 +1195,19 @@ const entries: Record<string, Entry> = {
       "Serve meshes from your own origin: `packages` maps each `package://` name to a URL, `meshBaseUrl` is the folder for the rest. STL and COLLADA load; a file that fails is named in the error.",
       "One view per screen. Each view holds a WebGL context and browsers allow only a few; for a fleet, list the robots and open one view for the robot chosen.",
       "Load it lazily (`next/dynamic` or `React.lazy`): three.js is large, and only the screens that show a robot model should download it.",
+    ],
+  },
+  "viewport-overlay": {
+    group: "Robotics",
+    wide: true,
+    examples: { file: "viewport-overlay", prefix: "ViewportOverlay" },
+    rules: [
+      "Everything drawn over a map, a point cloud, a 3D view or a camera goes in a `ViewportOverlay`: 16 px from the frame's edges, pieces 8 px apart. Never a corner of your own (`top-3 left-3`).",
+      "Each piece is a `ViewportPanel`: Float (`bg-float shadow-float ring-1 ring-edge backdrop-blur-xl`, opaque in high contrast) over a map or a canvas, `variant=\"scrim\"` for words straight over a picture. Never `bg-background`, which is the page, and never a card's ring with a shadow.",
+      "One radius, the buttons' (`rounded-sm`): a zoom group over the view takes `rounded-sm shadow-float`, so its shadow follows its corners.",
+      "Bottom left for the view's controls (zoom, fit, reset); keep the bottom right clear for the emergency stop. Top for what the view says about itself (a mode, a legend, Stale); top right for a compass or axes.",
+      "The overlay lets the pointer through to the canvas; give what is pressed inside it `pointer-events-auto`. A message over the whole view is `position=\"center\"` on `bg-scrim` when the view behind it is not to be trusted.",
+      "Status in a panel is the glyph and the word in the status colour; the panel and the other words stay neutral.",
     ],
   },
   command: {

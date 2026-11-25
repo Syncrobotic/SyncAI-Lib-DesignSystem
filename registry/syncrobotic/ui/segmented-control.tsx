@@ -1,4 +1,4 @@
-// @syncrobotic/segmented-control v0.28.0 · update: npx shadcn add @syncrobotic/segmented-control --overwrite
+// @syncrobotic/segmented-control v0.35.0 · update: npx shadcn add @syncrobotic/segmented-control --overwrite
 "use client"
 
 import * as React from "react"
@@ -126,5 +126,52 @@ export function SegmentedControlItem({ className, ...props }: React.ComponentPro
       )}
       {...props}
     />
+  )
+}
+
+export type ChartViewSwitchLabels = {
+  /** Names the switch: "Show as". */
+  view: string
+  chart: string
+  table: string
+}
+
+export const defaultChartViewSwitchLabels: ChartViewSwitchLabels = { view: "Show as", chart: "Chart", table: "Table" }
+
+/**
+ * The Chart / Table switch in a chart card's header (CardDataHeader's `actions`), or any switch between two views of the
+ * same data in a header with no field in it (Map / List, with `views`). A SegmentedControl at `--h-sm`: 36 px with a
+ * mouse, 44 on touch, as every `--h-sm`. Beside a search or a select, a toolbar is the field's `--h-md`: use a plain
+ * SegmentedControl there. Here rather than in chart, so a block drawn without recharts (a heatmap, a live chart) can use it.
+ */
+export function ChartViewSwitch({
+  value,
+  onValueChange,
+  views,
+  labels,
+  className,
+}: {
+  /** The view shown: "chart" or "table", or one of `views`. */
+  value: string
+  onValueChange: (value: string) => void
+  /** Other views than Chart and Table, in order: `[{ value: "map", label: "Map" }, { value: "list", label: "List" }]`. */
+  views?: { value: string; label: string }[]
+  /** The words it says, to translate them. With `views`, only `view` (the switch's name) is used. */
+  labels?: Partial<ChartViewSwitchLabels>
+  className?: string
+}) {
+  const l = { ...defaultChartViewSwitchLabels, ...labels }
+  const items = views ?? [
+    { value: "chart", label: l.chart },
+    { value: "table", label: l.table },
+  ]
+  return (
+    <SegmentedControl data-slot="chart-view-switch" value={value} onValueChange={onValueChange} aria-label={l.view} className={cn("h-(--h-sm) w-auto", className)}>
+      {items.map((v) => (
+        <SegmentedControlItem key={v.value} value={v.value}>
+          {v.label}
+        </SegmentedControlItem>
+      ))}
+    </SegmentedControl>
   )
 }

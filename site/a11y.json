@@ -877,6 +877,14 @@
     "tabStops": 1,
     "live": true
   },
+  "viewport-overlay": {
+    "roles": [
+      "button",
+      "group"
+    ],
+    "tabStops": 3,
+    "live": false
+  },
   "filter-form": {
     "roles": [
       "checkbox",
