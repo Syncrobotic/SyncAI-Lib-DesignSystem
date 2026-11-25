@@ -2,7 +2,7 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.39.0 · 2026-11-25
 
 A section heading at typography's two levels, a table that becomes a grouped list on phones, the data catalog's facet column as a component, a rule for writing numbers with the helper that follows it, when a label is a Badge, an InlineStatus or plain text, and the Next.js recipe for an error in the root layout.
 
