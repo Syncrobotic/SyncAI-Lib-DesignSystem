@@ -61,6 +61,21 @@ describe("disabled text", () => {
   }
 })
 
+describe("status words on every fill", () => {
+  for (const mode of modes) {
+    // A status word or a destructive item keeps 4.5:1 on whatever it sits on: the page, a card, the current row or page
+    // (--muted) and a hovered row or menu item (--accent). Darkening --accent in 0.35 once took red under 4:1 in dark.
+    it(`${mode}: success, warning, danger, info and destructive reach 4.5:1 on background, card, muted and accent`, () => {
+      for (const fg of ["success", "warning", "danger", "info", "destructive"]) {
+        for (const bg of ["background", "card", "muted", "accent"]) {
+          const c = contrast(fg, bg, mode)
+          if (c !== undefined) expect(c, `${fg} on ${bg}`).toBeGreaterThanOrEqual(4.5)
+        }
+      }
+    })
+  }
+})
+
 describe("hover and the current page", () => {
   for (const mode of modes) {
     // Navigation marks the current page with --muted (and weight) and hover with --accent: the two fills must differ, or

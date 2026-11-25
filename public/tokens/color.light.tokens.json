@@ -95,7 +95,7 @@
     },
     "success": {
       "$type": "color",
-      "$value": "#18704f"
+      "$value": "#166748"
     },
     "success-subtle": {
       "$type": "color",
@@ -103,7 +103,7 @@
     },
     "warning": {
       "$type": "color",
-      "$value": "#865900"
+      "$value": "#7c5200"
     },
     "warning-subtle": {
       "$type": "color",

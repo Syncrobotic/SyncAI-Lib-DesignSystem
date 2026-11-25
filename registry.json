@@ -21,7 +21,7 @@
           {
             "version": "0.35.0",
             "date": "2026-11-25",
-            "note": "`--accent` (hover) is one step darker than `--muted` (the current page in navigation, the quiet fill): #d4d4d8 in light, #34343b in dark, #3f3f46 in high-contrast dark; high-contrast light's `--muted` is #e6e6ea, so its #d4d4d8 accent differs too. Hover never looks like the current page. `--disabled` darkens slightly (#74747c light, #80808a dark, #8e8e96 high-contrast dark) to stay 3:1 on the new hover fill. Audit #8."
+            "note": "`--accent` (hover) is one step darker than `--muted` (the current page in navigation, the quiet fill): #d4d4d8 in light, #34343b in dark, #3f3f46 in high-contrast dark; high-contrast light's `--muted` is #e6e6ea, so its #d4d4d8 accent differs too. Hover never looks like the current page. `--disabled` darkens slightly (#74747c light, #80808a dark, #8e8e96 high-contrast dark) to stay 3:1 on the new hover fill. Audit #8. Status colours keep 4.5:1 on the darker hover fill too: light --success #166748 and --warning #7c5200, dark --danger and --destructive #f87583 (red was 3.9:1 on a hovered or selected row in dark)."
           },
           {
             "version": "0.31.0",
