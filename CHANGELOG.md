@@ -2,7 +2,9 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.35.0 · 2026-11-25
+
+One part per repeated look, from a design audit against the kit's own rules: a level past its threshold shows its shape and word, links are underlined, chrome over a canvas, empty states, the ⋯ menu, the Chart / Table switch and icon tiles each have one part, and hover is one step darker than the current page.
 
 ### Added
 - **`viewport-overlay` 0.35.0 (beta):** the place and the surface for what is drawn over a map, a point cloud, a 3D view or a camera. `ViewportOverlay` puts it 16 px from the frame's edges (`position` top-left, top, top-right, bottom-left, bottom, bottom-right, center), pieces 8 px apart, and lets the pointer through to the canvas; `ViewportPanel` is one piece, the kit's Float (`bg-float shadow-float ring-1 ring-edge backdrop-blur-xl`, opaque in high contrast) or `variant="scrim"` for words over a picture, rounded-sm like the buttons. Audit #4
