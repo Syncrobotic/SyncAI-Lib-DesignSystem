@@ -49,6 +49,7 @@ export type StoryFile =
   | "toggle-group"
   | "page-header"
   | "chip-group"
+  | "facets"
   | "filter-form"
   | "filters"
   | "search-field"
@@ -408,6 +409,20 @@ const entries: Record<string, Entry> = {
       "Fold long rows with max; chosen chips always stay visible.",
       "Chips with href are links: the filter lives in the URL and works without JavaScript. The chosen link is aria-current=\"page\"; give `current=\"true\"` to a row of filter links on a page whose navigation already marks the page. With `type=\"multiple\"` each link's href adds or removes its value, and chosen links say \"selected\" instead.",
       "`props` on a chip puts `data-*` hooks, a `title` or `aria-describedby` on its button or link.",
+    ],
+  },
+  facets: {
+    wide: true,
+    group: "Inputs",
+    examples: { file: "facets", prefix: "Facets" },
+    rules: [
+      "The facet column beside a catalog or a table: a few questions (tier, task, site), each a group of checkboxes, any of which can be on. Options in one facet combine with OR, facets with AND; the page filters, the facets only hold the picks.",
+      "Give every option its `count`, how many rows have it, computed by the page or the query. Pass `locale` so counts are grouped as on the server.",
+      "`Facets` is the column from 1024 px; put `FacetsDrawer` in the toolbar for smaller screens and give both the same `value` and `onValueChange`. Never a second, hand-made sheet of checkboxes.",
+      "The column pins under the shell's bar (`--shell-top`) and scrolls on its own when it is taller than the space under it, so the list beside it scrolls without taking the filters away.",
+      "`max` folds a long facet after that many options with \"Show all N\"; picked options always stay in view. A facet's own `max` wins.",
+      "Picks apply at once, in the column and in the drawer; the drawer's Done only closes it. Say what they leave (\"12 of 40 recordings\") beside the list, in a polite live region.",
+      "A query people build from any field and operator is `filters`; one facet as a row of chips above a list is `chip-group`.",
     ],
   },
   "filter-form": {
@@ -1480,6 +1495,12 @@ const keyboard: Record<string, [string, string][]> = {
   "chip-group": [
     ["`←` / `→`", "Move between the chips (one Tab stop for the group; N more is a stop of its own)"],
     ["`Enter` / `Space`", "Choose the focused chip; on the chosen one, clear the choice. With several at once, turn the focused chip on or off"],
+  ],
+  facets: [
+    ["`Tab`", "Move through the options of every facet, then its Show all; in the drawer, on to Clear all and Done"],
+    ["`Space`", "Turn the focused option on or off"],
+    ["`Enter` / `Space`", "On Show all N: unfold the facet and move to the first option it shows; on Show fewer: fold it again"],
+    ["`Esc`", "Close the drawer and return to its button"],
   ],
   "search-field": [
     ["`/`", "Focus the search box from anywhere on the page, except while typing in a field"],

@@ -19,6 +19,25 @@ export const overviews: Record<string, Overview> = {
     use: ["A quick filter above a list: task, site, tier.", "A facet where people pick two or three values at once.", "Saved views as links, so the choice lives in the URL."],
     instead: ["A long list of options to tick: checkboxes in a `field`.", "A query of several fields and rules: `filters`.", "Two to four views of the same data: `segmented-control`."],
   },
+  facets: {
+    what: "The facet column beside a catalog or a table: groups of checkboxes with how many rows each option has, folded after a few, pinned under the bar; a bottom sheet on phones.",
+    use: [
+      "A catalog of datasets, recordings or robots narrowed by a few fixed facets: tier, task, site, sensor.",
+      "A search results page with counts per facet value.",
+      "The same facets on phones, from a Filters button in the toolbar (`FacetsDrawer`).",
+    ],
+    instead: [
+      "One facet as a row of chips above a list: `chip-group`.",
+      "Filters that must live in the URL and work before JavaScript: `filter-form`.",
+      "A query of any field and operator: `filters`.",
+      "Filters applied together with one Show results button: the `sheet-filters` pattern.",
+    ],
+    notes: [
+      "It does not filter or count: compute `count` and the filtered rows from the same value.",
+      "Hold the value in the page (or the URL) and pass it to both `Facets` and `FacetsDrawer`; each keeps its own only when uncontrolled.",
+      "`Facets` is hidden below 1024 px and `FacetsDrawer` from 1024 px; change both breakpoints together through `className` if the page needs another.",
+    ],
+  },
   "filter-form": {
     what: "Filters kept in the URL: a GET form that applies itself as you type or pick, and works without JavaScript.",
     use: ["A catalog or log whose filtered view should be shareable and survive Back.", "Any page where changing a filter resets the page number."],

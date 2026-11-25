@@ -9,6 +9,7 @@ import type { BreadcrumbLabels } from "@/registry/syncrobotic/ui/breadcrumb"
 import type { CameraFeedLabels } from "@/registry/syncrobotic/ui/camera-feed"
 import type { CameraWallLabels } from "@/registry/syncrobotic/ui/camera-wall"
 import type { ChipGroupLabels } from "@/registry/syncrobotic/ui/chip-group"
+import type { FacetsLabels } from "@/registry/syncrobotic/ui/facets"
 import type { CodeBlockLabels } from "@/registry/syncrobotic/ui/code-block"
 import type { CommandDialogLabels } from "@/registry/syncrobotic/ui/command"
 import type { CopyButtonLabels } from "@/registry/syncrobotic/ui/copy-button"
@@ -122,6 +123,7 @@ it("fits every component's labels type", () => {
   fits<SortableLabels>()(zh.sortableLabels)
   fits<TreeLabels>()(zh.treeLabels)
   fits<ChipGroupLabels>()(zh.chipGroupLabels)
+  fits<FacetsLabels>()(zh.facetsLabels)
   fits<AutocompleteLabels>()(zh.autocompleteLabels)
   fits<SearchFieldLabels>()(zh.searchFieldLabels)
   fits<DatePickerLabels>()(zh.datePickerLabels)

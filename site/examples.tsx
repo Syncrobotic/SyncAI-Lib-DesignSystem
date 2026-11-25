@@ -77,6 +77,7 @@ const files = {
   "geo-map": () => import("@/stories/geo-map.stories"),
   "point-cloud": () => import("@/stories/point-cloud.stories"),
   "chip-group": () => import("@/stories/chip-group.stories"),
+  facets: () => import("@/stories/facets.stories"),
   "filter-form": () => import("@/stories/filter-form.stories"),
   filters: () => import("@/stories/filters.stories"),
   "search-field": () => import("@/stories/search-field.stories"),

@@ -28,8 +28,8 @@
     "hash": "03904a0793a968e9"
   },
   "labels-zh-tw": {
-    "version": "0.37.0",
-    "hash": "84aa89e213c9c9f2"
+    "version": "0.39.0",
+    "hash": "6582308347f29d12"
   },
   "ros": {
     "version": "0.36.0",
@@ -451,6 +451,10 @@
     "version": "0.37.0",
     "hash": "8a5977fc8f301322"
   },
+  "facets": {
+    "version": "0.39.0",
+    "hash": "bff24d3e34cfb09c"
+  },
   "search-field": {
     "version": "0.28.0",
     "hash": "a1eca6a8afdf4f83"
@@ -592,8 +596,8 @@
     "hash": "0906087725321427"
   },
   "data-catalog": {
-    "version": "0.37.0",
-    "hash": "52ed5d9973b8c517"
+    "version": "0.39.0",
+    "hash": "7a6952304f17a8f6"
   },
   "dataset-detail": {
     "version": "0.35.0",
@@ -628,8 +632,8 @@
     "hash": "26224425b5d61273"
   },
   "agent-skill": {
-    "version": "0.36.0",
-    "hash": "3078a31f1e6ff5f2"
+    "version": "0.39.0",
+    "hash": "c1c9685d0f0830f2"
   },
   "line-chart-telemetry": {
     "version": "0.35.0",
