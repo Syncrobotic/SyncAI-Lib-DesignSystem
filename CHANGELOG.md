@@ -2,6 +2,22 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.34.0 · 2026-11-25
+
+The full-screen model workspace: the action rail with a history column, a control panel and a top bar that folds instead of wrapping, grounded text that drives a picture in another panel, and a streaming chart that comes back from its table at full size.
+
+### Added
+- **`action-rail-shell` 0.34.0:** a full-screen workspace, for a model playground and any screen with past items on one side and the controls for the next step on the other. `leading` is a column left of `main` from 1280 px (18 rem; below that it is not shown, so put a top-bar button in `actions` that opens a Sheet with the same list); `panel` is a column right of `main` from 1024 px (22.5 rem) with the rail's step, primary and small actions pinned at its foot, and on phones it follows `main` while the rail stays the bar at the bottom. Either one makes the shell fill the screen from 1024 px with no page column: each column scrolls on its own under a `--h-row` head row with a hairline, 8 px apart like the app shell, and `ActionRailColumnHeader` gives `main` the same row so the hairlines line up. The columns are `aside` landmarks named by their titles; the rail inside the panel is a region named by the step; one `main`. Issues #343, #312
+- **`action-rail-shell` 0.34.0:** `headerItems` for the top bar: in priority order, and those that do not fit fold into a ⋯ menu (More), last first, instead of wrapping or running off the bar at 768–1280 px; an item is a 44 px button (or icon button) or your own node (a badge, a status), and a menu item or a line in the menu. `actions` never fold. The block still imports only Button and DropdownMenu, no sidebar, command or search code. Issues #312, #343
+- **`action-rail-shell` 0.34.0, `labels-zh-tw` 0.34.0:** `labels` (`actionRailShellLabels`: back, next step, more actions, More); `backLabel`, `stepLabel` and `moreLabel` still work and win. Issues #343, #312
+- **`agent-skill` 0.34.0:** the design language describes the workspace and the top bar that folds instead of wrapping; the checklist says a full-screen workspace is `action-rail-shell` with `leading` and `panel`, not a hand-built shell. Issues #343, #312
+- **`grounded-text` 0.34.0:** `GroundedTextBody`, the text alone, drives an annotated-image the screen already shows in another panel, so the page has one picture: it reports the span under the pointer or keyboard (`onActiveChange`) and the pin, lights the spans of the mark the picture reports (`activeMark`), and `groundedImageProps` gives the picture its highlight, selection and descriptions. GroundedText is built on it, API unchanged. Pinning a span scrolls its marks into view in the picture's panel (`picture`), never on hover, without scrolling the span away, instantly under reduced motion. The text is beside the picture from 42 rem of the component's own width (was 48 rem): a 720 px canvas has it beside. Issue #338
+- **`labels-zh-tw` 0.34.0:** `groundedTextBodyLabels`, the same words as `groundedTextLabels`. Issue #338
+- **`agent-skill` 0.34.0:** the checklist names GroundedTextBody for grounded text beside a picture the screen already shows. Issue #338
+
+### Fixed
+- **`streaming-chart` 0.34.0:** back from the table view the chart sizes its new canvas again; it was left at the browser's 300 × 150 and drawn stretched and blurred, cut to its top left corner.
+
 ## 0.33.0 · 2026-11-25
 
 Data and pictures in rows and cards: a ranked list of counts, a small picture for tables and lists, the media card pattern, and an image grid that draws your own tile face and hands focus back after your own view.
