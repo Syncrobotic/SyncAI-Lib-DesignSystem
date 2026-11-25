@@ -59,7 +59,27 @@ export const overviews: Record<string, Overview> = {
   "share-bar": {
     what: "How a whole splits into a few parts, as one thin bar, light enough for a table cell.",
     use: ["Images by use, label sources, a dataset's tiers.", "Inside a table cell without a legend, or on its own with `legend`.", "Parts people follow to a filtered list: `href` on a segment makes its legend entry a link.", "A list with one bar per row under one ShareLegend."],
-    instead: ["Values over time or many categories: `chart`.", "A single level within a range: `meter`."],
+    instead: ["Values over time or many categories: `chart`.", "A single level within a range: `meter`.", "Counts per category, ranked: `bar-list`."],
+  },
+  "bar-list": {
+    what: "A short ranked list of counts, each row its label and value in words with a bar in the accent scaled to the largest, drawn without a chart library.",
+    use: [
+      "\"Items by class\" or \"files by format\" on a dataset's card, the top 5 to 10.",
+      "Several small rankings on one data page, each inside its own card.",
+      "The top classes of a row, inside a table cell.",
+      "Rows that lead to the list filtered to them, with `href`.",
+    ],
+    instead: [
+      "A level against a known range (storage, a quota): `meter`.",
+      "How a whole splits into a few parts: `share-bar`.",
+      "A ranked chart people explore, with axes and a table view: `chart` (the bar-chart-ranked pattern).",
+    ],
+    notes: [
+      "It does not sort: pass the items largest first, as the query returns them.",
+      "Never give rows their own colours or status colours; one series, `--chart-1`.",
+      "Without `locale` the numbers are written as given (412345); pass `locale` for grouping, as on the server and in the browser alike.",
+      "No Card inside: it has no surface, so it goes into yours (CardDataHeader for the title).",
+    ],
   },
   "annotated-image": {
     what: "A picture with boxes, points, polygons or poses drawn over it: what a model predicted, what a person labelled, the previous version.",
@@ -199,6 +219,24 @@ export const overviews: Record<string, Overview> = {
     use: ["Thumbnails of a restricted dataset in a catalog or gallery."],
     instead: ["Data the viewer may not see at all: leave it out and say so in an `empty-state`."],
   },
+  thumbnail: {
+    what: "One small square picture for a table row, a list or a card: a size from the control scale, lazy, with a neutral fallback, and a restricted placeholder that fetches nothing.",
+    use: [
+      "The first column of a table of datasets, recordings or captures.",
+      "The picture at the start of a list row or a card's row.",
+      "A row from restricted data (faces, number plates, a tier): `restricted` with its `reason`.",
+      "The cells of a media card's mosaic, filling CardMedia.",
+    ],
+    instead: [
+      "Many pictures to browse, open or pick: `image-grid`.",
+      "One large preview someone may choose to reveal: `restricted-preview`.",
+      "A person or a robot: `avatar`.",
+    ],
+    notes: [
+      "Never put `src` on a restricted thumbnail expecting it to load later: it is never fetched; render it unrestricted once the viewer may see it.",
+      "It never takes focus; the reason's tooltip is for mouse users only, so write the reason (or a TierBadge) in the row where it matters.",
+    ],
+  },
   "image-grid": {
     what: "Many pictures at once, as a grid or a strip, that open in a lightbox or are picked one or many at a time.",
     use: [
@@ -211,7 +249,8 @@ export const overviews: Record<string, Overview> = {
     notes: [
       "Placeholders and tests must not load external URLs; draw the picture in code (an SVG data URI).",
       "Selection is `aria-pressed` on each tile; do not add a separate checkbox.",
-      "For your own detail view use `onOpen`; never build a second grid beside the kit's. The tiles still say they open a dialog, so open one, and return focus to the tile when it closes.",
+      "For your own detail view use `onOpen`; never build a second grid beside the kit's. The tiles still say they open a dialog, so open one, and call `restoreFocus()` on the grid's `ref` in its `onCloseAutoFocus` (with `preventDefault()`): a Radix dialog opened without a trigger otherwise drops focus on the page.",
+      "For marks on the tiles use `renderTile` (an AnnotatedImage with `legend={false}` and `onLoadError={onError}`), never a hand-made grid; it holds no buttons of its own.",
     ],
   },
   "load-more": {
@@ -903,11 +942,11 @@ export const overviews: Record<string, Overview> = {
   },
   card: {
     what: "One raised surface that holds a group of related content.",
-    use: ["A robot's summary, a KPI, a settings section.", "A catalog tile with a cover picture (CardMedia)."],
+    use: ["A robot's summary, a KPI, a settings section.", "A catalog tile with a cover picture (CardMedia).", "A gallery of collections as media cards: a cover or a mosaic, the title as its one link, facts and a badge (see the examples)."],
     instead: [
       "Rows of similar items: `list` or `table` inside one card. Cards are never nested.",
       "Label and value pairs: `description-list`.",
-      "A small picture at the start of a row: `item` with ItemMedia `variant=\"image\"`.",
+      "A small picture at the start of a row: `thumbnail`, or `item` with ItemMedia `variant=\"image\"`.",
       "Many pictures, picked or opened: `image-grid`.",
     ],
   },

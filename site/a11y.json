@@ -27,6 +27,19 @@
     "tabStops": 1,
     "live": true
   },
+  "use-ros": {
+    "roles": [
+      "application",
+      "button",
+      "group",
+      "list",
+      "listitem",
+      "region",
+      "status"
+    ],
+    "tabStops": 8,
+    "live": true
+  },
   "use-hotkeys": {
     "roles": [
       "button"
@@ -295,9 +308,10 @@
     "roles": [
       "button",
       "heading",
+      "img",
       "link"
     ],
-    "tabStops": 2,
+    "tabStops": 4,
     "live": false
   },
   "avatar": {
@@ -468,13 +482,6 @@
     "tabStops": 3,
     "live": false
   },
-  "collapsible": {
-    "roles": [
-      "button"
-    ],
-    "tabStops": 1,
-    "live": false
-  },
   "accordion": {
     "roles": [
       "button",
@@ -482,6 +489,13 @@
       "region"
     ],
     "tabStops": 3,
+    "live": false
+  },
+  "collapsible": {
+    "roles": [
+      "button"
+    ],
+    "tabStops": 1,
     "live": false
   },
   "tree": {
@@ -717,6 +731,15 @@
     "tabStops": 3,
     "live": false
   },
+  "bar-list": {
+    "roles": [
+      "link",
+      "list",
+      "listitem"
+    ],
+    "tabStops": 6,
+    "live": false
+  },
   "load-more": {
     "roles": [
       "button",
@@ -728,6 +751,13 @@
   "restricted-preview": {
     "roles": [],
     "tabStops": 1,
+    "live": false
+  },
+  "thumbnail": {
+    "roles": [
+      "img"
+    ],
+    "tabStops": 0,
     "live": false
   },
   "image-grid": {
@@ -1097,18 +1127,5 @@
     "roles": [],
     "tabStops": 0,
     "live": false
-  },
-  "use-ros": {
-    "roles": [
-      "application",
-      "button",
-      "group",
-      "list",
-      "listitem",
-      "region",
-      "status"
-    ],
-    "tabStops": 8,
-    "live": true
   }
 }
