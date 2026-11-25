@@ -7,6 +7,7 @@ Components install as source, so a project keeps the version it installed. Re-ru
 ### Changed
 - **Docs:** code listings carry their colours as eight classes instead of a style on every word, and a word in the code's own colour has no span at all: the same pixels in under half the bytes, on every page that shows code. Connect to ROS drops from 423 KB to 309 KB of HTML and leaves the size ceilings.
 - **Docs:** the Next.js guide drops from 516 KB to 373 KB of HTML and leaves the size ceilings: the lighter listings above, and its two lists of a hundred component links styled once from the list instead of on every link.
+- **Docs:** the icon gallery's tiles take four classes written once in the site's CSS instead of some forty utilities each, the same tiles in every state: /icons drops from 507 KB to 376 KB of HTML and leaves the size ceilings, and /icons/lucide is lighter too.
 
 ## 0.37.0 · 2026-11-25
 
