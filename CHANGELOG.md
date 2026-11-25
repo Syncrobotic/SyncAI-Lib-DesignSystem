@@ -2,6 +2,14 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **`action-rail-shell` 0.34.0:** a full-screen workspace, for a model playground and any screen with past items on one side and the controls for the next step on the other. `leading` is a column left of `main` from 1280 px (18 rem; below that it is not shown, so put a top-bar button in `actions` that opens a Sheet with the same list); `panel` is a column right of `main` from 1024 px (22.5 rem) with the rail's step, primary and small actions pinned at its foot, and on phones it follows `main` while the rail stays the bar at the bottom. Either one makes the shell fill the screen from 1024 px with no page column: each column scrolls on its own under a `--h-row` head row with a hairline, 8 px apart like the app shell, and `ActionRailColumnHeader` gives `main` the same row so the hairlines line up. The columns are `aside` landmarks named by their titles; the rail inside the panel is a region named by the step; one `main`. Issues #343, #312
+- **`action-rail-shell` 0.34.0:** `headerItems` for the top bar: in priority order, and those that do not fit fold into a ⋯ menu (More), last first, instead of wrapping or running off the bar at 768–1280 px; an item is a 44 px button (or icon button) or your own node (a badge, a status), and a menu item or a line in the menu. `actions` never fold. The block still imports only Button and DropdownMenu, no sidebar, command or search code. Issues #312, #343
+- **`action-rail-shell` 0.34.0, `labels-zh-tw` 0.34.0:** `labels` (`actionRailShellLabels`: back, next step, more actions, More); `backLabel`, `stepLabel` and `moreLabel` still work and win. Issues #343, #312
+- **`agent-skill` 0.34.0:** the design language describes the workspace and the top bar that folds instead of wrapping; the checklist says a full-screen workspace is `action-rail-shell` with `leading` and `panel`, not a hand-built shell. Issues #343, #312
+
 ## 0.32.0 · 2026-11-24
 
 A calmer log viewer, the sidebar's collapse on the sidebar itself, accessibility fixes from product teams (focus never under a sticky bar, Escape to native dialogs, status pages in a frame), a data-slot on every control the kit draws, and small options: a shared share-bar legend, metric-card tone, MetaPill links, card media, graph badges, inline code and a collapsible.
