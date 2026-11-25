@@ -177,6 +177,47 @@ html {
   }
 }
 
+/* The /docs/components grid (site/component-cards.tsx), styled from here so its 110 cards carry no classes: a framed
+   picture (one per theme) over the title and the description, the frame's ring darkening on hover. */
+.component-cards {
+  @apply grid gap-x-6 gap-y-8 md:grid-cols-2 lg:grid-cols-3;
+  & > .appear-item {
+    @apply flex;
+  }
+  & a {
+    @apply flex w-full flex-col gap-3 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring;
+    & > .specimen {
+      @apply aspect-16/10 overflow-hidden rounded-md ring-1 ring-border transition-shadow duration-(--motion-fast) ease-(--ease-standard);
+    }
+    & img {
+      @apply h-auto w-full;
+      &:first-child {
+        @apply block dark:hidden;
+      }
+      &:last-child {
+        @apply hidden dark:block;
+      }
+    }
+    & > div:last-child {
+      @apply flex flex-1 flex-col gap-1;
+      & > span:first-child {
+        @apply font-bold;
+      }
+      & > span:last-child:not(:first-child) {
+        @apply text-sm text-muted-foreground;
+      }
+    }
+    @media (hover: hover) {
+      &:hover > .specimen {
+        @apply ring-muted-foreground;
+      }
+      &:hover > div:last-child > span:first-child {
+        @apply underline;
+      }
+    }
+  }
+}
+
 /* Site arrival (site/appear.tsx): the theme's appear movement in CSS, staggered by order, so nothing waits on scripts. */
 [data-reveal="waiting"] .appear-item {
   opacity: 0;

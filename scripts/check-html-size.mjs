@@ -4,12 +4,18 @@
 // parsed and hydrated on the visitor's main thread. 0.35's chart page was 2.2 MB, most of it code listings behind tabs
 // nobody had opened; those are fetched on open now (site/code-data.ts). This keeps a page from growing back unnoticed.
 //
+// The payload repeats the server-rendered tree, so a long list pays for its markup twice. In 0.38 four pages left their
+// ceilings that way: a token table is one table that CSS lays out for a phone, its rows without classes (Colour 431 KB to
+// 310 KB); a long list a page draws from data is a client component given the strings, so the payload carries those and
+// not the elements (Upgrading 896 to 296, the Components cards 561 to 321); and a catalog few readers open is static JSON
+// fetched after the page shows (Localisation's labels, 1,978 to 302).
+//
 //   npm run build && npm run lint:html-size        fails when a page is over the limit, and lists the largest pages
 import { readdirSync, statSync } from "node:fs"
 import { join } from "node:path"
 
 const ROOT = ".next/server/app"
-/** The limit in KB. After 0.36 the median page is 211 KB and all but eight are under 360 KB. */
+/** The limit in KB. After 0.38 the median page is 211 KB; every page without a ceiling below is under 360 KB. */
 const LIMIT_KB = Number(process.env.HTML_LIMIT_KB ?? 400)
 
 /**
@@ -19,7 +25,6 @@ const LIMIT_KB = Number(process.env.HTML_LIMIT_KB ?? 400)
  */
 const ceilings = {
   "/docs/components/chart": { kb: 850, why: "771 KB: seven chart examples drawn as SVG and 21 chart patterns, each a live preview" },
-  "/docs/components": { kb: 620, why: "561 KB: a card for every component" },
   "/docs/nextjs": { kb: 570, why: "515 KB: 13 code listings shown on the page" },
   "/icons": { kb: 560, why: "507 KB: every robot icon drawn" },
   "/docs/ros": { kb: 470, why: "423 KB: the ROS guide with its listings" },
