@@ -283,6 +283,23 @@ describe("StreamingChart", () => {
     expect(rows[1]!.textContent).toContain("30.0")
   })
 
+  // Back from the table the chart gets a new canvas at the browser's 300 × 150: it must be sized to its box again, even
+  // though the box did not change (it was drawn stretched and blurred, cut to its top left corner).
+  it("sizes the new canvas when it comes back from the table", () => {
+    vi.spyOn(HTMLElement.prototype, "clientWidth", "get").mockReturnValue(640)
+    vi.spyOn(HTMLElement.prototype, "clientHeight", "get").mockReturnValue(256)
+    render(<Chart />)
+    const canvas = () => document.querySelector("canvas")!
+    expect([canvas().width, canvas().height]).not.toEqual([300, 150])
+    const sized = [canvas().width, canvas().height]
+    fireEvent.click(screen.getByRole("radio", { name: "Table" }))
+    run(10)
+    fireEvent.click(screen.getByRole("radio", { name: "Chart" }))
+    run(10)
+    expect([canvas().width, canvas().height]).toEqual(sized)
+    vi.restoreAllMocks()
+  })
+
   it("takes every word from labels", () => {
     const handle = React.createRef<StreamingChartHandle>()
     render(<Chart handle={handle} labels={{ pause: "暫停", resume: "繼續", waiting: "等待資料", chart: "圖表", table: "表格" }} />)

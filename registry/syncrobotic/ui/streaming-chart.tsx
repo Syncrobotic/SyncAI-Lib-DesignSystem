@@ -1,4 +1,4 @@
-// @syncrobotic/streaming-chart v0.32.0 · update: npx shadcn add @syncrobotic/streaming-chart --overwrite
+// @syncrobotic/streaming-chart v0.34.0 · update: npx shadcn add @syncrobotic/streaming-chart --overwrite
 "use client"
 
 import * as React from "react"
@@ -511,6 +511,10 @@ class StreamingEngine {
     this.observers = []
     this.canvas = canvas
     this.ctx = null
+    // A new canvas starts at the browser's 300 × 150: forget the last size, so resize() sets this one even when its box
+    // has not changed (back from the table view).
+    this.width = 0
+    this.height = 0
     if (!canvas) return
     try {
       this.ctx = canvas.getContext("2d")

@@ -209,8 +209,13 @@
         }
       ],
       "meta": {
-        "version": "0.33.0",
+        "version": "0.34.0",
         "changelog": [
+          {
+            "version": "0.34.0",
+            "date": "2026-11-25",
+            "note": "`actionRailShellLabels` for action-rail-shell (back, next step, more actions, and the top bar's More). Issues #343, #312. `groundedTextBodyLabels` for grounded-text's new GroundedTextBody: the same words as `groundedTextLabels` (圖上 8 個點). Issue #338."
+          },
           {
             "version": "0.33.0",
             "date": "2026-11-24",
@@ -2774,8 +2779,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.32.0",
+        "version": "0.34.0",
         "changelog": [
+          {
+            "version": "0.34.0",
+            "date": "2026-11-25",
+            "note": "Back from the table view, the chart sizes its new canvas again: it was left at the browser's 300 × 150 and drawn stretched and blurred, cut to its top left corner."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -4487,8 +4497,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.31.0",
+        "version": "0.34.0",
         "changelog": [
+          {
+            "version": "0.34.0",
+            "date": "2026-11-25",
+            "note": "`GroundedTextBody`: the text alone, to drive an annotated-image the screen already shows in another panel (one picture on the page). It reports the span under the pointer or keyboard (`onActiveChange`) and the pin (`pinned` / `onPinnedChange`), and lights the spans of the mark the picture reports (`activeMark`); `groundedImageProps` gives the picture its `highlighted`, `selectedId`, `onSelectedChange` and descriptions. GroundedText is built on the two, its API unchanged. Pinning a span (never a hover) scrolls its marks into view in the picture's scrolling panel (`picture`), without scrolling the span away; instantly under reduced motion. The text is beside the picture from 42 rem of the container (was 48 rem), so a 720 px canvas has it beside. Spans take `data-slot=\"grounded-text-span\"`, the text `grounded-text-body`. Issue #338."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -6620,7 +6635,7 @@
       "name": "action-rail-shell",
       "type": "registry:block",
       "title": "Action-rail shell",
-      "description": "A page whose right column holds only the next step: its title, what it does, one large primary button and a few small actions. A bar fixed to the bottom on phones; ← or Esc goes back up a level. A button keeps focus while its label changes (give an action an `id` when the list reorders).",
+      "description": "A page whose right column holds only the next step: its title, what it does, one large primary button and a few small actions. A bar fixed to the bottom on phones; ← or Esc goes back up a level. A button keeps focus while its label changes (give an action an `id` when the list reorders). With `leading` and `panel` it is a full-screen workspace: a history column, the content and a control panel with the rail at its foot; top-bar items that do not fit fold into ⋯.",
       "dependencies": [
         "lucide-react"
       ],
@@ -6636,8 +6651,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.34.0",
         "changelog": [
+          {
+            "version": "0.34.0",
+            "date": "2026-11-25",
+            "note": "A full-screen workspace: `leading` (a column left of main from 1280 px, e.g. a run history; below that reach it from a top-bar button that opens a Sheet) and `panel` (right of main from 1024 px, with the rail pinned at its foot; on phones it follows main and the rail stays the bottom bar). Either one makes the shell fill the screen from 1024 px with each column scrolling on its own under a --h-row head row; `ActionRailColumnHeader` gives main the same row. `headerItems` fold into a ⋯ menu (More), last first, instead of wrapping the top bar. `labels` (actionRailShellLabels in labels-zh-tw); `backLabel`, `stepLabel` and `moreLabel` still work. New data-slots: action-rail, action-rail-main, action-rail-leading, action-rail-panel, action-rail-column-header, action-rail-column-body, action-rail-title, action-rail-header-items, action-rail-header-item, action-rail-header-action, action-rail-header-more. Issues #343, #312."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -7539,8 +7559,13 @@
         }
       ],
       "meta": {
-        "version": "0.33.0",
+        "version": "0.34.0",
         "changelog": [
+          {
+            "version": "0.34.0",
+            "date": "2026-11-25",
+            "note": "The design language describes the action rail as a full-screen workspace (leading column, control panel with the rail at its foot, one head-row height, a top bar that folds into ⋯ instead of wrapping), and the checklist says a workspace is action-rail-shell with `leading` and `panel`, never a hand-built shell. Issues #343, #312. The checklist names GroundedTextBody for a model's grounded text beside an annotated-image the screen already shows: one picture, wired with `groundedImageProps`. Issue #338."
+          },
           {
             "version": "0.33.0",
             "date": "2026-11-24",

@@ -836,7 +836,9 @@ const entries: Record<string, Entry> = {
       "Give every span the ids of all its marks, and every mark a span. A span whose marks are not on the picture is plain text.",
       "Highlighting is the selected ink at 3 px with the rest faded, never a colour per span. In high contrast nothing fades; the width carries it.",
       "Class words on the picture are off: the text names each mark. Turn on `showLabels=\"selected\"` when the words differ from the text (a model's class next to a person's note).",
-      "Put it in a card at least 48 rem wide to see the text beside the picture; narrower, the text goes under it.",
+      "The text is beside the picture from 42 rem of the component's own width (a 720 px canvas), under it when narrower. It follows its container, not the window: put it in the panel, not a wider wrapper.",
+      "When the screen already shows the picture in its own panel, use `GroundedTextBody` in the other and wire the one annotated-image with `groundedImageProps`: one picture on the page, never a second copy. Share `pinned`; the picture's `onActiveChange` goes to `activeMark`, the text's `onActiveChange` to `activeSpan`.",
+      "Pass the picture's panel as `picture`: pinning a span scrolls its marks into view there. Hovering never scrolls; reduced motion jumps.",
     ],
   },
   "media-player": {
@@ -1592,9 +1594,9 @@ const keyboard: Record<string, [string, string][]> = {
     ["`Esc`", "Clear the selection"],
   ],
   "grounded-text": [
-    ["`Tab`", "Reach the picture's marks once, then each linked span in reading order; focus shows what it links to"],
+    ["`Tab`", "Reach the picture's marks once, then each linked span in reading order; focus shows what it links to. GroundedTextBody has only the spans; its picture in the other panel keeps annotated-image's keys"],
     ["`←` `→` / `↑` `↓`", "On the picture: previous or next mark (as annotated-image)"],
-    ["`Enter` / `Space`", "Pin the span or mark, so its links stay highlighted; again to let go"],
+    ["`Enter` / `Space`", "Pin the span or mark, so its links stay highlighted; again to let go. Pinning a span scrolls its marks into the picture's view"],
     ["`Esc`", "Let go of what is pinned"],
   ],
   dialog: overlayKeys,

@@ -1,4 +1,4 @@
-// @syncrobotic/grounded-text v0.31.0 · update: npx shadcn add @syncrobotic/grounded-text --overwrite
+// @syncrobotic/grounded-text v0.34.0 · update: npx shadcn add @syncrobotic/grounded-text --overwrite
 "use client"
 
 import * as React from "react"
@@ -14,7 +14,15 @@ import {
 /*
   Text whose words point at places on a picture, as a vision-language model answers: a caption where each object's name
   matches a box, or reasoning where "8 zebras" is linked to 8 points. The picture is annotated-image; the text is beside it
-  from 48 rem of width (the container's, not the window's), under it on a phone.
+  from 42 rem of width (the container's, not the window's: a 720 px canvas has it beside), under it on a phone.
+
+  GroundedTextBody is the text alone, for a screen that already shows the picture in another panel: it reports the span
+  under the pointer or keyboard (`onActiveChange`) and the pin, and lights the spans of the mark the picture reports
+  (`activeMark`). `groundedImageProps` turns that into the picture's `highlighted`, `selectedId` and descriptions, so the
+  page wires one annotated-image to it. GroundedText is the two, wired the same way.
+
+  Pinning a span (a click, Enter or Space; never a hover or focus) brings its marks into view when they are scrolled out of
+  the picture's scrolling panel, without scrolling the span itself away; instantly under reduced motion.
 
   Hover or focus a span and its marks are drawn highlighted (the selected ink, 3 px) while the rest fade; hover or focus a
   mark and the spans that point at it are highlighted. A click or tap, Enter or Space pins one, so it stays after the
@@ -121,6 +129,251 @@ function runs(text: string, spans: readonly GroundedSpan[], ids: Set<string>): R
   return out
 }
 
+/** What is shown: the span under the pointer or keyboard first, then the mark under them on the picture, then what is pinned. */
+const shownOf = (activeSpan: number | null, activeMark: string | null, pinned: GroundedPin | null): GroundedPin | null =>
+  activeSpan !== null ? { span: activeSpan } : activeMark !== null ? { mark: activeMark } : pinned
+
+const samePin = (a: GroundedPin | null, b: GroundedPin | null) =>
+  !!a && !!b && ("span" in a ? "span" in b && a.span === b.span : "mark" in b && a.mark === b.mark)
+
+/** The nearest ancestor that scrolls vertically, or null for the page. */
+function scrollParent(el: Element): HTMLElement | null {
+  for (let p = el.parentElement; p && p !== document.body && p !== document.documentElement; p = p.parentElement) {
+    const y = getComputedStyle(p).overflowY
+    if ((y === "auto" || y === "scroll" || y === "overlay") && p.scrollHeight > p.clientHeight) return p
+  }
+  return null
+}
+
+/**
+ * Scrolls the marks with these ids, found in `picture`, into their scrolling panel's view, the top of them first when they
+ * do not all fit. When the span scrolls with them (one panel, or the page), it is never scrolled out of view to do it.
+ */
+function reveal(picture: Element | null | undefined, ids: readonly string[], span: Element) {
+  if (!picture || !ids.length) return
+  const marks = [...picture.querySelectorAll<SVGGElement>("g[data-id]")].filter((g) => ids.includes(g.dataset.id ?? ""))
+  const [first] = marks
+  if (!first) return
+  const rects = marks.map((m) => m.getBoundingClientRect())
+  const top = Math.min(...rects.map((r) => r.top))
+  const bottom = Math.max(...rects.map((r) => r.bottom))
+  const scroller = scrollParent(first)
+  const port = scroller ? scroller.getBoundingClientRect() : { top: 0, bottom: window.innerHeight }
+  let by = top < port.top ? top - port.top : bottom > port.bottom ? Math.min(bottom - port.bottom, top - port.top) : 0
+  if (!scroller || scroller.contains(span)) {
+    const s = span.getBoundingClientRect()
+    by = by < 0 ? Math.min(0, Math.max(by, s.bottom - port.bottom)) : Math.max(0, Math.min(by, s.top - port.top))
+  }
+  if (!by) return
+  const reduce = typeof window.matchMedia !== "function" || window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  const options: ScrollToOptions = { top: by, behavior: reduce ? "auto" : "smooth" }
+  if (scroller) scroller.scrollBy?.(options)
+  else window.scrollBy?.(options)
+}
+
+/**
+ * The props that link an annotated-image to GroundedTextBody when the two are in separate panels: the marks described by
+ * the words that point at them, the ones to highlight, and a pinned mark as selected (a click on a mark pins it). Give the
+ * picture's `onActiveChange` to the text's `activeMark`, and the text's `onActiveChange` here as `activeSpan`; share `pinned`.
+ */
+export function groundedImageProps({
+  text,
+  spans,
+  annotations,
+  pinned,
+  onPinnedChange,
+  activeSpan = null,
+  activeMark = null,
+  labels: labelsProp,
+}: {
+  text: string
+  spans: readonly GroundedSpan[]
+  annotations: readonly Annotation[]
+  pinned: GroundedPin | null
+  onPinnedChange: (pin: GroundedPin | null) => void
+  activeSpan?: number | null
+  activeMark?: string | null
+  labels?: Partial<GroundedTextLabels>
+}): { annotations: Annotation[]; highlighted: string[]; selectedId: string | null; onSelectedChange: (id: string | null) => void } {
+  const labels = { ...defaultLabels, ...labelsProp }
+  const linked = runs(text, spans, new Set(annotations.map((a) => a.id))).filter((r) => r.span !== undefined)
+  const words = (r: Run) => text.slice(r.from, r.to).replace(/\s+/g, " ").trim()
+  const shown = shownOf(activeSpan, activeMark, pinned)
+  return {
+    annotations: annotations.map((a) => {
+      const from = linked.filter((r) => r.marks.includes(a.id)).map(words)
+      return from.length ? { ...a, description: labels.linked(from) } : a
+    }),
+    highlighted: !shown ? [] : "mark" in shown ? [shown.mark] : (linked.find((r) => r.span === shown.span)?.marks ?? []),
+    selectedId: pinned && "mark" in pinned ? pinned.mark : null,
+    onSelectedChange: (id) => {
+      if (id !== null) onPinnedChange(samePin(pinned, { mark: id }) ? null : { mark: id })
+      else if (pinned && "mark" in pinned) onPinnedChange(null)
+    },
+  }
+}
+
+type GroundedTextBodyProps = {
+  /** The answer or caption. Line breaks are kept. */
+  text: string
+  spans: GroundedSpan[]
+  /** The marks the spans point at: the list given to the annotated-image (only each one's `id` and `shape` are read). */
+  annotations: readonly Pick<Annotation, "id" | "shape">[]
+  /** The mark under the pointer or keyboard on the picture (its `onActiveChange`): the spans that point at it light up. */
+  activeMark?: string | null
+  /**
+   * The span under the mouse, or else the one with keyboard focus (its index in `spans`); `null` when neither. Touch does not
+   * hover: a tap pins. Give it to `groundedImageProps` as `activeSpan`.
+   */
+  onActiveChange?: (span: number | null) => void
+  /** Pinned at first (uncontrolled), or controlled with `onPinnedChange`. Control it when the picture is elsewhere, so a pinned mark lights its spans. */
+  defaultPinned?: GroundedPin | null
+  pinned?: GroundedPin | null
+  onPinnedChange?: (pin: GroundedPin | null) => void
+  /** The element around the linked annotated-image: pinning a span scrolls its marks into view there when they are scrolled out. */
+  picture?: React.RefObject<Element | null>
+  labels?: Partial<GroundedTextLabels>
+  className?: string
+}
+
+/**
+ * GroundedText's text alone, its spans linked to the marks of an annotated-image shown elsewhere on the page (another
+ * panel) through `onActiveChange`, `activeMark` and `pinned`; `groundedImageProps` gives the picture its side.
+ */
+export function GroundedTextBody({
+  text,
+  spans,
+  annotations,
+  activeMark = null,
+  onActiveChange,
+  defaultPinned = null,
+  pinned: pinnedProp,
+  onPinnedChange,
+  picture,
+  labels: labelsProp,
+  className,
+}: GroundedTextBodyProps) {
+  const labels = { ...defaultLabels, ...labelsProp }
+  const descId = React.useId()
+  const [ownPin, setOwnPin] = React.useState<GroundedPin | null>(defaultPinned)
+  const pinned = pinnedProp === undefined ? ownPin : pinnedProp
+  const [hovered, setHovered] = React.useState<number | null>(null)
+  const [focused, setFocused] = React.useState<number | null>(null)
+
+  const types = new Map(annotations.map((a) => [a.id, a.shape.type]))
+  const cut = runs(text, spans, new Set(types.keys()))
+  const linked = cut.filter((r) => r.span !== undefined)
+
+  const setPin = (pin: GroundedPin | null) => {
+    if (pinnedProp === undefined) setOwnPin(pin)
+    onPinnedChange?.(pin)
+  }
+  // A pin (never a hover or focus) brings the span's marks into view when the picture's panel has them scrolled out.
+  const pinSpan = (r: Run, el: Element) => {
+    const pin = { span: r.span ?? -1 }
+    if (samePin(pinned, pin)) return setPin(null)
+    setPin(pin)
+    reveal(picture?.current, r.marks, el)
+  }
+  // Hover first, then keyboard focus, as annotated-image reports its marks.
+  const report = (hover: number | null, focus: number | null) => {
+    const before = hovered ?? focused
+    const after = hover ?? focus
+    if (after !== before) onActiveChange?.(after)
+  }
+
+  const shown = shownOf(hovered ?? focused, activeMark, pinned)
+  const litSpan = (r: Run) => !!shown && ("span" in shown ? r.span === shown.span : r.marks.includes(shown.mark))
+
+  const count = (marks: string[]) => {
+    const n = { points: 0, boxes: 0, shapes: 0 }
+    for (const id of marks) {
+      const t = types.get(id)
+      if (t === "point") n.points++
+      else if (t === "box") n.boxes++
+      else n.shapes++
+    }
+    return labels.marks(n)
+  }
+
+  return (
+    <div data-slot="grounded-text-body" className={cn("min-w-0", className)}>
+      <p data-slot="grounded-text-text" className="min-w-0 text-base leading-7 break-words whitespace-pre-line">
+        {cut.map((r) => {
+          const t = text.slice(r.from, r.to)
+          if (r.span === undefined) return <React.Fragment key={r.from}>{t}</React.Fragment>
+          const i = r.span
+          const lit = litSpan(r)
+          return (
+            <span
+              key={r.from}
+              data-slot="grounded-text-span"
+              role="button"
+              tabIndex={0}
+              aria-pressed={samePin(pinned, { span: i })}
+              aria-describedby={`${descId}-${i}`}
+              data-active={lit || undefined}
+              onClick={(e) => pinSpan(r, e.currentTarget)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") pinSpan(r, e.currentTarget)
+                else if (e.key === "Escape" && pinned) {
+                  // Esc that let a pin go stops here, so it does not also close a dialog around it.
+                  e.stopPropagation()
+                  setPin(null)
+                } else return
+                e.preventDefault()
+              }}
+              onPointerEnter={(e) => {
+                if (e.pointerType === "touch") return
+                setHovered(i)
+                report(i, focused)
+              }}
+              onPointerLeave={(e) => {
+                if (e.pointerType === "touch") return
+                setHovered(null)
+                report(null, focused)
+              }}
+              onFocus={(e) => {
+                // Keyboard focus shows the span's marks; a click is a pin, so letting go of it shows the pin is gone.
+                let keyboard = true
+                try {
+                  keyboard = e.currentTarget.matches(":focus-visible")
+                } catch {}
+                if (!keyboard) return
+                setFocused(i)
+                report(hovered, i)
+              }}
+              onBlur={() => {
+                setFocused(null)
+                report(hovered, null)
+              }}
+              // Underlined so it reads as linked without colour: dotted and quiet at rest, solid and thick in the focus
+              // ink when lit. The text keeps its reading leading on touch too (inline targets in a sentence are exempt from the
+              // 44 px rule, WCAG 2.5.8); its padding reaches into the gap between lines, without moving them, so a tap still lands.
+              className={cn(
+                "cursor-pointer rounded-2xs underline decoration-muted-foreground decoration-dotted decoration-1 underline-offset-4 box-decoration-clone",
+                "transition-[background-color,text-decoration-color] duration-(--motion-fast) ease-(--ease-standard)",
+                "hover:decoration-foreground focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-ring any-pointer-coarse:py-1",
+                "aria-pressed:decoration-solid aria-pressed:decoration-2 aria-pressed:decoration-annotate-selected",
+                lit && "bg-accent decoration-solid decoration-2 decoration-annotate-selected",
+              )}
+            >
+              {t}
+            </span>
+          )
+        })}
+      </p>
+      <div hidden>
+        {linked.map((r) => (
+          <span key={r.span} id={`${descId}-${r.span}`}>
+            {count(r.marks)}
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 type GroundedTextProps = {
   /** The answer or caption. Line breaks are kept. */
   text: string
@@ -149,12 +402,10 @@ type GroundedTextProps = {
   className?: string
 }
 
-const samePin = (a: GroundedPin | null, b: GroundedPin | null) =>
-  !!a && !!b && ("span" in a ? "span" in b && a.span === b.span : "mark" in b && a.mark === b.mark)
-
 /**
  * A picture and the text that points at it, linked both ways: a span highlights its marks, a mark its spans. For a
  * vision-language model's caption or reasoning, or any review screen that shows words beside an annotated picture.
+ * The picture and GroundedTextBody, wired through `groundedImageProps`.
  */
 export function GroundedText({
   text,
@@ -172,132 +423,51 @@ export function GroundedText({
   defaultPinned = null,
   pinned: pinnedProp,
   onPinnedChange,
-  labels: labelsProp,
+  labels,
   imageLabels,
   className,
 }: GroundedTextProps) {
-  const labels = { ...defaultLabels, ...labelsProp }
-  const descId = React.useId()
   const [ownPin, setOwnPin] = React.useState<GroundedPin | null>(defaultPinned)
   const pinned = pinnedProp === undefined ? ownPin : pinnedProp
-  const [spanHover, setSpanHover] = React.useState<number | null>(null)
-  const [spanFocus, setSpanFocus] = React.useState<number | null>(null)
-  const [markActive, setMarkActive] = React.useState<string | null>(null)
-
-  const byId = new Map(annotations.map((a) => [a.id, a]))
-  const cut = runs(text, spans, new Set(byId.keys()))
-  const linked = cut.filter((r) => r.span !== undefined)
-  const words = (r: Run) => text.slice(r.from, r.to).replace(/\s+/g, " ").trim()
-
+  const [activeSpan, setActiveSpan] = React.useState<number | null>(null)
+  const [activeMark, setActiveMark] = React.useState<string | null>(null)
+  const root = React.useRef<HTMLDivElement>(null)
   const setPin = (pin: GroundedPin | null) => {
     if (pinnedProp === undefined) setOwnPin(pin)
     onPinnedChange?.(pin)
   }
-  const toggle = (pin: GroundedPin) => setPin(samePin(pinned, pin) ? null : pin)
+  const linked = groundedImageProps({ text, spans, annotations, pinned, onPinnedChange: setPin, activeSpan, activeMark, labels })
 
-  // What is shown: the pointer first, then a mark under the keyboard, then a span under it, then what is pinned.
-  const shown: GroundedPin | null =
-    spanHover !== null ? { span: spanHover } : markActive !== null ? { mark: markActive } : spanFocus !== null ? { span: spanFocus } : pinned
-  const litMarks = !shown ? [] : "mark" in shown ? [shown.mark] : (linked.find((r) => r.span === shown.span)?.marks ?? [])
-  const litSpan = (r: Run) => !!shown && ("span" in shown ? r.span === shown.span : r.marks.includes(shown.mark))
-
-  const count = (marks: string[]) => {
-    const n = { points: 0, boxes: 0, shapes: 0 }
-    for (const id of marks) {
-      const t = byId.get(id)?.shape.type
-      if (t === "point") n.points++
-      else if (t === "box") n.boxes++
-      else n.shapes++
-    }
-    return labels.marks(n)
-  }
-  const described = annotations.map((a) => {
-    const from = linked.filter((r) => r.marks.includes(a.id)).map(words)
-    return from.length ? { ...a, description: labels.linked(from) } : a
-  })
-
+  // Beside the picture from @2xl (42 rem): two columns of about 324 px at the threshold, 348 px at a 720 px canvas, a phone's
+  // reading width each; at @xl (36 rem) the text would be 276 px.
   return (
-    <div data-slot="grounded-text" className={cn("@container w-full", className)}>
-      <div className="grid gap-4 @3xl:grid-cols-2 @3xl:items-start @3xl:gap-6">
+    <div ref={root} data-slot="grounded-text" className={cn("@container w-full", className)}>
+      <div className="grid gap-4 @2xl:grid-cols-2 @2xl:items-start @2xl:gap-6">
         <AnnotatedImage
           src={src}
           image={image}
           width={width}
           height={height}
           label={label}
-          annotations={described}
+          {...linked}
           overlays={overlays}
           loading={loading}
           showLabels={showLabels}
           legend={legend}
           labels={imageLabels}
-          selectedId={pinned && "mark" in pinned ? pinned.mark : null}
-          onSelectedChange={(id) => (id === null ? pinned && "mark" in pinned && setPin(null) : toggle({ mark: id }))}
-          highlighted={litMarks}
-          onActiveChange={setMarkActive}
+          onActiveChange={setActiveMark}
         />
-        <p
-          data-slot="grounded-text-text"
-          className="min-w-0 text-base leading-7 break-words whitespace-pre-line"
-        >
-          {cut.map((r) => {
-            const t = text.slice(r.from, r.to)
-            if (r.span === undefined) return <React.Fragment key={r.from}>{t}</React.Fragment>
-            const i = r.span
-            const pin = { span: i }
-            const lit = litSpan(r)
-            return (
-              <span
-                key={r.from}
-                role="button"
-                tabIndex={0}
-                aria-pressed={samePin(pinned, pin)}
-                aria-describedby={`${descId}-${i}`}
-                data-active={lit || undefined}
-                onClick={() => toggle(pin)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") toggle(pin)
-                  else if (e.key === "Escape" && pinned) {
-                    // Esc that let a pin go stops here, so it does not also close a dialog around it.
-                    e.stopPropagation()
-                    setPin(null)
-                  } else return
-                  e.preventDefault()
-                }}
-                onPointerEnter={(e) => e.pointerType !== "touch" && setSpanHover(i)}
-                onPointerLeave={(e) => e.pointerType !== "touch" && setSpanHover(null)}
-                onFocus={(e) => {
-                  // Keyboard focus shows the span's marks; a click is a pin, so letting go of it shows the pin is gone.
-                  let keyboard = true
-                  try {
-                    keyboard = e.currentTarget.matches(":focus-visible")
-                  } catch {}
-                  if (keyboard) setSpanFocus(i)
-                }}
-                onBlur={() => setSpanFocus(null)}
-                // Underlined so it reads as linked without colour: dotted and quiet at rest, solid and thick in the focus
-                // ink when lit. The text keeps its reading leading on touch too (inline targets in a sentence are exempt from the
-                // 44 px rule, WCAG 2.5.8); its padding reaches into the gap between lines, without moving them, so a tap still lands.
-                className={cn(
-                  "cursor-pointer rounded-2xs underline decoration-muted-foreground decoration-dotted decoration-1 underline-offset-4 box-decoration-clone",
-                  "transition-[background-color,text-decoration-color] duration-(--motion-fast) ease-(--ease-standard)",
-                  "hover:decoration-foreground focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-ring any-pointer-coarse:py-1",
-                  "aria-pressed:decoration-solid aria-pressed:decoration-2 aria-pressed:decoration-annotate-selected",
-                  lit && "bg-accent decoration-solid decoration-2 decoration-annotate-selected",
-                )}
-              >
-                {t}
-              </span>
-            )
-          })}
-        </p>
-      </div>
-      <div hidden>
-        {linked.map((r) => (
-          <span key={r.span} id={`${descId}-${r.span}`}>
-            {count(r.marks)}
-          </span>
-        ))}
+        <GroundedTextBody
+          text={text}
+          spans={spans}
+          annotations={annotations}
+          activeMark={activeMark}
+          onActiveChange={setActiveSpan}
+          pinned={pinned}
+          onPinnedChange={setPin}
+          picture={root}
+          labels={labels}
+        />
       </div>
     </div>
   )
