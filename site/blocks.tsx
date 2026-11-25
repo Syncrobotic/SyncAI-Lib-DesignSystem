@@ -15,7 +15,7 @@ type Meta = {
   thumb?: ThumbView
   /** Shown on /blocks for its type instead of the type's first block (when the first is a bare frame with nothing in it). */
   cover?: boolean
-  /** Starting height. Sections then grow or shrink to their content; app shells fill this height like a screen. */
+  /** Starting height: an app shell fills it like a screen; a section starts at it, so it is the section's measured height at its starting width (the frame then follows the content, and a wrong number shows as a jump). */
   height: number
 }
 
@@ -24,112 +24,112 @@ const meta: Record<string, Meta> = {
   "line-chart-telemetry": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480
+    height: 392
   },
   "histogram-battery": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480
+    height: 400
   },
   "line-chart-limit": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480
+    height: 368
   },
   "line-chart-compare": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480
+    height: 408
   },
   "area-chart-battery": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480
+    height: 364
   },
   "area-chart-fleet-states": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480
+    height: 392
   },
   "area-chart-cumulative": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480
+    height: 364
   },
   "bar-chart-missions": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480
+    height: 392
   },
   "bar-chart-ranked": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480
+    height: 360
   },
   "bar-chart-stacked": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480
+    height: 388
   },
   "bar-chart-variance": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480
+    height: 328
   },
   "sparkline-robot-list": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480
+    height: 320
   },
   "sparkline-metric-tiles": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480
+    height: 172
   },
   "sparkline-table": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480
+    height: 364
   },
   "status-tracker-uptime": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480
+    height: 328
   },
   "status-tracker-runs": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480
+    height: 276
   },
   "status-tracker-rollout": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480
+    height: 192
   },
   "radial-chart-battery": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480
+    height: 236
   },
   "radial-chart-goal": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480
+    height: 260
   },
   "radial-chart-capacity": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480
+    height: 276
   },
   "heatmap-week-hours": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480
+    height: 380
   },
   "heatmap-zones": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 480
+    height: 484
   },
   // App shells: whole screens for internal engineering tools. Install one, replace the sample data, and you have a prototype.
   "app-shell": {
@@ -148,7 +148,7 @@ const meta: Record<string, Meta> = {
   "sign-in": { viewport: "desktop", height: 640, thumb: { x: 400, y: 112, width: 480 }},
   "status-pages": {
     viewport: "desktop",
-    height: 640,
+    height: 1304,
     thumb: { x: 84, y: 72, width: 480 }
   },
   "top-bar-shell": { viewport: "desktop", height: 720},
@@ -161,18 +161,18 @@ const meta: Record<string, Meta> = {
 
   "stats-cards": {
     viewport: "desktop",
-    height: 520,
+    height: 172,
     thumb: { x: 8, y: -36, width: 400 }
   },
   "fleet-table": {
     viewport: "desktop",
-    height: 640
+    height: 484
   },
   "robot-status-card": {
     viewport: "mobile",
-    height: 640
+    height: 340
   },
-  "marketing-hero": { viewport: "desktop", height: 760, thumb: { x: 56, y: 104, width: 600 }},
+  "marketing-hero": { viewport: "desktop", height: 548, thumb: { x: 56, y: 104, width: 600 }},
   // Solutions, batch 4: whole screens in the app shell.
   "mission-schedule": { viewport: "desktop", height: 720},
   "users-invitations": { viewport: "desktop", height: 680},
@@ -190,20 +190,20 @@ const meta: Record<string, Meta> = {
   "app-shell-mobile-tabs": { viewport: "mobile", height: 720},
   "stats-meters": {
     viewport: "desktop",
-    height: 320
+    height: 148
   },
   "stats-filtered": {
     viewport: "desktop",
-    height: 360
+    height: 232
   },
   "card-site": {
     viewport: "desktop",
-    height: 400
+    height: 272
   },
   "card-mission": {
     viewport: "desktop",
     thumbWidth: 960,
-    height: 480
+    height: 376
   },
   "auth-passkey": { viewport: "desktop", height: 640},
   "auth-invite": { viewport: "desktop", height: 760},
@@ -211,29 +211,29 @@ const meta: Record<string, Meta> = {
   "settings-notifications": {
     viewport: "desktop",
     thumbWidth: 960,
-    height: 640
+    height: 560
   },
   "settings-api-keys": {
     viewport: "desktop",
     thumbWidth: 960,
-    height: 480
+    height: 300
   },
   "settings-billing": {
     viewport: "desktop",
     thumbWidth: 960,
-    height: 1200
+    height: 1108
   },
   // The bell in a real top bar, its popover open on load so the card shows the list, not a closed bell.
   "notification-center": { viewport: "desktop", height: 720, thumb: { x: 760, y: 0, width: 520 }},
   "settings-webhooks": {
     viewport: "desktop",
     thumbWidth: 960,
-    height: 960
+    height: 744
   },
   "settings-sessions": {
     viewport: "desktop",
     thumbWidth: 960,
-    height: 720
+    height: 676
   },
   "dialog-confirm-destructive": {
     viewport: "desktop",
@@ -247,12 +247,12 @@ const meta: Record<string, Meta> = {
   "timeline-activity": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 560
+    height: 632
   },
   "timeline-audit": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 520
+    height: 452
   },
   "wizard-commission": { viewport: "desktop", height: 520, thumb: { x: 296, width: 560 }},
   "wizard-import": { viewport: "desktop", thumbWidth: 960, height: 760},

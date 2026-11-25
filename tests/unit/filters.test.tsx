@@ -2,6 +2,7 @@ import * as React from "react"
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { afterEach, describe, expect, it, vi } from "vitest"
 import {
+  FilterViews,
   Filters,
   describeValue,
   filterRows,
@@ -9,10 +10,12 @@ import {
   isComplete,
   matchRule,
   operatorsFor,
+  rulesEqual,
   toQueryString,
   toSearchParams,
   type FilterField,
   type FilterRule,
+  type FilterView,
 } from "@/registry/syncrobotic/ui/filters"
 
 const fields: FilterField[] = [
@@ -241,5 +244,91 @@ describe("Filters", () => {
     act(() => vi.advanceTimersByTime(500))
     expect(screen.queryByRole("button", { name: "Clear all" })).toBeNull()
     vi.useRealTimers()
+  })
+})
+
+describe("rulesEqual", () => {
+  it("ignores ids, the order of rules and the order of values", () => {
+    const a = [{ ...rule("status", "any_of", ["offline", "stopped"]), id: "x" }, rule("battery", "between", [20, 80])]
+    const b = [rule("battery", "between", [80, 20]), { ...rule("status", "any_of", ["stopped", "offline"]), id: "status-0" }]
+    expect(rulesEqual(a, b)).toBe(true)
+    expect(rulesEqual([], [])).toBe(true)
+  })
+  it("tells apart another operator, value or number of rules", () => {
+    const a = [rule("status", "any_of", ["offline"])]
+    expect(rulesEqual(a, [rule("status", "none_of", ["offline"])])).toBe(false)
+    expect(rulesEqual(a, [rule("status", "any_of", ["offline", "stopped"])])).toBe(false)
+    expect(rulesEqual(a, [...a, rule("charging", "is_true", null)])).toBe(false)
+    expect(rulesEqual([rule("battery", "lt", 30)], [rule("battery", "lt", "30" as unknown as number)])).toBe(false)
+  })
+})
+
+describe("FilterViews", () => {
+  afterEach(cleanup)
+
+  const views: FilterView[] = [
+    { id: "all", label: "All robots", rules: [], count: 40 },
+    { id: "attention", label: "Needs attention", rules: [rule("status", "any_of", ["offline", "stopped"])], count: 12 },
+    { id: "low", label: "Low battery", rules: [rule("battery", "lt", 30)] },
+  ]
+
+  function Harness({ initial, onSave }: { initial: FilterRule[]; onSave?: (label: string, rules: FilterRule[]) => void }) {
+    const [rules, setRules] = React.useState(initial)
+    return (
+      <>
+        <FilterViews views={views} rules={rules} onSelect={(v) => setRules(v.rules)} onSave={onSave} />
+        <button type="button" onClick={() => setRules([...rules, rule("charging", "is_true", null)])}>
+          Change
+        </button>
+      </>
+    )
+  }
+  const chip = (name: RegExp) => screen.getByRole("radio", { name })
+
+  it("chooses the view whose rules equal the current ones, in any order, and says so to screen readers", () => {
+    render(<Harness initial={[{ ...rule("status", "any_of", ["stopped", "offline"]), id: "status-0" }]} />)
+    expect(screen.getByRole("radiogroup", { name: "Saved views" })).toBeTruthy()
+    expect(chip(/Needs attention/).getAttribute("aria-checked")).toBe("true")
+    expect(chip(/All robots/).getAttribute("aria-checked")).toBe("false")
+    expect(chip(/Needs attention/).textContent).toContain("12")
+  })
+
+  it("chooses a view on press", () => {
+    render(<Harness initial={[]} />)
+    expect(chip(/All robots/).getAttribute("aria-checked")).toBe("true")
+    fireEvent.click(chip(/Low battery/))
+    expect(chip(/Low battery/).getAttribute("aria-checked")).toBe("true")
+    expect(chip(/All robots/).getAttribute("aria-checked")).toBe("false")
+  })
+
+  it("says Modified once the rules part from the view, and Reset puts them back and focuses its chip", () => {
+    render(<Harness initial={views[1]!.rules} />)
+    expect(screen.queryByRole("button", { name: "Reset to Needs attention" })).toBeNull()
+    expect(screen.getByRole("status").textContent).toBe("")
+    fireEvent.click(screen.getByRole("button", { name: "Change" }))
+    expect(screen.getByRole("status").textContent).toBe("Modified")
+    expect(screen.queryAllByRole("radio").every((r) => r.getAttribute("aria-checked") === "false")).toBe(true)
+    fireEvent.click(screen.getByRole("button", { name: "Reset to Needs attention" }))
+    expect(chip(/Needs attention/).getAttribute("aria-checked")).toBe("true")
+    expect(document.activeElement).toBe(chip(/Needs attention/))
+    expect(screen.getByRole("status").textContent).toBe("")
+  })
+
+  it("has no Save view without onSave", () => {
+    render(<Harness initial={[]} />)
+    expect(screen.queryByRole("button", { name: "Save view" })).toBeNull()
+  })
+
+  it("asks for a name and hands it over with the current rules", async () => {
+    const onSave = vi.fn()
+    render(<Harness initial={[rule("battery", "lt", 20)]} onSave={onSave} />)
+    fireEvent.click(screen.getByRole("button", { name: "Save view" }))
+    expect(await screen.findByRole("dialog", { name: "Save view" })).toBeTruthy()
+    const save = screen.getByRole("button", { name: "Save" }) as HTMLButtonElement
+    expect(save.disabled).toBe(true)
+    fireEvent.change(screen.getByRole("textbox", { name: "View name" }), { target: { value: "  Nearly flat  " } })
+    fireEvent.click(save)
+    expect(onSave).toHaveBeenCalledWith("Nearly flat", [rule("battery", "lt", 20)])
+    expect(screen.queryByRole("dialog")).toBeNull()
   })
 })
