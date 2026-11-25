@@ -1,11 +1,11 @@
-// @syncrobotic/area-chart-fleet-states v0.22.0 · update: npx shadcn add @syncrobotic/area-chart-fleet-states --overwrite
+// @syncrobotic/area-chart-fleet-states v0.35.0 · update: npx shadcn add @syncrobotic/area-chart-fleet-states --overwrite
 "use client"
 
 import * as React from "react"
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 import { ChartContainer, ChartLegend, ChartTable, ChartTooltip, chartAxis, chartMotion, type ChartConfig } from "@/registry/syncrobotic/ui/chart"
-import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
+import { ChartViewSwitch } from "@/registry/syncrobotic/ui/segmented-control"
 
 const config = {
   patrol: { label: "Patrolling", color: 1 },
@@ -36,10 +36,7 @@ export function AreaChartFleetStates() {
           </>
         }
         actions={
-          <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
-            <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
-            <SegmentedControlItem value="table">Table</SegmentedControlItem>
-          </SegmentedControl>
+          <ChartViewSwitch value={view} onValueChange={setView} />
         }
       >
         <p className="text-xs text-muted-foreground">Today, per 2 hours</p>

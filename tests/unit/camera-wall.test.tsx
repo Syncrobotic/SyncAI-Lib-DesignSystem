@@ -57,9 +57,9 @@ describe("CameraWall tiles", () => {
     const marker = tiles()[0]!.querySelector("[data-slot=camera-wall-alarm]")!
     expect(marker.textContent).toBe("Critical · Obstacle in path")
     expect(marker.querySelector("svg")).toBeTruthy()
-    // In the picture's top-right half, clear of the clock a camera burns into the top-left.
-    expect(marker.parentElement!.className).toMatch(/\bright-2\b.*\bw-1\/2\b.*\bjustify-end\b/)
-    expect(marker.parentElement!.className).not.toMatch(/\b(left|inset-x)-/)
+    // On a Float panel in the picture's top-right half, clear of the clock a camera burns into the top-left.
+    expect(marker.closest("[data-slot=viewport-panel]")!.parentElement!.className).toMatch(/\bright-2\b.*\bw-1\/2\b.*\bjustify-end\b/)
+    expect(marker.closest("[data-slot=viewport-panel]")!.parentElement!.className).not.toMatch(/\b(left|inset-x)-/)
     expect(tiles()[0]!.className).not.toMatch(/bg-danger|bg-warning/)
   })
 

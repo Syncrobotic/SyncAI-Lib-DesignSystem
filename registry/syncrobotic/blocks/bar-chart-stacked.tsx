@@ -1,11 +1,11 @@
-// @syncrobotic/bar-chart-stacked v0.22.0 · update: npx shadcn add @syncrobotic/bar-chart-stacked --overwrite
+// @syncrobotic/bar-chart-stacked v0.35.0 · update: npx shadcn add @syncrobotic/bar-chart-stacked --overwrite
 "use client"
 
 import * as React from "react"
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 import { ChartContainer, ChartLegend, ChartTable, ChartTooltip, chartAxis, chartMotion, type ChartConfig } from "@/registry/syncrobotic/ui/chart"
-import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
+import { ChartViewSwitch } from "@/registry/syncrobotic/ui/segmented-control"
 
 const config = {
   patrol: { label: "Patrolling", color: 1, unit: "h" },
@@ -32,10 +32,7 @@ export function BarChartStacked() {
           </>
         }
         actions={
-          <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
-            <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
-            <SegmentedControlItem value="table">Table</SegmentedControlItem>
-          </SegmentedControl>
+          <ChartViewSwitch value={view} onValueChange={setView} />
         }
       />
       {view === "chart" ? (

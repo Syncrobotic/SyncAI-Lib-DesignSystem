@@ -43,7 +43,7 @@
     },
     "muted": {
       "$type": "color",
-      "$value": "#dcdce1"
+      "$value": "#e6e6ea"
     },
     "muted-foreground": {
       "$type": "color",

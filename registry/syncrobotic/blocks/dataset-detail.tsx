@@ -1,4 +1,4 @@
-// @syncrobotic/dataset-detail v0.31.0 · update: npx shadcn add @syncrobotic/dataset-detail --overwrite
+// @syncrobotic/dataset-detail v0.35.0 · update: npx shadcn add @syncrobotic/dataset-detail --overwrite
 "use client"
 
 import * as React from "react"
@@ -137,7 +137,7 @@ export function DatasetDetailContent({ name = "Night parking lot people", refere
             ]}
           />
           <section aria-labelledby="splits" className="flex flex-col gap-2">
-            <h3 id="splits" className="text-sm font-bold">
+            <h3 id="splits" className="text-sm font-medium">
               Splits
             </h3>
             {/* Each split is its own segment, 2 px apart, in three steps of grey that stay apart from one another and from

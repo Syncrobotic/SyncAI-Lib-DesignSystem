@@ -1,4 +1,4 @@
-// @syncrobotic/point-cloud v0.24.1 · update: npx shadcn add @syncrobotic/point-cloud --overwrite
+// @syncrobotic/point-cloud v0.35.0 · update: npx shadcn add @syncrobotic/point-cloud --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,7 +6,9 @@ import { CircleAlert, Crosshair, Radar, Rotate3d, RotateCw, TriangleAlert } from
 import { cn } from "@/lib/utils"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { ButtonGroup } from "@/registry/syncrobotic/ui/button-group"
+import { ViewportOverlay, ViewportPanel } from "@/registry/syncrobotic/ui/viewport-overlay"
 import { Bone } from "@/registry/syncrobotic/shell/skeleton"
+import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 
 /** What the points are coloured by: their height (z), the sensor's intensity, or nothing (one grey, as a map's scans). */
 export type PointCloudColorBy = "height" | "intensity" | "none"
@@ -1308,46 +1310,44 @@ export function PointCloud({
         )}
 
         {state === "error" && (
-          <div role="alert" className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-4 text-center">
-            <CircleAlert aria-hidden="true" className="size-6 text-muted-foreground" />
-            <p className="text-sm text-pretty">{error === true ? l.error : error}</p>
-            {onRetry && (
-              <Button variant="secondary" onClick={onRetry}>
-                <RotateCw aria-hidden="true" />
-                {l.retry}
-              </Button>
-            )}
+          <div role="alert" className="absolute inset-0 grid place-items-center p-4">
+            <EmptyState
+              variant="overlay"
+              icon={CircleAlert}
+              title={error === true ? l.error : error}
+              action={
+                onRetry && (
+                  <Button variant="secondary" onClick={onRetry}>
+                    <RotateCw aria-hidden="true" />
+                    {l.retry}
+                  </Button>
+                )
+              }
+            />
           </div>
         )}
 
         {(state === "empty" || state === "no-webgl") && (
           <div className="pointer-events-none absolute inset-0 grid place-items-center p-4">
-            <div className="flex max-w-sm flex-col items-center gap-3 text-center">
-              <Radar aria-hidden="true" className="size-6 text-muted-foreground" />
-              <p className="text-sm text-pretty">
-                <span className="font-medium">{state === "empty" ? l.empty : l.noWebGL}</span>
-                {state === "no-webgl" && <span className="block text-muted-foreground">{l.noWebGLHint}</span>}
-              </p>
-            </div>
+            <EmptyState variant="overlay" icon={Radar} title={state === "empty" ? l.empty : l.noWebGL} description={state === "no-webgl" ? l.noWebGLHint : undefined} />
           </div>
         )}
 
         {state === "ready" && gl === "lost" && (
-          <div className="pointer-events-none absolute inset-0 grid place-items-center p-4">
-            <p className="rounded-sm bg-background px-3 py-2 text-sm">{l.contextLost}</p>
-          </div>
+          <ViewportOverlay position="center">
+            <ViewportPanel as="p">{l.contextLost}</ViewportPanel>
+          </ViewportOverlay>
         )}
 
         {stale && staleOn && (
-          <p
-            data-slot="point-cloud-stale"
-            className="pointer-events-none absolute top-3 left-3 flex items-center gap-2 rounded-sm bg-background px-3 py-2 text-sm ring-1 ring-border"
-          >
+          <ViewportOverlay position="top-left">
+            <ViewportPanel as="p" data-slot="point-cloud-stale" className="flex items-center gap-2">
             <TriangleAlert aria-hidden="true" className="size-4 text-warning" />
             <span>
               <span className="font-medium">{l.stale}</span> · <span className="tabular-nums">{l.lastScan(l.formatTime(new Date(staleOn.at)))}</span>
             </span>
-          </p>
+            </ViewportPanel>
+          </ViewportOverlay>
         )}
 
         {axes && interactive && (
@@ -1372,14 +1372,16 @@ export function PointCloud({
 
         {interactive && (
           // Bottom left, clear of the emergency stop, which products keep bottom right.
-          <ButtonGroup className="absolute bottom-3 left-3 shadow-float">
-            <Button variant="secondary" size="icon" aria-label={l.resetView} title={l.resetView} onClick={resetView}>
-              <Rotate3d aria-hidden="true" />
-            </Button>
-            <Button variant="secondary" size="icon" aria-label={l.fit} title={l.fit} onClick={fitView}>
-              <Crosshair aria-hidden="true" />
-            </Button>
-          </ButtonGroup>
+          <ViewportOverlay position="bottom-left">
+            <ButtonGroup className="pointer-events-auto rounded-sm shadow-float">
+              <Button variant="secondary" size="icon" aria-label={l.resetView} title={l.resetView} onClick={resetView}>
+                <Rotate3d aria-hidden="true" />
+              </Button>
+              <Button variant="secondary" size="icon" aria-label={l.fit} title={l.fit} onClick={fitView}>
+                <Crosshair aria-hidden="true" />
+              </Button>
+            </ButtonGroup>
+          </ViewportOverlay>
         )}
       </div>
 

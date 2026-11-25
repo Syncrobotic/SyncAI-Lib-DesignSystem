@@ -16,6 +16,7 @@ import type { DataGridLabels, DataGridPagination } from "@/registry/syncrobotic/
 import type { DatePickerLabels } from "@/registry/syncrobotic/ui/date-selector"
 import type { DiagnosticsLabels } from "@/registry/syncrobotic/ui/diagnostics"
 import type { DialogLabels } from "@/registry/syncrobotic/ui/dialog"
+import type { DropdownMenuMoreLabels } from "@/registry/syncrobotic/ui/dropdown-menu"
 import type { FilterOperator, Filters } from "@/registry/syncrobotic/ui/filters"
 import type { GraphLabels } from "@/registry/syncrobotic/ui/graph"
 import type { GroundedTextLabels } from "@/registry/syncrobotic/ui/grounded-text"
@@ -47,6 +48,7 @@ import type { StepperLabels } from "@/registry/syncrobotic/ui/stepper"
 import type { TextDiffLabels } from "@/registry/syncrobotic/ui/text-diff"
 import type { MeterLabels } from "@/registry/syncrobotic/ui/meter"
 import type { BarListLabels } from "@/registry/syncrobotic/ui/bar-list"
+import type { ChartViewSwitchLabels } from "@/registry/syncrobotic/ui/segmented-control"
 import type { ThumbnailLabels } from "@/registry/syncrobotic/ui/thumbnail"
 import type { ThemeChoice } from "@/registry/syncrobotic/ui/theme-toggle"
 import type { TimePickerLabels } from "@/registry/syncrobotic/ui/time-picker"
@@ -111,6 +113,7 @@ it("fits every component's labels type", () => {
   fits<WaypointEditorLabels>()(zh.waypointEditorLabels)
   fits<MeterLabels>()(zh.meterLabels)
   fits<BarListLabels>()(zh.barListLabels)
+  fits<ChartViewSwitchLabels>()(zh.chartViewSwitchLabels)
   fits<ThumbnailLabels>()(zh.thumbnailLabels)
   fits<MetricCardLabels>()(zh.metricCardLabels)
   fits<TextDiffLabels>()(zh.textDiffLabels)
@@ -138,6 +141,7 @@ it("fits every component's labels type", () => {
   fits<LoadingPageLabels>()(zh.loadingPageLabels)
   fits<CommandDialogLabels>()(zh.commandDialogLabels)
   fits<DialogLabels>()(zh.dialogContentLabels)
+  fits<DropdownMenuMoreLabels>()(zh.dropdownMenuMoreTriggerLabels)
   fits<StepperLabels>()(zh.stepperLabels)
   fits<StepperLabels>()(zh.stepperCompactLabels)
   fits<SpinnerLabels>()(zh.spinnerLabels)

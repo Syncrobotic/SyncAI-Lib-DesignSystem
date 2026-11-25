@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { Download, X } from "lucide-react"
 import { pageMeta } from "@/site/config"
-import { H2, PageTitle } from "@/site/prose"
+import { H2, PageTitle, textLink } from "@/site/prose"
 import { BrandMark, Logo, LogoMark } from "@/site/logo"
 import { SiteFooter } from "@/site/site-footer"
 import { PageTransition } from "@/site/page-transition"
@@ -47,7 +47,7 @@ const ratio = (a: string, b: string) => {
   return ((hi + 0.05) / (lo + 0.05)).toFixed(1)
 }
 
-const linkClass = "inline-flex min-h-(--h-sm) items-center gap-1 text-sm underline-offset-4 hover:underline"
+const linkClass = `inline-flex min-h-(--h-sm) items-center gap-1 text-sm ${textLink}`
 // Links are underlined foreground; hover darkens the underline, not the colour.
 const pageLink = "inline-flex min-h-(--h-sm) items-center text-sm underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground"
 

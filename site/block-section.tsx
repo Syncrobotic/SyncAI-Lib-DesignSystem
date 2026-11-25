@@ -6,6 +6,7 @@ import { blockHref, placement } from "./block-types"
 import type { blocks } from "./blocks"
 import { getItem, readSource } from "./catalog"
 import { CodeBlock } from "./code-block"
+import { textLink } from "./prose"
 
 /** Where a "Built from" chip goes: a component's page, the icon gallery for the robot icons, or another block's place.
  *  Anything else (a hook without a page of its own) is a plain chip, never a link to a page that does not exist. */
@@ -50,7 +51,7 @@ export function BlockSection({ block: b, heading: H = "h3" }: { block: (typeof b
               const href = usesHref(u)
               const chip = "inline-flex min-h-(--h-sm) items-center rounded-xs bg-muted px-2 font-mono text-xs"
               return href ? (
-                <Link key={u} href={href} className={`${chip} hover:bg-accent`}>
+                <Link key={u} href={href} className={`${chip} ${textLink}`}>
                   {u}
                 </Link>
               ) : (

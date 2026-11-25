@@ -1,6 +1,6 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { Battery, Bot, CalendarDays, CircleAlert, Info, Lock, MapPinOff, RotateCw, SearchX, TriangleAlert, Wifi, WifiOff } from "lucide-react"
+import { Battery, Bell, Bot, CalendarDays, CircleAlert, Info, Lock, MapPinOff, Radar, RotateCw, SearchX, TriangleAlert, Wifi, WifiOff } from "lucide-react"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { Alert, AlertDescription, AlertTitle } from "@/registry/syncrobotic/ui/alert"
@@ -9,10 +9,12 @@ import { Badge, ResultBadge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardMedia, CardTitle } from "@/registry/syncrobotic/ui/card"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
+import { IconTile } from "@/registry/syncrobotic/ui/icon-tile"
 import { Progress } from "@/registry/syncrobotic/ui/progress"
 import { Separator } from "@/registry/syncrobotic/ui/separator"
 import { Spinner } from "@/registry/syncrobotic/ui/spinner"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuMoreTrigger, DropdownMenuSeparator } from "@/registry/syncrobotic/ui/dropdown-menu"
+import { Table, TableActionsCell, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
 import { CountBadge } from "@/registry/syncrobotic/ui/badge"
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
@@ -157,6 +159,47 @@ export const TableDefault: S = {
               <InlineStatus status={r.tone}>{r.s}</InlineStatus>
             </TableCell>
             <TableCell className="text-right">{r.b} %</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  ),
+}
+
+/** A row's actions: a ghost ⋯ in TableActionsCell, named after its row ("More actions for Patrol dog 7F3A"). */
+export const TableRowActions: S = {
+  render: () => (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Robot</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead className="w-0 pr-2 pl-0 sm:px-4">
+            <span className="sr-only">Actions</span>
+          </TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {[
+          { name: "Patrol dog 7F3A", tone: "active" as const, s: "Patrolling" },
+          { name: "Patrol dog 2B10", tone: "normal" as const, s: "Docked" },
+        ].map((r) => (
+          <TableRow key={r.name}>
+            <TableCell className="font-medium">{r.name}</TableCell>
+            <TableCell>
+              <InlineStatus status={r.tone}>{r.s}</InlineStatus>
+            </TableCell>
+            <TableActionsCell>
+              <DropdownMenu modal={false}>
+                <DropdownMenuMoreTrigger name={r.name} size="icon-sm" />
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem>Show on map</DropdownMenuItem>
+                  <DropdownMenuItem>Rename</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem destructive>Remove from fleet</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </TableActionsCell>
           </TableRow>
         ))}
       </TableBody>
@@ -985,12 +1028,23 @@ export const EmptyStateOffline: S = {
   ),
 }
 
-/** Inside a table or a small panel: no icon, less padding. */
+/** Inside a table, a list or a small panel: `size="inline"`, a bare icon and 14 px words. */
 export const EmptyStateCompact: S = {
   render: () => (
     <div className={`${emptyWidth} rounded-md bg-card ring-1 ring-border`}>
       <div className="border-b border-border px-4 py-3 text-sm font-medium">Open alarms</div>
-      <EmptyState className="py-6" title="No open alarms" description="New alarms show up here as they happen." />
+      <EmptyState size="inline" icon={Bell} title="No open alarms" description="New alarms show up here as they happen." />
+    </div>
+  ),
+}
+
+/** Over a canvas or a picture: `variant="overlay"`, placed by the viewport's overlay layer; the canvas still pans under it. */
+export const EmptyStateOverlay: S = {
+  render: () => (
+    <div className={`${emptyWidth} relative h-64 overflow-hidden rounded-md bg-card ring-1 ring-border`}>
+      <div className="pointer-events-none absolute inset-0 grid place-items-center p-4">
+        <EmptyState variant="overlay" icon={Radar} title="No scan yet" description="Points appear when the lidar sends its first scan." />
+      </div>
     </div>
   ),
 }
@@ -1040,6 +1094,24 @@ export const AvatarPeopleAndRobots: S = {
         </span>
       </li>
     </ul>
+  ),
+}
+
+/** A robot without a picture: its short ID in mono on a square avatar, with the corner of the icon tile beside it. */
+export const AvatarRobotId: S = {
+  render: () => (
+    <div className="flex flex-col gap-4">
+      {(["md", "lg", "xl"] as const).map((size) => (
+        <div key={size} className="flex items-center gap-3">
+          <Avatar size={size} shape="square">
+            <AvatarFallback className="font-mono">{size === "md" ? "PD" : "7F3A"}</AvatarFallback>
+          </Avatar>
+          <IconTile variant="muted" size={size === "md" ? "sm" : size === "lg" ? "md" : "lg"}>
+            <Bot aria-hidden="true" />
+          </IconTile>
+        </div>
+      ))}
+    </div>
   ),
 }
 

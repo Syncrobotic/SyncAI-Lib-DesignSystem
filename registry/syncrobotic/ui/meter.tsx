@@ -1,5 +1,6 @@
-// @syncrobotic/meter v0.31.0 · update: npx shadcn add @syncrobotic/meter --overwrite
+// @syncrobotic/meter v0.35.0 · update: npx shadcn add @syncrobotic/meter --overwrite
 import { cn } from "@/lib/utils"
+import { StatusGlyph, statusText } from "@/registry/syncrobotic/shell/status-glyph"
 
 /** How a level reads: neutral, or past a threshold. */
 export type MeterTone = "normal" | "warning" | "danger"
@@ -126,11 +127,12 @@ export function Meter({
   ) : (
     track
   )
-  const valueText = (
-    <span className={cn("tabular-nums", tone === "danger" ? "text-danger" : tone === "warning" ? "text-warning" : inline ? "text-muted-foreground" : "")}>
-      {text}
-    </span>
-  )
+  // Past a threshold the level is a shape and a word, never colour alone: the status glyph (triangle warning, square danger)
+  // and the word ("Low", "Critical") stand before the value; only the glyph and the word take the
+  // status colour, the number stays text. The inline variant (table cells) keeps the glyph only; the word is in aria-valuetext.
+  const glyph = tone === "normal" ? null : <StatusGlyph status={tone} />
+  const word = said.slice(2)
+  const valueText = <span className={cn("tabular-nums", inline && tone === "normal" && "text-muted-foreground")}>{text}</span>
   return (
     <div
       role="meter"
@@ -146,13 +148,20 @@ export function Meter({
       {inline ? (
         <>
           {bar}
-          {valueText}
+          <span data-slot="meter-value" className="flex items-center gap-2">
+            {glyph}
+            {valueText}
+          </span>
         </>
       ) : (
         <>
           <span className="flex items-baseline justify-between gap-4 text-sm">
             <span className="text-muted-foreground">{label}</span>
-            <span className="font-medium">{valueText}</span>
+            <span data-slot="meter-value" className="flex items-center gap-2 font-medium">
+              {glyph}
+              {word && <span className={cn("first-letter:uppercase", statusText[tone === "danger" ? "danger" : "warning"])}>{word}</span>}
+              {valueText}
+            </span>
           </span>
           {bar}
         </>

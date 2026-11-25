@@ -1,11 +1,11 @@
-// @syncrobotic/area-chart-battery v0.17.2 · update: npx shadcn add @syncrobotic/area-chart-battery --overwrite
+// @syncrobotic/area-chart-battery v0.35.0 · update: npx shadcn add @syncrobotic/area-chart-battery --overwrite
 "use client"
 
 import * as React from "react"
 import { Area, AreaChart, CartesianGrid, ReferenceLine, XAxis, YAxis } from "recharts"
 import { Card, CardDataHeader, CardFigure } from "@/registry/syncrobotic/ui/card"
 import { ChartContainer, ChartTable, ChartTooltip, chartAxis, chartMotion, type ChartConfig } from "@/registry/syncrobotic/ui/chart"
-import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
+import { ChartViewSwitch } from "@/registry/syncrobotic/ui/segmented-control"
 
 const config = { battery: { label: "Battery", color: 1, unit: "%" } } satisfies ChartConfig
 const dock = 30
@@ -27,10 +27,7 @@ export function AreaChartBattery() {
           </>
         }
         actions={
-          <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
-            <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
-            <SegmentedControlItem value="table">Table</SegmentedControlItem>
-          </SegmentedControl>
+          <ChartViewSwitch value={view} onValueChange={setView} />
         }
       >
         <CardFigure value="61 %" />

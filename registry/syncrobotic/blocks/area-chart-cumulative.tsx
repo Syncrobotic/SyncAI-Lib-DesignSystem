@@ -1,11 +1,11 @@
-// @syncrobotic/area-chart-cumulative v0.22.1 · update: npx shadcn add @syncrobotic/area-chart-cumulative --overwrite
+// @syncrobotic/area-chart-cumulative v0.35.0 · update: npx shadcn add @syncrobotic/area-chart-cumulative --overwrite
 "use client"
 
 import * as React from "react"
 import { Area, AreaChart, CartesianGrid, Line, XAxis, YAxis } from "recharts"
 import { Card, CardDataHeader, CardFigure } from "@/registry/syncrobotic/ui/card"
 import { ChartContainer, ChartLegend, ChartTable, ChartTooltip, chartAxis, chartMotion, type ChartConfig } from "@/registry/syncrobotic/ui/chart"
-import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
+import { ChartViewSwitch } from "@/registry/syncrobotic/ui/segmented-control"
 
 const config = { done: { label: "Patrolled", color: 1, unit: "km" }, plan: { label: "Plan", color: 5, unit: "km" } } satisfies ChartConfig
 // Sample data: kilometres patrolled so far this month against the plan's straight line.
@@ -29,10 +29,7 @@ export function AreaChartCumulative() {
       <CardDataHeader
         title="Patrolled this month"
         actions={
-          <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
-            <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
-            <SegmentedControlItem value="table">Table</SegmentedControlItem>
-          </SegmentedControl>
+          <ChartViewSwitch value={view} onValueChange={setView} />
         }
       >
         <CardFigure value={`${last.done} km`} note={ahead >= 0 ? `${ahead} km ahead of plan` : `${-ahead} km behind plan`} />

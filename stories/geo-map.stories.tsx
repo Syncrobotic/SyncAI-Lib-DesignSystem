@@ -2,7 +2,7 @@ import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { GeoMap, GeoMapList, type GeoMapFence, type GeoMapGoal, type GeoMapRobot, type GeoPoint } from "@/registry/syncrobotic/ui/geo-map"
 import { geoGoalToGeoPoseStamped, navSatFixToGeo, type RosNavSatFix } from "@/registry/syncrobotic/lib/ros"
-import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
+import { ChartViewSwitch } from "@/registry/syncrobotic/ui/segmented-control"
 
 const meta: Meta = { title: "Charts/Geo map" }
 export default meta
@@ -57,10 +57,15 @@ function WithList({ title, ...props }: { title: string } & Partial<React.Compone
     <div className="flex w-full flex-col gap-3">
       <div className="flex items-center justify-between gap-4">
         <p className="text-sm font-medium">{title}</p>
-        <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto shrink-0">
-          <SegmentedControlItem value="map">Map</SegmentedControlItem>
-          <SegmentedControlItem value="list">List</SegmentedControlItem>
-        </SegmentedControl>
+        <ChartViewSwitch
+          value={view}
+          onValueChange={setView}
+          views={[
+            { value: "map", label: "Map" },
+            { value: "list", label: "List" },
+          ]}
+          className="shrink-0"
+        />
       </div>
       {view === "map" ? <GeoMap route={patrolRoute} routeActive {...shared} /> : <GeoMapList {...shared} />}
     </div>

@@ -8,6 +8,7 @@ import { PageTitle } from "@/site/prose"
 import { DocJsonLd } from "@/site/json-ld"
 import { aiPrompt, componentMarkdown } from "@/site/ai"
 import { CopyButton } from "@/registry/syncrobotic/ui/copy-button"
+import { MetaPill } from "@/registry/syncrobotic/ui/page-header"
 import { ComponentPanel, ComponentTabs } from "@/site/component-tabs"
 import { tabsOf } from "@/site/component-tabs-data"
 
@@ -68,22 +69,16 @@ export default async function ComponentLayout({ params, children }: Props) {
   )
 }
 
-// Version and status as one tag of two halves, at the height of a tag, set beside the title: each half is a link (the
-// changelog, what Beta means), with the 44 px target drawn around it so the small tag stays easy to hit.
+// Version and status as meta pills beside the title, the kit's own (page-header's MetaPill with href): each is a link (the
+// changelog, what Beta means), underlined like every link, with a 36 px target (44 on touch) drawn around the small pill.
 function VersionTag({ name, version, beta }: { name: string; version: string; beta: boolean }) {
-  const half =
-    "relative flex items-center px-2 transition-colors duration-(--motion-fast) ease-(--ease-standard) after:absolute after:inset-x-0 after:-inset-y-2.5 hover:bg-accent hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
   return (
-    <span className="inline-flex h-(--h-tag) items-stretch rounded-xs text-xs ring-1 ring-border ring-inset">
-      <a href={`/docs/components/${name}#changelog`} className={`${half} rounded-s-xs font-mono text-muted-foreground tabular-nums`}>
+    <span role="list" aria-label="Version and status" className="flex flex-wrap items-center gap-2">
+      <MetaPill href={`/docs/components/${name}#changelog`} className="font-mono tabular-nums">
         v{version}
         <span className="sr-only">, changelog</span>
-      </a>
-      {beta && (
-        <a href="/docs/upgrading#status" title="The API may still change in a minor release" className={`${half} rounded-e-xs border-s border-border font-medium`}>
-          Beta
-        </a>
-      )}
+      </MetaPill>
+      {beta && <MetaPill href="/docs/upgrading#status">Beta</MetaPill>}
     </span>
   )
 }

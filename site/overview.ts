@@ -359,6 +359,20 @@ export const overviews: Record<string, Overview> = {
       "Every string is in `labels`, including the axes' words and `formatTime` for the last scan's time.",
     ],
   },
+  "viewport-overlay": {
+    what: "The place and the surface for what is drawn over a map, a point cloud, a 3D view or a camera: one inset (16 px), one radius, the Float recipe, or the scrim over a picture.",
+    use: [
+      "A mode banner, a legend or a Stale notice over a map or a canvas.",
+      "The zoom and fit group in the bottom left of a view.",
+      "A message over a whole view (Reconnecting), on the scrim.",
+      "Paused, or a camera's alarm, over a video picture (`variant=\"scrim\"` or Float).",
+    ],
+    instead: [
+      "A message that a view has nothing to show: `empty-state`.",
+      "A panel beside the view, not over it: `card`.",
+      "A tray or a save bar at the bottom of a page: the Float recipe on the shell.",
+    ],
+  },
   "robot-model": {
     what: "A robot's pose in 3D from its URDF and live joint values, for monitoring: neutral greys, a ground grid, axes named in words, and the joints that need someone highlighted and named.",
     use: [
@@ -725,9 +739,9 @@ export const overviews: Record<string, Overview> = {
   },
   "toggle-group": {
     what: "A row of toggle buttons where one (single) or several (multiple) can be on.",
-    use: ["Time ranges, view modes and filters with a single choice.", "Map layers or notification channels where any mix is on."],
+    use: ["A tool or a mode with a single choice: what the next tap on a map does.", "Map layers, notification channels or filter chips where any mix is on."],
     instead: [
-      "Switching views of the same data on a muted track: `segmented-control`.",
+      "Switching views of the same data, a sort order or a time window: `segmented-control`.",
       "One on/off: `toggle`.",
       "A form choice saved on submit: `radio-group` or `checkbox`.",
     ],

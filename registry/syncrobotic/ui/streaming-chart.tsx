@@ -1,8 +1,8 @@
-// @syncrobotic/streaming-chart v0.34.0 · update: npx shadcn add @syncrobotic/streaming-chart --overwrite
+// @syncrobotic/streaming-chart v0.35.0 · update: npx shadcn add @syncrobotic/streaming-chart --overwrite
 "use client"
 
 import * as React from "react"
-import { Ellipsis, Pause, Play, TriangleAlert } from "lucide-react"
+import { Pause, Play, TriangleAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
@@ -13,9 +13,9 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenuMoreTrigger,
 } from "@/registry/syncrobotic/ui/dropdown-menu"
-import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
+import { ChartViewSwitch, SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
 
 /**
@@ -1354,21 +1354,14 @@ export function StreamingChart({
                 ))}
               </SegmentedControl>
             )}
-            <SegmentedControl
+            <ChartViewSwitch
               value={view}
-              onValueChange={(v) => v && setView(v === "table" ? "table" : "chart")}
-              aria-label={l.view}
-              className="hidden h-(--h-sm) w-auto @xl:inline-flex"
-            >
-              <SegmentedControlItem value="chart">{l.chart}</SegmentedControlItem>
-              <SegmentedControlItem value="table">{l.table}</SegmentedControlItem>
-            </SegmentedControl>
+              onValueChange={(v) => setView(v === "table" ? "table" : "chart")}
+              labels={{ view: l.view, chart: l.chart, table: l.table }}
+              className="hidden @xl:inline-flex"
+            />
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon-sm" aria-label={l.viewOptions} data-slot="streaming-chart-more" className="@xl:hidden">
-                  <Ellipsis aria-hidden="true" />
-                </Button>
-              </DropdownMenuTrigger>
+              <DropdownMenuMoreTrigger size="icon-sm" aria-label={l.viewOptions} data-slot="streaming-chart-more" className="@xl:hidden" />
               <DropdownMenuContent align="end">
                 {windows.length > 1 && (
                   <>

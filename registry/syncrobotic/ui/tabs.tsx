@@ -1,4 +1,4 @@
-// @syncrobotic/tabs v0.32.0 · update: npx shadcn add @syncrobotic/tabs --overwrite
+// @syncrobotic/tabs v0.35.0 · update: npx shadcn add @syncrobotic/tabs --overwrite
 "use client"
 
 import * as React from "react"
@@ -15,18 +15,24 @@ export function Tabs({ className, ...props }: React.ComponentProps<typeof TabsPr
  * is controlled or not, and a ResizeObserver follows the list and the labels. Null until measured.
  */
 function useUnderline(list: React.RefObject<HTMLDivElement | null>) {
-  const [line, setLine] = React.useState<{ x: number; w: number } | null>(null)
+  // `travel` is true only when the active tab changed: a tab that changes width (a web font arriving, a count) places the
+  // underline at once. Movement marks a change of state, and a resize is not one.
+  const [line, setLine] = React.useState<{ x: number; w: number; travel: boolean } | null>(null)
   React.useLayoutEffect(() => {
     const el = list.current
     if (!el) return
-    const measure = () => {
+    const measure = (travel: boolean) => {
       const on = el.querySelector<HTMLElement>(':scope > [data-slot="tabs-trigger"][data-state="active"]')
-      setLine(on ? { x: on.offsetLeft, w: on.offsetWidth } : null)
+      setLine((l) => {
+        if (!on) return null
+        const next = { x: on.offsetLeft, w: on.offsetWidth, travel }
+        return l && l.x === next.x && l.w === next.w ? l : next
+      })
     }
-    measure()
-    const mo = new MutationObserver(measure)
+    measure(false)
+    const mo = new MutationObserver(() => measure(true))
     mo.observe(el, { subtree: true, attributes: true, attributeFilter: ["data-state"] })
-    const ro = new ResizeObserver(measure)
+    const ro = new ResizeObserver(() => measure(false))
     ro.observe(el)
     for (const child of el.children) ro.observe(child)
     return () => {
@@ -137,7 +143,7 @@ export function TabsList({ className, children, sticky, ref, ...props }: TabsLis
           data-slot="tabs-underline"
           className={cn(
             "pointer-events-none absolute bottom-0 left-0 h-0.5 bg-foreground",
-            placed && "transition-[translate,width] duration-(--motion-base) ease-(--ease-standard)",
+            placed && line.travel && "transition-[translate,width] duration-(--motion-base) ease-(--ease-standard)",
           )}
           style={{ translate: `${line.x}px 0`, width: line.w }}
         />

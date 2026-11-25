@@ -1,4 +1,4 @@
-// @syncrobotic/auth-invite v0.17.3 · update: npx shadcn add @syncrobotic/auth-invite --overwrite
+// @syncrobotic/auth-invite v0.35.0 · update: npx shadcn add @syncrobotic/auth-invite --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,6 +6,7 @@ import { Check } from "lucide-react"
 import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Field } from "@/registry/syncrobotic/ui/field"
+import { IconTile } from "@/registry/syncrobotic/ui/icon-tile"
 import { Input } from "@/registry/syncrobotic/ui/input"
 
 export type Invitation = {
@@ -63,9 +64,9 @@ export function AuthInvite({
       <div className="flex w-full max-w-sm flex-col gap-6">
         {state === "accepted" ? (
           <div role="status" className="flex animate-appear flex-col gap-4">
-            <span className="flex size-10 items-center justify-center rounded-md bg-muted">
-              <Check aria-hidden="true" className="size-5" />
-            </span>
+            <IconTile variant="muted">
+              <Check aria-hidden="true" />
+            </IconTile>
             <div className="flex flex-col gap-1">
               <h1 className="text-xl font-bold">You have joined {i.site}</h1>
               <p className="text-sm text-muted-foreground">

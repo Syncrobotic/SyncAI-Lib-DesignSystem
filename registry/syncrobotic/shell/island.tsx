@@ -1,10 +1,11 @@
-// @syncrobotic/island v0.28.0 · update: npx shadcn add @syncrobotic/island --overwrite
+// @syncrobotic/island v0.35.0 · update: npx shadcn add @syncrobotic/island --overwrite
 "use client"
 
 import * as React from "react"
 import { Battery, BatteryCharging, Bell, ChevronDown, TriangleAlert, Wifi, WifiOff, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
+import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"
 import { CountBadge } from "@/registry/syncrobotic/ui/badge"
 import { Tray } from "@/registry/syncrobotic/shell/tray"
 import { StatusGlyph, toneSubtle, toneText, toStatus, warnTone, type Status, type Tone } from "@/registry/syncrobotic/shell/status-glyph"
@@ -111,9 +112,9 @@ export function Island({
           <span className="relative shrink-0">
             {/* A robot is a thing, so its avatar is square (people are round), with initials rather than an empty shape. */}
             {avatar ?? (
-              <span aria-hidden="true" className="flex size-8 items-center justify-center rounded-xs bg-track text-xs font-medium">
-                {initialsOf(name)}
-              </span>
+              <Avatar shape="square" aria-hidden="true">
+                <AvatarFallback>{initialsOf(name)}</AvatarFallback>
+              </Avatar>
             )}
             <StatusGlyph status={status} className="absolute -right-0.5 -bottom-0.5 rounded-full bg-float" />
           </span>

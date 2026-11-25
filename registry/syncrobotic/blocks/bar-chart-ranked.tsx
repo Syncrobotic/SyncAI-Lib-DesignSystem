@@ -1,11 +1,11 @@
-// @syncrobotic/bar-chart-ranked v0.28.0 · update: npx shadcn add @syncrobotic/bar-chart-ranked --overwrite
+// @syncrobotic/bar-chart-ranked v0.35.0 · update: npx shadcn add @syncrobotic/bar-chart-ranked --overwrite
 "use client"
 
 import * as React from "react"
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from "recharts"
 import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 import { ChartContainer, ChartTable, ChartTooltip, chartAxis, chartMotion, type ChartConfig } from "@/registry/syncrobotic/ui/chart"
-import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
+import { ChartViewSwitch } from "@/registry/syncrobotic/ui/segmented-control"
 
 const config = { n: { label: "Stops", color: 1 } } satisfies ChartConfig
 // Sample data: why robots stopped in the last 30 days, sorted.
@@ -25,10 +25,7 @@ export function BarChartRanked() {
       <CardDataHeader
         title="Why robots stopped"
         actions={
-          <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
-            <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
-            <SegmentedControlItem value="table">Table</SegmentedControlItem>
-          </SegmentedControl>
+          <ChartViewSwitch value={view} onValueChange={setView} />
         }
       >
         <p className="text-xs text-muted-foreground tabular-nums">Last 30 days · {data.reduce((s, d) => s + d.n, 0)} stops</p>

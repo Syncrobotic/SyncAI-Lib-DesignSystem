@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { fn } from "storybook/test"
-import { Bell, ChevronRight, FileText, KeyRound, Map, Ellipsis, Plug, Route, Settings, ShieldCheck, Users, Wifi } from "lucide-react"
+import { Bell, ChevronRight, FileText, KeyRound, Map, Plug, Route, Settings, ShieldCheck, Users, Wifi } from "lucide-react"
 import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"
 import { Badge, CountBadge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/registry/syncrobotic/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuMoreTrigger, DropdownMenuSeparator } from "@/registry/syncrobotic/ui/dropdown-menu"
 import {
   Item,
   ItemActions,
@@ -258,11 +258,7 @@ export const ItemWithMenu: S = {
       </ItemContent>
       <ItemActions>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button size="icon-sm" variant="ghost" aria-label="Elevator bridge actions">
-              <Ellipsis aria-hidden="true" />
-            </Button>
-          </DropdownMenuTrigger>
+          <DropdownMenuMoreTrigger name="Elevator bridge" size="icon-sm" />
           <DropdownMenuContent align="end">
             <DropdownMenuItem>Test connection</DropdownMenuItem>
             <DropdownMenuItem>Edit floors</DropdownMenuItem>

@@ -1,4 +1,4 @@
-// @syncrobotic/table v0.32.0 · update: npx shadcn add @syncrobotic/table --overwrite
+// @syncrobotic/table v0.35.0 · update: npx shadcn add @syncrobotic/table --overwrite
 "use client"
 
 import * as React from "react"
@@ -148,6 +148,15 @@ export function TableHead({
 
 export function TableCell({ className, ...props }: React.ComponentProps<"td">) {
   return <td data-slot="table-cell" className={cn("h-(--h-row) px-4 align-middle whitespace-nowrap", className)} {...props} />
+}
+
+/**
+ * The last cell of a row, holding its ⋯ menu (`DropdownMenuMoreTrigger` with the row's name) or one or two icon buttons:
+ * as narrow as what it holds, at the row's end. On phones it gives its start padding to the cell before it and keeps
+ * 8 px at the end, so the ⋯ lines up down the table on every width.
+ */
+export function TableActionsCell({ className, ...props }: React.ComponentProps<"td">) {
+  return <td data-slot="table-actions-cell" className={cn("h-(--h-row) w-0 pr-2 pl-0 text-right align-middle whitespace-nowrap sm:px-4", className)} {...props} />
 }
 
 export function TableCaption({ className, ...props }: React.ComponentProps<"caption">) {
