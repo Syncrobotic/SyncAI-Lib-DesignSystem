@@ -7780,7 +7780,7 @@
           {
             "version": "0.35.0",
             "date": "2026-11-25",
-            "note": "The design language says what `--muted` is (the quiet fill and the current page) and that hover (`--accent`) is a different, darker fill; how chrome sits over a viewport (ViewportOverlay, ViewportPanel). The checklist names ViewportOverlay and ChartViewSwitch, and a level past its threshold as glyph and word. Audits #1, #4, #5, #8. The design language and the checklist name one part per repeated look: EmptyState at its host's size, IconTile, a square Avatar for a robot's ID, DropdownMenuMoreTrigger in TableActionsCell, medium in-panel titles, bones at their control's height, and a single-choice toggle group only for a tool or a mode."
+            "note": "The design language says what `--muted` is (the quiet fill and the current page) and that hover (`--accent`) is a different, darker fill; how chrome sits over a viewport (ViewportOverlay, ViewportPanel). The checklist names ViewportOverlay and ChartViewSwitch, and a level past its threshold as glyph and word. Audits #1, #4, #5, #8. The design language and the checklist name one part per repeated look: EmptyState at its host's size, IconTile, a square Avatar for a robot's ID, DropdownMenuMoreTrigger in TableActionsCell, medium in-panel titles, bones at their control's height, and a single-choice toggle group only for a tool or a mode. The motion rule names its one exception, not for products: the docs home may enter sections on scroll."
           },
           {
             "version": "0.34.0",
