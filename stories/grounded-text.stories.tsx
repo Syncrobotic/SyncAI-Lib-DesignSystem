@@ -1,7 +1,16 @@
+import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { annotatedImageLabels, groundedTextLabels } from "@/registry/syncrobotic/lib/labels-zh-tw"
-import type { Annotation } from "@/registry/syncrobotic/ui/annotated-image"
-import { fromGrounding, GroundedText, type GroundedSpan, type Grounding } from "@/registry/syncrobotic/ui/grounded-text"
+import { AnnotatedImage, type Annotation } from "@/registry/syncrobotic/ui/annotated-image"
+import {
+  fromGrounding,
+  GroundedText,
+  GroundedTextBody,
+  groundedImageProps,
+  type GroundedPin,
+  type GroundedSpan,
+  type Grounding,
+} from "@/registry/syncrobotic/ui/grounded-text"
 import { warehouseFrame, zebraFrame, zebras } from "./placeholder-photos"
 
 const meta: Meta = { title: "Display/Grounded text" }
@@ -55,6 +64,49 @@ const zebraMarks = fromGrounding(reasoning, grounding, { width: W, height: H, sc
 export const GroundedTextReasoning: S = {
   render: () => <GroundedText text={reasoning} {...zebraMarks} src={zebraFrame} width={W} height={H} label="Savanna, frame 12" />,
 }
+
+/** In a canvas about 720 px wide (45 rem), as in a playground beside a sidebar: the text sits beside the picture from 42 rem of the component's own width. */
+export const GroundedTextNarrowCanvas: S = {
+  render: () => (
+    <div style={{ maxWidth: "45rem" }}>
+      <GroundedText text={reasoning} {...zebraMarks} src={zebraFrame} width={W} height={H} label="Savanna, frame 12" />
+    </div>
+  ),
+}
+
+function TwoPanels() {
+  const [pinned, setPinned] = React.useState<GroundedPin | null>(null)
+  const [activeSpan, setActiveSpan] = React.useState<number | null>(null)
+  const [activeMark, setActiveMark] = React.useState<string | null>(null)
+  const picture = React.useRef<HTMLElement>(null)
+  const image = groundedImageProps({ text: reasoning, ...zebraMarks, pinned, onPinnedChange: setPinned, activeSpan, activeMark })
+  return (
+    <div className="@container w-full">
+      <div className="grid gap-4 @2xl:grid-cols-2 @2xl:items-start">
+        <section ref={picture} aria-label="Picture" className="max-h-80 overflow-y-auto rounded-md border border-border bg-card p-4">
+          <AnnotatedImage src={zebraFrame} width={W} height={H} label="Savanna, frame 12" {...image} showLabels="none" legend={false} onActiveChange={setActiveMark} />
+        </section>
+        <section aria-label="Answer" className="rounded-md border border-border bg-card p-4">
+          <GroundedTextBody
+            text={reasoning}
+            {...zebraMarks}
+            pinned={pinned}
+            onPinnedChange={setPinned}
+            activeMark={activeMark}
+            onActiveChange={setActiveSpan}
+            picture={picture}
+          />
+        </section>
+      </div>
+    </div>
+  )
+}
+
+/**
+ * Two panels, one picture: the workspace already shows the annotated-image in its own (scrolling) panel, and GroundedTextBody
+ * in the other drives it through `groundedImageProps`. Pinning a span scrolls its marks into the picture's panel.
+ */
+export const GroundedTextTwoPanels: S = { render: () => <TwoPanels /> }
 
 /** Pinned: "8 zebras" was tapped, so its points stay highlighted and the rest fade. Tap again, or Esc, to let go. */
 export const GroundedTextPinned: S = {
