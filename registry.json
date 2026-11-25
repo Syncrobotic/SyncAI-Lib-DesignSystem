@@ -8081,7 +8081,7 @@
           {
             "version": "0.36.0",
             "date": "2026-11-25",
-            "note": "The design language and the checklist: an indicator inside a rounded surface is an inset pill in its own gutter, a selected card a 2 px ring, and a status word is not repeated beside the button that says it. Live data: every live-telemetry component goes stale by default at a limit chosen for its data, and `staleAfterMs={null}` is the one way to turn it off (design language and checklist)."
+            "note": "The design language and the checklist: an indicator inside a rounded surface is an inset pill in its own gutter, a selected card a 2 px ring, and a status word is not repeated beside the button that says it. Live data: every live-telemetry component goes stale by default at a limit chosen for its data, and `staleAfterMs={null}` is the one way to turn it off (design language and checklist). The motion rule names its one exception, not for products: the docs home may enter sections on scroll."
           },
           {
             "version": "0.35.0",
