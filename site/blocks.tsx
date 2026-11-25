@@ -1,10 +1,12 @@
 import registry from "../registry.json"
-import { placement } from "./block-types"
+import { blockGroups, blockTypes, placement } from "./block-types"
 import { blockList } from "./block-list"
-import type { ThumbView } from "./block-thumb"
 
 // Blocks are composed sections. Each renders alone at /preview/<name> (its component in site/block-renders.tsx) so the
 // docs can frame it at any width. This file is data only: a page that lists or frames blocks does not load them.
+/** The part of a block a /blocks card shows, in the block's own pixels: its left and top edge and its width. The height is the card's 16:10. */
+export type ThumbView = { x?: number; y?: number; width: number }
+
 type Meta = {
   viewport: "desktop" | "mobile"
   /** Width the overview thumbnail renders at. Charts are dashboard cards, so they render at a card's width, not a screen's. */
@@ -293,3 +295,23 @@ export const blocks = Object.keys(placement)
 
 export const getBlock = (name: string) => blocks.find((b) => b.name === name)
 export const blocksOfType = (slug: string) => blocks.filter((b) => b.type === slug)
+
+
+/**
+ * The /blocks cards: one per type of the Application and Solutions groups, showing the block that stands for the type (its
+ * cover if one is marked, else the first). Each is a picture taken by scripts/thumbs.mjs (npm run thumbs -- --blocks) from
+ * the block's preview at `width`: a desktop screen shows one region of itself (`view`, by default its top-left 480 px) at
+ * about half size, where the words still read; a section or a phone sits whole, centred. The page and the script read this
+ * one list, so a card never asks for a picture the script did not take.
+ */
+export function blockCards() {
+  return blockTypes
+    .filter((t) => (blockGroups as readonly string[]).includes(t.group) && blocksOfType(t.slug).length > 0)
+    .map((t) => {
+      const list = blocksOfType(t.slug)
+      const b = list.find((x) => x.cover) ?? list[0]
+      const width = b.thumbWidth ?? (b.viewport === "mobile" ? 390 : 1280)
+      const view: ThumbView | undefined = b.thumb ?? (b.fit === "screen" && width > 600 ? { width: 480 } : undefined)
+      return { type: t.slug, group: t.group, title: t.title, description: t.description, count: list.length, name: b.name, width, height: b.height, fit: b.fit, view }
+    })
+}

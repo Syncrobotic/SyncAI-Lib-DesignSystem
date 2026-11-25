@@ -49,6 +49,8 @@ jobs:
       - run: npm test
       # Registry JSON + docs site (Next.js)
       - run: npm run build
+      # No prerendered page over 400 KB of HTML, a few named ones held to their own ceilings (scripts/check-html-size.mjs)
+      - run: npm run lint:html-size
       - run: npm run build-storybook
       - uses: actions/upload-artifact@v7
         with: { name: registry, path: public/r }

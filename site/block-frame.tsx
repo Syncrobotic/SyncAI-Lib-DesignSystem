@@ -7,6 +7,7 @@ import * as m from "motion/react-m"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/registry/syncrobotic/ui/tabs"
 import { t } from "./motion"
 import { TabPanel } from "./tab-panel"
+import { loadCode } from "./lazy-code"
 
 const widths = { desktop: 1280, tablet: 768, mobile: 390 } as const
 type Viewport = keyof typeof widths
@@ -21,12 +22,15 @@ export function BlockFrame({
   height,
   initial,
   code,
+  prefetch = [],
   fit = "content",
 }: {
   name: string
   height: number
   initial: "desktop" | "mobile"
   code: React.ReactNode
+  /** The listings' addresses, fetched as the pointer or focus reaches the Code tab, so it opens filled. */
+  prefetch?: string[]
   /** content: the frame is as tall as the block at the chosen width, so nothing is cut off or left empty. screen: a fixed screen height, for app shells. */
   fit?: "content" | "screen"
 }) {
@@ -101,7 +105,7 @@ export function BlockFrame({
             <TabsTrigger value="preview">
               <Eye aria-hidden="true" /> Preview
             </TabsTrigger>
-            <TabsTrigger value="code">
+            <TabsTrigger value="code" onPointerEnter={() => prefetch.forEach(loadCode)} onFocus={() => prefetch.forEach(loadCode)}>
               <Code aria-hidden="true" /> Code
             </TabsTrigger>
           </TabsList>

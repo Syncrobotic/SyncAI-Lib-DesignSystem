@@ -2,6 +2,13 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Changed
+- **Docs:** code a reader has to open to see is no longer in the page. A block's Code tab, an example's Code sheet and a component's Source sheet fetch their listing when they open, from static JSON prerendered at build time (`/code/src/…`, `/code/story/…`, site/code-data.ts and site/lazy-code.tsx), and start fetching on hover or focus of the tab or button; until it arrives the frame shows its title and the listing's own number of lines, so nothing moves. The chart page's HTML went from 2,197 KB to 771 KB (its React payload from 1,730 KB to 304 KB), point-cloud's from 1,119 KB to 256 KB, and every Properties and Accessibility tab lost its component's source (robot-map's from 1,540 KB to 281 KB); 124 pages were over 400 KB, now 8.
+- **Docs:** the cards on /blocks are pictures, light and dark at 400 and 800 px like /docs/components, instead of a live iframe of the whole site per card (17 on the page). `npm run build && npm run thumbs -- --blocks` takes them from each block's preview, framed as the cards framed the live preview (site/blocks.tsx, `blockCards`); `lint:thumbs` checks them; the visual-baseline workflow retakes them. Lighthouse mobile on /blocks: Performance 63 → 86, Total Blocking Time 3.7 s → 0.16 s. A block's own place (its type page, or its component's Patterns) keeps the live preview with its device widths.
+- **CI:** `npm run lint:html-size` after the build fails when a prerendered page is over 400 KB of HTML; eight pages that are large for what they show are held to their own ceilings (scripts/check-html-size.mjs).
+
 ## 0.35.0 · 2026-11-25
 
 One part per repeated look, from a design audit against the kit's own rules: a level past its threshold shows its shape and word, links are underlined, chrome over a canvas, empty states, the ⋯ menu, the Chart / Table switch and icon tiles each have one part, and hover is one step darker than the current page.

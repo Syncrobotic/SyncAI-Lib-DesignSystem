@@ -4,8 +4,10 @@ import { aiPrompt, blockMarkdown } from "./ai"
 import { BlockFrame } from "./block-frame"
 import { blockHref, placement } from "./block-types"
 import type { blocks } from "./blocks"
-import { getItem, readSource } from "./catalog"
+import { getItem } from "./catalog"
 import { CodeBlock } from "./code-block"
+import { sourceListing, sourceUrl } from "./code-data"
+import { LazyCode } from "./lazy-code"
 import { textLink } from "./prose"
 
 /** Where a "Built from" chip goes: a component's page, the icon gallery for the robot icons, or another block's place.
@@ -68,9 +70,11 @@ export function BlockSection({ block: b, heading: H = "h3" }: { block: (typeof b
         height={b.height}
         fit={b.fit}
         initial={b.viewport}
+        // The Code tab is fetched when it opens (site/code-data.ts): the page carries where it is, not the listing.
         code={b.files.map((f) => (
-          <CodeBlock key={f.path} code={readSource(f.path)} title={f.path} />
+          <LazyCode key={f.path} {...sourceListing(f.path)} />
         ))}
+        prefetch={b.files.map((f) => sourceUrl(f.path))}
       />
     </section>
   )
