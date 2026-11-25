@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import * as React from "react"
 import Link from "next/link"
 import registry from "../../../../../registry.json"
 import { blockHref } from "@/site/block-types"
@@ -293,18 +294,19 @@ const withLinkAs = (registry.items as RegistryItem[])
   .filter((i) => i.files.some((f) => /\.tsx$/.test(f.path) && /\blinkAs\?:/.test(readSource(f.path))))
   .map((i) => ({ name: i.name, href: i.type === "registry:block" ? blockHref(i.name) : `/docs/components/${i.name}` }))
 
-const codeLink = "whitespace-nowrap font-mono text-sm underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground"
+// A list of a hundred names, each a link in mono: the links are styled from the list, once, rather than each carrying the
+// same classes (in the markup and again in the page's React payload).
+const codeLinks =
+  "max-w-3xl text-sm leading-7 text-muted-foreground [&_a]:whitespace-nowrap [&_a]:font-mono [&_a]:text-sm [&_a]:underline [&_a]:decoration-muted-foreground [&_a]:underline-offset-4 [&_a]:hover:decoration-foreground"
 
 function Names({ names }: { names: string[] }) {
   return (
-    <p className="max-w-3xl text-sm leading-7 text-muted-foreground">
+    <p className={codeLinks}>
       {names.map((n, i) => (
-        <span key={n}>
-          <Link href={`/docs/components/${n}`} className={codeLink}>
-            {n}
-          </Link>
+        <React.Fragment key={n}>
+          <Link href={`/docs/components/${n}`}>{n}</Link>
           {i < names.length - 1 && ", "}
-        </span>
+        </React.Fragment>
       ))}
     </p>
   )
@@ -372,14 +374,12 @@ export default function NextjsPage() {
 
       <H2 id="links">Links: next/link through linkAs</H2>
       <P text="Kit parts that render links take your router's link as `linkAs` and default to a plain `<a>`. Pass `next/link` (or the NavLink below, which adds route progress) and navigation stays client-side, with prefetching." />
-      <p className="max-w-3xl pb-4 text-sm leading-7 text-muted-foreground">
+      <p className={`pb-4 ${codeLinks}`}>
         {withLinkAs.map((i, n) => (
-          <span key={i.name}>
-            <Link href={i.href} className={codeLink}>
-              {i.name}
-            </Link>
+          <React.Fragment key={i.name}>
+            <Link href={i.href}>{i.name}</Link>
             {n < withLinkAs.length - 1 && ", "}
-          </span>
+          </React.Fragment>
         ))}
       </p>
       <CodeBlock code={sitesPage} lang="tsx" title="app/(app)/sites/page.tsx" />

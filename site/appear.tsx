@@ -25,7 +25,9 @@ export function AppearItem({ children, className }: { children: React.ReactNode;
 /**
  * A section further down arrives once, with the theme's appear movement (8 px, --motion-base), when it scrolls into view.
  * Only a section that starts below the screen waits, so nothing is hidden without JavaScript and nothing already on screen
- * flashes. It never runs back when scrolled away: nothing moves to decorate.
+ * flashes. A showcase section is the exception: hidden before the first paint when scripts run, it also arrives when it
+ * is already on screen at load, so a reload (which keeps the scroll position) plays the sections in view, not the hero
+ * alone. It never runs back when scrolled away: nothing moves to decorate.
  *
  * `showcase` is the home page's exception to the motion rule (Motion foundation, "The docs home"): a longer entrance, a
  * 24 px rise over --motion-sheet, items 60 ms apart. Nowhere else.
@@ -46,10 +48,18 @@ export function Reveal({
   showcase?: boolean
 }) {
   const ref = React.useRef<HTMLDivElement>(null)
-  const [state, setState] = React.useState<"shown" | "waiting" | "playing">("shown")
+  // A showcase section starts "pending": hidden by CSS before the first paint (only when scripts run), so one already on
+  // screen at load (a reload keeps the scroll position) plays its entrance too, instead of sitting there still while only
+  // the hero moves. Any other section starts shown and never hides what is on screen.
+  const [state, setState] = React.useState<"shown" | "pending" | "waiting" | "playing">(showcase ? "pending" : "shown")
   React.useEffect(() => {
     const el = ref.current
-    if (!el || navigator.webdriver || el.getBoundingClientRect().top < window.innerHeight) return
+    // On screen at load (or captured by an automated browser): decided on the next frame, the section hidden till then.
+    if (!el || navigator.webdriver || el.getBoundingClientRect().top < window.innerHeight) {
+      const now = !el || navigator.webdriver ? "shown" : "playing"
+      const id = requestAnimationFrame(() => setState((s) => (s === "pending" ? now : s)))
+      return () => cancelAnimationFrame(id)
+    }
     setState("waiting")
     let frame = 0
     // Scrolled past without ever being in view: shown as it is, with no movement nobody would see.
@@ -79,7 +89,7 @@ export function Reveal({
     io.observe(el)
     window.addEventListener("scroll", onScroll, { passive: true })
     return stop
-  }, [])
+  }, [showcase])
   return (
     <div
       ref={ref}

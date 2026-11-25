@@ -63,11 +63,61 @@ html {
 }
 /* GitHub's themes draw keywords (import, const, return) red, which here means danger: every listing would read as an
    error. Keywords take the brand indigo instead (--chart-1, 4.7:1 or more on the code's surfaces in both themes). */
-.code span[style*="--shiki-light:#A0111F"] {
+.code span[style*="--shiki-light:#A0111F"],
+.code span.hk {
   color: var(--chart-1);
 }
-.dark .code span[style*="--shiki-dark:#FF9492"] {
+.dark .code span[style*="--shiki-dark:#FF9492"],
+.dark .code span.hk {
   color: var(--chart-1);
+}
+/* The token colours as classes (site/highlight.ts): each sets the two variables its style attribute set. */
+.code .hk {
+  --shiki-light: #a0111f;
+  --shiki-dark: #ff9492;
+}
+.code .hs {
+  --shiki-light: #032563;
+  --shiki-dark: #addcff;
+}
+.code .hc {
+  --shiki-light: #023b95;
+  --shiki-dark: #91cbff;
+}
+.code .hf {
+  --shiki-light: #622cbc;
+  --shiki-dark: #dbb7ff;
+}
+.code .ht {
+  --shiki-light: #024c1a;
+  --shiki-dark: #72f088;
+}
+.code .hv {
+  --shiki-light: #702c00;
+  --shiki-dark: #ffb757;
+}
+.code .hm {
+  --shiki-light: #66707b;
+  --shiki-dark: #bdc4cc;
+}
+
+/* The icon gallery's tiles (site/icon-gallery.tsx), a few hundred to a page: their classes are written once here rather
+   than on every tile, where they were two thirds of /icons. In the utilities layer and after the generated utilities,
+   so they cascade as the same classes on the element did (transition-colors over press's transition list). */
+@layer utilities {
+  .icon-tile-cell {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 5rem auto 5rem;
+  }
+  .icon-tile {
+    @apply relative flex aspect-square w-full items-center justify-center rounded-md bg-card p-2 ring-1 ring-border transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent aria-pressed:ring-2 aria-pressed:ring-foreground;
+  }
+  .icon-tile-glyph {
+    @apply flex size-6 items-center justify-center transition-transform duration-(--motion-fast) ease-(--ease-standard) group-hover:-translate-y-2 group-focus-visible:-translate-y-2 group-aria-pressed:-translate-y-2 pointer-coarse:-translate-y-2;
+  }
+  .icon-tile-name {
+    @apply absolute inset-x-1 bottom-2 line-clamp-2 text-center font-mono text-xs text-muted-foreground opacity-0 transition-opacity duration-(--motion-fast) ease-(--ease-standard) group-hover:opacity-100 group-focus-visible:opacity-100 group-aria-pressed:opacity-100 pointer-coarse:opacity-100;
+  }
 }
 
 /* Exhibits sit on the page background, a step below the card around them. No pattern: the component is the subject. */
@@ -75,9 +125,163 @@ html {
   background-color: var(--background);
 }
 
+/* Docs token tables (site/doc.tsx TokenTable): one table, styled from here so its rows carry no classes. From md a table
+   with a muted header; on a phone every row is a card (its first cell on top, each other cell under its column's name,
+   which the table's --c1… variables hold, drawn silent to screen readers: they hear the visually hidden header row). */
+.token-table {
+  @apply rounded-md border border-border text-sm;
+  & table {
+    @apply w-full;
+  }
+  @variant md {
+    @apply overflow-x-auto;
+    & tbody {
+      @apply bg-card;
+    }
+    & thead {
+      @apply bg-muted text-left text-xs text-muted-foreground;
+    }
+    & th {
+      @apply h-10 px-4 text-left font-medium whitespace-nowrap;
+    }
+    & tbody tr {
+      @apply border-t border-border;
+    }
+    & td {
+      @apply px-4 py-3 align-top;
+      &:first-child {
+        @apply whitespace-nowrap;
+      }
+      &:not(:first-child) {
+        @apply min-w-24;
+      }
+      &:last-child {
+        @apply min-w-48;
+      }
+    }
+  }
+  @variant max-md {
+    @apply bg-card;
+    & table,
+    & tbody {
+      @apply block;
+    }
+    & thead {
+      @apply sr-only;
+    }
+    & tbody tr {
+      @apply grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-2 p-4;
+      & + tr {
+        @apply border-t border-border;
+      }
+    }
+    & td {
+      @apply col-span-full;
+      &:first-child {
+        @apply block font-medium;
+      }
+      &:not(:first-child) {
+        @apply grid grid-cols-subgrid wrap-anywhere;
+        & > * {
+          @apply min-w-0;
+        }
+        /* The column's name, in its own face whatever the cell's (a page may set the cells in mono). */
+        &::before {
+          @apply font-sans text-xs font-normal text-muted-foreground normal-nums;
+        }
+      }
+      /* The column's name, silent where the browser can say so (alt text after the slash); older ones read it too. */
+      &:nth-child(2)::before {
+        content: var(--c1);
+      }
+      &:nth-child(3)::before {
+        content: var(--c2);
+      }
+      &:nth-child(4)::before {
+        content: var(--c3);
+      }
+      &:nth-child(5)::before {
+        content: var(--c4);
+      }
+      &:nth-child(6)::before {
+        content: var(--c5);
+      }
+      @supports (content: "" / "") {
+        &:nth-child(2)::before {
+          content: var(--c1) / "";
+        }
+        &:nth-child(3)::before {
+          content: var(--c2) / "";
+        }
+        &:nth-child(4)::before {
+          content: var(--c3) / "";
+        }
+        &:nth-child(5)::before {
+          content: var(--c4) / "";
+        }
+        &:nth-child(6)::before {
+          content: var(--c5) / "";
+        }
+      }
+    }
+  }
+}
+
+/* The /docs/components grid (site/component-cards.tsx), styled from here so its 110 cards carry no classes: a framed
+   picture (one per theme) over the title and the description, the frame's ring darkening on hover. */
+.component-cards {
+  @apply grid gap-x-6 gap-y-8 md:grid-cols-2 lg:grid-cols-3;
+  & > .appear-item {
+    @apply flex;
+  }
+  & a {
+    @apply flex w-full flex-col gap-3 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring;
+    & > .specimen {
+      @apply aspect-16/10 overflow-hidden rounded-md ring-1 ring-border transition-shadow duration-(--motion-fast) ease-(--ease-standard);
+    }
+    & img {
+      @apply h-auto w-full;
+      &:first-child {
+        @apply block dark:hidden;
+      }
+      &:last-child {
+        @apply hidden dark:block;
+      }
+    }
+    & > div:last-child {
+      @apply flex flex-1 flex-col gap-1;
+      & > span:first-child {
+        @apply font-bold;
+      }
+      & > span:last-child:not(:first-child) {
+        @apply text-sm text-muted-foreground;
+      }
+    }
+    @media (hover: hover) {
+      &:hover > .specimen {
+        @apply ring-muted-foreground;
+      }
+      &:hover > div:last-child > span:first-child {
+        @apply underline;
+      }
+    }
+  }
+}
+
 /* Site arrival (site/appear.tsx): the theme's appear movement in CSS, staggered by order, so nothing waits on scripts. */
 [data-reveal="waiting"] .appear-item {
   opacity: 0;
+}
+/* A showcase section before its script has looked where it is: hidden only when scripts run (site/appear.tsx,
+   revealScript). Should the script never get there, it shows anyway after 2 s, so nothing stays blank. */
+:root[data-js] [data-reveal="pending"] .appear-item {
+  opacity: 0;
+  animation: reveal-fallback 0s 2s forwards;
+}
+@keyframes reveal-fallback {
+  to {
+    opacity: 1;
+  }
 }
 /* Printed (or saved as PDF) before it was scrolled through, a section still waiting to arrive prints as it is. */
 @media print {

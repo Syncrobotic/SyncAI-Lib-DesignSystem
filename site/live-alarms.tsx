@@ -42,7 +42,7 @@ export default function LiveAlarms() {
   const at = still ? STILL_AT : step
   return (
     <div ref={ref} className="h-full">
-      <AlarmList alarms={alarmsAt(at)} feedback={false} now={EPOCH + at * EVERY} />
+      <AlarmList alarms={alarmsAt(at)} feedback={false} now={EPOCH + at * EVERY} className="h-full" />
     </div>
   )
 }
