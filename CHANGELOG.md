@@ -2,7 +2,9 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.34.0 · 2026-11-25
+
+The full-screen model workspace: the action rail with a history column, a control panel and a top bar that folds instead of wrapping, grounded text that drives a picture in another panel, and a streaming chart that comes back from its table at full size.
 
 ### Added
 - **`action-rail-shell` 0.34.0:** a full-screen workspace, for a model playground and any screen with past items on one side and the controls for the next step on the other. `leading` is a column left of `main` from 1280 px (18 rem; below that it is not shown, so put a top-bar button in `actions` that opens a Sheet with the same list); `panel` is a column right of `main` from 1024 px (22.5 rem) with the rail's step, primary and small actions pinned at its foot, and on phones it follows `main` while the rail stays the bar at the bottom. Either one makes the shell fill the screen from 1024 px with no page column: each column scrolls on its own under a `--h-row` head row with a hairline, 8 px apart like the app shell, and `ActionRailColumnHeader` gives `main` the same row so the hairlines line up. The columns are `aside` landmarks named by their titles; the rail inside the panel is a region named by the step; one `main`. Issues #343, #312
