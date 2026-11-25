@@ -17,6 +17,9 @@ import { CountBadge } from "@/registry/syncrobotic/ui/badge"
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
 import { TextDiff } from "@/registry/syncrobotic/ui/text-diff"
+import { Thumbnail } from "@/registry/syncrobotic/ui/thumbnail"
+import { TierBadge, type Tier } from "@/registry/syncrobotic/ui/tier-badge"
+import { cn } from "@/lib/utils"
 import { placeholderPhoto } from "./placeholder-photos"
 
 const meta: Meta = { title: "Display" }
@@ -212,20 +215,80 @@ export const CardWithMedia: S = {
         { id: "aisles", title: "Forklift aisles v3", meta: "12,480 images · T1", inset: false, seed: 1 },
         { id: "docks", title: "Dock cameras v2", meta: "8,200 images · T0", inset: true, seed: 4 },
       ].map((c) => (
-        <Card key={c.id} className="press relative hover:ring-muted-foreground has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-ring">
+        <Card key={c.id} className="group/card press relative hover:ring-muted-foreground has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-ring">
           <CardMedia inset={c.inset}>
             <img src={placeholderPhoto(c.seed, c.title)} alt="" />
           </CardMedia>
           <CardHeader>
             <CardTitle>
               {/* focus-ring: the card draws the ring (has-[a:focus-visible]), since the link covers it. */}
-              <a href={`#datasets/${c.id}`} className="outline-none after:absolute after:inset-0 after:rounded-[inherit]">
+              <a href={`#datasets/${c.id}`} className="underline-offset-4 outline-none group-hover/card:underline after:absolute after:inset-0 after:rounded-[inherit]">
                 {c.title}
               </a>
             </CardTitle>
             <CardDescription>{c.meta}</CardDescription>
           </CardHeader>
         </Card>
+      ))}
+    </div>
+  ),
+}
+
+type Collection = { id: string; title: string; facts: string[]; tier: Tier; covers: number[]; reason?: string }
+
+const collections: Collection[] = [
+  { id: "aisles", title: "Warehouse aisles", facts: ["12,400 items", "Updated 3 d ago"], tier: "T1", covers: [1, 2, 3, 5] },
+  { id: "hall-b", title: "Hall B people", facts: ["3,912 items", "Updated today"], tier: "T2", covers: [], reason: "Restricted · faces" },
+  { id: "docks", title: "Dock cameras v2", facts: ["8,200 items", "Updated 2 w ago"], tier: "T0", covers: [4] },
+  { id: "night", title: "Night patrol, Hall A and the loading yard", facts: ["1,104 items", "Updated 5 d ago"], tier: "T0", covers: [6, 7] },
+]
+
+/**
+ * A media card: a pattern, not a component. CardMedia holds one cover or a mosaic of up to four Thumbnails (filling it),
+ * then the title as the card's one link (metric-card's stretched link, underlined while the card is hovered), one or two facts and a tier badge. A restricted
+ * collection shows Thumbnail's restricted placeholder and fetches nothing. Grid columns as many as fit at 16 rem.
+ */
+function MediaCard({ c }: { c: Collection }) {
+  const mosaic = c.covers.length > 1
+  return (
+    <Card className="group/card press relative hover:ring-muted-foreground has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-ring">
+      <CardMedia className={cn(mosaic && "grid grid-cols-2 gap-0.5")}>
+        {c.reason ? (
+          <Thumbnail restricted reason={c.reason} className="flex size-full rounded-none" />
+        ) : (
+          c.covers.slice(0, 4).map((seed, i) => (
+            // Two pictures fill a column each; three take one tall picture and two small; four a 2 × 2 mosaic.
+            <Thumbnail
+              key={seed}
+              src={placeholderPhoto(seed, `${c.id}-${i + 1}`)}
+              alt=""
+              className={cn("flex size-full rounded-none", mosaic && c.covers.length < 4 && i === 0 && "row-span-2", c.covers.length === 2 && "row-span-2")}
+            />
+          ))
+        )}
+      </CardMedia>
+      <CardHeader className="min-w-0">
+        <CardTitle className="truncate">
+          {/* focus-ring: the card draws the ring (has-[a:focus-visible]), since the link covers it. */}
+          <a href={`#collections/${c.id}`} className="underline-offset-4 outline-none group-hover/card:underline after:absolute after:inset-0 after:rounded-[inherit]">
+            {c.title}
+          </a>
+        </CardTitle>
+        <CardDescription className="tabular-nums">{c.facts.join(" · ")}</CardDescription>
+      </CardHeader>
+      <div>
+        <TierBadge tier={c.tier} />
+      </div>
+    </Card>
+  )
+}
+
+/** Media cards in a responsive grid: one link per card (the title), a cover or a mosaic, a restricted collection's placeholder. */
+export const CardMediaGallery: S = {
+  render: () => (
+    <div className="grid grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] gap-4">
+      {collections.map((c) => (
+        <MediaCard key={c.id} c={c} />
       ))}
     </div>
   ),

@@ -1,7 +1,7 @@
 import * as React from "react"
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react"
+import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { afterEach, describe, expect, it, vi } from "vitest"
-import { ImageGrid, type ImageGridItem } from "@/registry/syncrobotic/ui/image-grid"
+import { ImageGrid, type ImageGridHandle, type ImageGridItem } from "@/registry/syncrobotic/ui/image-grid"
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from "@/registry/syncrobotic/ui/sheet"
 
 afterEach(cleanup)
@@ -100,25 +100,18 @@ describe("ImageGrid", () => {
     expect(onOpen).toHaveBeenLastCalledWith(items[0], 0)
   })
 
-  it("with onOpen, the app's own dialog returns focus to the tile it was opened from, as documented", async () => {
+  it("with onOpen, restoreFocus() on the grid's ref returns focus to the tile when the app's own dialog closes", async () => {
     function App() {
       const [open, setOpen] = React.useState<ImageGridItem | null>(null)
-      const opener = React.useRef<HTMLElement | null>(null)
+      const grid = React.useRef<ImageGridHandle>(null)
       return (
         <>
-          <ImageGrid
-            label="Frames"
-            items={items}
-            onOpen={(item) => {
-              opener.current = document.activeElement as HTMLElement | null
-              setOpen(item)
-            }}
-          />
+          <ImageGrid ref={grid} label="Frames" items={items} onOpen={(item) => setOpen(item)} />
           <Sheet open={!!open} onOpenChange={(o) => !o && setOpen(null)}>
             <SheetContent
               onCloseAutoFocus={(e) => {
                 e.preventDefault()
-                opener.current?.focus()
+                grid.current?.restoreFocus()
               }}
             >
               <SheetTitle>{open?.name}</SheetTitle>
@@ -130,11 +123,52 @@ describe("ImageGrid", () => {
     }
     render(<App />)
     const second = screen.getByRole("button", { name: "Frame 2" })
-    second.focus()
     fireEvent.click(second)
     expect(screen.getByRole("dialog").textContent).toContain("b.jpg")
     fireEvent.keyDown(document.activeElement ?? document.body, { key: "Escape" })
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull())
     expect(document.activeElement).toBe(second)
+  })
+
+  it("restoreFocus() goes back to the corner button that opened it, or to the tile in a removed picture's place", () => {
+    const grid = React.createRef<ImageGridHandle>()
+    const { rerender } = render(<ImageGrid ref={grid} label="Frames" items={items} selection="multiple" onOpen={() => {}} />)
+    expect(grid.current!.restoreFocus()).toBe(false)
+    const zoom = screen.getByRole("button", { name: "View c.jpg larger" })
+    fireEvent.click(zoom)
+    ;(document.activeElement as HTMLElement | null)?.blur()
+    expect(grid.current!.restoreFocus()).toBe(true)
+    expect(document.activeElement).toBe(zoom)
+    // The picture was deleted from the app's sheet: the tile now last in the grid takes focus.
+    rerender(<ImageGrid ref={grid} label="Frames" items={items.slice(0, 2)} selection="multiple" onOpen={() => {}} />)
+    expect(grid.current!.restoreFocus()).toBe(true)
+    expect(document.activeElement).toBe(screen.getByRole("button", { name: "Frame 2" }))
+  })
+
+  it("renderTile draws the picture area; the grid keeps the button, its name, the hidden and the failed states", () => {
+    const hidden = items.map((item, i) => (i === 2 ? { ...item, restricted: true, reason: "T2 · faces" } : item))
+    let fail: (() => void) | undefined
+    render(
+      <ImageGrid
+        label="Frames"
+        items={hidden}
+        renderTile={(item, { onError }) => {
+          if (item.id === "b") fail = onError
+          return <span data-testid={`face-${item.id}`}>boxes on {item.name}</span>
+        }}
+      />,
+    )
+    // The face replaces the picture, inside the grid's own button, named by the item's alt.
+    const first = screen.getByRole("button", { name: "Frame 1" })
+    expect(first.getAttribute("data-slot")).toBe("image-grid-item")
+    expect(first.contains(screen.getByTestId("face-a"))).toBe(true)
+    expect(first.querySelector("img")).toBeNull()
+    // A hidden picture stays behind the placeholder: its face is not drawn.
+    expect(screen.queryByTestId("face-c")).toBeNull()
+    expect(screen.getByRole("button", { name: /Show picture/ }).getAttribute("data-slot")).toBe("image-grid-reveal")
+    // The face says its picture failed: the tile shows the grid's failed state, with the file name.
+    act(() => fail!())
+    expect(screen.queryByTestId("face-b")).toBeNull()
+    expect(screen.getByRole("button", { name: "Could not load: b.jpg" })).toBeTruthy()
   })
 })

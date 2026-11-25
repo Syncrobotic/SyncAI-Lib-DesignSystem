@@ -46,6 +46,8 @@ import type { TierBadgeLabels } from "@/registry/syncrobotic/ui/tier-badge"
 import type { StepperLabels } from "@/registry/syncrobotic/ui/stepper"
 import type { TextDiffLabels } from "@/registry/syncrobotic/ui/text-diff"
 import type { MeterLabels } from "@/registry/syncrobotic/ui/meter"
+import type { BarListLabels } from "@/registry/syncrobotic/ui/bar-list"
+import type { ThumbnailLabels } from "@/registry/syncrobotic/ui/thumbnail"
 import type { ThemeChoice } from "@/registry/syncrobotic/ui/theme-toggle"
 import type { TimePickerLabels } from "@/registry/syncrobotic/ui/time-picker"
 import type { TraceLabels } from "@/registry/syncrobotic/ui/trace"
@@ -106,6 +108,8 @@ it("fits every component's labels type", () => {
   fits<LogViewerLabels>()(zh.logViewerLabels)
   fits<WaypointEditorLabels>()(zh.waypointEditorLabels)
   fits<MeterLabels>()(zh.meterLabels)
+  fits<BarListLabels>()(zh.barListLabels)
+  fits<ThumbnailLabels>()(zh.thumbnailLabels)
   fits<MetricCardLabels>()(zh.metricCardLabels)
   fits<TextDiffLabels>()(zh.textDiffLabels)
   fits<LabelsOf<typeof Filters>>()(zh.filtersLabels)

@@ -227,7 +227,7 @@ export const blockTypes: BlockType[] = [
     home: "chart",
     description: "Counts per category: grouped, ranked, stacked, and above or below a plan.",
     use: ["Missions per day, stops per cause, hours per site."],
-    instead: ["A trend over many points: Line chart."],
+    instead: ["A trend over many points: Line chart.", "The top few counts inside a card or a table cell, no chart library: bar-list."],
     rules: ["Bars start at zero.", "Rounded on the data end only, 2 px apart.", "Long category names: horizontal bars, sorted."],
   },
   {
