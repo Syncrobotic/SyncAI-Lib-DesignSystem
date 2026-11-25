@@ -7116,8 +7116,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.38.0",
         "changelog": [
+          {
+            "version": "0.38.0",
+            "date": "2026-11-25",
+            "note": "insets: the bar's two ends balance from 768 px up. The logo and the last button's mark stand in from the bar's padding by insets.start and insets.end, both by default as far as that mark sits inside its button, so the floating panel's ends are equally far from its edges and, at the top, both marks sit on the content's edges."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
