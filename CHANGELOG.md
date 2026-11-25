@@ -2,7 +2,9 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.33.0 · 2026-11-25
+
+Data and pictures in rows and cards: a ranked list of counts, a small picture for tables and lists, the media card pattern, and an image grid that draws your own tile face and hands focus back after your own view.
 
 ### Added
 - **`bar-list` 0.33.0 (beta):** a short ranked list of counts ("items per class", "files per format") with no chart library: a `<ul>` named by `label`, each row its label (truncating) and its value in words (tabular, `locale` and `format`), a bar under it in `--chart-1` scaled to the largest value, so it needs no table view. One series, no status or per-row colours. Rows with `href` are links through `linkAs`, 36 px tall (44 on touch); `max` shows that many, then "N more"; every word through `labels` (`barListLabels` in `labels-zh-tw` 0.33.0). No surface of its own: it fits in a card, a table cell or a sheet. Issue #308
