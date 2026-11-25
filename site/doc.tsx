@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils"
 import { Inline, Unbroken } from "./prose"
 import { DocJsonLd, type Crumb } from "./json-ld"
 
+export { TokenTable } from "./token-table"
+
 // Building blocks for the design-language pages: specimens, do/don't pairs and token tables.
 
 export function DocHeader({ title, lead }: { title: string; lead: string }) {
@@ -80,52 +82,6 @@ export function DoDont({ good, bad }: { good: Case; bad: Case }) {
  * column wraps, so nothing is cut off. Phones: one card per row, each value under its column's name, so no column
  * hides off screen behind a sideways scroll.
  */
-export function TokenTable({ head, rows }: { head: string[]; rows: React.ReactNode[][] }) {
-  return (
-    <>
-      <div className="hidden overflow-x-auto rounded-md border border-border md:block">
-        <table className="w-full text-sm">
-          <thead className="bg-muted text-left text-xs text-muted-foreground">
-            <tr>
-              {head.map((h) => (
-                <th key={h} className="h-10 px-4 font-medium whitespace-nowrap">
-                  {h}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="bg-card">
-            {rows.map((r, i) => (
-              <tr key={i} className="border-t border-border">
-                {r.map((c, j) => (
-                  <td key={j} className={cn("px-4 py-3 align-top", j === 0 ? "whitespace-nowrap" : "min-w-24", j === r.length - 1 && "min-w-48")}>
-                    {c}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <ul className="flex flex-col divide-y divide-border rounded-md border border-border bg-card text-sm md:hidden">
-        {rows.map((r, i) => (
-          <li key={i} className="flex flex-col gap-2 p-4">
-            <div className="font-medium">{r[0]}</div>
-            <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2">
-              {r.slice(1).map((c, j) => (
-                <React.Fragment key={j}>
-                  <dt className="text-xs text-muted-foreground">{head[j + 1]}</dt>
-                  <dd className="min-w-0 wrap-anywhere">{c}</dd>
-                </React.Fragment>
-              ))}
-            </dl>
-          </li>
-        ))}
-      </ul>
-    </>
-  )
-}
-
 // A token or class never splits at its hyphens (h-(-- / h-md)): text goes through Unbroken, which wraps only at a space or "/".
 export function Code({ children }: { children: React.ReactNode }) {
   const parts = React.Children.toArray(children)

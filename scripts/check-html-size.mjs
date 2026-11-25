@@ -4,24 +4,28 @@
 // parsed and hydrated on the visitor's main thread. 0.35's chart page was 2.2 MB, most of it code listings behind tabs
 // nobody had opened; those are fetched on open now (site/code-data.ts). This keeps a page from growing back unnoticed.
 //
+// The payload repeats the server-rendered tree, so a long list pays for its markup twice. In 0.38 the last eight pages
+// left their ceilings that way: code listings carry eight colour classes, not a style on every word (ROS 423 KB to 309,
+// Next.js 516 to 373); repeated utilities written once as a class (the icon tiles, 507 to 376); a component's Patterns
+// drawn as each block nears the screen (chart 740 to 391); a token table is one table that CSS lays out for a phone, its rows without classes (Colour 431 KB to
+// 310 KB); a long list a page draws from data is a client component given the strings, so the payload carries those and
+// not the elements (Upgrading 896 to 296, the Components cards 561 to 321); and a catalog few readers open is static JSON
+// fetched after the page shows (Localisation's labels, 1,978 to 302).
+//
 //   npm run build && npm run lint:html-size        fails when a page is over the limit, and lists the largest pages
 import { readdirSync, statSync } from "node:fs"
 import { join } from "node:path"
 
 const ROOT = ".next/server/app"
-/** The limit in KB. After 0.36 the median page is 211 KB and all but eight are under 360 KB. */
+/** The limit in KB. After 0.38 the median page is 211 KB; every page without a ceiling below is under 360 KB. */
 const LIMIT_KB = Number(process.env.HTML_LIMIT_KB ?? 400)
 
 /**
- * Pages over the limit for what they show, not for anything hidden, each held to its 0.36 size plus about a tenth. Lower a
- * ceiling when a page shrinks; raising one is a decision, with its reason here.
+ * Pages allowed over the limit for what they show, each with its reason. Since 0.38 there are none: adding one is a
+ * decision, with its reason here.
  * @type {Record<string, { kb: number, why: string }>}
  */
 const ceilings = {
-  "/docs/localisation": { kb: 2150, why: "1,953 KB: every label of the kit with its zh-TW text, as a table and as a phone list" },
-  "/docs/upgrading": { kb: 980, why: "888 KB: the whole changelog" },
-  "/docs/components": { kb: 620, why: "561 KB: a card for every component" },
-  "/docs/foundations/color": { kb: 480, why: "430 KB: every colour token with its contrast" },
 }
 
 /** @param {string} dir @returns {string[]} */

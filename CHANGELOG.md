@@ -4,11 +4,23 @@ Components install as source, so a project keeps the version it installed. Re-ru
 
 ## Unreleased
 
+Every docs page is now under 400 KB of HTML, with no exceptions: the eight pages the budget let stay over it are lighter, most of them looking exactly as they did. The home page's fleet runs on a real street map, its sections arrive on a reload too, and the top bar's two ends balance.
+
+### Added
+- **`top-bar-shell` 0.38.0:** `insets` (`{ start, end }`): how far the logo and the last button's mark stand in from the bar's padding, from 768 px up. Both default to how far that last mark sits inside its 44 px button, so the floating panel's two ends are equally far from its edges, and at the top both marks sit on the content's edges. Before, the logo sat 12 px tighter to its edge than the icons at the other end. The docs header does the same.
+
 ### Changed
+- **Docs:** token tables (on the foundation pages, Tokens, Localisation and Upgrading) are rendered once: one table that CSS turns into a card per row on a phone, where there were a table and a phone list side by side, and their rows carry no classes. On a phone a row's column names are drawn by CSS and screen readers hear the table's headers. Colour is 310 KB of HTML, from 431 KB.
+- **Docs:** Upgrading's Current versions table is a client component drawn from four strings per item, so the page's React payload no longer carries its 200-odd rows as elements a second time beside the HTML, and the rows' looks are set once on the table: 296 KB, from 896 KB.
+- **Docs:** Localisation's catalog of every component's labels (62 tables, 718 keys) is fetched once the page shows, from `/localisation-labels.json` (built from the props file, as the Lucide list is), and drawn as before; "Loading the labels" holds its place for the moment it takes: 302 KB, from 1,978 KB.
+- **Docs:** the Components index's cards are drawn by a client component from each component's name, title and description, and styled from one CSS rule instead of classes on every card: 321 KB, from 561 KB. `lint:html-size` keeps no ceiling for these four pages.
 - **Docs:** code listings carry their colours as eight classes instead of a style on every word, and a word in the code's own colour has no span at all: the same pixels in under half the bytes, on every page that shows code. Connect to ROS drops from 423 KB to 309 KB of HTML and leaves the size ceilings.
 - **Docs:** the Next.js guide drops from 516 KB to 373 KB of HTML and leaves the size ceilings: the lighter listings above, and its two lists of a hundred component links styled once from the list instead of on every link.
 - **Docs:** the icon gallery's tiles take four classes written once in the site's CSS instead of some forty utilities each, the same tiles in every state: /icons drops from 507 KB to 376 KB of HTML and leaves the size ceilings, and /icons/lucide is lighter too.
 - **Docs:** a component's Patterns draw each block's copy buttons, install line, "Built from" row and preview card as the block nears the screen, as the examples already do; until then its title and description stand above empty boxes of the same size. The chart page, with 22 patterns, drops from 740 KB to 391 KB of HTML and leaves the size ceilings. The Prompt button's text is written in the browser, and /blocks pages send their blocks as data, not markup twice: the same page in fewer bytes.
+- **Docs:** `lint:html-size` keeps no ceilings: every prerendered page is held to 400 KB.
+- **Docs:** the home page's fleet runs on GeoMap over CARTO's grey basemap (OpenStreetMap data, credited on the map): four patrol robots in a city park, where it was a schematic floor plan. The alarm panel fills its box, so it ends level with the telemetry panel beside it.
+- **Docs:** on a reload the home page's sections already on screen play their entrance, as the hero does; before, a reload (which keeps the scroll position) left them still. They are hidden before the first paint only when scripts run, and show anyway after 2 s.
 
 ## 0.37.0 · 2026-11-25
 
