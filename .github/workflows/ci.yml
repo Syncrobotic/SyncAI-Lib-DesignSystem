@@ -58,7 +58,7 @@ jobs:
   # Story checks: every story, dark and light, opened once for its screenshot (against the committed baselines in
   # tests/__screenshots__/) and for axe (WCAG 2.2 A/AA), split over four runners.
   # They gate promotion into stage, where a release is assembled, and manual runs. Main receives stage's tree unchanged,
-  # so checking it again found nothing new; PRs into dev and main get the fast checks.
+  # so checking it again found nothing new; PRs into dev and main get the fast checks (and, into dev, stories-changed).
   # They run in Playwright's own image (same Ubuntu, browser and fonts preinstalled): installing them took 20 s to 4.5 min.
   stories:
     if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.base_ref == 'stage')
@@ -76,7 +76,7 @@ jobs:
         with: { node-version: 22, cache: npm }
       - run: npm ci
       - run: npm run build-storybook
-      - run: npx playwright test --update-snapshots=missing --shard=${{ matrix.shard }}/4
+      - run: npx playwright test --update-snapshots=none --shard=${{ matrix.shard }}/4
       - uses: actions/upload-artifact@v7
         if: always()
         with:
@@ -87,6 +87,42 @@ jobs:
         if: failure()
         with:
           name: story-test-results-${{ matrix.shard }}
+          path: test-results
+
+  # On a pull request into dev, the stories it can change (scripts/changed-stories.mjs) run twice: once with axe, writing
+  # their pictures, then again against those pictures. Their baselines move with the change, so a comparison with them
+  # says nothing yet; drawing the same picture twice is what a story must do before the baseline is written on dev.
+  stories-changed:
+    if: github.event_name == 'pull_request' && github.base_ref == 'dev'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    container: { image: "mcr.microsoft.com/playwright:v1.65.1-noble" }
+    env: { HOME: /root }
+    steps:
+      - uses: actions/checkout@v7
+        with: { fetch-depth: 0 }
+      - id: changed
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          files=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD")
+          if echo "$files" | grep -qE '^(registry/syncrobotic/|stories/)'; then echo "run=true" >> "$GITHUB_OUTPUT"
+          else echo "run=false" >> "$GITHUB_OUTPUT"; echo "No component or story changed: skipped."; fi
+      - if: steps.changed.outputs.run == 'true'
+        uses: actions/setup-node@v7
+        with: { node-version: 22, cache: npm }
+      - if: steps.changed.outputs.run == 'true'
+        run: npm ci && npm run build-storybook
+      - if: steps.changed.outputs.run == 'true'
+        id: pick
+        run: echo "grep=$(node scripts/changed-stories.mjs origin/${{ github.base_ref }})" >> "$GITHUB_OUTPUT"
+      - if: steps.pick.outputs.grep != ''
+        run: npx playwright test --update-snapshots=all --grep "${{ steps.pick.outputs.grep }}"
+      - if: steps.pick.outputs.grep != ''
+        run: STORY_CHECKS=visual npx playwright test --update-snapshots=none --grep "${{ steps.pick.outputs.grep }}"
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: changed-story-results
           path: test-results
 
   # Installs every item into a fresh Next.js app with the shadcn CLI, then typechecks and builds it. Skipped when a pull
