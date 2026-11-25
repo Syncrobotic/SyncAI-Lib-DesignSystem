@@ -11,26 +11,28 @@ import { cn } from "@/lib/utils"
  * track or a label changes size. Null until measured (and when nothing is selected).
  */
 function useThumb(root: React.RefObject<HTMLDivElement | null>) {
-  const [thumb, setThumb] = React.useState<{ x: number; w: number } | null>(null)
+  // `travel` is true only when the selection moved: a segment that changes width (a web font arriving, a count) places
+  // the thumb at once. Movement marks a change of state, and a resize is not one.
+  const [thumb, setThumb] = React.useState<{ x: number; w: number; travel: boolean } | null>(null)
   React.useLayoutEffect(() => {
     const el = root.current
     if (!el) return
     // offsetLeft / offsetWidth are the item's layout box inside the track (its offset parent), unaffected by the press
     // scale, so the thumb is exactly the selected segment's box. Unchanged values keep the same state, so no re-render.
-    const measure = () => {
+    const measure = (travel: boolean) => {
       const on = el.querySelector<HTMLElement>(':scope > [data-slot="segmented-control-item"][data-state="on"]')
       setThumb((t) => {
         if (!on) return null
-        const next = { x: on.offsetLeft, w: on.offsetWidth }
+        const next = { x: on.offsetLeft, w: on.offsetWidth, travel }
         return t && t.x === next.x && t.w === next.w ? t : next
       })
     }
-    measure()
-    const mo = new MutationObserver(measure)
+    measure(false)
+    const mo = new MutationObserver(() => measure(true))
     mo.observe(el, { subtree: true, attributes: true, attributeFilter: ["data-state"] })
     // Every segment is watched as well as the track: a label that changes width (a web font arriving, a count) moves
     // the segments inside a track whose own size stays the same.
-    const ro = new ResizeObserver(measure)
+    const ro = new ResizeObserver(() => measure(false))
     ro.observe(el)
     el.querySelectorAll<HTMLElement>(':scope > [data-slot="segmented-control-item"]').forEach((i) => ro.observe(i))
     return () => {
@@ -98,7 +100,7 @@ export function SegmentedControl({
           data-slot="segmented-control-thumb"
           className={cn(
             "pointer-events-none absolute inset-y-1 left-0 rounded-xs bg-primary",
-            placed && "transition-[translate,width] duration-(--motion-base) ease-(--ease-standard)",
+            placed && thumb.travel && "transition-[translate,width] duration-(--motion-base) ease-(--ease-standard)",
           )}
           style={{ translate: `${thumb.x}px 0`, width: thumb.w }}
         />

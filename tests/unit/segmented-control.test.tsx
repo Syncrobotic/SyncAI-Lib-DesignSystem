@@ -20,6 +20,44 @@ const radio = (name: string) => screen.getByRole("radio", { name })
 const checked = () => screen.getAllByRole("radio").filter((r) => r.getAttribute("aria-checked") === "true")
 
 describe("SegmentedControl", () => {
+  // Movement marks a change of state: the thumb travels to a new selection, and a segment that only changes width (a web
+  // font arriving) moves it at once. The visual checks had caught it halfway after a resize.
+  it("travels to a new selection, and only places itself on a resize", async () => {
+    let resize: () => void = () => {}
+    const RO = globalThis.ResizeObserver
+    globalThis.ResizeObserver = class {
+      constructor(cb: ResizeObserverCallback) {
+        resize = () => cb([], this as unknown as ResizeObserver)
+      }
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    } as unknown as typeof ResizeObserver
+    const width = vi.spyOn(HTMLElement.prototype, "offsetWidth", "get").mockReturnValue(80)
+    // Each segment at its own place, as in a browser (jsdom lays nothing out).
+    const left = vi.spyOn(HTMLElement.prototype, "offsetLeft", "get").mockImplementation(function (this: HTMLElement) {
+      return ["1 h", "24 h", "7 days", "30 days"].indexOf(this.textContent ?? "") * 100
+    })
+    const settle = () => act(async () => void (await new Promise((r) => setTimeout(r, 50))))
+    try {
+      render(<Range defaultValue="1h" />)
+      await settle()
+      const thumb = () => document.querySelector<HTMLElement>("[data-slot=segmented-control-thumb]")!
+      width.mockReturnValue(96)
+      act(() => resize())
+      expect(thumb().style.width).toBe("96px")
+      expect(thumb().className).not.toContain("transition")
+      fireEvent.click(radio("24 h"))
+      await settle()
+      expect(thumb().style.translate).toBe("100px 0")
+      expect(thumb().className).toContain("transition")
+    } finally {
+      width.mockRestore()
+      left.mockRestore()
+      globalThis.ResizeObserver = RO
+    }
+  })
+
   it("is a labelled radiogroup of radios, with the default value checked", () => {
     render(<Range defaultValue="24h" />)
     expect(screen.getByRole("radiogroup", { name: "Range" })).toBeTruthy()
