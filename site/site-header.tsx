@@ -13,11 +13,11 @@ export function SiteHeader() {
     <HeaderFrame>
       {/* Left, where its drawer opens from: the button and the panel move the same way. */}
       <NavDrawer scopes={scopes} />
-      <Link href="/" className="inline-flex min-h-(--h-md) items-center rounded-sm">
+      <Link href="/" className="inline-flex min-h-(--h-md) items-center rounded-sm lg:ml-(--start-inset)">
         <Logo />
       </Link>
       <HeaderNav links={headerLinks} />
-      <div className="ml-auto flex items-center gap-1">
+      <div className="ml-auto flex items-center gap-1 lg:mr-(--end-shift)">
         <SiteSearch />
         {/* Under 640 px it moves into the drawer, so the bar fits a 320 px screen. */}
         <a

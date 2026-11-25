@@ -1,4 +1,4 @@
-// @syncrobotic/top-bar-shell v0.32.0 · update: npx shadcn add @syncrobotic/top-bar-shell --overwrite
+// @syncrobotic/top-bar-shell v0.38.0 · update: npx shadcn add @syncrobotic/top-bar-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -59,6 +59,14 @@ type TopBarShellProps = {
   linkAs?: React.ElementType
   /** Where the logo and name link to. Defaults to the first link's href. */
   home?: string
+  /**
+   * The bar's two ends, from 768 px up, so they balance: how far the logo (`start`) and the mark of the last button
+   * (`end`) stand in from the bar's padding, as CSS lengths. By default both are as far as that last mark stands inside its
+   * 44 px button (the avatar's 6 px with a user, an icon's 12 px without), so the floating panel's two ends are equally far
+   * from its edges, and at the top the logo and the last mark sit on the content's edges. Set them when the logo carries
+   * space of its own, or the bar ends in something else.
+   */
+  insets?: { start?: string; end?: string }
   /** The id on `<main>`, for a skip link (`<a href="#main">`). */
   mainId?: string
   /** End of the page: version, copyright, links. No line above it. */
@@ -85,6 +93,7 @@ export function TopBarShell({
   userMenu = sampleUserMenu,
   linkAs: Link = "a",
   home = links[0]?.href ?? "#",
+  insets,
   mainId = "main",
   footer,
   labels,
@@ -158,14 +167,32 @@ export function TopBarShell({
       ref={frame}
       className="flex min-h-[var(--app-shell-height,100dvh)] flex-col bg-background text-foreground [--shell-surface:var(--color-background)] [--shell-top:calc(var(--h-row)+--spacing(2))]"
     >
-      <header className="pointer-events-none sticky top-0 z-20 mx-auto h-(--h-row) w-full max-w-6xl px-6">
+      <header
+        className="pointer-events-none sticky top-0 z-20 mx-auto h-(--h-row) w-full max-w-6xl px-6"
+        style={
+          {
+            // The last button's mark inside its 44 px box, and the two ends as asked (both that, by default).
+            "--shell-end-mark": `calc((var(--h-md) - ${user ? "2rem" : "1.25rem"}) / 2)`,
+            "--shell-start-inset": insets?.start ?? "var(--shell-end-mark)",
+            "--shell-end-inset": insets?.end ?? "var(--shell-end-mark)",
+            // How far the right-hand group moves out (negative) or in so its last mark lands at --shell-end-inset.
+            "--shell-end-shift": "calc(var(--shell-end-inset) - var(--shell-end-mark))",
+            // At the top the bar reaches out by its padding and each end's inset, so both marks sit on the content's edges.
+            "--shell-reach-start": "calc(1rem + var(--shell-start-inset))",
+            "--shell-reach-end": "calc(1rem + var(--shell-end-inset))",
+          } as React.CSSProperties
+        }
+      >
         <div
           className={cn(
             "pointer-events-auto flex h-(--h-row) items-center gap-6 rounded-md px-4 ring-1",
             "transition-[background-color,box-shadow,translate,margin] duration-(--motion-base) ease-(--ease-standard) motion-reduce:transition-none",
-            // At the top the bar is invisible and 16 px wider each side, so the menu icon or the logo starts on the
-            // content's edge, in line with the page's text. On scroll it gathers: its edges come in to the content column.
-            scrolled ? "mx-0 translate-y-2 bg-card ring-border" : "-mx-4 translate-y-0 bg-transparent ring-transparent",
+            // At the top the bar is invisible and 16 px wider each side, so the menu icon starts on the content's edge, in
+            // line with the page's text; from 768 px each side reaches out by its end's inset too, which puts the logo and the
+            // last button's mark on the content's two edges. On scroll it gathers: its edges come in to the content column.
+            scrolled
+              ? "mx-0 translate-y-2 bg-card ring-border"
+              : "-mx-4 translate-y-0 bg-transparent ring-transparent md:-ml-(--shell-reach-start) md:-mr-(--shell-reach-end)",
           )}
         >
           <Sheet open={drawer} onOpenChange={setDrawer}>
@@ -185,12 +212,12 @@ export function TopBarShell({
             </SheetContent>
           </Sheet>
           {/* The brand is a link home: a full-height target (44, 48 in gloves), not the 28 px of the logo. */}
-          <Link href={home} data-slot="top-bar-brand" className="flex min-h-(--h-md) shrink-0 items-center gap-2 rounded-xs">
+          <Link href={home} data-slot="top-bar-brand" className="flex min-h-(--h-md) shrink-0 items-center gap-2 rounded-xs md:ml-(--shell-start-inset)">
             {logo}
             <span className="text-sm font-bold">{product}</span>
           </Link>
           <div className="hidden md:block">{nav()}</div>
-          <div className="ml-auto flex items-center gap-2">
+          <div className="ml-auto flex items-center gap-2 md:mr-(--shell-end-shift)">
             {search && <ShellSearch search={search} linkAs={Link} />}
             {actions}
             {user && (
