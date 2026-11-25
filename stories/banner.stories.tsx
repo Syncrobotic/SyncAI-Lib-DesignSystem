@@ -96,8 +96,8 @@ export const BannerAboveAppShell: S = {
       <div className="min-h-0 flex-1 [--app-shell-height:100%]">
         {/* Your AppShell goes here; it fills h-[var(--app-shell-height,100dvh)]. */}
         <div className="flex h-[var(--app-shell-height,100dvh)] gap-2 bg-background p-2">
-          <div className="hidden w-48 shrink-0 rounded-sm bg-card p-4 text-sm text-muted-foreground ring-1 ring-border sm:block">Navigation</div>
-          <div className="flex min-w-0 flex-1 flex-col gap-2 rounded-sm bg-card p-4 text-sm ring-1 ring-border">
+          <div className="hidden w-48 shrink-0 rounded-xs bg-card p-4 text-sm text-muted-foreground ring-1 ring-border sm:block">Navigation</div>
+          <div className="flex min-w-0 flex-1 flex-col gap-2 rounded-xs bg-card p-4 text-sm ring-1 ring-border">
             <p className="font-medium">Overview</p>
             <p className="text-muted-foreground">The shell ends at the bottom of the frame, under the banner, whatever the banner's height.</p>
           </div>

@@ -6032,8 +6032,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.36.0",
+        "version": "0.37.0",
         "changelog": [
+          {
+            "version": "0.37.0",
+            "date": "2026-11-26",
+            "note": "The toolbar sits 4 px from the frame, so its controls' corners follow the frame's (outer radius = inner + padding)."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",

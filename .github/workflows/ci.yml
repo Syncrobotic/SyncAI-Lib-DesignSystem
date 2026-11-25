@@ -125,6 +125,27 @@ jobs:
           name: changed-story-results
           path: test-results
 
+  # The built site, looked at the way the design-language checklist asks: corners that are not concentric (outer radius =
+  # inner + padding, scripts/check-radius.cjs) and rows of actions that wrap badly on a 375 px phone (scripts/check-wrap.cjs).
+  site-checks:
+    if: github.event_name == 'pull_request' && github.base_ref != 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    container: { image: "mcr.microsoft.com/playwright:v1.65.1-noble" }
+    env: { HOME: /root, SITE: "http://127.0.0.1:3000" }
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm run build
+      # One step: the server started in the background lives as long as the step that started it.
+      - run: |
+          npx next start -p 3000 &
+          timeout 60 bash -c 'until node -e "fetch(process.env.SITE).then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))"; do sleep 1; done'
+          npm run check:radius
+          npm run check:wrap
+
   # Installs every item into a fresh Next.js app with the shadcn CLI, then typechecks and builds it. Skipped when a pull
   # request touches nothing an installed item is made of (docs pages, the site, stories, CI).
   # The Accessibility tab's measured roles and Tab stops (site/a11y.json) match the components as they render now.
