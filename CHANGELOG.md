@@ -4,7 +4,7 @@ Components install as source, so a project keeps the version it installed. Re-ru
 
 ## 0.38.0 · 2026-11-25
 
-Every docs page is now under 400 KB of HTML, with no exceptions: the eight pages the budget let stay over it are lighter, most of them looking exactly as they did. The home page's fleet runs on a real street map, its sections arrive on a reload too, and the top bar's two ends balance.
+Every docs page is now under 400 KB of HTML, with no exceptions: the eight pages the budget let stay over it are lighter, most of them looking exactly as they did. The home page's sections arrive on a reload too, and the top bar's two ends balance.
 
 ### Added
 - **`top-bar-shell` 0.38.0:** `insets` (`{ start, end }`): how far the logo and the last button's mark stand in from the bar's padding, from 768 px up. Both default to how far that last mark sits inside its 44 px button, so the floating panel's two ends are equally far from its edges, and at the top both marks sit on the content's edges. Before, the logo sat 12 px tighter to its edge than the icons at the other end. The docs header does the same.
@@ -19,7 +19,7 @@ Every docs page is now under 400 KB of HTML, with no exceptions: the eight pages
 - **Docs:** the icon gallery's tiles take four classes written once in the site's CSS instead of some forty utilities each, the same tiles in every state: /icons drops from 507 KB to 376 KB of HTML and leaves the size ceilings, and /icons/lucide is lighter too.
 - **Docs:** a component's Patterns draw each block's copy buttons, install line, "Built from" row and preview card as the block nears the screen, as the examples already do; until then its title and description stand above empty boxes of the same size. The chart page, with 22 patterns, drops from 740 KB to 391 KB of HTML and leaves the size ceilings. The Prompt button's text is written in the browser, and /blocks pages send their blocks as data, not markup twice: the same page in fewer bytes.
 - **Docs:** `lint:html-size` keeps no ceilings: every prerendered page is held to 400 KB.
-- **Docs:** the home page's fleet runs on GeoMap over OpenStreetMap's own tiles, which need no key, drawn grey (dark on a dark page) and credited on the map: four patrol robots in a city park, where it was a schematic floor plan. The alarm panel fills its box, so it ends level with the telemetry panel beside it.
+- **Docs:** on the home page the alarm panel fills its box, so it ends level with the telemetry panel beside it.
 - **Docs:** on a reload the home page's sections already on screen play their entrance, as the hero does; before, a reload (which keeps the scroll position) left them still. They are hidden before the first paint only when scripts run, and show anyway after 2 s.
 
 ## 0.37.0 · 2026-11-25

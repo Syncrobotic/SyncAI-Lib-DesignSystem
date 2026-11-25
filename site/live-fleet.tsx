@@ -3,33 +3,37 @@
 import * as React from "react"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
-import { GeoMap, type GeoMapRobot, type GeoPoint } from "@/registry/syncrobotic/ui/geo-map"
+import { RobotMap, type RobotMapPath, type RobotMapPoint, type RobotMapRobot, type RobotMapZone } from "@/registry/syncrobotic/ui/robot-map"
 import { useLive } from "./live"
 
-// A fleet for the home page: four patrol dogs in a city park, reporting their pose every 2 s, on a real street map (OpenStreetMap). Two
-// patrol, one docked robot charges, and one runs low and drives back to its dock, which the map and the list both say.
-// Every frame is a function of the step, so it is the same on every machine. Routes are laid out in metres on a 300 ×
-// 180 m patch of the park (x east, y south from its north-west corner) and turned into latitude and longitude.
+// A fleet for the home page: four patrol dogs on a 60 × 36 m site, reporting their pose every 2 s. Two patrol, one docked
+// robot charges, and one runs low and drives back to its dock, which the map and the list both say. Every frame is a
+// function of the step, so it is the same on every machine.
 const EVERY = 2000
 const CYCLE = 50
 // The still frame: the low robot on its way to the dock, its route drawn.
 const STILL_AT = 7
 
-type RobotMapPoint = [number, number]
-// The north-west corner of the patch, inside Daan Forest Park, Taipei.
-const LAT0 = 25.0313
-const LON0 = 121.5345
-const M_PER_DEG = 111_320
-const geo = ([x, y]: RobotMapPoint): GeoPoint => ({
-  lat: LAT0 - y / M_PER_DEG,
-  lon: LON0 + x / (M_PER_DEG * Math.cos((LAT0 * Math.PI) / 180)),
-})
-const CENTER = geo([150, 90])
+const W = 60
+const H = 36
+const zones: RobotMapZone[] = [
+  { id: "cold", kind: "restricted", label: "Cold store", points: [[44, 0], [60, 0], [60, 18], [44, 18]] },
+  { id: "bay", kind: "slow", label: "Loading bay", points: [[10, 28], [60, 28], [60, 36], [10, 36]] },
+  { id: "docks", kind: "charging", label: "Docks", points: [[0, 4], [6, 4], [6, 14], [0, 14]] },
+]
 
-// Basemap tiles: OpenStreetMap's own, which need no key, credited on the map as its licence asks. They are drawn in
-// colour; the map turns them grey (and, on a dark page, dark), so a calm fleet still sits on grey.
-const tiles = "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-const attribution = "© OpenStreetMap contributors"
+/** Walls and racks as hairlines, in metres. */
+function Floor() {
+  return (
+    <g className="fill-none stroke-map-point" strokeWidth="1">
+      {[14, 20, 26, 32, 38].map((x) => (
+        <rect key={x} x={x} y={6} width={2} height={16} vectorEffect="non-scaling-stroke" />
+      ))}
+      <path d="M44 0V18H60" vectorEffect="non-scaling-stroke" />
+      <path d="M0 28H10M18 28H60" vectorEffect="non-scaling-stroke" />
+    </g>
+  )
+}
 
 /** Where a robot is after `d` metres along a route (closed when `loop`), and which way it faces. */
 function along(points: RobotMapPoint[], d: number, loop = true) {
@@ -51,25 +55,25 @@ function along(points: RobotMapPoint[], d: number, loop = true) {
   return { x: b[0], y: b[1], heading: ((Math.atan2(b[0] - a[0], a[1] - b[1]) * 180) / Math.PI + 360) % 360 }
 }
 
-const lawn: RobotMapPoint[] = [[50, 125], [210, 125], [210, 15], [50, 15]]
-const south: RobotMapPoint[] = [[70, 160], [280, 160], [280, 170], [70, 170]]
-const home: RobotMapPoint[] = [[150, 125], [40, 125], [40, 45], [15, 45]]
-const SPEED = 8 // metres a step (4 m/s, so the 2 s steps show on a map of the whole patch)
+const aisle: RobotMapPoint[] = [[10, 25], [42, 25], [42, 3], [10, 3]]
+const bay: RobotMapPoint[] = [[14, 32], [56, 32], [56, 34], [14, 34]]
+const home: RobotMapPoint[] = [[30, 25], [8, 25], [8, 9], [3, 9]]
+const SPEED = 1.6 // metres a step (0.8 m/s)
 
-type Row = Omit<GeoMapRobot, "lat" | "lon"> & { x: number; y: number; battery: number; place: string }
+type Row = RobotMapRobot & { battery: number; place: string }
 
-function fleetAt(step: number): { robots: Row[]; route: RobotMapPoint[] } {
+function fleetAt(step: number): { robots: Row[]; paths: RobotMapPath[] } {
   const s = step % CYCLE
   // 9C44 drives home on what is left of its battery, then charges.
   const homeLen = home.slice(1).reduce((sum, p, i) => sum + Math.hypot(p[0] - home[i][0], p[1] - home[i][1]), 0)
   const homeAt = along(home, s * SPEED, false)
   const docked = s * SPEED >= homeLen
   const homeBattery = docked ? 12 + (s - homeLen / SPEED) * 0.5 : 14 - s * 0.08
-  const p7 = along(lawn, 200 + step * SPEED)
-  const p1 = along(south, 150 + step * SPEED)
+  const p7 = along(aisle, 40 + step * SPEED)
+  const p1 = along(bay, 30 + step * SPEED)
   const robots: Row[] = [
-    { id: "7F3A", name: "7F3A", ...p7, status: "active", statusLabel: "Patrolling", battery: 72 - (step % 200) * 0.05, place: "Central lawn" },
-    { id: "1A08", name: "1A08", ...p1, status: "active", statusLabel: "Patrolling", battery: 55 - (step % 200) * 0.05, place: "South path" },
+    { id: "7F3A", name: "7F3A", ...p7, status: "active", statusLabel: "Patrolling", battery: 72 - (step % 200) * 0.05, place: "Aisles" },
+    { id: "1A08", name: "1A08", ...p1, status: "active", statusLabel: "Patrolling", battery: 55 - (step % 200) * 0.05, place: "Loading bay" },
     {
       id: "9C44",
       name: "9C44",
@@ -77,13 +81,15 @@ function fleetAt(step: number): { robots: Row[]; route: RobotMapPoint[] } {
       status: docked ? "normal" : "warning",
       statusLabel: docked ? "Charging" : "Returning to dock",
       battery: homeBattery,
-      place: docked ? "Dock 2" : "Central lawn",
+      place: docked ? "Dock 2" : "Aisles",
     },
-    { id: "2B10", name: "2B10", x: 15, y: 27, heading: 90, status: "normal", statusLabel: "Docked", battery: 100, place: "Dock 1" },
+    { id: "2B10", name: "2B10", x: 3, y: 5.5, heading: 90, status: "normal", statusLabel: "Docked", battery: 100, place: "Dock 1" },
   ]
   // The way home is a process under way: the one blue line on the map.
-  const route: RobotMapPoint[] = docked ? [] : [[homeAt.x, homeAt.y], ...home.slice(legIndex(s * SPEED) + 1)]
-  return { robots, route }
+  const paths: RobotMapPath[] = docked
+    ? []
+    : [{ id: "9c44-home", kind: "planned", robotId: "9C44", points: [[homeAt.x, homeAt.y], ...home.slice(legIndex(s * SPEED) + 1)] }]
+  return { robots, paths }
 }
 
 /** The index of the route corner a robot `d` metres along `home` has passed. */
@@ -102,23 +108,11 @@ const frame = "grid h-full gap-4 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]"
 export default function LiveFleet() {
   const [step, setStep] = React.useState(0)
   const { ref, still } = useLive<HTMLDivElement>(EVERY, () => setStep((s) => s + 1))
-  const { robots, route } = fleetAt(still ? STILL_AT : step)
-  const onMap: GeoMapRobot[] = robots.map(({ x, y, battery: _b, place: _p, ...r }) => ({ ...r, ...geo([x, y]) }))
+  const { robots, paths } = fleetAt(still ? STILL_AT : step)
   return (
     <div ref={ref} className={frame}>
-      <div className="h-64 sm:h-72 lg:h-full [&_image]:opacity-80 [&_image]:grayscale dark:[&_image]:opacity-60 dark:[&_image]:invert">
-        <GeoMap
-          label="Map of the park patrol"
-          tileUrl={tiles}
-          attribution={attribution}
-          center={CENTER}
-          zoom={17.25}
-          robots={onMap}
-          route={route.map(geo)}
-          routeActive
-          fill
-          className="h-full"
-        />
+      <div className="h-64 sm:h-72 lg:h-full">
+        <RobotMap label="Map of North site" width={W} height={H} floorplan={<Floor />} zones={zones} robots={robots} paths={paths} fill className="h-full" />
       </div>
       <ul role="list" className="flex flex-col rounded-md bg-card ring-1 ring-border">
         {robots.map((r) => (
