@@ -1,10 +1,11 @@
-// @syncrobotic/navigation-menu v0.28.0 · update: npx shadcn add @syncrobotic/navigation-menu --overwrite
+// @syncrobotic/navigation-menu v0.35.0 · update: npx shadcn add @syncrobotic/navigation-menu --overwrite
 "use client"
 
 import * as React from "react"
 import { NavigationMenu as NavPrimitive } from "radix-ui"
 import { ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { IconTile } from "@/registry/syncrobotic/ui/icon-tile"
 
 /**
  * A site's top-level navigation: links, and triggers that open a panel of links.
@@ -148,7 +149,11 @@ export function NavigationMenuCard({
     // justify-start: the link is a flex column centred on its height; as a row it would centre each card by its own
     // width, so the icons of a panel's rows would not line up.
     <NavigationMenuLink className={cn("flex-row items-start justify-start gap-3", className)} {...props}>
-      {icon && <span className="grid size-8 shrink-0 place-items-center rounded-sm bg-muted [&_svg]:size-4">{icon}</span>}
+      {icon && (
+        <IconTile variant="muted" size="sm">
+          {icon}
+        </IconTile>
+      )}
       <span className="flex min-w-0 flex-col gap-1">
         <span className="font-medium text-foreground">{title}</span>
         {description && <span className="line-clamp-2 text-xs text-muted-foreground">{description}</span>}

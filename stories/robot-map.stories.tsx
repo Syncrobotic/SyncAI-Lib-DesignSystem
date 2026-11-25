@@ -13,7 +13,7 @@ import {
   type RobotMapZone,
 } from "@/registry/syncrobotic/ui/robot-map"
 import { Button } from "@/registry/syncrobotic/ui/button"
-import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
+import { ChartViewSwitch } from "@/registry/syncrobotic/ui/segmented-control"
 
 const meta: Meta = { title: "Charts/Robot map" }
 export default meta
@@ -114,10 +114,15 @@ function WithList({ title, defaultSelected = null, ...props }: { title: string; 
     <div className="flex w-full flex-col gap-3">
       <div className="flex items-center justify-between gap-4">
         <p className="text-sm font-medium">{title}</p>
-        <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto shrink-0">
-          <SegmentedControlItem value="map">Map</SegmentedControlItem>
-          <SegmentedControlItem value="list">List</SegmentedControlItem>
-        </SegmentedControl>
+        <ChartViewSwitch
+          value={view}
+          onValueChange={setView}
+          views={[
+            { value: "map", label: "Map" },
+            { value: "list", label: "List" },
+          ]}
+          className="shrink-0"
+        />
       </div>
       {view === "map" ? <RobotMap {...site} floorplan={<NorthSiteFloor />} paths={paths} {...shared} /> : <RobotMapList {...shared} />}
     </div>
@@ -266,10 +271,15 @@ function GridSite({ withCostmap = false }: { withCostmap?: boolean }) {
     <div className="flex w-full flex-col gap-3">
       <div className="flex items-center justify-between gap-4">
         <p className="text-sm font-medium">North site, as mapped</p>
-        <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto shrink-0">
-          <SegmentedControlItem value="map">Map</SegmentedControlItem>
-          <SegmentedControlItem value="list">List</SegmentedControlItem>
-        </SegmentedControl>
+        <ChartViewSwitch
+          value={view}
+          onValueChange={setView}
+          views={[
+            { value: "map", label: "Map" },
+            { value: "list", label: "List" },
+          ]}
+          className="shrink-0"
+        />
       </div>
       {view === "map" ? (
         <RobotMap grid={warehouseGrid()} costmap={withCostmap ? warehouseCostmap() : undefined} paths={withCostmap ? paths : undefined} {...shared} />

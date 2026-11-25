@@ -1,19 +1,19 @@
-// @syncrobotic/fleet-table v0.32.0 · update: npx shadcn add @syncrobotic/fleet-table --overwrite
+// @syncrobotic/fleet-table v0.35.0 · update: npx shadcn add @syncrobotic/fleet-table --overwrite
 "use client"
 
 import * as React from "react"
-import { Ellipsis, MapPin, Pencil, Search, Trash2 } from "lucide-react"
+import { MapPin, Pencil, Search, Trash2 } from "lucide-react"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import type { Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/registry/syncrobotic/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuMoreTrigger, DropdownMenuSeparator } from "@/registry/syncrobotic/ui/dropdown-menu"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { InputGroup, InputGroupAddon } from "@/registry/syncrobotic/ui/input-group"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
 import { Pagination } from "@/registry/syncrobotic/ui/pagination"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
+import { Table, TableActionsCell, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
 
 export type Robot = {
   id: string
@@ -130,7 +130,7 @@ export function FleetTable({ robots = sampleRobots, pageSize = 5, onOpen }: { ro
               <TableHead className="sm:w-48">Battery</TableHead>
               <TableHead className="hidden lg:table-cell lg:w-40">Site</TableHead>
               <TableHead className="hidden lg:table-cell lg:w-32">Last seen</TableHead>
-              <TableHead className="w-12 max-sm:pr-2 max-sm:pl-0">
+              <TableHead className="w-0 pr-2 pl-0 sm:px-4">
                 <span className="sr-only">Actions</span>
               </TableHead>
             </TableRow>
@@ -156,13 +156,9 @@ export function FleetTable({ robots = sampleRobots, pageSize = 5, onOpen }: { ro
                 </TableCell>
                 <TableCell className="hidden text-muted-foreground lg:table-cell">{r.site}</TableCell>
                 <TableCell className="hidden text-muted-foreground lg:table-cell">{r.lastSeen}</TableCell>
-                <TableCell className="max-sm:pr-2 max-sm:pl-0">
+                <TableActionsCell>
                   <DropdownMenu modal={false}>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon-sm" aria-label={`Actions for ${r.name}`}>
-                        <Ellipsis aria-hidden="true" />
-                      </Button>
-                    </DropdownMenuTrigger>
+                    <DropdownMenuMoreTrigger name={r.name} size="icon-sm" />
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem>
                         <MapPin aria-hidden="true" /> Show on map
@@ -176,7 +172,7 @@ export function FleetTable({ robots = sampleRobots, pageSize = 5, onOpen }: { ro
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
-                </TableCell>
+                </TableActionsCell>
               </TableRow>
             ))}
           </TableBody>

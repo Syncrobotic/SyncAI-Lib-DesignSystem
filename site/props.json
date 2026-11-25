@@ -4130,6 +4130,44 @@
    ]
   },
   {
+   "name": "DropdownMenuMoreTrigger",
+   "props": [
+    {
+     "name": "name",
+     "type": "string",
+     "description": "What the row is: a robot's name, a person's name or email. Leave it out in a toolbar."
+    },
+    {
+     "name": "size",
+     "type": "\"icon\" | \"icon-sm\"",
+     "default": "\"icon\"",
+     "description": ""
+    },
+    {
+     "name": "labels",
+     "type": "Partial<DropdownMenuMoreLabels>",
+     "description": "The words it says, to translate them. An `aria-label` wins over them.",
+     "keys": [
+      {
+       "name": "more",
+       "type": "string",
+       "default": "\"More actions\"",
+       "description": "A toolbar's or a card's own menu."
+      },
+      {
+       "name": "moreFor",
+       "type": "(name: string) => string",
+       "default": "(name) => `More actions for ${name}`",
+       "description": "A row's menu, named after the row so a screen reader tells one row's ⋯ from the next."
+      }
+     ]
+    }
+   ],
+   "inherits": [
+    "<button> (except children)"
+   ]
+  },
+  {
    "name": "DropdownMenuGroup",
    "props": [],
    "inherits": [
@@ -4223,9 +4261,22 @@
      "name": "action",
      "type": "ReactNode",
      "description": ""
+    },
+    {
+     "name": "size",
+     "type": "\"panel\" | \"inline\"",
+     "description": "`panel` (default) for a card or a section; `inline` inside a table, a list or a small panel. An overlay is inline unless set."
+    },
+    {
+     "name": "variant",
+     "type": "\"default\" | \"overlay\"",
+     "default": "\"default\"",
+     "description": "`overlay` over a canvas or a picture: no padding of its own, the host's overlay layer places it."
     }
    ],
-   "inherits": []
+   "inherits": [
+    "<div> (except title)"
+   ]
   }
  ],
  "field": [
@@ -9939,6 +9990,54 @@
    "inherits": [
     "ToggleGroup.Item"
    ]
+  },
+  {
+   "name": "ChartViewSwitch",
+   "props": [
+    {
+     "name": "value",
+     "type": "string",
+     "required": true,
+     "description": "The view shown: \"chart\" or \"table\", or one of `views`."
+    },
+    {
+     "name": "onValueChange",
+     "type": "(value: string) => void",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "views",
+     "type": "{ value: string; label: string; }[]",
+     "description": "Other views than Chart and Table, in order: `[{ value: \"map\", label: \"Map\" }, { value: \"list\", label: \"List\" }]`."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<ChartViewSwitchLabels>",
+     "description": "The words it says, to translate them. With `views`, only `view` (the switch's name) is used.",
+     "keys": [
+      {
+       "name": "view",
+       "type": "string",
+       "default": "\"Show as\"",
+       "description": "Names the switch: \"Show as\"."
+      },
+      {
+       "name": "chart",
+       "type": "string",
+       "default": "\"Chart\"",
+       "description": ""
+      },
+      {
+       "name": "table",
+       "type": "string",
+       "default": "\"Table\"",
+       "description": ""
+      }
+     ]
+    }
+   ],
+   "inherits": []
   }
  ],
  "select": [
@@ -11665,6 +11764,13 @@
    ]
   },
   {
+   "name": "TableActionsCell",
+   "props": [],
+   "inherits": [
+    "<td>"
+   ]
+  },
+  {
    "name": "TableCaption",
    "props": [],
    "inherits": [
@@ -12866,6 +12972,47 @@
     }
    ],
    "inherits": []
+  }
+ ],
+ "viewport-overlay": [
+  {
+   "name": "ViewportOverlay",
+   "props": [
+    {
+     "name": "position",
+     "type": "ViewportOverlayPosition",
+     "default": "\"top-left\"",
+     "description": "The corner or edge: top-left (the default), top, top-right, bottom-left, bottom, bottom-right, or center (a message over the whole frame)."
+    }
+   ],
+   "inherits": [
+    "<div>"
+   ]
+  },
+  {
+   "name": "ViewportPanel",
+   "props": [
+    {
+     "name": "as",
+     "type": "\"div\" | \"li\" | \"p\" | \"span\"",
+     "default": "\"div\"",
+     "description": "The element: a `p` for a line of words, `li` inside a list, `div` (the default) for anything with controls."
+    },
+    {
+     "name": "variant",
+     "type": "\"float\" | \"scrim\"",
+     "default": "\"float\"",
+     "description": "float (the default) over a map or a canvas; scrim for words over a picture."
+    },
+    {
+     "name": "ref",
+     "type": "((instance: HTMLElement | null) => void | (() => VoidOrUndefinedOnly) | DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES[keyof DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES]) | RefObject<HTMLElement | null>",
+     "description": ""
+    }
+   ],
+   "inherits": [
+    "HTMLElement"
+   ]
   }
  ],
  "waypoint-editor": [

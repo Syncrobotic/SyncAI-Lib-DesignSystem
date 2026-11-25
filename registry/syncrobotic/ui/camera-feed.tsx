@@ -1,4 +1,4 @@
-// @syncrobotic/camera-feed v0.29.0 · update: npx shadcn add @syncrobotic/camera-feed --overwrite
+// @syncrobotic/camera-feed v0.35.0 · update: npx shadcn add @syncrobotic/camera-feed --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,6 +6,7 @@ import { Camera, Maximize, Minimize, Pause, Play, RotateCw, TriangleAlert, Video
 import { cn } from "@/lib/utils"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Spinner } from "@/registry/syncrobotic/ui/spinner"
+import { ViewportOverlay, ViewportPanel } from "@/registry/syncrobotic/ui/viewport-overlay"
 import { Bone } from "@/registry/syncrobotic/shell/skeleton"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 
@@ -480,28 +481,32 @@ export function CameraFeed({
             <div className="absolute inset-0">
               <Bone className="size-full rounded-none" />
               {/* On its own surface, as Stalled is: grey words straight on the grey skeleton fall below 4.5:1. */}
-              <div className="absolute inset-0 grid place-items-center p-4">
-                <p className="rounded-sm bg-background px-3 py-2 text-center text-sm">{l.connectingLong}</p>
-              </div>
+              <ViewportOverlay position="center">
+                <ViewportPanel as="p" className="text-center">
+                  {l.connectingLong}
+                </ViewportPanel>
+              </ViewportOverlay>
             </div>
           )}
 
           {state === "stalled" && (
-            <div className="absolute inset-0 grid place-items-center bg-(--scrim) p-4">
-              <p className="flex items-center gap-2 rounded-sm bg-background px-3 py-2 text-center text-sm">
+            <ViewportOverlay position="center" className="bg-scrim">
+              <ViewportPanel as="p" className="flex items-center gap-2 text-center">
                 <TriangleAlert aria-hidden="true" className="size-4 text-warning" />
                 <span>
                   <span className="font-medium">{l.stalled}</span> · <span className="tabular-nums">{l.lastFrame(lastFrameTime)}</span>
                 </span>
-              </p>
-            </div>
+              </ViewportPanel>
+            </ViewportOverlay>
           )}
 
           {state === "paused" && (
-            <p className="pointer-events-none absolute top-3 left-3 flex items-center gap-2 rounded-sm bg-(--scrim) px-2 py-1 text-sm">
-              <Pause aria-hidden="true" className="size-4" />
-              {l.paused}
-            </p>
+            <ViewportOverlay position="top-left">
+              <ViewportPanel as="p" variant="scrim" className="flex items-center gap-2 px-2 py-1">
+                <Pause aria-hidden="true" className="size-4" />
+                {l.paused}
+              </ViewportPanel>
+            </ViewportOverlay>
           )}
 
           {(state === "offline" || state === "none") && (

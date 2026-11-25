@@ -1,19 +1,19 @@
-// @syncrobotic/users-roles v0.28.0 · update: npx shadcn add @syncrobotic/users-roles --overwrite
+// @syncrobotic/users-roles v0.35.0 · update: npx shadcn add @syncrobotic/users-roles --overwrite
 "use client"
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { Ellipsis, UserPlus } from "lucide-react"
+import { UserPlus } from "lucide-react"
 import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"
 import { Badge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/registry/syncrobotic/ui/dialog"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/registry/syncrobotic/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuMoreTrigger, DropdownMenuSeparator } from "@/registry/syncrobotic/ui/dropdown-menu"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
+import { Table, TableActionsCell, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
 import { Toaster, toast } from "@/registry/syncrobotic/ui/toast"
 
 type Role = "Admin" | "Operator" | "Viewer"
@@ -121,7 +121,7 @@ export function UsersRoles() {
             <TableRow>
               <TableHead>Person</TableHead>
               <TableHead className="w-32 px-2 sm:w-44 sm:px-4">Role</TableHead>
-              <TableHead className="w-16 px-2 sm:px-4">
+              <TableHead className="w-0 pr-2 pl-0 sm:px-4">
                 <span className="sr-only">Actions</span>
               </TableHead>
             </TableRow>
@@ -163,13 +163,9 @@ export function UsersRoles() {
                     </SelectContent>
                   </Select>
                 </TableCell>
-                <TableCell className="px-2 sm:px-4">
+                <TableActionsCell>
                   <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon-sm" aria-label={`More for ${u.name || u.email}`}>
-                        <Ellipsis aria-hidden="true" />
-                      </Button>
-                    </DropdownMenuTrigger>
+                    <DropdownMenuMoreTrigger name={u.name || u.email} size="icon-sm" />
                     <DropdownMenuContent align="end">
                       {u.invited && (
                         <DropdownMenuItem onSelect={() => toast({ title: "Invitation sent again", description: u.email })}>Resend invitation</DropdownMenuItem>
@@ -187,7 +183,7 @@ export function UsersRoles() {
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
-                </TableCell>
+                </TableActionsCell>
               </TableRow>
             ))}
           </TableBody>

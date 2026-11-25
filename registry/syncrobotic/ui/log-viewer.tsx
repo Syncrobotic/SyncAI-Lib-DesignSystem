@@ -1,9 +1,9 @@
-// @syncrobotic/log-viewer v0.32.0 · update: npx shadcn add @syncrobotic/log-viewer --overwrite
+// @syncrobotic/log-viewer v0.35.0 · update: npx shadcn add @syncrobotic/log-viewer --overwrite
 "use client"
 
 import * as React from "react"
 import { useVirtualizer } from "@tanstack/react-virtual"
-import { ArrowDownToLine, Bug, ChevronDown, ChevronRight, ChevronUp, CircleAlert, Ellipsis, Info, OctagonAlert, ScrollText, Search, SearchX, TriangleAlert, type LucideIcon } from "lucide-react"
+import { ArrowDownToLine, Bug, ChevronDown, ChevronRight, ChevronUp, CircleAlert, Info, OctagonAlert, ScrollText, Search, SearchX, TriangleAlert, type LucideIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
 import { Button } from "@/registry/syncrobotic/ui/button"
@@ -14,10 +14,12 @@ import {
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuMoreTrigger,
   DropdownMenuTrigger,
 } from "@/registry/syncrobotic/ui/dropdown-menu"
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { InputGroup, InputGroupAddon, InputGroupButton } from "@/registry/syncrobotic/ui/input-group"
+import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 
 /*
   A log viewer for robot and system logs (ROS /rosout, journald, a service's own lines): a virtual list that stays smooth
@@ -770,11 +772,7 @@ export function LogViewer({
             </DropdownMenuContent>
           </DropdownMenu>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" aria-label={l.viewOptions} className="ml-auto">
-                <Ellipsis aria-hidden="true" />
-              </Button>
-            </DropdownMenuTrigger>
+            <DropdownMenuMoreTrigger aria-label={l.viewOptions} className="ml-auto" />
             <DropdownMenuContent align="end">
               <DropdownMenuCheckboxItem checked={wrap} onCheckedChange={(on) => setWrap(on === true)}>
                 {l.wrap}
@@ -789,15 +787,19 @@ export function LogViewer({
 
       <div className="relative min-h-0 flex-1">
         {total === 0 || seqs.length === 0 ? (
-          <div className="flex h-full flex-col items-center justify-center gap-3 p-4 text-center text-sm text-muted-foreground">
-            {total === 0 ? <ScrollText aria-hidden="true" className="size-6" /> : <SearchX aria-hidden="true" className="size-6" />}
-            <p>{total === 0 ? l.empty : l.noMatch}</p>
-            {total > 0 && (
-              <Button variant="outline" size="sm" onClick={showAll}>
-                {l.showAll}
-              </Button>
-            )}
-          </div>
+          <EmptyState
+            size="inline"
+            icon={total === 0 ? ScrollText : SearchX}
+            title={total === 0 ? l.empty : l.noMatch}
+            action={
+              total > 0 && (
+                <Button variant="outline" size="sm" onClick={showAll}>
+                  {l.showAll}
+                </Button>
+              )
+            }
+            className="h-full justify-center"
+          />
         ) : (
           <LogRows
             ref={rows}

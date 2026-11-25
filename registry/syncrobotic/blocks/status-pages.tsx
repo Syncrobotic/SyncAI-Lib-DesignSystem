@@ -1,10 +1,11 @@
-// @syncrobotic/status-pages v0.32.0 · update: npx shadcn add @syncrobotic/status-pages --overwrite
+// @syncrobotic/status-pages v0.35.0 · update: npx shadcn add @syncrobotic/status-pages --overwrite
 "use client"
 
 import * as React from "react"
 import { CloudOff, Lock, RotateCw, SearchX } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/registry/syncrobotic/ui/button"
+import { IconTile } from "@/registry/syncrobotic/ui/icon-tile"
 import { Bone, LoadingLine } from "@/registry/syncrobotic/shell/skeleton"
 
 /**
@@ -75,9 +76,9 @@ export function StatusPage({
   return (
     <Root className={cn("flex items-center justify-center bg-background p-6", fill === "screen" ? "min-h-[var(--app-shell-height,100dvh)]" : "h-full min-h-96", className)}>
       <div className="flex max-w-md animate-appear flex-col items-center gap-4 text-center">
-        <span className="flex size-12 items-center justify-center rounded-sm bg-muted text-muted-foreground">
-          <Icon aria-hidden="true" className="size-6" />
-        </span>
+        <IconTile variant="muted" size="lg">
+          <Icon aria-hidden="true" />
+        </IconTile>
         <div className="flex flex-col items-center gap-2">
           {code && <p className="font-mono text-sm text-muted-foreground tabular-nums">{code}</p>}
           <Heading className="text-2xl font-bold text-balance">{title}</Heading>
@@ -234,7 +235,7 @@ export function LoadingPage({
         {[l.robotsOnline, l.patrolHours, l.events, l.avgBattery].map((label, i) => (
           <div key={i} className="flex flex-col gap-3 rounded-md bg-card p-4 ring-1 ring-border">
             <span className="text-sm text-muted-foreground">{label}</span>
-            <Bone onCard className="h-9 w-20" />
+            <Bone onCard className="h-(--h-sm) w-20" />
           </div>
         ))}
       </div>

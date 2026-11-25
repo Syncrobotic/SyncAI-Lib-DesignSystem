@@ -1,6 +1,7 @@
-// @syncrobotic/bar-list v0.33.0 · update: npx shadcn add @syncrobotic/bar-list --overwrite
+// @syncrobotic/bar-list v0.35.0 · update: npx shadcn add @syncrobotic/bar-list --overwrite
 import type * as React from "react"
 import { cn } from "@/lib/utils"
+import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 
 export type BarListItem = {
   key: string
@@ -65,9 +66,9 @@ export function BarList({
 
   if (!items.length)
     return (
-      <p data-slot="bar-list" data-empty="" className={cn("text-sm text-muted-foreground", className)}>
-        {l.empty}
-      </p>
+      <div data-slot="bar-list" data-empty="" className={cn("w-full min-w-0", className)}>
+        <EmptyState size="inline" title={l.empty} />
+      </div>
     )
 
   return (

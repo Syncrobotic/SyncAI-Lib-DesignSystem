@@ -1,4 +1,4 @@
-// @syncrobotic/camera-wall v0.29.0 · update: npx shadcn add @syncrobotic/camera-wall --overwrite
+// @syncrobotic/camera-wall v0.35.0 · update: npx shadcn add @syncrobotic/camera-wall --overwrite
 "use client"
 
 import * as React from "react"
@@ -17,7 +17,9 @@ import {
 import { Pagination } from "@/registry/syncrobotic/ui/pagination"
 import { DiamondAlert } from "@/registry/syncrobotic/ui/robot-icons"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
+import { ViewportPanel } from "@/registry/syncrobotic/ui/viewport-overlay"
 import { Toggle } from "@/registry/syncrobotic/ui/toggle"
+import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 
 /** What the wall asks the product's source function for: the focused camera is "high", every tile "low". */
 export type CameraWallQuality = "high" | "low"
@@ -557,14 +559,19 @@ export function CameraWall({
             </div>
           )}
           {shown.length === 0 ? (
-            <div className="flex flex-col items-center gap-3 rounded-md px-4 py-8 text-center ring-1 ring-border">
-              <VideoOff aria-hidden="true" className="size-6 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground">{cameras.length === 0 ? l.empty : l.noneNeedAttention}</p>
-              {cameras.length > 0 && (
-                <Button variant="outline" onClick={() => setAttentionOnly(false)}>
-                  {l.showAll}
-                </Button>
-              )}
+            <div data-slot="camera-wall-empty" className="rounded-md ring-1 ring-border">
+              <EmptyState
+                size="inline"
+                icon={VideoOff}
+                title={cameras.length === 0 ? l.empty : l.noneNeedAttention}
+                action={
+                  cameras.length > 0 && (
+                    <Button variant="outline" onClick={() => setAttentionOnly(false)}>
+                      {l.showAll}
+                    </Button>
+                  )
+                }
+              />
             </div>
           ) : (
             <ul data-slot="camera-wall-grid" className={cn("grid gap-4", cols[columns - 1])}>
@@ -717,17 +724,19 @@ function Tile({
           <canvas ref={still} aria-hidden="true" hidden={playing} className="pointer-events-none absolute inset-0 size-full rounded-md object-contain" />
           {!playing && (
             <div className="dark pointer-events-none absolute inset-0 grid place-items-center rounded-md bg-(--scrim) p-3 text-foreground">
-              <p className="flex items-center gap-2 rounded-sm bg-background px-3 py-2 text-center text-sm">
+              <ViewportPanel as="p" className="flex items-center gap-2 text-center">
                 <Pause aria-hidden="true" className="size-4 shrink-0" />
                 {l.pausedToSave}
-              </p>
+              </ViewportPanel>
             </div>
           )}
           {camera.alarm && (
             // Top-right, in the right half: a camera burns its name and clock into the top-left, and camera-feed draws nothing
             // in this corner (Paused sits top-left, the controls along the bottom, Stalled and Connecting in the middle).
             <div className="dark pointer-events-none absolute top-2 right-2 flex w-1/2 justify-end text-foreground">
-              <AlarmMarker alarm={camera.alarm} labels={l} wrap className="rounded-sm bg-background px-2 py-1" />
+              <ViewportPanel className="min-w-0 px-2 py-1">
+                <AlarmMarker alarm={camera.alarm} labels={l} wrap />
+              </ViewportPanel>
             </div>
           )}
         </div>

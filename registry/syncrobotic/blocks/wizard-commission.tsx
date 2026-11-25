@@ -1,4 +1,4 @@
-// @syncrobotic/wizard-commission v0.9.0 · update: npx shadcn add @syncrobotic/wizard-commission --overwrite
+// @syncrobotic/wizard-commission v0.35.0 · update: npx shadcn add @syncrobotic/wizard-commission --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,6 +7,7 @@ import { Button } from "@/registry/syncrobotic/ui/button"
 import { Card } from "@/registry/syncrobotic/ui/card"
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
 import { Field } from "@/registry/syncrobotic/ui/field"
+import { IconTile } from "@/registry/syncrobotic/ui/icon-tile"
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
 import { Spinner } from "@/registry/syncrobotic/ui/spinner"
@@ -70,9 +71,9 @@ export function WizardCommission({ onDone }: { onDone?: (robot: { serial: string
       <Card className="gap-4">
         {done ? (
           <div role="status" className="flex animate-appear flex-col gap-4">
-            <span className="flex size-10 items-center justify-center rounded-md bg-muted">
-              <Check aria-hidden="true" className="size-5" />
-            </span>
+            <IconTile variant="muted">
+              <Check aria-hidden="true" />
+            </IconTile>
             <div className="flex flex-col gap-1">
               <h2 className="text-lg font-bold">{name.trim()} is in the fleet</h2>
               <p className="text-sm text-muted-foreground">It waits at its dock until you give it a mission.</p>

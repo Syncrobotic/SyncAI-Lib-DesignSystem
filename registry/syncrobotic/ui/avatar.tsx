@@ -1,4 +1,4 @@
-// @syncrobotic/avatar v0.28.0 · update: npx shadcn add @syncrobotic/avatar --overwrite
+// @syncrobotic/avatar v0.35.0 · update: npx shadcn add @syncrobotic/avatar --overwrite
 "use client"
 
 import * as React from "react"
@@ -34,7 +34,8 @@ export function Avatar({
       className={cn(
         "group/avatar relative flex shrink-0 select-none",
         sizes[size],
-        shape === "circle" ? "rounded-full" : size === "sm" ? "rounded-2xs" : "rounded-xs",
+        // Square corners follow the icon tile of the same size, so a robot beside an icon lines up: 4, 8, 12, 12.
+        shape === "circle" ? "rounded-full" : { sm: "rounded-2xs", md: "rounded-xs", lg: "rounded-sm", xl: "rounded-sm" }[size],
         className,
       )}
       {...props}
@@ -133,7 +134,8 @@ export function AvatarGroupCount({
       data-shape={shape}
       className={cn(
         "relative flex shrink-0 items-center justify-center bg-track font-medium text-foreground tabular-nums",
-        shape === "circle" ? "rounded-full" : size === "sm" ? "rounded-2xs" : "rounded-xs",
+        // Square corners follow the icon tile of the same size, so a robot beside an icon lines up: 4, 8, 12, 12.
+        shape === "circle" ? "rounded-full" : { sm: "rounded-2xs", md: "rounded-xs", lg: "rounded-sm", xl: "rounded-sm" }[size],
         sizes[size],
         className,
       )}

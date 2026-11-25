@@ -59,6 +59,7 @@ const files = {
   "data-pieces": () => import("@/stories/data-pieces.stories"),
   "bar-list": () => import("@/stories/bar-list.stories"),
   thumbnail: () => import("@/stories/thumbnail.stories"),
+  "viewport-overlay": () => import("@/stories/viewport-overlay.stories"),
   "image-grid": () => import("@/stories/image-grid.stories"),
   "annotated-image": () => import("@/stories/annotated-image.stories"),
   "grounded-text": () => import("@/stories/grounded-text.stories"),

@@ -1,4 +1,4 @@
-/* @syncrobotic/syncrobotic-theme v0.31.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
+/* @syncrobotic/syncrobotic-theme v0.35.0 · update: npx shadcn add @syncrobotic/syncrobotic-theme --overwrite */
 /*
  * SYNCROBOTIC theme (see CHANGELOG.md for its version history)
  * Tokens for shadcn/ui (and shadcn registries such as ReUI) on Tailwind CSS v4.
@@ -21,7 +21,9 @@
  *   - Status colours come in pairs: foreground (--info) on its subtle tint (--info-subtle).
  *   - --primary is neutral high contrast (black in light, white in dark).
  *   - Green (--success) is a confirmation that just happened (toast, alert); a calm state stays grey.
- *   - Selected controls (segmented control, toggle) are inverted; the current page in navigation is --muted with weight, hover is --accent; a switch that is on uses --primary.
+ *   - Selected controls (segmented control, toggle) are inverted; a switch that is on uses --primary. --muted is the quiet fill
+ *     (table headers, segment tracks, tiles, disabled fills) and the current page in navigation, with weight; --accent is hover,
+ *     one step darker, so hovering another page never looks like the current one.
  *   - Actions in the lower part of the dock are never solid white, so they do not compete with the stop.
  *   - Alerts other than the stop (event counts) use --danger on --danger-subtle, never solid red.
  */
@@ -40,7 +42,7 @@
   --secondary-foreground: var(--foreground);
   --muted: #e6e6ea;
   --muted-foreground: #52525b;
-  --accent: #e6e6ea;
+  --accent: #d4d4d8;
   --accent-foreground: var(--foreground);
   --destructive: #860012;
   --border: #dcdce1;
@@ -48,7 +50,7 @@
      (WCAG 1.4.11), because on a card the edge is all that shows where the control is. Dividers stay --border. */
   --input: #80808a;
   --ring: var(--foreground); /* focus is not a status: the ink colour, never the in-progress blue */
-  --disabled: #7a7a82; /* disabled text: 3:1 on the page, cards and a muted track, still clearly lighter than secondary text */
+  --disabled: #74747c; /* disabled text: 3:1 on the page, cards and a muted track, still clearly lighter than secondary text */
   /* Tracks and quiet shapes: the unfilled part of a slider, progress, meter or ring, a skeleton bone, an avatar with no
      picture, a resize grip, the blocks of an illustration. 1.5:1 on the card and the page, so the shape reads as a shape;
      where the shape alone carries meaning (a bar at 0 %, a selected row) it also gets an edge at 3:1 (--input, --foreground). */
@@ -58,12 +60,12 @@
 
   --info: #2952b8;
   --info-subtle: #e4e9f4;
-  --success: #18704f;
+  --success: #166748;
   --success-subtle: #e0eee7;
   /* Warning and danger are told apart by hue and by lightness, so they stay apart for colour-blind eyes (deutan ΔE 10.8
      light, 21.6 dark) and at a glance (ΔE 16 and 29). Both reach 4.8:1 or more as text on every surface they sit on:
      the page, the card, a muted tile or a selected row, and their own tint. */
-  --warning: #865900;
+  --warning: #7c5200;
   --warning-subtle: #f4ecda;
   --danger: #860012;
   --danger-subtle: #f6e2e1;
@@ -166,12 +168,12 @@
   --secondary: #25252b;
   --muted: #25252b;
   --muted-foreground: #a1a1aa;
-  --accent: #25252b;
-  --destructive: #f75b6b;
+  --accent: #34343b;
+  --destructive: #f87583;
   --border: #2c2c32;
   --input: #72727a;
   --ring: var(--foreground);
-  --disabled: #7c7c84;
+  --disabled: #80808a;
   --track: #3f3f46;
   --thumb: #ffffff;
 
@@ -181,7 +183,7 @@
   --success-subtle: #172720;
   --warning: #ffd663;
   --warning-subtle: #2b2516;
-  --danger: #f75b6b;
+  --danger: #f87583;
   --danger-subtle: #321c1c;
   --neutral: #a1a1aa;
   --neutral-subtle: #1c1c21;
@@ -236,7 +238,7 @@
   --primary: #000000;
   --primary-foreground: #ffffff;
   --secondary: #dcdce1;
-  --muted: #dcdce1;
+  --muted: #e6e6ea;
   --muted-foreground: #3f3f46;
   --accent: #d4d4d8;
   --destructive: #6e000f;
@@ -300,12 +302,12 @@
   --secondary: #2a2a30;
   --muted: #2a2a30;
   --muted-foreground: #d4d4d8;
-  --accent: #34343b;
+  --accent: #3f3f46;
   --destructive: #ffa3ab;
   --border: #8a8a94;
   --input: #a1a1aa;
   --ring: var(--foreground);
-  --disabled: #808088;
+  --disabled: #8e8e96;
   --track: #4a4a52;
   --thumb: #ffffff;
 

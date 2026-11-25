@@ -1,4 +1,4 @@
-// @syncrobotic/copy-button v0.28.0 · update: npx shadcn add @syncrobotic/copy-button --overwrite
+// @syncrobotic/copy-button v0.35.0 · update: npx shadcn add @syncrobotic/copy-button --overwrite
 "use client"
 
 import * as React from "react"
@@ -117,7 +117,8 @@ export function CopyButton({
           <CircleAlert aria-hidden="true" className={cn(icon, "size-4 text-warning", shown("failed"))} />
         </span>
         {/* The three words share one cell, so the button is as wide as the longest and keeps its width when the word
-            changes; the ones not shown are hidden from sight and from its name. */}
+            changes; the ones not shown are hidden from sight and from its name. Each starts at the cell's start, so the
+            icon is always 8 px from the word shown (gap-2) and the reserved width falls after it, never between. */}
         {children && (
           <span className="grid">
             {(
@@ -127,7 +128,7 @@ export function CopyButton({
                 ["failed", l.notCopied],
               ] as const
             ).map(([s, text]) => (
-              <span key={s} aria-hidden={state !== s || undefined} className={cn("col-start-1 row-start-1 text-center", state !== s && "invisible")}>
+              <span key={s} aria-hidden={state !== s || undefined} className={cn("col-start-1 row-start-1 text-start", state !== s && "invisible")}>
                 {text}
               </span>
             ))}

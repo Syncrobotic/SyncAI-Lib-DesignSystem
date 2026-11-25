@@ -1,8 +1,9 @@
-// @syncrobotic/item v0.9.0 · update: npx shadcn add @syncrobotic/item --overwrite
+// @syncrobotic/item v0.35.0 · update: npx shadcn add @syncrobotic/item --overwrite
 import * as React from "react"
 import { Slot } from "radix-ui"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
+import { iconTileVariants } from "@/registry/syncrobotic/ui/icon-tile"
 
 /**
  * A row of content: media, a title with a line below, and actions at the end. People, files, services, settings links.
@@ -44,7 +45,8 @@ export function ItemMedia({ className, variant = "icon", ...props }: React.Compo
       data-slot="item-media"
       className={cn(
         "flex shrink-0 items-center justify-center",
-        variant === "icon" && "size-8 rounded-xs bg-muted text-muted-foreground [&_svg]:size-4",
+        // The icon on the kit's 32 px muted tile, so a row's icon and an icon tile elsewhere are one shape.
+        variant === "icon" && iconTileVariants({ variant: "muted", size: "sm" }),
         variant === "image" && "size-10 overflow-hidden rounded-xs [&_img]:size-full [&_img]:object-cover",
         className,
       )}

@@ -1,44 +1,33 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import {
-  ArrowDownWideNarrow,
-  ArrowUpNarrowWide,
-  Bell,
-  Camera,
-  Columns2,
-  Columns3,
-  Grid2x2,
-  LayoutList,
-  Mail,
-  Map,
-  MessageSquare,
-  Radar,
-  Rows3,
-  Thermometer,
-} from "lucide-react"
+import { Bell, Camera, Mail, Map, MapPin, MessageSquare, Radar, Route, Thermometer } from "lucide-react"
+import { SafetyZone } from "@/registry/syncrobotic/ui/robot-icons"
 import { ToggleGroup, ToggleGroupItem } from "@/registry/syncrobotic/ui/toggle-group"
 
 const meta: Meta = { title: "Actions/Toggle group" }
 export default meta
 type S = StoryObj
 
+/**
+ * Single: a tool or a mode, what a tap on the map does next. A view of the data or a time window is a Segmented control,
+ * not a toggle group.
+ */
 export const ToggleGroupSingle: S = {
   render: () => (
-    <ToggleGroup type="single" defaultValue="24h" aria-label="Time range">
-      {[
-        ["1h", "1 h"],
-        ["6h", "6 h"],
-        ["24h", "24 h"],
-        ["7d", "7 days"],
-        ["30d", "30 days"],
-      ].map(([v, l]) => (
-        <ToggleGroupItem key={v} value={v}>
-          {l}
-        </ToggleGroupItem>
-      ))}
+    <ToggleGroup type="single" defaultValue="route" aria-label="Map tool">
+      <ToggleGroupItem value="goal">
+        <MapPin aria-hidden="true" /> Goal
+      </ToggleGroupItem>
+      <ToggleGroupItem value="route">
+        <Route aria-hidden="true" /> Route
+      </ToggleGroupItem>
+      <ToggleGroupItem value="zone">
+        <SafetyZone aria-hidden="true" /> Zone
+      </ToggleGroupItem>
     </ToggleGroup>
   ),
 }
 
+/** Multiple: layers or channels, any mix on. */
 export const ToggleGroupMultipleLayers: S = {
   render: () => (
     <ToggleGroup type="multiple" defaultValue={["map", "lidar"]} aria-label="Map layers">
@@ -58,42 +47,45 @@ export const ToggleGroupMultipleLayers: S = {
   ),
 }
 
+/** Icon only: each item names its tool in an aria-label. */
 export const ToggleGroupIconOnly: S = {
   render: () => (
-    <ToggleGroup type="single" defaultValue="list" aria-label="View">
-      <ToggleGroupItem value="list" aria-label="List">
-        <LayoutList aria-hidden="true" />
+    <ToggleGroup type="single" defaultValue="goal" aria-label="Map tool">
+      <ToggleGroupItem value="goal" aria-label="Goal">
+        <MapPin aria-hidden="true" />
       </ToggleGroupItem>
-      <ToggleGroupItem value="grid" aria-label="Grid">
-        <Grid2x2 aria-hidden="true" />
+      <ToggleGroupItem value="route" aria-label="Route">
+        <Route aria-hidden="true" />
       </ToggleGroupItem>
-      <ToggleGroupItem value="map" aria-label="Map">
-        <Map aria-hidden="true" />
+      <ToggleGroupItem value="zone" aria-label="Zone">
+        <SafetyZone aria-hidden="true" />
       </ToggleGroupItem>
     </ToggleGroup>
   ),
 }
 
+/** Ghost: a tool palette over a map, no frame of its own. */
 export const ToggleGroupGhost: S = {
   render: () => (
-    <ToggleGroup type="single" variant="ghost" defaultValue="2" aria-label="Columns">
-      <ToggleGroupItem value="1" aria-label="One column">
-        <Rows3 aria-hidden="true" />
+    <ToggleGroup type="multiple" variant="ghost" defaultValue={["lidar"]} aria-label="Map layers">
+      <ToggleGroupItem value="lidar" aria-label="Lidar">
+        <Radar aria-hidden="true" />
       </ToggleGroupItem>
-      <ToggleGroupItem value="2" aria-label="Two columns">
-        <Columns2 aria-hidden="true" />
+      <ToggleGroupItem value="camera" aria-label="Camera">
+        <Camera aria-hidden="true" />
       </ToggleGroupItem>
-      <ToggleGroupItem value="3" aria-label="Three columns">
-        <Columns3 aria-hidden="true" />
+      <ToggleGroupItem value="heat" aria-label="Heat">
+        <Thermometer aria-hidden="true" />
       </ToggleGroupItem>
     </ToggleGroup>
   ),
 }
 
+/** Spaced: filter chips that read as separate options; any mix on. */
 export const ToggleGroupSpaced: S = {
   render: () => (
-    <ToggleGroup type="single" joined={false} size="sm" defaultValue="active" aria-label="Status filter">
-      {["All", "Active", "Paused", "Archived"].map((s) => (
+    <ToggleGroup type="multiple" joined={false} size="sm" defaultValue={["active", "paused"]} aria-label="Show missions">
+      {["Active", "Paused", "Archived"].map((s) => (
         <ToggleGroupItem key={s} value={s.toLowerCase()}>
           {s}
         </ToggleGroupItem>
@@ -118,27 +110,19 @@ export const ToggleGroupChannels: S = {
   ),
 }
 
-export const ToggleGroupSortDirection: S = {
-  render: () => (
-    <ToggleGroup type="single" size="sm" defaultValue="desc" aria-label="Sort">
-      <ToggleGroupItem value="asc">
-        <ArrowUpNarrowWide aria-hidden="true" /> Oldest
-      </ToggleGroupItem>
-      <ToggleGroupItem value="desc">
-        <ArrowDownWideNarrow aria-hidden="true" /> Newest
-      </ToggleGroupItem>
-    </ToggleGroup>
-  ),
-}
-
+/** Vertical: a tool palette at a map's edge. */
 export const ToggleGroupVertical: S = {
   render: () => (
-    <ToggleGroup type="single" orientation="vertical" defaultValue="floor-2" aria-label="Floor">
-      {["Floor 3", "Floor 2", "Floor 1", "Basement"].map((f) => (
-        <ToggleGroupItem key={f} value={f.toLowerCase().replace(" ", "-")} className="justify-start">
-          {f}
-        </ToggleGroupItem>
-      ))}
+    <ToggleGroup type="single" orientation="vertical" defaultValue="route" aria-label="Map tool">
+      <ToggleGroupItem value="goal" className="justify-start">
+        <MapPin aria-hidden="true" /> Goal
+      </ToggleGroupItem>
+      <ToggleGroupItem value="route" className="justify-start">
+        <Route aria-hidden="true" /> Route
+      </ToggleGroupItem>
+      <ToggleGroupItem value="zone" className="justify-start">
+        <SafetyZone aria-hidden="true" /> Zone
+      </ToggleGroupItem>
     </ToggleGroup>
   ),
 }
