@@ -29,6 +29,7 @@ export const overviews: Record<string, Overview> = {
     use: [
       "A long list or grid with many columns worth filtering: robots, incidents, runs.",
       "Views people tune and share: the rules go in the URL.",
+      "Saved views over the bar, with `FilterViews`: one chip per view, Modified and Reset once a rule changes.",
     ],
     instead: [
       "A fixed set of known filters, laid out in a sheet or above a list: `filter-form`.",
@@ -39,6 +40,7 @@ export const overviews: Record<string, Overview> = {
       "The value is a plain array of { id, field, operator, value }; filter rows with filterRows or matchRule, never by reading the chips.",
       "Boolean rules carry null; the operator (is_true, is_false) is the whole rule.",
       "Dates are \"yyyy-MM-dd\" strings, not Date objects, so the rules stay serialisable.",
+      "FilterViews compares rules with rulesEqual (ids ignored, any order); it keeps no views itself: add the one onSave hands you to `views`.",
     ],
   },
   "search-field": {

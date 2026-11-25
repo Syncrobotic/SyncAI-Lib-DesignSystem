@@ -28,8 +28,8 @@
     "hash": "03904a0793a968e9"
   },
   "labels-zh-tw": {
-    "version": "0.35.0",
-    "hash": "33f98dab123fb6e2"
+    "version": "0.37.0",
+    "hash": "1c4d72d8f0f3565a"
   },
   "ros": {
     "version": "0.36.0",
@@ -448,8 +448,8 @@
     "hash": "4408d94150b8f69d"
   },
   "filters": {
-    "version": "0.32.0",
-    "hash": "96d17ab58c0f8b54"
+    "version": "0.37.0",
+    "hash": "8a5977fc8f301322"
   },
   "search-field": {
     "version": "0.28.0",
@@ -592,8 +592,8 @@
     "hash": "0906087725321427"
   },
   "data-catalog": {
-    "version": "0.32.0",
-    "hash": "115a3eaac4e5ca57"
+    "version": "0.37.0",
+    "hash": "52ed5d9973b8c517"
   },
   "dataset-detail": {
     "version": "0.35.0",
