@@ -75,6 +75,108 @@ html {
   background-color: var(--background);
 }
 
+/* Docs token tables (site/doc.tsx TokenTable): one table, styled from here so its rows carry no classes. From md a table
+   with a muted header; on a phone every row is a card (its first cell on top, each other cell under its column's name,
+   which the table's --c1… variables hold, drawn silent to screen readers: they hear the visually hidden header row). */
+.token-table {
+  @apply rounded-md border border-border text-sm;
+  & table {
+    @apply w-full;
+  }
+  @variant md {
+    @apply overflow-x-auto;
+    & tbody {
+      @apply bg-card;
+    }
+    & thead {
+      @apply bg-muted text-left text-xs text-muted-foreground;
+    }
+    & th {
+      @apply h-10 px-4 text-left font-medium whitespace-nowrap;
+    }
+    & tbody tr {
+      @apply border-t border-border;
+    }
+    & td {
+      @apply px-4 py-3 align-top;
+      &:first-child {
+        @apply whitespace-nowrap;
+      }
+      &:not(:first-child) {
+        @apply min-w-24;
+      }
+      &:last-child {
+        @apply min-w-48;
+      }
+    }
+  }
+  @variant max-md {
+    @apply bg-card;
+    & table,
+    & tbody {
+      @apply block;
+    }
+    & thead {
+      @apply sr-only;
+    }
+    & tbody tr {
+      @apply grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-2 p-4;
+      & + tr {
+        @apply border-t border-border;
+      }
+    }
+    & td {
+      @apply col-span-full;
+      &:first-child {
+        @apply block font-medium;
+      }
+      &:not(:first-child) {
+        @apply grid grid-cols-subgrid wrap-anywhere;
+        & > * {
+          @apply min-w-0;
+        }
+        /* The column's name, in its own face whatever the cell's (a page may set the cells in mono). */
+        &::before {
+          @apply font-sans text-xs font-normal text-muted-foreground normal-nums;
+        }
+      }
+      /* The column's name, silent where the browser can say so (alt text after the slash); older ones read it too. */
+      &:nth-child(2)::before {
+        content: var(--c1);
+      }
+      &:nth-child(3)::before {
+        content: var(--c2);
+      }
+      &:nth-child(4)::before {
+        content: var(--c3);
+      }
+      &:nth-child(5)::before {
+        content: var(--c4);
+      }
+      &:nth-child(6)::before {
+        content: var(--c5);
+      }
+      @supports (content: "" / "") {
+        &:nth-child(2)::before {
+          content: var(--c1) / "";
+        }
+        &:nth-child(3)::before {
+          content: var(--c2) / "";
+        }
+        &:nth-child(4)::before {
+          content: var(--c3) / "";
+        }
+        &:nth-child(5)::before {
+          content: var(--c4) / "";
+        }
+        &:nth-child(6)::before {
+          content: var(--c5) / "";
+        }
+      }
+    }
+  }
+}
+
 /* Site arrival (site/appear.tsx): the theme's appear movement in CSS, staggered by order, so nothing waits on scripts. */
 [data-reveal="waiting"] .appear-item {
   opacity: 0;
