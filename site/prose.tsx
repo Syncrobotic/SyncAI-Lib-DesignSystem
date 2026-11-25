@@ -1,6 +1,13 @@
 // Small typographic building blocks shared by the docs pages.
 import * as React from "react"
 
+/**
+ * A link in running text or a list of names: underlined foreground, the underline grey until hover darkens it (never a
+ * colour, never underline on hover only). Navigation (the sidebar, the footer) and whole-card links are not text links.
+ */
+export const textLink =
+  "text-foreground underline decoration-muted-foreground underline-offset-4 transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:decoration-foreground"
+
 /** Code that never breaks mid-word: it may wrap at a space, and a path or URL after a "/" (`https://site/` · `llms.txt`). */
 export function Unbroken({ text }: { text: string }) {
   // Split after each space and each "/", but keep a scheme ("https://") with the host after it.

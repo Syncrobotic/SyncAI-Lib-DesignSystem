@@ -61,6 +61,18 @@ describe("disabled text", () => {
   }
 })
 
+describe("hover and the current page", () => {
+  for (const mode of modes) {
+    // Navigation marks the current page with --muted (and weight) and hover with --accent: the two fills must differ, or
+    // hovering another item looks like moving the current page. One step of the neutral ramp, darker for hover.
+    it(`${mode}: --accent (hover) is a visible step from --muted (current page), and text reads on both`, () => {
+      expect(contrast("accent", "muted", mode)!).toBeGreaterThanOrEqual(1.15)
+      expect(contrast("muted-foreground", "accent", mode)!).toBeGreaterThanOrEqual(mode.endsWith("hc") ? 7 : 4.5)
+      expect(contrast("foreground", "accent", mode)!).toBeGreaterThanOrEqual(mode.endsWith("hc") ? 7 : 4.5)
+    })
+  }
+})
+
 describe("tracks and quiet shapes", () => {
   for (const mode of modes) {
     // The empty part of a slider, progress, meter or ring, a skeleton bone, an avatar placeholder: a shape, not text.

@@ -1,4 +1,4 @@
-// @syncrobotic/robot-model v0.28.0 · update: npx shadcn add @syncrobotic/robot-model --overwrite
+// @syncrobotic/robot-model v0.35.0 · update: npx shadcn add @syncrobotic/robot-model --overwrite
 "use client"
 
 import * as React from "react"
@@ -10,6 +10,7 @@ import { Box, CircleAlert, Crosshair, OctagonAlert, Rotate3d, RotateCw, Triangle
 import { cn } from "@/lib/utils"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { ButtonGroup } from "@/registry/syncrobotic/ui/button-group"
+import { ViewportOverlay, ViewportPanel } from "@/registry/syncrobotic/ui/viewport-overlay"
 import { Spinner } from "@/registry/syncrobotic/ui/spinner"
 import { Bone } from "@/registry/syncrobotic/shell/skeleton"
 
@@ -1332,40 +1333,42 @@ export function RobotModel({
 
         {ready && callouts.length > 0 && info && (
           // The summary already reads these; the callout is the same words for the eye, never colour alone.
-          <ul aria-hidden="true" data-slot="robot-model-callout" className="pointer-events-none absolute top-4 right-28 left-4 flex flex-col items-start gap-1">
+          <ViewportOverlay position="top" aria-hidden="true" data-slot="robot-model-callout" className="right-28">
             {callouts.map((h) => (
-              <li key={h} className="flex w-fit items-start gap-2 rounded-xs bg-card px-3 py-2 text-sm ring-1 ring-border">
+              <ViewportPanel key={h} className="flex w-fit items-start gap-2">
                 <HighlightIcon aria-hidden="true" className={cn("mt-0.5 size-4 shrink-0", highlightText)} />
                 <span className="flex flex-col">
                   <span className="font-mono font-medium">{h}</span>
                   <span className="text-xs text-muted-foreground">{highlightDetail(h, info, joints, l)}</span>
                 </span>
-              </li>
+              </ViewportPanel>
             ))}
-          </ul>
+          </ViewportOverlay>
         )}
 
         {ready && (
           // Bottom left, clear of the emergency stop, which products keep bottom right. Out of the Tab order: the view is
           // one stop, and 0 and F do the same from the keyboard.
-          <ButtonGroup className="absolute bottom-4 left-4 rounded-md shadow-float">
-            <Button variant="secondary" size="icon" tabIndex={-1} aria-label={l.resetView} title={l.resetView} onClick={resetView}>
-              <Rotate3d aria-hidden="true" />
-            </Button>
-            <Button variant="secondary" size="icon" tabIndex={-1} aria-label={l.fitView} title={l.fitView} onClick={fitNow}>
-              <Crosshair aria-hidden="true" />
-            </Button>
-          </ButtonGroup>
+          <ViewportOverlay position="bottom-left">
+            <ButtonGroup className="pointer-events-auto rounded-sm shadow-float">
+              <Button variant="secondary" size="icon" tabIndex={-1} aria-label={l.resetView} title={l.resetView} onClick={resetView}>
+                <Rotate3d aria-hidden="true" />
+              </Button>
+              <Button variant="secondary" size="icon" tabIndex={-1} aria-label={l.fitView} title={l.fitView} onClick={fitNow}>
+                <Crosshair aria-hidden="true" />
+              </Button>
+            </ButtonGroup>
+          </ViewportOverlay>
         )}
 
         {state === "loading" && (
           <div className="absolute inset-0">
             <Bone className="size-full rounded-none" />
-            <div className="absolute inset-0 grid place-items-center p-4">
-              <p className="rounded-sm bg-background px-3 py-2 text-center text-sm">
+            <ViewportOverlay position="center">
+              <ViewportPanel as="p" className="text-center">
                 {load.phase === "loading" && load.meshes ? l.loadingMeshes(load.meshes.loaded, load.meshes.total) : l.loading}
-              </p>
-            </div>
+              </ViewportPanel>
+            </ViewportOverlay>
           </div>
         )}
 
@@ -1377,12 +1380,12 @@ export function RobotModel({
         {state === "empty" && message(<Box aria-hidden="true" className="size-6 text-muted-foreground" />, l.empty)}
 
         {state === "context-lost" && (
-          <div className="absolute inset-0 grid place-items-center bg-(--scrim) p-4">
-            <p className="flex items-center gap-2 rounded-sm bg-background px-3 py-2 text-sm">
+          <ViewportOverlay position="center" className="bg-scrim">
+            <ViewportPanel as="p" className="flex items-center gap-2">
               <Spinner className="size-4 text-info" delay={0} label={l.contextLost} />
               {l.contextLost}
-            </p>
-          </div>
+            </ViewportPanel>
+          </ViewportOverlay>
         )}
       </div>
     </div>

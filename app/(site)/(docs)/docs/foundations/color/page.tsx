@@ -24,13 +24,16 @@ const tones = [
 const groups: { title: string; tokens: string[]; use: Record<string, string> }[] = [
   {
     title: "Surface and text",
-    tokens: ["background", "card", "popover", "secondary", "muted", "track", "thumb", "border", "input", "foreground", "muted-foreground", "disabled"],
+    tokens: ["background", "card", "popover", "secondary", "muted", "accent", "track", "thumb", "border", "input", "foreground", "muted-foreground", "disabled"],
     use: {
       background: "Page only. Never fill a control with it: a field on a panel takes the panel's surface (card) and an input edge, or it reads as a hole",
       card: "Cards, list groups, app-shell panels, and the fields on them",
       popover: "Menus, dialogs. In dark one step above the card, so an overlay is told apart by its fill, not only a shadow",
       secondary: "Secondary buttons",
-      muted: "Current page in navigation (hover is accent), disabled fields, table headers",
+      muted:
+        "The quiet fill: table headers, a segmented control's track, icon and code tiles, disabled fields and filled buttons, and the current page in navigation (with weight). Words on it stay foreground or secondary text",
+      accent:
+        "Hover: menu items, ghost buttons, table rows, navigation; also a selected row's fill (with the ink bar). One step darker than muted, so hovering another page never looks like the current one",
       track: "The empty part of a slider, progress, meter or ring; skeleton bones, avatars without a picture, grips: 1.5:1 on the card and the page, so the shape reads",
       thumb: "The knob you drag: a slider's thumb, a switch's knob while it is off. White in every mode, with an edge, so it reads on the track and on the filled part",
       border: "Dividers, outlines",

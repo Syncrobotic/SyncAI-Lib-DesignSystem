@@ -1,4 +1,4 @@
-// @syncrobotic/graph v0.32.0 · update: npx shadcn add @syncrobotic/graph --overwrite
+// @syncrobotic/graph v0.35.0 · update: npx shadcn add @syncrobotic/graph --overwrite
 "use client"
 
 import * as React from "react"
@@ -432,7 +432,8 @@ export type GraphProps = {
   className?: string
 }
 
-const frame = "relative w-full rounded-md bg-background ring-1 ring-border"
+// A Surface (card fill, ring, no shadow): --background is the page only, never a frame on it.
+const frame = "relative w-full rounded-md bg-card ring-1 ring-border"
 
 /**
  * A directed acyclic graph: lineage (a dataset, the label sets it was built from, their raw captures), a training run's

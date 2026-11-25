@@ -2,6 +2,22 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Added
+- **`viewport-overlay` 0.35.0 (beta):** the place and the surface for what is drawn over a map, a point cloud, a 3D view or a camera. `ViewportOverlay` puts it 16 px from the frame's edges (`position` top-left, top, top-right, bottom-left, bottom, bottom-right, center), pieces 8 px apart, and lets the pointer through to the canvas; `ViewportPanel` is one piece, the kit's Float (`bg-float shadow-float ring-1 ring-edge backdrop-blur-xl`, opaque in high contrast) or `variant="scrim"` for words over a picture, rounded-sm like the buttons. Audit #4
+- **`segmented-control` 0.35.0, `labels-zh-tw` 0.35.0:** `ChartViewSwitch`, the Chart / Table switch for a chart card's header at `--h-sm` (36 px with a mouse, 44 on touch: a header holds no field), or any two views with `views` (Map / List); words through `labels` (`chartViewSwitchLabels`). In segmented-control, not chart, so a block drawn without recharts can use it. Audit #5
+- **`agent-skill` 0.35.0:** the design language says what `--muted` is and that hover is a different fill, and how chrome sits over a viewport; the checklist names ViewportOverlay, ChartViewSwitch and a level past its threshold as glyph and word. Audits #1, #4, #5, #8
+
+### Changed
+- **`syncrobotic-theme` 0.35.0:** `--accent` (hover) is one step darker than `--muted` (the current page in navigation, and the quiet fill of table headers, segment tracks, tiles and disabled fields), so hovering another page never looks like the current one: #d4d4d8 in light (was #e6e6ea, the same as muted), #34343b in dark (was #25252b), #3f3f46 in high-contrast dark; high-contrast light's `--muted` is #e6e6ea (was #dcdce1). `--disabled` darkens a step (#74747c light, #80808a dark, #8e8e96 high-contrast dark) to stay 3:1 on the hover fill. Hover fills are visibly darker everywhere (menus, ghost buttons, table rows, a selected row). The colour foundation lists `--accent`. Audit #8
+- **`meter` 0.35.0:** past `low` or `critical` a level shows the status glyph (triangle, square) before the value and the word (Low, High, Critical) beside it, in the status colour; the number stays text (it was the bar and the number in amber, the word only in `aria-valuetext`). `inline` shows the glyph and reads the word. **`robot-status-card`, `sparkline-robot-list` 0.35.0:** a low battery the same way. Audit #1
+- **`geo-map`, `robot-map`, `point-cloud`, `camera-feed`, `robot-model`, `camera-wall` 0.35.0:** what they draw over the view is ViewportOverlay and ViewportPanel: one inset (16 px; point-cloud and camera-feed were 12), one radius (rounded-sm), Float instead of a card with a shadow or the page's background. **`graph` 0.35.0:** its frame is a Surface (`bg-card`), not the page's background. Audit #4
+- **12 chart blocks** (`area-chart-battery`, `area-chart-cumulative`, `area-chart-fleet-states`, `bar-chart-missions`, `bar-chart-ranked`, `bar-chart-stacked`, `bar-chart-variance`, `heatmap-week-hours`, `histogram-battery`, `line-chart-compare`, `line-chart-limit`, `line-chart-telemetry`) **0.35.0:** the Chart / Table switch is ChartViewSwitch at `--h-sm` (was 44 px); line-chart-telemetry's range switch beside it too. **`streaming-chart` 0.35.0** uses it, no visible change. Audit #5
+- **`media-player` 0.35.0:** on a coarse pointer a marker's target is `--h-md` (44 px, 48 in gloves); it looks the same. Audit #12
+- **`copy-button` 0.35.0:** a text button's word starts 8 px after its icon whatever it says; the room kept for the longest word falls after it (the docs' Prompt button had 20 px between icon and word). Audit #14
+- **Docs:** links are underlined everywhere (How to upgrade, the related-component chips under Built from, the brand downloads), the underline grey until hover darkens it (`textLink` in site/prose); a component page's version and Beta are MetaPill links. Audit #2
+
 ## 0.34.0 · 2026-11-25
 
 The full-screen model workspace: the action rail with a history column, a control panel and a top bar that folds instead of wrapping, grounded text that drives a picture in another panel, and a streaming chart that comes back from its table at full size.

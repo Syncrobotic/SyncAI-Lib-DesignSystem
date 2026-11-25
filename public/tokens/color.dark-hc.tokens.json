@@ -51,7 +51,7 @@
     },
     "accent": {
       "$type": "color",
-      "$value": "#34343b"
+      "$value": "#3f3f46"
     },
     "accent-foreground": {
       "$type": "color",
@@ -75,7 +75,7 @@
     },
     "disabled": {
       "$type": "color",
-      "$value": "#808088"
+      "$value": "#8e8e96"
     },
     "track": {
       "$type": "color",

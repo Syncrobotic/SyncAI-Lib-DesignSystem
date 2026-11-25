@@ -1,4 +1,4 @@
-// @syncrobotic/robot-map v0.32.0 · update: npx shadcn add @syncrobotic/robot-map --overwrite
+// @syncrobotic/robot-map v0.35.0 · update: npx shadcn add @syncrobotic/robot-map --overwrite
 "use client"
 
 import * as React from "react"
@@ -8,6 +8,7 @@ import { StatusGlyph, statusText, type Status } from "@/registry/syncrobotic/she
 import { Bone } from "@/registry/syncrobotic/shell/skeleton"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { ButtonGroup } from "@/registry/syncrobotic/ui/button-group"
+import { ViewportOverlay, ViewportPanel } from "@/registry/syncrobotic/ui/viewport-overlay"
 import { ChargingDock, SafetyZone } from "@/registry/syncrobotic/ui/robot-icons"
 
 /**
@@ -1775,44 +1776,47 @@ export function RobotMap({
 
       {/* Top left, clear of the north arrow: what the map says about itself, one card under another. */}
       {(robots.length === 0 || costmap || banner) && (
-        <div className={cn("pointer-events-none absolute top-4 left-4 flex flex-col items-start gap-2", northDeg !== undefined ? "right-16" : "right-4")}>
+        <ViewportOverlay position="top" className={northDeg !== undefined ? "right-16" : undefined}>
           {banner && (
             // Smaller on a phone-sized map, where two lines of 14 px would cover a third of it.
-            <p
+            <ViewportPanel
+              as="p"
               ref={bannerEl}
               data-slot="robot-map-mode"
-              className={cn("flex max-w-full flex-col gap-1 rounded-xs bg-card shadow-float ring-1 ring-border", size.w >= 480 ? "px-3 py-2 text-sm" : "px-2 py-1 text-xs")}
+              className={cn("flex max-w-full flex-col gap-1", size.w < 480 && "px-2 py-1 text-xs")}
             >
               <span>{banner}</span>
               {/* How to pan while editing, where there is room for it; the instructions say it to screen readers. */}
               {size.w >= 480 && <span className="text-xs text-muted-foreground">{labels.panHint}</span>}
-            </p>
+            </ViewportPanel>
           )}
           {costmap && (
-            <p data-slot="robot-map-legend" className="flex items-center gap-2 rounded-xs bg-card px-2 py-1 text-xs text-muted-foreground ring-1 ring-border">
+            <ViewportPanel as="p" data-slot="robot-map-legend" className="flex items-center gap-2 px-2 py-1 text-xs text-muted-foreground">
               <span className="font-medium text-foreground">{labels.costTitle}</span>
               {labels.costLow}
               <span aria-hidden="true" className="h-2 w-12 rounded-2xs bg-map bg-linear-to-r from-transparent to-chart-1/60 ring-1 ring-border" />
               {labels.costHigh}
-            </p>
+            </ViewportPanel>
           )}
           {robots.length === 0 && <p className="w-fit rounded-xs bg-card px-3 py-2 text-sm text-muted-foreground ring-1 ring-border">{labels.empty}</p>}
-        </div>
+        </ViewportOverlay>
       )}
 
       {northDeg !== undefined && (
-        <div aria-hidden="true" className="absolute top-4 right-4 flex size-(--h-md) flex-col items-center justify-center rounded-md bg-card ring-1 ring-border">
+        <ViewportOverlay position="top-right">
+          <ViewportPanel aria-hidden="true" data-slot="robot-map-north" className="flex size-(--h-md) flex-col items-center justify-center p-0">
           <svg viewBox="-12 -12 24 24" className="size-6" style={{ transform: `rotate(${northDeg}deg)` }}>
             <path d="M0 -10L5 4L0 1L-5 4Z" className="fill-foreground" />
           </svg>
           <span className="text-xs leading-none font-bold">{labels.northLetter}</span>
-        </div>
+          </ViewportPanel>
+        </ViewportOverlay>
       )}
 
       {/* Bottom left, clear of the emergency stop, which products keep bottom right. */}
-      <div className="absolute bottom-4 left-4 flex items-end gap-2">
+      <ViewportOverlay position="bottom-left">
         {/* Stacked on a tall map; in a row on a short one (a phone), where a column would cover a third of it. */}
-        <ButtonGroup orientation={vertical ? "vertical" : "horizontal"} className="shadow-float">
+        <ButtonGroup orientation={vertical ? "vertical" : "horizontal"} className="pointer-events-auto rounded-sm shadow-float">
           <Button variant="secondary" size="icon" aria-label={labels.zoomIn} title={labels.zoomIn} disabled={view.k >= MAX_ZOOM} onClick={() => zoomBy(STEP)}>
             <ZoomIn aria-hidden="true" />
           </Button>
@@ -1827,7 +1831,7 @@ export function RobotMap({
           <span>{labels.metres(scaleM)}</span>
           <span style={{ width: scaleM * s }} className="h-2 border-x-2 border-b-2 border-foreground" />
         </div>
-      </div>
+      </ViewportOverlay>
     </div>
   )
 }

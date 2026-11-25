@@ -47,6 +47,7 @@ import type { StepperLabels } from "@/registry/syncrobotic/ui/stepper"
 import type { TextDiffLabels } from "@/registry/syncrobotic/ui/text-diff"
 import type { MeterLabels } from "@/registry/syncrobotic/ui/meter"
 import type { BarListLabels } from "@/registry/syncrobotic/ui/bar-list"
+import type { ChartViewSwitchLabels } from "@/registry/syncrobotic/ui/segmented-control"
 import type { ThumbnailLabels } from "@/registry/syncrobotic/ui/thumbnail"
 import type { ThemeChoice } from "@/registry/syncrobotic/ui/theme-toggle"
 import type { TimePickerLabels } from "@/registry/syncrobotic/ui/time-picker"
@@ -111,6 +112,7 @@ it("fits every component's labels type", () => {
   fits<WaypointEditorLabels>()(zh.waypointEditorLabels)
   fits<MeterLabels>()(zh.meterLabels)
   fits<BarListLabels>()(zh.barListLabels)
+  fits<ChartViewSwitchLabels>()(zh.chartViewSwitchLabels)
   fits<ThumbnailLabels>()(zh.thumbnailLabels)
   fits<MetricCardLabels>()(zh.metricCardLabels)
   fits<TextDiffLabels>()(zh.textDiffLabels)

@@ -1,4 +1,4 @@
-// @syncrobotic/sparkline-robot-list v0.15.2 · update: npx shadcn add @syncrobotic/sparkline-robot-list --overwrite
+// @syncrobotic/sparkline-robot-list v0.35.0 · update: npx shadcn add @syncrobotic/sparkline-robot-list --overwrite
 "use client"
 
 import { cn } from "@/lib/utils"
@@ -50,7 +50,9 @@ export function SparklineRobotList() {
                 </span>
               </span>
               <Sparkline values={r.battery} />
-              <span className={cn("w-12 text-right text-sm tabular-nums", low ? "font-medium text-warning" : "text-foreground")}>
+              {/* Low is the warning shape before the number, never the number's colour; the word is read. */}
+              <span className={cn("flex w-16 items-center justify-end gap-2 text-sm text-foreground tabular-nums", low && "font-medium")}>
+                {low && <StatusGlyph status="warning" />}
                 {now} %<span className="sr-only">{low ? ", low" : ""}</span>
               </span>
             </li>

@@ -1,7 +1,7 @@
 {
   "syncrobotic-theme": {
-    "version": "0.31.0",
-    "hash": "a4ad129f3e2be32e"
+    "version": "0.35.0",
+    "hash": "83684b449cb6f1c4"
   },
   "cn": {
     "version": "0.5.0",
@@ -12,8 +12,8 @@
     "hash": "8ec920f8618ff43d"
   },
   "labels-zh-tw": {
-    "version": "0.34.0",
-    "hash": "cbc35e6d7b4ded5a"
+    "version": "0.35.0",
+    "hash": "18de04377674c8a9"
   },
   "ros": {
     "version": "0.31.0",
@@ -88,24 +88,24 @@
     "hash": "939af3f1ab76abb6"
   },
   "geo-map": {
-    "version": "0.32.0",
-    "hash": "e386f5e4a6b814df"
+    "version": "0.35.0",
+    "hash": "8286c6e7695e34aa"
   },
   "spinner": {
     "version": "0.23.0",
     "hash": "6c973b85bdf50fa3"
   },
   "segmented-control": {
-    "version": "0.28.0",
-    "hash": "27ae6e624257042c"
+    "version": "0.35.0",
+    "hash": "c9936816adfa86a2"
   },
   "toggle": {
     "version": "0.28.0",
     "hash": "d2e6bf5a58372f2f"
   },
   "copy-button": {
-    "version": "0.28.0",
-    "hash": "954b614eb23b0587"
+    "version": "0.35.0",
+    "hash": "2bc5f519d87c8490"
   },
   "code-block": {
     "version": "0.19.0",
@@ -196,8 +196,8 @@
     "hash": "44d6294977873b90"
   },
   "meter": {
-    "version": "0.31.0",
-    "hash": "6e78f673bdd6bc49"
+    "version": "0.35.0",
+    "hash": "f6d60f2e8ab42764"
   },
   "metric-card": {
     "version": "0.32.0",
@@ -232,8 +232,8 @@
     "hash": "7e591be54e08bd72"
   },
   "streaming-chart": {
-    "version": "0.34.0",
-    "hash": "ad4e5486e8a3d39b"
+    "version": "0.35.0",
+    "hash": "994cfb6af976b76a"
   },
   "attitude": {
     "version": "0.29.0",
@@ -268,12 +268,12 @@
     "hash": "ed4f26f5991f7922"
   },
   "graph": {
-    "version": "0.32.0",
-    "hash": "b08266534d5a1078"
+    "version": "0.35.0",
+    "hash": "2e6dbaf0498f3718"
   },
   "robot-map": {
-    "version": "0.32.0",
-    "hash": "e6f76c192c8e2f51"
+    "version": "0.35.0",
+    "hash": "7519e6f861721f5b"
   },
   "waypoint-editor": {
     "version": "0.29.0",
@@ -388,16 +388,16 @@
     "hash": "a5aa74245f1ada3a"
   },
   "media-player": {
-    "version": "0.32.0",
-    "hash": "4af0f25152e9c644"
+    "version": "0.35.0",
+    "hash": "746e12e36c541b75"
   },
   "camera-feed": {
-    "version": "0.29.0",
-    "hash": "8036f5c14bd86b13"
+    "version": "0.35.0",
+    "hash": "752e470d5ca5fa6f"
   },
   "camera-wall": {
-    "version": "0.29.0",
-    "hash": "adf8f0f93b48cf5d"
+    "version": "0.35.0",
+    "hash": "c760b6e306a7218d"
   },
   "joint-state": {
     "version": "0.24.1",
@@ -408,12 +408,16 @@
     "hash": "7ce204e76cc56d10"
   },
   "point-cloud": {
-    "version": "0.24.1",
-    "hash": "2408604ba0e89408"
+    "version": "0.35.0",
+    "hash": "d2a1596854c4dbe4"
   },
   "robot-model": {
-    "version": "0.28.0",
-    "hash": "61667b3e4ffd0dcd"
+    "version": "0.35.0",
+    "hash": "bf5379b8a41a282d"
+  },
+  "viewport-overlay": {
+    "version": "0.35.0",
+    "hash": "5134599a453ae37c"
   },
   "filter-form": {
     "version": "0.10.0",
@@ -528,8 +532,8 @@
     "hash": "58435f401c44556e"
   },
   "robot-status-card": {
-    "version": "0.28.0",
-    "hash": "51c0de79bc63bb9e"
+    "version": "0.35.0",
+    "hash": "be556d2c879e6309"
   },
   "marketing-hero": {
     "version": "0.28.0",
@@ -600,52 +604,52 @@
     "hash": "98143b93352ba6f0"
   },
   "agent-skill": {
-    "version": "0.34.0",
-    "hash": "2981a93614e24bc7"
+    "version": "0.35.0",
+    "hash": "c5871b19ca0eb021"
   },
   "line-chart-telemetry": {
-    "version": "0.17.2",
-    "hash": "f3f50a2d46e488db"
+    "version": "0.35.0",
+    "hash": "d4959f834ce39ae4"
   },
   "line-chart-limit": {
-    "version": "0.17.3",
-    "hash": "072ee866b963e97b"
+    "version": "0.35.0",
+    "hash": "22058e2b1107c478"
   },
   "line-chart-compare": {
-    "version": "0.28.0",
-    "hash": "bb90ab86d273a707"
+    "version": "0.35.0",
+    "hash": "114a210186f59738"
   },
   "area-chart-battery": {
-    "version": "0.17.2",
-    "hash": "0c3c3c561ecd8041"
+    "version": "0.35.0",
+    "hash": "f6e78f18df611d1b"
   },
   "area-chart-fleet-states": {
-    "version": "0.22.0",
-    "hash": "2980b0707b6c9a4d"
+    "version": "0.35.0",
+    "hash": "5fc02b26e65c790d"
   },
   "area-chart-cumulative": {
-    "version": "0.22.1",
-    "hash": "f4b047de6fafbf46"
+    "version": "0.35.0",
+    "hash": "5fae7067316527b3"
   },
   "bar-chart-missions": {
-    "version": "0.22.1",
-    "hash": "3a93056ed6f9aedb"
+    "version": "0.35.0",
+    "hash": "12ad966e2bfbfedf"
   },
   "bar-chart-ranked": {
-    "version": "0.28.0",
-    "hash": "79d857eb92141d3f"
+    "version": "0.35.0",
+    "hash": "0a6e330b8dde4c71"
   },
   "bar-chart-stacked": {
-    "version": "0.22.0",
-    "hash": "56cb029bad7d7903"
+    "version": "0.35.0",
+    "hash": "4ac22271579015c2"
   },
   "bar-chart-variance": {
-    "version": "0.17.3",
-    "hash": "ec1346829d606279"
+    "version": "0.35.0",
+    "hash": "ad361e070e61a300"
   },
   "sparkline-robot-list": {
-    "version": "0.15.2",
-    "hash": "2298d83950f8180c"
+    "version": "0.35.0",
+    "hash": "68b27ba266af416a"
   },
   "sparkline-metric-tiles": {
     "version": "0.28.0",
@@ -680,16 +684,16 @@
     "hash": "48bcb7645422f003"
   },
   "heatmap-week-hours": {
-    "version": "0.22.3",
-    "hash": "f52ec84278afcf1a"
+    "version": "0.35.0",
+    "hash": "8a4a2b08717ed7c8"
   },
   "heatmap-zones": {
     "version": "0.22.4",
     "hash": "46b0ad1bfdb7cc45"
   },
   "histogram-battery": {
-    "version": "0.22.1",
-    "hash": "6ebcd39ea6f6b58d"
+    "version": "0.35.0",
+    "hash": "6c58a5bc0e2e0af8"
   },
   "app-shell-mobile-tabs": {
     "version": "0.31.0",
