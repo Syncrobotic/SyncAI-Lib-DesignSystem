@@ -20,12 +20,8 @@ const LIMIT_KB = Number(process.env.HTML_LIMIT_KB ?? 400)
 const ceilings = {
   "/docs/localisation": { kb: 2150, why: "1,953 KB: every label of the kit with its zh-TW text, as a table and as a phone list" },
   "/docs/upgrading": { kb: 980, why: "888 KB: the whole changelog" },
-  "/docs/components/chart": { kb: 850, why: "771 KB: seven chart examples drawn as SVG and 21 chart patterns, each a live preview" },
   "/docs/components": { kb: 620, why: "561 KB: a card for every component" },
-  "/docs/nextjs": { kb: 570, why: "515 KB: 13 code listings shown on the page" },
-  "/icons": { kb: 560, why: "507 KB: every robot icon drawn" },
   "/docs/foundations/color": { kb: 480, why: "430 KB: every colour token with its contrast" },
-  "/docs/ros": { kb: 470, why: "423 KB: the ROS guide with its listings" },
 }
 
 /** @param {string} dir @returns {string[]} */

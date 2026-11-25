@@ -225,7 +225,8 @@ function Gallery({ groups, total, placeholder, markKit = false, category }: Gall
               has no hover, so there (a coarse pointer) every tile shows its name. */}
           <ul className="grid grid-cols-[repeat(auto-fill,minmax(5rem,1fr))] gap-2 sm:grid-cols-[repeat(auto-fill,minmax(6rem,1fr))]">
             {g.icons.map((i) => (
-              <li key={i.name} style={{ contentVisibility: "auto", containIntrinsicSize: "auto 5rem auto 5rem" }}>
+              // A tile's classes are app/globals.css's icon-tile*, written once there instead of on each of a few hundred tiles.
+              <li key={i.name} className="icon-tile-cell">
                 <button
                   type="button"
                   aria-haspopup="dialog"
@@ -233,23 +234,17 @@ function Gallery({ groups, total, placeholder, markKit = false, category }: Gall
                   data-icon={i.name}
                   aria-label={i.means ? `${i.name}: ${i.means}` : i.name}
                   onClick={() => pick(i)}
-                  className="press group relative flex aspect-square w-full items-center justify-center rounded-md bg-card p-2 ring-1 ring-border transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent aria-pressed:ring-2 aria-pressed:ring-foreground"
+                  className="press group icon-tile"
                 >
                   {/* The drawing moves up to make room when the name shows, so the two never overlap. */}
                   <span
                     aria-hidden
-                    className={cn(
-                      "flex size-6 items-center justify-center transition-transform duration-(--motion-fast) ease-(--ease-standard) group-hover:-translate-y-2 group-focus-visible:-translate-y-2 group-aria-pressed:-translate-y-2 pointer-coarse:-translate-y-2",
-                      current.glyph,
-                    )}
+                    className={cn("icon-tile-glyph", current.glyph)}
                   >
                     {i.glyph}
                   </span>
                   {/* The name, over two lines if it needs them. The tile's accessible name already says it, so this is for the eye. */}
-                  <span
-                    aria-hidden
-                    className="absolute inset-x-1 bottom-2 line-clamp-2 text-center font-mono text-xs text-muted-foreground opacity-0 transition-opacity duration-(--motion-fast) ease-(--ease-standard) group-hover:opacity-100 group-focus-visible:opacity-100 group-aria-pressed:opacity-100 pointer-coarse:opacity-100"
-                  >
+                  <span aria-hidden className="icon-tile-name">
                     {/* Breaks only between words of the name: Battery|Charging, never BatteryChar|ging. */}
                     {i.name.split(/(?=[A-Z])/).map((w, k) => (
                       <React.Fragment key={k}>

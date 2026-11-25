@@ -63,11 +63,61 @@ html {
 }
 /* GitHub's themes draw keywords (import, const, return) red, which here means danger: every listing would read as an
    error. Keywords take the brand indigo instead (--chart-1, 4.7:1 or more on the code's surfaces in both themes). */
-.code span[style*="--shiki-light:#A0111F"] {
+.code span[style*="--shiki-light:#A0111F"],
+.code span.hk {
   color: var(--chart-1);
 }
-.dark .code span[style*="--shiki-dark:#FF9492"] {
+.dark .code span[style*="--shiki-dark:#FF9492"],
+.dark .code span.hk {
   color: var(--chart-1);
+}
+/* The token colours as classes (site/highlight.ts): each sets the two variables its style attribute set. */
+.code .hk {
+  --shiki-light: #a0111f;
+  --shiki-dark: #ff9492;
+}
+.code .hs {
+  --shiki-light: #032563;
+  --shiki-dark: #addcff;
+}
+.code .hc {
+  --shiki-light: #023b95;
+  --shiki-dark: #91cbff;
+}
+.code .hf {
+  --shiki-light: #622cbc;
+  --shiki-dark: #dbb7ff;
+}
+.code .ht {
+  --shiki-light: #024c1a;
+  --shiki-dark: #72f088;
+}
+.code .hv {
+  --shiki-light: #702c00;
+  --shiki-dark: #ffb757;
+}
+.code .hm {
+  --shiki-light: #66707b;
+  --shiki-dark: #bdc4cc;
+}
+
+/* The icon gallery's tiles (site/icon-gallery.tsx), a few hundred to a page: their classes are written once here rather
+   than on every tile, where they were two thirds of /icons. In the utilities layer and after the generated utilities,
+   so they cascade as the same classes on the element did (transition-colors over press's transition list). */
+@layer utilities {
+  .icon-tile-cell {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 5rem auto 5rem;
+  }
+  .icon-tile {
+    @apply relative flex aspect-square w-full items-center justify-center rounded-md bg-card p-2 ring-1 ring-border transition-colors duration-(--motion-fast) ease-(--ease-standard) hover:bg-accent aria-pressed:ring-2 aria-pressed:ring-foreground;
+  }
+  .icon-tile-glyph {
+    @apply flex size-6 items-center justify-center transition-transform duration-(--motion-fast) ease-(--ease-standard) group-hover:-translate-y-2 group-focus-visible:-translate-y-2 group-aria-pressed:-translate-y-2 pointer-coarse:-translate-y-2;
+  }
+  .icon-tile-name {
+    @apply absolute inset-x-1 bottom-2 line-clamp-2 text-center font-mono text-xs text-muted-foreground opacity-0 transition-opacity duration-(--motion-fast) ease-(--ease-standard) group-hover:opacity-100 group-focus-visible:opacity-100 group-aria-pressed:opacity-100 pointer-coarse:opacity-100;
+  }
 }
 
 /* Exhibits sit on the page background, a step below the card around them. No pattern: the component is the subject. */

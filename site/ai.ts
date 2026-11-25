@@ -7,6 +7,7 @@ import { foundations } from "./foundations"
 import { iconCount, iconGroups } from "./icons"
 import { overviews } from "./overview"
 import { a11yMarkdown } from "./a11y"
+import { promptFor } from "./ai-prompt"
 
 // The kit as AI agents read it: llms.txt, llms-full.txt and a markdown twin of every page (its URL plus .md).
 // Everything comes from the same data the pages render, so the two never disagree.
@@ -197,11 +198,4 @@ export const markdownResponse = (body: string | null) =>
 export const blockNames = () => blocks.map((b) => b.name)
 
 /** A prompt that hands an agent this item: what to install and where its rules are. */
-export const aiPrompt = (title: string, path: string, name: string) =>
-  [
-    `Use the SYNCROBOTIC ${title} (@syncrobotic/${name}) in this project.`,
-    `1. Install it: ${install(name)}`,
-    `2. Read ${url(`${path}.md`)} and follow its rules and agent notes; the design language is in ${url("/llms-full.txt")}.`,
-    "3. Keep its structure and tokens; replace only the sample data. Do not invent props: read the installed source.",
-    "4. Check: tokens only, 44 px targets on touch, colour only for abnormal states, every duration class with ease-(--ease-standard) beside it; leaving uses the exit animations (animate-disappear, sheet-out, collapse), which carry --ease-exit.",
-  ].join("\n")
+export const aiPrompt = (title: string, path: string, name: string) => promptFor(site.url, title, path, name)

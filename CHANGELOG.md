@@ -2,6 +2,14 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Changed
+- **Docs:** code listings carry their colours as eight classes instead of a style on every word, and a word in the code's own colour has no span at all: the same pixels in under half the bytes, on every page that shows code. Connect to ROS drops from 423 KB to 309 KB of HTML and leaves the size ceilings.
+- **Docs:** the Next.js guide drops from 516 KB to 373 KB of HTML and leaves the size ceilings: the lighter listings above, and its two lists of a hundred component links styled once from the list instead of on every link.
+- **Docs:** the icon gallery's tiles take four classes written once in the site's CSS instead of some forty utilities each, the same tiles in every state: /icons drops from 507 KB to 376 KB of HTML and leaves the size ceilings, and /icons/lucide is lighter too.
+- **Docs:** a component's Patterns draw each block's copy buttons, install line, "Built from" row and preview card as the block nears the screen, as the examples already do; until then its title and description stand above empty boxes of the same size. The chart page, with 22 patterns, drops from 740 KB to 391 KB of HTML and leaves the size ceilings. The Prompt button's text is written in the browser, and /blocks pages send their blocks as data, not markup twice: the same page in fewer bytes.
+
 ## 0.37.0 · 2026-11-25
 
 Saved views for the filter bar, catalog rows that unfold their label layers, event windows in the media player, and every item version findable at a kit tag. A lowered teleop speed limit now applies at once.
