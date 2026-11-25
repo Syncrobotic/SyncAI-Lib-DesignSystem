@@ -79,6 +79,17 @@ html {
 [data-reveal="waiting"] .appear-item {
   opacity: 0;
 }
+/* A showcase section before its script has looked where it is: hidden only when scripts run (site/appear.tsx,
+   revealScript). Should the script never get there, it shows anyway after 2 s, so nothing stays blank. */
+:root[data-js] [data-reveal="pending"] .appear-item {
+  opacity: 0;
+  animation: reveal-fallback 0s 2s forwards;
+}
+@keyframes reveal-fallback {
+  to {
+    opacity: 1;
+  }
+}
 /* Printed (or saved as PDF) before it was scrolled through, a section still waiting to arrive prints as it is. */
 @media print {
   [data-reveal] .appear-item {

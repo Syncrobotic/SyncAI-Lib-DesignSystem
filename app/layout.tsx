@@ -3,6 +3,7 @@ import { GeistMono } from "geist/font/mono"
 import { GeistSans } from "geist/font/sans"
 import { site, snippet } from "@/site/config"
 import { MotionProvider } from "@/site/motion-provider"
+import { revealScript } from "@/site/reveal-script"
 import { themeScript } from "@/site/theme-toggle"
 import { color } from "@/site/theme-tokens"
 import "./globals.css"
@@ -44,6 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-screen">
         {/* Before anything paints. Not in a hand-written <head>: that made hydration fail intermittently (React error 418). */}
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: revealScript }} />
         <MotionProvider>{children}</MotionProvider>
       </body>
     </html>
