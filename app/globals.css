@@ -11,6 +11,14 @@
 /* The theme switches on the .dark class, not on the OS setting. */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Docs block cards (site/block-frame.tsx): a preview under 640 px wide shows the phone view. The still card draws that
+   from its container, the live card from the width it measures. */
+@custom-variant frame-narrow {
+  @container (width < 40rem) {
+    @slot;
+  }
+}
+
 /* Geist is served by next/font under a generated family name; put it first. */
 :root {
   /* Docs site only: height of the sticky header, so the sidebar can fill the rest of the viewport */

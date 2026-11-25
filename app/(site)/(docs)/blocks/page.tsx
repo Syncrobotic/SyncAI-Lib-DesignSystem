@@ -1,8 +1,8 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { pageMeta } from "@/site/config"
-import { blocksOfType } from "@/site/blocks"
-import { blockGroups, blockTypes } from "@/site/block-types"
+import { blockCards } from "@/site/blocks"
+import { blockGroups } from "@/site/block-types"
 import { BlockThumb } from "@/site/block-thumb"
 import { AppearItem, Reveal } from "@/site/appear"
 
@@ -27,8 +27,9 @@ export default function BlocksPage() {
       </header>
 
       {blockGroups.map((g) => {
-        const types = blockTypes.filter((t) => t.group === g && blocksOfType(t.slug).length > 0)
-        if (types.length === 0) return null
+        // One card per type, showing the block that best stands for it (site/blocks.tsx).
+        const cards = blockCards().filter((c) => c.group === g)
+        if (cards.length === 0) return null
         return (
           <section key={g} aria-labelledby={`group-${g}`} className="flex flex-col gap-4 pt-section-sm">
             <div className="flex flex-col gap-1">
@@ -38,33 +39,22 @@ export default function BlocksPage() {
               <p className="max-w-2xl text-sm text-muted-foreground">{groupIntro[g]}</p>
             </div>
             <Reveal className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {types.map((t) => {
-                const list = blocksOfType(t.slug)
-                // The card shows the block that best stands for the type: its cover if one is marked, else the first.
-                const first = list.find((b) => b.cover) ?? list[0]
+              {cards.map((t) => {
                 return (
-                  <AppearItem key={t.slug} className="flex">
+                  <AppearItem key={t.type} className="flex">
                     {/* The screenshot is framed (it is a picture of a screen); the words under it are not boxed. */}
                     <Link
-                      href={`/blocks/${t.slug}`}
+                      href={`/blocks/${t.type}`}
                       className="group flex w-full flex-col gap-3 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
                     >
                       <div className="overflow-hidden rounded-md ring-1 ring-border transition-shadow duration-(--motion-fast) ease-(--ease-standard) group-hover:ring-muted-foreground">
-                        <BlockThumb
-                          name={first.name}
-                          title={t.title}
-                          width={first.thumbWidth ?? (first.viewport === "mobile" ? 390 : 1280)}
-                          height={first.height}
-                          fit={first.fit}
-                          ratio={16 / 10}
-                          view={first.thumb}
-                        />
+                        <BlockThumb name={t.name} />
                       </div>
                       <div className="flex flex-1 flex-col gap-1">
                         <span className="flex items-baseline justify-between gap-2">
                           <span className="font-bold group-hover:underline">{t.title}</span>
                           <span className="text-xs text-muted-foreground tabular-nums">
-                            {list.length} {list.length === 1 ? "block" : "blocks"}
+                            {t.count} {t.count === 1 ? "block" : "blocks"}
                           </span>
                         </span>
                         <span className="text-sm text-muted-foreground">{t.description}</span>
