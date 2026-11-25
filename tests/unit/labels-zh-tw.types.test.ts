@@ -43,6 +43,7 @@ import type { SpinnerLabels } from "@/registry/syncrobotic/ui/spinner"
 import type { StreamingChartLabels } from "@/registry/syncrobotic/ui/streaming-chart"
 import type { StreamingTextLabels } from "@/registry/syncrobotic/ui/streaming-text"
 import type { AttitudeIndicatorLabels, GaugeLabels } from "@/registry/syncrobotic/ui/attitude"
+import type { ResponsiveTableLabels } from "@/registry/syncrobotic/ui/responsive-table"
 import type { TierBadgeLabels } from "@/registry/syncrobotic/ui/tier-badge"
 import type { StepperLabels } from "@/registry/syncrobotic/ui/stepper"
 import type { TextDiffLabels } from "@/registry/syncrobotic/ui/text-diff"
@@ -143,6 +144,7 @@ it("fits every component's labels type", () => {
   fits<CommandDialogLabels>()(zh.commandDialogLabels)
   fits<DialogLabels>()(zh.dialogContentLabels)
   fits<DropdownMenuMoreLabels>()(zh.dropdownMenuMoreTriggerLabels)
+  fits<ResponsiveTableLabels>()(zh.responsiveTableLabels)
   fits<StepperLabels>()(zh.stepperLabels)
   fits<StepperLabels>()(zh.stepperCompactLabels)
   fits<SpinnerLabels>()(zh.spinnerLabels)

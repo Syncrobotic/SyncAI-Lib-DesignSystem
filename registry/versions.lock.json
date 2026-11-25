@@ -32,8 +32,8 @@
     "hash": "03904a0793a968e9"
   },
   "labels-zh-tw": {
-    "version": "0.37.0",
-    "hash": "84aa89e213c9c9f2"
+    "version": "0.39.0",
+    "hash": "6c32ccb26ec91619"
   },
   "ros": {
     "version": "0.36.0",
@@ -254,6 +254,10 @@
   "table": {
     "version": "0.35.0",
     "hash": "9f97c5ec5ac5fe3e"
+  },
+  "responsive-table": {
+    "version": "0.39.0",
+    "hash": "254427343bb2b7ff"
   },
   "chart": {
     "version": "0.22.1",
@@ -637,7 +641,7 @@
   },
   "agent-skill": {
     "version": "0.39.0",
-    "hash": "12279bb0a0c743de"
+    "hash": "25fa8c5539baddd7"
   },
   "line-chart-telemetry": {
     "version": "0.35.0",

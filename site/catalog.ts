@@ -49,6 +49,7 @@ export type StoryFile =
   | "toggle-group"
   | "page-header"
   | "section-header"
+  | "responsive-table"
   | "chip-group"
   | "filter-form"
   | "filters"
@@ -735,6 +736,21 @@ const entries: Record<string, Entry> = {
       "Right-align numbers. Numbers are tabular by default.",
       "A row's actions sit in its last cell, TableActionsCell: a ⋯ menu (DropdownMenuMoreTrigger with the row's name) or one or two icon buttons. Its header cell takes the same padding (`w-0 pr-2 pl-0 sm:px-4`) and a visually hidden “Actions”.",
       'No rows: one row whose cell spans every column and holds an inline EmptyState (`size="inline"`), never a bare line of grey text.',
+      "Rows that phones see too: `responsive-table`, which renders this table and a grouped list from one list of columns, never a second phone list written by hand.",
+    ],
+  },
+  "responsive-table": {
+    group: "Data display",
+    /** The table needs the row's width to show its wide layout. */
+    wide: true,
+    examples: { file: "responsive-table", prefix: "ResponsiveTable" },
+    rules: [
+      "Rows that people open on phones as well as on desks: one list of columns renders a Table where there are 36rem (576 px) of its own width, and a grouped list (ListGroup, ListRow) under that. Its own width decides, so a narrow column on a wide screen gets the list too.",
+      "Only one layout is in the page at a time, so a screen reader never meets the rows twice: table semantics on wide screens, a list of list items on phones. Before it is measured (the server's HTML) a container query shows the right one.",
+      "Each column says where it goes on a phone: the first is the row's title, `trailing` is the state at the row's end (InlineStatus, one column), the rest form the line under the title (`meta`, one or two facts) or are `hidden`. `phoneCell` gives a shorter form (\"82 %\" for a meter).",
+      "`onRowClick` makes the title cell a button in the table and the whole phone row a 56 px button with a chevron. `rowActions` is the ⋯ menu: TableActionsCell in the table, after the row's button on a phone.",
+      "Numbers `align: \"end\"`, written in full (formatCount). No rows: `empty` with an inline EmptyState.",
+      "Many columns to scan, sort and select on a desk: DataGrid. A list that is only ever on phones: ListGroup and ListRow.",
     ],
   },
   list: {

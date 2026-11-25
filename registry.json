@@ -332,8 +332,13 @@
         }
       ],
       "meta": {
-        "version": "0.37.0",
+        "version": "0.39.0",
         "changelog": [
+          {
+            "version": "0.39.0",
+            "date": "2026-11-25",
+            "note": "`responsiveTableLabels` for responsive-table (動作). Issue #383."
+          },
           {
             "version": "0.37.0",
             "date": "2026-11-25",
@@ -2973,6 +2978,34 @@
       "dependencies": [
         "lucide-react@^1"
       ]
+    },
+    {
+      "name": "responsive-table",
+      "type": "registry:ui",
+      "title": "Responsive table",
+      "description": "The same rows as a Table where there is room and as a grouped list (ListGroup, ListRow) under 36rem of its own width, from one list of columns. Only one is rendered: table semantics on wide screens, list semantics on phones.",
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/table",
+        "@syncrobotic/list"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/responsive-table.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.39.0",
+        "changelog": [
+          {
+            "version": "0.39.0",
+            "date": "2026-11-25",
+            "note": "First release: one column definition (header, cell, align, phone: title, meta, trailing or hidden, phoneCell) renders a Table from 36rem of its own width and a grouped list under it; onRowClick, rowActions, empty, layout and labels. Issue #383."
+          }
+        ]
+      }
     },
     {
       "name": "chart",
@@ -8170,7 +8203,7 @@
           {
             "version": "0.39.0",
             "date": "2026-11-25",
-            "note": "The design language and the checklist: the number formatting rule. A count is written in full with grouping in tables, headers and detail, and abbreviated (135K, 14萬) only where space is the constraint (a tab's count, chart ticks, a compact chip), both through formatCount. Issue #386. Section titles are SectionHeader at typography's two levels (page 20 px bold, surface 14 px medium), and it takes `as` like the other headings. Issue #385."
+            "note": "The design language and the checklist: the number formatting rule. A count is written in full with grouping in tables, headers and detail, and abbreviated (135K, 14萬) only where space is the constraint (a tab's count, chart ticks, a compact chip), both through formatCount. Issue #386. Section titles are SectionHeader at typography's two levels (page 20 px bold, surface 14 px medium), and it takes `as` like the other headings. Issue #385. Checklist: ResponsiveTable for rows that phones see too, never a hidden Table beside a hand-written phone list. Issue #383."
           },
           {
             "version": "0.36.0",

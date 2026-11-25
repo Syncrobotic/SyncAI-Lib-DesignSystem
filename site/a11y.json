@@ -420,6 +420,21 @@
     "tabStops": 3,
     "live": false
   },
+  "responsive-table": {
+    "roles": [
+      "button",
+      "cell",
+      "columnheader",
+      "list",
+      "listitem",
+      "meter",
+      "row",
+      "rowgroup",
+      "table"
+    ],
+    "tabStops": 5,
+    "live": false
+  },
   "chart": {
     "roles": [
       "application",

@@ -8746,6 +8746,72 @@
    ]
   }
  ],
+ "responsive-table": [
+  {
+   "name": "ResponsiveTable",
+   "props": [
+    {
+     "name": "rows",
+     "type": "readonly T[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "columns",
+     "type": "readonly ResponsiveTableColumn<T>[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "rowKey",
+     "type": "(row: T) => Key",
+     "required": true,
+     "description": "A stable key for each row."
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "Names the table, and the list on a phone, for screen readers (\"Robots\")."
+    },
+    {
+     "name": "onRowClick",
+     "type": "(row: T) => void",
+     "description": "Opens a row: the title cell becomes a button in the table, the whole row a button with a chevron on a phone."
+    },
+    {
+     "name": "rowActions",
+     "type": "(row: T) => ReactNode",
+     "description": "A row's ⋯ menu or one or two icon buttons (`DropdownMenuMoreTrigger` with the row's name): the table's last cell, the end of a phone row."
+    },
+    {
+     "name": "empty",
+     "type": "ReactNode",
+     "description": "What shows when there are no rows: an EmptyState with `size=\"inline\"`."
+    },
+    {
+     "name": "layout",
+     "type": "\"table\" | \"list\" | \"auto\"",
+     "default": "\"auto\"",
+     "description": "`auto` measures its own width; `table` or `list` fixes the layout (a side panel that is always narrow)."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<ResponsiveTableLabels>",
+     "description": "The words it says, to translate them.",
+     "keys": [
+      {
+       "name": "actions",
+       "type": "string",
+       "default": "\"Actions\"",
+       "description": "The hidden header of the actions column."
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "restricted-preview": [
   {
    "name": "RestrictedPreview",

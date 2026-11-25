@@ -1012,13 +1012,23 @@ export const overviews: Record<string, Overview> = {
   table: {
     what: "Rows and columns for comparing many records at once, with tabular numbers.",
     use: ["Fleet lists, event logs, user lists on wide screens."],
-    instead: ["Phones, or records with one main line: `list`.", "A trend over time: `chart`."],
+    instead: ["The same rows on desks and on phones: `responsive-table`, a table that becomes a grouped list.", "Phones, or records with one main line: `list`.", "A trend over time: `chart`."],
     notes: ["Sortable column: pass `sort` and `onSort` to TableHead; do not build your own header button."],
+  },
+  "responsive-table": {
+    what: "The same rows as a Table where there is room and as a grouped list on a phone, from one list of columns: its own width decides, and only one is rendered.",
+    use: ["A robot, incident or user list a page shows on desks and phones.", "A table in a dashboard column that can be narrow."],
+    instead: ["Many columns to sort, filter and select: `data-grid`.", "Rows only ever on a phone or in a side panel: `list`.", "Rows that only show on wide screens: `table`."],
+    notes: [
+      "Write each column once, with `phone` saying where it goes; never a second hand-written phone list beside a Table hidden with `sm:hidden`.",
+      "Keep the phone row to its title, one trailing state and one or two facts; mark the rest `hidden`.",
+      "Pass `layout=\"list\"` or `\"table\"` only where the width never changes (a side panel); `auto` measures.",
+    ],
   },
   list: {
     what: "Rows on one surface with inset dividers; status as shape plus word.",
     use: ["Robots, missions or settings on phones and in side panels."],
-    instead: ["Many columns to compare: `table`."],
+    instead: ["Many columns to compare: `table`.", "The same rows as a table on wide screens: `responsive-table`."],
   },
   "status-glyph": {
     what: "Status is a shape and a word; colour only when it is abnormal. The shapes: filled circle busy, hollow circle normal, triangle attention, square stopped, slashed circle offline.",
