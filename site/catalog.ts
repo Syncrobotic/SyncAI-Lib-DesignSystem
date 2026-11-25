@@ -871,6 +871,8 @@ const entries: Record<string, Entry> = {
       "Give `label` the clip's who, where and when (\"Patrol dog 7F3A, front camera, 14:02\"); it names the player for screen readers.",
       "Pass `duration` from the clip's record, so the time and the markers show before the file loads; `preload=\"none\"` in a long list of clips.",
       "Markers are events in the clip (Obstacle, Stop pressed), a word each, at most a handful. They are listed under the player too, for the keyboard and screen readers. A marker is a 24 px target with a mouse and 44 px on touch (48 in gloves); it looks the same.",
+      "A marker with `end` is a window (Person in path, 12:04–12:31): a bracket from start to end above the track, never a fill on it, so it is not read as the played part. It is named by its range, and a press goes to its start.",
+      "Several clips side by side: `markerList=\"collapsed\"`, so each is the picture and one \"3 events\" row and the grid lines up. `markerList=\"none\"` only when the page lists the events itself; the marks on the timeline then take the keyboard and are named.",
       "Never autoplay with sound. `autoPlay` starts muted and does nothing for someone who asked for reduced motion.",
       "When the clip cannot play, say why after \"Clip unavailable:\" (not uploaded yet, expired, the robot was offline) and offer a retry only when retrying can help.",
     ],

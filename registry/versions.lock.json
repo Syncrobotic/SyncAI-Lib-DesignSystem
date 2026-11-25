@@ -29,7 +29,7 @@
   },
   "labels-zh-tw": {
     "version": "0.37.0",
-    "hash": "1c4d72d8f0f3565a"
+    "hash": "84aa89e213c9c9f2"
   },
   "ros": {
     "version": "0.36.0",
@@ -412,8 +412,8 @@
     "hash": "ecaa27c87796ee91"
   },
   "media-player": {
-    "version": "0.36.0",
-    "hash": "d5014ee9d1cb9ea7"
+    "version": "0.37.0",
+    "hash": "e7f6065758a55c60"
   },
   "camera-feed": {
     "version": "0.36.0",

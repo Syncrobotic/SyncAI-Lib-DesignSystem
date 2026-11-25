@@ -1,16 +1,20 @@
-// @syncrobotic/media-player v0.36.0 · update: npx shadcn add @syncrobotic/media-player --overwrite
+// @syncrobotic/media-player v0.37.0 · update: npx shadcn add @syncrobotic/media-player --overwrite
 "use client"
 
 import * as React from "react"
 import { Captions, CircleAlert, Maximize, Minimize, Pause, Play, RotateCw, Volume2, VolumeX } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/registry/syncrobotic/ui/button"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/registry/syncrobotic/ui/collapsible"
 import { Slider } from "@/registry/syncrobotic/ui/slider"
 import { Spinner } from "@/registry/syncrobotic/ui/spinner"
 import { prefersReducedMotion } from "@/registry/syncrobotic/hooks/use-reduced-motion"
 
-/** A moment in the clip worth jumping to: "Obstacle" at 42 s. */
-export type MediaMarker = { time: number; label: string; id?: string }
+/**
+ * A moment in the clip worth jumping to: "Obstacle" at 42 s. With `end` (seconds, after `time`) it is a window, drawn as a
+ * band from start to end: "Person in path" from 12:04 to 12:31. Either way a press goes to `time`.
+ */
+export type MediaMarker = { time: number; end?: number; label: string; id?: string }
 
 /** A WebVTT file of captions or subtitles. One is shown at a time: the one marked `default`, else the first. */
 export type MediaTrack = { src: string; srcLang: string; label: string; kind?: "captions" | "subtitles"; default?: boolean }
@@ -33,6 +37,12 @@ export type MediaPlayerLabels = {
   position: (current: string, total: string) => string
   /** Heading of the list of markers under the player. */
   markers: string
+  /** The disclosure that unfolds the list, with `markerList="collapsed"`: "3 events". */
+  markerCount: (count: number) => string
+  /** A marker's span of time: "12:04–12:31". */
+  range: (start: string, end: string) => string
+  /** A marker's name, in the list and on the timeline: "12:04–12:31, Person in path". */
+  marker: (time: string, label: string) => string
   loading: string
   buffering: string
   /** "Clip unavailable", written before the reason. */
@@ -55,6 +65,9 @@ const defaultLabels: MediaPlayerLabels = {
   seek: "Position in clip",
   position: (current, total) => `${current} of ${total}`,
   markers: "Events in this clip",
+  markerCount: (count) => (count === 1 ? "1 event" : `${count} events`),
+  range: (start, end) => `${start}–${end}`,
+  marker: (time, label) => `${time}, ${label}`,
   loading: "Loading clip",
   buffering: "Buffering",
   unavailable: "Clip unavailable",
@@ -97,6 +110,12 @@ export type MediaPlayerProps = {
   /** Where to start, in seconds: an incident clip opens at its event. */
   startAt?: number
   markers?: MediaMarker[]
+  /**
+   * The markers listed under the player, for the keyboard and screen readers. `list` (default) shows them; `collapsed`
+   * folds them behind "3 events", so a grid of clips lines up; `none` leaves them out when the page lists the events
+   * itself, and the marks on the timeline then take the keyboard and are named instead.
+   */
+  markerList?: "list" | "collapsed" | "none"
   tracks?: MediaTrack[]
   /** The clip's URL is still being fetched. */
   loading?: boolean
@@ -124,6 +143,7 @@ export function MediaPlayer({
   duration: durationHint,
   startAt,
   markers = [],
+  markerList = "list",
   tracks = [],
   loading = false,
   unavailable,
@@ -347,6 +367,40 @@ export function MediaPlayer({
     } else poke()
   }
 
+  // A marker's time as written: "0:42", or "12:04–12:31" for a window. A window that ends where it starts is a moment.
+  const spans = (m: MediaMarker) => m.end !== undefined && m.end > m.time
+  const when = (m: MediaMarker) => (spans(m) ? l.range(formatMediaTime(m.time), formatMediaTime(m.end!)) : formatMediaTime(m.time))
+  const nameOf = (m: MediaMarker) => l.marker(when(m), m.label)
+  const at = (t: number) => Math.min(1, Math.max(0, t / duration))
+  // Without a list under the player, the marks are the only way to the markers, so they take the keyboard and a name.
+  const marksReachable = markerList === "none"
+  const markerKey = (m: MediaMarker) => m.id ?? `${m.time}-${m.end ?? ""}-${m.label}`
+
+  // Under its heading when listed; named by itself when folded, where the disclosure says only how many. The times are
+  // one column (each row a subgrid of the list), so every name starts at the same x whether its time is "0:02" or a range.
+  const markerItems = (
+    <ol
+      {...(markerList === "list" ? { "aria-labelledby": markersId } : { "aria-label": l.markers })}
+      className="grid grid-cols-[auto_1fr] gap-x-3"
+    >
+      {markers.map((m) => (
+        <li key={markerKey(m)} className="col-span-2 grid grid-cols-subgrid">
+          <Button
+            variant="ghost"
+            size="sm"
+            disabled={!ready}
+            aria-label={nameOf(m)}
+            onClick={() => seekTo(m.time)}
+            className="col-span-2 grid w-full grid-cols-subgrid justify-items-start gap-3 px-2 text-left font-normal"
+          >
+            <span className="font-mono text-xs text-muted-foreground tabular-nums">{when(m)}</span>
+            <span className="truncate">{m.label}</span>
+          </Button>
+        </li>
+      ))}
+    </ol>
+  )
+
   const buffering = ready && playing && waiting
   const shown = ready && (!playing || active || focusWithin || holding)
   const total = known ? duration : NaN
@@ -466,7 +520,8 @@ export function MediaPlayer({
                 {/* The time beside the timeline, so the buttons' row has room for all six on a phone. */}
                 <div className="flex items-center gap-2 px-2 font-mono text-xs tabular-nums">
                   <span data-slot="media-player-current">{formatMediaTime(current)}</span>
-                  <div className="relative min-w-0 flex-1">
+                  {/* isolate: a tick raised over a window stays inside the timeline, never over a sticky bar on the page. */}
+                  <div className="relative isolate min-w-0 flex-1">
                     <Slider
                       aria-label={l.seek}
                       min={0}
@@ -480,24 +535,52 @@ export function MediaPlayer({
                         if (v !== undefined) seekTo(v)
                       }}
                     />
+                    {/* Pointer shortcuts: the list under the player names each marker for the keyboard and screen readers
+                        (with markerList="none" the marks themselves do). */}
                     {known &&
                       markers.map((m) => (
-                        // Pointer shortcut only: the list under the player names each marker for keyboard and screen readers.
-                        // 24 × 24 (WCAG 2.5.8): the tick is drawn in its top two thirds, so the lower part only widens the
-                        // target over the track, where a press near a marker lands on the marker. On a coarse pointer the
-                        // target is --h-md (44, 48 in gloves) square, drawn by an invisible ::after as on Checkbox; the tick
-                        // looks the same.
-                        <button data-slot="media-player-marker"
-                          key={m.id ?? `${m.time}-${m.label}`}
+                        // A moment is a tick, a window a bracket from start to end: open, in the lane above the track, so
+                        // it is never read as the played or buffered fill. Both are 24 px tall targets with a mouse (WCAG
+                        // 2.5.8), --h-md (44, 48 in gloves) on a coarse pointer, widened by an invisible ::after as on
+                        // Checkbox; a press near a marker lands on it. A window narrower than the target is widened too.
+                        <button
+                          data-slot="media-player-marker"
+                          key={markerKey(m)}
                           type="button"
-                          tabIndex={-1}
-                          aria-hidden="true"
-                          title={`${m.label} · ${formatMediaTime(m.time)}`}
+                          className={cn(
+                            "group/mark press absolute top-0 flex h-6 items-start pt-1",
+                            "after:absolute after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:content-['']",
+                            spans(m)
+                              ? "after:h-6 after:w-full after:min-w-6 any-pointer-coarse:after:h-(--h-md) any-pointer-coarse:after:min-w-(--h-md)"
+                              // A moment inside a window is drawn over it.
+                              : "z-10 w-6 -translate-x-1/2 justify-center any-pointer-coarse:after:size-(--h-md)",
+                          )}
+                          tabIndex={marksReachable ? undefined : -1}
+                          aria-hidden={marksReachable ? undefined : true}
+                          aria-label={marksReachable ? nameOf(m) : undefined}
                           onClick={() => seekTo(m.time)}
-                          style={{ left: `${Math.min(1, m.time / duration) * 100}%` }}
-                          className="press absolute top-0 flex size-6 -translate-x-1/2 items-start justify-center pt-1 any-pointer-coarse:after:absolute any-pointer-coarse:after:top-1/2 any-pointer-coarse:after:left-1/2 any-pointer-coarse:after:size-(--h-md) any-pointer-coarse:after:-translate-x-1/2 any-pointer-coarse:after:-translate-y-1/2 any-pointer-coarse:after:content-['']"
+                          style={
+                            spans(m)
+                              ? { left: `${at(m.time) * 100}%`, width: `${(at(m.end!) - at(m.time)) * 100}%` }
+                              : { left: `${at(m.time) * 100}%` }
+                          }
                         >
-                          <span className="h-3 w-0.5 rounded-xs bg-foreground" />
+                          {spans(m) ? (
+                            <span className="h-3 w-full min-w-1 rounded-t-2xs border-x-2 border-t-4 border-foreground" />
+                          ) : (
+                            <span className="h-3 w-0.5 rounded-xs bg-foreground" />
+                          )}
+                          {/* Its name on hover and on focus, over the picture; kept inside the frame by the half it is in. */}
+                          <span
+                            aria-hidden="true"
+                            className={cn(
+                              "pointer-events-none absolute bottom-full mb-1 hidden whitespace-nowrap rounded-xs bg-scrim px-2 py-1 font-sans text-xs",
+                              "group-hover/mark:block group-focus-visible/mark:block",
+                              at(m.time) < 0.5 ? "left-0" : "right-0",
+                            )}
+                          >
+                            {nameOf(m)}
+                          </span>
                         </button>
                       ))}
                   </div>
@@ -531,22 +614,20 @@ export function MediaPlayer({
         </div>
       </div>
 
-      {markers.length > 0 && (
+      {markers.length > 0 && markerList === "list" && (
         <div className="flex flex-col gap-1">
           <p id={markersId} className="text-xs text-muted-foreground">
             {l.markers}
           </p>
-          <ol aria-labelledby={markersId} className="flex flex-col">
-            {markers.map((m) => (
-              <li key={m.id ?? `${m.time}-${m.label}`}>
-                <Button variant="ghost" size="sm" disabled={!ready} onClick={() => seekTo(m.time)} className="w-full justify-start gap-3 px-2 font-normal">
-                  <span className="font-mono text-xs text-muted-foreground tabular-nums">{formatMediaTime(m.time)}</span>
-                  <span className="truncate">{m.label}</span>
-                </Button>
-              </li>
-            ))}
-          </ol>
+          {markerItems}
         </div>
+      )}
+      {/* Folded, every clip in a grid is the same height: the picture and one row. */}
+      {markers.length > 0 && markerList === "collapsed" && (
+        <Collapsible>
+          <CollapsibleTrigger className="px-2 text-muted-foreground">{l.markerCount(markers.length)}</CollapsibleTrigger>
+          <CollapsibleContent className="pt-1">{markerItems}</CollapsibleContent>
+        </Collapsible>
       )}
     </div>
   )

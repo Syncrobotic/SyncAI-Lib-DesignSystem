@@ -116,7 +116,7 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "media-player": {
-    what: "A recorded clip with the kit's own controls over a native video: play, a timeline with event markers, time, mute, speed, captions and full screen.",
+    what: "A recorded clip with the kit's own controls over a native video: play, a timeline with event markers and windows, time, mute, speed, captions and full screen.",
     use: [
       "A robot's camera recording of a patrol or a mission.",
       "The clip attached to an incident, opened at the moment it fired.",

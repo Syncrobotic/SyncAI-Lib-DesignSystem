@@ -314,7 +314,7 @@
           {
             "version": "0.37.0",
             "date": "2026-11-26",
-            "note": "`filterViewsLabels` for filters' FilterViews (已儲存的檢視, 已修改, 還原, 儲存檢視). Issue #300."
+            "note": "`filterViewsLabels` for filters' FilterViews (已儲存的檢視, 已修改, 還原, 儲存檢視). Issue #300. `mediaPlayerLabels.markerCount`, `range` and `marker` for media-player windows and its folded marker list (3 個事件, 0:12–0:30，有人擋路). Issue #346."
           },
           {
             "version": "0.35.0",
@@ -4884,6 +4884,7 @@
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/button",
+        "@syncrobotic/collapsible",
         "@syncrobotic/slider",
         "@syncrobotic/spinner",
         "@syncrobotic/use-reduced-motion"
@@ -4896,8 +4897,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.36.0",
+        "version": "0.37.0",
         "changelog": [
+          {
+            "version": "0.37.0",
+            "date": "2026-11-26",
+            "note": "A marker with `end` is a window, drawn as a bracket from start to end above the track (never a fill on it, so it is not read as the played part); a press goes to its start, and it is named by its range (\"12:04–12:31, Person in path\") in the list, on hover and on focus. New `markerList`: `list` (default, as before), `collapsed` (a \"3 events\" disclosure that unfolds the list, so a grid of clips lines up) or `none` (no list; the marks on the timeline then take the keyboard and are named). A mark shows its name in a drawn label on hover and focus instead of the browser tooltip. Marks are placed from `duration` until the file reports its own length. Needs `collapsible`. Issue #346. In the list the times are one column, so every name starts at the same place."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
