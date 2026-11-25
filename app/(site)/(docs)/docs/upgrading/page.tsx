@@ -1,13 +1,13 @@
 import type { Metadata } from "next"
 import { startNeighbours } from "@/site/foundations"
 import registry from "../../../../../registry.json"
-import Link from "next/link"
 import { blockHref } from "@/site/block-types"
 import { getItem } from "@/site/catalog"
 import { CodeBlock } from "@/site/code-block"
 import { pageMeta } from "@/site/config"
 import { TokenTable, Pager } from "@/site/doc"
 import { H2, Inline, PageTitle } from "@/site/prose"
+import { VersionTable, type VersionRow } from "@/site/version-table"
 
 const description = "How SYNCROBOTIC components are versioned, how to see what a project has installed, and how to upgrade without losing local changes."
 
@@ -77,41 +77,18 @@ export default function UpgradingPage() {
       </p>
 
       <H2 id="current">Current versions</H2>
-      <TokenTable
-        head={["Item", "Version", "Latest change"]}
+      <VersionTable
         // Most recently changed first, then by name; each name opens its page.
         rows={[...registry.items]
           .sort((a, b) => {
             const d = (i: typeof a) => (i as { meta?: Meta }).meta?.changelog[0]?.date ?? ""
             return d(b).localeCompare(d(a)) || a.name.localeCompare(b.name)
           })
-          .map((i) => {
-          const m = (i as { meta?: Meta }).meta
-          const last = m?.changelog.find((c) => c.version === m.version)
-          return [
-            pageOf(i.name, i.type) ? (
-              <Link
-                key="n"
-                href={pageOf(i.name, i.type)!}
-                className="font-mono text-sm underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground"
-              >
-                {i.name}
-              </Link>
-            ) : (
-              // No page of its own: the same name, unlinked, with what it is in place of a link.
-              <span key="n" className="flex flex-col">
-                <span className="font-mono text-sm">{i.name}</span>
-                <span className="text-xs text-muted-foreground">Utility, no page</span>
-              </span>
-            ),
-            <span key="v" className="font-mono text-sm tabular-nums">
-              {m?.version}
-            </span>,
-            <span key="c" className="text-muted-foreground">
-              {last && <Inline text={`${last.date} · ${last.note}`} />}
-            </span>,
-          ]
-        })}
+          .map((i): VersionRow => {
+            const m = (i as { meta?: Meta }).meta
+            const last = m?.changelog.find((c) => c.version === m.version)
+            return [i.name, pageOf(i.name, i.type), m?.version ?? "", last ? `${last.date} · ${last.note}` : ""]
+          })}
       />
       <Pager {...startNeighbours("/docs/upgrading")} />
     </article>

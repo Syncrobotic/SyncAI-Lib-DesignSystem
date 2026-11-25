@@ -6,7 +6,8 @@ import { CodeBlock } from "@/site/code-block"
 import { pageMeta } from "@/site/config"
 import { Pager, TokenTable } from "@/site/doc"
 import { startNeighbours } from "@/site/foundations"
-import props from "@/site/props.json"
+import { LabelCatalog } from "@/site/label-catalog"
+import { labelGroups, localeProps } from "@/site/label-catalog-data"
 import { H2, Inline, PageTitle, Rules } from "@/site/prose"
 
 const description =
@@ -14,32 +15,9 @@ const description =
 
 export const metadata: Metadata = pageMeta({ title: "Localisation", description, path: "/docs/localisation" })
 
-type Key = { name: string; type: string; default?: string; description: string }
-type Prop = { name: string; type: string; description: string; keys?: Key[] }
-type Part = { name: string; props: Prop[] }
-const table = props as unknown as Record<string, Part[] | string>
-
-// Generated from the source (scripts/props.mjs writes each labels prop's keys, defaults and notes into site/props.json),
-// so the table below never drifts from the components.
-const withLabels = Object.entries(table)
-  .filter((e): e is [string, Part[]] => Array.isArray(e[1]))
-  .flatMap(([item, parts]) => {
-    // Parts of one item that take the same words (Trace and TraceHeader) share a table.
-    const groups: { names: string[]; keys: Key[] }[] = []
-    for (const part of parts) {
-      const keys = part.props.find((p) => p.name === "labels")?.keys
-      if (!keys?.length) continue
-      const sig = keys.map((k) => k.name).join()
-      const same = groups.find((g) => g.keys.map((k) => k.name).join() === sig)
-      if (same) same.names.push(part.name)
-      else groups.push({ names: [part.name], keys })
-    }
-    return groups.map((g) => ({ item, ...g }))
-  })
-
-const withLocale = Object.entries(table)
-  .filter((e): e is [string, Part[]] => Array.isArray(e[1]))
-  .flatMap(([item, parts]) => parts.flatMap((part) => part.props.filter((p) => p.name === "locale" || p.name === "calendarLocale").map((p) => ({ item, part: part.name, prop: p }))))
+// The catalog of every component's labels is fetched once the page shows (site/label-catalog.tsx); only its size is here.
+const labelTables = labelGroups().length
+const withLocale = localeProps()
 
 const pattern = `// The kit's own pattern, in every component that says words (here, Spinner).
 export type SpinnerLabels = {
@@ -217,32 +195,8 @@ export default function LocalisationPage() {
       />
 
       <H2 id="labels">Every component&apos;s labels</H2>
-      <P text={`${withLabels.length} components, each key with its English default and what it is. Functions receive the number or name to place in the sentence.`} />
-      <div className="flex flex-col gap-8">
-        {withLabels.map((g) => (
-          <section key={`${g.item}-${g.names.join()}`} aria-labelledby={`labels-${g.item}-${g.names[0]}`} className="flex flex-col gap-3">
-            <h3 id={`labels-${g.item}-${g.names[0]}`} className="text-base font-medium">
-              <ItemLink item={g.item} names={g.names} />
-            </h3>
-            <TokenTable
-              head={["Key", "English default"]}
-              rows={g.keys.map((k) => [
-                <code key="k" className={mono}>
-                  {k.name}
-                </code>,
-                <span key="d" className="flex flex-col gap-1">
-                  <code className="font-mono text-xs break-words">{k.default ?? k.type}</code>
-                  {k.description && (
-                    <span className="text-muted-foreground">
-                      <Inline text={k.description} />
-                    </span>
-                  )}
-                </span>,
-              ])}
-            />
-          </section>
-        ))}
-      </div>
+      <P text={`${labelTables} components, each key with its English default and what it is. Functions receive the number or name to place in the sentence.`} />
+      <LabelCatalog />
       <Pager {...startNeighbours("/docs/localisation")} />
     </article>
   )

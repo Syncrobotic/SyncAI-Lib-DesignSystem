@@ -71,9 +71,9 @@ const live = [
     wide: true,
     size: "h-148 sm:h-156 lg:h-80",
     caption:
-      "Four robots report where they are every two seconds. A calm fleet stays grey; the one running low turns amber on the map and says why in the list, and its way home is the only blue line.",
+      "Four patrol robots in a city park report where they are every two seconds, on a real street map. A calm fleet stays grey; the one running low turns amber on the map and says why in the list, and its way home is the only blue line.",
     links: [
-      ["Robot map", "/docs/components/robot-map"],
+      ["Geo map", "/docs/components/geo-map"],
       ["Meter", "/docs/components/meter"],
     ],
   },
