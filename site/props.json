@@ -4130,6 +4130,44 @@
    ]
   },
   {
+   "name": "DropdownMenuMoreTrigger",
+   "props": [
+    {
+     "name": "name",
+     "type": "string",
+     "description": "What the row is: a robot's name, a person's name or email. Leave it out in a toolbar."
+    },
+    {
+     "name": "size",
+     "type": "\"icon\" | \"icon-sm\"",
+     "default": "\"icon\"",
+     "description": ""
+    },
+    {
+     "name": "labels",
+     "type": "Partial<DropdownMenuMoreLabels>",
+     "description": "The words it says, to translate them. An `aria-label` wins over them.",
+     "keys": [
+      {
+       "name": "more",
+       "type": "string",
+       "default": "\"More actions\"",
+       "description": "A toolbar's or a card's own menu."
+      },
+      {
+       "name": "moreFor",
+       "type": "(name: string) => string",
+       "default": "(name) => `More actions for ${name}`",
+       "description": "A row's menu, named after the row so a screen reader tells one row's ⋯ from the next."
+      }
+     ]
+    }
+   ],
+   "inherits": [
+    "<button> (except children)"
+   ]
+  },
+  {
    "name": "DropdownMenuGroup",
    "props": [],
    "inherits": [
@@ -4223,9 +4261,22 @@
      "name": "action",
      "type": "ReactNode",
      "description": ""
+    },
+    {
+     "name": "size",
+     "type": "\"panel\" | \"inline\"",
+     "description": "`panel` (default) for a card or a section; `inline` inside a table, a list or a small panel. An overlay is inline unless set."
+    },
+    {
+     "name": "variant",
+     "type": "\"default\" | \"overlay\"",
+     "default": "\"default\"",
+     "description": "`overlay` over a canvas or a picture: no padding of its own, the host's overlay layer places it."
     }
    ],
-   "inherits": []
+   "inherits": [
+    "<div> (except title)"
+   ]
   }
  ],
  "field": [
@@ -11707,6 +11758,13 @@
   },
   {
    "name": "TableCell",
+   "props": [],
+   "inherits": [
+    "<td>"
+   ]
+  },
+  {
+   "name": "TableActionsCell",
    "props": [],
    "inherits": [
     "<td>"

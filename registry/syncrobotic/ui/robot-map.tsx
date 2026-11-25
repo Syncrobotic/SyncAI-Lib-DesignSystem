@@ -10,6 +10,7 @@ import { Button } from "@/registry/syncrobotic/ui/button"
 import { ButtonGroup } from "@/registry/syncrobotic/ui/button-group"
 import { ViewportOverlay, ViewportPanel } from "@/registry/syncrobotic/ui/viewport-overlay"
 import { ChargingDock, SafetyZone } from "@/registry/syncrobotic/ui/robot-icons"
+import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 
 /**
  * A point on the site, in metres from the plan's top-left corner: x to the right, y down (as the plan image is drawn).
@@ -1798,7 +1799,11 @@ export function RobotMap({
               {labels.costHigh}
             </ViewportPanel>
           )}
-          {robots.length === 0 && <p className="w-fit rounded-xs bg-card px-3 py-2 text-sm text-muted-foreground ring-1 ring-border">{labels.empty}</p>}
+          {robots.length === 0 && (
+            <ViewportPanel>
+              <EmptyState variant="overlay" title={labels.empty} />
+            </ViewportPanel>
+          )}
         </ViewportOverlay>
       )}
 
@@ -1879,9 +1884,9 @@ export function RobotMapList({ label: name, robots = [], zones = [], selectedId,
   }
   if (!robots.length) {
     return (
-      <p data-slot="robot-map-list" data-empty="" className={cn("rounded-md bg-card p-4 text-sm text-muted-foreground ring-1 ring-border", className)}>
-        {labels.empty}
-      </p>
+      <div data-slot="robot-map-list" data-empty="" className={cn("rounded-md bg-card ring-1 ring-border", className)}>
+        <EmptyState size="inline" title={labels.empty} />
+      </div>
     )
   }
 

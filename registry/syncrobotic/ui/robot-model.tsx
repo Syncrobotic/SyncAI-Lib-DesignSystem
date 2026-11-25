@@ -13,6 +13,7 @@ import { ButtonGroup } from "@/registry/syncrobotic/ui/button-group"
 import { ViewportOverlay, ViewportPanel } from "@/registry/syncrobotic/ui/viewport-overlay"
 import { Spinner } from "@/registry/syncrobotic/ui/spinner"
 import { Bone } from "@/registry/syncrobotic/shell/skeleton"
+import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 
 /** A joint's kind, as the URDF names it. */
 export type RobotModelJointType = "revolute" | "continuous" | "prismatic" | "fixed" | "floating" | "planar"
@@ -1191,16 +1192,9 @@ export function RobotModel({
     </div>
   )
 
-  const message = (icon: React.ReactNode, title: string, detail?: React.ReactNode, action?: React.ReactNode) => (
+  const message = (icon: React.ElementType, title: string, detail?: React.ReactNode, action?: React.ReactNode) => (
     <div className="absolute inset-0 grid place-items-center p-4">
-      <div className="flex max-w-sm flex-col items-center gap-3 text-center">
-        {icon}
-        <p className="text-sm text-pretty">
-          <span className="font-medium">{title}</span>
-          {detail && <span className="block text-muted-foreground wrap-anywhere">{detail}</span>}
-        </p>
-        {action}
-      </div>
+      <EmptyState variant="overlay" icon={icon} title={title} description={detail} action={action} />
     </div>
   )
   const retryButton = (
@@ -1373,11 +1367,11 @@ export function RobotModel({
         )}
 
         {load.phase === "error" &&
-          message(<CircleAlert aria-hidden="true" className="size-6 text-muted-foreground" />, l.error, <span className="font-mono text-xs">{l.errorDetail(load.path, load.reason)}</span>, retryButton)}
+          message(CircleAlert, l.error, <span className="font-mono text-xs">{l.errorDetail(load.path, load.reason)}</span>, retryButton)}
 
-        {contextFailed && load.phase !== "error" && message(<CircleAlert aria-hidden="true" className="size-6 text-muted-foreground" />, l.contextFailed, undefined, retryButton)}
+        {contextFailed && load.phase !== "error" && message(CircleAlert, l.contextFailed, undefined, retryButton)}
 
-        {state === "empty" && message(<Box aria-hidden="true" className="size-6 text-muted-foreground" />, l.empty)}
+        {state === "empty" && message(Box, l.empty)}
 
         {state === "context-lost" && (
           <ViewportOverlay position="center" className="bg-scrim">

@@ -739,9 +739,9 @@ export const overviews: Record<string, Overview> = {
   },
   "toggle-group": {
     what: "A row of toggle buttons where one (single) or several (multiple) can be on.",
-    use: ["Time ranges, view modes and filters with a single choice.", "Map layers or notification channels where any mix is on."],
+    use: ["A tool or a mode with a single choice: what the next tap on a map does.", "Map layers, notification channels or filter chips where any mix is on."],
     instead: [
-      "Switching views of the same data on a muted track: `segmented-control`.",
+      "Switching views of the same data, a sort order or a time window: `segmented-control`.",
       "One on/off: `toggle`.",
       "A form choice saved on submit: `radio-group` or `checkbox`.",
     ],

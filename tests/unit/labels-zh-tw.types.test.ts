@@ -16,6 +16,7 @@ import type { DataGridLabels, DataGridPagination } from "@/registry/syncrobotic/
 import type { DatePickerLabels } from "@/registry/syncrobotic/ui/date-selector"
 import type { DiagnosticsLabels } from "@/registry/syncrobotic/ui/diagnostics"
 import type { DialogLabels } from "@/registry/syncrobotic/ui/dialog"
+import type { DropdownMenuMoreLabels } from "@/registry/syncrobotic/ui/dropdown-menu"
 import type { FilterOperator, Filters } from "@/registry/syncrobotic/ui/filters"
 import type { GraphLabels } from "@/registry/syncrobotic/ui/graph"
 import type { GroundedTextLabels } from "@/registry/syncrobotic/ui/grounded-text"
@@ -140,6 +141,7 @@ it("fits every component's labels type", () => {
   fits<LoadingPageLabels>()(zh.loadingPageLabels)
   fits<CommandDialogLabels>()(zh.commandDialogLabels)
   fits<DialogLabels>()(zh.dialogContentLabels)
+  fits<DropdownMenuMoreLabels>()(zh.dropdownMenuMoreTriggerLabels)
   fits<StepperLabels>()(zh.stepperLabels)
   fits<StepperLabels>()(zh.stepperCompactLabels)
   fits<SpinnerLabels>()(zh.spinnerLabels)

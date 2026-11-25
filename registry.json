@@ -219,7 +219,7 @@
           {
             "version": "0.35.0",
             "date": "2026-11-25",
-            "note": "`chartViewSwitchLabels` for segmented-control's ChartViewSwitch (顯示方式, 圖表, 表格). Audit #5."
+            "note": "`chartViewSwitchLabels` for segmented-control's ChartViewSwitch (顯示方式, 圖表, 表格). Audit #5. `dropdownMenuMoreTriggerLabels` for DropdownMenuMoreTrigger."
           },
           {
             "version": "0.34.0",
@@ -803,7 +803,8 @@
         "@syncrobotic/status-glyph",
         "@syncrobotic/alarm",
         "@syncrobotic/badge",
-        "@syncrobotic/use-presence"
+        "@syncrobotic/use-presence",
+        "@syncrobotic/avatar"
       ],
       "files": [
         {
@@ -812,8 +813,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.35.0",
         "changelog": [
+          {
+            "version": "0.35.0",
+            "date": "2026-11-25",
+            "note": "The robot's initials are a square Avatar (md) instead of a hand-made tile."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -1045,7 +1051,8 @@
         "@syncrobotic/button",
         "@syncrobotic/button-group",
         "@syncrobotic/robot-icons",
-        "@syncrobotic/viewport-overlay"
+        "@syncrobotic/viewport-overlay",
+        "@syncrobotic/empty-state"
       ],
       "files": [
         {
@@ -1060,7 +1067,7 @@
           {
             "version": "0.35.0",
             "date": "2026-11-25",
-            "note": "Over the map, ViewportOverlay and ViewportPanel: the mode, the goal confirm and the blocked notice are Float (`bg-float`, `ring-edge`, backdrop blur) at rounded-sm, the zoom group rounded-sm with its shadow; 16 px in as before. Audit #4."
+            "note": "Over the map, ViewportOverlay and ViewportPanel: the mode, the goal confirm and the blocked notice are Float (`bg-float`, `ring-edge`, backdrop blur) at rounded-sm, the zoom group rounded-sm with its shadow; 16 px in as before. Audit #4. No robots: EmptyState (overlay) in the map's corner card, and EmptyState (inline) in GeoMapList."
           },
           {
             "version": "0.32.0",
@@ -2108,8 +2115,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.35.0",
         "changelog": [
+          {
+            "version": "0.35.0",
+            "date": "2026-11-25",
+            "note": "Square avatars take the icon tile's corner at the same size: 12 px at 40 and 48 (was 8), so a robot beside an icon tile lines up."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -2496,8 +2508,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.35.0",
         "changelog": [
+          {
+            "version": "0.35.0",
+            "date": "2026-11-25",
+            "note": "AlarmList's title is medium, like every title in a panel's head row (was bold)."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -2653,7 +2670,8 @@
       "title": "Empty state",
       "description": "What is missing, why, and the one action that fixes it.",
       "registryDependencies": [
-        "@syncrobotic/cn"
+        "@syncrobotic/cn",
+        "@syncrobotic/icon-tile"
       ],
       "files": [
         {
@@ -2662,8 +2680,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.35.0",
         "changelog": [
+          {
+            "version": "0.35.0",
+            "date": "2026-11-25",
+            "note": "`size` (`panel`, the default, or `inline` for a table, a list or a small panel: a bare icon and 14 px words) and `variant=\"overlay\"` (over a canvas or a picture: no padding of its own, at most 24 rem wide, placed by the host's overlay layer). The panel's icon sits on IconTile. Takes div props (`role`, `data-*`). Existing uses look the same."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -2693,8 +2716,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.35.0",
         "changelog": [
+          {
+            "version": "0.35.0",
+            "date": "2026-11-25",
+            "note": "`TableActionsCell`: the row's last cell for its ⋯ menu or icon buttons, as narrow as its content, 8 px from the row's end on phones."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -2816,7 +2844,7 @@
           {
             "version": "0.35.0",
             "date": "2026-11-25",
-            "note": "The Chart / Table switch is ChartViewSwitch; no visible change. Audit #5."
+            "note": "The Chart / Table switch is ChartViewSwitch; no visible change. Audit #5. The narrow View options ⋯ is DropdownMenuMoreTrigger: ghost, like every ⋯ (was outline)."
           },
           {
             "version": "0.34.0",
@@ -3225,7 +3253,8 @@
         "@syncrobotic/cn",
         "@syncrobotic/status-glyph",
         "@syncrobotic/skeleton",
-        "@syncrobotic/table"
+        "@syncrobotic/table",
+        "@syncrobotic/empty-state"
       ],
       "files": [
         {
@@ -3240,7 +3269,7 @@
           {
             "version": "0.35.0",
             "date": "2026-11-25",
-            "note": "The frame is a Surface (`bg-card`), not the page's background. Audit #4."
+            "note": "The frame is a Surface (`bg-card`), not the page's background. Audit #4. An empty graph and GraphList are EmptyState (inline)."
           },
           {
             "version": "0.32.0",
@@ -3280,7 +3309,8 @@
         "@syncrobotic/button",
         "@syncrobotic/button-group",
         "@syncrobotic/robot-icons",
-        "@syncrobotic/viewport-overlay"
+        "@syncrobotic/viewport-overlay",
+        "@syncrobotic/empty-state"
       ],
       "files": [
         {
@@ -3295,7 +3325,7 @@
           {
             "version": "0.35.0",
             "date": "2026-11-25",
-            "note": "Over the map, ViewportOverlay and ViewportPanel: the mode, the costmap legend and the north arrow are Float at rounded-sm, the zoom group rounded-sm with its shadow; 16 px in as before. Audit #4."
+            "note": "Over the map, ViewportOverlay and ViewportPanel: the mode, the costmap legend and the north arrow are Float at rounded-sm, the zoom group rounded-sm with its shadow; 16 px in as before. Audit #4. No robots: EmptyState (overlay) in the map's corner card, and EmptyState (inline) in RobotMapList."
           },
           {
             "version": "0.32.0",
@@ -3358,7 +3388,8 @@
         "@syncrobotic/segmented-control",
         "@syncrobotic/select",
         "@syncrobotic/sortable",
-        "@syncrobotic/toast"
+        "@syncrobotic/toast",
+        "@syncrobotic/empty-state"
       ],
       "files": [
         {
@@ -3368,8 +3399,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.29.0",
+        "version": "0.35.0",
         "changelog": [
+          {
+            "version": "0.35.0",
+            "date": "2026-11-25",
+            "note": "An empty route is EmptyState (inline, with the waypoints icon) in its card."
+          },
           {
             "version": "0.29.0",
             "date": "2026-11-22",
@@ -3664,7 +3700,8 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "@syncrobotic/cn"
+        "@syncrobotic/cn",
+        "@syncrobotic/button"
       ],
       "files": [
         {
@@ -3673,8 +3710,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.35.0",
         "changelog": [
+          {
+            "version": "0.35.0",
+            "date": "2026-11-25",
+            "note": "`DropdownMenuMoreTrigger`: the ⋯ that opens more actions, one ghost icon button everywhere, named \"More actions for {name}\" in a row (`name`) and \"More actions\" in a toolbar; `size=\"icon-sm\"` in a row; `labels` (`dropdownMenuMoreTriggerLabels` in labels-zh-tw)."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -3850,7 +3892,8 @@
         "radix-ui"
       ],
       "registryDependencies": [
-        "@syncrobotic/cn"
+        "@syncrobotic/cn",
+        "@syncrobotic/icon-tile"
       ],
       "files": [
         {
@@ -3859,8 +3902,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.35.0",
         "changelog": [
+          {
+            "version": "0.35.0",
+            "date": "2026-11-25",
+            "note": "ItemMedia's icon tile is IconTile's sm muted recipe (same look)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -4293,7 +4341,8 @@
       "title": "Bar list",
       "description": "A short ranked list of counts (items per class, files per format) with no chart library: each row its label and value in words, a bar under it in --chart-1 scaled to the largest value, links on rows with href, \"N more\" after max. No surface of its own, so it fits in a card, a table cell or a sheet.",
       "registryDependencies": [
-        "@syncrobotic/cn"
+        "@syncrobotic/cn",
+        "@syncrobotic/empty-state"
       ],
       "files": [
         {
@@ -4303,8 +4352,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.33.0",
+        "version": "0.35.0",
         "changelog": [
+          {
+            "version": "0.35.0",
+            "date": "2026-11-25",
+            "note": "An empty list is EmptyState (inline) instead of a bare grey line."
+          },
           {
             "version": "0.33.0",
             "date": "2026-11-24",
@@ -4687,7 +4741,8 @@
         "@syncrobotic/robot-icons",
         "@syncrobotic/segmented-control",
         "@syncrobotic/toggle",
-        "@syncrobotic/viewport-overlay"
+        "@syncrobotic/viewport-overlay",
+        "@syncrobotic/empty-state"
       ],
       "files": [
         {
@@ -4702,7 +4757,7 @@
           {
             "version": "0.35.0",
             "date": "2026-11-25",
-            "note": "Paused to save and a tile's alarm sit on a Float ViewportPanel, not the page's background. Audit #4."
+            "note": "Paused to save and a tile's alarm sit on a Float ViewportPanel, not the page's background. Audit #4. The empty and none-need-attention states are EmptyState (inline) in the grid's frame."
           },
           {
             "version": "0.29.0",
@@ -4799,7 +4854,8 @@
         "@syncrobotic/button",
         "@syncrobotic/button-group",
         "@syncrobotic/skeleton",
-        "@syncrobotic/viewport-overlay"
+        "@syncrobotic/viewport-overlay",
+        "@syncrobotic/empty-state"
       ],
       "files": [
         {
@@ -4814,7 +4870,7 @@
           {
             "version": "0.35.0",
             "date": "2026-11-25",
-            "note": "Over the view, ViewportOverlay and ViewportPanel: Stale and the lost-view message are Float (they were the page's background), and Stale and the Reset / Fit group are 16 px from the edges (were 12). Audit #4."
+            "note": "Over the view, ViewportOverlay and ViewportPanel: Stale and the lost-view message are Float (they were the page's background), and Stale and the Reset / Fit group are 16 px from the edges (were 12). Audit #4. The empty, no-WebGL and error messages are EmptyState (overlay)."
           },
           {
             "version": "0.24.1",
@@ -4848,7 +4904,8 @@
         "@syncrobotic/button-group",
         "@syncrobotic/spinner",
         "@syncrobotic/skeleton",
-        "@syncrobotic/viewport-overlay"
+        "@syncrobotic/viewport-overlay",
+        "@syncrobotic/empty-state"
       ],
       "files": [
         {
@@ -4863,7 +4920,7 @@
           {
             "version": "0.35.0",
             "date": "2026-11-25",
-            "note": "Over the view, ViewportOverlay and ViewportPanel: the joint callouts, Loading and the lost-view message are Float (they were a card or the page's background); the Reset / Fit group's shadow follows its rounded-sm corners. Audit #4."
+            "note": "Over the view, ViewportOverlay and ViewportPanel: the joint callouts, Loading and the lost-view message are Float (they were a card or the page's background); the Reset / Fit group's shadow follows its rounded-sm corners. Audit #4. The empty, error and context-failed messages are EmptyState (overlay)."
           },
           {
             "version": "0.28.0",
@@ -5555,7 +5612,8 @@
         "@syncrobotic/dropdown-menu",
         "@syncrobotic/pagination",
         "@syncrobotic/use-presence",
-        "@syncrobotic/table"
+        "@syncrobotic/table",
+        "@syncrobotic/empty-state"
       ],
       "files": [
         {
@@ -5564,8 +5622,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.35.0",
         "changelog": [
+          {
+            "version": "0.35.0",
+            "date": "2026-11-25",
+            "note": "A string `emptyText` (and the default) renders as EmptyState (inline); the empty row grows with it (min 128 px) instead of a fixed height."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -5656,7 +5719,8 @@
         "@syncrobotic/copy-button",
         "@syncrobotic/dropdown-menu",
         "@syncrobotic/input",
-        "@syncrobotic/input-group"
+        "@syncrobotic/input-group",
+        "@syncrobotic/empty-state"
       ],
       "files": [
         {
@@ -5666,8 +5730,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.32.0",
+        "version": "0.35.0",
         "changelog": [
+          {
+            "version": "0.35.0",
+            "date": "2026-11-25",
+            "note": "The empty and no-match states are EmptyState (inline); the View options ⋯ is DropdownMenuMoreTrigger (same look)."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -6106,7 +6175,8 @@
         "radix-ui"
       ],
       "registryDependencies": [
-        "@syncrobotic/cn"
+        "@syncrobotic/cn",
+        "@syncrobotic/icon-tile"
       ],
       "files": [
         {
@@ -6115,8 +6185,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.35.0",
         "changelog": [
+          {
+            "version": "0.35.0",
+            "date": "2026-11-25",
+            "note": "NavigationMenuCard's icon is IconTile (sm, muted): 8 px corner like every 32 px tile (was 12)."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -6408,8 +6483,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.35.0",
         "changelog": [
+          {
+            "version": "0.35.0",
+            "date": "2026-11-25",
+            "note": "The row's ⋯ is DropdownMenuMoreTrigger in TableActionsCell, named \"More actions for {robot}\" (was \"Actions for\")."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -6477,7 +6557,8 @@
         "@syncrobotic/card",
         "@syncrobotic/progress",
         "@syncrobotic/status-eyebrow",
-        "@syncrobotic/status-glyph"
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/avatar"
       ],
       "files": [
         {
@@ -6491,7 +6572,7 @@
           {
             "version": "0.35.0",
             "date": "2026-11-25",
-            "note": "A low battery is the warning glyph and the word Low beside the number, which stays text; it was the number in amber alone. Audit #1."
+            "note": "A low battery is the warning glyph and the word Low beside the number, which stays text; it was the number in amber alone. Audit #1. The robot's ID tile is a square Avatar (xl) with the ID in mono."
           },
           {
             "version": "0.28.0",
@@ -6760,8 +6841,13 @@
         }
       ],
       "meta": {
-        "version": "0.34.0",
+        "version": "0.35.0",
         "changelog": [
+          {
+            "version": "0.35.0",
+            "date": "2026-11-25",
+            "note": "The top bar's ⋯ is DropdownMenuMoreTrigger (same look and name); ActionRailColumnHeader's title is medium, like every in-panel title (was bold)."
+          },
           {
             "version": "0.34.0",
             "date": "2026-11-25",
@@ -6884,8 +6970,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.35.0",
         "changelog": [
+          {
+            "version": "0.35.0",
+            "date": "2026-11-25",
+            "note": "The Recent activity title is medium, like every title inside a card (was bold)."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -7227,8 +7318,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.35.0",
         "changelog": [
+          {
+            "version": "0.35.0",
+            "date": "2026-11-25",
+            "note": "The Splits title is medium, like every title inside a card (was bold)."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -7515,8 +7611,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.35.0",
         "changelog": [
+          {
+            "version": "0.35.0",
+            "date": "2026-11-25",
+            "note": "The row's ⋯ is DropdownMenuMoreTrigger in TableActionsCell, named \"More actions for {person}\" (was \"More for\")."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -7591,7 +7692,8 @@
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/button",
-        "@syncrobotic/skeleton"
+        "@syncrobotic/skeleton",
+        "@syncrobotic/icon-tile"
       ],
       "files": [
         {
@@ -7600,8 +7702,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.35.0",
         "changelog": [
+          {
+            "version": "0.35.0",
+            "date": "2026-11-25",
+            "note": "The page's icon is IconTile (lg, muted); the loading page's number bones are `--h-sm` tall instead of a fixed 36 px."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -7673,7 +7780,7 @@
           {
             "version": "0.35.0",
             "date": "2026-11-25",
-            "note": "The design language says what `--muted` is (the quiet fill and the current page) and that hover (`--accent`) is a different, darker fill; how chrome sits over a viewport (ViewportOverlay, ViewportPanel). The checklist names ViewportOverlay and ChartViewSwitch, and a level past its threshold as glyph and word. Audits #1, #4, #5, #8."
+            "note": "The design language says what `--muted` is (the quiet fill and the current page) and that hover (`--accent`) is a different, darker fill; how chrome sits over a viewport (ViewportOverlay, ViewportPanel). The checklist names ViewportOverlay and ChartViewSwitch, and a level past its threshold as glyph and word. Audits #1, #4, #5, #8. The design language and the checklist name one part per repeated look: EmptyState at its host's size, IconTile, a square Avatar for a robot's ID, DropdownMenuMoreTrigger in TableActionsCell, medium in-panel titles, bones at their control's height, and a single-choice toggle group only for a tool or a mode."
           },
           {
             "version": "0.34.0",
@@ -8844,7 +8951,8 @@
         "@syncrobotic/dock",
         "@syncrobotic/status-glyph",
         "@syncrobotic/tray",
-        "@syncrobotic/button"
+        "@syncrobotic/button",
+        "@syncrobotic/avatar"
       ],
       "files": [
         {
@@ -8853,8 +8961,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.35.0",
         "changelog": [
+          {
+            "version": "0.35.0",
+            "date": "2026-11-25",
+            "note": "The robots' ID tiles are square Avatars (lg) with the ID in mono."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -9131,7 +9244,8 @@
         "@syncrobotic/avatar",
         "@syncrobotic/button",
         "@syncrobotic/field",
-        "@syncrobotic/input"
+        "@syncrobotic/input",
+        "@syncrobotic/icon-tile"
       ],
       "files": [
         {
@@ -9140,8 +9254,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.35.0",
         "changelog": [
+          {
+            "version": "0.35.0",
+            "date": "2026-11-25",
+            "note": "The accepted check is IconTile (md, muted): 12 px corner like every 40 px tile (was 16)."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -9391,8 +9510,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.35.0",
         "changelog": [
+          {
+            "version": "0.35.0",
+            "date": "2026-11-25",
+            "note": "The loading bones for the plan's buttons are `--h-md` tall, so density changes them (were a fixed 40 px)."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -9803,7 +9927,8 @@
         "@syncrobotic/input",
         "@syncrobotic/select",
         "@syncrobotic/spinner",
-        "@syncrobotic/stepper"
+        "@syncrobotic/stepper",
+        "@syncrobotic/icon-tile"
       ],
       "files": [
         {
@@ -9812,8 +9937,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.35.0",
         "changelog": [
+          {
+            "version": "0.35.0",
+            "date": "2026-11-25",
+            "note": "The done check is IconTile (md, muted): 12 px corner like every 40 px tile (was 16)."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -10001,7 +10131,8 @@
         "@syncrobotic/button",
         "@syncrobotic/input",
         "@syncrobotic/select",
-        "@syncrobotic/table"
+        "@syncrobotic/table",
+        "@syncrobotic/empty-state"
       ],
       "files": [
         {
@@ -10010,8 +10141,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.35.0",
         "changelog": [
+          {
+            "version": "0.35.0",
+            "date": "2026-11-25",
+            "note": "No matching entries: EmptyState (inline) in the table."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",

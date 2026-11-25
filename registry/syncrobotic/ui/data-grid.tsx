@@ -1,4 +1,4 @@
-// @syncrobotic/data-grid v0.32.0 · update: npx shadcn add @syncrobotic/data-grid --overwrite
+// @syncrobotic/data-grid v0.35.0 · update: npx shadcn add @syncrobotic/data-grid --overwrite
 "use client"
 "use no memo"
 
@@ -37,6 +37,7 @@ import { ArrowDown, ArrowUp, ArrowUpDown, ChevronRight, ChevronsLeftRight, Chevr
 import { cn } from "@/lib/utils"
 import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
 import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
+import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -458,8 +459,8 @@ export function DataGridTable({
                 <td colSpan={cols} className="p-0">
                   {/* As wide as the visible part of the grid and held at its left edge, so the words stay in view however
                       wide the columns behind them are. 100cqw is the scroll area's own width (it is the container). */}
-                  <div className="sticky left-0 flex h-32 w-[100cqw] items-center justify-center px-4 text-center whitespace-normal text-muted-foreground">
-                    {emptyText}
+                  <div className="sticky left-0 flex min-h-32 w-[100cqw] items-center justify-center text-center whitespace-normal text-muted-foreground">
+                    {typeof emptyText === "string" ? <EmptyState size="inline" title={emptyText} /> : emptyText}
                   </div>
                 </td>
               </tr>

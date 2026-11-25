@@ -2,7 +2,7 @@
 "use client"
 
 import * as React from "react"
-import { Ellipsis, Pause, Play, TriangleAlert } from "lucide-react"
+import { Pause, Play, TriangleAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
@@ -13,7 +13,7 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenuMoreTrigger,
 } from "@/registry/syncrobotic/ui/dropdown-menu"
 import { ChartViewSwitch, SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
@@ -1361,11 +1361,7 @@ export function StreamingChart({
               className="hidden @xl:inline-flex"
             />
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon-sm" aria-label={l.viewOptions} data-slot="streaming-chart-more" className="@xl:hidden">
-                  <Ellipsis aria-hidden="true" />
-                </Button>
-              </DropdownMenuTrigger>
+              <DropdownMenuMoreTrigger size="icon-sm" aria-label={l.viewOptions} data-slot="streaming-chart-more" className="@xl:hidden" />
               <DropdownMenuContent align="end">
                 {windows.length > 1 && (
                   <>

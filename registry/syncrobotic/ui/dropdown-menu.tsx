@@ -1,15 +1,56 @@
-// @syncrobotic/dropdown-menu v0.32.0 · update: npx shadcn add @syncrobotic/dropdown-menu --overwrite
+// @syncrobotic/dropdown-menu v0.35.0 · update: npx shadcn add @syncrobotic/dropdown-menu --overwrite
 "use client"
 
 import * as React from "react"
 import { DropdownMenu as MenuPrimitive } from "radix-ui"
-import { Check } from "lucide-react"
+import { Check, Ellipsis } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { Button } from "@/registry/syncrobotic/ui/button"
 
 export const DropdownMenu = MenuPrimitive.Root
 /** The button that opens the menu. With `asChild`, a kit child (Button) keeps its own data-slot. */
 export function DropdownMenuTrigger(props: React.ComponentProps<typeof MenuPrimitive.Trigger>) {
   return <MenuPrimitive.Trigger data-slot="dropdown-menu-trigger" {...props} />
+}
+
+export type DropdownMenuMoreLabels = {
+  /** A toolbar's or a card's own menu. */
+  more: string
+  /** A row's menu, named after the row so a screen reader tells one row's ⋯ from the next. */
+  moreFor: (name: string) => string
+}
+
+export const defaultDropdownMenuMoreLabels: DropdownMenuMoreLabels = {
+  more: "More actions",
+  moreFor: (name) => `More actions for ${name}`,
+}
+
+/**
+ * The ⋯ button that opens a menu of more actions, one look everywhere: a ghost icon button. In a row, give it the row's
+ * `name` ("More actions for Patrol dog 7F3A"); in a toolbar or a card header, leave it out ("More actions"). A menu of
+ * view settings (wrap lines, relative time) is not more actions: give it `aria-label="View options"`, same button.
+ * `size="icon-sm"` (36, 44 on touch) in a row or a toolbar with no field; the default 44 beside a field.
+ */
+export function DropdownMenuMoreTrigger({
+  name,
+  labels,
+  size = "icon",
+  ...props
+}: Omit<React.ComponentProps<"button">, "children"> & {
+  /** What the row is: a robot's name, a person's name or email. Leave it out in a toolbar. */
+  name?: string
+  size?: "icon" | "icon-sm"
+  /** The words it says, to translate them. An `aria-label` wins over them. */
+  labels?: Partial<DropdownMenuMoreLabels>
+}) {
+  const l = { ...defaultDropdownMenuMoreLabels, ...labels }
+  return (
+    <MenuPrimitive.Trigger asChild>
+      <Button data-slot="dropdown-menu-more" variant="ghost" size={size} aria-label={name === undefined ? l.more : l.moreFor(name)} {...props}>
+        <Ellipsis aria-hidden="true" />
+      </Button>
+    </MenuPrimitive.Trigger>
+  )
 }
 export const DropdownMenuGroup = MenuPrimitive.Group
 /** One of several, like a segmented control folded into a menu: a check beside the chosen item. */

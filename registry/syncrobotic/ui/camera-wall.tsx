@@ -19,6 +19,7 @@ import { DiamondAlert } from "@/registry/syncrobotic/ui/robot-icons"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 import { ViewportPanel } from "@/registry/syncrobotic/ui/viewport-overlay"
 import { Toggle } from "@/registry/syncrobotic/ui/toggle"
+import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 
 /** What the wall asks the product's source function for: the focused camera is "high", every tile "low". */
 export type CameraWallQuality = "high" | "low"
@@ -558,14 +559,19 @@ export function CameraWall({
             </div>
           )}
           {shown.length === 0 ? (
-            <div className="flex flex-col items-center gap-3 rounded-md px-4 py-8 text-center ring-1 ring-border">
-              <VideoOff aria-hidden="true" className="size-6 text-muted-foreground" />
-              <p className="text-sm text-muted-foreground">{cameras.length === 0 ? l.empty : l.noneNeedAttention}</p>
-              {cameras.length > 0 && (
-                <Button variant="outline" onClick={() => setAttentionOnly(false)}>
-                  {l.showAll}
-                </Button>
-              )}
+            <div data-slot="camera-wall-empty" className="rounded-md ring-1 ring-border">
+              <EmptyState
+                size="inline"
+                icon={VideoOff}
+                title={cameras.length === 0 ? l.empty : l.noneNeedAttention}
+                action={
+                  cameras.length > 0 && (
+                    <Button variant="outline" onClick={() => setAttentionOnly(false)}>
+                      {l.showAll}
+                    </Button>
+                  )
+                }
+              />
             </div>
           ) : (
             <ul data-slot="camera-wall-grid" className={cn("grid gap-4", cols[columns - 1])}>

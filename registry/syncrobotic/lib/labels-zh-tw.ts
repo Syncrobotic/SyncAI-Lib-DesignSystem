@@ -1067,6 +1067,11 @@ export const commandDialogLabels = {
 
 export const dialogContentLabels = { close: "關閉" }
 
+export const dropdownMenuMoreTriggerLabels = {
+  more: "更多動作",
+  moreFor: (name: string) => `${name} 的更多動作`,
+}
+
 export const stepperLabels = {
   optional: "選填",
   unavailable: "無法使用",
