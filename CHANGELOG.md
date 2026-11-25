@@ -4,10 +4,23 @@ Components install as source, so a project keeps the version it installed. Re-ru
 
 ## Unreleased
 
+Component stability, from an engineering audit: live data never freezes silently, one shared copy of the runtime helpers components carried each, a hydration test, and tighter registry dependencies.
+
 ### Changed
 - **`alarm` 0.36.0:** the priority bar is a pill with round ends in its own 24 px gutter (10 px either side, as tall as the content), never a strip against the card's edge, which the round corner cut into a blade; cleared, it is dashed inside the same pill. Content starts 24 px in and ends 16 px from the edge. Beside Acknowledge the state is no longer repeated in words (screen readers still hear it); cleared, acknowledged, shelved and read-only alarms still say it.
 - **`waypoint-editor` 0.36.0:** a selected waypoint takes a 2 px ink ring all round, as a graph node, instead of a start border that the card's corners bent into a crescent.
 - **`agent-skill` 0.36.0:** an indicator inside a rounded surface is an inset pill in its own gutter, a selected card a 2 px ring, and a status word is not repeated beside the button that says it.
+- **Stale by default (`point-cloud`, `robot-model`, `attitude` 0.36.0):** every live-telemetry component now goes stale when nothing new arrives, at a limit chosen for its data. New defaults: PointCloud 3 s (clouds throttled to 1 or 2 Hz over rosbridge), RobotModel 1 s (the same joint states as JointState; a model shown without `joints` never goes stale), AttitudeIndicator 1 s (an IMU at 50 Hz or more), Gauge 3 s (two missed readings of a 1 Hz topic). Unchanged: CameraFeed and CameraWall 2 s, StreamingChart 2 s, JointState 1 s, Diagnostics 5 s. **Upgrading:** a view fed fixed data (a saved map, a URDF on show, a recording) passes `staleAfterMs={null}`; a still robot that keeps publishing stays live when you pass its message stamp (`updatedAt`, `receivedAt`).
+- **`staleAfterMs={null}` turns stale off everywhere** (`camera-feed`, `camera-wall`, `streaming-chart`, `joint-state`, `diagnostics`, `point-cloud`, `robot-model`, `attitude` 0.36.0). `Infinity` still works where it did. The rule is in the design language and the checklist (`agent-skill` 0.36.0).
+- **No hydration mismatch from the clock (`alarm`, `log-viewer`, `diagnostics` 0.36.0):** they read the time through the new `use-now`, null until the page has hydrated. `alarm` read `Date.now()` in its first render, so a list rendered on the server counted a flood the browser did not (or the reverse): a hydration error, and folded rows that jumped. `tests/unit/hydration.test.tsx` renders each live component on a server in UTC and hydrates it in New York 40 minutes later.
+- **`point-cloud`, `robot-model` 0.36.0:** release their WebGL context once unmounted (browsers keep about 16, and one waiting for garbage collection still counts); not while Strict Mode re-runs the effect on the same canvas.
+- **`ros` 0.36.0:** a fragmented message of more than 10 000 parts is refused instead of allocated, and one whose next part has not come for 10 s is dropped instead of kept for the life of the connection.
+- **`segmented-control`, `tabs` 0.36.0:** the frame that places the thumb or the underline is cancelled if they unmount first.
+- **Registry:** `fleet-table`, `list-detail` and `map-workspace` no longer install `progress`, `data-catalog`, `settings-page` and `users-roles` no longer install `label`, `dataset-detail` no longer installs `button` (none of them imported it). Every npm dependency names its major (`cmdk@^1`, `lucide-react@^1`, `radix-ui@^1`, …). `lint:registry` fails a registryDependency no file of the item imports, and a dependency without a version range.
+
+### Added
+- **Shared runtime helpers (0.36.0, beta), installed with the items that use them:** `input-modality` (keys or pointer last, one pair of document listeners for the page instead of one per menu: `command`, `context-menu`, `dropdown-menu`, `graph`, `select`, `tree`), `use-now`, `clock-time` (`formatClockTime`, with an optional `timeZone`: `streaming-chart`, `joint-state`, `attitude`, `camera-feed`, `point-cloud`, `robot-model`), `use-reduced-motion` (`attitude`, `streaming-chart`, `geo-map`, `robot-map`, `point-cloud`, `media-player`, `scrollspy`, `grounded-text`), `theme-change` (`point-cloud`, `streaming-chart`, `robot-model`) and `math` (`clamp`, `pad`: `number-field`, `geo-map`, `robot-map`, `robot-model`, `point-cloud`, `log-viewer`). Every component's API and behaviour is unchanged; each is 0.36.0.
+- **Tests:** React Compiler tests for `teleop-pad`, `use-long-press`, `use-slide-release` and `robot-map`, and direct tests of the two hold hooks behind the emergency stop.
 
 ## 0.35.0 · 2026-11-25
 

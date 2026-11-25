@@ -1,4 +1,4 @@
-// @syncrobotic/robot-model v0.35.0 · update: npx shadcn add @syncrobotic/robot-model --overwrite
+// @syncrobotic/robot-model v0.36.0 · update: npx shadcn add @syncrobotic/robot-model --overwrite
 "use client"
 
 import * as React from "react"
@@ -14,6 +14,9 @@ import { ViewportOverlay, ViewportPanel } from "@/registry/syncrobotic/ui/viewpo
 import { Spinner } from "@/registry/syncrobotic/ui/spinner"
 import { Bone } from "@/registry/syncrobotic/shell/skeleton"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
+import { formatClockTime } from "@/registry/syncrobotic/lib/clock-time"
+import { clamp } from "@/registry/syncrobotic/lib/math"
+import { onThemeChange } from "@/registry/syncrobotic/lib/theme-change"
 
 /** A joint's kind, as the URDF names it. */
 export type RobotModelJointType = "revolute" | "continuous" | "prismatic" | "fixed" | "floating" | "planar"
@@ -175,7 +178,7 @@ export const defaultRobotModelLabels: RobotModelLabels = {
   empty: "No robot model to show.",
   stale: "Stale",
   lastUpdate: (time) => `last update ${time}`,
-  formatTime: (d) => [d.getHours(), d.getMinutes(), d.getSeconds()].map((n) => String(n).padStart(2, "0")).join(":"),
+  formatTime: (d) => formatClockTime(d),
   noWebgl: "3D view unavailable: this browser cannot draw 3D (WebGL is off or not supported).",
   noWebglDetail: "The joint positions are listed below instead.",
   jointsHeading: "Joint positions",
@@ -461,8 +464,6 @@ const KEY_TURN = Math.PI / 12
 const KEY_ZOOM = 1.25
 const DRAG_TURN = 0.008
 
-const clamp = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n))
-
 /** The model's bounding sphere in the scene's frame (y up). */
 export type RobotModelBounds = { center: [number, number, number]; radius: number; floor: number }
 
@@ -678,8 +679,12 @@ export type RobotModelProps = {
   label?: string
   /** When the joint values were measured (the message's stamp). Without it, the time they last changed here. */
   updatedAt?: number | Date
-  /** With no update for this long, the view says "Stale" with the last update's time over the last pose. Off by default. */
-  staleAfterMs?: number
+  /**
+   * With no update of `joints` for this long, the view says "Stale" with the last update's time over the last pose.
+   * 1000 ms by default, as JointState's: the same joint states, at 50 Hz or more. A model without `joints` (a URDF on
+   * show, not a robot) never goes stale. `null` never goes stale.
+   */
+  staleAfterMs?: number | null
   /** Whether to draw in 3D. Defaults to whether the browser can (WebGL); false shows the words fallback, for a device that should not draw 3D. */
   webgl?: boolean
   /** Called by "Load again" after an error, instead of reloading the same files. */
@@ -709,7 +714,7 @@ export function RobotModel({
   up = "z",
   label,
   updatedAt,
-  staleAfterMs,
+  staleAfterMs = 1000,
   webgl,
   onRetry,
   aspectRatio = 4 / 3,
@@ -757,6 +762,8 @@ export function RobotModel({
   // update clears it during the render that brings it.
   const stamp = updatedAt instanceof Date ? updatedAt.getTime() : updatedAt
   const jointsKey = jointValuesKey(joints)
+  // Only a model fed joint states is live; one shown without them has nothing to go stale.
+  const live = joints !== undefined
   const [staleSince, setStaleSince] = React.useState<number | null>(null)
   const [seen, setSeen] = React.useState({ jointsKey, stamp })
   if (seen.jointsKey !== jointsKey || seen.stamp !== stamp) {
@@ -764,12 +771,12 @@ export function RobotModel({
     setStaleSince(null)
   }
   React.useEffect(() => {
-    if (staleAfterMs === undefined || !hasSource) return
+    if (staleAfterMs === null || !Number.isFinite(staleAfterMs) || !hasSource || !live) return
     const last = stamp ?? Date.now()
     // At most staleAfterMs from now: a stamp from a robot whose clock runs ahead of this one still goes stale.
     const id = setTimeout(() => setStaleSince(last), clamp(last + staleAfterMs - Date.now(), 0, staleAfterMs))
     return () => clearTimeout(id)
-  }, [jointsKey, stamp, staleAfterMs, hasSource])
+  }, [jointsKey, stamp, staleAfterMs, hasSource, live])
 
   // The renderer, scene, camera, lights and the shared materials: made once per canvas, freed on unmount.
   React.useEffect(() => {
@@ -855,10 +862,7 @@ export function RobotModel({
     ro.observe(box)
     // The theme switches by a class or attribute on <html> or another element above the view (dark, high contrast), or
     // by the system's preference.
-    const mo = new MutationObserver(repaintIfChanged)
-    for (const el of themedAncestors(box)) mo.observe(el, { attributes: true, attributeFilter: ["class", "style", "data-theme", "data-contrast"] })
-    const scheme = window.matchMedia?.("(prefers-color-scheme: dark)")
-    scheme?.addEventListener?.("change", stage.paint)
+    const stopTheme = onThemeChange(repaintIfChanged, themedAncestors(box))
     // A lost context (the GPU reset, too many views open) comes back by itself; until then the view says so.
     // If it has not come back within a few seconds it is not coming: the view says so and offers Load again, rather than
     // a spinner that never ends.
@@ -879,8 +883,7 @@ export function RobotModel({
 
     return () => {
       ro.disconnect()
-      mo.disconnect()
-      scheme?.removeEventListener?.("change", stage.paint)
+      stopTheme()
       canvas.removeEventListener("webglcontextlost", lost)
       canvas.removeEventListener("webglcontextrestored", restored)
       clearTimeout(restoreTimer)
@@ -891,6 +894,12 @@ export function RobotModel({
       for (const m of Object.values(materials)) m.dispose()
       renderer.dispose()
       stageRef.current = null
+      // dispose() frees what three made, not the context: browsers keep only about 16, and one waiting for garbage
+      // collection still counts. Released once the canvas has really left the page (Strict Mode re-runs this effect on the
+      // same canvas, which must keep its context).
+      setTimeout(() => {
+        if (!canvas.isConnected) renderer.forceContextLoss?.()
+      }, 0)
     }
   }, [draw, canvasKey])
 

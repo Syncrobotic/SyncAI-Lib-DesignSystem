@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import * as React from "react"
-import { imuToAttitude, odometryToSpeed, stampToMs, type RosImu, type RosOdometry } from "@/registry/syncrobotic/lib/ros"
+import { imuToAttitude, odometryToSpeed, stampToMs, type RosHeader, type RosImu, type RosOdometry } from "@/registry/syncrobotic/lib/ros"
 import { attitudeIndicatorLabels, gaugeLabels } from "@/registry/syncrobotic/lib/labels-zh-tw"
 import { AttitudeIndicator, Gauge, type AttitudeHandle, type AttitudeLimits, type GaugeHandle } from "@/registry/syncrobotic/ui/attitude"
+import { useLiveStamp } from "./live-stamp"
 
 const meta: Meta = { title: "Display/Attitude" }
 export default meta
@@ -11,6 +12,8 @@ type S = StoryObj
 /*
   Every story but the two live ones draws fixed values, so a screenshot is the same on every machine. The live ones move
   only for a person: under a test (navigator.webdriver) or reduced motion they hold the first reading.
+  An instrument goes stale when nothing new arrives (1 s for the attitude, 3 s for a gauge, by default), so a fixed
+  reading is re-stamped every 200 ms (`updatedAt={stamp}`), as a robot standing still keeps publishing.
 */
 const EPOCH = new Date(2026, 10, 21, 14, 2, 0).getTime()
 const animate = () =>
@@ -23,34 +26,60 @@ const dogLimits: AttitudeLimits = { roll: { warning: 25, critical: 35 }, pitch: 
 export const AttitudeDefault: StoryObj<{ roll: number; pitch: number; heading: number; size: "md" | "lg" }> = {
   // Args, so any pose can be opened from the URL (…&args=roll:-27;pitch:15;size:lg) to check the drawing at it.
   args: { roll: -12, pitch: 3, heading: 271, size: "md" },
-  render: ({ roll, pitch, heading, size }) => (
-    <AttitudeIndicator label="Attitude, Patrol dog 7F3A" roll={Number(roll)} pitch={Number(pitch)} heading={Number(heading)} size={size} limits={dogLimits} />
-  ),
+  render: function Render({ roll, pitch, heading, size }) {
+    const stamp = useLiveStamp()
+    return (
+      <AttitudeIndicator
+        label="Attitude, Patrol dog 7F3A"
+        roll={Number(roll)}
+        pitch={Number(pitch)}
+        heading={Number(heading)}
+        updatedAt={stamp}
+        size={size}
+        limits={dogLimits}
+      />
+    )
+  },
 }
 
 /** Past the 25° roll warning: the value, the bank pointer, the robot's symbol and the limit's triangle turn warning, and say so. */
 export const AttitudeOverLimit: S = {
-  render: () => <AttitudeIndicator label="Attitude, Patrol dog 7F3A" roll={27} pitch={-4} heading={88} limits={dogLimits} />,
+  render: function Render() {
+    const stamp = useLiveStamp()
+    return <AttitudeIndicator updatedAt={stamp} label="Attitude, Patrol dog 7F3A" roll={27} pitch={-4} heading={88} limits={dogLimits} />
+  },
 }
 
 /** Past the 35° critical roll: danger, with the octagon and the word. Pitch stays calm: only the axis past its limit is coloured. */
 export const AttitudeCritical: S = {
-  render: () => <AttitudeIndicator label="Attitude, Patrol dog 7F3A" roll={-38} pitch={12} heading={164} limits={dogLimits} />,
+  render: function Render() {
+    const stamp = useLiveStamp()
+    return <AttitudeIndicator updatedAt={stamp} label="Attitude, Patrol dog 7F3A" roll={-38} pitch={12} heading={164} limits={dogLimits} />
+  },
 }
 
 /** Climbing a ramp nose up, past the pitch warning: the dashed limit line on the ladder and its triangle turn warning. */
 export const AttitudePitchWarning: S = {
-  render: () => <AttitudeIndicator label="Attitude, Patrol dog 7F3A" roll={2} pitch={-22} heading={12} limits={dogLimits} />,
+  render: function Render() {
+    const stamp = useLiveStamp()
+    return <AttitudeIndicator updatedAt={stamp} label="Attitude, Patrol dog 7F3A" roll={2} pitch={-22} heading={12} limits={dogLimits} />
+  },
 }
 
 /** An IMU without a magnetometer has no heading: no compass on the ring and no Heading row. */
 export const AttitudeNoCompass: S = {
-  render: () => <AttitudeIndicator label="Attitude, AMR-07" roll={4} pitch={-2} limits={{ roll: { warning: 10, critical: 15 } }} />,
+  render: function Render() {
+    const stamp = useLiveStamp()
+    return <AttitudeIndicator updatedAt={stamp} label="Attitude, AMR-07" roll={4} pitch={-2} limits={{ roll: { warning: 10, critical: 15 } }} />
+  },
 }
 
 /** The large size, for a robot's own page. */
 export const AttitudeLarge: S = {
-  render: () => <AttitudeIndicator label="Attitude, Patrol dog 7F3A" roll={-12} pitch={3} heading={271} limits={dogLimits} size="lg" />,
+  render: function Render() {
+    const stamp = useLiveStamp()
+    return <AttitudeIndicator updatedAt={stamp} label="Attitude, Patrol dog 7F3A" roll={-12} pitch={3} heading={271} limits={dogLimits} size="lg" />
+  },
 }
 
 // One reading at 14:02:00 and then silence.
@@ -69,6 +98,12 @@ export const AttitudeWaiting: S = {
   render: () => <AttitudeIndicator label="Attitude, Patrol dog 7F3A" limits={dogLimits} />,
 }
 
+/** The same message again every 200 ms with a new header stamp, as a robot re-publishes a reading that has not changed. */
+function useRepublished<M extends { header?: RosHeader }>(msg: M): M {
+  const stamp = useLiveStamp()
+  return { ...msg, header: { ...msg.header, stamp: { sec: Math.floor(stamp / 1000), nanosec: (stamp % 1000) * 1e6 } } }
+}
+
 // A sensor_msgs/Imu as rosbridge sends it: the orientation in ENU, 9° of roll to the right and 4° nose up, facing NE.
 const imu: RosImu = {
   header: { stamp: { sec: EPOCH / 1000, nanosec: 0 }, frame_id: "imu_link" },
@@ -78,15 +113,16 @@ const imu: RosImu = {
 
 /** From ROS: `imuToAttitude(msg)` turns a sensor_msgs/Imu into roll, pitch and a compass heading (REP 103 and 145). */
 export const AttitudeFromIMU: S = {
-  render: () => {
-    const a = imuToAttitude(imu)
+  render: function Render() {
+    const msg = useRepublished(imu)
+    const a = imuToAttitude(msg)
     return (
       <AttitudeIndicator
         label="Attitude, AMR-07"
         roll={a.roll}
         pitch={a.pitch}
         heading={a.heading}
-        updatedAt={stampToMs(imu.header?.stamp)}
+        updatedAt={stampToMs(msg.header?.stamp)}
         limits={dogLimits}
       />
     )
@@ -95,9 +131,12 @@ export const AttitudeFromIMU: S = {
 
 /** Traditional Chinese: `attitudeIndicatorLabels` from labels-zh-tw, with `locale`. */
 export const AttitudeZhTw: S = {
-  render: () => (
-    <AttitudeIndicator label="姿態，巡檢犬 7F3A" roll={27} pitch={3} heading={271} limits={dogLimits} labels={attitudeIndicatorLabels} locale="zh-TW" />
-  ),
+  render: function Render() {
+    const stamp = useLiveStamp()
+    return (
+      <AttitudeIndicator label="姿態，巡檢犬 7F3A" roll={27} pitch={3} heading={271} updatedAt={stamp} limits={dogLimits} labels={attitudeIndicatorLabels} locale="zh-TW" />
+    )
+  },
 }
 
 /**
@@ -121,7 +160,7 @@ export const AttitudeLive: S = {
       const id = setInterval(() => ref.current?.push(at((performance.now() - start) / 1000)), 20)
       return () => clearInterval(id)
     }, [live])
-    return <AttitudeIndicator ref={ref} label="Attitude, Patrol dog 7F3A" limits={dogLimits} staleAfterMs={live ? 1000 : undefined} />
+    return <AttitudeIndicator ref={ref} label="Attitude, Patrol dog 7F3A" limits={dogLimits} staleAfterMs={live ? 1000 : null} />
   },
 }
 
@@ -129,13 +168,16 @@ export const AttitudeLive: S = {
 
 /** Three sizes: sm 96 px for a tile or a table row, md 144 px (the default), lg 192 px for the one value a screen is about. */
 export const AttitudeGaugeSizes: S = {
-  render: () => (
-    <div className="flex flex-wrap items-end gap-6">
-      <Gauge size="sm" label="Speed" value={1.2} max={2} unit="m/s" digits={2} low={1.5} critical={1.8} higherIsWorse />
-      <Gauge size="md" label="Left motor" value={54.3} min={20} max={90} unit="°C" low={70} critical={80} higherIsWorse />
-      <Gauge size="lg" label="Right wheel current" value={8.4} max={20} unit="A" low={14} critical={16} higherIsWorse />
-    </div>
-  ),
+  render: function Render() {
+    const stamp = useLiveStamp()
+    return (
+      <div className="flex flex-wrap items-end gap-6">
+        <Gauge updatedAt={stamp} size="sm" label="Speed" value={1.2} max={2} unit="m/s" digits={2} low={1.5} critical={1.8} higherIsWorse />
+        <Gauge updatedAt={stamp} size="md" label="Left motor" value={54.3} min={20} max={90} unit="°C" low={70} critical={80} higherIsWorse />
+        <Gauge updatedAt={stamp} size="lg" label="Right wheel current" value={8.4} max={20} unit="A" low={14} critical={16} higherIsWorse />
+      </div>
+    )
+  },
 }
 
 /**
@@ -143,18 +185,24 @@ export const AttitudeGaugeSizes: S = {
  * `critical` danger with "Critical". The marks on the arc are the kit's triangle and square.
  */
 export const AttitudeGaugeThresholds: S = {
-  render: () => (
-    <div className="flex flex-wrap items-end gap-6">
-      <Gauge label="Left motor" value={54.3} min={20} max={90} unit="°C" low={70} critical={80} higherIsWorse />
-      <Gauge label="Right motor" value={73.8} min={20} max={90} unit="°C" low={70} critical={80} higherIsWorse />
-      <Gauge label="Lift motor" value={84.1} min={20} max={90} unit="°C" low={70} critical={80} higherIsWorse />
-    </div>
-  ),
+  render: function Render() {
+    const stamp = useLiveStamp()
+    return (
+      <div className="flex flex-wrap items-end gap-6">
+        <Gauge updatedAt={stamp} label="Left motor" value={54.3} min={20} max={90} unit="°C" low={70} critical={80} higherIsWorse />
+        <Gauge updatedAt={stamp} label="Right motor" value={73.8} min={20} max={90} unit="°C" low={70} critical={80} higherIsWorse />
+        <Gauge updatedAt={stamp} label="Lift motor" value={84.1} min={20} max={90} unit="°C" low={70} critical={80} higherIsWorse />
+      </div>
+    )
+  },
 }
 
 /** A level that runs out is worse low: a pack's voltage under its 46 V warning reads "Low". */
 export const AttitudeGaugeLow: S = {
-  render: () => <Gauge label="Pack voltage" value={45.2} min={42} max={54} unit="V" low={46} critical={44} />,
+  render: function Render() {
+    const stamp = useLiveStamp()
+    return <Gauge updatedAt={stamp} label="Pack voltage" value={45.2} min={42} max={54} unit="V" low={46} critical={44} />
+  },
 }
 
 // nav_msgs/Odometry from /odom: a holonomic base moving forward and a little to the left.
@@ -167,9 +215,10 @@ const odom: RosOdometry = {
 
 /** From ROS: `odometryToSpeed(msg)` turns nav_msgs/Odometry's twist into a speed in m/s. */
 export const AttitudeGaugeFromOdometry: S = {
-  render: () => (
-    <Gauge label="Speed" value={odometryToSpeed(odom)} updatedAt={stampToMs(odom.header?.stamp)} max={2} unit="m/s" digits={2} low={1.5} critical={1.8} higherIsWorse />
-  ),
+  render: function Render() {
+    const msg = useRepublished(odom)
+    return <Gauge label="Speed" value={odometryToSpeed(msg)} updatedAt={stampToMs(msg.header?.stamp)} max={2} unit="m/s" digits={2} low={1.5} critical={1.8} higherIsWorse />
+  },
 }
 
 const subscribeSilentSpeed = (push: GaugeHandle["push"]) => {
@@ -183,7 +232,10 @@ export const AttitudeGaugeStale: S = {
 
 /** Traditional Chinese: `gaugeLabels` from labels-zh-tw. */
 export const AttitudeGaugeZhTw: S = {
-  render: () => <Gauge label="左馬達溫度" value={73.8} min={20} max={90} unit="°C" low={70} critical={80} higherIsWorse labels={gaugeLabels} locale="zh-TW" />,
+  render: function Render() {
+    const stamp = useLiveStamp()
+    return <Gauge updatedAt={stamp} label="左馬達溫度" value={73.8} min={20} max={90} unit="°C" low={70} critical={80} higherIsWorse labels={gaugeLabels} locale="zh-TW" />
+  },
 }
 
 /** Live at 20 Hz through `push`: a robot's speed on patrol, crossing its 1.5 m/s warning on the long straight. */
@@ -199,6 +251,6 @@ export const AttitudeGaugeLive: S = {
       const id = setInterval(() => ref.current?.push(at((performance.now() - start) / 1000)), 50)
       return () => clearInterval(id)
     }, [live])
-    return <Gauge ref={ref} label="Speed" max={2} unit="m/s" digits={2} low={1.5} critical={1.8} higherIsWorse staleAfterMs={live ? 1000 : undefined} />
+    return <Gauge ref={ref} label="Speed" max={2} unit="m/s" digits={2} low={1.5} critical={1.8} higherIsWorse staleAfterMs={live ? 1000 : null} />
   },
 }

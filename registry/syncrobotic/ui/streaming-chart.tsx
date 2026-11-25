@@ -1,4 +1,4 @@
-// @syncrobotic/streaming-chart v0.35.0 · update: npx shadcn add @syncrobotic/streaming-chart --overwrite
+// @syncrobotic/streaming-chart v0.36.0 · update: npx shadcn add @syncrobotic/streaming-chart --overwrite
 "use client"
 
 import * as React from "react"
@@ -17,6 +17,9 @@ import {
 } from "@/registry/syncrobotic/ui/dropdown-menu"
 import { ChartViewSwitch, SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
+import { formatClockTime } from "@/registry/syncrobotic/lib/clock-time"
+import { usePrefersReducedMotion } from "@/registry/syncrobotic/hooks/use-reduced-motion"
+import { onThemeChange } from "@/registry/syncrobotic/lib/theme-change"
 
 /**
  * One entry per series, the one the reader should look at first, as `chart`'s ChartConfig: `color` is the palette slot
@@ -112,8 +115,6 @@ export type StreamingChartLabels = {
   formatTime: (date: Date, locale?: string) => string
 }
 
-const pad = (n: number) => String(n).padStart(2, "0")
-
 export const defaultStreamingChartLabels: StreamingChartLabels = {
   live: "Live",
   paused: "Paused",
@@ -140,10 +141,7 @@ export const defaultStreamingChartLabels: StreamingChartLabels = {
   noValue: "–",
   reading: (series, value) => `${series} ${value}`,
   keys: "Space pauses or resumes. Left and right arrows move back and forward in time. End returns to live.",
-  formatTime: (d, locale) =>
-    locale
-      ? d.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23" })
-      : [d.getHours(), d.getMinutes(), d.getSeconds()].map(pad).join(":"),
+  formatTime: (d, locale) => formatClockTime(d, locale),
 }
 
 // ---------- The ring buffer ----------
@@ -1092,8 +1090,12 @@ export type StreamingChartProps = {
   band?: StreamingChartBand
   /** Readings kept per series. The default, 36 000, holds 10 minutes at 60 Hz; longer windows at high rates need more. */
   capacity?: number
-  /** With no reading for this long the chart says so, and a gap this long breaks the line instead of joining across it. */
-  staleAfterMs?: number
+  /**
+   * With no reading for this long the chart says so, and a gap this long breaks the line instead of joining across it.
+   * 2000 ms by default: telemetry charted live comes at 1 Hz or faster, so two missed readings at the slowest. `null`
+   * never says so and joins every gap.
+   */
+  staleAfterMs?: number | null
   /** How often screen readers hear the current values while focus is on the chart. A crossed limit is said at once. */
   announceEveryMs?: number
   /** The window switch, the Chart / Table switch and Pause. Off for small multiples driven by one set of controls. */
@@ -1134,7 +1136,7 @@ export function StreamingChart({
   limits = NO_LIMITS,
   band,
   capacity = DEFAULT_CAPACITY,
-  staleAfterMs = 2000,
+  staleAfterMs: staleAfterMsProp = 2000,
   announceEveryMs = 5000,
   controls = true,
   locale,
@@ -1142,6 +1144,8 @@ export function StreamingChart({
   className,
   plotClassName,
 }: StreamingChartProps) {
+  // null: never stale, and no gap breaks the line.
+  const staleAfterMs = staleAfterMsProp ?? Infinity
   const l = { ...defaultStreamingChartLabels, ...labelsProp }
   const [windowInner, setWindowInner] = React.useState(defaultWindow ?? windows[0] ?? 30_000)
   const windowMs = windowProp ?? windowInner
@@ -1219,30 +1223,17 @@ export function StreamingChart({
   }, [paused, engine])
 
   // Reduced motion: the view steps once a second instead of gliding.
+  const reduced = usePrefersReducedMotion()
   React.useEffect(() => {
-    if (typeof window === "undefined" || typeof window.matchMedia !== "function") return
-    const q = window.matchMedia("(prefers-reduced-motion: reduce)")
-    const apply = () => engine.setReduced(q.matches)
-    apply()
-    q.addEventListener?.("change", apply)
-    return () => q.removeEventListener?.("change", apply)
-  }, [engine])
+    engine.setReduced(reduced)
+  }, [engine, reduced])
 
   // The theme's colours, read again when the theme or contrast changes, since a canvas cannot use CSS variables.
   React.useEffect(() => {
     if (typeof window === "undefined" || typeof MutationObserver === "undefined") return
-    const mo = new MutationObserver(engine.readPalette)
-    mo.observe(document.documentElement, { attributes: true, attributeFilter: ["class", "style", "data-theme", "data-contrast"] })
-    const queries = ["(prefers-color-scheme: dark)", "(prefers-contrast: more)", "(forced-colors: active)"]
-      .map((q) => (typeof window.matchMedia === "function" ? window.matchMedia(q) : null))
-      .filter((q) => !!q)
-    queries.forEach((q) => q.addEventListener?.("change", engine.readPalette))
     // Webfonts arrive after the first frame; the tick labels are measured again in the real face.
     void document.fonts?.ready.then(engine.readPalette)
-    return () => {
-      mo.disconnect()
-      queries.forEach((q) => q.removeEventListener?.("change", engine.readPalette))
-    }
+    return onThemeChange(engine.readPalette)
   }, [engine])
 
   // The engine finds its root and canvas after each commit that can change them: the Chart / Table switch mounts and

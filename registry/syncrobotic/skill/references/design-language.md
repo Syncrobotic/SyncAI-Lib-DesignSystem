@@ -61,6 +61,9 @@ Everything here is a token in `syncrobotic-theme.css`; use the token, never the 
 ## Icons
 - Lucide at 16, 20, 24 px, 2 px stroke, plus `@syncrobotic/robot-icons`. One icon per meaning: look the meaning up in the icon set (/icons) and use its icon; a new icon is a new entry there.
 
+## Live data
+- Live telemetry never freezes silently. Every component that shows a robot's live data goes stale by default when nothing new arrives, at a limit chosen for its data: camera feed 2 s, streaming chart 2 s, joint state and robot model 1 s, attitude 1 s, gauge 3 s, point cloud 3 s, diagnostics 5 s. Stale dims the data and says Stale (or Stalled, or No new data) with the last update's time. Pass the message's stamp (`updatedAt`, `receivedAt`) so a robot re-sending an old message still reads stale, and a still robot that keeps publishing reads live. `staleAfterMs={null}` is the one way to turn it off, only for data that is not live (a saved map, a recording, a URDF on show).
+
 ## Alarms
 - Three priorities, each a shape, colour and word. An alarm stays until it clears and is acknowledged. Shelving is for a set time and never for critical; suppressed and out-of-service alarms are counted, not hidden silently. Over 10 in 10 minutes is a flood: name it, keep critical and high in view.
 

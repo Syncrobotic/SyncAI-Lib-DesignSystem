@@ -1,9 +1,10 @@
-// @syncrobotic/diagnostics v0.28.0 · update: npx shadcn add @syncrobotic/diagnostics --overwrite
+// @syncrobotic/diagnostics v0.36.0 · update: npx shadcn add @syncrobotic/diagnostics --overwrite
 "use client"
 
 import * as React from "react"
 import { Bot, SearchX } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useNow } from "@/registry/syncrobotic/hooks/use-now"
 import { Bone, LoadingLine } from "@/registry/syncrobotic/shell/skeleton"
 import { StatusGlyph, statusText, type Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Badge } from "@/registry/syncrobotic/ui/badge"
@@ -302,8 +303,11 @@ export type DiagnosticsProps = {
   label?: string
   /** Waiting for the first diagnostics: a skeleton the size of a short tree. */
   loading?: boolean
-  /** A status not updated for this long reads Stale (by its `receivedAt`). `Infinity` never times out. */
-  staleAfterMs?: number
+  /**
+   * A status not updated for this long reads Stale (by its `receivedAt`). 5000 ms by default: diagnostic_updater publishes
+   * once a second, and ROS's own aggregator calls a status stale after 5 s. `null` never times out.
+   */
+  staleAfterMs?: number | null
   /**
    * The time to measure from, in ms since the epoch. Left out, the panel reads the browser's clock once a second while any
    * status has a `receivedAt`. Pass it for a fixed picture (a test, a screenshot, a recorded bag played back).
@@ -376,23 +380,13 @@ export function Diagnostics({
     onQueryChange?.(next)
   }
 
-  // The clock, read once a second while anything can time out or say how long ago it came. Null until the first read after
-  // mounting, so the server and the browser's first render agree (nothing is timed out, no "ago" yet).
-  const [clock, setClock] = React.useState<number | null>(null)
+  // The clock, read once a second while anything can time out or say how long ago it came. Null until hydrated, so the
+  // server and the browser's first render agree (nothing is timed out, no "ago" yet).
   const timed = nowProp === undefined && !loading && statuses.some((s) => s.receivedAt !== undefined)
-  React.useEffect(() => {
-    if (!timed) return
-    const tick = () => setClock(Date.now())
-    const first = setTimeout(tick, 0)
-    const every = setInterval(tick, 1000)
-    return () => {
-      clearTimeout(first)
-      clearInterval(every)
-    }
-  }, [timed])
+  const clock = useNow(timed ? 1000 : null)
   const now = nowProp ?? clock ?? undefined
 
-  const tree = buildDiagnosticsTree(statuses, { now, staleAfterMs })
+  const tree = buildDiagnosticsTree(statuses, { now, staleAfterMs: staleAfterMs ?? Infinity })
   const counted = countedDiagnostics(tree)
   const counts: Record<DiagnosticLevel, number> = { error: 0, stale: 0, warn: 0, ok: 0 }
   for (const n of counted) counts[n.ownLevel!]++

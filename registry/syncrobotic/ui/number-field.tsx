@@ -1,10 +1,11 @@
-// @syncrobotic/number-field v0.32.0 · update: npx shadcn add @syncrobotic/number-field --overwrite
+// @syncrobotic/number-field v0.36.0 · update: npx shadcn add @syncrobotic/number-field --overwrite
 "use client"
 
 import * as React from "react"
 import { Minus, Plus } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { InputGroup } from "@/registry/syncrobotic/ui/input-group"
+import { clamp } from "@/registry/syncrobotic/lib/math"
 
 type NumberFieldProps = Omit<React.ComponentProps<"input">, "value" | "defaultValue" | "onChange" | "type" | "min" | "max" | "step"> & {
   value?: number | null
@@ -24,7 +25,6 @@ type NumberFieldProps = Omit<React.ComponentProps<"input">, "value" | "defaultVa
 const tight = (unit?: string) => unit === "°" || unit === "′" || unit === "″"
 
 const decimalsOf = (n: number) => (String(n).split(".")[1] ?? "").length
-const clamp = (n: number, min = -Infinity, max = Infinity) => Math.min(max, Math.max(min, n))
 
 /**
  * A number with a range and a unit: speed limits, battery thresholds, intervals.

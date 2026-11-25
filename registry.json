@@ -153,8 +153,8 @@
       "title": "cn() utility",
       "description": "clsx + tailwind-merge, shipped inside this registry so it installs on an intranet too.",
       "dependencies": [
-        "clsx",
-        "tailwind-merge"
+        "clsx@^2",
+        "tailwind-merge@^3"
       ],
       "files": [
         {
@@ -197,6 +197,101 @@
             "version": "0.11.0",
             "date": "2026-11-18",
             "note": "New."
+          }
+        ],
+        "status": "beta"
+      }
+    },
+    {
+      "name": "math",
+      "type": "registry:lib",
+      "title": "Math",
+      "description": "The small number helpers the kit's components share: clamp a value into a range, pad a number with leading zeros.",
+      "files": [
+        {
+          "path": "registry/syncrobotic/lib/math.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "meta": {
+        "version": "0.36.0",
+        "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "New: shared by the components that each carried their own copy."
+          }
+        ],
+        "status": "beta"
+      }
+    },
+    {
+      "name": "clock-time",
+      "type": "registry:lib",
+      "title": "Clock time",
+      "description": "formatClockTime: a time of day, 24-hour with seconds (\"14:02:31\"), in a locale and an optional time zone, the one format every live component writes its last-update times in.",
+      "registryDependencies": [
+        "@syncrobotic/math"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/lib/clock-time.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "meta": {
+        "version": "0.36.0",
+        "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "New: shared by the components that each carried their own copy."
+          }
+        ],
+        "status": "beta"
+      }
+    },
+    {
+      "name": "input-modality",
+      "type": "registry:lib",
+      "title": "Input modality",
+      "description": "Whether the last input on the page was a key or a pointer, from one pair of document listeners for the whole page: menus, lists and trees ring their row only in keyboard use.",
+      "files": [
+        {
+          "path": "registry/syncrobotic/lib/input-modality.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "meta": {
+        "version": "0.36.0",
+        "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "New: shared by the components that each carried their own copy."
+          }
+        ],
+        "status": "beta"
+      }
+    },
+    {
+      "name": "theme-change",
+      "type": "registry:lib",
+      "title": "Theme change",
+      "description": "onThemeChange: tells a canvas or WebGL view when to read the theme's colours again (dark mode, high contrast, forced colours, a theme class or attribute).",
+      "files": [
+        {
+          "path": "registry/syncrobotic/lib/theme-change.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "meta": {
+        "version": "0.36.0",
+        "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "New: shared by the components that each carried their own copy."
           }
         ],
         "status": "beta"
@@ -274,8 +369,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "Fragmented messages: a `total` above 10 000 parts is refused instead of allocated, a part whose count disagrees is ignored, and a message whose next part has not come for 10 s is dropped (it used to stay in memory for the life of the connection)."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -429,6 +529,52 @@
             "version": "0.15.0",
             "date": "2026-11-19",
             "note": "First release: useDebouncedValue and useDebouncedCallback (with cancel and flush)."
+          }
+        ],
+        "status": "beta"
+      }
+    },
+    {
+      "name": "use-now",
+      "type": "registry:hook",
+      "title": "useNow",
+      "description": "The clock, read again at an interval, and null until the page has hydrated, so a server render and the browser's first one never disagree about the time.",
+      "files": [
+        {
+          "path": "registry/syncrobotic/hooks/use-now.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "meta": {
+        "version": "0.36.0",
+        "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "New: shared by the components that each carried their own copy."
+          }
+        ],
+        "status": "beta"
+      }
+    },
+    {
+      "name": "use-reduced-motion",
+      "type": "registry:hook",
+      "title": "usePrefersReducedMotion",
+      "description": "Whether the person asked for less motion: prefersReducedMotion() read now, for a handler, and usePrefersReducedMotion() followed while mounted.",
+      "files": [
+        {
+          "path": "registry/syncrobotic/hooks/use-reduced-motion.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "meta": {
+        "version": "0.36.0",
+        "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "New: shared by the components that each carried their own copy."
           }
         ],
         "status": "beta"
@@ -611,7 +757,7 @@
       "title": "Emergency stop",
       "description": "One touch stops; hold 2 s to stop all; lying down it becomes wake and stand up. UI only: sending and the Bluetooth fallback live in the app.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -672,7 +818,7 @@
       "title": "Slide to release",
       "description": "Past 85% releases, short of that springs back in 200 ms; locked for viewers; hold 2 s on the keyboard instead.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -712,7 +858,7 @@
       "title": "Teleop pad",
       "description": "Drive a mobile robot by hand with a dead-man stick: it moves only while held and stops the moment input is let go or lost. Fixed-rate commands, dead zone, speed cap, keyboard.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -795,7 +941,7 @@
       "title": "Dynamic island",
       "description": "Name, device status and notifications, each zone expanding on its own; notices and the most urgent unacknowledged alarm live inside the island.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -900,7 +1046,7 @@
       "title": "Grouped list",
       "description": "One surface with inset dividers; icons only when they carry meaning; status as shape plus word.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -986,8 +1132,8 @@
       "title": "Button",
       "description": "Primary, secondary, outline, ghost, destructive and link; 36, 44 and 48 px; loading state with a delayed spinner.",
       "dependencies": [
-        "radix-ui",
-        "class-variance-authority"
+        "radix-ui@^1",
+        "class-variance-authority@^0.7"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -1042,7 +1188,7 @@
       "title": "Geo map",
       "description": "An outdoor map in latitude and longitude for robots that work outside (patrol, agriculture, delivery), drawn in SVG with no map library: Web Mercator raster tiles from your own tile server ({z}/{x}/{y}) with their attribution, or a coordinate grid that needs no network; robots as status shapes with heading, an accuracy circle and their GPS fix in words; geofences (keep-outs hatched), a route with numbered waypoints and trails; pan and zoom by drag, wheel, pinch, buttons and keys, a scale bar in m and km; a goal placed by pointer or keys and sent on confirm; GeoMapList shows the same robots as text.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -1052,7 +1198,9 @@
         "@syncrobotic/button-group",
         "@syncrobotic/robot-icons",
         "@syncrobotic/viewport-overlay",
-        "@syncrobotic/empty-state"
+        "@syncrobotic/empty-state",
+        "@syncrobotic/math",
+        "@syncrobotic/use-reduced-motion"
       ],
       "files": [
         {
@@ -1062,8 +1210,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.35.0",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "clamp and reduced motion come from the shared math lib and use-reduced-motion. Same behaviour."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -1124,7 +1277,7 @@
       "title": "Segmented control",
       "description": "Switch between views of the same data. The selected segment is inverted.",
       "dependencies": [
-        "radix-ui"
+        "radix-ui@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -1136,8 +1289,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "The frame that places the thumb is cancelled if the control unmounts first."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -1198,7 +1356,7 @@
       "title": "Toggle",
       "description": "An on/off button for a layer or option. On is inverted, like a selected segment.",
       "dependencies": [
-        "radix-ui"
+        "radix-ui@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -1237,7 +1395,7 @@
       "title": "Copy button",
       "description": "Copies a value; the icon becomes a check for 1.5 s.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -1287,7 +1445,7 @@
       "title": "Code block",
       "description": "Code or a command with a copy button: wraps a command between words, scrolls source sideways, hides a one-time secret until shown. Takes a highlighter's output as children.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -1421,11 +1579,12 @@
       "title": "Number field",
       "description": "A number with a range, a step and a unit. Type freely, kept in range on blur; 44 px buttons; arrow keys, Shift, PageUp/PageDown, Home/End.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
-        "@syncrobotic/input-group"
+        "@syncrobotic/input-group",
+        "@syncrobotic/math"
       ],
       "files": [
         {
@@ -1434,8 +1593,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "clamp comes from the shared math lib. Same behaviour."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -1517,7 +1681,7 @@
       "title": "Label",
       "description": "Accessible label for any control.",
       "dependencies": [
-        "radix-ui"
+        "radix-ui@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -1551,8 +1715,8 @@
       "title": "Field",
       "description": "Label, control and one line for the hint or the error, with ids and aria wired up.",
       "dependencies": [
-        "radix-ui",
-        "lucide-react"
+        "radix-ui@^1",
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -1602,10 +1766,10 @@
       "title": "Form",
       "description": "A form to copy and change: React Hook Form's Controller around the kit's Field, a zod schema, focus on the first error, server errors on a field or the form, a submit button that waits. No form wrapper component.",
       "dependencies": [
-        "react-hook-form",
+        "react-hook-form@^7",
         "@hookform/resolvers@^7",
         "zod@^3.25",
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -1652,8 +1816,8 @@
       "title": "Checkbox",
       "description": "Checked, unchecked and indeterminate.",
       "dependencies": [
-        "radix-ui",
-        "lucide-react"
+        "radix-ui@^1",
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -1707,7 +1871,7 @@
       "title": "Radio group",
       "description": "Pick exactly one of a few visible options.",
       "dependencies": [
-        "radix-ui"
+        "radix-ui@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -1756,7 +1920,7 @@
       "title": "Switch",
       "description": "On is the primary colour, off a neutral track; takes effect immediately.",
       "dependencies": [
-        "radix-ui"
+        "radix-ui@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -1815,7 +1979,7 @@
       "title": "Choice field",
       "description": "A choice as a whole tappable row (checkbox, radio or switch with label, description and count); FieldSet groups them under one question.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -1859,12 +2023,13 @@
       "title": "Select",
       "description": "Pick one from a longer list.",
       "dependencies": [
-        "radix-ui",
-        "lucide-react"
+        "radix-ui@^1",
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
-        "@syncrobotic/field"
+        "@syncrobotic/field",
+        "@syncrobotic/input-modality"
       ],
       "files": [
         {
@@ -1873,8 +2038,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.4",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "Keys-or-pointer comes from the shared input-modality: one pair of document listeners for the page instead of one per component."
+          },
           {
             "version": "0.17.4",
             "date": "2026-11-19",
@@ -1930,7 +2100,7 @@
       "title": "Slider",
       "description": "Single value or range.",
       "dependencies": [
-        "radix-ui"
+        "radix-ui@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -1984,9 +2154,9 @@
       "title": "Badge",
       "description": "Status tones as foreground on subtle tint, plus outline; CountBadge for a count and ResultBadge for a pass, a fail or too few samples.",
       "dependencies": [
-        "class-variance-authority",
-        "lucide-react",
-        "radix-ui"
+        "class-variance-authority@^0.7",
+        "lucide-react@^1",
+        "radix-ui@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -2102,7 +2272,7 @@
       "title": "Avatar",
       "description": "A person (round) or a robot, site or team (square), by picture, initials or icon, in four sizes, with a status or count badge and overlapping groups that fold into +N.",
       "dependencies": [
-        "radix-ui"
+        "radix-ui@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -2152,7 +2322,7 @@
       "title": "Separator",
       "description": "Horizontal or vertical hairline.",
       "dependencies": [
-        "radix-ui"
+        "radix-ui@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -2181,7 +2351,7 @@
       "title": "Progress",
       "description": "Determinate progress; blue unless the value itself is a status.",
       "dependencies": [
-        "radix-ui"
+        "radix-ui@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -2357,7 +2527,7 @@
       "title": "Metric card",
       "description": "One headline number on a card: label, value, change and context, coloured only when the change is for the worse or the caption says the number needs attention (tone); a link, loading and unavailable state, and MetricGrid for the row.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -2404,7 +2574,7 @@
       "title": "Banner",
       "description": "A full-width notice at the top of the page or app about the app itself: maintenance, read-only mode, a trial ending, no connection. Tones, one action, optional dismiss.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -2449,7 +2619,7 @@
       "title": "Alert",
       "description": "Inline message in a status tone with icon, title and description.",
       "dependencies": [
-        "class-variance-authority"
+        "class-variance-authority@^0.7"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -2493,13 +2663,14 @@
       "title": "Alarm",
       "description": "ISA-18.2 alarms: three priorities with their own shape, colour and words, acknowledge and clear states, and a sorted list that announces new alarms to screen readers.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/use-presence",
         "@syncrobotic/feedback",
-        "@syncrobotic/robot-icons"
+        "@syncrobotic/robot-icons",
+        "@syncrobotic/use-now"
       ],
       "files": [
         {
@@ -2513,7 +2684,7 @@
           {
             "version": "0.36.0",
             "date": "2026-11-25",
-            "note": "The priority bar is a pill with round ends in its own 24 px gutter (10 px either side, as tall as the content), never a strip against the card's edge, which the round corner cut into a blade; cleared, it is dashed inside the same pill. The content starts 24 px in and ends 16 px from the edge. Beside Acknowledge the state is not repeated in words (screen readers still hear it)."
+            "note": "The priority bar is a pill with round ends in its own 24 px gutter (10 px either side, as tall as the content), never a strip against the card's edge, which the round corner cut into a blade; cleared, it is dashed inside the same pill. The content starts 24 px in and ends 16 px from the edge. Beside Acknowledge the state is not repeated in words (screen readers still hear it). Flood detection reads the clock through useNow: null until hydrated, so a list rendered on the server and hydrated in the browser no longer disagree about a flood (a hydration error, and folded rows that jumped). Same behaviour in the browser."
           },
           {
             "version": "0.35.0",
@@ -2600,8 +2771,8 @@
       "title": "Toast",
       "description": "Transient feedback on what the user just did: 4 s, 8 s with an action, failures until dismissed. Call toast() anywhere; mount <Toaster /> once.",
       "dependencies": [
-        "radix-ui",
-        "lucide-react"
+        "radix-ui@^1",
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -2767,7 +2938,7 @@
         "status": "stable"
       },
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ]
     },
     {
@@ -2826,7 +2997,7 @@
       "title": "Streaming chart",
       "description": "A live line chart for robot telemetry at 20 to 50 Hz: drawn on a canvas from ring buffers it owns and fed by push() without a React render per reading, with a scrolling window, pause and jump to live, limit lines, a crosshair, a legend with each value now and a table view.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -2834,7 +3005,10 @@
         "@syncrobotic/button",
         "@syncrobotic/dropdown-menu",
         "@syncrobotic/segmented-control",
-        "@syncrobotic/table"
+        "@syncrobotic/table",
+        "@syncrobotic/clock-time",
+        "@syncrobotic/use-reduced-motion",
+        "@syncrobotic/theme-change"
       ],
       "files": [
         {
@@ -2844,8 +3018,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.35.0",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "`staleAfterMs={null}` never says No new data and joins every gap (the default stays 2000 ms). Theme changes, reduced motion and the time format come from the shared libs."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -2875,12 +3054,14 @@
       "title": "Attitude",
       "description": "A robot's attitude and its gauges: AttitudeIndicator draws roll and pitch as an artificial horizon and the heading on a compass ring, with the values in degrees and words and tip-over limits; Gauge draws one value with a known range on a dial with Meter's thresholds. Both take push() at 20 to 50 Hz without a React render per reading.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/status-glyph",
-        "@syncrobotic/meter"
+        "@syncrobotic/meter",
+        "@syncrobotic/clock-time",
+        "@syncrobotic/use-reduced-motion"
       ],
       "files": [
         {
@@ -2890,8 +3071,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.29.0",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "Stale is on by default: AttitudeIndicator after 1000 ms without a reading, Gauge after 3000 ms; `staleAfterMs={null}` turns it off. Reduced motion, the time format and the clamp come from the shared hooks and libs. A stale check that finds nothing changed no longer sets state."
+          },
           {
             "version": "0.29.0",
             "date": "2026-11-22",
@@ -2906,7 +3092,7 @@
       "title": "Tabs",
       "description": "Sections of one page. Sticky keeps the row under the shell's top bar over long sections.",
       "dependencies": [
-        "radix-ui"
+        "radix-ui@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -2918,8 +3104,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "The frame that places the underline is cancelled if the list unmounts first."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -2980,7 +3171,7 @@
       "title": "Pagination",
       "description": "Range and previous / next, or numbered pages, for long lists.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -3031,7 +3222,7 @@
       "title": "Breadcrumb",
       "description": "Where this page sits: links to the levels above, the current page last.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -3085,8 +3276,8 @@
       "title": "Accordion",
       "description": "Collapsible sections for settings and FAQs.",
       "dependencies": [
-        "radix-ui",
-        "lucide-react"
+        "radix-ui@^1",
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -3140,8 +3331,8 @@
       "title": "Collapsible",
       "description": "One region behind one trigger (More filters, How to use this, a long note), styled like accordion: the same chevron, focus ring and expand and collapse motion. The trigger needs no heading; content open in the server's HTML shows without animating.",
       "dependencies": [
-        "radix-ui",
-        "lucide-react"
+        "radix-ui@^1",
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -3170,11 +3361,12 @@
       "title": "Tree",
       "description": "A hierarchy from data: a nested list with guide lines, disclosure buttons and links (list), or a tree widget with arrow keys, type-ahead and one selected node (select).",
       "dependencies": [
-        "radix-ui",
-        "lucide-react"
+        "radix-ui@^1",
+        "lucide-react@^1"
       ],
       "registryDependencies": [
-        "@syncrobotic/cn"
+        "@syncrobotic/cn",
+        "@syncrobotic/input-modality"
       ],
       "files": [
         {
@@ -3184,8 +3376,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.28.0",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "Keys-or-pointer comes from the shared input-modality: one pair of document listeners for the page instead of one per component."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -3220,8 +3417,8 @@
       "title": "Sidebar",
       "description": "The main navigation of a console: a column of grouped links with counts, tags and nested pages, a header for a workspace or robot switcher and a footer for the account. Collapses to a rail of icons with tooltips (⌘B / Ctrl+B, kept in a cookie) and is a sheet on phones.",
       "dependencies": [
-        "radix-ui",
-        "lucide-react"
+        "radix-ui@^1",
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -3264,7 +3461,8 @@
         "@syncrobotic/status-glyph",
         "@syncrobotic/skeleton",
         "@syncrobotic/table",
-        "@syncrobotic/empty-state"
+        "@syncrobotic/empty-state",
+        "@syncrobotic/input-modality"
       ],
       "files": [
         {
@@ -3274,8 +3472,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.35.0",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "Keys-or-pointer comes from the shared input-modality: one pair of document listeners for the page instead of one per component."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -3310,7 +3513,7 @@
       "title": "Robot map",
       "description": "A site floor plan in metres, drawn in SVG with no map library: a ROS occupancy grid and costmap as the floor, laser scans, zones as outlines with icon and name, planned and travelled routes, robots as status shapes with heading and name, selection, pan and zoom by drag, wheel, pinch, buttons and keys, a scale bar and an optional north arrow; goal, waypoint and zone editing by pointer and keys; RobotMapList shows the same robots as text.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -3320,7 +3523,9 @@
         "@syncrobotic/button-group",
         "@syncrobotic/robot-icons",
         "@syncrobotic/viewport-overlay",
-        "@syncrobotic/empty-state"
+        "@syncrobotic/empty-state",
+        "@syncrobotic/math",
+        "@syncrobotic/use-reduced-motion"
       ],
       "files": [
         {
@@ -3330,8 +3535,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.35.0",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "clamp and reduced motion come from the shared math lib and use-reduced-motion. Same behaviour."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -3386,7 +3596,7 @@
       "title": "Waypoint editor",
       "description": "Plan a robot's route as an ordered list of waypoints, edited in a list and on robot-map together: each waypoint a name, a place in metres (or latitude and longitude), an optional heading, an action on arrival (wait, dock, take a photo, custom) and a dwell time. Reorder by drag or keys, add by clicking the map or a button, delete with Undo, duplicate; a row and its point select each other. Problems (outside the map, in a keep-out zone, too close, no name) show inline and Save says why it is disabled. Distance and estimated time, unsaved changes with Save and Cancel, a read-only mode, list first on a phone with the map a tab.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -3435,8 +3645,8 @@
       "title": "Dialog",
       "description": "A short decision or form that needs an answer before you go on, in a panel over the page.",
       "dependencies": [
-        "radix-ui",
-        "lucide-react"
+        "radix-ui@^1",
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -3485,7 +3695,7 @@
       "title": "Alert dialog",
       "description": "Confirms an action that cannot be undone; the confirm names the consequence.",
       "dependencies": [
-        "radix-ui"
+        "radix-ui@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -3525,7 +3735,7 @@
       "title": "Sheet",
       "description": "A panel that slides in and floats 8 px from the screen's edges: a bottom sheet with a grab handle on phones, a side panel on wide screens, a drawer for navigation.",
       "dependencies": [
-        "radix-ui"
+        "radix-ui@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -3584,7 +3794,7 @@
       "title": "Popover",
       "description": "Extra detail anchored to a control.",
       "dependencies": [
-        "radix-ui"
+        "radix-ui@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -3628,7 +3838,7 @@
       "title": "Hover card",
       "description": "A preview of what a link leads to, on hover and keyboard focus. Preview only: never the only way to the facts or actions in it.",
       "dependencies": [
-        "radix-ui"
+        "radix-ui@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -3662,7 +3872,7 @@
       "title": "Tooltip",
       "description": "Names an icon-only control on hover and focus.",
       "dependencies": [
-        "radix-ui"
+        "radix-ui@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -3711,12 +3921,13 @@
       "title": "Dropdown menu",
       "description": "Actions on an item; destructive actions last.",
       "dependencies": [
-        "radix-ui",
-        "lucide-react"
+        "radix-ui@^1",
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
-        "@syncrobotic/button"
+        "@syncrobotic/button",
+        "@syncrobotic/input-modality"
       ],
       "files": [
         {
@@ -3725,8 +3936,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "Keys-or-pointer comes from the shared input-modality: one pair of document listeners for the page instead of one per component."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -3787,11 +4003,12 @@
       "title": "Context menu",
       "description": "Actions on an item by right-click or long press, styled exactly like the dropdown menu; a shortcut to actions that are also on a visible control.",
       "dependencies": [
-        "radix-ui",
-        "lucide-react"
+        "radix-ui@^1",
+        "lucide-react@^1"
       ],
       "registryDependencies": [
-        "@syncrobotic/cn"
+        "@syncrobotic/cn",
+        "@syncrobotic/input-modality"
       ],
       "files": [
         {
@@ -3801,8 +4018,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.32.0",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "Keys-or-pointer comes from the shared input-modality: one pair of document listeners for the page instead of one per component."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -3822,12 +4044,13 @@
       "title": "Command",
       "description": "Search and run from the keyboard: a filterable list, and the ⌘K palette that opens over any page.",
       "dependencies": [
-        "cmdk",
-        "radix-ui",
-        "lucide-react"
+        "cmdk@^1",
+        "radix-ui@^1",
+        "lucide-react@^1"
       ],
       "registryDependencies": [
-        "@syncrobotic/cn"
+        "@syncrobotic/cn",
+        "@syncrobotic/input-modality"
       ],
       "files": [
         {
@@ -3836,8 +4059,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "Keys-or-pointer comes from the shared input-modality: one pair of document listeners for the page instead of one per component."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -3903,8 +4131,8 @@
       "title": "Item",
       "description": "A row of content: media, title and description, and trailing actions. Links draw the hover fill.",
       "dependencies": [
-        "class-variance-authority",
-        "radix-ui"
+        "class-variance-authority@^0.7",
+        "radix-ui@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -3939,8 +4167,8 @@
       "title": "Icon tile",
       "description": "A square or round surface behind one icon, in five surfaces and four sizes, with an optional status dot.",
       "dependencies": [
-        "class-variance-authority",
-        "radix-ui"
+        "class-variance-authority@^0.7",
+        "radix-ui@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -4061,7 +4289,7 @@
       "title": "Robot icons",
       "description": "Robot icons Lucide lacks, drawn to its grid: robot arm, mobile robot, charging dock, physical emergency stop pressed, safety zone, low-priority alarm.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "files": [
         {
@@ -4092,7 +4320,7 @@
       "title": "Button group",
       "description": "Buttons, a field or a menu joined into one strip: split buttons, steppers, prev / next, search with scope.",
       "dependencies": [
-        "radix-ui"
+        "radix-ui@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -4121,7 +4349,7 @@
       "title": "Scroll area",
       "description": "A bounded region with a thin themed scrollbar, vertical, horizontal or both, with optional fading edges.",
       "dependencies": [
-        "radix-ui"
+        "radix-ui@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -4165,7 +4393,7 @@
       "title": "Toggle group",
       "description": "A set of toggles, one or many on, joined or spaced, outline or ghost. On is inverted.",
       "dependencies": [
-        "radix-ui"
+        "radix-ui@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -4251,7 +4479,7 @@
       "title": "Chip group",
       "description": "One choice among several, or any of several with type=\"multiple\", as chips with counts, folded after N; or links, so a filter lives in the URL (current sets their aria-current). Per-chip props for data-* hooks and titles. Selected is inverted.",
       "dependencies": [
-        "radix-ui"
+        "radix-ui@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -4435,7 +4663,7 @@
       "title": "Restricted preview",
       "description": "A preview that is not loaded until someone asks: restricted data, or pictures with faces or number plates. Neutral, with the reason.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -4474,7 +4702,7 @@
       "title": "Thumbnail",
       "description": "One small square picture for a table row, a list or a card: sm, md or lg from the control scale, rounded-xs, object-cover, lazy, ImageGrid's neutral fallback when it fails, and restricted with a reason as RestrictedPreview's placeholder at that size, fetching nothing.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -4504,7 +4732,7 @@
       "title": "Image grid",
       "description": "Many pictures as a grid or a scroll-snap strip: lazy tiles that keep their aspect, skeleton, hidden and broken states, single or multiple picking, and a lightbox with arrow keys and Esc, or your own view with onOpen (restoreFocus on its ref returns focus to the tile) and your own tile face with renderTile.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -4562,7 +4790,7 @@
       "title": "Annotated image",
       "description": "Boxes, points, polygons and poses over a picture, in its own pixel space: predicted solid, ground truth dashed, the previous version dotted, each on a halo; class words, a line-style legend, selection by keyboard, raster overlays, lazy loading, loading and failed states, with onLoadError to tell the app.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -4604,7 +4832,8 @@
       "dependencies": [],
       "registryDependencies": [
         "@syncrobotic/cn",
-        "@syncrobotic/annotated-image"
+        "@syncrobotic/annotated-image",
+        "@syncrobotic/use-reduced-motion"
       ],
       "files": [
         {
@@ -4614,8 +4843,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.34.0",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "Reduced motion comes from the shared use-reduced-motion. Same behaviour."
+          },
           {
             "version": "0.34.0",
             "date": "2026-11-25",
@@ -4635,13 +4869,14 @@
       "title": "Media player",
       "description": "A recorded clip (a robot's camera recording, an incident clip) with the kit's controls over a native video: play, a timeline with event markers, time, mute, speed, captions and full screen on a scrim; keys while focused; loading, buffering and unavailable states.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/button",
         "@syncrobotic/slider",
-        "@syncrobotic/spinner"
+        "@syncrobotic/spinner",
+        "@syncrobotic/use-reduced-motion"
       ],
       "files": [
         {
@@ -4651,8 +4886,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.35.0",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "Reduced motion comes from the shared use-reduced-motion. Same behaviour."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -4697,7 +4937,7 @@
       "title": "Camera feed",
       "description": "A robot's live camera over a native video the app feeds (a WebRTC stream or a URL): Live with the latency, Stalled with the last frame's time when frames stop, Paused while the view is frozen here, connecting, offline and no-camera states; pause view, snapshot, mute and full screen; overlays drawn over the picture.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -4705,7 +4945,8 @@
         "@syncrobotic/spinner",
         "@syncrobotic/skeleton",
         "@syncrobotic/status-glyph",
-        "@syncrobotic/viewport-overlay"
+        "@syncrobotic/viewport-overlay",
+        "@syncrobotic/clock-time"
       ],
       "files": [
         {
@@ -4715,8 +4956,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.35.0",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "`staleAfterMs={null}` never stalls (the default stays 2000 ms). Its time format comes from clock-time."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -4746,7 +4992,7 @@
       "title": "Camera wall",
       "description": "Many robot cameras at once, each a camera-feed: an auto grid (1, 2×2, 3×3, 4×4 by count and width) with a page control, one camera focused large with a strip of the rest (click or Enter, Esc back, full screen), and a vertical list on phones. Tiles off screen or behind the focused one pause, only the focused camera asks the product's source function for high quality, and at most maxLive stream at once; the rest keep their last still, \"Paused to save bandwidth\". Each tile says its camera, robot and state (Live, Stalled · last frame 14:02:31, offline) and its robot's alarm by shape and word; sorted attention first or by name, filtered to what needs attention; arrow keys between tiles; state changes announced politely, throttled.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -4767,8 +5013,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.35.0",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "`staleAfterMs={null}` is passed to every feed and never stalls (the default stays 2000 ms)."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -4788,13 +5039,14 @@
       "title": "Joint state",
       "description": "A robot arm's joints for monitoring (ROS sensor_msgs/JointState with the URDF's limits): each joint's position in degrees or millimetres on a thin track between its limits, velocity and effort, near-limit and at-limit in words with an icon, and loading, empty and stale states.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/skeleton",
         "@syncrobotic/empty-state",
-        "@syncrobotic/robot-icons"
+        "@syncrobotic/robot-icons",
+        "@syncrobotic/clock-time"
       ],
       "files": [
         {
@@ -4804,8 +5056,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.24.1",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "`staleAfterMs={null}` never goes stale (the default stays 1000 ms; Infinity still works). Its time format comes from clock-time."
+          },
           {
             "version": "0.24.1",
             "date": "2026-11-21",
@@ -4825,7 +5082,7 @@
       "title": "Diagnostics",
       "description": "A robot's hardware and software health as ROS diagnostic_msgs/DiagnosticArray reports it: the worst level and the counts first, then a tree by the names' \"/\" paths with the worst level rolled up to each group, each status as a glyph and a word that opens to its values, Stale when updates stop, a Problems filter and search by name.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -4836,7 +5093,8 @@
         "@syncrobotic/description-list",
         "@syncrobotic/empty-state",
         "@syncrobotic/search-field",
-        "@syncrobotic/tree"
+        "@syncrobotic/tree",
+        "@syncrobotic/use-now"
       ],
       "files": [
         {
@@ -4846,8 +5104,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.28.0",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "`staleAfterMs={null}` never times out (the default stays 5000 ms; Infinity still works). The clock comes from the shared useNow."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -4862,7 +5125,7 @@
       "title": "Point cloud",
       "description": "A LiDAR or depth point cloud (a decoded ROS PointCloud2) drawn with raw WebGL2 and no 3D library: coloured by height or intensity on the accent's single-hue ramp with its scale, a recessive ground grid, the robot at the origin and an axes gizmo in words; orbit, pan and zoom by pointer, touch and keyboard; loading, empty, error, stale and no-WebGL states.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -4870,7 +5133,11 @@
         "@syncrobotic/button-group",
         "@syncrobotic/skeleton",
         "@syncrobotic/viewport-overlay",
-        "@syncrobotic/empty-state"
+        "@syncrobotic/empty-state",
+        "@syncrobotic/clock-time",
+        "@syncrobotic/math",
+        "@syncrobotic/use-reduced-motion",
+        "@syncrobotic/theme-change"
       ],
       "files": [
         {
@@ -4880,8 +5147,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.35.0",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "Stale is on by default: after 3000 ms without a new cloud; `staleAfterMs={null}` turns it off (a saved map, a scan from a file). Releases its WebGL context once unmounted (browsers keep about 16). Theme changes, reduced motion, the time format and clamp come from the shared libs."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -4908,7 +5180,7 @@
       "dependencies": [
         "three@^0.187.0",
         "urdf-loader@^0.13.1",
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "devDependencies": [
         "@types/three@^0.187.0"
@@ -4920,7 +5192,10 @@
         "@syncrobotic/spinner",
         "@syncrobotic/skeleton",
         "@syncrobotic/viewport-overlay",
-        "@syncrobotic/empty-state"
+        "@syncrobotic/empty-state",
+        "@syncrobotic/clock-time",
+        "@syncrobotic/math",
+        "@syncrobotic/theme-change"
       ],
       "files": [
         {
@@ -4930,8 +5205,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.35.0",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "Stale is on by default: after 1000 ms without new `joints` (a model shown without joints never goes stale); `staleAfterMs={null}` turns it off. Releases its WebGL context once unmounted. Theme changes, the time format and clamp come from the shared libs."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -5016,8 +5296,8 @@
       "title": "Filters",
       "description": "A query people build from chips: + Filter picks a field, an operator and a value; each rule is a chip whose parts reopen that step. Rules combine with AND, live in the URL and filter rows in the browser.",
       "dependencies": [
-        "date-fns",
-        "lucide-react"
+        "date-fns@^4",
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -5093,7 +5373,7 @@
       "title": "Search field",
       "description": "The tool's one search box: / focuses it, Enter opens the results page, and on that page it follows ?q= and applies as you type.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -5136,7 +5416,7 @@
       "title": "Theme toggle",
       "description": "Light, match the system, or dark: three icon segments, the current one inverted, each named for screen readers.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -5233,7 +5513,7 @@
       "title": "Autocomplete",
       "description": "A text field that suggests as you type: filter, arrows, Enter, groups, server search with loading.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -5301,8 +5581,8 @@
       "title": "Input OTP",
       "description": "A one-time code or PIN, one 44 px box per character, with paste and SMS autofill.",
       "dependencies": [
-        "input-otp",
-        "lucide-react"
+        "input-otp@^1",
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -5341,7 +5621,7 @@
       "title": "Phone input",
       "description": "A phone number with its country, formatted as you type, stored as E.164.",
       "dependencies": [
-        "libphonenumber-js"
+        "libphonenumber-js@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -5408,7 +5688,7 @@
       "description": "A month grid for one day, several days or a range; 36 px days with a mouse, 44 px on touch.",
       "dependencies": [
         "react-day-picker@^10",
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -5473,8 +5753,8 @@
       "description": "DatePicker and DateRangePicker: a field that opens a calendar, with presets and clear.",
       "dependencies": [
         "react-day-picker@^10",
-        "date-fns",
-        "lucide-react"
+        "date-fns@^4",
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -5546,7 +5826,7 @@
       "title": "Time picker",
       "description": "TimePicker (slots in a popover) and TimeInput (typed), on a 24-hour \"HH:mm\" value.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -5618,8 +5898,8 @@
       "description": "A TanStack Table grid: sorting, pagination, selection, column menus, pinning, resizing, expandable rows, totals, loading, virtual rows.",
       "dependencies": [
         "@tanstack/react-table@^9",
-        "@tanstack/react-virtual",
-        "lucide-react"
+        "@tanstack/react-virtual@^3",
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -5724,8 +6004,8 @@
       "title": "Log viewer",
       "description": "Robot and system logs (ROS /rosout, journald, a service's lines): a virtual list that stays smooth with 100,000 lines, follows the newest line until someone scrolls up (\"12 new · Jump to latest\"), keeps the last maxLines in a ring buffer, filters by level and source, searches with the matches marked and next/previous, wraps long lines, shows clock time or time ago, opens a line for its whole message and fields, and copies a line or a selection. Levels by shape and word; lines from props or an imperative append that batches a fast stream.",
       "dependencies": [
-        "@tanstack/react-virtual",
-        "lucide-react"
+        "@tanstack/react-virtual@^3",
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -5735,7 +6015,9 @@
         "@syncrobotic/dropdown-menu",
         "@syncrobotic/input",
         "@syncrobotic/input-group",
-        "@syncrobotic/empty-state"
+        "@syncrobotic/empty-state",
+        "@syncrobotic/use-now",
+        "@syncrobotic/math"
       ],
       "files": [
         {
@@ -5745,8 +6027,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.35.0",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "Relative times read the clock through useNow: null until hydrated, so the server and the browser agree; times of day show until then. pad comes from the math lib."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -5771,7 +6058,7 @@
       "title": "Streaming text",
       "description": "A model's answer as it streams in, token by token. The text grows in place under a calm status row: the queue position, Generating with Stop, then \"Done in 2.4 s · first token 0.3 s\", Stopped or Failed with the partial answer kept. A reasoning part stays apart, closed, and screen readers hear whole sentences, never every token.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -5802,10 +6089,10 @@
       "title": "Sortable",
       "description": "A list or grid people reorder by dragging a handle, by touch or by keyboard, with announcements (dnd-kit).",
       "dependencies": [
-        "@dnd-kit/core",
-        "@dnd-kit/sortable",
-        "@dnd-kit/utilities",
-        "lucide-react"
+        "@dnd-kit/core@^6",
+        "@dnd-kit/sortable@^10",
+        "@dnd-kit/utilities@^3",
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -5898,7 +6185,7 @@
       "title": "File upload",
       "description": "A drop zone that is also a button: checks type, size and count, and says what it refused.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -5942,7 +6229,7 @@
       "title": "Attachment",
       "description": "One file in a list, a composer or a queue: type, name, size, progress, error with Retry, Download and Remove.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -5994,7 +6281,7 @@
       "title": "File type",
       "description": "An icon for a file from its name or extension, with robot formats (mcap, bag, pgm, pcd, onnx) and the extension written on it.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -6023,7 +6310,7 @@
       "title": "Stepper",
       "description": "Where someone is in a fixed sequence of steps: done, current, upcoming and error steps, horizontal or vertical, with a compact bar for phones.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -6140,7 +6427,8 @@
       "title": "Scrollspy",
       "description": "An On this page list that follows the reader through the sections of a page or a scroll area, and the useScrollspy hook behind it.",
       "registryDependencies": [
-        "@syncrobotic/cn"
+        "@syncrobotic/cn",
+        "@syncrobotic/use-reduced-motion"
       ],
       "files": [
         {
@@ -6149,8 +6437,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "Reduced motion comes from the shared use-reduced-motion. Same behaviour (and no error in a browser without matchMedia)."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -6186,8 +6479,8 @@
       "title": "Navigation menu",
       "description": "A site's top navigation: links, and triggers that open panels of links and cards (Radix NavigationMenu).",
       "dependencies": [
-        "lucide-react",
-        "radix-ui"
+        "lucide-react@^1",
+        "radix-ui@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -6247,7 +6540,7 @@
       "title": "Questionnaire",
       "description": "A short set of questions, one per page or all on one form: single and multiple choice, scales and text, required checks and a review page.",
       "dependencies": [
-        "radix-ui"
+        "radix-ui@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -6311,8 +6604,8 @@
       "title": "Trace",
       "description": "The steps of a run with status and duration: missions, agent tool calls, rollouts, CI runs, audit trails. Steps open to show input, output or sub-steps; an optional waterfall bar.",
       "dependencies": [
-        "lucide-react",
-        "radix-ui"
+        "lucide-react@^1",
+        "radix-ui@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -6475,7 +6768,7 @@
       "title": "Fleet table",
       "description": "Search, filter by state, paginate and act on rows. Status as shape plus word, low battery in warning. A section, not a screen: the screen it sits in carries the emergency stop (the app shell's, as in console-overview).",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -6483,7 +6776,6 @@
         "@syncrobotic/dropdown-menu",
         "@syncrobotic/empty-state",
         "@syncrobotic/input",
-        "@syncrobotic/progress",
         "@syncrobotic/segmented-control",
         "@syncrobotic/table",
         "@syncrobotic/status-eyebrow",
@@ -6564,7 +6856,7 @@
       "title": "Robot status card",
       "description": "One robot on a phone: state, battery, connection, location, current task and the next actions. It never stops the robot itself: the app's dock carries the emergency stop, one tap away.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -6628,7 +6920,7 @@
       "title": "Marketing hero",
       "description": "Landing page hero with eyebrow, headline, two calls to action and a product visual.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -6679,7 +6971,7 @@
       "title": "App shell",
       "description": "The frame of an internal tool: the kit's Sidebar (a rail of icons below 1280 px, a sheet on phones), top bar with sidebar trigger, title, environment, search and actions, and the page.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -6780,7 +7072,7 @@
       "title": "Top-bar shell",
       "description": "The frame for a tool or site without a sidebar: links, search and user in a top bar that starts on the content's edge and gathers into a floating panel as wide as the content column on scroll, then the content and a footer. The logo links home, the main element has an id for a skip link, the phone drawer closes when a link in it is followed. Its screen-reader words (the links' landmark, the menu button, the account button) go through `labels`.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -6842,7 +7134,7 @@
       "title": "Action-rail shell",
       "description": "A page whose right column holds only the next step: its title, what it does, one large primary button and a few small actions. A bar fixed to the bottom on phones; ← or Esc goes back up a level. A button keeps focus while its label changes (give an action an `id` when the list reorders). With `leading` and `panel` it is a full-screen workspace: a history column, the content and a control panel with the rail at its foot; top-bar items that do not fit fold into ⋯.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -6897,7 +7189,7 @@
       "title": "Operations console",
       "description": "App shell with fleet numbers, the robot table and the alarm list on one screen.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -6958,7 +7250,7 @@
       "title": "List and detail",
       "description": "App shell with a filterable robot list and a detail pane; on phones the detail replaces the list.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -6968,7 +7260,6 @@
         "@syncrobotic/button",
         "@syncrobotic/empty-state",
         "@syncrobotic/input",
-        "@syncrobotic/progress",
         "@syncrobotic/separator",
         "@syncrobotic/input-group",
         "@syncrobotic/description-list",
@@ -7061,7 +7352,7 @@
       "title": "Event log",
       "description": "App shell with time, level and text filters, an event table and a side sheet for one event.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -7144,7 +7435,7 @@
       "title": "Map workspace",
       "description": "App shell with the site map edge to edge and floating trays for the selected robot, the top alarm and the emergency stop.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/app-shell",
@@ -7154,7 +7445,6 @@
         "@syncrobotic/tray",
         "@syncrobotic/alarm",
         "@syncrobotic/button",
-        "@syncrobotic/progress",
         "@syncrobotic/meter",
         "@syncrobotic/robot-icons",
         "@syncrobotic/slide-to-release",
@@ -7235,7 +7525,7 @@
       "title": "Data catalog",
       "description": "Datasets one row each: filter by tier, use and task (a drawer on phones), search, sort. Only restricted tiers carry colour. DataCatalogContent drops the sample frame, for your own shell.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -7244,7 +7534,6 @@
         "@syncrobotic/checkbox",
         "@syncrobotic/empty-state",
         "@syncrobotic/input",
-        "@syncrobotic/label",
         "@syncrobotic/sheet",
         "@syncrobotic/table",
         "@syncrobotic/input-group",
@@ -7309,7 +7598,7 @@
       "title": "Dataset detail",
       "description": "One dataset: release verdict, open issues, counts and splits, an annotated browse grid with layer toggles, lineage and compliance. DatasetDetailContent drops the sample frame, for your own shell.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -7317,7 +7606,6 @@
         "@syncrobotic/app-shell",
         "@syncrobotic/status-eyebrow",
         "@syncrobotic/alert",
-        "@syncrobotic/button",
         "@syncrobotic/separator",
         "@syncrobotic/tabs",
         "@syncrobotic/toggle",
@@ -7379,7 +7667,7 @@
       "title": "Review queue",
       "description": "Review items one at a time by keyboard: progress, the image with its question and caption, and a key bar ([1] Yes, [2] No, [3] Skip, Esc back, ⌫ undo, ? shortcuts) whose keys go down as they are pressed.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -7427,7 +7715,7 @@
       "title": "Governance to-do",
       "description": "What needs a maintainer or the compliance reviewer, most blocking first; done items leave the list. Read-only for viewers, app-owned completion, and GovernanceTodoContent drops the sample frame, for your own shell.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -7495,7 +7783,6 @@
         "@syncrobotic/button",
         "@syncrobotic/field",
         "@syncrobotic/input",
-        "@syncrobotic/label",
         "@syncrobotic/select",
         "@syncrobotic/switch",
         "@syncrobotic/toast",
@@ -7602,7 +7889,7 @@
       "title": "Users and roles",
       "description": "Who can do what: change a role in place, invite by email in a dialog, remove from the row menu with undo.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -7614,7 +7901,6 @@
         "@syncrobotic/dropdown-menu",
         "@syncrobotic/field",
         "@syncrobotic/input",
-        "@syncrobotic/label",
         "@syncrobotic/select",
         "@syncrobotic/table",
         "@syncrobotic/toast"
@@ -7702,7 +7988,7 @@
       "title": "Status pages",
       "description": "Not found, no access, error, offline and loading: what happened, why, and the next step. Never a dead end.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -7795,7 +8081,7 @@
           {
             "version": "0.36.0",
             "date": "2026-11-25",
-            "note": "The design language and the checklist: an indicator inside a rounded surface is an inset pill in its own gutter, a selected card a 2 px ring, and a status word is not repeated beside the button that says it."
+            "note": "The design language and the checklist: an indicator inside a rounded surface is an inset pill in its own gutter, a selected card a 2 px ring, and a status word is not repeated beside the button that says it. Live data: every live-telemetry component goes stale by default at a limit chosen for its data, and `staleAfterMs={null}` is the one way to turn it off (design language and checklist)."
           },
           {
             "version": "0.35.0",
@@ -7923,7 +8209,7 @@
       "description": "One measurement against its limit: the latest value up top, the limit as a labelled dashed line, a warning only while it is over.",
       "dependencies": [
         "recharts@^3",
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/card",
@@ -8615,7 +8901,7 @@
       "title": "Rollout stages",
       "description": "A rollout as stage lanes: finished stages checked, the running one in progress, later ones waiting.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -8920,7 +9206,7 @@
       "description": "How one value is spread: battery level at docking in equal 5 % bins, the median as a labelled dashed line, bins under 15 % in warning, counts on hover and a table view. Exports binEqualWidth and median.",
       "dependencies": [
         "recharts@^3",
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/card",
@@ -8965,7 +9251,7 @@
       "title": "Phone shell with tabs",
       "description": "A phone frame: the page title on top and up to four sections as tabs in a floating dock, in thumb reach.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/dock",
@@ -9107,7 +9393,7 @@
       "title": "Site cards",
       "description": "Sites to pick from: each card one link, state first, robots and missions, and what needs someone in words.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -9168,7 +9454,7 @@
       "title": "Mission cards",
       "description": "A mission's state, route, robot and progress, with the next action; a paused one says why and offers the fix.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -9222,7 +9508,7 @@
       "title": "Passkey sign-in",
       "description": "Sign in with a passkey, with a code from an authenticator app as the way back in on the same page.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/button",
@@ -9258,7 +9544,7 @@
       "title": "Accept an invitation",
       "description": "Who invited you, to what, and what the role lets you do, then one field and one action to join.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/avatar",
@@ -9300,7 +9586,7 @@
       "title": "Two-factor sign-in",
       "description": "The step after the password: a 6-digit code or a recovery code, remember this browser for 30 days, errors and a pause in words, a passkey as the quicker way.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/button",
@@ -9335,7 +9621,7 @@
       "title": "Notification matrix",
       "description": "Events by channel as checkboxes that apply at once; emergency stops are locked on and say so.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/card",
@@ -9381,7 +9667,7 @@
       "title": "API keys",
       "description": "Create, list and revoke API keys: a new secret shown once with a copy button, revoking confirmed first.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/alert-dialog",
@@ -9424,7 +9710,7 @@
       "title": "Webhooks",
       "description": "Endpoints with their events and state, adding one with its signing secret shown once, test events, recent deliveries, rotating and deleting.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -9478,7 +9764,7 @@
       "title": "Signed-in browsers",
       "description": "Where you are signed in, as browsers: sign one out, or all the others after a confirmation; browsers that skip the 2FA code for 30 days.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/skeleton",
@@ -9511,7 +9797,7 @@
       "title": "Plan and billing",
       "description": "Plan and renewal, robots and seats against what the plan includes, this period's usage, the card on file (brand and last four) and invoices with their PDFs; cancelling confirms first. No checkout or card form: those stay on your payment provider's pages.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/alert",
@@ -9561,7 +9847,7 @@
       "title": "Notification center",
       "description": "The bell in the top bar with its unread count, opening notifications grouped by day: a popover on wide screens, a bottom sheet on phones. Mark one or all as read, filter unread. For things worth knowing later; alarms that need action stay with Alarm and the island.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/badge",
@@ -9605,7 +9891,7 @@
       "title": "Confirm a deletion",
       "description": "A dialog for something that cannot be undone: what is lost, who it affects, and the name typed to confirm.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/alert-dialog",
@@ -9641,7 +9927,7 @@
       "title": "Form in a dialog",
       "description": "A short form in a dialog: three fields at most, errors under their fields, nothing typed is lost.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/button",
@@ -9694,7 +9980,7 @@
       "title": "Share dialog",
       "description": "Invite people by email, change their access in place, and copy a link whose reach is said in words.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/avatar",
@@ -9743,7 +10029,7 @@
       "title": "Robot detail panel",
       "description": "One robot in a side panel over the list: state, levels, last events and actions in thumb reach.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/status-eyebrow",
@@ -9820,7 +10106,7 @@
       "title": "Filters sheet",
       "description": "Filters in a bottom sheet: grouped options with counts and one button that says how many results you will see.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/button",
@@ -9868,7 +10154,7 @@
       "title": "Robot activity",
       "description": "A robot's shift, newest first and grouped by day, each event with its kind as an icon.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -9937,7 +10223,7 @@
       "title": "Add a robot",
       "description": "Adding a robot in four steps: identify, place, a live self-check, and a name.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/button",
@@ -9978,7 +10264,7 @@
       "title": "Import a file",
       "description": "Import a CSV in three steps down the page: choose it, match its columns, check the rows and import.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/button",
@@ -10024,7 +10310,7 @@
       "title": "Mission schedule",
       "description": "A night's missions in lanes per robot: done muted, running blue, planned outlined, and a conflict explained in words.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -10144,7 +10430,7 @@
       "title": "Audit log",
       "description": "Who did what, when and from where, narrowed by person and kind, with values before and after; exports what is shown.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/app-shell",
@@ -10202,7 +10488,7 @@
       "title": "Incident queue",
       "description": "Open incidents, unowned first, then by severity and age; severity has a shape and a number, and nobody-owns-it is a button.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -10363,7 +10649,7 @@
       "title": "Work order",
       "description": "A work order at the bench: steps as a checklist, parts used, notes, and sign-off that says why it is not ready yet.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/app-shell",
@@ -10414,7 +10700,7 @@
       "title": "Rollout in progress",
       "description": "A firmware rollout while it runs: its stage, the gates that pause it, and the robots in the stage, failures first.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
@@ -10633,7 +10919,7 @@
       "title": "Approve an agent's proposal",
       "description": "An agent's proposed change, before and after per robot, why, and what it does not know; approve or send back with a reason.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/app-shell",

@@ -1,4 +1,4 @@
-// @syncrobotic/tabs v0.35.0 · update: npx shadcn add @syncrobotic/tabs --overwrite
+// @syncrobotic/tabs v0.36.0 · update: npx shadcn add @syncrobotic/tabs --overwrite
 "use client"
 
 import * as React from "react"
@@ -117,7 +117,9 @@ export function TabsList({ className, children, sticky, ref, ...props }: TabsLis
   // The first measurement places the underline without travelling; later ones animate.
   const [placed, setPlaced] = React.useState(false)
   React.useEffect(() => {
-    if (line && !placed) requestAnimationFrame(() => setPlaced(true))
+    if (!line || placed) return
+    const id = requestAnimationFrame(() => setPlaced(true))
+    return () => cancelAnimationFrame(id)
   }, [line, placed])
   // overflow-x scrolls a row of many tabs. overflow-y must be hidden, not left to default: a scrolling x turns y to auto,
   // and the triggers sit 1 px past the list's border (-mb-px, so the underline covers it), which made the list scroll

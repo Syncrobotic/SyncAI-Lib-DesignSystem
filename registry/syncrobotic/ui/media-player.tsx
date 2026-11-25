@@ -1,4 +1,4 @@
-// @syncrobotic/media-player v0.35.0 · update: npx shadcn add @syncrobotic/media-player --overwrite
+// @syncrobotic/media-player v0.36.0 · update: npx shadcn add @syncrobotic/media-player --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Slider } from "@/registry/syncrobotic/ui/slider"
 import { Spinner } from "@/registry/syncrobotic/ui/spinner"
+import { prefersReducedMotion } from "@/registry/syncrobotic/hooks/use-reduced-motion"
 
 /** A moment in the clip worth jumping to: "Obstacle" at 42 s. */
 export type MediaMarker = { time: number; label: string; id?: string }
@@ -81,9 +82,6 @@ export function formatMediaTime(seconds: number) {
   const ss = String(s % 60).padStart(2, "0")
   return h > 0 ? `${h}:${String(m).padStart(2, "0")}:${ss}` : `${m}:${ss}`
 }
-
-const prefersReducedMotion = () =>
-  typeof window !== "undefined" && typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
 type VideoWithWebkit = HTMLVideoElement & { webkitEnterFullscreen?: () => void }
 
