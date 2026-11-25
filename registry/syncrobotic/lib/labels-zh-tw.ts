@@ -572,7 +572,7 @@ export const mediaPlayerLabels = {
   seek: "影片播放位置",
   position: (current: string, total: string) => `${current} / ${total}`,
   markers: "此影片中的事件",
-  markerCount: (count: number) => `${count} 個標記`,
+  markerCount: (count: number) => `${count} 個事件`,
   range: (start: string, end: string) => `${start}–${end}`,
   marker: (time: string, label: string) => `${time}，${label}`,
   loading: "正在載入影片",

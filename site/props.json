@@ -7257,7 +7257,7 @@
      "name": "markerList",
      "type": "\"none\" | \"list\" | \"collapsed\"",
      "default": "\"list\"",
-     "description": "The markers listed under the player, for the keyboard and screen readers. `list` (default) shows them; `collapsed` folds them behind \"3 markers\", so a grid of clips lines up; `none` leaves them out when the page lists the events itself, and the marks on the timeline then take the keyboard and are named instead."
+     "description": "The markers listed under the player, for the keyboard and screen readers. `list` (default) shows them; `collapsed` folds them behind \"3 events\", so a grid of clips lines up; `none` leaves them out when the page lists the events itself, and the marks on the timeline then take the keyboard and are named instead."
     },
     {
      "name": "tracks",
@@ -7373,8 +7373,8 @@
       {
        "name": "markerCount",
        "type": "(count: number) => string",
-       "default": "(count) => (count === 1 ? \"1 marker\" : `${count} markers`)",
-       "description": "The disclosure that unfolds the list, with `markerList=\"collapsed\"`: \"3 markers\"."
+       "default": "(count) => (count === 1 ? \"1 event\" : `${count} events`)",
+       "description": "The disclosure that unfolds the list, with `markerList=\"collapsed\"`: \"3 events\"."
       },
       {
        "name": "range",

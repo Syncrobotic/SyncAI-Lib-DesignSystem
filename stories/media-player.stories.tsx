@@ -53,7 +53,7 @@ const grid = [
   { label: "Forklift 2, front camera, today 13:47", markers: markers.slice(0, 2) },
 ]
 
-/** A grid of clips: `markerList="collapsed"` folds each list behind "3 markers", so every card is the picture and one row, and the grid lines up. */
+/** A grid of clips: `markerList="collapsed"` folds each list behind "3 events", so every card is the picture and one row, and the grid lines up. */
 export const MediaPlayerGrid: S = {
   render: () => (
     <div className="grid w-full grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] gap-4">

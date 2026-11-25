@@ -215,12 +215,12 @@ describe("MediaPlayer marker list", () => {
   it("lists the markers by default", () => {
     setup({ markers: three })
     expect(screen.getByRole("list", { name: "Events in this clip" }).querySelectorAll("li")).toHaveLength(3)
-    expect(screen.queryByRole("button", { name: "3 markers" })).toBeNull()
+    expect(screen.queryByRole("button", { name: "3 events" })).toBeNull()
   })
 
   it("folds the list behind a disclosure that says how many there are", () => {
     const { video } = setup({ markers: three, markerList: "collapsed" })
-    const disclosure = screen.getByRole("button", { name: "3 markers" })
+    const disclosure = screen.getByRole("button", { name: "3 events" })
     expect(disclosure.getAttribute("aria-expanded")).toBe("false")
     expect(screen.queryByRole("list")).toBeNull()
     fireEvent.click(disclosure)
@@ -231,9 +231,9 @@ describe("MediaPlayer marker list", () => {
     expect(video.currentTime).toBe(50)
   })
 
-  it("says 1 marker for one", () => {
+  it("says 1 event for one", () => {
     setup({ markers: [markers[0]!], markerList: "collapsed" })
-    expect(screen.getByRole("button", { name: "1 marker" })).toBeTruthy()
+    expect(screen.getByRole("button", { name: "1 event" })).toBeTruthy()
   })
 
   it("leaves the list out with none, and the marks on the timeline take the keyboard and a name instead", () => {

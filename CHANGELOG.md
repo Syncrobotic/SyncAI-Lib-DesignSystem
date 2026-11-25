@@ -7,8 +7,8 @@ Components install as source, so a project keeps the version it installed. Re-ru
 Media player: event windows on the timeline, a marker list that folds so a grid of clips lines up, and markers placed from the clip's record before the file loads.
 
 ### Added
-- **`media-player` 0.37.0:** a marker with `end` is a window (`{ time: 18, end: 31, label: "Person in path" }`), drawn as a bracket from start to end in the lane above the track, never a fill on it, so it is not read as the played or buffered part. A press goes to its start; hover and focus show its range ("0:18–0:31, Person in path"), and the list and the timeline name it the same way. Issue #346
-- **`media-player` 0.37.0:** `markerList`: `list` (default, as before), `collapsed` (a "3 markers" disclosure, the kit's Collapsible, that unfolds the list, so every clip in a grid is the picture and one row) or `none` (no list, when the page lists the events itself; the marks on the timeline then take the keyboard and are named). New docs examples: Ranges and Grid. Issue #346
+- **`media-player` 0.37.0:** a marker with `end` is a window (`{ time: 18, end: 31, label: "Person in path" }`), drawn as a bracket from start to end in the lane above the track, never a fill on it, so it is not read as the played or buffered part. A press goes to its start; hover and focus show its range ("0:18–0:31, Person in path"), and the list and the timeline name it the same way. In the list the times are one column, so every name starts at the same place. Issue #346
+- **`media-player` 0.37.0:** `markerList`: `list` (default, as before), `collapsed` (a "3 events" disclosure, the kit's Collapsible, that unfolds the list, so every clip in a grid is the picture and one row) or `none` (no list, when the page lists the events itself; the marks on the timeline then take the keyboard and are named). New docs examples: Ranges and Grid. Issue #346
 - **`labels-zh-tw` 0.37.0:** `mediaPlayerLabels.markerCount`, `range` and `marker`. Issue #346
 
 ### Changed

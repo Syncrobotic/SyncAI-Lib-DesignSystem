@@ -37,7 +37,7 @@ export type MediaPlayerLabels = {
   position: (current: string, total: string) => string
   /** Heading of the list of markers under the player. */
   markers: string
-  /** The disclosure that unfolds the list, with `markerList="collapsed"`: "3 markers". */
+  /** The disclosure that unfolds the list, with `markerList="collapsed"`: "3 events". */
   markerCount: (count: number) => string
   /** A marker's span of time: "12:04–12:31". */
   range: (start: string, end: string) => string
@@ -65,7 +65,7 @@ const defaultLabels: MediaPlayerLabels = {
   seek: "Position in clip",
   position: (current, total) => `${current} of ${total}`,
   markers: "Events in this clip",
-  markerCount: (count) => (count === 1 ? "1 marker" : `${count} markers`),
+  markerCount: (count) => (count === 1 ? "1 event" : `${count} events`),
   range: (start, end) => `${start}–${end}`,
   marker: (time, label) => `${time}, ${label}`,
   loading: "Loading clip",
@@ -112,7 +112,7 @@ export type MediaPlayerProps = {
   markers?: MediaMarker[]
   /**
    * The markers listed under the player, for the keyboard and screen readers. `list` (default) shows them; `collapsed`
-   * folds them behind "3 markers", so a grid of clips lines up; `none` leaves them out when the page lists the events
+   * folds them behind "3 events", so a grid of clips lines up; `none` leaves them out when the page lists the events
    * itself, and the marks on the timeline then take the keyboard and are named instead.
    */
   markerList?: "list" | "collapsed" | "none"
@@ -376,18 +376,22 @@ export function MediaPlayer({
   const marksReachable = markerList === "none"
   const markerKey = (m: MediaMarker) => m.id ?? `${m.time}-${m.end ?? ""}-${m.label}`
 
-  // Under its heading when listed; named by itself when folded, where the disclosure says only how many.
+  // Under its heading when listed; named by itself when folded, where the disclosure says only how many. The times are
+  // one column (each row a subgrid of the list), so every name starts at the same x whether its time is "0:02" or a range.
   const markerItems = (
-    <ol {...(markerList === "list" ? { "aria-labelledby": markersId } : { "aria-label": l.markers })} className="flex flex-col">
+    <ol
+      {...(markerList === "list" ? { "aria-labelledby": markersId } : { "aria-label": l.markers })}
+      className="grid grid-cols-[auto_1fr] gap-x-3"
+    >
       {markers.map((m) => (
-        <li key={markerKey(m)}>
+        <li key={markerKey(m)} className="col-span-2 grid grid-cols-subgrid">
           <Button
             variant="ghost"
             size="sm"
             disabled={!ready}
             aria-label={nameOf(m)}
             onClick={() => seekTo(m.time)}
-            className="w-full justify-start gap-3 px-2 font-normal"
+            className="col-span-2 grid w-full grid-cols-subgrid justify-items-start gap-3 px-2 text-left font-normal"
           >
             <span className="font-mono text-xs text-muted-foreground tabular-nums">{when(m)}</span>
             <span className="truncate">{m.label}</span>
