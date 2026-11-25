@@ -37,6 +37,10 @@ jobs:
       - run: npm run lint:thumbs
       # The package version has its CHANGELOG section, so the release on main has notes
       - run: node scripts/release-notes.mjs "$(node -p "require('./package.json').version")" > /dev/null
+      # Into main the package version is the release: no item ahead of it, and its CHANGELOG section is dated (release.yml
+      # tags it; 0.33.0 once reached main at an old package version and was not tagged)
+      - if: github.event_name == 'pull_request' && github.base_ref == 'main'
+        run: node scripts/release-guard.mjs
       # Code correctness: the React rules of hooks (the React Compiler relies on them) and TypeScript's recommended rules
       - run: npm run lint
       # Also the registry items alone under noUncheckedIndexedAccess, as a strict product compiles them
