@@ -215,14 +215,14 @@ export const CardWithMedia: S = {
         { id: "aisles", title: "Forklift aisles v3", meta: "12,480 images · T1", inset: false, seed: 1 },
         { id: "docks", title: "Dock cameras v2", meta: "8,200 images · T0", inset: true, seed: 4 },
       ].map((c) => (
-        <Card key={c.id} className="press relative hover:ring-muted-foreground has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-ring">
+        <Card key={c.id} className="group/card press relative hover:ring-muted-foreground has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-ring">
           <CardMedia inset={c.inset}>
             <img src={placeholderPhoto(c.seed, c.title)} alt="" />
           </CardMedia>
           <CardHeader>
             <CardTitle>
               {/* focus-ring: the card draws the ring (has-[a:focus-visible]), since the link covers it. */}
-              <a href={`#datasets/${c.id}`} className="outline-none after:absolute after:inset-0 after:rounded-[inherit]">
+              <a href={`#datasets/${c.id}`} className="underline-offset-4 outline-none group-hover/card:underline after:absolute after:inset-0 after:rounded-[inherit]">
                 {c.title}
               </a>
             </CardTitle>
@@ -245,13 +245,13 @@ const collections: Collection[] = [
 
 /**
  * A media card: a pattern, not a component. CardMedia holds one cover or a mosaic of up to four Thumbnails (filling it),
- * then the title as the card's one link (metric-card's stretched link), one or two facts and a tier badge. A restricted
+ * then the title as the card's one link (metric-card's stretched link, underlined while the card is hovered), one or two facts and a tier badge. A restricted
  * collection shows Thumbnail's restricted placeholder and fetches nothing. Grid columns as many as fit at 16 rem.
  */
 function MediaCard({ c }: { c: Collection }) {
   const mosaic = c.covers.length > 1
   return (
-    <Card className="press relative hover:ring-muted-foreground has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-ring">
+    <Card className="group/card press relative hover:ring-muted-foreground has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-ring">
       <CardMedia className={cn(mosaic && "grid grid-cols-2 gap-0.5")}>
         {c.reason ? (
           <Thumbnail restricted reason={c.reason} className="flex size-full rounded-none" />
@@ -270,7 +270,7 @@ function MediaCard({ c }: { c: Collection }) {
       <CardHeader className="min-w-0">
         <CardTitle className="truncate">
           {/* focus-ring: the card draws the ring (has-[a:focus-visible]), since the link covers it. */}
-          <a href={`#collections/${c.id}`} className="outline-none after:absolute after:inset-0 after:rounded-[inherit]">
+          <a href={`#collections/${c.id}`} className="underline-offset-4 outline-none group-hover/card:underline after:absolute after:inset-0 after:rounded-[inherit]">
             {c.title}
           </a>
         </CardTitle>

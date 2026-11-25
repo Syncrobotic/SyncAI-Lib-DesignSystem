@@ -625,7 +625,7 @@ const entries: Record<string, Entry> = {
       "Never nest cards. Group rows inside one card with separators.",
       "The title is an h3. Set `as` on CardTitle (`titleAs` on CardDataHeader) to the level the page needs: h2 for a card right under the h1, h4 inside a section under an h3. The size stays the same.",
       "A cover picture is CardMedia, first in the card: edge to edge, its top corners the card's own (`rounded-[inherit]`), 16:9 unless `aspect` says otherwise. `inset` keeps it inside the padding at the image radius (12). Never round the picture yourself.",
-      "A media card (a gallery of collections) is a pattern, not a component: CardMedia with one cover or a mosaic of up to four Thumbnails (`className=\"flex size-full rounded-none\"`), the title as the card's one link (metric-card's stretched link: `after:absolute after:inset-0` on the link, the ring on the card), one or two facts and one badge. A restricted collection shows Thumbnail's `restricted` placeholder and fetches nothing. Lay them out with `grid-cols-[repeat(auto-fill,minmax(16rem,1fr))]`.",
+      "A media card (a gallery of collections) is a pattern, not a component: CardMedia with one cover or a mosaic of up to four Thumbnails (`className=\"flex size-full rounded-none\"`), the title as the card's one link (metric-card's stretched link: `after:absolute after:inset-0` on the link, the ring on the card, the title underlined while the card is hovered, as every link shows it leads somewhere), one or two facts and one badge. A restricted collection shows Thumbnail's `restricted` placeholder and fetches nothing. Lay them out with `grid-cols-[repeat(auto-fill,minmax(16rem,1fr))]`.",
     ],
   },
   avatar: {
