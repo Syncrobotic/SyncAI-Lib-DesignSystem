@@ -110,6 +110,7 @@ export const overviews: Record<string, Overview> = {
       "`fromGrounding(text, groundings, { width, height, scale })` builds `annotations` and `spans`; `scale` is the range of the model's coordinates (1, 100, 1000), left out for pixels.",
       "Spans are role=button with aria-pressed (pinned), each described by where its marks are; marks are described by their words. Do not wrap either in a link or another button.",
       "The picture's words come from `imageLabels` (`annotatedImageLabels` in labels-zh-tw), the links' from `labels` (`groundedTextLabels`).",
+      "`GroundedTextBody` is the text alone, to drive an annotated-image the screen already shows in another panel: `groundedImageProps` gives that picture its `highlighted`, `selectedId` and descriptions. Beside the picture from 42 rem of the component's own width.",
     ],
   },
   "media-player": {

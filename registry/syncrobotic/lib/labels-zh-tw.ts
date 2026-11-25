@@ -523,6 +523,8 @@ export const groundedTextLabels = {
   linked: (words: string[]) => `文字中：${words.join("；")}`,
 }
 
+export const groundedTextBodyLabels = groundedTextLabels
+
 export const graphLabels = {
   from: (names: string[]) => `來自 ${list(names)}`,
   to: (names: string[]) => `通往 ${list(names)}`,

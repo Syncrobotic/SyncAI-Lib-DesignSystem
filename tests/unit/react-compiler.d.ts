@@ -33,6 +33,9 @@ declare module "@/registry/syncrobotic/ui/waypoint-editor?react-compiler" {
 declare module "@/registry/syncrobotic/ui/camera-wall?react-compiler" {
   export * from "@/registry/syncrobotic/ui/camera-wall"
 }
+declare module "@/registry/syncrobotic/ui/annotated-image?react-compiler" {
+  export * from "@/registry/syncrobotic/ui/annotated-image"
+}
 declare module "@/registry/syncrobotic/ui/grounded-text?react-compiler" {
   export * from "@/registry/syncrobotic/ui/grounded-text"
 }

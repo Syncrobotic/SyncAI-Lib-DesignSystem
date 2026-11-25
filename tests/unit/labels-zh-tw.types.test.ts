@@ -93,6 +93,7 @@ it("fits every component's labels type", () => {
   fits<GeoMapLabels>()(zh.geoMapListLabels)
   fits<AnnotatedImageLabels>()(zh.annotatedImageLabels)
   fits<GroundedTextLabels>()(zh.groundedTextLabels)
+  fits<GroundedTextLabels>()(zh.groundedTextBodyLabels)
   fits<Pick<AnnotatedImageLabels, "legend" | "previous" | "predicted" | "truth">>()(zh.annotationLegendLabels)
   fits<GraphLabels>()(zh.graphLabels)
   fits<GraphLabels>()(zh.graphListLabels)
