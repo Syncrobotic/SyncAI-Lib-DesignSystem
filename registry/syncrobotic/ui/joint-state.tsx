@@ -1,4 +1,4 @@
-// @syncrobotic/joint-state v0.24.1 · update: npx shadcn add @syncrobotic/joint-state --overwrite
+// @syncrobotic/joint-state v0.36.0 · update: npx shadcn add @syncrobotic/joint-state --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 import { Bone, LoadingLine } from "@/registry/syncrobotic/shell/skeleton"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 import { RobotArm } from "@/registry/syncrobotic/ui/robot-icons"
+import { formatClockTime } from "@/registry/syncrobotic/lib/clock-time"
 
 /** The SI unit ROS sends a joint in: radians for a revolute joint, metres for a prismatic one. */
 export type JointUnit = "rad" | "m"
@@ -84,8 +85,6 @@ export type JointStateLabels = {
   emptyHint: string
 }
 
-const pad = (n: number) => String(n).padStart(2, "0")
-
 export const defaultJointStateLabels: JointStateLabels = {
   title: "Joint states",
   joint: "Joint",
@@ -109,10 +108,7 @@ export const defaultJointStateLabels: JointStateLabels = {
   beyondUpper: "Past upper limit",
   stale: "Stale",
   lastUpdate: (time) => `last update ${time}`,
-  formatTime: (d, locale) =>
-    locale
-      ? d.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23" })
-      : [d.getHours(), d.getMinutes(), d.getSeconds()].map(pad).join(":"),
+  formatTime: (d, locale) => formatClockTime(d, locale),
   loading: "Loading joint states…",
   empty: "No joint states yet",
   emptyHint: "Positions show here once the robot publishes them.",
@@ -203,8 +199,12 @@ export type JointStateProps = {
    * wait is timed by this browser's clock.
    */
   updatedAt?: number
-  /** With no update for this long, the panel says "Stale" with the last update's time and dims the values. `Infinity` never goes stale. */
-  staleAfterMs?: number
+  /**
+   * With no update for this long, the panel says "Stale" with the last update's time and dims the values. 1000 ms by
+   * default: joint states come at 50 Hz or more (ros2_control's joint_state_broadcaster), so a second is 50 missed
+   * messages. `null` never goes stale.
+   */
+  staleAfterMs?: number | null
   /** How close to a limit counts as near, as a fraction of each joint's range. */
   margin?: number
   /**
@@ -257,7 +257,7 @@ export function JointState({
   const watching = !loading && joints.length > 0
   React.useEffect(() => {
     // setTimeout reads Infinity (and NaN) as 0, which would make "never stale" stale at once; it waits for nothing instead.
-    if (!watching || !Number.isFinite(staleAfterMs)) return
+    if (!watching || staleAfterMs === null || !Number.isFinite(staleAfterMs)) return
     // The wait counts from when this browser received the update, never from the robot's stamp: the two clocks are rarely
     // in step, and a robot a few seconds ahead would otherwise never look stale, one behind always would.
     const received = Date.now()

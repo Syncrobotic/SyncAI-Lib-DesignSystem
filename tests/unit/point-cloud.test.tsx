@@ -1,3 +1,4 @@
+import * as React from "react"
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import {
@@ -312,6 +313,28 @@ describe("PointCloud with WebGL2", () => {
     withWebGL()
   })
   const pts = cloud(0, 0, 0, 4, 2, 1)
+
+  it("releases its WebGL context once unmounted, not while Strict Mode re-runs it in place", () => {
+    vi.useFakeTimers()
+    try {
+      const loseContext = vi.fn()
+      const gl = fakeGl()
+      const real = new Proxy(gl, { get: (t, p) => (p === "getExtension" ? (name: string) => (name === "WEBGL_lose_context" ? { loseContext } : {}) : t[p as string]) })
+      vi.mocked(HTMLCanvasElement.prototype.getContext).mockImplementation(((type: string) => (type === "webgl2" ? real : null)) as never)
+      const { unmount } = render(
+        <React.StrictMode>
+          <PointCloud label="Front lidar" points={pts} />
+        </React.StrictMode>,
+      )
+      act(() => vi.runOnlyPendingTimers())
+      expect(loseContext).not.toHaveBeenCalled()
+      unmount()
+      act(() => vi.runOnlyPendingTimers())
+      expect(loseContext).toHaveBeenCalledTimes(1)
+    } finally {
+      vi.useRealTimers()
+    }
+  })
 
   it("is one Tab stop for the view, then Reset view and Fit, 44 px each", () => {
     render(<PointCloud label="Front lidar" points={pts} />)

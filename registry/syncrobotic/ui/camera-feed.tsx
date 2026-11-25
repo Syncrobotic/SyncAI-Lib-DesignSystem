@@ -1,4 +1,4 @@
-// @syncrobotic/camera-feed v0.35.0 · update: npx shadcn add @syncrobotic/camera-feed --overwrite
+// @syncrobotic/camera-feed v0.36.0 · update: npx shadcn add @syncrobotic/camera-feed --overwrite
 "use client"
 
 import * as React from "react"
@@ -9,6 +9,7 @@ import { Spinner } from "@/registry/syncrobotic/ui/spinner"
 import { ViewportOverlay, ViewportPanel } from "@/registry/syncrobotic/ui/viewport-overlay"
 import { Bone } from "@/registry/syncrobotic/shell/skeleton"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
+import { formatClockTime } from "@/registry/syncrobotic/lib/clock-time"
 
 /**
  * What the app knows about the connection. `live` means frames should be arriving; the feed itself tells "Live" from
@@ -55,7 +56,7 @@ export const defaultCameraFeedLabels: CameraFeedLabels = {
   connectingLong: "Connecting to camera…",
   stalled: "Stalled",
   lastFrame: (time) => `last frame ${time}`,
-  formatTime: (d) => [d.getHours(), d.getMinutes(), d.getSeconds()].map((n) => String(n).padStart(2, "0")).join(":"),
+  formatTime: (d) => formatClockTime(d),
   paused: "Paused",
   offline: "Camera offline",
   noCamera: "No camera",
@@ -145,8 +146,12 @@ export type CameraFeedProps = {
   status?: CameraFeedStatus
   /** Glass-to-glass delay, measured by the app, written after "Live". */
   latencyMs?: number
-  /** With no new frame for this long, the feed says "Stalled" over a dimmed picture instead of freezing silently. */
-  staleAfterMs?: number
+  /**
+   * With no new frame for this long, the feed says "Stalled" over a dimmed picture instead of freezing silently. 2000 ms
+   * by default: 30 to 60 missed frames at a camera's 15 to 30 fps, long enough to ride out a keyframe wait. `null` never
+   * stalls (a still image, a paused recording).
+   */
+  staleAfterMs?: number | null
   /** Why the camera is offline, written under "Camera offline": "the robot is out of network range." */
   offlineReason?: string
   /** Shows "Reconnect" while offline. Without it there is no button (a `src` reloads itself after a video error). */
@@ -228,6 +233,7 @@ export function CameraFeed({
 
   const arm = React.useCallback(() => {
     clearTimeout(staleTimer.current)
+    if (staleAfterMs === null || !Number.isFinite(staleAfterMs)) return
     staleTimer.current = setTimeout(() => {
       if (!watchingRef.current || lastFrame.current === null) return
       flags.current.stalled = true

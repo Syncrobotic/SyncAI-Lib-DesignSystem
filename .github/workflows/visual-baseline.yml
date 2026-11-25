@@ -30,6 +30,8 @@ jobs:
       # The pictures on /docs/components are the same stories, so they are taken here too, in the same browser:
       # a story change that needs new baselines gets new pictures in the same commit.
       - run: npm run thumbs
+      # The pictures on /blocks come from the blocks' previews on the built site (scripts/thumbs.mjs --blocks starts it).
+      - run: npx next build && npm run thumbs -- --blocks
       - run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config user.name "github-actions[bot]"
