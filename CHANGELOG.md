@@ -2,6 +2,14 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+Guidance on when a label is a Badge, an InlineStatus or plain text, and two dependency patches.
+
+### Changed
+- **`agent-skill` 0.39.0** and the Badge page: a state that changes (a robot's status, a job's state) is an `InlineStatus`, its shape and word with no box; a fixed attribute or category (a tier, a data use, an environment, a version, Beta) is a neutral `Badge`; a count is a `CountBadge`; in a table column whose header already names the attribute, the values are plain text. A page header shows at most one status, then its badges (#384).
+- **Dependencies:** libphonenumber-js 1.13.17 and tailwind-merge 3.7.1 (#339).
+
 ## 0.38.0 · 2026-11-25
 
 Every docs page is now under 400 KB of HTML, with no exceptions: the eight pages the budget let stay over it are lighter, most of them looking exactly as they did. The home page shows a robot's 3D lidar view, its sections arrive on a reload too, and the top bar's two ends balance.

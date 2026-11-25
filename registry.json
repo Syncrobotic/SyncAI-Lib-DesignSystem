@@ -8115,8 +8115,13 @@
         }
       ],
       "meta": {
-        "version": "0.36.0",
+        "version": "0.39.0",
         "changelog": [
+          {
+            "version": "0.39.0",
+            "date": "2026-11-25",
+            "note": "Badge, InlineStatus or plain text: a state that changes is an InlineStatus, a fixed attribute or category a neutral Badge, a count a count Badge, and the values of a table column already named by its header plain text."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",

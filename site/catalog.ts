@@ -614,7 +614,8 @@ const entries: Record<string, Entry> = {
     group: "Data display",
     examples: { file: "display", prefix: "Badge" },
     rules: [
-      "Short states and labels. In list rows prefer `status-eyebrow`'s `InlineStatus`; a count is a `CountBadge`.",
+      "A fixed attribute or category: a tier, a data use, an environment, a version, Beta. A state that changes (a robot's status, a job's state) is `status-eyebrow`'s `InlineStatus`, in a row or a header; a count is a `CountBadge`.",
+      "In a table column whose header already names the attribute, the values are plain text, not a badge on every row. A page header shows at most one status, then its badges after the title.",
       "Test and audit results are a `ResultBadge`: `result=\"passed\"` (grey with a check), `\"failed\"` (danger outline) or `\"insufficient\"` (grey, dashed circle). Never a green pass.",
       "`tone=\"success\"` renders grey, as `neutral` does: a state is never green. Use `neutral`.",
     ],
