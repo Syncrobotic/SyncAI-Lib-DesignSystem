@@ -212,8 +212,9 @@ export default async function ComponentPage({ params }: Props) {
                     </ul>
                   )}
                 </div>
+                {/* Each block's tools, install line and preview draw as it nears the screen: a chart has some twenty. */}
                 {blocksOfType(t.slug).map((b) => (
-                  <BlockSection key={b.name} block={b} heading="h4" />
+                  <BlockSection key={b.name} block={b} heading="h4" near />
                 ))}
               </section>
             ))}
