@@ -6,7 +6,7 @@ import { Meter } from "@/registry/syncrobotic/ui/meter"
 import { GeoMap, type GeoMapRobot, type GeoPoint } from "@/registry/syncrobotic/ui/geo-map"
 import { useLive } from "./live"
 
-// A fleet for the home page: four patrol dogs in a city park, reporting their pose every 2 s, on a real street map. Two
+// A fleet for the home page: four patrol dogs in a city park, reporting their pose every 2 s, on a real street map (OpenStreetMap). Two
 // patrol, one docked robot charges, and one runs low and drives back to its dock, which the map and the list both say.
 // Every frame is a function of the step, so it is the same on every machine. Routes are laid out in metres on a 300 ×
 // 180 m patch of the park (x east, y south from its north-west corner) and turned into latitude and longitude.
@@ -26,23 +26,10 @@ const geo = ([x, y]: RobotMapPoint): GeoPoint => ({
 })
 const CENTER = geo([150, 90])
 
-// Basemap tiles: CARTO's grey styles over OpenStreetMap data, light or dark with the page.
-const tiles = (dark: boolean) => `https://a.basemaps.cartocdn.com/${dark ? "dark_all" : "light_all"}/{z}/{x}/{y}@2x.png`
-const attribution = "© OpenStreetMap contributors © CARTO"
-
-/** Follows the page's theme, so the basemap's own style follows it too. */
-function useDark() {
-  const [dark, setDark] = React.useState(false)
-  React.useEffect(() => {
-    const html = document.documentElement
-    const read = () => setDark(html.classList.contains("dark"))
-    read()
-    const mo = new MutationObserver(read)
-    mo.observe(html, { attributes: true, attributeFilter: ["class"] })
-    return () => mo.disconnect()
-  }, [])
-  return dark
-}
+// Basemap tiles: OpenStreetMap's own, which need no key, credited on the map as its licence asks. They are drawn in
+// colour; the map turns them grey (and, on a dark page, dark), so a calm fleet still sits on grey.
+const tiles = "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+const attribution = "© OpenStreetMap contributors"
 
 /** Where a robot is after `d` metres along a route (closed when `loop`), and which way it faces. */
 function along(points: RobotMapPoint[], d: number, loop = true) {
@@ -115,15 +102,14 @@ const frame = "grid h-full gap-4 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]"
 export default function LiveFleet() {
   const [step, setStep] = React.useState(0)
   const { ref, still } = useLive<HTMLDivElement>(EVERY, () => setStep((s) => s + 1))
-  const dark = useDark()
   const { robots, route } = fleetAt(still ? STILL_AT : step)
   const onMap: GeoMapRobot[] = robots.map(({ x, y, battery: _b, place: _p, ...r }) => ({ ...r, ...geo([x, y]) }))
   return (
     <div ref={ref} className={frame}>
-      <div className="h-64 sm:h-72 lg:h-full">
+      <div className="h-64 sm:h-72 lg:h-full [&_image]:opacity-80 [&_image]:grayscale dark:[&_image]:opacity-60 dark:[&_image]:invert">
         <GeoMap
           label="Map of the park patrol"
-          tileUrl={tiles(dark)}
+          tileUrl={tiles}
           attribution={attribution}
           center={CENTER}
           zoom={17.25}
