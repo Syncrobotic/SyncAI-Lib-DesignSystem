@@ -9,6 +9,7 @@ The four docs pages that the page budget let stay over 400 KB of HTML are under 
 ### Changed
 - **Docs:** token tables (on the foundation pages, Tokens, Localisation and Upgrading) are rendered once: one table that CSS turns into a card per row on a phone, where there were a table and a phone list side by side, and their rows carry no classes. On a phone a row's column names are drawn by CSS and screen readers hear the table's headers. Colour is 310 KB of HTML, from 431 KB.
 - **Docs:** Upgrading's Current versions table is a client component drawn from four strings per item, so the page's React payload no longer carries its 200-odd rows as elements a second time beside the HTML, and the rows' looks are set once on the table: 296 KB, from 896 KB.
+- **Docs:** Localisation's catalog of every component's labels (62 tables, 718 keys) is fetched once the page shows, from `/localisation-labels.json` (built from the props file, as the Lucide list is), and drawn as before; "Loading the labels" holds its place for the moment it takes: 302 KB, from 1,978 KB.
 
 ## 0.37.0 · 2026-11-25
 
