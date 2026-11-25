@@ -67,13 +67,13 @@ const rules = [
 const live = [
   {
     demo: "fleet",
-    title: "A fleet on its map",
+    title: "What one robot sees",
     wide: true,
     size: "h-148 sm:h-156 lg:h-80",
     caption:
-      "Four patrol robots in a city park report where they are every two seconds, on a real street map. A calm fleet stays grey; the one running low turns amber on the map and says why in the list, and its way home is the only blue line.",
+      "Four robots report every two seconds. A calm fleet stays grey; the one running low turns amber and says why in the list, and the view is its front lidar in 3D as it drives back to its dock through the racks.",
     links: [
-      ["Geo map", "/docs/components/geo-map"],
+      ["Point cloud", "/docs/components/point-cloud"],
       ["Meter", "/docs/components/meter"],
     ],
   },
