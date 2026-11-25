@@ -66,8 +66,8 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 | --- | --- |
 | Actions | `button`, `segmented-control`, `toggle`, `copy-button`, `button-group`, `toggle-group`, `theme-toggle` |
 | Inputs | `input`, `input-group`, `number-field`, `textarea`, `label`, `field`, `form`, `checkbox`, `radio-group`, `switch`, `choice-field`, `select`, `slider`, `chip-group`, `filter-form`, `filters`, `search-field`, `autocomplete`, `input-otp`, `phone-input`, `calendar`, `date-selector`, `time-picker`, `sortable`, `file-upload`, `questionnaire` |
-| Display | `status-glyph`, `status-eyebrow`, `list`, `skeleton`, `spinner`, `badge`, `card`, `avatar`, `separator`, `progress`, `description-list`, `text-diff`, `meter`, `empty-state`, `table`, `item`, `icon-tile`, `kbd`, `code`, `scroll-area`, `share-bar`, `restricted-preview`, `image-grid`, `data-grid`, `resizable`, `attachment`, `file-type`, `timeline`, `trace`, `marker`, `media-player`, `camera-feed`, `graph` |
-| Charts | `chart`, `robot-map` |
+| Display | `status-glyph`, `status-eyebrow`, `list`, `skeleton`, `spinner`, `badge`, `card`, `avatar`, `separator`, `progress`, `description-list`, `text-diff`, `meter`, `empty-state`, `table`, `item`, `icon-tile`, `kbd`, `code`, `scroll-area`, `share-bar`, `restricted-preview`, `thumbnail`, `image-grid`, `data-grid`, `resizable`, `attachment`, `file-type`, `timeline`, `trace`, `marker`, `media-player`, `camera-feed`, `graph` |
+| Charts | `chart`, `bar-list`, `robot-map` |
 | Feedback | `alert`, `banner`, `alarm`, `toast`, `route-progress` |
 | Navigation | `tabs`, `pagination`, `breadcrumb`, `accordion`, `collapsible`, `page-header`, `load-more`, `stepper`, `scrollspy`, `navigation-menu`, `tree`, `sidebar` |
 | Overlays | `dialog`, `alert-dialog`, `sheet`, `popover`, `hover-card`, `tooltip`, `dropdown-menu`, `context-menu`, `command` |

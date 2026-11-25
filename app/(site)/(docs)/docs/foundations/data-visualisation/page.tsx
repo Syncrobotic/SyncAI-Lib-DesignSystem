@@ -17,6 +17,7 @@ const forms: { job: string; form: string; items: string[] }[] = [
   { job: "A value over time", form: "A line, one y axis", items: ["line-chart-telemetry", "line-chart-limit", "line-chart-compare"] },
   { job: "How a whole splits, over time", form: "Stacked areas that add up to the whole", items: ["area-chart-fleet-states", "area-chart-cumulative"] },
   { job: "Compare categories", form: "Bars from zero, sorted unless the order means something", items: ["bar-chart-missions", "bar-chart-ranked", "bar-chart-stacked"] },
+  { job: "The top few categories, in a card or a cell", form: "A ranked bar list: one hue, each value written in its row", items: ["bar-list"] },
   { job: "Above and below a target", form: "Bars in one hue around a drawn zero", items: ["bar-chart-variance"] },
   { job: "When something happens (day × hour)", form: "A heatmap in one hue", items: ["heatmap-week-hours"] },
   { job: "Where something happens", form: "A heatmap by zone, with each cell's number", items: ["heatmap-zones"] },
@@ -25,7 +26,7 @@ const forms: { job: string; form: string; items: string[] }[] = [
   { job: "Exact values, or many columns", form: "Not a chart: a table", items: ["data-grid"] },
 ]
 
-const components = new Set(["meter", "trace", "timeline", "data-grid"])
+const components = new Set(["meter", "bar-list", "trace", "timeline", "data-grid"])
 const ItemLink = ({ name }: { name: string }) => (
   <Link href={components.has(name) ? `/docs/components/${name}` : blockHref(name)} className="inline-flex min-h-(--h-sm) items-center font-mono text-xs underline underline-offset-4">
     {name}

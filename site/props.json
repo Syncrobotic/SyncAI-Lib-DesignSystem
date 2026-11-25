@@ -1589,6 +1589,66 @@
    ]
   }
  ],
+ "bar-list": [
+  {
+   "name": "BarList",
+   "props": [
+    {
+     "name": "items",
+     "type": "BarListItem[]",
+     "required": true,
+     "description": "The rows, in the order to show them: largest first for a ranking."
+    },
+    {
+     "name": "max",
+     "type": "number",
+     "description": "Show this many rows, then \"N more\". All of them when left out."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the values (a BCP 47 tag such as \"zh-TW\"): \"412,345\"."
+    },
+    {
+     "name": "format",
+     "type": "Intl.NumberFormatOptions",
+     "description": "How to write the values, e.g. `{ notation: \"compact\" }` (412K)."
+    },
+    {
+     "name": "label",
+     "type": "string",
+     "required": true,
+     "description": "Names the list for screen readers, e.g. \"Items by class\". Show the same words as the title of the card around it."
+    },
+    {
+     "name": "linkAs",
+     "type": "ElementType",
+     "default": "\"a\"",
+     "description": "Your router's link (e.g. next/link), for rows with `href`."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<BarListLabels>",
+     "description": "The words it says, to translate them.",
+     "keys": [
+      {
+       "name": "more",
+       "type": "(count: string) => string",
+       "default": "(count) => `${count} more`",
+       "description": "Under the list when `max` leaves rows out: \"4 more\". The count comes formatted."
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"Nothing to show\"",
+       "description": "Shown in place of the list when it has no items."
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "breadcrumb": [
   {
    "name": "Breadcrumb",
@@ -4396,6 +4456,12 @@
        "description": ""
       },
       {
+       "name": "more",
+       "type": "(first: string, more: number) => string",
+       "default": "(first: string, more: number) => `${first} +${more}`",
+       "description": "Several values on a chip: the first and how many more."
+      },
+      {
        "name": "from",
        "type": "string",
        "default": "\"From\"",
@@ -4412,12 +4478,6 @@
        "type": "string",
        "default": "\"Active filters, all must match\"",
        "description": "Names the list of chips, so a screen reader hears how they combine."
-      },
-      {
-       "name": "more",
-       "type": "(first: string, more: number) => string",
-       "default": "(first: string, more: number) => `${first} +${more}`",
-       "description": "Several values on a chip: the first and how many more."
       },
       {
        "name": "and",
@@ -5677,7 +5737,17 @@
     {
      "name": "onOpen",
      "type": "(item: ImageGridItem, index: number) => void",
-     "description": "Opens a picture your way (your own Sheet with its details) in place of the lightbox: a tile, or the corner button while picking, calls it. Your dialog then returns focus to the tile when it closes: keep `document.activeElement` here and focus it in the dialog's `onCloseAutoFocus` (a dialog opened without a trigger has nowhere to return to)."
+     "description": "Opens a picture your way (your own Sheet with its details) in place of the lightbox: a tile, or the corner button while picking, calls it. The grid remembers which: when your dialog closes, call `restoreFocus()` on the grid's `ref` in its `onCloseAutoFocus` (after `preventDefault()`), since a dialog opened without a trigger has nowhere to return to."
+    },
+    {
+     "name": "renderTile",
+     "type": "(item: ImageGridItem, context: ImageGridTileContext) => ReactNode",
+     "description": "Draws the picture area of a tile your way, e.g. an AnnotatedImage with the boxes on it, filling the tile's aspect box. The grid keeps the button, its name (the item's `alt`), the shape, picking, and the hidden and failed states. No controls inside: the tile is already the button. Call `onError` when your picture fails."
+    },
+    {
+     "name": "ref",
+     "type": "((instance: ImageGridHandle | null) => void | (() => VoidOrUndefinedOnly) | DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES[keyof DO_NOT_USE_OR_YOU_WILL_BE_FIRED_CALLBACK_REF_RETURN_VALUES]) | RefObject<ImageGridHandle | null>",
+     "description": "`restoreFocus()`, for a dialog of your own opened from `onOpen`."
     },
     {
      "name": "labels",
@@ -11851,6 +11921,61 @@
      "type": "\"center\" | \"end\" | \"start\"",
      "default": "\"end\"",
      "description": "The menu's edge that lines up with the button (menu only)."
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "thumbnail": [
+  {
+   "name": "Thumbnail",
+   "props": [
+    {
+     "name": "src",
+     "type": "string",
+     "description": "The picture. Left out (with no `restricted`), the neutral fallback shows."
+    },
+    {
+     "name": "alt",
+     "type": "string",
+     "default": "\"\"",
+     "description": "What the picture shows, e.g. \"Forklift in aisle 3\". \"\" when the row's own words already say it."
+    },
+    {
+     "name": "size",
+     "type": "\"sm\" | \"md\" | \"lg\"",
+     "default": "\"sm\"",
+     "description": "sm: --h-sm (36 px, 44 on touch) for a table row; md: --h-md (44); lg: --h-lg (48) for a list or a card's row."
+    },
+    {
+     "name": "restricted",
+     "type": "boolean",
+     "default": "false",
+     "description": "The viewer may not see it (faces, number plates, a restricted tier): a neutral placeholder, and nothing is fetched."
+    },
+    {
+     "name": "reason",
+     "type": "string",
+     "description": "Why it is hidden, e.g. \"Restricted · faces\": the placeholder's accessible name and its tooltip."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<ThumbnailLabels>",
+     "description": "The words it says, to translate them.",
+     "keys": [
+      {
+       "name": "broken",
+       "type": "string",
+       "default": "\"Could not load\"",
+       "description": "Read before the alt of a picture that could not load: \"Could not load: Forklift in aisle 3\"."
+      },
+      {
+       "name": "restricted",
+       "type": "string",
+       "default": "\"Restricted picture\"",
+       "description": "The name of a restricted thumbnail when no `reason` is given."
+      }
+     ]
     }
    ],
    "inherits": []
