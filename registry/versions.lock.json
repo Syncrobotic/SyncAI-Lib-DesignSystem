@@ -19,6 +19,10 @@
     "version": "0.36.0",
     "hash": "b52e10ecdfe0c777"
   },
+  "format-count": {
+    "version": "0.39.0",
+    "hash": "e24e6fcf7abf442e"
+  },
   "input-modality": {
     "version": "0.36.0",
     "hash": "18f32710c9c1f3cf"
@@ -28,8 +32,8 @@
     "hash": "03904a0793a968e9"
   },
   "labels-zh-tw": {
-    "version": "0.37.0",
-    "hash": "84aa89e213c9c9f2"
+    "version": "0.39.0",
+    "hash": "6c32ccb26ec91619"
   },
   "ros": {
     "version": "0.36.0",
@@ -251,6 +255,10 @@
     "version": "0.35.0",
     "hash": "9f97c5ec5ac5fe3e"
   },
+  "responsive-table": {
+    "version": "0.39.0",
+    "hash": "254427343bb2b7ff"
+  },
   "chart": {
     "version": "0.22.1",
     "hash": "7e591be54e08bd72"
@@ -374,6 +382,10 @@
   "page-header": {
     "version": "0.32.0",
     "hash": "1f92ba0794ccdc8d"
+  },
+  "section-header": {
+    "version": "0.39.0",
+    "hash": "352cb68c139952c1"
   },
   "chip-group": {
     "version": "0.32.0",
@@ -629,7 +641,7 @@
   },
   "agent-skill": {
     "version": "0.39.0",
-    "hash": "de5d4959f71bc821"
+    "hash": "981c8cf113b83145"
   },
   "line-chart-telemetry": {
     "version": "0.35.0",
