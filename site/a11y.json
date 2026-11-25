@@ -708,6 +708,14 @@
     "tabStops": 3,
     "live": false
   },
+  "section-header": {
+    "roles": [
+      "button",
+      "heading"
+    ],
+    "tabStops": 1,
+    "live": false
+  },
   "chip-group": {
     "roles": [
       "button",

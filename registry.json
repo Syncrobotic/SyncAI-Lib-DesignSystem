@@ -4507,6 +4507,33 @@
       }
     },
     {
+      "name": "section-header",
+      "type": "registry:ui",
+      "title": "Section header",
+      "description": "The heading of a section at typography's two levels: page (20 px bold, outside the cards) or surface (14 px medium, inside a card, a sheet or a panel), with an optional count in full, a line under it and actions. Heading level set by `as`.",
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/format-count"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/section-header.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.39.0",
+        "changelog": [
+          {
+            "version": "0.39.0",
+            "date": "2026-11-25",
+            "note": "First release: a section heading at the page level (20 px bold) or inside a surface (14 px medium), with `count` (formatCount, in full), `description`, `actions`, `as` and `id`. Issue #385."
+          }
+        ]
+      }
+    },
+    {
       "name": "chip-group",
       "type": "registry:ui",
       "title": "Chip group",
@@ -8143,7 +8170,7 @@
           {
             "version": "0.39.0",
             "date": "2026-11-25",
-            "note": "The design language and the checklist: the number formatting rule. A count is written in full with grouping in tables, headers and detail, and abbreviated (135K, 14萬) only where space is the constraint (a tab's count, chart ticks, a compact chip), both through formatCount. Issue #386."
+            "note": "The design language and the checklist: the number formatting rule. A count is written in full with grouping in tables, headers and detail, and abbreviated (135K, 14萬) only where space is the constraint (a tab's count, chart ticks, a compact chip), both through formatCount. Issue #386. Section titles are SectionHeader at typography's two levels (page 20 px bold, surface 14 px medium), and it takes `as` like the other headings. Issue #385."
           },
           {
             "version": "0.36.0",

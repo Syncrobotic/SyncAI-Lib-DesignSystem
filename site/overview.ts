@@ -12,7 +12,23 @@ export const overviews: Record<string, Overview> = {
       "A dataset, robot or site page whose counts and owner matter at a glance.",
       "A fact that opens what it counts: a MetaPill with `href`.",
     ],
-    instead: ["A title inside a card: the card's own heading.", "The app's own frame: `app-shell`."],
+    instead: ["A title inside a card: the card's own heading.", "The app's own frame: `app-shell`.", "A section further down the page: `section-header`."],
+  },
+  "section-header": {
+    what: "The heading of a section at one of typography's two levels: page (20 px bold) or inside a surface (14 px medium), with an optional count, a line and actions.",
+    use: [
+      "A section of a page between the page header and its cards: Robots 1,284, with Add robot.",
+      "A section inside a card, a sheet or a panel: Sensors 6, with Calibrate.",
+    ],
+    instead: [
+      "The top of the page: `page-header`.",
+      "The head of a card that shows data (a chart, a figure, a ring): `card` (CardDataHeader).",
+      "A card's own title: `card` (CardTitle).",
+    ],
+    notes: [
+      "Never hand-size a section title (text-base, text-lg, a weight of your own): pick the level instead.",
+      "Pass the count as a number, not a string: it is written in full with grouping, and `locale` sets the separators.",
+    ],
   },
   "chip-group": {
     what: "One choice among several, or any of several with `type=\"multiple\"`, shown as chips with their counts, folded after a few.",
@@ -963,6 +979,7 @@ export const overviews: Record<string, Overview> = {
     instead: [
       "Rows of similar items: `list` or `table` inside one card. Cards are never nested.",
       "Label and value pairs: `description-list`.",
+      "A section title inside the card: `section-header` with `variant=\"surface\"`.",
       "A small picture at the start of a row: `thumbnail`, or `item` with ItemMedia `variant=\"image\"`.",
       "Many pictures, picked or opened: `image-grid`.",
     ],

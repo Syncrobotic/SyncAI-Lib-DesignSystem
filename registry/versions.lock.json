@@ -379,6 +379,10 @@
     "version": "0.32.0",
     "hash": "1f92ba0794ccdc8d"
   },
+  "section-header": {
+    "version": "0.39.0",
+    "hash": "352cb68c139952c1"
+  },
   "chip-group": {
     "version": "0.32.0",
     "hash": "1bd0e13d32ee59cb"
@@ -633,7 +637,7 @@
   },
   "agent-skill": {
     "version": "0.39.0",
-    "hash": "b856fc17e4227637"
+    "hash": "12279bb0a0c743de"
   },
   "line-chart-telemetry": {
     "version": "0.35.0",

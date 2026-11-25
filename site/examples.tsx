@@ -55,6 +55,7 @@ const files = {
   "scroll-area": () => import("@/stories/scroll-area.stories"),
   "toggle-group": () => import("@/stories/toggle-group.stories"),
   "page-header": () => import("@/stories/page-header.stories"),
+  "section-header": () => import("@/stories/section-header.stories"),
   form: () => import("@/stories/form.stories"),
   "data-pieces": () => import("@/stories/data-pieces.stories"),
   "bar-list": () => import("@/stories/bar-list.stories"),

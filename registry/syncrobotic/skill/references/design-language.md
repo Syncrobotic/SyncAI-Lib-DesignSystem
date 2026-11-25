@@ -22,10 +22,10 @@ Everything here is a token in `syncrobotic-theme.css`; use the token, never the 
 - High contrast: `data-contrast="more"` on `<html>` or a container, in light or dark, for bright sun and low vision: 7:1 text and status, 3:1 edges, nothing translucent. Set it from `matchMedia("(prefers-contrast: more)")` or a setting; meanings do not change.
 
 ## Type
-- Sizes: xs 12 (hints, metadata, tags), sm 14 (buttons, rows, labels), base 16 (body, inputs), lg 18 (card titles), xl 20 (section and sheet titles), 2xl 24 (the number that leads a card), 3xl 28 (page titles), 4xl 36 and 5xl 48 (marketing heroes only). Nothing else.
+- Sizes: xs 12 (hints, metadata, tags), sm 14 (buttons, rows, labels), base 16 (body, inputs), lg 18 (card titles), xl 20 (section and sheet titles; a page's section is `SectionHeader`), 2xl 24 (the number that leads a card), 3xl 28 (page titles), 4xl 36 and 5xl 48 (marketing heroes only). Nothing else.
 - Numbers are tabular (`tabular-nums`). A count is written in full with grouping (135,287) in tables, headers, detail pages and figures: anywhere it is read or compared. Abbreviate (135K, 1.2M; 14萬 in zh-TW) only where space is the constraint: a count on a tab, a chart's axis ticks, a compact chip; keep the full number one step away (the table view, a tooltip). Both through `formatCount(n, { compact, locale })` (`@syncrobotic/format-count`), never a hand-made "k".
 - Weights: 400, 500, 700 only. Buttons medium (500); bold (700) for titles, figures and the stop.
-- Titles inside a surface (a card's data header, a section inside a card or a sheet, a panel's head row) are 14 px medium (`text-sm font-medium`, `CardDataHeader`), never bold: bold is for the page title, a card's own title (18) and a sheet's title.
+- Titles inside a surface (a card's data header, a section inside a card or a sheet, a panel's head row) are 14 px medium (`text-sm font-medium`: `CardDataHeader` on a data card, `SectionHeader variant="surface"` for a section), never bold: bold is for the page title, a card's own title (18) and a sheet's title.
 - WCAG large text is 24 px, or 18.66 px (14 pt) bold.
 
 ## Spacing, size and density

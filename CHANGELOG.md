@@ -4,12 +4,15 @@ Components install as source, so a project keeps the version it installed. Re-ru
 
 ## Unreleased
 
-A rule for writing numbers, with the helper that follows it.
+A section heading at typography's two levels, and a rule for writing numbers with the helper that follows it.
 
 ### Added
 - **`format-count` 0.39.0 (beta):** `formatCount(n, { compact, locale })`, through Intl.NumberFormat in `locale` (English when none is given, so the server and the browser agree). Full with grouping by default (135,287); `compact` abbreviates in the locale's own words (135K and 1.2M in English, 14萬 and 123萬 in zh-TW). Issue #386
 
+- **`section-header` 0.39.0 (beta):** the heading of a section at typography's two levels, so section titles stop drifting between 14, 16 and 18 px: `page` (20 px bold, an h2) for a section of the page outside the cards, `surface` (14 px medium, never bold, an h3) inside a card, a sheet or a panel. `count` after the title in muted text, in full with grouping (`formatCount`, `locale`); `description`, one line under it; `actions` at the right, under the title when it needs the width; `as` sets the heading level without changing the look; `id` for a section's `aria-labelledby`. A data card keeps CardDataHeader; a page keeps PageHeader. Issue #385
+
 ### Changed
+- **`agent-skill` 0.39.0:** section titles are SectionHeader at its two levels (page 20 px bold, surface 14 px medium), and it takes `as` like the other headings. Issue #385
 - **`agent-skill` 0.39.0:** the number formatting rule in the design language and the checklist: a count is written in full with grouping in tables, headers, detail pages and figures, and abbreviated only where space is the constraint (a tab's count, chart ticks, a compact chip), with the full number one step away, both through `formatCount`, never a hand-made "k". Issue #386
 - **Docs:** Typography's Numbers section says when to abbreviate, with a table of both forms in English and zh-TW and a Do / Don't; Data visualisation's axis rule lets ticks abbreviate counts. Issue #386
 

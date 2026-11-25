@@ -10071,6 +10071,56 @@
    "inherits": []
   }
  ],
+ "section-header": [
+  {
+   "name": "SectionHeader",
+   "props": [
+    {
+     "name": "title",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "variant",
+     "type": "\"page\" | \"surface\"",
+     "default": "\"page\"",
+     "description": "`page`: a section of the page, outside any card (20 px bold). `surface`: inside a card, a sheet or a panel (14 px medium)."
+    },
+    {
+     "name": "as",
+     "type": "\"h2\" | \"h3\" | \"h4\"",
+     "description": "The heading level: h2 for `page` and h3 for `surface` by default. Set it so the page's outline skips no level; the look stays the same."
+    },
+    {
+     "name": "count",
+     "type": "number",
+     "description": "How many items the section holds, after the title in muted text: full, with grouping (formatCount)."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "The locale the count is written in (English by default)."
+    },
+    {
+     "name": "description",
+     "type": "ReactNode",
+     "description": "One line under the title."
+    },
+    {
+     "name": "actions",
+     "type": "ReactNode",
+     "description": "Buttons for this section (\"View all\", \"Add\"): `size=\"sm\"` in a `surface` header."
+    },
+    {
+     "name": "id",
+     "type": "string",
+     "description": "The heading's id, for a section's `aria-labelledby`."
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "segmented-control": [
   {
    "name": "SegmentedControl",

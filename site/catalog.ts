@@ -48,6 +48,7 @@ export type StoryFile =
   | "scroll-area"
   | "toggle-group"
   | "page-header"
+  | "section-header"
   | "chip-group"
   | "filter-form"
   | "filters"
@@ -397,6 +398,17 @@ const entries: Record<string, Entry> = {
       "Meta pills are facts (counts, owner, last update); a status pill takes a tone and only warning and danger are coloured.",
       "A fact that leads somewhere (\"2 compliance items open\" to that tab) takes `href` (and `linkAs` for your router): the pill becomes an underlined link with the focus ring and a 36 px target (44 on touch), the same height on screen. Never wrap a pill in your own link.",
       "Actions sit at the right; the page's one primary action may be among them.",
+    ],
+  },
+  "section-header": {
+    group: "Layout",
+    examples: { file: "section-header", prefix: "SectionHeader" },
+    rules: [
+      "Two levels, from typography: `page` (20 px bold) for a section of the page, outside the cards; `surface` (14 px medium, never bold) for a section inside a card, a sheet or a panel. Never another size or weight for a section title.",
+      "The heading is an h2 at `page` and an h3 at `surface`. Set `as` so the page's outline skips no level; the look stays the same.",
+      "`count` is how many items the section holds, written in full with grouping (1,284, never 1.2K), muted after the title. A count that needs someone (unread, failing) is a CountBadge in the title instead.",
+      "Actions are the section's own (View all, Add): at the right, under the title when the title needs the width. `size=\"sm\"` buttons in a `surface` header.",
+      "A card that shows data (a chart, a figure) opens with CardDataHeader; a page opens with PageHeader. Give the section `aria-labelledby` with the heading's `id`.",
     ],
   },
   "chip-group": {
