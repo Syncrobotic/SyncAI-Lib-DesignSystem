@@ -25,7 +25,6 @@ const ceilings = {
   "/docs/nextjs": { kb: 570, why: "515 KB: 13 code listings shown on the page" },
   "/icons": { kb: 560, why: "507 KB: every robot icon drawn" },
   "/docs/foundations/color": { kb: 480, why: "430 KB: every colour token with its contrast" },
-  "/docs/ros": { kb: 470, why: "423 KB: the ROS guide with its listings" },
 }
 
 /** @param {string} dir @returns {string[]} */

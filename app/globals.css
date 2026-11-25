@@ -63,11 +63,42 @@ html {
 }
 /* GitHub's themes draw keywords (import, const, return) red, which here means danger: every listing would read as an
    error. Keywords take the brand indigo instead (--chart-1, 4.7:1 or more on the code's surfaces in both themes). */
-.code span[style*="--shiki-light:#A0111F"] {
+.code span[style*="--shiki-light:#A0111F"],
+.code span.hk {
   color: var(--chart-1);
 }
-.dark .code span[style*="--shiki-dark:#FF9492"] {
+.dark .code span[style*="--shiki-dark:#FF9492"],
+.dark .code span.hk {
   color: var(--chart-1);
+}
+/* The token colours as classes (site/highlight.ts): each sets the two variables its style attribute set. */
+.code .hk {
+  --shiki-light: #a0111f;
+  --shiki-dark: #ff9492;
+}
+.code .hs {
+  --shiki-light: #032563;
+  --shiki-dark: #addcff;
+}
+.code .hc {
+  --shiki-light: #023b95;
+  --shiki-dark: #91cbff;
+}
+.code .hf {
+  --shiki-light: #622cbc;
+  --shiki-dark: #dbb7ff;
+}
+.code .ht {
+  --shiki-light: #024c1a;
+  --shiki-dark: #72f088;
+}
+.code .hv {
+  --shiki-light: #702c00;
+  --shiki-dark: #ffb757;
+}
+.code .hm {
+  --shiki-light: #66707b;
+  --shiki-dark: #bdc4cc;
 }
 
 /* Exhibits sit on the page background, a step below the card around them. No pattern: the component is the subject. */

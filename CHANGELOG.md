@@ -2,6 +2,11 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Changed
+- **Docs:** code listings carry their colours as eight classes instead of a style on every word, and a word in the code's own colour has no span at all: the same pixels in under half the bytes, on every page that shows code. Connect to ROS drops from 423 KB to 309 KB of HTML and leaves the size ceilings.
+
 ## 0.37.0 · 2026-11-25
 
 Saved views for the filter bar, catalog rows that unfold their label layers, event windows in the media player, and every item version findable at a kit tag. A lowered teleop speed limit now applies at once.
