@@ -313,7 +313,7 @@
         "changelog": [
           {
             "version": "0.37.0",
-            "date": "2026-11-26",
+            "date": "2026-11-25",
             "note": "`filterViewsLabels` for filters' FilterViews (已儲存的檢視, 已修改, 還原, 儲存檢視). Issue #300. `mediaPlayerLabels.markerCount`, `range` and `marker` for media-player windows and its folded marker list (3 個事件, 0:12–0:30，有人擋路). Issue #346."
           },
           {
@@ -881,7 +881,7 @@
         "changelog": [
           {
             "version": "0.37.0",
-            "date": "2026-11-26",
+            "date": "2026-11-25",
             "note": "A lowered maxSpeed now applies on the next send, even while the stick is held still; before, it waited for the next move."
           },
           {
@@ -4901,7 +4901,7 @@
         "changelog": [
           {
             "version": "0.37.0",
-            "date": "2026-11-26",
+            "date": "2026-11-25",
             "note": "A marker with `end` is a window, drawn as a bracket from start to end above the track (never a fill on it, so it is not read as the played part); a press goes to its start, and it is named by its range (\"12:04–12:31, Person in path\") in the list, on hover and on focus. New `markerList`: `list` (default, as before), `collapsed` (a \"3 events\" disclosure that unfolds the list, so a grid of clips lines up) or `none` (no list; the marks on the timeline then take the keyboard and are named). A mark shows its name in a drawn label on hover and focus instead of the browser tooltip. Marks are placed from `duration` until the file reports its own length. Needs `collapsible`. Issue #346. In the list the times are one column, so every name starts at the same place."
           },
           {
@@ -5339,7 +5339,7 @@
         "changelog": [
           {
             "version": "0.37.0",
-            "date": "2026-11-26",
+            "date": "2026-11-25",
             "note": "Saved views: `FilterViews` shows views as chips (ChipGroup) and chooses the one whose rules equal the current ones, in any order and with values in any order; once a rule changes it says Modified (announced) with Reset, which puts that view's rules back and moves focus to its chip; with `onSave`, Save view asks for a name in a popover and hands you the name and the rules (storing views stays the app's job). `rulesEqual` compares two rule lists the same way. New labels type `FilterViewsLabels`. Now installs `chip-group` and `field`. Issue #300."
           },
           {
@@ -6054,7 +6054,7 @@
         "changelog": [
           {
             "version": "0.37.0",
-            "date": "2026-11-26",
+            "date": "2026-11-25",
             "note": "The toolbar sits 4 px from the frame, so its controls' corners follow the frame's (outer radius = inner + padding)."
           },
           {
@@ -7580,7 +7580,7 @@
         "changelog": [
           {
             "version": "0.37.0",
-            "date": "2026-11-26",
+            "date": "2026-11-25",
             "note": "A source dataset unfolds its label layers: `Dataset.layers` (`LabelLayer`: ref, name, version, items) adds a ghost toggle under the name (\"3 label layers\", aria-expanded, aria-controls naming the rows it shows); each layer is a row indented under its source behind a guide line, with its own link and mono ref line (`labels/coco@v2`), and on phones keeps the name and items as the dataset rows do. The layers appear and fade out; search finds a source by a layer's name or ref. Now installs `use-presence`. Issue #351."
           },
           {

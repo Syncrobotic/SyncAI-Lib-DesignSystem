@@ -2,7 +2,7 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.37.0 · 2026-11-25
 
 Saved views for the filter bar, catalog rows that unfold their label layers, event windows in the media player, and every item version findable at a kit tag. A lowered teleop speed limit now applies at once.
 
