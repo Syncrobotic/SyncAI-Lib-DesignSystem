@@ -252,6 +252,29 @@
       }
     },
     {
+      "name": "format-count",
+      "type": "registry:lib",
+      "title": "Format count",
+      "description": "formatCount: a count in full with grouping (135,287) for tables, headers and detail, or `compact` (135K, 1.2M; 14萬 in zh-TW) only where space is the constraint: tab marks, chart ticks, compact chips. Intl.NumberFormat in a locale, English by default.",
+      "files": [
+        {
+          "path": "registry/syncrobotic/lib/format-count.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "meta": {
+        "version": "0.39.0",
+        "changelog": [
+          {
+            "version": "0.39.0",
+            "date": "2026-11-25",
+            "note": "First release: formatCount(n, { compact, locale }) for the number formatting rule. Issue #386."
+          }
+        ],
+        "status": "beta"
+      }
+    },
+    {
       "name": "input-modality",
       "type": "registry:lib",
       "title": "Input modality",
@@ -8115,8 +8138,13 @@
         }
       ],
       "meta": {
-        "version": "0.36.0",
+        "version": "0.39.0",
         "changelog": [
+          {
+            "version": "0.39.0",
+            "date": "2026-11-25",
+            "note": "The design language and the checklist: the number formatting rule. A count is written in full with grouping in tables, headers and detail, and abbreviated (135K, 14萬) only where space is the constraint (a tab's count, chart ticks, a compact chip), both through formatCount. Issue #386."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",

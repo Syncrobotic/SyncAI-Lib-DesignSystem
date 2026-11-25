@@ -19,6 +19,10 @@
     "version": "0.36.0",
     "hash": "b52e10ecdfe0c777"
   },
+  "format-count": {
+    "version": "0.39.0",
+    "hash": "e24e6fcf7abf442e"
+  },
   "input-modality": {
     "version": "0.36.0",
     "hash": "18f32710c9c1f3cf"
@@ -628,8 +632,8 @@
     "hash": "26224425b5d61273"
   },
   "agent-skill": {
-    "version": "0.36.0",
-    "hash": "3078a31f1e6ff5f2"
+    "version": "0.39.0",
+    "hash": "b856fc17e4227637"
   },
   "line-chart-telemetry": {
     "version": "0.35.0",

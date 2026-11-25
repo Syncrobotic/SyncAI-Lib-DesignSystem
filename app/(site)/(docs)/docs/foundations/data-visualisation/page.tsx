@@ -374,7 +374,7 @@ export default function DataVisualisationPage() {
           rules={[
             "One y axis. Two measures on different scales are two charts, stacked, sharing the time axis.",
             "Lines 2 px: the first series solid, the second dashed (6 4), the third dotted (1.5 3.5); the chart sets this by series order. Bars start at zero, with 4 px rounded data ends and a 2 px gap in the surface colour between bars of a group and segments of a stack.",
-            "A horizontal hairline grid (--border); no axis lines; tick labels in --muted-foreground, tabular numbers.",
+            "A horizontal hairline grid (--border); no axis lines; tick labels in --muted-foreground, tabular numbers. Ticks may abbreviate counts (formatCount(n, { compact: true }): 135K); the table view writes them in full.",
             "A limit is a dashed line with its label at the end, in --muted-foreground. Only the value past it turns warning.",
             "Two series or more: a legend above the plot, with each series' line style. One series: no legend; the title names it, in the accent. Up to three series may also be labelled at the line's end.",
             "Text is never in the series colour: values, labels and legend stay in text colours; the swatch beside them carries the identity.",

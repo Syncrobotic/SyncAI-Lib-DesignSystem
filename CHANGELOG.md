@@ -2,6 +2,17 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+A rule for writing numbers, with the helper that follows it.
+
+### Added
+- **`format-count` 0.39.0 (beta):** `formatCount(n, { compact, locale })`, through Intl.NumberFormat in `locale` (English when none is given, so the server and the browser agree). Full with grouping by default (135,287); `compact` abbreviates in the locale's own words (135K and 1.2M in English, 14萬 and 123萬 in zh-TW). Issue #386
+
+### Changed
+- **`agent-skill` 0.39.0:** the number formatting rule in the design language and the checklist: a count is written in full with grouping in tables, headers, detail pages and figures, and abbreviated only where space is the constraint (a tab's count, chart ticks, a compact chip), with the full number one step away, both through `formatCount`, never a hand-made "k". Issue #386
+- **Docs:** Typography's Numbers section says when to abbreviate, with a table of both forms in English and zh-TW and a Do / Don't; Data visualisation's axis rule lets ticks abbreviate counts. Issue #386
+
 ## 0.38.0 · 2026-11-25
 
 Every docs page is now under 400 KB of HTML, with no exceptions: the eight pages the budget let stay over it are lighter, most of them looking exactly as they did. The home page shows a robot's 3D lidar view, its sections arrive on a reload too, and the top bar's two ends balance.
