@@ -279,6 +279,33 @@ describe("subscriptions", () => {
     expect(ros.getStatus().error?.message).toMatch(/foo_msgs/)
   })
 
+  it("refuses a fragment count past the cap and drops a set whose next part never comes", () => {
+    vi.useFakeTimers()
+    try {
+      const { bridge, ros } = opened()
+      const got = vi.fn()
+      ros.subscribe("/scan", "sensor_msgs/LaserScan", got)
+      // A corrupt total is refused before anything is allocated for it.
+      bridge.last.emit({ op: "fragment", id: "huge", num: 0, total: 1e9, data: "{" })
+      expect(ros.getStatus().error?.message).toMatch(/1000000000 parts was refused/)
+      const whole = '{"op":"publish","topic":"/scan","msg":{"ranges":[1]}}'
+      // The first half arrives, the second is lost; 10 s later the set is gone, so a late second half finishes nothing.
+      bridge.last.emit({ op: "fragment", id: "f2", num: 0, total: 2, data: whole.slice(0, 20) })
+      vi.advanceTimersByTime(10_001)
+      bridge.last.emit({ op: "fragment", id: "f2", num: 1, total: 2, data: whole.slice(20) })
+      expect(got).not.toHaveBeenCalled()
+      // Parts that keep arriving keep the set alive, however long the whole message takes.
+      bridge.last.emit({ op: "fragment", id: "f3", num: 0, total: 3, data: whole.slice(0, 10) })
+      vi.advanceTimersByTime(9_000)
+      bridge.last.emit({ op: "fragment", id: "f3", num: 1, total: 3, data: whole.slice(10, 20) })
+      vi.advanceTimersByTime(9_000)
+      bridge.last.emit({ op: "fragment", id: "f3", num: 2, total: 3, data: whole.slice(20) })
+      expect(got).toHaveBeenCalledWith({ ranges: [1] })
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
   it("parseRosJson leaves strings alone and only rewrites when plain JSON fails", () => {
     expect(parseRosJson('{"a":"NaN, b"}')).toEqual({ a: "NaN, b" })
     expect(parseRosJson('{"a":[NaN, 2]}')).toEqual({ a: [null, 2] })

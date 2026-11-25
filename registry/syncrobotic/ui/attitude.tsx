@@ -1,4 +1,4 @@
-// @syncrobotic/attitude v0.29.0 · update: npx shadcn add @syncrobotic/attitude --overwrite
+// @syncrobotic/attitude v0.36.0 · update: npx shadcn add @syncrobotic/attitude --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,6 +6,8 @@ import { OctagonAlert, TriangleAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { meterSaid, meterTone, type MeterTone } from "@/registry/syncrobotic/ui/meter"
+import { formatClockTime } from "@/registry/syncrobotic/lib/clock-time"
+import { usePrefersReducedMotion } from "@/registry/syncrobotic/hooks/use-reduced-motion"
 
 /*
   Two instruments for a robot's state now, drawn in SVG in the kit's chart language (graphite and one accent, no
@@ -52,12 +54,6 @@ export function formatReading(value: number, digits = 0, locale?: string): strin
   const text = f.format(rounded === 0 ? 0 : Math.abs(rounded))
   return rounded < 0 ? `−${text}` : text
 }
-
-const pad = (n: number) => String(n).padStart(2, "0")
-const clockTime = (d: Date, locale?: string) =>
-  locale
-    ? d.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23" })
-    : [d.getHours(), d.getMinutes(), d.getSeconds()].map(pad).join(":")
 
 /** A heading kept in 0–360 (0 is north, clockwise), rounded to whole degrees, 360 written as 0. */
 export const normalizeHeading = (deg: number) => {
@@ -192,29 +188,30 @@ class LiveReading<R extends Reading> {
 
 /** Reduced motion, followed while mounted. */
 function useReducedMotion(engine: { setReduced: (reduced: boolean) => void }) {
+  const reduced = usePrefersReducedMotion()
   React.useEffect(() => {
-    if (typeof window === "undefined" || typeof window.matchMedia !== "function") return
-    const q = window.matchMedia("(prefers-reduced-motion: reduce)")
-    const apply = () => engine.setReduced(q.matches)
-    apply()
-    q.addEventListener?.("change", apply)
-    return () => q.removeEventListener?.("change", apply)
-  }, [engine])
+    engine.setReduced(reduced)
+  }, [engine, reduced])
 }
 
 /** Stale after `staleAfterMs` without an update, checked four times a second, set only when it changes. */
-function useStale(engine: { hasData: () => boolean; receivedAt: number; sampleTime: number }, staleAfterMs: number | undefined) {
+function useStale(engine: { hasData: () => boolean; receivedAt: number; sampleTime: number }, staleAfterMs: number | null) {
   const [stale, setStale] = React.useState<{ at: number } | null>(null)
   React.useEffect(() => {
-    if (staleAfterMs === undefined || !Number.isFinite(staleAfterMs)) return
+    if (staleAfterMs === null || !Number.isFinite(staleAfterMs)) return
+    // What was last set, so a check that finds nothing changed sets nothing: even a set to the same value can cost a
+    // render, four times a second for an instrument that is on by default. Unknown until the first check.
+    let last: number | null | undefined
     const check = () => {
-      const is = engine.hasData() && now() - engine.receivedAt > staleAfterMs
-      setStale((was) => (is ? (was && was.at === engine.sampleTime ? was : { at: engine.sampleTime }) : null))
+      const next = engine.hasData() && now() - engine.receivedAt > staleAfterMs ? engine.sampleTime : null
+      if (next === last) return
+      last = next
+      setStale((was) => (next === null ? null : was && was.at === next ? was : { at: next }))
     }
     const id = setInterval(check, 250)
     return () => clearInterval(id)
   }, [engine, staleAfterMs])
-  return staleAfterMs !== undefined && Number.isFinite(staleAfterMs) ? stale : null
+  return staleAfterMs !== null && Number.isFinite(staleAfterMs) ? stale : null
 }
 
 /**
@@ -371,7 +368,7 @@ export const defaultAttitudeIndicatorLabels: AttitudeIndicatorLabels = {
     const s = [roll && `roll ${roll}`, pitch && `pitch ${pitch}`, heading && `heading ${heading}`].filter(Boolean).join(", ")
     return s.charAt(0).toUpperCase() + s.slice(1)
   },
-  formatTime: clockTime,
+  formatTime: (d, locale) => formatClockTime(d, locale),
 }
 
 export type AttitudeIndicatorProps = {
@@ -395,8 +392,12 @@ export type AttitudeIndicatorProps = {
   limits?: AttitudeLimits
   /** When the props' reading was taken (the message's stamp): a new stamp is an update, and it is the time Stale shows. */
   updatedAt?: number
-  /** With no update for this long, the instrument dims and says Stale with the last update's time. Left out, never stale. */
-  staleAfterMs?: number
+  /**
+   * With no update for this long, the instrument dims and says Stale with the last update's time. 1000 ms by default: an
+   * IMU publishes at 50 Hz or more, so a second is 50 missed readings, and a horizon frozen while the robot tips is the
+   * failure this guards against. `null` never goes stale.
+   */
+  staleAfterMs?: number | null
   /** How often, at most, screen readers hear a limit crossed (a step up to critical is said at once). */
   announceEveryMs?: number
   /** md 192 px (the default) or lg 256 px. */
@@ -458,7 +459,7 @@ export function AttitudeIndicator({
   subscribe,
   limits,
   updatedAt,
-  staleAfterMs,
+  staleAfterMs = 1000,
   announceEveryMs = 5000,
   size = "md",
   locale,
@@ -910,7 +911,7 @@ export const defaultGaugeLabels: GaugeLabels = {
   waiting: "Waiting for data",
   stale: "Stale",
   lastUpdate: (time) => `last update ${time}`,
-  formatTime: clockTime,
+  formatTime: (d, locale) => formatClockTime(d, locale),
 }
 
 export type GaugeProps = {
@@ -939,8 +940,12 @@ export type GaugeProps = {
    */
   subscribe?: (push: GaugeHandle["push"]) => (() => void) | void
   updatedAt?: number
-  /** With no update for this long the gauge dims and says Stale. Left out, never stale. */
-  staleAfterMs?: number
+  /**
+   * With no update for this long the gauge dims and says Stale. 3000 ms by default: a gauge shows anything from a speed
+   * at 20 Hz to a temperature or a battery at 1 Hz, and three seconds is two missed readings of the slowest. Set it to
+   * about three periods of your topic; `null` never goes stale.
+   */
+  staleAfterMs?: number | null
   announceEveryMs?: number
   locale?: string
   labels?: Partial<GaugeLabels>
@@ -973,7 +978,7 @@ export function Gauge({
   ref,
   subscribe,
   updatedAt,
-  staleAfterMs,
+  staleAfterMs = 3000,
   announceEveryMs = 5000,
   locale,
   labels: labelsProp,

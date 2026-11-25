@@ -64,7 +64,7 @@
     "lint": "eslint .",
     "lint:tokens": "node scripts/check-tokens.mjs",
     "test:stories": "playwright test tests/stories.spec.ts",
-    "ci": "npm run lint:tokens && npm run lint:registry && npm run lint:rules && npm run lint:motion && npm run lint:versions && npm run lint:dtcg && npm run lint:props && npm run lint:a11y && npm run lint:thumbs && npm run lint && npm run typecheck && npm test && npm run build && npm run build-storybook",
+    "ci": "npm run lint:tokens && npm run lint:registry && npm run lint:rules && npm run lint:motion && npm run lint:versions && npm run lint:dtcg && npm run lint:props && npm run lint:a11y && npm run lint:thumbs && npm run lint && npm run typecheck && npm test && npm run build && npm run lint:html-size && npm run build-storybook",
     "test": "vitest run",
     "lint:registry": "node scripts/check-registry.mjs",
     "lint:rules": "node scripts/check-rules.mjs",
@@ -81,7 +81,8 @@
     "a11y": "node scripts/a11y.cjs",
     "lint:a11y": "node scripts/a11y-check.mjs",
     "thumbs": "node scripts/thumbs.mjs",
-    "lint:thumbs": "node scripts/thumbs.mjs --check",
+    "lint:html-size": "node scripts/check-html-size.mjs",
+    "lint:thumbs": "node scripts/thumbs.mjs --check && vitest run tests/unit/block-thumbs.test.ts",
     "adoption": "node scripts/adoption.mjs"
   },
   "dependencies": {

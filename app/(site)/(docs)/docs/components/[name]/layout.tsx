@@ -2,7 +2,9 @@ import * as React from "react"
 import { notFound } from "next/navigation"
 import { site } from "@/site/config"
 import { CodeSheet } from "@/site/code-sheet"
-import { getItem, readSource } from "@/site/catalog"
+import { getItem } from "@/site/catalog"
+import { sourceListing, sourceUrl } from "@/site/code-data"
+import { LazyCode } from "@/site/lazy-code"
 import { CodeBlock } from "@/site/code-block"
 import { PageTitle } from "@/site/prose"
 import { DocJsonLd } from "@/site/json-ld"
@@ -20,12 +22,9 @@ export default async function ComponentLayout({ params, children }: Props) {
   if (!item) notFound()
   const meta = (item as { meta?: { version: string; status?: "beta" | "stable" } }).meta
   const installBlock = <CodeBlock code={`npx shadcn add @syncrobotic/${item.name}`} lang="bash" title="Terminal" />
-  const sourceFiles = await Promise.all(
-    item.files.map(async (f) => ({
-      name: f.path.split("/").pop()!,
-      code: <CodeBlock code={readSource(f.path)} lang={f.path.endsWith(".ts") ? "ts" : "tsx"} title={f.path} />,
-    })),
-  )
+  // Fetched when the sheet opens (site/code-data.ts): a component's source was most of every tab's payload (robot-map's
+  // 1.4 MB), on its Properties and Accessibility tabs too.
+  const sourceFiles = item.files.map((f) => ({ name: f.path.split("/").pop()!, code: <LazyCode {...sourceListing(f.path)} /> }))
   const tabs = tabsOf(item.name)
 
   return (
@@ -58,6 +57,7 @@ export default async function ComponentLayout({ params, children }: Props) {
             meta={meta ? `v${meta.version}` : undefined}
             install={installBlock}
             files={sourceFiles}
+            prefetch={item.files.map((f) => sourceUrl(f.path))}
             href={`${site.repo}/blob/main/${item.files[0].path}`}
           />
         </div>

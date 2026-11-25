@@ -70,9 +70,11 @@ const state = (container: HTMLElement) => container.querySelector("[data-slot=ro
 const loseContext = (container: HTMLElement) =>
   act(() => void container.querySelector("canvas")!.dispatchEvent(new Event("webglcontextlost", { cancelable: true })))
 
+// These arms hold one pose for seconds of fake time while the context is lost and restored: not a live feed, so they
+// opt out of going stale (on by default), which would otherwise be the state these tests read.
 describe("RobotModel's graphics context", () => {
   it("draws in 3D here, through the stand-in", async () => {
-    const { container } = render(<RobotModel urdf={demoArmUrdf} joints={demoArmPose} />)
+    const { container } = render(<RobotModel urdf={demoArmUrdf} joints={demoArmPose} staleAfterMs={null} />)
     await settle()
     expect(state(container)).toBe("ready")
     expect(container.querySelector("canvas")).toBeTruthy()
@@ -80,7 +82,7 @@ describe("RobotModel's graphics context", () => {
 
   it("says the view could not be restored when a lost context does not come back, and Load again draws it anew", async () => {
     const onRetry = vi.fn()
-    const { container } = render(<RobotModel urdf={demoArmUrdf} joints={demoArmPose} onRetry={onRetry} />)
+    const { container } = render(<RobotModel urdf={demoArmUrdf} joints={demoArmPose} staleAfterMs={null} onRetry={onRetry} />)
     await settle()
     const first = container.querySelector("canvas")
     await loseContext(container)
@@ -100,7 +102,7 @@ describe("RobotModel's graphics context", () => {
   })
 
   it("comes back from a lost context when it is restored in time", async () => {
-    const { container } = render(<RobotModel urdf={demoArmUrdf} joints={demoArmPose} />)
+    const { container } = render(<RobotModel urdf={demoArmUrdf} joints={demoArmPose} staleAfterMs={null} />)
     await settle()
     await loseContext(container)
     act(() => void container.querySelector("canvas")!.dispatchEvent(new Event("webglcontextrestored")))
@@ -111,13 +113,13 @@ describe("RobotModel's graphics context", () => {
   })
 
   it("forgets a loss when the view is drawn on a new canvas", async () => {
-    const { container, rerender } = render(<RobotModel urdf={demoArmUrdf} joints={demoArmPose} />)
+    const { container, rerender } = render(<RobotModel urdf={demoArmUrdf} joints={demoArmPose} staleAfterMs={null} />)
     await settle()
     await loseContext(container)
     expect(state(container)).toBe("context-lost")
-    rerender(<RobotModel urdf={demoArmUrdf} joints={demoArmPose} webgl={false} />)
+    rerender(<RobotModel urdf={demoArmUrdf} joints={demoArmPose} staleAfterMs={null} webgl={false} />)
     await settle()
-    rerender(<RobotModel urdf={demoArmUrdf} joints={demoArmPose} />)
+    rerender(<RobotModel urdf={demoArmUrdf} joints={demoArmPose} staleAfterMs={null} />)
     await settle()
     expect(state(container)).toBe("ready")
   })
@@ -144,7 +146,7 @@ describe("RobotModel's theme colours", () => {
   it("follows a theme set on an element above it, not only on <html>", async () => {
     const { container } = render(
       <div data-testid="panel" style={{ "--muted-foreground": "rgb(1, 2, 3)" } as React.CSSProperties}>
-        <RobotModel urdf={demoArmUrdf} joints={demoArmPose} />
+        <RobotModel urdf={demoArmUrdf} joints={demoArmPose} staleAfterMs={null} />
       </div>,
     )
     await settle()
@@ -162,7 +164,7 @@ describe("RobotModel's theme colours", () => {
   it("does not paint a part in the previous part's colour when its own colour does not parse", async () => {
     render(
       <div style={{ "--muted-foreground": "not-a-colour", "--map-point": "rgb(1, 2, 3)" } as React.CSSProperties}>
-        <RobotModel urdf={demoArmUrdf} joints={demoArmPose} />
+        <RobotModel urdf={demoArmUrdf} joints={demoArmPose} staleAfterMs={null} />
       </div>,
     )
     await settle()

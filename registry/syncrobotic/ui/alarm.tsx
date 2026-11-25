@@ -1,10 +1,11 @@
-// @syncrobotic/alarm v0.35.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
+// @syncrobotic/alarm v0.36.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
 "use client"
 
 import * as React from "react"
 import { ChevronRight, CloudOff, OctagonAlert, TriangleAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { usePresenceList } from "@/registry/syncrobotic/hooks/use-presence"
+import { useNow } from "@/registry/syncrobotic/hooks/use-now"
 import { feedback as signal } from "@/registry/syncrobotic/lib/feedback"
 import { DiamondAlert } from "@/registry/syncrobotic/ui/robot-icons"
 
@@ -126,13 +127,23 @@ const keepLastWord = (text: string) => text.replace(/ (\S{1,3})$/, "\u00a0$1").r
 
 // Light row buttons, 44 px on touch (--h-sm). Beside Acknowledge the others are ghost (ring-transparent), so the one thing
 // every unacknowledged row asks for is the only box in it; alone in a row (Unshelve) a button keeps its quiet outline.
+// The cleared bar: a column of small pills (8 px tall, 4 px apart, each with round ends), masked from the bar's own fill.
+// `round` fits a whole number of them, so the last one is never cut square. A style, not a class: a url() in a class name
+// is not picked up by Tailwind's scanner.
+const dashedPill: React.CSSProperties = {
+  maskImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 12'%3E%3Crect width='4' height='8' rx='2'/%3E%3C/svg%3E")`,
+  maskRepeat: "round",
+  maskSize: "var(--spacing) calc(var(--spacing) * 3)",
+}
+
 const rowButton = "press h-(--h-sm) shrink-0 rounded-xs px-3 text-sm font-medium ring-1 ring-inset hover:bg-accent"
 
 /**
  * One alarm, as a row of aligned columns: priority glyph, time, priority word and title (source under it), then state
  * and actions. Colour is only on the glyph and the priority word; rows are never tinted.
  *
- * - Unacknowledged: bold title and a solid bar in the priority's colour.
+ * - Unacknowledged: bold title and a solid bar in the priority's colour, inset in its own gutter. Beside Acknowledge the
+ *   state is not repeated in words (screen readers still hear it).
  * - Cleared, not acknowledged: still bold (it still needs someone), but the bar is dashed: the condition has gone.
  * - Acknowledged: regular weight, muted title, no bar, and when ("Acknowledged 13:42").
  * - Shelved: quiet like acknowledged, with "Shelved until 15:30" and the way back.
@@ -186,14 +197,21 @@ export function Alarm({
       data-state={shelved ? "shelved" : cleared ? "cleared" : loud ? "unacknowledged" : "acknowledged"}
       className={cn("@container relative w-full animate-appear rounded-md bg-card ring-1 ring-border", className)}
     >
-      {/* Solid while the condition is present; dashed once it has cleared and only the acknowledgement is missing. */}
+      {/* A pill in its own 24 px gutter, never against the card's edge: 10 px either side, as tall as the content (12 px
+          from the top and bottom). Solid while the condition is present; dashed once it has cleared and only the
+          acknowledgement is missing. */}
       {loud && (
         <span
           aria-hidden="true"
-          className={cn("absolute inset-y-2 left-0 rounded-r-xs", cleared ? cn("border-l-4 border-dashed", p.border) : cn("w-1", p.bar))}
+          data-slot="alarm-bar"
+          className={cn(
+            "absolute inset-y-3 left-2.5 w-1 rounded-full",
+            p.bar,
+          )}
+          style={cleared ? dashedPill : undefined}
         />
       )}
-      <div className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-x-2 py-3 pr-3 pl-4 @xl:grid-cols-[auto_auto_minmax(0,1fr)_auto]">
+      <div className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-x-2 py-3 pr-4 pl-6 @xl:grid-cols-[auto_auto_minmax(0,1fr)_auto]">
         {/* A 20 px glyph on the title's 20 px first line, not the middle of a two-line block. */}
         <Icon aria-hidden="true" className={cn("col-start-1 row-start-1 size-5 shrink-0", p.text)} />
         <p
@@ -224,7 +242,9 @@ export function Alarm({
         </div>
         {/* Narrow: state and buttons on their own line, the buttons at its end. Wide: the last column. */}
         <div className="col-start-2 row-start-3 mt-2 flex flex-wrap items-center justify-between gap-2 @xl:col-start-4 @xl:row-span-2 @xl:row-start-1 @xl:mt-0 @xl:justify-end @xl:self-center">
-          <span id={`${id}-state`} className="text-xs text-muted-foreground">
+          {/* Next to Acknowledge, "Unacknowledged" says the button twice: the bar, the bold title and the button carry it,
+              and screen readers still hear it. Cleared, acknowledged, shelved or read-only, the words show. */}
+          <span id={`${id}-state`} className={cn("text-xs text-muted-foreground", loud && !cleared && onAcknowledge && "sr-only")}>
             {state}
           </span>
           <span className="ml-auto flex flex-wrap justify-end gap-2 empty:hidden">
@@ -470,16 +490,12 @@ export function AlarmList({
   const shelved = alarms.filter((a) => isShelved(a) && (a.active || !a.acknowledged))
   const suppressed = alarms.filter((a) => a.suppressed && a.active).length
   const outOfService = alarms.filter((a) => a.outOfService && (a.active || !a.acknowledged)).length
-  // The clock moves on (every 30 s), so a flood ends when its alarms age out of the window.
-  const [clock, setClock] = React.useState(() => Date.now())
-  React.useEffect(() => {
-    if (now !== undefined) return
-    const t = setInterval(() => setClock(Date.now()), 30_000)
-    return () => clearInterval(t)
-  }, [now])
+  // The clock moves on (every 30 s), so a flood ends when its alarms age out of the window. Null until hydrated: the
+  // server's clock is not the browser's, so the server and the first render in the browser both count no flood.
+  const clock = useNow(now === undefined ? 30_000 : null)
   const at = now ?? clock
   // Only live alarms count: acknowledged-and-cleared, shelved, suppressed and out-of-service ones are not annunciating.
-  const recent = shown.filter((a) => a.raisedAt !== undefined && at - a.raisedAt <= flood.minutes * 60_000).length
+  const recent = at === null ? 0 : shown.filter((a) => a.raisedAt !== undefined && at - a.raisedAt <= flood.minutes * 60_000).length
   const flooding = recent > flood.count
   // In a flood, unacknowledged low alarms fold into one row so critical and high stay in view.
   const folded = flooding ? rendered.filter(({ item: a }) => a.priority === "low" && !a.acknowledged) : []

@@ -1,4 +1,4 @@
-// @syncrobotic/select v0.17.4 · update: npx shadcn add @syncrobotic/select --overwrite
+// @syncrobotic/select v0.36.0 · update: npx shadcn add @syncrobotic/select --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,6 +6,7 @@ import { Select as SelectPrimitive } from "radix-ui"
 import { Check, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useField } from "@/registry/syncrobotic/ui/field"
+import { getLastInput, trackInputModality } from "@/registry/syncrobotic/lib/input-modality"
 
 export const Select = SelectPrimitive.Root
 export const SelectGroup = SelectPrimitive.Group
@@ -41,18 +42,14 @@ export function SelectTrigger({ className, children, ...props }: React.Component
 
 // How the list was opened: keys or a pointer, the last one used anywhere on the page. Opened by a click, the list shows no
 // ring until a key moves in it; opened from the keyboard, the ring is there at once.
-let lastInput: "key" | "pointer" = "pointer"
-if (typeof document !== "undefined") {
-  document.addEventListener("keydown", () => (lastInput = "key"), true)
-  document.addEventListener("pointerdown", () => (lastInput = "pointer"), true)
-}
+trackInputModality()
 
 /**
  * The list remembers whether the keyboard or the mouse moved last (data-nav): the focused option shows a ring only in
  * keyboard use, and keeps the calm fill under the pointer.
  */
 export function SelectContent({ className, children, position = "popper", onKeyDown, onPointerMove, ...props }: React.ComponentProps<typeof SelectPrimitive.Content>) {
-  const [nav, setNav] = React.useState<"key" | "pointer">(() => lastInput)
+  const [nav, setNav] = React.useState<"key" | "pointer">(getLastInput)
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content

@@ -1,10 +1,11 @@
-// @syncrobotic/tree v0.28.0 · update: npx shadcn add @syncrobotic/tree --overwrite
+// @syncrobotic/tree v0.36.0 · update: npx shadcn add @syncrobotic/tree --overwrite
 "use client"
 
 import * as React from "react"
 import { Collapsible as CollapsiblePrimitive } from "radix-ui"
 import { ChevronDown, type LucideIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { getLastInput, trackInputModality } from "@/registry/syncrobotic/lib/input-modality"
 
 /** One node of a hierarchy. Branches have `children`; an empty array is a branch with nothing in it yet. */
 export type TreeNode = {
@@ -80,11 +81,7 @@ function branchIds(nodes: TreeNode[], out: string[] = []) {
 
 // How the tree was last used: keys or a pointer, the last one anywhere on the page, as in select and dropdown-menu.
 // Tabbing in shows the ring at once; a click shows none until a key moves in the tree.
-let lastInput: "key" | "pointer" = "pointer"
-if (typeof document !== "undefined") {
-  document.addEventListener("keydown", () => (lastInput = "key"), true)
-  document.addEventListener("pointerdown", () => (lastInput = "pointer"), true)
-}
+trackInputModality()
 
 // A level's children hang from a 1 px guide line under their parent's chevron (half the --h-sm box in), then 8 px.
 // The step follows --h-sm, so it widens with the rows on touch and in gloves.
@@ -292,7 +289,7 @@ function SelectTree({
   const [selectedState, setSelectedState] = React.useState(defaultSelectedId)
   const selected = selectedProp ?? selectedState
   const [focused, setFocused] = React.useState<string>()
-  const [nav, setNav] = React.useState<"key" | "pointer">(() => lastInput)
+  const [nav, setNav] = React.useState<"key" | "pointer">(getLastInput)
   const refs = React.useRef(new Map<string, HTMLLIElement>())
   const typed = React.useRef({ text: "", at: 0 })
 
@@ -497,7 +494,7 @@ function SelectTree({
       data-mode="select"
       data-nav={nav}
       onKeyDown={onKeyDown}
-      onFocus={() => setNav(lastInput)}
+      onFocus={() => setNav(getLastInput())}
       onPointerDown={() => setNav("pointer")}
       className={cn("flex min-w-0 flex-col", className)}
     >

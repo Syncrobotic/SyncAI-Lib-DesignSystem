@@ -10,7 +10,8 @@ import { ExampleCard } from "@/site/example-card"
 import { Stage } from "@/site/examples"
 import { WhenNear } from "@/site/when-near"
 import { Dot, H2, Rules, Unbroken, textLink } from "@/site/prose"
-import { storySource } from "@/site/story-source"
+import { storyListing, storyUrl } from "@/site/code-data"
+import { LazyCode } from "@/site/lazy-code"
 import { overviews } from "@/site/overview"
 import { getItem as findItem } from "@/site/catalog"
 import { BlockSection } from "@/site/block-section"
@@ -98,7 +99,9 @@ export default async function ComponentPage({ params }: Props) {
         )
       }
       install={installBlock}
-      code={<CodeBlock code={storySource(item.examples!.file, n)} title={`${n.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase()}.tsx`} />}
+      // Fetched when the sheet opens (site/code-data.ts); only its address and height are in the page.
+      code={<LazyCode {...storyListing(item.examples!.file, n, `${n.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase()}.tsx`)} />}
+      prefetch={storyUrl(item.examples!.file, n)}
     />
   )
   const [first, ...rest] = names

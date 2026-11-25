@@ -29,6 +29,7 @@ Everything here is a token in `syncrobotic-theme.css`; use the token, never the 
 
 ## Spacing, size and density
 - 4 px base, steps 4, 8, 12, 16, 24, 32. Icon to label 8 (`gap-2`) everywhere: buttons, menus, tabs, nav, notes, alerts, alarms; the one exception is inside a 24 px Badge, 4.
+- An indicator inside a rounded surface (an alarm's priority bar) is a pill with round ends in its own gutter, inset from the edge, never a straight strip against the edge: a round corner cutting a straight edge reads as a blade. A selected card takes a 2 px ink ring all round (as a graph node), never a one-sided border that the corner bends into a crescent; a flat row (table, list) keeps its 2 px start edge.
 - Heights are tokens: `--h-sm` 36 (with a mouse only, at any density; 44 on a coarse pointer), `--h-md` 44 (minimum interactive), `--h-lg` 48, `--h-row` 56 (rows, bars), `--h-stop` 56 (stop, wake and slide to release only). Never hard-code a height: use the token so density works. A skeleton bone that stands in for a control takes the control's token (`h-(--h-md)`), never `h-10`.
 - One part per repeated look, so it cannot drift: an empty place is `EmptyState` (`panel` on a card, `size="inline"` in a table, list or small panel, `variant="overlay"` over a canvas or picture); an icon on a tile is `IconTile`; a robot's ID or initials on a tile is a square `Avatar` (same corners as the tile of its size); a ⋯ menu is `DropdownMenuMoreTrigger`, a ghost icon button named "More actions for {name}" in a row and "More actions" in a toolbar ("View options" only for a menu of view settings), in a table inside `TableActionsCell`.
 - A toggle group with one choice is a tool or a mode (what the next tap does); a view of the data, a sort order or a time window is a `SegmentedControl`.
@@ -53,12 +54,16 @@ Everything here is a token in `syncrobotic-theme.css`; use the token, never the 
 - Six patterns (the Motion foundation lists where each is used): appear / disappear (`animate-appear`, `animate-disappear`), sheet in / out (`animate-sheet-in-*`, `animate-sheet-out-*`; scrims `animate-fade-in`), expand / collapse (`animate-expand`, `animate-collapse`), press (`press` utility, scale .97), swap (icon to icon, `--motion-fast`), move (a value or selection travelling, `--motion-base`).
 - Between pages only the content moves (old: fade out, --motion-fast; new: fade in and 8 px rise, --motion-base). Anything inside a view transition cannot be clicked while it runs, so the root is never snapshotted (`:root { view-transition-name: none }`, `::view-transition { pointer-events: none }`) and the stop and the island are never inside one.
 - Every enter has an exit (`usePresence` keeps leaving items mounted). Loops only for waiting: the Spinner, the skeleton's breath and the caret. Reduced motion: opacity only, loops stop.
+- One exception, not for products: the docs site's home page is a showcase, and only there may sections enter on scroll (a 24 px rise and fade over `--motion-sheet`, items 60 ms apart, once, never reversing, nothing under reduced motion). A product screen never animates on scroll; its live data moves because the data changed.
 
 ## Touch and sound
 - `@syncrobotic/feedback` holds one vibration pattern per safety moment (stop sent, confirmed, unconfirmed, release, new critical or high alarm) and the alarm tones. Use `feedback(name)`, never `navigator.vibrate` directly. Critical repeats until acknowledged; low is silent. Neither replaces the screen (no vibration on iOS; sound needs a first tap).
 
 ## Icons
 - Lucide at 16, 20, 24 px, 2 px stroke, plus `@syncrobotic/robot-icons`. One icon per meaning: look the meaning up in the icon set (/icons) and use its icon; a new icon is a new entry there.
+
+## Live data
+- Live telemetry never freezes silently. Every component that shows a robot's live data goes stale by default when nothing new arrives, at a limit chosen for its data: camera feed 2 s, streaming chart 2 s, joint state and robot model 1 s, attitude 1 s, gauge 3 s, point cloud 3 s, diagnostics 5 s. Stale dims the data and says Stale (or Stalled, or No new data) with the last update's time. Pass the message's stamp (`updatedAt`, `receivedAt`) so a robot re-sending an old message still reads stale, and a still robot that keeps publishing reads live. `staleAfterMs={null}` is the one way to turn it off, only for data that is not live (a saved map, a recording, a URDF on show).
 
 ## Alarms
 - Three priorities, each a shape, colour and word. An alarm stays until it clears and is acknowledged. Shelving is for a set time and never for critical; suppressed and out-of-service alarms are counted, not hidden silently. Over 10 in 10 minutes is a flood: name it, keep critical and high in view.

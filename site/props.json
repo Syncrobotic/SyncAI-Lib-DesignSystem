@@ -931,8 +931,9 @@
     },
     {
      "name": "staleAfterMs",
-     "type": "number",
-     "description": "With no update for this long, the instrument dims and says Stale with the last update's time. Left out, never stale."
+     "type": "number | null",
+     "default": "1000",
+     "description": "With no update for this long, the instrument dims and says Stale with the last update's time. 1000 ms by default: an IMU publishes at 50 Hz or more, so a second is 50 missed readings, and a horizon frozen while the robot tips is the failure this guards against. `null` never goes stale."
     },
     {
      "name": "announceEveryMs",
@@ -1079,7 +1080,7 @@
       {
        "name": "formatTime",
        "type": "(date: Date, locale?: string) => string",
-       "default": "clockTime",
+       "default": "(d, locale) => formatClockTime(d, locale)",
        "description": "A time of day, 24-hour with seconds by default; with `locale`, that locale's 24-hour time."
       }
      ]
@@ -1164,8 +1165,9 @@
     },
     {
      "name": "staleAfterMs",
-     "type": "number",
-     "description": "With no update for this long the gauge dims and says Stale. Left out, never stale."
+     "type": "number | null",
+     "default": "3000",
+     "description": "With no update for this long the gauge dims and says Stale. 3000 ms by default: a gauge shows anything from a speed at 20 Hz to a temperature or a battery at 1 Hz, and three seconds is two missed readings of the slowest. Set it to about three periods of your topic; `null` never goes stale."
     },
     {
      "name": "announceEveryMs",
@@ -1246,7 +1248,7 @@
       {
        "name": "formatTime",
        "type": "(date: Date, locale?: string) => string",
-       "default": "clockTime",
+       "default": "(d, locale) => formatClockTime(d, locale)",
        "description": ""
       }
      ]
@@ -1833,7 +1835,7 @@
       {
        "name": "formatTime",
        "type": "(date: Date) => string",
-       "default": "(d) => [d.getHours(), d.getMinutes(), d.getSeconds()].map((n) => String(n).padStart(2, \"0\")).join(\":\")",
+       "default": "(d) => formatClockTime(d)",
        "description": "The time of the last frame. 24-hour clock by default; pass the site's own format or time zone."
       },
       {
@@ -1943,9 +1945,9 @@
     },
     {
      "name": "staleAfterMs",
-     "type": "number",
+     "type": "number | null",
      "default": "2000",
-     "description": "With no new frame for this long, the feed says \"Stalled\" over a dimmed picture instead of freezing silently."
+     "description": "With no new frame for this long, the feed says \"Stalled\" over a dimmed picture instead of freezing silently. 2000 ms by default: 30 to 60 missed frames at a camera's 15 to 30 fps, long enough to ride out a keyframe wait. `null` never stalls (a still image, a paused recording)."
     },
     {
      "name": "offlineReason",
@@ -2040,7 +2042,7 @@
       {
        "name": "formatTime",
        "type": "(date: Date) => string",
-       "default": "(d) => [d.getHours(), d.getMinutes(), d.getSeconds()].map((n) => String(n).padStart(2, \"0\")).join(\":\")",
+       "default": "(d) => formatClockTime(d)",
        "description": "The time of the last frame. 24-hour clock by default; pass the site's own format or time zone."
       },
       {
@@ -2177,8 +2179,8 @@
     },
     {
      "name": "staleAfterMs",
-     "type": "number",
-     "description": "With no new frame for this long, a feed says Stalled. Passed to every feed."
+     "type": "number | null",
+     "description": "With no new frame for this long, a feed says Stalled. Passed to every feed: 2000 ms by default, `null` never."
     },
     {
      "name": "aspectRatio",
@@ -3735,9 +3737,9 @@
     },
     {
      "name": "staleAfterMs",
-     "type": "number",
+     "type": "number | null",
      "default": "5000",
-     "description": "A status not updated for this long reads Stale (by its `receivedAt`). `Infinity` never times out."
+     "description": "A status not updated for this long reads Stale (by its `receivedAt`). 5000 ms by default: diagnostic_updater publishes once a second, and ROS's own aggregator calls a status stale after 5 s. `null` never times out."
     },
     {
      "name": "now",
@@ -6439,9 +6441,9 @@
     },
     {
      "name": "staleAfterMs",
-     "type": "number",
+     "type": "number | null",
      "default": "1000",
-     "description": "With no update for this long, the panel says \"Stale\" with the last update's time and dims the values. `Infinity` never goes stale."
+     "description": "With no update for this long, the panel says \"Stale\" with the last update's time and dims the values. 1000 ms by default: joint states come at 50 Hz or more (ros2_control's joint_state_broadcaster), so a second is 50 missed messages. `null` never goes stale."
     },
     {
      "name": "margin",
@@ -6594,7 +6596,7 @@
       {
        "name": "formatTime",
        "type": "(date: Date, locale?: string) => string",
-       "default": "(d, locale) => locale ? d.toLocaleTimeString(locale, { hour: \"2-digit\", minute: \"2-digit\", second: \"2-digit\", hourCycle: \"h23\" }) : [d.getHours(), d.getMinutes(), d.getSeconds()].map(pad).join(\":\")",
+       "default": "(d, locale) => formatClockTime(d, locale)",
        "description": "The time of the last update. 24-hour clock by default; with `locale`, that locale's 24-hour time."
       },
       {
@@ -8101,8 +8103,9 @@
     },
     {
      "name": "staleAfterMs",
-     "type": "number",
-     "description": "With no new cloud for this long, the view says \"Stale\" with when the last one arrived, and dims. Off by default."
+     "type": "number | null",
+     "default": "3000",
+     "description": "With no new cloud for this long, the view says \"Stale\" with when the last one arrived, and dims. 3000 ms by default: a lidar sends 10 to 20 clouds a second, but over rosbridge they are usually throttled to 1 or 2, so three seconds is several missed clouds even then. `null` never goes stale: pass it for a cloud that is not live (a saved map, a scan from a file)."
     },
     {
      "name": "receivedAt",
@@ -8195,7 +8198,7 @@
       {
        "name": "formatTime",
        "type": "(date: Date) => string",
-       "default": "(d) => [d.getHours(), d.getMinutes(), d.getSeconds()].map((n) => String(n).padStart(2, \"0\")).join(\":\")",
+       "default": "(d) => formatClockTime(d)",
        "description": "The time of the last cloud. 24-hour clock by default; pass the site's own format or time zone."
       },
       {
@@ -9551,8 +9554,9 @@
     },
     {
      "name": "staleAfterMs",
-     "type": "number",
-     "description": "With no update for this long, the view says \"Stale\" with the last update's time over the last pose. Off by default."
+     "type": "number | null",
+     "default": "1000",
+     "description": "With no update of `joints` for this long, the view says \"Stale\" with the last update's time over the last pose. 1000 ms by default, as JointState's: the same joint states, at 50 Hz or more. A model without `joints` (a URDF on show, not a robot) never goes stale. `null` never goes stale."
     },
     {
      "name": "webgl",
@@ -9698,7 +9702,7 @@
       {
        "name": "formatTime",
        "type": "(date: Date) => string",
-       "default": "(d) => [d.getHours(), d.getMinutes(), d.getSeconds()].map((n) => String(n).padStart(2, \"0\")).join(\":\")",
+       "default": "(d) => formatClockTime(d)",
        "description": "The time of the last update. 24-hour clock by default; pass the site's own format or time zone."
       },
       {
@@ -11300,9 +11304,9 @@
     },
     {
      "name": "staleAfterMs",
-     "type": "number",
+     "type": "number | null",
      "default": "2000",
-     "description": "With no reading for this long the chart says so, and a gap this long breaks the line instead of joining across it."
+     "description": "With no reading for this long the chart says so, and a gap this long breaks the line instead of joining across it. 2000 ms by default: telemetry charted live comes at 1 Hz or faster, so two missed readings at the slowest. `null` never says so and joins every gap."
     },
     {
      "name": "announceEveryMs",
@@ -11479,7 +11483,7 @@
       {
        "name": "formatTime",
        "type": "(date: Date, locale?: string) => string",
-       "default": "(d, locale) => locale ? d.toLocaleTimeString(locale, { hour: \"2-digit\", minute: \"2-digit\", second: \"2-digit\", hourCycle: \"h23\" }) : [d.getHours(), d.getMinutes(), d.getSeconds()].map(pad).join(\":\")",
+       "default": "(d, locale) => formatClockTime(d, locale)",
        "description": "A time of day, 24-hour with seconds by default; with `locale`, that locale's 24-hour time."
       }
      ]
