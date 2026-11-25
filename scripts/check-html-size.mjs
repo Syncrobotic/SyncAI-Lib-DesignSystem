@@ -17,7 +17,7 @@ import { readdirSync, statSync } from "node:fs"
 import { join } from "node:path"
 
 const ROOT = ".next/server/app"
-/** The limit in KB. After 0.38 the median page is 211 KB; every page without a ceiling below is under 360 KB. */
+/** The limit in KB. After 0.38 the median page is about 210 KB and the largest 392 KB (the chart page). */
 const LIMIT_KB = Number(process.env.HTML_LIMIT_KB ?? 400)
 
 /**
