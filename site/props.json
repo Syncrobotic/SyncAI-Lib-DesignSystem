@@ -5403,6 +5403,81 @@
  ],
  "grounded-text": [
   {
+   "name": "GroundedTextBody",
+   "props": [
+    {
+     "name": "text",
+     "type": "string",
+     "required": true,
+     "description": "The answer or caption. Line breaks are kept."
+    },
+    {
+     "name": "spans",
+     "type": "GroundedSpan[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "annotations",
+     "type": "readonly Pick<Annotation, \"id\" | \"shape\">[]",
+     "required": true,
+     "description": "The marks the spans point at: the list given to the annotated-image (only each one's `id` and `shape` are read)."
+    },
+    {
+     "name": "activeMark",
+     "type": "string | null",
+     "default": "null",
+     "description": "The mark under the pointer or keyboard on the picture (its `onActiveChange`): the spans that point at it light up."
+    },
+    {
+     "name": "onActiveChange",
+     "type": "(span: number | null) => void",
+     "description": "The span under the mouse, or else the one with keyboard focus (its index in `spans`); `null` when neither. Touch does not hover: a tap pins. Give it to `groundedImageProps` as `activeSpan`."
+    },
+    {
+     "name": "defaultPinned",
+     "type": "{ span: number } | { mark: string } | null",
+     "default": "null",
+     "description": "Pinned at first (uncontrolled), or controlled with `onPinnedChange`. Control it when the picture is elsewhere, so a pinned mark lights its spans."
+    },
+    {
+     "name": "pinned",
+     "type": "{ span: number } | { mark: string } | null",
+     "description": ""
+    },
+    {
+     "name": "onPinnedChange",
+     "type": "(pin: GroundedPin | null) => void",
+     "description": ""
+    },
+    {
+     "name": "picture",
+     "type": "RefObject<Element | null>",
+     "description": "The element around the linked annotated-image: pinning a span scrolls its marks into view there when they are scrolled out."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<GroundedTextLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "marks",
+       "type": "(count: { points: number; boxes: number; shapes: number; }) => string",
+       "default": "({ points, boxes, shapes }) => { const parts = [boxes && plural(boxes, \"box\", \"boxes\"), points && plural(points, \"point\", \"points\"), shapes && plural(shapes, \"shape\", \"shapes\")].filter(Boolean) return `${parts.join(\" and \")} on the image` }",
+       "description": "A span's description, read after its words: \"8 points on the image\", \"2 boxes and 1 point on the image\"."
+      },
+      {
+       "name": "linked",
+       "type": "(words: string[]) => string",
+       "default": "(words) => `In the text: ${words.join(\"; \")}`",
+       "description": "A mark's description, read after its name: the words that point at it."
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  },
+  {
    "name": "GroundedText",
    "props": [
     {

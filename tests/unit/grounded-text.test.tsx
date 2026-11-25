@@ -1,8 +1,9 @@
+import * as React from "react"
 import { cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { afterEach, describe, expect, it, vi } from "vitest"
 import { groundedTextLabels } from "@/registry/syncrobotic/lib/labels-zh-tw"
-import type { Annotation } from "@/registry/syncrobotic/ui/annotated-image"
-import { fromGrounding, GroundedText, type GroundedSpan } from "@/registry/syncrobotic/ui/grounded-text"
+import { AnnotatedImage, type Annotation } from "@/registry/syncrobotic/ui/annotated-image"
+import { fromGrounding, GroundedText, GroundedTextBody, groundedImageProps, type GroundedPin, type GroundedSpan } from "@/registry/syncrobotic/ui/grounded-text"
 
 afterEach(cleanup)
 
@@ -162,3 +163,110 @@ describe("fromGrounding", () => {
   })
 })
 
+
+function TwoPanels({ onSpan }: { onSpan?: (span: number | null) => void }) {
+  const [pinned, setPinned] = React.useState<GroundedPin | null>(null)
+  const [span, setSpan] = React.useState<number | null>(null)
+  const [mark, setMark] = React.useState<string | null>(null)
+  const picture = React.useRef<HTMLDivElement>(null)
+  const image = groundedImageProps({ text, spans, annotations, pinned, onPinnedChange: setPinned, activeSpan: span, activeMark: mark })
+  return (
+    <>
+      <div ref={picture} data-testid="picture" style={{ overflowY: "auto" }}>
+        <AnnotatedImage src={src} width={640} height={480} label="Savanna" {...image} onActiveChange={setMark} />
+      </div>
+      <GroundedTextBody
+        text={text}
+        spans={spans}
+        annotations={annotations}
+        pinned={pinned}
+        onPinnedChange={setPinned}
+        activeMark={mark}
+        onActiveChange={(s) => {
+          setSpan(s)
+          onSpan?.(s)
+        }}
+        picture={picture}
+      />
+    </>
+  )
+}
+
+describe("GroundedTextBody", () => {
+  const rect = (top: number, bottom: number) => ({ top, bottom, left: 0, right: 100, width: 100, height: bottom - top, x: 0, y: top, toJSON: () => ({}) }) as DOMRect
+  const matchMedia = window.matchMedia
+  const scrollBy = window.scrollBy
+  afterEach(() => {
+    window.matchMedia = matchMedia
+    window.scrollBy = scrollBy
+    vi.restoreAllMocks()
+  })
+  // Marks are redrawn as they light up, so their boxes are given by element, not set on the nodes found at first.
+  const layout = (of: (el: Element) => DOMRect | undefined) =>
+    vi.spyOn(Element.prototype, "getBoundingClientRect").mockImplementation(function (this: Element) {
+      return of(this) ?? rect(0, 0)
+    })
+
+  it("renders only the text, its spans described by their marks", () => {
+    const { container } = render(<GroundedTextBody text={text} spans={spans} annotations={annotations} />)
+    expect(container.querySelector("[data-slot=grounded-text-body]")).not.toBeNull()
+    expect(container.querySelector("svg")).toBeNull()
+    expect(container.querySelector("[data-slot=grounded-text-text]")!.textContent).toBe(text)
+    expect(span("2 zebras").dataset.slot).toBe("grounded-text-span")
+    expect(document.getElementById(span("2 zebras").getAttribute("aria-describedby")!)!.textContent).toBe("2 points on the image")
+  })
+
+  it("drives an annotated-image in another panel: hover reports the span and lights its marks; a mark lights its span", () => {
+    const onSpan = vi.fn()
+    render(<TwoPanels onSpan={onSpan} />)
+    expect(document.querySelectorAll("[data-slot=annotated-image]")).toHaveLength(1)
+    fireEvent.pointerEnter(span("2 zebras"), { pointerType: "mouse" })
+    expect(onSpan).toHaveBeenLastCalledWith(0)
+    expect(lit()).toEqual(["z1", "z2"])
+    expect(faded()).toEqual(["tree"])
+    fireEvent.pointerLeave(span("2 zebras"), { pointerType: "mouse" })
+    expect(onSpan).toHaveBeenLastCalledWith(null)
+    expect(lit()).toEqual([])
+    const tree = screen.getByRole("button", { name: "tree, predicted" })
+    expect(document.getElementById(tree.getAttribute("aria-describedby")!)!.textContent).toBe("In the text: a tree")
+    fireEvent.pointerEnter(tree, { pointerType: "mouse" })
+    expect(span("a tree").dataset.active).toBe("true")
+    fireEvent.pointerLeave(tree, { pointerType: "mouse" })
+    fireEvent.click(tree)
+    expect(tree.getAttribute("aria-pressed")).toBe("true")
+    expect(span("a tree").getAttribute("aria-pressed")).toBe("false")
+    expect(span("a tree").dataset.active).toBe("true")
+  })
+
+  it("a pin scrolls the marks into the picture's panel, instantly under reduced motion; a hover never scrolls", () => {
+    render(<TwoPanels />)
+    const panel = screen.getByTestId("picture")
+    Object.defineProperty(panel, "scrollHeight", { value: 900 })
+    Object.defineProperty(panel, "clientHeight", { value: 300 })
+    panel.scrollBy = vi.fn()
+    layout((el) => (el === panel ? rect(100, 400) : el.matches("g[data-id=tree]") ? rect(150, 250) : el.matches("g[data-id]") ? rect(-60, -50) : undefined))
+    window.matchMedia = vi.fn().mockReturnValue({ matches: false })
+    fireEvent.pointerEnter(span("2 zebras"), { pointerType: "mouse" })
+    fireEvent.pointerLeave(span("2 zebras"), { pointerType: "mouse" })
+    expect(panel.scrollBy).not.toHaveBeenCalled()
+    fireEvent.click(span("a tree"))
+    expect(panel.scrollBy).not.toHaveBeenCalled()
+    fireEvent.click(span("2 zebras"))
+    expect(panel.scrollBy).toHaveBeenCalledWith({ top: -160, behavior: "smooth" })
+    window.matchMedia = vi.fn().mockReturnValue({ matches: true })
+    fireEvent.keyDown(span("2 zebras"), { key: "Enter" })
+    fireEvent.keyDown(span("2 zebras"), { key: "Enter" })
+    expect(panel.scrollBy).toHaveBeenCalledTimes(2)
+    expect(panel.scrollBy).toHaveBeenLastCalledWith({ top: -160, behavior: "auto" })
+  })
+
+  it("when the text scrolls with the picture, never scrolls the pinned span out of view", () => {
+    window.scrollBy = vi.fn()
+    window.matchMedia = vi.fn().mockReturnValue({ matches: true })
+    Object.defineProperty(window, "innerHeight", { value: 800, configurable: true })
+    render(<GroundedText {...props} />)
+    layout((el) => (el.matches("g[data-id]") ? rect(-500, -490) : el.textContent === "2 zebras" ? rect(600, 620) : undefined))
+    fireEvent.click(span("2 zebras"))
+    expect(window.scrollBy).toHaveBeenCalledWith({ top: -180, behavior: "auto" })
+  })
+})

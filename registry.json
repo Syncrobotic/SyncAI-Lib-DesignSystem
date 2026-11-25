@@ -209,8 +209,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.34.0",
         "changelog": [
+          {
+            "version": "0.34.0",
+            "date": "2026-11-25",
+            "note": "`groundedTextBodyLabels` for grounded-text's new GroundedTextBody: the same words as `groundedTextLabels` (圖上 8 個點). Issue #338."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -4421,8 +4426,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.31.0",
+        "version": "0.34.0",
         "changelog": [
+          {
+            "version": "0.34.0",
+            "date": "2026-11-25",
+            "note": "`GroundedTextBody`: the text alone, to drive an annotated-image the screen already shows in another panel (one picture on the page). It reports the span under the pointer or keyboard (`onActiveChange`) and the pin (`pinned` / `onPinnedChange`), and lights the spans of the mark the picture reports (`activeMark`); `groundedImageProps` gives the picture its `highlighted`, `selectedId`, `onSelectedChange` and descriptions. GroundedText is built on the two, its API unchanged. Pinning a span (never a hover) scrolls its marks into view in the picture's scrolling panel (`picture`), without scrolling the span away; instantly under reduced motion. The text is beside the picture from 42 rem of the container (was 48 rem), so a 720 px canvas has it beside. Spans take `data-slot=\"grounded-text-span\"`, the text `grounded-text-body`. Issue #338."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -7473,8 +7483,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.34.0",
         "changelog": [
+          {
+            "version": "0.34.0",
+            "date": "2026-11-25",
+            "note": "The checklist names GroundedTextBody for a model's grounded text beside an annotated-image the screen already shows: one picture, wired with `groundedImageProps`. Issue #338."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",

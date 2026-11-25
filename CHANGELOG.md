@@ -2,6 +2,12 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+- **`grounded-text` 0.34.0:** `GroundedTextBody`, the text alone, drives an annotated-image the screen already shows in another panel, so the page has one picture: it reports the span under the pointer or keyboard (`onActiveChange`) and the pin, lights the spans of the mark the picture reports (`activeMark`), and `groundedImageProps` gives the picture its highlight, selection and descriptions. GroundedText is built on it, API unchanged. Pinning a span scrolls its marks into view in the picture's panel (`picture`), never on hover, without scrolling the span away, instantly under reduced motion. The text is beside the picture from 42 rem of the component's own width (was 48 rem): a 720 px canvas has it beside. Issue #338
+- **`labels-zh-tw` 0.34.0:** `groundedTextBodyLabels`, the same words as `groundedTextLabels`. Issue #338
+- **`agent-skill` 0.34.0:** the checklist names GroundedTextBody for grounded text beside a picture the screen already shows. Issue #338
+
 ## 0.32.0 · 2026-11-24
 
 A calmer log viewer, the sidebar's collapse on the sidebar itself, accessibility fixes from product teams (focus never under a sticky bar, Escape to native dialogs, status pages in a frame), a data-slot on every control the kit draws, and small options: a shared share-bar legend, metric-card tone, MetaPill links, card media, graph badges, inline code and a collapsible.

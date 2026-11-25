@@ -1,4 +1,4 @@
-// @syncrobotic/labels-zh-tw v0.32.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
+// @syncrobotic/labels-zh-tw v0.34.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
 // The kit's words in Traditional Chinese as written in Taiwan, one object per component that takes `labels`. Pass each
 // to its component (`<DataGrid labels={dataGridLabels} />`) with `locale="zh-TW"` where the component formats numbers,
 // days or times. The file imports no component, so it installs on its own; the kit's tests hold every object to the
@@ -522,6 +522,8 @@ export const groundedTextLabels = {
     `圖上 ${[boxes && `${boxes} 個框`, points && `${points} 個點`, shapes && `${shapes} 個標註`].filter(Boolean).join("和 ")}`,
   linked: (words: string[]) => `文字中：${words.join("；")}`,
 }
+
+export const groundedTextBodyLabels = groundedTextLabels
 
 export const graphLabels = {
   from: (names: string[]) => `來自 ${list(names)}`,
