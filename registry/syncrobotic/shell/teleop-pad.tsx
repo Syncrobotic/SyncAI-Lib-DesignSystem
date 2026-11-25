@@ -1,4 +1,4 @@
-// @syncrobotic/teleop-pad v0.28.0 · update: npx shadcn add @syncrobotic/teleop-pad --overwrite
+// @syncrobotic/teleop-pad v0.37.0 · update: npx shadcn add @syncrobotic/teleop-pad --overwrite
 "use client"
 
 import * as React from "react"
@@ -156,7 +156,9 @@ export function TeleopPad({
     latest.current = { onCommand, onStop, deadZone, maxSpeed, rateHz, timeoutMs }
   })
   const engaged = React.useRef<null | "pointer" | "keys">(null)
-  const command = React.useRef<TeleopCommand>(ZERO)
+  // The stick position, not the shaped command: each send shapes it with the current deadZone and maxSpeed, so
+  // lowering the cap takes effect on the next send even while the stick is held still.
+  const stick = React.useRef({ x: 0, y: 0 })
   const pointer = React.useRef<{ id: number; x: number; y: number; travel: number } | null>(null)
   const keys = React.useRef(new Set<Dir>())
   // After Space, or after input was lost, held keys do nothing until every drive key is up: driving restarts only
@@ -176,7 +178,7 @@ export function TeleopPad({
     const by = engaged.current
     engaged.current = null
     clearTimers()
-    command.current = ZERO
+    stick.current = { x: 0, y: 0 }
     if (by === "pointer" && pointer.current) {
       try {
         padRef.current?.releasePointerCapture(pointer.current.id)
@@ -202,7 +204,8 @@ export function TeleopPad({
   // A fixed rate, by a self-scheduling timeout: each send queues the next, so a slow handler delays, never bunches.
   const send = () => {
     if (!engaged.current) return
-    latest.current.onCommand(command.current)
+    const { deadZone, maxSpeed } = latest.current
+    latest.current.onCommand(shapeTeleopCommand(stick.current.x, stick.current.y, deadZone, maxSpeed))
     tick.current = window.setTimeout(send, 1000 / Math.max(1, latest.current.rateHz))
   }
 
@@ -216,7 +219,7 @@ export function TeleopPad({
   const aim = (x: number, y: number) => {
     const m = Math.hypot(x, y)
     const v = m > 1 ? { x: x / m, y: y / m } : { x, y }
-    command.current = shapeTeleopCommand(v.x, v.y, latest.current.deadZone, latest.current.maxSpeed)
+    stick.current = v
     setKnob(v)
   }
 
@@ -265,7 +268,7 @@ export function TeleopPad({
     const knobSize = knobRef.current?.offsetWidth ?? 0
     // The stick starts where the finger lands, not at the pad's centre: pressing never moves the robot by itself.
     pointer.current = { id: e.pointerId, x: e.clientX, y: e.clientY, travel: Math.max(1, (pad - knobSize) / 2) }
-    command.current = ZERO
+    stick.current = { x: 0, y: 0 }
     start("pointer")
     armWatchdog()
   }

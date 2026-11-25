@@ -33,6 +33,37 @@ export const MediaPlayerIncident: S = {
   ),
 }
 
+// Windows of time, not moments: how long the person stood in the robot's path, how long it waited at the obstacle.
+const windows: MediaMarker[] = [
+  { time: 2, label: "Patrol started, aisle 4" },
+  { time: 18, end: 31, label: "Person in path" },
+  { time: 42, end: 50, label: "Stopped at obstacle" },
+]
+
+/** A marker with an `end` is a window: a bracket from start to end above the track, apart from the played fill. A press goes to its start; hover shows its range. */
+export const MediaPlayerRanges: S = {
+  render: () => (
+    <MediaPlayer label="Patrol dog 7F3A, front camera, today 14:02" src={clip} poster={poster} duration={60} markers={windows} />
+  ),
+}
+
+const grid = [
+  { label: "Patrol dog 7F3A, front camera, today 14:02", markers: windows },
+  { label: "Patrol dog 7F3A, rear camera, today 14:02", markers: [{ time: 42, end: 50, label: "Stopped at obstacle" }] },
+  { label: "Forklift 2, front camera, today 13:47", markers: markers.slice(0, 2) },
+]
+
+/** A grid of clips: `markerList="collapsed"` folds each list behind "3 events", so every card is the picture and one row, and the grid lines up. */
+export const MediaPlayerGrid: S = {
+  render: () => (
+    <div className="grid w-full grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] gap-4">
+      {grid.map((c) => (
+        <MediaPlayer key={c.label} label={c.label} src={clip} poster={poster} duration={60} preload="none" markers={c.markers} markerList="collapsed" />
+      ))}
+    </div>
+  ),
+}
+
 /** Opened at the event: an incident links to the moment it fired, not to the start of the recording. */
 export const MediaPlayerAtEvent: S = {
   render: () => <MediaPlayer label="Patrol dog 7F3A, front camera, today 14:02" src={clip} poster={poster} duration={60} startAt={40} />,

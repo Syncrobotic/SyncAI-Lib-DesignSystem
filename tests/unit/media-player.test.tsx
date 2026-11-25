@@ -48,6 +48,10 @@ const setup = (props: Partial<React.ComponentProps<typeof MediaPlayer>> = {}) =>
 const key = (el: Element, k: string) => fireEvent.keyDown(el, { key: k })
 const time = (c: HTMLElement) => ["current", "total"].map((s) => c.querySelector(`[data-slot=media-player-${s}]`)!.textContent)
 
+/** A marker's accessible name: its time, a comma, its label. A browser joins the inline spans as is; jsdom puts a space
+ * at each span's edge, so the name may read "0:42 , Obstacle" there. */
+const listed = (time: string, label: string) => new RegExp(`^${time} ?, ${label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`)
+
 describe("formatMediaTime", () => {
   it("writes a clock, with hours only when there are some", () => {
     expect(formatMediaTime(0)).toBe("0:00")
@@ -151,7 +155,7 @@ describe("MediaPlayer markers", () => {
     const { video } = setup({ markers })
     const list = screen.getByRole("list", { name: "Events in this clip" })
     const items = list.querySelectorAll("button")
-    expect([...items].map((b) => b.textContent)).toEqual(["0:02Patrol started", "0:42Obstacle"])
+    expect([...items].map((b) => b.textContent)).toEqual(["0:02, Patrol started", "0:42, Obstacle"])
     fireEvent.click(items[1])
     expect(video.currentTime).toBe(42)
   })
@@ -163,6 +167,121 @@ describe("MediaPlayer markers", () => {
     expect(ticks[1].tabIndex).toBe(-1)
     fireEvent.click(ticks[1])
     expect(video.currentTime).toBe(42)
+  })
+})
+
+describe("MediaPlayer range markers", () => {
+  const windows: MediaMarker[] = [
+    { time: 12, end: 30, label: "Person in path" },
+    { time: 42, label: "Obstacle" },
+  ]
+  const marks = (c: HTMLElement) => [...c.querySelectorAll<HTMLButtonElement>("[data-slot=media-player-marker]")]
+
+  it("draws a marker with an end as a band from start to end, and a press goes to its start", () => {
+    const { container, video } = setup({ markers: windows })
+    const [band, tick] = marks(container)
+    expect(band!.style.left).toBe("20%")
+    expect(band!.style.width).toBe("30%")
+    // A tick is placed by its centre and has no width of its own.
+    expect(tick!.style.left).toBe("70%")
+    expect(tick!.style.width).toBe("")
+    fireEvent.click(band!)
+    expect(video.currentTime).toBe(12)
+  })
+
+  it("names a window by its time range, in the list and on hover", () => {
+    const { container } = setup({ markers: windows })
+    const item = screen.getByRole("button", { name: listed("0:12–0:30", "Person in path") })
+    expect(item.textContent).toBe("0:12–0:30, Person in path")
+    expect(screen.getByRole("button", { name: listed("0:42", "Obstacle") })).toBeTruthy()
+    // The drawn label shown on hover and focus says the same.
+    expect(marks(container)[0]!.textContent).toBe("0:12–0:30, Person in path")
+  })
+
+  it("keeps the band inside the timeline, and draws a window that ends where it starts as a tick", () => {
+    const { container } = setup({
+      markers: [
+        { time: 50, end: 90, label: "Stopped until the end" },
+        { time: 20, end: 20, label: "Bump" },
+      ],
+    })
+    const [band, tick] = marks(container)
+    expect(band!.style.left).toMatch(/^83\.3/)
+    expect(Number.parseFloat(band!.style.width)).toBeCloseTo(100 / 6)
+    expect(tick!.style.width).toBe("")
+    expect(screen.getByRole("button", { name: listed("0:20", "Bump") })).toBeTruthy()
+  })
+})
+
+describe("MediaPlayer marker list", () => {
+  const three: MediaMarker[] = [...markers, { time: 50, end: 55, label: "Path clear" }]
+
+  it("lists the markers by default", () => {
+    setup({ markers: three })
+    expect(screen.getByRole("list", { name: "Events in this clip" }).querySelectorAll("li")).toHaveLength(3)
+    expect(screen.queryByRole("button", { name: "3 events" })).toBeNull()
+  })
+
+  it("folds the list behind a disclosure that says how many there are", () => {
+    const { video } = setup({ markers: three, markerList: "collapsed" })
+    const disclosure = screen.getByRole("button", { name: "3 events" })
+    expect(disclosure.getAttribute("aria-expanded")).toBe("false")
+    expect(screen.queryByRole("list")).toBeNull()
+    fireEvent.click(disclosure)
+    expect(disclosure.getAttribute("aria-expanded")).toBe("true")
+    const list = screen.getByRole("list", { name: "Events in this clip" })
+    expect(list.querySelectorAll("li")).toHaveLength(3)
+    fireEvent.click(screen.getByRole("button", { name: listed("0:50–0:55", "Path clear") }))
+    expect(video.currentTime).toBe(50)
+  })
+
+  it("says 1 event for one", () => {
+    setup({ markers: [markers[0]!], markerList: "collapsed" })
+    expect(screen.getByRole("button", { name: "1 event" })).toBeTruthy()
+  })
+
+  it("leaves the list out with none, and the marks on the timeline take the keyboard and a name instead", () => {
+    const { container, video } = setup({ markers: three, markerList: "none" })
+    expect(screen.queryByRole("list")).toBeNull()
+    expect(screen.queryByRole("button", { name: /markers$/ })).toBeNull()
+    const band = screen.getByRole("button", { name: listed("0:50–0:55", "Path clear") })
+    const tick = screen.getByRole("button", { name: listed("0:42", "Obstacle") })
+    expect(band.tabIndex).toBe(0)
+    expect(tick.getAttribute("aria-hidden")).toBeNull()
+    expect(container.querySelectorAll("[data-slot=media-player-marker][aria-hidden]")).toHaveLength(0)
+    fireEvent.click(band)
+    expect(video.currentTime).toBe(50)
+  })
+})
+
+describe("MediaPlayer duration before metadata", () => {
+  const tickAt = (c: HTMLElement) => c.querySelector<HTMLElement>("[data-slot=media-player-marker]")?.style.left
+
+  it("places the markers from the duration prop before the file's metadata arrives", () => {
+    const { container } = setup({ markers: [{ time: 42, label: "Obstacle" }], preload: "none" })
+    expect(tickAt(container)).toBe("70%")
+  })
+
+  it("lets the file's own length win once its metadata arrives, and keeps it when the hint changes later", () => {
+    const { container, video, rerender } = setup({ markers: [{ time: 42, label: "Obstacle" }] })
+    Object.defineProperty(video, "duration", { configurable: true, value: 120 })
+    fireEvent(video, new Event("loadedmetadata"))
+    expect(tickAt(container)).toBe("35%")
+    expect(time(container)).toEqual(["0:00", "2:00"])
+    rerender(<MediaPlayer label="Patrol dog 7F3A, front camera" src="/clip.webm" duration={90} markers={[{ time: 42, label: "Obstacle" }]} />)
+    expect(tickAt(container)).toBe("35%")
+  })
+
+  it("draws no marks without a length, and lists them all the same", () => {
+    const { container } = setup({ markers, duration: undefined })
+    expect(tickAt(container)).toBeUndefined()
+    expect(screen.getByRole("list", { name: "Events in this clip" }).querySelectorAll("li")).toHaveLength(2)
+  })
+
+  it("draws them once a hint arrives after the first render", () => {
+    const { container, rerender } = setup({ markers, duration: undefined })
+    rerender(<MediaPlayer label="Patrol dog 7F3A, front camera" src="/clip.webm" duration={60} markers={markers} />)
+    expect(tickAt(container)).toBe(`${(2 / 60) * 100}%`)
   })
 })
 

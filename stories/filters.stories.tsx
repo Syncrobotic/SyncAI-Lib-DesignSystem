@@ -1,7 +1,7 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Battery, BatteryCharging, Bot, Forklift, MapPin, Package, Route, Wrench } from "lucide-react"
-import { Filters, filterRows, fromSearchParams, toQueryString, type FilterField, type FilterRule } from "@/registry/syncrobotic/ui/filters"
+import { FilterViews, Filters, filterRows, fromSearchParams, toQueryString, type FilterField, type FilterRule, type FilterView } from "@/registry/syncrobotic/ui/filters"
 
 const meta: Meta = { title: "Inputs/Filters" }
 export default meta
@@ -116,6 +116,39 @@ export const FiltersURLSynced: S = {
     const rules = fromSearchParams(query, allFields)
     return (
       <div className="flex w-full flex-col gap-3">
+        <Filters fields={allFields} value={rules} onValueChange={(r) => setQuery(toQueryString(r))} />
+        <Count rules={rules} fields={allFields} />
+        <code aria-live="polite" className="rounded-xs bg-muted px-2 py-1 font-mono text-xs break-all">
+          /robots{query ? `?${query}` : ""}
+        </code>
+      </div>
+    )
+  },
+}
+
+export const FiltersSavedViews: S = {
+  render: function V() {
+    // Views are the app's to store (here, state; in a product, the user's settings or the server). The rules live in the
+    // query string as in the URL example, so choosing a view is a link people can share.
+    const view = (id: string, label: string, query: string): FilterView => {
+      const rules = fromSearchParams(query, allFields)
+      return { id, label, rules, count: filterRows(robots, rules, allFields).length }
+    }
+    const [views, setViews] = React.useState<FilterView[]>(() => [
+      view("all", "All robots", ""),
+      view("attention", "Needs attention", "status=any_of:attention,stopped"),
+      view("low", "Low battery", "battery=lt:30&charging=is_false"),
+    ])
+    const [query, setQuery] = React.useState("status=any_of:stopped,attention")
+    const rules = fromSearchParams(query, allFields)
+    return (
+      <div className="flex w-full flex-col gap-3">
+        <FilterViews
+          views={views}
+          rules={rules}
+          onSelect={(v) => setQuery(toQueryString(v.rules))}
+          onSave={(label, r) => setViews((vs) => [...vs, view(`view-${vs.length}`, label, toQueryString(r))])}
+        />
         <Filters fields={allFields} value={rules} onValueChange={(r) => setQuery(toQueryString(r))} />
         <Count rules={rules} fields={allFields} />
         <code aria-live="polite" className="rounded-xs bg-muted px-2 py-1 font-mono text-xs break-all">

@@ -1,9 +1,10 @@
-// @syncrobotic/data-catalog v0.32.0 · update: npx shadcn add @syncrobotic/data-catalog --overwrite
+// @syncrobotic/data-catalog v0.37.0 · update: npx shadcn add @syncrobotic/data-catalog --overwrite
 "use client"
 
 import * as React from "react"
-import { Database, Grid3x3, SlidersHorizontal, Plus, ScrollText, Search, SearchX, ShieldCheck } from "lucide-react"
+import { ChevronRight, Database, Grid3x3, SlidersHorizontal, Plus, ScrollText, Search, SearchX, ShieldCheck } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
 import { ChoiceField, FieldSet } from "@/registry/syncrobotic/ui/choice-field"
 import { AppShell, type AppNavGroup, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { TierBadge, tiers, type Tier } from "@/registry/syncrobotic/ui/tier-badge"
@@ -30,6 +31,14 @@ export const dataNav: AppNavGroup[] = [
 // The tier badge is its own item (tier-badge). Re-exported so code that imported it from here keeps working.
 export { TierBadge, tiers, type Tier } from "@/registry/syncrobotic/ui/tier-badge"
 
+/** A label layer made on a source dataset: its own ref, version and page. */
+export type LabelLayer = {
+  ref: string
+  name: string
+  version: string
+  items: number
+}
+
 export type Dataset = {
   ref: string
   name: string
@@ -40,6 +49,8 @@ export type Dataset = {
   owner: string
   licence: string
   items: number
+  /** The label layers made on this source; its row unfolds them. */
+  layers?: LabelLayer[]
 }
 
 export const sampleDatasets: Dataset[] = [
@@ -53,6 +64,11 @@ export const sampleDatasets: Dataset[] = [
     owner: "Data team",
     licence: "First-party",
     items: 48210,
+    layers: [
+      { ref: "labels/coco", name: "COCO person boxes", version: "v2", items: 48210 },
+      { ref: "labels/night-review", name: "Night review corrections", version: "v1", items: 6115 },
+      { ref: "labels/pose-auto", name: "Auto pose keypoints", version: "v3", items: 47980 },
+    ],
   },
   {
     ref: "smoking/clips",
@@ -139,6 +155,87 @@ function Facets({ data, picks, onPick }: { data: Dataset[]; picks: Picks; onPick
   )
 }
 
+// The columns after the name, so a layer's row keeps the dataset row's cells at every width.
+const hiddenCells = ["hidden sm:table-cell", "hidden md:table-cell", "hidden md:table-cell", "hidden xl:table-cell"]
+
+/** One dataset's row, and its label layers under it once unfolded. */
+function DatasetRows({ dataset: d }: { dataset: Dataset }) {
+  const [open, setOpen] = React.useState(false)
+  const { mounted, leaving, done } = usePresence(open)
+  const id = React.useId()
+  const layers = d.layers ?? []
+  const ids = layers.map((_, i) => `${id}-layer-${i}`).join(" ")
+  return (
+    <>
+      <TableRow>
+        <TableCell className="py-2 max-sm:whitespace-normal">
+          {/* At least the control height (44, 48 in gloves): two short lines alone are a 36 px target. */}
+          <a data-slot="data-catalog-link" href={`#${d.ref}`} className="flex min-h-(--h-md) flex-col justify-center hover:underline">
+            <span className="font-medium">{d.name}</span>
+            <span className="font-mono text-xs break-all text-muted-foreground">
+              {d.ref}@{d.version}
+            </span>
+          </a>
+          {/* On a phone the tier sits under the name; it is a column from 640 px, so the items count never clips. */}
+          <span className={cn("flex flex-wrap items-center gap-2", layers.length > 0 ? "mt-1" : "mt-1 sm:hidden")}>
+            <span className="flex sm:hidden">
+              <TierBadge tier={d.tier} compact />
+            </span>
+            {layers.length > 0 && (
+              // From 640 px it starts the line: it leans into the cell's padding so its chevron sits near the name's edge,
+              // with room left for the focus ring. On a phone it follows the tier badge.
+              <Button
+                data-slot="data-catalog-layers"
+                variant="ghost"
+                size="sm"
+                aria-expanded={open}
+                aria-controls={open ? ids : undefined}
+                onClick={() => setOpen((o) => !o)}
+                className="text-muted-foreground hover:text-foreground sm:-ml-2"
+              >
+                <ChevronRight aria-hidden="true" className={cn("transition-transform duration-(--motion-fast) ease-(--ease-standard)", open && "rotate-90")} />
+                {layers.length} label {layers.length === 1 ? "layer" : "layers"}
+                <span className="sr-only"> of {d.name}</span>
+              </Button>
+            )}
+          </span>
+        </TableCell>
+        <TableCell className="hidden sm:table-cell">
+          <TierBadge tier={d.tier} compact />
+        </TableCell>
+        <TableCell className="hidden md:table-cell">{d.task}</TableCell>
+        <TableCell className="hidden md:table-cell">{d.use}</TableCell>
+        <TableCell className={cn("hidden text-muted-foreground xl:table-cell")}>{d.owner}</TableCell>
+        <TableCell className="text-right tabular-nums">{d.items.toLocaleString("en-US")}</TableCell>
+      </TableRow>
+      {mounted &&
+        layers.map((l, i) => (
+          <TableRow
+            key={l.ref}
+            id={`${id}-layer-${i}`}
+            inert={leaving || undefined}
+            onAnimationEnd={(e) => i === layers.length - 1 && e.target === e.currentTarget && done()}
+            className={leaving ? "animate-disappear" : "animate-appear"}
+          >
+            {/* Indented under the source by 16 px more than its cell, behind a guide line. */}
+            <TableCell className="py-2 pl-8 max-sm:whitespace-normal">
+              <a data-slot="data-catalog-layer-link" href={`#${l.ref}@${l.version}`} className="flex min-h-(--h-md) flex-col justify-center border-l border-border pl-3 hover:underline">
+                <span>{l.name}</span>
+                <span className="font-mono text-xs break-all text-muted-foreground">
+                  {l.ref}@{l.version}
+                </span>
+              </a>
+            </TableCell>
+            {hiddenCells.map((c, j) => (
+              <TableCell key={j} className={c} />
+            ))}
+            <TableCell className="text-right text-muted-foreground tabular-nums">{l.items.toLocaleString("en-US")}</TableCell>
+          </TableRow>
+        ))}
+    </>
+  )
+}
+
 export type DataCatalogProps = { datasets?: Dataset[] }
 
 /**
@@ -154,7 +251,7 @@ export function DataCatalogContent({ datasets = sampleDatasets }: DataCatalogPro
   const active = Object.values(picks).flat().length
   const rows = datasets
     .filter((d) => (Object.keys(picks) as (keyof Picks)[]).every((k) => picks[k].length === 0 || picks[k].includes(d[k])))
-    .filter((d) => `${d.name} ${d.ref} ${d.owner}`.toLowerCase().includes(query.toLowerCase()))
+    .filter((d) => [d.name, d.ref, d.owner, ...(d.layers ?? []).flatMap((l) => [l.name, l.ref])].join(" ").toLowerCase().includes(query.toLowerCase()))
     .sort((a, b) => (sort.key === "items" ? a.items - b.items : a.name.localeCompare(b.name)) * sort.dir)
 
   const sortProps = (k: SortKey) => ({
@@ -214,28 +311,7 @@ export function DataCatalogContent({ datasets = sampleDatasets }: DataCatalogPro
             </TableHeader>
             <TableBody>
               {rows.map((d) => (
-                <TableRow key={d.ref}>
-                  <TableCell className="py-2 max-sm:whitespace-normal">
-                    {/* At least the control height (44, 48 in gloves): two short lines alone are a 36 px target. */}
-                    <a data-slot="data-catalog-link" href={`#${d.ref}`} className="flex min-h-(--h-md) flex-col justify-center hover:underline">
-                      <span className="font-medium">{d.name}</span>
-                      <span className="font-mono text-xs break-all text-muted-foreground">
-                        {d.ref}@{d.version}
-                      </span>
-                    </a>
-                    {/* On a phone the tier sits under the name; it is a column from 640 px, so the items count never clips. */}
-                    <span className="mt-1 flex sm:hidden">
-                      <TierBadge tier={d.tier} compact />
-                    </span>
-                  </TableCell>
-                  <TableCell className="hidden sm:table-cell">
-                    <TierBadge tier={d.tier} compact />
-                  </TableCell>
-                  <TableCell className="hidden md:table-cell">{d.task}</TableCell>
-                  <TableCell className="hidden md:table-cell">{d.use}</TableCell>
-                  <TableCell className={cn("hidden text-muted-foreground xl:table-cell")}>{d.owner}</TableCell>
-                  <TableCell className="text-right tabular-nums">{d.items.toLocaleString("en-US")}</TableCell>
-                </TableRow>
+                <DatasetRows key={d.ref} dataset={d} />
               ))}
             </TableBody>
           </Table>
