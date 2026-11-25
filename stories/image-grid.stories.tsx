@@ -1,9 +1,10 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Button } from "@/registry/syncrobotic/ui/button"
-import { ImageGrid, type ImageGridItem } from "@/registry/syncrobotic/ui/image-grid"
+import { AnnotatedImage, type Annotation } from "@/registry/syncrobotic/ui/annotated-image"
+import { ImageGrid, type ImageGridHandle, type ImageGridItem } from "@/registry/syncrobotic/ui/image-grid"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/registry/syncrobotic/ui/sheet"
-import { brokenPhoto, placeholderPhoto } from "./placeholder-photos"
+import { brokenPhoto, placeholderPhoto, warehouseFrame } from "./placeholder-photos"
 
 const meta: Meta = { title: "Display/Image grid" }
 export default meta
@@ -29,24 +30,17 @@ export const ImageGridDataset: S = {
 function OpenInSheet() {
   const items = frames(8)
   const [open, setOpen] = React.useState<ImageGridItem | null>(null)
-  // The tile that opened the sheet: focus goes back to it when the sheet closes.
-  const opener = React.useRef<HTMLElement | null>(null)
+  // The grid remembers the tile that opened the sheet; restoreFocus() puts focus back on it when the sheet closes.
+  const grid = React.useRef<ImageGridHandle>(null)
   return (
     <>
-      <ImageGrid
-        label="Images in Forklift aisles v3"
-        items={items}
-        onOpen={(item) => {
-          opener.current = document.activeElement as HTMLElement | null
-          setOpen(item)
-        }}
-      />
+      <ImageGrid ref={grid} label="Images in Forklift aisles v3" items={items} onOpen={(item) => setOpen(item)} />
       <Sheet open={!!open} onOpenChange={(o) => !o && setOpen(null)}>
         <SheetContent
           side="right"
           onCloseAutoFocus={(e) => {
             e.preventDefault()
-            opener.current?.focus()
+            grid.current?.restoreFocus()
           }}
         >
           <SheetHeader>
@@ -60,8 +54,55 @@ function OpenInSheet() {
   )
 }
 
-/** `onOpen`: a tile opens the app's own Sheet with the picture's details instead of the lightbox; closing it returns focus to the tile. */
+/** `onOpen`: a tile opens the app's own Sheet with the picture's details instead of the lightbox; closing it calls the grid's `restoreFocus()`, which returns focus to the tile. */
 export const ImageGridOpenInSheet: S = { render: () => <OpenInSheet /> }
+
+const box = (x: number, y: number, width: number, height: number) => ({ type: "box" as const, x, y, width, height })
+// The same frame with a different review on each: what a model found, against what a person drew.
+const reviews: Annotation[][] = [
+  [
+    { id: "p", kind: "predicted", label: "person", shape: box(114, 160, 82, 246) },
+    { id: "f", kind: "predicted", label: "forklift", shape: box(336, 226, 222, 182) },
+  ],
+  [
+    { id: "t", kind: "truth", label: "pallet", shape: box(226, 358, 82, 62) },
+    { id: "p", kind: "predicted", label: "pallet", shape: box(230, 352, 80, 70) },
+  ],
+  [{ id: "t", kind: "truth", label: "forklift", shape: box(328, 218, 236, 196) }],
+  [{ id: "p", kind: "predicted", label: "person", shape: box(540, 96, 76, 150) }],
+]
+const reviewed: ImageGridItem[] = reviews.map((_, i) => ({
+  id: `review-${i}`,
+  src: i === 3 ? brokenPhoto : warehouseFrame,
+  alt: `Aisle 3, frame ${i + 1}, ${reviews[i].length} boxes`,
+  name: `aisle-3-${String(i + 1).padStart(4, "0")}.jpg`,
+  ...(i === 2 ? { restricted: true, reason: "T2 · faces" } : {}),
+}))
+
+/**
+ * `renderTile`: the boxes drawn on each tile with AnnotatedImage (no legend, no words on a small tile). The grid keeps the
+ * button and its name, the shape, the hidden tile and the failed one: AnnotatedImage's `onLoadError` calls the grid's `onError`.
+ */
+export const ImageGridCustomTile: S = {
+  render: () => (
+    <ImageGrid
+      label="Reviewed frames in aisle 3"
+      items={reviewed}
+      renderTile={(item, { onError }) => (
+        <AnnotatedImage
+          src={item.src}
+          width={640}
+          height={480}
+          label={item.alt}
+          annotations={reviews[Number(item.id.split("-")[1])]}
+          legend={false}
+          showLabels="none"
+          onLoadError={onError}
+        />
+      )}
+    />
+  ),
+}
 
 function PickOne() {
   const items = frames(6)
