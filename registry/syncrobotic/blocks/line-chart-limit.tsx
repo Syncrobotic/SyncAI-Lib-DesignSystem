@@ -1,4 +1,4 @@
-// @syncrobotic/line-chart-limit v0.17.3 · update: npx shadcn add @syncrobotic/line-chart-limit --overwrite
+// @syncrobotic/line-chart-limit v0.35.0 · update: npx shadcn add @syncrobotic/line-chart-limit --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,7 +6,7 @@ import { CartesianGrid, Line, LineChart, ReferenceLine, XAxis, YAxis } from "rec
 import { TriangleAlert } from "lucide-react"
 import { Card, CardDataHeader, CardFigure } from "@/registry/syncrobotic/ui/card"
 import { ChartContainer, ChartTable, ChartTooltip, chartAxis, chartMotion, type ChartConfig } from "@/registry/syncrobotic/ui/chart"
-import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
+import { ChartViewSwitch } from "@/registry/syncrobotic/ui/segmented-control"
 
 const config = { temp: { label: "Motor", color: 1, unit: "°C" } } satisfies ChartConfig
 const limit = 60
@@ -39,10 +39,7 @@ export function LineChartLimit() {
       <CardDataHeader
         title="Motor temperature · Patrol dog 7F3A"
         actions={
-          <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
-            <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
-            <SegmentedControlItem value="table">Table</SegmentedControlItem>
-          </SegmentedControl>
+          <ChartViewSwitch value={view} onValueChange={setView} />
         }
       >
         <CardFigure value={latest === undefined ? "—" : `${latest} °C`} note={`peak ${peak} °C at 13:00`} />

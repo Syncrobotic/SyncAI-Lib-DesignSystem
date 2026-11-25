@@ -1,4 +1,4 @@
-// @syncrobotic/media-player v0.32.0 · update: npx shadcn add @syncrobotic/media-player --overwrite
+// @syncrobotic/media-player v0.35.0 · update: npx shadcn add @syncrobotic/media-player --overwrite
 "use client"
 
 import * as React from "react"
@@ -486,7 +486,9 @@ export function MediaPlayer({
                       markers.map((m) => (
                         // Pointer shortcut only: the list under the player names each marker for keyboard and screen readers.
                         // 24 × 24 (WCAG 2.5.8): the tick is drawn in its top two thirds, so the lower part only widens the
-                        // target over the track, where a press near a marker lands on the marker.
+                        // target over the track, where a press near a marker lands on the marker. On a coarse pointer the
+                        // target is --h-md (44, 48 in gloves) square, drawn by an invisible ::after as on Checkbox; the tick
+                        // looks the same.
                         <button data-slot="media-player-marker"
                           key={m.id ?? `${m.time}-${m.label}`}
                           type="button"
@@ -495,7 +497,7 @@ export function MediaPlayer({
                           title={`${m.label} · ${formatMediaTime(m.time)}`}
                           onClick={() => seekTo(m.time)}
                           style={{ left: `${Math.min(1, m.time / duration) * 100}%` }}
-                          className="press absolute top-0 flex size-6 -translate-x-1/2 items-start justify-center pt-1"
+                          className="press absolute top-0 flex size-6 -translate-x-1/2 items-start justify-center pt-1 any-pointer-coarse:after:absolute any-pointer-coarse:after:top-1/2 any-pointer-coarse:after:left-1/2 any-pointer-coarse:after:size-(--h-md) any-pointer-coarse:after:-translate-x-1/2 any-pointer-coarse:after:-translate-y-1/2 any-pointer-coarse:after:content-['']"
                         >
                           <span className="h-3 w-0.5 rounded-xs bg-foreground" />
                         </button>

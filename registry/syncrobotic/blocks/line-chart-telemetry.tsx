@@ -1,11 +1,11 @@
-// @syncrobotic/line-chart-telemetry v0.17.2 · update: npx shadcn add @syncrobotic/line-chart-telemetry --overwrite
+// @syncrobotic/line-chart-telemetry v0.35.0 · update: npx shadcn add @syncrobotic/line-chart-telemetry --overwrite
 "use client"
 
 import * as React from "react"
 import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
 import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 import { ChartContainer, ChartLegend, ChartTable, ChartTooltip, chartAxis, chartMotion, type ChartConfig } from "@/registry/syncrobotic/ui/chart"
-import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
+import { ChartViewSwitch, SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 
 const config = { north: { label: "North site", color: 1, unit: "m/s" }, south: { label: "South site", color: 2, unit: "m/s" } } satisfies ChartConfig
 
@@ -36,14 +36,11 @@ export function LineChartTelemetry({ title = "Average patrol speed" }: { title?:
         }
         actions={
           <>
-            <SegmentedControl value={range} onValueChange={(v) => v && setRange(v)} aria-label="Range" className="w-auto">
+            <SegmentedControl value={range} onValueChange={(v) => v && setRange(v)} aria-label="Range" className="h-(--h-sm) w-auto">
               <SegmentedControlItem value="1h">1 h</SegmentedControlItem>
               <SegmentedControlItem value="24h">24 h</SegmentedControlItem>
             </SegmentedControl>
-            <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
-              <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
-              <SegmentedControlItem value="table">Table</SegmentedControlItem>
-            </SegmentedControl>
+            <ChartViewSwitch value={view} onValueChange={setView} />
           </>
         }
       >

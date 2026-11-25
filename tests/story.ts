@@ -68,7 +68,10 @@ async function openOnce(page: Page, id: string, theme: (typeof themes)[number]) 
 
 /** Stories that draw against the clock and are shot with it paused at FROZEN_AT (see openOnce). */
 const FROZEN_AT = new Date("2026-11-21T14:00:00Z")
-const frozen = new Set(["charts-streaming-chart--streaming-chart-default", "charts-streaming-chart--streaming-chart-stale"])
+// Every streaming chart: its live edge comes from the clock, and under reduced motion it holds on whole seconds, so a
+// clock started at whatever millisecond the run began moved the line by up to a second (from-ros and small-multiples
+// came out different on every run).
+const frozen = { has: (id: string) => id.startsWith("charts-streaming-chart--") }
 
 /** Story id → the selector that says it has settled, for stories whose end state does not come from the clock alone. */
 const settled: Record<string, string> = {

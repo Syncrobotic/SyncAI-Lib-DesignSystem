@@ -1,11 +1,11 @@
-// @syncrobotic/bar-chart-variance v0.17.3 · update: npx shadcn add @syncrobotic/bar-chart-variance --overwrite
+// @syncrobotic/bar-chart-variance v0.35.0 · update: npx shadcn add @syncrobotic/bar-chart-variance --overwrite
 "use client"
 
 import * as React from "react"
 import { Bar, BarChart, CartesianGrid, ReferenceLine, XAxis, YAxis } from "recharts"
 import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 import { ChartContainer, chartNumber, ChartTable, ChartTooltip, chartAxis, chartMotion, type ChartConfig } from "@/registry/syncrobotic/ui/chart"
-import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
+import { ChartViewSwitch } from "@/registry/syncrobotic/ui/segmented-control"
 
 const config = { delta: { label: "Against plan", color: 1, unit: "min" } } satisfies ChartConfig
 // Sample data: minutes each robot's patrol ran over (+) or under (−) its plan today.
@@ -31,10 +31,7 @@ export function BarChartVariance() {
           </>
         }
         actions={
-          <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
-            <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
-            <SegmentedControlItem value="table">Table</SegmentedControlItem>
-          </SegmentedControl>
+          <ChartViewSwitch value={view} onValueChange={setView} />
         }
       >
         <p className="text-xs text-muted-foreground tabular-nums">

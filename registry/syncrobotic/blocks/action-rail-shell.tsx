@@ -1,11 +1,11 @@
-// @syncrobotic/action-rail-shell v0.34.0 · update: npx shadcn add @syncrobotic/action-rail-shell --overwrite
+// @syncrobotic/action-rail-shell v0.35.0 · update: npx shadcn add @syncrobotic/action-rail-shell --overwrite
 "use client"
 
 import * as React from "react"
 import { ArrowLeft, Ellipsis, type LucideIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/registry/syncrobotic/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/registry/syncrobotic/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuMoreTrigger, DropdownMenuTrigger } from "@/registry/syncrobotic/ui/dropdown-menu"
 
 /** One action in the rail. Give `href` to navigate (through `linkAs`) or `onSelect` to act. */
 export type RailAction = {
@@ -141,7 +141,7 @@ export function ActionRailColumnHeader({ title, id, children, className }: { tit
         className,
       )}
     >
-      <h2 id={id} className="min-w-0 flex-1 truncate text-sm font-bold">
+      <h2 id={id} className="min-w-0 flex-1 truncate text-sm font-medium">
         {title}
       </h2>
       {children && <div className="flex shrink-0 items-center gap-1">{children}</div>}
@@ -468,11 +468,7 @@ export function ActionRailShell({
         )}
         {folded.length > 0 && (
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button data-slot="action-rail-header-more" variant="ghost" size="icon" aria-label={l.headerMore} title={l.headerMore} className="shrink-0">
-                <Ellipsis aria-hidden="true" />
-              </Button>
-            </DropdownMenuTrigger>
+            <DropdownMenuMoreTrigger data-slot="action-rail-header-more" aria-label={l.headerMore} title={l.headerMore} className="shrink-0" />
             <DropdownMenuContent align="end" className="min-w-56">
               {folded.map((item) =>
                 item.href || item.onSelect ? (

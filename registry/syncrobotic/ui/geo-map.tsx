@@ -1,4 +1,4 @@
-// @syncrobotic/geo-map v0.32.0 · update: npx shadcn add @syncrobotic/geo-map --overwrite
+// @syncrobotic/geo-map v0.35.0 · update: npx shadcn add @syncrobotic/geo-map --overwrite
 "use client"
 
 import * as React from "react"
@@ -8,7 +8,9 @@ import { StatusGlyph, statusText, type Status } from "@/registry/syncrobotic/she
 import { Bone } from "@/registry/syncrobotic/shell/skeleton"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { ButtonGroup } from "@/registry/syncrobotic/ui/button-group"
+import { ViewportOverlay, ViewportPanel } from "@/registry/syncrobotic/ui/viewport-overlay"
 import { SafetyZone } from "@/registry/syncrobotic/ui/robot-icons"
+import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 
 /** A place on Earth in WGS 84 degrees: latitude north positive, longitude east positive. Objects, never a pair, so the order is never in doubt. */
 export type GeoPoint = { lat: number; lon: number }
@@ -1251,19 +1253,19 @@ export function GeoMap({
       </div>
 
       {(banner || showConfirm || blockedNotice || tilesFailed || robots.length === 0) && (
-        <div className="pointer-events-none absolute top-4 right-4 left-4 flex flex-col items-start gap-2">
+        <ViewportOverlay position="top">
           {banner && (
-            <p data-slot="geo-map-mode" className={cn("flex max-w-full flex-col gap-1 rounded-xs bg-card shadow-float ring-1 ring-border", size.w >= 480 ? "px-3 py-2 text-sm" : "px-2 py-1 text-xs")}>
+            <ViewportPanel as="p" data-slot="geo-map-mode" className={cn("flex max-w-full flex-col gap-1", size.w < 480 && "px-2 py-1 text-xs")}>
               <span>{banner}</span>
-            </p>
+            </ViewportPanel>
           )}
           {showConfirm && draftAt && (
-            <div
+            <ViewportPanel
               data-slot="geo-map-confirm"
               data-map-ui=""
               role="group"
               aria-label={labels.goalConfirm}
-              className="pointer-events-auto flex max-w-full flex-col gap-2 rounded-xs bg-card p-3 text-sm shadow-float ring-1 ring-border"
+              className="pointer-events-auto flex max-w-full flex-col gap-2 p-3"
             >
               <p className="font-medium">{labels.goalConfirm}</p>
               <p className="text-xs text-muted-foreground tabular-nums">
@@ -1286,22 +1288,30 @@ export function GeoMap({
                   {labels.send}
                 </Button>
               </div>
-            </div>
+            </ViewportPanel>
           )}
           {blockedNotice && (
-            <p data-slot="geo-map-blocked" className="flex w-fit items-center gap-2 rounded-xs bg-card px-3 py-2 text-sm text-warning shadow-float ring-1 ring-border">
+            <ViewportPanel as="p" data-slot="geo-map-blocked" className="flex w-fit items-center gap-2 text-warning">
               <TriangleAlert aria-hidden="true" className="size-4 shrink-0" />
               {warning}
-            </p>
+            </ViewportPanel>
           )}
-          {tilesFailed && <p className="w-fit rounded-xs bg-card px-3 py-2 text-sm text-muted-foreground ring-1 ring-border">{labels.tilesFailed}</p>}
-          {robots.length === 0 && <p className="w-fit rounded-xs bg-card px-3 py-2 text-sm text-muted-foreground ring-1 ring-border">{labels.empty}</p>}
-        </div>
+          {tilesFailed && (
+            <ViewportPanel as="p" className="w-fit text-muted-foreground">
+              {labels.tilesFailed}
+            </ViewportPanel>
+          )}
+          {robots.length === 0 && (
+            <ViewportPanel>
+              <EmptyState variant="overlay" title={labels.empty} />
+            </ViewportPanel>
+          )}
+        </ViewportOverlay>
       )}
 
       {/* Bottom left, clear of the emergency stop, which products keep bottom right: zoom, the scale bar, the attribution. */}
-      <div className="pointer-events-none absolute right-4 bottom-4 left-4 flex items-end gap-2">
-        <ButtonGroup orientation={vertical ? "vertical" : "horizontal"} className="pointer-events-auto shadow-float">
+      <ViewportOverlay position="bottom">
+        <ButtonGroup orientation={vertical ? "vertical" : "horizontal"} className="pointer-events-auto rounded-sm shadow-float">
           <Button variant="secondary" size="icon" aria-label={labels.zoomIn} title={labels.zoomIn} disabled={view.z >= maxZoom} onClick={() => zoomBy(1)}>
             <ZoomIn aria-hidden="true" />
           </Button>
@@ -1323,7 +1333,7 @@ export function GeoMap({
             </p>
           )}
         </div>
-      </div>
+      </ViewportOverlay>
     </div>
   )
 }
@@ -1370,9 +1380,9 @@ export function GeoMapList({ label: name, robots = [], fences = [], selectedId, 
   }
   if (!robots.length) {
     return (
-      <p data-slot="geo-map-list" data-empty="" className={cn("rounded-md bg-card p-4 text-sm text-muted-foreground ring-1 ring-border", className)}>
-        {labels.empty}
-      </p>
+      <div data-slot="geo-map-list" data-empty="" className={cn("rounded-md bg-card ring-1 ring-border", className)}>
+        <EmptyState size="inline" title={labels.empty} />
+      </div>
     )
   }
   const hasAllowed = fences.some((f) => f.kind === "allowed")

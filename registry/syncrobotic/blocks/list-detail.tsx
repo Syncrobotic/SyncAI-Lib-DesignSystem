@@ -1,4 +1,4 @@
-// @syncrobotic/list-detail v0.32.0 · update: npx shadcn add @syncrobotic/list-detail --overwrite
+// @syncrobotic/list-detail v0.35.0 · update: npx shadcn add @syncrobotic/list-detail --overwrite
 "use client"
 
 import * as React from "react"
@@ -126,7 +126,7 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
                 ]}
               />
               <div className="flex flex-col gap-2">
-                <h3 className="text-sm font-bold">Recent activity</h3>
+                <h3 className="text-sm font-medium">Recent activity</h3>
                 <ul className="rounded-md bg-card ring-1 ring-border">
                   {["14:02 · Route Perimeter B started", "13:40 · Charged to 100 %", "12:15 · Lidar self-check passed"].map((e, i) => (
                     <li key={e}>

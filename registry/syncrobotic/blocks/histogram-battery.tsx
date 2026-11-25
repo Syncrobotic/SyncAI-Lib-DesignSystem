@@ -1,4 +1,4 @@
-// @syncrobotic/histogram-battery v0.22.1 · update: npx shadcn add @syncrobotic/histogram-battery --overwrite
+// @syncrobotic/histogram-battery v0.35.0 · update: npx shadcn add @syncrobotic/histogram-battery --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,7 +6,7 @@ import { Bar, BarChart, CartesianGrid, Cell, ReferenceLine, XAxis, YAxis } from 
 import { BatteryLow } from "lucide-react"
 import { Card, CardDataHeader, CardFigure } from "@/registry/syncrobotic/ui/card"
 import { ChartContainer, ChartTable, ChartTooltip, chartAxis, chartMotion, type ChartConfig } from "@/registry/syncrobotic/ui/chart"
-import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
+import { ChartViewSwitch } from "@/registry/syncrobotic/ui/segmented-control"
 
 export type HistogramBin = { from: number; to: number; count: number }
 
@@ -73,10 +73,7 @@ export function HistogramBattery() {
       <CardDataHeader
         title="Battery when robots dock"
         actions={
-          <SegmentedControl value={view} onValueChange={(v) => v && setView(v)} aria-label="Show as" className="w-auto">
-            <SegmentedControlItem value="chart">Chart</SegmentedControlItem>
-            <SegmentedControlItem value="table">Table</SegmentedControlItem>
-          </SegmentedControl>
+          <ChartViewSwitch value={view} onValueChange={setView} />
         }
       >
         <CardFigure value={`${med} %`} note={`median of ${readings.length} dockings, last 30 days`} />

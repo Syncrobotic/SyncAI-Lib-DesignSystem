@@ -1,4 +1,4 @@
-// @syncrobotic/alarm v0.32.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
+// @syncrobotic/alarm v0.35.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
 "use client"
 
 import * as React from "react"
@@ -539,7 +539,7 @@ export function AlarmList({
       <div className="flex min-h-(--h-row) items-center justify-between gap-3 border-b border-border px-4 py-2">
         <div className="flex min-w-0 flex-col @md:flex-row @md:flex-wrap @md:items-baseline @md:gap-x-2">
           {/* Focusable from script only: where focus lands when the last Acknowledge button goes. */}
-          <h2 id={headingId} ref={heading} tabIndex={-1} className="text-sm font-bold">
+          <h2 id={headingId} ref={heading} tabIndex={-1} className="text-sm font-medium">
             {l.title}
           </h2>
           {/* Each part keeps its words together, so a narrow header breaks between "3 active ·" and "2 unacknowledged". */}

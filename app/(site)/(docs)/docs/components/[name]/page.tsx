@@ -9,7 +9,7 @@ import { Reveal, AppearItem } from "@/site/appear"
 import { ExampleCard } from "@/site/example-card"
 import { Stage } from "@/site/examples"
 import { WhenNear } from "@/site/when-near"
-import { Dot, H2, Rules, Unbroken } from "@/site/prose"
+import { Dot, H2, Rules, Unbroken, textLink } from "@/site/prose"
 import { storySource } from "@/site/story-source"
 import { overviews } from "@/site/overview"
 import { getItem as findItem } from "@/site/catalog"
@@ -27,7 +27,7 @@ function Linked({ text }: { text: string }) {
         const word = part.slice(1, -1)
         const target = findItem(word)
         return target ? (
-          <a key={i} href={`/docs/components/${word}`} className="font-medium text-foreground underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground">
+          <a key={i} href={`/docs/components/${word}`} className={`font-medium ${textLink}`}>
             {target.title}
           </a>
         ) : (
@@ -237,7 +237,7 @@ export default async function ComponentPage({ params }: Props) {
             {item.name === "ros" && (
               <>
                 ; how it fits together, with the safety notes, is on{" "}
-                <a href="/docs/ros" className="text-foreground underline underline-offset-4">
+                <a href="/docs/ros" className={textLink}>
                   Connect to ROS
                 </a>
               </>
@@ -279,7 +279,7 @@ export default async function ComponentPage({ params }: Props) {
             </AppearItem>
           </Reveal>
           <p className="pt-3 text-sm text-muted-foreground">
-            <a href="/docs/upgrading" className="inline-flex h-(--h-sm) items-center underline-offset-4 hover:underline">
+            <a href="/docs/upgrading" className={`inline-flex min-h-(--h-sm) items-center ${textLink}`}>
               How to upgrade
             </a>
           </p>

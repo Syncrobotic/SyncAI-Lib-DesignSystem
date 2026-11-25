@@ -1,4 +1,4 @@
-// @syncrobotic/settings-billing v0.28.0 · update: npx shadcn add @syncrobotic/settings-billing --overwrite
+// @syncrobotic/settings-billing v0.35.0 · update: npx shadcn add @syncrobotic/settings-billing --overwrite
 "use client"
 
 import * as React from "react"
@@ -198,8 +198,8 @@ export function SettingsBilling({
           <Bone className="h-6 w-40" />
           <Bone className="h-4 w-56" />
           <div className="grid gap-4 sm:grid-cols-2">
-            <Bone className="h-10" />
-            <Bone className="h-10" />
+            <Bone className="h-(--h-md)" />
+            <Bone className="h-(--h-md)" />
           </div>
         </Card>
         <Card>
