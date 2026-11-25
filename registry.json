@@ -21,7 +21,7 @@
           {
             "version": "0.35.0",
             "date": "2026-11-25",
-            "note": "`--accent` (hover) is one step darker than `--muted` (the current page in navigation, the quiet fill): #d4d4d8 in light, #34343b in dark, #3f3f46 in high-contrast dark; high-contrast light's `--muted` is #e6e6ea, so its #d4d4d8 accent differs too. Hover never looks like the current page. `--disabled` darkens slightly (#74747c light, #80808a dark, #8e8e96 high-contrast dark) to stay 3:1 on the new hover fill. Audit #8."
+            "note": "`--accent` (hover) is one step darker than `--muted` (the current page in navigation, the quiet fill): #d4d4d8 in light, #34343b in dark, #3f3f46 in high-contrast dark; high-contrast light's `--muted` is #e6e6ea, so its #d4d4d8 accent differs too. Hover never looks like the current page. `--disabled` darkens slightly (#74747c light, #80808a dark, #8e8e96 high-contrast dark) to stay 3:1 on the new hover fill. Audit #8. Status colours keep 4.5:1 on the darker hover fill too: light --success #166748 and --warning #7c5200, dark --danger and --destructive #f87583 (red was 3.9:1 on a hovered or selected row in dark)."
           },
           {
             "version": "0.31.0",
@@ -1141,7 +1141,7 @@
           {
             "version": "0.35.0",
             "date": "2026-11-25",
-            "note": "`ChartViewSwitch`: the Chart / Table switch for a chart card's header at `--h-sm` (36 px with a mouse, 44 on touch), or any two views with `views` (Map / List); `labels` (`chartViewSwitchLabels` in labels-zh-tw). Audit #5."
+            "note": "`ChartViewSwitch`: the Chart / Table switch for a chart card's header at `--h-sm` (36 px with a mouse, 44 on touch), or any two views with `views` (Map / List); `labels` (`chartViewSwitchLabels` in labels-zh-tw). Audit #5. The thumb travels only when the selection moves; a segment that changes width (a web font arriving, a count) places it at once, so it is never drawn halfway."
           },
           {
             "version": "0.28.0",
@@ -2913,8 +2913,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.35.0",
         "changelog": [
+          {
+            "version": "0.35.0",
+            "date": "2026-11-25",
+            "note": "The underline travels only when the active tab changes; a tab that changes width (a web font arriving, a count) places it at once, so it is never drawn halfway."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",

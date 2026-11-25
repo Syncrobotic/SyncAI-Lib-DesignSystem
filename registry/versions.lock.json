@@ -1,7 +1,7 @@
 {
   "syncrobotic-theme": {
     "version": "0.35.0",
-    "hash": "83684b449cb6f1c4"
+    "hash": "cf5c70aaeba42f6e"
   },
   "cn": {
     "version": "0.5.0",
@@ -97,7 +97,7 @@
   },
   "segmented-control": {
     "version": "0.35.0",
-    "hash": "c9936816adfa86a2"
+    "hash": "6dd3f60597fee815"
   },
   "toggle": {
     "version": "0.28.0",
@@ -240,8 +240,8 @@
     "hash": "6bcbe053d67712e3"
   },
   "tabs": {
-    "version": "0.32.0",
-    "hash": "091eabadcff77449"
+    "version": "0.35.0",
+    "hash": "01797919a9f15bb3"
   },
   "pagination": {
     "version": "0.31.0",

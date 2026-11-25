@@ -60,12 +60,12 @@
 
   --info: #2952b8;
   --info-subtle: #e4e9f4;
-  --success: #18704f;
+  --success: #166748;
   --success-subtle: #e0eee7;
   /* Warning and danger are told apart by hue and by lightness, so they stay apart for colour-blind eyes (deutan ΔE 10.8
      light, 21.6 dark) and at a glance (ΔE 16 and 29). Both reach 4.8:1 or more as text on every surface they sit on:
      the page, the card, a muted tile or a selected row, and their own tint. */
-  --warning: #865900;
+  --warning: #7c5200;
   --warning-subtle: #f4ecda;
   --danger: #860012;
   --danger-subtle: #f6e2e1;
@@ -169,7 +169,7 @@
   --muted: #25252b;
   --muted-foreground: #a1a1aa;
   --accent: #34343b;
-  --destructive: #f75b6b;
+  --destructive: #f87583;
   --border: #2c2c32;
   --input: #72727a;
   --ring: var(--foreground);
@@ -183,7 +183,7 @@
   --success-subtle: #172720;
   --warning: #ffd663;
   --warning-subtle: #2b2516;
-  --danger: #f75b6b;
+  --danger: #f87583;
   --danger-subtle: #321c1c;
   --neutral: #a1a1aa;
   --neutral-subtle: #1c1c21;
