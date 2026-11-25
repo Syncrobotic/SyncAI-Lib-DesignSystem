@@ -1,4 +1,4 @@
-// @syncrobotic/log-viewer v0.36.0 · update: npx shadcn add @syncrobotic/log-viewer --overwrite
+// @syncrobotic/log-viewer v0.37.0 · update: npx shadcn add @syncrobotic/log-viewer --overwrite
 "use client"
 
 import * as React from "react"
@@ -688,7 +688,7 @@ export function LogViewer({
     >
       {/* One control height across the toolbar, the field's (--h-md: 44 px, 48 with gloves), so the search and the menus
           beside it line up, as in every toolbar of the kit that holds a field. */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-border p-2">
+      <div className="flex flex-wrap items-center gap-2 border-b border-border p-1">
         <InputGroup className="w-full @xl:w-auto @xl:min-w-0 @xl:flex-1">
           <InputGroupAddon>
             <Search aria-hidden="true" />

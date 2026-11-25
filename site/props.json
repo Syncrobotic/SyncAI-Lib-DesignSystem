@@ -4637,6 +4637,89 @@
     }
    ],
    "inherits": []
+  },
+  {
+   "name": "FilterViews",
+   "props": [
+    {
+     "name": "views",
+     "type": "FilterView[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "rules",
+     "type": "FilterRule[]",
+     "required": true,
+     "description": "The rules in force now, the same array the Filters bar shows."
+    },
+    {
+     "name": "onSelect",
+     "type": "(view: FilterView) => void",
+     "required": true,
+     "description": "A view was chosen, or Reset pressed: set the rules to `view.rules`."
+    },
+    {
+     "name": "onSave",
+     "type": "(label: string, rules: FilterRule[]) => void",
+     "description": "Shows \"Save view\". Called with the name typed and the current rules; add the view to `views` yourself."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<FilterViewsLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "label",
+       "type": "string",
+       "default": "\"Saved views\"",
+       "description": "Names the row of views."
+      },
+      {
+       "name": "modified",
+       "type": "string",
+       "default": "\"Modified\"",
+       "description": "Said when the rules no longer equal the view last chosen."
+      },
+      {
+       "name": "reset",
+       "type": "string",
+       "default": "\"Reset\"",
+       "description": "The action that puts the view's rules back."
+      },
+      {
+       "name": "resetTo",
+       "type": "(view: string) => string",
+       "default": "(view) => `Reset to ${view}`",
+       "description": "Its accessible name, starting with the words shown (WCAG 2.5.3)."
+      },
+      {
+       "name": "save",
+       "type": "string",
+       "default": "\"Save view\"",
+       "description": "Opens the box that names a new view."
+      },
+      {
+       "name": "name",
+       "type": "string",
+       "default": "\"View name\"",
+       "description": "The name field's label."
+      },
+      {
+       "name": "confirm",
+       "type": "string",
+       "default": "\"Save\"",
+       "description": "Saves it."
+      }
+     ]
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the views' counts (a BCP 47 tag such as \"zh-TW\"). Left out, the browser's language."
+    }
+   ],
+   "inherits": []
   }
  ],
  "geo-map": [
@@ -7254,6 +7337,12 @@
      "description": ""
     },
     {
+     "name": "markerList",
+     "type": "\"none\" | \"list\" | \"collapsed\"",
+     "default": "\"list\"",
+     "description": "The markers listed under the player, for the keyboard and screen readers. `list` (default) shows them; `collapsed` folds them behind \"3 events\", so a grid of clips lines up; `none` leaves them out when the page lists the events itself, and the marks on the timeline then take the keyboard and are named instead."
+    },
+    {
      "name": "tracks",
      "type": "MediaTrack[]",
      "default": "[]",
@@ -7363,6 +7452,24 @@
        "type": "string",
        "default": "\"Events in this clip\"",
        "description": "Heading of the list of markers under the player."
+      },
+      {
+       "name": "markerCount",
+       "type": "(count: number) => string",
+       "default": "(count) => (count === 1 ? \"1 event\" : `${count} events`)",
+       "description": "The disclosure that unfolds the list, with `markerList=\"collapsed\"`: \"3 events\"."
+      },
+      {
+       "name": "range",
+       "type": "(start: string, end: string) => string",
+       "default": "(start, end) => `${start}–${end}`",
+       "description": "A marker's span of time: \"12:04–12:31\"."
+      },
+      {
+       "name": "marker",
+       "type": "(time: string, label: string) => string",
+       "default": "(time, label) => `${time}, ${label}`",
+       "description": "A marker's name, in the list and on the timeline: \"12:04–12:31, Person in path\"."
       },
       {
        "name": "loading",
@@ -10368,7 +10475,7 @@
    "props": [
     {
      "name": "show",
-     "type": "\"always\" | \"expanded\" | \"collapsed\" | \"mobile\"",
+     "type": "\"collapsed\" | \"always\" | \"expanded\" | \"mobile\"",
      "default": "\"always\"",
      "description": "When it shows. always (default): one trigger that collapses and expands, wherever it is. The pair that puts the collapse control on the sidebar: \"expanded\" in SidebarHeader (shown while the sidebar is open on a wide screen, never on phones, where the sheet has its own close) and \"collapsed\" in the page's top bar (shown while the sidebar is a rail or hidden, and always on phones, where it is the menu button that opens the sheet). \"mobile\": only on phones, the menu button that opens the sheet, for a layout whose wide screens collapse and expand at the sidebar's edge (SidebarRail) instead."
     }

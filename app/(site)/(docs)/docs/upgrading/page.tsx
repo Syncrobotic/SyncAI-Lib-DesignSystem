@@ -61,6 +61,9 @@ export default function UpgradingPage() {
       <p className="pt-3 text-sm text-muted-foreground">
         <Inline text="CI refuses a change to an item's files without a version bump and a changelog line, so the header never lies." />
       </p>
+      <p className="max-w-3xl pt-3 text-sm text-muted-foreground">
+        <Inline text={"To compare an installed file with its source, check out the kit tag that shipped it: an item at `v0.24.0` is in the tag `v0.24.0`. Some older items carry a version no kit release was called, such as `slider` `v0.21.1`; `/r/kit-tags.json` maps each of those to its tag (`\"slider@0.21.1\": \"v0.24.0\"`)."} />
+      </p>
 
       <H2 id="status">Beta and stable</H2>
       <p className="max-w-3xl text-base">

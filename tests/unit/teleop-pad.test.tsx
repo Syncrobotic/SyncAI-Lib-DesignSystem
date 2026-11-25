@@ -112,6 +112,17 @@ describe("TeleopPad", () => {
     expect(screen.getByText("Speed limit 50 %")).toBeTruthy()
   })
 
+  it("applies a lowered maxSpeed on the next send while the stick is held still", () => {
+    const { pad, onCommand, rerender } = setup({ maxSpeed: 1 })
+    press(pad)
+    move(pad, 0, -2 * T)
+    act(() => vi.advanceTimersByTime(100))
+    expect(last(onCommand)).toEqual({ linear: 1, angular: 0 })
+    rerender(<TeleopPad onCommand={onCommand} maxSpeed={0.25} />)
+    act(() => vi.advanceTimersByTime(100))
+    expect(last(onCommand)).toEqual({ linear: 0.25, angular: 0 })
+  })
+
   it.each([
     ["release", (pad: HTMLElement) => fireEvent.pointerUp(pad, { pointerId: 1 })],
     ["cancel", (pad: HTMLElement) => fireEvent.pointerCancel(pad, { pointerId: 1 })],

@@ -1,5 +1,5 @@
-import { cleanup, render, screen } from "@testing-library/react"
-import { afterEach, describe, expect, it } from "vitest"
+import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react"
+import { afterEach, describe, expect, it, vi } from "vitest"
 import * as catalog from "@/registry/syncrobotic/blocks/data-catalog"
 import { DataCatalog, DataCatalogContent } from "@/registry/syncrobotic/blocks/data-catalog"
 import { DatasetDetail, DatasetDetailContent } from "@/registry/syncrobotic/blocks/dataset-detail"
@@ -47,6 +47,58 @@ describe("data blocks: content and frame", () => {
   it("data-catalog still exports the tier badge, from tier-badge", () => {
     expect(catalog.TierBadge).toBe(TierBadge)
     expect(catalog.tiers).toBe(tiers)
+  })
+})
+
+describe("DataCatalog: a source row unfolds its label layers", () => {
+  const toggle = () => screen.getByRole("button", { name: "3 label layers of Night parking lot people" })
+
+  it("is a button that says whether it is open and which rows it shows", () => {
+    render(<DataCatalogContent />)
+    const button = toggle()
+    expect(button.getAttribute("aria-expanded")).toBe("false")
+    expect(button.getAttribute("aria-controls")).toBeNull()
+    expect(screen.queryByRole("link", { name: /labels\/coco@v2/ })).toBeNull()
+
+    fireEvent.click(button)
+    expect(button.getAttribute("aria-expanded")).toBe("true")
+    const ids = button.getAttribute("aria-controls")!.split(" ")
+    expect(ids).toHaveLength(3)
+    const rows = ids.map((id) => document.getElementById(id))
+    expect(rows.every((r) => r?.tagName === "TR")).toBe(true)
+    // Each layer links to its own page and carries its mono ref line.
+    const link = within(rows[0]!).getByRole("link")
+    expect(link.getAttribute("href")).toBe("#labels/coco@v2")
+    expect(link.textContent).toContain("labels/coco@v2")
+    expect(link.querySelector(".font-mono")?.textContent).toBe("labels/coco@v2")
+  })
+
+  it("toggles with Enter and Space and keeps focus on the toggle", () => {
+    vi.useFakeTimers()
+    render(<DataCatalogContent />)
+    const button = toggle()
+    button.focus()
+    // A native button, so Enter and Space press it; the test DOM does not turn a key into a click, so it is fired too.
+    expect(button.tagName).toBe("BUTTON")
+    fireEvent.keyDown(button, { key: "Enter" })
+    fireEvent.click(button)
+    expect(button.getAttribute("aria-expanded")).toBe("true")
+    expect(document.activeElement).toBe(button)
+    fireEvent.keyUp(button, { key: " " })
+    fireEvent.click(button)
+    expect(button.getAttribute("aria-expanded")).toBe("false")
+    expect(document.activeElement).toBe(button)
+    // The layers leave (fade out), then are gone.
+    act(() => vi.advanceTimersByTime(500))
+    expect(screen.queryByRole("link", { name: /labels\/coco@v2/ })).toBeNull()
+    vi.useRealTimers()
+  })
+
+  it("finds a source by a layer's ref", () => {
+    render(<DataCatalogContent />)
+    fireEvent.change(screen.getByRole("searchbox", { name: "Search datasets" }), { target: { value: "labels/pose-auto" } })
+    expect(screen.getByText("1 of 6 datasets")).toBeTruthy()
+    expect(toggle()).toBeTruthy()
   })
 })
 

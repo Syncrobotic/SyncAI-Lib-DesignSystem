@@ -6,6 +6,11 @@
 //
 // Rules: the version lives in registry.json (items[].meta.version), with one changelog line per version
 // (items[].meta.changelog). The lock (registry/versions.lock.json) records the content hash each version shipped with.
+//
+// Finding a version's source: an item at vX.Y.Z is in the kit tag vX.Y.Z, unless registry/kit-tags.json names
+// another tag for it ("slider@0.21.1": "v0.24.0", the first kit release that shipped it). A version that is neither
+// a kit release (a dated CHANGELOG section) nor in that map fails here once it is released, so every header stays
+// findable at a tag.
 import { createHash } from "node:crypto"
 import { existsSync, readFileSync, writeFileSync } from "node:fs"
 
@@ -15,6 +20,20 @@ const LOCK = "registry/versions.lock.json"
 const registry = JSON.parse(readFileSync("registry.json", "utf8"))
 /** @type {import("./types.js").VersionsLock} */
 const lock = existsSync(LOCK) ? JSON.parse(readFileSync(LOCK, "utf8")) : {}
+
+const KIT_TAGS = "registry/kit-tags.json"
+/** @type {Record<string, string>} */
+const kitTags = existsSync(KIT_TAGS) ? JSON.parse(readFileSync(KIT_TAGS, "utf8")) : {}
+/** @param {string} v */
+const semver = (v) => v.split(".").map(Number)
+/** @param {string} a @param {string} b */
+const after = (a, b) => {
+  const [x, y] = [semver(a), semver(b)]
+  for (let i = 0; i < 3; i++) if (x[i] !== y[i]) return x[i] > y[i]
+  return false
+}
+const releases = new Set([...readFileSync("CHANGELOG.md", "utf8").matchAll(/^## (\d+\.\d+\.\d+) · /gm)].map((m) => m[1]))
+const latestRelease = [...releases].reduce((a, b) => (after(b, a) ? b : a), "0.0.0")
 
 const HEADER = /^(\/\/ @syncrobotic\/\S+ v\S+.*\n|\/\* @syncrobotic\/\S+ v\S+.*\*\/\n)/
 /**
@@ -48,6 +67,10 @@ for (const item of registry.items) {
     continue
   }
   if (!item.meta?.changelog?.some((c) => c.version === version)) errors.push(`${item.name}: no meta.changelog entry for ${version}`)
+
+  // Not yet released (newer than every dated CHANGELOG section): it ships, and is tagged, with the next release.
+  if (!releases.has(version) && !kitTags[`${item.name}@${version}`] && !after(version, latestRelease))
+    errors.push(`${item.name}@${version}: no kit release is called ${version}. Add "${item.name}@${version}": "v<the release that ships it>" to ${KIT_TAGS}`)
 
   const h = hash(item)
   const was = lock[item.name]

@@ -2,6 +2,25 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.37.0 · 2026-11-25
+
+Saved views for the filter bar, catalog rows that unfold their label layers, event windows in the media player, and every item version findable at a kit tag. A lowered teleop speed limit now applies at once.
+
+### Added
+- **`filters` 0.37.0:** `FilterViews`, saved views above a Filters bar (#300). One chip per view (ChipGroup, a radio group to screen readers); the view whose rules equal the current rules is chosen, whatever their order and the order of their values. Change a rule and the chip lets go, "Modified" shows (and is announced once) with Reset, which puts that view's rules back and moves focus to its chip. With `onSave`, Save view asks for a name in a popover and calls `onSave(name, rules)`; storing the views is the app's job. `rulesEqual` compares two rule lists the same way, ids ignored. Every word is in `labels` (`FilterViewsLabels`); **`labels-zh-tw` 0.37.0** adds `filterViewsLabels`. The filters page has a Saved views example with the rules in the URL. `filters` now installs `chip-group` and `field`.
+- **`data-catalog` 0.37.0:** a source dataset unfolds its label layers (#351). `Dataset.layers` (`LabelLayer`) adds a ghost toggle under the name, "3 label layers", with `aria-expanded` and `aria-controls` naming the rows it shows; Enter and Space toggle it and focus stays on it. Each layer is a row indented under its source behind a guide line, with its own link and mono ref line (`labels/coco@v2`); on phones it keeps the name and the items, like the dataset rows. The layers appear and fade out, and search finds a source by a layer's name or ref. The sample's night parking dataset has three layers.
+- **`media-player` 0.37.0:** a marker with `end` is a window (`{ time: 18, end: 31, label: "Person in path" }`), drawn as a bracket from start to end in the lane above the track, never a fill on it, so it is not read as the played or buffered part. A press goes to its start; hover and focus show its range ("0:18–0:31, Person in path"), and the list and the timeline name it the same way. In the list the times are one column, so every name starts at the same place. Issue #346
+- **`media-player` 0.37.0:** `markerList`: `list` (default, as before), `collapsed` (a "3 events" disclosure, the kit's Collapsible, that unfolds the list, so every clip in a grid is the picture and one row) or `none` (no list, when the page lists the events itself; the marks on the timeline then take the keyboard and are named). New docs examples: Ranges and Grid. Issue #346
+- **`labels-zh-tw` 0.37.0:** `mediaPlayerLabels.markerCount`, `range` and `marker`. Issue #346
+- **Registry:** `registry/kit-tags.json`, served at `/r/kit-tags.json`, maps the 104 older item versions that no kit release was called (`slider` 0.21.1, `graph` 0.21.2 ...) to the first kit tag that shipped each, so every installed file can be found and compared at a tag (#328). `lint:versions` fails on a released version that is neither a kit release nor in the map. The Upgrading page says how to find a file's tag.
+
+### Changed
+- **`media-player` 0.37.0:** a mark on the timeline shows its name in a drawn label over the picture on hover and focus, instead of the browser's tooltip. Marks are placed from `duration` until the file's metadata reports its own length, which then wins (tested). Installs `collapsible`. Issue #346
+- **`teleop-pad` 0.37.0:** lowering `maxSpeed` while the stick is held still applies on the next send. Before, the pad kept sending the speed shaped at the last move until the stick moved again.
+- **`log-viewer` 0.37.0:** the toolbar sits 4 px from the frame, so its controls' corners follow the frame's (outer radius = inner + padding).
+- **Docs:** block previews start at their content's measured height instead of a guess (480 px for every chart), so the frame no longer jumps when it goes live.
+- **CI:** a pull request into dev runs the stories it can change twice, the second time against the first one's pictures, so a story caught mid-animation fails at dev, not stage. The stage run no longer writes a missing baseline. `check:radius` (concentric corners) and `check:wrap` (actions wrapping on a 375 px phone) run on the built site for pull requests into dev and stage.
+
 ## 0.36.0 · 2026-11-25
 
 Performance and stability, from an engineering audit, and the docs home in motion: live data never freezes silently, one shared copy of the runtime helpers, a hydration test, tighter registry dependencies; docs pages that load code only when opened, /blocks as pictures and block cards that go live near the screen; an alarm bar and a selected card no rounded corner cuts; and a docs home that shows the kit running.

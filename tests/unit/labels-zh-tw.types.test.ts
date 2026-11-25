@@ -17,7 +17,7 @@ import type { DatePickerLabels } from "@/registry/syncrobotic/ui/date-selector"
 import type { DiagnosticsLabels } from "@/registry/syncrobotic/ui/diagnostics"
 import type { DialogLabels } from "@/registry/syncrobotic/ui/dialog"
 import type { DropdownMenuMoreLabels } from "@/registry/syncrobotic/ui/dropdown-menu"
-import type { FilterOperator, Filters } from "@/registry/syncrobotic/ui/filters"
+import type { FilterOperator, FilterViewsLabels, Filters } from "@/registry/syncrobotic/ui/filters"
 import type { GraphLabels } from "@/registry/syncrobotic/ui/graph"
 import type { GroundedTextLabels } from "@/registry/syncrobotic/ui/grounded-text"
 import type { ImageGridLabels } from "@/registry/syncrobotic/ui/image-grid"
@@ -118,6 +118,7 @@ it("fits every component's labels type", () => {
   fits<MetricCardLabels>()(zh.metricCardLabels)
   fits<TextDiffLabels>()(zh.textDiffLabels)
   fits<LabelsOf<typeof Filters>>()(zh.filtersLabels)
+  fits<FilterViewsLabels>()(zh.filterViewsLabels)
   fits<SortableLabels>()(zh.sortableLabels)
   fits<TreeLabels>()(zh.treeLabels)
   fits<ChipGroupLabels>()(zh.chipGroupLabels)

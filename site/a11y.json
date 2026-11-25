@@ -803,7 +803,7 @@
       "slider",
       "status"
     ],
-    "tabStops": 10,
+    "tabStops": 21,
     "live": true
   },
   "camera-feed": {
@@ -900,10 +900,13 @@
       "button",
       "group",
       "list",
-      "listitem"
+      "listitem",
+      "radio",
+      "radiogroup",
+      "status"
     ],
     "tabStops": 29,
-    "live": false
+    "live": true
   },
   "search-field": {
     "roles": [
