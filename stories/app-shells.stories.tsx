@@ -14,6 +14,7 @@ import { MapWorkspace } from "@/registry/syncrobotic/blocks/map-workspace"
 import { TopBarShell } from "@/registry/syncrobotic/blocks/top-bar-shell"
 import { sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/registry/syncrobotic/ui/tabs"
+import { ActionRailWorkspaceDemo } from "./action-rail-workspace-demo"
 
 // Whole screens for internal tools, full screen like a real page. The docs site frames them at desktop, tablet and phone widths.
 const meta: Meta = { title: "App shells", parameters: { layout: "fullscreen" } }
@@ -142,3 +143,8 @@ export const TopBarShellStickyTabs: S = {
     </TopBarShell>
   ),
 }
+
+
+// The action-rail shell as a full-screen workspace (#343, #312): history | main | controls from 1280 px, the history in a
+// Sheet from the top bar below that, the fields after main and the rail as the bottom bar on phones (this frame).
+export const ActionRailWorkspace: S = { render: () => <ActionRailWorkspaceDemo /> }

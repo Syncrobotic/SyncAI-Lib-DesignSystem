@@ -12,8 +12,8 @@
     "hash": "8ec920f8618ff43d"
   },
   "labels-zh-tw": {
-    "version": "0.33.0",
-    "hash": "e13da9a83c5594a1"
+    "version": "0.34.0",
+    "hash": "b9fd45dedaf9184b"
   },
   "ros": {
     "version": "0.31.0",
@@ -544,8 +544,8 @@
     "hash": "78fa2eeb3d2b800b"
   },
   "action-rail-shell": {
-    "version": "0.32.0",
-    "hash": "11cdca57c4fe7989"
+    "version": "0.34.0",
+    "hash": "95374ad4c8ff6db4"
   },
   "console-overview": {
     "version": "0.28.0",
@@ -600,8 +600,8 @@
     "hash": "98143b93352ba6f0"
   },
   "agent-skill": {
-    "version": "0.33.0",
-    "hash": "c0c303796c1cb89f"
+    "version": "0.34.0",
+    "hash": "0ade17ea09866ad0"
   },
   "line-chart-telemetry": {
     "version": "0.17.2",

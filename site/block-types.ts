@@ -31,6 +31,7 @@ export const blockTypes: BlockType[] = [
       "Internal tools and consoles with more than a handful of pages.",
       "A site or tool that only needs a top bar.",
       "A page that leads to one next step, such as a batch to review or a model to train: the action rail.",
+      "A full-screen workspace with a history on one side and the controls for the next run on the other, such as a model playground: the action rail with `leading` and `panel`.",
     ],
     instead: ["A single screen with no navigation: start from a Solutions block."],
     rules: [
@@ -42,6 +43,10 @@ export const blockTypes: BlockType[] = [
       "Each shell sets `--shell-top`, its bar's bottom edge, and `--shell-surface`: a sticky tab row (`TabsList sticky`) or a filter bar pins there, under the bar.",
       "The action rail holds only the next step: one large primary button and a few small actions, never filters or facts. On phones it is a bar fixed above the safe area, and the page is padded so it never covers content.",
       "← and Esc go back up a level wherever there is a back button, except while typing or when an overlay is open.",
+      "A full-screen workspace is the action rail with `leading` and `panel`: a history left of the content from 1280 px, the fields for the next step right of it from 1024 px with the rail pinned at their foot. The page does not scroll there; each column does, under a head row of one height (`ActionRailColumnHeader` gives the content the same row), 8 px apart. On phones the fields follow the content and the rail is the bar at the bottom.",
+      "Below 1280 px the leading column is not shown: put a top-bar button in `actions` that opens a Sheet with the same list (`xl:hidden`).",
+      "A top bar never wraps. Items that may not fit go in `headerItems`, in priority order: the last folds first into a ⋯ menu (More); `actions` never fold, so keep them to the key action.",
+      "Keys in the action rail: `←` or `Esc` go back (not while typing or with an overlay open); `Tab` reaches the top bar, then the leading column, the content and the panel with the rail last; on ⋯, `Enter`, `Space` or `↓` open the menu, `↑` `↓` move, `Enter` chooses and `Esc` closes it and returns to ⋯.",
     ],
   },
   {
