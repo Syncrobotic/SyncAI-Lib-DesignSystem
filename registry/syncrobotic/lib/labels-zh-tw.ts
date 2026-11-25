@@ -1,4 +1,4 @@
-// @syncrobotic/labels-zh-tw v0.35.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
+// @syncrobotic/labels-zh-tw v0.37.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
 // The kit's words in Traditional Chinese as written in Taiwan, one object per component that takes `labels`. Pass each
 // to its component (`<DataGrid labels={dataGridLabels} />`) with `locale="zh-TW"` where the component formats numbers,
 // days or times. The file imports no component, so it installs on its own; the kit's tests hold every object to the
@@ -572,6 +572,9 @@ export const mediaPlayerLabels = {
   seek: "影片播放位置",
   position: (current: string, total: string) => `${current} / ${total}`,
   markers: "此影片中的事件",
+  markerCount: (count: number) => `${count} 個標記`,
+  range: (start: string, end: string) => `${start}–${end}`,
+  marker: (time: string, label: string) => `${time}，${label}`,
   loading: "正在載入影片",
   buffering: "緩衝中",
   unavailable: "無法播放影片",

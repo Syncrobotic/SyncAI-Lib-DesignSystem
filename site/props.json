@@ -7254,6 +7254,12 @@
      "description": ""
     },
     {
+     "name": "markerList",
+     "type": "\"none\" | \"list\" | \"collapsed\"",
+     "default": "\"list\"",
+     "description": "The markers listed under the player, for the keyboard and screen readers. `list` (default) shows them; `collapsed` folds them behind \"3 markers\", so a grid of clips lines up; `none` leaves them out when the page lists the events itself, and the marks on the timeline then take the keyboard and are named instead."
+    },
+    {
      "name": "tracks",
      "type": "MediaTrack[]",
      "default": "[]",
@@ -7363,6 +7369,24 @@
        "type": "string",
        "default": "\"Events in this clip\"",
        "description": "Heading of the list of markers under the player."
+      },
+      {
+       "name": "markerCount",
+       "type": "(count: number) => string",
+       "default": "(count) => (count === 1 ? \"1 marker\" : `${count} markers`)",
+       "description": "The disclosure that unfolds the list, with `markerList=\"collapsed\"`: \"3 markers\"."
+      },
+      {
+       "name": "range",
+       "type": "(start: string, end: string) => string",
+       "default": "(start, end) => `${start}–${end}`",
+       "description": "A marker's span of time: \"12:04–12:31\"."
+      },
+      {
+       "name": "marker",
+       "type": "(time: string, label: string) => string",
+       "default": "(time, label) => `${time}, ${label}`",
+       "description": "A marker's name, in the list and on the timeline: \"12:04–12:31, Person in path\"."
       },
       {
        "name": "loading",
@@ -10368,7 +10392,7 @@
    "props": [
     {
      "name": "show",
-     "type": "\"always\" | \"expanded\" | \"collapsed\" | \"mobile\"",
+     "type": "\"collapsed\" | \"always\" | \"expanded\" | \"mobile\"",
      "default": "\"always\"",
      "description": "When it shows. always (default): one trigger that collapses and expands, wherever it is. The pair that puts the collapse control on the sidebar: \"expanded\" in SidebarHeader (shown while the sidebar is open on a wide screen, never on phones, where the sheet has its own close) and \"collapsed\" in the page's top bar (shown while the sidebar is a rail or hidden, and always on phones, where it is the menu button that opens the sheet). \"mobile\": only on phones, the menu button that opens the sheet, for a layout whose wide screens collapse and expand at the sidebar's edge (SidebarRail) instead."
     }

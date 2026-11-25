@@ -2,6 +2,18 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+Media player: event windows on the timeline, a marker list that folds so a grid of clips lines up, and markers placed from the clip's record before the file loads.
+
+### Added
+- **`media-player` 0.37.0:** a marker with `end` is a window (`{ time: 18, end: 31, label: "Person in path" }`), drawn as a bracket from start to end in the lane above the track, never a fill on it, so it is not read as the played or buffered part. A press goes to its start; hover and focus show its range ("0:18–0:31, Person in path"), and the list and the timeline name it the same way. Issue #346
+- **`media-player` 0.37.0:** `markerList`: `list` (default, as before), `collapsed` (a "3 markers" disclosure, the kit's Collapsible, that unfolds the list, so every clip in a grid is the picture and one row) or `none` (no list, when the page lists the events itself; the marks on the timeline then take the keyboard and are named). New docs examples: Ranges and Grid. Issue #346
+- **`labels-zh-tw` 0.37.0:** `mediaPlayerLabels.markerCount`, `range` and `marker`. Issue #346
+
+### Changed
+- **`media-player` 0.37.0:** a mark on the timeline shows its name in a drawn label over the picture on hover and focus, instead of the browser's tooltip. Marks are placed from `duration` until the file's metadata reports its own length, which then wins (tested). Installs `collapsible`. Issue #346
+
 ## 0.36.0 · 2026-11-25
 
 Performance and stability, from an engineering audit, and the docs home in motion: live data never freezes silently, one shared copy of the runtime helpers, a hydration test, tighter registry dependencies; docs pages that load code only when opened, /blocks as pictures and block cards that go live near the screen; an alarm bar and a selected card no rounded corner cuts; and a docs home that shows the kit running.
