@@ -2,7 +2,7 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.36.0 · 2026-11-25
 
 Performance and stability, from an engineering audit, and the docs home in motion: live data never freezes silently, one shared copy of the runtime helpers, a hydration test, tighter registry dependencies; docs pages that load code only when opened, /blocks as pictures and block cards that go live near the screen; an alarm bar and a selected card no rounded corner cuts; and a docs home that shows the kit running.
 
