@@ -1,10 +1,11 @@
-// @syncrobotic/alarm v0.35.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
+// @syncrobotic/alarm v0.36.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
 "use client"
 
 import * as React from "react"
 import { ChevronRight, CloudOff, OctagonAlert, TriangleAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { usePresenceList } from "@/registry/syncrobotic/hooks/use-presence"
+import { useNow } from "@/registry/syncrobotic/hooks/use-now"
 import { feedback as signal } from "@/registry/syncrobotic/lib/feedback"
 import { DiamondAlert } from "@/registry/syncrobotic/ui/robot-icons"
 
@@ -470,16 +471,12 @@ export function AlarmList({
   const shelved = alarms.filter((a) => isShelved(a) && (a.active || !a.acknowledged))
   const suppressed = alarms.filter((a) => a.suppressed && a.active).length
   const outOfService = alarms.filter((a) => a.outOfService && (a.active || !a.acknowledged)).length
-  // The clock moves on (every 30 s), so a flood ends when its alarms age out of the window.
-  const [clock, setClock] = React.useState(() => Date.now())
-  React.useEffect(() => {
-    if (now !== undefined) return
-    const t = setInterval(() => setClock(Date.now()), 30_000)
-    return () => clearInterval(t)
-  }, [now])
+  // The clock moves on (every 30 s), so a flood ends when its alarms age out of the window. Null until hydrated: the
+  // server's clock is not the browser's, so the server and the first render in the browser both count no flood.
+  const clock = useNow(now === undefined ? 30_000 : null)
   const at = now ?? clock
   // Only live alarms count: acknowledged-and-cleared, shelved, suppressed and out-of-service ones are not annunciating.
-  const recent = shown.filter((a) => a.raisedAt !== undefined && at - a.raisedAt <= flood.minutes * 60_000).length
+  const recent = at === null ? 0 : shown.filter((a) => a.raisedAt !== undefined && at - a.raisedAt <= flood.minutes * 60_000).length
   const flooding = recent > flood.count
   // In a flood, unacknowledged low alarms fold into one row so critical and high stay in view.
   const folded = flooding ? rendered.filter(({ item: a }) => a.priority === "low" && !a.acknowledged) : []

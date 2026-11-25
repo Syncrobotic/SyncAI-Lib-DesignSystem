@@ -48,3 +48,15 @@ declare module "@/registry/syncrobotic/ui/streaming-text?react-compiler" {
 declare module "@/registry/syncrobotic/ui/image-grid?react-compiler" {
   export * from "@/registry/syncrobotic/ui/image-grid"
 }
+declare module "@/registry/syncrobotic/shell/teleop-pad?react-compiler" {
+  export * from "@/registry/syncrobotic/shell/teleop-pad"
+}
+declare module "@/registry/syncrobotic/hooks/use-long-press?react-compiler" {
+  export * from "@/registry/syncrobotic/hooks/use-long-press"
+}
+declare module "@/registry/syncrobotic/hooks/use-slide-release?react-compiler" {
+  export * from "@/registry/syncrobotic/hooks/use-slide-release"
+}
+declare module "@/registry/syncrobotic/ui/robot-map?react-compiler" {
+  export * from "@/registry/syncrobotic/ui/robot-map"
+}

@@ -1,4 +1,4 @@
-// @syncrobotic/geo-map v0.35.0 · update: npx shadcn add @syncrobotic/geo-map --overwrite
+// @syncrobotic/geo-map v0.36.0 · update: npx shadcn add @syncrobotic/geo-map --overwrite
 "use client"
 
 import * as React from "react"
@@ -11,6 +11,8 @@ import { ButtonGroup } from "@/registry/syncrobotic/ui/button-group"
 import { ViewportOverlay, ViewportPanel } from "@/registry/syncrobotic/ui/viewport-overlay"
 import { SafetyZone } from "@/registry/syncrobotic/ui/robot-icons"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
+import { clamp } from "@/registry/syncrobotic/lib/math"
+import { prefersReducedMotion } from "@/registry/syncrobotic/hooks/use-reduced-motion"
 
 /** A place on Earth in WGS 84 degrees: latitude north positive, longitude east positive. Objects, never a pair, so the order is never in doubt. */
 export type GeoPoint = { lat: number; lon: number }
@@ -72,7 +74,6 @@ export type GeoMapMode = "view" | "goal"
 export const MAX_LATITUDE = 85.0511287798
 /** WGS 84's equatorial radius, which Web Mercator takes as the sphere's. */
 const EARTH_RADIUS = 6378137
-const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v))
 
 /** A point in Web Mercator's unit square: x 0–1 from 180° W, y 0–1 from 85° N. */
 export function projectGeo({ lat, lon }: GeoPoint): [x: number, y: number] {
@@ -492,7 +493,7 @@ export function GeoMap({
   const glideTo = (v: View) => {
     const to = limit(v)
     const el = root.current
-    const reduce = typeof window === "undefined" || window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+    const reduce = prefersReducedMotion()
     const ms = el && !reduce ? parseFloat(getComputedStyle(el).getPropertyValue("--motion-base")) || 0 : 0
     if (!ms) return setView(to)
     const from = viewRef.current

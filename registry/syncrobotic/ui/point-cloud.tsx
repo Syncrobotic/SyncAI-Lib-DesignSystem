@@ -1,4 +1,4 @@
-// @syncrobotic/point-cloud v0.35.0 · update: npx shadcn add @syncrobotic/point-cloud --overwrite
+// @syncrobotic/point-cloud v0.36.0 · update: npx shadcn add @syncrobotic/point-cloud --overwrite
 "use client"
 
 import * as React from "react"
@@ -9,6 +9,10 @@ import { ButtonGroup } from "@/registry/syncrobotic/ui/button-group"
 import { ViewportOverlay, ViewportPanel } from "@/registry/syncrobotic/ui/viewport-overlay"
 import { Bone } from "@/registry/syncrobotic/shell/skeleton"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
+import { formatClockTime } from "@/registry/syncrobotic/lib/clock-time"
+import { clamp } from "@/registry/syncrobotic/lib/math"
+import { prefersReducedMotion } from "@/registry/syncrobotic/hooks/use-reduced-motion"
+import { onThemeChange } from "@/registry/syncrobotic/lib/theme-change"
 
 /** What the points are coloured by: their height (z), the sensor's intensity, or nothing (one grey, as a map's scans). */
 export type PointCloudColorBy = "height" | "intensity" | "none"
@@ -86,7 +90,7 @@ export const defaultPointCloudLabels: PointCloudLabels = {
   retry: "Load again",
   stale: "Stale",
   lastScan: (time) => `last scan ${time}`,
-  formatTime: (d) => [d.getHours(), d.getMinutes(), d.getSeconds()].map((n) => String(n).padStart(2, "0")).join(":"),
+  formatTime: (d) => formatClockTime(d),
   noWebGL: "This browser cannot draw the 3D view.",
   noWebGLHint: "WebGL 2 is turned off or not supported. Turn on hardware acceleration, or open this page in a current browser.",
   contextLost: "Restoring the 3D view…",
@@ -131,8 +135,6 @@ const RAMP_STOPS = 16
  * the card; a point never stands for none, so the lowest one must still be seen against the view.
  */
 const RAMP_FLOOR = 20
-
-const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v))
 
 /**
  * How often, at most, the description with the point count and the extent changes while the view stays in one state. A
@@ -628,11 +630,16 @@ class Renderer {
     return true
   }
 
-  /** Lets go of every buffer, program and pending timer. The context itself goes with the canvas. */
+  /**
+   * Lets go of every buffer, program and pending timer. Returns the context, for the view to release once its canvas has
+   * left the page: browsers keep only about 16 WebGL contexts, and one waiting for garbage collection still counts.
+   */
   stop() {
     this.halt()
+    const gl = this.res?.gl ?? null
     if (this.res) freeResources(this.res)
     this.res = null
+    return gl
   }
 
   /** The context was taken away: everything made with it is gone already. */
@@ -950,8 +957,13 @@ export type PointCloudProps = {
   error?: React.ReactNode
   /** Shows a button under the error that tries again. */
   onRetry?: () => void
-  /** With no new cloud for this long, the view says "Stale" with when the last one arrived, and dims. Off by default. */
-  staleAfterMs?: number
+  /**
+   * With no new cloud for this long, the view says "Stale" with when the last one arrived, and dims. 3000 ms by default:
+   * a lidar sends 10 to 20 clouds a second, but over rosbridge they are usually throttled to 1 or 2, so three seconds is
+   * several missed clouds even then. `null` never goes stale: pass it for a cloud that is not live (a saved map, a scan
+   * from a file).
+   */
+  staleAfterMs?: number | null
   /** When the cloud was taken (the message's header stamp, in ms since the epoch). Without it, when `points` arrived. */
   receivedAt?: number
   /** Width over height of the view. 16 / 9 by default. */
@@ -979,7 +991,7 @@ export function PointCloud({
   loading,
   error,
   onRetry,
-  staleAfterMs,
+  staleAfterMs = 3000,
   receivedAt,
   aspectRatio = 16 / 9,
   labels: labelsProp,
@@ -1056,8 +1068,14 @@ export function PointCloud({
       canvas.removeEventListener("webglcontextlost", onLost)
       canvas.removeEventListener("webglcontextrestored", start)
       ro?.disconnect()
-      r.stop()
+      const gl = r.stop()
       renderer.current = null
+      // Release the context only once the canvas is really gone (unmounted, not re-run in place by Strict Mode, which
+      // keeps the same canvas and would get the lost context back), as robot-model does with its own.
+      if (gl)
+        setTimeout(() => {
+          if (!canvas.isConnected && !gl.isContextLost()) gl.getExtension("WEBGL_lose_context")?.loseContext?.()
+        }, 0)
     }
   }, [status])
 
@@ -1073,16 +1091,7 @@ export function PointCloud({
       r.requestDraw()
     }
     apply()
-    const mo = new MutationObserver(apply)
-    mo.observe(document.documentElement, { attributes: true, attributeFilter: ["class", "style", "data-theme", "data-contrast"] })
-    const queries = ["(prefers-color-scheme: dark)", "(prefers-contrast: more)", "(forced-colors: active)"]
-      .map((q) => window.matchMedia?.(q))
-      .filter((q) => !!q)
-    queries.forEach((q) => q.addEventListener("change", apply))
-    return () => {
-      mo.disconnect()
-      queries.forEach((q) => q.removeEventListener("change", apply))
-    }
+    return onThemeChange(apply)
   }, [gl, colorBy])
 
   // A new cloud (or a new way to colour it) is packed and uploaded once; nothing is uploaded while the camera moves. The
@@ -1114,21 +1123,21 @@ export function PointCloud({
   const scanKey: unknown = receivedAt ?? points
   const [staleOn, setStaleOn] = React.useState<{ key: unknown; at: number } | null>(null)
   React.useEffect(() => {
-    if (staleAfterMs === undefined) return
+    if (staleAfterMs === null || !Number.isFinite(staleAfterMs)) return
     const at = receivedAt ?? Date.now()
     const id = setTimeout(() => setStaleOn({ key: scanKey, at }), Math.max(0, at + staleAfterMs - Date.now()))
     return () => clearTimeout(id)
   }, [scanKey, receivedAt, staleAfterMs])
 
   const state: PointCloudState = loading ? "loading" : error ? "error" : gl === "unsupported" ? "no-webgl" : !bounds ? "empty" : "ready"
-  const stale = staleAfterMs !== undefined && staleOn !== null && staleOn.key === scanKey && state !== "loading" && state !== "error"
+  const stale = staleAfterMs !== null && Number.isFinite(staleAfterMs) && staleOn !== null && staleOn.key === scanKey && state !== "loading" && state !== "error"
   const interactive = state === "ready" && gl === "ready"
 
   // Buttons and the 0 key glide to the new view at --motion-base; with reduced motion, or no motion token in the page,
   // they jump. Drags, pinches and the wheel follow the hand directly.
   const glideMs = () => {
     const el = rootRef.current
-    const reduce = typeof window === "undefined" || window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+    const reduce = prefersReducedMotion()
     return el && !reduce ? parseFloat(getComputedStyle(el).getPropertyValue("--motion-base")) || 0 : 0
   }
   const resetView = () => {

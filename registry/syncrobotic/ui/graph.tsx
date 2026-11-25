@@ -1,4 +1,4 @@
-// @syncrobotic/graph v0.35.0 · update: npx shadcn add @syncrobotic/graph --overwrite
+// @syncrobotic/graph v0.36.0 · update: npx shadcn add @syncrobotic/graph --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,6 +7,7 @@ import { StatusGlyph, statusText, type Status } from "@/registry/syncrobotic/she
 import { Bone } from "@/registry/syncrobotic/shell/skeleton"
 import { scrollFadeMask, useScrollEdges } from "@/registry/syncrobotic/ui/table"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
+import { getLastInput, trackInputModality } from "@/registry/syncrobotic/lib/input-modality"
 
 /** One box of the graph: a dataset, a label set, a training run, a step of a mission. */
 export type GraphNode = {
@@ -402,11 +403,7 @@ function accessibleName(n: GraphNode, ins: GraphNode[], outs: GraphNode[], label
 
 // How the graph was last used: keys or a pointer, the last one anywhere on the page, as in tree and select. Tabbing in
 // previews the focused node's path at once; a click does not.
-let lastInput: "key" | "pointer" = "pointer"
-if (typeof document !== "undefined") {
-  document.addEventListener("keydown", () => (lastInput = "key"), true)
-  document.addEventListener("pointerdown", () => (lastInput = "pointer"), true)
-}
+trackInputModality()
 
 export type GraphProps = {
   /** The boxes, in any order; they are laid out in columns from the edges. */
@@ -690,7 +687,7 @@ export function Graph({
                 "aria-label": accessibleName(n, ins, outs, labels),
                 onFocus: () => {
                   setFocused(n.id)
-                  if (lastInput === "key") setPreview(n.id)
+                  if (getLastInput() === "key") setPreview(n.id)
                 },
                 onPointerEnter: () => setPreview(n.id),
                 onPointerLeave: () => setPreview((p) => (p === n.id ? undefined : p)),

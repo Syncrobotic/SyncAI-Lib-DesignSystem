@@ -1,4 +1,4 @@
-// @syncrobotic/robot-map v0.35.0 · update: npx shadcn add @syncrobotic/robot-map --overwrite
+// @syncrobotic/robot-map v0.36.0 · update: npx shadcn add @syncrobotic/robot-map --overwrite
 "use client"
 
 import * as React from "react"
@@ -11,6 +11,8 @@ import { ButtonGroup } from "@/registry/syncrobotic/ui/button-group"
 import { ViewportOverlay, ViewportPanel } from "@/registry/syncrobotic/ui/viewport-overlay"
 import { ChargingDock, SafetyZone } from "@/registry/syncrobotic/ui/robot-icons"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
+import { clamp } from "@/registry/syncrobotic/lib/math"
+import { prefersReducedMotion } from "@/registry/syncrobotic/hooks/use-reduced-motion"
 
 /**
  * A point on the site, in metres from the plan's top-left corner: x to the right, y down (as the plan image is drawn).
@@ -433,8 +435,6 @@ const anchor = ({ w, h, top = INSET }: Size) => ({ x: w / 2, y: (top + h - BOTTO
 /** Steps for the grid and the scale bar, in metres. */
 const NICE = [0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000]
 
-const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v))
-
 /** The ease of --ease-standard, cubic-bezier(0.2, 0, 0, 1), solved for x by bisection. */
 function easeStandard(t: number) {
   const bez = (a: number, b: number, s: number) => 3 * a * s * (1 - s) ** 2 + 3 * b * s ** 2 * (1 - s) + s ** 3
@@ -747,7 +747,7 @@ export function RobotMap({
   const glideTo = (v: View) => {
     const to = limit(v)
     const el = root.current
-    const reduce = typeof window === "undefined" || window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+    const reduce = prefersReducedMotion()
     const ms = el && !reduce ? parseFloat(getComputedStyle(el).getPropertyValue("--motion-base")) || 0 : 0
     if (!ms) return setView(to)
     const from = viewRef.current

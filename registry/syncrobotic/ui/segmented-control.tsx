@@ -1,4 +1,4 @@
-// @syncrobotic/segmented-control v0.35.0 · update: npx shadcn add @syncrobotic/segmented-control --overwrite
+// @syncrobotic/segmented-control v0.36.0 · update: npx shadcn add @syncrobotic/segmented-control --overwrite
 "use client"
 
 import * as React from "react"
@@ -77,7 +77,9 @@ export function SegmentedControl({
   // The first measurement places the thumb without travelling; later ones animate.
   const [placed, setPlaced] = React.useState(false)
   React.useEffect(() => {
-    if (thumb && !placed) requestAnimationFrame(() => setPlaced(true))
+    if (!thumb || placed) return
+    const id = requestAnimationFrame(() => setPlaced(true))
+    return () => cancelAnimationFrame(id)
   }, [thumb, placed])
   return (
     <ToggleGroup.Root

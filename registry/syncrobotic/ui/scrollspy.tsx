@@ -1,8 +1,9 @@
-// @syncrobotic/scrollspy v0.32.0 · update: npx shadcn add @syncrobotic/scrollspy --overwrite
+// @syncrobotic/scrollspy v0.36.0 · update: npx shadcn add @syncrobotic/scrollspy --overwrite
 "use client"
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
+import { prefersReducedMotion } from "@/registry/syncrobotic/hooks/use-reduced-motion"
 
 /**
  * Which of several sections is being read. A section counts once its top passes `offset` px below the
@@ -79,7 +80,7 @@ export function Scrollspy({
     const el = document.getElementById(id)
     if (!el) return
     e.preventDefault()
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    const reduce = prefersReducedMotion()
     el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" })
     if (!el.hasAttribute("tabindex")) el.setAttribute("tabindex", "-1")
     el.focus({ preventScroll: true })

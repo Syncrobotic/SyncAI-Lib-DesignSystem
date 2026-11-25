@@ -1,10 +1,11 @@
-// @syncrobotic/context-menu v0.32.0 · update: npx shadcn add @syncrobotic/context-menu --overwrite
+// @syncrobotic/context-menu v0.36.0 · update: npx shadcn add @syncrobotic/context-menu --overwrite
 "use client"
 
 import * as React from "react"
 import { ContextMenu as MenuPrimitive } from "radix-ui"
 import { Check, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { getLastInput, trackInputModality } from "@/registry/syncrobotic/lib/input-modality"
 
 /**
  * The menu a right-click (or a long press on touch, or Shift+F10 / the Menu key on the focused area) opens where the
@@ -22,11 +23,7 @@ export const ContextMenuSub = MenuPrimitive.Sub
 
 // How the menu was opened: keys or a pointer, the last one used anywhere on the page (the same as DropdownMenu). Opened by
 // a right-click, the list shows no ring until a key moves in it; opened with Shift+F10 or the Menu key, the ring is there at once.
-let lastInput: "key" | "pointer" = "pointer"
-if (typeof document !== "undefined") {
-  document.addEventListener("keydown", () => (lastInput = "key"), true)
-  document.addEventListener("pointerdown", () => (lastInput = "pointer"), true)
-}
+trackInputModality()
 
 // The panel: identical to DropdownMenuContent, so the two menus cannot be told apart.
 const panel =
@@ -37,7 +34,7 @@ const panel =
  * which Radix renders only while the menu is open, so each opening starts from how this one was opened.
  */
 function useNav(onKeyDown?: React.KeyboardEventHandler<HTMLDivElement>, onPointerMove?: React.PointerEventHandler<HTMLDivElement>) {
-  const [nav, setNav] = React.useState<"key" | "pointer">(() => lastInput)
+  const [nav, setNav] = React.useState<"key" | "pointer">(getLastInput)
   return {
     "data-nav": nav,
     onKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => {
