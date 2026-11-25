@@ -872,8 +872,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.28.0",
+        "version": "0.37.0",
         "changelog": [
+          {
+            "version": "0.37.0",
+            "date": "2026-11-26",
+            "note": "A lowered maxSpeed now applies on the next send, even while the stick is held still; before, it waited for the next move."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",

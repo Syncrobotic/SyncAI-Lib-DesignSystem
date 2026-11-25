@@ -88,8 +88,8 @@
     "hash": "0400ef24e80c8d2f"
   },
   "teleop-pad": {
-    "version": "0.28.0",
-    "hash": "17014d31cb4c5b93"
+    "version": "0.37.0",
+    "hash": "7357265b8685dff2"
   },
   "dock": {
     "version": "0.8.0",
