@@ -85,8 +85,26 @@ describe("Alarm states (0.22.0)", () => {
     const row = screen.getByRole("article")
     expect(row.getAttribute("data-state")).toBe("cleared")
     expect(screen.getByText("Cleared 14:07, not acknowledged")).toBeTruthy()
-    expect(row.querySelector(".border-dashed")).toBeTruthy()
+    expect((row.querySelector("[data-slot=alarm-bar]") as HTMLElement).style.maskImage).toContain("rx=")
     expect(screen.getByRole("button", { name: /Acknowledge/ })).toBeTruthy()
+  })
+
+  // Beside Acknowledge, "Unacknowledged" would say the button twice: it stays for screen readers only. Without the
+  // button (read-only) and once cleared, the words show.
+  it("says Unacknowledged in words only where no button says it", () => {
+    const state = () => screen.getByText("Unacknowledged")
+    const { rerender } = render(<Alarm priority="high" title="Battery low" active acknowledged={false} onAcknowledge={() => {}} />)
+    expect(state().className).toContain("sr-only")
+    expect(screen.getByRole("article").getAttribute("aria-describedby")).toContain(state().id)
+    rerender(<Alarm priority="high" title="Battery low" active acknowledged={false} />)
+    expect(state().className).not.toContain("sr-only")
+  })
+
+  it("draws the priority bar as an inset pill, not a strip against the edge", () => {
+    render(<Alarm priority="critical" title="Collision risk" active acknowledged={false} />)
+    const bar = document.querySelector("[data-slot=alarm-bar]")!
+    expect(bar.className).toContain("rounded-full")
+    expect(bar.className).not.toMatch(/(^|\s)left-0(\s|$)/)
   })
 
   it("never tints a row, critical included", () => {

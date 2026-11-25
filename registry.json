@@ -2508,8 +2508,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "The priority bar is a pill with round ends in its own 24 px gutter (10 px either side, as tall as the content), never a strip against the card's edge, which the round corner cut into a blade; cleared, it is dashed inside the same pill. The content starts 24 px in and ends 16 px from the edge. Beside Acknowledge the state is not repeated in words (screen readers still hear it)."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -3404,8 +3409,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.35.0",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "A selected waypoint takes a 2 px ink ring all round, as a graph node, instead of a start border that the card's corners bent into a crescent."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -7780,8 +7790,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.36.0",
         "changelog": [
+          {
+            "version": "0.36.0",
+            "date": "2026-11-25",
+            "note": "The design language and the checklist: an indicator inside a rounded surface is an inset pill in its own gutter, a selected card a 2 px ring, and a status word is not repeated beside the button that says it."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",

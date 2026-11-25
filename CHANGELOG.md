@@ -2,6 +2,13 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Changed
+- **`alarm` 0.36.0:** the priority bar is a pill with round ends in its own 24 px gutter (10 px either side, as tall as the content), never a strip against the card's edge, which the round corner cut into a blade; cleared, it is dashed inside the same pill. Content starts 24 px in and ends 16 px from the edge. Beside Acknowledge the state is no longer repeated in words (screen readers still hear it); cleared, acknowledged, shelved and read-only alarms still say it.
+- **`waypoint-editor` 0.36.0:** a selected waypoint takes a 2 px ink ring all round, as a graph node, instead of a start border that the card's corners bent into a crescent.
+- **`agent-skill` 0.36.0:** an indicator inside a rounded surface is an inset pill in its own gutter, a selected card a 2 px ring, and a status word is not repeated beside the button that says it.
+
 ## 0.35.0 · 2026-11-25
 
 One part per repeated look, from a design audit against the kit's own rules: a level past its threshold shows its shape and word, links are underlined, chrome over a canvas, empty states, the ⋯ menu, the Chart / Table switch and icon tiles each have one part, and hover is one step darker than the current page.

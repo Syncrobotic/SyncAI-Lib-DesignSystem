@@ -1,4 +1,4 @@
-// @syncrobotic/waypoint-editor v0.35.0 · update: npx shadcn add @syncrobotic/waypoint-editor --overwrite
+// @syncrobotic/waypoint-editor v0.36.0 · update: npx shadcn add @syncrobotic/waypoint-editor --overwrite
 "use client"
 
 import * as React from "react"
@@ -637,7 +637,8 @@ export function WaypointEditor({
                     <div
                       data-waypoint-id={w.id}
                       data-state={isSelected ? "selected" : undefined}
-                      className={cn("flex flex-col rounded-sm border-l-2 bg-card ring-1 ring-border ring-inset", isSelected ? "border-foreground" : "border-transparent")}
+                      // Selected: a 2 px ink ring all round, as a graph node. Never a one-sided border: the corners bend it into a crescent.
+                      className={cn("flex flex-col rounded-sm bg-card ring-inset", isSelected ? "ring-2 ring-foreground" : "ring-1 ring-border")}
                     >
                       <div className="flex min-h-(--h-row) items-center gap-1 pr-1 pl-1">
                         {!readOnly && <SortableHandle label={labels.move(name)} />}
