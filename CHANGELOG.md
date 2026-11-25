@@ -2,6 +2,11 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+### Fixed
+- **`streaming-chart` 0.34.0:** back from the table view the chart sizes its new canvas again; it was left at the browser's 300 × 150 and drawn stretched and blurred, cut to its top left corner.
+
 ## 0.33.0 · 2026-11-25
 
 Data and pictures in rows and cards: a ranked list of counts, a small picture for tables and lists, the media card pattern, and an image grid that draws your own tile face and hands focus back after your own view.

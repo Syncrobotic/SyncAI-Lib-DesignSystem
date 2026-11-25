@@ -2774,8 +2774,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.32.0",
+        "version": "0.34.0",
         "changelog": [
+          {
+            "version": "0.34.0",
+            "date": "2026-11-25",
+            "note": "Back from the table view, the chart sizes its new canvas again: it was left at the browser's 300 × 150 and drawn stretched and blurred, cut to its top left corner."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
