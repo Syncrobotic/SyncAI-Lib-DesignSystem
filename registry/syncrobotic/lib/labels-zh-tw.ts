@@ -924,6 +924,15 @@ export const promptComposerLabels = {
   attachment: attachmentLabels,
 }
 
+export const messageScrollerLabels = {
+  name: "對話",
+  jump: "跳到最新",
+  newCount: (n: number, locale: string | undefined) => `${formatCount(n, { locale: locale ?? "zh-TW" })} 則新訊息`,
+  jumpLabel: (n: number, locale: string | undefined) => (n > 0 ? `跳到最新，${formatCount(n, { locale: locale ?? "zh-TW" })} 則新訊息` : "跳到最新"),
+  loadEarlier: "載入較早的訊息",
+  newTurn: (name: string, text: string) => (text ? `${name}：${text}` : name),
+}
+
 // Every operator the filter bar offers; the types test holds it to the full FilterOperator list, so a new one cannot be
 // left in English.
 const filterOperators = {

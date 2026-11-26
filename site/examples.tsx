@@ -28,6 +28,7 @@ const files = {
   "data-grid": () => import("@/stories/data-grid.stories"),
   "log-viewer": () => import("@/stories/log-viewer.stories"),
   "streaming-text": () => import("@/stories/streaming-text.stories"),
+  "message-scroller": () => import("@/stories/message-scroller.stories"),
   "prompt-composer": () => import("@/stories/prompt-composer.stories"),
   "message-actions": () => import("@/stories/message-actions.stories"),
   message: () => import("@/stories/message.stories"),

@@ -342,7 +342,7 @@
           {
             "version": "0.41.0",
             "date": "2026-11-26",
-            "note": "`messageLabels`, `messageMetaLabels`, `messageActionsLabels`, `promptComposerLabels` for the new conversation parts (message, message-actions, prompt-composer): 你, 助理, 重新生成, 送出, 跳到最新 and the rest."
+            "note": "`messageLabels`, `messageMetaLabels`, `messageActionsLabels`, `promptComposerLabels`, `messageScrollerLabels` for the new conversation parts (message, message-actions, prompt-composer, message-scroller): 你, 助理, 重新生成, 送出, 跳到最新 and the rest."
           },
           {
             "version": "0.40.0",
@@ -6539,6 +6539,39 @@
             "version": "0.41.0",
             "date": "2026-11-26",
             "note": "First release: a form that grows, sends on Enter but never mid-composition, takes files, and turns Send into Stop in place."
+          }
+        ]
+      }
+    },
+    {
+      "name": "message-scroller",
+      "type": "registry:ui",
+      "title": "Message scroller",
+      "description": "A conversation's scrolling viewport (role=\"log\"): follows the newest turn while the reader is at the bottom, lets go when they scroll up, offers Jump to latest with the count of new turns, keeps the view still when older turns load in front, and reads a turn that arrives complete once, never an answer StreamingText already read. No dependencies.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/format-number",
+        "@syncrobotic/use-presence",
+        "@syncrobotic/use-reduced-motion"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/message-scroller.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.41.0",
+        "changelog": [
+          {
+            "version": "0.41.0",
+            "date": "2026-11-26",
+            "note": "First release: follows the newest turn, lets go on a scroll up, Jump to latest with a count, scroll anchoring, reads complete turns once."
           }
         ]
       }

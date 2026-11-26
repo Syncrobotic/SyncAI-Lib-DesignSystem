@@ -659,6 +659,26 @@ export const overviews: Record<string, Overview> = {
       "Every word is in `labels` (`promptComposerLabels` in labels-zh-tw), including the attachment chips' words; `locale` formats the counts.",
     ],
   },
+  "message-scroller": {
+    what: "The viewport of a conversation: it keeps the newest turn in view while an answer streams, lets go when the reader scrolls up, brings them back with Jump to latest, and keeps its place when older turns load.",
+    use: [
+      "The middle of an assistant panel, between its header and the prompt composer.",
+      "A side copilot in a Sheet, in a flex column that ends with the composer.",
+      "Any conversation that grows at the bottom while someone reads further up.",
+    ],
+    instead: [
+      "Lines a program writes as it runs: `log-viewer`.",
+      "A fixed list people scroll without anything arriving: `scroll-area`.",
+      "Events in time order with no conversation: `timeline`.",
+    ],
+    notes: [
+      "No dependencies: following, letting go and scroll anchoring are a scroll listener, a ResizeObserver and a MutationObserver. The browser's own `overflow-anchor` is off on the viewport (Safari has none), so every browser behaves alike.",
+      "At the bottom means within 32 px. Only a move up lets go, so content growing under a following view never stops it.",
+      "Announcements: a turn appended complete is read once (\"Assistant, 14:02: …\", at most 600 characters); one that streamed is read when it ends only if it holds no StreamingText. Turns present at mount, put in front, or with `role=\"user\"` are never read.",
+      "On phones: put it and the prompt composer in a flex column 100dvh tall, the scroller `min-h-0 flex-1`; the on-screen keyboard then shrinks the scroller, not the composer.",
+      "Every word is in `labels` (`messageScrollerLabels` in labels-zh-tw); `locale` formats the count.",
+    ],
+  },
   sortable: {
     what: "A reorderable list or grid with a grip on each item, usable with a mouse, a finger or the keyboard.",
     use: ["Waypoint and patrol order.", "Rule priorities.", "Column order, camera layout, playlist steps."],

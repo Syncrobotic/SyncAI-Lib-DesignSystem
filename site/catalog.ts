@@ -28,6 +28,7 @@ export type StoryFile =
   | "data-grid"
   | "log-viewer"
   | "streaming-text"
+  | "message-scroller"
   | "prompt-composer"
   | "message-actions"
   | "message"
@@ -301,6 +302,20 @@ const entries: Record<string, Entry> = {
       "`allowFiles` adds the attach button, paste and drop; `accept`, `maxSize` and `maxFiles` are checked as in file-upload and refused files are named with the reason. The files show as Attachment chips above the text.",
       "`maxLength` shows the count (\"120 / 4,000\"); past it the box and the count take the danger edge and words, and Send waits. Nothing is cut off.",
       "Put a model select or a context chip in `toolbar`, beside the attach button. The composer has no fixed positioning: pin it with the page's layout (see the overview).",
+    ],
+  },
+  "message-scroller": {
+    wide: true,
+    group: "Data display",
+    examples: { file: "message-scroller", prefix: "MessageScroller" },
+    rules: [
+      "The scrolling box of a conversation: Message turns as its direct children, oldest first. Give it a height (`className`: h-96, or min-h-0 flex-1 in a column).",
+      "It follows the newest turn while the reader is at the bottom, also while an answer streams, and lets go the moment they scroll up. Do not scroll it yourself as tokens arrive.",
+      "Jump to latest shows whenever the reader is away from the bottom, with how many turns came since (\"3 new\"); it glides back, or jumps under reduced motion, and leaves focus on the conversation.",
+      "Sending a turn of one's own (a Message with `role=\"user\"` appended) always goes back to the bottom.",
+      "Older turns: `hasEarlier` and `onLoadEarlier` show Load earlier at the top; put the older turns in front of `children` and the view stays where it was.",
+      "Leave the reading to it: the log's own live region is off, StreamingText reads answers in sentences, and the scroller reads a turn once only when it arrives complete. Never add aria-live to the turns.",
+      "Pass `empty` for a new conversation: an EmptyState, with suggested prompts as chips.",
     ],
   },
   sortable: {
@@ -1866,6 +1881,12 @@ const keyboard: Record<string, [string, string][]> = {
     ["`Tab`", "From the text to the attach button, the toolbar, then Send (Stop while the answer streams)"],
     ["`Enter` / `Space`", "On Send or Stop: send, or stop the answer; on a file's ×: remove it, focus back in the text"],
   ],
+  "message-scroller": [
+    ["`Tab`", "Focus the conversation (one stop), then the turns' own controls, then Jump to latest"],
+    ["`↑` / `↓`, `PageUp` / `PageDown`", "Scroll the focused conversation; scrolling up stops following"],
+    ["`End`", "To the bottom: following starts again"],
+    ["`Enter` / `Space`", "On Jump to latest: to the newest turn, focus back on the conversation"],
+  ],
   filters: [
     ["`Enter`", "On + Filter, open the picker; on a part of a chip, reopen that step"],
     ["`↑` / `↓`", "Move through fields, operators or values; type to narrow them"],
@@ -1957,6 +1978,7 @@ const captions: Record<string, Record<string, string>> = {
   "status-eyebrow": { StatusInlineInRows: "InlineStatus in rows", StatusEyebrowOverTitle: "StatusEyebrow over a title" },
   "log-viewer": { LogViewerRosout: "/rosout", LogViewerZhTw: "Traditional Chinese (zh-TW)", LogViewerHundredThousand: "100,000 lines" },
   "streaming-text": { StreamingTextZhTw: "Traditional Chinese (zh-TW)" },
+  "message-scroller": { MessageScrollerZhTw: "Traditional Chinese (zh-TW)" },
   "prompt-composer": { PromptComposerZhTw: "Traditional Chinese (zh-TW)" },
   "message-actions": { MessageActionsZhTw: "Traditional Chinese (zh-TW)" },
   message: { MessageZhTw: "Traditional Chinese (zh-TW)" },

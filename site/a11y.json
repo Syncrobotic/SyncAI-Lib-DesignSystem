@@ -1095,6 +1095,19 @@
     "tabStops": 6,
     "live": true
   },
+  "message-scroller": {
+    "roles": [
+      "article",
+      "button",
+      "group",
+      "list",
+      "listitem",
+      "log",
+      "status"
+    ],
+    "tabStops": 9,
+    "live": true
+  },
   "sortable": {
     "roles": [
       "button",

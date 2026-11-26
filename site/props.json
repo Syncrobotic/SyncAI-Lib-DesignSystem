@@ -8092,6 +8092,94 @@
    "inherits": []
   }
  ],
+ "message-scroller": [
+  {
+   "name": "MessageScroller",
+   "props": [
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "description": "The turns, oldest first: Message elements (or your own rows, each a direct child)."
+    },
+    {
+     "name": "empty",
+     "type": "ReactNode",
+     "description": "Shown when there is no turn yet: an EmptyState, suggested prompts."
+    },
+    {
+     "name": "hasEarlier",
+     "type": "boolean",
+     "default": "false",
+     "description": "Older turns exist: shows Load earlier at the top."
+    },
+    {
+     "name": "loadingEarlier",
+     "type": "boolean",
+     "default": "false",
+     "description": ""
+    },
+    {
+     "name": "onLoadEarlier",
+     "type": "() => void",
+     "description": "Put the older turns in front of `children`; the view stays where it is."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the count of new turns."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<MessageScrollerLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "name",
+       "type": "string",
+       "default": "\"Conversation\"",
+       "description": "The log's name."
+      },
+      {
+       "name": "jump",
+       "type": "string",
+       "default": "\"Jump to latest\"",
+       "description": "The button that goes back to the newest turn."
+      },
+      {
+       "name": "newCount",
+       "type": "(n: number, locale: string | undefined) => string",
+       "default": "(n, locale) => `${formatCount(n, { locale })} new`",
+       "description": "After it, the turns that arrived since the reader scrolled up: \"3 new\"."
+      },
+      {
+       "name": "jumpLabel",
+       "type": "(n: number, locale: string | undefined) => string",
+       "default": "(n, locale) => (n > 0 ? `Jump to latest, ${formatCount(n, { locale })} new ${n === 1 ? \"message\" : \"messages\"}` : \"Jump to latest\")",
+       "description": "Its accessible name: \"Jump to latest, 3 new messages\"."
+      },
+      {
+       "name": "loadEarlier",
+       "type": "string",
+       "default": "\"Load earlier messages\"",
+       "description": ""
+      },
+      {
+       "name": "newTurn",
+       "type": "(name: string, text: string) => string",
+       "default": "(name, text) => (text ? `${name}: ${text}` : name)",
+       "description": "What is read when a turn arrives complete: its name (\"Assistant, 14:02\") and its text."
+      }
+     ]
+    },
+    {
+     "name": "contentClassName",
+     "type": "string",
+     "description": "On the list of turns: its gap and padding."
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "meter": [
   {
    "name": "Meter",
