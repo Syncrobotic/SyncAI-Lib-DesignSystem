@@ -108,9 +108,13 @@
     "roles": [
       "button",
       "img",
+      "list",
+      "listitem",
+      "meter",
+      "region",
       "status"
     ],
-    "tabStops": 5,
+    "tabStops": 8,
     "live": true
   },
   "list": {
