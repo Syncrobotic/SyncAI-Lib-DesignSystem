@@ -1,4 +1,4 @@
-// @syncrobotic/sign-in v0.40.0 · update: npx shadcn add @syncrobotic/sign-in --overwrite
+// @syncrobotic/sign-in v0.45.1 · update: npx shadcn add @syncrobotic/sign-in --overwrite
 "use client"
 
 import * as React from "react"
@@ -15,6 +15,10 @@ import { Separator } from "@/registry/syncrobotic/ui/separator"
 export function SignIn({ product = "Fleet console", onSignIn }: { product?: string; onSignIn?: (method: "sso" | "email", email?: string) => void }) {
   const [email, setEmail] = React.useState("")
   const [error, setError] = React.useState<string>()
+  // The sample's reply (the robot confirming, the server answering); cleared on unmount so it never lands on a page
+  // that is gone.
+  const reply = React.useRef<ReturnType<typeof setTimeout>>(undefined)
+  React.useEffect(() => () => clearTimeout(reply.current), [])
   const [sent, setSent] = React.useState(false)
   const [busy, setBusy] = React.useState(false)
 
@@ -23,7 +27,7 @@ export function SignIn({ product = "Fleet console", onSignIn }: { product?: stri
     if (!/^\S+@\S+\.\S+$/.test(email)) return setError("Enter your work email, e.g. name@example.com")
     setError(undefined)
     setBusy(true)
-    window.setTimeout(() => {
+    reply.current = setTimeout(() => {
       setBusy(false)
       setSent(true)
       onSignIn?.("email", email)

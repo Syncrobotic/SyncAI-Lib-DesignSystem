@@ -2,6 +2,28 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.45.1 · 2026-11-26
+
+Timers that outlived their page, found and kept from coming back.
+
+### Fixed
+- **`sheet-robot-detail`, `map-workspace`, `list-detail`, `auth-invite`, `record-form`, `sign-in` 0.45.1:** the sample's reply (the robot confirming a stop, the slide to release, the server answering a sign-in, an invitation or a save) was a timer nothing kept, so it fired after the block had unmounted, the leak that failed a test run in console-overview (0.43.1). Each is cleared on unmount now; list-detail keeps every pending reply, as several robots can be waiting at once.
+- **`use-long-press`, `ros`, `point-cloud`, `robot-model` 0.45.1:** a comment marks the one timer in each meant to outlive the component (releasing a WebGL context once its canvas is gone, rethrowing an error on a fresh stack). No change in behaviour.
+
+### Changed
+- **CI:** the workflows' token is read only, and only visual-baseline's commit job may write; checkouts that fetch nothing after them drop the token (`persist-credentials: false`), so a dependency's install script during `npm ci` finds none. The registry check installs items with the shadcn CLI in package.json instead of whatever `shadcn@3` npm has that day.
+- **Rules:** `npm run lint:rules` fails on a `setTimeout` in the registry whose handle is thrown away, unless it is an awaited stand-in for a request or a `timer-ok:` comment says why it may outlive the component.
+
+## 0.45.0 · 2026-11-26
+
+Prose in a ResponsiveTable, wrapped on purpose instead of by hand.
+
+### Added
+- **`responsive-table` 0.45.0:** `wrap` on a column, for prose that is the point of the row (a failure's reason, a note). In the table the cell wraps and keeps at least 12rem, so it never narrows to a word a line; on a phone a `meta` column that wraps gets a line of its own under the row's facts, in full, where before it was cut at the end of the meta line with the rest.
+
+### Changed
+- **`agent-run-outcome` 0.45.0, `agent-tool-permissions` 0.45.0:** the failure's reason and the call's arguments use `wrap` instead of classes of their own (`whitespace-normal`, a `block` span in `phoneCell`). They look the same.
+
 ## 0.44.1 · 2026-11-26
 
 The sidebar's handle, without the jump at the fold.

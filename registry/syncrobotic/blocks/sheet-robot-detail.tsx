@@ -1,4 +1,4 @@
-// @syncrobotic/sheet-robot-detail v0.28.0 · update: npx shadcn add @syncrobotic/sheet-robot-detail --overwrite
+// @syncrobotic/sheet-robot-detail v0.45.1 · update: npx shadcn add @syncrobotic/sheet-robot-detail --overwrite
 "use client"
 
 import * as React from "react"
@@ -30,6 +30,10 @@ export function SheetRobotDetail({
   // The stop as in the dock. The robot stands still at the door, so it starts pale ("idle"); a touch stops it, it
   // confirms, and slide to release lets it go again.
   const [stop, setStop] = React.useState<"idle" | "sending" | "stopped">("idle")
+  // The sample's reply (the robot confirming, the server answering); cleared on unmount so it never lands on a page
+  // that is gone.
+  const reply = React.useRef<ReturnType<typeof setTimeout>>(undefined)
+  React.useEffect(() => () => clearTimeout(reply.current), [])
   return (
     <div className="flex min-h-[var(--app-shell-height,100dvh)] items-start bg-background p-6">
       <Sheet defaultOpen={defaultOpen}>
@@ -78,7 +82,7 @@ export function SheetRobotDetail({
 
           <SheetFooter className="mt-auto">
             {stop === "stopped" ? (
-              <SlideToRelease tag="9E37" onRelease={() => window.setTimeout(() => setStop("idle"), 500)} />
+              <SlideToRelease tag="9E37" onRelease={() => (reply.current = setTimeout(() => setStop("idle"), 500))} />
             ) : (
               <StopButton
                 state={stop}
@@ -86,7 +90,7 @@ export function SheetRobotDetail({
                 onStop={() => {
                   setStop("sending")
                   // The robot confirms: the app says so to the hand, then offers release.
-                  window.setTimeout(() => {
+                  reply.current = setTimeout(() => {
                     feedback("stopConfirmed")
                     setStop("stopped")
                   }, 800)

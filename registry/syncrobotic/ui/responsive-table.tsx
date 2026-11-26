@@ -1,4 +1,4 @@
-// @syncrobotic/responsive-table v0.40.0 · update: npx shadcn add @syncrobotic/responsive-table --overwrite
+// @syncrobotic/responsive-table v0.45.0 · update: npx shadcn add @syncrobotic/responsive-table --overwrite
 "use client"
 
 import * as React from "react"
@@ -22,6 +22,12 @@ export type ResponsiveTableColumn<T> = {
    * row's end, one column) or `hidden`. Keep the meta line to one or two facts.
    */
   phone?: "title" | "meta" | "trailing" | "hidden"
+  /**
+   * Prose that is the point of the row (a failure's reason, a note): it wraps instead of staying on one line. In the
+   * table the cell keeps at least 12rem so it never narrows to a word a line; on a phone a `meta` column that wraps gets
+   * a line of its own under the row's facts, in full, instead of being cut at the end of the meta line.
+   */
+  wrap?: boolean
   /** A shorter form for the phone row ("82 %" where the table cell draws a meter). */
   phoneCell?: (row: T) => React.ReactNode
   /** A sortable column's order (TableHead's `sort`). */
@@ -94,7 +100,7 @@ export function ResponsiveTable<T>({
       <TableHeader>
         <TableRow>
           {columns.map((c) => (
-            <TableHead key={c.id} sort={c.sort} onSort={c.onSort} className={cn(c.align === "end" && "text-right", c.className)}>
+            <TableHead key={c.id} sort={c.sort} onSort={c.onSort} className={cn(c.align === "end" && "text-right", c.wrap && "min-w-48", c.className)}>
               {c.header}
             </TableHead>
           ))}
@@ -116,7 +122,7 @@ export function ResponsiveTable<T>({
           rows.map((row) => (
             <TableRow key={rowKey(row)} data-slot="responsive-table-row">
               {columns.map((c) => (
-                <TableCell key={c.id} className={cn(c.align === "end" && "text-right", c.className)}>
+                <TableCell key={c.id} className={cn(c.align === "end" && "text-right", c.wrap && "min-w-48 py-3 whitespace-normal", c.className)}>
                   {c === titleColumn && onRowClick ? (
                     <button
                       type="button"
@@ -145,7 +151,11 @@ export function ResponsiveTable<T>({
     ) : (
       <ListGroup role="list" aria-label={label}>
         {rows.map((row) => {
-          const meta = metaColumns.map((c) => ({ id: c.id, value: phoneValue(c, row) })).filter((m) => m.value !== null && m.value !== undefined && m.value !== "")
+          const present = (m: { value: React.ReactNode }) => m.value !== null && m.value !== undefined && m.value !== ""
+          const values = metaColumns.map((c) => ({ id: c.id, wrap: c.wrap, value: phoneValue(c, row) })).filter(present)
+          // The facts share one line, cut at its end; prose that wraps follows, a line each, in full.
+          const facts = values.filter((m) => !m.wrap)
+          const prose = values.filter((m) => m.wrap)
           const trailing = trailingColumn ? phoneValue(trailingColumn, row) : undefined
           return (
             // The item draws the hairline, so a row and its actions share one line between rows.
@@ -154,14 +164,18 @@ export function ResponsiveTable<T>({
                 <ListRow
                   title={phoneValue(titleColumn, row)}
                   meta={
-                    meta.length
-                      ? meta.map((m, i) => (
-                          <React.Fragment key={m.id}>
-                            {i > 0 && " · "}
+                    prose.length ? (
+                      <>
+                        {facts.length > 0 && <span className="block truncate">{joined(facts)}</span>}
+                        {prose.map((m) => (
+                          <span key={m.id} className="block whitespace-normal break-words">
                             {m.value}
-                          </React.Fragment>
-                        ))
-                      : undefined
+                          </span>
+                        ))}
+                      </>
+                    ) : facts.length ? (
+                      joined(facts)
+                    ) : undefined
                   }
                   trailing={typeof trailing === "number" ? String(trailing) : trailing}
                   chevron={!!onRowClick}
@@ -191,6 +205,16 @@ export function ResponsiveTable<T>({
       )}
     </div>
   )
+}
+
+/** The meta line's facts, joined with " · ". */
+function joined(items: { id: string; value: React.ReactNode }[]) {
+  return items.map((m, i) => (
+    <React.Fragment key={m.id}>
+      {i > 0 && " · "}
+      {m.value}
+    </React.Fragment>
+  ))
 }
 
 /**

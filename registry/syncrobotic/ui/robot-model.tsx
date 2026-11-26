@@ -1,4 +1,4 @@
-// @syncrobotic/robot-model v0.36.0 · update: npx shadcn add @syncrobotic/robot-model --overwrite
+// @syncrobotic/robot-model v0.45.1 · update: npx shadcn add @syncrobotic/robot-model --overwrite
 "use client"
 
 import * as React from "react"
@@ -896,7 +896,7 @@ export function RobotModel({
       stageRef.current = null
       // dispose() frees what three made, not the context: browsers keep only about 16, and one waiting for garbage
       // collection still counts. Released once the canvas has really left the page (Strict Mode re-runs this effect on the
-      // same canvas, which must keep its context).
+      // same canvas, which must keep its context). timer-ok: meant to run after unmount.
       setTimeout(() => {
         if (!canvas.isConnected) renderer.forceContextLoss?.()
       }, 0)
