@@ -1,4 +1,4 @@
-// @syncrobotic/map-workspace v0.40.0 · update: npx shadcn add @syncrobotic/map-workspace --overwrite
+// @syncrobotic/map-workspace v0.45.1 · update: npx shadcn add @syncrobotic/map-workspace --overwrite
 "use client"
 
 import * as React from "react"
@@ -74,6 +74,10 @@ export function MapWorkspace() {
   const [selected, setSelected] = React.useState("7F3A")
   // The stop as in the dock: ready, sending until the robot confirms, then stopped with slide to release.
   const [stop, setStop] = React.useState<"ready" | "sending" | "stopped">("ready")
+  // The sample's reply (the robot confirming, the server answering); cleared on unmount so it never lands on a page
+  // that is gone.
+  const reply = React.useRef<ReturnType<typeof setTimeout>>(undefined)
+  React.useEffect(() => () => clearTimeout(reply.current), [])
   const [list, setList] = React.useState(alarms)
   const robot = robots.find((r) => r.id === selected)!
   const [listOpen, setListOpen] = React.useState(false)
@@ -177,7 +181,7 @@ export function MapWorkspace() {
         <ViewportOverlay position="bottom-right" className="z-10 shrink-0 max-sm:static max-sm:m-4 max-sm:mt-0">
           <div className="pointer-events-auto w-full sm:w-72">
             {stop === "stopped" ? (
-              <SlideToRelease tag={robot.id} onRelease={() => window.setTimeout(() => setStop("ready"), 500)} />
+              <SlideToRelease tag={robot.id} onRelease={() => (reply.current = setTimeout(() => setStop("ready"), 500))} />
             ) : (
               <StopButton
                 state={stop}
@@ -185,7 +189,7 @@ export function MapWorkspace() {
                 onStop={() => {
                   setStop("sending")
                   // The robot confirms: the app says so to the hand, then offers release.
-                  window.setTimeout(() => {
+                  reply.current = setTimeout(() => {
                     feedback("stopConfirmed")
                     setStop("stopped")
                   }, 800)

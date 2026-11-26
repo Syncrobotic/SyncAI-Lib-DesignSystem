@@ -1,4 +1,4 @@
-// @syncrobotic/ros v0.36.0 · update: npx shadcn add @syncrobotic/ros --overwrite
+// @syncrobotic/ros v0.45.1 · update: npx shadcn add @syncrobotic/ros --overwrite
 /*
   ROS and ROS 2 in the browser, without a ROS library: the rosbridge v2 protocol (rosbridge_suite, which serves both ROS 1
   and ROS 2) spoken directly over the browser's WebSocket, and pure converters from the messages to the props the kit's
@@ -255,6 +255,7 @@ export function parseRosJson(text: string): unknown {
 
 function report(error: unknown) {
   // A listener that throws must not stop the others or the socket's handler; the error still reaches the console.
+  // timer-ok: rethrows on a fresh stack so the console shows it; nothing to clear.
   if (typeof reportError === "function") reportError(error)
   else setTimeout(() => {
     throw error

@@ -1,4 +1,4 @@
-// @syncrobotic/agent-tool-permissions v0.43.0 · update: npx shadcn add @syncrobotic/agent-tool-permissions --overwrite
+// @syncrobotic/agent-tool-permissions v0.45.0 · update: npx shadcn add @syncrobotic/agent-tool-permissions --overwrite
 "use client"
 
 import * as React from "react"
@@ -292,7 +292,8 @@ export function AgentToolPermissionsContent({
       header: "Arguments",
       phone: "hidden",
       cell: (c) => <Code className="text-xs">{c.args}</Code>,
-      className: "hidden whitespace-normal lg:table-cell",
+      wrap: true,
+      className: "hidden lg:table-cell",
     },
     {
       id: "result",

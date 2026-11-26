@@ -1,4 +1,4 @@
-// @syncrobotic/use-long-press v0.5.1 · update: npx shadcn add @syncrobotic/use-long-press --overwrite
+// @syncrobotic/use-long-press v0.45.1 · update: npx shadcn add @syncrobotic/use-long-press --overwrite
 "use client"
 
 import * as React from "react"
@@ -77,6 +77,7 @@ export function useLongPress({ onPress, onLongPress, duration = 2000, showAfter 
     if (e.key !== "Enter" && e.key !== " ") return
     stop()
     // Space clicks on key up, after this handler; clear the flag once that click has passed.
+    // timer-ok: one tick, sets a ref only, harmless after unmount.
     window.setTimeout(() => (byKey.current = false), 0)
   }
 

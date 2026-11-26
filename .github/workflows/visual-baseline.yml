@@ -8,11 +8,10 @@ name: visual-baseline
 on:
   workflow_dispatch:
 
+# Read only for the jobs that shoot (they run `npm ci`, so a dependency's install script gets no token worth stealing);
+# only the job that commits may write.
 permissions:
-  contents: write
-  # A push made with this workflow's token starts no workflows, so the pull request would wait on a check that never runs.
-  # Dispatching ci is the one start that token is allowed: its checks land on the new commit.
-  actions: write
+  contents: read
 
 jobs:
   shots:
@@ -28,6 +27,7 @@ jobs:
     steps:
       - run: command -v git || (apt-get update && apt-get install -y --no-install-recommends git)
       - uses: actions/checkout@v7
+        with: { persist-credentials: false }
       - uses: actions/setup-node@v7
         with: { node-version: 22, cache: npm }
       - run: npm ci
@@ -50,6 +50,7 @@ jobs:
     env: { HOME: /root }
     steps:
       - uses: actions/checkout@v7
+        with: { persist-credentials: false }
       - uses: actions/setup-node@v7
         with: { node-version: 22, cache: npm }
       - run: npm ci
@@ -66,6 +67,7 @@ jobs:
     env: { HOME: /root }
     steps:
       - uses: actions/checkout@v7
+        with: { persist-credentials: false }
       - uses: actions/setup-node@v7
         with: { node-version: 22, cache: npm }
       - run: npm ci
@@ -76,6 +78,11 @@ jobs:
   commit:
     needs: [shots, thumbs, block-thumbs]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      # A push made with this workflow's token starts no workflows, so the pull request would wait on a check that never
+      # runs. Dispatching ci is the one start that token is allowed: its checks land on the new commit.
+      actions: write
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7

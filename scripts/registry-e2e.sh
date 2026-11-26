@@ -18,7 +18,8 @@ cd "$WORK"
 npm install --no-audit --no-fund --loglevel=error
 ITEMS=$(node -e "console.log(require('$ROOT/registry.json').items.map(i => '@syncrobotic/' + i.name).join(' '))")
 # shellcheck disable=SC2086
-npx --yes shadcn@3 add $ITEMS --yes --overwrite
+# The CLI the registry is built with (package.json), not whatever shadcn@3 is on npm today.
+"$ROOT/node_modules/.bin/shadcn" add $ITEMS --yes --overwrite
 npx tsc --noEmit -p .
 NEXT_TELEMETRY_DISABLED=1 npx next build
 echo "Registry e2e passed: $(echo $ITEMS | wc -w) items installed, typechecked and built"
