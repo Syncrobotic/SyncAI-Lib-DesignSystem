@@ -182,6 +182,9 @@ const meta: Record<string, Meta> = {
   "agent-trace": { viewport: "desktop", height: 820},
   "agent-approval": { viewport: "desktop", height: 880},
   "agent-chat": { viewport: "desktop", height: 880},
+  "agent-run-gate": { viewport: "desktop", height: 1200},
+  "agent-run-outcome": { viewport: "desktop", height: 960},
+  "agent-tool-permissions": { viewport: "desktop", height: 1400},
   // Application, batch 3. Dialogs and sheets open on load in the preview without taking the page's focus.
   "app-shell-mobile-tabs": { viewport: "mobile", height: 720},
   "stats-meters": {
@@ -259,7 +262,10 @@ const shellView: ThumbView = { x: 248, width: 480 }
 const inShell = new Set([
   "agent-approval",
   "agent-chat",
+  "agent-run-gate",
+  "agent-run-outcome",
   "agent-runs",
+  "agent-tool-permissions",
   "agent-trace",
   "console-overview",
   "data-catalog",

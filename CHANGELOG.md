@@ -2,6 +2,18 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.43.0 · 2026-11-26
+
+More for AI agents: a run that waits for a person before it moves robots, what a fleet run did robot by robot, what an agent may do on its own, and a record of what it did.
+
+### Added
+- **`agent-run-gate` 0.43.0 (new block, AI agents):** an agent run step by step (Trace) that stops before a step that would move robots. The gate sits under the step it holds: what changes robot by robot (ResponsiveTable), why, the facts it used, and when it expires; steps further down that also move robots say they will wait for a person. Approve continues the run; Revise sends it back with a reason and keeps waiting; Deny asks why, then marks the held step and every step that depends on it Skipped, not Failed, each with the reason, while the steps that do not depend on it still run. Past its expiry nothing applies itself and the buttons are gone. The reason box takes focus, Esc returns to the button that opened it, and a decision moves focus to the line that says what happened. `AgentRunGate` is the page, `AgentRunGateContent` the run without the sample frame; the run is a deterministic script (`script={false}` for your own events) whose steps settle at once under reduced motion.
+- **`agent-run-outcome` 0.43.0 (new block, AI agents):** the result of a fleet run robot by robot: succeeded, failed with the robot's reason, skipped with why, and not verified (the command was sent, no confirmation came back), which is never counted as a success. A MetricCard per result (failed and not verified take their status shape), the robots that need someone first in a ResponsiveTable, and Retry failed, which says how many and sends the command again to the failed robots only (not verified ones are left out: the command may have arrived). A link leads back to the run's steps. `AgentRunOutcome` is the page, `AgentRunOutcomeContent` the result without the frame; `retry` takes your API's call. Retry failed moves robots, so it asks first and names them ("Send the command again to 2 robots?").
+- **`agent-tool-permissions` 0.43.0 (new block, AI agents):** which tools each agent may call, one SegmentedControl per tool, labelled with the tool and the agent: Auto (on its own), Ask (a person approves each call) or Blocked. A tool that moves or pauses a robot is never Auto: its Auto segment is unavailable and the row says why beside a lock, read with the control. Changes are counted until Save or Discard, each changed row says what it was, and saving a change that loosens a policy (Blocked to Ask, Ask to Auto) lists them in a confirmation that asks for the person's password. Under it, the call audit in a ResponsiveTable: time, agent, tool, the arguments in Code and the result as a shape and a word (allowed automatically, approved or denied by a person, blocked by policy, the only one in colour), narrowed by agent, with an inline EmptyState when an agent has made no calls. `AgentToolPermissions` is the page in the app shell, `AgentToolPermissionsContent` the content for a product's own shell. The save row pins under the shell's top bar, so Save stays in reach in a long list.
+
+### Changed
+- **Tests:** markdown's linear-time check alternates the two input sizes and keeps the best of seven each, so a busy machine no longer fails it (it did once in a full parallel run); linear (about 4) and quadratic (about 16) are still told apart.
+
 ## 0.42.0 · 2026-11-26
 
 Dependencies: the major versions the kit was behind on, so a product on the current toolchain builds the items as they are.

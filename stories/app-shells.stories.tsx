@@ -6,6 +6,9 @@ import { DataCatalog, DataCatalogContent } from "@/registry/syncrobotic/blocks/d
 import { DatasetDetail } from "@/registry/syncrobotic/blocks/dataset-detail"
 import { GovernanceTodo } from "@/registry/syncrobotic/blocks/governance-todo"
 import { AgentChat, AgentChatContent, AgentChatSheet } from "@/registry/syncrobotic/blocks/agent-chat"
+import { AgentRunGate, sampleAgentRun } from "@/registry/syncrobotic/blocks/agent-run-gate"
+import { AgentRunOutcome, sampleAgentRunOutcome } from "@/registry/syncrobotic/blocks/agent-run-outcome"
+import { AgentToolPermissions, AgentToolPermissionsContent } from "@/registry/syncrobotic/blocks/agent-tool-permissions"
 import { SignIn } from "@/registry/syncrobotic/blocks/sign-in"
 import { ErrorPage, LoadingPage, NoAccessPage, NotFoundPage, OfflinePage } from "@/registry/syncrobotic/blocks/status-pages"
 import { RecordForm } from "@/registry/syncrobotic/blocks/record-form"
@@ -164,6 +167,44 @@ export const AgentChatInOwnFrame: S = {
       <div className="flex h-128 flex-col overflow-hidden rounded-md bg-card ring-1 ring-border">
         <AgentChatContent />
       </div>
+    </div>
+  ),
+}
+
+// An agent run waiting at its approval gate (agent-run-gate): nothing runs until a decision, so the picture is still.
+// Approve and the remaining steps run one by one; Deny skips the held step and the steps that depend on it.
+export const AgentRunGateWaiting: S = { render: () => <AgentRunGate /> }
+// The same gate past its expiry: nothing applied itself, and the buttons are gone.
+export const AgentRunGateExpired: S = {
+  render: () => (
+    <AgentRunGate
+      run={{ ...sampleAgentRun, steps: sampleAgentRun.steps.map((s) => (s.approval ? { ...s, approval: { ...s.approval, expiresInMin: 0 } } : s)) }}
+    />
+  ),
+}
+// A fleet run's result robot by robot (agent-run-outcome): failures and the robot nobody confirmed first, Retry failed above.
+export const AgentRunOutcomeScreen: S = { render: () => <AgentRunOutcome /> }
+// Nothing failed: Retry failed is disabled and says why.
+export const AgentRunOutcomeAllDone: S = {
+  render: () => (
+    <AgentRunOutcome
+      run={{
+        ...sampleAgentRunOutcome,
+        robots: sampleAgentRunOutcome.robots.map((r) =>
+          r.result === "failed" || r.result === "unverified" ? { ...r, result: "succeeded" as const, detail: "Docked at Dock 4" } : r,
+        ),
+      }}
+    />
+  ),
+}
+// Which tools each agent may call (agent-tool-permissions): the saved policies, nothing changed yet, so the picture is the
+// same on every run. Tools that move a robot show Auto unavailable and say why.
+export const AgentToolPermissionsScreen: S = { render: () => <AgentToolPermissions /> }
+// The content alone in a product's own frame, with no calls yet: the audit's empty state.
+export const AgentToolPermissionsInOwnFrame: S = {
+  render: () => (
+    <div className="p-4">
+      <AgentToolPermissionsContent calls={[]} />
     </div>
   ),
 }
