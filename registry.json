@@ -737,8 +737,8 @@
     {
       "name": "status-eyebrow",
       "type": "registry:component",
-      "title": "Status eyebrow",
-      "description": "The state word above a headline, and the same status inside a list row.",
+      "title": "Inline status and eyebrow",
+      "description": "InlineStatus: a state that changes (a robot's status, a job's state) as its shape and its word with no box, in a row, a table cell or beside a page title. StatusEyebrow: the same state above a headline. Only warning and danger are coloured.",
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/status-glyph"
@@ -750,8 +750,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "InlineStatus takes `className` (its size in a 12 px meta line) and carries `data-slot=\"inline-status\"`; the item is titled Inline status and eyebrow, so InlineStatus, the one way to write a state, is found by its name."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -966,8 +971,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "DockActions: both buttons are medium (500), as every button, and the secondary's words are foreground; the block, not a heavier weight, marks the primary. Bold stays the stop's."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -4567,7 +4577,7 @@
       "name": "page-header",
       "type": "registry:ui",
       "title": "Page header",
-      "description": "The block a page opens with: breadcrumb above, one h1 and a line, meta pills (a link with href), actions at the right. No label above the title.",
+      "description": "The block a page opens with: breadcrumb above, one h1 and a line, its one status (InlineStatus) and badges beside the title, meta pills for facts (a link with href), actions at the right. No label above the title.",
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/status-glyph"
@@ -4579,8 +4589,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "`status`: the state of what the page shows, one InlineStatus beside the title (at most one), and `badges` for fixed attributes after it. MetaPill's `tone` is deprecated: a state in a boxed pill reads as one more fact."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -8384,8 +8399,13 @@
         }
       ],
       "meta": {
-        "version": "0.39.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "The number rule names formatNumber for any number that is not a count and bans toLocaleString(); a header's one status is PageHeader's `status` (InlineStatus) and its badges `badges`; checklist line 16: a state is an InlineStatus, never a tinted badge or a toned MetaPill."
+          },
           {
             "version": "0.39.0",
             "date": "2026-11-25",

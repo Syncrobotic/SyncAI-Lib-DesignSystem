@@ -6,11 +6,12 @@ export type Overview = { what: string; use: string[]; instead?: string[]; notes?
 
 export const overviews: Record<string, Overview> = {
   "page-header": {
-    what: "The top of a page: where it sits, what it is, the facts that frame it, and its actions.",
+    what: "The top of a page: where it sits, what it is, its state (one InlineStatus), the facts that frame it, and its actions.",
     use: [
       "The first thing in a page's content, under the app's top bar.",
       "A dataset, robot or site page whose counts and owner matter at a glance.",
       "A fact that opens what it counts: a MetaPill with `href`.",
+      "A robot, job or dataset whose state matters: `status` with an InlineStatus.",
     ],
     instead: ["A title inside a card: the card's own heading.", "The app's own frame: `app-shell`.", "A section further down the page: `section-header`."],
   },

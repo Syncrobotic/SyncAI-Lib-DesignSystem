@@ -8164,9 +8164,19 @@
      "description": "A Breadcrumb, shown above the title."
     },
     {
+     "name": "status",
+     "type": "ReactNode",
+     "description": "The state of what the page shows (a robot, a job, a dataset), beside the title: one `InlineStatus`, at most one. Its shape and word, no box, so it never reads as one more fact in the meta row."
+    },
+    {
+     "name": "badges",
+     "type": "ReactNode",
+     "description": "Badges for fixed attributes (an environment as an outline, Beta, a version), after the title and its status."
+    },
+    {
      "name": "meta",
      "type": "ReactNode",
-     "description": "MetaPills: counts, owner, last update, a status."
+     "description": "MetaPills: facts about the page, such as counts, owner and last update. A state goes in `status`, not here."
     },
     {
      "name": "actions",
@@ -8194,7 +8204,7 @@
     {
      "name": "tone",
      "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
-     "description": ""
+     "description": "Deprecated: A state in a boxed pill reads as one more fact. Put it in PageHeader's `status` (an InlineStatus); `tone` still draws its glyph and colour until 1.0."
     },
     {
      "name": "icon",
@@ -11340,7 +11350,7 @@
     {
      "name": "tone",
      "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
-     "description": ""
+     "description": "Deprecated: Use `status`."
     },
     {
      "name": "children",

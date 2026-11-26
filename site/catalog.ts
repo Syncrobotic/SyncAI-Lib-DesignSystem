@@ -397,7 +397,8 @@ const entries: Record<string, Entry> = {
     examples: { file: "page-header", prefix: "PageHeader" },
     rules: [
       "One per page, first in the content: the breadcrumb says where, the h1 says what. No label above the title.",
-      "Meta pills are facts (counts, owner, last update); a status pill takes a tone and only warning and danger are coloured.",
+      "A state (the robot's, the job's, the dataset's) goes in `status`: one `InlineStatus` beside the title, at most one, never a pill or a badge. Fixed attributes (Production as an outline, Beta, a version) go in `badges`, after it.",
+      "Meta pills are facts (counts, owner, last update). MetaPill's `tone` is deprecated: a state in a boxed pill reads as one more fact; move it to `status`.",
       "A fact that leads somewhere (\"2 compliance items open\" to that tab) takes `href` (and `linkAs` for your router): the pill becomes an underlined link with the focus ring and a 36 px target (44 on touch), the same height on screen. Never wrap a pill in your own link.",
       "Actions sit at the right; the page's one primary action may be among them.",
     ],

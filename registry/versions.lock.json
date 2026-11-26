@@ -76,8 +76,8 @@
     "hash": "c502899831e0d82b"
   },
   "status-eyebrow": {
-    "version": "0.13.0",
-    "hash": "dc80641e968d9ee8"
+    "version": "0.40.0",
+    "hash": "e2c5ce7b3bad2569"
   },
   "tray": {
     "version": "0.5.0",
@@ -96,8 +96,8 @@
     "hash": "0cce5e1811881eae"
   },
   "dock": {
-    "version": "0.8.0",
-    "hash": "c1f253777684177c"
+    "version": "0.40.0",
+    "hash": "5c32f3757b3dfa99"
   },
   "island": {
     "version": "0.35.0",
@@ -380,8 +380,8 @@
     "hash": "9e167fac95f73352"
   },
   "page-header": {
-    "version": "0.32.0",
-    "hash": "1f92ba0794ccdc8d"
+    "version": "0.40.0",
+    "hash": "85a1dde84d1c1e07"
   },
   "section-header": {
     "version": "0.39.0",
@@ -644,8 +644,8 @@
     "hash": "26224425b5d61273"
   },
   "agent-skill": {
-    "version": "0.39.0",
-    "hash": "d867aa59c0698d62"
+    "version": "0.40.0",
+    "hash": "bcc97813ea04a0e3"
   },
   "line-chart-telemetry": {
     "version": "0.35.0",
