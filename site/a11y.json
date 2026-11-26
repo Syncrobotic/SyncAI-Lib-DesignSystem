@@ -531,7 +531,8 @@
       "link",
       "list",
       "listitem",
-      "navigation"
+      "navigation",
+      "separator"
     ],
     "tabStops": 14,
     "live": false

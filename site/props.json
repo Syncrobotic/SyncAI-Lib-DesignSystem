@@ -11597,7 +11597,13 @@
      "name": "cookieName",
      "type": "string | null",
      "default": "SIDEBAR_COOKIE_NAME",
-     "description": "The cookie that keeps the choice for a week. null keeps it for this page only."
+     "description": "The cookie that keeps the choice for a week (and `<name>_width` the width). null keeps them for this page only."
+    },
+    {
+     "name": "defaultWidth",
+     "type": "number",
+     "default": "WIDTH.start",
+     "description": "The open column's width at first, in px (200 to 320, default 240). A stored width (the cookie) wins over it."
     },
     {
      "name": "keyboardShortcut",
@@ -11645,6 +11651,18 @@
        "type": "string",
        "default": "\"Open navigation\"",
        "description": "The trigger on phones, where it opens the sheet."
+      },
+      {
+       "name": "resize",
+       "type": "string",
+       "default": "\"Resize sidebar\"",
+       "description": "SidebarRail, the handle beside the sidebar (a window splitter)."
+      },
+      {
+       "name": "drag",
+       "type": "string",
+       "default": "\"Drag to resize\"",
+       "description": "The handle's tooltip, under collapse or expand."
       }
      ]
     }
@@ -11666,7 +11684,7 @@
      "name": "variant",
      "type": "\"floating\" | \"sidebar\"",
      "default": "\"sidebar\"",
-     "description": "sidebar (default): a column with a hairline beside the page. floating: a raised panel (give the provider `gap-2 p-2`)."
+     "description": "sidebar (default): a column with a hairline beside the page. floating: a raised panel (give the provider `gap-2 p-2`; SidebarRail sits in the 8 px gap)."
     },
     {
      "name": "collapsible",
@@ -11697,7 +11715,7 @@
    "name": "SidebarRail",
    "props": [],
    "inherits": [
-    "<button>"
+    "<div>"
    ]
   },
   {
