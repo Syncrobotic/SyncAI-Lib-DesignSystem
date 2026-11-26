@@ -3,7 +3,7 @@
 
 import * as React from "react"
 import { MapPin, Pencil, Search, SearchX, Trash2 } from "lucide-react"
-import { formatCount } from "@/registry/syncrobotic/lib/format-count"
+import { formatCount } from "@/registry/syncrobotic/lib/format-number"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { StatusGlyph, type Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"

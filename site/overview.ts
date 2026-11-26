@@ -1338,7 +1338,7 @@ export const overviews: Record<string, Overview> = {
     use: ["A search sent to a server when the typing stops (autocomplete's `debounce` uses it).", "Autosave after edits pause."],
     instead: ["Something the person must see at once: update it directly, never debounced."],
   },
-  "format-count": {
+  "format-number": {
     what: "The kit's one number path: formatCount for a count (135,287, or 135K where space is short), formatNumber for any other number, both through Intl.NumberFormat, English without a locale.",
     use: [
       "A count in a table, a header, a detail page or a figure: `formatCount(n, { locale })`.",

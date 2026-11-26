@@ -1,7 +1,7 @@
 // @syncrobotic/share-bar v0.40.0 · update: npx shadcn add @syncrobotic/share-bar --overwrite
 import type * as React from "react"
 import { cn } from "@/lib/utils"
-import { formatNumber } from "@/registry/syncrobotic/lib/format-count"
+import { formatNumber } from "@/registry/syncrobotic/lib/format-number"
 
 /** The chart palette: the accent, two graphite steps, then the light grey for "other" (slot 4). */
 const tones = {

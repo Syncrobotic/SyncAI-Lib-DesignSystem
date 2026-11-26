@@ -1,6 +1,6 @@
 // @syncrobotic/meter v0.40.0 · update: npx shadcn add @syncrobotic/meter --overwrite
 import { cn } from "@/lib/utils"
-import { formatNumber } from "@/registry/syncrobotic/lib/format-count"
+import { formatNumber } from "@/registry/syncrobotic/lib/format-number"
 import { StatusGlyph, statusText } from "@/registry/syncrobotic/shell/status-glyph"
 
 /** How a level reads: neutral, or past a threshold. */

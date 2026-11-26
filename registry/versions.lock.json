@@ -19,9 +19,9 @@
     "version": "0.36.0",
     "hash": "b52e10ecdfe0c777"
   },
-  "format-count": {
+  "format-number": {
     "version": "0.40.0",
-    "hash": "0fb66e35479b09a0"
+    "hash": "41012eb8151d76c2"
   },
   "input-modality": {
     "version": "0.36.0",
@@ -33,7 +33,7 @@
   },
   "labels-zh-tw": {
     "version": "0.40.0",
-    "hash": "678da13c11cf32b1"
+    "hash": "ac32f0528c5bf972"
   },
   "ros": {
     "version": "0.36.0",
@@ -93,7 +93,7 @@
   },
   "teleop-pad": {
     "version": "0.40.0",
-    "hash": "0cce5e1811881eae"
+    "hash": "f1851d99a13964bb"
   },
   "dock": {
     "version": "0.40.0",
@@ -117,7 +117,7 @@
   },
   "geo-map": {
     "version": "0.40.0",
-    "hash": "6584e136000592ec"
+    "hash": "9c291c7f4dd6aac1"
   },
   "spinner": {
     "version": "0.23.0",
@@ -225,7 +225,7 @@
   },
   "meter": {
     "version": "0.40.0",
-    "hash": "c6f6424668edab24"
+    "hash": "90e51336b004ead7"
   },
   "metric-card": {
     "version": "0.32.0",
@@ -261,15 +261,15 @@
   },
   "chart": {
     "version": "0.40.0",
-    "hash": "26cabfc925b26c93"
+    "hash": "de452a3c7fef169e"
   },
   "streaming-chart": {
     "version": "0.40.0",
-    "hash": "ea720d4f4a4da469"
+    "hash": "dfb28c0233c1ef02"
   },
   "attitude": {
     "version": "0.40.0",
-    "hash": "006512f2fe989a15"
+    "hash": "635766c16b6a2448"
   },
   "tabs": {
     "version": "0.36.0",
@@ -277,7 +277,7 @@
   },
   "pagination": {
     "version": "0.40.0",
-    "hash": "4168e9f5f8c297ca"
+    "hash": "914c1a946e221a19"
   },
   "breadcrumb": {
     "version": "0.31.0",
@@ -309,7 +309,7 @@
   },
   "waypoint-editor": {
     "version": "0.40.0",
-    "hash": "9407a136b4e8e4ba"
+    "hash": "bd41c730074d8f33"
   },
   "dialog": {
     "version": "0.32.0",
@@ -384,24 +384,24 @@
     "hash": "b1a9386f06c81b6b"
   },
   "section-header": {
-    "version": "0.39.0",
-    "hash": "352cb68c139952c1"
+    "version": "0.40.0",
+    "hash": "f4494b59a670761b"
   },
   "chip-group": {
     "version": "0.40.0",
-    "hash": "9f581eb0c2a3b1dc"
+    "hash": "58c7c1faa6ffbed3"
   },
   "share-bar": {
     "version": "0.40.0",
-    "hash": "1077e9345c7e3f01"
+    "hash": "03d58fb42cde48b8"
   },
   "bar-list": {
     "version": "0.40.0",
-    "hash": "93d0769b2584af94"
+    "hash": "781982e1ab664217"
   },
   "load-more": {
     "version": "0.40.0",
-    "hash": "8816396d5e37a8b1"
+    "hash": "301def8a3cbb53d4"
   },
   "restricted-preview": {
     "version": "0.32.0",
@@ -433,19 +433,19 @@
   },
   "camera-wall": {
     "version": "0.40.0",
-    "hash": "de4577e619e6b4fd"
+    "hash": "046a25d883268496"
   },
   "joint-state": {
     "version": "0.40.0",
-    "hash": "dde4b4a70785b56e"
+    "hash": "0619d94c2791913b"
   },
   "diagnostics": {
     "version": "0.40.0",
-    "hash": "396e9b2575622272"
+    "hash": "7721b86828fcdcad"
   },
   "point-cloud": {
     "version": "0.40.0",
-    "hash": "0f2e7f8c306c85f8"
+    "hash": "6ed4baf038e49b0e"
   },
   "robot-model": {
     "version": "0.36.0",
@@ -461,11 +461,11 @@
   },
   "filters": {
     "version": "0.40.0",
-    "hash": "abffbb66eb3c11f2"
+    "hash": "f0022fa276ab3514"
   },
   "facets": {
     "version": "0.40.0",
-    "hash": "9402e347b513c5e7"
+    "hash": "94be6c55e7ea75c0"
   },
   "search-field": {
     "version": "0.28.0",
@@ -509,11 +509,11 @@
   },
   "log-viewer": {
     "version": "0.40.0",
-    "hash": "aa1d4c08f0c062ce"
+    "hash": "772b8d5c4d959d0b"
   },
   "streaming-text": {
     "version": "0.40.0",
-    "hash": "fca72b0a875e9836"
+    "hash": "b0b654584f986b37"
   },
   "sortable": {
     "version": "0.32.0",
@@ -569,7 +569,7 @@
   },
   "fleet-table": {
     "version": "0.40.0",
-    "hash": "e1ae573affc33feb"
+    "hash": "bfe56962ebe9144c"
   },
   "robot-status-card": {
     "version": "0.40.0",
@@ -609,7 +609,7 @@
   },
   "data-catalog": {
     "version": "0.40.0",
-    "hash": "53e3577151c142a0"
+    "hash": "91638db7c38fdf0f"
   },
   "dataset-detail": {
     "version": "0.40.0",
@@ -621,7 +621,7 @@
   },
   "governance-todo": {
     "version": "0.40.0",
-    "hash": "c2ba5c3dbce5b4f3"
+    "hash": "addd94c553e59659"
   },
   "settings-page": {
     "version": "0.40.0",
@@ -645,7 +645,7 @@
   },
   "agent-skill": {
     "version": "0.40.0",
-    "hash": "021e29b82c9990d9"
+    "hash": "ccfa9950866c8707"
   },
   "line-chart-telemetry": {
     "version": "0.35.0",
@@ -697,7 +697,7 @@
   },
   "sparkline-table": {
     "version": "0.40.0",
-    "hash": "d3f5f0e873aec3c7"
+    "hash": "a80bf138e28c1936"
   },
   "status-tracker-uptime": {
     "version": "0.17.2",
@@ -745,7 +745,7 @@
   },
   "stats-filtered": {
     "version": "0.40.0",
-    "hash": "a05c8d1e8d1c7d66"
+    "hash": "afbd72d7149a17f0"
   },
   "card-site": {
     "version": "0.32.0",
@@ -785,7 +785,7 @@
   },
   "settings-billing": {
     "version": "0.40.0",
-    "hash": "82f50a6f70ba4b3e"
+    "hash": "efcdda2a5a2e3a4b"
   },
   "notification-center": {
     "version": "0.40.0",
@@ -809,7 +809,7 @@
   },
   "sheet-filters": {
     "version": "0.40.0",
-    "hash": "617f07ff75bf83db"
+    "hash": "cca1b760088ccb68"
   },
   "timeline-activity": {
     "version": "0.40.0",
@@ -817,7 +817,7 @@
   },
   "timeline-audit": {
     "version": "0.40.0",
-    "hash": "b4ede202a765c0e4"
+    "hash": "51739ebe545bc0f3"
   },
   "wizard-commission": {
     "version": "0.40.0",
@@ -841,7 +841,7 @@
   },
   "incident-queue": {
     "version": "0.40.0",
-    "hash": "b6ee832d44092e7e"
+    "hash": "d9d89e6bd32d1d28"
   },
   "incident-detail": {
     "version": "0.28.0",
@@ -849,11 +849,11 @@
   },
   "maintenance-due": {
     "version": "0.40.0",
-    "hash": "4c4a022c4efc118d"
+    "hash": "62b26087dac2e833"
   },
   "maintenance-work-order": {
     "version": "0.40.0",
-    "hash": "dfb8eedf012b0c75"
+    "hash": "912babc17aec775d"
   },
   "rollout-overview": {
     "version": "0.40.0",
@@ -865,7 +865,7 @@
   },
   "agent-runs": {
     "version": "0.40.0",
-    "hash": "6c751cfe37d6af98"
+    "hash": "7581ecf293f1abf0"
   },
   "agent-trace": {
     "version": "0.40.0",

@@ -3,7 +3,7 @@
 
 import * as React from "react"
 import { CircleAlert, CreditCard, Download, FileText, RotateCw, TriangleAlert } from "lucide-react"
-import { formatNumber } from "@/registry/syncrobotic/lib/format-count"
+import { formatNumber } from "@/registry/syncrobotic/lib/format-number"
 import { Bone, LoadingLine } from "@/registry/syncrobotic/shell/skeleton"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import type { Status } from "@/registry/syncrobotic/shell/status-glyph"

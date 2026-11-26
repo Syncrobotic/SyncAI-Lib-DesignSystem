@@ -4,7 +4,7 @@
 import * as React from "react"
 import { ChevronDown, ChevronRight, CircleAlert, CircleCheck, CircleStop } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { formatCount, formatNumber } from "@/registry/syncrobotic/lib/format-count"
+import { formatCount, formatNumber } from "@/registry/syncrobotic/lib/format-number"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Spinner } from "@/registry/syncrobotic/ui/spinner"
 

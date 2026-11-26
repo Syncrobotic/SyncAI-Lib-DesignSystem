@@ -8,7 +8,7 @@ import { Bone, LoadingLine } from "@/registry/syncrobotic/shell/skeleton"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 import { RobotArm } from "@/registry/syncrobotic/ui/robot-icons"
 import { formatClockTime } from "@/registry/syncrobotic/lib/clock-time"
-import { numberFormat, resolveLocale } from "@/registry/syncrobotic/lib/format-count"
+import { numberFormat, resolveLocale } from "@/registry/syncrobotic/lib/format-number"
 
 /** The SI unit ROS sends a joint in: radians for a revolute joint, metres for a prismatic one. */
 export type JointUnit = "rad" | "m"

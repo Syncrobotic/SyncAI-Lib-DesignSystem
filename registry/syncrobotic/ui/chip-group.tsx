@@ -4,7 +4,7 @@
 import * as React from "react"
 import { ToggleGroup } from "radix-ui"
 import { cn } from "@/lib/utils"
-import { formatCount } from "@/registry/syncrobotic/lib/format-count"
+import { formatCount } from "@/registry/syncrobotic/lib/format-number"
 
 /**
  * Attributes spread on one chip's button or link: `data-*` hooks for tests and analytics, `title`, `aria-describedby`.

@@ -4,7 +4,7 @@
 import * as React from "react"
 import { Wrench } from "lucide-react"
 import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
-import { formatCount } from "@/registry/syncrobotic/lib/format-count"
+import { formatCount } from "@/registry/syncrobotic/lib/format-number"
 import { StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"

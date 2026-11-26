@@ -1,6 +1,6 @@
 import { renderToString } from "react-dom/server"
 import { afterEach, describe, expect, it, vi } from "vitest"
-import { formatCount, formatNumber, numberFormat, resolveLocale } from "@/registry/syncrobotic/lib/format-count"
+import { formatCount, formatNumber, numberFormat, resolveLocale } from "@/registry/syncrobotic/lib/format-number"
 import { BarList } from "@/registry/syncrobotic/ui/bar-list"
 import { chartNumber } from "@/registry/syncrobotic/ui/chart"
 import { ChipGroup } from "@/registry/syncrobotic/ui/chip-group"

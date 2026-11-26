@@ -1,7 +1,7 @@
 // @syncrobotic/bar-list v0.40.0 · update: npx shadcn add @syncrobotic/bar-list --overwrite
 import type * as React from "react"
 import { cn } from "@/lib/utils"
-import { formatNumber } from "@/registry/syncrobotic/lib/format-count"
+import { formatNumber } from "@/registry/syncrobotic/lib/format-number"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 
 export type BarListItem = {

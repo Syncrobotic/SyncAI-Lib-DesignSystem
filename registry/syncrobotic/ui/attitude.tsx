@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { meterSaid, meterTone, type MeterTone } from "@/registry/syncrobotic/ui/meter"
 import { formatClockTime } from "@/registry/syncrobotic/lib/clock-time"
-import { numberFormat, resolveLocale } from "@/registry/syncrobotic/lib/format-count"
+import { numberFormat, resolveLocale } from "@/registry/syncrobotic/lib/format-number"
 import { usePrefersReducedMotion } from "@/registry/syncrobotic/hooks/use-reduced-motion"
 
 /*

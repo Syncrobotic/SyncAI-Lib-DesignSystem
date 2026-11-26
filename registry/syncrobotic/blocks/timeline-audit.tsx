@@ -3,7 +3,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { formatCount } from "@/registry/syncrobotic/lib/format-count"
+import { formatCount } from "@/registry/syncrobotic/lib/format-number"
 import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"
 import { Card } from "@/registry/syncrobotic/ui/card"
 import { Code } from "@/registry/syncrobotic/ui/code"

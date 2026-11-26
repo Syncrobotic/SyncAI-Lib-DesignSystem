@@ -18,7 +18,7 @@ import {
 import { ChartViewSwitch, SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
 import { formatClockTime } from "@/registry/syncrobotic/lib/clock-time"
-import { numberFormat, resolveLocale } from "@/registry/syncrobotic/lib/format-count"
+import { numberFormat, resolveLocale } from "@/registry/syncrobotic/lib/format-number"
 import { usePrefersReducedMotion } from "@/registry/syncrobotic/hooks/use-reduced-motion"
 import { onThemeChange } from "@/registry/syncrobotic/lib/theme-change"
 

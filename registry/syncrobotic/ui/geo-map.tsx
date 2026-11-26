@@ -4,7 +4,7 @@
 import * as React from "react"
 import { CircleAlert, Crosshair, LocateOff, RotateCw, TriangleAlert, ZoomIn, ZoomOut } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { formatNumber } from "@/registry/syncrobotic/lib/format-count"
+import { formatNumber } from "@/registry/syncrobotic/lib/format-number"
 import { StatusGlyph, statusText, type Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Bone } from "@/registry/syncrobotic/shell/skeleton"
 import { Button } from "@/registry/syncrobotic/ui/button"

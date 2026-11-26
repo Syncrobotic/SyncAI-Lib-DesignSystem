@@ -4,7 +4,7 @@
 import * as React from "react"
 import { CopyPlus, Plus, Trash2, CircleAlert, Waypoints } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { formatCount, formatNumber } from "@/registry/syncrobotic/lib/format-count"
+import { formatCount, formatNumber } from "@/registry/syncrobotic/lib/format-number"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"

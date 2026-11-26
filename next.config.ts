@@ -25,6 +25,10 @@ const config: NextConfig = {
         destination: "/blocks/data-visualisation",
         permanent: true,
       })),
+      // 0.40: the number library was renamed from format-count to format-number (it formats every number, not only counts).
+      { source: "/docs/components/format-count", destination: "/docs/components/format-number", permanent: true },
+      { source: "/docs/components/format-count.md", destination: "/docs/components/format-number.md", permanent: true },
+      { source: "/r/format-count.json", destination: "/r/format-number.json", permanent: true },
     ]
   },
   // Security headers on every response. The docs show blocks in iframes of their own pages, so framing is allowed from

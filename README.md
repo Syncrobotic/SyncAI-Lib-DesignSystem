@@ -78,7 +78,7 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 | Navigation | `tabs`, `pagination`, `breadcrumb`, `accordion`, `collapsible`, `sidebar`, `load-more`, `stepper`, `scrollspy`, `navigation-menu` |
 | Overlays | `dialog`, `alert-dialog`, `sheet`, `popover`, `hover-card`, `tooltip`, `dropdown-menu`, `context-menu`, `command` |
 | Layout | `card`, `separator`, `scroll-area`, `page-header`, `section-header`, `resizable` |
-| Hooks & libraries | `ros`, `use-long-press`, `use-slide-release`, `use-presence`, `use-debounce`, `use-ros`, `use-hotkeys`, `format-count`, `clock-time`, `feedback`, `use-now`, `use-reduced-motion` |
+| Hooks & libraries | `ros`, `use-long-press`, `use-slide-release`, `use-presence`, `use-debounce`, `use-ros`, `use-hotkeys`, `format-number`, `clock-time`, `feedback`, `use-now`, `use-reduced-motion` |
 | Icons | `robot-icons` (robot icons Lucide lacks, drawn to match) |
 <!-- /catalog:components -->
 

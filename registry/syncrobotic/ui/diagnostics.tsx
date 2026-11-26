@@ -4,7 +4,7 @@
 import * as React from "react"
 import { Bot, SearchX } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { formatCount, formatNumber, resolveLocale } from "@/registry/syncrobotic/lib/format-count"
+import { formatCount, formatNumber, resolveLocale } from "@/registry/syncrobotic/lib/format-number"
 import { useNow } from "@/registry/syncrobotic/hooks/use-now"
 import { Bone, LoadingLine } from "@/registry/syncrobotic/shell/skeleton"
 import { StatusGlyph, statusText, type Status } from "@/registry/syncrobotic/shell/status-glyph"

@@ -4,7 +4,7 @@
 import * as React from "react"
 import { CircleCheck, Plus } from "lucide-react"
 import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
-import { formatCount } from "@/registry/syncrobotic/lib/format-count"
+import { formatCount } from "@/registry/syncrobotic/lib/format-number"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import type { Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"

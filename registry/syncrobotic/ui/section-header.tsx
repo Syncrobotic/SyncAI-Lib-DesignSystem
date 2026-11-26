@@ -1,7 +1,7 @@
-// @syncrobotic/section-header v0.39.0 · update: npx shadcn add @syncrobotic/section-header --overwrite
+// @syncrobotic/section-header v0.40.0 · update: npx shadcn add @syncrobotic/section-header --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { formatCount } from "@/registry/syncrobotic/lib/format-count"
+import { formatCount } from "@/registry/syncrobotic/lib/format-number"
 
 const levels = {
   // A section of the page, outside any card: typography's Title, 20 px bold, as a sheet's title.

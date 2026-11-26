@@ -1,7 +1,7 @@
 // @syncrobotic/sparkline-table v0.40.0 · update: npx shadcn add @syncrobotic/sparkline-table --overwrite
 "use client"
 
-import { formatCount } from "@/registry/syncrobotic/lib/format-count"
+import { formatCount } from "@/registry/syncrobotic/lib/format-number"
 import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 import { ResponsiveTable } from "@/registry/syncrobotic/ui/responsive-table"
 

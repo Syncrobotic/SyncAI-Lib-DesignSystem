@@ -1439,7 +1439,7 @@ const entries: Record<string, Entry> = {
       "Answers can return out of order: keep only the one for the latest query.",
     ],
   },
-  "format-count": {
+  "format-number": {
     group: "Hooks & libraries",
     rules: [
       "Every number the screen writes goes through it: `formatCount(n, { locale })` for a count (whole things: rows, robots, matches), `formatNumber(n, { locale, ...options })` for any other number (a reading, a share, a price).",
@@ -1863,7 +1863,7 @@ const ordered = [
   ...["table", "responsive-table", "data-grid", "list", "item", "description-list", "tree", "sortable", "log-viewer"],
   ...["status-glyph", "status-eyebrow", "badge", "tier-badge", "meter", "metric-card"],
   ...["search-field", "filters", "filter-form", "chip-group", "facets"],
-  ...["format-count", "clock-time", "feedback", "use-now", "use-reduced-motion"],
+  ...["format-number", "clock-time", "feedback", "use-now", "use-reduced-motion"],
 ]
 const within = (name: string) => (ordered.includes(name) ? ordered.indexOf(name) : -1)
 

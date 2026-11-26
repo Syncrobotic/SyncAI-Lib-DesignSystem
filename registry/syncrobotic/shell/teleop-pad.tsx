@@ -4,7 +4,7 @@
 import * as React from "react"
 import { CircleAlert, CirclePause, Joystick, Lock, Move } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { formatNumber } from "@/registry/syncrobotic/lib/format-count"
+import { formatNumber } from "@/registry/syncrobotic/lib/format-number"
 import { feedback } from "@/registry/syncrobotic/lib/feedback"
 
 /**

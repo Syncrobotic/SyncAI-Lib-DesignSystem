@@ -1,4 +1,4 @@
-// @syncrobotic/format-count v0.40.0 · update: npx shadcn add @syncrobotic/format-count --overwrite
+// @syncrobotic/format-number v0.40.0 · update: npx shadcn add @syncrobotic/format-number --overwrite
 /**
  * The kit's one number path. Every number a component writes goes through here, so the server and the browser write the
  * same digits and a product changes the locale in one place:

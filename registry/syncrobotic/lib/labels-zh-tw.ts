@@ -1,14 +1,14 @@
 // @syncrobotic/labels-zh-tw v0.40.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
 // The kit's words in Traditional Chinese as written in Taiwan, one object per component that takes `labels`. Pass each
 // to its component (`<DataGrid labels={dataGridLabels} />`) with `locale="zh-TW"` where the component formats numbers,
-// days or times. The file imports no component (only format-count, which writes its numbers), so it installs on its own;
+// days or times. The file imports no component (only format-number, which writes its numbers), so it installs on its own;
 // the kit's tests hold every object to the component's own labels type, so a key the kit adds or renames is caught before
 // release instead of showing in English.
 //
 // Terms follow the kit's Chinese vocabulary: 警報 (alarm), 急停 (emergency stop), 機器人 (robot), 任務 (mission), and
 // Taiwan usage throughout (檔案, 設定, 影片, 連線, 網路). Units stay SI symbols (mm, m/s, N·m), as on the robot's own panels.
 
-import { formatCount, formatNumber } from "@/registry/syncrobotic/lib/format-count"
+import { formatCount, formatNumber } from "@/registry/syncrobotic/lib/format-number"
 
 /** The BCP 47 tag to pass as `locale` beside these labels. */
 export const locale = "zh-TW"

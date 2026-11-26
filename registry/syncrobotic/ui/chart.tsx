@@ -4,7 +4,7 @@
 import * as React from "react"
 import { Area, Bar, Legend, Line, ResponsiveContainer, Tooltip, type LegendProps, type TooltipContentProps } from "recharts"
 import { cn } from "@/lib/utils"
-import { formatNumber } from "@/registry/syncrobotic/lib/format-count"
+import { formatNumber } from "@/registry/syncrobotic/lib/format-number"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
 
 /**

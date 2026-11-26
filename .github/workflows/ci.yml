@@ -24,7 +24,7 @@ jobs:
       - run: npm run lint:registry
       # Focus is never removed, a battery warns below 15 %, every chart block has a table view
       - run: npm run lint:rules
-      # Every number goes through format-count: no toLocaleString (it follows the runtime locale), no second Intl cache
+      # Every number goes through format-number: no toLocaleString (it follows the runtime locale), no second Intl cache
       - run: npm run lint:numbers
       # Overlays animate in and out, buttons press, timing comes from the motion tokens
       - run: npm run lint:motion
