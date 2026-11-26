@@ -6751,7 +6751,7 @@
    "props": [
     {
      "name": "variant",
-     "type": "\"outline\" | \"default\" | \"muted\"",
+     "type": "\"outline\" | \"muted\" | \"default\"",
      "default": "\"default\"",
      "description": ""
     },

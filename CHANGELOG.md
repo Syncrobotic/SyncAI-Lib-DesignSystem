@@ -2,6 +2,15 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+Dependencies: the major versions the kit was behind on, so a product on the current toolchain builds the items as they are.
+
+### Changed
+- **TypeScript 6.0.3** (from 5.9). TypeScript 7 waits: its package exposes no compiler API to `typescript-eslint` (which supports up to 6.0) or to `scripts/props.mjs`.
+- **`graph` 0.42.0:** compiles without Node's types. TypeScript 6 no longer loads every installed `@types` package, so its `process.env.NODE_ENV` check declares `process` in the file; bundlers still replace it in place.
+- **Docs site:** the search index revalidates instead of being kept for an hour, so a release's new components are found as soon as it is deployed.
+
 ## 0.41.0 · 2026-11-26
 
 UI for LLM agents: the parts of a conversation with a model, built on streaming-text, trace and attachment, and a model's Markdown answer rendered safely as the kit's own elements with the sources it cites. A turn says who spoke in words, the answer's actions are quiet until wanted, the composer never sends half a word typed with an input method, and the conversation follows the answer without reading it twice.
