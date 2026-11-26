@@ -1,4 +1,4 @@
-// @syncrobotic/sign-in v0.17.3 · update: npx shadcn add @syncrobotic/sign-in --overwrite
+// @syncrobotic/sign-in v0.40.0 · update: npx shadcn add @syncrobotic/sign-in --overwrite
 "use client"
 
 import * as React from "react"

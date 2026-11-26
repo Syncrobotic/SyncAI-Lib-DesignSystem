@@ -1,4 +1,4 @@
-// @syncrobotic/stats-filtered v0.19.0 · update: npx shadcn add @syncrobotic/stats-filtered --overwrite
+// @syncrobotic/stats-filtered v0.40.0 · update: npx shadcn add @syncrobotic/stats-filtered --overwrite
 "use client"
 
 import * as React from "react"

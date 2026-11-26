@@ -1,4 +1,4 @@
-// @syncrobotic/sparkline-table v0.17.3 · update: npx shadcn add @syncrobotic/sparkline-table --overwrite
+// @syncrobotic/sparkline-table v0.40.0 · update: npx shadcn add @syncrobotic/sparkline-table --overwrite
 "use client"
 
 import { formatCount } from "@/registry/syncrobotic/lib/format-count"

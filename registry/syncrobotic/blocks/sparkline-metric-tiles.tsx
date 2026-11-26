@@ -1,4 +1,4 @@
-// @syncrobotic/sparkline-metric-tiles v0.28.0 · update: npx shadcn add @syncrobotic/sparkline-metric-tiles --overwrite
+// @syncrobotic/sparkline-metric-tiles v0.40.0 · update: npx shadcn add @syncrobotic/sparkline-metric-tiles --overwrite
 import { StatsCards, type Stat } from "@/registry/syncrobotic/blocks/stats-cards"
 
 // Sample data, oldest first. The trend decides the colour of the change, not its sign: more incidents is worse.

@@ -1,4 +1,4 @@
-// @syncrobotic/incident-queue v0.32.0 · update: npx shadcn add @syncrobotic/incident-queue --overwrite
+// @syncrobotic/incident-queue v0.40.0 · update: npx shadcn add @syncrobotic/incident-queue --overwrite
 "use client"
 
 import * as React from "react"

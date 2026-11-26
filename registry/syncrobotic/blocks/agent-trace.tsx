@@ -1,4 +1,4 @@
-// @syncrobotic/agent-trace v0.28.0 · update: npx shadcn add @syncrobotic/agent-trace --overwrite
+// @syncrobotic/agent-trace v0.40.0 · update: npx shadcn add @syncrobotic/agent-trace --overwrite
 "use client"
 
 import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"

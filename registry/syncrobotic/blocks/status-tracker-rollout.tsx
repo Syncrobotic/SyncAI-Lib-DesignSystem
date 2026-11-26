@@ -1,4 +1,4 @@
-// @syncrobotic/status-tracker-rollout v0.17.4 · update: npx shadcn add @syncrobotic/status-tracker-rollout --overwrite
+// @syncrobotic/status-tracker-rollout v0.40.0 · update: npx shadcn add @syncrobotic/status-tracker-rollout --overwrite
 "use client"
 
 import { Check } from "lucide-react"

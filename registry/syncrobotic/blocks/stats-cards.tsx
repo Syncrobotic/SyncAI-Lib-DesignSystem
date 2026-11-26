@@ -1,4 +1,4 @@
-// @syncrobotic/stats-cards v0.28.0 · update: npx shadcn add @syncrobotic/stats-cards --overwrite
+// @syncrobotic/stats-cards v0.40.0 · update: npx shadcn add @syncrobotic/stats-cards --overwrite
 import { cn } from "@/lib/utils"
 import { MetricCard, MetricGrid } from "@/registry/syncrobotic/ui/metric-card"
 

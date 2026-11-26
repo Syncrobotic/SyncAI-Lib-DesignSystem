@@ -1,4 +1,4 @@
-// @syncrobotic/event-log v0.32.0 · update: npx shadcn add @syncrobotic/event-log --overwrite
+// @syncrobotic/event-log v0.40.0 · update: npx shadcn add @syncrobotic/event-log --overwrite
 "use client"
 
 import * as React from "react"

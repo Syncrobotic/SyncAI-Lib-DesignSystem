@@ -1,4 +1,4 @@
-// @syncrobotic/wizard-commission v0.35.0 · update: npx shadcn add @syncrobotic/wizard-commission --overwrite
+// @syncrobotic/wizard-commission v0.40.0 · update: npx shadcn add @syncrobotic/wizard-commission --overwrite
 "use client"
 
 import * as React from "react"

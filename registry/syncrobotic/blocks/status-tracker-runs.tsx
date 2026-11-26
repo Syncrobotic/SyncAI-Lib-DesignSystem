@@ -1,4 +1,4 @@
-// @syncrobotic/status-tracker-runs v0.28.0 · update: npx shadcn add @syncrobotic/status-tracker-runs --overwrite
+// @syncrobotic/status-tracker-runs v0.40.0 · update: npx shadcn add @syncrobotic/status-tracker-runs --overwrite
 "use client"
 
 import { cn } from "@/lib/utils"

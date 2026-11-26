@@ -1,4 +1,4 @@
-// @syncrobotic/agent-runs v0.32.0 · update: npx shadcn add @syncrobotic/agent-runs --overwrite
+// @syncrobotic/agent-runs v0.40.0 · update: npx shadcn add @syncrobotic/agent-runs --overwrite
 "use client"
 
 import * as React from "react"

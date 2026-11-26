@@ -1,4 +1,4 @@
-// @syncrobotic/users-roles v0.35.0 · update: npx shadcn add @syncrobotic/users-roles --overwrite
+// @syncrobotic/users-roles v0.40.0 · update: npx shadcn add @syncrobotic/users-roles --overwrite
 "use client"
 
 import * as React from "react"

@@ -1,4 +1,4 @@
-// @syncrobotic/timeline-activity v0.9.0 · update: npx shadcn add @syncrobotic/timeline-activity --overwrite
+// @syncrobotic/timeline-activity v0.40.0 · update: npx shadcn add @syncrobotic/timeline-activity --overwrite
 "use client"
 
 import * as React from "react"

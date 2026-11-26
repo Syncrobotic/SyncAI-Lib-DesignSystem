@@ -1,4 +1,4 @@
-// @syncrobotic/users-audit-log v0.35.0 · update: npx shadcn add @syncrobotic/users-audit-log --overwrite
+// @syncrobotic/users-audit-log v0.40.0 · update: npx shadcn add @syncrobotic/users-audit-log --overwrite
 "use client"
 
 import * as React from "react"

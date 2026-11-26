@@ -1,4 +1,4 @@
-// @syncrobotic/dataset-detail v0.35.0 · update: npx shadcn add @syncrobotic/dataset-detail --overwrite
+// @syncrobotic/dataset-detail v0.40.0 · update: npx shadcn add @syncrobotic/dataset-detail --overwrite
 "use client"
 
 import * as React from "react"

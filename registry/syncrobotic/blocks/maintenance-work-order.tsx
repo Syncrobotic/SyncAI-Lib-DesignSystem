@@ -1,4 +1,4 @@
-// @syncrobotic/maintenance-work-order v0.28.0 · update: npx shadcn add @syncrobotic/maintenance-work-order --overwrite
+// @syncrobotic/maintenance-work-order v0.40.0 · update: npx shadcn add @syncrobotic/maintenance-work-order --overwrite
 "use client"
 
 import * as React from "react"

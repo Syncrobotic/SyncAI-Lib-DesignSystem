@@ -1,4 +1,4 @@
-// @syncrobotic/auth-invite v0.35.0 · update: npx shadcn add @syncrobotic/auth-invite --overwrite
+// @syncrobotic/auth-invite v0.40.0 · update: npx shadcn add @syncrobotic/auth-invite --overwrite
 "use client"
 
 import * as React from "react"

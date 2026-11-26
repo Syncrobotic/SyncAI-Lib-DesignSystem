@@ -1,4 +1,4 @@
-// @syncrobotic/radial-chart-battery v0.17.3 · update: npx shadcn add @syncrobotic/radial-chart-battery --overwrite
+// @syncrobotic/radial-chart-battery v0.40.0 · update: npx shadcn add @syncrobotic/radial-chart-battery --overwrite
 "use client"
 
 import * as React from "react"
