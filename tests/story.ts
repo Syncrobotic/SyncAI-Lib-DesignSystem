@@ -47,6 +47,12 @@ async function openOnce(page: Page, id: string, theme: (typeof themes)[number]) 
   // arriving), so a fixed second is a race. Advance the clock until that state is there.
   const done = settled[id]
   if (done) {
+    // A full-page screenshot makes the viewport as tall as the page while it is taken. Where what is on screen decides
+    // what streams (the camera wall plays only the tiles in view), that change reconnected the tiles and turned a
+    // stalled one Live in the picture. Be that tall before settling, so the screenshot changes nothing.
+    const size = page.viewportSize()
+    const height = await page.evaluate(() => document.documentElement.scrollHeight)
+    if (size && height > size.height) await page.setViewportSize({ width: size.width, height })
     for (let i = 0; i < 40 && !(await page.locator(done).count()); i++) {
       await page.waitForTimeout(50)
       await page.clock.runFor(250)
