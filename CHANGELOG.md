@@ -2,6 +2,18 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+Design-rule conformance: the kit's components, docs and catalog follow the rules 0.39 wrote down. Every number goes one way, Badge teaches labels instead of states, a page header takes one status, and the catalog's groups are smaller and say what they hold.
+
+### Added
+- **`format-count` 0.40.0:** the kit's one number path. `formatNumber(n, { locale, ...options })` for any number that is not a count (Intl.NumberFormat options: decimals, grouping, currency), `numberFormat(locale, options)` for the cached formatter and `resolveLocale(locale)`, beside `formatCount`. Both are English without a locale and for a tag Intl cannot read ("en_US"), so the server and the browser write the same digits.
+- **`lint:numbers`** (`scripts/check-numbers.mjs`, in CI's check job): no `.toLocaleString(` (it follows the runtime's language when given no locale) and no second `new Intl.NumberFormat(` in the registry.
+
+### Changed
+- **Numbers, everywhere:** the four private copies of `resolveLocale` (geo-map, diagnostics, attitude, joint-state, streaming-chart) and their formatter caches are format-count's. Counts without a locale are grouped (`facets` 48,210, not 48210; `bar-list` and `meter` 412,345 through formatNumber; `chart`'s `chartNumber` 12,480 with its true minus). `pagination`, `load-more`, `chip-group`, `filters`, `share-bar`, `log-viewer`, `camera-wall`, `waypoint-editor`, `streaming-text`, `teleop-pad` and `point-cloud` wrote numbers in the runtime's language when given no locale; they now write English, as the server does. `labels-zh-tw` writes its numbers through format-count (zh-TW without a locale) and depends on it. All 0.40.0.
+- **`data-catalog`, `stats-filtered`, `settings-billing` 0.40.0:** their numbers through format-count (lint:numbers).
+
 ## 0.39.0 · 2026-11-25
 
 A section heading at typography's two levels, a table that becomes a grouped list on phones, the data catalog's facet column as a component, a rule for writing numbers with the helper that follows it, when a label is a Badge, an InlineStatus or plain text, and the Next.js recipe for an error in the root layout.

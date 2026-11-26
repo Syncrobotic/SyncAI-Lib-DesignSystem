@@ -1,9 +1,10 @@
-// @syncrobotic/chart v0.22.1 · update: npx shadcn add @syncrobotic/chart --overwrite
+// @syncrobotic/chart v0.40.0 · update: npx shadcn add @syncrobotic/chart --overwrite
 "use client"
 
 import * as React from "react"
 import { Area, Bar, Legend, Line, ResponsiveContainer, Tooltip, type LegendProps, type TooltipContentProps } from "recharts"
 import { cn } from "@/lib/utils"
+import { formatNumber } from "@/registry/syncrobotic/lib/format-count"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
 
 /**
@@ -62,13 +63,16 @@ function withSeriesStyles(chart: React.ReactElement, config: ChartConfig) {
 }
 
 /**
- * A number as charts write it: a true minus sign (U+2212) for negatives, so "−6" lines up with "6" and is read as minus.
- * Use it for tick labels (`tickFormatter={chartNumber}`), tooltips and the table.
+ * A number as charts write it: grouped (12,480), up to three decimals, in English so server and browser agree
+ * (formatNumber), with a true minus sign (U+2212) for negatives, so "−6" lines up with "6" and is read as minus. Use it
+ * for tick labels (`tickFormatter={chartNumber}`), tooltips and the table; a string that is not a number comes back as
+ * it is. For another locale or a count's compact ticks, pass your own formatter built on formatNumber or formatCount.
  */
 export const chartNumber = (n: number | string) => {
   const v = typeof n === "number" ? n : Number(n)
   if (typeof n === "string" && (n.trim() === "" || Number.isNaN(v))) return n
-  return v < 0 ? `\u2212${String(Math.abs(v))}` : String(v)
+  const text = formatNumber(Math.abs(v))
+  return v < 0 && text !== "0" ? `\u2212${text}` : text
 }
 
 /**

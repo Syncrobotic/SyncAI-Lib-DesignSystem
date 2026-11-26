@@ -1,9 +1,10 @@
-// @syncrobotic/diagnostics v0.36.0 · update: npx shadcn add @syncrobotic/diagnostics --overwrite
+// @syncrobotic/diagnostics v0.40.0 · update: npx shadcn add @syncrobotic/diagnostics --overwrite
 "use client"
 
 import * as React from "react"
 import { Bot, SearchX } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { formatCount, formatNumber, resolveLocale } from "@/registry/syncrobotic/lib/format-count"
 import { useNow } from "@/registry/syncrobotic/hooks/use-now"
 import { Bone, LoadingLine } from "@/registry/syncrobotic/shell/skeleton"
 import { StatusGlyph, statusText, type Status } from "@/registry/syncrobotic/shell/status-glyph"
@@ -100,13 +101,13 @@ export const defaultDiagnosticsLabels: DiagnosticsLabels = {
   error: "Error",
   stale: "Stale",
   summary: (problems, total, locale) => {
-    const f = (n: number) => n.toLocaleString(locale)
+    const f = (n: number) => formatCount(n, { locale })
     if (problems === 0) return `${f(total)} ${total === 1 ? "status" : "statuses"}, nothing needs attention`
     return `${f(problems)} of ${f(total)} ${problems === 1 ? "needs" : "need"} attention`
   },
   updatedAgo: (ms, locale) => {
     const s = Math.max(0, Math.floor(ms / 1000))
-    const f = (n: number) => n.toLocaleString(locale)
+    const f = (n: number) => formatCount(n, { locale })
     if (s < 60) return `updated ${f(s)} s ago`
     if (s < 3600) return `updated ${f(Math.floor(s / 60))} min ago`
     return `updated ${f(Math.floor(s / 3600))} h ago`
@@ -260,22 +261,6 @@ const rowWord: Record<DiagnosticLevel, string> = { ok: "", warn: "font-medium te
 // one sentence, not a minute of speech.
 const ANNOUNCE_GAP_MS = 5000
 
-/** The same tag resolution as joint-state: "en" without a locale (so server and browser agree), and for a tag Intl cannot read. */
-const checkedLocales = new Map<string, string>()
-function resolveLocale(locale: string | undefined): string {
-  if (locale === undefined) return "en"
-  let ok = checkedLocales.get(locale)
-  if (ok === undefined) {
-    try {
-      ok = Intl.NumberFormat.supportedLocalesOf(locale).length > 0 ? locale : "en"
-    } catch {
-      ok = "en"
-    }
-    checkedLocales.set(locale, ok)
-  }
-  return ok
-}
-
 // A plain number, with an optional sign and an optional unit after it that has no digits: "1204553 ticks", "-8.4 A",
 // "64 %", "412". Not a version ("2.4.1"), a hex ID ("0x21"), a number already grouped ("1,204") or a word.
 const PLAIN_NUMBER = /^([-+−]?)(0|[1-9]\d*)(?:\.(\d+))?(\s*[^\d\s.,][^\d]*)?$/
@@ -292,7 +277,7 @@ export function formatDiagnosticValue(value: string, locale = "en"): string {
   const n = Number(`${whole}${decimals ? `.${decimals}` : ""}`)
   if (!Number.isFinite(n)) return value
   const digits = decimals.length
-  const text = n.toLocaleString(resolveLocale(locale), { minimumFractionDigits: digits, maximumFractionDigits: digits })
+  const text = formatNumber(n, { locale, minimumFractionDigits: digits, maximumFractionDigits: digits })
   return `${sign}${text}${unit}`
 }
 
@@ -565,7 +550,7 @@ export function Diagnostics({
                 .map((level) => (
                   <li key={level} data-level={level} className="flex items-center gap-2">
                     <StatusGlyph status={glyph[level]} />
-                    <span className="font-medium tabular-nums">{counts[level].toLocaleString(numberLocale)}</span>
+                    <span className="font-medium tabular-nums">{formatCount(counts[level], { locale: numberLocale })}</span>
                     <span className={cn(level === "ok" || level === "stale" ? "text-muted-foreground" : statusText[glyph[level]])}>{l[level]}</span>
                   </li>
                 ))}

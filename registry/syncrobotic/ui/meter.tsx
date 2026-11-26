@@ -1,5 +1,6 @@
-// @syncrobotic/meter v0.35.0 · update: npx shadcn add @syncrobotic/meter --overwrite
+// @syncrobotic/meter v0.40.0 · update: npx shadcn add @syncrobotic/meter --overwrite
 import { cn } from "@/lib/utils"
+import { formatNumber } from "@/registry/syncrobotic/lib/format-count"
 import { StatusGlyph, statusText } from "@/registry/syncrobotic/shell/status-glyph"
 
 /** How a level reads: neutral, or past a threshold. */
@@ -96,8 +97,8 @@ export function Meter({
   const pct = Math.min(100, Math.max(0, ((value - min) / (max - min)) * 100))
   const u = unit.trim()
   const suffix = u ? ` ${u}` : ""
-  // Written as given unless a locale or a format is asked for, so a number never changes between server and browser.
-  const num = (n: number) => (locale !== undefined || format ? n.toLocaleString(locale, format) : String(n))
+  // Grouped, in English unless a locale is asked for, so a number never changes between server and browser.
+  const num = (n: number) => formatNumber(n, { ...format, locale })
   const l = { ...defaultMeterLabels, ...labels }
   const text = `${showMax ? l.range(num(value), num(max)) : num(value)}${suffix}`
   // What the colour means, in words: a level that runs out is low; one that fills up or heats up is high.

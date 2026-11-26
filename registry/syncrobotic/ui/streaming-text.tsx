@@ -1,9 +1,10 @@
-// @syncrobotic/streaming-text v0.31.0 · update: npx shadcn add @syncrobotic/streaming-text --overwrite
+// @syncrobotic/streaming-text v0.40.0 · update: npx shadcn add @syncrobotic/streaming-text --overwrite
 "use client"
 
 import * as React from "react"
 import { ChevronDown, ChevronRight, CircleAlert, CircleCheck, CircleStop } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { formatCount, formatNumber } from "@/registry/syncrobotic/lib/format-count"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Spinner } from "@/registry/syncrobotic/ui/spinner"
 
@@ -60,17 +61,17 @@ export type StreamingTextLabels = {
 /** A duration in words: tenths of a second below 10 s, whole seconds below a minute, then minutes and seconds. */
 export function formatDuration(ms: number, locale?: string) {
   const s = Math.max(0, ms) / 1000
-  if (s < 10) return `${s.toLocaleString(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} s`
-  if (s < 60) return `${Math.round(s).toLocaleString(locale)} s`
+  if (s < 10) return `${formatNumber(s, { locale, minimumFractionDigits: 1, maximumFractionDigits: 1 })} s`
+  if (s < 60) return `${formatCount(Math.round(s), { locale })} s`
   const whole = Math.round(s)
   const m = Math.floor(whole / 60)
   const rest = whole % 60
-  return rest ? `${m.toLocaleString(locale)} min ${rest.toLocaleString(locale)} s` : `${m.toLocaleString(locale)} min`
+  return rest ? `${formatCount(m, { locale })} min ${formatCount(rest, { locale })} s` : `${formatCount(m, { locale })} min`
 }
 
 export const defaultStreamingTextLabels: StreamingTextLabels = {
   name: "Answer",
-  queued: (position, locale) => (position === undefined ? "Waiting in the queue" : position <= 1 ? "Next in the queue" : `Number ${position.toLocaleString(locale)} in the queue`),
+  queued: (position, locale) => (position === undefined ? "Waiting in the queue" : position <= 1 ? "Next in the queue" : `Number ${formatCount(position, { locale })} in the queue`),
   thinking: "Thinking",
   generating: "Generating",
   done: ({ durationMs, firstTokenMs }, locale) =>

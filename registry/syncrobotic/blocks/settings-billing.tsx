@@ -1,9 +1,10 @@
-// @syncrobotic/settings-billing v0.35.0 · update: npx shadcn add @syncrobotic/settings-billing --overwrite
+// @syncrobotic/settings-billing v0.40.0 · update: npx shadcn add @syncrobotic/settings-billing --overwrite
 "use client"
 
 import * as React from "react"
 import { CircleAlert, CircleCheck, Clock, CreditCard, Download, FileText, RotateCw, TriangleAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { formatNumber } from "@/registry/syncrobotic/lib/format-count"
 import { Bone, LoadingLine } from "@/registry/syncrobotic/shell/skeleton"
 import { Alert, AlertDescription, AlertTitle } from "@/registry/syncrobotic/ui/alert"
 import {
@@ -85,7 +86,7 @@ export const sampleBillingTwd: BillingAccount = {
 }
 
 /** Money in the account's currency, by Intl: "US$1,490.00", "NT$45,000.00". */
-export const formatMoney = (amount: number, currency: string, locale = "en-GB") => new Intl.NumberFormat(locale, { style: "currency", currency }).format(amount)
+export const formatMoney = (amount: number, currency: string, locale = "en-GB") => formatNumber(amount, { locale, style: "currency", currency })
 
 // Dates are calendar days, not instants: formatted in UTC so "1 Dec" is 1 Dec for every reader, server and browser alike.
 const formatDate = (iso: string, locale: string) => new Intl.DateTimeFormat(locale, { timeZone: "UTC", day: "numeric", month: "short", year: "numeric" }).format(new Date(iso))
@@ -341,7 +342,7 @@ export function SettingsBilling({
                 <div key={u.label} className="flex items-baseline justify-between gap-4 text-sm">
                   <span className="text-muted-foreground">{u.label}</span>
                   <span className="font-medium tabular-nums">
-                    {u.used.toLocaleString(locale)} {u.unit}
+                    {formatNumber(u.used, { locale })} {u.unit}
                   </span>
                 </div>
               ),

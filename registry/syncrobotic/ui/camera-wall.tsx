@@ -1,9 +1,10 @@
-// @syncrobotic/camera-wall v0.36.0 · update: npx shadcn add @syncrobotic/camera-wall --overwrite
+// @syncrobotic/camera-wall v0.40.0 · update: npx shadcn add @syncrobotic/camera-wall --overwrite
 "use client"
 
 import * as React from "react"
 import { ArrowLeft, OctagonAlert, Pause, TriangleAlert, VideoOff } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { formatCount } from "@/registry/syncrobotic/lib/format-count"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import {
   CameraFeed,
@@ -91,13 +92,13 @@ export const defaultCameraWallLabels: CameraWallLabels = {
   attentionFirst: "Attention first",
   byName: "Name",
   needsAttention: "Needs attention",
-  count: (n, locale) => n.toLocaleString(locale),
+  count: (n, locale) => formatCount(n, { locale }),
   allCameras: "All cameras",
   critical: "Critical",
   high: "High",
   low: "Low",
   alarm: (priority, title) => `${priority} · ${title}`,
-  range: (from, to, total, locale) => `${from.toLocaleString(locale)}–${to.toLocaleString(locale)} of ${total.toLocaleString(locale)} cameras`,
+  range: (from, to, total, locale) => `${formatCount(from, { locale })}–${formatCount(to, { locale })} of ${formatCount(total, { locale })} cameras`,
   previousPage: "Previous cameras",
   nextPage: "Next cameras",
   empty: "No cameras",
@@ -106,7 +107,7 @@ export const defaultCameraWallLabels: CameraWallLabels = {
   announce: (changes, locale) => {
     const shown = changes.slice(0, 3).map((c) => `${c.name}: ${c.state}.`)
     const more = changes.length - shown.length
-    return [...shown, more > 0 ? `${more.toLocaleString(locale)} more ${more === 1 ? "camera" : "cameras"} changed.` : ""].filter(Boolean).join(" ")
+    return [...shown, more > 0 ? `${formatCount(more, { locale })} more ${more === 1 ? "camera" : "cameras"} changed.` : ""].filter(Boolean).join(" ")
   },
   feed: {},
 }

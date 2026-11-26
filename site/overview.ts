@@ -114,7 +114,7 @@ export const overviews: Record<string, Overview> = {
     notes: [
       "It does not sort: pass the items largest first, as the query returns them.",
       "Never give rows their own colours or status colours; one series, `--chart-1`.",
-      "Without `locale` the numbers are written as given (412345); pass `locale` for grouping, as on the server and in the browser alike.",
+      "Numbers are grouped (412,345) through formatNumber, in English without `locale`, so the server and the browser agree; pass `locale` for another language.",
       "No Card inside: it has no surface, so it goes into yours (CardDataHeader for the title).",
     ],
   },
@@ -818,7 +818,7 @@ export const overviews: Record<string, Overview> = {
     notes: [
       "Do not pass a tone: colour comes from `low` and `critical`.",
       "For values where higher is worse, set higherIsWorse.",
-      "Numbers are written as given; pass `locale` (and `format` for a short form such as 412K) for counts in the thousands. `aria-valuenow` stays the raw number.",
+      "Numbers are grouped (412,345) through formatNumber, in English without `locale`; pass `locale` for another language and `format` for a short form such as 412K. `aria-valuenow` stays the raw number.",
     ],
   },
   "description-list": {

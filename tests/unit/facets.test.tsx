@@ -34,9 +34,9 @@ describe("Facets", () => {
     expect(screen.getByRole("checkbox", { name: "T0 · Open 48,210" })).toBeTruthy()
   })
 
-  it("writes the counts as given without a locale, so the server and the browser agree", () => {
+  it("writes the counts in full with grouping, in English without a locale, so the server and the browser agree", () => {
     render(<FacetList facets={facets.slice(0, 1)} />)
-    expect(screen.getByRole("checkbox", { name: "T0 · Open 48210" })).toBeTruthy()
+    expect(screen.getByRole("checkbox", { name: "T0 · Open 48,210" })).toBeTruthy()
   })
 
   it("picks and unpicks per facet, held by itself or by the page", () => {
