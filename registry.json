@@ -4604,8 +4604,7 @@
       "title": "Page header",
       "description": "The block a page opens with: breadcrumb above, one h1 and a line, its one status (InlineStatus) and badges beside the title, meta pills for facts (a link with href), actions at the right. No label above the title.",
       "registryDependencies": [
-        "@syncrobotic/cn",
-        "@syncrobotic/status-glyph"
+        "@syncrobotic/cn"
       ],
       "files": [
         {
