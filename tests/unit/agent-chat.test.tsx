@@ -102,4 +102,22 @@ describe("AgentChatSheet", () => {
     // In the sheet, the sources sit under its h2 title.
     expect(within(dialog).getAllByRole("heading", { name: "Sources", level: 3 }).length).toBeGreaterThan(0)
   })
+
+  it("sits beside the page on a wide screen: no scrim, and working on the page leaves it open", async () => {
+    vi.spyOn(window, "matchMedia").mockImplementation(
+      (q: string) => ({ matches: q.includes("64rem"), addEventListener: () => {}, removeEventListener: () => {} }) as unknown as MediaQueryList,
+    )
+    render(<AgentChatSheet />)
+    await act(async () => fireEvent.click(screen.getByRole("button", { name: "Ask the assistant" })))
+    const dialog = screen.getByRole("dialog", { name: "Fleet assistant" })
+    expect(dialog.getAttribute("aria-modal")).not.toBe("true")
+    expect(document.querySelector(".bg-\\(--scrim\\)")).toBeNull()
+    await act(async () => {
+      const page = screen.getByRole("heading", { name: "Robots", level: 1 })
+      fireEvent.pointerDown(page)
+      fireEvent.focusIn(page)
+    })
+    expect(screen.getByRole("dialog", { name: "Fleet assistant" })).toBeTruthy()
+    vi.restoreAllMocks()
+  })
 })

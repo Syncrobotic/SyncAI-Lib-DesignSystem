@@ -488,9 +488,21 @@ export function AgentChat({ defaultTurns = sampleAgentChatTurns, ...props }: Omi
   )
 }
 
+
+// Wide enough for the page and the copilot side by side.
+const WIDE = "(min-width: 64rem)"
+function subscribeWide(onChange: () => void) {
+  const query = window.matchMedia(WIDE)
+  query.addEventListener("change", onChange)
+  return () => query.removeEventListener("change", onChange)
+}
+const wideNow = () => window.matchMedia(WIDE).matches
 /**
  * The same assistant as a copilot: an ordinary console page (the robots) with Ask the assistant in its top bar, which
- * opens the conversation in a sheet on the right and puts the cursor in the composer. The page stays where it was.
+ * opens the conversation in a sheet on the right and puts the cursor in the composer. On a wide screen (1024 px and up)
+ * the sheet is not modal: the page moves over to make room beside it and stays in use, so a person can read the table
+ * while they ask about it, and a click on the page leaves the sheet open (Esc or Close closes it). Narrower, the sheet
+ * covers the page and is modal, as every sheet is.
  */
 export function AgentChatSheet({
   defaultOpen,
@@ -502,30 +514,44 @@ export function AgentChatSheet({
   focusOnOpen?: boolean
 }) {
   const content = React.useRef<HTMLDivElement>(null)
+  const [open, setOpen] = React.useState(defaultOpen ?? false)
+  const wide = React.useSyncExternalStore(subscribeWide, wideNow, () => false)
   return (
-    <Sheet defaultOpen={defaultOpen}>
-      <AppShell
-        product="Fleet console"
-        nav={sampleNav}
-        current="#robots"
-        title="Robots"
-        user={sampleUser}
-        actions={
-          <SheetTrigger asChild>
-            <Button size="sm" variant="secondary">
-              <Sparkles aria-hidden="true" />
-              Ask the assistant
-            </Button>
-          </SheetTrigger>
-        }
+    <Sheet open={open} onOpenChange={setOpen} modal={!wide}>
+      {/* Beside the page on a wide screen: the page gives up the sheet's width and its 8 px gutter. */}
+      <div
+        className={cn(
+          "[--copilot-room:calc(28rem+var(--spacing)*2)] motion-safe:transition-[padding] motion-safe:duration-(--motion-sheet)",
+          open && wide && "pr-(--copilot-room)",
+        )}
       >
-        <FleetTable />
-      </AppShell>
+        <AppShell
+          product="Fleet console"
+          nav={sampleNav}
+          current="#robots"
+          title="Robots"
+          user={sampleUser}
+          actions={
+            <SheetTrigger asChild>
+              <Button size="sm" variant="secondary">
+                <Sparkles aria-hidden="true" />
+                Ask the assistant
+              </Button>
+            </SheetTrigger>
+          }
+        >
+          <FleetTable />
+        </AppShell>
+      </div>
       <SheetContent
         ref={content}
         side="right"
         // The conversation scrolls inside; the sheet itself does not. 28 rem: below 42, every turn starts at the start.
         className="max-w-md gap-0 overflow-hidden p-0"
+        // Not modal: working on the page beside it does not close it.
+        onInteractOutside={(e) => {
+          if (wide) e.preventDefault()
+        }}
         onOpenAutoFocus={(e) => {
           e.preventDefault()
           if (focusOnOpen) content.current?.querySelector<HTMLTextAreaElement>("[data-slot=prompt-composer-input]")?.focus()
@@ -536,7 +562,7 @@ export function AgentChatSheet({
             <SheetTitle className="text-lg">Fleet assistant</SheetTitle>
             <SheetDescription>Reads robots, the schedule and incidents. A person approves anything that moves a robot.</SheetDescription>
           </div>
-          {/* A visible way out, as in a dialog: 44 px, 8 px in from the corner. Esc and the scrim close it too. */}
+          {/* A visible way out, as in a dialog: 44 px, 8 px in from the corner. Esc closes it too, and the scrim where there is one. */}
           <SheetClose
             aria-label="Close"
             className="press flex size-(--h-md) shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
