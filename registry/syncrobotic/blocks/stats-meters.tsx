@@ -2,6 +2,7 @@
 import { cn } from "@/lib/utils"
 import { Card } from "@/registry/syncrobotic/ui/card"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
+import { MetricGrid } from "@/registry/syncrobotic/ui/metric-card"
 
 export type LevelStat = {
   label: string
@@ -26,13 +27,14 @@ export const sampleLevels: LevelStat[] = [
 /** Levels in a fixed range, one per card: the bar shows how full, the number says exactly, and only a level past its line is coloured. */
 export function StatsMeters({ stats = sampleLevels, className }: { stats?: LevelStat[]; className?: string }) {
   return (
-    <div className={cn("grid gap-4 sm:grid-cols-2 xl:grid-cols-4", className)}>
+    // One per row on a phone, where a bar and its label need the width; two across from 640 px, four from 1280 px.
+    <MetricGrid className={cn("grid-cols-1 sm:grid-cols-2", className)}>
       {stats.map((s) => (
         <Card key={s.label} className="gap-3">
           <Meter label={s.label} value={s.value} max={s.max} unit={s.unit} low={s.low} critical={s.critical} higherIsWorse={s.higherIsWorse} />
           <span className="text-xs text-muted-foreground">{s.caption}</span>
         </Card>
       ))}
-    </div>
+    </MetricGrid>
   )
 }

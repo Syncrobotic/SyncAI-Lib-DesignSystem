@@ -4,13 +4,14 @@
 import * as React from "react"
 import { Plus } from "lucide-react"
 import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
-import { FleetTable } from "@/registry/syncrobotic/blocks/fleet-table"
+import { FleetTable, sampleRobots } from "@/registry/syncrobotic/blocks/fleet-table"
 import { StatsCards } from "@/registry/syncrobotic/blocks/stats-cards"
 import { feedback } from "@/registry/syncrobotic/lib/feedback"
 import { SlideToRelease } from "@/registry/syncrobotic/shell/slide-to-release"
 import { StopButton } from "@/registry/syncrobotic/shell/stop-button"
 import { AlarmList, type AlarmData } from "@/registry/syncrobotic/ui/alarm"
 import { Button } from "@/registry/syncrobotic/ui/button"
+import { SectionHeader } from "@/registry/syncrobotic/ui/section-header"
 
 const sampleAlarms: AlarmData[] = [
   { id: "a1", priority: "low", title: "Lidar cleaning due", source: "Patrol dog 2B10", time: "13:40:12", active: true, acknowledged: true, acknowledgedAt: "13:42" },
@@ -57,7 +58,8 @@ export function ConsoleOverview() {
           <AlarmList alarms={alarms} onAcknowledge={(id) => acknowledge([id])} onAcknowledgeAll={acknowledge} />
         )}
         <StatsCards />
-        <section aria-label="Robots" className="min-w-0">
+        <section aria-labelledby="overview-robots" className="flex min-w-0 flex-col gap-4">
+          <SectionHeader id="overview-robots" title="Robots" count={sampleRobots.length} />
           <FleetTable />
         </section>
         {/* The stop for every robot on the site sticks to the bottom of the scrolling page (full width on a phone, the

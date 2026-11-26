@@ -11,6 +11,7 @@ import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
 import { AppShell, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { Alert, AlertDescription, AlertTitle } from "@/registry/syncrobotic/ui/alert"
+import { PageHeader } from "@/registry/syncrobotic/ui/page-header"
 import { Separator } from "@/registry/syncrobotic/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/registry/syncrobotic/ui/tabs"
 import { Toggle } from "@/registry/syncrobotic/ui/toggle"
@@ -95,23 +96,37 @@ export function DatasetDetailContent({ name = "Night parking lot people", refere
 
   return (
     <div className="flex flex-col gap-6">
-      <Breadcrumb>
-        <BreadcrumbLink href="#catalog">Catalog</BreadcrumbLink>
-        <BreadcrumbLink href="#people">people</BreadcrumbLink>
-        <BreadcrumbPage>night-parking@v3</BreadcrumbPage>
-      </Breadcrumb>
-
-      <header className="flex flex-col gap-3">
-        <div className="flex flex-wrap items-center gap-3">
-          <h2 className="text-3xl font-bold">{name}</h2>
-          <TierBadge tier={tier} />
-        </div>
-        <p className="flex flex-wrap items-center gap-2 font-mono text-sm text-muted-foreground">
-          {reference}
-          <CopyButton value={reference} label="Copy reference" />
-        </p>
-        <InlineStatus status="normal">May enter product releases</InlineStatus>
-      </header>
+      {/* The shell's top bar holds the page's h1, so the dataset's header is an h2, at the page title's size. */}
+      <PageHeader
+        as="h2"
+        className="pb-0"
+        breadcrumb={
+          <Breadcrumb>
+            <BreadcrumbLink href="#catalog">Catalog</BreadcrumbLink>
+            <BreadcrumbLink href="#people">people</BreadcrumbLink>
+            <BreadcrumbPage>night-parking@v3</BreadcrumbPage>
+          </Breadcrumb>
+        }
+        title={name}
+        description={
+          <span className="flex flex-wrap items-center gap-2 font-mono text-sm">
+            {reference}
+            <CopyButton value={reference} label="Copy reference" />
+          </span>
+        }
+        // Its tier and whether it may be released, after the title: the badge for the fixed category, then the one status.
+        metaLabel="About this dataset"
+        meta={
+          <>
+            <span role="listitem" className="inline-flex">
+              <TierBadge tier={tier} />
+            </span>
+            <span role="listitem" className="inline-flex">
+              <InlineStatus status="normal">May enter product releases</InlineStatus>
+            </span>
+          </>
+        }
+      />
 
       <Tabs defaultValue="overview">
         <TabsList aria-label="Dataset">

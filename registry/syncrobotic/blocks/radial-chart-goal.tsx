@@ -59,7 +59,7 @@ export function RadialChartGoal() {
         <span role="meter" aria-label="Patrol coverage today" aria-valuemin={0} aria-valuemax={100} aria-valuenow={covered}>
           <Ring value={covered} size={144} stroke={12} className="stroke-foreground">
             <span className="flex flex-col items-center">
-              <span className="text-3xl font-bold tabular-nums">{covered} %</span>
+              <span className="text-2xl font-bold tabular-nums">{covered} %</span>
               <span className="text-xs text-muted-foreground">of plan</span>
             </span>
           </Ring>

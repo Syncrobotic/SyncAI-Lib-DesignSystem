@@ -81,7 +81,7 @@ export function StatusPage({
         </IconTile>
         <div className="flex flex-col items-center gap-2">
           {code && <p className="font-mono text-sm text-muted-foreground tabular-nums">{code}</p>}
-          <Heading className="text-2xl font-bold text-balance">{title}</Heading>
+          <Heading className="text-3xl font-bold tracking-tight text-balance">{title}</Heading>
           <div className="text-sm text-pretty text-muted-foreground">{body}</div>
         </div>
         <div className="flex flex-wrap justify-center gap-2 pt-2">
