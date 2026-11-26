@@ -503,20 +503,25 @@ describe("hostile input (time budget)", () => {
 
   it("grows linearly: four times the input takes about four times as long, not sixteen", () => {
     const unit = "*a **b [c](d `e <f &g; ~~h ".repeat(500) + "\n- i\n  - j\n> k\n| l | m |\n|---|---|\n| n | o |\n\n"
-    const time = (text: string) => {
-      let best = Infinity
-      for (let k = 0; k < 3; k++) {
-        const t0 = performance.now()
-        parseMarkdown(text)
-        parseInline(text, { open: true, cite: true })
-        best = Math.min(best, performance.now() - t0)
-      }
-      return best
+    const once = (text: string) => {
+      const t0 = performance.now()
+      parseMarkdown(text)
+      parseInline(text, { open: true, cite: true })
+      return performance.now() - t0
     }
-    time(unit) // warm up
-    const one = time(unit.repeat(5))
-    const four = time(unit.repeat(20))
-    expect(four / one).toBeLessThan(8)
+    once(unit) // warm up
+    // The two sizes take turns and each keeps its best of seven, so a garbage collection or a busy machine (the whole
+    // suite runs in parallel) that lands on one run of the larger size does not decide the ratio. Linear is about 4,
+    // quadratic about 16: 10 tells them apart.
+    const small = unit.repeat(5)
+    const large = unit.repeat(20)
+    let one = Infinity
+    let four = Infinity
+    for (let k = 0; k < 7; k++) {
+      one = Math.min(one, once(small))
+      four = Math.min(four, once(large))
+    }
+    expect(four / one).toBeLessThan(10)
   })
 
   it("renders deeply nested input without overflowing the stack", () => {

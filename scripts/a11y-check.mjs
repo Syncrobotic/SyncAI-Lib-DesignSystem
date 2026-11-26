@@ -20,7 +20,8 @@ const at = process.argv.indexOf("--measured")
 if (at > 0) {
   /** @type {Record<string, unknown>} */
   const now = JSON.parse(readFileSync(process.argv[at + 1], "utf8"))
-  const names = [...new Set([...Object.keys(data), ...Object.keys(now)])].sort()
+  // With --only (the quick check), compare just the components that were measured.
+  const names = process.argv.includes("--only") ? Object.keys(now).sort() : [...new Set([...Object.keys(data), ...Object.keys(now)])].sort()
   const stale = names.filter((n) => JSON.stringify(data[n]) !== JSON.stringify(now[n]))
   if (stale.length) {
     for (const n of stale) console.error(`${n}\n  committed: ${JSON.stringify(data[n] ?? null)}\n  measured:  ${JSON.stringify(now[n] ?? null)}`)
