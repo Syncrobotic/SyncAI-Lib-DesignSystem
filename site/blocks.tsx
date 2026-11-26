@@ -79,7 +79,7 @@ const meta: Record<string, Meta> = {
   "sparkline-robot-list": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 320
+    height: 317
   },
   "sparkline-metric-tiles": {
     viewport: "desktop",
@@ -88,7 +88,7 @@ const meta: Record<string, Meta> = {
   "sparkline-table": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 364
+    height: 361
   },
   "status-tracker-uptime": {
     viewport: "desktop",
@@ -98,7 +98,7 @@ const meta: Record<string, Meta> = {
   "status-tracker-runs": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 276
+    height: 278
   },
   "status-tracker-rollout": {
     viewport: "desktop",
@@ -108,7 +108,7 @@ const meta: Record<string, Meta> = {
   "radial-chart-battery": {
     viewport: "desktop",
     thumbWidth: 720,
-    height: 236
+    height: 264
   },
   "radial-chart-goal": {
     viewport: "desktop",
@@ -189,7 +189,7 @@ const meta: Record<string, Meta> = {
   "app-shell-mobile-tabs": { viewport: "mobile", height: 720},
   "stats-meters": {
     viewport: "desktop",
-    height: 148
+    height: 145
   },
   "stats-filtered": {
     viewport: "desktop",
@@ -210,29 +210,29 @@ const meta: Record<string, Meta> = {
   "settings-notifications": {
     viewport: "desktop",
     thumbWidth: 960,
-    height: 560
+    height: 564
   },
   "settings-api-keys": {
     viewport: "desktop",
     thumbWidth: 960,
-    height: 300
+    height: 289
   },
   "settings-billing": {
     viewport: "desktop",
     thumbWidth: 960,
-    height: 1108
+    height: 1101
   },
   // The bell in a real top bar, its popover open on load so the card shows the list, not a closed bell.
   "notification-center": { viewport: "desktop", height: 720, thumb: { x: 760, y: 0, width: 520 }},
   "settings-webhooks": {
     viewport: "desktop",
     thumbWidth: 960,
-    height: 744
+    height: 766
   },
   "settings-sessions": {
     viewport: "desktop",
     thumbWidth: 960,
-    height: 676
+    height: 646
   },
   "dialog-confirm-destructive": {
     viewport: "desktop",

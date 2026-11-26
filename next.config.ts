@@ -18,11 +18,13 @@ const config: NextConfig = {
       // The icons moved from the foundations to an area of their own.
       { source: "/docs/icons", destination: "/icons", permanent: true },
       // 0.40: the sparkline, status tracker, radial and heatmap patterns drew without the Chart component, so they left the
-      // Chart page for one Application type of their own. Their old type pages (and markdown twins) lead there.
-      ...["sparkline", "status-tracker", "radial-chart", "heatmap"].flatMap((slug) => [
-        { source: `/blocks/${slug}`, destination: "/blocks/data-visualisation", permanent: true },
-        { source: `/blocks/${slug}.md`, destination: "/blocks/data-visualisation.md", permanent: true },
-      ]),
+      // Chart page for one Application type of their own. Their old type pages lead there; each block's own URL
+      // (/blocks/<name>) already follows it to its new place.
+      ...["sparkline", "status-tracker", "radial-chart", "heatmap"].map((slug) => ({
+        source: `/blocks/${slug}`,
+        destination: "/blocks/data-visualisation",
+        permanent: true,
+      })),
     ]
   },
   // Security headers on every response. The docs show blocks in iframes of their own pages, so framing is allowed from
