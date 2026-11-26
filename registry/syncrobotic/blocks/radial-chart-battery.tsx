@@ -2,7 +2,7 @@
 "use client"
 
 import * as React from "react"
-import { cn } from "@/lib/utils"
+import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 
 // A ring: a track and an arc from 12 o'clock, clockwise. The number in the middle is the value; the arc only shows it.
@@ -52,7 +52,7 @@ const robots = [
 ]
 const tone = (v: number) => (v < 15 ? "stroke-warning" : "stroke-foreground")
 
-/** Battery per robot as rings: neutral when fine, warning below 15 % (never danger), with the number always in the middle. */
+/** Battery per robot as rings: neutral when fine, warning below 15 % (never danger) with the warning shape and word under it, the number always in the middle. */
 export function RadialChartBattery() {
   return (
     <Card>
@@ -62,10 +62,12 @@ export function RadialChartBattery() {
           <li key={r.id} className="flex flex-col items-center gap-2">
             <span role="meter" aria-label={`Battery of ${r.id}`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={r.battery}>
               <Ring value={r.battery} className={tone(r.battery)}>
-                <span className={cn("text-lg font-bold tabular-nums", r.battery < 15 && "text-warning")}>{r.battery} %</span>
+                <span className="text-lg font-bold tabular-nums">{r.battery} %</span>
               </Ring>
             </span>
             <span className="text-xs text-muted-foreground">{r.id}</span>
+            {/* Low is the ring's colour and the warning shape and word, never the number's colour. */}
+            {r.battery < 15 && <InlineStatus status="warning">Low</InlineStatus>}
           </li>
         ))}
       </ul>

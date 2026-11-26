@@ -2,9 +2,10 @@
 "use client"
 
 import * as React from "react"
-import { ChevronDown, CircleAlert, CircleCheck, CloudOff, Pause, Plug, Plus, RotateCw, Send } from "lucide-react"
+import { ChevronDown, CircleAlert, CircleCheck, CloudOff, Plug, Plus, RotateCw, Send } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Bone, LoadingLine } from "@/registry/syncrobotic/shell/skeleton"
+import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,10 +21,12 @@ import { Button } from "@/registry/syncrobotic/ui/button"
 import { Card } from "@/registry/syncrobotic/ui/card"
 import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
 import { ChoiceField, FieldSet } from "@/registry/syncrobotic/ui/choice-field"
+import { Code } from "@/registry/syncrobotic/ui/code"
 import { CodeBlock } from "@/registry/syncrobotic/ui/code-block"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
+import { SectionHeader } from "@/registry/syncrobotic/ui/section-header"
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/registry/syncrobotic/ui/sheet"
 
 export type WebhookEventType = { key: string; label: string; hint: string }
@@ -156,24 +159,20 @@ function validateUrl(value: string, taken: string[]) {
 }
 
 function EndpointStatus({ endpoint: e }: { endpoint: WebhookEndpoint }) {
-  // Calm states are grey; only a failing endpoint needs someone, so only it gets colour: its icon and the word Failing.
+  // Calm states are grey; only a failing endpoint needs someone, so only it gets colour: its shape and the word Failing.
   // Since when and the last error are the details, in grey.
-  if (e.status === "failing")
-    return (
-      <span className="flex items-start gap-2 text-xs text-muted-foreground">
-        <CircleAlert aria-hidden="true" className="size-4 shrink-0 text-danger" />
-        <span>
-          <span className="font-medium text-danger">Failing</span>
-          {e.failingSince && ` since ${e.failingSince}`}
-          {e.lastError && ` · Last error: ${e.lastError}`}
-        </span>
-      </span>
-    )
-  const Icon = e.status === "active" ? CircleCheck : Pause
+  const detail =
+    e.status === "failing"
+      ? [e.failingSince && `since ${e.failingSince}`, e.lastError && `Last error: ${e.lastError}`].filter(Boolean).join(" · ")
+      : e.status === "disabled"
+        ? "No events are sent"
+        : undefined
   return (
-    <span className="flex items-center gap-2 text-xs text-muted-foreground">
-      <Icon aria-hidden="true" className="size-4 shrink-0" />
-      {e.status === "active" ? "Active" : "Disabled · no events are sent"}
+    <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+      <InlineStatus status={e.status === "failing" ? "danger" : e.status === "active" ? "normal" : "offline"}>
+        {e.status === "failing" ? "Failing" : e.status === "active" ? "Active" : "Disabled"}
+      </InlineStatus>
+      {detail && <span className="text-xs text-muted-foreground">{detail}</span>}
     </span>
   )
 }
@@ -190,7 +189,9 @@ function DeliveryRow({ delivery: d }: { delivery: WebhookDelivery }) {
         {!ok && <span className="sr-only">, failed</span>}
       </span>
       <span className="flex min-w-0 flex-col text-left">
-        <code className="truncate font-mono text-sm">{d.event}</code>
+        <span className="truncate text-sm">
+          <Code>{d.event}</Code>
+        </span>
         <span className="text-xs text-muted-foreground tabular-nums">
           <time dateTime={d.at}>{d.time}</time> · {d.status === null ? `timed out after ${d.durationMs / 1000} s` : `${d.durationMs} ms`}
         </span>
@@ -393,15 +394,12 @@ export function SettingsWebhooks({
 
   return (
     <section aria-labelledby="webhooks-title" className="flex flex-col gap-4">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="flex flex-col gap-1">
-          <h2 id="webhooks-title" className="text-lg font-bold">
-            Webhooks
-          </h2>
-          <p className="text-sm text-muted-foreground">Send robot and mission events to your own systems as they happen.</p>
-        </div>
-        {state === "ready" && endpoints.length > 0 && !secret && <AddEndpoint taken={endpoints.map((e) => e.url)} onAdd={add} />}
-      </div>
+      <SectionHeader
+        id="webhooks-title"
+        title="Webhooks"
+        description="Send robot and mission events to your own systems as they happen."
+        actions={state === "ready" && endpoints.length > 0 && !secret && <AddEndpoint taken={endpoints.map((e) => e.url)} onAdd={add} />}
+      />
 
       {/* Read out only: what changed is already on screen (a new delivery at the top, an endpoint gone). */}
       <p role="status" className="sr-only">
@@ -492,14 +490,16 @@ export function SettingsWebhooks({
 
           {selected && (
             <section aria-labelledby="deliveries-title" className="flex flex-col gap-3">
-              <div className="flex flex-col gap-1">
-                <h3 id="deliveries-title" className="font-bold">
-                  Recent deliveries
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  To <Url url={selected.url} className="text-foreground" />, the last 7 days. A failed delivery is retried 5 times over 3 hours.
-                </p>
-              </div>
+              <SectionHeader
+                id="deliveries-title"
+                as="h3"
+                title="Recent deliveries"
+                description={
+                  <>
+                    To <Url url={selected.url} className="text-foreground" />, the last 7 days. A failed delivery is retried 5 times over 3 hours.
+                  </>
+                }
+              />
               <div className="flex flex-wrap gap-2">
                 <Button size="sm" variant="secondary" loading={testing} disabled={selected.status === "disabled"} onClick={() => sendTest(selected)}>
                   <Send aria-hidden="true" />

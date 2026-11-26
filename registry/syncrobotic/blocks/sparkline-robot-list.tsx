@@ -2,8 +2,9 @@
 "use client"
 
 import { cn } from "@/lib/utils"
+import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { StatusGlyph, type Status } from "@/registry/syncrobotic/shell/status-glyph"
-import { Card } from "@/registry/syncrobotic/ui/card"
+import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 
 // A sparkline: the shape of the last values, no axes. Neutral, so only a word or a number carries a warning.
 function Sparkline({ values, className }: { values: number[]; className?: string }) {
@@ -32,10 +33,7 @@ const row = "flex min-h-(--h-row) items-center gap-3 border-b border-border px-4
 export function SparklineRobotList() {
   return (
     <Card className="gap-0 p-0">
-      <div className="flex items-baseline justify-between gap-2 border-b border-border px-4 py-3">
-        <h3 className="text-sm font-medium">Battery, last 12 hours</h3>
-        <span className="text-xs text-muted-foreground">Now</span>
-      </div>
+      <CardDataHeader title="Battery, last 12 hours" actions={<span className="text-xs text-muted-foreground">Now</span>} className="border-b border-border px-4 py-3" />
       <ul>
         {rows.map((r) => {
           // A robot with no readings yet has no level now, and is not called low.
@@ -45,9 +43,7 @@ export function SparklineRobotList() {
             <li key={r.id} className={row}>
               <span className="flex min-w-0 flex-1 flex-col">
                 <span className="text-sm font-medium">Patrol dog {r.id}</span>
-                <span className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <StatusGlyph status={r.tone} /> {r.state}
-                </span>
+                <InlineStatus status={r.tone}>{r.state}</InlineStatus>
               </span>
               <Sparkline values={r.battery} />
               {/* Low is the warning shape before the number, never the number's colour; the word is read. */}

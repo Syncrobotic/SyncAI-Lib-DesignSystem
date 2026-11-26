@@ -2,15 +2,15 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
+import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
 
 type Run = "ok" | "partial" | "failed"
 // A run that passed is calm grey, opaque and 3:1 on the card (--input, the field-edge grey); only the others take colour.
 const cell: Record<Run, string> = { ok: "bg-input", partial: "bg-warning", failed: "bg-danger" }
 const outcome = {
-  partial: { status: "warning", label: "Partial", text: "text-warning" },
-  failed: { status: "danger", label: "Failed", text: "text-danger" },
+  partial: { status: "warning", label: "Partial" },
+  failed: { status: "danger", label: "Failed" },
 } as const
 // Sample data: the last 20 runs of each route, oldest first.
 const seq = (s: string): Run[] => s.split("").map((c) => (c === "x" ? "failed" : c === "~" ? "partial" : "ok"))
@@ -34,17 +34,9 @@ export function StatusTrackerRuns() {
               <span className="flex w-48 min-w-0 flex-col">
                 <span className="text-sm font-medium">{r.name}</span>
                 {/* The time stays grey; only the outcome of a run that did not pass is a shape and a word in colour. */}
-                <span className="text-xs text-muted-foreground">
-                  Last run {r.last}
-                  {last !== "ok" && (
-                    <>
-                      {" · "}
-                      <span className={cn("inline-flex items-center gap-2 font-medium", outcome[last].text)}>
-                        <StatusGlyph status={outcome[last].status} />
-                        {outcome[last].label}
-                      </span>
-                    </>
-                  )}
+                <span className="flex flex-wrap items-center gap-x-2">
+                  <span className="text-xs text-muted-foreground">Last run {r.last}</span>
+                  {last !== "ok" && <InlineStatus status={outcome[last].status}>{outcome[last].label}</InlineStatus>}
                 </span>
               </span>
               {/* The strip takes the rest of the row, its count right after it; on a phone the two wrap together. */}

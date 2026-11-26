@@ -126,14 +126,14 @@ describe("notification center", () => {
 describe("settings billing", () => {
   const invoice = (status: Invoice["status"]): Invoice => ({ id: "x", number: "INV-1", date: "2026-11-01", dueDate: "2026-12-01", amount: 10, status, pdfHref: "#" })
 
-  it("words each invoice status, with its own icon; only overdue is in colour, warning (robots keep working)", () => {
+  it("words each invoice status as an InlineStatus; only overdue is in colour, warning (robots keep working)", () => {
     expect(invoiceStatusText(invoice("paid"))).toBe("Paid")
     expect(invoiceStatusText(invoice("due"))).toBe("Due 1 Dec 2026")
     expect(invoiceStatusText(invoice("overdue"))).toBe("Overdue since 1 Dec 2026")
-    expect(new Set(Object.values(invoiceStatus).map((s) => s.icon)).size).toBe(3)
-    expect(invoiceStatus.paid.className).toContain("text-muted-foreground")
-    expect(invoiceStatus.overdue.className).toContain("text-warning")
-    expect(Object.values(invoiceStatus).some((s) => s.className.includes("danger"))).toBe(false)
+    expect(invoiceStatus.paid.status).toBe("normal")
+    expect(invoiceStatus.due.status).toBe("normal")
+    expect(invoiceStatus.overdue.status).toBe("warning")
+    expect(Object.values(invoiceStatus).some((s) => (s.status as string) === "danger")).toBe(false)
   })
 
   it("formats money with Intl in the account's currency", () => {
@@ -154,7 +154,9 @@ describe("settings billing", () => {
     expect(note.getAttribute("role")).toBe("status")
     expect(screen.queryByRole("alert")).toBeNull()
 
-    expect(screen.getAllByRole("link", { name: /Download invoice INV-2026-\d+ \(PDF\)/ })).toHaveLength(sampleBilling.invoices.length)
+    // ResponsiveTable renders its table and its phone list until it has measured itself (jsdom never does): count one.
+    const table = screen.getByRole("table", { name: "Invoices" })
+    expect(within(table).getAllByRole("link", { name: /Download invoice INV-2026-\d+ \(PDF\)/ })).toHaveLength(sampleBilling.invoices.length)
   })
 
   it("cancels the plan only after confirming", async () => {

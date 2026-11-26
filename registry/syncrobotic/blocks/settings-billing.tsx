@@ -2,9 +2,10 @@
 "use client"
 
 import * as React from "react"
-import { CircleAlert, CircleCheck, Clock, CreditCard, Download, FileText, RotateCw, TriangleAlert } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { CircleAlert, CreditCard, Download, FileText, RotateCw, TriangleAlert } from "lucide-react"
 import { Bone, LoadingLine } from "@/registry/syncrobotic/shell/skeleton"
+import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
+import type { Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Alert, AlertDescription, AlertTitle } from "@/registry/syncrobotic/ui/alert"
 import {
   AlertDialog,
@@ -21,7 +22,8 @@ import { Button } from "@/registry/syncrobotic/ui/button"
 import { Card } from "@/registry/syncrobotic/ui/card"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
+import { ResponsiveTable } from "@/registry/syncrobotic/ui/responsive-table"
+import { SectionHeader } from "@/registry/syncrobotic/ui/section-header"
 
 export type InvoiceStatus = "paid" | "due" | "overdue"
 
@@ -93,14 +95,14 @@ const formatDate = (iso: string, locale: string) => new Intl.DateTimeFormat(loca
 const formatRange = (start: string, end: string, locale: string) => `${formatDate(start, locale)} – ${formatDate(end, locale)}`
 
 /**
- * The words, icon and colour of an invoice's status. Paid is a calm, lasting state: grey with a check. Due is plain text
- * with a clock. Overdue needs someone, but the robots keep working: warning text with a warning icon, never danger.
+ * The word and the shape of an invoice's status, an InlineStatus. Paid and due are calm states: grey shapes, the date in
+ * the words. Overdue needs someone, but the robots keep working: the warning shape and word, never danger.
  */
 export const invoiceStatus = {
-  paid: { label: "Paid", icon: CircleCheck, className: "text-muted-foreground" },
-  due: { label: "Due", icon: Clock, className: "text-foreground" },
-  overdue: { label: "Overdue", icon: TriangleAlert, className: "font-medium text-warning" },
-} as const
+  paid: { label: "Paid", status: "normal" },
+  due: { label: "Due", status: "normal" },
+  overdue: { label: "Overdue", status: "warning" },
+} as const satisfies Record<Invoice["status"], { label: string; status: Status }>
 
 /** The status as it reads in the table: "Paid", "Due 1 Dec 2026", "Overdue since 1 Nov 2026". */
 export function invoiceStatusText(invoice: Invoice, locale = "en-GB") {
@@ -110,25 +112,19 @@ export function invoiceStatusText(invoice: Invoice, locale = "en-GB") {
 }
 
 function StatusText({ invoice, locale }: { invoice: Invoice; locale: string }) {
-  const s = invoiceStatus[invoice.status]
   return (
-    <span data-status={invoice.status} className={cn("flex items-center gap-2 text-sm", s.className)}>
-      <s.icon aria-hidden="true" className="size-4 shrink-0" />
-      {invoiceStatusText(invoice, locale)}
+    <span data-status={invoice.status} className="contents">
+      <InlineStatus status={invoiceStatus[invoice.status].status}>{invoiceStatusText(invoice, locale)}</InlineStatus>
     </span>
   )
 }
 
-function Subsection({ title, aside, children }: { title: string; aside?: React.ReactNode; children: React.ReactNode }) {
+/** A part of the billing page: inside a card its title is the card's (`surface`), between the cards it is the page's. */
+function Subsection({ title, aside, variant = "surface", children }: { title: string; aside?: React.ReactNode; variant?: "page" | "surface"; children: React.ReactNode }) {
   const id = React.useId()
   return (
     <section aria-labelledby={id} className="flex flex-col gap-3">
-      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <h3 id={id} className="font-bold">
-          {title}
-        </h3>
-        {aside && <span className="text-sm text-muted-foreground">{aside}</span>}
-      </div>
+      <SectionHeader id={id} as="h3" variant={variant} title={title} actions={aside && <span className="text-sm text-muted-foreground">{aside}</span>} />
       {children}
     </section>
   )
@@ -180,14 +176,7 @@ export function SettingsBilling({
   const { plan, allowances, period, usage, payment, invoices } = account
   const overdue = invoices.filter((i) => i.status === "overdue")
 
-  const header = (
-    <div className="flex flex-col gap-1">
-      <h2 id="billing-title" className="text-lg font-bold">
-        Plan and billing
-      </h2>
-      <p className="text-sm text-muted-foreground">What your organisation pays for, what it has used this period, and its invoices.</p>
-    </div>
-  )
+  const header = <SectionHeader id="billing-title" title="Plan and billing" description="What your organisation pays for, what it has used this period, and its invoices." />
 
   if (status === "loading")
     return (
@@ -379,7 +368,7 @@ export function SettingsBilling({
         </Subsection>
       </Card>
 
-      <Subsection title="Invoices">
+      <Subsection title="Invoices" variant="page">
         {invoices.length === 0 ? (
           <Card>
             <EmptyState
@@ -389,46 +378,27 @@ export function SettingsBilling({
             />
           </Card>
         ) : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="max-sm:px-3">Date</TableHead>
-                <TableHead className="hidden md:table-cell">Invoice</TableHead>
-                <TableHead className="text-right max-sm:px-3">Amount</TableHead>
-                <TableHead className="hidden sm:table-cell">Status</TableHead>
-                <TableHead className="max-sm:pr-3 max-sm:pl-0">
-                  <span className="sr-only">Download</span>
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {invoices.map((i) => (
-                <TableRow key={i.id}>
-                  <TableCell className="py-2 align-top max-sm:px-3 max-sm:whitespace-normal sm:align-middle">
-                    <span className="tabular-nums">{formatDate(i.date, locale)}</span>
-                    {/* On a phone the status sits under the date, and the number under that. */}
-                    <span className="mt-1 block sm:hidden">
-                      <StatusText invoice={i} locale={locale} />
-                    </span>
-                    <span className="block font-mono text-xs text-muted-foreground md:hidden">{i.number}</span>
-                  </TableCell>
-                  <TableCell className="hidden font-mono text-sm md:table-cell">{i.number}</TableCell>
-                  <TableCell className="py-2 text-right max-sm:px-3 align-top font-medium tabular-nums sm:align-middle">{money(i.amount)}</TableCell>
-                  <TableCell className="hidden sm:table-cell">
-                    <StatusText invoice={i} locale={locale} />
-                  </TableCell>
-                  <TableCell className="w-px py-2 text-right max-sm:pr-3 max-sm:pl-0 align-top sm:align-middle">
-                    <Button variant="ghost" size="sm" asChild className="max-sm:size-(--h-md) max-sm:px-0">
-                      <Link href={i.pdfHref} download aria-label={`Download invoice ${i.number} (PDF)`}>
-                        <Download aria-hidden="true" />
-                        <span className="max-sm:hidden">PDF</span>
-                      </Link>
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          // One list of columns: the date is the row's title, the number and amount the line under it, the status its
+          // trailing state; the PDF is the row's action in both layouts.
+          <ResponsiveTable
+            label="Invoices"
+            rows={invoices}
+            rowKey={(i) => i.id}
+            columns={[
+              { id: "date", header: "Date", cell: (i) => <span className="tabular-nums">{formatDate(i.date, locale)}</span>, phoneCell: (i) => formatDate(i.date, locale) },
+              { id: "number", header: "Invoice", cell: (i) => <span className="font-mono">{i.number}</span> },
+              { id: "amount", header: "Amount", align: "end", cell: (i) => <span className="font-medium tabular-nums">{money(i.amount)}</span>, phoneCell: (i) => money(i.amount) },
+              { id: "status", header: "Status", phone: "trailing", cell: (i) => <StatusText invoice={i} locale={locale} /> },
+            ]}
+            rowActions={(i) => (
+              <Button variant="ghost" size="sm" asChild>
+                <Link href={i.pdfHref} download aria-label={`Download invoice ${i.number} (PDF)`}>
+                  <Download aria-hidden="true" />
+                  PDF
+                </Link>
+              </Button>
+            )}
+          />
         )}
       </Subsection>
     </section>
