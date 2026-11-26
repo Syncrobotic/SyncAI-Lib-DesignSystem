@@ -2,6 +2,20 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.44.0 · 2026-11-26
+
+A sidebar you can resize, from a handle beside it that shows only when you need it.
+
+### Added
+- **`sidebar` 0.44.0:** `SidebarRail` is a handle beside the sidebar (a window splitter) that resizes it. Drag it for a column from 200 to 320 px; dragged under 140 it folds to the 72 px rail, and dragged out of the rail it opens. A click, or Enter, collapses and expands; ← and → resize by 16 px; ⌘B / Ctrl+B still toggles anywhere. The handle is a short pill, hidden until the pointer is over the sidebar, taller and brighter on the handle and while dragged, always there on a touch screen and from the keyboard. Beside a floating sidebar it sits in the 8 px gap, over nothing; beside a column, on the hairline. The width is kept in a cookie (`<cookieName>_width`) and `defaultWidth` sets the first one; the column's width is `--sidebar-width`. Two new labels, `resize` and `drag`.
+
+### Changed
+- **`app-shell` 0.44.0:** the round knob that sat across the 8 px gap between the sidebar and the top bar is now the handle above. The search in the top bar is filled, not outlined, and 36 px high with a mouse (44 on a touch screen), so it no longer reads as a box inside the bar's box; a field passed with `onSearch` is filled the same way when inset.
+- **`labels-zh-tw` 0.44.0:** the sidebar's `resize` and `drag` labels.
+
+### Upgrading
+- `SidebarRail` is a `div` with `role="separator"` now, not a `button`: a test or selector that found it as a button finds it by `getByRole("separator", { name: "Resize sidebar" })`. Its click is a pointer press without a drag, so a handler passed as `onClick` no longer toggles in its place.
+
 ## 0.43.1 · 2026-11-26
 
 A fix for a timer that outlived its page, and a quicker check on pull requests.

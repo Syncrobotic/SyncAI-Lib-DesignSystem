@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell v0.32.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
+// @syncrobotic/app-shell v0.44.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -391,14 +391,18 @@ export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch;
   const shortcut = mac ? "⌘K" : "Ctrl K"
   const groups = search.groups.filter((g) => scope === widest || g.scope === scope)
 
-  const scopeMenu = (
+  // In the field it fits inside it (4 px in); in the palette it is a compact control.
+  const scopeMenu = (inField: boolean) => (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button
           type="button"
           data-slot="shell-search-scope"
           aria-label={l.scope(scopeLabel ?? "")}
-          className="press mx-1 flex h-(--h-sm) shrink-0 items-center gap-2 rounded-xs px-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground"
+          className={cn(
+            "press mx-1 flex shrink-0 items-center gap-2 rounded-xs px-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground",
+            inField ? "my-1 self-stretch" : "h-(--h-sm)",
+          )}
         >
           {scopeLabel}
           <ChevronDown aria-hidden="true" className="size-4" />
@@ -421,8 +425,9 @@ export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch;
 
   return (
     <>
-      {/* Wide screens: a field with the scope inside. Narrow: an icon button. Both open the palette. */}
-      <div className="hidden h-(--h-md) w-80 items-center rounded-sm bg-card ring-1 ring-input ring-inset lg:flex">
+      {/* Wide screens: a field with the scope inside, filled rather than outlined, so it is not a box inside the top
+          bar's box. Narrow: an icon button. Both open the palette. */}
+      <div className="hidden h-(--h-sm) w-80 items-center rounded-sm bg-muted lg:flex">
         <button
           type="button"
           data-slot="shell-search"
@@ -433,7 +438,7 @@ export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch;
           <span className="truncate">{search.label ?? l.search}</span>
           <CommandShortcut className="mr-1">{shortcut}</CommandShortcut>
         </button>
-        {scopes.length > 1 && scopeMenu}
+        {scopes.length > 1 && scopeMenu(true)}
       </div>
       <button
         type="button"
@@ -446,7 +451,7 @@ export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch;
       </button>
 
       <CommandDialog open={open} onOpenChange={setOpen} title={l.search} description={search.placeholder}>
-        <CommandInput placeholder={search.placeholder ?? l.search} end={scopes.length > 1 ? scopeMenu : undefined} />
+        <CommandInput placeholder={search.placeholder ?? l.search} end={scopes.length > 1 ? scopeMenu(false) : undefined} />
         <CommandList>
           <CommandEmpty>{(query) => l.empty(query, scopeLabel ?? "")}</CommandEmpty>
           {groups.map((g) => (
@@ -575,7 +580,8 @@ export function AppShell({
             <SidebarUserMenu user={user} items={userMenu} linkAs={linkAs} />
           </SidebarFooter>
         )}
-        {/* Collapse and expand at the sidebar's edge: a handle in its middle (a Tab stop too), and ⌘B / Ctrl+B anywhere. */}
+        {/* The handle beside the sidebar: drag to resize, click (or Enter) to collapse and expand; ⌘B / Ctrl+B anywhere.
+            Inset it sits in the 8 px gap, over nothing; flush, on the hairline. */}
         <SidebarRail />
       </Sidebar>
 
@@ -602,7 +608,7 @@ export function AppShell({
           <div className="ml-auto flex items-center gap-2">
             {search && <ShellSearch search={search} linkAs={linkAs} />}
             {onSearch && (
-              <InputGroup className="hidden w-64 lg:flex">
+              <InputGroup className={cn("hidden w-64 lg:flex", inset && "bg-muted ring-0")}>
                 <InputGroupAddon>
                   <Search aria-hidden="true" />
                 </InputGroupAddon>
