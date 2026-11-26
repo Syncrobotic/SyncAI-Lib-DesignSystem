@@ -5,6 +5,7 @@ import { ListDetail } from "@/registry/syncrobotic/blocks/list-detail"
 import { DataCatalog, DataCatalogContent } from "@/registry/syncrobotic/blocks/data-catalog"
 import { DatasetDetail } from "@/registry/syncrobotic/blocks/dataset-detail"
 import { GovernanceTodo } from "@/registry/syncrobotic/blocks/governance-todo"
+import { AgentChat, AgentChatContent, AgentChatSheet } from "@/registry/syncrobotic/blocks/agent-chat"
 import { SignIn } from "@/registry/syncrobotic/blocks/sign-in"
 import { ErrorPage, LoadingPage, NoAccessPage, NotFoundPage, OfflinePage } from "@/registry/syncrobotic/blocks/status-pages"
 import { RecordForm } from "@/registry/syncrobotic/blocks/record-form"
@@ -148,3 +149,21 @@ export const TopBarShellStickyTabs: S = {
 // The action-rail shell as a full-screen workspace (#343, #312): history | main | controls from 1280 px, the history in a
 // Sheet from the top bar below that, the fields after main and the rail as the bottom bar on phones (this frame).
 export const ActionRailWorkspace: S = { render: () => <ActionRailWorkspaceDemo /> }
+
+// A conversation with the fleet's assistant (agent-chat): settled turns, so the picture is the same on every run. Send a
+// question and the scripted answer streams in; Stop ends it as Stopped.
+export const AgentChatScreen: S = { render: () => <AgentChat /> }
+// A new conversation: the suggested prompts as chips; one press sends it.
+export const AgentChatEmpty: S = { render: () => <AgentChat defaultTurns={[]} /> }
+// The copilot: an ordinary page with Ask the assistant in its top bar, the conversation in a sheet on the right.
+export const AgentChatSheetOpen: S = { render: () => <AgentChatSheet defaultOpen focusOnOpen={false} /> }
+// The conversation alone, in a product's own frame: here a card 32 rem tall.
+export const AgentChatInOwnFrame: S = {
+  render: () => (
+    <div className="p-4">
+      <div className="flex h-128 flex-col overflow-hidden rounded-md bg-card ring-1 ring-border">
+        <AgentChatContent />
+      </div>
+    </div>
+  ),
+}

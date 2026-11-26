@@ -8692,8 +8692,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.41.0",
         "changelog": [
+          {
+            "version": "0.41.0",
+            "date": "2026-11-26",
+            "note": "Checklist line 17: a conversation with a model is built from the conversation parts (Message turns in a MessageScroller with a height, PromptComposer at its foot with Stop, StreamingText as Markdown with Citations, MessageActions and MessageMeta under each answer, Trace for tool calls, suggested prompts in the empty state); an agent that would move a robot proposes and a person approves. The workflow names the agent-chat block and AgentChatContent."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -11781,6 +11786,48 @@
             "version": "0.9.0",
             "date": "2026-11-17",
             "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "agent-chat",
+      "type": "registry:block",
+      "title": "Chat with an agent",
+      "description": "A conversation with the fleet's assistant: turns in a scroller that fills the height, the composer pinned at its foot, suggested prompts to start, tool calls as a Trace, a streamed Markdown answer with its sources, actions and facts under each answer, and Stop. It drafts proposals for a person to approve and never moves a robot. AgentChat is the page, AgentChatSheet the same conversation as a copilot in a side sheet, and AgentChatContent drops the sample frame, for your own shell.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/fleet-table",
+        "@syncrobotic/use-reduced-motion",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/button",
+        "@syncrobotic/citations",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/message",
+        "@syncrobotic/message-actions",
+        "@syncrobotic/message-scroller",
+        "@syncrobotic/prompt-composer",
+        "@syncrobotic/sheet",
+        "@syncrobotic/streaming-text",
+        "@syncrobotic/trace"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/agent-chat.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.41.0",
+        "changelog": [
+          {
+            "version": "0.41.0",
+            "date": "2026-11-26",
+            "note": "New: a conversation with the fleet's assistant, as a page (AgentChat), a copilot sheet (AgentChatSheet) and its content alone (AgentChatContent)."
           }
         ]
       }
