@@ -1,4 +1,4 @@
-// @syncrobotic/radial-chart-goal v0.17.3 · update: npx shadcn add @syncrobotic/radial-chart-goal --overwrite
+// @syncrobotic/radial-chart-goal v0.40.0 · update: npx shadcn add @syncrobotic/radial-chart-goal --overwrite
 "use client"
 
 import * as React from "react"
@@ -59,7 +59,7 @@ export function RadialChartGoal() {
         <span role="meter" aria-label="Patrol coverage today" aria-valuemin={0} aria-valuemax={100} aria-valuenow={covered}>
           <Ring value={covered} size={144} stroke={12} className="stroke-foreground">
             <span className="flex flex-col items-center">
-              <span className="text-3xl font-bold tabular-nums">{covered} %</span>
+              <span className="text-2xl font-bold tabular-nums">{covered} %</span>
               <span className="text-xs text-muted-foreground">of plan</span>
             </span>
           </Ring>

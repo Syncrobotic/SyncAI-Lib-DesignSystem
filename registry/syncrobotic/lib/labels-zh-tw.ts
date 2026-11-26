@@ -1,11 +1,14 @@
-// @syncrobotic/labels-zh-tw v0.39.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
+// @syncrobotic/labels-zh-tw v0.40.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
 // The kit's words in Traditional Chinese as written in Taiwan, one object per component that takes `labels`. Pass each
 // to its component (`<DataGrid labels={dataGridLabels} />`) with `locale="zh-TW"` where the component formats numbers,
-// days or times. The file imports no component, so it installs on its own; the kit's tests hold every object to the
-// component's own labels type, so a key the kit adds or renames is caught before release instead of showing in English.
+// days or times. The file imports no component (only format-number, which writes its numbers), so it installs on its own;
+// the kit's tests hold every object to the component's own labels type, so a key the kit adds or renames is caught before
+// release instead of showing in English.
 //
 // Terms follow the kit's Chinese vocabulary: 警報 (alarm), 急停 (emergency stop), 機器人 (robot), 任務 (mission), and
 // Taiwan usage throughout (檔案, 設定, 影片, 連線, 網路). Units stay SI symbols (mm, m/s, N·m), as on the robot's own panels.
+
+import { formatCount, formatNumber } from "@/registry/syncrobotic/lib/format-number"
 
 /** The BCP 47 tag to pass as `locale` beside these labels. */
 export const locale = "zh-TW"
@@ -147,14 +150,14 @@ export const cameraWallLabels = {
   attentionFirst: "需處理優先",
   byName: "名稱",
   needsAttention: "需要處理",
-  count: (n: number, locale: string | undefined) => n.toLocaleString(locale),
+  count: (n: number, locale: string | undefined) => formatCount(n, { locale: locale ?? "zh-TW" }),
   allCameras: "所有攝影機",
   critical: "緊急",
   high: "高",
   low: "低",
   alarm: (priority: string, title: string) => `${priority}・${title}`,
   range: (from: number, to: number, total: number, locale?: string) =>
-    `第 ${from.toLocaleString(locale)}–${to.toLocaleString(locale)} 台，共 ${total.toLocaleString(locale)} 台攝影機`,
+    `第 ${formatCount(from, { locale: locale ?? "zh-TW" })}–${formatCount(to, { locale: locale ?? "zh-TW" })} 台，共 ${formatCount(total, { locale: locale ?? "zh-TW" })} 台攝影機`,
   previousPage: "上一頁攝影機",
   nextPage: "下一頁攝影機",
   empty: "沒有攝影機",
@@ -163,7 +166,7 @@ export const cameraWallLabels = {
   announce: (changes: { name: string; state: string }[], locale: string | undefined) => {
     const shown = changes.slice(0, 3).map((c) => `${c.name}：${c.state}。`)
     const more = changes.length - shown.length
-    return shown.join("") + (more > 0 ? `另有 ${more.toLocaleString(locale)} 台攝影機狀態改變。` : "")
+    return shown.join("") + (more > 0 ? `另有 ${formatCount(more, { locale: locale ?? "zh-TW" })} 台攝影機狀態改變。` : "")
   },
   feed: cameraFeedLabels,
 }
@@ -204,12 +207,12 @@ export const diagnosticsLabels = {
   error: "錯誤",
   stale: "未更新",
   summary: (problems: number, total: number, locale: string) =>
-    problems === 0 ? `共 ${total.toLocaleString(locale)} 項，沒有需要注意的項目` : `${total.toLocaleString(locale)} 項中有 ${problems.toLocaleString(locale)} 項需要注意`,
+    problems === 0 ? `共 ${formatCount(total, { locale: locale ?? "zh-TW" })} 項，沒有需要注意的項目` : `${formatCount(total, { locale: locale ?? "zh-TW" })} 項中有 ${formatCount(problems, { locale: locale ?? "zh-TW" })} 項需要注意`,
   updatedAgo: (ms: number, locale: string) => {
     const s = Math.max(0, Math.floor(ms / 1000))
-    if (s < 60) return `${s.toLocaleString(locale)} 秒前更新`
-    if (s < 3600) return `${Math.floor(s / 60).toLocaleString(locale)} 分鐘前更新`
-    return `${Math.floor(s / 3600).toLocaleString(locale)} 小時前更新`
+    if (s < 60) return `${formatCount(s, { locale: locale ?? "zh-TW" })} 秒前更新`
+    if (s < 3600) return `${formatCount(Math.floor(s / 60), { locale: locale ?? "zh-TW" })} 分鐘前更新`
+    return `${formatCount(Math.floor(s / 3600), { locale: locale ?? "zh-TW" })} 小時前更新`
   },
   filter: "顯示",
   all: "全部",
@@ -291,7 +294,7 @@ export const robotModelLabels = {
 export const pointCloudLabels = {
   viewName: "3D 點雲",
   keys: "拖曳可旋轉，按右鍵拖曳或用兩指可平移；視圖取得焦點後，用滾輪或雙指縮放。方向鍵旋轉，Shift 加方向鍵平移，加號與減號縮放，0 重設視圖。",
-  count: (n: number) => `${n.toLocaleString("zh-TW")} 個點`,
+  count: (n: number) => `${formatCount(n, { locale: "zh-TW" })} 個點`,
   bounds: (b: { min: [number, number, number]; max: [number, number, number]; count: number }) =>
     `x ${fixed1(b.min[0])} 至 ${fixed1(b.max[0])} m（前方），y ${fixed1(b.min[1])} 至 ${fixed1(b.max[1])} m（左方），z ${fixed1(b.min[2])} 至 ${fixed1(b.max[2])} m（上方）`,
   robotAtOrigin: "機器人位於原點，面向 x 軸",
@@ -371,7 +374,7 @@ export const robotMapLabels = {
 export const robotMapListLabels = robotMapLabels
 
 // 航點 (waypoint) and 路線 (route), as robot-map says them; 停留 for dwell, the word a dispatcher uses for time at a stop.
-const routeNumber = (n: number, locale: string | undefined, digits = 1) => n.toLocaleString(locale ?? "zh-TW", { minimumFractionDigits: digits, maximumFractionDigits: digits })
+const routeNumber = (n: number, locale: string | undefined, digits = 1) => formatNumber(n, { locale: locale ?? "zh-TW", minimumFractionDigits: digits, maximumFractionDigits: digits })
 export const waypointEditorLabels = {
   name: "路線",
   map: "路線地圖",
@@ -405,8 +408,8 @@ export const waypointEditorLabels = {
   geoPosition: (lat: number, lon: number, locale: string | undefined) => `${routeNumber(lat, locale, 6)}, ${routeNumber(lon, locale, 6)}`,
   headingShort: (deg: number) => `朝向 ${compass(deg)}°`,
   actionShort: (a: { type: string; seconds?: number; name?: string }, locale: string | undefined) =>
-    a.type === "wait" ? `等待 ${(a.seconds ?? 0).toLocaleString(locale ?? "zh-TW")} 秒` : a.type === "dock" ? "回充電座" : a.type === "photo" ? "拍照" : a.type === "custom" ? a.name || "自訂動作" : "",
-  dwellShort: (s: number, locale: string | undefined) => `停留 ${s.toLocaleString(locale ?? "zh-TW")} 秒`,
+    a.type === "wait" ? `等待 ${formatNumber(a.seconds ?? 0, { locale: locale ?? "zh-TW" })} 秒` : a.type === "dock" ? "回充電座" : a.type === "photo" ? "拍照" : a.type === "custom" ? a.name || "自訂動作" : "",
+  dwellShort: (s: number, locale: string | undefined) => `停留 ${formatNumber(s, { locale: locale ?? "zh-TW" })} 秒`,
   problem: (p: { kind: string; zone?: string; distance?: number }, min: number, locale: string | undefined) =>
     p.kind === "noName"
       ? "缺少名稱"
@@ -419,13 +422,13 @@ export const waypointEditorLabels = {
             : p.kind === "keepOut"
               ? `位於${p.zone ?? "禁入區"}內`
               : `距上一個航點 ${routeNumber(p.distance ?? 0, locale, 2)} m（至少需 ${routeNumber(min, locale)} m）`,
-  count: (n: number, locale: string | undefined) => `${n.toLocaleString(locale ?? "zh-TW")} 個航點`,
+  count: (n: number, locale: string | undefined) => `${formatCount(n, { locale: locale ?? "zh-TW" })} 個航點`,
   distanceTitle: "距離",
   durationTitle: "預估時間",
   distance: (m: number, locale: string | undefined) => (m >= 1000 ? `${routeNumber(m / 1000, locale, 2)} km` : `${routeNumber(m, locale)} m`),
   duration: (s: number, locale: string | undefined) => {
     const t = Math.round(s)
-    const n = (v: number) => v.toLocaleString(locale ?? "zh-TW")
+    const n = (v: number) => formatCount(v, { locale: locale ?? "zh-TW" })
     if (t < 60) return `約 ${n(t)} 秒`
     const h = Math.floor(t / 3600)
     const m = Math.floor((t % 3600) / 60)
@@ -437,11 +440,11 @@ export const waypointEditorLabels = {
   cancel: "取消",
   noChanges: "沒有要儲存的變更",
   needsWaypoint: "請先新增航點再儲存",
-  blocked: (n: number, locale: string | undefined) => `請先修正 ${n.toLocaleString(locale ?? "zh-TW")} 個問題再儲存`,
+  blocked: (n: number, locale: string | undefined) => `請先修正 ${formatCount(n, { locale: locale ?? "zh-TW" })} 個問題再儲存`,
   saveFailed: "無法儲存路線，請再試一次。",
   savedNotice: "已儲存路線",
   discarded: "已捨棄變更",
-  problems: (n: number, locale: string | undefined) => (n === 0 ? "已沒有問題" : `${n.toLocaleString(locale ?? "zh-TW")} 個問題`),
+  problems: (n: number, locale: string | undefined) => (n === 0 ? "已沒有問題" : `${formatCount(n, { locale: locale ?? "zh-TW" })} 個問題`),
   added: (name: string, n: number) => `已新增 ${name}，為第 ${n} 個航點`,
   duplicated: (name: string, n: number) => `已新增 ${name}，為第 ${n} 個航點`,
   readOnly: "僅供檢視：你無法變更這條路線。",
@@ -450,7 +453,7 @@ export const waypointEditorLabels = {
 
 // The outdoor map writes coordinates with fixed decimals and no grouping, in the locale's digits.
 const geoNumber = (n: number, max: number, locale: string | undefined, min = max) =>
-  n.toLocaleString(locale ?? "en", { minimumFractionDigits: min, maximumFractionDigits: max, useGrouping: false })
+  formatNumber(n, { locale: locale ?? "en", minimumFractionDigits: min, maximumFractionDigits: max, useGrouping: false })
 const geoCompass = ["北", "東北", "東", "東南", "南", "西南", "西", "西北"]
 
 export const geoMapLabels = {
@@ -660,7 +663,7 @@ export const shellSearchLabels = {
 export const paginationLabels = {
   nav: "分頁",
   range: (from: number, to: number, total: number, locale?: string) =>
-    `第 ${from.toLocaleString(locale)}–${to.toLocaleString(locale)} 筆，共 ${total.toLocaleString(locale)} 筆`,
+    `第 ${formatCount(from, { locale: locale ?? "zh-TW" })}–${formatCount(to, { locale: locale ?? "zh-TW" })} 筆，共 ${formatCount(total, { locale: locale ?? "zh-TW" })} 筆`,
   previous: "上一頁",
   next: "下一頁",
   page: (n: number) => `第 ${n} 頁`,
@@ -670,8 +673,8 @@ export const paginationLabels = {
 export const dataGridPaginationLabels = paginationLabels
 
 export const loadMoreLabels = {
-  showing: (shown: number, total: number, locale: string | undefined) => `已顯示 ${shown.toLocaleString(locale)} / ${total.toLocaleString(locale)} 筆`,
-  more: (next: number, left: number, locale: string | undefined) => `再顯示 ${next.toLocaleString(locale)} 筆（剩 ${left.toLocaleString(locale)} 筆）`,
+  showing: (shown: number, total: number, locale: string | undefined) => `已顯示 ${formatCount(shown, { locale: locale ?? "zh-TW" })} / ${formatCount(total, { locale: locale ?? "zh-TW" })} 筆`,
+  more: (next: number, left: number, locale: string | undefined) => `再顯示 ${formatCount(next, { locale: locale ?? "zh-TW" })} 筆（剩 ${formatCount(left, { locale: locale ?? "zh-TW" })} 筆）`,
 }
 
 export const streamingChartLabels = {
@@ -792,7 +795,7 @@ export const logViewerLabels = {
   search: "搜尋日誌",
   searchPlaceholder: "搜尋訊息與來源",
   matches: (current: number, total: number, locale: string | undefined) =>
-    total === 0 ? "沒有符合的結果" : current ? `第 ${current.toLocaleString(locale)} 筆，共 ${total.toLocaleString(locale)} 筆` : `${total.toLocaleString(locale)} 筆符合`,
+    total === 0 ? "沒有符合的結果" : current ? `第 ${formatCount(current, { locale: locale ?? "zh-TW" })} 筆，共 ${formatCount(total, { locale: locale ?? "zh-TW" })} 筆` : `${formatCount(total, { locale: locale ?? "zh-TW" })} 筆符合`,
   previousMatch: "上一筆符合",
   nextMatch: "下一筆符合",
   levels: "層級",
@@ -801,17 +804,17 @@ export const logViewerLabels = {
   sources: "來源",
   allSources: "所有來源",
   sourceCount: (n: number) => `${n} 個來源`,
-  count: (n: number, locale: string | undefined) => n.toLocaleString(locale),
+  count: (n: number, locale: string | undefined) => formatCount(n, { locale: locale ?? "zh-TW" }),
   viewOptions: "顯示選項",
   wrap: "長訊息自動換行",
   relativeTime: "顯示經過時間",
   jumpToLatest: "跳到最新",
-  newLines: (n: number, locale: string | undefined) => `${n.toLocaleString(locale)} 行新訊息`,
+  newLines: (n: number, locale: string | undefined) => `${formatCount(n, { locale: locale ?? "zh-TW" })} 行新訊息`,
   following: "持續顯示最新",
   paused: "已暫停",
   total: (shown: number, total: number, locale: string | undefined) =>
-    shown === total ? `共 ${total.toLocaleString(locale)} 行` : `顯示 ${shown.toLocaleString(locale)} 行，共 ${total.toLocaleString(locale)} 行`,
-  capped: (max: number, locale: string | undefined) => `只保留最近 ${max.toLocaleString(locale)} 行`,
+    shown === total ? `共 ${formatCount(total, { locale: locale ?? "zh-TW" })} 行` : `顯示 ${formatCount(shown, { locale: locale ?? "zh-TW" })} 行，共 ${formatCount(total, { locale: locale ?? "zh-TW" })} 行`,
+  capped: (max: number, locale: string | undefined) => `只保留最近 ${formatCount(max, { locale: locale ?? "zh-TW" })} 行`,
   empty: "尚無日誌",
   noMatch: "沒有符合篩選條件的行",
   showAll: "顯示全部",
@@ -832,14 +835,14 @@ export const logViewerLabels = {
     return rtf.format(-Math.floor(s / 86400), "day")
   },
   announce: ({ lines, errors, warnings }: { lines: number; errors: number; warnings: number }, locale: string | undefined) =>
-    [`${lines.toLocaleString(locale)} 行新訊息`, errors && `${errors.toLocaleString(locale)} 個錯誤`, warnings && `${warnings.toLocaleString(locale)} 個警告`].filter(Boolean).join("，"),
+    [`${formatCount(lines, { locale: locale ?? "zh-TW" })} 行新訊息`, errors && `${formatCount(errors, { locale: locale ?? "zh-TW" })} 個錯誤`, warnings && `${formatCount(warnings, { locale: locale ?? "zh-TW" })} 個警告`].filter(Boolean).join("，"),
   keys: "上下方向鍵在各行之間移動，按住 Shift 可選取多行，Enter 展開該行，C 複製，End 跳到最新一行，斜線鍵開始搜尋。",
 }
 
 // A model's answer as it streams: 生成 (generate), 推理 (reasoning), 首個 token (first token, the term engineers use).
 const streamDuration = (ms: number, locale: string | undefined) => {
   const s = Math.max(0, ms) / 1000
-  const n = (v: number, digits = 0) => v.toLocaleString(locale ?? "zh-TW", { minimumFractionDigits: digits, maximumFractionDigits: digits })
+  const n = (v: number, digits = 0) => formatNumber(v, { locale: locale ?? "zh-TW", minimumFractionDigits: digits, maximumFractionDigits: digits })
   if (s < 10) return `${n(s, 1)} 秒`
   if (s < 60) return `${n(Math.round(s))} 秒`
   const whole = Math.round(s)
@@ -849,7 +852,7 @@ const streamDuration = (ms: number, locale: string | undefined) => {
 export const streamingTextLabels = {
   name: "回答",
   queued: (position: number | undefined, locale: string | undefined) =>
-    position === undefined ? "排隊等候中" : position <= 1 ? "下一個就輪到" : `排隊中，第 ${position.toLocaleString(locale ?? "zh-TW")} 位`,
+    position === undefined ? "排隊等候中" : position <= 1 ? "下一個就輪到" : `排隊中，第 ${formatCount(position, { locale: locale ?? "zh-TW" })} 位`,
   thinking: "思考中",
   generating: "生成中",
   done: ({ durationMs, firstTokenMs }: { durationMs?: number; firstTokenMs?: number }, locale: string | undefined) =>

@@ -1,4 +1,4 @@
-// @syncrobotic/table v0.35.0 · update: npx shadcn add @syncrobotic/table --overwrite
+// @syncrobotic/table v0.40.0 · update: npx shadcn add @syncrobotic/table --overwrite
 "use client"
 
 import * as React from "react"
@@ -41,17 +41,6 @@ export function scrollFadeMask({ start, end }: { start: boolean; end: boolean })
   if (!start && !end) return undefined
   const image = `linear-gradient(to right, ${start ? "transparent, black 2rem" : "black, black"}, ${end ? "black calc(100% - 2rem), transparent" : "black"})`
   return { maskImage: image, WebkitMaskImage: image }
-}
-
-/** @deprecated since 0.17.4: use scrollFadeMask on the scrolling box (this overlay smeared over grey header rows). */
-export function ScrollFades({ start, end }: { start: boolean; end: boolean }) {
-  const fade = "pointer-events-none absolute inset-y-0 z-10 w-8 from-card to-transparent transition-opacity duration-(--motion-fast) ease-(--ease-standard)"
-  return (
-    <>
-      <span aria-hidden="true" data-slot="scroll-fade" className={cn(fade, "left-0 rounded-l-md bg-linear-to-r", start ? "opacity-100" : "opacity-0")} />
-      <span aria-hidden="true" data-slot="scroll-fade" className={cn(fade, "right-0 rounded-r-md bg-linear-to-l", end ? "opacity-100" : "opacity-0")} />
-    </>
-  )
 }
 
 /**

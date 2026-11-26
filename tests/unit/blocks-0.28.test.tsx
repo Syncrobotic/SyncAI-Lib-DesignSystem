@@ -96,7 +96,9 @@ describe("wizard import", () => {
     const next = screen.getAllByRole("button", { name: "Next" })[0]!
     expect(next.hasAttribute("disabled")).toBe(true)
     expect(document.getElementById(next.getAttribute("aria-describedby")!)?.textContent).toBe("Choose a CSV file first")
-    fireEvent.click(screen.getByRole("button", { name: /Choose a CSV file/ }))
+    // The drop zone opens the browser's picker; the sample file stands in for one here.
+    expect(screen.getByRole("button", { name: /Drop a CSV file here or choose one/ })).toBeTruthy()
+    fireEvent.click(screen.getByRole("button", { name: "Use the sample file" }))
     expect(screen.getByText("4 columns found")).toBeTruthy()
     expect(next.hasAttribute("disabled")).toBe(false)
     expect(next.getAttribute("aria-describedby")).toBeNull()
@@ -123,7 +125,7 @@ describe("maintenance due", () => {
     render(<MaintenanceDue />)
     const overdue = screen.getAllByText("Overdue")[0]!
     expect(overdue.className).toContain("text-danger")
-    expect(overdue.parentElement?.className).toContain("text-muted-foreground")
+    expect(screen.getAllByText("12 h over")[0]!.className).toContain("text-muted-foreground")
     expect(screen.getAllByText("Due soon")[0]!.className).toContain("text-warning")
   })
 })

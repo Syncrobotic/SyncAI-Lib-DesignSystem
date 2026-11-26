@@ -1,4 +1,4 @@
-// @syncrobotic/wizard-commission v0.35.0 · update: npx shadcn add @syncrobotic/wizard-commission --overwrite
+// @syncrobotic/wizard-commission v0.40.0 · update: npx shadcn add @syncrobotic/wizard-commission --overwrite
 "use client"
 
 import * as React from "react"
@@ -9,6 +9,7 @@ import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { IconTile } from "@/registry/syncrobotic/ui/icon-tile"
 import { Input } from "@/registry/syncrobotic/ui/input"
+import { PageHeader } from "@/registry/syncrobotic/ui/page-header"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
 import { Spinner } from "@/registry/syncrobotic/ui/spinner"
 import { Stepper, StepperItem } from "@/registry/syncrobotic/ui/stepper"
@@ -57,10 +58,7 @@ export function WizardCommission({ onDone }: { onDone?: (robot: { serial: string
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col gap-6 p-6">
-      <div className="flex flex-col gap-1">
-        <h1 className="text-xl font-bold">Add a robot</h1>
-        <p className="text-sm text-muted-foreground">Have the robot switched on and within 10 m of its dock.</p>
-      </div>
+      <PageHeader title="Add a robot" description="Have the robot switched on and within 10 m of its dock." className="pb-0" />
       <Stepper value={done ? 5 : step} onValueChange={setStep} navigable="done">
         <StepperItem title="Identify" />
         <StepperItem title="Place" />

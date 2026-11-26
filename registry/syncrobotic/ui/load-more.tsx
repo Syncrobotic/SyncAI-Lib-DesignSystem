@@ -1,8 +1,9 @@
-// @syncrobotic/load-more v0.28.0 · update: npx shadcn add @syncrobotic/load-more --overwrite
+// @syncrobotic/load-more v0.40.0 · update: npx shadcn add @syncrobotic/load-more --overwrite
 "use client"
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
+import { formatCount } from "@/registry/syncrobotic/lib/format-number"
 import { Button } from "@/registry/syncrobotic/ui/button"
 
 export type LoadMoreLabels = {
@@ -13,8 +14,8 @@ export type LoadMoreLabels = {
 }
 
 export const defaultLoadMoreLabels: LoadMoreLabels = {
-  showing: (shown, total, locale) => `Showing ${shown.toLocaleString(locale)} of ${total.toLocaleString(locale)}`,
-  more: (next, left, locale) => `Show ${next.toLocaleString(locale)} more (${left.toLocaleString(locale)} left)`,
+  showing: (shown, total, locale) => `Showing ${formatCount(shown, { locale })} of ${formatCount(total, { locale })}`,
+  more: (next, left, locale) => `Show ${formatCount(next, { locale })} more (${formatCount(left, { locale })} left)`,
 }
 
 /**
@@ -45,7 +46,7 @@ export function LoadMore({
   loading?: boolean
   /** The words it says, to translate them. */
   labels?: Partial<LoadMoreLabels>
-  /** Formats the numbers (a BCP 47 tag such as "zh-TW"). Left out, the browser's language. */
+  /** Formats the numbers (a BCP 47 tag such as "zh-TW"). Left out, English, so the server and the browser write the same. */
   locale?: string
   className?: string
 }) {

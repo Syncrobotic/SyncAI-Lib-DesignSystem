@@ -1,4 +1,4 @@
-// @syncrobotic/robot-map v0.36.0 · update: npx shadcn add @syncrobotic/robot-map --overwrite
+// @syncrobotic/robot-map v0.40.0 · update: npx shadcn add @syncrobotic/robot-map --overwrite
 "use client"
 
 import * as React from "react"
@@ -1717,7 +1717,8 @@ export function RobotMap({
               {/* A problem: the warning shape on the disc's corner, over a halo in the map's colour; the words are in the list. */}
               {mark?.problem && (
                 <svg aria-hidden="true" viewBox="0 0 12 12" className="absolute top-0 right-0 size-3 overflow-visible text-warning">
-                  <path d="M6 1 11 10.5H1Z" fill="currentColor" className="stroke-map" strokeWidth="2" strokeLinejoin="round" paintOrder="stroke" />
+                  <path d="M6 2.2 10.2 9.6H1.8Z" fill="none" className="stroke-map" strokeWidth="4" strokeLinejoin="round" />
+                  <path d="M6 2.2 10.2 9.6H1.8Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
                 </svg>
               )}
             </div>

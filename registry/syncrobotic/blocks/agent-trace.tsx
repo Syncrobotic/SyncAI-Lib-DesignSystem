@@ -1,8 +1,9 @@
-// @syncrobotic/agent-trace v0.28.0 · update: npx shadcn add @syncrobotic/agent-trace --overwrite
+// @syncrobotic/agent-trace v0.40.0 · update: npx shadcn add @syncrobotic/agent-trace --overwrite
 "use client"
 
 import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { Button } from "@/registry/syncrobotic/ui/button"
+import { Code } from "@/registry/syncrobotic/ui/code"
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
 import { Trace, TraceCode, TraceDetail, TraceHeader, TraceItem } from "@/registry/syncrobotic/ui/trace"
 
@@ -70,7 +71,7 @@ export function AgentTrace() {
           <DescriptionList
             columns={1}
             items={[
-              { label: "Run", value: <code className="font-mono text-sm">run_8bf3</code> },
+              { label: "Run", value: <Code>run_8bf3</Code> },
               { label: "Agent", value: "Route planner" },
               { label: "Started by", value: "Daily 17:30" },
               { label: "Result", value: "Plan for 3 robots, approved" },

@@ -1,4 +1,4 @@
-// @syncrobotic/event-log v0.32.0 · update: npx shadcn add @syncrobotic/event-log --overwrite
+// @syncrobotic/event-log v0.40.0 · update: npx shadcn add @syncrobotic/event-log --overwrite
 "use client"
 
 import * as React from "react"
@@ -146,56 +146,60 @@ export function EventLog({ events = sampleEvents }: { events?: LogEvent[] }) {
           </InputGroup>
         </div>
 
-        {rows.length === 0 ? (
-          <EmptyState icon={SearchX} title="No events match" description="Widen the time range or clear the filters." />
-        ) : (
-          <Table>
-            <TableHeader>
+        {/* The table stays when nothing matches: its header keeps the columns in place and one spanning cell says why. */}
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-28">Time</TableHead>
+              <TableHead className="hidden w-28 sm:table-cell">Level</TableHead>
+              <TableHead className="hidden w-24 md:table-cell">Source</TableHead>
+              <TableHead>Message</TableHead>
+              <TableHead className="w-12 max-sm:pr-2 max-sm:pl-0">
+                <span className="sr-only">Details</span>
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {rows.length === 0 && (
               <TableRow>
-                <TableHead className="w-28">Time</TableHead>
-                <TableHead className="hidden w-28 sm:table-cell">Level</TableHead>
-                <TableHead className="hidden w-24 md:table-cell">Source</TableHead>
-                <TableHead>Message</TableHead>
-                <TableHead className="w-12 max-sm:pr-2 max-sm:pl-0">
-                  <span className="sr-only">Details</span>
-                </TableHead>
+                <TableCell colSpan={5} className="h-auto py-4 whitespace-normal">
+                  <EmptyState size="inline" icon={SearchX} title="No events match" description="Widen the time range or clear the filters." />
+                </TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {rows.map((e) => (
-                // The whole row opens the event, as a card opens its site: the message is the button's text, and the button
-                // stretches over the row (after:inset-0), so the target is the row's 56 px, not the message's line.
-                <TableRow
-                  key={e.id}
-                  className="relative hover:bg-accent has-[button:focus-visible]:outline-2 has-[button:focus-visible]:-outline-offset-2 has-[button:focus-visible]:outline-ring"
-                >
-                  <TableCell className="py-2 align-top font-mono text-sm tabular-nums sm:align-middle">
-                    {e.time}
-                    {/* On a phone the level sits under the time, and the source under the message. */}
-                    <span className="mt-1 block font-sans sm:hidden">
-                      <Level priority={e.priority} />
-                    </span>
-                  </TableCell>
-                  <TableCell className="hidden sm:table-cell">
+            )}
+            {rows.map((e) => (
+              // The whole row opens the event, as a card opens its site: the message is the button's text, and the button
+              // stretches over the row (after:inset-0), so the target is the row's 56 px, not the message's line.
+              <TableRow
+                key={e.id}
+                className="relative hover:bg-accent has-[button:focus-visible]:outline-2 has-[button:focus-visible]:-outline-offset-2 has-[button:focus-visible]:outline-ring"
+              >
+                <TableCell className="py-2 align-top font-mono text-sm tabular-nums sm:align-middle">
+                  {e.time}
+                  {/* On a phone the level sits under the time, and the source under the message. */}
+                  <span className="mt-1 block font-sans sm:hidden">
                     <Level priority={e.priority} />
-                  </TableCell>
-                  <TableCell className="hidden font-mono text-sm md:table-cell">{e.source}</TableCell>
-                  <TableCell className="py-2 max-md:whitespace-normal">
-                    {/* focus-ring: the row draws the ring (has-[button:focus-visible] on TableRow), since the button covers it. No press:
-                        a scale would make the button the box its overlay fills, and shrink the target mid-tap. */}
-                    <button data-slot="event-log-open" type="button" onClick={() => setOpen(e)} className="text-left text-sm underline-offset-4 outline-none after:absolute after:inset-0 hover:underline">
-                      {e.message}
-                    </button>
-                    <span className="block font-mono text-xs text-muted-foreground md:hidden">{e.source}</span>
-                  </TableCell>
-                  <TableCell className="w-12 text-muted-foreground max-sm:pr-2 max-sm:pl-0">
-                    <ChevronRight aria-hidden="true" className="size-5" />
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        )}
+                  </span>
+                </TableCell>
+                <TableCell className="hidden sm:table-cell">
+                  <Level priority={e.priority} />
+                </TableCell>
+                <TableCell className="hidden font-mono text-sm md:table-cell">{e.source}</TableCell>
+                <TableCell className="py-2 max-md:whitespace-normal">
+                  {/* focus-ring: the row draws the ring (has-[button:focus-visible] on TableRow), since the button covers it. No press:
+                      a scale would make the button the box its overlay fills, and shrink the target mid-tap. */}
+                  <button data-slot="event-log-open" type="button" onClick={() => setOpen(e)} className="text-left text-sm underline-offset-4 outline-none after:absolute after:inset-0 hover:underline">
+                    {e.message}
+                  </button>
+                  <span className="block font-mono text-xs text-muted-foreground md:hidden">{e.source}</span>
+                </TableCell>
+                <TableCell className="w-12 text-muted-foreground max-sm:pr-2 max-sm:pl-0">
+                  <ChevronRight aria-hidden="true" className="size-5" />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
 
       <Sheet open={!!open} onOpenChange={(o) => !o && setOpen(null)}>

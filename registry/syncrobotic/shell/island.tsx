@@ -1,4 +1,4 @@
-// @syncrobotic/island v0.35.0 · update: npx shadcn add @syncrobotic/island --overwrite
+// @syncrobotic/island v0.40.0 · update: npx shadcn add @syncrobotic/island --overwrite
 "use client"
 
 import * as React from "react"
@@ -8,7 +8,7 @@ import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
 import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"
 import { CountBadge } from "@/registry/syncrobotic/ui/badge"
 import { Tray } from "@/registry/syncrobotic/shell/tray"
-import { StatusGlyph, toneSubtle, toneText, toStatus, warnTone, type Status, type Tone } from "@/registry/syncrobotic/shell/status-glyph"
+import { StatusGlyph, toneSubtle, toneText, type Status, type Tone } from "@/registry/syncrobotic/shell/status-glyph"
 import { AlarmAnnouncer, alarmPriority, defaultAlarmLabels, sortAlarms, topAlarm, useAlarmSignals, type AlarmData, type AlarmLabels } from "@/registry/syncrobotic/ui/alarm"
 
 type Zone = "name" | "status" | "bell"
@@ -40,8 +40,6 @@ type IslandProps = {
   avatar?: React.ReactNode
   /** Shape at the avatar's corner: the dog's current state. */
   status?: Status
-  /** @deprecated Use `status`. */
-  tone?: Tone
   /** Another dog needs attention: a triangle after the name. Show it only for new issues. */
   attention?: boolean
   online?: boolean
@@ -69,8 +67,7 @@ type IslandProps = {
 export function Island({
   name,
   avatar,
-  status: given,
-  tone,
+  status = "offline",
   attention,
   online = true,
   battery,
@@ -90,8 +87,6 @@ export function Island({
   if (children && children !== lastChildren) setLastChildren(children)
   const slot = usePresence(!!children)
   const l = { ...defaultIslandLabels, ...labels }
-  warnTone("Island", tone)
-  const status = given ?? toStatus(tone ?? "neutral")
   const toggle = (z: Zone) => onOpenChange?.(open === z ? null : z)
   const zone = (z: Zone) => cn("press flex h-(--h-md) items-center gap-2 rounded-md px-2", open === z && "bg-muted")
   // Warning below 15 %, the fleet-wide battery threshold (never danger: a low battery is not a fault).

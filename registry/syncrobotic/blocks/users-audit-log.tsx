@@ -1,4 +1,4 @@
-// @syncrobotic/users-audit-log v0.35.0 · update: npx shadcn add @syncrobotic/users-audit-log --overwrite
+// @syncrobotic/users-audit-log v0.40.0 · update: npx shadcn add @syncrobotic/users-audit-log --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,8 +7,9 @@ import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/a
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 import { Input } from "@/registry/syncrobotic/ui/input"
+import { InputGroup, InputGroupAddon } from "@/registry/syncrobotic/ui/input-group"
+import { ResponsiveTable } from "@/registry/syncrobotic/ui/responsive-table"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
 
 type Row = {
   at: string
@@ -73,7 +74,7 @@ function Change({ from, to }: { from: string; to?: string }) {
 }
 
 /**
- * Who did what, when, from where: a table you can narrow by person and kind, and search. Values changed show before and
+ * Who did what, when, from where: a table you can narrow by person and kind, and search (a list on a phone). Values changed show before and
  * after. Nothing is coloured: an emergency stop is a fact here, not an alarm. Export takes the filtered rows.
  */
 export function UsersAuditLog() {
@@ -100,16 +101,12 @@ export function UsersAuditLog() {
     >
       <div className="flex flex-col gap-4">
         <div className="flex flex-wrap items-center gap-2">
-          <div className="relative w-full sm:w-64">
-            <Search aria-hidden="true" className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              aria-label="Search actions and targets"
-              placeholder="Search actions and targets"
-              className="pl-8"
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-            />
-          </div>
+          <InputGroup className="w-full sm:w-64">
+            <InputGroupAddon>
+              <Search aria-hidden="true" />
+            </InputGroupAddon>
+            <Input type="search" aria-label="Search actions and targets" placeholder="Search actions and targets" value={q} onChange={(e) => setQ(e.target.value)} />
+          </InputGroup>
           <Select value={who} onValueChange={setWho}>
             <SelectTrigger aria-label="Person" className="flex-1 sm:w-40 sm:flex-none">
               <SelectValue />
@@ -138,50 +135,28 @@ export function UsersAuditLog() {
             {shown.length} of {rows.length} entries
           </span>
         </div>
-        {/* Table draws its own edge, scroll and fades; a second frame around it clipped or doubled them. */}
-        <Table className="bg-card">
-          <TableHeader>
-            <TableRow>
-              <TableHead>Time</TableHead>
-              <TableHead className="hidden sm:table-cell">Person</TableHead>
-              <TableHead>Action</TableHead>
-              <TableHead className="hidden lg:table-cell">Target</TableHead>
-              <TableHead className="hidden lg:table-cell">Change</TableHead>
-              <TableHead className="hidden lg:table-cell">IP address</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {shown.map((r) => (
-              <TableRow key={r.at}>
-                <TableCell className="whitespace-nowrap text-muted-foreground tabular-nums">
-                  <time dateTime={r.at}>{r.time}</time>
-                </TableCell>
-                <TableCell className="hidden sm:table-cell">{r.who}</TableCell>
-                <TableCell className="py-2 max-lg:whitespace-normal">
-                  <span className="font-medium">{r.action}</span>
-                  {/* Below 768 px the person, target and change stack under the action instead of scrolling off the side. */}
-                  <span className="flex flex-col text-xs text-muted-foreground lg:hidden">
-                    <span>
-                      <span className="sm:hidden">{r.who} · </span>
-                      {r.target}
-                    </span>
-                    {r.from && <Change from={r.from} to={r.to} />}
-                  </span>
-                </TableCell>
-                <TableCell className="hidden lg:table-cell">{r.target}</TableCell>
-                <TableCell className="hidden text-muted-foreground lg:table-cell">{r.from ? <Change from={r.from} to={r.to} /> : "—"}</TableCell>
-                <TableCell className="hidden font-mono text-xs text-muted-foreground lg:table-cell">{r.ip}</TableCell>
-              </TableRow>
-            ))}
-            {shown.length === 0 && (
-              <TableRow>
-                <TableCell colSpan={6} className="h-auto p-0 whitespace-normal">
-                  <EmptyState size="inline" icon={SearchX} title="No entries match" description="Clear the search or choose Everyone." />
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+        {/* One list of columns: the action is the row's title, the time its trailing value, who, the target and the change
+            the line under it on a phone; the address stays in the table. */}
+        <ResponsiveTable
+          label="Audit log"
+          rows={shown}
+          rowKey={(r) => r.at}
+          columns={[
+            { id: "time", header: "Time", phone: "trailing", cell: (r) => <time dateTime={r.at}>{r.time}</time>, className: "whitespace-nowrap text-muted-foreground tabular-nums" },
+            { id: "who", header: "Person", cell: (r) => r.who },
+            { id: "action", header: "Action", phone: "title", cell: (r) => <span className="font-medium">{r.action}</span>, phoneCell: (r) => r.action },
+            { id: "target", header: "Target", cell: (r) => r.target },
+            {
+              id: "change",
+              header: "Change",
+              cell: (r) => (r.from ? <Change from={r.from} to={r.to} /> : "—"),
+              phoneCell: (r) => (r.from ? <Change from={r.from} to={r.to} /> : undefined),
+              className: "hidden text-muted-foreground lg:table-cell",
+            },
+            { id: "ip", header: "IP address", phone: "hidden", cell: (r) => r.ip, className: "hidden font-mono text-xs text-muted-foreground lg:table-cell" },
+          ]}
+          empty={<EmptyState size="inline" icon={SearchX} title="No entries match" description="Clear the search or choose Everyone." />}
+        />
       </div>
     </AppShell>
   )

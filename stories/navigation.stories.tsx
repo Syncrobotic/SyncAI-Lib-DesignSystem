@@ -2,7 +2,7 @@ import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Bell, Bot, ChevronDown, Ellipsis, House, Settings } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/registry/syncrobotic/ui/dropdown-menu"
-import { Badge } from "@/registry/syncrobotic/ui/badge"
+import { CountBadge } from "@/registry/syncrobotic/ui/badge"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/registry/syncrobotic/ui/accordion"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/registry/syncrobotic/ui/tabs"
 import { Breadcrumb, BreadcrumbLink, BreadcrumbPage } from "@/registry/syncrobotic/ui/breadcrumb"
@@ -64,7 +64,7 @@ export const TabsWithIconsAndCounts: S = {
           <Bot aria-hidden="true" /> Robots
         </TabsTrigger>
         <TabsTrigger value="events">
-          <Bell aria-hidden="true" /> Events <Badge tone="danger">3</Badge>
+          <Bell aria-hidden="true" /> Events <CountBadge count={3} />
         </TabsTrigger>
         <TabsTrigger value="settings">
           <Settings aria-hidden="true" /> Settings

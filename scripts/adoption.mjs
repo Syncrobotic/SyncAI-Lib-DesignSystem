@@ -125,11 +125,21 @@ export function changesBetween({ sections, item, name, from, to }) {
 }
 
 /**
+ * Items that left the registry under one name for another. A header with the old name is not "not in the registry": it
+ * names the item to install instead. The old name itself no longer installs (its /r/<name>.json is a 404, on purpose).
+ * @type {Record<string, { to: string; in: string; how: string }>}
+ */
+export const RENAMED = {
+  "format-count": { to: "format-number", in: "0.40", how: "the same exports; change the imports from lib/format-count to lib/format-number" },
+  "sparkline-metric-tiles": { to: "stats-cards", in: "0.40", how: "render <StatsCards stats={…} columns={3} />" },
+}
+
+/**
  * beta / stable from meta.status; blocks have no status (you copy them and make them yours).
  * @param {Item | undefined} item
  */
-export function statusOf(item) {
-  if (!item) return "unknown"
+export function statusOf(item, name = "") {
+  if (!item) return name in RENAMED ? "renamed" : "unknown"
   if (item.meta?.status === "beta") return "beta"
   if (item.type === "registry:block") return "block"
   return "stable"
@@ -159,19 +169,22 @@ export function report(found, registry, sections) {
       const item = byName.get(g.name)
       const latest = item?.meta?.version ?? null
       const d = latest ? distance(installed, latest) : null
+      const renamed = item ? undefined : RENAMED[g.name]
       return {
         name: g.name,
         installed,
         versions,
         latest,
-        status: statusOf(item),
+        status: statusOf(item, g.name),
+        /** The name to install instead, when this one was renamed or folded into another item. */
+        renamedTo: renamed?.to ?? null,
         behind: d?.behind ?? false,
         ahead: d?.ahead ?? false,
         majorsBehind: d?.majors ?? 0,
         minorsBehind: d?.minors ?? 0,
         patchesBehind: d?.patches ?? 0,
         // An item in the registry has a version, so `d` and `latest` are set wherever they are read below.
-        state: !item ? "not in registry" : describeDistance(/** @type {Distance} */ (d)),
+        state: renamed ? `renamed in ${renamed.in}: install ${renamed.to}` : !item ? "not in registry" : describeDistance(/** @type {Distance} */ (d)),
         changes: d?.behind ? changesBetween({ sections, item, name: g.name, from: installed, to: /** @type {string} */ (latest) }) : [],
         files: g.files.sort(),
       }
@@ -185,6 +198,7 @@ export function report(found, registry, sections) {
       current: items.filter((i) => i.latest && !i.behind && !i.ahead).length,
       beta: items.filter((i) => i.status === "beta").length,
       unknown: items.filter((i) => i.status === "unknown").length,
+      renamed: items.filter((i) => i.status === "renamed").length,
     },
   }
 }
@@ -340,7 +354,7 @@ export function formatText(repos, summary) {
       out.push("  No @syncrobotic items found.", "")
       continue
     }
-    out.push(`  ${plural(r.counts.items, "item")}, ${r.counts.behind} behind, ${r.counts.beta} beta${r.counts.unknown ? `, ${r.counts.unknown} not in the registry` : ""}`, "")
+    out.push(`  ${plural(r.counts.items, "item")}, ${r.counts.behind} behind, ${r.counts.beta} beta${r.counts.renamed ? `, ${r.counts.renamed} renamed` : ""}${r.counts.unknown ? `, ${r.counts.unknown} not in the registry` : ""}`, "")
     const rows = [["", "Item", "Installed", "Latest", "Behind", "Status"]]
     for (const i of r.items)
       rows.push([
@@ -352,6 +366,14 @@ export function formatText(repos, summary) {
         i.status,
       ])
     out.push(table(rows))
+    const moved = r.items.filter((i) => i.renamedTo)
+    if (moved.length) {
+      out.push("", "  Renamed (the old name no longer installs):")
+      for (const i of moved) {
+        const m = RENAMED[i.name]
+        out.push(`  ${i.name} → ${m.to} (${m.in})   npx shadcn add @syncrobotic/${m.to}   then ${m.how}`)
+      }
+    }
     const late = r.items.filter((i) => i.behind)
     if (late.length) {
       out.push("", "  Changes since the installed version:")

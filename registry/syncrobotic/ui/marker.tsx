@@ -1,16 +1,16 @@
-// @syncrobotic/marker v0.28.0 · update: npx shadcn add @syncrobotic/marker --overwrite
+// @syncrobotic/marker v0.40.0 · update: npx shadcn add @syncrobotic/marker --overwrite
 import * as React from "react"
-import { type Status, StatusGlyph, type Tone, toStatus, warnTone } from "@/registry/syncrobotic/shell/status-glyph"
+import { type Status, StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { cn } from "@/lib/utils"
 
 /**
  * A labelled line across a log or a feed: where a day starts, where the operator took over, where a run resumed.
- * It reads as text, not as a control. Neutral by default; a tone only for the moments that went wrong.
+ * It reads as text, not as a control. Neutral by default; a status only for the moments that went wrong.
  */
 export function Marker({
   icon,
   time,
-  tone,
+  status,
   align = "center",
   className,
   children,
@@ -18,8 +18,8 @@ export function Marker({
 }: React.ComponentProps<"div"> & {
   icon?: React.ReactNode
   time?: React.ReactNode
-  /** warning or danger colour the label; anything else stays neutral. */
-  tone?: "warning" | "danger"
+  /** warning or danger colour the label; leave it out for an ordinary line. */
+  status?: "warning" | "danger"
   align?: "start" | "center"
 }) {
   return (
@@ -29,8 +29,8 @@ export function Marker({
       <span
         className={cn(
           "flex shrink-0 items-center gap-2 font-medium text-muted-foreground [&_svg]:size-4",
-          tone === "warning" && "text-warning",
-          tone === "danger" && "text-danger",
+          status === "warning" && "text-warning",
+          status === "danger" && "text-danger",
         )}
       >
         {icon && <span aria-hidden="true">{icon}</span>}
@@ -47,8 +47,7 @@ export function Marker({
  * The status is a glyph, so a long log of normal lines stays quiet.
  */
 export function MarkerRow({
-  status: given,
-  tone,
+  status,
   icon,
   title,
   detail,
@@ -57,10 +56,8 @@ export function MarkerRow({
   children,
   ...props
 }: Omit<React.ComponentProps<"div">, "title"> & {
-  /** The line's status, drawn as its glyph: only warning and danger are coloured. */
+  /** The line's status, drawn as its glyph: only warning and danger are coloured, the glyph and never the title. */
   status?: Status
-  /** @deprecated Use `status` (info → active, success → normal, neutral → offline). */
-  tone?: Tone
   /** An icon for the kind of line, used when there is no status. */
   icon?: React.ReactNode
   title: React.ReactNode
@@ -68,8 +65,6 @@ export function MarkerRow({
   detail?: React.ReactNode
   time?: React.ReactNode
 }) {
-  warnTone("MarkerRow", tone)
-  const status = given ?? (tone ? toStatus(tone) : undefined)
   return (
     <div data-slot="marker-row" className={cn("flex min-h-8 min-w-0 items-center gap-2 text-sm", className)} {...props}>
       {status ? (
@@ -83,7 +78,8 @@ export function MarkerRow({
           </span>
         )
       )}
-      <span className={cn("shrink-0 font-medium", status === "danger" && "text-danger", status === "warning" && "text-warning")}>
+      {/* The title stays in the text colour: status colour is for the glyph only. */}
+      <span className="shrink-0 font-medium">
         {title}
         {(status === "danger" || status === "warning") && <span className="sr-only">, {status === "danger" ? "failed" : "warning"}</span>}
       </span>

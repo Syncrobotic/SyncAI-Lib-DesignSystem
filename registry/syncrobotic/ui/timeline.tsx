@@ -1,31 +1,22 @@
-// @syncrobotic/timeline v0.28.0 · update: npx shadcn add @syncrobotic/timeline --overwrite
+// @syncrobotic/timeline v0.40.0 · update: npx shadcn add @syncrobotic/timeline --overwrite
 "use client"
 
 import * as React from "react"
-import { type Status, StatusGlyph, type Tone, toStatus, warnTone } from "@/registry/syncrobotic/shell/status-glyph"
+import { type Status, StatusGlyph, statusText } from "@/registry/syncrobotic/shell/status-glyph"
 import { cn } from "@/lib/utils"
 
 /**
  * Events in time order: what a robot did on a shift, how an incident unfolded, a release history.
- * Markers are neutral dots; a status tone adds its shape (and colour only for warning and danger),
- * so a calm history stays calm and the one abnormal event stands out.
+ * Markers are neutral dots; a status adds its shape (and colour only for warning and danger, on the glyph or the icon,
+ * never the title), so a calm history stays calm and the one abnormal event stands out.
  */
 type Ctx = { orientation: "vertical" | "horizontal"; align: "start" | "alternate"; density: "default" | "dense" }
 const TimelineCtx = React.createContext<Ctx>({ orientation: "vertical", align: "start", density: "default" })
 
-const warned = new Set<string>()
-/** Says once that `density` is now `size`, so it is not confused with the theme's data-density. Development only. */
-function warnDensity(component: string, density: unknown) {
-  if (density === undefined || process.env.NODE_ENV === "production" || warned.has(component)) return
-  warned.add(component)
-  console.warn(`${component}: \`density="dense"\` is now \`size="sm"\`. \`density\` stops working in 1.0.`)
-}
-
 export function Timeline({
   orientation = "vertical",
   align = "start",
-  size,
-  density: legacy,
+  size = "default",
   className,
   ...props
 }: React.ComponentProps<"ol"> & {
@@ -34,11 +25,8 @@ export function Timeline({
   align?: "start" | "alternate"
   /** sm: less space between events, for a long history. */
   size?: "default" | "sm"
-  /** @deprecated Use `size="sm"`. */
-  density?: "default" | "dense"
 }) {
-  warnDensity("Timeline", legacy)
-  const density = (size ?? (legacy === "dense" ? "sm" : "default")) === "sm" ? "dense" : "default"
+  const density = size === "sm" ? "dense" : "default"
   const list = React.useRef<HTMLOListElement>(null)
   const more = useMoreToTheRight(list, orientation === "horizontal")
   return (
@@ -87,8 +75,7 @@ function useMoreToTheRight(ref: React.RefObject<HTMLElement | null>, watch: bool
 export function TimelineItem({
   time,
   dateTime,
-  status: given,
-  tone,
+  status,
   icon,
   title,
   className,
@@ -99,23 +86,21 @@ export function TimelineItem({
   time?: React.ReactNode
   /** Machine-readable time for the <time> element. */
   dateTime?: string
-  /** A status, drawn as its glyph: only warning and danger are coloured. Leave empty for an ordinary event. */
+  /** A status, drawn as its glyph (or on the icon): only warning and danger are coloured, the mark and never the title. Leave empty for an ordinary event. */
   status?: Status
-  /** @deprecated Use `status` (info → active, success → normal, neutral → offline). */
-  tone?: Tone
   /** An icon instead of a dot, e.g. for kinds of event. */
   icon?: React.ReactNode
   title: React.ReactNode
 }) {
   const { orientation, align, density } = React.useContext(TimelineCtx)
-  warnTone("TimelineItem", tone)
-  const status = given ?? (tone ? toStatus(tone) : undefined)
   const marker = (
     <span
       aria-hidden="true"
       className={cn(
         "relative z-10 grid shrink-0 place-items-center rounded-full bg-background",
-        icon ? "size-8 text-muted-foreground ring-1 ring-border [&_svg]:size-4" : "size-4",
+        icon ? "size-8 ring-1 ring-border [&_svg]:size-4" : "size-4",
+        // An icon takes the status colour when the event is a warning or a failure; otherwise it stays grey.
+        icon && (status === "warning" || status === "danger" ? statusText[status] : "text-muted-foreground"),
       )}
     >
       {icon ?? (status ? <StatusGlyph status={status} /> : <span className="size-2 rounded-full bg-muted-foreground" />)}
@@ -128,7 +113,8 @@ export function TimelineItem({
   ) : null
   const body = (
     <div className="flex min-w-0 flex-col gap-1">
-      <span className={cn("text-sm font-medium", status === "warning" && "text-warning", status === "danger" && "text-danger")}>
+      {/* The title stays in the text colour: status colour is for the status mark only. */}
+      <span className="text-sm font-medium">
         {title}
         {/* The glyph is hidden from screen readers, so the status is said in words, as Marker does. */}
         {(status === "danger" || status === "warning") && <span className="sr-only">, {status === "danger" ? "failed" : "warning"}</span>}

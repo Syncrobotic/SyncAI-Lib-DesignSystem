@@ -1,9 +1,10 @@
-// @syncrobotic/status-tracker-rollout v0.17.4 · update: npx shadcn add @syncrobotic/status-tracker-rollout --overwrite
+// @syncrobotic/status-tracker-rollout v0.40.0 · update: npx shadcn add @syncrobotic/status-tracker-rollout --overwrite
 "use client"
 
 import { Check } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
+import { Progress } from "@/registry/syncrobotic/ui/progress"
 
 // Sample data: a firmware rollout through its stages. Blue marks the stage that is running now, the only in-progress state.
 const stages = [
@@ -32,19 +33,8 @@ export function StatusTrackerRollout() {
                 {s.done}/{s.robots}
               </span>
             </span>
-            <span
-              role="progressbar"
-              aria-label={`${s.name} stage`}
-              aria-valuemin={0}
-              aria-valuemax={s.robots}
-              aria-valuenow={s.done}
-              className="h-2 overflow-hidden rounded-full bg-track"
-            >
-              <span
-                className={cn("block h-full rounded-full", s.state === "running" ? "bg-info" : "bg-foreground/70")}
-                style={{ width: `${(s.done / s.robots) * 100}%` }}
-              />
-            </span>
+            {/* The running stage's bar is blue, a finished one grey; the stage's word under it stays grey. */}
+            <Progress value={(s.done / s.robots) * 100} tone={s.state === "running" ? "info" : "neutral"} aria-label={`${s.name} stage`} />
             <span className="text-xs text-muted-foreground">{s.state === "done" ? "Done" : s.state === "running" ? "Updating now" : "Waiting"}</span>
           </li>
         ))}

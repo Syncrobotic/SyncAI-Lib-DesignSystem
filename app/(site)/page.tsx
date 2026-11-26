@@ -17,7 +17,8 @@ import { SiteFooter } from "@/site/site-footer"
 import { textLink } from "@/site/prose"
 
 export const metadata: Metadata = {
-  title: { absolute: `${site.name} — robotics UI kit for React and shadcn/ui` },
+  // Under 580 px in a results page (about 55 characters): the longer form was cut off.
+  title: { absolute: `${site.name}: robotics UI kit for React` },
   alternates: { canonical: "/" },
 }
 

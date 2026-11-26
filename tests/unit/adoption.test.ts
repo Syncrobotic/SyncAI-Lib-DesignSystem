@@ -1,9 +1,9 @@
 // @vitest-environment node
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs"
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { afterAll, describe, expect, it } from "vitest"
-import { changesBetween, compareVersions, describeDistance, distance, parseChangelog, parseHeader, report, scanDir, statusOf, summarize } from "../../scripts/adoption.mjs"
+import { RENAMED, changesBetween, compareVersions, describeDistance, distance, formatText, parseChangelog, parseHeader, report, scanDir, statusOf, summarize } from "../../scripts/adoption.mjs"
 
 const changelog = parseChangelog(`# Changelog
 
@@ -87,11 +87,38 @@ describe("adoption scanner", () => {
     expect(r.items[0].name).toBe("tree") // behind first
     expect(r.items.find((i) => i.name === "fleet-table")).toMatchObject({ status: "block", state: "current" })
     expect(r.items.find((i) => i.name === "gone")).toMatchObject({ status: "unknown", latest: null, state: "not in registry" })
-    expect(r.counts).toEqual({ items: 3, behind: 1, current: 1, beta: 1, unknown: 1 })
+    expect(r.counts).toEqual({ items: 3, behind: 1, current: 1, beta: 1, unknown: 1, renamed: 0 })
     expect(statusOf(registry.items[1])).toBe("stable")
 
     const s = summarize([{ ...r, repo: "a" }, { ...report([], registry, changelog), repo: "b" }])
     expect(s).toMatchObject({ repos: 2, reposUsingKit: 1, items: 3, installs: 3, behind: 1 })
+  })
+
+  it("names the item to install for a name 0.40 renamed, instead of calling it unknown", () => {
+    const r = report(
+      [
+        { name: "format-count", version: "0.39.0", file: "lib/format-count.ts" },
+        { name: "sparkline-metric-tiles", version: "0.40.0", file: "components/sparkline-metric-tiles.tsx" },
+      ],
+      registry,
+      changelog,
+    )
+    expect(r.items.find((i) => i.name === "format-count")).toMatchObject({ status: "renamed", renamedTo: "format-number", state: "renamed in 0.40: install format-number" })
+    expect(r.items.find((i) => i.name === "sparkline-metric-tiles")).toMatchObject({ status: "renamed", renamedTo: "stats-cards", state: "renamed in 0.40: install stats-cards" })
+    expect(r.counts).toMatchObject({ unknown: 0, renamed: 2 })
+    const text = formatText([{ ...r, repo: "app", source: "." }], summarize([{ ...r, repo: "app" }]))
+    expect(text).toContain("2 renamed")
+    expect(text).toContain("npx shadcn add @syncrobotic/format-number")
+    expect(text).toContain("npx shadcn add @syncrobotic/stats-cards")
+    expect(text).not.toContain("not in the registry")
+  })
+
+  it("knows only renames the registry agrees with: the old name is gone, the new one is there", () => {
+    const names = new Set((JSON.parse(readFileSync("registry.json", "utf8")) as { items: { name: string }[] }).items.map((i) => i.name))
+    for (const [from, { to }] of Object.entries(RENAMED)) {
+      expect(names.has(from)).toBe(false)
+      expect(names.has(to)).toBe(true)
+    }
   })
 
   const dir = mkdtempSync(join(tmpdir(), "adoption-"))

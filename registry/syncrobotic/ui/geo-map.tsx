@@ -1,9 +1,10 @@
-// @syncrobotic/geo-map v0.36.0 · update: npx shadcn add @syncrobotic/geo-map --overwrite
+// @syncrobotic/geo-map v0.40.0 · update: npx shadcn add @syncrobotic/geo-map --overwrite
 "use client"
 
 import * as React from "react"
 import { CircleAlert, Crosshair, LocateOff, RotateCw, TriangleAlert, ZoomIn, ZoomOut } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { formatNumber } from "@/registry/syncrobotic/lib/format-number"
 import { StatusGlyph, statusText, type Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Bone } from "@/registry/syncrobotic/shell/skeleton"
 import { Button } from "@/registry/syncrobotic/ui/button"
@@ -112,32 +113,12 @@ export const fenceOf = (p: GeoPoint, fences: GeoMapFence[]) =>
 // Numbers and words
 // ---------------------------------------------------------------------------------------------------------------------
 
-/** As streaming-chart: English without a locale, the same on the server and in every browser; a tag Intl cannot read is English. */
-const checkedLocales = new Map<string, string>()
-function resolveLocale(locale: string | undefined): string {
-  if (locale === undefined) return "en"
-  let ok = checkedLocales.get(locale)
-  if (ok === undefined) {
-    try {
-      ok = Intl.NumberFormat.supportedLocalesOf(locale).length > 0 ? locale : "en"
-    } catch {
-      ok = "en"
-    }
-    checkedLocales.set(locale, ok)
-  }
-  return ok
-}
-const formatters = new Map<string, Intl.NumberFormat>()
-/** A number in `locale` with between `min` and `max` decimals, without grouping, so a coordinate reads as one number. */
+/**
+ * A number in `locale` (English without one, so server and browser agree) with between `min` and `max` decimals, without
+ * grouping, so a coordinate reads as one number.
+ */
 export function formatGeoNumber(value: number, max: number, locale?: string, min = max): string {
-  const tag = resolveLocale(locale)
-  const key = `${tag}|${min}|${max}`
-  let f = formatters.get(key)
-  if (!f) {
-    f = new Intl.NumberFormat(tag, { minimumFractionDigits: min, maximumFractionDigits: max, useGrouping: false })
-    formatters.set(key, f)
-  }
-  return f.format(value)
+  return formatNumber(value, { locale, minimumFractionDigits: min, maximumFractionDigits: max, useGrouping: false })
 }
 
 const compassPoints = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]

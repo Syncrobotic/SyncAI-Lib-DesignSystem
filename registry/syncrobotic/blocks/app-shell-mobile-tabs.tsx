@@ -1,10 +1,11 @@
-// @syncrobotic/app-shell-mobile-tabs v0.35.0 · update: npx shadcn add @syncrobotic/app-shell-mobile-tabs --overwrite
+// @syncrobotic/app-shell-mobile-tabs v0.40.0 · update: npx shadcn add @syncrobotic/app-shell-mobile-tabs --overwrite
 "use client"
 
 import * as React from "react"
 import { Bell, Bot, LayoutGrid, Map as MapIcon, Search } from "lucide-react"
 import { DockNav, type NavItem } from "@/registry/syncrobotic/shell/dock"
-import { StatusGlyph, type Status } from "@/registry/syncrobotic/shell/status-glyph"
+import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
+import type { Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Tray } from "@/registry/syncrobotic/shell/tray"
 import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"
 import { Button } from "@/registry/syncrobotic/ui/button"
@@ -37,11 +38,12 @@ function SampleRobots() {
           </Avatar>
           <span className="flex min-w-0 flex-1 flex-col">
             <span className="truncate text-sm font-medium">Patrol dog {r.id}</span>
-            <span className="flex items-center gap-2 truncate text-xs text-muted-foreground">
-              <StatusGlyph status={r.tone} /> {r.state} · {r.where}
+            <span className="truncate text-xs text-muted-foreground tabular-nums">
+              {r.where} · {r.battery} %
             </span>
           </span>
-          <span className={r.battery < 15 ? "text-sm font-medium text-warning tabular-nums" : "text-sm text-muted-foreground tabular-nums"}>{r.battery} %</span>
+          {/* The state is the row's trailing word with its shape, coloured only when it needs someone; the battery stays a plain number. */}
+          <InlineStatus status={r.tone}>{r.state}</InlineStatus>
         </li>
       ))}
     </ul>
