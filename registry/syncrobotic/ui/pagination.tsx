@@ -1,9 +1,10 @@
-// @syncrobotic/pagination v0.31.0 · update: npx shadcn add @syncrobotic/pagination --overwrite
+// @syncrobotic/pagination v0.40.0 · update: npx shadcn add @syncrobotic/pagination --overwrite
 "use client"
 
 import * as React from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { formatCount } from "@/registry/syncrobotic/lib/format-count"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import type { Navigate } from "@/registry/syncrobotic/ui/filter-form"
 
@@ -21,7 +22,7 @@ type Labels = {
 const defaults = {
   nav: "Pagination",
   range: (from: number, to: number, total: number, locale?: string) =>
-    `${from.toLocaleString(locale)}–${to.toLocaleString(locale)} of ${total.toLocaleString(locale)}`,
+    `${formatCount(from, { locale })}–${formatCount(to, { locale })} of ${formatCount(total, { locale })}`,
   previous: "Previous page",
   next: "Next page",
   page: (n: number) => `Page ${n}`,
@@ -71,7 +72,7 @@ export function Pagination({
   /** Show numbered page buttons between previous and next. */
   pages?: boolean
   labels?: Labels
-  /** Formats the numbers, with the language's thousands separator (a BCP 47 tag such as "zh-TW"). Left out, the browser's language. */
+  /** Formats the numbers, with the language's thousands separator (a BCP 47 tag such as "zh-TW"). Left out, English, so the server and the browser write the same. */
   locale?: string
   className?: string
 }) {
@@ -135,7 +136,7 @@ export function Pagination({
                     "aria-current": n === page ? "page" : undefined,
                     className: cn("tabular-nums", n === page ? "font-medium text-foreground" : "hidden @xl:inline-flex"),
                   },
-                  (n + 1).toLocaleString(locale),
+                  formatCount(n + 1, { locale }),
                 )}
               </React.Fragment>
             ),

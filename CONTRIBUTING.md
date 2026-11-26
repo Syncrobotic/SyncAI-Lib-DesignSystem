@@ -18,6 +18,7 @@ npm run storybook        # http://localhost:6006; the toolbar switches dark and 
 npm run lint:tokens      # any value outside the tokens, in the registry, the docs site and the stories
 npm run lint:registry    # an item's dependencies drifting from its imports; a file with hooks missing "use client"
 npm run lint:rules       # focus never removed, battery thresholds, a chart with axes without its table view
+npm run lint:numbers     # a number written with toLocaleString or its own Intl.NumberFormat instead of format-count
 npm run lint:motion      # durations and easing outside the motion tokens, buttons without press feedback
 npm run lint:versions    # an item changed without a version bump and changelog line
 npm run lint:dtcg        # the DTCG token files out of date with the theme
@@ -56,6 +57,7 @@ Not a check, a report: `npm run adoption -- <dir …>` (or `--github <org>`, wit
 - A registry file that uses hooks or handlers starts with `"use client"` (`lint:registry`).
 - `lint:rules`: `outline-none` only with a visible focus in its place (or a `// focus-ring:` comment saying where focus shows); a battery warns below 15 % and has no `critical`; a chart block with axes has a table view.
 - No native number input; use `NumberField`.
+- Numbers go through `@syncrobotic/format-count`: `formatCount` for a count, `formatNumber` for any other number, both English when no locale is given (`lint:numbers` bans `.toLocaleString(` and a second `Intl.NumberFormat` in the registry).
 - Icons only from the icon set (`site/icons.ts`, browsable at `/icons`), one meaning per icon. A new icon is a new entry there, with its meaning.
 
 ## Visual baselines

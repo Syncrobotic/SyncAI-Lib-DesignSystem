@@ -250,12 +250,13 @@ export default function ColorPage() {
         <DoDont
           good={{
             visual: (
-              <div className="flex gap-2">
-                <Badge tone="warning">Low battery</Badge>
-                <Badge tone="danger">Motor fault</Badge>
+              <div className="flex flex-wrap gap-x-4 gap-y-2">
+                <InlineStatus status="warning">Low battery</InlineStatus>
+                <InlineStatus status="danger">Motor fault</InlineStatus>
+                <Badge tone="outline">Production</Badge>
               </div>
             ),
-            text: "Pair each tone with its own tint.",
+            text: "Write a state as its shape and word (InlineStatus), in the tone of what it means: low battery needs attention (warning), a fault needs someone now (danger). A fixed attribute is a neutral badge.",
           }}
           bad={{
             visual: (
@@ -264,7 +265,7 @@ export default function ColorPage() {
                 <Badge tone="danger">Low battery</Badge>
               </div>
             ),
-            text: "Pick a tone by looks. Blue is for a process someone waits on, not for a robot that is busy; low battery is attention (warning), not failure (danger).",
+            text: "Box a state in a tinted badge, or pick its tone by looks. Blue is for a process someone waits on, not for a robot that is docked; low battery is attention (warning), not failure (danger).",
           }}
         />
       </Section>

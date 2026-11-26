@@ -1,6 +1,7 @@
-// @syncrobotic/share-bar v0.32.0 · update: npx shadcn add @syncrobotic/share-bar --overwrite
+// @syncrobotic/share-bar v0.40.0 · update: npx shadcn add @syncrobotic/share-bar --overwrite
 import type * as React from "react"
 import { cn } from "@/lib/utils"
+import { formatNumber } from "@/registry/syncrobotic/lib/format-count"
 
 /**
  * The chart palette: the accent, two graphite steps, then the light grey for "other" (slot 4). Slot 5 is the baseline
@@ -61,16 +62,16 @@ export function ShareBar({
   unit?: string
   /** sm: 8 px, for a table cell; md: 10 px. */
   size?: "sm" | "md"
-  /** Formats the numbers and shares (a BCP 47 tag such as "zh-TW"). Left out, the browser's language. */
+  /** Formats the numbers and shares (a BCP 47 tag such as "zh-TW"). Left out, English, so the server and the browser write the same. */
   locale?: string
   /** Your router's link (e.g. next/link), for segments with href. */
   linkAs?: React.ElementType
   className?: string
 }) {
-  const fmt = (n: number) => n.toLocaleString(locale)
-  const share = (n: number) => n.toLocaleString(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1, useGrouping: false })
+  const fmt = (n: number) => formatNumber(n, { locale })
+  const share = (n: number) => formatNumber(n, { locale, minimumFractionDigits: 1, maximumFractionDigits: 1, useGrouping: false })
   // In a link's name: whole numbers as they are ("42 %"), others to one decimal.
-  const said = (n: number) => n.toLocaleString(locale, { maximumFractionDigits: 1, useGrouping: false })
+  const said = (n: number) => formatNumber(n, { locale, maximumFractionDigits: 1, useGrouping: false })
   const total = totalProp ?? segments.reduce((n, s) => n + s.value, 0)
   const shown = segments.map((s, i) => ({ ...s, tone: toneOf(s, i) })).filter((s) => s.value > 0)
   const rest = total - shown.reduce((n, s) => n + s.value, 0)
@@ -149,7 +150,7 @@ export function ShareLegend({
   className,
 }: {
   segments: ShareLegendSegment[]
-  /** Formats the values (a BCP 47 tag such as "zh-TW"). Left out, the browser's language. */
+  /** Formats the values (a BCP 47 tag such as "zh-TW"). Left out, English, so the server and the browser write the same. */
   locale?: string
   className?: string
 }) {
@@ -159,7 +160,7 @@ export function ShareLegend({
         <li key={s.key} className="inline-flex items-center gap-2 tabular-nums">
           <span aria-hidden="true" className={cn("size-2 shrink-0 rounded-full", tones[toneOf(s, i)])} />
           {s.label}
-          {s.value !== undefined && ` ${s.value.toLocaleString(locale)}`}
+          {s.value !== undefined && ` ${formatNumber(s.value, { locale })}`}
         </li>
       ))}
     </ul>

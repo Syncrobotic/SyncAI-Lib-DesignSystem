@@ -154,7 +154,7 @@ export default function LocalisationPage() {
             "Leave `labels` out and nothing changes: the defaults are today's English words.",
             "Older single props (`label`, `placeholder`, `emptyText`, `closeLabel`…) still work, and win over `labels` when both are given.",
             "An `aria-label` you pass still names the element; `labels` fills in when there is none.",
-            "`locale` is a BCP 47 tag (`zh-TW`, `en-GB`, `de`). Left out, numbers use the browser's language as before; days, times and country names keep the kit's English form.",
+            "`locale` is a BCP 47 tag (`zh-TW`, `en-GB`, `de`). Left out, numbers are English (`formatCount` for counts, `formatNumber` for the rest, from `@syncrobotic/format-count`), so the server and the browser write the same digits; days, times and country names keep the kit's English form too.",
             "Text you pass as data (titles, options, column headers, presets) is already yours to translate; `labels` covers only the words the kit writes itself.",
           ]}
         />

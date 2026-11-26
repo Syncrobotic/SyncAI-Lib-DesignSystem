@@ -1,9 +1,10 @@
-// @syncrobotic/data-catalog v0.39.0 · update: npx shadcn add @syncrobotic/data-catalog --overwrite
+// @syncrobotic/data-catalog v0.40.0 · update: npx shadcn add @syncrobotic/data-catalog --overwrite
 "use client"
 
 import * as React from "react"
 import { ChevronRight, Database, Grid3x3, Plus, ScrollText, Search, SearchX, ShieldCheck } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { formatCount } from "@/registry/syncrobotic/lib/format-count"
 import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
 import { AppShell, type AppNavGroup, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { TierBadge, tiers, type Tier } from "@/registry/syncrobotic/ui/tier-badge"
@@ -193,7 +194,7 @@ function DatasetRows({ dataset: d }: { dataset: Dataset }) {
         <TableCell className="hidden md:table-cell">{d.task}</TableCell>
         <TableCell className="hidden md:table-cell">{d.use}</TableCell>
         <TableCell className={cn("hidden text-muted-foreground xl:table-cell")}>{d.owner}</TableCell>
-        <TableCell className="text-right tabular-nums">{d.items.toLocaleString("en-US")}</TableCell>
+        <TableCell className="text-right tabular-nums">{formatCount(d.items)}</TableCell>
       </TableRow>
       {mounted &&
         layers.map((l, i) => (
@@ -216,7 +217,7 @@ function DatasetRows({ dataset: d }: { dataset: Dataset }) {
             {hiddenCells.map((c, j) => (
               <TableCell key={j} className={c} />
             ))}
-            <TableCell className="text-right text-muted-foreground tabular-nums">{l.items.toLocaleString("en-US")}</TableCell>
+            <TableCell className="text-right text-muted-foreground tabular-nums">{formatCount(l.items)}</TableCell>
           </TableRow>
         ))}
     </>

@@ -61,9 +61,7 @@
     "live": false
   },
   "status-eyebrow": {
-    "roles": [
-      "heading"
-    ],
+    "roles": [],
     "tabStops": 0,
     "live": false
   },

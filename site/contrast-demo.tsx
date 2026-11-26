@@ -4,7 +4,7 @@ import * as React from "react"
 import { ChevronRight, Pause } from "lucide-react"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { StopButton } from "@/registry/syncrobotic/shell/stop-button"
-import { Badge } from "@/registry/syncrobotic/ui/badge"
+import { Badge, CountBadge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
@@ -56,9 +56,11 @@ export function ContrastDemo() {
           ))}
         </ul>
         <div className="flex flex-wrap gap-2">
-          <Badge tone="info">Sending</Badge>
-          <Badge tone="warning">Low battery</Badge>
-          <Badge tone="danger">Motor fault</Badge>
+          <Badge tone="outline">Production</Badge>
+          <Badge>Beta</Badge>
+          <span className="inline-flex items-center gap-2 text-sm">
+            Alarms <CountBadge count={3} />
+          </span>
         </div>
         <StopButton onStop={() => {}} />
       </div>

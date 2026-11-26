@@ -1,9 +1,10 @@
-// @syncrobotic/point-cloud v0.36.0 · update: npx shadcn add @syncrobotic/point-cloud --overwrite
+// @syncrobotic/point-cloud v0.40.0 · update: npx shadcn add @syncrobotic/point-cloud --overwrite
 "use client"
 
 import * as React from "react"
 import { CircleAlert, Crosshair, Radar, Rotate3d, RotateCw, TriangleAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { formatCount } from "@/registry/syncrobotic/lib/format-count"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { ButtonGroup } from "@/registry/syncrobotic/ui/button-group"
 import { ViewportOverlay, ViewportPanel } from "@/registry/syncrobotic/ui/viewport-overlay"
@@ -79,7 +80,7 @@ const fixed1 = (n: number) => (Object.is(Math.round(n * 10), -0) ? 0 : n).toFixe
 export const defaultPointCloudLabels: PointCloudLabels = {
   viewName: "3D point cloud",
   keys: "Drag to rotate, right-drag or two fingers to pan; the wheel or a pinch zooms once the view has focus. Arrow keys rotate, Shift with the arrows pans, plus and minus zoom, 0 resets the view.",
-  count: (n) => (n === 1 ? "1 point" : `${n.toLocaleString("en-US")} points`),
+  count: (n) => (n === 1 ? "1 point" : `${formatCount(n)} points`),
   bounds: (b) =>
     `x ${fixed1(b.min[0])} to ${fixed1(b.max[0])} m forward, y ${fixed1(b.min[1])} to ${fixed1(b.max[1])} m left, z ${fixed1(b.min[2])} to ${fixed1(b.max[2])} m up`,
   robotAtOrigin: "The robot is at the origin, facing x",

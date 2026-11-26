@@ -1,9 +1,10 @@
-// @syncrobotic/facets v0.39.0 · update: npx shadcn add @syncrobotic/facets --overwrite
+// @syncrobotic/facets v0.40.0 · update: npx shadcn add @syncrobotic/facets --overwrite
 "use client"
 
 import * as React from "react"
 import { SlidersHorizontal } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { formatCount } from "@/registry/syncrobotic/lib/format-count"
 import { CountBadge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
@@ -65,7 +66,7 @@ type FacetsBase = {
   onValueChange?: (value: FacetValue) => void
   /** Show this many options per facet, then "Show all N". All of them when left out. */
   max?: number
-  /** Formats the counts (a BCP 47 tag such as "zh-TW"): "48,210". Written as given when left out. */
+  /** Formats the counts (a BCP 47 tag such as "zh-TW"): "48,210". Left out, English (formatCount), so the server and the browser agree. */
   locale?: string
   /** The words it says, to translate them (`facetsLabels` in labels-zh-tw). */
   labels?: Partial<FacetsLabels>
@@ -193,8 +194,8 @@ export function FacetList({
 }: FacetsBase & { className?: string }) {
   const l = { ...defaultFacetsLabels, ...labels }
   const [value, setValue] = useFacetValue({ value: valueProp, defaultValue, onValueChange })
-  // Written as given unless a locale is asked for, so a count never changes between the server and the browser.
-  const num = (n: number) => (locale !== undefined ? n.toLocaleString(locale) : String(n))
+  // A count in full with grouping, in English unless a locale is asked for, so it never changes between server and browser.
+  const num = (n: number) => formatCount(n, { locale })
   return (
     <div data-slot="facets-list" className={cn("flex flex-col gap-6", className)}>
       {facets.map((f) => {

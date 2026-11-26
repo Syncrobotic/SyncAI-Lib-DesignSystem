@@ -42,9 +42,9 @@ describe("Meter says what its colour means", () => {
     expect(m.getAttribute("aria-valuetext")).toBe("412 of 512 GB")
   })
 
-  it("writes numbers as given by default, and formats value and total with locale and format", () => {
+  it("writes numbers grouped in English by default (formatNumber), and formats value and total with locale and format", () => {
     const { rerender } = render(<Meter label="Items" value={412345} max={1000000} unit="items" showMax />)
-    expect(screen.getByRole("meter").getAttribute("aria-valuetext")).toBe("412345 of 1000000 items")
+    expect(screen.getByRole("meter").getAttribute("aria-valuetext")).toBe("412,345 of 1,000,000 items")
     rerender(<Meter label="Items" value={412345} max={1000000} unit="items" showMax locale="en-US" />)
     expect(screen.getByRole("meter").getAttribute("aria-valuetext")).toBe("412,345 of 1,000,000 items")
     expect(screen.getByText("412,345 of 1,000,000 items")).toBeTruthy()

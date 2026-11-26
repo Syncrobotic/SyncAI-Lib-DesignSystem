@@ -1,11 +1,16 @@
-// @syncrobotic/badge v0.16.1 · update: npx shadcn add @syncrobotic/badge --overwrite
+// @syncrobotic/badge v0.40.0 · update: npx shadcn add @syncrobotic/badge --overwrite
 import * as React from "react"
 import { Slot } from "radix-ui"
 import { cva, type VariantProps } from "class-variance-authority"
 import { CircleAlert, CircleCheck, CircleDashed } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-/** Status colours always come in pairs: the tone's foreground on its subtle tint. */
+/**
+ * A label for a fixed attribute or category: Beta, a version, a tier, a data use (`neutral`, the default), or the
+ * environment, Production or Staging (`outline`). A state that changes (Offline, Low battery, Updating) is not a badge:
+ * it is an InlineStatus, its shape and its word with no box. The tinted tones remain for compatibility, each the tone's
+ * foreground on its subtle tint; a count is a CountBadge and a test result a ResultBadge.
+ */
 export const badgeVariants = cva("inline-flex h-(--h-tag) shrink-0 items-center gap-1 whitespace-nowrap rounded-xs px-2 text-xs font-medium [&_svg]:size-4", {
   variants: {
     tone: {

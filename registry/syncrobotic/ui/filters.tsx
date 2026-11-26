@@ -1,10 +1,11 @@
-// @syncrobotic/filters v0.37.0 · update: npx shadcn add @syncrobotic/filters --overwrite
+// @syncrobotic/filters v0.40.0 · update: npx shadcn add @syncrobotic/filters --overwrite
 "use client"
 
 import * as React from "react"
 import { format as formatDate } from "date-fns"
 import { ChevronLeft, Plus, Save, Undo2, X } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { formatCount } from "@/registry/syncrobotic/lib/format-count"
 import { usePresence, usePresenceList } from "@/registry/syncrobotic/hooks/use-presence"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Calendar } from "@/registry/syncrobotic/ui/calendar"
@@ -435,7 +436,7 @@ export function Filters({
   defaultValue?: FilterRule[]
   onValueChange?: (rules: FilterRule[]) => void
   labels?: Partial<Omit<FilterLabels, "operators">> & { operators?: Partial<Record<FilterOperator, string>> }
-  /** Formats the options' counts (a BCP 47 tag such as "zh-TW"). Left out, the browser's language. */
+  /** Formats the options' counts (a BCP 47 tag such as "zh-TW"). Left out, English, so the server and the browser write the same. */
   locale?: string
   className?: string
 }) {
@@ -828,7 +829,7 @@ function ValueStep({
                   {multiple && <CommandCheck checked={on} />}
                   {o.icon}
                   <span className="truncate">{o.label}</span>
-                  {o.count !== undefined && <span className="ml-auto text-xs text-muted-foreground tabular-nums">{o.count.toLocaleString(locale)}</span>}
+                  {o.count !== undefined && <span className="ml-auto text-xs text-muted-foreground tabular-nums">{formatCount(o.count, { locale })}</span>}
                 </CommandItem>
               )
             })}
@@ -1013,7 +1014,7 @@ export function FilterViews({
   /** Shows "Save view". Called with the name typed and the current rules; add the view to `views` yourself. */
   onSave?: (label: string, rules: FilterRule[]) => void
   labels?: Partial<FilterViewsLabels>
-  /** Formats the views' counts (a BCP 47 tag such as "zh-TW"). Left out, the browser's language. */
+  /** Formats the views' counts (a BCP 47 tag such as "zh-TW"). Left out, English, so the server and the browser write the same. */
   locale?: string
   className?: string
 }) {

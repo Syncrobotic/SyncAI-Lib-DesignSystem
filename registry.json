@@ -255,7 +255,7 @@
       "name": "format-count",
       "type": "registry:lib",
       "title": "Format count",
-      "description": "formatCount: a count in full with grouping (135,287) for tables, headers and detail, or `compact` (135K, 1.2M; 14萬 in zh-TW) only where space is the constraint: tab marks, chart ticks, compact chips. Intl.NumberFormat in a locale, English by default.",
+      "description": "The kit's one number path: formatCount, a count in full with grouping (135,287) or `compact` (135K; 14萬 in zh-TW) only where space is the constraint; formatNumber for any other number (Intl.NumberFormat options); resolveLocale. English when no locale is given, so the server and the browser write the same.",
       "files": [
         {
           "path": "registry/syncrobotic/lib/format-count.ts",
@@ -263,8 +263,13 @@
         }
       ],
       "meta": {
-        "version": "0.39.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "The kit's one number path: formatNumber (any number that is not a count, Intl.NumberFormat options, English by default), numberFormat (the cached formatter) and resolveLocale (English without a locale or for a tag Intl cannot read), beside formatCount, which now falls back to English for a bad tag too. lint:numbers bans toLocaleString in the registry."
+          },
           {
             "version": "0.39.0",
             "date": "2026-11-25",
@@ -332,8 +337,13 @@
         }
       ],
       "meta": {
-        "version": "0.39.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Numbers through format-count (formatCount, formatNumber), zh-TW when no locale is passed; depends on @syncrobotic/format-count."
+          },
           {
             "version": "0.39.0",
             "date": "2026-11-25",
@@ -386,7 +396,10 @@
           }
         ],
         "status": "beta"
-      }
+      },
+      "registryDependencies": [
+        "@syncrobotic/format-count"
+      ]
     },
     {
       "name": "ros",
@@ -724,8 +737,8 @@
     {
       "name": "status-eyebrow",
       "type": "registry:component",
-      "title": "Status eyebrow",
-      "description": "The state word above a headline, and the same status inside a list row.",
+      "title": "Inline status and eyebrow",
+      "description": "InlineStatus: a state that changes (a robot's status, a job's state) as its shape and its word with no box, in a row, a table cell or beside a page title. StatusEyebrow: the same state above a headline. Only warning and danger are coloured.",
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/status-glyph"
@@ -737,8 +750,13 @@
         }
       ],
       "meta": {
-        "version": "0.13.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "InlineStatus takes `className` (its size in a 12 px meta line) and carries `data-slot=\"inline-status\"`; the item is titled Inline status and eyebrow, so InlineStatus, the one way to write a state, is found by its name."
+          },
           {
             "version": "0.13.0",
             "date": "2026-11-19",
@@ -895,7 +913,8 @@
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
-        "@syncrobotic/feedback"
+        "@syncrobotic/feedback",
+        "@syncrobotic/format-count"
       ],
       "files": [
         {
@@ -905,8 +924,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.37.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "The speed through formatNumber, in English, instead of the runtime's language."
+          },
           {
             "version": "0.37.0",
             "date": "2026-11-25",
@@ -947,8 +971,13 @@
         }
       ],
       "meta": {
-        "version": "0.8.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "DockActions: both buttons are medium (500), as every button, and the secondary's words are foreground; the block, not a heavier weight, marks the primary. Bold stays the stop's."
+          },
           {
             "version": "0.8.0",
             "date": "2026-11-17",
@@ -1238,7 +1267,8 @@
         "@syncrobotic/viewport-overlay",
         "@syncrobotic/empty-state",
         "@syncrobotic/math",
-        "@syncrobotic/use-reduced-motion"
+        "@syncrobotic/use-reduced-motion",
+        "@syncrobotic/format-count"
       ],
       "files": [
         {
@@ -1248,8 +1278,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.36.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Numbers through format-count's resolveLocale and cached formatter instead of a private copy; output unchanged."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -2190,7 +2225,7 @@
       "name": "badge",
       "type": "registry:ui",
       "title": "Badge",
-      "description": "Status tones as foreground on subtle tint, plus outline; CountBadge for a count and ResultBadge for a pass, a fail or too few samples.",
+      "description": "A small tag for a fixed attribute or category: Beta, a version, the environment (Production, as an outline), a tier. Neutral or outline; a state that changes is an InlineStatus. CountBadge for a count and ResultBadge for a pass, a fail or too few samples.",
       "dependencies": [
         "class-variance-authority@^0.7",
         "lucide-react@^1",
@@ -2206,8 +2241,13 @@
         }
       ],
       "meta": {
-        "version": "0.16.1",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Docs: a badge is a fixed attribute or category (Beta, a version, Production as an outline, a tier), never a state; the examples show those, a status beside a title as an InlineStatus, and a Do / Don't. The tinted tones stay for compatibility."
+          },
           {
             "version": "0.16.1",
             "date": "2026-11-19",
@@ -2253,8 +2293,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.31.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "`tiers` is typed neutral or outline only (it never used warning or danger), and its comment no longer says the restricted tiers carry colour."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -2509,7 +2554,8 @@
       "dependencies": [],
       "registryDependencies": [
         "@syncrobotic/cn",
-        "@syncrobotic/status-glyph"
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/format-count"
       ],
       "files": [
         {
@@ -2518,8 +2564,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Values grouped through formatNumber (412,345) without a locale too, instead of the bare number; `format` and `locale` still apply."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -3017,7 +3068,8 @@
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
-        "@syncrobotic/table"
+        "@syncrobotic/table",
+        "@syncrobotic/format-count"
       ],
       "files": [
         {
@@ -3026,8 +3078,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.1",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "chartNumber groups (12,480) through formatNumber, English on the server and in every browser, keeping the true minus sign."
+          },
           {
             "version": "0.22.1",
             "date": "2026-11-21",
@@ -3074,7 +3131,8 @@
         "@syncrobotic/table",
         "@syncrobotic/clock-time",
         "@syncrobotic/use-reduced-motion",
-        "@syncrobotic/theme-change"
+        "@syncrobotic/theme-change",
+        "@syncrobotic/format-count"
       ],
       "files": [
         {
@@ -3084,8 +3142,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.36.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Numbers through format-count's resolveLocale and cached formatter instead of a private copy; output unchanged."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -3127,7 +3190,8 @@
         "@syncrobotic/status-glyph",
         "@syncrobotic/meter",
         "@syncrobotic/clock-time",
-        "@syncrobotic/use-reduced-motion"
+        "@syncrobotic/use-reduced-motion",
+        "@syncrobotic/format-count"
       ],
       "files": [
         {
@@ -3137,8 +3201,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.36.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Numbers through format-count's resolveLocale and cached formatter instead of a private copy; output unchanged."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -3242,7 +3311,8 @@
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/button",
-        "@syncrobotic/filter-form"
+        "@syncrobotic/filter-form",
+        "@syncrobotic/format-count"
       ],
       "files": [
         {
@@ -3251,8 +3321,13 @@
         }
       ],
       "meta": {
-        "version": "0.31.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Counts through formatCount: English without a locale, so the server and a browser in another language write the same digits (was the runtime's language)."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -3675,7 +3750,8 @@
         "@syncrobotic/select",
         "@syncrobotic/sortable",
         "@syncrobotic/toast",
-        "@syncrobotic/empty-state"
+        "@syncrobotic/empty-state",
+        "@syncrobotic/format-count"
       ],
       "files": [
         {
@@ -3685,8 +3761,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.36.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Counts through formatCount and distances, times and headings through formatNumber: English without a locale (was the runtime's language)."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -4496,7 +4577,7 @@
       "name": "page-header",
       "type": "registry:ui",
       "title": "Page header",
-      "description": "The block a page opens with: breadcrumb above, one h1 and a line, meta pills (a link with href), actions at the right. No label above the title.",
+      "description": "The block a page opens with: breadcrumb above, one h1 and a line, its one status (InlineStatus) and badges beside the title, meta pills for facts (a link with href), actions at the right. No label above the title.",
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/status-glyph"
@@ -4508,8 +4589,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "`status`: the state of what the page shows, one InlineStatus beside the title (at most one), and `badges` for fixed attributes after it. MetaPill's `tone` is deprecated: a state in a boxed pill reads as one more fact."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -4575,7 +4661,8 @@
         "radix-ui@^1"
       ],
       "registryDependencies": [
-        "@syncrobotic/cn"
+        "@syncrobotic/cn",
+        "@syncrobotic/format-count"
       ],
       "files": [
         {
@@ -4584,8 +4671,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Counts through formatCount: English without a locale, so the server and a browser in another language write the same digits (was the runtime's language)."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -4621,7 +4713,8 @@
       "title": "Share bar",
       "description": "How a whole splits, as one thin bar in the chart palette (the accent, two greys, Other): light enough for a table cell, with an optional label, total and legend, whose entries link to each part with href. ShareLegend is one legend for a list of bars.",
       "registryDependencies": [
-        "@syncrobotic/cn"
+        "@syncrobotic/cn",
+        "@syncrobotic/format-count"
       ],
       "files": [
         {
@@ -4630,8 +4723,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Numbers and shares through formatNumber: English without a locale, so the server and the browser agree (was the runtime's language)."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -4678,7 +4776,8 @@
       "description": "A short ranked list of counts (items per class, files per format) with no chart library: each row its label and value in words, a bar under it in --chart-1 scaled to the largest value, links on rows with href, \"N more\" after max. No surface of its own, so it fits in a card, a table cell or a sheet.",
       "registryDependencies": [
         "@syncrobotic/cn",
-        "@syncrobotic/empty-state"
+        "@syncrobotic/empty-state",
+        "@syncrobotic/format-count"
       ],
       "files": [
         {
@@ -4688,8 +4787,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.35.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Values grouped through formatNumber (412,345) without a locale too, instead of the bare number; `format` and `locale` still apply."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -4710,7 +4814,8 @@
       "description": "The end of a long list on a phone or in a gallery: how much is shown, and one button for the next batch that says how many it adds and how many remain.",
       "registryDependencies": [
         "@syncrobotic/cn",
-        "@syncrobotic/button"
+        "@syncrobotic/button",
+        "@syncrobotic/format-count"
       ],
       "files": [
         {
@@ -4719,8 +4824,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Counts through formatCount: English without a locale, so the server and a browser in another language write the same digits (was the runtime's language)."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -5102,7 +5212,8 @@
         "@syncrobotic/segmented-control",
         "@syncrobotic/toggle",
         "@syncrobotic/viewport-overlay",
-        "@syncrobotic/empty-state"
+        "@syncrobotic/empty-state",
+        "@syncrobotic/format-count"
       ],
       "files": [
         {
@@ -5112,8 +5223,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.36.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Counts through formatCount: English without a locale, so the server and a browser in another language write the same digits (was the runtime's language)."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -5145,7 +5261,8 @@
         "@syncrobotic/skeleton",
         "@syncrobotic/empty-state",
         "@syncrobotic/robot-icons",
-        "@syncrobotic/clock-time"
+        "@syncrobotic/clock-time",
+        "@syncrobotic/format-count"
       ],
       "files": [
         {
@@ -5155,8 +5272,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.36.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Numbers through format-count's resolveLocale and cached formatter instead of a private copy; output unchanged."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -5193,7 +5315,8 @@
         "@syncrobotic/empty-state",
         "@syncrobotic/search-field",
         "@syncrobotic/tree",
-        "@syncrobotic/use-now"
+        "@syncrobotic/use-now",
+        "@syncrobotic/format-count"
       ],
       "files": [
         {
@@ -5203,8 +5326,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.36.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Counts and values through format-count (formatCount, formatNumber) instead of toLocaleString and a private resolveLocale; output unchanged with a locale, English without one."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -5236,7 +5364,8 @@
         "@syncrobotic/clock-time",
         "@syncrobotic/math",
         "@syncrobotic/use-reduced-motion",
-        "@syncrobotic/theme-change"
+        "@syncrobotic/theme-change",
+        "@syncrobotic/format-count"
       ],
       "files": [
         {
@@ -5246,8 +5375,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.36.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "The point count through formatCount."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -5408,7 +5542,8 @@
         "@syncrobotic/field",
         "@syncrobotic/input",
         "@syncrobotic/number-field",
-        "@syncrobotic/popover"
+        "@syncrobotic/popover",
+        "@syncrobotic/format-count"
       ],
       "files": [
         {
@@ -5418,8 +5553,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.37.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Counts through formatCount: English without a locale, so the server and a browser in another language write the same digits (was the runtime's language)."
+          },
           {
             "version": "0.37.0",
             "date": "2026-11-25",
@@ -5487,7 +5627,8 @@
         "@syncrobotic/button",
         "@syncrobotic/checkbox",
         "@syncrobotic/choice-field",
-        "@syncrobotic/sheet"
+        "@syncrobotic/sheet",
+        "@syncrobotic/format-count"
       ],
       "files": [
         {
@@ -5497,8 +5638,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.39.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Counts in full with grouping (formatCount: 48,210) without a locale too, instead of the bare number."
+          },
           {
             "version": "0.39.0",
             "date": "2026-11-25",
@@ -6157,7 +6303,8 @@
         "@syncrobotic/input-group",
         "@syncrobotic/empty-state",
         "@syncrobotic/use-now",
-        "@syncrobotic/math"
+        "@syncrobotic/math",
+        "@syncrobotic/format-count"
       ],
       "files": [
         {
@@ -6167,8 +6314,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.37.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Counts through formatCount: English without a locale, so the server and a browser in another language write the same digits (was the runtime's language)."
+          },
           {
             "version": "0.37.0",
             "date": "2026-11-25",
@@ -6208,7 +6360,8 @@
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/button",
-        "@syncrobotic/spinner"
+        "@syncrobotic/spinner",
+        "@syncrobotic/format-count"
       ],
       "files": [
         {
@@ -6218,8 +6371,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.31.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Durations and queue positions through format-count: English without a locale (was the runtime's language)."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",
@@ -7687,7 +7845,8 @@
         "@syncrobotic/input",
         "@syncrobotic/table",
         "@syncrobotic/input-group",
-        "@syncrobotic/tier-badge"
+        "@syncrobotic/tier-badge",
+        "@syncrobotic/format-count"
       ],
       "files": [
         {
@@ -7696,8 +7855,13 @@
         }
       ],
       "meta": {
-        "version": "0.39.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Numbers through format-count (formatCount, formatNumber) instead of toLocaleString and a second Intl.NumberFormat (lint:numbers)."
+          },
           {
             "version": "0.39.0",
             "date": "2026-11-25",
@@ -8235,8 +8399,13 @@
         }
       ],
       "meta": {
-        "version": "0.39.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "The number rule names formatNumber for any number that is not a count and bans toLocaleString(); a header's one status is PageHeader's `status` (InlineStatus) and its badges `badges`; checklist line 16: a state is an InlineStatus, never a tinted badge or a toned MetaPill."
+          },
           {
             "version": "0.39.0",
             "date": "2026-11-25",
@@ -9522,7 +9691,8 @@
         "@syncrobotic/cn",
         "@syncrobotic/metric-card",
         "@syncrobotic/select",
-        "@syncrobotic/segmented-control"
+        "@syncrobotic/segmented-control",
+        "@syncrobotic/format-count"
       ],
       "files": [
         {
@@ -9531,8 +9701,13 @@
         }
       ],
       "meta": {
-        "version": "0.19.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Numbers through format-count (formatCount, formatNumber) instead of toLocaleString and a second Intl.NumberFormat (lint:numbers)."
+          },
           {
             "version": "0.19.0",
             "date": "2026-11-20",
@@ -9971,7 +10146,8 @@
         "@syncrobotic/empty-state",
         "@syncrobotic/meter",
         "@syncrobotic/skeleton",
-        "@syncrobotic/table"
+        "@syncrobotic/table",
+        "@syncrobotic/format-count"
       ],
       "files": [
         {
@@ -9980,8 +10156,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Numbers through format-count (formatCount, formatNumber) instead of toLocaleString and a second Intl.NumberFormat (lint:numbers)."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",

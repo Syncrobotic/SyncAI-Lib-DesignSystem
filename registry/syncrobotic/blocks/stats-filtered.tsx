@@ -1,8 +1,9 @@
-// @syncrobotic/stats-filtered v0.19.0 · update: npx shadcn add @syncrobotic/stats-filtered --overwrite
+// @syncrobotic/stats-filtered v0.40.0 · update: npx shadcn add @syncrobotic/stats-filtered --overwrite
 "use client"
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
+import { formatNumber } from "@/registry/syncrobotic/lib/format-count"
 import { MetricCard, MetricGrid } from "@/registry/syncrobotic/ui/metric-card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
@@ -70,7 +71,7 @@ export function StatsFiltered({ className }: { className?: string }) {
             <MetricCard
               key={k.label}
               label={k.label}
-              value={now.toLocaleString("en")}
+              value={formatNumber(now)}
               unit={k.unit}
               delta={moved ? `${up ? "+" : "−"}${Math.abs(change).toFixed(0)} %` : "0 %"}
               trend={!moved ? "flat" : worse ? "bad" : "good"}

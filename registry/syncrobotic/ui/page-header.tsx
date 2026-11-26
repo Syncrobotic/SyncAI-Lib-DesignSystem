@@ -1,16 +1,19 @@
-// @syncrobotic/page-header v0.32.0 · update: npx shadcn add @syncrobotic/page-header --overwrite
+// @syncrobotic/page-header v0.40.0 · update: npx shadcn add @syncrobotic/page-header --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { StatusGlyph, type Tone, toStatus } from "@/registry/syncrobotic/shell/status-glyph"
 
 /**
- * The block a page opens with: where you are (a breadcrumb above), what the page is (one h1 and a line), facts about it
- * (meta pills), and its actions on the right. No label above the title: the breadcrumb says where, the title says what.
+ * The block a page opens with: where you are (a breadcrumb above), what the page is (one h1 and a line), its state (one
+ * InlineStatus beside the title), facts about it (meta pills), and its actions on the right. No label above the title:
+ * the breadcrumb says where, the title says what.
  */
 export function PageHeader({
   title,
   description,
   breadcrumb,
+  status,
+  badges,
   meta,
   actions,
   metaLabel = "About this page",
@@ -21,7 +24,14 @@ export function PageHeader({
   description?: React.ReactNode
   /** A Breadcrumb, shown above the title. */
   breadcrumb?: React.ReactNode
-  /** MetaPills: counts, owner, last update, a status. */
+  /**
+   * The state of what the page shows (a robot, a job, a dataset), beside the title: one `InlineStatus`, at most one. Its
+   * shape and word, no box, so it never reads as one more fact in the meta row.
+   */
+  status?: React.ReactNode
+  /** Badges for fixed attributes (an environment as an outline, Beta, a version), after the title and its status. */
+  badges?: React.ReactNode
+  /** MetaPills: facts about the page, such as counts, owner and last update. A state goes in `status`, not here. */
   meta?: React.ReactNode
   /** Buttons for this page, at the right on wide screens and under the title on phones. */
   actions?: React.ReactNode
@@ -36,7 +46,24 @@ export function PageHeader({
       {breadcrumb}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex max-w-3xl min-w-0 flex-col gap-2">
-          <Heading className="text-3xl font-bold tracking-tight text-balance">{title}</Heading>
+          {status || badges ? (
+            // The status, then the badges, sit on the title's line after it, and wrap under it on a narrow screen.
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+              <Heading className="text-3xl font-bold tracking-tight text-balance">{title}</Heading>
+              {status && (
+                <span data-slot="page-header-status" className="inline-flex">
+                  {status}
+                </span>
+              )}
+              {badges && (
+                <span data-slot="page-header-badges" className="inline-flex flex-wrap items-center gap-2">
+                  {badges}
+                </span>
+              )}
+            </div>
+          ) : (
+            <Heading className="text-3xl font-bold tracking-tight text-balance">{title}</Heading>
+          )}
           {description && <p className="text-base text-pretty text-muted-foreground">{description}</p>}
         </div>
         {actions && <div className="flex shrink-0 flex-wrap gap-2">{actions}</div>}
@@ -51,9 +78,9 @@ export function PageHeader({
 }
 
 /**
- * One fact about the page, as a quiet tag: "128 datasets", "Updated 2 h ago", "Owner: Data team". A status (`tone`)
- * adds its glyph; only warning and danger are coloured, like everywhere else. With `href` the fact leads somewhere
- * ("2 compliance items open" to the compliance tab): the pill becomes a link, underlined like every link.
+ * One fact about the page, as a quiet tag: "128 datasets", "Updated 2 h ago", "Owner: Data team". With `href` the fact
+ * leads somewhere ("2 compliance items open" to the compliance tab): the pill becomes a link, underlined like every link.
+ * A state is not a fact: it goes in PageHeader's `status` as an InlineStatus, not in a pill.
  */
 export function MetaPill({
   tone,
@@ -63,6 +90,10 @@ export function MetaPill({
   className,
   children,
 }: {
+  /**
+   * @deprecated A state in a boxed pill reads as one more fact. Put it in PageHeader's `status` (an InlineStatus);
+   * `tone` still draws its glyph and colour until 1.0.
+   */
   tone?: Tone
   icon?: React.ReactNode
   /** Where the fact leads: the pill becomes a link, the same height on screen, with a 36 px target (44 on touch). */

@@ -2,6 +2,29 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+Design-rule conformance: the kit's components, docs and catalog follow the rules 0.39 wrote down. Every number goes one way, Badge teaches labels instead of states, a page header takes one status, and the catalog's groups are smaller and say what they hold.
+
+### Added
+- **`page-header` 0.40.0:** `status`, the state of what the page shows as one InlineStatus beside the title (at most one), and `badges` for fixed attributes after it (Production as an outline, Beta). A robot page's example shows both. MetaPill's `tone` is deprecated: a state in a boxed pill reads as one more fact; it still draws until 1.0.
+- **`status-eyebrow` 0.40.0:** InlineStatus takes `className` (its size in a 12 px meta line) and carries `data-slot="inline-status"`. The item is titled "Inline status and eyebrow" and its page, rules and overview lead with InlineStatus, the one way to write a state that changes, so it is found by its name.
+- **`format-count` 0.40.0:** the kit's one number path. `formatNumber(n, { locale, ...options })` for any number that is not a count (Intl.NumberFormat options: decimals, grouping, currency), `numberFormat(locale, options)` for the cached formatter and `resolveLocale(locale)`, beside `formatCount`. Both are English without a locale and for a tag Intl cannot read ("en_US"), so the server and the browser write the same digits.
+- **`lint:numbers`** (`scripts/check-numbers.mjs`, in CI's check job): no `.toLocaleString(` (it follows the runtime's language when given no locale) and no second `new Intl.NumberFormat(` in the registry.
+- **Docs:** pages for `format-count`, `clock-time`, `feedback`, `use-now` and `use-reduced-motion` under Hooks & libraries, with their rules and when to use them, so they are in the sidebar, the search, `/llms.txt` and the MCP server's catalog.
+- **`npm run readme`:** README.md's counts and its two catalog tables are written from the site's data (`site/readme.ts`); `tests/unit/readme.test.ts` fails when they drift.
+
+### Changed
+- **Docs: the component groups** follow what a screen is made of. New groups Lists & tables (table, responsive-table, data-grid, list, item, description-list, tree, sortable, log-viewer), Status & values (status-glyph, InlineStatus and StatusEyebrow, badge, tier-badge, meter, metric-card) and Search & filters (search-field, filters, filter-form, chip-group, facets). File upload moves to Media & files beside attachment and file type; the robot shell (dock, island, tray) joins Robotics after the stop and slide to release, and the Robot shell group, three items, is gone. Inputs holds 20 (was 27), Data display 11 (was 24). Component URLs do not change.
+- **README:** 122 components (it said 95 and 87), and its group table is the site's.
+- **Numbers, everywhere:** the five private copies of `resolveLocale` (geo-map, diagnostics, attitude, joint-state, streaming-chart) and their formatter caches are format-count's. Counts without a locale are grouped (`facets` 48,210, not 48210; `bar-list` and `meter` 412,345 through formatNumber; `chart`'s `chartNumber` 12,480 with its true minus). `pagination`, `load-more`, `chip-group`, `filters`, `share-bar`, `log-viewer`, `camera-wall`, `waypoint-editor`, `streaming-text`, `teleop-pad` and `point-cloud` wrote numbers in the runtime's language when given no locale; they now write English, as the server does. `labels-zh-tw` writes its numbers through format-count (zh-TW without a locale) and depends on it. All 0.40.0.
+- **`data-catalog`, `stats-filtered`, `settings-billing` 0.40.0:** their numbers through format-count (lint:numbers).
+- **`badge` 0.40.0** (docs and examples): a badge is a fixed attribute or category (Beta, v2.4.1, Production as a neutral outline, T1), never a state. The examples show those, a title with one InlineStatus then its badges and a CountBadge, badges with icons that are categories (Internal only, Simulation), and a Do / Don't (a state in a tinted badge). Its description and overview say the same; the tinted tones stay for compatibility.
+- **`tier-badge` 0.40.0:** `tiers` is typed `neutral | outline` (it never used warning or danger); its comment no longer says the restricted tiers carry colour.
+- **`dock` 0.40.0:** DockActions' two buttons are medium (500), as every button, and the secondary's words are foreground: the raised block, not a heavier weight, marks the primary; bold stays the stop's.
+- **`agent-skill` 0.40.0:** the number rule names `formatNumber` for any number that is not a count and bans `toLocaleString()`; a header's one status is PageHeader's `status`; checklist line 16: a state is an InlineStatus, never a tinted badge or a toned MetaPill.
+- **Docs:** Color's Do / Don't writes a state as an InlineStatus instead of a tinted badge; the high-contrast demo shows badges as labels and a CountBadge; the Card and Tabs examples draw their counts as CountBadge, not a Badge holding a number; Avatar's rule says "status mark" (AvatarBadge), not "status badge".
+
 ## 0.39.0 · 2026-11-25
 
 A section heading at typography's two levels, a table that becomes a grouped list on phones, the data catalog's facet column as a component, a rule for writing numbers with the helper that follows it, when a label is a Badge, an InlineStatus or plain text, and the Next.js recipe for an error in the root layout.

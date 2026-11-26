@@ -1,6 +1,7 @@
-// @syncrobotic/bar-list v0.35.0 · update: npx shadcn add @syncrobotic/bar-list --overwrite
+// @syncrobotic/bar-list v0.40.0 · update: npx shadcn add @syncrobotic/bar-list --overwrite
 import type * as React from "react"
 import { cn } from "@/lib/utils"
+import { formatNumber } from "@/registry/syncrobotic/lib/format-count"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 
 export type BarListItem = {
@@ -57,8 +58,8 @@ export function BarList({
   className?: string
 }) {
   const l = { ...defaultBarListLabels, ...labelsProp }
-  // Written as given unless a locale or a format is asked for, so a number never changes between server and browser.
-  const num = (n: number) => (locale !== undefined || format ? n.toLocaleString(locale, format) : String(n))
+  // Grouped, in English unless a locale is asked for, so a number never changes between server and browser.
+  const num = (n: number) => formatNumber(n, { ...format, locale })
   // Scaled to the largest value of all the items, shown or not, so a row's bar does not change with `max`.
   const top = Math.max(0, ...items.map((i) => i.value))
   const shown = max !== undefined ? items.slice(0, Math.max(0, max)) : items
