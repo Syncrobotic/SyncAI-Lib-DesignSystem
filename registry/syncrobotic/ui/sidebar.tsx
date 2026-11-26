@@ -454,8 +454,8 @@ export function SidebarRail({ className, ...props }: React.ComponentProps<"div">
           aria-label={labels.resize}
           aria-valuemin={WIDTH.rail}
           aria-valuemax={WIDTH.max}
+          // Open or a rail is in the value (72 is the rail); a separator takes no aria-expanded.
           aria-valuenow={open ? width : WIDTH.rail}
-          aria-expanded={open}
           aria-keyshortcuts={keyshortcuts}
           tabIndex={0}
           data-slot="sidebar-rail"

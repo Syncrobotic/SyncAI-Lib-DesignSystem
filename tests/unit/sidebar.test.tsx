@@ -259,7 +259,7 @@ describe("app shell on the sidebar", () => {
     expect(rail.tabIndex).toBe(0)
     expect(rail.getAttribute("aria-orientation")).toBe("vertical")
     // A rail (the test screen is under 1280 px).
-    expect(rail.getAttribute("aria-expanded")).toBe("false")
+    expect(rail.getAttribute("aria-expanded")).toBeNull()
     expect(rail.getAttribute("aria-valuenow")).toBe("72")
     fireEvent.pointerDown(rail, { button: 0, clientX: 72, pointerId: 1 })
     fireEvent.pointerUp(rail, { button: 0, clientX: 72, pointerId: 1 })
