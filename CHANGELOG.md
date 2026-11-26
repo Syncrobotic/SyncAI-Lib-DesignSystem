@@ -2,7 +2,7 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.41.0 · 2026-11-26
 
 UI for LLM agents: the parts of a conversation with a model, built on streaming-text, trace and attachment, and a model's Markdown answer rendered safely as the kit's own elements with the sources it cites. A turn says who spoke in words, the answer's actions are quiet until wanted, the composer never sends half a word typed with an input method, and the conversation follows the answer without reading it twice.
 
