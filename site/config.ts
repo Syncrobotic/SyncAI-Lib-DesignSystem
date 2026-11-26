@@ -18,6 +18,8 @@ export const site = {
   /** Shown in install instructions. */
   registryUrl: host,
   repo: "https://github.com/Syncrobotic/SyncAI-Lib-DesignSystem",
+  /** The company's profile, linked from the footer and named as the publisher's sameAs in JSON-LD. */
+  linkedin: "https://www.linkedin.com/company/syncrobotic/",
   keywords: [
     "robotics UI kit",
     "robot UI",

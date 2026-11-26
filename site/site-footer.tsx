@@ -45,6 +45,7 @@ const columns: { title: string; links: FooterLink[] }[] = [
       { label: "Releases", href: `${site.repo}/releases`, external: true },
       { label: "Changelog", href: `${site.repo}/blob/main/CHANGELOG.md`, external: true },
       { label: "Roadmap", href: `${site.repo}/blob/main/ROADMAP.md`, external: true },
+      { label: "SYNCROBOTIC on LinkedIn", href: site.linkedin, external: true },
     ],
   },
 ]
