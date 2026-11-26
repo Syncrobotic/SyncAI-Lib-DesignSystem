@@ -33,7 +33,7 @@
   },
   "labels-zh-tw": {
     "version": "0.41.0",
-    "hash": "858cee3e8b567795"
+    "hash": "530633feaf7b8810"
   },
   "ros": {
     "version": "0.36.0",
@@ -522,6 +522,10 @@
   "message-actions": {
     "version": "0.41.0",
     "hash": "3e64e876026786c9"
+  },
+  "prompt-composer": {
+    "version": "0.41.0",
+    "hash": "278cfa368e786b81"
   },
   "sortable": {
     "version": "0.32.0",

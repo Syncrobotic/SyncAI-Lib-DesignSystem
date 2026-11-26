@@ -342,7 +342,7 @@
           {
             "version": "0.41.0",
             "date": "2026-11-26",
-            "note": "`messageLabels`, `messageMetaLabels`, `messageActionsLabels` for the new conversation parts (message, message-actions): 你, 助理, 重新生成, 送出, 跳到最新 and the rest."
+            "note": "`messageLabels`, `messageMetaLabels`, `messageActionsLabels`, `promptComposerLabels` for the new conversation parts (message, message-actions, prompt-composer): 你, 助理, 重新生成, 送出, 跳到最新 and the rest."
           },
           {
             "version": "0.40.0",
@@ -6506,6 +6506,39 @@
             "version": "0.41.0",
             "date": "2026-11-26",
             "note": "First release: Copy, Regenerate, Good and Bad toggles with a reason, and a version switcher; quiet until hovered or focused, with a mouse only."
+          }
+        ]
+      }
+    },
+    {
+      "name": "prompt-composer",
+      "type": "registry:ui",
+      "title": "Prompt composer",
+      "description": "Where someone writes to a model: a real form whose text box grows to `maxRows`, Enter sends and Shift+Enter adds a line, and Enter during an input method's composition never sends. Files in a tray of Attachment chips (attach, paste or drop), Send that becomes Stop in place while the answer streams, disabled reasons and the character limit in words.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/attachment",
+        "@syncrobotic/button",
+        "@syncrobotic/file-upload",
+        "@syncrobotic/format-number"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/prompt-composer.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.41.0",
+        "changelog": [
+          {
+            "version": "0.41.0",
+            "date": "2026-11-26",
+            "note": "First release: a form that grows, sends on Enter but never mid-composition, takes files, and turns Send into Stop in place."
           }
         ]
       }

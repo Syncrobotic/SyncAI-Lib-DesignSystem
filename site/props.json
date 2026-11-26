@@ -9022,6 +9022,209 @@
    ]
   }
  ],
+ "prompt-composer": [
+  {
+   "name": "PromptComposer",
+   "props": [
+    {
+     "name": "onSubmit",
+     "type": "(text: string, files: File[]) => void | boolean",
+     "required": true,
+     "description": "Called with the trimmed text and the attached files. Return false to keep them in the box (it is cleared otherwise)."
+    },
+    {
+     "name": "onStop",
+     "type": "() => void",
+     "description": "Shows Stop in Send's place while `streaming`. Abort the request in it."
+    },
+    {
+     "name": "streaming",
+     "type": "boolean",
+     "default": "false",
+     "description": "An answer is streaming: Send becomes Stop, and Enter does not send."
+    },
+    {
+     "name": "disabled",
+     "type": "boolean",
+     "default": "false",
+     "description": "Nothing can be sent (offline, no access): say why in `disabledReason`."
+    },
+    {
+     "name": "disabledReason",
+     "type": "string",
+     "description": "Why it is disabled, shown under the box."
+    },
+    {
+     "name": "value",
+     "type": "string",
+     "description": "The text (controlled)."
+    },
+    {
+     "name": "defaultValue",
+     "type": "string",
+     "default": "\"\"",
+     "description": ""
+    },
+    {
+     "name": "onValueChange",
+     "type": "(value: string) => void",
+     "description": ""
+    },
+    {
+     "name": "allowFiles",
+     "type": "boolean",
+     "default": "false",
+     "description": "Shows the attach button and takes pasted and dropped files."
+    },
+    {
+     "name": "defaultFiles",
+     "type": "File[]",
+     "description": "Files in the tray at first: a frame the page attaches for the person."
+    },
+    {
+     "name": "accept",
+     "type": "string",
+     "description": "Same syntax as <input accept>: \"image/*,.pdf\"."
+    },
+    {
+     "name": "maxSize",
+     "type": "number",
+     "description": "Bytes, per file."
+    },
+    {
+     "name": "maxFiles",
+     "type": "number",
+     "description": ""
+    },
+    {
+     "name": "onFilesChange",
+     "type": "(files: File[]) => void",
+     "description": "Called with the files in the tray whenever it changes."
+    },
+    {
+     "name": "onReject",
+     "type": "(rejections: FileRejection[]) => void",
+     "description": "Called with the files refused, by type, size or count. They are also named under the box."
+    },
+    {
+     "name": "maxLength",
+     "type": "number",
+     "description": "A limit on the text, in characters: shows the count, and Send says why it waits once it is passed."
+    },
+    {
+     "name": "maxRows",
+     "type": "number",
+     "default": "8",
+     "description": "How many lines the box grows to before it scrolls. Default 8."
+    },
+    {
+     "name": "toolbar",
+     "type": "ReactNode",
+     "description": "More controls beside the attach button: a model select, a context chip."
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "description": "The text box's name, for the form's data."
+    },
+    {
+     "name": "autoFocus",
+     "type": "boolean",
+     "description": ""
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the counts."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<PromptComposerLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "label",
+       "type": "string",
+       "default": "\"Message\"",
+       "description": "The text box's name."
+      },
+      {
+       "name": "placeholder",
+       "type": "string",
+       "default": "\"Write a message\"",
+       "description": ""
+      },
+      {
+       "name": "send",
+       "type": "string",
+       "default": "\"Send\"",
+       "description": ""
+      },
+      {
+       "name": "stop",
+       "type": "string",
+       "default": "\"Stop generating\"",
+       "description": "Send's name while the answer streams."
+      },
+      {
+       "name": "attach",
+       "type": "string",
+       "default": "\"Attach files\"",
+       "description": ""
+      },
+      {
+       "name": "files",
+       "type": "string",
+       "default": "\"Attached files\"",
+       "description": "The tray's name."
+      },
+      {
+       "name": "keyboard",
+       "type": "string",
+       "default": "\"Enter sends, Shift+Enter starts a new line\"",
+       "description": "Read after the text box's name: how Enter works."
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"Write a message or attach a file to send\"",
+       "description": "Why Send did nothing: nothing written and no file."
+      },
+      {
+       "name": "streaming",
+       "type": "string",
+       "default": "\"Wait for the answer to finish, or stop it\"",
+       "description": "Why Send did nothing while the answer streams."
+      },
+      {
+       "name": "count",
+       "type": "(length: number, max: number, locale: string | undefined) => string",
+       "default": "(length, max, locale) => `${formatCount(length, { locale })} / ${formatCount(max, { locale })}`",
+       "description": "Under the limit: \"120 / 4,000\"."
+      },
+      {
+       "name": "overLimit",
+       "type": "(over: number, max: number, locale: string | undefined) => string",
+       "default": "(over, max, locale) => `${formatCount(over, { locale })} ${over === 1 ? \"character\" : \"characters\"} over the ${formatCount(max, { locale })} limit`",
+       "description": "Over it, with the danger glyph: \"120 characters over the 4,000 limit\"."
+      },
+      {
+       "name": "rejected",
+       "type": "(rejection: FileRejection, locale: string | undefined) => string",
+       "default": "({ file, reason }) => reason === \"type\" ? `${file.name}: not a type this accepts` : reason === \"size\" ? `${file.name}: too large` : `${file.name}: too many files`",
+       "description": "A refused file, by name and reason."
+      },
+      {
+       "name": "attachment",
+       "type": "Partial<AttachmentLabels>",
+       "description": "The chips' words (Remove report.pdf)."
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "questionnaire": [
   {
    "name": "Questionnaire",

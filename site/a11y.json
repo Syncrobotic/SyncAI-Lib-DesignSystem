@@ -1083,6 +1083,18 @@
     "tabStops": 6,
     "live": true
   },
+  "prompt-composer": {
+    "roles": [
+      "button",
+      "combobox",
+      "list",
+      "listitem",
+      "status",
+      "textbox"
+    ],
+    "tabStops": 6,
+    "live": true
+  },
   "sortable": {
     "roles": [
       "button",

@@ -28,6 +28,7 @@ export type StoryFile =
   | "data-grid"
   | "log-viewer"
   | "streaming-text"
+  | "prompt-composer"
   | "message-actions"
   | "message"
   | "sortable"
@@ -286,6 +287,20 @@ const entries: Record<string, Entry> = {
       "Regenerating adds a version: pass `version` and `versions` and switch the shown answer in `onVersionChange`. The switcher's ends stay focusable and say they are the end.",
       "`quiet` (on by default) keeps the buttons out of sight until the turn is hovered or focused, with a mouse only: touch screens and keyboards always see them. Set it false on the latest answer. Feedback that was given and the switcher never hide.",
       "Every button is an icon with its name in `aria-label`; 36 px with a mouse, 44 on touch.",
+    ],
+  },
+  "prompt-composer": {
+    wide: true,
+    group: "Inputs",
+    examples: { file: "prompt-composer", prefix: "PromptComposer" },
+    rules: [
+      "Where someone writes to a model or an agent. It is a real <form>: `onSubmit(text, files)` gets the trimmed text and the attached files; return false to keep the draft (say why beside it).",
+      "Enter sends and Shift+Enter starts a new line. Enter that ends an input method's composition (Zhuyin, Cangjie, Pinyin, kana) only commits the characters: never send on it in your own handlers either (`isComposingEnter`).",
+      "While the answer streams pass `streaming` and `onStop`: Send becomes Stop in the same place and size, with focus kept, and Enter does not send. Abort the request in `onStop`.",
+      "Never a greyed Send without a reason: an empty box, an answer still streaming and a passed `maxLength` are said in words under the box and in Send's description. `disabled` takes `disabledReason` (offline, no access).",
+      "`allowFiles` adds the attach button, paste and drop; `accept`, `maxSize` and `maxFiles` are checked as in file-upload and refused files are named with the reason. The files show as Attachment chips above the text.",
+      "`maxLength` shows the count (\"120 / 4,000\"); past it the box and the count take the danger edge and words, and Send waits. Nothing is cut off.",
+      "Put a model select or a context chip in `toolbar`, beside the attach button. The composer has no fixed positioning: pin it with the page's layout (see the overview).",
     ],
   },
   sortable: {
@@ -1845,6 +1860,12 @@ const keyboard: Record<string, [string, string][]> = {
     ["`Enter` / `Space`", "Run the button; on Good or Bad, press or release it"],
     ["`←` / `→`", "In the reasons, move between them (one Tab stop); `Enter` or `Space` picks one"],
   ],
+  "prompt-composer": [
+    ["`Enter`", "Send (not while an input method is composing; not while the answer streams)"],
+    ["`Shift`+`Enter`", "New line"],
+    ["`Tab`", "From the text to the attach button, the toolbar, then Send (Stop while the answer streams)"],
+    ["`Enter` / `Space`", "On Send or Stop: send, or stop the answer; on a file's ×: remove it, focus back in the text"],
+  ],
   filters: [
     ["`Enter`", "On + Filter, open the picker; on a part of a chip, reopen that step"],
     ["`↑` / `↓`", "Move through fields, operators or values; type to narrow them"],
@@ -1936,6 +1957,7 @@ const captions: Record<string, Record<string, string>> = {
   "status-eyebrow": { StatusInlineInRows: "InlineStatus in rows", StatusEyebrowOverTitle: "StatusEyebrow over a title" },
   "log-viewer": { LogViewerRosout: "/rosout", LogViewerZhTw: "Traditional Chinese (zh-TW)", LogViewerHundredThousand: "100,000 lines" },
   "streaming-text": { StreamingTextZhTw: "Traditional Chinese (zh-TW)" },
+  "prompt-composer": { PromptComposerZhTw: "Traditional Chinese (zh-TW)" },
   "message-actions": { MessageActionsZhTw: "Traditional Chinese (zh-TW)" },
   message: { MessageZhTw: "Traditional Chinese (zh-TW)" },
   calendar: { CalendarMonthYearDropdowns: "Month and year dropdowns" },

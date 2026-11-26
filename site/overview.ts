@@ -639,6 +639,26 @@ export const overviews: Record<string, Overview> = {
       "Every word is in `labels` (`messageActionsLabels` in labels-zh-tw); `locale` formats the version numbers.",
     ],
   },
+  "prompt-composer": {
+    what: "The box where someone writes to a model: it grows with the text, sends on Enter (never mid-composition), holds attached files as chips, and turns Send into Stop while the answer streams.",
+    use: [
+      "The foot of an assistant panel or a side copilot.",
+      "A prompt to a vision model about a camera frame, with the frame attached.",
+      "Any free-text request to an agent that may take files.",
+    ],
+    instead: [
+      "A one-line search: `search-field`.",
+      "A long note on a record, with no sending: `textarea` in a `field`.",
+      "Picking files with no message: `file-upload`.",
+    ],
+    notes: [
+      "Pinning on phones without fixed positioning: make the page a flex column `h-dvh` (the conversation `min-h-0 flex-1` and scrolling, the composer last, with `pb-[env(safe-area-inset-bottom)]` on its wrapper), and add `interactive-widget=resizes-content` to the viewport meta so the on-screen keyboard shrinks the page instead of covering the composer. The text is 16 px, so iOS does not zoom into it.",
+      "Growth: the box is measured on every change, up to `maxRows` lines (8), then it scrolls; no `field-sizing`, which Firefox lacks.",
+      "Send stays focusable when it cannot send (aria-disabled) and its description says why, so a keyboard or screen reader learns the reason where they are; a press shows the reason under the box in a polite region.",
+      "The tray is uncontrolled: `onFilesChange` reports it; it empties on a send that is not refused. Upload progress belongs to your own Attachment rows once sent.",
+      "Every word is in `labels` (`promptComposerLabels` in labels-zh-tw), including the attachment chips' words; `locale` formats the counts.",
+    ],
+  },
   sortable: {
     what: "A reorderable list or grid with a grip on each item, usable with a mouse, a finger or the keyboard.",
     use: ["Waypoint and patrol order.", "Rule priorities.", "Column order, camera layout, playlist steps."],

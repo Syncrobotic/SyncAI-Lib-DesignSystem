@@ -903,6 +903,27 @@ export const messageActionsLabels = {
     `${formatCount(n, { locale: locale ?? "zh-TW" })} / ${formatCount(count, { locale: locale ?? "zh-TW" })}`,
 }
 
+// The box people write to a model in: 訊息 (message), 送出 (send), 附加檔案 (attach files), 注音 and 倉頡 users press
+// Enter to choose characters, which never sends.
+export const promptComposerLabels = {
+  label: "訊息",
+  placeholder: "輸入訊息",
+  send: "送出",
+  stop: "停止生成",
+  attach: "附加檔案",
+  files: "已附加的檔案",
+  keyboard: "按 Enter 送出，Shift+Enter 換行",
+  empty: "請輸入訊息或附加檔案後再送出",
+  streaming: "請等回答完成，或先停止生成",
+  count: (length: number, max: number, locale: string | undefined) =>
+    `${formatCount(length, { locale: locale ?? "zh-TW" })} / ${formatCount(max, { locale: locale ?? "zh-TW" })}`,
+  overLimit: (over: number, max: number, locale: string | undefined) =>
+    `超過 ${formatCount(max, { locale: locale ?? "zh-TW" })} 字上限 ${formatCount(over, { locale: locale ?? "zh-TW" })} 字`,
+  rejected: ({ file, reason }: { file: { name: string }; reason: "type" | "size" | "count" }) =>
+    reason === "type" ? `${file.name}：不支援這種檔案類型` : reason === "size" ? `${file.name}：檔案太大` : `${file.name}：檔案數量超過上限`,
+  attachment: attachmentLabels,
+}
+
 // Every operator the filter bar offers; the types test holds it to the full FilterOperator list, so a new one cannot be
 // left in English.
 const filterOperators = {
