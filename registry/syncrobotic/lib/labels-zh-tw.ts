@@ -1,4 +1,4 @@
-// @syncrobotic/labels-zh-tw v0.44.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
+// @syncrobotic/labels-zh-tw v0.46.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
 // The kit's words in Traditional Chinese as written in Taiwan, one object per component that takes `labels`. Pass each
 // to its component (`<DataGrid labels={dataGridLabels} />`) with `locale="zh-TW"` where the component formats numbers,
 // days or times. The file imports no component (only format-number, which writes its numbers), so it installs on its own;
@@ -112,6 +112,33 @@ export const islandLabels = {
   battery: (percent: number) => `電量 ${percent}%`,
   batteryUnknown: "電量未知",
   notifications: (unread: number) => `通知，${unread} 則未讀`,
+  robotsPanel: "切換機器狗",
+  statusPanel: "裝置狀態",
+  notificationsPanel: "通知",
+}
+
+export const islandRobotsLabels = {
+  current: "目前",
+  attention: "需要處理",
+  battery: (percent: number) => `${percent} %`,
+}
+
+export const islandStatusLabels = {
+  connection: "連線",
+  wifi: "Wi-Fi",
+  bluetooth: "只剩藍牙：緊急停止與狀態仍可使用",
+  offline: "離線",
+  battery: "電量",
+  charging: "充電中",
+  notCharging: "未充電",
+  unknown: "尚未回報",
+  updated: "最後更新",
+}
+
+export const islandNotificationsLabels = {
+  markAllRead: "全部標為已讀",
+  empty: "沒有通知",
+  unread: "未讀",
 }
 
 // ---------- Robot views ----------

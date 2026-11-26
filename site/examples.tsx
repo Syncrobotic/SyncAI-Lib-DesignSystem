@@ -152,7 +152,7 @@ export function Stage({ file, name, className, wide }: { file: StoryFile; name: 
             : // A row of small things (badges, buttons, avatars) shrinks to its content and sits in the middle; an example with a
               // field, a table, a card, a bar or navigation keeps the column's width, so inputs and grids still fill it. The rule
               // has no specificity (:where), so a width the story sets itself (w-md, w-2xl) always wins.
-              "mx-auto w-fit max-w-full min-w-full text-center sm:min-w-sm [&>*]:mx-auto [&>*]:text-start [:where(&>*:not(:has(input,textarea,table,img,video,canvas,nav,[role=combobox],[role=grid],[role=tree],[role=progressbar],[role=meter],[role=slider],[data-slot=card],[data-slot=metric-card],[data-slot=table-container])))]:w-fit"
+              "mx-auto w-fit max-w-full min-w-full text-center sm:min-w-sm [&>*]:mx-auto [&>*]:max-w-full [&>*]:text-start [:where(&>*:not(:has(input,textarea,table,img,video,canvas,nav,[role=combobox],[role=grid],[role=tree],[role=progressbar],[role=meter],[role=slider],[data-slot=card],[data-slot=metric-card],[data-slot=table-container])))]:w-fit"
         }
       >
         {render(file, name)}

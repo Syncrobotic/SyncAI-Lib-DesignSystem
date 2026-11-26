@@ -62,7 +62,7 @@ import type { ThemeChoice } from "@/registry/syncrobotic/ui/theme-toggle"
 import type { TimePickerLabels } from "@/registry/syncrobotic/ui/time-picker"
 import type { TraceLabels } from "@/registry/syncrobotic/ui/trace"
 import type { TreeLabels } from "@/registry/syncrobotic/ui/tree"
-import type { IslandAlarm, IslandLabels } from "@/registry/syncrobotic/shell/island"
+import type { IslandAlarm, IslandLabels, IslandNotificationsLabels, IslandRobotsLabels, IslandStatusLabels } from "@/registry/syncrobotic/shell/island"
 import type { StopButtonLabels } from "@/registry/syncrobotic/shell/stop-button"
 import type { TeleopPadLabels } from "@/registry/syncrobotic/shell/teleop-pad"
 import type { TopBarShellLabels } from "@/registry/syncrobotic/blocks/top-bar-shell"
@@ -86,6 +86,9 @@ it("fits every component's labels type", () => {
   fits<StopButtonLabels>()(zh.stopButtonLabels)
   fits<TeleopPadLabels>()(zh.teleopPadLabels)
   fits<IslandLabels>()(zh.islandLabels)
+  fits<IslandRobotsLabels>()(zh.islandRobotsLabels)
+  fits<IslandStatusLabels>()(zh.islandStatusLabels)
+  fits<IslandNotificationsLabels>()(zh.islandNotificationsLabels)
   fits<CameraFeedLabels>()(zh.cameraFeedLabels)
   fits<CameraWallLabels>()(zh.cameraWallLabels)
   fits<CameraFeedLabels>()(zh.cameraFeedStateLineLabels)
