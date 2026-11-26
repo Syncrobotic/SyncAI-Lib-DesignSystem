@@ -108,8 +108,8 @@
     "hash": "0e814244074765ba"
   },
   "skeleton": {
-    "version": "0.17.3",
-    "hash": "d29fd2d8f1567e8e"
+    "version": "0.40.0",
+    "hash": "6f1de244efb070aa"
   },
   "button": {
     "version": "0.17.1",
@@ -240,8 +240,8 @@
     "hash": "5599e73c521ec230"
   },
   "alarm": {
-    "version": "0.36.0",
-    "hash": "c2621bd7c87a149b"
+    "version": "0.40.0",
+    "hash": "3face12c9a96e70c"
   },
   "toast": {
     "version": "0.32.0",
@@ -252,8 +252,8 @@
     "hash": "c75920e4ae2969af"
   },
   "table": {
-    "version": "0.35.0",
-    "hash": "9f97c5ec5ac5fe3e"
+    "version": "0.40.0",
+    "hash": "0367fada89960798"
   },
   "responsive-table": {
     "version": "0.39.0",
@@ -261,7 +261,7 @@
   },
   "chart": {
     "version": "0.40.0",
-    "hash": "387fe5083ed79fca"
+    "hash": "26cabfc925b26c93"
   },
   "streaming-chart": {
     "version": "0.40.0",
@@ -393,7 +393,7 @@
   },
   "share-bar": {
     "version": "0.40.0",
-    "hash": "a82b0d399c75a224"
+    "hash": "1077e9345c7e3f01"
   },
   "bar-list": {
     "version": "0.40.0",
@@ -641,7 +641,7 @@
   },
   "status-pages": {
     "version": "0.40.0",
-    "hash": "5bd06df01aaafdbc"
+    "hash": "f3df60b316b685d3"
   },
   "agent-skill": {
     "version": "0.40.0",

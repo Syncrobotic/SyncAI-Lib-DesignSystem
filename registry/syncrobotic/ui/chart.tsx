@@ -121,8 +121,6 @@ export function ChartContainer({
  * animate-fade-in, --motion-base) when it mounts. Spread onto Line, Area and Bar: `<Line {...chartMotion} />`.
  */
 export const chartMotion = { isAnimationActive: false } as const
-/** @deprecated Use `chartMotion`; kept so existing code compiles. */
-export const useChartMotion = () => chartMotion
 
 /** The hover layer. Line and area charts get a crosshair (the default cursor); bars a band. */
 export function ChartTooltip(props: React.ComponentProps<typeof Tooltip>) {

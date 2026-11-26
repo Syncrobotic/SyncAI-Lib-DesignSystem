@@ -1,4 +1,4 @@
-// @syncrobotic/alarm v0.36.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
+// @syncrobotic/alarm v0.40.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
 "use client"
 
 import * as React from "react"
@@ -20,8 +20,6 @@ export const alarmPriority = {
   critical: {
     icon: OctagonAlert,
     text: "text-danger",
-    /** Not used by Alarm since 0.22.0 (rows are never tinted); kept for code that reads it. */
-    tint: "bg-danger-subtle",
     bar: "bg-danger",
     border: "border-danger",
     rank: 0,
@@ -29,7 +27,6 @@ export const alarmPriority = {
   high: {
     icon: TriangleAlert,
     text: "text-warning",
-    tint: "bg-warning-subtle",
     bar: "bg-warning",
     border: "border-warning",
     rank: 1,
@@ -37,7 +34,6 @@ export const alarmPriority = {
   low: {
     icon: DiamondAlert,
     text: "text-neutral",
-    tint: "bg-neutral-subtle",
     bar: "bg-neutral",
     border: "border-neutral",
     rank: 2,

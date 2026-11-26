@@ -235,13 +235,13 @@ export function LoadingPage({
         {[l.robotsOnline, l.patrolHours, l.events, l.avgBattery].map((label, i) => (
           <div key={i} className="flex flex-col gap-3 rounded-md bg-card p-4 ring-1 ring-border">
             <span className="text-sm text-muted-foreground">{label}</span>
-            <Bone onCard className="h-(--h-sm) w-20" />
+            <Bone className="h-(--h-sm) w-20" />
           </div>
         ))}
       </div>
       <div className="flex flex-col gap-3 rounded-md bg-card p-4 ring-1 ring-border">
         {Array.from({ length: 5 }, (_, i) => (
-          <Bone key={i} onCard className="h-6 w-full" />
+          <Bone key={i} className="h-6 w-full" />
         ))}
       </div>
     </Root>

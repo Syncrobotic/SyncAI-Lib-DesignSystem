@@ -1177,8 +1177,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Breaking: Bone no longer takes the deprecated `onCard` (it changed nothing)."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -2778,8 +2783,13 @@
         }
       ],
       "meta": {
-        "version": "0.36.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Breaking: `alarmPriority.*.tint` is gone (rows have not been tinted since 0.22)."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -2991,8 +3001,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Breaking: the deprecated `ScrollFades` overlay is gone; put `scrollFadeMask` on the scrolling box."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -3093,7 +3108,7 @@
           {
             "version": "0.40.0",
             "date": "2026-11-26",
-            "note": "chartNumber groups (12,480) through formatNumber, English on the server and in every browser, keeping the true minus sign."
+            "note": "chartNumber groups (12,480) through formatNumber, English on the server and in every browser, keeping the true minus sign. Breaking: the deprecated `useChartMotion` hook is gone; spread `chartMotion`."
           },
           {
             "version": "0.22.1",
@@ -4738,7 +4753,7 @@
           {
             "version": "0.40.0",
             "date": "2026-11-26",
-            "note": "Numbers and shares through formatNumber: English without a locale, so the server and the browser agree (was the runtime's language)."
+            "note": "Numbers and shares through formatNumber: English without a locale, so the server and the browser agree (was the runtime's language). Breaking: a segment's `tone` no longer takes 5 (the baseline grey); 1 to 4 or \"other\"."
           },
           {
             "version": "0.32.0",
@@ -8433,7 +8448,7 @@
           {
             "version": "0.40.0",
             "date": "2026-11-26",
-            "note": "The title is 28 px, the page title's size (was 24)."
+            "note": "The title is 28 px, the page title's size (was 24). The skeleton bones drop the removed `onCard`."
           },
           {
             "version": "0.35.0",

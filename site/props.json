@@ -11025,13 +11025,7 @@
  "skeleton": [
   {
    "name": "Bone",
-   "props": [
-    {
-     "name": "onCard",
-     "type": "boolean",
-     "description": "Deprecated: Bones read on every surface now; kept so older call sites still compile."
-    }
-   ],
+   "props": [],
    "inherits": []
   },
   {
@@ -12156,24 +12150,6 @@
   }
  ],
  "table": [
-  {
-   "name": "ScrollFades",
-   "props": [
-    {
-     "name": "start",
-     "type": "boolean",
-     "required": true,
-     "description": ""
-    },
-    {
-     "name": "end",
-     "type": "boolean",
-     "required": true,
-     "description": ""
-    }
-   ],
-   "inherits": []
-  },
   {
    "name": "Table",
    "props": [],

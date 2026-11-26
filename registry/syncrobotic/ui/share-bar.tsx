@@ -3,16 +3,12 @@ import type * as React from "react"
 import { cn } from "@/lib/utils"
 import { formatNumber } from "@/registry/syncrobotic/lib/format-count"
 
-/**
- * The chart palette: the accent, two graphite steps, then the light grey for "other" (slot 4). Slot 5 is the baseline
- * grey, kept for code that names it.
- */
+/** The chart palette: the accent, two graphite steps, then the light grey for "other" (slot 4). */
 const tones = {
   1: "bg-chart-1",
   2: "bg-chart-2",
   3: "bg-chart-3",
   4: "bg-chart-4",
-  5: "bg-chart-5",
   other: "bg-chart-4",
 } as const
 
