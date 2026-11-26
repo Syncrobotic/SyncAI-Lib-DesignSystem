@@ -28,6 +28,7 @@ export type StoryFile =
   | "data-grid"
   | "log-viewer"
   | "streaming-text"
+  | "markdown"
   | "sortable"
   | "resizable"
   | "file-upload"
@@ -250,13 +251,26 @@ const entries: Record<string, Entry> = {
     examples: { file: "streaming-text", prefix: "StreamingText" },
     rules: [
       "For one answer that a model streams token by token: a VLM's caption, count or answer to a query, an LLM's reply. Numbers over time are `streaming-chart`; lines a program writes are `log-viewer`.",
-      "Append each chunk to one string and pass it as `text` with the `phase`. Plain text only: blank lines start paragraphs, no markdown is parsed.",
+      "Append each chunk to one string and pass it as `text` with the `phase`. Plain text by default (blank lines start paragraphs); `format=\"markdown\"` when the model writes Markdown, so it renders as headings, lists, tables and code while it streams and is read aloud without its syntax.",
       "Set `phase` from the request: \"queued\" with `queuePosition` (1 is next), \"streaming\", then \"done\", \"stopped\" or \"error\" with `error` in words. Stopped and failed keep the partial text and say it is incomplete.",
       "Give `onStop` and abort the request in it, then set \"stopped\". Give `onRetry` for an error. Try again shows only after an error, never after Stop, so a second tap on Stop cannot start a new answer.",
       "Pass `startedAt`, `firstTokenAt` and `finishedAt` (or the server's `durationMs` and `firstTokenMs`): done says \"Done in 2.4 s · first token 0.3 s\". Without them it says Done.",
       "A reasoning part goes in `reasoning`, never into `text`: it streams first, sits apart behind a Reasoning button, closed, and the status says Thinking until the answer starts.",
       "Calm while it waits: grey Spinner and a word, no blinking caret, no blue. Colour only on an error's glyph and word.",
       "Leave `announce` on \"text\": screen readers hear each phase once and the answer in whole sentences, at most every 5 s. \"status\" where the answer is read elsewhere.",
+    ],
+  },
+  markdown: {
+    wide: true,
+    group: "Data display",
+    examples: { file: "markdown", prefix: "Markdown" },
+    rules: [
+      "For text a model wrote in Markdown: an assistant's answer, a summary, a generated report. A streamed answer is StreamingText with `format=\"markdown\"`, which renders through this and reads it aloud; use Markdown alone for an answer that is already whole, or inside your own message layout.",
+      "A safe subset, never HTML: tags show as the text they are, links go only to http(s) and mailto (anything else, a relative path included, is its words), and pictures are a link with their alt text. Name the origins pictures may load from in `imageOrigins`, and only ones you serve or trust.",
+      "Pass the growing text with `streaming` while it arrives, and turn it off at the end: an unclosed ** styles its words, a link shows its words until its URL is whole, and a table waits for its delimiter line, so nothing half-written flashes. Keep `cite` and `labels` stable (a module constant), so finished blocks are not drawn again.",
+      "Headings start at `headingLevel` (h3, under a page's h1 and a section's h2) and never skip a level, whatever the model wrote. Set it from where the answer sits in the page.",
+      "Code fences are the kit's CodeBlock with Copy and the language, without highlighting; tables are the kit's Table and scroll sideways when wider than the column. Links open in a new tab by default and say so to screen readers.",
+      "It never speaks on its own. For citations, pass `cite={citationMarker}` inside `Citations`: [1] and [^1] in the text become markers linked to the sources list.",
     ],
   },
   sortable: {
@@ -1806,6 +1820,11 @@ const keyboard: Record<string, [string, string][]> = {
   "streaming-text": [
     ["`Tab`", "Move to Stop (Cancel while queued), the Reasoning button and Try again after an error"],
     ["`Enter` / `Space`", "Stop, open or close the reasoning, or try again"],
+  ],
+  markdown: [
+    ["`Tab`", "Move through the links, each code block's Copy and scroll box, and each table's scroll box"],
+    ["`←` / `→`", "Scroll a focused code block or table sideways"],
+    ["`Enter`", "Follow a link (a new tab for http(s), said to screen readers)"],
   ],
   filters: [
     ["`Enter`", "On + Filter, open the picker; on a part of a chip, reopen that step"],

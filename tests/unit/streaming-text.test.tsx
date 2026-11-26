@@ -179,3 +179,43 @@ describe("announcements", () => {
     expect(announcer()).toBe("New.")
   })
 })
+
+describe('format="markdown"', () => {
+  const answer = "## Dock\n\nThe **plate** is clear. A `box` sits left.\n\n- Contacts: uncovered.\n\n```bash\nros2 topic echo /dock\n```\n\nDone [1]."
+
+  it("renders the answer with Markdown while it streams, and plain text by default", () => {
+    const { container, rerender } = render(<StreamingText text={answer} phase="streaming" format="markdown" />)
+    expect(container.querySelector("[data-slot=streaming-text-body] [data-slot=markdown] h3")?.textContent).toBe("Dock")
+    expect(container.querySelector("strong")?.textContent).toBe("plate")
+    expect(container.querySelector("[data-slot=code-block]")).toBeTruthy()
+    rerender(<StreamingText text={answer} phase="done" />)
+    expect(container.querySelector("[data-slot=markdown]")).toBeNull()
+    expect(container.textContent).toContain("**plate**")
+  })
+
+  it("holds back what is still forming while streaming", () => {
+    const { container } = render(<StreamingText text={"The **pla"} phase="streaming" format="markdown" />)
+    expect(container.querySelector("[data-slot=streaming-text-body]")?.textContent).toBe("The pla")
+  })
+
+  it("reads the words in sentences, never the syntax", () => {
+    const { rerender } = render(<StreamingText text="" phase="streaming" format="markdown" />)
+    rerender(<StreamingText text={answer.slice(0, 50)} phase="streaming" format="markdown" />)
+    run(5000)
+    expect(announcer()).toBe("Dock\nThe plate is clear.")
+    rerender(<StreamingText text={answer} phase="done" format="markdown" />)
+    run(0)
+    const said = announcer() ?? ""
+    expect(said).toBe("A box sits left.\nContacts: uncovered.\nCode in bash.\nDone [1].")
+    expect(said).not.toMatch(/\*\*|`|```|##/)
+  })
+
+  it("passes markdownProps to Markdown and leaves citations out of the reading", () => {
+    const { rerender } = render(<StreamingText text="" phase="streaming" format="markdown" markdownProps={{ cite: (n) => <sup key={n}>{n}</sup>, headingLevel: 4 }} />)
+    rerender(<StreamingText text={"# Title\n\nClear [1]. More"} phase="streaming" format="markdown" markdownProps={{ cite: (n) => <sup key={n}>{n}</sup>, headingLevel: 4 }} />)
+    expect(document.querySelector("h4")?.textContent).toBe("Title")
+    expect(document.querySelector("sup")?.textContent).toBe("1")
+    run(5000)
+    expect(announcer()).toBe("Title\nClear.")
+  })
+})

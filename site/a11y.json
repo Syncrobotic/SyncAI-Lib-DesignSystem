@@ -1057,9 +1057,34 @@
     "roles": [
       "article",
       "button",
-      "status"
+      "cell",
+      "columnheader",
+      "list",
+      "listitem",
+      "row",
+      "rowgroup",
+      "status",
+      "table"
     ],
     "tabStops": 2,
+    "live": true
+  },
+  "markdown": {
+    "roles": [
+      "button",
+      "cell",
+      "columnheader",
+      "group",
+      "heading",
+      "img",
+      "link",
+      "list",
+      "listitem",
+      "row",
+      "rowgroup",
+      "table"
+    ],
+    "tabStops": 4,
     "live": true
   },
   "sortable": {

@@ -28,6 +28,7 @@ const files = {
   "data-grid": () => import("@/stories/data-grid.stories"),
   "log-viewer": () => import("@/stories/log-viewer.stories"),
   "streaming-text": () => import("@/stories/streaming-text.stories"),
+  markdown: () => import("@/stories/markdown.stories"),
   stepper: () => import("@/stories/stepper.stories"),
   trace: () => import("@/stories/trace.stories"),
   marker: () => import("@/stories/marker.stories"),

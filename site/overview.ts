@@ -579,6 +579,26 @@ export const overviews: Record<string, Overview> = {
       "Every word is in `labels`, including `ago` for time ago and `announce`; `locale` formats times and counts.",
     ],
   },
+  markdown: {
+    what: "A model's answer in Markdown as the kit's own elements: headings at the surface's levels, lists, tables, code blocks with Copy, quotes and links. A safe subset written for the kit, with no dependency and no HTML, that takes a growing text.",
+    use: [
+      "An assistant's answer that is already whole: a saved conversation, a summary on a robot's page.",
+      "A generated report or a model's explanation inside your own message layout.",
+      "Release notes or help text an LLM writes for operators.",
+    ],
+    instead: [
+      "A streamed answer with a status, Stop and reading aloud: `streaming-text` with `format=\"markdown\"`.",
+      "Text written by people with formatting tools: a rich-text editor's own renderer.",
+      "Code alone: `code-block`; a path or a key in a sentence: `code`.",
+    ],
+    notes: [
+      "Supported: ATX headings, paragraphs, *em*, **strong**, ~~strike~~, `code`, fenced code (``` and ~~~), bullet and numbered lists with nesting (two spaces under a number counts), links, <url> and bare http(s) URLs, blockquotes, GFM pipe tables with alignment, rules and line breaks (every line break is one; `breaks={false}` for CommonMark's two spaces). Not supported, shown as text: raw HTML, setext headings, indented code, reference links, footnote definitions, task lists.",
+      "Parsing is linear: no backtracking patterns, code spans find their closers from one index, emphasis uses one stack per character, URLs are bounded, containers nest at most 8 deep and inline styles 24. A 100 KB hostile text parses in milliseconds.",
+      "Incremental: `createMarkdownParser` keeps the finished blocks and parses only the last again when the text grows by appending; finished blocks keep their identity, so React skips them. A 20 KB answer in 200 chunks parses in a few ms in all. A text that changes before its last block starts is parsed again from the start.",
+      "Strong is 500, as the kit writes emphasis in running text; headings are 18, 16 and then 14 px medium, the surface's levels, never bold.",
+      "`parseMarkdown`, `parseInline`, `markdownToText` and `safeHref` are exported, for tests, previews and reading aloud.",
+    ],
+  },
   "streaming-text": {
     what: "A model's answer as it streams in: plain text that grows in place under a calm status row (queue position, Thinking, Generating with Stop) that becomes the final state in the same place: done with its timing, stopped or failed with the partial answer kept.",
     use: [
@@ -590,7 +610,7 @@ export const overviews: Record<string, Overview> = {
       "Numbers arriving over time: `streaming-chart`.",
       "Lines a program writes as it runs: `log-viewer`.",
       "Work with a known end and no text to show yet: `progress` or a Button's `loading`.",
-      "Formatted documents (headings, tables, code): render them with your own markdown renderer once done; this shows plain text.",
+      "Formatted text alone, already whole (a saved answer, a generated report): `markdown`.",
     ],
     notes: [
       "Controlled: the product appends each chunk to `text` and sets `phase`. React batches the renders, and each paragraph is its own element, so only the last one changes while it grows. There is no imperative append: token rates do not need one.",
