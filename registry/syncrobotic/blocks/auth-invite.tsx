@@ -8,6 +8,7 @@ import { Button } from "@/registry/syncrobotic/ui/button"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { IconTile } from "@/registry/syncrobotic/ui/icon-tile"
 import { Input } from "@/registry/syncrobotic/ui/input"
+import { PageHeader } from "@/registry/syncrobotic/ui/page-header"
 
 export type Invitation = {
   from: { name: string; initials: string }
@@ -67,12 +68,7 @@ export function AuthInvite({
             <IconTile variant="muted">
               <Check aria-hidden="true" />
             </IconTile>
-            <div className="flex flex-col gap-1">
-              <h1 className="text-xl font-bold">You have joined {i.site}</h1>
-              <p className="text-sm text-muted-foreground">
-                You are an {i.role}. {i.from.name} can change your role.
-              </p>
-            </div>
+            <PageHeader title={`You have joined ${i.site}`} description={`You are an ${i.role}. ${i.from.name} can change your role.`} className="pb-0" />
             <Button size="lg">Open {product}</Button>
           </div>
         ) : (
@@ -85,14 +81,7 @@ export function AuthInvite({
                 <span className="font-medium text-foreground">{i.from.name}</span> invited you
               </p>
             </div>
-            <div className="flex flex-col gap-1">
-              <h1 className="text-xl font-bold">
-                Join {i.site} as {i.role}
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                In {product}, as {i.email}.
-              </p>
-            </div>
+            <PageHeader title={`Join ${i.site} as ${i.role}`} description={`In ${product}, as ${i.email}.`} className="pb-0" />
             <div className="flex flex-col gap-2 rounded-md bg-card p-4 ring-1 ring-border">
               <span className="text-sm font-medium">As {i.role} you can</span>
               <ul className="flex flex-col gap-2 text-sm text-muted-foreground">

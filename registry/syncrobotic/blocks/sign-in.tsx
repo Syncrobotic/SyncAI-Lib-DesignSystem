@@ -5,6 +5,7 @@ import * as React from "react"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
+import { PageHeader } from "@/registry/syncrobotic/ui/page-header"
 import { Separator } from "@/registry/syncrobotic/ui/separator"
 
 /**
@@ -32,10 +33,7 @@ export function SignIn({ product = "Fleet console", onSignIn }: { product?: stri
   return (
     <main className="flex min-h-[var(--app-shell-height,100dvh)] items-center justify-center bg-background p-4">
       <div className="flex w-full max-w-sm flex-col gap-6">
-        <div className="flex flex-col gap-1">
-          <h1 className="text-xl font-bold">Sign in to {product}</h1>
-          <p className="text-sm text-muted-foreground">Use your SYNCROBOTIC account.</p>
-        </div>
+        <PageHeader title={`Sign in to ${product}`} description="Use your SYNCROBOTIC account." className="pb-0" />
 
         {sent ? (
           <div role="status" className="flex animate-appear flex-col gap-2 rounded-md bg-card p-4 ring-1 ring-border">

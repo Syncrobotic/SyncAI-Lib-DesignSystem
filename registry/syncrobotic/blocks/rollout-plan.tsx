@@ -5,8 +5,8 @@ import * as React from "react"
 import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
+import { ChoiceField, FieldSet } from "@/registry/syncrobotic/ui/choice-field"
 import { Field } from "@/registry/syncrobotic/ui/field"
-import { Label } from "@/registry/syncrobotic/ui/label"
 import { NumberField } from "@/registry/syncrobotic/ui/number-field"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
@@ -137,27 +137,18 @@ export function RolloutPlan() {
           )}
         </section>
 
-        <fieldset className="flex flex-col gap-3">
-          <legend className="pb-2 text-sm font-medium">Safety</legend>
-          <div className="flex items-start gap-3">
-            <Checkbox id="auto-pause" checked={autoPause} onCheckedChange={(v) => setAutoPause(v === true)} aria-describedby="auto-pause-hint" />
-            <div className="flex flex-col gap-1">
-              <Label htmlFor="auto-pause">Pause on its own when a gate fails</Label>
-              <span id="auto-pause-hint" className="text-sm text-muted-foreground">
-                More than 2 failed updates in a stage, a robot stopping within 30 min, or mission success under 95 %.
-              </span>
-            </div>
-          </div>
-          <div className="flex items-start gap-3">
-            <Checkbox id="auto-rollback" checked={rollback} onCheckedChange={(v) => setRollback(v === true)} aria-describedby="auto-rollback-hint" />
-            <div className="flex flex-col gap-1">
-              <Label htmlFor="auto-rollback">Roll failed robots back to their last version</Label>
-              <span id="auto-rollback-hint" className="text-sm text-muted-foreground">
-                Otherwise they stay on their current version and keep working.
-              </span>
-            </div>
-          </div>
-        </fieldset>
+        <FieldSet legend="Safety">
+          <ChoiceField
+            label="Pause on its own when a gate fails"
+            description="More than 2 failed updates in a stage, a robot stopping within 30 min, or mission success under 95 %."
+            control={<Checkbox checked={autoPause} onCheckedChange={(v) => setAutoPause(v === true)} />}
+          />
+          <ChoiceField
+            label="Roll failed robots back to their last version"
+            description="Otherwise they stay on their current version and keep working."
+            control={<Checkbox checked={rollback} onCheckedChange={(v) => setRollback(v === true)} />}
+          />
+        </FieldSet>
 
         <div className="flex flex-col gap-3 border-t border-border pt-4">
           <p className="text-sm">

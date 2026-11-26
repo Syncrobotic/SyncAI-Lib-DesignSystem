@@ -8,8 +8,8 @@ import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
 import { ChoiceField } from "@/registry/syncrobotic/ui/choice-field"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
+import { PageHeader } from "@/registry/syncrobotic/ui/page-header"
 import { InputOTP, InputOTPGroup, InputOTPSlot, REGEXP_ONLY_DIGITS } from "@/registry/syncrobotic/ui/input-otp"
-import { Label } from "@/registry/syncrobotic/ui/label"
 import { Separator } from "@/registry/syncrobotic/ui/separator"
 
 export type TwoFactorMethod = "app" | "recovery"
@@ -146,18 +146,20 @@ export function AuthTwoFactor({
     }
   }
 
-  const errorId = "two-factor-error"
 
   return (
     <main className="flex min-h-[var(--app-shell-height,100dvh)] items-center justify-center bg-background p-4">
       <div className="flex w-full max-w-sm flex-col gap-6">
-        <div className="flex flex-col gap-1">
-          <h1 className="text-xl font-bold">{method === "app" ? "Enter your 2FA code" : "Use a recovery code"}</h1>
-          <p className="text-sm text-muted-foreground">
-            {method === "app" ? `Open your authenticator app and enter the code for ${product}.` : "Each recovery code works once."} Signing in as{" "}
-            <span className="font-medium text-foreground wrap-anywhere">{email}</span>.
-          </p>
-        </div>
+        <PageHeader
+          title={method === "app" ? "Enter your 2FA code" : "Use a recovery code"}
+          description={
+            <>
+              {method === "app" ? `Open your authenticator app and enter the code for ${product}.` : "Each recovery code works once."} Signing in as{" "}
+              <span className="font-medium text-foreground wrap-anywhere">{email}</span>.
+            </>
+          }
+          className="pb-0"
+        />
 
         {done ? (
           <p role="status" className="animate-appear text-sm">
@@ -167,10 +169,8 @@ export function AuthTwoFactor({
           <>
             <form noValidate onSubmit={submit} className="flex flex-col gap-4">
               {method === "app" ? (
-                <div className="flex flex-col gap-2">
-                  <Label htmlFor="two-factor-code">6-digit code</Label>
+                <Field label="6-digit code" error={error}>
                   <InputOTP
-                    id="two-factor-code"
                     ref={field}
                     autoFocus
                     maxLength={6}
@@ -181,8 +181,6 @@ export function AuthTwoFactor({
                       setCode(v)
                       if (!locked) setError(undefined)
                     }}
-                    aria-invalid={error ? true : undefined}
-                    aria-describedby={error ? errorId : undefined}
                     // The six boxes share the column's width, so their edges line up with the button below.
                     containerClassName="w-full"
                   >
@@ -192,8 +190,7 @@ export function AuthTwoFactor({
                       ))}
                     </InputOTPGroup>
                   </InputOTP>
-                  {error && <Problem id={errorId}>{error}</Problem>}
-                </div>
+                </Field>
               ) : (
                 <Field label="Recovery code" hint="One of the 10 codes you saved when you set up 2FA." error={error}>
                   <Input
