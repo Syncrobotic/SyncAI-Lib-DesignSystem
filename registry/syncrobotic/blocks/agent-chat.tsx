@@ -521,7 +521,7 @@ export function AgentChatSheet({
       {/* Beside the page on a wide screen: the page gives up the sheet's width and its 8 px gutter. */}
       <div
         className={cn(
-          "[--copilot-room:calc(28rem+var(--spacing)*2)] motion-safe:transition-[padding] motion-safe:duration-(--motion-sheet)",
+          "[--copilot-room:calc(28rem+var(--spacing)*2)] motion-safe:transition-[padding] motion-safe:duration-(--motion-sheet) motion-safe:ease-(--ease-standard)",
           open && wide && "pr-(--copilot-room)",
         )}
       >
