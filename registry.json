@@ -337,8 +337,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.41.0",
         "changelog": [
+          {
+            "version": "0.41.0",
+            "date": "2026-11-26",
+            "note": "`messageLabels`, `messageMetaLabels`, `messageActionsLabels`, `promptComposerLabels`, `messageScrollerLabels` for the new conversation parts (message, message-actions, prompt-composer, message-scroller): 你, 助理, 重新生成, 送出, 跳到最新 and the rest."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -6441,6 +6446,137 @@
             "version": "0.31.0",
             "date": "2026-11-22",
             "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "message",
+      "type": "registry:ui",
+      "title": "Message",
+      "description": "One turn of a conversation with a model or an agent: a header with the role word (You, Assistant, Tool, System), a name and the time, never a bubble colour; any body (StreamingText, Trace, attachments, markdown); then its actions and a quiet line of facts (model · 2.4 s · 1,204 tokens). Streaming is aria-busy; failed and stopped are a shape and a word.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/format-number",
+        "@syncrobotic/streaming-text"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/message.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.41.0",
+        "changelog": [
+          {
+            "version": "0.41.0",
+            "date": "2026-11-26",
+            "note": "First release: a conversation turn named by its role word, name and time, never a colour; streaming, failed and stopped states; MessageMeta. Words in `labels`."
+          }
+        ]
+      }
+    },
+    {
+      "name": "message-actions",
+      "type": "registry:ui",
+      "title": "Message actions",
+      "description": "The actions under a model's answer: Copy, Regenerate, Good and Bad as toggle buttons (aria-pressed) with an optional reason after Bad, and a ‹ 2 / 3 › switcher for regenerated answers. Quiet until the turn is hovered or focused with a mouse; always shown on touch and to the keyboard.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/chip-group",
+        "@syncrobotic/copy-button",
+        "@syncrobotic/format-number"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/message-actions.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.41.0",
+        "changelog": [
+          {
+            "version": "0.41.0",
+            "date": "2026-11-26",
+            "note": "First release: Copy, Regenerate, Good and Bad toggles with a reason, and a version switcher; quiet until hovered or focused, with a mouse only."
+          }
+        ]
+      }
+    },
+    {
+      "name": "prompt-composer",
+      "type": "registry:ui",
+      "title": "Prompt composer",
+      "description": "Where someone writes to a model: a real form whose text box grows to `maxRows`, Enter sends and Shift+Enter adds a line, and Enter during an input method's composition never sends. Files in a tray of Attachment chips (attach, paste or drop), Send that becomes Stop in place while the answer streams, disabled reasons and the character limit in words.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/attachment",
+        "@syncrobotic/button",
+        "@syncrobotic/file-upload",
+        "@syncrobotic/format-number"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/prompt-composer.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.41.0",
+        "changelog": [
+          {
+            "version": "0.41.0",
+            "date": "2026-11-26",
+            "note": "First release: a form that grows, sends on Enter but never mid-composition, takes files, and turns Send into Stop in place."
+          }
+        ]
+      }
+    },
+    {
+      "name": "message-scroller",
+      "type": "registry:ui",
+      "title": "Message scroller",
+      "description": "A conversation's scrolling viewport (role=\"log\"): follows the newest turn while the reader is at the bottom, lets go when they scroll up, offers Jump to latest with the count of new turns, keeps the view still when older turns load in front, and reads a turn that arrives complete once, never an answer StreamingText already read. No dependencies.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/format-number",
+        "@syncrobotic/use-presence",
+        "@syncrobotic/use-reduced-motion"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/message-scroller.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.41.0",
+        "changelog": [
+          {
+            "version": "0.41.0",
+            "date": "2026-11-26",
+            "note": "First release: follows the newest turn, lets go on a scroll up, Jump to latest with a count, scroll anchoring, reads complete turns once."
           }
         ]
       }

@@ -601,6 +601,84 @@ export const overviews: Record<string, Overview> = {
       "Every word is in `labels` (`streamingTextLabels` in `labels-zh-tw`), including `queued`, `done` and `stopped` as functions; `locale` formats the numbers.",
     ],
   },
+  message: {
+    what: "One turn of a conversation with a model or an agent: who spoke (a role word, a name, the time), what they said, and the turn's actions and facts.",
+    use: [
+      "An operator's assistant: the person's question and the assistant's streamed answer.",
+      "An agent's tool calls shown in the conversation, each a Tool turn with a Trace inside.",
+      "A system note at the start of a conversation: what the assistant may and may not do.",
+    ],
+    instead: [
+      "One answer on its own, with no conversation around it: `streaming-text`.",
+      "An agent run read step by step: `trace`, or the `agent-trace` block.",
+      "Comments people leave on a record: `timeline`.",
+    ],
+    notes: [
+      "An <article> named by `labels.label` (\"Assistant, 14:02\"), so a screen reader's list of articles is the conversation's outline. The role word comes first in the name and in the header.",
+      "The status row is a polite live region that is always present: a turn that fails or is stopped while on screen is said once; turns that mount already failed are not read.",
+      "`align=\"end\"` works through a container query (`@2xl`, 42 rem): message-scroller's list is the container; put `@container` on your own list's parent.",
+      "Every word is in `labels` (`messageLabels` and `messageMetaLabels` in labels-zh-tw); `MessageMeta` takes `locale`.",
+    ],
+  },
+  "message-actions": {
+    what: "The row of actions under a model's answer: copy it, regenerate it, rate it Good or Bad (with a reason), and switch between regenerated versions.",
+    use: [
+      "Every assistant answer in a conversation.",
+      "An answer whose quality feeds an evaluation: Good and Bad with reasons.",
+      "An answer people regenerate until it suits them: the ‹ 2 / 3 › switcher.",
+    ],
+    instead: [
+      "One value to copy beside a label: `copy-button`.",
+      "Actions on a record in a list: `dropdown-menu` (DropdownMenuMoreTrigger).",
+      "A form people fill in about an answer: `questionnaire`.",
+    ],
+    notes: [
+      "Controlled or not: `feedback` and `reason` with their callbacks, or `defaultFeedback` and nothing else; the callbacks fire either way.",
+      "The hidden state is opacity only, inside `(pointer: fine) and (not (any-pointer: coarse))` and only while neither the turn (Message's `group/message`) nor the row is hovered or focused, so the buttons keep their place, stay in the Tab order and show on focus.",
+      "Copy is the kit's CopyButton: it says Copied, or why it could not copy, in a polite region.",
+      "Every word is in `labels` (`messageActionsLabels` in labels-zh-tw); `locale` formats the version numbers.",
+    ],
+  },
+  "prompt-composer": {
+    what: "The box where someone writes to a model: it grows with the text, sends on Enter (never mid-composition), holds attached files as chips, and turns Send into Stop while the answer streams.",
+    use: [
+      "The foot of an assistant panel or a side copilot.",
+      "A prompt to a vision model about a camera frame, with the frame attached.",
+      "Any free-text request to an agent that may take files.",
+    ],
+    instead: [
+      "A one-line search: `search-field`.",
+      "A long note on a record, with no sending: `textarea` in a `field`.",
+      "Picking files with no message: `file-upload`.",
+    ],
+    notes: [
+      "Pinning on phones without fixed positioning: make the page a flex column `h-dvh` (the conversation `min-h-0 flex-1` and scrolling, the composer last, with `pb-[env(safe-area-inset-bottom)]` on its wrapper), and add `interactive-widget=resizes-content` to the viewport meta so the on-screen keyboard shrinks the page instead of covering the composer. The text is 16 px, so iOS does not zoom into it.",
+      "Growth: the box is measured on every change, up to `maxRows` lines (8), then it scrolls; no `field-sizing`, which Firefox lacks.",
+      "Send stays focusable when it cannot send (aria-disabled) and its description says why, so a keyboard or screen reader learns the reason where they are; a press shows the reason under the box in a polite region.",
+      "The tray is uncontrolled: `onFilesChange` reports it; it empties on a send that is not refused. Upload progress belongs to your own Attachment rows once sent.",
+      "Every word is in `labels` (`promptComposerLabels` in labels-zh-tw), including the attachment chips' words; `locale` formats the counts.",
+    ],
+  },
+  "message-scroller": {
+    what: "The viewport of a conversation: it keeps the newest turn in view while an answer streams, lets go when the reader scrolls up, brings them back with Jump to latest, and keeps its place when older turns load.",
+    use: [
+      "The middle of an assistant panel, between its header and the prompt composer.",
+      "A side copilot in a Sheet, in a flex column that ends with the composer.",
+      "Any conversation that grows at the bottom while someone reads further up.",
+    ],
+    instead: [
+      "Lines a program writes as it runs: `log-viewer`.",
+      "A fixed list people scroll without anything arriving: `scroll-area`.",
+      "Events in time order with no conversation: `timeline`.",
+    ],
+    notes: [
+      "No dependencies: following, letting go and scroll anchoring are a scroll listener, a ResizeObserver and a MutationObserver. The browser's own `overflow-anchor` is off on the viewport (Safari has none), so every browser behaves alike.",
+      "At the bottom means within 32 px. Only a move up lets go, so content growing under a following view never stops it.",
+      "Announcements: a turn appended complete is read once (\"Assistant, 14:02: …\", at most 600 characters); one that streamed is read when it ends only if it holds no StreamingText. Turns present at mount, put in front, or with `role=\"user\"` are never read.",
+      "On phones: put it and the prompt composer in a flex column 100dvh tall, the scroller `min-h-0 flex-1`; the on-screen keyboard then shrinks the scroller, not the composer.",
+      "Every word is in `labels` (`messageScrollerLabels` in labels-zh-tw); `locale` formats the count.",
+    ],
+  },
   sortable: {
     what: "A reorderable list or grid with a grip on each item, usable with a mouse, a finger or the keyboard.",
     use: ["Waypoint and patrol order.", "Rule priorities.", "Column order, camera layout, playlist steps."],

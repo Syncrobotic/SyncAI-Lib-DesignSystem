@@ -32,8 +32,8 @@
     "hash": "03904a0793a968e9"
   },
   "labels-zh-tw": {
-    "version": "0.40.0",
-    "hash": "ac32f0528c5bf972"
+    "version": "0.41.0",
+    "hash": "35b618a2d1a861d4"
   },
   "ros": {
     "version": "0.36.0",
@@ -514,6 +514,22 @@
   "streaming-text": {
     "version": "0.40.0",
     "hash": "b0b654584f986b37"
+  },
+  "message": {
+    "version": "0.41.0",
+    "hash": "9ccb9b79d21b06a1"
+  },
+  "message-actions": {
+    "version": "0.41.0",
+    "hash": "3e64e876026786c9"
+  },
+  "prompt-composer": {
+    "version": "0.41.0",
+    "hash": "278cfa368e786b81"
+  },
+  "message-scroller": {
+    "version": "0.41.0",
+    "hash": "13aade848a528ad4"
   },
   "sortable": {
     "version": "0.32.0",

@@ -1062,6 +1062,52 @@
     "tabStops": 2,
     "live": true
   },
+  "message": {
+    "roles": [
+      "article",
+      "button",
+      "list",
+      "listitem",
+      "status"
+    ],
+    "tabStops": 1,
+    "live": true
+  },
+  "message-actions": {
+    "roles": [
+      "button",
+      "group",
+      "radio",
+      "radiogroup"
+    ],
+    "tabStops": 6,
+    "live": true
+  },
+  "prompt-composer": {
+    "roles": [
+      "button",
+      "combobox",
+      "list",
+      "listitem",
+      "status",
+      "textbox"
+    ],
+    "tabStops": 6,
+    "live": true
+  },
+  "message-scroller": {
+    "roles": [
+      "article",
+      "button",
+      "group",
+      "list",
+      "listitem",
+      "log",
+      "status"
+    ],
+    "tabStops": 9,
+    "live": true
+  },
   "sortable": {
     "roles": [
       "button",
