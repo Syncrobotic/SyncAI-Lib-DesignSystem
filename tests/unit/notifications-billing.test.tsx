@@ -156,7 +156,7 @@ describe("settings billing", () => {
 
     // ResponsiveTable renders its table and its phone list until it has measured itself (jsdom never does): count one.
     const table = screen.getByRole("table", { name: "Invoices" })
-    expect(within(table).getAllByRole("link", { name: /Download invoice INV-2026-\d+ \(PDF\)/ })).toHaveLength(sampleBilling.invoices.length)
+    expect(within(table).getAllByRole("link", { name: /^Download invoice INV-2026-\d+, PDF$/ })).toHaveLength(sampleBilling.invoices.length)
   })
 
   it("cancels the plan only after confirming", async () => {
