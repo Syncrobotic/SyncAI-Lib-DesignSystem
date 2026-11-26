@@ -2466,8 +2466,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Breaking: the `success` tone is gone (it drew neutral); a finished bar is `tone=\"neutral\"`."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -4362,8 +4367,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Breaking: the `info` and `success` tones are gone (they drew neutral); a calm tile is `neutral`, so they are type errors now."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -8540,7 +8550,7 @@
           {
             "version": "0.40.0",
             "date": "2026-11-26",
-            "note": "Design language: narrowing a list by one attribute is a SegmentedControl when two to four choices cover the list and one is always on, and a ChipGroup when the choice can be cleared, several can be on or there are more than four. The number rule names formatNumber for any number that is not a count and bans toLocaleString(); a header's one status is PageHeader's `status` (InlineStatus) and its badges `badges`; checklist line 16: a state is an InlineStatus, never a tinted badge or a toned MetaPill. A count is a CountBadge, and neither a Badge nor a MetaPill has a status tone. Imports @syncrobotic/format-number (renamed from format-count)."
+            "note": "Design language: narrowing a list by one attribute is a SegmentedControl when two to four choices cover the list and one is always on, and a ChipGroup when the choice can be cleared, several can be on or there are more than four. The number rule names formatNumber for any number that is not a count and bans toLocaleString(); a header's one status is PageHeader's `status` (InlineStatus) and its badges `badges`; checklist line 16: a state is an InlineStatus, never a tinted badge or a toned MetaPill. A count is a CountBadge, and neither a Badge nor a MetaPill has a status tone. Imports @syncrobotic/format-number (renamed from format-count). A finished Progress is `neutral` and an IconTile has no info or success tone."
           },
           {
             "version": "0.39.0",

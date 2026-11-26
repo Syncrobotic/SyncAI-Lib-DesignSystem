@@ -212,8 +212,8 @@
     "hash": "7b4d8675eed8b3b3"
   },
   "progress": {
-    "version": "0.17.3",
-    "hash": "a948d6a3a61eb91c"
+    "version": "0.40.0",
+    "hash": "855448b7511dc7d5"
   },
   "description-list": {
     "version": "0.28.0",
@@ -352,8 +352,8 @@
     "hash": "1fe4d62e4ca5c0b6"
   },
   "icon-tile": {
-    "version": "0.28.0",
-    "hash": "01cb225fbc79551e"
+    "version": "0.40.0",
+    "hash": "e0694509d0bade35"
   },
   "kbd": {
     "version": "0.31.0",
@@ -645,7 +645,7 @@
   },
   "agent-skill": {
     "version": "0.40.0",
-    "hash": "ccfa9950866c8707"
+    "hash": "eb0b92002aad524a"
   },
   "line-chart-telemetry": {
     "version": "0.35.0",

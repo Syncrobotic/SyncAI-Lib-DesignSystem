@@ -348,7 +348,7 @@ const entries: Record<string, Entry> = {
     examples: { file: "icon-tile", prefix: "IconTile" },
     rules: [
       "Neutral by default. A tone only when the tile states a status.",
-      "Tones info and success render neutral: a tile stays on screen, so it is a state, and a state is grey. Only warning and danger colour it.",
+      "Tones are neutral, warning and danger: a tile stays on screen, so it is a state, and a calm state is grey. There is no info or success tone (removed in 0.40).",
       "Never solid red: a solid danger tile stays on its tint, since solid red belongs to the emergency stop.",
       "Icons inside are 16, 20 or 24 px; the size prop sets them.",
       "Every icon on a tile is an IconTile (an empty state, a status page, a confirmation, a menu card, a row's media): never a hand-made square, whose size and corner drift. sm 32 px with an 8 px corner, md 40 and lg 48 with 12, xl 64 with 16.",
@@ -711,7 +711,7 @@ const entries: Record<string, Entry> = {
     examples: { file: "display", prefix: "Progress" },
     rules: [
       "Blue: a process someone is waiting on, with an end. A level that stays (battery, storage, signal) is a Meter, not a Progress.",
-      "Success is neutral: a finished bar stays grey. Green is a confirmation that comes and goes (a toast), not a state.",
+      "A finished bar is `tone=\"neutral\"`, grey; there is no success tone (removed in 0.40). Green is a confirmation that comes and goes (a toast), not a state.",
     ],
   },
   spinner: {

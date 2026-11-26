@@ -6087,7 +6087,7 @@
     },
     {
      "name": "tone",
-     "type": "\"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
+     "type": "\"neutral\" | \"warning\" | \"danger\"",
      "default": "\"neutral\"",
      "description": ""
     },
@@ -8681,7 +8681,7 @@
    "props": [
     {
      "name": "tone",
-     "type": "\"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
+     "type": "\"neutral\" | \"info\" | \"warning\" | \"danger\"",
      "default": "\"info\"",
      "description": ""
     }

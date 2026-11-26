@@ -1,4 +1,4 @@
-// @syncrobotic/icon-tile v0.28.0 · update: npx shadcn add @syncrobotic/icon-tile --overwrite
+// @syncrobotic/icon-tile v0.40.0 · update: npx shadcn add @syncrobotic/icon-tile --overwrite
 import * as React from "react"
 import { Slot } from "radix-ui"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -18,7 +18,9 @@ export const iconTileVariants = cva("relative inline-flex shrink-0 items-center 
       soft: "",
       solid: "",
     },
-    tone: { neutral: "", info: "", success: "", warning: "", danger: "" },
+    // No info or success: a tile holds a state, and calm states are grey (neutral). Blue is for a process someone is
+    // waiting on (a progress bar), green for a confirmation that comes and goes (a toast).
+    tone: { neutral: "", warning: "", danger: "" },
     size: {
       sm: "size-8 rounded-xs [&_svg]:size-4",
       md: "size-10 rounded-sm [&_svg]:size-5",
@@ -29,15 +31,9 @@ export const iconTileVariants = cva("relative inline-flex shrink-0 items-center 
   },
   compoundVariants: [
     { variant: "soft", tone: "neutral", class: "bg-neutral-subtle text-neutral" },
-    // info and success stay calm (neutral) on a tile that stays on screen: blue is for a process someone is waiting on (a
-    // progress bar, a running stage), green for confirmations that come and go. Neither is a state a tile can hold.
-    { variant: "soft", tone: "info", class: "bg-neutral-subtle text-neutral" },
-    { variant: "soft", tone: "success", class: "bg-neutral-subtle text-neutral" },
     { variant: "soft", tone: "warning", class: "bg-warning-subtle text-warning" },
     { variant: "soft", tone: "danger", class: "bg-danger-subtle text-danger" },
     { variant: "solid", tone: "neutral", class: "bg-primary text-primary-foreground" },
-    { variant: "solid", tone: "info", class: "bg-primary text-primary-foreground" },
-    { variant: "solid", tone: "success", class: "bg-primary text-primary-foreground" },
     // The ink flips with the mode (white on light amber-brown, near-black on dark yellow): 4.5:1 or more in every theme.
     { variant: "solid", tone: "warning", class: "bg-warning text-primary-foreground" },
     // Solid red is the emergency stop's alone, so a solid danger tile stays on its tint with a danger edge.
