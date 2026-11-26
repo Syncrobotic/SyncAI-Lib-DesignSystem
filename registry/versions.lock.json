@@ -32,8 +32,8 @@
     "hash": "03904a0793a968e9"
   },
   "labels-zh-tw": {
-    "version": "0.44.0",
-    "hash": "1f719f4dd1a9b2af"
+    "version": "0.46.0",
+    "hash": "a8bc15a90decbfa7"
   },
   "ros": {
     "version": "0.45.1",
@@ -100,8 +100,8 @@
     "hash": "5c32f3757b3dfa99"
   },
   "island": {
-    "version": "0.40.0",
-    "hash": "5a1a4452a88537e2"
+    "version": "0.46.0",
+    "hash": "637412ceaf7eede0"
   },
   "list": {
     "version": "0.40.0",
@@ -750,6 +750,10 @@
   "app-shell-mobile-tabs": {
     "version": "0.40.0",
     "hash": "b983367d6656634b"
+  },
+  "app-shell-control": {
+    "version": "0.46.0",
+    "hash": "939c3b78c9803e29"
   },
   "stats-meters": {
     "version": "0.40.0",

@@ -40,6 +40,7 @@ import { RadialChartCapacity } from "@/registry/syncrobotic/blocks/radial-chart-
 import { HeatmapWeekHours } from "@/registry/syncrobotic/blocks/heatmap-week-hours"
 import { HeatmapZones } from "@/registry/syncrobotic/blocks/heatmap-zones"
 import { AppShellMobileTabs } from "@/registry/syncrobotic/blocks/app-shell-mobile-tabs"
+import { AppShellControl } from "@/registry/syncrobotic/blocks/app-shell-control"
 import { StatsMeters } from "@/registry/syncrobotic/blocks/stats-meters"
 import { StatsFiltered } from "@/registry/syncrobotic/blocks/stats-filtered"
 import { CardSite } from "@/registry/syncrobotic/blocks/card-site"
@@ -263,6 +264,7 @@ export const blockRenders: Record<string, () => React.ReactNode> = {
   "agent-run-outcome": () => <AgentRunOutcome />,
   "agent-tool-permissions": () => <AgentToolPermissions />,
   "app-shell-mobile-tabs": () => <AppShellMobileTabs />,
+  "app-shell-control": () => <AppShellControl />,
   "stats-meters": () => (
       <div className="p-6">
         <StatsMeters />

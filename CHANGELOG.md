@@ -2,6 +2,28 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.46.0 · 2026-11-26
+
+The dynamic island, finished: every zone opens its panel, and the phone control app it belongs to, assembled.
+
+### Added
+- **`island` 0.46.0:** each zone opens its own panel, passed as `panels`.
+  - `IslandRobots` under the name: the robots this phone controls, to switch to another. The current one is ticked; one that needs attention carries the island's triangle.
+  - `IslandStatus` under the device status: the connection (Wi-Fi, Bluetooth only with what still works, offline), the battery as a Meter that warns below 15 % and never turns danger (an unknown battery is said, not made up), charging, and the last report.
+  - `IslandNotifications` under the bell: newest first, unread ones in bold with a dot, a row that opens what it is about, Mark all read, and an empty state.
+
+  The open panel shows under any notice or alarm, which stay in view, on an opaque island so the page never shows through its rows. Esc, or a tap outside the island, closes it and gives focus back to its zone; each zone names its panel (`aria-controls`, a labelled region). `open` is optional now (`defaultOpen`), so the island opens its zones by itself. Six new examples, one per panel and state, and one where all three work.
+- **`app-shell-control` 0.46.0 (new block):** the phone app that controls one robot, assembled.
+  - **Top:** the island, with its three panels.
+  - **Middle:** the page, which starts under the island's measured height, so a stop notice never covers it.
+  - **Bottom:** the dock, with the emergency stop in thumb reach, then the tabs.
+
+  A stop turns the island's edge danger with a notice that stays, and the dock offers Slide to release. It is the island's page in the docs; the fleet console's phone layout stays `app-shell-mobile-tabs`, as a fleet has no single name, status or battery to put in an island.
+- **`labels-zh-tw` 0.46.0:** the island's panels.
+
+### Fixed
+- **Docs examples:** an example wider than a phone's frame could run past it (the island at 390 px, its bell cut off). The frame keeps every example inside it now, and the island's examples are as wide as the frame, as on a phone.
+
 ## 0.45.1 · 2026-11-26
 
 Timers that outlived their page, found and kept from coming back.

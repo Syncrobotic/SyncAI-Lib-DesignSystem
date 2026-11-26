@@ -6489,13 +6489,23 @@
     {
      "name": "open",
      "type": "\"name\" | \"status\" | \"bell\" | null",
+     "description": "Which zone is expanded, controlled. Leave it out and the island keeps it itself (`defaultOpen`)."
+    },
+    {
+     "name": "defaultOpen",
+     "type": "\"name\" | \"status\" | \"bell\" | null",
      "default": "null",
-     "description": "Which zone is expanded. Each zone has its own panel."
+     "description": ""
     },
     {
      "name": "onOpenChange",
      "type": "(zone: Zone | null) => void",
      "description": ""
+    },
+    {
+     "name": "panels",
+     "type": "Partial<Record<IslandZone, ReactNode>>",
+     "description": "What each zone opens: IslandRobots under the name, IslandStatus under the device status, IslandNotifications under the bell. The open zone's panel shows under any notice or alarm, which stay in view. Esc, or a tap outside the island, closes it and focus goes back to the zone."
     },
     {
      "name": "edge",
@@ -6557,6 +6567,24 @@
        "name": "notifications",
        "type": "(unread: number) => string",
        "default": "(unread) => `Notifications, ${unread} unread`",
+       "description": ""
+      },
+      {
+       "name": "robotsPanel",
+       "type": "string",
+       "default": "\"Switch robot\"",
+       "description": "The open panels' names, read when one opens."
+      },
+      {
+       "name": "statusPanel",
+       "type": "string",
+       "default": "\"Device status\"",
+       "description": ""
+      },
+      {
+       "name": "notificationsPanel",
+       "type": "string",
+       "default": "\"Notifications\"",
        "description": ""
       }
      ]
@@ -6733,6 +6761,188 @@
      "type": "boolean",
      "default": "true",
      "description": "Buzz and sound for a new critical or high alarm, and repeat critical until acknowledged. On by default: on a phone the island is the alarm surface. Turn off if an AlarmList on the same screen already signals."
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "IslandRobots",
+   "props": [
+    {
+     "name": "robots",
+     "type": "readonly IslandRobot[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "current",
+     "type": "string",
+     "description": "The id of the robot the island shows now."
+    },
+    {
+     "name": "onSelect",
+     "type": "(id: string) => void",
+     "description": ""
+    },
+    {
+     "name": "labels",
+     "type": "Partial<IslandRobotsLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "current",
+       "type": "string",
+       "default": "\"current\"",
+       "description": ""
+      },
+      {
+       "name": "attention",
+       "type": "string",
+       "default": "\"needs attention\"",
+       "description": ""
+      },
+      {
+       "name": "battery",
+       "type": "(percent: number) => string",
+       "default": "(n) => `${n} %`",
+       "description": ""
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "IslandStatus",
+   "props": [
+    {
+     "name": "link",
+     "type": "\"offline\" | \"wifi\" | \"bluetooth\"",
+     "default": "\"wifi\"",
+     "description": "How the phone reaches the robot."
+    },
+    {
+     "name": "battery",
+     "type": "number",
+     "description": ""
+    },
+    {
+     "name": "charging",
+     "type": "boolean",
+     "description": ""
+    },
+    {
+     "name": "updated",
+     "type": "string",
+     "description": "When the robot last reported (\"14:02:31\", \"2 min ago\")."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<IslandStatusLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "connection",
+       "type": "string",
+       "default": "\"Connection\"",
+       "description": ""
+      },
+      {
+       "name": "wifi",
+       "type": "string",
+       "default": "\"Wi-Fi\"",
+       "description": ""
+      },
+      {
+       "name": "bluetooth",
+       "type": "string",
+       "default": "\"Bluetooth only: emergency stop and status still work\"",
+       "description": ""
+      },
+      {
+       "name": "offline",
+       "type": "string",
+       "default": "\"Offline\"",
+       "description": ""
+      },
+      {
+       "name": "battery",
+       "type": "string",
+       "default": "\"Battery\"",
+       "description": ""
+      },
+      {
+       "name": "charging",
+       "type": "string",
+       "default": "\"Charging\"",
+       "description": ""
+      },
+      {
+       "name": "notCharging",
+       "type": "string",
+       "default": "\"Not charging\"",
+       "description": ""
+      },
+      {
+       "name": "unknown",
+       "type": "string",
+       "default": "\"Not reported yet\"",
+       "description": ""
+      },
+      {
+       "name": "updated",
+       "type": "string",
+       "default": "\"Last update\"",
+       "description": ""
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "IslandNotifications",
+   "props": [
+    {
+     "name": "items",
+     "type": "readonly IslandNotification[]",
+     "required": true,
+     "description": ""
+    },
+    {
+     "name": "onOpen",
+     "type": "(id: string) => void",
+     "description": ""
+    },
+    {
+     "name": "onMarkAllRead",
+     "type": "() => void",
+     "description": ""
+    },
+    {
+     "name": "labels",
+     "type": "Partial<IslandNotificationsLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "markAllRead",
+       "type": "string",
+       "default": "\"Mark all read\"",
+       "description": ""
+      },
+      {
+       "name": "empty",
+       "type": "string",
+       "default": "\"No notifications\"",
+       "description": ""
+      },
+      {
+       "name": "unread",
+       "type": "string",
+       "default": "\"unread\"",
+       "description": ""
+      }
+     ]
     }
    ],
    "inherits": []
@@ -12463,6 +12673,12 @@
        "description": ""
       },
       {
+       "name": "bluetooth",
+       "type": "string",
+       "default": "\"Emergency stop · Bluetooth\"",
+       "description": ""
+      },
+      {
        "name": "sending",
        "type": "string",
        "default": "\"Sending…\"",
@@ -12472,12 +12688,6 @@
        "name": "unconfirmed",
        "type": "string",
        "default": "\"Not confirmed, press again\"",
-       "description": ""
-      },
-      {
-       "name": "bluetooth",
-       "type": "string",
-       "default": "\"Emergency stop · Bluetooth\"",
        "description": ""
       },
       {
