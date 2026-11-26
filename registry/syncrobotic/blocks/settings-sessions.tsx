@@ -19,6 +19,8 @@ import { Badge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Card } from "@/registry/syncrobotic/ui/card"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
+import { Item, ItemActions, ItemContent, ItemGroup, ItemMedia, ItemTitle } from "@/registry/syncrobotic/ui/item"
+import { SectionHeader } from "@/registry/syncrobotic/ui/section-header"
 
 export type BrowserSession = {
   id: string
@@ -64,18 +66,11 @@ function Parts({ items }: { items: string[] }) {
   )
 }
 
+// A row of a list on a card: the card's 16 px inside, a hairline between rows; it wraps its button under a long name.
+const row = "flex-wrap rounded-none border-b border-border px-4 last:border-b-0"
+
 function Heading({ id, title, children, action }: { id: string; title: string; children: React.ReactNode; action?: React.ReactNode }) {
-  return (
-    <div className="flex flex-wrap items-start justify-between gap-3">
-      <div className="flex flex-col gap-1">
-        <h2 id={id} className="text-lg font-bold">
-          {title}
-        </h2>
-        <p className="text-sm text-muted-foreground">{children}</p>
-      </div>
-      {action}
-    </div>
-  )
+  return <SectionHeader id={id} title={title} description={children} actions={action} />
 }
 
 /**
@@ -195,28 +190,32 @@ export function SettingsSessions({
         </Heading>
         {body(
           <Card className="gap-0 p-0">
-            <ul aria-label="Signed-in browsers">
+            <ItemGroup aria-label="Signed-in browsers" className="gap-0">
               {sessions.map((s) => {
                 const Icon = icons[s.form]
                 return (
-                  <li key={s.id} className="flex flex-wrap items-center gap-2 border-b border-border px-4 py-3 last:border-b-0">
-                    <Icon aria-hidden="true" className="size-5 shrink-0 text-muted-foreground" />
-                    <span className="flex min-w-0 flex-1 flex-col">
-                      <span className="flex flex-wrap items-center gap-2 text-sm font-medium">
-                        {s.browser}
+                  <Item key={s.id} role="listitem" className={row}>
+                    <ItemMedia variant="plain">
+                      <Icon aria-hidden="true" className="size-5 text-muted-foreground" />
+                    </ItemMedia>
+                    <ItemContent className="gap-0">
+                      <ItemTitle className="flex-wrap">
+                        <span>{s.browser}</span>
                         {s.current && <Badge>This browser</Badge>}
-                      </span>
+                      </ItemTitle>
                       <Parts items={[`Near ${s.location}`, s.lastActive]} />
-                    </span>
+                    </ItemContent>
                     {!s.current && (
-                      <Button variant="outline" size="sm" aria-label={`Sign out ${s.browser}, ${s.location}`} onClick={() => signOut(s)}>
-                        Sign out
-                      </Button>
+                      <ItemActions>
+                        <Button variant="outline" size="sm" aria-label={`Sign out ${s.browser}, ${s.location}`} onClick={() => signOut(s)}>
+                          Sign out
+                        </Button>
+                      </ItemActions>
                     )}
-                  </li>
+                  </Item>
                 )
               })}
-            </ul>
+            </ItemGroup>
             {others.length === 0 && <p className="border-t border-border px-4 py-3 text-sm text-muted-foreground">No other browsers are signed in.</p>}
           </Card>,
         )}
@@ -233,30 +232,32 @@ export function SettingsSessions({
             </Card>
           ) : (
             <Card className="gap-0 p-0">
-              <ul aria-label="Remembered browsers">
+              <ItemGroup aria-label="Remembered browsers" className="gap-0">
                 {trusted.map((t) => (
-                  <li key={t.id} className="flex flex-wrap items-center gap-3 border-b border-border px-4 py-3 last:border-b-0">
-                    <span className="flex min-w-0 flex-1 flex-col">
-                      <span className="flex flex-wrap items-center gap-2 text-sm font-medium">
-                        {t.browser}
+                  <Item key={t.id} role="listitem" className={row}>
+                    <ItemContent className="gap-0">
+                      <ItemTitle className="flex-wrap">
+                        <span>{t.browser}</span>
                         {t.current && <Badge>This browser</Badge>}
-                      </span>
+                      </ItemTitle>
                       <Parts items={[`Remembered on ${t.since}`, `until ${t.until}`]} />
-                    </span>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      aria-label={`Forget ${t.browser}`}
-                      onClick={() => {
-                        setTrusted((all) => all.filter((x) => x.id !== t.id))
-                        setSaid(`${t.browser} will ask for a code at its next sign-in.`)
-                      }}
-                    >
-                      Forget
-                    </Button>
-                  </li>
+                    </ItemContent>
+                    <ItemActions>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        aria-label={`Forget ${t.browser}`}
+                        onClick={() => {
+                          setTrusted((all) => all.filter((x) => x.id !== t.id))
+                          setSaid(`${t.browser} will ask for a code at its next sign-in.`)
+                        }}
+                      >
+                        Forget
+                      </Button>
+                    </ItemActions>
+                  </Item>
                 ))}
-              </ul>
+              </ItemGroup>
             </Card>
           ),
         )}

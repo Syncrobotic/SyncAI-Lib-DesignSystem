@@ -5,6 +5,7 @@ import * as React from "react"
 import { Lock } from "lucide-react"
 import { Card } from "@/registry/syncrobotic/ui/card"
 import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
+import { SectionHeader } from "@/registry/syncrobotic/ui/section-header"
 import { Switch } from "@/registry/syncrobotic/ui/switch"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
 
@@ -48,12 +49,7 @@ export function SettingsNotifications() {
   return (
     <div className="flex flex-col gap-6">
       <section aria-labelledby="notify-title" className="flex flex-col gap-3">
-        <div className="flex flex-col gap-1">
-          <h2 id="notify-title" className="text-lg font-bold">
-            Notifications
-          </h2>
-          <p className="text-sm text-muted-foreground">Changes save as you make them.</p>
-        </div>
+        <SectionHeader id="notify-title" title="Notifications" description="Changes save as you make them." />
         <Card className="gap-0 p-0">
           <Table>
             <TableHeader>

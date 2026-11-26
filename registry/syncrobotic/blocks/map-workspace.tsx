@@ -16,7 +16,9 @@ import { Tray } from "@/registry/syncrobotic/shell/tray"
 import { type AlarmData } from "@/registry/syncrobotic/ui/alarm"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { RobotMap, RobotMapList, type RobotMapRobot, type RobotMapZone } from "@/registry/syncrobotic/ui/robot-map"
+import { SectionHeader } from "@/registry/syncrobotic/ui/section-header"
 import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/registry/syncrobotic/ui/sheet"
+import { ViewportOverlay } from "@/registry/syncrobotic/ui/viewport-overlay"
 
 type MapRobot = { id: string; x: number; y: number; tone: Status; status: string; battery: number; route?: [number, number][] }
 
@@ -127,13 +129,10 @@ export function MapWorkspace() {
         corners: the robot top left, the alarm top right, or under the robot when the two do not fit side by side.
       */}
       <div className="flex h-full min-h-96 flex-col gap-4 overflow-hidden bg-map sm:relative sm:block">
-        <div className="pointer-events-none z-10 m-4 mb-0 flex shrink-0 flex-col gap-2 sm:absolute sm:inset-x-4 sm:top-4 sm:m-0 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
+        <ViewportOverlay position="top" className="z-10 shrink-0 max-sm:static max-sm:m-4 max-sm:mb-0 max-sm:items-stretch sm:flex-row sm:flex-wrap sm:justify-between">
           <Tray className="pointer-events-auto shrink-0 sm:w-72">
             <div className="flex flex-col gap-3 rounded-md bg-card p-4">
-              <div className="flex items-center justify-between gap-2">
-                <h2 className="font-bold">Patrol dog {robot.id}</h2>
-                <InlineStatus status={robot.tone}>{robot.status}</InlineStatus>
-              </div>
+              <SectionHeader variant="surface" as="h2" title={`Patrol dog ${robot.id}`} actions={<InlineStatus status={robot.tone}>{robot.status}</InlineStatus>} />
               <Meter value={robot.battery} low={15} label="Battery" />
               <div className="flex gap-2">
                 <Button variant="secondary" size="sm">
@@ -157,7 +156,7 @@ export function MapWorkspace() {
           <Tray className="pointer-events-auto hidden min-w-0 has-[[role=group]]:flex sm:w-72 lg:w-96">
             <IslandAlarm alarms={list} onAcknowledge={(id) => setList((l) => l.map((a) => (a.id === id ? { ...a, acknowledged: true } : a)))} />
           </Tray>
-        </div>
+        </ViewportOverlay>
 
         {/* On phones the map gives way: the tray and the stop keep their size, so the stop is on screen on any phone. */}
         <div className="relative min-h-0 flex-1 sm:absolute sm:inset-0">
@@ -174,24 +173,27 @@ export function MapWorkspace() {
           />
         </div>
 
-        <div className="z-10 m-4 mt-0 shrink-0 sm:absolute sm:right-4 sm:bottom-4 sm:m-0 sm:w-72">
-          {stop === "stopped" ? (
-            <SlideToRelease tag={robot.id} onRelease={() => window.setTimeout(() => setStop("ready"), 500)} />
-          ) : (
-            <StopButton
-              state={stop}
-              tag={robot.id}
-              onStop={() => {
-                setStop("sending")
-                // The robot confirms: the app says so to the hand, then offers release.
-                window.setTimeout(() => {
-                  feedback("stopConfirmed")
-                  setStop("stopped")
-                }, 800)
-              }}
-            />
-          )}
-        </div>
+        {/* The stop takes the bottom right, the corner the other chrome keeps clear for it; on a phone it sits under the map. */}
+        <ViewportOverlay position="bottom-right" className="z-10 shrink-0 max-sm:static max-sm:m-4 max-sm:mt-0">
+          <div className="pointer-events-auto w-full sm:w-72">
+            {stop === "stopped" ? (
+              <SlideToRelease tag={robot.id} onRelease={() => window.setTimeout(() => setStop("ready"), 500)} />
+            ) : (
+              <StopButton
+                state={stop}
+                tag={robot.id}
+                onStop={() => {
+                  setStop("sending")
+                  // The robot confirms: the app says so to the hand, then offers release.
+                  window.setTimeout(() => {
+                    feedback("stopConfirmed")
+                    setStop("stopped")
+                  }, 800)
+                }}
+              />
+            )}
+          </div>
+        </ViewportOverlay>
       </div>
     </AppShell>
   )

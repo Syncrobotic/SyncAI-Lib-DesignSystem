@@ -3,13 +3,13 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { UserPlus } from "lucide-react"
+import { UserPlus, Users } from "lucide-react"
 import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"
-import { Badge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/registry/syncrobotic/ui/dialog"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuMoreTrigger, DropdownMenuSeparator } from "@/registry/syncrobotic/ui/dropdown-menu"
+import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
@@ -127,6 +127,13 @@ export function UsersRoles() {
             </TableRow>
           </TableHeader>
           <TableBody>
+            {users.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={3} className="h-auto py-4 whitespace-normal">
+                  <EmptyState size="inline" icon={Users} title="Nobody here yet" description="Invite the people who run this site; they sign in with their own account." />
+                </TableCell>
+              </TableRow>
+            )}
             {users.map((u) => (
               <TableRow key={u.id}>
                 {/* w-full max-w-0: the person takes what the role and menu leave, and a long email wraps instead of pushing the role off a phone. */}
@@ -136,13 +143,9 @@ export function UsersRoles() {
                       <AvatarFallback>{initials(u)}</AvatarFallback>
                     </Avatar>
                     <div className="flex min-w-0 flex-col items-start">
-                      {/* Someone invited has no name yet: the badge takes the name's line and the email its own, whole, so it
-                          is never cut to a few letters beside the badge. */}
-                      {u.name ? (
-                        <span className="max-w-full truncate font-medium">{u.name}</span>
-                      ) : (
-                        <Badge tone="outline">Invited</Badge>
-                      )}
+                      {/* Someone invited has no name yet: the word Invited takes the name's line, in plain grey (a state, not a
+                          category, so no badge), and the email its own, whole, so it is never cut short beside it. */}
+                      {u.name ? <span className="max-w-full truncate font-medium">{u.name}</span> : <span className="text-muted-foreground">Invited</span>}
                       <span className={cn("max-w-full text-xs wrap-break-word", u.name ? "text-muted-foreground" : "mt-1 font-medium text-foreground")}>
                         {breakAtSign(u.email)}
                       </span>

@@ -9,6 +9,7 @@ import { CountBadge } from "@/registry/syncrobotic/ui/badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 import { Popover, PopoverContent, PopoverTrigger } from "@/registry/syncrobotic/ui/popover"
+import { SectionHeader } from "@/registry/syncrobotic/ui/section-header"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/registry/syncrobotic/ui/sheet"
 
@@ -151,7 +152,8 @@ export function NotificationPanel({
   settingsHref,
   linkAs: Link = "a",
   onNavigate,
-  heading = <h2 className="text-lg font-bold">Notifications</h2>,
+  // The sheet's title on a phone is 20 px bold; the popover's own heading is the same size, as a SectionHeader.
+  heading = <SectionHeader title="Notifications" />,
 }: PanelProps) {
   const [filter, setFilter] = React.useState<Filter>("all")
   const [announce, setAnnounce] = React.useState("")
