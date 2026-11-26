@@ -906,5 +906,9 @@
   "citations": {
     "version": "0.41.0",
     "hash": "cfc32efa1107e886"
+  },
+  "agent-tool-permissions": {
+    "version": "0.43.0",
+    "hash": "f3ccdab88a8f3db1"
   }
 }

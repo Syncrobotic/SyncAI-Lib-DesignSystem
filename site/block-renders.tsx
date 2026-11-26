@@ -77,6 +77,7 @@ import { AgentApproval } from "@/registry/syncrobotic/blocks/agent-approval"
 import { AgentChatDemo } from "./agent-chat-demo"
 import { AgentRunGate } from "@/registry/syncrobotic/blocks/agent-run-gate"
 import { AgentRunOutcome } from "@/registry/syncrobotic/blocks/agent-run-outcome"
+import { AgentToolPermissions } from "@/registry/syncrobotic/blocks/agent-tool-permissions"
 import { blocks } from "./blocks"
 
 /** Each block's preview, for /preview/<name> only: importing this file loads every block. */
@@ -260,6 +261,7 @@ export const blockRenders: Record<string, () => React.ReactNode> = {
   "agent-chat": () => <AgentChatDemo />,
   "agent-run-gate": () => <AgentRunGate />,
   "agent-run-outcome": () => <AgentRunOutcome />,
+  "agent-tool-permissions": () => <AgentToolPermissions />,
   "app-shell-mobile-tabs": () => <AppShellMobileTabs />,
   "stats-meters": () => (
       <div className="p-6">

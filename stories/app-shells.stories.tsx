@@ -8,6 +8,7 @@ import { GovernanceTodo } from "@/registry/syncrobotic/blocks/governance-todo"
 import { AgentChat, AgentChatContent, AgentChatSheet } from "@/registry/syncrobotic/blocks/agent-chat"
 import { AgentRunGate, sampleAgentRun } from "@/registry/syncrobotic/blocks/agent-run-gate"
 import { AgentRunOutcome, sampleAgentRunOutcome } from "@/registry/syncrobotic/blocks/agent-run-outcome"
+import { AgentToolPermissions, AgentToolPermissionsContent } from "@/registry/syncrobotic/blocks/agent-tool-permissions"
 import { SignIn } from "@/registry/syncrobotic/blocks/sign-in"
 import { ErrorPage, LoadingPage, NoAccessPage, NotFoundPage, OfflinePage } from "@/registry/syncrobotic/blocks/status-pages"
 import { RecordForm } from "@/registry/syncrobotic/blocks/record-form"
@@ -194,5 +195,16 @@ export const AgentRunOutcomeAllDone: S = {
         ),
       }}
     />
+  ),
+}
+// Which tools each agent may call (agent-tool-permissions): the saved policies, nothing changed yet, so the picture is the
+// same on every run. Tools that move a robot show Auto unavailable and say why.
+export const AgentToolPermissionsScreen: S = { render: () => <AgentToolPermissions /> }
+// The content alone in a product's own frame, with no calls yet: the audit's empty state.
+export const AgentToolPermissionsInOwnFrame: S = {
+  render: () => (
+    <div className="p-4">
+      <AgentToolPermissionsContent calls={[]} />
+    </div>
   ),
 }

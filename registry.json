@@ -11992,6 +11992,48 @@
           }
         ]
       }
+    },
+    {
+      "name": "agent-tool-permissions",
+      "type": "registry:block",
+      "title": "Agent tool access",
+      "description": "Which tools each AI agent may call, one choice per tool: Auto (on its own), Ask (a person approves each call) or Blocked. Tools that move a robot are never Auto and say why in words. Changes are counted until Save or Discard, and saving one that loosens a policy asks the person to confirm with their password. Under it, the call audit: time, agent, tool, the arguments and what happened (allowed automatically, approved or denied by a person, blocked by policy), narrowed by agent. AgentToolPermissions is the page in the app shell; AgentToolPermissionsContent drops the sample frame, for your own shell.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/app-shell",
+        "@syncrobotic/format-number",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/alert-dialog",
+        "@syncrobotic/button",
+        "@syncrobotic/card",
+        "@syncrobotic/code",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/field",
+        "@syncrobotic/input",
+        "@syncrobotic/responsive-table",
+        "@syncrobotic/section-header",
+        "@syncrobotic/segmented-control",
+        "@syncrobotic/select"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/agent-tool-permissions.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.43.0",
+        "changelog": [
+          {
+            "version": "0.43.0",
+            "date": "2026-11-26",
+            "note": "New: per-agent tool policies (Auto, Ask, Blocked) with robot-moving tools locked out of Auto, a counted save with a password step-up when a policy loosens, and the call audit filtered by agent."
+          }
+        ]
+      }
     }
   ]
 }
