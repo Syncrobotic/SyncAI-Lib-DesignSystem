@@ -620,6 +620,25 @@ export const overviews: Record<string, Overview> = {
       "Every word is in `labels` (`messageLabels` and `messageMetaLabels` in labels-zh-tw); `MessageMeta` takes `locale`.",
     ],
   },
+  "message-actions": {
+    what: "The row of actions under a model's answer: copy it, regenerate it, rate it Good or Bad (with a reason), and switch between regenerated versions.",
+    use: [
+      "Every assistant answer in a conversation.",
+      "An answer whose quality feeds an evaluation: Good and Bad with reasons.",
+      "An answer people regenerate until it suits them: the ‹ 2 / 3 › switcher.",
+    ],
+    instead: [
+      "One value to copy beside a label: `copy-button`.",
+      "Actions on a record in a list: `dropdown-menu` (DropdownMenuMoreTrigger).",
+      "A form people fill in about an answer: `questionnaire`.",
+    ],
+    notes: [
+      "Controlled or not: `feedback` and `reason` with their callbacks, or `defaultFeedback` and nothing else; the callbacks fire either way.",
+      "The hidden state is opacity only, inside `(pointer: fine) and (not (any-pointer: coarse))` and only while neither the turn (Message's `group/message`) nor the row is hovered or focused, so the buttons keep their place, stay in the Tab order and show on focus.",
+      "Copy is the kit's CopyButton: it says Copied, or why it could not copy, in a polite region.",
+      "Every word is in `labels` (`messageActionsLabels` in labels-zh-tw); `locale` formats the version numbers.",
+    ],
+  },
   sortable: {
     what: "A reorderable list or grid with a grip on each item, usable with a mouse, a finger or the keyboard.",
     use: ["Waypoint and patrol order.", "Rule priorities.", "Column order, camera layout, playlist steps."],

@@ -1073,6 +1073,16 @@
     "tabStops": 1,
     "live": true
   },
+  "message-actions": {
+    "roles": [
+      "button",
+      "group",
+      "radio",
+      "radiogroup"
+    ],
+    "tabStops": 6,
+    "live": true
+  },
   "sortable": {
     "roles": [
       "button",

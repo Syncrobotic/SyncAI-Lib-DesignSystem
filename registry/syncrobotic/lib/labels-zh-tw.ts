@@ -885,6 +885,24 @@ export const messageMetaLabels = {
   tokens: (n: number, locale: string | undefined) => `${formatCount(n, { locale: locale ?? "zh-TW" })} 個 token`,
 }
 
+export const messageActionsLabels = {
+  group: "回答的動作",
+  copy: "複製",
+  copied: "已複製",
+  copyFailed: "無法複製：請選取文字後自行複製",
+  regenerate: "重新生成",
+  good: "回答良好",
+  bad: "回答不佳",
+  reasons: "哪裡有問題？",
+  versions: "版本",
+  previous: "上一個版本",
+  next: "下一個版本",
+  version: (n: number, count: number, locale: string | undefined) =>
+    `第 ${formatCount(n, { locale: locale ?? "zh-TW" })} 個版本，共 ${formatCount(count, { locale: locale ?? "zh-TW" })} 個`,
+  versionShort: (n: number, count: number, locale: string | undefined) =>
+    `${formatCount(n, { locale: locale ?? "zh-TW" })} / ${formatCount(count, { locale: locale ?? "zh-TW" })}`,
+}
+
 // Every operator the filter bar offers; the types test holds it to the full FilterOperator list, so a new one cannot be
 // left in English.
 const filterOperators = {

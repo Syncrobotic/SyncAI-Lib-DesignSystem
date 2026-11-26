@@ -28,6 +28,7 @@ export type StoryFile =
   | "data-grid"
   | "log-viewer"
   | "streaming-text"
+  | "message-actions"
   | "message"
   | "sortable"
   | "resizable"
@@ -273,6 +274,18 @@ const entries: Record<string, Entry> = {
       "While the answer arrives set `status=\"streaming\"` (aria-busy). When the body is StreamingText, leave the final state to it (its status row says Done, Stopped or Failed) and clear `status`; use Message's `error` and `stopped` for a turn whose body cannot say it, such as a person's turn that was not sent.",
       "Facts about the answer go in `footer` with `MessageMeta` (model, duration, tokens, numbers through format-number); its actions go in `actions` (`message-actions`).",
       "The same speaker's next turn takes `continued`: the header stays for screen readers only. Put the turns in a `message-scroller`.",
+    ],
+  },
+  "message-actions": {
+    group: "Data display",
+    examples: { file: "message-actions", prefix: "MessageActions" },
+    rules: [
+      "The actions under a model's answer, in Message's `actions`. Each part shows only when you give what it needs: `copyText` for Copy, `onRegenerate` for Regenerate, `onFeedbackChange` for Good and Bad, `versions` above 1 for the switcher.",
+      "Good and Bad are toggles (aria-pressed), inverted when pressed like every selected control, never green or red. Pressing the pressed one again clears it.",
+      "Give `reasons` to ask what was wrong after Bad: a few short ones (\"Wrong facts\", \"Did not follow the request\"). Send the feedback and the reason from `onFeedbackChange` and `onReasonChange`.",
+      "Regenerating adds a version: pass `version` and `versions` and switch the shown answer in `onVersionChange`. The switcher's ends stay focusable and say they are the end.",
+      "`quiet` (on by default) keeps the buttons out of sight until the turn is hovered or focused, with a mouse only: touch screens and keyboards always see them. Set it false on the latest answer. Feedback that was given and the switcher never hide.",
+      "Every button is an icon with its name in `aria-label`; 36 px with a mouse, 44 on touch.",
     ],
   },
   sortable: {
@@ -1827,6 +1840,11 @@ const keyboard: Record<string, [string, string][]> = {
     ["`Tab`", "Move to the turn's own controls: Try again after a failure, then its actions"],
     ["`Enter` / `Space`", "Try again"],
   ],
+  "message-actions": [
+    ["`Tab`", "Move through the switcher's ‹ and ›, Copy, Regenerate, Good and Bad, then the reasons; focus shows the quiet buttons"],
+    ["`Enter` / `Space`", "Run the button; on Good or Bad, press or release it"],
+    ["`←` / `→`", "In the reasons, move between them (one Tab stop); `Enter` or `Space` picks one"],
+  ],
   filters: [
     ["`Enter`", "On + Filter, open the picker; on a part of a chip, reopen that step"],
     ["`↑` / `↓`", "Move through fields, operators or values; type to narrow them"],
@@ -1918,6 +1936,7 @@ const captions: Record<string, Record<string, string>> = {
   "status-eyebrow": { StatusInlineInRows: "InlineStatus in rows", StatusEyebrowOverTitle: "StatusEyebrow over a title" },
   "log-viewer": { LogViewerRosout: "/rosout", LogViewerZhTw: "Traditional Chinese (zh-TW)", LogViewerHundredThousand: "100,000 lines" },
   "streaming-text": { StreamingTextZhTw: "Traditional Chinese (zh-TW)" },
+  "message-actions": { MessageActionsZhTw: "Traditional Chinese (zh-TW)" },
   message: { MessageZhTw: "Traditional Chinese (zh-TW)" },
   calendar: { CalendarMonthYearDropdowns: "Month and year dropdowns" },
   chart: { ChartAboveBelowZero: "Above and below zero" },

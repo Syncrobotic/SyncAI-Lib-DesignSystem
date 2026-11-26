@@ -8,6 +8,7 @@ UI for LLM agents: the parts of a conversation with a model, built on streaming-
 
 ### Added
 - **`message` 0.41.0 (new, beta):** one turn of a conversation. An `<article>` named "Assistant, 14:02": the role word (You, Assistant, Tool, System) leads the header with a name and the time, never a bubble colour; a person's turn keeps the word when `align="end"` moves it to the end of a wide container. Any body (StreamingText, Trace, attachments, markdown later). `status` streaming (aria-busy), error (Failed with the reason and Try again) or stopped, each a shape and a word in a polite region; `actions` and `footer` slots, and `MessageMeta` for "Large · 2.4 s · 1,204 tokens" (format-number). **`labels-zh-tw` 0.41.0** adds `messageLabels` and `messageMetaLabels`.
+- **`message-actions` 0.41.0 (new, beta):** the actions under an answer: Copy (copy-button), Regenerate, Good and Bad as toggle buttons (aria-pressed, inverted when pressed, never green or red; pressing again clears), an optional row of `reasons` after Bad, and a ‹ 2 / 3 › switcher for regenerated answers whose ends stay focusable (aria-disabled) and whose position is said ("Version 2 of 3"). `quiet` keeps the buttons out of sight until the turn is hovered or focused, with a mouse and no touch screen only; touch and the keyboard always see them, and feedback once given never hides. **`labels-zh-tw`** adds `messageActionsLabels`. The icon set gains ThumbsUp and ThumbsDown (a good or bad answer).
 
 ## Unreleased
 

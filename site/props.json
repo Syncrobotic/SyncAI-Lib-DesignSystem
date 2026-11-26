@@ -7932,6 +7932,166 @@
    "inherits": []
   }
  ],
+ "message-actions": [
+  {
+   "name": "MessageActions",
+   "props": [
+    {
+     "name": "copyText",
+     "type": "string",
+     "description": "The answer as text: shows Copy."
+    },
+    {
+     "name": "onRegenerate",
+     "type": "() => void",
+     "description": "Shows Regenerate. The new answer becomes the last version."
+    },
+    {
+     "name": "feedback",
+     "type": "\"good\" | \"bad\" | null",
+     "description": "The feedback given (controlled): \"good\", \"bad\" or null."
+    },
+    {
+     "name": "defaultFeedback",
+     "type": "\"good\" | \"bad\" | null",
+     "default": "null",
+     "description": ""
+    },
+    {
+     "name": "onFeedbackChange",
+     "type": "(feedback: MessageFeedback | null) => void",
+     "description": "Shows Good and Bad. Called with the new value; pressing the pressed one again clears it (null)."
+    },
+    {
+     "name": "reasons",
+     "type": "MessageFeedbackReason[]",
+     "description": "After Bad: a row of reasons to pick one from (\"Wrong facts\", \"Did not follow the request\")."
+    },
+    {
+     "name": "reason",
+     "type": "string",
+     "description": "The picked reason (controlled)."
+    },
+    {
+     "name": "onReasonChange",
+     "type": "(reason: string | undefined) => void",
+     "description": ""
+    },
+    {
+     "name": "version",
+     "type": "number",
+     "description": "The version shown, from 1. With `versions` above 1, shows ‹ 2 / 3 ›."
+    },
+    {
+     "name": "versions",
+     "type": "number",
+     "description": "How many versions regeneration has made."
+    },
+    {
+     "name": "onVersionChange",
+     "type": "(version: number) => void",
+     "description": ""
+    },
+    {
+     "name": "quiet",
+     "type": "boolean",
+     "default": "true",
+     "description": "Out of sight until the turn is hovered or focused, with a mouse only. Set false on the latest answer to keep it shown."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the version numbers."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<MessageActionsLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "group",
+       "type": "string",
+       "default": "\"Answer actions\"",
+       "description": "The group's name: \"Answer actions\"."
+      },
+      {
+       "name": "copy",
+       "type": "string",
+       "default": "\"Copy\"",
+       "description": ""
+      },
+      {
+       "name": "copied",
+       "type": "string",
+       "default": "\"Copied\"",
+       "description": "Said after a copy."
+      },
+      {
+       "name": "copyFailed",
+       "type": "string",
+       "default": "\"Could not copy: select the text and copy it\"",
+       "description": "Said when the browser refused the copy."
+      },
+      {
+       "name": "regenerate",
+       "type": "string",
+       "default": "\"Regenerate\"",
+       "description": ""
+      },
+      {
+       "name": "good",
+       "type": "string",
+       "default": "\"Good answer\"",
+       "description": ""
+      },
+      {
+       "name": "bad",
+       "type": "string",
+       "default": "\"Bad answer\"",
+       "description": ""
+      },
+      {
+       "name": "reasons",
+       "type": "string",
+       "default": "\"What was wrong?\"",
+       "description": "Over the reasons that follow Bad."
+      },
+      {
+       "name": "versions",
+       "type": "string",
+       "default": "\"Versions\"",
+       "description": "The version switcher's name."
+      },
+      {
+       "name": "previous",
+       "type": "string",
+       "default": "\"Previous version\"",
+       "description": ""
+      },
+      {
+       "name": "next",
+       "type": "string",
+       "default": "\"Next version\"",
+       "description": ""
+      },
+      {
+       "name": "version",
+       "type": "(n: number, count: number, locale: string | undefined) => string",
+       "default": "(n, count, locale) => `Version ${formatCount(n, { locale })} of ${formatCount(count, { locale })}`",
+       "description": "What screen readers hear for the switcher: \"Version 2 of 3\"."
+      },
+      {
+       "name": "versionShort",
+       "type": "(n: number, count: number, locale: string | undefined) => string",
+       "default": "(n, count, locale) => `${formatCount(n, { locale })} / ${formatCount(count, { locale })}`",
+       "description": "What it shows: \"2 / 3\"."
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "meter": [
   {
    "name": "Meter",

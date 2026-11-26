@@ -342,7 +342,7 @@
           {
             "version": "0.41.0",
             "date": "2026-11-26",
-            "note": "`messageLabels`, `messageMetaLabels` for the new conversation parts (message): 你, 助理, 重新生成, 送出, 跳到最新 and the rest."
+            "note": "`messageLabels`, `messageMetaLabels`, `messageActionsLabels` for the new conversation parts (message, message-actions): 你, 助理, 重新生成, 送出, 跳到最新 and the rest."
           },
           {
             "version": "0.40.0",
@@ -6473,6 +6473,39 @@
             "version": "0.41.0",
             "date": "2026-11-26",
             "note": "First release: a conversation turn named by its role word, name and time, never a colour; streaming, failed and stopped states; MessageMeta. Words in `labels`."
+          }
+        ]
+      }
+    },
+    {
+      "name": "message-actions",
+      "type": "registry:ui",
+      "title": "Message actions",
+      "description": "The actions under a model's answer: Copy, Regenerate, Good and Bad as toggle buttons (aria-pressed) with an optional reason after Bad, and a ‹ 2 / 3 › switcher for regenerated answers. Quiet until the turn is hovered or focused with a mouse; always shown on touch and to the keyboard.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/chip-group",
+        "@syncrobotic/copy-button",
+        "@syncrobotic/format-number"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/message-actions.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.41.0",
+        "changelog": [
+          {
+            "version": "0.41.0",
+            "date": "2026-11-26",
+            "note": "First release: Copy, Regenerate, Good and Bad toggles with a reason, and a version switcher; quiet until hovered or focused, with a mouse only."
           }
         ]
       }
