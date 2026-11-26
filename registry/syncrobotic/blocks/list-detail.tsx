@@ -1,4 +1,4 @@
-// @syncrobotic/list-detail v0.40.0 · update: npx shadcn add @syncrobotic/list-detail --overwrite
+// @syncrobotic/list-detail v0.45.1 · update: npx shadcn add @syncrobotic/list-detail --overwrite
 "use client"
 
 import * as React from "react"
@@ -51,6 +51,21 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
   const robot = robots.find((r) => r.id === selected)
   // The stop as in the dock, per robot: ready, sending until the robot confirms, then stopped with slide to release.
   const [stops, setStops] = React.useState<Record<string, "sending" | "stopped" | "released">>({})
+  // The sample's reply (the robot confirming, the server answering); cleared on unmount so it never lands on a page
+  // that is gone.
+  // Several robots can be waiting at once, so every pending reply is kept.
+  const replies = React.useRef(new Set<ReturnType<typeof setTimeout>>())
+  React.useEffect(() => {
+    const pending = replies.current
+    return () => pending.forEach(clearTimeout)
+  }, [])
+  const later = (fn: () => void, ms: number) => {
+    const t = setTimeout(() => {
+      replies.current.delete(t)
+      fn()
+    }, ms)
+    replies.current.add(t)
+  }
   const stopOf = (r: Robot) => stops[r.id] ?? (r.status === "stopped" ? "stopped" : undefined)
 
   return (
@@ -146,7 +161,7 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
                   <SlideToRelease
                     key={robot.id}
                     tag={robot.id}
-                    onRelease={() => window.setTimeout(() => setStops((s) => ({ ...s, [robot.id]: "released" })), 500)}
+                    onRelease={() => later(() => setStops((s) => ({ ...s, [robot.id]: "released" })), 500)}
                   />
                 ) : (
                   <StopButton
@@ -157,7 +172,7 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
                       const id = robot.id
                       setStops((s) => ({ ...s, [id]: "sending" }))
                       // The robot confirms: the app says so to the hand, then offers release.
-                      window.setTimeout(() => {
+                      later(() => {
                         feedback("stopConfirmed")
                         setStops((s) => ({ ...s, [id]: "stopped" }))
                       }, 800)

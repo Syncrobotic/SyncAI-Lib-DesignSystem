@@ -1,4 +1,4 @@
-// @syncrobotic/point-cloud v0.40.0 · update: npx shadcn add @syncrobotic/point-cloud --overwrite
+// @syncrobotic/point-cloud v0.45.1 · update: npx shadcn add @syncrobotic/point-cloud --overwrite
 "use client"
 
 import * as React from "react"
@@ -1073,6 +1073,7 @@ export function PointCloud({
       renderer.current = null
       // Release the context only once the canvas is really gone (unmounted, not re-run in place by Strict Mode, which
       // keeps the same canvas and would get the lost context back), as robot-model does with its own.
+      // timer-ok: meant to run after unmount.
       if (gl)
         setTimeout(() => {
           if (!canvas.isConnected && !gl.isContextLost()) gl.getExtension("WEBGL_lose_context")?.loseContext?.()

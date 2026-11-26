@@ -1,4 +1,4 @@
-// @syncrobotic/auth-invite v0.40.0 · update: npx shadcn add @syncrobotic/auth-invite --overwrite
+// @syncrobotic/auth-invite v0.45.1 · update: npx shadcn add @syncrobotic/auth-invite --overwrite
 "use client"
 
 import * as React from "react"
@@ -47,13 +47,17 @@ export function AuthInvite({
   const [name, setName] = React.useState("")
   const [error, setError] = React.useState<string>()
   const [state, setState] = React.useState<"open" | "busy" | "accepted">("open")
+  // The sample's reply (the robot confirming, the server answering); cleared on unmount so it never lands on a page
+  // that is gone.
+  const reply = React.useRef<ReturnType<typeof setTimeout>>(undefined)
+  React.useEffect(() => () => clearTimeout(reply.current), [])
 
   const accept = (e: React.FormEvent) => {
     e.preventDefault()
     if (!name.trim()) return setError("Enter your name as your team knows it.")
     setError(undefined)
     setState("busy")
-    window.setTimeout(() => {
+    reply.current = setTimeout(() => {
       setState("accepted")
       onAccept?.(name.trim())
     }, 600)
