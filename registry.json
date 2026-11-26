@@ -11853,6 +11853,83 @@
       }
     },
     {
+      "name": "agent-run-gate",
+      "type": "registry:block",
+      "title": "Agent run with an approval gate",
+      "description": "An agent run step by step that stops before a step that would move robots: the gate shows the change robot by robot, why, the facts it used and when it expires; Approve continues the run, Revise sends it back with a reason, Deny skips the step and every step that depends on it, with the reason. AgentRunGate is the page, AgentRunGateContent drops the sample frame.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/app-shell",
+        "@syncrobotic/use-reduced-motion",
+        "@syncrobotic/format-number",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/button",
+        "@syncrobotic/code",
+        "@syncrobotic/description-list",
+        "@syncrobotic/field",
+        "@syncrobotic/table",
+        "@syncrobotic/section-header",
+        "@syncrobotic/textarea",
+        "@syncrobotic/trace"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/agent-run-gate.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.43.0",
+        "changelog": [
+          {
+            "version": "0.43.0",
+            "date": "2026-11-26",
+            "note": "New: an agent run that waits at an approval gate before a step that moves robots; Deny skips the held step and its dependents as Skipped, with the reason."
+          }
+        ]
+      }
+    },
+    {
+      "name": "agent-run-outcome",
+      "type": "registry:block",
+      "title": "Agent run outcome",
+      "description": "The result of a fleet run robot by robot: succeeded, failed with the reason, skipped, and not verified (sent, but no confirmation came back). A count per result, the robots that need someone first, Retry failed for the failed robots only (with how many), and a link to the run's steps. AgentRunOutcome is the page, AgentRunOutcomeContent drops the sample frame.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/app-shell",
+        "@syncrobotic/format-number",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/button",
+        "@syncrobotic/code",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/metric-card",
+        "@syncrobotic/responsive-table",
+        "@syncrobotic/section-header"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/agent-run-outcome.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.43.0",
+        "changelog": [
+          {
+            "version": "0.43.0",
+            "date": "2026-11-26",
+            "note": "New: the result of a fleet run robot by robot, with not verified kept apart from succeeded and Retry failed for the failed robots only."
+          }
+        ]
+      }
+    },
+    {
       "name": "markdown",
       "type": "registry:ui",
       "title": "Markdown",

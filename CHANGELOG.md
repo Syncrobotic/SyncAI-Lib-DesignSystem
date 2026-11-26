@@ -2,6 +2,14 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+AI agents: a run that waits for a person before it moves robots, and what a fleet run did, robot by robot.
+
+### Added
+- **`agent-run-gate` 0.43.0 (new block, AI agents):** an agent run step by step (Trace) that stops before a step that would move robots. The gate sits under the step it holds: what changes robot by robot (ResponsiveTable), why, the facts it used, and when it expires; steps further down that also move robots say they will wait for a person. Approve continues the run; Revise sends it back with a reason and keeps waiting; Deny asks why, then marks the held step and every step that depends on it Skipped, not Failed, each with the reason, while the steps that do not depend on it still run. Past its expiry nothing applies itself and the buttons are gone. The reason box takes focus, Esc returns to the button that opened it, and a decision moves focus to the line that says what happened. `AgentRunGate` is the page, `AgentRunGateContent` the run without the sample frame; the run is a deterministic script (`script={false}` for your own events) whose steps settle at once under reduced motion.
+- **`agent-run-outcome` 0.43.0 (new block, AI agents):** the result of a fleet run robot by robot: succeeded, failed with the robot's reason, skipped with why, and not verified (the command was sent, no confirmation came back), which is never counted as a success. A MetricCard per result (failed and not verified take their status shape), the robots that need someone first in a ResponsiveTable, and Retry failed, which says how many and sends the command again to the failed robots only (not verified ones are left out: the command may have arrived). A link leads back to the run's steps. `AgentRunOutcome` is the page, `AgentRunOutcomeContent` the result without the frame; `retry` takes your API's call.
+
 ## 0.42.0 · 2026-11-26
 
 Dependencies: the major versions the kit was behind on, so a product on the current toolchain builds the items as they are.

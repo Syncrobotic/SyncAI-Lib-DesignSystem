@@ -891,6 +891,14 @@
     "version": "0.41.0",
     "hash": "17e2d81857df5ab1"
   },
+  "agent-run-gate": {
+    "version": "0.43.0",
+    "hash": "b59957ee5ab3901d"
+  },
+  "agent-run-outcome": {
+    "version": "0.43.0",
+    "hash": "0ddd6c7bf6d534fa"
+  },
   "markdown": {
     "version": "0.41.0",
     "hash": "fc986f0f403aa317"
