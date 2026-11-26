@@ -3626,8 +3626,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.44.0",
+        "version": "0.44.1",
         "changelog": [
+          {
+            "version": "0.44.1",
+            "date": "2026-11-26",
+            "note": "Dragging the handle no longer jumps: under 200 px the column still gives (at 40 % of the pointer), past the fold it eases down to the rail, out of the rail it eases open, and let go under 200 it springs back. No tooltip while dragging."
+          },
           {
             "version": "0.44.0",
             "date": "2026-11-26",
