@@ -401,7 +401,7 @@ export function ShellSearch({ search, linkAs: Link = "a" }: { search: AppSearch;
           aria-label={l.scope(scopeLabel ?? "")}
           className={cn(
             "press mx-1 flex shrink-0 items-center gap-2 rounded-xs px-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground",
-            inField ? "h-[calc(100%-0.5rem)]" : "h-(--h-sm)",
+            inField ? "my-1 self-stretch" : "h-(--h-sm)",
           )}
         >
           {scopeLabel}
