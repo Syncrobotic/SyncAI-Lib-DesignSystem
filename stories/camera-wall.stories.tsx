@@ -96,7 +96,10 @@ function wallStore(ids: string[], hang: string[]) {
       senders.push(() => {
         const elapsed = (Date.now() - startedAt) / 1000
         if (hang.includes(id)) {
-          if (fixed ? shown : elapsed > 1.5) return
+          // In the still, once its tile's video is there the hanging camera sends one frame and waits for it to show:
+          // the screenshot clock runs a quarter second at a time, and frames requested together could still land after
+          // the tile had gone Stalled and bring it back to Live in the picture.
+          if (fixed ? shown || watching : elapsed > 1.5) return
           const video = [...document.querySelectorAll("video")].find((v) => v.srcObject === s)
           if (video && video !== watching && typeof video.requestVideoFrameCallback === "function") {
             watching = video
