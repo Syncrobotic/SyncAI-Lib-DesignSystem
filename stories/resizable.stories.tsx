@@ -16,7 +16,7 @@ const frame = "h-64 rounded-md bg-card ring-1 ring-border overflow-hidden"
 export const ResizableHorizontal: S = {
   render: () => (
     <div className={frame}>
-      <ResizablePanelGroup direction="horizontal">
+      <ResizablePanelGroup orientation="horizontal">
         <ResizablePanel defaultSize={40} minSize={25}>
           {pane("Robots", "list")}
         </ResizablePanel>
@@ -32,7 +32,7 @@ export const ResizableHorizontal: S = {
 export const ResizableVertical: S = {
   render: () => (
     <div className={frame}>
-      <ResizablePanelGroup direction="vertical">
+      <ResizablePanelGroup orientation="vertical">
         <ResizablePanel defaultSize={65} minSize={30}>
           {pane("Camera", "live")}
         </ResizablePanel>
@@ -48,7 +48,7 @@ export const ResizableVertical: S = {
 export const ResizableWithGrip: S = {
   render: () => (
     <div className={frame}>
-      <ResizablePanelGroup direction="horizontal">
+      <ResizablePanelGroup orientation="horizontal">
         <ResizablePanel defaultSize={50}>{pane("Route editor")}</ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={50}>{pane("Preview")}</ResizablePanel>
@@ -60,7 +60,7 @@ export const ResizableWithGrip: S = {
 export const ResizableThreePanels: S = {
   render: () => (
     <div className={frame}>
-      <ResizablePanelGroup direction="horizontal">
+      <ResizablePanelGroup orientation="horizontal">
         <ResizablePanel defaultSize={25} minSize={15}>
           {pane("Sites")}
         </ResizablePanel>
@@ -80,13 +80,13 @@ export const ResizableThreePanels: S = {
 export const ResizableNested: S = {
   render: () => (
     <div className={frame}>
-      <ResizablePanelGroup direction="horizontal">
+      <ResizablePanelGroup orientation="horizontal">
         <ResizablePanel defaultSize={35} minSize={20}>
           {pane("Robots")}
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={65}>
-          <ResizablePanelGroup direction="vertical">
+          <ResizablePanelGroup orientation="vertical">
             <ResizablePanel defaultSize={60}>{pane("Camera")}</ResizablePanel>
             <ResizableHandle withHandle />
             <ResizablePanel defaultSize={40}>{pane("Telemetry")}</ResizablePanel>
@@ -100,7 +100,7 @@ export const ResizableNested: S = {
 export const ResizableCollapsible: S = {
   render: () => (
     <div className={frame}>
-      <ResizablePanelGroup direction="horizontal">
+      <ResizablePanelGroup orientation="horizontal">
         <ResizablePanel defaultSize={30} minSize={20} collapsible collapsedSize={0}>
           {pane("Filters", "drag to the edge to hide")}
         </ResizablePanel>
