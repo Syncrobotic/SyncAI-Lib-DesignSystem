@@ -80,7 +80,7 @@ export default function UpgradingPage() {
       <p className="max-w-3xl text-base">
         <Inline text="A release that renames or removes something has its own page: what changed, old to new, and the codemods that do the mechanical part." />
       </p>
-      <ul className="list-disc space-y-1 pt-2 pl-5 text-base">
+      <ul className="list-disc space-y-1 pt-2 pl-6 text-base">
         <li id="0-40">
           <a href="/docs/upgrading/0-40" className={textLink}>
             0.40: the pre-1.0 cleanup
