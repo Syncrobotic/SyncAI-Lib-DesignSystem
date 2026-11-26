@@ -2,6 +2,13 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.44.1 · 2026-11-26
+
+The sidebar's handle, without the jump at the fold.
+
+### Fixed
+- **`sidebar` 0.44.1:** dragging the handle under the narrowest width jumped: the column stopped at 200 px, then snapped to the rail at 140 with no animation. Now under 200 it still gives, at 40 % of the pointer, so the fold is felt coming; past the fold it eases down to the 72 px rail (the sheet's 320 ms), dragged out of the rail it eases open to the pointer, and let go between 140 and 200 it springs back to 200. The stored width is never under 200. The tooltip stays hidden while dragging, so it no longer rides along over the page.
+
 ## 0.44.0 · 2026-11-26
 
 A sidebar you can resize, from a handle beside it that shows only when you need it.
