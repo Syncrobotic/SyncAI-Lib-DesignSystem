@@ -2,6 +2,16 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.43.1 · 2026-11-26
+
+A fix for a timer that outlived its page, and a quicker check on pull requests.
+
+### Fixed
+- **`console-overview` 0.43.1:** the sample stop's reply (Stop, then the robots confirm; Release, then ready again) is cleared when the page unmounts, so it no longer updates a page that is gone. It failed a test run once, after every test had passed.
+
+### Changed
+- **CI:** a pull request into dev whose changes move no measured component (a block's stories, say) skips the accessibility measure instead of measuring all of them.
+
 ## 0.43.0 · 2026-11-26
 
 More for AI agents: a run that waits for a person before it moves robots, what a fleet run did robot by robot, what an agent may do on its own, and a record of what it did.

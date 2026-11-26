@@ -7770,8 +7770,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.43.1",
         "changelog": [
+          {
+            "version": "0.43.1",
+            "date": "2026-11-26",
+            "note": "The sample stop's reply is cleared when the page unmounts, so it no longer updates a page that is gone."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
