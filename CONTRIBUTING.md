@@ -39,6 +39,7 @@ npm run check:wrap       # with the site running: on a 375 px phone, no row of b
 ```
 
 - Story checks run on pull requests into `stage`, where a release is assembled, in Playwright's own image (`mcr.microsoft.com/playwright`), four shards. `main` receives `stage`'s tree unchanged, so they are not repeated there. Run them on any branch with Actions → `ci` → Run workflow.
+- Into `main`, stage's tree arrives unchanged: only the release checks run (the CHANGELOG section for the version, nothing ahead of it), under the same `check` name. Into `dev`, the accessibility data is measured for the components the change can move (`scripts/a11y-affected.mjs`); into `stage`, for all of them.
 - The registry install test runs on every pull request that touches `registry/`, `registry.json`, the package files or the TypeScript config, and is skipped otherwise.
 - `check:radius` and `check:wrap` are local only: run them before a release.
 
@@ -94,6 +95,8 @@ After changing an item's files, bump its `meta.version` in `registry.json`, add 
 `feat/*` → `dev` → `stage` → `main`, each step through a pull request with CI green. Promotions into `stage` and `main` use a merge commit, never a squash.
 
 Commit subjects and pull request titles are English [Conventional Commits](https://www.conventionalcommits.org/), as in the [engineering handbook](https://github.com/Syncrobotic/SyncAI-Docs-Handbook): `feat(data-grid): keyboard row selection`, `fix(time-picker): no NaN on a malformed time`, `chore(release): 0.27.0`. The `PR title` check enforces it. The version goes in the body or the changelog, not at the start of the title. A squash merge uses the title as the commit, so the title is what lands on `dev`.
+
+Put the version bump (`package.json`, `package-lock.json`, the CHANGELOG heading) in the release's last pull request into `dev` rather than a pull request of its own: one CI run fewer. Run `visual-baseline` after merging into `dev`; it commits on top of `dev` as it is when it ends, so a merge during it is kept.
 
 When `main` gets a `package.json` version that has no tag, the `release` workflow tags it `vX.Y.Z` and publishes a GitHub Release with that version's section of `CHANGELOG.md`. CI checks that the section exists.
 
