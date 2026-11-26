@@ -36,7 +36,8 @@ export function StatusGlyph({
     <svg aria-hidden="true" viewBox="0 0 12 12" className={cn("size-3 shrink-0", color[status], className)}>
       {status === "active" && <circle cx="6" cy="6" r="5" fill="currentColor" />}
       {status === "normal" && <circle cx="6" cy="6" r="4" fill="none" stroke="currentColor" strokeWidth="2" />}
-      {status === "warning" && <path d="M6 1 11 10.5H1Z" fill="currentColor" />}
+      {/* Inset, then stroked with round joins: the triangle keeps its size and gets rounded corners, like the square. */}
+      {status === "warning" && <path d="M6 2.2 10.2 9.6H1.8Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />}
       {status === "danger" && <rect x="1.5" y="1.5" width="9" height="9" rx="2" fill="currentColor" />}
       {status === "offline" && (
         <>
