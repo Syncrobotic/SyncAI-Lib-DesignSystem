@@ -35,13 +35,15 @@ const migration: string[][] = [
   ["MetaPill", "`tone`", "PageHeader `status`", "A state is not a fact: `status={<InlineStatus status=\"warning\">…</InlineStatus>}` on PageHeader; the pill keeps the fact."],
   ["status-glyph", "`toStatus`, `warnTone`", "removed", "Map an old tone yourself, or pass `status`."],
   ["Badge", "`tone=\"info\" | \"success\" | \"warning\" | \"danger\"`", "`neutral` or `outline`", "A state is an `InlineStatus` with the status; a category keeps a neutral Badge; a count is a CountBadge."],
+  ["IconTile", "`tone=\"info\" | \"success\"`", "`tone=\"neutral\"`", "They drew neutral already; `neutral`, `warning` and `danger` remain."],
+  ["Progress", "`tone=\"success\"`", "`tone=\"neutral\"`", "It drew neutral already: a finished bar is grey."],
   ["chart", "`useChartMotion()`", "`chartMotion`", "Codemod: `<Line {...chartMotion} />`."],
   ["table", "`ScrollFades`", "`scrollFadeMask`", "`style={scrollFadeMask(edges)}` on the scrolling box."],
   ["skeleton", "`<Bone onCard />`", "`<Bone />`", "Codemod (it changed nothing)."],
   ["alarm", "`alarmPriority.critical.tint`", "removed", "Rows are not tinted; use `bg-danger-subtle` directly if you must."],
   ["share-bar", "segment `tone: 5`", "`1` to `4` or `\"other\"`", "Or leave `tone` out to follow the order."],
-  ["format-count", "`@syncrobotic/format-count`", "`@syncrobotic/format-number`", "Install it and codemod the imports; the functions keep their names."],
-  ["sparkline-metric-tiles", "`<SparklineMetricTiles />`", "`<StatsCards stats={…} columns={3} />`", "Install `stats-cards`; pass your own stats."],
+  ["format-count", "`@syncrobotic/format-count`", "`@syncrobotic/format-number`", "Install it and codemod the imports; the functions keep their names. The old name does not install: `npx shadcn add @syncrobotic/format-count` fails with a 404."],
+  ["sparkline-metric-tiles", "`<SparklineMetricTiles />`", "`<StatsCards stats={…} columns={3} />`", "Install `stats-cards`; pass your own stats. The old name fails with a 404."],
 ]
 
 const codemods = `# Run from your project's root on a clean tree, then read the diff. Each line is safe where noted; the rest need a look.
@@ -55,6 +57,10 @@ grep -rlE '<(StatusGlyph|StatusEyebrow|InlineStatus|TimelineItem|MarkerRow|Islan
 
 # Marker's tone -> status (warning or danger)
 grep -rl '<Marker ' src | xargs -r sed -i -E '/<Marker /s/ tone=/ status=/g'
+
+# IconTile info/success and Progress success -> neutral (they drew neutral already). Safe on one-line tags.
+grep -rlE '<IconTile[ >]' src | xargs -r sed -i -E '/<IconTile[ >]/s/tone="(info|success)"/tone="neutral"/g'
+grep -rlE '<Progress[ >]' src | xargs -r sed -i -E '/<Progress[ >]/s/tone="success"/tone="neutral"/g'
 
 # useChartMotion() -> chartMotion. Safe.
 grep -rl useChartMotion src | xargs -r sed -i -E 's/useChartMotion\\(\\)/chartMotion/g; s/useChartMotion/chartMotion/g'
@@ -127,7 +133,7 @@ export default function UpgradingPage() {
         rows={migration.map((r) => r.map((c) => <Inline key={c} text={c} />))}
       />
       <p className="max-w-3xl pt-3 text-sm text-muted-foreground">
-        <Inline text="A warning or danger TimelineItem no longer colours its title (only its glyph or icon), and a ResponsiveTable phone row's title wraps to two lines: neither needs a change in your code." />
+        <Inline text="Removed and renamed items are not redirected in the registry: installing an old name fails (a 404) rather than install something else under it. `npm run adoption` names the item to install instead. A warning or danger TimelineItem or MarkerRow no longer colours its title (only its glyph or icon), and a ResponsiveTable phone row's title wraps to two lines: neither needs a change in your code." />
       </p>
       <div className="pt-4">
         <CodeBlock code={codemods} lang="bash" title="0.40 codemods" />
