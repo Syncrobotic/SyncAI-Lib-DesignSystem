@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Download, Users } from "lucide-react"
 import { Breadcrumb, BreadcrumbLink } from "@/registry/syncrobotic/ui/breadcrumb"
 import { Button } from "@/registry/syncrobotic/ui/button"
+import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
+import { Badge } from "@/registry/syncrobotic/ui/badge"
 import { MetaPill, PageHeader } from "@/registry/syncrobotic/ui/page-header"
 
 const meta: Meta = { title: "Navigation/Page header" }
@@ -41,10 +43,11 @@ export const PageHeaderDetail: S = {
       }
       title="warehouse-forklifts v3"
       description="Forklifts and pallets in two warehouses, day and night shifts."
+      status={<InlineStatus status="warning">Needs review</InlineStatus>}
       meta={
         <>
           <MetaPill>12,480 images</MetaPill>
-          <MetaPill tone="warning">2 open issues</MetaPill>
+          <MetaPill>2 open issues</MetaPill>
           <MetaPill>Released 14 Nov</MetaPill>
         </>
       }
@@ -68,10 +71,37 @@ export const PageHeaderMetaLinks: S = {
       meta={
         <>
           <MetaPill>12,480 images</MetaPill>
-          <MetaPill tone="warning" href="#compliance">
+          <MetaPill href="#compliance">
             2 compliance items open
           </MetaPill>
           <MetaPill href="#releases">Used by 3 releases</MetaPill>
+        </>
+      }
+    />
+  ),
+}
+
+/**
+ * A robot's page: its state beside the name as one InlineStatus (grey while it is fine, coloured only when it needs
+ * someone), then its badges, then the facts. A state never goes in a meta pill or a badge.
+ */
+export const PageHeaderWithStatus: S = {
+  render: () => (
+    <PageHeader
+      as="h2"
+      title="Patrol dog 7F3A"
+      description="Night patrol of the north fence and the loading bays."
+      status={<InlineStatus status="active">Patrolling</InlineStatus>}
+      badges={
+        <>
+          <Badge tone="outline">Production</Badge>
+          <Badge>Firmware 4.8</Badge>
+        </>
+      }
+      meta={
+        <>
+          <MetaPill>Hall B</MetaPill>
+          <MetaPill>Last seen 2 min ago</MetaPill>
         </>
       }
     />

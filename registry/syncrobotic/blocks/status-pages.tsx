@@ -1,4 +1,4 @@
-// @syncrobotic/status-pages v0.35.0 · update: npx shadcn add @syncrobotic/status-pages --overwrite
+// @syncrobotic/status-pages v0.40.0 · update: npx shadcn add @syncrobotic/status-pages --overwrite
 "use client"
 
 import * as React from "react"
@@ -81,7 +81,7 @@ export function StatusPage({
         </IconTile>
         <div className="flex flex-col items-center gap-2">
           {code && <p className="font-mono text-sm text-muted-foreground tabular-nums">{code}</p>}
-          <Heading className="text-2xl font-bold text-balance">{title}</Heading>
+          <Heading className="text-3xl font-bold tracking-tight text-balance">{title}</Heading>
           <div className="text-sm text-pretty text-muted-foreground">{body}</div>
         </div>
         <div className="flex flex-wrap justify-center gap-2 pt-2">
@@ -235,13 +235,13 @@ export function LoadingPage({
         {[l.robotsOnline, l.patrolHours, l.events, l.avgBattery].map((label, i) => (
           <div key={i} className="flex flex-col gap-3 rounded-md bg-card p-4 ring-1 ring-border">
             <span className="text-sm text-muted-foreground">{label}</span>
-            <Bone onCard className="h-(--h-sm) w-20" />
+            <Bone className="h-(--h-sm) w-20" />
           </div>
         ))}
       </div>
       <div className="flex flex-col gap-3 rounded-md bg-card p-4 ring-1 ring-border">
         {Array.from({ length: 5 }, (_, i) => (
-          <Bone key={i} onCard className="h-6 w-full" />
+          <Bone key={i} className="h-6 w-full" />
         ))}
       </div>
     </Root>

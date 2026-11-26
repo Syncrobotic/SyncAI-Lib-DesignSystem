@@ -28,14 +28,19 @@ const meta: Meta = { title: "Display" }
 export default meta
 type S = StoryObj
 
-export const BadgeTones: S = {
+/**
+ * A badge labels something that does not change while you look at it: a release channel, a version, the environment, a
+ * licence tier. Neutral grey, or an outline for the environment (a colour on every page all day stops meaning anything).
+ */
+export const BadgeAttributes: S = {
   render: () => (
     <div className="flex flex-wrap gap-2">
-      <Badge tone="info">Updating</Badge>
-      <Badge tone="warning">Low battery</Badge>
-      <Badge tone="danger">3 events</Badge>
-      <Badge>Offline</Badge>
+      <Badge>Beta</Badge>
       <Badge tone="outline">v2.4.1</Badge>
+      <Badge tone="outline">Production</Badge>
+      <Badge>
+        <span className="font-mono">T1</span>
+      </Badge>
     </div>
   ),
 }
@@ -55,7 +60,7 @@ export const CardDefault: S = {
         <Separator />
         <div className="flex items-center justify-between text-sm">
           <span className="text-muted-foreground">Events</span>
-          <Badge tone="danger">2</Badge>
+          <CountBadge count={2} />
         </div>
       </CardContent>
       <CardFooter>
@@ -207,16 +212,17 @@ export const TableRowActions: S = {
   ),
 }
 
-/** A calm state is a neutral badge with its shape; only what needs attention is tinted. Counts are CountBadges. */
+/**
+ * Beside a title: at most one status, as an InlineStatus (its shape and word, no box), then the badges, then a count as a
+ * CountBadge. The badges never carry the state.
+ */
 export const BadgeWithStatusAndCount: S = {
   render: () => (
-    <div className="flex flex-wrap items-center gap-2">
-      <Badge tone="neutral">
-        <StatusGlyph status="active" /> Patrolling
-      </Badge>
-      <Badge tone="warning">
-        <Battery aria-hidden="true" /> 12 %
-      </Badge>
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+      <span className="text-lg font-bold">Patrol dog 7F3A</span>
+      <InlineStatus status="active">Patrolling</InlineStatus>
+      <Badge tone="outline">Production</Badge>
+      <Badge>Beta</Badge>
       <span className="inline-flex items-center gap-2 text-sm">
         Events <CountBadge count={12} />
       </span>
@@ -595,18 +601,48 @@ export const BadgeOutline: S = {
   ),
 }
 
+/** An icon says what kind of label it is, 4 px from the word inside the 24 px badge. Still a category, still grey. */
 export const BadgeWithIcon: S = {
   render: () => (
     <div className="flex flex-wrap gap-2">
-      <Badge tone="warning">
-        <TriangleAlert aria-hidden="true" /> Low battery
+      <Badge>
+        <Lock aria-hidden="true" /> Internal only
+      </Badge>
+      <Badge tone="outline">
+        <Bot aria-hidden="true" /> Simulation
       </Badge>
       <Badge>
-        <Wifi aria-hidden="true" /> Online
+        <CalendarDays aria-hidden="true" /> Night shift
       </Badge>
-      <Badge tone="danger">
-        <CircleAlert aria-hidden="true" /> 2 faults
-      </Badge>
+    </div>
+  ),
+}
+
+/**
+ * Do: a state as an InlineStatus, colour only when it needs someone, and the fixed attributes as grey badges. Don't: a
+ * state in a tinted badge. A box with a colour on every state reads as an alarm, and the state changes under its label.
+ */
+export const BadgeDoAndDont: S = {
+  render: () => (
+    <div className="grid gap-4 sm:grid-cols-2">
+      <figure className="flex flex-col gap-3 rounded-md p-4 ring-1 ring-border">
+        <figcaption className="text-sm font-medium">Do</figcaption>
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+          <InlineStatus status="offline">Offline</InlineStatus>
+          <InlineStatus status="warning">Low battery</InlineStatus>
+          <Badge tone="outline">Production</Badge>
+          <Badge>Beta</Badge>
+        </div>
+      </figure>
+      <figure className="flex flex-col gap-3 rounded-md p-4 ring-1 ring-border">
+        <figcaption className="text-sm font-medium text-danger">Don't</figcaption>
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge className="bg-info-subtle text-info">Updating</Badge>
+          <Badge className="bg-warning-subtle text-warning">Low battery</Badge>
+          <Badge>Offline</Badge>
+          <Badge className="bg-danger-subtle text-danger">Production</Badge>
+        </div>
+      </figure>
     </div>
   ),
 }

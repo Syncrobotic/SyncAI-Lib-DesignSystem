@@ -23,7 +23,7 @@ export function DocJsonLd({ trail, description }: { trail: Crumb[]; description?
       url: `${site.url}${here.path}`,
       inLanguage: "en",
       isPartOf: { "@type": "WebSite", "@id": `${site.url}/#site`, name: site.name, url: site.url },
-      publisher: { "@type": "Organization", name: "SYNCROBOTIC", url: site.url },
+      publisher: { "@type": "Organization", name: "SYNCROBOTIC", url: site.url, sameAs: [site.linkedin, "https://github.com/Syncrobotic"] },
     })
   // `<` escaped, so no text in the data can close the script element.
   const json = JSON.stringify({ "@context": "https://schema.org", "@graph": graph }).replace(/</g, "\\u003c")

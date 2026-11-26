@@ -1,9 +1,10 @@
-// @syncrobotic/chip-group v0.32.0 · update: npx shadcn add @syncrobotic/chip-group --overwrite
+// @syncrobotic/chip-group v0.40.0 · update: npx shadcn add @syncrobotic/chip-group --overwrite
 "use client"
 
 import * as React from "react"
 import { ToggleGroup } from "radix-ui"
 import { cn } from "@/lib/utils"
+import { formatCount } from "@/registry/syncrobotic/lib/format-number"
 
 /**
  * Attributes spread on one chip's button or link: `data-*` hooks for tests and analytics, `title`, `aria-describedby`.
@@ -62,7 +63,7 @@ type ChipGroupBase = {
   lessLabel?: string
   /** The words it says, to translate them. */
   labels?: Partial<ChipGroupLabels>
-  /** Formats the counts (a BCP 47 tag such as "zh-TW"). Left out, the browser's language. */
+  /** Formats the counts (a BCP 47 tag such as "zh-TW"). Left out, English, so the server and the browser write the same. */
   locale?: string
   /** Your router's link (e.g. next/link), for chips with href. */
   linkAs?: React.ElementType
@@ -165,7 +166,7 @@ export function ChipGroup({
   const inner = (c: Chip) => (
     <>
       {c.label}
-      {c.count !== undefined && <span className={countCls}>{c.count.toLocaleString(locale)}</span>}
+      {c.count !== undefined && <span className={countCls}>{formatCount(c.count, { locale })}</span>}
       {multiple && c.href && isOn(c) && <span className="sr-only">, {l.selected}</span>}
     </>
   )

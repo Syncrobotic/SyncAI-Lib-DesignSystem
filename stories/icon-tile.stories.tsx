@@ -64,7 +64,7 @@ export const IconTileStatusTones: S = {
   render: () => (
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-3">
-        <IconTile variant="soft" tone="success">
+        <IconTile variant="soft" tone="neutral">
           <CircleCheck aria-hidden="true" />
         </IconTile>
         <IconTile variant="soft" tone="warning">
@@ -78,7 +78,7 @@ export const IconTileStatusTones: S = {
         </IconTile>
       </div>
       <div className="flex items-center gap-3">
-        <IconTile variant="solid" tone="success">
+        <IconTile variant="solid" tone="neutral">
           <CircleCheck aria-hidden="true" />
         </IconTile>
         <IconTile variant="solid" tone="warning">

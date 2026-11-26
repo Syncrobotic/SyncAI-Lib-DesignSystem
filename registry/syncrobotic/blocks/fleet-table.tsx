@@ -1,10 +1,11 @@
-// @syncrobotic/fleet-table v0.35.0 · update: npx shadcn add @syncrobotic/fleet-table --overwrite
+// @syncrobotic/fleet-table v0.40.0 · update: npx shadcn add @syncrobotic/fleet-table --overwrite
 "use client"
 
 import * as React from "react"
-import { MapPin, Pencil, Search, Trash2 } from "lucide-react"
+import { MapPin, Pencil, Search, SearchX, Trash2 } from "lucide-react"
+import { formatCount } from "@/registry/syncrobotic/lib/format-number"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
-import type { Status } from "@/registry/syncrobotic/shell/status-glyph"
+import { StatusGlyph, type Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuMoreTrigger, DropdownMenuSeparator } from "@/registry/syncrobotic/ui/dropdown-menu"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
@@ -12,8 +13,8 @@ import { Input } from "@/registry/syncrobotic/ui/input"
 import { InputGroup, InputGroupAddon } from "@/registry/syncrobotic/ui/input-group"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
 import { Pagination } from "@/registry/syncrobotic/ui/pagination"
+import { ResponsiveTable, type ResponsiveTableColumn } from "@/registry/syncrobotic/ui/responsive-table"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
-import { Table, TableActionsCell, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
 
 export type Robot = {
   id: string
@@ -43,6 +44,24 @@ export const sampleRobots: Robot[] = [
   { id: "3C62", name: "Patrol dog 3C62", status: "patrolling", battery: 38, site: "Loading bay", lastSeen: "now" },
 ]
 
+// The battery in a phone row's line: the number, and below 15 % the warning shape before it and the word read out.
+const PhoneBattery = ({ value }: { value: number }) => (
+  <span className="inline-flex items-center gap-2 tabular-nums">
+    {value < 15 && <StatusGlyph status="warning" />}
+    {value} %{value < 15 && <span className="sr-only">, low</span>}
+  </span>
+)
+
+// One list of columns for the table and the phone rows: the name is the row's title, the status its trailing shape and
+// word, the battery and the site the line under it; last seen stays in the table.
+const columns: ResponsiveTableColumn<Robot>[] = [
+  { id: "name", header: "Robot", cell: (r) => r.name },
+  { id: "status", header: "Status", cell: (r) => <InlineStatus status={status[r.status].tone}>{status[r.status].label}</InlineStatus>, phone: "trailing", className: "w-44" },
+  { id: "battery", header: "Battery", cell: (r) => <Meter value={r.battery} low={15} label={`Battery, ${r.name}`} inline />, phoneCell: (r) => <PhoneBattery value={r.battery} />, className: "w-48" },
+  { id: "site", header: "Site", cell: (r) => r.site, className: "hidden text-muted-foreground lg:table-cell lg:w-40" },
+  { id: "seen", header: "Last seen", cell: (r) => r.lastSeen, phone: "hidden", className: "hidden text-muted-foreground lg:table-cell lg:w-32" },
+]
+
 type Filter = "all" | "active" | "attention" | "offline"
 const matches: Record<Filter, (r: Robot) => boolean> = {
   all: () => true,
@@ -52,8 +71,8 @@ const matches: Record<Filter, (r: Robot) => boolean> = {
 }
 
 /**
- * The fleet at a glance: search, filter by state, page through, act on a row. On phones, status moves under the name
- * and site and last seen hide. A section, not a screen: the screen it sits in carries the emergency stop, one tap away
+ * The fleet at a glance: search, filter by state, page through, act on a row. The rows are a ResponsiveTable: a table
+ * where there is room, a list on a phone (the name, its state, and the battery and site under it). A section, not a screen: the screen it sits in carries the emergency stop, one tap away
  * (the app shell's, as in console-overview); the table never stops a robot itself.
  */
 
@@ -66,7 +85,7 @@ export function FleetTable({ robots = sampleRobots, pageSize = 5, onOpen }: { ro
   const pages = Math.max(1, Math.ceil(rows.length / pageSize))
   const current = Math.min(page, pages - 1)
   const visible = rows.slice(current * pageSize, current * pageSize + pageSize)
-  const count = (f: Filter) => robots.filter(matches[f]).length
+  const count = (f: Filter) => formatCount(robots.filter(matches[f]).length, { compact: true })
 
   return (
     <div className="flex flex-col gap-4">
@@ -102,15 +121,40 @@ export function FleetTable({ robots = sampleRobots, pageSize = 5, onOpen }: { ro
         </InputGroup>
       </div>
 
-      {visible.length === 0 ? (
-        <div className="rounded-md ring-1 ring-border">
+      <ResponsiveTable
+        label="Robots"
+        rows={visible}
+        columns={columns}
+        rowKey={(r) => r.id}
+        onRowClick={(r) => onOpen?.(r)}
+        rowActions={(r) => (
+          <DropdownMenu modal={false}>
+            <DropdownMenuMoreTrigger name={r.name} size="icon-sm" />
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem>
+                <MapPin aria-hidden="true" /> Show on map
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Pencil aria-hidden="true" /> Rename
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem destructive>
+                <Trash2 aria-hidden="true" /> Remove from fleet
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
+        // No match: one inline EmptyState in the table's spanning cell (the list's surface on a phone), with the way back.
+        empty={
           <EmptyState
-            icon={Search}
+            size="inline"
+            icon={SearchX}
             title="No robots match"
             description="Try another name or clear the filter."
             action={
               <Button
                 variant="secondary"
+                size="sm"
                 onClick={() => {
                   setQuery("")
                   setFilter("all")
@@ -120,64 +164,8 @@ export function FleetTable({ robots = sampleRobots, pageSize = 5, onOpen }: { ro
               </Button>
             }
           />
-        </div>
-      ) : (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Robot</TableHead>
-              <TableHead className="hidden sm:table-cell sm:w-44">Status</TableHead>
-              <TableHead className="sm:w-48">Battery</TableHead>
-              <TableHead className="hidden lg:table-cell lg:w-40">Site</TableHead>
-              <TableHead className="hidden lg:table-cell lg:w-32">Last seen</TableHead>
-              <TableHead className="w-0 pr-2 pl-0 sm:px-4">
-                <span className="sr-only">Actions</span>
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {visible.map((r) => (
-              <TableRow key={r.id}>
-                <TableCell className="max-sm:py-2">
-                  {/* One target for the name and, on a phone, the status under it: at least 44 px, with the row's padding
-                      even above and below. */}
-                  <button data-slot="fleet-table-open" type="button" onClick={() => onOpen?.(r)} className="group/name press flex min-h-(--h-md) flex-col items-start justify-center gap-1 text-left">
-                    <span className="font-medium group-hover/name:underline">{r.name}</span>
-                    <span className="sm:hidden">
-                      <InlineStatus status={status[r.status].tone}>{status[r.status].label}</InlineStatus>
-                    </span>
-                  </button>
-                </TableCell>
-                <TableCell className="hidden sm:table-cell">
-                  <InlineStatus status={status[r.status].tone}>{status[r.status].label}</InlineStatus>
-                </TableCell>
-                <TableCell>
-                  <Meter value={r.battery} low={15} label={`Battery, ${r.name}`} inline className="max-sm:flex-col max-sm:items-start max-sm:gap-1" />
-                </TableCell>
-                <TableCell className="hidden text-muted-foreground lg:table-cell">{r.site}</TableCell>
-                <TableCell className="hidden text-muted-foreground lg:table-cell">{r.lastSeen}</TableCell>
-                <TableActionsCell>
-                  <DropdownMenu modal={false}>
-                    <DropdownMenuMoreTrigger name={r.name} size="icon-sm" />
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem>
-                        <MapPin aria-hidden="true" /> Show on map
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Pencil aria-hidden="true" /> Rename
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem destructive>
-                        <Trash2 aria-hidden="true" /> Remove from fleet
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableActionsCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      )}
+        }
+      />
 
       <Pagination page={current} pageSize={pageSize} total={rows.length} onPageChange={setPage} labels={{ empty: "0 robots" }} />
     </div>

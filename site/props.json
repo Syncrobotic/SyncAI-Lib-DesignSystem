@@ -1488,7 +1488,7 @@
    "props": [
     {
      "name": "tone",
-     "type": "\"outline\" | \"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
+     "type": "\"outline\" | \"neutral\"",
      "default": "\"neutral\"",
      "description": ""
     },
@@ -2254,7 +2254,7 @@
       {
        "name": "count",
        "type": "(n: number, locale: string | undefined) => string",
-       "default": "(n, locale) => n.toLocaleString(locale)",
+       "default": "(n, locale) => formatCount(n, { locale })",
        "description": ""
       },
       {
@@ -2290,7 +2290,7 @@
       {
        "name": "range",
        "type": "(from: number, to: number, total: number, locale?: string) => string",
-       "default": "(from, to, total, locale) => `${from.toLocaleString(locale)}–${to.toLocaleString(locale)} of ${total.toLocaleString(locale)} cameras`",
+       "default": "(from, to, total, locale) => `${formatCount(from, { locale })}–${formatCount(to, { locale })} of ${formatCount(total, { locale })} cameras`",
        "description": ""
       },
       {
@@ -2326,7 +2326,7 @@
       {
        "name": "announce",
        "type": "(changes: { name: string; state: string; }[], locale: string | undefined) => string",
-       "default": "(changes, locale) => { const shown = changes.slice(0, 3).map((c) => `${c.name}: ${c.state}.`) const more = changes.length - shown.length return [...shown, more > 0 ? `${more.toLocaleString(locale)} more ${more === 1 ? \"camera\" : \"cameras\"} changed.` : \"\"].filter(Boolean).join(\" \") }",
+       "default": "(changes, locale) => { const shown = changes.slice(0, 3).map((c) => `${c.name}: ${c.state}.`) const more = changes.length - shown.length return [...shown, more > 0 ? `${formatCount(more, { locale })} more ${more === 1 ? \"camera\" : \"cameras\"} changed.` : \"\"].filter(Boolean).join(\" \") }",
        "description": "One polite announcement for the state changes since the last one: \"Front camera, Patrol dog 7F3A: Stalled.\""
       },
       {
@@ -2649,7 +2649,7 @@
     {
      "name": "locale",
      "type": "string",
-     "description": "Formats the counts (a BCP 47 tag such as \"zh-TW\"). Left out, the browser's language."
+     "description": "Formats the counts (a BCP 47 tag such as \"zh-TW\"). Left out, English, so the server and the browser write the same."
     },
     {
      "name": "linkAs",
@@ -3192,12 +3192,8 @@
     {
      "name": "size",
      "type": "\"sm\" | \"default\"",
+     "default": "\"default\"",
      "description": "sm: 44 px rows for long lists on a desktop. Separate from the theme's data-density, which this follows too."
-    },
-    {
-     "name": "density",
-     "type": "\"default\" | \"dense\"",
-     "description": "Deprecated: Use `size=\"sm\"`."
     },
     {
      "name": "variant",
@@ -3432,7 +3428,7 @@
       {
        "name": "range",
        "type": "(from: number, to: number, total: number, locale?: string) => string",
-       "default": "(from: number, to: number, total: number, locale?: string) => `${from.toLocaleString(locale)}–${to.toLocaleString(locale)} of ${total.toLocaleString(locale)}`",
+       "default": "(from: number, to: number, total: number, locale?: string) => `${formatCount(from, { locale })}–${formatCount(to, { locale })} of ${formatCount(total, { locale })}`",
        "description": "\"1,201–1,220 of 1,240\". `locale` is Pagination's, for formatting the numbers."
       },
       {
@@ -3826,13 +3822,13 @@
       {
        "name": "summary",
        "type": "(problems: number, total: number, locale: string) => string",
-       "default": "(problems, total, locale) => { const f = (n: number) => n.toLocaleString(locale) if (problems === 0) return `${f(total)} ${total === 1 ? \"status\" : \"statuses\"}, nothing needs attention` return `${f(problems)} of ${f(total)} ${problems === 1 ? \"needs\" : \"need\"} attention` }",
+       "default": "(problems, total, locale) => { const f = (n: number) => formatCount(n, { locale }) if (problems === 0) return `${f(total)} ${total === 1 ? \"status\" : \"statuses\"}, nothing needs attention` return `${f(problems)} of ${f(total)} ${problems === 1 ? \"needs\" : \"need\"} attention` }",
        "description": "Beside the worst level, at the top: \"6 of 24 need attention\", or \"All 24 OK\"."
       },
       {
        "name": "updatedAgo",
        "type": "(ms: number, locale: string) => string",
-       "default": "(ms, locale) => { const s = Math.max(0, Math.floor(ms / 1000)) const f = (n: number) => n.toLocaleString(locale) if (s < 60) return `updated ${f(s)} s ago` if (s < 3600) return `updated ${f(Math.floor(s / 60))} min ago` return `updated ${f(Math.floor(s / 3600))} h ago` }",
+       "default": "(ms, locale) => { const s = Math.max(0, Math.floor(ms / 1000)) const f = (n: number) => formatCount(n, { locale }) if (s < 60) return `updated ${f(s)} s ago` if (s < 3600) return `updated ${f(Math.floor(s / 60))} min ago` return `updated ${f(Math.floor(s / 3600))} h ago` }",
        "description": "The time since a status (or, in the header, the last status) arrived: \"updated 12 s ago\"."
       },
       {
@@ -4314,7 +4310,7 @@
     {
      "name": "locale",
      "type": "string",
-     "description": "Formats the counts (a BCP 47 tag such as \"zh-TW\"): \"48,210\". Written as given when left out."
+     "description": "Formats the counts (a BCP 47 tag such as \"zh-TW\"): \"48,210\". Left out, English (formatCount), so the server and the browser agree."
     },
     {
      "name": "labels",
@@ -4394,7 +4390,7 @@
     {
      "name": "locale",
      "type": "string",
-     "description": "Formats the counts (a BCP 47 tag such as \"zh-TW\"): \"48,210\". Written as given when left out."
+     "description": "Formats the counts (a BCP 47 tag such as \"zh-TW\"): \"48,210\". Left out, English (formatCount), so the server and the browser agree."
     },
     {
      "name": "labels",
@@ -4474,7 +4470,7 @@
     {
      "name": "locale",
      "type": "string",
-     "description": "Formats the counts (a BCP 47 tag such as \"zh-TW\"): \"48,210\". Written as given when left out."
+     "description": "Formats the counts (a BCP 47 tag such as \"zh-TW\"): \"48,210\". Left out, English (formatCount), so the server and the browser agree."
     },
     {
      "name": "labels",
@@ -4533,6 +4529,11 @@
      "name": "onOpenChange",
      "type": "(open: boolean) => void",
      "description": ""
+    },
+    {
+     "name": "onOpenAutoFocus",
+     "type": "(event: Event) => void",
+     "description": "The sheet's own focus move when it opens (Radix `onOpenAutoFocus`). Call `event.preventDefault()` to keep focus where it is, for a sheet that opens on load (a preview) rather than from its button."
     }
    ],
    "inherits": []
@@ -4890,7 +4891,7 @@
     {
      "name": "locale",
      "type": "string",
-     "description": "Formats the options' counts (a BCP 47 tag such as \"zh-TW\"). Left out, the browser's language."
+     "description": "Formats the options' counts (a BCP 47 tag such as \"zh-TW\"). Left out, English, so the server and the browser write the same."
     }
    ],
    "inherits": []
@@ -4973,7 +4974,7 @@
     {
      "name": "locale",
      "type": "string",
-     "description": "Formats the views' counts (a BCP 47 tag such as \"zh-TW\"). Left out, the browser's language."
+     "description": "Formats the views' counts (a BCP 47 tag such as \"zh-TW\"). Left out, English, so the server and the browser write the same."
     }
    ],
    "inherits": []
@@ -6086,7 +6087,7 @@
     },
     {
      "name": "tone",
-     "type": "\"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
+     "type": "\"neutral\" | \"warning\" | \"danger\"",
      "default": "\"neutral\"",
      "description": ""
     },
@@ -6370,12 +6371,8 @@
     {
      "name": "status",
      "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
+     "default": "\"offline\"",
      "description": "Shape at the avatar's corner: the dog's current state."
-    },
-    {
-     "name": "tone",
-     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
-     "description": "Deprecated: Use `status`."
     },
     {
      "name": "attention",
@@ -7035,6 +7032,11 @@
      "name": "onClick",
      "type": "() => void",
      "description": ""
+    },
+    {
+     "name": "wrap",
+     "type": "boolean",
+     "description": "The title wraps to a second line (clamped past that) instead of being cut, and the trailing slot moves under it rather than squeeze it below 160 px. For a row whose title is the words that matter (an incident, an alarm)."
     }
    ],
    "inherits": []
@@ -7082,13 +7084,13 @@
       {
        "name": "showing",
        "type": "(shown: number, total: number, locale?: string) => string",
-       "default": "(shown, total, locale) => `Showing ${shown.toLocaleString(locale)} of ${total.toLocaleString(locale)}`",
+       "default": "(shown, total, locale) => `Showing ${formatCount(shown, { locale })} of ${formatCount(total, { locale })}`",
        "description": "\"Showing 40 of 125\". `locale` is LoadMore's, for formatting the numbers."
       },
       {
        "name": "more",
        "type": "(next: number, left: number, locale?: string) => string",
-       "default": "(next, left, locale) => `Show ${next.toLocaleString(locale)} more (${left.toLocaleString(locale)} left)`",
+       "default": "(next, left, locale) => `Show ${formatCount(next, { locale })} more (${formatCount(left, { locale })} left)`",
        "description": "\"Show 20 more (85 left)\""
       }
      ]
@@ -7096,7 +7098,7 @@
     {
      "name": "locale",
      "type": "string",
-     "description": "Formats the numbers (a BCP 47 tag such as \"zh-TW\"). Left out, the browser's language."
+     "description": "Formats the numbers (a BCP 47 tag such as \"zh-TW\"). Left out, English, so the server and the browser write the same."
     }
    ],
    "inherits": []
@@ -7286,7 +7288,7 @@
       {
        "name": "matches",
        "type": "(current: number, total: number, locale: string | undefined) => string",
-       "default": "(current, total, locale) => total === 0 ? \"No matches\" : current ? `${current.toLocaleString(locale)} of ${total.toLocaleString(locale)}` : plural(total, \"match\", \"matches\", locale)",
+       "default": "(current, total, locale) => total === 0 ? \"No matches\" : current ? `${formatCount(current, { locale })} of ${formatCount(total, { locale })}` : plural(total, \"match\", \"matches\", locale)",
        "description": "Beside the search box: \"3 of 120\", or how many lines match before one is picked."
       },
       {
@@ -7340,7 +7342,7 @@
       {
        "name": "count",
        "type": "(n: number, locale: string | undefined) => string",
-       "default": "(n, locale) => n.toLocaleString(locale)",
+       "default": "(n, locale) => formatCount(n, { locale })",
        "description": "Shown in a menu item beside a level or a source."
       },
       {
@@ -7370,7 +7372,7 @@
       {
        "name": "newLines",
        "type": "(n: number, locale: string | undefined) => string",
-       "default": "(n, locale) => `${n.toLocaleString(locale)} new`",
+       "default": "(n, locale) => `${formatCount(n, { locale })} new`",
        "description": ""
       },
       {
@@ -7388,13 +7390,13 @@
       {
        "name": "total",
        "type": "(shown: number, total: number, locale: string | undefined) => string",
-       "default": "(shown, total, locale) => (shown === total ? plural(total, \"line\", \"lines\", locale) : `${shown.toLocaleString(locale)} of ${plural(total, \"line\", \"lines\", locale)}`)",
+       "default": "(shown, total, locale) => (shown === total ? plural(total, \"line\", \"lines\", locale) : `${formatCount(shown, { locale })} of ${plural(total, \"line\", \"lines\", locale)}`)",
        "description": "Footer: all lines, or the lines the filters show of them."
       },
       {
        "name": "capped",
        "type": "(max: number, locale: string | undefined) => string",
-       "default": "(max, locale) => `keeps the last ${max.toLocaleString(locale)}`",
+       "default": "(max, locale) => `keeps the last ${formatCount(max, { locale })}`",
        "description": "Footer, once the buffer is full: older lines are being dropped."
       },
       {
@@ -7502,9 +7504,9 @@
      "description": ""
     },
     {
-     "name": "tone",
+     "name": "status",
      "type": "\"warning\" | \"danger\"",
-     "description": "warning or danger colour the label; anything else stays neutral."
+     "description": "warning or danger colour the label; leave it out for an ordinary line."
     },
     {
      "name": "align",
@@ -7523,12 +7525,7 @@
     {
      "name": "status",
      "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
-     "description": "The line's status, drawn as its glyph: only warning and danger are coloured."
-    },
-    {
-     "name": "tone",
-     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
-     "description": "Deprecated: Use `status` (info → active, success → normal, neutral → offline)."
+     "description": "The line's status, drawn as its glyph: only warning and danger are coloured, the glyph and never the title."
     },
     {
      "name": "icon",
@@ -8164,9 +8161,19 @@
      "description": "A Breadcrumb, shown above the title."
     },
     {
+     "name": "status",
+     "type": "ReactNode",
+     "description": "The state of what the page shows (a robot, a job, a dataset), beside the title: one `InlineStatus`, at most one. Its shape and word, no box, so it never reads as one more fact in the meta row."
+    },
+    {
+     "name": "badges",
+     "type": "ReactNode",
+     "description": "Badges for fixed attributes (an environment as an outline, Beta, a version), after the title and its status."
+    },
+    {
      "name": "meta",
      "type": "ReactNode",
-     "description": "MetaPills: counts, owner, last update, a status."
+     "description": "MetaPills: facts about the page, such as counts, owner and last update. A state goes in `status`, not here."
     },
     {
      "name": "actions",
@@ -8191,11 +8198,6 @@
   {
    "name": "MetaPill",
    "props": [
-    {
-     "name": "tone",
-     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
-     "description": ""
-    },
     {
      "name": "icon",
      "type": "ReactNode",
@@ -8279,7 +8281,7 @@
       {
        "name": "range",
        "type": "(from: number, to: number, total: number, locale?: string) => string",
-       "default": "(from: number, to: number, total: number, locale?: string) => `${from.toLocaleString(locale)}–${to.toLocaleString(locale)} of ${total.toLocaleString(locale)}`",
+       "default": "(from: number, to: number, total: number, locale?: string) => `${formatCount(from, { locale })}–${formatCount(to, { locale })} of ${formatCount(total, { locale })}`",
        "description": "\"1,201–1,220 of 1,240\". `locale` is Pagination's, for formatting the numbers."
       },
       {
@@ -8311,7 +8313,7 @@
     {
      "name": "locale",
      "type": "string",
-     "description": "Formats the numbers, with the language's thousands separator (a BCP 47 tag such as \"zh-TW\"). Left out, the browser's language."
+     "description": "Formats the numbers, with the language's thousands separator (a BCP 47 tag such as \"zh-TW\"). Left out, English, so the server and the browser write the same."
     }
    ],
    "inherits": []
@@ -8502,7 +8504,7 @@
       {
        "name": "count",
        "type": "(n: number) => string",
-       "default": "(n) => (n === 1 ? \"1 point\" : `${n.toLocaleString(\"en-US\")} points`)",
+       "default": "(n) => (n === 1 ? \"1 point\" : `${formatCount(n)} points`)",
        "description": "\"123,456 points\"."
       },
       {
@@ -8679,7 +8681,7 @@
    "props": [
     {
      "name": "tone",
-     "type": "\"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
+     "type": "\"neutral\" | \"info\" | \"warning\" | \"danger\"",
      "default": "\"info\"",
      "description": ""
     }
@@ -10632,7 +10634,7 @@
     {
      "name": "locale",
      "type": "string",
-     "description": "Formats the numbers and shares (a BCP 47 tag such as \"zh-TW\"). Left out, the browser's language."
+     "description": "Formats the numbers and shares (a BCP 47 tag such as \"zh-TW\"). Left out, English, so the server and the browser write the same."
     },
     {
      "name": "linkAs",
@@ -10655,7 +10657,7 @@
     {
      "name": "locale",
      "type": "string",
-     "description": "Formats the values (a BCP 47 tag such as \"zh-TW\"). Left out, the browser's language."
+     "description": "Formats the values (a BCP 47 tag such as \"zh-TW\"). Left out, English, so the server and the browser write the same."
     }
    ],
    "inherits": []
@@ -11033,13 +11035,7 @@
  "skeleton": [
   {
    "name": "Bone",
-   "props": [
-    {
-     "name": "onCard",
-     "type": "boolean",
-     "description": "Deprecated: Bones read on every surface now; kept so older call sites still compile."
-    }
-   ],
+   "props": [],
    "inherits": []
   },
   {
@@ -11313,12 +11309,8 @@
     {
      "name": "status",
      "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
-     "description": ""
-    },
-    {
-     "name": "tone",
-     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
-     "description": "Deprecated: Use `status`."
+     "default": "\"offline\"",
+     "description": "active (busy), normal, warning, danger or offline (the default)."
     },
     {
      "name": "children",
@@ -11335,12 +11327,8 @@
     {
      "name": "status",
      "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
-     "description": ""
-    },
-    {
-     "name": "tone",
-     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
-     "description": ""
+     "default": "\"offline\"",
+     "description": "active (busy), normal, warning, danger or offline (the default)."
     },
     {
      "name": "children",
@@ -11359,12 +11347,8 @@
     {
      "name": "status",
      "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
-     "description": "active (busy), normal, warning, danger or offline."
-    },
-    {
-     "name": "tone",
-     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
-     "description": "Deprecated: Use `status` (info → active, success → normal, neutral → offline)."
+     "default": "\"offline\"",
+     "description": "active (busy), normal, warning, danger or offline (the default)."
     }
    ],
    "inherits": []
@@ -12085,7 +12069,7 @@
       {
        "name": "queued",
        "type": "(position: number | undefined, locale: string | undefined) => string",
-       "default": "(position, locale) => (position === undefined ? \"Waiting in the queue\" : position <= 1 ? \"Next in the queue\" : `Number ${position.toLocaleString(locale)} in the queue`)",
+       "default": "(position, locale) => (position === undefined ? \"Waiting in the queue\" : position <= 1 ? \"Next in the queue\" : `Number ${formatCount(position, { locale })} in the queue`)",
        "description": "In the queue: with the place in it (1 is next), or without one."
       },
       {
@@ -12176,24 +12160,6 @@
   }
  ],
  "table": [
-  {
-   "name": "ScrollFades",
-   "props": [
-    {
-     "name": "start",
-     "type": "boolean",
-     "required": true,
-     "description": ""
-    },
-    {
-     "name": "end",
-     "type": "boolean",
-     "required": true,
-     "description": ""
-    }
-   ],
-   "inherits": []
-  },
   {
    "name": "Table",
    "props": [],
@@ -12854,12 +12820,8 @@
     {
      "name": "size",
      "type": "\"sm\" | \"default\"",
+     "default": "\"default\"",
      "description": "sm: less space between events, for a long history."
-    },
-    {
-     "name": "density",
-     "type": "\"default\" | \"dense\"",
-     "description": "Deprecated: Use `size=\"sm\"`."
     }
    ],
    "inherits": [
@@ -12882,12 +12844,7 @@
     {
      "name": "status",
      "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
-     "description": "A status, drawn as its glyph: only warning and danger are coloured. Leave empty for an ordinary event."
-    },
-    {
-     "name": "tone",
-     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
-     "description": "Deprecated: Use `status` (info → active, success → normal, neutral → offline)."
+     "description": "A status, drawn as its glyph (or on the icon): only warning and danger are coloured, the mark and never the title. Leave empty for an ordinary event."
     },
     {
      "name": "icon",
@@ -13085,11 +13042,6 @@
      "name": "size",
      "type": "\"sm\" | \"default\"",
      "description": "sm: tighter rows for a long run. Rows you can open stay 44 px."
-    },
-    {
-     "name": "density",
-     "type": "\"default\" | \"dense\"",
-     "description": "Deprecated: Use `size=\"sm\"`."
     },
     {
      "name": "total",
@@ -13748,19 +13700,19 @@
       {
        "name": "headingShort",
        "type": "(deg: number, locale: string | undefined) => string",
-       "default": "(deg, locale) => `facing ${Math.round(deg).toLocaleString(locale)}°`",
+       "default": "(deg, locale) => `facing ${formatCount(Math.round(deg), { locale })}°`",
        "description": ""
       },
       {
        "name": "actionShort",
        "type": "(action: WaypointAction, locale: string | undefined) => string",
-       "default": "(a, locale) => a.type === \"wait\" ? `Wait ${a.seconds.toLocaleString(locale)} s` : a.type === \"dock\" ? \"Dock\" : a.type === \"photo\" ? \"Photo\" : a.type === \"custom\" ? a.name || \"Custom action\" : \"\"",
+       "default": "(a, locale) => a.type === \"wait\" ? `Wait ${formatNumber(a.seconds, { locale })} s` : a.type === \"dock\" ? \"Dock\" : a.type === \"photo\" ? \"Photo\" : a.type === \"custom\" ? a.name || \"Custom action\" : \"\"",
        "description": "The action in the row: \"Wait 30 s\", \"Dock\", the custom action's name."
       },
       {
        "name": "dwellShort",
        "type": "(seconds: number, locale: string | undefined) => string",
-       "default": "(s, locale) => `stay ${s.toLocaleString(locale)} s`",
+       "default": "(s, locale) => `stay ${formatNumber(s, { locale })} s`",
        "description": ""
       },
       {
@@ -13772,7 +13724,7 @@
       {
        "name": "count",
        "type": "(n: number, locale: string | undefined) => string",
-       "default": "(n, locale) => (n === 1 ? \"1 waypoint\" : `${n.toLocaleString(locale)} waypoints`)",
+       "default": "(n, locale) => (n === 1 ? \"1 waypoint\" : `${formatCount(n, { locale })} waypoints`)",
        "description": ""
       },
       {
@@ -13796,7 +13748,7 @@
       {
        "name": "duration",
        "type": "(seconds: number, locale: string | undefined) => string",
-       "default": "(s, locale) => { const t = Math.round(s) if (t < 60) return `about ${t.toLocaleString(locale)} s` const h = Math.floor(t / 3600) const m = Math.floor((t % 3600) / 60) return h ? `about ${h.toLocaleString(locale)} h ${m.toLocaleString(locale)} min` : `about ${m.toLocaleString(locale)} min ${(t % 60).toLocaleString(locale)} s` }",
+       "default": "(s, locale) => { const t = Math.round(s) if (t < 60) return `about ${formatCount(t, { locale })} s` const h = Math.floor(t / 3600) const m = Math.floor((t % 3600) / 60) return h ? `about ${formatCount(h, { locale })} h ${formatCount(m, { locale })} min` : `about ${formatCount(m, { locale })} min ${formatCount(t % 60, { locale })} s` }",
        "description": ""
       },
       {
@@ -13838,7 +13790,7 @@
       {
        "name": "blocked",
        "type": "(problems: number, locale: string | undefined) => string",
-       "default": "(n, locale) => (n === 1 ? \"Fix 1 problem to save\" : `Fix ${n.toLocaleString(locale)} problems to save`)",
+       "default": "(n, locale) => (n === 1 ? \"Fix 1 problem to save\" : `Fix ${formatCount(n, { locale })} problems to save`)",
        "description": ""
       },
       {
@@ -13862,7 +13814,7 @@
       {
        "name": "problems",
        "type": "(n: number, locale: string | undefined) => string",
-       "default": "(n, locale) => (n === 0 ? \"No problems left\" : n === 1 ? \"1 problem\" : `${n.toLocaleString(locale)} problems`)",
+       "default": "(n, locale) => (n === 0 ? \"No problems left\" : n === 1 ? \"1 problem\" : `${formatCount(n, { locale })} problems`)",
        "description": "Said (throttled) when the number of problems changes."
       },
       {

@@ -1,9 +1,10 @@
-// @syncrobotic/teleop-pad v0.37.0 · update: npx shadcn add @syncrobotic/teleop-pad --overwrite
+// @syncrobotic/teleop-pad v0.40.0 · update: npx shadcn add @syncrobotic/teleop-pad --overwrite
 "use client"
 
 import * as React from "react"
 import { CircleAlert, CirclePause, Joystick, Lock, Move } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { formatNumber } from "@/registry/syncrobotic/lib/format-number"
 import { feedback } from "@/registry/syncrobotic/lib/feedback"
 
 /**
@@ -334,7 +335,7 @@ export function TeleopPad({
   const Icon = disabled ? Lock : driving ? Move : status === "stopped" ? CirclePause : status === "lost" ? CircleAlert : Joystick
   const speedText =
     driving && !disabled && speed !== undefined
-      ? `${speed.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ${l.speedUnit}`
+      ? `${formatNumber(speed, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} ${l.speedUnit}`
       : undefined
 
   // The pad is four stop-heights across (224 px, 256 in glove density) and the knob one: the knob is as big a target

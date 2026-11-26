@@ -30,7 +30,6 @@ import { BarChartRanked } from "@/registry/syncrobotic/blocks/bar-chart-ranked"
 import { BarChartStacked } from "@/registry/syncrobotic/blocks/bar-chart-stacked"
 import { BarChartVariance } from "@/registry/syncrobotic/blocks/bar-chart-variance"
 import { SparklineRobotList } from "@/registry/syncrobotic/blocks/sparkline-robot-list"
-import { SparklineMetricTiles } from "@/registry/syncrobotic/blocks/sparkline-metric-tiles"
 import { SparklineTable } from "@/registry/syncrobotic/blocks/sparkline-table"
 import { StatusTrackerUptime } from "@/registry/syncrobotic/blocks/status-tracker-uptime"
 import { StatusTrackerRuns } from "@/registry/syncrobotic/blocks/status-tracker-runs"
@@ -137,11 +136,6 @@ export const blockRenders: Record<string, () => React.ReactNode> = {
   "sparkline-robot-list": () => (
       <div className="mx-auto max-w-3xl p-6">
         <SparklineRobotList />
-      </div>
-    ),
-  "sparkline-metric-tiles": () => (
-      <div className="mx-auto max-w-3xl p-6">
-        <SparklineMetricTiles />
       </div>
     ),
   "sparkline-table": () => (

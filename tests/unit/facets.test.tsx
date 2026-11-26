@@ -34,9 +34,9 @@ describe("Facets", () => {
     expect(screen.getByRole("checkbox", { name: "T0 · Open 48,210" })).toBeTruthy()
   })
 
-  it("writes the counts as given without a locale, so the server and the browser agree", () => {
+  it("writes the counts in full with grouping, in English without a locale, so the server and the browser agree", () => {
     render(<FacetList facets={facets.slice(0, 1)} />)
-    expect(screen.getByRole("checkbox", { name: "T0 · Open 48210" })).toBeTruthy()
+    expect(screen.getByRole("checkbox", { name: "T0 · Open 48,210" })).toBeTruthy()
   })
 
   it("picks and unpicks per facet, held by itself or by the page", () => {
@@ -145,6 +145,18 @@ describe("FacetsDrawer", () => {
     expect(document.activeElement).toBe(within(sheet).getByRole("button", { name: "Done" }))
     fireEvent.click(within(sheet).getByRole("button", { name: "Done" }))
     expect(screen.queryByRole("dialog")).toBeNull()
+  })
+
+  it("passes onOpenAutoFocus to the sheet, so a drawer open on load can leave focus where it is", () => {
+    const outside = document.createElement("button")
+    document.body.append(outside)
+    outside.focus()
+    const onOpenAutoFocus = vi.fn((e: Event) => e.preventDefault())
+    render(<FacetsDrawer facets={facets} defaultOpen onOpenAutoFocus={onOpenAutoFocus} />)
+    expect(screen.getByRole("dialog", { name: "Filters" })).toBeTruthy()
+    expect(onOpenAutoFocus).toHaveBeenCalledTimes(1)
+    expect(document.activeElement).toBe(outside)
+    outside.remove()
   })
 
   it("speaks Traditional Chinese through labels", () => {

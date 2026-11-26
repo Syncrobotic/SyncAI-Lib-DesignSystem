@@ -17,6 +17,21 @@ const config: NextConfig = {
       { source: "/docs/foundations", destination: "/docs", permanent: true },
       // The icons moved from the foundations to an area of their own.
       { source: "/docs/icons", destination: "/icons", permanent: true },
+      // 0.40: the sparkline, status tracker, radial and heatmap patterns drew without the Chart component, so they left the
+      // Chart page for one Application type of their own. Their old type pages lead there; each block's own URL
+      // (/blocks/<name>) already follows it to its new place.
+      ...["sparkline", "status-tracker", "radial-chart", "heatmap"].map((slug) => ({
+        source: `/blocks/${slug}`,
+        destination: "/blocks/data-visualisation",
+        permanent: true,
+      })),
+      // 0.40: the number library was renamed from format-count to format-number (it formats every number, not only counts).
+      { source: "/docs/components/format-count", destination: "/docs/components/format-number", permanent: true },
+      { source: "/docs/components/format-count.md", destination: "/docs/components/format-number.md", permanent: true },
+      // 0.40: sparkline-metric-tiles was stats-cards with three stats; it is removed, and its pages lead to stats-cards.
+      { source: "/blocks/sparkline-metric-tiles", destination: "/blocks/stats#stats-cards", permanent: true },
+      { source: "/blocks/sparkline-metric-tiles.md", destination: "/blocks/stats-cards.md", permanent: true },
+      { source: "/preview/sparkline-metric-tiles", destination: "/preview/stats-cards", permanent: true },
     ]
   },
   // Security headers on every response. The docs show blocks in iframes of their own pages, so framing is allowed from

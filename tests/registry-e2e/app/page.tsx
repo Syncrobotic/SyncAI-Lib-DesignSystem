@@ -27,8 +27,8 @@ export default function Page() {
       <StatsCards />
       <FleetTable />
       <RobotStatusCard />
-      <Island name="7F3A" tone="info" />
-      <Card><CardHeader><CardTitle>Card</CardTitle></CardHeader><Badge tone="info">Info</Badge><Button>Go</Button><Button asChild><a href="#x">Link</a></Button></Card>
+      <Island name="7F3A" status="active" />
+      <Card><CardHeader><CardTitle>Card</CardTitle></CardHeader><Badge tone="outline">Info</Badge><Button>Go</Button><Button asChild><a href="#x">Link</a></Button></Card>
       <Alert tone="warning"><AlertTitle>Alert</AlertTitle></Alert>
       <Table><TableBody><TableRow><TableCell>1</TableCell></TableRow></TableBody></Table>
       <EmptyState title="Empty" /><Separator /><Progress value={40} />
@@ -36,7 +36,7 @@ export default function Page() {
       <Tabs defaultValue="a"><TabsList><TabsTrigger value="a">A</TabsTrigger></TabsList><TabsContent value="a">A</TabsContent></Tabs>
       <Field label="Name"><Input /></Field>
       <ListGroup><ListRow title="Row" /></ListGroup>
-      <StatusEyebrow tone="success">OK</StatusEyebrow><Bone />
+      <StatusEyebrow status="normal">OK</StatusEyebrow><Bone />
     </main>
   )
 }

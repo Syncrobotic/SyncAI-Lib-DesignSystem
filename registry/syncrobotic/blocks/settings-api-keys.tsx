@@ -1,4 +1,4 @@
-// @syncrobotic/settings-api-keys v0.17.3 · update: npx shadcn add @syncrobotic/settings-api-keys --overwrite
+// @syncrobotic/settings-api-keys v0.40.0 · update: npx shadcn add @syncrobotic/settings-api-keys --overwrite
 "use client"
 
 import * as React from "react"
@@ -16,9 +16,13 @@ import {
 } from "@/registry/syncrobotic/ui/alert-dialog"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Card } from "@/registry/syncrobotic/ui/card"
-import { CopyButton } from "@/registry/syncrobotic/ui/copy-button"
+import { Code } from "@/registry/syncrobotic/ui/code"
+import { CodeBlock } from "@/registry/syncrobotic/ui/code-block"
+import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
+import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from "@/registry/syncrobotic/ui/item"
+import { SectionHeader } from "@/registry/syncrobotic/ui/section-header"
 
 export type ApiKey = { id: string; name: string; prefix: string; created: string; lastUsed: string }
 
@@ -57,20 +61,20 @@ export function SettingsApiKeys({ keys: initial = sampleKeys }: { keys?: ApiKey[
 
   return (
     <section aria-labelledby="keys-title" className="flex flex-col gap-4">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="flex flex-col gap-1">
-          <h2 id="keys-title" className="text-lg font-bold">
-            API keys
-          </h2>
-          <p className="text-sm text-muted-foreground">Keys let other systems read robots and start missions as your organisation.</p>
-        </div>
-        {!creating && !secret && (
-          <Button variant="secondary" onClick={() => setCreating(true)}>
-            <Plus aria-hidden="true" />
-            Create key
-          </Button>
-        )}
-      </div>
+      <SectionHeader
+        id="keys-title"
+        title="API keys"
+        description="Keys let other systems read robots and start missions as your organisation."
+        actions={
+          !creating &&
+          !secret && (
+            <Button variant="secondary" onClick={() => setCreating(true)}>
+              <Plus aria-hidden="true" />
+              Create key
+            </Button>
+          )
+        }
+      />
 
       {creating && (
         <form noValidate onSubmit={create} className="flex animate-appear flex-col gap-4 rounded-md bg-card p-4 ring-1 ring-border">
@@ -92,10 +96,7 @@ export function SettingsApiKeys({ keys: initial = sampleKeys }: { keys?: ApiKey[
             <span className="text-sm font-medium">Copy your new key now</span>
             <span className="text-sm text-muted-foreground">You will not see it again. If you lose it, revoke it and create another.</span>
           </div>
-          <div className="flex items-center gap-2 rounded-sm bg-muted p-2 pl-3">
-            <code className="min-w-0 flex-1 truncate font-mono text-sm">{secret}</code>
-            <CopyButton value={secret} label="Copy the new key" variant="outline" />
-          </div>
+          <CodeBlock code={secret} title="API key" secret copyLabel="Copy the new key" />
           <Button variant="secondary" className="self-start" onClick={() => setSecret(null)}>
             Done, I have copied it
           </Button>
@@ -103,42 +104,57 @@ export function SettingsApiKeys({ keys: initial = sampleKeys }: { keys?: ApiKey[
       )}
 
       <Card className="gap-0 p-0">
-        <ul>
-          {keys.map((k) => (
-            <li key={k.id} className="flex flex-wrap items-center gap-2 border-b border-border px-4 py-3 last:border-b-0">
-              <KeyRound aria-hidden="true" className="size-5 shrink-0 text-muted-foreground" />
-              <span className="flex min-w-0 flex-1 flex-col">
-                <span className="text-sm font-medium">{k.name}</span>
-                <span className="text-xs text-muted-foreground">
-                  <code className="font-mono">{k.prefix}…</code> · Created {k.created} · Last used {k.lastUsed}
-                </span>
-              </span>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  {/* Neutral in the list: three red buttons at rest would shout on a calm page. Red is for the
-                      confirmation, where the key is actually revoked. */}
-                  <Button variant="outline" size="sm" aria-label={`Revoke ${k.name}`}>
-                    Revoke
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Revoke {k.name}?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Anything using <code className="font-mono">{k.prefix}…</code> stops working at once. You cannot undo this; create a new key instead.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Keep key</AlertDialogCancel>
-                    <AlertDialogAction destructive onClick={() => setKeys((all) => all.filter((x) => x.id !== k.id))}>
-                      Revoke key
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </li>
-          ))}
-        </ul>
+        {keys.length === 0 ? (
+          <EmptyState
+            size="inline"
+            icon={KeyRound}
+            title="No API keys"
+            description="Create one for each system that reads robots or starts missions, so you can revoke it alone."
+          />
+        ) : (
+          <ItemGroup aria-label="API keys" className="gap-0">
+            {keys.map((k) => (
+              <Item key={k.id} role="listitem" className="flex-wrap rounded-none border-b border-border px-4 last:border-b-0">
+                <ItemMedia variant="plain">
+                  <KeyRound aria-hidden="true" className="size-5 text-muted-foreground" />
+                </ItemMedia>
+                <ItemContent>
+                  <ItemTitle>
+                    <span>{k.name}</span>
+                  </ItemTitle>
+                  <ItemDescription className="text-xs">
+                    <Code>{k.prefix}…</Code> · Created {k.created} · Last used {k.lastUsed}
+                  </ItemDescription>
+                </ItemContent>
+                <ItemActions>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      {/* Neutral in the list: three red buttons at rest would shout on a calm page. Red is for the
+                          confirmation, where the key is actually revoked. */}
+                      <Button variant="outline" size="sm" aria-label={`Revoke ${k.name}`}>
+                        Revoke
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Revoke {k.name}?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Anything using <Code>{k.prefix}…</Code> stops working at once. You cannot undo this; create a new key instead.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Keep key</AlertDialogCancel>
+                        <AlertDialogAction destructive onClick={() => setKeys((all) => all.filter((x) => x.id !== k.id))}>
+                          Revoke key
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </ItemActions>
+              </Item>
+            ))}
+          </ItemGroup>
+        )}
       </Card>
     </section>
   )

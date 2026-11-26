@@ -1,13 +1,16 @@
-// @syncrobotic/dialog-share v0.17.4 · update: npx shadcn add @syncrobotic/dialog-share --overwrite
+// @syncrobotic/dialog-share v0.40.0 · update: npx shadcn add @syncrobotic/dialog-share --overwrite
 "use client"
 
 import * as React from "react"
 import { Share2 } from "lucide-react"
 import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"
 import { Button } from "@/registry/syncrobotic/ui/button"
+import { Code } from "@/registry/syncrobotic/ui/code"
 import { CopyButton } from "@/registry/syncrobotic/ui/copy-button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/registry/syncrobotic/ui/dialog"
+import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
+import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from "@/registry/syncrobotic/ui/item"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
 import { Separator } from "@/registry/syncrobotic/ui/separator"
 
@@ -66,56 +69,53 @@ export function DialogShare({
             <DialogTitle>Share {title}</DialogTitle>
             <DialogDescription>People you add get an email with a link.</DialogDescription>
           </DialogHeader>
-          <form noValidate onSubmit={invite} className="flex flex-col gap-2">
-            <div className="flex gap-2">
-              <Input
-                aria-label="Email to invite"
-                placeholder="name@example.com"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                aria-invalid={error ? true : undefined}
-                aria-describedby={error ? "share-error" : undefined}
-              />
+          <form noValidate onSubmit={invite} className="flex items-start gap-2">
+            <Field label="Invite by email" error={error} className="min-w-0 flex-1">
+              <Input placeholder="name@example.com" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            </Field>
+            {/* A blank line the height of the label, so the button lines up with the field, not with its error. */}
+            <div className="flex flex-col gap-2">
+              <span aria-hidden="true" className="h-5" />
               <Button type="submit" variant="secondary">
                 Invite
               </Button>
             </div>
-            {error && (
-              <p id="share-error" className="text-sm text-danger">
-                {error}
-              </p>
-            )}
           </form>
-          <ul aria-label="People with access" className="flex flex-col">
+          <ItemGroup aria-label="People with access" className="gap-0">
             {people.map((p) => (
-              <li key={p.email} className="flex min-h-(--h-row) items-center gap-3">
-                <Avatar className="size-8">
-                  <AvatarFallback className="text-xs">{p.initials}</AvatarFallback>
-                </Avatar>
-                <span className="flex min-w-0 flex-1 flex-col">
-                  <span className="truncate text-sm font-medium capitalize">{p.name}</span>
-                  <span className="truncate text-xs text-muted-foreground">{p.email}</span>
-                </span>
-                {p.access === "owner" ? (
-                  <span className="px-3 text-sm text-muted-foreground">Owner</span>
-                ) : (
-                  <Select
-                    value={p.access}
-                    onValueChange={(v) => setPeople((all) => all.map((x) => (x.email === p.email ? { ...x, access: v as Person["access"] } : x)))}
-                  >
-                    <SelectTrigger aria-label={`Access for ${p.name}`} className="w-32">
-                      <SelectValue>{accessLabel[p.access]}</SelectValue>
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="edit">Can edit</SelectItem>
-                      <SelectItem value="view">Can view</SelectItem>
-                    </SelectContent>
-                  </Select>
-                )}
-              </li>
+              <Item key={p.email} role="listitem" className="px-0">
+                <ItemMedia variant="avatar">
+                  <Avatar className="size-8">
+                    <AvatarFallback className="text-xs">{p.initials}</AvatarFallback>
+                  </Avatar>
+                </ItemMedia>
+                <ItemContent className="gap-0">
+                  <ItemTitle className="capitalize">
+                    <span>{p.name}</span>
+                  </ItemTitle>
+                  <ItemDescription className="truncate text-xs">{p.email}</ItemDescription>
+                </ItemContent>
+                <ItemActions>
+                  {p.access === "owner" ? (
+                    <span className="px-3 text-sm text-muted-foreground">Owner</span>
+                  ) : (
+                    <Select
+                      value={p.access}
+                      onValueChange={(v) => setPeople((all) => all.map((x) => (x.email === p.email ? { ...x, access: v as Person["access"] } : x)))}
+                    >
+                      <SelectTrigger aria-label={`Access for ${p.name}`} className="w-32">
+                        <SelectValue>{accessLabel[p.access]}</SelectValue>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="edit">Can edit</SelectItem>
+                        <SelectItem value="view">Can view</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
+                </ItemActions>
+              </Item>
             ))}
-          </ul>
+          </ItemGroup>
           <Separator />
           <div className="flex flex-col gap-2">
             <div className="flex flex-wrap items-center justify-between gap-2">
@@ -132,8 +132,10 @@ export function DialogShare({
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex items-center gap-2 rounded-sm bg-muted p-2 pl-3">
-              <code className="min-w-0 flex-1 truncate font-mono text-sm">{link}</code>
+            <div className="flex items-center gap-2">
+              <span className="min-w-0 flex-1 text-sm">
+                <Code>{link}</Code>
+              </span>
               <CopyButton value={link} label="Copy link" variant="outline">
                 Copy link
               </CopyButton>
