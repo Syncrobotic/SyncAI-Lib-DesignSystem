@@ -1,4 +1,4 @@
-// @syncrobotic/settings-page v0.28.0 · update: npx shadcn add @syncrobotic/settings-page --overwrite
+// @syncrobotic/settings-page v0.40.0 · update: npx shadcn add @syncrobotic/settings-page --overwrite
 "use client"
 
 import * as React from "react"
@@ -22,6 +22,7 @@ import { Input } from "@/registry/syncrobotic/ui/input"
 import { ChoiceField } from "@/registry/syncrobotic/ui/choice-field"
 import { Scrollspy } from "@/registry/syncrobotic/ui/scrollspy"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
+import { SectionHeader } from "@/registry/syncrobotic/ui/section-header"
 import { Switch } from "@/registry/syncrobotic/ui/switch"
 import { Toaster, toast } from "@/registry/syncrobotic/ui/toast"
 
@@ -34,12 +35,7 @@ const sections = [
 function Section({ id, title, description, children }: { id: string; title: string; description: string; children: React.ReactNode }) {
   return (
     <section id={id} aria-labelledby={`${id}-title`} className="grid scroll-mt-6 gap-4 md:grid-cols-[14rem_1fr]">
-      <div className="flex flex-col gap-1">
-        <h2 id={`${id}-title`} className="font-bold">
-          {title}
-        </h2>
-        <p className="text-sm text-muted-foreground">{description}</p>
-      </div>
+      <SectionHeader id={`${id}-title`} title={title} description={description} className="self-start" />
       <div className="flex flex-col gap-4 rounded-md bg-card p-4 ring-1 ring-border">{children}</div>
     </section>
   )

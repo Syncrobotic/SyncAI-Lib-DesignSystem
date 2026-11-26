@@ -48,7 +48,7 @@ describe("Timeline", () => {
   it("keeps markers and connecting lines out of the accessibility tree", () => {
     const { container } = render(
       <Timeline>
-        <TimelineItem time="14:02" tone="danger" title="Emergency stop pressed" />
+        <TimelineItem time="14:02" status="danger" title="Emergency stop pressed" />
         <TimelineItem time="14:01" icon={<svg data-testid="icon" />} title="Obstacle in path" />
       </Timeline>,
     )
@@ -56,20 +56,17 @@ describe("Timeline", () => {
     expect(screen.getByTestId("icon").closest('[aria-hidden="true"]')).not.toBeNull()
   })
 
-  it("draws a status glyph for a tone, and colours the title only for warning and danger", () => {
+  it("draws a status glyph for a status, and never colours the title", () => {
     const { container } = render(
       <Timeline>
-        <TimelineItem tone="danger" title="Stopped" />
-        <TimelineItem tone="warning" title="Slowed" />
-        <TimelineItem tone="info" title="Patrol started" />
+        <TimelineItem status="danger" title="Stopped" />
+        <TimelineItem status="warning" title="Slowed" />
+        <TimelineItem status="active" title="Patrol started" />
         <TimelineItem title="Plain" />
       </Timeline>,
     )
     const titles = ["Stopped", "Slowed", "Patrol started", "Plain"].map((t) => screen.getByText(t))
-    expect(titles[0].className).toContain("text-danger")
-    expect(titles[1].className).toContain("text-warning")
-    expect(titles[2].className).not.toMatch(/text-(danger|warning)/)
-    expect(titles[3].className).not.toMatch(/text-(danger|warning)/)
+    for (const t of titles) expect(t.className).not.toMatch(/text-(danger|warning)/)
     const items = container.querySelectorAll('[data-slot="timeline-item"]')
     // Danger is a square, warning a triangle, info (active) a filled circle; a plain event has a dot and no glyph.
     expect(items[0].querySelector("svg rect")).not.toBeNull()
@@ -81,12 +78,15 @@ describe("Timeline", () => {
   it("shows an icon in place of the marker", () => {
     render(
       <Timeline>
-        <TimelineItem tone="danger" icon={<svg data-testid="wrench" />} title="Lidar cleaned" />
+        <TimelineItem status="danger" icon={<svg data-testid="wrench" />} title="Lidar cleaned" />
       </Timeline>,
     )
     const item = screen.getByRole("listitem")
     expect(within(item).getByTestId("wrench")).toBeTruthy()
-    expect(item.querySelector("rect")).toBeNull() // the icon wins over the tone's glyph
+    expect(item.querySelector("rect")).toBeNull() // the icon wins over the status glyph
+    // The icon carries the status colour instead; the title stays in the text colour.
+    expect(within(item).getByTestId("wrench").parentElement!.className).toContain("text-danger")
+    expect(screen.getByText("Lidar cleaned").className).not.toContain("text-danger")
   })
 
   it("groups events under headings, which are list items too", () => {
@@ -135,21 +135,14 @@ describe("Timeline", () => {
     expect(container.querySelector(".pb-4")).not.toBeNull()
   })
 
-  it("still honours the deprecated density prop, and warns about it once", () => {
-    const warn = vi.spyOn(console, "warn").mockImplementation(() => {})
+  it("has no density prop any more: size is the only spacing switch", () => {
     const { container } = render(
-      <>
-        <Timeline density="dense">
-          <TimelineItem title="A" />
-        </Timeline>
-        <Timeline density="dense">
-          <TimelineItem title="B" />
-        </Timeline>
-      </>,
+      // @ts-expect-error `density` was removed in 0.40; use size="sm".
+      <Timeline density="dense">
+        <TimelineItem title="A" />
+      </Timeline>,
     )
-    expect(container.querySelectorAll(".pb-4")).toHaveLength(2)
-    expect(warn).toHaveBeenCalledTimes(1)
-    expect(warn.mock.calls[0][0]).toContain('size="sm"')
+    expect(container.querySelector(".pb-4")).toBeNull()
   })
 
   it("is not a Tab stop when vertical", () => {
@@ -211,8 +204,8 @@ describe("Timeline", () => {
   it("tells screen readers that an event is a warning or a failure", () => {
     render(
       <Timeline>
-        <TimelineItem tone="danger" title="Emergency stop pressed" />
-        <TimelineItem tone="warning" title="Obstacle in path" />
+        <TimelineItem status="danger" title="Emergency stop pressed" />
+        <TimelineItem status="warning" title="Obstacle in path" />
       </Timeline>,
     )
     const [danger, warning] = screen.getAllByRole("listitem")

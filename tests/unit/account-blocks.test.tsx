@@ -54,8 +54,9 @@ describe("SettingsWebhooks", () => {
     // Only the word Failing is in danger; since when and the last error are grey details beside it.
     const word = screen.getByText("Failing")
     expect(word.className).toContain("text-danger")
-    expect(word.parentElement?.textContent).toBe("Failing since Today, 09:15 · Last error: 503 Service Unavailable")
-    expect(word.parentElement?.className ?? "").not.toContain("text-danger")
+    const details = screen.getByText("since Today, 09:15 · Last error: 503 Service Unavailable")
+    expect(details.className).toContain("text-muted-foreground")
+    expect(details.parentElement).toBe(word.parentElement)
     const failed = screen.getByRole("button", { name: /502.*failed/ })
     expect(failed.getAttribute("aria-expanded")).toBe("false")
     fireEvent.click(failed)

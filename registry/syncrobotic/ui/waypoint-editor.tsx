@@ -1,9 +1,10 @@
-// @syncrobotic/waypoint-editor v0.36.0 · update: npx shadcn add @syncrobotic/waypoint-editor --overwrite
+// @syncrobotic/waypoint-editor v0.40.0 · update: npx shadcn add @syncrobotic/waypoint-editor --overwrite
 "use client"
 
 import * as React from "react"
 import { CopyPlus, Plus, Trash2, CircleAlert, Waypoints } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { formatCount, formatNumber } from "@/registry/syncrobotic/lib/format-number"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
@@ -125,7 +126,7 @@ export type WaypointEditorLabels = {
   details: string
 }
 
-const num = (n: number, locale: string | undefined, digits = 1) => n.toLocaleString(locale, { minimumFractionDigits: digits, maximumFractionDigits: digits })
+const num = (n: number, locale: string | undefined, digits = 1) => formatNumber(n, { locale, minimumFractionDigits: digits, maximumFractionDigits: digits })
 
 export const defaultWaypointEditorLabels: WaypointEditorLabels = {
   name: "Route",
@@ -158,10 +159,10 @@ export const defaultWaypointEditorLabels: WaypointEditorLabels = {
   undo: "Undo",
   position: (x, y, locale) => `${num(x, locale)}, ${num(y, locale)} m`,
   geoPosition: (lat, lon, locale) => `${num(lat, locale, 6)}, ${num(lon, locale, 6)}`,
-  headingShort: (deg, locale) => `facing ${Math.round(deg).toLocaleString(locale)}°`,
+  headingShort: (deg, locale) => `facing ${formatCount(Math.round(deg), { locale })}°`,
   actionShort: (a, locale) =>
-    a.type === "wait" ? `Wait ${a.seconds.toLocaleString(locale)} s` : a.type === "dock" ? "Dock" : a.type === "photo" ? "Photo" : a.type === "custom" ? a.name || "Custom action" : "",
-  dwellShort: (s, locale) => `stay ${s.toLocaleString(locale)} s`,
+    a.type === "wait" ? `Wait ${formatNumber(a.seconds, { locale })} s` : a.type === "dock" ? "Dock" : a.type === "photo" ? "Photo" : a.type === "custom" ? a.name || "Custom action" : "",
+  dwellShort: (s, locale) => `stay ${formatNumber(s, { locale })} s`,
   problem: (p, min, locale) =>
     p.kind === "noName"
       ? "Name missing"
@@ -174,16 +175,16 @@ export const defaultWaypointEditorLabels: WaypointEditorLabels = {
             : p.kind === "keepOut"
               ? `Inside ${p.zone ?? "a no-entry zone"}`
               : `${num(p.distance ?? 0, locale, 2)} m from the one before (at least ${num(min, locale)} m)`,
-  count: (n, locale) => (n === 1 ? "1 waypoint" : `${n.toLocaleString(locale)} waypoints`),
+  count: (n, locale) => (n === 1 ? "1 waypoint" : `${formatCount(n, { locale })} waypoints`),
   distanceTitle: "Distance",
   durationTitle: "Estimated time",
   distance: (m, locale) => (m >= 1000 ? `${num(m / 1000, locale, 2)} km` : `${num(m, locale)} m`),
   duration: (s, locale) => {
     const t = Math.round(s)
-    if (t < 60) return `about ${t.toLocaleString(locale)} s`
+    if (t < 60) return `about ${formatCount(t, { locale })} s`
     const h = Math.floor(t / 3600)
     const m = Math.floor((t % 3600) / 60)
-    return h ? `about ${h.toLocaleString(locale)} h ${m.toLocaleString(locale)} min` : `about ${m.toLocaleString(locale)} min ${(t % 60).toLocaleString(locale)} s`
+    return h ? `about ${formatCount(h, { locale })} h ${formatCount(m, { locale })} min` : `about ${formatCount(m, { locale })} min ${formatCount(t % 60, { locale })} s`
   },
   unsaved: "Unsaved changes",
   saved: "No unsaved changes",
@@ -191,11 +192,11 @@ export const defaultWaypointEditorLabels: WaypointEditorLabels = {
   cancel: "Cancel",
   noChanges: "No changes to save",
   needsWaypoint: "Add a waypoint to save",
-  blocked: (n, locale) => (n === 1 ? "Fix 1 problem to save" : `Fix ${n.toLocaleString(locale)} problems to save`),
+  blocked: (n, locale) => (n === 1 ? "Fix 1 problem to save" : `Fix ${formatCount(n, { locale })} problems to save`),
   saveFailed: "The route could not be saved. Try again.",
   savedNotice: "Route saved",
   discarded: "Changes discarded",
-  problems: (n, locale) => (n === 0 ? "No problems left" : n === 1 ? "1 problem" : `${n.toLocaleString(locale)} problems`),
+  problems: (n, locale) => (n === 0 ? "No problems left" : n === 1 ? "1 problem" : `${formatCount(n, { locale })} problems`),
   added: (name, n) => `${name} added as waypoint ${n}`,
   duplicated: (name, n) => `${name} added as waypoint ${n}`,
   readOnly: "View only: you cannot change this route.",
@@ -892,9 +893,9 @@ function Details({
 function ReadOnlyDetails({ w, labels, locale }: { w: Waypoint; labels: WaypointEditorLabels; locale: string | undefined }) {
   const rows: [string, string][] = [
     [w.at.kind === "plan" ? `${labels.x}, ${labels.y}` : `${labels.lat}, ${labels.lon}`, w.at.kind === "plan" ? labels.position(w.at.x, w.at.y, locale) : labels.geoPosition(w.at.lat, w.at.lon, locale)],
-    [labels.heading, w.heading === undefined ? "—" : `${Math.round(w.heading).toLocaleString(locale)}°`],
+    [labels.heading, w.heading === undefined ? "—" : `${formatCount(Math.round(w.heading), { locale })}°`],
     [labels.action, w.action.type === "none" ? labels.actions.none : labels.actionShort(w.action, locale)],
-    [labels.dwell, `${(w.dwell ?? 0).toLocaleString(locale)} s`],
+    [labels.dwell, `${formatNumber(w.dwell ?? 0, { locale })} s`],
   ]
   return (
     <dl className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-2 text-sm">

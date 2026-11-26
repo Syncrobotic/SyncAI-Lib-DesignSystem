@@ -1,10 +1,11 @@
-// @syncrobotic/log-viewer v0.37.0 · update: npx shadcn add @syncrobotic/log-viewer --overwrite
+// @syncrobotic/log-viewer v0.40.0 · update: npx shadcn add @syncrobotic/log-viewer --overwrite
 "use client"
 
 import * as React from "react"
 import { useVirtualizer } from "@tanstack/react-virtual"
 import { ArrowDownToLine, Bug, ChevronDown, ChevronRight, ChevronUp, CircleAlert, Info, OctagonAlert, ScrollText, Search, SearchX, TriangleAlert, type LucideIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { formatCount } from "@/registry/syncrobotic/lib/format-number"
 import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
 import { useNow } from "@/registry/syncrobotic/hooks/use-now"
 import { Button } from "@/registry/syncrobotic/ui/button"
@@ -137,7 +138,7 @@ export type LogViewerLabels = {
   keys: string
 }
 
-const plural = (n: number, one: string, many: string, locale: string | undefined) => `${n.toLocaleString(locale)} ${n === 1 ? one : many}`
+const plural = (n: number, one: string, many: string, locale: string | undefined) => `${formatCount(n, { locale })} ${n === 1 ? one : many}`
 
 export const defaultLogViewerLabels: LogViewerLabels = {
   name: "Log",
@@ -153,7 +154,7 @@ export const defaultLogViewerLabels: LogViewerLabels = {
   search: "Search the log",
   searchPlaceholder: "Search messages and sources",
   matches: (current, total, locale) =>
-    total === 0 ? "No matches" : current ? `${current.toLocaleString(locale)} of ${total.toLocaleString(locale)}` : plural(total, "match", "matches", locale),
+    total === 0 ? "No matches" : current ? `${formatCount(current, { locale })} of ${formatCount(total, { locale })}` : plural(total, "match", "matches", locale),
   previousMatch: "Previous match",
   nextMatch: "Next match",
   levels: "Levels",
@@ -162,16 +163,16 @@ export const defaultLogViewerLabels: LogViewerLabels = {
   sources: "Sources",
   allSources: "All sources",
   sourceCount: (n) => `${n} sources`,
-  count: (n, locale) => n.toLocaleString(locale),
+  count: (n, locale) => formatCount(n, { locale }),
   viewOptions: "View options",
   wrap: "Wrap long lines",
   relativeTime: "Show time ago",
   jumpToLatest: "Jump to latest",
-  newLines: (n, locale) => `${n.toLocaleString(locale)} new`,
+  newLines: (n, locale) => `${formatCount(n, { locale })} new`,
   following: "Following new lines",
   paused: "Paused",
-  total: (shown, total, locale) => (shown === total ? plural(total, "line", "lines", locale) : `${shown.toLocaleString(locale)} of ${plural(total, "line", "lines", locale)}`),
-  capped: (max, locale) => `keeps the last ${max.toLocaleString(locale)}`,
+  total: (shown, total, locale) => (shown === total ? plural(total, "line", "lines", locale) : `${formatCount(shown, { locale })} of ${plural(total, "line", "lines", locale)}`),
+  capped: (max, locale) => `keeps the last ${formatCount(max, { locale })}`,
   empty: "No log lines yet",
   noMatch: "No lines match the filters",
   showAll: "Show all lines",

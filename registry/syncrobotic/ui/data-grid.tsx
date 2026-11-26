@@ -1,4 +1,4 @@
-// @syncrobotic/data-grid v0.35.0 · update: npx shadcn add @syncrobotic/data-grid --overwrite
+// @syncrobotic/data-grid v0.40.0 · update: npx shadcn add @syncrobotic/data-grid --overwrite
 "use client"
 "use no memo"
 
@@ -87,14 +87,6 @@ export type DataGridColumnDef<TData extends RowData, TFeatures extends DataGridF
 type GridTable = TanTable<DataGridFeatures, RowData>
 type GridColumn = Column<DataGridFeatures, RowData, unknown>
 type GridRow = Row<DataGridFeatures, RowData>
-
-const warned = new Set<string>()
-/** Says once that `density` is now `size`, so it is not confused with the theme's data-density. Development only. */
-function warnDensity(component: string, density: unknown) {
-  if (density === undefined || process.env.NODE_ENV === "production" || warned.has(component)) return
-  warned.add(component)
-  console.warn(`${component}: \`density="dense"\` is now \`size="sm"\`. \`density\` stops working in 1.0.`)
-}
 
 /** A height token in px as it resolves at `el` (rem or px), or undefined before mount. */
 function tokenPx(el: HTMLElement | null, name: string) {
@@ -189,8 +181,7 @@ const useGrid = () => {
  */
 export function DataGrid<T extends RowData, TFeatures extends DataGridFeatures>({
   table,
-  size,
-  density: legacy,
+  size = "default",
   variant = "default",
   loading = false,
   emptyText,
@@ -201,8 +192,6 @@ export function DataGrid<T extends RowData, TFeatures extends DataGridFeatures>(
   table: TanTable<TFeatures, T>
   /** sm: 44 px rows for long lists on a desktop. Separate from the theme's data-density, which this follows too. */
   size?: "default" | "sm"
-  /** @deprecated Use `size="sm"`. */
-  density?: Density
   variant?: Variant
   loading?: boolean
   /** Same as `labels.empty`, and wins over it. */
@@ -212,8 +201,7 @@ export function DataGrid<T extends RowData, TFeatures extends DataGridFeatures>(
   className?: string
   children: React.ReactNode
 }) {
-  warnDensity("DataGrid", legacy)
-  const density: Density = (size ?? (legacy === "dense" ? "sm" : "default")) === "sm" ? "dense" : "default"
+  const density: Density = size === "sm" ? "dense" : "default"
   // Memoized by hand, since the compiler skips this file: the parts render again when the table changes (useTable
   // returns a new one on every state change) or the grid's own props do, not on every render of the page around it.
   const ctx = React.useMemo<Ctx>(() => {

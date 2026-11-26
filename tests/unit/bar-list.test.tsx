@@ -51,9 +51,9 @@ describe("BarList", () => {
     expect(screen.getAllByRole("link")).toHaveLength(1)
   })
 
-  it("writes values as given without a locale, and by the locale and format when asked", () => {
+  it("writes values grouped in English without a locale (formatNumber), and by the locale and format when asked", () => {
     const { rerender } = render(<BarList label="L" items={items.slice(0, 1)} />)
-    expect(screen.getByRole("listitem").textContent).toContain("400000")
+    expect(screen.getByRole("listitem").textContent).toContain("400,000")
     rerender(<BarList label="L" items={items.slice(0, 1)} locale="en-US" format={{ notation: "compact" }} />)
     expect(screen.getByRole("listitem").textContent).toContain("400K")
   })

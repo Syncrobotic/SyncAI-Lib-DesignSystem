@@ -1,10 +1,12 @@
-// @syncrobotic/timeline-audit v0.17.2 · update: npx shadcn add @syncrobotic/timeline-audit --overwrite
+// @syncrobotic/timeline-audit v0.40.0 · update: npx shadcn add @syncrobotic/timeline-audit --overwrite
 "use client"
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
+import { formatCount } from "@/registry/syncrobotic/lib/format-number"
 import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"
 import { Card } from "@/registry/syncrobotic/ui/card"
+import { Code } from "@/registry/syncrobotic/ui/code"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 import { Timeline, TimelineItem } from "@/registry/syncrobotic/ui/timeline"
 
@@ -54,14 +56,16 @@ export function TimelineAudit({ className }: { className?: string }) {
   const [who, setWho] = React.useState("all")
   const by = (w: string) => entries.filter((e) => w === "all" || (w === "people" ? e.who : !e.who))
   const shown = by(who)
+  // Slices that cover the log, one always on: a SegmentedControl, each count after its word (compact, as on a tab).
+  const count = (w: string) => formatCount(by(w).length, { compact: true })
   return (
     <Card className={cn("w-full max-w-2xl", className)}>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h3 className="text-sm font-medium">Changes at Taoyuan plant</h3>
         <SegmentedControl aria-label="Show changes by" value={who} onValueChange={(v) => v && setWho(v)} className="w-auto">
-          <SegmentedControlItem value="all">All {by("all").length}</SegmentedControlItem>
-          <SegmentedControlItem value="people">People {by("people").length}</SegmentedControlItem>
-          <SegmentedControlItem value="system">System {by("system").length}</SegmentedControlItem>
+          <SegmentedControlItem value="all">All {count("all")}</SegmentedControlItem>
+          <SegmentedControlItem value="people">People {count("people")}</SegmentedControlItem>
+          <SegmentedControlItem value="system">System {count("system")}</SegmentedControlItem>
         </SegmentedControl>
       </div>
       <Timeline size="sm">
@@ -84,10 +88,10 @@ export function TimelineAudit({ className }: { className?: string }) {
             {e.change && (
               <span className="inline-flex flex-wrap items-center gap-2 text-xs">
                 {e.change.field}
-                <code className="rounded-xs bg-muted px-1 font-mono text-muted-foreground line-through">{e.change.from}</code>
+                <Code className="text-muted-foreground line-through">{e.change.from}</Code>
                 <span aria-hidden="true">→</span>
                 <span className="sr-only">to</span>
-                <code className="rounded-xs bg-muted px-1 font-mono text-foreground">{e.change.to}</code>
+                <Code>{e.change.to}</Code>
               </span>
             )}
           </TimelineItem>

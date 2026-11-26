@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { Code, DocHeader, DoDont, Pager, Section, Specimen, TokenTable } from "@/site/doc"
 import { metaFor, neighbours } from "@/site/foundations"
-import { formatCount } from "@/registry/syncrobotic/lib/format-count"
+import { formatCount } from "@/registry/syncrobotic/lib/format-number"
 import { px, themeValue } from "@/site/theme-tokens"
 
 export const metadata: Metadata = metaFor("typography")
@@ -116,7 +116,7 @@ export default function TypographyPage() {
         <p className="max-w-2xl text-sm text-muted-foreground">
           A count is written in full, with grouping, wherever it is read or compared. Abbreviate it only where space is the
           constraint, and keep the full number one step away: the table view under a chart, a tooltip on a tab. Write both with{" "}
-          <Code>formatCount(n, {"{ compact, locale }"})</Code> from <Code>@syncrobotic/format-count</Code>, never a hand-made
+          <Code>formatCount(n, {"{ compact, locale }"})</Code> from <Code>@syncrobotic/format-number</Code>, never a hand-made
           “k”: the locale decides the words (135K in English, 14萬 in Traditional Chinese).
         </p>
         <TokenTable

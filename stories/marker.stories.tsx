@@ -29,8 +29,8 @@ export const MarkerTones: S = {
   render: () => (
     <div className="flex flex-col">
       <Marker>Shift change</Marker>
-      <Marker tone="warning">Connection lost for 42 s</Marker>
-      <Marker tone="danger" icon={<OctagonAlert />} time="14:02">
+      <Marker status="warning">Connection lost for 42 s</Marker>
+      <Marker status="danger" icon={<OctagonAlert />} time="14:02">
         Emergency stop
       </Marker>
     </div>

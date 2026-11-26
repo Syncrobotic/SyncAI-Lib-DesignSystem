@@ -1,4 +1,5 @@
-// @syncrobotic/stats-cards v0.28.0 · update: npx shadcn add @syncrobotic/stats-cards --overwrite
+// @syncrobotic/stats-cards v0.40.0 · update: npx shadcn add @syncrobotic/stats-cards --overwrite
+import { cn } from "@/lib/utils"
 import { MetricCard, MetricGrid } from "@/registry/syncrobotic/ui/metric-card"
 
 export type Stat = {
@@ -23,12 +24,13 @@ export const sampleStats: Stat[] = [
 ]
 
 /**
- * Four headline numbers for a dashboard, one MetricCard each in a MetricGrid: value first, then the change, then context.
- * Only a change for the worse is coloured.
+ * Headline numbers for a dashboard, one MetricCard each in a MetricGrid: value first, then the change, then context, and
+ * the last values as a sparkline when a stat has a `series`. Only a change for the worse is coloured. Four by default (two
+ * across on a phone); `columns={3}` for three, three across from 640 px and one per row on a phone.
  */
-export function StatsCards({ stats = sampleStats, className }: { stats?: Stat[]; className?: string }) {
+export function StatsCards({ stats = sampleStats, columns = 4, className }: { stats?: Stat[]; columns?: 3 | 4; className?: string }) {
   return (
-    <MetricGrid className={className}>
+    <MetricGrid className={cn(columns === 3 && "grid-cols-1 sm:grid-cols-3 xl:grid-cols-3", className)}>
       {stats.map((s) => (
         <MetricCard key={s.label} {...s} />
       ))}

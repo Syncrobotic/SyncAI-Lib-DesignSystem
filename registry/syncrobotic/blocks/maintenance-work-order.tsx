@@ -1,16 +1,17 @@
-// @syncrobotic/maintenance-work-order v0.28.0 · update: npx shadcn add @syncrobotic/maintenance-work-order --overwrite
+// @syncrobotic/maintenance-work-order v0.40.0 · update: npx shadcn add @syncrobotic/maintenance-work-order --overwrite
 "use client"
 
 import * as React from "react"
 import { Wrench } from "lucide-react"
 import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
+import { formatCount } from "@/registry/syncrobotic/lib/format-number"
 import { StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
+import { ChoiceField, FieldSet } from "@/registry/syncrobotic/ui/choice-field"
 import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
 import { Field } from "@/registry/syncrobotic/ui/field"
-import { Label } from "@/registry/syncrobotic/ui/label"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
+import { ResponsiveTable } from "@/registry/syncrobotic/ui/responsive-table"
 import { Textarea } from "@/registry/syncrobotic/ui/textarea"
 
 const steps = [
@@ -45,55 +46,34 @@ export function MaintenanceWorkOrder() {
             </h2>
           </div>
 
-          <fieldset className="flex flex-col gap-1 rounded-md bg-card p-4 ring-1 ring-border">
-            <legend className="sr-only">Steps</legend>
-            <div className="flex items-baseline justify-between pb-2">
-              <span className="text-sm font-medium">Steps</span>
-              <span className="text-xs text-muted-foreground tabular-nums">
-                {steps.length - left} of {steps.length} done
-              </span>
-            </div>
-            {steps.map((s, i) => (
-              <div key={s} className="flex min-h-(--h-lg) items-center gap-3 border-b border-border last:border-b-0">
-                <Checkbox
-                  id={`wo-step-${i}`}
-                  checked={done[i]}
-                  disabled={signed}
-                  onCheckedChange={(v) => setDone((d) => d.map((x, j) => (j === i ? v === true : x)))}
+          <div className="rounded-md bg-card p-4 ring-1 ring-border">
+            <FieldSet legend="Steps" hint={`${steps.length - left} of ${steps.length} done`}>
+              {steps.map((step, i) => (
+                <ChoiceField
+                  key={step}
+                  className="border-b border-border last:border-b-0"
+                  label={<span className={done[i] ? "text-muted-foreground line-through" : undefined}>{`${i + 1}. ${step}`}</span>}
+                  control={<Checkbox checked={done[i]} disabled={signed} onCheckedChange={(v) => setDone((d) => d.map((x, j) => (j === i ? v === true : x)))} />}
                 />
-                <Label htmlFor={`wo-step-${i}`} className={done[i] ? "font-normal text-muted-foreground line-through" : "font-normal"}>
-                  {i + 1}. {s}
-                </Label>
-              </div>
-            ))}
-          </fieldset>
+              ))}
+            </FieldSet>
+          </div>
 
           <section aria-labelledby="parts-title" className="flex flex-col gap-3">
             <h3 id="parts-title" className="text-sm font-medium">
               Parts used
             </h3>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Part</TableHead>
-                  <TableHead className="hidden sm:table-cell">Code</TableHead>
-                  <TableHead className="text-right">Quantity</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {parts.map((p) => (
-                  <TableRow key={p.code}>
-                    <TableCell className="py-2 max-sm:whitespace-normal">
-                      {p.part}
-                      {/* On a phone the code sits under the part, so the quantity keeps its place on the right. */}
-                      <span className="block font-mono text-xs text-muted-foreground sm:hidden">{p.code}</span>
-                    </TableCell>
-                    <TableCell className="hidden font-mono text-xs sm:table-cell">{p.code}</TableCell>
-                    <TableCell className="text-right tabular-nums">{p.qty}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            {/* The part is the row's title, its code the line under it on a phone, the quantity at the row's end. */}
+            <ResponsiveTable
+              label="Parts used"
+              rows={parts}
+              rowKey={(p) => p.code}
+              columns={[
+                { id: "part", header: "Part", cell: (p) => p.part },
+                { id: "code", header: "Code", cell: (p) => <span className="font-mono text-xs">{p.code}</span> },
+                { id: "qty", header: "Quantity", cell: (p) => formatCount(p.qty), align: "end", phone: "trailing", className: "tabular-nums" },
+              ]}
+            />
           </section>
 
           <Field label="Notes" hint="What you found, for the next person.">

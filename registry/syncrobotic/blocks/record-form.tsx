@@ -1,12 +1,12 @@
-// @syncrobotic/record-form v0.21.1 · update: npx shadcn add @syncrobotic/record-form --overwrite
+// @syncrobotic/record-form v0.40.0 · update: npx shadcn add @syncrobotic/record-form --overwrite
 "use client"
 
 import * as React from "react"
 import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { Button } from "@/registry/syncrobotic/ui/button"
+import { ChoiceField, FieldSet } from "@/registry/syncrobotic/ui/choice-field"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
-import { Label } from "@/registry/syncrobotic/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/registry/syncrobotic/ui/radio-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
 import { TimeInput } from "@/registry/syncrobotic/ui/time-picker"
@@ -84,23 +84,17 @@ export function RecordForm({ initial }: { initial?: { name: string; robot: strin
           </Select>
         </Field>
 
-        <fieldset className="flex flex-col gap-2">
-          <legend className="pb-2 text-sm font-medium">Repeat</legend>
-          <RadioGroup value={repeat} onValueChange={setRepeat} className="flex flex-col gap-1">
+        <FieldSet legend="Repeat">
+          <RadioGroup value={repeat} onValueChange={setRepeat} className="gap-0">
             {([
               ["once", "Once"],
               ["daily", "Every day"],
               ["weekdays", "Weekdays"],
             ] as const).map(([v, l]) => (
-              <div key={v} className="flex min-h-(--h-md) items-center gap-3">
-                <RadioGroupItem id={`repeat-${v}`} value={v} />
-                <Label htmlFor={`repeat-${v}`} className="font-normal">
-                  {l}
-                </Label>
-              </div>
+              <ChoiceField key={v} label={l} control={<RadioGroupItem value={v} />} />
             ))}
           </RadioGroup>
-        </fieldset>
+        </FieldSet>
 
         <Field label="Start" error={errors.start}>
           {/* Typed on the kit's 24-hour clock (HH:mm), never the browser's own, which shows "10:00 PM" in an English locale. */}

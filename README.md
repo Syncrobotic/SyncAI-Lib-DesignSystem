@@ -2,7 +2,7 @@
 
 # SYNCROBOTIC Design System
 
-**A robotics UI kit for React.** Interfaces for the people who run robots: the design language behind every SYNCROBOTIC product, with design tokens, 95 React components, 48 blocks and 29 patterns, shipped as a [shadcn/ui](https://ui.shadcn.com) registry for Tailwind CSS v4. Components install into your project as source you can read and change.
+**A robotics UI kit for React.** Interfaces for the people who run robots: the design language behind every SYNCROBOTIC product, with design tokens, 122 React components, 58 blocks and 18 patterns, shipped as a [shadcn/ui](https://ui.shadcn.com) registry for Tailwind CSS v4. Components install into your project as source you can read and change.
 
 For robot apps it has what general UI kits leave out: an emergency stop, a fail-safe teleoperation pad, a robot map with ROS occupancy grids, laser scans and mission editing, a live camera feed, a LiDAR point cloud viewer, a URDF robot model, joint states and an alarm system. See [Robotics UI kit](https://design-system.syncrobotic.me/docs/robotics).
 
@@ -56,34 +56,44 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 | | |
 | --- | --- |
 | **Foundations** | Principles, colour, typography, spacing, radius, elevation, motion, iconography, accessibility, alarms and data visualisation, each with its tokens and the rules for using them, plus an [icon set](https://design-system.syncrobotic.me/icons) that gives each icon one meaning, with robot icons Lucide lacks drawn to match. Tokens also ship as [DTCG JSON](public/tokens) for design tools, in light, dark and high contrast. |
-| **87 components** | General UI on Radix primitives, a charts component on Recharts, building blocks for data tools (filters, data grid, text diff, image grid), and the robot shell: emergency stop, slide to release, dock and dynamic island. |
-| **48 blocks, 29 patterns** | Blocks are whole screens and sections in two groups: Application (shells, including an action-rail page, stats, cards, sign-in, settings, forms, wizards) and Solutions for robot operations (fleet operations, data operations with a keyboard-first review queue, users and access, incidents, maintenance, firmware rollout, AI agents). Patterns are ready-made uses of one component (charts, timelines, dialogs, sheets) and live on that component's page. Both install the same way. |
+| **122 components** | General UI on Radix primitives, a charts component on Recharts, building blocks for data tools (filters, data grid, text diff, image grid), and the robot shell: emergency stop, slide to release, dock and dynamic island. |
+| **58 blocks, 18 patterns** | Blocks are whole screens and sections in two groups: Application (shells, including an action-rail page, stats, cards, sign-in, settings, forms, wizards) and Solutions for robot operations (fleet operations, data operations with a keyboard-first review queue, users and access, incidents, maintenance, firmware rollout, AI agents). Patterns are ready-made uses of one component (charts, timelines, dialogs, sheets) and live on that component's page. Both install the same way. |
 
 <details>
 <summary>Every component, by group</summary>
 
+<!-- catalog:components -->
 | Group | Components |
 | --- | --- |
 | Actions | `button`, `segmented-control`, `toggle`, `copy-button`, `button-group`, `toggle-group`, `theme-toggle` |
-| Inputs | `input`, `input-group`, `number-field`, `textarea`, `label`, `field`, `form`, `checkbox`, `radio-group`, `switch`, `choice-field`, `select`, `slider`, `chip-group`, `facets`, `filter-form`, `filters`, `search-field`, `autocomplete`, `input-otp`, `phone-input`, `calendar`, `date-selector`, `time-picker`, `sortable`, `file-upload`, `questionnaire` |
-| Display | `status-glyph`, `status-eyebrow`, `list`, `skeleton`, `spinner`, `badge`, `card`, `avatar`, `separator`, `progress`, `description-list`, `text-diff`, `meter`, `empty-state`, `table`, `responsive-table`, `item`, `icon-tile`, `kbd`, `code`, `scroll-area`, `share-bar`, `restricted-preview`, `thumbnail`, `image-grid`, `data-grid`, `resizable`, `attachment`, `file-type`, `timeline`, `trace`, `marker`, `media-player`, `camera-feed`, `graph` |
-| Charts | `chart`, `bar-list`, `robot-map` |
-| Feedback | `alert`, `banner`, `alarm`, `toast`, `route-progress` |
-| Navigation | `tabs`, `pagination`, `breadcrumb`, `accordion`, `collapsible`, `page-header`, `section-header`, `load-more`, `stepper`, `scrollspy`, `navigation-menu`, `tree`, `sidebar` |
+| Inputs | `input`, `input-group`, `number-field`, `textarea`, `label`, `field`, `form`, `checkbox`, `radio-group`, `switch`, `choice-field`, `select`, `slider`, `autocomplete`, `input-otp`, `phone-input`, `calendar`, `date-selector`, `time-picker`, `questionnaire` |
+| Robotics | `stop-button`, `slide-to-release`, `dock`, `island`, `tray`, `teleop-pad`, `robot-map`, `geo-map`, `waypoint-editor`, `camera-feed`, `camera-wall`, `point-cloud`, `robot-model`, `attitude`, `joint-state`, `diagnostics`, `viewport-overlay` |
+| Lists & tables | `table`, `responsive-table`, `data-grid`, `list`, `item`, `description-list`, `tree`, `sortable`, `log-viewer` |
+| Status & values | `status-glyph`, `status-eyebrow`, `badge`, `tier-badge`, `meter`, `metric-card` |
+| Search & filters | `search-field`, `filters`, `filter-form`, `chip-group`, `facets` |
+| Data display | `code-block`, `avatar`, `text-diff`, `graph`, `icon-tile`, `kbd`, `code`, `streaming-text`, `timeline`, `trace`, `marker` |
+| Charts | `chart`, `streaming-chart`, `share-bar`, `bar-list` |
+| Media & files | `restricted-preview`, `thumbnail`, `image-grid`, `annotated-image`, `grounded-text`, `media-player`, `file-upload`, `attachment`, `file-type` |
+| Feedback | `skeleton`, `spinner`, `progress`, `banner`, `alert`, `alarm`, `toast`, `empty-state`, `route-progress` |
+| Navigation | `tabs`, `pagination`, `breadcrumb`, `accordion`, `collapsible`, `sidebar`, `load-more`, `stepper`, `scrollspy`, `navigation-menu` |
 | Overlays | `dialog`, `alert-dialog`, `sheet`, `popover`, `hover-card`, `tooltip`, `dropdown-menu`, `context-menu`, `command` |
-| Robot shell | `tray`, `stop-button`, `slide-to-release`, `teleop-pad`, `dock`, `island` |
+| Layout | `card`, `separator`, `scroll-area`, `page-header`, `section-header`, `resizable` |
+| Hooks & libraries | `ros`, `use-long-press`, `use-slide-release`, `use-presence`, `use-debounce`, `use-ros`, `use-hotkeys`, `format-number`, `clock-time`, `feedback`, `use-now`, `use-reduced-motion` |
 | Icons | `robot-icons` (robot icons Lucide lacks, drawn to match) |
-| Hooks | `use-long-press`, `use-slide-release`, `use-presence`, `use-debounce`, `use-hotkeys` |
+<!-- /catalog:components -->
 
 </details>
 
 <details>
 <summary>Every block and pattern, by group and type</summary>
 
+<!-- catalog:blocks -->
 | Group | Type | Blocks |
 | --- | --- | --- |
-| Application | App shell | `app-shell`, `top-bar-shell`, `app-shell-mobile-tabs`, `action-rail-shell` |
+| Application | App shell | `app-shell`, `top-bar-shell`, `action-rail-shell`, `app-shell-mobile-tabs` |
 | Application | Stats | `stats-cards`, `stats-meters`, `stats-filtered` |
+| Application | Data table | `fleet-table` |
+| Application | Data visualisation | `sparkline-robot-list`, `sparkline-table`, `status-tracker-uptime`, `status-tracker-runs`, `status-tracker-rollout`, `radial-chart-battery`, `radial-chart-goal`, `radial-chart-capacity`, `heatmap-week-hours`, `heatmap-zones` |
 | Application | Card | `robot-status-card`, `card-site`, `card-mission` |
 | Application | Sign-in | `sign-in`, `auth-passkey`, `auth-invite`, `auth-2fa` |
 | Application | Settings | `settings-page`, `settings-notifications`, `settings-api-keys`, `settings-billing`, `settings-webhooks`, `settings-sessions` |
@@ -92,31 +102,29 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 | Application | Empty and error states | `status-pages` |
 | Application | Landing | `marketing-hero` |
 | Application | Wizard | `wizard-commission`, `wizard-import` |
-| Patterns: Chart | Line chart | `line-chart-telemetry`, `line-chart-limit`, `line-chart-compare` |
-| Patterns: Chart | Area chart | `area-chart-battery`, `area-chart-fleet-states`, `area-chart-cumulative` |
-| Patterns: Chart | Bar chart | `bar-chart-missions`, `bar-chart-ranked`, `bar-chart-stacked`, `bar-chart-variance` |
-| Patterns: Chart | Sparkline | `sparkline-robot-list`, `sparkline-metric-tiles`, `sparkline-table` |
-| Patterns: Chart | Status tracker | `status-tracker-uptime`, `status-tracker-runs`, `status-tracker-rollout` |
-| Patterns: Chart | Radial chart | `radial-chart-battery`, `radial-chart-goal`, `radial-chart-capacity` |
-| Patterns: Chart | Heatmap | `heatmap-week-hours`, `heatmap-zones` |
-| Patterns: Chart | Histogram | `histogram-battery` |
-| Patterns: Alert dialog | Confirm a destructive action | `dialog-confirm-destructive` |
-| Patterns: Dialog | Dialog | `dialog-form`, `dialog-share` |
-| Patterns: Sheet | Sheet | `sheet-robot-detail`, `sheet-filters` |
-| Patterns: Timeline | Timeline | `timeline-activity`, `timeline-audit` |
-| Solutions | Fleet operations | `console-overview`, `map-workspace`, `list-detail`, `event-log`, `fleet-table`, `mission-schedule` |
+| Solutions | Fleet operations | `console-overview`, `map-workspace`, `list-detail`, `event-log`, `mission-schedule` |
 | Solutions | Data operations | `data-catalog`, `dataset-detail`, `governance-todo`, `review-queue` |
 | Solutions | Users and access | `users-roles`, `users-invitations`, `users-audit-log` |
 | Solutions | Incidents | `incident-queue`, `incident-detail` |
 | Solutions | Maintenance | `maintenance-due`, `maintenance-work-order` |
 | Solutions | Firmware rollout | `rollout-overview`, `rollout-plan` |
 | Solutions | AI agents | `agent-runs`, `agent-trace`, `agent-approval` |
+| Patterns: Alert dialog | Confirm a destructive action | `dialog-confirm-destructive` |
+| Patterns: Dialog | Form and share dialogs | `dialog-form`, `dialog-share` |
+| Patterns: Sheet | Detail sheet | `sheet-robot-detail` |
+| Patterns: Facets | Filters on a phone | `sheet-filters` |
+| Patterns: Timeline | Activity and audit timelines | `timeline-activity`, `timeline-audit` |
+| Patterns: Chart | Line chart | `line-chart-telemetry`, `line-chart-limit`, `line-chart-compare` |
+| Patterns: Chart | Area chart | `area-chart-battery`, `area-chart-fleet-states`, `area-chart-cumulative` |
+| Patterns: Chart | Bar chart | `bar-chart-missions`, `bar-chart-ranked`, `bar-chart-stacked`, `bar-chart-variance` |
+| Patterns: Chart | Histogram | `histogram-battery` |
+<!-- /catalog:blocks -->
 
 </details>
 
 ## Quality you can rely on
 
-The rules are not a style guide that drifts: checks enforce them. On every pull request: tokens, registry, rules, motion, versions, DTCG, types, tests, build. Before a release (pull requests into `stage`): axe and screenshots of every story.
+The rules are not a style guide that drifts: checks enforce them. On every pull request: tokens, registry, rules, numbers, motion, versions, DTCG, types, tests, build. Before a release (pull requests into `stage`): axe and screenshots of every story.
 
 - **Accessibility.** Before a release, every story, in dark and light, is checked with axe against WCAG 2.2 AA. Status colours are validated for colour-vision deficiency, and the warning and danger pair stays apart for deutan eyes.
 - **Visual regression.** Before a release, every state of every component is a screenshot compared with its baseline in both themes; a change to how anything looks needs an approved new baseline.

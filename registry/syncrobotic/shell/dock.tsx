@@ -1,4 +1,4 @@
-// @syncrobotic/dock v0.8.0 · update: npx shadcn add @syncrobotic/dock --overwrite
+// @syncrobotic/dock v0.40.0 · update: npx shadcn add @syncrobotic/dock --overwrite
 "use client"
 
 import * as React from "react"
@@ -26,23 +26,24 @@ export function Dock({ state, action, nav, className }: { state: React.ReactNode
 type Act = { label: string; onClick: () => void; icon?: React.ElementType }
 
 /**
- * Two actions under the stop. The primary is a raised muted block, never solid white,
- * so it does not compete with the red stop right above it.
+ * Two actions under the stop. The primary is a raised muted block, never solid white, so it does not compete with the
+ * red stop right above it; the secondary is a ghost. Both are medium (500), as every button: the block, not a heavier
+ * weight, says which one is primary, and bold belongs to the stop.
  */
 export function DockActions({ secondary, primary, destructive }: { secondary: Act; primary: Act; destructive?: boolean }) {
   // Labels wrap to a second line rather than run past the edge on a narrow phone: a consequence ("Delete 38 GB") must stay readable.
-  const base = "press flex min-h-(--h-lg) min-w-0 flex-1 items-center justify-center gap-2 rounded-md px-2 py-1 text-center text-sm leading-tight"
+  const base = "press flex min-h-(--h-lg) min-w-0 flex-1 items-center justify-center gap-2 rounded-md px-2 py-1 text-center text-sm font-medium leading-tight"
   const S = secondary.icon
   return (
     <div className="flex gap-(--tray-gap)">
-      <button type="button" onClick={secondary.onClick} className={cn(base, "text-muted-foreground")}>
+      <button type="button" onClick={secondary.onClick} className={cn(base, "text-foreground")}>
         {S && <S aria-hidden="true" className="size-5" />}
         {secondary.label}
       </button>
       <button
         type="button"
         onClick={primary.onClick}
-        className={cn(base, "font-bold", destructive ? "text-danger ring-1 ring-danger" : "bg-muted text-foreground ring-1 ring-edge")}
+        className={cn(base, destructive ? "text-danger ring-1 ring-danger" : "bg-muted text-foreground ring-1 ring-edge")}
       >
         {primary.label}
       </button>

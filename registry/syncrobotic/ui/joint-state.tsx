@@ -1,4 +1,4 @@
-// @syncrobotic/joint-state v0.36.0 · update: npx shadcn add @syncrobotic/joint-state --overwrite
+// @syncrobotic/joint-state v0.40.0 · update: npx shadcn add @syncrobotic/joint-state --overwrite
 "use client"
 
 import * as React from "react"
@@ -8,6 +8,7 @@ import { Bone, LoadingLine } from "@/registry/syncrobotic/shell/skeleton"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 import { RobotArm } from "@/registry/syncrobotic/ui/robot-icons"
 import { formatClockTime } from "@/registry/syncrobotic/lib/clock-time"
+import { numberFormat, resolveLocale } from "@/registry/syncrobotic/lib/format-number"
 
 /** The SI unit ROS sends a joint in: radians for a revolute joint, metres for a prismatic one. */
 export type JointUnit = "rad" | "m"
@@ -142,35 +143,9 @@ export function classifyJointLimit(position: number, lower: number | undefined, 
   return { level: "within" }
 }
 
-/**
- * The locale the numbers and the time are written in. Without one it is "en", never the runtime's default: the server and
- * a browser set to another language would write "1,234.5" and "1.234,5", and React would find the two renders differ. A
- * tag Intl cannot read ("en_US", "") falls back to "en" too, so a bad setting writes English rather than break the panel.
- */
-const checkedLocales = new Map<string, string>()
-function resolveLocale(locale: string | undefined): string {
-  if (locale === undefined) return "en"
-  let ok = checkedLocales.get(locale)
-  if (ok === undefined) {
-    try {
-      ok = Intl.NumberFormat.supportedLocalesOf(locale).length > 0 ? locale : "en"
-    } catch {
-      ok = "en"
-    }
-    checkedLocales.set(locale, ok)
-  }
-  return ok
-}
-
-// One formatter per locale and precision: a panel redraws many times a second, and building Intl objects is not free.
-const formatters = new Map<string, Intl.NumberFormat>()
-function formatNumber(value: number, digits: number, locale: string) {
-  const key = `${locale}|${digits}`
-  let f = formatters.get(key)
-  if (!f) {
-    f = new Intl.NumberFormat(locale, { minimumFractionDigits: digits, maximumFractionDigits: digits })
-    formatters.set(key, f)
-  }
+// The formatter is cached per locale and precision (numberFormat): a panel redraws many times a second.
+function formatJointNumber(value: number, digits: number, locale: string) {
+  const f = numberFormat(locale, { minimumFractionDigits: digits, maximumFractionDigits: digits })
   // Rounded first, half away from zero on both sides, so -0.05 and 0.05 round to the same size; and a reading of -0.04
   // shows as 0.0 rather than an alarming "-0.0". Math.round alone rounds -0.5 up to -0 but 0.5 up to 1.
   const step = 10 ** digits
@@ -275,7 +250,7 @@ export function JointState({
   const grid = cn("grid grid-cols-[minmax(0,1fr)_auto] gap-x-3 gap-y-1", wideGrid[columns])
 
   const position = (value: number, unit: JointUnit) => {
-    const text = formatNumber(toDisplayUnit(value, unit), 1, numberLocale)
+    const text = formatJointNumber(toDisplayUnit(value, unit), 1, numberLocale)
     return unit === "m" ? l.millimetres(text) : l.degrees(text)
   }
 
@@ -399,13 +374,13 @@ function JointRow({
 
   const velocity =
     joint.velocity !== undefined && Number.isFinite(joint.velocity)
-      ? (unit === "m" ? l.millimetresPerSecond : l.degreesPerSecond)(formatNumber(toDisplayUnit(joint.velocity, unit), 1, locale))
+      ? (unit === "m" ? l.millimetresPerSecond : l.degreesPerSecond)(formatJointNumber(toDisplayUnit(joint.velocity, unit), 1, locale))
       : null
   const effort =
     joint.effort !== undefined && Number.isFinite(joint.effort)
       ? joint.effortLimit !== undefined && joint.effortLimit > 0
-        ? l.effortPercent(formatNumber((Math.abs(joint.effort) / joint.effortLimit) * 100, 0, locale))
-        : (unit === "m" ? l.newtons : l.newtonMetres)(formatNumber(joint.effort, 1, locale))
+        ? l.effortPercent(formatJointNumber((Math.abs(joint.effort) / joint.effortLimit) * 100, 0, locale))
+        : (unit === "m" ? l.newtons : l.newtonMetres)(formatJointNumber(joint.effort, 1, locale))
       : null
 
   return (

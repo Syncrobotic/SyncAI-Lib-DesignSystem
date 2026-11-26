@@ -1,4 +1,4 @@
-// @syncrobotic/responsive-table v0.39.0 · update: npx shadcn add @syncrobotic/responsive-table --overwrite
+// @syncrobotic/responsive-table v0.40.0 · update: npx shadcn add @syncrobotic/responsive-table --overwrite
 "use client"
 
 import * as React from "react"
@@ -166,6 +166,8 @@ export function ResponsiveTable<T>({
                   trailing={typeof trailing === "number" ? String(trailing) : trailing}
                   chevron={!!onRowClick}
                   onClick={onRowClick && (() => onRowClick(row))}
+                  // The title is the words that matter: two lines on a phone, never cut to "Two robots lost sign…".
+                  wrap
                 />
               </div>
               {rowActions && <div className="flex shrink-0 items-center">{rowActions(row)}</div>}

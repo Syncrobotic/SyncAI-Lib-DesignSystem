@@ -1,4 +1,4 @@
-// @syncrobotic/attitude v0.36.0 · update: npx shadcn add @syncrobotic/attitude --overwrite
+// @syncrobotic/attitude v0.40.0 · update: npx shadcn add @syncrobotic/attitude --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { meterSaid, meterTone, type MeterTone } from "@/registry/syncrobotic/ui/meter"
 import { formatClockTime } from "@/registry/syncrobotic/lib/clock-time"
+import { numberFormat, resolveLocale } from "@/registry/syncrobotic/lib/format-number"
 import { usePrefersReducedMotion } from "@/registry/syncrobotic/hooks/use-reduced-motion"
 
 /*
@@ -22,33 +23,13 @@ import { usePrefersReducedMotion } from "@/registry/syncrobotic/hooks/use-reduce
 
 // ---------- Numbers ----------
 
-/** As streaming-chart: English without a locale, the same on the server and in every browser; a tag Intl cannot read is English. */
-const checkedLocales = new Map<string, string>()
-function resolveLocale(locale: string | undefined): string {
-  if (locale === undefined) return "en"
-  let ok = checkedLocales.get(locale)
-  if (ok === undefined) {
-    try {
-      ok = Intl.NumberFormat.supportedLocalesOf(locale).length > 0 ? locale : "en"
-    } catch {
-      ok = "en"
-    }
-    checkedLocales.set(locale, ok)
-  }
-  return ok
-}
-
-const formatters = new Map<string, Intl.NumberFormat>()
-/** A reading as the instruments write it: fixed decimals, no "−0", and a true minus sign (U+2212). */
+/**
+ * A reading as the instruments write it: fixed decimals, no "−0", and a true minus sign (U+2212), in `locale` (English
+ * without one, so server and browser agree).
+ */
 export function formatReading(value: number, digits = 0, locale?: string): string {
-  const tag = resolveLocale(locale)
   const d = Math.min(Math.max(0, Math.floor(digits)), 6)
-  const key = `${tag}|${d}`
-  let f = formatters.get(key)
-  if (!f) {
-    f = new Intl.NumberFormat(tag, { minimumFractionDigits: d, maximumFractionDigits: d, useGrouping: false })
-    formatters.set(key, f)
-  }
+  const f = numberFormat(locale, { minimumFractionDigits: d, maximumFractionDigits: d, useGrouping: false })
   const step = 10 ** d
   const rounded = (Math.sign(value) * Math.round(Math.abs(value) * step)) / step
   const text = f.format(rounded === 0 ? 0 : Math.abs(rounded))

@@ -8,6 +8,17 @@ const meta: Meta = { title: "Data/List and status" }
 export default meta
 type S = StoryObj
 
+/** InlineStatus: a state that changes, as its shape and its word with no box, at the end of a row. */
+export const StatusInlineInRows: S = {
+  render: () => (
+    <ListGroup>
+      <ListRow title="Patrol dog 7F3A" meta="North gate" trailing={<InlineStatus status="active">Patrolling</InlineStatus>} />
+      <ListRow title="Courier 2B19" meta="Hall B" trailing={<InlineStatus status="warning">Low battery</InlineStatus>} />
+      <ListRow title="Courier 4D21" meta="Floor 3" trailing={<InlineStatus status="danger">Stopped</InlineStatus>} />
+    </ListGroup>
+  ),
+}
+
 export const StatusShapes: S = {
   render: () => (
     // Each shape with its word: a glyph alone is documented under Status glyph.
@@ -36,10 +47,10 @@ export const LoadingSkeleton: S = {
       <ListGroup>
         {[0, 1, 2].map((i) => (
           <div key={i} className="flex min-h-(--h-row) items-center gap-3 border-b border-border py-2 last:border-b-0" style={{ opacity: i === 2 ? 0.5 : 1 }}>
-            <Bone onCard className="size-10 rounded-xs" />
+            <Bone className="size-10 rounded-xs" />
             <div className="flex flex-1 flex-col gap-2">
-              <Bone onCard className="h-4 w-3/5" />
-              <Bone onCard className="h-3 w-4/5" />
+              <Bone className="h-4 w-3/5" />
+              <Bone className="h-3 w-4/5" />
             </div>
           </div>
         ))}
@@ -56,7 +67,7 @@ export const SkeletonCard: S = {
         {["Battery", "Signal"].map((l) => (
           <div key={l} className="flex flex-col gap-2">
             <span className="text-xs text-muted-foreground">{l}</span>
-            <Bone onCard className="h-5 w-16" />
+            <Bone className="h-5 w-16" />
           </div>
         ))}
       </div>
@@ -86,15 +97,5 @@ export const StatusEyebrowOverTitle: S = {
       <h2 className="text-2xl font-bold">Patrol dog 7F3A</h2>
       <p className="text-sm text-muted-foreground">Waiting at door 3 for 2 min.</p>
     </div>
-  ),
-}
-
-export const StatusInlineInRows: S = {
-  render: () => (
-    <ListGroup>
-      <ListRow title="Patrol dog 7F3A" meta="North gate" trailing={<InlineStatus status="active">Patrolling</InlineStatus>} />
-      <ListRow title="Courier 2B19" meta="Hall B" trailing={<InlineStatus status="warning">Low battery</InlineStatus>} />
-      <ListRow title="Courier 4D21" meta="Floor 3" trailing={<InlineStatus status="danger">Stopped</InlineStatus>} />
-    </ListGroup>
   ),
 }

@@ -1,10 +1,12 @@
-// @syncrobotic/stats-filtered v0.19.0 · update: npx shadcn add @syncrobotic/stats-filtered --overwrite
+// @syncrobotic/stats-filtered v0.40.0 · update: npx shadcn add @syncrobotic/stats-filtered --overwrite
 "use client"
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
+import { formatNumber } from "@/registry/syncrobotic/lib/format-number"
 import { MetricCard, MetricGrid } from "@/registry/syncrobotic/ui/metric-card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
+import { SectionHeader } from "@/registry/syncrobotic/ui/section-header"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 
 type Range = "24h" | "7d" | "30d"
@@ -36,28 +38,29 @@ export function StatsFiltered({ className }: { className?: string }) {
   const [site, setSite] = React.useState("all")
   return (
     <section aria-labelledby="stats-filtered-title" className={cn("flex flex-col gap-4", className)}>
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 id="stats-filtered-title" className="text-lg font-bold">
-          Performance
-        </h2>
-        <div className="flex flex-wrap items-center gap-2">
-          <Select value={site} onValueChange={setSite}>
-            <SelectTrigger aria-label="Site" className="w-40">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All sites</SelectItem>
-              <SelectItem value="taipei">Taipei HQ</SelectItem>
-              <SelectItem value="taoyuan">Taoyuan plant</SelectItem>
-            </SelectContent>
-          </Select>
-          <SegmentedControl aria-label="Time range" value={range} onValueChange={(v) => v && setRange(v as Range)} className="w-auto">
-            <SegmentedControlItem value="24h">24 h</SegmentedControlItem>
-            <SegmentedControlItem value="7d">7 days</SegmentedControlItem>
-            <SegmentedControlItem value="30d">30 days</SegmentedControlItem>
-          </SegmentedControl>
-        </div>
-      </div>
+      <SectionHeader
+        id="stats-filtered-title"
+        title="Performance"
+        actions={
+          <>
+            <Select value={site} onValueChange={setSite}>
+              <SelectTrigger aria-label="Site" className="w-40">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All sites</SelectItem>
+                <SelectItem value="taipei">Taipei HQ</SelectItem>
+                <SelectItem value="taoyuan">Taoyuan plant</SelectItem>
+              </SelectContent>
+            </Select>
+            <SegmentedControl aria-label="Time range" value={range} onValueChange={(v) => v && setRange(v as Range)} className="w-auto">
+              <SegmentedControlItem value="24h">24 h</SegmentedControlItem>
+              <SegmentedControlItem value="7d">7 days</SegmentedControlItem>
+              <SegmentedControlItem value="30d">30 days</SegmentedControlItem>
+            </SegmentedControl>
+          </>
+        }
+      />
       <MetricGrid>
         {kpis.map((k) => {
           const { now, before } = k.values[range]
@@ -70,7 +73,7 @@ export function StatsFiltered({ className }: { className?: string }) {
             <MetricCard
               key={k.label}
               label={k.label}
-              value={now.toLocaleString("en")}
+              value={formatNumber(now)}
               unit={k.unit}
               delta={moved ? `${up ? "+" : "−"}${Math.abs(change).toFixed(0)} %` : "0 %"}
               trend={!moved ? "flat" : worse ? "bad" : "good"}

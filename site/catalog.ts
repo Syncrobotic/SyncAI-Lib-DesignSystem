@@ -90,7 +90,25 @@ export type StoryFile =
 type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
 // Robotics third: after the two groups every product reaches for first, and before the general ones, as the kit's reason to exist.
-export const groups = ["Actions", "Inputs", "Robotics", "Robot shell", "Data display", "Charts", "Media & files", "Feedback", "Navigation", "Overlays", "Layout", "Hooks & libraries"] as const
+// The robot shell (dock, island, tray) is part of it, after the stop. Then what a data screen is made of, from the rows to
+// the values in them: lists and tables, status and values, search and filters, then the rest of data display. No group
+// holds more than about twenty, so each reads as one choice in the sidebar.
+export const groups = [
+  "Actions",
+  "Inputs",
+  "Robotics",
+  "Lists & tables",
+  "Status & values",
+  "Search & filters",
+  "Data display",
+  "Charts",
+  "Media & files",
+  "Feedback",
+  "Navigation",
+  "Overlays",
+  "Layout",
+  "Hooks & libraries",
+] as const
 export type Group = (typeof groups)[number]
 
 type Entry = {
@@ -163,7 +181,7 @@ const entries: Record<string, Entry> = {
     group: "Data display",
     examples: { file: "timeline", prefix: "Timeline" },
     rules: [
-      "Plain events get a neutral dot. Only warning and danger events are coloured.",
+      "Plain events get a neutral dot. Only a warning or danger event is coloured, and only its mark (the glyph, or the icon you pass): the title stays in the text colour.",
       "Give dateTime so the time is machine-readable.",
       "Newest first for incidents and logs; oldest first for a process.",
     ],
@@ -197,7 +215,7 @@ const entries: Record<string, Entry> = {
   },
   "data-grid": {
     wide: true,
-    group: "Data display",
+    group: "Lists & tables",
     examples: { file: "data-grid", prefix: "DataGrid" },
     rules: [
       "Build the table with `useTable`, with `dataGridFeatures` in its features; `DataGrid` draws it.",
@@ -213,7 +231,7 @@ const entries: Record<string, Entry> = {
   },
   "log-viewer": {
     wide: true,
-    group: "Data display",
+    group: "Lists & tables",
     examples: { file: "log-viewer", prefix: "LogViewer" },
     rules: [
       "For lines a program writes as it runs: ROS /rosout, journald, a service's log. Events people act on are `alarm`; a table people sort and page is `data-grid`; one run's steps are `trace`.",
@@ -242,7 +260,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   sortable: {
-    group: "Inputs",
+    group: "Lists & tables",
     examples: { file: "sortable", prefix: "Sortable" },
     rules: [
       "Only the handle drags; the rest of the row stays clickable.",
@@ -257,7 +275,7 @@ const entries: Record<string, Entry> = {
     rules: ["Set minSize so a panel never collapses into nothing by accident.", "withHandle on touch screens, where a thin line is hard to find."],
   },
   "file-upload": {
-    group: "Inputs",
+    group: "Media & files",
     examples: { file: "file-upload", prefix: "FileUpload" },
     rules: ["Say what is accepted and how big, in the hint.", "Report refused files by name and reason.", "Show what was taken as Attachment rows."],
   },
@@ -317,7 +335,7 @@ const entries: Record<string, Entry> = {
     rules: ['Values are "HH:mm" on a 24-hour clock; hour12 only changes how they read.', "Taken slots stay in the list, struck through."],
   },
   item: {
-    group: "Data display",
+    group: "Lists & tables",
     examples: { file: "item", prefix: "Item" },
     rules: [
       "One row per thing: a person, a file, a service, a setting link.",
@@ -330,7 +348,7 @@ const entries: Record<string, Entry> = {
     examples: { file: "icon-tile", prefix: "IconTile" },
     rules: [
       "Neutral by default. A tone only when the tile states a status.",
-      "Tones info and success render neutral: a tile stays on screen, so it is a state, and a state is grey. Only warning and danger colour it.",
+      "Tones are neutral, warning and danger: a tile stays on screen, so it is a state, and a calm state is grey. There is no info or success tone (removed in 0.40).",
       "Never solid red: a solid danger tile stays on its tint, since solid red belongs to the emergency stop.",
       "Icons inside are 16, 20 or 24 px; the size prop sets them.",
       "Every icon on a tile is an IconTile (an empty state, a status page, a confirmation, a menu card, a row's media): never a hand-made square, whose size and corner drift. sm 32 px with an 8 px corner, md 40 and lg 48 with 12, xl 64 with 16.",
@@ -397,7 +415,8 @@ const entries: Record<string, Entry> = {
     examples: { file: "page-header", prefix: "PageHeader" },
     rules: [
       "One per page, first in the content: the breadcrumb says where, the h1 says what. No label above the title.",
-      "Meta pills are facts (counts, owner, last update); a status pill takes a tone and only warning and danger are coloured.",
+      "A state (the robot's, the job's, the dataset's) goes in `status`: one `InlineStatus` beside the title, at most one, never a pill or a badge. Fixed attributes (Production as an outline, Beta, a version) go in `badges`, after it.",
+      "Meta pills are facts (counts, owner, last update), never a state: a state in a boxed pill reads as one more fact, so it goes in `status`. MetaPill has no tone.",
       "A fact that leads somewhere (\"2 compliance items open\" to that tab) takes `href` (and `linkAs` for your router): the pill becomes an underlined link with the focus ring and a 36 px target (44 on touch), the same height on screen. Never wrap a pill in your own link.",
       "Actions sit at the right; the page's one primary action may be among them.",
     ],
@@ -414,7 +433,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "chip-group": {
-    group: "Inputs",
+    group: "Search & filters",
     examples: { file: "chip-group", prefix: "ChipGroup" },
     rules: [
       "One choice among several, with the count each gives. `type=\"multiple\"` for any of several values in one facet (\"detection or segmentation\"); `value` is then a list. For a long list of options use checkboxes in a FieldSet.",
@@ -426,7 +445,7 @@ const entries: Record<string, Entry> = {
   },
   facets: {
     wide: true,
-    group: "Inputs",
+    group: "Search & filters",
     examples: { file: "facets", prefix: "Facets" },
     rules: [
       "The facet column beside a catalog or a table: a few questions (tier, task, site), each a group of checkboxes, any of which can be on. Options in one facet combine with OR, facets with AND; the page filters, the facets only hold the picks.",
@@ -435,11 +454,12 @@ const entries: Record<string, Entry> = {
       "The column pins under the shell's bar (`--shell-top`) and scrolls on its own when it is taller than the space under it, so the list beside it scrolls without taking the filters away.",
       "`max` folds a long facet after that many options with \"Show all N\"; picked options always stay in view. A facet's own `max` wins.",
       "Picks apply at once, in the column and in the drawer; the drawer's Done only closes it. Say what they leave (\"12 of 40 recordings\") beside the list, in a polite live region.",
+      "A drawer opened from its button moves focus into the sheet. One that opens on load (`defaultOpen`, a preview) passes `onOpenAutoFocus={(e) => e.preventDefault()}` so the page keeps its focus.",
       "A query people build from any field and operator is `filters`; one facet as a row of chips above a list is `chip-group`.",
     ],
   },
   "filter-form": {
-    group: "Inputs",
+    group: "Search & filters",
     examples: { file: "filter-form", prefix: "FilterForm" },
     rules: [
       "Filters that change what a page lists belong in the URL: shareable, bookmarkable, undone with Back.",
@@ -448,7 +468,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   filters: {
-    group: "Inputs",
+    group: "Search & filters",
     examples: { file: "filters", prefix: "Filters" },
     rules: [
       "For a query people build themselves: any field, any number of rules. For a few fixed facets use Chip group or Filter form.",
@@ -460,7 +480,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "search-field": {
-    group: "Inputs",
+    group: "Search & filters",
     examples: { file: "search-field", prefix: "SearchField" },
     rules: [
       "One search box per tool, in the top bar. / focuses it; Enter opens the results page.",
@@ -639,17 +659,17 @@ const entries: Record<string, Entry> = {
   slider: { group: "Inputs", examples: { file: "inputs", prefix: "Slider" }, rules: ["Always show the current value in the label next to it."] },
   // Display
   badge: {
-    group: "Data display",
+    group: "Status & values",
     examples: { file: "display", prefix: "Badge" },
     rules: [
       "A fixed attribute or category: a tier, a data use, an environment, a version, Beta. A state that changes (a robot's status, a job's state) is `status-eyebrow`'s `InlineStatus`, in a row or a header; a count is a `CountBadge`.",
       "In a table column whose header already names the attribute, the values are plain text, not a badge on every row. A page header shows at most one status, then its badges after the title.",
       "Test and audit results are a `ResultBadge`: `result=\"passed\"` (grey with a check), `\"failed\"` (danger outline) or `\"insufficient\"` (grey, dashed circle). Never a green pass.",
-      "`tone=\"success\"` renders grey, as `neutral` does: a state is never green. Use `neutral`.",
+      "Neutral (the default) or `outline` (the environment: Production, Staging). There are no status tones (removed in 0.40: `tone=\"warning\"` is a type error). A state in a tinted box is the mistake the Do / Don't example shows; it is an `InlineStatus`.",
     ],
   },
   "tier-badge": {
-    group: "Data display",
+    group: "Status & values",
     examples: { file: "tier-badge", prefix: "TierBadge" },
     rules: [
       "A dataset's licence tier, wherever the dataset is named: a row, a page header, a release check.",
@@ -674,7 +694,7 @@ const entries: Record<string, Entry> = {
       "A person or a robot, by picture or initials. Initials when there is no picture, never an empty circle.",
       "People are round; robots, sites and teams are square (shape=\"square\"), so a mixed list tells who from what before the name is read.",
       'A robot without a picture shows its short ID (the last four characters, `className="font-mono"` on the fallback) or its initials, never a hand-made tile. Square corners follow IconTile at the same size (8 px at 32, 12 px at 40 and 48), so a robot beside an icon lines up.',
-      "Pair it with the name: an avatar alone is not an identity. A status badge is said in words too, nearby or in the label.",
+      "Pair it with the name: an avatar alone is not an identity. A status mark (AvatarBadge `status`) is said in words too, nearby or in the label.",
       "A group shows a few and folds the rest into +N (max); its label names everyone.",
     ],
   },
@@ -691,7 +711,7 @@ const entries: Record<string, Entry> = {
     examples: { file: "display", prefix: "Progress" },
     rules: [
       "Blue: a process someone is waiting on, with an end. A level that stays (battery, storage, signal) is a Meter, not a Progress.",
-      "Success is neutral: a finished bar stays grey. Green is a confirmation that comes and goes (a toast), not a state.",
+      "A finished bar is `tone=\"neutral\"`, grey; there is no success tone (removed in 0.40). Green is a confirmation that comes and goes (a toast), not a state.",
     ],
   },
   spinner: {
@@ -703,7 +723,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   meter: {
-    group: "Data display",
+    group: "Status & values",
     examples: { file: "display", prefix: "Meter" },
     rules: [
       "For a level in a known range (battery, storage). For work under way, use Progress.",
@@ -715,7 +735,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "metric-card": {
-    group: "Data display",
+    group: "Status & values",
     /** A row of cards needs the row: examples use the card's full width. */
     wide: true,
     examples: { file: "metric-card", prefix: "MetricCard" },
@@ -731,7 +751,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "description-list": {
-    group: "Data display",
+    group: "Lists & tables",
     examples: { file: "display", prefix: "DescriptionList" },
     rules: ["Label above value, value in medium weight with tabular numbers.", "`tiles` only for the few numbers that matter most; everything else plain.", "`bare` inside something that is already a surface (a card, an expanded table row), so cards never nest."],
   },
@@ -746,7 +766,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   table: {
-    group: "Data display",
+    group: "Lists & tables",
     examples: { file: "display", prefix: "Table" },
     rules: [
       "Right-align numbers. Numbers are tabular by default.",
@@ -756,42 +776,45 @@ const entries: Record<string, Entry> = {
     ],
   },
   "responsive-table": {
-    group: "Data display",
+    group: "Lists & tables",
     /** The table needs the row's width to show its wide layout. */
     wide: true,
     examples: { file: "responsive-table", prefix: "ResponsiveTable" },
     rules: [
       "Rows that people open on phones as well as on desks: one list of columns renders a Table where there are 36rem (576 px) of its own width, and a grouped list (ListGroup, ListRow) under that. Its own width decides, so a narrow column on a wide screen gets the list too.",
       "Only one layout is in the page at a time, so a screen reader never meets the rows twice: table semantics on wide screens, a list of list items on phones. Before it is measured (the server's HTML) a container query shows the right one.",
-      "Each column says where it goes on a phone: the first is the row's title, `trailing` is the state at the row's end (InlineStatus, one column), the rest form the line under the title (`meta`, one or two facts) or are `hidden`. `phoneCell` gives a shorter form (\"82 %\" for a meter).",
+      "Each column says where it goes on a phone: the first is the row's title, `trailing` is the state at the row's end (InlineStatus, one column), the rest form the line under the title (`meta`, one or two facts) or are `hidden`. `phoneCell` gives a shorter form (\"82 %\" for a meter). The phone row's title wraps to two lines rather than being cut, and the trailing state moves under it before it squeezes the title below 160 px.",
       "`onRowClick` makes the title cell a button in the table and the whole phone row a 56 px button with a chevron. `rowActions` is the ⋯ menu: TableActionsCell in the table, after the row's button on a phone.",
       "Numbers `align: \"end\"`, written in full (formatCount). No rows: `empty` with an inline EmptyState.",
       "Many columns to scan, sort and select on a desk: DataGrid. A list that is only ever on phones: ListGroup and ListRow.",
     ],
   },
   list: {
-    group: "Data display",
+    group: "Lists & tables",
     examples: { file: "list", only: ["GroupedList"] },
     rules: [
       "Rows of the same kind, each a whole touch target at 56 px, with its state in the trailing slot.",
       "Group long lists under headings; more than about 50 rows wants search or a DataGrid.",
+      "A row whose title is the words that matter (an incident, an alarm) takes `wrap`: the title wraps to two lines instead of being cut, and the trailing slot moves under it before it squeezes the title below 160 px.",
     ],
   },
   "status-glyph": {
-    group: "Data display",
+    group: "Status & values",
     examples: { file: "display", prefix: "StatusGlyph" },
     rules: [
       "Status is a shape and a word; colour only when it is abnormal. The shape reads without colour vision: filled circle active (busy), hollow circle normal, triangle attention, square stopped, slashed circle offline (grey).",
       "The glyph is hidden from screen readers: write the status in words beside it, or use `status-eyebrow`, which does.",
-      "Pass `status`: active, normal, warning, danger or offline. The old `tone` (info, success, warning, danger, neutral) still works until 1.0 and warns once in development.",
+      "Pass `status`: active, normal, warning, danger or offline (the default). The old `tone` names (info, success, neutral) were removed in 0.40.",
     ],
   },
   "status-eyebrow": {
-    group: "Data display",
+    group: "Status & values",
     examples: { file: "list", only: ["StatusShapes", "StatusEyebrowOverTitle", "StatusInlineInRows"] },
     rules: [
-      "A robot's state above its name, or in a row's trailing slot: shape plus word, always both.",
-      "Pass `status`: active, normal, warning, danger or offline. Only warning and danger are coloured.",
+      "`InlineStatus` is the one way to write a state that changes (a robot's status, a job's state): its shape and its word, no box, in a row's trailing slot, a table cell, or beside a page title (PageHeader's `status`, at most one). Never a Badge or a MetaPill for a state.",
+      "`StatusEyebrow` is the same state above a headline (a robot's page title: Patrolling, then Patrol dog 7F3A).",
+      "Pass `status`: active, normal, warning, danger or offline. Only warning and danger are coloured; shape plus word, always both.",
+      "`className` on InlineStatus sets its size where the line around it is smaller (`text-xs` in a 12 px meta line).",
     ],
   },
   skeleton: {
@@ -1065,7 +1088,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   tree: {
-    group: "Navigation",
+    group: "Lists & tables",
     examples: { file: "tree", prefix: "Tree" },
     rules: [
       "list (default) for a hierarchy people read and follow links in: lineage, an outline. select only when choosing a node is the job (a file explorer, a site picker): it is one Tab stop with arrow keys, and its nodes are not links.",
@@ -1301,7 +1324,7 @@ const entries: Record<string, Entry> = {
       "Leave the browser's own menu on text people copy and on links: put the trigger on the row or card, not on a field.",
     ],
   },
-  // Robot shell
+  // Robotics: the stop first, then the shell around it
   "stop-button": {
     group: "Robotics",
     examples: { file: "stop-button", only: ["Ready", "StopStates", "ConnectionStates", "WakeStates"] },
@@ -1338,7 +1361,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   dock: {
-    group: "Robot shell",
+    group: "Robotics",
     examples: { file: "dock", only: ["Moving", "DockRobotStates", "DockActionStates"] },
     rules: [
       "Three tiers, top to bottom: state action, this page's primary action, navigation.",
@@ -1346,7 +1369,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   island: {
-    group: "Robot shell",
+    group: "Robotics",
     examples: { file: "island" },
     rules: [
       "Name, device status and notifications each expand on their own.",
@@ -1356,7 +1379,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   tray: {
-    group: "Robot shell",
+    group: "Robotics",
     examples: { file: "hooks", prefix: "Tray" },
     rules: ["Rows inside are radius 16 (md), so their corners stay concentric with the tray's 24. Dock and Dynamic island are built on it."],
   },
@@ -1416,6 +1439,44 @@ const entries: Record<string, Entry> = {
       "Debounce what goes to a server (a search, an autosave), never what the person sees: the text box updates on every key.",
       "300 ms for typing. A clear button and Enter do not wait: cancel() or flush().",
       "Answers can return out of order: keep only the one for the latest query.",
+    ],
+  },
+  "format-number": {
+    group: "Hooks & libraries",
+    rules: [
+      "Every number the screen writes goes through it: `formatCount(n, { locale })` for a count (whole things: rows, robots, matches), `formatNumber(n, { locale, ...options })` for any other number (a reading, a share, a price).",
+      "A count is in full with grouping (135,287) in tables, headers, detail pages and figures; `compact` (135K; 14萬 in zh-TW) only on a tab's count, a chart's ticks or a compact chip, with the full number one step away.",
+      "English without a locale, and for a tag Intl cannot read (\"en_US\"), so the server and the browser write the same digits. Never `toLocaleString()`: it follows the runtime's language (`lint:numbers` bans it in the kit).",
+      "Write the result in `tabular-nums`.",
+    ],
+  },
+  "clock-time": {
+    group: "Hooks & libraries",
+    rules: [
+      "The one format every live component writes a time of day in: 24-hour with seconds (14:02:31), in `locale` and an optional `timeZone`.",
+      "A time read during render differs between the server and the browser: read the clock with `use-now` and format what it returns.",
+    ],
+  },
+  feedback: {
+    group: "Hooks & libraries",
+    rules: [
+      "`feedback(name)` for a safety moment (stop sent, confirmed, unconfirmed, release, a new critical or high alarm), never `navigator.vibrate` directly: one pattern per moment, so the hand learns it.",
+      "Critical repeats until acknowledged; low is silent. Neither replaces the screen: iOS has no vibration and sound needs a first tap.",
+      "The stop, the slide to release, the teleop pad, the alarm list and the island call it already; call it yourself only for a moment the kit does not see (the stop confirmed by your app).",
+    ],
+  },
+  "use-now": {
+    group: "Hooks & libraries",
+    rules: [
+      "The clock for \"12 s ago\", for what has timed out, for a flood window: `useNow(intervalMs)`, null on the server and until the page hydrates, so the two renders agree.",
+      "Render nothing time-based (or a placeholder) while it is null, never `Date.now()` in render.",
+    ],
+  },
+  "use-reduced-motion": {
+    group: "Hooks & libraries",
+    rules: [
+      "`usePrefersReducedMotion()` while mounted, `prefersReducedMotion()` in a handler. Under reduced motion only opacity changes and loops stop.",
+      "CSS animations in the kit already follow the media query; use it for motion driven from JavaScript (a scroll, a canvas, a spring).",
     ],
   },
 }
@@ -1795,10 +1856,18 @@ const keyboard: Record<string, [string, string][]> = {
   ],
 }
 
-// Robotics in the order an operator meets them, as on /docs/robotics: stop it, drive it and send it, see what it sees,
-// read its state. Other groups keep the registry's order.
-const robotics = ["stop-button", "slide-to-release", "teleop-pad", "robot-map", "geo-map", "waypoint-editor", "camera-feed", "camera-wall", "point-cloud", "robot-model", "attitude", "joint-state", "diagnostics"]
-const within = (name: string) => (robotics.includes(name) ? robotics.indexOf(name) : 0)
+// Robotics in the order an operator meets them, as on /docs/robotics: stop it (and the shell around the stop: dock,
+// island, tray), drive it and send it, see what it sees, read its state, and what is drawn over a view. The groups made
+// in 0.40 go from the general to the special: the table before its variants, the shape of a state before its words,
+// the search before the filters. Other groups keep the registry's order.
+const ordered = [
+  ...["stop-button", "slide-to-release", "dock", "island", "tray", "teleop-pad", "robot-map", "geo-map", "waypoint-editor", "camera-feed", "camera-wall", "point-cloud", "robot-model", "attitude", "joint-state", "diagnostics", "viewport-overlay"],
+  ...["table", "responsive-table", "data-grid", "list", "item", "description-list", "tree", "sortable", "log-viewer"],
+  ...["status-glyph", "status-eyebrow", "badge", "tier-badge", "meter", "metric-card"],
+  ...["search-field", "filters", "filter-form", "chip-group", "facets"],
+  ...["format-number", "clock-time", "feedback", "use-now", "use-reduced-motion"],
+]
+const within = (name: string) => (ordered.includes(name) ? ordered.indexOf(name) : -1)
 
 export const items: Item[] = registry.items
   .filter((i) => i.name in entries)
@@ -1825,6 +1894,8 @@ export function storyNames(ex: Examples) {
 
 /** An example's caption where the story's name cannot say it: component → story → caption. */
 const captions: Record<string, Record<string, string>> = {
+  badge: { BadgeDoAndDont: "Do and don't" },
+  "status-eyebrow": { StatusInlineInRows: "InlineStatus in rows", StatusEyebrowOverTitle: "StatusEyebrow over a title" },
   "log-viewer": { LogViewerRosout: "/rosout", LogViewerZhTw: "Traditional Chinese (zh-TW)", LogViewerHundredThousand: "100,000 lines" },
   "streaming-text": { StreamingTextZhTw: "Traditional Chinese (zh-TW)" },
   calendar: { CalendarMonthYearDropdowns: "Month and year dropdowns" },

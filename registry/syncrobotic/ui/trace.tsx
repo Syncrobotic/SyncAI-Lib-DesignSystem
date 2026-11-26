@@ -1,4 +1,4 @@
-// @syncrobotic/trace v0.28.0 · update: npx shadcn add @syncrobotic/trace --overwrite
+// @syncrobotic/trace v0.40.0 · update: npx shadcn add @syncrobotic/trace --overwrite
 "use client"
 
 import * as React from "react"
@@ -51,17 +51,8 @@ export const defaultTraceLabels: TraceLabels = {
 type Ctx = { density: "default" | "dense"; total?: number; labels: TraceLabels }
 const TraceCtx = React.createContext<Ctx>({ density: "default", labels: defaultTraceLabels })
 
-const warned = new Set<string>()
-/** Says once that `density` is now `size`, so it is not confused with the theme's data-density. Development only. */
-function warnDensity(component: string, density: unknown) {
-  if (density === undefined || process.env.NODE_ENV === "production" || warned.has(component)) return
-  warned.add(component)
-  console.warn(`${component}: \`density="dense"\` is now \`size="sm"\`. \`density\` stops working in 1.0.`)
-}
-
 export function Trace({
   size,
-  density: legacy,
   total,
   labels,
   className,
@@ -69,16 +60,13 @@ export function Trace({
 }: React.ComponentProps<"ol"> & {
   /** sm: tighter rows for a long run. Rows you can open stay 44 px. */
   size?: "default" | "sm"
-  /** @deprecated Use `size="sm"`. */
-  density?: "default" | "dense"
   /** Length of the whole run in ms. With it, steps that have `start` and `duration` draw a waterfall bar. */
   total?: number
   /** The words it says, to translate them. Nested traces take their parent's. */
   labels?: Partial<TraceLabels>
 }) {
   const parent = React.useContext(TraceCtx)
-  warnDensity("Trace", legacy)
-  const density = size ? (size === "sm" ? "dense" : "default") : legacy
+  const density = size ? (size === "sm" ? "dense" : "default") : undefined
   // Nested traces (sub-steps) inherit density and the run length.
   return (
     <TraceCtx.Provider value={{ density: density ?? parent.density, total: total ?? parent.total, labels: { ...parent.labels, ...labels } }}>

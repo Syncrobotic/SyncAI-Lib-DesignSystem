@@ -64,11 +64,12 @@
     "lint": "eslint .",
     "lint:tokens": "node scripts/check-tokens.mjs",
     "test:stories": "playwright test tests/stories.spec.ts",
-    "ci": "npm run lint:tokens && npm run lint:registry && npm run lint:rules && npm run lint:motion && npm run lint:versions && npm run lint:dtcg && npm run lint:props && npm run lint:a11y && npm run lint:thumbs && npm run lint && npm run typecheck && npm test && npm run build && npm run lint:html-size && npm run build-storybook",
+    "ci": "npm run lint:tokens && npm run lint:registry && npm run lint:rules && npm run lint:numbers && npm run lint:motion && npm run lint:versions && npm run lint:dtcg && npm run lint:props && npm run lint:a11y && npm run lint:thumbs && npm run lint && npm run typecheck && npm test && npm run build && npm run lint:html-size && npm run build-storybook",
     "test": "vitest run",
     "lint:registry": "node scripts/check-registry.mjs",
     "lint:rules": "node scripts/check-rules.mjs",
     "lint:props": "node scripts/props.mjs",
+    "lint:numbers": "node scripts/check-numbers.mjs",
     "props": "node scripts/props.mjs --write",
     "lint:versions": "node scripts/versions.mjs",
     "lint:motion": "node scripts/check-motion.mjs registry site app",
@@ -83,7 +84,8 @@
     "thumbs": "node scripts/thumbs.mjs",
     "lint:html-size": "node scripts/check-html-size.mjs",
     "lint:thumbs": "node scripts/thumbs.mjs --check && vitest run tests/unit/block-thumbs.test.ts",
-    "adoption": "node scripts/adoption.mjs"
+    "adoption": "node scripts/adoption.mjs",
+    "readme": "WRITE_README=1 vitest run tests/unit/readme.test.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

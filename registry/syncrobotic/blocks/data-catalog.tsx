@@ -1,9 +1,10 @@
-// @syncrobotic/data-catalog v0.39.0 · update: npx shadcn add @syncrobotic/data-catalog --overwrite
+// @syncrobotic/data-catalog v0.40.0 · update: npx shadcn add @syncrobotic/data-catalog --overwrite
 "use client"
 
 import * as React from "react"
 import { ChevronRight, Database, Grid3x3, Plus, ScrollText, Search, SearchX, ShieldCheck } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { formatCount } from "@/registry/syncrobotic/lib/format-number"
 import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
 import { AppShell, type AppNavGroup, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { TierBadge, tiers, type Tier } from "@/registry/syncrobotic/ui/tier-badge"
@@ -193,7 +194,7 @@ function DatasetRows({ dataset: d }: { dataset: Dataset }) {
         <TableCell className="hidden md:table-cell">{d.task}</TableCell>
         <TableCell className="hidden md:table-cell">{d.use}</TableCell>
         <TableCell className={cn("hidden text-muted-foreground xl:table-cell")}>{d.owner}</TableCell>
-        <TableCell className="text-right tabular-nums">{d.items.toLocaleString("en-US")}</TableCell>
+        <TableCell className="text-right tabular-nums">{formatCount(d.items)}</TableCell>
       </TableRow>
       {mounted &&
         layers.map((l, i) => (
@@ -216,7 +217,7 @@ function DatasetRows({ dataset: d }: { dataset: Dataset }) {
             {hiddenCells.map((c, j) => (
               <TableCell key={j} className={c} />
             ))}
-            <TableCell className="text-right text-muted-foreground tabular-nums">{l.items.toLocaleString("en-US")}</TableCell>
+            <TableCell className="text-right text-muted-foreground tabular-nums">{formatCount(l.items)}</TableCell>
           </TableRow>
         ))}
     </>
@@ -265,31 +266,35 @@ export function DataCatalogContent({ datasets = sampleDatasets }: DataCatalogPro
           <FacetsDrawer facets={facets} value={picks} onValueChange={setPicks} locale="en-US" />
         </div>
         <p className="text-sm text-muted-foreground" aria-live="polite">
-          {rows.length} of {datasets.length} datasets
+          {formatCount(rows.length)} of {formatCount(datasets.length)} datasets
         </p>
-        {rows.length === 0 ? (
-          <EmptyState icon={SearchX} title="No datasets match" description="Clear a filter or search for something broader." />
-        ) : (
-          <Table>
-            <TableHeader>
+        {/* The table stays when nothing matches: one spanning cell says why, under the header and its sort. */}
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead {...sortProps("name")}>Dataset</TableHead>
+              <TableHead className="hidden sm:table-cell">Tier</TableHead>
+              <TableHead className="hidden md:table-cell">Task</TableHead>
+              <TableHead className="hidden md:table-cell">Use</TableHead>
+              <TableHead className="hidden xl:table-cell">Owner</TableHead>
+              <TableHead {...sortProps("items")} className="text-right">
+                Items
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {rows.length === 0 && (
               <TableRow>
-                <TableHead {...sortProps("name")}>Dataset</TableHead>
-                <TableHead className="hidden sm:table-cell">Tier</TableHead>
-                <TableHead className="hidden md:table-cell">Task</TableHead>
-                <TableHead className="hidden md:table-cell">Use</TableHead>
-                <TableHead className="hidden xl:table-cell">Owner</TableHead>
-                <TableHead {...sortProps("items")} className="text-right">
-                  Items
-                </TableHead>
+                <TableCell colSpan={6} className="h-auto py-4 whitespace-normal">
+                  <EmptyState size="inline" icon={SearchX} title="No datasets match" description="Clear a filter or search for something broader." />
+                </TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {rows.map((d) => (
-                <DatasetRows key={d.ref} dataset={d} />
-              ))}
-            </TableBody>
-          </Table>
-        )}
+            )}
+            {rows.map((d) => (
+              <DatasetRows key={d.ref} dataset={d} />
+            ))}
+          </TableBody>
+        </Table>
       </div>
     </div>
   )

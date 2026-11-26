@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
 import { MapPin, Pencil, SearchX } from "lucide-react"
 import { fn } from "storybook/test"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
-import { formatCount } from "@/registry/syncrobotic/lib/format-count"
+import { formatCount } from "@/registry/syncrobotic/lib/format-number"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuMoreTrigger } from "@/registry/syncrobotic/ui/dropdown-menu"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 import { Meter } from "@/registry/syncrobotic/ui/meter"
@@ -75,6 +75,28 @@ export const ResponsiveTableNarrowColumn: S = {
     <div className="flex max-w-sm flex-col gap-4">
       <SectionHeader title="Needs attention" count={2} />
       <ResponsiveTable label="Robots that need attention" rows={robots.filter((r) => r.status === "warning" || r.status === "danger")} columns={columns} rowKey={(r) => r.id} />
+    </div>
+  ),
+}
+
+/**
+ * Long titles on a phone: the title wraps to two lines (clamped past that) instead of being cut to "Two robots lost sign…",
+ * and a long trailing state moves under it rather than squeeze it below 160 px.
+ */
+export const ResponsiveTableLongTitles: S = {
+  render: () => (
+    <div className="max-w-sm">
+      <ResponsiveTable
+        label="Incidents"
+        rows={[
+          { ...robots[3], id: "i1", name: "Two robots lost signal in Zone B while crossing the loading bay", status: "danger", state: "Stopped" },
+          { ...robots[1], id: "i2", name: "Courier 2B19 waited at a closed fire door for 12 minutes", status: "warning", state: "Needs attention" },
+          { ...robots[0], id: "i3", name: "Patrol dog 7F3A", status: "normal", state: "Resolved" },
+        ]}
+        columns={columns}
+        rowKey={(r) => r.id}
+        onRowClick={fn()}
+      />
     </div>
   ),
 }
