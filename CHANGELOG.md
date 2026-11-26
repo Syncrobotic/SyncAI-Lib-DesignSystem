@@ -2,7 +2,7 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.42.0 · 2026-11-26
 
 Dependencies: the major versions the kit was behind on, so a product on the current toolchain builds the items as they are.
 
