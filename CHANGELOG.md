@@ -2,7 +2,7 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
-## Unreleased
+## 0.40.0 · 2026-11-26
 
 Design-rule conformance: the kit's components, docs and catalog follow the rules 0.39 wrote down. Every number goes one way, Badge teaches labels instead of states, a page header takes one status, and the catalog's groups are smaller and say what they hold. The blocks follow the design rules they teach: status is a shape and a word, section titles are SectionHeader, forms use Field, FieldSet and ChoiceField, lists that can be empty say so with EmptyState, and the tables that hand-wrote a phone version are ResponsiveTable. The blocks that draw numbers without the Chart component have a type of their own.
 
