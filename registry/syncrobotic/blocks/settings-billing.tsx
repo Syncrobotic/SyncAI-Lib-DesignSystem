@@ -393,8 +393,9 @@ export function SettingsBilling({
             ]}
             rowActions={(i) => (
               <Button variant="ghost" size="sm" asChild>
-                <Link href={i.pdfHref} download aria-label={`Download invoice ${i.number} (PDF)`}>
+                <Link href={i.pdfHref} download>
                   <Download aria-hidden="true" />
+                  <span className="sr-only">Download invoice {i.number}, </span>
                   PDF
                 </Link>
               </Button>
