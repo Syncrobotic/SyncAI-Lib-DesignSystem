@@ -2215,7 +2215,7 @@
       "name": "badge",
       "type": "registry:ui",
       "title": "Badge",
-      "description": "Status tones as foreground on subtle tint, plus outline; CountBadge for a count and ResultBadge for a pass, a fail or too few samples.",
+      "description": "A small tag for a fixed attribute or category: Beta, a version, the environment (Production, as an outline), a tier. Neutral or outline; a state that changes is an InlineStatus. CountBadge for a count and ResultBadge for a pass, a fail or too few samples.",
       "dependencies": [
         "class-variance-authority@^0.7",
         "lucide-react@^1",
@@ -2231,8 +2231,13 @@
         }
       ],
       "meta": {
-        "version": "0.16.1",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Docs: a badge is a fixed attribute or category (Beta, a version, Production as an outline, a tier), never a state; the examples show those, a status beside a title as an InlineStatus, and a Do / Don't. The tinted tones stay for compatibility."
+          },
           {
             "version": "0.16.1",
             "date": "2026-11-19",
@@ -2278,8 +2283,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.31.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "`tiers` is typed neutral or outline only (it never used warning or danger), and its comment no longer says the restricted tiers carry colour."
+          },
           {
             "version": "0.31.0",
             "date": "2026-11-22",

@@ -645,7 +645,7 @@ const entries: Record<string, Entry> = {
       "A fixed attribute or category: a tier, a data use, an environment, a version, Beta. A state that changes (a robot's status, a job's state) is `status-eyebrow`'s `InlineStatus`, in a row or a header; a count is a `CountBadge`.",
       "In a table column whose header already names the attribute, the values are plain text, not a badge on every row. A page header shows at most one status, then its badges after the title.",
       "Test and audit results are a `ResultBadge`: `result=\"passed\"` (grey with a check), `\"failed\"` (danger outline) or `\"insufficient\"` (grey, dashed circle). Never a green pass.",
-      "`tone=\"success\"` renders grey, as `neutral` does: a state is never green. Use `neutral`.",
+      "Neutral (the default) or `outline` (the environment: Production, Staging). The tinted tones stay for compatibility; `tone=\"success\"` renders grey, as `neutral` does. A state in a tinted badge is the mistake the Do / Don't example shows.",
     ],
   },
   "tier-badge": {
@@ -674,7 +674,7 @@ const entries: Record<string, Entry> = {
       "A person or a robot, by picture or initials. Initials when there is no picture, never an empty circle.",
       "People are round; robots, sites and teams are square (shape=\"square\"), so a mixed list tells who from what before the name is read.",
       'A robot without a picture shows its short ID (the last four characters, `className="font-mono"` on the fallback) or its initials, never a hand-made tile. Square corners follow IconTile at the same size (8 px at 32, 12 px at 40 and 48), so a robot beside an icon lines up.',
-      "Pair it with the name: an avatar alone is not an identity. A status badge is said in words too, nearby or in the label.",
+      "Pair it with the name: an avatar alone is not an identity. A status mark (AvatarBadge `status`) is said in words too, nearby or in the label.",
       "A group shows a few and folds the rest into +N (max); its label names everyone.",
     ],
   },

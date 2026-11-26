@@ -1,4 +1,4 @@
-// @syncrobotic/tier-badge v0.31.0 · update: npx shadcn add @syncrobotic/tier-badge --overwrite
+// @syncrobotic/tier-badge v0.40.0 · update: npx shadcn add @syncrobotic/tier-badge --overwrite
 import { Badge } from "@/registry/syncrobotic/ui/badge"
 
 /** A dataset's licence tier: T0 may enter product releases, T1–T3 restrict what you may do with it. */
@@ -14,8 +14,11 @@ export const tierBadgeLabels: TierBadgeLabels = {
   T3: "On-premises only",
 }
 
-/** Licence tiers. Only the restricted ones carry colour: they are the ones that change what you may do. */
-export const tiers: Record<Tier, { label: string; tone: "neutral" | "outline" | "warning" | "danger" }> = {
+/**
+ * Licence tiers. None carries colour (a tier is a category, not a state): T0 is a grey tag and the restricted tiers are
+ * outlined, so the ones that change what you may do stand apart without a status colour.
+ */
+export const tiers: Record<Tier, { label: string; tone: "neutral" | "outline" }> = {
   T0: { label: tierBadgeLabels.T0, tone: "neutral" },
   T1: { label: tierBadgeLabels.T1, tone: "outline" },
   T2: { label: tierBadgeLabels.T2, tone: "outline" },
@@ -33,8 +36,8 @@ type TierBadgeProps = {
 
 /**
  * A dataset's licence tier as a tag: its code in mono and what it means ("T1 · Non-commercial"). `compact` shows the code
- * alone on screen (a screen reader still hears the words), for a table column whose header says Tier. T0 is a grey tag, the restricted tiers outlined: a tier is a
- * category, never a status colour.
+ * alone on screen (a screen reader still hears the words), for a table column whose header says Tier. T0 is a grey tag,
+ * the restricted tiers outlined: a tier is a category, never a status colour.
  */
 export function TierBadge({ tier, compact, labels }: TierBadgeProps) {
   const label = labels?.[tier] ?? tierBadgeLabels[tier]

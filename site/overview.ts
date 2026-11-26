@@ -977,12 +977,23 @@ export const overviews: Record<string, Overview> = {
     instead: ["An exact value or a value with a unit: `number-field`."],
   },
   badge: {
-    what: "A short label or count in a status tone.",
-    use: ["A count next to a title (3 alarms).", "A state word in a header, like Production or Offline."],
-    instead: ["A state in a list row: `status-eyebrow` (InlineStatus).", "A message that needs a sentence: `alert`."],
+    what: "A small tag for a fixed attribute or category (Beta, a version, the environment, a tier), and CountBadge for a count beside a label.",
+    use: [
+      "A release channel or a version after a name: Beta, v2.4.1.",
+      "The environment in a header, as a neutral outline: Production, Staging.",
+      "A category that does not change while you look at it: a licence tier (T1), a data use (Internal only).",
+      "A count next to a title (3 alarms): CountBadge.",
+    ],
+    instead: [
+      "A state that changes (Offline, Patrolling, Low battery, Updating), in a row or beside a page title: `status-eyebrow` (InlineStatus), its shape and word with no box.",
+      "A value in a table column whose header already names it: plain text.",
+      "A dataset's licence tier: `tier-badge`.",
+      "A message that needs a sentence: `alert`.",
+    ],
     // CountBadge, in the same file, is the one way to draw a count next to a label.
     notes: [
-      "Status tones only for status; licence tiers or categories use neutral or outline.",
+      "Neutral (the default) or outline only. Don't put a state in a tinted badge (`<Badge tone=\"warning\">Low battery</Badge>`): it is an InlineStatus.",
+      "At most one status beside a title, then its badges.",
       "For counts use CountBadge, never a Badge with a number and never a solid red circle.",
     ],
   },

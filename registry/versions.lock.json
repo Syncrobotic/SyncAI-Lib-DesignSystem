@@ -192,12 +192,12 @@
     "hash": "b4040da405239ed3"
   },
   "badge": {
-    "version": "0.16.1",
-    "hash": "9f704a562bd27a1b"
+    "version": "0.40.0",
+    "hash": "f22bf170ec79046e"
   },
   "tier-badge": {
-    "version": "0.31.0",
-    "hash": "aaf74a6dbe1ca2a8"
+    "version": "0.40.0",
+    "hash": "94a0b7d4ddc1f606"
   },
   "card": {
     "version": "0.32.0",
