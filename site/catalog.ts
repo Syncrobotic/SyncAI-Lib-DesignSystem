@@ -1892,6 +1892,7 @@ export function storyNames(ex: Examples) {
 
 /** An example's caption where the story's name cannot say it: component → story → caption. */
 const captions: Record<string, Record<string, string>> = {
+  badge: { BadgeDoAndDont: "Do and don't" },
   "status-eyebrow": { StatusInlineInRows: "InlineStatus in rows", StatusEyebrowOverTitle: "StatusEyebrow over a title" },
   "log-viewer": { LogViewerRosout: "/rosout", LogViewerZhTw: "Traditional Chinese (zh-TW)", LogViewerHundredThousand: "100,000 lines" },
   "streaming-text": { StreamingTextZhTw: "Traditional Chinese (zh-TW)" },

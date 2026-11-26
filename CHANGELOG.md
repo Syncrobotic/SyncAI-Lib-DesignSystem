@@ -11,7 +11,6 @@ Design-rule conformance: the kit's components, docs and catalog follow the rules
 - **`status-eyebrow` 0.40.0:** InlineStatus takes `className` (its size in a 12 px meta line) and carries `data-slot="inline-status"`. The item is titled "Inline status and eyebrow" and its page, rules and overview lead with InlineStatus, the one way to write a state that changes, so it is found by its name.
 - **`format-count` 0.40.0:** the kit's one number path. `formatNumber(n, { locale, ...options })` for any number that is not a count (Intl.NumberFormat options: decimals, grouping, currency), `numberFormat(locale, options)` for the cached formatter and `resolveLocale(locale)`, beside `formatCount`. Both are English without a locale and for a tag Intl cannot read ("en_US"), so the server and the browser write the same digits.
 - **`lint:numbers`** (`scripts/check-numbers.mjs`, in CI's check job): no `.toLocaleString(` (it follows the runtime's language when given no locale) and no second `new Intl.NumberFormat(` in the registry.
-
 - **Docs:** pages for `format-count`, `clock-time`, `feedback`, `use-now` and `use-reduced-motion` under Hooks & libraries, with their rules and when to use them, so they are in the sidebar, the search, `/llms.txt` and the MCP server's catalog.
 - **`npm run readme`:** README.md's counts and its two catalog tables are written from the site's data (`site/readme.ts`); `tests/unit/readme.test.ts` fails when they drift.
 
