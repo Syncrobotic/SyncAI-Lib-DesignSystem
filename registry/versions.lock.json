@@ -465,7 +465,7 @@
   },
   "facets": {
     "version": "0.40.0",
-    "hash": "94be6c55e7ea75c0"
+    "hash": "a5f1bd3abab09a35"
   },
   "search-field": {
     "version": "0.28.0",
@@ -805,7 +805,7 @@
   },
   "sheet-filters": {
     "version": "0.40.0",
-    "hash": "cca1b760088ccb68"
+    "hash": "272133e400e8700e"
   },
   "timeline-activity": {
     "version": "0.40.0",

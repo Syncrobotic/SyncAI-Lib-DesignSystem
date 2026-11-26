@@ -287,6 +287,7 @@ export function FacetsDrawer({
   defaultOpen,
   open: openProp,
   onOpenChange,
+  onOpenAutoFocus,
   ...props
 }: FacetsBase & {
   /** On the button; its `lg:hidden` hides it where `Facets` shows the column. */
@@ -296,6 +297,11 @@ export function FacetsDrawer({
   /** Whether the sheet is open, when you hold it. */
   open?: boolean
   onOpenChange?: (open: boolean) => void
+  /**
+   * The sheet's own focus move when it opens (Radix `onOpenAutoFocus`). Call `event.preventDefault()` to keep focus where
+   * it is, for a sheet that opens on load (a preview) rather than from its button.
+   */
+  onOpenAutoFocus?: React.ComponentProps<typeof SheetContent>["onOpenAutoFocus"]
 }) {
   const l = { ...defaultFacetsLabels, ...labels }
   const [value, setValue] = useFacetValue(props)
@@ -321,7 +327,7 @@ export function FacetsDrawer({
           )}
         </Button>
       </SheetTrigger>
-      <SheetContent side="bottom" className="sm:mx-auto sm:w-full sm:max-w-md">
+      <SheetContent side="bottom" className="sm:mx-auto sm:w-full sm:max-w-md" onOpenAutoFocus={onOpenAutoFocus}>
         <SheetTitle>{l.title}</SheetTitle>
         <FacetList {...props} labels={labels} value={value} onValueChange={setValue} />
         <SheetFooter className="flex-row">

@@ -454,6 +454,7 @@ const entries: Record<string, Entry> = {
       "The column pins under the shell's bar (`--shell-top`) and scrolls on its own when it is taller than the space under it, so the list beside it scrolls without taking the filters away.",
       "`max` folds a long facet after that many options with \"Show all N\"; picked options always stay in view. A facet's own `max` wins.",
       "Picks apply at once, in the column and in the drawer; the drawer's Done only closes it. Say what they leave (\"12 of 40 recordings\") beside the list, in a polite live region.",
+      "A drawer opened from its button moves focus into the sheet. One that opens on load (`defaultOpen`, a preview) passes `onOpenAutoFocus={(e) => e.preventDefault()}` so the page keeps its focus.",
       "A query people build from any field and operator is `filters`; one facet as a row of chips above a list is `chip-group`.",
     ],
   },

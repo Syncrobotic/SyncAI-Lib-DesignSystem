@@ -147,6 +147,18 @@ describe("FacetsDrawer", () => {
     expect(screen.queryByRole("dialog")).toBeNull()
   })
 
+  it("passes onOpenAutoFocus to the sheet, so a drawer open on load can leave focus where it is", () => {
+    const outside = document.createElement("button")
+    document.body.append(outside)
+    outside.focus()
+    const onOpenAutoFocus = vi.fn((e: Event) => e.preventDefault())
+    render(<FacetsDrawer facets={facets} defaultOpen onOpenAutoFocus={onOpenAutoFocus} />)
+    expect(screen.getByRole("dialog", { name: "Filters" })).toBeTruthy()
+    expect(onOpenAutoFocus).toHaveBeenCalledTimes(1)
+    expect(document.activeElement).toBe(outside)
+    outside.remove()
+  })
+
   it("speaks Traditional Chinese through labels", () => {
     render(<FacetsDrawer facets={facets} labels={facetsLabels} defaultValue={{ tier: ["T0"] }} />)
     expect(screen.getByRole("button", { name: "篩選 1 個已選取" })).toBeTruthy()

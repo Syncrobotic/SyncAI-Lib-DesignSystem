@@ -52,11 +52,14 @@ function facetsOf(value: FacetValue): Facet[] {
  */
 export function SheetFilters({
   defaultOpen,
+  focusOnOpen = true,
   defaultValue = { state: ["attention", "offline"] },
   onValueChange,
 }: {
   /** Opens the sheet at first. */
   defaultOpen?: boolean
+  /** false for previews that open on load, so the page around them keeps its focus. */
+  focusOnOpen?: boolean
   /** The picks it starts with. */
   defaultValue?: FacetValue
   /** Called with every facet's picks after each change. */
@@ -72,7 +75,13 @@ export function SheetFilters({
   return (
     <div className="flex min-h-[var(--app-shell-height,100dvh)] flex-col gap-4 bg-background p-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <FacetsDrawer facets={facetsOf(value)} value={value} onValueChange={change} defaultOpen={defaultOpen} />
+        <FacetsDrawer
+          facets={facetsOf(value)}
+          value={value}
+          onValueChange={change}
+          defaultOpen={defaultOpen}
+          onOpenAutoFocus={focusOnOpen ? undefined : (e) => e.preventDefault()}
+        />
         {/* What the picks leave, said once after each change. */}
         <p className="text-sm text-muted-foreground tabular-nums" aria-live="polite">
           {formatCount(shown.length)} of {formatCount(robots.length)} robots

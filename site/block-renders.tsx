@@ -308,8 +308,7 @@ export const blockRenders: Record<string, () => React.ReactNode> = {
   "dialog-form": () => <DialogForm defaultOpen focusOnOpen={false} />,
   "dialog-share": () => <DialogShare defaultOpen focusOnOpen={false} />,
   "sheet-robot-detail": () => <SheetRobotDetail defaultOpen focusOnOpen={false} />,
-  // Closed: an open sheet would take the focus from the docs page around the preview (FacetsDrawer has no way to keep it).
-  "sheet-filters": () => <SheetFilters />,
+  "sheet-filters": () => <SheetFilters defaultOpen focusOnOpen={false} />,
   "timeline-activity": () => (
       <div className="p-6">
         <TimelineActivity className="mx-auto" />

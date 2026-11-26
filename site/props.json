@@ -4529,6 +4529,11 @@
      "name": "onOpenChange",
      "type": "(open: boolean) => void",
      "description": ""
+    },
+    {
+     "name": "onOpenAutoFocus",
+     "type": "(event: Event) => void",
+     "description": "The sheet's own focus move when it opens (Radix `onOpenAutoFocus`). Call `event.preventDefault()` to keep focus where it is, for a sheet that opens on load (a preview) rather than from its button."
     }
    ],
    "inherits": []

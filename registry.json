@@ -5672,7 +5672,7 @@
           {
             "version": "0.40.0",
             "date": "2026-11-26",
-            "note": "Counts in full with grouping (formatCount: 48,210) without a locale too, instead of the bare number. Imports @syncrobotic/format-number (renamed from format-count)."
+            "note": "Counts in full with grouping (formatCount: 48,210) without a locale too, instead of the bare number. Imports @syncrobotic/format-number (renamed from format-count). FacetsDrawer takes `onOpenAutoFocus`, passed to its sheet, so a drawer open on load can leave focus where it is."
           },
           {
             "version": "0.39.0",
@@ -10674,7 +10674,7 @@
           {
             "version": "0.40.0",
             "date": "2026-11-26",
-            "note": "Rebuilt as the FacetsDrawer example, shown on the Facets page: the drawer from the toolbar, picks that apply at once, the list and its count behind it, an inline empty state. It was a hand-made sheet of checkboxes and radios with an apply button. Props: `defaultOpen`, `defaultValue`, `onValueChange` (was `onApply` and `focusOnOpen`). Imports @syncrobotic/format-number (renamed from format-count)."
+            "note": "Rebuilt as the FacetsDrawer example, shown on the Facets page: the drawer from the toolbar, picks that apply at once, the list and its count behind it, an inline empty state. It was a hand-made sheet of checkboxes and radios with an apply button. Props: `defaultOpen`, `defaultValue`, `onValueChange` (was `onApply` and `focusOnOpen`). Imports @syncrobotic/format-number (renamed from format-count). `focusOnOpen={false}` keeps focus on the page when the sheet opens on load; the preview opens it again."
           },
           {
             "version": "0.17.3",
