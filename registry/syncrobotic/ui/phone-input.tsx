@@ -1,4 +1,4 @@
-// @syncrobotic/phone-input v0.32.0 · update: npx shadcn add @syncrobotic/phone-input --overwrite
+// @syncrobotic/phone-input v0.42.0 · update: npx shadcn add @syncrobotic/phone-input --overwrite
 "use client"
 
 import * as React from "react"
@@ -127,9 +127,9 @@ export function PhoneInput({
       >
         <SelectTrigger
           aria-label={l.country}
-          // Transparent in every state, disabled too: a fill of its own would paint over the field's inset outline, which
-          // must run unbroken round both segments.
-          className={cn("h-full w-auto shrink-0 gap-1 rounded-r-none bg-transparent px-3 ring-0 disabled:bg-transparent", readOnly && "disabled:opacity-100")}
+          // Transparent in every state, disabled and invalid too: a fill or a ring of its own would paint over the field's
+          // inset outline, which must run unbroken round both segments (the field's own ring says it is invalid).
+          className={cn("h-full w-auto shrink-0 gap-1 rounded-r-none bg-transparent px-3 ring-0 disabled:bg-transparent aria-invalid:ring-0", readOnly && "disabled:opacity-100")}
         >
           <span className="flex items-center gap-2">
             <span aria-hidden="true">{flag(country)}</span>
