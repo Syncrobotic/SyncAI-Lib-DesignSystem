@@ -609,8 +609,8 @@ export const InputGroupWithButton: S = {
     <Field label="Robot ID">
       <InputGroup>
         <Input defaultValue="7F3A" />
-        {/* A button with a word, inside the field's edge: the field's one action. */}
-        <InputGroupButton className="w-auto gap-2 px-3 text-sm font-medium text-foreground ring-1 ring-border ring-inset">
+        {/* A button with a word, inside the field's edge: the field's one action, a quiet fill rather than an edge of its own. */}
+        <InputGroupButton className="w-auto gap-2 bg-muted px-3 text-sm font-medium text-foreground">
           <Search aria-hidden="true" />
           Find
         </InputGroupButton>

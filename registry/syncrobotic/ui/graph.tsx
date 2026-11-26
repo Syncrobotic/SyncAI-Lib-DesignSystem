@@ -1,4 +1,4 @@
-// @syncrobotic/graph v0.36.0 · update: npx shadcn add @syncrobotic/graph --overwrite
+// @syncrobotic/graph v0.42.0 · update: npx shadcn add @syncrobotic/graph --overwrite
 "use client"
 
 import * as React from "react"
@@ -92,6 +92,10 @@ export type GraphLayout = { nodes: GraphLayoutNode[]; edges: GraphLayoutEdge[]; 
 // bounds; `nth` states them once, instead of a `!` on every read. Writes that read and assign in one step (`x[i] -= d`)
 // carry their own `!` for the same reason.
 const nth = <T,>(list: readonly T[], i: number): T => list[i] as T
+
+// Declared here, not taken from @types/node: TypeScript 6 no longer loads every installed @types package, so a product
+// need not have Node's types for this item to compile. Bundlers still replace process.env.NODE_ENV in place.
+declare const process: { env: { NODE_ENV?: string } }
 
 const warn = (msg: string) => {
   if (process.env.NODE_ENV !== "production") console.warn(`Graph: ${msg}`)

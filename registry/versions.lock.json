@@ -300,8 +300,8 @@
     "hash": "ed4f26f5991f7922"
   },
   "graph": {
-    "version": "0.36.0",
-    "hash": "e2c9565e4909b9cb"
+    "version": "0.42.0",
+    "hash": "020514bb57f76c06"
   },
   "robot-map": {
     "version": "0.40.0",
@@ -488,8 +488,8 @@
     "hash": "0f57d3b10bbfd124"
   },
   "phone-input": {
-    "version": "0.32.0",
-    "hash": "7d37aa5002ee7a6e"
+    "version": "0.42.0",
+    "hash": "90dd91457d33397f"
   },
   "calendar": {
     "version": "0.32.0",
@@ -524,8 +524,8 @@
     "hash": "3e64e876026786c9"
   },
   "prompt-composer": {
-    "version": "0.41.0",
-    "hash": "278cfa368e786b81"
+    "version": "0.42.0",
+    "hash": "e8dfcccbae201fb8"
   },
   "message-scroller": {
     "version": "0.41.0",
@@ -536,8 +536,8 @@
     "hash": "d11b2868b7a396c6"
   },
   "resizable": {
-    "version": "0.17.3",
-    "hash": "54a68ee91d6b7ecd"
+    "version": "0.42.0",
+    "hash": "b4014ec9e4d27e06"
   },
   "file-upload": {
     "version": "0.32.0",

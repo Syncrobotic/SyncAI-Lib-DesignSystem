@@ -81,6 +81,12 @@ export default function UpgradingPage() {
         <Inline text="A release that renames or removes something has its own page: what changed, old to new, and the codemods that do the mechanical part." />
       </p>
       <ul className="list-disc space-y-1 pt-2 pl-6 text-base">
+        <li id="0-42">
+          <a href="/docs/upgrading/0-42" className={textLink}>
+            0.42: resizable on react-resizable-panels 4
+          </a>
+          <span className="text-muted-foreground"> · onLayout → onLayoutChanged, ref → panelRef and groupRef, data-separator</span>
+        </li>
         <li id="0-40">
           <a href="/docs/upgrading/0-40" className={textLink}>
             0.40: the pre-1.0 cleanup

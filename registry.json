@@ -3658,8 +3658,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.36.0",
+        "version": "0.42.0",
         "changelog": [
+          {
+            "version": "0.42.0",
+            "date": "2026-11-26",
+            "note": "Compiles without Node's types: `process` is declared in the file, since TypeScript 6 no longer loads every installed @types package."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -5980,8 +5985,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.42.0",
         "changelog": [
+          {
+            "version": "0.42.0",
+            "date": "2026-11-26",
+            "note": "Invalid, the country select keeps no ring of its own: the field's ring says it, and no thick line splits the two segments."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -6544,8 +6554,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.41.0",
+        "version": "0.42.0",
         "changelog": [
+          {
+            "version": "0.42.0",
+            "date": "2026-11-26",
+            "note": "A Select in the toolbar drops its own ring and fill, so the box is the one edge and the select reads as a quiet button beside Attach."
+          },
           {
             "version": "0.41.0",
             "date": "2026-11-26",
@@ -6650,7 +6665,7 @@
       "title": "Resizable",
       "description": "Panels resized by dragging the line between them or with the arrow keys, horizontal, vertical or nested (react-resizable-panels).",
       "dependencies": [
-        "react-resizable-panels@^3"
+        "react-resizable-panels@^4"
       ],
       "registryDependencies": [
         "@syncrobotic/cn"
@@ -6662,8 +6677,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.42.0",
         "changelog": [
+          {
+            "version": "0.42.0",
+            "date": "2026-11-26",
+            "note": "On react-resizable-panels 4. A number is still a percentage of the group (a string takes a unit: \"240px\"), direction is also orientation and autoSaveId still remembers sizes, without a hydration mismatch. Panel callbacks and refs follow version 4 (onResize, panelRef, groupRef, onLayoutChanged), and the handle's state and direction are data-separator and aria-orientation. F6 moves between handles; a double-click restores the default size."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",

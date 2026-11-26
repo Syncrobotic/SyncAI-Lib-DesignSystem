@@ -131,7 +131,7 @@ export const FormChoices: S = { render: () => <AlertChannels /> }
 
 const site = z.object({
   name: z.string().trim().min(2, "At least 2 characters"),
-  speed: z.number({ invalid_type_error: "Enter a speed, in metres per second." }).min(0.2, "At least 0.2 m/s.").max(1.5, "At most 1.5 m/s indoors."),
+  speed: z.number({ error: "Enter a speed, in metres per second." }).min(0.2, "At least 0.2 m/s.").max(1.5, "At most 1.5 m/s indoors."),
 })
 type Site = z.infer<typeof site>
 
