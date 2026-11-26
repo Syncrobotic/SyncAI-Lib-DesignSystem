@@ -3192,12 +3192,8 @@
     {
      "name": "size",
      "type": "\"sm\" | \"default\"",
+     "default": "\"default\"",
      "description": "sm: 44 px rows for long lists on a desktop. Separate from the theme's data-density, which this follows too."
-    },
-    {
-     "name": "density",
-     "type": "\"default\" | \"dense\"",
-     "description": "Deprecated: Use `size=\"sm\"`."
     },
     {
      "name": "variant",
@@ -12864,12 +12860,8 @@
     {
      "name": "size",
      "type": "\"sm\" | \"default\"",
+     "default": "\"default\"",
      "description": "sm: less space between events, for a long history."
-    },
-    {
-     "name": "density",
-     "type": "\"default\" | \"dense\"",
-     "description": "Deprecated: Use `size=\"sm\"`."
     }
    ],
    "inherits": [
@@ -13095,11 +13087,6 @@
      "name": "size",
      "type": "\"sm\" | \"default\"",
      "description": "sm: tighter rows for a long run. Rows you can open stay 44 px."
-    },
-    {
-     "name": "density",
-     "type": "\"default\" | \"dense\"",
-     "description": "Deprecated: Use `size=\"sm\"`."
     },
     {
      "name": "total",

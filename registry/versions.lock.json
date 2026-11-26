@@ -504,8 +504,8 @@
     "hash": "7547bf8f88c93234"
   },
   "data-grid": {
-    "version": "0.35.0",
-    "hash": "67a107c42fe44b2a"
+    "version": "0.40.0",
+    "hash": "e2092d60ab8896ed"
   },
   "log-viewer": {
     "version": "0.40.0",
@@ -540,8 +540,8 @@
     "hash": "576354d039eca397"
   },
   "timeline": {
-    "version": "0.28.0",
-    "hash": "850306c0988f500d"
+    "version": "0.40.0",
+    "hash": "e5d5063536832471"
   },
   "scrollspy": {
     "version": "0.36.0",
@@ -556,8 +556,8 @@
     "hash": "2611a24c74ff5959"
   },
   "trace": {
-    "version": "0.28.0",
-    "hash": "34efe081d65023bf"
+    "version": "0.40.0",
+    "hash": "f58f221958cc6619"
   },
   "marker": {
     "version": "0.28.0",

@@ -6203,8 +6203,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Breaking: the deprecated `density` prop is gone; use `size=\"sm\"`."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -6688,8 +6693,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Breaking: the deprecated `density` prop is gone; use `size=\"sm\"`."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -6921,8 +6931,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Breaking: the deprecated `density` prop is gone; use `size=\"sm\"`."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",

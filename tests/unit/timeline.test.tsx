@@ -135,21 +135,14 @@ describe("Timeline", () => {
     expect(container.querySelector(".pb-4")).not.toBeNull()
   })
 
-  it("still honours the deprecated density prop, and warns about it once", () => {
-    const warn = vi.spyOn(console, "warn").mockImplementation(() => {})
+  it("has no density prop any more: size is the only spacing switch", () => {
     const { container } = render(
-      <>
-        <Timeline density="dense">
-          <TimelineItem title="A" />
-        </Timeline>
-        <Timeline density="dense">
-          <TimelineItem title="B" />
-        </Timeline>
-      </>,
+      // @ts-expect-error `density` was removed in 0.40; use size="sm".
+      <Timeline density="dense">
+        <TimelineItem title="A" />
+      </Timeline>,
     )
-    expect(container.querySelectorAll(".pb-4")).toHaveLength(2)
-    expect(warn).toHaveBeenCalledTimes(1)
-    expect(warn.mock.calls[0][0]).toContain('size="sm"')
+    expect(container.querySelector(".pb-4")).toBeNull()
   })
 
   it("is not a Tab stop when vertical", () => {

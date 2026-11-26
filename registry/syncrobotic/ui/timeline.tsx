@@ -1,4 +1,4 @@
-// @syncrobotic/timeline v0.28.0 · update: npx shadcn add @syncrobotic/timeline --overwrite
+// @syncrobotic/timeline v0.40.0 · update: npx shadcn add @syncrobotic/timeline --overwrite
 "use client"
 
 import * as React from "react"
@@ -13,19 +13,10 @@ import { cn } from "@/lib/utils"
 type Ctx = { orientation: "vertical" | "horizontal"; align: "start" | "alternate"; density: "default" | "dense" }
 const TimelineCtx = React.createContext<Ctx>({ orientation: "vertical", align: "start", density: "default" })
 
-const warned = new Set<string>()
-/** Says once that `density` is now `size`, so it is not confused with the theme's data-density. Development only. */
-function warnDensity(component: string, density: unknown) {
-  if (density === undefined || process.env.NODE_ENV === "production" || warned.has(component)) return
-  warned.add(component)
-  console.warn(`${component}: \`density="dense"\` is now \`size="sm"\`. \`density\` stops working in 1.0.`)
-}
-
 export function Timeline({
   orientation = "vertical",
   align = "start",
-  size,
-  density: legacy,
+  size = "default",
   className,
   ...props
 }: React.ComponentProps<"ol"> & {
@@ -34,11 +25,8 @@ export function Timeline({
   align?: "start" | "alternate"
   /** sm: less space between events, for a long history. */
   size?: "default" | "sm"
-  /** @deprecated Use `size="sm"`. */
-  density?: "default" | "dense"
 }) {
-  warnDensity("Timeline", legacy)
-  const density = (size ?? (legacy === "dense" ? "sm" : "default")) === "sm" ? "dense" : "default"
+  const density = size === "sm" ? "dense" : "default"
   const list = React.useRef<HTMLOListElement>(null)
   const more = useMoreToTheRight(list, orientation === "horizontal")
   return (
