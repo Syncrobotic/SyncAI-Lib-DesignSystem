@@ -601,6 +601,25 @@ export const overviews: Record<string, Overview> = {
       "Every word is in `labels` (`streamingTextLabels` in `labels-zh-tw`), including `queued`, `done` and `stopped` as functions; `locale` formats the numbers.",
     ],
   },
+  message: {
+    what: "One turn of a conversation with a model or an agent: who spoke (a role word, a name, the time), what they said, and the turn's actions and facts.",
+    use: [
+      "An operator's assistant: the person's question and the assistant's streamed answer.",
+      "An agent's tool calls shown in the conversation, each a Tool turn with a Trace inside.",
+      "A system note at the start of a conversation: what the assistant may and may not do.",
+    ],
+    instead: [
+      "One answer on its own, with no conversation around it: `streaming-text`.",
+      "An agent run read step by step: `trace`, or the `agent-trace` block.",
+      "Comments people leave on a record: `timeline`.",
+    ],
+    notes: [
+      "An <article> named by `labels.label` (\"Assistant, 14:02\"), so a screen reader's list of articles is the conversation's outline. The role word comes first in the name and in the header.",
+      "The status row is a polite live region that is always present: a turn that fails or is stopped while on screen is said once; turns that mount already failed are not read.",
+      "`align=\"end\"` works through a container query (`@2xl`, 42 rem): message-scroller's list is the container; put `@container` on your own list's parent.",
+      "Every word is in `labels` (`messageLabels` and `messageMetaLabels` in labels-zh-tw); `MessageMeta` takes `locale`.",
+    ],
+  },
   sortable: {
     what: "A reorderable list or grid with a grip on each item, usable with a mouse, a finger or the keyboard.",
     use: ["Waypoint and patrol order.", "Rule priorities.", "Column order, camera layout, playlist steps."],

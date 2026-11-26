@@ -337,8 +337,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.41.0",
         "changelog": [
+          {
+            "version": "0.41.0",
+            "date": "2026-11-26",
+            "note": "`messageLabels`, `messageMetaLabels` for the new conversation parts (message): 你, 助理, 重新生成, 送出, 跳到最新 and the rest."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -6436,6 +6441,38 @@
             "version": "0.31.0",
             "date": "2026-11-22",
             "note": "First release."
+          }
+        ]
+      }
+    },
+    {
+      "name": "message",
+      "type": "registry:ui",
+      "title": "Message",
+      "description": "One turn of a conversation with a model or an agent: a header with the role word (You, Assistant, Tool, System), a name and the time, never a bubble colour; any body (StreamingText, Trace, attachments, markdown); then its actions and a quiet line of facts (model · 2.4 s · 1,204 tokens). Streaming is aria-busy; failed and stopped are a shape and a word.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/button",
+        "@syncrobotic/format-number",
+        "@syncrobotic/streaming-text"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/message.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.41.0",
+        "changelog": [
+          {
+            "version": "0.41.0",
+            "date": "2026-11-26",
+            "note": "First release: a conversation turn named by its role word, name and time, never a colour; streaming, failed and stopped states; MessageMeta. Words in `labels`."
           }
         ]
       }

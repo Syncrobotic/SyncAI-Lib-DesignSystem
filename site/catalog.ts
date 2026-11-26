@@ -28,6 +28,7 @@ export type StoryFile =
   | "data-grid"
   | "log-viewer"
   | "streaming-text"
+  | "message"
   | "sortable"
   | "resizable"
   | "file-upload"
@@ -257,6 +258,21 @@ const entries: Record<string, Entry> = {
       "A reasoning part goes in `reasoning`, never into `text`: it streams first, sits apart behind a Reasoning button, closed, and the status says Thinking until the answer starts.",
       "Calm while it waits: grey Spinner and a word, no blinking caret, no blue. Colour only on an error's glyph and word.",
       "Leave `announce` on \"text\": screen readers hear each phase once and the answer in whole sentences, at most every 5 s. \"status\" where the answer is read elsewhere.",
+    ],
+  },
+  message: {
+    wide: true,
+    group: "Data display",
+    examples: { file: "message", prefix: "Message" },
+    rules: [
+      "One turn of a conversation with a model or an agent. Map your API's `role` straight to `role`: user, assistant, tool or system.",
+      "Who spoke is the role word in the header (You, Assistant, Tool, System), with `name` after it (the person, the assistant, the tool called). Never tell roles apart by a bubble colour or by alignment alone: `align=\"end\"` may move a person's turns to the end of a wide container, and they keep the word.",
+      "Every turn is on neutral ground. A person's turn has a quiet `surface` (muted) by default; nothing takes a colour for its role.",
+      "Pass `time` already formatted (\"14:02\") and `dateTime` for machines. Format it once in the browser, or with a time zone, so the server and the page agree.",
+      "The body is `children`: StreamingText for a streamed answer, Trace for tool calls, Attachment for files, your markdown renderer. Message parses nothing.",
+      "While the answer arrives set `status=\"streaming\"` (aria-busy). When the body is StreamingText, leave the final state to it (its status row says Done, Stopped or Failed) and clear `status`; use Message's `error` and `stopped` for a turn whose body cannot say it, such as a person's turn that was not sent.",
+      "Facts about the answer go in `footer` with `MessageMeta` (model, duration, tokens, numbers through format-number); its actions go in `actions` (`message-actions`).",
+      "The same speaker's next turn takes `continued`: the header stays for screen readers only. Put the turns in a `message-scroller`.",
     ],
   },
   sortable: {
@@ -1807,6 +1823,10 @@ const keyboard: Record<string, [string, string][]> = {
     ["`Tab`", "Move to Stop (Cancel while queued), the Reasoning button and Try again after an error"],
     ["`Enter` / `Space`", "Stop, open or close the reasoning, or try again"],
   ],
+  message: [
+    ["`Tab`", "Move to the turn's own controls: Try again after a failure, then its actions"],
+    ["`Enter` / `Space`", "Try again"],
+  ],
   filters: [
     ["`Enter`", "On + Filter, open the picker; on a part of a chip, reopen that step"],
     ["`↑` / `↓`", "Move through fields, operators or values; type to narrow them"],
@@ -1898,6 +1918,7 @@ const captions: Record<string, Record<string, string>> = {
   "status-eyebrow": { StatusInlineInRows: "InlineStatus in rows", StatusEyebrowOverTitle: "StatusEyebrow over a title" },
   "log-viewer": { LogViewerRosout: "/rosout", LogViewerZhTw: "Traditional Chinese (zh-TW)", LogViewerHundredThousand: "100,000 lines" },
   "streaming-text": { StreamingTextZhTw: "Traditional Chinese (zh-TW)" },
+  message: { MessageZhTw: "Traditional Chinese (zh-TW)" },
   calendar: { CalendarMonthYearDropdowns: "Month and year dropdowns" },
   chart: { ChartAboveBelowZero: "Above and below zero" },
   "time-picker": { TimePickerTwelveHour: "12-hour clock" },

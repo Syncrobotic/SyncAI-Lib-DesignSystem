@@ -7761,6 +7761,177 @@
    "inherits": []
   }
  ],
+ "message": [
+  {
+   "name": "Message",
+   "props": [
+    {
+     "name": "role",
+     "type": "\"user\" | \"assistant\" | \"tool\" | \"system\"",
+     "required": true,
+     "description": "Who spoke: the role word leads the header and the accessible name. Named `role` after the chat APIs' field."
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "description": "Who exactly, after the role word: a person's name, the assistant's or the model's name, the tool called."
+    },
+    {
+     "name": "time",
+     "type": "string",
+     "description": "When, as shown (\"14:02\"). Format it once, in the browser or with a time zone, so the server and the page agree."
+    },
+    {
+     "name": "dateTime",
+     "type": "string",
+     "description": "The same moment for machines (an ISO 8601 string), on the <time> element."
+    },
+    {
+     "name": "avatar",
+     "type": "ReactNode",
+     "description": "A picture before the role word: an `Avatar` at size \"sm\". Hidden from screen readers: the role word names the turn."
+    },
+    {
+     "name": "status",
+     "type": "\"streaming\" | \"error\" | \"stopped\"",
+     "description": "See MessageStatus. Leave it undefined when the body (StreamingText) already shows the final state."
+    },
+    {
+     "name": "error",
+     "type": "string",
+     "description": "With status \"error\": what went wrong, in words, after \"Failed\"."
+    },
+    {
+     "name": "onRetry",
+     "type": "() => void",
+     "description": "With status \"error\": shows Try again."
+    },
+    {
+     "name": "align",
+     "type": "\"end\" | \"start\"",
+     "default": "\"start\"",
+     "description": "\"end\" moves the turn to the end of a wide container (`@container` 42 rem and up); below that every turn starts at the start."
+    },
+    {
+     "name": "surface",
+     "type": "boolean",
+     "default": "role === \"user\"",
+     "description": "A quiet surface under the body. On by default for the user's turns."
+    },
+    {
+     "name": "continued",
+     "type": "boolean",
+     "default": "false",
+     "description": "The same speaker's next turn: the header is kept for screen readers only."
+    },
+    {
+     "name": "footer",
+     "type": "ReactNode",
+     "description": "Facts about the turn, under the body: `MessageMeta`, or your own."
+    },
+    {
+     "name": "actions",
+     "type": "ReactNode",
+     "description": "The turn's actions (`MessageActions`), under the body, before the footer's facts."
+    },
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "description": "The body: StreamingText, Trace, attachments, your markdown renderer."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<MessageLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "roles",
+       "type": "Record<\"user\" | \"assistant\" | \"tool\" | \"system\", string>",
+       "default": "{ user: \"You\", assistant: \"Assistant\", tool: \"Tool\", system: \"System\" }",
+       "description": "The word for each role, shown in the header and first in the accessible name."
+      },
+      {
+       "name": "label",
+       "type": "(parts: { role: string; name?: string; time?: string; }) => string",
+       "default": "({ role, name, time }) => [role, name, time].filter(Boolean).join(\", \")",
+       "description": "The article's accessible name: \"Assistant, 14:02\", \"Tool, robots.list, 14:02\"."
+      },
+      {
+       "name": "failed",
+       "type": "string",
+       "default": "\"Failed\"",
+       "description": "The word after the error glyph, in the danger colour; `error` follows it."
+      },
+      {
+       "name": "stopped",
+       "type": "string",
+       "default": "\"Stopped\"",
+       "description": "The word after the stop glyph."
+      },
+      {
+       "name": "retry",
+       "type": "string",
+       "default": "\"Try again\"",
+       "description": "The retry button."
+      }
+     ]
+    }
+   ],
+   "inherits": [
+    "<article> (except role, children)"
+   ]
+  },
+  {
+   "name": "MessageMeta",
+   "props": [
+    {
+     "name": "model",
+     "type": "string",
+     "description": "The model that answered, as people know it."
+    },
+    {
+     "name": "durationMs",
+     "type": "number",
+     "description": "How long the answer took, in ms."
+    },
+    {
+     "name": "tokens",
+     "type": "number",
+     "description": "Tokens used (prompt and answer, or as your API counts them)."
+    },
+    {
+     "name": "locale",
+     "type": "string",
+     "description": "Formats the numbers. Left out, English, so the server and the browser write the same."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<MessageMetaLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "duration",
+       "type": "(ms: number, locale: string | undefined) => string",
+       "default": "formatDuration",
+       "description": "How long the answer took: \"2.4 s\"."
+      },
+      {
+       "name": "tokens",
+       "type": "(n: number, locale: string | undefined) => string",
+       "default": "(n, locale) => `${formatCount(n, { locale })} ${n === 1 ? \"token\" : \"tokens\"}`",
+       "description": "How many tokens it used: \"1,204 tokens\"."
+      }
+     ]
+    },
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "description": ""
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "meter": [
   {
    "name": "Meter",
@@ -12516,15 +12687,15 @@
      "description": "",
      "keys": [
       {
-       "name": "light",
-       "type": "string",
-       "default": "\"Light\"",
-       "description": ""
-      },
-      {
        "name": "system",
        "type": "string",
        "default": "\"Match system\"",
+       "description": ""
+      },
+      {
+       "name": "light",
+       "type": "string",
+       "default": "\"Light\"",
        "description": ""
       },
       {

@@ -1062,6 +1062,17 @@
     "tabStops": 2,
     "live": true
   },
+  "message": {
+    "roles": [
+      "article",
+      "button",
+      "list",
+      "listitem",
+      "status"
+    ],
+    "tabStops": 1,
+    "live": true
+  },
   "sortable": {
     "roles": [
       "button",

@@ -1,4 +1,4 @@
-// @syncrobotic/labels-zh-tw v0.40.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
+// @syncrobotic/labels-zh-tw v0.41.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
 // The kit's words in Traditional Chinese as written in Taiwan, one object per component that takes `labels`. Pass each
 // to its component (`<DataGrid labels={dataGridLabels} />`) with `locale="zh-TW"` where the component formats numbers,
 // days or times. The file imports no component (only format-number, which writes its numbers), so it installs on its own;
@@ -869,6 +869,20 @@ export const streamingTextLabels = {
   retry: "重試",
   reasoningToggle: "推理過程",
   duration: streamDuration,
+}
+
+// One turn of a conversation: 你 (you) for the person's own turns, 助理 (assistant), 工具 (tool), 系統 (system).
+export const messageLabels = {
+  roles: { user: "你", assistant: "助理", tool: "工具", system: "系統" },
+  label: ({ role, name, time }: { role: string; name?: string; time?: string }) => [role, name, time].filter(Boolean).join("，"),
+  failed: "失敗",
+  stopped: "已停止",
+  retry: "重試",
+}
+
+export const messageMetaLabels = {
+  duration: streamDuration,
+  tokens: (n: number, locale: string | undefined) => `${formatCount(n, { locale: locale ?? "zh-TW" })} 個 token`,
 }
 
 // Every operator the filter bar offers; the types test holds it to the full FilterOperator list, so a new one cannot be

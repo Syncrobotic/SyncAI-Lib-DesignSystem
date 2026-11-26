@@ -2,6 +2,13 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.41 (unreleased)
+
+UI for LLM agents: the parts of a conversation with a model, built on streaming-text, trace and attachment. A turn says who spoke in words, the answer's actions are quiet until wanted, the composer never sends half a word typed with an input method, and the conversation follows the answer without reading it twice.
+
+### Added
+- **`message` 0.41.0 (new, beta):** one turn of a conversation. An `<article>` named "Assistant, 14:02": the role word (You, Assistant, Tool, System) leads the header with a name and the time, never a bubble colour; a person's turn keeps the word when `align="end"` moves it to the end of a wide container. Any body (StreamingText, Trace, attachments, markdown later). `status` streaming (aria-busy), error (Failed with the reason and Try again) or stopped, each a shape and a word in a polite region; `actions` and `footer` slots, and `MessageMeta` for "Large · 2.4 s · 1,204 tokens" (format-number). **`labels-zh-tw` 0.41.0** adds `messageLabels` and `messageMetaLabels`.
+
 ## Unreleased
 
 Design-rule conformance: the kit's components, docs and catalog follow the rules 0.39 wrote down. Every number goes one way, Badge teaches labels instead of states, a page header takes one status, and the catalog's groups are smaller and say what they hold. The blocks follow the design rules they teach: status is a shape and a word, section titles are SectionHeader, forms use Field, FieldSet and ChoiceField, lists that can be empty say so with EmptyState, and the tables that hand-wrote a phone version are ResponsiveTable. The blocks that draw numbers without the Chart component have a type of their own.

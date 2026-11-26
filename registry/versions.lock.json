@@ -32,8 +32,8 @@
     "hash": "03904a0793a968e9"
   },
   "labels-zh-tw": {
-    "version": "0.40.0",
-    "hash": "ac32f0528c5bf972"
+    "version": "0.41.0",
+    "hash": "fba7dc5c3a03ba1b"
   },
   "ros": {
     "version": "0.36.0",
@@ -514,6 +514,10 @@
   "streaming-text": {
     "version": "0.40.0",
     "hash": "b0b654584f986b37"
+  },
+  "message": {
+    "version": "0.41.0",
+    "hash": "9ccb9b79d21b06a1"
   },
   "sortable": {
     "version": "0.32.0",
