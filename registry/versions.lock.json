@@ -32,8 +32,8 @@
     "hash": "03904a0793a968e9"
   },
   "labels-zh-tw": {
-    "version": "0.40.0",
-    "hash": "ac32f0528c5bf972"
+    "version": "0.41.0",
+    "hash": "23ced743582daa0a"
   },
   "ros": {
     "version": "0.36.0",
@@ -512,8 +512,24 @@
     "hash": "772b8d5c4d959d0b"
   },
   "streaming-text": {
-    "version": "0.40.0",
-    "hash": "b0b654584f986b37"
+    "version": "0.41.0",
+    "hash": "fcabc33b10f81512"
+  },
+  "message": {
+    "version": "0.41.0",
+    "hash": "9ccb9b79d21b06a1"
+  },
+  "message-actions": {
+    "version": "0.41.0",
+    "hash": "3e64e876026786c9"
+  },
+  "prompt-composer": {
+    "version": "0.41.0",
+    "hash": "278cfa368e786b81"
+  },
+  "message-scroller": {
+    "version": "0.41.0",
+    "hash": "13aade848a528ad4"
   },
   "sortable": {
     "version": "0.32.0",
@@ -644,8 +660,8 @@
     "hash": "f3df60b316b685d3"
   },
   "agent-skill": {
-    "version": "0.40.0",
-    "hash": "eb0b92002aad524a"
+    "version": "0.41.0",
+    "hash": "f1c94ee0512ee86a"
   },
   "line-chart-telemetry": {
     "version": "0.35.0",
@@ -870,5 +886,17 @@
   "agent-approval": {
     "version": "0.17.3",
     "hash": "becc267fa584901e"
+  },
+  "agent-chat": {
+    "version": "0.41.0",
+    "hash": "17e2d81857df5ab1"
+  },
+  "markdown": {
+    "version": "0.41.0",
+    "hash": "fc986f0f403aa317"
+  },
+  "citations": {
+    "version": "0.41.0",
+    "hash": "cfc32efa1107e886"
   }
 }

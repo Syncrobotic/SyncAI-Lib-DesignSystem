@@ -1057,9 +1057,62 @@
     "roles": [
       "article",
       "button",
-      "status"
+      "cell",
+      "columnheader",
+      "list",
+      "listitem",
+      "row",
+      "rowgroup",
+      "status",
+      "table"
     ],
     "tabStops": 2,
+    "live": true
+  },
+  "message": {
+    "roles": [
+      "article",
+      "button",
+      "list",
+      "listitem",
+      "status"
+    ],
+    "tabStops": 1,
+    "live": true
+  },
+  "message-actions": {
+    "roles": [
+      "button",
+      "group",
+      "radio",
+      "radiogroup"
+    ],
+    "tabStops": 6,
+    "live": true
+  },
+  "prompt-composer": {
+    "roles": [
+      "button",
+      "combobox",
+      "list",
+      "listitem",
+      "status",
+      "textbox"
+    ],
+    "tabStops": 6,
+    "live": true
+  },
+  "message-scroller": {
+    "roles": [
+      "article",
+      "button",
+      "group",
+      "list",
+      "listitem",
+      "log",
+      "status"
+    ],
+    "tabStops": 9,
     "live": true
   },
   "sortable": {
@@ -1167,6 +1220,35 @@
   "marker": {
     "roles": [],
     "tabStops": 0,
+    "live": false
+  },
+  "markdown": {
+    "roles": [
+      "button",
+      "cell",
+      "columnheader",
+      "group",
+      "heading",
+      "img",
+      "link",
+      "list",
+      "listitem",
+      "row",
+      "rowgroup",
+      "table"
+    ],
+    "tabStops": 4,
+    "live": true
+  },
+  "citations": {
+    "roles": [
+      "heading",
+      "link",
+      "list",
+      "listitem",
+      "region"
+    ],
+    "tabStops": 8,
     "live": false
   }
 }

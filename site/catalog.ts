@@ -28,6 +28,12 @@ export type StoryFile =
   | "data-grid"
   | "log-viewer"
   | "streaming-text"
+  | "message-scroller"
+  | "prompt-composer"
+  | "message-actions"
+  | "message"
+  | "markdown"
+  | "citations"
   | "sortable"
   | "resizable"
   | "file-upload"
@@ -91,7 +97,8 @@ type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
 // Robotics third: after the two groups every product reaches for first, and before the general ones, as the kit's reason to exist.
 // The robot shell (dock, island, tray) is part of it, after the stop. Then what a data screen is made of, from the rows to
-// the values in them: lists and tables, status and values, search and filters, then the rest of data display. No group
+// the values in them: lists and tables, status and values, search and filters, then the rest of data display. AI holds the
+// parts of a conversation with a model or an agent, from the answer's text to the box that sends the next question. No group
 // holds more than about twenty, so each reads as one choice in the sidebar.
 export const groups = [
   "Actions",
@@ -101,6 +108,7 @@ export const groups = [
   "Status & values",
   "Search & filters",
   "Data display",
+  "AI",
   "Charts",
   "Media & files",
   "Feedback",
@@ -146,7 +154,7 @@ const entries: Record<string, Entry> = {
   },
   trace: {
     wide: true,
-    group: "Data display",
+    group: "AI",
     examples: { file: "trace", prefix: "Trace" },
     rules: [
       "Done steps are a neutral check; only warnings and failures are coloured.",
@@ -246,17 +254,98 @@ const entries: Record<string, Entry> = {
   },
   "streaming-text": {
     wide: true,
-    group: "Data display",
+    group: "AI",
     examples: { file: "streaming-text", prefix: "StreamingText" },
     rules: [
       "For one answer that a model streams token by token: a VLM's caption, count or answer to a query, an LLM's reply. Numbers over time are `streaming-chart`; lines a program writes are `log-viewer`.",
-      "Append each chunk to one string and pass it as `text` with the `phase`. Plain text only: blank lines start paragraphs, no markdown is parsed.",
+      "Append each chunk to one string and pass it as `text` with the `phase`. Plain text by default (blank lines start paragraphs); `format=\"markdown\"` when the model writes Markdown, so it renders as headings, lists, tables and code while it streams and is read aloud without its syntax.",
       "Set `phase` from the request: \"queued\" with `queuePosition` (1 is next), \"streaming\", then \"done\", \"stopped\" or \"error\" with `error` in words. Stopped and failed keep the partial text and say it is incomplete.",
       "Give `onStop` and abort the request in it, then set \"stopped\". Give `onRetry` for an error. Try again shows only after an error, never after Stop, so a second tap on Stop cannot start a new answer.",
       "Pass `startedAt`, `firstTokenAt` and `finishedAt` (or the server's `durationMs` and `firstTokenMs`): done says \"Done in 2.4 s · first token 0.3 s\". Without them it says Done.",
       "A reasoning part goes in `reasoning`, never into `text`: it streams first, sits apart behind a Reasoning button, closed, and the status says Thinking until the answer starts.",
       "Calm while it waits: grey Spinner and a word, no blinking caret, no blue. Colour only on an error's glyph and word.",
       "Leave `announce` on \"text\": screen readers hear each phase once and the answer in whole sentences, at most every 5 s. \"status\" where the answer is read elsewhere.",
+    ],
+  },
+  message: {
+    wide: true,
+    group: "AI",
+    examples: { file: "message", prefix: "Message" },
+    rules: [
+      "One turn of a conversation with a model or an agent. Map your API's `role` straight to `role`: user, assistant, tool or system.",
+      "Who spoke is the role word in the header (You, Assistant, Tool, System), with `name` after it (the person, the assistant, the tool called). Never tell roles apart by a bubble colour or by alignment alone: `align=\"end\"` may move a person's turns to the end of a wide container, and they keep the word.",
+      "Every turn is on neutral ground. A person's turn has a quiet `surface` (muted) by default; nothing takes a colour for its role.",
+      "Pass `time` already formatted (\"14:02\") and `dateTime` for machines. Format it once in the browser, or with a time zone, so the server and the page agree.",
+      "The body is `children`: StreamingText for a streamed answer, Trace for tool calls, Attachment for files, your markdown renderer. Message parses nothing.",
+      "While the answer arrives set `status=\"streaming\"` (aria-busy). When the body is StreamingText, leave the final state to it (its status row says Done, Stopped or Failed) and clear `status`; use Message's `error` and `stopped` for a turn whose body cannot say it, such as a person's turn that was not sent.",
+      "Facts about the answer go in `footer` with `MessageMeta` (model, duration, tokens, numbers through format-number); its actions go in `actions` (`message-actions`).",
+      "The same speaker's next turn takes `continued`: the header stays for screen readers only. Put the turns in a `message-scroller`.",
+    ],
+  },
+  "message-actions": {
+    group: "AI",
+    examples: { file: "message-actions", prefix: "MessageActions" },
+    rules: [
+      "The actions under a model's answer, in Message's `actions`. Each part shows only when you give what it needs: `copyText` for Copy, `onRegenerate` for Regenerate, `onFeedbackChange` for Good and Bad, `versions` above 1 for the switcher.",
+      "Good and Bad are toggles (aria-pressed), inverted when pressed like every selected control, never green or red. Pressing the pressed one again clears it.",
+      "Give `reasons` to ask what was wrong after Bad: a few short ones (\"Wrong facts\", \"Did not follow the request\"). Send the feedback and the reason from `onFeedbackChange` and `onReasonChange`.",
+      "Regenerating adds a version: pass `version` and `versions` and switch the shown answer in `onVersionChange`. The switcher's ends stay focusable and say they are the end.",
+      "`quiet` (on by default) keeps the buttons out of sight until the turn is hovered or focused, with a mouse only: touch screens and keyboards always see them. Set it false on the latest answer. Feedback that was given and the switcher never hide.",
+      "Every button is an icon with its name in `aria-label`; 36 px with a mouse, 44 on touch.",
+    ],
+  },
+  "prompt-composer": {
+    wide: true,
+    group: "AI",
+    examples: { file: "prompt-composer", prefix: "PromptComposer" },
+    rules: [
+      "Where someone writes to a model or an agent. It is a real <form>: `onSubmit(text, files)` gets the trimmed text and the attached files; return false to keep the draft (say why beside it).",
+      "Enter sends and Shift+Enter starts a new line. Enter that ends an input method's composition (Zhuyin, Cangjie, Pinyin, kana) only commits the characters: never send on it in your own handlers either (`isComposingEnter`).",
+      "While the answer streams pass `streaming` and `onStop`: Send becomes Stop in the same place and size, with focus kept, and Enter does not send. Abort the request in `onStop`.",
+      "Never a greyed Send without a reason: an empty box, an answer still streaming and a passed `maxLength` are said in words under the box and in Send's description. `disabled` takes `disabledReason` (offline, no access).",
+      "`allowFiles` adds the attach button, paste and drop; `accept`, `maxSize` and `maxFiles` are checked as in file-upload and refused files are named with the reason. The files show as Attachment chips above the text.",
+      "`maxLength` shows the count (\"120 / 4,000\"); past it the box and the count take the danger edge and words, and Send waits. Nothing is cut off.",
+      "Put a model select or a context chip in `toolbar`, beside the attach button. The composer has no fixed positioning: pin it with the page's layout (see the overview).",
+    ],
+  },
+  "message-scroller": {
+    wide: true,
+    group: "AI",
+    examples: { file: "message-scroller", prefix: "MessageScroller" },
+    rules: [
+      "The scrolling box of a conversation: Message turns as its direct children, oldest first. Give it a height (`className`: h-96, or min-h-0 flex-1 in a column).",
+      "It follows the newest turn while the reader is at the bottom, also while an answer streams, and lets go the moment they scroll up. Do not scroll it yourself as tokens arrive.",
+      "Jump to latest shows whenever the reader is away from the bottom, with how many turns came since (\"3 new\"); it glides back, or jumps under reduced motion, and leaves focus on the conversation.",
+      "Sending a turn of one's own (a Message with `role=\"user\"` appended) always goes back to the bottom.",
+      "Older turns: `hasEarlier` and `onLoadEarlier` show Load earlier at the top; put the older turns in front of `children` and the view stays where it was.",
+      "Leave the reading to it: the log's own live region is off, StreamingText reads answers in sentences, and the scroller reads a turn once only when it arrives complete. Never add aria-live to the turns.",
+      "Pass `empty` for a new conversation: an EmptyState, with suggested prompts as chips.",
+    ],
+  },
+  markdown: {
+    wide: true,
+    group: "AI",
+    examples: { file: "markdown", prefix: "Markdown" },
+    rules: [
+      "For text a model wrote in Markdown: an assistant's answer, a summary, a generated report. A streamed answer is StreamingText with `format=\"markdown\"`, which renders through this and reads it aloud; use Markdown alone for an answer that is already whole, or inside your own message layout.",
+      "A safe subset, never HTML: tags show as the text they are, links go only to http(s) and mailto (anything else, a relative path included, is its words), and pictures are a link with their alt text. Name the origins pictures may load from in `imageOrigins`, and only ones you serve or trust.",
+      "Pass the growing text with `streaming` while it arrives, and turn it off at the end: an unclosed ** styles its words, a link shows its words until its URL is whole, and a table waits for its delimiter line, so nothing half-written flashes. Keep `cite` and `labels` stable (a module constant), so finished blocks are not drawn again.",
+      "Headings start at `headingLevel` (h3, under a page's h1 and a section's h2) and never skip a level, whatever the model wrote. Set it from where the answer sits in the page.",
+      "Code fences are the kit's CodeBlock with Copy and the language, without highlighting; tables are the kit's Table and scroll sideways when wider than the column. Links open in a new tab by default and say so to screen readers.",
+      "It never speaks on its own. For citations, pass `cite={citationMarker}` inside `Citations`: [1] and [^1] in the text become markers linked to the sources list.",
+    ],
+  },
+  citations: {
+    wide: true,
+    group: "AI",
+    examples: { file: "citations", prefix: "Citations" },
+    rules: [
+      "For an answer built from documents (retrieval): each claim's sources as numbered markers in the text, and the list of them under the answer. Words that point at places on a picture are `grounded-text`.",
+      "Pass the sources in the order the model numbers them: [1] is the first. Put the answer and `CitationSources` inside one `Citations`; in Markdown, `cite={citationMarker}` turns [1], [^1] and [1, 2] into markers. A number with no source stays the text [N].",
+      "Give each source a `title` and an http(s) `url`, or a `location` (a file and page, a manual's section) when it is not a web page; a `snippet` is the passage the answer used, a sentence or two.",
+      "Neutral: the markers and their highlight are the kit's quiet fill and inverted number, never a colour per source. A title with a URL opens in a new tab with the external-link icon, and says so to screen readers.",
+      "Activating a marker moves focus to its source, which shows \"Back to citation N\"; that button or Esc returns to the marker. Keep the list on the same page as the answer, under it.",
+      "Inside StreamingText, wrap the StreamingText and the list in `Citations` and pass `markdownProps={{ cite: citationMarker }}`: the markers appear as the answer streams, and the reading leaves them out.",
     ],
   },
   sortable: {
@@ -1807,6 +1896,37 @@ const keyboard: Record<string, [string, string][]> = {
     ["`Tab`", "Move to Stop (Cancel while queued), the Reasoning button and Try again after an error"],
     ["`Enter` / `Space`", "Stop, open or close the reasoning, or try again"],
   ],
+  message: [
+    ["`Tab`", "Move to the turn's own controls: Try again after a failure, then its actions"],
+    ["`Enter` / `Space`", "Try again"],
+  ],
+  "message-actions": [
+    ["`Tab`", "Move through the switcher's ‹ and ›, Copy, Regenerate, Good and Bad, then the reasons; focus shows the quiet buttons"],
+    ["`Enter` / `Space`", "Run the button; on Good or Bad, press or release it"],
+    ["`←` / `→`", "In the reasons, move between them (one Tab stop); `Enter` or `Space` picks one"],
+  ],
+  "prompt-composer": [
+    ["`Enter`", "Send (not while an input method is composing; not while the answer streams)"],
+    ["`Shift`+`Enter`", "New line"],
+    ["`Tab`", "From the text to the attach button, the toolbar, then Send (Stop while the answer streams)"],
+    ["`Enter` / `Space`", "On Send or Stop: send, or stop the answer; on a file's ×: remove it, focus back in the text"],
+  ],
+  "message-scroller": [
+    ["`Tab`", "Focus the conversation (one stop), then the turns' own controls, then Jump to latest"],
+    ["`↑` / `↓`, `PageUp` / `PageDown`", "Scroll the focused conversation; scrolling up stops following"],
+    ["`End`", "To the bottom: following starts again"],
+    ["`Enter` / `Space`", "On Jump to latest: to the newest turn, focus back on the conversation"],
+  ],
+  citations: [
+    ["`Tab`", "Move through the markers in the text, then the sources' links"],
+    ["`Enter`", "On a marker, move to its source; on Back to citation N, return to the marker"],
+    ["`Esc`", "In a source reached from a marker, return to that marker"],
+  ],
+  markdown: [
+    ["`Tab`", "Move through the links, each code block's Copy and scroll box, and each table's scroll box"],
+    ["`←` / `→`", "Scroll a focused code block or table sideways"],
+    ["`Enter`", "Follow a link (a new tab for http(s), said to screen readers)"],
+  ],
   filters: [
     ["`Enter`", "On + Filter, open the picker; on a part of a chip, reopen that step"],
     ["`↑` / `↓`", "Move through fields, operators or values; type to narrow them"],
@@ -1898,6 +2018,10 @@ const captions: Record<string, Record<string, string>> = {
   "status-eyebrow": { StatusInlineInRows: "InlineStatus in rows", StatusEyebrowOverTitle: "StatusEyebrow over a title" },
   "log-viewer": { LogViewerRosout: "/rosout", LogViewerZhTw: "Traditional Chinese (zh-TW)", LogViewerHundredThousand: "100,000 lines" },
   "streaming-text": { StreamingTextZhTw: "Traditional Chinese (zh-TW)" },
+  "message-scroller": { MessageScrollerZhTw: "Traditional Chinese (zh-TW)" },
+  "prompt-composer": { PromptComposerZhTw: "Traditional Chinese (zh-TW)" },
+  "message-actions": { MessageActionsZhTw: "Traditional Chinese (zh-TW)" },
+  message: { MessageZhTw: "Traditional Chinese (zh-TW)" },
   calendar: { CalendarMonthYearDropdowns: "Month and year dropdowns" },
   chart: { ChartAboveBelowZero: "Above and below zero" },
   "time-picker": { TimePickerTwelveHour: "12-hour clock" },
