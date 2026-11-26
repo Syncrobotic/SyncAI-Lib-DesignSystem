@@ -1465,7 +1465,8 @@ const entries: Record<string, Entry> = {
     group: "Robotics",
     examples: { file: "island" },
     rules: [
-      "Name, device status and notifications each expand on their own.",
+      "Name, device status and notifications each expand on their own, one at a time, each into its panel: IslandRobots (switch robot), IslandStatus (connection, battery, last report), IslandNotifications. A zone with nothing to open is not a control people learn to ignore: give every zone its panel.",
+      "An open panel never hides an alarm or a failure: notices and IslandAlarm stay above it. Esc or a tap outside closes it, and focus goes back to its zone.",
       "Failure notices stay until handled. A persistent fault (stopped) changes the tray edge colour; offline stays neutral and is said in words and by its shape.",
       "IslandAlarm shows the most urgent unacknowledged alarm above any notice, from the same data as AlarmList. The edge follows it: critical danger, high warning.",
       "On a phone the island is the alarm surface, so it buzzes, sounds (critical repeats until acknowledged) and announces new alarms, like AlarmList. Turn `feedback` off on one of them when both are on screen.",

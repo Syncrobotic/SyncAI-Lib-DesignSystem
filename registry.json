@@ -337,8 +337,13 @@
         }
       ],
       "meta": {
-        "version": "0.44.0",
+        "version": "0.46.0",
         "changelog": [
+          {
+            "version": "0.46.0",
+            "date": "2026-11-26",
+            "note": "The island's panels: robotsPanel, statusPanel, notificationsPanel, and islandRobotsLabels, islandStatusLabels, islandNotificationsLabels."
+          },
           {
             "version": "0.44.0",
             "date": "2026-11-26",
@@ -1042,7 +1047,8 @@
         "@syncrobotic/alarm",
         "@syncrobotic/badge",
         "@syncrobotic/use-presence",
-        "@syncrobotic/avatar"
+        "@syncrobotic/avatar",
+        "@syncrobotic/meter"
       ],
       "files": [
         {
@@ -1051,8 +1057,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.46.0",
         "changelog": [
+          {
+            "version": "0.46.0",
+            "date": "2026-11-26",
+            "note": "Each zone opens its own panel: IslandRobots under the name (switch robot), IslandStatus under the device status (connection, a battery Meter that warns below 15 %, last report), IslandNotifications under the bell (unread in bold with a dot, Mark all read). Pass them as panels; the open one shows under any notice or alarm, which stay in view. Esc or a tap outside closes it and gives focus back to its zone. open is optional now (defaultOpen), so the island opens its zones by itself."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -10034,6 +10045,40 @@
             "version": "0.9.0",
             "date": "2026-11-17",
             "note": "New."
+          }
+        ]
+      }
+    },
+    {
+      "name": "app-shell-control",
+      "type": "registry:block",
+      "title": "Phone control app",
+      "description": "The phone app that controls one robot: the dynamic island on top (robot, device status and notifications, each opening its panel), the page, and the dock with the emergency stop and tabs in thumb reach.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/island",
+        "@syncrobotic/dock",
+        "@syncrobotic/list",
+        "@syncrobotic/slide-to-release",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/stop-button",
+        "@syncrobotic/feedback"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/blocks/app-shell-control.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "meta": {
+        "version": "0.46.0",
+        "changelog": [
+          {
+            "version": "0.46.0",
+            "date": "2026-11-26",
+            "note": "New: the phone control app, assembled. The island's three zones open their panels (switch robot, device status, notifications); the dock keeps the emergency stop in thumb reach, then the tabs; a stop turns the island's edge danger with a notice that stays until release."
           }
         ]
       }

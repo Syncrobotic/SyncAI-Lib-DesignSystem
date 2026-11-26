@@ -187,6 +187,7 @@ const meta: Record<string, Meta> = {
   "agent-tool-permissions": { viewport: "desktop", height: 1400},
   // Application, batch 3. Dialogs and sheets open on load in the preview without taking the page's focus.
   "app-shell-mobile-tabs": { viewport: "mobile", height: 720},
+  "app-shell-control": { viewport: "mobile", height: 760},
   "stats-meters": {
     viewport: "desktop",
     height: 145

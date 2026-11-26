@@ -1,17 +1,20 @@
-// @syncrobotic/island v0.40.0 · update: npx shadcn add @syncrobotic/island --overwrite
+// @syncrobotic/island v0.46.0 · update: npx shadcn add @syncrobotic/island --overwrite
 "use client"
 
 import * as React from "react"
-import { Battery, BatteryCharging, Bell, ChevronDown, TriangleAlert, Wifi, WifiOff, X } from "lucide-react"
+import { Battery, BatteryCharging, Bell, Bluetooth, Check, ChevronDown, TriangleAlert, Wifi, WifiOff, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
 import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"
 import { CountBadge } from "@/registry/syncrobotic/ui/badge"
+import { Meter } from "@/registry/syncrobotic/ui/meter"
 import { Tray } from "@/registry/syncrobotic/shell/tray"
 import { StatusGlyph, toneSubtle, toneText, type Status, type Tone } from "@/registry/syncrobotic/shell/status-glyph"
 import { AlarmAnnouncer, alarmPriority, defaultAlarmLabels, sortAlarms, topAlarm, useAlarmSignals, type AlarmData, type AlarmLabels } from "@/registry/syncrobotic/ui/alarm"
 
-type Zone = "name" | "status" | "bell"
+/** The three zones of the island, each with its own panel: the robot, its device status, the notifications. */
+export type IslandZone = "name" | "status" | "bell"
+type Zone = IslandZone
 
 /** Screen-reader strings. Pass `labels` to localise. */
 export type IslandLabels = {
@@ -23,6 +26,10 @@ export type IslandLabels = {
   /** No battery reading yet (or the robot does not report one). */
   batteryUnknown: string
   notifications: (unread: number) => string
+  /** The open panels' names, read when one opens. */
+  robotsPanel: string
+  statusPanel: string
+  notificationsPanel: string
 }
 
 export const defaultIslandLabels: IslandLabels = {
@@ -33,6 +40,9 @@ export const defaultIslandLabels: IslandLabels = {
   battery: (n) => `battery ${n}%`,
   batteryUnknown: "battery unknown",
   notifications: (unread) => `Notifications, ${unread} unread`,
+  robotsPanel: "Switch robot",
+  statusPanel: "Device status",
+  notificationsPanel: "Notifications",
 }
 
 type IslandProps = {
@@ -47,9 +57,16 @@ type IslandProps = {
   battery?: number
   charging?: boolean
   unread?: number
-  /** Which zone is expanded. Each zone has its own panel. */
+  /** Which zone is expanded, controlled. Leave it out and the island keeps it itself (`defaultOpen`). */
   open?: Zone | null
+  defaultOpen?: Zone | null
   onOpenChange?: (zone: Zone | null) => void
+  /**
+   * What each zone opens: IslandRobots under the name, IslandStatus under the device status, IslandNotifications under the
+   * bell. The open zone's panel shows under any notice or alarm, which stay in view. Esc, or a tap outside the island,
+   * closes it and focus goes back to the zone.
+   */
+  panels?: Partial<Record<Zone, React.ReactNode>>
   /** Persistent fault (stopped): changes the tray edge colour. Offline is neutral: say it, do not colour it. */
   edge?: Tone
   /** Status zone while the first status has not arrived. */
@@ -73,8 +90,10 @@ export function Island({
   battery,
   charging,
   unread = 0,
-  open = null,
+  open: openProp,
+  defaultOpen = null,
   onOpenChange,
+  panels,
   edge,
   loading,
   children,
@@ -87,7 +106,31 @@ export function Island({
   if (children && children !== lastChildren) setLastChildren(children)
   const slot = usePresence(!!children)
   const l = { ...defaultIslandLabels, ...labels }
-  const toggle = (z: Zone) => onOpenChange?.(open === z ? null : z)
+  const [openState, setOpenState] = React.useState<Zone | null>(defaultOpen)
+  const open = openProp !== undefined ? openProp : openState
+  const setOpen = (z: Zone | null) => {
+    if (openProp === undefined) setOpenState(z)
+    onOpenChange?.(z)
+  }
+  const toggle = (z: Zone) => setOpen(open === z ? null : z)
+  const id = React.useId()
+  const tray = React.useRef<HTMLDivElement>(null)
+  const panel = open ? panels?.[open] : undefined
+  // The panel that is leaving keeps its content while it fades, as the notice slot does.
+  const [lastPanel, setLastPanel] = React.useState<{ zone: Zone; node: React.ReactNode } | null>(null)
+  if (open && panel && (lastPanel?.zone !== open || lastPanel.node !== panel)) setLastPanel({ zone: open, node: panel })
+  const panelSlot = usePresence(!!panel)
+  // A tap outside closes the open panel (Esc does too, below, and gives focus back to its zone).
+  const closeOutside = React.useEffectEvent((target: Node) => {
+    if (tray.current && !tray.current.contains(target)) setOpen(null)
+  })
+  const panelOpen = !!panel
+  React.useEffect(() => {
+    if (!panelOpen) return
+    const onDown = (e: PointerEvent) => closeOutside(e.target as Node)
+    document.addEventListener("pointerdown", onDown)
+    return () => document.removeEventListener("pointerdown", onDown)
+  }, [panelOpen])
   const zone = (z: Zone) => cn("press flex h-(--h-md) items-center gap-2 rounded-md px-2", open === z && "bg-muted")
   // Warning below 15 %, the fleet-wide battery threshold (never danger: a low battery is not a fault).
   const known = battery !== undefined && Number.isFinite(battery)
@@ -95,15 +138,33 @@ export function Island({
   const BatteryIcon = charging ? BatteryCharging : Battery
   return (
     <Tray
+      ref={tray}
+      onKeyDown={(e) => {
+        if (e.key !== "Escape" || !open || !panels?.[open]) return
+        e.stopPropagation()
+        const zoneButton = tray.current?.querySelector<HTMLElement>(`[data-zone="${open}"]`)
+        setOpen(null)
+        zoneButton?.focus()
+      }}
+      data-slot="island"
+      data-panel={panelSlot.mounted || undefined}
       className={cn(
         "fixed inset-x-4 top-[max(1rem,env(safe-area-inset-top))] z-10",
+        // Translucent over the map, but a panel is a column of text: opaque while one is open, so the page never shows
+        // through its rows.
+        "transition-colors duration-(--motion-base) ease-(--ease-standard) data-panel:bg-card",
         edge === "danger" && "ring-danger",
         edge === "warning" && "ring-warning",
         className,
       )}
     >
       <div className="flex h-(--h-md) items-center gap-1">
-        <button type="button" aria-expanded={open === "name"} onClick={() => toggle("name")} className={cn(zone("name"), "min-w-0 flex-1 text-left")}>
+        <button
+          type="button"
+          data-zone="name"
+          aria-expanded={open === "name"}
+          aria-controls={panels?.name ? `${id}-name` : undefined}
+          onClick={() => toggle("name")} className={cn(zone("name"), "min-w-0 flex-1 text-left")}>
           <span className="relative shrink-0">
             {/* A robot is a thing, so its avatar is square (people are round), with initials rather than an empty shape. */}
             {avatar ?? (
@@ -119,7 +180,9 @@ export function Island({
         </button>
         <button
           type="button"
+          data-zone="status"
           aria-expanded={open === "status"}
+          aria-controls={panels?.status ? `${id}-status` : undefined}
           // Every state the icons show is also said: offline and charging matter as much as a low battery.
           aria-label={loading ? l.status : [l.status, !online && l.offline, charging && l.charging, !known ? l.batteryUnknown : (low || charging) && l.battery(battery)].filter(Boolean).join(", ")}
           onClick={() => toggle("status")}
@@ -141,7 +204,9 @@ export function Island({
         </button>
         <button
           type="button"
+          data-zone="bell"
           aria-expanded={open === "bell"}
+          aria-controls={panels?.bell ? `${id}-bell` : undefined}
           aria-label={l.notifications(unread)}
           onClick={() => toggle("bell")}
           // As wide as it is tall: the bell alone was a 36 px target.
@@ -159,6 +224,18 @@ export function Island({
           onAnimationEnd={(e) => e.target === e.currentTarget && slot.done()}
         >
           {children ?? lastChildren}
+        </div>
+      )}
+      {panelSlot.mounted && lastPanel && (
+        <div
+          id={`${id}-${lastPanel.zone}`}
+          role="region"
+          aria-label={{ name: l.robotsPanel, status: l.statusPanel, bell: l.notificationsPanel }[lastPanel.zone]}
+          aria-hidden={panelSlot.leaving || undefined}
+          className={cn("max-h-96 overflow-y-auto overscroll-contain", panelSlot.leaving ? "animate-disappear" : "animate-appear")}
+          onAnimationEnd={(e) => e.target === e.currentTarget && panelSlot.done()}
+        >
+          {panel ?? lastPanel.node}
         </div>
       )}
     </Tray>
@@ -313,5 +390,240 @@ export function IslandAlarm({ alarms, onAcknowledge, onShowAll, labels, feedback
       )}
       </div>
     </>
+  )
+}
+
+// ---------- The zones' panels ----------
+
+/** One robot the person can switch to, for IslandRobots. */
+export type IslandRobot = {
+  id: string
+  name: string
+  /** Its state, by shape (and colour only when it needs someone). */
+  status: Status
+  /** The state in words ("Patrolling", "Needs attention"). */
+  state: string
+  /** Percent; leave it out when the robot has not reported one. */
+  battery?: number
+  /** It needs attention: a triangle after its name, as in the island. */
+  attention?: boolean
+}
+
+export type IslandRobotsLabels = { current: string; attention: string; battery: (percent: number) => string }
+const defaultIslandRobotsLabels: IslandRobotsLabels = { current: "current", attention: "needs attention", battery: (n) => `${n} %` }
+
+/**
+ * The name zone's panel: the robots this phone can control, to switch to another. The current one is ticked; one that
+ * needs attention carries the island's triangle. A row is a button the height of a list row.
+ */
+export function IslandRobots({
+  robots,
+  current,
+  onSelect,
+  labels,
+}: {
+  robots: readonly IslandRobot[]
+  /** The id of the robot the island shows now. */
+  current?: string
+  onSelect?: (id: string) => void
+  labels?: Partial<IslandRobotsLabels>
+}) {
+  const l = { ...defaultIslandRobotsLabels, ...labels }
+  return (
+    <ul className="flex flex-col">
+      {robots.map((r) => {
+        const here = r.id === current
+        const low = r.battery !== undefined && r.battery < 15
+        return (
+          <li key={r.id}>
+            <button
+              type="button"
+              aria-current={here || undefined}
+              onClick={() => onSelect?.(r.id)}
+              className={cn("press flex min-h-(--h-row) w-full items-center gap-3 rounded-md px-2 text-left hover:bg-accent", here && "bg-muted")} // icon-gap-ok: the robot's avatar leads the row
+            >
+              <span className="relative shrink-0">
+                <Avatar shape="square" aria-hidden="true">
+                  <AvatarFallback>{initialsOf(r.name)}</AvatarFallback>
+                </Avatar>
+                <StatusGlyph status={r.status} className="absolute -right-0.5 -bottom-0.5 rounded-full bg-float" />
+              </span>
+              <span className="flex min-w-0 flex-1 flex-col">
+                <span className="flex items-center gap-2">
+                  <span className="truncate text-sm font-medium">{r.name}</span>
+                  {r.attention && <TriangleAlert aria-label={l.attention} className="size-4 shrink-0 text-warning" />}
+                </span>
+                <span className="truncate text-xs text-muted-foreground">
+                  {r.state}
+                  {r.battery !== undefined && (
+                    <>
+                      {" · "}
+                      <span className={cn("tabular-nums", low && "text-warning")}>{l.battery(r.battery)}</span>
+                    </>
+                  )}
+                </span>
+              </span>
+              {here && (
+                <>
+                  <Check aria-hidden="true" className="size-4 shrink-0" />
+                  <span className="sr-only">{l.current}</span>
+                </>
+              )}
+            </button>
+          </li>
+        )
+      })}
+    </ul>
+  )
+}
+
+export type IslandStatusLabels = {
+  connection: string
+  wifi: string
+  bluetooth: string
+  offline: string
+  battery: string
+  charging: string
+  notCharging: string
+  unknown: string
+  updated: string
+}
+const defaultIslandStatusLabels: IslandStatusLabels = {
+  connection: "Connection",
+  wifi: "Wi-Fi",
+  bluetooth: "Bluetooth only: emergency stop and status still work",
+  offline: "Offline",
+  battery: "Battery",
+  charging: "Charging",
+  notCharging: "Not charging",
+  unknown: "Not reported yet",
+  updated: "Last update",
+}
+
+/**
+ * The device status zone's panel: how the phone reaches the robot, its battery (a Meter that warns below 15 % and never
+ * turns danger) and when it last reported. Offline is said in words with its icon, never in colour.
+ */
+export function IslandStatus({
+  link = "wifi",
+  battery,
+  charging,
+  updated,
+  labels,
+}: {
+  /** How the phone reaches the robot. */
+  link?: "wifi" | "bluetooth" | "offline"
+  battery?: number
+  charging?: boolean
+  /** When the robot last reported ("14:02:31", "2 min ago"). */
+  updated?: string
+  labels?: Partial<IslandStatusLabels>
+}) {
+  const l = { ...defaultIslandStatusLabels, ...labels }
+  const LinkIcon = link === "wifi" ? Wifi : link === "bluetooth" ? Bluetooth : WifiOff
+  const known = battery !== undefined && Number.isFinite(battery)
+  const row = "flex min-h-(--h-md) items-center justify-between gap-3 px-2 text-sm"
+  return (
+    <div className="flex flex-col gap-1 py-1">
+      <div className={row}>
+        <span className="text-muted-foreground">{l.connection}</span>
+        <span className={cn("flex min-w-0 items-center gap-2 text-right", link === "bluetooth" && "text-warning", link === "offline" && "text-muted-foreground")}>
+          <LinkIcon aria-hidden="true" className="size-4 shrink-0" />
+          <span className="min-w-0">{link === "wifi" ? l.wifi : link === "bluetooth" ? l.bluetooth : l.offline}</span>
+        </span>
+      </div>
+      <div className="flex flex-col gap-1 px-2 py-1">
+        {known ? (
+          <Meter value={battery} label={l.battery} low={15} />
+        ) : (
+          <div className="flex min-h-(--h-md) items-center justify-between gap-3 text-sm">
+            <span className="text-muted-foreground">{l.battery}</span>
+            <span className="text-muted-foreground">{l.unknown}</span>
+          </div>
+        )}
+        <span className="flex items-center gap-2 text-xs text-muted-foreground">
+          {charging ? <BatteryCharging aria-hidden="true" className="size-4" /> : <Battery aria-hidden="true" className="size-4" />}
+          {charging ? l.charging : l.notCharging}
+        </span>
+      </div>
+      {updated && (
+        <div className={row}>
+          <span className="text-muted-foreground">{l.updated}</span>
+          <span className="font-mono text-xs tabular-nums">{updated}</span>
+        </div>
+      )}
+    </div>
+  )
+}
+
+/** One notification, for IslandNotifications. */
+export type IslandNotification = {
+  id: string
+  title: string
+  meta?: string
+  time?: string
+  unread?: boolean
+  /** Only for what needs someone: warning or danger. Everything else stays neutral. */
+  tone?: Tone
+  icon?: React.ElementType
+}
+
+export type IslandNotificationsLabels = { markAllRead: string; empty: string; unread: string }
+const defaultIslandNotificationsLabels: IslandNotificationsLabels = { markAllRead: "Mark all read", empty: "No notifications", unread: "unread" }
+
+/**
+ * The bell zone's panel: the latest notifications, newest first, unread ones marked with a dot and in bold. A row opens
+ * what it is about; "Mark all read" clears the bell's count. Alarms are not here: the most urgent one is in the island
+ * itself, and the full list is AlarmList's.
+ */
+export function IslandNotifications({
+  items,
+  onOpen,
+  onMarkAllRead,
+  labels,
+}: {
+  items: readonly IslandNotification[]
+  onOpen?: (id: string) => void
+  onMarkAllRead?: () => void
+  labels?: Partial<IslandNotificationsLabels>
+}) {
+  const l = { ...defaultIslandNotificationsLabels, ...labels }
+  if (items.length === 0) return <p className="flex min-h-(--h-row) items-center justify-center text-sm text-muted-foreground">{l.empty}</p>
+  return (
+    <div className="flex flex-col">
+      {onMarkAllRead && items.some((n) => n.unread) && (
+        <button type="button" onClick={onMarkAllRead} className="press ml-auto h-(--h-sm) rounded-xs px-3 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground">
+          {l.markAllRead}
+        </button>
+      )}
+      <ul className="flex flex-col">
+        {items.map((n) => {
+          const Icon = n.icon ?? Bell
+          return (
+            <li key={n.id}>
+              <button type="button" onClick={() => onOpen?.(n.id)} className="press flex min-h-(--h-row) w-full items-start gap-3 rounded-md px-2 py-2 text-left hover:bg-accent" /* icon-gap-ok: a 32 px tile leads a two-line row */>
+                <span className={cn("flex size-8 shrink-0 items-center justify-center", n.tone ? toneText[n.tone] : "text-muted-foreground")}>
+                  <Icon aria-hidden="true" className="size-5" />
+                </span>
+                <span className="flex min-w-0 flex-1 flex-col">
+                  <span className={cn("line-clamp-2 text-sm break-words", n.unread ? "font-bold" : "font-medium")}>
+                    {n.unread && <span className="sr-only">{l.unread}: </span>}
+                    {n.title}
+                  </span>
+                  {(n.time || n.meta) && (
+                    <span className="truncate text-xs text-muted-foreground">
+                      {n.time && <span className="font-mono tabular-nums">{n.time}</span>}
+                      {n.time && n.meta && " · "}
+                      {n.meta}
+                    </span>
+                  )}
+                </span>
+                {n.unread && <span aria-hidden="true" className="mt-2 size-2 shrink-0 rounded-full bg-foreground" />}
+              </button>
+            </li>
+          )
+        })}
+      </ul>
+    </div>
   )
 }
