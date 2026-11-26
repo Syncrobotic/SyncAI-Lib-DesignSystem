@@ -29,6 +29,7 @@ export type StoryFile =
   | "log-viewer"
   | "streaming-text"
   | "markdown"
+  | "citations"
   | "sortable"
   | "resizable"
   | "file-upload"
@@ -271,6 +272,19 @@ const entries: Record<string, Entry> = {
       "Headings start at `headingLevel` (h3, under a page's h1 and a section's h2) and never skip a level, whatever the model wrote. Set it from where the answer sits in the page.",
       "Code fences are the kit's CodeBlock with Copy and the language, without highlighting; tables are the kit's Table and scroll sideways when wider than the column. Links open in a new tab by default and say so to screen readers.",
       "It never speaks on its own. For citations, pass `cite={citationMarker}` inside `Citations`: [1] and [^1] in the text become markers linked to the sources list.",
+    ],
+  },
+  citations: {
+    wide: true,
+    group: "Data display",
+    examples: { file: "citations", prefix: "Citations" },
+    rules: [
+      "For an answer built from documents (retrieval): each claim's sources as numbered markers in the text, and the list of them under the answer. Words that point at places on a picture are `grounded-text`.",
+      "Pass the sources in the order the model numbers them: [1] is the first. Put the answer and `CitationSources` inside one `Citations`; in Markdown, `cite={citationMarker}` turns [1], [^1] and [1, 2] into markers. A number with no source stays the text [N].",
+      "Give each source a `title` and an http(s) `url`, or a `location` (a file and page, a manual's section) when it is not a web page; a `snippet` is the passage the answer used, a sentence or two.",
+      "Neutral: the markers and their highlight are the kit's quiet fill and inverted number, never a colour per source. A title with a URL opens in a new tab with the external-link icon, and says so to screen readers.",
+      "Activating a marker moves focus to its source, which shows \"Back to citation N\"; that button or Esc returns to the marker. Keep the list on the same page as the answer, under it.",
+      "Inside StreamingText, wrap the StreamingText and the list in `Citations` and pass `markdownProps={{ cite: citationMarker }}`: the markers appear as the answer streams, and the reading leaves them out.",
     ],
   },
   sortable: {
@@ -1820,6 +1834,11 @@ const keyboard: Record<string, [string, string][]> = {
   "streaming-text": [
     ["`Tab`", "Move to Stop (Cancel while queued), the Reasoning button and Try again after an error"],
     ["`Enter` / `Space`", "Stop, open or close the reasoning, or try again"],
+  ],
+  citations: [
+    ["`Tab`", "Move through the markers in the text, then the sources' links"],
+    ["`Enter`", "On a marker, move to its source; on Back to citation N, return to the marker"],
+    ["`Esc`", "In a source reached from a marker, return to that marker"],
   ],
   markdown: [
     ["`Tab`", "Move through the links, each code block's Copy and scroll box, and each table's scroll box"],

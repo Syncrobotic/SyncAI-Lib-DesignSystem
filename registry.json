@@ -342,7 +342,7 @@
           {
             "version": "0.41.0",
             "date": "2026-11-26",
-            "note": "`markdownLabels` for the new markdown (圖片：…, （在新分頁開啟）, 程式碼)."
+            "note": "`markdownLabels` for the new markdown (圖片：…, （在新分頁開啟）, 程式碼). `citationsLabels` for the new citations (來源 1：…, 回到引用 1)."
           },
           {
             "version": "0.40.0",
@@ -6479,6 +6479,38 @@
             "version": "0.41.0",
             "date": "2026-11-26",
             "note": "First release: a safe Markdown subset for model output, parsed in the item with no dependency and in linear time (headings, paragraphs, emphasis, strong, strikethrough, inline code, fenced code as CodeBlock, nested lists, links, blockquotes, GFM pipe tables as Table, rules, line breaks). Raw HTML is text, links only to http(s) and mailto (`safeHref`), pictures a link with their alt text unless `imageOrigins` allows them. `streaming`: finished blocks are parsed once and not drawn again, an unclosed ** or ` styles what follows, a link shows its words until its URL is whole, a table waits for its delimiter line, an unclosed fence is code so far. Headings start at `headingLevel` (h3) and never skip a level. `cite` renders [1] tokens (citations' `citationMarker`); `markdownToText` gives the words without the syntax, for reading aloud. Words through `labels` (`markdownLabels` in labels-zh-tw)."
+          }
+        ]
+      }
+    },
+    {
+      "name": "citations",
+      "type": "registry:ui",
+      "title": "Citations",
+      "description": "The sources a model's answer cites: numbered markers in the text, each a link named \"Source 1: <title>\", and the numbered list of sources (title, where it is, a snippet). Linked both ways as grounded-text links words to marks: hover or focus on a marker highlights its source and back, and a marker moves focus to its source, which offers the way back. In Markdown, [1] and [^1] become markers.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/use-reduced-motion",
+        "@syncrobotic/button",
+        "@syncrobotic/section-header"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/citations.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.41.0",
+        "changelog": [
+          {
+            "version": "0.41.0",
+            "date": "2026-11-26",
+            "note": "First release: `Citations` (the sources and the linking), `CitationMarker` (a link to its entry, named \"Source N: <title>\"; \"[N]\" when there is no such source), `CitationSources` (the numbered list: title linked in a new tab with the external-link icon, domain and path or `location`, snippet) and `citationMarker` for Markdown's `cite`. Hover or keyboard focus on a marker highlights its source and on a source every marker citing it (the inverted number and the hover fill, no colour); activating a marker moves focus to its source, whose \"Back to citation N\" or Esc returns it. Words through `labels` (`citationsLabels` in labels-zh-tw)."
           }
         ]
       }

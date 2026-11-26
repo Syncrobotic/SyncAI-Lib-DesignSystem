@@ -579,6 +579,25 @@ export const overviews: Record<string, Overview> = {
       "Every word is in `labels`, including `ago` for time ago and `announce`; `locale` formats times and counts.",
     ],
   },
+  citations: {
+    what: "The sources a model's answer cites: numbered markers in the text and the numbered list of what they point at, linked both ways, as grounded-text links words to marks.",
+    use: [
+      "An assistant that answers from manuals, maps or logs (retrieval), so an operator can check each claim.",
+      "A generated report that quotes its evidence.",
+      "Search answers that summarise several documents.",
+    ],
+    instead: [
+      "Words that point at boxes or points on a picture: `grounded-text`.",
+      "A list of links with no text citing them: `list` or `item`.",
+      "A footnote in a document people write: an ordinary link.",
+    ],
+    notes: [
+      "`Citations` is a provider with no element of its own: it holds the sources, which number is highlighted (`onActiveChange` reports it) and where a jump came from.",
+      "A marker is an `<a href=\"#…\">` to its entry, so it works before the script; with it, focus moves to the entry (scrolled into view, instantly under reduced motion) and the way back appears there.",
+      "The highlight follows the pointer (not touch) and keyboard focus; a click is a jump, not a hover.",
+      "`citationLocation` writes a source's line: its `location`, or its URL's host without www. and its path.",
+    ],
+  },
   markdown: {
     what: "A model's answer in Markdown as the kit's own elements: headings at the surface's levels, lists, tables, code blocks with Copy, quotes and links. A safe subset written for the kit, with no dependency and no HTML, that takes a growing text.",
     use: [

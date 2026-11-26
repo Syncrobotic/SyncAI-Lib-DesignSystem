@@ -39,6 +39,8 @@ const pick = {
   marker: "MarkerInLog",
   // The first story is the column beside a list in a scrolling box; the column alone reads at card size.
   facets: "FacetsShowAll",
+  // The first story is a long answer whose sources fall below the crop; the short one shows markers and the list together.
+  citations: "CitationsLocations",
   // The first story is three buttons that raise a toast; the open one pins its toasts to the viewport's bottom edge.
   toast: "ToastWithUndo",
 }

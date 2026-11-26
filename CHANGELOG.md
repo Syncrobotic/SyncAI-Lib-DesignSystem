@@ -4,10 +4,11 @@ Components install as source, so a project keeps the version it installed. Re-ru
 
 ## 0.41 (unreleased)
 
-UI for LLM agents: a model's Markdown answer rendered safely as the kit's own elements, streamed or whole.
+UI for LLM agents: a model's Markdown answer rendered safely as the kit's own elements, streamed or whole, with the sources it cites.
 
 ### Added
 - **`markdown` 0.41.0 (new, beta):** a safe Markdown subset for model output, written for the kit with no dependency and parsed in linear time: headings, paragraphs, emphasis, strong, strikethrough, inline code (Code), fenced code (CodeBlock with Copy and the language, no highlighter), nested lists, links, blockquotes, GFM pipe tables (the kit's Table, scrolling when wide), rules and line breaks. Raw HTML is shown as text, links go only to http(s) and mailto (anything else is its words), and pictures are a link with their alt text unless `imageOrigins` allows their origin. Headings start at `headingLevel` (h3) and never skip a level. With `streaming`, finished blocks are parsed once and not drawn again (a 20 KB answer in 200 chunks parses in about 6 ms in all), an unclosed ** or ` styles what follows, a link shows its words until its URL is whole, a table waits for its delimiter line and an unclosed fence is code so far. `markdownToText` gives the words without the syntax. **`labels-zh-tw` 0.41.0** adds `markdownLabels`.
+- **`citations` 0.41.0 (new, beta):** the sources an answer cites. `CitationMarker` is a numbered link in the text named "Source 1: <title>", `CitationSources` the numbered list (title linked in a new tab with the external-link icon, domain and path or a `location`, a snippet), and `Citations` links them both ways as grounded-text links words to marks: hover or keyboard focus on a marker highlights its source and on a source every marker citing it, with the kit's inverted number and hover fill, no colour; activating a marker moves focus to its source, whose "Back to citation N" (or Esc) returns. In Markdown, `cite={citationMarker}` turns [1], [^1] and [1, 2] into markers, also inside StreamingText's `markdownProps`. **`labels-zh-tw` 0.41.0** adds `citationsLabels`.
 
 ### Changed
 - **`streaming-text` 0.41.0:** `format="markdown"` renders the answer with Markdown while it streams, and `markdownProps` passes its options (`cite`, `headingLevel`, `imageOrigins`, `labels`). The live region stays in StreamingText and reads the words without their syntax, in sentences as before; a code block is read as "Code in bash." It installs `markdown`.

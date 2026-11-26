@@ -1136,6 +1136,13 @@ export const markdownLabels = {
   codeBlock: codeBlockLabels,
 }
 
+export const citationsLabels = {
+  marker: (n: number, title: string) => `來源 ${n}：${title}`,
+  sources: "來源",
+  back: (n: number) => `回到引用 ${n}`,
+  newTab: "（在新分頁開啟）",
+}
+
 export const copyButtonLabels = {
   copy: "複製",
   copied: "已複製",

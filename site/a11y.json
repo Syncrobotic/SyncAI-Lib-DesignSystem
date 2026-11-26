@@ -1087,6 +1087,17 @@
     "tabStops": 4,
     "live": true
   },
+  "citations": {
+    "roles": [
+      "heading",
+      "link",
+      "list",
+      "listitem",
+      "region"
+    ],
+    "tabStops": 8,
+    "live": false
+  },
   "sortable": {
     "roles": [
       "button",
