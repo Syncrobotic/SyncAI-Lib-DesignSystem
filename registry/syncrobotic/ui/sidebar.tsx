@@ -1,4 +1,4 @@
-// @syncrobotic/sidebar v0.44.0 · update: npx shadcn add @syncrobotic/sidebar --overwrite
+// @syncrobotic/sidebar v0.44.1 · update: npx shadcn add @syncrobotic/sidebar --overwrite
 "use client"
 
 import * as React from "react"
@@ -277,7 +277,7 @@ type SidebarProps = React.ComponentProps<"aside"> & {
  * edge on phones. Children are SidebarHeader, SidebarContent and SidebarFooter, the same on every screen.
  */
 export function Sidebar({ side = "left", variant = "sidebar", collapsible = "icon", className, children, ...props }: SidebarProps) {
-  const { state, isMobile, openMobile, setOpenMobile, labels, forced, resizing } = useSidebar()
+  const { state, isMobile, openMobile, setOpenMobile, labels, forced } = useSidebar()
 
   if (isMobile && collapsible !== "none") {
     return (
@@ -309,7 +309,6 @@ export function Sidebar({ side = "left", variant = "sidebar", collapsible = "ico
       data-collapsible={collapsed ? collapsible : ""}
       data-variant={variant}
       data-side={side}
-      data-resizing={resizing || undefined}
       aria-label={labels.sidebar}
       className={cn(
         // Sticky and as tall as the screen when the page scrolls; as tall as the frame when the provider has a height.
@@ -318,7 +317,8 @@ export function Sidebar({ side = "left", variant = "sidebar", collapsible = "ico
         // Before hydration a phone cannot be told from the server, so the column hides below md by CSS; the sheet takes over.
         forced ? "flex" : "hidden md:flex",
         // The frame's width is what moves (--motion-sheet); icons stay on the rail's centre line and words fade.
-        // While the handle is dragged the width follows the pointer as it is, without easing.
+        // While the handle is dragged the width follows the pointer as it is, without easing (SidebarRail sets
+        // data-resizing on this element); folding, opening and springing back keep the easing.
         "transition-[width] duration-(--motion-sheet) ease-(--ease-standard) motion-reduce:transition-none data-resizing:transition-none",
         collapsed ? (hidden ? "w-0" : "w-18") : "w-(--sidebar-width)",
         variant === "floating" ? "rounded-md ring-1 ring-border" : side === "left" ? "border-e border-border" : "border-s border-border",
@@ -430,23 +430,67 @@ export function SidebarTrigger({ show = "always", className, onClick, ...props }
  */
 export function SidebarRail({ className, ...props }: React.ComponentProps<"div">) {
   const { isMobile, open, setOpen, toggleSidebar, labels, shortcut, keyshortcuts, width, setWidth, resizing, setResizing } = useSidebar()
-  const drag = React.useRef<{ x: number; from: number; sign: number; moved: boolean } | null>(null)
+  const drag = React.useRef<{ x: number; from: number; sign: number; moved: boolean; easeUntil: number } | null>(null)
   if (isMobile) return null
   const label = open ? labels.collapse : labels.expand
   // Towards the page widens: right for a sidebar on the left, left for one on the right.
   const sign = (el: Element) => ((el.closest("[data-slot=sidebar]") as HTMLElement | null)?.dataset.side === "right" ? -1 : 1)
 
-  const follow = (next: number) => {
+  const asideOf = (el: Element) => el.closest<HTMLElement>("[data-slot=sidebar]")
+  // Easing off while the width follows the pointer; on for a fold, an open or a spring back. Set on the element itself,
+  // in the same moment as the change it is for, so a fold never starts without its animation.
+  const ease = (aside: HTMLElement | null, on: boolean) => {
+    if (!aside) return
+    if (on) delete aside.dataset.resizing
+    else aside.dataset.resizing = "true"
+  }
+  // How long the sheet's transition runs, so the drag does not turn the easing off halfway through a fold or an open.
+  const easeTime = (aside: HTMLElement) => (parseFloat(getComputedStyle(aside).transitionDuration) || 0) * 1000
+
+  const follow = (d: NonNullable<typeof drag.current>, next: number, aside: HTMLElement | null) => {
+    const snap = (change: () => void) => {
+      ease(aside, true)
+      if (aside) {
+        aside.style.width = ""
+        d.easeUntil = performance.now() + easeTime(aside)
+      }
+      change()
+    }
     if (next < WIDTH.fold) {
-      if (open) setOpen(false)
+      // Past the fold: the column eases down to the rail.
+      if (open) snap(() => setOpen(false))
+      return
+    }
+    if (!open) {
+      // Out of the rail: it eases open to where the pointer is.
+      snap(() => {
+        setOpen(true)
+        setWidth(next)
+      })
+      return
+    }
+    if (performance.now() >= d.easeUntil) ease(aside, false)
+    if (next < WIDTH.min) {
+      // Under the narrowest width it still gives, at 40 % of the pointer, so the fold is felt coming. Only on screen: the
+      // stored width stays at least 200.
+      if (aside) aside.style.width = `${WIDTH.min - (WIDTH.min - next) * 0.4}px`
+      setWidth(WIDTH.min)
     } else {
-      if (!open) setOpen(true)
+      if (aside) aside.style.width = ""
       setWidth(next)
     }
   }
+  const release = (el: Element) => {
+    const aside = asideOf(el)
+    // Easing back on before the stretch is let go, so a column left under 200 springs back to it.
+    ease(aside, true)
+    if (aside) aside.style.width = ""
+    setResizing(false)
+  }
 
   return (
-    <Tooltip>
+    // No tooltip while dragging: it would ride along over the page.
+    <Tooltip open={resizing ? false : undefined}>
       <TooltipTrigger asChild>
         <div
           role="separator"
@@ -474,7 +518,7 @@ export function SidebarRail({ className, ...props }: React.ComponentProps<"div">
           onPointerDown={(e) => {
             if (e.button !== 0) return
             e.currentTarget.setPointerCapture(e.pointerId)
-            drag.current = { x: e.clientX, from: open ? width : WIDTH.rail, sign: sign(e.currentTarget), moved: false }
+            drag.current = { x: e.clientX, from: open ? width : WIDTH.rail, sign: sign(e.currentTarget), moved: false, easeUntil: 0 }
           }}
           onPointerMove={(e) => {
             const d = drag.current
@@ -484,20 +528,20 @@ export function SidebarRail({ className, ...props }: React.ComponentProps<"div">
             if (!d.moved && Math.abs(dx) < 4) return
             if (!d.moved) setResizing(true)
             d.moved = true
-            follow(d.from + dx)
+            follow(d, d.from + dx, asideOf(e.currentTarget))
           }}
           onPointerUp={(e) => {
             const d = drag.current
             drag.current = null
             if (!d) return
             if (e.currentTarget.hasPointerCapture(e.pointerId)) e.currentTarget.releasePointerCapture(e.pointerId)
-            setResizing(false)
+            release(e.currentTarget)
             if (d.moved) setWidth(width, true)
             else toggleSidebar()
           }}
-          onPointerCancel={() => {
+          onPointerCancel={(e) => {
             drag.current = null
-            setResizing(false)
+            release(e.currentTarget)
           }}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
