@@ -11910,7 +11910,8 @@
         "@syncrobotic/empty-state",
         "@syncrobotic/metric-card",
         "@syncrobotic/responsive-table",
-        "@syncrobotic/section-header"
+        "@syncrobotic/section-header",
+        "@syncrobotic/alert-dialog"
       ],
       "files": [
         {

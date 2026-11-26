@@ -1,4 +1,4 @@
-import { act, cleanup, fireEvent, render, screen } from "@testing-library/react"
+import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react"
 import { afterEach, describe, expect, it, vi } from "vitest"
 import {
   AgentRunOutcome,
@@ -57,7 +57,14 @@ describe("agent-run-outcome", () => {
     render(<AgentRunOutcome retry={retry} />)
     const button = screen.getByRole("button", { name: "Retry 2 failed" })
     expect(screen.getByText(/Retry sends the command again to the 2 failed only/)).toBeTruthy()
+    // It moves robots, so it asks first and names them; nothing is sent until the person confirms.
     await act(async () => void fireEvent.click(button))
+    const dialog = screen.getByRole("alertdialog", { name: "Send the command again to 2 robots?" })
+    expect(within(dialog).getByText("AMR 07")).toBeTruthy()
+    expect(within(dialog).getByText("Patrol dog 9E37")).toBeTruthy()
+    expect(within(dialog).queryByText("AMR 12")).toBeNull()
+    expect(retry).not.toHaveBeenCalled()
+    await act(async () => void fireEvent.click(within(dialog).getByRole("button", { name: "Send again" })))
     expect(retry.mock.calls.map(([r]) => r.robot).sort()).toEqual(["AMR 07", "Patrol dog 9E37"])
     expect(result("AMR 07")).toBe("Retrying")
     expect(result("AMR 12")).toBe("Not verified")
@@ -80,6 +87,7 @@ describe("agent-run-outcome", () => {
     vi.useFakeTimers()
     render(<AgentRunOutcome />)
     await act(async () => void fireEvent.click(screen.getByRole("button", { name: "Retry 2 failed" })))
+    await act(async () => void fireEvent.click(screen.getByRole("button", { name: "Send again" })))
     await act(async () => void (await vi.advanceTimersByTimeAsync(1500)))
     expect(result("AMR 07")).toBe("Succeeded")
     expect(result("Patrol dog 9E37")).toBe("Failed")

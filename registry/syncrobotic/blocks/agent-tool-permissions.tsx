@@ -311,8 +311,10 @@ export function AgentToolPermissionsContent({
           title="Tool access"
           description="Auto: the agent calls the tool on its own. Ask: a person approves each call. Blocked: the agent cannot call it."
         />
-        {/* The save row: how many changes wait, then Discard and Save; on a phone the count takes its own line above them. */}
-        <div className="flex flex-wrap items-center justify-end gap-2">
+        {/* The save row: how many changes wait, then Discard and Save; on a phone the count takes its own line above them.
+            It pins under the shell's top bar (--shell-top) on the shell's surface, like a sticky TabsList, so Save stays in
+            reach while the rows of a long list are changed. */}
+        <div className="sticky top-[var(--shell-top,0)] z-10 flex flex-wrap items-center justify-end gap-2 bg-[var(--shell-surface,var(--color-background))] py-2">
           <span role="status" className="mr-auto text-sm text-muted-foreground tabular-nums max-sm:w-full">
             {changes.length ? plural(changes.length, "unsaved change", "unsaved changes") : justSaved ? "Changes saved" : "No unsaved changes"}
           </span>

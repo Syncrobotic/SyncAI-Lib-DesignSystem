@@ -7,6 +7,17 @@ import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/a
 import { formatCount } from "@/registry/syncrobotic/lib/format-number"
 import { InlineStatus, StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
 import type { Status } from "@/registry/syncrobotic/shell/status-glyph"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/registry/syncrobotic/ui/alert-dialog"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Code } from "@/registry/syncrobotic/ui/code"
 import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
@@ -19,7 +30,8 @@ import { SectionHeader } from "@/registry/syncrobotic/ui/section-header"
   failed (with the reason the robot gave), skipped (with why), and not verified: the command was sent but no
   confirmation came back, so nobody knows yet whether the robot moved. That one is never counted as a success.
 
-  Retry failed sends the command again to the failed robots only, and says how many. A robot that is not verified is
+  Retry failed sends the command again to the failed robots only, and says how many. It moves robots, so it asks first
+  and names them: the person who presses it approves those robots, no others. A robot that is not verified is
   left out: the command may have arrived, and sending it twice could move it twice. The retry here is a script; replace
   `retry` with your API's (it resolves to each robot's new result).
 */
@@ -216,10 +228,35 @@ export function AgentRunOutcomeContent({
                 : "Nothing failed, so there is nothing to retry."
             }
             actions={
-              <Button size="sm" variant="secondary" disabled={!failed || retrying > 0} onClick={retryFailed}>
-                <RotateCw aria-hidden="true" />
-                {failed ? `Retry ${formatCount(failed)} failed` : "Retry failed"}
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button size="sm" variant="secondary" disabled={!failed || retrying > 0}>
+                    <RotateCw aria-hidden="true" />
+                    {failed ? `Retry ${formatCount(failed)} failed` : "Retry failed"}
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Send the command again to {formatCount(failed)} {failed === 1 ? "robot" : "robots"}?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>They will move as the run asked. The robots not verified are left out.</AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <ul className="flex flex-col gap-1 text-sm">
+                    {robots
+                      .filter((r) => r.result === "failed")
+                      .map((r) => (
+                        <li key={r.robot}>
+                          <span className="font-medium">{r.robot}</span> <span className="text-muted-foreground">· {r.detail}</span>
+                        </li>
+                      ))}
+                  </ul>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Not now</AlertDialogCancel>
+                    <AlertDialogAction onClick={retryFailed}>Send again</AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             }
           />
           <p role="status" className="sr-only">
