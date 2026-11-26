@@ -143,6 +143,26 @@ describe("ResponsiveTable", () => {
     expect(row.contains(menu)).toBe(false)
   })
 
+  it("wraps a column marked wrap: at least 12rem in the table, a line of its own in full on a phone", () => {
+    const note = "Stopped at the lift: the door did not open after three tries, so the mission was handed back."
+    const withNote: ResponsiveTableColumn<Robot>[] = [...columns, { id: "note", header: "Note", cell: () => note, wrap: true }]
+    const { unmount } = render(<ResponsiveTable rows={robots.slice(0, 1)} columns={withNote} rowKey={(r) => r.id} label="Robots" layout="table" />)
+    const cell = screen.getByRole("cell", { name: note })
+    expect(cell.className).toContain("whitespace-normal")
+    expect(cell.className).toContain("min-w-48")
+    expect(screen.getByRole("columnheader", { name: "Note" }).className).toContain("min-w-48")
+    // Other cells stay on one line.
+    expect(screen.getByRole("cell", { name: "North gate" }).className).not.toContain("whitespace-normal")
+    unmount()
+
+    render(<ResponsiveTable rows={robots.slice(0, 1)} columns={withNote} rowKey={(r) => r.id} label="Robots" layout="list" />)
+    const facts = screen.getByText((_, el) => el?.textContent === "North gate · 82 %" && el.classList.contains("truncate"))
+    const prose = screen.getByText(note)
+    expect(prose.className).toContain("whitespace-normal")
+    expect(prose.className).not.toContain("truncate")
+    expect(facts.nextElementSibling).toBe(prose)
+  })
+
   it("shows the empty state in one spanning cell, or alone on a phone", () => {
     width = 800
     const empty = <p>No robots match</p>

@@ -3093,8 +3093,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.40.0",
+        "version": "0.45.0",
         "changelog": [
+          {
+            "version": "0.45.0",
+            "date": "2026-11-26",
+            "note": "A column takes wrap for prose that is the point of the row: it wraps in the table (at least 12rem wide) and has a line of its own, in full, under the row's facts on a phone."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -11945,8 +11950,13 @@
         }
       ],
       "meta": {
-        "version": "0.43.0",
+        "version": "0.45.0",
         "changelog": [
+          {
+            "version": "0.45.0",
+            "date": "2026-11-26",
+            "note": "The failure's reason uses ResponsiveTable's wrap instead of classes of its own."
+          },
           {
             "version": "0.43.0",
             "date": "2026-11-26",
@@ -12051,8 +12061,13 @@
         }
       ],
       "meta": {
-        "version": "0.43.0",
+        "version": "0.45.0",
         "changelog": [
+          {
+            "version": "0.45.0",
+            "date": "2026-11-26",
+            "note": "The call's arguments use ResponsiveTable's wrap instead of classes of its own."
+          },
           {
             "version": "0.43.0",
             "date": "2026-11-26",
