@@ -698,7 +698,7 @@
           {
             "version": "0.40.0",
             "date": "2026-11-26",
-            "note": "Breaking: the deprecated `tone` prop, `toStatus` and `warnTone` are gone; pass `status` (info → active, success → normal, neutral → offline). `Tone`, `toneText` and `toneSubtle` stay for notices. toneText and toneSubtle are documented as IslandNotice's, not old names."
+            "note": "Breaking: the deprecated `tone` prop, `toStatus` and `warnTone` are gone; pass `status` (info → active, success → normal, neutral → offline). `Tone`, `toneText` and `toneSubtle` stay for notices. toneText and toneSubtle are documented as IslandNotice's, not old names. The warning triangle has rounded corners, like the stopped square."
           },
           {
             "version": "0.28.0",
@@ -3716,8 +3716,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.36.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "The problem triangle on a waypoint has rounded corners, like StatusGlyph's."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -3806,7 +3811,7 @@
           {
             "version": "0.40.0",
             "date": "2026-11-26",
-            "note": "Counts through formatCount and distances, times and headings through formatNumber: English without a locale (was the runtime's language). Imports @syncrobotic/format-number (renamed from format-count)."
+            "note": "Counts through formatCount and distances, times and headings through formatNumber: English without a locale (was the runtime's language). Imports @syncrobotic/format-number (renamed from format-count). The problem triangle has rounded corners, like StatusGlyph's."
           },
           {
             "version": "0.36.0",

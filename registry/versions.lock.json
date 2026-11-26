@@ -73,7 +73,7 @@
   },
   "status-glyph": {
     "version": "0.40.0",
-    "hash": "fb04429dc8aa782a"
+    "hash": "adc01f994760d805"
   },
   "status-eyebrow": {
     "version": "0.40.0",
@@ -304,12 +304,12 @@
     "hash": "e2c9565e4909b9cb"
   },
   "robot-map": {
-    "version": "0.36.0",
-    "hash": "c4cc56d05efebd02"
+    "version": "0.40.0",
+    "hash": "28cb86025d6dcdd6"
   },
   "waypoint-editor": {
     "version": "0.40.0",
-    "hash": "bd41c730074d8f33"
+    "hash": "fec10b4e45e757ee"
   },
   "dialog": {
     "version": "0.32.0",

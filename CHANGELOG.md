@@ -53,6 +53,7 @@ Before 1.0 a rename or a removal is a minor version. Every one below is a type e
 - **`marker` 0.40.0:** a warning or danger MarkerRow colours its glyph only, never its title.
 - **`npm run adoption`:** a header that names a name 0.40 renamed (`format-count`, `sparkline-metric-tiles`) is reported as "renamed in 0.40: install format-number" (or stats-cards), with the install command, instead of "not in registry".
 - **`responsive-table` 0.40.0:** on a phone the row title wraps to two lines (line-clamp-2; the whole title stays in the accessible name) instead of being cut to one ("Two robots lost sign…" in incident-queue at 390 px), and the trailing state moves under it before it squeezes the title below 160 px.
+- **`status-glyph` 0.40.0:** the warning triangle has rounded corners, like the stopped square; the same triangle in `waypoint-editor` and on a `robot-map` waypoint follows it.
 
 ## 0.39.0 · 2026-11-25
 

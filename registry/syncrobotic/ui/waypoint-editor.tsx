@@ -679,7 +679,7 @@ export function WaypointEditor({
                             {own.length > 0 && (
                               <span data-slot="waypoint-problems" className="flex items-start gap-2 text-xs text-warning">
                                 <svg aria-hidden="true" viewBox="0 0 12 12" className="mt-px size-3 shrink-0">
-                                  <path d="M6 1 11 10.5H1Z" fill="currentColor" />
+                                  <path d="M6 2.2 10.2 9.6H1.8Z" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
                                 </svg>
                                 <span>{own.map((p) => labels.problem(p, minSpacing, locale)).join(" · ")}</span>
                               </span>
