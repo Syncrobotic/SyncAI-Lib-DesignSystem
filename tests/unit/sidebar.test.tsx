@@ -240,13 +240,30 @@ describe("app shell on the sidebar", () => {
     expect(screen.getByRole("button", { name: "ML Mei Lin mei.lin@example.com , account menu" })).toBeTruthy()
     // The test screen is 1024 px wide, under 1280: the shell starts as a rail.
     expect(aside().dataset.state).toBe("collapsed")
-    fireEvent.click(aside().querySelector<HTMLElement>("[data-slot=sidebar-rail]")!)
+    fireEvent.click(document.querySelector("header")!.querySelector<HTMLElement>("[data-slot=sidebar-trigger]")!)
     expect(aside().dataset.state).toBe("expanded")
   })
 
-  it("folds at the sidebar's edge: one round button, in the Tab order, named for what it does", () => {
+  it("inset: folds from the top bar, with nothing on the sidebar's edge to cut the gap", () => {
     render(
       <AppShell product="Fleet console" nav={sampleNav} current="#robots" title="Robots">
+        page
+      </AppShell>,
+    )
+    expect(aside().querySelector("[data-slot=sidebar-rail]")).toBeNull()
+    expect(aside().querySelector("[data-slot=sidebar-trigger]")).toBeNull()
+    const top = document.querySelector("header")!.querySelector<HTMLElement>("[data-slot=sidebar-trigger]")!
+    expect(top.dataset.show).toBe("always")
+    expect(top.className).not.toContain("md:hidden")
+    expect(top.getAttribute("aria-label")).toBe("Expand sidebar")
+    fireEvent.click(top)
+    expect(aside().dataset.state).toBe("expanded")
+    expect(top.getAttribute("aria-label")).toBe("Collapse sidebar")
+  })
+
+  it("flush: folds at the sidebar's edge, one round button, in the Tab order, named for what it does", () => {
+    render(
+      <AppShell layout="flush" product="Fleet console" nav={sampleNav} current="#robots" title="Robots">
         page
       </AppShell>,
     )

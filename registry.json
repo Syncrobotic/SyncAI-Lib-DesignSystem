@@ -7546,8 +7546,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.43.2",
         "changelog": [
+          {
+            "version": "0.43.2",
+            "date": "2026-11-26",
+            "note": "Inset: the collapse button is in the top bar, before the title, instead of a knob on the sidebar's edge that sat across the 8 px gap between the panels. The search in the top bar is filled, not outlined, and 36 px high with a mouse, so it is no longer a box inside the bar's box."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",

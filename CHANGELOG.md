@@ -2,6 +2,13 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.43.2 · 2026-11-26
+
+The inset app shell, cleaned up: nothing across the gap between its panels, and a search that is not a box inside a box.
+
+### Changed
+- **`app-shell` 0.43.2:** inset, the collapse button is in the top bar, before the title (the usual place in an inset layout), instead of a round knob on the sidebar's edge that sat across the 8 px gap and cut it. The flush layout keeps the knob, on the bar's hairline. The search in the top bar is filled, not outlined, and 36 px high with a mouse (44 on a touch screen), so it no longer reads as a box inside the bar's box; a field passed with `onSearch` is filled the same way when inset.
+
 ## 0.43.1 · 2026-11-26
 
 A fix for a timer that outlived its page, and a quicker check on pull requests.
