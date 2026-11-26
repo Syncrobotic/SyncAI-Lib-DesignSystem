@@ -60,7 +60,7 @@ export const statusSubtle: Record<Status, string> = {
   offline: "bg-neutral-subtle",
 }
 
-/** By the old names, for notices and anything still keyed by tone. */
+/** Keyed by tone, for IslandNotice, whose tones describe a notice rather than a robot's status. */
 export const toneText: Record<Tone, string> = { info: color.active, success: color.normal, warning: color.warning, danger: color.danger, neutral: color.offline }
 export const toneSubtle: Record<Tone, string> = {
   info: statusSubtle.active,

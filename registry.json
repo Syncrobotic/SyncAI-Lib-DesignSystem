@@ -698,7 +698,7 @@
           {
             "version": "0.40.0",
             "date": "2026-11-26",
-            "note": "Breaking: the deprecated `tone` prop, `toStatus` and `warnTone` are gone; pass `status` (info → active, success → normal, neutral → offline). `Tone`, `toneText` and `toneSubtle` stay for notices."
+            "note": "Breaking: the deprecated `tone` prop, `toStatus` and `warnTone` are gone; pass `status` (info → active, success → normal, neutral → offline). `Tone`, `toneText` and `toneSubtle` stay for notices. toneText and toneSubtle are documented as IslandNotice's, not old names."
           },
           {
             "version": "0.28.0",
