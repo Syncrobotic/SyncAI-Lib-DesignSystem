@@ -6,6 +6,7 @@ import { usePresenceList } from "@/registry/syncrobotic/hooks/use-presence"
 import { CircleCheck } from "lucide-react"
 import { dataNav } from "@/registry/syncrobotic/blocks/data-catalog"
 import { AppShell, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
+import { formatCount } from "@/registry/syncrobotic/lib/format-count"
 import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import type { Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
@@ -67,7 +68,8 @@ export function GovernanceTodoContent({ todos = sampleTodos, readOnly, onDone }:
   const [done, setDone] = React.useState<string[]>([])
   const open = onDone ? todos : todos.filter((t) => !done.includes(t.id))
   const shown = open.filter((t) => who === "all" || t.who === who)
-  const count = (w: Todo["who"]) => open.filter((t) => t.who === w).length
+  // Slices that cover the to-do, one always on: a SegmentedControl, each count after its word (compact, as on a tab).
+  const count = (w: "all" | Todo["who"]) => formatCount(open.filter((t) => w === "all" || t.who === w).length, { compact: true })
 
   // A finished task fades out where it was, rather than the list jumping under the pointer.
   const { rendered, done: finish } = usePresenceList(shown, (t) => t.id)
@@ -75,7 +77,7 @@ export function GovernanceTodoContent({ todos = sampleTodos, readOnly, onDone }:
   return (
     <div className="flex flex-col gap-4">
       <SegmentedControl value={who} onValueChange={(v) => v && setWho(v as typeof who)} aria-label="Owner" className="sm:w-auto sm:self-start">
-        <SegmentedControlItem value="all">All {open.length}</SegmentedControlItem>
+        <SegmentedControlItem value="all">All {count("all")}</SegmentedControlItem>
         <SegmentedControlItem value="Maintainer">Maintainers {count("Maintainer")}</SegmentedControlItem>
         <SegmentedControlItem value="Compliance">Compliance {count("Compliance")}</SegmentedControlItem>
       </SegmentedControl>
