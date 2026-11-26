@@ -491,7 +491,7 @@ export const overviews: Record<string, Overview> = {
     what: "A list of events in time order, each with a time, a marker and a title.",
     use: ["What a robot did on a shift.", "How an incident unfolded.", "Maintenance and release history."],
     instead: ["A sortable, filterable log: `data-grid`.", "Steps someone has to go through: `stepper`."],
-    notes: ["tone draws the status glyph; colour only for warning and danger.", "TimelineHeading groups events by day."],
+    notes: ["`status` draws the status glyph (or colours the icon); colour only for warning and danger, never on the title.", "TimelineHeading groups events by day."],
   },
   scrollspy: {
     what: "An On this page list that marks the section being read and scrolls to a section when clicked.",

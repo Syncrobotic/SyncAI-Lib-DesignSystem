@@ -12834,7 +12834,7 @@
     {
      "name": "status",
      "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
-     "description": "A status, drawn as its glyph: only warning and danger are coloured. Leave empty for an ordinary event."
+     "description": "A status, drawn as its glyph (or on the icon): only warning and danger are coloured, the mark and never the title. Leave empty for an ordinary event."
     },
     {
      "name": "icon",

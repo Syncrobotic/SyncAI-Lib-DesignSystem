@@ -2,13 +2,13 @@
 "use client"
 
 import * as React from "react"
-import { type Status, StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
+import { type Status, StatusGlyph, statusText } from "@/registry/syncrobotic/shell/status-glyph"
 import { cn } from "@/lib/utils"
 
 /**
  * Events in time order: what a robot did on a shift, how an incident unfolded, a release history.
- * Markers are neutral dots; a status tone adds its shape (and colour only for warning and danger),
- * so a calm history stays calm and the one abnormal event stands out.
+ * Markers are neutral dots; a status adds its shape (and colour only for warning and danger, on the glyph or the icon,
+ * never the title), so a calm history stays calm and the one abnormal event stands out.
  */
 type Ctx = { orientation: "vertical" | "horizontal"; align: "start" | "alternate"; density: "default" | "dense" }
 const TimelineCtx = React.createContext<Ctx>({ orientation: "vertical", align: "start", density: "default" })
@@ -86,7 +86,7 @@ export function TimelineItem({
   time?: React.ReactNode
   /** Machine-readable time for the <time> element. */
   dateTime?: string
-  /** A status, drawn as its glyph: only warning and danger are coloured. Leave empty for an ordinary event. */
+  /** A status, drawn as its glyph (or on the icon): only warning and danger are coloured, the mark and never the title. Leave empty for an ordinary event. */
   status?: Status
   /** An icon instead of a dot, e.g. for kinds of event. */
   icon?: React.ReactNode
@@ -98,7 +98,9 @@ export function TimelineItem({
       aria-hidden="true"
       className={cn(
         "relative z-10 grid shrink-0 place-items-center rounded-full bg-background",
-        icon ? "size-8 text-muted-foreground ring-1 ring-border [&_svg]:size-4" : "size-4",
+        icon ? "size-8 ring-1 ring-border [&_svg]:size-4" : "size-4",
+        // An icon takes the status colour when the event is a warning or a failure; otherwise it stays grey.
+        icon && (status === "warning" || status === "danger" ? statusText[status] : "text-muted-foreground"),
       )}
     >
       {icon ?? (status ? <StatusGlyph status={status} /> : <span className="size-2 rounded-full bg-muted-foreground" />)}
@@ -111,7 +113,8 @@ export function TimelineItem({
   ) : null
   const body = (
     <div className="flex min-w-0 flex-col gap-1">
-      <span className={cn("text-sm font-medium", status === "warning" && "text-warning", status === "danger" && "text-danger")}>
+      {/* The title stays in the text colour: status colour is for the status mark only. */}
+      <span className="text-sm font-medium">
         {title}
         {/* The glyph is hidden from screen readers, so the status is said in words, as Marker does. */}
         {(status === "danger" || status === "warning") && <span className="sr-only">, {status === "danger" ? "failed" : "warning"}</span>}

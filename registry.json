@@ -6727,7 +6727,7 @@
           {
             "version": "0.40.0",
             "date": "2026-11-26",
-            "note": "Breaking: the deprecated `density` prop is gone; use `size=\"sm\"`. Breaking: TimelineItem no longer takes the deprecated `tone`; pass `status`."
+            "note": "Breaking: the deprecated `density` prop is gone; use `size=\"sm\"`. Breaking: TimelineItem no longer takes the deprecated `tone`; pass `status`. A warning or danger item colours its mark only (the glyph, or the icon it is given), never its title."
           },
           {
             "version": "0.28.0",
@@ -10724,7 +10724,7 @@
           {
             "version": "0.40.0",
             "date": "2026-11-26",
-            "note": "The problem event uses the timeline's warning status, the title in the status's words, never a coloured sentence of its own."
+            "note": "The problem event uses the timeline's warning status, the title in the status's words, never a coloured sentence of its own. The stopped event's title is in the text colour; TimelineItem colours its icon."
           },
           {
             "version": "0.9.0",

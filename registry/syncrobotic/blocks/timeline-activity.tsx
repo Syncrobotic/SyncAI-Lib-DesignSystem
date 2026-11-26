@@ -41,9 +41,9 @@ export function TimelineActivity({ className }: { className?: string }) {
                 key={e.at}
                 time={e.time}
                 dateTime={e.at}
-                // The problem is the timeline's warning status: its triangle in the warning colour, and the title says what happened.
+                // The problem is the timeline's warning status: the item colours its icon, and the title, in the text colour, says what happened.
                 status={e.warn ? "warning" : undefined}
-                icon={<e.icon className={e.warn ? "text-warning" : undefined} />}
+                icon={<e.icon />}
                 title={e.title}
               >
                 {e.body}

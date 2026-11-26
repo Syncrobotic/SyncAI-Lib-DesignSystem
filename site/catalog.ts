@@ -181,7 +181,7 @@ const entries: Record<string, Entry> = {
     group: "Data display",
     examples: { file: "timeline", prefix: "Timeline" },
     rules: [
-      "Plain events get a neutral dot. Only warning and danger events are coloured.",
+      "Plain events get a neutral dot. Only a warning or danger event is coloured, and only its mark (the glyph, or the icon you pass): the title stays in the text colour.",
       "Give dateTime so the time is machine-readable.",
       "Newest first for incidents and logs; oldest first for a process.",
     ],

@@ -56,7 +56,7 @@ describe("Timeline", () => {
     expect(screen.getByTestId("icon").closest('[aria-hidden="true"]')).not.toBeNull()
   })
 
-  it("draws a status glyph for a status, and colours the title only for warning and danger", () => {
+  it("draws a status glyph for a status, and never colours the title", () => {
     const { container } = render(
       <Timeline>
         <TimelineItem status="danger" title="Stopped" />
@@ -66,10 +66,7 @@ describe("Timeline", () => {
       </Timeline>,
     )
     const titles = ["Stopped", "Slowed", "Patrol started", "Plain"].map((t) => screen.getByText(t))
-    expect(titles[0].className).toContain("text-danger")
-    expect(titles[1].className).toContain("text-warning")
-    expect(titles[2].className).not.toMatch(/text-(danger|warning)/)
-    expect(titles[3].className).not.toMatch(/text-(danger|warning)/)
+    for (const t of titles) expect(t.className).not.toMatch(/text-(danger|warning)/)
     const items = container.querySelectorAll('[data-slot="timeline-item"]')
     // Danger is a square, warning a triangle, info (active) a filled circle; a plain event has a dot and no glyph.
     expect(items[0].querySelector("svg rect")).not.toBeNull()
@@ -87,6 +84,9 @@ describe("Timeline", () => {
     const item = screen.getByRole("listitem")
     expect(within(item).getByTestId("wrench")).toBeTruthy()
     expect(item.querySelector("rect")).toBeNull() // the icon wins over the status glyph
+    // The icon carries the status colour instead; the title stays in the text colour.
+    expect(within(item).getByTestId("wrench").parentElement!.className).toContain("text-danger")
+    expect(screen.getByText("Lidar cleaned").className).not.toContain("text-danger")
   })
 
   it("groups events under headings, which are list items too", () => {
