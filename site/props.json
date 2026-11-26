@@ -7525,7 +7525,7 @@
     {
      "name": "status",
      "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
-     "description": "The line's status, drawn as its glyph: only warning and danger are coloured."
+     "description": "The line's status, drawn as its glyph: only warning and danger are coloured, the glyph and never the title."
     },
     {
      "name": "icon",

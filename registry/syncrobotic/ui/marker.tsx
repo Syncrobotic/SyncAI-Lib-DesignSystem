@@ -56,7 +56,7 @@ export function MarkerRow({
   children,
   ...props
 }: Omit<React.ComponentProps<"div">, "title"> & {
-  /** The line's status, drawn as its glyph: only warning and danger are coloured. */
+  /** The line's status, drawn as its glyph: only warning and danger are coloured, the glyph and never the title. */
   status?: Status
   /** An icon for the kind of line, used when there is no status. */
   icon?: React.ReactNode
@@ -78,7 +78,8 @@ export function MarkerRow({
           </span>
         )
       )}
-      <span className={cn("shrink-0 font-medium", status === "danger" && "text-danger", status === "warning" && "text-warning")}>
+      {/* The title stays in the text colour: status colour is for the glyph only. */}
+      <span className="shrink-0 font-medium">
         {title}
         {(status === "danger" || status === "warning") && <span className="sr-only">, {status === "danger" ? "failed" : "warning"}</span>}
       </span>

@@ -176,6 +176,9 @@ describe("MarkerRow and TimelineItem take a status", () => {
       </>,
     )
     expect(screen.getByText("open_door").textContent).toBe("open_door, failed")
+    // Status colour is for the glyph: the title stays in the text colour.
+    expect(screen.getByText("open_door").className).not.toMatch(/text-(warning|danger)/)
+    expect(container.querySelector('[data-slot="marker-row"] svg')!.getAttribute("class")).toContain("text-danger")
     expect(screen.getByText("Battery 12 %").textContent).toBe("Battery 12 %, warning")
     expect(screen.getByText("Patrol started").className).not.toMatch(/text-(warning|danger|info)/)
     // A filled circle for active: the glyph, not the plain dot of an ordinary event.

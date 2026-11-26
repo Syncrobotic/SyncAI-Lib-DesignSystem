@@ -478,7 +478,7 @@ export const overviews: Record<string, Overview> = {
     instead: ["A plain divider with no label: `separator`.", "Steps with durations and details: `trace`."],
     notes: [
       "Marker reads as text, not a separator role, so the label is announced.",
-      "MarkerRow takes a StatusGlyph `status`; danger and warning are also spoken. Marker's `status` (warning or danger) colours its label.",
+      "MarkerRow takes a StatusGlyph `status`: only the glyph takes the colour, never the title; danger and warning are also spoken. Marker's `status` (warning or danger) colours its label.",
     ],
   },
   stepper: {

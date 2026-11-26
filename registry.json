@@ -7047,7 +7047,7 @@
           {
             "version": "0.40.0",
             "date": "2026-11-26",
-            "note": "Breaking: MarkerRow no longer takes the deprecated `tone` (pass `status`), and Marker's `tone` is renamed `status` (warning or danger)."
+            "note": "Breaking: MarkerRow no longer takes the deprecated `tone` (pass `status`), and Marker's `tone` is renamed `status` (warning or danger). A warning or danger MarkerRow colours its glyph only, never its title."
           },
           {
             "version": "0.28.0",
