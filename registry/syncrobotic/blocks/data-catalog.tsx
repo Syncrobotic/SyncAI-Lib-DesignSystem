@@ -6,7 +6,6 @@ import { ChevronRight, Database, Grid3x3, Plus, ScrollText, Search, SearchX, Shi
 import { cn } from "@/lib/utils"
 import { formatCount } from "@/registry/syncrobotic/lib/format-count"
 import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
-import { formatCount } from "@/registry/syncrobotic/lib/format-count"
 import { AppShell, type AppNavGroup, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { TierBadge, tiers, type Tier } from "@/registry/syncrobotic/ui/tier-badge"
 import { Button } from "@/registry/syncrobotic/ui/button"

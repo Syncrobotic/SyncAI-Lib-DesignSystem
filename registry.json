@@ -10325,7 +10325,6 @@
         "@syncrobotic/status-eyebrow",
         "@syncrobotic/responsive-table",
         "@syncrobotic/section-header",
-        "@syncrobotic/table",
         "@syncrobotic/format-count"
       ],
       "files": [
