@@ -6,6 +6,11 @@ on:
   workflow_dispatch:
 
 # A new push to a pull request cancels the run it makes stale.
+# Read only: no job here writes to the repository, and every job runs `npm ci`, so a dependency's install script gets
+# no token worth stealing. Checkouts drop the token too (persist-credentials), as nothing fetches after them.
+permissions:
+  contents: read
+
 concurrency:
   group: ci-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -20,6 +25,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v7
+        with: { persist-credentials: false }
       # The package version has its dated CHANGELOG section and no item is ahead of it (release.yml tags it)
       - run: node scripts/release-notes.mjs "$(node -p "require('./package.json').version")" > /dev/null
       - run: node scripts/release-guard.mjs
@@ -30,6 +36,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
+        with: { persist-credentials: false }
       - uses: actions/setup-node@v7
         with: { node-version: 22, cache: npm }
       - run: npm ci
@@ -84,6 +91,7 @@ jobs:
     env: { HOME: /root }
     steps:
       - uses: actions/checkout@v7
+        with: { persist-credentials: false }
       - uses: actions/setup-node@v7
         with: { node-version: 22, cache: npm }
       - run: npm ci
@@ -112,7 +120,7 @@ jobs:
     env: { HOME: /root }
     steps:
       - uses: actions/checkout@v7
-        with: { fetch-depth: 0 }
+        with: { fetch-depth: 0, persist-credentials: false }
       - id: changed
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
@@ -147,6 +155,7 @@ jobs:
     env: { HOME: /root, SITE: "http://127.0.0.1:3000" }
     steps:
       - uses: actions/checkout@v7
+        with: { persist-credentials: false }
       - uses: actions/setup-node@v7
         with: { node-version: 22, cache: npm }
       - run: npm ci
@@ -170,7 +179,7 @@ jobs:
     env: { HOME: /root }
     steps:
       - uses: actions/checkout@v7
-        with: { fetch-depth: 0 }
+        with: { fetch-depth: 0, persist-credentials: false }
       - id: changed
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
@@ -213,7 +222,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
-        with: { fetch-depth: 0 }
+        with: { fetch-depth: 0, persist-credentials: false }
       - id: changed
         run: |
           if [ "${{ github.event_name }}" != "pull_request" ]; then echo "registry=true" >> "$GITHUB_OUTPUT"; exit 0; fi

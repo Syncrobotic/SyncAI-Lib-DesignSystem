@@ -36,12 +36,12 @@
     "hash": "1f719f4dd1a9b2af"
   },
   "ros": {
-    "version": "0.36.0",
-    "hash": "fb363a2da564f434"
+    "version": "0.45.1",
+    "hash": "a10ecd645aab0c12"
   },
   "use-long-press": {
-    "version": "0.5.1",
-    "hash": "9353a9e71f657181"
+    "version": "0.45.1",
+    "hash": "9c133b0f0ac59c5c"
   },
   "use-slide-release": {
     "version": "0.28.0",
@@ -444,12 +444,12 @@
     "hash": "7721b86828fcdcad"
   },
   "point-cloud": {
-    "version": "0.40.0",
-    "hash": "6ed4baf038e49b0e"
+    "version": "0.45.1",
+    "hash": "90277de71f73fe91"
   },
   "robot-model": {
-    "version": "0.36.0",
-    "hash": "8663971952ba5f34"
+    "version": "0.45.1",
+    "hash": "1c7fead2e90d0a68"
   },
   "viewport-overlay": {
     "version": "0.35.0",
@@ -612,16 +612,16 @@
     "hash": "e3481118b8f4398c"
   },
   "list-detail": {
-    "version": "0.40.0",
-    "hash": "3d3eb73496b6edb4"
+    "version": "0.45.1",
+    "hash": "8709d5b29d744bd3"
   },
   "event-log": {
     "version": "0.40.0",
     "hash": "93da226ce0f9b521"
   },
   "map-workspace": {
-    "version": "0.40.0",
-    "hash": "c6d9909b4ca42c4b"
+    "version": "0.45.1",
+    "hash": "f0c159b6168fc422"
   },
   "data-catalog": {
     "version": "0.40.0",
@@ -644,16 +644,16 @@
     "hash": "4de6b5a2f4b25b4c"
   },
   "record-form": {
-    "version": "0.40.0",
-    "hash": "a6759becb93ba7ae"
+    "version": "0.45.1",
+    "hash": "0c4af53d9bb33743"
   },
   "users-roles": {
     "version": "0.40.0",
     "hash": "76c0289c56fbad8b"
   },
   "sign-in": {
-    "version": "0.40.0",
-    "hash": "1e1ce6a2d5f7fb54"
+    "version": "0.45.1",
+    "hash": "7284f8c06a07e2e1"
   },
   "status-pages": {
     "version": "0.40.0",
@@ -772,8 +772,8 @@
     "hash": "e29102643a8cf228"
   },
   "auth-invite": {
-    "version": "0.40.0",
-    "hash": "f777115a482ee094"
+    "version": "0.45.1",
+    "hash": "a66ac0e9bb8d9c76"
   },
   "auth-2fa": {
     "version": "0.40.0",
@@ -816,8 +816,8 @@
     "hash": "bf30a75f68a84874"
   },
   "sheet-robot-detail": {
-    "version": "0.28.0",
-    "hash": "8343c1e510cbc3a5"
+    "version": "0.45.1",
+    "hash": "288761e44d1819c3"
   },
   "sheet-filters": {
     "version": "0.40.0",

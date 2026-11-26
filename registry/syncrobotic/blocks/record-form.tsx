@@ -1,4 +1,4 @@
-// @syncrobotic/record-form v0.40.0 · update: npx shadcn add @syncrobotic/record-form --overwrite
+// @syncrobotic/record-form v0.45.1 · update: npx shadcn add @syncrobotic/record-form --overwrite
 "use client"
 
 import * as React from "react"
@@ -32,6 +32,9 @@ function validate(v: { name: string; robot: string; start: string }): Errors {
  */
 export function RecordForm({ initial }: { initial?: { name: string; robot: string; repeat: string; start: string; notes: string } }) {
   const [name, setName] = React.useState(initial?.name ?? "")
+  // The sample's save; cleared on unmount so it never lands on a page that is gone.
+  const reply = React.useRef<ReturnType<typeof setTimeout>>(undefined)
+  React.useEffect(() => () => clearTimeout(reply.current), [])
   const [robot, setRobot] = React.useState(initial?.robot ?? "")
   const [repeat, setRepeat] = React.useState(initial?.repeat ?? "daily")
   const [start, setStart] = React.useState(initial?.start ?? "22:00")
@@ -51,7 +54,7 @@ export function RecordForm({ initial }: { initial?: { name: string; robot: strin
       return
     }
     setSaving(true)
-    window.setTimeout(() => {
+    reply.current = setTimeout(() => {
       setSaving(false)
       toast({ tone: "success", title: "Mission created", description: `${name} · ${repeat} at ${start}` })
     }, 600)

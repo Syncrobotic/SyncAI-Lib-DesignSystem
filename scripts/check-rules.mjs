@@ -13,6 +13,12 @@
 //     a Table. Sparklines, rings and status strips write their numbers in words instead (see the Data visualisation foundation).
 //  5. A graph has a text view in the same way: a block that draws one (Graph) offers GraphList.
 //  6. So does a map: a block that draws one (RobotMap, GeoMap) offers its list (RobotMapList, GeoMapList).
+//  7. A registry component keeps the timers it starts: `setTimeout(` with its handle thrown away cannot be cleared on
+//     unmount, and fires on a page that is gone (it failed a test run after every test had passed). Store it (`const t =`,
+//     `ref.current =`) and clear it in the effect's cleanup. A delay awaited as a stand-in for a request
+//     (`await new Promise((r) => setTimeout(r, 600))`) is an exception: a real request cannot be cancelled either. So is a
+//     timer meant to outlive the component (releasing a WebGL context once the canvas is gone), with a `timer-ok:`
+//     comment within three lines above saying why.
 //
 // Field-edge contrast (--input 3:1) is a number, so it is a unit test: tests/unit/rules.test.ts.
 //
@@ -105,6 +111,13 @@ for (const file of ROOTS.flatMap(walk)) {
       const above = lines.slice(Math.max(0, i - 3), i + 1).join("\n")
       if (!showsFocus(near) && !/focus-ring:/.test(above))
         fail(file, n, "`outline-none` with no visible focus in its place. Add one, or a `// focus-ring:` comment saying where focus shows.")
+    }
+
+    // 7: timers kept
+    if (file.includes("registry/syncrobotic/") && /(?<![\w.])(?:window\.)?setTimeout\(/.test(line)) {
+      const kept = /(?:=|return|\()\s*(?:window\.)?setTimeout\(/.test(line) && !/(?:=>|\(\))\s*(?:window\.)?setTimeout\(/.test(line)
+      if (!kept && !/new Promise/.test(line) && !/timer-ok:/.test(lines.slice(Math.max(0, i - 3), i + 1).join("\n")))
+        fail(file, n, "a timer whose handle is thrown away cannot be cleared on unmount: store it (`ref.current = setTimeout(…)`) and clear it in the effect's cleanup")
     }
 
     // 3: battery thresholds

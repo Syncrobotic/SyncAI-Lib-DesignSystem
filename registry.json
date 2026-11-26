@@ -425,8 +425,13 @@
         }
       ],
       "meta": {
-        "version": "0.36.0",
+        "version": "0.45.1",
         "changelog": [
+          {
+            "version": "0.45.1",
+            "date": "2026-11-26",
+            "note": "A comment marks the one timer meant to outlive the component (timer-ok:), for the new timer rule. No change in behaviour."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -468,8 +473,13 @@
         }
       ],
       "meta": {
-        "version": "0.5.1",
+        "version": "0.45.1",
         "changelog": [
+          {
+            "version": "0.45.1",
+            "date": "2026-11-26",
+            "note": "A comment marks the one timer meant to outlive the component (timer-ok:), for the new timer rule. No change in behaviour."
+          },
           {
             "version": "0.5.1",
             "date": "2026-11-21",
@@ -5459,8 +5469,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.40.0",
+        "version": "0.45.1",
         "changelog": [
+          {
+            "version": "0.45.1",
+            "date": "2026-11-26",
+            "note": "A comment marks the one timer meant to outlive the component (timer-ok:), for the new timer rule. No change in behaviour."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -5522,8 +5537,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.36.0",
+        "version": "0.45.1",
         "changelog": [
+          {
+            "version": "0.45.1",
+            "date": "2026-11-26",
+            "note": "A comment marks the one timer meant to outlive the component (timer-ok:), for the new timer rule. No change in behaviour."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -7872,8 +7892,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.45.1",
         "changelog": [
+          {
+            "version": "0.45.1",
+            "date": "2026-11-26",
+            "note": "The sample's reply (the robot confirming the stop, the server answering) is cleared when the block unmounts, so it never updates a page that is gone."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -8066,8 +8091,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.45.1",
         "changelog": [
+          {
+            "version": "0.45.1",
+            "date": "2026-11-26",
+            "note": "The sample's reply (the robot confirming the stop, the server answering) is cleared when the block unmounts, so it never updates a page that is gone."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -8498,8 +8528,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.45.1",
         "changelog": [
+          {
+            "version": "0.45.1",
+            "date": "2026-11-26",
+            "note": "The sample's reply (the robot confirming the stop, the server answering) is cleared when the block unmounts, so it never updates a page that is gone."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -8623,8 +8658,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.45.1",
         "changelog": [
+          {
+            "version": "0.45.1",
+            "date": "2026-11-26",
+            "note": "The sample's reply (the robot confirming the stop, the server answering) is cleared when the block unmounts, so it never updates a page that is gone."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -10266,8 +10306,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.45.1",
         "changelog": [
+          {
+            "version": "0.45.1",
+            "date": "2026-11-26",
+            "note": "The sample's reply (the robot confirming the stop, the server answering) is cleared when the block unmounts, so it never updates a page that is gone."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -10817,8 +10862,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.45.1",
         "changelog": [
+          {
+            "version": "0.45.1",
+            "date": "2026-11-26",
+            "note": "The sample's reply (the robot confirming the stop, the server answering) is cleared when the block unmounts, so it never updates a page that is gone."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
