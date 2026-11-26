@@ -1488,7 +1488,7 @@
    "props": [
     {
      "name": "tone",
-     "type": "\"outline\" | \"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
+     "type": "\"outline\" | \"neutral\"",
      "default": "\"neutral\"",
      "description": ""
     },

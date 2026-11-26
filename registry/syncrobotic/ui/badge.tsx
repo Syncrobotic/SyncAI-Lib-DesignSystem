@@ -8,18 +8,13 @@ import { cn } from "@/lib/utils"
 /**
  * A label for a fixed attribute or category: Beta, a version, a tier, a data use (`neutral`, the default), or the
  * environment, Production or Staging (`outline`). A state that changes (Offline, Low battery, Updating) is not a badge:
- * it is an InlineStatus, its shape and its word with no box. The tinted tones remain for compatibility, each the tone's
- * foreground on its subtle tint; a count is a CountBadge and a test result a ResultBadge.
+ * it is an InlineStatus, its shape and its word with no box, so a badge has no status tones. A count is a CountBadge and
+ * a test result a ResultBadge.
  */
 export const badgeVariants = cva("inline-flex h-(--h-tag) shrink-0 items-center gap-1 whitespace-nowrap rounded-xs px-2 text-xs font-medium [&_svg]:size-4", {
   variants: {
     tone: {
       neutral: "bg-neutral-subtle text-neutral",
-      info: "bg-info-subtle text-info",
-      // A calm state is grey: success reads as neutral. Green is for a confirmation that just happened (Toast, Alert).
-      success: "bg-neutral-subtle text-neutral",
-      warning: "bg-warning-subtle text-warning",
-      danger: "bg-danger-subtle text-danger",
       outline: "text-foreground ring-1 ring-border ring-inset",
     },
   },

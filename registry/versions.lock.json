@@ -193,7 +193,7 @@
   },
   "badge": {
     "version": "0.40.0",
-    "hash": "f22bf170ec79046e"
+    "hash": "486654040b0ea5d4"
   },
   "tier-badge": {
     "version": "0.40.0",
@@ -645,7 +645,7 @@
   },
   "agent-skill": {
     "version": "0.40.0",
-    "hash": "97e1b6ce62ad28a0"
+    "hash": "021e29b82c9990d9"
   },
   "line-chart-telemetry": {
     "version": "0.35.0",

@@ -637,10 +637,10 @@ export const BadgeDoAndDont: S = {
       <figure className="flex flex-col gap-3 rounded-md p-4 ring-1 ring-border">
         <figcaption className="text-sm font-medium text-danger">Don't</figcaption>
         <div className="flex flex-wrap items-center gap-2">
-          <Badge tone="info">Updating</Badge>
-          <Badge tone="warning">Low battery</Badge>
+          <Badge className="bg-info-subtle text-info">Updating</Badge>
+          <Badge className="bg-warning-subtle text-warning">Low battery</Badge>
           <Badge>Offline</Badge>
-          <Badge tone="danger">Production</Badge>
+          <Badge className="bg-danger-subtle text-danger">Production</Badge>
         </div>
       </figure>
     </div>

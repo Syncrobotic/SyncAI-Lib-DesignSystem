@@ -992,7 +992,7 @@ export const overviews: Record<string, Overview> = {
     ],
     // CountBadge, in the same file, is the one way to draw a count next to a label.
     notes: [
-      "Neutral (the default) or outline only. Don't put a state in a tinted badge (`<Badge tone=\"warning\">Low battery</Badge>`): it is an InlineStatus.",
+      "Neutral (the default) or outline only: the tinted tones were removed in 0.40. A state (Low battery) is an InlineStatus, never a badge.",
       "At most one status beside a title, then its badges.",
       "For counts use CountBadge, never a Badge with a number and never a solid red circle.",
     ],

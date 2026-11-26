@@ -664,7 +664,7 @@ const entries: Record<string, Entry> = {
       "A fixed attribute or category: a tier, a data use, an environment, a version, Beta. A state that changes (a robot's status, a job's state) is `status-eyebrow`'s `InlineStatus`, in a row or a header; a count is a `CountBadge`.",
       "In a table column whose header already names the attribute, the values are plain text, not a badge on every row. A page header shows at most one status, then its badges after the title.",
       "Test and audit results are a `ResultBadge`: `result=\"passed\"` (grey with a check), `\"failed\"` (danger outline) or `\"insufficient\"` (grey, dashed circle). Never a green pass.",
-      "Neutral (the default) or `outline` (the environment: Production, Staging). The tinted tones stay for compatibility; `tone=\"success\"` renders grey, as `neutral` does. A state in a tinted badge is the mistake the Do / Don't example shows.",
+      "Neutral (the default) or `outline` (the environment: Production, Staging). There are no status tones (removed in 0.40: `tone=\"warning\"` is a type error). A state in a tinted box is the mistake the Do / Don't example shows; it is an `InlineStatus`.",
     ],
   },
   "tier-badge": {
@@ -809,7 +809,7 @@ const entries: Record<string, Entry> = {
     group: "Status & values",
     examples: { file: "list", only: ["StatusShapes", "StatusEyebrowOverTitle", "StatusInlineInRows"] },
     rules: [
-      "`InlineStatus` is the one way to write a state that changes (a robot's status, a job's state): its shape and its word, no box, in a row's trailing slot, a table cell, or beside a page title (PageHeader's `status`, at most one). Never a tinted Badge or a MetaPill for a state.",
+      "`InlineStatus` is the one way to write a state that changes (a robot's status, a job's state): its shape and its word, no box, in a row's trailing slot, a table cell, or beside a page title (PageHeader's `status`, at most one). Never a Badge or a MetaPill for a state.",
       "`StatusEyebrow` is the same state above a headline (a robot's page title: Patrolling, then Patrol dog 7F3A).",
       "Pass `status`: active, normal, warning, danger or offline. Only warning and danger are coloured; shape plus word, always both.",
       "`className` on InlineStatus sets its size where the line around it is smaller (`text-xs` in a 12 px meta line).",

@@ -2261,7 +2261,7 @@
           {
             "version": "0.40.0",
             "date": "2026-11-26",
-            "note": "Docs: a badge is a fixed attribute or category (Beta, a version, Production as an outline, a tier), never a state; the examples show those, a status beside a title as an InlineStatus, and a Do / Don't. The tinted tones stay for compatibility."
+            "note": "Docs: a badge is a fixed attribute or category (Beta, a version, Production as an outline, a tier), never a state; the examples show those, a status beside a title as an InlineStatus, and a Do / Don't. The tinted tones stay for compatibility. Breaking: Badge keeps `neutral` and `outline` only; the tinted `info`, `success`, `warning` and `danger` tones are gone (a type error now). A state is an InlineStatus. CountBadge and ResultBadge are unchanged."
           },
           {
             "version": "0.16.1",
@@ -8526,7 +8526,7 @@
           {
             "version": "0.40.0",
             "date": "2026-11-26",
-            "note": "Design language: narrowing a list by one attribute is a SegmentedControl when two to four choices cover the list and one is always on, and a ChipGroup when the choice can be cleared, several can be on or there are more than four. The number rule names formatNumber for any number that is not a count and bans toLocaleString(); a header's one status is PageHeader's `status` (InlineStatus) and its badges `badges`; checklist line 16: a state is an InlineStatus, never a tinted badge or a toned MetaPill."
+            "note": "Design language: narrowing a list by one attribute is a SegmentedControl when two to four choices cover the list and one is always on, and a ChipGroup when the choice can be cleared, several can be on or there are more than four. The number rule names formatNumber for any number that is not a count and bans toLocaleString(); a header's one status is PageHeader's `status` (InlineStatus) and its badges `badges`; checklist line 16: a state is an InlineStatus, never a tinted badge or a toned MetaPill. A count is a CountBadge, and neither a Badge nor a MetaPill has a status tone."
           },
           {
             "version": "0.39.0",

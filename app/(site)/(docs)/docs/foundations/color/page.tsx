@@ -261,8 +261,8 @@ export default function ColorPage() {
           bad={{
             visual: (
               <div className="flex gap-2">
-                <Badge tone="info">Docked</Badge>
-                <Badge tone="danger">Low battery</Badge>
+                <Badge className="bg-info-subtle text-info">Docked</Badge>
+                <Badge className="bg-danger-subtle text-danger">Low battery</Badge>
               </div>
             ),
             text: "Box a state in a tinted badge, or pick its tone by looks. Blue is for a process someone waits on, not for a robot that is docked; low battery is attention (warning), not failure (danger).",
