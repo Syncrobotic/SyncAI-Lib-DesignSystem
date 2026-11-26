@@ -1,4 +1,4 @@
-// @syncrobotic/labels-zh-tw v0.40.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
+// @syncrobotic/labels-zh-tw v0.41.0 · update: npx shadcn add @syncrobotic/labels-zh-tw --overwrite
 // The kit's words in Traditional Chinese as written in Taiwan, one object per component that takes `labels`. Pass each
 // to its component (`<DataGrid labels={dataGridLabels} />`) with `locale="zh-TW"` where the component formats numbers,
 // days or times. The file imports no component (only format-number, which writes its numbers), so it installs on its own;
@@ -871,6 +871,68 @@ export const streamingTextLabels = {
   duration: streamDuration,
 }
 
+// One turn of a conversation: 你 (you) for the person's own turns, 助理 (assistant), 工具 (tool), 系統 (system).
+export const messageLabels = {
+  roles: { user: "你", assistant: "助理", tool: "工具", system: "系統" },
+  label: ({ role, name, time }: { role: string; name?: string; time?: string }) => [role, name, time].filter(Boolean).join("，"),
+  failed: "失敗",
+  stopped: "已停止",
+  retry: "重試",
+}
+
+export const messageMetaLabels = {
+  duration: streamDuration,
+  tokens: (n: number, locale: string | undefined) => `${formatCount(n, { locale: locale ?? "zh-TW" })} 個 token`,
+}
+
+export const messageActionsLabels = {
+  group: "回答的動作",
+  copy: "複製",
+  copied: "已複製",
+  copyFailed: "無法複製：請選取文字後自行複製",
+  regenerate: "重新生成",
+  good: "回答良好",
+  bad: "回答不佳",
+  reasons: "哪裡有問題？",
+  versions: "版本",
+  previous: "上一個版本",
+  next: "下一個版本",
+  version: (n: number, count: number, locale: string | undefined) =>
+    `第 ${formatCount(n, { locale: locale ?? "zh-TW" })} 個版本，共 ${formatCount(count, { locale: locale ?? "zh-TW" })} 個`,
+  versionShort: (n: number, count: number, locale: string | undefined) =>
+    `${formatCount(n, { locale: locale ?? "zh-TW" })} / ${formatCount(count, { locale: locale ?? "zh-TW" })}`,
+}
+
+// The box people write to a model in: 訊息 (message), 送出 (send), 附加檔案 (attach files), 注音 and 倉頡 users press
+// Enter to choose characters, which never sends.
+export const promptComposerLabels = {
+  label: "訊息",
+  placeholder: "輸入訊息",
+  send: "送出",
+  stop: "停止生成",
+  attach: "附加檔案",
+  files: "已附加的檔案",
+  keyboard: "按 Enter 送出，Shift+Enter 換行",
+  empty: "請輸入訊息或附加檔案後再送出",
+  streaming: "請等回答完成，或先停止生成",
+  count: (length: number, max: number, locale: string | undefined) =>
+    `${formatCount(length, { locale: locale ?? "zh-TW" })} / ${formatCount(max, { locale: locale ?? "zh-TW" })}`,
+  overLimit: (over: number, max: number, locale: string | undefined) =>
+    `超過 ${formatCount(max, { locale: locale ?? "zh-TW" })} 字上限 ${formatCount(over, { locale: locale ?? "zh-TW" })} 字`,
+  rejected: ({ file, reason }: { file: { name: string }; reason: "type" | "size" | "count" }) =>
+    reason === "type" ? `${file.name}：不支援這種檔案類型` : reason === "size" ? `${file.name}：檔案太大` : `${file.name}：檔案數量超過上限`,
+  attachment: attachmentLabels,
+}
+
+export const messageScrollerLabels = {
+  name: "對話",
+  jump: "跳到最新",
+  newCount: (n: number, locale: string | undefined) => `${formatCount(n, { locale: locale ?? "zh-TW" })} 則新訊息`,
+  jumpLabel: (n: number, locale: string | undefined) => (n > 0 ? `跳到最新，${formatCount(n, { locale: locale ?? "zh-TW" })} 則新訊息` : "跳到最新"),
+  loadEarlier: "載入較早的訊息",
+  newTurn: (name: string, text: string) => (text ? `${name}：${text}` : name),
+}
+
 // Every operator the filter bar offers; the types test holds it to the full FilterOperator list, so a new one cannot be
 // left in English.
 const filterOperators = {
@@ -1127,6 +1189,20 @@ export const codeBlockLabels = {
   show: "顯示內容",
   hidden: "已隱藏",
   code: "程式碼",
+}
+
+export const markdownLabels = {
+  image: (alt: string) => (alt ? `圖片：${alt}` : "圖片"),
+  newTab: "（在新分頁開啟）",
+  spokenCode: (language: string | undefined) => (language ? `${language} 程式碼。` : "程式碼。"),
+  codeBlock: codeBlockLabels,
+}
+
+export const citationsLabels = {
+  marker: (n: number, title: string) => `來源 ${n}：${title}`,
+  sources: "來源",
+  back: (n: number) => `回到引用 ${n}`,
+  newTab: "（在新分頁開啟）",
 }
 
 export const copyButtonLabels = {
