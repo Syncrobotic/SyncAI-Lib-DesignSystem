@@ -1,4 +1,4 @@
-// @syncrobotic/agent-run-outcome v0.43.0 · update: npx shadcn add @syncrobotic/agent-run-outcome --overwrite
+// @syncrobotic/agent-run-outcome v0.45.0 · update: npx shadcn add @syncrobotic/agent-run-outcome --overwrite
 "use client"
 
 import * as React from "react"
@@ -106,9 +106,9 @@ const columns: ResponsiveTableColumn<AgentRunRobotOutcome>[] = [
     id: "detail",
     header: "Detail",
     cell: (r) => r.detail,
-    // A failure's reason is the point of the row: on a phone it wraps under the robot in full instead of being cut.
-    phoneCell: (r) => <span className="block whitespace-normal">{r.detail}</span>,
-    className: "whitespace-normal text-muted-foreground",
+    // A failure's reason is the point of the row: it wraps, and on a phone it is a line of its own under the robot.
+    wrap: true,
+    className: "text-muted-foreground",
   },
   { id: "time", header: "Time", cell: (r) => r.time ?? "—", align: "end", phone: "hidden", className: "text-muted-foreground tabular-nums" },
 ]

@@ -256,8 +256,8 @@
     "hash": "0367fada89960798"
   },
   "responsive-table": {
-    "version": "0.40.0",
-    "hash": "f839f33f7aae291e"
+    "version": "0.45.0",
+    "hash": "4dcbc459a3cf18d3"
   },
   "chart": {
     "version": "0.40.0",
@@ -896,8 +896,8 @@
     "hash": "b59957ee5ab3901d"
   },
   "agent-run-outcome": {
-    "version": "0.43.0",
-    "hash": "be85483473933e1d"
+    "version": "0.45.0",
+    "hash": "bca1b22dd800e0b0"
   },
   "markdown": {
     "version": "0.41.0",
@@ -908,7 +908,7 @@
     "hash": "cfc32efa1107e886"
   },
   "agent-tool-permissions": {
-    "version": "0.43.0",
-    "hash": "81e6447945b0d795"
+    "version": "0.45.0",
+    "hash": "aac0b60b9af38b19"
   }
 }

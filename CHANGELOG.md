@@ -2,6 +2,16 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.45.0 · 2026-11-26
+
+Prose in a ResponsiveTable, wrapped on purpose instead of by hand.
+
+### Added
+- **`responsive-table` 0.45.0:** `wrap` on a column, for prose that is the point of the row (a failure's reason, a note). In the table the cell wraps and keeps at least 12rem, so it never narrows to a word a line; on a phone a `meta` column that wraps gets a line of its own under the row's facts, in full, where before it was cut at the end of the meta line with the rest.
+
+### Changed
+- **`agent-run-outcome` 0.45.0, `agent-tool-permissions` 0.45.0:** the failure's reason and the call's arguments use `wrap` instead of classes of their own (`whitespace-normal`, a `block` span in `phoneCell`). They look the same.
+
 ## 0.44.1 · 2026-11-26
 
 The sidebar's handle, without the jump at the fold.
