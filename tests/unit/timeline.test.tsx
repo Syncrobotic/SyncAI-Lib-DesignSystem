@@ -48,7 +48,7 @@ describe("Timeline", () => {
   it("keeps markers and connecting lines out of the accessibility tree", () => {
     const { container } = render(
       <Timeline>
-        <TimelineItem time="14:02" tone="danger" title="Emergency stop pressed" />
+        <TimelineItem time="14:02" status="danger" title="Emergency stop pressed" />
         <TimelineItem time="14:01" icon={<svg data-testid="icon" />} title="Obstacle in path" />
       </Timeline>,
     )
@@ -56,12 +56,12 @@ describe("Timeline", () => {
     expect(screen.getByTestId("icon").closest('[aria-hidden="true"]')).not.toBeNull()
   })
 
-  it("draws a status glyph for a tone, and colours the title only for warning and danger", () => {
+  it("draws a status glyph for a status, and colours the title only for warning and danger", () => {
     const { container } = render(
       <Timeline>
-        <TimelineItem tone="danger" title="Stopped" />
-        <TimelineItem tone="warning" title="Slowed" />
-        <TimelineItem tone="info" title="Patrol started" />
+        <TimelineItem status="danger" title="Stopped" />
+        <TimelineItem status="warning" title="Slowed" />
+        <TimelineItem status="active" title="Patrol started" />
         <TimelineItem title="Plain" />
       </Timeline>,
     )
@@ -81,12 +81,12 @@ describe("Timeline", () => {
   it("shows an icon in place of the marker", () => {
     render(
       <Timeline>
-        <TimelineItem tone="danger" icon={<svg data-testid="wrench" />} title="Lidar cleaned" />
+        <TimelineItem status="danger" icon={<svg data-testid="wrench" />} title="Lidar cleaned" />
       </Timeline>,
     )
     const item = screen.getByRole("listitem")
     expect(within(item).getByTestId("wrench")).toBeTruthy()
-    expect(item.querySelector("rect")).toBeNull() // the icon wins over the tone's glyph
+    expect(item.querySelector("rect")).toBeNull() // the icon wins over the status glyph
   })
 
   it("groups events under headings, which are list items too", () => {
@@ -204,8 +204,8 @@ describe("Timeline", () => {
   it("tells screen readers that an event is a warning or a failure", () => {
     render(
       <Timeline>
-        <TimelineItem tone="danger" title="Emergency stop pressed" />
-        <TimelineItem tone="warning" title="Obstacle in path" />
+        <TimelineItem status="danger" title="Emergency stop pressed" />
+        <TimelineItem status="warning" title="Obstacle in path" />
       </Timeline>,
     )
     const [danger, warning] = screen.getAllByRole("listitem")

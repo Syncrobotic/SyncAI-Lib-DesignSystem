@@ -478,7 +478,7 @@ export const overviews: Record<string, Overview> = {
     instead: ["A plain divider with no label: `separator`.", "Steps with durations and details: `trace`."],
     notes: [
       "Marker reads as text, not a separator role, so the label is announced.",
-      "MarkerRow takes the StatusGlyph tones; danger and warning are also spoken.",
+      "MarkerRow takes a StatusGlyph `status`; danger and warning are also spoken. Marker's `status` (warning or danger) colours its label.",
     ],
   },
   stepper: {
@@ -1065,7 +1065,7 @@ export const overviews: Record<string, Overview> = {
     use: ["Next to a robot's name, in tables and on the map."],
     instead: ["A state with its word: `status-eyebrow`.", "An alarm: `alarm`, which has its own shapes."],
     notes: [
-      "Active and normal render in the foreground colour, not blue or green. The old `tone` maps info, success and neutral to active, normal and offline.",
+      "Active and normal render in the foreground colour, not blue or green.",
     ],
   },
   "status-eyebrow": {

@@ -693,8 +693,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Breaking: the deprecated `tone` prop, `toStatus` and `warnTone` are gone; pass `status` (info → active, success → normal, neutral → offline). `Tone`, `toneText` and `toneSubtle` stay for notices."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -755,7 +760,7 @@
           {
             "version": "0.40.0",
             "date": "2026-11-26",
-            "note": "InlineStatus takes `className` (its size in a 12 px meta line) and carries `data-slot=\"inline-status\"`; the item is titled Inline status and eyebrow, so InlineStatus, the one way to write a state, is found by its name."
+            "note": "InlineStatus takes `className` (its size in a 12 px meta line) and carries `data-slot=\"inline-status\"`; the item is titled Inline status and eyebrow, so InlineStatus, the one way to write a state, is found by its name. Breaking: StatusEyebrow and InlineStatus no longer take the deprecated `tone`; pass `status`."
           },
           {
             "version": "0.13.0",
@@ -1026,8 +1031,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Breaking: Island no longer takes the deprecated `tone`; pass `status`. IslandNotice keeps its `tone`."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -4594,7 +4604,7 @@
           {
             "version": "0.40.0",
             "date": "2026-11-26",
-            "note": "`status`: the state of what the page shows, one InlineStatus beside the title (at most one), and `badges` for fixed attributes after it. MetaPill's `tone` is deprecated: a state in a boxed pill reads as one more fact."
+            "note": "`status`: the state of what the page shows, one InlineStatus beside the title (at most one), and `badges` for fixed attributes after it. MetaPill's `tone` is deprecated: a state in a boxed pill reads as one more fact. Breaking: MetaPill no longer takes `tone`: it is a plain fact pill. A state goes in PageHeader's `status`."
           },
           {
             "version": "0.32.0",
@@ -6698,7 +6708,7 @@
           {
             "version": "0.40.0",
             "date": "2026-11-26",
-            "note": "Breaking: the deprecated `density` prop is gone; use `size=\"sm\"`."
+            "note": "Breaking: the deprecated `density` prop is gone; use `size=\"sm\"`. Breaking: TimelineItem no longer takes the deprecated `tone`; pass `status`."
           },
           {
             "version": "0.28.0",
@@ -7003,8 +7013,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Breaking: MarkerRow no longer takes the deprecated `tone` (pass `status`), and Marker's `tone` is renamed `status` (warning or danger)."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",

@@ -1,7 +1,6 @@
 // @syncrobotic/page-header v0.40.0 · update: npx shadcn add @syncrobotic/page-header --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { StatusGlyph, type Tone, toStatus } from "@/registry/syncrobotic/shell/status-glyph"
 
 /**
  * The block a page opens with: where you are (a breadcrumb above), what the page is (one h1 and a line), its state (one
@@ -83,18 +82,12 @@ export function PageHeader({
  * A state is not a fact: it goes in PageHeader's `status` as an InlineStatus, not in a pill.
  */
 export function MetaPill({
-  tone,
   icon,
   href,
   linkAs: Link = "a",
   className,
   children,
 }: {
-  /**
-   * @deprecated A state in a boxed pill reads as one more fact. Put it in PageHeader's `status` (an InlineStatus);
-   * `tone` still draws its glyph and colour until 1.0.
-   */
-  tone?: Tone
   icon?: React.ReactNode
   /** Where the fact leads: the pill becomes a link, the same height on screen, with a 36 px target (44 on touch). */
   href?: string
@@ -105,14 +98,12 @@ export function MetaPill({
 }) {
   const pill = cn(
     "inline-flex h-(--h-tag) items-center gap-2 rounded-xs px-2 text-xs text-muted-foreground ring-1 ring-border ring-inset [&_svg]:size-4",
-    // A link's words are foreground, as every link's; a status keeps its colour.
+    // A link's words are foreground, as every link's.
     href && "relative text-foreground",
-    tone === "warning" && "text-warning",
-    tone === "danger" && "text-danger",
   )
   const content = (
     <>
-      {tone ? <StatusGlyph status={toStatus(tone)} /> : icon}
+      {icon}
       {children}
     </>
   )

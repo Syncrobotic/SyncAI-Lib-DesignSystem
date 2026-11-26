@@ -38,9 +38,9 @@ describe("stepper", () => {
 })
 
 describe("status names", () => {
-  it("reads the old tone names as the new statuses", async () => {
-    const { toStatus } = await import("@/registry/syncrobotic/shell/status-glyph")
-    expect(["info", "success", "warning", "danger", "neutral"].map((t) => toStatus(t as "info"))).toEqual(["active", "normal", "warning", "danger", "offline"])
-    expect(toStatus("active")).toBe("active")
+  it("takes the status names only: the old tone names were removed in 0.40", async () => {
+    const mod = await import("@/registry/syncrobotic/shell/status-glyph")
+    expect("toStatus" in mod).toBe(false)
+    expect("warnTone" in mod).toBe(false)
   })
 })

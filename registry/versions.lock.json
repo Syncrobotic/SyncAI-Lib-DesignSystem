@@ -72,12 +72,12 @@
     "hash": "86bab888e47c15ba"
   },
   "status-glyph": {
-    "version": "0.28.0",
-    "hash": "c502899831e0d82b"
+    "version": "0.40.0",
+    "hash": "95fed1c3c2a46eee"
   },
   "status-eyebrow": {
     "version": "0.40.0",
-    "hash": "e2c5ce7b3bad2569"
+    "hash": "5ea2e5285f6d0707"
   },
   "tray": {
     "version": "0.5.0",
@@ -100,8 +100,8 @@
     "hash": "5c32f3757b3dfa99"
   },
   "island": {
-    "version": "0.35.0",
-    "hash": "f1420c2c06310efb"
+    "version": "0.40.0",
+    "hash": "5a1a4452a88537e2"
   },
   "list": {
     "version": "0.15.0",
@@ -381,7 +381,7 @@
   },
   "page-header": {
     "version": "0.40.0",
-    "hash": "85a1dde84d1c1e07"
+    "hash": "b1a9386f06c81b6b"
   },
   "section-header": {
     "version": "0.39.0",
@@ -541,7 +541,7 @@
   },
   "timeline": {
     "version": "0.40.0",
-    "hash": "e5d5063536832471"
+    "hash": "d8d7d0d524ca4c5a"
   },
   "scrollspy": {
     "version": "0.36.0",
@@ -560,8 +560,8 @@
     "hash": "f58f221958cc6619"
   },
   "marker": {
-    "version": "0.28.0",
-    "hash": "3953ef61525244e2"
+    "version": "0.40.0",
+    "hash": "414c5142cafcd2d6"
   },
   "stats-cards": {
     "version": "0.40.0",

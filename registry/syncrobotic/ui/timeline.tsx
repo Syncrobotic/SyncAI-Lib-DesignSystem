@@ -2,7 +2,7 @@
 "use client"
 
 import * as React from "react"
-import { type Status, StatusGlyph, type Tone, toStatus, warnTone } from "@/registry/syncrobotic/shell/status-glyph"
+import { type Status, StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { cn } from "@/lib/utils"
 
 /**
@@ -75,8 +75,7 @@ function useMoreToTheRight(ref: React.RefObject<HTMLElement | null>, watch: bool
 export function TimelineItem({
   time,
   dateTime,
-  status: given,
-  tone,
+  status,
   icon,
   title,
   className,
@@ -89,15 +88,11 @@ export function TimelineItem({
   dateTime?: string
   /** A status, drawn as its glyph: only warning and danger are coloured. Leave empty for an ordinary event. */
   status?: Status
-  /** @deprecated Use `status` (info → active, success → normal, neutral → offline). */
-  tone?: Tone
   /** An icon instead of a dot, e.g. for kinds of event. */
   icon?: React.ReactNode
   title: React.ReactNode
 }) {
   const { orientation, align, density } = React.useContext(TimelineCtx)
-  warnTone("TimelineItem", tone)
-  const status = given ?? (tone ? toStatus(tone) : undefined)
   const marker = (
     <span
       aria-hidden="true"

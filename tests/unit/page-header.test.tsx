@@ -7,11 +7,13 @@ afterEach(cleanup)
 
 describe("MetaPill", () => {
   it("without href is a list item with no link, as before", () => {
-    render(<PageHeader title="Catalog" meta={<MetaPill tone="warning">2 open issues</MetaPill>} />)
+    render(<PageHeader title="Catalog" meta={<MetaPill>2 open issues</MetaPill>} />)
     const item = screen.getByRole("listitem")
     expect(item.getAttribute("data-slot")).toBe("meta-pill")
     expect(item.className).toContain("h-(--h-tag)")
-    expect(item.className).toContain("text-warning")
+    // A fact, never a state: no status colour, no glyph.
+    expect(item.className).not.toMatch(/text-(warning|danger)/)
+    expect(item.querySelector("svg")).toBeNull()
     expect(screen.queryByRole("link")).toBeNull()
   })
   it("with href is a link inside the list item: the pill's height on screen, a taller target, underlined, the focus ring", () => {
@@ -19,7 +21,7 @@ describe("MetaPill", () => {
       <PageHeader
         title="warehouse-forklifts"
         meta={
-          <MetaPill tone="warning" href="#compliance" className="extra">
+          <MetaPill href="#compliance" className="extra">
             2 compliance items open
           </MetaPill>
         }
@@ -32,11 +34,9 @@ describe("MetaPill", () => {
     expect(link.className).toContain("after:h-(--h-sm)")
     expect(link.className).toContain("underline")
     expect(link.className).toContain("focus-visible:outline-ring")
-    expect(link.className).toContain("text-warning")
     expect(link.className).toContain("extra")
-    expect(link.querySelector("svg[aria-hidden=true]")).not.toBeNull()
   })
-  it("writes a link without a tone in the foreground, and renders through linkAs", () => {
+  it("writes a link in the foreground, and renders through linkAs", () => {
     const Router = ({ href, ...rest }: React.ComponentProps<"a">) => <a data-router="" href={`/app${href}`} {...rest} />
     render(
       <PageHeader

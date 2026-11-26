@@ -416,7 +416,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "One per page, first in the content: the breadcrumb says where, the h1 says what. No label above the title.",
       "A state (the robot's, the job's, the dataset's) goes in `status`: one `InlineStatus` beside the title, at most one, never a pill or a badge. Fixed attributes (Production as an outline, Beta, a version) go in `badges`, after it.",
-      "Meta pills are facts (counts, owner, last update). MetaPill's `tone` is deprecated: a state in a boxed pill reads as one more fact; move it to `status`.",
+      "Meta pills are facts (counts, owner, last update), never a state: a state in a boxed pill reads as one more fact, so it goes in `status`. MetaPill has no tone.",
       "A fact that leads somewhere (\"2 compliance items open\" to that tab) takes `href` (and `linkAs` for your router): the pill becomes an underlined link with the focus ring and a 36 px target (44 on touch), the same height on screen. Never wrap a pill in your own link.",
       "Actions sit at the right; the page's one primary action may be among them.",
     ],
@@ -802,7 +802,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "Status is a shape and a word; colour only when it is abnormal. The shape reads without colour vision: filled circle active (busy), hollow circle normal, triangle attention, square stopped, slashed circle offline (grey).",
       "The glyph is hidden from screen readers: write the status in words beside it, or use `status-eyebrow`, which does.",
-      "Pass `status`: active, normal, warning, danger or offline. The old `tone` (info, success, warning, danger, neutral) still works until 1.0 and warns once in development.",
+      "Pass `status`: active, normal, warning, danger or offline (the default). The old `tone` names (info, success, neutral) were removed in 0.40.",
     ],
   },
   "status-eyebrow": {

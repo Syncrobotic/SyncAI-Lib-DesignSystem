@@ -6366,12 +6366,8 @@
     {
      "name": "status",
      "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
+     "default": "\"offline\"",
      "description": "Shape at the avatar's corner: the dog's current state."
-    },
-    {
-     "name": "tone",
-     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
-     "description": "Deprecated: Use `status`."
     },
     {
      "name": "attention",
@@ -7498,9 +7494,9 @@
      "description": ""
     },
     {
-     "name": "tone",
+     "name": "status",
      "type": "\"warning\" | \"danger\"",
-     "description": "warning or danger colour the label; anything else stays neutral."
+     "description": "warning or danger colour the label; leave it out for an ordinary line."
     },
     {
      "name": "align",
@@ -7520,11 +7516,6 @@
      "name": "status",
      "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
      "description": "The line's status, drawn as its glyph: only warning and danger are coloured."
-    },
-    {
-     "name": "tone",
-     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
-     "description": "Deprecated: Use `status` (info → active, success → normal, neutral → offline)."
     },
     {
      "name": "icon",
@@ -8197,11 +8188,6 @@
   {
    "name": "MetaPill",
    "props": [
-    {
-     "name": "tone",
-     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
-     "description": "Deprecated: A state in a boxed pill reads as one more fact. Put it in PageHeader's `status` (an InlineStatus); `tone` still draws its glyph and colour until 1.0."
-    },
     {
      "name": "icon",
      "type": "ReactNode",
@@ -11319,12 +11305,8 @@
     {
      "name": "status",
      "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
-     "description": ""
-    },
-    {
-     "name": "tone",
-     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
-     "description": "Deprecated: Use `status`."
+     "default": "\"offline\"",
+     "description": "active (busy), normal, warning, danger or offline (the default)."
     },
     {
      "name": "children",
@@ -11341,12 +11323,8 @@
     {
      "name": "status",
      "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
-     "description": ""
-    },
-    {
-     "name": "tone",
-     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
-     "description": "Deprecated: Use `status`."
+     "default": "\"offline\"",
+     "description": "active (busy), normal, warning, danger or offline (the default)."
     },
     {
      "name": "children",
@@ -11365,12 +11343,8 @@
     {
      "name": "status",
      "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
-     "description": "active (busy), normal, warning, danger or offline."
-    },
-    {
-     "name": "tone",
-     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
-     "description": "Deprecated: Use `status` (info → active, success → normal, neutral → offline)."
+     "default": "\"offline\"",
+     "description": "active (busy), normal, warning, danger or offline (the default)."
     }
    ],
    "inherits": []
@@ -12885,11 +12859,6 @@
      "name": "status",
      "type": "\"active\" | \"normal\" | \"warning\" | \"danger\" | \"offline\"",
      "description": "A status, drawn as its glyph: only warning and danger are coloured. Leave empty for an ordinary event."
-    },
-    {
-     "name": "tone",
-     "type": "\"info\" | \"success\" | \"warning\" | \"danger\" | \"neutral\"",
-     "description": "Deprecated: Use `status` (info → active, success → normal, neutral → offline)."
     },
     {
      "name": "icon",
