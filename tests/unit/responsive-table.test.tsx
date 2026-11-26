@@ -59,7 +59,7 @@ describe("ResponsiveTable", () => {
     const rows = [{ ...robots[0], name: long }]
     const onRowClick = vi.fn()
     render(<ResponsiveTable label="Robots" rows={rows} columns={columns} rowKey={(r) => r.id} onRowClick={onRowClick} />)
-    const title = document.querySelector<HTMLElement>("[data-slot=list-row-title]")!
+    const title = screen.getByText(long)
     expect(title.textContent).toBe(long)
     expect(title.className).toContain("line-clamp-2")
     expect(title.className).not.toContain("truncate")
