@@ -32,8 +32,8 @@
     "hash": "03904a0793a968e9"
   },
   "labels-zh-tw": {
-    "version": "0.41.0",
-    "hash": "23ced743582daa0a"
+    "version": "0.44.0",
+    "hash": "1f719f4dd1a9b2af"
   },
   "ros": {
     "version": "0.36.0",
@@ -296,8 +296,8 @@
     "hash": "95ad49c6d314e6a5"
   },
   "sidebar": {
-    "version": "0.32.0",
-    "hash": "ed4f26f5991f7922"
+    "version": "0.44.0",
+    "hash": "d54dcc2381ecd659"
   },
   "graph": {
     "version": "0.42.0",
@@ -596,8 +596,8 @@
     "hash": "b5d221d88156088f"
   },
   "app-shell": {
-    "version": "0.43.2",
-    "hash": "69037136646df473"
+    "version": "0.44.0",
+    "hash": "fc9f679e2663920d"
   },
   "top-bar-shell": {
     "version": "0.38.0",

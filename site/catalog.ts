@@ -1204,7 +1204,7 @@ const entries: Record<string, Entry> = {
       "Every item leads with an icon and has a tooltip: collapsed, the rail shows only the icons. Group names give way to a short line.",
       "A switcher for sites, workspaces or robots goes in SidebarHeader as a size=\"lg\" button that opens a menu; the account goes in SidebarFooter the same way.",
       "Open by default on wide screens, a rail below about 1280 px. People choose with the trigger or ⌘B / Ctrl+B, and the cookie keeps it.",
-      "Where collapse goes follows the layout. A column beside the page (flush): the sidebar's edge, SidebarRail, a small round button half over it, level with the line under the top bar, ‹ to collapse and › to expand, in the Tab order and named for what it does. Floating panels (inset): SidebarTrigger in the top bar, before the title, never a knob across the gap between the panels. On phones the sidebar is a sheet and that top-bar trigger is its menu button.",
+      "Collapse and width belong to the sidebar's edge: SidebarRail is a handle beside it (a window splitter), hidden until the pointer is over the sidebar. Drag it to resize (200 to 320 px, under 140 it folds to the rail), click it or press Enter to collapse and expand, ← and → to resize from the keyboard. Beside a floating sidebar it sits in the gap, over nothing; never a control in the top bar on wide screens. On phones the sidebar is a sheet: SidebarTrigger show=\"mobile\" in the top bar is its menu button.",
     ],
   },
   // Overlays: the docs show the closed trigger; the *Open stories are for visual tests.

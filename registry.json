@@ -337,8 +337,13 @@
         }
       ],
       "meta": {
-        "version": "0.41.0",
+        "version": "0.44.0",
         "changelog": [
+          {
+            "version": "0.44.0",
+            "date": "2026-11-26",
+            "note": "Sidebar: resize and drag."
+          },
           {
             "version": "0.41.0",
             "date": "2026-11-26",
@@ -3621,8 +3626,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.32.0",
+        "version": "0.44.0",
         "changelog": [
+          {
+            "version": "0.44.0",
+            "date": "2026-11-26",
+            "note": "SidebarRail is now a handle beside the sidebar that resizes it: drag for 200 to 320 px (under 140 it folds to the rail), click or Enter to collapse and expand, ← and → by 16 px. Hidden until the pointer is over the sidebar. The width is kept in a cookie (<cookieName>_width); defaultWidth sets the first one. Two new labels, resize and drag."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -7546,12 +7556,12 @@
         }
       ],
       "meta": {
-        "version": "0.43.2",
+        "version": "0.44.0",
         "changelog": [
           {
-            "version": "0.43.2",
+            "version": "0.44.0",
             "date": "2026-11-26",
-            "note": "Inset: the collapse button is in the top bar, before the title, instead of a knob on the sidebar's edge that sat across the 8 px gap between the panels. The search in the top bar is filled, not outlined, and 36 px high with a mouse, so it is no longer a box inside the bar's box."
+            "note": "The sidebar resizes from the handle beside it, which sits in the 8 px gap when inset, instead of a round knob across it. The top bar's search is filled, not outlined, and 36 px high with a mouse."
           },
           {
             "version": "0.32.0",

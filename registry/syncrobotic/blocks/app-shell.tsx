@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell v0.43.2 · update: npx shadcn add @syncrobotic/app-shell --overwrite
+// @syncrobotic/app-shell v0.44.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -580,9 +580,9 @@ export function AppShell({
             <SidebarUserMenu user={user} items={userMenu} linkAs={linkAs} />
           </SidebarFooter>
         )}
-        {/* Flush: collapse and expand at the sidebar's edge, a knob on the bar's hairline (a Tab stop too). Inset: the
-            button is in the top bar instead, as a knob would sit across the 8 px gap and cut it. ⌘B / Ctrl+B anywhere. */}
-        {!inset && <SidebarRail />}
+        {/* The handle beside the sidebar: drag to resize, click (or Enter) to collapse and expand; ⌘B / Ctrl+B anywhere.
+            Inset it sits in the 8 px gap, over nothing; flush, on the hairline. */}
+        <SidebarRail />
       </Sidebar>
 
       {/* Inset: the top bar and the content are two panels, 8 px apart, so the bar never reads as part of the page.
@@ -595,8 +595,8 @@ export function AppShell({
             inset ? "rounded-md bg-card ring-1 ring-border" : "border-b border-border",
           )}
         >
-          {/* Phones: the menu button that opens the sheet. Wide screens fold the sidebar at its edge (flush) or here (inset). */}
-          <SidebarTrigger show={inset ? "always" : "mobile"} className="-ms-2" />
+          {/* Phones only: the menu button that opens the sheet. Wide screens fold the sidebar at its edge. */}
+          <SidebarTrigger show="mobile" className="-ms-2" />
           {breadcrumb && <div className="hidden min-w-0 shrink items-center gap-1 md:flex">{breadcrumb}</div>}
           <h1 className="truncate text-lg font-bold">{title}</h1>
           {/* On phones the title keeps the room; the environment shows from 640 px. */}

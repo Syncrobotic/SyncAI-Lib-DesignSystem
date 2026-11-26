@@ -93,7 +93,7 @@ describe("sidebar", () => {
   it("toggles between the open column and the rail from its trigger", () => {
     render(<Frame isMobile={false} />)
     expect(aside().dataset.state).toBe("expanded")
-    expect(aside().className).toContain("w-60")
+    expect(aside().className).toContain("w-(--sidebar-width)")
     fireEvent.click(screen.getByRole("button", { name: "Collapse sidebar" }))
     expect(aside().dataset.state).toBe("collapsed")
     expect(aside().dataset.collapsible).toBe("icon")
@@ -240,52 +240,80 @@ describe("app shell on the sidebar", () => {
     expect(screen.getByRole("button", { name: "ML Mei Lin mei.lin@example.com , account menu" })).toBeTruthy()
     // The test screen is 1024 px wide, under 1280: the shell starts as a rail.
     expect(aside().dataset.state).toBe("collapsed")
-    fireEvent.click(document.querySelector("header")!.querySelector<HTMLElement>("[data-slot=sidebar-trigger]")!)
+    fireEvent.keyDown(screen.getByRole("separator", { name: "Resize sidebar" }), { key: "Enter" })
     expect(aside().dataset.state).toBe("expanded")
   })
 
-  it("inset: folds from the top bar, with nothing on the sidebar's edge to cut the gap", () => {
+  it("the handle beside the sidebar: a splitter in the Tab order that folds on a click or Enter", () => {
     render(
       <AppShell product="Fleet console" nav={sampleNav} current="#robots" title="Robots">
         page
       </AppShell>,
     )
-    expect(aside().querySelector("[data-slot=sidebar-rail]")).toBeNull()
+    // No trigger inside the sidebar or (on wide screens) in the top bar; the handle is the control.
     expect(aside().querySelector("[data-slot=sidebar-trigger]")).toBeNull()
-    const top = document.querySelector("header")!.querySelector<HTMLElement>("[data-slot=sidebar-trigger]")!
-    expect(top.dataset.show).toBe("always")
-    expect(top.className).not.toContain("md:hidden")
-    expect(top.getAttribute("aria-label")).toBe("Expand sidebar")
-    fireEvent.click(top)
-    expect(aside().dataset.state).toBe("expanded")
-    expect(top.getAttribute("aria-label")).toBe("Collapse sidebar")
-  })
-
-  it("flush: folds at the sidebar's edge, one round button, in the Tab order, named for what it does", () => {
-    render(
-      <AppShell layout="flush" product="Fleet console" nav={sampleNav} current="#robots" title="Robots">
-        page
-      </AppShell>,
-    )
-    // No trigger inside the sidebar; the edge button is the control on wide screens.
-    expect(aside().querySelector("[data-slot=sidebar-trigger]")).toBeNull()
-    const rail = aside().querySelector<HTMLElement>("[data-slot=sidebar-rail]")!
-    expect(rail.tagName).toBe("BUTTON")
-    expect(rail.tabIndex).toBe(0)
-    expect(rail.getAttribute("aria-hidden")).toBeNull()
-    // A rail (the test screen is under 1280 px): it expands.
-    expect(rail.getAttribute("aria-label")).toBe("Expand sidebar")
-    expect(rail.getAttribute("aria-expanded")).toBe("false")
-    fireEvent.click(rail)
-    expect(aside().dataset.state).toBe("expanded")
-    expect(rail.getAttribute("aria-label")).toBe("Collapse sidebar")
-    expect(rail.getAttribute("aria-expanded")).toBe("true")
-    fireEvent.click(rail)
-    expect(aside().dataset.state).toBe("collapsed")
-    // The top bar's trigger is the phone's menu button: in the page before hydration, hidden from 768 px by CSS.
     const top = document.querySelector("header")!.querySelector<HTMLElement>("[data-slot=sidebar-trigger]")!
     expect(top.dataset.show).toBe("mobile")
     expect(top.className).toContain("md:hidden")
+    const rail = screen.getByRole("separator", { name: "Resize sidebar" })
+    expect(rail.tabIndex).toBe(0)
+    expect(rail.getAttribute("aria-orientation")).toBe("vertical")
+    // A rail (the test screen is under 1280 px).
+    expect(rail.getAttribute("aria-expanded")).toBe("false")
+    expect(rail.getAttribute("aria-valuenow")).toBe("72")
+    fireEvent.pointerDown(rail, { button: 0, clientX: 72, pointerId: 1 })
+    fireEvent.pointerUp(rail, { button: 0, clientX: 72, pointerId: 1 })
+    expect(aside().dataset.state).toBe("expanded")
+    expect(rail.getAttribute("aria-valuenow")).toBe("240")
+    fireEvent.keyDown(rail, { key: "Enter" })
+    expect(aside().dataset.state).toBe("collapsed")
+  })
+
+  it("drags to resize between 200 and 320 px, folds under 140 and keeps the width", () => {
+    render(
+      <AppShell product="Fleet console" nav={sampleNav} current="#robots" title="Robots">
+        page
+      </AppShell>,
+    )
+    const rail = screen.getByRole("separator", { name: "Resize sidebar" })
+    const wrapper = () => document.querySelector<HTMLElement>("[data-slot=sidebar-wrapper]")!.style.getPropertyValue("--sidebar-width")
+    fireEvent.keyDown(rail, { key: "Enter" })
+    expect(aside().dataset.state).toBe("expanded")
+    fireEvent.pointerDown(rail, { button: 0, clientX: 240, pointerId: 1 })
+    fireEvent.pointerMove(rail, { clientX: 300, pointerId: 1 })
+    expect(aside().dataset.resizing).toBe("true")
+    expect(wrapper()).toBe("300px")
+    fireEvent.pointerMove(rail, { clientX: 500, pointerId: 1 })
+    expect(wrapper()).toBe("320px")
+    fireEvent.pointerUp(rail, { clientX: 500, pointerId: 1 })
+    expect(aside().dataset.resizing).toBeUndefined()
+    expect(document.cookie).toContain("sidebar_state_width=320")
+    // A drag is not a click: still open.
+    expect(aside().dataset.state).toBe("expanded")
+    fireEvent.pointerDown(rail, { button: 0, clientX: 320, pointerId: 1 })
+    fireEvent.pointerMove(rail, { clientX: 100, pointerId: 1 })
+    fireEvent.pointerUp(rail, { clientX: 100, pointerId: 1 })
+    expect(aside().dataset.state).toBe("collapsed")
+    expect(wrapper()).toBe("320px")
+  })
+
+  it("resizes from the keyboard: ← and → by 16 px, ← at the narrowest folds, → opens the rail", () => {
+    document.cookie = "sidebar_state_width=; path=/; max-age=0"
+    render(
+      <AppShell product="Fleet console" nav={sampleNav} current="#robots" title="Robots">
+        page
+      </AppShell>,
+    )
+    const rail = screen.getByRole("separator", { name: "Resize sidebar" })
+    fireEvent.keyDown(rail, { key: "ArrowRight" })
+    expect(aside().dataset.state).toBe("expanded")
+    expect(rail.getAttribute("aria-valuenow")).toBe("240")
+    fireEvent.keyDown(rail, { key: "ArrowRight" })
+    expect(rail.getAttribute("aria-valuenow")).toBe("256")
+    for (let i = 0; i < 4; i++) fireEvent.keyDown(rail, { key: "ArrowLeft" })
+    expect(rail.getAttribute("aria-valuenow")).toBe("200")
+    fireEvent.keyDown(rail, { key: "ArrowLeft" })
+    expect(aside().dataset.state).toBe("collapsed")
   })
 
   it("on phones, the top bar's trigger is the menu button and the sidebar has no collapse button", () => {
