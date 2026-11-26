@@ -1070,9 +1070,14 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "status-eyebrow": {
-    what: "The state word above a headline, and the same status inside a list row.",
-    use: ["A robot's page title: Patrolling, then Patrol dog 7F3A.", "A row's state in a list."],
-    instead: ["A count or label in a header: `badge`."],
+    what: "InlineStatus, a state that changes written as its shape and its word with no box, and StatusEyebrow, the same state above a headline.",
+    use: [
+      "InlineStatus: a row's state in a list or a table cell (Patrolling, Offline, Needs review).",
+      "InlineStatus: the one state beside a page title, in PageHeader's `status`.",
+      "StatusEyebrow: a robot's page title, Patrolling above Patrol dog 7F3A.",
+    ],
+    instead: ["A fixed attribute or category (Beta, a version, Production): `badge`.", "A count: CountBadge in `badge`.", "The shape alone, with the word elsewhere: `status-glyph`."],
+    notes: ["Both come with `npx shadcn add @syncrobotic/status-eyebrow`: there is no separate inline-status item.", "In a 12 px meta line, give InlineStatus `className=\"text-xs\"` so the line keeps one size."],
   },
   skeleton: {
     what: "Placeholders for values not loaded yet. What is known shows first; only unknown values get a skeleton.",
@@ -1333,6 +1338,40 @@ export const overviews: Record<string, Overview> = {
     what: "A value or a function call that waits until changes pause: useDebouncedValue and useDebouncedCallback.",
     use: ["A search sent to a server when the typing stops (autocomplete's `debounce` uses it).", "Autosave after edits pause."],
     instead: ["Something the person must see at once: update it directly, never debounced."],
+  },
+  "format-count": {
+    what: "The kit's one number path: formatCount for a count (135,287, or 135K where space is short), formatNumber for any other number, both through Intl.NumberFormat, English without a locale.",
+    use: [
+      "A count in a table, a header, a detail page or a figure: `formatCount(n, { locale })`.",
+      "A count on a tab, a chart's ticks or a compact chip: `formatCount(n, { compact: true })`, with the full number one step away.",
+      "A reading, a share, a price: `formatNumber(n, { locale, maximumFractionDigits: 1 })` (any Intl.NumberFormat option).",
+    ],
+    instead: ["A time of day: `clock-time`.", "A number typed in: `number-field`."],
+    notes: [
+      "Never `toLocaleString()` or a hand-made \"k\": the first follows the runtime's language, so the server and the browser write different digits.",
+      "`resolveLocale(locale)` is the tag both use: English without one and for a tag Intl cannot read; `numberFormat(locale, options)` is the cached formatter for a hot loop.",
+    ],
+  },
+  "clock-time": {
+    what: "formatClockTime: a time of day, 24-hour with seconds (14:02:31), in a locale and an optional time zone: the one format live components write their last update in.",
+    use: ["A last-update time beside live data: Stale since 14:02:31.", "A log or an event's time of day."],
+    instead: ["\"12 s ago\": count from `use-now`'s clock.", "A date: the date components (`calendar`, `date-selector`)."],
+  },
+  feedback: {
+    what: "Touch and sound as tokens: one vibration pattern per safety moment (stop sent, confirmed, unconfirmed, release, a new critical or high alarm) and the alarm tones, through `feedback(name)`.",
+    use: ["A safety moment your app sees and the kit does not: the robot confirmed the stop.", "Turning sound or vibration off in a setting: `configureFeedback`."],
+    instead: ["A confirmation on screen: `toast`.", "Something someone must act on: `alarm`."],
+    notes: ["Never `navigator.vibrate` directly. iOS has no vibration and sound needs a first tap, so it never replaces the screen."],
+  },
+  "use-now": {
+    what: "The clock in React, read again at an interval, and null until the page has hydrated, so a server render and the browser's first one never disagree about the time.",
+    use: ["\"Updated 12 s ago\", a timeout, an alarm flood's window.", "Stale data: how long since the last message."],
+    instead: ["A time of day to show: format the value with `clock-time`."],
+  },
+  "use-reduced-motion": {
+    what: "Whether the person asked for less motion: `prefersReducedMotion()` read now, for a handler, and `usePrefersReducedMotion()` followed while mounted.",
+    use: ["Motion driven from JavaScript: a scroll into view, a canvas camera, a spring.", "Turning off a loop that only decorates."],
+    instead: ["CSS animations: the kit's motion tokens already follow `prefers-reduced-motion`."],
   },
   "use-ros": {
     what: "ROS and ROS 2 data in React over rosbridge, with no ROS library: RosProvider holds one connection, useRosTopic returns a topic's latest message, useRosPublisher a stable publish function (a zero Twist when a drive stops), useRosService a call with a timeout, and useRosStatus the connection's state in words.",

@@ -8,6 +8,17 @@ const meta: Meta = { title: "Data/List and status" }
 export default meta
 type S = StoryObj
 
+/** InlineStatus: a state that changes, as its shape and its word with no box, at the end of a row. */
+export const StatusInlineInRows: S = {
+  render: () => (
+    <ListGroup>
+      <ListRow title="Patrol dog 7F3A" meta="North gate" trailing={<InlineStatus status="active">Patrolling</InlineStatus>} />
+      <ListRow title="Courier 2B19" meta="Hall B" trailing={<InlineStatus status="warning">Low battery</InlineStatus>} />
+      <ListRow title="Courier 4D21" meta="Floor 3" trailing={<InlineStatus status="danger">Stopped</InlineStatus>} />
+    </ListGroup>
+  ),
+}
+
 export const StatusShapes: S = {
   render: () => (
     // Each shape with its word: a glyph alone is documented under Status glyph.
@@ -86,15 +97,5 @@ export const StatusEyebrowOverTitle: S = {
       <h2 className="text-2xl font-bold">Patrol dog 7F3A</h2>
       <p className="text-sm text-muted-foreground">Waiting at door 3 for 2 min.</p>
     </div>
-  ),
-}
-
-export const StatusInlineInRows: S = {
-  render: () => (
-    <ListGroup>
-      <ListRow title="Patrol dog 7F3A" meta="North gate" trailing={<InlineStatus status="active">Patrolling</InlineStatus>} />
-      <ListRow title="Courier 2B19" meta="Hall B" trailing={<InlineStatus status="warning">Low battery</InlineStatus>} />
-      <ListRow title="Courier 4D21" meta="Floor 3" trailing={<InlineStatus status="danger">Stopped</InlineStatus>} />
-    </ListGroup>
   ),
 }
