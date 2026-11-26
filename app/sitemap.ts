@@ -17,6 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/docs/tokens", priority: 0.7 },
     { path: "/docs/upgrading", priority: 0.7 },
     { path: "/docs/upgrading/0-40", priority: 0.6 },
+    { path: "/docs/upgrading/0-42", priority: 0.6 },
     { path: "/docs", priority: 0.9 },
     ...foundations.map((f) => ({ path: `/docs/foundations/${f.slug}`, priority: 0.8 })),
     { path: "/docs/components", priority: 0.9 },

@@ -361,7 +361,11 @@ const entries: Record<string, Entry> = {
     wide: true,
     group: "Layout",
     examples: { file: "resizable", prefix: "Resizable" },
-    rules: ["Set minSize so a panel never collapses into nothing by accident.", "withHandle on touch screens, where a thin line is hard to find."],
+    rules: [
+      "Set minSize so a panel never collapses into nothing by accident.",
+      "withHandle on touch screens, where a thin line is hard to find.",
+      'A number is a percentage of the group; give a unit for anything else ("240px", "20rem").',
+    ],
   },
   "file-upload": {
     group: "Media & files",
@@ -1620,6 +1624,7 @@ const keyboard: Record<string, [string, string][]> = {
     ["`←` `→` `↑` `↓`", "Resize"],
     ["`Home` / `End`", "Collapse or expand fully"],
     ["`Enter`", "Toggle a collapsible panel"],
+    ["`F6` / `Shift+F6`", "Next or previous handle in the group"],
   ],
   "file-upload": [
     ["`Tab`", "Focus the drop zone"],

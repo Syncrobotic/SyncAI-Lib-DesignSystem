@@ -6,7 +6,19 @@ Components install as source, so a project keeps the version it installed. Re-ru
 
 Dependencies: the major versions the kit was behind on, so a product on the current toolchain builds the items as they are.
 
+### Breaking
+
+Before 1.0 a rename or a removal is a minor version. [0.42 migration](https://design-system.syncrobotic.me/docs/upgrading/0-42) has the table.
+
+- **`resizable` 0.42.0 on react-resizable-panels 4:** what a product passes most keeps working: `direction` (now also `orientation`), numbers as percentages of the group, `autoSaveId`, `withHandle`. What follows version 4 instead:
+  - Group `onLayout(sizes[])` → `onLayoutChanged(layout)` (or `onLayoutChange` while dragging), a map of panel id to percentage; `ref` → `groupRef`, whose `getLayout` and `setLayout` take that map too. `keyboardResizeBy`, `storage` and `tagName` are gone.
+  - Panel `onCollapse` and `onExpand` → `onResize` (`panelSize.asPercentage`, and `isCollapsed()` on `panelRef`); `onResize(size, prev)` → `onResize({ asPercentage, inPixels }, id, prev)`; `ref` → `panelRef`, whose `getSize()` returns `{ asPercentage, inPixels }` and whose `resize(30)` is 30 px (write `resize("30%")`); `order` is gone (panels follow the DOM).
+  - Handle `onDragging`, `hitAreaMargins` and `tagName` are gone; the hit area is the group's `resizeTargetMinimumSize`, which the kit sets to 16 px, or `--h-md` on a touch screen.
+  - CSS that read the library's attributes: `data-panel-group-direction` → the group's `data-orientation` and the handle's `aria-orientation` (horizontal on a vertical group), `data-resize-handle-state="drag"` → `data-separator="active"` (and `hover`, `focus`, `inactive`, `disabled`), `data-panel-size` → the handle's `aria-valuenow`. A Panel's `className` is on an inner element now.
+  - The arrow keys move 5% (10% before) and Shift no longer jumps the whole way: Home and End do. Sizes saved under an `autoSaveId` by version 3 are read when the panels have `id`s; without ids they start from `defaultSize` once.
+
 ### Changed
+- **`resizable` 0.42.0:** react-resizable-panels 4 (from 3); see Breaking. The handle keeps its 1 px line, 16 px hit area (`--h-md` on a touch screen), grip, colours and focus ring. F6 and Shift+F6 move between a group's handles and a double-click puts a panel back to its default size. `autoSaveId` restores sizes after hydration without a mismatch. The registry item asks for `react-resizable-panels@^4`.
 - **TypeScript 6.0.3** (from 5.9). TypeScript 7 waits: its package exposes no compiler API to `typescript-eslint` (which supports up to 6.0) or to `scripts/props.mjs`.
 - **zod 4** in the repo (from 3.25): the docs' edit-form story uses `error` for the type message. The `form` example still asks for `zod@^3.25` and works unchanged on zod 4, so installing it never moves a product from zod 3 to 4.
 - **`@types/node` 26** (from 22) and the minor updates: Storybook 10.6.9, Vitest 5.1.2, typescript-eslint 8.74, lucide-react 1.80, recharts 3.11.1, shadcn 4.23.1, @tanstack/react-virtual 3.14.28, @hookform/resolvers 7.0.9, @axe-core/playwright 4.14.1, @types/react 19.3.3. Babel 8 waits.

@@ -9771,9 +9771,58 @@
  "resizable": [
   {
    "name": "ResizablePanelGroup",
-   "props": [],
+   "props": [
+    {
+     "name": "orientation",
+     "type": "\"horizontal\" | \"vertical\"",
+     "description": "\"horizontal\" (side by side, the default) or \"vertical\" (stacked)."
+    },
+    {
+     "name": "direction",
+     "type": "\"horizontal\" | \"vertical\"",
+     "description": "The name react-resizable-panels 3 used; the same as `orientation`."
+    },
+    {
+     "name": "autoSaveId",
+     "type": "string",
+     "description": "Remembers the sizes in this browser under this name. Give each Panel an `id` so a saved size finds its panel."
+    }
+   ],
    "inherits": [
-    "PanelGroup"
+    "GroupProps (except orientation)"
+   ]
+  },
+  {
+   "name": "ResizablePanel",
+   "props": [
+    {
+     "name": "defaultSize",
+     "type": "string | number",
+     "description": "The first size: a number is a percentage of the group (40 is 40%); a string takes a unit (\"240px\", \"20rem\")."
+    },
+    {
+     "name": "minSize",
+     "type": "string | number",
+     "description": "The smallest it can be dragged to, as `defaultSize`."
+    },
+    {
+     "name": "maxSize",
+     "type": "string | number",
+     "description": "The largest it can be dragged to, as `defaultSize`."
+    },
+    {
+     "name": "collapsedSize",
+     "type": "string | number",
+     "description": "Its size when collapsed (with `collapsible`), as `defaultSize`; 0 by default."
+    },
+    {
+     "name": "collapsedThreshold",
+     "type": "string | number",
+     "description": "How far past `minSize` a drag must go to collapse it, as `defaultSize`."
+    }
+   ],
+   "inherits": [
+    "PanelProps (except defaultSize, minSize, maxSize, collapsedSize, collapsedThreshold)"
    ]
   },
   {
@@ -9786,7 +9835,7 @@
     }
    ],
    "inherits": [
-    "PanelResizeHandle"
+    "SeparatorProps"
    ]
   }
  ],
