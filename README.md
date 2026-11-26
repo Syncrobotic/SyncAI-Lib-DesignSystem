@@ -66,12 +66,13 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 | Group | Components |
 | --- | --- |
 | Actions | `button`, `segmented-control`, `toggle`, `copy-button`, `button-group`, `toggle-group`, `theme-toggle` |
-| Inputs | `input`, `input-group`, `number-field`, `textarea`, `label`, `field`, `form`, `checkbox`, `radio-group`, `switch`, `choice-field`, `select`, `slider`, `autocomplete`, `input-otp`, `phone-input`, `calendar`, `date-selector`, `time-picker`, `prompt-composer`, `questionnaire` |
+| Inputs | `input`, `input-group`, `number-field`, `textarea`, `label`, `field`, `form`, `checkbox`, `radio-group`, `switch`, `choice-field`, `select`, `slider`, `autocomplete`, `input-otp`, `phone-input`, `calendar`, `date-selector`, `time-picker`, `questionnaire` |
 | Robotics | `stop-button`, `slide-to-release`, `dock`, `island`, `tray`, `teleop-pad`, `robot-map`, `geo-map`, `waypoint-editor`, `camera-feed`, `camera-wall`, `point-cloud`, `robot-model`, `attitude`, `joint-state`, `diagnostics`, `viewport-overlay` |
 | Lists & tables | `table`, `responsive-table`, `data-grid`, `list`, `item`, `description-list`, `tree`, `sortable`, `log-viewer` |
 | Status & values | `status-glyph`, `status-eyebrow`, `badge`, `tier-badge`, `meter`, `metric-card` |
 | Search & filters | `search-field`, `filters`, `filter-form`, `chip-group`, `facets` |
-| Data display | `code-block`, `avatar`, `text-diff`, `graph`, `icon-tile`, `kbd`, `code`, `streaming-text`, `message`, `message-actions`, `message-scroller`, `timeline`, `trace`, `marker`, `markdown`, `citations` |
+| Data display | `code-block`, `avatar`, `text-diff`, `graph`, `icon-tile`, `kbd`, `code`, `timeline`, `marker` |
+| AI | `streaming-text`, `message`, `message-actions`, `prompt-composer`, `message-scroller`, `trace`, `markdown`, `citations` |
 | Charts | `chart`, `streaming-chart`, `share-bar`, `bar-list` |
 | Media & files | `restricted-preview`, `thumbnail`, `image-grid`, `annotated-image`, `grounded-text`, `media-player`, `file-upload`, `attachment`, `file-type` |
 | Feedback | `skeleton`, `spinner`, `progress`, `banner`, `alert`, `alarm`, `toast`, `empty-state`, `route-progress` |

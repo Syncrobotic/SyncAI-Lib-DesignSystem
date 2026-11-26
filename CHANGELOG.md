@@ -16,6 +16,7 @@ UI for LLM agents: the parts of a conversation with a model, built on streaming-
 
 ### Changed
 - **`streaming-text` 0.41.0:** `format="markdown"` renders the answer with Markdown while it streams, and `markdownProps` passes its options (`cite`, `headingLevel`, `imageOrigins`, `labels`). The live region stays in StreamingText and reads the words without their syntax, in sentences as before; a code block is read as "Code in bash." It installs `markdown`.
+- **Docs site:** a new AI group in the components sidebar holds the conversation parts (message, message-actions, message-scroller, prompt-composer), markdown, citations, streaming-text and trace. Each release that renames or removes something gets its own migration page; 0.40's moves to `/docs/upgrading/0-40`, and `/docs/upgrading#0-40` links to it.
 
 ## Unreleased
 
@@ -23,7 +24,7 @@ Design-rule conformance: the kit's components, docs and catalog follow the rules
 
 ### Breaking
 
-Before 1.0 a rename or a removal is a minor version. Every one below is a type error at its call site, not a silent fallback; [Versions and upgrades › 0.40 migration](https://design-system.syncrobotic.me/docs/upgrading#0-40) has the table and the codemods.
+Before 1.0 a rename or a removal is a minor version. Every one below is a type error at its call site, not a silent fallback; [0.40 migration](https://design-system.syncrobotic.me/docs/upgrading/0-40) has the table and the codemods.
 
 - **`density` → `size`:** `timeline`, `trace` and `data-grid` 0.40.0 no longer take the deprecated `density` (and its development warning, `warnDensity`, is gone). `density="dense"` is `size="sm"`.
 - **`tone` → `status`:** `status-glyph` (StatusGlyph), `status-eyebrow` (StatusEyebrow, InlineStatus), `island` (Island), `timeline` (TimelineItem) and `marker` (MarkerRow) 0.40.0 take `status` only: info → active, success → normal, neutral → offline. `toStatus` and `warnTone` are no longer exported. Marker's own `tone` (warning or danger) is renamed `status`. IslandNotice keeps its `tone`.

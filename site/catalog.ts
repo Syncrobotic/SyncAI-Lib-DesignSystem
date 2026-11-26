@@ -97,7 +97,8 @@ type Examples = { file: StoryFile; prefix?: string; only?: string[] }
 
 // Robotics third: after the two groups every product reaches for first, and before the general ones, as the kit's reason to exist.
 // The robot shell (dock, island, tray) is part of it, after the stop. Then what a data screen is made of, from the rows to
-// the values in them: lists and tables, status and values, search and filters, then the rest of data display. No group
+// the values in them: lists and tables, status and values, search and filters, then the rest of data display. AI holds the
+// parts of a conversation with a model or an agent, from the answer's text to the box that sends the next question. No group
 // holds more than about twenty, so each reads as one choice in the sidebar.
 export const groups = [
   "Actions",
@@ -107,6 +108,7 @@ export const groups = [
   "Status & values",
   "Search & filters",
   "Data display",
+  "AI",
   "Charts",
   "Media & files",
   "Feedback",
@@ -152,7 +154,7 @@ const entries: Record<string, Entry> = {
   },
   trace: {
     wide: true,
-    group: "Data display",
+    group: "AI",
     examples: { file: "trace", prefix: "Trace" },
     rules: [
       "Done steps are a neutral check; only warnings and failures are coloured.",
@@ -252,7 +254,7 @@ const entries: Record<string, Entry> = {
   },
   "streaming-text": {
     wide: true,
-    group: "Data display",
+    group: "AI",
     examples: { file: "streaming-text", prefix: "StreamingText" },
     rules: [
       "For one answer that a model streams token by token: a VLM's caption, count or answer to a query, an LLM's reply. Numbers over time are `streaming-chart`; lines a program writes are `log-viewer`.",
@@ -267,7 +269,7 @@ const entries: Record<string, Entry> = {
   },
   message: {
     wide: true,
-    group: "Data display",
+    group: "AI",
     examples: { file: "message", prefix: "Message" },
     rules: [
       "One turn of a conversation with a model or an agent. Map your API's `role` straight to `role`: user, assistant, tool or system.",
@@ -281,7 +283,7 @@ const entries: Record<string, Entry> = {
     ],
   },
   "message-actions": {
-    group: "Data display",
+    group: "AI",
     examples: { file: "message-actions", prefix: "MessageActions" },
     rules: [
       "The actions under a model's answer, in Message's `actions`. Each part shows only when you give what it needs: `copyText` for Copy, `onRegenerate` for Regenerate, `onFeedbackChange` for Good and Bad, `versions` above 1 for the switcher.",
@@ -294,7 +296,7 @@ const entries: Record<string, Entry> = {
   },
   "prompt-composer": {
     wide: true,
-    group: "Inputs",
+    group: "AI",
     examples: { file: "prompt-composer", prefix: "PromptComposer" },
     rules: [
       "Where someone writes to a model or an agent. It is a real <form>: `onSubmit(text, files)` gets the trimmed text and the attached files; return false to keep the draft (say why beside it).",
@@ -308,7 +310,7 @@ const entries: Record<string, Entry> = {
   },
   "message-scroller": {
     wide: true,
-    group: "Data display",
+    group: "AI",
     examples: { file: "message-scroller", prefix: "MessageScroller" },
     rules: [
       "The scrolling box of a conversation: Message turns as its direct children, oldest first. Give it a height (`className`: h-96, or min-h-0 flex-1 in a column).",
@@ -322,7 +324,7 @@ const entries: Record<string, Entry> = {
   },
   markdown: {
     wide: true,
-    group: "Data display",
+    group: "AI",
     examples: { file: "markdown", prefix: "Markdown" },
     rules: [
       "For text a model wrote in Markdown: an assistant's answer, a summary, a generated report. A streamed answer is StreamingText with `format=\"markdown\"`, which renders through this and reads it aloud; use Markdown alone for an answer that is already whole, or inside your own message layout.",
@@ -335,7 +337,7 @@ const entries: Record<string, Entry> = {
   },
   citations: {
     wide: true,
-    group: "Data display",
+    group: "AI",
     examples: { file: "citations", prefix: "Citations" },
     rules: [
       "For an answer built from documents (retrieval): each claim's sources as numbered markers in the text, and the list of them under the answer. Words that point at places on a picture are `grounded-text`.",
