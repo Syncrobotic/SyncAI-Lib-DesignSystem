@@ -2746,6 +2746,91 @@
    "inherits": []
   }
  ],
+ "citations": [
+  {
+   "name": "Citations",
+   "props": [
+    {
+     "name": "sources",
+     "type": "readonly CitationSource[]",
+     "required": true,
+     "description": "The sources in the order the text numbers them: [1] is the first."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<CitationsLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "marker",
+       "type": "(n: number, title: string) => string",
+       "default": "(n, title) => `Source ${n}: ${title}`",
+       "description": "A marker's name: \"Source 1: Docking manual\"."
+      },
+      {
+       "name": "sources",
+       "type": "string",
+       "default": "\"Sources\"",
+       "description": "The list's title."
+      },
+      {
+       "name": "back",
+       "type": "(n: number) => string",
+       "default": "(n) => `Back to citation ${n}`",
+       "description": "The button in a source reached from a marker, back to that marker."
+      },
+      {
+       "name": "newTab",
+       "type": "string",
+       "default": "\"(opens in a new tab)\"",
+       "description": "After a source's title that opens in a new tab, for screen readers."
+      }
+     ]
+    },
+    {
+     "name": "onActiveChange",
+     "type": "(n: number | null) => void",
+     "description": "The source highlighted from a marker or an entry under the pointer or keyboard (1-based), or null."
+    },
+    {
+     "name": "children",
+     "type": "ReactNode",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "CitationMarker",
+   "props": [
+    {
+     "name": "n",
+     "type": "number",
+     "required": true,
+     "description": ""
+    }
+   ],
+   "inherits": []
+  },
+  {
+   "name": "CitationSources",
+   "props": [
+    {
+     "name": "title",
+     "type": "ReactNode | null",
+     "description": "The list's title; `labels.sources` (\"Sources\") by default, null for none (name it yourself then)."
+    },
+    {
+     "name": "as",
+     "type": "\"h2\" | \"h3\" | \"h4\"",
+     "default": "\"h3\"",
+     "description": "The title's heading level, so the page's outline skips none."
+    }
+   ],
+   "inherits": []
+  }
+ ],
  "code": [
   {
    "name": "Code",
@@ -4791,6 +4876,12 @@
        "description": "Names the list of chips, so a screen reader hears how they combine."
       },
       {
+       "name": "back",
+       "type": "string",
+       "default": "\"Back\"",
+       "description": ""
+      },
+      {
        "name": "and",
        "type": "string",
        "default": "\"and\"",
@@ -4854,12 +4945,6 @@
        "name": "apply",
        "type": "string",
        "default": "\"Apply\"",
-       "description": ""
-      },
-      {
-       "name": "back",
-       "type": "string",
-       "default": "\"Back\"",
        "description": ""
       },
       {
@@ -7482,6 +7567,84 @@
        "type": "string",
        "default": "\"Up and down arrows move between lines, Shift with them selects lines, Enter opens a line, C copies, End goes to the latest line, slash searches.\"",
        "description": "How the keyboard works, read once when the grid gets focus."
+      }
+     ]
+    }
+   ],
+   "inherits": []
+  }
+ ],
+ "markdown": [
+  {
+   "name": "Markdown",
+   "props": [
+    {
+     "name": "text",
+     "type": "string",
+     "required": true,
+     "description": "The Markdown text: a model's answer, whole or as it grows."
+    },
+    {
+     "name": "streaming",
+     "type": "boolean",
+     "default": "false",
+     "description": "The text is still growing: what is still forming at its end is held back or styled so far (see above)."
+    },
+    {
+     "name": "headingLevel",
+     "type": "2 | 3 | 4 | 5 | 6",
+     "default": "3",
+     "description": "The level of the text's top headings (# and the first heading under it): 3 by default, under a page's h1 and a section's h2."
+    },
+    {
+     "name": "cite",
+     "type": "(n: number) => ReactNode",
+     "description": "Renders a citation token ([1], [^1], [1, 2]) as a marker; without it the tokens are text. `citationMarker` from citations."
+    },
+    {
+     "name": "imageOrigins",
+     "type": "readonly string[]",
+     "description": "Origins pictures may load from (\"https://cdn.example.com\"); pictures from anywhere else are a link with their alt text. None by default."
+    },
+    {
+     "name": "breaks",
+     "type": "boolean",
+     "default": "true",
+     "description": "Every line break is a break (true, as a model means it), or only one after two spaces or a backslash (false, as CommonMark)."
+    },
+    {
+     "name": "newTab",
+     "type": "boolean",
+     "default": "true",
+     "description": "Open http(s) links in a new tab (true), said to screen readers; false keeps them in this one."
+    },
+    {
+     "name": "labels",
+     "type": "Partial<MarkdownLabels>",
+     "description": "",
+     "keys": [
+      {
+       "name": "image",
+       "type": "(alt: string) => string",
+       "default": "(alt) => (alt ? `Image: ${alt}` : \"Image\")",
+       "description": "An image that is not loaded: a link to it, with its alt text."
+      },
+      {
+       "name": "newTab",
+       "type": "string",
+       "default": "\"(opens in a new tab)\"",
+       "description": "After a link that opens in a new tab, for screen readers."
+      },
+      {
+       "name": "spokenCode",
+       "type": "(language: string | undefined) => string",
+       "default": "(language) => (language ? `Code in ${language}.` : \"Code.\")",
+       "description": "What a code block is read as by `markdownToText` (StreamingText reads that), in place of its code."
+      },
+      {
+       "name": "codeBlock",
+       "type": "Partial<CodeBlockLabels>",
+       "description": "The code block's copy button and its words."
       }
      ]
     }
@@ -12591,11 +12754,22 @@
      "name": "text",
      "type": "string",
      "required": true,
-     "description": "The answer so far, as plain text. Append each chunk to it; blank lines start paragraphs. No markdown is parsed."
+     "description": "The answer so far. Append each chunk to it. As plain text (blank lines start paragraphs), or Markdown with `format`."
+    },
+    {
+     "name": "format",
+     "type": "\"text\" | \"markdown\"",
+     "default": "\"text\"",
+     "description": "\"text\" (default): plain text, nothing parsed. \"markdown\": rendered with the kit's Markdown as it streams, read without its syntax."
+    },
+    {
+     "name": "markdownProps",
+     "type": "Omit<MarkdownProps, \"text\" | \"streaming\">",
+     "description": "Markdown's options with `format=\"markdown\"`: `cite` for citation markers, `headingLevel`, `imageOrigins`, `labels`."
     },
     {
      "name": "phase",
-     "type": "\"done\" | \"error\" | \"queued\" | \"streaming\" | \"stopped\"",
+     "type": "\"done\" | \"error\" | \"streaming\" | \"queued\" | \"stopped\"",
      "required": true,
      "description": ""
     },

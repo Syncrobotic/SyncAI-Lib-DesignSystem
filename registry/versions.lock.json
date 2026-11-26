@@ -33,7 +33,7 @@
   },
   "labels-zh-tw": {
     "version": "0.41.0",
-    "hash": "35b618a2d1a861d4"
+    "hash": "23ced743582daa0a"
   },
   "ros": {
     "version": "0.36.0",
@@ -512,8 +512,8 @@
     "hash": "772b8d5c4d959d0b"
   },
   "streaming-text": {
-    "version": "0.40.0",
-    "hash": "b0b654584f986b37"
+    "version": "0.41.0",
+    "hash": "fcabc33b10f81512"
   },
   "message": {
     "version": "0.41.0",
@@ -886,5 +886,13 @@
   "agent-approval": {
     "version": "0.17.3",
     "hash": "becc267fa584901e"
+  },
+  "markdown": {
+    "version": "0.41.0",
+    "hash": "fc986f0f403aa317"
+  },
+  "citations": {
+    "version": "0.41.0",
+    "hash": "cfc32efa1107e886"
   }
 }

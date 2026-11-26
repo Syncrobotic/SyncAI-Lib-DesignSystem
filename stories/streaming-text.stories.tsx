@@ -92,6 +92,18 @@ export const StreamingTextReasoningOpen: S = {
   ),
 }
 
+const markdownAnswer =
+  "**Mostly clear.** The dock plate is free of debris and the contacts are uncovered.\n\n| Check | Result |\n|---|---|\n| Plate | Clear |\n| Contacts | Uncovered |\n| Box | 40 cm left, outside the path |\n\n- The robot approaches from the right, so the box can stay.\n- To move it, ask the night shift before 22:00."
+
+/** An LLM's reply in Markdown (`format="markdown"`): a table and a list as they arrive, read aloud without their syntax. */
+export const StreamingTextMarkdown: S = {
+  render: () => (
+    <Panel>
+      <StreamingText text={markdownAnswer.slice(0, 230)} format="markdown" phase="streaming" onStop={noop} />
+    </Panel>
+  ),
+}
+
 const zhAnswer = "大致淨空。充電座平台清楚可見，沒有雜物，充電接點也沒有被遮住。\n\n平台左側約 40 公分處有一個紙箱。它不在對接路徑上，但機器人靠近時左側可能會擦到它。"
 
 /** In Traditional Chinese: `streamingTextLabels` from labels-zh-tw, with the locale for the numbers. */

@@ -1191,6 +1191,20 @@ export const codeBlockLabels = {
   code: "程式碼",
 }
 
+export const markdownLabels = {
+  image: (alt: string) => (alt ? `圖片：${alt}` : "圖片"),
+  newTab: "（在新分頁開啟）",
+  spokenCode: (language: string | undefined) => (language ? `${language} 程式碼。` : "程式碼。"),
+  codeBlock: codeBlockLabels,
+}
+
+export const citationsLabels = {
+  marker: (n: number, title: string) => `來源 ${n}：${title}`,
+  sources: "來源",
+  back: (n: number) => `回到引用 ${n}`,
+  newTab: "（在新分頁開啟）",
+}
+
 export const copyButtonLabels = {
   copy: "複製",
   copied: "已複製",

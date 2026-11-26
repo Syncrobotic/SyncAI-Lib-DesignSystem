@@ -41,6 +41,8 @@ const pick = {
   facets: "FacetsShowAll",
   // The first story is the empty box; one with files and a model select shows what it holds.
   "prompt-composer": "PromptComposerWithFiles",
+  // The first story is a long answer whose sources fall below the crop; the short one shows markers and the list together.
+  citations: "CitationsLocations",
   // The first story is three buttons that raise a toast; the open one pins its toasts to the viewport's bottom edge.
   toast: "ToastWithUndo",
 }

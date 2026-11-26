@@ -32,6 +32,8 @@ export type StoryFile =
   | "prompt-composer"
   | "message-actions"
   | "message"
+  | "markdown"
+  | "citations"
   | "sortable"
   | "resizable"
   | "file-upload"
@@ -254,7 +256,7 @@ const entries: Record<string, Entry> = {
     examples: { file: "streaming-text", prefix: "StreamingText" },
     rules: [
       "For one answer that a model streams token by token: a VLM's caption, count or answer to a query, an LLM's reply. Numbers over time are `streaming-chart`; lines a program writes are `log-viewer`.",
-      "Append each chunk to one string and pass it as `text` with the `phase`. Plain text only: blank lines start paragraphs, no markdown is parsed.",
+      "Append each chunk to one string and pass it as `text` with the `phase`. Plain text by default (blank lines start paragraphs); `format=\"markdown\"` when the model writes Markdown, so it renders as headings, lists, tables and code while it streams and is read aloud without its syntax.",
       "Set `phase` from the request: \"queued\" with `queuePosition` (1 is next), \"streaming\", then \"done\", \"stopped\" or \"error\" with `error` in words. Stopped and failed keep the partial text and say it is incomplete.",
       "Give `onStop` and abort the request in it, then set \"stopped\". Give `onRetry` for an error. Try again shows only after an error, never after Stop, so a second tap on Stop cannot start a new answer.",
       "Pass `startedAt`, `firstTokenAt` and `finishedAt` (or the server's `durationMs` and `firstTokenMs`): done says \"Done in 2.4 s · first token 0.3 s\". Without them it says Done.",
@@ -316,6 +318,32 @@ const entries: Record<string, Entry> = {
       "Older turns: `hasEarlier` and `onLoadEarlier` show Load earlier at the top; put the older turns in front of `children` and the view stays where it was.",
       "Leave the reading to it: the log's own live region is off, StreamingText reads answers in sentences, and the scroller reads a turn once only when it arrives complete. Never add aria-live to the turns.",
       "Pass `empty` for a new conversation: an EmptyState, with suggested prompts as chips.",
+    ],
+  },
+  markdown: {
+    wide: true,
+    group: "Data display",
+    examples: { file: "markdown", prefix: "Markdown" },
+    rules: [
+      "For text a model wrote in Markdown: an assistant's answer, a summary, a generated report. A streamed answer is StreamingText with `format=\"markdown\"`, which renders through this and reads it aloud; use Markdown alone for an answer that is already whole, or inside your own message layout.",
+      "A safe subset, never HTML: tags show as the text they are, links go only to http(s) and mailto (anything else, a relative path included, is its words), and pictures are a link with their alt text. Name the origins pictures may load from in `imageOrigins`, and only ones you serve or trust.",
+      "Pass the growing text with `streaming` while it arrives, and turn it off at the end: an unclosed ** styles its words, a link shows its words until its URL is whole, and a table waits for its delimiter line, so nothing half-written flashes. Keep `cite` and `labels` stable (a module constant), so finished blocks are not drawn again.",
+      "Headings start at `headingLevel` (h3, under a page's h1 and a section's h2) and never skip a level, whatever the model wrote. Set it from where the answer sits in the page.",
+      "Code fences are the kit's CodeBlock with Copy and the language, without highlighting; tables are the kit's Table and scroll sideways when wider than the column. Links open in a new tab by default and say so to screen readers.",
+      "It never speaks on its own. For citations, pass `cite={citationMarker}` inside `Citations`: [1] and [^1] in the text become markers linked to the sources list.",
+    ],
+  },
+  citations: {
+    wide: true,
+    group: "Data display",
+    examples: { file: "citations", prefix: "Citations" },
+    rules: [
+      "For an answer built from documents (retrieval): each claim's sources as numbered markers in the text, and the list of them under the answer. Words that point at places on a picture are `grounded-text`.",
+      "Pass the sources in the order the model numbers them: [1] is the first. Put the answer and `CitationSources` inside one `Citations`; in Markdown, `cite={citationMarker}` turns [1], [^1] and [1, 2] into markers. A number with no source stays the text [N].",
+      "Give each source a `title` and an http(s) `url`, or a `location` (a file and page, a manual's section) when it is not a web page; a `snippet` is the passage the answer used, a sentence or two.",
+      "Neutral: the markers and their highlight are the kit's quiet fill and inverted number, never a colour per source. A title with a URL opens in a new tab with the external-link icon, and says so to screen readers.",
+      "Activating a marker moves focus to its source, which shows \"Back to citation N\"; that button or Esc returns to the marker. Keep the list on the same page as the answer, under it.",
+      "Inside StreamingText, wrap the StreamingText and the list in `Citations` and pass `markdownProps={{ cite: citationMarker }}`: the markers appear as the answer streams, and the reading leaves them out.",
     ],
   },
   sortable: {
@@ -1886,6 +1914,16 @@ const keyboard: Record<string, [string, string][]> = {
     ["`↑` / `↓`, `PageUp` / `PageDown`", "Scroll the focused conversation; scrolling up stops following"],
     ["`End`", "To the bottom: following starts again"],
     ["`Enter` / `Space`", "On Jump to latest: to the newest turn, focus back on the conversation"],
+  ],
+  citations: [
+    ["`Tab`", "Move through the markers in the text, then the sources' links"],
+    ["`Enter`", "On a marker, move to its source; on Back to citation N, return to the marker"],
+    ["`Esc`", "In a source reached from a marker, return to that marker"],
+  ],
+  markdown: [
+    ["`Tab`", "Move through the links, each code block's Copy and scroll box, and each table's scroll box"],
+    ["`←` / `→`", "Scroll a focused code block or table sideways"],
+    ["`Enter`", "Follow a link (a new tab for http(s), said to screen readers)"],
   ],
   filters: [
     ["`Enter`", "On + Filter, open the picker; on a part of a chip, reopen that step"],

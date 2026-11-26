@@ -47,6 +47,8 @@ import type { MessageLabels, MessageMetaLabels } from "@/registry/syncrobotic/ui
 import type { MessageActionsLabels } from "@/registry/syncrobotic/ui/message-actions"
 import type { PromptComposerLabels } from "@/registry/syncrobotic/ui/prompt-composer"
 import type { MessageScrollerLabels } from "@/registry/syncrobotic/ui/message-scroller"
+import type { MarkdownLabels } from "@/registry/syncrobotic/ui/markdown"
+import type { CitationsLabels } from "@/registry/syncrobotic/ui/citations"
 import type { AttitudeIndicatorLabels, GaugeLabels } from "@/registry/syncrobotic/ui/attitude"
 import type { ResponsiveTableLabels } from "@/registry/syncrobotic/ui/responsive-table"
 import type { TierBadgeLabels } from "@/registry/syncrobotic/ui/tier-badge"
@@ -95,6 +97,8 @@ it("fits every component's labels type", () => {
   fits<MessageActionsLabels>()(zh.messageActionsLabels)
   fits<PromptComposerLabels>()(zh.promptComposerLabels)
   fits<MessageScrollerLabels>()(zh.messageScrollerLabels)
+  fits<MarkdownLabels>()(zh.markdownLabels)
+  fits<CitationsLabels>()(zh.citationsLabels)
   fits<AttitudeIndicatorLabels>()(zh.attitudeIndicatorLabels)
   fits<GaugeLabels>()(zh.gaugeLabels)
   fits<DiagnosticsLabels>()(zh.diagnosticsLabels)
