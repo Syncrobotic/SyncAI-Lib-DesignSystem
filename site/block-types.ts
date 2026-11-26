@@ -370,7 +370,7 @@ export const blockTypes: BlockType[] = [
     slug: "ai-agents",
     title: "AI agents",
     group: "Solutions",
-    description: "Agents that plan and summarise for the fleet: their runs, one run step by step, a proposal waiting for a person, and a conversation with the assistant.",
+    description: "Agents that plan and summarise for the fleet: their runs, one run step by step, a proposal waiting for a person, a conversation with the assistant, and which tools each agent may call.",
     use: ["Any agent that reads fleet data or proposes changes to robots."],
     rules: [
       "An agent proposes; a person approves anything that moves a robot.",
@@ -451,6 +451,7 @@ export const placement: Record<string, { type: string; fit: "screen" | "content"
   "agent-trace": { type: "ai-agents", fit: "screen" },
   "agent-approval": { type: "ai-agents", fit: "screen" },
   "agent-chat": { type: "ai-agents", fit: "screen" },
+  "agent-tool-permissions": { type: "ai-agents", fit: "screen" },
   "line-chart-telemetry": { type: "line-chart", fit: "content" },
   "line-chart-limit": { type: "line-chart", fit: "content" },
   "line-chart-compare": { type: "line-chart", fit: "content" },

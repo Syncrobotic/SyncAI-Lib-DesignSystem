@@ -2,6 +2,13 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## Unreleased
+
+More for AI agents: what an agent may do on its own, and a record of what it did.
+
+### Added
+- **`agent-tool-permissions` 0.43.0 (new block, AI agents):** which tools each agent may call, one SegmentedControl per tool, labelled with the tool and the agent: Auto (on its own), Ask (a person approves each call) or Blocked. A tool that moves or pauses a robot is never Auto: its Auto segment is unavailable and the row says why beside a lock, read with the control. Changes are counted until Save or Discard, each changed row says what it was, and saving a change that loosens a policy (Blocked to Ask, Ask to Auto) lists them in a confirmation that asks for the person's password. Under it, the call audit in a ResponsiveTable: time, agent, tool, the arguments in Code and the result as a shape and a word (allowed automatically, approved or denied by a person, blocked by policy, the only one in colour), narrowed by agent, with an inline EmptyState when an agent has made no calls. `AgentToolPermissions` is the page in the app shell, `AgentToolPermissionsContent` the content for a product's own shell.
+
 ## 0.42.0 · 2026-11-26
 
 Dependencies: the major versions the kit was behind on, so a product on the current toolchain builds the items as they are.

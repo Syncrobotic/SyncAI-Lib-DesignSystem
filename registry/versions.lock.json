@@ -891,6 +891,10 @@
     "version": "0.41.0",
     "hash": "17e2d81857df5ab1"
   },
+  "agent-tool-permissions": {
+    "version": "0.43.0",
+    "hash": "f3ccdab88a8f3db1"
+  },
   "markdown": {
     "version": "0.41.0",
     "hash": "fc986f0f403aa317"
