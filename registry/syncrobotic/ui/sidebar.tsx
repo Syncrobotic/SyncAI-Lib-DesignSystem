@@ -1,9 +1,9 @@
-// @syncrobotic/sidebar v0.32.0 · update: npx shadcn add @syncrobotic/sidebar --overwrite
+// @syncrobotic/sidebar v0.44.0 · update: npx shadcn add @syncrobotic/sidebar --overwrite
 "use client"
 
 import * as React from "react"
 import { Slot } from "radix-ui"
-import { ChevronLeft, ChevronRight, Menu } from "lucide-react"
+import { Menu } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { CountBadge } from "@/registry/syncrobotic/ui/badge"
 import { Sheet, SheetContent, SheetTitle } from "@/registry/syncrobotic/ui/sheet"
@@ -15,6 +15,9 @@ export const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7
 // Below md (768 px) the sidebar is a sheet from the screen's edge; the classes below use the same breakpoint (md:).
 const MOBILE_QUERY = "(max-width: 767px)"
+// The open column's width, in px: 240 at first, 200 to 320 by dragging its edge. Dragged under 140 it folds to the 72 px rail.
+const WIDTH = { min: 200, start: 240, max: 320, fold: 140, rail: 72, step: 16 }
+const clampWidth = (w: number) => Math.round(Math.min(WIDTH.max, Math.max(WIDTH.min, w)))
 
 export type SidebarLabels = {
   /** The sidebar's landmark (an aside). */
@@ -29,6 +32,10 @@ export type SidebarLabels = {
   expand: string
   /** The trigger on phones, where it opens the sheet. */
   open: string
+  /** SidebarRail, the handle beside the sidebar (a window splitter). */
+  resize: string
+  /** The handle's tooltip, under collapse or expand. */
+  drag: string
 }
 
 const defaultLabels: SidebarLabels = {
@@ -38,6 +45,8 @@ const defaultLabels: SidebarLabels = {
   collapse: "Collapse sidebar",
   expand: "Expand sidebar",
   open: "Open navigation",
+  resize: "Resize sidebar",
+  drag: "Drag to resize",
 }
 
 type SidebarContextValue = {
@@ -61,6 +70,13 @@ type SidebarContextValue = {
    * (SidebarTrigger `show`) calls it when pressed from the keyboard, so focus never falls to the page's start.
    */
   handOffFocus: () => void
+  /** The open column's width in px (200 to 320). */
+  width: number
+  /** Sets the width; `keep` stores it in the cookie (at the end of a drag, not on every move). */
+  setWidth: (width: number, keep?: boolean) => void
+  /** true while the handle is dragged: the width follows the pointer without easing. */
+  resizing: boolean
+  setResizing: (resizing: boolean) => void
 }
 
 const SidebarContext = React.createContext<SidebarContextValue | null>(null)
@@ -88,7 +104,7 @@ function readCookie(name: string) {
   }
   return null
 }
-function writeCookie(name: string, value: boolean) {
+function writeCookie(name: string, value: boolean | number) {
   document.cookie = `${name}=${value}; path=/; max-age=${COOKIE_MAX_AGE}; samesite=lax`
   for (const listener of cookieListeners) listener()
 }
@@ -137,8 +153,10 @@ type SidebarProviderProps = React.ComponentProps<"div"> & {
   defaultOpenMobile?: boolean
   /** The phone (sheet) or desktop (column) form, instead of following the screen's width (768 px): for a preview frame. */
   isMobile?: boolean
-  /** The cookie that keeps the choice for a week. null keeps it for this page only. */
+  /** The cookie that keeps the choice for a week (and `<name>_width` the width). null keeps them for this page only. */
   cookieName?: string | null
+  /** The open column's width at first, in px (200 to 320, default 240). A stored width (the cookie) wins over it. */
+  defaultWidth?: number
   /** Toggles the sidebar from anywhere on the page, except while typing. mod is ⌘ on a Mac, Ctrl elsewhere; false for none. */
   keyboardShortcut?: string | false
   labels?: Partial<SidebarLabels>
@@ -155,6 +173,7 @@ export function SidebarProvider({
   defaultOpenMobile = false,
   isMobile: mobileProp,
   cookieName = SIDEBAR_COOKIE_NAME,
+  defaultWidth = WIDTH.start,
   keyboardShortcut = "mod+b",
   labels: given,
   className,
@@ -176,6 +195,16 @@ export function SidebarProvider({
     onOpenChange?.(value)
   }
   const toggleSidebar = () => (isMobile ? setOpenMobile(!openMobile) : setOpen(!open))
+
+  const widthCookie = cookieName ? `${cookieName}_width` : null
+  const storedWidth = React.useSyncExternalStore(subscribeCookie, () => (widthCookie ? readCookie(widthCookie) : null), () => null)
+  const [widthChoice, setWidthChoice] = React.useState<number | null>(null)
+  const width = clampWidth(widthChoice ?? (Number(storedWidth) || defaultWidth))
+  const setWidth = (value: number, keep = false) => {
+    setWidthChoice(clampWidth(value))
+    if (keep && widthCookie) writeCookie(widthCookie, clampWidth(value))
+  }
+  const [resizing, setResizing] = React.useState(false)
 
   // The collapse control in the sidebar's header and the expand control in the page's top bar are two buttons, one shown
   // at a time. Pressed from the keyboard, the one that hides hands focus to the one that shows.
@@ -214,11 +243,21 @@ export function SidebarProvider({
     keyshortcuts: shortcut?.aria,
     forced: mobileProp !== undefined,
     handOffFocus,
+    width,
+    setWidth,
+    resizing,
+    setResizing,
   }
 
   return (
     <SidebarContext value={value}>
-      <div data-slot="sidebar-wrapper" data-sidebar-provider={wrapperId} className={cn("flex w-full", className)} {...props}>
+      <div
+        data-slot="sidebar-wrapper"
+        data-sidebar-provider={wrapperId}
+        className={cn("flex w-full", className)}
+        {...props}
+        style={{ "--sidebar-width": `${width}px`, ...props.style } as React.CSSProperties}
+      >
         {children}
       </div>
     </SidebarContext>
@@ -227,18 +266,18 @@ export function SidebarProvider({
 
 type SidebarProps = React.ComponentProps<"aside"> & {
   side?: "left" | "right"
-  /** sidebar (default): a column with a hairline beside the page. floating: a raised panel (give the provider `gap-2 p-2`). */
+  /** sidebar (default): a column with a hairline beside the page. floating: a raised panel (give the provider `gap-2 p-2`; SidebarRail sits in the 8 px gap). */
   variant?: "sidebar" | "floating"
   /** icon (default): collapses to a 72 px rail of icons with tooltips. offcanvas: collapses out of view. none: always open. */
   collapsible?: "icon" | "offcanvas" | "none"
 }
 
 /**
- * The main navigation of a console: a 240 px column that collapses to a 72 px rail of icons, and a sheet from the screen's
+ * The main navigation of a console: a 240 px column (200 to 320 with SidebarRail) that collapses to a 72 px rail of icons, and a sheet from the screen's
  * edge on phones. Children are SidebarHeader, SidebarContent and SidebarFooter, the same on every screen.
  */
 export function Sidebar({ side = "left", variant = "sidebar", collapsible = "icon", className, children, ...props }: SidebarProps) {
-  const { state, isMobile, openMobile, setOpenMobile, labels, forced } = useSidebar()
+  const { state, isMobile, openMobile, setOpenMobile, labels, forced, resizing } = useSidebar()
 
   if (isMobile && collapsible !== "none") {
     return (
@@ -270,6 +309,7 @@ export function Sidebar({ side = "left", variant = "sidebar", collapsible = "ico
       data-collapsible={collapsed ? collapsible : ""}
       data-variant={variant}
       data-side={side}
+      data-resizing={resizing || undefined}
       aria-label={labels.sidebar}
       className={cn(
         // Sticky and as tall as the screen when the page scrolls; as tall as the frame when the provider has a height.
@@ -278,8 +318,9 @@ export function Sidebar({ side = "left", variant = "sidebar", collapsible = "ico
         // Before hydration a phone cannot be told from the server, so the column hides below md by CSS; the sheet takes over.
         forced ? "flex" : "hidden md:flex",
         // The frame's width is what moves (--motion-sheet); icons stay on the rail's centre line and words fade.
-        "transition-[width] duration-(--motion-sheet) ease-(--ease-standard) motion-reduce:transition-none",
-        collapsed ? (hidden ? "w-0" : "w-18") : "w-60",
+        // While the handle is dragged the width follows the pointer as it is, without easing.
+        "transition-[width] duration-(--motion-sheet) ease-(--ease-standard) motion-reduce:transition-none data-resizing:transition-none",
+        collapsed ? (hidden ? "w-0" : "w-18") : "w-(--sidebar-width)",
         variant === "floating" ? "rounded-md ring-1 ring-border" : side === "left" ? "border-e border-border" : "border-s border-border",
         hidden && "border-0 ring-0",
         className,
@@ -290,7 +331,7 @@ export function Sidebar({ side = "left", variant = "sidebar", collapsible = "ico
           aside) is not clipped by it. Off canvas, the column keeps its width while the frame closes over it, and nothing
           in it can be reached. */}
       <div data-slot="sidebar-frame" className="flex h-full min-h-0 w-full overflow-hidden rounded-[inherit]">
-        <div inert={hidden} className={cn("flex h-full min-h-0 shrink-0 flex-col", collapsible === "offcanvas" ? "w-60" : "w-full")}>
+        <div inert={hidden} className={cn("flex h-full min-h-0 shrink-0 flex-col", collapsible === "offcanvas" ? "w-(--sidebar-width)" : "w-full")}>
           {children}
         </div>
       </div>
@@ -381,63 +422,124 @@ export function SidebarTrigger({ show = "always", className, onClick, ...props }
 }
 
 /**
- * The sidebar's edge as a control, for a mouse: a 16 px strip over the edge (4 px in, 12 px out) that shows a hairline on
- * hover and collapses or expands the sidebar on a click, with the same tooltip and shortcut as the trigger. Put it last
- * inside Sidebar. It is a pointer convenience beside SidebarTrigger, never instead of one: out of the Tab order and
- * hidden from screen readers (the trigger is the way for both), and absent on touch screens and phones.
+ * The handle beside the sidebar, a window splitter: drag it to make the column wider or narrower (200 to 320 px; under
+ * 140 it folds to the rail, and dragged out of the rail it opens), click it to collapse or expand. A short pill in the
+ * middle of the edge, quiet until hover, focus or a drag; beside a floating sidebar it sits in the 8 px gap, over nothing,
+ * and beside a column it straddles the hairline. From the keyboard it is a Tab stop: ← and → resize by 16 px, Enter
+ * collapses or expands, as does ⌘B / Ctrl+B anywhere. Put it last inside Sidebar. Absent on phones (the sheet).
  */
-// A round button on the sidebar's edge, half over it, level with the line between the top bar and the content: the bar
-// is --h-row (56 px) tall; beside a floating sidebar the panels are 8 px apart, so the gap's middle is 60 px down; beside
-// a sidebar column the bar's hairline is at 56 px.
-export function SidebarRail({ className, onClick, ...props }: React.ComponentProps<"button">) {
-  const { isMobile, open, toggleSidebar, labels, shortcut, keyshortcuts } = useSidebar()
+export function SidebarRail({ className, ...props }: React.ComponentProps<"div">) {
+  const { isMobile, open, setOpen, toggleSidebar, labels, shortcut, keyshortcuts, width, setWidth, resizing, setResizing } = useSidebar()
+  const drag = React.useRef<{ x: number; from: number; sign: number; moved: boolean } | null>(null)
   if (isMobile) return null
   const label = open ? labels.collapse : labels.expand
+  // Towards the page widens: right for a sidebar on the left, left for one on the right.
+  const sign = (el: Element) => ((el.closest("[data-slot=sidebar]") as HTMLElement | null)?.dataset.side === "right" ? -1 : 1)
+
+  const follow = (next: number) => {
+    if (next < WIDTH.fold) {
+      if (open) setOpen(false)
+    } else {
+      if (!open) setOpen(true)
+      setWidth(next)
+    }
+  }
+
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <button
-          type="button"
-          data-slot="sidebar-rail"
-          aria-label={label}
-          aria-expanded={open}
+        <div
+          role="separator"
+          aria-orientation="vertical"
+          aria-label={labels.resize}
+          aria-valuemin={WIDTH.rail}
+          aria-valuemax={WIDTH.max}
+          // Open or a rail is in the value (72 is the rail); a separator takes no aria-expanded.
+          aria-valuenow={open ? width : WIDTH.rail}
           aria-keyshortcuts={keyshortcuts}
+          tabIndex={0}
+          data-slot="sidebar-rail"
+          data-dragging={resizing || undefined}
           className={cn(
-            // focus-ring: on the round knob inside (group-focus-visible/rail), the shape you see.
-            "group/rail press absolute top-15 z-10 flex size-6 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full outline-none group-data-[variant=sidebar]/sidebar:top-14",
-            "group-data-[side=left]/sidebar:-right-3 group-data-[side=right]/sidebar:-left-3",
-            // On a touch screen the target grows to the kit's 44 px without changing the button's size.
-            "pointer-coarse:after:absolute pointer-coarse:after:size-(--h-md) pointer-coarse:after:rounded-full",
+            // focus-ring: on the pill inside (group-focus-visible/rail), the shape you see.
+            "group/rail absolute inset-y-0 z-10 flex w-2 cursor-ew-resize touch-none items-center justify-center outline-none select-none",
+            // Floating: the 8 px gap beside the panel. A column: over its hairline, half each side.
+            "group-data-[side=left]/sidebar:-right-2 group-data-[side=right]/sidebar:-left-2",
+            "group-data-[variant=sidebar]/sidebar:group-data-[side=left]/sidebar:-right-1 group-data-[variant=sidebar]/sidebar:group-data-[side=right]/sidebar:-left-1",
+            // On a touch screen the strip a finger can take grows to 24 px without changing what shows.
+            "pointer-coarse:after:absolute pointer-coarse:after:inset-y-0 pointer-coarse:after:-inset-x-2",
             "group-data-[collapsible=offcanvas]/sidebar:hidden",
             className,
           )}
-          onClick={(e) => {
-            onClick?.(e)
-            if (!e.defaultPrevented) toggleSidebar()
+          onPointerDown={(e) => {
+            if (e.button !== 0) return
+            e.currentTarget.setPointerCapture(e.pointerId)
+            drag.current = { x: e.clientX, from: open ? width : WIDTH.rail, sign: sign(e.currentTarget), moved: false }
+          }}
+          onPointerMove={(e) => {
+            const d = drag.current
+            if (!d) return
+            const dx = (e.clientX - d.x) * d.sign
+            // A few px of wobble in a click is not a drag.
+            if (!d.moved && Math.abs(dx) < 4) return
+            if (!d.moved) setResizing(true)
+            d.moved = true
+            follow(d.from + dx)
+          }}
+          onPointerUp={(e) => {
+            const d = drag.current
+            drag.current = null
+            if (!d) return
+            if (e.currentTarget.hasPointerCapture(e.pointerId)) e.currentTarget.releasePointerCapture(e.pointerId)
+            setResizing(false)
+            if (d.moved) setWidth(width, true)
+            else toggleSidebar()
+          }}
+          onPointerCancel={() => {
+            drag.current = null
+            setResizing(false)
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault()
+              toggleSidebar()
+              return
+            }
+            if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return
+            e.preventDefault()
+            const grow = (e.key === "ArrowRight" ? 1 : -1) * sign(e.currentTarget)
+            if (!open) {
+              if (grow > 0) setOpen(true)
+              return
+            }
+            if (grow < 0 && width <= WIDTH.min) setOpen(false)
+            else setWidth(width + grow * WIDTH.step, true)
           }}
           {...props}
         >
-          {/* A small round button on the sidebar's edge, half over it: the way the sidebar goes (‹ to collapse, › to
-              expand), in the surface's colour with a hairline ring, quiet until hover or focus. */}
+          {/* A short pill in the middle of the edge. Hidden until the pointer is over the sidebar, then a quiet line;
+              on the handle itself taller and in the text's colour, and while dragged in the foreground's. Always there
+              on a touch screen (no hover) and from the keyboard, with the focus ring on it. */}
           <span
             aria-hidden="true"
             className={cn(
-              "flex size-6 items-center justify-center rounded-full bg-card text-muted-foreground ring-1 ring-border",
-              "transition-colors duration-(--motion-fast) ease-(--ease-standard)",
-              "group-hover/rail:bg-accent group-hover/rail:text-foreground",
-              "group-focus-visible/rail:text-foreground group-focus-visible/rail:outline-2 group-focus-visible/rail:outline-offset-2 group-focus-visible/rail:outline-ring",
+              "h-8 w-1 scale-y-50 rounded-full bg-border opacity-0",
+              "transition-[height,background-color,opacity,scale] duration-(--motion-base) ease-(--ease-standard) motion-reduce:transition-none",
+              "group-hover/sidebar:scale-y-100 group-hover/sidebar:opacity-100 pointer-coarse:scale-y-100 pointer-coarse:opacity-100",
+              "group-hover/rail:h-12 group-hover/rail:bg-muted-foreground group-data-dragging/rail:h-12 group-data-dragging/rail:scale-y-100 group-data-dragging/rail:bg-foreground group-data-dragging/rail:opacity-100",
+              "group-focus-visible/rail:scale-y-100 group-focus-visible/rail:opacity-100",
+              "group-focus-visible/rail:h-12 group-focus-visible/rail:bg-foreground group-focus-visible/rail:outline-2 group-focus-visible/rail:outline-offset-2 group-focus-visible/rail:outline-ring",
             )}
-          >
-            {/* The way the sidebar goes: towards its side to collapse, away from it to expand. */}
-            <ChevronLeft className="hidden size-4 group-data-[side=left]/sidebar:group-data-[state=expanded]/sidebar:block group-data-[side=right]/sidebar:group-data-[state=collapsed]/sidebar:block" />
-            <ChevronRight className="hidden size-4 group-data-[side=left]/sidebar:group-data-[state=collapsed]/sidebar:block group-data-[side=right]/sidebar:group-data-[state=expanded]/sidebar:block" />
-          </span>
-        </button>
+          />
+        </div>
       </TooltipTrigger>
       <TooltipContent side="right">
-        <span className="flex items-center gap-2">
-          {label}
-          {shortcut && <kbd className="font-sans">{shortcut}</kbd>}
+        <span className="flex flex-col gap-1">
+          <span className="flex items-center gap-2">
+            {label}
+            {shortcut && <kbd className="font-sans">{shortcut}</kbd>}
+          </span>
+          <span className="text-muted-foreground">{labels.drag}</span>
         </span>
       </TooltipContent>
     </Tooltip>
