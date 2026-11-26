@@ -18,7 +18,12 @@ const reg = JSON.parse(readFileSync("registry.json", "utf8"))
 const slotsOf = Object.fromEntries(
   reg.items.map((i) => [i.name, [...new Set((i.files ?? []).flatMap((f) => [...readFileSync(f.path, "utf8").matchAll(/data-slot="([\w-]+)"/g)].map((m) => m[1])))]]),
 )
-const names = reg.items.filter((i) => i.type !== "registry:block" && i.type !== "registry:lib" && i.type !== "registry:style" && i.type !== "registry:theme").map((i) => i.name)
+// ONLY=a,b,c measures just those (the quick check on a pull request into dev; scripts/a11y-affected.mjs picks them).
+const only = process.env.ONLY ? new Set(process.env.ONLY.split(",").filter(Boolean)) : null
+const names = reg.items
+  .filter((i) => i.type !== "registry:block" && i.type !== "registry:lib" && i.type !== "registry:style" && i.type !== "registry:theme")
+  .map((i) => i.name)
+  .filter((n) => !only || only.has(n))
 
 // Roles worth naming. Structure every page has (generic, paragraph, text) says nothing about the component.
 const MEANINGFUL = new Set(

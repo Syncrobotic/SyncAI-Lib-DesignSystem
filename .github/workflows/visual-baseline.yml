@@ -2,6 +2,9 @@ name: visual-baseline
 # Writes the visual regression baselines on CI's own Linux browser (screenshots from a laptop never match its fonts)
 # and commits them to the chosen branch. Run it once to start, and again after an intended visual change:
 # Actions → visual-baseline → Run workflow → branch.
+# The stories are shot on four runners and the two sets of thumbnails on two more, all at once; one last job gathers
+# what each wrote and commits it on top of the branch as it is then, so a merge into the branch meanwhile is kept, not
+# a reason to fail (it took 19 minutes on one runner, and a merge during them lost the run).
 on:
   workflow_dispatch:
 
@@ -12,36 +15,92 @@ permissions:
   actions: write
 
 jobs:
-  update:
+  shots:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     # The same image the story checks run in, so baselines and checks render with the same fonts.
     container: { image: "mcr.microsoft.com/playwright:v1.65.1-noble" }
     env: { HOME: /root }
+    strategy:
+      fail-fast: true
+      matrix:
+        shard: [1, 2, 3, 4]
     steps:
-      # The commit below needs git in the image; checkout without it would download a tarball with no history.
       - run: command -v git || (apt-get update && apt-get install -y --no-install-recommends git)
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with: { node-version: 22, cache: npm }
       - run: npm ci
       - run: npm run build-storybook
-      - run: npx playwright test tests/stories.spec.ts --update-snapshots=all
+      - run: npx playwright test tests/stories.spec.ts --update-snapshots=all --shard=${{ matrix.shard }}/4
         env: { STORY_CHECKS: visual }
-      # The pictures on /docs/components are the same stories, so they are taken here too, in the same browser:
-      # a story change that needs new baselines gets new pictures in the same commit.
-      - run: npm run thumbs
-      # The pictures on /blocks come from the blocks' previews on the built site (scripts/thumbs.mjs --blocks starts it).
-      - run: npx next build && npm run thumbs -- --blocks
+      # Only the pictures this shard wrote: the others in its checkout are the old ones and must not overwrite a new one.
       - run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          mkdir -p out
+          git ls-files -m -o --exclude-standard tests/__screenshots__ | while read -r f; do mkdir -p "out/$(dirname "$f")"; cp "$f" "out/$f"; done
+      - uses: actions/upload-artifact@v7
+        with: { name: "shots-${{ matrix.shard }}", path: out, if-no-files-found: ignore, include-hidden-files: false }
+
+  # The pictures on /docs/components are the same stories, so they are taken in the same browser.
+  thumbs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    container: { image: "mcr.microsoft.com/playwright:v1.65.1-noble" }
+    env: { HOME: /root }
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm run build-storybook
+      - run: npm run thumbs
+      - uses: actions/upload-artifact@v7
+        with: { name: thumbs-components, path: public/thumbs/components }
+
+  # The pictures on /blocks come from the blocks' previews on the built site (scripts/thumbs.mjs --blocks starts it).
+  block-thumbs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    container: { image: "mcr.microsoft.com/playwright:v1.65.1-noble" }
+    env: { HOME: /root }
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npx next build && npm run thumbs -- --blocks
+      - uses: actions/upload-artifact@v7
+        with: { name: thumbs-blocks, path: public/thumbs/blocks }
+
+  commit:
+    needs: [shots, thumbs, block-thumbs]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with: { fetch-depth: 0 }
+      - uses: actions/download-artifact@v7
+        with: { path: artifacts }
+      - id: commit
+        run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # On the branch as it is now: a pull request merged while the pictures were taken stays in.
+          git fetch origin "$GITHUB_REF_NAME"
+          git checkout -B "$GITHUB_REF_NAME" "origin/$GITHUB_REF_NAME"
+          for d in artifacts/shots-*; do if [ -d "$d" ]; then cp -R "$d"/. .; fi; done
+          if [ -d artifacts/thumbs-components ]; then cp -R artifacts/thumbs-components/. public/thumbs/components/; fi
+          if [ -d artifacts/thumbs-blocks ]; then cp -R artifacts/thumbs-blocks/. public/thumbs/blocks/; fi
           git add tests/__screenshots__ public/thumbs
-          git diff --cached --quiet && echo "Baselines unchanged" && exit 0
+          if git diff --cached --quiet; then echo "Baselines unchanged"; exit 0; fi
           git commit -m "test(visual): update baselines from ci"
-          git push
-          echo "pushed=true" >> "$GITHUB_OUTPUT"
-        id: commit
+          # A merge can still land between the fetch and the push: take it and try again.
+          for i in 1 2 3; do
+            git push origin "HEAD:$GITHUB_REF_NAME" && { echo "pushed=true" >> "$GITHUB_OUTPUT"; exit 0; }
+            git fetch origin "$GITHUB_REF_NAME" && git rebase "origin/$GITHUB_REF_NAME"
+          done
+          exit 1
       - if: steps.commit.outputs.pushed == 'true'
         env: { GH_TOKEN: "${{ github.token }}" }
         run: >-

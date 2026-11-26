@@ -891,6 +891,14 @@
     "version": "0.41.0",
     "hash": "17e2d81857df5ab1"
   },
+  "agent-run-gate": {
+    "version": "0.43.0",
+    "hash": "b59957ee5ab3901d"
+  },
+  "agent-run-outcome": {
+    "version": "0.43.0",
+    "hash": "be85483473933e1d"
+  },
   "markdown": {
     "version": "0.41.0",
     "hash": "fc986f0f403aa317"
@@ -898,5 +906,9 @@
   "citations": {
     "version": "0.41.0",
     "hash": "cfc32efa1107e886"
+  },
+  "agent-tool-permissions": {
+    "version": "0.43.0",
+    "hash": "81e6447945b0d795"
   }
 }
