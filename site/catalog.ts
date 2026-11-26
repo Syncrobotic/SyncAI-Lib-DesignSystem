@@ -783,7 +783,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "Rows that people open on phones as well as on desks: one list of columns renders a Table where there are 36rem (576 px) of its own width, and a grouped list (ListGroup, ListRow) under that. Its own width decides, so a narrow column on a wide screen gets the list too.",
       "Only one layout is in the page at a time, so a screen reader never meets the rows twice: table semantics on wide screens, a list of list items on phones. Before it is measured (the server's HTML) a container query shows the right one.",
-      "Each column says where it goes on a phone: the first is the row's title, `trailing` is the state at the row's end (InlineStatus, one column), the rest form the line under the title (`meta`, one or two facts) or are `hidden`. `phoneCell` gives a shorter form (\"82 %\" for a meter).",
+      "Each column says where it goes on a phone: the first is the row's title, `trailing` is the state at the row's end (InlineStatus, one column), the rest form the line under the title (`meta`, one or two facts) or are `hidden`. `phoneCell` gives a shorter form (\"82 %\" for a meter). The phone row's title wraps to two lines rather than being cut, and the trailing state moves under it before it squeezes the title below 160 px.",
       "`onRowClick` makes the title cell a button in the table and the whole phone row a 56 px button with a chevron. `rowActions` is the ⋯ menu: TableActionsCell in the table, after the row's button on a phone.",
       "Numbers `align: \"end\"`, written in full (formatCount). No rows: `empty` with an inline EmptyState.",
       "Many columns to scan, sort and select on a desk: DataGrid. A list that is only ever on phones: ListGroup and ListRow.",
@@ -795,6 +795,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "Rows of the same kind, each a whole touch target at 56 px, with its state in the trailing slot.",
       "Group long lists under headings; more than about 50 rows wants search or a DataGrid.",
+      "A row whose title is the words that matter (an incident, an alarm) takes `wrap`: the title wraps to two lines instead of being cut, and the trailing slot moves under it before it squeezes the title below 160 px.",
     ],
   },
   "status-glyph": {

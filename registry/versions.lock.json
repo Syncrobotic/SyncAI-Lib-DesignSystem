@@ -104,8 +104,8 @@
     "hash": "5a1a4452a88537e2"
   },
   "list": {
-    "version": "0.15.0",
-    "hash": "0e814244074765ba"
+    "version": "0.40.0",
+    "hash": "a5613bec71a46c01"
   },
   "skeleton": {
     "version": "0.40.0",
@@ -256,8 +256,8 @@
     "hash": "0367fada89960798"
   },
   "responsive-table": {
-    "version": "0.39.0",
-    "hash": "254427343bb2b7ff"
+    "version": "0.40.0",
+    "hash": "f839f33f7aae291e"
   },
   "chart": {
     "version": "0.40.0",

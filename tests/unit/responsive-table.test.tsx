@@ -53,6 +53,24 @@ describe("ResponsiveTable", () => {
     expect(frame().dataset.layout).toBe("table")
   })
 
+  it("wraps a phone row's title to two lines instead of cutting it, the whole title in the row's accessible name", () => {
+    width = 360
+    const long = "Two robots lost signal in Zone B while crossing the loading bay"
+    const rows = [{ ...robots[0], name: long }]
+    const onRowClick = vi.fn()
+    render(<ResponsiveTable label="Robots" rows={rows} columns={columns} rowKey={(r) => r.id} onRowClick={onRowClick} />)
+    const title = document.querySelector<HTMLElement>("[data-slot=list-row-title]")!
+    expect(title.textContent).toBe(long)
+    expect(title.className).toContain("line-clamp-2")
+    expect(title.className).not.toContain("truncate")
+    expect(screen.getByRole("button", { name: new RegExp(long) })).toBeTruthy()
+    // The title keeps at least 160 px: the row wraps, and the trailing state moves under it before it squeezes the title.
+    const row = title.closest("button")!
+    expect(row.className).toContain("flex-wrap")
+    expect(title.parentElement!.parentElement!.className).toContain("basis-40")
+    expect(within(row).getByText("Patrolling").parentElement!.className).toContain("ml-auto")
+  })
+
   it("is a grouped list under 36rem: title, the line under it and the trailing state, hidden columns left out", () => {
     width = 360
     render(<ResponsiveTable label="Robots" rows={robots} columns={columns} rowKey={(r) => r.id} />)

@@ -79,6 +79,28 @@ export const ResponsiveTableNarrowColumn: S = {
   ),
 }
 
+/**
+ * Long titles on a phone: the title wraps to two lines (clamped past that) instead of being cut to "Two robots lost sign…",
+ * and a long trailing state moves under it rather than squeeze it below 160 px.
+ */
+export const ResponsiveTableLongTitles: S = {
+  render: () => (
+    <div className="max-w-sm">
+      <ResponsiveTable
+        label="Incidents"
+        rows={[
+          { ...robots[3], id: "i1", name: "Two robots lost signal in Zone B while crossing the loading bay", status: "danger", state: "Stopped" },
+          { ...robots[1], id: "i2", name: "Courier 2B19 waited at a closed fire door for 12 minutes", status: "warning", state: "Needs attention" },
+          { ...robots[0], id: "i3", name: "Patrol dog 7F3A", status: "normal", state: "Resolved" },
+        ]}
+        columns={columns}
+        rowKey={(r) => r.id}
+        onRowClick={fn()}
+      />
+    </div>
+  ),
+}
+
 /** No rows: an inline EmptyState, in the table's one spanning cell or in the list's surface. */
 export const ResponsiveTableEmpty: S = {
   render: () => (

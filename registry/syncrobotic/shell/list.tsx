@@ -1,4 +1,4 @@
-// @syncrobotic/list v0.15.0 · update: npx shadcn add @syncrobotic/list --overwrite
+// @syncrobotic/list v0.40.0 · update: npx shadcn add @syncrobotic/list --overwrite
 import * as React from "react"
 import { ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -18,26 +18,44 @@ type RowProps = {
   /** Show only when the row leads somewhere. */
   chevron?: boolean
   onClick?: () => void
+  /**
+   * The title wraps to a second line (clamped past that) instead of being cut, and the trailing slot moves under it rather
+   * than squeeze it below 160 px. For a row whose title is the words that matter (an incident, an alarm).
+   */
+  wrap?: boolean
 }
 
-export function ListRow({ title, meta, lead, trailing, chevron, onClick }: RowProps) {
+export function ListRow({ title, meta, lead, trailing, chevron, onClick, wrap }: RowProps) {
   const Comp = onClick ? "button" : "div"
+  const end = (
+    <>
+      {typeof trailing === "string" ? <span className="shrink-0 whitespace-nowrap text-sm text-muted-foreground">{trailing}</span> : trailing}
+      {chevron && <ChevronRight aria-hidden="true" className="size-5 shrink-0 text-muted-foreground" />}
+    </>
+  )
   return (
     <Comp
       type={onClick ? "button" : undefined}
       onClick={onClick}
-      className={cn("flex min-h-(--h-row) w-full items-center gap-3 border-b border-border py-2 text-left last:border-b-0", onClick && "press")}
+      className={cn(
+        "flex min-h-(--h-row) w-full items-center gap-3 border-b border-border py-2 text-left last:border-b-0",
+        wrap && "flex-wrap gap-y-1",
+        onClick && "press",
+      )}
     >
       {/* The lead sits on the title's line (20 px), not the middle of title and meta, so an icon reads with its name. */}
-      <span className="flex min-w-0 flex-1 items-start gap-3">
+      <span className={cn("flex min-w-0 flex-1 items-start gap-3", wrap && "basis-40")}>
         {lead && <span className="flex min-h-5 shrink-0 items-center">{lead}</span>}
         <span className="flex min-w-0 flex-1 flex-col">
-          <span className="truncate text-sm font-medium">{title}</span>
+          {/* Clamped, not cut short in the DOM: the whole title stays in the row's accessible name. */}
+          <span data-slot="list-row-title" className={wrap ? "line-clamp-2 text-sm font-medium break-words" : "truncate text-sm font-medium"}>
+            {title}
+          </span>
           {meta && <span className="truncate text-xs text-muted-foreground">{meta}</span>}
         </span>
       </span>
-      {typeof trailing === "string" ? <span className="shrink-0 whitespace-nowrap text-sm text-muted-foreground">{trailing}</span> : trailing}
-      {chevron && <ChevronRight aria-hidden="true" className="size-5 shrink-0 text-muted-foreground" />}
+      {/* Wrapping, the trailing slot and the chevron move together, to the end of a line of their own when it comes to that. */}
+      {wrap && (trailing || chevron) ? <span className="ml-auto flex shrink-0 items-center gap-3">{end}</span> : end}
     </Comp>
   )
 }

@@ -7032,6 +7032,11 @@
      "name": "onClick",
      "type": "() => void",
      "description": ""
+    },
+    {
+     "name": "wrap",
+     "type": "boolean",
+     "description": "The title wraps to a second line (clamped past that) instead of being cut, and the trailing slot moves under it rather than squeeze it below 160 px. For a row whose title is the words that matter (an incident, an alarm)."
     }
    ],
    "inherits": []
