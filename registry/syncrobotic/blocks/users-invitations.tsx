@@ -1,15 +1,18 @@
-// @syncrobotic/users-invitations v0.28.0 · update: npx shadcn add @syncrobotic/users-invitations --overwrite
+// @syncrobotic/users-invitations v0.40.0 · update: npx shadcn add @syncrobotic/users-invitations --overwrite
 "use client"
 
 import * as React from "react"
-import { cn } from "@/lib/utils"
+import { Mail, Send, Trash2 } from "lucide-react"
 import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
-import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
+import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { Button } from "@/registry/syncrobotic/ui/button"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuMoreTrigger } from "@/registry/syncrobotic/ui/dropdown-menu"
+import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
 import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
+import { ResponsiveTable } from "@/registry/syncrobotic/ui/responsive-table"
+import { SectionHeader } from "@/registry/syncrobotic/ui/section-header"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
 import { Toaster, toast } from "@/registry/syncrobotic/ui/toast"
 
 type Invite = { email: string; role: string; by: string; sent: string; expires: string; expired?: boolean }
@@ -26,32 +29,14 @@ const roleHint: Record<string, string> = {
   Supervisor: "Everything an Operator does, plus schedules and routes.",
 }
 
-function Expiry({ invite }: { invite: Invite }) {
-  return invite.expired ? (
-    <span className="flex items-center gap-2 text-warning">
-      <StatusGlyph status="warning" /> Expired {invite.expires}
-    </span>
-  ) : (
-    <span className="text-muted-foreground">{invite.expires}</span>
-  )
-}
-
-function Actions({ invite, resend, revoke }: { invite: Invite; resend: (i: Invite) => void; revoke: (i: Invite) => void }) {
-  return (
-    <>
-      <Button size="sm" variant={invite.expired ? "secondary" : "ghost"} onClick={() => resend(invite)} aria-label={`Send again to ${invite.email}`}>
-        Send again
-      </Button>
-      <Button size="sm" variant="ghost" onClick={() => revoke(invite)} aria-label={`Revoke invitation for ${invite.email}`}>
-        Revoke
-      </Button>
-    </>
-  )
-}
+// An expired invitation says so with the warning shape and word; one that is still open is a quiet date.
+const Expiry = ({ invite }: { invite: Invite }) =>
+  invite.expired ? <InlineStatus status="warning">Expired {invite.expires}</InlineStatus> : <span className="text-muted-foreground">{invite.expires}</span>
 
 /**
  * Invitations that have not been accepted yet: invite in one row at the top, what the chosen role allows written under
- * it, then the pending list. An expired invitation says so and offers to send it again; revoking can be undone.
+ * it, then the pending list (a table where there is room, a list on a phone). An expired invitation says so and offers to
+ * send it again; revoking can be undone.
  */
 export function UsersInvitations() {
   const [invites, setInvites] = React.useState(initial)
@@ -83,7 +68,7 @@ export function UsersInvitations() {
     <AppShell product="Fleet console" nav={sampleNav} current="#invitations" title="Invitations" user={sampleUser}>
       <div className="flex flex-col gap-6">
         <form noValidate onSubmit={send} className="flex flex-col gap-3 rounded-md bg-card p-4 ring-1 ring-border">
-          <h2 className="text-sm font-medium">Invite someone</h2>
+          <SectionHeader variant="surface" as="h2" title="Invite someone" />
           <div className="grid items-start gap-3 sm:grid-cols-[1fr_12rem_auto]">
             <Field label="Email" error={error}>
               <Input type="email" autoComplete="off" value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -111,55 +96,47 @@ export function UsersInvitations() {
         </form>
 
         <section aria-labelledby="pending-title" className="flex flex-col gap-3">
-          <h2 id="pending-title" className="text-lg font-bold">
-            Pending <span className="font-normal text-muted-foreground tabular-nums">{invites.length}</span>
-          </h2>
-          <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Email</TableHead>
-                  <TableHead className="hidden lg:table-cell">Role</TableHead>
-                  <TableHead className="hidden lg:table-cell">Invited by</TableHead>
-                  <TableHead className="hidden sm:table-cell">Expires</TableHead>
-                  <TableHead className="hidden sm:table-cell">
-                    <span className="sr-only">Actions</span>
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {invites.map((i) => (
-                  <TableRow key={i.email}>
-                    <TableCell className="py-2 max-sm:pt-3 max-sm:whitespace-normal">
-                      <span className="font-medium break-all">{i.email}</span>
-                      {/* On a phone the role, the expiry and the actions sit under the email, so nothing reaches the card's
-                          edge; they are columns from wider screens (the role from 1024 px, beside a shell's sidebar). */}
-                      <span className="flex flex-col text-xs lg:hidden">
-                        <span className="text-muted-foreground">{i.role}</span>
-                        <span className="sm:hidden">
-                          <Expiry invite={i} />
-                        </span>
-                      </span>
-                      {/* A ghost button's words line up with the email above it; a filled one's edge does. */}
-                      <span className={cn("mt-2 flex gap-2 sm:hidden", !i.expired && "-ml-3")}>
-                        <Actions invite={i} resend={resend} revoke={revoke} />
-                      </span>
-                    </TableCell>
-                    <TableCell className="hidden lg:table-cell">{i.role}</TableCell>
-                    <TableCell className="hidden text-muted-foreground lg:table-cell">
-                      {i.by}, {i.sent}
-                    </TableCell>
-                    <TableCell className="hidden sm:table-cell">
-                      <Expiry invite={i} />
-                    </TableCell>
-                    <TableCell className="hidden py-2 text-right whitespace-nowrap sm:table-cell">
-                      <span className="flex justify-end">
-                        <Actions invite={i} resend={resend} revoke={revoke} />
-                      </span>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+          <SectionHeader id="pending-title" title="Pending" count={invites.length} />
+          {/* One list of columns: the email is the row's title, the role the line under it, an expiry its trailing state. */}
+          <ResponsiveTable
+            label="Pending invitations"
+            rows={invites}
+            rowKey={(i) => i.email}
+            columns={[
+              { id: "email", header: "Email", cell: (i) => <span className="font-medium">{i.email}</span>, phoneCell: (i) => i.email },
+              { id: "role", header: "Role", cell: (i) => i.role },
+              { id: "by", header: "Invited by", cell: (i) => `${i.by}, ${i.sent}`, phone: "hidden", className: "hidden text-muted-foreground lg:table-cell" },
+              {
+                id: "expires",
+                header: "Expires",
+                phone: "trailing",
+                cell: (i) => <Expiry invite={i} />,
+                phoneCell: (i) => (i.expired ? <InlineStatus status="warning">Expired</InlineStatus> : undefined),
+              },
+            ]}
+            // An expired invitation offers to send it again in view; every row has both actions in its ⋯ menu.
+            rowActions={(i) => (
+              <span className="flex items-center gap-2">
+                {i.expired && (
+                  <Button size="sm" variant="secondary" onClick={() => resend(i)} aria-label={`Send again to ${i.email}`}>
+                    Send again
+                  </Button>
+                )}
+                <DropdownMenu modal={false}>
+                  <DropdownMenuMoreTrigger name={i.email} size="icon-sm" />
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onSelect={() => resend(i)}>
+                      <Send aria-hidden="true" /> Send again
+                    </DropdownMenuItem>
+                    <DropdownMenuItem destructive onSelect={() => revoke(i)}>
+                      <Trash2 aria-hidden="true" /> Revoke
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </span>
+            )}
+            empty={<EmptyState size="inline" icon={Mail} title="No pending invitations" description="Everyone you invited has joined. Invite someone above." />}
+          />
         </section>
       </div>
       <Toaster />

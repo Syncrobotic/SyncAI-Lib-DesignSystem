@@ -1,4 +1,4 @@
-// @syncrobotic/timeline-activity v0.9.0 · update: npx shadcn add @syncrobotic/timeline-activity --overwrite
+// @syncrobotic/timeline-activity v0.40.0 · update: npx shadcn add @syncrobotic/timeline-activity --overwrite
 "use client"
 
 import * as React from "react"
@@ -41,8 +41,10 @@ export function TimelineActivity({ className }: { className?: string }) {
                 key={e.at}
                 time={e.time}
                 dateTime={e.at}
+                // The problem is the timeline's warning status: its triangle in the warning colour, and the title says what happened.
+                status={e.warn ? "warning" : undefined}
                 icon={<e.icon className={e.warn ? "text-warning" : undefined} />}
-                title={e.warn ? <span className="text-warning">{e.title}</span> : e.title}
+                title={e.title}
               >
                 {e.body}
               </TimelineItem>

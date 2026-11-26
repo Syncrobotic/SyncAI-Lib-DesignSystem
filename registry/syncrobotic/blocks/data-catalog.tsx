@@ -6,6 +6,7 @@ import { ChevronRight, Database, Grid3x3, Plus, ScrollText, Search, SearchX, Shi
 import { cn } from "@/lib/utils"
 import { formatCount } from "@/registry/syncrobotic/lib/format-count"
 import { usePresence } from "@/registry/syncrobotic/hooks/use-presence"
+import { formatCount } from "@/registry/syncrobotic/lib/format-count"
 import { AppShell, type AppNavGroup, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { TierBadge, tiers, type Tier } from "@/registry/syncrobotic/ui/tier-badge"
 import { Button } from "@/registry/syncrobotic/ui/button"
@@ -266,31 +267,35 @@ export function DataCatalogContent({ datasets = sampleDatasets }: DataCatalogPro
           <FacetsDrawer facets={facets} value={picks} onValueChange={setPicks} locale="en-US" />
         </div>
         <p className="text-sm text-muted-foreground" aria-live="polite">
-          {rows.length} of {datasets.length} datasets
+          {formatCount(rows.length)} of {formatCount(datasets.length)} datasets
         </p>
-        {rows.length === 0 ? (
-          <EmptyState icon={SearchX} title="No datasets match" description="Clear a filter or search for something broader." />
-        ) : (
-          <Table>
-            <TableHeader>
+        {/* The table stays when nothing matches: one spanning cell says why, under the header and its sort. */}
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead {...sortProps("name")}>Dataset</TableHead>
+              <TableHead className="hidden sm:table-cell">Tier</TableHead>
+              <TableHead className="hidden md:table-cell">Task</TableHead>
+              <TableHead className="hidden md:table-cell">Use</TableHead>
+              <TableHead className="hidden xl:table-cell">Owner</TableHead>
+              <TableHead {...sortProps("items")} className="text-right">
+                Items
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {rows.length === 0 && (
               <TableRow>
-                <TableHead {...sortProps("name")}>Dataset</TableHead>
-                <TableHead className="hidden sm:table-cell">Tier</TableHead>
-                <TableHead className="hidden md:table-cell">Task</TableHead>
-                <TableHead className="hidden md:table-cell">Use</TableHead>
-                <TableHead className="hidden xl:table-cell">Owner</TableHead>
-                <TableHead {...sortProps("items")} className="text-right">
-                  Items
-                </TableHead>
+                <TableCell colSpan={6} className="h-auto py-4 whitespace-normal">
+                  <EmptyState size="inline" icon={SearchX} title="No datasets match" description="Clear a filter or search for something broader." />
+                </TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {rows.map((d) => (
-                <DatasetRows key={d.ref} dataset={d} />
-              ))}
-            </TableBody>
-          </Table>
-        )}
+            )}
+            {rows.map((d) => (
+              <DatasetRows key={d.ref} dataset={d} />
+            ))}
+          </TableBody>
+        </Table>
       </div>
     </div>
   )

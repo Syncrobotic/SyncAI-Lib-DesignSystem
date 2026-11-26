@@ -7025,8 +7025,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "`columns={3}` lays out three stats, three across from 640 px and one per row on a phone (sparkline-metric-tiles is this)."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -7069,7 +7074,7 @@
       "name": "fleet-table",
       "type": "registry:block",
       "title": "Fleet table",
-      "description": "Search, filter by state, paginate and act on rows. Status as shape plus word, low battery in warning. A section, not a screen: the screen it sits in carries the emergency stop (the app shell's, as in console-overview).",
+      "description": "Search, filter by state, paginate and act on rows, as a ResponsiveTable (a list on a phone). Status as shape plus word, low battery in warning. A section, not a screen: the screen it sits in carries the emergency stop (the app shell's, as in console-overview).",
       "dependencies": [
         "lucide-react@^1"
       ],
@@ -7080,11 +7085,12 @@
         "@syncrobotic/empty-state",
         "@syncrobotic/input",
         "@syncrobotic/segmented-control",
-        "@syncrobotic/table",
         "@syncrobotic/status-eyebrow",
         "@syncrobotic/input-group",
         "@syncrobotic/meter",
-        "@syncrobotic/pagination"
+        "@syncrobotic/pagination",
+        "@syncrobotic/format-count",
+        "@syncrobotic/responsive-table"
       ],
       "files": [
         {
@@ -7093,8 +7099,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "The rows are a ResponsiveTable: a table where there is room, a list on a phone (name, state, battery and site). No match is an inline EmptyState inside it. Segment counts through formatCount. Now under Application › Data table."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -7177,8 +7188,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Low battery is an InlineStatus."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -7508,7 +7524,8 @@
         "@syncrobotic/button",
         "@syncrobotic/stop-button",
         "@syncrobotic/slide-to-release",
-        "@syncrobotic/feedback"
+        "@syncrobotic/feedback",
+        "@syncrobotic/section-header"
       ],
       "files": [
         {
@@ -7517,8 +7534,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "The robots section has a visible title, a SectionHeader with the count."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -7584,8 +7606,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "No match is an inline EmptyState; a robot's state and site share one 14 px line."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -7682,8 +7709,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "No match keeps the table: an inline EmptyState in one spanning cell."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -7758,7 +7790,8 @@
         "@syncrobotic/slide-to-release",
         "@syncrobotic/feedback",
         "@syncrobotic/robot-map",
-        "@syncrobotic/sheet"
+        "@syncrobotic/sheet",
+        "@syncrobotic/section-header"
       ],
       "files": [
         {
@@ -7767,8 +7800,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "The trays and the stop are placed with ViewportOverlay; the robot's tray title is a SectionHeader."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -7860,7 +7898,7 @@
           {
             "version": "0.40.0",
             "date": "2026-11-26",
-            "note": "Numbers through format-count (formatCount, formatNumber) instead of toLocaleString and a second Intl.NumberFormat (lint:numbers)."
+            "note": "No match keeps the table: an inline EmptyState in one spanning cell. Counts through formatCount. Numbers through format-count (formatCount, formatNumber) instead of toLocaleString and a second Intl.NumberFormat (lint:numbers)."
           },
           {
             "version": "0.39.0",
@@ -7935,7 +7973,8 @@
         "@syncrobotic/breadcrumb",
         "@syncrobotic/copy-button",
         "@syncrobotic/description-list",
-        "@syncrobotic/tier-badge"
+        "@syncrobotic/tier-badge",
+        "@syncrobotic/page-header"
       ],
       "files": [
         {
@@ -7944,8 +7983,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Opens with PageHeader (as h2 under the shell's h1): breadcrumb, name, the reference with its copy button, then the tier badge and the one status."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -8049,7 +8093,8 @@
         "@syncrobotic/empty-state",
         "@syncrobotic/segmented-control",
         "@syncrobotic/separator",
-        "@syncrobotic/use-presence"
+        "@syncrobotic/use-presence",
+        "@syncrobotic/format-count"
       ],
       "files": [
         {
@@ -8058,8 +8103,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Segment counts through formatCount."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -8111,7 +8161,8 @@
         "@syncrobotic/toast",
         "@syncrobotic/choice-field",
         "@syncrobotic/use-presence",
-        "@syncrobotic/scrollspy"
+        "@syncrobotic/scrollspy",
+        "@syncrobotic/section-header"
       ],
       "files": [
         {
@@ -8120,8 +8171,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Section titles are SectionHeader."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -8162,12 +8218,12 @@
         "@syncrobotic/button",
         "@syncrobotic/field",
         "@syncrobotic/input",
-        "@syncrobotic/label",
         "@syncrobotic/radio-group",
         "@syncrobotic/select",
         "@syncrobotic/textarea",
         "@syncrobotic/toast",
-        "@syncrobotic/time-picker"
+        "@syncrobotic/time-picker",
+        "@syncrobotic/choice-field"
       ],
       "files": [
         {
@@ -8176,8 +8232,13 @@
         }
       ],
       "meta": {
-        "version": "0.21.1",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Repeat is a FieldSet of ChoiceFields."
+          },
           {
             "version": "0.21.1",
             "date": "2026-11-21",
@@ -8218,7 +8279,6 @@
         "@syncrobotic/cn",
         "@syncrobotic/app-shell",
         "@syncrobotic/avatar",
-        "@syncrobotic/badge",
         "@syncrobotic/button",
         "@syncrobotic/dialog",
         "@syncrobotic/dropdown-menu",
@@ -8226,7 +8286,8 @@
         "@syncrobotic/input",
         "@syncrobotic/select",
         "@syncrobotic/table",
-        "@syncrobotic/toast"
+        "@syncrobotic/toast",
+        "@syncrobotic/empty-state"
       ],
       "files": [
         {
@@ -8235,8 +8296,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Someone invited reads Invited in plain grey, not a Badge; no people is an inline EmptyState in the table."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -8281,7 +8347,8 @@
         "@syncrobotic/button",
         "@syncrobotic/field",
         "@syncrobotic/input",
-        "@syncrobotic/separator"
+        "@syncrobotic/separator",
+        "@syncrobotic/page-header"
       ],
       "files": [
         {
@@ -8290,8 +8357,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Opens with PageHeader (28 px title)."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -8326,8 +8398,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "The title is 28 px, the page title's size (was 24)."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -8404,7 +8481,7 @@
           {
             "version": "0.40.0",
             "date": "2026-11-26",
-            "note": "The number rule names formatNumber for any number that is not a count and bans toLocaleString(); a header's one status is PageHeader's `status` (InlineStatus) and its badges `badges`; checklist line 16: a state is an InlineStatus, never a tinted badge or a toned MetaPill."
+            "note": "Design language: narrowing a list by one attribute is a SegmentedControl when two to four choices cover the list and one is always on, and a ChipGroup when the choice can be cleared, several can be on or there are more than four. The number rule names formatNumber for any number that is not a count and bans toLocaleString(); a header's one status is PageHeader's `status` (InlineStatus) and its badges `badges`; checklist line 16: a state is an InlineStatus, never a tinted badge or a toned MetaPill."
           },
           {
             "version": "0.39.0",
@@ -9029,7 +9106,8 @@
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/card",
-        "@syncrobotic/status-glyph"
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/status-eyebrow"
       ],
       "files": [
         {
@@ -9038,8 +9116,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "The head is CardDataHeader; a robot's state is an InlineStatus. Now under Application › Data visualisation."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -9077,9 +9160,9 @@
       "name": "sparkline-metric-tiles",
       "type": "registry:block",
       "title": "Metric tiles",
-      "description": "Three headline numbers, each with its week as a sparkline; only a change for the worse is coloured.",
+      "description": "Three headline numbers, each with its week as a sparkline: stats-cards with three stats. Only a change for the worse is coloured.",
       "registryDependencies": [
-        "@syncrobotic/metric-card"
+        "@syncrobotic/stats-cards"
       ],
       "files": [
         {
@@ -9088,8 +9171,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "stats-cards with three stats (`StatsCards columns={3}`), kept so the name still installs; now under Application › Stats. `stats` replaces the sample."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -9115,7 +9203,8 @@
       "description": "A table where each row's last 14 days are mini bars on one shared scale.",
       "registryDependencies": [
         "@syncrobotic/card",
-        "@syncrobotic/table"
+        "@syncrobotic/format-count",
+        "@syncrobotic/responsive-table"
       ],
       "files": [
         {
@@ -9124,8 +9213,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "The rows are a ResponsiveTable: on a phone the site, its robots, and the bars with the total at the end. Counts through formatCount. Now under Application › Data visualisation."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-21",
@@ -9194,7 +9288,7 @@
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/card",
-        "@syncrobotic/status-glyph"
+        "@syncrobotic/status-eyebrow"
       ],
       "files": [
         {
@@ -9203,8 +9297,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "A run's outcome is an InlineStatus. Now under Application › Data visualisation."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -9238,7 +9337,8 @@
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
-        "@syncrobotic/card"
+        "@syncrobotic/card",
+        "@syncrobotic/progress"
       ],
       "files": [
         {
@@ -9247,8 +9347,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.4",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "The stage bars are Progress, blue only on the running stage. Now under Application › Data visualisation."
+          },
           {
             "version": "0.17.4",
             "date": "2026-11-21",
@@ -9279,7 +9384,8 @@
       "description": "Battery per robot as rings, neutral until low or critical, the number always in the middle.",
       "registryDependencies": [
         "@syncrobotic/cn",
-        "@syncrobotic/card"
+        "@syncrobotic/card",
+        "@syncrobotic/status-eyebrow"
       ],
       "files": [
         {
@@ -9288,8 +9394,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Low is the ring's colour and the warning shape and word under it; the number stays foreground. Now under Application › Data visualisation."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -9333,8 +9444,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "The figure in the ring is 24 px, the card figure's size (was 28). Now under Application › Data visualisation."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -9591,7 +9707,8 @@
         "@syncrobotic/status-glyph",
         "@syncrobotic/tray",
         "@syncrobotic/button",
-        "@syncrobotic/avatar"
+        "@syncrobotic/avatar",
+        "@syncrobotic/status-eyebrow"
       ],
       "files": [
         {
@@ -9600,8 +9717,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "A sample robot's state is its row's trailing InlineStatus; the battery is a plain number, never an amber one."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -9653,7 +9775,8 @@
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/card",
-        "@syncrobotic/meter"
+        "@syncrobotic/meter",
+        "@syncrobotic/metric-card"
       ],
       "files": [
         {
@@ -9662,8 +9785,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Laid out with MetricGrid, one per row on a phone."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-21",
@@ -9692,6 +9820,7 @@
         "@syncrobotic/metric-card",
         "@syncrobotic/select",
         "@syncrobotic/segmented-control",
+        "@syncrobotic/section-header",
         "@syncrobotic/format-count"
       ],
       "files": [
@@ -9706,7 +9835,7 @@
           {
             "version": "0.40.0",
             "date": "2026-11-26",
-            "note": "Numbers through format-count (formatCount, formatNumber) instead of toLocaleString and a second Intl.NumberFormat (lint:numbers)."
+            "note": "The title and its controls are a SectionHeader. Numbers through format-count (formatCount, formatNumber) instead of toLocaleString and a second Intl.NumberFormat (lint:numbers)."
           },
           {
             "version": "0.19.0",
@@ -9852,8 +9981,9 @@
       "registryDependencies": [
         "@syncrobotic/button",
         "@syncrobotic/input-otp",
-        "@syncrobotic/label",
-        "@syncrobotic/separator"
+        "@syncrobotic/separator",
+        "@syncrobotic/field",
+        "@syncrobotic/page-header"
       ],
       "files": [
         {
@@ -9862,8 +9992,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Opens with PageHeader (28 px title); the code from an authenticator app is a Field."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -9890,7 +10025,8 @@
         "@syncrobotic/button",
         "@syncrobotic/field",
         "@syncrobotic/input",
-        "@syncrobotic/icon-tile"
+        "@syncrobotic/icon-tile",
+        "@syncrobotic/page-header"
       ],
       "files": [
         {
@@ -9899,8 +10035,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Opens with PageHeader (28 px title)."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -9934,8 +10075,8 @@
         "@syncrobotic/field",
         "@syncrobotic/input",
         "@syncrobotic/input-otp",
-        "@syncrobotic/label",
-        "@syncrobotic/separator"
+        "@syncrobotic/separator",
+        "@syncrobotic/page-header"
       ],
       "files": [
         {
@@ -9944,8 +10085,13 @@
         }
       ],
       "meta": {
-        "version": "0.21.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Opens with PageHeader (28 px title); the 6-digit code is a Field, so its label, error and aria wiring are the kit's."
+          },
           {
             "version": "0.21.0",
             "date": "2026-11-20",
@@ -9966,7 +10112,8 @@
         "@syncrobotic/card",
         "@syncrobotic/checkbox",
         "@syncrobotic/switch",
-        "@syncrobotic/table"
+        "@syncrobotic/table",
+        "@syncrobotic/section-header"
       ],
       "files": [
         {
@@ -9975,8 +10122,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "The title is a SectionHeader."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-21",
@@ -10012,9 +10164,13 @@
         "@syncrobotic/alert-dialog",
         "@syncrobotic/button",
         "@syncrobotic/card",
-        "@syncrobotic/copy-button",
         "@syncrobotic/field",
-        "@syncrobotic/input"
+        "@syncrobotic/input",
+        "@syncrobotic/code",
+        "@syncrobotic/code-block",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/item",
+        "@syncrobotic/section-header"
       ],
       "files": [
         {
@@ -10023,8 +10179,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "The title is a SectionHeader; keys are Items with the prefix in a Code; a new key is a secret CodeBlock; no keys is an inline EmptyState."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -10063,7 +10224,10 @@
         "@syncrobotic/empty-state",
         "@syncrobotic/field",
         "@syncrobotic/input",
-        "@syncrobotic/sheet"
+        "@syncrobotic/sheet",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/code",
+        "@syncrobotic/section-header"
       ],
       "files": [
         {
@@ -10072,8 +10236,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Titles are SectionHeader; an endpoint's state is an InlineStatus with its details beside it; an event name is a Code."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -10111,7 +10280,9 @@
         "@syncrobotic/badge",
         "@syncrobotic/button",
         "@syncrobotic/card",
-        "@syncrobotic/empty-state"
+        "@syncrobotic/empty-state",
+        "@syncrobotic/item",
+        "@syncrobotic/section-header"
       ],
       "files": [
         {
@@ -10120,8 +10291,13 @@
         }
       ],
       "meta": {
-        "version": "0.21.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Titles are SectionHeader; browsers are Items."
+          },
           {
             "version": "0.21.0",
             "date": "2026-11-20",
@@ -10146,6 +10322,9 @@
         "@syncrobotic/empty-state",
         "@syncrobotic/meter",
         "@syncrobotic/skeleton",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/responsive-table",
+        "@syncrobotic/section-header",
         "@syncrobotic/table",
         "@syncrobotic/format-count"
       ],
@@ -10161,7 +10340,7 @@
           {
             "version": "0.40.0",
             "date": "2026-11-26",
-            "note": "Numbers through format-count (formatCount, formatNumber) instead of toLocaleString and a second Intl.NumberFormat (lint:numbers)."
+            "note": "Titles are SectionHeader; invoice states are InlineStatus (`invoiceStatus` is now `{ label, status }`); the invoices are a ResponsiveTable with the PDF as the row's action. Numbers through format-count (formatCount, formatNumber) instead of toLocaleString and a second Intl.NumberFormat (lint:numbers)."
           },
           {
             "version": "0.35.0",
@@ -10201,7 +10380,8 @@
         "@syncrobotic/popover",
         "@syncrobotic/segmented-control",
         "@syncrobotic/sheet",
-        "@syncrobotic/skeleton"
+        "@syncrobotic/skeleton",
+        "@syncrobotic/section-header"
       ],
       "files": [
         {
@@ -10210,8 +10390,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "The panel's heading is a SectionHeader, 20 px as the phone sheet's title (was 18 px)."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -10334,7 +10519,9 @@
         "@syncrobotic/dialog",
         "@syncrobotic/input",
         "@syncrobotic/select",
-        "@syncrobotic/separator"
+        "@syncrobotic/separator",
+        "@syncrobotic/code",
+        "@syncrobotic/item"
       ],
       "files": [
         {
@@ -10343,8 +10530,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.4",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "The invite email is a Field with a visible label; people with access are Items; the link is a Code beside its copy button."
+          },
           {
             "version": "0.17.4",
             "date": "2026-11-21",
@@ -10449,17 +10641,18 @@
       "name": "sheet-filters",
       "type": "registry:block",
       "title": "Filters sheet",
-      "description": "Filters in a bottom sheet: grouped options with counts and one button that says how many results you will see.",
+      "description": "Filters on a phone with FacetsDrawer: the facets in a bottom sheet from the toolbar, each option with how many it leaves, the list and its count behind it.",
       "dependencies": [
         "lucide-react@^1"
       ],
       "registryDependencies": [
         "@syncrobotic/button",
-        "@syncrobotic/badge",
-        "@syncrobotic/checkbox",
-        "@syncrobotic/label",
-        "@syncrobotic/radio-group",
-        "@syncrobotic/sheet"
+        "@syncrobotic/format-count",
+        "@syncrobotic/list",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/facets"
       ],
       "files": [
         {
@@ -10468,8 +10661,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Rebuilt as the FacetsDrawer example, shown on the Facets page: the drawer from the toolbar, picks that apply at once, the list and its count behind it, an inline empty state. It was a hand-made sheet of checkboxes and radios with an apply button. Props: `defaultOpen`, `defaultValue`, `onValueChange` (was `onApply` and `focusOnOpen`)."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -10513,8 +10711,13 @@
         }
       ],
       "meta": {
-        "version": "0.9.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "The problem event uses the timeline's warning status, the title in the status's words, never a coloured sentence of its own."
+          },
           {
             "version": "0.9.0",
             "date": "2026-11-17",
@@ -10533,7 +10736,9 @@
         "@syncrobotic/avatar",
         "@syncrobotic/card",
         "@syncrobotic/segmented-control",
-        "@syncrobotic/timeline"
+        "@syncrobotic/timeline",
+        "@syncrobotic/format-count",
+        "@syncrobotic/code"
       ],
       "files": [
         {
@@ -10542,8 +10747,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.2",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Values before and after are Code; segment counts through formatCount."
+          },
           {
             "version": "0.17.2",
             "date": "2026-11-19",
@@ -10579,7 +10789,8 @@
         "@syncrobotic/select",
         "@syncrobotic/spinner",
         "@syncrobotic/stepper",
-        "@syncrobotic/icon-tile"
+        "@syncrobotic/icon-tile",
+        "@syncrobotic/page-header"
       ],
       "files": [
         {
@@ -10588,8 +10799,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Opens with PageHeader (28 px title)."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -10615,7 +10831,11 @@
         "@syncrobotic/button",
         "@syncrobotic/select",
         "@syncrobotic/stepper",
-        "@syncrobotic/table"
+        "@syncrobotic/table",
+        "@syncrobotic/status-glyph",
+        "@syncrobotic/code",
+        "@syncrobotic/file-upload",
+        "@syncrobotic/page-header"
       ],
       "files": [
         {
@@ -10624,8 +10844,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Opens with PageHeader; the file is a FileUpload (drop or choose, CSV up to 5 MB); a row with a problem is the warning shape and its words; column names are Code."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -10716,16 +10941,21 @@
       "type": "registry:block",
       "title": "Invitations",
       "description": "Invite in one row with what the role allows, then the pending list: expired ones say so, revoking can be undone.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/app-shell",
-        "@syncrobotic/status-glyph",
         "@syncrobotic/button",
         "@syncrobotic/field",
         "@syncrobotic/input",
         "@syncrobotic/select",
-        "@syncrobotic/table",
-        "@syncrobotic/toast"
+        "@syncrobotic/toast",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/responsive-table",
+        "@syncrobotic/section-header"
       ],
       "files": [
         {
@@ -10734,8 +10964,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Titles are SectionHeader; an expired invitation is an InlineStatus; the pending list is a ResponsiveTable with a ⋯ menu per row and an inline empty state."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -10782,8 +11017,8 @@
         "@syncrobotic/button",
         "@syncrobotic/input",
         "@syncrobotic/select",
-        "@syncrobotic/table",
-        "@syncrobotic/empty-state"
+        "@syncrobotic/empty-state",
+        "@syncrobotic/responsive-table"
       ],
       "files": [
         {
@@ -10792,8 +11027,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "The log is a ResponsiveTable; the search is an InputGroup instead of an icon placed over the field."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -10841,8 +11081,11 @@
         "@syncrobotic/status-glyph",
         "@syncrobotic/avatar",
         "@syncrobotic/button",
-        "@syncrobotic/table",
-        "@syncrobotic/segmented-control"
+        "@syncrobotic/segmented-control",
+        "@syncrobotic/format-count",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/responsive-table"
       ],
       "files": [
         {
@@ -10851,8 +11094,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Sev 3 takes the calm hollow circle, not offline's slashed one; severity is an InlineStatus. The queue is a ResponsiveTable with Take as the row's action and an inline empty state; `onOpen` and `onTake`."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -10944,12 +11192,18 @@
       "type": "registry:block",
       "title": "Service due",
       "description": "Service coming due by hours run: a meter per robot that turns amber near its interval and red past it, overdue first.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/app-shell",
         "@syncrobotic/button",
         "@syncrobotic/meter",
-        "@syncrobotic/table"
+        "@syncrobotic/format-count",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/responsive-table"
       ],
       "files": [
         {
@@ -10958,8 +11212,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Due states are InlineStatus; the rows are a ResponsiveTable with Book as the row's action and an inline empty state. `rows` replaces the sample."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -11003,9 +11262,10 @@
         "@syncrobotic/checkbox",
         "@syncrobotic/description-list",
         "@syncrobotic/field",
-        "@syncrobotic/label",
-        "@syncrobotic/table",
-        "@syncrobotic/textarea"
+        "@syncrobotic/textarea",
+        "@syncrobotic/format-count",
+        "@syncrobotic/choice-field",
+        "@syncrobotic/responsive-table"
       ],
       "files": [
         {
@@ -11014,8 +11274,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "The steps are a FieldSet of ChoiceFields; the parts are a ResponsiveTable."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -11054,7 +11319,9 @@
         "@syncrobotic/button",
         "@syncrobotic/progress",
         "@syncrobotic/stepper",
-        "@syncrobotic/table"
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/responsive-table",
+        "@syncrobotic/section-header"
       ],
       "files": [
         {
@@ -11063,8 +11330,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Robot states are InlineStatus; the robots are a ResponsiveTable with Retry as the row's action; the sections open with SectionHeader."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -11108,10 +11380,10 @@
         "@syncrobotic/button",
         "@syncrobotic/checkbox",
         "@syncrobotic/field",
-        "@syncrobotic/label",
         "@syncrobotic/number-field",
         "@syncrobotic/select",
-        "@syncrobotic/table"
+        "@syncrobotic/table",
+        "@syncrobotic/choice-field"
       ],
       "files": [
         {
@@ -11120,8 +11392,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "Safety is a FieldSet of ChoiceFields with their descriptions."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -11160,13 +11437,19 @@
       "type": "registry:block",
       "title": "Agent runs",
       "description": "What the AI agents did: each run's goal, trigger and state; one waiting for approval comes first with the only button.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
       "registryDependencies": [
         "@syncrobotic/cn",
         "@syncrobotic/app-shell",
         "@syncrobotic/trace",
         "@syncrobotic/button",
         "@syncrobotic/segmented-control",
-        "@syncrobotic/table"
+        "@syncrobotic/format-count",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/responsive-table"
       ],
       "files": [
         {
@@ -11175,8 +11458,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "The runs are a ResponsiveTable (a list on a phone) with an inline empty state; each state is an InlineStatus, coloured only for an approval or a failure. `onOpen` opens a run. Segment counts through formatCount."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -11219,7 +11507,8 @@
         "@syncrobotic/app-shell",
         "@syncrobotic/button",
         "@syncrobotic/description-list",
-        "@syncrobotic/trace"
+        "@syncrobotic/trace",
+        "@syncrobotic/code"
       ],
       "files": [
         {
@@ -11228,8 +11517,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.40.0",
         "changelog": [
+          {
+            "version": "0.40.0",
+            "date": "2026-11-26",
+            "note": "The run's id is a Code."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",

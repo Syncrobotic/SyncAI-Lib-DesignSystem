@@ -1,9 +1,13 @@
-// @syncrobotic/wizard-import v0.32.0 · update: npx shadcn add @syncrobotic/wizard-import --overwrite
+// @syncrobotic/wizard-import v0.40.0 · update: npx shadcn add @syncrobotic/wizard-import --overwrite
 "use client"
 
 import * as React from "react"
 import { FileSpreadsheet } from "lucide-react"
+import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
+import { Code } from "@/registry/syncrobotic/ui/code"
+import { FileUpload } from "@/registry/syncrobotic/ui/file-upload"
+import { PageHeader } from "@/registry/syncrobotic/ui/page-header"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/registry/syncrobotic/ui/select"
 import { Stepper, StepperItem } from "@/registry/syncrobotic/ui/stepper"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
@@ -40,22 +44,26 @@ export function WizardImport({ onImport }: { onImport?: (count: number) => void 
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col gap-6 p-6">
-      <div className="flex flex-col gap-1">
-        <h1 className="text-xl font-bold">Import checkpoints</h1>
-        <p className="text-sm text-muted-foreground">Add checkpoints to the route Perimeter from a CSV file.</p>
-      </div>
+      <PageHeader title="Import checkpoints" description="Add checkpoints to the route Perimeter from a CSV file." className="pb-0" />
       <Stepper value={imported !== null ? 4 : step} onValueChange={setStep} navigable="done" orientation="vertical">
         <StepperItem title="Choose a file" description={file ?? "CSV, one checkpoint per row"}>
           <div className="flex flex-col gap-3">
-            <button data-slot="wizard-import-file"
-              type="button"
-              onClick={() => setFile("perimeter-checkpoints.csv")}
-              className="press flex flex-col items-center gap-2 rounded-md p-6 text-sm ring-1 ring-border ring-dashed hover:bg-accent"
-            >
-              <FileSpreadsheet aria-hidden="true" className="size-6 text-muted-foreground" />
-              {file ? <span className="font-medium">{file}</span> : <span>Choose a CSV file</span>}
-              <span className="text-xs text-muted-foreground">Up to 5 MB</span>
-            </button>
+            {/* Drop a file on it or choose one; it refuses another type or a bigger file before anything is read. */}
+            <FileUpload
+              accept=".csv,text/csv"
+              multiple={false}
+              maxSize={5 * 1024 * 1024}
+              icon={FileSpreadsheet}
+              title={file ?? "Drop a CSV file here or choose one"}
+              hint="Up to 5 MB"
+              onFiles={(files) => files[0] && setFile(files[0].name)}
+            />
+            {/* Sample only: lets the preview go on without a file of your own. */}
+            {!file && (
+              <Button variant="link" className="self-start" onClick={() => setFile("perimeter-checkpoints.csv")}>
+                Use the sample file
+              </Button>
+            )}
             {/* Disabled says why, beside it and to screen readers. */}
             <div className="flex flex-wrap items-center gap-3">
               <Button disabled={!file} aria-describedby={file ? undefined : whyId} onClick={() => setStep(2)}>
@@ -74,9 +82,9 @@ export function WizardImport({ onImport }: { onImport?: (count: number) => void 
           <div className="flex flex-col gap-3">
             {columns.map((c) => (
               <div key={c} className="grid grid-cols-[8rem_1fr] items-center gap-3">
-                <code id={`col-${c}`} className="font-mono text-sm">
-                  {c}
-                </code>
+                <span className="text-sm">
+                  <Code id={`col-${c}`}>{c}</Code>
+                </span>
                 <Select value={map[c]} onValueChange={(v) => setMap((m) => ({ ...m, [c]: v }))}>
                   <SelectTrigger aria-labelledby={`col-${c}`}>
                     <SelectValue />
@@ -98,8 +106,11 @@ export function WizardImport({ onImport }: { onImport?: (count: number) => void 
         </StepperItem>
         <StepperItem title="Check and import" description={imported !== null ? `${imported} imported` : file ? `${rows.length} rows` : undefined}>
           <div className="flex flex-col gap-3">
-            <p className="text-sm">
-              {good} rows are ready. <span className="text-warning">{bad} row has a problem and will be skipped.</span>
+            <p className="text-sm">{good} rows are ready.</p>
+            {/* The problem is the warning shape and its words, never words in the warning colour. */}
+            <p className="flex items-start gap-2 text-sm">
+              <StatusGlyph status="warning" className="mt-1" />
+              <span>{bad} row has a problem and will be skipped.</span>
             </p>
             {/* Table draws its own edge, scroll and fades; a second frame around it clipped or doubled them. */}
             <Table className="bg-card">
@@ -117,7 +128,16 @@ export function WizardImport({ onImport }: { onImport?: (count: number) => void 
                     <TableCell className="font-medium">{r.name}</TableCell>
                     <TableCell className="text-right tabular-nums">{r.x}</TableCell>
                     <TableCell className="text-right tabular-nums">{r.y || "—"}</TableCell>
-                    <TableCell className={r.issue ? "text-warning" : "text-muted-foreground"}>{r.issue || "None"}</TableCell>
+                    <TableCell className={r.issue ? undefined : "text-muted-foreground"}>
+                      {r.issue ? (
+                        <span className="flex items-center gap-2">
+                          <StatusGlyph status="warning" />
+                          {r.issue}
+                        </span>
+                      ) : (
+                        "None"
+                      )}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

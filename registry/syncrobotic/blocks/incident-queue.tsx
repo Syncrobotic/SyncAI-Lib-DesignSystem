@@ -1,17 +1,19 @@
-// @syncrobotic/incident-queue v0.32.0 · update: npx shadcn add @syncrobotic/incident-queue --overwrite
+// @syncrobotic/incident-queue v0.40.0 · update: npx shadcn add @syncrobotic/incident-queue --overwrite
 "use client"
 
 import * as React from "react"
-import { Plus } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { CircleCheck, Plus } from "lucide-react"
 import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
-import { StatusGlyph, type Status } from "@/registry/syncrobotic/shell/status-glyph"
+import { formatCount } from "@/registry/syncrobotic/lib/format-count"
+import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
+import type { Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"
 import { Button } from "@/registry/syncrobotic/ui/button"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
+import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
+import { ResponsiveTable, type ResponsiveTableColumn } from "@/registry/syncrobotic/ui/responsive-table"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 
-type Incident = {
+export type Incident = {
   id: string
   title: string
   severity: 1 | 2 | 3
@@ -53,23 +55,56 @@ const incidents: Incident[] = [
   },
 ]
 
-const sevTone: Record<Incident["severity"], Status> = { 1: "danger", 2: "warning", 3: "offline" }
+// Severity 3 is calm: the hollow circle of a normal state, never the slashed circle that means offline.
+const sevTone: Record<Incident["severity"], Status> = { 1: "danger", 2: "warning", 3: "normal" }
 const order: Incident["state"][] = ["Unassigned", "Investigating", "Monitoring", "Resolved"]
 
-function Severity({ severity, className }: { severity: Incident["severity"]; className?: string }) {
-  return (
-    <span className={cn("flex items-center gap-2 font-medium whitespace-nowrap", severity === 1 && "text-danger", severity === 2 && "text-warning", className)}>
-      <StatusGlyph status={sevTone[severity]} />
-      Sev {severity}
-    </span>
-  )
-}
+const Severity = ({ severity }: { severity: Incident["severity"] }) => <InlineStatus status={sevTone[severity]}>Sev {severity}</InlineStatus>
+
+// One list of columns for the table and the phone rows: the incident is the row's title, its severity the trailing
+// shape and word, its state and age the line under it.
+const columns: ResponsiveTableColumn<Incident>[] = [
+  { id: "severity", header: "Severity", cell: (i) => <Severity severity={i.severity} />, phone: "trailing", className: "w-28" },
+  {
+    id: "incident",
+    header: "Incident",
+    phone: "title",
+    cell: (i) => (
+      <span className="flex flex-col whitespace-normal">
+        <span>{i.title}</span>
+        <span className="font-mono text-xs font-normal text-muted-foreground">{i.id}</span>
+      </span>
+    ),
+    phoneCell: (i) => i.title,
+  },
+  { id: "state", header: "State", cell: (i) => i.state },
+  {
+    id: "owner",
+    header: "Owner",
+    phone: "hidden",
+    // Nobody owning it is said in words; Take is the row's action, at the end of the row.
+    cell: (i) =>
+      i.owner ? (
+        <span className="flex items-center gap-2">
+          <Avatar className="size-6">
+            <AvatarFallback className="text-xs">{i.owner.initials}</AvatarFallback>
+          </Avatar>
+          {i.owner.name}
+        </span>
+      ) : (
+        <span className="text-muted-foreground">Nobody</span>
+      ),
+  },
+  { id: "robots", header: "Robots", cell: (i) => formatCount(i.robots), align: "end", phone: "hidden", className: "hidden tabular-nums lg:table-cell" },
+  { id: "open", header: "Open for", cell: (i) => i.open, align: "end", className: "text-muted-foreground tabular-nums" },
+]
 
 /**
  * The incident queue: unowned incidents first, then by severity, then by age. Severity has a shape and a number, and only
- * the two that stop or slow work are coloured. An incident nobody owns says so, in words, in the owner column.
+ * the two that stop or slow work are coloured. An incident nobody owns says so, in words, in the owner column, and offers
+ * Take at the end of its row. The same rows are a table where there is room and a list on a phone (ResponsiveTable).
  */
-export function IncidentQueue() {
+export function IncidentQueue({ onOpen, onTake }: { onOpen?: (incident: Incident) => void; onTake?: (incident: Incident) => void } = {}) {
   const [tab, setTab] = React.useState("open")
   const shown = incidents
     .filter((i) => (tab === "open" ? i.state !== "Resolved" : i.state === "Resolved"))
@@ -91,65 +126,33 @@ export function IncidentQueue() {
       }
     >
       <div className="flex flex-col gap-4">
+        {/* Two slices that cover the queue, one always on: a SegmentedControl, each count after its word. */}
         <SegmentedControl aria-label="Show incidents" value={tab} onValueChange={(v) => v && setTab(v)} className="w-auto self-start">
-          <SegmentedControlItem value="open">Open {openCount}</SegmentedControlItem>
-          <SegmentedControlItem value="resolved">Resolved {resolvedCount}</SegmentedControlItem>
+          <SegmentedControlItem value="open">Open {formatCount(openCount, { compact: true })}</SegmentedControlItem>
+          <SegmentedControlItem value="resolved">Resolved {formatCount(resolvedCount, { compact: true })}</SegmentedControlItem>
         </SegmentedControl>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="hidden w-24 sm:table-cell">Severity</TableHead>
-              <TableHead>Incident</TableHead>
-              <TableHead className="hidden sm:table-cell">State</TableHead>
-              <TableHead>Owner</TableHead>
-              <TableHead className="hidden text-right lg:table-cell">Robots</TableHead>
-              <TableHead className="hidden text-right sm:table-cell">Open for</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {shown.map((i) => (
-              <TableRow key={i.id}>
-                <TableCell className="hidden sm:table-cell">
-                  <Severity severity={i.severity} />
-                </TableCell>
-                <TableCell className="py-2 max-lg:whitespace-normal">
-                  <a data-slot="incident-queue-link" href={`#${i.id}`} className="flex flex-col hover:underline">
-                    <span className="font-medium">{i.title}</span>
-                    <span className="text-xs text-muted-foreground">
-                      {/* On a phone the severity leads the id and the state and age follow on their own line; they are
-                          columns from 640 px. Each piece keeps its words together. */}
-                      <span className="sm:hidden">
-                        <Severity severity={i.severity} className="inline-flex text-xs" />
-                        {" · "}
-                      </span>
-                      <span className="font-mono whitespace-nowrap">{i.id}</span>
-                      <span className="block sm:hidden">
-                        <span className="whitespace-nowrap">{i.state}</span> · <span className="whitespace-nowrap">{i.open}</span>
-                      </span>
-                    </span>
-                  </a>
-                </TableCell>
-                <TableCell className="hidden sm:table-cell">{i.state}</TableCell>
-                <TableCell>
-                  {i.owner ? (
-                    <span className="flex items-center gap-2">
-                      <Avatar className="size-6">
-                        <AvatarFallback className="text-xs">{i.owner.initials}</AvatarFallback>
-                      </Avatar>
-                      <span className="max-sm:sr-only">{i.owner.name}</span>
-                    </span>
-                  ) : (
-                    <Button size="sm" variant="secondary" aria-label={`Take ${i.id}`}>
-                      Take
-                    </Button>
-                  )}
-                </TableCell>
-                <TableCell className="hidden text-right tabular-nums lg:table-cell">{i.robots}</TableCell>
-                <TableCell className="hidden text-right text-muted-foreground tabular-nums sm:table-cell">{i.open}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <ResponsiveTable
+          label={tab === "open" ? "Open incidents" : "Resolved incidents"}
+          rows={shown}
+          columns={columns}
+          rowKey={(i) => i.id}
+          onRowClick={(i) => onOpen?.(i)}
+          rowActions={(i) =>
+            i.owner ? null : (
+              <Button size="sm" variant="secondary" aria-label={`Take ${i.id}`} onClick={() => onTake?.(i)}>
+                Take
+              </Button>
+            )
+          }
+          empty={
+            <EmptyState
+              size="inline"
+              icon={CircleCheck}
+              title={tab === "open" ? "No open incidents" : "Nothing resolved yet"}
+              description={tab === "open" ? "Every site is running as planned." : "Resolved incidents stay here for 90 days."}
+            />
+          }
+        />
       </div>
     </AppShell>
   )

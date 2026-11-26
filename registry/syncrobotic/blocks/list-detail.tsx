@@ -1,8 +1,8 @@
-// @syncrobotic/list-detail v0.35.0 · update: npx shadcn add @syncrobotic/list-detail --overwrite
+// @syncrobotic/list-detail v0.40.0 · update: npx shadcn add @syncrobotic/list-detail --overwrite
 "use client"
 
 import * as React from "react"
-import { ArrowLeft, MapPin, Pause, Search } from "lucide-react"
+import { ArrowLeft, MapPin, Pause, Search, SearchX } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { feedback } from "@/registry/syncrobotic/lib/feedback"
 import { ChargingDock } from "@/registry/syncrobotic/ui/robot-icons"
@@ -78,13 +78,18 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
                   )}
                 >
                   <span className="text-sm font-medium">{r.name}</span>
-                  <span className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <InlineStatus status={status[r.status].tone}>{status[r.status].label}</InlineStatus> · {r.site}
+                  {/* The state at its own size, then the site in the same 14 px, grey. */}
+                  <span className="flex items-center gap-2 text-sm font-normal text-muted-foreground">
+                    <InlineStatus status={status[r.status].tone}>{status[r.status].label}</InlineStatus> · <span className="truncate">{r.site}</span>
                   </span>
                 </button>
               </li>
             ))}
-            {shown.length === 0 && <li className="p-4 text-sm text-muted-foreground">No robots match “{query}”.</li>}
+            {shown.length === 0 && (
+              <li>
+                <EmptyState size="inline" icon={SearchX} title="No robots match" description={`Nothing matches “${query}”. Try another name or site.`} />
+              </li>
+            )}
           </ul>
         </div>
 

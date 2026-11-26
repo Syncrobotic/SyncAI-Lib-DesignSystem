@@ -41,13 +41,12 @@ export const overviews: Record<string, Overview> = {
     use: [
       "A catalog of datasets, recordings or robots narrowed by a few fixed facets: tier, task, site, sensor.",
       "A search results page with counts per facet value.",
-      "The same facets on phones, from a Filters button in the toolbar (`FacetsDrawer`).",
+      "The same facets on phones, from a Filters button in the toolbar (`FacetsDrawer`; the `sheet-filters` pattern is a whole example).",
     ],
     instead: [
       "One facet as a row of chips above a list: `chip-group`.",
       "Filters that must live in the URL and work before JavaScript: `filter-form`.",
       "A query of any field and operator: `filters`.",
-      "Filters applied together with one Show results button: the `sheet-filters` pattern.",
     ],
     notes: [
       "It does not filter or count: compute `count` and the filtered rows from the same value.",

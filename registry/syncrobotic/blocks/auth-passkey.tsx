@@ -1,11 +1,12 @@
-// @syncrobotic/auth-passkey v0.17.3 · update: npx shadcn add @syncrobotic/auth-passkey --overwrite
+// @syncrobotic/auth-passkey v0.40.0 · update: npx shadcn add @syncrobotic/auth-passkey --overwrite
 "use client"
 
 import * as React from "react"
 import { Fingerprint } from "lucide-react"
 import { Button } from "@/registry/syncrobotic/ui/button"
+import { Field } from "@/registry/syncrobotic/ui/field"
 import { InputOTP, InputOTPGroup, InputOTPSlot, REGEXP_ONLY_DIGITS } from "@/registry/syncrobotic/ui/input-otp"
-import { Label } from "@/registry/syncrobotic/ui/label"
+import { PageHeader } from "@/registry/syncrobotic/ui/page-header"
 import { Separator } from "@/registry/syncrobotic/ui/separator"
 
 type Step = "passkey" | "waiting" | "failed" | "code"
@@ -48,17 +49,12 @@ export function AuthPasskey({
   return (
     <main className="flex min-h-[var(--app-shell-height,100dvh)] items-center justify-center bg-background p-4">
       <div className="flex w-full max-w-sm flex-col gap-6">
-        <div className="flex flex-col gap-1">
-          <h1 className="text-xl font-bold">Sign in to {product}</h1>
-          <p className="text-sm text-muted-foreground">No password: use the passkey on this device.</p>
-        </div>
+        <PageHeader title={`Sign in to ${product}`} description="No password: use the passkey on this device." className="pb-0" />
 
         {step === "code" ? (
           <form noValidate onSubmit={submitCode} className="flex animate-appear flex-col gap-4">
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="auth-code">Code from your authenticator app</Label>
+            <Field label="Code from your authenticator app" error={codeError}>
               <InputOTP
-                id="auth-code"
                 maxLength={6}
                 pattern={REGEXP_ONLY_DIGITS}
                 value={code}
@@ -66,8 +62,6 @@ export function AuthPasskey({
                   setCode(v)
                   setCodeError(undefined)
                 }}
-                aria-invalid={codeError ? true : undefined}
-                aria-describedby={codeError ? "auth-code-error" : undefined}
               >
                 <InputOTPGroup>
                   {[0, 1, 2, 3, 4, 5].map((i) => (
@@ -75,12 +69,7 @@ export function AuthPasskey({
                   ))}
                 </InputOTPGroup>
               </InputOTP>
-              {codeError && (
-                <p id="auth-code-error" className="text-sm text-danger">
-                  {codeError}
-                </p>
-              )}
-            </div>
+            </Field>
             <Button type="submit" size="lg" loading={busy}>
               Sign in with code
             </Button>

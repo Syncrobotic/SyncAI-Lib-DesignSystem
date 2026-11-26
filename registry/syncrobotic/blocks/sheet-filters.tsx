@@ -1,17 +1,19 @@
-// @syncrobotic/sheet-filters v0.17.3 · update: npx shadcn add @syncrobotic/sheet-filters --overwrite
+// @syncrobotic/sheet-filters v0.40.0 · update: npx shadcn add @syncrobotic/sheet-filters --overwrite
 "use client"
 
 import * as React from "react"
-import { SlidersHorizontal } from "lucide-react"
+import { SearchX } from "lucide-react"
+import { formatCount } from "@/registry/syncrobotic/lib/format-count"
+import { ListGroup, ListRow } from "@/registry/syncrobotic/shell/list"
+import { InlineStatus } from "@/registry/syncrobotic/shell/status-eyebrow"
+import type { Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
-import { CountBadge } from "@/registry/syncrobotic/ui/badge"
-import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
-import { Label } from "@/registry/syncrobotic/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/registry/syncrobotic/ui/radio-group"
-import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/registry/syncrobotic/ui/sheet"
+import { EmptyState } from "@/registry/syncrobotic/ui/empty-state"
+import { FacetsDrawer, type Facet, type FacetValue } from "@/registry/syncrobotic/ui/facets"
 
 // Sample data: the robots the filters narrow down.
-const robots = [
+type Robot = { id: string; state: "patrolling" | "docked" | "attention" | "offline"; site: "taipei" | "taoyuan" | "hsinchu" }
+const robots: Robot[] = [
   { id: "7F3A", state: "patrolling", site: "taipei" },
   { id: "1715", state: "patrolling", site: "taipei" },
   { id: "DAA6", state: "docked", site: "taipei" },
@@ -20,128 +22,86 @@ const robots = [
   { id: "4A11", state: "docked", site: "taoyuan" },
   { id: "B812", state: "patrolling", site: "hsinchu" },
 ]
-const states = [
-  { value: "patrolling", label: "Patrolling" },
-  { value: "docked", label: "Docked" },
-  { value: "attention", label: "Needs attention" },
-  { value: "offline", label: "Offline" },
-]
-const sites = [
-  { value: "all", label: "All sites" },
-  { value: "taipei", label: "Taipei HQ" },
-  { value: "taoyuan", label: "Taoyuan plant" },
-  { value: "hsinchu", label: "Hsinchu lab" },
-]
+const states: Record<Robot["state"], { label: string; status: Status }> = {
+  patrolling: { label: "Patrolling", status: "active" },
+  docked: { label: "Docked", status: "normal" },
+  attention: { label: "Needs attention", status: "warning" },
+  offline: { label: "Offline", status: "offline" },
+}
+const sites: Record<Robot["site"], string> = { taipei: "Taipei HQ", taoyuan: "Taoyuan plant", hsinchu: "Hsinchu lab" }
+
+const matches = (r: Robot, v: FacetValue) => (!v.state?.length || v.state.includes(r.state)) && (!v.site?.length || v.site.includes(r.site))
 
 /**
- * Filters in a bottom sheet on phones: options grouped under headings, each with how many robots it has, and one button
- * that says how many results you will see. Nothing applies until you press it; "Clear" resets the sheet, not the page.
+ * The facets, each option with how many robots it would leave once the other facet's picks apply: what the reader sees
+ * before they tap it.
+ */
+function facetsOf(value: FacetValue): Facet[] {
+  const count = (key: "state" | "site", option: string) => robots.filter((r) => r[key] === option && matches(r, { ...value, [key]: [] })).length
+  return [
+    { key: "state", label: "State", options: (Object.keys(states) as Robot["state"][]).map((s) => ({ value: s, label: states[s].label, count: count("state", s) })) },
+    { key: "site", label: "Site", options: (Object.keys(sites) as Robot["site"][]).map((s) => ({ value: s, label: sites[s], count: count("site", s) })) },
+  ]
+}
+
+/**
+ * Filters on a phone: the Filters button in the list's toolbar says how many are on and opens the facets in a bottom sheet
+ * (FacetsDrawer), each option with how many robots it leaves. Picks apply at once, as in the facet column on a wide screen,
+ * so the list and its count behind the sheet are always the result; Done closes it, Clear all empties it. On a wide screen
+ * put `Facets` beside the list with the same value.
  */
 export function SheetFilters({
-  onApply,
   defaultOpen,
-  focusOnOpen = true,
+  defaultValue = { state: ["attention", "offline"] },
+  onValueChange,
 }: {
-  onApply?: (filters: { states: string[]; site: string }) => void
+  /** Opens the sheet at first. */
   defaultOpen?: boolean
-  /** false for previews that open on load, so the page around them keeps its focus. */
-  focusOnOpen?: boolean
+  /** The picks it starts with. */
+  defaultValue?: FacetValue
+  /** Called with every facet's picks after each change. */
+  onValueChange?: (value: FacetValue) => void
 }) {
-  const [open, setOpen] = React.useState(!!defaultOpen)
-  const [applied, setApplied] = React.useState<{ states: string[]; site: string }>({ states: [], site: "all" })
-  const [picked, setPicked] = React.useState<string[]>(["attention", "offline"])
-  const [site, setSite] = React.useState("all")
-
-  const inSite = robots.filter((r) => site === "all" || r.site === site)
-  const results = inSite.filter((r) => picked.length === 0 || picked.includes(r.state)).length
-  const active = applied.states.length + (applied.site === "all" ? 0 : 1)
+  const [value, setValue] = React.useState<FacetValue>(defaultValue)
+  const change = (v: FacetValue) => {
+    setValue(v)
+    onValueChange?.(v)
+  }
+  const shown = robots.filter((r) => matches(r, value))
 
   return (
     <div className="flex min-h-[var(--app-shell-height,100dvh)] flex-col gap-4 bg-background p-4">
-      <Sheet open={open} onOpenChange={setOpen}>
-        <SheetTrigger asChild>
-          <Button variant="secondary" className="self-start">
-            <SlidersHorizontal aria-hidden="true" />
-            Filters
-            {active > 0 && (
-              <>
-                <CountBadge count={active} tone="neutral" />
-                <span className="sr-only">active</span>
-              </>
-            )}
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="bottom" className="sm:mx-auto sm:max-w-md" onOpenAutoFocus={focusOnOpen ? undefined : (e) => e.preventDefault()}>
-          <SheetHeader>
-            <SheetTitle>Filter robots</SheetTitle>
-            <SheetDescription>Pick what to show; nothing changes until you apply.</SheetDescription>
-          </SheetHeader>
-
-          <fieldset className="flex flex-col gap-1">
-            <legend className="pb-2 text-sm font-medium">State</legend>
-            {states.map((s) => {
-              const id = `filter-${s.value}`
-              const n = inSite.filter((r) => r.state === s.value).length
-              return (
-                <div key={s.value} className="flex min-h-(--h-lg) items-center gap-3">
-                  <Checkbox
-                    id={id}
-                    checked={picked.includes(s.value)}
-                    onCheckedChange={(v) => setPicked((p) => (v === true ? [...p, s.value] : p.filter((x) => x !== s.value)))}
-                  />
-                  {/* The count follows the words, not the far edge, so it reads with its option on a wide sheet too. */}
-                  <Label htmlFor={id} className="flex flex-1 items-baseline gap-2 font-normal">
-                    {s.label}
-                    <span className="text-sm text-muted-foreground tabular-nums">{n}</span>
-                  </Label>
-                </div>
-              )
-            })}
-          </fieldset>
-
-          <fieldset className="flex flex-col gap-1">
-            <legend className="pb-2 text-sm font-medium">Site</legend>
-            <RadioGroup value={site} onValueChange={setSite} className="gap-0">
-              {sites.map((s) => {
-                const id = `site-${s.value}`
-                return (
-                  <div key={s.value} className="flex min-h-(--h-lg) items-center gap-3">
-                    <RadioGroupItem id={id} value={s.value} />
-                    <Label htmlFor={id} className="flex-1 font-normal">
-                      {s.label}
-                    </Label>
-                  </div>
-                )
-              })}
-            </RadioGroup>
-          </fieldset>
-
-          <SheetFooter className="flex-row">
-            <Button
-              variant="ghost"
-              onClick={() => {
-                setPicked([])
-                setSite("all")
-              }}
-            >
-              Clear
-            </Button>
-            <Button
-              className="flex-1"
-              disabled={results === 0}
-              onClick={() => {
-                const f = { states: picked, site }
-                setApplied(f)
-                onApply?.(f)
-                setOpen(false)
-              }}
-            >
-              {results === 0 ? "No robots match" : `Show ${results} ${results === 1 ? "robot" : "robots"}`}
-            </Button>
-          </SheetFooter>
-        </SheetContent>
-      </Sheet>
-      <p className="text-sm text-muted-foreground">Your list of robots, filtered by the sheet.</p>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <FacetsDrawer facets={facetsOf(value)} value={value} onValueChange={change} defaultOpen={defaultOpen} />
+        {/* What the picks leave, said once after each change. */}
+        <p className="text-sm text-muted-foreground tabular-nums" aria-live="polite">
+          {formatCount(shown.length)} of {formatCount(robots.length)} robots
+        </p>
+      </div>
+      {shown.length === 0 ? (
+        <ListGroup className="py-4">
+          <EmptyState
+            size="inline"
+            icon={SearchX}
+            title="No robots match"
+            description="Pick another state or site."
+            action={
+              <Button variant="secondary" size="sm" onClick={() => change({})}>
+                Clear filters
+              </Button>
+            }
+          />
+        </ListGroup>
+      ) : (
+        <ListGroup role="list" aria-label="Robots">
+          {shown.map((r) => (
+            // The item draws the hairline between rows, as ResponsiveTable's phone rows do.
+            <div key={r.id} role="listitem" className="border-b border-border last:border-b-0">
+              <ListRow title={`Patrol dog ${r.id}`} meta={sites[r.site]} trailing={<InlineStatus status={states[r.state].status}>{states[r.state].label}</InlineStatus>} />
+            </div>
+          ))}
+        </ListGroup>
+      )}
     </div>
   )
 }
