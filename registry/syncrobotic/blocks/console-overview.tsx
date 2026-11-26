@@ -1,4 +1,4 @@
-// @syncrobotic/console-overview v0.40.0 · update: npx shadcn add @syncrobotic/console-overview --overwrite
+// @syncrobotic/console-overview v0.43.1 · update: npx shadcn add @syncrobotic/console-overview --overwrite
 "use client"
 
 import * as React from "react"
@@ -30,6 +30,9 @@ export function ConsoleOverview() {
   const [alarms, setAlarms] = React.useState(sampleAlarms)
   // The stop as in the dock: ready, sending until the robots confirm, then stopped with slide to release.
   const [stop, setStop] = React.useState<"ready" | "sending" | "stopped">("ready")
+  // The sample robots' reply; cleared on unmount so it never lands on a page that is gone.
+  const reply = React.useRef<ReturnType<typeof setTimeout>>(undefined)
+  React.useEffect(() => () => clearTimeout(reply.current), [])
   // One update for one or many: the row's Acknowledge and the header's "Acknowledge all" both record when.
   const acknowledge = (ids: string[]) => {
     const at = clock()
@@ -66,7 +69,7 @@ export function ConsoleOverview() {
             corner from 640 px), so it is one tap away wherever the reader is, as in the dock and the map workspace. */}
         <div className="sticky bottom-4 z-10 sm:ml-auto sm:w-72">
           {stop === "stopped" ? (
-            <SlideToRelease tag="All robots" onRelease={() => window.setTimeout(() => setStop("ready"), 500)} />
+            <SlideToRelease tag="All robots" onRelease={() => (reply.current = setTimeout(() => setStop("ready"), 500))} />
           ) : (
             <StopButton
               state={stop}
@@ -74,7 +77,7 @@ export function ConsoleOverview() {
               onStop={() => {
                 setStop("sending")
                 // The robots confirm: the app says so to the hand, then offers release.
-                window.setTimeout(() => {
+                reply.current = setTimeout(() => {
                   feedback("stopConfirmed")
                   setStop("stopped")
                 }, 800)
