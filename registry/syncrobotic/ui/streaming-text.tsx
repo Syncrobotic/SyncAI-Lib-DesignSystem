@@ -1,4 +1,4 @@
-// @syncrobotic/streaming-text v0.40.0 · update: npx shadcn add @syncrobotic/streaming-text --overwrite
+// @syncrobotic/streaming-text v0.41.0 · update: npx shadcn add @syncrobotic/streaming-text --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,6 +6,7 @@ import { ChevronDown, ChevronRight, CircleAlert, CircleCheck, CircleStop } from 
 import { cn } from "@/lib/utils"
 import { formatCount, formatNumber } from "@/registry/syncrobotic/lib/format-number"
 import { Button } from "@/registry/syncrobotic/ui/button"
+import { Markdown, markdownToText, type MarkdownProps } from "@/registry/syncrobotic/ui/markdown"
 import { Spinner } from "@/registry/syncrobotic/ui/spinner"
 
 /*
@@ -22,6 +23,10 @@ import { Spinner } from "@/registry/syncrobotic/ui/spinner"
   Accessibility: the status word is a polite live region, so each phase is said once ("Generating", "Done in 2.4 s").
   The answer is read in whole sentences, at most every `announceEveryMs` (5 s), never token by token; what is left is
   read when the answer ends. An answer that was already finished when it mounted is not read aloud.
+
+  `format="markdown"` renders the answer with the kit's Markdown (headings, lists, tables, code) while it streams. The
+  reading stays here, on the words without their syntax (`markdownToText`): a screen reader hears "The plate is clear",
+  never "asterisk asterisk", and a code block as "Code in bash." Markdown itself never speaks, so there is one voice.
 */
 
 export const streamingTextPhases = ["queued", "streaming", "done", "stopped", "error"] as const
@@ -126,8 +131,12 @@ export function sentenceEnd(rest: string, max = 400) {
 const paragraphs = (text: string) => text.split(/\n{2,}/)
 
 type Props = {
-  /** The answer so far, as plain text. Append each chunk to it; blank lines start paragraphs. No markdown is parsed. */
+  /** The answer so far. Append each chunk to it. As plain text (blank lines start paragraphs), or Markdown with `format`. */
   text: string
+  /** "text" (default): plain text, nothing parsed. "markdown": rendered with the kit's Markdown as it streams, read without its syntax. */
+  format?: "text" | "markdown"
+  /** Markdown's options with `format="markdown"`: `cite` for citation markers, `headingLevel`, `imageOrigins`, `labels`. */
+  markdownProps?: Omit<MarkdownProps, "text" | "streaming">
   phase: StreamingTextPhase
   /** While queued: the place in the queue, 1 being next. */
   queuePosition?: number
@@ -169,6 +178,8 @@ const live = (phase: StreamingTextPhase) => phase === "queued" || phase === "str
  */
 export function StreamingText({
   text,
+  format = "text",
+  markdownProps,
   phase,
   queuePosition,
   onStop,
@@ -201,12 +212,15 @@ export function StreamingText({
   const [said, setSaid] = React.useState("")
   const speak = React.useEffectEvent((all: boolean) => {
     if (announce !== "text") return
-    if (text.length < spoken.current) spoken.current = 0 // a new answer in the same place
-    const rest = text.slice(spoken.current)
+    // Markdown is read as its words: the syntax never reaches the live region.
+    const source =
+      format === "markdown" ? markdownToText(text, { streaming: phase === "streaming", cite: !!markdownProps?.cite, labels: markdownProps?.labels }) : text
+    if (source.length < spoken.current) spoken.current = 0 // a new answer in the same place
+    const rest = source.slice(spoken.current)
     const end = all ? rest.length : sentenceEnd(rest)
-    const words = rest.slice(0, end).trim()
+    const sentence = rest.slice(0, end).trim()
     spoken.current += end
-    if (words) setSaid(words)
+    if (sentence) setSaid(sentence)
   })
   const streaming = phase === "streaming"
   React.useEffect(() => {
@@ -331,11 +345,15 @@ export function StreamingText({
 
       {!empty && (
         <div data-slot="streaming-text-body" className="flex min-w-0 flex-col gap-3 text-base text-foreground">
-          {paragraphs(text).map((p, i) => (
-            <p key={i} className="break-words whitespace-pre-wrap">
-              {p}
-            </p>
-          ))}
+          {format === "markdown" ? (
+            <Markdown {...markdownProps} text={text} streaming={phase === "streaming"} />
+          ) : (
+            paragraphs(text).map((p, i) => (
+              <p key={i} className="break-words whitespace-pre-wrap">
+                {p}
+              </p>
+            ))
+          )}
         </div>
       )}
 
