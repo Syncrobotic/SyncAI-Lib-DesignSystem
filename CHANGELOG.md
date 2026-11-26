@@ -22,6 +22,7 @@ Before 1.0 a rename or a removal is a minor version. [0.42 migration](https://de
 - **TypeScript 6.0.3** (from 5.9). TypeScript 7 waits: its package exposes no compiler API to `typescript-eslint` (which supports up to 6.0) or to `scripts/props.mjs`.
 - **zod 4** in the repo (from 3.25): the docs' edit-form story uses `error` for the type message. The `form` example still asks for `zod@^3.25` and works unchanged on zod 4, so installing it never moves a product from zod 3 to 4.
 - **`@types/node` 26** (from 22) and the minor updates: Storybook 10.6.9, Vitest 5.1.2, typescript-eslint 8.74, lucide-react 1.80, recharts 3.11.1, shadcn 4.23.1, @tanstack/react-virtual 3.14.28, @hookform/resolvers 7.0.9, @axe-core/playwright 4.14.1, @types/react 19.3.3. Babel 8 waits.
+- **`prompt-composer` 0.42.0:** a Select in the toolbar (a model, a mode) drops its own ring and fill: the box is the one edge, and the select reads as a quiet button beside Attach, with the hover fill.
 - **`graph` 0.42.0:** compiles without Node's types. TypeScript 6 no longer loads every installed `@types` package, so its `process.env.NODE_ENV` check declares `process` in the file; bundlers still replace it in place.
 - **Docs site:** the search index revalidates instead of being kept for an hour, so a release's new components are found as soon as it is deployed.
 

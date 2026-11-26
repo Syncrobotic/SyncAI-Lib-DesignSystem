@@ -9371,7 +9371,7 @@
     {
      "name": "toolbar",
      "type": "ReactNode",
-     "description": "More controls beside the attach button: a model select, a context chip."
+     "description": "More controls beside the attach button: a model select, a context chip. A Select here loses its ring and fill (the box is the edge)."
     },
     {
      "name": "name",

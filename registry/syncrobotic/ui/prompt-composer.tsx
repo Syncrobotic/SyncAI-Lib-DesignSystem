@@ -1,4 +1,4 @@
-// @syncrobotic/prompt-composer v0.41.0 · update: npx shadcn add @syncrobotic/prompt-composer --overwrite
+// @syncrobotic/prompt-composer v0.42.0 · update: npx shadcn add @syncrobotic/prompt-composer --overwrite
 "use client"
 
 import * as React from "react"
@@ -136,7 +136,7 @@ export function PromptComposer({
   maxLength?: number
   /** How many lines the box grows to before it scrolls. Default 8. */
   maxRows?: number
-  /** More controls beside the attach button: a model select, a context chip. */
+  /** More controls beside the attach button: a model select, a context chip. A Select here loses its ring and fill (the box is the edge). */
   toolbar?: React.ReactNode
   /** The text box's name, for the form's data. */
   name?: string
@@ -313,7 +313,12 @@ export function PromptComposer({
         <span id={keysId} className="sr-only">
           {l.keyboard}
         </span>
-        <div data-slot="prompt-composer-toolbar" className="flex min-w-0 items-center gap-2">
+        {/* The box is the one edge: a select put in the toolbar (a model, a mode) drops its own ring and fill and reads as
+            a quiet button, like Attach beside it, with the hover fill to show it can be pressed. */}
+        <div
+          data-slot="prompt-composer-toolbar"
+          className="flex min-w-0 items-center gap-2 [&_[data-slot=select-trigger]]:bg-transparent [&_[data-slot=select-trigger]]:ring-0 [&_[data-slot=select-trigger]:hover]:bg-accent"
+        >
           {allowFiles && (
             <>
               <Button
