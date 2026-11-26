@@ -297,6 +297,36 @@ describe("app shell on the sidebar", () => {
     expect(wrapper()).toBe("320px")
   })
 
+  it("gives under 200 px at 40 % of the pointer, springs back on release and eases a fold", () => {
+    document.cookie = "sidebar_state_width=; path=/; max-age=0"
+    render(
+      <AppShell product="Fleet console" nav={sampleNav} current="#robots" title="Robots">
+        page
+      </AppShell>,
+    )
+    const rail = screen.getByRole("separator", { name: "Resize sidebar" })
+    fireEvent.keyDown(rail, { key: "Enter" })
+    fireEvent.pointerDown(rail, { button: 0, clientX: 240, pointerId: 1 })
+    fireEvent.pointerMove(rail, { clientX: 170, pointerId: 1 })
+    // 30 px under 200 shows as 12 px under it, without easing; the stored width stays 200.
+    expect(aside().style.width).toBe("188px")
+    expect(aside().dataset.resizing).toBe("true")
+    expect(rail.getAttribute("aria-valuenow")).toBe("200")
+    fireEvent.pointerUp(rail, { clientX: 170, pointerId: 1 })
+    expect(aside().style.width).toBe("")
+    expect(aside().dataset.resizing).toBeUndefined()
+    expect(aside().dataset.state).toBe("expanded")
+    // Past the fold the easing is on for the fold itself, mid-drag.
+    fireEvent.pointerDown(rail, { button: 0, clientX: 200, pointerId: 1 })
+    fireEvent.pointerMove(rail, { clientX: 180, pointerId: 1 })
+    expect(aside().dataset.resizing).toBe("true")
+    fireEvent.pointerMove(rail, { clientX: 120, pointerId: 1 })
+    expect(aside().dataset.state).toBe("collapsed")
+    expect(aside().dataset.resizing).toBeUndefined()
+    expect(aside().style.width).toBe("")
+    fireEvent.pointerUp(rail, { clientX: 120, pointerId: 1 })
+  })
+
   it("resizes from the keyboard: ← and → by 16 px, ← at the narrowest folds, → opens the rail", () => {
     document.cookie = "sidebar_state_width=; path=/; max-age=0"
     render(
