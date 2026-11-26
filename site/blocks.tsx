@@ -81,10 +81,6 @@ const meta: Record<string, Meta> = {
     thumbWidth: 720,
     height: 317
   },
-  "sparkline-metric-tiles": {
-    viewport: "desktop",
-    height: 172
-  },
   "sparkline-table": {
     viewport: "desktop",
     thumbWidth: 720,

@@ -390,7 +390,6 @@ export const placement: Record<string, { type: string; fit: "screen" | "content"
   "action-rail-shell": { type: "app-shell", fit: "screen" },
   "app-shell-mobile-tabs": { type: "app-shell", fit: "screen" },
   "stats-cards": { type: "stats", fit: "content" },
-  "sparkline-metric-tiles": { type: "stats", fit: "content" },
   "stats-meters": { type: "stats", fit: "content" },
   "stats-filtered": { type: "stats", fit: "content" },
   "fleet-table": { type: "data-table", fit: "content" },

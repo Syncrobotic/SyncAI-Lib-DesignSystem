@@ -691,10 +691,6 @@
     "version": "0.40.0",
     "hash": "08b1d2bf7b193c2a"
   },
-  "sparkline-metric-tiles": {
-    "version": "0.40.0",
-    "hash": "ad796e2c7c9d547b"
-  },
   "sparkline-table": {
     "version": "0.40.0",
     "hash": "a80bf138e28c1936"

@@ -28,7 +28,10 @@ const config: NextConfig = {
       // 0.40: the number library was renamed from format-count to format-number (it formats every number, not only counts).
       { source: "/docs/components/format-count", destination: "/docs/components/format-number", permanent: true },
       { source: "/docs/components/format-count.md", destination: "/docs/components/format-number.md", permanent: true },
-      { source: "/r/format-count.json", destination: "/r/format-number.json", permanent: true },
+      // 0.40: sparkline-metric-tiles was stats-cards with three stats; it is removed, and its pages lead to stats-cards.
+      { source: "/blocks/sparkline-metric-tiles", destination: "/blocks/stats#stats-cards", permanent: true },
+      { source: "/blocks/sparkline-metric-tiles.md", destination: "/blocks/stats-cards.md", permanent: true },
+      { source: "/preview/sparkline-metric-tiles", destination: "/preview/stats-cards", permanent: true },
     ]
   },
   // Security headers on every response. The docs show blocks in iframes of their own pages, so framing is allowed from
