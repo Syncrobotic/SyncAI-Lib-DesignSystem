@@ -2,7 +2,7 @@
 
 # SYNCROBOTIC Design System
 
-**A robotics UI kit for React.** Interfaces for the people who run robots: the design language behind every SYNCROBOTIC product, with design tokens, 135 React components, 63 blocks and 18 patterns, shipped as a [shadcn/ui](https://ui.shadcn.com) registry for Tailwind CSS v4. Components install into your project as source you can read and change.
+**A robotics UI kit for React.** Interfaces for the people who run robots: the design language behind every SYNCROBOTIC product, with design tokens, 135 React components, 65 blocks and 18 patterns, shipped as a [shadcn/ui](https://ui.shadcn.com) registry for Tailwind CSS v4. Components install into your project as source you can read and change.
 
 For robot apps it has what general UI kits leave out: an emergency stop, a fail-safe teleoperation pad, a robot map with ROS occupancy grids, laser scans and mission editing, a live camera feed, a LiDAR point cloud viewer, a URDF robot model, joint states and an alarm system. See [Robotics UI kit](https://design-system.syncrobotic.me/docs/robotics).
 
@@ -57,7 +57,7 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 | --- | --- |
 | **Foundations** | Principles, colour, typography, spacing, radius, elevation, motion, iconography, accessibility, alarms, data visualisation, and permissions and data states, each with its tokens and the rules for using them, plus an [icon set](https://design-system.syncrobotic.me/icons) that gives each icon one meaning, with robot icons Lucide lacks drawn to match. Tokens also ship as [DTCG JSON](public/tokens) for design tools, in light, dark and high contrast. |
 | **135 components** | General UI on Radix primitives, a charts component on Recharts, building blocks for data tools (filters, data grid, text diff, image grid), and the robot shell: emergency stop, slide to release, dock and dynamic island. |
-| **63 blocks, 18 patterns** | Blocks are whole screens and sections in two groups: Applications (shells, including an action-rail page, stats, small charts, cards, sign-in, settings, forms, wizards) and Solutions for robot operations (fleet operations, data operations with a keyboard-first review queue, users and access, incidents, maintenance, firmware rollout, AI agents). Patterns are ready-made uses of one component (charts, timelines, dialogs, sheets) and live on that component's page. Both install the same way. |
+| **65 blocks, 18 patterns** | Blocks are whole screens and sections in two groups: Applications (shells, including an action-rail page, stats, small charts, cards, sign-in, settings, forms, wizards) and Solutions for robot operations (fleet operations, data operations with a keyboard-first review queue, users and access, device enrolment and detail, incidents, maintenance, firmware rollout, AI agents). Patterns are ready-made uses of one component (charts, timelines, dialogs, sheets) and live on that component's page. Both install the same way. |
 
 <details>
 <summary>Every component, by group</summary>
@@ -100,6 +100,7 @@ Light is the default, because it reads in daylight and glare; add `class="dark"`
 | Identity and account | Settings | `settings-page`, `settings-notifications`, `settings-billing`, `settings-sessions` |
 | Tenancy and access | Users and access | `users-roles`, `users-invitations`, `users-audit-log` |
 | Tenancy and access | API keys and webhooks | `settings-api-keys`, `settings-webhooks` |
+| Device lifecycle | Devices | `device-enrolment`, `device-detail` |
 | Fleet operations | Fleet operations | `console-overview`, `map-workspace`, `list-detail`, `event-log`, `mission-schedule` |
 | Fleet operations | Incidents | `incident-queue`, `incident-detail` |
 | Fleet operations | Maintenance | `maintenance-due`, `maintenance-work-order` |
