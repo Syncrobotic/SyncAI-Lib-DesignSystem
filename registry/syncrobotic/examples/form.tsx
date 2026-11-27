@@ -1,4 +1,4 @@
-// @syncrobotic/form v0.25.0 · update: npx shadcn add @syncrobotic/form --overwrite
+// @syncrobotic/form v0.49.0 · update: npx shadcn add @syncrobotic/form --overwrite
 "use client"
 
 // A form with React Hook Form and zod, drawn with the kit's Field: an example to copy and change, not a component.
@@ -63,7 +63,7 @@ export function MissionForm({
   }
 
   return (
-    <form noValidate onSubmit={form.handleSubmit(submit)} className="flex w-md max-w-full flex-col gap-6">
+    <form noValidate onSubmit={(e) => void form.handleSubmit(submit)(e)} className="flex w-md max-w-full flex-col gap-6">
       {serverError && (
         <Alert tone="danger">
           <CircleAlert aria-hidden="true" />

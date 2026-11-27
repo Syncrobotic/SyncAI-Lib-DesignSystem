@@ -162,6 +162,23 @@ describe("AuthTwoFactor", () => {
   const type = (v: string) => fireEvent.change(code(), { target: { value: v } })
   const submit = () => fireEvent.click(screen.getByRole("button", { name: "Verify and sign in" }))
 
+  it("says a request that fails is not a wrong code, and stops waiting", async () => {
+    render(<AuthTwoFactor onVerify={() => Promise.reject(new Error("offline"))} />)
+    type("123456")
+    submit()
+    await flush()
+    expect(screen.getByText("Could not check the code. Check the connection and try again.")).toBeTruthy()
+    expect(screen.getByRole("button", { name: "Verify and sign in" }).getAttribute("aria-busy")).not.toBe("true")
+  })
+
+  it("treats a cancelled passkey prompt (a rejected promise) as a failed try, never a button left waiting", async () => {
+    const cancelled = Object.assign(new Error("The operation either timed out or was not allowed."), { name: "NotAllowedError" })
+    render(<AuthTwoFactor onPasskey={() => Promise.reject(cancelled)} />)
+    fireEvent.click(screen.getByRole("button", { name: /Use a passkey instead/ }))
+    await flush()
+    expect(screen.getByText(/No passkey for .* in this browser/)).toBeTruthy()
+  })
+
   it("asks for all six digits before checking", async () => {
     const onVerify = vi.fn()
     render(<AuthTwoFactor onVerify={onVerify} />)

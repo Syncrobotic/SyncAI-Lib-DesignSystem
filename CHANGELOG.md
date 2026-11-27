@@ -2,6 +2,37 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.49.0 · 2026-11-27
+
+The sidebar in balance in both its states, with a fold that moves between them, and sign-in that never waits for good.
+
+### Changed
+- **`sidebar` 0.49.0: a 68 px rail (was 72):**
+  - **Square links:** every link on the rail is a 44 px square, 12 px from either edge as in the open column.
+  - **One centre line:** the icons sit 12 px in, on the 34 px centre line, without the 2 px margin they had.
+  - **Scroll cues:** the fades and the chevron ease in and out with the scroll (the fades' depths are registered lengths, so the mask moves instead of jumping). They are gone at the end of the list and on the rail. The chevron sits at the list's foot, between the list and what is under it, instead of over the last link.
+- **`app-shell` 0.49.0: each state of the sidebar has its own balance, and the fold moves between them:**
+  - **Open:** the 28 px mark sits 14 px from the top and the 28 px avatar 14 px from the bottom, in a 40 px account button with 8 px corners, 8 px in. The names follow 8 px after each.
+  - **As a rail:** the account is a 44 px square with 12 px corners like the links', 12 px from the bottom as from either side, so the avatar is 20 px in from three edges. The mark stays centred in its row, level with the page's title across the gap.
+  - **Open:** the corners are concentric with the sidebar's 16 (16 = 8 + 8), and the foot is 56 px, as the head.
+  - **Both states:** the mark, the icons and the avatar stay on one centre line through the fold, and the height, corners and padding move with it.
+  - **Account menu from the rail:** pressing the avatar opens the sidebar, then the menu once the column has stopped moving, above the button as when open, and exactly as wide as the button at any sidebar width (it had a 224 px minimum, wider than a 200 px column's button). Without motion it opens at once; if the fold is reversed midway it stays shut.
+  - **Before:** in 0.48.0 the account button's fill touched the sidebar's bottom edge.
+- **App shell titles, 16 px:** the page's title in the top bar is 16 px bold (was 18), and the product's name in the sidebar is 16 px bold (was 14). They sit on one line across the gap, so they are one size; the title leads its sections and cards by place. Also in `action-rail-shell` and `app-shell-mobile-tabs` 0.49.0. The type scale in the docs and the agent skill says the same.
+- **`list-detail` 0.49.0:** the list's filter is filled, not outlined. It sits in the list's own bar, and an outline there would be an edge inside an edge.
+
+### Added
+- **`app-shell` 0.49.0:** `exit` on a user menu item. Sign out is neutral at rest and turns to danger text on a danger tint when it is pointed at or focused (5.9:1 dark, 8.4:1 light), so it warns as it is reached without reading as destructive.
+- **`app-shell` 0.49.0:** `sidebarOpen` and `sidebarWidth`, the sidebar's state as the server reads it from its cookies (`sidebar_state`, `sidebar_state_width`), so the first paint is already the person's sidebar instead of the default followed by a jump. `sidebar` 0.49.0 exports `SIDEBAR_WIDTH_COOKIE_NAME`. In a server component, read the cookies by name: it cannot import values from the client module.
+- **Lint:** the registry is linted with types for promises (`no-floating-promises`, `no-misused-promises`). It found that a cancelled passkey prompt left sign-in waiting for good. Handlers that already caught their own errors are passed as `() => void run()`: `copy-button`, `filters`, `settings-webhooks`, `agent-run-outcome` and the form example, all 0.49.0.
+
+### Fixed
+- **Pointer on menu items:** `dropdown-menu`, `context-menu`, `select`, `command`, `autocomplete` 0.49.0. Their items had `cursor-default`, which beat the theme's rule that anything clickable shows the pointer. They show it now.
+- **`auth-2fa`, `auth-passkey` 0.49.0:**
+  - **Cancelled passkey:** a cancelled or timed-out passkey prompt rejects (`NotAllowedError`). It is now a failed try with the way back to the code, never a button left loading.
+  - **Failed request:** a verify request that fails says the code could not be checked, not that it was wrong.
+  - **Tests:** both cases have tests that fail on the old code.
+
 ## 0.48.0 · 2026-11-27
 
 A calmer page: three title sizes in an app shell, a sidebar that says when there is more, and its two marks in balance.

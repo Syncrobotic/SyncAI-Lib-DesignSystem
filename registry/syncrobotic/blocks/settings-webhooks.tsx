@@ -1,4 +1,4 @@
-// @syncrobotic/settings-webhooks v0.40.0 · update: npx shadcn add @syncrobotic/settings-webhooks --overwrite
+// @syncrobotic/settings-webhooks v0.49.0 · update: npx shadcn add @syncrobotic/settings-webhooks --overwrite
 "use client"
 
 import * as React from "react"
@@ -501,7 +501,7 @@ export function SettingsWebhooks({
                 }
               />
               <div className="flex flex-wrap gap-2">
-                <Button size="sm" variant="secondary" loading={testing} disabled={selected.status === "disabled"} onClick={() => sendTest(selected)}>
+                <Button size="sm" variant="secondary" loading={testing} disabled={selected.status === "disabled"} onClick={() => void sendTest(selected)}>
                   <Send aria-hidden="true" />
                   Send test event
                 </Button>

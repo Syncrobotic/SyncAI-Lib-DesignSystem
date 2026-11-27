@@ -97,7 +97,7 @@ describe("sidebar", () => {
     fireEvent.click(screen.getByRole("button", { name: "Collapse sidebar" }))
     expect(aside().dataset.state).toBe("collapsed")
     expect(aside().dataset.collapsible).toBe("icon")
-    expect(aside().className).toContain("w-18")
+    expect(aside().className).toContain("w-17")
     fireEvent.click(screen.getByRole("button", { name: "Expand sidebar" }))
     expect(aside().dataset.state).toBe("expanded")
   })
@@ -260,7 +260,7 @@ describe("app shell on the sidebar", () => {
     expect(rail.getAttribute("aria-orientation")).toBe("vertical")
     // A rail (the test screen is under 1280 px).
     expect(rail.getAttribute("aria-expanded")).toBeNull()
-    expect(rail.getAttribute("aria-valuenow")).toBe("72")
+    expect(rail.getAttribute("aria-valuenow")).toBe("68")
     fireEvent.pointerDown(rail, { button: 0, clientX: 72, pointerId: 1 })
     fireEvent.pointerUp(rail, { button: 0, clientX: 72, pointerId: 1 })
     expect(aside().dataset.state).toBe("expanded")
@@ -325,6 +325,24 @@ describe("app shell on the sidebar", () => {
     expect(aside().dataset.resizing).toBeUndefined()
     expect(aside().style.width).toBe("")
     fireEvent.pointerUp(rail, { clientX: 120, pointerId: 1 })
+  })
+
+  it("starts as the server read it from the cookies: open or not, and the width, with no jump after hydration", () => {
+    document.cookie = "sidebar_state_width=; path=/; max-age=0"
+    render(
+      <AppShell product="Fleet console" nav={sampleNav} current="#robots" title="Robots" sidebarOpen sidebarWidth={296}>
+        page
+      </AppShell>,
+    )
+    expect(aside().dataset.state).toBe("expanded")
+    expect(document.querySelector<HTMLElement>("[data-slot=sidebar-wrapper]")!.style.getPropertyValue("--sidebar-width")).toBe("296px")
+    cleanup()
+    render(
+      <AppShell product="Fleet console" nav={sampleNav} current="#robots" title="Robots" sidebarOpen={false}>
+        page
+      </AppShell>,
+    )
+    expect(aside().dataset.state).toBe("collapsed")
   })
 
   it("resizes from the keyboard: ← and → by 16 px, ← at the narrowest folds, → opens the rail", () => {

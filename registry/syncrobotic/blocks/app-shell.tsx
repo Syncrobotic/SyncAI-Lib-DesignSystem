@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell v0.48.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
+// @syncrobotic/app-shell v0.49.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -72,8 +72,16 @@ export type AppNavItem = {
 }
 export type AppNavGroup = { label?: string; items: AppNavItem[] }
 export type AppUser = { name: string; initials: string; email?: string }
-/** One row of the user menu. Sign out goes last; it is not destructive, so it is not red. */
-export type AppUserMenuItem = { label: string; icon?: LucideIcon; href?: string; onSelect?: () => void; separatorBefore?: boolean }
+/** One row of the user menu. Sign out goes last, after a separator: not destructive, so not red at rest; marked `exit`, it turns danger as it is reached. */
+export type AppUserMenuItem = {
+  label: string
+  icon?: LucideIcon
+  href?: string
+  onSelect?: () => void
+  separatorBefore?: boolean
+  /** An exit (Sign out): neutral at rest, danger text on a danger tint when pointed at or focused, so it warns as you reach it. */
+  exit?: boolean
+}
 
 export type AppSearchItem = {
   label: string
@@ -202,7 +210,7 @@ export const sampleSearch: AppSearch = {
 export const sampleUserMenu: AppUserMenuItem[] = [
   { label: "Account", icon: UserRound, href: "#account" },
   { label: "Preferences", icon: Settings, href: "#preferences" },
-  { label: "Sign out", icon: LogOut, href: "#sign-out", separatorBefore: true },
+  { label: "Sign out", icon: LogOut, href: "#sign-out", separatorBefore: true, exit: true },
 ]
 
 /** The signed-in person every sample screen shows: the sidebar's foot is the same avatar, name and email on every block. */
@@ -253,6 +261,15 @@ type AppShellProps = {
   footer?: React.ReactNode
   /** The sidebar's words (its trigger, landmarks and phone sheet), e.g. sidebarProviderLabels from labels-zh-tw. */
   sidebarLabels?: Partial<SidebarLabels>
+  /**
+   * The sidebar as the person left it, read on the server from its cookies, so the first paint is already right instead
+   * of the default (open on wide screens, 240 px) followed by a jump: `sidebarOpen` from the "sidebar_state" cookie
+   * ("true" or "false"), `sidebarWidth` from "sidebar_state_width" (px). In Next.js, in the server component around it:
+   * `const c = await cookies()`, then `sidebarOpen={c.get("sidebar_state") ? c.get("sidebar_state")?.value === "true" : undefined}`
+   * and `sidebarWidth={Number(c.get("sidebar_state_width")?.value) || undefined}`.
+   */
+  sidebarOpen?: boolean
+  sidebarWidth?: number
   children: React.ReactNode
 }
 
@@ -312,17 +329,46 @@ function AppNav({ nav, current, linkAs: Link = "a" }: { nav: AppNavGroup[]; curr
  * sidebar's state, so it goes inside a SidebarProvider (the AppShell has one).
  */
 export function SidebarUserMenu({ user, items = sampleUserMenu, linkAs: Link = "a" }: { user: AppUser; items?: AppUserMenuItem[]; linkAs?: React.ElementType }) {
-  const { state, isMobile } = useSidebar()
+  const { state, isMobile, setOpen } = useSidebar()
   const rail = state === "collapsed" && !isMobile
+  const [menuOpen, setMenuOpen] = React.useState(false)
+  const trigger = React.useRef<HTMLButtonElement>(null)
+  // On the rail the menu has no room for the name and email it repeats, so pressing the avatar opens the sidebar first and
+  // the menu once the column has finished moving, where it is when the sidebar is open: above the button, as wide as it.
+  // Without motion (or if the column is not moving) it opens at once; if the fold is reversed midway, it stays closed.
+  const openFromRail = () => {
+    const frame = trigger.current?.closest<HTMLElement>("[data-slot=sidebar]")
+    setOpen(true)
+    if (!frame || parseFloat(getComputedStyle(frame).transitionDuration) === 0) return setMenuOpen(true)
+    const settle = (event: TransitionEvent) => {
+      if (event.target !== frame || event.propertyName !== "width") return
+      frame.removeEventListener("transitionend", settle)
+      frame.removeEventListener("transitioncancel", settle)
+      if (event.type === "transitionend") setMenuOpen(true)
+    }
+    frame.addEventListener("transitionend", settle)
+    frame.addEventListener("transitioncancel", settle)
+  }
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+    <DropdownMenu open={menuOpen} onOpenChange={(next) => (next && rail ? openFromRail() : setMenuOpen(next))}>
+      <DropdownMenuTrigger ref={trigger} asChild>
         {/* Named by what it shows (initials, name, email) and then what it opens, so speech input can say what is on screen
             (WCAG 2.5.3): no aria-label that would reorder the words. */}
-        {/* pr-3: the chevron's right edge lines up with the counts on the links above (px-3); the avatar keeps px-2, on
-            the rail's centre line. */}
-        <SidebarMenuButton size="lg" tooltip={user.name} className="pr-3 text-foreground">
-          <Avatar>
+        {/* Open: 40 px (44 on touch), 8 px corners. As a rail: a 44 px square with 12 px corners, as the links' buttons;
+            the height and the corners move with the fold, the width follows the column. The 28 px avatar stays 20 px in
+            (pl-2) on the 34 px centre line all through it, and the name follows 8 px after it, as the brand's name after
+            the mark. The chevron lines up with the counts above (pr-3). */}
+        <SidebarMenuButton
+          size="lg"
+          tooltip={user.name}
+          className={cn(
+            "h-10 gap-2 rounded-xs pr-3 pl-2 text-foreground pointer-coarse:h-(--h-md)",
+            "transition-[height,border-radius,background-color,color] duration-(--motion-sheet) ease-(--ease-standard) motion-reduce:transition-none",
+            "group-data-[collapsible=icon]/sidebar:h-11 group-data-[collapsible=icon]/sidebar:rounded-sm",
+          )}
+        >
+          {/* 28 px, as the mark at the top: both sit 14 px from their edges, on the 34 px centre line. */}
+          <Avatar className="size-7">
             <AvatarFallback>{user.initials}</AvatarFallback>
           </Avatar>
           <span className="flex flex-col">
@@ -333,7 +379,7 @@ export function SidebarUserMenu({ user, items = sampleUserMenu, linkAs: Link = "
           <ChevronsUpDown aria-hidden="true" className="text-muted-foreground" />
         </SidebarMenuButton>
       </DropdownMenuTrigger>
-      <DropdownMenuContent side={rail ? "right" : "top"} align={rail ? "end" : "start"} className="w-(--radix-dropdown-menu-trigger-width) min-w-56">
+      <DropdownMenuContent side="top" align="start" className="w-(--radix-dropdown-menu-trigger-width) min-w-0">
         <DropdownMenuLabel className="flex flex-col">
           <span className="truncate text-sm font-medium text-foreground">{user.name}</span>
           {user.email && <span className="truncate text-xs font-normal text-muted-foreground">{user.email}</span>}
@@ -342,7 +388,7 @@ export function SidebarUserMenu({ user, items = sampleUserMenu, linkAs: Link = "
         {items.map((item) => (
           <React.Fragment key={item.label}>
             {item.separatorBefore && <DropdownMenuSeparator />}
-            <DropdownMenuItem asChild={!!item.href} onSelect={item.onSelect}>
+            <DropdownMenuItem asChild={!!item.href} onSelect={item.onSelect} className={cn(item.exit && "focus:bg-danger-subtle focus:text-danger")}>
               {item.href ? (
                 <Link href={item.href}>
                   {item.icon && <item.icon aria-hidden="true" />}
@@ -514,7 +560,7 @@ const wideNow = () => window.matchMedia(WIDE).matches
  * The frame of an internal tool, in three zones: the sidebar (navigation, with the user menu at its foot), the top bar
  * (sidebar trigger, page title, environment, search, actions), and the content with its footer.
  *
- * The sidebar is the kit's Sidebar: open on wide screens (1280 px and up) and a 72 px rail of icons with tooltips below
+ * The sidebar is the kit's Sidebar: open on wide screens (1280 px and up) and a 68 px rail of icons with tooltips below
  * that, until the person toggles it; the choice is kept in a cookie. Collapse is on the sidebar itself: a quiet button at
  * the end of its brand row and, for a mouse, its edge (hover shows a hairline). While it is a rail, the expand button sits
  * at the start of the top bar, and the edge expands it too. ⌘B / Ctrl+B toggles it anywhere. Phones get it as a sheet
@@ -538,6 +584,8 @@ export function AppShell({
   layout = "inset",
   footer,
   sidebarLabels,
+  sidebarOpen,
+  sidebarWidth,
   children,
 }: AppShellProps) {
   const wide = React.useSyncExternalStore(subscribeWide, wideNow, () => true)
@@ -549,7 +597,8 @@ export function AppShell({
     // The page scrolls inside <main>, below the top bar, so what pins to the top (TabsList sticky) pins at 0
     // (--shell-top), on the content panel's surface (--shell-surface).
     <SidebarProvider
-      defaultOpen={wide}
+      defaultOpen={sidebarOpen ?? wide}
+      defaultWidth={sidebarWidth}
       labels={sidebarLabels}
       className={cn(
         "h-[var(--app-shell-height,100dvh)] bg-background text-foreground [--shell-top:0]",
@@ -557,19 +606,27 @@ export function AppShell({
       )}
     >
       <Sidebar variant={inset ? "floating" : "sidebar"}>
-        {/* The brand row is as tall as the top bar, so their edges line up across the gap. The logo sits in a 48 px box
-            12 px in, so its centre is the rail's centre line, open or closed; only the name fades. Flush: lined, level
+        {/* The brand row is as tall as the top bar, so their edges line up across the gap. The 28 px logo sits 20 px
+            in, so its centre is the rail's centre line (34 px), open or closed; the name follows 8 px after it, as the
+            account's name after the avatar. Only the name fades. Flush: lined, level
             with the top bar's line. */}
-        <SidebarHeader className={cn("h-(--h-row) justify-center border-b py-0", inset ? "border-transparent" : "border-border")}>
-          <span className="flex min-w-0 items-center gap-1">
-            <span className="flex w-12 shrink-0 items-center justify-center">
+        {/* The mark stays centred in the row in both states (14 px from the top), level with the page's title across the
+            gap: raising it on the rail to mirror the avatar's 12 px broke that line, and the line reads first. */}
+        <SidebarHeader
+          className={cn(
+            "h-(--h-row) justify-center border-b py-0",
+            inset ? "border-transparent" : "border-border",
+          )}
+        >
+          <span className="flex min-w-0 items-center gap-2">
+            <span className="ml-2 flex size-7 shrink-0 items-center justify-center">
               {logo ?? (
-                <span aria-hidden="true" className="flex size-8 items-center justify-center rounded-xs bg-primary text-sm font-bold text-primary-foreground">
+                <span aria-hidden="true" className="flex size-7 items-center justify-center rounded-xs bg-primary text-sm font-bold text-primary-foreground">
                   {product.slice(0, 1)}
                 </span>
               )}
             </span>
-            <span className="min-w-0 flex-1 truncate text-sm font-bold whitespace-nowrap transition-opacity duration-(--motion-base) ease-(--ease-standard) group-data-[collapsible=icon]/sidebar:opacity-0">
+            <span className="min-w-0 flex-1 truncate text-base font-bold whitespace-nowrap transition-opacity duration-(--motion-base) ease-(--ease-standard) group-data-[collapsible=icon]/sidebar:opacity-0">
               {product}
             </span>
           </span>
@@ -578,9 +635,15 @@ export function AppShell({
           <AppNav nav={nav} current={current} linkAs={linkAs} />
         </SidebarContent>
         {user && (
-          // The foot mirrors the head: no padding of its own around the 56 px account row, so the mark above and the 32 px
-          // avatar below sit the same 12 px from their edges, on the same centre line and the same left edge.
-          <SidebarFooter className={cn("border-t py-0", inset ? "border-transparent" : "border-border")}>
+          // Open: 56 px, as the brand row, 8 px around a 40 px account button, its 8 px corner concentric with the sidebar's
+          // 16 (16 = 8 + 8). As a rail: a 44 px square like the links', 12 px from the bottom as from either side, so the
+          // avatar sits 20 px in from three edges, as the mark does in its row. The fold moves the padding with the column.
+          <SidebarFooter
+            className={cn(
+              "border-t py-2 transition-[padding] duration-(--motion-sheet) ease-(--ease-standard) group-data-[collapsible=icon]/sidebar:py-3 motion-reduce:transition-none",
+              inset ? "border-transparent" : "border-border",
+            )}
+          >
             <SidebarUserMenu user={user} items={userMenu} linkAs={linkAs} />
           </SidebarFooter>
         )}
@@ -602,8 +665,9 @@ export function AppShell({
           {/* Phones only: the menu button that opens the sheet. Wide screens fold the sidebar at its edge. */}
           <SidebarTrigger show="mobile" className="-ms-2" />
           {breadcrumb && <div className="hidden min-w-0 shrink items-center gap-1 md:flex">{breadcrumb}</div>}
-          {/* The page's title, 18 px: above its sections and cards (16), quiet in the 56 px bar. */}
-          <h1 className="truncate text-lg font-bold">{title}</h1>
+          {/* The page's title, 16 px bold: the product's name across the gap is the same size on the same line, so the two
+              read as one band. It leads its sections and cards (also 16) by place, in its own bar above them. */}
+          <h1 className="truncate text-base font-bold">{title}</h1>
           {/* On phones the title keeps the room; the environment shows from 640 px. */}
           {env && (
             <Badge tone={env.tone} className="max-sm:hidden">
