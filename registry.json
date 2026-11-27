@@ -2172,8 +2172,13 @@
         }
       ],
       "meta": {
-        "version": "0.36.0",
+        "version": "0.49.0",
         "changelog": [
+          {
+            "version": "0.49.0",
+            "date": "2026-11-26",
+            "note": "Items show the pointer cursor, as everything clickable in the kit (a cursor-default class overrode the theme's rule)."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -4219,8 +4224,13 @@
         }
       ],
       "meta": {
-        "version": "0.36.0",
+        "version": "0.49.0",
         "changelog": [
+          {
+            "version": "0.49.0",
+            "date": "2026-11-26",
+            "note": "Items show the pointer cursor, as everything clickable in the kit (a cursor-default class overrode the theme's rule)."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -4301,8 +4311,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.36.0",
+        "version": "0.49.0",
         "changelog": [
+          {
+            "version": "0.49.0",
+            "date": "2026-11-26",
+            "note": "Items show the pointer cursor, as everything clickable in the kit (a cursor-default class overrode the theme's rule)."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -4342,8 +4357,13 @@
         }
       ],
       "meta": {
-        "version": "0.36.0",
+        "version": "0.49.0",
         "changelog": [
+          {
+            "version": "0.49.0",
+            "date": "2026-11-26",
+            "note": "Items show the pointer cursor, as everything clickable in the kit (a cursor-default class overrode the theme's rule)."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -5990,8 +6010,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.49.0",
         "changelog": [
+          {
+            "version": "0.49.0",
+            "date": "2026-11-26",
+            "note": "Items show the pointer cursor, as everything clickable in the kit (a cursor-default class overrode the theme's rule)."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -7678,7 +7703,7 @@
           {
             "version": "0.49.0",
             "date": "2026-11-26",
-            "note": "Each sidebar state has its own balance and the fold moves between them. Open: a 28 px mark 14 px from the top, a 28 px avatar 14 px from the bottom in a 40 px account button with 8 px corners, 8 px in; names 8 px after each. As a rail: both 12 px from their edges, the account a 44 px square with 12 px corners like the links', 4 px from the bottom; corners concentric with the sidebar's in both. sidebarOpen and sidebarWidth take the sidebar's state from the server's cookies, so the first paint is already right. The page's title and the product's name are both 16 px bold, on one line."
+            "note": "Each sidebar state has its own balance and the fold moves between them. Open: a 28 px mark 14 px from the top, a 28 px avatar 14 px from the bottom in a 40 px account button with 8 px corners, 8 px in; names 8 px after each. As a rail: both 12 px from their edges, the account a 44 px square with 12 px corners like the links', 4 px from the bottom; corners concentric with the sidebar's in both. sidebarOpen and sidebarWidth take the sidebar's state from the server's cookies, so the first paint is already right. The page's title and the product's name are both 16 px bold, on one line. User menu items take `exit`: Sign out is neutral at rest and turns danger when pointed at or focused."
           },
           {
             "version": "0.48.0",

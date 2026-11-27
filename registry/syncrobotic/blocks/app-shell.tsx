@@ -72,8 +72,16 @@ export type AppNavItem = {
 }
 export type AppNavGroup = { label?: string; items: AppNavItem[] }
 export type AppUser = { name: string; initials: string; email?: string }
-/** One row of the user menu. Sign out goes last; it is not destructive, so it is not red. */
-export type AppUserMenuItem = { label: string; icon?: LucideIcon; href?: string; onSelect?: () => void; separatorBefore?: boolean }
+/** One row of the user menu. Sign out goes last, after a separator: not destructive, so not red at rest; marked `exit`, it turns danger as it is reached. */
+export type AppUserMenuItem = {
+  label: string
+  icon?: LucideIcon
+  href?: string
+  onSelect?: () => void
+  separatorBefore?: boolean
+  /** An exit (Sign out): neutral at rest, danger text on a danger tint when pointed at or focused, so it warns as you reach it. */
+  exit?: boolean
+}
 
 export type AppSearchItem = {
   label: string
@@ -202,7 +210,7 @@ export const sampleSearch: AppSearch = {
 export const sampleUserMenu: AppUserMenuItem[] = [
   { label: "Account", icon: UserRound, href: "#account" },
   { label: "Preferences", icon: Settings, href: "#preferences" },
-  { label: "Sign out", icon: LogOut, href: "#sign-out", separatorBefore: true },
+  { label: "Sign out", icon: LogOut, href: "#sign-out", separatorBefore: true, exit: true },
 ]
 
 /** The signed-in person every sample screen shows: the sidebar's foot is the same avatar, name and email on every block. */
@@ -380,7 +388,7 @@ export function SidebarUserMenu({ user, items = sampleUserMenu, linkAs: Link = "
         {items.map((item) => (
           <React.Fragment key={item.label}>
             {item.separatorBefore && <DropdownMenuSeparator />}
-            <DropdownMenuItem asChild={!!item.href} onSelect={item.onSelect}>
+            <DropdownMenuItem asChild={!!item.href} onSelect={item.onSelect} className={cn(item.exit && "focus:bg-danger-subtle focus:text-danger")}>
               {item.href ? (
                 <Link href={item.href}>
                   {item.icon && <item.icon aria-hidden="true" />}

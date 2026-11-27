@@ -1,4 +1,4 @@
-// @syncrobotic/autocomplete v0.32.0 · update: npx shadcn add @syncrobotic/autocomplete --overwrite
+// @syncrobotic/autocomplete v0.49.0 · update: npx shadcn add @syncrobotic/autocomplete --overwrite
 "use client"
 
 import * as React from "react"
@@ -250,7 +250,7 @@ export function Autocomplete({
                         setKeyNav(false)
                       }}
                       className={cn(
-                        "flex min-h-(--h-sm) cursor-default items-center gap-2 rounded-sm px-3 py-1 text-sm transition-colors duration-(--motion-fast) ease-(--ease-standard)",
+                        "flex min-h-(--h-sm) cursor-pointer items-center gap-2 rounded-sm px-3 py-1 text-sm transition-colors duration-(--motion-fast) ease-(--ease-standard)",
                         isActive && "bg-accent",
                         // The fill alone is 1.2:1: in keyboard use the active option also carries a 2 px ring inside it.
                         isActive && keyNav && "outline-2 -outline-offset-2 outline-ring",

@@ -22,10 +22,12 @@ The sidebar in balance in both its states, with a fold that moves between them, 
 - **`list-detail` 0.49.0:** the list's filter is filled, not outlined. It sits in the list's own bar, and an outline there would be an edge inside an edge.
 
 ### Added
+- **`app-shell` 0.49.0:** `exit` on a user menu item. Sign out is neutral at rest and turns to danger text on a danger tint when it is pointed at or focused (5.9:1 dark, 8.4:1 light), so it warns as it is reached without reading as destructive.
 - **`app-shell` 0.49.0:** `sidebarOpen` and `sidebarWidth`, the sidebar's state as the server reads it from its cookies (`sidebar_state`, `sidebar_state_width`), so the first paint is already the person's sidebar instead of the default followed by a jump. `sidebar` 0.49.0 exports `SIDEBAR_WIDTH_COOKIE_NAME`. In a server component, read the cookies by name: it cannot import values from the client module.
 - **Lint:** the registry is linted with types for promises (`no-floating-promises`, `no-misused-promises`). It found that a cancelled passkey prompt left sign-in waiting for good. Handlers that already caught their own errors are passed as `() => void run()`: `copy-button`, `filters`, `settings-webhooks`, `agent-run-outcome` and the form example, all 0.49.0.
 
 ### Fixed
+- **Pointer on menu items:** `dropdown-menu`, `context-menu`, `select`, `command`, `autocomplete` 0.49.0. Their items had `cursor-default`, which beat the theme's rule that anything clickable shows the pointer. They show it now.
 - **`auth-2fa`, `auth-passkey` 0.49.0:**
   - **Cancelled passkey:** a cancelled or timed-out passkey prompt rejects (`NotAllowedError`). It is now a failed try with the way back to the code, never a button left loading.
   - **Failed request:** a verify request that fails says the code could not be checked, not that it was wrong.
