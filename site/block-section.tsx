@@ -23,6 +23,8 @@ export function BlockSection({ block: b, heading = "h3", near = false }: { block
     title: b.title,
     description: b.description,
     markdown: blockMarkdown(b.name) ?? "",
+    status: b.status,
+    wiring: b.wiring,
     href: blockHref(b.name),
     origin: site.url,
     uses: uses.map((u) => ({ name: u, href: usesHref(u) })),

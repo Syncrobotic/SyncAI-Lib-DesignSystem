@@ -1,5 +1,5 @@
 import registry from "../registry.json"
-import { blockGroups, blockTypes, placement } from "./block-types"
+import { blockFlags, blockGroups, blockTypes, placement } from "./block-types"
 import { blockList } from "./block-list"
 
 // Blocks are composed sections. Each renders alone at /preview/<name> (its component in site/block-renders.tsx) so the
@@ -168,7 +168,7 @@ const meta: Record<string, Meta> = {
     height: 340
   },
   "marketing-hero": { viewport: "desktop", height: 548, thumb: { x: 56, y: 104, width: 600 }},
-  // Solutions, batch 4: whole screens in the app shell.
+  // Whole screens in the app shell.
   "mission-schedule": { viewport: "desktop", height: 720},
   "users-invitations": { viewport: "desktop", height: 680},
   "users-audit-log": { viewport: "desktop", height: 680},
@@ -185,7 +185,7 @@ const meta: Record<string, Meta> = {
   "agent-run-gate": { viewport: "desktop", height: 1200},
   "agent-run-outcome": { viewport: "desktop", height: 960},
   "agent-tool-permissions": { viewport: "desktop", height: 1400},
-  // Applications, batch 3. Dialogs and sheets open on load in the preview without taking the page's focus.
+  // Dialogs and sheets open on load in the preview without taking the page's focus.
   "app-shell-mobile-tabs": { viewport: "mobile", height: 720},
   "app-shell-control": { viewport: "mobile", height: 760},
   "stats-meters": {
@@ -216,7 +216,7 @@ const meta: Record<string, Meta> = {
   "settings-api-keys": {
     viewport: "desktop",
     thumbWidth: 960,
-    height: 289
+    height: 345
   },
   "settings-billing": {
     viewport: "desktop",
@@ -228,12 +228,12 @@ const meta: Record<string, Meta> = {
   "settings-webhooks": {
     viewport: "desktop",
     thumbWidth: 960,
-    height: 766
+    height: 754
   },
   "settings-sessions": {
     viewport: "desktop",
     thumbWidth: 960,
-    height: 646
+    height: 638
   },
   "dialog-confirm-destructive": {
     viewport: "desktop",
@@ -295,7 +295,7 @@ for (const b of blockList) if (!(b.name in meta)) throw new Error(`Block ${b.nam
 export const blocks = Object.keys(placement)
   .map((name) => registry.items.find((i) => i.type === "registry:block" && i.name === name))
   .filter((i): i is NonNullable<typeof i> => !!i && i.name in meta)
-  .map((i) => ({ ...i, thumb: inShell.has(i.name) ? shellView : undefined, ...meta[i.name], ...placement[i.name] }))
+  .map((i) => ({ ...i, thumb: inShell.has(i.name) ? shellView : undefined, ...meta[i.name], ...placement[i.name], ...blockFlags(i.meta) }))
 
 /** Blocks that render an h1 of their own: their preview page adds none (one h1 a page; lint:html-size checks). */
 export const ownHeading = new Set<string>([
@@ -313,7 +313,7 @@ export const blocksOfType = (slug: string) => blocks.filter((b) => b.type === sl
 
 
 /**
- * The /blocks cards: one per type of the Applications and Solutions groups, showing the block that stands for the type (its
+ * The /blocks cards: one per type with a page of its own (not a component's patterns), showing the block that stands for the type (its
  * cover if one is marked, else the first). Each is a picture taken by scripts/thumbs.mjs (npm run thumbs -- --blocks) from
  * the block's preview at `width`: a desktop screen shows one region of itself (`view`, by default its top-left 480 px) at
  * about half size, where the words still read; a section or a phone sits whole, centred. The page and the script read this
@@ -321,12 +321,13 @@ export const blocksOfType = (slug: string) => blocks.filter((b) => b.type === sl
  */
 export function blockCards() {
   return blockTypes
-    .filter((t) => (blockGroups as readonly string[]).includes(t.group) && blocksOfType(t.slug).length > 0)
+    .filter((t) => !t.home && (blockGroups as readonly string[]).includes(t.group) && blocksOfType(t.slug).length > 0)
     .map((t) => {
       const list = blocksOfType(t.slug)
       const b = list.find((x) => x.cover) ?? list[0]
       const width = b.thumbWidth ?? (b.viewport === "mobile" ? 390 : 1280)
       const view: ThumbView | undefined = b.thumb ?? (b.fit === "screen" && width > 600 ? { width: 480 } : undefined)
-      return { type: t.slug, group: t.group, title: t.title, description: t.description, count: list.length, name: b.name, width, height: b.height, fit: b.fit, view }
+      const beta = list.some((x) => x.status === "beta")
+      return { type: t.slug, group: t.group, title: t.title, description: t.description, count: list.length, beta, name: b.name, width, height: b.height, fit: b.fit, view }
     })
 }

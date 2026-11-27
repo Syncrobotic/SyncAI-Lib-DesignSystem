@@ -302,6 +302,29 @@
       }
     },
     {
+      "name": "list-query",
+      "type": "registry:lib",
+      "title": "List query",
+      "description": "The query a server-paged list sends (page, limit, sortBy, order, search) and the page it gets back (items, total), read from and written to URLSearchParams.",
+      "files": [
+        {
+          "path": "registry/syncrobotic/lib/list-query.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.55.0",
+        "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "First release: `ListQuery`, `ListPage<T>`, `parseListQuery` (malformed values fall back to the defaults; `sortable` and `maxLimit` bound a hand-edited URL), `serializeListQuery` (keeps other keys, leaves defaults out), `pageCount`, `pageRange` and `clampPage`."
+          }
+        ]
+      }
+    },
+    {
       "name": "format-number",
       "type": "registry:lib",
       "title": "Format number",
@@ -417,8 +440,13 @@
         }
       ],
       "meta": {
-        "version": "0.54.0",
+        "version": "0.55.0",
         "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "`dataStateLabels`, `permissionGateLabels` and `stepUpDialogLabels` for the new data-state, permission-gate and step-up-dialog (載入中…, 沒有權限, 確認是你本人). Also the ten controlled blocks' labels; `noAccessPageLabels.body` follows the new signature."
+          },
           {
             "version": "0.54.0",
             "date": "2026-11-27",
@@ -776,6 +804,56 @@
           }
         ],
         "status": "stable"
+      }
+    },
+    {
+      "name": "use-list-query",
+      "type": "registry:hook",
+      "title": "useListQuery",
+      "description": "A server-paged list's query kept in the URL, so a filtered view is a link: page, limit, sortBy, order and search, read through list-query's grammar.",
+      "registryDependencies": [
+        "@syncrobotic/list-query",
+        "@syncrobotic/use-debounce"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/hooks/use-list-query.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.55.0",
+        "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "First release: the query from the URL through an adapter (`historyAdapter` by default, `memoryAdapter`, or your router's), the search text ahead of the URL with a debounce, and a new search, sort, limit or filter back on page 1. `setQuery` and `useSearchText` for controlled blocks."
+          }
+        ]
+      }
+    },
+    {
+      "name": "use-step-up",
+      "type": "registry:hook",
+      "title": "useStepUp",
+      "description": "Runs a sensitive action and, when the server answers with a step-up code, holds it, opens the step-up dialog, and replays it once the person is verified.",
+      "files": [
+        {
+          "path": "registry/syncrobotic/hooks/use-step-up.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.55.0",
+        "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "First release: `run(action)`, triggered by `ELEVATED_SESSION_REQUIRED` and `TWO_FACTOR_SETUP_REQUIRED` (configurable), replays once after `verify`; cancel rejects with `StepUpCancelledError`. `errorCodeOf` reads `code` or the envelope's `error.code`, never the message."
+          }
+        ]
       }
     },
     {
@@ -1529,8 +1607,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.55.0",
         "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "`aria-disabled=\"true\"` looks disabled as `disabled` does, in every variant, and stays focusable: for a control whose reason shows in a tooltip (permission-gate)."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -3659,6 +3742,69 @@
       }
     },
     {
+      "name": "data-state",
+      "type": "registry:ui",
+      "title": "Data state",
+      "description": "One contract for what a data region shows while it loads, when it is empty, failed, forbidden, out of date or ready.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/skeleton",
+        "@syncrobotic/button",
+        "@syncrobotic/empty-state"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/data-state.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.55.0",
+        "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "First release: `state` loading, empty, error, forbidden, stale or ready; an error's copy from its `code` through `labels.errors` (the message is never shown or parsed), Try again, stale content kept under a notice, one live region. `dataStateOf` picks the state from a fetch."
+          }
+        ]
+      }
+    },
+    {
+      "name": "permission-gate",
+      "type": "registry:ui",
+      "title": "Permission gate",
+      "description": "Shows, disables with a reason, makes read-only or replaces what a permission string guards.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/cn",
+        "@syncrobotic/empty-state",
+        "@syncrobotic/tooltip"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/permission-gate.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.55.0",
+        "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "First release: `can` and `permission` (all, or any) or `allowed`, never a role's name; modes `hidden`, `disabled` (aria-disabled, focusable, the reason in a tooltip, on a tap and to screen readers), `read-only` and `forbidden`. `permissionsFrom` and `isAllowed`."
+          }
+        ]
+      }
+    },
+    {
       "name": "table",
       "type": "registry:ui",
       "title": "Table",
@@ -4847,6 +4993,40 @@
           }
         ],
         "status": "stable"
+      }
+    },
+    {
+      "name": "step-up-dialog",
+      "type": "registry:ui",
+      "title": "Step-up dialog",
+      "description": "Asks for a fresh check (an authenticator code or the password) before a sensitive action, then hands back to the action.",
+      "dependencies": [
+        "lucide-react@^1"
+      ],
+      "registryDependencies": [
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/button",
+        "@syncrobotic/dialog",
+        "@syncrobotic/field",
+        "@syncrobotic/input",
+        "@syncrobotic/input-otp"
+      ],
+      "files": [
+        {
+          "path": "registry/syncrobotic/ui/step-up-dialog.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "meta": {
+        "status": "beta",
+        "version": "0.55.0",
+        "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "First release: a 6-digit code (sent on the sixth digit, once) or the password, through your `verify()`; a failure's message from its code, announced, the field cleared and focused. With `setup`, offers `onSetup` instead. Opened by useStepUp."
+          }
+        ]
       }
     },
     {
@@ -8979,6 +9159,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -9048,7 +9230,13 @@
         "@syncrobotic/meter",
         "@syncrobotic/pagination",
         "@syncrobotic/format-number",
-        "@syncrobotic/responsive-table"
+        "@syncrobotic/responsive-table",
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/use-list-query",
+        "@syncrobotic/list-query",
+        "@syncrobotic/alert",
+        "@syncrobotic/data-state",
+        "@syncrobotic/permission-gate"
       ],
       "files": [
         {
@@ -9057,8 +9245,15 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.55.0",
+        "status": "beta",
+        "wiring": "controlled",
         "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "Controlled: `FleetTableContent` renders only from props (server `total`, data state, permission strings, `labels`); the old export is its demo. Segment counts come from `counts`, no longer counted in the browser."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -9163,6 +9358,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -9244,6 +9441,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -9305,6 +9504,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "controlled",
         "changelog": [
           {
             "version": "0.53.0",
@@ -9437,6 +9638,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "controlled",
         "changelog": [
           {
             "version": "0.53.0",
@@ -9517,6 +9720,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "controlled",
         "changelog": [
           {
             "version": "0.53.0",
@@ -9609,6 +9814,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -9692,6 +9899,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -9825,6 +10034,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -9926,6 +10137,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -10034,6 +10247,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -10129,6 +10344,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -10202,6 +10419,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -10264,6 +10483,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -10332,7 +10553,10 @@
         "@syncrobotic/choice-field",
         "@syncrobotic/use-presence",
         "@syncrobotic/scrollspy",
-        "@syncrobotic/section-header"
+        "@syncrobotic/section-header",
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/data-state",
+        "@syncrobotic/permission-gate"
       ],
       "files": [
         {
@@ -10341,8 +10565,15 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.55.0",
+        "status": "beta",
+        "wiring": "controlled",
         "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "Controlled: `SettingsPageContent` renders only from props (server `total`, data state, permission strings, `labels`); the old export is its demo. Read-only without `project:write`; delete disabled with its reason without `project:delete`."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -10408,6 +10639,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -10477,7 +10710,14 @@
         "@syncrobotic/select",
         "@syncrobotic/table",
         "@syncrobotic/toast",
-        "@syncrobotic/empty-state"
+        "@syncrobotic/empty-state",
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/format-number",
+        "@syncrobotic/list-query",
+        "@syncrobotic/alert",
+        "@syncrobotic/data-state",
+        "@syncrobotic/pagination",
+        "@syncrobotic/permission-gate"
       ],
       "files": [
         {
@@ -10486,8 +10726,15 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.55.0",
+        "status": "beta",
+        "wiring": "controlled",
         "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "Controlled: `UsersRolesContent` renders only from props (server `total`, data state, permission strings, `labels`); the old export is its demo. Roles arrive with their permission bundles; nobody gives a role above their own. Invite sits in the content."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -10553,6 +10800,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -10608,8 +10857,15 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.55.0",
+        "status": "beta",
+        "wiring": "controlled",
         "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "Breaking: `NoAccessPage` takes `permission` instead of `role`, and `NoAccessPageLabels.body` is `(permission, admin)`; `ErrorPage` has no default `reference` and words errors by `error.code`."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -10696,8 +10952,13 @@
         }
       ],
       "meta": {
-        "version": "0.51.0",
+        "version": "0.55.0",
         "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "Permissions and data states in the design language (permission strings, hidden, disabled with a reason, read-only, forbidden, 404 across tenants; one DataState, counts from `total`, the list query in the URL, step-up); checklist line 10 says it."
+          },
           {
             "version": "0.51.0",
             "date": "2026-11-27",
@@ -10838,6 +11099,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -10884,6 +11147,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -10944,6 +11209,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -11014,6 +11281,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -11069,6 +11338,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -11129,6 +11400,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -11194,6 +11467,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -11249,6 +11524,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -11304,6 +11581,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -11359,6 +11638,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -11412,6 +11693,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -11474,6 +11757,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -11526,6 +11811,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -11573,6 +11860,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -11628,6 +11917,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -11680,6 +11971,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -11735,6 +12028,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -11785,6 +12080,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -11843,6 +12140,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -11914,6 +12213,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -11990,6 +12291,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -12043,6 +12346,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -12137,6 +12442,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -12175,6 +12482,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -12225,6 +12534,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -12277,6 +12588,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -12356,6 +12669,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -12418,6 +12733,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -12476,6 +12793,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -12541,6 +12860,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -12603,6 +12924,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -12660,7 +12983,16 @@
         "@syncrobotic/code-block",
         "@syncrobotic/empty-state",
         "@syncrobotic/item",
-        "@syncrobotic/section-header"
+        "@syncrobotic/section-header",
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/list-query",
+        "@syncrobotic/status-eyebrow",
+        "@syncrobotic/checkbox",
+        "@syncrobotic/choice-field",
+        "@syncrobotic/data-state",
+        "@syncrobotic/pagination",
+        "@syncrobotic/permission-gate",
+        "@syncrobotic/select"
       ],
       "files": [
         {
@@ -12669,8 +13001,15 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.55.0",
+        "status": "beta",
+        "wiring": "controlled",
         "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "Controlled: `SettingsApiKeysContent` renders only from props (server `total`, data state, permission strings, `labels`); the old export is its demo. Scopes bounded by `allowedScopes` and an expiry. Breaking: `ApiKey.created`/`lastUsed` become ISO `createdAt`/`lastUsedAt`."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -12714,7 +13053,6 @@
       ],
       "registryDependencies": [
         "@syncrobotic/cn",
-        "@syncrobotic/skeleton",
         "@syncrobotic/alert-dialog",
         "@syncrobotic/button",
         "@syncrobotic/card",
@@ -12727,7 +13065,12 @@
         "@syncrobotic/sheet",
         "@syncrobotic/status-eyebrow",
         "@syncrobotic/code",
-        "@syncrobotic/section-header"
+        "@syncrobotic/section-header",
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/list-query",
+        "@syncrobotic/data-state",
+        "@syncrobotic/pagination",
+        "@syncrobotic/permission-gate"
       ],
       "files": [
         {
@@ -12736,8 +13079,15 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.55.0",
+        "status": "beta",
+        "wiring": "controlled",
         "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "Controlled: `SettingsWebhooksContent` renders only from props (server `total`, data state, permission strings, `labels`); the old export is its demo. Breaking: `WebhookDelivery.time` is removed (formatted from `at`); `failingSince` is ISO."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -12790,14 +13140,16 @@
         "lucide-react@^1"
       ],
       "registryDependencies": [
-        "@syncrobotic/skeleton",
         "@syncrobotic/alert-dialog",
         "@syncrobotic/badge",
         "@syncrobotic/button",
         "@syncrobotic/card",
         "@syncrobotic/empty-state",
         "@syncrobotic/item",
-        "@syncrobotic/section-header"
+        "@syncrobotic/section-header",
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/list-query",
+        "@syncrobotic/data-state"
       ],
       "files": [
         {
@@ -12806,8 +13158,15 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.55.0",
+        "status": "beta",
+        "wiring": "controlled",
         "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "Controlled: `SettingsSessionsContent` renders only from props (server `total`, data state, permission strings, `labels`); the old export is its demo. Breaking: `lastActive` becomes ISO `lastActiveAt`; `TrustedBrowser.since`/`until` are ISO."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -12860,6 +13219,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -12915,7 +13276,11 @@
         "@syncrobotic/segmented-control",
         "@syncrobotic/sheet",
         "@syncrobotic/skeleton",
-        "@syncrobotic/section-header"
+        "@syncrobotic/section-header",
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/list-query",
+        "@syncrobotic/data-state",
+        "@syncrobotic/load-more"
       ],
       "files": [
         {
@@ -12924,8 +13289,15 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.55.0",
+        "status": "beta",
+        "wiring": "controlled",
         "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "Controlled: `NotificationCenterContent` renders only from props (server `total`, data state, permission strings, `labels`); the old export is its demo. `NotificationPanelContent` too; the unread count comes from the server."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -12991,6 +13363,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -13034,6 +13408,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -13100,6 +13476,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -13162,6 +13540,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -13251,6 +13631,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -13311,6 +13693,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -13352,6 +13736,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -13409,6 +13795,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -13469,6 +13857,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -13526,6 +13916,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -13594,7 +13986,13 @@
         "@syncrobotic/status-eyebrow",
         "@syncrobotic/empty-state",
         "@syncrobotic/responsive-table",
-        "@syncrobotic/section-header"
+        "@syncrobotic/section-header",
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/list-query",
+        "@syncrobotic/alert",
+        "@syncrobotic/data-state",
+        "@syncrobotic/pagination",
+        "@syncrobotic/permission-gate"
       ],
       "files": [
         {
@@ -13603,8 +14001,15 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.55.0",
+        "status": "beta",
+        "wiring": "controlled",
         "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "Controlled: `UsersInvitationsContent` renders only from props (server `total`, data state, permission strings, `labels`); the old export is its demo. Dates are ISO, formatted through Intl."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -13662,7 +14067,14 @@
         "@syncrobotic/input",
         "@syncrobotic/select",
         "@syncrobotic/empty-state",
-        "@syncrobotic/responsive-table"
+        "@syncrobotic/responsive-table",
+        "@syncrobotic/use-list-query",
+        "@syncrobotic/use-step-up",
+        "@syncrobotic/format-number",
+        "@syncrobotic/list-query",
+        "@syncrobotic/data-state",
+        "@syncrobotic/pagination",
+        "@syncrobotic/permission-gate"
       ],
       "files": [
         {
@@ -13671,8 +14083,15 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.55.0",
+        "status": "beta",
+        "wiring": "controlled",
         "changelog": [
+          {
+            "version": "0.55.0",
+            "date": "2026-11-27",
+            "note": "Controlled: `UsersAuditLogContent` renders only from props (server `total`, data state, permission strings, `labels`); the old export is its demo. The count reads the server's total; Export sits in the content."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -13744,6 +14163,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -13817,6 +14238,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -13877,6 +14300,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -13944,6 +14369,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -14015,6 +14442,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -14082,6 +14511,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -14153,6 +14584,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -14217,6 +14650,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -14280,6 +14715,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -14362,6 +14799,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -14422,6 +14861,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -14485,6 +14926,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",
@@ -14641,6 +15084,8 @@
       ],
       "meta": {
         "version": "0.53.0",
+        "status": "beta",
+        "wiring": "demo",
         "changelog": [
           {
             "version": "0.53.0",

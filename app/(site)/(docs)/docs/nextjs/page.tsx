@@ -11,7 +11,7 @@ import { startNeighbours } from "@/site/foundations"
 import { H2, Inline, PageTitle, Rules } from "@/site/prose"
 
 const description =
-  "Use the SYNCROBOTIC kit in a Next.js App Router project: server and client components, the theme without a flash, next/link, the app shell in a layout, route progress, forms and images."
+  "Use the SYNCROBOTIC kit in a Next.js App Router project: server and client components, the theme without a flash, next/link, the app shell in a layout, route progress and images; forms and lists have their own page."
 
 export const metadata: Metadata = pageMeta({ title: "Next.js", description, path: "/docs/nextjs" })
 
@@ -229,36 +229,6 @@ export function NavLink({ children, ...props }: React.ComponentProps<typeof Link
   )
 }`
 
-const actions = `"use server"
-
-import type { MissionValues } from "@/components/form"
-
-// A refusal is a return value: an error thrown here reaches the browser without its message in production.
-export async function saveMission(values: MissionValues): Promise<{ error?: string }> {
-  if (values.name.toLowerCase().includes("test")) return { error: "A mission named “test” already exists on this site." }
-  // … write it to your API or database
-  return {}
-}`
-
-const newMission = `"use client"
-
-import { useRouter } from "next/navigation"
-import { MissionForm } from "@/components/form"
-import { saveMission } from "./actions"
-
-export function NewMission() {
-  const router = useRouter()
-  return (
-    <MissionForm
-      onSave={async (values) => {
-        const { error } = await saveMission(values)
-        if (error) throw new Error(error) // MissionForm shows it above the fields and keeps what was typed
-        router.push("/missions")
-      }}
-    />
-  )
-}`
-
 const localTime = `// The locale and the time zone are written down, so the server and the browser format the same text. Show a robot's
 // times in its site's zone: that is the clock the people on site read.
 export function LocalTime({ iso, timeZone, locale = "en-GB" }: { iso: string; timeZone: string; locale?: string }) {
@@ -404,18 +374,12 @@ export default function NextjsPage() {
       <P text="`RouteProgress` shows a thin blue bar while the next page loads, only after 300 ms. In the App Router, drive it from `useLinkStatus`, which reports a pending navigation of the `<Link>` it sits in. Pages that are prefetched or have a `loading.tsx` arrive at once and show no bar, which is right." />
       <CodeBlock code={navLink} lang="tsx" title="components/nav-link.tsx" />
 
-      <H2 id="forms">Forms</H2>
-      <P text="Start from the `form` example: React Hook Form and zod drawn with the kit's Field, installed with `npx shadcn add @syncrobotic/form`. `MissionForm` is a client component. Save through a Server Function that returns a refusal instead of throwing it, and turn it into an error in a small client file." />
-      <Stack>
-        <CodeBlock code={actions} lang="ts" title="app/(app)/missions/new/actions.ts" />
-        <CodeBlock code={newMission} lang="tsx" title="app/(app)/missions/new/new-mission.tsx" />
-      </Stack>
-      <P className="pt-3" text="The page (`page.tsx`) stays a Server Component that renders `<NewMission />`." />
+      <H2 id="forms">Forms and lists</H2>
       <p className="max-w-3xl text-base">
-        <Link href="/docs/components/form" className="underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground">
-          The form example
+        <Link href="/docs/nextjs/data" className="underline decoration-muted-foreground underline-offset-4 hover:decoration-foreground">
+          Forms and lists in Next.js
         </Link>{" "}
-        <Inline text="covers the rest: errors after the first submit, focus on the first field in error, and a button that waits." />
+        <Inline text="saves a form through a Server Function and keeps a list's page, sort and search in the URL." />
       </p>
 
       <H2 id="images">Images</H2>
