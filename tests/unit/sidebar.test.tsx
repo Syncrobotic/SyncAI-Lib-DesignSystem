@@ -327,6 +327,24 @@ describe("app shell on the sidebar", () => {
     fireEvent.pointerUp(rail, { clientX: 120, pointerId: 1 })
   })
 
+  it("starts as the server read it from the cookies: open or not, and the width, with no jump after hydration", () => {
+    document.cookie = "sidebar_state_width=; path=/; max-age=0"
+    render(
+      <AppShell product="Fleet console" nav={sampleNav} current="#robots" title="Robots" sidebarOpen sidebarWidth={296}>
+        page
+      </AppShell>,
+    )
+    expect(aside().dataset.state).toBe("expanded")
+    expect(document.querySelector<HTMLElement>("[data-slot=sidebar-wrapper]")!.style.getPropertyValue("--sidebar-width")).toBe("296px")
+    cleanup()
+    render(
+      <AppShell product="Fleet console" nav={sampleNav} current="#robots" title="Robots" sidebarOpen={false}>
+        page
+      </AppShell>,
+    )
+    expect(aside().dataset.state).toBe("collapsed")
+  })
+
   it("resizes from the keyboard: ← and → by 16 px, ← at the narrowest folds, → opens the rail", () => {
     document.cookie = "sidebar_state_width=; path=/; max-age=0"
     render(

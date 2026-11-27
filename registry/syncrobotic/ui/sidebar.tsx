@@ -12,6 +12,15 @@ import { isMac, parseCombo, useHotkeys } from "@/registry/syncrobotic/hooks/use-
 
 /** The cookie that keeps the sidebar open or collapsed between visits ("true" or "false"). Read it on the server and pass it as `defaultOpen`. */
 export const SIDEBAR_COOKIE_NAME = "sidebar_state"
+/**
+ * The cookie that keeps the open column's width (px), "sidebar_state_width". Read both on the server for a first paint
+ * that is already right; by name, as a server component cannot import values from this client module:
+ *   const c = await cookies()
+ *   const open = c.get("sidebar_state")?.value      // "true" | "false" | undefined → defaultOpen (AppShell: sidebarOpen)
+ *   const width = Number(c.get("sidebar_state_width")?.value) || undefined  // → defaultWidth (AppShell: sidebarWidth)
+ */
+export const SIDEBAR_WIDTH_COOKIE_NAME = `${SIDEBAR_COOKIE_NAME}_width`
+
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7
 // Below md (768 px) the sidebar is a sheet from the screen's edge; the classes below use the same breakpoint (md:).
 const MOBILE_QUERY = "(max-width: 767px)"

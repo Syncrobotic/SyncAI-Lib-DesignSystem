@@ -253,6 +253,15 @@ type AppShellProps = {
   footer?: React.ReactNode
   /** The sidebar's words (its trigger, landmarks and phone sheet), e.g. sidebarProviderLabels from labels-zh-tw. */
   sidebarLabels?: Partial<SidebarLabels>
+  /**
+   * The sidebar as the person left it, read on the server from its cookies, so the first paint is already right instead
+   * of the default (open on wide screens, 240 px) followed by a jump: `sidebarOpen` from the "sidebar_state" cookie
+   * ("true" or "false"), `sidebarWidth` from "sidebar_state_width" (px). In Next.js, in the server component around it:
+   * `const c = await cookies()`, then `sidebarOpen={c.get("sidebar_state") ? c.get("sidebar_state")?.value === "true" : undefined}`
+   * and `sidebarWidth={Number(c.get("sidebar_state_width")?.value) || undefined}`.
+   */
+  sidebarOpen?: boolean
+  sidebarWidth?: number
   children: React.ReactNode
 }
 
@@ -549,6 +558,8 @@ export function AppShell({
   layout = "inset",
   footer,
   sidebarLabels,
+  sidebarOpen,
+  sidebarWidth,
   children,
 }: AppShellProps) {
   const wide = React.useSyncExternalStore(subscribeWide, wideNow, () => true)
@@ -560,7 +571,8 @@ export function AppShell({
     // The page scrolls inside <main>, below the top bar, so what pins to the top (TabsList sticky) pins at 0
     // (--shell-top), on the content panel's surface (--shell-surface).
     <SidebarProvider
-      defaultOpen={wide}
+      defaultOpen={sidebarOpen ?? wide}
+      defaultWidth={sidebarWidth}
       labels={sidebarLabels}
       className={cn(
         "h-[var(--app-shell-height,100dvh)] bg-background text-foreground [--shell-top:0]",
