@@ -14,25 +14,22 @@ updates:
     groups:
       minor-and-patch:
         update-types: [minor, patch]
-    # Held major: it forces products to rewrite code for no visible gain (Panels 4 halves the keyboard step and resets
-    # saved layouts). Its migration is ready on the branch deps/table9-panels4; lift this when a product needs it or
-    # Panels 3 stops getting fixes. TanStack Table is no longer held: data-grid moved to Table 9 in 0.26.0.
-    # Held majors that are migrations, not bumps: @types/node follows the Node runtime (.nvmrc, 22); TypeScript 7
-    # and zod 4 failed CI (#264, #266). Each moves in its own pull request when we choose to.
+    # Held majors that are migrations, not bumps: @types/node follows the Node runtime (.nvmrc, 22), so its types never
+    # offer an API Node 22 lacks; TypeScript 7 waits for typescript-eslint and a JS API (see 0.42.0). Each moves in its
+    # own pull request when we choose to.
     ignore:
-      - dependency-name: react-resizable-panels
-        update-types: ["version-update:semver-major"]
       - dependency-name: "@types/node"
         update-types: ["version-update:semver-major"]
       - dependency-name: typescript
-        update-types: ["version-update:semver-major"]
-      - dependency-name: zod
         update-types: ["version-update:semver-major"]
     # Titles read build(deps): … and build(deps-dev): …, Conventional Commits like every other PR.
     commit-message:
       prefix: build
       prefix-development: build
       include: scope
+  # Actions are pinned by commit SHA (a tag can be moved); this keeps the SHAs and their "# v7" comments current. The
+  # Playwright container image is pinned by digest and is not updated here: move it with @playwright/test (the same
+  # version in package.json and every `container: image:`), or the baselines are shot in another browser.
   - package-ecosystem: github-actions
     directory: /
     target-branch: dev
