@@ -27,6 +27,10 @@
     "version": "0.53.0",
     "hash": "8b25e00a64349b04"
   },
+  "relative-time": {
+    "version": "0.56.0",
+    "hash": "872909cca23a9302"
+  },
   "input-modality": {
     "version": "0.53.0",
     "hash": "20baa66af8c899a6"
@@ -36,8 +40,8 @@
     "hash": "c73671ae05fd9bf5"
   },
   "labels-zh-tw": {
-    "version": "0.55.0",
-    "hash": "d2e9d7ab6d6b2cac"
+    "version": "0.56.0",
+    "hash": "728659e01f1853fb"
   },
   "ros": {
     "version": "0.53.0",
@@ -84,8 +88,8 @@
     "hash": "518b4ab519b39c5d"
   },
   "status-glyph": {
-    "version": "0.53.0",
-    "hash": "28bdd4142e4daf82"
+    "version": "0.56.0",
+    "hash": "9b58e48fd00cb091"
   },
   "status-eyebrow": {
     "version": "0.53.0",
@@ -228,8 +232,8 @@
     "hash": "55d884c57d2c6203"
   },
   "description-list": {
-    "version": "0.53.0",
-    "hash": "a813efe33b37d0c6"
+    "version": "0.56.0",
+    "hash": "6417af4ad9009462"
   },
   "text-diff": {
     "version": "0.53.0",
@@ -270,6 +274,22 @@
   "permission-gate": {
     "version": "0.55.0",
     "hash": "a04fb612b5d8f561"
+  },
+  "freshness-stamp": {
+    "version": "0.56.0",
+    "hash": "c313bfed418fd5af"
+  },
+  "evidence-panel": {
+    "version": "0.56.0",
+    "hash": "f8b7922bb962429d"
+  },
+  "desired-state": {
+    "version": "0.56.0",
+    "hash": "86a2266e01cd3489"
+  },
+  "heartbeat-strip": {
+    "version": "0.56.0",
+    "hash": "086c5e4d7ca6286a"
   },
   "table": {
     "version": "0.53.0",
@@ -360,12 +380,12 @@
     "hash": "554b0d64d6abdc98"
   },
   "dropdown-menu": {
-    "version": "0.53.0",
-    "hash": "05793df288d50dc3"
+    "version": "0.56.0",
+    "hash": "14df8ed4ca4afa1c"
   },
   "context-menu": {
-    "version": "0.53.0",
-    "hash": "6e7eac72c30530d1"
+    "version": "0.56.0",
+    "hash": "153d28a3b95d5354"
   },
   "command": {
     "version": "0.54.0",
@@ -608,8 +628,8 @@
     "hash": "dae4b84a4c99ce13"
   },
   "fleet-table": {
-    "version": "0.55.0",
-    "hash": "1489b03d62fd0f48"
+    "version": "0.56.0",
+    "hash": "d7185f09be2b03cf"
   },
   "robot-status-card": {
     "version": "0.53.0",
@@ -684,8 +704,8 @@
     "hash": "ed2f295992f73b9a"
   },
   "agent-skill": {
-    "version": "0.55.0",
-    "hash": "615117a0c9764517"
+    "version": "0.56.0",
+    "hash": "d7d9c075331b45d2"
   },
   "line-chart-telemetry": {
     "version": "0.53.0",
@@ -878,6 +898,14 @@
   "users-audit-log": {
     "version": "0.55.0",
     "hash": "3f4d53b5dc724d97"
+  },
+  "device-enrolment": {
+    "version": "0.56.0",
+    "hash": "78ed50e89be58357"
+  },
+  "device-detail": {
+    "version": "0.56.0",
+    "hash": "aeaf6bf2fd8d660b"
   },
   "incident-queue": {
     "version": "0.53.0",

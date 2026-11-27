@@ -73,6 +73,8 @@ const controlled = [
   ["settings-sessions", "SettingsSessionsContent"],
   ["notification-center", "NotificationCenterContent"],
   ["settings-page", "SettingsPageContent"],
+  ["device-enrolment", "DeviceEnrolmentContent"],
+  ["device-detail", "DeviceDetailContent"],
   ["status-pages", "NotFoundPage, NoAccessPage, ErrorPage"],
 ] as const
 

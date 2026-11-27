@@ -897,8 +897,8 @@ export const overviews: Record<string, Overview> = {
     ],
   },
   "description-list": {
-    use: ["A robot's site, firmware and last contact.", "A dataset's owner, size and date."],
-    instead: ["Many records to compare: `table`.", "One headline number: a stat in a `card`."],
+    use: ["A robot's site, firmware and last contact.", "A dataset's owner, size and date.", "A device's instance ID (mono, copy), version and the caveat on where it came from (hint)."],
+    instead: ["Many records to compare: `table`.", "One headline number: a stat in a `card`.", "What a device claims about itself beside the record: `evidence-panel`."],
   },
   breadcrumb: {
     use: ["Pages two or more levels deep: a dataset inside a catalog, a robot inside a site."],
@@ -1085,6 +1085,37 @@ export const overviews: Record<string, Overview> = {
     use: ["A list with no items yet, search with no results, a page without permission."],
     instead: ["A temporary error inside a page: `alert`."],
   },
+  "freshness-stamp": {
+    use: [
+      "Beside a device's reported values on its detail page: modules running, GPU, disk.",
+      "In a fleet list's last-seen column, with one `now` for every row.",
+    ],
+    instead: [
+      "Live telemetry that streams (a camera, a chart): their own `staleAfterMs`.",
+      "Whether the device is online at all: its liveness as an InlineStatus beside its name.",
+      "A failed refresh of data the server holds: `data-state` stale.",
+    ],
+    notes: [
+      "`freshnessOf` decides without rendering, for a sort or a filter (\"stale devices\"); the component calls the same function.",
+      "Without `now` it reads the clock every 30 s and renders nothing time-based until the page hydrates.",
+    ],
+  },
+  "evidence-panel": {
+    use: ["Reviewing a device that asked to join: its key fingerprint, hardware anchors, version and source IP.", "A device's detail page, beside the record, for the hardware it claims."],
+    instead: ["Values the server recorded or verified: `description-list`.", "Two versions of one text: `text-diff`."],
+    notes: [
+      "A list value (GPU UUIDs) is compared as a set, in any order. Pass `matches` for another rule, such as case-insensitive.",
+      "Its rows are a table to screen readers, with the column headers present at every width; on a phone each value carries its source in words.",
+    ],
+  },
+  "desired-state": {
+    use: ["A revocation, a removal or a licence change waiting for the device's next check-in.", "Any order a device confirms later: a config push, a module switched off."],
+    instead: ["A change that applies at once: a toast saying it is done.", "A bounded process with progress: `progress`."],
+    notes: [
+      "`desiredPhaseOf` gives the phase alone, for a list's state column.",
+      "With `thresholds` and `lastCheckInAt` it shows the last check-in's freshness, and a device past the stale threshold blocks the order.",
+    ],
+  },
   "data-state": {
     use: [
       "A card, table or panel filled from a server: devices, API keys, members, a usage chart.",
@@ -1157,6 +1188,7 @@ export const overviews: Record<string, Overview> = {
     instead: ["A state with its word: `status-eyebrow`.", "An alarm: `alarm`, which has its own shapes."],
     notes: [
       "Active and normal render in the foreground colour, not blue or green.",
+      "`status=\"none\"` takes `GlyphStatus`; `Status` keeps its five values, so a `Record<Status, string>` of words needs no new key.",
     ],
   },
   "status-eyebrow": {
@@ -1247,6 +1279,14 @@ export const overviews: Record<string, Overview> = {
       "Never a native <details> or your own chevron: this keeps the kit's chevron, focus ring and motion.",
       "Do not wrap the trigger in a heading; if the region needs one, it is an accordion section.",
       "Put layout (gap, padding) on CollapsibleContent's className; it goes on the inner box, so the height animation stays clean.",
+    ],
+  },
+  "heartbeat-strip": {
+    use: ["On a device's detail page, the last hour, day or week of check-ins.", "Reading a gap against a restart or an update on the same axis."],
+    instead: ["Uptime per day for several machines: the status-tracker-uptime pattern.", "A measured value over time (cameras, load): `chart`."],
+    notes: [
+      "`heartbeatCell` and `heartbeatGaps` give the same verdicts without rendering, for a summary elsewhere.",
+      "The strip is one Tab stop; its numbers are in words above it, and the table view lists every stretch.",
     ],
   },
   dialog: {
@@ -1454,6 +1494,11 @@ export const overviews: Record<string, Overview> = {
       "`errorCodeOf` finds the code on the error, in its `error`, `body`, `details` or `data`, the shapes fetch wrappers give.",
       "A second call that asks while one waits cancels the first, so only one dialog is ever open.",
     ],
+  },
+  "relative-time": {
+    use: ["\"Reported 3 minutes ago\", \"ordered 2 days ago\", a log's time column, an axis's ticks.", "The exact time behind a relative one, in a tooltip."],
+    instead: ["A time of day on a live panel, to the second: `clock-time`.", "Numbers that are not times: `format-number`."],
+    notes: ["English without a locale, so server and browser agree; give `timeZone` when the server formats, as its zone is rarely the reader's."],
   },
   "use-now": {
     use: ["\"Updated 12 s ago\", a timeout, an alarm flood's window.", "Stale data: how long since the last message."],

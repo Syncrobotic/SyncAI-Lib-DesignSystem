@@ -71,6 +71,8 @@ const WizardImport = dynamic(() => import("@/registry/syncrobotic/blocks/wizard-
 const MissionSchedule = dynamic(() => import("@/registry/syncrobotic/blocks/mission-schedule").then((m) => m.MissionSchedule))
 const UsersInvitations = dynamic(() => import("@/registry/syncrobotic/blocks/users-invitations").then((m) => m.UsersInvitations))
 const UsersAuditLog = dynamic(() => import("@/registry/syncrobotic/blocks/users-audit-log").then((m) => m.UsersAuditLog))
+const DeviceEnrolment = dynamic(() => import("@/registry/syncrobotic/blocks/device-enrolment").then((m) => m.DeviceEnrolment))
+const DeviceDetail = dynamic(() => import("@/registry/syncrobotic/blocks/device-detail").then((m) => m.DeviceDetail))
 const IncidentQueue = dynamic(() => import("@/registry/syncrobotic/blocks/incident-queue").then((m) => m.IncidentQueue))
 const IncidentDetail = dynamic(() => import("@/registry/syncrobotic/blocks/incident-detail").then((m) => m.IncidentDetail))
 const MaintenanceDue = dynamic(() => import("@/registry/syncrobotic/blocks/maintenance-due").then((m) => m.MaintenanceDue))
@@ -257,6 +259,8 @@ export const blockRenders: Record<string, () => React.ReactNode> = {
   "mission-schedule": () => <MissionSchedule />,
   "users-invitations": () => <UsersInvitations />,
   "users-audit-log": () => <UsersAuditLog />,
+  "device-enrolment": () => <DeviceEnrolment />,
+  "device-detail": () => <DeviceDetail />,
   "incident-queue": () => <IncidentQueue />,
   "incident-detail": () => <IncidentDetail />,
   "maintenance-due": () => <MaintenanceDue />,

@@ -172,6 +172,9 @@ const meta: Record<string, Meta> = {
   "mission-schedule": { viewport: "desktop", height: 720},
   "users-invitations": { viewport: "desktop", height: 680},
   "users-audit-log": { viewport: "desktop", height: 680},
+  // The review, not the queue: claims beside the record are what this type is for.
+  "device-enrolment": { viewport: "desktop", height: 900, thumb: { x: 664, y: 256, width: 600 }},
+  "device-detail": { viewport: "desktop", height: 1200},
   "incident-queue": { viewport: "desktop", height: 620},
   "incident-detail": { viewport: "desktop", height: 900},
   "maintenance-due": { viewport: "desktop", height: 600},
@@ -271,6 +274,8 @@ const inShell = new Set([
   "console-overview",
   "data-catalog",
   "dataset-detail",
+  "device-detail",
+  "device-enrolment",
   "event-log",
   "governance-todo",
   "incident-detail",
@@ -301,7 +306,7 @@ export const blocks = Object.keys(placement)
 export const ownHeading = new Set<string>([
   "action-rail-shell", "agent-approval", "agent-chat", "agent-run-gate", "agent-run-outcome", "agent-runs",
   "agent-tool-permissions", "agent-trace", "app-shell-mobile-tabs", "app-shell", "auth-2fa", "auth-invite",
-  "auth-passkey", "console-overview", "data-catalog", "dataset-detail", "event-log", "governance-todo",
+  "auth-passkey", "console-overview", "data-catalog", "dataset-detail", "device-detail", "device-enrolment", "event-log", "governance-todo",
   "incident-detail", "incident-queue", "list-detail", "maintenance-due", "maintenance-work-order", "map-workspace",
   "marketing-hero", "mission-schedule", "notification-center", "record-form", "rollout-overview", "rollout-plan",
   "settings-page", "sign-in", "users-audit-log", "users-invitations", "users-roles", "wizard-commission",
