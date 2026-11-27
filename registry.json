@@ -2776,8 +2776,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.47.0",
         "changelog": [
+          {
+            "version": "0.47.0",
+            "date": "2026-11-26",
+            "note": "No success tone: a success does not stay, so it is a toast. Info only while a process runs, never for a state."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -3042,8 +3047,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.47.0",
         "changelog": [
+          {
+            "version": "0.47.0",
+            "date": "2026-11-26",
+            "note": "bare, for a table inside something that is already a surface (a card, a sheet, a panel): no edge of its own, only the hairlines between rows."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -3990,8 +4000,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.47.0",
         "changelog": [
+          {
+            "version": "0.47.0",
+            "date": "2026-11-26",
+            "note": "side=\"end\": bottom under 640 px, right from 640 px, decided in CSS, for a detail or a form beside the page."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -5270,8 +5285,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.36.0",
+        "version": "0.47.0",
         "changelog": [
+          {
+            "version": "0.47.0",
+            "date": "2026-11-26",
+            "note": "The connecting spinner is muted, not blue: waiting is not a process the person can follow."
+          },
           {
             "version": "0.36.0",
             "date": "2026-11-25",
@@ -5548,8 +5568,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.45.1",
+        "version": "0.47.0",
         "changelog": [
+          {
+            "version": "0.47.0",
+            "date": "2026-11-26",
+            "note": "The loading spinners are muted, not blue."
+          },
           {
             "version": "0.45.1",
             "date": "2026-11-26",
@@ -7198,8 +7223,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.47.0",
         "changelog": [
+          {
+            "version": "0.47.0",
+            "date": "2026-11-26",
+            "note": "The panel's head title is 14 px medium, as every title inside a surface (it inherited 16 px)."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -7466,7 +7496,8 @@
         "@syncrobotic/progress",
         "@syncrobotic/status-eyebrow",
         "@syncrobotic/status-glyph",
-        "@syncrobotic/avatar"
+        "@syncrobotic/avatar",
+        "@syncrobotic/description-list"
       ],
       "files": [
         {
@@ -7475,8 +7506,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.47.0",
         "changelog": [
+          {
+            "version": "0.47.0",
+            "date": "2026-11-26",
+            "note": "The two figures are DescriptionList tiles instead of hand-made boxes; tiles sit 8 px apart."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -7597,8 +7633,13 @@
         }
       ],
       "meta": {
-        "version": "0.44.0",
+        "version": "0.47.0",
         "changelog": [
+          {
+            "version": "0.47.0",
+            "date": "2026-11-26",
+            "note": "The top bar's title, the page's h1, is 2xl (24 px), larger than the sections under it (xl 20); it was 18."
+          },
           {
             "version": "0.44.0",
             "date": "2026-11-26",
@@ -7764,8 +7805,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.47.0",
         "changelog": [
+          {
+            "version": "0.47.0",
+            "date": "2026-11-26",
+            "note": "The title, the page's h1, is 2xl (24 px), larger than the sections under it."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -7903,8 +7949,13 @@
         }
       ],
       "meta": {
-        "version": "0.45.1",
+        "version": "0.47.0",
         "changelog": [
+          {
+            "version": "0.47.0",
+            "date": "2026-11-26",
+            "note": "The selected row is accent with its 2 px ink bar, as a selected table row; muted is the current page in navigation."
+          },
           {
             "version": "0.45.1",
             "date": "2026-11-26",
@@ -8011,8 +8062,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.47.0",
         "changelog": [
+          {
+            "version": "0.47.0",
+            "date": "2026-11-26",
+            "note": "The event's sheet opens from the bottom on a phone and the right from 640 px (Sheet side end)."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -8102,8 +8158,13 @@
         }
       ],
       "meta": {
-        "version": "0.45.1",
+        "version": "0.47.0",
         "changelog": [
+          {
+            "version": "0.47.0",
+            "date": "2026-11-26",
+            "note": "The robots' sheet opens from the bottom on a phone and the right from 640 px (Sheet side end)."
+          },
           {
             "version": "0.45.1",
             "date": "2026-11-26",
@@ -8793,8 +8854,13 @@
         }
       ],
       "meta": {
-        "version": "0.41.0",
+        "version": "0.47.0",
         "changelog": [
+          {
+            "version": "0.47.0",
+            "date": "2026-11-26",
+            "note": "The design language says the page title is larger than its sections, a surface has one edge (never an edge inside an edge), and describes the sidebar's handle, not the round button it replaced."
+          },
           {
             "version": "0.41.0",
             "date": "2026-11-26",
@@ -9824,8 +9890,13 @@
         }
       ],
       "meta": {
-        "version": "0.35.0",
+        "version": "0.47.0",
         "changelog": [
+          {
+            "version": "0.47.0",
+            "date": "2026-11-26",
+            "note": "The table inside the card is bare: one edge, not two."
+          },
           {
             "version": "0.35.0",
             "date": "2026-11-25",
@@ -9885,8 +9956,13 @@
         }
       ],
       "meta": {
-        "version": "0.22.4",
+        "version": "0.47.0",
         "changelog": [
+          {
+            "version": "0.47.0",
+            "date": "2026-11-26",
+            "note": "The table inside the card is bare: one edge, not two."
+          },
           {
             "version": "0.22.4",
             "date": "2026-11-21",
@@ -9999,8 +10075,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.47.0",
         "changelog": [
+          {
+            "version": "0.47.0",
+            "date": "2026-11-26",
+            "note": "The title is 2xl, and a battery under 15 % shows the warning glyph (and says low), as in fleet-table."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -10183,7 +10264,8 @@
         "@syncrobotic/cn",
         "@syncrobotic/status-eyebrow",
         "@syncrobotic/status-glyph",
-        "@syncrobotic/card"
+        "@syncrobotic/card",
+        "@syncrobotic/description-list"
       ],
       "files": [
         {
@@ -10192,8 +10274,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.47.0",
         "changelog": [
+          {
+            "version": "0.47.0",
+            "date": "2026-11-26",
+            "note": "The two figures are DescriptionList tiles instead of hand-made boxes."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -10443,8 +10530,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.47.0",
         "changelog": [
+          {
+            "version": "0.47.0",
+            "date": "2026-11-26",
+            "note": "The table inside the card is bare: one edge, not two."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -10612,8 +10704,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.47.0",
         "changelog": [
+          {
+            "version": "0.47.0",
+            "date": "2026-11-26",
+            "note": "No other browsers: an inline EmptyState instead of a bare grey line."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -10907,8 +11004,13 @@
         }
       ],
       "meta": {
-        "version": "0.45.1",
+        "version": "0.47.0",
         "changelog": [
+          {
+            "version": "0.47.0",
+            "date": "2026-11-26",
+            "note": "Opens from the bottom on a phone (Sheet side end); the facts are a bare DescriptionList (no card inside the sheet); under the stop, Send to dock is the dock's muted primary and Open camera a ghost, never solid white."
+          },
           {
             "version": "0.45.1",
             "date": "2026-11-26",
@@ -11124,8 +11226,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.47.0",
         "changelog": [
+          {
+            "version": "0.47.0",
+            "date": "2026-11-26",
+            "note": "The running check's spinner is muted, not blue."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -11221,8 +11328,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.47.0",
         "changelog": [
+          {
+            "version": "0.47.0",
+            "date": "2026-11-26",
+            "note": "A conflict shows the warning shape before its words, in the list and on the timeline."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -11599,8 +11711,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.47.0",
         "changelog": [
+          {
+            "version": "0.47.0",
+            "date": "2026-11-26",
+            "note": "An overdue service says so: Overdue by 12 h with the warning shape, not plain text."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -11900,8 +12017,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.47.0",
         "changelog": [
+          {
+            "version": "0.47.0",
+            "date": "2026-11-26",
+            "note": "The decision row's buttons are lg (48 px), as a page's main action."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-19",
@@ -11967,8 +12089,13 @@
         }
       ],
       "meta": {
-        "version": "0.41.0",
+        "version": "0.47.0",
         "changelog": [
+          {
+            "version": "0.47.0",
+            "date": "2026-11-26",
+            "note": "On a phone the chat opens from the bottom (Sheet side end)."
+          },
           {
             "version": "0.41.0",
             "date": "2026-11-26",
@@ -12007,8 +12134,13 @@
         }
       ],
       "meta": {
-        "version": "0.43.0",
+        "version": "0.47.0",
         "changelog": [
+          {
+            "version": "0.47.0",
+            "date": "2026-11-26",
+            "note": "The gate's panel is set apart by a hairline, not a box inside the step's card, and its table is bare: one edge instead of three. 9E37's 14 % battery shows the warning glyph."
+          },
           {
             "version": "0.43.0",
             "date": "2026-11-26",

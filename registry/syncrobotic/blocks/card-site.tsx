@@ -1,9 +1,10 @@
-// @syncrobotic/card-site v0.32.0 · update: npx shadcn add @syncrobotic/card-site --overwrite
+// @syncrobotic/card-site v0.47.0 · update: npx shadcn add @syncrobotic/card-site --overwrite
 import { ChevronRight, MapPin } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { StatusGlyph, type Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Card } from "@/registry/syncrobotic/ui/card"
+import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
 
 export type Site = {
   name: string
@@ -71,18 +72,23 @@ export function CardSite({ sites = sampleSites, className }: { sites?: Site[]; c
               </div>
               <ChevronRight aria-hidden="true" className="size-5 shrink-0 text-muted-foreground" />
             </div>
-            <dl className="grid grid-cols-2 gap-3 text-sm">
-              <div className="flex flex-col gap-1 rounded-sm bg-muted p-3">
-                <dt className="text-xs text-muted-foreground">Robots active</dt>
-                <dd className="font-medium tabular-nums">
-                  {s.robots.active} <span className="text-muted-foreground">of {s.robots.total}</span>
-                </dd>
-              </div>
-              <div className="flex flex-col gap-1 rounded-sm bg-muted p-3">
-                <dt className="text-xs text-muted-foreground">Missions today</dt>
-                <dd className="font-medium tabular-nums">{s.missionsToday}</dd>
-              </div>
-            </dl>
+            {/* The two numbers people compare sites by, side by side at every width. */}
+            <DescriptionList
+              variant="tiles"
+              columns={2}
+              className="grid-cols-2"
+              items={[
+                {
+                  label: "Robots active",
+                  value: (
+                    <>
+                      {s.robots.active} <span className="text-muted-foreground">of {s.robots.total}</span>
+                    </>
+                  ),
+                },
+                { label: "Missions today", value: s.missionsToday },
+              ]}
+            />
             {/* What needs someone is in ink, after the state's shape; the colour is the shape's and the state word's above. */}
             {s.attention ? (
               <p className="flex items-center gap-2 text-sm">

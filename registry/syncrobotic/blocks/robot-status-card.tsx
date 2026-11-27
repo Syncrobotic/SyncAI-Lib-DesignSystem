@@ -1,4 +1,4 @@
-// @syncrobotic/robot-status-card v0.40.0 · update: npx shadcn add @syncrobotic/robot-status-card --overwrite
+// @syncrobotic/robot-status-card v0.47.0 · update: npx shadcn add @syncrobotic/robot-status-card --overwrite
 import { Battery, BatteryCharging, MapPin, Navigation, Wifi, WifiOff } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { InlineStatus, StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
@@ -6,6 +6,7 @@ import type { Status } from "@/registry/syncrobotic/shell/status-glyph"
 import { Avatar, AvatarFallback } from "@/registry/syncrobotic/ui/avatar"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Card } from "@/registry/syncrobotic/ui/card"
+import { DescriptionList } from "@/registry/syncrobotic/ui/description-list"
 import { Progress } from "@/registry/syncrobotic/ui/progress"
 
 export type RobotStatus = {
@@ -58,24 +59,34 @@ export function RobotStatusCard({
         </div>
       </div>
 
-      <dl className="grid grid-cols-2 gap-3 text-sm">
-        <div className="flex flex-col gap-1 rounded-sm bg-muted p-3">
-          <dt className="text-xs text-muted-foreground">Battery</dt>
-          {/* Low is a shape and a word in the warning colour; the number stays text. */}
-          <dd className="flex flex-wrap items-center gap-2 font-medium">
-            <BatteryIcon aria-hidden="true" className="size-4" />
-            {robot.battery} %
-            {low && <InlineStatus status="warning">Low</InlineStatus>}
-          </dd>
-        </div>
-        <div className="flex flex-col gap-1 rounded-sm bg-muted p-3">
-          <dt className="text-xs text-muted-foreground">Connection</dt>
-          <dd className={cn("flex items-center gap-2 font-medium", !robot.online && "text-muted-foreground")}>
-            {robot.online ? <Wifi aria-hidden="true" className="size-4" /> : <WifiOff aria-hidden="true" className="size-4" />}
-            {robot.online ? (robot.signal ?? "Online") : "Offline"}
-          </dd>
-        </div>
-      </dl>
+      {/* Two tiles side by side on a phone too: the card is phone-sized, and the two numbers are read together. */}
+      <DescriptionList
+        variant="tiles"
+        columns={2}
+        className="grid-cols-2"
+        items={[
+          {
+            label: "Battery",
+            // Low is a shape and a word in the warning colour; the number stays text.
+            value: (
+              <span className="flex flex-wrap items-center gap-2">
+                <BatteryIcon aria-hidden="true" className="size-4" />
+                {robot.battery} %
+                {low && <InlineStatus status="warning">Low</InlineStatus>}
+              </span>
+            ),
+          },
+          {
+            label: "Connection",
+            value: (
+              <span className={cn("flex items-center gap-2", !robot.online && "text-muted-foreground")}>
+                {robot.online ? <Wifi aria-hidden="true" className="size-4" /> : <WifiOff aria-hidden="true" className="size-4" />}
+                {robot.online ? (robot.signal ?? "Online") : "Offline"}
+              </span>
+            ),
+          },
+        ]}
+      />
 
       <p className="flex items-center gap-2 text-sm text-muted-foreground">
         <MapPin aria-hidden="true" className="size-4 shrink-0" />

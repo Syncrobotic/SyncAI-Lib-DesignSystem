@@ -1,4 +1,4 @@
-// @syncrobotic/mission-schedule v0.28.0 · update: npx shadcn add @syncrobotic/mission-schedule --overwrite
+// @syncrobotic/mission-schedule v0.47.0 · update: npx shadcn add @syncrobotic/mission-schedule --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,6 +6,7 @@ import { Plus, TriangleAlert } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { Alert, AlertDescription, AlertTitle } from "@/registry/syncrobotic/ui/alert"
+import { StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { SegmentedControl, SegmentedControlItem } from "@/registry/syncrobotic/ui/segmented-control"
 
@@ -126,10 +127,13 @@ export function MissionSchedule() {
                 <ul aria-label={`${l.robot} missions`} className="flex flex-col gap-2">
                   {l.slots.map((s) => (
                     <li key={s.start} className={cn("flex min-h-(--h-md) items-center justify-between gap-3 rounded-xs px-3 py-2 text-sm", slotStyle[s.state])}>
-                      <span className="flex min-w-0 flex-col">
+                      <div className="flex min-w-0 flex-col">
                         <span className="font-medium">{s.name}</span>
-                        <span className="text-xs text-muted-foreground">{stateWord[s.state]}</span>
-                      </span>
+                        <span className="flex items-center gap-2 text-xs text-muted-foreground">
+                          {s.state === "conflict" && <StatusGlyph status="warning" />}
+                          {stateWord[s.state]}
+                        </span>
+                      </div>
                       <span className="shrink-0 tabular-nums">
                         {clock(s.start)}–{clock(s.end)}
                       </span>
@@ -181,10 +185,14 @@ export function MissionSchedule() {
                           >
                             <span className="flex min-w-0 flex-col">
                               <span className="truncate font-medium">{s.name}</span>
-                              <span className="truncate">
-                                <span className="sr-only">, </span>
-                                {shortWord[s.state]}
-                                <span className="sr-only">, </span>
+                              {/* A state is a shape and a word: the one in warning carries its triangle, as InlineStatus does. */}
+                              <span className="flex min-w-0 items-center gap-2">
+                                {s.state === "conflict" && <StatusGlyph status="warning" />}
+                                <span className="truncate">
+                                  <span className="sr-only">, </span>
+                                  {shortWord[s.state]}
+                                  <span className="sr-only">, </span>
+                                </span>
                               </span>
                               <span className="truncate text-muted-foreground tabular-nums">
                                 {clock(s.start)}–{clock(s.end)}

@@ -1,4 +1,4 @@
-// @syncrobotic/table v0.40.0 · update: npx shadcn add @syncrobotic/table --overwrite
+// @syncrobotic/table v0.47.0 · update: npx shadcn add @syncrobotic/table --overwrite
 "use client"
 
 import * as React from "react"
@@ -46,16 +46,18 @@ export function scrollFadeMask({ start, end }: { start: boolean; end: boolean })
 /**
  * Dense data for dashboards. Numbers are tabular by default; right-align numeric columns. Give phones their own layout
  * first (hide secondary columns below sm, stack them under the first cell); a table that still scrolls fades on the
- * side that hides columns.
+ * side that hides columns. `bare` inside something that is already a surface (a card, a sheet, a panel): no edge of its
+ * own, only the hairlines between rows, so edges never nest.
  */
-export function Table({ className, ...props }: React.ComponentProps<"table">) {
+export function Table({ className, bare, ...props }: React.ComponentProps<"table"> & { bare?: boolean }) {
   const scroller = React.useRef<HTMLDivElement>(null)
   const edges = useScrollEdges(scroller)
   return (
     // The frame draws the edge and the focus ring, so the fade on the scrolling box never eats either.
     <div
       data-slot="table-frame"
-      className="relative w-full rounded-md ring-1 ring-border has-[>[data-slot=table-container]:focus-visible]:outline-2 has-[>[data-slot=table-container]:focus-visible]:outline-offset-2 has-[>[data-slot=table-container]:focus-visible]:outline-ring"
+      data-bare={bare || undefined}
+      className="relative w-full rounded-md ring-1 ring-border data-bare:ring-0 has-[>[data-slot=table-container]:focus-visible]:outline-2 has-[>[data-slot=table-container]:focus-visible]:outline-offset-2 has-[>[data-slot=table-container]:focus-visible]:outline-ring"
     >
       <div
         ref={scroller}

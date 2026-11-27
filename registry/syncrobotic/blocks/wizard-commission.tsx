@@ -1,4 +1,4 @@
-// @syncrobotic/wizard-commission v0.40.0 · update: npx shadcn add @syncrobotic/wizard-commission --overwrite
+// @syncrobotic/wizard-commission v0.47.0 · update: npx shadcn add @syncrobotic/wizard-commission --overwrite
 "use client"
 
 import * as React from "react"
@@ -128,7 +128,7 @@ export function WizardCommission({ onDone }: { onDone?: (robot: { serial: string
                         {state === "passed" ? (
                           <Check className="size-4" />
                         ) : state === "running" ? (
-                          <Spinner className="size-4 text-info" />
+                          <Spinner className="size-4 text-muted-foreground" />
                         ) : (
                           <span className="size-2 rounded-full bg-border" />
                         )}

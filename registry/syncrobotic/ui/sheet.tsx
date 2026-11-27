@@ -1,4 +1,4 @@
-// @syncrobotic/sheet v0.32.0 · update: npx shadcn add @syncrobotic/sheet --overwrite
+// @syncrobotic/sheet v0.47.0 · update: npx shadcn add @syncrobotic/sheet --overwrite
 "use client"
 
 import * as React from "react"
@@ -20,12 +20,18 @@ const sides = {
     "inset-x-2 bottom-[max(0.5rem,env(safe-area-inset-bottom))] max-h-[85dvh] rounded-xl data-[state=open]:animate-sheet-in-bottom data-[state=closed]:animate-sheet-out-bottom",
   right:
     "inset-2 ml-auto max-w-sm rounded-xl data-[state=open]:animate-sheet-in-right data-[state=closed]:animate-sheet-out-right",
+  /**
+   * A detail or a form beside the page: from the bottom on a phone (under 640 px), from the right from 640 px, decided
+   * in CSS so the first paint is already the right one. What most sheets want.
+   */
+  end: "rounded-xl max-sm:inset-x-2 max-sm:bottom-[max(0.5rem,env(safe-area-inset-bottom))] max-sm:max-h-[85dvh] max-sm:data-[state=open]:animate-sheet-in-bottom max-sm:data-[state=closed]:animate-sheet-out-bottom sm:inset-2 sm:ml-auto sm:max-w-sm sm:data-[state=open]:animate-sheet-in-right sm:data-[state=closed]:animate-sheet-out-right",
   /** Navigation drawers, which open from the side the navigation lives on. */
   left: "inset-2 mr-auto max-w-sm rounded-xl data-[state=open]:animate-sheet-in-left data-[state=closed]:animate-sheet-out-left",
 } as const
 
 /**
  * Bottom sheet on phones (radius 24, xl, with a grab handle); right panel on wide screens; left for navigation drawers.
+ * `end` is both: bottom under 640 px, right from 640 px, for a detail or a form that opens beside the page.
  * Each floats 8 px in from the screen's edges. A side sheet fills the space between those edges up to `max-w-sm`;
  * set `w-*` or `sm:max-w-*` to change it, and auto margins keep it on its side.
  */
@@ -48,7 +54,9 @@ export function SheetContent({
         )}
         {...props}
       >
-        {side === "bottom" && <span aria-hidden="true" className="mx-auto -mt-2 block h-1 w-10 shrink-0 rounded-full bg-border" />}
+        {(side === "bottom" || side === "end") && (
+          <span aria-hidden="true" className={cn("mx-auto -mt-2 block h-1 w-10 shrink-0 rounded-full bg-border", side === "end" && "sm:hidden")} />
+        )}
         {children}
       </SheetPrimitive.Content>
     </SheetPrimitive.Portal>

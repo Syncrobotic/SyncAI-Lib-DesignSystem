@@ -1,4 +1,4 @@
-// @syncrobotic/agent-chat v0.41.0 · update: npx shadcn add @syncrobotic/agent-chat --overwrite
+// @syncrobotic/agent-chat v0.47.0 · update: npx shadcn add @syncrobotic/agent-chat --overwrite
 "use client"
 
 import * as React from "react"
@@ -545,7 +545,7 @@ export function AgentChatSheet({
       </div>
       <SheetContent
         ref={content}
-        side="right"
+        side="end"
         // The conversation scrolls inside; the sheet itself does not. 28 rem: below 42, every turn starts at the start.
         className="max-w-md gap-0 overflow-hidden p-0"
         // Not modal: working on the page beside it does not close it.

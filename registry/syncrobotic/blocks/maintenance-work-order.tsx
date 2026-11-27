@@ -1,11 +1,11 @@
-// @syncrobotic/maintenance-work-order v0.40.0 · update: npx shadcn add @syncrobotic/maintenance-work-order --overwrite
+// @syncrobotic/maintenance-work-order v0.47.0 · update: npx shadcn add @syncrobotic/maintenance-work-order --overwrite
 "use client"
 
 import * as React from "react"
 import { Wrench } from "lucide-react"
 import { AppShell, sampleNav, sampleUser } from "@/registry/syncrobotic/blocks/app-shell"
 import { formatCount } from "@/registry/syncrobotic/lib/format-number"
-import { StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
+import { InlineStatus, StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
 import { Button } from "@/registry/syncrobotic/ui/button"
 import { Checkbox } from "@/registry/syncrobotic/ui/checkbox"
 import { ChoiceField, FieldSet } from "@/registry/syncrobotic/ui/choice-field"
@@ -100,7 +100,16 @@ export function MaintenanceWorkOrder() {
             items={[
               { label: "Opened", value: "Today, 08:10, by the service plan" },
               { label: "Assigned to", value: "Mei Lin" },
-              { label: "Hours run", value: "212 of 200 h (overdue by 12 h)" },
+              {
+                label: "Hours run",
+                // Past its threshold: the warning shape and the word, the number in ink.
+                value: (
+                  <span className="flex flex-wrap items-center gap-x-2">
+                    212 of 200 h{" "}
+                    <InlineStatus status="warning">Overdue by 12 h</InlineStatus>
+                  </span>
+                ),
+              },
               { label: "Bench", value: "Taoyuan plant, workshop 1" },
             ]}
           />

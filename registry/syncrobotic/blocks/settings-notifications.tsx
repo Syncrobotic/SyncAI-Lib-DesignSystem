@@ -1,4 +1,4 @@
-// @syncrobotic/settings-notifications v0.40.0 · update: npx shadcn add @syncrobotic/settings-notifications --overwrite
+// @syncrobotic/settings-notifications v0.47.0 · update: npx shadcn add @syncrobotic/settings-notifications --overwrite
 "use client"
 
 import * as React from "react"
@@ -51,7 +51,7 @@ export function SettingsNotifications() {
       <section aria-labelledby="notify-title" className="flex flex-col gap-3">
         <SectionHeader id="notify-title" title="Notifications" description="Changes save as you make them." />
         <Card className="gap-0 p-0">
-          <Table>
+          <Table bare>
             <TableHeader>
               <TableRow>
                 <TableHead>Event</TableHead>
