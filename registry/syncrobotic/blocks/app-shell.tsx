@@ -321,11 +321,29 @@ function AppNav({ nav, current, linkAs: Link = "a" }: { nav: AppNavGroup[]; curr
  * sidebar's state, so it goes inside a SidebarProvider (the AppShell has one).
  */
 export function SidebarUserMenu({ user, items = sampleUserMenu, linkAs: Link = "a" }: { user: AppUser; items?: AppUserMenuItem[]; linkAs?: React.ElementType }) {
-  const { state, isMobile } = useSidebar()
+  const { state, isMobile, setOpen } = useSidebar()
   const rail = state === "collapsed" && !isMobile
+  const [menuOpen, setMenuOpen] = React.useState(false)
+  const trigger = React.useRef<HTMLButtonElement>(null)
+  // On the rail the menu has no room for the name and email it repeats, so pressing the avatar opens the sidebar first and
+  // the menu once the column has finished moving, where it is when the sidebar is open: above the button, as wide as it.
+  // Without motion (or if the column is not moving) it opens at once; if the fold is reversed midway, it stays closed.
+  const openFromRail = () => {
+    const frame = trigger.current?.closest<HTMLElement>("[data-slot=sidebar]")
+    setOpen(true)
+    if (!frame || parseFloat(getComputedStyle(frame).transitionDuration) === 0) return setMenuOpen(true)
+    const settle = (event: TransitionEvent) => {
+      if (event.target !== frame || event.propertyName !== "width") return
+      frame.removeEventListener("transitionend", settle)
+      frame.removeEventListener("transitioncancel", settle)
+      if (event.type === "transitionend") setMenuOpen(true)
+    }
+    frame.addEventListener("transitionend", settle)
+    frame.addEventListener("transitioncancel", settle)
+  }
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+    <DropdownMenu open={menuOpen} onOpenChange={(next) => (next && rail ? openFromRail() : setMenuOpen(next))}>
+      <DropdownMenuTrigger ref={trigger} asChild>
         {/* Named by what it shows (initials, name, email) and then what it opens, so speech input can say what is on screen
             (WCAG 2.5.3): no aria-label that would reorder the words. */}
         {/* Open: 40 px (44 on touch), 8 px corners. As a rail: a 44 px square with 12 px corners, as the links' buttons;
@@ -353,7 +371,7 @@ export function SidebarUserMenu({ user, items = sampleUserMenu, linkAs: Link = "
           <ChevronsUpDown aria-hidden="true" className="text-muted-foreground" />
         </SidebarMenuButton>
       </DropdownMenuTrigger>
-      <DropdownMenuContent side={rail ? "right" : "top"} align={rail ? "end" : "start"} className="w-(--radix-dropdown-menu-trigger-width) min-w-56">
+      <DropdownMenuContent side="top" align="start" className="w-(--radix-dropdown-menu-trigger-width) min-w-56">
         <DropdownMenuLabel className="flex flex-col">
           <span className="truncate text-sm font-medium text-foreground">{user.name}</span>
           {user.email && <span className="truncate text-xs font-normal text-muted-foreground">{user.email}</span>}
@@ -584,12 +602,11 @@ export function AppShell({
             in, so its centre is the rail's centre line (34 px), open or closed; the name follows 8 px after it, as the
             account's name after the avatar. Only the name fades. Flush: lined, level
             with the top bar's line. */}
-        {/* Each state has its own balance, and the fold moves between them: open, the 28 px mark sits 14 px from the top, as
-            the avatar from the bottom; as a rail, 4 px more room under it raises it to 12, as the avatar's 44 px square
-            lowers it to 12. */}
+        {/* The mark stays centred in the row in both states (14 px from the top), level with the page's title across the
+            gap: raising it on the rail to mirror the avatar's 12 px broke that line, and the line reads first. */}
         <SidebarHeader
           className={cn(
-            "h-(--h-row) justify-center border-b py-0 transition-[padding] duration-(--motion-sheet) ease-(--ease-standard) group-data-[collapsible=icon]/sidebar:pb-1 motion-reduce:transition-none",
+            "h-(--h-row) justify-center border-b py-0",
             inset ? "border-transparent" : "border-border",
           )}
         >
@@ -610,12 +627,12 @@ export function AppShell({
           <AppNav nav={nav} current={current} linkAs={linkAs} />
         </SidebarContent>
         {user && (
-          // 56 px in both states, as the brand row. Open: 8 px around a 40 px account button, its 8 px corner concentric with
-          // the sidebar's 16 (16 = 8 + 8). As a rail: a 44 px square like the links', 4 px from the bottom, its 12 px corner
-          // concentric too (16 = 12 + 4). The fold moves the padding with the column.
+          // Open: 56 px, as the brand row, 8 px around a 40 px account button, its 8 px corner concentric with the sidebar's
+          // 16 (16 = 8 + 8). As a rail: a 44 px square like the links', 12 px from the bottom as from either side, so the
+          // avatar sits 20 px in from three edges, as the mark does in its row. The fold moves the padding with the column.
           <SidebarFooter
             className={cn(
-              "border-t py-2 transition-[padding] duration-(--motion-sheet) ease-(--ease-standard) group-data-[collapsible=icon]/sidebar:pb-1 motion-reduce:transition-none",
+              "border-t py-2 transition-[padding] duration-(--motion-sheet) ease-(--ease-standard) group-data-[collapsible=icon]/sidebar:py-3 motion-reduce:transition-none",
               inset ? "border-transparent" : "border-border",
             )}
           >

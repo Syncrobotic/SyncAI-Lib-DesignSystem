@@ -13,8 +13,10 @@ The sidebar in balance in both its states, with a fold that moves between them, 
   - **Scroll cues:** the fades and the chevron ease in and out with the scroll (the fades' depths are registered lengths, so the mask moves instead of jumping). They are gone at the end of the list and on the rail. The chevron sits at the list's foot, between the list and what is under it, instead of over the last link.
 - **`app-shell` 0.49.0: each state of the sidebar has its own balance, and the fold moves between them:**
   - **Open:** the 28 px mark sits 14 px from the top and the 28 px avatar 14 px from the bottom, in a 40 px account button with 8 px corners, 8 px in. The names follow 8 px after each.
-  - **As a rail:** both sit 12 px from their edges. The account is a 44 px square with 12 px corners like the links', 4 px from the bottom.
-  - **Both states:** the corners are concentric with the sidebar's 16 (16 = 8 + 8 open, 12 + 4 on the rail), and the foot is 56 px, as the head. The mark, the icons and the avatar stay on one centre line through the fold, and the height, corners and padding move with it.
+  - **As a rail:** the account is a 44 px square with 12 px corners like the links', 12 px from the bottom as from either side, so the avatar is 20 px in from three edges. The mark stays centred in its row, level with the page's title across the gap.
+  - **Open:** the corners are concentric with the sidebar's 16 (16 = 8 + 8), and the foot is 56 px, as the head.
+  - **Both states:** the mark, the icons and the avatar stay on one centre line through the fold, and the height, corners and padding move with it.
+  - **Account menu from the rail:** pressing the avatar opens the sidebar, then the menu once the column has stopped moving, above the button as when open. Without motion it opens at once; if the fold is reversed midway it stays shut.
   - **Before:** in 0.48.0 the account button's fill touched the sidebar's bottom edge.
 - **`list-detail` 0.49.0:** the list's filter is filled, not outlined. It sits in the list's own bar, and an outline there would be an edge inside an edge.
 
