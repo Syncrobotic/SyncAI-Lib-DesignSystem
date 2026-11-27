@@ -319,9 +319,9 @@ export function SidebarUserMenu({ user, items = sampleUserMenu, linkAs: Link = "
       <DropdownMenuTrigger asChild>
         {/* Named by what it shows (initials, name, email) and then what it opens, so speech input can say what is on screen
             (WCAG 2.5.3): no aria-label that would reorder the words. */}
-        {/* pr-3: the chevron's right edge lines up with the counts on the links above (px-3); the avatar keeps px-2, on
-            the rail's centre line. */}
-        <SidebarMenuButton size="lg" tooltip={user.name} className="pr-3 text-foreground">
+        {/* 40 px (44 on touch), 8 px corners: the avatar keeps the rail's centre line and the mark's left edge (pl-2), and
+            the chevron lines up with the counts on the links above (pr-3). As a rail it is as wide as the links' buttons. */}
+        <SidebarMenuButton size="lg" tooltip={user.name} className="h-10 rounded-xs pr-3 pl-2 text-foreground pointer-coarse:h-(--h-md)">
           <Avatar>
             <AvatarFallback>{user.initials}</AvatarFallback>
           </Avatar>
@@ -578,9 +578,10 @@ export function AppShell({
           <AppNav nav={nav} current={current} linkAs={linkAs} />
         </SidebarContent>
         {user && (
-          // The foot mirrors the head: no padding of its own around the 56 px account row, so the mark above and the 32 px
-          // avatar below sit the same 12 px from their edges, on the same centre line and the same left edge.
-          <SidebarFooter className={cn("border-t py-0", inset ? "border-transparent" : "border-border")}>
+          // The foot mirrors the head: 56 px, 8 px above and below a 40 px account button, so the avatar sits 12 px from the
+          // bottom as the mark does from the top, and the button's fill (hover, open) never touches the frame: 8 px in, its
+          // 8 px corner concentric with the sidebar's 16.
+          <SidebarFooter className={cn("border-t py-2", inset ? "border-transparent" : "border-border")}>
             <SidebarUserMenu user={user} items={userMenu} linkAs={linkAs} />
           </SidebarFooter>
         )}

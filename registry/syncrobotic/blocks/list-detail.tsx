@@ -73,7 +73,8 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
       <div className="flex h-full">
         <div className={cn("flex w-full flex-col border-r border-border md:w-80", robot && "hidden md:flex")}>
           <div className="border-b border-border p-3">
-            <InputGroup>
+            {/* In the list's own bar, under its hairline: filled, not outlined, so it is not an edge inside an edge. */}
+            <InputGroup className="bg-muted ring-0">
               <InputGroupAddon>
                 <Search aria-hidden="true" />
               </InputGroupAddon>
