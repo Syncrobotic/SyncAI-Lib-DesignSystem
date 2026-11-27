@@ -1,4 +1,4 @@
-// @syncrobotic/wizard-commission v0.47.0 · update: npx shadcn add @syncrobotic/wizard-commission --overwrite
+// @syncrobotic/wizard-commission v0.48.0 · update: npx shadcn add @syncrobotic/wizard-commission --overwrite
 "use client"
 
 import * as React from "react"
@@ -73,7 +73,7 @@ export function WizardCommission({ onDone }: { onDone?: (robot: { serial: string
               <Check aria-hidden="true" />
             </IconTile>
             <div className="flex flex-col gap-1">
-              <h2 className="text-lg font-bold">{name.trim()} is in the fleet</h2>
+              <h2 className="text-base font-bold">{name.trim()} is in the fleet</h2>
               <p className="text-sm text-muted-foreground">It waits at its dock until you give it a mission.</p>
             </div>
             <DescriptionList

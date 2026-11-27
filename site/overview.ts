@@ -16,7 +16,7 @@ export const overviews: Record<string, Overview> = {
     instead: ["A title inside a card: the card's own heading.", "The app's own frame: `app-shell`.", "A section further down the page: `section-header`."],
   },
   "section-header": {
-    what: "The heading of a section at one of typography's two levels: page (20 px bold) or inside a surface (14 px medium), with an optional count, a line and actions.",
+    what: "The heading of a section at one of typography's two levels: page (16 px bold) or inside a surface (14 px medium), with an optional count, a line and actions.",
     use: [
       "A section of a page between the page header and its cards: Robots 1,284, with Add robot.",
       "A section inside a card, a sheet or a panel: Sensors 6, with Calibrate.",

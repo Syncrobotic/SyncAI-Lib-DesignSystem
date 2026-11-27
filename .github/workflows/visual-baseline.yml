@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     # The same image the story checks run in, so baselines and checks render with the same fonts.
-    container: { image: "mcr.microsoft.com/playwright:v1.65.1-noble" }
+    container: { image: "mcr.microsoft.com/playwright:v1.65.1-noble@sha256:1507cbfc550a63a6b7396791ca4f00df17beb56342d2447b3f106c306f525579" }
     env: { HOME: /root }
     strategy:
       fail-fast: true
@@ -26,9 +26,9 @@ jobs:
         shard: [1, 2, 3, 4]
     steps:
       - run: command -v git || (apt-get update && apt-get install -y --no-install-recommends git)
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with: { persist-credentials: false }
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with: { node-version: 22, cache: npm }
       - run: npm ci
       - run: npm run build-storybook
@@ -39,40 +39,40 @@ jobs:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           mkdir -p out
           git ls-files -m -o --exclude-standard tests/__screenshots__ | while read -r f; do mkdir -p "out/$(dirname "$f")"; cp "$f" "out/$f"; done
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with: { name: "shots-${{ matrix.shard }}", path: out, if-no-files-found: ignore, include-hidden-files: false }
 
   # The pictures on /docs/components are the same stories, so they are taken in the same browser.
   thumbs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    container: { image: "mcr.microsoft.com/playwright:v1.65.1-noble" }
+    container: { image: "mcr.microsoft.com/playwright:v1.65.1-noble@sha256:1507cbfc550a63a6b7396791ca4f00df17beb56342d2447b3f106c306f525579" }
     env: { HOME: /root }
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with: { persist-credentials: false }
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with: { node-version: 22, cache: npm }
       - run: npm ci
       - run: npm run build-storybook
       - run: npm run thumbs
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with: { name: thumbs-components, path: public/thumbs/components }
 
   # The pictures on /blocks come from the blocks' previews on the built site (scripts/thumbs.mjs --blocks starts it).
   block-thumbs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    container: { image: "mcr.microsoft.com/playwright:v1.65.1-noble" }
+    container: { image: "mcr.microsoft.com/playwright:v1.65.1-noble@sha256:1507cbfc550a63a6b7396791ca4f00df17beb56342d2447b3f106c306f525579" }
     env: { HOME: /root }
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with: { persist-credentials: false }
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with: { node-version: 22, cache: npm }
       - run: npm ci
       - run: npx next build && npm run thumbs -- --blocks
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with: { name: thumbs-blocks, path: public/thumbs/blocks }
 
   commit:
@@ -85,9 +85,9 @@ jobs:
       actions: write
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with: { fetch-depth: 0 }
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with: { path: artifacts }
       - id: commit
         run: |

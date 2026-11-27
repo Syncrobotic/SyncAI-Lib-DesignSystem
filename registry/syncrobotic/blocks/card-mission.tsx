@@ -1,4 +1,4 @@
-// @syncrobotic/card-mission v0.28.0 · update: npx shadcn add @syncrobotic/card-mission --overwrite
+// @syncrobotic/card-mission v0.48.0 · update: npx shadcn add @syncrobotic/card-mission --overwrite
 "use client"
 
 import { Bot, Clock, Route, TriangleAlert } from "lucide-react"
@@ -56,7 +56,7 @@ export function CardMission({ missions = sampleMissions, className }: { missions
           <Card key={m.name} className="gap-4">
             <div className="flex flex-col gap-1">
               <StatusEyebrow status={m.state.tone}>{m.state.label}</StatusEyebrow>
-              <h3 className="text-lg font-bold">{m.name}</h3>
+              <h3 className="text-base font-bold">{m.name}</h3>
             </div>
             <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
               <li className="flex items-center gap-2">

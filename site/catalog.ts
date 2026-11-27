@@ -518,7 +518,7 @@ const entries: Record<string, Entry> = {
     group: "Layout",
     examples: { file: "section-header", prefix: "SectionHeader" },
     rules: [
-      "Two levels, from typography: `page` (20 px bold) for a section of the page, outside the cards; `surface` (14 px medium, never bold) for a section inside a card, a sheet or a panel. Never another size or weight for a section title.",
+      "Two levels, from typography: `page` (16 px bold, under the page's title at 18) for a section of the page, outside the cards; `surface` (14 px medium, never bold) for a section inside a card, a sheet or a panel. Never another size or weight for a section title.",
       "The heading is an h2 at `page` and an h3 at `surface`. Set `as` so the page's outline skips no level; the look stays the same.",
       "`count` is how many items the section holds, written in full with grouping (1,284, never 1.2K), muted after the title. A count that needs someone (unread, failing) is a CountBadge in the title instead.",
       "Actions are the section's own (View all, Add): at the right, under the title when the title needs the width. `size=\"sm\"` buttons in a `surface` header.",

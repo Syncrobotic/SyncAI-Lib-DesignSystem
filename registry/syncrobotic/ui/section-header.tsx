@@ -1,17 +1,17 @@
-// @syncrobotic/section-header v0.40.0 · update: npx shadcn add @syncrobotic/section-header --overwrite
+// @syncrobotic/section-header v0.48.0 · update: npx shadcn add @syncrobotic/section-header --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { formatCount } from "@/registry/syncrobotic/lib/format-number"
 
 const levels = {
-  // A section of the page, outside any card: typography's Title, 20 px bold, as a sheet's title.
-  page: { heading: "text-xl font-bold", description: "text-sm", as: "h2" },
+  // A section of the page, outside any card: 16 px bold, under the page's title (18) and level with a card's title.
+  page: { heading: "text-base font-bold", description: "text-sm", as: "h2" },
   // A section inside a card, a sheet or a panel: 14 px medium, never bold, as CardDataHeader's title.
   surface: { heading: "text-sm font-medium", description: "text-xs", as: "h3" },
 } as const
 
 /**
- * The heading of a section, at one of typography's two section levels: `page` (20 px bold) for a section of the page,
+ * The heading of a section, at one of typography's two section levels: `page` (16 px bold) for a section of the page,
  * outside the cards, and `surface` (14 px medium) for a section inside a card, a sheet or a panel. The title can carry a
  * count, written in full (1,284, never 1.2K), and a line under it; actions sit at the right and go under the title when
  * the title needs the width. A data card (a chart, a figure) opens with CardDataHeader instead; a page opens with
@@ -29,7 +29,7 @@ export function SectionHeader({
   className,
 }: {
   title: React.ReactNode
-  /** `page`: a section of the page, outside any card (20 px bold). `surface`: inside a card, a sheet or a panel (14 px medium). */
+  /** `page`: a section of the page, outside any card (16 px bold). `surface`: inside a card, a sheet or a panel (14 px medium). */
   variant?: "page" | "surface"
   /** The heading level: h2 for `page` and h3 for `surface` by default. Set it so the page's outline skips no level; the look stays the same. */
   as?: "h2" | "h3" | "h4"
