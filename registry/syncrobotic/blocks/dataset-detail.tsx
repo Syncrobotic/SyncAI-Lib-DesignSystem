@@ -1,4 +1,4 @@
-// @syncrobotic/dataset-detail v0.40.0 · update: npx shadcn add @syncrobotic/dataset-detail --overwrite
+// @syncrobotic/dataset-detail v0.53.0 · update: npx shadcn add @syncrobotic/dataset-detail --overwrite
 "use client"
 
 import * as React from "react"
@@ -223,8 +223,9 @@ export function DatasetDetailContent({ name = "Night parking lot people", refere
 }
 
 /**
- * One dataset: what it is, whether it may enter a release and why, what is in it, where it came from and where it goes.
- * Browse shows the items with their annotations; layers toggle on and off.
+ * One dataset: release verdict, open issues, counts and splits, an annotated browse grid with layer toggles, lineage
+ * and compliance; DatasetDetailContent drops the sample frame. It says what the dataset is, whether it may enter a
+ * release and why, and where it came from and where it goes.
  */
 export function DatasetDetail(props: DatasetDetailProps) {
   return (

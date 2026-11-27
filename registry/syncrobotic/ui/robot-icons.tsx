@@ -1,9 +1,10 @@
-// @syncrobotic/robot-icons v0.22.1 · update: npx shadcn add @syncrobotic/robot-icons --overwrite
+// @syncrobotic/robot-icons v0.53.0 · update: npx shadcn add @syncrobotic/robot-icons --overwrite
 import { createLucideIcon } from "lucide-react"
 
 /*
-  Robot icons Lucide does not have, drawn to its rules: 24 px grid, 2 px stroke, round caps and joins, no fill.
-  Built with Lucide's own factory, so they take the same props (size, strokeWidth, className) and sit beside it unnoticed.
+  Robot icons Lucide lacks, drawn to its grid: robot arm, mobile robot, charging dock, physical emergency stop pressed,
+  safety zone, low-priority alarm. A 2 px stroke, round caps and joins, no fill, and Lucide's own factory, so they take
+  the same props (size, strokeWidth, className) and sit beside it unnoticed.
 */
 
 /** A robot arm: a cobot or any fixed manipulator. */

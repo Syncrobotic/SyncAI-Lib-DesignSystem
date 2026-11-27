@@ -1,4 +1,4 @@
-// @syncrobotic/tree v0.51.0 · update: npx shadcn add @syncrobotic/tree --overwrite
+// @syncrobotic/tree v0.53.0 · update: npx shadcn add @syncrobotic/tree --overwrite
 "use client"
 
 import * as React from "react"
@@ -126,8 +126,9 @@ function Meta({ node, id }: { node: TreeNode; id?: string }) {
 }
 
 /**
- * A hierarchy (lineage, sites › zones › robots, folders). `list` (default): nested list with links as ordinary Tab stops.
- * `select`: a WAI-ARIA tree, one Tab stop, arrow keys, type-ahead and one selected node, since role="tree" is for that.
+ * A hierarchy from data: a nested list with guide lines, disclosure buttons and links (list), or a tree widget with
+ * arrow keys, type-ahead and one selected node (select). `list` (default) keeps links as ordinary Tab stops; `select`
+ * is a WAI-ARIA tree with one Tab stop, since role="tree" is for selecting.
  */
 export function Tree({
   items,

@@ -1,11 +1,12 @@
-// @syncrobotic/empty-state v0.51.0 · update: npx shadcn add @syncrobotic/empty-state --overwrite
+// @syncrobotic/empty-state v0.53.0 · update: npx shadcn add @syncrobotic/empty-state --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { IconTile } from "@/registry/syncrobotic/ui/icon-tile"
 
 /**
- * Say what is missing, why, and the one action that fixes it. `size="panel"` (default) for a card or dialog body;
- * `size="inline"` inside a table or list; `variant="overlay"` over a canvas or picture, where the viewport overlay places it.
+ * What is missing, why, and the one action that fixes it. `size="panel"` (default) for a card or dialog body;
+ * `size="inline"` inside a table or list; `variant="overlay"` over a canvas or picture, where the viewport overlay
+ * places it.
  */
 export function EmptyState({
   icon: Icon,

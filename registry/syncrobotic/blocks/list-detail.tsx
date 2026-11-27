@@ -1,4 +1,4 @@
-// @syncrobotic/list-detail v0.52.0 · update: npx shadcn add @syncrobotic/list-detail --overwrite
+// @syncrobotic/list-detail v0.53.0 · update: npx shadcn add @syncrobotic/list-detail --overwrite
 "use client"
 
 import * as React from "react"
@@ -30,9 +30,9 @@ const status: Record<Robot["status"], { tone: Status; label: string }> = {
 }
 
 /**
- * List and detail: pick a robot on the left, read and act on it on the right. On phones the detail replaces the list.
- * The picked robot's emergency stop sits at the foot of its detail and stays on screen while it scrolls; a stopped
- * robot offers slide to release there instead.
+ * Pick a robot from a filterable list and read and act on it in the detail beside it; on phones the detail replaces the
+ * list. The picked robot's emergency stop sits at the foot of its detail and stays on screen while it scrolls; a
+ * stopped robot offers slide to release there instead.
  */
 export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
   const [query, setQuery] = React.useState("")

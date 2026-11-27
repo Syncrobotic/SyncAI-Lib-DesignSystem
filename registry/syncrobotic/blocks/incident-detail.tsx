@@ -1,4 +1,4 @@
-// @syncrobotic/incident-detail v0.48.0 · update: npx shadcn add @syncrobotic/incident-detail --overwrite
+// @syncrobotic/incident-detail v0.53.0 · update: npx shadcn add @syncrobotic/incident-detail --overwrite
 "use client"
 
 import * as React from "react"
@@ -28,8 +28,8 @@ const initial: Update[] = [
 ]
 
 /**
- * One incident: where it stands as steps, what is affected, and the updates, newest first. Posting an update can move it to
- * the next state, so the record and the status never disagree. Nothing here stops a robot; the dock does that.
+ * One incident: its state as steps, the facts, and updates newest first; posting an update can move it on. Moving it
+ * with the update keeps the record and the status in agreement. Nothing here stops a robot; the dock does that.
  */
 export function IncidentDetail() {
   const [updates, setUpdates] = React.useState(initial)

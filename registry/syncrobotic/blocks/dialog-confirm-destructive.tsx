@@ -1,4 +1,4 @@
-// @syncrobotic/dialog-confirm-destructive v0.17.3 · update: npx shadcn add @syncrobotic/dialog-confirm-destructive --overwrite
+// @syncrobotic/dialog-confirm-destructive v0.53.0 · update: npx shadcn add @syncrobotic/dialog-confirm-destructive --overwrite
 "use client"
 
 import * as React from "react"
@@ -19,9 +19,9 @@ import { Field } from "@/registry/syncrobotic/ui/field"
 import { Input } from "@/registry/syncrobotic/ui/input"
 
 /**
- * Confirming something that cannot be undone: the title is the question, the body says what will be lost and who it
- * affects, and for the worst cases you type the name. The safe choice is focused first; the destructive one names the
- * action and stays an outline, never solid red.
+ * A dialog for something that cannot be undone: what is lost, who it affects, and the name typed to confirm. The title
+ * is the question; typing the name is for the worst cases. The safe choice is focused first; the destructive one names
+ * the action and stays an outline, never solid red.
  */
 export function DialogConfirmDestructive({
   name = "Taoyuan plant, floor 2",

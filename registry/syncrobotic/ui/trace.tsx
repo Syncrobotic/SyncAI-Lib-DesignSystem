@@ -1,4 +1,4 @@
-// @syncrobotic/trace v0.51.0 · update: npx shadcn add @syncrobotic/trace --overwrite
+// @syncrobotic/trace v0.53.0 · update: npx shadcn add @syncrobotic/trace --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,10 +7,6 @@ import { ChevronRight, Circle, CircleAlert, CircleCheck, Minus, TriangleAlert } 
 import { cn } from "@/lib/utils"
 import { Spinner } from "@/registry/syncrobotic/ui/spinner"
 
-/**
- * The steps of a run in order, each with status and duration (a mission, an agent's tool calls, a rollout). Steps open to
- * their input, output or sub-steps. Done is a neutral check; only warnings and failures are coloured.
- */
 export type TraceStatus = "pending" | "running" | "done" | "warning" | "error" | "skipped"
 
 /** 840 ms, 1.2 s, 2 m 05 s, 1 h 04 m. */
@@ -50,6 +46,11 @@ export const defaultTraceLabels: TraceLabels = {
 type Ctx = { density: "default" | "dense"; total?: number; labels: TraceLabels }
 const TraceCtx = React.createContext<Ctx>({ density: "default", labels: defaultTraceLabels })
 
+/**
+ * The steps of a run (missions, agent tool calls, rollouts, CI runs, audit trails) with status and duration, each opening
+ * to its input, output or sub-steps, and an optional waterfall bar. Done is a neutral check; only warnings and failures
+ * are coloured.
+ */
 export function Trace({
   size,
   total,
@@ -152,9 +153,9 @@ export function TraceItem({
             )}
           >
             {title}
-          </span>
+          </span>{" "}
           {meta && <span className="truncate font-mono text-xs text-muted-foreground">{meta}</span>}
-          <span className="sr-only">, {l[status]}</span>
+          <span className="sr-only"> {l[status]}</span>
         </span>
         {description && <span className={cn("text-xs", status === "error" ? "text-danger" : "text-muted-foreground")}>{description}</span>}
       </span>
@@ -271,7 +272,7 @@ export function TraceHeader({
       {/* A title inside a surface: 14 px medium. */}
       <span className="text-sm font-medium">
         {title}
-        <span className="sr-only">, {l[status]}</span>
+        <span className="sr-only"> {l[status]}</span>
       </span>
       {duration !== undefined && <span className="text-sm text-muted-foreground tabular-nums">{l.duration(duration)}</span>}
       {counts && (

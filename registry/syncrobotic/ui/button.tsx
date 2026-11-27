@@ -1,4 +1,4 @@
-// @syncrobotic/button v0.17.1 · update: npx shadcn add @syncrobotic/button --overwrite
+// @syncrobotic/button v0.53.0 · update: npx shadcn add @syncrobotic/button --overwrite
 import * as React from "react"
 import { Slot } from "radix-ui"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -45,6 +45,11 @@ export type ButtonProps = React.ComponentProps<"button"> &
     loading?: boolean
   }
 
+/**
+ * A control that does one thing now, labelled with a verb: primary, secondary, outline, ghost, destructive and
+ * link; 36, 44 and 48 px; loading state with a delayed spinner. An icon-only button (`size="icon"`) needs an
+ * `aria-label` and a Tooltip.
+ */
 export function Button({ className, variant, size, asChild, loading, disabled, children, ...props }: ButtonProps) {
   const Comp = asChild ? Slot.Root : "button"
   return (

@@ -1,4 +1,4 @@
-// @syncrobotic/annotated-image v0.51.0 · update: npx shadcn add @syncrobotic/annotated-image --overwrite
+// @syncrobotic/annotated-image v0.53.0 · update: npx shadcn add @syncrobotic/annotated-image --overwrite
 "use client"
 
 import * as React from "react"
@@ -215,9 +215,9 @@ type AnnotatedImageProps = {
 }
 
 /**
- * Boxes, points, polygons and poses over a picture: predictions, labels, a previous version. Marks share the picture's
- * pixel space, so they line up at any size; line style carries the kind (predicted solid, ground truth dashed, previous
- * dotted) and the class is a word, never a colour. With `onSelectedChange` each annotation is a button.
+ * Boxes, points, polygons and poses over a picture in its pixel space (predicted solid, ground truth dashed, previous
+ * dotted), with class words, a legend, keyboard selection and load states. Marks share the picture's pixel space, so
+ * they line up at any size; the class is a word, never a colour. With `onSelectedChange` each annotation is a button.
  */
 export function AnnotatedImage({
   src,

@@ -1,4 +1,4 @@
-// @syncrobotic/facets v0.51.0 · update: npx shadcn add @syncrobotic/facets --overwrite
+// @syncrobotic/facets v0.53.0 · update: npx shadcn add @syncrobotic/facets --overwrite
 "use client"
 
 import * as React from "react"
@@ -226,8 +226,9 @@ function scrollParent(el: HTMLElement): HTMLElement | null {
 }
 
 /**
- * The facet column beside a list, from 1024 px: it sticks under the shell's bar and scrolls on its own when taller. Below
- * 1024 px use `FacetsDrawer` in the toolbar with the same value.
+ * The facet column beside a catalog or table: checkbox groups with counts and "Show all N", pinned under the shell's
+ * bar; FacetsDrawer opens the same list in a bottom sheet on phones. From 1024 px it scrolls on its own when taller;
+ * below, put FacetsDrawer in the toolbar with the same value.
  */
 export function Facets({ className, labels, ...props }: FacetsBase & { className?: string }) {
   const l = { ...defaultFacetsLabels, ...labels }

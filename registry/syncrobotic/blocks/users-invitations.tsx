@@ -1,4 +1,4 @@
-// @syncrobotic/users-invitations v0.40.0 · update: npx shadcn add @syncrobotic/users-invitations --overwrite
+// @syncrobotic/users-invitations v0.53.0 · update: npx shadcn add @syncrobotic/users-invitations --overwrite
 "use client"
 
 import * as React from "react"
@@ -34,9 +34,9 @@ const Expiry = ({ invite }: { invite: Invite }) =>
   invite.expired ? <InlineStatus status="warning">Expired {invite.expires}</InlineStatus> : <span className="text-muted-foreground">{invite.expires}</span>
 
 /**
- * Invitations that have not been accepted yet: invite in one row at the top, what the chosen role allows written under
- * it, then the pending list (a table where there is room, a list on a phone). An expired invitation says so and offers to
- * send it again; revoking can be undone.
+ * Pending invitations: invite in one row with what the role allows, then the list, where expired ones say so and
+ * revoking can be undone. A table where there is room, a list on a phone; an expired invitation offers to send it
+ * again.
  */
 export function UsersInvitations() {
   const [invites, setInvites] = React.useState(initial)

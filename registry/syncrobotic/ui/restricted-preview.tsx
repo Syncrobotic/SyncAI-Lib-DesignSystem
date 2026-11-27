@@ -1,4 +1,4 @@
-// @syncrobotic/restricted-preview v0.51.0 · update: npx shadcn add @syncrobotic/restricted-preview --overwrite
+// @syncrobotic/restricted-preview v0.53.0 · update: npx shadcn add @syncrobotic/restricted-preview --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,8 +6,9 @@ import { EyeOff } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 /**
- * A preview not loaded until someone asks: restricted data, faces or number plates. The children render, and so fetch,
- * only after that. Neutral, since being restricted is not something wrong; the app decides whether a reveal is logged.
+ * A neutral placeholder, with the reason, for a preview not loaded until someone asks: restricted data, or pictures
+ * with faces or number plates. The children render, and so fetch, only after that. Neutral, since being restricted is
+ * not something wrong; the app decides whether a reveal is logged.
  */
 export function RestrictedPreview({
   restricted,

@@ -1,4 +1,4 @@
-// @syncrobotic/markdown v0.51.0 · update: npx shadcn add @syncrobotic/markdown --overwrite
+// @syncrobotic/markdown v0.53.0 · update: npx shadcn add @syncrobotic/markdown --overwrite
 "use client"
 
 import * as React from "react"
@@ -1357,10 +1357,10 @@ export type MarkdownProps = {
 }
 
 /**
- * A model's answer in Markdown as the kit's elements: headings at the surface's levels, lists, tables (the kit's Table),
- * code blocks (the kit's CodeBlock, with Copy), quotes and links. A safe subset: raw HTML is text, links are only
- * http(s) and mailto, pictures are not loaded unless their origin is allowed. Pass the growing text with `streaming` while
- * it arrives.
+ * A model's answer in Markdown as the kit's elements, with no dependency: a safe subset (raw HTML as text, http(s) and
+ * mailto links only) that parses a growing text without flashing. Headings take the surface's levels; tables are the
+ * kit's Table and code blocks its CodeBlock. Pictures are not loaded unless their origin is allowed. Pass the growing
+ * text with `streaming` while it arrives.
  */
 export function Markdown({
   text,

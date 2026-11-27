@@ -1,4 +1,4 @@
-// @syncrobotic/route-progress v0.51.0 · update: npx shadcn add @syncrobotic/route-progress --overwrite
+// @syncrobotic/route-progress v0.53.0 · update: npx shadcn add @syncrobotic/route-progress --overwrite
 "use client"
 
 import * as React from "react"
@@ -12,8 +12,8 @@ export type RouteProgressLabels = {
 export const defaultRouteProgressLabels: RouteProgressLabels = { loading: "Loading page" }
 
 /**
- * A thin blue bar along the top while the next page loads. It appears only after `delay`, creeps without reaching the end,
- * gives up after `giveUp`, and on arrival fills and fades from where it got to. Drive `active` from your router.
+ * A thin blue bar while the next page loads: shows after 300 ms, never reaches the end, gives up after 10 s. On arrival
+ * it fills and fades from where it got to. Drive `active` from your router; `delay` and `giveUp` set the times.
  */
 export function RouteProgress({
   active,

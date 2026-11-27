@@ -88,7 +88,7 @@ describe("CameraWall tiles", () => {
     frame(videoOf("Bravo"))
     act(() => vi.advanceTimersByTime(600))
     expect(order()).toEqual(["Charlie", "Alpha", "Bravo"])
-    expect(names()[0]).toBe("Front camera · Charlie Stalled, last frame 14:02:31")
+    expect(names()[0]).toBe("Front camera · Charlie Stalled last frame 14:02:31")
     fireEvent.click(screen.getByRole("button", { name: /Needs attention/ }))
     expect(order()).toEqual(["Charlie"])
   })

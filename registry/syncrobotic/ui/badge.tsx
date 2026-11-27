@@ -1,14 +1,10 @@
-// @syncrobotic/badge v0.51.0 · update: npx shadcn add @syncrobotic/badge --overwrite
+// @syncrobotic/badge v0.53.0 · update: npx shadcn add @syncrobotic/badge --overwrite
 import * as React from "react"
 import { Slot } from "radix-ui"
 import { cva, type VariantProps } from "class-variance-authority"
 import { CircleAlert, CircleCheck, CircleDashed } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-/**
- * A label for a fixed attribute: Beta, a version, a tier (`neutral`), or the environment (`outline`). A changing state is
- * an InlineStatus, a count a CountBadge, a test result a ResultBadge, so a badge has no status tones.
- */
 export const badgeVariants = cva("inline-flex h-(--h-tag) shrink-0 items-center gap-1 whitespace-nowrap rounded-xs px-2 text-xs font-medium [&_svg]:size-4", {
   variants: {
     tone: {
@@ -19,6 +15,11 @@ export const badgeVariants = cva("inline-flex h-(--h-tag) shrink-0 items-center 
   defaultVariants: { tone: "neutral" },
 })
 
+/**
+ * A small neutral or outline tag for a fixed attribute (Beta, a version, Production, a tier), with CountBadge for a count
+ * and ResultBadge for a pass, a fail or too few samples. A changing state is an InlineStatus, so a badge has no status
+ * tones.
+ */
 export function Badge({ className, tone, asChild, ...props }: React.ComponentProps<"span"> & VariantProps<typeof badgeVariants> & { asChild?: boolean }) {
   const Comp = asChild ? Slot.Root : "span"
   return <Comp data-slot="badge" className={cn(badgeVariants({ tone }), className)} {...props} />

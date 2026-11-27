@@ -1,4 +1,4 @@
-// @syncrobotic/date-selector v0.52.0 · update: npx shadcn add @syncrobotic/date-selector --overwrite
+// @syncrobotic/date-selector v0.53.0 · update: npx shadcn add @syncrobotic/date-selector --overwrite
 "use client"
 
 import * as React from "react"
@@ -10,6 +10,11 @@ import { useMediaQuery } from "@/registry/syncrobotic/hooks/use-reduced-motion"
 import { Calendar } from "@/registry/syncrobotic/ui/calendar"
 import { useField } from "@/registry/syncrobotic/ui/field"
 import { Popover, PopoverContent, PopoverTrigger } from "@/registry/syncrobotic/ui/popover"
+
+/*
+  DatePicker and DateRangePicker: a field that opens a calendar, with presets and clear. Inside a Field the trigger
+  takes the field's label, note and error.
+*/
 
 export type { DateRange }
 export type DatePreset<T> = { label: string; value: () => T }

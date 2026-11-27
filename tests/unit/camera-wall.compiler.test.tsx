@@ -52,7 +52,7 @@ describe("camera-wall, compiled", () => {
     expect(order()).toEqual(["AMR 3", "AMR 2", "AMR 1"])
     const tile = tiles()[1]!.querySelector("[role=button]")!
     expect(tile.textContent).toContain("Stalled")
-    expect(tile.querySelector(".sr-only")!.textContent).toBe(", last frame 14:02:31")
+    expect(tile.querySelector(".sr-only")!.textContent).toBe(" last frame 14:02:31")
   })
 
   it("opens and closes a camera, moving the live slot and the quality with it", () => {

@@ -1,17 +1,17 @@
-// @syncrobotic/timeline v0.51.0 · update: npx shadcn add @syncrobotic/timeline --overwrite
+// @syncrobotic/timeline v0.53.0 · update: npx shadcn add @syncrobotic/timeline --overwrite
 "use client"
 
 import * as React from "react"
 import { type Status, StatusGlyph, statusText } from "@/registry/syncrobotic/shell/status-glyph"
 import { cn } from "@/lib/utils"
 
-/**
- * Events in time order (a robot's shift, an incident, a release history). Markers are neutral dots; a status adds its
- * shape, coloured only for warning and danger, so the one abnormal event stands out.
- */
 type Ctx = { orientation: "vertical" | "horizontal"; align: "start" | "alternate"; density: "default" | "dense" }
 const TimelineCtx = React.createContext<Ctx>({ orientation: "vertical", align: "start", density: "default" })
 
+/**
+ * Events in time order with neutral markers, status glyphs or icons; vertical, alternate or horizontal, grouped by day.
+ * A status is coloured only for warning and danger, so the one abnormal event stands out.
+ */
 export function Timeline({
   orientation = "vertical",
   align = "start",
@@ -116,7 +116,7 @@ export function TimelineItem({
       <span className="text-sm font-medium">
         {title}
         {/* The glyph is hidden from screen readers, so the status is said in words, as Marker does. */}
-        {(status === "danger" || status === "warning") && <span className="sr-only">, {status === "danger" ? "failed" : "warning"}</span>}
+        {(status === "danger" || status === "warning") && <span className="sr-only"> {status === "danger" ? "failed" : "warning"}</span>}
       </span>
       {children && <div className="text-sm text-muted-foreground">{children}</div>}
     </div>

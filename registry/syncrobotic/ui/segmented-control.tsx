@@ -1,4 +1,4 @@
-// @syncrobotic/segmented-control v0.51.0 · update: npx shadcn add @syncrobotic/segmented-control --overwrite
+// @syncrobotic/segmented-control v0.53.0 · update: npx shadcn add @syncrobotic/segmented-control --overwrite
 "use client"
 
 import * as React from "react"
@@ -43,8 +43,9 @@ function useThumb(root: React.RefObject<HTMLDivElement | null>) {
 }
 
 /**
- * Pick one of a few views. The selected segment is inverted and its thumb moves between segments (--motion-base); before
- * it is measured the segment fills itself, so it never shows unselected.
+ * Two to four buttons joined into one for switching between views of the same data, with the selected segment inverted.
+ * Its thumb moves between segments (--motion-base); before it is measured the segment fills itself, so it never shows
+ * unselected.
  */
 export function SegmentedControl({
   className,

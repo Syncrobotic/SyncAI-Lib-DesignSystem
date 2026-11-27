@@ -1,4 +1,4 @@
-// @syncrobotic/radial-chart-capacity v0.22.1 · update: npx shadcn add @syncrobotic/radial-chart-capacity --overwrite
+// @syncrobotic/radial-chart-capacity v0.53.0 · update: npx shadcn add @syncrobotic/radial-chart-capacity --overwrite
 "use client"
 
 import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
@@ -11,7 +11,10 @@ const rings = [
   { label: "Uplink", used: 33, detail: "330 of 1000 Mb/s", color: "var(--chart-3)" },
 ]
 
-/** Several shares of capacity at once: concentric rings in series colours, each named with its value in the legend beside it. */
+/**
+ * Several shares of capacity as concentric rings in series colours, each named with its value. The names and values are
+ * in the legend beside it.
+ */
 export function RadialChartCapacity() {
   const size = 160
   const stroke = 12

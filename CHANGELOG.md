@@ -2,6 +2,21 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.53.0 · 2026-11-27
+
+Every item's doc opens with its description, and accessible names read the words they show.
+
+### Changed
+- **One sentence, one source:** every item's doc opens with its registry description, word for word: 197 items rewritten and 30 more documented, among them `button`, `dialog`, `select` and `table`.
+  - **Where the doc is read:** the JSDoc of the export named for the item, else the module's header comment, else the first documented export.
+  - **Enforced:** `lint:registry` now fails, not warns, when they differ.
+  - **Descriptions:** where one was weak, it was improved first, then used in both places. Among them are the page blocks (console-overview, list-detail, event-log, map-workspace, settings-page, sign-in…), `use-long-press`, `use-slide-release`, `cn`, `list`, `copy-button`, `theme-toggle`, and `section-header`, whose page level is 16 px, not 20.
+
+### Fixed
+- **Names without stray punctuation:** a positioned screen-reader-only ", " was read as "Stop , 7F3A". The fix: names come from the words shown, with real spaces between them, and hidden additions start with a word.
+  - **Items:** `stepper`, `trace`, `timeline`, `marker`, `chip-group`, `camera-wall`, `media-player`, `message`, `share-bar`, `island`, `app-shell-mobile-tabs`, `mission-schedule`, `settings-webhooks`, `heatmap-zones`, `agent-run-gate`, `wizard-commission`.
+  - **`top-bar-shell`:** the account button no longer reads the avatar's initials.
+
 ## 0.52.0 · 2026-11-27
 
 Keyboard and screen-reader fixes from a health check, previews that load only their own block, and one source for what an item is.

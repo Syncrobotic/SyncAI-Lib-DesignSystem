@@ -1,4 +1,4 @@
-// @syncrobotic/breadcrumb v0.51.0 · update: npx shadcn add @syncrobotic/breadcrumb --overwrite
+// @syncrobotic/breadcrumb v0.53.0 · update: npx shadcn add @syncrobotic/breadcrumb --overwrite
 import * as React from "react"
 import { ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -10,7 +10,10 @@ export type BreadcrumbLabels = {
 
 export const defaultBreadcrumbLabels: BreadcrumbLabels = { nav: "Breadcrumb" }
 
-/** Where this page sits: each level a link, the current page last and not a link. Separators are drawn, not read. */
+/**
+ * Where this page sits: links to the levels above, the current page last. The current page is not a link. Separators
+ * are drawn, not read.
+ */
 export function Breadcrumb({
   className,
   children,

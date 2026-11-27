@@ -1,4 +1,7 @@
-// @syncrobotic/math v0.52.0 · update: npx shadcn add @syncrobotic/math --overwrite
+// @syncrobotic/math v0.53.0 · update: npx shadcn add @syncrobotic/math --overwrite
+// The small number helpers the kit's components share: clamp a value into a range, pad a number with leading zeros,
+// and the standard easing curve for a glide drawn in JavaScript.
+
 /** `value` held between `min` and `max` (either may be left out). */
 export const clamp = (value: number, min = -Infinity, max = Infinity) => Math.min(max, Math.max(min, value))
 

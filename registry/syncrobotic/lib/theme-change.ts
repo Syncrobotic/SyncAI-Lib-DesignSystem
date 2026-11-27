@@ -1,7 +1,8 @@
-// @syncrobotic/theme-change v0.36.0 · update: npx shadcn add @syncrobotic/theme-change --overwrite
+// @syncrobotic/theme-change v0.53.0 · update: npx shadcn add @syncrobotic/theme-change --overwrite
 /*
-  A canvas or WebGL view cannot use CSS variables: it reads the theme's colours once and draws with them. These say when
-  to read them again.
+  onThemeChange: tells a canvas or WebGL view when to read the theme's colours again (dark mode, high contrast, forced
+  colours, a theme class or attribute). Such a view cannot use CSS variables: it reads the colours once and draws with
+  them.
 */
 
 /** The attributes a theme switches by: the dark class, an inline style, data-theme, and data-contrast for high contrast. */

@@ -1,4 +1,4 @@
-// @syncrobotic/diagnostics v0.51.0 · update: npx shadcn add @syncrobotic/diagnostics --overwrite
+// @syncrobotic/diagnostics v0.53.0 · update: npx shadcn add @syncrobotic/diagnostics --overwrite
 "use client"
 
 import * as React from "react"
@@ -323,9 +323,9 @@ export type DiagnosticsProps = {
 type Expansion = { opened: string[]; closed: string[] }
 
 /**
- * Robot hardware and software health from `diagnostic_msgs/DiagnosticArray`, as rqt_robot_monitor shows it: worst level
- * and counts first, then a tree by "/" path with each group's worst level. A status not updated for `staleAfterMs` reads
- * Stale. "Problems" and search narrow the tree.
+ * A robot's health from ROS DiagnosticArray: the worst level and counts first, then a tree by "/" path with levels
+ * rolled up, each status a glyph and a word, Stale, a Problems filter and search. As rqt_robot_monitor shows it; a
+ * status not updated for `staleAfterMs` reads Stale.
  */
 export function Diagnostics({
   statuses,

@@ -1,4 +1,4 @@
-// @syncrobotic/use-ros v0.51.0 · update: npx shadcn add @syncrobotic/use-ros --overwrite
+// @syncrobotic/use-ros v0.53.0 · update: npx shadcn add @syncrobotic/use-ros --overwrite
 "use client"
 
 import * as React from "react"
@@ -11,8 +11,10 @@ import {
   type RosStatus,
 } from "@/registry/syncrobotic/lib/ros"
 
-// The React layer over `ros`: one connection in context, and hooks that read it through useSyncExternalStore. Nothing
-// here reads a ref during render or sets state in an effect, so the React Compiler keeps every hook as written.
+// React hooks over the ros client: RosProvider, useRosStatus, useRosTopic, useRosPublisher (a zero Twist on unmount,
+// hidden page and dropped link for cmd_vel) and useRosService. One connection in context, read through
+// useSyncExternalStore. Nothing here reads a ref during render or sets state in an effect, so the React Compiler keeps
+// every hook as written.
 
 const RosContext = React.createContext<RosConnection | null>(null)
 

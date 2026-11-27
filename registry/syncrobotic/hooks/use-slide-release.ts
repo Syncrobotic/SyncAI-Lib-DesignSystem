@@ -1,4 +1,4 @@
-// @syncrobotic/use-slide-release v0.28.0 · update: npx shadcn add @syncrobotic/use-slide-release --overwrite
+// @syncrobotic/use-slide-release v0.53.0 · update: npx shadcn add @syncrobotic/use-slide-release --overwrite
 "use client"
 
 import * as React from "react"
@@ -19,8 +19,8 @@ type Options = {
 }
 
 /**
- * Slide-to-release for the e-stop. The thumb follows the finger; past `threshold` letting go
- * releases, otherwise the thumb springs back (the component animates `position` back to 0).
+ * The drag behind slide to release: the thumb follows the finger, letting go past the threshold releases, and short of
+ * it the thumb springs back. The component animates `position` back to 0.
  */
 export function useSlideRelease({
   onRelease,

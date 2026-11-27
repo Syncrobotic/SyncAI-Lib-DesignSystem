@@ -1,4 +1,4 @@
-// @syncrobotic/mission-schedule v0.47.0 · update: npx shadcn add @syncrobotic/mission-schedule --overwrite
+// @syncrobotic/mission-schedule v0.53.0 · update: npx shadcn add @syncrobotic/mission-schedule --overwrite
 "use client"
 
 import * as React from "react"
@@ -71,9 +71,9 @@ const slotStyle = {
 } as const
 
 /**
- * A night's missions, one lane per robot across the hours. Every mission says its state in a word; done missions are
- * muted, running ones are the only blue, planned ones are outlined; a mission that cannot run as planned is the only
- * thing in warning, with the reason written out above the schedule.
+ * A night's missions in lanes per robot: done muted, running blue, planned outlined, and a conflict explained in words.
+ * Every mission says its state in a word, and the conflict is the only thing in warning, its reason written out above
+ * the schedule.
  */
 export function MissionSchedule() {
   const [night, setNight] = React.useState<"tonight" | "tomorrow">("tonight")
@@ -183,16 +183,14 @@ export function MissionSchedule() {
                             className={cn("absolute inset-y-2 flex flex-col justify-center rounded-xs text-xs leading-4", short ? "px-1" : "px-2", slotStyle[s.state])}
                             style={{ left: `${(s.start / HOURS) * 100}%`, width: `${((s.end - s.start) / HOURS) * 100}%` }}
                           >
-                            <span className="flex min-w-0 flex-col">
+                            {/* Read as one string, as the tooltip says it: a positioned sr-only ", " is read as " , ". */}
+                            <span className="sr-only">{`${s.name}, ${shortWord[s.state]}, ${clock(s.start)}–${clock(s.end)}`}</span>
+                            <span aria-hidden="true" className="flex min-w-0 flex-col">
                               <span className="truncate font-medium">{s.name}</span>
                               {/* A state is a shape and a word: the one in warning carries its triangle, as InlineStatus does. */}
                               <span className="flex min-w-0 items-center gap-2">
                                 {s.state === "conflict" && <StatusGlyph status="warning" />}
-                                <span className="truncate">
-                                  <span className="sr-only">, </span>
-                                  {shortWord[s.state]}
-                                  <span className="sr-only">, </span>
-                                </span>
+                                <span className="truncate">{shortWord[s.state]}</span>
                               </span>
                               <span className="truncate text-muted-foreground tabular-nums">
                                 {clock(s.start)}–{clock(s.end)}

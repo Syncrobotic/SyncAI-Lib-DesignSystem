@@ -1,4 +1,4 @@
-// @syncrobotic/record-form v0.51.0 · update: npx shadcn add @syncrobotic/record-form --overwrite
+// @syncrobotic/record-form v0.53.0 · update: npx shadcn add @syncrobotic/record-form --overwrite
 "use client"
 
 import * as React from "react"
@@ -25,8 +25,9 @@ function validate(v: { name: string; robot: string; start: string }): Errors {
 }
 
 /**
- * Create a record (here: a patrol mission): one column, labels above fields, the primary action names the result.
- * Validates like the `form` example without a form library. Pass initial values to make it an edit form.
+ * A form to create or edit a record: one column, labels above fields, errors in the hint line on submit with focus on
+ * the first, and a primary action that names the result. Here a patrol mission. Validates like the `form` example
+ * without a form library; pass initial values to make it an edit form.
  */
 export function RecordForm({ initial }: { initial?: { name: string; robot: string; repeat: string; start: string; notes: string } }) {
   const [name, setName] = React.useState(initial?.name ?? "")

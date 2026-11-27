@@ -1,4 +1,4 @@
-// @syncrobotic/auth-invite v0.52.0 · update: npx shadcn add @syncrobotic/auth-invite --overwrite
+// @syncrobotic/auth-invite v0.53.0 · update: npx shadcn add @syncrobotic/auth-invite --overwrite
 "use client"
 
 import * as React from "react"
@@ -30,8 +30,8 @@ export const sampleInvitation: Invitation = {
 }
 
 /**
- * Accepting an invitation: who invited you, to what, and what the role lets you do, before you commit. One field (your
- * name), one primary action; declining is quiet but always there.
+ * Accepting an invitation: who invited you, to what, and what the role lets you do, then one field and one action to
+ * join. Declining is quiet but always there.
  */
 export function AuthInvite({
   invitation = sampleInvitation,

@@ -1,4 +1,4 @@
-// @syncrobotic/hover-card v0.51.0 · update: npx shadcn add @syncrobotic/hover-card --overwrite
+// @syncrobotic/hover-card v0.53.0 · update: npx shadcn add @syncrobotic/hover-card --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,9 +6,9 @@ import { HoverCard as HoverCardPrimitive } from "radix-ui"
 import { cn } from "@/lib/utils"
 
 /**
- * A preview of where a link leads, on hover or keyboard focus. Touch never shows it and screen readers are not told, so
- * everything in it must also be on the linked page, and nothing in it is a control. Opens after 500 ms (no flashing across
- * a table of links) and closes after 300 ms (time to cross onto the card).
+ * A preview of what a link leads to, on hover and keyboard focus, and never the only way to the facts or actions in it.
+ * Touch never shows it and screen readers are not told, so nothing in it is a control. Opens after 500 ms (no flashing
+ * across a table of links) and closes after 300 ms (time to cross onto the card).
  */
 export function HoverCard({ openDelay = 500, closeDelay = 300, ...props }: React.ComponentProps<typeof HoverCardPrimitive.Root>) {
   return <HoverCardPrimitive.Root openDelay={openDelay} closeDelay={closeDelay} {...props} />

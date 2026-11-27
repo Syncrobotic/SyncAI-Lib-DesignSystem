@@ -1,4 +1,4 @@
-// @syncrobotic/users-roles v0.40.0 · update: npx shadcn add @syncrobotic/users-roles --overwrite
+// @syncrobotic/users-roles v0.53.0 · update: npx shadcn add @syncrobotic/users-roles --overwrite
 "use client"
 
 import * as React from "react"
@@ -54,7 +54,10 @@ const breakAtSign = (email: string) => {
   )
 }
 
-/** Users and roles: who can do what. Change a role in place; invite by email; remove from the row menu (last, after a separator). */
+/**
+ * Who can do what: change a role in place, invite by email in a dialog, remove from the row menu with undo. The row
+ * menu puts remove last, after a separator.
+ */
 export function UsersRoles() {
   const [users, setUsers] = React.useState(initial)
   const [open, setOpen] = React.useState(false)

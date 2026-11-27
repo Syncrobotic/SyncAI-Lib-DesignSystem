@@ -1,4 +1,4 @@
-// @syncrobotic/use-presence v0.8.1 · update: npx shadcn add @syncrobotic/use-presence --overwrite
+// @syncrobotic/use-presence v0.53.0 · update: npx shadcn add @syncrobotic/use-presence --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,8 +7,9 @@ import * as React from "react"
 const SAFETY_MS = 400
 
 /**
- * Keeps one element on screen while it leaves. `show` false marks it leaving; render it with
- * `animate-disappear` and call `done` on animation end. Under reduced motion the tokens are near zero, so it ends at once.
+ * Keeps an element, or list items, on screen while they leave, so exits use the disappear movement instead of
+ * vanishing. `show` false marks it leaving; render it with `animate-disappear` and call `done` on animation end. Under
+ * reduced motion the tokens are near zero, so it ends at once.
  */
 export function usePresence(show: boolean) {
   const [mounted, setMounted] = React.useState(show)

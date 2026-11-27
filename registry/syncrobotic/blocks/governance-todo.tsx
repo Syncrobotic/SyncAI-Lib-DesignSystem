@@ -1,4 +1,4 @@
-// @syncrobotic/governance-todo v0.51.0 · update: npx shadcn add @syncrobotic/governance-todo --overwrite
+// @syncrobotic/governance-todo v0.53.0 · update: npx shadcn add @syncrobotic/governance-todo --overwrite
 "use client"
 
 import * as React from "react"
@@ -116,7 +116,10 @@ export function GovernanceTodoContent({ todos = sampleTodos, readOnly, onDone }:
   )
 }
 
-/** Governance to-do: what needs a maintainer or the compliance reviewer, most blocking first. Done items leave the list. */
+/**
+ * What needs a maintainer or the compliance reviewer, most blocking first, read-only for viewers; GovernanceTodoContent
+ * drops the sample frame for your own shell. Done items leave the list.
+ */
 export function GovernanceTodo(props: GovernanceTodoProps) {
   return (
     <AppShell product="DataCore" nav={dataNav} current="#governance" title="Governance" user={sampleUser}>

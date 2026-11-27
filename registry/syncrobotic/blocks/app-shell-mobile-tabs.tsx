@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell-mobile-tabs v0.49.0 · update: npx shadcn add @syncrobotic/app-shell-mobile-tabs --overwrite
+// @syncrobotic/app-shell-mobile-tabs v0.53.0 · update: npx shadcn add @syncrobotic/app-shell-mobile-tabs --overwrite
 "use client"
 
 import * as React from "react"
@@ -27,10 +27,17 @@ const robots: { id: string; tone: Status; state: string; where: string; battery:
 ]
 
 // The battery in a row's line: the number, and below 15 % the warning shape before it and the word read out, never danger.
+// A DOM space before the word, which a positioned sr-only ", low" would read as " , low".
 const Battery = ({ value }: { value: number }) => (
   <span className="inline-flex items-center gap-2">
     {value < 15 && <StatusGlyph status="warning" />}
-    {value} %{value < 15 && <span className="sr-only">, low</span>}
+    {value} %
+    {value < 15 && (
+      <>
+        {" "}
+        <span className="sr-only">low</span>
+      </>
+    )}
   </span>
 )
 
@@ -59,8 +66,8 @@ function SampleRobots() {
 }
 
 /**
- * The phone frame of a tool: the page's name at the top, its content, and the main sections as tabs in a floating
- * dock at the bottom, in thumb reach. Four tabs at most; anything more goes in a page, not in the bar.
+ * A phone frame: the page title on top and up to four sections as tabs in a floating dock, in thumb reach. Anything
+ * more goes in a page, not in the bar.
  */
 export function AppShellMobileTabs({
   product = "Fleet console",

@@ -1,4 +1,4 @@
-// @syncrobotic/agent-runs v0.40.0 · update: npx shadcn add @syncrobotic/agent-runs --overwrite
+// @syncrobotic/agent-runs v0.53.0 · update: npx shadcn add @syncrobotic/agent-runs --overwrite
 "use client"
 
 import * as React from "react"
@@ -123,9 +123,8 @@ const columns: ResponsiveTableColumn<Run>[] = [
 ]
 
 /**
- * What the AI agents did and are doing: each run's goal in words, what started it, and its state. A run waiting for a
- * person's approval comes first and is the only one with a button; a failure says it failed. The same rows are a table
- * where there is room and a list on a phone.
+ * What the AI agents did: each run's goal, trigger and state; one waiting for approval comes first with the only
+ * button. A failure says it failed. A table where there is room, a list on a phone.
  */
 export function AgentRuns({ onOpen }: { onOpen?: (run: Run) => void } = {}) {
   const [filter, setFilter] = React.useState<Filter>("all")

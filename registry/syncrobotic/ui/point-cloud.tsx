@@ -1,4 +1,4 @@
-// @syncrobotic/point-cloud v0.52.0 · update: npx shadcn add @syncrobotic/point-cloud --overwrite
+// @syncrobotic/point-cloud v0.53.0 · update: npx shadcn add @syncrobotic/point-cloud --overwrite
 "use client"
 
 import * as React from "react"
@@ -951,9 +951,9 @@ export type PointCloudProps = {
 }
 
 /**
- * A LiDAR or depth point cloud in WebGL2 (no 3D library), coloured by height or intensity, with the robot at the origin.
- * Orbit, zoom and pan by pointer, touch or keys. It draws only when something changes, so half a million points stay
- * smooth.
+ * A LiDAR or depth point cloud (a decoded PointCloud2) in raw WebGL2, coloured by height or intensity with a scale,
+ * with a ground grid, orbit, pan and zoom, and loading to no-WebGL states. The robot is at the origin. It draws only
+ * when something changes, so half a million points stay smooth.
  */
 export function PointCloud({
   label,

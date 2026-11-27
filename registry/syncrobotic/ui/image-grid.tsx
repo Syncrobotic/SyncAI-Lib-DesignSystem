@@ -1,4 +1,4 @@
-// @syncrobotic/image-grid v0.51.0 · update: npx shadcn add @syncrobotic/image-grid --overwrite
+// @syncrobotic/image-grid v0.53.0 · update: npx shadcn add @syncrobotic/image-grid --overwrite
 "use client"
 
 import * as React from "react"
@@ -121,9 +121,9 @@ type ImageGridProps = {
 }
 
 /**
- * Many pictures at once (a dataset, a run's frames, uploads); tiles keep their `aspect` and load lazily. A tile opens a
- * lightbox, or with `selection` is picked: many as toggles, one as a radio group (one Tab stop, arrows, Home, End).
- * Hidden pictures wait behind RestrictedPreview. `onOpen` replaces the lightbox; `renderTile` draws the picture area.
+ * Many pictures as a grid or scroll-snap strip: lazy tiles that keep their aspect, loading, hidden and broken states,
+ * picking and a lightbox, or your own view (onOpen) and tile (renderTile). With `selection`, many are picked as toggles
+ * and one as a radio group (one Tab stop, arrows, Home, End).
  */
 export function ImageGrid({
   items,

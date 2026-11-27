@@ -1,4 +1,4 @@
-// @syncrobotic/settings-sessions v0.47.0 · update: npx shadcn add @syncrobotic/settings-sessions --overwrite
+// @syncrobotic/settings-sessions v0.53.0 · update: npx shadcn add @syncrobotic/settings-sessions --overwrite
 "use client"
 
 import * as React from "react"
@@ -74,9 +74,9 @@ function Heading({ id, title, children, action }: { id: string; title: string; c
 }
 
 /**
- * Where you are signed in, as browsers (a session is a browser, not a device): browser and system, an approximate
- * place, when it was last active, and "This browser" on the one you are using. Sign one out at once; signing out all the
- * others asks first and says who is affected. Below, the browsers that skip the 2FA code for 30 days, each one forgettable.
+ * Where you are signed in, as browsers: sign one out, or all the others after a confirmation; browsers that skip
+ * the 2FA code for 30 days. A session is a browser, not a device: each shows browser and system, an approximate place,
+ * when it was last active, and "This browser" on the one you are using. Each trusted browser can be forgotten.
  */
 export function SettingsSessions({
   product = "Fleet console",

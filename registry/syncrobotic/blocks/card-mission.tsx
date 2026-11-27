@@ -1,4 +1,4 @@
-// @syncrobotic/card-mission v0.48.0 · update: npx shadcn add @syncrobotic/card-mission --overwrite
+// @syncrobotic/card-mission v0.53.0 · update: npx shadcn add @syncrobotic/card-mission --overwrite
 "use client"
 
 import { Bot, Clock, Route, TriangleAlert } from "lucide-react"
@@ -43,8 +43,8 @@ export const sampleMissions: Mission[] = [
 ]
 
 /**
- * A mission on a card: its state, the route and the robot on it, how far it is, then what to do next. A running mission
- * shows blue progress, the only in-progress colour; a paused one says why and offers the fix as its one primary action.
+ * A mission's state, route, robot and progress, with the next action; a paused one says why and offers the fix. A
+ * running mission shows blue progress, the only in-progress colour; the fix is the paused one's one primary action.
  */
 export function CardMission({ missions = sampleMissions, className }: { missions?: Mission[]; className?: string }) {
   return (

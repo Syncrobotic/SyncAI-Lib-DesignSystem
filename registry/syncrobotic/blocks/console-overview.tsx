@@ -1,4 +1,4 @@
-// @syncrobotic/console-overview v0.43.1 · update: npx shadcn add @syncrobotic/console-overview --overwrite
+// @syncrobotic/console-overview v0.53.0 · update: npx shadcn add @syncrobotic/console-overview --overwrite
 "use client"
 
 import * as React from "react"
@@ -23,8 +23,8 @@ const sampleAlarms: AlarmData[] = [
 const clock = () => new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })
 
 /**
- * Operations console: what needs a person first, then the fleet's numbers and the robots, on one screen. The site's
- * emergency stop stays at the bottom of the screen while the page scrolls, one tap away.
+ * An operations console: what needs a person first, then the fleet's numbers and the robots, on one screen, with the
+ * site's emergency stop one tap away. The stop stays at the bottom of the screen while the page scrolls.
  */
 export function ConsoleOverview() {
   const [alarms, setAlarms] = React.useState(sampleAlarms)

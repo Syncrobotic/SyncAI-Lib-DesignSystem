@@ -1,4 +1,4 @@
-// @syncrobotic/robot-map v0.52.0 · update: npx shadcn add @syncrobotic/robot-map --overwrite
+// @syncrobotic/robot-map v0.53.0 · update: npx shadcn add @syncrobotic/robot-map --overwrite
 "use client"
 
 import * as React from "react"
@@ -588,9 +588,9 @@ const proportions = (width: number, height: number, fill?: boolean): React.CSSPr
   fill ? undefined : { aspectRatio: `${width} / ${height}`, maxHeight: "75svh", minHeight: "min(18rem, 75svh)" }
 
 /**
- * A site's floor plan in metres with zones, routes and robots (status shape, heading tick, name). Pan and zoom by pointer,
- * wheel, touch, buttons or keys. It can draw a ROS occupancy grid, a costmap and scans, and with `mode` place a goal,
- * waypoints or a zone. One Tab stop: offer RobotMapList beside it as the text view.
+ * A site floor plan in metres, in SVG with no map library: occupancy grid, scans, zones, routes and robots, pan and
+ * zoom, goal, waypoint and zone editing, and RobotMapList as text. Pan and zoom by pointer, wheel, touch, buttons or
+ * keys. One Tab stop: offer RobotMapList beside it as the text view.
  */
 export function RobotMap({
   label: name,

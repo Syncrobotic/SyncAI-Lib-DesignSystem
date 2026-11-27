@@ -1,4 +1,4 @@
-// @syncrobotic/wizard-import v0.40.0 · update: npx shadcn add @syncrobotic/wizard-import --overwrite
+// @syncrobotic/wizard-import v0.53.0 · update: npx shadcn add @syncrobotic/wizard-import --overwrite
 "use client"
 
 import * as React from "react"
@@ -30,8 +30,8 @@ const rows = [
 ]
 
 /**
- * Importing a file in three steps down the page: choose it, match its columns, check the rows. Each step opens under its
- * title and the steps before it stay readable. Rows with a problem are named, and you can import the rest.
+ * Import a CSV in three steps down the page: choose it, match its columns, check the rows and import. Each step opens
+ * under its title and the steps before it stay readable. Rows with a problem are named, and you can import the rest.
  */
 export function WizardImport({ onImport }: { onImport?: (count: number) => void }) {
   const [step, setStep] = React.useState(1)

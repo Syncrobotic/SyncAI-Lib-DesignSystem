@@ -1,4 +1,4 @@
-// @syncrobotic/sidebar v0.52.0 · update: npx shadcn add @syncrobotic/sidebar --overwrite
+// @syncrobotic/sidebar v0.53.0 · update: npx shadcn add @syncrobotic/sidebar --overwrite
 "use client"
 
 import * as React from "react"
@@ -305,8 +305,10 @@ type SidebarProps = React.ComponentProps<"aside"> & {
 }
 
 /**
- * The main navigation of a console: a 240 px column (200 to 320 with SidebarRail) that collapses to a 68 px rail of icons, and a sheet from the screen's
- * edge on phones. Children are SidebarHeader, SidebarContent and SidebarFooter, the same on every screen.
+ * A console's main navigation: grouped links with counts, tags and nested pages, a switcher header and an account
+ * footer, collapsing to an icon rail (⌘B / Ctrl+B) and a sheet on phones. The column is 240 px (200 to 320 with
+ * SidebarRail) and the rail 68 px. Children are SidebarHeader, SidebarContent and SidebarFooter, the same on every
+ * screen.
  */
 export function Sidebar({ side = "left", variant = "sidebar", collapsible = "icon", className, children, ...props }: SidebarProps) {
   const { state, isMobile, openMobile, setOpenMobile, labels, forced, boot } = useSidebar()

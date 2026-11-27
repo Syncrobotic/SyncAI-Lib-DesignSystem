@@ -1,10 +1,14 @@
-// @syncrobotic/popover v0.51.0 · update: npx shadcn add @syncrobotic/popover --overwrite
+// @syncrobotic/popover v0.53.0 · update: npx shadcn add @syncrobotic/popover --overwrite
 "use client"
 
 import * as React from "react"
 import { Popover as PopoverPrimitive } from "radix-ui"
 import { cn } from "@/lib/utils"
 
+/**
+ * Extra detail anchored to a control. It opens on click, takes focus, and closes on Escape or a click outside, returning
+ * focus to the control; a name for an icon-only control is a Tooltip, a decision a Dialog.
+ */
 export const Popover = PopoverPrimitive.Root
 export function PopoverTrigger(props: React.ComponentProps<typeof PopoverPrimitive.Trigger>) {
   return <PopoverPrimitive.Trigger data-slot="popover-trigger" {...props} />

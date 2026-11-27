@@ -1,4 +1,4 @@
-// @syncrobotic/auth-passkey v0.52.0 · update: npx shadcn add @syncrobotic/auth-passkey --overwrite
+// @syncrobotic/auth-passkey v0.53.0 · update: npx shadcn add @syncrobotic/auth-passkey --overwrite
 "use client"
 
 import * as React from "react"
@@ -12,8 +12,8 @@ import { Separator } from "@/registry/syncrobotic/ui/separator"
 type Step = "passkey" | "waiting" | "failed" | "code"
 
 /**
- * Sign in with a passkey: one button, then the browser's own prompt (fingerprint, face or device PIN). If the passkey is
- * not there, a six-digit code from an authenticator app is the way back in, on the same page.
+ * Sign in with a passkey, with a code from an authenticator app as the way back in on the same page. One button, then
+ * the browser's own prompt (fingerprint, face or device PIN).
  */
 export function AuthPasskey({
   product = "Fleet console",

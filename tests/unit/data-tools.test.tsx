@@ -51,7 +51,7 @@ describe("ChipGroup", () => {
   const items = ["a", "b", "c", "d", "e"].map((v, i) => ({ value: v, label: v.toUpperCase(), count: i }))
   it("folds after max but keeps the selected chip, and unfolds", () => {
     render(<ChipGroup label="Task" items={items} value="e" max={2} onValueChange={() => {}} />)
-    expect(screen.getAllByRole("radio").map((b) => b.textContent)).toEqual(["A0", "B1", "E4"])
+    expect(screen.getAllByRole("radio").map((b) => b.textContent)).toEqual(["A 0", "B 1", "E 4"])
     fireEvent.click(screen.getByRole("button", { name: "2 more" }))
     expect(screen.getAllByRole("radio")).toHaveLength(5)
   })
@@ -81,7 +81,7 @@ describe("ChipGroup", () => {
     const change = vi.fn()
     render(<ChipGroup type="multiple" label="Task" items={items} value={["a", "e"]} max={2} onValueChange={change} />)
     const buttons = screen.getAllByRole("button", { pressed: true })
-    expect(buttons.map((b) => b.textContent)).toEqual(["A0", "E4"])
+    expect(buttons.map((b) => b.textContent)).toEqual(["A 0", "E 4"])
     expect(screen.getByRole("button", { name: /^B/ }).getAttribute("aria-pressed")).toBe("false")
     expect(screen.getByRole("button", { name: "2 more" })).toBeTruthy()
     fireEvent.click(screen.getByRole("button", { name: /^B/ }))

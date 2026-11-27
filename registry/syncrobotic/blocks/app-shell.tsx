@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell v0.52.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
+// @syncrobotic/app-shell v0.53.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -582,9 +582,9 @@ const subscribeWide = (onChange: () => void) => {
 const wideNow = () => window.matchMedia(WIDE).matches
 
 /**
- * The frame of an internal tool: the sidebar (navigation, user menu at its foot), the top bar (title, environment, search,
- * actions) and the content. The sidebar is open from 1280 px and a 68 px icon rail below until the person toggles it
- * (kept in a cookie; ⌘B / Ctrl+B anywhere); phones get it as a sheet from the top bar's menu button.
+ * The frame of an internal tool: the kit's Sidebar (a rail of icons below 1280 px, a sheet on phones), top bar with
+ * sidebar trigger, title, environment, search and actions, and the page. The user menu sits at the sidebar's foot; the
+ * person's toggle is kept in a cookie (⌘B / Ctrl+B anywhere).
  */
 export function AppShell({
   product,

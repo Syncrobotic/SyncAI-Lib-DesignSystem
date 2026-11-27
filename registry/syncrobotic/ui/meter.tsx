@@ -1,4 +1,4 @@
-// @syncrobotic/meter v0.51.0 · update: npx shadcn add @syncrobotic/meter --overwrite
+// @syncrobotic/meter v0.53.0 · update: npx shadcn add @syncrobotic/meter --overwrite
 import { cn } from "@/lib/utils"
 import { formatNumber } from "@/registry/syncrobotic/lib/format-number"
 import { StatusGlyph, statusText } from "@/registry/syncrobotic/shell/status-glyph"
@@ -46,8 +46,9 @@ export const defaultMeterLabels: MeterLabels = {
 }
 
 /**
- * A level within a known range: battery, storage, signal. Neutral while normal; warning below `low`, danger below
- * `critical` (above, with `higherIsWorse`); the value is always written. role="meter"; work under way is a Progress.
+ * A level within a known range, neutral until it crosses a threshold and inline for table cells, with ticks at the
+ * thresholds (showThresholds) and locale and format for big counts. Warning below `low`, danger below `critical`
+ * (above, with `higherIsWorse`); the value is always written. role="meter"; work under way is a Progress.
  */
 export function Meter({
   value,

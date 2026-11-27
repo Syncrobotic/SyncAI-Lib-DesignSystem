@@ -1,4 +1,4 @@
-// @syncrobotic/settings-notifications v0.47.0 · update: npx shadcn add @syncrobotic/settings-notifications --overwrite
+// @syncrobotic/settings-notifications v0.53.0 · update: npx shadcn add @syncrobotic/settings-notifications --overwrite
 "use client"
 
 import * as React from "react"
@@ -35,8 +35,8 @@ const initial: Record<string, Channel[]> = {
 }
 
 /**
- * Who hears about what, as a grid of events by channel. Each box applies at once. An emergency stop always reaches the
- * app and the phone; those boxes are locked and say so, rather than disappear.
+ * Who hears about what: events by channel as checkboxes that apply at once; emergency stops are locked on and say so.
+ * An emergency stop always reaches the app and the phone.
  */
 export function SettingsNotifications() {
   const [on, setOn] = React.useState(initial)

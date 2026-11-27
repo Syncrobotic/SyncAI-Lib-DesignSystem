@@ -1,4 +1,4 @@
-// @syncrobotic/line-chart-compare v0.35.0 · update: npx shadcn add @syncrobotic/line-chart-compare --overwrite
+// @syncrobotic/line-chart-compare v0.53.0 · update: npx shadcn add @syncrobotic/line-chart-compare --overwrite
 "use client"
 
 import * as React from "react"
@@ -19,7 +19,10 @@ const data = [
   { d: "Sun", now: 12, before: 11 },
 ]
 
-/** This period against the last: totals and the change up top, the earlier period dashed so it reads as the reference. */
+/**
+ * This week against last week: the total and the change up top, the earlier period dashed. The dashed period reads as
+ * the reference.
+ */
 export function LineChartCompare() {
   const [view, setView] = React.useState("chart")
   const now = data.reduce((s, d) => s + d.now, 0)

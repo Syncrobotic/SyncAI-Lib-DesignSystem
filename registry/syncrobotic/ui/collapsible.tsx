@@ -1,4 +1,4 @@
-// @syncrobotic/collapsible v0.51.0 · update: npx shadcn add @syncrobotic/collapsible --overwrite
+// @syncrobotic/collapsible v0.53.0 · update: npx shadcn add @syncrobotic/collapsible --overwrite
 "use client"
 
 import type * as React from "react"
@@ -7,8 +7,9 @@ import { ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 /**
- * One region behind one trigger ("More filters", a long note); it needs no heading. For sections with headings use
- * Accordion, which it matches. Closed by default.
+ * One region behind one trigger (More filters, a long note) with accordion's chevron, focus ring and motion; the
+ * trigger needs no heading and content open on the server does not animate. For sections with headings use Accordion.
+ * Closed by default.
  */
 export function Collapsible(props: React.ComponentProps<typeof CollapsiblePrimitive.Root>) {
   return <CollapsiblePrimitive.Root data-slot="collapsible" {...props} />

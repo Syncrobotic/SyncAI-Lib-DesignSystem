@@ -1,4 +1,4 @@
-// @syncrobotic/autocomplete v0.51.0 · update: npx shadcn add @syncrobotic/autocomplete --overwrite
+// @syncrobotic/autocomplete v0.53.0 · update: npx shadcn add @syncrobotic/autocomplete --overwrite
 "use client"
 
 import * as React from "react"
@@ -39,8 +39,9 @@ export const defaultAutocompleteLabels: AutocompleteLabels = {
 }
 
 /**
- * A text field that suggests as you type (WAI-ARIA combobox), for one of many known values where a Select would be too
- * long. To search a server: `onQueryChange`, `filter={false}`, `loading`, and `debounce` (ms).
+ * A text field that suggests as you type: filter, arrows, Enter, groups, server search with loading. A WAI-ARIA
+ * combobox, for one of many known values where a Select would be too long. To search a server: `onQueryChange`,
+ * `filter={false}`, `loading`, and `debounce` (ms).
  */
 export function Autocomplete({
   options,

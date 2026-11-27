@@ -1,4 +1,4 @@
-// @syncrobotic/dialog v0.51.0 · update: npx shadcn add @syncrobotic/dialog --overwrite
+// @syncrobotic/dialog v0.53.0 · update: npx shadcn add @syncrobotic/dialog --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,6 +6,10 @@ import { Dialog as DialogPrimitive } from "radix-ui"
 import { X } from "lucide-react"
 import { cn } from "@/lib/utils"
 
+/**
+ * A short decision or form that needs an answer before you go on, in a panel over the page. Focus stays inside until it
+ * closes (Escape closes it), then returns to what opened it; for a longer task beside the page use a Sheet.
+ */
 export const Dialog = DialogPrimitive.Root
 export function DialogTrigger(props: React.ComponentProps<typeof DialogPrimitive.Trigger>) {
   return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />

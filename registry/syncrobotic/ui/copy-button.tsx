@@ -1,4 +1,4 @@
-// @syncrobotic/copy-button v0.51.0 · update: npx shadcn add @syncrobotic/copy-button --overwrite
+// @syncrobotic/copy-button v0.53.0 · update: npx shadcn add @syncrobotic/copy-button --overwrite
 "use client"
 
 import * as React from "react"
@@ -58,7 +58,7 @@ export const defaultCopyButtonLabels: CopyButtonLabels = {
 }
 
 /**
- * Copies a value and says what happened: a check for 1.5 s, or an alert icon when it failed, and an announcement. With
+ * Copies a value and says what happened: a check for 1.5 s, an alert icon when it fails, and an announcement. With
  * `children` a text button; without, an icon button named by `label`.
  */
 export function CopyButton({

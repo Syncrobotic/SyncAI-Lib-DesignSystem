@@ -1,4 +1,4 @@
-// @syncrobotic/heatmap-zones v0.47.0 · update: npx shadcn add @syncrobotic/heatmap-zones --overwrite
+// @syncrobotic/heatmap-zones v0.53.0 · update: npx shadcn add @syncrobotic/heatmap-zones --overwrite
 "use client"
 
 import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
@@ -22,7 +22,10 @@ const max = 90
 // No data (null) is not none: the theme's no-data hatch (3:1 outline and lines), in place of the number.
 const shade = (v: number) => `color-mix(in oklab, var(--chart-1) calc(var(--heat-max) * ${(v / max).toFixed(3)}), var(--track))`
 
-/** Where the robots spend their time: zones by time of day, with each cell's minutes written in it, so the colour only groups. */
+/**
+ * Zones by time slots with the value written in every cell, so the colour only groups. Here: where the robots spend
+ * their time, in minutes.
+ */
 export function HeatmapZones() {
   return (
     <Card className="@container gap-3 [--heat-max:60%] in-data-[contrast=more]:[--heat-max:36%]">
@@ -35,9 +38,12 @@ export function HeatmapZones() {
             <TableHead className="w-24 pr-2">Zone</TableHead>
             {slots.map((s) => (
               <TableHead key={s} className="px-0 text-center tabular-nums">
-                {s}
-                {/* A narrow card writes the hour only ("06"), so the six columns never run into each other. */}
-                <span className="sr-only @md:not-sr-only">:00</span>
+                {/* A narrow card writes the hour only ("06"), so the six columns never run into each other; the header is
+                    read "06:00" either way, without the space a positioned sr-only ":00" would put before it. */}
+                <span aria-hidden="true" className="@md:hidden">
+                  {s}
+                </span>
+                <span className="sr-only @md:not-sr-only">{s}:00</span>
               </TableHead>
             ))}
             {/* An empty column as wide as the gap after the last cell, so the last column keeps its width and the cells
