@@ -144,7 +144,7 @@ describe("SettingsSessions", () => {
     const left = within(screen.getByRole("list", { name: "Signed-in browsers" })).getAllByRole("listitem")
     expect(left).toHaveLength(1)
     expect(left[0].textContent).toContain("This browser")
-    expect(screen.getByText("No other browsers are signed in.")).toBeTruthy()
+    expect(screen.getByText("No other browsers are signed in")).toBeTruthy()
     expect(screen.queryByRole("button", { name: "Sign out all other browsers" })).toBeNull()
   })
 

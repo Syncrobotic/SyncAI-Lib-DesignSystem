@@ -1,4 +1,4 @@
-// @syncrobotic/event-log v0.40.0 · update: npx shadcn add @syncrobotic/event-log --overwrite
+// @syncrobotic/event-log v0.47.0 · update: npx shadcn add @syncrobotic/event-log --overwrite
 "use client"
 
 import * as React from "react"
@@ -203,7 +203,7 @@ export function EventLog({ events = sampleEvents }: { events?: LogEvent[] }) {
       </div>
 
       <Sheet open={!!open} onOpenChange={(o) => !o && setOpen(null)}>
-        <SheetContent side="right" className="sm:max-w-md">
+        <SheetContent side="end" className="sm:max-w-md">
           {open && (
             <SheetHeader>
               <SheetTitle>{open.message}</SheetTitle>

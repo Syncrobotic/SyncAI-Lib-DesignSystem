@@ -1,4 +1,4 @@
-// @syncrobotic/agent-approval v0.17.3 · update: npx shadcn add @syncrobotic/agent-approval --overwrite
+// @syncrobotic/agent-approval v0.47.0 · update: npx shadcn add @syncrobotic/agent-approval --overwrite
 "use client"
 
 import * as React from "react"
@@ -130,11 +130,16 @@ export function AgentApproval() {
             // from 1024 px, where the content beside the shell's sidebar has room, they share a row.
             className="grid gap-2 border-t border-border pt-4 lg:flex lg:flex-wrap"
           >
-            <Button onClick={() => setState("approved")}>Approve and send to robots</Button>
-            <Button variant="secondary" onClick={() => setState("rejecting")}>
+            {/* The page's main action at 48 px, and the row at its height: one height per row. */}
+            <Button size="lg" onClick={() => setState("approved")}>
+              Approve and send to robots
+            </Button>
+            <Button size="lg" variant="secondary" onClick={() => setState("rejecting")}>
               Send back
             </Button>
-            <Button variant="ghost">Open in the planner</Button>
+            <Button size="lg" variant="ghost">
+              Open in the planner
+            </Button>
           </div>
         )}
       </div>

@@ -1,4 +1,4 @@
-// @syncrobotic/robot-model v0.45.1 · update: npx shadcn add @syncrobotic/robot-model --overwrite
+// @syncrobotic/robot-model v0.47.0 · update: npx shadcn add @syncrobotic/robot-model --overwrite
 "use client"
 
 import * as React from "react"
@@ -1191,7 +1191,7 @@ export function RobotModel({
           ) : (
             <>
               <span aria-hidden="true" className="flex">
-                <Spinner className="size-4 text-info" delay={0} label={l.loading} />
+                <Spinner className="size-4 text-muted-foreground" delay={0} label={l.loading} />
               </span>
               <span>{load.phase === "loading" && load.meshes ? l.loadingMeshes(load.meshes.loaded, load.meshes.total) : l.loading}</span>
             </>
@@ -1385,7 +1385,7 @@ export function RobotModel({
         {state === "context-lost" && (
           <ViewportOverlay position="center" className="bg-scrim">
             <ViewportPanel as="p" className="flex items-center gap-2">
-              <Spinner className="size-4 text-info" delay={0} label={l.contextLost} />
+              <Spinner className="size-4 text-muted-foreground" delay={0} label={l.contextLost} />
               {l.contextLost}
             </ViewportPanel>
           </ViewportOverlay>

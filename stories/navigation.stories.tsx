@@ -1,6 +1,6 @@
 import * as React from "react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { Bell, Bot, ChevronDown, Ellipsis, House, Settings } from "lucide-react"
+import { Bell, ChevronDown, Ellipsis, House, LayoutGrid, ScrollText } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/registry/syncrobotic/ui/dropdown-menu"
 import { CountBadge } from "@/registry/syncrobotic/ui/badge"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/registry/syncrobotic/ui/accordion"
@@ -56,28 +56,29 @@ export const AccordionDefault: S = {
   ),
 }
 
+// Views of one robot, never the app's sections: those are navigation.
 export const TabsWithIconsAndCounts: S = {
   render: () => (
     <Tabs defaultValue="events">
-      <TabsList>
-        <TabsTrigger value="robots">
-          <Bot aria-hidden="true" /> Robots
+      <TabsList aria-label="Robot 7F3A">
+        <TabsTrigger value="overview">
+          <LayoutGrid aria-hidden="true" /> Overview
         </TabsTrigger>
         <TabsTrigger value="events">
           <Bell aria-hidden="true" /> Events <CountBadge count={3} />
         </TabsTrigger>
-        <TabsTrigger value="settings">
-          <Settings aria-hidden="true" /> Settings
+        <TabsTrigger value="logs">
+          <ScrollText aria-hidden="true" /> Logs <CountBadge count={2} />
         </TabsTrigger>
       </TabsList>
-      <TabsContent value="robots" className="text-sm text-muted-foreground">
-        12 robots on this site
+      <TabsContent value="overview" className="text-sm text-muted-foreground">
+        Patrolling the north gate, battery 72 %
       </TabsContent>
       <TabsContent value="events" className="text-sm text-muted-foreground">
         3 events need review
       </TabsContent>
-      <TabsContent value="settings" className="text-sm text-muted-foreground">
-        Site settings
+      <TabsContent value="logs" className="text-sm text-muted-foreground">
+        2 errors since 06:00
       </TabsContent>
     </Tabs>
   ),
@@ -96,10 +97,11 @@ export const TabsSticky: S = {
         </TabsList>
         <TabsContent value="events">
           <div className="flex flex-col text-sm">
+            {/* Newest first: lap 16 is the latest, half an hour after lap 15. */}
             {Array.from({ length: 16 }, (_, i) => (
               <p key={i} className="flex min-h-(--h-row) items-center justify-between gap-3 border-b border-border last:border-b-0">
                 <span>Patrol lap {16 - i} finished</span>
-                <span className="font-mono text-xs text-muted-foreground tabular-nums">{`${String(21 - Math.floor(i / 2)).padStart(2, "0")}:${i % 2 ? "30" : "00"}`}</span>
+                <span className="font-mono text-xs text-muted-foreground tabular-nums">{`${String(21 - Math.floor(i / 2)).padStart(2, "0")}:${i % 2 ? "00" : "30"}`}</span>
               </p>
             ))}
           </div>

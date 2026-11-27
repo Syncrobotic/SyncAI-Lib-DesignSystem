@@ -2,6 +2,46 @@
 
 Components install as source, so a project keeps the version it installed. Re-run `npx shadcn add @syncrobotic/<item> --overwrite` to take a newer one, and read the entries below first.
 
+## 0.47.0 · 2026-11-27
+
+The kit following its own rules: an audit of every block against the foundations, and the rules it found unwritten, written.
+
+### Fixed
+- **Page title above its sections:** `app-shell`, `action-rail-shell`, `app-shell-mobile-tabs` 0.47.0. The top bar's title is the page's h1, and it was 18 px under sections of 20. It is 2xl (24 px) now, the largest that sits in the 56 px bar; typography's scale says so.
+- **One edge per surface:**
+  - `agent-run-gate` 0.47.0: the gate's panel was a box inside the step's card with a ringed table inside it, three edges deep. It is set apart by a hairline now, and its table is bare.
+  - `heatmap-week-hours`, `heatmap-zones`, `settings-notifications` 0.47.0: the tables inside their cards are bare.
+  - `sheet-robot-detail` 0.47.0: its facts are a bare DescriptionList, no card inside the sheet.
+- **Sheets on phones:** `sheet-robot-detail`, `event-log`, `map-workspace`, `agent-chat` 0.47.0. They open from the bottom on a phone and from the right from 640 px, as the sheet's rule says; they were right panels on every screen.
+- **Under the stop:** `sheet-robot-detail`. Send to dock is the dock's muted primary and Open camera a ghost, never a solid white button competing with the stop.
+- **Selected, not current:** `list-detail` 0.47.0. The selected row is accent with its 2 px ink bar, as a selected table row (muted is the current page in navigation).
+- **A level past its threshold shows its shape:**
+  - `app-shell-mobile-tabs`, `agent-run-gate`: a battery under 15 % shows the warning glyph and says low.
+  - `mission-schedule` 0.47.0: a conflict shows the warning shape before its words.
+  - `maintenance-work-order` 0.47.0: an overdue service says "Overdue by 12 h" with its shape.
+- **One part per look:** `robot-status-card`, `card-site` 0.47.0. Their figures are DescriptionList tiles instead of hand-made boxes.
+- **Sizes:**
+  - `trace` 0.47.0: the panel's title is 14 px medium, as every title inside a surface.
+  - `agent-approval` 0.47.0: the decision row is lg (48 px), a page's main action.
+- **Empty:** `settings-sessions` 0.47.0. "No other browsers are signed in" is an inline EmptyState, not a bare grey line.
+- **Spinners are grey:** `wizard-commission`, `camera-feed`, `robot-model` 0.47.0. Blue was waiting's colour in three places and grey in the rest; waiting is not a process the person can follow.
+
+### Added
+- **`table` 0.47.0:** `bare`, for a table inside a surface: no edge of its own, only the hairlines between rows.
+- **`sheet` 0.47.0:** `side="end"`, bottom under 640 px and right from 640 px, in CSS so the first paint is the right one.
+- **Rules written down:**
+  - **Elevation:** one edge per surface. Inside it, a field is filled, a table or list is bare, and a part is set apart by a hairline and space; the app shell's inset content panel is the page itself, so cards sit on it as on any page. Until now this was in a code comment only.
+  - **Spinner:** in the text's colour, never blue.
+  - **SegmentedControl:** also a setting with two to four short choices, which Select's rule already sent to it.
+  - **Sheet:** `end`.
+- **`agent-skill` 0.47.0:** the design language for agents says all of this, and describes the sidebar's handle instead of the round button it replaced in 0.44 (an agent following it would have rebuilt the old one).
+
+### Changed
+- **`alert` 0.47.0:** no `success` tone. A success does not stay, so it is a toast; an Alert is a condition that stays while it is true. `info` stays, for a process under way only.
+
+### Upgrading
+- `<Alert tone="success">` no longer compiles: say it with a toast (or the island's notice on a phone). Nothing in the kit used it.
+
 ## 0.46.0 · 2026-11-26
 
 The dynamic island, finished: every zone opens its panel, and the phone control app it belongs to, assembled.

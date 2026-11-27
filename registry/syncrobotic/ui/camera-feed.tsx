@@ -1,4 +1,4 @@
-// @syncrobotic/camera-feed v0.36.0 · update: npx shadcn add @syncrobotic/camera-feed --overwrite
+// @syncrobotic/camera-feed v0.47.0 · update: npx shadcn add @syncrobotic/camera-feed --overwrite
 "use client"
 
 import * as React from "react"
@@ -106,7 +106,7 @@ export function CameraFeedStateLine({
     <p data-slot="camera-feed-state" className={cn("flex items-center gap-2", state === "stalled" ? "text-warning" : "text-muted-foreground", className)}>
       {state === "connecting" ? (
         <span aria-hidden="true" className="flex">
-          <Spinner className="size-4 text-info" delay={0} label={l.connectingLong} />
+          <Spinner className="size-4 text-muted-foreground" delay={0} label={l.connectingLong} />
         </span>
       ) : state === "paused" ? (
         <Pause aria-hidden="true" className="size-4" />

@@ -10,7 +10,7 @@ const scale = [
   { key: "5xl", cls: "text-5xl", role: "Hero", use: "Marketing page headlines only" },
   { key: "4xl", cls: "text-4xl", role: "Hero, phone", use: "Marketing headlines on phones" },
   { key: "3xl", cls: "text-3xl", role: "Display", use: "Page titles" },
-  { key: "2xl", cls: "text-2xl", role: "Figure", use: "The number that leads a card or chart" },
+  { key: "2xl", cls: "text-2xl", role: "Figure", use: "The number that leads a card or chart; a page's title in an app shell's top bar" },
   { key: "xl", cls: "text-xl", role: "Title", use: "Section and sheet titles" },
   { key: "lg", cls: "text-lg", role: "Heading", use: "Card titles, emergency stop label" },
   { key: "base", cls: "text-base", role: "Body", use: "Paragraphs, inputs" },

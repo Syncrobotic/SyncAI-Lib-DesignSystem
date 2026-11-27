@@ -1,4 +1,4 @@
-// @syncrobotic/heatmap-zones v0.22.4 · update: npx shadcn add @syncrobotic/heatmap-zones --overwrite
+// @syncrobotic/heatmap-zones v0.47.0 · update: npx shadcn add @syncrobotic/heatmap-zones --overwrite
 "use client"
 
 import { Card, CardDataHeader } from "@/registry/syncrobotic/ui/card"
@@ -29,7 +29,7 @@ export function HeatmapZones() {
       <CardDataHeader title="Robot presence by zone">
         <p className="text-xs text-muted-foreground">Today, minutes per 3 hours</p>
       </CardDataHeader>
-      <Table className="table-fixed">
+      <Table bare className="table-fixed">
         <TableHeader>
           <TableRow>
             <TableHead className="w-24 pr-2">Zone</TableHead>
