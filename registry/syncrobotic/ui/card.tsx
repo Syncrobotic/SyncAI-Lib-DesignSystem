@@ -1,4 +1,4 @@
-// @syncrobotic/card v0.32.0 · update: npx shadcn add @syncrobotic/card --overwrite
+// @syncrobotic/card v0.48.0 · update: npx shadcn add @syncrobotic/card --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
@@ -55,7 +55,7 @@ export function CardTitle({
   /** The heading level: h3 by default; h2 for a card right under the page's h1, h4 for one in a section under an h3. */
   as?: "h2" | "h3" | "h4"
 }) {
-  return <Heading data-slot="card-title" className={cn("text-lg font-bold", className)} {...props} />
+  return <Heading data-slot="card-title" className={cn("text-base font-bold", className)} {...props} />
 }
 
 export function CardDescription({ className, ...props }: React.ComponentProps<"p">) {

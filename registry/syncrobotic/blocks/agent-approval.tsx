@@ -1,4 +1,4 @@
-// @syncrobotic/agent-approval v0.47.0 · update: npx shadcn add @syncrobotic/agent-approval --overwrite
+// @syncrobotic/agent-approval v0.48.0 · update: npx shadcn add @syncrobotic/agent-approval --overwrite
 "use client"
 
 import * as React from "react"
@@ -33,7 +33,7 @@ export function AgentApproval() {
           <StatusEyebrow status={decided ? "normal" : "warning"}>
             {state === "approved" ? "Approved by you" : state === "rejected" ? "Sent back" : "Needs your approval · expires in 25 min"}
           </StatusEyebrow>
-          <h2 className="text-xl font-bold">Reroute around door C3</h2>
+          <h2 className="text-base font-bold">Reroute around door C3</h2>
           <p className="flex items-center gap-2 text-sm text-muted-foreground">
             <Sparkles aria-hidden="true" className="size-4" />
             <span>

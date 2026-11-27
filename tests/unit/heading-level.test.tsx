@@ -19,7 +19,7 @@ describe("CardTitle", () => {
     render(<CardTitle as={as} className="extra">Storage</CardTitle>)
     const h = screen.getByRole("heading", { name: "Storage" })
     expect(h.tagName).toBe(as.toUpperCase())
-    expect(h.className).toBe("text-lg font-bold extra")
+    expect(h.className).toBe("text-base font-bold extra")
   })
 })
 

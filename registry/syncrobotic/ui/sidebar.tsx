@@ -1,9 +1,9 @@
-// @syncrobotic/sidebar v0.44.1 · update: npx shadcn add @syncrobotic/sidebar --overwrite
+// @syncrobotic/sidebar v0.48.0 · update: npx shadcn add @syncrobotic/sidebar --overwrite
 "use client"
 
 import * as React from "react"
 import { Slot } from "radix-ui"
-import { Menu } from "lucide-react"
+import { ChevronDown, Menu } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { CountBadge } from "@/registry/syncrobotic/ui/badge"
 import { Sheet, SheetContent, SheetTitle } from "@/registry/syncrobotic/ui/sheet"
@@ -610,16 +610,71 @@ export function SidebarSeparator({ className, ...props }: React.ComponentProps<"
   return <hr data-slot="sidebar-separator" className={cn("mx-3 border-border", className)} {...props} />
 }
 
-/** The scrolling middle: the groups of links, in a navigation landmark ("Main"; pass aria-label to rename it). */
+/** Which ends of a box that scrolls up and down still hide content. */
+function useVerticalEdges(ref: React.RefObject<HTMLElement | null>) {
+  const [edges, setEdges] = React.useState({ top: false, bottom: false })
+  React.useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const update = () => {
+      const top = el.scrollTop > 4
+      const bottom = el.scrollTop < el.scrollHeight - el.clientHeight - 4
+      setEdges((e) => (e.top === top && e.bottom === bottom ? e : { top, bottom }))
+    }
+    update()
+    el.addEventListener("scroll", update, { passive: true })
+    const ro = typeof ResizeObserver === "undefined" ? undefined : new ResizeObserver(update)
+    ro?.observe(el)
+    for (const child of el.children) ro?.observe(child)
+    return () => {
+      el.removeEventListener("scroll", update)
+      ro?.disconnect()
+    }
+  }, [ref])
+  return edges
+}
+
+/**
+ * The scrolling middle: the groups of links, in a navigation landmark ("Main"; pass aria-label to rename it). When the
+ * links are taller than the column, the end that still hides some fades out (a mask, so the sidebar's own surface shows
+ * through), and while there is more below, a small chevron at the foot says so; a tap on it scrolls a page down.
+ */
 export function SidebarContent({ className, ...props }: React.ComponentProps<"nav">) {
   const { labels } = useSidebar()
+  const scroller = React.useRef<HTMLElement>(null)
+  const { top, bottom } = useVerticalEdges(scroller)
+  const fade =
+    top || bottom
+      ? `linear-gradient(to bottom, ${top ? "transparent, black 1.5rem" : "black, black"}, ${bottom ? "black calc(100% - 2.5rem), transparent" : "black"})`
+      : undefined
   return (
-    <nav
-      data-slot="sidebar-content"
-      aria-label={labels.nav}
-      className={cn("flex min-h-0 flex-1 flex-col gap-4 overflow-x-hidden overflow-y-auto px-3 py-2", className)}
-      {...props}
-    />
+    <div data-slot="sidebar-content-frame" className="relative flex min-h-0 flex-1 flex-col">
+      <nav
+        ref={scroller}
+        data-slot="sidebar-content"
+        aria-label={labels.nav}
+        style={fade ? { maskImage: fade, WebkitMaskImage: fade } : undefined}
+        className={cn("flex min-h-0 flex-1 flex-col gap-4 overflow-x-hidden overflow-y-auto overscroll-contain px-3 py-2", className)}
+        {...props}
+      />
+      {/* A pointer's cue, out of the Tab order and hidden from screen readers: the keyboard scrolls the list by moving
+          through it, and a reader reads every link. */}
+      <button
+        type="button"
+        tabIndex={-1}
+        aria-hidden="true"
+        data-slot="sidebar-scroll-hint"
+        data-shown={bottom || undefined}
+        onClick={() => scroller.current?.scrollBy({ top: scroller.current.clientHeight * 0.8, behavior: "smooth" })}
+        className={cn(
+          "press absolute bottom-1 left-1/2 flex size-6 -translate-x-1/2 items-center justify-center rounded-full bg-card text-muted-foreground ring-1 ring-border hover:bg-accent hover:text-foreground",
+          "pointer-events-none opacity-0 transition-opacity duration-(--motion-base) ease-(--ease-standard) motion-reduce:transition-none",
+          "data-shown:pointer-events-auto data-shown:opacity-100",
+        )}
+      >
+        <ChevronDown className="size-4" />
+      </button>
+    </div>
   )
 }
 

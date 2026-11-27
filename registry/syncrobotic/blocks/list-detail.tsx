@@ -1,4 +1,4 @@
-// @syncrobotic/list-detail v0.47.0 · update: npx shadcn add @syncrobotic/list-detail --overwrite
+// @syncrobotic/list-detail v0.48.0 · update: npx shadcn add @syncrobotic/list-detail --overwrite
 "use client"
 
 import * as React from "react"
@@ -117,7 +117,7 @@ export function ListDetail({ robots = sampleRobots }: { robots?: Robot[] }) {
                   <ArrowLeft aria-hidden="true" />
                 </Button>
                 <div className="flex min-w-0 flex-1 basis-48 flex-col gap-1">
-                  <h2 className="text-xl font-bold">{robot.name}</h2>
+                  <h2 className="text-base font-bold">{robot.name}</h2>
                   <InlineStatus status={status[robot.status].tone}>{status[robot.status].label}</InlineStatus>
                 </div>
                 <div className="flex gap-2">

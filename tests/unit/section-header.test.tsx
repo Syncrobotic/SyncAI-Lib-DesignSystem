@@ -2,15 +2,15 @@ import { cleanup, render, screen } from "@testing-library/react"
 import { afterEach, describe, expect, it } from "vitest"
 import { SectionHeader } from "@/registry/syncrobotic/ui/section-header"
 
-// Typography's two section levels in one part (#385): page 20 px bold, surface 14 px medium; the count in full.
+// Typography's two section levels in one part (#385): page 16 px bold, surface 14 px medium; the count in full.
 afterEach(cleanup)
 
 describe("SectionHeader", () => {
-  it("is a page section by default: an h2, 20 px bold", () => {
+  it("is a page section by default: an h2, 16 px bold", () => {
     render(<SectionHeader title="Robots" />)
     const h = screen.getByRole("heading", { name: "Robots" })
     expect(h.tagName).toBe("H2")
-    expect(h.className).toContain("text-xl font-bold")
+    expect(h.className).toContain("text-base font-bold")
     expect(h.closest("[data-slot=section-header]")?.getAttribute("data-variant")).toBe("page")
   })
 

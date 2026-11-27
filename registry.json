@@ -2374,8 +2374,13 @@
         }
       ],
       "meta": {
-        "version": "0.32.0",
+        "version": "0.48.0",
         "changelog": [
+          {
+            "version": "0.48.0",
+            "date": "2026-11-26",
+            "note": "CardTitle is 16 px bold (was 18), under the page's title (18) in an app shell and level with a section's."
+          },
           {
             "version": "0.32.0",
             "date": "2026-11-24",
@@ -3662,8 +3667,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.44.1",
+        "version": "0.48.0",
         "changelog": [
+          {
+            "version": "0.48.0",
+            "date": "2026-11-26",
+            "note": "When the links are taller than the column, the end that still hides some fades out, and a chevron at the foot says there is more below (a tap scrolls a page). Pointer only: the keyboard scrolls by moving through the links."
+          },
           {
             "version": "0.44.1",
             "date": "2026-11-26",
@@ -4757,8 +4767,13 @@
       ],
       "meta": {
         "status": "beta",
-        "version": "0.40.0",
+        "version": "0.48.0",
         "changelog": [
+          {
+            "version": "0.48.0",
+            "date": "2026-11-26",
+            "note": "page is 16 px bold (was 20 bold), under the page's title (18); surface stays 14 px medium."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -7506,8 +7521,13 @@
         }
       ],
       "meta": {
-        "version": "0.47.0",
+        "version": "0.48.0",
         "changelog": [
+          {
+            "version": "0.48.0",
+            "date": "2026-11-26",
+            "note": "Titles follow the app shell's three levels: the page 18, its sections and cards 16, inside a card 14."
+          },
           {
             "version": "0.47.0",
             "date": "2026-11-26",
@@ -7633,8 +7653,13 @@
         }
       ],
       "meta": {
-        "version": "0.47.0",
+        "version": "0.48.0",
         "changelog": [
+          {
+            "version": "0.48.0",
+            "date": "2026-11-26",
+            "note": "The top bar's title is 18 px again (was 24): the sections and cards under it are 16 now. The account row mirrors the brand row: a 32 px mark above and a 32 px avatar below, each 12 px from its edge on the same left edge, and the chevron's right edge in line with the counts on the links."
+          },
           {
             "version": "0.47.0",
             "date": "2026-11-26",
@@ -7805,8 +7830,13 @@
         }
       ],
       "meta": {
-        "version": "0.47.0",
+        "version": "0.48.0",
         "changelog": [
+          {
+            "version": "0.48.0",
+            "date": "2026-11-26",
+            "note": "The title is 18 px (was 24) and the rail's panel title 16. Titles follow the app shell's three levels: the page 18, its sections and cards 16, inside a card 14."
+          },
           {
             "version": "0.47.0",
             "date": "2026-11-26",
@@ -7949,8 +7979,13 @@
         }
       ],
       "meta": {
-        "version": "0.47.0",
+        "version": "0.48.0",
         "changelog": [
+          {
+            "version": "0.48.0",
+            "date": "2026-11-26",
+            "note": "Titles follow the app shell's three levels: the page 18, its sections and cards 16, inside a card 14."
+          },
           {
             "version": "0.47.0",
             "date": "2026-11-26",
@@ -8419,8 +8454,13 @@
         }
       ],
       "meta": {
-        "version": "0.17.3",
+        "version": "0.48.0",
         "changelog": [
+          {
+            "version": "0.48.0",
+            "date": "2026-11-26",
+            "note": "Titles follow the app shell's three levels: the page 18, its sections and cards 16, inside a card 14."
+          },
           {
             "version": "0.17.3",
             "date": "2026-11-21",
@@ -8854,8 +8894,13 @@
         }
       ],
       "meta": {
-        "version": "0.47.0",
+        "version": "0.48.0",
         "changelog": [
+          {
+            "version": "0.48.0",
+            "date": "2026-11-26",
+            "note": "The type scale: in an app shell the page's title is 18, its sections and cards 16, inside a card 14; 20 is for sheet titles."
+          },
           {
             "version": "0.47.0",
             "date": "2026-11-26",
@@ -10075,8 +10120,13 @@
         }
       ],
       "meta": {
-        "version": "0.47.0",
+        "version": "0.48.0",
         "changelog": [
+          {
+            "version": "0.48.0",
+            "date": "2026-11-26",
+            "note": "The title is 18 px (was 24). Titles follow the app shell's three levels: the page 18, its sections and cards 16, inside a card 14."
+          },
           {
             "version": "0.47.0",
             "date": "2026-11-26",
@@ -10274,8 +10324,13 @@
         }
       ],
       "meta": {
-        "version": "0.47.0",
+        "version": "0.48.0",
         "changelog": [
+          {
+            "version": "0.48.0",
+            "date": "2026-11-26",
+            "note": "Titles follow the app shell's three levels: the page 18, its sections and cards 16, inside a card 14."
+          },
           {
             "version": "0.47.0",
             "date": "2026-11-26",
@@ -10343,8 +10398,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.48.0",
         "changelog": [
+          {
+            "version": "0.48.0",
+            "date": "2026-11-26",
+            "note": "Titles follow the app shell's three levels: the page 18, its sections and cards 16, inside a card 14."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -10807,8 +10867,13 @@
         }
       ],
       "meta": {
-        "version": "0.40.0",
+        "version": "0.48.0",
         "changelog": [
+          {
+            "version": "0.48.0",
+            "date": "2026-11-26",
+            "note": "Titles follow the app shell's three levels: the page 18, its sections and cards 16, inside a card 14."
+          },
           {
             "version": "0.40.0",
             "date": "2026-11-26",
@@ -11226,8 +11291,13 @@
         }
       ],
       "meta": {
-        "version": "0.47.0",
+        "version": "0.48.0",
         "changelog": [
+          {
+            "version": "0.48.0",
+            "date": "2026-11-26",
+            "note": "Titles follow the app shell's three levels: the page 18, its sections and cards 16, inside a card 14."
+          },
           {
             "version": "0.47.0",
             "date": "2026-11-26",
@@ -11599,8 +11669,13 @@
         }
       ],
       "meta": {
-        "version": "0.28.0",
+        "version": "0.48.0",
         "changelog": [
+          {
+            "version": "0.48.0",
+            "date": "2026-11-26",
+            "note": "Titles follow the app shell's three levels: the page 18, its sections and cards 16, inside a card 14."
+          },
           {
             "version": "0.28.0",
             "date": "2026-11-21",
@@ -11711,8 +11786,13 @@
         }
       ],
       "meta": {
-        "version": "0.47.0",
+        "version": "0.48.0",
         "changelog": [
+          {
+            "version": "0.48.0",
+            "date": "2026-11-26",
+            "note": "Titles follow the app shell's three levels: the page 18, its sections and cards 16, inside a card 14."
+          },
           {
             "version": "0.47.0",
             "date": "2026-11-26",
@@ -12017,8 +12097,13 @@
         }
       ],
       "meta": {
-        "version": "0.47.0",
+        "version": "0.48.0",
         "changelog": [
+          {
+            "version": "0.48.0",
+            "date": "2026-11-26",
+            "note": "Titles follow the app shell's three levels: the page 18, its sections and cards 16, inside a card 14."
+          },
           {
             "version": "0.47.0",
             "date": "2026-11-26",
@@ -12134,8 +12219,13 @@
         }
       ],
       "meta": {
-        "version": "0.47.0",
+        "version": "0.48.0",
         "changelog": [
+          {
+            "version": "0.48.0",
+            "date": "2026-11-26",
+            "note": "Titles follow the app shell's three levels: the page 18, its sections and cards 16, inside a card 14."
+          },
           {
             "version": "0.47.0",
             "date": "2026-11-26",
@@ -12177,8 +12267,13 @@
         }
       ],
       "meta": {
-        "version": "0.45.0",
+        "version": "0.48.0",
         "changelog": [
+          {
+            "version": "0.48.0",
+            "date": "2026-11-26",
+            "note": "Titles follow the app shell's three levels: the page 18, its sections and cards 16, inside a card 14."
+          },
           {
             "version": "0.45.0",
             "date": "2026-11-26",
