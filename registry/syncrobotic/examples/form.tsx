@@ -1,4 +1,4 @@
-// @syncrobotic/form v0.25.0 · update: npx shadcn add @syncrobotic/form --overwrite
+// @syncrobotic/form v0.49.0 · update: npx shadcn add @syncrobotic/form --overwrite
 "use client"
 
 // A form with React Hook Form and zod, drawn with the kit's Field: an example to copy and change, not a component.

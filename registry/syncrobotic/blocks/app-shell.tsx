@@ -1,4 +1,4 @@
-// @syncrobotic/app-shell v0.48.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
+// @syncrobotic/app-shell v0.49.0 · update: npx shadcn add @syncrobotic/app-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -330,13 +330,13 @@ export function SidebarUserMenu({ user, items = sampleUserMenu, linkAs: Link = "
             (WCAG 2.5.3): no aria-label that would reorder the words. */}
         {/* Open: 40 px (44 on touch), 8 px corners. As a rail: a 44 px square with 12 px corners, as the links' buttons;
             the height and the corners move with the fold, the width follows the column. The 28 px avatar stays 20 px in
-            (pl-2) on the 34 px centre line all through it, and the name starts at 52 px, as the links' names and the
-            brand's (gap-1 after a 28 px avatar, icon-gap-ok). The chevron lines up with the counts above (pr-3). */}
+            (pl-2) on the 34 px centre line all through it, and the name follows 8 px after it, as the brand's name after
+            the mark. The chevron lines up with the counts above (pr-3). */}
         <SidebarMenuButton
           size="lg"
           tooltip={user.name}
           className={cn(
-            "h-10 gap-1 rounded-xs pr-3 pl-2 text-foreground pointer-coarse:h-(--h-md)",
+            "h-10 gap-2 rounded-xs pr-3 pl-2 text-foreground pointer-coarse:h-(--h-md)",
             "transition-[height,border-radius,background-color,color] duration-(--motion-sheet) ease-(--ease-standard) motion-reduce:transition-none",
             "group-data-[collapsible=icon]/sidebar:h-11 group-data-[collapsible=icon]/sidebar:rounded-sm",
           )}
@@ -581,8 +581,8 @@ export function AppShell({
     >
       <Sidebar variant={inset ? "floating" : "sidebar"}>
         {/* The brand row is as tall as the top bar, so their edges line up across the gap. The 28 px logo sits 20 px
-            in, so its centre is the rail's centre line (34 px), open or closed, and the name starts at 52 px, where the
-            links' names and the account's name start too: one column of text down the sidebar. Only the name fades. Flush: lined, level
+            in, so its centre is the rail's centre line (34 px), open or closed; the name follows 8 px after it, as the
+            account's name after the avatar. Only the name fades. Flush: lined, level
             with the top bar's line. */}
         {/* Each state has its own balance, and the fold moves between them: open, the 28 px mark sits 14 px from the top, as
             the avatar from the bottom; as a rail, 4 px more room under it raises it to 12, as the avatar's 44 px square
@@ -593,7 +593,7 @@ export function AppShell({
             inset ? "border-transparent" : "border-border",
           )}
         >
-          <span className="flex min-w-0 items-center gap-1">
+          <span className="flex min-w-0 items-center gap-2">
             <span className="ml-2 flex size-7 shrink-0 items-center justify-center">
               {logo ?? (
                 <span aria-hidden="true" className="flex size-7 items-center justify-center rounded-xs bg-primary text-sm font-bold text-primary-foreground">

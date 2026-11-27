@@ -1,4 +1,4 @@
-// @syncrobotic/sidebar v0.48.0 · update: npx shadcn add @syncrobotic/sidebar --overwrite
+// @syncrobotic/sidebar v0.49.0 · update: npx shadcn add @syncrobotic/sidebar --overwrite
 "use client"
 
 import * as React from "react"
@@ -666,9 +666,14 @@ function registerFadeProperties() {
  * scroll, and at the bottom of the list there is neither.
  */
 export function SidebarContent({ className, ...props }: React.ComponentProps<"nav">) {
-  const { labels } = useSidebar()
+  const { labels, state, isMobile } = useSidebar()
   const scroller = React.useRef<HTMLElement>(null)
-  const { top, bottom } = useVerticalEdges(scroller)
+  const edges = useVerticalEdges(scroller)
+  // As a rail there are no cues: a column of icons is short to scan, and a fade or a chevron would crowd 68 px. They ease
+  // out with the fold and back in when it opens.
+  const rail = state === "collapsed" && !isMobile
+  const top = edges.top && !rail
+  const bottom = edges.bottom && !rail
   React.useEffect(registerFadeProperties, [])
   return (
     <div data-slot="sidebar-content-frame" className="relative flex min-h-0 flex-1 flex-col">

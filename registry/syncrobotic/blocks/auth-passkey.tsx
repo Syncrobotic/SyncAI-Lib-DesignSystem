@@ -1,4 +1,4 @@
-// @syncrobotic/auth-passkey v0.40.0 · update: npx shadcn add @syncrobotic/auth-passkey --overwrite
+// @syncrobotic/auth-passkey v0.49.0 · update: npx shadcn add @syncrobotic/auth-passkey --overwrite
 "use client"
 
 import * as React from "react"

@@ -1,4 +1,4 @@
-// @syncrobotic/copy-button v0.35.0 · update: npx shadcn add @syncrobotic/copy-button --overwrite
+// @syncrobotic/copy-button v0.49.0 · update: npx shadcn add @syncrobotic/copy-button --overwrite
 "use client"
 
 import * as React from "react"

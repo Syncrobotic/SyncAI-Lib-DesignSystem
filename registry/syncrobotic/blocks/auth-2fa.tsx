@@ -1,4 +1,4 @@
-// @syncrobotic/auth-2fa v0.40.0 · update: npx shadcn add @syncrobotic/auth-2fa --overwrite
+// @syncrobotic/auth-2fa v0.49.0 · update: npx shadcn add @syncrobotic/auth-2fa --overwrite
 "use client"
 
 import * as React from "react"
