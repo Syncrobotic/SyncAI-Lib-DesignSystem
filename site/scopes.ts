@@ -29,6 +29,7 @@ export const scopes: Scope[] = [
           { href: "/docs/robotics", label: "Robotics UI kit" },
           { href: "/docs/ros", label: "Connect to ROS" },
           { href: "/docs/nextjs", label: "Next.js" },
+          { href: "/docs/nextjs/data", label: "Next.js forms and lists" },
           { href: "/docs/localisation", label: "Localisation" },
           { href: "/docs/tokens", label: "Design tokens" },
           { href: "/docs/upgrading", label: "Versions and upgrades" },

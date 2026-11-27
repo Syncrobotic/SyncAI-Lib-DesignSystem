@@ -1618,7 +1618,7 @@ const entries: Record<string, Entry> = {
     rules: [
       "Bind the search box to `search` and `setSearch`: the box answers every key, the URL and the request wait for the pause. Clearing never waits.",
       "A new search, sort, limit or filter goes back to page 1; only `setPage` keeps the rest.",
-      "In Next.js pass an adapter on the router (`useSearchParams`, `useRouter`, `usePathname`), so navigation goes through it; the docs page has the code.",
+      "In Next.js pass an adapter on the router (`useSearchParams`, `useRouter`, `usePathname`), so navigation goes through it; /docs/nextjs/data has the code.",
       "Request with `query`, not with the box's text: the query is what the URL says.",
     ],
   },

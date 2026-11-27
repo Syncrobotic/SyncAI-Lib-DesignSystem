@@ -27,6 +27,7 @@ const start = [
   { href: "/docs/robotics", title: "Robotics UI kit" },
   { href: "/docs/ros", title: "Connect to ROS" },
   { href: "/docs/nextjs", title: "Next.js" },
+  { href: "/docs/nextjs/data", title: "Next.js forms and lists" },
   { href: "/docs/localisation", title: "Localisation" },
   { href: "/docs/tokens", title: "Design tokens" },
   { href: "/docs/upgrading", title: "Versions and upgrades" },
