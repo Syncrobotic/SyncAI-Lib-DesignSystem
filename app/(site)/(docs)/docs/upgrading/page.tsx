@@ -76,7 +76,7 @@ export default function UpgradingPage() {
       <H2 id="upgrade">Upgrade</H2>
       <CodeBlock code={steps} lang="bash" title="Terminal" />
       <p className="pt-3 text-sm text-muted-foreground">
-        <Inline text="Across many products: in a checkout of the design system repository, `npm run adoption -- ../app-a ../app-b` (or `--github <org>` with the gh CLI) lists each product's items and versions, how far each is behind and the changelog lines in between." />
+        <Inline text="Across many products: in a checkout of the design system repository, `npm run adoption -- ../app-a ../app-b` (or `--github <org>` with the gh CLI) lists each product's items and versions, how far each is behind and the changelog lines in between, and in a local checkout the product's own look-alikes of kit items (a PageHeader of its own), each with its kit item and the migration guide." />
       </p>
 
       <H2 id="migrations">Migration guides</H2>
@@ -84,6 +84,12 @@ export default function UpgradingPage() {
         <Inline text="A release that renames or removes something has its own page: what changed, old to new, and the codemods that do the mechanical part." />
       </p>
       <ul className="list-disc space-y-1 pt-2 pl-6 text-base">
+        <li id="local-components">
+          <a href="/docs/migrating-from-local-components" className={textLink}>
+            From local components
+          </a>
+          <span className="text-muted-foreground"> · a product's own PageHeader, MetricCard or StatusDot to the kit's, with a codemod</span>
+        </li>
         <li id="0-42">
           <a href="/docs/upgrading/0-42" className={textLink}>
             0.42: resizable on react-resizable-panels 4

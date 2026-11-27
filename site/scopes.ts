@@ -19,7 +19,7 @@ export const scopes: Scope[] = [
     key: "docs",
     label: "Docs",
     href: "/docs",
-    match: ["/docs", "/docs/foundations", "/docs/installation", "/docs/robotics", "/docs/ros", "/docs/nextjs", "/docs/localisation", "/docs/tokens", "/docs/upgrading", "/docs/ai"],
+    match: ["/docs", "/docs/foundations", "/docs/installation", "/docs/robotics", "/docs/ros", "/docs/nextjs", "/docs/localisation", "/docs/tokens", "/docs/upgrading", "/docs/migrating-from-local-components", "/docs/ai"],
     groups: [
       {
         title: "Getting started",
@@ -33,6 +33,7 @@ export const scopes: Scope[] = [
           { href: "/docs/localisation", label: "Localisation" },
           { href: "/docs/tokens", label: "Design tokens" },
           { href: "/docs/upgrading", label: "Versions and upgrades" },
+          { href: "/docs/migrating-from-local-components", label: "Migrating to the kit" },
           { href: "/docs/ai", label: "For AI agents" },
         ],
       },

@@ -1,0 +1,41 @@
+"use client";
+
+import { Activity, Inbox, Server } from "lucide-react";
+import { useTranslations } from "next-intl";
+
+import { ConfirmDialog } from "@/components/common/confirm-dialog";
+import { EmptyState } from "@/components/common/empty-state";
+import { MetricCard } from "@/components/common/metric-card";
+import { PageHeader, type PageHeaderAction } from "@/components/common/page-header";
+import { Section, SectionHeader, SubsectionHeader } from "@/components/common/section-header";
+import { Badge } from "@/components/ui/badge";
+import { StatusDot as Dot } from "@/components/ui/status-dot";
+
+export function DevicePage({ online, onAdd, busy }: { online: boolean; onAdd: () => void; busy: string }) {
+  const t = useTranslations("devices");
+  const action: PageHeaderAction = { label: t("add") };
+  return (
+    <div className="w-full space-y-6">
+      <PageHeader
+        icon={Server}
+        title={t("title")}
+        badge={<Badge>Beta</Badge>}
+        colorTheme="blue"
+        back={{ href: "/projects", label: t("back") }}
+      />
+      <MetricCard label={t("online")} value={12} description={t("of")} icon={Activity} isLoading={false} compact />
+      <MetricCard label={t("pending")} value={3} internalHref="/devices?state=pending" />
+      <Section title={t("fleet")} description={t("fleetHint")} action={<Badge>{busy}</Badge>}>
+        <SubsectionHeader title={t("runtime")} icon={Server} tone="warning" />
+        <SectionHeader title={t("more")} action={<Badge>1</Badge>} />
+        <Dot status="online" size="lg" />
+        <Dot status={online ? "online" : "offline"} pulse className="ml-2" />
+      </Section>
+      <Section title={t("empty")} className="mt-6">
+        <EmptyState title={t("none")} description={t("noneHint")} icon={Inbox} actionLabel={t("add")} actionHref="/devices/new" />
+        <EmptyState title={t("none")} description={t("noneHint")} eyebrow="Fleet" actionLabel="Add" onAction={onAdd} />
+      </Section>
+      <ConfirmDialog open={false} onOpenChange={() => {}} title={action.label} onConfirm={onAdd} />
+    </div>
+  );
+}
