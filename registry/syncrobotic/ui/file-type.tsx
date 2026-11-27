@@ -1,7 +1,12 @@
-// @syncrobotic/file-type v0.9.0 · update: npx shadcn add @syncrobotic/file-type --overwrite
+// @syncrobotic/file-type v0.53.0 · update: npx shadcn add @syncrobotic/file-type --overwrite
 import * as React from "react"
 import { File, FileArchive, FileAudio, FileCode, FileImage, FileJson, FileSpreadsheet, FileText, FileVideo, Map as MapIcon, Box, Database } from "lucide-react"
 import { cn } from "@/lib/utils"
+
+/*
+  An icon for a file from its name or extension, with robot formats (mcap, bag, pgm, pcd, onnx) and the extension
+  written on it. Neutral like every icon: the label tells formats apart, not colour.
+*/
 
 type Family = "image" | "video" | "audio" | "doc" | "sheet" | "code" | "data" | "archive" | "map" | "model" | "other"
 

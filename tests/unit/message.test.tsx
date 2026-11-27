@@ -104,7 +104,7 @@ describe("Message", () => {
 describe("MessageMeta", () => {
   it("writes the facts it has, numbers through format-number, in a locale", () => {
     const { rerender, container } = render(<MessageMeta model="Large" durationMs={2400} tokens={1204} />)
-    expect(container.textContent).toBe("Large · , 2.4 s · , 1,204 tokens")
+    expect(container.textContent).toBe("Large · 2.4 s · 1,204 tokens")
     rerender(<MessageMeta tokens={1} />)
     expect(container.textContent).toBe("1 token")
     rerender(<MessageMeta />)

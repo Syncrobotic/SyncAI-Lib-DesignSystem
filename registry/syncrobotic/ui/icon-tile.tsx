@@ -1,13 +1,9 @@
-// @syncrobotic/icon-tile v0.40.0 · update: npx shadcn add @syncrobotic/icon-tile --overwrite
+// @syncrobotic/icon-tile v0.53.0 · update: npx shadcn add @syncrobotic/icon-tile --overwrite
 import * as React from "react"
 import { Slot } from "radix-ui"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
-/**
- * A square (or round) surface behind one icon, so icons in rows, cards and empty states line up at one size.
- * Neutral by default; a tone only when the tile states a status (a failed run, a warning), never to decorate.
- */
 export const iconTileVariants = cva("relative inline-flex shrink-0 items-center justify-center", {
   variants: {
     variant: {
@@ -42,6 +38,10 @@ export const iconTileVariants = cva("relative inline-flex shrink-0 items-center 
   defaultVariants: { variant: "outline", tone: "neutral", size: "md", shape: "square" },
 })
 
+/**
+ * A square or round surface behind one icon, in five surfaces and four sizes, with an optional status dot. It lines up
+ * icons in rows, cards and empty states; neutral by default, a tone only when the tile states a status, never to decorate.
+ */
 export function IconTile({
   className,
   variant,

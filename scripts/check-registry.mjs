@@ -5,7 +5,7 @@
 // that use React hooks or handlers must start with "use client". Also the text limits in CONTRIBUTING.md ("Comments and
 // docs"): a description of at most 200 characters, a changelog note of at most 300 (notes after NOTE_LIMIT_AFTER).
 // And one source for what an item is: its description. A line in site/overview.ts or site/catalog.ts that repeats it fails;
-// a component JSDoc whose first sentence differs from it is counted as a warning (`--jsdoc` lists them).
+// an item's doc must open with it, word for word.
 import { readFileSync } from "node:fs"
 import ts from "typescript"
 
@@ -204,42 +204,88 @@ for (const { item, text, line, file, keys } of docs) {
 }
 
 // The component JSDoc ships in the installed source, so it stays; its first sentence should be the description's.
-// The JSDoc of the export named for the item (page-header → PageHeader, use-now → useNow). A warning until they agree.
+// The doc where itemDoc finds it must open with the description.
 /** @param {string} n */
 const pascal = (n) => n.replace(/(?:^|-)(\w)/g, (_, c) => c.toUpperCase())
 /** @type {string[]} */
 const differs = []
 let documented = 0
-let unrelated = 0
+/** @param {string} c The summary of a comment: up to the first blank line or list. */
+const summary = (c) => c.split(/\n\s*\n|\n\s*[-*\d]+[.)]?\s/)[0].replace(/\s+/g, " ").trim()
+/**
+ * Where an item says what it is, as [comment text, position]: the JSDoc of the export named for it (page-header →
+ * PageHeader, use-now → useNow); else the module's header, the first comment after the banner that no statement owns
+ * (a lib or hook of several exports); else the JSDoc of the first export that has one (auth-2fa → AuthTwoFactor).
+ * @param {{ name: string, title?: string }} item
+ * @param {ts.SourceFile} sf
+ * @returns {[string, number] | undefined}
+ */
+function itemDoc(item, sf) {
+  const src = sf.text
+  const names = [pascal(item.name), pascal(item.name).replace(/^Use/, "use"), String(item.title ?? "").replace(/[^A-Za-z0-9]/g, "")]
+  /** @param {ts.Statement} st */
+  const declOf = (st) => {
+    const decl = ts.isVariableStatement(st) ? st.declarationList.declarations[0] : st
+    return ts.isVariableDeclaration(decl) || ts.isFunctionDeclaration(decl) || ts.isClassDeclaration(decl) ? decl : undefined
+  }
+  /** @param {ts.Node} decl @returns {[string, number] | undefined} */
+  const jsdoc = (decl) => {
+    const doc = ts.getJSDocCommentsAndTags(decl).filter(ts.isJSDoc).at(-1)
+    const text = doc && ts.getTextOfJSDocComment(doc.comment)
+    return text ? [text, doc.getStart(sf)] : undefined
+  }
+  const named = sf.statements.map(declOf).find((d) => d && names.includes(d.name?.getText(sf) ?? ""))
+  if (named) return jsdoc(named)
+  // The header: comments before the first statement that is not an import or a directive, line comments in a run
+  // taken as one, minus the banner and the comments that sit on that statement with no blank line between.
+  const first = sf.statements.find((st) => !ts.isImportDeclaration(st) && !(ts.isExpressionStatement(st) && ts.isStringLiteral(st.expression)))
+  /** @type {{ pos: number, end: number }[]} */
+  const blocks = []
+  for (const st of sf.statements) {
+    for (const c of ts.getLeadingCommentRanges(src, st.getFullStart()) ?? []) {
+      const last = blocks.at(-1)
+      if (last && c.kind === ts.SyntaxKind.SingleLineCommentTrivia && src[last.pos + 1] === "/" && !src.startsWith("// @syncrobotic/", last.pos) && /^[ \t]*\n[ \t]*$/.test(src.slice(last.end, c.pos))) last.end = c.end
+      else blocks.push({ pos: c.pos, end: c.end })
+    }
+    if (st === first) break
+  }
+  while (blocks.length && first && !/\n[ \t]*\n/.test(src.slice(blocks.at(-1).end, first.getStart(sf)))) blocks.pop()
+  const header = blocks.find((b) => !src.startsWith("// @syncrobotic/", b.pos))
+  if (header) {
+    const raw = src.slice(header.pos, header.end).replace(/^\/\*\*?|\*\/$/g, "")
+    return [raw.split("\n").map((l) => l.replace(/^\s*(?:\/\/|\*(?!\/))?\s?/, "")).join("\n"), header.pos]
+  }
+  for (const st of sf.statements) {
+    const decl = declOf(st)
+    const doc = decl && ts.getCombinedModifierFlags(decl) & ts.ModifierFlags.Export ? jsdoc(decl) : undefined
+    if (doc) return doc
+  }
+}
+
 for (const item of registry.items) {
   const path = item.files[0]?.path
   if (!path || !/\.tsx?$/.test(path) || !item.description) continue
   const sf = ts.createSourceFile(path, readFileSync(path, "utf8"), ts.ScriptTarget.Latest, true)
-  const names = [pascal(item.name), pascal(item.name).replace(/^Use/, "use"), String(item.title ?? "").replace(/[^A-Za-z0-9]/g, "")]
-  for (const st of sf.statements) {
-    const decl = ts.isVariableStatement(st) ? st.declarationList.declarations[0] : st
-    const declName = ts.isVariableDeclaration(decl) || ts.isFunctionDeclaration(decl) || ts.isClassDeclaration(decl) ? decl.name?.getText(sf) : undefined
-    if (!declName || !names.includes(declName)) continue
-    const doc = ts.getJSDocCommentsAndTags(decl).filter(ts.isJSDoc).at(-1)
-    // The summary ends at the first blank line or list, whichever comes before the first full stop.
-    const text = doc && ts.getTextOfJSDocComment(doc.comment)?.split(/\n\s*\n|\n\s*[-*\d]+[.)]?\s/)[0].replace(/\s+/g, " ").trim()
-    if (!text) break
-    documented++
-    const own = firstSentence(text)
-    const ownWords = words(own)
-    const descWords = words(item.description)
-    const apart = [...ownWords].filter((w) => descWords.has(w)).length < Math.min(ownWords.size, descWords.size) / 3
-    if (apart) unrelated++
-    if (norm(own) !== norm(firstSentence(item.description)))
-      differs.push(`${path}:${sf.getLineAndCharacterOfPosition(doc.getStart(sf)).line + 1}  ${item.name}${apart ? "  (under a third of the words shared)" : ""}\n    jsdoc:       ${own}\n    description: ${item.description}`)
-    break
+  const found = itemDoc(item, sf)
+  // The summary ends at the first blank line or list, whichever comes before the first full stop.
+  const text = found && summary(found[0])
+  if (!found || !text) {
+    differs.push(`${path}  ${item.name}: no JSDoc on the export named for it, no header comment, no documented export`)
+    continue
   }
+  documented++
+  const own = firstSentence(text)
+  const ownWords = words(own)
+  const descWords = words(item.description)
+  const apart = [...ownWords].filter((w) => descWords.has(w)).length < Math.min(ownWords.size, descWords.size) / 3
+  if (norm(own) !== norm(firstSentence(item.description)))
+    differs.push(`${path}:${sf.getLineAndCharacterOfPosition(found[1]).line + 1}  ${item.name}${apart ? "  (under a third of the words shared)" : ""}\n    jsdoc:       ${own}\n    description: ${item.description}`)
 }
-if (process.argv.includes("--jsdoc")) for (const d of differs) console.warn(d)
-if (differs.length)
-  console.warn(
-    `warning: ${differs.length} of ${documented} component JSDocs open with a sentence other than the item's registry.json description, ${unrelated} sharing under a third of its words${process.argv.includes("--jsdoc") ? "" : " (node scripts/check-registry.mjs --jsdoc lists them)"}`,
-  )
+for (const d of differs) console.error(d)
+if (differs.length) {
+  console.error(`${differs.length} of ${documented} item docs do not open with the item's registry.json description, word for word`)
+  bad += differs.length
+}
 
 if (bad) {
   console.error(`\n${bad} registry problem(s)`)

@@ -1,11 +1,14 @@
-// @syncrobotic/tabs v0.51.0 · update: npx shadcn add @syncrobotic/tabs --overwrite
+// @syncrobotic/tabs v0.53.0 · update: npx shadcn add @syncrobotic/tabs --overwrite
 "use client"
 
 import * as React from "react"
 import { Tabs as TabsPrimitive } from "radix-ui"
 import { cn } from "@/lib/utils"
 
-/** Sections of one page. To switch between views of the same data, use SegmentedControl. */
+/**
+ * Sections of one page, with sticky keeping the row under the shell's top bar over long sections. To switch between
+ * views of the same data, use SegmentedControl.
+ */
 export function Tabs({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.Root>) {
   return <TabsPrimitive.Root data-slot="tabs" className={cn("flex flex-col gap-4", className)} {...props} />
 }

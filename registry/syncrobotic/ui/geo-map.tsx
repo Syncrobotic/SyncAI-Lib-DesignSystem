@@ -1,4 +1,4 @@
-// @syncrobotic/geo-map v0.52.0 · update: npx shadcn add @syncrobotic/geo-map --overwrite
+// @syncrobotic/geo-map v0.53.0 · update: npx shadcn add @syncrobotic/geo-map --overwrite
 "use client"
 
 import * as React from "react"
@@ -359,9 +359,9 @@ const proportions = (fill?: boolean): React.CSSProperties | undefined => (fill ?
 type Draft = { at: [number, number]; heading?: number; placed?: boolean; byKeys?: boolean }
 
 /**
- * An outdoor map in latitude and longitude, in SVG with no map library: raster tiles from your tile server, or a grid
- * that needs no network. Robots, geofences, routes and trails; `mode="goal"` places a goal. One Tab stop: offer
- * GeoMapList beside it as the text view.
+ * An outdoor map in latitude and longitude, in SVG with no map library: your own raster tiles or a grid, robots with
+ * GPS fix, geofences, routes, pan and zoom, a goal, and GeoMapList as text. Raster tiles come from your tile server;
+ * the grid needs no network. `mode="goal"` places a goal. One Tab stop: offer GeoMapList beside it as the text view.
  */
 export function GeoMap({
   label: name,

@@ -1,4 +1,4 @@
-// @syncrobotic/review-queue v0.48.0 · update: npx shadcn add @syncrobotic/review-queue --overwrite
+// @syncrobotic/review-queue v0.53.0 · update: npx shadcn add @syncrobotic/review-queue --overwrite
 "use client"
 
 import * as React from "react"
@@ -51,8 +51,8 @@ type Step = { id: string; position: number; previous?: string; value: string }
 const subscribeNever = () => () => {}
 
 /**
- * Review items one at a time by keyboard: a progress line, the item, and a key bar with the answers. 1, 2, 3 answer and
- * move on; Esc goes back one item; Backspace or ⌘Z / Ctrl+Z undoes the last answer; ? lists the keys. Every answer is
+ * Review items one at a time by keyboard: progress, the image with its question, and a key bar ([1] Yes, [2] No, [3]
+ * Skip, Esc back, ⌫ undo, ? shortcuts) whose keys go down as they are pressed. ⌘Z / Ctrl+Z also undoes; every answer is
  * also a 44 px button for touch.
  */
 export function ReviewQueue({

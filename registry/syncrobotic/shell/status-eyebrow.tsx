@@ -1,9 +1,12 @@
-// @syncrobotic/status-eyebrow v0.40.0 · update: npx shadcn add @syncrobotic/status-eyebrow --overwrite
+// @syncrobotic/status-eyebrow v0.53.0 · update: npx shadcn add @syncrobotic/status-eyebrow --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { StatusGlyph, statusText, type Status } from "@/registry/syncrobotic/shell/status-glyph"
 
-/** The state word above a headline: shape + word in the state colour, no pill background. */
+/**
+ * A changing state (a robot's status, a job's state) as a shape and a word with no box: InlineStatus in a row or cell,
+ * StatusEyebrow above a headline; only warning and danger are coloured.
+ */
 export function StatusEyebrow({
   status = "offline",
   children,

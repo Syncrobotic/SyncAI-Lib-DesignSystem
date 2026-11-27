@@ -1,4 +1,4 @@
-// @syncrobotic/histogram-battery v0.35.0 · update: npx shadcn add @syncrobotic/histogram-battery --overwrite
+// @syncrobotic/histogram-battery v0.53.0 · update: npx shadcn add @syncrobotic/histogram-battery --overwrite
 "use client"
 
 import * as React from "react"
@@ -63,8 +63,9 @@ const lowCount = readings.filter((v) => v < LOW).length
 const rangeOf = (mid: unknown) => data.find((d) => d.mid === Number(mid))?.range ?? String(mid)
 
 /**
- * How one value is spread: battery level at docking in 5 % bins, the median as a labelled dashed line, and the bins
- * under 15 % in warning, because docking that low is the thing to act on. Every other bin is one neutral hue.
+ * Battery level at docking in equal 5 % bins, with the median as a dashed line, bins under 15 % in warning, counts on
+ * hover and a table view; exports binEqualWidth and median. Docking that low is the thing to act on; every other bin is
+ * one neutral hue.
  */
 export function HistogramBattery() {
   const [view, setView] = React.useState("chart")

@@ -1,4 +1,4 @@
-// @syncrobotic/citations v0.51.0 · update: npx shadcn add @syncrobotic/citations --overwrite
+// @syncrobotic/citations v0.53.0 · update: npx shadcn add @syncrobotic/citations --overwrite
 "use client"
 
 import * as React from "react"
@@ -96,7 +96,8 @@ const keyboardFocus = (el: Element) => {
 }
 
 /**
- * The sources of one answer and the linking between its markers and its list. Put the text (Markdown with
+ * The sources a model's answer cites: numbered markers linked both ways to a numbered source list, each highlighting
+ * the other on hover or focus; [1] and [^1] in Markdown become markers. Put the text (Markdown with
  * `cite={citationMarker}`, or CitationMarker anywhere) and CitationSources inside.
  */
 export function Citations({

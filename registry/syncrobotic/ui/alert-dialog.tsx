@@ -1,4 +1,4 @@
-// @syncrobotic/alert-dialog v0.51.0 · update: npx shadcn add @syncrobotic/alert-dialog --overwrite
+// @syncrobotic/alert-dialog v0.53.0 · update: npx shadcn add @syncrobotic/alert-dialog --overwrite
 "use client"
 
 import * as React from "react"
@@ -7,8 +7,8 @@ import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/registry/syncrobotic/ui/button"
 
 /**
- * Confirms an action that cannot be undone. It cannot be dismissed by clicking outside.
- * Name the consequence in the action label ("Delete 38 GB of video"), not "OK".
+ * A dialog that confirms an action that cannot be undone; the confirm button names the consequence. It cannot be
+ * dismissed by clicking outside. Name the consequence ("Delete 38 GB of video"), not "OK".
  */
 export const AlertDialog = AlertDialogPrimitive.Root
 export function AlertDialogTrigger(props: React.ComponentProps<typeof AlertDialogPrimitive.Trigger>) {

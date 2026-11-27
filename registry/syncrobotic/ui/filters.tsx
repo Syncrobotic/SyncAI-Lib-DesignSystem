@@ -1,4 +1,4 @@
-// @syncrobotic/filters v0.52.0 · update: npx shadcn add @syncrobotic/filters --overwrite
+// @syncrobotic/filters v0.53.0 · update: npx shadcn add @syncrobotic/filters --overwrite
 "use client"
 
 import * as React from "react"
@@ -418,9 +418,9 @@ const segment = cn("press inline-flex h-full min-w-(--h-sm) items-center justify
 )
 
 /**
- * A row of filter rules: "+ Filter" picks field, operator and value, and each rule becomes a chip whose parts reopen that
- * step. Rules combine with AND. Keep them in the URL with `toSearchParams` / `fromSearchParams`; filter rows with
- * `filterRows`. Enter opens, arrows and Enter choose, Escape backs out one step.
+ * A query built from chips (+ Filter picks a field, an operator and a value), combined with AND, kept in the URL and
+ * applied in the browser; FilterViews adds saved views above the bar. Keep them in the URL with `toSearchParams` /
+ * `fromSearchParams`; filter rows with `filterRows`. Enter opens, arrows and Enter choose, Escape backs out one step.
  */
 export function Filters({
   fields,

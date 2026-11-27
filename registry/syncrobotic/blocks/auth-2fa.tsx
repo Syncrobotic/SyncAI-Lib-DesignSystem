@@ -1,4 +1,4 @@
-// @syncrobotic/auth-2fa v0.52.0 · update: npx shadcn add @syncrobotic/auth-2fa --overwrite
+// @syncrobotic/auth-2fa v0.53.0 · update: npx shadcn add @syncrobotic/auth-2fa --overwrite
 "use client"
 
 import * as React from "react"
@@ -43,9 +43,9 @@ function Problem({ id, children }: { id: string; children: React.ReactNode }) {
 }
 
 /**
- * The step after the password: a 6-digit authenticator code or a recovery code, with "Remember this browser for 30 days".
- * A wrong code says how many tries are left; too many pauses sign-in with a countdown. Offers a passkey unless `passkey`
- * is false. Same frame and width as Sign-in.
+ * The step after the password: a 6-digit code or a recovery code, remember this browser for 30 days, errors and a pause
+ * in words, a passkey as the quicker way. A wrong code says how many tries are left; too many pauses sign-in with a
+ * countdown. The passkey is offered unless `passkey` is false. Same frame and width as Sign-in.
  */
 export function AuthTwoFactor({
   product = "Fleet console",

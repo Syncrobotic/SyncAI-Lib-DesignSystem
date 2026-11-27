@@ -1,4 +1,4 @@
-// @syncrobotic/settings-webhooks v0.51.0 · update: npx shadcn add @syncrobotic/settings-webhooks --overwrite
+// @syncrobotic/settings-webhooks v0.53.0 · update: npx shadcn add @syncrobotic/settings-webhooks --overwrite
 "use client"
 
 import * as React from "react"
@@ -186,7 +186,12 @@ function DeliveryRow({ delivery: d }: { delivery: WebhookDelivery }) {
       <span className={cn("flex items-center gap-2 text-sm whitespace-nowrap tabular-nums", ok ? "text-muted-foreground" : "text-danger")}>
         {ok ? <CircleCheck aria-hidden="true" className="size-4 shrink-0" /> : <CircleAlert aria-hidden="true" className="size-4 shrink-0" />}
         {d.status ?? "No answer"}
-        {!ok && <span className="sr-only">, failed</span>}
+        {!ok && (
+          <>
+            {" "}
+            <span className="sr-only">failed</span>
+          </>
+        )}
       </span>
       <span className="flex min-w-0 flex-col text-left">
         <span className="truncate text-sm">
@@ -338,9 +343,8 @@ function DeleteEndpoint({ endpoint, onDelete }: { endpoint: WebhookEndpoint; onD
 }
 
 /**
- * Webhooks: endpoints that receive fleet events, with their state (only failing is coloured). A signing secret shows once,
- * on adding or rotating. One endpoint at a time shows its recent deliveries and can send a test event; deleting asks for
- * the host to be typed.
+ * Webhook endpoints with their events and state: adding one with its signing secret shown once, test events, recent
+ * deliveries, rotating and deleting. Only failing is coloured; deleting asks for the host to be typed.
  */
 export function SettingsWebhooks({
   endpoints: initial = sampleEndpoints,

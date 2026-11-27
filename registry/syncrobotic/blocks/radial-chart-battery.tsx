@@ -1,4 +1,4 @@
-// @syncrobotic/radial-chart-battery v0.40.0 · update: npx shadcn add @syncrobotic/radial-chart-battery --overwrite
+// @syncrobotic/radial-chart-battery v0.53.0 · update: npx shadcn add @syncrobotic/radial-chart-battery --overwrite
 "use client"
 
 import * as React from "react"
@@ -52,7 +52,10 @@ const robots = [
 ]
 const tone = (v: number) => (v < 15 ? "stroke-warning" : "stroke-foreground")
 
-/** Battery per robot as rings: neutral when fine, warning below 15 % (never danger) with the warning shape and word under it, the number always in the middle. */
+/**
+ * Battery per robot as rings, neutral until low or critical, the number always in the middle. Below 15 % it turns
+ * warning (never danger), with the warning shape and word under it.
+ */
 export function RadialChartBattery() {
   return (
     <Card>

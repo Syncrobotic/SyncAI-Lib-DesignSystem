@@ -1,4 +1,4 @@
-// @syncrobotic/media-player v0.51.0 · update: npx shadcn add @syncrobotic/media-player --overwrite
+// @syncrobotic/media-player v0.53.0 · update: npx shadcn add @syncrobotic/media-player --overwrite
 "use client"
 
 import * as React from "react"
@@ -132,8 +132,9 @@ export type MediaPlayerProps = {
 }
 
 /**
- * A recorded clip with the kit's controls over a native `<video>`. Controls sit on a dark scrim so they read over any
- * picture, and hide while playing once the pointer rests. Keys work only while focus is in the player.
+ * A recorded clip over a native video with the kit's controls (play, a timeline with event markers, mute, speed,
+ * captions, full screen), keys while focused, and loading and unavailable states. Controls sit on a dark scrim so they
+ * read over any picture, and hide while playing once the pointer rests.
  */
 export function MediaPlayer({
   label,
@@ -391,10 +392,9 @@ export function MediaPlayer({
             onClick={() => seekTo(m.time)}
             className="col-span-2 grid w-full grid-cols-subgrid justify-items-start gap-3 px-2 text-left font-normal"
           >
-            {/* Named by what it shows (no aria-label, which would have to repeat the visible words): the time, a comma
-                for screen readers only (out of the grid, as it is absolutely placed), then the label. */}
-            <span className="font-mono text-xs text-muted-foreground tabular-nums">{when(m)}</span>
-            <span className="sr-only">, </span>
+            {/* Named by what it shows (no aria-label, which would have to repeat the visible words): the time, a space
+                (a grid drops it from layout but not from the name), then the label. */}
+            <span className="font-mono text-xs text-muted-foreground tabular-nums">{when(m)}</span>{" "}
             <span className="truncate">{m.label}</span>
           </Button>
         </li>

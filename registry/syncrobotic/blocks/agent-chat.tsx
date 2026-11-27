@@ -1,4 +1,4 @@
-// @syncrobotic/agent-chat v0.52.0 · update: npx shadcn add @syncrobotic/agent-chat --overwrite
+// @syncrobotic/agent-chat v0.53.0 · update: npx shadcn add @syncrobotic/agent-chat --overwrite
 "use client"
 
 import * as React from "react"
@@ -456,8 +456,9 @@ function ProposalLink({ proposal: p }: { proposal: AgentChatProposal }) {
 // ---------- The two frames ----------
 
 /**
- * A conversation with the fleet's assistant as a page of the console: the conversation fills the content area under the
- * top bar, the composer pinned at its foot. New conversation clears it to the suggested prompts.
+ * A conversation with the fleet's assistant that drafts proposals for a person to approve and never moves a robot, as a
+ * page, a side sheet (AgentChatSheet) or content (AgentChatContent). As a page the conversation fills the content area
+ * under the top bar, the composer pinned at its foot. New conversation clears it to the suggested prompts.
  */
 export function AgentChat({ defaultTurns = sampleAgentChatTurns, ...props }: Omit<AgentChatContentProps, "className" | "headingLevel">) {
   const [session, setSession] = React.useState(0)

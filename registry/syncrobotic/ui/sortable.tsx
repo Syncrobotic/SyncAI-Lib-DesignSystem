@@ -1,4 +1,4 @@
-// @syncrobotic/sortable v0.51.0 · update: npx shadcn add @syncrobotic/sortable --overwrite
+// @syncrobotic/sortable v0.53.0 · update: npx shadcn add @syncrobotic/sortable --overwrite
 "use client"
 
 import * as React from "react"
@@ -57,8 +57,9 @@ export const defaultSortableLabels: SortableLabels = {
 }
 
 /**
- * A list or grid reordered by dragging a handle, by touch, or by keys (Space lifts, arrows move, Space drops, Escape
- * cancels; dnd-kit). Each move is announced, naming the item via `getLabel`. Order is yours: `onValueChange` gets the array.
+ * A list or grid people reorder by dragging a handle, by touch or by keyboard, with announcements (dnd-kit). Space
+ * lifts, arrows move, Space drops, Escape cancels. Each move names the item via `getLabel`. Order is yours:
+ * `onValueChange` gets the array.
  */
 export function Sortable<T>({
   value,

@@ -1,10 +1,11 @@
-// @syncrobotic/code v0.51.0 · update: npx shadcn add @syncrobotic/code --overwrite
+// @syncrobotic/code v0.53.0 · update: npx shadcn add @syncrobotic/code --overwrite
 import type * as React from "react"
 import { cn } from "@/lib/utils"
 
 /**
- * A path, a key or a command inside a sentence, monospace at the surrounding text's size; it breaks anywhere rather than
- * push a phone sideways. Code on its own lines is a CodeBlock; a key to press is a Kbd.
+ * Inline code in a sentence (a path, a key, a version or a command) in mono on a muted tile at the text's size,
+ * breaking anywhere on a phone, with no copy button of its own. Code on its own lines is a CodeBlock; a key to press is
+ * a Kbd.
  */
 export function Code({ className, ...props }: React.ComponentProps<"code">) {
   return (

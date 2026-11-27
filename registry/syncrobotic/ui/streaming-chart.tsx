@@ -1,4 +1,4 @@
-// @syncrobotic/streaming-chart v0.51.0 · update: npx shadcn add @syncrobotic/streaming-chart --overwrite
+// @syncrobotic/streaming-chart v0.53.0 · update: npx shadcn add @syncrobotic/streaming-chart --overwrite
 "use client"
 
 import * as React from "react"
@@ -1093,9 +1093,9 @@ const DEFAULT_WINDOWS = [30_000, 120_000, 600_000]
 const NO_LIMITS: readonly StreamingChartLimit[] = []
 
 /**
- * A live line chart for telemetry arriving many times a second, over a fixed window ending now. Pause freezes the view
- * while readings keep buffering; arrows move a paused view, Jump to live returns. Drawn on a canvas only while on screen
- * and the tab is visible: a reading never renders React.
+ * A live canvas line chart for robot telemetry at 20 to 50 Hz, fed by push() without a React render per reading, with a
+ * scrolling window, pause, limit lines, crosshair, legend and table view. Pause freezes the view while readings keep
+ * buffering; arrows move a paused view, Jump to live returns. It draws only while on screen and the tab is visible.
  */
 export function StreamingChart({
   config,

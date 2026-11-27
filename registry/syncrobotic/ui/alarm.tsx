@@ -1,4 +1,4 @@
-// @syncrobotic/alarm v0.52.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
+// @syncrobotic/alarm v0.53.0 · update: npx shadcn add @syncrobotic/alarm --overwrite
 "use client"
 
 import * as React from "react"
@@ -132,9 +132,10 @@ const dashedPill: React.CSSProperties = {
 const rowButton = "press h-(--h-sm) shrink-0 rounded-xs px-3 text-sm font-medium ring-1 ring-inset hover:bg-accent"
 
 /**
- * One alarm as a row: priority glyph, time, priority word, title and source, state and actions. Colour only on the glyph
- * and the word; rows are never tinted. Unacknowledged is bold with a solid bar (dashed once cleared); acknowledged and
- * shelved are quiet and say when. Under 576 px of container the columns reflow.
+ * ISA-18.2 alarms: three priorities with their own shape, colour and words, acknowledge and clear states, and a sorted
+ * list that announces new alarms to screen readers. Alarm draws one alarm as a row: priority glyph, time, priority word,
+ * title and source, state and actions. Colour only on the glyph and the word; rows are never tinted. Unacknowledged is
+ * bold with a solid bar (dashed once cleared); acknowledged and shelved are quiet and say when.
  */
 export function Alarm({
   priority,

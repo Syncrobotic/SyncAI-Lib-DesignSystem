@@ -1,4 +1,4 @@
-// @syncrobotic/agent-run-outcome v0.51.0 · update: npx shadcn add @syncrobotic/agent-run-outcome --overwrite
+// @syncrobotic/agent-run-outcome v0.53.0 · update: npx shadcn add @syncrobotic/agent-run-outcome --overwrite
 "use client"
 
 import * as React from "react"
@@ -271,7 +271,10 @@ export function AgentRunOutcomeContent({
   )
 }
 
-/** The result of a fleet run, robot by robot, as a page of the console. */
+/**
+ * A fleet run's result robot by robot (succeeded, failed, skipped, not verified), with counts, the robots that need
+ * someone first and Retry failed; AgentRunOutcomeContent drops the frame.
+ */
 export function AgentRunOutcome(props: Omit<AgentRunOutcomeContentProps, "className" | "headingLevel">) {
   return (
     <AppShell product="Fleet console" nav={sampleNav} current="#agents" title="Run result" user={sampleUser}>

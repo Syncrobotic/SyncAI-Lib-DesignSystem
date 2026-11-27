@@ -1,10 +1,10 @@
-// @syncrobotic/feedback v0.51.0 · update: npx shadcn add @syncrobotic/feedback --overwrite
+// @syncrobotic/feedback v0.53.0 · update: npx shadcn add @syncrobotic/feedback --overwrite
 
 /*
-  Touch and sound, as tokens: an operator in gloves or machine noise cannot rely on the screen, so a stop sent or a
-  critical alarm also buzzes (and an alarm sounds), each with one fixed pattern. iOS Safari has no Vibration API, so touch
-  is never the only signal. Browsers block sound until the first touch: an app relying on alarm sound asks for one tap at
-  sign-in.
+  Vibration patterns per safety moment (stop sent, confirmed, unconfirmed, release, drive start and stop, new critical
+  or high alarm) and IEC 60601-1-8-style alarm tones from Web Audio. An operator in gloves or machine noise cannot rely
+  on the screen, so each moment has one fixed pattern. iOS Safari has no Vibration API, so touch is never the only
+  signal. Browsers block sound until the first touch: an app relying on alarm sound asks for one tap at sign-in.
 */
 
 /** Vibration patterns in ms: on, off, on… */

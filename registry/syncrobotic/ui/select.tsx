@@ -1,4 +1,4 @@
-// @syncrobotic/select v0.49.0 · update: npx shadcn add @syncrobotic/select --overwrite
+// @syncrobotic/select v0.53.0 · update: npx shadcn add @syncrobotic/select --overwrite
 "use client"
 
 import * as React from "react"
@@ -8,6 +8,10 @@ import { cn } from "@/lib/utils"
 import { useField } from "@/registry/syncrobotic/ui/field"
 import { getLastInput, trackInputModality } from "@/registry/syncrobotic/lib/input-modality"
 
+/**
+ * Pick one from a longer list. It opens on click, Enter or Space, and typing jumps to an option; inside a Field the
+ * trigger takes the field's label and note. For a few options a RadioGroup shows them all at once.
+ */
 export const Select = SelectPrimitive.Root
 export const SelectGroup = SelectPrimitive.Group
 export const SelectValue = SelectPrimitive.Value

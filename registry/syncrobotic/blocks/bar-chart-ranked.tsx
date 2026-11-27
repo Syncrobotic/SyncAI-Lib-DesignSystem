@@ -1,4 +1,4 @@
-// @syncrobotic/bar-chart-ranked v0.35.0 · update: npx shadcn add @syncrobotic/bar-chart-ranked --overwrite
+// @syncrobotic/bar-chart-ranked v0.53.0 · update: npx shadcn add @syncrobotic/bar-chart-ranked --overwrite
 "use client"
 
 import * as React from "react"
@@ -17,7 +17,7 @@ const data = [
   { cause: "Other", n: 3 },
 ]
 
-/** Categories with long names, ranked: horizontal bars, one series, the value at each bar's end. */
+/** Categories with long names, sorted, as horizontal bars with the value at each end. */
 export function BarChartRanked() {
   const [view, setView] = React.useState("chart")
   return (

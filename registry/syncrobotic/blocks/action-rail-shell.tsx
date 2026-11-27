@@ -1,4 +1,4 @@
-// @syncrobotic/action-rail-shell v0.52.0 · update: npx shadcn add @syncrobotic/action-rail-shell --overwrite
+// @syncrobotic/action-rail-shell v0.53.0 · update: npx shadcn add @syncrobotic/action-rail-shell --overwrite
 "use client"
 
 import * as React from "react"
@@ -152,9 +152,9 @@ export function ActionRailColumnHeader({ title, id, children, className }: { tit
 }
 
 /**
- * A page that leads to one next step: content on the left, and a rail with that step's title, one line, a large primary
- * button and a few small actions. From 1024 px the rail stays in view; on phones it is a bar fixed to the bottom. With
- * `leading` or `panel` it is a full-screen workspace whose columns scroll on their own. ← and Esc call `onBack`.
+ * A page whose right column holds only the next step (title, what it does, one primary button, a few actions), a bottom
+ * bar on phones, or a full-screen workspace with `leading` and `panel`. From 1024 px the rail stays in view. With
+ * `leading` or `panel` the columns scroll on their own. ← and Esc call `onBack`.
  */
 export function ActionRailShell({
   title,

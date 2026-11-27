@@ -1,4 +1,4 @@
-// @syncrobotic/dialog-form v0.51.0 · update: npx shadcn add @syncrobotic/dialog-form --overwrite
+// @syncrobotic/dialog-form v0.53.0 · update: npx shadcn add @syncrobotic/dialog-form --overwrite
 "use client"
 
 import * as React from "react"
@@ -20,9 +20,9 @@ const validate = (v: { name: string; robot: string }) => ({
 })
 
 /**
- * A short form in a dialog: three fields at most. Validates like the `form` example without a form library (nothing before
- * the first submit, then errors follow each value; a failed submit focuses the first error) and keeps what was typed.
- * Longer forms get their own page (record-form).
+ * A short form in a dialog: three fields at most, errors under their fields, nothing typed is lost. Validates like the
+ * `form` example without a form library (nothing before the first submit, then errors follow each value; a failed
+ * submit focuses the first error). Longer forms get their own page (record-form).
  */
 export function DialogForm({
   onCreate,

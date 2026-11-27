@@ -110,11 +110,10 @@ describe("mission schedule", () => {
   it("says each mission's state in a visible word on the timeline, never by its fill alone", () => {
     render(<MissionSchedule />)
     const lane = screen.getAllByRole("list", { name: "Patrol dog 1715 missions" }).at(-1)!
-    const words = within(lane)
-      .getAllByRole("listitem")
-      .map((li) => li.textContent)
-    // The one the now-line crosses (22:00–00:00) is running, not planned.
-    expect(words).toEqual(["Car park, Done, 18:30–20:30", "Car park, Running, 22:00–00:00", "Car park, Planned, 03:00–05:00"])
+    const items = within(lane).getAllByRole("listitem")
+    // Read as one string; the visible word stays beside the bar's fill. The one the now-line crosses (22:00–00:00) is running.
+    expect(items.map((li) => li.querySelector(".sr-only")?.textContent)).toEqual(["Car park, Done, 18:30–20:30", "Car park, Running, 22:00–00:00", "Car park, Planned, 03:00–05:00"])
+    expect(items.map((li) => li.querySelector('[aria-hidden="true"]')?.textContent)).toEqual(["Car parkDone18:30–20:30", "Car parkRunning22:00–00:00", "Car parkPlanned03:00–05:00"])
     const key = screen.getByRole("list", { name: "Key" })
     expect(key.textContent).not.toMatch(/Amber|Blue|Muted|Outlined/)
   })

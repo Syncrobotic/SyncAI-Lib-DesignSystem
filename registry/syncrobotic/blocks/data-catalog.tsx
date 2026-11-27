@@ -1,4 +1,4 @@
-// @syncrobotic/data-catalog v0.40.0 · update: npx shadcn add @syncrobotic/data-catalog --overwrite
+// @syncrobotic/data-catalog v0.53.0 · update: npx shadcn add @syncrobotic/data-catalog --overwrite
 "use client"
 
 import * as React from "react"
@@ -300,7 +300,10 @@ export function DataCatalogContent({ datasets = sampleDatasets }: DataCatalogPro
   )
 }
 
-/** Data catalog: filter by tier, use and task, search, sort, read one row per dataset. On phones the filters open in a drawer. */
+/**
+ * Datasets one row each, with tier, use and task filters, search, sort and source rows that unfold their label layers;
+ * DataCatalogContent drops the sample frame for your own shell. On phones the filters open in a drawer.
+ */
 export function DataCatalog(props: DataCatalogProps) {
   return (
     <AppShell

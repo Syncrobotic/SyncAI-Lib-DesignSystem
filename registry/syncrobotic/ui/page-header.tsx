@@ -1,10 +1,10 @@
-// @syncrobotic/page-header v0.51.0 · update: npx shadcn add @syncrobotic/page-header --overwrite
+// @syncrobotic/page-header v0.53.0 · update: npx shadcn add @syncrobotic/page-header --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
 /**
- * The block a page opens with: a breadcrumb, one h1 and a line, one InlineStatus, meta pills and actions on the right.
- * No label above the title: the breadcrumb says where, the title says what.
+ * The block a page opens with: breadcrumb, one h1 and a line, one InlineStatus and badges beside the title, meta pills
+ * for facts, and actions at the right. No label above the title: the breadcrumb says where, the title says what.
  */
 export function PageHeader({
   title,

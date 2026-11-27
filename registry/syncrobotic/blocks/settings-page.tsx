@@ -1,4 +1,4 @@
-// @syncrobotic/settings-page v0.40.0 · update: npx shadcn add @syncrobotic/settings-page --overwrite
+// @syncrobotic/settings-page v0.53.0 · update: npx shadcn add @syncrobotic/settings-page --overwrite
 "use client"
 
 import * as React from "react"
@@ -59,8 +59,8 @@ function SwitchRow({ label, hint, defaultChecked }: { id?: string; label: string
 }
 
 /**
- * Settings: sections side by side with their explanation. Switches apply at once; text fields collect into one
- * save bar that appears only when something changed. The danger zone confirms with the consequence named.
+ * Settings in sections beside their explanation: switches apply at once, text fields collect into a save bar that
+ * appears only when something changed, and a danger zone names the consequence.
  */
 export function SettingsPage() {
   const saved = { site: "North site", timezone: "Asia/Taipei" }

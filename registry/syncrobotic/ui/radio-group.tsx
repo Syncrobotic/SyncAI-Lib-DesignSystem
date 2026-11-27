@@ -1,10 +1,14 @@
-// @syncrobotic/radio-group v0.15.0 · update: npx shadcn add @syncrobotic/radio-group --overwrite
+// @syncrobotic/radio-group v0.53.0 · update: npx shadcn add @syncrobotic/radio-group --overwrite
 "use client"
 
 import * as React from "react"
 import { RadioGroup as RadioGroupPrimitive } from "radix-ui"
 import { cn } from "@/lib/utils"
 
+/**
+ * Pick exactly one of a few visible options. Tab reaches the group once and the arrow keys move and select; for a longer
+ * list use a Select.
+ */
 export function RadioGroup({ className, ...props }: React.ComponentProps<typeof RadioGroupPrimitive.Root>) {
   return <RadioGroupPrimitive.Root data-slot="radio-group" className={cn("grid gap-3", className)} {...props} />
 }

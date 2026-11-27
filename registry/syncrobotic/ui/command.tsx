@@ -1,4 +1,4 @@
-// @syncrobotic/command v0.52.0 · update: npx shadcn add @syncrobotic/command --overwrite
+// @syncrobotic/command v0.53.0 · update: npx shadcn add @syncrobotic/command --overwrite
 "use client"
 
 import * as React from "react"
@@ -8,10 +8,6 @@ import { Check, Search } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { getLastInput, trackInputModality } from "@/registry/syncrobotic/lib/input-modality"
 
-/**
- * A filterable list driven from the keyboard (cmdk): type to narrow, ↑↓ to move, Enter to run. The highlighted row is
- * ringed only when the keyboard moved last (data-nav), and no row is ringed before anyone uses it.
- */
 // The last input modality on the page: a palette opened with ⌘K rings its row at once; one opened with a click does not.
 trackInputModality()
 
@@ -65,6 +61,11 @@ function CommandStatus({ labels }: { labels: CommandLabels }) {
   )
 }
 
+/**
+ * Search and run from the keyboard: a filterable list, and the ⌘K palette that opens over any page. Type to narrow, ↑↓
+ * to move, Enter to run; the highlighted row is ringed only when the keyboard moved last (data-nav), never before anyone
+ * uses it.
+ */
 export function Command({
   className,
   onKeyDown,

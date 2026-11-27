@@ -1,10 +1,14 @@
-// @syncrobotic/sheet v0.51.0 · update: npx shadcn add @syncrobotic/sheet --overwrite
+// @syncrobotic/sheet v0.53.0 · update: npx shadcn add @syncrobotic/sheet --overwrite
 "use client"
 
 import * as React from "react"
 import { Dialog as SheetPrimitive } from "radix-ui"
 import { cn } from "@/lib/utils"
 
+/**
+ * A panel that slides in and floats 8 px from the screen's edges: a bottom sheet with a grab handle on phones, a side
+ * panel on wide screens, a drawer for navigation. Like a Dialog it keeps focus inside until it closes; Escape closes it.
+ */
 export const Sheet = SheetPrimitive.Root
 export function SheetTrigger(props: React.ComponentProps<typeof SheetPrimitive.Trigger>) {
   return <SheetPrimitive.Trigger data-slot="sheet-trigger" {...props} />

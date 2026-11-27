@@ -48,9 +48,9 @@ const setup = (props: Partial<React.ComponentProps<typeof MediaPlayer>> = {}) =>
 const key = (el: Element, k: string) => fireEvent.keyDown(el, { key: k })
 const time = (c: HTMLElement) => ["current", "total"].map((s) => c.querySelector(`[data-slot=media-player-${s}]`)!.textContent)
 
-/** A marker's accessible name: its time, a comma, its label. A browser joins the inline spans as is; jsdom puts a space
- * at each span's edge, so the name may read "0:42 , Obstacle" there. */
-const listed = (time: string, label: string) => new RegExp(`^${time} ?, ${label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`)
+/** A marker's accessible name. In the list: its time, a space, its label, by content (no separator span, which a browser
+ * reads "0:42 , Obstacle"). On the timeline: `labels.marker`, "0:42, Obstacle" by default. */
+const listed = (time: string, label: string) => new RegExp(`^${time},? ${label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`)
 
 describe("formatMediaTime", () => {
   it("writes a clock, with hours only when there are some", () => {
@@ -155,7 +155,7 @@ describe("MediaPlayer markers", () => {
     const { video } = setup({ markers })
     const list = screen.getByRole("list", { name: "Events in this clip" })
     const items = list.querySelectorAll("button")
-    expect([...items].map((b) => b.textContent)).toEqual(["0:02, Patrol started", "0:42, Obstacle"])
+    expect([...items].map((b) => b.textContent)).toEqual(["0:02 Patrol started", "0:42 Obstacle"])
     fireEvent.click(items[1])
     expect(video.currentTime).toBe(42)
   })
@@ -192,7 +192,7 @@ describe("MediaPlayer range markers", () => {
   it("names a window by its time range, in the list and on hover", () => {
     const { container } = setup({ markers: windows })
     const item = screen.getByRole("button", { name: listed("0:12–0:30", "Person in path") })
-    expect(item.textContent).toBe("0:12–0:30, Person in path")
+    expect(item.textContent).toBe("0:12–0:30 Person in path")
     expect(screen.getByRole("button", { name: listed("0:42", "Obstacle") })).toBeTruthy()
     // The drawn label shown on hover and focus says the same.
     expect(marks(container)[0]!.textContent).toBe("0:12–0:30, Person in path")

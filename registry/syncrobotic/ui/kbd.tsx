@@ -1,13 +1,13 @@
-// @syncrobotic/kbd v0.51.0 · update: npx shadcn add @syncrobotic/kbd --overwrite
+// @syncrobotic/kbd v0.53.0 · update: npx shadcn add @syncrobotic/kbd --overwrite
 "use client"
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
 /**
- * A key in a shortcut or an instruction: ⌘K, Esc. One key per Kbd; a chord is a KbdGroup; "Hold" is a word beside it.
- * In a tooltip it takes the tooltip's text colour, so it shows in both modes. `pressed` sinks it and thickens its edge
- * while its shortcut runs, so the change is not colour alone.
+ * A keyboard key in shortcuts and instructions; KbdGroup for chords. One key per Kbd; "Hold" is a word beside it. In a
+ * tooltip it takes the tooltip's text colour, so it shows in both modes. `pressed` sinks it and thickens its edge while
+ * its shortcut runs, so the change is not colour alone.
  */
 export function Kbd({ className, pressed, ...props }: React.ComponentProps<"kbd"> & { pressed?: boolean }) {
   return (

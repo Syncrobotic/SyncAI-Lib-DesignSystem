@@ -1,4 +1,4 @@
-// @syncrobotic/marketing-hero v0.28.0 · update: npx shadcn add @syncrobotic/marketing-hero --overwrite
+// @syncrobotic/marketing-hero v0.53.0 · update: npx shadcn add @syncrobotic/marketing-hero --overwrite
 import * as React from "react"
 import { ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -9,8 +9,9 @@ import { Button } from "@/registry/syncrobotic/ui/button"
 type Cta = { label: string; href: string }
 
 /**
- * Landing page hero. Uses the marketing-only tokens: text-5xl for the headline and
- * --space-section for vertical rhythm. Neutral primary CTA; red stays reserved for the stop.
+ * Landing page hero with eyebrow, headline, two calls to action and a product visual. Uses the marketing-only tokens:
+ * text-5xl for the headline and --space-section for vertical rhythm. Neutral primary CTA; red stays reserved for the
+ * stop.
  */
 export function MarketingHero({
   eyebrow = "New · Fleet v2.4",

@@ -1,4 +1,4 @@
-// @syncrobotic/sparkline-table v0.40.0 · update: npx shadcn add @syncrobotic/sparkline-table --overwrite
+// @syncrobotic/sparkline-table v0.53.0 · update: npx shadcn add @syncrobotic/sparkline-table --overwrite
 "use client"
 
 import { formatCount } from "@/registry/syncrobotic/lib/format-number"
@@ -29,9 +29,9 @@ type Site = (typeof sites)[number]
 const total = (s: Site) => s.events.reduce((a, b) => a + b, 0)
 
 /**
- * A table with a trend column: each site's events over 14 days as mini bars on one shared scale, with the total beside it.
- * Where it is narrow (a phone, a dashboard column) the rows are a list: the site, its robots under it, the bars and the total
- * at the end.
+ * A table where each row's last 14 days are mini bars on one shared scale. Here each site's events over 14 days, with
+ * the total beside it. Where it is narrow (a phone, a dashboard column) the rows are a list: the site, its robots under
+ * it, the bars and the total at the end.
  */
 export function SparklineTable() {
   const max = Math.max(...sites.flatMap((s) => s.events))

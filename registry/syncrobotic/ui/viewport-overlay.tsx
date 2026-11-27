@@ -1,4 +1,4 @@
-// @syncrobotic/viewport-overlay v0.51.0 · update: npx shadcn add @syncrobotic/viewport-overlay --overwrite
+// @syncrobotic/viewport-overlay v0.53.0 · update: npx shadcn add @syncrobotic/viewport-overlay --overwrite
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
@@ -18,8 +18,9 @@ const placement: Record<ViewportOverlayPosition, string> = {
 }
 
 /**
- * The place for chrome over a viewport (a map, a camera): a corner or edge, 16 px in, pieces 8 px apart. Pointer events
- * pass through to the canvas; give pressable pieces `pointer-events-auto`. Keep the bottom right clear for the stop.
+ * Chrome over a map, point cloud, 3D view or camera: ViewportOverlay places it 16 px from the frame's edges and lets
+ * the pointer through; ViewportPanel is one piece, Float or scrim. Pieces sit 8 px apart; give pressable ones
+ * `pointer-events-auto`. Keep the bottom right clear for the stop.
  */
 export function ViewportOverlay({
   position = "top-left",

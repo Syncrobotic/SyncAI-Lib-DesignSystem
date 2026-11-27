@@ -1,4 +1,4 @@
-// @syncrobotic/bar-chart-stacked v0.35.0 · update: npx shadcn add @syncrobotic/bar-chart-stacked --overwrite
+// @syncrobotic/bar-chart-stacked v0.53.0 · update: npx shadcn add @syncrobotic/bar-chart-stacked --overwrite
 "use client"
 
 import * as React from "react"
@@ -20,7 +20,10 @@ const data = ["North", "South", "Hall B", "Parking"].map((site, i) => ({
   idle: [3, 6, 2, 5][i],
 }))
 
-/** Parts of a whole per category: stacked segments separated by a 2 px gap in the card colour, rounded only at the top. */
+/**
+ * Parts of a whole per category as stacked segments, separated by a 2 px gap in the card colour. Only the top is
+ * rounded.
+ */
 export function BarChartStacked() {
   const [view, setView] = React.useState("chart")
   return (

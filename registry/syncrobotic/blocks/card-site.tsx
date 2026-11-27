@@ -1,4 +1,4 @@
-// @syncrobotic/card-site v0.48.0 · update: npx shadcn add @syncrobotic/card-site --overwrite
+// @syncrobotic/card-site v0.53.0 · update: npx shadcn add @syncrobotic/card-site --overwrite
 import { ChevronRight, MapPin } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { StatusEyebrow } from "@/registry/syncrobotic/shell/status-eyebrow"
@@ -46,8 +46,8 @@ export const sampleSites: Site[] = [
 ]
 
 /**
- * Sites to pick from: each card is one link, state first, then the two numbers people compare sites by, and what needs
- * someone written out. A calm site is grey; only the site with a problem carries colour.
+ * Sites to pick from: each card one link, state first, robots and missions, and what needs someone in words. A calm
+ * site is grey; only the site with a problem carries colour.
  */
 export function CardSite({ sites = sampleSites, className }: { sites?: Site[]; className?: string }) {
   return (

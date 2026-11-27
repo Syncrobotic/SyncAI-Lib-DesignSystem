@@ -1,12 +1,13 @@
-// @syncrobotic/input-group v0.51.0 · update: npx shadcn add @syncrobotic/input-group --overwrite
+// @syncrobotic/input-group v0.53.0 · update: npx shadcn add @syncrobotic/input-group --overwrite
 "use client"
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
 /**
- * An input with an icon, a unit or a button inside its edge. The group draws the field (edge, focus ring, error) and the
- * Input inside draws nothing, so addons of any width fit. A unit follows its value ("120 m"), not the far edge.
+ * An input with an icon, a unit or a button (clear, show password) inside its edge, where the group draws the field,
+ * focus and error. The Input inside draws nothing, so addons of any width fit. A unit follows its value ("120 m"), not
+ * the far edge.
  */
 export function InputGroup({
   className,

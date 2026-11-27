@@ -1,11 +1,12 @@
-// @syncrobotic/marker v0.40.0 · update: npx shadcn add @syncrobotic/marker --overwrite
+// @syncrobotic/marker v0.53.0 · update: npx shadcn add @syncrobotic/marker --overwrite
 import * as React from "react"
 import { type Status, StatusGlyph } from "@/registry/syncrobotic/shell/status-glyph"
 import { cn } from "@/lib/utils"
 
 /**
- * A labelled line across a log or a feed: where a day starts, where the operator took over, where a run resumed.
- * It reads as text, not as a control. Neutral by default; a status only for the moments that went wrong.
+ * A labelled line across a log or feed (a day, a takeover, an e-stop), and MarkerRow: one dense log line with a status
+ * glyph, detail and time. It reads as text, not as a control. Neutral by default; a status only for the moments that
+ * went wrong.
  */
 export function Marker({
   icon,
@@ -81,7 +82,7 @@ export function MarkerRow({
       {/* The title stays in the text colour: status colour is for the glyph only. */}
       <span className="shrink-0 font-medium">
         {title}
-        {(status === "danger" || status === "warning") && <span className="sr-only">, {status === "danger" ? "failed" : "warning"}</span>}
+        {(status === "danger" || status === "warning") && <span className="sr-only"> {status === "danger" ? "failed" : "warning"}</span>}
       </span>
       {detail && <span className="min-w-0 truncate font-mono text-xs text-muted-foreground">{detail}</span>}
       {children}

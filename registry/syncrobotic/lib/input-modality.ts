@@ -1,8 +1,8 @@
-// @syncrobotic/input-modality v0.51.0 · update: npx shadcn add @syncrobotic/input-modality --overwrite
+// @syncrobotic/input-modality v0.53.0 · update: npx shadcn add @syncrobotic/input-modality --overwrite
 /*
-  The last input on the page, keys or a pointer: menus, lists and trees ring their highlighted row only after keys.
-  One pair of capture listeners for the whole page, attached on the first trackInputModality() (called as a module
-  loads, so the key press that opens a menu is counted), never on the server.
+  Whether the last input on the page was a key or a pointer, from one pair of document listeners for the whole page:
+  menus, lists and trees ring their row only in keyboard use. The listeners capture, attached on the first
+  trackInputModality() (called as a module loads, so the key press that opens a menu is counted), never on the server.
 */
 
 export type InputModality = "key" | "pointer"

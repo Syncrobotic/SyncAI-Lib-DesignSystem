@@ -1,4 +1,4 @@
-// @syncrobotic/graph v0.52.0 · update: npx shadcn add @syncrobotic/graph --overwrite
+// @syncrobotic/graph v0.53.0 · update: npx shadcn add @syncrobotic/graph --overwrite
 "use client"
 
 import * as React from "react"
@@ -432,9 +432,9 @@ export type GraphProps = {
 const frame = "relative w-full rounded-md bg-card ring-1 ring-border"
 
 /**
- * A directed acyclic graph (lineage, a training run's inputs and outputs, a mission's steps), inputs to the left.
- * Selecting or pointing at a node highlights its upstream and downstream path. One Tab stop; arrow keys follow edges.
- * Offer GraphList beside it as the text view.
+ * A directed acyclic graph for lineage and pipelines, laid out in layers with no library: nodes with status and links,
+ * the selected path highlighted, arrow keys along edges, and GraphList as text. Inputs are on the left. One Tab stop:
+ * offer GraphList beside it as the text view.
  */
 export function Graph({
   nodes,

@@ -1,4 +1,4 @@
-// @syncrobotic/spinner v0.23.0 · update: npx shadcn add @syncrobotic/spinner --overwrite
+// @syncrobotic/spinner v0.53.0 · update: npx shadcn add @syncrobotic/spinner --overwrite
 "use client"
 
 import * as React from "react"
@@ -12,7 +12,8 @@ export type SpinnerLabels = {
 export const defaultSpinnerLabels: SpinnerLabels = { loading: "Loading" }
 
 /**
- * Appears only after `delay` (300 ms by default): work that finishes sooner never flashes a spinner.
+ * A turning indicator for work with no measurable progress, shown only after 300 ms so quick work never flashes it.
+ * `delay` sets the wait.
  */
 export function Spinner({
   className,

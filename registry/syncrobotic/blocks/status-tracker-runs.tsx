@@ -1,4 +1,4 @@
-// @syncrobotic/status-tracker-runs v0.40.0 · update: npx shadcn add @syncrobotic/status-tracker-runs --overwrite
+// @syncrobotic/status-tracker-runs v0.53.0 · update: npx shadcn add @syncrobotic/status-tracker-runs --overwrite
 "use client"
 
 import { cn } from "@/lib/utils"
@@ -20,7 +20,9 @@ const routes = [
   { name: "Perimeter · East fence", runs: seq("..x...~..x.....~x..x"), last: "Today 21:15" },
 ]
 
-/** Run history per route: the last 20 runs as a strip, newest on the right, with the pass count and the last run in words. */
+/**
+ * The last 20 runs of each route as a strip, newest on the right, with the pass count. The last run is said in words.
+ */
 export function StatusTrackerRuns() {
   return (
     <Card>

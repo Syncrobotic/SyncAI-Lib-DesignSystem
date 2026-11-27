@@ -1,4 +1,4 @@
-// @syncrobotic/chart v0.51.0 · update: npx shadcn add @syncrobotic/chart --overwrite
+// @syncrobotic/chart v0.53.0 · update: npx shadcn add @syncrobotic/chart --overwrite
 "use client"
 
 import * as React from "react"
@@ -6,6 +6,12 @@ import { Area, Bar, Legend, Line, ResponsiveContainer, Tooltip, type LegendProps
 import { cn } from "@/lib/utils"
 import { formatNumber } from "@/registry/syncrobotic/lib/format-number"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/registry/syncrobotic/ui/table"
+
+/*
+  Line, area and bar charts on Recharts, in graphite and one accent with series told apart by line style, with a
+  crosshair tooltip, a legend and a table view. Wrap the Recharts chart in ChartContainer with a ChartConfig, and pair
+  it with a ChartTable behind a Chart / Table switch.
+*/
 
 /**
  * One entry per series, most important first. `color` is the palette slot: 1 the accent, 2 and 3 graphite, 4 light

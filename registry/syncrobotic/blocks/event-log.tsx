@@ -1,4 +1,4 @@
-// @syncrobotic/event-log v0.47.0 · update: npx shadcn add @syncrobotic/event-log --overwrite
+// @syncrobotic/event-log v0.53.0 · update: npx shadcn add @syncrobotic/event-log --overwrite
 "use client"
 
 import * as React from "react"
@@ -88,7 +88,9 @@ function Level({ priority }: { priority: LogEvent["priority"] }) {
   )
 }
 
-/** Event log: filter by time, level and text, read the table, open one event in a side sheet by its whole row. */
+/**
+ * An event log: filter by time, level and text, read the table, and open one event in a side sheet by its whole row.
+ */
 export function EventLog({ events = sampleEvents }: { events?: LogEvent[] }) {
   const [range, setRange] = React.useState<keyof typeof ranges>("24h")
   const [level, setLevel] = React.useState<string>("all")

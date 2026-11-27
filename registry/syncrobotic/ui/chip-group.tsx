@@ -1,4 +1,4 @@
-// @syncrobotic/chip-group v0.51.0 · update: npx shadcn add @syncrobotic/chip-group --overwrite
+// @syncrobotic/chip-group v0.53.0 · update: npx shadcn add @syncrobotic/chip-group --overwrite
 "use client"
 
 import * as React from "react"
@@ -95,8 +95,9 @@ type ChipGroupMultiple = {
 export type ChipGroupProps = ChipGroupBase & (ChipGroupSingle | ChipGroupMultiple)
 
 /**
- * One choice (or several, `type="multiple"`) as a row of chips with their result counts: a facet, a level, a saved view.
- * Past `max` chips fold behind "N more" (chosen ones stay). Chips with `href` are links, so a filter works without JS.
+ * One or several choices (type="multiple") as chips with counts, folded after N, or as links so the filter lives in the
+ * URL, with the selected chip inverted. Past `max` chips fold behind "N more" (chosen ones stay). Chips with `href` are
+ * links, so a filter works without JS.
  */
 export function ChipGroup({
   items,
@@ -163,8 +164,13 @@ export function ChipGroup({
   const inner = (c: Chip) => (
     <>
       {c.label}
-      {c.count !== undefined && <span className={countCls}>{formatCount(c.count, { locale })}</span>}
-      {multiple && c.href && isOn(c) && <span className="sr-only">, {l.selected}</span>}
+      {c.count !== undefined && (
+        <>
+          {" "}
+          <span className={countCls}>{formatCount(c.count, { locale })}</span>
+        </>
+      )}
+      {multiple && c.href && isOn(c) && <span className="sr-only"> {l.selected}</span>}
     </>
   )
 

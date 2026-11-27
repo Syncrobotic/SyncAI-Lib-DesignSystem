@@ -1,4 +1,4 @@
-// @syncrobotic/progress v0.40.0 · update: npx shadcn add @syncrobotic/progress --overwrite
+// @syncrobotic/progress v0.53.0 · update: npx shadcn add @syncrobotic/progress --overwrite
 "use client"
 
 import * as React from "react"
@@ -14,8 +14,9 @@ const fill = {
 } as const
 
 /**
- * Blue: a process someone is waiting on, with an end. A level that stays (battery, storage) is a Meter, not a Progress.
- * At 0 % (waiting to start) the empty track is all there is to see, so it takes the --input edge (3:1) and reads as a bar.
+ * A determinate bar that fills as work completes; blue unless the value itself is a status. Blue is for a process
+ * someone is waiting on; a level that stays (battery, storage) is a Meter. At 0 % the empty track takes the --input
+ * edge (3:1), so it still reads as a bar.
  */
 export function Progress({
   className,

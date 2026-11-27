@@ -1,4 +1,4 @@
-// @syncrobotic/sparkline-robot-list v0.40.0 · update: npx shadcn add @syncrobotic/sparkline-robot-list --overwrite
+// @syncrobotic/sparkline-robot-list v0.53.0 · update: npx shadcn add @syncrobotic/sparkline-robot-list --overwrite
 "use client"
 
 import { cn } from "@/lib/utils"
@@ -29,7 +29,7 @@ const rows: Row[] = [
 
 const row = "flex min-h-(--h-row) items-center gap-3 border-b border-border px-4 last:border-b-0" // icon-gap-ok: the svg is a sparkline, not an icon beside a label
 
-/** A robot list where each row carries its last 12 hours of battery: the shape tells the story, the number says where it is now. */
+/** Each robot row with its last 12 hours of battery as a sparkline and the value now. */
 export function SparklineRobotList() {
   return (
     <Card className="gap-0 p-0">
