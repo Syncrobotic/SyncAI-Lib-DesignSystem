@@ -1085,6 +1085,24 @@ export const overviews: Record<string, Overview> = {
     use: ["A list with no items yet, search with no results, a page without permission."],
     instead: ["A temporary error inside a page: `alert`."],
   },
+  "scope-picker": {
+    use: ["An API key's or a service account's scopes.", "Any grant of permission strings that must stay within what the person granting holds."],
+    instead: ["A role with its bundle: a Select of roles, as users-roles does.", "A few unrelated options: `choice-field` in a FieldSet."],
+    notes: ["`groupScopes` gives the same grouping for a read-only list of a key's scopes."],
+  },
+  "quota-field": {
+    use: ["A project's device seats, a plan's seat count, any limit that may be unlimited."],
+    instead: ["A number that is never unlimited: `number-field`.", "A choice of a set, not a count: `all-or-some-field`."],
+  },
+  "all-or-some-field": {
+    use: ["A project's licensed modules, a key's projects, any entitlement that may follow the catalog as it grows."],
+    instead: ["Permission strings bounded by the viewer: `scope-picker`.", "A fixed set with no \"all\": checkboxes in a FieldSet."],
+  },
+  "project-switcher": {
+    use: ["The sidebar's header in a multi-project console: which project the pages show."],
+    instead: ["Switching sites or robots inside one project: the sidebar's own switcher menu.", "Searching everything in the product: the command palette (`command`)."],
+    notes: ["Below 640 px it opens as a bottom sheet; the same keys work in both."],
+  },
   "freshness-stamp": {
     use: [
       "Beside a device's reported values on its detail page: modules running, GPU, disk.",

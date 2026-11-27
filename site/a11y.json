@@ -502,6 +502,33 @@
     "tabStops": 3,
     "live": false
   },
+  "scope-picker": {
+    "roles": [
+      "checkbox",
+      "group",
+      "radio",
+      "radiogroup"
+    ],
+    "tabStops": 9,
+    "live": true
+  },
+  "quota-field": {
+    "roles": [
+      "button",
+      "switch"
+    ],
+    "tabStops": 2,
+    "live": false
+  },
+  "all-or-some-field": {
+    "roles": [
+      "checkbox",
+      "radio",
+      "radiogroup"
+    ],
+    "tabStops": 5,
+    "live": false
+  },
   "table": {
     "roles": [
       "button",
@@ -633,6 +660,13 @@
       "separator"
     ],
     "tabStops": 14,
+    "live": false
+  },
+  "project-switcher": {
+    "roles": [
+      "button"
+    ],
+    "tabStops": 1,
     "live": false
   },
   "graph": {

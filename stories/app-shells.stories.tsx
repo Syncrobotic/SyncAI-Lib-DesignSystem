@@ -16,6 +16,11 @@ import { SettingsPage } from "@/registry/syncrobotic/blocks/settings-page"
 import { UsersRoles } from "@/registry/syncrobotic/blocks/users-roles"
 import { DeviceEnrolment, DeviceEnrolmentContent, deviceNav, sampleEnrolmentRequests } from "@/registry/syncrobotic/blocks/device-enrolment"
 import { DeviceDetail, DeviceDetailContent, sampleDevice, sampleDeviceLicences } from "@/registry/syncrobotic/blocks/device-detail"
+import { OfflineLicence } from "@/registry/syncrobotic/blocks/offline-licence"
+import { ProjectMembers } from "@/registry/syncrobotic/blocks/project-members"
+import { PermissionMatrix } from "@/registry/syncrobotic/blocks/permission-matrix"
+import { WebhookDeliveries } from "@/registry/syncrobotic/blocks/webhook-deliveries"
+import { TenantAdmin } from "@/registry/syncrobotic/blocks/tenant-admin"
 import { permissionsFrom } from "@/registry/syncrobotic/ui/permission-gate"
 import { MapWorkspace } from "@/registry/syncrobotic/blocks/map-workspace"
 import { TopBarShell } from "@/registry/syncrobotic/blocks/top-bar-shell"
@@ -97,6 +102,11 @@ export const DeviceDetailAirGapped: S = {
     </AppShell>
   ),
 }
+export const OfflineLicenceScreen: S = { render: () => <OfflineLicence /> }
+export const ProjectMembersScreen: S = { render: () => <ProjectMembers /> }
+export const PermissionMatrixScreen: S = { render: () => <PermissionMatrix /> }
+export const WebhookDeliveriesScreen: S = { render: () => <WebhookDeliveries /> }
+export const TenantAdminScreen: S = { render: () => <TenantAdmin /> }
 export const SignInScreen: S = { render: () => <SignIn /> }
 export const NotFoundScreen: S = { render: () => <NotFoundPage /> }
 export const NoAccessScreen: S = { render: () => <NoAccessPage permission="audit-logs:read" /> }
