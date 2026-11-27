@@ -380,12 +380,12 @@
     "hash": "554b0d64d6abdc98"
   },
   "dropdown-menu": {
-    "version": "0.53.0",
-    "hash": "05793df288d50dc3"
+    "version": "0.56.0",
+    "hash": "14df8ed4ca4afa1c"
   },
   "context-menu": {
-    "version": "0.53.0",
-    "hash": "6e7eac72c30530d1"
+    "version": "0.56.0",
+    "hash": "153d28a3b95d5354"
   },
   "command": {
     "version": "0.54.0",

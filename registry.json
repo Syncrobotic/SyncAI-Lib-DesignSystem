@@ -5447,8 +5447,13 @@
         }
       ],
       "meta": {
-        "version": "0.53.0",
+        "version": "0.56.0",
         "changelog": [
+          {
+            "version": "0.56.0",
+            "date": "2026-11-27",
+            "note": "An item disabled with `aria-disabled` (a PermissionGate keeping it focusable for its reason) looks disabled too."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
@@ -5544,8 +5549,13 @@
       ],
       "meta": {
         "status": "stable",
-        "version": "0.53.0",
+        "version": "0.56.0",
         "changelog": [
+          {
+            "version": "0.56.0",
+            "date": "2026-11-27",
+            "note": "An item disabled with `aria-disabled` looks disabled, as in the dropdown menu."
+          },
           {
             "version": "0.53.0",
             "date": "2026-11-27",
